@@ -17,6 +17,7 @@ The only currently working example is  test/exKSP3.jl, which solves a simple sys
 To do:
   * Use Petsc typealiases for all arguments
   * Generate file at installation that defines the correct typealiases, taking into account the options Petsc was built with (the Petsc function PetscDataTypeGetSize()  should help)
+  * Handle Petsc error codes properly
   * Make the script for building Petsc more flexible, eg. allowing more configuration options like building blas or lapack, while ensure it remains completely autonomous (needed for Travis testig)
   * Wrap more PetscVec functions
   * Wrap more PetscMat functions

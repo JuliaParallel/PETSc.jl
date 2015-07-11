@@ -14,6 +14,7 @@ julia ./name_of_file
 The only currently working example is  test/exKSP3.jl, which solves a simple system with a Krylov Subspace method and compares the result with a direct solve using Julia's backslash operator
 
 
+
 To do:
   * Use Petsc typealiases for all arguments
   * Generate file at installation that defines the correct typealiases, taking into account the options Petsc was built with (the Petsc function PetscDataTypeGetSize()  should help)

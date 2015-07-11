@@ -11,8 +11,8 @@ notifications:
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y  mpich2 mpich2-doc
-  - sudo apt-get install -y liblapack-dev liblapack-doc liblapack-doc-man liblapack3 liblapack3gf liblapacke liblapacke-dev
-  - sudo apt-get install -y libblas3 libblas-dev libblas-doc -libblas-test libblas3gf
+  - sudo apt-get install -y liblapack-dev liblapack-doc liblapack3gf
+  - sudo apt-get install -y libblas-dev libblas-doc -libblas-test libblas3gf
   - ./build/install_petsc.sh
   - source ./build/use_petsc.sh
 # uncomment the following lines to override the default test script

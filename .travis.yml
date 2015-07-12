@@ -16,6 +16,7 @@ before_install:
   - echo `pwd`
 install:
   - julia -e 'Pkg.clone("MPI")'
+  - ls ./
   - ls ../
   - ls ~/.julia/v0.4
   - sudo ./build/travis-install-mpi.sh mpich3

@@ -14,7 +14,8 @@ before_install:
   - sudo apt-get install -y libblas-dev libblas-doc libblas3gf
   - echo `pwd`
 install:
-  - julia -e 'Pkg.cone("MPI")'
+  - julia -e 'Pkg.clone("MPI")'
+  - ls ../
   
 # uncomment the following lines to override the default test script
 #script:

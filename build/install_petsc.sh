@@ -35,16 +35,18 @@ $cmd2 | tee fout3
 echo "finished second command"
 
 
-cmd3=$(tail --lines=1 ./fout3)
-substr='<number of MPI processes you intend to use>'
-nprocs=4
-cmd3a="${cmd3/$substr/$nprocs}"
+# cmd3 the slashes in cmd3a substitution are causing problems
+# for julia, so we skip them
+#cmd3=$(tail --lines=1 ./fout3)
+#substr='<number of MPI processes you intend to use>'
+#nprocs=4
+#cmd3a="${cmd3/$substr/$nprocs}"
 # execute the command
 
-$cmd3a | tee fout4
+#$cmd3a | tee fout4
 
 
-echo "finished third command"
+#echo "finished third command"
 
 #export PETSC_DIR=`pwd`
 #export PETSC_ARCH
@@ -54,7 +56,8 @@ cd ..
 echo "export PETSC_DIR=$petsc_dir" >> use_petsc.sh
 echo "export PETSC_ARCH=$PETSC_ARCH" >> use_petsc.sh
 
-
+echo "$petsc_dir" >> petsc_evars
+echo "$PETSC_ARCH" >> petsc_evars
 
 
 

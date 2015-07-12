@@ -16,11 +16,18 @@ export KSP_NORM_DEFAULT, KSP_NORM_NONE, KSP_NORM_PRECONDITIONED, KSP_NORM_UNPREC
 
 export KSP_NORM_MAX
 
-# figure out which version of petsc to use
-if haskey(ENV, "PETSC_DIR") && haskey(ENV, "PETSC_ARCH")
-  global const PETSC_DIR = ENV["PETSC_DIR"]
-  global const PETSC_ARCH = ENV["PETSC_ARCH"]
+# decide which version of Petsc to use
+# if no PETSC_DIR or PETSC_ARCH defined, use the one (hopefully) built 
+# during package installation
+if !haskey(ENV, "PETSC_DIR") && !haskey(ENV, "PETSC_ARCH")
+  args = open(readdlm, "../build/petsc_evars")
+  println("args = ", args)
+  ENV["PETSC_DIR"] = args[1]
+  ENV["PETSC_ARCH"] = args[2]
 end
+
+global const PETSC_DIR = ENV["PETSC_DIR"]
+global const PETSC_ARCH = ENV["PETSC_ARCH"]
 
 
 # definitions of Petsc types

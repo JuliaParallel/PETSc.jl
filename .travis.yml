@@ -15,11 +15,12 @@ before_install:
   - sudo apt-get install -y libblas-dev libblas-doc libblas3gf
   - echo `pwd`
 install:
-  - julia -e 'Pkg.clone("MPI")'
   - ls ./
   - ls ../
   - ls ~/.julia/v0.4
   - sudo ./build/travis-install-mpi.sh mpich3
+  - julia -e 'Pkg.clone("MPI")'
+  - julia -e 'Pkg.build("MPI")'
   
 # uncomment the following lines to override the default test script
 #script:

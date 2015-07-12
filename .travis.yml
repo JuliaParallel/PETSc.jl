@@ -10,12 +10,15 @@ notifications:
 
 before_install:
   - sudo apt-get update -qq
+  - sudo apt-get install build-essential gfortran perl g++ gcc cmake m4 git
   - sudo apt-get install -y liblapack-dev liblapack-doc liblapack3gf
   - sudo apt-get install -y libblas-dev libblas-doc libblas3gf
   - echo `pwd`
 install:
   - julia -e 'Pkg.clone("MPI")'
   - ls ../
+  - ls ~/.julia/v0.4
+  - sudo ./build/travis-install-mpi.sh mpich3
   
 # uncomment the following lines to override the default test script
 #script:

@@ -3,7 +3,7 @@ set -ex
 petsc_name=petsc-3.6.0
 fmt=.tar.gz
 wget http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/$petsc_name$fmt
-tar xfvz ./$petsc_name$fmt
+tar xfz ./$petsc_name$fmt
 
 #export PETSC_DIR=`pwd`/$petsc_name
 #export PETSC_ARCH=

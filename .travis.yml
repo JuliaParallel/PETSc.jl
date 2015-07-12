@@ -10,11 +10,12 @@ notifications:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -y  mpich2 mpich2-doc
   - sudo apt-get install -y liblapack-dev liblapack-doc liblapack3gf
   - sudo apt-get install -y libblas-dev libblas-doc libblas3gf
-  - ./build/install_petsc.sh
-  - source ./build/use_petsc.sh
+  - echo `pwd`
+install:
+  - julia -e 'Pkg.cone("MPI")'
+  
 # uncomment the following lines to override the default test script
 #script:
 #  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi

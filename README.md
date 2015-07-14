@@ -45,12 +45,8 @@ Directory Structure
 
 
 Building Petsc (or not)
-Upon installation of the package, the build script (`build.jl`) checks for the environmental variables `PETSC_DIR` and `PETSC_ARCH`.  
-If both are present, it does nothing, otherwise is downloads and builds Petsc using the script `install_petsc.sh`.  Note that the script assumes BLAS, LAPACK and MPI are already installed.  See `.travis.yml` to see the Ubuntu packages used for testing.
-  When complete, it generates two files, `use_petsc.sh` and `petsc_evars`, which contains the values of `PETSC_DIR` and `PETSC_ARCH` for the Petsc installation.
+Upon installation of the package, the build script (`build.jl`) checks for the environmental variables `PETSC_DIR` and `PETSC_ARCH`.  If both are present, it does nothing, otherwise is downloads and builds Petsc using the script `install_petsc.sh`.  Note that the script assumes BLAS, LAPACK and MPI are already installed.  See `.travis.yml` to see the Ubuntu packages used for testing.  When complete, it generates two files, `use_petsc.sh` and `petsc_evars`, which contains the values of `PETSC_DIR` and `PETSC_ARCH` for the Petsc installation.
 
-  At runtime, the module checks for the presents of the environmental variables and uses them if found, otherwise it uses the values in `petsc_evars`.  
-This enables you to use different Petsc installations if you choose.  Note that (currently), Petsc must be built with 32 bit integers and PetscScalar as a 64 bit float.  
-Auto-detecting the Petsc data types is high on the priority list, so hopefully this limitation will be removed shortly.
+  At runtime, the module checks for the presents of the environmental variables and uses them if found, otherwise it uses the values in `petsc_evars`.  This enables you to use different Petsc installations if you choose.  Note that (currently), Petsc must be built with 32 bit integers and PetscScalar as a 64 bit float.  Auto-detecting the Petsc data types is high on the priority list, so hopefully this limitation will be removed shortly.
 
 [![Build Status](https://travis-ci.org/JaredCrean2/PETSc.jl.svg?branch=master)](https://travis-ci.org/JaredCrean2/PETSc.jl)

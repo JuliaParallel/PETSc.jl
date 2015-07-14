@@ -4,6 +4,8 @@
 
 export PETSC_NULL, PETSC_IGNORE, PETSC_DECIDE, PETSC_DETERMINE, PETSCDEFAULT, PETSC_COMM_SELF
 
+export PetscInt, PetscScalar, PetscErrorCode
+
 export PETSC_INSERT_VALUES, PETSC_ADD_VALUES, PETSC_COPY_VALUESA
 
 export PETSC_NORM_1, PETSC_NORM_2, PETSC_NORM_FROBENIUS, PETSC_NORM_INFINITY, PETSC_NORM_MAX
@@ -15,6 +17,25 @@ export KSPRICHARDSON, KSPCHEBYSHEV, KSPCG, KSPGROPPCG, KSPIPECG, KSPCGNE, KSPNAS
 export KSP_NORM_DEFAULT, KSP_NORM_NONE, KSP_NORM_PRECONDITIONED, KSP_NORM_UNPRECONGDITIONED, KSP_NORM_NATURAL
 
 export KSP_NORM_MAX
+
+
+
+export VECSEQ
+export VECMPI
+export VECSTANDARD
+export VECSHARED
+export VECSEQCUSP
+export VECMPICUSP
+export VECCUSP
+export VECSEQVIENNACL
+export VECMPIVIENNACL
+export VECVIENNACL
+export VECNEST
+export VECSEQPTHREAD
+export VECMPIPTHREAD
+export VECPTHREAD
+
+
 
 # decide which version of Petsc to use
 # if no PETSC_DIR or PETSC_ARCH defined, use the one (hopefully) built 
@@ -78,30 +99,46 @@ const PETSC_NINFINITY = -PETSC_INFINITY
 #const PassiveScalar = PetscScalar
 #const MPIU_MATSCALAR = MPIU_SCALAR
 #const MPIU_2INT = Cint
-const PETSC_NULL = C_NULL
-const PETSC_IGNORE = C_NULL
-const PETSC_DECIDE = convert(Int32, -1)
-const PETSC_DETERMINE = PETSC_DECIDE
-const PETSC_DEFAULT = convert(Int32, -2)
-const PETSC_COMM_SELF = MPI.COMM_SELF
+global const PETSC_NULL = C_NULL
+global const PETSC_IGNORE = C_NULL
+global const PETSC_DECIDE = convert(Int32, -1)
+global const PETSC_DETERMINE = PETSC_DECIDE
+global const PETSC_DEFAULT = convert(Int32, -2)
+global const PETSC_COMM_SELF = MPI.COMM_SELF
 
 typealias MPI_Comm MPI.Comm  # use MPI package communicator type
 
-const PETSC_INSERT_VALUES = convert(Int32, 1);
-const PETSC_ADD_VALUES    = convert(Int32, 2);
-const PETSC_COPY_VALUES   = convert(Int32, 0);
+global const PETSC_INSERT_VALUES = convert(Int32, 1);
+global const PETSC_ADD_VALUES    = convert(Int32, 2);
+global const PETSC_COPY_VALUES   = convert(Int32, 0);
 
-const PETSC_NORM_1         = convert(Int32, 0);
-const PETSC_NORM_2         = convert(Int32, 1);
-const PETSC_NORM_FROBENIUS = convert(Int32 ,2);
-const PETSC_NORM_INFINITY  = convert(Int32 ,3);
-const PETSC_NORM_MAX       = PETSC_NORM_INFINITY;
-
-
+global const PETSC_NORM_1         = convert(Int32, 0);
+global const PETSC_NORM_2         = convert(Int32, 1);
+global const PETSC_NORM_FROBENIUS = convert(Int32 ,2);
+global const PETSC_NORM_INFINITY  = convert(Int32 ,3);
+global const PETSC_NORM_MAX       = PETSC_NORM_INFINITY;
 
 
-const  PETSC_MAT_FLUSH_ASSEMBLY = convert(Int32, 1)
-const  PETSC_MAT_FINAL_ASSEMBLY = convert(Int32, 0)
+
+
+global const  PETSC_MAT_FLUSH_ASSEMBLY = convert(Int32, 1)
+global const  PETSC_MAT_FINAL_ASSEMBLY = convert(Int32, 0)
+
+# vector formats
+global const VECSEQ = "seq"
+global const VECMPI = "mpi"
+global const VECSTANDARD = "standard"
+global const VECSHARED = "shared"
+global const VECSEQCUSP = "seqcusp"
+global const VECMPICUSP = "mpicusp"
+global const VECCUSP = "cusp"
+global const VECSEQVIENNACL = "seqviennacl"
+global const VECMPIVIENNACL = "mpiviennacl"
+global const VECVIENNACL = "viennacl"
+global const VECNEST = "nest"
+global const VECSEQPTHREAD = "seqpthread"
+global const VECMPIPTHREAD = "mpipthread"
+global const VECPTHREAD = "pthread"
 
 
 
@@ -145,13 +182,13 @@ global const KSPPYTHON    = "python"
 global const KSPGCR       = "gcr"
 
 typealias KSPNormType Cint
-const KSP_NORM_DEFAULT = (Int32)(-1)
-const KSP_NORM_NONE = (Int32)(0)
-const KSP_NORM_PRECONDITIONED = (Int32)(1)
-const KSP_NORM_UNPRECONDITIONED = (Int32)(2)
-const KSP_NORM_NATURAL = (Int32)(3)
+global const KSP_NORM_DEFAULT = (Int32)(-1)
+global const KSP_NORM_NONE = (Int32)(0)
+global const KSP_NORM_PRECONDITIONED = (Int32)(1)
+global const KSP_NORM_UNPRECONDITIONED = (Int32)(2)
+global const KSP_NORM_NATURAL = (Int32)(3)
 # end enum KSPNormType
 
-const KSP_NORM_MAX = KSP_NORM_NATURAL + 1
+global const KSP_NORM_MAX = KSP_NORM_NATURAL + 1
 
 

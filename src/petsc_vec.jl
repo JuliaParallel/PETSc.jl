@@ -9,7 +9,7 @@ type PetscVec <: PetscObject
     err = ccall(( :VecCreate, libpetsclocation ),Int32,(Int64,Ptr{Void}),comm.val,vec);
     vec = new(vec[1])
 #    finalizer(vec,PetscDestroy)
-    # does not seem to be called immediately when vec is no longer visible, is it called later during garbage collection?
+    # does not seem to be called immediately when vec is no longer visible, is it called later during garbage collection? - yes
     return vec
   end
 end
@@ -18,10 +18,8 @@ end
     if (vec.pobj != 0)
       err = ccall(( :VecDestroy, libpetsclocation),Int32,(Ptr{Ptr{Void}},), &vec.pobj);
     end
-#    vec.pobj = 0  # unnecessary? vec no longer has any references to it
-    println("VecDestroy called")
-#    sleep(5)
-#    println("finished sleeping")
+    vec.pobj = 0  # unnecessary? vec no longer has any references to it
+#    println("VecDestroy called")
   end
 
   function PetscVecSetType(vec::PetscVec,name)
@@ -80,9 +78,9 @@ end
     return n[1]
   end
 
-  function PetscVecNorm(obj::PetscVec,normtype::Int)
+  function PetscVecNorm(obj::PetscVec,normtype::Integer)
     n = Array(Float64,1)
-    err = ccall( ( :VecNorm,  libpetsclocation),Int32,(Ptr{Void},Int32,Ptr{Int32}), obj.pobj,normtype, n);
+    err = ccall( ( :VecNorm,  libpetsclocation),Int32,(Ptr{Void},Int32,Ptr{Float64}), obj.pobj,normtype, n);
     return n[1]
   end
   function PetscVecNorm(obj::PetscVec)

@@ -408,6 +408,8 @@ const IS_FILE_CLASSID = 1211218
 const ISGENERAL = "general"
 const ISSTRIDE = "stride"
 const ISBLOCK = "block"
+
+# vector formats
 const VECSEQ = "seq"
 const VECMPI = "mpi"
 const VECSTANDARD = "standard"
@@ -422,6 +424,8 @@ const VECNEST = "nest"
 const VECSEQPTHREAD = "seqpthread"
 const VECMPIPTHREAD = "mpipthread"
 const VECPTHREAD = "pthread"
+
+
 const VEC_FILE_CLASSID = 1211214
 
 # begin enum NormType
@@ -440,6 +444,7 @@ const NORM_MAX = NORM_INFINITY
 # Skipping MacroDefinition: VecLockPop ( x ) 0
 # Skipping MacroDefinition: VecLocked ( x , arg )
 
+# matrix formats
 const MATSAME = "same"
 const MATMAIJ = "maij"
 const MATSEQMAIJ = "seqmaij"

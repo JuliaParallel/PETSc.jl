@@ -24,6 +24,7 @@ To do:
   * Wrap more PetscMat functions
   * Wrap more KSP function
   * Determine priorities for wrapping additional functions
+  * Add backup finalizer/destructor in case the variable holding the pointer to a Petsc object gets reassigned before the Petsc object is destroyed
 
 
 

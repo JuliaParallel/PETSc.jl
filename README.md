@@ -1,9 +1,9 @@
 # PETSc
-This package provides thin wrappers for PETSc, as well as a few convience functions that take advantage of multiple dispatch.
+This package provides thin wrappers for PETSc, as well as a few convenience functions that take advantage of multiple dispatch.
 
-This package requires the MPI.jl package be installed.  Once it is installed you should be able to run both Julia and Petsc in parallel using MPI for all communcation.  Initial some initial experiments indicate this works, although it is not thoroughly tested yet.
+This package requires the MPI.jl package be installed.  Once it is installed you should be able to run both Julia and Petsc in parallel using MPI for all communication.  Initial some initial experiments indicate this works, although it is not thoroughly tested yet.
 
-To use the package, simple put `using PETSc` at the top of your Julia source file.  The module exports the names of all the functions, as well as the Petsc datatype aliases and constants such as PETSC_DECIDE.
+To use the package, simple put `using PETSc` at the top of your Julia source file.  The module exports the names of all the functions, as well as the Petsc data type aliases and constants such as PETSC_DECIDE.
 
 In general, it is possible to run PETSC in parallel. To do so with 4 processors, do:
 
@@ -18,10 +18,10 @@ The only currently working example is  test/exKSP3.jl, which solves a simple sys
 
 
 ## To do:
-  * Use Petsc typealiases for all arguments
-  * Generate file at installation that defines the correct typealiases, taking into account the options Petsc was built with (the Petsc function PetscDataTypeGetSize()  should help)
+  * Use Petsc type aliases for all arguments
+  * Generate file at installation that defines the correct type aliases, taking into account the options Petsc was built with (the Petsc function PetscDataTypeGetSize()  should help)
   * Handle Petsc error codes properly
-  * Make the script for building Petsc more flexible, eg. allowing more configuration options like building blas or lapack, while ensure it remains completely autonomous (needed for Travis testig)
+  * Make the script for building Petsc more flexible, eg. allowing more configuration options like building BLAS or LAPCK, while ensure it remains completely autonomous (needed for Travis testing)
   * Wrap more PetscVec functions
   * Wrap more PetscMat functions
   * Wrap more KSP function
@@ -52,11 +52,11 @@ The only currently working example is  test/exKSP3.jl, which solves a simple sys
 ## Building Petsc (or not)
 Upon installation of the package, the build script (`build.jl`) checks for the environmental variables `PETSC_DIR` and `PETSC_ARCH`.  If both are present, it does nothing, otherwise is downloads and builds Petsc using the script `install_petsc.sh`.  Note that the script assumes BLAS, LAPACK and MPI are already installed.  See `.travis.yml` to see the Ubuntu packages used for testing.  When complete, it generates two files, `use_petsc.sh` and `petsc_evars`, which contains the values of `PETSC_DIR` and `PETSC_ARCH` for the Petsc installation.
 
-  At runtime, the module checks for the presents of the environmental variables and uses them if found, otherwise it uses the values in `petsc_evars`.  This enables you to use different Petsc installations if you choose.  Note that (currently), Petsc must be built with 32 bit integers and PetscScalar as a 64 bit float.  Auto-detecting the Petsc data types is high on the priority list, so hopefully this limitation will be removed shortly.
+  At runtime, the module checks for the presence of the environmental variables and uses them if found, otherwise it uses the values in `petsc_evars`.  This enables you to use different Petsc installations if you choose.  Note that (currently), Petsc must be built with 32 bit integers and PetscScalar as a 64 bit float.  Auto-detecting the Petsc data types is high on the priority list, so hopefully this limitation will be removed shortly.
 
 
 ## Installing MPI.jl
-This package requires MPI.jl, although it is not listed in the REQUIRE file because that would download the release version of MPI.jl, which does not work.  Instead, you must use the master branch.  After you have an MPI implimentation installed, execute the following Julia commands:
+This package requires MPI.jl, although it is not listed in the REQUIRE file because that would download the release version of MPI.jl, which does not work.  Instead, you must use the master branch.  After you have an MPI implementation installed, execute the following Julia commands:
 ```
   Pkg.clone("MPI")
   Pkg.build("MPI")

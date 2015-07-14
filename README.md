@@ -27,5 +27,4 @@ To do:
   * Add backup finalizer/destructor in case the variable holding the pointer to a Petsc object gets reassigned before the Petsc object is destroyed
 
 
-
-https://travis-ci.org/JaredCrean2/PETSc.jl.svg?branch=master  
+[![Build Status](https://travis-ci.org/JaredCrean2/PETSc.jl.svg?branch=master)](https://travis-ci.org/JaredCrean2/PETSc.jl)

@@ -41,8 +41,11 @@ The only currently working example is  test/exKSP3.jl, which solves a simple sys
 
 # Directory Structure
   /src : source files.  PETSc.jl is the main file containing initialization, with the functions for each type of Petsc object in its own file.  All constants are declared in petsc_constants.jl
+
   /src/auto: auto generated wrappers from Clang.jl.  Not directly useful, but easy to modify to make useful
+
   /test : contains runtest.jl, which does some setup and runs all tests.  Test for each type of Petsc object (mirroring the files in /src) are contained in separate files.
+
   /deps : builds Petsc if needed.  See description below
 
 

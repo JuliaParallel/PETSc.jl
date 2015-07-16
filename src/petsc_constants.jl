@@ -4,7 +4,7 @@
 
 export PETSC_NULL, PETSC_IGNORE, PETSC_DECIDE, PETSC_DETERMINE, PETSCDEFAULT, PETSC_COMM_SELF
 
-export PetscInt, PetscScalar, PetscErrorCode
+export PetscInt, PetscScalar, PetscBool, PetscErrorCode, PetscDataType
 
 export PETSC_INSERT_VALUES, PETSC_ADD_VALUES, PETSC_COPY_VALUESA
 
@@ -52,14 +52,38 @@ global const PETSC_DIR = ENV["PETSC_DIR"]
 global const PETSC_ARCH = ENV["PETSC_ARCH"]
 
 
+#PETSC_DIR = readall(`echo $PETSC_DIR`)
+#PETSC_ARCH = readall(`echo $PETSC_ARCH`)
+
+#PETSC_DIR = "/home/jared/build/petsc-3.6.0"
+#PETSC_ARCH = "arch-linux2-c-debug"
+
+#PETSC_DIR = getenv("PETSC_DIR");
+#PETSC_ARCH = getenv("PETSC_ARCH");
+#=
+if (length(PETSC_DIR) == 0)
+  disp("Must have environmental variable PETSC_DIR set")
+end
+if (length(PETSC_ARCH) == 0)
+  disp("Must have environmental variable PETSC_ARCH set")
+end
+=#
+
+global const libpetsclocation = string(PETSC_DIR, "/", PETSC_ARCH, "/lib/", "libpetsc")
+global const petsc = libpetsclocation # for compatability with auto generated wrappers
+global const libpetsc = Libdl.dlopen(libpetsclocation)
+
+
+
+
 # definitions of Petsc types
 # a way to automatically generate these would be preferable
+# define all the data types that are known a priori
 typealias Petsc64bitInt Int64
-typealias PetscInt Cint
-typealias PetscBLASInt Cint
+#typealias PetscBLASInt Int32
 #typealias PetscScalar Cint
-typealias PetscScalar Cdouble
-
+typealias PetscBool Cint
+typealias PetscDataType Cint  # C enums are Int32
 
 typealias PetscErrorCode Cint
 #=
@@ -67,23 +91,109 @@ const PETSC_PRECISION_SINGLE = (UInt32)(4)
 const PETSC_PRECISION_DOUBLE = (UInt32)(8)
 =#
 
-#=
-const PETSC_INT = (UInt32)(0)
-const PETSC_DOUBLE = (UInt32)(1)
-const PETSC_COMPLEX = (UInt32)(2)
-const PETSC_LONG = (UInt32)(3)
-const PETSC_SHORT = (UInt32)(4)
-const PETSC_FLOAT = (UInt32)(5)
-const PETSC_CHAR = (UInt32)(6)
-const PETSC_BIT_LOGICAL = (UInt32)(7)
-const PETSC_ENUM = (UInt32)(8)
-const PETSC_BOOL = (UInt32)(9)
-const PETSC___FLOAT128 = (UInt32)(10)
-const PETSC_OBJECT = (UInt32)(11)
-const PETSC_FUNCTION = (UInt32)(12)
-const PETSC_STRING = (UInt32)(12)
-=#
 
+const PETSC_INT = (Int32)(0)
+const PETSC_DOUBLE = (Int32)(1)
+const PETSC_COMPLEX = (Int32)(2)
+const PETSC_LONG = (Int32)(3)
+const PETSC_SHORT = (Int32)(4)
+const PETSC_FLOAT = (Int32)(5)
+const PETSC_CHAR = (Int32)(6)
+const PETSC_BIT_LOGICAL = (Int32)(7)
+const PETSC_ENUM = (Int32)(8)
+const PETSC_BOOL = (Int32)(9)
+const PETSC___FLOAT128 = (Int32)(10)
+const PETSC_OBJECT = (Int32)(11)
+const PETSC_FUNCTION = (Int32)(12)
+const PETSC_STRING = (Int32)(12)
+
+
+
+# these functions are used for figuring out the sizes of the datatypes
+# use the ones in PETSc.jl for writing programs
+function PetscDataTypeFromString_(name::AbstractString)
+    ptype = Array(Cint, 1)
+    found = Array(PetscBool, 1)
+    ccall((:PetscDataTypeFromString,petsc),PetscErrorCode,(Cstring,Ptr{PetscDataType},Ptr{PetscBool}), name, ptype, found)
+
+    return ptype[1], convert(Bool, found[1])
+end
+
+
+function PetscDataTypeGetSize_(dtype::PetscDataType)
+    datasize = Array(Csize_t, 1)
+    ccall((:PetscDataTypeGetSize,petsc),PetscErrorCode,(PetscDataType,Ptr{Csize_t}), dtype, datasize)
+
+    return datasize[1]
+end
+
+
+# define types that depend on the options Petsc was compiled with
+(real_type_enum, found_real) = PetscDataTypeFromString_("Real")
+(scalar_type_enum, found_scalar) = PetscDataTypeFromString_("Scalar")
+int_size = PetscDataTypeGetSize_(PETSC_INT)
+
+# confirm a value was found
+@assert(found_real)
+@assert(found_scalar)
+
+# figure out what the values mean
+if real_type_enum == PETSC_DOUBLE
+  precision = "double"
+elseif real_type_enum == PETSC_FLOAT
+  precision = "single"
+else
+  println("unknown type of Real")
+  println("real_type_enum = ", real_type_enum)
+end
+
+
+if scalar_type_enum == real_type_enum
+  scalar_type = "real"
+elseif scalar_type_enum == PETSC_COMPLEX
+  scalar_type = "complex"
+else
+  println("unknown type of Scalar")
+  println("scalar_type_enum = ", scalar_type_enum)
+end
+
+# figure out types
+
+if scalar_type == "real"
+  # single or double precision real
+  if precision == "single"
+    scalar_dtype = Float32
+    real_dtype = Float32
+  else
+    scalar_dtype = Float64
+    real_dtype = Float64
+  end
+else  # scalar_type = complex
+  if precision == "single"
+    scalar_dtype = Complex64
+    real_dtype = Float32
+  else
+    scalar_dtype = Complex128
+    real_dtype = Float64
+  end
+end
+
+if int_size == 4
+   int_dtype = Int32
+elseif int_size == 8
+   int_dtype = Int64
+else
+  println("unknown Int size")
+  println("int_size = ", int_size)
+end
+
+println("PetscScalar type = ", scalar_dtype)
+println("PetscReal type = ", real_dtype)
+println("PetscInt type = ", int_dtype)
+
+typealias PetscScalar scalar_dtype
+typealias PetscReal real_dtype
+typealias PetscInt int_dtype
 
 #=
 const PETSC_PI = pi

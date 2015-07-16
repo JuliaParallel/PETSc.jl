@@ -14,29 +14,10 @@ include("petsc_constants.jl")
 
 
 # export all names
-export PetscInitialize, getPETSC_COMM_SELF, PetscView, PetscIS, PetscDestroy, PetscISSetType, PetscISGetSizePetscISGetIndices
+export PetscInitialize, getPETSC_COMM_SELF, PetscView, PetscIS, PetscDestroy, PetscISSetType, PetscISGetSizePetscISGetIndices, PetscDataTypeFromString, PetscDataTypeGetSize
 
 export KSP, KSPSetOperators, KSPSetFromOptions, KSPSolve,  KSPSetUp
 
-
-#PETSC_DIR = readall(`echo $PETSC_DIR`)
-#PETSC_ARCH = readall(`echo $PETSC_ARCH`)
-
-#PETSC_DIR = "/home/jared/build/petsc-3.6.0"
-#PETSC_ARCH = "arch-linux2-c-debug"
-
-#PETSC_DIR = getenv("PETSC_DIR");
-#PETSC_ARCH = getenv("PETSC_ARCH");
-if (length(PETSC_DIR) == 0)
-  disp("Must have environmental variable PETSC_DIR set")
-end
-if (length(PETSC_ARCH) == 0)
-  disp("Must have environmental variable PETSC_ARCH set")
-end
-
-const libpetsclocation = string(PETSC_DIR, "/", PETSC_ARCH, "/lib/", "libpetsc")
-const petsc = libpetsclocation # for compatability with auto generated wrappers
-libpetsc = Libdl.dlopen(libpetsclocation)
 
 # -------------------------------------
 function echodemo(filename)
@@ -125,6 +106,27 @@ function getPETSC_COMM_SELF()
 #  return comm[1]
    return MPI.COMM_WORLD.val
 end
+
+function PetscDataTypeFromString(name::AbstractString)
+    ptype = Array(Cint, 1)
+    found = Array(PetscBool, 1)
+    ccall((:PetscDataTypeFromString,petsc),PetscErrorCode,(Cstring,Ptr{PetscDataType},Ptr{PetscBool}), name, ptype, found)
+
+    return ptype[1], convert(Bool, found[1])
+end
+
+
+function PetscDataTypeGetSize(dtype::PetscDataType)
+    datasize = Array(Csize_t, 1)
+    ccall((:PetscDataTypeGetSize,petsc),PetscErrorCode,(PetscDataType,Ptr{Csize_t}), dtype, datasize)
+
+    return datasize[1]
+end
+
+
+
+
+
 
 # -------------------------------------
 #

@@ -1,10 +1,10 @@
-#1/bin/sh
+#!/bin/bash
 set -ex
 petsc_name=petsc-3.6.0
 fmt=.tar.gz
 
 # get tarball if it is not present
-if [ ![-e ./$petsc_name$fmt] ]
+if [ ! -e ./$petsc_name$fmt ]
 then
   wget http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/$petsc_name$fmt
 fi

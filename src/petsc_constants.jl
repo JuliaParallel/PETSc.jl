@@ -4,7 +4,7 @@
 
 export PETSC_NULL, PETSC_IGNORE, PETSC_DECIDE, PETSC_DETERMINE, PETSCDEFAULT, PETSC_COMM_SELF
 
-export PetscInt, PetscScalar, PetscBool, PetscErrorCode, PetscDataType
+export PetscInt, PetscScalar, PetscBool, PetscErrorCode, PetscDataType, PetscReal
 
 export PETSC_INSERT_VALUES, PETSC_ADD_VALUES, PETSC_COPY_VALUESA
 

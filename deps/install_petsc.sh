@@ -2,7 +2,20 @@
 set -ex
 petsc_name=petsc-3.6.0
 fmt=.tar.gz
-wget http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/$petsc_name$fmt
+
+# get tarball if it is not present
+if [ ![-e ./$petsc_name$fmt] ]
+then
+  wget http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/$petsc_name$fmt
+fi
+
+# delete existing installation
+if [ -e ./$petsc_name ]
+then
+  rm -vr ./$petsc_name
+fi
+
+# extract the tarball fresh
 tar xfz ./$petsc_name$fmt
 
 #export PETSC_DIR=`pwd`/$petsc_name
@@ -10,8 +23,13 @@ tar xfz ./$petsc_name$fmt
 unset PETSC_DIR
 unset PETSC_ARCH
 
+
+# some useful options
+# --with-64-big-indices
+# --with-precision=<single,double>
+# --wtih-scalar-type=<real, complex>
 cd ./$petsc_name
-./configure | tee fout
+./configure $1 $2 $3 | tee fout
 
 echo "finished configure"
 
@@ -53,10 +71,10 @@ echo "finished second command"
 
 petsc_dir=`pwd`
 cd ..
-echo "export PETSC_DIR=$petsc_dir" >> use_petsc.sh
+echo "export PETSC_DIR=$petsc_dir" > use_petsc.sh
 echo "export PETSC_ARCH=$PETSC_ARCH" >> use_petsc.sh
 
-echo "$petsc_dir" >> petsc_evars
+echo "$petsc_dir" > petsc_evars
 echo "$PETSC_ARCH" >> petsc_evars
 
 

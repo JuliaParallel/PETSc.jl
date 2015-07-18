@@ -26,5 +26,5 @@ install:
   
 # uncomment the following lines to override the default test script
 #script:
-#  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-#  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("PETSc"); Pkg.test("PETSc"; coverage=true)'
+  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("PETSc"); Pkg.test("PETSc"; coverage=true)'

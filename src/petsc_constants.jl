@@ -217,6 +217,10 @@ global const PETSC_DEFAULT = convert(Int32, -2)
 global const PETSC_COMM_SELF = MPI.COMM_SELF
 
 typealias MPI_Comm MPI.Comm  # use MPI package communicator type
+# typealias to size of MPI communicator value
+# this is not defined by the MPI C standard, so it might be
+# 32 bits (MPICH), or possibly 64 bits
+typealias comm_type typeof(MPI.COMM_WORLD.val) 
 
 global const PETSC_INSERT_VALUES = convert(Int32, 1);
 global const PETSC_ADD_VALUES    = convert(Int32, 2);

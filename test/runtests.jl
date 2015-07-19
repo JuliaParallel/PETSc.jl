@@ -23,10 +23,43 @@ comm = MPI.COMM_WORLD
 comm_size = MPI.Comm_size(MPI.COMM_WORLD)
 comm_rank = MPI.Comm_rank(MPI.COMM_WORLD)
 
-sys_size = 3
+sys_size = PetscInt(3)
 
-rhs = Array(1.0:3)
-A_julia = [1.0 2.0 3; 4 5 7; 7 8 9]
+tmp2 = Array(1.0:3)
+tmp = [1.0 2.0 3; 4 5 7; 7 8 9]
+
+tmp3 = [1.0 + 0im; 2.0 + 1.0im; 3.0 + 2.0im]
+tmp4 = [1.0 + 1im   2 + 2im  3 + 3im; 4 + 4im  5 + 5im 7 + 7im; 7 + 7im 8 + 8im 9 + 9im]
+
+A_julia = zeros(PetscScalar, sys_size, sys_size)
+rhs = zeros(PetscScalar, sys_size)
+# convert to arrays of the proper Petsc type
+# this facilitates testing with the different Petsc build options
+if PetscScalar <: Real
+  for i=1:sys_size
+    rhs[i] = convert(PetscScalar, tmp2[i])
+  end
+
+  for i=1:sys_size
+    for j=1:sys_size
+      A_julia[i,j] = convert(PetscScalar, tmp[i,j])
+    end
+  end
+end
+
+if PetscScalar <: Complex
+  for i=1:sys_size
+    rhs[i] = convert(PetscScalar, tmp3[i])
+  end
+
+  for i=1:sys_size
+    for j=1:sys_size
+      A_julia[i,j] = convert(PetscScalar, tmp4[i,j])
+    end
+  end
+end
+#
+
 #println("rhs = ", rhs)
 #println("A_julia = ", A_julia)
 x_julia = A_julia\rhs

@@ -12,7 +12,8 @@ fi
 # delete existing installation
 if [ -e ./$petsc_name ]
 then
-  rm -vr ./$petsc_name
+  echo "deleting extisting petsc installation in deps"
+  rm -r ./$petsc_name
 fi
 
 # extract the tarball fresh

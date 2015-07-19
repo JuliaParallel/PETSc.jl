@@ -1,5 +1,5 @@
 
-facts("Testing vector function") do
+facts("\n   ---Testing vector functions---") do
 
 for j=1:length(vec_formats)
 
@@ -7,7 +7,7 @@ for j=1:length(vec_formats)
   println("testing vector format ", format_j)
   b = PetscVec(comm);
   PetscVecSetType(b, format_j);
-  PetscVecSetSizes(b,sys_size, comm_size*sys_size);
+  PetscVecSetSizes(b,sys_size, PetscInt(comm_size*sys_size));
 
   #=
   x = PetscVec(comm);
@@ -16,7 +16,7 @@ for j=1:length(vec_formats)
   =#
 
   for i=1:sys_size
-    idxm = [(comm_rank)*sys_size + i]   # index
+    idxm = [PetscInt((comm_rank)*sys_size + i - 1)]   # index
     val = [ rhs[i] ]  # value
     PetscVecSetValues(b, idxm, val, PETSC_INSERT_VALUES)
   end
@@ -25,8 +25,12 @@ for j=1:length(vec_formats)
   PetscVecAssemblyEnd(b)
 
   # check that the vector was set/assembled correctly
-  b_copy = zeros(sys_size)
-  idx = Array(0:2)  
+  b_copy = zeros(PetscScalar, sys_size)
+#  idx = Array(0:2)  
+  idx = Array(PetscInt, 3)
+  for i=1:sys_size
+    idx[i] = i-1
+  end
 
   PetscVecGetValues(b, sys_size, idx, b_copy)
   for i=1:sys_size
@@ -37,7 +41,12 @@ for j=1:length(vec_formats)
 
   julia_vec_norms = [1, 2, Inf]
   for i=1:length(vec_norms)
+    norm_petsc = PetscVecNorm(b, vec_norms[i])
+    norm_julia = norm(rhs, julia_vec_norms[i])
+    println("petsc_norm = ", norm_petsc, ", julia_norm = ", norm_julia)
+    println("petsc norm type: ", vec_norms[i], " , julia norm type: ", julia_vec_norms[i])
     @fact PetscVecNorm(b, vec_norms[i]) => roughly( norm(rhs, julia_vec_norms[i]))
+    print("\n")
   end
   
   # check for non zero exit status is all we can really do here 
@@ -49,3 +58,4 @@ for j=1:length(vec_formats)
 
 
 end # end fact check block
+

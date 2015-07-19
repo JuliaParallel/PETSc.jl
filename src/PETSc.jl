@@ -62,6 +62,21 @@ PETSC_NORM_MAX       = PETSC_NORM_INFINITY;
 #    underlying PETSc object.
 #
 # -------------------------------------
+function PetscInitialized()
+  init = Array(PetscBool, 1);
+  err = ccall( (:PetscInitialized,  libpetsclocation),Int32,(Ptr{PetscBool},), init);
+
+  return init[1]
+end
+
+function PetscFinalize()
+  gc() # call garbage collection to force all PETSc objects be destroy that are queued up for destruction
+  return ccall( (:PetscFinalize,  libpetsclocation),Int32,());
+end
+
+
+ 
+
 function PetscInitialize()
   PetscInitialize([])
 end
@@ -77,12 +92,19 @@ function PetscInitialize(args,filename,help)
   #
   #   If the user forgot to PetscFinalize() we do it for them, before restarting PETSc
   #
-  init = 0;
-  err = ccall( (:PetscInitialized,  libpetsclocation),Int32,(Ptr{Int32},),&init);
-  if (init != 0)
-    gc() # call garbage collection to force all PETSc objects be destroy that are queued up for destruction
-    err = ccall( (:PetscFinalize,  libpetsclocation),Int32,());if (err != 0) return err; end
+
+ init = PetscInitialized()
+ if (init != 0)
+#    gc() # call garbage collection to force all PETSc objects be destroy that are queued up for destruction
+#    err = ccall( (:PetscFinalize,  libpetsclocation),Int32,());if (err != 0) return err; end
+    err = PetscFinalize()
+
+    if err != 0
+      return err
+    end
   end
+
+  # convert arguments to Cstring
   arr = Array(ByteString, length(args))
   for i = 1:length(args)
     arr[i] = Base.cconvert(Cstring, args[i])
@@ -93,11 +115,6 @@ function PetscInitialize(args,filename,help)
 
   err = ccall( (:PetscInitializeNoPointers,  libpetsclocation),Int32,(Int32,Ptr{Ptr{Uint8}},Cstring,Cstring), length(arr), arr,filename,help);
   return err
-end
-
-function PetscFinalize()
-  gc() # call garbage collection to force all PETSc objects be destroy that are queued up for destruction
-  return ccall( (:PetscFinalize,  libpetsclocation),Int32,());
 end
 
 function getPETSC_COMM_SELF()
@@ -137,53 +154,58 @@ function PetscView(obj::PetscObject)
 end
 
 type PetscIS <: PetscObject
-  pobj::Int64
+  pobj::Ptr{Void}
   function PetscIS(comm::MPI_Comm)
 #    comm = PETSC_COMM_SELF();
     is = Array(Int64,1)
-    err = ccall( (:ISCreate,  libpetsclocation),Int32,(Int64,Ptr{Int64}),comm.val,is);if (err != 0) return err;end
-    is = new(is[1])
-    finalizer(is,PetscDestroy)
+    err = ccall( (:ISCreate,  libpetsclocation),Int32,(comm_type,Ptr{Void}),comm.val,is)
+#    if (err != 0)  # return type stability
+#      return err
+#    end
+    is_ = new(is[1])
+    finalizer(is_,PetscDestroy)
     # does not seem to be called immediately when is is no longer visible, is it called later during garbage collection?
-    return is
+    return is_
   end
 end
 
   function PetscDestroy(is::PetscIS)
     if (is.pobj != 0) then
-      err = ccall( ( :ISDestroy,  libpetsclocation),Int32,(Ptr{Int64},), &is.pobj);
+      err = ccall( ( :ISDestroy,  libpetsclocation),PetscErrorCode,(Ptr{Void},), &is.pobj);
     end
     is.pobj = 0
     println("ISDestroy called")
     return 0
   end
 
-  function PetscIS(indices::Array{Int64})
+  function PetscIS(indices::Array{PetscInt})
     is = PetscIS()
-    err = ccall( ( :ISSetType,  libpetsclocation),Int32,(Int64,Cstring), is.pobj,"general");
-    err = ccall( (:ISGeneralSetIndices,  libpetsclocation),Int32,(Int64,Int32,Ptr{Int32},Int32),is.pobj,length(indices),convert(Array{Int32},indices),PETSC_COPY_VALUES)
+    err = ccall( ( :ISSetType,  libpetsclocation),PetscErrorCode,(Ptr{Void},Cstring), is.pobj,"general");
+    err = ccall( (:ISGeneralSetIndices,  libpetsclocation), PetscErrorCode, (Ptr{Void}, PetscInt, Ptr{PetscInt},Int32),is.pobj,length(indices), indices, PETSC_COPY_VALUES)
     return is
   end
 
-  function PetscISSetType(vec::PetscIS,name)
-    err = ccall( (:ISSetType,  libpetsclocation),Int32,(Int64,Cstring), vec.pobj,name);
+  function PetscISSetType(vec::PetscIS, name)
+    err = ccall( (:ISSetType,  libpetsclocation),PetscErrorCode,(Ptr{Void},Cstring), vec.pobj,name);
   end
 
   function PetscView(obj::PetscIS,viewer)
-   err = ccall( ( :ISView,  libpetsclocation),Int32,(Int64,Int64),obj.pobj,0);
+  # what is the viewer argument used for?
+   err = ccall( ( :ISView,  libpetsclocation),PetscErrorCode,(Ptr{Void},Int64),obj.pobj,0);
   end
 
   function PetscISGetSize(obj::PetscIS)
-    n = Array(Int32,1)
-    err = ccall( ( :ISGetSize,  libpetsclocation),Int32,(Int64,Ptr{Int32}), obj.pobj,n);
+    n = Array(PetscInt, 1)
+    err = ccall( ( :ISGetSize,  libpetsclocation), PetscErrorCode,(Ptr{Void}, Ptr{PetscInt}), obj.pobj, n);
     return n[1]
   end
 
+  # this should really take the indices array as an arguments
   function PetscISGetIndices(obj::PetscIS)
     len = PetscISGetSize(obj)
-    indices = Array(Int32,len);
-    err = ccall( (:ISGetIndicesCopy,  libpetsclocation),Int32,(Int64,Ptr{Int32}),obj.pobj,indices);
-    indices = indices + 1
+    indices = Array(PetscInt,len)
+    err = ccall( (:ISGetIndicesCopy,  libpetsclocation), PetscErrorCode,(Ptr{Void},Ptr{PetscInt}),obj.pobj,indices);
+
     return indices
   end
 
@@ -200,7 +222,7 @@ type KSP <: PetscObject
 
   function KSP(comm::MPI_Comm)
       ptr = Array(Ptr{Void}, 1)
-      ierr = ccall((:KSPCreate,petsc),PetscErrorCode,(Int64,Ptr{Void}),comm.val, ptr)
+      ierr = ccall((:KSPCreate,petsc),PetscErrorCode,(comm_type, Ptr{Void}),comm.val, ptr)
       @assert(ierr == 0)
       obj = new(ptr[1])
 #      finalizer(obj, PetscDestroy)

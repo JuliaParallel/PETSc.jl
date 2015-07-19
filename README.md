@@ -30,6 +30,7 @@ The only currently working example is  test/exKSP3.jl, which solves a simple sys
   * Provide methods that copy indices to proper size integer
   * Create warning system (@inefficient macro?) for use of copying methods
   * Decide about zero or one based indexing
+  * use Ref{T} instead of & for passing by reference
 
 
 ## For Contributors:

@@ -3,6 +3,8 @@ set -ex
 petsc_name=petsc-3.6.0
 fmt=.tar.gz
 
+echo "building PETSc in `pwd`"
+
 # get tarball if it is not present
 if [ ! -e ./$petsc_name$fmt ]
 then

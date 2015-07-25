@@ -6,7 +6,7 @@
 
 
 test_dir=`pwd`
-build_dir="~/.julia/v0.4/PETSc/deps"
+build_dir="./deps"
 echo $test_dir
 # run all test configuration
 sum=0 

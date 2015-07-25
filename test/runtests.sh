@@ -37,11 +37,6 @@ julia --check-bounds=yes ./test/runtests.jl
 sum=$(expr $sum + $?)
 
 
-# exit early for testing
-exit $sum
-
-
-
 
 # 32 bit intger, single precision real
 cd $build_dir
@@ -133,4 +128,4 @@ sum=$(expr $sum + $?)
 #
 
 
-#exit $sum
+exit $sum

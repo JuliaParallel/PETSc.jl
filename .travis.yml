@@ -28,6 +28,8 @@ install:
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("PETSc")'
+  - echo $HOME
+  - cd ~/.julia/v0.4/PETSc
   - ./test/runtests.sh
 #  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("PETSc"); Pkg.test("PETSc"; coverage=true)'
 #  - julia --check-bounds=yes ./test/test_singlereal.jl

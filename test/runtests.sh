@@ -1,6 +1,12 @@
 #!/bin/bash
+# this script tests all 6 configurations of Petsc
+# this script should be executed from one directory above the tests/ directory
+# the build_dir is the location of the deps/ directory, where Petsc will
+# be built
+
 
 test_dir=`pwd`
+build_dir="~/.julia/v0.4/PETSc/deps"
 echo $test_dir
 # run all test configuration
 sum=0 
@@ -18,7 +24,7 @@ sum=$(expr $sum + $?)
 
 
 # 64 bit intger, double precision real
-cd ./deps
+cd $build_dir
 ./install_petsc.sh --with-64-bit-indices
 cd $test_dir
 
@@ -38,7 +44,7 @@ exit $sum
 
 
 # 32 bit intger, single precision real
-cd ./deps
+cd $build_dir
 ./install_petsc.sh --with-precision=single
 cd $test_dir
 
@@ -53,7 +59,7 @@ sum=$(expr $sum + $?)
 
 
 # 64 bit intger, single precision real
-cd ./deps
+cd $build_dir
 ./install_petsc.sh --with-precision=single  --with-64-bit-indices
 cd $test_dir
 
@@ -68,7 +74,7 @@ sum=$(expr $sum + $?)
 
 
 # 32 bit intger, double precision complex
-cd ./deps
+cd $build_dir
 ./install_petsc.sh --with-scalar-type=complex
 cd $test_dir
 
@@ -83,7 +89,7 @@ sum=$(expr $sum + $?)
 
 
 # 64 bit intger, double precision complex
-cd ./deps
+cd $build_dir
 ./install_petsc.sh --with-scalar-type=complex --with-64-bit-indices
 cd $test_dir
 
@@ -98,7 +104,7 @@ sum=$(expr $sum + $?)
 
 # Petsc does not support single precision complex
 ## 32 bit intger, single precision complex
-#cd ./deps
+#cd $build_dir
 #./install_petsc.sh --with-scalar-type=complex --with-precision=single
 #cd $test_dir
 #
@@ -113,7 +119,7 @@ sum=$(expr $sum + $?)
 #
 #
 ## 64 bit intger, single precision complex
-#cd ./deps
+#cd $build_dir
 #./install_petsc.sh --with-scalar-type=complex --with-64-bit-indices --with-precision=single
 #cd $test_dir
 #

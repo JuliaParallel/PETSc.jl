@@ -79,7 +79,7 @@ end
 
   function PetscVecNorm(obj::PetscVec,normtype::Integer)
     n = Array(PetscReal,1)
-    err = ccall( ( :VecNorm,  libpetsclocation), PetscScalar, (Ptr{Void},Int32,Ptr{Float64}), obj.pobj,normtype, n);
+    err = ccall( ( :VecNorm,  libpetsclocation), PetscScalar, (Ptr{Void},Int32,Ptr{PetscReal}), obj.pobj,normtype, n);
     return n[1]
   end
 

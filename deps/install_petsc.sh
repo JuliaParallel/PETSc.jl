@@ -30,7 +30,7 @@ unset PETSC_ARCH
 # --with-precision=<single,double>
 # --wtih-scalar-type=<real, complex>
 cd ./$petsc_name
-./configure $1 $2 $3 | tee fout
+./configure $1 $2 $3 > fout
 
 echo "finished configure"
 
@@ -41,14 +41,14 @@ PETSC_ARCH=$(cat ./fout | grep "PETSC_ARCH:" | awk '{print $2}')
 cmd=$(tail --lines=2 ./fout | head --lines=1)
 # execute the command
 
-$cmd | tee fout2
+$cmd MAKE_NP=4 > fout2
 
 echo "finished first command"
 
 cmd2=$(tail --lines=2 ./fout2 | head --lines=1)
 # execute the command
 
-$cmd2 | tee fout3
+$cmd2 MAKE_NP=4 > fout3
 
 
 echo "finished second command"

@@ -4,6 +4,8 @@ using FactCheck
 
 
 import MPI
+println("pwd = ", pwd())
+println("PETSC_DIR = ", ENV["PETSC_DIR"])
 MPI.Init()
 
 

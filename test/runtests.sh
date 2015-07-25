@@ -91,35 +91,35 @@ julia --check-bounds=yes ./test/runtests.jl
 sum=$(expr $sum + $?)
 
 
-
-# 32 bit intger, single precision complex
-cd ./deps
-./install_petsc.sh --with-scalar-type=complex --with-precision=single
-cd $test_dir
-
-echo "--- testing 32 bit integer, single precision, complex---"
-julia --check-bounds=yes ./test/test_singlecomplex32.jl
-sum=$(expr $sum + $?)
-
-
-julia --check-bounds=yes ./test/runtests.jl
-sum=$(expr $sum + $?)
-
-
-
-# 64 bit intger, single precision complex
-cd ./deps
-./install_petsc.sh --with-scalar-type=complex --with-64-bit-indices --with-precision=single
-cd $test_dir
-
-echo "--- testing 64 bit integer, single precision, complex---"
-julia --check-bounds=yes ./test/test_singlecomplex64.jl
-sum=$(expr $sum + $?)
-
-
-julia --check-bounds=yes ./test/runtests.jl
-sum=$(expr $sum + $?)
-
+# Petsc does not support single precision complex
+## 32 bit intger, single precision complex
+#cd ./deps
+#./install_petsc.sh --with-scalar-type=complex --with-precision=single
+#cd $test_dir
+#
+#echo "--- testing 32 bit integer, single precision, complex---"
+#julia --check-bounds=yes ./test/test_singlecomplex32.jl
+#sum=$(expr $sum + $?)
+#
+#
+#julia --check-bounds=yes ./test/runtests.jl
+#sum=$(expr $sum + $?)
+#
+#
+#
+## 64 bit intger, single precision complex
+#cd ./deps
+#./install_petsc.sh --with-scalar-type=complex --with-64-bit-indices --with-precision=single
+#cd $test_dir
+#
+#echo "--- testing 64 bit integer, single precision, complex---"
+#julia --check-bounds=yes ./test/test_singlecomplex64.jl
+#sum=$(expr $sum + $?)
+#
+#
+#julia --check-bounds=yes ./test/runtests.jl
+#sum=$(expr $sum + $?)
+#
 
 
 exit $sum

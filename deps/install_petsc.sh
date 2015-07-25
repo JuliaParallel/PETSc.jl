@@ -45,10 +45,10 @@ $cmd MAKE_NP=4 > fout2
 
 echo "finished first command"
 
-cmd2=$(tail --lines=2 ./fout2 | head --lines=1)
+#cmd2=$(tail --lines=2 ./fout2 | head --lines=1)
 # execute the command
 
-$cmd2 MAKE_NP=4 > fout3
+#$cmd2 MAKE_NP=4 > fout3
 
 
 echo "finished second command"

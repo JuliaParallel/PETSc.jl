@@ -11,8 +11,11 @@ MPI.Init()
 
 
 # define some arrays to make looping easier
-vec_norms = [PETSC_NORM_1, PETSC_NORM_2, PETSC_NORM_INFINITY]
+#vec_norms = [PETSC_NORM_1, PETSC_NORM_2, PETSC_NORM_INFINITY]
 
+# skip 1 norm untill Petsc 1 complex 1 norm fix is released
+vec_norms = [ PETSC_NORM_2, PETSC_NORM_INFINITY]
+julia_vec_norms = [ 2, Inf]
 # for some reason only the first four vector format works
 #vec_formats = [VECSEQ, VECMPI, VECSTANDARD, VECSHARED, VECSEQCUSP, VECMPICUSP, VECCUSP, VECSEQVIENNACL, VECMPIVIENNACL, VECVIENNACL, VECNEST]  # no pthread
 vec_formats = [VECSEQ, VECMPI, VECSTANDARD, VECSHARED]
@@ -25,11 +28,12 @@ comm_rank = MPI.Comm_rank(MPI.COMM_WORLD)
 
 sys_size = PetscInt(3)
 
-tmp2 = Array(1.0:3)
-tmp = [1.0 2.0 3; 4 5 7; 7 8 9]
+# create these with smallest precision, so they can be promoted
+tmp2 = convert(Array{Float32,1}, Array(1.0:3))
+tmp = convert(Array{Float32, 2}, [1.0 2.0 3; 4 5 7; 7 8 9])
 
-tmp3 = [1.0 + 0im; 2.0 + 1.0im; 3.0 + 2.0im]
-tmp4 = [1.0 + 1im   2 + 2im  3 + 3im; 4 + 4im  5 + 5im 7 + 7im; 7 + 7im 8 + 8im 9 + 9im]
+tmp3 = convert(Array{Complex64, 1}, [1.0 + 0im; 2.0 + 1.0im; 3.0 + 2.0im])
+tmp4 = convert( Array{Complex64, 2}, [1.0 + 1im   2 + 2im  3 + 3im; 4 + 4im  5 + 5im 7 + 7im; 7 + 7im 8 + 8im 9 + 9im])
 
 A_julia = zeros(PetscScalar, sys_size, sys_size)
 rhs = zeros(PetscScalar, sys_size)

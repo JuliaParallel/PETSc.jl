@@ -39,7 +39,6 @@ for j=1:length(vec_formats)
 
   @fact PetscVecGetSize(b) => sys_size
 
-  julia_vec_norms = [1, 2, Inf]
   for i=1:length(vec_norms)
     norm_petsc = PetscVecNorm(b, vec_norms[i])
     norm_julia = norm(rhs, julia_vec_norms[i])

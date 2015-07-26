@@ -79,11 +79,25 @@ end  # end if statement
 if PetscScalar <: Complex
   for i=1:sys_size
     rhs[i] = convert(PetscScalar, tmp3[i])
+
+    for j=0:(comm_size - 1)  # global 
+      idx = i + j*sys_size
+      rhs_global[idx] = convert(PetscScalar, tmp3[i])
+    end    
+
+
   end
 
   for i=1:sys_size
     for j=1:sys_size
       A_julia[i,j] = convert(PetscScalar, tmp4[i,j])
+
+      for k=0:(comm_size - 1)
+        idxm = i + k*sys_size
+        idxn = j + k*sys_size
+        A_julia_global[idxm, idxn] = convert(PetscScalar, tmp4[i,j] )
+      end
+ 
     end
   end
 end

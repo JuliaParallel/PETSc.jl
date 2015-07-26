@@ -1,4 +1,4 @@
-export PetscMat, PetscMatSetType, PetscSetUp, PetscMatSetValues, PetscMatAssemblyBegin, PetscMatAssemblyEnd, PetscMatSetSizes, PetscMatGetSize, MatGetValues
+export PetscMat, PetscMatSetType, PetscSetUp, PetscMatSetValues, PetscMatAssemblyBegin, PetscMatAssemblyEnd, PetscMatSetSizes, PetscMatGetSize, MatGetValues, PetscMatGetOwnershipRange
 
 
 type PetscMat <: PetscObject
@@ -86,6 +86,14 @@ function MatGetValues(obj::PetscMat, idxm::Array{PetscInt, 1}, idxn::Array{Petsc
 
     ccall((:MatGetValues,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{PetscScalar}), obj.pobj, length(idxm), idxm, length(idxn), idxn, v)
 
+end
+
+function PetscMatGetOwnershipRange(mat::PetscMat)
+    low = Array(PetscInt,1)
+    high = Array(PetscInt,1)
+    ccall((:MatGetOwnershipRange,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt}),mat.pobj, low, high)
+
+    return low[1], high[1]
 end
 
 

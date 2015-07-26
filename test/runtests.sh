@@ -22,6 +22,9 @@ julia --check-bounds=yes ./test/runtests.jl
 sum=$(expr $sum + $?)
 
 
+mpirun -np 2julia --check-bounds=yes ./test/runtests.jl
+sum=$(expr $sum + $?)
+
 
 # 64 bit intger, double precision real
 cd $build_dir
@@ -34,6 +37,9 @@ sum=$(expr $sum + $?)
 
 
 julia --check-bounds=yes ./test/runtests.jl
+sum=$(expr $sum + $?)
+
+mpirun -np 2 julia --check-bounds=yes ./test/runtests.jl
 sum=$(expr $sum + $?)
 
 
@@ -51,6 +57,9 @@ sum=$(expr $sum + $?)
 julia --check-bounds=yes ./test/runtests.jl
 sum=$(expr $sum + $?)
 
+mpirun -np 2 julia --check-bounds=yes ./test/runtests.jl
+sum=$(expr $sum + $?)
+
 
 
 # 64 bit intger, single precision real
@@ -64,6 +73,9 @@ sum=$(expr $sum + $?)
 
 
 julia --check-bounds=yes ./test/runtests.jl
+sum=$(expr $sum + $?)
+
+mpirun -np 2 julia --check-bounds=yes ./test/runtests.jl
 sum=$(expr $sum + $?)
 
 
@@ -81,6 +93,9 @@ sum=$(expr $sum + $?)
 julia --check-bounds=yes ./test/runtests.jl
 sum=$(expr $sum + $?)
 
+mpirun -np 2 julia --check-bounds=yes ./test/runtests.jl
+sum=$(expr $sum + $?)
+
 
 
 # 64 bit intger, double precision complex
@@ -94,6 +109,9 @@ sum=$(expr $sum + $?)
 
 
 julia --check-bounds=yes ./test/runtests.jl
+sum=$(expr $sum + $?)
+
+mpirun -np 2 julia --check-bounds=yes ./test/runtests.jl
 sum=$(expr $sum + $?)
 
 

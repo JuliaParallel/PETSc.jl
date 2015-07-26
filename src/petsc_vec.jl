@@ -1,4 +1,4 @@
-export PetscVec, PetscVecSetType, PetscVecSetValues, PetscVecAssemblyBegin, PetscVecAssemblyEnd, PetscVecSetSizes, PetscVecGetSize, PetscVecNorm, PetscVecGetValues
+export PetscVec, PetscVecSetType, PetscVecSetValues, PetscVecAssemblyBegin, PetscVecAssemblyEnd, PetscVecSetSizes, PetscVecGetSize, PetscVecNorm, PetscVecGetValues, PetscVecGetOwnershipRange
 
 
 type PetscVec <: PetscObject
@@ -99,5 +99,16 @@ function PetscVecGetValues(vec::PetscVec, ni::Integer, ix::AbstractArray{PetscIn
 
     return nothing
 end
+
+function PetscVecGetOwnershipRange(vec::PetscVec)
+    low = Array(PetscInt, 1)
+    high = Array(PetscInt, 1)
+
+    ccall((:VecGetOwnershipRange,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt}),vec.pobj, low, high)
+
+  return low[1], high[1]
+end
+
+
 
 

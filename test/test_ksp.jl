@@ -6,12 +6,20 @@ facts("\n   ---testing KSP solvers---") do
   PetscVecSetType(b, "mpi");
   PetscVecSetSizes(b,sys_size, PetscInt(comm_size*sys_size));
 
+  low, high = PetscVecGetOwnershipRange(b)
+  b_global_indices = Array(low:PetscInt(high - 1))
+ 
+
   x = PetscVec(comm);
   PetscVecSetType(x,"mpi");
   PetscVecSetSizes(x,sys_size, PetscInt(comm_size*sys_size));
 
+  low, high = PetscVecGetOwnershipRange(x)
+  x_global_indices = Array(low:PetscInt(high - 1))
+ 
+
   for i=1:sys_size
-    idxm = [PetscInt((comm_rank)*sys_size + i - 1)]   # index
+    idxm = [ b_global_indices[i] ]   # index
     val = [ rhs[i] ]  # value
     PetscVecSetValues(b, idxm, val, PETSC_INSERT_VALUES)
   end
@@ -27,10 +35,14 @@ facts("\n   ---testing KSP solvers---") do
   PetscMatSetSizes(A,sys_size,sys_size,PetscInt(comm_size*sys_size),PetscInt(comm_size*sys_size));
   PetscSetUp(A);
 
+  low, high = PetscMatGetOwnershipRange(A)
+  mat_global_indices = Array(low:PetscInt(high - 1))
+ 
+
   for i=1:sys_size
     for j = 1:sys_size
-      idxm = [PetscInt((comm_rank)*sys_size + i - 1)]  # row index
-      idxn = [PetscInt((comm_rank)*sys_size + j - 1)]  # column index
+      idxm = [ mat_global_indices[i] ]  # row index
+      idxn = [ mat_global_indices[j] ]  # column index
       PetscMatSetValues(A,idxm, idxn, [A_julia[i,j]],PETSC_INSERT_VALUES);
     end
   end
@@ -50,15 +62,16 @@ KSPSolve(ksp, b, x)
 # copy solution back to Julia
 x_copy = zeros(PetscScalar, sys_size)
 #idx = Array(0:2)
-idx = zeros(PetscInt, sys_size)
-for i=1:sys_size
-  idx[i] = i-1
-end
+#idx = zeros(PetscInt, sys_size)
+#for i=1:sys_size
+#  idx[i] = i-1
+#end
 
-PetscVecGetValues(x, sys_size, idx, x_copy)
+PetscVecGetValues(x, sys_size, x_global_indices, x_copy)
 
 for i=1:sys_size
     @fact x_copy[i] => roughly(x_julia[i])
 end
 
+PetscView(x, 0)
 end

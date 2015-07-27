@@ -1,4 +1,4 @@
-export PetscVec, PetscVecSetType, PetscVecSetValues, PetscVecAssemblyBegin, PetscVecAssemblyEnd, PetscVecSetSizes, PetscVecGetSize, PetscVecNorm, PetscVecGetValues, PetscVecGetOwnershipRange
+export PetscVec, PetscVecSetType, PetscVecSetValues, PetscVecAssemblyBegin, PetscVecAssemblyEnd, PetscVecSetSizes, PetscVecGetSize, PetscVecNorm, PetscVecGetValues, PetscVecGetOwnershipRange, PetscVecGetArray, PetscVecRestoreArray, PetscVecGetArrayRead, PetscVecRestoreArrayRead, PetscVecSet, PetscVecSqrtAbs, PetscVecLog, PetscVecExp, PetscVecAbs, PetscVecCopy, PetscVecDuplicate
 
 
 type PetscVec <: PetscObject
@@ -11,7 +11,13 @@ type PetscVec <: PetscObject
 #    finalizer(vec,PetscDestroy)
     # does not seem to be called immediately when vec is no longer visible, is it called later during garbage collection? - yes
     return vec
+
   end
+
+  function PetscVec(pobj::Ptr{Void})  # default constructor
+    return new(pobj)
+  end
+ 
 end
 
   function PetscDestroy(vec::PetscVec)
@@ -108,6 +114,88 @@ function PetscVecGetOwnershipRange(vec::PetscVec)
 
   return low[1], high[1]
 end
+
+
+# new functions
+
+function PetscVecGetArray(vec::PetscVec)
+# gets a pointer to the data underlying a Petsc vec, turns it into a Julia
+# array
+# ptr_arr must be passed into PetscVecRestoreArray
+    ptr_arr = Array(Ptr{PetscScalar}, 1)
+    ccall((:VecGetArray,petsc),PetscErrorCode,(Ptr{Void}, Ptr{Ptr{PetscScalar}}),vec.pobj, ptr_arr)
+
+    first, last = PetscVecGetOwnershipRange(vec)
+    len = last - first
+    arr = pointer_to_array(ptr_arr[1], len)
+    return arr, ptr_arr
+end
+
+
+function PetscVecRestoreArray(vec::PetscVec, ptr_arr::Array{Ptr{PetscScalar}, 1})
+    ccall((:VecRestoreArray,petsc),PetscErrorCode,(Ptr{Void}, Ptr{Ptr{PetscScalar}}),vec.pobj, ptr_arr)
+end
+
+
+function PetscVecGetArrayRead(vec::PetscVec)
+    ptr_arr = Array(Ptr{PetscScalar}, 1)
+    ccall((:VecGetArrayRead,petsc),PetscErrorCode,(Ptr{Void}, Ptr{Ptr{PetscScalar}}),vec.pobj, ptr_arr)
+
+    first, last = PetscVecGetOwnershipRange(vec)
+    len = last - first
+    arr = pointer_to_array(ptr_arr[1], len)
+    return arr, ptr_arr
+end
+
+function PetscVecRestoreArrayRead(vec::PetscVec, ptr_arr::Array{Ptr{PetscScalar}, 1})
+
+    ccall((:VecRestoreArrayRead,petsc),PetscErrorCode,(Ptr{Void}, Ptr{Ptr{PetscScalar}}),vec.pobj, ptr_arr)
+#    ccall((:VecRestoreArrayRead,petsc),PetscErrorCode,(Vec,Ptr{Ptr{PetscScalar}}),arg1,arg2)
+end
+
+
+
+function PetscVecSet(vec::PetscVec, val::PetscScalar)
+    ccall((:VecSet,petsc),PetscErrorCode,(Ptr{Void},PetscScalar), vec.pobj, val)
+end
+
+
+function PetscVecSqrtAbs(vec::PetscVec)
+    ccall((:VecSqrtAbs,petsc),PetscErrorCode,(Ptr{Void},), vec.pobj)
+end
+
+function PetscVecLog(vec::PetscVec)
+    ccall((:VecLog,petsc),PetscErrorCode,(Ptr{Void},),vec.pobj)
+end
+
+function PetscVecExp(vec::PetscVec)
+    ccall((:VecExp,petsc),PetscErrorCode,(Ptr{Void},),vec.pobj)
+end
+
+function PetscVecAbs(vec::PetscVec)
+    ccall((:VecAbs,petsc),PetscErrorCode,(Ptr{Void},),vec.pobj)
+end
+
+
+function PetscVecCopy(vec::PetscVec , vec2::PetscVec)
+    ccall((:VecCopy,petsc),PetscErrorCode,(Ptr{Void}, Ptr{Void}), vec.pobj, vec.pobj)
+end
+
+function PetscVecDuplicate( vec::PetscVec)
+    ptr_arr = Array(Ptr{Void}, 1)
+
+    ccall((:VecDuplicate,petsc),PetscErrorCode,( Ptr{Void}, Ptr{Ptr{Void}}), vec.pobj, ptr_arr)
+
+    return PetscVec(ptr_arr[1])
+end
+
+
+
+
+
+
+
+
 
 
 

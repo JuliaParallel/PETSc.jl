@@ -30,17 +30,33 @@ for j=1:length(vec_formats)
   PetscVecAssemblyEnd(b)
 
   # check that the vector was set/assembled correctly
+  # check all the methods of copying/accesing a vector work
   b_copy = zeros(PetscScalar, sys_size)
+  b2_copy = zeros(PetscScalar, sys_size)
 #  idx = Array(0:2)  
 #  idx = Array(PetscInt, 3)
 #  for i=1:sys_size
 #    idx[i] = global_indices[i]
 #  end
 
+  b_arr, ptr_arr = PetscVecGetArray(b)
+  b_arr_ro, ptr_arr2 = PetscVecGetArrayRead(b)
+  b2 = PetscVecDuplicate(b)
+  PetscVecCopy(b, b2)
+  
   PetscVecGetValues(b, sys_size, global_indices, b_copy)
+  PetscVecGetValues(b, sys_size, global_indices, b2_copy)
   for i=1:sys_size
      @fact b_copy[i] => roughly(rhs[i])
+     @fact b_arr[i] => roughly(rhs[i])
+     @fact b_arr_ro[i] => roughly(rhs[i])
+     @fact b2_copy[i] => roughly(rhs[i])
   end
+
+  PetscVecRestoreArray(b, ptr_arr)
+  PetscVecRestoreArrayRead(b, ptr_arr2)
+
+  
 
   @fact PetscVecGetSize(b) => comm_size*sys_size
 
@@ -55,11 +71,45 @@ for j=1:length(vec_formats)
   
   # check for non zero exit status is all we can really do here 
   @fact PetscView(b, 0) => 0
+
+
+  # test math functions
+  PetscVecSqrtAbs(b)
+  rhs_tmp = deepcopy(rhs)  # don't modifiy original rhs
+  PetscVecGetValues(b, sys_size, global_indices, b_copy)
+  for i=1:sys_size
+    rhs_tmp[i] = sqrt(abs(rhs_tmp[i]))
+    @fact b_copy[i] => roughly(rhs_tmp[i])
+  end
+
+  PetscVecLog(b)
+  PetscVecGetValues(b, sys_size, global_indices, b_copy)
+  for i=1:sys_size
+    rhs_tmp[i] = log(rhs_tmp[i])
+    @fact b_copy[i] => roughly(rhs_tmp[i])
+  end
+
+  PetscVecExp(b)
+  PetscVecGetValues(b, sys_size, global_indices, b_copy)
+  for i=1:sys_size
+    rhs_tmp[i] = exp(rhs_tmp[i])
+    @fact b_copy[i] => roughly(rhs_tmp[i])
+  end
+
+  PetscVecAbs(b)
+  PetscVecGetValues(b, sys_size, global_indices, b_copy)
+  for i=1:sys_size
+    rhs_tmp[i] = abs(rhs_tmp[i])
+    @fact b_copy[i] => roughly(rhs_tmp[i])
+  end
+  
   
   PetscDestroy(b)
-
+  PetscDestroy(b2)
   end
 
 
 end # end fact check block
+
+
 

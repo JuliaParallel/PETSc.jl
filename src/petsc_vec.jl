@@ -178,7 +178,7 @@ end
 
 
 function PetscVecMax(vec::PetscVec)
-    r = Array(PetscScalar, 1) # max value
+    r = Array(PetscReal, 1) # max value
     idx = Array(PetscInt, 1)  # index of max value
     ccall((:VecMax,petsc),PetscErrorCode,(Ptr{Void}, Ptr{PetscInt},Ptr{PetscReal}), vec.pobj, idx, r)
 
@@ -186,7 +186,7 @@ function PetscVecMax(vec::PetscVec)
 end
 
 function PetscVecMin(vec::PetscVec)
-    r = Array(PetscScalar, 1) # min value
+    r = Array(PetscReal, 1) # min value
     idx = Array(PetscInt, 1)  # index of min value
  
     ccall((:VecMin,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscReal}), vec.pobj, idx, r)

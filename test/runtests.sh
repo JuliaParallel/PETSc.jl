@@ -11,6 +11,11 @@ echo $test_dir
 # run all test configuration
 sum=0 
 
+cd $build_dir
+./install_petsc.sh
+cd $test_dir
+
+
 
 # 32 bit integer, double precision real
 echo "--- testing 32 bit integer, double precision, real---"

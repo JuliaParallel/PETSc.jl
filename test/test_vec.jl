@@ -259,7 +259,7 @@ for j=1:length(vec_formats)
   PetscView(b2)
 
   petsc_r = PetscVecDot(b, b2)
-  julia_r = comm_size*rhs_tmp'*rhs
+  julia_r = comm_size*rhs'*rhs_tmp  # note reversed b, b2
 
   println("petsc_r = ", petsc_r)
   println("julia_r = ", julia_r)

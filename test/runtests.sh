@@ -161,5 +161,5 @@ echo $sum
 #sum=$(expr $sum + $?)
 #
 
-
+echo "exit status sum = $sum"
 exit $sum

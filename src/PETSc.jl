@@ -14,7 +14,7 @@ include("petsc_constants.jl")
 
 
 # export all names
-export PetscInitialize, getPETSC_COMM_SELF, PetscView, PetscIS, PetscDestroy, PetscISSetType, PetscISGetSizePetscISGetIndices, PetscDataTypeFromString, PetscDataTypeGetSize
+export PetscInitialize, getPETSC_COMM_SELF, PetscView, PetscIS, PetscDestroy, PetscISSetType, PetscISGetSizePetscISGetIndices, PetscDataTypeFromString, PetscDataTypeGetSize, PetscFinalize
 
 export KSP, KSPSetOperators, KSPSetFromOptions, KSPSolve,  KSPSetUp
 

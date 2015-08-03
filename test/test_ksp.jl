@@ -68,10 +68,16 @@ x_copy = zeros(PetscScalar, sys_size)
 #end
 
 PetscVecGetValues(x, sys_size, x_global_indices, x_copy)
-
+println("x_copy = ", x_copy)
+println("x_julia = ", x_julia)
 for i=1:sys_size
     @fact x_copy[i] => roughly(x_julia[i])
 end
 
-PetscView(x, 0)
+#PetscView(x, 0)
+
+PetscDestroy(x)
+PetscDestroy(b)
+PetscDestroy(A)
+PetscDestroy(ksp)
 end

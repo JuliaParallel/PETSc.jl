@@ -114,8 +114,8 @@ x_julia = A_julia\rhs
 #println("x_julia = ", x_julia)
 
 include("test_vec.jl")
-#include("test_mat.jl")
-#include("test_ksp.jl")
+include("test_mat.jl")
+include("test_ksp.jl")
 
 PetscFinalize()
 FactCheck.exitstatus()

@@ -120,8 +120,8 @@ end
 function getPETSC_COMM_SELF()
   comm = Array(Int64, 1)
   err = ccall( (:PetscGetPETSC_COMM_SELF,  libpetsclocation),Int32,(Ptr{Int64},),comm);
-#  return comm[1]
-   return MPI.COMM_WORLD.val
+  return comm[1]
+#   return MPI.COMM_WORLD.val
 end
 
 function PetscDataTypeFromString(name::AbstractString)

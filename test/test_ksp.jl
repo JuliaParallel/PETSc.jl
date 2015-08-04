@@ -71,7 +71,7 @@ PetscVecGetValues(x, sys_size, x_global_indices, x_copy)
 println("x_copy = ", x_copy)
 println("x_julia = ", x_julia)
 for i=1:sys_size
-    @fact x_copy[i] => roughly(x_julia[i])
+    @fact x_copy[i] => roughly(x_julia[i], atol=1e-14)
 end
 
 #PetscView(x, 0)

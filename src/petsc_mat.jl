@@ -145,4 +145,13 @@ function PetscMatMultHermitianTranspose(mat::PetscMat, x::PetscVec, y::PetscVec)
     ccall((:MatMultHermitianTranspose,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}),mat.pobj, x.pobj, y.pobj)
 end
 
+function MatXAIJSetPreallocation(mat::PetscMat, bs::PetscInt, dnnz::AbstractArray{PetscInt, 1}, onnz::AbstractArray{PetscInt,1}, dnnzu::AbstractArray{PetscInt, 1}, onnzu::AbstractArray{PetscInt, 1})
+# this is a unified interface for matrix preallocation for the Petsc built in
+# matrix types: Aij, Bij, and their respective symmetric forms SAij, SBij
+# for a non symmetric format matrix, dnnzu and onnzu are not required
+# and vice versa for a non symmetric format matrix
+
+    ccall((:MatXAIJSetPreallocation,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}), mat.pobj, bs, dnnz, onnz, dnnzu, onnzu)
+end
+
 

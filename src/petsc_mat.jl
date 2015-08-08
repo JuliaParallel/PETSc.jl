@@ -1,4 +1,4 @@
-export PetscMat, PetscMatSetType, PetscSetUp, PetscMatSetValues, PetscMatAssemblyBegin, PetscMatAssemblyEnd, PetscMatSetSizes, PetscMatGetSize, PetscMatGetValues, PetscMatGetOwnershipRange
+export PetscMat, PetscMatSetType, PetscSetUp, PetscMatSetValues, PetscMatAssemblyBegin, PetscMatAssemblyEnd, PetscMatSetSizes, PetscMatGetSize, PetscMatGetValues, PetscMatGetOwnershipRange, PetscMatXAIJSetPreallocation, PetscMatMPIAIJSetPreallocation, PetscMatSetFromOptions, PetscMatGetInfo
 
 
 type PetscMat <: PetscObject
@@ -24,6 +24,45 @@ end
 #    sleep(5)
   end
 
+
+immutable PetscMatInfo
+    block_size::PetscLogDouble
+    nz_allocated::PetscLogDouble
+    nz_used::PetscLogDouble
+    nz_unneeded::PetscLogDouble
+    memory::PetscLogDouble
+    assemblies::PetscLogDouble
+    mallocs::PetscLogDouble
+    fill_ratio_given::PetscLogDouble
+    fill_ratio_needed::PetscLogDouble
+    factor_mallocs::PetscLogDouble
+
+    function PetscMatInfo()  # incomplete initialization
+      return new()
+    end
+end
+
+
+function show(io::IO, obj::PetscMatInfo)
+# print the fields of PetscMatInfo
+#  println("PetscMatInfo:")
+  println(io, "  block_size : ", obj.block_size)
+  println(io, "  nz_allocated : ", obj.nz_allocated)
+  println(io, "  nz_used : ", obj.nz_used)
+  println(io, "  nz_unneeded : ", obj.nz_unneeded)
+  println(io, "  memory : ", obj.memory)
+  println(io, "  assemblies : ", obj.assemblies)
+  println(io, "  mallocs : ", obj.mallocs)
+  println(io, "  fill_ratio_given : ", obj.fill_ratio_given)
+  println(io, "  fill_ratio_needed : ", obj.fill_ratio_needed)
+  println(io, "  factor_mallocs : ", obj.factor_mallocs)
+end
+
+  function PetscMatSetFromOptions(mat::PetscMat)
+    ccall((:MatSetFromOptions,petsc),PetscErrorCode,(Ptr{Void},), mat.pobj)
+  end
+
+
   function PetscMatSetType(vec::PetscMat,name)
     err = ccall( (:MatSetType,  libpetsclocation), PetscErrorCode,(Ptr{Void}, Cstring), vec.pobj,name);
   end
@@ -38,8 +77,12 @@ end
 =#
 
   function PetscMatSetValues(vec::PetscMat,idi::Array{PetscInt},idj::Array{PetscInt},array::Array{PetscScalar},flag::Integer)
+    # remember, only matrices can be inserted into a Petsc matrix
+    # if array is a 3 by 3, then idi and idj are vectors of length 3
     idi = idi
     idj = idj
+
+    @assert length(idi)*length(idj) == length(array)
 
     # do check here to ensure array is the right shape (remember tranpose)
     err = ccall( ( :MatSetValues,  libpetsclocation), PetscErrorCode, (Ptr{Void}, PetscInt, Ptr{PetscInt}, PetscInt, Ptr{PetscInt}, Ptr{PetscScalar},Int32), vec.pobj,length(idi), idi, length(idi), idj,array,flag);
@@ -145,13 +188,28 @@ function PetscMatMultHermitianTranspose(mat::PetscMat, x::PetscVec, y::PetscVec)
     ccall((:MatMultHermitianTranspose,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}),mat.pobj, x.pobj, y.pobj)
 end
 
-function MatXAIJSetPreallocation(mat::PetscMat, bs::PetscInt, dnnz::AbstractArray{PetscInt, 1}, onnz::AbstractArray{PetscInt,1}, dnnzu::AbstractArray{PetscInt, 1}, onnzu::AbstractArray{PetscInt, 1})
+function PetscMatXAIJSetPreallocation(mat::PetscMat, bs::PetscInt, dnnz::AbstractArray{PetscInt, 1}, onnz::AbstractArray{PetscInt,1}, dnnzu::AbstractArray{PetscInt, 1}, onnzu::AbstractArray{PetscInt, 1})
 # this is a unified interface for matrix preallocation for the Petsc built in
 # matrix types: Aij, Bij, and their respective symmetric forms SAij, SBij
 # for a non symmetric format matrix, dnnzu and onnzu are not required
 # and vice versa for a non symmetric format matrix
 
-    ccall((:MatXAIJSetPreallocation,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}), mat.pobj, bs, dnnz, onnz, dnnzu, onnzu)
+    ccall((:MatXAIJSetPreallocation,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}), mat.pobj, bs, dnnz, onnz, dnnzu, onnzu)
+end
+
+
+arr_or_null = Union(AbstractArray{PetscInt}, Ptr{Void})
+
+function PetscMatMPIAIJSetPreallocation(mat::PetscMat, d_nz::PetscInt, d_nnz::arr_or_null, o_nz::PetscInt, o_nnz::arr_or_null)
+
+    ccall((:MatMPIAIJSetPreallocation,petsc),PetscErrorCode,(Ptr{Void}, PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt}), mat.pobj, d_nz, d_nnz, o_nz, o_nnz)
+end
+
+function PetscMatGetInfo(mat::PetscMat, info_type::Int32)
+    matinfo = PetscMatInfo()  # create uninitialized struct
+    ref_matinfo = Ref{PetscMatInfo}(matinfo)
+    ccall((:MatGetInfo,petsc),PetscErrorCode,(Ptr{Void}, Int32,Ref{PetscMatInfo}), mat.pobj ,info_type, ref_matinfo)
+    return ref_matinfo[]
 end
 
 

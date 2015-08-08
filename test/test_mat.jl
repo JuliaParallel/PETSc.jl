@@ -194,13 +194,78 @@ facts("\n   ---testing matrix functions---") do
 
 
 
+  println("testing preallocation")
+  nb = PetscInt(100)  # number of times/blocks to insert
+  C = PetscMat(comm)
+  PetscMatSetType(C, "mpiaij")
+#  PetscMatSetFromOptions(C)
+  println("nb = ", nb)
+  println("comm_size = ", comm_size)
+  println("sys_size = ", sys_size)
+
+  PetscMatSetSizes(C, nb*sys_size, nb*sys_size, PetscInt(nb*comm_size*sys_size),PetscInt(nb*comm_size*sys_size));
+
+  # preallocation parameters
+  bs = PetscInt(1)
+  dnnz = 3*ones(PetscInt, nb*sys_size)  # on diagonal (row + column owned by this process)
+  onnz = zeros(PetscInt, nb*sys_size)  # no off diagonal (column not owned by this process)
+  dnnzu = Array(PetscInt, 0)  # this is not a symmetric matrix, so unused
+  onnzu = Array(PetscInt, 0)  # this is not a symmetric matrix, so unused
+
+  println("dnnz = ", dnnz)
+  PetscMatXAIJSetPreallocation(C, bs, dnnz, onnz, dnnzu, onnzu)
+
+#  PetscSetUp(C);
 
 
+  println("A_julia = ", A_julia)
+  println("typeof(A_julia) = ", typeof(A_julia))
+
+  A_julia_t = A_julia.'  # transpose because C is row major
+
+  low, high = PetscMatGetOwnershipRange(C)
+  idi = zeros(PetscInt, sys_size)  # row indices
+  idj = zeros(PetscInt, sys_size)  # column indices
+
+  for i=1:nb
+
+    # get indices
+    pos = 1
+    for j=1:sys_size # insert block on diagonal
+	idi[pos] = low + sys_size*(i - 1) + j - 1
+	idj[pos] = low + sys_size*(i - 1) + j - 1
+	pos += 1
+    end
+
+    # add a random component
+    for i=1:sys_size
+      for j=1:sys_size
+	A_julia_t[i,j] += rand()
+      end
+    end
+
+#    println("idi = ", idi)
+#    println("idj = ", idj)
+    PetscMatSetValues(C, idi, idj, A_julia_t, PETSC_INSERT_VALUES)
+  end
+
+
+  PetscMatAssemblyBegin(C, PETSC_MAT_FINAL_ASSEMBLY)
+  PetscMatAssemblyEnd(C, PETSC_MAT_FINAL_ASSEMBLY)
+
+  matinfo = PetscMatGetInfo(C, MAT_LOCAL)
+
+  @fact matinfo.mallocs => roughly(0.0)
+
+#  PetscView(C, 0)
+
+  println("finished testing preallocation")
 
 
 
   @fact PetscDestroy(A) => 0
   PetscDestroy(B)
+  PetscDestroy(C)
   PetscDestroy(y)
   PetscDestroy(x)
 end

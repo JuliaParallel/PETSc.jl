@@ -85,6 +85,7 @@ typealias Petsc64bitInt Int64
 typealias PetscBool Cint
 typealias PetscDataType Cint  # C enums are Int32
 
+typealias PetscLogDouble Cdouble
 typealias PetscErrorCode Cint
 #=
 const PETSC_PRECISION_SINGLE = (UInt32)(4)
@@ -326,8 +327,12 @@ global const MATSUBMATRIX = "submatrix"
 global const MATLOCALREF = "localref"
 global const MATNEST = "nest"
 
-
-
+export MAT_LOCAL, MAT_GLOBAL_MAX, MAT_GLOBAL_SUM
+typealias MatInfoType Int32
+const MAT_LOCAL = (Int32)(1)
+const MAT_GLOBAL_MAX = (Int32)(2)
+const MAT_GLOBAL_SUM = (Int32)(3)
+#
 
 # types of KSP solvers
 typealias KSPType ASCIIString

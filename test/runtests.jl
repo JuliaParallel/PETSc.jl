@@ -31,7 +31,7 @@ else  # serial run
   vec_formats = [VECSEQ]
 end
 
-PetscInitialize(["-ksp_monitor","-malloc","-malloc_debug","-malloc_dump","-info"]);
+PetscInitialize(["-ksp_monitor","-malloc","-malloc_debug","-malloc_dump"]);
 
 # size of the system owned by this process (ie. local sys size)
 sys_size = PetscInt(3)
@@ -113,9 +113,10 @@ end
 x_julia = A_julia\rhs
 #println("x_julia = ", x_julia)
 
-#include("test_vec.jl")
-#include("test_mat.jl")
+include("test_vec.jl")
+include("test_mat.jl")
 include("test_ksp.jl")
+#include("test_prealloc.jl")
 
 PetscFinalize()
 FactCheck.exitstatus()

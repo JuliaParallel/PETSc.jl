@@ -20,7 +20,7 @@ comm_rank = MPI.Comm_rank(MPI.COMM_WORLD)
 #vec_norms = [PETSC_NORM_1, PETSC_NORM_2, PETSC_NORM_INFINITY]
 
 # skip 1 norm untill Petsc 1 complex 1 norm fix is released
-vec_norms = [ PETSC_NORM_2, PETSC_NORM_INFINITY]
+vec_norms = [ NORM_2, NORM_INFINITY]
 julia_vec_norms = [ 2, Inf]
 # for some reason only the first four vector format works
 #vec_formats = [VECSEQ, VECMPI, VECSTANDARD, VECSHARED, VECSEQCUSP, VECMPICUSP, VECCUSP, VECSEQVIENNACL, VECMPIVIENNACL, VECVIENNACL, VECNEST]  # no pthread

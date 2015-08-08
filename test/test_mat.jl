@@ -193,6 +193,26 @@ facts("\n   ---testing matrix functions---") do
   end
 
 
+  D = PetscMat(comm)
+  PetscMatMatMult(A, B, MAT_INITIAL_MATRIX, PetscReal(1.0), D)
+  D_julia = A_julia*B_julia
+  println("D_julia = ", D_julia)
+  D_copy = zeros(PetscScalar, sys_size, sys_size)
+  PetscMatGetValues(D, global_indices, global_indices, D_copy)
+
+  for i=1:sys_size
+    for j=1:sys_size
+      @fact D_copy[j,i] => roughly(D_julia[i,j])
+    end
+  end
+
+  # test matrix norms
+  fnorm = PetscMatNorm(D, NORM_FROBENIUS)
+  infnorm = PetscMatNorm(D, NORM_INFINITY)
+
+  @fact fnorm => roughly(vecnorm(D_julia))
+  @fact infnorm => roughly(norm(D_julia, Inf))
+
 
   println("testing preallocation")
   nb = PetscInt(100)  # number of times/blocks to insert
@@ -266,6 +286,7 @@ facts("\n   ---testing matrix functions---") do
   @fact PetscDestroy(A) => 0
   PetscDestroy(B)
   PetscDestroy(C)
+  PetscDestroy(D)
   PetscDestroy(y)
   PetscDestroy(x)
 end

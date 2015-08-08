@@ -1,4 +1,4 @@
-export PetscMat, PetscMatSetType, PetscSetUp, PetscMatSetValues, PetscMatAssemblyBegin, PetscMatAssemblyEnd, PetscMatSetSizes, PetscMatGetSize, PetscMatGetValues, PetscMatGetOwnershipRange, PetscMatXAIJSetPreallocation, PetscMatMPIAIJSetPreallocation, PetscMatSetFromOptions, PetscMatGetInfo
+export PetscMat, PetscMatSetType, PetscSetUp, PetscMatSetValues, PetscMatAssemblyBegin, PetscMatAssemblyEnd, PetscMatSetSizes, PetscMatGetSize, PetscMatGetValues, PetscMatGetOwnershipRange, PetscMatXAIJSetPreallocation, PetscMatMPIAIJSetPreallocation, PetscMatSetFromOptions, PetscMatGetInfo, PetscMatMatMult, PetscMatNorm
 
 
 type PetscMat <: PetscObject
@@ -11,6 +11,10 @@ type PetscMat <: PetscObject
 #    finalizer(vec,PetscDestroy)
     # does not seem to be called immediately when vec is no longer visible, is it called later during garbage collection?
     return vec
+  end
+
+  function PetscMat(pobj::Ptr{Void})  # default constructor
+    return new(pobj)
   end
 end
 
@@ -151,6 +155,15 @@ function PetscMatGetOwnershipRange(mat::PetscMat)
 end
 
 ### new function ###
+
+function PetscMatNorm(mat::PetscMat, ntype::NormType)
+    nrm = Array(PetscReal, 1)
+    ccall((:MatNorm,petsc),PetscErrorCode,(Ptr{Void}, NormType,Ptr{PetscReal}), mat.pobj, ntype, nrm)
+    return nrm[1]
+end
+
+
+
 export PetscMatAXPY, PetscMatAYPX, PetscMatScale, PetscMatShift
 function PetscMatAXPY(Y::PetscMat, a::PetscScalar, X::PetscMat, str::PetscMatStructure)
     ccall((:MatAXPY,petsc),PetscErrorCode,(Ptr{Void},PetscScalar,Ptr{Void},PetscMatStructure), Y.pobj, a, X.pobj, str)
@@ -188,6 +201,19 @@ function PetscMatMultHermitianTranspose(mat::PetscMat, x::PetscVec, y::PetscVec)
     ccall((:MatMultHermitianTranspose,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}),mat.pobj, x.pobj, y.pobj)
 end
 
+function PetscMatMatMult(A::PetscMat, B::PetscMat, scall::MatReuse, fill::PetscReal, C::PetscMat)
+    arr = [C.pobj]
+    ccall((:MatMatMult,petsc),PetscErrorCode,(Ptr{Void}, Ptr{Void}, MatReuse, PetscReal, Ptr{Ptr{Void}}), A.pobj, B.pobj, scall, fill, arr)
+    if C.pobj != arr[1]
+      PetscDestroy(C)
+      C.pobj = arr[1] 
+    end
+
+end
+
+
+
+
 function PetscMatXAIJSetPreallocation(mat::PetscMat, bs::PetscInt, dnnz::AbstractArray{PetscInt, 1}, onnz::AbstractArray{PetscInt,1}, dnnzu::AbstractArray{PetscInt, 1}, onnzu::AbstractArray{PetscInt, 1})
 # this is a unified interface for matrix preallocation for the Petsc built in
 # matrix types: Aij, Bij, and their respective symmetric forms SAij, SBij
@@ -198,9 +224,8 @@ function PetscMatXAIJSetPreallocation(mat::PetscMat, bs::PetscInt, dnnz::Abstrac
 end
 
 
-arr_or_null = Union(AbstractArray{PetscInt}, Ptr{Void})
-
-function PetscMatMPIAIJSetPreallocation(mat::PetscMat, d_nz::PetscInt, d_nnz::arr_or_null, o_nz::PetscInt, o_nnz::arr_or_null)
+# Matrix preallocation
+function PetscMatMPIAIJSetPreallocation(mat::PetscMat, d_nz::PetscInt, d_nnz::PetscInt_arr_or_null, o_nz::PetscInt, o_nnz::PetscInt_arr_or_null)
 
     ccall((:MatMPIAIJSetPreallocation,petsc),PetscErrorCode,(Ptr{Void}, PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt}), mat.pobj, d_nz, d_nnz, o_nz, o_nnz)
 end

@@ -8,7 +8,7 @@ export PetscInt, PetscScalar, PetscBool, PetscErrorCode, PetscDataType, PetscRea
 
 export PETSC_INSERT_VALUES, PETSC_ADD_VALUES, PETSC_COPY_VALUESA
 
-export PETSC_NORM_1, PETSC_NORM_2, PETSC_NORM_FROBENIUS, PETSC_NORM_INFINITY, PETSC_NORM_MAX
+export NORM_1, NORM_2, NORM_FROBENIUS, NORM_INFINITY, NORM_MAX
 
 export PETSC_MAT_FLUSH_ASSEMBLY, PETSC_MAT_FINAL_ASSEMBLY
 
@@ -196,6 +196,10 @@ typealias PetscScalar scalar_dtype
 typealias PetscReal real_dtype
 typealias PetscInt int_dtype
 
+
+# some useful type unions
+PetscInt_arr_or_null = Union(AbstractArray{PetscInt}, Ptr{Void})
+
 #=
 const PETSC_PI = pi
 const PETSC_MAX_INT = 2147483647
@@ -227,11 +231,12 @@ global const PETSC_INSERT_VALUES = convert(Int32, 1);
 global const PETSC_ADD_VALUES    = convert(Int32, 2);
 global const PETSC_COPY_VALUES   = convert(Int32, 0);
 
-global const PETSC_NORM_1         = convert(Int32, 0);
-global const PETSC_NORM_2         = convert(Int32, 1);
-global const PETSC_NORM_FROBENIUS = convert(Int32 ,2);
-global const PETSC_NORM_INFINITY  = convert(Int32 ,3);
-global const PETSC_NORM_MAX       = PETSC_NORM_INFINITY;
+typealias NormType Int32
+global const NORM_1         = convert(Int32, 0);
+global const NORM_2         = convert(Int32, 1);
+global const NORM_FROBENIUS = convert(Int32 ,2);
+global const NORM_INFINITY  = convert(Int32 ,3);
+global const NORM_MAX       = NORM_INFINITY;
 
 
 
@@ -332,6 +337,13 @@ typealias MatInfoType Int32
 const MAT_LOCAL = (Int32)(1)
 const MAT_GLOBAL_MAX = (Int32)(2)
 const MAT_GLOBAL_SUM = (Int32)(3)
+#
+
+export MAT_INITIAL_MATRIX, MAT_REUSE_MATRIX, MAT_IGNORE_MATRIX
+typealias MatReuse Int32
+const MAT_INITIAL_MATRIX = (Int32)(0)
+const MAT_REUSE_MATRIX = (Int32)(1)
+const MAT_IGNORE_MATRIX = (Int32)(2)
 #
 
 # types of KSP solvers

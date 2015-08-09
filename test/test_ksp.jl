@@ -56,8 +56,14 @@ facts("\n   ---testing KSP solvers---") do
 ksp = KSP(comm)
 KSPSetOperators(ksp, A, A)
 KSPSetFromOptions(ksp)
+KSPSetUp(ksp)
 KSPSolve(ksp, b, x)
+reason = KSPGetConvergedReason(ksp)
 
+println("KSP convergence reason = ", reason)
+@fact reason => greater_than(0)  # convergence
+
+PetscView(ksp)
 
 # copy solution back to Julia
 x_copy = zeros(PetscScalar, sys_size)

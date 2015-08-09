@@ -17,7 +17,6 @@ import Base.show
 # export all names
 export PetscInitialize, getPETSC_COMM_SELF, PetscView, PetscIS, PetscDestroy, PetscISSetType, PetscISGetSizePetscISGetIndices, PetscDataTypeFromString, PetscDataTypeGetSize, PetscFinalize
 
-export KSP, KSPSetOperators, KSPSetFromOptions, KSPSolve,  KSPSetUp
 
 
 # -------------------------------------
@@ -218,46 +217,8 @@ include("petsc_vec.jl")
 # -------------------------------------
 include("petsc_mat.jl")
 
-type KSP <: PetscObject
-  pobj::Ptr{Void}
-
-  function KSP(comm::MPI_Comm)
-      ptr = Array(Ptr{Void}, 1)
-      ierr = ccall((:KSPCreate,petsc),PetscErrorCode,(comm_type, Ptr{Void}),comm.val, ptr)
-      @assert(ierr == 0)
-      obj = new(ptr[1])
-#      finalizer(obj, PetscDestroy)
-      return obj
-  end
-end
-
-
-function PetscDestroy(ksp::KSP)
-    err = ccall((:KSPDestroy,petsc),PetscErrorCode,(Ptr{Ptr{Void}},),&ksp.pobj)
-    println("KSPDestroy called")
-#    sleep(5)
-end
-
-
-function KSPSetOperators(ksp::KSP,Amat::PetscMat,Pmat::PetscMat)
-   err = ccall((:KSPSetOperators,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}), ksp.pobj, Amat.pobj, Pmat.pobj)
-end
-
-
-function KSPSetFromOptions(ksp::KSP)
-    ccall((:KSPSetFromOptions,petsc),PetscErrorCode,(Ptr{Void},),ksp.pobj)
-end
-
-function KSPSolve(ksp::KSP, b::PetscVec, x::PetscVec)
-    err = ccall((:KSPSolve,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}), ksp.pobj, b.pobj, x.pobj)
-end
-
-function KSPSetUp(ksp::KSP)
-    err = ccall((:KSPSetUp,petsc),PetscErrorCode,(Ptr{Void},), ksp.pobj)
-end
-
-
-
+# -------------------------------------
+include("petsc_ksp.jl")
 
 end  # end module
 

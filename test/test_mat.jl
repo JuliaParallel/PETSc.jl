@@ -209,8 +209,8 @@ facts("\n   ---testing matrix functions---") do
   # test matrix norms
   fnorm = PetscMatNorm(D, NORM_FROBENIUS)
   infnorm = PetscMatNorm(D, NORM_INFINITY)
-
-  @fact fnorm => roughly(vecnorm(D_julia))
+  
+  @fact fnorm => roughly(sqrt(comm_size)*vecnorm(D_julia))
   @fact infnorm => roughly(norm(D_julia, Inf))
 
 

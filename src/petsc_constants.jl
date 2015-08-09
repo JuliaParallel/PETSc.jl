@@ -391,6 +391,33 @@ global const KSP_NORM_UNPRECONDITIONED = (Int32)(2)
 global const KSP_NORM_NATURAL = (Int32)(3)
 # end enum KSPNormType
 
+export KSPConvergedReason
+
+typealias KSPConvergedReason Cint
+global const KSP_CONVERGED_RTOL_NORMAL = (Int32)(1)
+global const KSP_CONVERGED_ATOL_NORMAL = (Int32)(9)
+global const KSP_CONVERGED_RTOL = (Int32)(2)
+global const KSP_CONVERGED_ATOL = (Int32)(3)
+global const KSP_CONVERGED_ITS = (Int32)(4)
+global const KSP_CONVERGED_CG_NEG_CURVE = (Int32)(5)
+global const KSP_CONVERGED_CG_CONSTRAINED = (Int32)(6)
+global const KSP_CONVERGED_STEP_LENGTH = (Int32)(7)
+global const KSP_CONVERGED_HAPPY_BREAKDOWN = (Int32)(8)
+global const KSP_DIVERGED_NULL = (Int32)(-2)
+global const KSP_DIVERGED_ITS = (Int32)(-3)
+global const KSP_DIVERGED_DTOL = (Int32)(-4)
+global const KSP_DIVERGED_BREAKDOWN = (Int32)(-5)
+global const KSP_DIVERGED_BREAKDOWN_BICG = (Int32)(-6)
+global const KSP_DIVERGED_NONSYMMETRIC = (Int32)(-7)
+global const KSP_DIVERGED_INDEFINITE_PC = (Int32)(-8)
+global const KSP_DIVERGED_NANORINF = (Int32)(-9)
+global const KSP_DIVERGED_INDEFINITE_MAT = (Int32)(-10)
+global const KSP_DIVERGED_PCSETUP_FAILED = (Int32)(-11)
+global const KSP_CONVERGED_ITERATING = (Int32)(0)
+#
+# declare a dictionary here for printing?
+
+
 global const KSP_NORM_MAX = KSP_NORM_NATURAL + 1
 
 

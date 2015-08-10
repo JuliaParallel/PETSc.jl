@@ -346,6 +346,7 @@ const MAT_REUSE_MATRIX = (Int32)(1)
 const MAT_IGNORE_MATRIX = (Int32)(2)
 #
 
+export KSPType
 # types of KSP solvers
 typealias KSPType ASCIIString
 global const KSPRICHARDSON = "richardson"

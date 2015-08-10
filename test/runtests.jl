@@ -51,7 +51,16 @@ A_julia_global = zeros(PetscScalar, comm_size*sys_size, comm_size*sys_size)
 rhs_global = zeros(PetscScalar, comm_size*sys_size)
 # convert to arrays of the proper Petsc type
 # this facilitates testing with the different Petsc build options
+
+# define tolerances for KSP
+rtol = PetscReal(1e-5)
+abstol = PetscReal(1e-14)
+dtol = PetscReal(1e5)
+maxits = PetscInt(50)
+
+
 if PetscScalar <: Real
+
   for i=1:sys_size
     rhs[i] = convert(PetscScalar, tmp2[i])
     
@@ -77,6 +86,7 @@ if PetscScalar <: Real
 end  # end if statement
 
 if PetscScalar <: Complex
+
   for i=1:sys_size
     rhs[i] = convert(PetscScalar, tmp3[i])
 

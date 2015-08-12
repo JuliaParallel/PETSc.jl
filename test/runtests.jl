@@ -53,8 +53,13 @@ rhs_global = zeros(PetscScalar, comm_size*sys_size)
 # this facilitates testing with the different Petsc build options
 
 # define tolerances for KSP
-rtol = PetscReal(1e-5)
-abstol = PetscReal(1e-14)
+if PetscReal == Float64
+  rtol = PetscReal(1e-5)
+  abstol = PetscReal(1e-14)
+else  # single preciiosn
+  rtol = PetscReal(1e-5)
+  abstol = PetscReal(1e-6)
+end
 dtol = PetscReal(1e5)
 maxits = PetscInt(50)
 

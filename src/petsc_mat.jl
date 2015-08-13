@@ -245,3 +245,49 @@ function PetscMatGetInfo(mat::PetscMat, info_type::Int32)
 end
 
 
+
+# some functions to make a PetscMat look like a Julia array
+# these only work after a matrix has been assembled
+# some of them only work for uniprocess matrices
+import Base.size
+import Base.getindex
+
+function size(A::PetscMat)
+
+  return PetscMatGetLocalSize(A)
+end
+
+function size(A::PetscMat, dim::Integer)
+  dims = PetscMatGetLocalSize(A)
+  return dims[dim]
+end
+
+function getindex(A::PetscMat, i::Integer, j::Integer)
+  # not efficient
+
+  i_ = [PetscInt(i - 1)]
+  j_ = [PetscInt(j - 1)]
+  val = Array(PetscScalar, 1, 1)
+
+  PetscMatGetValues(A, i_, j_, val)
+
+  return val[1]
+end
+
+function getindex(A::PetscMat, idx::Integer)
+  # linear indexing
+  m,n = PetscMatGetLocalSize(A)
+  i = idx % m
+  j = div(idx, m)
+
+  # zero based indexing
+  i -= 1
+  j -= 1  
+
+  i_ = [PetscInt(i)]
+  j_ = [PetscInt(j)]
+  val = Array(PetscScalar, 1, 1)
+
+  PetscMatGetValues(A, i_, j_, val)
+  return val[1]
+end

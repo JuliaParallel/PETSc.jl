@@ -281,6 +281,9 @@ facts("\n   ---testing matrix functions---") do
 
   println("finished testing preallocation")
 
+  PetscMatZeroEntries(C)
+  cnorm = PetscMatNorm(C, NORM_FROBENIUS)
+  @fact cnorm => roughly(0.0, atol=1e-3)  # norm is zero iff matrix is zero
 
 
   @fact PetscDestroy(A) => 0

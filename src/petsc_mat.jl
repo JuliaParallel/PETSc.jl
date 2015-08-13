@@ -1,4 +1,4 @@
-export PetscMat, PetscMatSetType, PetscSetUp, PetscMatSetValues, PetscMatAssemblyBegin, PetscMatAssemblyEnd, PetscMatSetSizes, PetscMatGetSize, PetscMatGetValues, PetscMatGetOwnershipRange, PetscMatXAIJSetPreallocation, PetscMatMPIAIJSetPreallocation, PetscMatSetFromOptions, PetscMatGetInfo, PetscMatMatMult, PetscMatNorm
+export PetscMat, PetscMatSetType, PetscSetUp, PetscMatSetValues, PetscMatAssemblyBegin, PetscMatAssemblyEnd, PetscMatSetSizes, PetscMatGetSize, PetscMatGetValues, PetscMatGetOwnershipRange, PetscMatXAIJSetPreallocation, PetscMatMPIAIJSetPreallocation, PetscMatSetFromOptions, PetscMatGetInfo, PetscMatMatMult, PetscMatNorm, PetscMatZeroEntries
 
 
 type PetscMat <: PetscObject
@@ -153,6 +153,13 @@ function PetscMatGetOwnershipRange(mat::PetscMat)
 
     return low[1], high[1]
 end
+
+
+function PetscMatZeroEntries(mat::PetscMat)
+    ccall((:MatZeroEntries,petsc),PetscErrorCode,(Ptr{Void},),mat.pobj)
+end
+
+
 
 ### new function ###
 

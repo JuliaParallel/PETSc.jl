@@ -269,6 +269,7 @@ global const SUBSET_NONZERO_PATTERN = (Int32)(1)
 global const SAME_NONZERO_PATTERN = (Int32)(2)
 # end enum MatStructure
 
+export MATSEQAIJ, MATMPIAIJ
 # matrix types
 global const MATSAME = "same"
 global const MATMAIJ = "maij"

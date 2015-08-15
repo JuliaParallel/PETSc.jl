@@ -91,11 +91,71 @@ println("   \n--- Testing LGMRES --- ")
 # perform solve
 ksp = KSP(comm)
 KSPSetOperators(ksp, A, A)
+
+# test PC
+println("   \n---Testing PC Options ---")
+pc = KSPGetPC(ksp)
+
+PCSetType(pc, PETSc.PCBJACOBI)
+pctype = PCGetType(pc)
+println("pctype = ", pctype)
+@fact pctype => PETSc.PCBJACOBI
+#PCFactorSetUseInPlace(pc, PetscBool(true))
+
+### Do some KSP setup
+
 KSPSetFromOptions(ksp)
 KSPSetTolerances(ksp, rtol, abstol, dtol, maxits)
 KSPSetInitialGuessNonzero(ksp, PetscBool(true))
 KSPSetType(ksp, PETSc.KSPLGMRES)
 KSPSetUp(ksp)
+
+### More PC testing
+println("getting sub KSP objects")
+n_local, first_local, ksp_arr = PCBJacobiGetSubKSP(pc)
+ksp2 = ksp_arr[1]
+
+println("ksp2 = ", ksp2)
+println("typeof(ksp2) = ", typeof(ksp2))
+println("getting sub KSP PC")
+pc2 = KSPGetPC(ksp2)
+println("finsihed getting sub KSP PC")
+
+println("setting ReusePreconditioner")
+PCSetReusePreconditioner(pc2, PetscBool(true))
+@fact PCGetReusePreconditioner(pc2) => true
+println("finished setting ReusePreconditioner")
+
+PCFactorSetAllowDiagonalFill(pc2, PetscBool(true))
+@fact PCFactorGetAllowDiagonalFill(pc2) => true
+
+PCFactorSetLevels(pc2, PetscInt(1))
+@fact PCFactorGetLevels(pc2) => 1
+
+PCSetReusePreconditioner(pc2, PetscBool(true))
+@fact PCGetReusePreconditioner(pc2) => true
+
+PCFactorSetFill(pc, PetscReal(7.0))
+
+#=
+PCJacobiSetType(pc, PETSc.PC_JACOBI_ROWMAX)
+@fact PCJacobiGetType(pc) => PETSc.PC_JACOBI_ROWMAX
+=#
+
+
+
+
+
+
+
+
+#=
+tmp = PCFactorGetUseInPlace(pc)
+println("tmp = ", tmp)
+@fact PCFactorGetUseInPlace(pc) => true
+=#
+
+
 KSPSolve(ksp, b, x)
 reason = KSPGetConvergedReason(ksp)
 ksptype = KSPGetType(ksp)

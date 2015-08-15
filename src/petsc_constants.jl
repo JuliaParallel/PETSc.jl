@@ -447,3 +447,61 @@ global const KSPConvergedReasonDict = Dict{KSPConvergedReason, ASCIIString} (
 global const KSP_NORM_MAX = KSP_NORM_NATURAL + 1
 
 
+typealias PCType ASCIIString
+
+global const PCNONE = "none"
+global const PCJACOBI = "jacobi"
+global const PCSOR = "sor"
+global const PCLU = "lu"
+global const PCSHELL = "shell"
+global const PCBJACOBI = "bjacobi"
+global const PCMG = "mg"
+global const PCEISENSTAT = "eisenstat"
+global const PCILU = "ilu"
+global const PCICC = "icc"
+global const PCASM = "asm"
+global const PCGASM = "gasm"
+global const PCKSP = "ksp"
+global const PCCOMPOSITE = "composite"
+global const PCREDUNDANT = "redundant"
+global const PCSPAI = "spai"
+global const PCNN = "nn"
+global const PCCHOLESKY = "cholesky"
+global const PCPBJACOBI = "pbjacobi"
+global const PCMAT = "mat"
+global const PCHYPRE = "hypre"
+global const PCPARMS = "parms"
+global const PCFIELDSPLIT = "fieldsplit"
+global const PCTFS = "tfs"
+global const PCML = "ml"
+global const PCGALERKIN = "galerkin"
+global const PCEXOTIC = "exotic"
+global const PCCP = "cp"
+global const PCBFBT = "bfbt"
+global const PCLSC = "lsc"
+global const PCPYTHON = "python"
+global const PCPFMG = "pfmg"
+global const PCSYSPFMG = "syspfmg"
+global const PCREDISTRIBUTE = "redistribute"
+global const PCSVD = "svd"
+global const PCGAMG = "gamg"
+global const PCSACUSP = "sacusp"
+global const PCSACUSPPOLY = "sacusppoly"
+global const PCBICGSTABCUSP = "bicgstabcusp"
+global const PCAINVCUSP = "ainvcusp"
+global const PCBDDC = "bddc"
+global const PCKACZMARZ = "kaczmarz"
+
+# begin enum PCSide
+typealias PCSide Cint
+global const PC_SIDE_DEFAULT = (Int32)(-1)
+global const PC_LEFT = (Int32)(0)
+global const PC_RIGHT = (Int32)(1)
+global const PC_SYMMETRIC = (Int32)(2)
+# end enum PCSide
+
+typealias PCJacobiType Int32
+const PC_JACOBI_DIAGONAL = (Int32)(0)
+const PC_JACOBI_ROWMAX = (Int32)(1)
+const PC_JACOBI_ROWSUM = (Int32)(2)
+#

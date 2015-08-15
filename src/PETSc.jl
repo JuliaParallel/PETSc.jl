@@ -220,6 +220,9 @@ include("petsc_mat.jl")
 # -------------------------------------
 include("petsc_ksp.jl")
 
+# -------------------------------------
+include("petsc_pc.jl")
+
 end  # end module
 
 

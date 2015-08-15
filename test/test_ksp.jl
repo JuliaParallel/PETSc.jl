@@ -130,7 +130,7 @@ PCFactorSetAllowDiagonalFill(pc2, PetscBool(true))
 @fact PCFactorGetAllowDiagonalFill(pc2) => true
 
 PCFactorSetLevels(pc2, PetscInt(1))
-@fact PCFactorGetLevels(pc2) => 1
+@fact PCFactorGetLevels(pc2) => 1  # should be pc2
 
 PCSetReusePreconditioner(pc2, PetscBool(true))
 @fact PCGetReusePreconditioner(pc2) => true

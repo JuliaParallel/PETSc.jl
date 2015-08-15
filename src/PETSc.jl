@@ -10,7 +10,8 @@ module PETSc
 
 
 using MPI
-include("petsc_constants.jl")
+include("petsc_constants.jl")  # typedefs and constants
+include("petsc_error.jl")  # error handling
 
 import Base.show
 

@@ -501,7 +501,14 @@ global const PC_SYMMETRIC = (Int32)(2)
 # end enum PCSide
 
 typealias PCJacobiType Int32
-const PC_JACOBI_DIAGONAL = (Int32)(0)
-const PC_JACOBI_ROWMAX = (Int32)(1)
-const PC_JACOBI_ROWSUM = (Int32)(2)
+global const PC_JACOBI_DIAGONAL = (Int32)(0)
+global const PC_JACOBI_ROWMAX = (Int32)(1)
+global const PC_JACOBI_ROWSUM = (Int32)(2)
+#
+
+
+typealias PetscErrorType Int32
+global const PETSC_ERROR_INITIAL = (Int32)(0)
+global const PETSC_ERROR_REPEAT = (Int32)(1)
+global const PETSC_ERROR_IN_CXX = (Int32)(2)
 #

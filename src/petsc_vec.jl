@@ -1,7 +1,7 @@
 export PetscVec, PetscVecSetType, PetscVecSetValues, PetscVecAssemblyBegin, PetscVecAssemblyEnd, PetscVecSetSizes, PetscVecGetSize, PetscVecNorm, PetscVecGetValues, PetscVecGetOwnershipRange, PetscVecGetArray, PetscVecRestoreArray, PetscVecGetArrayRead, PetscVecRestoreArrayRead, PetscVecSet, PetscVecSqrtAbs, PetscVecLog, PetscVecExp, PetscVecAbs, PetscVecMax, PetscVecMin, PetscVecCopy, PetscVecDuplicate, PetscVecAXPY, PetscVecAXPBY, PetscVecAYPX, PetscVecWAXPY, PetscVecMAXPY, PetscVecAXPBYPCZ, PetscVecScale, PetscVecDot, PetscVecTDot, PetscVecSum, PetscVecSwap, PetscVecReciprocal, PetscVecShift, PetscVecPointwiseMult, PetscVecPointwiseDivide
 
 
-type PetscVec <: PetscObject
+type PetscVec
   pobj::Ptr{Void}
   function PetscVec(comm::MPI_Comm)
 #    comm = PETSC_COMM_SELF();

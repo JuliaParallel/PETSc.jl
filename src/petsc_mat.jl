@@ -1,7 +1,7 @@
 export PetscMat, PetscMatSetType, PetscSetUp, PetscMatSetValues, PetscMatAssemblyBegin, PetscMatAssemblyEnd, PetscMatSetSizes, PetscMatGetSize, PetscMatGetValues, PetscMatGetOwnershipRange, PetscMatXAIJSetPreallocation, PetscMatMPIAIJSetPreallocation, PetscMatSetFromOptions, PetscMatGetInfo, PetscMatMatMult, PetscMatNorm, PetscMatZeroEntries
 
 
-type PetscMat <: PetscObject
+type PetscMat  <: AbstractArray{PetscScalar, 2}
   pobj::Ptr{Void}
   function PetscMat(comm::MPI_Comm)
 #    comm = PETSC_COMM_SELF();
@@ -83,15 +83,15 @@ end
   function PetscMatSetValues(vec::PetscMat,idi::Array{PetscInt},idj::Array{PetscInt},array::Array{PetscScalar},flag::Integer)
     # remember, only matrices can be inserted into a Petsc matrix
     # if array is a 3 by 3, then idi and idj are vectors of length 3
-    idi = idi
-    idj = idj
+#    idi = idi
+#    idj = idj
 
     @assert length(idi)*length(idj) == length(array)
 
     # do check here to ensure array is the right shape (remember tranpose)
-    err = ccall( ( :MatSetValues,  libpetsclocation), PetscErrorCode, (Ptr{Void}, PetscInt, Ptr{PetscInt}, PetscInt, Ptr{PetscInt}, Ptr{PetscScalar},Int32), vec.pobj,length(idi), idi, length(idi), idj,array,flag);
-    idi = idi
-    idj = idj
+    err = ccall( ( :MatSetValues,  libpetsclocation), PetscErrorCode, (Ptr{Void}, PetscInt, Ptr{PetscInt}, PetscInt, Ptr{PetscInt}, Ptr{PetscScalar},Int32), vec.pobj,length(idi), idi, length(idj), idj,array,flag);
+#    idi = idi
+#    idj = idj
     return err
   end
 

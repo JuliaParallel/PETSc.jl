@@ -3,7 +3,7 @@ export KSP, KSPSetOperators, KSPSetFromOptions, KSPSolve,  KSPSetUp
 
 export KSPGetConvergedReason, PetscView, KSPSetType, KSPGetType, KSPSetTolerances, KSPGetTolerances, KSPSetInitialGuessNonzero, KSPGetInitialGuessNonzero, KSPGetResidualNorm
 
-type KSP <: PetscObject
+type KSP
   pobj::Ptr{Void}
 
   function KSP(comm::MPI_Comm)

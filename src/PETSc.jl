@@ -147,13 +147,13 @@ end
 
 # -------------------------------------
 #
-abstract PetscObject
+#abstract PetscObject
 
-function PetscView(obj::PetscObject)
+function PetscView(obj)
   PetscView(obj,0)
 end
 
-type PetscIS <: PetscObject
+type PetscIS
   pobj::Ptr{Void}
   function PetscIS(comm::MPI_Comm)
 #    comm = PETSC_COMM_SELF();

@@ -417,7 +417,31 @@ global const KSP_DIVERGED_INDEFINITE_MAT = (Int32)(-10)
 global const KSP_DIVERGED_PCSETUP_FAILED = (Int32)(-11)
 global const KSP_CONVERGED_ITERATING = (Int32)(0)
 #
-# declare a dictionary here for printing?
+# map values to string for printing
+export KSPConvergedReasonDict
+global const KSPConvergedReasonDict = Dict{KSPConvergedReason, ASCIIString} (
+ KSP_CONVERGED_RTOL_NORMAL => "Converged: RTol normal",
+ KSP_CONVERGED_ATOL_NORMAL => "Converged: ATol normal",
+ KSP_CONVERGED_RTOL => "Converged: RTol",
+ KSP_CONVERGED_ATOL => "converged: ATol",
+ KSP_CONVERGED_ITS => "Converged: ITS",
+ KSP_CONVERGED_CG_NEG_CURVE => "Converged: CG Negative Curvature",
+ KSP_CONVERGED_CG_CONSTRAINED => "Converged: CG Constrained",
+ KSP_CONVERGED_STEP_LENGTH => "Converged: step length",
+ KSP_CONVERGED_HAPPY_BREAKDOWN => "Converged: happy breakdown",
+ KSP_DIVERGED_NULL => "Diverged: Null",
+ KSP_DIVERGED_ITS => "Diverged: iteration max",
+ KSP_DIVERGED_DTOL => "Diverged divergence tolerance",
+ KSP_DIVERGED_BREAKDOWN => "Diverged: Krylov breakdown",
+ KSP_DIVERGED_BREAKDOWN_BICG => "Diverged: BICG breakdown",
+ KSP_DIVERGED_NONSYMMETRIC => "Diverged: non symmetric",
+ KSP_DIVERGED_INDEFINITE_PC => "Diverged: indefinitate PC",
+ KSP_DIVERGED_NANORINF => "Diverged nan or inf",
+ KSP_DIVERGED_INDEFINITE_MAT => "Diverged: indefinate matrix",
+ KSP_DIVERGED_PCSETUP_FAILED => "Diverged: PC setup failed",
+ KSP_CONVERGED_ITERATING => "Still running: please be patient",
+ )
+#
 
 
 global const KSP_NORM_MAX = KSP_NORM_NATURAL + 1

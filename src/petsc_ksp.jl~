@@ -3,7 +3,7 @@ export KSP, KSPSetOperators, KSPSetFromOptions, KSPSolve,  KSPSetUp
 
 export KSPGetConvergedReason, PetscView, KSPSetType, KSPGetType, KSPSetTolerances, KSPGetTolerances, KSPSetInitialGuessNonzero, KSPGetInitialGuessNonzero, KSPGetResidualNorm
 
-type KSP <: PetscObject
+type KSP
   pobj::Ptr{Void}
 
   function KSP(comm::MPI_Comm)
@@ -13,6 +13,10 @@ type KSP <: PetscObject
       obj = new(ptr[1])
 #      finalizer(obj, PetscDestroy)
       return obj
+  end
+
+  function KSP(ptr::Ptr{Void})
+    return new(ptr)
   end
 end
 
@@ -103,5 +107,11 @@ end
 
 
 
+
+### new function
+# not tested
+function KSPSetReusePreconditioner(arg1::KSP,arg2::PetscBool)
+    ccall((:KSPSetReusePreconditioner,petsc),PetscErrorCode,(KSP,PetscBool),arg1,arg2)
+end
 
 

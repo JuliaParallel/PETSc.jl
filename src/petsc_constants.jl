@@ -417,9 +417,98 @@ global const KSP_DIVERGED_INDEFINITE_MAT = (Int32)(-10)
 global const KSP_DIVERGED_PCSETUP_FAILED = (Int32)(-11)
 global const KSP_CONVERGED_ITERATING = (Int32)(0)
 #
-# declare a dictionary here for printing?
+# map values to string for printing
+export KSPConvergedReasonDict
+global const KSPConvergedReasonDict = Dict{KSPConvergedReason, ASCIIString} (
+ KSP_CONVERGED_RTOL_NORMAL => "Converged: RTol normal",
+ KSP_CONVERGED_ATOL_NORMAL => "Converged: ATol normal",
+ KSP_CONVERGED_RTOL => "Converged: RTol",
+ KSP_CONVERGED_ATOL => "converged: ATol",
+ KSP_CONVERGED_ITS => "Converged: ITS",
+ KSP_CONVERGED_CG_NEG_CURVE => "Converged: CG Negative Curvature",
+ KSP_CONVERGED_CG_CONSTRAINED => "Converged: CG Constrained",
+ KSP_CONVERGED_STEP_LENGTH => "Converged: step length",
+ KSP_CONVERGED_HAPPY_BREAKDOWN => "Converged: happy breakdown",
+ KSP_DIVERGED_NULL => "Diverged: Null",
+ KSP_DIVERGED_ITS => "Diverged: iteration max",
+ KSP_DIVERGED_DTOL => "Diverged divergence tolerance",
+ KSP_DIVERGED_BREAKDOWN => "Diverged: Krylov breakdown",
+ KSP_DIVERGED_BREAKDOWN_BICG => "Diverged: BICG breakdown",
+ KSP_DIVERGED_NONSYMMETRIC => "Diverged: non symmetric",
+ KSP_DIVERGED_INDEFINITE_PC => "Diverged: indefinitate PC",
+ KSP_DIVERGED_NANORINF => "Diverged nan or inf",
+ KSP_DIVERGED_INDEFINITE_MAT => "Diverged: indefinate matrix",
+ KSP_DIVERGED_PCSETUP_FAILED => "Diverged: PC setup failed",
+ KSP_CONVERGED_ITERATING => "Still running: please be patient",
+ )
+#
 
 
 global const KSP_NORM_MAX = KSP_NORM_NATURAL + 1
 
 
+typealias PCType ASCIIString
+
+global const PCNONE = "none"
+global const PCJACOBI = "jacobi"
+global const PCSOR = "sor"
+global const PCLU = "lu"
+global const PCSHELL = "shell"
+global const PCBJACOBI = "bjacobi"
+global const PCMG = "mg"
+global const PCEISENSTAT = "eisenstat"
+global const PCILU = "ilu"
+global const PCICC = "icc"
+global const PCASM = "asm"
+global const PCGASM = "gasm"
+global const PCKSP = "ksp"
+global const PCCOMPOSITE = "composite"
+global const PCREDUNDANT = "redundant"
+global const PCSPAI = "spai"
+global const PCNN = "nn"
+global const PCCHOLESKY = "cholesky"
+global const PCPBJACOBI = "pbjacobi"
+global const PCMAT = "mat"
+global const PCHYPRE = "hypre"
+global const PCPARMS = "parms"
+global const PCFIELDSPLIT = "fieldsplit"
+global const PCTFS = "tfs"
+global const PCML = "ml"
+global const PCGALERKIN = "galerkin"
+global const PCEXOTIC = "exotic"
+global const PCCP = "cp"
+global const PCBFBT = "bfbt"
+global const PCLSC = "lsc"
+global const PCPYTHON = "python"
+global const PCPFMG = "pfmg"
+global const PCSYSPFMG = "syspfmg"
+global const PCREDISTRIBUTE = "redistribute"
+global const PCSVD = "svd"
+global const PCGAMG = "gamg"
+global const PCSACUSP = "sacusp"
+global const PCSACUSPPOLY = "sacusppoly"
+global const PCBICGSTABCUSP = "bicgstabcusp"
+global const PCAINVCUSP = "ainvcusp"
+global const PCBDDC = "bddc"
+global const PCKACZMARZ = "kaczmarz"
+
+# begin enum PCSide
+typealias PCSide Cint
+global const PC_SIDE_DEFAULT = (Int32)(-1)
+global const PC_LEFT = (Int32)(0)
+global const PC_RIGHT = (Int32)(1)
+global const PC_SYMMETRIC = (Int32)(2)
+# end enum PCSide
+
+typealias PCJacobiType Int32
+global const PC_JACOBI_DIAGONAL = (Int32)(0)
+global const PC_JACOBI_ROWMAX = (Int32)(1)
+global const PC_JACOBI_ROWSUM = (Int32)(2)
+#
+
+
+typealias PetscErrorType Int32
+global const PETSC_ERROR_INITIAL = (Int32)(0)
+global const PETSC_ERROR_REPEAT = (Int32)(1)
+global const PETSC_ERROR_IN_CXX = (Int32)(2)
+#

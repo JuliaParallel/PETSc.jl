@@ -3,16 +3,20 @@ export KSP, KSPSetOperators, KSPSetFromOptions, KSPSolve,  KSPSetUp
 
 export KSPGetConvergedReason, PetscView, KSPSetType, KSPGetType, KSPSetTolerances, KSPGetTolerances, KSPSetInitialGuessNonzero, KSPGetInitialGuessNonzero, KSPGetResidualNorm
 
-type KSP <: PetscObject
+type KSP
   pobj::Ptr{Void}
 
-  function KSP(comm::MPI_Comm)
+  function KSP(comm::MPI_Comm)  # constructor for KSP owned by the user
       ptr = Array(Ptr{Void}, 1)
       ierr = ccall((:KSPCreate,petsc),PetscErrorCode,(comm_type, Ptr{Void}),comm.val, ptr)
       @assert(ierr == 0)
       obj = new(ptr[1])
 #      finalizer(obj, PetscDestroy)
       return obj
+  end
+
+  function KSP(ptr::Ptr{Void})  # constructor for KSP *not* owned by the user
+    return new(ptr)
   end
 end
 
@@ -103,5 +107,11 @@ end
 
 
 
+
+### new function
+# not tested
+function KSPSetReusePreconditioner(arg1::KSP,arg2::PetscBool)
+    ccall((:KSPSetReusePreconditioner,petsc),PetscErrorCode,(KSP,PetscBool),arg1,arg2)
+end
 
 

@@ -10,7 +10,8 @@ module PETSc
 
 
 using MPI
-include("petsc_constants.jl")
+include("petsc_constants.jl")  # typedefs and constants
+include("petsc_error.jl")  # error handling
 
 import Base.show
 
@@ -147,13 +148,13 @@ end
 
 # -------------------------------------
 #
-abstract PetscObject
+#abstract PetscObject
 
-function PetscView(obj::PetscObject)
+function PetscView(obj)
   PetscView(obj,0)
 end
 
-type PetscIS <: PetscObject
+type PetscIS
   pobj::Ptr{Void}
   function PetscIS(comm::MPI_Comm)
 #    comm = PETSC_COMM_SELF();
@@ -219,6 +220,9 @@ include("petsc_mat.jl")
 
 # -------------------------------------
 include("petsc_ksp.jl")
+
+# -------------------------------------
+include("petsc_pc.jl")
 
 end  # end module
 

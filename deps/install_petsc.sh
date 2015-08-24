@@ -32,7 +32,8 @@ unset PETSC_ARCH
 # --with-precision=<single,double>
 # --wtih-scalar-type=<real, complex>
 cd ./$petsc_name
-./configure $1 $2 $3 > fout
+#./configure $1 $2 $3 > fout
+./configure --with-debugging=0 COPTFLAGS='-O3 -march=native -mtrune=native' CXXOPTFLAGS='-O3 -march=native -mtune=native' FOPTFLAGS='-O3 -march=native -mtune=native' > fout
 
 echo "finished configure"
 

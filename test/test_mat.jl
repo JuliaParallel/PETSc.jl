@@ -100,8 +100,17 @@ facts("\n   ---testing matrix functions---") do
       PetscMatGetValues(A, idxm, idxn, v)
 #      println("i = ", i, " j = ", j, " v = ", v[1,1], " A[i,j] = ", A_julia[i,j])
       @fact v[1,1] => roughly(A_julia[i,j]) "mismatch at i=$i, j=$j"
+      @fact A[i,j] => roughly(A_julia[i,j])
     end
   end
+
+  for i=1:sys_size*sys_size
+    A[i] => roughly(A_julia[i])
+  end
+
+  @fact size(A) => (sys_size, sys_size)
+  @fact size(A, 1) => sys_size
+  @fact size(A, 2) => sys_size
 
 
   @fact PetscMatGetSize(A) => (comm_size*sys_size, comm_size*sys_size)

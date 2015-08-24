@@ -68,7 +68,7 @@ const global MPIU_SCALAR = MPIU_REAL
 # Skipping MacroDefinition: PetscAbsReal ( a ) ( ( ( a ) < 0 ) ? - ( a ) : ( a ) )
 # Skipping MacroDefinition: PetscSqr ( a ) ( ( a ) * ( a ) )
 
-const global PETSC_PI = M_PI
+const global PETSC_PI = 3.141592653589793
 const global PETSC_MAX_INT = 2147483647
 const global PETSC_MIN_INT = -PETSC_MAX_INT - 1
 const global PETSC_INFINITY = PETSC_MAX_REAL / 4.0
@@ -727,11 +727,11 @@ const global PETSC_FUNCTION = (UInt32)(12)
 const global PETSC_STRING = (UInt32)(12)
 # end enum ANONYMOUS_4
 
-typealias PetscToken Ptr{Void}
-typealias PetscObject Ptr{Void}
+typealias PetscToken Ptr{_p_PetscToken}
+typealias PetscObject Ptr{_p_PetscObject}
 typealias PetscObjectId Petsc64bitInt
 typealias PetscObjectState Petsc64bitInt
-typealias PetscFunctionList Ptr{Void}
+typealias PetscFunctionList Ptr{_n_PetscFunctionList}
 
 # begin enum ANONYMOUS_5
 typealias ANONYMOUS_5 Uint32
@@ -1002,7 +1002,7 @@ end
 typealias PetscVoidStarFunction Ptr{Ptr{Void}}
 typealias PetscVoidFunction Ptr{Void}
 typealias PetscErrorCodeFunction Ptr{Void}
-typealias PetscViewer Ptr{Void}
+typealias PetscViewer Ptr{_p_PetscViewer}
 
 # begin enum ANONYMOUS_8
 typealias ANONYMOUS_8 Uint32
@@ -1036,7 +1036,7 @@ const global OPTION_BOOL_ARRAY = (UInt32)(10)
 const global OPTION_STRING_ARRAY = (UInt32)(11)
 # end enum PetscOptionType
 
-typealias PetscOption Ptr{Void}
+typealias PetscOption Ptr{_n_PetscOption}
 
 type PetscOptions
     count::PetscInt
@@ -1067,11 +1067,11 @@ const global PETSC_DL_NOW = (UInt32)(1)
 const global PETSC_DL_LOCAL = (UInt32)(2)
 # end enum PetscDLMode
 
-typealias PetscObjectList Ptr{Void}
-typealias PetscDLLibrary Ptr{Void}
+typealias PetscObjectList Ptr{_n_PetscObjectList}
+typealias PetscDLLibrary Ptr{_n_PetscDLLibrary}
 typealias PetscLogEvent Cint
 typealias PetscLogStage Cint
-typealias PetscIntStack Ptr{Void}
+typealias PetscIntStack Ptr{_n_PetscIntStack}
 
 type PetscClassRegInfo
     name::Ptr{Uint8}
@@ -1086,8 +1086,8 @@ type PetscClassPerfInfo
     descMem::PetscLogDouble
 end
 
-typealias PetscClassRegLog Ptr{Void}
-typealias PetscClassPerfLog Ptr{Void}
+typealias PetscClassRegLog Ptr{_n_PetscClassRegLog}
+typealias PetscClassPerfLog Ptr{_n_PetscClassPerfLog}
 
 type PetscEventRegInfo
     name::Ptr{Uint8}
@@ -1111,8 +1111,8 @@ type PetscEventPerfInfo
     numReductions::PetscLogDouble
 end
 
-typealias PetscEventRegLog Ptr{Void}
-typealias PetscEventPerfLog Ptr{Void}
+typealias PetscEventRegLog Ptr{_n_PetscEventRegLog}
+typealias PetscEventPerfLog Ptr{_n_PetscEventPerfLog}
 
 type PetscStageInfo
     name::Ptr{Uint8}
@@ -1122,10 +1122,10 @@ type PetscStageInfo
     classLog::PetscClassPerfLog
 end
 
-typealias PetscStageLog Ptr{Void}
-typealias PetscContainer Ptr{Void}
+typealias PetscStageLog Ptr{_n_PetscStageLog}
+typealias PetscContainer Ptr{_p_PetscContainer}
 typealias PetscRandomType Ptr{Uint8}
-typealias PetscRandom Ptr{Void}
+typealias PetscRandom Ptr{_p_PetscRandom}
 
 # begin enum ANONYMOUS_10
 typealias ANONYMOUS_10 Uint32
@@ -1193,20 +1193,20 @@ const global PETSC_SUBCOMM_CONTIGUOUS = (UInt32)(1)
 const global PETSC_SUBCOMM_INTERLACED = (UInt32)(2)
 # end enum PetscSubcommType
 
-typealias PetscSubcomm Ptr{Void}
-typealias PetscSegBuffer Ptr{Void}
-typealias PetscSF Ptr{Void}
+typealias PetscSubcomm Ptr{_n_PetscSubcomm}
+typealias PetscSegBuffer Ptr{_n_PetscSegBuffer}
+typealias PetscSF Ptr{_p_PetscSF}
 
 type PetscSFNode
     rank::PetscInt
     index::PetscInt
 end
 
-typealias IS Ptr{Void}
-typealias ISLocalToGlobalMapping Ptr{Void}
-typealias ISColoring Ptr{Void}
-typealias PetscLayout Ptr{Void}
-typealias PetscSection Ptr{Void}
+typealias IS Ptr{_p_IS}
+typealias ISLocalToGlobalMapping Ptr{_p_ISLocalToGlobalMapping}
+typealias ISColoring Ptr{_n_ISColoring}
+typealias PetscLayout Ptr{_n_PetscLayout}
+typealias PetscSection Ptr{_p_PetscSection}
 typealias ISType Ptr{Uint8}
 
 # begin enum ANONYMOUS_14
@@ -1236,12 +1236,12 @@ const global IS_COLORING_GHOSTED = (UInt32)(1)
 typealias PETSC_IS_COLOR_VALUE_TYPE Uint32
 typealias PetscViewerType Ptr{Uint8}
 typealias PetscDrawType Ptr{Uint8}
-typealias PetscDraw Ptr{Void}
-typealias PetscDrawAxis Ptr{Void}
-typealias PetscDrawLG Ptr{Void}
-typealias PetscDrawSP Ptr{Void}
-typealias PetscDrawHG Ptr{Void}
-typealias PetscDrawBar Ptr{Void}
+typealias PetscDraw Ptr{_p_PetscDraw}
+typealias PetscDrawAxis Ptr{_p_PetscDrawAxis}
+typealias PetscDrawLG Ptr{_p_PetscDrawLG}
+typealias PetscDrawSP Ptr{_p_PetscDrawSP}
+typealias PetscDrawHG Ptr{_p_PetscDrawHG}
+typealias PetscDrawBar Ptr{_p_PetscDrawBar}
 
 # begin enum ANONYMOUS_16
 typealias ANONYMOUS_16 Uint32
@@ -1325,9 +1325,9 @@ const global PETSC_VTK_CELL_FIELD = (UInt32)(2)
 const global PETSC_VTK_CELL_VECTOR_FIELD = (UInt32)(3)
 # end enum PetscViewerVTKFieldType
 
-typealias PetscViewers Ptr{Void}
-typealias Vec Ptr{Void}
-typealias VecScatter Ptr{Void}
+typealias PetscViewers Ptr{_n_PetscViewers}
+typealias Vec Ptr{_p_Vec}
+typealias VecScatter Ptr{_p_VecScatter}
 
 # begin enum ANONYMOUS_18
 typealias ANONYMOUS_18 Uint32
@@ -1384,8 +1384,8 @@ const global VECOP_LOAD = (UInt32)(41)
 const global VECOP_DUPLICATE = (UInt32)(0)
 # end enum VecOperation
 
-typealias Vecs Ptr{Void}
-typealias Mat Ptr{Void}
+typealias Vecs Ptr{_n_Vecs}
+typealias Mat Ptr{_p_Mat}
 typealias MatType Ptr{Uint8}
 
 # begin enum ANONYMOUS_22
@@ -1636,7 +1636,7 @@ const global SOR_APPLY_UPPER = (UInt32)(64)
 const global SOR_APPLY_LOWER = (UInt32)(128)
 # end enum MatSORType
 
-typealias MatColoring Ptr{Void}
+typealias MatColoring Ptr{_p_MatColoring}
 typealias MatColoringType Ptr{Uint8}
 
 # begin enum ANONYMOUS_33
@@ -1655,9 +1655,9 @@ const global MAT_COLORING_WEIGHT_LF = (UInt32)(2)
 const global MAT_COLORING_WEIGHT_SL = (UInt32)(3)
 # end enum MatColoringWeightType
 
-typealias MatFDColoring Ptr{Void}
-typealias MatTransposeColoring Ptr{Void}
-typealias MatPartitioning Ptr{Void}
+typealias MatFDColoring Ptr{_p_MatFDColoring}
+typealias MatTransposeColoring Ptr{_p_MatTransposeColoring}
+typealias MatPartitioning Ptr{_p_MatPartitioning}
 typealias MatPartitioningType Ptr{Uint8}
 
 # begin enum ANONYMOUS_34
@@ -1720,7 +1720,7 @@ const global MP_PTSCOTCH_SAFETY = (UInt32)(3)
 const global MP_PTSCOTCH_SCALABILITY = (UInt32)(4)
 # end enum MPPTScotchStrategyType
 
-typealias MatCoarsen Ptr{Void}
+typealias MatCoarsen Ptr{_p_MatCoarsen}
 typealias MatCoarsenType Ptr{Uint8}
 
 type PetscCDIntNd
@@ -2022,10 +2022,10 @@ const global MATOP_FDCOLORING_SETUP = (UInt32)(142)
 const global MATOP_MPICONCATENATESEQ = (UInt32)(144)
 # end enum MatOperation
 
-typealias MatNullSpace Ptr{Void}
-typealias MatMFFD Ptr{Void}
+typealias MatNullSpace Ptr{_p_MatNullSpace}
+typealias MatMFFD Ptr{_p_MatMFFD}
 typealias MatMFFDType Ptr{Uint8}
-typealias DM Ptr{Void}
+typealias DM Ptr{_p_DM}
 
 # begin enum ANONYMOUS_39
 typealias ANONYMOUS_39 Uint32
@@ -2045,8 +2045,8 @@ const global DM_BOUNDARY_PERIODIC = (UInt32)(3)
 const global DM_BOUNDARY_TWIST = (UInt32)(4)
 # end enum DMBoundaryType
 
-typealias PetscPartitioner Ptr{Void}
-typealias PC Ptr{Void}
+typealias PetscPartitioner Ptr{_p_PetscPartitioner}
+typealias PC Ptr{_p_PC}
 typealias PCType Ptr{Uint8}
 
 # begin enum ANONYMOUS_40
@@ -2236,7 +2236,7 @@ const global PC_EXOTIC_FACE = (UInt32)(0)
 const global PC_EXOTIC_WIREBASKET = (UInt32)(1)
 # end enum PCExoticType
 
-typealias KSP Ptr{Void}
+typealias KSP Ptr{_p_KSP}
 typealias KSPType Ptr{Uint8}
 
 # begin enum ANONYMOUS_53
@@ -2334,7 +2334,7 @@ const global KSP_CG_SYMMETRIC = (UInt32)(0)
 const global KSP_CG_HERMITIAN = (UInt32)(1)
 # end enum KSPCGType
 
-typealias KSPFischerGuess Ptr{Void}
+typealias KSPFischerGuess Ptr{_p_KSPFischerGuess}
 
 # begin enum ANONYMOUS_58
 typealias ANONYMOUS_58 Uint32

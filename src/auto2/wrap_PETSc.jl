@@ -41,8 +41,8 @@ push!(clang_includes, PETSC_INCLUDE)
 
 println("clang_includes = ", clang_includes)
 # Clang arguments
-clang_extraargs = ["-v"]
-# clang_extraargs = ["-D", "__STDC_LIMIT_MACROS", "-D", "__STDC_CONSTANT_MACROS"]
+#clang_extraargs = ["-v"]
+ clang_extraargs = [ "-std=c99", "-D", "__STDC_LIMIT_MACROS", "-D", "__STDC_CONSTANT_MACROS"]
 
 # Callback to test if a header should actually be wrapped (for exclusion)
 function wrap_header(top_hdr::ASCIIString, cursor_header::ASCIIString)

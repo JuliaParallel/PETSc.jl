@@ -2,12 +2,18 @@
 
 # dictionary to map pointer types to desired type
 
+type_dict = Dict{Any, Any} (
+:PetscScalar => :Float64,
+:PetscReal => :Float64,
+:PetscInt => :Int32,
+)
+
 ptr_dict = Dict{Any, Any} (
-:(Ptr{PetscInt}) => :(Union(Ptr{PetscInt}, AbstractArray{PetscInt}, Ptr{Void}))
+:(Ptr{PetscInt}) => :(Union(Ptr{PetscInt}, StridedArray{PetscInt}, Ptr{Void}))
 )
 
 ccall_dict = Dict{Any, Any} (
-:Mat => :(Ptr{Void}),
+#:Mat => :(Ptr{Void}),
 )
 
 function petsc_rewriter(obuf)
@@ -31,7 +37,7 @@ function petsc_rewriter(obuf)
       elseif ex_i.head == :const
         make_global_const(ex_i)
       elseif ex_i.head == :typealias
-        make_typealias_void(ex_i)
+        fix_typealias(ex_i)
       else
         println("not processing expression", ex_i)
       end
@@ -54,6 +60,16 @@ function rewrite_sig(ex)  # rewrite the function signature
 
   # ex.args[1] = function name, as a symbol
 
+   # check if function contains a PetscScalar
+
+   # if yes, add paramterization, do search and replace PetscScalar -> S
+   # also add macro
+
+   println("rewrite_sig ex = ", ex)
+   val = contains_symbol(ex, :PetscScalar)
+   println("contains_symbol = ", val)
+
+
   for i=2:length(ex.args)  # process all arguments of the function,
                            # each of which is an expression containing arg name, argtype
     println("typeof(ex.args[$i]) = ", typeof(ex.args[i]))
@@ -61,6 +77,15 @@ function rewrite_sig(ex)  # rewrite the function signature
     process_sig_arg(ex.args[i])  # process each expression
   end
 
+  for i=2:length(ex.args)  # do second pass to replace PetscScalar with proper type
+    for j in keys(type_dict)  # check for all types
+
+    println("replacing ", j, ", with ", type_dict[j])
+      replace_symbol(ex.args[i], j, type_dict[j])
+    end
+  end
+
+  println("after modification rewrite_sig ex = ", ex)
 end
 
 function process_sig_arg(ex)  # take the expression that is an argument to the function and rewrite it
@@ -72,6 +97,10 @@ function process_sig_arg(ex)  # take the expression that is an argument to the f
 #   arg_type = ex.args[2]  # Expr contianing type tag
    println("ex.args[2] = ", ex.args[2])
    println("type = ", typeof(ex.args[2]))
+
+#   if typeof(ex.args[1]) == Symbol
+     
+
    ex.args[2] = modify_typetag(ex.args[2])
 
 end
@@ -82,6 +111,15 @@ function modify_typetag(ex)
   return get(ptr_dict, ex, ex)  # get new typetag if one was given, either an Expr or a Symbol
 end
 
+function add_param(ex)
+# add the {S <: PetscScalar} to a function declaration
+
+  @assert typeof(ex) == Symbol  # make sure we don't already have a paramaterization
+
+  # could do more extensive operations here
+  return :($ex{S <: PetscScalars})
+end
+  
 
 
 #####  function to  rewrite the body of the function #####
@@ -132,11 +170,16 @@ function make_global_const(ex)
 end
 
 
-function make_typealias_void(ex)
+function fix_typealias(ex)
 
   @assert ex.head == :typealias
 
   if typeof(ex.args[2]) == Expr  # this a compound type declaration
+    new_type = ex.args[1]
+    if haskey(type_dict, new_type)
+      return "# no typealias $ex"
+    end
+#=
     ex2 = ex.args[2]
     @assert ex2.head == :curly
     str = string(ex2.args[2])  # get the pointee type name
@@ -149,7 +192,102 @@ function make_typealias_void(ex)
       println("ex = ", ex)
     end
     # else do nothing
+=#
   end
+end
+
+
+
+##### Misc. functions ####
+
+function contains_symbol(ex, sym::Symbol)
+# do a recursive check to see if the expression ex contains a symbol
+
+  @assert typeof(ex) == Expr
+
+  sum = 0  
+
+  if ex.head == :(::)  # if this expression is a type annotation
+    for i=1:length(ex.args)
+      if typeof(ex.args[i]) == Expr
+        sum += check_annot(ex.args[i], sym)
+        
+      else  # this is a symbol
+#        println("    comparing ", ex.args[i], " to ", sym)
+        if ex.args[i] == sym
+#          println("comparison true")
+         return true
+        end
+#        println("comparison false")
+     end  # end if ... else
+    end  # end for
+
+  else  # keep recursing
+
+    for i=1:length(ex.args)
+      if typeof(ex.args[i]) == Expr
+#        println("  processing sub expression ", ex.args[i])
+        sum += contains_symbol(ex.args[i], sym)
+#        println("  sum = ", sum)
+      end  # else let this expression fall out of loop
+    end  # end loop over args
+
+  end  # end if ... else
+
+  return sum
+
+end
+
+function check_annot(ex, sym::Symbol)
+# check a type annotation
+
+  for i=1:length(ex.args)
+#   println("  comparing ", ex.args[i], ", to ", sym)
+   if ex.args[i] == sym
+#    println("  comparison true")
+    return true
+   end
+#   println("  comparsion false")
+  end
+
+  return false
+end
+
+
+function replace_symbol(ex, sym_old::Symbol, sym_new::Symbol)
+# do a recursive descent replace one symbol with another
+
+#  @assert typeof(ex) == Expr
+  println("receiving expression ", ex)
+
+  if typeof(ex) == Symbol  # if this is a symbol
+      println("  found symbol ", ex)
+      if ex == sym_old
+        println("  performing replacement ", ex, " with ", sym_new)
+        return sym_new
+      else
+        println("  returning original symbol")
+        return ex
+      end
+        
+  elseif typeof(ex)  == Expr  # keep recursing
+  
+    for i=1:length(ex.args)
+#        println("  processing sub expression ", ex.args[i])
+         println("  recursing expression ", ex.args[i]) 
+         ex.args[i] =  replace_symbol(ex.args[i], sym_old, sym_new)
+    end  # end loop over args
+  else # we don't know/care what this expression is
+    println("  not modify unknown expression ", ex)
+    return ex
+  end  # end if ... elseifa
+
+  println("Warning, got to end of replace_symbol")
+  println("ex = ", ex)
+  println("typeof(ex) = ", typeof(ex))
+
+  return ex
+
 end
 
 

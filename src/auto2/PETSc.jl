@@ -86,7 +86,7 @@ function PetscDataTypeFromString(arg1::Ptr{Uint8},arg2::Ptr{PetscDataType},arg3:
     ccall((:PetscDataTypeFromString,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{PetscDataType},Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function PetscBitMemcpy(arg1::Ptr{Void},arg2::PetscInt,arg3::Ptr{Void},arg4::PetscInt,arg5::PetscInt,arg6::PetscDataType)
+function PetscBitMemcpy(arg1::Ptr{Void},arg2::Int32,arg3::Ptr{Void},arg4::Int32,arg5::Int32,arg6::PetscDataType)
     ccall((:PetscBitMemcpy,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{Void},PetscInt,PetscInt,PetscDataType),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
@@ -174,7 +174,7 @@ function PetscStrbeginswith(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{PetscBoo
     ccall((:PetscStrbeginswith,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function PetscStrendswithwhich(arg1::Ptr{Uint8},arg2::Ptr{Ptr{Uint8}},arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscStrendswithwhich(arg1::Ptr{Uint8},arg2::Ptr{Ptr{Uint8}},arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscStrendswithwhich,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Ptr{Uint8}},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
@@ -190,11 +190,11 @@ function PetscStrArrayDestroy(arg1::Ptr{Ptr{Ptr{Uint8}}})
     ccall((:PetscStrArrayDestroy,petsc),PetscErrorCode,(Ptr{Ptr{Ptr{Uint8}}},),arg1)
 end
 
-function PetscStrNArrayallocpy(arg1::PetscInt,arg2::Ptr{Ptr{Uint8}},arg3::Ptr{Ptr{Ptr{Uint8}}})
+function PetscStrNArrayallocpy(arg1::Int32,arg2::Ptr{Ptr{Uint8}},arg3::Ptr{Ptr{Ptr{Uint8}}})
     ccall((:PetscStrNArrayallocpy,petsc),PetscErrorCode,(PetscInt,Ptr{Ptr{Uint8}},Ptr{Ptr{Ptr{Uint8}}}),arg1,arg2,arg3)
 end
 
-function PetscStrNArrayDestroy(arg1::PetscInt,arg2::Ptr{Ptr{Ptr{Uint8}}})
+function PetscStrNArrayDestroy(arg1::Int32,arg2::Ptr{Ptr{Ptr{Uint8}}})
     ccall((:PetscStrNArrayDestroy,petsc),PetscErrorCode,(PetscInt,Ptr{Ptr{Ptr{Uint8}}}),arg1,arg2)
 end
 
@@ -218,7 +218,7 @@ function PetscTokenDestroy(arg1::Ptr{PetscToken})
     ccall((:PetscTokenDestroy,petsc),PetscErrorCode,(Ptr{PetscToken},),arg1)
 end
 
-function PetscEListFind(arg1::PetscInt,arg2::Ptr{Ptr{Uint8}},arg3::Ptr{Uint8},arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Ptr{PetscBool})
+function PetscEListFind(arg1::Int32,arg2::Ptr{Ptr{Uint8}},arg3::Ptr{Uint8},arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Ptr{PetscBool})
     ccall((:PetscEListFind,petsc),PetscErrorCode,(PetscInt,Ptr{Ptr{Uint8}},Ptr{Uint8},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end
 
@@ -226,15 +226,15 @@ function PetscEnumFind(arg1::Ptr{Ptr{Uint8}},arg2::Ptr{Uint8},arg3::Ptr{PetscEnu
     ccall((:PetscEnumFind,petsc),PetscErrorCode,(Ptr{Ptr{Uint8}},Ptr{Uint8},Ptr{PetscEnum},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
-function PetscMaxSum(arg1::MPI_Comm,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscMaxSum(arg1::MPI_Comm,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscMaxSum,petsc),PetscErrorCode,(MPI_Comm,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
-function MPIULong_Send(arg1::Ptr{Void},arg2::PetscInt,arg3::MPI_Datatype,arg4::PetscMPIInt,arg5::PetscMPIInt,arg6::MPI_Comm)
+function MPIULong_Send(arg1::Ptr{Void},arg2::Int32,arg3::MPI_Datatype,arg4::PetscMPIInt,arg5::PetscMPIInt,arg6::MPI_Comm)
     ccall((:MPIULong_Send,petsc),PetscErrorCode,(Ptr{Void},PetscInt,MPI_Datatype,PetscMPIInt,PetscMPIInt,MPI_Comm),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MPIULong_Recv(arg1::Ptr{Void},arg2::PetscInt,arg3::MPI_Datatype,arg4::PetscMPIInt,arg5::PetscMPIInt,arg6::MPI_Comm)
+function MPIULong_Recv(arg1::Ptr{Void},arg2::Int32,arg3::MPI_Datatype,arg4::PetscMPIInt,arg5::PetscMPIInt,arg6::MPI_Comm)
     ccall((:MPIULong_Recv,petsc),PetscErrorCode,(Ptr{Void},PetscInt,MPI_Datatype,PetscMPIInt,PetscMPIInt,MPI_Comm),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
@@ -294,7 +294,7 @@ function PetscPopSignalHandler()
     ccall((:PetscPopSignalHandler,petsc),PetscErrorCode,())
 end
 
-function PetscCheckPointerSetIntensity(arg1::PetscInt)
+function PetscCheckPointerSetIntensity(arg1::Int32)
     ccall((:PetscCheckPointerSetIntensity,petsc),PetscErrorCode,(PetscInt,),arg1)
 end
 
@@ -454,15 +454,15 @@ function PetscObjectGetName(arg1::PetscObject,arg2::Ptr{Ptr{Uint8}})
     ccall((:PetscObjectGetName,petsc),PetscErrorCode,(PetscObject,Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
-function PetscObjectSetTabLevel(arg1::PetscObject,arg2::PetscInt)
+function PetscObjectSetTabLevel(arg1::PetscObject,arg2::Int32)
     ccall((:PetscObjectSetTabLevel,petsc),PetscErrorCode,(PetscObject,PetscInt),arg1,arg2)
 end
 
-function PetscObjectGetTabLevel(arg1::PetscObject,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscObjectGetTabLevel(arg1::PetscObject,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscObjectGetTabLevel,petsc),PetscErrorCode,(PetscObject,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscObjectIncrementTabLevel(arg1::PetscObject,arg2::PetscObject,arg3::PetscInt)
+function PetscObjectIncrementTabLevel(arg1::PetscObject,arg2::PetscObject,arg3::Int32)
     ccall((:PetscObjectIncrementTabLevel,petsc),PetscErrorCode,(PetscObject,PetscObject,PetscInt),arg1,arg2,arg3)
 end
 
@@ -470,7 +470,7 @@ function PetscObjectReference(arg1::PetscObject)
     ccall((:PetscObjectReference,petsc),PetscErrorCode,(PetscObject,),arg1)
 end
 
-function PetscObjectGetReference(arg1::PetscObject,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscObjectGetReference(arg1::PetscObject,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscObjectGetReference,petsc),PetscErrorCode,(PetscObject,Ptr{PetscInt}),arg1,arg2)
 end
 
@@ -522,7 +522,7 @@ function PetscObjectDestroyOptionsHandlers(arg1::PetscObject)
     ccall((:PetscObjectDestroyOptionsHandlers,petsc),PetscErrorCode,(PetscObject,),arg1)
 end
 
-function PetscObjectsListGetGlobalNumbering(arg1::MPI_Comm,arg2::PetscInt,arg3::Ptr{PetscObject},arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscObjectsListGetGlobalNumbering(arg1::MPI_Comm,arg2::Int32,arg3::Ptr{PetscObject},arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscObjectsListGetGlobalNumbering,petsc),PetscErrorCode,(MPI_Comm,PetscInt,Ptr{PetscObject},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5)
 end
 
@@ -530,7 +530,7 @@ function PetscOptionsHasName(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{PetscBo
     ccall((:PetscOptionsHasName,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function PetscOptionsGetInt(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{PetscBool})
+function PetscOptionsGetInt(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{PetscBool})
     ccall((:PetscOptionsGetInt,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
@@ -542,23 +542,23 @@ function PetscOptionsGetReal(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{Cint},a
     ccall((:PetscOptionsGetReal,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{Cint},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
-function PetscOptionsGetScalar(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{PetscScalar},arg4::Ptr{PetscBool})
-    ccall((:PetscOptionsGetScalar,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{PetscScalar},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
+function PetscOptionsGetScalar(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{Float64},arg4::Ptr{PetscBool})
+    ccall((:PetscOptionsGetScalar,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
-function PetscOptionsGetIntArray(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Ptr{PetscBool})
+function PetscOptionsGetIntArray(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Ptr{PetscBool})
     ccall((:PetscOptionsGetIntArray,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscOptionsGetRealArray(arg1::Ptr{Uint8},arg2::Ptr{Uint8},PetscReal::Ptr{Cint},arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{PetscBool})
+function PetscOptionsGetRealArray(arg1::Ptr{Uint8},arg2::Ptr{Uint8},Float64::Ptr{Cint},arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{PetscBool})
     ccall((:PetscOptionsGetRealArray,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{Cint},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,PetscReal,arg3,arg4)
 end
 
-function PetscOptionsGetScalarArray(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{PetscScalar},arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Ptr{PetscBool})
-    ccall((:PetscOptionsGetScalarArray,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{PetscScalar},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
+function PetscOptionsGetScalarArray(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{Float64},arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Ptr{PetscBool})
+    ccall((:PetscOptionsGetScalarArray,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{Float64},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscOptionsGetBoolArray(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{PetscBool},arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Ptr{PetscBool})
+function PetscOptionsGetBoolArray(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{PetscBool},arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Ptr{PetscBool})
     ccall((:PetscOptionsGetBoolArray,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{PetscBool},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end
 
@@ -566,11 +566,11 @@ function PetscOptionsGetString(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{Uint8
     ccall((:PetscOptionsGetString,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},Cint,Ptr{PetscBool}),arg1,arg2,arg3,size_t,arg4)
 end
 
-function PetscOptionsGetStringArray(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{Ptr{Uint8}},arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Ptr{PetscBool})
+function PetscOptionsGetStringArray(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{Ptr{Uint8}},arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Ptr{PetscBool})
     ccall((:PetscOptionsGetStringArray,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{Ptr{Uint8}},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscOptionsGetEList(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{Ptr{Uint8}},arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{PetscBool})
+function PetscOptionsGetEList(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{Ptr{Uint8}},arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{PetscBool})
     ccall((:PetscOptionsGetEList,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{Ptr{Uint8}},PetscInt,Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
@@ -578,7 +578,7 @@ function PetscOptionsGetEnum(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{Ptr{Uin
     ccall((:PetscOptionsGetEnum,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{Ptr{Uint8}},Ptr{PetscEnum},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscOptionsGetEnumArray(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{Ptr{Uint8}},arg4::Ptr{PetscEnum},arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{PetscBool})
+function PetscOptionsGetEnumArray(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{Ptr{Uint8}},arg4::Ptr{PetscEnum},arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{PetscBool})
     ccall((:PetscOptionsGetEnumArray,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Ptr{Ptr{Uint8}},Ptr{PetscEnum},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
@@ -598,7 +598,7 @@ function PetscOptionsClearValue(arg1::Ptr{Uint8})
     ccall((:PetscOptionsClearValue,petsc),PetscErrorCode,(Ptr{Uint8},),arg1)
 end
 
-function PetscOptionsAllUsed(arg1::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscOptionsAllUsed(arg1::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscOptionsAllUsed,petsc),PetscErrorCode,(Ptr{PetscInt},),arg1)
 end
 
@@ -658,7 +658,7 @@ function PetscOptionsGetenv(arg1::MPI_Comm,arg2::Ptr{Uint8},arg3::Ptr{Uint8},siz
     ccall((:PetscOptionsGetenv,petsc),PetscErrorCode,(MPI_Comm,Ptr{Uint8},Ptr{Uint8},Cint,Ptr{PetscBool}),arg1,arg2,arg3,size_t,arg4)
 end
 
-function PetscOptionsStringToInt(arg1::Ptr{Uint8},arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscOptionsStringToInt(arg1::Ptr{Uint8},arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscOptionsStringToInt,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{PetscInt}),arg1,arg2)
 end
 
@@ -702,16 +702,16 @@ function PetscOptionsEnum_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3:
     ccall((:PetscOptionsEnum_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},Ptr{Ptr{Uint8}},PetscEnum,Ptr{PetscEnum},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function PetscOptionsInt_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::PetscInt,arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{PetscBool})
+function PetscOptionsInt_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Int32,arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{PetscBool})
     ccall((:PetscOptionsInt_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},PetscInt,Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function PetscOptionsReal_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},PetscReal::Cint,arg5::Ptr{Cint},arg6::Ptr{PetscBool})
+function PetscOptionsReal_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},Float64::Cint,arg5::Ptr{Cint},arg6::Ptr{PetscBool})
     ccall((:PetscOptionsReal_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},Cint,Ptr{Cint},Ptr{PetscBool}),arg1,arg2,arg3,arg4,PetscReal,arg5,arg6)
 end
 
-function PetscOptionsScalar_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::PetscScalar,arg6::Ptr{PetscScalar},arg7::Ptr{PetscBool})
-    ccall((:PetscOptionsScalar_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},PetscScalar,Ptr{PetscScalar},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function PetscOptionsScalar_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Float64,arg6::Ptr{Float64},arg7::Ptr{PetscBool})
+    ccall((:PetscOptionsScalar_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},PetscScalar,Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
 function PetscOptionsName_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Ptr{PetscBool})
@@ -742,31 +742,31 @@ function PetscOptionsFList_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3
     ccall((:PetscOptionsFList_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},PetscFunctionList,Ptr{Uint8},Ptr{Uint8},Cint,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,size_t,arg8)
 end
 
-function PetscOptionsEList_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Ptr{Ptr{Uint8}},arg6::PetscInt,arg7::Ptr{Uint8},arg8::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg9::Ptr{PetscBool})
+function PetscOptionsEList_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Ptr{Ptr{Uint8}},arg6::Int32,arg7::Ptr{Uint8},arg8::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg9::Ptr{PetscBool})
     ccall((:PetscOptionsEList_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},Ptr{Ptr{Uint8}},PetscInt,Ptr{Uint8},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
 end
 
-function PetscOptionsRealArray_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},PetscReal::Ptr{Cint},arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{PetscBool})
+function PetscOptionsRealArray_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},Float64::Ptr{Cint},arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{PetscBool})
     ccall((:PetscOptionsRealArray_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},Ptr{Cint},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,PetscReal,arg5,arg6)
 end
 
-function PetscOptionsScalarArray_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Ptr{PetscScalar},arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{PetscBool})
-    ccall((:PetscOptionsScalarArray_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},Ptr{PetscScalar},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function PetscOptionsScalarArray_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Ptr{Float64},arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{PetscBool})
+    ccall((:PetscOptionsScalarArray_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},Ptr{Float64},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function PetscOptionsIntArray_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{PetscBool})
+function PetscOptionsIntArray_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{PetscBool})
     ccall((:PetscOptionsIntArray_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function PetscOptionsStringArray_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Ptr{Ptr{Uint8}},arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{PetscBool})
+function PetscOptionsStringArray_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Ptr{Ptr{Uint8}},arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{PetscBool})
     ccall((:PetscOptionsStringArray_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},Ptr{Ptr{Uint8}},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function PetscOptionsBoolArray_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Ptr{PetscBool},arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{PetscBool})
+function PetscOptionsBoolArray_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Ptr{PetscBool},arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{PetscBool})
     ccall((:PetscOptionsBoolArray_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},Ptr{PetscBool},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function PetscOptionsEnumArray_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Ptr{Ptr{Uint8}},arg6::Ptr{PetscEnum},arg7::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg8::Ptr{PetscBool})
+function PetscOptionsEnumArray_Private(arg1::Ptr{PetscOptions},arg2::Ptr{Uint8},arg3::Ptr{Uint8},arg4::Ptr{Uint8},arg5::Ptr{Ptr{Uint8}},arg6::Ptr{PetscEnum},arg7::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg8::Ptr{PetscBool})
     ccall((:PetscOptionsEnumArray_Private,petsc),PetscErrorCode,(Ptr{PetscOptions},Ptr{Uint8},Ptr{Uint8},Ptr{Uint8},Ptr{Ptr{Uint8}},Ptr{PetscEnum},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
@@ -938,11 +938,11 @@ function PetscDLLibraryClose(arg1::PetscDLLibrary)
     ccall((:PetscDLLibraryClose,petsc),PetscErrorCode,(PetscDLLibrary,),arg1)
 end
 
-function PetscSplitOwnership(arg1::MPI_Comm,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSplitOwnership(arg1::MPI_Comm,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSplitOwnership,petsc),PetscErrorCode,(MPI_Comm,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PetscSplitOwnershipBlock(arg1::MPI_Comm,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSplitOwnershipBlock(arg1::MPI_Comm,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSplitOwnershipBlock,petsc),PetscErrorCode,(MPI_Comm,PetscInt,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
@@ -1026,12 +1026,12 @@ function PetscFClose(arg1::MPI_Comm,arg2::Ptr{FILE})
     ccall((:PetscFClose,petsc),PetscErrorCode,(MPI_Comm,Ptr{FILE}),arg1,arg2)
 end
 
-function PetscVSNPrintf(arg1::Ptr{Uint8},size_t::Cint,arg2::Ptr{Uint8},arg3::Ptr{Cint},arg4::va_list)
-    ccall((:PetscVSNPrintf,petsc),PetscErrorCode,(Ptr{Uint8},Cint,Ptr{Uint8},Ptr{Cint},va_list),arg1,size_t,arg2,arg3,arg4)
+function PetscVSNPrintf(arg1::Ptr{Uint8},size_t::Cint,arg2::Ptr{Uint8},arg3::Ptr{Cint},va_list::Cint)
+    ccall((:PetscVSNPrintf,petsc),PetscErrorCode,(Ptr{Uint8},Cint,Ptr{Uint8},Ptr{Cint},Cint),arg1,size_t,arg2,arg3,va_list)
 end
 
-function PetscVFPrintfDefault(arg1::Ptr{FILE},arg2::Ptr{Uint8},arg3::va_list)
-    ccall((:PetscVFPrintfDefault,petsc),PetscErrorCode,(Ptr{FILE},Ptr{Uint8},va_list),arg1,arg2,arg3)
+function PetscVFPrintfDefault(arg1::Ptr{FILE},arg2::Ptr{Uint8},va_list::Cint)
+    ccall((:PetscVFPrintfDefault,petsc),PetscErrorCode,(Ptr{FILE},Ptr{Uint8},Cint),arg1,arg2,va_list)
 end
 
 function PetscSynchronizedFlush(arg1::MPI_Comm,arg2::Ptr{FILE})
@@ -1078,16 +1078,16 @@ function PetscContainerSetUserDestroy(arg1::PetscContainer,arg2::Ptr{Void})
     ccall((:PetscContainerSetUserDestroy,petsc),PetscErrorCode,(PetscContainer,Ptr{Void}),arg1,arg2)
 end
 
-function PetscIntView(arg1::PetscInt,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::PetscViewer)
+function PetscIntView(arg1::Int32,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::PetscViewer)
     ccall((:PetscIntView,petsc),PetscErrorCode,(PetscInt,Ptr{PetscInt},PetscViewer),arg1,arg2,arg3)
 end
 
-function PetscRealView(arg1::PetscInt,PetscReal::Ptr{Cint},arg2::PetscViewer)
+function PetscRealView(arg1::Int32,Float64::Ptr{Cint},arg2::PetscViewer)
     ccall((:PetscRealView,petsc),PetscErrorCode,(PetscInt,Ptr{Cint},PetscViewer),arg1,PetscReal,arg2)
 end
 
-function PetscScalarView(arg1::PetscInt,arg2::Ptr{PetscScalar},arg3::PetscViewer)
-    ccall((:PetscScalarView,petsc),PetscErrorCode,(PetscInt,Ptr{PetscScalar},PetscViewer),arg1,arg2,arg3)
+function PetscScalarView(arg1::Int32,arg2::Ptr{Float64},arg3::PetscViewer)
+    ccall((:PetscScalarView,petsc),PetscErrorCode,(PetscInt,Ptr{Float64},PetscViewer),arg1,arg2,arg3)
 end
 
 function PetscGetHostName(arg1::Ptr{Uint8},size_t::Cint)
@@ -1114,39 +1114,39 @@ function PetscGetVersion(arg1::Ptr{Uint8},size_t::Cint)
     ccall((:PetscGetVersion,petsc),PetscErrorCode,(Ptr{Uint8},Cint),arg1,size_t)
 end
 
-function PetscSortInt(arg1::PetscInt,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSortInt(arg1::Int32,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSortInt,petsc),PetscErrorCode,(PetscInt,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscSortRemoveDupsInt(arg1::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSortRemoveDupsInt(arg1::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSortRemoveDupsInt,petsc),PetscErrorCode,(Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscFindInt(arg1::PetscInt,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscFindInt(arg1::Int32,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscFindInt,petsc),PetscErrorCode,(PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
-function PetscSortIntWithPermutation(arg1::PetscInt,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSortIntWithPermutation(arg1::Int32,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSortIntWithPermutation,petsc),PetscErrorCode,(PetscInt,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PetscSortStrWithPermutation(arg1::PetscInt,arg2::Ptr{Ptr{Uint8}},arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSortStrWithPermutation(arg1::Int32,arg2::Ptr{Ptr{Uint8}},arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSortStrWithPermutation,petsc),PetscErrorCode,(PetscInt,Ptr{Ptr{Uint8}},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PetscSortIntWithArray(arg1::PetscInt,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSortIntWithArray(arg1::Int32,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSortIntWithArray,petsc),PetscErrorCode,(PetscInt,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PetscSortIntWithArrayPair(arg1::PetscInt,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSortIntWithArrayPair(arg1::Int32,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSortIntWithArrayPair,petsc),PetscErrorCode,(PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
-function PetscSortMPIInt(arg1::PetscInt,arg2::Ptr{PetscMPIInt})
+function PetscSortMPIInt(arg1::Int32,arg2::Ptr{PetscMPIInt})
     ccall((:PetscSortMPIInt,petsc),PetscErrorCode,(PetscInt,Ptr{PetscMPIInt}),arg1,arg2)
 end
 
-function PetscSortRemoveDupsMPIInt(arg1::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg2::Ptr{PetscMPIInt})
+function PetscSortRemoveDupsMPIInt(arg1::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg2::Ptr{PetscMPIInt})
     ccall((:PetscSortRemoveDupsMPIInt,petsc),PetscErrorCode,(Ptr{PetscInt},Ptr{PetscMPIInt}),arg1,arg2)
 end
 
@@ -1154,44 +1154,44 @@ function PetscSortMPIIntWithArray(arg1::PetscMPIInt,arg2::Ptr{PetscMPIInt},arg3:
     ccall((:PetscSortMPIIntWithArray,petsc),PetscErrorCode,(PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt}),arg1,arg2,arg3)
 end
 
-function PetscSortIntWithScalarArray(arg1::PetscInt,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{PetscScalar})
-    ccall((:PetscSortIntWithScalarArray,petsc),PetscErrorCode,(PetscInt,Ptr{PetscInt},Ptr{PetscScalar}),arg1,arg2,arg3)
+function PetscSortIntWithScalarArray(arg1::Int32,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Float64})
+    ccall((:PetscSortIntWithScalarArray,petsc),PetscErrorCode,(PetscInt,Ptr{PetscInt},Ptr{Float64}),arg1,arg2,arg3)
 end
 
-function PetscSortIntWithDataArray(arg1::PetscInt,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Void},size_t::Cint,arg4::Ptr{Void})
+function PetscSortIntWithDataArray(arg1::Int32,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Void},size_t::Cint,arg4::Ptr{Void})
     ccall((:PetscSortIntWithDataArray,petsc),PetscErrorCode,(PetscInt,Ptr{PetscInt},Ptr{Void},Cint,Ptr{Void}),arg1,arg2,arg3,size_t,arg4)
 end
 
-function PetscSortReal(arg1::PetscInt,PetscReal::Ptr{Cint})
+function PetscSortReal(arg1::Int32,Float64::Ptr{Cint})
     ccall((:PetscSortReal,petsc),PetscErrorCode,(PetscInt,Ptr{Cint}),arg1,PetscReal)
 end
 
-function PetscSortRealWithPermutation(arg1::PetscInt,PetscReal::Ptr{Cint},arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSortRealWithPermutation(arg1::Int32,Float64::Ptr{Cint},arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSortRealWithPermutation,petsc),PetscErrorCode,(PetscInt,Ptr{Cint},Ptr{PetscInt}),arg1,PetscReal,arg2)
 end
 
-function PetscSortRemoveDupsReal(arg1::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),PetscReal::Ptr{Cint})
+function PetscSortRemoveDupsReal(arg1::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),Float64::Ptr{Cint})
     ccall((:PetscSortRemoveDupsReal,petsc),PetscErrorCode,(Ptr{PetscInt},Ptr{Cint}),arg1,PetscReal)
 end
 
-function PetscSortSplit(arg1::PetscInt,arg2::PetscInt,arg3::Ptr{PetscScalar},arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:PetscSortSplit,petsc),PetscErrorCode,(PetscInt,PetscInt,Ptr{PetscScalar},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
+function PetscSortSplit(arg1::Int32,arg2::Int32,arg3::Ptr{Float64},arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:PetscSortSplit,petsc),PetscErrorCode,(PetscInt,PetscInt,Ptr{Float64},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
-function PetscSortSplitReal(arg1::PetscInt,arg2::PetscInt,PetscReal::Ptr{Cint},arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSortSplitReal(arg1::Int32,arg2::Int32,Float64::Ptr{Cint},arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSortSplitReal,petsc),PetscErrorCode,(PetscInt,PetscInt,Ptr{Cint},Ptr{PetscInt}),arg1,arg2,PetscReal,arg3)
 end
 
-function PetscProcessTree(arg1::PetscInt,arg2::Ptr{PetscBool},arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Ptr{Ptr{PetscInt}},arg6::Ptr{Ptr{PetscInt}},arg7::Ptr{Ptr{PetscInt}},arg8::Ptr{Ptr{PetscInt}})
-    ccall((:PetscProcessTree,petsc),PetscErrorCode,(PetscInt,Ptr{PetscBool},Ptr{PetscInt},Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscInt}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function PetscProcessTree(arg1::Int32,arg2::Ptr{PetscBool},arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Ptr{Ptr{Int32}},arg6::Ptr{Ptr{Int32}},arg7::Ptr{Ptr{Int32}},arg8::Ptr{Ptr{Int32}})
+    ccall((:PetscProcessTree,petsc),PetscErrorCode,(PetscInt,Ptr{PetscBool},Ptr{PetscInt},Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Int32}},Ptr{Ptr{Int32}},Ptr{Ptr{Int32}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function PetscMergeIntArrayPair(arg1::PetscInt,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg8::Ptr{Ptr{PetscInt}},arg9::Ptr{Ptr{PetscInt}})
-    ccall((:PetscMergeIntArrayPair,petsc),PetscErrorCode,(PetscInt,Ptr{PetscInt},Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscInt}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
+function PetscMergeIntArrayPair(arg1::Int32,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg8::Ptr{Ptr{Int32}},arg9::Ptr{Ptr{Int32}})
+    ccall((:PetscMergeIntArrayPair,petsc),PetscErrorCode,(PetscInt,Ptr{PetscInt},Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Int32}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
 end
 
-function PetscMergeIntArray(arg1::PetscInt,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{Ptr{PetscInt}})
-    ccall((:PetscMergeIntArray,petsc),PetscErrorCode,(PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Ptr{PetscInt}}),arg1,arg2,arg3,arg4,arg5,arg6)
+function PetscMergeIntArray(arg1::Int32,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Ptr{Int32}})
+    ccall((:PetscMergeIntArray,petsc),PetscErrorCode,(PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Ptr{Int32}}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
 function PetscSetDisplay()
@@ -1226,19 +1226,19 @@ function PetscRandomCreate(arg1::MPI_Comm,arg2::Ptr{PetscRandom})
     ccall((:PetscRandomCreate,petsc),PetscErrorCode,(MPI_Comm,Ptr{PetscRandom}),arg1,arg2)
 end
 
-function PetscRandomGetValue(arg1::PetscRandom,arg2::Ptr{PetscScalar})
-    ccall((:PetscRandomGetValue,petsc),PetscErrorCode,(PetscRandom,Ptr{PetscScalar}),arg1,arg2)
+function PetscRandomGetValue(arg1::PetscRandom,arg2::Ptr{Float64})
+    ccall((:PetscRandomGetValue,petsc),PetscErrorCode,(PetscRandom,Ptr{Float64}),arg1,arg2)
 end
 
 function PetscRandomGetValueReal(arg1::PetscRandom,arg2::Ptr{Cint})
     ccall((:PetscRandomGetValueReal,petsc),PetscErrorCode,(PetscRandom,Ptr{Cint}),arg1,arg2)
 end
 
-function PetscRandomGetInterval(arg1::PetscRandom,arg2::Ptr{PetscScalar},arg3::Ptr{PetscScalar})
-    ccall((:PetscRandomGetInterval,petsc),PetscErrorCode,(PetscRandom,Ptr{PetscScalar},Ptr{PetscScalar}),arg1,arg2,arg3)
+function PetscRandomGetInterval(arg1::PetscRandom,arg2::Ptr{Float64},arg3::Ptr{Float64})
+    ccall((:PetscRandomGetInterval,petsc),PetscErrorCode,(PetscRandom,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3)
 end
 
-function PetscRandomSetInterval(arg1::PetscRandom,arg2::PetscScalar,arg3::PetscScalar)
+function PetscRandomSetInterval(arg1::PetscRandom,arg2::Float64,arg3::Float64)
     ccall((:PetscRandomSetInterval,petsc),PetscErrorCode,(PetscRandom,PetscScalar,PetscScalar),arg1,arg2,arg3)
 end
 
@@ -1286,19 +1286,19 @@ function PetscTestDirectory(arg1::Ptr{Uint8},arg2::Uint8,arg3::Ptr{PetscBool})
     ccall((:PetscTestDirectory,petsc),PetscErrorCode,(Ptr{Uint8},Uint8,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function PetscBinaryRead(arg1::Cint,arg2::Ptr{Void},arg3::PetscInt,arg4::PetscDataType)
+function PetscBinaryRead(arg1::Cint,arg2::Ptr{Void},arg3::Int32,arg4::PetscDataType)
     ccall((:PetscBinaryRead,petsc),PetscErrorCode,(Cint,Ptr{Void},PetscInt,PetscDataType),arg1,arg2,arg3,arg4)
 end
 
-function PetscBinarySynchronizedRead(arg1::MPI_Comm,arg2::Cint,arg3::Ptr{Void},arg4::PetscInt,arg5::PetscDataType)
+function PetscBinarySynchronizedRead(arg1::MPI_Comm,arg2::Cint,arg3::Ptr{Void},arg4::Int32,arg5::PetscDataType)
     ccall((:PetscBinarySynchronizedRead,petsc),PetscErrorCode,(MPI_Comm,Cint,Ptr{Void},PetscInt,PetscDataType),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscBinarySynchronizedWrite(arg1::MPI_Comm,arg2::Cint,arg3::Ptr{Void},arg4::PetscInt,arg5::PetscDataType,arg6::PetscBool)
+function PetscBinarySynchronizedWrite(arg1::MPI_Comm,arg2::Cint,arg3::Ptr{Void},arg4::Int32,arg5::PetscDataType,arg6::PetscBool)
     ccall((:PetscBinarySynchronizedWrite,petsc),PetscErrorCode,(MPI_Comm,Cint,Ptr{Void},PetscInt,PetscDataType,PetscBool),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function PetscBinaryWrite(arg1::Cint,arg2::Ptr{Void},arg3::PetscInt,arg4::PetscDataType,arg5::PetscBool)
+function PetscBinaryWrite(arg1::Cint,arg2::Ptr{Void},arg3::Int32,arg4::PetscDataType,arg5::PetscBool)
     ccall((:PetscBinaryWrite,petsc),PetscErrorCode,(Cint,Ptr{Void},PetscInt,PetscDataType,PetscBool),arg1,arg2,arg3,arg4,arg5)
 end
 
@@ -1334,15 +1334,15 @@ function PetscOpenSocket(arg1::Ptr{Uint8},arg2::Cint,arg3::Ptr{Cint})
     ccall((:PetscOpenSocket,petsc),PetscErrorCode,(Ptr{Uint8},Cint,Ptr{Cint}),arg1,arg2,arg3)
 end
 
-function PetscBinarySeek(arg1::Cint,arg2::off_t,arg3::PetscBinarySeekType,arg4::Ptr{off_t})
-    ccall((:PetscBinarySeek,petsc),PetscErrorCode,(Cint,off_t,PetscBinarySeekType,Ptr{off_t}),arg1,arg2,arg3,arg4)
+function PetscBinarySeek(arg1::Cint,off_t::Cint,arg2::PetscBinarySeekType,arg3::Ptr{Cint})
+    ccall((:PetscBinarySeek,petsc),PetscErrorCode,(Cint,Cint,PetscBinarySeekType,Ptr{Cint}),arg1,off_t,arg2,arg3)
 end
 
-function PetscBinarySynchronizedSeek(arg1::MPI_Comm,arg2::Cint,arg3::off_t,arg4::PetscBinarySeekType,arg5::Ptr{off_t})
-    ccall((:PetscBinarySynchronizedSeek,petsc),PetscErrorCode,(MPI_Comm,Cint,off_t,PetscBinarySeekType,Ptr{off_t}),arg1,arg2,arg3,arg4,arg5)
+function PetscBinarySynchronizedSeek(arg1::MPI_Comm,arg2::Cint,off_t::Cint,arg3::PetscBinarySeekType,arg4::Ptr{Cint})
+    ccall((:PetscBinarySynchronizedSeek,petsc),PetscErrorCode,(MPI_Comm,Cint,Cint,PetscBinarySeekType,Ptr{Cint}),arg1,arg2,off_t,arg3,arg4)
 end
 
-function PetscByteSwap(arg1::Ptr{Void},arg2::PetscDataType,arg3::PetscInt)
+function PetscByteSwap(arg1::Ptr{Void},arg2::PetscDataType,arg3::Int32)
     ccall((:PetscByteSwap,petsc),PetscErrorCode,(Ptr{Void},PetscDataType,PetscInt),arg1,arg2,arg3)
 end
 
@@ -1382,15 +1382,15 @@ function PetscGatherMessageLengths2(arg1::MPI_Comm,arg2::PetscMPIInt,arg3::Petsc
     ccall((:PetscGatherMessageLengths2,petsc),PetscErrorCode,(MPI_Comm,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function PetscPostIrecvInt(arg1::MPI_Comm,arg2::PetscMPIInt,arg3::PetscMPIInt,arg4::Ptr{PetscMPIInt},arg5::Ptr{PetscMPIInt},arg6::Ptr{Ptr{Ptr{PetscInt}}},arg7::Ptr{Ptr{MPI_Request}})
-    ccall((:PetscPostIrecvInt,petsc),PetscErrorCode,(MPI_Comm,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{Ptr{Ptr{PetscInt}}},Ptr{Ptr{MPI_Request}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function PetscPostIrecvInt(arg1::MPI_Comm,arg2::PetscMPIInt,arg3::PetscMPIInt,arg4::Ptr{PetscMPIInt},arg5::Ptr{PetscMPIInt},arg6::Ptr{Ptr{Ptr{Int32}}},arg7::Ptr{Ptr{MPI_Request}})
+    ccall((:PetscPostIrecvInt,petsc),PetscErrorCode,(MPI_Comm,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{Ptr{Ptr{Int32}}},Ptr{Ptr{MPI_Request}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function PetscPostIrecvScalar(arg1::MPI_Comm,arg2::PetscMPIInt,arg3::PetscMPIInt,arg4::Ptr{PetscMPIInt},arg5::Ptr{PetscMPIInt},arg6::Ptr{Ptr{Ptr{PetscScalar}}},arg7::Ptr{Ptr{MPI_Request}})
-    ccall((:PetscPostIrecvScalar,petsc),PetscErrorCode,(MPI_Comm,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{Ptr{Ptr{PetscScalar}}},Ptr{Ptr{MPI_Request}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function PetscPostIrecvScalar(arg1::MPI_Comm,arg2::PetscMPIInt,arg3::PetscMPIInt,arg4::Ptr{PetscMPIInt},arg5::Ptr{PetscMPIInt},arg6::Ptr{Ptr{Ptr{Float64}}},arg7::Ptr{Ptr{MPI_Request}})
+    ccall((:PetscPostIrecvScalar,petsc),PetscErrorCode,(MPI_Comm,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{Ptr{Ptr{Float64}}},Ptr{Ptr{MPI_Request}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function PetscCommBuildTwoSided(arg1::MPI_Comm,arg2::PetscMPIInt,arg3::MPI_Datatype,arg4::PetscInt,arg5::Ptr{PetscMPIInt},arg6::Ptr{Void},arg7::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg8::Ptr{Ptr{PetscMPIInt}},arg9::Ptr{Void})
+function PetscCommBuildTwoSided(arg1::MPI_Comm,arg2::PetscMPIInt,arg3::MPI_Datatype,arg4::Int32,arg5::Ptr{PetscMPIInt},arg6::Ptr{Void},arg7::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg8::Ptr{Ptr{PetscMPIInt}},arg9::Ptr{Void})
     ccall((:PetscCommBuildTwoSided,petsc),PetscErrorCode,(MPI_Comm,PetscMPIInt,MPI_Datatype,PetscInt,Ptr{PetscMPIInt},Ptr{Void},Ptr{PetscInt},Ptr{Ptr{PetscMPIInt}},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
 end
 
@@ -1414,7 +1414,7 @@ function PetscSubcommDestroy(arg1::Ptr{PetscSubcomm})
     ccall((:PetscSubcommDestroy,petsc),PetscErrorCode,(Ptr{PetscSubcomm},),arg1)
 end
 
-function PetscSubcommSetNumber(arg1::PetscSubcomm,arg2::PetscInt)
+function PetscSubcommSetNumber(arg1::PetscSubcomm,arg2::Int32)
     ccall((:PetscSubcommSetNumber,petsc),PetscErrorCode,(PetscSubcomm,PetscInt),arg1,arg2)
 end
 
@@ -1518,27 +1518,27 @@ function ISCreate(arg1::MPI_Comm,arg2::Ptr{IS})
     ccall((:ISCreate,petsc),PetscErrorCode,(MPI_Comm,Ptr{IS}),arg1,arg2)
 end
 
-function ISCreateGeneral(arg1::MPI_Comm,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),PetscCopyMode::Cint,arg4::Ptr{IS})
+function ISCreateGeneral(arg1::MPI_Comm,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),PetscCopyMode::Cint,arg4::Ptr{IS})
     ccall((:ISCreateGeneral,petsc),PetscErrorCode,(MPI_Comm,PetscInt,Ptr{PetscInt},Cint,Ptr{IS}),arg1,arg2,arg3,PetscCopyMode,arg4)
 end
 
-function ISGeneralSetIndices(arg1::IS,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),PetscCopyMode::Cint)
+function ISGeneralSetIndices(arg1::IS,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),PetscCopyMode::Cint)
     ccall((:ISGeneralSetIndices,petsc),PetscErrorCode,(IS,PetscInt,Ptr{PetscInt},Cint),arg1,arg2,arg3,PetscCopyMode)
 end
 
-function ISCreateBlock(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),PetscCopyMode::Cint,arg5::Ptr{IS})
+function ISCreateBlock(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),PetscCopyMode::Cint,arg5::Ptr{IS})
     ccall((:ISCreateBlock,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{PetscInt},Cint,Ptr{IS}),arg1,arg2,arg3,arg4,PetscCopyMode,arg5)
 end
 
-function ISBlockSetIndices(arg1::IS,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),PetscCopyMode::Cint)
+function ISBlockSetIndices(arg1::IS,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),PetscCopyMode::Cint)
     ccall((:ISBlockSetIndices,petsc),PetscErrorCode,(IS,PetscInt,PetscInt,Ptr{PetscInt},Cint),arg1,arg2,arg3,arg4,PetscCopyMode)
 end
 
-function ISCreateStride(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::Ptr{IS})
+function ISCreateStride(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Ptr{IS})
     ccall((:ISCreateStride,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,Ptr{IS}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function ISStrideSetStride(arg1::IS,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt)
+function ISStrideSetStride(arg1::IS,arg2::Int32,arg3::Int32,arg4::Int32)
     ccall((:ISStrideSetStride,petsc),PetscErrorCode,(IS,PetscInt,PetscInt,PetscInt),arg1,arg2,arg3,arg4)
 end
 
@@ -1562,32 +1562,32 @@ function ISIdentity(arg1::IS,arg2::Ptr{PetscBool})
     ccall((:ISIdentity,petsc),PetscErrorCode,(IS,Ptr{PetscBool}),arg1,arg2)
 end
 
-function ISContiguousLocal(arg1::IS,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Ptr{PetscBool})
+function ISContiguousLocal(arg1::IS,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Ptr{PetscBool})
     ccall((:ISContiguousLocal,petsc),PetscErrorCode,(IS,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function ISGetIndices(arg1::IS,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:ISGetIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function ISGetIndices(arg1::IS,arg2::Ptr{Ptr{Int32}})
+    ccall((:ISGetIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
-function ISRestoreIndices(arg1::IS,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:ISRestoreIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function ISRestoreIndices(arg1::IS,arg2::Ptr{Ptr{Int32}})
+    ccall((:ISRestoreIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
-function ISGetTotalIndices(arg1::IS,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:ISGetTotalIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function ISGetTotalIndices(arg1::IS,arg2::Ptr{Ptr{Int32}})
+    ccall((:ISGetTotalIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
-function ISRestoreTotalIndices(arg1::IS,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:ISRestoreTotalIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function ISRestoreTotalIndices(arg1::IS,arg2::Ptr{Ptr{Int32}})
+    ccall((:ISRestoreTotalIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
-function ISGetNonlocalIndices(arg1::IS,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:ISGetNonlocalIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function ISGetNonlocalIndices(arg1::IS,arg2::Ptr{Ptr{Int32}})
+    ccall((:ISGetNonlocalIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
-function ISRestoreNonlocalIndices(arg1::IS,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:ISRestoreNonlocalIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function ISRestoreNonlocalIndices(arg1::IS,arg2::Ptr{Ptr{Int32}})
+    ccall((:ISRestoreNonlocalIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
 function ISGetNonlocalIS(arg1::IS,is::Ptr{IS})
@@ -1598,15 +1598,15 @@ function ISRestoreNonlocalIS(arg1::IS,is::Ptr{IS})
     ccall((:ISRestoreNonlocalIS,petsc),PetscErrorCode,(IS,Ptr{IS}),arg1,is)
 end
 
-function ISGetSize(arg1::IS,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISGetSize(arg1::IS,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISGetSize,petsc),PetscErrorCode,(IS,Ptr{PetscInt}),arg1,arg2)
 end
 
-function ISGetLocalSize(arg1::IS,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISGetLocalSize(arg1::IS,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISGetLocalSize,petsc),PetscErrorCode,(IS,Ptr{PetscInt}),arg1,arg2)
 end
 
-function ISInvertPermutation(arg1::IS,arg2::PetscInt,arg3::Ptr{IS})
+function ISInvertPermutation(arg1::IS,arg2::Int32,arg3::Ptr{IS})
     ccall((:ISInvertPermutation,petsc),PetscErrorCode,(IS,PetscInt,Ptr{IS}),arg1,arg2,arg3)
 end
 
@@ -1642,35 +1642,35 @@ function ISExpand(arg1::IS,arg2::IS,arg3::Ptr{IS})
     ccall((:ISExpand,petsc),PetscErrorCode,(IS,IS,Ptr{IS}),arg1,arg2,arg3)
 end
 
-function ISGetMinMax(arg1::IS,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISGetMinMax(arg1::IS,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISGetMinMax,petsc),PetscErrorCode,(IS,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function ISBlockGetIndices(arg1::IS,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:ISBlockGetIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function ISBlockGetIndices(arg1::IS,arg2::Ptr{Ptr{Int32}})
+    ccall((:ISBlockGetIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
-function ISBlockRestoreIndices(arg1::IS,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:ISBlockRestoreIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function ISBlockRestoreIndices(arg1::IS,arg2::Ptr{Ptr{Int32}})
+    ccall((:ISBlockRestoreIndices,petsc),PetscErrorCode,(IS,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
-function ISBlockGetLocalSize(arg1::IS,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISBlockGetLocalSize(arg1::IS,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISBlockGetLocalSize,petsc),PetscErrorCode,(IS,Ptr{PetscInt}),arg1,arg2)
 end
 
-function ISBlockGetSize(arg1::IS,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISBlockGetSize(arg1::IS,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISBlockGetSize,petsc),PetscErrorCode,(IS,Ptr{PetscInt}),arg1,arg2)
 end
 
-function ISGetBlockSize(arg1::IS,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISGetBlockSize(arg1::IS,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISGetBlockSize,petsc),PetscErrorCode,(IS,Ptr{PetscInt}),arg1,arg2)
 end
 
-function ISSetBlockSize(arg1::IS,arg2::PetscInt)
+function ISSetBlockSize(arg1::IS,arg2::Int32)
     ccall((:ISSetBlockSize,petsc),PetscErrorCode,(IS,PetscInt),arg1,arg2)
 end
 
-function ISStrideGetInfo(arg1::IS,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISStrideGetInfo(arg1::IS,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISStrideGetInfo,petsc),PetscErrorCode,(IS,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
@@ -1690,19 +1690,19 @@ function ISAllGather(arg1::IS,arg2::Ptr{IS})
     ccall((:ISAllGather,petsc),PetscErrorCode,(IS,Ptr{IS}),arg1,arg2)
 end
 
-function ISComplement(arg1::IS,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{IS})
+function ISComplement(arg1::IS,arg2::Int32,arg3::Int32,arg4::Ptr{IS})
     ccall((:ISComplement,petsc),PetscErrorCode,(IS,PetscInt,PetscInt,Ptr{IS}),arg1,arg2,arg3,arg4)
 end
 
-function ISConcatenate(arg1::MPI_Comm,arg2::PetscInt,arg3::Ptr{IS},arg4::Ptr{IS})
+function ISConcatenate(arg1::MPI_Comm,arg2::Int32,arg3::Ptr{IS},arg4::Ptr{IS})
     ccall((:ISConcatenate,petsc),PetscErrorCode,(MPI_Comm,PetscInt,Ptr{IS},Ptr{IS}),arg1,arg2,arg3,arg4)
 end
 
-function ISListToPair(arg1::MPI_Comm,arg2::PetscInt,arg3::Ptr{IS},arg4::Ptr{IS},arg5::Ptr{IS})
+function ISListToPair(arg1::MPI_Comm,arg2::Int32,arg3::Ptr{IS},arg4::Ptr{IS},arg5::Ptr{IS})
     ccall((:ISListToPair,petsc),PetscErrorCode,(MPI_Comm,PetscInt,Ptr{IS},Ptr{IS},Ptr{IS}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function ISPairToList(arg1::IS,arg2::IS,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Ptr{IS}})
+function ISPairToList(arg1::IS,arg2::IS,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Ptr{IS}})
     ccall((:ISPairToList,petsc),PetscErrorCode,(IS,IS,Ptr{PetscInt},Ptr{Ptr{IS}}),arg1,arg2,arg3,arg4)
 end
 
@@ -1718,7 +1718,7 @@ function ISOnComm(arg1::IS,arg2::MPI_Comm,PetscCopyMode::Cint,arg3::Ptr{IS})
     ccall((:ISOnComm,petsc),PetscErrorCode,(IS,MPI_Comm,Cint,Ptr{IS}),arg1,arg2,PetscCopyMode,arg3)
 end
 
-function ISLocalToGlobalMappingCreate(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),PetscCopyMode::Cint,arg5::Ptr{ISLocalToGlobalMapping})
+function ISLocalToGlobalMappingCreate(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),PetscCopyMode::Cint,arg5::Ptr{ISLocalToGlobalMapping})
     ccall((:ISLocalToGlobalMappingCreate,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{PetscInt},Cint,Ptr{ISLocalToGlobalMapping}),arg1,arg2,arg3,arg4,PetscCopyMode,arg5)
 end
 
@@ -1726,7 +1726,7 @@ function ISLocalToGlobalMappingCreateIS(arg1::IS,arg2::Ptr{ISLocalToGlobalMappin
     ccall((:ISLocalToGlobalMappingCreateIS,petsc),PetscErrorCode,(IS,Ptr{ISLocalToGlobalMapping}),arg1,arg2)
 end
 
-function ISLocalToGlobalMappingCreateSF(arg1::PetscSF,arg2::PetscInt,arg3::Ptr{ISLocalToGlobalMapping})
+function ISLocalToGlobalMappingCreateSF(arg1::PetscSF,arg2::Int32,arg3::Ptr{ISLocalToGlobalMapping})
     ccall((:ISLocalToGlobalMappingCreateSF,petsc),PetscErrorCode,(PetscSF,PetscInt,Ptr{ISLocalToGlobalMapping}),arg1,arg2,arg3)
 end
 
@@ -1738,11 +1738,11 @@ function ISLocalToGlobalMappingDestroy(arg1::Ptr{ISLocalToGlobalMapping})
     ccall((:ISLocalToGlobalMappingDestroy,petsc),PetscErrorCode,(Ptr{ISLocalToGlobalMapping},),arg1)
 end
 
-function ISLocalToGlobalMappingApply(arg1::ISLocalToGlobalMapping,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISLocalToGlobalMappingApply(arg1::ISLocalToGlobalMapping,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISLocalToGlobalMappingApply,petsc),PetscErrorCode,(ISLocalToGlobalMapping,PetscInt,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
-function ISLocalToGlobalMappingApplyBlock(arg1::ISLocalToGlobalMapping,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISLocalToGlobalMappingApplyBlock(arg1::ISLocalToGlobalMapping,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISLocalToGlobalMappingApplyBlock,petsc),PetscErrorCode,(ISLocalToGlobalMapping,PetscInt,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
@@ -1750,11 +1750,11 @@ function ISLocalToGlobalMappingApplyIS(arg1::ISLocalToGlobalMapping,arg2::IS,arg
     ccall((:ISLocalToGlobalMappingApplyIS,petsc),PetscErrorCode,(ISLocalToGlobalMapping,IS,Ptr{IS}),arg1,arg2,arg3)
 end
 
-function ISGlobalToLocalMappingApply(arg1::ISLocalToGlobalMapping,arg2::ISGlobalToLocalMappingType,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISGlobalToLocalMappingApply(arg1::ISLocalToGlobalMapping,arg2::ISGlobalToLocalMappingType,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISGlobalToLocalMappingApply,petsc),PetscErrorCode,(ISLocalToGlobalMapping,ISGlobalToLocalMappingType,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function ISGlobalToLocalMappingApplyBlock(arg1::ISLocalToGlobalMapping,arg2::ISGlobalToLocalMappingType,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISGlobalToLocalMappingApplyBlock(arg1::ISLocalToGlobalMapping,arg2::ISGlobalToLocalMappingType,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISGlobalToLocalMappingApplyBlock,petsc),PetscErrorCode,(ISLocalToGlobalMapping,ISGlobalToLocalMappingType,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
@@ -1762,59 +1762,59 @@ function ISGlobalToLocalMappingApplyIS(arg1::ISLocalToGlobalMapping,arg2::ISGlob
     ccall((:ISGlobalToLocalMappingApplyIS,petsc),PetscErrorCode,(ISLocalToGlobalMapping,ISGlobalToLocalMappingType,IS,Ptr{IS}),arg1,arg2,arg3,arg4)
 end
 
-function ISLocalToGlobalMappingGetSize(arg1::ISLocalToGlobalMapping,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISLocalToGlobalMappingGetSize(arg1::ISLocalToGlobalMapping,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISLocalToGlobalMappingGetSize,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{PetscInt}),arg1,arg2)
 end
 
-function ISLocalToGlobalMappingGetInfo(arg1::ISLocalToGlobalMapping,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{PetscInt}},arg4::Ptr{Ptr{PetscInt}},arg5::Ptr{Ptr{Ptr{PetscInt}}})
-    ccall((:ISLocalToGlobalMappingGetInfo,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscInt}},Ptr{Ptr{Ptr{PetscInt}}}),arg1,arg2,arg3,arg4,arg5)
+function ISLocalToGlobalMappingGetInfo(arg1::ISLocalToGlobalMapping,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Int32}},arg4::Ptr{Ptr{Int32}},arg5::Ptr{Ptr{Ptr{Int32}}})
+    ccall((:ISLocalToGlobalMappingGetInfo,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Int32}},Ptr{Ptr{Ptr{Int32}}}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function ISLocalToGlobalMappingRestoreInfo(arg1::ISLocalToGlobalMapping,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{PetscInt}},arg4::Ptr{Ptr{PetscInt}},arg5::Ptr{Ptr{Ptr{PetscInt}}})
-    ccall((:ISLocalToGlobalMappingRestoreInfo,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscInt}},Ptr{Ptr{Ptr{PetscInt}}}),arg1,arg2,arg3,arg4,arg5)
+function ISLocalToGlobalMappingRestoreInfo(arg1::ISLocalToGlobalMapping,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Int32}},arg4::Ptr{Ptr{Int32}},arg5::Ptr{Ptr{Ptr{Int32}}})
+    ccall((:ISLocalToGlobalMappingRestoreInfo,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Int32}},Ptr{Ptr{Ptr{Int32}}}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function ISLocalToGlobalMappingGetBlockInfo(arg1::ISLocalToGlobalMapping,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{PetscInt}},arg4::Ptr{Ptr{PetscInt}},arg5::Ptr{Ptr{Ptr{PetscInt}}})
-    ccall((:ISLocalToGlobalMappingGetBlockInfo,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscInt}},Ptr{Ptr{Ptr{PetscInt}}}),arg1,arg2,arg3,arg4,arg5)
+function ISLocalToGlobalMappingGetBlockInfo(arg1::ISLocalToGlobalMapping,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Int32}},arg4::Ptr{Ptr{Int32}},arg5::Ptr{Ptr{Ptr{Int32}}})
+    ccall((:ISLocalToGlobalMappingGetBlockInfo,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Int32}},Ptr{Ptr{Ptr{Int32}}}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function ISLocalToGlobalMappingRestoreBlockInfo(arg1::ISLocalToGlobalMapping,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{PetscInt}},arg4::Ptr{Ptr{PetscInt}},arg5::Ptr{Ptr{Ptr{PetscInt}}})
-    ccall((:ISLocalToGlobalMappingRestoreBlockInfo,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscInt}},Ptr{Ptr{Ptr{PetscInt}}}),arg1,arg2,arg3,arg4,arg5)
+function ISLocalToGlobalMappingRestoreBlockInfo(arg1::ISLocalToGlobalMapping,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Int32}},arg4::Ptr{Ptr{Int32}},arg5::Ptr{Ptr{Ptr{Int32}}})
+    ccall((:ISLocalToGlobalMappingRestoreBlockInfo,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Int32}},Ptr{Ptr{Ptr{Int32}}}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function ISLocalToGlobalMappingGetIndices(arg1::ISLocalToGlobalMapping,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:ISLocalToGlobalMappingGetIndices,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function ISLocalToGlobalMappingGetIndices(arg1::ISLocalToGlobalMapping,arg2::Ptr{Ptr{Int32}})
+    ccall((:ISLocalToGlobalMappingGetIndices,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
-function ISLocalToGlobalMappingRestoreIndices(arg1::ISLocalToGlobalMapping,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:ISLocalToGlobalMappingRestoreIndices,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function ISLocalToGlobalMappingRestoreIndices(arg1::ISLocalToGlobalMapping,arg2::Ptr{Ptr{Int32}})
+    ccall((:ISLocalToGlobalMappingRestoreIndices,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
-function ISLocalToGlobalMappingGetBlockIndices(arg1::ISLocalToGlobalMapping,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:ISLocalToGlobalMappingGetBlockIndices,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function ISLocalToGlobalMappingGetBlockIndices(arg1::ISLocalToGlobalMapping,arg2::Ptr{Ptr{Int32}})
+    ccall((:ISLocalToGlobalMappingGetBlockIndices,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
-function ISLocalToGlobalMappingRestoreBlockIndices(arg1::ISLocalToGlobalMapping,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:ISLocalToGlobalMappingRestoreBlockIndices,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function ISLocalToGlobalMappingRestoreBlockIndices(arg1::ISLocalToGlobalMapping,arg2::Ptr{Ptr{Int32}})
+    ccall((:ISLocalToGlobalMappingRestoreBlockIndices,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
-function ISLocalToGlobalMappingConcatenate(arg1::MPI_Comm,arg2::PetscInt,arg3::Ptr{ISLocalToGlobalMapping},arg4::Ptr{ISLocalToGlobalMapping})
+function ISLocalToGlobalMappingConcatenate(arg1::MPI_Comm,arg2::Int32,arg3::Ptr{ISLocalToGlobalMapping},arg4::Ptr{ISLocalToGlobalMapping})
     ccall((:ISLocalToGlobalMappingConcatenate,petsc),PetscErrorCode,(MPI_Comm,PetscInt,Ptr{ISLocalToGlobalMapping},Ptr{ISLocalToGlobalMapping}),arg1,arg2,arg3,arg4)
 end
 
-function ISG2LMapApply(arg1::ISLocalToGlobalMapping,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISG2LMapApply(arg1::ISLocalToGlobalMapping,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISG2LMapApply,petsc),PetscErrorCode,(ISLocalToGlobalMapping,PetscInt,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
-function ISLocalToGlobalMappingGetBlockSize(arg1::ISLocalToGlobalMapping,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISLocalToGlobalMappingGetBlockSize(arg1::ISLocalToGlobalMapping,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISLocalToGlobalMappingGetBlockSize,petsc),PetscErrorCode,(ISLocalToGlobalMapping,Ptr{PetscInt}),arg1,arg2)
 end
 
-function ISAllGatherColors(arg1::MPI_Comm,arg2::PetscInt,arg3::Ptr{Cint},arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Ptr{Ptr{Cint}})
+function ISAllGatherColors(arg1::MPI_Comm,arg2::Int32,arg3::Ptr{Cint},arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Ptr{Ptr{Cint}})
     ccall((:ISAllGatherColors,petsc),PetscErrorCode,(MPI_Comm,PetscInt,Ptr{Cint},Ptr{PetscInt},Ptr{Ptr{Cint}}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function ISColoringCreate(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,ISColoringValue::Ptr{Cint},PetscCopyMode::Cint,arg4::Ptr{ISColoring})
+function ISColoringCreate(arg1::MPI_Comm,arg2::Int32,arg3::Int32,ISColoringValue::Ptr{Cint},PetscCopyMode::Cint,arg4::Ptr{ISColoring})
     ccall((:ISColoringCreate,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{Cint},Cint,Ptr{ISColoring}),arg1,arg2,arg3,ISColoringValue,PetscCopyMode,arg4)
 end
 
@@ -1830,7 +1830,7 @@ function ISColoringViewFromOptions(arg1::ISColoring,arg2::PetscObject,arg3::Ptr{
     ccall((:ISColoringViewFromOptions,petsc),PetscErrorCode,(ISColoring,PetscObject,Ptr{Uint8}),arg1,arg2,arg3)
 end
 
-function ISColoringGetIS(arg1::ISColoring,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{IS}})
+function ISColoringGetIS(arg1::ISColoring,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{IS}})
     ccall((:ISColoringGetIS,petsc),PetscErrorCode,(ISColoring,Ptr{PetscInt},Ptr{Ptr{IS}}),arg1,arg2,arg3)
 end
 
@@ -1850,19 +1850,19 @@ function ISPartitioningToNumbering(arg1::IS,arg2::Ptr{IS})
     ccall((:ISPartitioningToNumbering,petsc),PetscErrorCode,(IS,Ptr{IS}),arg1,arg2)
 end
 
-function ISPartitioningCount(arg1::IS,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function ISPartitioningCount(arg1::IS,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:ISPartitioningCount,petsc),PetscErrorCode,(IS,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function ISCompressIndicesGeneral(arg1::PetscInt,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::Ptr{IS},arg6::Ptr{IS})
+function ISCompressIndicesGeneral(arg1::Int32,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Ptr{IS},arg6::Ptr{IS})
     ccall((:ISCompressIndicesGeneral,petsc),PetscErrorCode,(PetscInt,PetscInt,PetscInt,PetscInt,Ptr{IS},Ptr{IS}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function ISCompressIndicesSorted(arg1::PetscInt,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{IS},arg5::Ptr{IS})
+function ISCompressIndicesSorted(arg1::Int32,arg2::Int32,arg3::Int32,arg4::Ptr{IS},arg5::Ptr{IS})
     ccall((:ISCompressIndicesSorted,petsc),PetscErrorCode,(PetscInt,PetscInt,PetscInt,Ptr{IS},Ptr{IS}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function ISExpandIndicesGeneral(arg1::PetscInt,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::Ptr{IS},arg6::Ptr{IS})
+function ISExpandIndicesGeneral(arg1::Int32,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Ptr{IS},arg6::Ptr{IS})
     ccall((:ISExpandIndicesGeneral,petsc),PetscErrorCode,(PetscInt,PetscInt,PetscInt,PetscInt,Ptr{IS},Ptr{IS}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
@@ -1882,43 +1882,43 @@ function PetscLayoutReference(arg1::PetscLayout,arg2::Ptr{PetscLayout})
     ccall((:PetscLayoutReference,petsc),PetscErrorCode,(PetscLayout,Ptr{PetscLayout}),arg1,arg2)
 end
 
-function PetscLayoutSetLocalSize(arg1::PetscLayout,arg2::PetscInt)
+function PetscLayoutSetLocalSize(arg1::PetscLayout,arg2::Int32)
     ccall((:PetscLayoutSetLocalSize,petsc),PetscErrorCode,(PetscLayout,PetscInt),arg1,arg2)
 end
 
-function PetscLayoutGetLocalSize(arg1::PetscLayout,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscLayoutGetLocalSize(arg1::PetscLayout,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscLayoutGetLocalSize,petsc),PetscErrorCode,(PetscLayout,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscLayoutSetSize(arg1::PetscLayout,arg2::PetscInt)
+function PetscLayoutSetSize(arg1::PetscLayout,arg2::Int32)
     ccall((:PetscLayoutSetSize,petsc),PetscErrorCode,(PetscLayout,PetscInt),arg1,arg2)
 end
 
-function PetscLayoutGetSize(arg1::PetscLayout,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscLayoutGetSize(arg1::PetscLayout,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscLayoutGetSize,petsc),PetscErrorCode,(PetscLayout,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscLayoutSetBlockSize(arg1::PetscLayout,arg2::PetscInt)
+function PetscLayoutSetBlockSize(arg1::PetscLayout,arg2::Int32)
     ccall((:PetscLayoutSetBlockSize,petsc),PetscErrorCode,(PetscLayout,PetscInt),arg1,arg2)
 end
 
-function PetscLayoutGetBlockSize(arg1::PetscLayout,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscLayoutGetBlockSize(arg1::PetscLayout,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscLayoutGetBlockSize,petsc),PetscErrorCode,(PetscLayout,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscLayoutGetRange(arg1::PetscLayout,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscLayoutGetRange(arg1::PetscLayout,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscLayoutGetRange,petsc),PetscErrorCode,(PetscLayout,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PetscLayoutGetRanges(arg1::PetscLayout,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:PetscLayoutGetRanges,petsc),PetscErrorCode,(PetscLayout,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function PetscLayoutGetRanges(arg1::PetscLayout,arg2::Ptr{Ptr{Int32}})
+    ccall((:PetscLayoutGetRanges,petsc),PetscErrorCode,(PetscLayout,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
 function PetscLayoutSetISLocalToGlobalMapping(arg1::PetscLayout,arg2::ISLocalToGlobalMapping)
     ccall((:PetscLayoutSetISLocalToGlobalMapping,petsc),PetscErrorCode,(PetscLayout,ISLocalToGlobalMapping),arg1,arg2)
 end
 
-function PetscSFSetGraphLayout(arg1::PetscSF,arg2::PetscLayout,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),PetscCopyMode::Cint,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSFSetGraphLayout(arg1::PetscSF,arg2::PetscLayout,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),PetscCopyMode::Cint,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSFSetGraphLayout,petsc),PetscErrorCode,(PetscSF,PetscLayout,PetscInt,Ptr{PetscInt},Cint,Ptr{PetscInt}),arg1,arg2,arg3,arg4,PetscCopyMode,arg5)
 end
 
@@ -1934,35 +1934,35 @@ function PetscSectionCopy(arg1::PetscSection,arg2::PetscSection)
     ccall((:PetscSectionCopy,petsc),PetscErrorCode,(PetscSection,PetscSection),arg1,arg2)
 end
 
-function PetscSectionGetNumFields(arg1::PetscSection,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionGetNumFields(arg1::PetscSection,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionGetNumFields,petsc),PetscErrorCode,(PetscSection,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscSectionSetNumFields(arg1::PetscSection,arg2::PetscInt)
+function PetscSectionSetNumFields(arg1::PetscSection,arg2::Int32)
     ccall((:PetscSectionSetNumFields,petsc),PetscErrorCode,(PetscSection,PetscInt),arg1,arg2)
 end
 
-function PetscSectionGetFieldName(arg1::PetscSection,arg2::PetscInt,arg3::Ptr{Ptr{Uint8}})
+function PetscSectionGetFieldName(arg1::PetscSection,arg2::Int32,arg3::Ptr{Ptr{Uint8}})
     ccall((:PetscSectionGetFieldName,petsc),PetscErrorCode,(PetscSection,PetscInt,Ptr{Ptr{Uint8}}),arg1,arg2,arg3)
 end
 
-function PetscSectionSetFieldName(arg1::PetscSection,arg2::PetscInt,arg3::Ptr{Uint8})
+function PetscSectionSetFieldName(arg1::PetscSection,arg2::Int32,arg3::Ptr{Uint8})
     ccall((:PetscSectionSetFieldName,petsc),PetscErrorCode,(PetscSection,PetscInt,Ptr{Uint8}),arg1,arg2,arg3)
 end
 
-function PetscSectionGetFieldComponents(arg1::PetscSection,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionGetFieldComponents(arg1::PetscSection,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionGetFieldComponents,petsc),PetscErrorCode,(PetscSection,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PetscSectionSetFieldComponents(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt)
+function PetscSectionSetFieldComponents(arg1::PetscSection,arg2::Int32,arg3::Int32)
     ccall((:PetscSectionSetFieldComponents,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
-function PetscSectionGetChart(arg1::PetscSection,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionGetChart(arg1::PetscSection,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionGetChart,petsc),PetscErrorCode,(PetscSection,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PetscSectionSetChart(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt)
+function PetscSectionSetChart(arg1::PetscSection,arg2::Int32,arg3::Int32)
     ccall((:PetscSectionSetChart,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
@@ -1974,27 +1974,27 @@ function PetscSectionSetPermutation(arg1::PetscSection,arg2::IS)
     ccall((:PetscSectionSetPermutation,petsc),PetscErrorCode,(PetscSection,IS),arg1,arg2)
 end
 
-function PetscSectionGetDof(arg1::PetscSection,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionGetDof(arg1::PetscSection,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionGetDof,petsc),PetscErrorCode,(PetscSection,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PetscSectionSetDof(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt)
+function PetscSectionSetDof(arg1::PetscSection,arg2::Int32,arg3::Int32)
     ccall((:PetscSectionSetDof,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
-function PetscSectionAddDof(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt)
+function PetscSectionAddDof(arg1::PetscSection,arg2::Int32,arg3::Int32)
     ccall((:PetscSectionAddDof,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
-function PetscSectionGetFieldDof(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionGetFieldDof(arg1::PetscSection,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionGetFieldDof,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
-function PetscSectionSetFieldDof(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt)
+function PetscSectionSetFieldDof(arg1::PetscSection,arg2::Int32,arg3::Int32,arg4::Int32)
     ccall((:PetscSectionSetFieldDof,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt,PetscInt),arg1,arg2,arg3,arg4)
 end
 
-function PetscSectionAddFieldDof(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt)
+function PetscSectionAddFieldDof(arg1::PetscSection,arg2::Int32,arg3::Int32,arg4::Int32)
     ccall((:PetscSectionAddFieldDof,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt,PetscInt),arg1,arg2,arg3,arg4)
 end
 
@@ -2002,43 +2002,43 @@ function PetscSectionHasConstraints(arg1::PetscSection,arg2::Ptr{PetscBool})
     ccall((:PetscSectionHasConstraints,petsc),PetscErrorCode,(PetscSection,Ptr{PetscBool}),arg1,arg2)
 end
 
-function PetscSectionGetConstraintDof(arg1::PetscSection,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionGetConstraintDof(arg1::PetscSection,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionGetConstraintDof,petsc),PetscErrorCode,(PetscSection,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PetscSectionSetConstraintDof(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt)
+function PetscSectionSetConstraintDof(arg1::PetscSection,arg2::Int32,arg3::Int32)
     ccall((:PetscSectionSetConstraintDof,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
-function PetscSectionAddConstraintDof(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt)
+function PetscSectionAddConstraintDof(arg1::PetscSection,arg2::Int32,arg3::Int32)
     ccall((:PetscSectionAddConstraintDof,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
-function PetscSectionGetFieldConstraintDof(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionGetFieldConstraintDof(arg1::PetscSection,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionGetFieldConstraintDof,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
-function PetscSectionSetFieldConstraintDof(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt)
+function PetscSectionSetFieldConstraintDof(arg1::PetscSection,arg2::Int32,arg3::Int32,arg4::Int32)
     ccall((:PetscSectionSetFieldConstraintDof,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt,PetscInt),arg1,arg2,arg3,arg4)
 end
 
-function PetscSectionAddFieldConstraintDof(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt)
+function PetscSectionAddFieldConstraintDof(arg1::PetscSection,arg2::Int32,arg3::Int32,arg4::Int32)
     ccall((:PetscSectionAddFieldConstraintDof,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt,PetscInt),arg1,arg2,arg3,arg4)
 end
 
-function PetscSectionGetConstraintIndices(arg1::PetscSection,arg2::PetscInt,arg3::Ptr{Ptr{PetscInt}})
-    ccall((:PetscSectionGetConstraintIndices,petsc),PetscErrorCode,(PetscSection,PetscInt,Ptr{Ptr{PetscInt}}),arg1,arg2,arg3)
+function PetscSectionGetConstraintIndices(arg1::PetscSection,arg2::Int32,arg3::Ptr{Ptr{Int32}})
+    ccall((:PetscSectionGetConstraintIndices,petsc),PetscErrorCode,(PetscSection,PetscInt,Ptr{Ptr{Int32}}),arg1,arg2,arg3)
 end
 
-function PetscSectionSetConstraintIndices(arg1::PetscSection,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionSetConstraintIndices(arg1::PetscSection,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionSetConstraintIndices,petsc),PetscErrorCode,(PetscSection,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PetscSectionGetFieldConstraintIndices(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{Ptr{PetscInt}})
-    ccall((:PetscSectionGetFieldConstraintIndices,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt,Ptr{Ptr{PetscInt}}),arg1,arg2,arg3,arg4)
+function PetscSectionGetFieldConstraintIndices(arg1::PetscSection,arg2::Int32,arg3::Int32,arg4::Ptr{Ptr{Int32}})
+    ccall((:PetscSectionGetFieldConstraintIndices,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt,Ptr{Ptr{Int32}}),arg1,arg2,arg3,arg4)
 end
 
-function PetscSectionSetFieldConstraintIndices(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionSetFieldConstraintIndices(arg1::PetscSection,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionSetFieldConstraintIndices,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
@@ -2050,35 +2050,35 @@ function PetscSectionSetUp(arg1::PetscSection)
     ccall((:PetscSectionSetUp,petsc),PetscErrorCode,(PetscSection,),arg1)
 end
 
-function PetscSectionGetMaxDof(arg1::PetscSection,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionGetMaxDof(arg1::PetscSection,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionGetMaxDof,petsc),PetscErrorCode,(PetscSection,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscSectionGetStorageSize(arg1::PetscSection,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionGetStorageSize(arg1::PetscSection,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionGetStorageSize,petsc),PetscErrorCode,(PetscSection,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscSectionGetConstrainedStorageSize(arg1::PetscSection,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionGetConstrainedStorageSize(arg1::PetscSection,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionGetConstrainedStorageSize,petsc),PetscErrorCode,(PetscSection,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscSectionGetOffset(arg1::PetscSection,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionGetOffset(arg1::PetscSection,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionGetOffset,petsc),PetscErrorCode,(PetscSection,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PetscSectionSetOffset(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt)
+function PetscSectionSetOffset(arg1::PetscSection,arg2::Int32,arg3::Int32)
     ccall((:PetscSectionSetOffset,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
-function PetscSectionGetFieldOffset(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionGetFieldOffset(arg1::PetscSection,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionGetFieldOffset,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
-function PetscSectionSetFieldOffset(arg1::PetscSection,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt)
+function PetscSectionSetFieldOffset(arg1::PetscSection,arg2::Int32,arg3::Int32,arg4::Int32)
     ccall((:PetscSectionSetFieldOffset,petsc),PetscErrorCode,(PetscSection,PetscInt,PetscInt,PetscInt),arg1,arg2,arg3,arg4)
 end
 
-function PetscSectionGetOffsetRange(arg1::PetscSection,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscSectionGetOffsetRange(arg1::PetscSection,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscSectionGetOffsetRange,petsc),PetscErrorCode,(PetscSection,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
@@ -2094,11 +2094,11 @@ function PetscSectionCreateGlobalSection(arg1::PetscSection,arg2::PetscSF,arg3::
     ccall((:PetscSectionCreateGlobalSection,petsc),PetscErrorCode,(PetscSection,PetscSF,PetscBool,Ptr{PetscSection}),arg1,arg2,arg3,arg4)
 end
 
-function PetscSectionCreateGlobalSectionCensored(arg1::PetscSection,arg2::PetscSF,arg3::PetscBool,arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{PetscSection})
+function PetscSectionCreateGlobalSectionCensored(arg1::PetscSection,arg2::PetscSF,arg3::PetscBool,arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{PetscSection})
     ccall((:PetscSectionCreateGlobalSectionCensored,petsc),PetscErrorCode,(PetscSection,PetscSF,PetscBool,PetscInt,Ptr{PetscInt},Ptr{PetscSection}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function PetscSectionCreateSubsection(arg1::PetscSection,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{PetscSection})
+function PetscSectionCreateSubsection(arg1::PetscSection,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{PetscSection})
     ccall((:PetscSectionCreateSubsection,petsc),PetscErrorCode,(PetscSection,PetscInt,Ptr{PetscInt},Ptr{PetscSection}),arg1,arg2,arg3,arg4)
 end
 
@@ -2118,7 +2118,7 @@ function PetscSectionPermute(arg1::PetscSection,arg2::IS,arg3::Ptr{PetscSection}
     ccall((:PetscSectionPermute,petsc),PetscErrorCode,(PetscSection,IS,Ptr{PetscSection}),arg1,arg2,arg3)
 end
 
-function PetscSectionGetField(arg1::PetscSection,arg2::PetscInt,arg3::Ptr{PetscSection})
+function PetscSectionGetField(arg1::PetscSection,arg2::Int32,arg3::Ptr{PetscSection})
     ccall((:PetscSectionGetField,petsc),PetscErrorCode,(PetscSection,PetscInt,Ptr{PetscSection}),arg1,arg2,arg3)
 end
 
@@ -2134,15 +2134,15 @@ function PetscSFConvertPartition(arg1::PetscSF,arg2::PetscSection,arg3::IS,arg4:
     ccall((:PetscSFConvertPartition,petsc),PetscErrorCode,(PetscSF,PetscSection,IS,Ptr{ISLocalToGlobalMapping},Ptr{PetscSF}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscSFCreateRemoteOffsets(arg1::PetscSF,arg2::PetscSection,arg3::PetscSection,arg4::Ptr{Ptr{PetscInt}})
-    ccall((:PetscSFCreateRemoteOffsets,petsc),PetscErrorCode,(PetscSF,PetscSection,PetscSection,Ptr{Ptr{PetscInt}}),arg1,arg2,arg3,arg4)
+function PetscSFCreateRemoteOffsets(arg1::PetscSF,arg2::PetscSection,arg3::PetscSection,arg4::Ptr{Ptr{Int32}})
+    ccall((:PetscSFCreateRemoteOffsets,petsc),PetscErrorCode,(PetscSF,PetscSection,PetscSection,Ptr{Ptr{Int32}}),arg1,arg2,arg3,arg4)
 end
 
-function PetscSFDistributeSection(arg1::PetscSF,arg2::PetscSection,arg3::Ptr{Ptr{PetscInt}},arg4::PetscSection)
-    ccall((:PetscSFDistributeSection,petsc),PetscErrorCode,(PetscSF,PetscSection,Ptr{Ptr{PetscInt}},PetscSection),arg1,arg2,arg3,arg4)
+function PetscSFDistributeSection(arg1::PetscSF,arg2::PetscSection,arg3::Ptr{Ptr{Int32}},arg4::PetscSection)
+    ccall((:PetscSFDistributeSection,petsc),PetscErrorCode,(PetscSF,PetscSection,Ptr{Ptr{Int32}},PetscSection),arg1,arg2,arg3,arg4)
 end
 
-function PetscSFCreateSectionSF(arg1::PetscSF,arg2::PetscSection,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscSection,arg5::Ptr{PetscSF})
+function PetscSFCreateSectionSF(arg1::PetscSF,arg2::PetscSection,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::PetscSection,arg5::Ptr{PetscSF})
     ccall((:PetscSFCreateSectionSF,petsc),PetscErrorCode,(PetscSF,PetscSection,Ptr{PetscInt},PetscSection,Ptr{PetscSF}),arg1,arg2,arg3,arg4,arg5)
 end
 
@@ -2178,11 +2178,11 @@ function PetscViewerBinaryOpen(arg1::MPI_Comm,arg2::Ptr{Uint8},arg3::PetscFileMo
     ccall((:PetscViewerBinaryOpen,petsc),PetscErrorCode,(MPI_Comm,Ptr{Uint8},PetscFileMode,Ptr{PetscViewer}),arg1,arg2,arg3,arg4)
 end
 
-function PetscViewerBinaryGetFlowControl(arg1::PetscViewer,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscViewerBinaryGetFlowControl(arg1::PetscViewer,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscViewerBinaryGetFlowControl,petsc),PetscErrorCode,(PetscViewer,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscViewerBinarySetFlowControl(arg1::PetscViewer,arg2::PetscInt)
+function PetscViewerBinarySetFlowControl(arg1::PetscViewer,arg2::Int32)
     ccall((:PetscViewerBinarySetFlowControl,petsc),PetscErrorCode,(PetscViewer,PetscInt),arg1,arg2)
 end
 
@@ -2306,7 +2306,7 @@ function PetscViewerFileSetMode(arg1::PetscViewer,arg2::PetscFileMode)
     ccall((:PetscViewerFileSetMode,petsc),PetscErrorCode,(PetscViewer,PetscFileMode),arg1,arg2)
 end
 
-function PetscViewerRead(arg1::PetscViewer,arg2::Ptr{Void},arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::PetscDataType)
+function PetscViewerRead(arg1::PetscViewer,arg2::Ptr{Void},arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::PetscDataType)
     ccall((:PetscViewerRead,petsc),PetscErrorCode,(PetscViewer,Ptr{Void},PetscInt,Ptr{PetscInt},PetscDataType),arg1,arg2,arg3,arg4,arg5)
 end
 
@@ -2326,23 +2326,23 @@ function PetscViewerASCIIUseTabs(arg1::PetscViewer,arg2::PetscBool)
     ccall((:PetscViewerASCIIUseTabs,petsc),PetscErrorCode,(PetscViewer,PetscBool),arg1,arg2)
 end
 
-function PetscViewerASCIISetTab(arg1::PetscViewer,arg2::PetscInt)
+function PetscViewerASCIISetTab(arg1::PetscViewer,arg2::Int32)
     ccall((:PetscViewerASCIISetTab,petsc),PetscErrorCode,(PetscViewer,PetscInt),arg1,arg2)
 end
 
-function PetscViewerASCIIGetTab(arg1::PetscViewer,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PetscViewerASCIIGetTab(arg1::PetscViewer,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PetscViewerASCIIGetTab,petsc),PetscErrorCode,(PetscViewer,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscViewerASCIIAddTab(arg1::PetscViewer,arg2::PetscInt)
+function PetscViewerASCIIAddTab(arg1::PetscViewer,arg2::Int32)
     ccall((:PetscViewerASCIIAddTab,petsc),PetscErrorCode,(PetscViewer,PetscInt),arg1,arg2)
 end
 
-function PetscViewerASCIISubtractTab(arg1::PetscViewer,arg2::PetscInt)
+function PetscViewerASCIISubtractTab(arg1::PetscViewer,arg2::Int32)
     ccall((:PetscViewerASCIISubtractTab,petsc),PetscErrorCode,(PetscViewer,PetscInt),arg1,arg2)
 end
 
-function PetscViewerASCIIRead(arg1::PetscViewer,arg2::Ptr{Void},arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::PetscDataType)
+function PetscViewerASCIIRead(arg1::PetscViewer,arg2::Ptr{Void},arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::PetscDataType)
     ccall((:PetscViewerASCIIRead,petsc),PetscErrorCode,(PetscViewer,Ptr{Void},PetscInt,Ptr{PetscInt},PetscDataType),arg1,arg2,arg3,arg4,arg5)
 end
 
@@ -2354,15 +2354,15 @@ function PetscViewerBinaryGetInfoPointer(arg1::PetscViewer,arg2::Ptr{Ptr{FILE}})
     ccall((:PetscViewerBinaryGetInfoPointer,petsc),PetscErrorCode,(PetscViewer,Ptr{Ptr{FILE}}),arg1,arg2)
 end
 
-function PetscViewerBinaryRead(arg1::PetscViewer,arg2::Ptr{Void},arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::PetscDataType)
+function PetscViewerBinaryRead(arg1::PetscViewer,arg2::Ptr{Void},arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::PetscDataType)
     ccall((:PetscViewerBinaryRead,petsc),PetscErrorCode,(PetscViewer,Ptr{Void},PetscInt,Ptr{PetscInt},PetscDataType),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscViewerBinaryWrite(arg1::PetscViewer,arg2::Ptr{Void},arg3::PetscInt,arg4::PetscDataType,arg5::PetscBool)
+function PetscViewerBinaryWrite(arg1::PetscViewer,arg2::Ptr{Void},arg3::Int32,arg4::PetscDataType,arg5::PetscBool)
     ccall((:PetscViewerBinaryWrite,petsc),PetscErrorCode,(PetscViewer,Ptr{Void},PetscInt,PetscDataType,PetscBool),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscViewerStringSetString(arg1::PetscViewer,arg2::Ptr{Uint8},arg3::PetscInt)
+function PetscViewerStringSetString(arg1::PetscViewer,arg2::Ptr{Uint8},arg3::Int32)
     ccall((:PetscViewerStringSetString,petsc),PetscErrorCode,(PetscViewer,Ptr{Uint8},PetscInt),arg1,arg2,arg3)
 end
 
@@ -2378,7 +2378,7 @@ function PetscViewerDrawGetHold(arg1::PetscViewer,arg2::Ptr{PetscBool})
     ccall((:PetscViewerDrawGetHold,petsc),PetscErrorCode,(PetscViewer,Ptr{PetscBool}),arg1,arg2)
 end
 
-function PetscViewerDrawSetPause(arg1::PetscViewer,PetscReal::Cint)
+function PetscViewerDrawSetPause(arg1::PetscViewer,Float64::Cint)
     ccall((:PetscViewerDrawSetPause,petsc),PetscErrorCode,(PetscViewer,Cint),arg1,PetscReal)
 end
 
@@ -2394,11 +2394,11 @@ function PetscViewerDrawResize(arg1::PetscViewer,arg2::Cint,arg3::Cint)
     ccall((:PetscViewerDrawResize,petsc),PetscErrorCode,(PetscViewer,Cint,Cint),arg1,arg2,arg3)
 end
 
-function PetscViewerDrawSetBounds(arg1::PetscViewer,arg2::PetscInt,arg3::Ptr{Cint})
+function PetscViewerDrawSetBounds(arg1::PetscViewer,arg2::Int32,arg3::Ptr{Cint})
     ccall((:PetscViewerDrawSetBounds,petsc),PetscErrorCode,(PetscViewer,PetscInt,Ptr{Cint}),arg1,arg2,arg3)
 end
 
-function PetscViewerDrawGetBounds(arg1::PetscViewer,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{Cint}})
+function PetscViewerDrawGetBounds(arg1::PetscViewer,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Cint}})
     ccall((:PetscViewerDrawGetBounds,petsc),PetscErrorCode,(PetscViewer,Ptr{PetscInt},Ptr{Ptr{Cint}}),arg1,arg2,arg3)
 end
 
@@ -2566,8 +2566,8 @@ function PETSC_VIEWER_HDF5_(arg1::MPI_Comm)
     ccall((:PETSC_VIEWER_HDF5_,petsc),PetscViewer,(MPI_Comm,),arg1)
 end
 
-function PetscViewerMatlabGetArray(arg1::PetscViewer,arg2::Cint,arg3::Cint,arg4::Ptr{PetscScalar},arg5::Ptr{Uint8})
-    ccall((:PetscViewerMatlabGetArray,petsc),PetscErrorCode,(PetscViewer,Cint,Cint,Ptr{PetscScalar},Ptr{Uint8}),arg1,arg2,arg3,arg4,arg5)
+function PetscViewerMatlabGetArray(arg1::PetscViewer,arg2::Cint,arg3::Cint,arg4::Ptr{Float64},arg5::Ptr{Uint8})
+    ccall((:PetscViewerMatlabGetArray,petsc),PetscErrorCode,(PetscViewer,Cint,Cint,Ptr{Float64},Ptr{Uint8}),arg1,arg2,arg3,arg4,arg5)
 end
 
 function PetscViewerMatlabPutVariable(arg1::PetscViewer,arg2::Ptr{Uint8},arg3::Ptr{Void})
@@ -2582,7 +2582,7 @@ function PetscViewersDestroy(arg1::Ptr{PetscViewers})
     ccall((:PetscViewersDestroy,petsc),PetscErrorCode,(Ptr{PetscViewers},),arg1)
 end
 
-function PetscViewersGetViewer(arg1::PetscViewers,arg2::PetscInt,arg3::Ptr{PetscViewer})
+function PetscViewersGetViewer(arg1::PetscViewers,arg2::Int32,arg3::Ptr{PetscViewer})
     ccall((:PetscViewersGetViewer,petsc),PetscErrorCode,(PetscViewers,PetscInt,Ptr{PetscViewer}),arg1,arg2,arg3)
 end
 
@@ -2598,23 +2598,23 @@ function VecCreate(arg1::MPI_Comm,arg2::Ptr{Vec})
     ccall((:VecCreate,petsc),PetscErrorCode,(MPI_Comm,Ptr{Vec}),arg1,arg2)
 end
 
-function VecCreateSeq(arg1::MPI_Comm,arg2::PetscInt,arg3::Ptr{Vec})
+function VecCreateSeq(arg1::MPI_Comm,arg2::Int32,arg3::Ptr{Vec})
     ccall((:VecCreateSeq,petsc),PetscErrorCode,(MPI_Comm,PetscInt,Ptr{Vec}),arg1,arg2,arg3)
 end
 
-function VecCreateMPI(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{Vec})
+function VecCreateMPI(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Ptr{Vec})
     ccall((:VecCreateMPI,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{Vec}),arg1,arg2,arg3,arg4)
 end
 
-function VecCreateSeqWithArray(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{PetscScalar},arg5::Ptr{Vec})
-    ccall((:VecCreateSeqWithArray,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{PetscScalar},Ptr{Vec}),arg1,arg2,arg3,arg4,arg5)
+function VecCreateSeqWithArray(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Ptr{Float64},arg5::Ptr{Vec})
+    ccall((:VecCreateSeqWithArray,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{Float64},Ptr{Vec}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function VecCreateMPIWithArray(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::Ptr{PetscScalar},arg6::Ptr{Vec})
-    ccall((:VecCreateMPIWithArray,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,Ptr{PetscScalar},Ptr{Vec}),arg1,arg2,arg3,arg4,arg5,arg6)
+function VecCreateMPIWithArray(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Ptr{Float64},arg6::Ptr{Vec})
+    ccall((:VecCreateMPIWithArray,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,Ptr{Float64},Ptr{Vec}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function VecCreateShared(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{Vec})
+function VecCreateShared(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Ptr{Vec})
     ccall((:VecCreateShared,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{Vec}),arg1,arg2,arg3,arg4)
 end
 
@@ -2642,32 +2642,32 @@ function VecGetOptionsPrefix(arg1::Vec,arg2::Ptr{Ptr{Uint8}})
     ccall((:VecGetOptionsPrefix,petsc),PetscErrorCode,(Vec,Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
-function VecSetSizes(arg1::Vec,arg2::PetscInt,arg3::PetscInt)
+function VecSetSizes(arg1::Vec,arg2::Int32,arg3::Int32)
     ccall((:VecSetSizes,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
-function VecDotNorm2(arg1::Vec,arg2::Vec,arg3::Ptr{PetscScalar},arg4::Ptr{Cint})
-    ccall((:VecDotNorm2,petsc),PetscErrorCode,(Vec,Vec,Ptr{PetscScalar},Ptr{Cint}),arg1,arg2,arg3,arg4)
+function VecDotNorm2(arg1::Vec,arg2::Vec,arg3::Ptr{Float64},arg4::Ptr{Cint})
+    ccall((:VecDotNorm2,petsc),PetscErrorCode,(Vec,Vec,Ptr{Float64},Ptr{Cint}),arg1,arg2,arg3,arg4)
 end
 
-function VecDot(arg1::Vec,arg2::Vec,arg3::Ptr{PetscScalar})
-    ccall((:VecDot,petsc),PetscErrorCode,(Vec,Vec,Ptr{PetscScalar}),arg1,arg2,arg3)
+function VecDot(arg1::Vec,arg2::Vec,arg3::Ptr{Float64})
+    ccall((:VecDot,petsc),PetscErrorCode,(Vec,Vec,Ptr{Float64}),arg1,arg2,arg3)
 end
 
 function VecDotRealPart(arg1::Vec,arg2::Vec,arg3::Ptr{Cint})
     ccall((:VecDotRealPart,petsc),PetscErrorCode,(Vec,Vec,Ptr{Cint}),arg1,arg2,arg3)
 end
 
-function VecTDot(arg1::Vec,arg2::Vec,arg3::Ptr{PetscScalar})
-    ccall((:VecTDot,petsc),PetscErrorCode,(Vec,Vec,Ptr{PetscScalar}),arg1,arg2,arg3)
+function VecTDot(arg1::Vec,arg2::Vec,arg3::Ptr{Float64})
+    ccall((:VecTDot,petsc),PetscErrorCode,(Vec,Vec,Ptr{Float64}),arg1,arg2,arg3)
 end
 
-function VecMDot(arg1::Vec,arg2::PetscInt,arg3::Ptr{Vec},arg4::Ptr{PetscScalar})
-    ccall((:VecMDot,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Vec},Ptr{PetscScalar}),arg1,arg2,arg3,arg4)
+function VecMDot(arg1::Vec,arg2::Int32,arg3::Ptr{Vec},arg4::Ptr{Float64})
+    ccall((:VecMDot,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Vec},Ptr{Float64}),arg1,arg2,arg3,arg4)
 end
 
-function VecMTDot(arg1::Vec,arg2::PetscInt,arg3::Ptr{Vec},arg4::Ptr{PetscScalar})
-    ccall((:VecMTDot,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Vec},Ptr{PetscScalar}),arg1,arg2,arg3,arg4)
+function VecMTDot(arg1::Vec,arg2::Int32,arg3::Ptr{Vec},arg4::Ptr{Float64})
+    ccall((:VecMTDot,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Vec},Ptr{Float64}),arg1,arg2,arg3,arg4)
 end
 
 function VecGetSubVector(arg1::Vec,arg2::IS,arg3::Ptr{Vec})
@@ -2690,19 +2690,19 @@ function VecNormalize(arg1::Vec,arg2::Ptr{Cint})
     ccall((:VecNormalize,petsc),PetscErrorCode,(Vec,Ptr{Cint}),arg1,arg2)
 end
 
-function VecSum(arg1::Vec,arg2::Ptr{PetscScalar})
-    ccall((:VecSum,petsc),PetscErrorCode,(Vec,Ptr{PetscScalar}),arg1,arg2)
+function VecSum(arg1::Vec,arg2::Ptr{Float64})
+    ccall((:VecSum,petsc),PetscErrorCode,(Vec,Ptr{Float64}),arg1,arg2)
 end
 
-function VecMax(arg1::Vec,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Cint})
+function VecMax(arg1::Vec,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Cint})
     ccall((:VecMax,petsc),PetscErrorCode,(Vec,Ptr{PetscInt},Ptr{Cint}),arg1,arg2,arg3)
 end
 
-function VecMin(arg1::Vec,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Cint})
+function VecMin(arg1::Vec,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Cint})
     ccall((:VecMin,petsc),PetscErrorCode,(Vec,Ptr{PetscInt},Ptr{Cint}),arg1,arg2,arg3)
 end
 
-function VecScale(arg1::Vec,arg2::PetscScalar)
+function VecScale(arg1::Vec,arg2::Float64)
     ccall((:VecScale,petsc),PetscErrorCode,(Vec,PetscScalar),arg1,arg2)
 end
 
@@ -2714,7 +2714,7 @@ function VecSetRandom(arg1::Vec,arg2::PetscRandom)
     ccall((:VecSetRandom,petsc),PetscErrorCode,(Vec,PetscRandom),arg1,arg2)
 end
 
-function VecSet(arg1::Vec,arg2::PetscScalar)
+function VecSet(arg1::Vec,arg2::Float64)
     ccall((:VecSet,petsc),PetscErrorCode,(Vec,PetscScalar),arg1,arg2)
 end
 
@@ -2726,27 +2726,27 @@ function VecSwap(arg1::Vec,arg2::Vec)
     ccall((:VecSwap,petsc),PetscErrorCode,(Vec,Vec),arg1,arg2)
 end
 
-function VecAXPY(arg1::Vec,arg2::PetscScalar,arg3::Vec)
+function VecAXPY(arg1::Vec,arg2::Float64,arg3::Vec)
     ccall((:VecAXPY,petsc),PetscErrorCode,(Vec,PetscScalar,Vec),arg1,arg2,arg3)
 end
 
-function VecAXPBY(arg1::Vec,arg2::PetscScalar,arg3::PetscScalar,arg4::Vec)
+function VecAXPBY(arg1::Vec,arg2::Float64,arg3::Float64,arg4::Vec)
     ccall((:VecAXPBY,petsc),PetscErrorCode,(Vec,PetscScalar,PetscScalar,Vec),arg1,arg2,arg3,arg4)
 end
 
-function VecMAXPY(arg1::Vec,arg2::PetscInt,arg3::Ptr{PetscScalar},arg4::Ptr{Vec})
-    ccall((:VecMAXPY,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscScalar},Ptr{Vec}),arg1,arg2,arg3,arg4)
+function VecMAXPY(arg1::Vec,arg2::Int32,arg3::Ptr{Float64},arg4::Ptr{Vec})
+    ccall((:VecMAXPY,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Float64},Ptr{Vec}),arg1,arg2,arg3,arg4)
 end
 
-function VecAYPX(arg1::Vec,arg2::PetscScalar,arg3::Vec)
+function VecAYPX(arg1::Vec,arg2::Float64,arg3::Vec)
     ccall((:VecAYPX,petsc),PetscErrorCode,(Vec,PetscScalar,Vec),arg1,arg2,arg3)
 end
 
-function VecWAXPY(arg1::Vec,arg2::PetscScalar,arg3::Vec,arg4::Vec)
+function VecWAXPY(arg1::Vec,arg2::Float64,arg3::Vec,arg4::Vec)
     ccall((:VecWAXPY,petsc),PetscErrorCode,(Vec,PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4)
 end
 
-function VecAXPBYPCZ(arg1::Vec,arg2::PetscScalar,arg3::PetscScalar,arg4::PetscScalar,arg5::Vec,arg6::Vec)
+function VecAXPBYPCZ(arg1::Vec,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Vec,arg6::Vec)
     ccall((:VecAXPBYPCZ,petsc),PetscErrorCode,(Vec,PetscScalar,PetscScalar,PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
@@ -2774,7 +2774,7 @@ function VecMaxPointwiseDivide(arg1::Vec,arg2::Vec,arg3::Ptr{Cint})
     ccall((:VecMaxPointwiseDivide,petsc),PetscErrorCode,(Vec,Vec,Ptr{Cint}),arg1,arg2,arg3)
 end
 
-function VecShift(arg1::Vec,arg2::PetscScalar)
+function VecShift(arg1::Vec,arg2::Float64)
     ccall((:VecShift,petsc),PetscErrorCode,(Vec,PetscScalar),arg1,arg2)
 end
 
@@ -2806,59 +2806,59 @@ function VecDuplicate(arg1::Vec,arg2::Ptr{Vec})
     ccall((:VecDuplicate,petsc),PetscErrorCode,(Vec,Ptr{Vec}),arg1,arg2)
 end
 
-function VecDuplicateVecs(arg1::Vec,arg2::PetscInt,arg3::Ptr{Ptr{Vec}})
+function VecDuplicateVecs(arg1::Vec,arg2::Int32,arg3::Ptr{Ptr{Vec}})
     ccall((:VecDuplicateVecs,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Ptr{Vec}}),arg1,arg2,arg3)
 end
 
-function VecDestroyVecs(arg1::PetscInt,arg2::Ptr{Ptr{Vec}})
+function VecDestroyVecs(arg1::Int32,arg2::Ptr{Ptr{Vec}})
     ccall((:VecDestroyVecs,petsc),PetscErrorCode,(PetscInt,Ptr{Ptr{Vec}}),arg1,arg2)
 end
 
-function VecStrideNormAll(arg1::Vec,arg2::NormType,PetscReal::Ptr{Cint})
+function VecStrideNormAll(arg1::Vec,arg2::NormType,Float64::Ptr{Cint})
     ccall((:VecStrideNormAll,petsc),PetscErrorCode,(Vec,NormType,Ptr{Cint}),arg1,arg2,PetscReal)
 end
 
-function VecStrideMaxAll(arg1::Vec,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),PetscReal::Ptr{Cint})
+function VecStrideMaxAll(arg1::Vec,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),Float64::Ptr{Cint})
     ccall((:VecStrideMaxAll,petsc),PetscErrorCode,(Vec,Ptr{PetscInt},Ptr{Cint}),arg1,arg2,PetscReal)
 end
 
-function VecStrideMinAll(arg1::Vec,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),PetscReal::Ptr{Cint})
+function VecStrideMinAll(arg1::Vec,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),Float64::Ptr{Cint})
     ccall((:VecStrideMinAll,petsc),PetscErrorCode,(Vec,Ptr{PetscInt},Ptr{Cint}),arg1,arg2,PetscReal)
 end
 
-function VecStrideScaleAll(arg1::Vec,arg2::Ptr{PetscScalar})
-    ccall((:VecStrideScaleAll,petsc),PetscErrorCode,(Vec,Ptr{PetscScalar}),arg1,arg2)
+function VecStrideScaleAll(arg1::Vec,arg2::Ptr{Float64})
+    ccall((:VecStrideScaleAll,petsc),PetscErrorCode,(Vec,Ptr{Float64}),arg1,arg2)
 end
 
-function VecUniqueEntries(arg1::Vec,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{PetscScalar}})
-    ccall((:VecUniqueEntries,petsc),PetscErrorCode,(Vec,Ptr{PetscInt},Ptr{Ptr{PetscScalar}}),arg1,arg2,arg3)
+function VecUniqueEntries(arg1::Vec,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Float64}})
+    ccall((:VecUniqueEntries,petsc),PetscErrorCode,(Vec,Ptr{PetscInt},Ptr{Ptr{Float64}}),arg1,arg2,arg3)
 end
 
-function VecStrideNorm(arg1::Vec,arg2::PetscInt,arg3::NormType,arg4::Ptr{Cint})
+function VecStrideNorm(arg1::Vec,arg2::Int32,arg3::NormType,arg4::Ptr{Cint})
     ccall((:VecStrideNorm,petsc),PetscErrorCode,(Vec,PetscInt,NormType,Ptr{Cint}),arg1,arg2,arg3,arg4)
 end
 
-function VecStrideMax(arg1::Vec,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Cint})
+function VecStrideMax(arg1::Vec,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Cint})
     ccall((:VecStrideMax,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt},Ptr{Cint}),arg1,arg2,arg3,arg4)
 end
 
-function VecStrideMin(arg1::Vec,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Cint})
+function VecStrideMin(arg1::Vec,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Cint})
     ccall((:VecStrideMin,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt},Ptr{Cint}),arg1,arg2,arg3,arg4)
 end
 
-function VecStrideScale(arg1::Vec,arg2::PetscInt,arg3::PetscScalar)
+function VecStrideScale(arg1::Vec,arg2::Int32,arg3::Float64)
     ccall((:VecStrideScale,petsc),PetscErrorCode,(Vec,PetscInt,PetscScalar),arg1,arg2,arg3)
 end
 
-function VecStrideSet(arg1::Vec,arg2::PetscInt,arg3::PetscScalar)
+function VecStrideSet(arg1::Vec,arg2::Int32,arg3::Float64)
     ccall((:VecStrideSet,petsc),PetscErrorCode,(Vec,PetscInt,PetscScalar),arg1,arg2,arg3)
 end
 
-function VecStrideGather(arg1::Vec,arg2::PetscInt,arg3::Vec,arg4::InsertMode)
+function VecStrideGather(arg1::Vec,arg2::Int32,arg3::Vec,arg4::InsertMode)
     ccall((:VecStrideGather,petsc),PetscErrorCode,(Vec,PetscInt,Vec,InsertMode),arg1,arg2,arg3,arg4)
 end
 
-function VecStrideScatter(arg1::Vec,arg2::PetscInt,arg3::Vec,arg4::InsertMode)
+function VecStrideScatter(arg1::Vec,arg2::Int32,arg3::Vec,arg4::InsertMode)
     ccall((:VecStrideScatter,petsc),PetscErrorCode,(Vec,PetscInt,Vec,InsertMode),arg1,arg2,arg3,arg4)
 end
 
@@ -2870,20 +2870,20 @@ function VecStrideScatterAll(arg1::Ptr{Vec},arg2::Vec,arg3::InsertMode)
     ccall((:VecStrideScatterAll,petsc),PetscErrorCode,(Ptr{Vec},Vec,InsertMode),arg1,arg2,arg3)
 end
 
-function VecStrideSubSetScatter(arg1::Vec,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Vec,arg6::InsertMode)
+function VecStrideSubSetScatter(arg1::Vec,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Vec,arg6::InsertMode)
     ccall((:VecStrideSubSetScatter,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Vec,InsertMode),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function VecStrideSubSetGather(arg1::Vec,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Vec,arg6::InsertMode)
+function VecStrideSubSetGather(arg1::Vec,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Vec,arg6::InsertMode)
     ccall((:VecStrideSubSetGather,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Vec,InsertMode),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function VecSetValues(arg1::Vec,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{PetscScalar},arg5::InsertMode)
-    ccall((:VecSetValues,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt},Ptr{PetscScalar},InsertMode),arg1,arg2,arg3,arg4,arg5)
+function VecSetValues(arg1::Vec,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Float64},arg5::InsertMode)
+    ccall((:VecSetValues,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5)
 end
 
-function VecGetValues(arg1::Vec,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{PetscScalar})
-    ccall((:VecGetValues,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt},Ptr{PetscScalar}),arg1,arg2,arg3,arg4)
+function VecGetValues(arg1::Vec,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Float64})
+    ccall((:VecGetValues,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt},Ptr{Float64}),arg1,arg2,arg3,arg4)
 end
 
 function VecAssemblyBegin(arg1::Vec)
@@ -2894,7 +2894,7 @@ function VecAssemblyEnd(arg1::Vec)
     ccall((:VecAssemblyEnd,petsc),PetscErrorCode,(Vec,),arg1)
 end
 
-function VecStashSetInitialSize(arg1::Vec,arg2::PetscInt,arg3::PetscInt)
+function VecStashSetInitialSize(arg1::Vec,arg2::Int32,arg3::Int32)
     ccall((:VecStashSetInitialSize,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
@@ -2906,16 +2906,16 @@ function VecStashViewFromOptions(arg1::Vec,arg2::PetscObject,arg3::Ptr{Uint8})
     ccall((:VecStashViewFromOptions,petsc),PetscErrorCode,(Vec,PetscObject,Ptr{Uint8}),arg1,arg2,arg3)
 end
 
-function VecStashGetInfo(arg1::Vec,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function VecStashGetInfo(arg1::Vec,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:VecStashGetInfo,petsc),PetscErrorCode,(Vec,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function VecGetBlockSize(arg1::Vec,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function VecGetBlockSize(arg1::Vec,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:VecGetBlockSize,petsc),PetscErrorCode,(Vec,Ptr{PetscInt}),arg1,arg2)
 end
 
-function VecSetValuesBlocked(arg1::Vec,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{PetscScalar},arg5::InsertMode)
-    ccall((:VecSetValuesBlocked,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt},Ptr{PetscScalar},InsertMode),arg1,arg2,arg3,arg4,arg5)
+function VecSetValuesBlocked(arg1::Vec,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Float64},arg5::InsertMode)
+    ccall((:VecSetValuesBlocked,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5)
 end
 
 function VecSetType(arg1::Vec,arg2::VecType)
@@ -2938,7 +2938,7 @@ function VecScatterCreateEmpty(arg1::MPI_Comm,arg2::Ptr{VecScatter})
     ccall((:VecScatterCreateEmpty,petsc),PetscErrorCode,(MPI_Comm,Ptr{VecScatter}),arg1,arg2)
 end
 
-function VecScatterCreateLocal(arg1::VecScatter,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::PetscInt,arg7::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg8::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg9::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg10::PetscInt)
+function VecScatterCreateLocal(arg1::VecScatter,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Int32,arg7::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg8::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg9::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg10::Int32)
     ccall((:VecScatterCreateLocal,petsc),PetscErrorCode,(VecScatter,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt},PetscInt),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
 end
 
@@ -2966,88 +2966,88 @@ function VecScatterGetMerged(arg1::VecScatter,arg2::Ptr{PetscBool})
     ccall((:VecScatterGetMerged,petsc),PetscErrorCode,(VecScatter,Ptr{PetscBool}),arg1,arg2)
 end
 
-function VecGetArray4d(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::PetscInt,arg8::PetscInt,arg9::PetscInt,arg10::Ptr{Ptr{Ptr{Ptr{Ptr{PetscScalar}}}}})
-    ccall((:VecGetArray4d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{Ptr{PetscScalar}}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
+function VecGetArray4d(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Int32,arg8::Int32,arg9::Int32,arg10::Ptr{Ptr{Ptr{Ptr{Ptr{Float64}}}}})
+    ccall((:VecGetArray4d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{Ptr{Float64}}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
 end
 
-function VecRestoreArray4d(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::PetscInt,arg8::PetscInt,arg9::PetscInt,arg10::Ptr{Ptr{Ptr{Ptr{Ptr{PetscScalar}}}}})
-    ccall((:VecRestoreArray4d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{Ptr{PetscScalar}}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
+function VecRestoreArray4d(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Int32,arg8::Int32,arg9::Int32,arg10::Ptr{Ptr{Ptr{Ptr{Ptr{Float64}}}}})
+    ccall((:VecRestoreArray4d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{Ptr{Float64}}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
 end
 
-function VecGetArray3d(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::PetscInt,arg8::Ptr{Ptr{Ptr{Ptr{PetscScalar}}}})
-    ccall((:VecGetArray3d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{PetscScalar}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function VecGetArray3d(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Int32,arg8::Ptr{Ptr{Ptr{Ptr{Float64}}}})
+    ccall((:VecGetArray3d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{Float64}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function VecRestoreArray3d(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::PetscInt,arg8::Ptr{Ptr{Ptr{Ptr{PetscScalar}}}})
-    ccall((:VecRestoreArray3d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{PetscScalar}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function VecRestoreArray3d(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Int32,arg8::Ptr{Ptr{Ptr{Ptr{Float64}}}})
+    ccall((:VecRestoreArray3d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{Float64}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function VecGetArray2d(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Ptr{Ptr{Ptr{PetscScalar}}})
-    ccall((:VecGetArray2d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{PetscScalar}}}),arg1,arg2,arg3,arg4,arg5,arg6)
+function VecGetArray2d(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Ptr{Ptr{Ptr{Float64}}})
+    ccall((:VecGetArray2d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Float64}}}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function VecRestoreArray2d(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Ptr{Ptr{Ptr{PetscScalar}}})
-    ccall((:VecRestoreArray2d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{PetscScalar}}}),arg1,arg2,arg3,arg4,arg5,arg6)
+function VecRestoreArray2d(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Ptr{Ptr{Ptr{Float64}}})
+    ccall((:VecRestoreArray2d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Float64}}}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function VecGetArray1d(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{Ptr{PetscScalar}})
-    ccall((:VecGetArray1d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,Ptr{Ptr{PetscScalar}}),arg1,arg2,arg3,arg4)
+function VecGetArray1d(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Ptr{Ptr{Float64}})
+    ccall((:VecGetArray1d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4)
 end
 
-function VecRestoreArray1d(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{Ptr{PetscScalar}})
-    ccall((:VecRestoreArray1d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,Ptr{Ptr{PetscScalar}}),arg1,arg2,arg3,arg4)
+function VecRestoreArray1d(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Ptr{Ptr{Float64}})
+    ccall((:VecRestoreArray1d,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4)
 end
 
-function VecGetArray4dRead(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::PetscInt,arg8::PetscInt,arg9::PetscInt,arg10::Ptr{Ptr{Ptr{Ptr{Ptr{PetscScalar}}}}})
-    ccall((:VecGetArray4dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{Ptr{PetscScalar}}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
+function VecGetArray4dRead(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Int32,arg8::Int32,arg9::Int32,arg10::Ptr{Ptr{Ptr{Ptr{Ptr{Float64}}}}})
+    ccall((:VecGetArray4dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{Ptr{Float64}}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
 end
 
-function VecRestoreArray4dRead(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::PetscInt,arg8::PetscInt,arg9::PetscInt,arg10::Ptr{Ptr{Ptr{Ptr{Ptr{PetscScalar}}}}})
-    ccall((:VecRestoreArray4dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{Ptr{PetscScalar}}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
+function VecRestoreArray4dRead(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Int32,arg8::Int32,arg9::Int32,arg10::Ptr{Ptr{Ptr{Ptr{Ptr{Float64}}}}})
+    ccall((:VecRestoreArray4dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{Ptr{Float64}}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
 end
 
-function VecGetArray3dRead(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::PetscInt,arg8::Ptr{Ptr{Ptr{Ptr{PetscScalar}}}})
-    ccall((:VecGetArray3dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{PetscScalar}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function VecGetArray3dRead(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Int32,arg8::Ptr{Ptr{Ptr{Ptr{Float64}}}})
+    ccall((:VecGetArray3dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{Float64}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function VecRestoreArray3dRead(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::PetscInt,arg8::Ptr{Ptr{Ptr{Ptr{PetscScalar}}}})
-    ccall((:VecRestoreArray3dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{PetscScalar}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function VecRestoreArray3dRead(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Int32,arg8::Ptr{Ptr{Ptr{Ptr{Float64}}}})
+    ccall((:VecRestoreArray3dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Ptr{Float64}}}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function VecGetArray2dRead(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Ptr{Ptr{Ptr{PetscScalar}}})
-    ccall((:VecGetArray2dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{PetscScalar}}}),arg1,arg2,arg3,arg4,arg5,arg6)
+function VecGetArray2dRead(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Ptr{Ptr{Ptr{Float64}}})
+    ccall((:VecGetArray2dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Float64}}}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function VecRestoreArray2dRead(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Ptr{Ptr{Ptr{PetscScalar}}})
-    ccall((:VecRestoreArray2dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{PetscScalar}}}),arg1,arg2,arg3,arg4,arg5,arg6)
+function VecRestoreArray2dRead(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Ptr{Ptr{Ptr{Float64}}})
+    ccall((:VecRestoreArray2dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Ptr{Ptr{Float64}}}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function VecGetArray1dRead(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{Ptr{PetscScalar}})
-    ccall((:VecGetArray1dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,Ptr{Ptr{PetscScalar}}),arg1,arg2,arg3,arg4)
+function VecGetArray1dRead(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Ptr{Ptr{Float64}})
+    ccall((:VecGetArray1dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4)
 end
 
-function VecRestoreArray1dRead(arg1::Vec,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{Ptr{PetscScalar}})
-    ccall((:VecRestoreArray1dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,Ptr{Ptr{PetscScalar}}),arg1,arg2,arg3,arg4)
+function VecRestoreArray1dRead(arg1::Vec,arg2::Int32,arg3::Int32,arg4::Ptr{Ptr{Float64}})
+    ccall((:VecRestoreArray1dRead,petsc),PetscErrorCode,(Vec,PetscInt,PetscInt,Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4)
 end
 
-function VecPlaceArray(arg1::Vec,arg2::Ptr{PetscScalar})
-    ccall((:VecPlaceArray,petsc),PetscErrorCode,(Vec,Ptr{PetscScalar}),arg1,arg2)
+function VecPlaceArray(arg1::Vec,arg2::Ptr{Float64})
+    ccall((:VecPlaceArray,petsc),PetscErrorCode,(Vec,Ptr{Float64}),arg1,arg2)
 end
 
 function VecResetArray(arg1::Vec)
     ccall((:VecResetArray,petsc),PetscErrorCode,(Vec,),arg1)
 end
 
-function VecReplaceArray(arg1::Vec,arg2::Ptr{PetscScalar})
-    ccall((:VecReplaceArray,petsc),PetscErrorCode,(Vec,Ptr{PetscScalar}),arg1,arg2)
+function VecReplaceArray(arg1::Vec,arg2::Ptr{Float64})
+    ccall((:VecReplaceArray,petsc),PetscErrorCode,(Vec,Ptr{Float64}),arg1,arg2)
 end
 
-function VecGetArrays(arg1::Ptr{Vec},arg2::PetscInt,arg3::Ptr{Ptr{Ptr{PetscScalar}}})
-    ccall((:VecGetArrays,petsc),PetscErrorCode,(Ptr{Vec},PetscInt,Ptr{Ptr{Ptr{PetscScalar}}}),arg1,arg2,arg3)
+function VecGetArrays(arg1::Ptr{Vec},arg2::Int32,arg3::Ptr{Ptr{Ptr{Float64}}})
+    ccall((:VecGetArrays,petsc),PetscErrorCode,(Ptr{Vec},PetscInt,Ptr{Ptr{Ptr{Float64}}}),arg1,arg2,arg3)
 end
 
-function VecRestoreArrays(arg1::Ptr{Vec},arg2::PetscInt,arg3::Ptr{Ptr{Ptr{PetscScalar}}})
-    ccall((:VecRestoreArrays,petsc),PetscErrorCode,(Ptr{Vec},PetscInt,Ptr{Ptr{Ptr{PetscScalar}}}),arg1,arg2,arg3)
+function VecRestoreArrays(arg1::Ptr{Vec},arg2::Int32,arg3::Ptr{Ptr{Ptr{Float64}}})
+    ccall((:VecRestoreArrays,petsc),PetscErrorCode,(Ptr{Vec},PetscInt,Ptr{Ptr{Ptr{Float64}}}),arg1,arg2,arg3)
 end
 
 function VecView(arg1::Vec,arg2::PetscViewer)
@@ -3062,48 +3062,48 @@ function VecLoad(arg1::Vec,arg2::PetscViewer)
     ccall((:VecLoad,petsc),PetscErrorCode,(Vec,PetscViewer),arg1,arg2)
 end
 
-function VecGetSize(arg1::Vec,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function VecGetSize(arg1::Vec,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:VecGetSize,petsc),PetscErrorCode,(Vec,Ptr{PetscInt}),arg1,arg2)
 end
 
-function VecGetLocalSize(arg1::Vec,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function VecGetLocalSize(arg1::Vec,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:VecGetLocalSize,petsc),PetscErrorCode,(Vec,Ptr{PetscInt}),arg1,arg2)
 end
 
-function VecGetOwnershipRange(arg1::Vec,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function VecGetOwnershipRange(arg1::Vec,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:VecGetOwnershipRange,petsc),PetscErrorCode,(Vec,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function VecGetOwnershipRanges(arg1::Vec,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:VecGetOwnershipRanges,petsc),PetscErrorCode,(Vec,Ptr{Ptr{PetscInt}}),arg1,arg2)
+function VecGetOwnershipRanges(arg1::Vec,arg2::Ptr{Ptr{Int32}})
+    ccall((:VecGetOwnershipRanges,petsc),PetscErrorCode,(Vec,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
 function VecSetLocalToGlobalMapping(arg1::Vec,arg2::ISLocalToGlobalMapping)
     ccall((:VecSetLocalToGlobalMapping,petsc),PetscErrorCode,(Vec,ISLocalToGlobalMapping),arg1,arg2)
 end
 
-function VecSetValuesLocal(arg1::Vec,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{PetscScalar},arg5::InsertMode)
-    ccall((:VecSetValuesLocal,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt},Ptr{PetscScalar},InsertMode),arg1,arg2,arg3,arg4,arg5)
+function VecSetValuesLocal(arg1::Vec,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Float64},arg5::InsertMode)
+    ccall((:VecSetValuesLocal,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5)
 end
 
 function VecGetLocalToGlobalMapping(arg1::Vec,arg2::Ptr{ISLocalToGlobalMapping})
     ccall((:VecGetLocalToGlobalMapping,petsc),PetscErrorCode,(Vec,Ptr{ISLocalToGlobalMapping}),arg1,arg2)
 end
 
-function VecDotBegin(arg1::Vec,arg2::Vec,arg3::Ptr{PetscScalar})
-    ccall((:VecDotBegin,petsc),PetscErrorCode,(Vec,Vec,Ptr{PetscScalar}),arg1,arg2,arg3)
+function VecDotBegin(arg1::Vec,arg2::Vec,arg3::Ptr{Float64})
+    ccall((:VecDotBegin,petsc),PetscErrorCode,(Vec,Vec,Ptr{Float64}),arg1,arg2,arg3)
 end
 
-function VecDotEnd(arg1::Vec,arg2::Vec,arg3::Ptr{PetscScalar})
-    ccall((:VecDotEnd,petsc),PetscErrorCode,(Vec,Vec,Ptr{PetscScalar}),arg1,arg2,arg3)
+function VecDotEnd(arg1::Vec,arg2::Vec,arg3::Ptr{Float64})
+    ccall((:VecDotEnd,petsc),PetscErrorCode,(Vec,Vec,Ptr{Float64}),arg1,arg2,arg3)
 end
 
-function VecTDotBegin(arg1::Vec,arg2::Vec,arg3::Ptr{PetscScalar})
-    ccall((:VecTDotBegin,petsc),PetscErrorCode,(Vec,Vec,Ptr{PetscScalar}),arg1,arg2,arg3)
+function VecTDotBegin(arg1::Vec,arg2::Vec,arg3::Ptr{Float64})
+    ccall((:VecTDotBegin,petsc),PetscErrorCode,(Vec,Vec,Ptr{Float64}),arg1,arg2,arg3)
 end
 
-function VecTDotEnd(arg1::Vec,arg2::Vec,arg3::Ptr{PetscScalar})
-    ccall((:VecTDotEnd,petsc),PetscErrorCode,(Vec,Vec,Ptr{PetscScalar}),arg1,arg2,arg3)
+function VecTDotEnd(arg1::Vec,arg2::Vec,arg3::Ptr{Float64})
+    ccall((:VecTDotEnd,petsc),PetscErrorCode,(Vec,Vec,Ptr{Float64}),arg1,arg2,arg3)
 end
 
 function VecNormBegin(arg1::Vec,arg2::NormType,arg3::Ptr{Cint})
@@ -3114,20 +3114,20 @@ function VecNormEnd(arg1::Vec,arg2::NormType,arg3::Ptr{Cint})
     ccall((:VecNormEnd,petsc),PetscErrorCode,(Vec,NormType,Ptr{Cint}),arg1,arg2,arg3)
 end
 
-function VecMDotBegin(arg1::Vec,arg2::PetscInt,arg3::Ptr{Vec},arg4::Ptr{PetscScalar})
-    ccall((:VecMDotBegin,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Vec},Ptr{PetscScalar}),arg1,arg2,arg3,arg4)
+function VecMDotBegin(arg1::Vec,arg2::Int32,arg3::Ptr{Vec},arg4::Ptr{Float64})
+    ccall((:VecMDotBegin,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Vec},Ptr{Float64}),arg1,arg2,arg3,arg4)
 end
 
-function VecMDotEnd(arg1::Vec,arg2::PetscInt,arg3::Ptr{Vec},arg4::Ptr{PetscScalar})
-    ccall((:VecMDotEnd,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Vec},Ptr{PetscScalar}),arg1,arg2,arg3,arg4)
+function VecMDotEnd(arg1::Vec,arg2::Int32,arg3::Ptr{Vec},arg4::Ptr{Float64})
+    ccall((:VecMDotEnd,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Vec},Ptr{Float64}),arg1,arg2,arg3,arg4)
 end
 
-function VecMTDotBegin(arg1::Vec,arg2::PetscInt,arg3::Ptr{Vec},arg4::Ptr{PetscScalar})
-    ccall((:VecMTDotBegin,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Vec},Ptr{PetscScalar}),arg1,arg2,arg3,arg4)
+function VecMTDotBegin(arg1::Vec,arg2::Int32,arg3::Ptr{Vec},arg4::Ptr{Float64})
+    ccall((:VecMTDotBegin,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Vec},Ptr{Float64}),arg1,arg2,arg3,arg4)
 end
 
-function VecMTDotEnd(arg1::Vec,arg2::PetscInt,arg3::Ptr{Vec},arg4::Ptr{PetscScalar})
-    ccall((:VecMTDotEnd,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Vec},Ptr{PetscScalar}),arg1,arg2,arg3,arg4)
+function VecMTDotEnd(arg1::Vec,arg2::Int32,arg3::Ptr{Vec},arg4::Ptr{Float64})
+    ccall((:VecMTDotEnd,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Vec},Ptr{Float64}),arg1,arg2,arg3,arg4)
 end
 
 function PetscCommSplitReductionBegin(arg1::MPI_Comm)
@@ -3138,20 +3138,20 @@ function VecSetOption(arg1::Vec,arg2::VecOption,arg3::PetscBool)
     ccall((:VecSetOption,petsc),PetscErrorCode,(Vec,VecOption,PetscBool),arg1,arg2,arg3)
 end
 
-function VecGetArray(arg1::Vec,arg2::Ptr{Ptr{PetscScalar}})
-    ccall((:VecGetArray,petsc),PetscErrorCode,(Vec,Ptr{Ptr{PetscScalar}}),arg1,arg2)
+function VecGetArray(arg1::Vec,arg2::Ptr{Ptr{Float64}})
+    ccall((:VecGetArray,petsc),PetscErrorCode,(Vec,Ptr{Ptr{Float64}}),arg1,arg2)
 end
 
-function VecGetArrayRead(arg1::Vec,arg2::Ptr{Ptr{PetscScalar}})
-    ccall((:VecGetArrayRead,petsc),PetscErrorCode,(Vec,Ptr{Ptr{PetscScalar}}),arg1,arg2)
+function VecGetArrayRead(arg1::Vec,arg2::Ptr{Ptr{Float64}})
+    ccall((:VecGetArrayRead,petsc),PetscErrorCode,(Vec,Ptr{Ptr{Float64}}),arg1,arg2)
 end
 
-function VecRestoreArray(arg1::Vec,arg2::Ptr{Ptr{PetscScalar}})
-    ccall((:VecRestoreArray,petsc),PetscErrorCode,(Vec,Ptr{Ptr{PetscScalar}}),arg1,arg2)
+function VecRestoreArray(arg1::Vec,arg2::Ptr{Ptr{Float64}})
+    ccall((:VecRestoreArray,petsc),PetscErrorCode,(Vec,Ptr{Ptr{Float64}}),arg1,arg2)
 end
 
-function VecRestoreArrayRead(arg1::Vec,arg2::Ptr{Ptr{PetscScalar}})
-    ccall((:VecRestoreArrayRead,petsc),PetscErrorCode,(Vec,Ptr{Ptr{PetscScalar}}),arg1,arg2)
+function VecRestoreArrayRead(arg1::Vec,arg2::Ptr{Ptr{Float64}})
+    ccall((:VecRestoreArrayRead,petsc),PetscErrorCode,(Vec,Ptr{Ptr{Float64}}),arg1,arg2)
 end
 
 function VecGetLocalVector(arg1::Vec,arg2::Vec)
@@ -3170,7 +3170,7 @@ function VecRestoreLocalVectorRead(arg1::Vec,arg2::Vec)
     ccall((:VecRestoreLocalVectorRead,petsc),PetscErrorCode,(Vec,Vec),arg1,arg2)
 end
 
-function VecContourScale(arg1::Vec,PetscReal::Cint,arg2::Cint)
+function VecContourScale(arg1::Vec,Float64::Cint,arg2::Cint)
     ccall((:VecContourScale,petsc),PetscErrorCode,(Vec,Cint,Cint),arg1,PetscReal,arg2)
 end
 
@@ -3178,24 +3178,24 @@ function VecSetOperation(arg1::Vec,arg2::VecOperation,arg3::Ptr{Void})
     ccall((:VecSetOperation,petsc),PetscErrorCode,(Vec,VecOperation,Ptr{Void}),arg1,arg2,arg3)
 end
 
-function VecMPISetGhost(arg1::Vec,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function VecMPISetGhost(arg1::Vec,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:VecMPISetGhost,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function VecCreateGhost(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{Vec})
+function VecCreateGhost(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Vec})
     ccall((:VecCreateGhost,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Vec}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function VecCreateGhostWithArray(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{PetscScalar},arg7::Ptr{Vec})
-    ccall((:VecCreateGhostWithArray,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscScalar},Ptr{Vec}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function VecCreateGhostWithArray(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Float64},arg7::Ptr{Vec})
+    ccall((:VecCreateGhostWithArray,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Float64},Ptr{Vec}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function VecCreateGhostBlock(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{Vec})
+function VecCreateGhostBlock(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{Vec})
     ccall((:VecCreateGhostBlock,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Vec}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function VecCreateGhostBlockWithArray(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{PetscScalar},arg8::Ptr{Vec})
-    ccall((:VecCreateGhostBlockWithArray,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscScalar},Ptr{Vec}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function VecCreateGhostBlockWithArray(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{Float64},arg8::Ptr{Vec})
+    ccall((:VecCreateGhostBlockWithArray,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Float64},Ptr{Vec}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
 function VecGhostGetLocalForm(arg1::Vec,arg2::Ptr{Vec})
@@ -3234,7 +3234,7 @@ function ISComplementVec(arg1::IS,arg2::Vec,arg3::Ptr{IS})
     ccall((:ISComplementVec,petsc),PetscErrorCode,(IS,Vec,Ptr{IS}),arg1,arg2,arg3)
 end
 
-function VecPow(arg1::Vec,arg2::PetscScalar)
+function VecPow(arg1::Vec,arg2::Float64)
     ccall((:VecPow,petsc),PetscErrorCode,(Vec,PetscScalar),arg1,arg2)
 end
 
@@ -3262,11 +3262,11 @@ function VecWhichEqual(arg1::Vec,arg2::Vec,arg3::Ptr{IS})
     ccall((:VecWhichEqual,petsc),PetscErrorCode,(Vec,Vec,Ptr{IS}),arg1,arg2,arg3)
 end
 
-function VecISAXPY(arg1::Vec,arg2::IS,arg3::PetscScalar,arg4::Vec)
+function VecISAXPY(arg1::Vec,arg2::IS,arg3::Float64,arg4::Vec)
     ccall((:VecISAXPY,petsc),PetscErrorCode,(Vec,IS,PetscScalar,Vec),arg1,arg2,arg3,arg4)
 end
 
-function VecISSet(arg1::Vec,arg2::IS,arg3::PetscScalar)
+function VecISSet(arg1::Vec,arg2::IS,arg3::Float64)
     ccall((:VecISSet,petsc),PetscErrorCode,(Vec,IS,PetscScalar),arg1,arg2,arg3)
 end
 
@@ -3298,39 +3298,39 @@ function VecsDestroy(arg1::Vecs)
     ccall((:VecsDestroy,petsc),PetscErrorCode,(Vecs,),arg1)
 end
 
-function VecsCreateSeq(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{Vecs})
+function VecsCreateSeq(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Ptr{Vecs})
     ccall((:VecsCreateSeq,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{Vecs}),arg1,arg2,arg3,arg4)
 end
 
-function VecsCreateSeqWithArray(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{PetscScalar},arg5::Ptr{Vecs})
-    ccall((:VecsCreateSeqWithArray,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{PetscScalar},Ptr{Vecs}),arg1,arg2,arg3,arg4,arg5)
+function VecsCreateSeqWithArray(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Ptr{Float64},arg5::Ptr{Vecs})
+    ccall((:VecsCreateSeqWithArray,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{Float64},Ptr{Vecs}),arg1,arg2,arg3,arg4,arg5)
 end
 
 function VecsDuplicate(arg1::Vecs,arg2::Ptr{Vecs})
     ccall((:VecsDuplicate,petsc),PetscErrorCode,(Vecs,Ptr{Vecs}),arg1,arg2)
 end
 
-function VecNestGetSubVecs(arg1::Vec,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{Vec}})
+function VecNestGetSubVecs(arg1::Vec,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Vec}})
     ccall((:VecNestGetSubVecs,petsc),PetscErrorCode,(Vec,Ptr{PetscInt},Ptr{Ptr{Vec}}),arg1,arg2,arg3)
 end
 
-function VecNestGetSubVec(arg1::Vec,arg2::PetscInt,arg3::Ptr{Vec})
+function VecNestGetSubVec(arg1::Vec,arg2::Int32,arg3::Ptr{Vec})
     ccall((:VecNestGetSubVec,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{Vec}),arg1,arg2,arg3)
 end
 
-function VecNestSetSubVecs(arg1::Vec,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Vec})
+function VecNestSetSubVecs(arg1::Vec,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Vec})
     ccall((:VecNestSetSubVecs,petsc),PetscErrorCode,(Vec,PetscInt,Ptr{PetscInt},Ptr{Vec}),arg1,arg2,arg3,arg4)
 end
 
-function VecNestSetSubVec(arg1::Vec,arg2::PetscInt,arg3::Vec)
+function VecNestSetSubVec(arg1::Vec,arg2::Int32,arg3::Vec)
     ccall((:VecNestSetSubVec,petsc),PetscErrorCode,(Vec,PetscInt,Vec),arg1,arg2,arg3)
 end
 
-function VecCreateNest(arg1::MPI_Comm,arg2::PetscInt,arg3::Ptr{IS},arg4::Ptr{Vec},arg5::Ptr{Vec})
+function VecCreateNest(arg1::MPI_Comm,arg2::Int32,arg3::Ptr{IS},arg4::Ptr{Vec},arg5::Ptr{Vec})
     ccall((:VecCreateNest,petsc),PetscErrorCode,(MPI_Comm,PetscInt,Ptr{IS},Ptr{Vec},Ptr{Vec}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function VecNestGetSize(arg1::Vec,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function VecNestGetSize(arg1::Vec,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:VecNestGetSize,petsc),PetscErrorCode,(Vec,Ptr{PetscInt}),arg1,arg2)
 end
 
@@ -3338,7 +3338,7 @@ function PetscOptionsGetVec(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Vec,arg4::Pt
     ccall((:PetscOptionsGetVec,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Vec,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
-function VecChop(arg1::Vec,PetscReal::Cint)
+function VecChop(arg1::Vec,Float64::Cint)
     ccall((:VecChop,petsc),PetscErrorCode,(Vec,Cint),arg1,PetscReal)
 end
 
@@ -3354,32 +3354,32 @@ function PetscSectionVecView(arg1::PetscSection,arg2::Vec,arg3::PetscViewer)
     ccall((:PetscSectionVecView,petsc),PetscErrorCode,(PetscSection,Vec,PetscViewer),arg1,arg2,arg3)
 end
 
-function VecGetValuesSection(arg1::Vec,arg2::PetscSection,arg3::PetscInt,arg4::Ptr{Ptr{PetscScalar}})
-    ccall((:VecGetValuesSection,petsc),PetscErrorCode,(Vec,PetscSection,PetscInt,Ptr{Ptr{PetscScalar}}),arg1,arg2,arg3,arg4)
+function VecGetValuesSection(arg1::Vec,arg2::PetscSection,arg3::Int32,arg4::Ptr{Ptr{Float64}})
+    ccall((:VecGetValuesSection,petsc),PetscErrorCode,(Vec,PetscSection,PetscInt,Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4)
 end
 
-function VecSetValuesSection(arg1::Vec,arg2::PetscSection,arg3::PetscInt,arg4::Ptr{PetscScalar},arg5::InsertMode)
-    ccall((:VecSetValuesSection,petsc),PetscErrorCode,(Vec,PetscSection,PetscInt,Ptr{PetscScalar},InsertMode),arg1,arg2,arg3,arg4,arg5)
+function VecSetValuesSection(arg1::Vec,arg2::PetscSection,arg3::Int32,arg4::Ptr{Float64},arg5::InsertMode)
+    ccall((:VecSetValuesSection,petsc),PetscErrorCode,(Vec,PetscSection,PetscInt,Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscSectionVecNorm(arg1::PetscSection,arg2::PetscSection,arg3::Vec,arg4::NormType,PetscReal::Ptr{Cint})
+function PetscSectionVecNorm(arg1::PetscSection,arg2::PetscSection,arg3::Vec,arg4::NormType,Float64::Ptr{Cint})
     ccall((:PetscSectionVecNorm,petsc),PetscErrorCode,(PetscSection,PetscSection,Vec,NormType,Ptr{Cint}),arg1,arg2,arg3,arg4,PetscReal)
 end
 
 function MatGetFactor(arg1::Mat,arg2::Ptr{Uint8},arg3::MatFactorType,arg4::Ptr{Mat})
-    ccall((:MatGetFactor,petsc),PetscErrorCode,(Ptr{Void},Ptr{Uint8},MatFactorType,Ptr{Mat}),arg1,arg2,arg3,arg4)
+    ccall((:MatGetFactor,petsc),PetscErrorCode,(Mat,Ptr{Uint8},MatFactorType,Ptr{Mat}),arg1,arg2,arg3,arg4)
 end
 
 function MatGetFactorAvailable(arg1::Mat,arg2::Ptr{Uint8},arg3::MatFactorType,arg4::Ptr{PetscBool})
-    ccall((:MatGetFactorAvailable,petsc),PetscErrorCode,(Ptr{Void},Ptr{Uint8},MatFactorType,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
+    ccall((:MatGetFactorAvailable,petsc),PetscErrorCode,(Mat,Ptr{Uint8},MatFactorType,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
 function MatFactorGetSolverPackage(arg1::Mat,arg2::Ptr{Ptr{Uint8}})
-    ccall((:MatFactorGetSolverPackage,petsc),PetscErrorCode,(Ptr{Void},Ptr{Ptr{Uint8}}),arg1,arg2)
+    ccall((:MatFactorGetSolverPackage,petsc),PetscErrorCode,(Mat,Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
 function MatGetFactorType(arg1::Mat,arg2::Ptr{MatFactorType})
-    ccall((:MatGetFactorType,petsc),PetscErrorCode,(Ptr{Void},Ptr{MatFactorType}),arg1,arg2)
+    ccall((:MatGetFactorType,petsc),PetscErrorCode,(Mat,Ptr{MatFactorType}),arg1,arg2)
 end
 
 function MatSolverPackageRegister(arg1::Ptr{Uint8},arg2::MatType,arg3::MatFactorType,arg4::Ptr{Void})
@@ -3398,16 +3398,16 @@ function MatCreate(arg1::MPI_Comm,arg2::Ptr{Mat})
     ccall((:MatCreate,petsc),PetscErrorCode,(MPI_Comm,Ptr{Mat}),arg1,arg2)
 end
 
-function MatSetSizes(arg1::Mat,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt)
-    ccall((:MatSetSizes,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscInt,PetscInt,PetscInt),arg1,arg2,arg3,arg4,arg5)
+function MatSetSizes(arg1::Mat,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32)
+    ccall((:MatSetSizes,petsc),PetscErrorCode,(Mat,PetscInt,PetscInt,PetscInt,PetscInt),arg1,arg2,arg3,arg4,arg5)
 end
 
 function MatSetType(arg1::Mat,arg2::MatType)
-    ccall((:MatSetType,petsc),PetscErrorCode,(Ptr{Void},MatType),arg1,arg2)
+    ccall((:MatSetType,petsc),PetscErrorCode,(Mat,MatType),arg1,arg2)
 end
 
 function MatSetFromOptions(arg1::Mat)
-    ccall((:MatSetFromOptions,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatSetFromOptions,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
 function MatRegisterBaseName(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{Uint8})
@@ -3415,122 +3415,122 @@ function MatRegisterBaseName(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::Ptr{Uint8})
 end
 
 function MatSetOptionsPrefix(arg1::Mat,arg2::Ptr{Uint8})
-    ccall((:MatSetOptionsPrefix,petsc),PetscErrorCode,(Ptr{Void},Ptr{Uint8}),arg1,arg2)
+    ccall((:MatSetOptionsPrefix,petsc),PetscErrorCode,(Mat,Ptr{Uint8}),arg1,arg2)
 end
 
 function MatAppendOptionsPrefix(arg1::Mat,arg2::Ptr{Uint8})
-    ccall((:MatAppendOptionsPrefix,petsc),PetscErrorCode,(Ptr{Void},Ptr{Uint8}),arg1,arg2)
+    ccall((:MatAppendOptionsPrefix,petsc),PetscErrorCode,(Mat,Ptr{Uint8}),arg1,arg2)
 end
 
 function MatGetOptionsPrefix(arg1::Mat,arg2::Ptr{Ptr{Uint8}})
-    ccall((:MatGetOptionsPrefix,petsc),PetscErrorCode,(Ptr{Void},Ptr{Ptr{Uint8}}),arg1,arg2)
+    ccall((:MatGetOptionsPrefix,petsc),PetscErrorCode,(Mat,Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
 function MatSetErrorIfFPE(arg1::Mat,arg2::PetscBool)
-    ccall((:MatSetErrorIfFPE,petsc),PetscErrorCode,(Ptr{Void},PetscBool),arg1,arg2)
+    ccall((:MatSetErrorIfFPE,petsc),PetscErrorCode,(Mat,PetscBool),arg1,arg2)
 end
 
-function MatCreateSeqDense(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{PetscScalar},arg5::Ptr{Mat})
-    ccall((:MatCreateSeqDense,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{PetscScalar},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5)
+function MatCreateSeqDense(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Ptr{Float64},arg5::Ptr{Mat})
+    ccall((:MatCreateSeqDense,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{Float64},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatCreateDense(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Ptr{PetscScalar},arg7::Ptr{Mat})
-    ccall((:MatCreateDense,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscScalar},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function MatCreateDense(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Ptr{Float64},arg7::Ptr{Mat})
+    ccall((:MatCreateDense,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Float64},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatCreateSeqAIJ(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{Mat})
+function MatCreateSeqAIJ(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Mat})
     ccall((:MatCreateSeqAIJ,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatCreateAIJ(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg8::PetscInt,arg9::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg10::Ptr{Mat})
+function MatCreateAIJ(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg8::Int32,arg9::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg10::Ptr{Mat})
     ccall((:MatCreateAIJ,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
 end
 
-function MatCreateMPIAIJWithArrays(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg8::Ptr{PetscScalar},arg9::Ptr{Mat})
-    ccall((:MatCreateMPIAIJWithArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
+function MatCreateMPIAIJWithArrays(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg8::Ptr{Float64},arg9::Ptr{Mat})
+    ccall((:MatCreateMPIAIJWithArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
 end
 
-function MatCreateMPIAIJWithSplitArrays(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg8::Ptr{PetscScalar},arg9::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg10::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg11::Ptr{PetscScalar},arg12::Ptr{Mat})
-    ccall((:MatCreateMPIAIJWithSplitArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12)
+function MatCreateMPIAIJWithSplitArrays(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg8::Ptr{Float64},arg9::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg10::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg11::Ptr{Float64},arg12::Ptr{Mat})
+    ccall((:MatCreateMPIAIJWithSplitArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64},Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12)
 end
 
-function MatCreateSeqBAIJ(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{Mat})
+function MatCreateSeqBAIJ(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{Mat})
     ccall((:MatCreateSeqBAIJ,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatCreateBAIJ(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::PetscInt,arg8::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg9::PetscInt,arg10::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg11::Ptr{Mat})
+function MatCreateBAIJ(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Int32,arg8::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg9::Int32,arg10::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg11::Ptr{Mat})
     ccall((:MatCreateBAIJ,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
 end
 
-function MatCreateMPIBAIJWithArrays(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg8::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg9::Ptr{PetscScalar},arg10::Ptr{Mat})
-    ccall((:MatCreateMPIBAIJWithArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
+function MatCreateMPIBAIJWithArrays(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg8::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg9::Ptr{Float64},arg10::Ptr{Mat})
+    ccall((:MatCreateMPIBAIJWithArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
 end
 
-function MatCreateMPIAdj(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{Mat})
+function MatCreateMPIAdj(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{Mat})
     ccall((:MatCreateMPIAdj,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatCreateSeqSBAIJ(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{Mat})
+function MatCreateSeqSBAIJ(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{Mat})
     ccall((:MatCreateSeqSBAIJ,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatCreateSBAIJ(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::PetscInt,arg8::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg9::PetscInt,arg10::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg11::Ptr{Mat})
+function MatCreateSBAIJ(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Int32,arg8::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg9::Int32,arg10::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg11::Ptr{Mat})
     ccall((:MatCreateSBAIJ,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
 end
 
-function MatCreateMPISBAIJWithArrays(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg8::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg9::Ptr{PetscScalar},arg10::Ptr{Mat})
-    ccall((:MatCreateMPISBAIJWithArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
+function MatCreateMPISBAIJWithArrays(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg8::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg9::Ptr{Float64},arg10::Ptr{Mat})
+    ccall((:MatCreateMPISBAIJWithArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
 end
 
-function MatSeqSBAIJSetPreallocationCSR(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Ptr{PetscScalar})
-    ccall((:MatSeqSBAIJSetPreallocationCSR,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar}),arg1,arg2,arg3,arg4,arg5)
+function MatSeqSBAIJSetPreallocationCSR(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Ptr{Float64})
+    ccall((:MatSeqSBAIJSetPreallocationCSR,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatMPISBAIJSetPreallocationCSR(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Ptr{PetscScalar})
-    ccall((:MatMPISBAIJSetPreallocationCSR,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar}),arg1,arg2,arg3,arg4,arg5)
+function MatMPISBAIJSetPreallocationCSR(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Ptr{Float64})
+    ccall((:MatMPISBAIJSetPreallocationCSR,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatXAIJSetPreallocation(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatXAIJSetPreallocation,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatXAIJSetPreallocation(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatXAIJSetPreallocation,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatCreateShell(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Ptr{Void},arg7::Ptr{Mat})
+function MatCreateShell(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Ptr{Void},arg7::Ptr{Mat})
     ccall((:MatCreateShell,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Void},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
 function MatCreateNormal(arg1::Mat,arg2::Ptr{Mat})
-    ccall((:MatCreateNormal,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat}),arg1,arg2)
+    ccall((:MatCreateNormal,petsc),PetscErrorCode,(Mat,Ptr{Mat}),arg1,arg2)
 end
 
 function MatCreateLRC(arg1::Mat,arg2::Mat,arg3::Mat,arg4::Ptr{Mat})
-    ccall((:MatCreateLRC,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Mat}),arg1,arg2,arg3,arg4)
+    ccall((:MatCreateLRC,petsc),PetscErrorCode,(Mat,Mat,Mat,Ptr{Mat}),arg1,arg2,arg3,arg4)
 end
 
-function MatCreateIS(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::ISLocalToGlobalMapping,arg8::Ptr{Mat})
+function MatCreateIS(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::ISLocalToGlobalMapping,arg8::Ptr{Mat})
     ccall((:MatCreateIS,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,ISLocalToGlobalMapping,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function MatCreateSeqAIJCRL(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{Mat})
+function MatCreateSeqAIJCRL(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Mat})
     ccall((:MatCreateSeqAIJCRL,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatCreateMPIAIJCRL(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::PetscInt,arg7::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg8::Ptr{Mat})
+function MatCreateMPIAIJCRL(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Int32,arg7::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg8::Ptr{Mat})
     ccall((:MatCreateMPIAIJCRL,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function MatCreateSeqBSTRM(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{Mat})
+function MatCreateSeqBSTRM(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{Mat})
     ccall((:MatCreateSeqBSTRM,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatCreateMPIBSTRM(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::PetscInt,arg8::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg9::PetscInt,arg10::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg11::Ptr{Mat})
+function MatCreateMPIBSTRM(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Int32,arg8::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg9::Int32,arg10::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg11::Ptr{Mat})
     ccall((:MatCreateMPIBSTRM,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
 end
 
-function MatCreateSeqSBSTRM(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{Mat})
+function MatCreateSeqSBSTRM(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{Mat})
     ccall((:MatCreateSeqSBSTRM,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatCreateMPISBSTRM(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::PetscInt,arg8::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg9::PetscInt,arg10::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg11::Ptr{Mat})
+function MatCreateMPISBSTRM(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Int32,arg8::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg9::Int32,arg10::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg11::Ptr{Mat})
     ccall((:MatCreateMPISBSTRM,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
 end
 
@@ -3539,67 +3539,67 @@ function MatCreateScatter(arg1::MPI_Comm,arg2::VecScatter,arg3::Ptr{Mat})
 end
 
 function MatScatterSetVecScatter(arg1::Mat,arg2::VecScatter)
-    ccall((:MatScatterSetVecScatter,petsc),PetscErrorCode,(Ptr{Void},VecScatter),arg1,arg2)
+    ccall((:MatScatterSetVecScatter,petsc),PetscErrorCode,(Mat,VecScatter),arg1,arg2)
 end
 
 function MatScatterGetVecScatter(arg1::Mat,arg2::Ptr{VecScatter})
-    ccall((:MatScatterGetVecScatter,petsc),PetscErrorCode,(Ptr{Void},Ptr{VecScatter}),arg1,arg2)
+    ccall((:MatScatterGetVecScatter,petsc),PetscErrorCode,(Mat,Ptr{VecScatter}),arg1,arg2)
 end
 
-function MatCreateBlockMat(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{Mat})
+function MatCreateBlockMat(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{Mat})
     ccall((:MatCreateBlockMat,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
 function MatCompositeAddMat(arg1::Mat,arg2::Mat)
-    ccall((:MatCompositeAddMat,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void}),arg1,arg2)
+    ccall((:MatCompositeAddMat,petsc),PetscErrorCode,(Mat,Mat),arg1,arg2)
 end
 
 function MatCompositeMerge(arg1::Mat)
-    ccall((:MatCompositeMerge,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatCompositeMerge,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
-function MatCreateComposite(arg1::MPI_Comm,arg2::PetscInt,arg3::Ptr{Mat},arg4::Ptr{Mat})
+function MatCreateComposite(arg1::MPI_Comm,arg2::Int32,arg3::Ptr{Mat},arg4::Ptr{Mat})
     ccall((:MatCreateComposite,petsc),PetscErrorCode,(MPI_Comm,PetscInt,Ptr{Mat},Ptr{Mat}),arg1,arg2,arg3,arg4)
 end
 
 function MatCompositeSetType(arg1::Mat,arg2::MatCompositeType)
-    ccall((:MatCompositeSetType,petsc),PetscErrorCode,(Ptr{Void},MatCompositeType),arg1,arg2)
+    ccall((:MatCompositeSetType,petsc),PetscErrorCode,(Mat,MatCompositeType),arg1,arg2)
 end
 
-function MatCreateFFT(arg1::MPI_Comm,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::MatType,arg5::Ptr{Mat})
+function MatCreateFFT(arg1::MPI_Comm,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::MatType,arg5::Ptr{Mat})
     ccall((:MatCreateFFT,petsc),PetscErrorCode,(MPI_Comm,PetscInt,Ptr{PetscInt},MatType,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatCreateSeqCUFFT(arg1::MPI_Comm,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Mat})
+function MatCreateSeqCUFFT(arg1::MPI_Comm,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Mat})
     ccall((:MatCreateSeqCUFFT,petsc),PetscErrorCode,(MPI_Comm,PetscInt,Ptr{PetscInt},Ptr{Mat}),arg1,arg2,arg3,arg4)
 end
 
 function MatCreateTranspose(arg1::Mat,arg2::Ptr{Mat})
-    ccall((:MatCreateTranspose,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat}),arg1,arg2)
+    ccall((:MatCreateTranspose,petsc),PetscErrorCode,(Mat,Ptr{Mat}),arg1,arg2)
 end
 
 function MatCreateHermitianTranspose(arg1::Mat,arg2::Ptr{Mat})
-    ccall((:MatCreateHermitianTranspose,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat}),arg1,arg2)
+    ccall((:MatCreateHermitianTranspose,petsc),PetscErrorCode,(Mat,Ptr{Mat}),arg1,arg2)
 end
 
 function MatCreateSubMatrix(arg1::Mat,arg2::IS,arg3::IS,arg4::Ptr{Mat})
-    ccall((:MatCreateSubMatrix,petsc),PetscErrorCode,(Ptr{Void},IS,IS,Ptr{Mat}),arg1,arg2,arg3,arg4)
+    ccall((:MatCreateSubMatrix,petsc),PetscErrorCode,(Mat,IS,IS,Ptr{Mat}),arg1,arg2,arg3,arg4)
 end
 
 function MatSubMatrixUpdate(arg1::Mat,arg2::Mat,arg3::IS,arg4::IS)
-    ccall((:MatSubMatrixUpdate,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},IS,IS),arg1,arg2,arg3,arg4)
+    ccall((:MatSubMatrixUpdate,petsc),PetscErrorCode,(Mat,Mat,IS,IS),arg1,arg2,arg3,arg4)
 end
 
 function MatCreateLocalRef(arg1::Mat,arg2::IS,arg3::IS,arg4::Ptr{Mat})
-    ccall((:MatCreateLocalRef,petsc),PetscErrorCode,(Ptr{Void},IS,IS,Ptr{Mat}),arg1,arg2,arg3,arg4)
+    ccall((:MatCreateLocalRef,petsc),PetscErrorCode,(Mat,IS,IS,Ptr{Mat}),arg1,arg2,arg3,arg4)
 end
 
 function MatPythonSetType(arg1::Mat,arg2::Ptr{Uint8})
-    ccall((:MatPythonSetType,petsc),PetscErrorCode,(Ptr{Void},Ptr{Uint8}),arg1,arg2)
+    ccall((:MatPythonSetType,petsc),PetscErrorCode,(Mat,Ptr{Uint8}),arg1,arg2)
 end
 
 function MatSetUp(arg1::Mat)
-    ccall((:MatSetUp,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatSetUp,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
 function MatDestroy(arg1::Ptr{Mat})
@@ -3607,783 +3607,783 @@ function MatDestroy(arg1::Ptr{Mat})
 end
 
 function MatGetNonzeroState(arg1::Mat,arg2::Ptr{PetscObjectState})
-    ccall((:MatGetNonzeroState,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscObjectState}),arg1,arg2)
+    ccall((:MatGetNonzeroState,petsc),PetscErrorCode,(Mat,Ptr{PetscObjectState}),arg1,arg2)
 end
 
 function MatConjugate(arg1::Mat)
-    ccall((:MatConjugate,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatConjugate,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
 function MatRealPart(arg1::Mat)
-    ccall((:MatRealPart,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatRealPart,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
 function MatImaginaryPart(arg1::Mat)
-    ccall((:MatImaginaryPart,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatImaginaryPart,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
 function MatGetDiagonalBlock(arg1::Mat,arg2::Ptr{Mat})
-    ccall((:MatGetDiagonalBlock,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat}),arg1,arg2)
+    ccall((:MatGetDiagonalBlock,petsc),PetscErrorCode,(Mat,Ptr{Mat}),arg1,arg2)
 end
 
-function MatGetTrace(arg1::Mat,arg2::Ptr{PetscScalar})
-    ccall((:MatGetTrace,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscScalar}),arg1,arg2)
+function MatGetTrace(arg1::Mat,arg2::Ptr{Float64})
+    ccall((:MatGetTrace,petsc),PetscErrorCode,(Mat,Ptr{Float64}),arg1,arg2)
 end
 
-function MatInvertBlockDiagonal(arg1::Mat,arg2::Ptr{Ptr{PetscScalar}})
-    ccall((:MatInvertBlockDiagonal,petsc),PetscErrorCode,(Ptr{Void},Ptr{Ptr{PetscScalar}}),arg1,arg2)
+function MatInvertBlockDiagonal(arg1::Mat,arg2::Ptr{Ptr{Float64}})
+    ccall((:MatInvertBlockDiagonal,petsc),PetscErrorCode,(Mat,Ptr{Ptr{Float64}}),arg1,arg2)
 end
 
-function MatSetValues(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{PetscScalar},arg7::InsertMode)
-    ccall((:MatSetValues,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{PetscScalar},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function MatSetValues(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Float64},arg7::InsertMode)
+    ccall((:MatSetValues,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatSetValuesBlocked(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{PetscScalar},arg7::InsertMode)
-    ccall((:MatSetValuesBlocked,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{PetscScalar},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function MatSetValuesBlocked(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Float64},arg7::InsertMode)
+    ccall((:MatSetValuesBlocked,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatSetValuesRow(arg1::Mat,arg2::PetscInt,arg3::Ptr{PetscScalar})
-    ccall((:MatSetValuesRow,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscScalar}),arg1,arg2,arg3)
+function MatSetValuesRow(arg1::Mat,arg2::Int32,arg3::Ptr{Float64})
+    ccall((:MatSetValuesRow,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{Float64}),arg1,arg2,arg3)
 end
 
-function MatSetValuesRowLocal(arg1::Mat,arg2::PetscInt,arg3::Ptr{PetscScalar})
-    ccall((:MatSetValuesRowLocal,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscScalar}),arg1,arg2,arg3)
+function MatSetValuesRowLocal(arg1::Mat,arg2::Int32,arg3::Ptr{Float64})
+    ccall((:MatSetValuesRowLocal,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{Float64}),arg1,arg2,arg3)
 end
 
-function MatSetValuesBatch(arg1::Mat,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Ptr{PetscScalar})
-    ccall((:MatSetValuesBatch,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscScalar}),arg1,arg2,arg3,arg4,arg5)
+function MatSetValuesBatch(arg1::Mat,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Ptr{Float64})
+    ccall((:MatSetValuesBatch,petsc),PetscErrorCode,(Mat,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
 end
 
 function MatSetRandom(arg1::Mat,arg2::PetscRandom)
-    ccall((:MatSetRandom,petsc),PetscErrorCode,(Ptr{Void},PetscRandom),arg1,arg2)
+    ccall((:MatSetRandom,petsc),PetscErrorCode,(Mat,PetscRandom),arg1,arg2)
 end
 
-function MatSetValuesStencil(arg1::Mat,arg2::PetscInt,arg3::Ptr{MatStencil},arg4::PetscInt,arg5::Ptr{MatStencil},arg6::Ptr{PetscScalar},arg7::InsertMode)
-    ccall((:MatSetValuesStencil,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{MatStencil},PetscInt,Ptr{MatStencil},Ptr{PetscScalar},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function MatSetValuesStencil(arg1::Mat,arg2::Int32,arg3::Ptr{MatStencil},arg4::Int32,arg5::Ptr{MatStencil},arg6::Ptr{Float64},arg7::InsertMode)
+    ccall((:MatSetValuesStencil,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{MatStencil},PetscInt,Ptr{MatStencil},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatSetValuesBlockedStencil(arg1::Mat,arg2::PetscInt,arg3::Ptr{MatStencil},arg4::PetscInt,arg5::Ptr{MatStencil},arg6::Ptr{PetscScalar},arg7::InsertMode)
-    ccall((:MatSetValuesBlockedStencil,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{MatStencil},PetscInt,Ptr{MatStencil},Ptr{PetscScalar},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function MatSetValuesBlockedStencil(arg1::Mat,arg2::Int32,arg3::Ptr{MatStencil},arg4::Int32,arg5::Ptr{MatStencil},arg6::Ptr{Float64},arg7::InsertMode)
+    ccall((:MatSetValuesBlockedStencil,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{MatStencil},PetscInt,Ptr{MatStencil},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatSetStencil(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::PetscInt)
-    ccall((:MatSetStencil,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},Ptr{PetscInt},PetscInt),arg1,arg2,arg3,arg4,arg5)
+function MatSetStencil(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Int32)
+    ccall((:MatSetStencil,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{PetscInt},PetscInt),arg1,arg2,arg3,arg4,arg5)
 end
 
 function MatSetColoring(arg1::Mat,arg2::ISColoring)
-    ccall((:MatSetColoring,petsc),PetscErrorCode,(Ptr{Void},ISColoring),arg1,arg2)
+    ccall((:MatSetColoring,petsc),PetscErrorCode,(Mat,ISColoring),arg1,arg2)
 end
 
-function MatSetValuesAdifor(arg1::Mat,arg2::PetscInt,arg3::Ptr{Void})
-    ccall((:MatSetValuesAdifor,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{Void}),arg1,arg2,arg3)
+function MatSetValuesAdifor(arg1::Mat,arg2::Int32,arg3::Ptr{Void})
+    ccall((:MatSetValuesAdifor,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{Void}),arg1,arg2,arg3)
 end
 
 function MatAssemblyBegin(arg1::Mat,arg2::MatAssemblyType)
-    ccall((:MatAssemblyBegin,petsc),PetscErrorCode,(Ptr{Void},MatAssemblyType),arg1,arg2)
+    ccall((:MatAssemblyBegin,petsc),PetscErrorCode,(Mat,MatAssemblyType),arg1,arg2)
 end
 
 function MatAssemblyEnd(arg1::Mat,arg2::MatAssemblyType)
-    ccall((:MatAssemblyEnd,petsc),PetscErrorCode,(Ptr{Void},MatAssemblyType),arg1,arg2)
+    ccall((:MatAssemblyEnd,petsc),PetscErrorCode,(Mat,MatAssemblyType),arg1,arg2)
 end
 
 function MatAssembled(arg1::Mat,arg2::Ptr{PetscBool})
-    ccall((:MatAssembled,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscBool}),arg1,arg2)
+    ccall((:MatAssembled,petsc),PetscErrorCode,(Mat,Ptr{PetscBool}),arg1,arg2)
 end
 
 function MatSetOption(arg1::Mat,arg2::MatOption,arg3::PetscBool)
-    ccall((:MatSetOption,petsc),PetscErrorCode,(Ptr{Void},MatOption,PetscBool),arg1,arg2,arg3)
+    ccall((:MatSetOption,petsc),PetscErrorCode,(Mat,MatOption,PetscBool),arg1,arg2,arg3)
 end
 
 function MatGetOption(arg1::Mat,arg2::MatOption,arg3::Ptr{PetscBool})
-    ccall((:MatGetOption,petsc),PetscErrorCode,(Ptr{Void},MatOption,Ptr{PetscBool}),arg1,arg2,arg3)
+    ccall((:MatGetOption,petsc),PetscErrorCode,(Mat,MatOption,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
 function MatGetType(arg1::Mat,arg2::Ptr{MatType})
-    ccall((:MatGetType,petsc),PetscErrorCode,(Ptr{Void},Ptr{MatType}),arg1,arg2)
+    ccall((:MatGetType,petsc),PetscErrorCode,(Mat,Ptr{MatType}),arg1,arg2)
 end
 
-function MatGetValues(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{PetscScalar})
-    ccall((:MatGetValues,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{PetscScalar}),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatGetValues(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Float64})
+    ccall((:MatGetValues,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatGetRow(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Ptr{PetscInt}},arg5::Ptr{Ptr{PetscScalar}})
-    ccall((:MatGetRow,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscScalar}}),arg1,arg2,arg3,arg4,arg5)
+function MatGetRow(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Ptr{Int32}},arg5::Ptr{Ptr{Float64}})
+    ccall((:MatGetRow,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatRestoreRow(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Ptr{PetscInt}},arg5::Ptr{Ptr{PetscScalar}})
-    ccall((:MatRestoreRow,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscScalar}}),arg1,arg2,arg3,arg4,arg5)
+function MatRestoreRow(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Ptr{Int32}},arg5::Ptr{Ptr{Float64}})
+    ccall((:MatRestoreRow,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5)
 end
 
 function MatGetRowUpperTriangular(arg1::Mat)
-    ccall((:MatGetRowUpperTriangular,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatGetRowUpperTriangular,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
 function MatRestoreRowUpperTriangular(arg1::Mat)
-    ccall((:MatRestoreRowUpperTriangular,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatRestoreRowUpperTriangular,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
-function MatGetColumn(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Ptr{PetscInt}},arg5::Ptr{Ptr{PetscScalar}})
-    ccall((:MatGetColumn,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscScalar}}),arg1,arg2,arg3,arg4,arg5)
+function MatGetColumn(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Ptr{Int32}},arg5::Ptr{Ptr{Float64}})
+    ccall((:MatGetColumn,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatRestoreColumn(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Ptr{PetscInt}},arg5::Ptr{Ptr{PetscScalar}})
-    ccall((:MatRestoreColumn,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscScalar}}),arg1,arg2,arg3,arg4,arg5)
+function MatRestoreColumn(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Ptr{Int32}},arg5::Ptr{Ptr{Float64}})
+    ccall((:MatRestoreColumn,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatGetColumnVector(arg1::Mat,arg2::Vec,arg3::PetscInt)
-    ccall((:MatGetColumnVector,petsc),PetscErrorCode,(Ptr{Void},Vec,PetscInt),arg1,arg2,arg3)
+function MatGetColumnVector(arg1::Mat,arg2::Vec,arg3::Int32)
+    ccall((:MatGetColumnVector,petsc),PetscErrorCode,(Mat,Vec,PetscInt),arg1,arg2,arg3)
 end
 
-function MatSeqAIJGetArray(arg1::Mat,arg2::Ptr{Ptr{PetscScalar}})
-    ccall((:MatSeqAIJGetArray,petsc),PetscErrorCode,(Ptr{Void},Ptr{Ptr{PetscScalar}}),arg1,arg2)
+function MatSeqAIJGetArray(arg1::Mat,arg2::Ptr{Ptr{Float64}})
+    ccall((:MatSeqAIJGetArray,petsc),PetscErrorCode,(Mat,Ptr{Ptr{Float64}}),arg1,arg2)
 end
 
-function MatSeqAIJRestoreArray(arg1::Mat,arg2::Ptr{Ptr{PetscScalar}})
-    ccall((:MatSeqAIJRestoreArray,petsc),PetscErrorCode,(Ptr{Void},Ptr{Ptr{PetscScalar}}),arg1,arg2)
+function MatSeqAIJRestoreArray(arg1::Mat,arg2::Ptr{Ptr{Float64}})
+    ccall((:MatSeqAIJRestoreArray,petsc),PetscErrorCode,(Mat,Ptr{Ptr{Float64}}),arg1,arg2)
 end
 
-function MatSeqAIJGetMaxRowNonzeros(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatSeqAIJGetMaxRowNonzeros,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt}),arg1,arg2)
+function MatSeqAIJGetMaxRowNonzeros(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatSeqAIJGetMaxRowNonzeros,petsc),PetscErrorCode,(Mat,Ptr{PetscInt}),arg1,arg2)
 end
 
-function MatSeqAIJSetValuesLocalFast(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{PetscScalar},arg7::InsertMode)
-    ccall((:MatSeqAIJSetValuesLocalFast,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{PetscScalar},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function MatSeqAIJSetValuesLocalFast(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Float64},arg7::InsertMode)
+    ccall((:MatSeqAIJSetValuesLocalFast,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatDenseGetArray(arg1::Mat,arg2::Ptr{Ptr{PetscScalar}})
-    ccall((:MatDenseGetArray,petsc),PetscErrorCode,(Ptr{Void},Ptr{Ptr{PetscScalar}}),arg1,arg2)
+function MatDenseGetArray(arg1::Mat,arg2::Ptr{Ptr{Float64}})
+    ccall((:MatDenseGetArray,petsc),PetscErrorCode,(Mat,Ptr{Ptr{Float64}}),arg1,arg2)
 end
 
-function MatDenseRestoreArray(arg1::Mat,arg2::Ptr{Ptr{PetscScalar}})
-    ccall((:MatDenseRestoreArray,petsc),PetscErrorCode,(Ptr{Void},Ptr{Ptr{PetscScalar}}),arg1,arg2)
+function MatDenseRestoreArray(arg1::Mat,arg2::Ptr{Ptr{Float64}})
+    ccall((:MatDenseRestoreArray,petsc),PetscErrorCode,(Mat,Ptr{Ptr{Float64}}),arg1,arg2)
 end
 
-function MatGetBlockSize(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatGetBlockSize,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt}),arg1,arg2)
+function MatGetBlockSize(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatGetBlockSize,petsc),PetscErrorCode,(Mat,Ptr{PetscInt}),arg1,arg2)
 end
 
-function MatSetBlockSize(arg1::Mat,arg2::PetscInt)
-    ccall((:MatSetBlockSize,petsc),PetscErrorCode,(Ptr{Void},PetscInt),arg1,arg2)
+function MatSetBlockSize(arg1::Mat,arg2::Int32)
+    ccall((:MatSetBlockSize,petsc),PetscErrorCode,(Mat,PetscInt),arg1,arg2)
 end
 
-function MatGetBlockSizes(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatGetBlockSizes,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
+function MatGetBlockSizes(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatGetBlockSizes,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function MatSetBlockSizes(arg1::Mat,arg2::PetscInt,arg3::PetscInt)
-    ccall((:MatSetBlockSizes,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscInt),arg1,arg2,arg3)
+function MatSetBlockSizes(arg1::Mat,arg2::Int32,arg3::Int32)
+    ccall((:MatSetBlockSizes,petsc),PetscErrorCode,(Mat,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
 function MatSetBlockSizesFromMats(arg1::Mat,arg2::Mat,arg3::Mat)
-    ccall((:MatSetBlockSizesFromMats,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+    ccall((:MatSetBlockSizesFromMats,petsc),PetscErrorCode,(Mat,Mat,Mat),arg1,arg2,arg3)
 end
 
-function MatSetNThreads(arg1::Mat,arg2::PetscInt)
-    ccall((:MatSetNThreads,petsc),PetscErrorCode,(Ptr{Void},PetscInt),arg1,arg2)
+function MatSetNThreads(arg1::Mat,arg2::Int32)
+    ccall((:MatSetNThreads,petsc),PetscErrorCode,(Mat,PetscInt),arg1,arg2)
 end
 
-function MatGetNThreads(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatGetNThreads,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt}),arg1,arg2)
+function MatGetNThreads(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatGetNThreads,petsc),PetscErrorCode,(Mat,Ptr{PetscInt}),arg1,arg2)
 end
 
 function MatMult(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatMult,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatMult,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function MatMultDiagonalBlock(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatMultDiagonalBlock,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatMultDiagonalBlock,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function MatMultAdd(arg1::Mat,arg2::Vec,arg3::Vec,arg4::Vec)
-    ccall((:MatMultAdd,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec,Vec),arg1,arg2,arg3,arg4)
+    ccall((:MatMultAdd,petsc),PetscErrorCode,(Mat,Vec,Vec,Vec),arg1,arg2,arg3,arg4)
 end
 
 function MatMultTranspose(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatMultTranspose,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatMultTranspose,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function MatMultHermitianTranspose(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatMultHermitianTranspose,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatMultHermitianTranspose,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
-function MatIsTranspose(arg1::Mat,arg2::Mat,PetscReal::Cint,arg3::Ptr{PetscBool})
-    ccall((:MatIsTranspose,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Cint,Ptr{PetscBool}),arg1,arg2,PetscReal,arg3)
+function MatIsTranspose(arg1::Mat,arg2::Mat,Float64::Cint,arg3::Ptr{PetscBool})
+    ccall((:MatIsTranspose,petsc),PetscErrorCode,(Mat,Mat,Cint,Ptr{PetscBool}),arg1,arg2,PetscReal,arg3)
 end
 
-function MatIsHermitianTranspose(arg1::Mat,arg2::Mat,PetscReal::Cint,arg3::Ptr{PetscBool})
-    ccall((:MatIsHermitianTranspose,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Cint,Ptr{PetscBool}),arg1,arg2,PetscReal,arg3)
+function MatIsHermitianTranspose(arg1::Mat,arg2::Mat,Float64::Cint,arg3::Ptr{PetscBool})
+    ccall((:MatIsHermitianTranspose,petsc),PetscErrorCode,(Mat,Mat,Cint,Ptr{PetscBool}),arg1,arg2,PetscReal,arg3)
 end
 
 function MatMultTransposeAdd(arg1::Mat,arg2::Vec,arg3::Vec,arg4::Vec)
-    ccall((:MatMultTransposeAdd,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec,Vec),arg1,arg2,arg3,arg4)
+    ccall((:MatMultTransposeAdd,petsc),PetscErrorCode,(Mat,Vec,Vec,Vec),arg1,arg2,arg3,arg4)
 end
 
 function MatMultHermitianTransposeAdd(arg1::Mat,arg2::Vec,arg3::Vec,arg4::Vec)
-    ccall((:MatMultHermitianTransposeAdd,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec,Vec),arg1,arg2,arg3,arg4)
+    ccall((:MatMultHermitianTransposeAdd,petsc),PetscErrorCode,(Mat,Vec,Vec,Vec),arg1,arg2,arg3,arg4)
 end
 
 function MatMultConstrained(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatMultConstrained,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatMultConstrained,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function MatMultTransposeConstrained(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatMultTransposeConstrained,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatMultTransposeConstrained,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function MatMatSolve(arg1::Mat,arg2::Mat,arg3::Mat)
-    ccall((:MatMatSolve,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+    ccall((:MatMatSolve,petsc),PetscErrorCode,(Mat,Mat,Mat),arg1,arg2,arg3)
 end
 
 function MatResidual(arg1::Mat,arg2::Vec,arg3::Vec,arg4::Vec)
-    ccall((:MatResidual,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec,Vec),arg1,arg2,arg3,arg4)
+    ccall((:MatResidual,petsc),PetscErrorCode,(Mat,Vec,Vec,Vec),arg1,arg2,arg3,arg4)
 end
 
 function MatConvert(arg1::Mat,arg2::MatType,arg3::MatReuse,arg4::Ptr{Mat})
-    ccall((:MatConvert,petsc),PetscErrorCode,(Ptr{Void},MatType,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4)
+    ccall((:MatConvert,petsc),PetscErrorCode,(Mat,MatType,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4)
 end
 
 function MatDuplicate(arg1::Mat,arg2::MatDuplicateOption,arg3::Ptr{Mat})
-    ccall((:MatDuplicate,petsc),PetscErrorCode,(Ptr{Void},MatDuplicateOption,Ptr{Mat}),arg1,arg2,arg3)
+    ccall((:MatDuplicate,petsc),PetscErrorCode,(Mat,MatDuplicateOption,Ptr{Mat}),arg1,arg2,arg3)
 end
 
 function MatCopy(arg1::Mat,arg2::Mat,arg3::MatStructure)
-    ccall((:MatCopy,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},MatStructure),arg1,arg2,arg3)
+    ccall((:MatCopy,petsc),PetscErrorCode,(Mat,Mat,MatStructure),arg1,arg2,arg3)
 end
 
 function MatView(arg1::Mat,arg2::PetscViewer)
-    ccall((:MatView,petsc),PetscErrorCode,(Ptr{Void},PetscViewer),arg1,arg2)
+    ccall((:MatView,petsc),PetscErrorCode,(Mat,PetscViewer),arg1,arg2)
 end
 
-function MatIsSymmetric(arg1::Mat,PetscReal::Cint,arg2::Ptr{PetscBool})
-    ccall((:MatIsSymmetric,petsc),PetscErrorCode,(Ptr{Void},Cint,Ptr{PetscBool}),arg1,PetscReal,arg2)
+function MatIsSymmetric(arg1::Mat,Float64::Cint,arg2::Ptr{PetscBool})
+    ccall((:MatIsSymmetric,petsc),PetscErrorCode,(Mat,Cint,Ptr{PetscBool}),arg1,PetscReal,arg2)
 end
 
 function MatIsStructurallySymmetric(arg1::Mat,arg2::Ptr{PetscBool})
-    ccall((:MatIsStructurallySymmetric,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscBool}),arg1,arg2)
+    ccall((:MatIsStructurallySymmetric,petsc),PetscErrorCode,(Mat,Ptr{PetscBool}),arg1,arg2)
 end
 
-function MatIsHermitian(arg1::Mat,PetscReal::Cint,arg2::Ptr{PetscBool})
-    ccall((:MatIsHermitian,petsc),PetscErrorCode,(Ptr{Void},Cint,Ptr{PetscBool}),arg1,PetscReal,arg2)
+function MatIsHermitian(arg1::Mat,Float64::Cint,arg2::Ptr{PetscBool})
+    ccall((:MatIsHermitian,petsc),PetscErrorCode,(Mat,Cint,Ptr{PetscBool}),arg1,PetscReal,arg2)
 end
 
 function MatIsSymmetricKnown(arg1::Mat,arg2::Ptr{PetscBool},arg3::Ptr{PetscBool})
-    ccall((:MatIsSymmetricKnown,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscBool},Ptr{PetscBool}),arg1,arg2,arg3)
+    ccall((:MatIsSymmetricKnown,petsc),PetscErrorCode,(Mat,Ptr{PetscBool},Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
 function MatIsHermitianKnown(arg1::Mat,arg2::Ptr{PetscBool},arg3::Ptr{PetscBool})
-    ccall((:MatIsHermitianKnown,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscBool},Ptr{PetscBool}),arg1,arg2,arg3)
+    ccall((:MatIsHermitianKnown,petsc),PetscErrorCode,(Mat,Ptr{PetscBool},Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function MatMissingDiagonal(arg1::Mat,arg2::Ptr{PetscBool},arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatMissingDiagonal,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscBool},Ptr{PetscInt}),arg1,arg2,arg3)
+function MatMissingDiagonal(arg1::Mat,arg2::Ptr{PetscBool},arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatMissingDiagonal,petsc),PetscErrorCode,(Mat,Ptr{PetscBool},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
 function MatLoad(arg1::Mat,arg2::PetscViewer)
-    ccall((:MatLoad,petsc),PetscErrorCode,(Ptr{Void},PetscViewer),arg1,arg2)
+    ccall((:MatLoad,petsc),PetscErrorCode,(Mat,PetscViewer),arg1,arg2)
 end
 
-function MatGetRowIJ(arg1::Mat,arg2::PetscInt,arg3::PetscBool,arg4::PetscBool,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{Ptr{PetscInt}},arg7::Ptr{Ptr{PetscInt}},arg8::Ptr{PetscBool})
-    ccall((:MatGetRowIJ,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscBool,PetscBool,Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscInt}},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function MatGetRowIJ(arg1::Mat,arg2::Int32,arg3::PetscBool,arg4::PetscBool,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Ptr{Int32}},arg7::Ptr{Ptr{Int32}},arg8::Ptr{PetscBool})
+    ccall((:MatGetRowIJ,petsc),PetscErrorCode,(Mat,PetscInt,PetscBool,PetscBool,Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Int32}},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function MatRestoreRowIJ(arg1::Mat,arg2::PetscInt,arg3::PetscBool,arg4::PetscBool,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{Ptr{PetscInt}},arg7::Ptr{Ptr{PetscInt}},arg8::Ptr{PetscBool})
-    ccall((:MatRestoreRowIJ,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscBool,PetscBool,Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscInt}},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function MatRestoreRowIJ(arg1::Mat,arg2::Int32,arg3::PetscBool,arg4::PetscBool,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Ptr{Int32}},arg7::Ptr{Ptr{Int32}},arg8::Ptr{PetscBool})
+    ccall((:MatRestoreRowIJ,petsc),PetscErrorCode,(Mat,PetscInt,PetscBool,PetscBool,Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Int32}},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function MatGetColumnIJ(arg1::Mat,arg2::PetscInt,arg3::PetscBool,arg4::PetscBool,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{Ptr{PetscInt}},arg7::Ptr{Ptr{PetscInt}},arg8::Ptr{PetscBool})
-    ccall((:MatGetColumnIJ,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscBool,PetscBool,Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscInt}},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function MatGetColumnIJ(arg1::Mat,arg2::Int32,arg3::PetscBool,arg4::PetscBool,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Ptr{Int32}},arg7::Ptr{Ptr{Int32}},arg8::Ptr{PetscBool})
+    ccall((:MatGetColumnIJ,petsc),PetscErrorCode,(Mat,PetscInt,PetscBool,PetscBool,Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Int32}},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function MatRestoreColumnIJ(arg1::Mat,arg2::PetscInt,arg3::PetscBool,arg4::PetscBool,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{Ptr{PetscInt}},arg7::Ptr{Ptr{PetscInt}},arg8::Ptr{PetscBool})
-    ccall((:MatRestoreColumnIJ,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscBool,PetscBool,Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{Ptr{PetscInt}},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function MatRestoreColumnIJ(arg1::Mat,arg2::Int32,arg3::PetscBool,arg4::PetscBool,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Ptr{Int32}},arg7::Ptr{Ptr{Int32}},arg8::Ptr{PetscBool})
+    ccall((:MatRestoreColumnIJ,petsc),PetscErrorCode,(Mat,PetscInt,PetscBool,PetscBool,Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{Ptr{Int32}},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
 function MatGetInfo(arg1::Mat,arg2::MatInfoType,arg3::Ptr{MatInfo})
-    ccall((:MatGetInfo,petsc),PetscErrorCode,(Ptr{Void},MatInfoType,Ptr{MatInfo}),arg1,arg2,arg3)
+    ccall((:MatGetInfo,petsc),PetscErrorCode,(Mat,MatInfoType,Ptr{MatInfo}),arg1,arg2,arg3)
 end
 
 function MatGetDiagonal(arg1::Mat,arg2::Vec)
-    ccall((:MatGetDiagonal,petsc),PetscErrorCode,(Ptr{Void},Vec),arg1,arg2)
+    ccall((:MatGetDiagonal,petsc),PetscErrorCode,(Mat,Vec),arg1,arg2)
 end
 
-function MatGetRowMax(arg1::Mat,arg2::Vec,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatGetRowMax,petsc),PetscErrorCode,(Ptr{Void},Vec,Ptr{PetscInt}),arg1,arg2,arg3)
+function MatGetRowMax(arg1::Mat,arg2::Vec,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatGetRowMax,petsc),PetscErrorCode,(Mat,Vec,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function MatGetRowMin(arg1::Mat,arg2::Vec,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatGetRowMin,petsc),PetscErrorCode,(Ptr{Void},Vec,Ptr{PetscInt}),arg1,arg2,arg3)
+function MatGetRowMin(arg1::Mat,arg2::Vec,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatGetRowMin,petsc),PetscErrorCode,(Mat,Vec,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function MatGetRowMaxAbs(arg1::Mat,arg2::Vec,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatGetRowMaxAbs,petsc),PetscErrorCode,(Ptr{Void},Vec,Ptr{PetscInt}),arg1,arg2,arg3)
+function MatGetRowMaxAbs(arg1::Mat,arg2::Vec,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatGetRowMaxAbs,petsc),PetscErrorCode,(Mat,Vec,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function MatGetRowMinAbs(arg1::Mat,arg2::Vec,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatGetRowMinAbs,petsc),PetscErrorCode,(Ptr{Void},Vec,Ptr{PetscInt}),arg1,arg2,arg3)
+function MatGetRowMinAbs(arg1::Mat,arg2::Vec,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatGetRowMinAbs,petsc),PetscErrorCode,(Mat,Vec,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
 function MatGetRowSum(arg1::Mat,arg2::Vec)
-    ccall((:MatGetRowSum,petsc),PetscErrorCode,(Ptr{Void},Vec),arg1,arg2)
+    ccall((:MatGetRowSum,petsc),PetscErrorCode,(Mat,Vec),arg1,arg2)
 end
 
 function MatTranspose(arg1::Mat,arg2::MatReuse,arg3::Ptr{Mat})
-    ccall((:MatTranspose,petsc),PetscErrorCode,(Ptr{Void},MatReuse,Ptr{Mat}),arg1,arg2,arg3)
+    ccall((:MatTranspose,petsc),PetscErrorCode,(Mat,MatReuse,Ptr{Mat}),arg1,arg2,arg3)
 end
 
 function MatHermitianTranspose(arg1::Mat,arg2::MatReuse,arg3::Ptr{Mat})
-    ccall((:MatHermitianTranspose,petsc),PetscErrorCode,(Ptr{Void},MatReuse,Ptr{Mat}),arg1,arg2,arg3)
+    ccall((:MatHermitianTranspose,petsc),PetscErrorCode,(Mat,MatReuse,Ptr{Mat}),arg1,arg2,arg3)
 end
 
 function MatPermute(arg1::Mat,arg2::IS,arg3::IS,arg4::Ptr{Mat})
-    ccall((:MatPermute,petsc),PetscErrorCode,(Ptr{Void},IS,IS,Ptr{Mat}),arg1,arg2,arg3,arg4)
+    ccall((:MatPermute,petsc),PetscErrorCode,(Mat,IS,IS,Ptr{Mat}),arg1,arg2,arg3,arg4)
 end
 
 function MatDiagonalScale(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatDiagonalScale,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatDiagonalScale,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function MatDiagonalSet(arg1::Mat,arg2::Vec,arg3::InsertMode)
-    ccall((:MatDiagonalSet,petsc),PetscErrorCode,(Ptr{Void},Vec,InsertMode),arg1,arg2,arg3)
+    ccall((:MatDiagonalSet,petsc),PetscErrorCode,(Mat,Vec,InsertMode),arg1,arg2,arg3)
 end
 
 function MatEqual(arg1::Mat,arg2::Mat,arg3::Ptr{PetscBool})
-    ccall((:MatEqual,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{PetscBool}),arg1,arg2,arg3)
+    ccall((:MatEqual,petsc),PetscErrorCode,(Mat,Mat,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function MatMultEqual(arg1::Mat,arg2::Mat,arg3::PetscInt,arg4::Ptr{PetscBool})
-    ccall((:MatMultEqual,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},PetscInt,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
+function MatMultEqual(arg1::Mat,arg2::Mat,arg3::Int32,arg4::Ptr{PetscBool})
+    ccall((:MatMultEqual,petsc),PetscErrorCode,(Mat,Mat,PetscInt,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
-function MatMultAddEqual(arg1::Mat,arg2::Mat,arg3::PetscInt,arg4::Ptr{PetscBool})
-    ccall((:MatMultAddEqual,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},PetscInt,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
+function MatMultAddEqual(arg1::Mat,arg2::Mat,arg3::Int32,arg4::Ptr{PetscBool})
+    ccall((:MatMultAddEqual,petsc),PetscErrorCode,(Mat,Mat,PetscInt,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
-function MatMultTransposeEqual(arg1::Mat,arg2::Mat,arg3::PetscInt,arg4::Ptr{PetscBool})
-    ccall((:MatMultTransposeEqual,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},PetscInt,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
+function MatMultTransposeEqual(arg1::Mat,arg2::Mat,arg3::Int32,arg4::Ptr{PetscBool})
+    ccall((:MatMultTransposeEqual,petsc),PetscErrorCode,(Mat,Mat,PetscInt,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
-function MatMultTransposeAddEqual(arg1::Mat,arg2::Mat,arg3::PetscInt,arg4::Ptr{PetscBool})
-    ccall((:MatMultTransposeAddEqual,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},PetscInt,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
+function MatMultTransposeAddEqual(arg1::Mat,arg2::Mat,arg3::Int32,arg4::Ptr{PetscBool})
+    ccall((:MatMultTransposeAddEqual,petsc),PetscErrorCode,(Mat,Mat,PetscInt,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
 function MatNorm(arg1::Mat,arg2::NormType,arg3::Ptr{Cint})
-    ccall((:MatNorm,petsc),PetscErrorCode,(Ptr{Void},NormType,Ptr{Cint}),arg1,arg2,arg3)
+    ccall((:MatNorm,petsc),PetscErrorCode,(Mat,NormType,Ptr{Cint}),arg1,arg2,arg3)
 end
 
 function MatGetColumnNorms(arg1::Mat,arg2::NormType,arg3::Ptr{Cint})
-    ccall((:MatGetColumnNorms,petsc),PetscErrorCode,(Ptr{Void},NormType,Ptr{Cint}),arg1,arg2,arg3)
+    ccall((:MatGetColumnNorms,petsc),PetscErrorCode,(Mat,NormType,Ptr{Cint}),arg1,arg2,arg3)
 end
 
 function MatZeroEntries(arg1::Mat)
-    ccall((:MatZeroEntries,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatZeroEntries,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
-function MatZeroRows(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscScalar,arg5::Vec,arg6::Vec)
-    ccall((:MatZeroRows,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatZeroRows(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Float64,arg5::Vec,arg6::Vec)
+    ccall((:MatZeroRows,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatZeroRowsIS(arg1::Mat,arg2::IS,arg3::PetscScalar,arg4::Vec,arg5::Vec)
-    ccall((:MatZeroRowsIS,petsc),PetscErrorCode,(Ptr{Void},IS,PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5)
+function MatZeroRowsIS(arg1::Mat,arg2::IS,arg3::Float64,arg4::Vec,arg5::Vec)
+    ccall((:MatZeroRowsIS,petsc),PetscErrorCode,(Mat,IS,PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatZeroRowsStencil(arg1::Mat,arg2::PetscInt,arg3::Ptr{MatStencil},arg4::PetscScalar,arg5::Vec,arg6::Vec)
-    ccall((:MatZeroRowsStencil,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{MatStencil},PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatZeroRowsStencil(arg1::Mat,arg2::Int32,arg3::Ptr{MatStencil},arg4::Float64,arg5::Vec,arg6::Vec)
+    ccall((:MatZeroRowsStencil,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{MatStencil},PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatZeroRowsColumnsStencil(arg1::Mat,arg2::PetscInt,arg3::Ptr{MatStencil},arg4::PetscScalar,arg5::Vec,arg6::Vec)
-    ccall((:MatZeroRowsColumnsStencil,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{MatStencil},PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatZeroRowsColumnsStencil(arg1::Mat,arg2::Int32,arg3::Ptr{MatStencil},arg4::Float64,arg5::Vec,arg6::Vec)
+    ccall((:MatZeroRowsColumnsStencil,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{MatStencil},PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatZeroRowsColumns(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscScalar,arg5::Vec,arg6::Vec)
-    ccall((:MatZeroRowsColumns,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatZeroRowsColumns(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Float64,arg5::Vec,arg6::Vec)
+    ccall((:MatZeroRowsColumns,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatZeroRowsColumnsIS(arg1::Mat,arg2::IS,arg3::PetscScalar,arg4::Vec,arg5::Vec)
-    ccall((:MatZeroRowsColumnsIS,petsc),PetscErrorCode,(Ptr{Void},IS,PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5)
+function MatZeroRowsColumnsIS(arg1::Mat,arg2::IS,arg3::Float64,arg4::Vec,arg5::Vec)
+    ccall((:MatZeroRowsColumnsIS,petsc),PetscErrorCode,(Mat,IS,PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatGetSize(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatGetSize,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
+function MatGetSize(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatGetSize,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function MatGetLocalSize(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatGetLocalSize,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
+function MatGetLocalSize(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatGetLocalSize,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function MatGetOwnershipRange(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatGetOwnershipRange,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
+function MatGetOwnershipRange(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatGetOwnershipRange,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function MatGetOwnershipRanges(arg1::Mat,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:MatGetOwnershipRanges,petsc),PetscErrorCode,(Ptr{Void},Ptr{Ptr{PetscInt}}),arg1,arg2)
+function MatGetOwnershipRanges(arg1::Mat,arg2::Ptr{Ptr{Int32}})
+    ccall((:MatGetOwnershipRanges,petsc),PetscErrorCode,(Mat,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
-function MatGetOwnershipRangeColumn(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatGetOwnershipRangeColumn,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
+function MatGetOwnershipRangeColumn(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatGetOwnershipRangeColumn,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function MatGetOwnershipRangesColumn(arg1::Mat,arg2::Ptr{Ptr{PetscInt}})
-    ccall((:MatGetOwnershipRangesColumn,petsc),PetscErrorCode,(Ptr{Void},Ptr{Ptr{PetscInt}}),arg1,arg2)
+function MatGetOwnershipRangesColumn(arg1::Mat,arg2::Ptr{Ptr{Int32}})
+    ccall((:MatGetOwnershipRangesColumn,petsc),PetscErrorCode,(Mat,Ptr{Ptr{Int32}}),arg1,arg2)
 end
 
 function MatGetOwnershipIS(arg1::Mat,arg2::Ptr{IS},arg3::Ptr{IS})
-    ccall((:MatGetOwnershipIS,petsc),PetscErrorCode,(Ptr{Void},Ptr{IS},Ptr{IS}),arg1,arg2,arg3)
+    ccall((:MatGetOwnershipIS,petsc),PetscErrorCode,(Mat,Ptr{IS},Ptr{IS}),arg1,arg2,arg3)
 end
 
-function MatGetSubMatrices(arg1::Mat,arg2::PetscInt,arg3::Ptr{IS},arg4::Ptr{IS},arg5::MatReuse,arg6::Ptr{Ptr{Mat}})
-    ccall((:MatGetSubMatrices,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{IS},Ptr{IS},MatReuse,Ptr{Ptr{Mat}}),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatGetSubMatrices(arg1::Mat,arg2::Int32,arg3::Ptr{IS},arg4::Ptr{IS},arg5::MatReuse,arg6::Ptr{Ptr{Mat}})
+    ccall((:MatGetSubMatrices,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{IS},Ptr{IS},MatReuse,Ptr{Ptr{Mat}}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatGetSubMatricesMPI(arg1::Mat,arg2::PetscInt,arg3::Ptr{IS},arg4::Ptr{IS},arg5::MatReuse,arg6::Ptr{Ptr{Mat}})
-    ccall((:MatGetSubMatricesMPI,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{IS},Ptr{IS},MatReuse,Ptr{Ptr{Mat}}),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatGetSubMatricesMPI(arg1::Mat,arg2::Int32,arg3::Ptr{IS},arg4::Ptr{IS},arg5::MatReuse,arg6::Ptr{Ptr{Mat}})
+    ccall((:MatGetSubMatricesMPI,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{IS},Ptr{IS},MatReuse,Ptr{Ptr{Mat}}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatDestroyMatrices(arg1::PetscInt,arg2::Ptr{Ptr{Mat}})
+function MatDestroyMatrices(arg1::Int32,arg2::Ptr{Ptr{Mat}})
     ccall((:MatDestroyMatrices,petsc),PetscErrorCode,(PetscInt,Ptr{Ptr{Mat}}),arg1,arg2)
 end
 
 function MatGetSubMatrix(arg1::Mat,arg2::IS,arg3::IS,arg4::MatReuse,arg5::Ptr{Mat})
-    ccall((:MatGetSubMatrix,petsc),PetscErrorCode,(Ptr{Void},IS,IS,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5)
+    ccall((:MatGetSubMatrix,petsc),PetscErrorCode,(Mat,IS,IS,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5)
 end
 
 function MatGetLocalSubMatrix(arg1::Mat,arg2::IS,arg3::IS,arg4::Ptr{Mat})
-    ccall((:MatGetLocalSubMatrix,petsc),PetscErrorCode,(Ptr{Void},IS,IS,Ptr{Mat}),arg1,arg2,arg3,arg4)
+    ccall((:MatGetLocalSubMatrix,petsc),PetscErrorCode,(Mat,IS,IS,Ptr{Mat}),arg1,arg2,arg3,arg4)
 end
 
 function MatRestoreLocalSubMatrix(arg1::Mat,arg2::IS,arg3::IS,arg4::Ptr{Mat})
-    ccall((:MatRestoreLocalSubMatrix,petsc),PetscErrorCode,(Ptr{Void},IS,IS,Ptr{Mat}),arg1,arg2,arg3,arg4)
+    ccall((:MatRestoreLocalSubMatrix,petsc),PetscErrorCode,(Mat,IS,IS,Ptr{Mat}),arg1,arg2,arg3,arg4)
 end
 
 function MatGetSeqNonzeroStructure(arg1::Mat,arg2::Ptr{Mat})
-    ccall((:MatGetSeqNonzeroStructure,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat}),arg1,arg2)
+    ccall((:MatGetSeqNonzeroStructure,petsc),PetscErrorCode,(Mat,Ptr{Mat}),arg1,arg2)
 end
 
 function MatDestroySeqNonzeroStructure(arg1::Ptr{Mat})
     ccall((:MatDestroySeqNonzeroStructure,petsc),PetscErrorCode,(Ptr{Mat},),arg1)
 end
 
-function MatCreateMPIAIJSumSeqAIJ(arg1::MPI_Comm,arg2::Mat,arg3::PetscInt,arg4::PetscInt,arg5::MatReuse,arg6::Ptr{Mat})
-    ccall((:MatCreateMPIAIJSumSeqAIJ,petsc),PetscErrorCode,(MPI_Comm,Ptr{Void},PetscInt,PetscInt,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatCreateMPIAIJSumSeqAIJ(arg1::MPI_Comm,arg2::Mat,arg3::Int32,arg4::Int32,arg5::MatReuse,arg6::Ptr{Mat})
+    ccall((:MatCreateMPIAIJSumSeqAIJ,petsc),PetscErrorCode,(MPI_Comm,Mat,PetscInt,PetscInt,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatCreateMPIAIJSumSeqAIJSymbolic(arg1::MPI_Comm,arg2::Mat,arg3::PetscInt,arg4::PetscInt,arg5::Ptr{Mat})
-    ccall((:MatCreateMPIAIJSumSeqAIJSymbolic,petsc),PetscErrorCode,(MPI_Comm,Ptr{Void},PetscInt,PetscInt,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5)
+function MatCreateMPIAIJSumSeqAIJSymbolic(arg1::MPI_Comm,arg2::Mat,arg3::Int32,arg4::Int32,arg5::Ptr{Mat})
+    ccall((:MatCreateMPIAIJSumSeqAIJSymbolic,petsc),PetscErrorCode,(MPI_Comm,Mat,PetscInt,PetscInt,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5)
 end
 
 function MatCreateMPIAIJSumSeqAIJNumeric(arg1::Mat,arg2::Mat)
-    ccall((:MatCreateMPIAIJSumSeqAIJNumeric,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void}),arg1,arg2)
+    ccall((:MatCreateMPIAIJSumSeqAIJNumeric,petsc),PetscErrorCode,(Mat,Mat),arg1,arg2)
 end
 
 function MatMPIAIJGetLocalMat(arg1::Mat,arg2::MatReuse,arg3::Ptr{Mat})
-    ccall((:MatMPIAIJGetLocalMat,petsc),PetscErrorCode,(Ptr{Void},MatReuse,Ptr{Mat}),arg1,arg2,arg3)
+    ccall((:MatMPIAIJGetLocalMat,petsc),PetscErrorCode,(Mat,MatReuse,Ptr{Mat}),arg1,arg2,arg3)
 end
 
 function MatMPIAIJGetLocalMatCondensed(arg1::Mat,arg2::MatReuse,arg3::Ptr{IS},arg4::Ptr{IS},arg5::Ptr{Mat})
-    ccall((:MatMPIAIJGetLocalMatCondensed,petsc),PetscErrorCode,(Ptr{Void},MatReuse,Ptr{IS},Ptr{IS},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5)
+    ccall((:MatMPIAIJGetLocalMatCondensed,petsc),PetscErrorCode,(Mat,MatReuse,Ptr{IS},Ptr{IS},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5)
 end
 
 function MatGetBrowsOfAcols(arg1::Mat,arg2::Mat,arg3::MatReuse,arg4::Ptr{IS},arg5::Ptr{IS},arg6::Ptr{Mat})
-    ccall((:MatGetBrowsOfAcols,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},MatReuse,Ptr{IS},Ptr{IS},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6)
+    ccall((:MatGetBrowsOfAcols,petsc),PetscErrorCode,(Mat,Mat,MatReuse,Ptr{IS},Ptr{IS},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatGetGhosts(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{PetscInt}})
-    ccall((:MatGetGhosts,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{Ptr{PetscInt}}),arg1,arg2,arg3)
+function MatGetGhosts(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Int32}})
+    ccall((:MatGetGhosts,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{Ptr{Int32}}),arg1,arg2,arg3)
 end
 
-function MatIncreaseOverlap(arg1::Mat,arg2::PetscInt,arg3::Ptr{IS},arg4::PetscInt)
-    ccall((:MatIncreaseOverlap,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{IS},PetscInt),arg1,arg2,arg3,arg4)
+function MatIncreaseOverlap(arg1::Mat,arg2::Int32,arg3::Ptr{IS},arg4::Int32)
+    ccall((:MatIncreaseOverlap,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{IS},PetscInt),arg1,arg2,arg3,arg4)
 end
 
-function MatMatMult(arg1::Mat,arg2::Mat,arg3::MatReuse,PetscReal::Cint,arg4::Ptr{Mat})
-    ccall((:MatMatMult,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},MatReuse,Cint,Ptr{Mat}),arg1,arg2,arg3,PetscReal,arg4)
+function MatMatMult(arg1::Mat,arg2::Mat,arg3::MatReuse,Float64::Cint,arg4::Ptr{Mat})
+    ccall((:MatMatMult,petsc),PetscErrorCode,(Mat,Mat,MatReuse,Cint,Ptr{Mat}),arg1,arg2,arg3,PetscReal,arg4)
 end
 
-function MatMatMultSymbolic(arg1::Mat,arg2::Mat,PetscReal::Cint,arg3::Ptr{Mat})
-    ccall((:MatMatMultSymbolic,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Cint,Ptr{Mat}),arg1,arg2,PetscReal,arg3)
+function MatMatMultSymbolic(arg1::Mat,arg2::Mat,Float64::Cint,arg3::Ptr{Mat})
+    ccall((:MatMatMultSymbolic,petsc),PetscErrorCode,(Mat,Mat,Cint,Ptr{Mat}),arg1,arg2,PetscReal,arg3)
 end
 
 function MatMatMultNumeric(arg1::Mat,arg2::Mat,arg3::Mat)
-    ccall((:MatMatMultNumeric,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+    ccall((:MatMatMultNumeric,petsc),PetscErrorCode,(Mat,Mat,Mat),arg1,arg2,arg3)
 end
 
-function MatMatMatMult(arg1::Mat,arg2::Mat,arg3::Mat,arg4::MatReuse,PetscReal::Cint,arg5::Ptr{Mat})
-    ccall((:MatMatMatMult,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void},MatReuse,Cint,Ptr{Mat}),arg1,arg2,arg3,arg4,PetscReal,arg5)
+function MatMatMatMult(arg1::Mat,arg2::Mat,arg3::Mat,arg4::MatReuse,Float64::Cint,arg5::Ptr{Mat})
+    ccall((:MatMatMatMult,petsc),PetscErrorCode,(Mat,Mat,Mat,MatReuse,Cint,Ptr{Mat}),arg1,arg2,arg3,arg4,PetscReal,arg5)
 end
 
-function MatMatMatMultSymbolic(arg1::Mat,arg2::Mat,arg3::Mat,PetscReal::Cint,arg4::Ptr{Mat})
-    ccall((:MatMatMatMultSymbolic,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void},Cint,Ptr{Mat}),arg1,arg2,arg3,PetscReal,arg4)
+function MatMatMatMultSymbolic(arg1::Mat,arg2::Mat,arg3::Mat,Float64::Cint,arg4::Ptr{Mat})
+    ccall((:MatMatMatMultSymbolic,petsc),PetscErrorCode,(Mat,Mat,Mat,Cint,Ptr{Mat}),arg1,arg2,arg3,PetscReal,arg4)
 end
 
 function MatMatMatMultNumeric(arg1::Mat,arg2::Mat,arg3::Mat,arg4::Mat)
-    ccall((:MatMatMatMultNumeric,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
+    ccall((:MatMatMatMultNumeric,petsc),PetscErrorCode,(Mat,Mat,Mat,Mat),arg1,arg2,arg3,arg4)
 end
 
-function MatPtAP(arg1::Mat,arg2::Mat,arg3::MatReuse,PetscReal::Cint,arg4::Ptr{Mat})
-    ccall((:MatPtAP,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},MatReuse,Cint,Ptr{Mat}),arg1,arg2,arg3,PetscReal,arg4)
+function MatPtAP(arg1::Mat,arg2::Mat,arg3::MatReuse,Float64::Cint,arg4::Ptr{Mat})
+    ccall((:MatPtAP,petsc),PetscErrorCode,(Mat,Mat,MatReuse,Cint,Ptr{Mat}),arg1,arg2,arg3,PetscReal,arg4)
 end
 
-function MatPtAPSymbolic(arg1::Mat,arg2::Mat,PetscReal::Cint,arg3::Ptr{Mat})
-    ccall((:MatPtAPSymbolic,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Cint,Ptr{Mat}),arg1,arg2,PetscReal,arg3)
+function MatPtAPSymbolic(arg1::Mat,arg2::Mat,Float64::Cint,arg3::Ptr{Mat})
+    ccall((:MatPtAPSymbolic,petsc),PetscErrorCode,(Mat,Mat,Cint,Ptr{Mat}),arg1,arg2,PetscReal,arg3)
 end
 
 function MatPtAPNumeric(arg1::Mat,arg2::Mat,arg3::Mat)
-    ccall((:MatPtAPNumeric,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+    ccall((:MatPtAPNumeric,petsc),PetscErrorCode,(Mat,Mat,Mat),arg1,arg2,arg3)
 end
 
-function MatRARt(arg1::Mat,arg2::Mat,arg3::MatReuse,PetscReal::Cint,arg4::Ptr{Mat})
-    ccall((:MatRARt,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},MatReuse,Cint,Ptr{Mat}),arg1,arg2,arg3,PetscReal,arg4)
+function MatRARt(arg1::Mat,arg2::Mat,arg3::MatReuse,Float64::Cint,arg4::Ptr{Mat})
+    ccall((:MatRARt,petsc),PetscErrorCode,(Mat,Mat,MatReuse,Cint,Ptr{Mat}),arg1,arg2,arg3,PetscReal,arg4)
 end
 
-function MatRARtSymbolic(arg1::Mat,arg2::Mat,PetscReal::Cint,arg3::Ptr{Mat})
-    ccall((:MatRARtSymbolic,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Cint,Ptr{Mat}),arg1,arg2,PetscReal,arg3)
+function MatRARtSymbolic(arg1::Mat,arg2::Mat,Float64::Cint,arg3::Ptr{Mat})
+    ccall((:MatRARtSymbolic,petsc),PetscErrorCode,(Mat,Mat,Cint,Ptr{Mat}),arg1,arg2,PetscReal,arg3)
 end
 
 function MatRARtNumeric(arg1::Mat,arg2::Mat,arg3::Mat)
-    ccall((:MatRARtNumeric,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+    ccall((:MatRARtNumeric,petsc),PetscErrorCode,(Mat,Mat,Mat),arg1,arg2,arg3)
 end
 
-function MatTransposeMatMult(arg1::Mat,arg2::Mat,arg3::MatReuse,PetscReal::Cint,arg4::Ptr{Mat})
-    ccall((:MatTransposeMatMult,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},MatReuse,Cint,Ptr{Mat}),arg1,arg2,arg3,PetscReal,arg4)
+function MatTransposeMatMult(arg1::Mat,arg2::Mat,arg3::MatReuse,Float64::Cint,arg4::Ptr{Mat})
+    ccall((:MatTransposeMatMult,petsc),PetscErrorCode,(Mat,Mat,MatReuse,Cint,Ptr{Mat}),arg1,arg2,arg3,PetscReal,arg4)
 end
 
-function MatTransposetMatMultSymbolic(arg1::Mat,arg2::Mat,PetscReal::Cint,arg3::Ptr{Mat})
-    ccall((:MatTransposetMatMultSymbolic,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Cint,Ptr{Mat}),arg1,arg2,PetscReal,arg3)
+function MatTransposetMatMultSymbolic(arg1::Mat,arg2::Mat,Float64::Cint,arg3::Ptr{Mat})
+    ccall((:MatTransposetMatMultSymbolic,petsc),PetscErrorCode,(Mat,Mat,Cint,Ptr{Mat}),arg1,arg2,PetscReal,arg3)
 end
 
 function MatTransposetMatMultNumeric(arg1::Mat,arg2::Mat,arg3::Mat)
-    ccall((:MatTransposetMatMultNumeric,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+    ccall((:MatTransposetMatMultNumeric,petsc),PetscErrorCode,(Mat,Mat,Mat),arg1,arg2,arg3)
 end
 
-function MatMatTransposeMult(arg1::Mat,arg2::Mat,arg3::MatReuse,PetscReal::Cint,arg4::Ptr{Mat})
-    ccall((:MatMatTransposeMult,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},MatReuse,Cint,Ptr{Mat}),arg1,arg2,arg3,PetscReal,arg4)
+function MatMatTransposeMult(arg1::Mat,arg2::Mat,arg3::MatReuse,Float64::Cint,arg4::Ptr{Mat})
+    ccall((:MatMatTransposeMult,petsc),PetscErrorCode,(Mat,Mat,MatReuse,Cint,Ptr{Mat}),arg1,arg2,arg3,PetscReal,arg4)
 end
 
-function MatMatTransposeMultSymbolic(arg1::Mat,arg2::Mat,PetscReal::Cint,arg3::Ptr{Mat})
-    ccall((:MatMatTransposeMultSymbolic,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Cint,Ptr{Mat}),arg1,arg2,PetscReal,arg3)
+function MatMatTransposeMultSymbolic(arg1::Mat,arg2::Mat,Float64::Cint,arg3::Ptr{Mat})
+    ccall((:MatMatTransposeMultSymbolic,petsc),PetscErrorCode,(Mat,Mat,Cint,Ptr{Mat}),arg1,arg2,PetscReal,arg3)
 end
 
 function MatMatTransposeMultNumeric(arg1::Mat,arg2::Mat,arg3::Mat)
-    ccall((:MatMatTransposeMultNumeric,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+    ccall((:MatMatTransposeMultNumeric,petsc),PetscErrorCode,(Mat,Mat,Mat),arg1,arg2,arg3)
 end
 
-function MatAXPY(arg1::Mat,arg2::PetscScalar,arg3::Mat,arg4::MatStructure)
-    ccall((:MatAXPY,petsc),PetscErrorCode,(Ptr{Void},PetscScalar,Ptr{Void},MatStructure),arg1,arg2,arg3,arg4)
+function MatAXPY(arg1::Mat,arg2::Float64,arg3::Mat,arg4::MatStructure)
+    ccall((:MatAXPY,petsc),PetscErrorCode,(Mat,PetscScalar,Mat,MatStructure),arg1,arg2,arg3,arg4)
 end
 
-function MatAYPX(arg1::Mat,arg2::PetscScalar,arg3::Mat,arg4::MatStructure)
-    ccall((:MatAYPX,petsc),PetscErrorCode,(Ptr{Void},PetscScalar,Ptr{Void},MatStructure),arg1,arg2,arg3,arg4)
+function MatAYPX(arg1::Mat,arg2::Float64,arg3::Mat,arg4::MatStructure)
+    ccall((:MatAYPX,petsc),PetscErrorCode,(Mat,PetscScalar,Mat,MatStructure),arg1,arg2,arg3,arg4)
 end
 
-function MatScale(arg1::Mat,arg2::PetscScalar)
-    ccall((:MatScale,petsc),PetscErrorCode,(Ptr{Void},PetscScalar),arg1,arg2)
+function MatScale(arg1::Mat,arg2::Float64)
+    ccall((:MatScale,petsc),PetscErrorCode,(Mat,PetscScalar),arg1,arg2)
 end
 
-function MatShift(arg1::Mat,arg2::PetscScalar)
-    ccall((:MatShift,petsc),PetscErrorCode,(Ptr{Void},PetscScalar),arg1,arg2)
+function MatShift(arg1::Mat,arg2::Float64)
+    ccall((:MatShift,petsc),PetscErrorCode,(Mat,PetscScalar),arg1,arg2)
 end
 
 function MatSetLocalToGlobalMapping(arg1::Mat,arg2::ISLocalToGlobalMapping,arg3::ISLocalToGlobalMapping)
-    ccall((:MatSetLocalToGlobalMapping,petsc),PetscErrorCode,(Ptr{Void},ISLocalToGlobalMapping,ISLocalToGlobalMapping),arg1,arg2,arg3)
+    ccall((:MatSetLocalToGlobalMapping,petsc),PetscErrorCode,(Mat,ISLocalToGlobalMapping,ISLocalToGlobalMapping),arg1,arg2,arg3)
 end
 
 function MatGetLocalToGlobalMapping(arg1::Mat,arg2::Ptr{ISLocalToGlobalMapping},arg3::Ptr{ISLocalToGlobalMapping})
-    ccall((:MatGetLocalToGlobalMapping,petsc),PetscErrorCode,(Ptr{Void},Ptr{ISLocalToGlobalMapping},Ptr{ISLocalToGlobalMapping}),arg1,arg2,arg3)
+    ccall((:MatGetLocalToGlobalMapping,petsc),PetscErrorCode,(Mat,Ptr{ISLocalToGlobalMapping},Ptr{ISLocalToGlobalMapping}),arg1,arg2,arg3)
 end
 
 function MatGetLayouts(arg1::Mat,arg2::Ptr{PetscLayout},arg3::Ptr{PetscLayout})
-    ccall((:MatGetLayouts,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscLayout},Ptr{PetscLayout}),arg1,arg2,arg3)
+    ccall((:MatGetLayouts,petsc),PetscErrorCode,(Mat,Ptr{PetscLayout},Ptr{PetscLayout}),arg1,arg2,arg3)
 end
 
-function MatZeroRowsLocal(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscScalar,arg5::Vec,arg6::Vec)
-    ccall((:MatZeroRowsLocal,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatZeroRowsLocal(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Float64,arg5::Vec,arg6::Vec)
+    ccall((:MatZeroRowsLocal,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatZeroRowsLocalIS(arg1::Mat,arg2::IS,arg3::PetscScalar,arg4::Vec,arg5::Vec)
-    ccall((:MatZeroRowsLocalIS,petsc),PetscErrorCode,(Ptr{Void},IS,PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5)
+function MatZeroRowsLocalIS(arg1::Mat,arg2::IS,arg3::Float64,arg4::Vec,arg5::Vec)
+    ccall((:MatZeroRowsLocalIS,petsc),PetscErrorCode,(Mat,IS,PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatZeroRowsColumnsLocal(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscScalar,arg5::Vec,arg6::Vec)
-    ccall((:MatZeroRowsColumnsLocal,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatZeroRowsColumnsLocal(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Float64,arg5::Vec,arg6::Vec)
+    ccall((:MatZeroRowsColumnsLocal,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatZeroRowsColumnsLocalIS(arg1::Mat,arg2::IS,arg3::PetscScalar,arg4::Vec,arg5::Vec)
-    ccall((:MatZeroRowsColumnsLocalIS,petsc),PetscErrorCode,(Ptr{Void},IS,PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5)
+function MatZeroRowsColumnsLocalIS(arg1::Mat,arg2::IS,arg3::Float64,arg4::Vec,arg5::Vec)
+    ccall((:MatZeroRowsColumnsLocalIS,petsc),PetscErrorCode,(Mat,IS,PetscScalar,Vec,Vec),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatSetValuesLocal(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{PetscScalar},arg7::InsertMode)
-    ccall((:MatSetValuesLocal,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{PetscScalar},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function MatSetValuesLocal(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Float64},arg7::InsertMode)
+    ccall((:MatSetValuesLocal,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatSetValuesBlockedLocal(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{PetscScalar},arg7::InsertMode)
-    ccall((:MatSetValuesBlockedLocal,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{PetscScalar},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function MatSetValuesBlockedLocal(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Float64},arg7::InsertMode)
+    ccall((:MatSetValuesBlockedLocal,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatStashSetInitialSize(arg1::Mat,arg2::PetscInt,arg3::PetscInt)
-    ccall((:MatStashSetInitialSize,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscInt),arg1,arg2,arg3)
+function MatStashSetInitialSize(arg1::Mat,arg2::Int32,arg3::Int32)
+    ccall((:MatStashSetInitialSize,petsc),PetscErrorCode,(Mat,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
-function MatStashGetInfo(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatStashGetInfo,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5)
+function MatStashGetInfo(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatStashGetInfo,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5)
 end
 
 function MatInterpolate(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatInterpolate,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatInterpolate,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function MatInterpolateAdd(arg1::Mat,arg2::Vec,arg3::Vec,arg4::Vec)
-    ccall((:MatInterpolateAdd,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec,Vec),arg1,arg2,arg3,arg4)
+    ccall((:MatInterpolateAdd,petsc),PetscErrorCode,(Mat,Vec,Vec,Vec),arg1,arg2,arg3,arg4)
 end
 
 function MatRestrict(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatRestrict,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatRestrict,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function MatCreateVecs(arg1::Mat,arg2::Ptr{Vec},arg3::Ptr{Vec})
-    ccall((:MatCreateVecs,petsc),PetscErrorCode,(Ptr{Void},Ptr{Vec},Ptr{Vec}),arg1,arg2,arg3)
+    ccall((:MatCreateVecs,petsc),PetscErrorCode,(Mat,Ptr{Vec},Ptr{Vec}),arg1,arg2,arg3)
 end
 
 function MatGetMultiProcBlock(arg1::Mat,arg2::MPI_Comm,arg3::MatReuse,arg4::Ptr{Mat})
-    ccall((:MatGetMultiProcBlock,petsc),PetscErrorCode,(Ptr{Void},MPI_Comm,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4)
+    ccall((:MatGetMultiProcBlock,petsc),PetscErrorCode,(Mat,MPI_Comm,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4)
 end
 
 function MatFindZeroDiagonals(arg1::Mat,arg2::Ptr{IS})
-    ccall((:MatFindZeroDiagonals,petsc),PetscErrorCode,(Ptr{Void},Ptr{IS}),arg1,arg2)
+    ccall((:MatFindZeroDiagonals,petsc),PetscErrorCode,(Mat,Ptr{IS}),arg1,arg2)
 end
 
 function MatFindOffBlockDiagonalEntries(arg1::Mat,arg2::Ptr{IS})
-    ccall((:MatFindOffBlockDiagonalEntries,petsc),PetscErrorCode,(Ptr{Void},Ptr{IS}),arg1,arg2)
+    ccall((:MatFindOffBlockDiagonalEntries,petsc),PetscErrorCode,(Mat,Ptr{IS}),arg1,arg2)
 end
 
-function MatCreateMPIMatConcatenateSeqMat(arg1::MPI_Comm,arg2::Mat,arg3::PetscInt,arg4::MatReuse,arg5::Ptr{Mat})
-    ccall((:MatCreateMPIMatConcatenateSeqMat,petsc),PetscErrorCode,(MPI_Comm,Ptr{Void},PetscInt,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5)
+function MatCreateMPIMatConcatenateSeqMat(arg1::MPI_Comm,arg2::Mat,arg3::Int32,arg4::MatReuse,arg5::Ptr{Mat})
+    ccall((:MatCreateMPIMatConcatenateSeqMat,petsc),PetscErrorCode,(MPI_Comm,Mat,PetscInt,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5)
 end
 
 function MatInodeAdjustForInodes(arg1::Mat,arg2::Ptr{IS},arg3::Ptr{IS})
-    ccall((:MatInodeAdjustForInodes,petsc),PetscErrorCode,(Ptr{Void},Ptr{IS},Ptr{IS}),arg1,arg2,arg3)
+    ccall((:MatInodeAdjustForInodes,petsc),PetscErrorCode,(Mat,Ptr{IS},Ptr{IS}),arg1,arg2,arg3)
 end
 
-function MatInodeGetInodeSizes(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{PetscInt}},arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatInodeGetInodeSizes,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{Ptr{PetscInt}},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
+function MatInodeGetInodeSizes(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Int32}},arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatInodeGetInodeSizes,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{Ptr{Int32}},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
-function MatSeqAIJSetColumnIndices(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatSeqAIJSetColumnIndices,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt}),arg1,arg2)
+function MatSeqAIJSetColumnIndices(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatSeqAIJSetColumnIndices,petsc),PetscErrorCode,(Mat,Ptr{PetscInt}),arg1,arg2)
 end
 
-function MatSeqBAIJSetColumnIndices(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatSeqBAIJSetColumnIndices,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt}),arg1,arg2)
+function MatSeqBAIJSetColumnIndices(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatSeqBAIJSetColumnIndices,petsc),PetscErrorCode,(Mat,Ptr{PetscInt}),arg1,arg2)
 end
 
-function MatCreateSeqAIJWithArrays(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{PetscScalar},arg7::Ptr{Mat})
-    ccall((:MatCreateSeqAIJWithArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function MatCreateSeqAIJWithArrays(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Float64},arg7::Ptr{Mat})
+    ccall((:MatCreateSeqAIJWithArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatCreateSeqBAIJWithArrays(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{PetscScalar},arg8::Ptr{Mat})
-    ccall((:MatCreateSeqBAIJWithArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function MatCreateSeqBAIJWithArrays(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{Float64},arg8::Ptr{Mat})
+    ccall((:MatCreateSeqBAIJWithArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function MatCreateSeqSBAIJWithArrays(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg7::Ptr{PetscScalar},arg8::Ptr{Mat})
-    ccall((:MatCreateSeqSBAIJWithArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function MatCreateSeqSBAIJWithArrays(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg7::Ptr{Float64},arg8::Ptr{Mat})
+    ccall((:MatCreateSeqSBAIJWithArrays,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function MatCreateSeqAIJFromTriple(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{PetscScalar},arg7::Ptr{Mat},arg8::PetscInt,arg9::PetscBool)
-    ccall((:MatCreateSeqAIJFromTriple,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar},Ptr{Mat},PetscInt,PetscBool),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
+function MatCreateSeqAIJFromTriple(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Float64},arg7::Ptr{Mat},arg8::Int32,arg9::PetscBool)
+    ccall((:MatCreateSeqAIJFromTriple,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64},Ptr{Mat},PetscInt,PetscBool),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
 end
 
-function MatSeqBAIJSetPreallocation(arg1::Mat,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatSeqBAIJSetPreallocation,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4)
+function MatSeqBAIJSetPreallocation(arg1::Mat,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatSeqBAIJSetPreallocation,petsc),PetscErrorCode,(Mat,PetscInt,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
-function MatSeqSBAIJSetPreallocation(arg1::Mat,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatSeqSBAIJSetPreallocation,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4)
+function MatSeqSBAIJSetPreallocation(arg1::Mat,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatSeqSBAIJSetPreallocation,petsc),PetscErrorCode,(Mat,PetscInt,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
-function MatSeqAIJSetPreallocation(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatSeqAIJSetPreallocation,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt}),arg1,arg2,arg3)
+function MatSeqAIJSetPreallocation(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatSeqAIJSetPreallocation,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function MatMPIBAIJSetPreallocation(arg1::Mat,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::PetscInt,arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatMPIBAIJSetPreallocation,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatMPIBAIJSetPreallocation(arg1::Mat,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Int32,arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatMPIBAIJSetPreallocation,petsc),PetscErrorCode,(Mat,PetscInt,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatMPISBAIJSetPreallocation(arg1::Mat,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::PetscInt,arg6::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatMPISBAIJSetPreallocation,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatMPISBAIJSetPreallocation(arg1::Mat,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Int32,arg6::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatMPISBAIJSetPreallocation,petsc),PetscErrorCode,(Mat,PetscInt,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatMPIAIJSetPreallocation(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatMPIAIJSetPreallocation,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5)
+function MatMPIAIJSetPreallocation(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatMPIAIJSetPreallocation,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatSeqAIJSetPreallocationCSR(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{PetscScalar})
-    ccall((:MatSeqAIJSetPreallocationCSR,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar}),arg1,arg2,arg3,arg4)
+function MatSeqAIJSetPreallocationCSR(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Float64})
+    ccall((:MatSeqAIJSetPreallocationCSR,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64}),arg1,arg2,arg3,arg4)
 end
 
-function MatSeqBAIJSetPreallocationCSR(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Ptr{PetscScalar})
-    ccall((:MatSeqBAIJSetPreallocationCSR,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar}),arg1,arg2,arg3,arg4,arg5)
+function MatSeqBAIJSetPreallocationCSR(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Ptr{Float64})
+    ccall((:MatSeqBAIJSetPreallocationCSR,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatMPIAIJSetPreallocationCSR(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{PetscScalar})
-    ccall((:MatMPIAIJSetPreallocationCSR,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar}),arg1,arg2,arg3,arg4)
+function MatMPIAIJSetPreallocationCSR(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Float64})
+    ccall((:MatMPIAIJSetPreallocationCSR,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64}),arg1,arg2,arg3,arg4)
 end
 
-function MatMPIBAIJSetPreallocationCSR(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Ptr{PetscScalar})
-    ccall((:MatMPIBAIJSetPreallocationCSR,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscScalar}),arg1,arg2,arg3,arg4,arg5)
+function MatMPIBAIJSetPreallocationCSR(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Ptr{Float64})
+    ccall((:MatMPIBAIJSetPreallocationCSR,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatMPIAdjSetPreallocation(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatMPIAdjSetPreallocation,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
+function MatMPIAdjSetPreallocation(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatMPIAdjSetPreallocation,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
-function MatMPIDenseSetPreallocation(arg1::Mat,arg2::Ptr{PetscScalar})
-    ccall((:MatMPIDenseSetPreallocation,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscScalar}),arg1,arg2)
+function MatMPIDenseSetPreallocation(arg1::Mat,arg2::Ptr{Float64})
+    ccall((:MatMPIDenseSetPreallocation,petsc),PetscErrorCode,(Mat,Ptr{Float64}),arg1,arg2)
 end
 
-function MatSeqDenseSetPreallocation(arg1::Mat,arg2::Ptr{PetscScalar})
-    ccall((:MatSeqDenseSetPreallocation,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscScalar}),arg1,arg2)
+function MatSeqDenseSetPreallocation(arg1::Mat,arg2::Ptr{Float64})
+    ccall((:MatSeqDenseSetPreallocation,petsc),PetscErrorCode,(Mat,Ptr{Float64}),arg1,arg2)
 end
 
-function MatMPIAIJGetSeqAIJ(arg1::Mat,arg2::Ptr{Mat},arg3::Ptr{Mat},arg4::Ptr{Ptr{PetscInt}})
-    ccall((:MatMPIAIJGetSeqAIJ,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat},Ptr{Mat},Ptr{Ptr{PetscInt}}),arg1,arg2,arg3,arg4)
+function MatMPIAIJGetSeqAIJ(arg1::Mat,arg2::Ptr{Mat},arg3::Ptr{Mat},arg4::Ptr{Ptr{Int32}})
+    ccall((:MatMPIAIJGetSeqAIJ,petsc),PetscErrorCode,(Mat,Ptr{Mat},Ptr{Mat},Ptr{Ptr{Int32}}),arg1,arg2,arg3,arg4)
 end
 
-function MatMPIBAIJGetSeqBAIJ(arg1::Mat,arg2::Ptr{Mat},arg3::Ptr{Mat},arg4::Ptr{Ptr{PetscInt}})
-    ccall((:MatMPIBAIJGetSeqBAIJ,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat},Ptr{Mat},Ptr{Ptr{PetscInt}}),arg1,arg2,arg3,arg4)
+function MatMPIBAIJGetSeqBAIJ(arg1::Mat,arg2::Ptr{Mat},arg3::Ptr{Mat},arg4::Ptr{Ptr{Int32}})
+    ccall((:MatMPIBAIJGetSeqBAIJ,petsc),PetscErrorCode,(Mat,Ptr{Mat},Ptr{Mat},Ptr{Ptr{Int32}}),arg1,arg2,arg3,arg4)
 end
 
 function MatMPIAdjCreateNonemptySubcommMat(arg1::Mat,arg2::Ptr{Mat})
-    ccall((:MatMPIAdjCreateNonemptySubcommMat,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat}),arg1,arg2)
+    ccall((:MatMPIAdjCreateNonemptySubcommMat,petsc),PetscErrorCode,(Mat,Ptr{Mat}),arg1,arg2)
 end
 
-function MatISSetPreallocation(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::PetscInt,arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatISSetPreallocation,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5)
+function MatISSetPreallocation(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Int32,arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatISSetPreallocation,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},PetscInt,Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function MatSeqDenseSetLDA(arg1::Mat,arg2::PetscInt)
-    ccall((:MatSeqDenseSetLDA,petsc),PetscErrorCode,(Ptr{Void},PetscInt),arg1,arg2)
+function MatSeqDenseSetLDA(arg1::Mat,arg2::Int32)
+    ccall((:MatSeqDenseSetLDA,petsc),PetscErrorCode,(Mat,PetscInt),arg1,arg2)
 end
 
 function MatDenseGetLocalMatrix(arg1::Mat,arg2::Ptr{Mat})
-    ccall((:MatDenseGetLocalMatrix,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat}),arg1,arg2)
+    ccall((:MatDenseGetLocalMatrix,petsc),PetscErrorCode,(Mat,Ptr{Mat}),arg1,arg2)
 end
 
 function MatStoreValues(arg1::Mat)
-    ccall((:MatStoreValues,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatStoreValues,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
 function MatRetrieveValues(arg1::Mat)
-    ccall((:MatRetrieveValues,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatRetrieveValues,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
 function MatDAADSetCtx(arg1::Mat,arg2::Ptr{Void})
-    ccall((:MatDAADSetCtx,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void}),arg1,arg2)
+    ccall((:MatDAADSetCtx,petsc),PetscErrorCode,(Mat,Ptr{Void}),arg1,arg2)
 end
 
 function MatFindNonzeroRows(arg1::Mat,arg2::Ptr{IS})
-    ccall((:MatFindNonzeroRows,petsc),PetscErrorCode,(Ptr{Void},Ptr{IS}),arg1,arg2)
+    ccall((:MatFindNonzeroRows,petsc),PetscErrorCode,(Mat,Ptr{IS}),arg1,arg2)
 end
 
 function MatGetOrdering(arg1::Mat,arg2::MatOrderingType,arg3::Ptr{IS},arg4::Ptr{IS})
-    ccall((:MatGetOrdering,petsc),PetscErrorCode,(Ptr{Void},MatOrderingType,Ptr{IS},Ptr{IS}),arg1,arg2,arg3,arg4)
+    ccall((:MatGetOrdering,petsc),PetscErrorCode,(Mat,MatOrderingType,Ptr{IS},Ptr{IS}),arg1,arg2,arg3,arg4)
 end
 
 function MatGetOrderingList(arg1::Ptr{PetscFunctionList})
@@ -4394,12 +4394,12 @@ function MatOrderingRegister(arg1::Ptr{Uint8},arg2::Ptr{Void})
     ccall((:MatOrderingRegister,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Void}),arg1,arg2)
 end
 
-function MatReorderForNonzeroDiagonal(arg1::Mat,PetscReal::Cint,arg2::IS,arg3::IS)
-    ccall((:MatReorderForNonzeroDiagonal,petsc),PetscErrorCode,(Ptr{Void},Cint,IS,IS),arg1,PetscReal,arg2,arg3)
+function MatReorderForNonzeroDiagonal(arg1::Mat,Float64::Cint,arg2::IS,arg3::IS)
+    ccall((:MatReorderForNonzeroDiagonal,petsc),PetscErrorCode,(Mat,Cint,IS,IS),arg1,PetscReal,arg2,arg3)
 end
 
-function MatCreateLaplacian(arg1::Mat,PetscReal::Cint,arg2::PetscBool,arg3::Ptr{Mat})
-    ccall((:MatCreateLaplacian,petsc),PetscErrorCode,(Ptr{Void},Cint,PetscBool,Ptr{Mat}),arg1,PetscReal,arg2,arg3)
+function MatCreateLaplacian(arg1::Mat,Float64::Cint,arg2::PetscBool,arg3::Ptr{Mat})
+    ccall((:MatCreateLaplacian,petsc),PetscErrorCode,(Mat,Cint,PetscBool,Ptr{Mat}),arg1,PetscReal,arg2,arg3)
 end
 
 function MatFactorInfoInitialize(arg1::Ptr{MatFactorInfo})
@@ -4407,91 +4407,91 @@ function MatFactorInfoInitialize(arg1::Ptr{MatFactorInfo})
 end
 
 function MatCholeskyFactor(arg1::Mat,arg2::IS,arg3::Ptr{MatFactorInfo})
-    ccall((:MatCholeskyFactor,petsc),PetscErrorCode,(Ptr{Void},IS,Ptr{MatFactorInfo}),arg1,arg2,arg3)
+    ccall((:MatCholeskyFactor,petsc),PetscErrorCode,(Mat,IS,Ptr{MatFactorInfo}),arg1,arg2,arg3)
 end
 
 function MatCholeskyFactorSymbolic(arg1::Mat,arg2::Mat,arg3::IS,arg4::Ptr{MatFactorInfo})
-    ccall((:MatCholeskyFactorSymbolic,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},IS,Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
+    ccall((:MatCholeskyFactorSymbolic,petsc),PetscErrorCode,(Mat,Mat,IS,Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
 end
 
 function MatCholeskyFactorNumeric(arg1::Mat,arg2::Mat,arg3::Ptr{MatFactorInfo})
-    ccall((:MatCholeskyFactorNumeric,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{MatFactorInfo}),arg1,arg2,arg3)
+    ccall((:MatCholeskyFactorNumeric,petsc),PetscErrorCode,(Mat,Mat,Ptr{MatFactorInfo}),arg1,arg2,arg3)
 end
 
 function MatLUFactor(arg1::Mat,arg2::IS,arg3::IS,arg4::Ptr{MatFactorInfo})
-    ccall((:MatLUFactor,petsc),PetscErrorCode,(Ptr{Void},IS,IS,Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
+    ccall((:MatLUFactor,petsc),PetscErrorCode,(Mat,IS,IS,Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
 end
 
 function MatILUFactor(arg1::Mat,arg2::IS,arg3::IS,arg4::Ptr{MatFactorInfo})
-    ccall((:MatILUFactor,petsc),PetscErrorCode,(Ptr{Void},IS,IS,Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
+    ccall((:MatILUFactor,petsc),PetscErrorCode,(Mat,IS,IS,Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
 end
 
 function MatLUFactorSymbolic(arg1::Mat,arg2::Mat,arg3::IS,arg4::IS,arg5::Ptr{MatFactorInfo})
-    ccall((:MatLUFactorSymbolic,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},IS,IS,Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4,arg5)
+    ccall((:MatLUFactorSymbolic,petsc),PetscErrorCode,(Mat,Mat,IS,IS,Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4,arg5)
 end
 
 function MatILUFactorSymbolic(arg1::Mat,arg2::Mat,arg3::IS,arg4::IS,arg5::Ptr{MatFactorInfo})
-    ccall((:MatILUFactorSymbolic,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},IS,IS,Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4,arg5)
+    ccall((:MatILUFactorSymbolic,petsc),PetscErrorCode,(Mat,Mat,IS,IS,Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4,arg5)
 end
 
 function MatICCFactorSymbolic(arg1::Mat,arg2::Mat,arg3::IS,arg4::Ptr{MatFactorInfo})
-    ccall((:MatICCFactorSymbolic,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},IS,Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
+    ccall((:MatICCFactorSymbolic,petsc),PetscErrorCode,(Mat,Mat,IS,Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
 end
 
 function MatICCFactor(arg1::Mat,arg2::IS,arg3::Ptr{MatFactorInfo})
-    ccall((:MatICCFactor,petsc),PetscErrorCode,(Ptr{Void},IS,Ptr{MatFactorInfo}),arg1,arg2,arg3)
+    ccall((:MatICCFactor,petsc),PetscErrorCode,(Mat,IS,Ptr{MatFactorInfo}),arg1,arg2,arg3)
 end
 
 function MatLUFactorNumeric(arg1::Mat,arg2::Mat,arg3::Ptr{MatFactorInfo})
-    ccall((:MatLUFactorNumeric,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{MatFactorInfo}),arg1,arg2,arg3)
+    ccall((:MatLUFactorNumeric,petsc),PetscErrorCode,(Mat,Mat,Ptr{MatFactorInfo}),arg1,arg2,arg3)
 end
 
-function MatGetInertia(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatGetInertia,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
+function MatGetInertia(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatGetInertia,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4)
 end
 
 function MatSolve(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatSolve,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatSolve,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function MatForwardSolve(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatForwardSolve,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatForwardSolve,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function MatBackwardSolve(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatBackwardSolve,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatBackwardSolve,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function MatSolveAdd(arg1::Mat,arg2::Vec,arg3::Vec,arg4::Vec)
-    ccall((:MatSolveAdd,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec,Vec),arg1,arg2,arg3,arg4)
+    ccall((:MatSolveAdd,petsc),PetscErrorCode,(Mat,Vec,Vec,Vec),arg1,arg2,arg3,arg4)
 end
 
 function MatSolveTranspose(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatSolveTranspose,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatSolveTranspose,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function MatSolveTransposeAdd(arg1::Mat,arg2::Vec,arg3::Vec,arg4::Vec)
-    ccall((:MatSolveTransposeAdd,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec,Vec),arg1,arg2,arg3,arg4)
+    ccall((:MatSolveTransposeAdd,petsc),PetscErrorCode,(Mat,Vec,Vec,Vec),arg1,arg2,arg3,arg4)
 end
 
 function MatSolves(arg1::Mat,arg2::Vecs,arg3::Vecs)
-    ccall((:MatSolves,petsc),PetscErrorCode,(Ptr{Void},Vecs,Vecs),arg1,arg2,arg3)
+    ccall((:MatSolves,petsc),PetscErrorCode,(Mat,Vecs,Vecs),arg1,arg2,arg3)
 end
 
 function MatSetUnfactored(arg1::Mat)
-    ccall((:MatSetUnfactored,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatSetUnfactored,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
-function MatSOR(arg1::Mat,arg2::Vec,PetscReal::Cint,arg3::MatSORType,arg4::Cint,arg5::PetscInt,arg6::PetscInt,arg7::Vec)
-    ccall((:MatSOR,petsc),PetscErrorCode,(Ptr{Void},Vec,Cint,MatSORType,Cint,PetscInt,PetscInt,Vec),arg1,arg2,PetscReal,arg3,arg4,arg5,arg6,arg7)
+function MatSOR(arg1::Mat,arg2::Vec,Float64::Cint,arg3::MatSORType,arg4::Cint,arg5::Int32,arg6::Int32,arg7::Vec)
+    ccall((:MatSOR,petsc),PetscErrorCode,(Mat,Vec,Cint,MatSORType,Cint,PetscInt,PetscInt,Vec),arg1,arg2,PetscReal,arg3,arg4,arg5,arg6,arg7)
 end
 
 function MatColoringCreate(arg1::Mat,arg2::Ptr{MatColoring})
-    ccall((:MatColoringCreate,petsc),PetscErrorCode,(Ptr{Void},Ptr{MatColoring}),arg1,arg2)
+    ccall((:MatColoringCreate,petsc),PetscErrorCode,(Mat,Ptr{MatColoring}),arg1,arg2)
 end
 
-function MatColoringGetDegrees(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatColoringGetDegrees,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt}),arg1,arg2,arg3)
+function MatColoringGetDegrees(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatColoringGetDegrees,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
 function MatColoringDestroy(arg1::Ptr{MatColoring})
@@ -4510,19 +4510,19 @@ function MatColoringSetFromOptions(arg1::MatColoring)
     ccall((:MatColoringSetFromOptions,petsc),PetscErrorCode,(MatColoring,),arg1)
 end
 
-function MatColoringSetDistance(arg1::MatColoring,arg2::PetscInt)
+function MatColoringSetDistance(arg1::MatColoring,arg2::Int32)
     ccall((:MatColoringSetDistance,petsc),PetscErrorCode,(MatColoring,PetscInt),arg1,arg2)
 end
 
-function MatColoringGetDistance(arg1::MatColoring,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function MatColoringGetDistance(arg1::MatColoring,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:MatColoringGetDistance,petsc),PetscErrorCode,(MatColoring,Ptr{PetscInt}),arg1,arg2)
 end
 
-function MatColoringSetMaxColors(arg1::MatColoring,arg2::PetscInt)
+function MatColoringSetMaxColors(arg1::MatColoring,arg2::Int32)
     ccall((:MatColoringSetMaxColors,petsc),PetscErrorCode,(MatColoring,PetscInt),arg1,arg2)
 end
 
-function MatColoringGetMaxColors(arg1::MatColoring,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function MatColoringGetMaxColors(arg1::MatColoring,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:MatColoringGetMaxColors,petsc),PetscErrorCode,(MatColoring,Ptr{PetscInt}),arg1,arg2)
 end
 
@@ -4534,24 +4534,24 @@ function MatColoringRegister(arg1::Ptr{Uint8},arg2::Ptr{Void})
     ccall((:MatColoringRegister,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Void}),arg1,arg2)
 end
 
-function MatColoringPatch(arg1::Mat,arg2::PetscInt,arg3::PetscInt,ISColoringValue::Ptr{Cint},arg4::Ptr{ISColoring})
-    ccall((:MatColoringPatch,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscInt,Ptr{Cint},Ptr{ISColoring}),arg1,arg2,arg3,ISColoringValue,arg4)
+function MatColoringPatch(arg1::Mat,arg2::Int32,arg3::Int32,ISColoringValue::Ptr{Cint},arg4::Ptr{ISColoring})
+    ccall((:MatColoringPatch,petsc),PetscErrorCode,(Mat,PetscInt,PetscInt,Ptr{Cint},Ptr{ISColoring}),arg1,arg2,arg3,ISColoringValue,arg4)
 end
 
 function MatColoringSetWeightType(arg1::MatColoring,arg2::MatColoringWeightType)
     ccall((:MatColoringSetWeightType,petsc),PetscErrorCode,(MatColoring,MatColoringWeightType),arg1,arg2)
 end
 
-function MatColoringSetWeights(arg1::MatColoring,arg2::Ptr{Cint},arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function MatColoringSetWeights(arg1::MatColoring,arg2::Ptr{Cint},arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:MatColoringSetWeights,petsc),PetscErrorCode,(MatColoring,Ptr{Cint},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function MatColoringCreateWeights(arg1::MatColoring,arg2::Ptr{Ptr{Cint}},lperm::Ptr{Ptr{PetscInt}})
-    ccall((:MatColoringCreateWeights,petsc),PetscErrorCode,(MatColoring,Ptr{Ptr{Cint}},Ptr{Ptr{PetscInt}}),arg1,arg2,lperm)
+function MatColoringCreateWeights(arg1::MatColoring,arg2::Ptr{Ptr{Cint}},lperm::Ptr{Ptr{Int32}})
+    ccall((:MatColoringCreateWeights,petsc),PetscErrorCode,(MatColoring,Ptr{Ptr{Cint}},Ptr{Ptr{Int32}}),arg1,arg2,lperm)
 end
 
 function MatFDColoringCreate(arg1::Mat,arg2::ISColoring,arg3::Ptr{MatFDColoring})
-    ccall((:MatFDColoringCreate,petsc),PetscErrorCode,(Ptr{Void},ISColoring,Ptr{MatFDColoring}),arg1,arg2,arg3)
+    ccall((:MatFDColoringCreate,petsc),PetscErrorCode,(Mat,ISColoring,Ptr{MatFDColoring}),arg1,arg2,arg3)
 end
 
 function MatFDColoringDestroy(arg1::Ptr{MatFDColoring})
@@ -4570,7 +4570,7 @@ function MatFDColoringGetFunction(arg1::MatFDColoring,arg2::Ptr{Ptr{Void}},arg3:
     ccall((:MatFDColoringGetFunction,petsc),PetscErrorCode,(MatFDColoring,Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3)
 end
 
-function MatFDColoringSetParameters(arg1::MatFDColoring,PetscReal::Cint,arg2::Cint)
+function MatFDColoringSetParameters(arg1::MatFDColoring,Float64::Cint,arg2::Cint)
     ccall((:MatFDColoringSetParameters,petsc),PetscErrorCode,(MatFDColoring,Cint,Cint),arg1,PetscReal,arg2)
 end
 
@@ -4579,35 +4579,35 @@ function MatFDColoringSetFromOptions(arg1::MatFDColoring)
 end
 
 function MatFDColoringApply(arg1::Mat,arg2::MatFDColoring,arg3::Vec,arg4::Ptr{Void})
-    ccall((:MatFDColoringApply,petsc),PetscErrorCode,(Ptr{Void},MatFDColoring,Vec,Ptr{Void}),arg1,arg2,arg3,arg4)
+    ccall((:MatFDColoringApply,petsc),PetscErrorCode,(Mat,MatFDColoring,Vec,Ptr{Void}),arg1,arg2,arg3,arg4)
 end
 
 function MatFDColoringSetF(arg1::MatFDColoring,arg2::Vec)
     ccall((:MatFDColoringSetF,petsc),PetscErrorCode,(MatFDColoring,Vec),arg1,arg2)
 end
 
-function MatFDColoringGetPerturbedColumns(arg1::MatFDColoring,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{PetscInt}})
-    ccall((:MatFDColoringGetPerturbedColumns,petsc),PetscErrorCode,(MatFDColoring,Ptr{PetscInt},Ptr{Ptr{PetscInt}}),arg1,arg2,arg3)
+function MatFDColoringGetPerturbedColumns(arg1::MatFDColoring,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Int32}})
+    ccall((:MatFDColoringGetPerturbedColumns,petsc),PetscErrorCode,(MatFDColoring,Ptr{PetscInt},Ptr{Ptr{Int32}}),arg1,arg2,arg3)
 end
 
 function MatFDColoringSetUp(arg1::Mat,arg2::ISColoring,arg3::MatFDColoring)
-    ccall((:MatFDColoringSetUp,petsc),PetscErrorCode,(Ptr{Void},ISColoring,MatFDColoring),arg1,arg2,arg3)
+    ccall((:MatFDColoringSetUp,petsc),PetscErrorCode,(Mat,ISColoring,MatFDColoring),arg1,arg2,arg3)
 end
 
-function MatFDColoringSetBlockSize(arg1::MatFDColoring,arg2::PetscInt,arg3::PetscInt)
+function MatFDColoringSetBlockSize(arg1::MatFDColoring,arg2::Int32,arg3::Int32)
     ccall((:MatFDColoringSetBlockSize,petsc),PetscErrorCode,(MatFDColoring,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
 function MatTransposeColoringCreate(arg1::Mat,arg2::ISColoring,arg3::Ptr{MatTransposeColoring})
-    ccall((:MatTransposeColoringCreate,petsc),PetscErrorCode,(Ptr{Void},ISColoring,Ptr{MatTransposeColoring}),arg1,arg2,arg3)
+    ccall((:MatTransposeColoringCreate,petsc),PetscErrorCode,(Mat,ISColoring,Ptr{MatTransposeColoring}),arg1,arg2,arg3)
 end
 
 function MatTransColoringApplySpToDen(arg1::MatTransposeColoring,arg2::Mat,arg3::Mat)
-    ccall((:MatTransColoringApplySpToDen,petsc),PetscErrorCode,(MatTransposeColoring,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+    ccall((:MatTransColoringApplySpToDen,petsc),PetscErrorCode,(MatTransposeColoring,Mat,Mat),arg1,arg2,arg3)
 end
 
 function MatTransColoringApplyDenToSp(arg1::MatTransposeColoring,arg2::Mat,arg3::Mat)
-    ccall((:MatTransColoringApplyDenToSp,petsc),PetscErrorCode,(MatTransposeColoring,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+    ccall((:MatTransColoringApplyDenToSp,petsc),PetscErrorCode,(MatTransposeColoring,Mat,Mat),arg1,arg2,arg3)
 end
 
 function MatTransposeColoringDestroy(arg1::Ptr{MatTransposeColoring})
@@ -4622,19 +4622,19 @@ function MatPartitioningSetType(arg1::MatPartitioning,arg2::MatPartitioningType)
     ccall((:MatPartitioningSetType,petsc),PetscErrorCode,(MatPartitioning,MatPartitioningType),arg1,arg2)
 end
 
-function MatPartitioningSetNParts(arg1::MatPartitioning,arg2::PetscInt)
+function MatPartitioningSetNParts(arg1::MatPartitioning,arg2::Int32)
     ccall((:MatPartitioningSetNParts,petsc),PetscErrorCode,(MatPartitioning,PetscInt),arg1,arg2)
 end
 
 function MatPartitioningSetAdjacency(arg1::MatPartitioning,arg2::Mat)
-    ccall((:MatPartitioningSetAdjacency,petsc),PetscErrorCode,(MatPartitioning,Ptr{Void}),arg1,arg2)
+    ccall((:MatPartitioningSetAdjacency,petsc),PetscErrorCode,(MatPartitioning,Mat),arg1,arg2)
 end
 
-function MatPartitioningSetVertexWeights(arg1::MatPartitioning,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function MatPartitioningSetVertexWeights(arg1::MatPartitioning,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:MatPartitioningSetVertexWeights,petsc),PetscErrorCode,(MatPartitioning,Ptr{PetscInt}),arg1,arg2)
 end
 
-function MatPartitioningSetPartitionWeights(arg1::MatPartitioning,PetscReal::Ptr{Cint})
+function MatPartitioningSetPartitionWeights(arg1::MatPartitioning,Float64::Ptr{Cint})
     ccall((:MatPartitioningSetPartitionWeights,petsc),PetscErrorCode,(MatPartitioning,Ptr{Cint}),arg1,PetscReal)
 end
 
@@ -4666,7 +4666,7 @@ function MatPartitioningParmetisSetCoarseSequential(arg1::MatPartitioning)
     ccall((:MatPartitioningParmetisSetCoarseSequential,petsc),PetscErrorCode,(MatPartitioning,),arg1)
 end
 
-function MatPartitioningParmetisGetEdgeCut(arg1::MatPartitioning,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function MatPartitioningParmetisGetEdgeCut(arg1::MatPartitioning,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:MatPartitioningParmetisGetEdgeCut,petsc),PetscErrorCode,(MatPartitioning,Ptr{PetscInt}),arg1,arg2)
 end
 
@@ -4686,7 +4686,7 @@ function MatPartitioningChacoGetLocal(arg1::MatPartitioning,arg2::Ptr{MPChacoLoc
     ccall((:MatPartitioningChacoGetLocal,petsc),PetscErrorCode,(MatPartitioning,Ptr{MPChacoLocalType}),arg1,arg2)
 end
 
-function MatPartitioningChacoSetCoarseLevel(arg1::MatPartitioning,PetscReal::Cint)
+function MatPartitioningChacoSetCoarseLevel(arg1::MatPartitioning,Float64::Cint)
     ccall((:MatPartitioningChacoSetCoarseLevel,petsc),PetscErrorCode,(MatPartitioning,Cint),arg1,PetscReal)
 end
 
@@ -4698,7 +4698,7 @@ function MatPartitioningChacoGetEigenSolver(arg1::MatPartitioning,arg2::Ptr{MPCh
     ccall((:MatPartitioningChacoGetEigenSolver,petsc),PetscErrorCode,(MatPartitioning,Ptr{MPChacoEigenType}),arg1,arg2)
 end
 
-function MatPartitioningChacoSetEigenTol(arg1::MatPartitioning,PetscReal::Cint)
+function MatPartitioningChacoSetEigenTol(arg1::MatPartitioning,Float64::Cint)
     ccall((:MatPartitioningChacoSetEigenTol,petsc),PetscErrorCode,(MatPartitioning,Cint),arg1,PetscReal)
 end
 
@@ -4706,11 +4706,11 @@ function MatPartitioningChacoGetEigenTol(arg1::MatPartitioning,arg2::Ptr{Cint})
     ccall((:MatPartitioningChacoGetEigenTol,petsc),PetscErrorCode,(MatPartitioning,Ptr{Cint}),arg1,arg2)
 end
 
-function MatPartitioningChacoSetEigenNumber(arg1::MatPartitioning,arg2::PetscInt)
+function MatPartitioningChacoSetEigenNumber(arg1::MatPartitioning,arg2::Int32)
     ccall((:MatPartitioningChacoSetEigenNumber,petsc),PetscErrorCode,(MatPartitioning,PetscInt),arg1,arg2)
 end
 
-function MatPartitioningChacoGetEigenNumber(arg1::MatPartitioning,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function MatPartitioningChacoGetEigenNumber(arg1::MatPartitioning,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:MatPartitioningChacoGetEigenNumber,petsc),PetscErrorCode,(MatPartitioning,Ptr{PetscInt}),arg1,arg2)
 end
 
@@ -4722,7 +4722,7 @@ function MatPartitioningPartySetLocal(arg1::MatPartitioning,arg2::Ptr{Uint8})
     ccall((:MatPartitioningPartySetLocal,petsc),PetscErrorCode,(MatPartitioning,Ptr{Uint8}),arg1,arg2)
 end
 
-function MatPartitioningPartySetCoarseLevel(arg1::MatPartitioning,PetscReal::Cint)
+function MatPartitioningPartySetCoarseLevel(arg1::MatPartitioning,Float64::Cint)
     ccall((:MatPartitioningPartySetCoarseLevel,petsc),PetscErrorCode,(MatPartitioning,Cint),arg1,PetscReal)
 end
 
@@ -4734,7 +4734,7 @@ function MatPartitioningPartySetMatchOptimization(arg1::MatPartitioning,arg2::Pe
     ccall((:MatPartitioningPartySetMatchOptimization,petsc),PetscErrorCode,(MatPartitioning,PetscBool),arg1,arg2)
 end
 
-function MatPartitioningPTScotchSetImbalance(arg1::MatPartitioning,PetscReal::Cint)
+function MatPartitioningPTScotchSetImbalance(arg1::MatPartitioning,Float64::Cint)
     ccall((:MatPartitioningPTScotchSetImbalance,petsc),PetscErrorCode,(MatPartitioning,Cint),arg1,PetscReal)
 end
 
@@ -4759,7 +4759,7 @@ function MatCoarsenSetType(arg1::MatCoarsen,arg2::MatCoarsenType)
 end
 
 function MatCoarsenSetAdjacency(arg1::MatCoarsen,arg2::Mat)
-    ccall((:MatCoarsenSetAdjacency,petsc),PetscErrorCode,(MatCoarsen,Ptr{Void}),arg1,arg2)
+    ccall((:MatCoarsenSetAdjacency,petsc),PetscErrorCode,(MatCoarsen,Mat),arg1,arg2)
 end
 
 function MatCoarsenSetGreedyOrdering(arg1::MatCoarsen,arg2::IS)
@@ -4798,43 +4798,43 @@ function MatCoarsenGetType(arg1::MatCoarsen,arg2::Ptr{MatCoarsenType})
     ccall((:MatCoarsenGetType,petsc),PetscErrorCode,(MatCoarsen,Ptr{MatCoarsenType}),arg1,arg2)
 end
 
-function MatMeshToCellGraph(arg1::Mat,arg2::PetscInt,arg3::Ptr{Mat})
-    ccall((:MatMeshToCellGraph,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{Mat}),arg1,arg2,arg3)
+function MatMeshToCellGraph(arg1::Mat,arg2::Int32,arg3::Ptr{Mat})
+    ccall((:MatMeshToCellGraph,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{Mat}),arg1,arg2,arg3)
 end
 
 function MatHasOperation(arg1::Mat,arg2::MatOperation,arg3::Ptr{PetscBool})
-    ccall((:MatHasOperation,petsc),PetscErrorCode,(Ptr{Void},MatOperation,Ptr{PetscBool}),arg1,arg2,arg3)
+    ccall((:MatHasOperation,petsc),PetscErrorCode,(Mat,MatOperation,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
 function MatShellSetOperation(arg1::Mat,arg2::MatOperation,arg3::Ptr{Void})
-    ccall((:MatShellSetOperation,petsc),PetscErrorCode,(Ptr{Void},MatOperation,Ptr{Void}),arg1,arg2,arg3)
+    ccall((:MatShellSetOperation,petsc),PetscErrorCode,(Mat,MatOperation,Ptr{Void}),arg1,arg2,arg3)
 end
 
 function MatShellGetOperation(arg1::Mat,arg2::MatOperation,arg3::Ptr{Ptr{Void}})
-    ccall((:MatShellGetOperation,petsc),PetscErrorCode,(Ptr{Void},MatOperation,Ptr{Ptr{Void}}),arg1,arg2,arg3)
+    ccall((:MatShellGetOperation,petsc),PetscErrorCode,(Mat,MatOperation,Ptr{Ptr{Void}}),arg1,arg2,arg3)
 end
 
 function MatShellSetContext(arg1::Mat,arg2::Ptr{Void})
-    ccall((:MatShellSetContext,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void}),arg1,arg2)
+    ccall((:MatShellSetContext,petsc),PetscErrorCode,(Mat,Ptr{Void}),arg1,arg2)
 end
 
-function MatMPIBAIJSetHashTableFactor(arg1::Mat,PetscReal::Cint)
-    ccall((:MatMPIBAIJSetHashTableFactor,petsc),PetscErrorCode,(Ptr{Void},Cint),arg1,PetscReal)
+function MatMPIBAIJSetHashTableFactor(arg1::Mat,Float64::Cint)
+    ccall((:MatMPIBAIJSetHashTableFactor,petsc),PetscErrorCode,(Mat,Cint),arg1,PetscReal)
 end
 
 function MatISGetLocalMat(arg1::Mat,arg2::Ptr{Mat})
-    ccall((:MatISGetLocalMat,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat}),arg1,arg2)
+    ccall((:MatISGetLocalMat,petsc),PetscErrorCode,(Mat,Ptr{Mat}),arg1,arg2)
 end
 
 function MatISSetLocalMat(arg1::Mat,arg2::Mat)
-    ccall((:MatISSetLocalMat,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void}),arg1,arg2)
+    ccall((:MatISSetLocalMat,petsc),PetscErrorCode,(Mat,Mat),arg1,arg2)
 end
 
 function MatISGetMPIXAIJ(arg1::Mat,arg2::MatReuse,arg3::Ptr{Mat})
-    ccall((:MatISGetMPIXAIJ,petsc),PetscErrorCode,(Ptr{Void},MatReuse,Ptr{Mat}),arg1,arg2,arg3)
+    ccall((:MatISGetMPIXAIJ,petsc),PetscErrorCode,(Mat,MatReuse,Ptr{Mat}),arg1,arg2,arg3)
 end
 
-function MatNullSpaceCreate(arg1::MPI_Comm,arg2::PetscBool,arg3::PetscInt,arg4::Ptr{Vec},arg5::Ptr{MatNullSpace})
+function MatNullSpaceCreate(arg1::MPI_Comm,arg2::PetscBool,arg3::Int32,arg4::Ptr{Vec},arg5::Ptr{MatNullSpace})
     ccall((:MatNullSpaceCreate,petsc),PetscErrorCode,(MPI_Comm,PetscBool,PetscInt,Ptr{Vec},Ptr{MatNullSpace}),arg1,arg2,arg3,arg4,arg5)
 end
 
@@ -4851,38 +4851,38 @@ function MatNullSpaceRemove(arg1::MatNullSpace,arg2::Vec)
 end
 
 function MatGetNullSpace(arg1::Mat,arg2::Ptr{MatNullSpace})
-    ccall((:MatGetNullSpace,petsc),PetscErrorCode,(Ptr{Void},Ptr{MatNullSpace}),arg1,arg2)
+    ccall((:MatGetNullSpace,petsc),PetscErrorCode,(Mat,Ptr{MatNullSpace}),arg1,arg2)
 end
 
 function MatGetTransposeNullSpace(arg1::Mat,arg2::Ptr{MatNullSpace})
-    ccall((:MatGetTransposeNullSpace,petsc),PetscErrorCode,(Ptr{Void},Ptr{MatNullSpace}),arg1,arg2)
+    ccall((:MatGetTransposeNullSpace,petsc),PetscErrorCode,(Mat,Ptr{MatNullSpace}),arg1,arg2)
 end
 
 function MatSetTransposeNullSpace(arg1::Mat,arg2::MatNullSpace)
-    ccall((:MatSetTransposeNullSpace,petsc),PetscErrorCode,(Ptr{Void},MatNullSpace),arg1,arg2)
+    ccall((:MatSetTransposeNullSpace,petsc),PetscErrorCode,(Mat,MatNullSpace),arg1,arg2)
 end
 
 function MatSetNullSpace(arg1::Mat,arg2::MatNullSpace)
-    ccall((:MatSetNullSpace,petsc),PetscErrorCode,(Ptr{Void},MatNullSpace),arg1,arg2)
+    ccall((:MatSetNullSpace,petsc),PetscErrorCode,(Mat,MatNullSpace),arg1,arg2)
 end
 
 function MatSetNearNullSpace(arg1::Mat,arg2::MatNullSpace)
-    ccall((:MatSetNearNullSpace,petsc),PetscErrorCode,(Ptr{Void},MatNullSpace),arg1,arg2)
+    ccall((:MatSetNearNullSpace,petsc),PetscErrorCode,(Mat,MatNullSpace),arg1,arg2)
 end
 
 function MatGetNearNullSpace(arg1::Mat,arg2::Ptr{MatNullSpace})
-    ccall((:MatGetNearNullSpace,petsc),PetscErrorCode,(Ptr{Void},Ptr{MatNullSpace}),arg1,arg2)
+    ccall((:MatGetNearNullSpace,petsc),PetscErrorCode,(Mat,Ptr{MatNullSpace}),arg1,arg2)
 end
 
 function MatNullSpaceTest(arg1::MatNullSpace,arg2::Mat,arg3::Ptr{PetscBool})
-    ccall((:MatNullSpaceTest,petsc),PetscErrorCode,(MatNullSpace,Ptr{Void},Ptr{PetscBool}),arg1,arg2,arg3)
+    ccall((:MatNullSpaceTest,petsc),PetscErrorCode,(MatNullSpace,Mat,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
 function MatNullSpaceView(arg1::MatNullSpace,arg2::PetscViewer)
     ccall((:MatNullSpaceView,petsc),PetscErrorCode,(MatNullSpace,PetscViewer),arg1,arg2)
 end
 
-function MatNullSpaceGetVecs(arg1::MatNullSpace,arg2::Ptr{PetscBool},arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Ptr{Vec}})
+function MatNullSpaceGetVecs(arg1::MatNullSpace,arg2::Ptr{PetscBool},arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Ptr{Vec}})
     ccall((:MatNullSpaceGetVecs,petsc),PetscErrorCode,(MatNullSpace,Ptr{PetscBool},Ptr{PetscInt},Ptr{Ptr{Vec}}),arg1,arg2,arg3,arg4)
 end
 
@@ -4891,167 +4891,167 @@ function MatNullSpaceCreateRigidBody(arg1::Vec,arg2::Ptr{MatNullSpace})
 end
 
 function MatReorderingSeqSBAIJ(arg1::Mat,arg2::IS)
-    ccall((:MatReorderingSeqSBAIJ,petsc),PetscErrorCode,(Ptr{Void},IS),arg1,arg2)
+    ccall((:MatReorderingSeqSBAIJ,petsc),PetscErrorCode,(Mat,IS),arg1,arg2)
 end
 
-function MatMPISBAIJSetHashTableFactor(arg1::Mat,PetscReal::Cint)
-    ccall((:MatMPISBAIJSetHashTableFactor,petsc),PetscErrorCode,(Ptr{Void},Cint),arg1,PetscReal)
+function MatMPISBAIJSetHashTableFactor(arg1::Mat,Float64::Cint)
+    ccall((:MatMPISBAIJSetHashTableFactor,petsc),PetscErrorCode,(Mat,Cint),arg1,PetscReal)
 end
 
-function MatSeqSBAIJSetColumnIndices(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatSeqSBAIJSetColumnIndices,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt}),arg1,arg2)
+function MatSeqSBAIJSetColumnIndices(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatSeqSBAIJSetColumnIndices,petsc),PetscErrorCode,(Mat,Ptr{PetscInt}),arg1,arg2)
 end
 
 function MatSeqBAIJInvertBlockDiagonal(arg1::Mat)
-    ccall((:MatSeqBAIJInvertBlockDiagonal,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatSeqBAIJInvertBlockDiagonal,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
-function MatCreateMAIJ(arg1::Mat,arg2::PetscInt,arg3::Ptr{Mat})
-    ccall((:MatCreateMAIJ,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{Mat}),arg1,arg2,arg3)
+function MatCreateMAIJ(arg1::Mat,arg2::Int32,arg3::Ptr{Mat})
+    ccall((:MatCreateMAIJ,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{Mat}),arg1,arg2,arg3)
 end
 
-function MatMAIJRedimension(arg1::Mat,arg2::PetscInt,arg3::Ptr{Mat})
-    ccall((:MatMAIJRedimension,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{Mat}),arg1,arg2,arg3)
+function MatMAIJRedimension(arg1::Mat,arg2::Int32,arg3::Ptr{Mat})
+    ccall((:MatMAIJRedimension,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{Mat}),arg1,arg2,arg3)
 end
 
 function MatMAIJGetAIJ(arg1::Mat,arg2::Ptr{Mat})
-    ccall((:MatMAIJGetAIJ,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat}),arg1,arg2)
+    ccall((:MatMAIJGetAIJ,petsc),PetscErrorCode,(Mat,Ptr{Mat}),arg1,arg2)
 end
 
 function MatComputeExplicitOperator(arg1::Mat,arg2::Ptr{Mat})
-    ccall((:MatComputeExplicitOperator,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat}),arg1,arg2)
+    ccall((:MatComputeExplicitOperator,petsc),PetscErrorCode,(Mat,Ptr{Mat}),arg1,arg2)
 end
 
 function MatDiagonalScaleLocal(arg1::Mat,arg2::Vec)
-    ccall((:MatDiagonalScaleLocal,petsc),PetscErrorCode,(Ptr{Void},Vec),arg1,arg2)
+    ccall((:MatDiagonalScaleLocal,petsc),PetscErrorCode,(Mat,Vec),arg1,arg2)
 end
 
-function MatCreateMFFD(arg1::MPI_Comm,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::Ptr{Mat})
+function MatCreateMFFD(arg1::MPI_Comm,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Ptr{Mat})
     ccall((:MatCreateMFFD,petsc),PetscErrorCode,(MPI_Comm,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
 function MatMFFDSetBase(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:MatMFFDSetBase,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:MatMFFDSetBase,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function MatMFFDSetFunction(arg1::Mat,arg2::Ptr{Void},arg3::Ptr{Void})
-    ccall((:MatMFFDSetFunction,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+    ccall((:MatMFFDSetFunction,petsc),PetscErrorCode,(Mat,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
 end
 
 function MatMFFDSetFunctioni(arg1::Mat,arg2::Ptr{Void})
-    ccall((:MatMFFDSetFunctioni,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void}),arg1,arg2)
+    ccall((:MatMFFDSetFunctioni,petsc),PetscErrorCode,(Mat,Ptr{Void}),arg1,arg2)
 end
 
 function MatMFFDSetFunctioniBase(arg1::Mat,arg2::Ptr{Void})
-    ccall((:MatMFFDSetFunctioniBase,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void}),arg1,arg2)
+    ccall((:MatMFFDSetFunctioniBase,petsc),PetscErrorCode,(Mat,Ptr{Void}),arg1,arg2)
 end
 
 function MatMFFDAddNullSpace(arg1::Mat,arg2::MatNullSpace)
-    ccall((:MatMFFDAddNullSpace,petsc),PetscErrorCode,(Ptr{Void},MatNullSpace),arg1,arg2)
+    ccall((:MatMFFDAddNullSpace,petsc),PetscErrorCode,(Mat,MatNullSpace),arg1,arg2)
 end
 
-function MatMFFDSetHHistory(arg1::Mat,arg2::Ptr{PetscScalar},arg3::PetscInt)
-    ccall((:MatMFFDSetHHistory,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscScalar},PetscInt),arg1,arg2,arg3)
+function MatMFFDSetHHistory(arg1::Mat,arg2::Ptr{Float64},arg3::Int32)
+    ccall((:MatMFFDSetHHistory,petsc),PetscErrorCode,(Mat,Ptr{Float64},PetscInt),arg1,arg2,arg3)
 end
 
 function MatMFFDResetHHistory(arg1::Mat)
-    ccall((:MatMFFDResetHHistory,petsc),PetscErrorCode,(Ptr{Void},),arg1)
+    ccall((:MatMFFDResetHHistory,petsc),PetscErrorCode,(Mat,),arg1)
 end
 
-function MatMFFDSetFunctionError(arg1::Mat,PetscReal::Cint)
-    ccall((:MatMFFDSetFunctionError,petsc),PetscErrorCode,(Ptr{Void},Cint),arg1,PetscReal)
+function MatMFFDSetFunctionError(arg1::Mat,Float64::Cint)
+    ccall((:MatMFFDSetFunctionError,petsc),PetscErrorCode,(Mat,Cint),arg1,PetscReal)
 end
 
-function MatMFFDSetPeriod(arg1::Mat,arg2::PetscInt)
-    ccall((:MatMFFDSetPeriod,petsc),PetscErrorCode,(Ptr{Void},PetscInt),arg1,arg2)
+function MatMFFDSetPeriod(arg1::Mat,arg2::Int32)
+    ccall((:MatMFFDSetPeriod,petsc),PetscErrorCode,(Mat,PetscInt),arg1,arg2)
 end
 
-function MatMFFDGetH(arg1::Mat,arg2::Ptr{PetscScalar})
-    ccall((:MatMFFDGetH,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscScalar}),arg1,arg2)
+function MatMFFDGetH(arg1::Mat,arg2::Ptr{Float64})
+    ccall((:MatMFFDGetH,petsc),PetscErrorCode,(Mat,Ptr{Float64}),arg1,arg2)
 end
 
 function MatMFFDSetOptionsPrefix(arg1::Mat,arg2::Ptr{Uint8})
-    ccall((:MatMFFDSetOptionsPrefix,petsc),PetscErrorCode,(Ptr{Void},Ptr{Uint8}),arg1,arg2)
+    ccall((:MatMFFDSetOptionsPrefix,petsc),PetscErrorCode,(Mat,Ptr{Uint8}),arg1,arg2)
 end
 
-function MatMFFDCheckPositivity(arg1::Ptr{Void},arg2::Vec,arg3::Vec,arg4::Ptr{PetscScalar})
-    ccall((:MatMFFDCheckPositivity,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec,Ptr{PetscScalar}),arg1,arg2,arg3,arg4)
+function MatMFFDCheckPositivity(arg1::Ptr{Void},arg2::Vec,arg3::Vec,arg4::Ptr{Float64})
+    ccall((:MatMFFDCheckPositivity,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec,Ptr{Float64}),arg1,arg2,arg3,arg4)
 end
 
 function MatMFFDSetCheckh(arg1::Mat,arg2::Ptr{Void},arg3::Ptr{Void})
-    ccall((:MatMFFDSetCheckh,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+    ccall((:MatMFFDSetCheckh,petsc),PetscErrorCode,(Mat,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
 end
 
 function MatMFFDSetType(arg1::Mat,arg2::MatMFFDType)
-    ccall((:MatMFFDSetType,petsc),PetscErrorCode,(Ptr{Void},MatMFFDType),arg1,arg2)
+    ccall((:MatMFFDSetType,petsc),PetscErrorCode,(Mat,MatMFFDType),arg1,arg2)
 end
 
 function MatMFFDRegister(arg1::Ptr{Uint8},arg2::Ptr{Void})
     ccall((:MatMFFDRegister,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Void}),arg1,arg2)
 end
 
-function MatMFFDDSSetUmin(arg1::Mat,PetscReal::Cint)
-    ccall((:MatMFFDDSSetUmin,petsc),PetscErrorCode,(Ptr{Void},Cint),arg1,PetscReal)
+function MatMFFDDSSetUmin(arg1::Mat,Float64::Cint)
+    ccall((:MatMFFDDSSetUmin,petsc),PetscErrorCode,(Mat,Cint),arg1,PetscReal)
 end
 
 function MatMFFDWPSetComputeNormU(arg1::Mat,arg2::PetscBool)
-    ccall((:MatMFFDWPSetComputeNormU,petsc),PetscErrorCode,(Ptr{Void},PetscBool),arg1,arg2)
+    ccall((:MatMFFDWPSetComputeNormU,petsc),PetscErrorCode,(Mat,PetscBool),arg1,arg2)
 end
 
-function PetscViewerMathematicaPutMatrix(arg1::PetscViewer,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{Cint})
+function PetscViewerMathematicaPutMatrix(arg1::PetscViewer,arg2::Int32,arg3::Int32,arg4::Ptr{Cint})
     ccall((:PetscViewerMathematicaPutMatrix,petsc),PetscErrorCode,(PetscViewer,PetscInt,PetscInt,Ptr{Cint}),arg1,arg2,arg3,arg4)
 end
 
-function PetscViewerMathematicaPutCSRMatrix(arg1::PetscViewer,arg2::PetscInt,arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg6::Ptr{Cint})
+function PetscViewerMathematicaPutCSRMatrix(arg1::PetscViewer,arg2::Int32,arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg6::Ptr{Cint})
     ccall((:PetscViewerMathematicaPutCSRMatrix,petsc),PetscErrorCode,(PetscViewer,PetscInt,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Ptr{Cint}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatCreateNest(arg1::MPI_Comm,arg2::PetscInt,arg3::Ptr{IS},arg4::PetscInt,arg5::Ptr{IS},arg6::Ptr{Mat},arg7::Ptr{Mat})
+function MatCreateNest(arg1::MPI_Comm,arg2::Int32,arg3::Ptr{IS},arg4::Int32,arg5::Ptr{IS},arg6::Ptr{Mat},arg7::Ptr{Mat})
     ccall((:MatCreateNest,petsc),PetscErrorCode,(MPI_Comm,PetscInt,Ptr{IS},PetscInt,Ptr{IS},Ptr{Mat},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function MatNestGetSize(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatNestGetSize,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
+function MatNestGetSize(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatNestGetSize,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
 function MatNestGetISs(arg1::Mat,arg2::Ptr{IS},arg3::Ptr{IS})
-    ccall((:MatNestGetISs,petsc),PetscErrorCode,(Ptr{Void},Ptr{IS},Ptr{IS}),arg1,arg2,arg3)
+    ccall((:MatNestGetISs,petsc),PetscErrorCode,(Mat,Ptr{IS},Ptr{IS}),arg1,arg2,arg3)
 end
 
 function MatNestGetLocalISs(arg1::Mat,arg2::Ptr{IS},arg3::Ptr{IS})
-    ccall((:MatNestGetLocalISs,petsc),PetscErrorCode,(Ptr{Void},Ptr{IS},Ptr{IS}),arg1,arg2,arg3)
+    ccall((:MatNestGetLocalISs,petsc),PetscErrorCode,(Mat,Ptr{IS},Ptr{IS}),arg1,arg2,arg3)
 end
 
-function MatNestGetSubMats(arg1::Mat,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Ptr{Ptr{Mat}}})
-    ccall((:MatNestGetSubMats,petsc),PetscErrorCode,(Ptr{Void},Ptr{PetscInt},Ptr{PetscInt},Ptr{Ptr{Ptr{Mat}}}),arg1,arg2,arg3,arg4)
+function MatNestGetSubMats(arg1::Mat,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Ptr{Ptr{Mat}}})
+    ccall((:MatNestGetSubMats,petsc),PetscErrorCode,(Mat,Ptr{PetscInt},Ptr{PetscInt},Ptr{Ptr{Ptr{Mat}}}),arg1,arg2,arg3,arg4)
 end
 
-function MatNestGetSubMat(arg1::Mat,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{Mat})
-    ccall((:MatNestGetSubMat,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscInt,Ptr{Mat}),arg1,arg2,arg3,arg4)
+function MatNestGetSubMat(arg1::Mat,arg2::Int32,arg3::Int32,arg4::Ptr{Mat})
+    ccall((:MatNestGetSubMat,petsc),PetscErrorCode,(Mat,PetscInt,PetscInt,Ptr{Mat}),arg1,arg2,arg3,arg4)
 end
 
 function MatNestSetVecType(arg1::Mat,arg2::VecType)
-    ccall((:MatNestSetVecType,petsc),PetscErrorCode,(Ptr{Void},VecType),arg1,arg2)
+    ccall((:MatNestSetVecType,petsc),PetscErrorCode,(Mat,VecType),arg1,arg2)
 end
 
-function MatNestSetSubMats(arg1::Mat,arg2::PetscInt,arg3::Ptr{IS},arg4::PetscInt,arg5::Ptr{IS},arg6::Ptr{Mat})
-    ccall((:MatNestSetSubMats,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{IS},PetscInt,Ptr{IS},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6)
+function MatNestSetSubMats(arg1::Mat,arg2::Int32,arg3::Ptr{IS},arg4::Int32,arg5::Ptr{IS},arg6::Ptr{Mat})
+    ccall((:MatNestSetSubMats,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{IS},PetscInt,Ptr{IS},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function MatNestSetSubMat(arg1::Mat,arg2::PetscInt,arg3::PetscInt,arg4::Mat)
-    ccall((:MatNestSetSubMat,petsc),PetscErrorCode,(Ptr{Void},PetscInt,PetscInt,Ptr{Void}),arg1,arg2,arg3,arg4)
+function MatNestSetSubMat(arg1::Mat,arg2::Int32,arg3::Int32,arg4::Mat)
+    ccall((:MatNestSetSubMat,petsc),PetscErrorCode,(Mat,PetscInt,PetscInt,Mat),arg1,arg2,arg3,arg4)
 end
 
-function MatChop(arg1::Mat,PetscReal::Cint)
-    ccall((:MatChop,petsc),PetscErrorCode,(Ptr{Void},Cint),arg1,PetscReal)
+function MatChop(arg1::Mat,Float64::Cint)
+    ccall((:MatChop,petsc),PetscErrorCode,(Mat,Cint),arg1,PetscReal)
 end
 
-function MatComputeBandwidth(arg1::Mat,PetscReal::Cint,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
-    ccall((:MatComputeBandwidth,petsc),PetscErrorCode,(Ptr{Void},Cint,Ptr{PetscInt}),arg1,PetscReal,arg2)
+function MatComputeBandwidth(arg1::Mat,Float64::Cint,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
+    ccall((:MatComputeBandwidth,petsc),PetscErrorCode,(Mat,Cint,Ptr{PetscInt}),arg1,PetscReal,arg2)
 end
 
-function MatSubdomainsCreateCoalesce(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Ptr{IS}})
-    ccall((:MatSubdomainsCreateCoalesce,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},Ptr{Ptr{IS}}),arg1,arg2,arg3,arg4)
+function MatSubdomainsCreateCoalesce(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Ptr{IS}})
+    ccall((:MatSubdomainsCreateCoalesce,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{Ptr{IS}}),arg1,arg2,arg3,arg4)
 end
 
 function PCExoticSetType(arg1::PC,arg2::PCExoticType)
@@ -5078,7 +5078,7 @@ function PCSetUp(arg1::PC)
     ccall((:PCSetUp,petsc),PetscErrorCode,(PC,),arg1)
 end
 
-function PCGetSetUpFailedReason(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PCGetSetUpFailedReason(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PCGetSetUpFailedReason,petsc),PetscErrorCode,(PC,Ptr{PetscInt}),arg1,arg2)
 end
 
@@ -5126,7 +5126,7 @@ function PCSetErrorIfFailure(arg1::PC,arg2::PetscBool)
     ccall((:PCSetErrorIfFailure,petsc),PetscErrorCode,(PC,PetscBool),arg1,arg2)
 end
 
-function PCApplyRichardson(arg1::PC,arg2::Vec,arg3::Vec,arg4::Vec,PetscReal::Cint,arg5::Cint,arg6::Cint,arg7::PetscInt,arg8::PetscBool,arg9::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg10::Ptr{PCRichardsonConvergedReason})
+function PCApplyRichardson(arg1::PC,arg2::Vec,arg3::Vec,arg4::Vec,Float64::Cint,arg5::Cint,arg6::Cint,arg7::Int32,arg8::PetscBool,arg9::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg10::Ptr{PCRichardsonConvergedReason})
     ccall((:PCApplyRichardson,petsc),PetscErrorCode,(PC,Vec,Vec,Vec,Cint,Cint,Cint,PetscInt,PetscBool,Ptr{PetscInt},Ptr{PCRichardsonConvergedReason}),arg1,arg2,arg3,arg4,PetscReal,arg5,arg6,arg7,arg8,arg9,arg10)
 end
 
@@ -5174,12 +5174,12 @@ function PCSetModifySubMatrices(arg1::PC,arg2::Ptr{Void},arg3::Ptr{Void})
     ccall((:PCSetModifySubMatrices,petsc),PetscErrorCode,(PC,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
 end
 
-function PCModifySubMatrices(arg1::PC,arg2::PetscInt,arg3::Ptr{IS},arg4::Ptr{IS},arg5::Ptr{Mat},arg6::Ptr{Void})
+function PCModifySubMatrices(arg1::PC,arg2::Int32,arg3::Ptr{IS},arg4::Ptr{IS},arg5::Ptr{Mat},arg6::Ptr{Void})
     ccall((:PCModifySubMatrices,petsc),PetscErrorCode,(PC,PetscInt,Ptr{IS},Ptr{IS},Ptr{Mat},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
 function PCSetOperators(arg1::PC,arg2::Mat,arg3::Mat)
-    ccall((:PCSetOperators,petsc),PetscErrorCode,(PC,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+    ccall((:PCSetOperators,petsc),PetscErrorCode,(PC,Mat,Mat),arg1,arg2,arg3)
 end
 
 function PCGetOperators(arg1::PC,arg2::Ptr{Mat},arg3::Ptr{Mat})
@@ -5250,7 +5250,7 @@ function PCSORGetSymmetric(arg1::PC,arg2::Ptr{MatSORType})
     ccall((:PCSORGetSymmetric,petsc),PetscErrorCode,(PC,Ptr{MatSORType}),arg1,arg2)
 end
 
-function PCSORSetOmega(arg1::PC,PetscReal::Cint)
+function PCSORSetOmega(arg1::PC,Float64::Cint)
     ccall((:PCSORSetOmega,petsc),PetscErrorCode,(PC,Cint),arg1,PetscReal)
 end
 
@@ -5258,15 +5258,15 @@ function PCSORGetOmega(arg1::PC,arg2::Ptr{Cint})
     ccall((:PCSORGetOmega,petsc),PetscErrorCode,(PC,Ptr{Cint}),arg1,arg2)
 end
 
-function PCSORSetIterations(arg1::PC,arg2::PetscInt,arg3::PetscInt)
+function PCSORSetIterations(arg1::PC,arg2::Int32,arg3::Int32)
     ccall((:PCSORSetIterations,petsc),PetscErrorCode,(PC,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
-function PCSORGetIterations(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PCSORGetIterations(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PCSORGetIterations,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PCEisenstatSetOmega(arg1::PC,PetscReal::Cint)
+function PCEisenstatSetOmega(arg1::PC,Float64::Cint)
     ccall((:PCEisenstatSetOmega,petsc),PetscErrorCode,(PC,Cint),arg1,PetscReal)
 end
 
@@ -5282,20 +5282,20 @@ function PCEisenstatGetNoDiagonalScaling(arg1::PC,arg2::Ptr{PetscBool})
     ccall((:PCEisenstatGetNoDiagonalScaling,petsc),PetscErrorCode,(PC,Ptr{PetscBool}),arg1,arg2)
 end
 
-function PCBJacobiSetTotalBlocks(arg1::PC,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PCBJacobiSetTotalBlocks(arg1::PC,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PCBJacobiSetTotalBlocks,petsc),PetscErrorCode,(PC,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PCBJacobiGetTotalBlocks(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{PetscInt}})
-    ccall((:PCBJacobiGetTotalBlocks,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{Ptr{PetscInt}}),arg1,arg2,arg3)
+function PCBJacobiGetTotalBlocks(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Int32}})
+    ccall((:PCBJacobiGetTotalBlocks,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{Ptr{Int32}}),arg1,arg2,arg3)
 end
 
-function PCBJacobiSetLocalBlocks(arg1::PC,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PCBJacobiSetLocalBlocks(arg1::PC,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PCBJacobiSetLocalBlocks,petsc),PetscErrorCode,(PC,PetscInt,Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PCBJacobiGetLocalBlocks(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{PetscInt}})
-    ccall((:PCBJacobiGetLocalBlocks,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{Ptr{PetscInt}}),arg1,arg2,arg3)
+function PCBJacobiGetLocalBlocks(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Int32}})
+    ccall((:PCBJacobiGetLocalBlocks,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{Ptr{Int32}}),arg1,arg2,arg3)
 end
 
 function PCShellSetApply(arg1::PC,arg2::Ptr{Void})
@@ -5342,7 +5342,7 @@ function PCShellGetName(arg1::PC,arg2::Ptr{Ptr{Uint8}})
     ccall((:PCShellGetName,petsc),PetscErrorCode,(PC,Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
-function PCFactorSetZeroPivot(arg1::PC,PetscReal::Cint)
+function PCFactorSetZeroPivot(arg1::PC,Float64::Cint)
     ccall((:PCFactorSetZeroPivot,petsc),PetscErrorCode,(PC,Cint),arg1,PetscReal)
 end
 
@@ -5350,7 +5350,7 @@ function PCFactorSetShiftType(arg1::PC,arg2::MatFactorShiftType)
     ccall((:PCFactorSetShiftType,petsc),PetscErrorCode,(PC,MatFactorShiftType),arg1,arg2)
 end
 
-function PCFactorSetShiftAmount(arg1::PC,PetscReal::Cint)
+function PCFactorSetShiftAmount(arg1::PC,Float64::Cint)
     ccall((:PCFactorSetShiftAmount,petsc),PetscErrorCode,(PC,Cint),arg1,PetscReal)
 end
 
@@ -5366,15 +5366,15 @@ function PCFactorSetUpMatSolverPackage(arg1::PC)
     ccall((:PCFactorSetUpMatSolverPackage,petsc),PetscErrorCode,(PC,),arg1)
 end
 
-function PCFactorSetFill(arg1::PC,PetscReal::Cint)
+function PCFactorSetFill(arg1::PC,Float64::Cint)
     ccall((:PCFactorSetFill,petsc),PetscErrorCode,(PC,Cint),arg1,PetscReal)
 end
 
-function PCFactorSetColumnPivot(arg1::PC,PetscReal::Cint)
+function PCFactorSetColumnPivot(arg1::PC,Float64::Cint)
     ccall((:PCFactorSetColumnPivot,petsc),PetscErrorCode,(PC,Cint),arg1,PetscReal)
 end
 
-function PCFactorReorderForNonzeroDiagonal(arg1::PC,PetscReal::Cint)
+function PCFactorReorderForNonzeroDiagonal(arg1::PC,Float64::Cint)
     ccall((:PCFactorReorderForNonzeroDiagonal,petsc),PetscErrorCode,(PC,Cint),arg1,PetscReal)
 end
 
@@ -5410,27 +5410,27 @@ function PCFactorSetPivotInBlocks(arg1::PC,arg2::PetscBool)
     ccall((:PCFactorSetPivotInBlocks,petsc),PetscErrorCode,(PC,PetscBool),arg1,arg2)
 end
 
-function PCFactorSetLevels(arg1::PC,arg2::PetscInt)
+function PCFactorSetLevels(arg1::PC,arg2::Int32)
     ccall((:PCFactorSetLevels,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
-function PCFactorGetLevels(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PCFactorGetLevels(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PCFactorGetLevels,petsc),PetscErrorCode,(PC,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PCFactorSetDropTolerance(arg1::PC,PetscReal::Cint,arg2::Cint,arg3::PetscInt)
+function PCFactorSetDropTolerance(arg1::PC,Float64::Cint,arg2::Cint,arg3::Int32)
     ccall((:PCFactorSetDropTolerance,petsc),PetscErrorCode,(PC,Cint,Cint,PetscInt),arg1,PetscReal,arg2,arg3)
 end
 
-function PCASMSetLocalSubdomains(arg1::PC,arg2::PetscInt,arg3::Ptr{IS},arg4::Ptr{IS})
+function PCASMSetLocalSubdomains(arg1::PC,arg2::Int32,arg3::Ptr{IS},arg4::Ptr{IS})
     ccall((:PCASMSetLocalSubdomains,petsc),PetscErrorCode,(PC,PetscInt,Ptr{IS},Ptr{IS}),arg1,arg2,arg3,arg4)
 end
 
-function PCASMSetTotalSubdomains(arg1::PC,arg2::PetscInt,arg3::Ptr{IS},arg4::Ptr{IS})
+function PCASMSetTotalSubdomains(arg1::PC,arg2::Int32,arg3::Ptr{IS},arg4::Ptr{IS})
     ccall((:PCASMSetTotalSubdomains,petsc),PetscErrorCode,(PC,PetscInt,Ptr{IS},Ptr{IS}),arg1,arg2,arg3,arg4)
 end
 
-function PCASMSetOverlap(arg1::PC,arg2::PetscInt)
+function PCASMSetOverlap(arg1::PC,arg2::Int32)
     ccall((:PCASMSetOverlap,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -5462,35 +5462,35 @@ function PCASMGetLocalType(arg1::PC,arg2::Ptr{PCCompositeType})
     ccall((:PCASMGetLocalType,petsc),PetscErrorCode,(PC,Ptr{PCCompositeType}),arg1,arg2)
 end
 
-function PCASMCreateSubdomains(arg1::Mat,arg2::PetscInt,arg3::Ptr{Ptr{IS}})
-    ccall((:PCASMCreateSubdomains,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{Ptr{IS}}),arg1,arg2,arg3)
+function PCASMCreateSubdomains(arg1::Mat,arg2::Int32,arg3::Ptr{Ptr{IS}})
+    ccall((:PCASMCreateSubdomains,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{Ptr{IS}}),arg1,arg2,arg3)
 end
 
-function PCASMDestroySubdomains(arg1::PetscInt,arg2::Ptr{IS},arg3::Ptr{IS})
+function PCASMDestroySubdomains(arg1::Int32,arg2::Ptr{IS},arg3::Ptr{IS})
     ccall((:PCASMDestroySubdomains,petsc),PetscErrorCode,(PetscInt,Ptr{IS},Ptr{IS}),arg1,arg2,arg3)
 end
 
-function PCASMCreateSubdomains2D(arg1::PetscInt,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg8::Ptr{Ptr{IS}},arg9::Ptr{Ptr{IS}})
+function PCASMCreateSubdomains2D(arg1::Int32,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg8::Ptr{Ptr{IS}},arg9::Ptr{Ptr{IS}})
     ccall((:PCASMCreateSubdomains2D,petsc),PetscErrorCode,(PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Ptr{IS}},Ptr{Ptr{IS}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
 end
 
-function PCASMGetLocalSubdomains(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{IS}},arg4::Ptr{Ptr{IS}})
+function PCASMGetLocalSubdomains(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{IS}},arg4::Ptr{Ptr{IS}})
     ccall((:PCASMGetLocalSubdomains,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{Ptr{IS}},Ptr{Ptr{IS}}),arg1,arg2,arg3,arg4)
 end
 
-function PCASMGetLocalSubmatrices(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{Mat}})
+function PCASMGetLocalSubmatrices(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Mat}})
     ccall((:PCASMGetLocalSubmatrices,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{Ptr{Mat}}),arg1,arg2,arg3)
 end
 
-function PCGASMSetTotalSubdomains(arg1::PC,arg2::PetscInt)
+function PCGASMSetTotalSubdomains(arg1::PC,arg2::Int32)
     ccall((:PCGASMSetTotalSubdomains,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
-function PCGASMSetSubdomains(arg1::PC,arg2::PetscInt,arg3::Ptr{IS},arg4::Ptr{IS})
+function PCGASMSetSubdomains(arg1::PC,arg2::Int32,arg3::Ptr{IS},arg4::Ptr{IS})
     ccall((:PCGASMSetSubdomains,petsc),PetscErrorCode,(PC,PetscInt,Ptr{IS},Ptr{IS}),arg1,arg2,arg3,arg4)
 end
 
-function PCGASMSetOverlap(arg1::PC,arg2::PetscInt)
+function PCGASMSetOverlap(arg1::PC,arg2::Int32)
     ccall((:PCGASMSetOverlap,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -5510,23 +5510,23 @@ function PCGASMSetType(arg1::PC,arg2::PCGASMType)
     ccall((:PCGASMSetType,petsc),PetscErrorCode,(PC,PCGASMType),arg1,arg2)
 end
 
-function PCGASMCreateSubdomains(arg1::Mat,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Ptr{IS}})
-    ccall((:PCGASMCreateSubdomains,petsc),PetscErrorCode,(Ptr{Void},PetscInt,Ptr{PetscInt},Ptr{Ptr{IS}}),arg1,arg2,arg3,arg4)
+function PCGASMCreateSubdomains(arg1::Mat,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Ptr{IS}})
+    ccall((:PCGASMCreateSubdomains,petsc),PetscErrorCode,(Mat,PetscInt,Ptr{PetscInt},Ptr{Ptr{IS}}),arg1,arg2,arg3,arg4)
 end
 
-function PCGASMDestroySubdomains(arg1::PetscInt,arg2::Ptr{Ptr{IS}},arg3::Ptr{Ptr{IS}})
+function PCGASMDestroySubdomains(arg1::Int32,arg2::Ptr{Ptr{IS}},arg3::Ptr{Ptr{IS}})
     ccall((:PCGASMDestroySubdomains,petsc),PetscErrorCode,(PetscInt,Ptr{Ptr{IS}},Ptr{Ptr{IS}}),arg1,arg2,arg3)
 end
 
-function PCGASMCreateSubdomains2D(arg1::PC,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt,arg5::PetscInt,arg6::PetscInt,arg7::PetscInt,arg8::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg9::Ptr{Ptr{IS}},arg10::Ptr{Ptr{IS}})
+function PCGASMCreateSubdomains2D(arg1::PC,arg2::Int32,arg3::Int32,arg4::Int32,arg5::Int32,arg6::Int32,arg7::Int32,arg8::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg9::Ptr{Ptr{IS}},arg10::Ptr{Ptr{IS}})
     ccall((:PCGASMCreateSubdomains2D,petsc),PetscErrorCode,(PC,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,PetscInt,Ptr{PetscInt},Ptr{Ptr{IS}},Ptr{Ptr{IS}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
 end
 
-function PCGASMGetSubdomains(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{IS}},arg4::Ptr{Ptr{IS}})
+function PCGASMGetSubdomains(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{IS}},arg4::Ptr{Ptr{IS}})
     ccall((:PCGASMGetSubdomains,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{Ptr{IS}},Ptr{Ptr{IS}}),arg1,arg2,arg3,arg4)
 end
 
-function PCGASMGetSubmatrices(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{Mat}})
+function PCGASMGetSubmatrices(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Mat}})
     ccall((:PCGASMGetSubmatrices,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{Ptr{Mat}}),arg1,arg2,arg3)
 end
 
@@ -5542,15 +5542,15 @@ function PCCompositeAddPC(arg1::PC,arg2::PCType)
     ccall((:PCCompositeAddPC,petsc),PetscErrorCode,(PC,PCType),arg1,arg2)
 end
 
-function PCCompositeGetPC(arg1::PC,arg2::PetscInt,arg3::Ptr{PC})
+function PCCompositeGetPC(arg1::PC,arg2::Int32,arg3::Ptr{PC})
     ccall((:PCCompositeGetPC,petsc),PetscErrorCode,(PC,PetscInt,Ptr{PC}),arg1,arg2,arg3)
 end
 
-function PCCompositeSpecialSetAlpha(arg1::PC,arg2::PetscScalar)
+function PCCompositeSpecialSetAlpha(arg1::PC,arg2::Float64)
     ccall((:PCCompositeSpecialSetAlpha,petsc),PetscErrorCode,(PC,PetscScalar),arg1,arg2)
 end
 
-function PCRedundantSetNumber(arg1::PC,arg2::PetscInt)
+function PCRedundantSetNumber(arg1::PC,arg2::Int32)
     ccall((:PCRedundantSetNumber,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -5566,31 +5566,31 @@ function PCSPAISetEpsilon(arg1::PC,arg2::Cdouble)
     ccall((:PCSPAISetEpsilon,petsc),PetscErrorCode,(PC,Cdouble),arg1,arg2)
 end
 
-function PCSPAISetNBSteps(arg1::PC,arg2::PetscInt)
+function PCSPAISetNBSteps(arg1::PC,arg2::Int32)
     ccall((:PCSPAISetNBSteps,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
-function PCSPAISetMax(arg1::PC,arg2::PetscInt)
+function PCSPAISetMax(arg1::PC,arg2::Int32)
     ccall((:PCSPAISetMax,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
-function PCSPAISetMaxNew(arg1::PC,arg2::PetscInt)
+function PCSPAISetMaxNew(arg1::PC,arg2::Int32)
     ccall((:PCSPAISetMaxNew,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
-function PCSPAISetBlockSize(arg1::PC,arg2::PetscInt)
+function PCSPAISetBlockSize(arg1::PC,arg2::Int32)
     ccall((:PCSPAISetBlockSize,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
-function PCSPAISetCacheSize(arg1::PC,arg2::PetscInt)
+function PCSPAISetCacheSize(arg1::PC,arg2::Int32)
     ccall((:PCSPAISetCacheSize,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
-function PCSPAISetVerbose(arg1::PC,arg2::PetscInt)
+function PCSPAISetVerbose(arg1::PC,arg2::Int32)
     ccall((:PCSPAISetVerbose,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
-function PCSPAISetSp(arg1::PC,arg2::PetscInt)
+function PCSPAISetSp(arg1::PC,arg2::Int32)
     ccall((:PCSPAISetSp,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -5603,11 +5603,11 @@ function PCHYPREGetType(arg1::PC,arg2::Ptr{Ptr{Uint8}})
 end
 
 function PCHYPRESetDiscreteGradient(arg1::PC,arg2::Mat)
-    ccall((:PCHYPRESetDiscreteGradient,petsc),PetscErrorCode,(PC,Ptr{Void}),arg1,arg2)
+    ccall((:PCHYPRESetDiscreteGradient,petsc),PetscErrorCode,(PC,Mat),arg1,arg2)
 end
 
 function PCHYPRESetDiscreteCurl(arg1::PC,arg2::Mat)
-    ccall((:PCHYPRESetDiscreteCurl,petsc),PetscErrorCode,(PC,Ptr{Void}),arg1,arg2)
+    ccall((:PCHYPRESetDiscreteCurl,petsc),PetscErrorCode,(PC,Mat),arg1,arg2)
 end
 
 function PCHYPRESetEdgeConstantVectors(arg1::PC,arg2::Vec,arg3::Vec,arg4::Vec)
@@ -5615,22 +5615,22 @@ function PCHYPRESetEdgeConstantVectors(arg1::PC,arg2::Vec,arg3::Vec,arg4::Vec)
 end
 
 function PCHYPRESetAlphaPoissonMatrix(arg1::PC,arg2::Mat)
-    ccall((:PCHYPRESetAlphaPoissonMatrix,petsc),PetscErrorCode,(PC,Ptr{Void}),arg1,arg2)
+    ccall((:PCHYPRESetAlphaPoissonMatrix,petsc),PetscErrorCode,(PC,Mat),arg1,arg2)
 end
 
 function PCHYPRESetBetaPoissonMatrix(arg1::PC,arg2::Mat)
-    ccall((:PCHYPRESetBetaPoissonMatrix,petsc),PetscErrorCode,(PC,Ptr{Void}),arg1,arg2)
+    ccall((:PCHYPRESetBetaPoissonMatrix,petsc),PetscErrorCode,(PC,Mat),arg1,arg2)
 end
 
-function PCBJacobiGetLocalBlocks(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{PetscInt}})
-    ccall((:PCBJacobiGetLocalBlocks,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{Ptr{PetscInt}}),arg1,arg2,arg3)
+function PCBJacobiGetLocalBlocks(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Int32}})
+    ccall((:PCBJacobiGetLocalBlocks,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{Ptr{Int32}}),arg1,arg2,arg3)
 end
 
-function PCBJacobiGetTotalBlocks(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{PetscInt}})
-    ccall((:PCBJacobiGetTotalBlocks,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{Ptr{PetscInt}}),arg1,arg2,arg3)
+function PCBJacobiGetTotalBlocks(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{Int32}})
+    ccall((:PCBJacobiGetTotalBlocks,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{Ptr{Int32}}),arg1,arg2,arg3)
 end
 
-function PCFieldSplitSetFields(arg1::PC,arg2::Ptr{Uint8},arg3::PetscInt,arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PCFieldSplitSetFields(arg1::PC,arg2::Ptr{Uint8},arg3::Int32,arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PCFieldSplitSetFields,petsc),PetscErrorCode,(PC,Ptr{Uint8},PetscInt,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5)
 end
 
@@ -5642,7 +5642,7 @@ function PCFieldSplitGetType(arg1::PC,arg2::Ptr{PCCompositeType})
     ccall((:PCFieldSplitGetType,petsc),PetscErrorCode,(PC,Ptr{PCCompositeType}),arg1,arg2)
 end
 
-function PCFieldSplitSetBlockSize(arg1::PC,arg2::PetscInt)
+function PCFieldSplitSetBlockSize(arg1::PC,arg2::Int32)
     ccall((:PCFieldSplitSetBlockSize,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -5683,11 +5683,11 @@ function PETSC_DEPRECATED()
 end
 
 function PCFieldSplitSchurPrecondition(arg1::PC,arg2::PCFieldSplitSchurPreType,arg3::Mat)
-    ccall((:PCFieldSplitSchurPrecondition,petsc),PetscErrorCode,(PC,PCFieldSplitSchurPreType,Ptr{Void}),arg1,arg2,arg3)
+    ccall((:PCFieldSplitSchurPrecondition,petsc),PetscErrorCode,(PC,PCFieldSplitSchurPreType,Mat),arg1,arg2,arg3)
 end
 
 function PCFieldSplitSetSchurPre(arg1::PC,arg2::PCFieldSplitSchurPreType,arg3::Mat)
-    ccall((:PCFieldSplitSetSchurPre,petsc),PetscErrorCode,(PC,PCFieldSplitSchurPreType,Ptr{Void}),arg1,arg2,arg3)
+    ccall((:PCFieldSplitSetSchurPre,petsc),PetscErrorCode,(PC,PCFieldSplitSchurPreType,Mat),arg1,arg2,arg3)
 end
 
 function PCFieldSplitGetSchurPre(arg1::PC,arg2::Ptr{PCFieldSplitSchurPreType},arg3::Ptr{Mat})
@@ -5711,14 +5711,14 @@ function PCFieldSplitSchurRestoreS(arg1::PC,S::Ptr{Mat})
 end
 
 function PCGalerkinSetRestriction(arg1::PC,arg2::Mat)
-    ccall((:PCGalerkinSetRestriction,petsc),PetscErrorCode,(PC,Ptr{Void}),arg1,arg2)
+    ccall((:PCGalerkinSetRestriction,petsc),PetscErrorCode,(PC,Mat),arg1,arg2)
 end
 
 function PCGalerkinSetInterpolation(arg1::PC,arg2::Mat)
-    ccall((:PCGalerkinSetInterpolation,petsc),PetscErrorCode,(PC,Ptr{Void}),arg1,arg2)
+    ccall((:PCGalerkinSetInterpolation,petsc),PetscErrorCode,(PC,Mat),arg1,arg2)
 end
 
-function PCSetCoordinates(arg1::PC,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{Cint})
+function PCSetCoordinates(arg1::PC,arg2::Int32,arg3::Int32,arg4::Ptr{Cint})
     ccall((:PCSetCoordinates,petsc),PetscErrorCode,(PC,PetscInt,PetscInt,Ptr{Cint}),arg1,arg2,arg3,arg4)
 end
 
@@ -5742,11 +5742,11 @@ function PCGetApplicationContext(arg1::PC,arg2::Ptr{Void})
     ccall((:PCGetApplicationContext,petsc),PetscErrorCode,(PC,Ptr{Void}),arg1,arg2)
 end
 
-function PCBiCGStabCUSPSetTolerance(arg1::PC,PetscReal::Cint)
+function PCBiCGStabCUSPSetTolerance(arg1::PC,Float64::Cint)
     ccall((:PCBiCGStabCUSPSetTolerance,petsc),PetscErrorCode,(PC,Cint),arg1,PetscReal)
 end
 
-function PCBiCGStabCUSPSetIterations(arg1::PC,arg2::PetscInt)
+function PCBiCGStabCUSPSetIterations(arg1::PC,arg2::Int32)
     ccall((:PCBiCGStabCUSPSetIterations,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -5754,7 +5754,7 @@ function PCBiCGStabCUSPSetUseVerboseMonitor(arg1::PC,arg2::PetscBool)
     ccall((:PCBiCGStabCUSPSetUseVerboseMonitor,petsc),PetscErrorCode,(PC,PetscBool),arg1,arg2)
 end
 
-function PCAINVCUSPSetDropTolerance(arg1::PC,PetscReal::Cint)
+function PCAINVCUSPSetDropTolerance(arg1::PC,Float64::Cint)
     ccall((:PCAINVCUSPSetDropTolerance,petsc),PetscErrorCode,(PC,Cint),arg1,PetscReal)
 end
 
@@ -5762,11 +5762,11 @@ function PCAINVCUSPUseScaling(arg1::PC,arg2::PetscBool)
     ccall((:PCAINVCUSPUseScaling,petsc),PetscErrorCode,(PC,PetscBool),arg1,arg2)
 end
 
-function PCAINVCUSPSetNonzeros(arg1::PC,arg2::PetscInt)
+function PCAINVCUSPSetNonzeros(arg1::PC,arg2::Int32)
     ccall((:PCAINVCUSPSetNonzeros,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
-function PCAINVCUSPSetLinParameter(arg1::PC,arg2::PetscInt)
+function PCAINVCUSPSetLinParameter(arg1::PC,arg2::Int32)
     ccall((:PCAINVCUSPSetLinParameter,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -5778,11 +5778,11 @@ function PCPARMSSetLocal(arg1::PC,arg2::PCPARMSLocalType)
     ccall((:PCPARMSSetLocal,petsc),PetscErrorCode,(PC,PCPARMSLocalType),arg1,arg2)
 end
 
-function PCPARMSSetSolveTolerances(arg1::PC,PetscReal::Cint,arg2::PetscInt)
+function PCPARMSSetSolveTolerances(arg1::PC,Float64::Cint,arg2::Int32)
     ccall((:PCPARMSSetSolveTolerances,petsc),PetscErrorCode,(PC,Cint,PetscInt),arg1,PetscReal,arg2)
 end
 
-function PCPARMSSetSolveRestart(arg1::PC,arg2::PetscInt)
+function PCPARMSSetSolveRestart(arg1::PC,arg2::Int32)
     ccall((:PCPARMSSetSolveRestart,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -5790,7 +5790,7 @@ function PCPARMSSetNonsymPerm(arg1::PC,arg2::PetscBool)
     ccall((:PCPARMSSetNonsymPerm,petsc),PetscErrorCode,(PC,PetscBool),arg1,arg2)
 end
 
-function PCPARMSSetFill(arg1::PC,arg2::PetscInt,arg3::PetscInt,arg4::PetscInt)
+function PCPARMSSetFill(arg1::PC,arg2::Int32,arg3::Int32,arg4::Int32)
     ccall((:PCPARMSSetFill,petsc),PetscErrorCode,(PC,PetscInt,PetscInt,PetscInt),arg1,arg2,arg3,arg4)
 end
 
@@ -5802,7 +5802,7 @@ function PCGAMGGetType(arg1::PC,arg2::Ptr{PCGAMGType})
     ccall((:PCGAMGGetType,petsc),PetscErrorCode,(PC,Ptr{PCGAMGType}),arg1,arg2)
 end
 
-function PCGAMGSetProcEqLim(arg1::PC,arg2::PetscInt)
+function PCGAMGSetProcEqLim(arg1::PC,arg2::Int32)
     ccall((:PCGAMGSetProcEqLim,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -5814,23 +5814,23 @@ function PCGAMGSetUseASMAggs(arg1::PC,arg2::PetscBool)
     ccall((:PCGAMGSetUseASMAggs,petsc),PetscErrorCode,(PC,PetscBool),arg1,arg2)
 end
 
-function PCGAMGSetSolverType(arg1::PC,arg2::Ptr{Uint8},arg3::PetscInt)
+function PCGAMGSetSolverType(arg1::PC,arg2::Ptr{Uint8},arg3::Int32)
     ccall((:PCGAMGSetSolverType,petsc),PetscErrorCode,(PC,Ptr{Uint8},PetscInt),arg1,arg2,arg3)
 end
 
-function PCGAMGSetThreshold(arg1::PC,PetscReal::Cint)
+function PCGAMGSetThreshold(arg1::PC,Float64::Cint)
     ccall((:PCGAMGSetThreshold,petsc),PetscErrorCode,(PC,Cint),arg1,PetscReal)
 end
 
-function PCGAMGSetCoarseEqLim(arg1::PC,arg2::PetscInt)
+function PCGAMGSetCoarseEqLim(arg1::PC,arg2::Int32)
     ccall((:PCGAMGSetCoarseEqLim,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
-function PCGAMGSetNlevels(arg1::PC,arg2::PetscInt)
+function PCGAMGSetNlevels(arg1::PC,arg2::Int32)
     ccall((:PCGAMGSetNlevels,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
-function PCGAMGSetNSmooths(arg1::PC,arg2::PetscInt)
+function PCGAMGSetNSmooths(arg1::PC,arg2::Int32)
     ccall((:PCGAMGSetNSmooths,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -5838,7 +5838,7 @@ function PCGAMGSetSymGraph(arg1::PC,arg2::PetscBool)
     ccall((:PCGAMGSetSymGraph,petsc),PetscErrorCode,(PC,PetscBool),arg1,arg2)
 end
 
-function PCGAMGSetSquareGraph(arg1::PC,arg2::PetscInt)
+function PCGAMGSetSquareGraph(arg1::PC,arg2::Int32)
     ccall((:PCGAMGSetSquareGraph,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -5867,18 +5867,18 @@ function PCGAMGClassicalGetType(arg1::PC,arg2::Ptr{PCGAMGClassicalType})
 end
 
 function PCBDDCSetChangeOfBasisMat(arg1::PC,arg2::Mat)
-    ccall((:PCBDDCSetChangeOfBasisMat,petsc),PetscErrorCode,(PC,Ptr{Void}),arg1,arg2)
+    ccall((:PCBDDCSetChangeOfBasisMat,petsc),PetscErrorCode,(PC,Mat),arg1,arg2)
 end
 
 function PCBDDCSetPrimalVerticesLocalIS(arg1::PC,arg2::IS)
     ccall((:PCBDDCSetPrimalVerticesLocalIS,petsc),PetscErrorCode,(PC,IS),arg1,arg2)
 end
 
-function PCBDDCSetCoarseningRatio(arg1::PC,arg2::PetscInt)
+function PCBDDCSetCoarseningRatio(arg1::PC,arg2::Int32)
     ccall((:PCBDDCSetCoarseningRatio,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
-function PCBDDCSetLevels(arg1::PC,arg2::PetscInt)
+function PCBDDCSetLevels(arg1::PC,arg2::Int32)
     ccall((:PCBDDCSetLevels,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -5918,15 +5918,15 @@ function PCBDDCGetNeumannBoundariesLocal(arg1::PC,arg2::Ptr{IS})
     ccall((:PCBDDCGetNeumannBoundariesLocal,petsc),PetscErrorCode,(PC,Ptr{IS}),arg1,arg2)
 end
 
-function PCBDDCSetDofsSplitting(arg1::PC,arg2::PetscInt,arg3::Ptr{IS})
+function PCBDDCSetDofsSplitting(arg1::PC,arg2::Int32,arg3::Ptr{IS})
     ccall((:PCBDDCSetDofsSplitting,petsc),PetscErrorCode,(PC,PetscInt,Ptr{IS}),arg1,arg2,arg3)
 end
 
-function PCBDDCSetDofsSplittingLocal(arg1::PC,arg2::PetscInt,arg3::Ptr{IS})
+function PCBDDCSetDofsSplittingLocal(arg1::PC,arg2::Int32,arg3::Ptr{IS})
     ccall((:PCBDDCSetDofsSplittingLocal,petsc),PetscErrorCode,(PC,PetscInt,Ptr{IS}),arg1,arg2,arg3)
 end
 
-function PCBDDCSetLocalAdjacencyGraph(arg1::PC,arg2::PetscInt,arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),PetscCopyMode::Cint)
+function PCBDDCSetLocalAdjacencyGraph(arg1::PC,arg2::Int32,arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),PetscCopyMode::Cint)
     ccall((:PCBDDCSetLocalAdjacencyGraph,petsc),PetscErrorCode,(PC,PetscInt,Ptr{PetscInt},Ptr{PetscInt},Cint),arg1,arg2,arg3,arg4,PetscCopyMode)
 end
 
@@ -5935,18 +5935,18 @@ function PCBDDCCreateFETIDPOperators(arg1::PC,arg2::Ptr{Mat},arg3::Ptr{PC})
 end
 
 function PCBDDCMatFETIDPGetRHS(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:PCBDDCMatFETIDPGetRHS,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:PCBDDCMatFETIDPGetRHS,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function PCBDDCMatFETIDPGetSolution(arg1::Mat,arg2::Vec,arg3::Vec)
-    ccall((:PCBDDCMatFETIDPGetSolution,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec),arg1,arg2,arg3)
+    ccall((:PCBDDCMatFETIDPGetSolution,petsc),PetscErrorCode,(Mat,Vec,Vec),arg1,arg2,arg3)
 end
 
 function PCISSetUseStiffnessScaling(arg1::PC,arg2::PetscBool)
     ccall((:PCISSetUseStiffnessScaling,petsc),PetscErrorCode,(PC,PetscBool),arg1,arg2)
 end
 
-function PCISSetSubdomainScalingFactor(arg1::PC,arg2::PetscScalar)
+function PCISSetSubdomainScalingFactor(arg1::PC,arg2::Float64)
     ccall((:PCISSetSubdomainScalingFactor,petsc),PetscErrorCode,(PC,PetscScalar),arg1,arg2)
 end
 
@@ -5962,19 +5962,19 @@ function PCMGGetType(arg1::PC,arg2::Ptr{PCMGType})
     ccall((:PCMGGetType,petsc),PetscErrorCode,(PC,Ptr{PCMGType}),arg1,arg2)
 end
 
-function PCMGSetLevels(arg1::PC,arg2::PetscInt,arg3::Ptr{MPI_Comm})
+function PCMGSetLevels(arg1::PC,arg2::Int32,arg3::Ptr{MPI_Comm})
     ccall((:PCMGSetLevels,petsc),PetscErrorCode,(PC,PetscInt,Ptr{MPI_Comm}),arg1,arg2,arg3)
 end
 
-function PCMGGetLevels(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function PCMGGetLevels(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:PCMGGetLevels,petsc),PetscErrorCode,(PC,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PCMGSetNumberSmoothUp(arg1::PC,arg2::PetscInt)
+function PCMGSetNumberSmoothUp(arg1::PC,arg2::Int32)
     ccall((:PCMGSetNumberSmoothUp,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
-function PCMGSetNumberSmoothDown(arg1::PC,arg2::PetscInt)
+function PCMGSetNumberSmoothDown(arg1::PC,arg2::Int32)
     ccall((:PCMGSetNumberSmoothDown,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -5982,15 +5982,15 @@ function PCMGSetCycleType(arg1::PC,arg2::PCMGCycleType)
     ccall((:PCMGSetCycleType,petsc),PetscErrorCode,(PC,PCMGCycleType),arg1,arg2)
 end
 
-function PCMGSetCycleTypeOnLevel(arg1::PC,arg2::PetscInt,arg3::PCMGCycleType)
+function PCMGSetCycleTypeOnLevel(arg1::PC,arg2::Int32,arg3::PCMGCycleType)
     ccall((:PCMGSetCycleTypeOnLevel,petsc),PetscErrorCode,(PC,PetscInt,PCMGCycleType),arg1,arg2,arg3)
 end
 
-function PCMGSetCyclesOnLevel(arg1::PC,arg2::PetscInt,arg3::PetscInt)
+function PCMGSetCyclesOnLevel(arg1::PC,arg2::Int32,arg3::Int32)
     ccall((:PCMGSetCyclesOnLevel,petsc),PetscErrorCode,(PC,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
-function PCMGMultiplicativeSetCycles(arg1::PC,arg2::PetscInt)
+function PCMGMultiplicativeSetCycles(arg1::PC,arg2::Int32)
     ccall((:PCMGMultiplicativeSetCycles,petsc),PetscErrorCode,(PC,PetscInt),arg1,arg2)
 end
 
@@ -6002,48 +6002,48 @@ function PCMGGetGalerkin(arg1::PC,arg2::Ptr{PetscBool})
     ccall((:PCMGGetGalerkin,petsc),PetscErrorCode,(PC,Ptr{PetscBool}),arg1,arg2)
 end
 
-function PCMGSetRhs(arg1::PC,arg2::PetscInt,arg3::Vec)
+function PCMGSetRhs(arg1::PC,arg2::Int32,arg3::Vec)
     ccall((:PCMGSetRhs,petsc),PetscErrorCode,(PC,PetscInt,Vec),arg1,arg2,arg3)
 end
 
-function PCMGSetX(arg1::PC,arg2::PetscInt,arg3::Vec)
+function PCMGSetX(arg1::PC,arg2::Int32,arg3::Vec)
     ccall((:PCMGSetX,petsc),PetscErrorCode,(PC,PetscInt,Vec),arg1,arg2,arg3)
 end
 
-function PCMGSetR(arg1::PC,arg2::PetscInt,arg3::Vec)
+function PCMGSetR(arg1::PC,arg2::Int32,arg3::Vec)
     ccall((:PCMGSetR,petsc),PetscErrorCode,(PC,PetscInt,Vec),arg1,arg2,arg3)
 end
 
-function PCMGSetRestriction(arg1::PC,arg2::PetscInt,arg3::Mat)
-    ccall((:PCMGSetRestriction,petsc),PetscErrorCode,(PC,PetscInt,Ptr{Void}),arg1,arg2,arg3)
+function PCMGSetRestriction(arg1::PC,arg2::Int32,arg3::Mat)
+    ccall((:PCMGSetRestriction,petsc),PetscErrorCode,(PC,PetscInt,Mat),arg1,arg2,arg3)
 end
 
-function PCMGGetRestriction(arg1::PC,arg2::PetscInt,arg3::Ptr{Mat})
+function PCMGGetRestriction(arg1::PC,arg2::Int32,arg3::Ptr{Mat})
     ccall((:PCMGGetRestriction,petsc),PetscErrorCode,(PC,PetscInt,Ptr{Mat}),arg1,arg2,arg3)
 end
 
-function PCMGSetInterpolation(arg1::PC,arg2::PetscInt,arg3::Mat)
-    ccall((:PCMGSetInterpolation,petsc),PetscErrorCode,(PC,PetscInt,Ptr{Void}),arg1,arg2,arg3)
+function PCMGSetInterpolation(arg1::PC,arg2::Int32,arg3::Mat)
+    ccall((:PCMGSetInterpolation,petsc),PetscErrorCode,(PC,PetscInt,Mat),arg1,arg2,arg3)
 end
 
-function PCMGGetInterpolation(arg1::PC,arg2::PetscInt,arg3::Ptr{Mat})
+function PCMGGetInterpolation(arg1::PC,arg2::Int32,arg3::Ptr{Mat})
     ccall((:PCMGGetInterpolation,petsc),PetscErrorCode,(PC,PetscInt,Ptr{Mat}),arg1,arg2,arg3)
 end
 
-function PCMGSetRScale(arg1::PC,arg2::PetscInt,arg3::Vec)
+function PCMGSetRScale(arg1::PC,arg2::Int32,arg3::Vec)
     ccall((:PCMGSetRScale,petsc),PetscErrorCode,(PC,PetscInt,Vec),arg1,arg2,arg3)
 end
 
-function PCMGGetRScale(arg1::PC,arg2::PetscInt,arg3::Ptr{Vec})
+function PCMGGetRScale(arg1::PC,arg2::Int32,arg3::Ptr{Vec})
     ccall((:PCMGGetRScale,petsc),PetscErrorCode,(PC,PetscInt,Ptr{Vec}),arg1,arg2,arg3)
 end
 
-function PCMGSetResidual(arg1::PC,arg2::PetscInt,arg3::Ptr{Void},arg4::Mat)
-    ccall((:PCMGSetResidual,petsc),PetscErrorCode,(PC,PetscInt,Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
+function PCMGSetResidual(arg1::PC,arg2::Int32,arg3::Ptr{Void},arg4::Mat)
+    ccall((:PCMGSetResidual,petsc),PetscErrorCode,(PC,PetscInt,Ptr{Void},Mat),arg1,arg2,arg3,arg4)
 end
 
 function PCMGResidualDefault(arg1::Mat,arg2::Vec,arg3::Vec,arg4::Vec)
-    ccall((:PCMGResidualDefault,petsc),PetscErrorCode,(Ptr{Void},Vec,Vec,Vec),arg1,arg2,arg3,arg4)
+    ccall((:PCMGResidualDefault,petsc),PetscErrorCode,(Mat,Vec,Vec,Vec),arg1,arg2,arg3,arg4)
 end
 
 function KSPInitializePackage()
@@ -6106,11 +6106,11 @@ function KSPGetPCSide(arg1::KSP,arg2::Ptr{PCSide})
     ccall((:KSPGetPCSide,petsc),PetscErrorCode,(KSP,Ptr{PCSide}),arg1,arg2)
 end
 
-function KSPSetTolerances(arg1::KSP,PetscReal::Cint,arg2::Cint,arg3::Cint,arg4::PetscInt)
+function KSPSetTolerances(arg1::KSP,Float64::Cint,arg2::Cint,arg3::Cint,arg4::Int32)
     ccall((:KSPSetTolerances,petsc),PetscErrorCode,(KSP,Cint,Cint,Cint,PetscInt),arg1,PetscReal,arg2,arg3,arg4)
 end
 
-function KSPGetTolerances(arg1::KSP,arg2::Ptr{Cint},arg3::Ptr{Cint},arg4::Ptr{Cint},arg5::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function KSPGetTolerances(arg1::KSP,arg2::Ptr{Cint},arg3::Ptr{Cint},arg4::Ptr{Cint},arg5::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:KSPGetTolerances,petsc),PetscErrorCode,(KSP,Ptr{Cint},Ptr{Cint},Ptr{Cint},Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5)
 end
 
@@ -6166,15 +6166,15 @@ function KSPGetResidualNorm(arg1::KSP,arg2::Ptr{Cint})
     ccall((:KSPGetResidualNorm,petsc),PetscErrorCode,(KSP,Ptr{Cint}),arg1,arg2)
 end
 
-function KSPGetIterationNumber(arg1::KSP,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function KSPGetIterationNumber(arg1::KSP,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:KSPGetIterationNumber,petsc),PetscErrorCode,(KSP,Ptr{PetscInt}),arg1,arg2)
 end
 
-function KSPGetTotalIterations(arg1::KSP,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function KSPGetTotalIterations(arg1::KSP,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:KSPGetTotalIterations,petsc),PetscErrorCode,(KSP,Ptr{PetscInt}),arg1,arg2)
 end
 
-function KSPCreateVecs(arg1::KSP,arg2::PetscInt,arg3::Ptr{Ptr{Vec}},arg4::PetscInt,arg5::Ptr{Ptr{Vec}})
+function KSPCreateVecs(arg1::KSP,arg2::Int32,arg3::Ptr{Ptr{Vec}},arg4::Int32,arg5::Ptr{Ptr{Vec}})
     ccall((:KSPCreateVecs,petsc),PetscErrorCode,(KSP,PetscInt,Ptr{Ptr{Vec}},PetscInt,Ptr{Ptr{Vec}}),arg1,arg2,arg3,arg4,arg5)
 end
 
@@ -6190,7 +6190,7 @@ function KSPGetPC(arg1::KSP,arg2::Ptr{PC})
     ccall((:KSPGetPC,petsc),PetscErrorCode,(KSP,Ptr{PC}),arg1,arg2)
 end
 
-function KSPMonitor(arg1::KSP,arg2::PetscInt,PetscReal::Cint)
+function KSPMonitor(arg1::KSP,arg2::Int32,Float64::Cint)
     ccall((:KSPMonitor,petsc),PetscErrorCode,(KSP,PetscInt,Cint),arg1,arg2,PetscReal)
 end
 
@@ -6206,11 +6206,11 @@ function KSPGetMonitorContext(arg1::KSP,arg2::Ptr{Ptr{Void}})
     ccall((:KSPGetMonitorContext,petsc),PetscErrorCode,(KSP,Ptr{Ptr{Void}}),arg1,arg2)
 end
 
-function KSPGetResidualHistory(arg1::KSP,arg2::Ptr{Ptr{Cint}},arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function KSPGetResidualHistory(arg1::KSP,arg2::Ptr{Ptr{Cint}},arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:KSPGetResidualHistory,petsc),PetscErrorCode,(KSP,Ptr{Ptr{Cint}},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function KSPSetResidualHistory(arg1::KSP,PetscReal::Ptr{Cint},arg2::PetscInt,arg3::PetscBool)
+function KSPSetResidualHistory(arg1::KSP,Float64::Ptr{Cint},arg2::Int32,arg3::PetscBool)
     ccall((:KSPSetResidualHistory,petsc),PetscErrorCode,(KSP,Ptr{Cint},PetscInt,PetscBool),arg1,PetscReal,arg2,arg3)
 end
 
@@ -6226,7 +6226,7 @@ function KSPDestroyDefault(arg1::KSP)
     ccall((:KSPDestroyDefault,petsc),PetscErrorCode,(KSP,),arg1)
 end
 
-function KSPSetWorkVecs(arg1::KSP,arg2::PetscInt)
+function KSPSetWorkVecs(arg1::KSP,arg2::Int32)
     ccall((:KSPSetWorkVecs,petsc),PetscErrorCode,(KSP,PetscInt),arg1,arg2)
 end
 
@@ -6234,31 +6234,31 @@ function PCKSPGetKSP(arg1::PC,arg2::Ptr{KSP})
     ccall((:PCKSPGetKSP,petsc),PetscErrorCode,(PC,Ptr{KSP}),arg1,arg2)
 end
 
-function PCBJacobiGetSubKSP(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Ptr{KSP}})
+function PCBJacobiGetSubKSP(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Ptr{KSP}})
     ccall((:PCBJacobiGetSubKSP,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{PetscInt},Ptr{Ptr{KSP}}),arg1,arg2,arg3,arg4)
 end
 
-function PCASMGetSubKSP(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Ptr{KSP}})
+function PCASMGetSubKSP(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Ptr{KSP}})
     ccall((:PCASMGetSubKSP,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{PetscInt},Ptr{Ptr{KSP}}),arg1,arg2,arg3,arg4)
 end
 
-function PCGASMGetSubKSP(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg4::Ptr{Ptr{KSP}})
+function PCGASMGetSubKSP(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg4::Ptr{Ptr{KSP}})
     ccall((:PCGASMGetSubKSP,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{PetscInt},Ptr{Ptr{KSP}}),arg1,arg2,arg3,arg4)
 end
 
-function PCFieldSplitGetSubKSP(arg1::PC,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}),arg3::Ptr{Ptr{KSP}})
+function PCFieldSplitGetSubKSP(arg1::PC,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}),arg3::Ptr{Ptr{KSP}})
     ccall((:PCFieldSplitGetSubKSP,petsc),PetscErrorCode,(PC,Ptr{PetscInt},Ptr{Ptr{KSP}}),arg1,arg2,arg3)
 end
 
-function PCMGGetSmoother(arg1::PC,arg2::PetscInt,arg3::Ptr{KSP})
+function PCMGGetSmoother(arg1::PC,arg2::Int32,arg3::Ptr{KSP})
     ccall((:PCMGGetSmoother,petsc),PetscErrorCode,(PC,PetscInt,Ptr{KSP}),arg1,arg2,arg3)
 end
 
-function PCMGGetSmootherDown(arg1::PC,arg2::PetscInt,arg3::Ptr{KSP})
+function PCMGGetSmootherDown(arg1::PC,arg2::Int32,arg3::Ptr{KSP})
     ccall((:PCMGGetSmootherDown,petsc),PetscErrorCode,(PC,PetscInt,Ptr{KSP}),arg1,arg2,arg3)
 end
 
-function PCMGGetSmootherUp(arg1::PC,arg2::PetscInt,arg3::Ptr{KSP})
+function PCMGGetSmootherUp(arg1::PC,arg2::Int32,arg3::Ptr{KSP})
     ccall((:PCMGGetSmootherUp,petsc),PetscErrorCode,(PC,PetscInt,Ptr{KSP}),arg1,arg2,arg3)
 end
 
@@ -6278,7 +6278,7 @@ function KSPBuildResidual(arg1::KSP,arg2::Vec,arg3::Vec,arg4::Ptr{Vec})
     ccall((:KSPBuildResidual,petsc),PetscErrorCode,(KSP,Vec,Vec,Ptr{Vec}),arg1,arg2,arg3,arg4)
 end
 
-function KSPRichardsonSetScale(arg1::KSP,PetscReal::Cint)
+function KSPRichardsonSetScale(arg1::KSP,Float64::Cint)
     ccall((:KSPRichardsonSetScale,petsc),PetscErrorCode,(KSP,Cint),arg1,PetscReal)
 end
 
@@ -6286,11 +6286,11 @@ function KSPRichardsonSetSelfScale(arg1::KSP,arg2::PetscBool)
     ccall((:KSPRichardsonSetSelfScale,petsc),PetscErrorCode,(KSP,PetscBool),arg1,arg2)
 end
 
-function KSPChebyshevSetEigenvalues(arg1::KSP,PetscReal::Cint,arg2::Cint)
+function KSPChebyshevSetEigenvalues(arg1::KSP,Float64::Cint,arg2::Cint)
     ccall((:KSPChebyshevSetEigenvalues,petsc),PetscErrorCode,(KSP,Cint,Cint),arg1,PetscReal,arg2)
 end
 
-function KSPChebyshevEstEigSet(arg1::KSP,PetscReal::Cint,arg2::Cint,arg3::Cint,arg4::Cint)
+function KSPChebyshevEstEigSet(arg1::KSP,Float64::Cint,arg2::Cint,arg3::Cint,arg4::Cint)
     ccall((:KSPChebyshevEstEigSet,petsc),PetscErrorCode,(KSP,Cint,Cint,Cint,Cint),arg1,PetscReal,arg2,arg3,arg4)
 end
 
@@ -6306,27 +6306,27 @@ function KSPComputeExtremeSingularValues(arg1::KSP,arg2::Ptr{Cint},arg3::Ptr{Cin
     ccall((:KSPComputeExtremeSingularValues,petsc),PetscErrorCode,(KSP,Ptr{Cint},Ptr{Cint}),arg1,arg2,arg3)
 end
 
-function KSPComputeEigenvalues(arg1::KSP,arg2::PetscInt,PetscReal::Ptr{Cint},arg3::Ptr{Cint},arg4::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function KSPComputeEigenvalues(arg1::KSP,arg2::Int32,Float64::Ptr{Cint},arg3::Ptr{Cint},arg4::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:KSPComputeEigenvalues,petsc),PetscErrorCode,(KSP,PetscInt,Ptr{Cint},Ptr{Cint},Ptr{PetscInt}),arg1,arg2,PetscReal,arg3,arg4)
 end
 
-function KSPComputeEigenvaluesExplicitly(arg1::KSP,arg2::PetscInt,PetscReal::Ptr{Cint},arg3::Ptr{Cint})
+function KSPComputeEigenvaluesExplicitly(arg1::KSP,arg2::Int32,Float64::Ptr{Cint},arg3::Ptr{Cint})
     ccall((:KSPComputeEigenvaluesExplicitly,petsc),PetscErrorCode,(KSP,PetscInt,Ptr{Cint},Ptr{Cint}),arg1,arg2,PetscReal,arg3)
 end
 
-function KSPFCGSetMmax(arg1::KSP,arg2::PetscInt)
+function KSPFCGSetMmax(arg1::KSP,arg2::Int32)
     ccall((:KSPFCGSetMmax,petsc),PetscErrorCode,(KSP,PetscInt),arg1,arg2)
 end
 
-function KSPFCGGetMmax(arg1::KSP,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function KSPFCGGetMmax(arg1::KSP,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:KSPFCGGetMmax,petsc),PetscErrorCode,(KSP,Ptr{PetscInt}),arg1,arg2)
 end
 
-function KSPFCGSetNprealloc(arg1::KSP,arg2::PetscInt)
+function KSPFCGSetNprealloc(arg1::KSP,arg2::Int32)
     ccall((:KSPFCGSetNprealloc,petsc),PetscErrorCode,(KSP,PetscInt),arg1,arg2)
 end
 
-function KSPFCGGetNprealloc(arg1::KSP,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function KSPFCGGetNprealloc(arg1::KSP,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:KSPFCGGetNprealloc,petsc),PetscErrorCode,(KSP,Ptr{PetscInt}),arg1,arg2)
 end
 
@@ -6338,15 +6338,15 @@ function KSPFCGGetTruncationType(arg1::KSP,arg2::Ptr{KSPFCGTruncationType})
     ccall((:KSPFCGGetTruncationType,petsc),PetscErrorCode,(KSP,Ptr{KSPFCGTruncationType}),arg1,arg2)
 end
 
-function KSPGMRESSetRestart(arg1::KSP,arg2::PetscInt)
+function KSPGMRESSetRestart(arg1::KSP,arg2::Int32)
     ccall((:KSPGMRESSetRestart,petsc),PetscErrorCode,(KSP,PetscInt),arg1,arg2)
 end
 
-function KSPGMRESGetRestart(arg1::KSP,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function KSPGMRESGetRestart(arg1::KSP,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:KSPGMRESGetRestart,petsc),PetscErrorCode,(KSP,Ptr{PetscInt}),arg1,arg2)
 end
 
-function KSPGMRESSetHapTol(arg1::KSP,PetscReal::Cint)
+function KSPGMRESSetHapTol(arg1::KSP,Float64::Cint)
     ccall((:KSPGMRESSetHapTol,petsc),PetscErrorCode,(KSP,Cint),arg1,PetscReal)
 end
 
@@ -6362,15 +6362,15 @@ function KSPGMRESGetOrthogonalization(arg1::KSP,arg2::Ptr{Ptr{Void}})
     ccall((:KSPGMRESGetOrthogonalization,petsc),PetscErrorCode,(KSP,Ptr{Ptr{Void}}),arg1,arg2)
 end
 
-function KSPGMRESModifiedGramSchmidtOrthogonalization(arg1::KSP,arg2::PetscInt)
+function KSPGMRESModifiedGramSchmidtOrthogonalization(arg1::KSP,arg2::Int32)
     ccall((:KSPGMRESModifiedGramSchmidtOrthogonalization,petsc),PetscErrorCode,(KSP,PetscInt),arg1,arg2)
 end
 
-function KSPGMRESClassicalGramSchmidtOrthogonalization(arg1::KSP,arg2::PetscInt)
+function KSPGMRESClassicalGramSchmidtOrthogonalization(arg1::KSP,arg2::Int32)
     ccall((:KSPGMRESClassicalGramSchmidtOrthogonalization,petsc),PetscErrorCode,(KSP,PetscInt),arg1,arg2)
 end
 
-function KSPLGMRESSetAugDim(arg1::KSP,arg2::PetscInt)
+function KSPLGMRESSetAugDim(arg1::KSP,arg2::Int32)
     ccall((:KSPLGMRESSetAugDim,petsc),PetscErrorCode,(KSP,PetscInt),arg1,arg2)
 end
 
@@ -6378,11 +6378,11 @@ function KSPLGMRESSetConstant(arg1::KSP)
     ccall((:KSPLGMRESSetConstant,petsc),PetscErrorCode,(KSP,),arg1)
 end
 
-function KSPGCRSetRestart(arg1::KSP,arg2::PetscInt)
+function KSPGCRSetRestart(arg1::KSP,arg2::Int32)
     ccall((:KSPGCRSetRestart,petsc),PetscErrorCode,(KSP,PetscInt),arg1,arg2)
 end
 
-function KSPGCRGetRestart(arg1::KSP,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function KSPGCRGetRestart(arg1::KSP,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:KSPGCRGetRestart,petsc),PetscErrorCode,(KSP,Ptr{PetscInt}),arg1,arg2)
 end
 
@@ -6398,11 +6398,11 @@ function KSPGMRESGetCGSRefinementType(arg1::KSP,arg2::Ptr{KSPGMRESCGSRefinementT
     ccall((:KSPGMRESGetCGSRefinementType,petsc),PetscErrorCode,(KSP,Ptr{KSPGMRESCGSRefinementType}),arg1,arg2)
 end
 
-function KSPFGMRESModifyPCNoChange(arg1::KSP,arg2::PetscInt,arg3::PetscInt,PetscReal::Cint,arg4::Ptr{Void})
+function KSPFGMRESModifyPCNoChange(arg1::KSP,arg2::Int32,arg3::Int32,Float64::Cint,arg4::Ptr{Void})
     ccall((:KSPFGMRESModifyPCNoChange,petsc),PetscErrorCode,(KSP,PetscInt,PetscInt,Cint,Ptr{Void}),arg1,arg2,arg3,PetscReal,arg4)
 end
 
-function KSPFGMRESModifyPCKSP(arg1::KSP,arg2::PetscInt,arg3::PetscInt,PetscReal::Cint,arg4::Ptr{Void})
+function KSPFGMRESModifyPCKSP(arg1::KSP,arg2::Int32,arg3::Int32,Float64::Cint,arg4::Ptr{Void})
     ccall((:KSPFGMRESModifyPCKSP,petsc),PetscErrorCode,(KSP,PetscInt,PetscInt,Cint,Ptr{Void}),arg1,arg2,arg3,PetscReal,arg4)
 end
 
@@ -6410,7 +6410,7 @@ function KSPFGMRESSetModifyPC(arg1::KSP,arg2::Ptr{Void},arg3::Ptr{Void},arg4::Pt
     ccall((:KSPFGMRESSetModifyPC,petsc),PetscErrorCode,(KSP,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
 end
 
-function KSPQCGSetTrustRegionRadius(arg1::KSP,PetscReal::Cint)
+function KSPQCGSetTrustRegionRadius(arg1::KSP,Float64::Cint)
     ccall((:KSPQCGSetTrustRegionRadius,petsc),PetscErrorCode,(KSP,Cint),arg1,PetscReal)
 end
 
@@ -6422,7 +6422,7 @@ function KSPQCGGetTrialStepNorm(arg1::KSP,arg2::Ptr{Cint})
     ccall((:KSPQCGGetTrialStepNorm,petsc),PetscErrorCode,(KSP,Ptr{Cint}),arg1,arg2)
 end
 
-function KSPBCGSLSetXRes(arg1::KSP,PetscReal::Cint)
+function KSPBCGSLSetXRes(arg1::KSP,Float64::Cint)
     ccall((:KSPBCGSLSetXRes,petsc),PetscErrorCode,(KSP,Cint),arg1,PetscReal)
 end
 
@@ -6430,7 +6430,7 @@ function KSPBCGSLSetPol(arg1::KSP,arg2::PetscBool)
     ccall((:KSPBCGSLSetPol,petsc),PetscErrorCode,(KSP,PetscBool),arg1,arg2)
 end
 
-function KSPBCGSLSetEll(arg1::KSP,arg2::PetscInt)
+function KSPBCGSLSetEll(arg1::KSP,arg2::Int32)
     ccall((:KSPBCGSLSetEll,petsc),PetscErrorCode,(KSP,PetscInt),arg1,arg2)
 end
 
@@ -6446,23 +6446,23 @@ function KSPAddOptionsChecker(arg1::Ptr{Void})
     ccall((:KSPAddOptionsChecker,petsc),PetscErrorCode,(Ptr{Void},),arg1)
 end
 
-function KSPMonitorSingularValue(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{Void})
+function KSPMonitorSingularValue(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{Void})
     ccall((:KSPMonitorSingularValue,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{Void}),arg1,arg2,PetscReal,arg3)
 end
 
-function KSPMonitorDefault(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{Void})
+function KSPMonitorDefault(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{Void})
     ccall((:KSPMonitorDefault,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{Void}),arg1,arg2,PetscReal,arg3)
 end
 
-function KSPLSQRMonitorDefault(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{Void})
+function KSPLSQRMonitorDefault(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{Void})
     ccall((:KSPLSQRMonitorDefault,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{Void}),arg1,arg2,PetscReal,arg3)
 end
 
-function KSPMonitorRange(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{Void})
+function KSPMonitorRange(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{Void})
     ccall((:KSPMonitorRange,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{Void}),arg1,arg2,PetscReal,arg3)
 end
 
-function KSPMonitorDynamicTolerance(ksp::KSP,its::PetscInt,fnorm::Cint,dummy::Ptr{Void})
+function KSPMonitorDynamicTolerance(ksp::KSP,its::Int32,fnorm::Cint,dummy::Ptr{Void})
     ccall((:KSPMonitorDynamicTolerance,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{Void}),ksp,its,fnorm,dummy)
 end
 
@@ -6470,23 +6470,23 @@ function KSPMonitorDynamicToleranceDestroy(dummy::Ptr{Ptr{Void}})
     ccall((:KSPMonitorDynamicToleranceDestroy,petsc),PetscErrorCode,(Ptr{Ptr{Void}},),dummy)
 end
 
-function KSPMonitorTrueResidualNorm(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{Void})
+function KSPMonitorTrueResidualNorm(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{Void})
     ccall((:KSPMonitorTrueResidualNorm,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{Void}),arg1,arg2,PetscReal,arg3)
 end
 
-function KSPMonitorTrueResidualMaxNorm(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{Void})
+function KSPMonitorTrueResidualMaxNorm(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{Void})
     ccall((:KSPMonitorTrueResidualMaxNorm,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{Void}),arg1,arg2,PetscReal,arg3)
 end
 
-function KSPMonitorDefaultShort(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{Void})
+function KSPMonitorDefaultShort(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{Void})
     ccall((:KSPMonitorDefaultShort,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{Void}),arg1,arg2,PetscReal,arg3)
 end
 
-function KSPMonitorSolution(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{Void})
+function KSPMonitorSolution(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{Void})
     ccall((:KSPMonitorSolution,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{Void}),arg1,arg2,PetscReal,arg3)
 end
 
-function KSPMonitorSAWs(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{Void})
+function KSPMonitorSAWs(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{Void})
     ccall((:KSPMonitorSAWs,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{Void}),arg1,arg2,PetscReal,arg3)
 end
 
@@ -6498,7 +6498,7 @@ function KSPMonitorSAWsDestroy(arg1::Ptr{Ptr{Void}})
     ccall((:KSPMonitorSAWsDestroy,petsc),PetscErrorCode,(Ptr{Ptr{Void}},),arg1)
 end
 
-function KSPGMRESMonitorKrylov(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{Void})
+function KSPGMRESMonitorKrylov(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{Void})
     ccall((:KSPGMRESMonitorKrylov,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{Void}),arg1,arg2,PetscReal,arg3)
 end
 
@@ -6511,7 +6511,7 @@ function KSPInitialResidual(arg1::KSP,arg2::Vec,arg3::Vec,arg4::Vec,arg5::Vec,ar
 end
 
 function KSPSetOperators(arg1::KSP,arg2::Mat,arg3::Mat)
-    ccall((:KSPSetOperators,petsc),PetscErrorCode,(KSP,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+    ccall((:KSPSetOperators,petsc),PetscErrorCode,(KSP,Mat,Mat),arg1,arg2,arg3)
 end
 
 function KSPGetOperators(arg1::KSP,arg2::Ptr{Mat},arg3::Ptr{Mat})
@@ -6534,11 +6534,11 @@ function KSPGetOptionsPrefix(arg1::KSP,arg2::Ptr{Ptr{Uint8}})
     ccall((:KSPGetOptionsPrefix,petsc),PetscErrorCode,(KSP,Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
-function KSPSetTabLevel(arg1::KSP,arg2::PetscInt)
+function KSPSetTabLevel(arg1::KSP,arg2::Int32)
     ccall((:KSPSetTabLevel,petsc),PetscErrorCode,(KSP,PetscInt),arg1,arg2)
 end
 
-function KSPGetTabLevel(arg1::KSP,arg2::Union(Ptr{PetscInt},AbstractArray{PetscInt},Ptr{Void}))
+function KSPGetTabLevel(arg1::KSP,arg2::Union(Ptr{Int32},StridedArray{Int32},Ptr{Void}))
     ccall((:KSPGetTabLevel,petsc),PetscErrorCode,(KSP,Ptr{PetscInt}),arg1,arg2)
 end
 
@@ -6594,11 +6594,11 @@ function KSPGetNormType(arg1::KSP,arg2::Ptr{KSPNormType})
     ccall((:KSPGetNormType,petsc),PetscErrorCode,(KSP,Ptr{KSPNormType}),arg1,arg2)
 end
 
-function KSPSetSupportedNorm(ksp::KSP,arg1::KSPNormType,arg2::PCSide,arg3::PetscInt)
+function KSPSetSupportedNorm(ksp::KSP,arg1::KSPNormType,arg2::PCSide,arg3::Int32)
     ccall((:KSPSetSupportedNorm,petsc),PetscErrorCode,(KSP,KSPNormType,PCSide,PetscInt),ksp,arg1,arg2,arg3)
 end
 
-function KSPSetCheckNormIteration(arg1::KSP,arg2::PetscInt)
+function KSPSetCheckNormIteration(arg1::KSP,arg2::Int32)
     ccall((:KSPSetCheckNormIteration,petsc),PetscErrorCode,(KSP,PetscInt),arg1,arg2)
 end
 
@@ -6614,11 +6614,11 @@ function KSPGetConvergenceContext(arg1::KSP,arg2::Ptr{Ptr{Void}})
     ccall((:KSPGetConvergenceContext,petsc),PetscErrorCode,(KSP,Ptr{Ptr{Void}}),arg1,arg2)
 end
 
-function KSPConvergedDefault(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{KSPConvergedReason},arg4::Ptr{Void})
+function KSPConvergedDefault(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{KSPConvergedReason},arg4::Ptr{Void})
     ccall((:KSPConvergedDefault,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{KSPConvergedReason},Ptr{Void}),arg1,arg2,PetscReal,arg3,arg4)
 end
 
-function KSPConvergedLSQR(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{KSPConvergedReason},arg4::Ptr{Void})
+function KSPConvergedLSQR(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{KSPConvergedReason},arg4::Ptr{Void})
     ccall((:KSPConvergedLSQR,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{KSPConvergedReason},Ptr{Void}),arg1,arg2,PetscReal,arg3,arg4)
 end
 
@@ -6638,7 +6638,7 @@ function KSPConvergedDefaultSetUMIRNorm(arg1::KSP)
     ccall((:KSPConvergedDefaultSetUMIRNorm,petsc),PetscErrorCode,(KSP,),arg1)
 end
 
-function KSPConvergedSkip(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{KSPConvergedReason},arg4::Ptr{Void})
+function KSPConvergedSkip(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{KSPConvergedReason},arg4::Ptr{Void})
     ccall((:KSPConvergedSkip,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{KSPConvergedReason},Ptr{Void}),arg1,arg2,PetscReal,arg3,arg4)
 end
 
@@ -6654,7 +6654,7 @@ function KSPCGUseSingleReduction(arg1::KSP,arg2::PetscBool)
     ccall((:KSPCGUseSingleReduction,petsc),PetscErrorCode,(KSP,PetscBool),arg1,arg2)
 end
 
-function KSPNASHSetRadius(arg1::KSP,PetscReal::Cint)
+function KSPNASHSetRadius(arg1::KSP,Float64::Cint)
     ccall((:KSPNASHSetRadius,petsc),PetscErrorCode,(KSP,Cint),arg1,PetscReal)
 end
 
@@ -6666,7 +6666,7 @@ function KSPNASHGetObjFcn(arg1::KSP,arg2::Ptr{Cint})
     ccall((:KSPNASHGetObjFcn,petsc),PetscErrorCode,(KSP,Ptr{Cint}),arg1,arg2)
 end
 
-function KSPSTCGSetRadius(arg1::KSP,PetscReal::Cint)
+function KSPSTCGSetRadius(arg1::KSP,Float64::Cint)
     ccall((:KSPSTCGSetRadius,petsc),PetscErrorCode,(KSP,Cint),arg1,PetscReal)
 end
 
@@ -6678,7 +6678,7 @@ function KSPSTCGGetObjFcn(arg1::KSP,arg2::Ptr{Cint})
     ccall((:KSPSTCGGetObjFcn,petsc),PetscErrorCode,(KSP,Ptr{Cint}),arg1,arg2)
 end
 
-function KSPGLTRSetRadius(arg1::KSP,PetscReal::Cint)
+function KSPGLTRSetRadius(arg1::KSP,Float64::Cint)
     ccall((:KSPGLTRSetRadius,petsc),PetscErrorCode,(KSP,Cint),arg1,PetscReal)
 end
 
@@ -6714,7 +6714,7 @@ function KSPMonitorLGResidualNormCreate(arg1::Ptr{Uint8},arg2::Ptr{Uint8},arg3::
     ccall((:KSPMonitorLGResidualNormCreate,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Cint,Cint,Cint,Cint,Ptr{Ptr{PetscObject}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function KSPMonitorLGResidualNorm(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{PetscObject})
+function KSPMonitorLGResidualNorm(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{PetscObject})
     ccall((:KSPMonitorLGResidualNorm,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{PetscObject}),arg1,arg2,PetscReal,arg3)
 end
 
@@ -6726,7 +6726,7 @@ function KSPMonitorLGTrueResidualNormCreate(arg1::Ptr{Uint8},arg2::Ptr{Uint8},ar
     ccall((:KSPMonitorLGTrueResidualNormCreate,petsc),PetscErrorCode,(Ptr{Uint8},Ptr{Uint8},Cint,Cint,Cint,Cint,Ptr{Ptr{PetscObject}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
-function KSPMonitorLGTrueResidualNorm(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{PetscObject})
+function KSPMonitorLGTrueResidualNorm(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{PetscObject})
     ccall((:KSPMonitorLGTrueResidualNorm,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{PetscObject}),arg1,arg2,PetscReal,arg3)
 end
 
@@ -6734,7 +6734,7 @@ function KSPMonitorLGTrueResidualNormDestroy(arg1::Ptr{Ptr{PetscObject}})
     ccall((:KSPMonitorLGTrueResidualNormDestroy,petsc),PetscErrorCode,(Ptr{Ptr{PetscObject}},),arg1)
 end
 
-function KSPMonitorLGRange(arg1::KSP,arg2::PetscInt,PetscReal::Cint,arg3::Ptr{Void})
+function KSPMonitorLGRange(arg1::KSP,arg2::Int32,Float64::Cint,arg3::Ptr{Void})
     ccall((:KSPMonitorLGRange,petsc),PetscErrorCode,(KSP,PetscInt,Cint,Ptr{Void}),arg1,arg2,PetscReal,arg3)
 end
 
@@ -6746,7 +6746,7 @@ function PCShellSetPostSolve(arg1::PC,arg2::Ptr{Void})
     ccall((:PCShellSetPostSolve,petsc),PetscErrorCode,(PC,Ptr{Void}),arg1,arg2)
 end
 
-function KSPFischerGuessCreate(arg1::KSP,arg2::PetscInt,arg3::PetscInt,arg4::Ptr{KSPFischerGuess})
+function KSPFischerGuessCreate(arg1::KSP,arg2::Int32,arg3::Int32,arg4::Ptr{KSPFischerGuess})
     ccall((:KSPFischerGuessCreate,petsc),PetscErrorCode,(KSP,PetscInt,PetscInt,Ptr{KSPFischerGuess}),arg1,arg2,arg3,arg4)
 end
 
@@ -6770,7 +6770,7 @@ function KSPFischerGuessSetFromOptions(arg1::KSPFischerGuess)
     ccall((:KSPFischerGuessSetFromOptions,petsc),PetscErrorCode,(KSPFischerGuess,),arg1)
 end
 
-function KSPSetUseFischerGuess(arg1::KSP,arg2::PetscInt,arg3::PetscInt)
+function KSPSetUseFischerGuess(arg1::KSP,arg2::Int32,arg3::Int32)
     ccall((:KSPSetUseFischerGuess,petsc),PetscErrorCode,(KSP,PetscInt,PetscInt),arg1,arg2,arg3)
 end
 
@@ -6783,51 +6783,51 @@ function KSPGetFischerGuess(arg1::KSP,arg2::Ptr{KSPFischerGuess})
 end
 
 function MatCreateSchurComplement(arg1::Mat,arg2::Mat,arg3::Mat,arg4::Mat,arg5::Mat,arg6::Ptr{Mat})
-    ccall((:MatCreateSchurComplement,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6)
+    ccall((:MatCreateSchurComplement,petsc),PetscErrorCode,(Mat,Mat,Mat,Mat,Mat,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
 function MatSchurComplementGetKSP(arg1::Mat,arg2::Ptr{KSP})
-    ccall((:MatSchurComplementGetKSP,petsc),PetscErrorCode,(Ptr{Void},Ptr{KSP}),arg1,arg2)
+    ccall((:MatSchurComplementGetKSP,petsc),PetscErrorCode,(Mat,Ptr{KSP}),arg1,arg2)
 end
 
 function MatSchurComplementSetKSP(arg1::Mat,arg2::KSP)
-    ccall((:MatSchurComplementSetKSP,petsc),PetscErrorCode,(Ptr{Void},KSP),arg1,arg2)
+    ccall((:MatSchurComplementSetKSP,petsc),PetscErrorCode,(Mat,KSP),arg1,arg2)
 end
 
 function MatSchurComplementSetSubMatrices(arg1::Mat,arg2::Mat,arg3::Mat,arg4::Mat,arg5::Mat,arg6::Mat)
-    ccall((:MatSchurComplementSetSubMatrices,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
+    ccall((:MatSchurComplementSetSubMatrices,petsc),PetscErrorCode,(Mat,Mat,Mat,Mat,Mat,Mat),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
 function MatSchurComplementUpdateSubMatrices(arg1::Mat,arg2::Mat,arg3::Mat,arg4::Mat,arg5::Mat,arg6::Mat)
-    ccall((:MatSchurComplementUpdateSubMatrices,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
+    ccall((:MatSchurComplementUpdateSubMatrices,petsc),PetscErrorCode,(Mat,Mat,Mat,Mat,Mat,Mat),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
 function MatSchurComplementGetSubMatrices(arg1::Mat,arg2::Ptr{Mat},arg3::Ptr{Mat},arg4::Ptr{Mat},arg5::Ptr{Mat},arg6::Ptr{Mat})
-    ccall((:MatSchurComplementGetSubMatrices,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat},Ptr{Mat},Ptr{Mat},Ptr{Mat},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6)
+    ccall((:MatSchurComplementGetSubMatrices,petsc),PetscErrorCode,(Mat,Ptr{Mat},Ptr{Mat},Ptr{Mat},Ptr{Mat},Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
 function MatSchurComplementSetAinvType(arg1::Mat,arg2::MatSchurComplementAinvType)
-    ccall((:MatSchurComplementSetAinvType,petsc),PetscErrorCode,(Ptr{Void},MatSchurComplementAinvType),arg1,arg2)
+    ccall((:MatSchurComplementSetAinvType,petsc),PetscErrorCode,(Mat,MatSchurComplementAinvType),arg1,arg2)
 end
 
 function MatSchurComplementGetAinvType(arg1::Mat,arg2::Ptr{MatSchurComplementAinvType})
-    ccall((:MatSchurComplementGetAinvType,petsc),PetscErrorCode,(Ptr{Void},Ptr{MatSchurComplementAinvType}),arg1,arg2)
+    ccall((:MatSchurComplementGetAinvType,petsc),PetscErrorCode,(Mat,Ptr{MatSchurComplementAinvType}),arg1,arg2)
 end
 
 function MatSchurComplementGetPmat(arg1::Mat,arg2::MatReuse,arg3::Ptr{Mat})
-    ccall((:MatSchurComplementGetPmat,petsc),PetscErrorCode,(Ptr{Void},MatReuse,Ptr{Mat}),arg1,arg2,arg3)
+    ccall((:MatSchurComplementGetPmat,petsc),PetscErrorCode,(Mat,MatReuse,Ptr{Mat}),arg1,arg2,arg3)
 end
 
 function MatSchurComplementComputeExplicitOperator(arg1::Mat,arg2::Ptr{Mat})
-    ccall((:MatSchurComplementComputeExplicitOperator,petsc),PetscErrorCode,(Ptr{Void},Ptr{Mat}),arg1,arg2)
+    ccall((:MatSchurComplementComputeExplicitOperator,petsc),PetscErrorCode,(Mat,Ptr{Mat}),arg1,arg2)
 end
 
 function MatGetSchurComplement(arg1::Mat,arg2::IS,arg3::IS,arg4::IS,arg5::IS,arg6::MatReuse,arg7::Ptr{Mat},arg8::MatSchurComplementAinvType,arg9::MatReuse,arg10::Ptr{Mat})
-    ccall((:MatGetSchurComplement,petsc),PetscErrorCode,(Ptr{Void},IS,IS,IS,IS,MatReuse,Ptr{Mat},MatSchurComplementAinvType,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
+    ccall((:MatGetSchurComplement,petsc),PetscErrorCode,(Mat,IS,IS,IS,IS,MatReuse,Ptr{Mat},MatSchurComplementAinvType,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
 end
 
 function MatCreateSchurComplementPmat(arg1::Mat,arg2::Mat,arg3::Mat,arg4::Mat,arg5::MatSchurComplementAinvType,arg6::MatReuse,arg7::Ptr{Mat})
-    ccall((:MatCreateSchurComplementPmat,petsc),PetscErrorCode,(Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void},MatSchurComplementAinvType,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+    ccall((:MatCreateSchurComplementPmat,petsc),PetscErrorCode,(Mat,Mat,Mat,Mat,MatSchurComplementAinvType,MatReuse,Ptr{Mat}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
 function KSPSetDM(arg1::KSP,arg2::DM)

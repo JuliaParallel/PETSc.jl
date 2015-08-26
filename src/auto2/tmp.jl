@@ -1,1 +1,1 @@
-include("PETSc.jl")
+include("mod_PETSc.jl")

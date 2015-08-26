@@ -693,10 +693,12 @@ const PETSC_TRUE = (UInt32)(1)
 #= # end enum PetscBool =#
 typealias MatReal Cint
 
-#= skipping undefined expression type petsc_mpiu_2scalar
-    a::Float64
-    b::Float64
-end =#
+#= skipping type declaration with undefined symbols:
+type petsc_mpiu_2scalar
+    a::PetscScalar
+    b::PetscScalar
+end 
+=#
 typealias PetscLogDouble Cdouble
 
 #= # begin enum ANONYMOUS_4 =#
@@ -774,7 +776,7 @@ const PETSC_FP_TRAP_OFF = (UInt32)(0)
 const PETSC_FP_TRAP_ON = (UInt32)(1)
 
 #= # end enum PetscFPTrap =#
-#= skipping undefined expression immutable Array_64_Ptr
+immutable Array_64_Ptr
     d1::Ptr{Uint8}
     d2::Ptr{Uint8}
     d3::Ptr{Uint8}
@@ -839,11 +841,12 @@ const PETSC_FP_TRAP_ON = (UInt32)(1)
     d62::Ptr{Uint8}
     d63::Ptr{Uint8}
     d64::Ptr{Uint8}
-end =#
+end
+
 #= skipping undefined expression zero(::Type{Array_64_Ptr}) = begin  # /home/jared/.julia/v0.4/Clang/src/wrap_c.jl, line 264:
-        Array_64_Ptr(fill(zero(Ptr{Uint8}),64)...)
+        Array_64_Ptr(fill(zero(ASCIIString),64)...)
     end =#
-#= skipping undefined expression immutable Array_64_Cint
+immutable Array_64_Cint
     d1::Cint
     d2::Cint
     d3::Cint
@@ -908,11 +911,12 @@ end =#
     d62::Cint
     d63::Cint
     d64::Cint
-end =#
+end
+
 #= skipping undefined expression zero(::Type{Array_64_Cint}) = begin  # /home/jared/.julia/v0.4/Clang/src/wrap_c.jl, line 264:
         Array_64_Cint(fill(zero(Cint),64)...)
     end =#
-#= skipping undefined expression immutable Array_64_PetscBool
+immutable Array_64_PetscBool
     d1::PetscBool
     d2::PetscBool
     d3::PetscBool
@@ -977,18 +981,20 @@ end =#
     d62::PetscBool
     d63::PetscBool
     d64::PetscBool
-end =#
+end
+
 #= skipping undefined expression zero(::Type{Array_64_PetscBool}) = begin  # /home/jared/.julia/v0.4/Clang/src/wrap_c.jl, line 264:
         Array_64_PetscBool(fill(zero(PetscBool),64)...)
     end =#
-#= skipping undefined expression type PetscStack
+type PetscStack
     _function::Array_64_Ptr
     file::Array_64_Ptr
     line::Array_64_Cint
     petscroutine::Array_64_PetscBool
     currentsize::Cint
     hotdepth::Cint
-end =#
+end
+
 typealias PetscVoidStarFunction Ptr{Ptr{Void}}
 typealias PetscVoidFunction Ptr{Void}
 typealias PetscErrorCodeFunction Ptr{Void}
@@ -1035,8 +1041,9 @@ immutable PetscOption{T}
     pobj::Ptr{Void}
 end
 
-#= skipping undefined expression type PetscOptions
-    count::Int32
+#= skipping type declaration with undefined symbols:
+type PetscOptions
+    count::PetscInt
     next::PetscOption
     prefix::Ptr{Uint8}
     pprefix::Ptr{Uint8}
@@ -1046,7 +1053,8 @@ end
     changedmethod::PetscBool
     alreadyprinted::PetscBool
     object::PetscObject
-end =#
+end 
+=#
 typealias PetscDLHandle Ptr{Void}
 
 #= # begin enum ANONYMOUS_9 =#
@@ -1071,24 +1079,27 @@ typealias PetscLogEvent Cint
 typealias PetscLogStage Cint
 
 # skipping undefined typealias typealias PetscIntStack Ptr{_n_PetscIntStack}
-#= skipping undefined expression type PetscClassRegInfo
+type PetscClassRegInfo
     name::Ptr{Uint8}
     classid::PetscClassId
-end =#
-#= skipping undefined expression type PetscClassPerfInfo
+end
+
+type PetscClassPerfInfo
     id::PetscClassId
     creations::Cint
     destructions::Cint
     mem::PetscLogDouble
     descMem::PetscLogDouble
-end =#
+end
+
 # skipping undefined typealias typealias PetscClassRegLog Ptr{_n_PetscClassRegLog}
 # skipping undefined typealias typealias PetscClassPerfLog Ptr{_n_PetscClassPerfLog}
-#= skipping undefined expression type PetscEventRegInfo
+type PetscEventRegInfo
     name::Ptr{Uint8}
     classid::PetscClassId
-end =#
-#= skipping undefined expression type PetscEventPerfInfo
+end
+
+type PetscEventPerfInfo
     id::Cint
     active::PetscBool
     visible::PetscBool
@@ -1103,19 +1114,22 @@ end =#
     numMessages::PetscLogDouble
     messageLength::PetscLogDouble
     numReductions::PetscLogDouble
-end =#
+end
+
 # skipping undefined typealias typealias PetscEventRegLog Ptr{_n_PetscEventRegLog}
 # skipping undefined typealias typealias PetscEventPerfLog Ptr{_n_PetscEventPerfLog}
-#= skipping undefined expression type PetscStageInfo
+#= skipping type declaration with undefined symbols:
+type PetscStageInfo
     name::Ptr{Uint8}
     used::PetscBool
     perfInfo::PetscEventPerfInfo
     eventLog::PetscEventPerfLog
     classLog::PetscClassPerfLog
-end =#
+end 
+=#
 # skipping undefined typealias typealias PetscStageLog Ptr{_n_PetscStageLog}
 # skipping undefined typealias typealias PetscContainer Ptr{_p_PetscContainer}
-typealias PetscRandomType Ptr{Uint8}
+typealias PetscRandomType ASCIIString
 
 # skipping undefined typealias typealias PetscRandom Ptr{_p_PetscRandom}
 #= # begin enum ANONYMOUS_10 =#
@@ -1195,10 +1209,12 @@ const PETSC_SUBCOMM_INTERLACED = (UInt32)(2)
 # skipping undefined typealias typealias PetscSubcomm Ptr{_n_PetscSubcomm}
 # skipping undefined typealias typealias PetscSegBuffer Ptr{_n_PetscSegBuffer}
 # skipping undefined typealias typealias PetscSF Ptr{_p_PetscSF}
-#= skipping undefined expression type PetscSFNode
-    rank::Int32
-    index::Int32
-end =#
+#= skipping type declaration with undefined symbols:
+type PetscSFNode
+    rank::PetscInt
+    index::PetscInt
+end 
+=#
 immutable IS{T}
     pobj::Ptr{Void}
 end
@@ -1216,7 +1232,7 @@ immutable PetscLayout{T}
 end
 
 # skipping undefined typealias typealias PetscSection Ptr{_p_PetscSection}
-typealias ISType Ptr{Uint8}
+typealias ISType ASCIIString
 
 #= # begin enum ANONYMOUS_14 =#
 typealias ANONYMOUS_14 Uint32
@@ -1247,8 +1263,8 @@ const IS_COLORING_GHOSTED = (UInt32)(1)
 
 #= # end enum ISColoringType =#
 typealias PETSC_IS_COLOR_VALUE_TYPE Uint32
-typealias PetscViewerType Ptr{Uint8}
-typealias PetscDrawType Ptr{Uint8}
+typealias PetscViewerType ASCIIString
+typealias PetscDrawType ASCIIString
 
 # skipping undefined typealias typealias PetscDraw Ptr{_p_PetscDraw}
 # skipping undefined typealias typealias PetscDrawAxis Ptr{_p_PetscDrawAxis}
@@ -1371,7 +1387,7 @@ const SCATTER_REVERSE_LOCAL = (UInt32)(3)
 const SCATTER_LOCAL = (UInt32)(2)
 
 #= # end enum ScatterMode =#
-typealias VecType Ptr{Uint8}
+typealias VecType ASCIIString
 
 #= # begin enum ANONYMOUS_19 =#
 typealias ANONYMOUS_19 Uint32
@@ -1418,7 +1434,7 @@ immutable Mat{T}
     pobj::Ptr{Void}
 end
 
-typealias MatType Ptr{Uint8}
+typealias MatType ASCIIString
 
 #= # begin enum ANONYMOUS_22 =#
 typealias ANONYMOUS_22 Uint32
@@ -1502,12 +1518,14 @@ const MAT_COMPOSITE_ADDITIVE = (UInt32)(0)
 const MAT_COMPOSITE_MULTIPLICATIVE = (UInt32)(1)
 
 #= # end enum MatCompositeType =#
-#= skipping undefined expression type MatStencil
-    k::Int32
-    j::Int32
-    i::Int32
-    c::Int32
-end =#
+#= skipping type declaration with undefined symbols:
+type MatStencil
+    k::PetscInt
+    j::PetscInt
+    i::PetscInt
+    c::PetscInt
+end 
+=#
 #= # begin enum ANONYMOUS_27 =#
 typealias ANONYMOUS_27 Uint32
 
@@ -1596,7 +1614,7 @@ const MAT_COPY_VALUES = (UInt32)(1)
 const MAT_SHARE_NONZERO_PATTERN = (UInt32)(2)
 
 #= # end enum MatDuplicateOption =#
-#= skipping undefined expression type MatInfo
+type MatInfo
     block_size::PetscLogDouble
     nz_allocated::PetscLogDouble
     nz_used::PetscLogDouble
@@ -1607,7 +1625,8 @@ const MAT_SHARE_NONZERO_PATTERN = (UInt32)(2)
     fill_ratio_given::PetscLogDouble
     fill_ratio_needed::PetscLogDouble
     factor_mallocs::PetscLogDouble
-end =#
+end
+
 #= # begin enum ANONYMOUS_30 =#
 typealias ANONYMOUS_30 Uint32
 
@@ -1624,7 +1643,7 @@ const MAT_GLOBAL_MAX = (UInt32)(2)
 const MAT_GLOBAL_SUM = (UInt32)(3)
 
 #= # end enum MatInfoType =#
-typealias MatOrderingType Ptr{Uint8}
+typealias MatOrderingType ASCIIString
 
 #= # begin enum ANONYMOUS_31 =#
 typealias ANONYMOUS_31 Uint32
@@ -1644,7 +1663,7 @@ const MAT_SHIFT_POSITIVE_DEFINITE = (UInt32)(2)
 const MAT_SHIFT_INBLOCKS = (UInt32)(3)
 
 #= # end enum MatFactorShiftType =#
-#= skipping undefined expression type MatFactorInfo
+type MatFactorInfo
     diagonal_fill::Cint
     usedt::Cint
     dt::Cint
@@ -1656,7 +1675,8 @@ const MAT_SHIFT_INBLOCKS = (UInt32)(3)
     zeropivot::Cint
     shifttype::Cint
     shiftamount::Cint
-end =#
+end
+
 #= # begin enum ANONYMOUS_32 =#
 typealias ANONYMOUS_32 Uint32
 
@@ -1688,7 +1708,7 @@ const SOR_APPLY_LOWER = (UInt32)(128)
 
 #= # end enum MatSORType =#
 # skipping undefined typealias typealias MatColoring Ptr{_p_MatColoring}
-typealias MatColoringType Ptr{Uint8}
+typealias MatColoringType ASCIIString
 
 #= # begin enum ANONYMOUS_33 =#
 typealias ANONYMOUS_33 Uint32
@@ -1711,7 +1731,7 @@ const MAT_COLORING_WEIGHT_SL = (UInt32)(3)
 # skipping undefined typealias typealias MatFDColoring Ptr{_p_MatFDColoring}
 # skipping undefined typealias typealias MatTransposeColoring Ptr{_p_MatTransposeColoring}
 # skipping undefined typealias typealias MatPartitioning Ptr{_p_MatPartitioning}
-typealias MatPartitioningType Ptr{Uint8}
+typealias MatPartitioningType ASCIIString
 
 #= # begin enum ANONYMOUS_34 =#
 typealias ANONYMOUS_34 Uint32
@@ -1782,26 +1802,32 @@ const MP_PTSCOTCH_SCALABILITY = (UInt32)(4)
 
 #= # end enum MPPTScotchStrategyType =#
 # skipping undefined typealias typealias MatCoarsen Ptr{_p_MatCoarsen}
-typealias MatCoarsenType Ptr{Uint8}
+typealias MatCoarsenType ASCIIString
 
-#= skipping undefined expression type PetscCDIntNd
+#= skipping type declaration with undefined symbols:
+type PetscCDIntNd
     next::Ptr{_PetscCDIntNd}
-    gid::Int32
-end =#
-#= skipping undefined expression type PetscCDArrNd
+    gid::PetscInt
+end 
+=#
+#= skipping type declaration with undefined symbols:
+type PetscCDArrNd
     next::Ptr{_PetscCDArrNd}
     array::Ptr{_PetscCDIntNd}
-end =#
-#= skipping undefined expression type PetscCoarsenData
+end 
+=#
+#= skipping type declaration with undefined symbols:
+type PetscCoarsenData
     pool_list::PetscCDArrNd
     new_node::Ptr{PetscCDIntNd}
-    new_left::Int32
-    chk_sz::Int32
+    new_left::PetscInt
+    chk_sz::PetscInt
     extra_nodes::Ptr{PetscCDIntNd}
     array::Ptr{Ptr{PetscCDIntNd}}
-    size::Int32
+    size::PetscInt
     mat::Mat
-end =#
+end 
+=#
 #= # begin enum ANONYMOUS_38 =#
 typealias ANONYMOUS_38 Uint32
 
@@ -2084,7 +2110,7 @@ const MATOP_MPICONCATENATESEQ = (UInt32)(144)
 #= # end enum MatOperation =#
 # skipping undefined typealias typealias MatNullSpace Ptr{_p_MatNullSpace}
 # skipping undefined typealias typealias MatMFFD Ptr{_p_MatMFFD}
-typealias MatMFFDType Ptr{Uint8}
+typealias MatMFFDType ASCIIString
 
 # skipping undefined typealias typealias DM Ptr{_p_DM}
 #= # begin enum ANONYMOUS_39 =#
@@ -2112,7 +2138,7 @@ immutable PC{T}
     pobj::Ptr{Void}
 end
 
-typealias PCType Ptr{Uint8}
+typealias PCType ASCIIString
 
 #= # begin enum ANONYMOUS_40 =#
 typealias ANONYMOUS_40 Cint
@@ -2285,8 +2311,8 @@ const PC_PARMS_LOCAL_ILUT = (UInt32)(2)
 const PC_PARMS_LOCAL_ARMS = (UInt32)(3)
 
 #= # end enum PCPARMSLocalType =#
-typealias PCGAMGType Ptr{Uint8}
-typealias PCGAMGClassicalType Ptr{Uint8}
+typealias PCGAMGType ASCIIString
+typealias PCGAMGClassicalType ASCIIString
 
 #= # begin enum ANONYMOUS_50 =#
 typealias ANONYMOUS_50 Uint32
@@ -2329,7 +2355,7 @@ immutable KSP{T}
     pobj::Ptr{Void}
 end
 
-typealias KSPType Ptr{Uint8}
+typealias KSPType ASCIIString
 
 #= # begin enum ANONYMOUS_53 =#
 typealias ANONYMOUS_53 Uint32

@@ -250,13 +250,16 @@ function rewrite_sig(ex)  # rewrite the function signature
 
    val = contains_symbol(ex, :PetscScalar)
    for i in keys(typealias_dict)
-     val += contains_symbol(ex, i)
+     if typealias_dict[i] == 1
+       val += contains_symbol(ex, i)
+     end
    end
 
    println("contains_symbol = ", val)
 
-  println("adding dummy arg")
   if val == 0  # if no arguments will make the function signature unique
+
+    println("adding dummy arg")
     ex = add_dummy_arg(ex)
   end
 

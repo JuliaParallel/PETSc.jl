@@ -1,6 +1,7 @@
 # common functions (initialization, destruction etsc)
 
-function PetscInitialize()
+function __init__()
+  
   PetscInitialize([])
 end
 
@@ -41,13 +42,20 @@ function PetscInitialize(args,filename,help)
   println("typeof(filename) = ", typeof(bytestring(filename)))
   println("typeof(help) = ", typeof(bytestring(help)))
 
-  err = PetscInitializeNoPointers( Int32(length(arr)), arr, bytestring(filename), bytestring(help))
+  err = C.PetscInitializeNoPointers(Float64, Int32(length(arr)), arr, bytestring(filename), bytestring(help))
 
   if err != 0
     println("non zero return status: ", err)
   end
 #  err = ccall( (:PetscInitializeNoPointers,  libpetsclocation),Int32,(Int32,Ptr{Ptr{Uint8}},Cstring,Cstring), length(arr), arr,filename,help);
   return err
+end
+
+
+function petsc_sizeof(t::C.PetscDataType)
+    s = Array(Csize_t, 1)
+    chk(PetscDataTypeGetSize(C.petsc_type[1], t, s))
+    s[1]
 end
 
 

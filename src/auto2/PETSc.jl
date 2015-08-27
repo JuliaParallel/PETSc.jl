@@ -1,10 +1,16 @@
 module PETSc
+import MPI
+#generated_path = joinpath(Pkg.dir("PETSc"), "src/auto2/generated")
+#push!(LOAD_PATH, generated_path)
 
-generated_path = joinpath(Pkg.dir("PETSc"), "src/auto2/generated")
-push!(LOAD_PATH, generated_path)
-import C
-
+include(joinpath("generated", "C.jl"))
+using .C
 include("petsc_com.jl")
+include("vec.jl")
+include("mat.jl")
+include("error.jl")
+
+
 
 
 end

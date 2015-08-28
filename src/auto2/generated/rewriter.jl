@@ -15,6 +15,7 @@ type_dict = Dict{Any, Any} (
 #:PetscInt => :Int32,
 )
 
+val_tmp = type_dict[:PetscScalar]
 type_dict_single = Dict{Any, Any} (
 :(Ptr{Uint8}) => Union(ByteString, Symbol)
 )
@@ -32,22 +33,138 @@ sym_dict = Dict{Any, Any} (
 # if value == 1, create new immutable type
 # otherwise replace key with value
 # also used for function signatures
-typealias_dict = Dict{Any, Any} (
-:Vec => 1,
-:Mat => 1,
-:KSP => 1,
-:PC => 1,
-:PetscViewer => 1,
-:PetscOption => 1,
-:IS => 1,
-:ISLocalToGlobalMapping => 1,
-:ISColoring => 1,
-:PetscLayout => 1,
-:VecScatter => 1,
-:(Ptr{Uint8}) => :ASCIIString,
+new_type_dict = Dict{Any, Any} (
+:Vec => :(Vec{$val_tmp}),
+:Mat => :(Mat{$val_tmp}),
+:KSP => :(KSP{$val_tmp}),
+:PC => :(PC{$val_tmp}),
+:PetscViewer => :(PetscViewer{$val_tmp}),
+:PetscOption => :(PetscOption{$val_tmp}),
+:IS => :(IS{$val_tmp}),
+:ISLocalToGlobalMapping => :(ISLocalToGlobalMapping{$val_tmp}),
+:ISColoring => :(ISColoring{$val_tmp}),
+:PetscLayout => :(PetscLayout{$val_tmp}),
+:VecScatter => :(VecScatter{$val_tmp}),
 )
 
 
+# definitions that will be provided, but don't come from Petsc
+# mostly MPI stuff
+const_defs = Dict{Any, Any} (
+:MPI_COMM_SELF => 1,
+:MPI_Comm => 1,
+:comm_type => 1,
+)
+
+
+
+# things to be recursively replaced in function signatures
+sig_rec_dict = Dict{Any, Any} (
+)
+
+for i in keys(type_dict)
+  get!(sig_rec_dict, i, type_dict[i])
+end
+
+for i in keys(new_type_dict)
+  get!(sig_rec_dict, i, new_type_dict[i])
+end
+
+# things to be replaced in function signatures only if they 
+# are top level (ie. this does a non recursive replace)
+sig_single_dict = Dict{Any, Any} (
+:(Ptr{Uint8}) => :(Union(ByteString, Symbol)),
+
+)
+
+
+# list of symbols to search for
+# if none are found, then a dummy argument is added
+sig_dummyarg_dict = Dict{Any, Any}(
+:PetscScalar => 1,
+)
+
+# add keys from new_type_dict because dummy arg check
+# is done after type replacement
+for i in values(new_type_dict)
+  get!(sig_dummyarg_dict, i, 1)
+end
+
+# things to be recursively replaced in the ccall argument list
+ccall_rec_dict = Dict{Any, Any} (
+:MPI_Comm => :comm_type
+)
+
+for i in keys(type_dict)
+  get!(ccall_rec_dict, i, type_dict[i])
+end
+
+for i in keys(new_type_dict)
+  get!(ccall_rec_dict, i, new_type_dict[i])
+end
+
+# things to be replace in the ccall argument list only if
+# they are top level (ie. this does a non recursive replace)
+ccall_single_dict = Dict{Any, Any} (
+:(Ptr{Uint8}) => :Cstring
+)
+
+
+# things to be replaced recurisvely in typealias rhs
+typealias_rec_dict = Dict{Any, Any} (
+
+)
+
+for i in keys(type_dict)
+  get!(typealias_rec_dict, i, type_dict[i])
+end
+
+for i in keys(new_type_dict)
+  get!(typealias_rec_dict, i, new_type_dict[i])
+end
+
+
+
+# things to be replaced in typealias rhs, non recursive
+# this creates a potential loophole for string handling
+# because a Ptr{typealias} == Ptr{Ptr{Uint8}} will be 
+# handled incorrectly
+typealias_single_dict = Dict{Any, Any} (
+:(Ptr{Uint8}) => :Cstring
+)
+
+# key = typealias rhs values to exclude
+# if values == 1, then create an immutable type
+typealias_exclude_dict = Dict{Any, Any} (
+
+)
+
+for i in keys(new_type_dict)
+  get!(typealias_exclude_dict, i, 1)
+end
+
+
+# things to be recurisvely replace in constant declaration rhs
+const_rec_dict = Dict{Any, Any} (
+:NULL => :C_NULL
+)
+
+for i in keys(type_dict)
+  get!(typealias_rec_dict, i, type_dict[i])
+end
+
+for i in keys(new_type_dict)
+  get!(typealias_rec_dict, i, new_type_dict[i])
+end
+
+# suffixes to add ccall argument names based on the argument type
+# ex arg1 => arg1.val
+ccall_arg_dict = Dict{Any, Any} (
+:comm_type => :val,
+)
+
+
+#=
 # dictionary for rewriting pointer type annotations in function signatures
 # Ptrs are converted to Union(Ptr{ptype}, StridedArray{ptype}, Ptr{Void})
 # the objects in the typealias_dict are added automatically
@@ -67,7 +184,7 @@ end
 
 println("ptr_dict = ", ptr_dict)
 
-
+#=
 # used to replace symbols on the right hand side of constant definitions
 # the type_dict is automatically includes
 const_dict = Dict{Any, Any} (
@@ -78,14 +195,7 @@ const_dict = Dict{Any, Any} (
 for i in keys(type_dict)
   get!(const_dict, i, type_dict[i])
 end
-
-# definitions that will be provided, but don't come from Petsc
-# mostly MPI stuff
-const_defs = Dict{Any, Any} (
-:MPI_COMM_SELF => 1,
-:MPI_Comm => 1,
-:comm_type => 1,
-)
+=#
 
 # used to modify ccall arguments
 # the contents of type_dict are automatically included
@@ -114,13 +224,7 @@ for i in keys(typealias_dict)
   end
 end
 
-
-# suffixes to add ccall argument names based on the argument type
-# ex arg1 => arg1.val
-ccall_argdict = Dict{Any, Any} (
-:comm_type => :val,
-)
-
+=#
 
 
 
@@ -253,10 +357,8 @@ function rewrite_sig(ex)  # rewrite the function signature
    println("ex = ", ex)
 
    val = contains_symbol(ex, :PetscScalar)
-   for i in keys(typealias_dict)
-     if typealias_dict[i] == 1
+   for i in keys(sig_dummyarg_dict)
        val += contains_symbol(ex, i)
-     end
    end
 
    println("contains_symbol = ", val)
@@ -267,6 +369,7 @@ function rewrite_sig(ex)  # rewrite the function signature
     ex = add_dummy_arg(ex)
   end
 
+#=
   println("replacing typealiases")
   println("ex = ", ex)
   # do second pass to replace Petsc typealiases with a specific type
@@ -279,7 +382,7 @@ function rewrite_sig(ex)  # rewrite the function signature
   end
 
   println("after modification rewrite_sig ex = ", ex)
-
+=#
   return ex
 end
 
@@ -309,6 +412,18 @@ function modify_typetag(ex)
   println("transforming entire expression")
   println("before expression = ", ex)
 
+
+  # do non recursive replace first
+  ex = get(sig_single_dict, ex, ex)
+  
+
+  # now do recursive search and replace
+
+  for i in keys(sig_rec_dict)
+    ex = replace_symbol(ex, i, sig_rec_dict[i])
+  end
+
+#=
   if typeof(ex) == Expr
     if haskey(ptr_dict, ex)
      println("transforming ", ex, " to ", ptr_dict[ex])
@@ -316,15 +431,15 @@ function modify_typetag(ex)
      ex = get(ptr_dict, ex, ex) 
     end 
   end
-
+=#
   println("after expression = ", ex)
-
+#=
   # transform individual symbols only
   if typeof(ex) == Symbol
     println("transforming symbols only")
     ex = get(sym_dict, ex, ex)
   end
-
+=#
 #=
   if typeof(ex) == Expr
     println("after, ex.head = ", ex.head)
@@ -335,7 +450,7 @@ function modify_typetag(ex)
   end
 =#
 
-
+#=
   # replace individual symbols
   println("\nreplacing symbols")
   cnt = 0
@@ -378,10 +493,11 @@ function modify_typetag(ex)
     print("\n")
 
   end
-
+=#
   println("after recursively replacing symbols, ex = ", ex)
 
   println("replacing pointer with Union")
+  # should make sure there are no nested pointers?
 #  @assert ex.head == :curly || ex.head == :symbol # verify this is a typetag
   if typeof(ex) == Expr
     # replace pointer with Union of ptr, array, c_null
@@ -431,7 +547,8 @@ function add_dummy_arg(ex)
   # insert dummy argument into first position
   # the PetscScalar will get rewritten to
   # appropriate type later
-  ex.args[2] = :(arg0::Type{PetscScalar})
+  val = type_dict[:PetscScalar]
+  ex.args[2] = :(arg0::Type{$val})
 
   println("finished adding dummy arg, ex = ", ex)
 
@@ -470,12 +587,12 @@ function process_ccall(ex)
   @assert ex3.head == :tuple
 
   # change argument names based on argument types
-  for i in keys(ccall_argdict)
+  for i in keys(ccall_arg_dict)
     for j=1:length(ex3.args)
       if ex3.args[j] == i
         println("found argument to change at position ", j)
         argname_orig = deepcopy(ex.args[j + 3])
-        suffix = ccall_argdict[i]
+        suffix = ccall_arg_dict[i]
         ex.args[j + 3] = Expr(:., argname_orig, QuoteNode(suffix))
 #        ex.args[j + 3] = :($argname_orig.($suffix))
       end
@@ -498,13 +615,26 @@ i#      ex.args[i] = get(ccall_dict, ex.args[i], ex.args[i])  # get the new argu
   end                                                      # use existing type of no key found
 =#
 
+  # do non recursive replace first
+  for i=1:length(ex.args)
+    ex.args[i] = get(ccall_single_dict, ex.args[i], ex.args[i])
+  end
+
+  # do recursive replacement
+  for i in keys(ccall_rec_dict)
+    for j=1:length(ex.args)
+      ex.args[j] = replace_symbol(ex.args[j], i, ccall_rec_dict[i])
+    end
+  end
+
+#=
   new_ex = deepcopy(ex) 
   for i in reverse(collect(keys(ccall_dict)))
     println("looking to replace ", i, " with ", ccall_dict[i], " in expression ", new_ex)
     new_ex = replace_symbol(new_ex, i, ccall_dict[i])
   end
-     
-  return new_ex
+=#     
+  return deepcopy(ex)
 end
    
 function modify_libname(ex)
@@ -522,9 +652,11 @@ function process_const(ex)
 
   @assert ex.head == :const
 
+  
+
   # do any replacements
-  for j in keys(const_dict)
-    replace_symbol(ex, j, const_dict[j])
+  for j in keys(const_rec_dict)
+    replace_symbol(ex, j, const_rec_dict[j])
   end
  
   ex2 = ex.args[1]  # get the assignment
@@ -547,7 +679,6 @@ function process_const(ex)
 
   return deepcopy(ex)
   
-
 end
 
 
@@ -556,20 +687,36 @@ function fix_typealias(ex)
   @assert ex.head == :typealias
   new_type = ex.args[1]
 
-    if haskey(typealias_dict, new_type)
-      if typealias_dict[new_type] == 1
+    if haskey(typealias_exclude_dict, new_type)
+      if typealias_exclude_dict[new_type] == 1
         # construct immutable type definition
         fields = Expr(:(::), :pobj, :(Ptr{Void}))
         body = Expr(:block, fields)
         typename = Expr(:curly, new_type, :T)  # add static parameter T
         ex_new = Expr(:type, false, typename, body)
         return ex_new
+      else 
+        if haskey(wc.common_buf, new_type)
+          delete!(wc.common_buf, new_type)  # record that symbol is now undefined
+        end
+        return "# excluding $ex"
        end
     end
 
     # if we didn't create immutable type, transform the rhs according to the 
-    # dictionary
+    # dictionaries
+
+    lhs = deepcopy(ex.args[1])
+    rhs = deepcopy(ex.args[2])
+
+    # do non recursive replacement
+    rhs = get(typealias_single_dict, rhs, rhs)
     
+    # do recursive replacement
+    for i in keys(typealias_rec_dict)
+      rhs = replace_symbol(rhs, i, typealias_rec_dict[i])
+    end
+#=    
     if haskey(typealias_dict, ex.args[2]) && !haskey(typealias_dict, ex.args[1])
       lhs = deepcopy(ex.args[1])
       rhs = deepcopy(ex.args[2])
@@ -579,14 +726,14 @@ function fix_typealias(ex)
       rhs = get(ccall_dict, rhs, rhs)  # get a new rhs if it exists
       get!(ccall_dict, lhs, rhs)  # store lhs -> rhs
     end
-
-
+=#
+#=
     # get rid of typealiases that we are not using
     if haskey(type_dict, new_type)
       delete!(wc.common_buf, new_type)  # record that the lhs symbol is now undefined
       return "# omitting typealias $ex"
     end
-
+=#
 
     # check for undefined symbols
 
@@ -612,7 +759,10 @@ function fix_typealias(ex)
 =#
 
    # if no conditions met
-   return ex
+   # construct a new typealias
+
+
+   return :(typealias $lhs $rhs)
 end
 
 # string processing

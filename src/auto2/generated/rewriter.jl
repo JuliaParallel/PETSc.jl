@@ -13,7 +13,10 @@ type_dict = Dict{Any, Any} (
 :PetscScalar => :Float64,
 :PetscReal => :Float64,
 #:PetscInt => :Int32,
-:(Ptr{Uint8}) => :ASCIIString,
+)
+
+type_dict_single = Dict{Any, Any} (
+:(Ptr{Uint8}) => Union(ByteString, Symbol)
 )
 
 # used to modify function argument type annotations that are symbols
@@ -28,6 +31,7 @@ sym_dict = Dict{Any, Any} (
 # currently, if the key exists, it is converted
 # if value == 1, create new immutable type
 # otherwise replace key with value
+# also used for function signatures
 typealias_dict = Dict{Any, Any} (
 :Vec => 1,
 :Mat => 1,
@@ -534,6 +538,11 @@ function process_const(ex)
     lhs = ex2.args[1]
     delete!(wc.common_buf, lhs)  # remove lh from list of defined symbols
     return "#skipping undefined $ex"  # replace expression with constant
+  end
+
+  # turn strings into symbols
+  if typeof(rhs) <: AbstractString
+    ex2.args[2] = :(symbol($rhs))
   end
 
   return deepcopy(ex)

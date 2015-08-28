@@ -1,9 +1,10 @@
 # common functions (initialization, destruction etsc)
 
-function __init__()
-  
+#function __init__()
+function PetscInitialize()  
   PetscInitialize([])
 end
+#end
 
 function PetscInitialize(args)
   PetscInitialize(args,"","")

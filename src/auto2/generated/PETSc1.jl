@@ -56,7 +56,7 @@ function PetscMallocGetDebug(arg0::Type{Float64},arg1::Union(Ptr{PetscBool},Stri
     ccall((:PetscMallocGetDebug,petsc1),PetscErrorCode,(Ptr{PetscBool},),arg1)
 end
 
-function PetscMallocValidate(arg0::Type{Float64},arg1::Integer,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscMallocValidate(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscMallocValidate,petsc1),PetscErrorCode,(Cint,Cstring,Cstring),arg1,arg2,arg3)
 end
 
@@ -86,7 +86,7 @@ function PetscDataTypeGetSize(arg0::Type{Float64},arg1::PetscDataType,arg2::Unio
     ccall((:PetscDataTypeGetSize,petsc1),PetscErrorCode,(PetscDataType,Ptr{Cint}),arg1,arg2)
 end
 
-function PetscDataTypeFromString(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{PetscDataType},StridedArray{PetscDataType},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscDataTypeFromString(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{PetscDataType},StridedArray{PetscDataType},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscDataTypeFromString,petsc1),PetscErrorCode,(Cstring,Ptr{PetscDataType},Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
@@ -102,121 +102,121 @@ function PetscMemcmp(arg0::Type{Float64},arg1::Union(Ptr{Void},StridedArray{Void
     ccall((:PetscMemcmp,petsc1),PetscErrorCode,(Ptr{Void},Ptr{Void},Cint,Ptr{PetscBool}),arg1,arg2,size_t,arg3)
 end
 
-function PetscStrlen(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}))
+function PetscStrlen(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}))
     ccall((:PetscStrlen,petsc1),PetscErrorCode,(Cstring,Ptr{Cint}),arg1,arg2)
 end
 
-function PetscStrToArray(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Uint8,arg3::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg4::Union(Ptr{Ptr{ASCIIString}},StridedArray{Ptr{ASCIIString}},Ptr{Void}))
+function PetscStrToArray(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Uint8,arg3::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg4::Union(Ptr{Ptr{Ptr{Uint8}}},StridedArray{Ptr{Ptr{Uint8}}},Ptr{Void}))
     ccall((:PetscStrToArray,petsc1),PetscErrorCode,(Cstring,Uint8,Ptr{Cint},Ptr{Ptr{Ptr{Uint8}}}),arg1,arg2,arg3,arg4)
 end
 
-function PetscStrToArrayDestroy(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscStrToArrayDestroy(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscStrToArrayDestroy,petsc1),PetscErrorCode,(Cint,Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
-function PetscStrcmp(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscStrcmp(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscStrcmp,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function PetscStrgrt(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscStrgrt(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscStrgrt,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function PetscStrcasecmp(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscStrcasecmp(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscStrcasecmp,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function PetscStrncmp(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscStrncmp(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscStrncmp,petsc1),PetscErrorCode,(Cstring,Cstring,Cint,Ptr{PetscBool}),arg1,arg2,size_t,arg3)
 end
 
-function PetscStrcpy(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscStrcpy(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscStrcpy,petsc1),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
 end
 
-function PetscStrcat(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscStrcat(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscStrcat,petsc1),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
 end
 
-function PetscStrncat(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscStrncat(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscStrncat,petsc1),PetscErrorCode,(Cstring,Cstring,Cint),arg1,arg2,size_t)
 end
 
-function PetscStrncpy(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscStrncpy(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscStrncpy,petsc1),PetscErrorCode,(Cstring,Cstring,Cint),arg1,arg2,size_t)
 end
 
-function PetscStrchr(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Uint8,arg3::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscStrchr(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Uint8,arg3::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscStrchr,petsc1),PetscErrorCode,(Cstring,Uint8,Ptr{Ptr{Uint8}}),arg1,arg2,arg3)
 end
 
-function PetscStrtolower(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscStrtolower(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscStrtolower,petsc1),PetscErrorCode,(Cstring,),arg1)
 end
 
-function PetscStrtoupper(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscStrtoupper(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscStrtoupper,petsc1),PetscErrorCode,(Cstring,),arg1)
 end
 
-function PetscStrrchr(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Uint8,arg3::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscStrrchr(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Uint8,arg3::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscStrrchr,petsc1),PetscErrorCode,(Cstring,Uint8,Ptr{Ptr{Uint8}}),arg1,arg2,arg3)
 end
 
-function PetscStrstr(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscStrstr(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscStrstr,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{Ptr{Uint8}}),arg1,arg2,arg3)
 end
 
-function PetscStrrstr(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscStrrstr(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscStrrstr,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{Ptr{Uint8}}),arg1,arg2,arg3)
 end
 
-function PetscStrendswith(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscStrendswith(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscStrendswith,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function PetscStrbeginswith(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscStrbeginswith(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscStrbeginswith,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function PetscStrendswithwhich(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg3::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}))
+function PetscStrendswithwhich(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg3::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}))
     ccall((:PetscStrendswithwhich,petsc1),PetscErrorCode,(Cstring,Ptr{Ptr{Uint8}},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PetscStrallocpy(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscStrallocpy(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscStrallocpy,petsc1),PetscErrorCode,(Cstring,Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
-function PetscStrArrayallocpy(arg0::Type{Float64},arg1::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg2::Union(Ptr{Ptr{ASCIIString}},StridedArray{Ptr{ASCIIString}},Ptr{Void}))
+function PetscStrArrayallocpy(arg0::Type{Float64},arg1::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg2::Union(Ptr{Ptr{Ptr{Uint8}}},StridedArray{Ptr{Ptr{Uint8}}},Ptr{Void}))
     ccall((:PetscStrArrayallocpy,petsc1),PetscErrorCode,(Ptr{Ptr{Uint8}},Ptr{Ptr{Ptr{Uint8}}}),arg1,arg2)
 end
 
-function PetscStrArrayDestroy(arg0::Type{Float64},arg1::Union(Ptr{Ptr{ASCIIString}},StridedArray{Ptr{ASCIIString}},Ptr{Void}))
+function PetscStrArrayDestroy(arg0::Type{Float64},arg1::Union(Ptr{Ptr{Ptr{Uint8}}},StridedArray{Ptr{Ptr{Uint8}}},Ptr{Void}))
     ccall((:PetscStrArrayDestroy,petsc1),PetscErrorCode,(Ptr{Ptr{Ptr{Uint8}}},),arg1)
 end
 
-function PetscStrNArrayallocpy(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg3::Union(Ptr{Ptr{ASCIIString}},StridedArray{Ptr{ASCIIString}},Ptr{Void}))
+function PetscStrNArrayallocpy(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg3::Union(Ptr{Ptr{Ptr{Uint8}}},StridedArray{Ptr{Ptr{Uint8}}},Ptr{Void}))
     ccall((:PetscStrNArrayallocpy,petsc1),PetscErrorCode,(PetscInt,Ptr{Ptr{Uint8}},Ptr{Ptr{Ptr{Uint8}}}),arg1,arg2,arg3)
 end
 
-function PetscStrNArrayDestroy(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{Ptr{ASCIIString}},StridedArray{Ptr{ASCIIString}},Ptr{Void}))
+function PetscStrNArrayDestroy(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{Ptr{Ptr{Uint8}}},StridedArray{Ptr{Ptr{Uint8}}},Ptr{Void}))
     ccall((:PetscStrNArrayDestroy,petsc1),PetscErrorCode,(PetscInt,Ptr{Ptr{Ptr{Uint8}}}),arg1,arg2)
 end
 
-function PetscStrreplace(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscStrreplace(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscStrreplace,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Cint),arg1.val,arg2,arg3,size_t)
 end
 
-function PetscStrcmpNoError(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscStrcmpNoError(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscStrcmpNoError,petsc1),Void,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
 #= skipping function with undefined symbols: 
- function PetscTokenCreate(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Uint8,arg3::Union(Ptr{PetscToken},StridedArray{PetscToken},Ptr{Void}))
+ function PetscTokenCreate(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Uint8,arg3::Union(Ptr{PetscToken},StridedArray{PetscToken},Ptr{Void}))
     ccall((:PetscTokenCreate,petsc1),PetscErrorCode,(Cstring,Uint8,Ptr{PetscToken}),arg1,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscTokenFind(arg0::Type{Float64},arg1::PetscToken,arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+ function PetscTokenFind(arg0::Type{Float64},arg1::PetscToken,arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscTokenFind,petsc1),PetscErrorCode,(PetscToken,Ptr{Ptr{Uint8}}),arg1,arg2)
 end 
 =#
@@ -225,11 +225,11 @@ end
     ccall((:PetscTokenDestroy,petsc1),PetscErrorCode,(Ptr{PetscToken},),arg1)
 end 
 =#
-function PetscEListFind(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscEListFind(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscEListFind,petsc1),PetscErrorCode,(PetscInt,Ptr{Ptr{Uint8}},Cstring,Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscEnumFind(arg0::Type{Float64},arg1::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscEnumFind(arg0::Type{Float64},arg1::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscEnumFind,petsc1),PetscErrorCode,(Ptr{Ptr{Uint8}},Cstring,Ptr{PetscEnum},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
@@ -251,35 +251,35 @@ function PetscErrorPrintfInitialize(arg0::Type{Float64})
     ccall((:PetscErrorPrintfInitialize,petsc1),PetscErrorCode,())
 end
 
-function PetscErrorMessage(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg3::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscErrorMessage(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg3::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscErrorMessage,petsc1),PetscErrorCode,(Cint,Ptr{Ptr{Uint8}},Ptr{Ptr{Uint8}}),arg1,arg2,arg3)
 end
 
-function PetscTraceBackErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function PetscTraceBackErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PetscTraceBackErrorHandler,petsc1),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function PetscIgnoreErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function PetscIgnoreErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PetscIgnoreErrorHandler,petsc1),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function PetscEmacsClientErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function PetscEmacsClientErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PetscEmacsClientErrorHandler,petsc1),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function PetscMPIAbortErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function PetscMPIAbortErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PetscMPIAbortErrorHandler,petsc1),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function PetscAbortErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function PetscAbortErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PetscAbortErrorHandler,petsc1),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function PetscAttachDebuggerErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function PetscAttachDebuggerErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PetscAttachDebuggerErrorHandler,petsc1),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
-function PetscReturnErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function PetscReturnErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PetscReturnErrorHandler,petsc1),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
@@ -337,7 +337,7 @@ function PetscStackDestroy(arg0::Type{Float64})
     ccall((:PetscStackDestroy,petsc1),PetscErrorCode,())
 end
 
-function PetscClassIdRegister(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{PetscClassId},StridedArray{PetscClassId},Ptr{Void}))
+function PetscClassIdRegister(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{PetscClassId},StridedArray{PetscClassId},Ptr{Void}))
     ccall((:PetscClassIdRegister,petsc1),PetscErrorCode,(Cstring,Ptr{PetscClassId}),arg1,arg2)
 end
 
@@ -353,11 +353,11 @@ function PetscMemorySetGetMaximumUsage(arg0::Type{Float64})
     ccall((:PetscMemorySetGetMaximumUsage,petsc1),PetscErrorCode,())
 end
 
-function PetscMemoryTrace(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscMemoryTrace(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscMemoryTrace,petsc1),PetscErrorCode,(Cstring,),arg1)
 end
 
-function PetscInfoAllow(arg0::Type{Float64},arg1::PetscBool,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscInfoAllow(arg0::Type{Float64},arg1::PetscBool,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscInfoAllow,petsc1),PetscErrorCode,(PetscBool,Cstring),arg1,arg2)
 end
 
@@ -365,11 +365,11 @@ function PetscSleep(arg0::Type{Float64})
     ccall((:PetscSleep,petsc1),PetscErrorCode,())
 end
 
-function PetscInitialize(arg0::Type{Float64},arg1::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg2::Union(Ptr{Ptr{ASCIIString}},StridedArray{Ptr{ASCIIString}},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscInitialize(arg0::Type{Float64},arg1::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg2::Union(Ptr{Ptr{Ptr{Uint8}}},StridedArray{Ptr{Ptr{Uint8}}},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscInitialize,petsc1),PetscErrorCode,(Ptr{Cint},Ptr{Ptr{Ptr{Uint8}}},Cstring,Cstring),arg1,arg2,arg3,arg4)
 end
 
-function PetscInitializeNoPointers(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscInitializeNoPointers(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscInitializeNoPointers,petsc1),PetscErrorCode,(Cint,Ptr{Ptr{Uint8}},Cstring,Cstring),arg1,arg2,arg3,arg4)
 end
 
@@ -393,15 +393,15 @@ function PetscInitializeFortran(arg0::Type{Float64})
     ccall((:PetscInitializeFortran,petsc1),PetscErrorCode,())
 end
 
-function PetscGetArgs(arg0::Type{Float64},arg1::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg2::Union(Ptr{Ptr{ASCIIString}},StridedArray{Ptr{ASCIIString}},Ptr{Void}))
+function PetscGetArgs(arg0::Type{Float64},arg1::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg2::Union(Ptr{Ptr{Ptr{Uint8}}},StridedArray{Ptr{Ptr{Uint8}}},Ptr{Void}))
     ccall((:PetscGetArgs,petsc1),PetscErrorCode,(Ptr{Cint},Ptr{Ptr{Ptr{Uint8}}}),arg1,arg2)
 end
 
-function PetscGetArguments(arg0::Type{Float64},arg1::Union(Ptr{Ptr{ASCIIString}},StridedArray{Ptr{ASCIIString}},Ptr{Void}))
+function PetscGetArguments(arg0::Type{Float64},arg1::Union(Ptr{Ptr{Ptr{Uint8}}},StridedArray{Ptr{Ptr{Uint8}}},Ptr{Void}))
     ccall((:PetscGetArguments,petsc1),PetscErrorCode,(Ptr{Ptr{Ptr{Uint8}}},),arg1)
 end
 
-function PetscFreeArguments(arg0::Type{Float64},arg1::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscFreeArguments(arg0::Type{Float64},arg1::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscFreeArguments,petsc1),PetscErrorCode,(Ptr{Ptr{Uint8}},),arg1)
 end
 
@@ -413,7 +413,7 @@ function PetscSysInitializePackage(arg0::Type{Float64})
     ccall((:PetscSysInitializePackage,petsc1),PetscErrorCode,())
 end
 
-function PetscPythonInitialize(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscPythonInitialize(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscPythonInitialize,petsc1),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
 end
 
@@ -426,7 +426,7 @@ function PetscPythonPrintError(arg0::Type{Float64})
 end
 
 #= skipping function with undefined symbols: 
- function PetscPythonMonitorSet(arg0::Type{Float64},arg1::PetscObject,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscPythonMonitorSet(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscPythonMonitorSet,petsc1),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
 end 
 =#
@@ -446,12 +446,12 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectGetClassName(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+ function PetscObjectGetClassName(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscObjectGetClassName,petsc1),PetscErrorCode,(PetscObject,Ptr{Ptr{Uint8}}),arg1,arg2)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectSetType(arg0::Type{Float64},arg1::PetscObject,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscObjectSetType(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscObjectSetType,petsc1),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
 end 
 =#
@@ -461,17 +461,17 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectGetType(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+ function PetscObjectGetType(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscObjectGetType,petsc1),PetscErrorCode,(PetscObject,Ptr{Ptr{Uint8}}),arg1,arg2)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectSetName(arg0::Type{Float64},arg1::PetscObject,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscObjectSetName(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscObjectSetName,petsc1),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectGetName(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+ function PetscObjectGetName(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscObjectGetName,petsc1),PetscErrorCode,(PetscObject,Ptr{Ptr{Uint8}}),arg1,arg2)
 end 
 =#
@@ -511,22 +511,22 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectCompose(arg0::Type{Float64},arg1::PetscObject,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::PetscObject)
+ function PetscObjectCompose(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::PetscObject)
     ccall((:PetscObjectCompose,petsc1),PetscErrorCode,(PetscObject,Cstring,PetscObject),arg1,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectRemoveReference(arg0::Type{Float64},arg1::PetscObject,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscObjectRemoveReference(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscObjectRemoveReference,petsc1),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectQuery(arg0::Type{Float64},arg1::PetscObject,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscObject},StridedArray{PetscObject},Ptr{Void}))
+ function PetscObjectQuery(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscObject},StridedArray{PetscObject},Ptr{Void}))
     ccall((:PetscObjectQuery,petsc1),PetscErrorCode,(PetscObject,Cstring,Ptr{PetscObject}),arg1,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectComposeFunction_Private(arg0::Type{Float64},arg1::PetscObject,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+ function PetscObjectComposeFunction_Private(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PetscObjectComposeFunction_Private,petsc1),PetscErrorCode,(PetscObject,Cstring,Ptr{Void}),arg1,arg2,arg3)
 end 
 =#
@@ -564,75 +564,75 @@ end
     ccall((:PetscObjectsListGetGlobalNumbering,petsc1),PetscErrorCode,(comm_type,PetscInt,Ptr{PetscObject},Ptr{PetscInt},Ptr{PetscInt}),arg1.val,arg2,arg3,arg4,arg5)
 end 
 =#
-function PetscOptionsHasName(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsHasName(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsHasName,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function PetscOptionsGetInt(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetInt(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetInt,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
-function PetscOptionsGetBool(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetBool(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetBool,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
-function PetscOptionsGetReal(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetReal(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetReal,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{Cint},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
-function PetscOptionsGetScalar(arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Float64},StridedArray{Float64},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetScalar(arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Float64},StridedArray{Float64},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetScalar,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
-function PetscOptionsGetIntArray(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetIntArray(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetIntArray,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscOptionsGetRealArray(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),Float64::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg3::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetRealArray(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),Float64::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg3::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetRealArray,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{Cint},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,PetscReal,arg3,arg4)
 end
 
-function PetscOptionsGetScalarArray(arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Float64},StridedArray{Float64},Ptr{Void}),arg4::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetScalarArray(arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Float64},StridedArray{Float64},Ptr{Void}),arg4::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetScalarArray,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{Float64},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscOptionsGetBoolArray(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}),arg4::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetBoolArray(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}),arg4::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetBoolArray,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscOptionsGetString(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetString(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetString,petsc1),PetscErrorCode,(Cstring,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1,arg2,arg3,size_t,arg4)
 end
 
-function PetscOptionsGetStringArray(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg4::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetStringArray(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg4::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetStringArray,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{Ptr{Uint8}},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscOptionsGetEList(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg4::Integer,arg5::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetEList(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg4::Integer,arg5::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetEList,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{Ptr{Uint8}},PetscInt,Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function PetscOptionsGetEnum(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg4::Union(Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetEnum(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg4::Union(Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetEnum,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{Ptr{Uint8}},Ptr{PetscEnum},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscOptionsGetEnumArray(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg4::Union(Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{Void}),arg5::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetEnumArray(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg4::Union(Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{Void}),arg5::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetEnumArray,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{Ptr{Uint8}},Ptr{PetscEnum},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
-function PetscOptionsValidKey(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsValidKey(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsValidKey,petsc1),PetscErrorCode,(Cstring,Ptr{PetscBool}),arg1,arg2)
 end
 
-function PetscOptionsSetAlias(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscOptionsSetAlias(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscOptionsSetAlias,petsc1),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
 end
 
-function PetscOptionsSetValue(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscOptionsSetValue(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscOptionsSetValue,petsc1),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
 end
 
-function PetscOptionsClearValue(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscOptionsClearValue(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscOptionsClearValue,petsc1),PetscErrorCode,(Cstring,),arg1)
 end
 
@@ -640,7 +640,7 @@ function PetscOptionsAllUsed(arg0::Type{Float64},arg1::Union(Ptr{PetscInt},Strid
     ccall((:PetscOptionsAllUsed,petsc1),PetscErrorCode,(Ptr{PetscInt},),arg1)
 end
 
-function PetscOptionsUsed(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsUsed(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsUsed,petsc1),PetscErrorCode,(Cstring,Ptr{PetscBool}),arg1,arg2)
 end
 
@@ -656,15 +656,15 @@ function PetscOptionsCreate(arg0::Type{Float64})
     ccall((:PetscOptionsCreate,petsc1),PetscErrorCode,())
 end
 
-function PetscOptionsInsert(arg0::Type{Float64},arg1::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg2::Union(Ptr{Ptr{ASCIIString}},StridedArray{Ptr{ASCIIString}},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscOptionsInsert(arg0::Type{Float64},arg1::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg2::Union(Ptr{Ptr{Ptr{Uint8}}},StridedArray{Ptr{Ptr{Uint8}}},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscOptionsInsert,petsc1),PetscErrorCode,(Ptr{Cint},Ptr{Ptr{Ptr{Uint8}}},Cstring),arg1,arg2,arg3)
 end
 
-function PetscOptionsInsertFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::PetscBool)
+function PetscOptionsInsertFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::PetscBool)
     ccall((:PetscOptionsInsertFile,petsc1),PetscErrorCode,(comm_type,Cstring,PetscBool),arg1.val,arg2,arg3)
 end
 
-function PetscOptionsInsertString(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscOptionsInsertString(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscOptionsInsertString,petsc1),PetscErrorCode,(Cstring,),arg1)
 end
 
@@ -676,7 +676,7 @@ function PetscOptionsClear(arg0::Type{Float64})
     ccall((:PetscOptionsClear,petsc1),PetscErrorCode,())
 end
 
-function PetscOptionsPrefixPush(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscOptionsPrefixPush(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscOptionsPrefixPush,petsc1),PetscErrorCode,(Cstring,),arg1)
 end
 
@@ -684,27 +684,27 @@ function PetscOptionsPrefixPop(arg0::Type{Float64})
     ccall((:PetscOptionsPrefixPop,petsc1),PetscErrorCode,())
 end
 
-function PetscOptionsReject(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscOptionsReject(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscOptionsReject,petsc1),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
 end
 
-function PetscOptionsGetAll(arg0::Type{Float64},arg1::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscOptionsGetAll(arg0::Type{Float64},arg1::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscOptionsGetAll,petsc1),PetscErrorCode,(Ptr{Ptr{Uint8}},),arg1)
 end
 
-function PetscOptionsGetenv(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetenv(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetenv,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1.val,arg2,arg3,size_t,arg4)
 end
 
-function PetscOptionsStringToInt(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}))
+function PetscOptionsStringToInt(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}))
     ccall((:PetscOptionsStringToInt,petsc1),PetscErrorCode,(Cstring,Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscOptionsStringToReal(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}))
+function PetscOptionsStringToReal(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}))
     ccall((:PetscOptionsStringToReal,petsc1),PetscErrorCode,(Cstring,Ptr{Cint}),arg1,arg2)
 end
 
-function PetscOptionsStringToBool(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsStringToBool(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsStringToBool,petsc1),PetscErrorCode,(Cstring,Ptr{PetscBool}),arg1,arg2)
 end
 
@@ -716,12 +716,12 @@ function PetscOptionsMonitorCancel(arg0::Type{Float64})
     ccall((:PetscOptionsMonitorCancel,petsc1),PetscErrorCode,())
 end
 
-function PetscOptionsMonitorDefault(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function PetscOptionsMonitorDefault(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PetscOptionsMonitorDefault,petsc1),PetscErrorCode,(Cstring,Cstring,Ptr{Void}),arg1,arg2,arg3)
 end
 
 #= skipping function with undefined symbols: 
- function PetscOptionsBegin_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::MPI_Comm,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscOptionsBegin_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::MPI_Comm,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscOptionsBegin_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},comm_type,Cstring,Cstring,Cstring),arg1,arg2.val,arg3,arg4,arg5)
 end 
 =#
@@ -736,97 +736,97 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsHead(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscOptionsHead(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscOptionsHead,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring),arg1,arg2)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsEnum_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg6::PetscEnum,arg7::Union(Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{Void}),arg8::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsEnum_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg6::PetscEnum,arg7::Union(Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{Void}),arg8::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsEnum_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Ptr{Uint8}},PetscEnum,Ptr{PetscEnum},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsInt_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Integer,arg6::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsInt_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Integer,arg6::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsInt_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,PetscInt,Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsReal_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),Float64::Integer,arg5::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg6::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsReal_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),Float64::Integer,arg5::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg6::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsReal_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Cint,Ptr{Cint},Ptr{PetscBool}),arg1,arg2,arg3,arg4,PetscReal,arg5,arg6)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsScalar_Private(arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Float64,arg6::Union(Ptr{Float64},StridedArray{Float64},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsScalar_Private(arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Float64,arg6::Union(Ptr{Float64},StridedArray{Float64},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsScalar_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Float64,Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsName_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsName_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsName_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsString_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg6::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsString_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg6::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsString_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,size_t,arg7)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsBool_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::PetscBool,arg6::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsBool_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::PetscBool,arg6::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsBool_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,PetscBool,Ptr{PetscBool},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsBoolGroupBegin_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsBoolGroupBegin_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsBoolGroupBegin_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsBoolGroup_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsBoolGroup_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsBoolGroup_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsBoolGroupEnd_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsBoolGroupEnd_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsBoolGroupEnd_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsFList_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::PetscFunctionList,arg6::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg7::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg8::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsFList_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::PetscFunctionList,arg6::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg7::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg8::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsFList_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,PetscFunctionList,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,size_t,arg8)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsEList_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg6::Integer,arg7::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg9::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsEList_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg6::Integer,arg7::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg8::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg9::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsEList_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Ptr{Uint8}},PetscInt,Cstring,Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsRealArray_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),Float64::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg5::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsRealArray_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),Float64::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),arg5::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsRealArray_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Cint},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,PetscReal,arg5,arg6)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsScalarArray_Private(arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{Float64},StridedArray{Float64},Ptr{Void}),arg6::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsScalarArray_Private(arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{Float64},StridedArray{Float64},Ptr{Void}),arg6::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsScalarArray_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Float64},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsIntArray_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsIntArray_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg6::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsIntArray_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscInt},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsStringArray_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg6::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsStringArray_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg6::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsStringArray_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Ptr{Uint8}},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsBoolArray_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}),arg6::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsBoolArray_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}),arg6::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsBoolArray_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsEnumArray_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg6::Union(Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{Void}),arg7::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg8::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsEnumArray_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg6::Union(Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{Void}),arg7::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg8::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsEnumArray_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Ptr{Uint8}},Ptr{PetscEnum},Ptr{PetscInt},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end 
 =#
@@ -838,7 +838,7 @@ function PetscOptionsSAWsDestroy(arg0::Type{Float64})
     ccall((:PetscOptionsSAWsDestroy,petsc1),PetscErrorCode,())
 end
 
-function PetscMemoryShowUsage(arg1::PetscViewer{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscMemoryShowUsage(arg1::PetscViewer{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscMemoryShowUsage,petsc1),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
 end
 
@@ -853,32 +853,32 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectQueryFunction_Private(arg0::Type{Float64},arg1::PetscObject,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Void}))
+ function PetscObjectQueryFunction_Private(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Void}))
     ccall((:PetscObjectQueryFunction_Private,petsc1),PetscErrorCode,(PetscObject,Cstring,Ptr{Ptr{Void}}),arg1,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectSetOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscObjectSetOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscObjectSetOptionsPrefix,petsc1),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectAppendOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscObjectAppendOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscObjectAppendOptionsPrefix,petsc1),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectPrependOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscObjectPrependOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscObjectPrependOptionsPrefix,petsc1),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectGetOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+ function PetscObjectGetOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscObjectGetOptionsPrefix,petsc1),PetscErrorCode,(PetscObject,Ptr{Ptr{Uint8}}),arg1,arg2)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectChangeTypeName(arg0::Type{Float64},arg1::PetscObject,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscObjectChangeTypeName(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscObjectChangeTypeName,petsc1),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
 end 
 =#
@@ -892,7 +892,7 @@ function PetscObjectRegisterDestroyAll(arg0::Type{Float64})
 end
 
 #= skipping function with undefined symbols: 
- function PetscObjectViewFromOptions(arg0::Type{Float64},arg1::PetscObject,arg2::PetscObject,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscObjectViewFromOptions(arg0::Type{Float64},arg1::PetscObject,arg2::PetscObject,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscObjectViewFromOptions,petsc1),PetscErrorCode,(PetscObject,PetscObject,Cstring),arg1,arg2,arg3)
 end 
 =#
@@ -902,7 +902,7 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectTypeCompare(arg0::Type{Float64},arg1::PetscObject,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscObjectTypeCompare(arg0::Type{Float64},arg1::PetscObject,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscObjectTypeCompare,petsc1),PetscErrorCode,(PetscObject,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
 end 
 =#
@@ -914,7 +914,7 @@ function PetscRegisterFinalizeAll(arg0::Type{Float64})
     ccall((:PetscRegisterFinalizeAll,petsc1),PetscErrorCode,())
 end
 
-function PetscDLOpen(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::PetscDLMode,arg3::Union(Ptr{PetscDLHandle},StridedArray{PetscDLHandle},Ptr{Void}))
+function PetscDLOpen(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::PetscDLMode,arg3::Union(Ptr{PetscDLHandle},StridedArray{PetscDLHandle},Ptr{Void}))
     ccall((:PetscDLOpen,petsc1),PetscErrorCode,(Cstring,PetscDLMode,Ptr{PetscDLHandle}),arg1,arg2,arg3)
 end
 
@@ -922,7 +922,7 @@ function PetscDLClose(arg0::Type{Float64},arg1::Union(Ptr{PetscDLHandle},Strided
     ccall((:PetscDLClose,petsc1),PetscErrorCode,(Ptr{PetscDLHandle},),arg1)
 end
 
-function PetscDLSym(arg0::Type{Float64},arg1::PetscDLHandle,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Void}))
+function PetscDLSym(arg0::Type{Float64},arg1::PetscDLHandle,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Void}))
     ccall((:PetscDLSym,petsc1),PetscErrorCode,(PetscDLHandle,Cstring,Ptr{Ptr{Void}}),arg1,arg2,arg3)
 end
 
@@ -937,22 +937,22 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectListFind(arg0::Type{Float64},arg1::PetscObjectList,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscObject},StridedArray{PetscObject},Ptr{Void}))
+ function PetscObjectListFind(arg0::Type{Float64},arg1::PetscObjectList,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscObject},StridedArray{PetscObject},Ptr{Void}))
     ccall((:PetscObjectListFind,petsc1),PetscErrorCode,(PetscObjectList,Cstring,Ptr{PetscObject}),arg1,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectListReverseFind(arg0::Type{Float64},arg1::PetscObjectList,arg2::PetscObject,arg3::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscObjectListReverseFind(arg0::Type{Float64},arg1::PetscObjectList,arg2::PetscObject,arg3::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscObjectListReverseFind,petsc1),PetscErrorCode,(PetscObjectList,PetscObject,Ptr{Ptr{Uint8}},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectListAdd(arg0::Type{Float64},arg1::Union(Ptr{PetscObjectList},StridedArray{PetscObjectList},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::PetscObject)
+ function PetscObjectListAdd(arg0::Type{Float64},arg1::Union(Ptr{PetscObjectList},StridedArray{PetscObjectList},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::PetscObject)
     ccall((:PetscObjectListAdd,petsc1),PetscErrorCode,(Ptr{PetscObjectList},Cstring,PetscObject),arg1,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscObjectListRemoveReference(arg0::Type{Float64},arg1::Union(Ptr{PetscObjectList},StridedArray{PetscObjectList},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscObjectListRemoveReference(arg0::Type{Float64},arg1::Union(Ptr{PetscObjectList},StridedArray{PetscObjectList},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscObjectListRemoveReference,petsc1),PetscErrorCode,(Ptr{PetscObjectList},Cstring),arg1,arg2)
 end 
 =#
@@ -962,7 +962,7 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscFunctionListAdd_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscFunctionList},StridedArray{PetscFunctionList},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+ function PetscFunctionListAdd_Private(arg0::Type{Float64},arg1::Union(Ptr{PetscFunctionList},StridedArray{PetscFunctionList},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PetscFunctionListAdd_Private,petsc1),PetscErrorCode,(Ptr{PetscFunctionList},Cstring,Ptr{Void}),arg1,arg2,arg3)
 end 
 =#
@@ -972,12 +972,12 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscFunctionListFind_Private(arg0::Type{Float64},arg1::PetscFunctionList,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Void}))
+ function PetscFunctionListFind_Private(arg0::Type{Float64},arg1::PetscFunctionList,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Void}))
     ccall((:PetscFunctionListFind_Private,petsc1),PetscErrorCode,(PetscFunctionList,Cstring,Ptr{Ptr{Void}}),arg1,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscFunctionListPrintTypes(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{FILE},StridedArray{FILE},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg6::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg7::PetscFunctionList,arg8::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscFunctionListPrintTypes(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{FILE},StridedArray{FILE},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg6::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg7::PetscFunctionList,arg8::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscFunctionListPrintTypes,petsc1),PetscErrorCode,(comm_type,Ptr{FILE},Cstring,Cstring,Cstring,Cstring,PetscFunctionList,Cstring),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end 
 =#
@@ -992,22 +992,22 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscFunctionListGet(arg0::Type{Float64},arg1::PetscFunctionList,arg2::Union(Ptr{Ptr{ASCIIString}},StridedArray{Ptr{ASCIIString}},Ptr{Void}),arg3::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}))
+ function PetscFunctionListGet(arg0::Type{Float64},arg1::PetscFunctionList,arg2::Union(Ptr{Ptr{Ptr{Uint8}}},StridedArray{Ptr{Ptr{Uint8}}},Ptr{Void}),arg3::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}))
     ccall((:PetscFunctionListGet,petsc1),PetscErrorCode,(PetscFunctionList,Ptr{Ptr{Ptr{Uint8}}},Ptr{Cint}),arg1,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscDLLibraryAppend(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscDLLibraryAppend(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscDLLibraryAppend,petsc1),PetscErrorCode,(comm_type,Ptr{PetscDLLibrary},Cstring),arg1.val,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscDLLibraryPrepend(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscDLLibraryPrepend(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscDLLibraryPrepend,petsc1),PetscErrorCode,(comm_type,Ptr{PetscDLLibrary},Cstring),arg1.val,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscDLLibrarySym(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Void}))
+ function PetscDLLibrarySym(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Void}))
     ccall((:PetscDLLibrarySym,petsc1),PetscErrorCode,(comm_type,Ptr{PetscDLLibrary},Cstring,Cstring,Ptr{Ptr{Void}}),arg1.val,arg2,arg3,arg4,arg5)
 end 
 =#
@@ -1016,12 +1016,12 @@ end
     ccall((:PetscDLLibraryPrintPath,petsc1),PetscErrorCode,(PetscDLLibrary,),arg1)
 end 
 =#
-function PetscDLLibraryRetrieve(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscDLLibraryRetrieve(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscDLLibraryRetrieve,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1.val,arg2,arg3,size_t,arg4)
 end
 
 #= skipping function with undefined symbols: 
- function PetscDLLibraryOpen(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{Void}))
+ function PetscDLLibraryOpen(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{Void}))
     ccall((:PetscDLLibraryOpen,petsc1),PetscErrorCode,(comm_type,Cstring,Ptr{PetscDLLibrary}),arg1.val,arg2,arg3)
 end 
 =#
@@ -1119,12 +1119,12 @@ end
     ccall((:PetscIntStackEmpty,petsc1),PetscErrorCode,(PetscIntStack,Ptr{PetscBool}),arg1,arg2)
 end 
 =#
-function PetscFixFilename(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscFixFilename(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscFixFilename,petsc1),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
 end
 
 #= skipping function with undefined symbols: 
- function PetscFOpen(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Void}))
+ function PetscFOpen(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Void}))
     ccall((:PetscFOpen,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{Ptr{FILE}}),arg1.val,arg2,arg3,arg4)
 end 
 =#
@@ -1133,12 +1133,12 @@ end
     ccall((:PetscFClose,petsc1),PetscErrorCode,(comm_type,Ptr{FILE}),arg1.val,arg2)
 end 
 =#
-function PetscVSNPrintf(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),va_list::Integer)
+function PetscVSNPrintf(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}),va_list::Integer)
     ccall((:PetscVSNPrintf,petsc1),PetscErrorCode,(Cstring,Cint,Cstring,Ptr{Cint},Cint),arg1,size_t,arg2,arg3,va_list)
 end
 
 #= skipping function with undefined symbols: 
- function PetscVFPrintfDefault(arg0::Type{Float64},arg1::Union(Ptr{FILE},StridedArray{FILE},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),va_list::Integer)
+ function PetscVFPrintfDefault(arg0::Type{Float64},arg1::Union(Ptr{FILE},StridedArray{FILE},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),va_list::Integer)
     ccall((:PetscVFPrintfDefault,petsc1),PetscErrorCode,(Ptr{FILE},Cstring,Cint),arg1,arg2,va_list)
 end 
 =#
@@ -1148,25 +1148,25 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscSynchronizedFGets(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{FILE},StridedArray{FILE},Ptr{Void}),size_t::Integer,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscSynchronizedFGets(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{FILE},StridedArray{FILE},Ptr{Void}),size_t::Integer,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscSynchronizedFGets,petsc1),PetscErrorCode,(comm_type,Ptr{FILE},Cint,Cstring),arg1.val,arg2,size_t,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscStartMatlab(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Void}))
+ function PetscStartMatlab(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Void}))
     ccall((:PetscStartMatlab,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{Ptr{FILE}}),arg1.val,arg2,arg3,arg4)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscStartJava(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Void}))
+ function PetscStartJava(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Void}))
     ccall((:PetscStartJava,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{Ptr{FILE}}),arg1.val,arg2,arg3,arg4)
 end 
 =#
-function PetscGetPetscDir(arg0::Type{Float64},arg1::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscGetPetscDir(arg0::Type{Float64},arg1::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscGetPetscDir,petsc1),PetscErrorCode,(Ptr{Ptr{Uint8}},),arg1)
 end
 
-function PetscPopUpSelect(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Integer,arg5::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg6::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}))
+function PetscPopUpSelect(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Integer,arg5::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg6::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}))
     ccall((:PetscPopUpSelect,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Ptr{Ptr{Uint8}},Ptr{Cint}),arg1.val,arg2,arg3,arg4,arg5,arg6)
 end
 
@@ -1207,27 +1207,27 @@ function PetscScalarView(arg1::Integer,arg2::Union(Ptr{Float64},StridedArray{Flo
     ccall((:PetscScalarView,petsc1),PetscErrorCode,(PetscInt,Ptr{Float64},PetscViewer{Float64}),arg1,arg2,arg3)
 end
 
-function PetscGetHostName(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscGetHostName(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscGetHostName,petsc1),PetscErrorCode,(Cstring,Cint),arg1,size_t)
 end
 
-function PetscGetUserName(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscGetUserName(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscGetUserName,petsc1),PetscErrorCode,(Cstring,Cint),arg1,size_t)
 end
 
-function PetscGetProgramName(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscGetProgramName(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscGetProgramName,petsc1),PetscErrorCode,(Cstring,Cint),arg1,size_t)
 end
 
-function PetscSetProgramName(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscSetProgramName(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscSetProgramName,petsc1),PetscErrorCode,(Cstring,),arg1)
 end
 
-function PetscGetDate(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscGetDate(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscGetDate,petsc1),PetscErrorCode,(Cstring,Cint),arg1,size_t)
 end
 
-function PetscGetVersion(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscGetVersion(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscGetVersion,petsc1),PetscErrorCode,(Cstring,Cint),arg1,size_t)
 end
 
@@ -1247,7 +1247,7 @@ function PetscSortIntWithPermutation(arg0::Type{Float64},arg1::Integer,arg2::Uni
     ccall((:PetscSortIntWithPermutation,petsc1),PetscErrorCode,(PetscInt,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
-function PetscSortStrWithPermutation(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}),arg3::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}))
+function PetscSortStrWithPermutation(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}),arg3::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}))
     ccall((:PetscSortStrWithPermutation,petsc1),PetscErrorCode,(PetscInt,Ptr{Ptr{Uint8}},Ptr{PetscInt}),arg1,arg2,arg3)
 end
 
@@ -1315,7 +1315,7 @@ function PetscSetDisplay(arg0::Type{Float64})
     ccall((:PetscSetDisplay,petsc1),PetscErrorCode,())
 end
 
-function PetscGetDisplay(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscGetDisplay(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscGetDisplay,petsc1),PetscErrorCode,(Cstring,Cint),arg1,size_t)
 end
 
@@ -1323,7 +1323,7 @@ function PetscRandomInitializePackage(arg0::Type{Float64})
     ccall((:PetscRandomInitializePackage,petsc1),PetscErrorCode,())
 end
 
-function PetscRandomRegister(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function PetscRandomRegister(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PetscRandomRegister,petsc1),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
 end
 
@@ -1387,31 +1387,31 @@ end
     ccall((:PetscRandomDestroy,petsc1),PetscErrorCode,(Ptr{PetscRandom},),arg1)
 end 
 =#
-function PetscGetFullPath(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscGetFullPath(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscGetFullPath,petsc1),PetscErrorCode,(Cstring,Cstring,Cint),arg1,arg2,size_t)
 end
 
-function PetscGetRelativePath(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscGetRelativePath(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscGetRelativePath,petsc1),PetscErrorCode,(Cstring,Cstring,Cint),arg1,arg2,size_t)
 end
 
-function PetscGetWorkingDirectory(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscGetWorkingDirectory(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscGetWorkingDirectory,petsc1),PetscErrorCode,(Cstring,Cint),arg1,size_t)
 end
 
-function PetscGetRealPath(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscGetRealPath(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscGetRealPath,petsc1),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
 end
 
-function PetscGetHomeDirectory(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscGetHomeDirectory(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscGetHomeDirectory,petsc1),PetscErrorCode,(Cstring,Cint),arg1,size_t)
 end
 
-function PetscTestFile(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Uint8,arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscTestFile(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Uint8,arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscTestFile,petsc1),PetscErrorCode,(Cstring,Uint8,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function PetscTestDirectory(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Uint8,arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscTestDirectory(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Uint8,arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscTestDirectory,petsc1),PetscErrorCode,(Cstring,Uint8,Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
@@ -1431,7 +1431,7 @@ function PetscBinaryWrite(arg0::Type{Float64},arg1::Integer,arg2::Union(Ptr{Void
     ccall((:PetscBinaryWrite,petsc1),PetscErrorCode,(Cint,Ptr{Void},PetscInt,PetscDataType,PetscBool),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscBinaryOpen(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::PetscFileMode,arg3::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}))
+function PetscBinaryOpen(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::PetscFileMode,arg3::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}))
     ccall((:PetscBinaryOpen,petsc1),PetscErrorCode,(Cstring,PetscFileMode,Ptr{Cint}),arg1,arg2,arg3)
 end
 
@@ -1447,19 +1447,19 @@ function PetscSharedWorkingDirectory(arg0::Type{Float64},arg1::MPI_Comm,arg2::Un
     ccall((:PetscSharedWorkingDirectory,petsc1),PetscErrorCode,(comm_type,Ptr{PetscBool}),arg1.val,arg2)
 end
 
-function PetscGetTmp(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscGetTmp(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscGetTmp,petsc1),PetscErrorCode,(comm_type,Cstring,Cint),arg1.val,arg2,size_t)
 end
 
-function PetscFileRetrieve(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscFileRetrieve(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscFileRetrieve,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1.val,arg2,arg3,size_t,arg4)
 end
 
-function PetscLs(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscLs(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscLs,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1.val,arg2,arg3,size_t,arg4)
 end
 
-function PetscOpenSocket(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Integer,arg3::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}))
+function PetscOpenSocket(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Integer,arg3::Union(Ptr{Cint},StridedArray{Cint},Ptr{Void}))
     ccall((:PetscOpenSocket,petsc1),PetscErrorCode,(Cstring,Cint,Ptr{Cint}),arg1,arg2,arg3)
 end
 
@@ -1475,11 +1475,11 @@ function PetscByteSwap(arg0::Type{Float64},arg1::Union(Ptr{Void},StridedArray{Vo
     ccall((:PetscByteSwap,petsc1),PetscErrorCode,(Ptr{Void},PetscDataType,PetscInt),arg1,arg2,arg3)
 end
 
-function PetscSetDebugTerminal(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscSetDebugTerminal(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscSetDebugTerminal,petsc1),PetscErrorCode,(Cstring,),arg1)
 end
 
-function PetscSetDebugger(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::PetscBool)
+function PetscSetDebugger(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::PetscBool)
     ccall((:PetscSetDebugger,petsc1),PetscErrorCode,(Cstring,PetscBool),arg1,arg2)
 end
 
@@ -1487,7 +1487,7 @@ function PetscSetDefaultDebugger(arg0::Type{Float64})
     ccall((:PetscSetDefaultDebugger,petsc1),PetscErrorCode,())
 end
 
-function PetscSetDebuggerFromString(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscSetDebuggerFromString(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscSetDebuggerFromString,petsc1),PetscErrorCode,(Cstring,),arg1)
 end
 
@@ -1612,35 +1612,35 @@ end
     ccall((:PetscSegBufferUnuse,petsc1),PetscErrorCode,(PetscSegBuffer,Cint),arg1,size_t)
 end 
 =#
-function PetscGoogleDriveAuthorize(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscGoogleDriveAuthorize(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscGoogleDriveAuthorize,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Cint),arg1.val,arg2,arg3,size_t)
 end
 
-function PetscGoogleDriveRefresh(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscGoogleDriveRefresh(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscGoogleDriveRefresh,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Cint),arg1.val,arg2,arg3,size_t)
 end
 
-function PetscGoogleDriveUpload(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscGoogleDriveUpload(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscGoogleDriveUpload,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring),arg1.val,arg2,arg3)
 end
 
-function PetscBoxAuthorize(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscBoxAuthorize(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscBoxAuthorize,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Cint),arg1.val,arg2,arg3,size_t)
 end
 
-function PetscBoxRefresh(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscBoxRefresh(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscBoxRefresh,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Cstring,Cint),arg1.val,arg2,arg3,arg4,size_t)
 end
 
-function PetscTextBelt(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscTextBelt(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscTextBelt,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{PetscBool}),arg1.val,arg2,arg3,arg4)
 end
 
-function PetscPullJSONValue(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscPullJSONValue(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscPullJSONValue,petsc1),PetscErrorCode,(Cstring,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1,arg2,arg3,size_t,arg4)
 end
 
-function PetscPushJSONValue(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer)
+function PetscPushJSONValue(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer)
     ccall((:PetscPushJSONValue,petsc1),PetscErrorCode,(Cstring,Cstring,Cstring,Cint),arg1,arg2,arg3,size_t)
 end
 
@@ -1656,7 +1656,7 @@ function ISGetType(arg1::IS{Float64},arg2::Union(Ptr{ISType},StridedArray{ISType
     ccall((:ISGetType,petsc1),PetscErrorCode,(IS{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
-function ISRegister(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function ISRegister(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:ISRegister,petsc1),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
 end
 
@@ -1974,7 +1974,7 @@ function ISColoringView(arg1::ISColoring{Float64},arg2::PetscViewer{Float64})
 end
 
 #= skipping function with undefined symbols: 
- function ISColoringViewFromOptions(arg1::ISColoring{Float64},arg2::PetscObject,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function ISColoringViewFromOptions(arg1::ISColoring{Float64},arg2::PetscObject,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:ISColoringViewFromOptions,petsc1),PetscErrorCode,(ISColoring{Float64},PetscObject,Cstring),arg1,arg2,arg3)
 end 
 =#
@@ -2097,12 +2097,12 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscSectionGetFieldName(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+ function PetscSectionGetFieldName(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscSectionGetFieldName,petsc1),PetscErrorCode,(PetscSection,PetscInt,Ptr{Ptr{Uint8}}),arg1,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscSectionSetFieldName(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function PetscSectionSetFieldName(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscSectionSetFieldName,petsc1),PetscErrorCode,(PetscSection,PetscInt,Cstring),arg1,arg2,arg3)
 end 
 =#
@@ -2355,7 +2355,7 @@ function PetscViewerInitializePackage(arg0::Type{Float64})
     ccall((:PetscViewerInitializePackage,petsc1),PetscErrorCode,())
 end
 
-function PetscViewerRegister(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function PetscViewerRegister(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PetscViewerRegister,petsc1),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
 end
 
@@ -2372,7 +2372,7 @@ end
     ccall((:PetscViewerASCIIOpenWithFILE,petsc1),PetscErrorCode,(comm_type,Ptr{FILE},Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3)
 end 
 =#
-function PetscViewerASCIIOpen(arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
+function PetscViewerASCIIOpen(arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
     ccall((:PetscViewerASCIIOpen,petsc1),PetscErrorCode,(comm_type,Cstring,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3)
 end
 
@@ -2381,7 +2381,7 @@ end
     ccall((:PetscViewerASCIISetFILE,petsc1),PetscErrorCode,(PetscViewer{Float64},Ptr{FILE}),arg1,arg2)
 end 
 =#
-function PetscViewerBinaryOpen(arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::PetscFileMode,arg4::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
+function PetscViewerBinaryOpen(arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::PetscFileMode,arg4::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
     ccall((:PetscViewerBinaryOpen,petsc1),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4)
 end
 
@@ -2401,15 +2401,15 @@ function PetscViewerBinaryGetUseMPIIO(arg1::PetscViewer{Float64},arg2::Union(Ptr
     ccall((:PetscViewerBinaryGetUseMPIIO,petsc1),PetscErrorCode,(PetscViewer{Float64},Ptr{PetscBool}),arg1,arg2)
 end
 
-function PetscViewerSocketOpen(arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Integer,arg4::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
+function PetscViewerSocketOpen(arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Integer,arg4::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
     ccall((:PetscViewerSocketOpen,petsc1),PetscErrorCode,(comm_type,Cstring,Cint,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4)
 end
 
-function PetscViewerStringOpen(arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg3::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
+function PetscViewerStringOpen(arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),size_t::Integer,arg3::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
     ccall((:PetscViewerStringOpen,petsc1),PetscErrorCode,(comm_type,Cstring,Cint,Ptr{PetscViewer{Float64}}),arg1.val,arg2,size_t,arg3)
 end
 
-function PetscViewerDrawOpen(arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
+function PetscViewerDrawOpen(arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
     ccall((:PetscViewerDrawOpen,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end
 
@@ -2417,15 +2417,15 @@ function PetscViewerDrawSetDrawType(arg1::PetscViewer{Float64},arg2::PetscDrawTy
     ccall((:PetscViewerDrawSetDrawType,petsc1),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
 end
 
-function PetscViewerMathematicaOpen(arg1::MPI_Comm,arg2::Integer,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
+function PetscViewerMathematicaOpen(arg1::MPI_Comm,arg2::Integer,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
     ccall((:PetscViewerMathematicaOpen,petsc1),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4,arg5)
 end
 
-function PetscViewerSiloOpen(arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
+function PetscViewerSiloOpen(arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
     ccall((:PetscViewerSiloOpen,petsc1),PetscErrorCode,(comm_type,Cstring,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3)
 end
 
-function PetscViewerMatlabOpen(arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::PetscFileMode,arg4::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
+function PetscViewerMatlabOpen(arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::PetscFileMode,arg4::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
     ccall((:PetscViewerMatlabOpen,petsc1),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4)
 end
 
@@ -2465,11 +2465,11 @@ function PetscViewerView(arg1::PetscViewer{Float64},arg2::PetscViewer{Float64})
     ccall((:PetscViewerView,petsc1),PetscErrorCode,(PetscViewer{Float64},PetscViewer{Float64}),arg1,arg2)
 end
 
-function PetscViewerAppendOptionsPrefix(arg1::PetscViewer{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscViewerAppendOptionsPrefix(arg1::PetscViewer{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscViewerAppendOptionsPrefix,petsc1),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
 end
 
-function PetscViewerGetOptionsPrefix(arg1::PetscViewer{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscViewerGetOptionsPrefix(arg1::PetscViewer{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscViewerGetOptionsPrefix,petsc1),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
@@ -2493,12 +2493,12 @@ function PetscViewerFlush(arg1::PetscViewer{Float64})
     ccall((:PetscViewerFlush,petsc1),PetscErrorCode,(PetscViewer{Float64},),arg1)
 end
 
-function PetscOptionsGetViewer(arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}),arg5::Union(Ptr{PetscViewerFormat},StridedArray{PetscViewerFormat},Ptr{Void}),arg6::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetViewer(arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}),arg5::Union(Ptr{PetscViewerFormat},StridedArray{PetscViewerFormat},Ptr{Void}),arg6::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetViewer,petsc1),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{PetscViewer{Float64}},Ptr{PetscViewerFormat},Ptr{PetscBool}),arg1.val,arg2,arg3,arg4,arg5,arg6)
 end
 
 #= skipping function with undefined symbols: 
- function PetscOptionsViewer_Private(arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}),arg6::Union(Ptr{PetscViewerFormat},StridedArray{PetscViewerFormat},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+ function PetscOptionsViewer_Private(arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg5::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}),arg6::Union(Ptr{PetscViewerFormat},StridedArray{PetscViewerFormat},Ptr{Void}),arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsViewer_Private,petsc1),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscViewer{Float64}},Ptr{PetscViewerFormat},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end 
 =#
@@ -2572,7 +2572,7 @@ function PetscViewerBinaryWrite(arg1::PetscViewer{Float64},arg2::Union(Ptr{Void}
     ccall((:PetscViewerBinaryWrite,petsc1),PetscErrorCode,(PetscViewer{Float64},Ptr{Void},PetscInt,PetscDataType,PetscBool),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscViewerStringSetString(arg1::PetscViewer{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Integer)
+function PetscViewerStringSetString(arg1::PetscViewer{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Integer)
     ccall((:PetscViewerStringSetString,petsc1),PetscErrorCode,(PetscViewer{Float64},Cstring,PetscInt),arg1,arg2,arg3)
 end
 
@@ -2596,7 +2596,7 @@ function PetscViewerDrawGetPause(arg1::PetscViewer{Float64},arg2::Union(Ptr{Cint
     ccall((:PetscViewerDrawGetPause,petsc1),PetscErrorCode,(PetscViewer{Float64},Ptr{Cint}),arg1,arg2)
 end
 
-function PetscViewerDrawSetInfo(arg1::PetscViewer{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer)
+function PetscViewerDrawSetInfo(arg1::PetscViewer{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer)
     ccall((:PetscViewerDrawSetInfo,petsc1),PetscErrorCode,(PetscViewer{Float64},Cstring,Cstring,Cint,Cint,Cint,Cint),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end
 
@@ -2612,7 +2612,7 @@ function PetscViewerDrawGetBounds(arg1::PetscViewer{Float64},arg2::Union(Ptr{Pet
     ccall((:PetscViewerDrawGetBounds,petsc1),PetscErrorCode,(PetscViewer{Float64},Ptr{PetscInt},Ptr{Ptr{Cint}}),arg1,arg2,arg3)
 end
 
-function PetscViewerSocketSetConnection(arg1::PetscViewer{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Integer)
+function PetscViewerSocketSetConnection(arg1::PetscViewer{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Integer)
     ccall((:PetscViewerSocketSetConnection,petsc1),PetscErrorCode,(PetscViewer{Float64},Cstring,Cint),arg1,arg2,arg3)
 end
 
@@ -2644,19 +2644,19 @@ function PetscViewerBinaryGetSkipHeader(arg1::PetscViewer{Float64},arg2::Union(P
     ccall((:PetscViewerBinaryGetSkipHeader,petsc1),PetscErrorCode,(PetscViewer{Float64},Ptr{PetscBool}),arg1,arg2)
 end
 
-function PetscViewerBinaryReadStringArray(arg1::PetscViewer{Float64},arg2::Union(Ptr{Ptr{ASCIIString}},StridedArray{Ptr{ASCIIString}},Ptr{Void}))
+function PetscViewerBinaryReadStringArray(arg1::PetscViewer{Float64},arg2::Union(Ptr{Ptr{Ptr{Uint8}}},StridedArray{Ptr{Ptr{Uint8}}},Ptr{Void}))
     ccall((:PetscViewerBinaryReadStringArray,petsc1),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{Ptr{Uint8}}}),arg1,arg2)
 end
 
-function PetscViewerBinaryWriteStringArray(arg1::PetscViewer{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscViewerBinaryWriteStringArray(arg1::PetscViewer{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscViewerBinaryWriteStringArray,petsc1),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
-function PetscViewerFileSetName(arg1::PetscViewer{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscViewerFileSetName(arg1::PetscViewer{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscViewerFileSetName,petsc1),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
 end
 
-function PetscViewerFileGetName(arg1::PetscViewer{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscViewerFileGetName(arg1::PetscViewer{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscViewerFileGetName,petsc1),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
@@ -2685,11 +2685,11 @@ function PetscViewerMathematicaFinalizePackage(arg0::Type{Float64})
     ccall((:PetscViewerMathematicaFinalizePackage,petsc1),PetscErrorCode,())
 end
 
-function PetscViewerMathematicaGetName(arg1::PetscViewer{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscViewerMathematicaGetName(arg1::PetscViewer{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscViewerMathematicaGetName,petsc1),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
-function PetscViewerMathematicaSetName(arg1::PetscViewer{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscViewerMathematicaSetName(arg1::PetscViewer{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscViewerMathematicaSetName,petsc1),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
 end
 
@@ -2701,11 +2701,11 @@ function PetscViewerMathematicaSkipPackets(arg1::PetscViewer{Float64},arg2::Inte
     ccall((:PetscViewerMathematicaSkipPackets,petsc1),PetscErrorCode,(PetscViewer{Float64},Cint),arg1,arg2)
 end
 
-function PetscViewerSiloGetName(arg1::PetscViewer{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscViewerSiloGetName(arg1::PetscViewer{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscViewerSiloGetName,petsc1),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
-function PetscViewerSiloSetName(arg1::PetscViewer{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscViewerSiloSetName(arg1::PetscViewer{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscViewerSiloSetName,petsc1),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
 end
 
@@ -2713,11 +2713,11 @@ function PetscViewerSiloClearName(arg1::PetscViewer{Float64})
     ccall((:PetscViewerSiloClearName,petsc1),PetscErrorCode,(PetscViewer{Float64},),arg1)
 end
 
-function PetscViewerSiloGetMeshName(arg1::PetscViewer{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PetscViewerSiloGetMeshName(arg1::PetscViewer{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PetscViewerSiloGetMeshName,petsc1),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
-function PetscViewerSiloSetMeshName(arg1::PetscViewer{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscViewerSiloSetMeshName(arg1::PetscViewer{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscViewerSiloSetMeshName,petsc1),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
 end
 
@@ -2725,7 +2725,7 @@ function PetscViewerSiloClearMeshName(arg1::PetscViewer{Float64})
     ccall((:PetscViewerSiloClearMeshName,petsc1),PetscErrorCode,(PetscViewer{Float64},),arg1)
 end
 
-function PetscViewerNetcdfOpen(arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::PetscFileMode,arg4::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
+function PetscViewerNetcdfOpen(arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::PetscFileMode,arg4::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
     ccall((:PetscViewerNetcdfOpen,petsc1),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4)
 end
 
@@ -2738,7 +2738,7 @@ end
     ccall((:PetscViewerVTKAddField,petsc1),PetscErrorCode,(PetscViewer{Float64},PetscObject,Ptr{Void},PetscViewerVTKFieldType,PetscObject),arg1,arg2,PetscViewerVTKWriteFunction,arg3,arg4)
 end 
 =#
-function PetscViewerVTKOpen(arg1::MPI_Comm,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::PetscFileMode,arg4::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
+function PetscViewerVTKOpen(arg1::MPI_Comm,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::PetscFileMode,arg4::Union(Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{Void}))
     ccall((:PetscViewerVTKOpen,petsc1),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4)
 end
 
@@ -2778,11 +2778,11 @@ function PETSC_VIEWER_HDF5_(arg0::Type{Float64},arg1::MPI_Comm)
     ccall((:PETSC_VIEWER_HDF5_,petsc1),PetscViewer,(comm_type,),arg1.val)
 end
 
-function PetscViewerMatlabGetArray(arg1::PetscViewer{Float64},arg2::Integer,arg3::Integer,arg4::Union(Ptr{Float64},StridedArray{Float64},Ptr{Void}),arg5::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PetscViewerMatlabGetArray(arg1::PetscViewer{Float64},arg2::Integer,arg3::Integer,arg4::Union(Ptr{Float64},StridedArray{Float64},Ptr{Void}),arg5::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PetscViewerMatlabGetArray,petsc1),PetscErrorCode,(PetscViewer{Float64},Cint,Cint,Ptr{Float64},Cstring),arg1,arg2,arg3,arg4,arg5)
 end
 
-function PetscViewerMatlabPutVariable(arg1::PetscViewer{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function PetscViewerMatlabPutVariable(arg1::PetscViewer{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PetscViewerMatlabPutVariable,petsc1),PetscErrorCode,(PetscViewer{Float64},Cstring,Ptr{Void}),arg1,arg2,arg3)
 end
 
@@ -2845,15 +2845,15 @@ function VecZeroEntries(arg1::Vec{Float64})
     ccall((:VecZeroEntries,petsc1),PetscErrorCode,(Vec{Float64},),arg1)
 end
 
-function VecSetOptionsPrefix(arg1::Vec{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function VecSetOptionsPrefix(arg1::Vec{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:VecSetOptionsPrefix,petsc1),PetscErrorCode,(Vec{Float64},Cstring),arg1,arg2)
 end
 
-function VecAppendOptionsPrefix(arg1::Vec{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function VecAppendOptionsPrefix(arg1::Vec{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:VecAppendOptionsPrefix,petsc1),PetscErrorCode,(Vec{Float64},Cstring),arg1,arg2)
 end
 
-function VecGetOptionsPrefix(arg1::Vec{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function VecGetOptionsPrefix(arg1::Vec{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:VecGetOptionsPrefix,petsc1),PetscErrorCode,(Vec{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
@@ -3119,7 +3119,7 @@ function VecStashView(arg1::Vec{Float64},arg2::PetscViewer{Float64})
 end
 
 #= skipping function with undefined symbols: 
- function VecStashViewFromOptions(arg1::Vec{Float64},arg2::PetscObject,arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function VecStashViewFromOptions(arg1::Vec{Float64},arg2::PetscObject,arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:VecStashViewFromOptions,petsc1),PetscErrorCode,(Vec{Float64},PetscObject,Cstring),arg1,arg2,arg3)
 end 
 =#
@@ -3143,7 +3143,7 @@ function VecGetType(arg1::Vec{Float64},arg2::Union(Ptr{VecType},StridedArray{Vec
     ccall((:VecGetType,petsc1),PetscErrorCode,(Vec{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
-function VecRegister(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function VecRegister(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:VecRegister,petsc1),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
 end
 
@@ -3555,7 +3555,7 @@ function VecNestGetSize(arg1::Vec{Float64},arg2::Union(Ptr{PetscInt},StridedArra
     ccall((:VecNestGetSize,petsc1),PetscErrorCode,(Vec{Float64},Ptr{PetscInt}),arg1,arg2)
 end
 
-function PetscOptionsGetVec(arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Vec{Float64},arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function PetscOptionsGetVec(arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Vec{Float64},arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:PetscOptionsGetVec,petsc1),PetscErrorCode,(Cstring,Cstring,Vec{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
@@ -3591,15 +3591,15 @@ end
     ccall((:PetscSectionVecNorm,petsc1),PetscErrorCode,(PetscSection,PetscSection,Vec{Float64},NormType,Ptr{Cint}),arg1,arg2,arg3,arg4,PetscReal)
 end 
 =#
-function MatGetFactor(arg1::Mat{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::MatFactorType,arg4::Union(Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Void}))
+function MatGetFactor(arg1::Mat{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::MatFactorType,arg4::Union(Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Void}))
     ccall((:MatGetFactor,petsc1),PetscErrorCode,(Mat{Float64},Cstring,MatFactorType,Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4)
 end
 
-function MatGetFactorAvailable(arg1::Mat{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::MatFactorType,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
+function MatGetFactorAvailable(arg1::Mat{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::MatFactorType,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}))
     ccall((:MatGetFactorAvailable,petsc1),PetscErrorCode,(Mat{Float64},Cstring,MatFactorType,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
 end
 
-function MatFactorGetSolverPackage(arg1::Mat{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function MatFactorGetSolverPackage(arg1::Mat{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:MatFactorGetSolverPackage,petsc1),PetscErrorCode,(Mat{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
@@ -3607,11 +3607,11 @@ function MatGetFactorType(arg1::Mat{Float64},arg2::Union(Ptr{MatFactorType},Stri
     ccall((:MatGetFactorType,petsc1),PetscErrorCode,(Mat{Float64},Ptr{MatFactorType}),arg1,arg2)
 end
 
-function MatSolverPackageRegister(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::MatType,arg3::MatFactorType,arg4::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function MatSolverPackageRegister(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::MatType,arg3::MatFactorType,arg4::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:MatSolverPackageRegister,petsc1),PetscErrorCode,(Cstring,Cstring,MatFactorType,Ptr{Void}),arg1,arg2,arg3,arg4)
 end
 
-function MatSolverPackageGet(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::MatType,arg3::MatFactorType,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}),arg6::Union(Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Void}))
+function MatSolverPackageGet(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::MatType,arg3::MatFactorType,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}),arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{Void}),arg6::Union(Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Void}))
     ccall((:MatSolverPackageGet,petsc1),PetscErrorCode,(Cstring,Cstring,MatFactorType,Ptr{PetscBool},Ptr{PetscBool},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5,arg6)
 end
 
@@ -3635,19 +3635,19 @@ function MatSetFromOptions(arg1::Mat{Float64})
     ccall((:MatSetFromOptions,petsc1),PetscErrorCode,(Mat{Float64},),arg1)
 end
 
-function MatRegisterBaseName(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function MatRegisterBaseName(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:MatRegisterBaseName,petsc1),PetscErrorCode,(Cstring,Cstring,Cstring),arg1,arg2,arg3)
 end
 
-function MatSetOptionsPrefix(arg1::Mat{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function MatSetOptionsPrefix(arg1::Mat{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:MatSetOptionsPrefix,petsc1),PetscErrorCode,(Mat{Float64},Cstring),arg1,arg2)
 end
 
-function MatAppendOptionsPrefix(arg1::Mat{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function MatAppendOptionsPrefix(arg1::Mat{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:MatAppendOptionsPrefix,petsc1),PetscErrorCode,(Mat{Float64},Cstring),arg1,arg2)
 end
 
-function MatGetOptionsPrefix(arg1::Mat{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function MatGetOptionsPrefix(arg1::Mat{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:MatGetOptionsPrefix,petsc1),PetscErrorCode,(Mat{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
@@ -3819,7 +3819,7 @@ function MatCreateLocalRef(arg1::Mat{Float64},arg2::IS{Float64},arg3::IS{Float64
     ccall((:MatCreateLocalRef,petsc1),PetscErrorCode,(Mat{Float64},IS{Float64},IS{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4)
 end
 
-function MatPythonSetType(arg1::Mat{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function MatPythonSetType(arg1::Mat{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:MatPythonSetType,petsc1),PetscErrorCode,(Mat{Float64},Cstring),arg1,arg2)
 end
 
@@ -4617,7 +4617,7 @@ end
     ccall((:MatGetOrderingList,petsc1),PetscErrorCode,(Ptr{PetscFunctionList},),arg1)
 end 
 =#
-function MatOrderingRegister(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function MatOrderingRegister(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:MatOrderingRegister,petsc1),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
 end
 
@@ -4768,7 +4768,7 @@ end
     ccall((:MatColoringApply,petsc1),PetscErrorCode,(MatColoring,Ptr{ISColoring{Float64}}),arg1,arg2)
 end 
 =#
-function MatColoringRegister(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function MatColoringRegister(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:MatColoringRegister,petsc1),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
 end
 
@@ -4911,7 +4911,7 @@ end
     ccall((:MatPartitioningDestroy,petsc1),PetscErrorCode,(Ptr{MatPartitioning},),arg1)
 end 
 =#
-function MatPartitioningRegister(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function MatPartitioningRegister(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:MatPartitioningRegister,petsc1),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
 end
 
@@ -4996,12 +4996,12 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function MatPartitioningPartySetGlobal(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function MatPartitioningPartySetGlobal(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:MatPartitioningPartySetGlobal,petsc1),PetscErrorCode,(MatPartitioning,Cstring),arg1,arg2)
 end 
 =#
 #= skipping function with undefined symbols: 
- function MatPartitioningPartySetLocal(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+ function MatPartitioningPartySetLocal(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:MatPartitioningPartySetLocal,petsc1),PetscErrorCode,(MatPartitioning,Cstring),arg1,arg2)
 end 
 =#
@@ -5080,7 +5080,7 @@ end
     ccall((:MatCoarsenDestroy,petsc1),PetscErrorCode,(Ptr{MatCoarsen},),arg1)
 end 
 =#
-function MatCoarsenRegister(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function MatCoarsenRegister(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:MatCoarsenRegister,petsc1),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
 end
 
@@ -5286,7 +5286,7 @@ function MatMFFDGetH(arg1::Mat{Float64},arg2::Union(Ptr{Float64},StridedArray{Fl
     ccall((:MatMFFDGetH,petsc1),PetscErrorCode,(Mat{Float64},Ptr{Float64}),arg1,arg2)
 end
 
-function MatMFFDSetOptionsPrefix(arg1::Mat{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function MatMFFDSetOptionsPrefix(arg1::Mat{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:MatMFFDSetOptionsPrefix,petsc1),PetscErrorCode,(Mat{Float64},Cstring),arg1,arg2)
 end
 
@@ -5302,7 +5302,7 @@ function MatMFFDSetType(arg1::Mat{Float64},arg2::MatMFFDType)
     ccall((:MatMFFDSetType,petsc1),PetscErrorCode,(Mat{Float64},Cstring),arg1,arg2)
 end
 
-function MatMFFDRegister(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function MatMFFDRegister(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:MatMFFDRegister,petsc1),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
 end
 
@@ -5466,7 +5466,7 @@ function PCGetUseAmat(arg1::PC{Float64},arg2::Union(Ptr{PetscBool},StridedArray{
     ccall((:PCGetUseAmat,petsc1),PetscErrorCode,(PC{Float64},Ptr{PetscBool}),arg1,arg2)
 end
 
-function PCRegister(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function PCRegister(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:PCRegister,petsc1),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
 end
 
@@ -5514,11 +5514,11 @@ function PCLoad(arg1::PC{Float64},arg2::PetscViewer{Float64})
     ccall((:PCLoad,petsc1),PetscErrorCode,(PC{Float64},PetscViewer{Float64}),arg1,arg2)
 end
 
-function PCAppendOptionsPrefix(arg1::PC{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PCAppendOptionsPrefix(arg1::PC{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PCAppendOptionsPrefix,petsc1),PetscErrorCode,(PC{Float64},Cstring),arg1,arg2)
 end
 
-function PCGetOptionsPrefix(arg1::PC{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PCGetOptionsPrefix(arg1::PC{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PCGetOptionsPrefix,petsc1),PetscErrorCode,(PC{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
@@ -5650,11 +5650,11 @@ function PCShellGetContext(arg1::PC{Float64},arg2::Union(Ptr{Ptr{Void}},StridedA
     ccall((:PCShellGetContext,petsc1),PetscErrorCode,(PC{Float64},Ptr{Ptr{Void}}),arg1,arg2)
 end
 
-function PCShellSetName(arg1::PC{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PCShellSetName(arg1::PC{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PCShellSetName,petsc1),PetscErrorCode,(PC{Float64},Cstring),arg1,arg2)
 end
 
-function PCShellGetName(arg1::PC{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PCShellGetName(arg1::PC{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PCShellGetName,petsc1),PetscErrorCode,(PC{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
@@ -5670,11 +5670,11 @@ function PCFactorSetShiftAmount(arg1::PC{Float64},Float64::Integer)
     ccall((:PCFactorSetShiftAmount,petsc1),PetscErrorCode,(PC{Float64},Cint),arg1,PetscReal)
 end
 
-function PCFactorSetMatSolverPackage(arg1::PC{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PCFactorSetMatSolverPackage(arg1::PC{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PCFactorSetMatSolverPackage,petsc1),PetscErrorCode,(PC{Float64},Cstring),arg1,arg2)
 end
 
-function PCFactorGetMatSolverPackage(arg1::PC{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PCFactorGetMatSolverPackage(arg1::PC{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PCFactorGetMatSolverPackage,petsc1),PetscErrorCode,(PC{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
@@ -5910,11 +5910,11 @@ function PCSPAISetSp(arg1::PC{Float64},arg2::Integer)
     ccall((:PCSPAISetSp,petsc1),PetscErrorCode,(PC{Float64},PetscInt),arg1,arg2)
 end
 
-function PCHYPRESetType(arg1::PC{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PCHYPRESetType(arg1::PC{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PCHYPRESetType,petsc1),PetscErrorCode,(PC{Float64},Cstring),arg1,arg2)
 end
 
-function PCHYPREGetType(arg1::PC{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function PCHYPREGetType(arg1::PC{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:PCHYPREGetType,petsc1),PetscErrorCode,(PC{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
@@ -5946,7 +5946,7 @@ function PCBJacobiGetTotalBlocks(arg1::PC{Float64},arg2::Union(Ptr{PetscInt},Str
     ccall((:PCBJacobiGetTotalBlocks,petsc1),PetscErrorCode,(PC{Float64},Ptr{PetscInt},Ptr{Ptr{PetscInt}}),arg1,arg2,arg3)
 end
 
-function PCFieldSplitSetFields(arg1::PC{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Integer,arg4::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}))
+function PCFieldSplitSetFields(arg1::PC{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Integer,arg4::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}),arg5::Union(Ptr{PetscInt},StridedArray{PetscInt},Ptr{Void}))
     ccall((:PCFieldSplitSetFields,petsc1),PetscErrorCode,(PC{Float64},Cstring,PetscInt,Ptr{PetscInt},Ptr{PetscInt}),arg1,arg2,arg3,arg4,arg5)
 end
 
@@ -5962,11 +5962,11 @@ function PCFieldSplitSetBlockSize(arg1::PC{Float64},arg2::Integer)
     ccall((:PCFieldSplitSetBlockSize,petsc1),PetscErrorCode,(PC{Float64},PetscInt),arg1,arg2)
 end
 
-function PCFieldSplitSetIS(arg1::PC{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::IS{Float64})
+function PCFieldSplitSetIS(arg1::PC{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::IS{Float64})
     ccall((:PCFieldSplitSetIS,petsc1),PetscErrorCode,(PC{Float64},Cstring,IS{Float64}),arg1,arg2,arg3)
 end
 
-function PCFieldSplitGetIS(arg1::PC{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{Void}))
+function PCFieldSplitGetIS(arg1::PC{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Union(Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{Void}))
     ccall((:PCFieldSplitGetIS,petsc1),PetscErrorCode,(PC{Float64},Cstring,Ptr{IS{Float64}}),arg1,arg2,arg3)
 end
 
@@ -6038,7 +6038,7 @@ function PCSetCoordinates(arg1::PC{Float64},arg2::Integer,arg3::Integer,arg4::Un
     ccall((:PCSetCoordinates,petsc1),PetscErrorCode,(PC{Float64},PetscInt,PetscInt,Ptr{Cint}),arg1,arg2,arg3,arg4)
 end
 
-function PCPythonSetType(arg1::PC{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function PCPythonSetType(arg1::PC{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:PCPythonSetType,petsc1),PetscErrorCode,(PC{Float64},Cstring),arg1,arg2)
 end
 
@@ -6132,7 +6132,7 @@ function PCGAMGSetUseASMAggs(arg1::PC{Float64},arg2::PetscBool)
     ccall((:PCGAMGSetUseASMAggs,petsc1),PetscErrorCode,(PC{Float64},PetscBool),arg1,arg2)
 end
 
-function PCGAMGSetSolverType(arg1::PC{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Integer)
+function PCGAMGSetSolverType(arg1::PC{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Integer)
     ccall((:PCGAMGSetSolverType,petsc1),PetscErrorCode,(PC{Float64},Cstring,PetscInt),arg1,arg2,arg3)
 end
 
@@ -6413,7 +6413,7 @@ function KSPSetSkipPCSetFromOptions(arg1::KSP{Float64},arg2::PetscBool)
     ccall((:KSPSetSkipPCSetFromOptions,petsc1),PetscErrorCode,(KSP{Float64},PetscBool),arg1,arg2)
 end
 
-function KSPRegister(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
+function KSPRegister(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void}))
     ccall((:KSPRegister,petsc1),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
 end
 
@@ -6842,15 +6842,15 @@ function KSPGetOperatorsSet(arg1::KSP{Float64},arg2::Union(Ptr{PetscBool},Stride
     ccall((:KSPGetOperatorsSet,petsc1),PetscErrorCode,(KSP{Float64},Ptr{PetscBool},Ptr{PetscBool}),arg1,arg2,arg3)
 end
 
-function KSPSetOptionsPrefix(arg1::KSP{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function KSPSetOptionsPrefix(arg1::KSP{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:KSPSetOptionsPrefix,petsc1),PetscErrorCode,(KSP{Float64},Cstring),arg1,arg2)
 end
 
-function KSPAppendOptionsPrefix(arg1::KSP{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function KSPAppendOptionsPrefix(arg1::KSP{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:KSPAppendOptionsPrefix,petsc1),PetscErrorCode,(KSP{Float64},Cstring),arg1,arg2)
 end
 
-function KSPGetOptionsPrefix(arg1::KSP{Float64},arg2::Union(Ptr{ASCIIString},StridedArray{ASCIIString},Ptr{Void}))
+function KSPGetOptionsPrefix(arg1::KSP{Float64},arg2::Union(Ptr{Ptr{Uint8}},StridedArray{Ptr{Uint8}},Ptr{Void}))
     ccall((:KSPGetOptionsPrefix,petsc1),PetscErrorCode,(KSP{Float64},Ptr{Ptr{Uint8}}),arg1,arg2)
 end
 
@@ -7018,7 +7018,7 @@ function KSPGLTRGetLambda(arg1::KSP{Float64},arg2::Union(Ptr{Cint},StridedArray{
     ccall((:KSPGLTRGetLambda,petsc1),PetscErrorCode,(KSP{Float64},Ptr{Cint}),arg1,arg2)
 end
 
-function KSPPythonSetType(arg1::KSP{Float64},arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}))
+function KSPPythonSetType(arg1::KSP{Float64},arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}))
     ccall((:KSPPythonSetType,petsc1),PetscErrorCode,(KSP{Float64},Cstring),arg1,arg2)
 end
 
@@ -7031,7 +7031,7 @@ function PCPostSolve(arg1::PC{Float64},arg2::KSP{Float64})
 end
 
 #= skipping function with undefined symbols: 
- function KSPMonitorLGResidualNormCreate(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union(Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Void}))
+ function KSPMonitorLGResidualNormCreate(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union(Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Void}))
     ccall((:KSPMonitorLGResidualNormCreate,petsc1),PetscErrorCode,(Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{Ptr{PetscObject}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end 
 =#
@@ -7046,7 +7046,7 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function KSPMonitorLGTrueResidualNormCreate(arg0::Type{Float64},arg1::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg2::Union(ASCIIString,StridedArray{Uint8},Ptr{Void}),arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union(Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Void}))
+ function KSPMonitorLGTrueResidualNormCreate(arg0::Type{Float64},arg1::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg2::Union(Ptr{Uint8},StridedArray{Uint8},Ptr{Void}),arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union(Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Void}))
     ccall((:KSPMonitorLGTrueResidualNormCreate,petsc1),PetscErrorCode,(Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{Ptr{PetscObject}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
 end 
 =#

@@ -1,28 +1,33 @@
 # AbstractVector wrapper around PETSc Vec types
 export Vec
 #typealias pVec Ptr{Void} # Vec arguments in Petsc are pointers
-type Vec{T} <: AbstractVector{T}
+# T is data type
+# VType is type of vector from C.VecType
+type Vec{T, VType} <: AbstractVector{T}
     p::C.Vec{T}
     assembling::Bool # whether we are in the middle of assemble(vec) do ..
     insertmode::C.InsertMode # current mode for setindex!
-    function Vec{T}(p::C.Vec{T})
-        v = new(p, false, C.INSERT_VALUES)
+    comm::MPI.Comm  # communicator this process is defined on
+    vectype::C.VecType
+    function Vec(p::C.Vec{T}; comm=MPI.COMM_SELF)  # default sequantial vector
+        v = new(p, false, C.INSERT_VALUES, comm, VType)
+        settype!(v, VType)  # set the type here to ensure it matches VType
 #        finalizer(v, VecDestroy)
         return v
     end
 end
 
-function Vec{T}(::Type{T}; comm=MPI.COMM_WORLD)
+function Vec{T}(::Type{T}, vtype::C.VecType=C.VECSEQ; comm=MPI.COMM_SELF)
     p = Array(C.Vec{T}, 1)
     C.VecCreate(comm, p)
-    Vec(p[1])
+    Vec{T, vtype}(p[1])
 end
 
-function Vec{T <: Scalar}(::Type{T}, len::Integer; comm=MPI.COMM_WORLD)
+function Vec{T <: Scalar, VType}(::Type{T}, len::Integer, vtype::C.VecType=C.VECSEQ ; comm=MPI.COMM_SELF, vtyp=VType)
   p = Array(C.Vec{T}, 1)
   C.VecCreate(comm, p)
-  vec = Vec{T}(p[1])
-  settype!(vec, C.VECMPI)
+  vec = Vec{T, vtype}(p[1])
+#  settype!(vec, VType)
   setsizes!(vec, len)
   vec
 end
@@ -57,7 +62,7 @@ function settype!(a::Vec, T::C.VecType)
 end
 
 function gettype(a::Vec)
-    p = Array(VecType, 1)  # was Uint8
+    p = Array(C.VecType, 1)  # was Uint8
     chk(C.VecGetType(a.p, p))
     bytestring(p[1])
 end
@@ -87,16 +92,16 @@ end
 sizelocal(x::Vec) = (lengthlocal(x),)
 sizelocal{T,n}(t::AbstractArray{T,n}, d) = (d>n ? 1 : sizelocal(t)[d])
 
-function similar{T}(x::Vec{T})
+function similar{T, VType}(x::Vec{T, VType})
     p = Array(C.Vec{T}, 1)
     chk(C.VecDuplicate( x.p, p))
-    Vec(p[1])
+    Vec{T, VType}(p[1])
 end
 
 
 similar{T}(x::Vec{T}, ::Type{T}) = similar(x)
-similar{T}(x::Vec{T}, ::Type{T}, len::Int) =
-    len==length(x) ? similar(x) : Vec(T, len; comm=comm(x), T=gettype(x))
+#similar{T}(x::Vec{T}, ::Type{T}, len::Int) =
+#    len==length(x) ? similar(x) : Vec(T, len; comm=x.comm, T=gettype(x))
 
 function copy(x::Vec)
     y = similar(x)

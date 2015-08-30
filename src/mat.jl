@@ -26,7 +26,7 @@ end
 function Mat{T}(::Type{T}, m::Integer, n::Integer;
     mlocal::Integer=C.PETSC_DECIDE, nlocal::Integer=C.PETSC_DECIDE,
     nz::Integer=16, nnz::AbstractVector=PetscInt[],
-    onz::Integer=0, onnz::AbstractVector=PetscInt[];
+    onz::Integer=0, onnz::AbstractVector=PetscInt[],
     comm=MPI.COMM_WORLD,
     mtype::Symbol=C.MATMPIAIJ)
 
@@ -143,7 +143,7 @@ end
 
 lengthlocal(a::Mat) = prod(sizelocal(a))
 
-function similar{T}(a::Mat{T, MType})
+function similar{T, MType}(a::Mat{T, MType})
     p = Array(C.Mat{T}, 1)
     chk(C.MatDuplicate(A.p, C.MAT_DO_NOT_COPY_VALUES, p))
     Mat{T, MType}(p[1], comm=a.comm)

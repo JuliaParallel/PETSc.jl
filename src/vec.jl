@@ -23,7 +23,7 @@ function Vec{T}(::Type{T}, vtype::C.VecType=C.VECSEQ; comm=MPI.COMM_SELF)
     Vec{T, vtype}(p[1])
 end
 
-function Vec{T <: Scalar, VType}(::Type{T}, len::Integer, vtype::C.VecType=C.VECSEQ ; comm=MPI.COMM_SELF, vtyp=VType)
+function Vec{T <: Scalar}(::Type{T}, len::Integer, vtype::C.VecType=C.VECSEQ ; comm=MPI.COMM_SELF)
   p = Array(C.Vec{T}, 1)
   C.VecCreate(comm, p)
   vec = Vec{T, vtype}(p[1])
@@ -102,8 +102,11 @@ end
 
 
 similar{T}(x::Vec{T}, ::Type{T}) = similar(x)
-#similar{T}(x::Vec{T}, ::Type{T}, len::Int) =
-#    len==length(x) ? similar(x) : Vec(T, len; comm=x.comm, T=gettype(x))
+function similar{T, VType}(x::Vec{T, VType}, ::Type{T}, len::Int)
+    println("T = ", T)
+    println("VType = ", VType)
+    len==length(x) ? similar(x) : Vec(T, len, VType; comm=x.comm)
+end
 
 function copy(x::Vec)
     y = similar(x)
@@ -152,10 +155,13 @@ function setindex!{T}(x::Vec{T}, v::Number, i::Real)
 end
 
 # what is this function doing?
+#=
 function setindex!{T<: Scalar}(x::Vec{T}, v::Array{T}, I::AbstractArray{T})
     I0 = PetscInt[ to_index(i)-1 for i in I ]
     setindex0!(x, v, I0)
 end
+=#
+
 
 # set multiple entries to a single value
 setindex!{T<:Real}(x::Vec, v::Number, I::AbstractArray{T}) = assemble(x) do
@@ -165,13 +171,13 @@ setindex!{T<:Real}(x::Vec, v::Number, I::AbstractArray{T}) = assemble(x) do
     x
 end
 
-function fill!(x::Vec, v::Number)
-    chk(C.VecSet(x, v))
+function fill!{T}(x::Vec{T}, v::Number)
+    chk(C.VecSet(x.p, T(v)))
     return x
 end
 
 function setindex!(x::Vec, v::Number, I::Range{Int})
-    if abs(step(I)) == 1 && min(I) == 1 && max(I) == length(x)
+    if abs(step(I)) == 1 && minimum(I) == 1 && maximum(I) == length(x)
         fill!(x, v)
         return v
     else
@@ -195,8 +201,9 @@ assemble(x) do
     x
 end
 
+
 # logical indexing
-setindex!(A::Vec, x::Number, I::AbstractArray{Bool}) = assemble(X) do
+setindex!(A::Vec, x::Number, I::AbstractArray{Bool}) = assemble(A) do
     for i = 1:length(I)
         if I[i]
             A[i] = x
@@ -205,7 +212,7 @@ setindex!(A::Vec, x::Number, I::AbstractArray{Bool}) = assemble(X) do
     A
 end
 for T in (:(Array{T2}),:(AbstractArray{T2})) # avoid method ambiguities
-    @eval setindex!{T2 <: Scalar}(A::Vec, X::$T, I::AbstractArray{Bool}) = assemble(X) do
+    @eval setindex!{T2 <: Scalar}(A::Vec, X::$T, I::AbstractArray{Bool}) = assemble(A) do
         c = 1
         for i = 1:length(I)
             if I[i]
@@ -213,6 +220,7 @@ for T in (:(Array{T2}),:(AbstractArray{T2})) # avoid method ambiguities
                 c += 1
             end
         end
+   
         A
     end
 end

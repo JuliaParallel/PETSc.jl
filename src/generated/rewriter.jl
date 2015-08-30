@@ -58,12 +58,36 @@ symbol_type_dict = Dict{Any, Any} (
 )
 
 
+function symbol_get_before(sym_arr)
+
+  return similar(sym_arr, ASCIIString)
+end
+
+function symbol_get_after(str_arr, sym_arr)
+
+  for i=1:length(sym_arr)
+    sym_arr = bytestring(str_arr[i])
+  end
+
+end
+
+function symbol_set_before(sym_arr)
+  str_arr = similar(sym_arr, ASCIIString)
+
+  for i=1:length(str_arr)
+    str_arr[i] = bytestring(sym_arr[i])
+  end
+
+end
+
+
+
 # create a string array mirroring a symbol array
-function send_symbol(x::AbstractArray{Symbol})
+function send_symbol(x::AbstractArray)
   string_arr = similar(x, ASCIIString)
   for i=1:length(x)
     if isdefined(x[i])
-      string_arr[i] = x[i]
+      string_arr[i] = copy(x[i])
     end
   end
 
@@ -71,7 +95,7 @@ function send_symbol(x::AbstractArray{Symbol})
 end
 
 # get a string array and turn it into a symbol array
-function return_symbol(string_array::AbstractArray{ASCIIString}, x::AbstractArray{Symbol})
+function return_symbol(string_array::AbstractArray, x::AbstractArray)
 
   for i=1:length(x)
     x[i] = bytestring(string_array[i])
@@ -352,8 +376,95 @@ function process_func(ex)
     return "#= skipping function with undefined symbols: \n $ex \n=#"
   end
 
+
+  # now add any extra expression needed
+  ex = add_body(ex)
+
+
+
   return ex
 end
+
+# add any needed expressions to the body of the function
+# this is post rewrite_sig, rewrite_body
+function add_body(ex)
+
+  ex_sig = ex.args[1]
+  ex_body = ex.args[2]
+
+  fname = ex_sig.args[1]
+  @assert typeof(fname) == Symbol
+  fname_str = string(fname)
+  # check if a type annotation == Union(Ptr{symbol_type}...)
+  println("checking function ", fname_str, " for symbols-string conversions")
+
+  # check number of ccall args vs. function signature args
+  numargs_ccall = length(ex_body.args[1].args) - 3
+  numargs_func = length(ex_sig.args) - 1
+  offset = numargs_func - numargs_ccall  # skip any function args in excess of ccall args
+
+  for i in keys(symbol_type_dict)
+    for j=(2 + offset):length(ex_sig.args)  # loop over arguments to function
+      println("j = ", j)
+      type_annot_j = ex_sig.args[j].args[2]  # get the teyp annotation
+      argname_j = ex_sig.args[j].args[1]
+      # if type annotates matches an array of symbols
+      if type_annot_j == :(Union(Ptr{$i}, StridedArray{$i}, Ptr{Void}))
+        if contains(fname_str, "Get")  # array is to be populated
+          # add calls to function body
+          resize!(ex_body.args, 3)
+          ex_body.args[2] = deepcopy(ex_body.args[1])  # shift ccall to 2nd arg
+
+          # construct the before function call
+          call_ex =  Expr(:call, :sym_get_before, argname_j)
+          new_argname = symbol(string( argname_j, "_"))  # add underscore
+          ex_body.args[1] = Expr(:(=), new_argname, deepcopy(call_ex))
+
+          # construct the after call
+          ex_body.args[3] = Expr(:call, :sym_get_after, new_argname, argname_j)
+
+          # modify the ccall argument name
+          ccall_ex = ex_body.args[2]
+          @assert ccall_ex.head == :ccall
+          ccall_ex.args[j + 3 - 1 - offset] = new_argname
+
+
+        elseif contains(fname_str, "Set")  # array is already populated
+          # add calls to function body
+          resize!(ex_body.args, 2)
+          ex_body.args[2] = deepcopy(ex_body.args[1])  # shift ccall to 2nd arg
+
+          # construct the before function call
+          call_ex =  Expr(:call, :sym_set_before, argname_j)
+          new_argname = string( argname_j, "_")  # add underscore
+          ex_body.args[1] = Expr(:(=), new_argname, deepcopy(call_ex))
+
+
+          # modify the ccall argument name
+          ccall_ex = ex_body.args[2]
+          @assert ccall_ex.head == :ccall
+          ccall_ex.args[j + 3 - 1 - offset] = new_argname
+
+
+        else 
+          println(STDERR, "Warning, symbol type conversion not handled in function ", fname_str)
+
+        end  # end if contains(get)
+      end  # end if type_annot_j == ...
+    end  # end for j
+  end # end loop over symbol_type_dict
+
+    
+
+
+
+  # convert array of symbols to array of strings
+  # check signature for 
+  return deepcopy(ex)
+end
+
+
+
 
 function rewrite_sig(ex)  # rewrite the function signature
 
@@ -743,6 +854,7 @@ function fix_typealias(ex)
 
     if rhs == :Symbol
       get!(ccall_rec_dict, lhs, Ptr{Uint8})  # make the ccall argument a Uint8
+      get!(symbol_type_dict, lhs, 1)  # record that this type is a symbol
     end   
  
     # do recursive replacement

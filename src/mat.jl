@@ -1,37 +1,42 @@
 # AbstractMatrix wrapper around Petsc Mat
 export Mat
 #typealias pMat Ptr{Void} # Mat arguments in Petsc are pointers
-type Mat{T} <: AbstractSparseMatrix{T,PetscInt}
+type Mat{T, MType} <: AbstractSparseMatrix{T,PetscInt}
     p::C.Mat{T}
     assembling::Bool # whether we are in the middle of assemble(vec) do ..
     insertmode::C.InsertMode # current mode for setindex!
     data::Any # keep a reference to anything needed for the Mat
     comm::MPI.Comm
+    mattype::C.MatType
     function Mat(p::C.Mat{T}, data=nothing; comm=MPI.COMM_SELF)  # default sequantial matrix
-        A = new(p, false, C.INSERT_VALUES, data)
+        A = new(p, false, C.INSERT_VALUES, data, comm, MType)
+        settype!(A, MType)
         finalizer(A, MatDestroy)
         A
     end
 end
 
-function Mat{T}(::Type{T}; comm=MPI.COMM_WORLD)
+function Mat{T}(::Type{T}, mtype=C.MatType=C.MATSEQ; comm=MPI.COMM_WORLD)
     p = Array(C.Mat{T}, 1)
     chk(C.MatCreate(comm, p))
-    Mat{T}(p[1])
+    Mat{T, mtype}(p[1])
 end
 
 
-Mat{T2}(::Type{T2}, m::Integer, n::Integer;
+function Mat{T}(::Type{T}, m::Integer, n::Integer;
     mlocal::Integer=C.PETSC_DECIDE, nlocal::Integer=C.PETSC_DECIDE,
     nz::Integer=16, nnz::AbstractVector=PetscInt[],
-    onz::Integer=0, onnz::AbstractVector=PetscInt[],
+    onz::Integer=0, onnz::AbstractVector=PetscInt[];
     comm=MPI.COMM_WORLD,
-    T::Symbol=C.MATMPIAIJ) =
-  setoption!(setpreallocation!(setsizes!(settype!(Mat(T2, comm=comm), T),
-                                         m, n, mlocal=mlocal, nlocal=nlocal),
-                               T, nz=nz, nnz=nnz, onz=onz, onnz=onnz),
-             C.MAT_ROW_ORIENTED, false) # julia data is column-major
+    mtype::Symbol=C.MATMPIAIJ)
 
+    mat = Mat(T, mtype, comm=comm)
+    setsizes!(mat, m, n, mlocal=mlocal, nlocal=nlocal)
+    setpreallocation!(mat, nz=nz, nnz=nnz, onz=onz, onnz=onnz)
+    setoption!(mat, C.MAT_ROW_ORIENTED, false)  # julia data is column major
+
+    return mat
+end
 
 
 function MatDestroy(mat::Mat)
@@ -70,10 +75,10 @@ function setsizes!(a::Mat, m::Integer, n::Integer;
     a
 end
 
-function setpreallocation!(a::Mat, T::C.MatType=gettype(a);
+function setpreallocation!{T, MType}(a::Mat{T, MType};
                            nz::Integer=16, nnz::AbstractVector=PetscInt[],
                            onz::Integer=0, onnz::AbstractVector=PetscInt[])
-    if T == C.MATSEQAIJ
+    if MType == C.MATSEQAIJ
         pnnz = if isempty(nnz)
             C_NULL
         else
@@ -83,7 +88,7 @@ function setpreallocation!(a::Mat, T::C.MatType=gettype(a);
             isa(nnz,Vector{PetscInt}) ? nnz : PetscInt[ i for i in nnz ]
         end
         chk(C.MatSeqAIJSetPreallocation(a.p, nz, pnnz))
-    elseif T == C.MATMPIAIJ
+    elseif MType == C.MATMPIAIJ
         mlocal = sizelocal(a,1)
         pnnz = if isempty(nnz)
             C_NULL
@@ -138,23 +143,23 @@ end
 
 lengthlocal(a::Mat) = prod(sizelocal(a))
 
-function similar{T}(a::Mat{T})
+function similar{T}(a::Mat{T, MType})
     p = Array(C.Mat{T}, 1)
     chk(C.MatDuplicate(A.p, C.MAT_DO_NOT_COPY_VALUES, p))
-    Mat(p[1])
+    Mat{T, MType}(p[1], comm=a.comm)
 end
 
 similar{T}(a::Mat{T}, ::Type{T}) = similar(a)
 similar{T}(a::Mat{T}, ::Type{T}, ::Type{PetscInt}) = similar(a)
-similar{T}(a::Mat{T}, ::Type{T}, m::Int, n::Int) = 
-    (m,n) == size(a) ? similar(a) : Mat(m,n)
+similar{T, MType}(a::Mat{T, MType}, ::Type{T}, m::Int, n::Int) = 
+    (m,n) == size(a) ? similar(a) : Mat(m,n, comm=a.comm, mtype=MType)
 similar{T}(a::Mat, ::Type{T}, d::Tuple{Int,Int}) = 
     similar(a, T, d...)
 
-function copy{T}(a::Mat{T})
+function copy{T, MType}(a::Mat{T, MType})
     p = Array(C.Mat{T}, 1)
     chk(C.MatDuplicate(a.p, C.MAT_COPY_VALUES, p))
-    Mat(p[1])
+    Mat{T, MType}(p[1])
 end
 
 function getinfo(m::Mat, infotype::Integer=C.MAT_GLOBAL_SUM)

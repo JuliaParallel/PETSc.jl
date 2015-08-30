@@ -63,10 +63,10 @@ end
 
 function gettype(a::Vec)
     p = Array(C.VecType, 1)  # was Uint8
-    p[1] = "a"  # need to initialize symbol array to something
+#    p[1] = "a"  # need to initialize symbol array to something
     
     chk(C.VecGetType(a.p, p))
-    symbol(bytestring(string(p[1])))
+    p[1]
 end
 
 function setsizes!(x::Vec, m::Integer; mlocal::Integer=C.PETSC_DECIDE)

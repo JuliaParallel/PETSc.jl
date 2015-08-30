@@ -5,12 +5,12 @@
 # wrap this around all PETSc ccalls, in order to catch exceptions
 function chk(errnum)
     if errnum != 0
-         println(STDERR, "an Error has occured")
-    #    throw(PetscError(errnum))
+         println(STDERR, "Error number $errnum has occured")
+         throw(PetscError(errnum))
     end
     nothing
 end
-#=
+
 immutable PetscError <: Exception
     errnum::PetscErrorCode
     msg::String
@@ -20,10 +20,14 @@ end
 
 # return error message string corresponding to errnum
 function PetscErrorMessage(errnum)
-    msg = Array(ASCIIString, 1)
+#    println("entered PetscErrorMessage")
+    arr = Array(Ptr{Uint8}, 1)
+    arr_ptr = pointer(arr)
     # use the first petsc library for all cases
-    C.PetscErrorMessage(C.petsc_type[1], errnum,  msg, C_NULL)
-    bytestring(msg[1])
+    C.PetscErrorMessage(C.petsc_type[1], errnum,  arr_ptr, C_NULL)
+#    println("retrieved error message from petsc") 
+    str = bytestring(arr[1])
+#    println("error message = ", str)
 #    msg[1] ==  ? "(unknown)" : bytestring(msg[1])
 end
 
@@ -35,4 +39,4 @@ for i=1:C.numlibs
   val = @eval(cglobal((:PetscIgnoreErrorHandler, C.$libname)))
   C.PetscPushErrorHandler(C.petsc_type[i], val, C_NULL)
 end
-=#
+

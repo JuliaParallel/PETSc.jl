@@ -26,7 +26,7 @@ Mat{T2}(::Type{T2}, m::Integer, n::Integer;
     nz::Integer=16, nnz::AbstractVector=PetscInt[],
     onz::Integer=0, onnz::AbstractVector=PetscInt[],
     comm=MPI.COMM_WORLD,
-    T::String="mpiaij") =
+    T::Symbol=C.MATMPIAIJ) =
   setoption!(setpreallocation!(setsizes!(settype!(Mat(T2, comm=comm), T),
                                          m, n, mlocal=mlocal, nlocal=nlocal),
                                T, nz=nz, nnz=nnz, onz=onz, onnz=onnz),
@@ -59,9 +59,9 @@ function settype!(a::Mat, T::C.MatType)
 end
 
 function gettype(a::Mat)
-    p = Array(Ptr{Uint8},1)
+    p = Array(C.VecType,1)
     chk(C.MatGetType(a.p, p))
-    bytestring(p[1])
+    p[1]
 end
 
 function setsizes!(a::Mat, m::Integer, n::Integer;
@@ -70,10 +70,10 @@ function setsizes!(a::Mat, m::Integer, n::Integer;
     a
 end
 
-function setpreallocation!(a::Mat, T::String=gettype(a);
+function setpreallocation!(a::Mat, T::C.MatType=gettype(a);
                            nz::Integer=16, nnz::AbstractVector=PetscInt[],
                            onz::Integer=0, onnz::AbstractVector=PetscInt[])
-    if T == "seqaij"
+    if T == C.MATSEQAIJ
         pnnz = if isempty(nnz)
             C_NULL
         else
@@ -83,7 +83,7 @@ function setpreallocation!(a::Mat, T::String=gettype(a);
             isa(nnz,Vector{PetscInt}) ? nnz : PetscInt[ i for i in nnz ]
         end
         chk(C.MatSeqAIJSetPreallocation(a.p, nz, pnnz))
-    elseif T == "mpiaij"
+    elseif T == C.MATMPIAIJ
         mlocal = sizelocal(a,1)
         pnnz = if isempty(nnz)
             C_NULL

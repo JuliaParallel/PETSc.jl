@@ -1,13 +1,9 @@
 
 # create Vec
 facts("\n --- Testing Vector Function ---") do
-vtype = PETSc.C.VECSEQ
+vtype = PETSc.C.VECMPI
 vec = PETSc.Vec(Float64, vtype)
-PETSc.settype!(vec, vtype)
-vectype_ret = PETSc.gettype(vec)
-
-@fact vectype_ret => PETSc.C.VECMPI
-
+#PETSc.settype!(vec, vtype)
 PETSc.setsizes!(vec, 4)
 len_ret = length(vec)
 
@@ -18,6 +14,12 @@ len_local = lengthlocal(vec)
 @fact len_local => 4
 size_local = sizelocal(vec)
 @fact size_local => (4,)
+
+vectype_ret = PETSc.gettype(vec)
+
+@fact vectype_ret => PETSc.C.VECMPI
+
+
 
 vec[1] = 2
 val_ret = vec[1]

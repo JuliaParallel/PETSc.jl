@@ -11,9 +11,11 @@ include("mat.jl")
 include("error.jl")
 
 
+#=
 function __init__()
-  PetscInitialize()
-end
 
+    PetscInitialize()
+end
+=#
 
 end

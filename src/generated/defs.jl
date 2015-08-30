@@ -24,3 +24,36 @@ typealias Scalar Union(Float32, Float64, Complex128)
 MPI_COMM_SELF = MPI.COMM_SELF
 typealias MPI_Comm MPI.Comm
 typealias comm_type typeof(MPI.COMM_WORLD.val)
+
+
+# some auxiliary functions used by ccall wrappers
+function symbol_get_before(sym_arr)
+  ptr_arr = Array(Ptr{Uint8}, length(sym_arr))
+  println("ptr_arr = ", ptr_arr)
+  for i=1:length(sym_arr)
+    println("ptr_arr[$i] = ", ptr_arr[i])
+  end
+
+  return pointer(ptr_arr), ptr_arr
+end
+
+function symbol_get_after(ptr, sym_arr)
+  ptr_arr = pointer_to_array(ptr, length(sym_arr))
+
+  for i=1:length(sym_arr)
+    println("ptr_arr[$i] = ", ptr_arr[i])
+    sym_arr[i] = bytestring(ptr_arr[i])
+  end
+
+end
+
+function symbol_set_before(sym_arr)
+  str_arr = similar(sym_arr, ASCIIString)
+
+  for i=1:length(str_arr)
+    str_arr[i] = bytestring(sym_arr[i])
+  end
+
+end
+
+

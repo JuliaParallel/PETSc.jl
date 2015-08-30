@@ -58,28 +58,6 @@ symbol_type_dict = Dict{Any, Any} (
 )
 
 
-function symbol_get_before(sym_arr)
-
-  return similar(sym_arr, ASCIIString)
-end
-
-function symbol_get_after(str_arr, sym_arr)
-
-  for i=1:length(sym_arr)
-    sym_arr = bytestring(str_arr[i])
-  end
-
-end
-
-function symbol_set_before(sym_arr)
-  str_arr = similar(sym_arr, ASCIIString)
-
-  for i=1:length(str_arr)
-    str_arr[i] = bytestring(sym_arr[i])
-  end
-
-end
-
 
 
 # create a string array mirroring a symbol array
@@ -408,40 +386,55 @@ function add_body(ex)
       println("j = ", j)
       type_annot_j = ex_sig.args[j].args[2]  # get the teyp annotation
       argname_j = ex_sig.args[j].args[1]
-      # if type annotates matches an array of symbols
+      # check for arrays of symbols that need to be copied into a string array
       if type_annot_j == :(Union(Ptr{$i}, StridedArray{$i}, Ptr{Void}))
         if contains(fname_str, "Get")  # array is to be populated
           # add calls to function body
-          resize!(ex_body.args, 3)
-          ex_body.args[2] = deepcopy(ex_body.args[1])  # shift ccall to 2nd arg
+          resize!(ex_body.args, length(ex_body.args) + 2)
+          for i=2:(length(ex_body.args) - 1)
+            ex_body.args[i] = deepcopy(ex_body.args[i-1])  # shift ccall to 2nd arg
+          end
+          ex_body.args[1] = nothing
+          ex_body.args[end] = nothing
+
+          # figure out where the ccall is
+          ccall_index = get_ccall_index(ex_body)
 
           # construct the before function call
-          call_ex =  Expr(:call, :sym_get_before, argname_j)
+          call_ex =  Expr(:call, :symbol_get_before, argname_j)
           new_argname = symbol(string( argname_j, "_"))  # add underscore
-          ex_body.args[1] = Expr(:(=), new_argname, deepcopy(call_ex))
+          ex_body.args[1] = Expr(:(=), :($new_argname, tmp), deepcopy(call_ex))
 
           # construct the after call
-          ex_body.args[3] = Expr(:call, :sym_get_after, new_argname, argname_j)
+          ex_body.args[length(ex_body.args)] = Expr(:call, :symbol_get_after, new_argname, argname_j)
 
           # modify the ccall argument name
-          ccall_ex = ex_body.args[2]
+          println("ccall_index = ", ccall_index)
+          ccall_ex = ex_body.args[ccall_index]
+          
           @assert ccall_ex.head == :ccall
           ccall_ex.args[j + 3 - 1 - offset] = new_argname
 
 
         elseif contains(fname_str, "Set")  # array is already populated
           # add calls to function body
-          resize!(ex_body.args, 2)
-          ex_body.args[2] = deepcopy(ex_body.args[1])  # shift ccall to 2nd arg
+          resize!(ex_body.args, length(ex_body.args) + 1)
+          for i=2:(length(ex_body.args))
+            ex_body.args[i] = deepcopy(ex_body.args[i-1])  # shift ccall to 2nd arg
+          end
+          ex_body.args[1] = nothing
+
+          # figure out where the ccall is
+          ccall_index = get_ccall_index(ex_body)
 
           # construct the before function call
-          call_ex =  Expr(:call, :sym_set_before, argname_j)
-          new_argname = string( argname_j, "_")  # add underscore
+          call_ex =  Expr(:call, :symbol_set_before, argname_j)
+          new_argname = symbol(string( argname_j, "_"))  # add underscore
           ex_body.args[1] = Expr(:(=), new_argname, deepcopy(call_ex))
 
 
           # modify the ccall argument name
-          ccall_ex = ex_body.args[2]
+          ccall_ex = ex_body.args[ccall_index]
           @assert ccall_ex.head == :ccall
           ccall_ex.args[j + 3 - 1 - offset] = new_argname
 
@@ -454,8 +447,16 @@ function add_body(ex)
     end  # end for j
   end # end loop over symbol_type_dict
 
-    
+  
 
+  # assign ccall error code to a variable, then return the variable
+  # this should be the last modification made, because get_ccall_index
+  # won't work after this
+  ccall_index = get_ccall_index(ex_body)
+  ccall_ex = deepcopy(ex_body.args[ccall_index])
+  ex_body.args[ccall_index] = :(err = $ccall_ex)
+  resize!(ex_body.args, length(ex_body.args) + 1)
+  ex_body.args[end] = :(return err)
 
 
   # convert array of symbols to array of strings
@@ -464,6 +465,26 @@ function add_body(ex)
 end
 
 
+function get_ccall_index(ex)
+# returns the index of the first ccall in the arguments of ex
+
+  index = 0
+
+  for i=1:length(ex.args)
+    if typeof(ex.args[i]) == Expr
+      if ex.args[i].head  == :ccall
+        index = i
+        break
+      end
+    end
+  end
+
+  if index == 0
+    println("Warning, ccall not found")
+  end
+
+  return index
+end
 
 
 function rewrite_sig(ex)  # rewrite the function signature
@@ -757,7 +778,10 @@ i#      ex.args[i] = get(ccall_dict, ex.args[i], ex.args[i])  # get the new argu
 
   # do non recursive replace first
   for i=1:length(ex.args)
+    println("checking if ", ex.args[i], " has entry in ccall_single_dict")
+    println("ex.args[$i] before = ", ex.args[i])
     ex.args[i] = get(ccall_single_dict, ex.args[i], ex.args[i])
+    println("  after = ", ex.args[i])
   end
 
   # do recursive replacement
@@ -853,7 +877,8 @@ function fix_typealias(ex)
     rhs = get(typealias_single_dict, rhs, rhs)
 
     if rhs == :Symbol
-      get!(ccall_rec_dict, lhs, Ptr{Uint8})  # make the ccall argument a Uint8
+      get!(ccall_rec_dict, lhs, :(Ptr{Uint8}))  # make the ccall argument a Uint8 recursive
+      get!(ccall_single_dict, lhs, :Cstring)  # make it a cstring for single level replacement
       get!(symbol_type_dict, lhs, 1)  # record that this type is a symbol
     end   
  

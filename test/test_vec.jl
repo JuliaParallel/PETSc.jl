@@ -86,6 +86,78 @@ println("vec4 = ", vec4)
 @fact vec4[2] => roughly(vals[1])
 @fact vec4[1] => not(vals[1])
 
+# reset vec4
+ vec4_j = zeros(length(vec4))
+for i=1:length(vec4)
+  vec4[i] = -i
+  vec4_j[i] = -i
+end
+
+vec4_j = abs(vec4_j)
+abs!(vec4)
+
+for i=1:length(vec4)
+  @fact vec4[i] => vec4_j[i]
+end
+
+vec4_j = exp(vec4_j)
+exp!(vec4)
+
+for i=1:length(vec4)
+  @fact vec4[i] => vec4_j[i]
+end
+
+
+vec4_j = log(vec4_j)
+log!(vec4)
+
+for i=1:length(vec4)
+  @fact vec4[i] => vec4_j[i]
+end
+
+#=
+(max_val, max_index) = findmax(vec4)
+max_val_j, max_index_j = findmax(vec4_j)
+
+@fact max_val => roughly(maxval_j)
+@fact max_index => max_index_j
+
+(min_val, min_index) = findmin(vec4)
+min_val_j, min_index_j = findmin(vec4_j)
+
+@fact min_val => roughly(min_val_j)
+@fact min_index => min_index_j
+=#
+
+#=
+val = norm(vec4, 1)
+val_j = norm(vec4_j, 1)
+
+@fact val => val_j
+
+val = norm(vec4, 2)
+val_j = norm(vec4_j, 2)
+
+@fact val => val_j
+
+val = norm(vec4, Inf)
+val_j = norm(vec4_j, Inf)
+
+@fact val => val_j
+=#
+
+normalize!(vec4)
+vec4_j = vec4_j/norm(vec4_j, 2)
+
+for i=1:length(vec4)
+  @fact vec4[i] => vec4_j[i]
+end
+
+
+val = dot(vec4, vec)
+val_j = vec4.'*vec4
+
+@fact val => val_j
 
 
 end

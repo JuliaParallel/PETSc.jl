@@ -75,7 +75,7 @@ const wc = wrap_c.init(;
                         header_library      = lib_file,
                         header_outputfile   = output_file,
                         cursor_wrapped      = wrap_cursor,
-                        clang_diagnostics = true,
+                        clang_diagnostics = true
                         rewriter = petsc_rewriter)
 
 run(wc)

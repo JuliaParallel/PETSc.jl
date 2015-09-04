@@ -241,7 +241,7 @@ getindex{T<:Real}(x::Vec, I::AbstractVector{T}) =
   getindex0(x, PetscInt[ to_index(i)-1 for i in I ])
 
 ##########################################################################
-import Base: abs, exp, log, conj, conj!, max, min, findmax, findmin, norm, max, min, .*, ./, +, -, scale!, dot, ==, !=, sum
+import Base: abs, exp, log, conj, conj!, max, min, findmax, findmin, norm, maximum, minimum, .*, ./, +, -, scale!, dot, ==, !=, sum
 export normalize!, abs!, exp!, log!, chop!
 
 for (f,pf) in ((:abs,:VecAbs), (:exp,:VecExp), (:log,:VecLog), 
@@ -249,7 +249,7 @@ for (f,pf) in ((:abs,:VecAbs), (:exp,:VecExp), (:log,:VecLog),
     fb = symbol(string(f, "!"))
     @eval begin
         function $fb(x::Vec)
-            chk($pf(x.p))
+            chk(C.$pf(x.p))
 #            chk(ccall(($(Expr(:quote, pf)),petsc), PetscErrorCode, 
  #                     (pVec,), x))
             x
@@ -267,22 +267,24 @@ function chop!(x::Vec, tol::Real)
     x
 end
 =#
+
+
 # real versions
-for (f,pf) in ((:max, :VecMax), (:min, :VecMin))
-    ff = symbol(string("find", f))
+for (f,pf, sf) in ((:findmax, :VecMax, :maximum), (:findmin, :VecMin, :minimum))
+#    ff = symbol(string("find", f))
     @eval begin
-        function $ff{T <: Real}(x::Vec{T})
+        function $f{T <: Scalar}(x::Vec{T})
             i = Array(PetscInt, 1)
             v = Array(T, 1)
             chk(C.$pf(x.p, i, v))
             (v[1], i[1]+1)
         end
-        $f(x::Vec) = $ff(x)[1]
+        $sf(x::Vec) = $f(x)[1]
     end
 end
 
 # complex versions
-for (f,pf) in ((:max, :VecMax), (:min, :VecMin))
+for (f,pf) in ((:maximum, :VecMax), (:minimum, :VecMin))
     ff = symbol(string("find", f))
     @eval begin
         function $ff{T}(x::Vec{Complex{T}})

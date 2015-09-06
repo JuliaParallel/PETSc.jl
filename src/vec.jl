@@ -108,6 +108,8 @@ function similar{T, VType}(x::Vec{T, VType}, ::Type{T}, len::Int)
     len==length(x) ? similar(x) : Vec(T, len, VType; comm=x.comm)
 end
 
+similar{T, DType <: Integer}(x::Vec{T}, t::Type{T}, dims::Tuple{DType}) = similar(x, t, dims[1])
+
 function copy(x::Vec)
     y = similar(x)
     chk(C.VecCopy(x.p, y.p))
@@ -405,7 +407,7 @@ function axpy!{T}(alpha::Number, x::Vec{T}, y::Vec)
 end
 # w <- alpha*x + y
 function axpy!{T}(alpha::Number, x::Vec{T}, y::Vec, w::Vec)
-    chk(VecWAXPY(w.p, T(alpha), x.p, y.p))
+    chk(C.VecWAXPY(w.p, T(alpha), x.p, y.p))
     y
 end
 # y <- alpha*y + x
@@ -414,12 +416,12 @@ function aypx!{T}(x::Vec{T}, alpha::Number, y::Vec)
     y
 end
 # y <- alpha*x + beta*y
-function axpby!(alpha::Number, x::Vec, beta::Number, y::Vec)
+function axpby!{T}(alpha::Number, x::Vec{T}, beta::Number, y::Vec)
     chk(C.VecAXPBY(y.p, T(alpha), T(beta), x.p))
     y
 end
 # z <- alpha*x + beta*y + gamma*z
-function axpbypcz!(alpha::Number, x::Vec, beta::Number, y::Vec,
+function axpbypcz!{T}(alpha::Number, x::Vec{T}, beta::Number, y::Vec,
                    gamma::Number, z::Vec)
     chk(C.VecAXPBYPCZ(z.p, T(alpha), T(beta), T(gamma), x.p, y.p))
     z
@@ -440,13 +442,15 @@ function axpy!{T<:Number}(alphax::AbstractVector{(T,Vec)}, y::Vec)
     maxpy!(y, alpha, x)
 end
 =#
-function maxpy!{T <: Number}(y::Vec, alpha::AbstractArray{T}, x::Array{Vec})
+function maxpy!{T <: Number, VType}(y::Vec, alpha::AbstractArray, x::Array{Vec{T, VType}})
 
   @assert length(alpha) == length(x)
   n = length(x)
-  _x = Array(C.Vec, n)
+  _x = Array(C.Vec{T}, n)
+  _alpha = Array(T, n)
   for i=1:n
     _x[i] = x[i].p
+    _alpha[i] = alpha[i]
   end
 
   C.VecMAXPY(y.p, n, alpha, _x)

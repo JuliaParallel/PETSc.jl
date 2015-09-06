@@ -18,16 +18,16 @@ function repr_jl(ptr::cindex.Pointer)
   Expr(:curly, Union, ex1, ex2)
 end
 =#
-PETSC_INCLUDE = "/home/jared/build/petsc-3.6.0/include"
+PETSC_INCLUDE = "../../deps/petsc-3.6.0/include"
 #PETSC_INCLUDE = "/home/jared/.julia/v0.4/PETSc/deps/petsc-3.6.0/arch-linux2-c-opt/include"
-MPI_INCLUDE = "/usr/include/mpich"
+#MPI_INCLUDE = "/usr/include/mpich"
 
-petsc_header = [joinpath(PETSC_INCLUDE, "petscksp.h")]
-#petsc_header = [joinpath(PETSC_INCLUDE, "petsc.h")]
-h1 = "/usr/include"
-h2 = joinpath(PETSC_INCLUDE, "petsc/mpiuni")
-h3 = joinpath(PETSC_INCLUDE, "petsc/private")
-h4 = joinpath(PETSC_INCLUDE, "petsc/private/kernels")
+#petsc_header = [joinpath(PETSC_INCLUDE, "petscksp.h")]
+petsc_header = [joinpath(PETSC_INCLUDE, "petsc.h")]
+#h1 = "/usr/include"
+#h2 = joinpath(PETSC_INCLUDE, "petsc/mpiuni")
+#h3 = joinpath(PETSC_INCLUDE, "petsc/private")
+#h4 = joinpath(PETSC_INCLUDE, "petsc/private/kernels")
 
 # Set up include paths
 clang_includes = ASCIIString[]
@@ -46,6 +46,7 @@ println("clang_includes = ", clang_includes)
 
 # Callback to test if a header should actually be wrapped (for exclusion)
 function wrap_header(top_hdr::ASCIIString, cursor_header::ASCIIString)
+#     return true
     return startswith(dirname(cursor_header), PETSC_INCLUDE)
 end
 
@@ -75,7 +76,7 @@ const wc = wrap_c.init(;
                         header_library      = lib_file,
                         header_outputfile   = output_file,
                         cursor_wrapped      = wrap_cursor,
-                        clang_diagnostics = true
-                        rewriter = petsc_rewriter)
+                        clang_diagnostics = true)
+#                        rewriter = petsc_rewriter)
 
 run(wc)

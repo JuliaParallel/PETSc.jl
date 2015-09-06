@@ -67,6 +67,8 @@ for i=1:length(idx)
   @fact vec4[idx[i]] => vals[i]
 end
 
+
+println("testing logical indexing")
 logicals = Array(Bool, length(vec4))
 for i=1:length(logicals)
   logicals[i] = false
@@ -92,6 +94,8 @@ for i=1:length(vec4)
   vec4[i] = -i
   vec4_j[i] = -i
 end
+
+println("testing math functions")
 
 vec4_j = abs(vec4_j)
 abs!(vec4)
@@ -145,19 +149,92 @@ val_j = norm(vec4_j, Inf)
 
 @fact val => val_j
 =#
-
+#=
 normalize!(vec4)
 vec4_j = vec4_j/norm(vec4_j, 2)
 
 for i=1:length(vec4)
   @fact vec4[i] => vec4_j[i]
 end
+=#
 
+println("testing dot product")
 
 val = dot(vec4, vec)
-val_j = vec4.'*vec4
+#val_j = vec4.'*vec
+val_j = dot(vec4, vec)
+println("val = ", val)
+println("val_j = ", val_j)
 
 @fact val => val_j
+
+# make copies of vecs 1 2 4
+
+println("testing level 1 Blas")
+
+vecj = zeros(length(vec))
+vec2j = zeros(length(vec))
+vec4j = zeros(length(vec))
+
+for i=1:length(vec)
+  vecj[i] = vec[i]
+  vec2j[i] = vec2[i]
+  vec4j[i] = vec4[i]
+end
+
+axpy!(2, vec, vec2)
+vec2j = 2*vecj + vec2j
+
+for i=1:length(vec)
+  @fact vec2j[i] => vec2[i]
+end
+
+axpy!(2, vec, vec2, vec4)
+vec4j = 2*vecj + vec2j 
+
+for i=1:length(vec)
+  @fact vec2j[i] => vec2[i]
+end
+
+
+aypx!(vec, 2, vec2)
+vec2j = 2*vec2j + vec
+
+for i=1:length(vec)
+  @fact vec2j[i] => vec2[i]
+end
+
+
+axpby!(2, vec, 3, vec2)
+vec2j = 2*vecj + 3*vec2j
+
+for i=1:length(vec)
+  @fact vec2j[i] => vec2[i]
+end
+
+
+axpbypcz!(2, vec, 3, vec2, 4, vec4)
+vec4j = 2*vecj + 3*vec2j + 4*vec4j
+
+for i=1:length(vec)
+  @fact vec4j[i] => vec4[i]
+end
+
+vecs = Array(typeof(vec), 2)
+vecs[1] = vec
+vecs[2] = vec2
+#vecs = [vec; vec2]
+alphas = [2.0, 3.0]
+println("vecs = ", vecs)
+println("typeof(vecs) = ", typeof(vecs))
+
+PETSc.maxpy!(vec4, alphas, vecs)
+vec4j = vec4j + 2.0*vecj + 3.0*vec2j
+println("vec4 = ", vec4)
+println("vec4j = ", vec4j)
+for i=1:length(vec)
+  @fact vec4j[i] => vec4[i]
+end
 
 
 end

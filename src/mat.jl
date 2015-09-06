@@ -9,6 +9,8 @@ type Mat{T, MType} <: AbstractSparseMatrix{T,PetscInt}
     comm::MPI.Comm
     mattype::C.MatType
     function Mat(p::C.Mat{T}, data=nothing; comm=MPI.COMM_SELF)  # default sequantial matrix
+#        A = new(p, assembling, insertmode, data, comm, MType)
+
         A = new(p, false, C.INSERT_VALUES, data, comm, MType)
         settype!(A, MType)
         finalizer(A, MatDestroy)
@@ -143,16 +145,17 @@ end
 
 lengthlocal(a::Mat) = prod(sizelocal(a))
 
+# this causes the assembly state of the underlying petsc matrix to be copied
 function similar{T, MType}(a::Mat{T, MType})
     p = Array(C.Mat{T}, 1)
-    chk(C.MatDuplicate(A.p, C.MAT_DO_NOT_COPY_VALUES, p))
+    chk(C.MatDuplicate(a.p, C.MAT_DO_NOT_COPY_VALUES, p))
     Mat{T, MType}(p[1], comm=a.comm)
 end
 
 similar{T}(a::Mat{T}, ::Type{T}) = similar(a)
 similar{T}(a::Mat{T}, ::Type{T}, ::Type{PetscInt}) = similar(a)
-similar{T, MType}(a::Mat{T, MType}, ::Type{T}, m::Int, n::Int) = 
-    (m,n) == size(a) ? similar(a) : Mat(m,n, comm=a.comm, mtype=MType)
+similar{T, MType}(a::Mat{T, MType}, ::Type{T}, m::Integer, n::Integer) = 
+    (m,n) == size(a) ? similar(a) : Mat(T, m,n, comm=a.comm, mtype=MType)
 similar{T}(a::Mat, ::Type{T}, d::Tuple{Int,Int}) = 
     similar(a, T, d...)
 
@@ -164,7 +167,7 @@ end
 
 function getinfo(m::Mat, infotype::Integer=C.MAT_GLOBAL_SUM)
     info = Array(C.MatInfo,1)
-    chk(C.MatGetInfo(m.p, MatInfoType(infotype), info))
+    chk(C.MatGetInfo(m.p, C.MatInfoType(infotype), info))
     info[1]
 end
 
@@ -174,11 +177,13 @@ nnz(m::Mat) = int(getinfo(m).nz_used)
 
 # for efficient matrix assembly, put all calls to A[...] = ... inside
 # assemble(A) do ... end
-function AssemblyBegin(x::Mat, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
+
+
+function AssemblyBegin(x::Mat, t::C.MatAssemblyType=C.MAT_FLUSH_ASSEMBLY)
   chk(C.MatAssemblyBegin(x.p, t))
 end
 
-function AssemblyEnd(x::Mat, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
+function AssemblyEnd(x::Mat, t::C.MatAssemblyType=C.MAT_FLUSH_ASSEMBLY)
   chk(C.MatAssemblyEnd(x.p, t))
 end
 
@@ -223,8 +228,10 @@ end
 assemble(x::Union(Vec,Mat)) = assemble(() -> nothing, x)
 
 # intermediate assembly, before it is finally compressed for use
+iassemble(x::Union(Vec, Mat)) = assemble( () -> nothing, x, x.insertmode, C.MAT_FLUSH_ASSEMBLY)
 iassemble(f::Function, x::Mat, insertmode=x.insertmode) =
     assemble(f, x, insertmode, C.MAT_FLUSH_ASSEMBLY)
+
 
 # like x[i,j] = v, but requires i,j to be 0-based indices for Petsc
 function setindex0!{T}(x::Mat{T}, v::Array{T}, 
@@ -235,11 +242,15 @@ function setindex0!{T}(x::Mat{T}, v::Array{T},
         throw(ArgumentError("length(values) != length(indices)"))
     end
 
+    println("i = ", i)
+    println("j = ", j)
+    println("v = ", v)
+
     chk(C.MatSetValues(x.p, ni, i, nj, j, v, x.insertmode))
 
     if !x.assembling
-        AssemblyBegin(x,C.MAT_FINAL_ASSEMBLY)
-        AssemblyEnd(x,C.MAT_FINAL_ASSEMBLY)
+        AssemblyBegin(x,C.MAT_FLUSH_ASSEMBLY)
+        AssemblyEnd(x,C.MAT_FLUSH_ASSEMBLY)
     end
     x
 end
@@ -270,6 +281,7 @@ function setindex!{T2, T<:Real}(x::Mat{T2}, v::Array{T2},
     J0 = PetscInt[ to_index(j)-1 ]
     setindex0!(x, v, I0, J0)
 end
+
 
 setindex!{T1<:Real, T2<:Real}(x::Mat, v::Number, 
                               I::AbstractArray{T1},
@@ -307,9 +319,17 @@ function setindex!{T0<:Real, T1<:Real, T2<:Real}(x::Mat, v::AbstractArray{T0},
 end
 
 function fill!(x::Mat, v::Number)
-    if v == 0
-        chk(ccall((:MatZeroEntries,petsc), PetscErrorCode, (pMat,), x))
-    else
+
+# the current behavior of fill! for SparseMatrixCSC
+# destroys the sparsity pattern of the matrix
+# this is a bad way of doing this, but we should be
+# consistent with it
+#    if v == 0
+#        chk(C.MatZeroEntries(x.p))
+#        chk(ccall((:MatZeroEntries,petsc), PetscErrorCode, (pMat,), x))
+#    else
+
+  
         # FIXME: only loop over local rows
         iassemble(x) do
             m,n = size(x)
@@ -319,7 +339,7 @@ function fill!(x::Mat, v::Number)
                 end
             end
         end
-    end
+#    end
     x
 end
 
@@ -369,10 +389,10 @@ end
 for (f,pf) in ((:MatTranspose,:MatCreateTranspose), # acts like A.'
                (:MatNormal, :MatCreateNormal))      # acts like A'*A
     pfe = Expr(:quote, pf)
-    @eval function $f{T}(a::Mat{T})
+    @eval function $f{T, MType}(a::Mat{T, MType})
         p = Array(C.Mat{T}, 1)
-        chk($pf(a.p, p))
-        Mat(p[1], a)
+        chk(C.$pf(a.p, p))
+        Mat{T, MType}(p[1], a, comm=a.comm)
     end
 end
 
@@ -382,7 +402,7 @@ for (f,pf) in ((:transpose,:MatTranspose),(:ctranspose,:MatHermitianTranspose))
     @eval begin
         function $fb(a::Mat)
             pa = [a.p]
-            chk(C.$pf(a.p, C.MAT_REUSE_MATRIX, pa))
+            chk(C.C.$pf(a.p, C.MAT_REUSE_MATRIX, pa))
             a
         end
         

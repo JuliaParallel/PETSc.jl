@@ -2,12 +2,12 @@
 # Example script to wrap PETSc
 #
 
-using Clang.cindex
-using Clang.wrap_c
+using Clang_orig.cindex
+using Clang_orig.wrap_c
 using Compat
 
 
-import Clang.wrap_c.repr_jl
+import Clang_orig.wrap_c.repr_jl
 
 include("rewriter.jl")
 #=
@@ -76,7 +76,7 @@ const wc = wrap_c.init(;
                         header_library      = lib_file,
                         header_outputfile   = output_file,
                         cursor_wrapped      = wrap_cursor,
-                        clang_diagnostics = true)
-#                        rewriter = petsc_rewriter)
+                        clang_diagnostics = true,
+                        rewriter = petsc_rewriter)
 
 run(wc)

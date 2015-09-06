@@ -950,6 +950,9 @@ end
 ##### Type declaration functions #####
 function process_type(ex)
 
+  # make all types (structs) immutable
+  ex.args[1] = false
+
   ex_body = ex.args[3]  # body of type declaration
   
   # check that every type annotation is fully defined

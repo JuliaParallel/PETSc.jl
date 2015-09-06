@@ -307,10 +307,7 @@ const PETSC_BINARY_SHORT_SIZE = 16 / 8
 const PETSC_BINARY_DOUBLE_SIZE = 64 / 8
 
 #= # Skipping MacroDefinition: PETSC_BINARY_SCALAR_SIZE sizeof ( PetscScalar ) =#
-const IS_FILE_CLASSID = 1211218
-const ISGENERAL = symbol("general")
-const ISSTRIDE = symbol("stride")
-const ISBLOCK = symbol("block")
+const PETSC_BAG_FILE_CLASSID = 1211219
 const PETSCVIEWERSOCKET = symbol("socket")
 const PETSCVIEWERASCII = symbol("ascii")
 const PETSCVIEWERBINARY = symbol("binary")
@@ -344,6 +341,53 @@ const PETSC_DRAW_TIKZ = symbol("tikz")
 #= # Skipping MacroDefinition: PETSC_VIEWER_MATLAB_WORLD PETSC_VIEWER_MATLAB_ ( PETSC_COMM_WORLD ) =#
 #= # Skipping MacroDefinition: PETSC_VIEWER_MATLAB_SELF PETSC_VIEWER_MATLAB_ ( PETSC_COMM_SELF ) =#
 #= # Skipping MacroDefinition: PETSC_VIEWER_MATHEMATICA_WORLD ( PetscViewerInitializeMathematicaWorld_Private ( ) , PETSC_VIEWER_MATHEMATICA_WORLD_PRIVATE ) =#
+const PETSC_HASH_FACT = 79943
+
+#= # Skipping MacroDefinition: PETSC_MATLAB_ENGINE_WORLD PETSC_MATLAB_ENGINE_ ( PETSC_COMM_WORLD ) =#
+#= # Skipping MacroDefinition: PETSC_MATLAB_ENGINE_SELF PETSC_MATLAB_ENGINE_ ( PETSC_COMM_SELF ) =#
+const PETSC_DRAW_BASIC_COLORS = 33
+const PETSC_DRAW_ROTATE = -1
+const PETSC_DRAW_WHITE = 0
+const PETSC_DRAW_BLACK = 1
+const PETSC_DRAW_RED = 2
+const PETSC_DRAW_GREEN = 3
+const PETSC_DRAW_CYAN = 4
+const PETSC_DRAW_BLUE = 5
+const PETSC_DRAW_MAGENTA = 6
+const PETSC_DRAW_AQUAMARINE = 7
+const PETSC_DRAW_FORESTGREEN = 8
+const PETSC_DRAW_ORANGE = 9
+const PETSC_DRAW_VIOLET = 10
+const PETSC_DRAW_BROWN = 11
+const PETSC_DRAW_PINK = 12
+const PETSC_DRAW_CORAL = 13
+const PETSC_DRAW_GRAY = 14
+const PETSC_DRAW_YELLOW = 15
+const PETSC_DRAW_GOLD = 16
+const PETSC_DRAW_LIGHTPINK = 17
+const PETSC_DRAW_MEDIUMTURQUOISE = 18
+const PETSC_DRAW_KHAKI = 19
+const PETSC_DRAW_DIMGRAY = 20
+const PETSC_DRAW_YELLOWGREEN = 21
+const PETSC_DRAW_SKYBLUE = 22
+const PETSC_DRAW_DARKGREEN = 23
+const PETSC_DRAW_NAVYBLUE = 24
+const PETSC_DRAW_SANDYBROWN = 25
+const PETSC_DRAW_CADETBLUE = 26
+const PETSC_DRAW_POWDERBLUE = 27
+const PETSC_DRAW_DEEPPINK = 28
+const PETSC_DRAW_THISTLE = 29
+const PETSC_DRAW_LIMEGREEN = 30
+const PETSC_DRAW_LAVENDERBLUSH = 31
+const PETSC_DRAW_PLUM = 32
+const PETSC_DRAW_FULL_SIZE = -3
+const PETSC_DRAW_HALF_SIZE = -4
+const PETSC_DRAW_THIRD_SIZE = -5
+const PETSC_DRAW_QUARTER_SIZE = -6
+const IS_FILE_CLASSID = 1211218
+const ISGENERAL = symbol("general")
+const ISSTRIDE = symbol("stride")
+const ISBLOCK = symbol("block")
 const VECSEQ = symbol("seq")
 const VECMPI = symbol("mpi")
 const VECSTANDARD = symbol("standard")
@@ -518,6 +562,54 @@ const MATCOARSENHEM = symbol("hem")
 const MATRIX_BINARY_FORMAT_DENSE = -1
 const MATMFFD_DS = symbol("ds")
 const MATMFFD_WP = symbol("wp")
+const DMDA = symbol("da")
+const DMCOMPOSITE = symbol("composite")
+const DMSLICED = symbol("sliced")
+const DMSHELL = symbol("shell")
+const DMPLEX = symbol("plex")
+const DMCARTESIAN = symbol("cartesian")
+const DMREDUNDANT = symbol("redundant")
+const DMPATCH = symbol("patch")
+const DMMOAB = symbol("moab")
+const DMNETWORK = symbol("network")
+const DM_FILE_CLASSID = 1211221
+const PFCONSTANT = symbol("constant")
+const PFMAT = symbol("mat")
+const PFSTRING = symbol("string")
+const PFQUICK = symbol("quick")
+const PFIDENTITY = symbol("identity")
+const PFMATLAB = symbol("matlab")
+
+#= # Skipping MacroDefinition: PFSetOptionsPrefix ( a , s ) PetscObjectSetOptionsPrefix ( ( PetscObject ) ( a ) , s ) =#
+const AOBASIC = symbol("basic")
+const AOADVANCED = symbol("advanced")
+const AOMAPPING = symbol("mapping")
+const AOMEMORYSCALABLE = symbol("memoryscalable")
+const PETSCSPACEPOLYNOMIAL = symbol("poly")
+const PETSCSPACEDG = symbol("dg")
+const PETSCDUALSPACELAGRANGE = symbol("lagrange")
+const PETSCDUALSPACESIMPLE = symbol("simple")
+const PETSCFEBASIC = symbol("basic")
+const PETSCFENONAFFINE = symbol("nonaffine")
+const PETSCFEOPENCL = symbol("opencl")
+const PETSCFECOMPOSITE = symbol("composite")
+const MATSEQUSFFT = symbol("sequsfft")
+const PETSCLIMITERSIN = symbol("sin")
+const PETSCLIMITERZERO = symbol("zero")
+const PETSCLIMITERNONE = symbol("none")
+const PETSCLIMITERMINMOD = symbol("minmod")
+const PETSCLIMITERVANLEER = symbol("vanleer")
+const PETSCLIMITERVANALBADA = symbol("vanalbada")
+const PETSCLIMITERSUPERBEE = symbol("superbee")
+const PETSCLIMITERMC = symbol("mc")
+const PETSCFVUPWIND = symbol("upwind")
+const PETSCFVLEASTSQUARES = symbol("leastsquares")
+const PETSCPARTITIONERCHACO = symbol("chaco")
+const PETSCPARTITIONERPARMETIS = symbol("parmetis")
+const PETSCPARTITIONERSHELL = symbol("shell")
+const PETSCPARTITIONERSIMPLE = symbol("simple")
+const PETSCDSBASIC = symbol("basic")
+const CHARACTERISTICDA = symbol("da")
 const PCNONE = symbol("none")
 const PCJACOBI = symbol("jacobi")
 const PCSOR = symbol("sor")
@@ -642,6 +734,143 @@ const KSP_NORM_MAX = KSP_NORM_NATURAL + 1
 #= # Skipping MacroDefinition: KSPDefaultConvergedSetUIRNorm ( KSPDefaultConvergedSetUIRNorm , KSPConvergedDefaultSetUIRNorm ) =#
 #= # Skipping MacroDefinition: KSPDefaultConvergedSetUMIRNorm ( KSPDefaultConvergedSetUMIRNorm , KSPConvergedDefaultSetUMIRNorm ) =#
 #= # Skipping MacroDefinition: KSPSkipConverged ( KSPSkipConverged , KSPConvergedSkip ) =#
+const SNESNEWTONLS = symbol("newtonls")
+const SNESNEWTONTR = symbol("newtontr")
+const SNESPYTHON = symbol("python")
+const SNESTEST = symbol("test")
+const SNESNRICHARDSON = symbol("nrichardson")
+const SNESKSPONLY = symbol("ksponly")
+const SNESVINEWTONRSLS = symbol("vinewtonrsls")
+const SNESVINEWTONSSLS = symbol("vinewtonssls")
+const SNESNGMRES = symbol("ngmres")
+const SNESQN = symbol("qn")
+const SNESSHELL = symbol("shell")
+const SNESNGS = symbol("ngs")
+const SNESNCG = symbol("ncg")
+const SNESFAS = symbol("fas")
+const SNESMS = symbol("ms")
+const SNESNASM = symbol("nasm")
+const SNESANDERSON = symbol("anderson")
+const SNESASPIN = symbol("aspin")
+const SNESCOMPOSITE = symbol("composite")
+const SNES_FILE_CLASSID = 1211224
+
+#= # Skipping MacroDefinition: SNESSkipConverged ( SNESSkipConverged , SNESConvergedSkip ) =#
+const SNESLINESEARCHBT = symbol("bt")
+const SNESLINESEARCHNLEQERR = symbol("nleqerr")
+const SNESLINESEARCHBASIC = symbol("basic")
+const SNESLINESEARCHL2 = symbol("l2")
+const SNESLINESEARCHCP = symbol("cp")
+const SNESLINESEARCHSHELL = symbol("shell")
+const SNES_LINESEARCH_ORDER_LINEAR = 1
+const SNES_LINESEARCH_ORDER_QUADRATIC = 2
+const SNES_LINESEARCH_ORDER_CUBIC = 3
+const SNESMSM62 = symbol("m62")
+const SNESMSEULER = symbol("euler")
+const SNESMSJAMESON83 = symbol("jameson83")
+const SNESMSVLTP21 = symbol("vltp21")
+const SNESMSVLTP31 = symbol("vltp31")
+const SNESMSVLTP41 = symbol("vltp41")
+const SNESMSVLTP51 = symbol("vltp51")
+const SNESMSVLTP61 = symbol("vltp61")
+const TSEULER = symbol("euler")
+const TSBEULER = symbol("beuler")
+const TSPSEUDO = symbol("pseudo")
+const TSCN = symbol("cn")
+const TSSUNDIALS = symbol("sundials")
+const TSRK = symbol("rk")
+const TSPYTHON = symbol("python")
+const TSTHETA = symbol("theta")
+const TSALPHA = symbol("alpha")
+const TSGL = symbol("gl")
+const TSSSP = symbol("ssp")
+const TSARKIMEX = symbol("arkimex")
+const TSROSW = symbol("rosw")
+const TSEIMEX = symbol("eimex")
+const TSMIMEX = symbol("mimex")
+const TSTRAJECTORYBASIC = symbol("basic")
+const TSTRAJECTORYSINGLEFILE = symbol("singlefile")
+const TS_FILE_CLASSID = 1211225
+const TSSSPRKS2 = symbol("rks2")
+const TSSSPRKS3 = symbol("rks3")
+const TSSSPRK104 = symbol("rk104")
+const TSADAPTBASIC = symbol("basic")
+const TSADAPTNONE = symbol("none")
+const TSADAPTCFL = symbol("cfl")
+const TSGLADAPT_NONE = symbol("none")
+const TSGLADAPT_SIZE = symbol("size")
+const TSGLADAPT_BOTH = symbol("both")
+const TSGLACCEPT_ALWAYS = symbol("always")
+const TSGL_IRKS = symbol("irks")
+
+#= # Skipping MacroDefinition: TSEIMEXType char * =#
+const TSRK1FE = symbol("1fe")
+const TSRK2A = symbol("2a")
+const TSRK3 = symbol("3")
+const TSRK3BS = symbol("3bs")
+const TSRK4 = symbol("4")
+const TSRK5F = symbol("5f")
+const TSRK5DP = symbol("5dp")
+const TSARKIMEX1BEE = symbol("1bee")
+const TSARKIMEXA2 = symbol("a2")
+const TSARKIMEXL2 = symbol("l2")
+const TSARKIMEXARS122 = symbol("ars122")
+const TSARKIMEX2C = symbol("2c")
+const TSARKIMEX2D = symbol("2d")
+const TSARKIMEX2E = symbol("2e")
+const TSARKIMEXPRSSP2 = symbol("prssp2")
+const TSARKIMEX3 = symbol("3")
+const TSARKIMEXBPR3 = symbol("bpr3")
+const TSARKIMEXARS443 = symbol("ars443")
+const TSARKIMEX4 = symbol("4")
+const TSARKIMEX5 = symbol("5")
+const TSROSW2M = symbol("2m")
+const TSROSW2P = symbol("2p")
+const TSROSWRA3PW = symbol("ra3pw")
+const TSROSWRA34PW2 = symbol("ra34pw2")
+const TSROSWRODAS3 = symbol("rodas3")
+const TSROSWSANDU3 = symbol("sandu3")
+const TSROSWASSP3P3S1C = symbol("assp3p3s1c")
+const TSROSWLASSP3P4S2C = symbol("lassp3p4s2c")
+const TSROSWLLSSP3P4S2C = symbol("llssp3p4s2c")
+const TSROSWARK3 = symbol("ark3")
+const TSROSWTHETA1 = symbol("theta1")
+const TSROSWTHETA2 = symbol("theta2")
+const TSROSWGRK4T = symbol("grk4t")
+const TSROSWSHAMP4 = symbol("shamp4")
+const TSROSWVELDD4 = symbol("veldd4")
+const TSROSW4L = symbol("4l")
+
+#= # Skipping MacroDefinition: TaoType char * =#
+const TAOLMVM = symbol("lmvm")
+const TAONLS = symbol("nls")
+const TAONTR = symbol("ntr")
+const TAONTL = symbol("ntl")
+const TAOCG = symbol("cg")
+const TAOTRON = symbol("tron")
+const TAOOWLQN = symbol("owlqn")
+const TAOBMRM = symbol("bmrm")
+const TAOBLMVM = symbol("blmvm")
+const TAOBQPIP = symbol("bqpip")
+const TAOGPCG = symbol("gpcg")
+const TAONM = symbol("nm")
+const TAOPOUNDERS = symbol("pounders")
+const TAOLCL = symbol("lcl")
+const TAOSSILS = symbol("ssils")
+const TAOSSFLS = symbol("ssfls")
+const TAOASILS = symbol("asils")
+const TAOASFLS = symbol("asfls")
+const TAOIPM = symbol("ipm")
+const TAOTEST = symbol("test")
+
+#= # Skipping MacroDefinition: TaoLineSearchType char * =#
+const TAOLINESEARCHUNIT = symbol("unit")
+const TAOLINESEARCHMT = symbol("more-thuente")
+const TAOLINESEARCHGPCG = symbol("gpcg")
+const TAOLINESEARCHARMIJO = symbol("armijo")
+const TAOLINESEARCHOWARMIJO = symbol("owarmijo")
+const TAOLINESEARCHIPM = symbol("ipm")
+
 typealias PetscErrorCode Cint
 typealias PetscClassId Cint
 typealias PetscMPIInt Cint
@@ -692,7 +921,7 @@ const PETSC_TRUE = (UInt32)(1)
 #= # end enum PetscBool =#
 typealias MatReal Cint
 
-type petsc_mpiu_2scalar
+immutable petsc_mpiu_2scalar
     a::PetscScalar
     b::PetscScalar
 end
@@ -841,7 +1070,7 @@ immutable Array_64_Ptr
     d64::Ptr{Uint8}
 end
 
-#= skipping undefined expression zero(::Type{Array_64_Ptr}) = begin  # /home/jared/.julia/v0.4/Clang/src/wrap_c.jl, line 264:
+#= skipping undefined expression zero(::Type{Array_64_Ptr}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 264:
         Array_64_Ptr(fill(zero(Ptr{Uint8}),64)...)
     end =#
 immutable Array_64_Cint
@@ -911,7 +1140,7 @@ immutable Array_64_Cint
     d64::Cint
 end
 
-#= skipping undefined expression zero(::Type{Array_64_Cint}) = begin  # /home/jared/.julia/v0.4/Clang/src/wrap_c.jl, line 264:
+#= skipping undefined expression zero(::Type{Array_64_Cint}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 264:
         Array_64_Cint(fill(zero(Cint),64)...)
     end =#
 immutable Array_64_PetscBool
@@ -981,10 +1210,10 @@ immutable Array_64_PetscBool
     d64::PetscBool
 end
 
-#= skipping undefined expression zero(::Type{Array_64_PetscBool}) = begin  # /home/jared/.julia/v0.4/Clang/src/wrap_c.jl, line 264:
+#= skipping undefined expression zero(::Type{Array_64_PetscBool}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 264:
         Array_64_PetscBool(fill(zero(PetscBool),64)...)
     end =#
-type PetscStack
+immutable PetscStack
     _function::Array_64_Ptr
     file::Array_64_Ptr
     line::Array_64_Cint
@@ -1040,7 +1269,7 @@ immutable PetscOption{T}
 end
 
 #= skipping type declaration with undefined symbols:
-type PetscOptions
+immutable PetscOptions
     count::PetscInt
     next::PetscOption
     prefix::Ptr{Uint8}
@@ -1077,12 +1306,12 @@ typealias PetscLogEvent Cint
 typealias PetscLogStage Cint
 
 # skipping undefined typealias typealias PetscIntStack Ptr{_n_PetscIntStack}
-type PetscClassRegInfo
+immutable PetscClassRegInfo
     name::Ptr{Uint8}
     classid::PetscClassId
 end
 
-type PetscClassPerfInfo
+immutable PetscClassPerfInfo
     id::PetscClassId
     creations::Cint
     destructions::Cint
@@ -1092,12 +1321,12 @@ end
 
 # skipping undefined typealias typealias PetscClassRegLog Ptr{_n_PetscClassRegLog}
 # skipping undefined typealias typealias PetscClassPerfLog Ptr{_n_PetscClassPerfLog}
-type PetscEventRegInfo
+immutable PetscEventRegInfo
     name::Ptr{Uint8}
     classid::PetscClassId
 end
 
-type PetscEventPerfInfo
+immutable PetscEventPerfInfo
     id::Cint
     active::PetscBool
     visible::PetscBool
@@ -1117,7 +1346,7 @@ end
 # skipping undefined typealias typealias PetscEventRegLog Ptr{_n_PetscEventRegLog}
 # skipping undefined typealias typealias PetscEventPerfLog Ptr{_n_PetscEventPerfLog}
 #= skipping type declaration with undefined symbols:
-type PetscStageInfo
+immutable PetscStageInfo
     name::Ptr{Uint8}
     used::PetscBool
     perfInfo::PetscEventPerfInfo
@@ -1206,60 +1435,8 @@ const PETSC_SUBCOMM_INTERLACED = (UInt32)(2)
 #= # end enum PetscSubcommType =#
 # skipping undefined typealias typealias PetscSubcomm Ptr{_n_PetscSubcomm}
 # skipping undefined typealias typealias PetscSegBuffer Ptr{_n_PetscSegBuffer}
-# skipping undefined typealias typealias PetscSF Ptr{_p_PetscSF}
-type PetscSFNode
-    rank::PetscInt
-    index::PetscInt
-end
-
-immutable IS{T}
-    pobj::Ptr{Void}
-end
-
-immutable ISLocalToGlobalMapping{T}
-    pobj::Ptr{Void}
-end
-
-immutable ISColoring{T}
-    pobj::Ptr{Void}
-end
-
-immutable PetscLayout{T}
-    pobj::Ptr{Void}
-end
-
-# skipping undefined typealias typealias PetscSection Ptr{_p_PetscSection}
-typealias ISType Symbol
-
-#= # begin enum ANONYMOUS_14 =#
-typealias ANONYMOUS_14 Uint32
-
-const IS_GTOLM_MASK = (UInt32)(0)
-const IS_GTOLM_DROP = (UInt32)(1)
-
-#= # end enum ANONYMOUS_14 =#
-#= # begin enum ISGlobalToLocalMappingType =#
-typealias ISGlobalToLocalMappingType Uint32
-
-const IS_GTOLM_MASK = (UInt32)(0)
-const IS_GTOLM_DROP = (UInt32)(1)
-
-#= # end enum ISGlobalToLocalMappingType =#
-#= # begin enum ANONYMOUS_15 =#
-typealias ANONYMOUS_15 Uint32
-
-const IS_COLORING_GLOBAL = (UInt32)(0)
-const IS_COLORING_GHOSTED = (UInt32)(1)
-
-#= # end enum ANONYMOUS_15 =#
-#= # begin enum ISColoringType =#
-typealias ISColoringType Uint32
-
-const IS_COLORING_GLOBAL = (UInt32)(0)
-const IS_COLORING_GHOSTED = (UInt32)(1)
-
-#= # end enum ISColoringType =#
-typealias PETSC_IS_COLOR_VALUE_TYPE Uint32
+# skipping undefined typealias typealias PetscBag Ptr{_n_PetscBag}
+# skipping undefined typealias typealias PetscBagItem Ptr{_n_PetscBagItem}
 typealias PetscViewerType Symbol
 typealias PetscDrawType Symbol
 
@@ -1269,8 +1446,8 @@ typealias PetscDrawType Symbol
 # skipping undefined typealias typealias PetscDrawSP Ptr{_p_PetscDrawSP}
 # skipping undefined typealias typealias PetscDrawHG Ptr{_p_PetscDrawHG}
 # skipping undefined typealias typealias PetscDrawBar Ptr{_p_PetscDrawBar}
-#= # begin enum ANONYMOUS_16 =#
-typealias ANONYMOUS_16 Uint32
+#= # begin enum ANONYMOUS_14 =#
+typealias ANONYMOUS_14 Uint32
 
 const PETSC_VIEWER_DEFAULT = (UInt32)(0)
 const PETSC_VIEWER_ASCII_MATLAB = (UInt32)(1)
@@ -1302,7 +1479,7 @@ const PETSC_VIEWER_NATIVE = (UInt32)(26)
 const PETSC_VIEWER_HDF5_VIZ = (UInt32)(27)
 const PETSC_VIEWER_NOFORMAT = (UInt32)(28)
 
-#= # end enum ANONYMOUS_16 =#
+#= # end enum ANONYMOUS_14 =#
 #= # begin enum PetscViewerFormat =#
 typealias PetscViewerFormat Uint32
 
@@ -1337,15 +1514,15 @@ const PETSC_VIEWER_HDF5_VIZ = (UInt32)(27)
 const PETSC_VIEWER_NOFORMAT = (UInt32)(28)
 
 #= # end enum PetscViewerFormat =#
-#= # begin enum ANONYMOUS_17 =#
-typealias ANONYMOUS_17 Uint32
+#= # begin enum ANONYMOUS_15 =#
+typealias ANONYMOUS_15 Uint32
 
 const PETSC_VTK_POINT_FIELD = (UInt32)(0)
 const PETSC_VTK_POINT_VECTOR_FIELD = (UInt32)(1)
 const PETSC_VTK_CELL_FIELD = (UInt32)(2)
 const PETSC_VTK_CELL_VECTOR_FIELD = (UInt32)(3)
 
-#= # end enum ANONYMOUS_17 =#
+#= # end enum ANONYMOUS_15 =#
 #= # begin enum PetscViewerVTKFieldType =#
 typealias PetscViewerVTKFieldType Uint32
 
@@ -1356,6 +1533,123 @@ const PETSC_VTK_CELL_VECTOR_FIELD = (UInt32)(3)
 
 #= # end enum PetscViewerVTKFieldType =#
 # skipping undefined typealias typealias PetscViewers Ptr{_n_PetscViewers}
+typealias PetscBT Symbol
+
+# skipping undefined typealias typealias PetscTable Ptr{_n_PetscTable}
+typealias PetscTablePosition Ptr{PetscInt}
+
+# skipping undefined typealias typealias PetscMatlabEngine Ptr{_p_PetscMatlabEngine}
+#= # begin enum ANONYMOUS_16 =#
+typealias ANONYMOUS_16 Uint32
+
+const PETSC_DRAW_MARKER_CROSS = (UInt32)(0)
+const PETSC_DRAW_MARKER_POINT = (UInt32)(1)
+const PETSC_DRAW_MARKER_PLUS = (UInt32)(2)
+const PETSC_DRAW_MARKER_CIRCLE = (UInt32)(3)
+
+#= # end enum ANONYMOUS_16 =#
+#= # begin enum PetscDrawMarkerType =#
+typealias PetscDrawMarkerType Uint32
+
+const PETSC_DRAW_MARKER_CROSS = (UInt32)(0)
+const PETSC_DRAW_MARKER_POINT = (UInt32)(1)
+const PETSC_DRAW_MARKER_PLUS = (UInt32)(2)
+const PETSC_DRAW_MARKER_CIRCLE = (UInt32)(3)
+
+#= # end enum PetscDrawMarkerType =#
+#= # begin enum ANONYMOUS_17 =#
+typealias ANONYMOUS_17 Uint32
+
+const PETSC_BUTTON_NONE = (UInt32)(0)
+const PETSC_BUTTON_LEFT = (UInt32)(1)
+const PETSC_BUTTON_CENTER = (UInt32)(2)
+const PETSC_BUTTON_RIGHT = (UInt32)(3)
+const PETSC_BUTTON_LEFT_SHIFT = (UInt32)(4)
+const PETSC_BUTTON_CENTER_SHIFT = (UInt32)(5)
+const PETSC_BUTTON_RIGHT_SHIFT = (UInt32)(6)
+
+#= # end enum ANONYMOUS_17 =#
+#= # begin enum PetscDrawButton =#
+typealias PetscDrawButton Uint32
+
+const PETSC_BUTTON_NONE = (UInt32)(0)
+const PETSC_BUTTON_LEFT = (UInt32)(1)
+const PETSC_BUTTON_CENTER = (UInt32)(2)
+const PETSC_BUTTON_RIGHT = (UInt32)(3)
+const PETSC_BUTTON_LEFT_SHIFT = (UInt32)(4)
+const PETSC_BUTTON_CENTER_SHIFT = (UInt32)(5)
+const PETSC_BUTTON_RIGHT_SHIFT = (UInt32)(6)
+
+#= # end enum PetscDrawButton =#
+#= skipping type declaration with undefined symbols:
+immutable PetscDrawViewPorts
+    nports::PetscInt
+    xl::Ptr{Cint}
+    xr::Ptr{Cint}
+    yl::Ptr{Cint}
+    yr::Ptr{Cint}
+    draw::PetscDraw
+    port_xl::Cint
+    port_yl::Cint
+    port_xr::Cint
+    port_yr::Cint
+end 
+=#
+# skipping undefined typealias typealias PetscSF Ptr{_p_PetscSF}
+immutable PetscSFNode
+    rank::PetscInt
+    index::PetscInt
+end
+
+immutable IS{T}
+    pobj::Ptr{Void}
+end
+
+immutable ISLocalToGlobalMapping{T}
+    pobj::Ptr{Void}
+end
+
+immutable ISColoring{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscLayout{T}
+    pobj::Ptr{Void}
+end
+
+# skipping undefined typealias typealias PetscSection Ptr{_p_PetscSection}
+typealias ISType Symbol
+
+#= # begin enum ANONYMOUS_18 =#
+typealias ANONYMOUS_18 Uint32
+
+const IS_GTOLM_MASK = (UInt32)(0)
+const IS_GTOLM_DROP = (UInt32)(1)
+
+#= # end enum ANONYMOUS_18 =#
+#= # begin enum ISGlobalToLocalMappingType =#
+typealias ISGlobalToLocalMappingType Uint32
+
+const IS_GTOLM_MASK = (UInt32)(0)
+const IS_GTOLM_DROP = (UInt32)(1)
+
+#= # end enum ISGlobalToLocalMappingType =#
+#= # begin enum ANONYMOUS_19 =#
+typealias ANONYMOUS_19 Uint32
+
+const IS_COLORING_GLOBAL = (UInt32)(0)
+const IS_COLORING_GHOSTED = (UInt32)(1)
+
+#= # end enum ANONYMOUS_19 =#
+#= # begin enum ISColoringType =#
+typealias ISColoringType Uint32
+
+const IS_COLORING_GLOBAL = (UInt32)(0)
+const IS_COLORING_GHOSTED = (UInt32)(1)
+
+#= # end enum ISColoringType =#
+typealias PETSC_IS_COLOR_VALUE_TYPE Uint32
+
 immutable Vec{T}
     pobj::Ptr{Void}
 end
@@ -1364,8 +1658,8 @@ immutable VecScatter{T}
     pobj::Ptr{Void}
 end
 
-#= # begin enum ANONYMOUS_18 =#
-typealias ANONYMOUS_18 Uint32
+#= # begin enum ANONYMOUS_20 =#
+typealias ANONYMOUS_20 Uint32
 
 const SCATTER_FORWARD = (UInt32)(0)
 const SCATTER_REVERSE = (UInt32)(1)
@@ -1373,7 +1667,7 @@ const SCATTER_FORWARD_LOCAL = (UInt32)(2)
 const SCATTER_REVERSE_LOCAL = (UInt32)(3)
 const SCATTER_LOCAL = (UInt32)(2)
 
-#= # end enum ANONYMOUS_18 =#
+#= # end enum ANONYMOUS_20 =#
 #= # begin enum ScatterMode =#
 typealias ScatterMode Uint32
 
@@ -1386,8 +1680,8 @@ const SCATTER_LOCAL = (UInt32)(2)
 #= # end enum ScatterMode =#
 typealias VecType Symbol
 
-#= # begin enum ANONYMOUS_19 =#
-typealias ANONYMOUS_19 Uint32
+#= # begin enum ANONYMOUS_21 =#
+typealias ANONYMOUS_21 Uint32
 
 const NORM_1 = (UInt32)(0)
 const NORM_2 = (UInt32)(1)
@@ -1395,14 +1689,14 @@ const NORM_FROBENIUS = (UInt32)(2)
 const NORM_INFINITY = (UInt32)(3)
 const NORM_1_AND_2 = (UInt32)(4)
 
-#= # end enum ANONYMOUS_19 =#
-#= # begin enum ANONYMOUS_20 =#
-typealias ANONYMOUS_20 Uint32
+#= # end enum ANONYMOUS_21 =#
+#= # begin enum ANONYMOUS_22 =#
+typealias ANONYMOUS_22 Uint32
 
 const VEC_IGNORE_OFF_PROC_ENTRIES = (UInt32)(0)
 const VEC_IGNORE_NEGATIVE_INDICES = (UInt32)(1)
 
-#= # end enum ANONYMOUS_20 =#
+#= # end enum ANONYMOUS_22 =#
 #= # begin enum VecOption =#
 typealias VecOption Uint32
 
@@ -1410,14 +1704,14 @@ const VEC_IGNORE_OFF_PROC_ENTRIES = (UInt32)(0)
 const VEC_IGNORE_NEGATIVE_INDICES = (UInt32)(1)
 
 #= # end enum VecOption =#
-#= # begin enum ANONYMOUS_21 =#
-typealias ANONYMOUS_21 Uint32
+#= # begin enum ANONYMOUS_23 =#
+typealias ANONYMOUS_23 Uint32
 
 const VECOP_VIEW = (UInt32)(33)
 const VECOP_LOAD = (UInt32)(41)
 const VECOP_DUPLICATE = (UInt32)(0)
 
-#= # end enum ANONYMOUS_21 =#
+#= # end enum ANONYMOUS_23 =#
 #= # begin enum VecOperation =#
 typealias VecOperation Uint32
 
@@ -1433,8 +1727,8 @@ end
 
 typealias MatType Symbol
 
-#= # begin enum ANONYMOUS_22 =#
-typealias ANONYMOUS_22 Uint32
+#= # begin enum ANONYMOUS_24 =#
+typealias ANONYMOUS_24 Uint32
 
 const MAT_FACTOR_NONE = (UInt32)(0)
 const MAT_FACTOR_LU = (UInt32)(1)
@@ -1443,7 +1737,7 @@ const MAT_FACTOR_ILU = (UInt32)(3)
 const MAT_FACTOR_ICC = (UInt32)(4)
 const MAT_FACTOR_ILUDT = (UInt32)(5)
 
-#= # end enum ANONYMOUS_22 =#
+#= # end enum ANONYMOUS_24 =#
 #= # begin enum MatFactorType =#
 typealias MatFactorType Uint32
 
@@ -1455,14 +1749,14 @@ const MAT_FACTOR_ICC = (UInt32)(4)
 const MAT_FACTOR_ILUDT = (UInt32)(5)
 
 #= # end enum MatFactorType =#
-#= # begin enum ANONYMOUS_23 =#
-typealias ANONYMOUS_23 Uint32
+#= # begin enum ANONYMOUS_25 =#
+typealias ANONYMOUS_25 Uint32
 
 const MAT_INITIAL_MATRIX = (UInt32)(0)
 const MAT_REUSE_MATRIX = (UInt32)(1)
 const MAT_IGNORE_MATRIX = (UInt32)(2)
 
-#= # end enum ANONYMOUS_23 =#
+#= # end enum ANONYMOUS_25 =#
 #= # begin enum MatReuse =#
 typealias MatReuse Uint32
 
@@ -1471,13 +1765,13 @@ const MAT_REUSE_MATRIX = (UInt32)(1)
 const MAT_IGNORE_MATRIX = (UInt32)(2)
 
 #= # end enum MatReuse =#
-#= # begin enum ANONYMOUS_24 =#
-typealias ANONYMOUS_24 Uint32
+#= # begin enum ANONYMOUS_26 =#
+typealias ANONYMOUS_26 Uint32
 
 const MAT_DO_NOT_GET_VALUES = (UInt32)(0)
 const MAT_GET_VALUES = (UInt32)(1)
 
-#= # end enum ANONYMOUS_24 =#
+#= # end enum ANONYMOUS_26 =#
 #= # begin enum MatGetSubMatrixOption =#
 typealias MatGetSubMatrixOption Uint32
 
@@ -1485,14 +1779,14 @@ const MAT_DO_NOT_GET_VALUES = (UInt32)(0)
 const MAT_GET_VALUES = (UInt32)(1)
 
 #= # end enum MatGetSubMatrixOption =#
-#= # begin enum ANONYMOUS_25 =#
-typealias ANONYMOUS_25 Uint32
+#= # begin enum ANONYMOUS_27 =#
+typealias ANONYMOUS_27 Uint32
 
 const DIFFERENT_NONZERO_PATTERN = (UInt32)(0)
 const SUBSET_NONZERO_PATTERN = (UInt32)(1)
 const SAME_NONZERO_PATTERN = (UInt32)(2)
 
-#= # end enum ANONYMOUS_25 =#
+#= # end enum ANONYMOUS_27 =#
 #= # begin enum MatStructure =#
 typealias MatStructure Uint32
 
@@ -1501,13 +1795,13 @@ const SUBSET_NONZERO_PATTERN = (UInt32)(1)
 const SAME_NONZERO_PATTERN = (UInt32)(2)
 
 #= # end enum MatStructure =#
-#= # begin enum ANONYMOUS_26 =#
-typealias ANONYMOUS_26 Uint32
+#= # begin enum ANONYMOUS_28 =#
+typealias ANONYMOUS_28 Uint32
 
 const MAT_COMPOSITE_ADDITIVE = (UInt32)(0)
 const MAT_COMPOSITE_MULTIPLICATIVE = (UInt32)(1)
 
-#= # end enum ANONYMOUS_26 =#
+#= # end enum ANONYMOUS_28 =#
 #= # begin enum MatCompositeType =#
 typealias MatCompositeType Uint32
 
@@ -1515,20 +1809,20 @@ const MAT_COMPOSITE_ADDITIVE = (UInt32)(0)
 const MAT_COMPOSITE_MULTIPLICATIVE = (UInt32)(1)
 
 #= # end enum MatCompositeType =#
-type MatStencil
+immutable MatStencil
     k::PetscInt
     j::PetscInt
     i::PetscInt
     c::PetscInt
 end
 
-#= # begin enum ANONYMOUS_27 =#
-typealias ANONYMOUS_27 Uint32
+#= # begin enum ANONYMOUS_29 =#
+typealias ANONYMOUS_29 Uint32
 
 const MAT_FLUSH_ASSEMBLY = (UInt32)(1)
 const MAT_FINAL_ASSEMBLY = (UInt32)(0)
 
-#= # end enum ANONYMOUS_27 =#
+#= # end enum ANONYMOUS_29 =#
 #= # begin enum MatAssemblyType =#
 typealias MatAssemblyType Uint32
 
@@ -1536,8 +1830,8 @@ const MAT_FLUSH_ASSEMBLY = (UInt32)(1)
 const MAT_FINAL_ASSEMBLY = (UInt32)(0)
 
 #= # end enum MatAssemblyType =#
-#= # begin enum ANONYMOUS_28 =#
-typealias ANONYMOUS_28 Cint
+#= # begin enum ANONYMOUS_30 =#
+typealias ANONYMOUS_30 Cint
 
 const MAT_OPTION_MIN = (Int32)(-5)
 const MAT_NEW_NONZERO_LOCATION_ERR = (Int32)(-4)
@@ -1564,7 +1858,7 @@ const MAT_NO_OFF_PROC_ENTRIES = (Int32)(17)
 const MAT_NEW_NONZERO_LOCATIONS = (Int32)(18)
 const MAT_OPTION_MAX = (Int32)(19)
 
-#= # end enum ANONYMOUS_28 =#
+#= # end enum ANONYMOUS_30 =#
 #= # begin enum MatOption =#
 typealias MatOption Cint
 
@@ -1594,14 +1888,14 @@ const MAT_NEW_NONZERO_LOCATIONS = (Int32)(18)
 const MAT_OPTION_MAX = (Int32)(19)
 
 #= # end enum MatOption =#
-#= # begin enum ANONYMOUS_29 =#
-typealias ANONYMOUS_29 Uint32
+#= # begin enum ANONYMOUS_31 =#
+typealias ANONYMOUS_31 Uint32
 
 const MAT_DO_NOT_COPY_VALUES = (UInt32)(0)
 const MAT_COPY_VALUES = (UInt32)(1)
 const MAT_SHARE_NONZERO_PATTERN = (UInt32)(2)
 
-#= # end enum ANONYMOUS_29 =#
+#= # end enum ANONYMOUS_31 =#
 #= # begin enum MatDuplicateOption =#
 typealias MatDuplicateOption Uint32
 
@@ -1610,7 +1904,7 @@ const MAT_COPY_VALUES = (UInt32)(1)
 const MAT_SHARE_NONZERO_PATTERN = (UInt32)(2)
 
 #= # end enum MatDuplicateOption =#
-type MatInfo
+immutable MatInfo
     block_size::PetscLogDouble
     nz_allocated::PetscLogDouble
     nz_used::PetscLogDouble
@@ -1623,14 +1917,14 @@ type MatInfo
     factor_mallocs::PetscLogDouble
 end
 
-#= # begin enum ANONYMOUS_30 =#
-typealias ANONYMOUS_30 Uint32
+#= # begin enum ANONYMOUS_32 =#
+typealias ANONYMOUS_32 Uint32
 
 const MAT_LOCAL = (UInt32)(1)
 const MAT_GLOBAL_MAX = (UInt32)(2)
 const MAT_GLOBAL_SUM = (UInt32)(3)
 
-#= # end enum ANONYMOUS_30 =#
+#= # end enum ANONYMOUS_32 =#
 #= # begin enum MatInfoType =#
 typealias MatInfoType Uint32
 
@@ -1641,15 +1935,15 @@ const MAT_GLOBAL_SUM = (UInt32)(3)
 #= # end enum MatInfoType =#
 typealias MatOrderingType Symbol
 
-#= # begin enum ANONYMOUS_31 =#
-typealias ANONYMOUS_31 Uint32
+#= # begin enum ANONYMOUS_33 =#
+typealias ANONYMOUS_33 Uint32
 
 const MAT_SHIFT_NONE = (UInt32)(0)
 const MAT_SHIFT_NONZERO = (UInt32)(1)
 const MAT_SHIFT_POSITIVE_DEFINITE = (UInt32)(2)
 const MAT_SHIFT_INBLOCKS = (UInt32)(3)
 
-#= # end enum ANONYMOUS_31 =#
+#= # end enum ANONYMOUS_33 =#
 #= # begin enum MatFactorShiftType =#
 typealias MatFactorShiftType Uint32
 
@@ -1659,7 +1953,7 @@ const MAT_SHIFT_POSITIVE_DEFINITE = (UInt32)(2)
 const MAT_SHIFT_INBLOCKS = (UInt32)(3)
 
 #= # end enum MatFactorShiftType =#
-type MatFactorInfo
+immutable MatFactorInfo
     diagonal_fill::Cint
     usedt::Cint
     dt::Cint
@@ -1673,8 +1967,8 @@ type MatFactorInfo
     shiftamount::Cint
 end
 
-#= # begin enum ANONYMOUS_32 =#
-typealias ANONYMOUS_32 Uint32
+#= # begin enum ANONYMOUS_34 =#
+typealias ANONYMOUS_34 Uint32
 
 const SOR_FORWARD_SWEEP = (UInt32)(1)
 const SOR_BACKWARD_SWEEP = (UInt32)(2)
@@ -1687,7 +1981,7 @@ const SOR_EISENSTAT = (UInt32)(32)
 const SOR_APPLY_UPPER = (UInt32)(64)
 const SOR_APPLY_LOWER = (UInt32)(128)
 
-#= # end enum ANONYMOUS_32 =#
+#= # end enum ANONYMOUS_34 =#
 #= # begin enum MatSORType =#
 typealias MatSORType Uint32
 
@@ -1706,15 +2000,15 @@ const SOR_APPLY_LOWER = (UInt32)(128)
 # skipping undefined typealias typealias MatColoring Ptr{_p_MatColoring}
 typealias MatColoringType Symbol
 
-#= # begin enum ANONYMOUS_33 =#
-typealias ANONYMOUS_33 Uint32
+#= # begin enum ANONYMOUS_35 =#
+typealias ANONYMOUS_35 Uint32
 
 const MAT_COLORING_WEIGHT_RANDOM = (UInt32)(0)
 const MAT_COLORING_WEIGHT_LEXICAL = (UInt32)(1)
 const MAT_COLORING_WEIGHT_LF = (UInt32)(2)
 const MAT_COLORING_WEIGHT_SL = (UInt32)(3)
 
-#= # end enum ANONYMOUS_33 =#
+#= # end enum ANONYMOUS_35 =#
 #= # begin enum MatColoringWeightType =#
 typealias MatColoringWeightType Uint32
 
@@ -1729,8 +2023,8 @@ const MAT_COLORING_WEIGHT_SL = (UInt32)(3)
 # skipping undefined typealias typealias MatPartitioning Ptr{_p_MatPartitioning}
 typealias MatPartitioningType Symbol
 
-#= # begin enum ANONYMOUS_34 =#
-typealias ANONYMOUS_34 Uint32
+#= # begin enum ANONYMOUS_36 =#
+typealias ANONYMOUS_36 Uint32
 
 const MP_CHACO_MULTILEVEL = (UInt32)(1)
 const MP_CHACO_SPECTRAL = (UInt32)(2)
@@ -1738,7 +2032,7 @@ const MP_CHACO_LINEAR = (UInt32)(4)
 const MP_CHACO_RANDOM = (UInt32)(5)
 const MP_CHACO_SCATTERED = (UInt32)(6)
 
-#= # end enum ANONYMOUS_34 =#
+#= # end enum ANONYMOUS_36 =#
 #= # begin enum MPChacoGlobalType =#
 typealias MPChacoGlobalType Uint32
 
@@ -1749,13 +2043,13 @@ const MP_CHACO_RANDOM = (UInt32)(5)
 const MP_CHACO_SCATTERED = (UInt32)(6)
 
 #= # end enum MPChacoGlobalType =#
-#= # begin enum ANONYMOUS_35 =#
-typealias ANONYMOUS_35 Uint32
+#= # begin enum ANONYMOUS_37 =#
+typealias ANONYMOUS_37 Uint32
 
 const MP_CHACO_KERNIGHAN = (UInt32)(1)
 const MP_CHACO_NONE = (UInt32)(2)
 
-#= # end enum ANONYMOUS_35 =#
+#= # end enum ANONYMOUS_37 =#
 #= # begin enum MPChacoLocalType =#
 typealias MPChacoLocalType Uint32
 
@@ -1763,13 +2057,13 @@ const MP_CHACO_KERNIGHAN = (UInt32)(1)
 const MP_CHACO_NONE = (UInt32)(2)
 
 #= # end enum MPChacoLocalType =#
-#= # begin enum ANONYMOUS_36 =#
-typealias ANONYMOUS_36 Uint32
+#= # begin enum ANONYMOUS_38 =#
+typealias ANONYMOUS_38 Uint32
 
 const MP_CHACO_LANCZOS = (UInt32)(0)
 const MP_CHACO_RQI = (UInt32)(1)
 
-#= # end enum ANONYMOUS_36 =#
+#= # end enum ANONYMOUS_38 =#
 #= # begin enum MPChacoEigenType =#
 typealias MPChacoEigenType Uint32
 
@@ -1777,8 +2071,8 @@ const MP_CHACO_LANCZOS = (UInt32)(0)
 const MP_CHACO_RQI = (UInt32)(1)
 
 #= # end enum MPChacoEigenType =#
-#= # begin enum ANONYMOUS_37 =#
-typealias ANONYMOUS_37 Uint32
+#= # begin enum ANONYMOUS_39 =#
+typealias ANONYMOUS_39 Uint32
 
 const MP_PTSCOTCH_QUALITY = (UInt32)(0)
 const MP_PTSCOTCH_SPEED = (UInt32)(1)
@@ -1786,7 +2080,7 @@ const MP_PTSCOTCH_BALANCE = (UInt32)(2)
 const MP_PTSCOTCH_SAFETY = (UInt32)(3)
 const MP_PTSCOTCH_SCALABILITY = (UInt32)(4)
 
-#= # end enum ANONYMOUS_37 =#
+#= # end enum ANONYMOUS_39 =#
 #= # begin enum MPPTScotchStrategyType =#
 typealias MPPTScotchStrategyType Uint32
 
@@ -1801,19 +2095,19 @@ const MP_PTSCOTCH_SCALABILITY = (UInt32)(4)
 typealias MatCoarsenType Symbol
 
 #= skipping type declaration with undefined symbols:
-type PetscCDIntNd
+immutable PetscCDIntNd
     next::Ptr{_PetscCDIntNd}
     gid::PetscInt
 end 
 =#
 #= skipping type declaration with undefined symbols:
-type PetscCDArrNd
+immutable PetscCDArrNd
     next::Ptr{_PetscCDArrNd}
     array::Ptr{_PetscCDIntNd}
 end 
 =#
 #= skipping type declaration with undefined symbols:
-type PetscCoarsenData
+immutable PetscCoarsenData
     pool_list::PetscCDArrNd
     new_node::Ptr{PetscCDIntNd}
     new_left::PetscInt
@@ -1824,8 +2118,8 @@ type PetscCoarsenData
     mat::Mat
 end 
 =#
-#= # begin enum ANONYMOUS_38 =#
-typealias ANONYMOUS_38 Uint32
+#= # begin enum ANONYMOUS_40 =#
+typealias ANONYMOUS_40 Uint32
 
 const MATOP_SET_VALUES = (UInt32)(0)
 const MATOP_GET_ROW = (UInt32)(1)
@@ -1963,7 +2257,7 @@ const MATOP_RESIDUAL = (UInt32)(141)
 const MATOP_FDCOLORING_SETUP = (UInt32)(142)
 const MATOP_MPICONCATENATESEQ = (UInt32)(144)
 
-#= # end enum ANONYMOUS_38 =#
+#= # end enum ANONYMOUS_40 =#
 #= # begin enum MatOperation =#
 typealias MatOperation Uint32
 
@@ -2109,8 +2403,8 @@ const MATOP_MPICONCATENATESEQ = (UInt32)(144)
 typealias MatMFFDType Symbol
 
 # skipping undefined typealias typealias DM Ptr{_p_DM}
-#= # begin enum ANONYMOUS_39 =#
-typealias ANONYMOUS_39 Uint32
+#= # begin enum ANONYMOUS_41 =#
+typealias ANONYMOUS_41 Uint32
 
 const DM_BOUNDARY_NONE = (UInt32)(0)
 const DM_BOUNDARY_GHOSTED = (UInt32)(1)
@@ -2118,7 +2412,7 @@ const DM_BOUNDARY_MIRROR = (UInt32)(2)
 const DM_BOUNDARY_PERIODIC = (UInt32)(3)
 const DM_BOUNDARY_TWIST = (UInt32)(4)
 
-#= # end enum ANONYMOUS_39 =#
+#= # end enum ANONYMOUS_41 =#
 #= # begin enum DMBoundaryType =#
 typealias DMBoundaryType Uint32
 
@@ -2130,30 +2424,262 @@ const DM_BOUNDARY_TWIST = (UInt32)(4)
 
 #= # end enum DMBoundaryType =#
 # skipping undefined typealias typealias PetscPartitioner Ptr{_p_PetscPartitioner}
+# skipping undefined typealias typealias PetscSpace Ptr{_p_PetscSpace}
+# skipping undefined typealias typealias PetscDualSpace Ptr{_p_PetscDualSpace}
+# skipping undefined typealias typealias PetscFE Ptr{_p_PetscFE}
+# skipping undefined typealias typealias PetscDS Ptr{_p_PetscDS}
+typealias DMType Symbol
+
+immutable NLF_DAAD
+end
+
+typealias NLF Ptr{NLF_DAAD}
+
+#= # begin enum ANONYMOUS_42 =#
+typealias ANONYMOUS_42 Uint32
+
+const PETSC_UNIT_LENGTH = (UInt32)(0)
+const PETSC_UNIT_MASS = (UInt32)(1)
+const PETSC_UNIT_TIME = (UInt32)(2)
+const PETSC_UNIT_CURRENT = (UInt32)(3)
+const PETSC_UNIT_TEMPERATURE = (UInt32)(4)
+const PETSC_UNIT_AMOUNT = (UInt32)(5)
+const PETSC_UNIT_LUMINOSITY = (UInt32)(6)
+const NUM_PETSC_UNITS = (UInt32)(7)
+
+#= # end enum ANONYMOUS_42 =#
+#= # begin enum PetscUnit =#
+typealias PetscUnit Uint32
+
+const PETSC_UNIT_LENGTH = (UInt32)(0)
+const PETSC_UNIT_MASS = (UInt32)(1)
+const PETSC_UNIT_TIME = (UInt32)(2)
+const PETSC_UNIT_CURRENT = (UInt32)(3)
+const PETSC_UNIT_TEMPERATURE = (UInt32)(4)
+const PETSC_UNIT_AMOUNT = (UInt32)(5)
+const PETSC_UNIT_LUMINOSITY = (UInt32)(6)
+const NUM_PETSC_UNITS = (UInt32)(7)
+
+#= # end enum PetscUnit =#
+# skipping undefined typealias typealias DMInterpolationInfo Ptr{_DMInterpolationInfo}
+#= # begin enum ANONYMOUS_43 =#
+typealias ANONYMOUS_43 Uint32
+
+const DMDA_STENCIL_STAR = (UInt32)(0)
+const DMDA_STENCIL_BOX = (UInt32)(1)
+
+#= # end enum ANONYMOUS_43 =#
+#= # begin enum DMDAStencilType =#
+typealias DMDAStencilType Uint32
+
+const DMDA_STENCIL_STAR = (UInt32)(0)
+const DMDA_STENCIL_BOX = (UInt32)(1)
+
+#= # end enum DMDAStencilType =#
+#= # begin enum ANONYMOUS_44 =#
+typealias ANONYMOUS_44 Uint32
+
+const DMDA_Q0 = (UInt32)(0)
+const DMDA_Q1 = (UInt32)(1)
+
+#= # end enum ANONYMOUS_44 =#
+#= # begin enum DMDAInterpolationType =#
+typealias DMDAInterpolationType Uint32
+
+const DMDA_Q0 = (UInt32)(0)
+const DMDA_Q1 = (UInt32)(1)
+
+#= # end enum DMDAInterpolationType =#
+#= # begin enum ANONYMOUS_45 =#
+typealias ANONYMOUS_45 Uint32
+
+const DMDA_ELEMENT_P1 = (UInt32)(0)
+const DMDA_ELEMENT_Q1 = (UInt32)(1)
+
+#= # end enum ANONYMOUS_45 =#
+#= # begin enum DMDAElementType =#
+typealias DMDAElementType Uint32
+
+const DMDA_ELEMENT_P1 = (UInt32)(0)
+const DMDA_ELEMENT_Q1 = (UInt32)(1)
+
+#= # end enum DMDAElementType =#
+#= skipping type declaration with undefined symbols:
+immutable DMDALocalInfo
+    dim::PetscInt
+    dof::PetscInt
+    sw::PetscInt
+    mx::PetscInt
+    my::PetscInt
+    mz::PetscInt
+    xs::PetscInt
+    ys::PetscInt
+    zs::PetscInt
+    xm::PetscInt
+    ym::PetscInt
+    zm::PetscInt
+    gxs::PetscInt
+    gys::PetscInt
+    gzs::PetscInt
+    gxm::PetscInt
+    gym::PetscInt
+    gzm::PetscInt
+    bx::DMBoundaryType
+    by::DMBoundaryType
+    bz::DMBoundaryType
+    st::DMDAStencilType
+    da::DM
+end 
+=#
+typealias PFType Symbol
+
+# skipping undefined typealias typealias PF Ptr{_p_PF}
+typealias AOType Symbol
+
+# skipping undefined typealias typealias PetscQuadrature Ptr{_p_PetscQuadrature}
+immutable Array_3_Cint
+    d1::Cint
+    d2::Cint
+    d3::Cint
+end
+
+#= skipping undefined expression zero(::Type{Array_3_Cint}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 264:
+        Array_3_Cint(fill(zero(Cint),3)...)
+    end =#
+immutable Array_9_Cint
+    d1::Cint
+    d2::Cint
+    d3::Cint
+    d4::Cint
+    d5::Cint
+    d6::Cint
+    d7::Cint
+    d8::Cint
+    d9::Cint
+end
+
+#= skipping undefined expression zero(::Type{Array_9_Cint}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 264:
+        Array_9_Cint(fill(zero(Cint),9)...)
+    end =#
+immutable PetscFECellGeom
+    v0::Array_3_Cint
+    J::Array_9_Cint
+    invJ::Array_9_Cint
+    detJ::Cint
+    n::Array_3_Cint
+    dim::PetscInt
+    dimEmbed::PetscInt
+end
+
+typealias PetscSpaceType Symbol
+typealias PetscDualSpaceType Symbol
+typealias PetscFEType Symbol
+
+#= # begin enum ANONYMOUS_46 =#
+typealias ANONYMOUS_46 Uint32
+
+const DMDA_X = (UInt32)(0)
+const DMDA_Y = (UInt32)(1)
+const DMDA_Z = (UInt32)(2)
+
+#= # end enum ANONYMOUS_46 =#
+#= # begin enum DMDADirection =#
+typealias DMDADirection Uint32
+
+const DMDA_X = (UInt32)(0)
+const DMDA_Y = (UInt32)(1)
+const DMDA_Z = (UInt32)(2)
+
+#= # end enum DMDADirection =#
+immutable DMDACoor2d
+    x::PetscScalar
+    y::PetscScalar
+end
+
+immutable DMDACoor3d
+    x::PetscScalar
+    y::PetscScalar
+    z::PetscScalar
+end
+
+# skipping undefined typealias typealias PetscLimiter Ptr{_p_PetscLimiter}
+# skipping undefined typealias typealias PetscFV Ptr{_p_PetscFV}
+immutable Array_3_PetscScalar
+    d1::PetscScalar
+    d2::PetscScalar
+    d3::PetscScalar
+end
+
+#= skipping undefined expression zero(::Type{Array_3_PetscScalar}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 264:
+        Array_3_PetscScalar(fill(zero(Float64),3)...)
+    end =#
+immutable Array_2_Array_3_PetscScalar
+    d1::Array_3_PetscScalar
+    d2::Array_3_PetscScalar
+end
+
+#= skipping undefined expression zero(::Type{Array_2_Array_3_PetscScalar}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 264:
+        Array_2_Array_3_PetscScalar(fill(zero(Array_3_PetscScalar),2)...)
+    end =#
+immutable PetscFVFaceGeom
+    normal::Array_3_Cint
+    centroid::Array_3_Cint
+    grad::Array_2_Array_3_PetscScalar
+end
+
+immutable PetscFVCellGeom
+    centroid::Array_3_Cint
+    volume::Cint
+end
+
+typealias PetscLimiterType Symbol
+typealias PetscFVType Symbol
+typealias PetscPartitionerType Symbol
+
+# skipping undefined typealias typealias DMLabel Ptr{_n_DMLabel}
+# skipping undefined typealias typealias DMBoundary Ptr{_n_Boundary}
+#= skipping type declaration with undefined symbols:
+immutable JacActionCtx
+    dm::DM
+    u::Vec
+    J::Mat
+    user::Ptr{Void}
+end 
+=#
+typealias PetscDSType Symbol
+typealias PetscPointFunc Ptr{Void}
+typealias PetscPointJac Ptr{Void}
+typealias PetscBdPointFunc Ptr{Void}
+typealias PetscBdPointJac Ptr{Void}
+typealias PetscRiemannFunc Ptr{Void}
+
+# skipping undefined typealias typealias Characteristic Ptr{_p_Characteristic}
+typealias CharacteristicType Symbol
+
 immutable PC{T}
     pobj::Ptr{Void}
 end
 
 typealias PCType Symbol
 
-#= # begin enum ANONYMOUS_40 =#
-typealias ANONYMOUS_40 Cint
+#= # begin enum ANONYMOUS_47 =#
+typealias ANONYMOUS_47 Cint
 
 const PC_SIDE_DEFAULT = (Int32)(-1)
 const PC_LEFT = (Int32)(0)
 const PC_RIGHT = (Int32)(1)
 const PC_SYMMETRIC = (Int32)(2)
 
-#= # end enum ANONYMOUS_40 =#
-#= # begin enum ANONYMOUS_41 =#
-typealias ANONYMOUS_41 Cint
+#= # end enum ANONYMOUS_47 =#
+#= # begin enum ANONYMOUS_48 =#
+typealias ANONYMOUS_48 Cint
 
 const PCRICHARDSON_CONVERGED_RTOL = (Int32)(2)
 const PCRICHARDSON_CONVERGED_ATOL = (Int32)(3)
 const PCRICHARDSON_CONVERGED_ITS = (Int32)(4)
 const PCRICHARDSON_DIVERGED_DTOL = (Int32)(-4)
 
-#= # end enum ANONYMOUS_41 =#
+#= # end enum ANONYMOUS_48 =#
 #= # begin enum PCRichardsonConvergedReason =#
 typealias PCRichardsonConvergedReason Cint
 
@@ -2163,14 +2689,14 @@ const PCRICHARDSON_CONVERGED_ITS = (Int32)(4)
 const PCRICHARDSON_DIVERGED_DTOL = (Int32)(-4)
 
 #= # end enum PCRichardsonConvergedReason =#
-#= # begin enum ANONYMOUS_42 =#
-typealias ANONYMOUS_42 Uint32
+#= # begin enum ANONYMOUS_49 =#
+typealias ANONYMOUS_49 Uint32
 
 const PC_JACOBI_DIAGONAL = (UInt32)(0)
 const PC_JACOBI_ROWMAX = (UInt32)(1)
 const PC_JACOBI_ROWSUM = (UInt32)(2)
 
-#= # end enum ANONYMOUS_42 =#
+#= # end enum ANONYMOUS_49 =#
 #= # begin enum PCJacobiType =#
 typealias PCJacobiType Uint32
 
@@ -2179,15 +2705,15 @@ const PC_JACOBI_ROWMAX = (UInt32)(1)
 const PC_JACOBI_ROWSUM = (UInt32)(2)
 
 #= # end enum PCJacobiType =#
-#= # begin enum ANONYMOUS_43 =#
-typealias ANONYMOUS_43 Uint32
+#= # begin enum ANONYMOUS_50 =#
+typealias ANONYMOUS_50 Uint32
 
 const PC_ASM_BASIC = (UInt32)(3)
 const PC_ASM_RESTRICT = (UInt32)(1)
 const PC_ASM_INTERPOLATE = (UInt32)(2)
 const PC_ASM_NONE = (UInt32)(0)
 
-#= # end enum ANONYMOUS_43 =#
+#= # end enum ANONYMOUS_50 =#
 #= # begin enum PCASMType =#
 typealias PCASMType Uint32
 
@@ -2197,15 +2723,15 @@ const PC_ASM_INTERPOLATE = (UInt32)(2)
 const PC_ASM_NONE = (UInt32)(0)
 
 #= # end enum PCASMType =#
-#= # begin enum ANONYMOUS_44 =#
-typealias ANONYMOUS_44 Uint32
+#= # begin enum ANONYMOUS_51 =#
+typealias ANONYMOUS_51 Uint32
 
 const PC_GASM_BASIC = (UInt32)(3)
 const PC_GASM_RESTRICT = (UInt32)(1)
 const PC_GASM_INTERPOLATE = (UInt32)(2)
 const PC_GASM_NONE = (UInt32)(0)
 
-#= # end enum ANONYMOUS_44 =#
+#= # end enum ANONYMOUS_51 =#
 #= # begin enum PCGASMType =#
 typealias PCGASMType Uint32
 
@@ -2215,8 +2741,8 @@ const PC_GASM_INTERPOLATE = (UInt32)(2)
 const PC_GASM_NONE = (UInt32)(0)
 
 #= # end enum PCGASMType =#
-#= # begin enum ANONYMOUS_45 =#
-typealias ANONYMOUS_45 Uint32
+#= # begin enum ANONYMOUS_52 =#
+typealias ANONYMOUS_52 Uint32
 
 const PC_COMPOSITE_ADDITIVE = (UInt32)(0)
 const PC_COMPOSITE_MULTIPLICATIVE = (UInt32)(1)
@@ -2224,7 +2750,7 @@ const PC_COMPOSITE_SYMMETRIC_MULTIPLICATIVE = (UInt32)(2)
 const PC_COMPOSITE_SPECIAL = (UInt32)(3)
 const PC_COMPOSITE_SCHUR = (UInt32)(4)
 
-#= # end enum ANONYMOUS_45 =#
+#= # end enum ANONYMOUS_52 =#
 #= # begin enum PCCompositeType =#
 typealias PCCompositeType Uint32
 
@@ -2235,8 +2761,8 @@ const PC_COMPOSITE_SPECIAL = (UInt32)(3)
 const PC_COMPOSITE_SCHUR = (UInt32)(4)
 
 #= # end enum PCCompositeType =#
-#= # begin enum ANONYMOUS_46 =#
-typealias ANONYMOUS_46 Uint32
+#= # begin enum ANONYMOUS_53 =#
+typealias ANONYMOUS_53 Uint32
 
 const PC_FIELDSPLIT_SCHUR_PRE_SELF = (UInt32)(0)
 const PC_FIELDSPLIT_SCHUR_PRE_SELFP = (UInt32)(1)
@@ -2244,7 +2770,7 @@ const PC_FIELDSPLIT_SCHUR_PRE_A11 = (UInt32)(2)
 const PC_FIELDSPLIT_SCHUR_PRE_USER = (UInt32)(3)
 const PC_FIELDSPLIT_SCHUR_PRE_FULL = (UInt32)(4)
 
-#= # end enum ANONYMOUS_46 =#
+#= # end enum ANONYMOUS_53 =#
 #= # begin enum PCFieldSplitSchurPreType =#
 typealias PCFieldSplitSchurPreType Uint32
 
@@ -2255,15 +2781,15 @@ const PC_FIELDSPLIT_SCHUR_PRE_USER = (UInt32)(3)
 const PC_FIELDSPLIT_SCHUR_PRE_FULL = (UInt32)(4)
 
 #= # end enum PCFieldSplitSchurPreType =#
-#= # begin enum ANONYMOUS_47 =#
-typealias ANONYMOUS_47 Uint32
+#= # begin enum ANONYMOUS_54 =#
+typealias ANONYMOUS_54 Uint32
 
 const PC_FIELDSPLIT_SCHUR_FACT_DIAG = (UInt32)(0)
 const PC_FIELDSPLIT_SCHUR_FACT_LOWER = (UInt32)(1)
 const PC_FIELDSPLIT_SCHUR_FACT_UPPER = (UInt32)(2)
 const PC_FIELDSPLIT_SCHUR_FACT_FULL = (UInt32)(3)
 
-#= # end enum ANONYMOUS_47 =#
+#= # end enum ANONYMOUS_54 =#
 #= # begin enum PCFieldSplitSchurFactType =#
 typealias PCFieldSplitSchurFactType Uint32
 
@@ -2273,14 +2799,14 @@ const PC_FIELDSPLIT_SCHUR_FACT_UPPER = (UInt32)(2)
 const PC_FIELDSPLIT_SCHUR_FACT_FULL = (UInt32)(3)
 
 #= # end enum PCFieldSplitSchurFactType =#
-#= # begin enum ANONYMOUS_48 =#
-typealias ANONYMOUS_48 Uint32
+#= # begin enum ANONYMOUS_55 =#
+typealias ANONYMOUS_55 Uint32
 
 const PC_PARMS_GLOBAL_RAS = (UInt32)(0)
 const PC_PARMS_GLOBAL_SCHUR = (UInt32)(1)
 const PC_PARMS_GLOBAL_BJ = (UInt32)(2)
 
-#= # end enum ANONYMOUS_48 =#
+#= # end enum ANONYMOUS_55 =#
 #= # begin enum PCPARMSGlobalType =#
 typealias PCPARMSGlobalType Uint32
 
@@ -2289,15 +2815,15 @@ const PC_PARMS_GLOBAL_SCHUR = (UInt32)(1)
 const PC_PARMS_GLOBAL_BJ = (UInt32)(2)
 
 #= # end enum PCPARMSGlobalType =#
-#= # begin enum ANONYMOUS_49 =#
-typealias ANONYMOUS_49 Uint32
+#= # begin enum ANONYMOUS_56 =#
+typealias ANONYMOUS_56 Uint32
 
 const PC_PARMS_LOCAL_ILU0 = (UInt32)(0)
 const PC_PARMS_LOCAL_ILUK = (UInt32)(1)
 const PC_PARMS_LOCAL_ILUT = (UInt32)(2)
 const PC_PARMS_LOCAL_ARMS = (UInt32)(3)
 
-#= # end enum ANONYMOUS_49 =#
+#= # end enum ANONYMOUS_56 =#
 #= # begin enum PCPARMSLocalType =#
 typealias PCPARMSLocalType Uint32
 
@@ -2310,22 +2836,22 @@ const PC_PARMS_LOCAL_ARMS = (UInt32)(3)
 typealias PCGAMGType Symbol
 typealias PCGAMGClassicalType Symbol
 
-#= # begin enum ANONYMOUS_50 =#
-typealias ANONYMOUS_50 Uint32
+#= # begin enum ANONYMOUS_57 =#
+typealias ANONYMOUS_57 Uint32
 
 const PC_MG_MULTIPLICATIVE = (UInt32)(0)
 const PC_MG_ADDITIVE = (UInt32)(1)
 const PC_MG_FULL = (UInt32)(2)
 const PC_MG_KASKADE = (UInt32)(3)
 
-#= # end enum ANONYMOUS_50 =#
-#= # begin enum ANONYMOUS_51 =#
-typealias ANONYMOUS_51 Uint32
+#= # end enum ANONYMOUS_57 =#
+#= # begin enum ANONYMOUS_58 =#
+typealias ANONYMOUS_58 Uint32
 
 const PC_MG_CYCLE_V = (UInt32)(1)
 const PC_MG_CYCLE_W = (UInt32)(2)
 
-#= # end enum ANONYMOUS_51 =#
+#= # end enum ANONYMOUS_58 =#
 #= # begin enum PCMGCycleType =#
 typealias PCMGCycleType Uint32
 
@@ -2333,13 +2859,13 @@ const PC_MG_CYCLE_V = (UInt32)(1)
 const PC_MG_CYCLE_W = (UInt32)(2)
 
 #= # end enum PCMGCycleType =#
-#= # begin enum ANONYMOUS_52 =#
-typealias ANONYMOUS_52 Uint32
+#= # begin enum ANONYMOUS_59 =#
+typealias ANONYMOUS_59 Uint32
 
 const PC_EXOTIC_FACE = (UInt32)(0)
 const PC_EXOTIC_WIREBASKET = (UInt32)(1)
 
-#= # end enum ANONYMOUS_52 =#
+#= # end enum ANONYMOUS_59 =#
 #= # begin enum PCExoticType =#
 typealias PCExoticType Uint32
 
@@ -2353,13 +2879,13 @@ end
 
 typealias KSPType Symbol
 
-#= # begin enum ANONYMOUS_53 =#
-typealias ANONYMOUS_53 Uint32
+#= # begin enum ANONYMOUS_60 =#
+typealias ANONYMOUS_60 Uint32
 
 const KSP_FCG_TRUNC_TYPE_STANDARD = (UInt32)(0)
 const KSP_FCG_TRUNC_TYPE_NOTAY = (UInt32)(1)
 
-#= # end enum ANONYMOUS_53 =#
+#= # end enum ANONYMOUS_60 =#
 #= # begin enum KSPFCGTruncationType =#
 typealias KSPFCGTruncationType Uint32
 
@@ -2367,14 +2893,14 @@ const KSP_FCG_TRUNC_TYPE_STANDARD = (UInt32)(0)
 const KSP_FCG_TRUNC_TYPE_NOTAY = (UInt32)(1)
 
 #= # end enum KSPFCGTruncationType =#
-#= # begin enum ANONYMOUS_54 =#
-typealias ANONYMOUS_54 Uint32
+#= # begin enum ANONYMOUS_61 =#
+typealias ANONYMOUS_61 Uint32
 
 const KSP_GMRES_CGS_REFINE_NEVER = (UInt32)(0)
 const KSP_GMRES_CGS_REFINE_IFNEEDED = (UInt32)(1)
 const KSP_GMRES_CGS_REFINE_ALWAYS = (UInt32)(2)
 
-#= # end enum ANONYMOUS_54 =#
+#= # end enum ANONYMOUS_61 =#
 #= # begin enum KSPGMRESCGSRefinementType =#
 typealias KSPGMRESCGSRefinementType Uint32
 
@@ -2383,8 +2909,8 @@ const KSP_GMRES_CGS_REFINE_IFNEEDED = (UInt32)(1)
 const KSP_GMRES_CGS_REFINE_ALWAYS = (UInt32)(2)
 
 #= # end enum KSPGMRESCGSRefinementType =#
-#= # begin enum ANONYMOUS_55 =#
-typealias ANONYMOUS_55 Cint
+#= # begin enum ANONYMOUS_62 =#
+typealias ANONYMOUS_62 Cint
 
 const KSP_NORM_DEFAULT = (Int32)(-1)
 const KSP_NORM_NONE = (Int32)(0)
@@ -2392,9 +2918,9 @@ const KSP_NORM_PRECONDITIONED = (Int32)(1)
 const KSP_NORM_UNPRECONDITIONED = (Int32)(2)
 const KSP_NORM_NATURAL = (Int32)(3)
 
-#= # end enum ANONYMOUS_55 =#
-#= # begin enum ANONYMOUS_56 =#
-typealias ANONYMOUS_56 Cint
+#= # end enum ANONYMOUS_62 =#
+#= # begin enum ANONYMOUS_63 =#
+typealias ANONYMOUS_63 Cint
 
 const KSP_CONVERGED_RTOL_NORMAL = (Int32)(1)
 const KSP_CONVERGED_ATOL_NORMAL = (Int32)(9)
@@ -2417,7 +2943,7 @@ const KSP_DIVERGED_INDEFINITE_MAT = (Int32)(-10)
 const KSP_DIVERGED_PCSETUP_FAILED = (Int32)(-11)
 const KSP_CONVERGED_ITERATING = (Int32)(0)
 
-#= # end enum ANONYMOUS_56 =#
+#= # end enum ANONYMOUS_63 =#
 #= # begin enum KSPConvergedReason =#
 typealias KSPConvergedReason Cint
 
@@ -2443,13 +2969,13 @@ const KSP_DIVERGED_PCSETUP_FAILED = (Int32)(-11)
 const KSP_CONVERGED_ITERATING = (Int32)(0)
 
 #= # end enum KSPConvergedReason =#
-#= # begin enum ANONYMOUS_57 =#
-typealias ANONYMOUS_57 Uint32
+#= # begin enum ANONYMOUS_64 =#
+typealias ANONYMOUS_64 Uint32
 
 const KSP_CG_SYMMETRIC = (UInt32)(0)
 const KSP_CG_HERMITIAN = (UInt32)(1)
 
-#= # end enum ANONYMOUS_57 =#
+#= # end enum ANONYMOUS_64 =#
 #= # begin enum KSPCGType =#
 typealias KSPCGType Uint32
 
@@ -2458,13 +2984,13 @@ const KSP_CG_HERMITIAN = (UInt32)(1)
 
 #= # end enum KSPCGType =#
 # skipping undefined typealias typealias KSPFischerGuess Ptr{_p_KSPFischerGuess}
-#= # begin enum ANONYMOUS_58 =#
-typealias ANONYMOUS_58 Uint32
+#= # begin enum ANONYMOUS_65 =#
+typealias ANONYMOUS_65 Uint32
 
 const MAT_SCHUR_COMPLEMENT_AINV_DIAG = (UInt32)(0)
 const MAT_SCHUR_COMPLEMENT_AINV_LUMP = (UInt32)(1)
 
-#= # end enum ANONYMOUS_58 =#
+#= # end enum ANONYMOUS_65 =#
 #= # begin enum MatSchurComplementAinvType =#
 typealias MatSchurComplementAinvType Uint32
 
@@ -2472,3 +2998,480 @@ const MAT_SCHUR_COMPLEMENT_AINV_DIAG = (UInt32)(0)
 const MAT_SCHUR_COMPLEMENT_AINV_LUMP = (UInt32)(1)
 
 #= # end enum MatSchurComplementAinvType =#
+# skipping undefined typealias typealias SNES Ptr{_p_SNES}
+typealias SNESType Symbol
+
+#= # begin enum ANONYMOUS_66 =#
+typealias ANONYMOUS_66 Cint
+
+const SNES_CONVERGED_FNORM_ABS = (Int32)(2)
+const SNES_CONVERGED_FNORM_RELATIVE = (Int32)(3)
+const SNES_CONVERGED_SNORM_RELATIVE = (Int32)(4)
+const SNES_CONVERGED_ITS = (Int32)(5)
+const SNES_CONVERGED_TR_DELTA = (Int32)(7)
+const SNES_DIVERGED_FUNCTION_DOMAIN = (Int32)(-1)
+const SNES_DIVERGED_FUNCTION_COUNT = (Int32)(-2)
+const SNES_DIVERGED_LINEAR_SOLVE = (Int32)(-3)
+const SNES_DIVERGED_FNORM_NAN = (Int32)(-4)
+const SNES_DIVERGED_MAX_IT = (Int32)(-5)
+const SNES_DIVERGED_LINE_SEARCH = (Int32)(-6)
+const SNES_DIVERGED_INNER = (Int32)(-7)
+const SNES_DIVERGED_LOCAL_MIN = (Int32)(-8)
+const SNES_CONVERGED_ITERATING = (Int32)(0)
+
+#= # end enum ANONYMOUS_66 =#
+#= # begin enum SNESConvergedReason =#
+typealias SNESConvergedReason Cint
+
+const SNES_CONVERGED_FNORM_ABS = (Int32)(2)
+const SNES_CONVERGED_FNORM_RELATIVE = (Int32)(3)
+const SNES_CONVERGED_SNORM_RELATIVE = (Int32)(4)
+const SNES_CONVERGED_ITS = (Int32)(5)
+const SNES_CONVERGED_TR_DELTA = (Int32)(7)
+const SNES_DIVERGED_FUNCTION_DOMAIN = (Int32)(-1)
+const SNES_DIVERGED_FUNCTION_COUNT = (Int32)(-2)
+const SNES_DIVERGED_LINEAR_SOLVE = (Int32)(-3)
+const SNES_DIVERGED_FNORM_NAN = (Int32)(-4)
+const SNES_DIVERGED_MAX_IT = (Int32)(-5)
+const SNES_DIVERGED_LINE_SEARCH = (Int32)(-6)
+const SNES_DIVERGED_INNER = (Int32)(-7)
+const SNES_DIVERGED_LOCAL_MIN = (Int32)(-8)
+const SNES_CONVERGED_ITERATING = (Int32)(0)
+
+#= # end enum SNESConvergedReason =#
+#= # begin enum ANONYMOUS_67 =#
+typealias ANONYMOUS_67 Cint
+
+const SNES_NORM_DEFAULT = (Int32)(-1)
+const SNES_NORM_NONE = (Int32)(0)
+const SNES_NORM_ALWAYS = (Int32)(1)
+const SNES_NORM_INITIAL_ONLY = (Int32)(2)
+const SNES_NORM_FINAL_ONLY = (Int32)(3)
+const SNES_NORM_INITIAL_FINAL_ONLY = (Int32)(4)
+
+#= # end enum ANONYMOUS_67 =#
+#= # begin enum SNESNormSchedule =#
+typealias SNESNormSchedule Cint
+
+const SNES_NORM_DEFAULT = (Int32)(-1)
+const SNES_NORM_NONE = (Int32)(0)
+const SNES_NORM_ALWAYS = (Int32)(1)
+const SNES_NORM_INITIAL_ONLY = (Int32)(2)
+const SNES_NORM_FINAL_ONLY = (Int32)(3)
+const SNES_NORM_INITIAL_FINAL_ONLY = (Int32)(4)
+
+#= # end enum SNESNormSchedule =#
+#= # begin enum ANONYMOUS_68 =#
+typealias ANONYMOUS_68 Cint
+
+const SNES_FUNCTION_DEFAULT = (Int32)(-1)
+const SNES_FUNCTION_UNPRECONDITIONED = (Int32)(0)
+const SNES_FUNCTION_PRECONDITIONED = (Int32)(1)
+
+#= # end enum ANONYMOUS_68 =#
+#= # begin enum SNESFunctionType =#
+typealias SNESFunctionType Cint
+
+const SNES_FUNCTION_DEFAULT = (Int32)(-1)
+const SNES_FUNCTION_UNPRECONDITIONED = (Int32)(0)
+const SNES_FUNCTION_PRECONDITIONED = (Int32)(1)
+
+#= # end enum SNESFunctionType =#
+# skipping undefined typealias typealias SNESLineSearch Ptr{_p_LineSearch}
+typealias SNESLineSearchType Symbol
+typealias SNESLineSearchVIProjectFunc Ptr{Void}
+typealias SNESLineSearchVINormFunc Ptr{Void}
+typealias SNESLineSearchApplyFunc Ptr{Void}
+typealias SNESLineSearchUserFunc Ptr{Void}
+
+#= # begin enum ANONYMOUS_69 =#
+typealias ANONYMOUS_69 Uint32
+
+const SNES_LINESEARCH_SUCCEEDED = (UInt32)(0)
+const SNES_LINESEARCH_FAILED_NANORINF = (UInt32)(1)
+const SNES_LINESEARCH_FAILED_DOMAIN = (UInt32)(2)
+const SNES_LINESEARCH_FAILED_REDUCT = (UInt32)(3)
+const SNES_LINESEARCH_FAILED_USER = (UInt32)(4)
+const SNES_LINESEARCH_FAILED_FUNCTION = (UInt32)(5)
+
+#= # end enum ANONYMOUS_69 =#
+#= # begin enum SNESLineSearchReason =#
+typealias SNESLineSearchReason Uint32
+
+const SNES_LINESEARCH_SUCCEEDED = (UInt32)(0)
+const SNES_LINESEARCH_FAILED_NANORINF = (UInt32)(1)
+const SNES_LINESEARCH_FAILED_DOMAIN = (UInt32)(2)
+const SNES_LINESEARCH_FAILED_REDUCT = (UInt32)(3)
+const SNES_LINESEARCH_FAILED_USER = (UInt32)(4)
+const SNES_LINESEARCH_FAILED_FUNCTION = (UInt32)(5)
+
+#= # end enum SNESLineSearchReason =#
+typealias DMDASNESFunction Ptr{Void}
+typealias DMDASNESJacobian Ptr{Void}
+typealias DMDASNESObjective Ptr{Void}
+typealias SNESMSType Symbol
+
+#= # begin enum ANONYMOUS_70 =#
+typealias ANONYMOUS_70 Uint32
+
+const SNES_NGMRES_RESTART_NONE = (UInt32)(0)
+const SNES_NGMRES_RESTART_PERIODIC = (UInt32)(1)
+const SNES_NGMRES_RESTART_DIFFERENCE = (UInt32)(2)
+
+#= # end enum ANONYMOUS_70 =#
+#= # begin enum SNESNGMRESRestartType =#
+typealias SNESNGMRESRestartType Uint32
+
+const SNES_NGMRES_RESTART_NONE = (UInt32)(0)
+const SNES_NGMRES_RESTART_PERIODIC = (UInt32)(1)
+const SNES_NGMRES_RESTART_DIFFERENCE = (UInt32)(2)
+
+#= # end enum SNESNGMRESRestartType =#
+#= # begin enum ANONYMOUS_71 =#
+typealias ANONYMOUS_71 Uint32
+
+const SNES_NGMRES_SELECT_NONE = (UInt32)(0)
+const SNES_NGMRES_SELECT_DIFFERENCE = (UInt32)(1)
+const SNES_NGMRES_SELECT_LINESEARCH = (UInt32)(2)
+
+#= # end enum ANONYMOUS_71 =#
+#= # begin enum SNESNGMRESSelectType =#
+typealias SNESNGMRESSelectType Uint32
+
+const SNES_NGMRES_SELECT_NONE = (UInt32)(0)
+const SNES_NGMRES_SELECT_DIFFERENCE = (UInt32)(1)
+const SNES_NGMRES_SELECT_LINESEARCH = (UInt32)(2)
+
+#= # end enum SNESNGMRESSelectType =#
+#= # begin enum ANONYMOUS_72 =#
+typealias ANONYMOUS_72 Uint32
+
+const SNES_NCG_FR = (UInt32)(0)
+const SNES_NCG_PRP = (UInt32)(1)
+const SNES_NCG_HS = (UInt32)(2)
+const SNES_NCG_DY = (UInt32)(3)
+const SNES_NCG_CD = (UInt32)(4)
+
+#= # end enum ANONYMOUS_72 =#
+#= # begin enum SNESNCGType =#
+typealias SNESNCGType Uint32
+
+const SNES_NCG_FR = (UInt32)(0)
+const SNES_NCG_PRP = (UInt32)(1)
+const SNES_NCG_HS = (UInt32)(2)
+const SNES_NCG_DY = (UInt32)(3)
+const SNES_NCG_CD = (UInt32)(4)
+
+#= # end enum SNESNCGType =#
+#= # begin enum ANONYMOUS_73 =#
+typealias ANONYMOUS_73 Uint32
+
+const SNES_QN_SCALE_DEFAULT = (UInt32)(0)
+const SNES_QN_SCALE_NONE = (UInt32)(1)
+const SNES_QN_SCALE_SHANNO = (UInt32)(2)
+const SNES_QN_SCALE_LINESEARCH = (UInt32)(3)
+const SNES_QN_SCALE_JACOBIAN = (UInt32)(4)
+
+#= # end enum ANONYMOUS_73 =#
+#= # begin enum SNESQNScaleType =#
+typealias SNESQNScaleType Uint32
+
+const SNES_QN_SCALE_DEFAULT = (UInt32)(0)
+const SNES_QN_SCALE_NONE = (UInt32)(1)
+const SNES_QN_SCALE_SHANNO = (UInt32)(2)
+const SNES_QN_SCALE_LINESEARCH = (UInt32)(3)
+const SNES_QN_SCALE_JACOBIAN = (UInt32)(4)
+
+#= # end enum SNESQNScaleType =#
+#= # begin enum ANONYMOUS_74 =#
+typealias ANONYMOUS_74 Uint32
+
+const SNES_QN_RESTART_DEFAULT = (UInt32)(0)
+const SNES_QN_RESTART_NONE = (UInt32)(1)
+const SNES_QN_RESTART_POWELL = (UInt32)(2)
+const SNES_QN_RESTART_PERIODIC = (UInt32)(3)
+
+#= # end enum ANONYMOUS_74 =#
+#= # begin enum SNESQNRestartType =#
+typealias SNESQNRestartType Uint32
+
+const SNES_QN_RESTART_DEFAULT = (UInt32)(0)
+const SNES_QN_RESTART_NONE = (UInt32)(1)
+const SNES_QN_RESTART_POWELL = (UInt32)(2)
+const SNES_QN_RESTART_PERIODIC = (UInt32)(3)
+
+#= # end enum SNESQNRestartType =#
+#= # begin enum ANONYMOUS_75 =#
+typealias ANONYMOUS_75 Uint32
+
+const SNES_QN_LBFGS = (UInt32)(0)
+const SNES_QN_BROYDEN = (UInt32)(1)
+const SNES_QN_BADBROYDEN = (UInt32)(2)
+
+#= # end enum ANONYMOUS_75 =#
+#= # begin enum SNESQNType =#
+typealias SNESQNType Uint32
+
+const SNES_QN_LBFGS = (UInt32)(0)
+const SNES_QN_BROYDEN = (UInt32)(1)
+const SNES_QN_BADBROYDEN = (UInt32)(2)
+
+#= # end enum SNESQNType =#
+#= # begin enum ANONYMOUS_76 =#
+typealias ANONYMOUS_76 Uint32
+
+const SNES_COMPOSITE_ADDITIVE = (UInt32)(0)
+const SNES_COMPOSITE_MULTIPLICATIVE = (UInt32)(1)
+const SNES_COMPOSITE_ADDITIVEOPTIMAL = (UInt32)(2)
+
+#= # end enum ANONYMOUS_76 =#
+#= # begin enum SNESCompositeType =#
+typealias SNESCompositeType Uint32
+
+const SNES_COMPOSITE_ADDITIVE = (UInt32)(0)
+const SNES_COMPOSITE_MULTIPLICATIVE = (UInt32)(1)
+const SNES_COMPOSITE_ADDITIVEOPTIMAL = (UInt32)(2)
+
+#= # end enum SNESCompositeType =#
+#= # begin enum ANONYMOUS_77 =#
+typealias ANONYMOUS_77 Uint32
+
+const SNES_FAS_MULTIPLICATIVE = (UInt32)(0)
+const SNES_FAS_ADDITIVE = (UInt32)(1)
+const SNES_FAS_FULL = (UInt32)(2)
+const SNES_FAS_KASKADE = (UInt32)(3)
+
+#= # end enum ANONYMOUS_77 =#
+#= # begin enum SNESFASType =#
+typealias SNESFASType Uint32
+
+const SNES_FAS_MULTIPLICATIVE = (UInt32)(0)
+const SNES_FAS_ADDITIVE = (UInt32)(1)
+const SNES_FAS_FULL = (UInt32)(2)
+const SNES_FAS_KASKADE = (UInt32)(3)
+
+#= # end enum SNESFASType =#
+# skipping undefined typealias typealias TS Ptr{_p_TS}
+typealias TSType Symbol
+
+#= # begin enum ANONYMOUS_78 =#
+typealias ANONYMOUS_78 Uint32
+
+const TS_LINEAR = (UInt32)(0)
+const TS_NONLINEAR = (UInt32)(1)
+
+#= # end enum ANONYMOUS_78 =#
+#= # begin enum TSProblemType =#
+typealias TSProblemType Uint32
+
+const TS_LINEAR = (UInt32)(0)
+const TS_NONLINEAR = (UInt32)(1)
+
+#= # end enum TSProblemType =#
+#= # begin enum ANONYMOUS_79 =#
+typealias ANONYMOUS_79 Cint
+
+const TS_EQ_UNSPECIFIED = (Int32)(-1)
+const TS_EQ_EXPLICIT = (Int32)(0)
+const TS_EQ_ODE_EXPLICIT = (Int32)(1)
+const TS_EQ_DAE_SEMI_EXPLICIT_INDEX1 = (Int32)(100)
+const TS_EQ_DAE_SEMI_EXPLICIT_INDEX2 = (Int32)(200)
+const TS_EQ_DAE_SEMI_EXPLICIT_INDEX3 = (Int32)(300)
+const TS_EQ_DAE_SEMI_EXPLICIT_INDEXHI = (Int32)(500)
+const TS_EQ_IMPLICIT = (Int32)(1000)
+const TS_EQ_ODE_IMPLICIT = (Int32)(1001)
+const TS_EQ_DAE_IMPLICIT_INDEX1 = (Int32)(1100)
+const TS_EQ_DAE_IMPLICIT_INDEX2 = (Int32)(1200)
+const TS_EQ_DAE_IMPLICIT_INDEX3 = (Int32)(1300)
+const TS_EQ_DAE_IMPLICIT_INDEXHI = (Int32)(1500)
+
+#= # end enum ANONYMOUS_79 =#
+#= # begin enum TSEquationType =#
+typealias TSEquationType Cint
+
+const TS_EQ_UNSPECIFIED = (Int32)(-1)
+const TS_EQ_EXPLICIT = (Int32)(0)
+const TS_EQ_ODE_EXPLICIT = (Int32)(1)
+const TS_EQ_DAE_SEMI_EXPLICIT_INDEX1 = (Int32)(100)
+const TS_EQ_DAE_SEMI_EXPLICIT_INDEX2 = (Int32)(200)
+const TS_EQ_DAE_SEMI_EXPLICIT_INDEX3 = (Int32)(300)
+const TS_EQ_DAE_SEMI_EXPLICIT_INDEXHI = (Int32)(500)
+const TS_EQ_IMPLICIT = (Int32)(1000)
+const TS_EQ_ODE_IMPLICIT = (Int32)(1001)
+const TS_EQ_DAE_IMPLICIT_INDEX1 = (Int32)(1100)
+const TS_EQ_DAE_IMPLICIT_INDEX2 = (Int32)(1200)
+const TS_EQ_DAE_IMPLICIT_INDEX3 = (Int32)(1300)
+const TS_EQ_DAE_IMPLICIT_INDEXHI = (Int32)(1500)
+
+#= # end enum TSEquationType =#
+#= # begin enum ANONYMOUS_80 =#
+typealias ANONYMOUS_80 Cint
+
+const TS_CONVERGED_ITERATING = (Int32)(0)
+const TS_CONVERGED_TIME = (Int32)(1)
+const TS_CONVERGED_ITS = (Int32)(2)
+const TS_CONVERGED_USER = (Int32)(3)
+const TS_CONVERGED_EVENT = (Int32)(4)
+const TS_DIVERGED_NONLINEAR_SOLVE = (Int32)(-1)
+const TS_DIVERGED_STEP_REJECTED = (Int32)(-2)
+
+#= # end enum ANONYMOUS_80 =#
+#= # begin enum TSConvergedReason =#
+typealias TSConvergedReason Cint
+
+const TS_CONVERGED_ITERATING = (Int32)(0)
+const TS_CONVERGED_TIME = (Int32)(1)
+const TS_CONVERGED_ITS = (Int32)(2)
+const TS_CONVERGED_USER = (Int32)(3)
+const TS_CONVERGED_EVENT = (Int32)(4)
+const TS_DIVERGED_NONLINEAR_SOLVE = (Int32)(-1)
+const TS_DIVERGED_STEP_REJECTED = (Int32)(-2)
+
+#= # end enum TSConvergedReason =#
+#= # begin enum ANONYMOUS_81 =#
+typealias ANONYMOUS_81 Uint32
+
+const TS_EXACTFINALTIME_STEPOVER = (UInt32)(0)
+const TS_EXACTFINALTIME_INTERPOLATE = (UInt32)(1)
+const TS_EXACTFINALTIME_MATCHSTEP = (UInt32)(2)
+
+#= # end enum ANONYMOUS_81 =#
+#= # begin enum TSExactFinalTimeOption =#
+typealias TSExactFinalTimeOption Uint32
+
+const TS_EXACTFINALTIME_STEPOVER = (UInt32)(0)
+const TS_EXACTFINALTIME_INTERPOLATE = (UInt32)(1)
+const TS_EXACTFINALTIME_MATCHSTEP = (UInt32)(2)
+
+#= # end enum TSExactFinalTimeOption =#
+# skipping undefined typealias typealias TSTrajectory Ptr{_p_TSTrajectory}
+typealias TSTrajectoryType Symbol
+
+# skipping undefined typealias typealias TSMonitorDrawCtx Ptr{_n_TSMonitorDrawCtx}
+typealias TSRHSFunction Ptr{Void}
+typealias TSRHSJacobian Ptr{Void}
+typealias TSSolutionFunction Ptr{Void}
+typealias TSIFunction Ptr{Void}
+typealias TSIJacobian Ptr{Void}
+typealias DMDATSRHSFunctionLocal Ptr{Void}
+typealias DMDATSRHSJacobianLocal Ptr{Void}
+typealias DMDATSIFunctionLocal Ptr{Void}
+typealias DMDATSIJacobianLocal Ptr{Void}
+
+# skipping undefined typealias typealias TSMonitorLGCtx Ptr{_n_TSMonitorLGCtx}
+#= skipping type declaration with undefined symbols:
+immutable TSMonitorDMDARayCtx
+    ray::Vec
+    scatter::VecScatter
+    viewer::PetscViewer
+    lgctx::TSMonitorLGCtx
+end 
+=#
+# skipping undefined typealias typealias TSMonitorEnvelopeCtx Ptr{_n_TSMonitorEnvelopeCtx}
+# skipping undefined typealias typealias TSMonitorSPEigCtx Ptr{_n_TSMonitorSPEigCtx}
+typealias TSSSPType Symbol
+
+# skipping undefined typealias typealias TSAdapt Ptr{_p_TSAdapt}
+typealias TSAdaptType Symbol
+
+# skipping undefined typealias typealias TSGLAdapt Ptr{_p_TSGLAdapt}
+typealias TSGLAdaptType Symbol
+typealias TSGLAcceptType Symbol
+typealias TSGLAcceptFunction Ptr{Void}
+typealias TSGLType Symbol
+typealias TSRKType Symbol
+typealias TSARKIMEXType Symbol
+typealias TSRosWType Symbol
+
+#= # begin enum ANONYMOUS_82 =#
+typealias ANONYMOUS_82 Uint32
+
+const TAO_SUBSET_SUBVEC = (UInt32)(0)
+const TAO_SUBSET_MASK = (UInt32)(1)
+const TAO_SUBSET_MATRIXFREE = (UInt32)(2)
+
+#= # end enum ANONYMOUS_82 =#
+#= # begin enum TaoSubsetType =#
+typealias TaoSubsetType Uint32
+
+const TAO_SUBSET_SUBVEC = (UInt32)(0)
+const TAO_SUBSET_MASK = (UInt32)(1)
+const TAO_SUBSET_MATRIXFREE = (UInt32)(2)
+
+#= # end enum TaoSubsetType =#
+# skipping undefined typealias typealias Tao Ptr{_p_Tao}
+#= # begin enum ANONYMOUS_83 =#
+typealias ANONYMOUS_83 Cint
+
+const TAO_CONVERGED_FATOL = (Int32)(1)
+const TAO_CONVERGED_FRTOL = (Int32)(2)
+const TAO_CONVERGED_GATOL = (Int32)(3)
+const TAO_CONVERGED_GRTOL = (Int32)(4)
+const TAO_CONVERGED_GTTOL = (Int32)(5)
+const TAO_CONVERGED_STEPTOL = (Int32)(6)
+const TAO_CONVERGED_MINF = (Int32)(7)
+const TAO_CONVERGED_USER = (Int32)(8)
+const TAO_DIVERGED_MAXITS = (Int32)(-2)
+const TAO_DIVERGED_NAN = (Int32)(-4)
+const TAO_DIVERGED_MAXFCN = (Int32)(-5)
+const TAO_DIVERGED_LS_FAILURE = (Int32)(-6)
+const TAO_DIVERGED_TR_REDUCTION = (Int32)(-7)
+const TAO_DIVERGED_USER = (Int32)(-8)
+const TAO_CONTINUE_ITERATING = (Int32)(0)
+
+#= # end enum ANONYMOUS_83 =#
+#= # begin enum TaoConvergedReason =#
+typealias TaoConvergedReason Cint
+
+const TAO_CONVERGED_FATOL = (Int32)(1)
+const TAO_CONVERGED_FRTOL = (Int32)(2)
+const TAO_CONVERGED_GATOL = (Int32)(3)
+const TAO_CONVERGED_GRTOL = (Int32)(4)
+const TAO_CONVERGED_GTTOL = (Int32)(5)
+const TAO_CONVERGED_STEPTOL = (Int32)(6)
+const TAO_CONVERGED_MINF = (Int32)(7)
+const TAO_CONVERGED_USER = (Int32)(8)
+const TAO_DIVERGED_MAXITS = (Int32)(-2)
+const TAO_DIVERGED_NAN = (Int32)(-4)
+const TAO_DIVERGED_MAXFCN = (Int32)(-5)
+const TAO_DIVERGED_LS_FAILURE = (Int32)(-6)
+const TAO_DIVERGED_TR_REDUCTION = (Int32)(-7)
+const TAO_DIVERGED_USER = (Int32)(-8)
+const TAO_CONTINUE_ITERATING = (Int32)(0)
+
+#= # end enum TaoConvergedReason =#
+# skipping undefined typealias typealias TaoLineSearch Ptr{_p_TaoLineSearch}
+#= # begin enum ANONYMOUS_84 =#
+typealias ANONYMOUS_84 Cint
+
+const TAOLINESEARCH_FAILED_INFORNAN = (Int32)(-1)
+const TAOLINESEARCH_FAILED_BADPARAMETER = (Int32)(-2)
+const TAOLINESEARCH_FAILED_ASCENT = (Int32)(-3)
+const TAOLINESEARCH_CONTINUE_ITERATING = (Int32)(0)
+const TAOLINESEARCH_SUCCESS = (Int32)(1)
+const TAOLINESEARCH_SUCCESS_USER = (Int32)(2)
+const TAOLINESEARCH_HALTED_OTHER = (Int32)(3)
+const TAOLINESEARCH_HALTED_MAXFCN = (Int32)(4)
+const TAOLINESEARCH_HALTED_UPPERBOUND = (Int32)(5)
+const TAOLINESEARCH_HALTED_LOWERBOUND = (Int32)(6)
+const TAOLINESEARCH_HALTED_RTOL = (Int32)(7)
+const TAOLINESEARCH_HALTED_USER = (Int32)(8)
+
+#= # end enum ANONYMOUS_84 =#
+#= # begin enum TaoLineSearchConvergedReason =#
+typealias TaoLineSearchConvergedReason Cint
+
+const TAOLINESEARCH_FAILED_INFORNAN = (Int32)(-1)
+const TAOLINESEARCH_FAILED_BADPARAMETER = (Int32)(-2)
+const TAOLINESEARCH_FAILED_ASCENT = (Int32)(-3)
+const TAOLINESEARCH_CONTINUE_ITERATING = (Int32)(0)
+const TAOLINESEARCH_SUCCESS = (Int32)(1)
+const TAOLINESEARCH_SUCCESS_USER = (Int32)(2)
+const TAOLINESEARCH_HALTED_OTHER = (Int32)(3)
+const TAOLINESEARCH_HALTED_MAXFCN = (Int32)(4)
+const TAOLINESEARCH_HALTED_UPPERBOUND = (Int32)(5)
+const TAOLINESEARCH_HALTED_LOWERBOUND = (Int32)(6)
+const TAOLINESEARCH_HALTED_RTOL = (Int32)(7)
+const TAOLINESEARCH_HALTED_USER = (Int32)(8)
+
+#= # end enum TaoLineSearchConvergedReason =#

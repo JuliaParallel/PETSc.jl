@@ -1,37 +1,19 @@
 #!/bin/bash
 set -ex
-petsc_name=petsc-3.6.0
-fmt=.tar.gz
 
-echo "building PETSc in `pwd`"
+# all arguments are passed to the configure script
 
-# get tarball if it is not present
-if [ ! -e ./$petsc_name$fmt ]
-then
-  wget http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/$petsc_name$fmt
-fi
+petsc_name=$1
 
-# delete existing installation
-if [ -e ./$petsc_name ]
-then
-  echo "deleting extisting petsc installation in deps"
-  rm -r ./$petsc_name
-fi
-
-# extract the tarball fresh
-tar xfz ./$petsc_name$fmt
-
-#export PETSC_DIR=`pwd`/$petsc_name
-#export PETSC_ARCH=
+# unset the environmental variables if they exist
 unset PETSC_DIR
 unset PETSC_ARCH
-
 
 # some useful options
 # --with-64-big-indices
 # --with-precision=<single,double>
 # --wtih-scalar-type=<real, complex>
-cd ./$petsc_name
+#cd ./$petsc_name
 ./configure $1 $2 $3 > fout
 #./configure --with-debugging=0 COPTFLAGS='-O3 -march=native -mtrune=native' CXXOPTFLAGS='-O3 -march=native -mtune=native' FOPTFLAGS='-O3 -march=native -mtune=native' > fout
 

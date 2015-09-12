@@ -6,17 +6,28 @@ export MPI_Comm
 export PetscErrorCode
 export PetscBool
 
-global const PETSC_DIR = ENV["PETSC_DIR"]
-global const PETSC_ARCH = ENV["PETSC_ARCH"]
+include("lib_locations.jl")
+#=
+#global const PETSC_DIR = ENV["PETSC_DIR"]
+#global const PETSC_ARCH = ENV["PETSC_ARCH"]
 
-global const libpetsclocation = string(PETSC_DIR, "/", PETSC_ARCH, "/lib/", "libpetsc")
-global const petsc1 = libpetsclocation # for compatability with auto generated wrappers
-global const petsc2 = libpetsclocation
-global const petsc3 = libpetsclocation
+pkgdir = Pkg.dir("PETSc")
+petsc_version = "3.6.0"
+petsc_arch = "arch-linux2-c-debug"
+#global const libpetsclocation = string(PETSC_DIR, "/", PETSC_ARCH, "/lib/", "libpetsc")
+#global const petsc1 = libpetsclocation
+global const petsc1 = joinpath(pkgdir, "deps/petsc-$petsc_version/$petsc_arch", "lib/libpetsc")
+println("petsc1 = ", petsc1)
+global const petsc2 = petsc1
+global const petsc3 = petsc1
 global const numlibs = 1  # number of libraries actually present
 #global const libpetsc = Libdl.dlopen(libpetsclocation)
+=#
 
-global const petsc_libs = [:petsc1, :petsc2, :petsc3]
+numlibs = 1
+
+
+global const petsc_libs = [:petscRealDouble, :petscRealSingle, :petscComplexDouble]
 global const petsc_type = [Float64, Float32, Complex128]
 
 typealias Scalar Union(Float32, Float64, Complex128)

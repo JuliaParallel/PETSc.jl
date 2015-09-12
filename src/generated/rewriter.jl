@@ -259,7 +259,7 @@ end
 
 
 
-const petsc_libname = :petsc1
+const petsc_libname = :petscRealDouble
 
 
 

@@ -6,6 +6,4 @@ if !haskey(pkg_dict, "MPI")
   Pkg.build("MPI")
 end
 
-if !haskey(ENV, "PETSC_DIR")  && !haskey(ENV, "PETSC_ARCH")
- run(`./install_petsc.sh`)
-end 
+include("build_petscs.jl")

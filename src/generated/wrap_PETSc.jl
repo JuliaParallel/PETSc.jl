@@ -18,7 +18,7 @@ function repr_jl(ptr::cindex.Pointer)
   Expr(:curly, Union, ex1, ex2)
 end
 =#
-PETSC_INCLUDE = "../../deps/petsc-3.6.0/include"
+PETSC_INCLUDE = "../../deps/RealDouble/petsc-3.6.0/include"
 #PETSC_INCLUDE = "/home/jared/.julia/v0.4/PETSc/deps/petsc-3.6.0/arch-linux2-c-opt/include"
 #MPI_INCLUDE = "/usr/include/mpich"
 

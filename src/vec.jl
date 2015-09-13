@@ -103,8 +103,8 @@ end
 
 similar{T}(x::Vec{T}, ::Type{T}) = similar(x)
 function similar{T, VType}(x::Vec{T, VType}, ::Type{T}, len::Int)
-    println("T = ", T)
-    println("VType = ", VType)
+#    println("T = ", T)
+#    println("VType = ", VType)
     len==length(x) ? similar(x) : Vec(T, len, VType; comm=x.comm)
 end
 
@@ -458,3 +458,42 @@ function maxpy!{T <: Number, VType}(y::Vec, alpha::AbstractArray, x::Array{Vec{T
 end
 
 ##########################################################################
+# elementwise operations
+
+function (.*)(x::Vec, y::Vec)
+  z = similar(x)
+#  println("before mult, z = ", z)
+  chk(C.VecPointwiseMult(z.p, x.p, y.p))
+  return z
+end
+
+
+function (./)(x::Vec, y::Vec)
+  z = similar(x)
+  chk(C.VecPointwiseDivide(z.p, x.p, y.p))
+  return z
+end
+
+
+
+function (.^){T}(x::Vec{T}, y::Number)
+  z = copy(x)
+  chk(C.VecPow(z.p, T(y)))
+  return z
+end
+
+function (+){T}(x::Vec{T}, y::Vec{T})
+  z = similar(x)
+  chk(C.VecWAXPY(z.p, T(1), x.p, y.p))
+  return z
+end
+
+function (-){T}(x::Vec{T}, y::Vec{T})
+  z = similar(x)
+  chk(C.VecWAXPY(z.p, T(-1), y.p, x.p))
+  return z
+end
+
+
+
+

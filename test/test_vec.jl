@@ -237,4 +237,61 @@ for i=1:length(vec)
 end
 
 
+vec5 = Vec(Float64, 3, PETSc.C.VECMPI)
+vec6 = similar(vec5)
+vec5j = zeros(3)
+vec6j = zeros(3)
+
+for i=1:3
+  vec5[i] = i
+  vec6[i] = i+3
+  vec5j[i] = i
+  vec6j[i] = i+3
+end
+
+println("vec5 = ", vec5)
+println("vec6 = ", vec6)
+
+vec7 = vec5.*vec6
+vec7j = vec5j.*vec6j
+println("vec7j = ", vec7j)
+println("vec7 = ", vec7)
+for i=1:3
+  @fact vec7[i] => roughly(vec7j[i])
+end
+
+vec8 = vec5./vec6
+vec8j = vec5j./vec6j
+
+for i=1:3
+  @fact vec8[i] => roughly(vec8j[i])
+end
+
+vec9 = vec5.^3
+vec9j = vec5j.^3
+
+for i=1:3
+  @fact vec9[i] => roughly(vec9j[i])
+end
+
+vec10 = vec5 + vec6
+vec10j = vec5j + vec6j
+for i=1:3
+  @fact vec10[i] => roughly(vec10j[i])
+end
+
+vec11 = vec5 - vec6
+vec11j = vec5j - vec6j
+
+for i=1:3
+  @fact vec11[i] => roughly(vec11j[i])
+end
+
+
+
+
+
+
+
+
 end

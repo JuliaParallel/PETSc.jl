@@ -242,9 +242,9 @@ function setindex0!{T}(x::Mat{T}, v::Array{T},
         throw(ArgumentError("length(values) != length(indices)"))
     end
 
-    println("i = ", i)
-    println("j = ", j)
-    println("v = ", v)
+#    println("i = ", i)
+#    println("j = ", j)
+#    println("v = ", v)
 
     chk(C.MatSetValues(x.p, ni, i, nj, j, v, x.insertmode))
 
@@ -429,3 +429,71 @@ function chop!(x::Mat, tol::Real)
     x
 end
 =#
+
+
+function (*){T, VType}(A::Mat{T}, x::Vec{T, VType})
+  m = size(A, 1)
+  b = Vec(T, m, VType, comm=x.comm)
+  chk(C.MatMult(A.p, x.p, b.p))
+  return b
+end
+
+function (*){T, VType}(A::Mat{T, VType}, x::Number)
+  Y = similar(A)
+  chk(C.MatAXPY(A.p, T(x), Y.p, C.SAME_NONZERO_PATTERN))
+  return Y
+end
+
+# need mat-mat
+function (*){T, VType}(A::Mat{T,VType}, B::Mat{T})
+#  p = Ptr{Void}(1)
+#  cmat = C.Mat{T}()
+#  p_arr = [cmat]
+
+#  D = Mat(T, VType, comm=A.comm)
+#  p_arr = [D.p] 
+  p = Array(C.Mat{T}, 1)
+  chk(C.MatCreate(A.comm, p))
+   
+#  println("typeof(p_arr) = ", typeof(p_arr))
+#  p = Array(C.Mat{T}, 1)
+#  chk(C.MatCreate(A.comm, p))
+  chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, C.PETSC_DEFAULT, p))
+
+  if D.p == p_arr[1]
+    println("pointer is unchanged")
+  else
+    println("pointer changed")
+    D.p = p_arr[1]
+  end
+#  D = Mat{T, VType}(p_arr[1], comm=A.comm)
+  return D
+end
+
+function (+){T, VType}(A::Mat{T, VType}, B::Mat{T})
+  C = copy(B)
+  chk(C.MatAXPY(A.p, T(1), C.p))
+  return C
+end
+
+function (-){T, VType}(A::Mat{T, VType}, B::Mat{T})
+  C = copy(B)
+  chk(C.MatAXPY(C.p, T(-1), A.p))
+  return C
+end
+
+function (-){T, VType}(A::Mat{T, VType})
+  B = copy(A)
+  chk(C.MatScale(B.p, T(-1)))
+  return B
+end
+
+# there don't appear to be PETSc functions for pointwise
+# operations on matrices
+
+
+function (==){T}(A::Mat{T}, b::Mat{T})
+  bool_arr = Array(PetscBool, 1)
+  chk(C.MatEqual(A.p, b.p, bool_arr))
+  return Bool(bool_arr[1])
+end

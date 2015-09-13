@@ -258,5 +258,56 @@ for i=1:3
 end 
 =#
 
+mat16 = PETSc.Mat(Float64, 3, 3)
+mat17 = PETSc.Mat(Float64, 3, 3)
+mat16j = zeros(3, 3)
+mat17j = zeros(3, 3)
+vec1 = PETSc.Vec(Float64, 3)
+vec1j = zeros(3)
+cnt = 1
+for i=1:3
+  for j=1:3
+    mat16[i,j] = cnt
+    mat16j[i,j] = cnt
+    mat17[i,j] = cnt + 9
+    mat17j[i,j] = cnt + 9
+    cnt += 1
+  end
+  vec1[i] = i
+  vec1j[i] = i
+end
+
+assemble(mat16)
+assemble(mat17)
+
+vec2 = mat16*vec1
+vec2j = mat16j*vec1j
+
+for i=1:3
+  @fact vec2[i] => vec2j[i]
+end
+
+mat18 = 2*mat16
+assemble(mat18)
+mat18j = 2*mat16j
+
+println("mat18 = ", mat18)
+println("mat18j = ", mat18j)
+for i=1:3
+  for j=1:3
+    @fact mat18[i,j] => roughly(mat18j[i,j])
+  end
+end
+
+println("mat16 = ", mat16)
+println("mat17 = ", mat17)
+mat19 = mat16*mat17
+mat19j = mat16j*mat17j
+for i=1:3
+  for j=1:3
+    @fact mat19[i,j] => roughly(mat19j[i,j])
+  end
+end
+
 
 end

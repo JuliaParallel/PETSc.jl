@@ -8,11 +8,11 @@ file_name = string(petsc_name, fmt)
 
 if !isfile(file_name)
   println("Downloading $file_name")
-  download("http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/$file_name")
+  download("http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/$file_name", file_name)
 end
 
 start_dir = pwd()
-if false
+if true  # debugging flag
 
 # delete existing installation
 name_i = "RealDouble"

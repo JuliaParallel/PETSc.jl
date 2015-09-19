@@ -5,7 +5,7 @@ using FactCheck
 import MPI
 MPI.Init()
 
-include("test_error.jl")
-include("test_vec.jl")
-include("test_mat.jl")
+include("error.jl")
+include("vec.jl")
+include("mat.jl")
 PETSc.C.PetscFinalize(Float64)

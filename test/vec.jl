@@ -19,7 +19,7 @@ vectype_ret = PETSc.gettype(vec)
 
 @fact vectype_ret => PETSc.C.VECMPI
 
-
+println("point 1")
 
 vec[1] = 2
 val_ret = vec[1]
@@ -42,13 +42,24 @@ for i=1:length(vec)
   @fact vec4[i] => roughly(vec[i])
 end
 
+println("point 2")
+
 idx = [1,3, 4]
+println("idx = ",idx)
+println("typeof(idx) = ", typeof(idx))
 vec4[idx] = 2
 vals_ret = vec4[idx]
+println("point 2.4")
+println("idx = ", idx)
+println("typeof(idx) = ", typeof(idx))
+println("length(idx) = ", length(idx))
 for i=1:length(idx)
+  println("i = ", i)
+#  println("vals_ret[i] = ", vals_ret[i])
   @fact vals_ret[i] => 2
 end
 
+println("point 2.5")
 fill!(vec4, 3)
 
 for i=1:length(vec4)
@@ -57,6 +68,8 @@ end
 
 vec4[1:2] = 4
 
+
+println("point 3")
 @fact vec4[1:2] => [4.0, 4.0]
 
 
@@ -182,13 +195,17 @@ for i=1:length(vec)
   vec4j[i] = vec4[i]
 end
 
+println("testing axpy")
 axpy!(2, vec, vec2)
 vec2j = 2*vecj + vec2j
-
+println("vec2j = ", vec2j)
+println("vec2 = ", vec2)
 for i=1:length(vec)
+  println("vec2j[i] = ", vec2j[i], ", vec2[i] = ", vec2[i])
   @fact vec2j[i] => vec2[i]
 end
 
+println("testing 4 argument axpy")
 axpy!(2, vec, vec2, vec4)
 vec4j = 2*vecj + vec2j 
 
@@ -197,6 +214,7 @@ for i=1:length(vec)
 end
 
 
+println("testing aypx")
 aypx!(vec, 2, vec2)
 vec2j = 2*vec2j + vec
 
@@ -204,10 +222,21 @@ for i=1:length(vec)
   @fact vec2j[i] => vec2[i]
 end
 
+println("testing axpby")
+println("before operation:")
+println("vec = ", vec)
+println("vecj = ", vecj)
+println("vec2 = ", vec2)
+println("vec2j = ", vec2j)
+
 
 axpby!(2, vec, 3, vec2)
 vec2j = 2*vecj + 3*vec2j
-
+println("after operation:")
+println("vec = ", vec)
+println("vecj = ", vecj)
+println("vec2 = ", vec2)
+println("vec2j = ", vec2j)
 for i=1:length(vec)
   @fact vec2j[i] => vec2[i]
 end

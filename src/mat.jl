@@ -19,9 +19,12 @@ type Mat{T, MType} <: AbstractSparseMatrix{T,PetscInt}
 end
 
 function Mat{T}(::Type{T}, mtype=C.MatType=C.MATSEQ; comm=MPI.COMM_WORLD)
-    p = Array(C.Mat{T}, 1)
+#    p = Array(C.Mat{T}, 1)
+    p = Ref{C.Mat{T}}()
+    println("before MatCreate, p = ", p)
     chk(C.MatCreate(comm, p))
-    Mat{T, mtype}(p[1])
+    println("after MatCreate, p = ", p)
+    Mat{T, mtype}(p[])
 end
 
 
@@ -452,12 +455,27 @@ function (*){T, VType}(A::Mat{T,VType}, B::Mat{T})
 
 #  D = Mat(T, VType, comm=A.comm)
 #  p_arr = [D.p] 
-  p = Array(C.Mat{T}, 1)
-  chk(C.MatCreate(A.comm, p))
-   
+#  p = Array(C.Mat{T}, 1)
+
+#  p = C.Mat{T}(C_NULL) 
+#  ref_p = Ref{C.Mat{T}}(p)
+#  println("before, ref_p = ", ref_p)
+#  chk(C.MatCreate(A.comm, ref_p))
+#  println("after, ref_p = ", ref_p)
+#  p = ref_p[]
+#  chk(C.MatSetType(p, VType))
+#  chk(C.MatSetUp(p))
+#  println("p = ", p)
+
 #  println("typeof(p_arr) = ", typeof(p_arr))
 #  p = Array(C.Mat{T}, 1)
 #  chk(C.MatCreate(A.comm, p))
+  println("A.p = ", A.p)
+  println("B.p = ", B.p)
+  println("C.MAT_INITIAL_MATRIX = ", C.MAT_INITIAL_MATRIX)
+  println("C.PETSC_DEFAULT = ", C.PETSC_DEFAULT)
+#  println("ref_p2 = ", ref_p)
+  p = C_NULL
   chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, C.PETSC_DEFAULT, p))
 
   if D.p == p_arr[1]

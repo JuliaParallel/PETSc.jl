@@ -15,6 +15,8 @@ type_dict = Dict{Any, Any} (
 #:PetscInt => :Int32,
 )
 
+const petsc_libname = :petscRealDouble
+
 val_tmp = type_dict[:PetscScalar]
 type_dict_single = Dict{Any, Any} (
 :(Ptr{Uint8}) => Union(ByteString, Symbol)
@@ -154,7 +156,14 @@ for i in keys(new_type_dict)
   get!(typealias_rec_dict, i, new_type_dict[i])
 end
 
+# dictionary of typealiases to exclude based on the lhs argument
+typealias_lhs_dict = Dict{Any, Any} (
 
+)
+
+for i in keys(type_dict)
+  get!(typealias_lhs_dict, i, i)
+end
 
 # things to be replaced in typealias rhs, non recursive
 # this creates a potential loophole for string handling
@@ -181,12 +190,14 @@ const_rec_dict = Dict{Any, Any} (
 )
 
 for i in keys(type_dict)
-  get!(typealias_rec_dict, i, type_dict[i])
+  get!(const_rec_dict, i, type_dict[i])
 end
 
 for i in keys(new_type_dict)
-  get!(typealias_rec_dict, i, new_type_dict[i])
+  get!(const_rec_dict, i, new_type_dict[i])
 end
+
+println("const_rec_dict = ", const_rec_dict)
 
 # suffixes to add ccall argument names based on the argument type
 # ex arg1 => arg1.val
@@ -259,7 +270,6 @@ end
 
 
 
-const petsc_libname = :petscRealDouble
 
 
 
@@ -387,7 +397,7 @@ function add_body(ex)
       type_annot_j = ex_sig.args[j].args[2]  # get the teyp annotation
       argname_j = ex_sig.args[j].args[1]
       # check for arrays of symbols that need to be copied into a string array
-      if type_annot_j == :(Union(Ptr{$i}, StridedArray{$i}, Ptr{Void}))
+      if type_annot_j == :(Union(Ptr{$i}, StridedArray{$i}, Ptr{Void}, Ref{$i}))
         if contains(fname_str, "Get")  # array is to be populated
           # add calls to function body
           resize!(ex_body.args, length(ex_body.args) + 2)
@@ -664,7 +674,7 @@ function modify_typetag(ex)
     # replace pointer with Union of ptr, array, c_null
     if ex.head == :curly && ex.args[1] == :Ptr
       ptr_type = ex.args[2]
-      ex =  :(Union(Ptr{$ptr_type}, StridedArray{$ptr_type}, Ptr{Void}))
+      ex =  :(Union(Ptr{$ptr_type}, StridedArray{$ptr_type}, Ptr{Void}, Ref{$ptr_type}))
     end
   end
 
@@ -873,6 +883,13 @@ function fix_typealias(ex)
     lhs = deepcopy(ex.args[1])
     rhs = deepcopy(ex.args[2])
 
+    # check lhs for exclusion criteria
+    if haskey(typealias_lhs_dict, lhs)
+      # record that symbol is now undefined
+      delete!(wc.common_buf, lhs)
+      return "# excluding lhs of  $ex"
+    end
+
     # do non recursive replacement
     rhs = get(typealias_single_dict, rhs, rhs)
 
@@ -912,6 +929,7 @@ function fix_typealias(ex)
      delete!(wc.common_buf, lhs)  # record that the lhs symbol is now undefined
      return "# skipping undefined typealias $ex"
     end
+
 #=
     ex2 = ex.args[2]
     @assert ex2.head == :curly

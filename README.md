@@ -78,4 +78,13 @@ This package requires MPI.jl, although it is not listed in the REQUIRE file beca
 
 Currently, only MPI implimentations where the Fortran communicator is the same as the C communictor are supported.  This is due to the current implimentation of the MPI.jl package.  MPICH is one MPI implimentation that satisfies this requirement.  Note that OPENMPI does not.
 
+
+## Auto Generation Notes
+Clang does not correctly read teh PetscScalar, PetscReal etc. typedefs used by
+ Petsc.  It appears this is due to the tyedefs being delcared inside a 
+preprocessor if statement that uses a value that is only available during the 
+build process.  A hack to get around this is to pick the correct typedef for 
+the currently build Petsc and move it outside the if statement so Clang will 
+read it.
+
 [![Build Status](https://travis-ci.org/JaredCrean2/PETSc.jl.svg?branch=master)](https://travis-ci.org/JaredCrean2/PETSc.jl)

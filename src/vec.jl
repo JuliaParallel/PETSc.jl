@@ -239,8 +239,12 @@ end
 
 getindex(x::Vec, i::Real) = getindex0(x, PetscInt[to_index(i)-1])[1]
 
-getindex{T<:Real}(x::Vec, I::AbstractVector{T}) =
-  getindex0(x, PetscInt[ to_index(i)-1 for i in I ])
+#getindex{T<:Real}(x::Vec, I::AbstractVector{T}) =
+#  getindex0(x, PetscInt[ to_index(i)-1 for i in I ])
+
+getindex(x::Vec, I::AbstractVector{PetscInt}) =
+  getindex0(x, PetscInt[ i for i in I ])
+
 
 ##########################################################################
 import Base: abs, exp, log, conj, conj!, max, min, findmax, findmin, norm, maximum, minimum, .*, ./, +, -, scale!, dot, ==, !=, sum

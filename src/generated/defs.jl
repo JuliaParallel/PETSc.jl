@@ -59,7 +59,7 @@ function symbol_get_after(ptr, sym_arr)
 end
 
 function symbol_set_before(sym_arr)
-  str_arr = similar(sym_arr, ASCIIString)
+  str_arr = similar(sym_arr, UTF8String)
 
   for i=1:length(str_arr)
     str_arr[i] = bytestring(sym_arr[i])

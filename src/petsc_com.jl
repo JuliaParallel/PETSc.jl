@@ -31,7 +31,7 @@ function PetscInitialize(args,filename,help)
   end
 =#
   # convert arguments to Cstring
-  arr = Array(ASCIIString, length(args))  # convert to C string
+  arr = Array(UTF8String, length(args))  # convert to C string
   arr2 = Array(Ptr{Uint8}, length(args))  # get array of pointers
   for i = 1:length(args)
     arr[i] = Base.cconvert(Cstring, args[i])

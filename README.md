@@ -80,11 +80,8 @@ Currently, only MPI implimentations where the Fortran communicator is the same a
 
 
 ## Auto Generation Notes
-Clang does not correctly read teh PetscScalar, PetscReal etc. typedefs used by
- Petsc.  It appears this is due to the tyedefs being delcared inside a 
-preprocessor if statement that uses a value that is only available during the 
-build process.  A hack to get around this is to pick the correct typedef for 
-the currently build Petsc and move it outside the if statement so Clang will 
-read it.
+PETSc uses preprocessor variables to decide what code to include when compiling 
+the library.  Clang does not know what preprocessor variables were defined at 
+compile time, so it does not correctly detect the typealiases PetscScalar, PetscReal, etc.  To correctly autogenerate wrappers, the proper variables must be passed to Clang with the -D switch.  Note that users will not need to generate their own wrappers because they have already been generated and commit to the repo.
 
 [![Build Status](https://travis-ci.org/JaredCrean2/PETSc.jl.svg?branch=master)](https://travis-ci.org/JaredCrean2/PETSc.jl)

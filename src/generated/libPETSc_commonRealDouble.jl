@@ -888,7 +888,8 @@ const ENUM_DUMMY = (UInt32)(0)
 
 #= # end enum PetscEnum =#
 typealias Petsc64bitInt Cint
-typealias PetscInt Cint
+
+# excluding lhs of  typealias PetscInt Cint
 typealias PetscBLASInt Cint
 
 #= # begin enum ANONYMOUS_2 =#
@@ -1537,7 +1538,7 @@ const PETSC_VTK_CELL_VECTOR_FIELD = (UInt32)(3)
 typealias PetscBT Symbol
 
 # skipping undefined typealias typealias PetscTable Ptr{_n_PetscTable}
-typealias PetscTablePosition Ptr{PetscInt}
+typealias PetscTablePosition Ptr{Int64}
 
 # skipping undefined typealias typealias PetscMatlabEngine Ptr{_p_PetscMatlabEngine}
 #= # begin enum ANONYMOUS_16 =#
@@ -1597,11 +1598,12 @@ immutable PetscDrawViewPorts
 end 
 =#
 # skipping undefined typealias typealias PetscSF Ptr{_p_PetscSF}
+#= skipping type declaration with undefined symbols:
 immutable PetscSFNode
     rank::PetscInt
     index::PetscInt
-end
-
+end 
+=#
 immutable IS{T}
     pobj::Ptr{Void}
 end
@@ -1810,13 +1812,14 @@ const MAT_COMPOSITE_ADDITIVE = (UInt32)(0)
 const MAT_COMPOSITE_MULTIPLICATIVE = (UInt32)(1)
 
 #= # end enum MatCompositeType =#
+#= skipping type declaration with undefined symbols:
 immutable MatStencil
     k::PetscInt
     j::PetscInt
     i::PetscInt
     c::PetscInt
-end
-
+end 
+=#
 #= # begin enum ANONYMOUS_29 =#
 typealias ANONYMOUS_29 Uint32
 
@@ -2562,6 +2565,7 @@ end
 #= skipping undefined expression zero(::Type{Array_9_Cint}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 268:
         Array_9_Cint(fill(zero(Cint),9)...)
     end =#
+#= skipping type declaration with undefined symbols:
 immutable PetscFECellGeom
     v0::Array_3_Cint
     J::Array_9_Cint
@@ -2570,8 +2574,8 @@ immutable PetscFECellGeom
     n::Array_3_Cint
     dim::PetscInt
     dimEmbed::PetscInt
-end
-
+end 
+=#
 typealias PetscSpaceType Symbol
 typealias PetscDualSpaceType Symbol
 typealias PetscFEType Symbol

@@ -10,7 +10,7 @@ unset PETSC_DIR
 unset PETSC_ARCH
 
 # some useful options
-# --with-64-big-indices
+# --with-64-bit-indices=<true, false>
 # --with-precision=<single,double>
 # --wtih-scalar-type=<real, complex>
 #cd ./$petsc_name

@@ -47,8 +47,14 @@ println("point 2")
 idx = [1,3, 4]
 println("idx = ",idx)
 println("typeof(idx) = ", typeof(idx))
+println("size(vec4) = ", size(vec4))
 vec4[idx] = 2
+println("set vec4 values")
+println("idx = ", idx)
+println("size(vec4) = ", size(vec4))
 vals_ret = vec4[idx]
+println("retrieved vec4 values")
+println("vals_ret = ", vals_ret)
 println("point 2.4")
 println("idx = ", idx)
 println("typeof(idx) = ", typeof(idx))

@@ -233,6 +233,7 @@ import Base.getindex
 # like getindex but for 0-based indices i
 function getindex0{T}(x::Vec{T}, i::Vector{PetscInt})
     v = similar(i, T)
+    println("i = ", i)
     chk(C.VecGetValues(x.p, length(i), i, v))
     v
 end
@@ -243,7 +244,7 @@ getindex(x::Vec, i::Real) = getindex0(x, PetscInt[to_index(i)-1])[1]
 #  getindex0(x, PetscInt[ to_index(i)-1 for i in I ])
 
 getindex(x::Vec, I::AbstractVector{PetscInt}) =
-  getindex0(x, PetscInt[ i for i in I ])
+  getindex0(x, PetscInt[ (i-1) for i in I ])
 
 
 ##########################################################################

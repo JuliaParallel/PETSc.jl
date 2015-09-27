@@ -10,12 +10,12 @@ using DataStructures
 
 # used to modify function signatures
 type_dict = Dict{Any, Any} (
-:PetscScalar => :Float64,
-:PetscReal => :Float64,
-#:PetscInt => :Int32,
+:PetscScalar => :Float32,
+:PetscReal => :Float32,
+:PetscInt => :Int64,
 )
 
-const petsc_libname = :petscRealDouble
+const petsc_libname = :petscRealSingle
 
 val_tmp = type_dict[:PetscScalar]
 type_dict_single = Dict{Any, Any} (
@@ -397,7 +397,7 @@ function add_body(ex)
       type_annot_j = ex_sig.args[j].args[2]  # get the teyp annotation
       argname_j = ex_sig.args[j].args[1]
       # check for arrays of symbols that need to be copied into a string array
-      if type_annot_j == :(Union(Ptr{$i}, StridedArray{$i}, Ptr{Void}, Ref{$i}))
+      if type_annot_j == :(Union(Ptr{$i}, StridedArray{$i}, Ptr{$i}, Ref{$i}))
         if contains(fname_str, "Get")  # array is to be populated
           # add calls to function body
           resize!(ex_body.args, length(ex_body.args) + 2)
@@ -674,7 +674,7 @@ function modify_typetag(ex)
     # replace pointer with Union of ptr, array, c_null
     if ex.head == :curly && ex.args[1] == :Ptr
       ptr_type = ex.args[2]
-      ex =  :(Union(Ptr{$ptr_type}, StridedArray{$ptr_type}, Ptr{Void}, Ref{$ptr_type}))
+      ex =  :(Union(Ptr{$ptr_type}, StridedArray{$ptr_type}, Ptr{$ptr_type}, Ref{$ptr_type}))
     end
   end
 

@@ -24,7 +24,7 @@ function PetscErrorMessage(errnum)
     arr = Array(Ptr{Uint8}, 1)
     arr_ptr = pointer(arr)
     # use the first petsc library for all cases
-    C.PetscErrorMessage(C.petsc_type[1], errnum,  arr_ptr, C_NULL)
+    C.PetscErrorMessage(C.petsc_type[1], errnum,  arr_ptr, Ref{Ptr{Uint8}}(0))
 #    println("retrieved error message from petsc") 
     str = bytestring(arr[1])
 #    println("error message = ", str)

@@ -85,7 +85,7 @@ function setpreallocation!{T, MType}(a::Mat{T, MType};
                            onz::Integer=0, onnz::AbstractVector=PetscInt[])
     if MType == C.MATSEQAIJ
         pnnz = if isempty(nnz)
-            C_NULL
+            Ptr{T}(0)
         else
             if length(nnz) != size(a,1)
                 throw(ArgumentError("length(nnz) must be # rows"))
@@ -96,7 +96,7 @@ function setpreallocation!{T, MType}(a::Mat{T, MType};
     elseif MType == C.MATMPIAIJ
         mlocal = sizelocal(a,1)
         pnnz = if isempty(nnz)
-            C_NULL
+            Ptr{PetscInt}(0)
         else
             if length(nnz) != mlocal
                 throw(ArgumentError("length(nnz) must be # local rows"))
@@ -104,7 +104,7 @@ function setpreallocation!{T, MType}(a::Mat{T, MType};
             isa(nnz,Vector{PetscInt}) ? nnz : PetscInt[ i for i in nnz ]
         end
         ponnz = if isempty(onnz)
-            C_NULL
+            Ptr{PetscInt}(0)
         else
             if length(onnz) != mlocal
                 throw(ArgumentError("length(onnz) must be # local rows"))
@@ -475,8 +475,14 @@ function (*){T, VType}(A::Mat{T,VType}, B::Mat{T})
   println("C.MAT_INITIAL_MATRIX = ", C.MAT_INITIAL_MATRIX)
   println("C.PETSC_DEFAULT = ", C.PETSC_DEFAULT)
 #  println("ref_p2 = ", ref_p)
-  p = C_NULL
-  chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, C.PETSC_DEFAULT, p))
+#  p = C.Mat{T}(C_NULL)  # create Mat object using null pointer
+#  ref_p = Ref{C.Mat{T}}(p)
+#  println("ref_p = ", ref_p)
+
+  p = Ptr{Void}(1)
+  p_arr = [p]
+  
+  chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, C.PETSC_DEFAULT, p_arr))
 
   if D.p == p_arr[1]
     println("pointer is unchanged")

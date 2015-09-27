@@ -5,6 +5,7 @@ export comm_type
 export MPI_Comm
 export PetscErrorCode
 export PetscBool
+export PetscInt
 
 include("lib_locations.jl")
 #=
@@ -35,7 +36,7 @@ typealias Scalar Union(Float32, Float64, Complex128)
 MPI_COMM_SELF = MPI.COMM_SELF
 typealias MPI_Comm MPI.Comm
 typealias comm_type typeof(MPI.COMM_WORLD.val)
-
+typealias PetscInt Int64
 
 # some auxiliary functions used by ccall wrappers
 function symbol_get_before(sym_arr)

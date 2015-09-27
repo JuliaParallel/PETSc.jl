@@ -25,7 +25,7 @@ mkdir(name_i)
 cd(name_i)
 run(`tar xfvz ../$file_name`)
 cd(petsc_name)
-run(`../../install_petsc.sh --with-scalar-type=real --with-precision=double`)
+run(`../../install_petsc.sh --with-64-bit-indices=true --with-scalar-type=real --with-precision=double`)
 
 cd(start_dir)
 
@@ -40,7 +40,7 @@ mkdir(name_i)
 cd(name_i)
 run(`tar xfvz ../$file_name`)
 cd(petsc_name)
-run(`../../install_petsc.sh --with-scalar-type=real --with-precision=single`)
+run(`../../install_petsc.sh --with-64-bit-indices=true --with-scalar-type=real --with-precision=single`)
 
 
 cd(start_dir)
@@ -56,7 +56,7 @@ mkdir(name_i)
 cd(name_i)
 run(`tar xfvz ../$file_name`)
 cd(petsc_name)
-run(`../../install_petsc.sh --with-scalar-type=complex --with-precision=double`)
+run(`../../install_petsc.sh --with-64-bit-indices=true --with-scalar-type=complex --with-precision=double`)
 
 
 cd(start_dir)

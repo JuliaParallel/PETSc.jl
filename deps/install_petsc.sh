@@ -23,14 +23,14 @@ echo "finished configure"
 PETSC_ARCH=$(cat ./fout | grep "PETSC_ARCH:" | awk '{print $2}')
 
 # get the command printed out on the second to last line
-cmd=$(tail --lines=2 ./fout | head --lines=1)
+cmd=$(tail -n 2 ./fout | head -n 1)
 # execute the command
 
 $cmd MAKE_NP=4 > fout2
 
 echo "finished first command"
 
-cmd2=$(tail --lines=2 ./fout2 | head --lines=1)
+cmd2=$(tail -n 2 ./fout2 | head -n 1)
 # execute the command
 
 $cmd2 MAKE_NP=4 > fout3

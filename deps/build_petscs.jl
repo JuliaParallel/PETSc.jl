@@ -23,7 +23,9 @@ end
 # create new one
 mkdir(name_i)
 cd(name_i)
-run(`tar xfvz ../$file_name`)
+println("extracting PETSc $name_i")
+run(`tar xfz ../$file_name`)
+println("finished extracting PETSc $name_i")
 cd(petsc_name)
 run(`../../install_petsc.sh --with-64-bit-indices=true --with-scalar-type=real --with-precision=double`)
 
@@ -38,7 +40,9 @@ end
 # create new one
 mkdir(name_i)
 cd(name_i)
-run(`tar xfvz ../$file_name`)
+println("extracting PETSc $name_i")
+run(`tar xfz ../$file_name`)
+println("finished extractin PETSc $name_i")
 cd(petsc_name)
 run(`../../install_petsc.sh --with-64-bit-indices=true --with-scalar-type=real --with-precision=single`)
 
@@ -54,7 +58,9 @@ end
 # create new one
 mkdir(name_i)
 cd(name_i)
+println("extracting PETSc $name_i")
 run(`tar xfvz ../$file_name`)
+println("finished extracting PETSc $name_i")
 cd(petsc_name)
 run(`../../install_petsc.sh --with-64-bit-indices=true --with-scalar-type=complex --with-precision=double`)
 

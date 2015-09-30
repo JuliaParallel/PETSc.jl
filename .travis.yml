@@ -21,6 +21,8 @@ install:
 #  - julia -e 'Pkg.build("MPI")'
   - ls ./
   - ls ../
+  - ls -a ~
+  - ls -a ~/.julia
   - ls ~/.julia/v0.4
  
   

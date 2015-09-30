@@ -6054,10 +6054,10 @@ end
 
 #function MatMatMult(arg1::Mat{Float64},arg2::Mat{Float64},arg3::MatReuse,PetscReal::Integer,arg4::Union(Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}))
 
-function MatMatMult(arg1::Mat{Float64},arg2::Mat{Float64},arg3::MatReuse,PetscReal::Integer,arg4)
+function MatMatMult(arg1::Mat{Float64},arg2::Mat{Float64},arg3::MatReuse, arg3_::Float64,arg4)
 #    err = ccall((:MatMatMult,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},MatReuse,Cint,Ptr{Mat{Float64}}),arg1,arg2,arg3,PetscReal,arg4)
 
-    err = ccall((:MatMatMult,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},MatReuse,Cint,Ptr{Ptr{Void}}),arg1,arg2,arg3,PetscReal,arg4)
+    err = ccall((:MatMatMult,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},MatReuse,Float64,Ptr{Ptr{Void}}),arg1,arg2,arg3,arg3_,arg4)
     return err
 end
 

@@ -478,11 +478,11 @@ function (*){T, VType}(A::Mat{T,VType}, B::Mat{T})
 #  p = C.Mat{T}(C_NULL)  # create Mat object using null pointer
 #  ref_p = Ref{C.Mat{T}}(p)
 #  println("ref_p = ", ref_p)
-
-  p = Ptr{Void}(1)
+  p = C_NULL
+#  p = Ptr{Void}(1)
   p_arr = [p]
   
-  chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, C.PETSC_DEFAULT, p_arr))
+  chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, 2.0, p_arr))
 
   if D.p == p_arr[1]
     println("pointer is unchanged")

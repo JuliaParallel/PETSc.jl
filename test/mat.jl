@@ -299,7 +299,7 @@ for i=1:3
   end
 end
 
-#=
+
 println("mat16 = ", mat16)
 println("mat17 = ", mat17)
 mat19 = mat16*mat17
@@ -309,6 +309,6 @@ for i=1:3
     @fact mat19[i,j] => roughly(mat19j[i,j])
   end
 end
-=#
+
 
 end

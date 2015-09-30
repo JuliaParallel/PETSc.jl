@@ -22,8 +22,8 @@ install:
   - ls ./
   - ls ../
   - ls -a ~
-  - ls -a ~/.julia
-  - ls ~/.julia/v0.4
+#  - ls -a ~/.julia
+#  - ls ~/.julia/v0.4
  
   
 # uncomment the following lines to override the default test script
@@ -31,6 +31,9 @@ script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("PETSc")'
   - echo $HOME
+  - echo `pwd`
+  - ls -a ~
+  - ls -a ~/.julia
   - cd ~/.julia/v0.4/PETSc
   - ./test/runtests.sh
 #  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("PETSc"); Pkg.test("PETSc"; coverage=true)'

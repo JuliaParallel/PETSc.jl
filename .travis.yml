@@ -37,5 +37,6 @@ script:
 #  - cd ~/.julia/v0.4/PETSc
 #  - ./test/runtests.sh
 #  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("PETSc"); Pkg.test("PETSc"; coverage=true)'
-   - julia --check-bounds=yes -e 'Pkg.test("PETSc"; converage=true)'
+#   - julia --check-bounds=yes -e 'Pkg.test("PETSc"; converage=true)'
+  - julia --check-bounds=yes -e 'Pkg.test("PETSc"; coverage=true)'
 #  - julia --check-bounds=yes ./test/test_singlereal.jl

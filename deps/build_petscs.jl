@@ -59,7 +59,7 @@ end
 mkdir(name_i)
 cd(name_i)
 println("extracting PETSc $name_i")
-run(`tar xfvz ../$file_name`)
+run(`tar xfz ../$file_name`)
 println("finished extracting PETSc $name_i")
 cd(petsc_name)
 run(`../../install_petsc.sh --with-64-bit-indices=true --with-scalar-type=complex --with-precision=double`)

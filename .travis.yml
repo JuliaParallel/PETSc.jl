@@ -17,8 +17,8 @@ install:
   - ls ./deps
   - ls -lh ./deps/travis-install-mpi.sh
   - sudo ./deps/travis-install-mpi.sh mpich3
-  - julia -e 'Pkg.clone("MPI")'
-  - julia -e 'Pkg.build("MPI")'
+#  - julia -e 'Pkg.clone("MPI")'
+#  - julia -e 'Pkg.build("MPI")'
   - ls ./
   - ls ../
   - ls ~/.julia/v0.4

@@ -484,14 +484,9 @@ function (*){T, VType}(A::Mat{T,VType}, B::Mat{T})
   
   chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, 2.0, p_arr))
 
-  if D.p == p_arr[1]
-    println("pointer is unchanged")
-  else
-    println("pointer changed")
-    D.p = p_arr[1]
-  end
-#  D = Mat{T, VType}(p_arr[1], comm=A.comm)
-  return D
+  c_mat = C.Mat{T}(p_arr[1])
+  new_mat = Mat{T, VType}(c_mat, comm=A.comm)
+  return new_mat
 end
 
 function (+){T, VType}(A::Mat{T, VType}, B::Mat{T})

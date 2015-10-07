@@ -233,7 +233,6 @@ import Base.getindex
 # like getindex but for 0-based indices i
 function getindex0{T}(x::Vec{T}, i::Vector{PetscInt})
     v = similar(i, T)
-    println("i = ", i)
     chk(C.VecGetValues(x.p, length(i), i, v))
     v
 end

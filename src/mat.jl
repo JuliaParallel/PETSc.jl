@@ -21,9 +21,7 @@ end
 function Mat{T}(::Type{T}, mtype=C.MatType=C.MATSEQ; comm=MPI.COMM_WORLD)
 #    p = Array(C.Mat{T}, 1)
     p = Ref{C.Mat{T}}()
-    println("before MatCreate, p = ", p)
     chk(C.MatCreate(comm, p))
-    println("after MatCreate, p = ", p)
     Mat{T, mtype}(p[])
 end
 
@@ -449,43 +447,14 @@ end
 
 # need mat-mat
 function (*){T, VType}(A::Mat{T,VType}, B::Mat{T})
-#  p = Ptr{Void}(1)
-#  cmat = C.Mat{T}()
-#  p_arr = [cmat]
-
-#  D = Mat(T, VType, comm=A.comm)
-#  p_arr = [D.p] 
-#  p = Array(C.Mat{T}, 1)
-
-#  p = C.Mat{T}(C_NULL) 
-#  ref_p = Ref{C.Mat{T}}(p)
-#  println("before, ref_p = ", ref_p)
-#  chk(C.MatCreate(A.comm, ref_p))
-#  println("after, ref_p = ", ref_p)
-#  p = ref_p[]
-#  chk(C.MatSetType(p, VType))
-#  chk(C.MatSetUp(p))
-#  println("p = ", p)
-
-#  println("typeof(p_arr) = ", typeof(p_arr))
-#  p = Array(C.Mat{T}, 1)
-#  chk(C.MatCreate(A.comm, p))
-  println("A.p = ", A.p)
-  println("B.p = ", B.p)
-  println("C.MAT_INITIAL_MATRIX = ", C.MAT_INITIAL_MATRIX)
-  println("C.PETSC_DEFAULT = ", C.PETSC_DEFAULT)
-#  println("ref_p2 = ", ref_p)
-#  p = C.Mat{T}(C_NULL)  # create Mat object using null pointer
-#  ref_p = Ref{C.Mat{T}}(p)
-#  println("ref_p = ", ref_p)
-  p = C_NULL
-#  p = Ptr{Void}(1)
-  p_arr = [p]
-  
+  p = Ptr{Float64}(0)
+  p_arr = Array(C.Mat{T}, 1)
+  println("p_arr = ", p_arr)  
   chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, 2.0, p_arr))
 
-  c_mat = C.Mat{T}(p_arr[1])
-  new_mat = Mat{T, VType}(c_mat, comm=A.comm)
+  println("p_arr = ", p_arr)
+#  c_mat = C.Mat{T}(p_arr[1])
+  new_mat = Mat{T, VType}(p_arr[1], comm=A.comm)
   return new_mat
 end
 

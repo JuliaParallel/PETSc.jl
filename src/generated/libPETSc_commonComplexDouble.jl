@@ -36,6 +36,26 @@ const OMPI_SKIP_MPICXX = 1
 #= # Skipping MacroDefinition: PetscUnlikely ( cond ) ( cond ) =#
 #= # Skipping MacroDefinition: PetscLikely ( cond ) ( cond ) =#
 #= # Skipping MacroDefinition: PetscExpPassiveScalar ( a ) PetscExpScalar ( ) =#
+#skipping undefined const MPIU_REAL = MPI_FLOAT
+#= # Skipping MacroDefinition: PetscSqrtReal ( a ) sqrt ( a ) =#
+#= # Skipping MacroDefinition: PetscExpReal ( a ) exp ( a ) =#
+#= # Skipping MacroDefinition: PetscLogReal ( a ) log ( a ) =#
+#= # Skipping MacroDefinition: PetscLog10Real ( a ) log10 ( a ) =#
+#= # Skipping MacroDefinition: PetscSinReal ( a ) sin ( a ) =#
+#= # Skipping MacroDefinition: PetscCosReal ( a ) cos ( a ) =#
+#= # Skipping MacroDefinition: PetscTanReal ( a ) tan ( a ) =#
+#= # Skipping MacroDefinition: PetscAsinReal ( a ) asin ( a ) =#
+#= # Skipping MacroDefinition: PetscAcosReal ( a ) acos ( a ) =#
+#= # Skipping MacroDefinition: PetscAtanReal ( a ) atan ( a ) =#
+#= # Skipping MacroDefinition: PetscAtan2Real ( a , b ) atan2 ( a , b ) =#
+#= # Skipping MacroDefinition: PetscSinhReal ( a ) sinh ( a ) =#
+#= # Skipping MacroDefinition: PetscCoshReal ( a ) cosh ( a ) =#
+#= # Skipping MacroDefinition: PetscTanhReal ( a ) tanh ( a ) =#
+#= # Skipping MacroDefinition: PetscPowReal ( a , b ) pow ( a , b ) =#
+#= # Skipping MacroDefinition: PetscCeilReal ( a ) ceil ( a ) =#
+#= # Skipping MacroDefinition: PetscFloorReal ( a ) floor ( a ) =#
+#= # Skipping MacroDefinition: PetscFmodReal ( a , b ) fmod ( a , b ) =#
+#= # Skipping MacroDefinition: PetscTGamma ( a ) tgammaf ( a ) =#
 #skipping undefined const MPIU_SCALAR = MPIU_REAL
 #= # Skipping MacroDefinition: PetscRealPart ( a ) ( a ) =#
 #= # Skipping MacroDefinition: PetscImaginaryPart ( a ) ( ( PetscReal ) 0. ) =#
@@ -63,12 +83,18 @@ const OMPI_SKIP_MPICXX = 1
 const PETSC_PI = 3.141592653589793
 const PETSC_MAX_INT = 2147483647
 const PETSC_MIN_INT = -PETSC_MAX_INT - 1
+const PETSC_MAX_REAL = 3.4028234663852886e38
+const PETSC_MIN_REAL = -PETSC_MAX_REAL
+const PETSC_MACHINE_EPSILON = 1.1920929e-7
+const PETSC_SQRT_MACHINE_EPSILON = 0.000345266983
+const PETSC_SMALL = 1.0e-5
+const PETSC_INFINITY = PETSC_MAX_REAL / 4.0
+const PETSC_NINFINITY = -PETSC_INFINITY
 
-#skipping undefined const PETSC_INFINITY = PETSC_MAX_REAL / 4.0
-#skipping undefined const PETSC_NINFINITY = -PETSC_INFINITY
+# excluding lhs of  typealias PetscReal Cfloat
 const PassiveReal = Float64
 
-# excluding lhs of  typealias PetscScalar Cint
+# excluding lhs of  typealias PetscScalar PetscReal
 const PassiveScalar = Complex128
 
 #skipping undefined const MPIU_MATSCALAR = MPIU_SCALAR
@@ -126,8 +152,8 @@ const PETSC_FUNCTION = (UInt32)(12)
 const PETSC_STRING = (UInt32)(12)
 
 #= # end enum PetscDataType =#
-const PETSC_SCALAR = PETSC_DOUBLE
-const PETSC_REAL = PETSC_DOUBLE
+const PETSC_SCALAR = PETSC_FLOAT
+const PETSC_REAL = PETSC_FLOAT
 const PETSC_FORTRANADDR = PETSC_LONG
 
 #skipping undefined const MPIU_SUM = MPI_SUM
@@ -920,7 +946,7 @@ const PETSC_FALSE = (UInt32)(0)
 const PETSC_TRUE = (UInt32)(1)
 
 #= # end enum PetscBool =#
-typealias MatReal Cint
+typealias MatReal Float64
 
 #= skipping type declaration with undefined symbols:
 immutable petsc_mpiu_2scalar
@@ -1586,15 +1612,15 @@ const PETSC_BUTTON_RIGHT_SHIFT = (UInt32)(6)
 #= skipping type declaration with undefined symbols:
 immutable PetscDrawViewPorts
     nports::PetscInt
-    xl::Ptr{Cint}
-    xr::Ptr{Cint}
-    yl::Ptr{Cint}
-    yr::Ptr{Cint}
+    xl::Ptr{PetscReal}
+    xr::Ptr{PetscReal}
+    yl::Ptr{PetscReal}
+    yr::Ptr{PetscReal}
     draw::PetscDraw
-    port_xl::Cint
-    port_yl::Cint
-    port_xr::Cint
-    port_yr::Cint
+    port_xl::PetscReal
+    port_yl::PetscReal
+    port_xr::PetscReal
+    port_yr::PetscReal
 end 
 =#
 # skipping undefined typealias typealias PetscSF Ptr{_p_PetscSF}
@@ -1957,20 +1983,21 @@ const MAT_SHIFT_POSITIVE_DEFINITE = (UInt32)(2)
 const MAT_SHIFT_INBLOCKS = (UInt32)(3)
 
 #= # end enum MatFactorShiftType =#
+#= skipping type declaration with undefined symbols:
 immutable MatFactorInfo
-    diagonal_fill::Cint
-    usedt::Cint
-    dt::Cint
-    dtcol::Cint
-    dtcount::Cint
-    fill::Cint
-    levels::Cint
-    pivotinblocks::Cint
-    zeropivot::Cint
-    shifttype::Cint
-    shiftamount::Cint
-end
-
+    diagonal_fill::PetscReal
+    usedt::PetscReal
+    dt::PetscReal
+    dtcol::PetscReal
+    dtcount::PetscReal
+    fill::PetscReal
+    levels::PetscReal
+    pivotinblocks::PetscReal
+    zeropivot::PetscReal
+    shifttype::PetscReal
+    shiftamount::PetscReal
+end 
+=#
 #= # begin enum ANONYMOUS_34 =#
 typealias ANONYMOUS_34 Uint32
 
@@ -2541,37 +2568,39 @@ typealias PFType Symbol
 typealias AOType Symbol
 
 # skipping undefined typealias typealias PetscQuadrature Ptr{_p_PetscQuadrature}
-immutable Array_3_Cint
-    d1::Cint
-    d2::Cint
-    d3::Cint
-end
-
-#= skipping undefined expression zero(::Type{Array_3_Cint}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 268:
-        Array_3_Cint(fill(zero(Cint),3)...)
+#= skipping type declaration with undefined symbols:
+immutable Array_3_PetscReal
+    d1::PetscReal
+    d2::PetscReal
+    d3::PetscReal
+end 
+=#
+#= skipping undefined expression zero(::Type{Array_3_PetscReal}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 268:
+        Array_3_PetscReal(fill(zero(Float64),3)...)
     end =#
-immutable Array_9_Cint
-    d1::Cint
-    d2::Cint
-    d3::Cint
-    d4::Cint
-    d5::Cint
-    d6::Cint
-    d7::Cint
-    d8::Cint
-    d9::Cint
-end
-
-#= skipping undefined expression zero(::Type{Array_9_Cint}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 268:
-        Array_9_Cint(fill(zero(Cint),9)...)
+#= skipping type declaration with undefined symbols:
+immutable Array_9_PetscReal
+    d1::PetscReal
+    d2::PetscReal
+    d3::PetscReal
+    d4::PetscReal
+    d5::PetscReal
+    d6::PetscReal
+    d7::PetscReal
+    d8::PetscReal
+    d9::PetscReal
+end 
+=#
+#= skipping undefined expression zero(::Type{Array_9_PetscReal}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 268:
+        Array_9_PetscReal(fill(zero(Float64),9)...)
     end =#
 #= skipping type declaration with undefined symbols:
 immutable PetscFECellGeom
-    v0::Array_3_Cint
-    J::Array_9_Cint
-    invJ::Array_9_Cint
-    detJ::Cint
-    n::Array_3_Cint
+    v0::Array_3_PetscReal
+    J::Array_9_PetscReal
+    invJ::Array_9_PetscReal
+    detJ::PetscReal
+    n::Array_3_PetscReal
     dim::PetscInt
     dimEmbed::PetscInt
 end 
@@ -2632,16 +2661,17 @@ end
     end =#
 #= skipping type declaration with undefined symbols:
 immutable PetscFVFaceGeom
-    normal::Array_3_Cint
-    centroid::Array_3_Cint
+    normal::Array_3_PetscReal
+    centroid::Array_3_PetscReal
     grad::Array_2_Array_3_PetscScalar
 end 
 =#
+#= skipping type declaration with undefined symbols:
 immutable PetscFVCellGeom
-    centroid::Array_3_Cint
-    volume::Cint
-end
-
+    centroid::Array_3_PetscReal
+    volume::PetscReal
+end 
+=#
 typealias PetscLimiterType Symbol
 typealias PetscFVType Symbol
 typealias PetscPartitionerType Symbol

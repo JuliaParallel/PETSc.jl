@@ -11,6 +11,11 @@ function __init__()
     PetscInitialize(i)
     println("initialized Petsc library ", i)
   end
+
+  # register atexit finalizers for the Petsc libraries
+  atexit(() -> C.PetscFinalize(Float64))
+  atexit(() -> C.PetscFinalize(Float32))
+  atexit(() -> C.PetscFinalize(Complex128))
 end
 
 

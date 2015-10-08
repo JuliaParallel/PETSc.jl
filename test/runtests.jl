@@ -49,6 +49,6 @@ end
 
 # it looks like all the libraries share an MPI session, so we can only
 # finialize one of them
-for ST in [Float64, Float32, Complex128]
-  PETSc.C.PetscFinalize(ST)
-end
+#for ST in [Float64, Float32, Complex128]
+#  PETSc.C.PetscFinalize(ST)
+#end

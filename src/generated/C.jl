@@ -1,5 +1,8 @@
 module C
 
+using Compat
+
+
 export PetscInt
 
 include("defs.jl")

@@ -2,8 +2,8 @@ using PETSc
 #PETSc.PetscInitialize()
 using FactCheck
 
-import MPI
-MPI.Init()
+#import MPI
+#MPI.Init()
 
 # determine scalar type of current run
 global ST = Float64  # scalar type
@@ -39,6 +39,7 @@ function RC(x::AbstractArray)
 end
 
 for ST in [Float64, Float32, Complex128]
+#ST = Float32
   println("\n\nTesting ", ST)
   include("error.jl")
   include("vec.jl")
@@ -48,4 +49,6 @@ end
 
 # it looks like all the libraries share an MPI session, so we can only
 # finialize one of them
-#PETSc.C.PetscFinalize(ST)
+for ST in [Float64, Float32, Complex128]
+  PETSc.C.PetscFinalize(ST)
+end

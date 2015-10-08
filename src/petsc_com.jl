@@ -1,6 +1,12 @@
 # common functions (initialization, destruction etsc)
 
 function __init__()
+
+  # initialize MPI first so Petsc won't finalize it
+  if !MPI.Initialized()
+    MPI.Init()
+  end
+    
   for i in [Float64, Float32, Complex128]
     PetscInitialize(i)
     println("initialized Petsc library ", i)

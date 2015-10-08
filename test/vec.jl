@@ -37,8 +37,12 @@ vec3 = similar(vec, ST, 5)
 len3_ret = length(vec3)
 @fact len3_ret => 5
 
+println("\n\n\n Copying vec to vec4")
 vec4 = copy(vec)
+println("vec = ", vec)
+println("vec4 = ", vec4)
 
+println("\n\n\n")
 for i=1:length(vec)
   @fact vec4[i] => roughly(vec[i])
 end
@@ -123,6 +127,7 @@ end
 
 println("testing math functions")
 
+println("testing abs")
 vec4_j = abs(vec4_j)
 abs!(vec4)
 
@@ -130,19 +135,29 @@ for i=1:length(vec4)
   @fact vec4[i] => vec4_j[i]
 end
 
+println("testing exp")
+
+println("before, vec and vec4 = ")
+println("vec4 = ", vec4)
+println("vec4_j = ", vec4_j)
+
 vec4_j = exp(vec4_j)
 exp!(vec4)
 
+println("vec4 = ", vec4)
+println("vec4_j = ", vec4_j)
+
+
 for i=1:length(vec4)
-  @fact vec4[i] => vec4_j[i]
+  @fact vec4[i] => roughly(vec4_j[i], atol=1e-4)
 end
 
-
+println("testing log")
 vec4_j = log(vec4_j)
 log!(vec4)
 
 for i=1:length(vec4)
-  @fact vec4[i] => vec4_j[i]
+  @fact vec4[i] => roughly(vec4_j[i], atol=1e-4)
 end
 
 #=

@@ -2,7 +2,7 @@
 # create Vec
 facts("\n --- Testing Vector Function ---") do
 vtype = PETSc.C.VECMPI
-vec = PETSc.Vec(Float64, vtype)
+vec = PETSc.Vec(ST, vtype)
 #PETSc.settype!(vec, vtype)
 PETSc.setsizes!(vec, 4)
 len_ret = length(vec)
@@ -21,9 +21,10 @@ vectype_ret = PETSc.gettype(vec)
 
 println("point 1")
 
-vec[1] = 2
+vt = complex(2.,2)  # use vt to hold temporary values
+vec[1] = RC(vt)
 val_ret = vec[1]
-@fact val_ret => 2
+@fact val_ret => RC(vt)
 
 vec2 = similar(vec)
 PETSc.AssemblyBegin(vec2)
@@ -32,7 +33,7 @@ val2_ret = vec2[1]
 
 @fact val2_ret => not(val_ret)
 
-vec3 = similar(vec, Float64, 5)
+vec3 = similar(vec, ST, 5)
 len3_ret = length(vec3)
 @fact len3_ret => 5
 
@@ -45,10 +46,11 @@ end
 println("point 2")
 
 idx = [1,3, 4]
+vt = RC(complex(2.,2))
 println("idx = ",idx)
 println("typeof(idx) = ", typeof(idx))
 println("size(vec4) = ", size(vec4))
-vec4[idx] = 2
+vec4[idx] = vt
 println("set vec4 values")
 println("idx = ", idx)
 println("size(vec4) = ", size(vec4))
@@ -62,24 +64,26 @@ println("length(idx) = ", length(idx))
 for i=1:length(idx)
   println("i = ", i)
 #  println("vals_ret[i] = ", vals_ret[i])
-  @fact vals_ret[i] => 2
+  @fact vals_ret[i] => vt
 end
 
 println("point 2.5")
-fill!(vec4, 3)
+vt = RC(complex(3.,3))
+fill!(vec4, vt)
 
 for i=1:length(vec4)
-  @fact vec4[i] => roughly(3)
+  @fact vec4[i] => roughly(vt)
 end
 
-vec4[1:2] = 4
+vt = RC(complex( 4.,4))
+vec4[1:2] = vt
 
 
 println("point 3")
-@fact vec4[1:2] => [4.0, 4.0]
+@fact vec4[1:2] => [vt, vt]
 
 
-vals = [1, 3., 4]
+vals = [RC(complex(1,1.)), RC(complex(3.,3)), RC(complex(4., 3))]
 vec4[idx] = vals
 
 for i=1:length(idx)
@@ -94,12 +98,14 @@ for i=1:length(logicals)
 end
 logicals[2] = true
 
-vec4[logicals] = 5
+vt = RC(complex(5,5.))
+vec4[logicals] = vt
 
-@fact vec4[2] => roughly(5)
-@fact vec4[1] => not(5)
+@fact vec4[2] => roughly(vt)
+@fact vec4[1] => not(vt)
 
-vals = rand(1)
+vt = RC(complex(rand(), rand()))
+vals = [vt]
 vec4[logicals] = vals
 println("vals = ", vals)
 println("logicals = ", logicals)
@@ -108,10 +114,11 @@ println("vec4 = ", vec4)
 @fact vec4[1] => not(vals[1])
 
 # reset vec4
- vec4_j = zeros(length(vec4))
+vec4_j = zeros(ST, length(vec4))
 for i=1:length(vec4)
-  vec4[i] = -i
-  vec4_j[i] = -i
+  vec4[i] = RC(complex(Float64(-i), Float64(-i))) 
+  vec4_j[i] = RC(complex(Float64(-i), Float64(-i))) 
+
 end
 
 println("testing math functions")
@@ -191,9 +198,9 @@ println("val_j = ", val_j)
 
 println("testing level 1 Blas")
 
-vecj = zeros(length(vec))
-vec2j = zeros(length(vec))
-vec4j = zeros(length(vec))
+vecj = zeros(ST, length(vec))
+vec2j = zeros(ST, length(vec))
+vec4j = zeros(ST, length(vec))
 
 for i=1:length(vec)
   vecj[i] = vec[i]
@@ -202,8 +209,9 @@ for i=1:length(vec)
 end
 
 println("testing axpy")
-axpy!(2, vec, vec2)
-vec2j = 2*vecj + vec2j
+vt = RC(complex(2.,2))
+axpy!(vt, vec, vec2)
+vec2j = vt*vecj + vec2j
 println("vec2j = ", vec2j)
 println("vec2 = ", vec2)
 for i=1:length(vec)
@@ -212,8 +220,8 @@ for i=1:length(vec)
 end
 
 println("testing 4 argument axpy")
-axpy!(2, vec, vec2, vec4)
-vec4j = 2*vecj + vec2j 
+axpy!(vt, vec, vec2, vec4)
+vec4j = vt*vecj + vec2j 
 
 for i=1:length(vec)
   @fact vec2j[i] => vec2[i]
@@ -221,8 +229,8 @@ end
 
 
 println("testing aypx")
-aypx!(vec, 2, vec2)
-vec2j = 2*vec2j + vec
+aypx!(vec, vt, vec2)
+vec2j = vt*vec2j + vec
 
 for i=1:length(vec)
   @fact vec2j[i] => vec2[i]
@@ -235,9 +243,10 @@ println("vecj = ", vecj)
 println("vec2 = ", vec2)
 println("vec2j = ", vec2j)
 
-
-axpby!(2, vec, 3, vec2)
-vec2j = 2*vecj + 3*vec2j
+vt2 = RC(complex(3.,3))
+vt3 = RC(complex(4.,4))
+axpby!(vt, vec, vt2, vec2)
+vec2j = vt*vecj + vt2*vec2j
 println("after operation:")
 println("vec = ", vec)
 println("vecj = ", vecj)
@@ -248,8 +257,8 @@ for i=1:length(vec)
 end
 
 
-axpbypcz!(2, vec, 3, vec2, 4, vec4)
-vec4j = 2*vecj + 3*vec2j + 4*vec4j
+axpbypcz!(vt, vec, vt2, vec2, vt3, vec4)
+vec4j = vt*vecj + vt2*vec2j + vt3*vec4j
 
 for i=1:length(vec)
   @fact vec4j[i] => vec4[i]
@@ -259,12 +268,12 @@ vecs = Array(typeof(vec), 2)
 vecs[1] = vec
 vecs[2] = vec2
 #vecs = [vec; vec2]
-alphas = [2.0, 3.0]
+alphas = [vt2, vt3]
 println("vecs = ", vecs)
 println("typeof(vecs) = ", typeof(vecs))
 
 PETSc.maxpy!(vec4, alphas, vecs)
-vec4j = vec4j + 2.0*vecj + 3.0*vec2j
+vec4j = vec4j + vt2*vecj + vt3*vec2j
 println("vec4 = ", vec4)
 println("vec4j = ", vec4j)
 for i=1:length(vec)
@@ -272,16 +281,18 @@ for i=1:length(vec)
 end
 
 
-vec5 = Vec(Float64, 3, PETSc.C.VECMPI)
+vec5 = Vec(ST, 3, PETSc.C.VECMPI)
 vec6 = similar(vec5)
-vec5j = zeros(3)
-vec6j = zeros(3)
+vec5j = zeros(ST, 3)
+vec6j = zeros(ST, 3)
 
 for i=1:3
-  vec5[i] = i
-  vec6[i] = i+3
-  vec5j[i] = i
-  vec6j[i] = i+3
+  i_float = Float64(i)
+  
+  vec5[i] = RC(complex(i_float, i_float))
+  vec6[i] = RC(complex(i_float+3, i_float+3))
+  vec5j[i] = RC(complex(i_float, i_float))
+  vec6j[i] = RC(complex(i_float +3, i_float+3))
 end
 
 println("vec5 = ", vec5)

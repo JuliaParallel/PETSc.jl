@@ -1,16 +1,23 @@
 # common functions (initialization, destruction etsc)
 
-#function __init__()
-function PetscInitialize()  
-  PetscInitialize([])
-end
-#end
-
-function PetscInitialize(args)
-  PetscInitialize(args,"","")
+function __init__()
+  for i in [Float64, Float32, Complex128]
+    PetscInitialize(i)
+    println("initialized Petsc library ", i)
+  end
 end
 
-function PetscInitialize(args,filename,help)
+
+function PetscInitialize(lib::DataType)  
+  PetscInitialize(lib, [])
+end
+
+
+function PetscInitialize(lib::DataType, args)
+  PetscInitialize(lib, args,"","")
+end
+
+function PetscInitialize(lib::DataType, args,filename,help)
   # argument list starts with program name
   args = ["julia";args];
   println("typeof(args) = ", typeof(args))
@@ -52,7 +59,7 @@ function PetscInitialize(args,filename,help)
   arr2_ptr_tmp = typeof(arr2_ptr)[arr2_ptr]
   arr3_ptr = pointer(arr2_ptr_tmp)
 
-  err = C.PetscInitialize(Float64, val_ptr, arr3_ptr, bytestring(filename), bytestring(help))
+  err = C.PetscInitialize(lib, val_ptr, arr3_ptr, bytestring(filename), bytestring(help))
 
   if err != 0
     println("non zero return status: ", err)

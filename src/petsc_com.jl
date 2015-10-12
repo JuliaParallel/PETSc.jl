@@ -12,6 +12,15 @@ function __init__()
     println("initialized Petsc library ", i)
   end
 
+  # we want Petsc to return errors to us, rather than using its own
+  # error handlers, so that we can catch error codes and throw exceptions
+  # need to do this for all Petsc versions
+  for i=1:3
+    libname = C.petsc_libs[i]
+    val = @eval(cglobal((:PetscIgnoreErrorHandler, C.$libname)))
+    C.PetscPushErrorHandler(C.petsc_type[i], val, C_NULL)
+  end
+
   # register atexit finalizers for the Petsc libraries
   atexit(() -> C.PetscFinalize(Float64))
   atexit(() -> C.PetscFinalize(Float32))

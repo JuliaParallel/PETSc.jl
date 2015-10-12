@@ -31,12 +31,4 @@ function PetscErrorMessage(errnum)
 #    msg[1] ==  ? "(unknown)" : bytestring(msg[1])
 end
 
-# we want Petsc to return errors to us, rather than using its own
-# error handlers, so that we can catch error codes and throw exceptions
-# need to do this for all Petsc versions
-for i=1:C.numlibs
-  libname = C.petsc_libs[i]
-  val = @eval(cglobal((:PetscIgnoreErrorHandler, C.$libname)))
-  C.PetscPushErrorHandler(C.petsc_type[i], val, C_NULL)
-end
 

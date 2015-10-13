@@ -1,6 +1,8 @@
 # PETSc
 
 [![Build Status](https://travis-ci.org/JuliaParallel/PETSc.jl.svg?branch=master)](https://travis-ci.org/JuliaParallel/PETSc.jl)
+[![codecov.io](http://codecov.io/github/JuliaParallel/PETSc.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaParallel/PETSc.jl?branch=master)
+[![Coverage Status](https://coveralls.io/repos/JuliaParallel/PETSc.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/JuliaParallel/PETSc.jl?branch=master)
 
 This package provides a high level interface for PETSc, enabling the use of PETSc as an `AbstractArray`.  A low level interface is also available in the submodule `PETSc.C`.
 

@@ -11,7 +11,8 @@ if !isfile(file_name)
   download("http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/$file_name", file_name)
 end
 
-start_dir = pwd()
+
+start_dir = dirname(@__FILE__)
 if true  # debugging flag
 
 # delete existing installation
@@ -27,7 +28,7 @@ println("extracting PETSc $name_i")
 run(`tar xfz ../$file_name`)
 println("finished extracting PETSc $name_i")
 cd(petsc_name)
-run(`../../install_petsc.sh --with-64-bit-indices=true --with-scalar-type=real --with-precision=double`)
+run(`$start_dir/install_petsc.sh --with-64-bit-indices=true --with-scalar-type=real --with-precision=double`)
 
 cd(start_dir)
 
@@ -44,7 +45,7 @@ println("extracting PETSc $name_i")
 run(`tar xfz ../$file_name`)
 println("finished extractin PETSc $name_i")
 cd(petsc_name)
-run(`../../install_petsc.sh --with-64-bit-indices=true --with-scalar-type=real --with-precision=single`)
+run(`$start_dir/install_petsc.sh --with-64-bit-indices=true --with-scalar-type=real --with-precision=single`)
 
 
 cd(start_dir)
@@ -62,7 +63,7 @@ println("extracting PETSc $name_i")
 run(`tar xfz ../$file_name`)
 println("finished extracting PETSc $name_i")
 cd(petsc_name)
-run(`../../install_petsc.sh --with-64-bit-indices=true --with-scalar-type=complex --with-precision=double`)
+run(`$start_dir/install_petsc.sh --with-64-bit-indices=true --with-scalar-type=complex --with-precision=double`)
 
 
 cd(start_dir)

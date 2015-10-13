@@ -1,5 +1,6 @@
 # PETSc
-[![Build Status](https://travis-ci.org/JaredCrean2/PETSc.jl.svg?branch=master)](https://travis-ci.org/JaredCrean2/PETSc.jl)
+
+[![Build Status](https://travis-ci.org/JuliaParallel/PETSc.jl.svg?branch=master)](https://travis-ci.org/JuliaParallel/PETSc.jl)
 
 This package provides a high level interface for PETSc, enabling the use of PETSc as an `AbstractArray`.  A low level interface is also available in the submodule `PETSc.C`.
 

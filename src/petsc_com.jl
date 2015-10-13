@@ -6,7 +6,7 @@ function __init__()
   if !MPI.Initialized()
     MPI.Init()
   end
-    
+
   for i in [Float64, Float32, Complex128]
     PetscInitialize(i)
     println("initialized Petsc library ", i)
@@ -28,7 +28,7 @@ function __init__()
 end
 
 
-function PetscInitialize(lib::DataType)  
+function PetscInitialize(lib::DataType)
   PetscInitialize(lib, [])
 end
 
@@ -59,14 +59,14 @@ function PetscInitialize(lib::DataType, args,filename,help)
 =#
   # convert arguments to Cstring
   arr = Array(UTF8String, length(args))  # convert to C string
-  arr2 = Array(Ptr{Uint8}, length(args))  # get array of pointers
+  arr2 = Array(Ptr{UInt8}, length(args))  # get array of pointers
   for i = 1:length(args)
     arr[i] = Base.cconvert(Cstring, args[i])
     arr2[i] = pointer(arr[i])
     # = cstring(args[i])
   end
 #  ptrs = _jl_pre_exec(arr)
-#  err = ccall(Libdl.dlsym(libpetsc, :PetscInitializeNoPointers),Int32,(Int32,Ptr{Ptr{Uint8}},Ptr{Uint8},Ptr{Uint8}), length(ptrs), ptrs,cstring(filename),cstring(help));
+#  err = ccall(Libdl.dlsym(libpetsc, :PetscInitializeNoPointers),Int32,(Int32,Ptr{Ptr{UInt8}},Ptr{UInt8},Ptr{UInt8}), length(ptrs), ptrs,cstring(filename),cstring(help));
 
   println("typeof(arr) = ", typeof(arr))
   println("typeof(filename) = ", typeof(bytestring(filename)))
@@ -93,10 +93,10 @@ function PetscInitialize(lib::DataType, args,filename,help)
   for i=1:val
     arr_ret[i] = bytestring(arr2_ret[i])
   end
-  
+
   println("returned argv = ", arr_ret)
 =#
-#  err = ccall( (:PetscInitializeNoPointers,  libpetsclocation),Int32,(Int32,Ptr{Ptr{Uint8}},Cstring,Cstring), length(arr), arr,filename,help);
+#  err = ccall( (:PetscInitializeNoPointers,  libpetsclocation),Int32,(Int32,Ptr{Ptr{UInt8}},Cstring,Cstring), length(arr), arr,filename,help);
   return err
 end
 

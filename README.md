@@ -1,4 +1,5 @@
 # PETSc
+[![Build Status](https://travis-ci.org/JaredCrean2/PETSc.jl.svg?branch=master)](https://travis-ci.org/JaredCrean2/PETSc.jl)
 This package provides a high level interface for PETSc, enabling the use of PETSc as an `AbstractArray.  A low level interface is also available in the submodule PETSc.C.
 
 This package requires the MPI.jl package be installed.  Once it is installed you should be able to run both Julia and Petsc in parallel using MPI for all communication.  The testing verifies that PETSc can be used both serially and in parallel.

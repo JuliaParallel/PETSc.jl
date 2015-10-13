@@ -46,7 +46,7 @@ function VecDestroy(vec::Vec)
 
   tmp = Array(PetscBool, 1)
   C.PetscFinalized(eltype(vec), tmp)
-   
+
   if tmp[1] == 0  # if petsc has not been finalized yet
     C.VecDestroy([vec.p])
   end
@@ -54,7 +54,7 @@ function VecDestroy(vec::Vec)
    # if Petsc has been finalized, let the OS deallocate the memory
 end
 
- 
+
 
 function settype!(a::Vec, T::C.VecType)
     chk(C.VecSetType(a.p, T))
@@ -62,9 +62,9 @@ function settype!(a::Vec, T::C.VecType)
 end
 
 function gettype(a::Vec)
-    p = Array(C.VecType, 1)  # was Uint8
+    p = Array(C.VecType, 1)  # was UInt8
 #    p[1] = "a"  # need to initialize symbol array to something
-    
+
     chk(C.VecGetType(a.p, p))
     p[1]
 end
@@ -188,12 +188,12 @@ function setindex!(x::Vec, v::Number, I::Range{Int})
     end
 end
 
-setindex!{T<:Real}(x::Vec, V::AbstractArray, I::AbstractArray{T}) = 
+setindex!{T<:Real}(x::Vec, V::AbstractArray, I::AbstractArray{T}) =
 assemble(x) do
     if length(V) != length(I)
         throw(ArgumentError("length(values) != length(indices)"))
     end
-    # possibly faster to make a PetscScalar array from V, and 
+    # possibly faster to make a PetscScalar array from V, and
     # a copy of the I array shifted by 1, to call setindex0! instead?
     c = 1
     for i in I
@@ -222,7 +222,7 @@ for T in (:(Array{T2}),:(AbstractArray{T2})) # avoid method ambiguities
                 c += 1
             end
         end
-   
+
         A
     end
 end
@@ -250,17 +250,17 @@ getindex(x::Vec, I::AbstractVector{PetscInt}) =
 import Base: abs, exp, log, conj, conj!, max, min, findmax, findmin, norm, maximum, minimum, .*, ./, +, -, scale!, dot, ==, !=, sum
 export normalize!, abs!, exp!, log!, chop!
 
-for (f,pf) in ((:abs,:VecAbs), (:exp,:VecExp), (:log,:VecLog), 
+for (f,pf) in ((:abs,:VecAbs), (:exp,:VecExp), (:log,:VecLog),
                (:conj,:VecConjugate))
     fb = symbol(string(f, "!"))
     @eval begin
         function $fb(x::Vec)
             chk(C.$pf(x.p))
-#            chk(ccall(($(Expr(:quote, pf)),petsc), PetscErrorCode, 
+#            chk(ccall(($(Expr(:quote, pf)),petsc), PetscErrorCode,
  #                     (pVec,), x))
             x
         end
- 
+
         $f(x::Vec) = $fb(copy(x))
     end
 end
@@ -406,7 +406,7 @@ import Base.LinAlg.BLAS.axpy!
 
 # y <- alpha*x + y
 function axpy!{T}(alpha::Number, x::Vec{T}, y::Vec)
-    chk(C.VecAXPY(y.p, T(alpha), x.p)) 
+    chk(C.VecAXPY(y.p, T(alpha), x.p))
     y
 end
 # w <- alpha*x + y

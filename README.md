@@ -1,11 +1,16 @@
 # PETSc
-This package provides a high level interface for PETSc, enabling the use of PETSc as an `AbstractArray.  A low level interface is also available in the submodule PETSc.C.
 
-This package requires the MPI.jl package be installed.  Once it is installed you should be able to run both Julia and Petsc in parallel using MPI for all communication.  The testing verifies that PETSc can be used both serially and in parallel.
+[![Build Status](https://travis-ci.org/JuliaParallel/PETSc.jl.svg?branch=master)](https://travis-ci.org/JuliaParallel/PETSc.jl)
+[![codecov.io](http://codecov.io/github/JuliaParallel/PETSc.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaParallel/PETSc.jl?branch=master)
+[![Coverage Status](https://coveralls.io/repos/JuliaParallel/PETSc.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/JuliaParallel/PETSc.jl?branch=master)
 
-To use the package, simply put `using PETSc` at the top of your Julia source file.  The module exports the names of all the functions, as well as the Petsc data type aliases and constants such as `PETSC_DECIDE`.
+This package provides a high level interface for PETSc, enabling the use of PETSc as an `AbstractArray`.  A low level interface is also available in the submodule `PETSc.C`.
 
-In general, it is possible to run PETSC in parallel. To do so with 4 processors, do:
+This package requires the [MPI.jl package](https://github.com/JuliaParallel/MPI.jl) be installed.  Once it is installed you should be able to run both Julia and Petsc in parallel using MPI for all communication.  The testing verifies that PETSc can be used both serially and in parallel.
+
+To use the package, simply put `using PETSc` at the top of your Julia source file.  The module exports the names of all the functions, as well as the PETSc data type aliases and constants such as `PETSC_DECIDE`.
+
+In general, it is possible to run PETSc in parallel. To do so with 4 processors, do:
 
 ```
 mpirun -np 4 julia ./name_of_file
@@ -18,23 +23,23 @@ To run in serial, do:
 julia ./name_of_file
 ```
 
-Even when running serially, the MPI.jl package must be installed.
+Even when running serially, the [MPI.jl package](https://github.com/JuliaParallel/MPI.jl) must be installed.
 
 
-An example of using a Krylov Sub-Space method to solve a linear system is in  `test/test_ksp.jl`, which solves a simple system with a Krylov Subspace method and compares the result with a direct solve using Julia's backslash operator.  This works in serial and in parallel.  It requires some variables declared at the top of `runtests.jl` to work.
+An example of using a Krylov subspace method to solve a linear system is in  `test/test_ksp.jl`, which solves a simple system with a Krylov subspace method and compares the result with a direct solve using Julia's backslash operator.  This works in serial and in parallel.  It requires some variables declared at the top of `runtests.jl` to work.
 
 
 
 ## To do:
-  * Make the script for building Petsc more flexible, eg. allowing more configuration options like building BLAS or LAPCK, while ensure it remains completely autonomous (needed for Travis testing)
-  * Wrap more KSP function
+  * Make the script for building PETSc more flexible, e.g. allowing more configuration options like building BLAS or LAPCK, while ensure it remains completely autonomous (needed for Travis testing)
+  * Wrap more KSP functions
 
 ## Status
 ### Vector
-  The AbstractArray for PetscVec is implemented.  Some additional PETSc 
+  The `AbstractArray` for `PetscVec` is implemented.  Some additional PETSc 
   BLAS functions are wrapped as well.
 ### Matrix
- The AbstractArray interface for PetscMat is implemented.  Preallocation 
+ The AbstractArray interface for `PetscMat` is implemented.  Preallocation 
  is supported through optional keyword arguments to the matrix constructor or
  the `setpreallocation` function.  It possible to set multiple values in the 
   matrix without intermediate assembly using the `assemble` function or by 
@@ -54,7 +59,7 @@ An example of using a Krylov Sub-Space method to solve a linear system is in  `t
   `/deps` : builds Petsc if needed.  See description below
 
 
-## Building Petsc
+## Building PETSc
 Building the package will build build the 3 versions of PETSc in the `/deps` 
  directory, and writes the file `lib_locations.jl` to the `/src/generated` 
  directory to tell the package the location of the libraries.  Note that 
@@ -63,19 +68,18 @@ development.  If you wish to do high performance computations, you should
 build the optimized versions of the library.  See the PETSc website for 
 details.
 
-## Installing MPI.jl
-This package requires MPI.jl, although it is not listed in the REQUIRE file because that would download the release version of MPI.jl, which does not work.  Instead, you must use the master branch.  After you have an MPI implementation installed, Pkg.build("Petsc") will install it and then Petsc, according to the description above.  If you wish to install it manually, do:
-```
+## Installing [MPI.jl](https://github.com/JuliaParallel/MPI.jl)
+This package requires MPI.jl, although it is not listed in the REQUIRE file because that would download the release version of MPI.jl, which does not work.  Instead, you must use the master branch.  After you have an MPI implementation installed, `Pkg.build("Petsc")` will install it and then PETSc, according to the description above.  If you wish to install it manually, do:
+
+```jl
   Pkg.clone("MPI")
   Pkg.build("MPI")
 ```
 
-Currently, only MPI implimentations where the Fortran communicator is the same as the C communictor are supported.  This is due to the current implimentation of the MPI.jl package.  MPICH is one MPI implimentation that satisfies this requirement.  Note that OPENMPI does not.
+Currently, only MPI implementations where the Fortran communicator is the same as the C communictor are supported.  This is due to the current implementation of the MPI.jl package.  MPICH is one MPI implementation that satisfies this requirement.  Note that OPENMPI does not.
 
 
 ## Auto Generation Notes
 PETSc uses preprocessor variables to decide what code to include when compiling 
 the library.  Clang does not know what preprocessor variables were defined at 
-compile time, so it does not correctly detect the typealiases PetscScalar, PetscReal, etc.  To correctly autogenerate wrappers, the proper variables must be passed to Clang with the -D switch.  Note that users will not need to generate their own wrappers because they have already been generated and commit to the repo.
-
-[![Build Status](https://travis-ci.org/JaredCrean2/PETSc.jl.svg?branch=master)](https://travis-ci.org/JaredCrean2/PETSc.jl)
+compile time, so it does not correctly detect the typealiases `PetscScalar`, `PetscReal`, etc.  To correctly autogenerate wrappers, the proper variables must be passed to Clang with the -D switch.  Note that users will not need to generate their own wrappers because they have already been generated and commit to the repo.

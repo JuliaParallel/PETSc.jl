@@ -46,7 +46,7 @@ function MatDestroy(mat::Mat)
 
   tmp = Array(PetscBool, 1)
   C.PetscFinalized(eltype(mat), tmp)
-   
+
   if tmp[1] == 0  # if petsc has not been finalized yet
     C.MatDestroy([mat.p])
   end
@@ -118,8 +118,8 @@ end
 
 # construct Vec for multiplication by a::Mat or transpose(a::Mat)
 #const mat2vec = [ "mpiaij" => "aij", "seqaij" => "seq" ]
-const mat2vec = Dict{C.MatType, C.MatType} ( :mpiaij => :aij, :seqaij => :seq ) 
-Vec{T2}(a::Mat{T2}, transposed=false) = 
+const mat2vec = Dict{C.MatType, C.MatType} ( :mpiaij => :aij, :seqaij => :seq )
+Vec{T2}(a::Mat{T2}, transposed=false) =
   transposed ? Vec(T, size(a,1), comm=a.comm, T=mat2vec[gettype(a)],
                    mlocal=sizelocal(a,1)) :
                Vec(T, size(a,2), comm=a.comm, T=mat2vec[gettype(a)],
@@ -155,9 +155,9 @@ end
 
 similar{T}(a::Mat{T}, ::Type{T}) = similar(a)
 similar{T}(a::Mat{T}, ::Type{T}, ::Type{PetscInt}) = similar(a)
-similar{T, MType}(a::Mat{T, MType}, ::Type{T}, m::Integer, n::Integer) = 
+similar{T, MType}(a::Mat{T, MType}, ::Type{T}, m::Integer, n::Integer) =
     (m,n) == size(a) ? similar(a) : Mat(T, m,n, comm=a.comm, mtype=MType)
-similar{T}(a::Mat, ::Type{T}, d::Tuple{Int,Int}) = 
+similar{T}(a::Mat, ::Type{T}, d::Tuple{Int,Int}) =
     similar(a, T, d...)
 
 function copy{T, MType}(a::Mat{T, MType})
@@ -201,7 +201,7 @@ function isassembled(x::Mat)
     end
 end
 
-function assemble(f::Function, x::Union(Vec,Mat), 
+function assemble(f::Function, x::Union{Vec,Mat},
                   insertmode=x.insertmode,
                   assemblytype::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
     if x.insertmode != insertmode && x.assembling
@@ -226,16 +226,16 @@ function assemble(f::Function, x::Union(Vec,Mat),
 end
 
 # finalize matrix assembly
-assemble(x::Union(Vec,Mat)) = assemble(() -> nothing, x)
+assemble(x::Union{Vec,Mat}) = assemble(() -> nothing, x)
 
 # intermediate assembly, before it is finally compressed for use
-iassemble(x::Union(Vec, Mat)) = assemble( () -> nothing, x, x.insertmode, C.MAT_FLUSH_ASSEMBLY)
+iassemble(x::Union{Vec,Mat}) = assemble( () -> nothing, x, x.insertmode, C.MAT_FLUSH_ASSEMBLY)
 iassemble(f::Function, x::Mat, insertmode=x.insertmode) =
     assemble(f, x, insertmode, C.MAT_FLUSH_ASSEMBLY)
 
 
 # like x[i,j] = v, but requires i,j to be 0-based indices for Petsc
-function setindex0!{T}(x::Mat{T}, v::Array{T}, 
+function setindex0!{T}(x::Mat{T}, v::Array{T},
                     i::Array{PetscInt}, j::Array{PetscInt})
     ni = length(i)
     nj = length(j)
@@ -258,25 +258,25 @@ end
 
 function setindex!{T}(x::Mat{T}, v::Number, i::Real, j::Real)
     # can't call MatSetValue since that is a static inline function
-    setindex0!(x, T[ v ], 
-               PetscInt[ to_index(i) - 1 ], 
+    setindex0!(x, T[ v ],
+               PetscInt[ to_index(i) - 1 ],
                PetscInt[ to_index(j) - 1 ])
     v
 end
-function setindex!{T3, T1<:Real, T2<:Real}(x::Mat{T3}, v::Array{T3}, 
+function setindex!{T3, T1<:Real, T2<:Real}(x::Mat{T3}, v::Array{T3},
                                        I::AbstractArray{T1},
                                        J::AbstractArray{T2})
     I0 = PetscInt[ to_index(i)-1 for i in I ]
     J0 = PetscInt[ to_index(j)-1 for j in J ]
     setindex0!(x, v, I0, J0)
 end
-function setindex!{T2, T<:Real}(x::Mat{T2}, v::Array{T2}, 
+function setindex!{T2, T<:Real}(x::Mat{T2}, v::Array{T2},
                             i::Real, J::AbstractArray{T})
     I0 = PetscInt[ to_index(i)-1 ]
     J0 = PetscInt[ to_index(j)-1 for j in J ]
     setindex0!(x, v, I0, J0)
 end
-function setindex!{T2, T<:Real}(x::Mat{T2}, v::Array{T2}, 
+function setindex!{T2, T<:Real}(x::Mat{T2}, v::Array{T2},
                             I::AbstractArray{T}, j::Real)
     I0 = PetscInt[ to_index(i)-1 for i in I ]
     J0 = PetscInt[ to_index(j)-1 ]
@@ -284,7 +284,7 @@ function setindex!{T2, T<:Real}(x::Mat{T2}, v::Array{T2},
 end
 
 
-setindex!{T1<:Real, T2<:Real}(x::Mat, v::Number, 
+setindex!{T1<:Real, T2<:Real}(x::Mat, v::Number,
                               I::AbstractArray{T1},
                               J::AbstractArray{T2}) = iassemble(x) do
     for i in I
@@ -294,14 +294,14 @@ setindex!{T1<:Real, T2<:Real}(x::Mat, v::Number,
     end
     x
 end
-setindex!{T<:Real}(x::Mat, v::Number, 
+setindex!{T<:Real}(x::Mat, v::Number,
                    i::Real, J::AbstractArray{T}) = iassemble(x) do
     for j in J
         x[i,j] = v
     end
     x
 end
-setindex!{T<:Real}(x::Mat, v::Number, 
+setindex!{T<:Real}(x::Mat, v::Number,
                    I::AbstractArray{T}, j::Real) = iassemble(x) do
     for i in I
         x[i,j] = v
@@ -309,7 +309,7 @@ setindex!{T<:Real}(x::Mat, v::Number,
     x
 end
 
-function setindex!{T0<:Real, T1<:Real, T2<:Real}(x::Mat, v::AbstractArray{T0}, 
+function setindex!{T0<:Real, T1<:Real, T2<:Real}(x::Mat, v::AbstractArray{T0},
                                                  I::AbstractArray{T1},
                                                  J::AbstractArray{T2})
     if length(v) != length(I)*length(J)
@@ -330,7 +330,7 @@ function fill!(x::Mat, v::Number)
 #        chk(ccall((:MatZeroEntries,petsc), PetscErrorCode, (pMat,), x))
 #    else
 
-  
+
         # FIXME: only loop over local rows
         iassemble(x) do
             m,n = size(x)
@@ -359,7 +359,7 @@ end
 getindex(a::Mat, i0::Real, i1::Real) =
   getindex0(a, PetscInt[ to_index(i0)-1 ], PetscInt[ to_index(i1)-1 ])[1]
 
-getindex{T0<:Real,T1<:Real}(a::Mat, 
+getindex{T0<:Real,T1<:Real}(a::Mat,
                             I0::AbstractArray{T0},
                             I1::AbstractArray{T1}) =
   getindex0(a, PetscInt[ to_index(i0)-1 for i0 in I0 ],
@@ -406,7 +406,7 @@ for (f,pf) in ((:transpose,:MatTranspose),(:ctranspose,:MatHermitianTranspose))
             chk(C.C.$pf(a.p, C.MAT_REUSE_MATRIX, pa))
             a
         end
-        
+
         function $f{T}(a::Mat{T})
             p = Array(C.Mat{T}, 1)
             chk(C.$pf(a.p, C.MAT_INITIAL_MATRIX, p))
@@ -449,7 +449,7 @@ end
 function (*){T, VType}(A::Mat{T,VType}, B::Mat{T})
   p = Ptr{Float64}(0)
   p_arr = Array(C.Mat{T}, 1)
-  println("p_arr = ", p_arr)  
+  println("p_arr = ", p_arr)
   chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, real(T(2.0)), p_arr))
 
   println("p_arr = ", p_arr)

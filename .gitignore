@@ -1,2 +1,8 @@
+deps/ComplexDouble/
+deps/RealDouble/
+deps/RealSingle/
+deps/lib_locations.jl
+deps/petsc-*.tar.gz
+src/generated/lib_locations.jl
 *.jl.cov
 *.jl.mem

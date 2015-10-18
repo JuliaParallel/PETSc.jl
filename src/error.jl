@@ -14,18 +14,18 @@ end
 immutable PetscError <: Exception
     errnum::PetscErrorCode
     msg::String
-    PetscError(n::Integer, m="") = new(convert(PetscErrorCode, n), 
+    PetscError(n::Integer, m="") = new(convert(PetscErrorCode, n),
                                        PetscErrorMessage(n))
 end
 
 # return error message string corresponding to errnum
 function PetscErrorMessage(errnum)
 #    println("entered PetscErrorMessage")
-    arr = Array(Ptr{Uint8}, 1)
+    arr = Array(Ptr{UInt8}, 1)
     arr_ptr = pointer(arr)
     # use the first petsc library for all cases
-    C.PetscErrorMessage(C.petsc_type[1], errnum,  arr_ptr, Ref{Ptr{Uint8}}(0))
-#    println("retrieved error message from petsc") 
+    C.PetscErrorMessage(C.petsc_type[1], errnum,  arr_ptr, Ref{Ptr{UInt8}}(0))
+#    println("retrieved error message from petsc")
     str = bytestring(arr[1])
 #    println("error message = ", str)
 #    msg[1] ==  ? "(unknown)" : bytestring(msg[1])

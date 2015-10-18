@@ -10,8 +10,8 @@ using DataStructures
 
 # used to modify function signatures
 type_dict = Dict{Any, Any} (
-:PetscScalar => :Float32,
-:PetscReal => :Float32,
+:PetscScalar => :Complex128,
+:PetscReal => :Float64,
 :PetscInt => :Int64,
 )
 

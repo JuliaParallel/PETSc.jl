@@ -97,8 +97,8 @@ end
     ccall((:PetscMPIDataTypeToPetscDataType,petscRealSingle),PetscErrorCode,(MPI_Datatype,Ptr{PetscDataType}),arg1,arg2)
 end 
 =#
-function PetscDataTypeGetSize(arg0::Type{Float32},arg1::PetscDataType,arg2::Union(Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}))
-    err = ccall((:PetscDataTypeGetSize,petscRealSingle),PetscErrorCode,(PetscDataType,Ptr{Cint}),arg1,arg2)
+function PetscDataTypeGetSize(arg0::Type{Float32},arg1::PetscDataType,arg2::Union(Ptr{Csize_t},StridedArray{Csize_t},Ptr{Csize_t},Ref{Csize_t}))
+    err = ccall((:PetscDataTypeGetSize,petscRealSingle),PetscErrorCode,(PetscDataType,Ptr{Csize_t}),arg1,arg2)
     return err
 end
 
@@ -112,18 +112,18 @@ function PetscBitMemcpy(arg0::Type{Float32},arg1::Union(Ptr{Void},StridedArray{V
     return err
 end
 
-function PetscMemmove(arg0::Type{Float32},arg1::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}),size_t::Integer)
-    err = ccall((:PetscMemmove,petscRealSingle),PetscErrorCode,(Ptr{Void},Ptr{Void},Cint),arg1,arg2,size_t)
+function PetscMemmove(arg0::Type{Float32},arg1::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}),arg3::Csize_t)
+    err = ccall((:PetscMemmove,petscRealSingle),PetscErrorCode,(Ptr{Void},Ptr{Void},Csize_t),arg1,arg2,arg3)
     return err
 end
 
-function PetscMemcmp(arg0::Type{Float32},arg1::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}),size_t::Integer,arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
-    err = ccall((:PetscMemcmp,petscRealSingle),PetscErrorCode,(Ptr{Void},Ptr{Void},Cint,Ptr{PetscBool}),arg1,arg2,size_t,arg3)
+function PetscMemcmp(arg0::Type{Float32},arg1::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}),arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}),arg3::Csize_t,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
+    err = ccall((:PetscMemcmp,petscRealSingle),PetscErrorCode,(Ptr{Void},Ptr{Void},Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscStrlen(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}))
-    err = ccall((:PetscStrlen,petscRealSingle),PetscErrorCode,(Cstring,Ptr{Cint}),arg1,arg2)
+function PetscStrlen(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(Ptr{Csize_t},StridedArray{Csize_t},Ptr{Csize_t},Ref{Csize_t}))
+    err = ccall((:PetscStrlen,petscRealSingle),PetscErrorCode,(Cstring,Ptr{Csize_t}),arg1,arg2)
     return err
 end
 
@@ -152,8 +152,8 @@ function PetscStrcasecmp(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2
     return err
 end
 
-function PetscStrncmp(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),size_t::Integer,arg3::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
-    err = ccall((:PetscStrncmp,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cint,Ptr{PetscBool}),arg1,arg2,size_t,arg3)
+function PetscStrncmp(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),arg3::Csize_t,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
+    err = ccall((:PetscStrncmp,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -167,13 +167,13 @@ function PetscStrcat(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Un
     return err
 end
 
-function PetscStrncat(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscStrncat,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cint),arg1,arg2,size_t)
+function PetscStrncat(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),arg3::Csize_t)
+    err = ccall((:PetscStrncat,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Csize_t),arg1,arg2,arg3)
     return err
 end
 
-function PetscStrncpy(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscStrncpy,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cint),arg1,arg2,size_t)
+function PetscStrncpy(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),arg3::Csize_t)
+    err = ccall((:PetscStrncpy,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Csize_t),arg1,arg2,arg3)
     return err
 end
 
@@ -247,8 +247,8 @@ function PetscStrNArrayDestroy(arg0::Type{Float32},arg1::Integer,arg2::Union(Ptr
     return err
 end
 
-function PetscStrreplace(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscStrreplace,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Cint),arg1.val,arg2,arg3,size_t)
+function PetscStrreplace(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Csize_t)
+    err = ccall((:PetscStrreplace,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1.val,arg2,arg3,arg4)
     return err
 end
 
@@ -702,8 +702,8 @@ function PetscOptionsGetBoolArray(arg0::Type{Float32},arg1::Union(ByteString,Sym
     return err
 end
 
-function PetscOptionsGetString(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
-    err = ccall((:PetscOptionsGetString,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1,arg2,arg3,size_t,arg4)
+function PetscOptionsGetString(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Csize_t,arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
+    err = ccall((:PetscOptionsGetString,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -817,8 +817,8 @@ function PetscOptionsGetAll(arg0::Type{Float32},arg1::Union(Ptr{Ptr{Uint8}},Stri
     return err
 end
 
-function PetscOptionsGetenv(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
-    err = ccall((:PetscOptionsGetenv,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1.val,arg2,arg3,size_t,arg4)
+function PetscOptionsGetenv(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Csize_t,arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
+    err = ccall((:PetscOptionsGetenv,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1.val,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -898,8 +898,8 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsString_Private(arg0::Type{Float32},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}),arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Union(ByteString,Symbol),arg5::Union(ByteString,Symbol),arg6::Union(ByteString,Symbol),size_t::Integer,arg7::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
-    ccall((:PetscOptionsString_Private,petscRealSingle),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,size_t,arg7)
+ function PetscOptionsString_Private(arg0::Type{Float32},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}),arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Union(ByteString,Symbol),arg5::Union(ByteString,Symbol),arg6::Union(ByteString,Symbol),arg7::Csize_t,arg8::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
+    ccall((:PetscOptionsString_Private,petscRealSingle),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
 end 
 =#
 #= skipping function with undefined symbols: 
@@ -923,8 +923,8 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscOptionsFList_Private(arg0::Type{Float32},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}),arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Union(ByteString,Symbol),arg5::PetscFunctionList,arg6::Union(ByteString,Symbol),arg7::Union(ByteString,Symbol),size_t::Integer,arg8::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
-    ccall((:PetscOptionsFList_Private,petscRealSingle),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,PetscFunctionList,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,size_t,arg8)
+ function PetscOptionsFList_Private(arg0::Type{Float32},arg1::Union(Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}),arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Union(ByteString,Symbol),arg5::PetscFunctionList,arg6::Union(ByteString,Symbol),arg7::Union(ByteString,Symbol),arg8::Csize_t,arg9::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
+    ccall((:PetscOptionsFList_Private,petscRealSingle),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,PetscFunctionList,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
 end 
 =#
 #= skipping function with undefined symbols: 
@@ -1157,8 +1157,8 @@ end
     ccall((:PetscDLLibraryPrintPath,petscRealSingle),PetscErrorCode,(PetscDLLibrary,),arg1)
 end 
 =#
-function PetscDLLibraryRetrieve(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
-    err = ccall((:PetscDLLibraryRetrieve,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1.val,arg2,arg3,size_t,arg4)
+function PetscDLLibraryRetrieve(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Csize_t,arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
+    err = ccall((:PetscDLLibraryRetrieve,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1.val,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -1282,14 +1282,14 @@ end
     ccall((:PetscFClose,petscRealSingle),PetscErrorCode,(comm_type,Ptr{FILE}),arg1.val,arg2)
 end 
 =#
-function PetscVSNPrintf(arg0::Type{Float32},arg1::Union(ByteString,Symbol),size_t::Integer,arg2::Union(ByteString,Symbol),arg3::Union(Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}),va_list::Integer)
-    err = ccall((:PetscVSNPrintf,petscRealSingle),PetscErrorCode,(Cstring,Cint,Cstring,Ptr{Cint},Cint),arg1,size_t,arg2,arg3,va_list)
-    return err
-end
-
 #= skipping function with undefined symbols: 
- function PetscVFPrintfDefault(arg0::Type{Float32},arg1::Union(Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}),arg2::Union(ByteString,Symbol),va_list::Integer)
-    ccall((:PetscVFPrintfDefault,petscRealSingle),PetscErrorCode,(Ptr{FILE},Cstring,Cint),arg1,arg2,va_list)
+ function PetscVSNPrintf(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Csize_t,arg3::Union(ByteString,Symbol),arg4::Union(Ptr{Csize_t},StridedArray{Csize_t},Ptr{Csize_t},Ref{Csize_t}),arg5::Union(Ptr{__va_list_tag},StridedArray{__va_list_tag},Ptr{__va_list_tag},Ref{__va_list_tag}))
+    ccall((:PetscVSNPrintf,petscRealSingle),PetscErrorCode,(Cstring,Csize_t,Cstring,Ptr{Csize_t},Ptr{__va_list_tag}),arg1,arg2,arg3,arg4,arg5)
+end 
+=#
+#= skipping function with undefined symbols: 
+ function PetscVFPrintfDefault(arg0::Type{Float32},arg1::Union(Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}),arg2::Union(ByteString,Symbol),arg3::Union(Ptr{__va_list_tag},StridedArray{__va_list_tag},Ptr{__va_list_tag},Ref{__va_list_tag}))
+    ccall((:PetscVFPrintfDefault,petscRealSingle),PetscErrorCode,(Ptr{FILE},Cstring,Ptr{__va_list_tag}),arg1,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
@@ -1298,8 +1298,8 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscSynchronizedFGets(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}),size_t::Integer,arg3::Union(ByteString,Symbol))
-    ccall((:PetscSynchronizedFGets,petscRealSingle),PetscErrorCode,(comm_type,Ptr{FILE},Cint,Cstring),arg1.val,arg2,size_t,arg3)
+ function PetscSynchronizedFGets(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}),arg3::Csize_t,arg4::Union(ByteString,Symbol))
+    ccall((:PetscSynchronizedFGets,petscRealSingle),PetscErrorCode,(comm_type,Ptr{FILE},Csize_t,Cstring),arg1.val,arg2,arg3,arg4)
 end 
 =#
 #= skipping function with undefined symbols: 
@@ -1362,18 +1362,18 @@ function PetscScalarView(arg1::Integer,arg2::Union(Ptr{Float32},StridedArray{Flo
     return err
 end
 
-function PetscGetHostName(arg0::Type{Float32},arg1::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscGetHostName,petscRealSingle),PetscErrorCode,(Cstring,Cint),arg1,size_t)
+function PetscGetHostName(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Csize_t)
+    err = ccall((:PetscGetHostName,petscRealSingle),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
-function PetscGetUserName(arg0::Type{Float32},arg1::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscGetUserName,petscRealSingle),PetscErrorCode,(Cstring,Cint),arg1,size_t)
+function PetscGetUserName(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Csize_t)
+    err = ccall((:PetscGetUserName,petscRealSingle),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
-function PetscGetProgramName(arg0::Type{Float32},arg1::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscGetProgramName,petscRealSingle),PetscErrorCode,(Cstring,Cint),arg1,size_t)
+function PetscGetProgramName(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Csize_t)
+    err = ccall((:PetscGetProgramName,petscRealSingle),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
@@ -1382,13 +1382,13 @@ function PetscSetProgramName(arg0::Type{Float32},arg1::Union(ByteString,Symbol))
     return err
 end
 
-function PetscGetDate(arg0::Type{Float32},arg1::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscGetDate,petscRealSingle),PetscErrorCode,(Cstring,Cint),arg1,size_t)
+function PetscGetDate(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Csize_t)
+    err = ccall((:PetscGetDate,petscRealSingle),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
-function PetscGetVersion(arg0::Type{Float32},arg1::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscGetVersion,petscRealSingle),PetscErrorCode,(Cstring,Cint),arg1,size_t)
+function PetscGetVersion(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Csize_t)
+    err = ccall((:PetscGetVersion,petscRealSingle),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
@@ -1447,8 +1447,8 @@ function PetscSortIntWithScalarArray(arg0::Type{Float32},arg1::Integer,arg2::Uni
     return err
 end
 
-function PetscSortIntWithDataArray(arg0::Type{Float32},arg1::Integer,arg2::Union(Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}),arg3::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}),size_t::Integer,arg4::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}))
-    err = ccall((:PetscSortIntWithDataArray,petscRealSingle),PetscErrorCode,(Int64,Ptr{Int64},Ptr{Void},Cint,Ptr{Void}),arg1,arg2,arg3,size_t,arg4)
+function PetscSortIntWithDataArray(arg0::Type{Float32},arg1::Integer,arg2::Union(Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}),arg3::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}),arg4::Csize_t,arg5::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}))
+    err = ccall((:PetscSortIntWithDataArray,petscRealSingle),PetscErrorCode,(Int64,Ptr{Int64},Ptr{Void},Csize_t,Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -1497,8 +1497,8 @@ function PetscSetDisplay(arg0::Type{Float32})
     return err
 end
 
-function PetscGetDisplay(arg0::Type{Float32},arg1::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscGetDisplay,petscRealSingle),PetscErrorCode,(Cstring,Cint),arg1,size_t)
+function PetscGetDisplay(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Csize_t)
+    err = ccall((:PetscGetDisplay,petscRealSingle),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
@@ -1572,18 +1572,18 @@ end
     ccall((:PetscRandomDestroy,petscRealSingle),PetscErrorCode,(Ptr{PetscRandom},),arg1)
 end 
 =#
-function PetscGetFullPath(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscGetFullPath,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cint),arg1,arg2,size_t)
+function PetscGetFullPath(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),arg3::Csize_t)
+    err = ccall((:PetscGetFullPath,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Csize_t),arg1,arg2,arg3)
     return err
 end
 
-function PetscGetRelativePath(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscGetRelativePath,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cint),arg1,arg2,size_t)
+function PetscGetRelativePath(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),arg3::Csize_t)
+    err = ccall((:PetscGetRelativePath,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Csize_t),arg1,arg2,arg3)
     return err
 end
 
-function PetscGetWorkingDirectory(arg0::Type{Float32},arg1::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscGetWorkingDirectory,petscRealSingle),PetscErrorCode,(Cstring,Cint),arg1,size_t)
+function PetscGetWorkingDirectory(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Csize_t)
+    err = ccall((:PetscGetWorkingDirectory,petscRealSingle),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
@@ -1592,8 +1592,8 @@ function PetscGetRealPath(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg
     return err
 end
 
-function PetscGetHomeDirectory(arg0::Type{Float32},arg1::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscGetHomeDirectory,petscRealSingle),PetscErrorCode,(Cstring,Cint),arg1,size_t)
+function PetscGetHomeDirectory(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Csize_t)
+    err = ccall((:PetscGetHomeDirectory,petscRealSingle),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
@@ -1647,18 +1647,18 @@ function PetscSharedWorkingDirectory(arg0::Type{Float32},arg1::MPI_Comm,arg2::Un
     return err
 end
 
-function PetscGetTmp(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscGetTmp,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cint),arg1.val,arg2,size_t)
+function PetscGetTmp(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Csize_t)
+    err = ccall((:PetscGetTmp,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Csize_t),arg1.val,arg2,arg3)
     return err
 end
 
-function PetscFileRetrieve(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
-    err = ccall((:PetscFileRetrieve,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1.val,arg2,arg3,size_t,arg4)
+function PetscFileRetrieve(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Csize_t,arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
+    err = ccall((:PetscFileRetrieve,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1.val,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscLs(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
-    err = ccall((:PetscLs,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1.val,arg2,arg3,size_t,arg4)
+function PetscLs(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Csize_t,arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
+    err = ccall((:PetscLs,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1.val,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -1792,19 +1792,19 @@ end
     ccall((:PetscSubcommSetFromOptions,petscRealSingle),PetscErrorCode,(PetscSubcomm,),arg1)
 end 
 =#
-function PetscSegBufferCreate(arg0::Type{Float32})
-    err = ccall((:PetscSegBufferCreate,petscRealSingle),PetscErrorCode,())
-    return err
-end
-
+#= skipping function with undefined symbols: 
+ function PetscSegBufferCreate(arg0::Type{Float32},arg1::Csize_t,arg2::Csize_t,arg3::Union(Ptr{PetscSegBuffer},StridedArray{PetscSegBuffer},Ptr{PetscSegBuffer},Ref{PetscSegBuffer}))
+    ccall((:PetscSegBufferCreate,petscRealSingle),PetscErrorCode,(Csize_t,Csize_t,Ptr{PetscSegBuffer}),arg1,arg2,arg3)
+end 
+=#
 #= skipping function with undefined symbols: 
  function PetscSegBufferDestroy(arg0::Type{Float32},arg1::Union(Ptr{PetscSegBuffer},StridedArray{PetscSegBuffer},Ptr{PetscSegBuffer},Ref{PetscSegBuffer}))
     ccall((:PetscSegBufferDestroy,petscRealSingle),PetscErrorCode,(Ptr{PetscSegBuffer},),arg1)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscSegBufferGet(arg0::Type{Float32},arg1::PetscSegBuffer,size_t::Integer,arg2::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}))
-    ccall((:PetscSegBufferGet,petscRealSingle),PetscErrorCode,(PetscSegBuffer,Cint,Ptr{Void}),arg1,size_t,arg2)
+ function PetscSegBufferGet(arg0::Type{Float32},arg1::PetscSegBuffer,arg2::Csize_t,arg3::Union(Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}))
+    ccall((:PetscSegBufferGet,petscRealSingle),PetscErrorCode,(PetscSegBuffer,Csize_t,Ptr{Void}),arg1,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
@@ -1823,22 +1823,22 @@ end
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscSegBufferGetSize(arg0::Type{Float32},arg1::PetscSegBuffer,arg2::Union(Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}))
-    ccall((:PetscSegBufferGetSize,petscRealSingle),PetscErrorCode,(PetscSegBuffer,Ptr{Cint}),arg1,arg2)
+ function PetscSegBufferGetSize(arg0::Type{Float32},arg1::PetscSegBuffer,arg2::Union(Ptr{Csize_t},StridedArray{Csize_t},Ptr{Csize_t},Ref{Csize_t}))
+    ccall((:PetscSegBufferGetSize,petscRealSingle),PetscErrorCode,(PetscSegBuffer,Ptr{Csize_t}),arg1,arg2)
 end 
 =#
 #= skipping function with undefined symbols: 
- function PetscSegBufferUnuse(arg0::Type{Float32},arg1::PetscSegBuffer,size_t::Integer)
-    ccall((:PetscSegBufferUnuse,petscRealSingle),PetscErrorCode,(PetscSegBuffer,Cint),arg1,size_t)
+ function PetscSegBufferUnuse(arg0::Type{Float32},arg1::PetscSegBuffer,arg2::Csize_t)
+    ccall((:PetscSegBufferUnuse,petscRealSingle),PetscErrorCode,(PetscSegBuffer,Csize_t),arg1,arg2)
 end 
 =#
-function PetscGoogleDriveAuthorize(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscGoogleDriveAuthorize,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Cint),arg1.val,arg2,arg3,size_t)
+function PetscGoogleDriveAuthorize(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Csize_t)
+    err = ccall((:PetscGoogleDriveAuthorize,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1.val,arg2,arg3,arg4)
     return err
 end
 
-function PetscGoogleDriveRefresh(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscGoogleDriveRefresh,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Cint),arg1.val,arg2,arg3,size_t)
+function PetscGoogleDriveRefresh(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Csize_t)
+    err = ccall((:PetscGoogleDriveRefresh,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1.val,arg2,arg3,arg4)
     return err
 end
 
@@ -1847,13 +1847,13 @@ function PetscGoogleDriveUpload(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(B
     return err
 end
 
-function PetscBoxAuthorize(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscBoxAuthorize,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Cint),arg1.val,arg2,arg3,size_t)
+function PetscBoxAuthorize(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Csize_t)
+    err = ccall((:PetscBoxAuthorize,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1.val,arg2,arg3,arg4)
     return err
 end
 
-function PetscBoxRefresh(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscBoxRefresh,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Cstring,Cint),arg1.val,arg2,arg3,arg4,size_t)
+function PetscBoxRefresh(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Union(ByteString,Symbol),arg5::Csize_t)
+    err = ccall((:PetscBoxRefresh,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cstring,Cstring,Csize_t),arg1.val,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -1862,19 +1862,19 @@ function PetscTextBelt(arg0::Type{Float32},arg1::MPI_Comm,arg2::Union(ByteString
     return err
 end
 
-function PetscPullJSONValue(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),size_t::Integer,arg4::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
-    err = ccall((:PetscPullJSONValue,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cstring,Cint,Ptr{PetscBool}),arg1,arg2,arg3,size_t,arg4)
+function PetscPullJSONValue(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Csize_t,arg5::Union(Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}))
+    err = ccall((:PetscPullJSONValue,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscPushJSONValue(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),size_t::Integer)
-    err = ccall((:PetscPushJSONValue,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cstring,Cint),arg1,arg2,arg3,size_t)
+function PetscPushJSONValue(arg0::Type{Float32},arg1::Union(ByteString,Symbol),arg2::Union(ByteString,Symbol),arg3::Union(ByteString,Symbol),arg4::Csize_t)
+    err = ccall((:PetscPushJSONValue,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cstring,Csize_t),arg1,arg2,arg3,arg4)
     return err
 end
 
 #= skipping function with undefined symbols: 
- function PetscBagCreate(arg0::Type{Float32},arg1::MPI_Comm,size_t::Integer,arg2::Union(Ptr{PetscBag},StridedArray{PetscBag},Ptr{PetscBag},Ref{PetscBag}))
-    ccall((:PetscBagCreate,petscRealSingle),PetscErrorCode,(comm_type,Cint,Ptr{PetscBag}),arg1.val,size_t,arg2)
+ function PetscBagCreate(arg0::Type{Float32},arg1::MPI_Comm,arg2::Csize_t,arg3::Union(Ptr{PetscBag},StridedArray{PetscBag},Ptr{PetscBag},Ref{PetscBag}))
+    ccall((:PetscBagCreate,petscRealSingle),PetscErrorCode,(comm_type,Csize_t,Ptr{PetscBag}),arg1.val,arg2,arg3)
 end 
 =#
 #= skipping function with undefined symbols: 
@@ -2057,8 +2057,8 @@ function PetscViewerSocketOpen(arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg
     return err
 end
 
-function PetscViewerStringOpen(arg1::MPI_Comm,arg2::Union(ByteString,Symbol),size_t::Integer,arg3::Union(Ptr{PetscViewer{Float32}},StridedArray{PetscViewer{Float32}},Ptr{PetscViewer{Float32}},Ref{PetscViewer{Float32}}))
-    err = ccall((:PetscViewerStringOpen,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Cint,Ptr{PetscViewer{Float32}}),arg1.val,arg2,size_t,arg3)
+function PetscViewerStringOpen(arg1::MPI_Comm,arg2::Union(ByteString,Symbol),arg3::Csize_t,arg4::Union(Ptr{PetscViewer{Float32}},StridedArray{PetscViewer{Float32}},Ptr{PetscViewer{Float32}},Ref{PetscViewer{Float32}}))
+    err = ccall((:PetscViewerStringOpen,petscRealSingle),PetscErrorCode,(comm_type,Cstring,Csize_t,Ptr{PetscViewer{Float32}}),arg1.val,arg2,arg3,arg4)
     return err
 end
 

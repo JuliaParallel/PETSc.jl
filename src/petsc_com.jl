@@ -21,6 +21,7 @@ function __init__()
     C.PetscPushErrorHandler(C.petsc_type[i], val, C_NULL)
   end
 
+
   # register atexit finalizers for the Petsc libraries
   atexit(() -> C.PetscFinalize(Float64))
   atexit(() -> C.PetscFinalize(Float32))

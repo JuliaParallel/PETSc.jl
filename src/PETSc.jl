@@ -10,6 +10,7 @@ include("petsc_com.jl")
 include("vec.jl")
 include("mat.jl")
 include("error.jl")
+include("ksp.jl")
 
 
 #=

@@ -13,7 +13,7 @@ end
 
 immutable PetscError <: Exception
     errnum::PetscErrorCode
-    msg::String
+    msg::AbstractString
     PetscError(n::Integer, m="") = new(convert(PetscErrorCode, n),
                                        PetscErrorMessage(n))
 end

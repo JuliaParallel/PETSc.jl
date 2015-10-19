@@ -10,16 +10,16 @@ using DataStructures
 
 # used to modify function signatures
 type_dict = Dict{Any, Any} (
-:PetscScalar => :Float32,
-:PetscReal => :Float32,
+:PetscScalar => :Complex128,
+:PetscReal => :Float64,
 :PetscInt => :Int64,
 )
 
-const petsc_libname = :petscRealSingle
+const petsc_libname = :petscComplexDouble
 
 val_tmp = type_dict[:PetscScalar]
 type_dict_single = Dict{Any, Any} (
-:(Ptr{Uint8}) => Union(ByteString, Symbol)
+:(Ptr{UInt8}) => Union{ByteString, Symbol}
 )
 
 
@@ -102,7 +102,7 @@ end
 # things to be replaced in function signatures only if they 
 # are top level (ie. this does a non recursive replace)
 sig_single_dict = Dict{Any, Any} (
-:(Ptr{Uint8}) => :(Union(ByteString, Symbol)),
+:(Ptr{UInt8}) => :(Union{ByteString, Symbol}),
 :Int32 => :Integer,
 :Int64 => :Integer,
 :Cint => :Integer,
@@ -138,7 +138,7 @@ end
 # things to be replace in the ccall argument list only if
 # they are top level (ie. this does a non recursive replace)
 ccall_single_dict = Dict{Any, Any} (
-:(Ptr{Uint8}) => :Cstring,
+:(Ptr{UInt8}) => :Cstring,
 )
 
 
@@ -167,10 +167,10 @@ end
 
 # things to be replaced in typealias rhs, non recursive
 # this creates a potential loophole for string handling
-# because a Ptr{typealias} == Ptr{Ptr{Uint8}} will be 
+# because a Ptr{typealias} == Ptr{Ptr{UInt8}} will be 
 # handled incorrectly
 typealias_single_dict = Dict{Any, Any} (
-:(Ptr{Uint8}) => :Symbol
+:(Ptr{UInt8}) => :Symbol
 )
 
 # key = typealias rhs values to exclude
@@ -246,14 +246,14 @@ end
 ccall_dict = OrderedDict{Any, Any} (
 #:Mat => :(Ptr{Void}),
 #:MPI_Comm => :comm_type,  # need to change ccall arg name to argname.val
-#:(Ptr{Uint8}) => :Cstring,
-#:(Ptr{Cstring}) => Ptr{Ptr{Uint8}},  # 
+#:(Ptr{UInt8}) => :Cstring,
+#:(Ptr{Cstring}) => Ptr{Ptr{UInt8}},  # 
 )
 
 ccall_dict[:MPI_Comm] = :comm_type
 
-ccall_dict[:(Ptr{Cstring})] = :(Ptr{Ptr{Uint8}})
-ccall_dict[:(Ptr{Uint8})] = :Cstring
+ccall_dict[:(Ptr{Cstring})] = :(Ptr{Ptr{UInt8}})
+ccall_dict[:(Ptr{UInt8})] = :Cstring
 
 for i in keys(type_dict)
   get!(ccall_dict, i, type_dict[i])
@@ -397,7 +397,7 @@ function add_body(ex)
       type_annot_j = ex_sig.args[j].args[2]  # get the teyp annotation
       argname_j = ex_sig.args[j].args[1]
       # check for arrays of symbols that need to be copied into a string array
-      if type_annot_j == :(Union(Ptr{$i}, StridedArray{$i}, Ptr{$i}, Ref{$i}))
+      if type_annot_j == :(Union{Ptr{$i}, StridedArray{$i}, Ptr{$i}, Ref{$i}})
         if contains(fname_str, "Get")  # array is to be populated
           # add calls to function body
           resize!(ex_body.args, length(ex_body.args) + 2)
@@ -674,7 +674,7 @@ function modify_typetag(ex)
     # replace pointer with Union of ptr, array, c_null
     if ex.head == :curly && ex.args[1] == :Ptr
       ptr_type = ex.args[2]
-      ex =  :(Union(Ptr{$ptr_type}, StridedArray{$ptr_type}, Ptr{$ptr_type}, Ref{$ptr_type}))
+      ex =  :(Union{Ptr{$ptr_type}, StridedArray{$ptr_type}, Ptr{$ptr_type}, Ref{$ptr_type}})
     end
   end
 
@@ -894,7 +894,7 @@ function fix_typealias(ex)
     rhs = get(typealias_single_dict, rhs, rhs)
 
     if rhs == :Symbol
-      get!(ccall_rec_dict, lhs, :(Ptr{Uint8}))  # make the ccall argument a Uint8 recursive
+      get!(ccall_rec_dict, lhs, :(Ptr{UInt8}))  # make the ccall argument a UInt8 recursive
       get!(ccall_single_dict, lhs, :Cstring)  # make it a cstring for single level replacement
       get!(symbol_type_dict, lhs, 1)  # record that this type is a symbol
     end   

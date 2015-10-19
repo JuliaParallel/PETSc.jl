@@ -118,7 +118,7 @@ end
 
 # construct Vec for multiplication by a::Mat or transpose(a::Mat)
 #const mat2vec = [ "mpiaij" => "aij", "seqaij" => "seq" ]
-const mat2vec = Dict{C.MatType, C.MatType} ( :mpiaij => :aij, :seqaij => :seq )
+const mat2vec = Dict{C.MatType, C.MatType}( :mpiaij => :aij, :seqaij => :seq )
 Vec{T2}(a::Mat{T2}, transposed=false) =
   transposed ? Vec(T, size(a,1), comm=a.comm, T=mat2vec[gettype(a)],
                    mlocal=sizelocal(a,1)) :

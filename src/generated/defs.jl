@@ -31,7 +31,7 @@ numlibs = 1
 global const petsc_libs = [:petscRealDouble, :petscRealSingle, :petscComplexDouble]
 global const petsc_type = [Float64, Float32, Complex128]
 
-typealias Scalar Union(Float32, Float64, Complex128)
+typealias Scalar Union{Float32, Float64, Complex128}
 
 MPI_COMM_SELF = MPI.COMM_SELF
 typealias MPI_Comm MPI.Comm

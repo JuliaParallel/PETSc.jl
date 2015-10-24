@@ -47,7 +47,8 @@ An example of using a Krylov subspace method to solve a linear system is in  `te
  repeatedly.
 
 ### KSP
- Just enough KSP functions are implimented to do a GMRES solve.  After the vector and matrix functions I will focus on KSP.
+ Just enough KSP functions are implimented to do a GMRES solve.  Adding more 
+functionality is the current priority.
 
 ## Directory Structure
   `/src` : source files.  PETSc.jl is the main file containing initialization, with the functions for each type of Petsc object in its own file.  All constants are declared in `petsc_constants.jl`.

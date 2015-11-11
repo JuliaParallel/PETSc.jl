@@ -18,7 +18,7 @@ typealias Scalar Union{Float32, Float64, Complex128}
 
 const MPI_COMM_SELF = MPI.COMM_SELF
 typealias MPI_Comm MPI.Comm
-typealias comm_type typeof(MPI.COMM_WORLD.val)
+typealias comm_type MPI.CComm
 
 # some auxiliary functions used by ccall wrappers
 function symbol_get_before(sym_arr)

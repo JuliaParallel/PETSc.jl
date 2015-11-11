@@ -81,8 +81,8 @@ function return_symbol(string_array::AbstractArray, x::AbstractArray)
     x[i] = bytestring(string_array[i])
   end
 end
-  
-  
+
+
 
 
 
@@ -99,7 +99,7 @@ for i in keys(new_type_dict)
   get!(sig_rec_dict, i, new_type_dict[i])
 end
 
-# things to be replaced in function signatures only if they 
+# things to be replaced in function signatures only if they
 # are top level (ie. this does a non recursive replace)
 sig_single_dict = Dict{Any, Any} (
 :(Ptr{UInt8}) => :(Union{ByteString, Symbol}),
@@ -167,7 +167,7 @@ end
 
 # things to be replaced in typealias rhs, non recursive
 # this creates a potential loophole for string handling
-# because a Ptr{typealias} == Ptr{Ptr{UInt8}} will be 
+# because a Ptr{typealias} == Ptr{Ptr{UInt8}} will be
 # handled incorrectly
 typealias_single_dict = Dict{Any, Any} (
 :(Ptr{UInt8}) => :Symbol
@@ -198,13 +198,6 @@ for i in keys(new_type_dict)
 end
 
 println("const_rec_dict = ", const_rec_dict)
-
-# suffixes to add ccall argument names based on the argument type
-# ex arg1 => arg1.val
-ccall_arg_dict = Dict{Any, Any} (
-:comm_type => :val,
-)
-
 
 #=
 # dictionary for rewriting pointer type annotations in function signatures
@@ -247,7 +240,7 @@ ccall_dict = OrderedDict{Any, Any} (
 #:Mat => :(Ptr{Void}),
 #:MPI_Comm => :comm_type,  # need to change ccall arg name to argname.val
 #:(Ptr{UInt8}) => :Cstring,
-#:(Ptr{Cstring}) => Ptr{Ptr{UInt8}},  # 
+#:(Ptr{Cstring}) => Ptr{Ptr{UInt8}},  #
 )
 
 ccall_dict[:MPI_Comm] = :comm_type
@@ -297,10 +290,10 @@ function petsc_rewriter(obuf)
         obuf[i] = fix_typealias(ex_i)
      elseif ex_i.head == :type
        obuf[i] = process_type(ex_i)
-      
+
       else  # some other kind of expression
         println("not processing expression", ex_i)
-        
+
         # convert to concrete types
         for j in keys(type_dict)
           obuf[i] = replace_symbol(ex_i, j, type_dict[j])
@@ -319,7 +312,7 @@ function petsc_rewriter(obuf)
         if haskey(wc.common_buf, obj_name)
           delete!(wc.common_buf, obj_name)
         end
-        
+
       end
 
     elseif typeof(ex_i) == ASCIIString
@@ -350,7 +343,7 @@ function process_func(ex)
   ex_body = ex.args[2]
 
   for i=2:length(ex_sig.args)  # loop over all arguments to the function
-    # get the type annotation Expr or symbol of argument i-1 
+    # get the type annotation Expr or symbol of argument i-1
     ex_sig_i = ex_sig.args[i].args[2]
     sum += are_syms_defined(ex_sig_i)
   end
@@ -359,7 +352,7 @@ function process_func(ex)
   ex_ccall = ex_body.args[1]
   ex_ccall_types = ex_ccall.args[3]  # the tuple of argument types
   sum += are_syms_defined(ex_ccall_types)
-    
+
   if sum != 0
     return "#= skipping function with undefined symbols: \n $ex \n=#"
   end
@@ -421,7 +414,7 @@ function add_body(ex)
           # modify the ccall argument name
           println("ccall_index = ", ccall_index)
           ccall_ex = ex_body.args[ccall_index]
-          
+
           @assert ccall_ex.head == :ccall
           ccall_ex.args[j + 3 - 1 - offset] = new_argname
 
@@ -449,7 +442,7 @@ function add_body(ex)
           ccall_ex.args[j + 3 - 1 - offset] = new_argname
 
 
-        else 
+        else
           println(STDERR, "Warning, symbol type conversion not handled in function ", fname_str)
 
         end  # end if contains(get)
@@ -457,7 +450,7 @@ function add_body(ex)
     end  # end for j
   end # end loop over symbol_type_dict
 
-  
+
 
   # assign ccall error code to a variable, then return the variable
   # this should be the last modification made, because get_ccall_index
@@ -470,7 +463,7 @@ function add_body(ex)
 
 
   # convert array of symbols to array of strings
-  # check signature for 
+  # check signature for
   return deepcopy(ex)
 end
 
@@ -511,7 +504,7 @@ function rewrite_sig(ex)  # rewrite the function signature
    println("rewrite_sig ex = ", ex)
 
   # Process all arguments of the function
-  # Replace all pointers with Unions(Ptr, AbstractArray...) 
+  # Replace all pointers with Unions(Ptr, AbstractArray...)
   # do any other transformations in ptr_dict
   for i=2:length(ex.args)
    # each of ex.args is an expression containing arg name, argtype
@@ -522,7 +515,7 @@ function rewrite_sig(ex)  # rewrite the function signature
 
 
 
-   # check for any symbol that will uniquely identify which 
+   # check for any symbol that will uniquely identify which
    # version of petsc to call
    println("checking for uniqueness of signature")
    println("ex = ", ex)
@@ -544,7 +537,7 @@ function rewrite_sig(ex)  # rewrite the function signature
   println("replacing typealiases")
   println("ex = ", ex)
   # do second pass to replace Petsc typealiases with a specific type
-  for i=2:length(ex.args)  
+  for i=2:length(ex.args)
     for j in keys(type_dict)  # check for all types
 
     println("replacing ", j, ", with ", type_dict[j])
@@ -557,11 +550,11 @@ function rewrite_sig(ex)  # rewrite the function signature
   return ex
 end
 
-function process_sig_arg(ex)  
+function process_sig_arg(ex)
 # take the expression that is an argument to the function and rewrite it
 
    @assert ex.head == :(::)
-   
+
    # modify args here
 #   arg_name = ex.args[1]  # symbol
 #   arg_type = ex.args[2]  # Expr contianing type tag
@@ -569,7 +562,7 @@ function process_sig_arg(ex)
    println("type = ", typeof(ex.args[2]))
 
 #   if typeof(ex.args[1]) == Symbol
-     
+
    # get only typetag expression, modify it
    ex.args[2] = modify_typetag(ex.args[2])
 
@@ -586,7 +579,7 @@ function modify_typetag(ex)
 
   # do non recursive replace first
   ex = get(sig_single_dict, ex, ex)
-  
+
 
   # now do recursive search and replace
 
@@ -599,8 +592,8 @@ function modify_typetag(ex)
     if haskey(ptr_dict, ex)
      println("transforming ", ex, " to ", ptr_dict[ex])
 
-     ex = get(ptr_dict, ex, ex) 
-    end 
+     ex = get(ptr_dict, ex, ex)
+    end
   end
 =#
   println("after expression = ", ex)
@@ -656,7 +649,7 @@ function modify_typetag(ex)
           end
         end
       end
-#      println("number of symbols = ", count_depth(0, ex))      
+#      println("number of symbols = ", count_depth(0, ex))
       println("ex.args = ", ex.args)
     end
 =#
@@ -691,7 +684,7 @@ function add_param(ex)
   # could do more extensive operations here
   return :($ex{S <: PetscScalars})
 end
-  
+
 function add_dummy_arg(ex)
 # add a dummy argument to the function argument list
 # ex is the function name + args (ie. the entire function signature)
@@ -757,19 +750,6 @@ function process_ccall(ex)
 
   @assert ex3.head == :tuple
 
-  # change argument names based on argument types
-  for i in keys(ccall_arg_dict)
-    for j=1:length(ex3.args)
-      if ex3.args[j] == i
-        println("found argument to change at position ", j)
-        argname_orig = deepcopy(ex.args[j + 3])
-        suffix = ccall_arg_dict[i]
-        ex.args[j + 3] = Expr(:., argname_orig, QuoteNode(suffix))
-#        ex.args[j + 3] = :($argname_orig.($suffix))
-      end
-    end
-  end
-
   return ex
 
 end
@@ -802,15 +782,15 @@ i#      ex.args[i] = get(ccall_dict, ex.args[i], ex.args[i])  # get the new argu
   end
 
 #=
-  new_ex = deepcopy(ex) 
+  new_ex = deepcopy(ex)
   for i in reverse(collect(keys(ccall_dict)))
     println("looking to replace ", i, " with ", ccall_dict[i], " in expression ", new_ex)
     new_ex = replace_symbol(new_ex, i, ccall_dict[i])
   end
-=#     
+=#
   return deepcopy(ex)
 end
-   
+
 function modify_libname(ex)
 
   @assert ex.head == :tuple
@@ -819,26 +799,26 @@ function modify_libname(ex)
 
   return ex
 end
-    
+
 ##### functions to make consts into global consts #####
 
 function process_const(ex)
 
   @assert ex.head == :const
 
-  
+
 
   # do any replacements
   for j in keys(const_rec_dict)
     replace_symbol(ex, j, const_rec_dict[j])
   end
- 
+
   ex2 = ex.args[1]  # get the assignment
 #  ex.args[1] = :(global $val)  # make it global
 
-  
+
   rhs = ex2.args[2]
-  tmp = are_syms_defined(rhs) 
+  tmp = are_syms_defined(rhs)
   if tmp != 0  # something is undefined
 #    println("returning comment message")
     lhs = ex2.args[1]
@@ -852,7 +832,7 @@ function process_const(ex)
   end
 
   return deepcopy(ex)
-  
+
 end
 
 
@@ -869,7 +849,7 @@ function fix_typealias(ex)
         typename = Expr(:curly, new_type, :T)  # add static parameter T
         ex_new = Expr(:type, false, typename, body)
         return ex_new
-      else 
+      else
         if haskey(wc.common_buf, new_type)
           delete!(wc.common_buf, new_type)  # record that symbol is now undefined
         end
@@ -877,7 +857,7 @@ function fix_typealias(ex)
        end
     end
 
-    # if we didn't create immutable type, transform the rhs according to the 
+    # if we didn't create immutable type, transform the rhs according to the
     # dictionaries
 
     lhs = deepcopy(ex.args[1])
@@ -897,18 +877,18 @@ function fix_typealias(ex)
       get!(ccall_rec_dict, lhs, :(Ptr{UInt8}))  # make the ccall argument a UInt8 recursive
       get!(ccall_single_dict, lhs, :Cstring)  # make it a cstring for single level replacement
       get!(symbol_type_dict, lhs, 1)  # record that this type is a symbol
-    end   
- 
+    end
+
     # do recursive replacement
     for i in keys(typealias_rec_dict)
       rhs = replace_symbol(rhs, i, typealias_rec_dict[i])
     end
-#=    
+#=
     if haskey(typealias_dict, ex.args[2]) && !haskey(typealias_dict, ex.args[1])
       lhs = deepcopy(ex.args[1])
       rhs = deepcopy(ex.args[2])
       ex.args[2] = typealias_dict[ex.args[2]]
-      
+
       # update dictionaries so the typealias will be converted to the proper C type
       rhs = get(ccall_dict, rhs, rhs)  # get a new rhs if it exists
       get!(ccall_dict, lhs, rhs)  # store lhs -> rhs
@@ -972,7 +952,7 @@ function process_type(ex)
   ex.args[1] = false
 
   ex_body = ex.args[3]  # body of type declaration
-  
+
   # check that every type annotation is fully defined
   for i=1:length(ex_body.args)
     # if this is a type annotation expression
@@ -982,7 +962,7 @@ function process_type(ex)
       if tmp != 0
         new_name = ex.args[2]  # get the name of the type being declared
         delete!(wc.common_buf, new_name)
-     
+
         return "#= skipping type declaration with undefined symbols:\n$ex \n=#"
       end
     end
@@ -1012,7 +992,7 @@ function contains_symbol(ex, sym)
 
   return sum
 end
-    
+
 
 #=
 function contains_symbol(ex, sym::Symbol)
@@ -1020,13 +1000,13 @@ function contains_symbol(ex, sym::Symbol)
 
   @assert typeof(ex) == Expr
 
-  sum = 0  
+  sum = 0
 
   if ex.head == :(::)  # if this expression is a type annotation
     for i=1:length(ex.args)
       if typeof(ex.args[i]) == Expr
         sum += check_annot(ex.args[i], sym)
-        
+
       else  # this is a symbol
 #        println("    comparing ", ex.args[i], " to ", sym)
         if ex.args[i] == sym
@@ -1094,7 +1074,7 @@ function replace_symbol(ex, sym_old, sym_new)
 
   return deepcopy(ex)
 end
-    
+
 
 #=
 
@@ -1108,10 +1088,10 @@ end
         return ex
       end
    elseif typeof(ex)  == Expr  # keep recursing
-  
+
     for i=1:length(ex.args)
 #        println("  processing sub expression ", ex.args[i])
-#         println("  recursing expression ", ex.args[i]) 
+#         println("  recursing expression ", ex.args[i])
          tmp =  replace_symbol(ex.args[i], sym_old, sym_new)
 #         println("tmp = ", tmp)
 #         println("typeof(tmp) = ", typeof(tmp))
@@ -1126,10 +1106,10 @@ end
            println("replacing ", ex.args[i], " with ", tmp)
          end
          ex.args[i] = tmp  # this shouldn't be necessary?
-         
+
 #         println("after assignment typeof(ex.args[$i]) = ", typeof(ex.args[i]))
     end  # end loop over args
-        
+
  else # we don't know/care what this expression is
     println("  not modify unknown expression ", ex)
     return ex
@@ -1173,11 +1153,11 @@ function are_syms_defined(ex)
   undefined_syms = 0  # approximate counter of undefined symbols found
 
   if typeof(ex)  == Expr  # keep recursing
-  
+
     for i=1:length(ex.args)
          undefined_syms +=  are_syms_defined(ex.args[i])
     end  # end loop over args
- 
+
 
   elseif typeof(ex) == Symbol  # if this is a symbol
        if isdefined(ex) || haskey(wc.common_buf, ex) || haskey(const_defs, ex)
@@ -1187,7 +1167,7 @@ function are_syms_defined(ex)
            print("in common_buf ")
          end
          println(ex, " is defined")
- 
+
          return 0  # symbol is defined
        else
          println(ex, " is not defined")

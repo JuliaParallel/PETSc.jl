@@ -18,7 +18,7 @@ function PetscSetHelpVersionFunctions(arg0::Type{Float64},arg1::Union{Ptr{Void},
 end
 
 function PetscCommDuplicate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{MPI_Comm},StridedArray{MPI_Comm},Ptr{MPI_Comm},Ref{MPI_Comm}},arg3::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
-    err = ccall((:PetscCommDuplicate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{comm_type},Ptr{Cint}),arg1.val,arg2,arg3)
+    err = ccall((:PetscCommDuplicate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{comm_type},Ptr{Cint}),arg1,arg2,arg3)
     return err
 end
 
@@ -37,15 +37,15 @@ function PetscMallocClear(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscMallocDump(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscMallocDump,petscRealDouble),PetscErrorCode,(Ptr{FILE},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscMallocDumpLog(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscMallocDumpLog,petscRealDouble),PetscErrorCode,(Ptr{FILE},),arg1)
-end 
+end
 =#
 function PetscMallocGetCurrentUsage(arg0::Type{Float64},arg1::Union{Ptr{PetscLogDouble},StridedArray{PetscLogDouble},Ptr{PetscLogDouble},Ref{PetscLogDouble}})
     err = ccall((:PetscMallocGetCurrentUsage,petscRealDouble),PetscErrorCode,(Ptr{PetscLogDouble},),arg1)
@@ -87,15 +87,15 @@ function PetscMallocGetDumpLog(arg0::Type{Float64},arg1::Union{Ptr{PetscBool},St
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDataTypeToMPIDataType(arg0::Type{Float64},arg1::PetscDataType,arg2::Union{Ptr{MPI_Datatype},StridedArray{MPI_Datatype},Ptr{MPI_Datatype},Ref{MPI_Datatype}})
     ccall((:PetscDataTypeToMPIDataType,petscRealDouble),PetscErrorCode,(PetscDataType,Ptr{MPI_Datatype}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscMPIDataTypeToPetscDataType(arg0::Type{Float64},arg1::MPI_Datatype,arg2::Union{Ptr{PetscDataType},StridedArray{PetscDataType},Ptr{PetscDataType},Ref{PetscDataType}})
     ccall((:PetscMPIDataTypeToPetscDataType,petscRealDouble),PetscErrorCode,(MPI_Datatype,Ptr{PetscDataType}),arg1,arg2)
-end 
+end
 =#
 function PetscDataTypeGetSize(arg0::Type{Float64},arg1::PetscDataType,arg2::Union{Ptr{Csize_t},StridedArray{Csize_t},Ptr{Csize_t},Ref{Csize_t}})
     err = ccall((:PetscDataTypeGetSize,petscRealDouble),PetscErrorCode,(PetscDataType,Ptr{Csize_t}),arg1,arg2)
@@ -248,7 +248,7 @@ function PetscStrNArrayDestroy(arg0::Type{Float64},arg1::Integer,arg2::Union{Ptr
 end
 
 function PetscStrreplace(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Csize_t)
-    err = ccall((:PetscStrreplace,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscStrreplace,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -257,20 +257,20 @@ function PetscStrcmpNoError(arg0::Type{Float64},arg1::Union{ByteString,Symbol},a
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscTokenCreate(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::UInt8,arg3::Union{Ptr{PetscToken},StridedArray{PetscToken},Ptr{PetscToken},Ref{PetscToken}})
     ccall((:PetscTokenCreate,petscRealDouble),PetscErrorCode,(Cstring,UInt8,Ptr{PetscToken}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscTokenFind(arg0::Type{Float64},arg1::PetscToken,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:PetscTokenFind,petscRealDouble),PetscErrorCode,(PetscToken,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscTokenDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscToken},StridedArray{PetscToken},Ptr{PetscToken},Ref{PetscToken}})
     ccall((:PetscTokenDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscToken},),arg1)
-end 
+end
 =#
 function PetscEListFind(arg0::Type{Float64},arg1::Integer,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg3::Union{ByteString,Symbol},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscEListFind,petscRealDouble),PetscErrorCode,(Int64,Ptr{Ptr{UInt8}},Cstring,Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
@@ -283,19 +283,19 @@ function PetscEnumFind(arg0::Type{Float64},arg1::Union{Ptr{Ptr{UInt8}},StridedAr
 end
 
 function PetscMaxSum(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:PetscMaxSum,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscMaxSum,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MPIULong_Send(arg0::Type{Float64},arg1::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg2::Integer,arg3::MPI_Datatype,arg4::PetscMPIInt,arg5::PetscMPIInt,arg6::MPI_Comm)
-    ccall((:MPIULong_Send,petscRealDouble),PetscErrorCode,(Ptr{Void},Int64,MPI_Datatype,PetscMPIInt,PetscMPIInt,comm_type),arg1,arg2,arg3,arg4,arg5,arg6.val)
-end 
+    ccall((:MPIULong_Send,petscRealDouble),PetscErrorCode,(Ptr{Void},Int64,MPI_Datatype,PetscMPIInt,PetscMPIInt,comm_type),arg1,arg2,arg3,arg4,arg5,arg6)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MPIULong_Recv(arg0::Type{Float64},arg1::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg2::Integer,arg3::MPI_Datatype,arg4::PetscMPIInt,arg5::PetscMPIInt,arg6::MPI_Comm)
-    ccall((:MPIULong_Recv,petscRealDouble),PetscErrorCode,(Ptr{Void},Int64,MPI_Datatype,PetscMPIInt,PetscMPIInt,comm_type),arg1,arg2,arg3,arg4,arg5,arg6.val)
-end 
+    ccall((:MPIULong_Recv,petscRealDouble),PetscErrorCode,(Ptr{Void},Int64,MPI_Datatype,PetscMPIInt,PetscMPIInt,comm_type),arg1,arg2,arg3,arg4,arg5,arg6)
+end
 =#
 function PetscErrorPrintfInitialize(arg0::Type{Float64})
     err = ccall((:PetscErrorPrintfInitialize,petscRealDouble),PetscErrorCode,())
@@ -308,37 +308,37 @@ function PetscErrorMessage(arg0::Type{Float64},arg1::Integer,arg2::Union{Ptr{Ptr
 end
 
 function PetscTraceBackErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Symbol},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:PetscTraceBackErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:PetscTraceBackErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
 function PetscIgnoreErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Symbol},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:PetscIgnoreErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:PetscIgnoreErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
 function PetscEmacsClientErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Symbol},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:PetscEmacsClientErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:PetscEmacsClientErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
 function PetscMPIAbortErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Symbol},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:PetscMPIAbortErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:PetscMPIAbortErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
 function PetscAbortErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Symbol},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:PetscAbortErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:PetscAbortErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
 function PetscAttachDebuggerErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Symbol},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:PetscAttachDebuggerErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:PetscAttachDebuggerErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
 function PetscReturnErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Symbol},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:PetscReturnErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:PetscReturnErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
@@ -392,15 +392,15 @@ function PetscStackCopy(arg0::Type{Float64},arg1::Union{Ptr{PetscStack},StridedA
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscStackPrint(arg0::Type{Float64},arg1::Union{Ptr{PetscStack},StridedArray{PetscStack},Ptr{PetscStack},Ref{PetscStack}},arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscStackPrint,petscRealDouble),PetscErrorCode,(Ptr{PetscStack},Ptr{FILE}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscStackView(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscStackView,petscRealDouble),PetscErrorCode,(Ptr{FILE},),arg1)
-end 
+end
 =#
 function PetscStackDestroy(arg0::Type{Float64})
     err = ccall((:PetscStackDestroy,petscRealDouble),PetscErrorCode,())
@@ -517,145 +517,145 @@ function PetscPythonPrintError(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscPythonMonitorSet(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Symbol})
     ccall((:PetscPythonMonitorSet,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
     ccall((:PetscObjectDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscObject},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectGetComm(arg0::Type{Float64},arg1::PetscObject,arg2::Union{Ptr{MPI_Comm},StridedArray{MPI_Comm},Ptr{MPI_Comm},Ref{MPI_Comm}})
     ccall((:PetscObjectGetComm,petscRealDouble),PetscErrorCode,(PetscObject,Ptr{comm_type}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectGetClassId(arg0::Type{Float64},arg1::PetscObject,arg2::Union{Ptr{PetscClassId},StridedArray{PetscClassId},Ptr{PetscClassId},Ref{PetscClassId}})
     ccall((:PetscObjectGetClassId,petscRealDouble),PetscErrorCode,(PetscObject,Ptr{PetscClassId}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectGetClassName(arg0::Type{Float64},arg1::PetscObject,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:PetscObjectGetClassName,petscRealDouble),PetscErrorCode,(PetscObject,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectSetType(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Symbol})
     ccall((:PetscObjectSetType,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectSetPrecision(arg0::Type{Float64},arg1::PetscObject,arg2::PetscPrecision)
     ccall((:PetscObjectSetPrecision,petscRealDouble),PetscErrorCode,(PetscObject,PetscPrecision),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectGetType(arg0::Type{Float64},arg1::PetscObject,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:PetscObjectGetType,petscRealDouble),PetscErrorCode,(PetscObject,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectSetName(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Symbol})
     ccall((:PetscObjectSetName,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectGetName(arg0::Type{Float64},arg1::PetscObject,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:PetscObjectGetName,petscRealDouble),PetscErrorCode,(PetscObject,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectSetTabLevel(arg0::Type{Float64},arg1::PetscObject,arg2::Integer)
     ccall((:PetscObjectSetTabLevel,petscRealDouble),PetscErrorCode,(PetscObject,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectGetTabLevel(arg0::Type{Float64},arg1::PetscObject,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscObjectGetTabLevel,petscRealDouble),PetscErrorCode,(PetscObject,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectIncrementTabLevel(arg0::Type{Float64},arg1::PetscObject,arg2::PetscObject,arg3::Integer)
     ccall((:PetscObjectIncrementTabLevel,petscRealDouble),PetscErrorCode,(PetscObject,PetscObject,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectReference(arg0::Type{Float64},arg1::PetscObject)
     ccall((:PetscObjectReference,petscRealDouble),PetscErrorCode,(PetscObject,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectGetReference(arg0::Type{Float64},arg1::PetscObject,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscObjectGetReference,petscRealDouble),PetscErrorCode,(PetscObject,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectDereference(arg0::Type{Float64},arg1::PetscObject)
     ccall((:PetscObjectDereference,petscRealDouble),PetscErrorCode,(PetscObject,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectGetNewTag(arg0::Type{Float64},arg1::PetscObject,arg2::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}})
     ccall((:PetscObjectGetNewTag,petscRealDouble),PetscErrorCode,(PetscObject,Ptr{PetscMPIInt}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectCompose(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Symbol},arg3::PetscObject)
     ccall((:PetscObjectCompose,petscRealDouble),PetscErrorCode,(PetscObject,Cstring,PetscObject),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectRemoveReference(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Symbol})
     ccall((:PetscObjectRemoveReference,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectQuery(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
     ccall((:PetscObjectQuery,petscRealDouble),PetscErrorCode,(PetscObject,Cstring,Ptr{PetscObject}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectComposeFunction_Private(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscObjectComposeFunction_Private,petscRealDouble),PetscErrorCode,(PetscObject,Cstring,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectSetFromOptions(arg0::Type{Float64},arg1::PetscObject)
     ccall((:PetscObjectSetFromOptions,petscRealDouble),PetscErrorCode,(PetscObject,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectSetUp(arg0::Type{Float64},arg1::PetscObject)
     ccall((:PetscObjectSetUp,petscRealDouble),PetscErrorCode,(PetscObject,),arg1)
-end 
+end
 =#
 function PetscCommGetNewTag(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}})
-    err = ccall((:PetscCommGetNewTag,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscMPIInt}),arg1.val,arg2)
+    err = ccall((:PetscCommGetNewTag,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscMPIInt}),arg1,arg2)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectAddOptionsHandler(arg0::Type{Float64},arg1::PetscObject,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscObjectAddOptionsHandler,petscRealDouble),PetscErrorCode,(PetscObject,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectProcessOptionsHandlers(arg0::Type{Float64},arg1::PetscObject)
     ccall((:PetscObjectProcessOptionsHandlers,petscRealDouble),PetscErrorCode,(PetscObject,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectDestroyOptionsHandlers(arg0::Type{Float64},arg1::PetscObject)
     ccall((:PetscObjectDestroyOptionsHandlers,petscRealDouble),PetscErrorCode,(PetscObject,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectsListGetGlobalNumbering(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    ccall((:PetscObjectsListGetGlobalNumbering,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{PetscObject},Ptr{Int64},Ptr{Int64}),arg1.val,arg2,arg3,arg4,arg5)
-end 
+    ccall((:PetscObjectsListGetGlobalNumbering,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{PetscObject},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
+end
 =#
 function PetscOptionsHasName(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{ByteString,Symbol},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsHasName,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
@@ -778,7 +778,7 @@ function PetscOptionsInsert(arg0::Type{Float64},arg1::Union{Ptr{Cint},StridedArr
 end
 
 function PetscOptionsInsertFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::PetscBool)
-    err = ccall((:PetscOptionsInsertFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool),arg1.val,arg2,arg3)
+    err = ccall((:PetscOptionsInsertFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool),arg1,arg2,arg3)
     return err
 end
 
@@ -818,7 +818,7 @@ function PetscOptionsGetAll(arg0::Type{Float64},arg1::Union{Ptr{Ptr{UInt8}},Stri
 end
 
 function PetscOptionsGetenv(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:PetscOptionsGetenv,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:PetscOptionsGetenv,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -852,115 +852,115 @@ function PetscOptionsMonitorDefault(arg0::Type{Float64},arg1::Union{ByteString,S
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsBegin_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::MPI_Comm,arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{ByteString,Symbol})
-    ccall((:PetscOptionsBegin_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},comm_type,Cstring,Cstring,Cstring),arg1,arg2.val,arg3,arg4,arg5)
-end 
+    ccall((:PetscOptionsBegin_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},comm_type,Cstring,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectOptionsBegin_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::PetscObject)
     ccall((:PetscObjectOptionsBegin_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},PetscObject),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsEnd_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}})
     ccall((:PetscOptionsEnd_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsHead(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol})
     ccall((:PetscOptionsHead,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsEnum_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::PetscEnum,arg7::Union{Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{PetscEnum},Ref{PetscEnum}},arg8::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsEnum_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Ptr{UInt8}},PetscEnum,Ptr{PetscEnum},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsInt_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsInt_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Int64,Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsReal_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Float64,arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsReal_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Float64,Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsScalar_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Float64,arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsScalar_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Float64,Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsName_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsName_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsString_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{ByteString,Symbol},arg6::Union{ByteString,Symbol},arg7::Csize_t,arg8::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsString_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsBool_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::PetscBool,arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsBool_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,PetscBool,Ptr{PetscBool},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsBoolGroupBegin_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsBoolGroupBegin_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsBoolGroup_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsBoolGroup_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsBoolGroupEnd_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsBoolGroupEnd_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsFList_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::PetscFunctionList,arg6::Union{ByteString,Symbol},arg7::Union{ByteString,Symbol},arg8::Csize_t,arg9::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsFList_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,PetscFunctionList,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsEList_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::Integer,arg7::Union{ByteString,Symbol},arg8::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg9::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsEList_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Ptr{UInt8}},Int64,Cstring,Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsRealArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsRealArray_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Float64},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsScalarArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsScalarArray_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Float64},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsIntArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsIntArray_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Int64},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsStringArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsStringArray_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Ptr{UInt8}},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsBoolArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsBoolArray_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsEnumArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::Union{Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{PetscEnum},Ref{PetscEnum}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsEnumArray_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Ptr{UInt8}},Ptr{PetscEnum},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
 function PetscOptionsSetFromOptions(arg0::Type{Float64})
     err = ccall((:PetscOptionsSetFromOptions,petscRealDouble),PetscErrorCode,())
@@ -977,70 +977,70 @@ function PetscMemoryShowUsage(arg1::PetscViewer{Float64},arg2::Union{ByteString,
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectPrintClassNamePrefixType(arg1::PetscObject,arg2::PetscViewer{Float64})
     ccall((:PetscObjectPrintClassNamePrefixType,petscRealDouble),PetscErrorCode,(PetscObject,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectView(arg1::PetscObject,arg2::PetscViewer{Float64})
     ccall((:PetscObjectView,petscRealDouble),PetscErrorCode,(PetscObject,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectQueryFunction_Private(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:PetscObjectQueryFunction_Private,petscRealDouble),PetscErrorCode,(PetscObject,Cstring,Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectSetOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Symbol})
     ccall((:PetscObjectSetOptionsPrefix,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectAppendOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Symbol})
     ccall((:PetscObjectAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectPrependOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Symbol})
     ccall((:PetscObjectPrependOptionsPrefix,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectGetOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:PetscObjectGetOptionsPrefix,petscRealDouble),PetscErrorCode,(PetscObject,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectChangeTypeName(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Symbol})
     ccall((:PetscObjectChangeTypeName,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectRegisterDestroy(arg0::Type{Float64},arg1::PetscObject)
     ccall((:PetscObjectRegisterDestroy,petscRealDouble),PetscErrorCode,(PetscObject,),arg1)
-end 
+end
 =#
 function PetscObjectRegisterDestroyAll(arg0::Type{Float64})
     err = ccall((:PetscObjectRegisterDestroyAll,petscRealDouble),PetscErrorCode,())
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectViewFromOptions(arg0::Type{Float64},arg1::PetscObject,arg2::PetscObject,arg3::Union{ByteString,Symbol})
     ccall((:PetscObjectViewFromOptions,petscRealDouble),PetscErrorCode,(PetscObject,PetscObject,Cstring),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectName(arg0::Type{Float64},arg1::PetscObject)
     ccall((:PetscObjectName,petscRealDouble),PetscErrorCode,(PetscObject,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectTypeCompare(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscObjectTypeCompare,petscRealDouble),PetscErrorCode,(PetscObject,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
-end 
+end
 =#
 function PetscRegisterFinalize(arg0::Type{Float64},arg1::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscRegisterFinalize,petscRealDouble),PetscErrorCode,(Ptr{Void},),arg1)
@@ -1067,140 +1067,140 @@ function PetscDLSym(arg0::Type{Float64},arg1::PetscDLHandle,arg2::Union{ByteStri
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectsDump(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg2::PetscBool)
     ccall((:PetscObjectsDump,petscRealDouble),PetscErrorCode,(Ptr{FILE},PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectListDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscObjectList},StridedArray{PetscObjectList},Ptr{PetscObjectList},Ref{PetscObjectList}})
     ccall((:PetscObjectListDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscObjectList},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectListFind(arg0::Type{Float64},arg1::PetscObjectList,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
     ccall((:PetscObjectListFind,petscRealDouble),PetscErrorCode,(PetscObjectList,Cstring,Ptr{PetscObject}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectListReverseFind(arg0::Type{Float64},arg1::PetscObjectList,arg2::PetscObject,arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscObjectListReverseFind,petscRealDouble),PetscErrorCode,(PetscObjectList,PetscObject,Ptr{Ptr{UInt8}},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectListAdd(arg0::Type{Float64},arg1::Union{Ptr{PetscObjectList},StridedArray{PetscObjectList},Ptr{PetscObjectList},Ref{PetscObjectList}},arg2::Union{ByteString,Symbol},arg3::PetscObject)
     ccall((:PetscObjectListAdd,petscRealDouble),PetscErrorCode,(Ptr{PetscObjectList},Cstring,PetscObject),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectListRemoveReference(arg0::Type{Float64},arg1::Union{Ptr{PetscObjectList},StridedArray{PetscObjectList},Ptr{PetscObjectList},Ref{PetscObjectList}},arg2::Union{ByteString,Symbol})
     ccall((:PetscObjectListRemoveReference,petscRealDouble),PetscErrorCode,(Ptr{PetscObjectList},Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectListDuplicate(arg0::Type{Float64},arg1::PetscObjectList,arg2::Union{Ptr{PetscObjectList},StridedArray{PetscObjectList},Ptr{PetscObjectList},Ref{PetscObjectList}})
     ccall((:PetscObjectListDuplicate,petscRealDouble),PetscErrorCode,(PetscObjectList,Ptr{PetscObjectList}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFunctionListAdd_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscFunctionList},StridedArray{PetscFunctionList},Ptr{PetscFunctionList},Ref{PetscFunctionList}},arg2::Union{ByteString,Symbol},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscFunctionListAdd_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscFunctionList},Cstring,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFunctionListDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscFunctionList},StridedArray{PetscFunctionList},Ptr{PetscFunctionList},Ref{PetscFunctionList}})
     ccall((:PetscFunctionListDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscFunctionList},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFunctionListFind_Private(arg0::Type{Float64},arg1::PetscFunctionList,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:PetscFunctionListFind_Private,petscRealDouble),PetscErrorCode,(PetscFunctionList,Cstring,Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFunctionListPrintTypes(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{ByteString,Symbol},arg6::Union{ByteString,Symbol},arg7::PetscFunctionList,arg8::Union{ByteString,Symbol})
-    ccall((:PetscFunctionListPrintTypes,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE},Cstring,Cstring,Cstring,Cstring,PetscFunctionList,Cstring),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+    ccall((:PetscFunctionListPrintTypes,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE},Cstring,Cstring,Cstring,Cstring,PetscFunctionList,Cstring),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFunctionListDuplicate(arg0::Type{Float64},arg1::PetscFunctionList,arg2::Union{Ptr{PetscFunctionList},StridedArray{PetscFunctionList},Ptr{PetscFunctionList},Ref{PetscFunctionList}})
     ccall((:PetscFunctionListDuplicate,petscRealDouble),PetscErrorCode,(PetscFunctionList,Ptr{PetscFunctionList}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFunctionListView(arg1::PetscFunctionList,arg2::PetscViewer{Float64})
     ccall((:PetscFunctionListView,petscRealDouble),PetscErrorCode,(PetscFunctionList,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFunctionListGet(arg0::Type{Float64},arg1::PetscFunctionList,arg2::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}},arg3::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
     ccall((:PetscFunctionListGet,petscRealDouble),PetscErrorCode,(PetscFunctionList,Ptr{Ptr{Ptr{UInt8}}},Ptr{Cint}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDLLibraryAppend(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{PetscDLLibrary},Ref{PetscDLLibrary}},arg3::Union{ByteString,Symbol})
-    ccall((:PetscDLLibraryAppend,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDLLibrary},Cstring),arg1.val,arg2,arg3)
-end 
+    ccall((:PetscDLLibraryAppend,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDLLibrary},Cstring),arg1,arg2,arg3)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDLLibraryPrepend(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{PetscDLLibrary},Ref{PetscDLLibrary}},arg3::Union{ByteString,Symbol})
-    ccall((:PetscDLLibraryPrepend,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDLLibrary},Cstring),arg1.val,arg2,arg3)
-end 
+    ccall((:PetscDLLibraryPrepend,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDLLibrary},Cstring),arg1,arg2,arg3)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDLLibrarySym(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{PetscDLLibrary},Ref{PetscDLLibrary}},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
-    ccall((:PetscDLLibrarySym,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDLLibrary},Cstring,Cstring,Ptr{Ptr{Void}}),arg1.val,arg2,arg3,arg4,arg5)
-end 
+    ccall((:PetscDLLibrarySym,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDLLibrary},Cstring,Cstring,Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDLLibraryPrintPath(arg0::Type{Float64},arg1::PetscDLLibrary)
     ccall((:PetscDLLibraryPrintPath,petscRealDouble),PetscErrorCode,(PetscDLLibrary,),arg1)
-end 
+end
 =#
 function PetscDLLibraryRetrieve(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:PetscDLLibraryRetrieve,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:PetscDLLibraryRetrieve,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDLLibraryOpen(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{PetscDLLibrary},Ref{PetscDLLibrary}})
-    ccall((:PetscDLLibraryOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Ptr{PetscDLLibrary}),arg1.val,arg2,arg3)
-end 
+    ccall((:PetscDLLibraryOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Ptr{PetscDLLibrary}),arg1,arg2,arg3)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDLLibraryClose(arg0::Type{Float64},arg1::PetscDLLibrary)
     ccall((:PetscDLLibraryClose,petscRealDouble),PetscErrorCode,(PetscDLLibrary,),arg1)
-end 
+end
 =#
 function PetscSplitOwnership(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:PetscSplitOwnership,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Int64},Ptr{Int64}),arg1.val,arg2,arg3)
+    err = ccall((:PetscSplitOwnership,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3)
     return err
 end
 
 function PetscSplitOwnershipBlock(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:PetscSplitOwnershipBlock,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscSplitOwnershipBlock,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
     return err
 end
 
 function PetscSequentialPhaseBegin(arg0::Type{Float64},arg1::MPI_Comm,arg2::PetscMPIInt)
-    err = ccall((:PetscSequentialPhaseBegin,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt),arg1.val,arg2)
+    err = ccall((:PetscSequentialPhaseBegin,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt),arg1,arg2)
     return err
 end
 
 function PetscSequentialPhaseEnd(arg0::Type{Float64},arg1::MPI_Comm,arg2::PetscMPIInt)
-    err = ccall((:PetscSequentialPhaseEnd,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt),arg1.val,arg2)
+    err = ccall((:PetscSequentialPhaseEnd,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt),arg1,arg2)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBarrier(arg0::Type{Float64},arg1::PetscObject)
     ccall((:PetscBarrier,petscRealDouble),PetscErrorCode,(PetscObject,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscMPIDump(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscMPIDump,petscRealDouble),PetscErrorCode,(Ptr{FILE},),arg1)
-end 
+end
 =#
 function PetscInfoDeactivateClass(arg0::Type{Float64},arg1::PetscClassId)
     err = ccall((:PetscInfoDeactivateClass,petscRealDouble),PetscErrorCode,(PetscClassId,),arg1)
@@ -1212,105 +1212,105 @@ function PetscInfoActivateClass(arg0::Type{Float64},arg1::PetscClassId)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscLogGetStageLog(arg0::Type{Float64},arg1::Union{Ptr{PetscStageLog},StridedArray{PetscStageLog},Ptr{PetscStageLog},Ref{PetscStageLog}})
     ccall((:PetscLogGetStageLog,petscRealDouble),PetscErrorCode,(Ptr{PetscStageLog},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscStageLogGetCurrent(arg0::Type{Float64},arg1::PetscStageLog,arg2::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
     ccall((:PetscStageLogGetCurrent,petscRealDouble),PetscErrorCode,(PetscStageLog,Ptr{Cint}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscStageLogGetEventPerfLog(arg0::Type{Float64},arg1::PetscStageLog,arg2::Integer,arg3::Union{Ptr{PetscEventPerfLog},StridedArray{PetscEventPerfLog},Ptr{PetscEventPerfLog},Ref{PetscEventPerfLog}})
     ccall((:PetscStageLogGetEventPerfLog,petscRealDouble),PetscErrorCode,(PetscStageLog,Cint,Ptr{PetscEventPerfLog}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscLogObjectParent(arg0::Type{Float64},arg1::PetscObject,arg2::PetscObject)
     ccall((:PetscLogObjectParent,petscRealDouble),PetscErrorCode,(PetscObject,PetscObject),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscLogObjectMemory(arg0::Type{Float64},arg1::PetscObject,arg2::PetscLogDouble)
     ccall((:PetscLogObjectMemory,petscRealDouble),PetscErrorCode,(PetscObject,PetscLogDouble),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscIntStackCreate(arg0::Type{Float64},arg1::Union{Ptr{PetscIntStack},StridedArray{PetscIntStack},Ptr{PetscIntStack},Ref{PetscIntStack}})
     ccall((:PetscIntStackCreate,petscRealDouble),PetscErrorCode,(Ptr{PetscIntStack},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscIntStackDestroy(arg0::Type{Float64},arg1::PetscIntStack)
     ccall((:PetscIntStackDestroy,petscRealDouble),PetscErrorCode,(PetscIntStack,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscIntStackPush(arg0::Type{Float64},arg1::PetscIntStack,arg2::Integer)
     ccall((:PetscIntStackPush,petscRealDouble),PetscErrorCode,(PetscIntStack,Cint),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscIntStackPop(arg0::Type{Float64},arg1::PetscIntStack,arg2::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
     ccall((:PetscIntStackPop,petscRealDouble),PetscErrorCode,(PetscIntStack,Ptr{Cint}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscIntStackTop(arg0::Type{Float64},arg1::PetscIntStack,arg2::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
     ccall((:PetscIntStackTop,petscRealDouble),PetscErrorCode,(PetscIntStack,Ptr{Cint}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscIntStackEmpty(arg0::Type{Float64},arg1::PetscIntStack,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscIntStackEmpty,petscRealDouble),PetscErrorCode,(PetscIntStack,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
 function PetscFixFilename(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{ByteString,Symbol})
     err = ccall((:PetscFixFilename,petscRealDouble),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFOpen(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
-    ccall((:PetscFOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{Ptr{FILE}}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:PetscFOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{Ptr{FILE}}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFClose(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
-    ccall((:PetscFClose,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE}),arg1.val,arg2)
-end 
+    ccall((:PetscFClose,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscVSNPrintf(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Csize_t,arg3::Union{ByteString,Symbol},arg4::Union{Ptr{Csize_t},StridedArray{Csize_t},Ptr{Csize_t},Ref{Csize_t}},arg5::Union{Ptr{__va_list_tag},StridedArray{__va_list_tag},Ptr{__va_list_tag},Ref{__va_list_tag}})
     ccall((:PetscVSNPrintf,petscRealDouble),PetscErrorCode,(Cstring,Csize_t,Cstring,Ptr{Csize_t},Ptr{__va_list_tag}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscVFPrintfDefault(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg2::Union{ByteString,Symbol},arg3::Union{Ptr{__va_list_tag},StridedArray{__va_list_tag},Ptr{__va_list_tag},Ref{__va_list_tag}})
     ccall((:PetscVFPrintfDefault,petscRealDouble),PetscErrorCode,(Ptr{FILE},Cstring,Ptr{__va_list_tag}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSynchronizedFlush(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
-    ccall((:PetscSynchronizedFlush,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE}),arg1.val,arg2)
-end 
+    ccall((:PetscSynchronizedFlush,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSynchronizedFGets(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg3::Csize_t,arg4::Union{ByteString,Symbol})
-    ccall((:PetscSynchronizedFGets,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE},Csize_t,Cstring),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:PetscSynchronizedFGets,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE},Csize_t,Cstring),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscStartMatlab(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
-    ccall((:PetscStartMatlab,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{Ptr{FILE}}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:PetscStartMatlab,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{Ptr{FILE}}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscStartJava(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
-    ccall((:PetscStartJava,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{Ptr{FILE}}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:PetscStartJava,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{Ptr{FILE}}),arg1,arg2,arg3,arg4)
+end
 =#
 function PetscGetPetscDir(arg0::Type{Float64},arg1::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     err = ccall((:PetscGetPetscDir,petscRealDouble),PetscErrorCode,(Ptr{Ptr{UInt8}},),arg1)
@@ -1318,34 +1318,34 @@ function PetscGetPetscDir(arg0::Type{Float64},arg1::Union{Ptr{Ptr{UInt8}},Stride
 end
 
 function PetscPopUpSelect(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Integer,arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
-    err = ccall((:PetscPopUpSelect,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Ptr{Ptr{UInt8}},Ptr{Cint}),arg1.val,arg2,arg3,arg4,arg5,arg6)
+    err = ccall((:PetscPopUpSelect,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Ptr{Ptr{UInt8}},Ptr{Cint}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscContainerGetPointer(arg0::Type{Float64},arg1::PetscContainer,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:PetscContainerGetPointer,petscRealDouble),PetscErrorCode,(PetscContainer,Ptr{Ptr{Void}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscContainerSetPointer(arg0::Type{Float64},arg1::PetscContainer,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscContainerSetPointer,petscRealDouble),PetscErrorCode,(PetscContainer,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscContainerDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscContainer},StridedArray{PetscContainer},Ptr{PetscContainer},Ref{PetscContainer}})
     ccall((:PetscContainerDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscContainer},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscContainerCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscContainer},StridedArray{PetscContainer},Ptr{PetscContainer},Ref{PetscContainer}})
-    ccall((:PetscContainerCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscContainer}),arg1.val,arg2)
-end 
+    ccall((:PetscContainerCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscContainer}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscContainerSetUserDestroy(arg0::Type{Float64},arg1::PetscContainer,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscContainerSetUserDestroy,petscRealDouble),PetscErrorCode,(PetscContainer,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
 function PetscIntView(arg1::Integer,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::PetscViewer{Float64})
     err = ccall((:PetscIntView,petscRealDouble),PetscErrorCode,(Int64,Ptr{Int64},PetscViewer{Float64}),arg1,arg2,arg3)
@@ -1512,65 +1512,65 @@ function PetscRandomRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscRandomSetType(arg0::Type{Float64},arg1::PetscRandom,arg2::PetscRandomType)
     ccall((:PetscRandomSetType,petscRealDouble),PetscErrorCode,(PetscRandom,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscRandomSetFromOptions(arg0::Type{Float64},arg1::PetscRandom)
     ccall((:PetscRandomSetFromOptions,petscRealDouble),PetscErrorCode,(PetscRandom,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscRandomGetType(arg0::Type{Float64},arg1::PetscRandom,arg2::Union{Ptr{PetscRandomType},StridedArray{PetscRandomType},Ptr{PetscRandomType},Ref{PetscRandomType}})
     ccall((:PetscRandomGetType,petscRealDouble),PetscErrorCode,(PetscRandom,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscRandomCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscRandom},StridedArray{PetscRandom},Ptr{PetscRandom},Ref{PetscRandom}})
-    ccall((:PetscRandomCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscRandom}),arg1.val,arg2)
-end 
+    ccall((:PetscRandomCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscRandom}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscRandomGetValue(arg0::Type{Float64},arg1::PetscRandom,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscRandomGetValue,petscRealDouble),PetscErrorCode,(PetscRandom,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscRandomGetValueReal(arg0::Type{Float64},arg1::PetscRandom,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscRandomGetValueReal,petscRealDouble),PetscErrorCode,(PetscRandom,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscRandomGetInterval(arg0::Type{Float64},arg1::PetscRandom,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscRandomGetInterval,petscRealDouble),PetscErrorCode,(PetscRandom,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscRandomSetInterval(arg0::Type{Float64},arg1::PetscRandom,arg2::Float64,arg3::Float64)
     ccall((:PetscRandomSetInterval,petscRealDouble),PetscErrorCode,(PetscRandom,Float64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscRandomSetSeed(arg0::Type{Float64},arg1::PetscRandom,arg2::Culong)
     ccall((:PetscRandomSetSeed,petscRealDouble),PetscErrorCode,(PetscRandom,Culong),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscRandomGetSeed(arg0::Type{Float64},arg1::PetscRandom,arg2::Union{Ptr{Culong},StridedArray{Culong},Ptr{Culong},Ref{Culong}})
     ccall((:PetscRandomGetSeed,petscRealDouble),PetscErrorCode,(PetscRandom,Ptr{Culong}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscRandomSeed(arg0::Type{Float64},arg1::PetscRandom)
     ccall((:PetscRandomSeed,petscRealDouble),PetscErrorCode,(PetscRandom,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscRandomDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscRandom},StridedArray{PetscRandom},Ptr{PetscRandom},Ref{PetscRandom}})
     ccall((:PetscRandomDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscRandom},),arg1)
-end 
+end
 =#
 function PetscGetFullPath(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{ByteString,Symbol},arg3::Csize_t)
     err = ccall((:PetscGetFullPath,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Csize_t),arg1,arg2,arg3)
@@ -1613,12 +1613,12 @@ function PetscBinaryRead(arg0::Type{Float64},arg1::Integer,arg2::Union{Ptr{Void}
 end
 
 function PetscBinarySynchronizedRead(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Integer,arg5::PetscDataType)
-    err = ccall((:PetscBinarySynchronizedRead,petscRealDouble),PetscErrorCode,(comm_type,Cint,Ptr{Void},Int64,PetscDataType),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:PetscBinarySynchronizedRead,petscRealDouble),PetscErrorCode,(comm_type,Cint,Ptr{Void},Int64,PetscDataType),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function PetscBinarySynchronizedWrite(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Integer,arg5::PetscDataType,arg6::PetscBool)
-    err = ccall((:PetscBinarySynchronizedWrite,petscRealDouble),PetscErrorCode,(comm_type,Cint,Ptr{Void},Int64,PetscDataType,PetscBool),arg1.val,arg2,arg3,arg4,arg5,arg6)
+    err = ccall((:PetscBinarySynchronizedWrite,petscRealDouble),PetscErrorCode,(comm_type,Cint,Ptr{Void},Int64,PetscDataType,PetscBool),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
@@ -1638,27 +1638,27 @@ function PetscBinaryClose(arg0::Type{Float64},arg1::Integer)
 end
 
 function PetscSharedTmp(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:PetscSharedTmp,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscBool}),arg1.val,arg2)
+    err = ccall((:PetscSharedTmp,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscBool}),arg1,arg2)
     return err
 end
 
 function PetscSharedWorkingDirectory(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:PetscSharedWorkingDirectory,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscBool}),arg1.val,arg2)
+    err = ccall((:PetscSharedWorkingDirectory,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscBool}),arg1,arg2)
     return err
 end
 
 function PetscGetTmp(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Csize_t)
-    err = ccall((:PetscGetTmp,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Csize_t),arg1.val,arg2,arg3)
+    err = ccall((:PetscGetTmp,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Csize_t),arg1,arg2,arg3)
     return err
 end
 
 function PetscFileRetrieve(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:PetscFileRetrieve,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:PetscFileRetrieve,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function PetscLs(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:PetscLs,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:PetscLs,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -1673,7 +1673,7 @@ function PetscBinarySeek(arg0::Type{Float64},arg1::Integer,off_t::Integer,arg2::
 end
 
 function PetscBinarySynchronizedSeek(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,off_t::Integer,arg3::PetscBinarySeekType,arg4::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
-    err = ccall((:PetscBinarySynchronizedSeek,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cint,PetscBinarySeekType,Ptr{Cint}),arg1.val,arg2,off_t,arg3,arg4)
+    err = ccall((:PetscBinarySynchronizedSeek,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cint,PetscBinarySeekType,Ptr{Cint}),arg1,arg2,off_t,arg3,arg4)
     return err
 end
 
@@ -1713,152 +1713,152 @@ function PetscStopForDebugger(arg0::Type{Float64})
 end
 
 function PetscGatherNumberOfMessages(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg3::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg4::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}})
-    err = ccall((:PetscGatherNumberOfMessages,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{PetscMPIInt}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscGatherNumberOfMessages,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{PetscMPIInt}),arg1,arg2,arg3,arg4)
     return err
 end
 
 function PetscGatherMessageLengths(arg0::Type{Float64},arg1::MPI_Comm,arg2::PetscMPIInt,arg3::PetscMPIInt,arg4::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg5::Union{Ptr{Ptr{PetscMPIInt}},StridedArray{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}},Ref{Ptr{PetscMPIInt}}},arg6::Union{Ptr{Ptr{PetscMPIInt}},StridedArray{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}},Ref{Ptr{PetscMPIInt}}})
-    err = ccall((:PetscGatherMessageLengths,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}}),arg1.val,arg2,arg3,arg4,arg5,arg6)
+    err = ccall((:PetscGatherMessageLengths,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
 function PetscGatherMessageLengths2(arg0::Type{Float64},arg1::MPI_Comm,arg2::PetscMPIInt,arg3::PetscMPIInt,arg4::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg5::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg6::Union{Ptr{Ptr{PetscMPIInt}},StridedArray{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}},Ref{Ptr{PetscMPIInt}}},arg7::Union{Ptr{Ptr{PetscMPIInt}},StridedArray{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}},Ref{Ptr{PetscMPIInt}}},arg8::Union{Ptr{Ptr{PetscMPIInt}},StridedArray{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}},Ref{Ptr{PetscMPIInt}}})
-    err = ccall((:PetscGatherMessageLengths2,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:PetscGatherMessageLengths2,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscPostIrecvInt(arg0::Type{Float64},arg1::MPI_Comm,arg2::PetscMPIInt,arg3::PetscMPIInt,arg4::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg5::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg6::Union{Ptr{Ptr{Ptr{Int64}}},StridedArray{Ptr{Ptr{Int64}}},Ptr{Ptr{Ptr{Int64}}},Ref{Ptr{Ptr{Int64}}}},arg7::Union{Ptr{Ptr{MPI_Request}},StridedArray{Ptr{MPI_Request}},Ptr{Ptr{MPI_Request}},Ref{Ptr{MPI_Request}}})
-    ccall((:PetscPostIrecvInt,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{Ptr{Ptr{Int64}}},Ptr{Ptr{MPI_Request}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+    ccall((:PetscPostIrecvInt,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{Ptr{Ptr{Int64}}},Ptr{Ptr{MPI_Request}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscPostIrecvScalar(arg0::Type{Float64},arg1::MPI_Comm,arg2::PetscMPIInt,arg3::PetscMPIInt,arg4::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg5::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg6::Union{Ptr{Ptr{Ptr{Float64}}},StridedArray{Ptr{Ptr{Float64}}},Ptr{Ptr{Ptr{Float64}}},Ref{Ptr{Ptr{Float64}}}},arg7::Union{Ptr{Ptr{MPI_Request}},StridedArray{Ptr{MPI_Request}},Ptr{Ptr{MPI_Request}},Ref{Ptr{MPI_Request}}})
-    ccall((:PetscPostIrecvScalar,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{Ptr{Ptr{Float64}}},Ptr{Ptr{MPI_Request}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+    ccall((:PetscPostIrecvScalar,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{Ptr{Ptr{Float64}}},Ptr{Ptr{MPI_Request}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscCommBuildTwoSided(arg0::Type{Float64},arg1::MPI_Comm,arg2::PetscMPIInt,arg3::MPI_Datatype,arg4::Integer,arg5::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Ptr{PetscMPIInt}},StridedArray{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}},Ref{Ptr{PetscMPIInt}}},arg9::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    ccall((:PetscCommBuildTwoSided,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,MPI_Datatype,Int64,Ptr{PetscMPIInt},Ptr{Void},Ptr{Int64},Ptr{Ptr{PetscMPIInt}},Ptr{Void}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+    ccall((:PetscCommBuildTwoSided,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,MPI_Datatype,Int64,Ptr{PetscMPIInt},Ptr{Void},Ptr{Int64},Ptr{Ptr{PetscMPIInt}},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
+end
 =#
 function PetscCommBuildTwoSidedSetType(arg0::Type{Float64},arg1::MPI_Comm,arg2::PetscBuildTwoSidedType)
-    err = ccall((:PetscCommBuildTwoSidedSetType,petscRealDouble),PetscErrorCode,(comm_type,PetscBuildTwoSidedType),arg1.val,arg2)
+    err = ccall((:PetscCommBuildTwoSidedSetType,petscRealDouble),PetscErrorCode,(comm_type,PetscBuildTwoSidedType),arg1,arg2)
     return err
 end
 
 function PetscCommBuildTwoSidedGetType(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscBuildTwoSidedType},StridedArray{PetscBuildTwoSidedType},Ptr{PetscBuildTwoSidedType},Ref{PetscBuildTwoSidedType}})
-    err = ccall((:PetscCommBuildTwoSidedGetType,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscBuildTwoSidedType}),arg1.val,arg2)
+    err = ccall((:PetscCommBuildTwoSidedGetType,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscBuildTwoSidedType}),arg1,arg2)
     return err
 end
 
 function PetscSSEIsEnabled(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:PetscSSEIsEnabled,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscBool},Ptr{PetscBool}),arg1.val,arg2,arg3)
+    err = ccall((:PetscSSEIsEnabled,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscBool},Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscObjectComm(arg0::Type{Float64},arg1::PetscObject)
     ccall((:PetscObjectComm,petscRealDouble),MPI_Comm,(PetscObject,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSubcommDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscSubcomm},StridedArray{PetscSubcomm},Ptr{PetscSubcomm},Ref{PetscSubcomm}})
     ccall((:PetscSubcommDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscSubcomm},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSubcommSetNumber(arg0::Type{Float64},arg1::PetscSubcomm,arg2::Integer)
     ccall((:PetscSubcommSetNumber,petscRealDouble),PetscErrorCode,(PetscSubcomm,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSubcommSetType(arg0::Type{Float64},arg1::PetscSubcomm,arg2::PetscSubcommType)
     ccall((:PetscSubcommSetType,petscRealDouble),PetscErrorCode,(PetscSubcomm,PetscSubcommType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSubcommSetTypeGeneral(arg0::Type{Float64},arg1::PetscSubcomm,arg2::PetscMPIInt,arg3::PetscMPIInt)
     ccall((:PetscSubcommSetTypeGeneral,petscRealDouble),PetscErrorCode,(PetscSubcomm,PetscMPIInt,PetscMPIInt),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSubcommView(arg1::PetscSubcomm,arg2::PetscViewer{Float64})
     ccall((:PetscSubcommView,petscRealDouble),PetscErrorCode,(PetscSubcomm,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSubcommSetFromOptions(arg0::Type{Float64},arg1::PetscSubcomm)
     ccall((:PetscSubcommSetFromOptions,petscRealDouble),PetscErrorCode,(PetscSubcomm,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSegBufferCreate(arg0::Type{Float64},arg1::Csize_t,arg2::Csize_t,arg3::Union{Ptr{PetscSegBuffer},StridedArray{PetscSegBuffer},Ptr{PetscSegBuffer},Ref{PetscSegBuffer}})
     ccall((:PetscSegBufferCreate,petscRealDouble),PetscErrorCode,(Csize_t,Csize_t,Ptr{PetscSegBuffer}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSegBufferDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscSegBuffer},StridedArray{PetscSegBuffer},Ptr{PetscSegBuffer},Ref{PetscSegBuffer}})
     ccall((:PetscSegBufferDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscSegBuffer},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSegBufferGet(arg0::Type{Float64},arg1::PetscSegBuffer,arg2::Csize_t,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscSegBufferGet,petscRealDouble),PetscErrorCode,(PetscSegBuffer,Csize_t,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSegBufferExtractAlloc(arg0::Type{Float64},arg1::PetscSegBuffer,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscSegBufferExtractAlloc,petscRealDouble),PetscErrorCode,(PetscSegBuffer,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSegBufferExtractTo(arg0::Type{Float64},arg1::PetscSegBuffer,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscSegBufferExtractTo,petscRealDouble),PetscErrorCode,(PetscSegBuffer,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSegBufferExtractInPlace(arg0::Type{Float64},arg1::PetscSegBuffer,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscSegBufferExtractInPlace,petscRealDouble),PetscErrorCode,(PetscSegBuffer,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSegBufferGetSize(arg0::Type{Float64},arg1::PetscSegBuffer,arg2::Union{Ptr{Csize_t},StridedArray{Csize_t},Ptr{Csize_t},Ref{Csize_t}})
     ccall((:PetscSegBufferGetSize,petscRealDouble),PetscErrorCode,(PetscSegBuffer,Ptr{Csize_t}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSegBufferUnuse(arg0::Type{Float64},arg1::PetscSegBuffer,arg2::Csize_t)
     ccall((:PetscSegBufferUnuse,petscRealDouble),PetscErrorCode,(PetscSegBuffer,Csize_t),arg1,arg2)
-end 
+end
 =#
 function PetscGoogleDriveAuthorize(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Csize_t)
-    err = ccall((:PetscGoogleDriveAuthorize,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscGoogleDriveAuthorize,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1,arg2,arg3,arg4)
     return err
 end
 
 function PetscGoogleDriveRefresh(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Csize_t)
-    err = ccall((:PetscGoogleDriveRefresh,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscGoogleDriveRefresh,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1,arg2,arg3,arg4)
     return err
 end
 
 function PetscGoogleDriveUpload(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol})
-    err = ccall((:PetscGoogleDriveUpload,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring),arg1.val,arg2,arg3)
+    err = ccall((:PetscGoogleDriveUpload,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring),arg1,arg2,arg3)
     return err
 end
 
 function PetscBoxAuthorize(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Csize_t)
-    err = ccall((:PetscBoxAuthorize,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscBoxAuthorize,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1,arg2,arg3,arg4)
     return err
 end
 
 function PetscBoxRefresh(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Csize_t)
-    err = ccall((:PetscBoxRefresh,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cstring,Csize_t),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:PetscBoxRefresh,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cstring,Csize_t),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function PetscTextBelt(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:PetscTextBelt,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{PetscBool}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscTextBelt,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -1872,120 +1872,120 @@ function PetscPushJSONValue(arg0::Type{Float64},arg1::Union{ByteString,Symbol},a
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Csize_t,arg3::Union{Ptr{PetscBag},StridedArray{PetscBag},Ptr{PetscBag},Ref{PetscBag}})
-    ccall((:PetscBagCreate,petscRealDouble),PetscErrorCode,(comm_type,Csize_t,Ptr{PetscBag}),arg1.val,arg2,arg3)
-end 
+    ccall((:PetscBagCreate,petscRealDouble),PetscErrorCode,(comm_type,Csize_t,Ptr{PetscBag}),arg1,arg2,arg3)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscBag},StridedArray{PetscBag},Ptr{PetscBag},Ref{PetscBag}})
     ccall((:PetscBagDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscBag},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagGetData(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:PetscBagGetData,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Ptr{Void}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagRegisterReal(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Float64,arg4::Union{ByteString,Symbol},arg5::Union{ByteString,Symbol})
     ccall((:PetscBagRegisterReal,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Float64,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagRegisterRealArray(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{ByteString,Symbol},arg5::Union{ByteString,Symbol})
     ccall((:PetscBagRegisterRealArray,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Int64,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagRegisterString(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{ByteString,Symbol},arg5::Union{ByteString,Symbol},arg6::Union{ByteString,Symbol})
     ccall((:PetscBagRegisterString,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Int64,Cstring,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagRegisterScalar(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Float64,arg4::Union{ByteString,Symbol},arg5::Union{ByteString,Symbol})
     ccall((:PetscBagRegisterScalar,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Float64,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagRegisterInt(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{ByteString,Symbol},arg5::Union{ByteString,Symbol})
     ccall((:PetscBagRegisterInt,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Int64,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagRegister64bitInt(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Petsc64bitInt,arg4::Union{ByteString,Symbol},arg5::Union{ByteString,Symbol})
     ccall((:PetscBagRegister64bitInt,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Petsc64bitInt,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagRegisterIntArray(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{ByteString,Symbol},arg5::Union{ByteString,Symbol})
     ccall((:PetscBagRegisterIntArray,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Int64,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagRegisterEnum(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg4::PetscEnum,arg5::Union{ByteString,Symbol},arg6::Union{ByteString,Symbol})
     ccall((:PetscBagRegisterEnum,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Ptr{Ptr{UInt8}},PetscEnum,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagRegisterBool(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::PetscBool,arg4::Union{ByteString,Symbol},arg5::Union{ByteString,Symbol})
     ccall((:PetscBagRegisterBool,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},PetscBool,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagRegisterBoolArray(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{ByteString,Symbol},arg5::Union{ByteString,Symbol})
     ccall((:PetscBagRegisterBoolArray,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Int64,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagGetNames(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:PetscBagGetNames,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagSetFromOptions(arg0::Type{Float64},arg1::PetscBag)
     ccall((:PetscBagSetFromOptions,petscRealDouble),PetscErrorCode,(PetscBag,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagGetName(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:PetscBagGetName,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagSetName(arg0::Type{Float64},arg1::PetscBag,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol})
     ccall((:PetscBagSetName,petscRealDouble),PetscErrorCode,(PetscBag,Cstring,Cstring),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagSetOptionsPrefix(arg0::Type{Float64},arg1::PetscBag,arg2::Union{ByteString,Symbol})
     ccall((:PetscBagSetOptionsPrefix,petscRealDouble),PetscErrorCode,(PetscBag,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagView(arg1::PetscBag,arg2::PetscViewer{Float64})
     ccall((:PetscBagView,petscRealDouble),PetscErrorCode,(PetscBag,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagLoad(arg1::PetscViewer{Float64},arg2::PetscBag)
     ccall((:PetscBagLoad,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},PetscBag),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagSetViewer(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscBagSetViewer,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagSetLoader(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscBagSetLoader,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscBagSetDestroy(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscBagSetDestroy,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
 function PetscGetCPUTime(arg0::Type{Float64},arg1::Union{Ptr{PetscLogDouble},StridedArray{PetscLogDouble},Ptr{PetscLogDouble},Ref{PetscLogDouble}})
     err = ccall((:PetscGetCPUTime,petscRealDouble),PetscErrorCode,(Ptr{PetscLogDouble},),arg1)
@@ -2003,7 +2003,7 @@ function PetscViewerRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},
 end
 
 function PetscViewerCreate(arg1::MPI_Comm,arg2::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscViewer{Float64}}),arg1.val,arg2)
+    err = ccall((:PetscViewerCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscViewer{Float64}}),arg1,arg2)
     return err
 end
 
@@ -2012,23 +2012,23 @@ function PetscViewerSetFromOptions(arg1::PetscViewer{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscViewerASCIIOpenWithFILE(arg1::MPI_Comm,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg3::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    ccall((:PetscViewerASCIIOpenWithFILE,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE},Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3)
-end 
+    ccall((:PetscViewerASCIIOpenWithFILE,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE},Ptr{PetscViewer{Float64}}),arg1,arg2,arg3)
+end
 =#
 function PetscViewerASCIIOpen(arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerASCIIOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3)
+    err = ccall((:PetscViewerASCIIOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscViewerASCIISetFILE(arg1::PetscViewer{Float64},arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscViewerASCIISetFILE,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{FILE}),arg1,arg2)
-end 
+end
 =#
 function PetscViewerBinaryOpen(arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::PetscFileMode,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerBinaryOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscViewerBinaryOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -2053,17 +2053,17 @@ function PetscViewerBinaryGetUseMPIIO(arg1::PetscViewer{Float64},arg2::Union{Ptr
 end
 
 function PetscViewerSocketOpen(arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Integer,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerSocketOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cint,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscViewerSocketOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cint,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
 function PetscViewerStringOpen(arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Csize_t,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerStringOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Csize_t,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscViewerStringOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Csize_t,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
 function PetscViewerDrawOpen(arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerDrawOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:PetscViewerDrawOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
@@ -2073,17 +2073,17 @@ function PetscViewerDrawSetDrawType(arg1::PetscViewer{Float64},arg2::PetscDrawTy
 end
 
 function PetscViewerMathematicaOpen(arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerMathematicaOpen,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:PetscViewerMathematicaOpen,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function PetscViewerSiloOpen(arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerSiloOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3)
+    err = ccall((:PetscViewerSiloOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3)
     return err
 end
 
 function PetscViewerMatlabOpen(arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::PetscFileMode,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerMatlabOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscViewerMatlabOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -2115,12 +2115,12 @@ function PetscViewerRestoreSingleton(arg1::PetscViewer{Float64},arg2::Union{Ptr{
 end
 
 function PetscViewerGetSubcomm(arg1::PetscViewer{Float64},arg2::MPI_Comm,arg3::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerGetSubcomm,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},comm_type,Ptr{PetscViewer{Float64}}),arg1,arg2.val,arg3)
+    err = ccall((:PetscViewerGetSubcomm,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},comm_type,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3)
     return err
 end
 
 function PetscViewerRestoreSubcomm(arg1::PetscViewer{Float64},arg2::MPI_Comm,arg3::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerRestoreSubcomm,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},comm_type,Ptr{PetscViewer{Float64}}),arg1,arg2.val,arg3)
+    err = ccall((:PetscViewerRestoreSubcomm,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},comm_type,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3)
     return err
 end
 
@@ -2170,19 +2170,19 @@ function PetscViewerFlush(arg1::PetscViewer{Float64})
 end
 
 function PetscOptionsGetViewer(arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}},arg5::Union{Ptr{PetscViewerFormat},StridedArray{PetscViewerFormat},Ptr{PetscViewerFormat},Ref{PetscViewerFormat}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:PetscOptionsGetViewer,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{PetscViewer{Float64}},Ptr{PetscViewerFormat},Ptr{PetscBool}),arg1.val,arg2,arg3,arg4,arg5,arg6)
+    err = ccall((:PetscOptionsGetViewer,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{PetscViewer{Float64}},Ptr{PetscViewerFormat},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscOptionsViewer_Private(arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}},arg6::Union{Ptr{PetscViewerFormat},StridedArray{PetscViewerFormat},Ptr{PetscViewerFormat},Ref{PetscViewerFormat}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsViewer_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscViewer{Float64}},Ptr{PetscViewerFormat},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscViewerASCIIGetPointer(arg1::PetscViewer{Float64},arg2::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
     ccall((:PetscViewerASCIIGetPointer,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{FILE}}),arg1,arg2)
-end 
+end
 =#
 function PetscViewerFileGetMode(arg1::PetscViewer{Float64},arg2::Union{Ptr{PetscFileMode},StridedArray{PetscFileMode},Ptr{PetscFileMode},Ref{PetscFileMode}})
     err = ccall((:PetscViewerFileGetMode,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{PetscFileMode}),arg1,arg2)
@@ -2249,10 +2249,10 @@ function PetscViewerBinaryGetDescriptor(arg1::PetscViewer{Float64},arg2::Union{P
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscViewerBinaryGetInfoPointer(arg1::PetscViewer{Float64},arg2::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
     ccall((:PetscViewerBinaryGetInfoPointer,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{FILE}}),arg1,arg2)
-end 
+end
 =#
 function PetscViewerBinaryRead(arg1::PetscViewer{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::PetscDataType)
     err = ccall((:PetscViewerBinaryRead,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{Void},Int64,Ptr{Int64},PetscDataType),arg1,arg2,arg3,arg4,arg5)
@@ -2374,10 +2374,10 @@ function PetscViewerFileGetName(arg1::PetscViewer{Float64},arg2::Union{Ptr{Ptr{U
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscViewerVUGetPointer(arg1::PetscViewer{Float64},arg2::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
     ccall((:PetscViewerVUGetPointer,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{FILE}}),arg1,arg2)
-end 
+end
 =#
 function PetscViewerVUSetVecSeen(arg1::PetscViewer{Float64},arg2::PetscBool)
     err = ccall((:PetscViewerVUSetVecSeen,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},PetscBool),arg1,arg2)
@@ -2455,7 +2455,7 @@ function PetscViewerSiloClearMeshName(arg1::PetscViewer{Float64})
 end
 
 function PetscViewerNetcdfOpen(arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::PetscFileMode,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerNetcdfOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscViewerNetcdfOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -2464,58 +2464,58 @@ function PetscViewerNetcdfGetID(arg1::PetscViewer{Float64},arg2::Union{Ptr{Cint}
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscViewerVTKAddField(arg1::PetscViewer{Float64},arg2::PetscObject,PetscViewerVTKWriteFunction::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::PetscViewerVTKFieldType,arg4::PetscObject)
     ccall((:PetscViewerVTKAddField,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},PetscObject,Ptr{Void},PetscViewerVTKFieldType,PetscObject),arg1,arg2,PetscViewerVTKWriteFunction,arg3,arg4)
-end 
+end
 =#
 function PetscViewerVTKOpen(arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::PetscFileMode,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerVTKOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:PetscViewerVTKOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
 function PETSC_VIEWER_STDOUT_(arg0::Type{Float64},arg1::MPI_Comm)
-    err = ccall((:PETSC_VIEWER_STDOUT_,petscRealDouble),PetscViewer,(comm_type,),arg1.val)
+    err = ccall((:PETSC_VIEWER_STDOUT_,petscRealDouble),PetscViewer,(comm_type,),arg1)
     return err
 end
 
 function PetscViewerASCIIGetStdout(arg1::MPI_Comm,arg2::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerASCIIGetStdout,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscViewer{Float64}}),arg1.val,arg2)
+    err = ccall((:PetscViewerASCIIGetStdout,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscViewer{Float64}}),arg1,arg2)
     return err
 end
 
 function PETSC_VIEWER_STDERR_(arg0::Type{Float64},arg1::MPI_Comm)
-    err = ccall((:PETSC_VIEWER_STDERR_,petscRealDouble),PetscViewer,(comm_type,),arg1.val)
+    err = ccall((:PETSC_VIEWER_STDERR_,petscRealDouble),PetscViewer,(comm_type,),arg1)
     return err
 end
 
 function PetscViewerASCIIGetStderr(arg1::MPI_Comm,arg2::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
-    err = ccall((:PetscViewerASCIIGetStderr,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscViewer{Float64}}),arg1.val,arg2)
+    err = ccall((:PetscViewerASCIIGetStderr,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscViewer{Float64}}),arg1,arg2)
     return err
 end
 
 function PETSC_VIEWER_DRAW_(arg0::Type{Float64},arg1::MPI_Comm)
-    err = ccall((:PETSC_VIEWER_DRAW_,petscRealDouble),PetscViewer,(comm_type,),arg1.val)
+    err = ccall((:PETSC_VIEWER_DRAW_,petscRealDouble),PetscViewer,(comm_type,),arg1)
     return err
 end
 
 function PETSC_VIEWER_SOCKET_(arg0::Type{Float64},arg1::MPI_Comm)
-    err = ccall((:PETSC_VIEWER_SOCKET_,petscRealDouble),PetscViewer,(comm_type,),arg1.val)
+    err = ccall((:PETSC_VIEWER_SOCKET_,petscRealDouble),PetscViewer,(comm_type,),arg1)
     return err
 end
 
 function PETSC_VIEWER_BINARY_(arg0::Type{Float64},arg1::MPI_Comm)
-    err = ccall((:PETSC_VIEWER_BINARY_,petscRealDouble),PetscViewer,(comm_type,),arg1.val)
+    err = ccall((:PETSC_VIEWER_BINARY_,petscRealDouble),PetscViewer,(comm_type,),arg1)
     return err
 end
 
 function PETSC_VIEWER_MATLAB_(arg0::Type{Float64},arg1::MPI_Comm)
-    err = ccall((:PETSC_VIEWER_MATLAB_,petscRealDouble),PetscViewer,(comm_type,),arg1.val)
+    err = ccall((:PETSC_VIEWER_MATLAB_,petscRealDouble),PetscViewer,(comm_type,),arg1)
     return err
 end
 
 function PETSC_VIEWER_HDF5_(arg0::Type{Float64},arg1::MPI_Comm)
-    err = ccall((:PETSC_VIEWER_HDF5_,petscRealDouble),PetscViewer,(comm_type,),arg1.val)
+    err = ccall((:PETSC_VIEWER_HDF5_,petscRealDouble),PetscViewer,(comm_type,),arg1)
     return err
 end
 
@@ -2529,113 +2529,113 @@ function PetscViewerMatlabPutVariable(arg1::PetscViewer{Float64},arg2::Union{Byt
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscViewersCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscViewers},StridedArray{PetscViewers},Ptr{PetscViewers},Ref{PetscViewers}})
-    ccall((:PetscViewersCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscViewers}),arg1.val,arg2)
-end 
+    ccall((:PetscViewersCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscViewers}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscViewersDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscViewers},StridedArray{PetscViewers},Ptr{PetscViewers},Ref{PetscViewers}})
     ccall((:PetscViewersDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscViewers},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscViewersGetViewer(arg1::PetscViewers,arg2::Integer,arg3::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
     ccall((:PetscViewersGetViewer,petscRealDouble),PetscErrorCode,(PetscViewers,Int64,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscTableCreate(arg0::Type{Float64},arg1::Integer,arg2::Integer,arg3::Union{Ptr{PetscTable},StridedArray{PetscTable},Ptr{PetscTable},Ref{PetscTable}})
     ccall((:PetscTableCreate,petscRealDouble),PetscErrorCode,(Int64,Int64,Ptr{PetscTable}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscTableCreateCopy(arg0::Type{Float64},arg1::PetscTable,arg2::Union{Ptr{PetscTable},StridedArray{PetscTable},Ptr{PetscTable},Ref{PetscTable}})
     ccall((:PetscTableCreateCopy,petscRealDouble),PetscErrorCode,(PetscTable,Ptr{PetscTable}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscTableDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscTable},StridedArray{PetscTable},Ptr{PetscTable},Ref{PetscTable}})
     ccall((:PetscTableDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscTable},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscTableGetCount(arg0::Type{Float64},arg1::PetscTable,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscTableGetCount,petscRealDouble),PetscErrorCode,(PetscTable,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscTableIsEmpty(arg0::Type{Float64},arg1::PetscTable,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscTableIsEmpty,petscRealDouble),PetscErrorCode,(PetscTable,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscTableAddExpand(arg0::Type{Float64},arg1::PetscTable,arg2::Integer,arg3::Integer,arg4::InsertMode)
     ccall((:PetscTableAddExpand,petscRealDouble),PetscErrorCode,(PetscTable,Int64,Int64,InsertMode),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscTableAddCountExpand(arg0::Type{Float64},arg1::PetscTable,arg2::Integer)
     ccall((:PetscTableAddCountExpand,petscRealDouble),PetscErrorCode,(PetscTable,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscTableGetHeadPosition(arg0::Type{Float64},arg1::PetscTable,arg2::Union{Ptr{PetscTablePosition},StridedArray{PetscTablePosition},Ptr{PetscTablePosition},Ref{PetscTablePosition}})
     ccall((:PetscTableGetHeadPosition,petscRealDouble),PetscErrorCode,(PetscTable,Ptr{PetscTablePosition}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscTableGetNext(arg0::Type{Float64},arg1::PetscTable,arg2::Union{Ptr{PetscTablePosition},StridedArray{PetscTablePosition},Ptr{PetscTablePosition},Ref{PetscTablePosition}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscTableGetNext,petscRealDouble),PetscErrorCode,(PetscTable,Ptr{PetscTablePosition},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscTableRemoveAll(arg0::Type{Float64},arg1::PetscTable)
     ccall((:PetscTableRemoveAll,petscRealDouble),PetscErrorCode,(PetscTable,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscMatlabEngineCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{PetscMatlabEngine},StridedArray{PetscMatlabEngine},Ptr{PetscMatlabEngine},Ref{PetscMatlabEngine}})
-    ccall((:PetscMatlabEngineCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Ptr{PetscMatlabEngine}),arg1.val,arg2,arg3)
-end 
+    ccall((:PetscMatlabEngineCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Ptr{PetscMatlabEngine}),arg1,arg2,arg3)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscMatlabEngineDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscMatlabEngine},StridedArray{PetscMatlabEngine},Ptr{PetscMatlabEngine},Ref{PetscMatlabEngine}})
     ccall((:PetscMatlabEngineDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscMatlabEngine},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscMatlabEngineGetOutput(arg0::Type{Float64},arg1::PetscMatlabEngine,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:PetscMatlabEngineGetOutput,petscRealDouble),PetscErrorCode,(PetscMatlabEngine,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscMatlabEnginePrintOutput(arg0::Type{Float64},arg1::PetscMatlabEngine,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscMatlabEnginePrintOutput,petscRealDouble),PetscErrorCode,(PetscMatlabEngine,Ptr{FILE}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscMatlabEnginePut(arg0::Type{Float64},arg1::PetscMatlabEngine,arg2::PetscObject)
     ccall((:PetscMatlabEnginePut,petscRealDouble),PetscErrorCode,(PetscMatlabEngine,PetscObject),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscMatlabEngineGet(arg0::Type{Float64},arg1::PetscMatlabEngine,arg2::PetscObject)
     ccall((:PetscMatlabEngineGet,petscRealDouble),PetscErrorCode,(PetscMatlabEngine,PetscObject),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscMatlabEnginePutArray(arg0::Type{Float64},arg1::PetscMatlabEngine,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{ByteString,Symbol})
     ccall((:PetscMatlabEnginePutArray,petscRealDouble),PetscErrorCode,(PetscMatlabEngine,Cint,Cint,Ptr{Float64},Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscMatlabEngineGetArray(arg0::Type{Float64},arg1::PetscMatlabEngine,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{ByteString,Symbol})
     ccall((:PetscMatlabEngineGetArray,petscRealDouble),PetscErrorCode,(PetscMatlabEngine,Cint,Cint,Ptr{Float64},Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
 function PETSC_MATLAB_ENGINE_(arg0::Type{Float64},arg1::MPI_Comm)
-    err = ccall((:PETSC_MATLAB_ENGINE_,petscRealDouble),PetscMatlabEngine,(comm_type,),arg1.val)
+    err = ccall((:PETSC_MATLAB_ENGINE_,petscRealDouble),PetscMatlabEngine,(comm_type,),arg1)
     return err
 end
 
@@ -2649,675 +2649,675 @@ function PetscDrawRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},ar
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawGetType(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{PetscDrawType},StridedArray{PetscDrawType},Ptr{PetscDrawType},Ref{PetscDrawType}})
     ccall((:PetscDrawGetType,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSetType(arg0::Type{Float64},arg1::PetscDraw,arg2::PetscDrawType)
     ccall((:PetscDrawSetType,petscRealDouble),PetscErrorCode,(PetscDraw,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
-    ccall((:PetscDrawCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{PetscDraw}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+    ccall((:PetscDrawCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{PetscDraw}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSetFromOptions(arg0::Type{Float64},arg1::PetscDraw)
     ccall((:PetscDrawSetFromOptions,petscRealDouble),PetscErrorCode,(PetscDraw,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSetSave(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{ByteString,Symbol},arg3::PetscBool)
     ccall((:PetscDrawSetSave,petscRealDouble),PetscErrorCode,(PetscDraw,Cstring,PetscBool),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSetSaveFinalImage(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{ByteString,Symbol})
     ccall((:PetscDrawSetSaveFinalImage,petscRealDouble),PetscErrorCode,(PetscDraw,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawView(arg1::PetscDraw,arg2::PetscViewer{Float64})
     ccall((:PetscDrawView,petscRealDouble),PetscErrorCode,(PetscDraw,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawOpenGLUT(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
-    ccall((:PetscDrawOpenGLUT,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{PetscDraw}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+    ccall((:PetscDrawOpenGLUT,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{PetscDraw}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawOpenNull(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
-    ccall((:PetscDrawOpenNull,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDraw}),arg1.val,arg2)
-end 
+    ccall((:PetscDrawOpenNull,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDraw}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
     ccall((:PetscDrawDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscDraw},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawIsNull(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscDrawIsNull,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawGetPopup(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
     ccall((:PetscDrawGetPopup,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{PetscDraw}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawCheckResizedWindow(arg0::Type{Float64},arg1::PetscDraw)
     ccall((:PetscDrawCheckResizedWindow,petscRealDouble),PetscErrorCode,(PetscDraw,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawResizeWindow(arg0::Type{Float64},arg1::PetscDraw,arg2::Integer,arg3::Integer)
     ccall((:PetscDrawResizeWindow,petscRealDouble),PetscErrorCode,(PetscDraw,Cint,Cint),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawScalePopup(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64)
     ccall((:PetscDrawScalePopup,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawPixelToCoordinate(arg0::Type{Float64},arg1::PetscDraw,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawPixelToCoordinate,petscRealDouble),PetscErrorCode,(PetscDraw,Int64,Int64,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawCoordinateToPixel(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscDrawCoordinateToPixel,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawIndicatorFunction(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Integer,arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscDrawIndicatorFunction,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Float64,Float64,Cint,Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLine(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Integer)
     ccall((:PetscDrawLine,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Float64,Float64,Cint),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawArrow(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Integer)
     ccall((:PetscDrawArrow,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Float64,Float64,Cint),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLineSetWidth(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64)
     ccall((:PetscDrawLineSetWidth,petscRealDouble),PetscErrorCode,(PetscDraw,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLineGetWidth(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawLineGetWidth,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawMarker(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer)
     ccall((:PetscDrawMarker,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Cint),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSetMarkerType(arg0::Type{Float64},arg1::PetscDraw,arg2::PetscDrawMarkerType)
     ccall((:PetscDrawSetMarkerType,petscRealDouble),PetscErrorCode,(PetscDraw,PetscDrawMarkerType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawGetMarkerType(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{PetscDrawMarkerType},StridedArray{PetscDrawMarkerType},Ptr{PetscDrawMarkerType},Ref{PetscDrawMarkerType}})
     ccall((:PetscDrawGetMarkerType,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{PetscDrawMarkerType}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawPoint(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer)
     ccall((:PetscDrawPoint,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Cint),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawPointPixel(arg0::Type{Float64},arg1::PetscDraw,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:PetscDrawPointPixel,petscRealDouble),PetscErrorCode,(PetscDraw,Int64,Int64,Cint),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawPointSetSize(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64)
     ccall((:PetscDrawPointSetSize,petscRealDouble),PetscErrorCode,(PetscDraw,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawRectangle(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Integer,arg7::Integer,arg8::Integer,arg9::Integer)
     ccall((:PetscDrawRectangle,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Float64,Float64,Cint,Cint,Cint,Cint),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawTriangle(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Float64,arg7::Float64,arg8::Integer,arg9::Integer,arg10::Integer)
     ccall((:PetscDrawTriangle,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Float64,Float64,Float64,Float64,Cint,Cint,Cint),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawEllipse(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Integer)
     ccall((:PetscDrawEllipse,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Float64,Float64,Cint),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawTensorContourPatch(arg0::Type{Float64},arg1::PetscDraw,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Float64,arg7::Float64,arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawTensorContourPatch,petscRealDouble),PetscErrorCode,(PetscDraw,Cint,Cint,Ptr{Float64},Ptr{Float64},Float64,Float64,Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawTensorContour(arg0::Type{Float64},arg1::PetscDraw,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawTensorContour,petscRealDouble),PetscErrorCode,(PetscDraw,Cint,Cint,Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawString(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer,arg5::Union{ByteString,Symbol})
     ccall((:PetscDrawString,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Cint,Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawStringCentered(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer,arg5::Union{ByteString,Symbol})
     ccall((:PetscDrawStringCentered,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Cint,Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawStringBoxed(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer,arg5::Integer,arg6::Union{ByteString,Symbol},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawStringBoxed,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Cint,Cint,Cstring,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawStringBoxedSize(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawStringBoxedSize,petscRealDouble),PetscErrorCode,(PetscDraw,Cstring,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawStringVertical(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer,arg5::Union{ByteString,Symbol})
     ccall((:PetscDrawStringVertical,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Cint,Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawStringSetSize(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64)
     ccall((:PetscDrawStringSetSize,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawStringGetSize(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawStringGetSize,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSetViewPort(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64)
     ccall((:PetscDrawSetViewPort,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Float64,Float64),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawGetViewPort(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawGetViewPort,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSplitViewPort(arg0::Type{Float64},arg1::PetscDraw)
     ccall((:PetscDrawSplitViewPort,petscRealDouble),PetscErrorCode,(PetscDraw,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSetCoordinates(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64)
     ccall((:PetscDrawSetCoordinates,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Float64,Float64),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawGetCoordinates(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawGetCoordinates,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSetTitle(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{ByteString,Symbol})
     ccall((:PetscDrawSetTitle,petscRealDouble),PetscErrorCode,(PetscDraw,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawAppendTitle(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{ByteString,Symbol})
     ccall((:PetscDrawAppendTitle,petscRealDouble),PetscErrorCode,(PetscDraw,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawGetTitle(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:PetscDrawGetTitle,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSetPause(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64)
     ccall((:PetscDrawSetPause,petscRealDouble),PetscErrorCode,(PetscDraw,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawGetPause(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawGetPause,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawPause(arg0::Type{Float64},arg1::PetscDraw)
     ccall((:PetscDrawPause,petscRealDouble),PetscErrorCode,(PetscDraw,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSetDoubleBuffer(arg0::Type{Float64},arg1::PetscDraw)
     ccall((:PetscDrawSetDoubleBuffer,petscRealDouble),PetscErrorCode,(PetscDraw,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawFlush(arg0::Type{Float64},arg1::PetscDraw)
     ccall((:PetscDrawFlush,petscRealDouble),PetscErrorCode,(PetscDraw,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSynchronizedFlush(arg0::Type{Float64},arg1::PetscDraw)
     ccall((:PetscDrawSynchronizedFlush,petscRealDouble),PetscErrorCode,(PetscDraw,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawClear(arg0::Type{Float64},arg1::PetscDraw)
     ccall((:PetscDrawClear,petscRealDouble),PetscErrorCode,(PetscDraw,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSave(arg0::Type{Float64},arg1::PetscDraw)
     ccall((:PetscDrawSave,petscRealDouble),PetscErrorCode,(PetscDraw,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSynchronizedClear(arg0::Type{Float64},arg1::PetscDraw)
     ccall((:PetscDrawSynchronizedClear,petscRealDouble),PetscErrorCode,(PetscDraw,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawBOP(arg0::Type{Float64},arg1::PetscDraw)
     ccall((:PetscDrawBOP,petscRealDouble),PetscErrorCode,(PetscDraw,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawEOP(arg0::Type{Float64},arg1::PetscDraw)
     ccall((:PetscDrawEOP,petscRealDouble),PetscErrorCode,(PetscDraw,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSetDisplay(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{ByteString,Symbol})
     ccall((:PetscDrawSetDisplay,petscRealDouble),PetscErrorCode,(PetscDraw,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawGetSingleton(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
     ccall((:PetscDrawGetSingleton,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{PetscDraw}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawRestoreSingleton(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
     ccall((:PetscDrawRestoreSingleton,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{PetscDraw}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawGetCurrentPoint(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawGetCurrentPoint,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSetCurrentPoint(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64)
     ccall((:PetscDrawSetCurrentPoint,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawPushCurrentPoint(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64)
     ccall((:PetscDrawPushCurrentPoint,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawPopCurrentPoint(arg0::Type{Float64},arg1::PetscDraw)
     ccall((:PetscDrawPopCurrentPoint,petscRealDouble),PetscErrorCode,(PetscDraw,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawGetBoundingBox(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawGetBoundingBox,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawGetMouseButton(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{PetscDrawButton},StridedArray{PetscDrawButton},Ptr{PetscDrawButton},Ref{PetscDrawButton}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawGetMouseButton,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{PetscDrawButton},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSynchronizedGetMouseButton(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{PetscDrawButton},StridedArray{PetscDrawButton},Ptr{PetscDrawButton},Ref{PetscDrawButton}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawSynchronizedGetMouseButton,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{PetscDrawButton},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawZoom(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscDrawZoom,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawViewPortsCreate(arg0::Type{Float64},arg1::PetscDraw,arg2::Integer,arg3::Union{Ptr{Ptr{PetscDrawViewPorts}},StridedArray{Ptr{PetscDrawViewPorts}},Ptr{Ptr{PetscDrawViewPorts}},Ref{Ptr{PetscDrawViewPorts}}})
     ccall((:PetscDrawViewPortsCreate,petscRealDouble),PetscErrorCode,(PetscDraw,Int64,Ptr{Ptr{PetscDrawViewPorts}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawViewPortsCreateRect(arg0::Type{Float64},arg1::PetscDraw,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Ptr{PetscDrawViewPorts}},StridedArray{Ptr{PetscDrawViewPorts}},Ptr{Ptr{PetscDrawViewPorts}},Ref{Ptr{PetscDrawViewPorts}}})
     ccall((:PetscDrawViewPortsCreateRect,petscRealDouble),PetscErrorCode,(PetscDraw,Int64,Int64,Ptr{Ptr{PetscDrawViewPorts}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawViewPortsDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscDrawViewPorts},StridedArray{PetscDrawViewPorts},Ptr{PetscDrawViewPorts},Ref{PetscDrawViewPorts}})
     ccall((:PetscDrawViewPortsDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscDrawViewPorts},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawViewPortsSet(arg0::Type{Float64},arg1::Union{Ptr{PetscDrawViewPorts},StridedArray{PetscDrawViewPorts},Ptr{PetscDrawViewPorts},Ref{PetscDrawViewPorts}},arg2::Integer)
     ccall((:PetscDrawViewPortsSet,petscRealDouble),PetscErrorCode,(Ptr{PetscDrawViewPorts},Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawAxisCreate(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{PetscDrawAxis},StridedArray{PetscDrawAxis},Ptr{PetscDrawAxis},Ref{PetscDrawAxis}})
     ccall((:PetscDrawAxisCreate,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{PetscDrawAxis}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawAxisDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscDrawAxis},StridedArray{PetscDrawAxis},Ptr{PetscDrawAxis},Ref{PetscDrawAxis}})
     ccall((:PetscDrawAxisDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscDrawAxis},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawAxisDraw(arg0::Type{Float64},arg1::PetscDrawAxis)
     ccall((:PetscDrawAxisDraw,petscRealDouble),PetscErrorCode,(PetscDrawAxis,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawAxisSetLimits(arg0::Type{Float64},arg1::PetscDrawAxis,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64)
     ccall((:PetscDrawAxisSetLimits,petscRealDouble),PetscErrorCode,(PetscDrawAxis,Float64,Float64,Float64,Float64),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawAxisGetLimits(arg0::Type{Float64},arg1::PetscDrawAxis,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawAxisGetLimits,petscRealDouble),PetscErrorCode,(PetscDrawAxis,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawAxisSetHoldLimits(arg0::Type{Float64},arg1::PetscDrawAxis,arg2::PetscBool)
     ccall((:PetscDrawAxisSetHoldLimits,petscRealDouble),PetscErrorCode,(PetscDrawAxis,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawAxisSetColors(arg0::Type{Float64},arg1::PetscDrawAxis,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:PetscDrawAxisSetColors,petscRealDouble),PetscErrorCode,(PetscDrawAxis,Cint,Cint,Cint),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawAxisSetLabels(arg0::Type{Float64},arg1::PetscDrawAxis,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol})
     ccall((:PetscDrawAxisSetLabels,petscRealDouble),PetscErrorCode,(PetscDrawAxis,Cstring,Cstring,Cstring),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGCreate(arg0::Type{Float64},arg1::PetscDraw,arg2::Integer,arg3::Union{Ptr{PetscDrawLG},StridedArray{PetscDrawLG},Ptr{PetscDrawLG},Ref{PetscDrawLG}})
     ccall((:PetscDrawLGCreate,petscRealDouble),PetscErrorCode,(PetscDraw,Int64,Ptr{PetscDrawLG}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscDrawLG},StridedArray{PetscDrawLG},Ptr{PetscDrawLG},Ref{PetscDrawLG}})
     ccall((:PetscDrawLGDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscDrawLG},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGAddPoint(arg0::Type{Float64},arg1::PetscDrawLG,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawLGAddPoint,petscRealDouble),PetscErrorCode,(PetscDrawLG,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGAddCommonPoint(arg0::Type{Float64},arg1::PetscDrawLG,arg2::Float64,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawLGAddCommonPoint,petscRealDouble),PetscErrorCode,(PetscDrawLG,Float64,Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGAddPoints(arg0::Type{Float64},arg1::PetscDrawLG,arg2::Integer,arg3::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscDrawLGAddPoints,petscRealDouble),PetscErrorCode,(PetscDrawLG,Int64,Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGDraw(arg0::Type{Float64},arg1::PetscDrawLG)
     ccall((:PetscDrawLGDraw,petscRealDouble),PetscErrorCode,(PetscDrawLG,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGView(arg1::PetscDrawLG,arg2::PetscViewer{Float64})
     ccall((:PetscDrawLGView,petscRealDouble),PetscErrorCode,(PetscDrawLG,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGReset(arg0::Type{Float64},arg1::PetscDrawLG)
     ccall((:PetscDrawLGReset,petscRealDouble),PetscErrorCode,(PetscDrawLG,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGSetDimension(arg0::Type{Float64},arg1::PetscDrawLG,arg2::Integer)
     ccall((:PetscDrawLGSetDimension,petscRealDouble),PetscErrorCode,(PetscDrawLG,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGGetDimension(arg0::Type{Float64},arg1::PetscDrawLG,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscDrawLGGetDimension,petscRealDouble),PetscErrorCode,(PetscDrawLG,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGSetLegend(arg0::Type{Float64},arg1::PetscDrawLG,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:PetscDrawLGSetLegend,petscRealDouble),PetscErrorCode,(PetscDrawLG,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGGetAxis(arg0::Type{Float64},arg1::PetscDrawLG,arg2::Union{Ptr{PetscDrawAxis},StridedArray{PetscDrawAxis},Ptr{PetscDrawAxis},Ref{PetscDrawAxis}})
     ccall((:PetscDrawLGGetAxis,petscRealDouble),PetscErrorCode,(PetscDrawLG,Ptr{PetscDrawAxis}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGGetDraw(arg0::Type{Float64},arg1::PetscDrawLG,arg2::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
     ccall((:PetscDrawLGGetDraw,petscRealDouble),PetscErrorCode,(PetscDrawLG,Ptr{PetscDraw}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGSetUseMarkers(arg0::Type{Float64},arg1::PetscDrawLG,arg2::PetscBool)
     ccall((:PetscDrawLGSetUseMarkers,petscRealDouble),PetscErrorCode,(PetscDrawLG,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGSetLimits(arg0::Type{Float64},arg1::PetscDrawLG,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64)
     ccall((:PetscDrawLGSetLimits,petscRealDouble),PetscErrorCode,(PetscDrawLG,Float64,Float64,Float64,Float64),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGSetColors(arg0::Type{Float64},arg1::PetscDrawLG,arg2::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
     ccall((:PetscDrawLGSetColors,petscRealDouble),PetscErrorCode,(PetscDrawLG,Ptr{Cint}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGSetFromOptions(arg0::Type{Float64},arg1::PetscDrawLG)
     ccall((:PetscDrawLGSetFromOptions,petscRealDouble),PetscErrorCode,(PetscDrawLG,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSPCreate(arg0::Type{Float64},arg1::PetscDraw,arg2::Integer,arg3::Union{Ptr{PetscDrawSP},StridedArray{PetscDrawSP},Ptr{PetscDrawSP},Ref{PetscDrawSP}})
     ccall((:PetscDrawSPCreate,petscRealDouble),PetscErrorCode,(PetscDraw,Cint,Ptr{PetscDrawSP}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSPDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscDrawSP},StridedArray{PetscDrawSP},Ptr{PetscDrawSP},Ref{PetscDrawSP}})
     ccall((:PetscDrawSPDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscDrawSP},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSPAddPoint(arg0::Type{Float64},arg1::PetscDrawSP,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDrawSPAddPoint,petscRealDouble),PetscErrorCode,(PetscDrawSP,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSPAddPoints(arg0::Type{Float64},arg1::PetscDrawSP,arg2::Integer,arg3::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscDrawSPAddPoints,petscRealDouble),PetscErrorCode,(PetscDrawSP,Cint,Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSPDraw(arg0::Type{Float64},arg1::PetscDrawSP,arg2::PetscBool)
     ccall((:PetscDrawSPDraw,petscRealDouble),PetscErrorCode,(PetscDrawSP,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSPReset(arg0::Type{Float64},arg1::PetscDrawSP)
     ccall((:PetscDrawSPReset,petscRealDouble),PetscErrorCode,(PetscDrawSP,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSPSetDimension(arg0::Type{Float64},arg1::PetscDrawSP,arg2::Integer)
     ccall((:PetscDrawSPSetDimension,petscRealDouble),PetscErrorCode,(PetscDrawSP,Cint),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSPGetAxis(arg0::Type{Float64},arg1::PetscDrawSP,arg2::Union{Ptr{PetscDrawAxis},StridedArray{PetscDrawAxis},Ptr{PetscDrawAxis},Ref{PetscDrawAxis}})
     ccall((:PetscDrawSPGetAxis,petscRealDouble),PetscErrorCode,(PetscDrawSP,Ptr{PetscDrawAxis}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSPGetDraw(arg0::Type{Float64},arg1::PetscDrawSP,arg2::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
     ccall((:PetscDrawSPGetDraw,petscRealDouble),PetscErrorCode,(PetscDrawSP,Ptr{PetscDraw}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawSPSetLimits(arg0::Type{Float64},arg1::PetscDrawSP,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64)
     ccall((:PetscDrawSPSetLimits,petscRealDouble),PetscErrorCode,(PetscDrawSP,Float64,Float64,Float64,Float64),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawLGSPDraw(arg0::Type{Float64},arg1::PetscDrawLG,arg2::PetscDrawSP)
     ccall((:PetscDrawLGSPDraw,petscRealDouble),PetscErrorCode,(PetscDrawLG,PetscDrawSP),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawHGCreate(arg0::Type{Float64},arg1::PetscDraw,arg2::Integer,arg3::Union{Ptr{PetscDrawHG},StridedArray{PetscDrawHG},Ptr{PetscDrawHG},Ref{PetscDrawHG}})
     ccall((:PetscDrawHGCreate,petscRealDouble),PetscErrorCode,(PetscDraw,Cint,Ptr{PetscDrawHG}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawHGDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscDrawHG},StridedArray{PetscDrawHG},Ptr{PetscDrawHG},Ref{PetscDrawHG}})
     ccall((:PetscDrawHGDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscDrawHG},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawHGAddValue(arg0::Type{Float64},arg1::PetscDrawHG,arg2::Float64)
     ccall((:PetscDrawHGAddValue,petscRealDouble),PetscErrorCode,(PetscDrawHG,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawHGDraw(arg0::Type{Float64},arg1::PetscDrawHG)
     ccall((:PetscDrawHGDraw,petscRealDouble),PetscErrorCode,(PetscDrawHG,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawHGView(arg1::PetscDrawHG,arg2::PetscViewer{Float64})
     ccall((:PetscDrawHGView,petscRealDouble),PetscErrorCode,(PetscDrawHG,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawHGReset(arg0::Type{Float64},arg1::PetscDrawHG)
     ccall((:PetscDrawHGReset,petscRealDouble),PetscErrorCode,(PetscDrawHG,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawHGGetAxis(arg0::Type{Float64},arg1::PetscDrawHG,arg2::Union{Ptr{PetscDrawAxis},StridedArray{PetscDrawAxis},Ptr{PetscDrawAxis},Ref{PetscDrawAxis}})
     ccall((:PetscDrawHGGetAxis,petscRealDouble),PetscErrorCode,(PetscDrawHG,Ptr{PetscDrawAxis}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawHGGetDraw(arg0::Type{Float64},arg1::PetscDrawHG,arg2::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
     ccall((:PetscDrawHGGetDraw,petscRealDouble),PetscErrorCode,(PetscDrawHG,Ptr{PetscDraw}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawHGSetLimits(arg0::Type{Float64},arg1::PetscDrawHG,arg2::Float64,arg3::Float64,arg4::Integer,arg5::Integer)
     ccall((:PetscDrawHGSetLimits,petscRealDouble),PetscErrorCode,(PetscDrawHG,Float64,Float64,Cint,Cint),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawHGSetNumberBins(arg0::Type{Float64},arg1::PetscDrawHG,arg2::Integer)
     ccall((:PetscDrawHGSetNumberBins,petscRealDouble),PetscErrorCode,(PetscDrawHG,Cint),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawHGSetColor(arg0::Type{Float64},arg1::PetscDrawHG,arg2::Integer)
     ccall((:PetscDrawHGSetColor,petscRealDouble),PetscErrorCode,(PetscDrawHG,Cint),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawHGCalcStats(arg0::Type{Float64},arg1::PetscDrawHG,arg2::PetscBool)
     ccall((:PetscDrawHGCalcStats,petscRealDouble),PetscErrorCode,(PetscDrawHG,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawHGIntegerBins(arg0::Type{Float64},arg1::PetscDrawHG,arg2::PetscBool)
     ccall((:PetscDrawHGIntegerBins,petscRealDouble),PetscErrorCode,(PetscDrawHG,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawBarCreate(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{PetscDrawBar},StridedArray{PetscDrawBar},Ptr{PetscDrawBar},Ref{PetscDrawBar}})
     ccall((:PetscDrawBarCreate,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{PetscDrawBar}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawBarSetData(arg0::Type{Float64},arg1::PetscDrawBar,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:PetscDrawBarSetData,petscRealDouble),PetscErrorCode,(PetscDrawBar,Int64,Ptr{Float64},Ptr{Ptr{UInt8}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawBarDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscDrawBar},StridedArray{PetscDrawBar},Ptr{PetscDrawBar},Ref{PetscDrawBar}})
     ccall((:PetscDrawBarDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscDrawBar},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawBarDraw(arg0::Type{Float64},arg1::PetscDrawBar)
     ccall((:PetscDrawBarDraw,petscRealDouble),PetscErrorCode,(PetscDrawBar,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawBarSetColor(arg0::Type{Float64},arg1::PetscDrawBar,arg2::Integer)
     ccall((:PetscDrawBarSetColor,petscRealDouble),PetscErrorCode,(PetscDrawBar,Cint),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawBarSetLimits(arg0::Type{Float64},arg1::PetscDrawBar,arg2::Float64,arg3::Float64)
     ccall((:PetscDrawBarSetLimits,petscRealDouble),PetscErrorCode,(PetscDrawBar,Float64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawBarSort(arg0::Type{Float64},arg1::PetscDrawBar,arg2::PetscBool,arg3::Float64)
     ccall((:PetscDrawBarSort,petscRealDouble),PetscErrorCode,(PetscDrawBar,PetscBool,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawBarSetFromOptions(arg0::Type{Float64},arg1::PetscDrawBar)
     ccall((:PetscDrawBarSetFromOptions,petscRealDouble),PetscErrorCode,(PetscDrawBar,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawBarGetAxis(arg0::Type{Float64},arg1::PetscDrawBar,arg2::Union{Ptr{PetscDrawAxis},StridedArray{PetscDrawAxis},Ptr{PetscDrawAxis},Ref{PetscDrawAxis}})
     ccall((:PetscDrawBarGetAxis,petscRealDouble),PetscErrorCode,(PetscDrawBar,Ptr{PetscDrawAxis}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDrawBarGetDraw(arg0::Type{Float64},arg1::PetscDrawBar,arg2::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
     ccall((:PetscDrawBarGetDraw,petscRealDouble),PetscErrorCode,(PetscDrawBar,Ptr{PetscDraw}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscViewerDrawGetDraw(arg1::PetscViewer{Float64},arg2::Integer,arg3::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
     ccall((:PetscViewerDrawGetDraw,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Int64,Ptr{PetscDraw}),arg1,arg2,arg3)
-end 
+end
 =#
 function PetscViewerDrawBaseAdd(arg1::PetscViewer{Float64},arg2::Integer)
     err = ccall((:PetscViewerDrawBaseAdd,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Int64),arg1,arg2)
@@ -3329,15 +3329,15 @@ function PetscViewerDrawBaseSet(arg1::PetscViewer{Float64},arg2::Integer)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscViewerDrawGetDrawLG(arg1::PetscViewer{Float64},arg2::Integer,arg3::Union{Ptr{PetscDrawLG},StridedArray{PetscDrawLG},Ptr{PetscDrawLG},Ref{PetscDrawLG}})
     ccall((:PetscViewerDrawGetDrawLG,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Int64,Ptr{PetscDrawLG}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscViewerDrawGetDrawAxis(arg1::PetscViewer{Float64},arg2::Integer,arg3::Union{Ptr{PetscDrawAxis},StridedArray{PetscDrawAxis},Ptr{PetscDrawAxis},Ref{PetscDrawAxis}})
     ccall((:PetscViewerDrawGetDrawAxis,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Int64,Ptr{PetscDrawAxis}),arg1,arg2,arg3)
-end 
+end
 =#
 function PetscDrawUtilitySetCmapHue(arg0::Type{Float64},arg1::Union{Ptr{Cuchar},StridedArray{Cuchar},Ptr{Cuchar},Ref{Cuchar}},arg2::Union{Ptr{Cuchar},StridedArray{Cuchar},Ptr{Cuchar},Ref{Cuchar}},arg3::Union{Ptr{Cuchar},StridedArray{Cuchar},Ptr{Cuchar},Ref{Cuchar}},arg4::Integer)
     err = ccall((:PetscDrawUtilitySetCmapHue,petscRealDouble),PetscErrorCode,(Ptr{Cuchar},Ptr{Cuchar},Ptr{Cuchar},Cint),arg1,arg2,arg3,arg4)
@@ -3372,12 +3372,12 @@ function ISRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Uni
 end
 
 function ISCreate(arg1::MPI_Comm,arg2::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
-    err = ccall((:ISCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{IS{Float64}}),arg1.val,arg2)
+    err = ccall((:ISCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{IS{Float64}}),arg1,arg2)
     return err
 end
 
 function ISCreateGeneral(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},PetscCopyMode::Integer,arg4::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
-    err = ccall((:ISCreateGeneral,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Cint,Ptr{IS{Float64}}),arg1.val,arg2,arg3,PetscCopyMode,arg4)
+    err = ccall((:ISCreateGeneral,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Cint,Ptr{IS{Float64}}),arg1,arg2,arg3,PetscCopyMode,arg4)
     return err
 end
 
@@ -3387,7 +3387,7 @@ function ISGeneralSetIndices(arg1::IS{Float64},arg2::Integer,arg3::Union{Ptr{Int
 end
 
 function ISCreateBlock(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},PetscCopyMode::Integer,arg5::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
-    err = ccall((:ISCreateBlock,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Int64},Cint,Ptr{IS{Float64}}),arg1.val,arg2,arg3,arg4,PetscCopyMode,arg5)
+    err = ccall((:ISCreateBlock,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Int64},Cint,Ptr{IS{Float64}}),arg1,arg2,arg3,arg4,PetscCopyMode,arg5)
     return err
 end
 
@@ -3397,7 +3397,7 @@ function ISBlockSetIndices(arg1::IS{Float64},arg2::Integer,arg3::Integer,arg4::U
 end
 
 function ISCreateStride(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
-    err = ccall((:ISCreateStride,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{IS{Float64}}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:ISCreateStride,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{IS{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -3597,12 +3597,12 @@ function ISComplement(arg1::IS{Float64},arg2::Integer,arg3::Integer,arg4::Union{
 end
 
 function ISConcatenate(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg4::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
-    err = ccall((:ISConcatenate,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{IS{Float64}},Ptr{IS{Float64}}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:ISConcatenate,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{IS{Float64}},Ptr{IS{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
 function ISListToPair(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg4::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg5::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
-    err = ccall((:ISListToPair,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{IS{Float64}},Ptr{IS{Float64}},Ptr{IS{Float64}}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:ISListToPair,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{IS{Float64}},Ptr{IS{Float64}},Ptr{IS{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -3622,12 +3622,12 @@ function ISSortPermutation(arg1::IS{Float64},arg2::PetscBool,arg3::Union{Ptr{IS{
 end
 
 function ISOnComm(arg1::IS{Float64},arg2::MPI_Comm,PetscCopyMode::Integer,arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
-    err = ccall((:ISOnComm,petscRealDouble),PetscErrorCode,(IS{Float64},comm_type,Cint,Ptr{IS{Float64}}),arg1,arg2.val,PetscCopyMode,arg3)
+    err = ccall((:ISOnComm,petscRealDouble),PetscErrorCode,(IS{Float64},comm_type,Cint,Ptr{IS{Float64}}),arg1,arg2,PetscCopyMode,arg3)
     return err
 end
 
 function ISLocalToGlobalMappingCreate(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},PetscCopyMode::Integer,arg5::Union{Ptr{ISLocalToGlobalMapping{Float64}},StridedArray{ISLocalToGlobalMapping{Float64}},Ptr{ISLocalToGlobalMapping{Float64}},Ref{ISLocalToGlobalMapping{Float64}}})
-    err = ccall((:ISLocalToGlobalMappingCreate,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Int64},Cint,Ptr{ISLocalToGlobalMapping{Float64}}),arg1.val,arg2,arg3,arg4,PetscCopyMode,arg5)
+    err = ccall((:ISLocalToGlobalMappingCreate,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Int64},Cint,Ptr{ISLocalToGlobalMapping{Float64}}),arg1,arg2,arg3,arg4,PetscCopyMode,arg5)
     return err
 end
 
@@ -3636,10 +3636,10 @@ function ISLocalToGlobalMappingCreateIS(arg1::IS{Float64},arg2::Union{Ptr{ISLoca
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function ISLocalToGlobalMappingCreateSF(arg1::PetscSF,arg2::Integer,arg3::Union{Ptr{ISLocalToGlobalMapping{Float64}},StridedArray{ISLocalToGlobalMapping{Float64}},Ptr{ISLocalToGlobalMapping{Float64}},Ref{ISLocalToGlobalMapping{Float64}}})
     ccall((:ISLocalToGlobalMappingCreateSF,petscRealDouble),PetscErrorCode,(PetscSF,Int64,Ptr{ISLocalToGlobalMapping{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
 function ISLocalToGlobalMappingView(arg1::ISLocalToGlobalMapping{Float64},arg2::PetscViewer{Float64})
     err = ccall((:ISLocalToGlobalMappingView,petscRealDouble),PetscErrorCode,(ISLocalToGlobalMapping{Float64},PetscViewer{Float64}),arg1,arg2)
@@ -3727,7 +3727,7 @@ function ISLocalToGlobalMappingRestoreBlockIndices(arg1::ISLocalToGlobalMapping{
 end
 
 function ISLocalToGlobalMappingConcatenate(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{ISLocalToGlobalMapping{Float64}},StridedArray{ISLocalToGlobalMapping{Float64}},Ptr{ISLocalToGlobalMapping{Float64}},Ref{ISLocalToGlobalMapping{Float64}}},arg4::Union{Ptr{ISLocalToGlobalMapping{Float64}},StridedArray{ISLocalToGlobalMapping{Float64}},Ptr{ISLocalToGlobalMapping{Float64}},Ref{ISLocalToGlobalMapping{Float64}}})
-    err = ccall((:ISLocalToGlobalMappingConcatenate,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{ISLocalToGlobalMapping{Float64}},Ptr{ISLocalToGlobalMapping{Float64}}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:ISLocalToGlobalMappingConcatenate,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{ISLocalToGlobalMapping{Float64}},Ptr{ISLocalToGlobalMapping{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -3742,12 +3742,12 @@ function ISLocalToGlobalMappingGetBlockSize(arg1::ISLocalToGlobalMapping{Float64
 end
 
 function ISAllGatherColors(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Ptr{Cint}},StridedArray{Ptr{Cint}},Ptr{Ptr{Cint}},Ref{Ptr{Cint}}})
-    err = ccall((:ISAllGatherColors,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Cint},Ptr{Int64},Ptr{Ptr{Cint}}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:ISAllGatherColors,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Cint},Ptr{Int64},Ptr{Ptr{Cint}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function ISColoringCreate(arg1::MPI_Comm,arg2::Integer,arg3::Integer,ISColoringValue::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}},PetscCopyMode::Integer,arg4::Union{Ptr{ISColoring{Float64}},StridedArray{ISColoring{Float64}},Ptr{ISColoring{Float64}},Ref{ISColoring{Float64}}})
-    err = ccall((:ISColoringCreate,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Cint},Cint,Ptr{ISColoring{Float64}}),arg1.val,arg2,arg3,ISColoringValue,PetscCopyMode,arg4)
+    err = ccall((:ISColoringCreate,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Cint},Cint,Ptr{ISColoring{Float64}}),arg1,arg2,arg3,ISColoringValue,PetscCopyMode,arg4)
     return err
 end
 
@@ -3761,10 +3761,10 @@ function ISColoringView(arg1::ISColoring{Float64},arg2::PetscViewer{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function ISColoringViewFromOptions(arg1::ISColoring{Float64},arg2::PetscObject,arg3::Union{ByteString,Symbol})
     ccall((:ISColoringViewFromOptions,petscRealDouble),PetscErrorCode,(ISColoring{Float64},PetscObject,Cstring),arg1,arg2,arg3)
-end 
+end
 =#
 function ISColoringGetIS(arg1::ISColoring{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{IS{Float64}}},StridedArray{Ptr{IS{Float64}}},Ptr{Ptr{IS{Float64}}},Ref{Ptr{IS{Float64}}}})
     err = ccall((:ISColoringGetIS,petscRealDouble),PetscErrorCode,(ISColoring{Float64},Ptr{Int64},Ptr{Ptr{IS{Float64}}}),arg1,arg2,arg3)
@@ -3876,290 +3876,290 @@ function PetscLayoutSetISLocalToGlobalMapping(arg1::PetscLayout{Float64},arg2::I
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSFSetGraphLayout(arg1::PetscSF,arg2::PetscLayout{Float64},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},PetscCopyMode::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSFSetGraphLayout,petscRealDouble),PetscErrorCode,(PetscSF,PetscLayout{Float64},Int64,Ptr{Int64},Cint,Ptr{Int64}),arg1,arg2,arg3,arg4,PetscCopyMode,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
-    ccall((:PetscSectionCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscSection}),arg1.val,arg2)
-end 
+    ccall((:PetscSectionCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscSection}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionClone(arg0::Type{Float64},arg1::PetscSection,arg2::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:PetscSectionClone,petscRealDouble),PetscErrorCode,(PetscSection,Ptr{PetscSection}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionCopy(arg0::Type{Float64},arg1::PetscSection,arg2::PetscSection)
     ccall((:PetscSectionCopy,petscRealDouble),PetscErrorCode,(PetscSection,PetscSection),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetNumFields(arg0::Type{Float64},arg1::PetscSection,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionGetNumFields,petscRealDouble),PetscErrorCode,(PetscSection,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetNumFields(arg0::Type{Float64},arg1::PetscSection,arg2::Integer)
     ccall((:PetscSectionSetNumFields,petscRealDouble),PetscErrorCode,(PetscSection,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetFieldName(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:PetscSectionGetFieldName,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Ptr{Ptr{UInt8}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetFieldName(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union{ByteString,Symbol})
     ccall((:PetscSectionSetFieldName,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Cstring),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetFieldComponents(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionGetFieldComponents,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetFieldComponents(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer)
     ccall((:PetscSectionSetFieldComponents,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetChart(arg0::Type{Float64},arg1::PetscSection,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionGetChart,petscRealDouble),PetscErrorCode,(PetscSection,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetChart(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer)
     ccall((:PetscSectionSetChart,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetPermutation(arg1::PetscSection,arg2::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:PetscSectionGetPermutation,petscRealDouble),PetscErrorCode,(PetscSection,Ptr{IS{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetPermutation(arg1::PetscSection,arg2::IS{Float64})
     ccall((:PetscSectionSetPermutation,petscRealDouble),PetscErrorCode,(PetscSection,IS{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetDof(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionGetDof,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetDof(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer)
     ccall((:PetscSectionSetDof,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionAddDof(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer)
     ccall((:PetscSectionAddDof,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetFieldDof(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionGetFieldDof,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64,Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetFieldDof(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:PetscSectionSetFieldDof,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionAddFieldDof(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:PetscSectionAddFieldDof,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionHasConstraints(arg0::Type{Float64},arg1::PetscSection,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscSectionHasConstraints,petscRealDouble),PetscErrorCode,(PetscSection,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetConstraintDof(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionGetConstraintDof,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetConstraintDof(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer)
     ccall((:PetscSectionSetConstraintDof,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionAddConstraintDof(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer)
     ccall((:PetscSectionAddConstraintDof,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetFieldConstraintDof(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionGetFieldConstraintDof,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64,Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetFieldConstraintDof(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:PetscSectionSetFieldConstraintDof,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionAddFieldConstraintDof(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:PetscSectionAddFieldConstraintDof,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetConstraintIndices(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:PetscSectionGetConstraintIndices,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Ptr{Ptr{Int64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetConstraintIndices(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionSetConstraintIndices,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetFieldConstraintIndices(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:PetscSectionGetFieldConstraintIndices,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64,Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetFieldConstraintIndices(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionSetFieldConstraintIndices,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64,Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetUpBC(arg0::Type{Float64},arg1::PetscSection)
     ccall((:PetscSectionSetUpBC,petscRealDouble),PetscErrorCode,(PetscSection,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetUp(arg0::Type{Float64},arg1::PetscSection)
     ccall((:PetscSectionSetUp,petscRealDouble),PetscErrorCode,(PetscSection,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetMaxDof(arg0::Type{Float64},arg1::PetscSection,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionGetMaxDof,petscRealDouble),PetscErrorCode,(PetscSection,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetStorageSize(arg0::Type{Float64},arg1::PetscSection,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionGetStorageSize,petscRealDouble),PetscErrorCode,(PetscSection,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetConstrainedStorageSize(arg0::Type{Float64},arg1::PetscSection,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionGetConstrainedStorageSize,petscRealDouble),PetscErrorCode,(PetscSection,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetOffset(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionGetOffset,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetOffset(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer)
     ccall((:PetscSectionSetOffset,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetFieldOffset(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionGetFieldOffset,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64,Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetFieldOffset(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:PetscSectionSetFieldOffset,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetOffsetRange(arg0::Type{Float64},arg1::PetscSection,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSectionGetOffsetRange,petscRealDouble),PetscErrorCode,(PetscSection,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionView(arg1::PetscSection,arg2::PetscViewer{Float64})
     ccall((:PetscSectionView,petscRealDouble),PetscErrorCode,(PetscSection,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:PetscSectionDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscSection},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionCreateGlobalSection(arg0::Type{Float64},arg1::PetscSection,arg2::PetscSF,arg3::PetscBool,arg4::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:PetscSectionCreateGlobalSection,petscRealDouble),PetscErrorCode,(PetscSection,PetscSF,PetscBool,Ptr{PetscSection}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionCreateGlobalSectionCensored(arg0::Type{Float64},arg1::PetscSection,arg2::PetscSF,arg3::PetscBool,arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:PetscSectionCreateGlobalSectionCensored,petscRealDouble),PetscErrorCode,(PetscSection,PetscSF,PetscBool,Int64,Ptr{Int64},Ptr{PetscSection}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionCreateSubsection(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:PetscSectionCreateSubsection,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Ptr{Int64},Ptr{PetscSection}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionCreateSubmeshSection(arg1::PetscSection,arg2::IS{Float64},arg3::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:PetscSectionCreateSubmeshSection,petscRealDouble),PetscErrorCode,(PetscSection,IS{Float64},Ptr{PetscSection}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetPointLayout(arg1::MPI_Comm,arg2::PetscSection,arg3::Union{Ptr{PetscLayout{Float64}},StridedArray{PetscLayout{Float64}},Ptr{PetscLayout{Float64}},Ref{PetscLayout{Float64}}})
-    ccall((:PetscSectionGetPointLayout,petscRealDouble),PetscErrorCode,(comm_type,PetscSection,Ptr{PetscLayout{Float64}{Float64}}),arg1.val,arg2,arg3)
-end 
+    ccall((:PetscSectionGetPointLayout,petscRealDouble),PetscErrorCode,(comm_type,PetscSection,Ptr{PetscLayout{Float64}{Float64}}),arg1,arg2,arg3)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetValueLayout(arg1::MPI_Comm,arg2::PetscSection,arg3::Union{Ptr{PetscLayout{Float64}},StridedArray{PetscLayout{Float64}},Ptr{PetscLayout{Float64}},Ref{PetscLayout{Float64}}})
-    ccall((:PetscSectionGetValueLayout,petscRealDouble),PetscErrorCode,(comm_type,PetscSection,Ptr{PetscLayout{Float64}{Float64}}),arg1.val,arg2,arg3)
-end 
+    ccall((:PetscSectionGetValueLayout,petscRealDouble),PetscErrorCode,(comm_type,PetscSection,Ptr{PetscLayout{Float64}{Float64}}),arg1,arg2,arg3)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionPermute(arg1::PetscSection,arg2::IS{Float64},arg3::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:PetscSectionPermute,petscRealDouble),PetscErrorCode,(PetscSection,IS{Float64},Ptr{PetscSection}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetField(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:PetscSectionGetField,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Ptr{PetscSection}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionSetClosureIndex(arg1::PetscSection,arg2::PetscObject,arg3::PetscSection,arg4::IS{Float64})
     ccall((:PetscSectionSetClosureIndex,petscRealDouble),PetscErrorCode,(PetscSection,PetscObject,PetscSection,IS{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionGetClosureIndex(arg1::PetscSection,arg2::PetscObject,arg3::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}},arg4::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:PetscSectionGetClosureIndex,petscRealDouble),PetscErrorCode,(PetscSection,PetscObject,Ptr{PetscSection},Ptr{IS{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSFConvertPartition(arg1::PetscSF,arg2::PetscSection,arg3::IS{Float64},arg4::Union{Ptr{ISLocalToGlobalMapping{Float64}},StridedArray{ISLocalToGlobalMapping{Float64}},Ptr{ISLocalToGlobalMapping{Float64}},Ref{ISLocalToGlobalMapping{Float64}}},arg5::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}})
     ccall((:PetscSFConvertPartition,petscRealDouble),PetscErrorCode,(PetscSF,PetscSection,IS{Float64},Ptr{ISLocalToGlobalMapping{Float64}},Ptr{PetscSF}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSFCreateRemoteOffsets(arg0::Type{Float64},arg1::PetscSF,arg2::PetscSection,arg3::PetscSection,arg4::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:PetscSFCreateRemoteOffsets,petscRealDouble),PetscErrorCode,(PetscSF,PetscSection,PetscSection,Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSFDistributeSection(arg0::Type{Float64},arg1::PetscSF,arg2::PetscSection,arg3::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}},arg4::PetscSection)
     ccall((:PetscSFDistributeSection,petscRealDouble),PetscErrorCode,(PetscSF,PetscSection,Ptr{Ptr{Int64}},PetscSection),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSFCreateSectionSF(arg0::Type{Float64},arg1::PetscSF,arg2::PetscSection,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::PetscSection,arg5::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}})
     ccall((:PetscSFCreateSectionSF,petscRealDouble),PetscErrorCode,(PetscSF,PetscSection,Ptr{Int64},PetscSection,Ptr{PetscSF}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
 function VecInitializePackage(arg0::Type{Float64})
     err = ccall((:VecInitializePackage,petscRealDouble),PetscErrorCode,())
@@ -4172,32 +4172,32 @@ function VecFinalizePackage(arg0::Type{Float64})
 end
 
 function VecCreate(arg1::MPI_Comm,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:VecCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Vec{Float64}}),arg1.val,arg2)
+    err = ccall((:VecCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Vec{Float64}}),arg1,arg2)
     return err
 end
 
 function VecCreateSeq(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:VecCreateSeq,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Vec{Float64}}),arg1.val,arg2,arg3)
+    err = ccall((:VecCreateSeq,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Vec{Float64}}),arg1,arg2,arg3)
     return err
 end
 
 function VecCreateMPI(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:VecCreateMPI,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Vec{Float64}}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:VecCreateMPI,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
 function VecCreateSeqWithArray(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:VecCreateSeqWithArray,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Float64},Ptr{Vec{Float64}}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:VecCreateSeqWithArray,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function VecCreateMPIWithArray(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:VecCreateMPIWithArray,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Float64},Ptr{Vec{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6)
+    err = ccall((:VecCreateMPIWithArray,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
 function VecCreateShared(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:VecCreateShared,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Vec{Float64}}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:VecCreateShared,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -4316,10 +4316,10 @@ function VecCopy(arg1::Vec{Float64},arg2::Vec{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function VecSetRandom(arg1::Vec{Float64},arg2::PetscRandom)
     ccall((:VecSetRandom,petscRealDouble),PetscErrorCode,(Vec{Float64},PetscRandom),arg1,arg2)
-end 
+end
 =#
 function VecSet(arg1::Vec{Float64},arg2::Float64)
     err = ccall((:VecSet,petscRealDouble),PetscErrorCode,(Vec{Float64},Float64),arg1,arg2)
@@ -4556,10 +4556,10 @@ function VecStashView(arg1::Vec{Float64},arg2::PetscViewer{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function VecStashViewFromOptions(arg1::Vec{Float64},arg2::PetscObject,arg3::Union{ByteString,Symbol})
     ccall((:VecStashViewFromOptions,petscRealDouble),PetscErrorCode,(Vec{Float64},PetscObject,Cstring),arg1,arg2,arg3)
-end 
+end
 =#
 function VecStashGetInfo(arg1::Vec{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     err = ccall((:VecStashGetInfo,petscRealDouble),PetscErrorCode,(Vec{Float64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
@@ -4599,7 +4599,7 @@ function VecScatterCreate(arg1::Vec{Float64},arg2::IS{Float64},arg3::Vec{Float64
 end
 
 function VecScatterCreateEmpty(arg1::MPI_Comm,arg2::Union{Ptr{VecScatter{Float64}},StridedArray{VecScatter{Float64}},Ptr{VecScatter{Float64}},Ref{VecScatter{Float64}}})
-    err = ccall((:VecScatterCreateEmpty,petscRealDouble),PetscErrorCode,(comm_type,Ptr{VecScatter{Float64}}),arg1.val,arg2)
+    err = ccall((:VecScatterCreateEmpty,petscRealDouble),PetscErrorCode,(comm_type,Ptr{VecScatter{Float64}}),arg1,arg2)
     return err
 end
 
@@ -4844,7 +4844,7 @@ function VecMTDotEnd(arg1::Vec{Float64},arg2::Integer,arg3::Union{Ptr{Vec{Float6
 end
 
 function PetscCommSplitReductionBegin(arg0::Type{Float64},arg1::MPI_Comm)
-    err = ccall((:PetscCommSplitReductionBegin,petscRealDouble),PetscErrorCode,(comm_type,),arg1.val)
+    err = ccall((:PetscCommSplitReductionBegin,petscRealDouble),PetscErrorCode,(comm_type,),arg1)
     return err
 end
 
@@ -4909,22 +4909,22 @@ function VecMPISetGhost(arg1::Vec{Float64},arg2::Integer,arg3::Union{Ptr{Int64},
 end
 
 function VecCreateGhost(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:VecCreateGhost,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Vec{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6)
+    err = ccall((:VecCreateGhost,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
 function VecCreateGhostWithArray(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:VecCreateGhostWithArray,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Float64},Ptr{Vec{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
+    err = ccall((:VecCreateGhostWithArray,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
 function VecCreateGhostBlock(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:VecCreateGhostBlock,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Vec{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
+    err = ccall((:VecCreateGhostBlock,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
 function VecCreateGhostBlockWithArray(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:VecCreateGhostBlockWithArray,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Float64},Ptr{Vec{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:VecCreateGhostBlockWithArray,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
@@ -5048,25 +5048,25 @@ function PetscViewerMathematicaPutVector(arg1::PetscViewer{Float64},arg2::Vec{Fl
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function VecsDestroy(arg0::Type{Float64},arg1::Vecs)
     ccall((:VecsDestroy,petscRealDouble),PetscErrorCode,(Vecs,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function VecsCreateSeq(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Vecs},StridedArray{Vecs},Ptr{Vecs},Ref{Vecs}})
-    ccall((:VecsCreateSeq,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Vecs}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:VecsCreateSeq,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Vecs}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function VecsCreateSeqWithArray(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Vecs},StridedArray{Vecs},Ptr{Vecs},Ref{Vecs}})
-    ccall((:VecsCreateSeqWithArray,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Float64},Ptr{Vecs}),arg1.val,arg2,arg3,arg4,arg5)
-end 
+    ccall((:VecsCreateSeqWithArray,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Float64},Ptr{Vecs}),arg1,arg2,arg3,arg4,arg5)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function VecsDuplicate(arg0::Type{Float64},arg1::Vecs,arg2::Union{Ptr{Vecs},StridedArray{Vecs},Ptr{Vecs},Ref{Vecs}})
     ccall((:VecsDuplicate,petscRealDouble),PetscErrorCode,(Vecs,Ptr{Vecs}),arg1,arg2)
-end 
+end
 =#
 function VecNestGetSubVecs(arg1::Vec{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}})
     err = ccall((:VecNestGetSubVecs,petscRealDouble),PetscErrorCode,(Vec{Float64},Ptr{Int64},Ptr{Ptr{Vec{Float64}}}),arg1,arg2,arg3)
@@ -5089,7 +5089,7 @@ function VecNestSetSubVec(arg1::Vec{Float64},arg2::Integer,arg3::Vec{Float64})
 end
 
 function VecCreateNest(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg5::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:VecCreateNest,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{IS{Float64}},Ptr{Vec{Float64}},Ptr{Vec{Float64}}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:VecCreateNest,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{IS{Float64}},Ptr{Vec{Float64}},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -5118,25 +5118,25 @@ function VecSetLayout(arg1::Vec{Float64},arg2::PetscLayout{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionVecView(arg1::PetscSection,arg2::Vec{Float64},arg3::PetscViewer{Float64})
     ccall((:PetscSectionVecView,petscRealDouble),PetscErrorCode,(PetscSection,Vec{Float64},PetscViewer{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function VecGetValuesSection(arg1::Vec{Float64},arg2::PetscSection,arg3::Integer,arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:VecGetValuesSection,petscRealDouble),PetscErrorCode,(Vec{Float64},PetscSection,Int64,Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function VecSetValuesSection(arg1::Vec{Float64},arg2::PetscSection,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::InsertMode)
     ccall((:VecSetValuesSection,petscRealDouble),PetscErrorCode,(Vec{Float64},PetscSection,Int64,Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionVecNorm(arg1::PetscSection,arg2::PetscSection,arg3::Vec{Float64},arg4::NormType,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscSectionVecNorm,petscRealDouble),PetscErrorCode,(PetscSection,PetscSection,Vec{Float64},NormType,Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
 function MatGetFactor(arg1::Mat{Float64},arg2::Union{ByteString,Symbol},arg3::MatFactorType,arg4::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     err = ccall((:MatGetFactor,petscRealDouble),PetscErrorCode,(Mat{Float64},Cstring,MatFactorType,Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4)
@@ -5174,7 +5174,7 @@ function MatInitializePackage(arg0::Type{Float64})
 end
 
 function MatCreate(arg1::MPI_Comm,arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Mat{Float64}}),arg1.val,arg2)
+    err = ccall((:MatCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Mat{Float64}}),arg1,arg2)
     return err
 end
 
@@ -5219,67 +5219,67 @@ function MatSetErrorIfFPE(arg1::Mat{Float64},arg2::PetscBool)
 end
 
 function MatCreateSeqDense(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateSeqDense,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Float64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:MatCreateSeqDense,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function MatCreateDense(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateDense,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Float64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
+    err = ccall((:MatCreateDense,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
 function MatCreateSeqAIJ(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateSeqAIJ,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6)
+    err = ccall((:MatCreateSeqAIJ,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
 function MatCreateAIJ(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Integer,arg9::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg10::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateAIJ,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
+    err = ccall((:MatCreateAIJ,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
     return err
 end
 
 function MatCreateMPIAIJWithArrays(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg9::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateMPIAIJWithArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
+    err = ccall((:MatCreateMPIAIJWithArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
     return err
 end
 
 function MatCreateMPIAIJWithSplitArrays(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg9::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg10::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg11::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg12::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateMPIAIJWithSplitArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12)
+    err = ccall((:MatCreateMPIAIJWithSplitArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12)
     return err
 end
 
 function MatCreateSeqBAIJ(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateSeqBAIJ,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
+    err = ccall((:MatCreateSeqBAIJ,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
 function MatCreateBAIJ(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg9::Integer,arg10::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg11::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateBAIJ,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
+    err = ccall((:MatCreateBAIJ,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
     return err
 end
 
 function MatCreateMPIBAIJWithArrays(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg10::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateMPIBAIJWithArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
+    err = ccall((:MatCreateMPIBAIJWithArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
     return err
 end
 
 function MatCreateMPIAdj(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateMPIAdj,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
+    err = ccall((:MatCreateMPIAdj,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
 function MatCreateSeqSBAIJ(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateSeqSBAIJ,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
+    err = ccall((:MatCreateSeqSBAIJ,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
 function MatCreateSBAIJ(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg9::Integer,arg10::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg11::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateSBAIJ,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
+    err = ccall((:MatCreateSBAIJ,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
     return err
 end
 
 function MatCreateMPISBAIJWithArrays(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg10::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateMPISBAIJWithArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
+    err = ccall((:MatCreateMPISBAIJWithArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
     return err
 end
 
@@ -5299,7 +5299,7 @@ function MatXAIJSetPreallocation(arg1::Mat{Float64},arg2::Integer,arg3::Union{Pt
 end
 
 function MatCreateShell(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateShell,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Void},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
+    err = ccall((:MatCreateShell,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Void},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
@@ -5314,42 +5314,42 @@ function MatCreateLRC(arg1::Mat{Float64},arg2::Mat{Float64},arg3::Mat{Float64},a
 end
 
 function MatCreateIS(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::ISLocalToGlobalMapping{Float64},arg8::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateIS,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,ISLocalToGlobalMapping{Float64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:MatCreateIS,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,ISLocalToGlobalMapping{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
 function MatCreateSeqAIJCRL(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateSeqAIJCRL,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6)
+    err = ccall((:MatCreateSeqAIJCRL,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
 function MatCreateMPIAIJCRL(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Integer,arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateMPIAIJCRL,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:MatCreateMPIAIJCRL,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
 function MatCreateSeqBSTRM(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateSeqBSTRM,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
+    err = ccall((:MatCreateSeqBSTRM,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
 function MatCreateMPIBSTRM(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg9::Integer,arg10::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg11::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateMPIBSTRM,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
+    err = ccall((:MatCreateMPIBSTRM,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
     return err
 end
 
 function MatCreateSeqSBSTRM(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateSeqSBSTRM,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
+    err = ccall((:MatCreateSeqSBSTRM,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
 function MatCreateMPISBSTRM(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg9::Integer,arg10::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg11::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateMPISBSTRM,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
+    err = ccall((:MatCreateMPISBSTRM,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
     return err
 end
 
 function MatCreateScatter(arg1::MPI_Comm,arg2::VecScatter{Float64},arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateScatter,petscRealDouble),PetscErrorCode,(comm_type,VecScatter{Float64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3)
+    err = ccall((:MatCreateScatter,petscRealDouble),PetscErrorCode,(comm_type,VecScatter{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3)
     return err
 end
 
@@ -5364,7 +5364,7 @@ function MatScatterGetVecScatter(arg1::Mat{Float64},arg2::Union{Ptr{VecScatter{F
 end
 
 function MatCreateBlockMat(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateBlockMat,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
+    err = ccall((:MatCreateBlockMat,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
@@ -5379,7 +5379,7 @@ function MatCompositeMerge(arg1::Mat{Float64})
 end
 
 function MatCreateComposite(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg4::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateComposite,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Mat{Float64}},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:MatCreateComposite,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Mat{Float64}},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -5389,12 +5389,12 @@ function MatCompositeSetType(arg1::Mat{Float64},arg2::MatCompositeType)
 end
 
 function MatCreateFFT(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::MatType,arg5::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateFFT,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Cstring,Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:MatCreateFFT,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Cstring,Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function MatCreateSeqCUFFT(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateSeqCUFFT,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4)
+    err = ccall((:MatCreateSeqCUFFT,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -5498,20 +5498,20 @@ function MatSetValuesBatch(arg1::Mat{Float64},arg2::Integer,arg3::Integer,arg4::
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatSetRandom(arg1::Mat{Float64},arg2::PetscRandom)
     ccall((:MatSetRandom,petscRealDouble),PetscErrorCode,(Mat{Float64},PetscRandom),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatSetValuesStencil(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg4::Integer,arg5::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::InsertMode)
     ccall((:MatSetValuesStencil,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{MatStencil},Int64,Ptr{MatStencil},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatSetValuesBlockedStencil(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg4::Integer,arg5::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::InsertMode)
     ccall((:MatSetValuesBlockedStencil,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{MatStencil},Int64,Ptr{MatStencil},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
 function MatSetStencil(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Integer)
     err = ccall((:MatSetStencil,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{Int64},Ptr{Int64},Int64),arg1,arg2,arg3,arg4,arg5)
@@ -5915,15 +5915,15 @@ function MatZeroRowsIS(arg1::Mat{Float64},arg2::IS{Float64},arg3::Float64,arg4::
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatZeroRowsStencil(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg4::Float64,arg5::Vec{Float64},arg6::Vec{Float64})
     ccall((:MatZeroRowsStencil,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{MatStencil},Float64,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatZeroRowsColumnsStencil(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg4::Float64,arg5::Vec{Float64},arg6::Vec{Float64})
     ccall((:MatZeroRowsColumnsStencil,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{MatStencil},Float64,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
 function MatZeroRowsColumns(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Float64,arg5::Vec{Float64},arg6::Vec{Float64})
     err = ccall((:MatZeroRowsColumns,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{Int64},Float64,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
@@ -6011,12 +6011,12 @@ function MatDestroySeqNonzeroStructure(arg1::Union{Ptr{Mat{Float64}},StridedArra
 end
 
 function MatCreateMPIAIJSumSeqAIJ(arg1::MPI_Comm,arg2::Mat{Float64},arg3::Integer,arg4::Integer,arg5::MatReuse,arg6::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateMPIAIJSumSeqAIJ,petscRealDouble),PetscErrorCode,(comm_type,Mat{Float64},Int64,Int64,MatReuse,Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6)
+    err = ccall((:MatCreateMPIAIJSumSeqAIJ,petscRealDouble),PetscErrorCode,(comm_type,Mat{Float64},Int64,Int64,MatReuse,Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
 function MatCreateMPIAIJSumSeqAIJSymbolic(arg1::MPI_Comm,arg2::Mat{Float64},arg3::Integer,arg4::Integer,arg5::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateMPIAIJSumSeqAIJSymbolic,petscRealDouble),PetscErrorCode,(comm_type,Mat{Float64},Int64,Int64,Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:MatCreateMPIAIJSumSeqAIJSymbolic,petscRealDouble),PetscErrorCode,(comm_type,Mat{Float64},Int64,Int64,Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -6236,7 +6236,7 @@ function MatCreateVecs(arg1::Mat{Float64},arg2::Union{Ptr{Vec{Float64}},StridedA
 end
 
 function MatGetMultiProcBlock(arg1::Mat{Float64},arg2::MPI_Comm,arg3::MatReuse,arg4::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatGetMultiProcBlock,petscRealDouble),PetscErrorCode,(Mat{Float64},comm_type,MatReuse,Ptr{Mat{Float64}}),arg1,arg2.val,arg3,arg4)
+    err = ccall((:MatGetMultiProcBlock,petscRealDouble),PetscErrorCode,(Mat{Float64},comm_type,MatReuse,Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -6251,7 +6251,7 @@ function MatFindOffBlockDiagonalEntries(arg1::Mat{Float64},arg2::Union{Ptr{IS{Fl
 end
 
 function MatCreateMPIMatConcatenateSeqMat(arg1::MPI_Comm,arg2::Mat{Float64},arg3::Integer,arg4::MatReuse,arg5::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateMPIMatConcatenateSeqMat,petscRealDouble),PetscErrorCode,(comm_type,Mat{Float64},Int64,MatReuse,Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:MatCreateMPIMatConcatenateSeqMat,petscRealDouble),PetscErrorCode,(comm_type,Mat{Float64},Int64,MatReuse,Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -6276,22 +6276,22 @@ function MatSeqBAIJSetColumnIndices(arg1::Mat{Float64},arg2::Union{Ptr{Int64},St
 end
 
 function MatCreateSeqAIJWithArrays(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateSeqAIJWithArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
+    err = ccall((:MatCreateSeqAIJWithArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
 function MatCreateSeqBAIJWithArrays(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateSeqBAIJWithArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:MatCreateSeqBAIJWithArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
 function MatCreateSeqSBAIJWithArrays(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateSeqSBAIJWithArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+    err = ccall((:MatCreateSeqSBAIJWithArrays,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
 function MatCreateSeqAIJFromTriple(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg8::Integer,arg9::PetscBool)
-    err = ccall((:MatCreateSeqAIJFromTriple,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}},Int64,PetscBool),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
+    err = ccall((:MatCreateSeqAIJFromTriple,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Mat{Float64}},Int64,PetscBool),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
     return err
 end
 
@@ -6415,10 +6415,10 @@ function MatGetOrdering(arg1::Mat{Float64},arg2::MatOrderingType,arg3::Union{Ptr
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatGetOrderingList(arg0::Type{Float64},arg1::Union{Ptr{PetscFunctionList},StridedArray{PetscFunctionList},Ptr{PetscFunctionList},Ref{PetscFunctionList}})
     ccall((:MatGetOrderingList,petscRealDouble),PetscErrorCode,(Ptr{PetscFunctionList},),arg1)
-end 
+end
 =#
 function MatOrderingRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:MatOrderingRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -6435,60 +6435,60 @@ function MatCreateLaplacian(arg1::Mat{Float64},arg2::Float64,arg3::PetscBool,arg
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatFactorInfoInitialize(arg0::Type{Float64},arg1::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatFactorInfoInitialize,petscRealDouble),PetscErrorCode,(Ptr{MatFactorInfo},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCholeskyFactor(arg1::Mat{Float64},arg2::IS{Float64},arg3::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatCholeskyFactor,petscRealDouble),PetscErrorCode,(Mat{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCholeskyFactorSymbolic(arg1::Mat{Float64},arg2::Mat{Float64},arg3::IS{Float64},arg4::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatCholeskyFactorSymbolic,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCholeskyFactorNumeric(arg1::Mat{Float64},arg2::Mat{Float64},arg3::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatCholeskyFactorNumeric,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatLUFactor(arg1::Mat{Float64},arg2::IS{Float64},arg3::IS{Float64},arg4::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatLUFactor,petscRealDouble),PetscErrorCode,(Mat{Float64},IS{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatILUFactor(arg1::Mat{Float64},arg2::IS{Float64},arg3::IS{Float64},arg4::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatILUFactor,petscRealDouble),PetscErrorCode,(Mat{Float64},IS{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatLUFactorSymbolic(arg1::Mat{Float64},arg2::Mat{Float64},arg3::IS{Float64},arg4::IS{Float64},arg5::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatLUFactorSymbolic,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},IS{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatILUFactorSymbolic(arg1::Mat{Float64},arg2::Mat{Float64},arg3::IS{Float64},arg4::IS{Float64},arg5::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatILUFactorSymbolic,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},IS{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatICCFactorSymbolic(arg1::Mat{Float64},arg2::Mat{Float64},arg3::IS{Float64},arg4::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatICCFactorSymbolic,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatICCFactor(arg1::Mat{Float64},arg2::IS{Float64},arg3::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatICCFactor,petscRealDouble),PetscErrorCode,(Mat{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatLUFactorNumeric(arg1::Mat{Float64},arg2::Mat{Float64},arg3::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatLUFactorNumeric,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3)
-end 
+end
 =#
 function MatGetInertia(arg1::Mat{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     err = ccall((:MatGetInertia,petscRealDouble),PetscErrorCode,(Mat{Float64},Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
@@ -6525,10 +6525,10 @@ function MatSolveTransposeAdd(arg1::Mat{Float64},arg2::Vec{Float64},arg3::Vec{Fl
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatSolves(arg1::Mat{Float64},arg2::Vecs,arg3::Vecs)
     ccall((:MatSolves,petscRealDouble),PetscErrorCode,(Mat{Float64},Vecs,Vecs),arg1,arg2,arg3)
-end 
+end
 =#
 function MatSetUnfactored(arg1::Mat{Float64})
     err = ccall((:MatSetUnfactored,petscRealDouble),PetscErrorCode,(Mat{Float64},),arg1)
@@ -6540,60 +6540,60 @@ function MatSOR(arg1::Mat{Float64},arg2::Vec{Float64},arg3::Float64,arg4::MatSOR
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatColoringCreate(arg1::Mat{Float64},arg2::Union{Ptr{MatColoring},StridedArray{MatColoring},Ptr{MatColoring},Ref{MatColoring}})
     ccall((:MatColoringCreate,petscRealDouble),PetscErrorCode,(Mat{Float64},Ptr{MatColoring}),arg1,arg2)
-end 
+end
 =#
 function MatColoringGetDegrees(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     err = ccall((:MatColoringGetDegrees,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{Int64}),arg1,arg2,arg3)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatColoringDestroy(arg0::Type{Float64},arg1::Union{Ptr{MatColoring},StridedArray{MatColoring},Ptr{MatColoring},Ref{MatColoring}})
     ccall((:MatColoringDestroy,petscRealDouble),PetscErrorCode,(Ptr{MatColoring},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatColoringView(arg1::MatColoring,arg2::PetscViewer{Float64})
     ccall((:MatColoringView,petscRealDouble),PetscErrorCode,(MatColoring,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatColoringSetType(arg0::Type{Float64},arg1::MatColoring,arg2::MatColoringType)
     ccall((:MatColoringSetType,petscRealDouble),PetscErrorCode,(MatColoring,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatColoringSetFromOptions(arg0::Type{Float64},arg1::MatColoring)
     ccall((:MatColoringSetFromOptions,petscRealDouble),PetscErrorCode,(MatColoring,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatColoringSetDistance(arg0::Type{Float64},arg1::MatColoring,arg2::Integer)
     ccall((:MatColoringSetDistance,petscRealDouble),PetscErrorCode,(MatColoring,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatColoringGetDistance(arg0::Type{Float64},arg1::MatColoring,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:MatColoringGetDistance,petscRealDouble),PetscErrorCode,(MatColoring,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatColoringSetMaxColors(arg0::Type{Float64},arg1::MatColoring,arg2::Integer)
     ccall((:MatColoringSetMaxColors,petscRealDouble),PetscErrorCode,(MatColoring,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatColoringGetMaxColors(arg0::Type{Float64},arg1::MatColoring,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:MatColoringGetMaxColors,petscRealDouble),PetscErrorCode,(MatColoring,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatColoringApply(arg1::MatColoring,arg2::Union{Ptr{ISColoring{Float64}},StridedArray{ISColoring{Float64}},Ptr{ISColoring{Float64}},Ref{ISColoring{Float64}}})
     ccall((:MatColoringApply,petscRealDouble),PetscErrorCode,(MatColoring,Ptr{ISColoring{Float64}}),arg1,arg2)
-end 
+end
 =#
 function MatColoringRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:MatColoringRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -6605,330 +6605,330 @@ function MatColoringPatch(arg1::Mat{Float64},arg2::Integer,arg3::Integer,ISColor
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatColoringSetWeightType(arg0::Type{Float64},arg1::MatColoring,arg2::MatColoringWeightType)
     ccall((:MatColoringSetWeightType,petscRealDouble),PetscErrorCode,(MatColoring,MatColoringWeightType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatColoringSetWeights(arg0::Type{Float64},arg1::MatColoring,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:MatColoringSetWeights,petscRealDouble),PetscErrorCode,(MatColoring,Ptr{Float64},Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatColoringCreateWeights(arg0::Type{Float64},arg1::MatColoring,arg2::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},lperm::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:MatColoringCreateWeights,petscRealDouble),PetscErrorCode,(MatColoring,Ptr{Ptr{Float64}},Ptr{Ptr{Int64}}),arg1,arg2,lperm)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatFDColoringCreate(arg1::Mat{Float64},arg2::ISColoring{Float64},arg3::Union{Ptr{MatFDColoring},StridedArray{MatFDColoring},Ptr{MatFDColoring},Ref{MatFDColoring}})
     ccall((:MatFDColoringCreate,petscRealDouble),PetscErrorCode,(Mat{Float64},ISColoring{Float64},Ptr{MatFDColoring}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatFDColoringDestroy(arg0::Type{Float64},arg1::Union{Ptr{MatFDColoring},StridedArray{MatFDColoring},Ptr{MatFDColoring},Ref{MatFDColoring}})
     ccall((:MatFDColoringDestroy,petscRealDouble),PetscErrorCode,(Ptr{MatFDColoring},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatFDColoringView(arg1::MatFDColoring,arg2::PetscViewer{Float64})
     ccall((:MatFDColoringView,petscRealDouble),PetscErrorCode,(MatFDColoring,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatFDColoringSetFunction(arg0::Type{Float64},arg1::MatFDColoring,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:MatFDColoringSetFunction,petscRealDouble),PetscErrorCode,(MatFDColoring,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatFDColoringGetFunction(arg0::Type{Float64},arg1::MatFDColoring,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:MatFDColoringGetFunction,petscRealDouble),PetscErrorCode,(MatFDColoring,Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatFDColoringSetParameters(arg0::Type{Float64},arg1::MatFDColoring,arg2::Float64,arg3::Float64)
     ccall((:MatFDColoringSetParameters,petscRealDouble),PetscErrorCode,(MatFDColoring,Float64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatFDColoringSetFromOptions(arg0::Type{Float64},arg1::MatFDColoring)
     ccall((:MatFDColoringSetFromOptions,petscRealDouble),PetscErrorCode,(MatFDColoring,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatFDColoringApply(arg1::Mat{Float64},arg2::MatFDColoring,arg3::Vec{Float64},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:MatFDColoringApply,petscRealDouble),PetscErrorCode,(Mat{Float64},MatFDColoring,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatFDColoringSetF(arg1::MatFDColoring,arg2::Vec{Float64})
     ccall((:MatFDColoringSetF,petscRealDouble),PetscErrorCode,(MatFDColoring,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatFDColoringGetPerturbedColumns(arg0::Type{Float64},arg1::MatFDColoring,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:MatFDColoringGetPerturbedColumns,petscRealDouble),PetscErrorCode,(MatFDColoring,Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatFDColoringSetUp(arg1::Mat{Float64},arg2::ISColoring{Float64},arg3::MatFDColoring)
     ccall((:MatFDColoringSetUp,petscRealDouble),PetscErrorCode,(Mat{Float64},ISColoring{Float64},MatFDColoring),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatFDColoringSetBlockSize(arg0::Type{Float64},arg1::MatFDColoring,arg2::Integer,arg3::Integer)
     ccall((:MatFDColoringSetBlockSize,petscRealDouble),PetscErrorCode,(MatFDColoring,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatTransposeColoringCreate(arg1::Mat{Float64},arg2::ISColoring{Float64},arg3::Union{Ptr{MatTransposeColoring},StridedArray{MatTransposeColoring},Ptr{MatTransposeColoring},Ref{MatTransposeColoring}})
     ccall((:MatTransposeColoringCreate,petscRealDouble),PetscErrorCode,(Mat{Float64},ISColoring{Float64},Ptr{MatTransposeColoring}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatTransColoringApplySpToDen(arg1::MatTransposeColoring,arg2::Mat{Float64},arg3::Mat{Float64})
     ccall((:MatTransColoringApplySpToDen,petscRealDouble),PetscErrorCode,(MatTransposeColoring,Mat{Float64},Mat{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatTransColoringApplyDenToSp(arg1::MatTransposeColoring,arg2::Mat{Float64},arg3::Mat{Float64})
     ccall((:MatTransColoringApplyDenToSp,petscRealDouble),PetscErrorCode,(MatTransposeColoring,Mat{Float64},Mat{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatTransposeColoringDestroy(arg0::Type{Float64},arg1::Union{Ptr{MatTransposeColoring},StridedArray{MatTransposeColoring},Ptr{MatTransposeColoring},Ref{MatTransposeColoring}})
     ccall((:MatTransposeColoringDestroy,petscRealDouble),PetscErrorCode,(Ptr{MatTransposeColoring},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{MatPartitioning},StridedArray{MatPartitioning},Ptr{MatPartitioning},Ref{MatPartitioning}})
-    ccall((:MatPartitioningCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{MatPartitioning}),arg1.val,arg2)
-end 
+    ccall((:MatPartitioningCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{MatPartitioning}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningSetType(arg0::Type{Float64},arg1::MatPartitioning,arg2::MatPartitioningType)
     ccall((:MatPartitioningSetType,petscRealDouble),PetscErrorCode,(MatPartitioning,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningSetNParts(arg0::Type{Float64},arg1::MatPartitioning,arg2::Integer)
     ccall((:MatPartitioningSetNParts,petscRealDouble),PetscErrorCode,(MatPartitioning,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningSetAdjacency(arg1::MatPartitioning,arg2::Mat{Float64})
     ccall((:MatPartitioningSetAdjacency,petscRealDouble),PetscErrorCode,(MatPartitioning,Mat{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningSetVertexWeights(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:MatPartitioningSetVertexWeights,petscRealDouble),PetscErrorCode,(MatPartitioning,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningSetPartitionWeights(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:MatPartitioningSetPartitionWeights,petscRealDouble),PetscErrorCode,(MatPartitioning,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningApply(arg1::MatPartitioning,arg2::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:MatPartitioningApply,petscRealDouble),PetscErrorCode,(MatPartitioning,Ptr{IS{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningDestroy(arg0::Type{Float64},arg1::Union{Ptr{MatPartitioning},StridedArray{MatPartitioning},Ptr{MatPartitioning},Ref{MatPartitioning}})
     ccall((:MatPartitioningDestroy,petscRealDouble),PetscErrorCode,(Ptr{MatPartitioning},),arg1)
-end 
+end
 =#
 function MatPartitioningRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:MatPartitioningRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningView(arg1::MatPartitioning,arg2::PetscViewer{Float64})
     ccall((:MatPartitioningView,petscRealDouble),PetscErrorCode,(MatPartitioning,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningSetFromOptions(arg0::Type{Float64},arg1::MatPartitioning)
     ccall((:MatPartitioningSetFromOptions,petscRealDouble),PetscErrorCode,(MatPartitioning,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningGetType(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{Ptr{MatPartitioningType},StridedArray{MatPartitioningType},Ptr{MatPartitioningType},Ref{MatPartitioningType}})
     ccall((:MatPartitioningGetType,petscRealDouble),PetscErrorCode,(MatPartitioning,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningParmetisSetCoarseSequential(arg0::Type{Float64},arg1::MatPartitioning)
     ccall((:MatPartitioningParmetisSetCoarseSequential,petscRealDouble),PetscErrorCode,(MatPartitioning,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningParmetisGetEdgeCut(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:MatPartitioningParmetisGetEdgeCut,petscRealDouble),PetscErrorCode,(MatPartitioning,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningChacoSetGlobal(arg0::Type{Float64},arg1::MatPartitioning,arg2::MPChacoGlobalType)
     ccall((:MatPartitioningChacoSetGlobal,petscRealDouble),PetscErrorCode,(MatPartitioning,MPChacoGlobalType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningChacoGetGlobal(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{Ptr{MPChacoGlobalType},StridedArray{MPChacoGlobalType},Ptr{MPChacoGlobalType},Ref{MPChacoGlobalType}})
     ccall((:MatPartitioningChacoGetGlobal,petscRealDouble),PetscErrorCode,(MatPartitioning,Ptr{MPChacoGlobalType}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningChacoSetLocal(arg0::Type{Float64},arg1::MatPartitioning,arg2::MPChacoLocalType)
     ccall((:MatPartitioningChacoSetLocal,petscRealDouble),PetscErrorCode,(MatPartitioning,MPChacoLocalType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningChacoGetLocal(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{Ptr{MPChacoLocalType},StridedArray{MPChacoLocalType},Ptr{MPChacoLocalType},Ref{MPChacoLocalType}})
     ccall((:MatPartitioningChacoGetLocal,petscRealDouble),PetscErrorCode,(MatPartitioning,Ptr{MPChacoLocalType}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningChacoSetCoarseLevel(arg0::Type{Float64},arg1::MatPartitioning,arg2::Float64)
     ccall((:MatPartitioningChacoSetCoarseLevel,petscRealDouble),PetscErrorCode,(MatPartitioning,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningChacoSetEigenSolver(arg0::Type{Float64},arg1::MatPartitioning,arg2::MPChacoEigenType)
     ccall((:MatPartitioningChacoSetEigenSolver,petscRealDouble),PetscErrorCode,(MatPartitioning,MPChacoEigenType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningChacoGetEigenSolver(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{Ptr{MPChacoEigenType},StridedArray{MPChacoEigenType},Ptr{MPChacoEigenType},Ref{MPChacoEigenType}})
     ccall((:MatPartitioningChacoGetEigenSolver,petscRealDouble),PetscErrorCode,(MatPartitioning,Ptr{MPChacoEigenType}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningChacoSetEigenTol(arg0::Type{Float64},arg1::MatPartitioning,arg2::Float64)
     ccall((:MatPartitioningChacoSetEigenTol,petscRealDouble),PetscErrorCode,(MatPartitioning,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningChacoGetEigenTol(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:MatPartitioningChacoGetEigenTol,petscRealDouble),PetscErrorCode,(MatPartitioning,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningChacoSetEigenNumber(arg0::Type{Float64},arg1::MatPartitioning,arg2::Integer)
     ccall((:MatPartitioningChacoSetEigenNumber,petscRealDouble),PetscErrorCode,(MatPartitioning,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningChacoGetEigenNumber(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:MatPartitioningChacoGetEigenNumber,petscRealDouble),PetscErrorCode,(MatPartitioning,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningPartySetGlobal(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{ByteString,Symbol})
     ccall((:MatPartitioningPartySetGlobal,petscRealDouble),PetscErrorCode,(MatPartitioning,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningPartySetLocal(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{ByteString,Symbol})
     ccall((:MatPartitioningPartySetLocal,petscRealDouble),PetscErrorCode,(MatPartitioning,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningPartySetCoarseLevel(arg0::Type{Float64},arg1::MatPartitioning,arg2::Float64)
     ccall((:MatPartitioningPartySetCoarseLevel,petscRealDouble),PetscErrorCode,(MatPartitioning,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningPartySetBipart(arg0::Type{Float64},arg1::MatPartitioning,arg2::PetscBool)
     ccall((:MatPartitioningPartySetBipart,petscRealDouble),PetscErrorCode,(MatPartitioning,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningPartySetMatchOptimization(arg0::Type{Float64},arg1::MatPartitioning,arg2::PetscBool)
     ccall((:MatPartitioningPartySetMatchOptimization,petscRealDouble),PetscErrorCode,(MatPartitioning,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningPTScotchSetImbalance(arg0::Type{Float64},arg1::MatPartitioning,arg2::Float64)
     ccall((:MatPartitioningPTScotchSetImbalance,petscRealDouble),PetscErrorCode,(MatPartitioning,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningPTScotchGetImbalance(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:MatPartitioningPTScotchGetImbalance,petscRealDouble),PetscErrorCode,(MatPartitioning,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningPTScotchSetStrategy(arg0::Type{Float64},arg1::MatPartitioning,arg2::MPPTScotchStrategyType)
     ccall((:MatPartitioningPTScotchSetStrategy,petscRealDouble),PetscErrorCode,(MatPartitioning,MPPTScotchStrategyType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatPartitioningPTScotchGetStrategy(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{Ptr{MPPTScotchStrategyType},StridedArray{MPPTScotchStrategyType},Ptr{MPPTScotchStrategyType},Ref{MPPTScotchStrategyType}})
     ccall((:MatPartitioningPTScotchGetStrategy,petscRealDouble),PetscErrorCode,(MatPartitioning,Ptr{MPPTScotchStrategyType}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCoarsenCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{MatCoarsen},StridedArray{MatCoarsen},Ptr{MatCoarsen},Ref{MatCoarsen}})
-    ccall((:MatCoarsenCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{MatCoarsen}),arg1.val,arg2)
-end 
+    ccall((:MatCoarsenCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{MatCoarsen}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCoarsenSetType(arg0::Type{Float64},arg1::MatCoarsen,arg2::MatCoarsenType)
     ccall((:MatCoarsenSetType,petscRealDouble),PetscErrorCode,(MatCoarsen,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCoarsenSetAdjacency(arg1::MatCoarsen,arg2::Mat{Float64})
     ccall((:MatCoarsenSetAdjacency,petscRealDouble),PetscErrorCode,(MatCoarsen,Mat{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCoarsenSetGreedyOrdering(arg1::MatCoarsen,arg2::IS{Float64})
     ccall((:MatCoarsenSetGreedyOrdering,petscRealDouble),PetscErrorCode,(MatCoarsen,IS{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCoarsenSetStrictAggs(arg0::Type{Float64},arg1::MatCoarsen,arg2::PetscBool)
     ccall((:MatCoarsenSetStrictAggs,petscRealDouble),PetscErrorCode,(MatCoarsen,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCoarsenGetData(arg0::Type{Float64},arg1::MatCoarsen,arg2::Union{Ptr{Ptr{PetscCoarsenData}},StridedArray{Ptr{PetscCoarsenData}},Ptr{Ptr{PetscCoarsenData}},Ref{Ptr{PetscCoarsenData}}})
     ccall((:MatCoarsenGetData,petscRealDouble),PetscErrorCode,(MatCoarsen,Ptr{Ptr{PetscCoarsenData}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCoarsenApply(arg0::Type{Float64},arg1::MatCoarsen)
     ccall((:MatCoarsenApply,petscRealDouble),PetscErrorCode,(MatCoarsen,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCoarsenDestroy(arg0::Type{Float64},arg1::Union{Ptr{MatCoarsen},StridedArray{MatCoarsen},Ptr{MatCoarsen},Ref{MatCoarsen}})
     ccall((:MatCoarsenDestroy,petscRealDouble),PetscErrorCode,(Ptr{MatCoarsen},),arg1)
-end 
+end
 =#
 function MatCoarsenRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:MatCoarsenRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCoarsenView(arg1::MatCoarsen,arg2::PetscViewer{Float64})
     ccall((:MatCoarsenView,petscRealDouble),PetscErrorCode,(MatCoarsen,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCoarsenSetFromOptions(arg0::Type{Float64},arg1::MatCoarsen)
     ccall((:MatCoarsenSetFromOptions,petscRealDouble),PetscErrorCode,(MatCoarsen,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCoarsenGetType(arg0::Type{Float64},arg1::MatCoarsen,arg2::Union{Ptr{MatCoarsenType},StridedArray{MatCoarsenType},Ptr{MatCoarsenType},Ref{MatCoarsenType}})
     ccall((:MatCoarsenGetType,petscRealDouble),PetscErrorCode,(MatCoarsen,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
 function MatMeshToCellGraph(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     err = ccall((:MatMeshToCellGraph,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{Mat{Float64}}),arg1,arg2,arg3)
@@ -6975,75 +6975,75 @@ function MatISGetMPIXAIJ(arg1::Mat{Float64},arg2::MatReuse,arg3::Union{Ptr{Mat{F
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatNullSpaceCreate(arg1::MPI_Comm,arg2::PetscBool,arg3::Integer,arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg5::Union{Ptr{MatNullSpace},StridedArray{MatNullSpace},Ptr{MatNullSpace},Ref{MatNullSpace}})
-    ccall((:MatNullSpaceCreate,petscRealDouble),PetscErrorCode,(comm_type,PetscBool,Int64,Ptr{Vec{Float64}},Ptr{MatNullSpace}),arg1.val,arg2,arg3,arg4,arg5)
-end 
+    ccall((:MatNullSpaceCreate,petscRealDouble),PetscErrorCode,(comm_type,PetscBool,Int64,Ptr{Vec{Float64}},Ptr{MatNullSpace}),arg1,arg2,arg3,arg4,arg5)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatNullSpaceSetFunction(arg0::Type{Float64},arg1::MatNullSpace,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:MatNullSpaceSetFunction,petscRealDouble),PetscErrorCode,(MatNullSpace,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatNullSpaceDestroy(arg0::Type{Float64},arg1::Union{Ptr{MatNullSpace},StridedArray{MatNullSpace},Ptr{MatNullSpace},Ref{MatNullSpace}})
     ccall((:MatNullSpaceDestroy,petscRealDouble),PetscErrorCode,(Ptr{MatNullSpace},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatNullSpaceRemove(arg1::MatNullSpace,arg2::Vec{Float64})
     ccall((:MatNullSpaceRemove,petscRealDouble),PetscErrorCode,(MatNullSpace,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatGetNullSpace(arg1::Mat{Float64},arg2::Union{Ptr{MatNullSpace},StridedArray{MatNullSpace},Ptr{MatNullSpace},Ref{MatNullSpace}})
     ccall((:MatGetNullSpace,petscRealDouble),PetscErrorCode,(Mat{Float64},Ptr{MatNullSpace}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatGetTransposeNullSpace(arg1::Mat{Float64},arg2::Union{Ptr{MatNullSpace},StridedArray{MatNullSpace},Ptr{MatNullSpace},Ref{MatNullSpace}})
     ccall((:MatGetTransposeNullSpace,petscRealDouble),PetscErrorCode,(Mat{Float64},Ptr{MatNullSpace}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatSetTransposeNullSpace(arg1::Mat{Float64},arg2::MatNullSpace)
     ccall((:MatSetTransposeNullSpace,petscRealDouble),PetscErrorCode,(Mat{Float64},MatNullSpace),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatSetNullSpace(arg1::Mat{Float64},arg2::MatNullSpace)
     ccall((:MatSetNullSpace,petscRealDouble),PetscErrorCode,(Mat{Float64},MatNullSpace),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatSetNearNullSpace(arg1::Mat{Float64},arg2::MatNullSpace)
     ccall((:MatSetNearNullSpace,petscRealDouble),PetscErrorCode,(Mat{Float64},MatNullSpace),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatGetNearNullSpace(arg1::Mat{Float64},arg2::Union{Ptr{MatNullSpace},StridedArray{MatNullSpace},Ptr{MatNullSpace},Ref{MatNullSpace}})
     ccall((:MatGetNearNullSpace,petscRealDouble),PetscErrorCode,(Mat{Float64},Ptr{MatNullSpace}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatNullSpaceTest(arg1::MatNullSpace,arg2::Mat{Float64},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:MatNullSpaceTest,petscRealDouble),PetscErrorCode,(MatNullSpace,Mat{Float64},Ptr{PetscBool}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatNullSpaceView(arg1::MatNullSpace,arg2::PetscViewer{Float64})
     ccall((:MatNullSpaceView,petscRealDouble),PetscErrorCode,(MatNullSpace,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatNullSpaceGetVecs(arg1::MatNullSpace,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}})
     ccall((:MatNullSpaceGetVecs,petscRealDouble),PetscErrorCode,(MatNullSpace,Ptr{PetscBool},Ptr{Int64},Ptr{Ptr{Vec{Float64}}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatNullSpaceCreateRigidBody(arg1::Vec{Float64},arg2::Union{Ptr{MatNullSpace},StridedArray{MatNullSpace},Ptr{MatNullSpace},Ref{MatNullSpace}})
     ccall((:MatNullSpaceCreateRigidBody,petscRealDouble),PetscErrorCode,(Vec{Float64},Ptr{MatNullSpace}),arg1,arg2)
-end 
+end
 =#
 function MatReorderingSeqSBAIJ(arg1::Mat{Float64},arg2::IS{Float64})
     err = ccall((:MatReorderingSeqSBAIJ,petscRealDouble),PetscErrorCode,(Mat{Float64},IS{Float64}),arg1,arg2)
@@ -7091,7 +7091,7 @@ function MatDiagonalScaleLocal(arg1::Mat{Float64},arg2::Vec{Float64})
 end
 
 function MatCreateMFFD(arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateMFFD,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6)
+    err = ccall((:MatCreateMFFD,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
@@ -7115,10 +7115,10 @@ function MatMFFDSetFunctioniBase(arg1::Mat{Float64},arg2::Union{Ptr{Void},Stride
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatMFFDAddNullSpace(arg1::Mat{Float64},arg2::MatNullSpace)
     ccall((:MatMFFDAddNullSpace,petscRealDouble),PetscErrorCode,(Mat{Float64},MatNullSpace),arg1,arg2)
-end 
+end
 =#
 function MatMFFDSetHHistory(arg1::Mat{Float64},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Integer)
     err = ccall((:MatMFFDSetHHistory,petscRealDouble),PetscErrorCode,(Mat{Float64},Ptr{Float64},Int64),arg1,arg2,arg3)
@@ -7191,7 +7191,7 @@ function PetscViewerMathematicaPutCSRMatrix(arg1::PetscViewer{Float64},arg2::Int
 end
 
 function MatCreateNest(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg4::Integer,arg5::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg6::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg7::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
-    err = ccall((:MatCreateNest,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{IS{Float64}},Int64,Ptr{IS{Float64}},Ptr{Mat{Float64}},Ptr{Mat{Float64}}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
+    err = ccall((:MatCreateNest,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{IS{Float64}},Int64,Ptr{IS{Float64}},Ptr{Mat{Float64}},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
@@ -7255,25 +7255,25 @@ function DMInitializePackage(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DM}),arg1.val,arg2)
-end 
+    ccall((:DMCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DM}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMClone(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMClone,petscRealDouble),PetscErrorCode,(DM,Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetType(arg0::Type{Float64},arg1::DM,arg2::DMType)
     ccall((:DMSetType,petscRealDouble),PetscErrorCode,(DM,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetType(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DMType},StridedArray{DMType},Ptr{DMType},Ref{DMType}})
     ccall((:DMGetType,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
 function DMRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:DMRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -7285,430 +7285,430 @@ function DMRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMView(arg1::DM,arg2::PetscViewer{Float64})
     ccall((:DMView,petscRealDouble),PetscErrorCode,(DM,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLoad(arg1::DM,arg2::PetscViewer{Float64})
     ccall((:DMLoad,petscRealDouble),PetscErrorCode,(DM,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDestroy(arg0::Type{Float64},arg1::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMDestroy,petscRealDouble),PetscErrorCode,(Ptr{DM},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateGlobalVector(arg1::DM,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMCreateGlobalVector,petscRealDouble),PetscErrorCode,(DM,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateLocalVector(arg1::DM,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMCreateLocalVector,petscRealDouble),PetscErrorCode,(DM,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetLocalVector(arg1::DM,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMGetLocalVector,petscRealDouble),PetscErrorCode,(DM,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMRestoreLocalVector(arg1::DM,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMRestoreLocalVector,petscRealDouble),PetscErrorCode,(DM,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetGlobalVector(arg1::DM,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMGetGlobalVector,petscRealDouble),PetscErrorCode,(DM,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMRestoreGlobalVector(arg1::DM,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMRestoreGlobalVector,petscRealDouble),PetscErrorCode,(DM,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMClearGlobalVectors(arg0::Type{Float64},arg1::DM)
     ccall((:DMClearGlobalVectors,petscRealDouble),PetscErrorCode,(DM,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetNamedGlobalVector(arg1::DM,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMGetNamedGlobalVector,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{Vec{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMRestoreNamedGlobalVector(arg1::DM,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMRestoreNamedGlobalVector,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{Vec{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetNamedLocalVector(arg1::DM,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMGetNamedLocalVector,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{Vec{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMRestoreNamedLocalVector(arg1::DM,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMRestoreNamedLocalVector,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{Vec{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetLocalToGlobalMapping(arg1::DM,arg2::Union{Ptr{ISLocalToGlobalMapping{Float64}},StridedArray{ISLocalToGlobalMapping{Float64}},Ptr{ISLocalToGlobalMapping{Float64}},Ref{ISLocalToGlobalMapping{Float64}}})
     ccall((:DMGetLocalToGlobalMapping,petscRealDouble),PetscErrorCode,(DM,Ptr{ISLocalToGlobalMapping{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateFieldIS(arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}},arg4::Union{Ptr{Ptr{IS{Float64}}},StridedArray{Ptr{IS{Float64}}},Ptr{Ptr{IS{Float64}}},Ref{Ptr{IS{Float64}}}})
     ccall((:DMCreateFieldIS,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Ptr{Ptr{UInt8}}},Ptr{Ptr{IS{Float64}}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetBlockSize(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMGetBlockSize,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateColoring(arg1::DM,arg2::ISColoringType,arg3::Union{Ptr{ISColoring{Float64}},StridedArray{ISColoring{Float64}},Ptr{ISColoring{Float64}},Ref{ISColoring{Float64}}})
     ccall((:DMCreateColoring,petscRealDouble),PetscErrorCode,(DM,ISColoringType,Ptr{ISColoring{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateMatrix(arg1::DM,arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     ccall((:DMCreateMatrix,petscRealDouble),PetscErrorCode,(DM,Ptr{Mat{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetMatrixPreallocateOnly(arg0::Type{Float64},arg1::DM,arg2::PetscBool)
     ccall((:DMSetMatrixPreallocateOnly,petscRealDouble),PetscErrorCode,(DM,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateInterpolation(arg1::DM,arg2::DM,arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMCreateInterpolation,petscRealDouble),PetscErrorCode,(DM,DM,Ptr{Mat{Float64}},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateInjection(arg1::DM,arg2::DM,arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     ccall((:DMCreateInjection,petscRealDouble),PetscErrorCode,(DM,DM,Ptr{Mat{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetWorkArray(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::PetscDataType,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMGetWorkArray,petscRealDouble),PetscErrorCode,(DM,Int64,PetscDataType,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMRestoreWorkArray(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::PetscDataType,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMRestoreWorkArray,petscRealDouble),PetscErrorCode,(DM,Int64,PetscDataType,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMRefine(arg0::Type{Float64},arg1::DM,arg2::MPI_Comm,arg3::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMRefine,petscRealDouble),PetscErrorCode,(DM,comm_type,Ptr{DM}),arg1,arg2.val,arg3)
-end 
+    ccall((:DMRefine,petscRealDouble),PetscErrorCode,(DM,comm_type,Ptr{DM}),arg1,arg2,arg3)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCoarsen(arg0::Type{Float64},arg1::DM,arg2::MPI_Comm,arg3::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMCoarsen,petscRealDouble),PetscErrorCode,(DM,comm_type,Ptr{DM}),arg1,arg2.val,arg3)
-end 
+    ccall((:DMCoarsen,petscRealDouble),PetscErrorCode,(DM,comm_type,Ptr{DM}),arg1,arg2,arg3)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMRefineHierarchy(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMRefineHierarchy,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{DM}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCoarsenHierarchy(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMCoarsenHierarchy,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{DM}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCoarsenHookAdd(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMCoarsenHookAdd,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMRefineHookAdd(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMRefineHookAdd,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMRestrict(arg1::DM,arg2::Mat{Float64},arg3::Vec{Float64},arg4::Mat{Float64},arg5::DM)
     ccall((:DMRestrict,petscRealDouble),PetscErrorCode,(DM,Mat{Float64},Vec{Float64},Mat{Float64},DM),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMInterpolate(arg1::DM,arg2::Mat{Float64},arg3::DM)
     ccall((:DMInterpolate,petscRealDouble),PetscErrorCode,(DM,Mat{Float64},DM),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetFromOptions(arg0::Type{Float64},arg1::DM)
     ccall((:DMSetFromOptions,petscRealDouble),PetscErrorCode,(DM,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateInterpolationScale(arg1::DM,arg2::DM,arg3::Mat{Float64},arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMCreateInterpolationScale,petscRealDouble),PetscErrorCode,(DM,DM,Mat{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateAggregates(arg1::DM,arg2::DM,arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     ccall((:DMCreateAggregates,petscRealDouble),PetscErrorCode,(DM,DM,Ptr{Mat{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGlobalToLocalHookAdd(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMGlobalToLocalHookAdd,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLocalToGlobalHookAdd(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMLocalToGlobalHookAdd,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGlobalToLocalBegin(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMGlobalToLocalBegin,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGlobalToLocalEnd(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMGlobalToLocalEnd,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLocalToGlobalBegin(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMLocalToGlobalBegin,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLocalToGlobalEnd(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMLocalToGlobalEnd,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLocalToLocalBegin(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMLocalToLocalBegin,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLocalToLocalEnd(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMLocalToLocalEnd,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMConvert(arg0::Type{Float64},arg1::DM,arg2::DMType,arg3::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMConvert,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{DM}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetDimension(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMGetDimension,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetDimension(arg0::Type{Float64},arg1::DM,arg2::Integer)
     ccall((:DMSetDimension,petscRealDouble),PetscErrorCode,(DM,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetDimPoints(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMGetDimPoints,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetCoordinateDM(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMGetCoordinateDM,petscRealDouble),PetscErrorCode,(DM,Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetCoordinateDM(arg0::Type{Float64},arg1::DM,arg2::DM)
     ccall((:DMSetCoordinateDM,petscRealDouble),PetscErrorCode,(DM,DM),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetCoordinateDim(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMGetCoordinateDim,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetCoordinateDim(arg0::Type{Float64},arg1::DM,arg2::Integer)
     ccall((:DMSetCoordinateDim,petscRealDouble),PetscErrorCode,(DM,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetCoordinateSection(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:DMGetCoordinateSection,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscSection}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetCoordinateSection(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::PetscSection)
     ccall((:DMSetCoordinateSection,petscRealDouble),PetscErrorCode,(DM,Int64,PetscSection),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetCoordinates(arg1::DM,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMGetCoordinates,petscRealDouble),PetscErrorCode,(DM,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetCoordinates(arg1::DM,arg2::Vec{Float64})
     ccall((:DMSetCoordinates,petscRealDouble),PetscErrorCode,(DM,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetCoordinatesLocal(arg1::DM,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMGetCoordinatesLocal,petscRealDouble),PetscErrorCode,(DM,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetCoordinatesLocal(arg1::DM,arg2::Vec{Float64})
     ccall((:DMSetCoordinatesLocal,petscRealDouble),PetscErrorCode,(DM,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLocatePoints(arg1::DM,arg2::Vec{Float64},arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMLocatePoints,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Ptr{IS{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetPeriodicity(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg3::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg4::Union{Ptr{Ptr{DMBoundaryType}},StridedArray{Ptr{DMBoundaryType}},Ptr{Ptr{DMBoundaryType}},Ref{Ptr{DMBoundaryType}}})
     ccall((:DMGetPeriodicity,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{DMBoundaryType}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetPeriodicity(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{DMBoundaryType},StridedArray{DMBoundaryType},Ptr{DMBoundaryType},Ref{DMBoundaryType}})
     ccall((:DMSetPeriodicity,petscRealDouble),PetscErrorCode,(DM,Ptr{Float64},Ptr{Float64},Ptr{DMBoundaryType}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSubDomainHookAdd(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMSubDomainHookAdd,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSubDomainRestrict(arg1::DM,arg2::VecScatter{Float64},arg3::VecScatter{Float64},arg4::DM)
     ccall((:DMSubDomainRestrict,petscRealDouble),PetscErrorCode,(DM,VecScatter{Float64},VecScatter{Float64},DM),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetOptionsPrefix(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol})
     ccall((:DMSetOptionsPrefix,petscRealDouble),PetscErrorCode,(DM,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetVecType(arg0::Type{Float64},arg1::DM,arg2::VecType)
     ccall((:DMSetVecType,petscRealDouble),PetscErrorCode,(DM,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetVecType(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{VecType},StridedArray{VecType},Ptr{VecType},Ref{VecType}})
     ccall((:DMGetVecType,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetMatType(arg0::Type{Float64},arg1::DM,arg2::MatType)
     ccall((:DMSetMatType,petscRealDouble),PetscErrorCode,(DM,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetMatType(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{MatType},StridedArray{MatType},Ptr{MatType},Ref{MatType}})
     ccall((:DMGetMatType,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetApplicationContext(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMSetApplicationContext,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetApplicationContextDestroy(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMSetApplicationContextDestroy,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetApplicationContext(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMGetApplicationContext,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetVariableBounds(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMSetVariableBounds,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMHasVariableBounds(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMHasVariableBounds,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMHasColoring(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMHasColoring,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMComputeVariableBounds(arg1::DM,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:DMComputeVariableBounds,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateSubDM(arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg5::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMCreateSubDM,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{IS{Float64}},Ptr{DM}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateFieldDecomposition(arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}},arg4::Union{Ptr{Ptr{IS{Float64}}},StridedArray{Ptr{IS{Float64}}},Ptr{Ptr{IS{Float64}}},Ref{Ptr{IS{Float64}}}},arg5::Union{Ptr{Ptr{DM}},StridedArray{Ptr{DM}},Ptr{Ptr{DM}},Ref{Ptr{DM}}})
     ccall((:DMCreateFieldDecomposition,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Ptr{Ptr{UInt8}}},Ptr{Ptr{IS{Float64}}},Ptr{Ptr{DM}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateDomainDecomposition(arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}},arg4::Union{Ptr{Ptr{IS{Float64}}},StridedArray{Ptr{IS{Float64}}},Ptr{Ptr{IS{Float64}}},Ref{Ptr{IS{Float64}}}},arg5::Union{Ptr{Ptr{IS{Float64}}},StridedArray{Ptr{IS{Float64}}},Ptr{Ptr{IS{Float64}}},Ref{Ptr{IS{Float64}}}},arg6::Union{Ptr{Ptr{DM}},StridedArray{Ptr{DM}},Ptr{Ptr{DM}},Ref{Ptr{DM}}})
     ccall((:DMCreateDomainDecomposition,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Ptr{Ptr{UInt8}}},Ptr{Ptr{IS{Float64}}},Ptr{Ptr{IS{Float64}}},Ptr{Ptr{DM}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateDomainDecompositionScatters(arg1::DM,arg2::Integer,arg3::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}},arg4::Union{Ptr{Ptr{VecScatter{Float64}}},StridedArray{Ptr{VecScatter{Float64}}},Ptr{Ptr{VecScatter{Float64}}},Ref{Ptr{VecScatter{Float64}}}},arg5::Union{Ptr{Ptr{VecScatter{Float64}}},StridedArray{Ptr{VecScatter{Float64}}},Ptr{Ptr{VecScatter{Float64}}},Ref{Ptr{VecScatter{Float64}}}},arg6::Union{Ptr{Ptr{VecScatter{Float64}}},StridedArray{Ptr{VecScatter{Float64}}},Ptr{Ptr{VecScatter{Float64}}},Ref{Ptr{VecScatter{Float64}}}})
     ccall((:DMCreateDomainDecompositionScatters,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{DM},Ptr{Ptr{VecScatter{Float64}}},Ptr{Ptr{VecScatter{Float64}}},Ptr{Ptr{VecScatter{Float64}}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetRefineLevel(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMGetRefineLevel,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetCoarsenLevel(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMGetCoarsenLevel,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
 function DMFinalizePackage(arg0::Type{Float64})
     err = ccall((:DMFinalizePackage,petscRealDouble),PetscErrorCode,())
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function VecGetDM(arg1::Vec{Float64},arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:VecGetDM,petscRealDouble),PetscErrorCode,(Vec{Float64},Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function VecSetDM(arg1::Vec{Float64},arg2::DM)
     ccall((:VecSetDM,petscRealDouble),PetscErrorCode,(Vec{Float64},DM),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatGetDM(arg1::Mat{Float64},arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:MatGetDM,petscRealDouble),PetscErrorCode,(Mat{Float64},Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatSetDM(arg1::Mat{Float64},arg2::DM)
     ccall((:MatSetDM,petscRealDouble),PetscErrorCode,(Mat{Float64},DM),arg1,arg2)
-end 
+end
 =#
 function DMPrintCellVector(arg0::Type{Float64},arg1::Integer,arg2::Union{ByteString,Symbol},arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     err = ccall((:DMPrintCellVector,petscRealDouble),PetscErrorCode,(Int64,Cstring,Int64,Ptr{Float64}),arg1,arg2,arg3,arg4)
@@ -7720,200 +7720,200 @@ function DMPrintCellMatrix(arg0::Type{Float64},arg1::Integer,arg2::Union{ByteStr
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPrintLocalVec(arg1::DM,arg2::Union{ByteString,Symbol},arg3::Float64,arg4::Vec{Float64})
     ccall((:DMPrintLocalVec,petscRealDouble),PetscErrorCode,(DM,Cstring,Float64,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetDefaultSection(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:DMGetDefaultSection,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscSection}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetDefaultSection(arg0::Type{Float64},arg1::DM,arg2::PetscSection)
     ccall((:DMSetDefaultSection,petscRealDouble),PetscErrorCode,(DM,PetscSection),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetDefaultConstraints(arg1::DM,arg2::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}},arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     ccall((:DMGetDefaultConstraints,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscSection},Ptr{Mat{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetDefaultConstraints(arg1::DM,arg2::PetscSection,arg3::Mat{Float64})
     ccall((:DMSetDefaultConstraints,petscRealDouble),PetscErrorCode,(DM,PetscSection,Mat{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetDefaultGlobalSection(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:DMGetDefaultGlobalSection,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscSection}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetDefaultGlobalSection(arg0::Type{Float64},arg1::DM,arg2::PetscSection)
     ccall((:DMSetDefaultGlobalSection,petscRealDouble),PetscErrorCode,(DM,PetscSection),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetDefaultSF(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}})
     ccall((:DMGetDefaultSF,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscSF}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetDefaultSF(arg0::Type{Float64},arg1::DM,arg2::PetscSF)
     ccall((:DMSetDefaultSF,petscRealDouble),PetscErrorCode,(DM,PetscSF),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCreateDefaultSF(arg0::Type{Float64},arg1::DM,arg2::PetscSection,arg3::PetscSection)
     ccall((:DMCreateDefaultSF,petscRealDouble),PetscErrorCode,(DM,PetscSection,PetscSection),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetPointSF(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}})
     ccall((:DMGetPointSF,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscSF}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetPointSF(arg0::Type{Float64},arg1::DM,arg2::PetscSF)
     ccall((:DMSetPointSF,petscRealDouble),PetscErrorCode,(DM,PetscSF),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetOutputDM(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMGetOutputDM,petscRealDouble),PetscErrorCode,(DM,Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetOutputSequenceNumber(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMGetOutputSequenceNumber,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetOutputSequenceNumber(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Float64)
     ccall((:DMSetOutputSequenceNumber,petscRealDouble),PetscErrorCode,(DM,Int64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMOutputSequenceLoad(arg1::DM,arg2::PetscViewer{Float64},arg3::Union{ByteString,Symbol},arg4::Integer,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMOutputSequenceLoad,petscRealDouble),PetscErrorCode,(DM,PetscViewer{Float64},Cstring,Int64,Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetDS(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscDS},StridedArray{PetscDS},Ptr{PetscDS},Ref{PetscDS}})
     ccall((:DMGetDS,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscDS}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetDS(arg0::Type{Float64},arg1::DM,arg2::PetscDS)
     ccall((:DMSetDS,petscRealDouble),PetscErrorCode,(DM,PetscDS),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetNumFields(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMGetNumFields,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetNumFields(arg0::Type{Float64},arg1::DM,arg2::Integer)
     ccall((:DMSetNumFields,petscRealDouble),PetscErrorCode,(DM,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGetField(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
     ccall((:DMGetField,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{PetscObject}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSetField(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::PetscObject)
     ccall((:DMSetField,petscRealDouble),PetscErrorCode,(DM,Int64,PetscObject),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMInterpolationCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{DMInterpolationInfo},StridedArray{DMInterpolationInfo},Ptr{DMInterpolationInfo},Ref{DMInterpolationInfo}})
-    ccall((:DMInterpolationCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DMInterpolationInfo}),arg1.val,arg2)
-end 
+    ccall((:DMInterpolationCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DMInterpolationInfo}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMInterpolationSetDim(arg0::Type{Float64},arg1::DMInterpolationInfo,arg2::Integer)
     ccall((:DMInterpolationSetDim,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMInterpolationGetDim(arg0::Type{Float64},arg1::DMInterpolationInfo,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMInterpolationGetDim,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMInterpolationSetDof(arg0::Type{Float64},arg1::DMInterpolationInfo,arg2::Integer)
     ccall((:DMInterpolationSetDof,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMInterpolationGetDof(arg0::Type{Float64},arg1::DMInterpolationInfo,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMInterpolationGetDof,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMInterpolationAddPoints(arg0::Type{Float64},arg1::DMInterpolationInfo,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMInterpolationAddPoints,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Int64,Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMInterpolationSetUp(arg0::Type{Float64},arg1::DMInterpolationInfo,arg2::DM,arg3::PetscBool)
     ccall((:DMInterpolationSetUp,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,DM,PetscBool),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMInterpolationGetCoordinates(arg1::DMInterpolationInfo,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMInterpolationGetCoordinates,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMInterpolationGetVector(arg1::DMInterpolationInfo,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMInterpolationGetVector,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMInterpolationRestoreVector(arg1::DMInterpolationInfo,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMInterpolationRestoreVector,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMInterpolationEvaluate(arg1::DMInterpolationInfo,arg2::DM,arg3::Vec{Float64},arg4::Vec{Float64})
     ccall((:DMInterpolationEvaluate,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,DM,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMInterpolationDestroy(arg0::Type{Float64},arg1::Union{Ptr{DMInterpolationInfo},StridedArray{DMInterpolationInfo},Ptr{DMInterpolationInfo},Ref{DMInterpolationInfo}})
     ccall((:DMInterpolationDestroy,petscRealDouble),PetscErrorCode,(Ptr{DMInterpolationInfo},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PFCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{PF},StridedArray{PF},Ptr{PF},Ref{PF}})
-    ccall((:PFCreate,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{PF}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:PFCreate,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{PF}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PFSetType(arg0::Type{Float64},arg1::PF,arg2::PFType,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PFSetType,petscRealDouble),PetscErrorCode,(PF,Cstring,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PFSet(arg0::Type{Float64},arg1::PF,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PFSet,petscRealDouble),PetscErrorCode,(PF,Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PFApply(arg0::Type{Float64},arg1::PF,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PFApply,petscRealDouble),PetscErrorCode,(PF,Int64,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PFApplyVec(arg1::PF,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:PFApplyVec,petscRealDouble),PetscErrorCode,(PF,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
 function PFInitializePackage(arg0::Type{Float64})
     err = ccall((:PFInitializePackage,petscRealDouble),PetscErrorCode,())
@@ -7925,25 +7925,25 @@ function PFRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Uni
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PFDestroy(arg0::Type{Float64},arg1::Union{Ptr{PF},StridedArray{PF},Ptr{PF},Ref{PF}})
     ccall((:PFDestroy,petscRealDouble),PetscErrorCode,(Ptr{PF},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PFSetFromOptions(arg0::Type{Float64},arg1::PF)
     ccall((:PFSetFromOptions,petscRealDouble),PetscErrorCode,(PF,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PFGetType(arg0::Type{Float64},arg1::PF,arg2::Union{Ptr{PFType},StridedArray{PFType},Ptr{PFType},Ref{PFType}})
     ccall((:PFGetType,petscRealDouble),PetscErrorCode,(PF,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PFView(arg1::PF,arg2::PetscViewer{Float64})
     ccall((:PFView,petscRealDouble),PetscErrorCode,(PF,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
 function AOInitializePackage(arg0::Type{Float64})
     err = ccall((:AOInitializePackage,petscRealDouble),PetscErrorCode,())
@@ -7951,7 +7951,7 @@ function AOInitializePackage(arg0::Type{Float64})
 end
 
 function AOCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
-    err = ccall((:AOCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Cint}),arg1.val,arg2)
+    err = ccall((:AOCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Cint}),arg1,arg2)
     return err
 end
 
@@ -7966,7 +7966,7 @@ function AOSetFromOptions(arg0::Type{Float64})
 end
 
 function AOCreateBasic(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
-    err = ccall((:AOCreateBasic,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{Cint}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:AOCreateBasic,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{Cint}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -7976,7 +7976,7 @@ function AOCreateBasicIS(arg1::IS{Float64},arg2::IS{Float64},arg3::Union{Ptr{Cin
 end
 
 function AOCreateMemoryScalable(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
-    err = ccall((:AOCreateMemoryScalable,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{Cint}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:AOCreateMemoryScalable,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{Cint}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -7986,7 +7986,7 @@ function AOCreateMemoryScalableIS(arg1::IS{Float64},arg2::IS{Float64},arg3::Unio
 end
 
 function AOCreateMapping(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
-    err = ccall((:AOCreateMapping,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{Cint}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:AOCreateMapping,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{Cint}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -8065,50 +8065,50 @@ function AOMappingHasPetscIndex(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscQuadratureCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscQuadrature},StridedArray{PetscQuadrature},Ptr{PetscQuadrature},Ref{PetscQuadrature}})
-    ccall((:PetscQuadratureCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscQuadrature}),arg1.val,arg2)
-end 
+    ccall((:PetscQuadratureCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscQuadrature}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscQuadratureDuplicate(arg0::Type{Float64},arg1::PetscQuadrature,arg2::Union{Ptr{PetscQuadrature},StridedArray{PetscQuadrature},Ptr{PetscQuadrature},Ref{PetscQuadrature}})
     ccall((:PetscQuadratureDuplicate,petscRealDouble),PetscErrorCode,(PetscQuadrature,Ptr{PetscQuadrature}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscQuadratureGetOrder(arg0::Type{Float64},arg1::PetscQuadrature,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscQuadratureGetOrder,petscRealDouble),PetscErrorCode,(PetscQuadrature,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscQuadratureSetOrder(arg0::Type{Float64},arg1::PetscQuadrature,arg2::Integer)
     ccall((:PetscQuadratureSetOrder,petscRealDouble),PetscErrorCode,(PetscQuadrature,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscQuadratureGetData(arg0::Type{Float64},arg1::PetscQuadrature,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg5::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscQuadratureGetData,petscRealDouble),PetscErrorCode,(PetscQuadrature,Ptr{Int64},Ptr{Int64},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscQuadratureSetData(arg0::Type{Float64},arg1::PetscQuadrature,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscQuadratureSetData,petscRealDouble),PetscErrorCode,(PetscQuadrature,Int64,Int64,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscQuadratureView(arg1::PetscQuadrature,arg2::PetscViewer{Float64})
     ccall((:PetscQuadratureView,petscRealDouble),PetscErrorCode,(PetscQuadrature,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscQuadratureDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscQuadrature},StridedArray{PetscQuadrature},Ptr{PetscQuadrature},Ref{PetscQuadrature}})
     ccall((:PetscQuadratureDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscQuadrature},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscQuadratureExpandComposite(arg0::Type{Float64},arg1::PetscQuadrature,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{PetscQuadrature},StridedArray{PetscQuadrature},Ptr{PetscQuadrature},Ref{PetscQuadrature}})
     ccall((:PetscQuadratureExpandComposite,petscRealDouble),PetscErrorCode,(PetscQuadrature,Int64,Ptr{Float64},Ptr{Float64},Ptr{PetscQuadrature}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
 function PetscDTLegendreEval(arg0::Type{Float64},arg1::Integer,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     err = ccall((:PetscDTLegendreEval,petscRealDouble),PetscErrorCode,(Int64,Ptr{Float64},Int64,Ptr{Int64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
@@ -8125,50 +8125,50 @@ function PetscDTReconstructPoly(arg0::Type{Float64},arg1::Integer,arg2::Integer,
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDTGaussTensorQuadrature(arg0::Type{Float64},arg1::Integer,arg2::Integer,arg3::Float64,arg4::Float64,arg5::Union{Ptr{PetscQuadrature},StridedArray{PetscQuadrature},Ptr{PetscQuadrature},Ref{PetscQuadrature}})
     ccall((:PetscDTGaussTensorQuadrature,petscRealDouble),PetscErrorCode,(Int64,Int64,Float64,Float64,Ptr{PetscQuadrature}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDTGaussJacobiQuadrature(arg0::Type{Float64},arg1::Integer,arg2::Integer,arg3::Float64,arg4::Float64,arg5::Union{Ptr{PetscQuadrature},StridedArray{PetscQuadrature},Ptr{PetscQuadrature},Ref{PetscQuadrature}})
     ccall((:PetscDTGaussJacobiQuadrature,petscRealDouble),PetscErrorCode,(Int64,Int64,Float64,Float64,Ptr{PetscQuadrature}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
 function PetscFEInitializePackage(arg0::Type{Float64})
     err = ccall((:PetscFEInitializePackage,petscRealDouble),PetscErrorCode,())
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpaceCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscSpace},StridedArray{PetscSpace},Ptr{PetscSpace},Ref{PetscSpace}})
-    ccall((:PetscSpaceCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscSpace}),arg1.val,arg2)
-end 
+    ccall((:PetscSpaceCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscSpace}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpaceDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscSpace},StridedArray{PetscSpace},Ptr{PetscSpace},Ref{PetscSpace}})
     ccall((:PetscSpaceDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscSpace},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpaceSetType(arg0::Type{Float64},arg1::PetscSpace,arg2::PetscSpaceType)
     ccall((:PetscSpaceSetType,petscRealDouble),PetscErrorCode,(PetscSpace,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpaceGetType(arg0::Type{Float64},arg1::PetscSpace,arg2::Union{Ptr{PetscSpaceType},StridedArray{PetscSpaceType},Ptr{PetscSpaceType},Ref{PetscSpaceType}})
     ccall((:PetscSpaceGetType,petscRealDouble),PetscErrorCode,(PetscSpace,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpaceSetUp(arg0::Type{Float64},arg1::PetscSpace)
     ccall((:PetscSpaceSetUp,petscRealDouble),PetscErrorCode,(PetscSpace,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpaceSetFromOptions(arg0::Type{Float64},arg1::PetscSpace)
     ccall((:PetscSpaceSetFromOptions,petscRealDouble),PetscErrorCode,(PetscSpace,),arg1)
-end 
+end
 =#
 function PetscSpaceRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscSpaceRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -8180,100 +8180,100 @@ function PetscSpaceRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpaceGetDimension(arg0::Type{Float64},arg1::PetscSpace,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSpaceGetDimension,petscRealDouble),PetscErrorCode,(PetscSpace,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpaceSetOrder(arg0::Type{Float64},arg1::PetscSpace,arg2::Integer)
     ccall((:PetscSpaceSetOrder,petscRealDouble),PetscErrorCode,(PetscSpace,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpaceGetOrder(arg0::Type{Float64},arg1::PetscSpace,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSpaceGetOrder,petscRealDouble),PetscErrorCode,(PetscSpace,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpaceEvaluate(arg0::Type{Float64},arg1::PetscSpace,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscSpaceEvaluate,petscRealDouble),PetscErrorCode,(PetscSpace,Int64,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpacePolynomialSetNumVariables(arg0::Type{Float64},arg1::PetscSpace,arg2::Integer)
     ccall((:PetscSpacePolynomialSetNumVariables,petscRealDouble),PetscErrorCode,(PetscSpace,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpacePolynomialGetNumVariables(arg0::Type{Float64},arg1::PetscSpace,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscSpacePolynomialGetNumVariables,petscRealDouble),PetscErrorCode,(PetscSpace,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpacePolynomialSetSymmetric(arg0::Type{Float64},arg1::PetscSpace,arg2::PetscBool)
     ccall((:PetscSpacePolynomialSetSymmetric,petscRealDouble),PetscErrorCode,(PetscSpace,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpacePolynomialGetSymmetric(arg0::Type{Float64},arg1::PetscSpace,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscSpacePolynomialGetSymmetric,petscRealDouble),PetscErrorCode,(PetscSpace,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpacePolynomialSetTensor(arg0::Type{Float64},arg1::PetscSpace,arg2::PetscBool)
     ccall((:PetscSpacePolynomialSetTensor,petscRealDouble),PetscErrorCode,(PetscSpace,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpacePolynomialGetTensor(arg0::Type{Float64},arg1::PetscSpace,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscSpacePolynomialGetTensor,petscRealDouble),PetscErrorCode,(PetscSpace,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpaceDGSetQuadrature(arg0::Type{Float64},arg1::PetscSpace,arg2::PetscQuadrature)
     ccall((:PetscSpaceDGSetQuadrature,petscRealDouble),PetscErrorCode,(PetscSpace,PetscQuadrature),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSpaceDGGetQuadrature(arg0::Type{Float64},arg1::PetscSpace,arg2::Union{Ptr{PetscQuadrature},StridedArray{PetscQuadrature},Ptr{PetscQuadrature},Ref{PetscQuadrature}})
     ccall((:PetscSpaceDGGetQuadrature,petscRealDouble),PetscErrorCode,(PetscSpace,Ptr{PetscQuadrature}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscDualSpace},StridedArray{PetscDualSpace},Ptr{PetscDualSpace},Ref{PetscDualSpace}})
-    ccall((:PetscDualSpaceCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDualSpace}),arg1.val,arg2)
-end 
+    ccall((:PetscDualSpaceCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDualSpace}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscDualSpace},StridedArray{PetscDualSpace},Ptr{PetscDualSpace},Ref{PetscDualSpace}})
     ccall((:PetscDualSpaceDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscDualSpace},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceDuplicate(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Union{Ptr{PetscDualSpace},StridedArray{PetscDualSpace},Ptr{PetscDualSpace},Ref{PetscDualSpace}})
     ccall((:PetscDualSpaceDuplicate,petscRealDouble),PetscErrorCode,(PetscDualSpace,Ptr{PetscDualSpace}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceSetType(arg0::Type{Float64},arg1::PetscDualSpace,arg2::PetscDualSpaceType)
     ccall((:PetscDualSpaceSetType,petscRealDouble),PetscErrorCode,(PetscDualSpace,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceGetType(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Union{Ptr{PetscDualSpaceType},StridedArray{PetscDualSpaceType},Ptr{PetscDualSpaceType},Ref{PetscDualSpaceType}})
     ccall((:PetscDualSpaceGetType,petscRealDouble),PetscErrorCode,(PetscDualSpace,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceSetUp(arg0::Type{Float64},arg1::PetscDualSpace)
     ccall((:PetscDualSpaceSetUp,petscRealDouble),PetscErrorCode,(PetscDualSpace,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceSetFromOptions(arg0::Type{Float64},arg1::PetscDualSpace)
     ccall((:PetscDualSpaceSetFromOptions,petscRealDouble),PetscErrorCode,(PetscDualSpace,),arg1)
-end 
+end
 =#
 function PetscDualSpaceRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscDualSpaceRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -8285,100 +8285,100 @@ function PetscDualSpaceRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceGetDimension(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscDualSpaceGetDimension,petscRealDouble),PetscErrorCode,(PetscDualSpace,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceSetOrder(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Integer)
     ccall((:PetscDualSpaceSetOrder,petscRealDouble),PetscErrorCode,(PetscDualSpace,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceGetOrder(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscDualSpaceGetOrder,petscRealDouble),PetscErrorCode,(PetscDualSpace,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceSetDM(arg0::Type{Float64},arg1::PetscDualSpace,arg2::DM)
     ccall((:PetscDualSpaceSetDM,petscRealDouble),PetscErrorCode,(PetscDualSpace,DM),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceGetDM(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:PetscDualSpaceGetDM,petscRealDouble),PetscErrorCode,(PetscDualSpace,Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceGetFunctional(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Integer,arg3::Union{Ptr{PetscQuadrature},StridedArray{PetscQuadrature},Ptr{PetscQuadrature},Ref{PetscQuadrature}})
     ccall((:PetscDualSpaceGetFunctional,petscRealDouble),PetscErrorCode,(PetscDualSpace,Int64,Ptr{PetscQuadrature}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceCreateReferenceCell(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Integer,arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:PetscDualSpaceCreateReferenceCell,petscRealDouble),PetscErrorCode,(PetscDualSpace,Int64,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceApply(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Integer,arg3::Union{Ptr{PetscFECellGeom},StridedArray{PetscFECellGeom},Ptr{PetscFECellGeom},Ref{PetscFECellGeom}},arg4::Integer,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDualSpaceApply,petscRealDouble),PetscErrorCode,(PetscDualSpace,Int64,Ptr{PetscFECellGeom},Int64,Ptr{Void},Ptr{Void},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceLagrangeGetContinuity(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscDualSpaceLagrangeGetContinuity,petscRealDouble),PetscErrorCode,(PetscDualSpace,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceLagrangeSetContinuity(arg0::Type{Float64},arg1::PetscDualSpace,arg2::PetscBool)
     ccall((:PetscDualSpaceLagrangeSetContinuity,petscRealDouble),PetscErrorCode,(PetscDualSpace,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceGetHeightSubspace(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Integer,arg3::Union{Ptr{PetscDualSpace},StridedArray{PetscDualSpace},Ptr{PetscDualSpace},Ref{PetscDualSpace}})
     ccall((:PetscDualSpaceGetHeightSubspace,petscRealDouble),PetscErrorCode,(PetscDualSpace,Int64,Ptr{PetscDualSpace}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceSimpleSetDimension(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Integer)
     ccall((:PetscDualSpaceSimpleSetDimension,petscRealDouble),PetscErrorCode,(PetscDualSpace,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDualSpaceSimpleSetFunctional(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Integer,arg3::PetscQuadrature)
     ccall((:PetscDualSpaceSimpleSetFunctional,petscRealDouble),PetscErrorCode,(PetscDualSpace,Int64,PetscQuadrature),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFECreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscFE},StridedArray{PetscFE},Ptr{PetscFE},Ref{PetscFE}})
-    ccall((:PetscFECreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscFE}),arg1.val,arg2)
-end 
+    ccall((:PetscFECreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscFE}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscFE},StridedArray{PetscFE},Ptr{PetscFE},Ref{PetscFE}})
     ccall((:PetscFEDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscFE},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFESetType(arg0::Type{Float64},arg1::PetscFE,arg2::PetscFEType)
     ccall((:PetscFESetType,petscRealDouble),PetscErrorCode,(PetscFE,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEGetType(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{PetscFEType},StridedArray{PetscFEType},Ptr{PetscFEType},Ref{PetscFEType}})
     ccall((:PetscFEGetType,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFESetUp(arg0::Type{Float64},arg1::PetscFE)
     ccall((:PetscFESetUp,petscRealDouble),PetscErrorCode,(PetscFE,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFESetFromOptions(arg0::Type{Float64},arg1::PetscFE)
     ccall((:PetscFESetFromOptions,petscRealDouble),PetscErrorCode,(PetscFE,),arg1)
-end 
+end
 =#
 function PetscFERegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscFERegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -8390,795 +8390,795 @@ function PetscFERegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFECreateDefault(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::PetscBool,arg5::Union{ByteString,Symbol},arg6::Integer,arg7::Union{Ptr{PetscFE},StridedArray{PetscFE},Ptr{PetscFE},Ref{PetscFE}})
     ccall((:PetscFECreateDefault,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,PetscBool,Cstring,Int64,Ptr{PetscFE}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEGetDimension(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscFEGetDimension,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEGetSpatialDimension(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscFEGetSpatialDimension,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFESetNumComponents(arg0::Type{Float64},arg1::PetscFE,arg2::Integer)
     ccall((:PetscFESetNumComponents,petscRealDouble),PetscErrorCode,(PetscFE,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEGetNumComponents(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscFEGetNumComponents,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEGetTileSizes(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscFEGetTileSizes,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFESetTileSizes(arg0::Type{Float64},arg1::PetscFE,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer)
     ccall((:PetscFESetTileSizes,petscRealDouble),PetscErrorCode,(PetscFE,Int64,Int64,Int64,Int64),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFESetBasisSpace(arg0::Type{Float64},arg1::PetscFE,arg2::PetscSpace)
     ccall((:PetscFESetBasisSpace,petscRealDouble),PetscErrorCode,(PetscFE,PetscSpace),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEGetBasisSpace(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{PetscSpace},StridedArray{PetscSpace},Ptr{PetscSpace},Ref{PetscSpace}})
     ccall((:PetscFEGetBasisSpace,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{PetscSpace}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFESetDualSpace(arg0::Type{Float64},arg1::PetscFE,arg2::PetscDualSpace)
     ccall((:PetscFESetDualSpace,petscRealDouble),PetscErrorCode,(PetscFE,PetscDualSpace),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEGetDualSpace(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{PetscDualSpace},StridedArray{PetscDualSpace},Ptr{PetscDualSpace},Ref{PetscDualSpace}})
     ccall((:PetscFEGetDualSpace,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{PetscDualSpace}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFESetQuadrature(arg0::Type{Float64},arg1::PetscFE,arg2::PetscQuadrature)
     ccall((:PetscFESetQuadrature,petscRealDouble),PetscErrorCode,(PetscFE,PetscQuadrature),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEGetQuadrature(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{PetscQuadrature},StridedArray{PetscQuadrature},Ptr{PetscQuadrature},Ref{PetscQuadrature}})
     ccall((:PetscFEGetQuadrature,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{PetscQuadrature}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEGetNumDof(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:PetscFEGetNumDof,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{Ptr{Int64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEGetDefaultTabulation(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg3::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscFEGetDefaultTabulation,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEGetFaceTabulation(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscFEGetFaceTabulation,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{Ptr{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEGetTabulation(arg0::Type{Float64},arg1::PetscFE,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg5::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg6::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscFEGetTabulation,petscRealDouble),PetscErrorCode,(PetscFE,Int64,Ptr{Float64},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFERestoreTabulation(arg0::Type{Float64},arg1::PetscFE,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg5::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg6::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscFERestoreTabulation,petscRealDouble),PetscErrorCode,(PetscFE,Int64,Ptr{Float64},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFERefine(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{PetscFE},StridedArray{PetscFE},Ptr{PetscFE},Ref{PetscFE}})
     ccall((:PetscFERefine,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{PetscFE}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEIntegrate(arg0::Type{Float64},arg1::PetscFE,arg2::PetscDS,arg3::Integer,arg4::Integer,arg5::Union{Ptr{PetscFECellGeom},StridedArray{PetscFECellGeom},Ptr{PetscFECellGeom},Ref{PetscFECellGeom}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::PetscDS,arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscFEIntegrate,petscRealDouble),PetscErrorCode,(PetscFE,PetscDS,Int64,Int64,Ptr{PetscFECellGeom},Ptr{Float64},PetscDS,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEIntegrateResidual(arg0::Type{Float64},arg1::PetscFE,arg2::PetscDS,arg3::Integer,arg4::Integer,arg5::Union{Ptr{PetscFECellGeom},StridedArray{PetscFECellGeom},Ptr{PetscFECellGeom},Ref{PetscFECellGeom}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::PetscDS,arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg10::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscFEIntegrateResidual,petscRealDouble),PetscErrorCode,(PetscFE,PetscDS,Int64,Int64,Ptr{PetscFECellGeom},Ptr{Float64},Ptr{Float64},PetscDS,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEIntegrateBdResidual(arg0::Type{Float64},arg1::PetscFE,arg2::PetscDS,arg3::Integer,arg4::Integer,arg5::Union{Ptr{PetscFECellGeom},StridedArray{PetscFECellGeom},Ptr{PetscFECellGeom},Ref{PetscFECellGeom}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::PetscDS,arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg10::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscFEIntegrateBdResidual,petscRealDouble),PetscErrorCode,(PetscFE,PetscDS,Int64,Int64,Ptr{PetscFECellGeom},Ptr{Float64},Ptr{Float64},PetscDS,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEIntegrateJacobian(arg0::Type{Float64},arg1::PetscFE,arg2::PetscDS,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{PetscFECellGeom},StridedArray{PetscFECellGeom},Ptr{PetscFECellGeom},Ref{PetscFECellGeom}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg9::PetscDS,arg10::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg11::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscFEIntegrateJacobian,petscRealDouble),PetscErrorCode,(PetscFE,PetscDS,Int64,Int64,Int64,Ptr{PetscFECellGeom},Ptr{Float64},Ptr{Float64},PetscDS,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEIntegrateBdJacobian(arg0::Type{Float64},arg1::PetscFE,arg2::PetscDS,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{PetscFECellGeom},StridedArray{PetscFECellGeom},Ptr{PetscFECellGeom},Ref{PetscFECellGeom}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg9::PetscDS,arg10::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg11::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscFEIntegrateBdJacobian,petscRealDouble),PetscErrorCode,(PetscFE,PetscDS,Int64,Int64,Int64,Ptr{PetscFECellGeom},Ptr{Float64},Ptr{Float64},PetscDS,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFECompositeGetMapping(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg5::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscFECompositeGetMapping,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{Int64},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEOpenCLSetRealType(arg0::Type{Float64},arg1::PetscFE,arg2::PetscDataType)
     ccall((:PetscFEOpenCLSetRealType,petscRealDouble),PetscErrorCode,(PetscFE,PetscDataType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFEOpenCLGetRealType(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{PetscDataType},StridedArray{PetscDataType},Ptr{PetscDataType},Ref{PetscDataType}})
     ccall((:PetscFEOpenCLGetRealType,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{PetscDataType}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetInterpolationType(arg0::Type{Float64},arg1::DM,arg2::DMDAInterpolationType)
     ccall((:DMDASetInterpolationType,petscRealDouble),PetscErrorCode,(DM,DMDAInterpolationType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetInterpolationType(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DMDAInterpolationType},StridedArray{DMDAInterpolationType},Ptr{DMDAInterpolationType},Ref{DMDAInterpolationType}})
     ccall((:DMDAGetInterpolationType,petscRealDouble),PetscErrorCode,(DM,Ptr{DMDAInterpolationType}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetElementType(arg0::Type{Float64},arg1::DM,arg2::DMDAElementType)
     ccall((:DMDASetElementType,petscRealDouble),PetscErrorCode,(DM,DMDAElementType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetElementType(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DMDAElementType},StridedArray{DMDAElementType},Ptr{DMDAElementType},Ref{DMDAElementType}})
     ccall((:DMDAGetElementType,petscRealDouble),PetscErrorCode,(DM,Ptr{DMDAElementType}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetElements(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMDAGetElements,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDARestoreElements(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMDARestoreElements,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDACreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMDACreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DM}),arg1.val,arg2)
-end 
+    ccall((:DMDACreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DM}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetSizes(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:DMDASetSizes,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDACreate1d(arg0::Type{Float64},arg1::MPI_Comm,arg2::DMBoundaryType,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMDACreate1d,petscRealDouble),PetscErrorCode,(comm_type,DMBoundaryType,Int64,Int64,Int64,Ptr{Int64},Ptr{DM}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+    ccall((:DMDACreate1d,petscRealDouble),PetscErrorCode,(comm_type,DMBoundaryType,Int64,Int64,Int64,Ptr{Int64},Ptr{DM}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDACreate2d(arg0::Type{Float64},arg1::MPI_Comm,arg2::DMBoundaryType,arg3::DMBoundaryType,arg4::DMDAStencilType,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Integer,arg9::Integer,arg10::Integer,arg11::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg12::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg13::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMDACreate2d,petscRealDouble),PetscErrorCode,(comm_type,DMBoundaryType,DMBoundaryType,DMDAStencilType,Int64,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{DM}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13)
-end 
+    ccall((:DMDACreate2d,petscRealDouble),PetscErrorCode,(comm_type,DMBoundaryType,DMBoundaryType,DMDAStencilType,Int64,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{DM}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDACreate3d(arg0::Type{Float64},arg1::MPI_Comm,arg2::DMBoundaryType,arg3::DMBoundaryType,arg4::DMBoundaryType,arg5::DMDAStencilType,arg6::Integer,arg7::Integer,arg8::Integer,arg9::Integer,arg10::Integer,arg11::Integer,arg12::Integer,arg13::Integer,arg14::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg15::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg16::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg17::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMDACreate3d,petscRealDouble),PetscErrorCode,(comm_type,DMBoundaryType,DMBoundaryType,DMBoundaryType,DMDAStencilType,Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{DM}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17)
-end 
+    ccall((:DMDACreate3d,petscRealDouble),PetscErrorCode,(comm_type,DMBoundaryType,DMBoundaryType,DMBoundaryType,DMDAStencilType,Int64,Int64,Int64,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{DM}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGlobalToNaturalBegin(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMDAGlobalToNaturalBegin,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGlobalToNaturalEnd(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMDAGlobalToNaturalEnd,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDANaturalToGlobalBegin(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMDANaturalToGlobalBegin,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDANaturalToGlobalEnd(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMDANaturalToGlobalEnd,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetCorners(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetCorners,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetGhostCorners(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetGhostCorners,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetInfo(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg9::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg10::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg11::Union{Ptr{DMBoundaryType},StridedArray{DMBoundaryType},Ptr{DMBoundaryType},Ref{DMBoundaryType}},arg12::Union{Ptr{DMBoundaryType},StridedArray{DMBoundaryType},Ptr{DMBoundaryType},Ref{DMBoundaryType}},arg13::Union{Ptr{DMBoundaryType},StridedArray{DMBoundaryType},Ptr{DMBoundaryType},Ref{DMBoundaryType}},arg14::Union{Ptr{DMDAStencilType},StridedArray{DMDAStencilType},Ptr{DMDAStencilType},Ref{DMDAStencilType}})
     ccall((:DMDAGetInfo,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{DMBoundaryType},Ptr{DMBoundaryType},Ptr{DMBoundaryType},Ptr{DMDAStencilType}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetProcessorSubset(arg0::Type{Float64},arg1::DM,arg2::DMDADirection,arg3::Integer,arg4::Union{Ptr{MPI_Comm},StridedArray{MPI_Comm},Ptr{MPI_Comm},Ref{MPI_Comm}})
     ccall((:DMDAGetProcessorSubset,petscRealDouble),PetscErrorCode,(DM,DMDADirection,Int64,Ptr{comm_type}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetProcessorSubsets(arg0::Type{Float64},arg1::DM,arg2::DMDADirection,arg3::Union{Ptr{MPI_Comm},StridedArray{MPI_Comm},Ptr{MPI_Comm},Ref{MPI_Comm}})
     ccall((:DMDAGetProcessorSubsets,petscRealDouble),PetscErrorCode,(DM,DMDADirection,Ptr{comm_type}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetRay(arg1::DM,arg2::DMDADirection,arg3::Integer,arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg5::Union{Ptr{VecScatter{Float64}},StridedArray{VecScatter{Float64}},Ptr{VecScatter{Float64}},Ref{VecScatter{Float64}}})
     ccall((:DMDAGetRay,petscRealDouble),PetscErrorCode,(DM,DMDADirection,Int64,Ptr{Vec{Float64}},Ptr{VecScatter{Float64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGlobalToNaturalAllCreate(arg1::DM,arg2::Union{Ptr{VecScatter{Float64}},StridedArray{VecScatter{Float64}},Ptr{VecScatter{Float64}},Ref{VecScatter{Float64}}})
     ccall((:DMDAGlobalToNaturalAllCreate,petscRealDouble),PetscErrorCode,(DM,Ptr{VecScatter{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDANaturalAllToGlobalCreate(arg1::DM,arg2::Union{Ptr{VecScatter{Float64}},StridedArray{VecScatter{Float64}},Ptr{VecScatter{Float64}},Ref{VecScatter{Float64}}})
     ccall((:DMDANaturalAllToGlobalCreate,petscRealDouble),PetscErrorCode,(DM,Ptr{VecScatter{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetScatter(arg1::DM,arg2::Union{Ptr{VecScatter{Float64}},StridedArray{VecScatter{Float64}},Ptr{VecScatter{Float64}},Ref{VecScatter{Float64}}},arg3::Union{Ptr{VecScatter{Float64}},StridedArray{VecScatter{Float64}},Ptr{VecScatter{Float64}},Ref{VecScatter{Float64}}})
     ccall((:DMDAGetScatter,petscRealDouble),PetscErrorCode,(DM,Ptr{VecScatter{Float64}},Ptr{VecScatter{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetNeighbors(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{PetscMPIInt}},StridedArray{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}},Ref{Ptr{PetscMPIInt}}})
     ccall((:DMDAGetNeighbors,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{PetscMPIInt}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetAOType(arg0::Type{Float64},arg1::DM,arg2::AOType)
     ccall((:DMDASetAOType,petscRealDouble),PetscErrorCode,(DM,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetAO(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
     ccall((:DMDAGetAO,petscRealDouble),PetscErrorCode,(DM,Ptr{Cint}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetUniformCoordinates(arg0::Type{Float64},arg1::DM,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Float64,arg7::Float64)
     ccall((:DMDASetUniformCoordinates,petscRealDouble),PetscErrorCode,(DM,Float64,Float64,Float64,Float64,Float64,Float64),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetCoordinateArray(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDAGetCoordinateArray,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDARestoreCoordinateArray(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDARestoreCoordinateArray,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetBoundingBox(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMDAGetBoundingBox,petscRealDouble),PetscErrorCode,(DM,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetLocalBoundingBox(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMDAGetLocalBoundingBox,petscRealDouble),PetscErrorCode,(DM,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetLogicalCoordinate(arg0::Type{Float64},arg1::DM,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg10::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMDAGetLogicalCoordinate,petscRealDouble),PetscErrorCode,(DM,Float64,Float64,Float64,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAMapCoordsToPeriodicDomain(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMDAMapCoordsToPeriodicDomain,petscRealDouble),PetscErrorCode,(DM,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetReducedDMDA(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMDAGetReducedDMDA,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{DM}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetFieldName(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{ByteString,Symbol})
     ccall((:DMDASetFieldName,petscRealDouble),PetscErrorCode,(DM,Int64,Cstring),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetFieldName(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:DMDAGetFieldName,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Ptr{UInt8}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetFieldNames(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:DMDASetFieldNames,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetFieldNames(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}})
     ccall((:DMDAGetFieldNames,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Ptr{UInt8}}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetCoordinateName(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{ByteString,Symbol})
     ccall((:DMDASetCoordinateName,petscRealDouble),PetscErrorCode,(DM,Int64,Cstring),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetCoordinateName(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:DMDAGetCoordinateName,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Ptr{UInt8}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetBoundaryType(arg0::Type{Float64},arg1::DM,arg2::DMBoundaryType,arg3::DMBoundaryType,arg4::DMBoundaryType)
     ccall((:DMDASetBoundaryType,petscRealDouble),PetscErrorCode,(DM,DMBoundaryType,DMBoundaryType,DMBoundaryType),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetDof(arg0::Type{Float64},arg1::DM,arg2::Integer)
     ccall((:DMDASetDof,petscRealDouble),PetscErrorCode,(DM,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetOverlap(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:DMDASetOverlap,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetOverlap(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetOverlap,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetNumLocalSubDomains(arg0::Type{Float64},arg1::DM,arg2::Integer)
     ccall((:DMDASetNumLocalSubDomains,petscRealDouble),PetscErrorCode,(DM,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetNumLocalSubDomains(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetNumLocalSubDomains,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetOffset(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetOffset,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetOffset(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer)
     ccall((:DMDASetOffset,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Int64,Int64,Int64,Int64),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetNonOverlappingRegion(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetNonOverlappingRegion,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetNonOverlappingRegion(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer)
     ccall((:DMDASetNonOverlappingRegion,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Int64,Int64,Int64,Int64),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetStencilWidth(arg0::Type{Float64},arg1::DM,arg2::Integer)
     ccall((:DMDASetStencilWidth,petscRealDouble),PetscErrorCode,(DM,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetOwnershipRanges(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDASetOwnershipRanges,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetOwnershipRanges(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}},arg3::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}},arg4::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMDAGetOwnershipRanges,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Int64}},Ptr{Ptr{Int64}},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetNumProcs(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:DMDASetNumProcs,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetStencilType(arg0::Type{Float64},arg1::DM,arg2::DMDAStencilType)
     ccall((:DMDASetStencilType,petscRealDouble),PetscErrorCode,(DM,DMDAStencilType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAVecGetArray(arg1::DM,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDAVecGetArray,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAVecRestoreArray(arg1::DM,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDAVecRestoreArray,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAVecGetArrayDOF(arg1::DM,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDAVecGetArrayDOF,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAVecRestoreArrayDOF(arg1::DM,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDAVecRestoreArrayDOF,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAVecGetArrayRead(arg1::DM,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDAVecGetArrayRead,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAVecRestoreArrayRead(arg1::DM,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDAVecRestoreArrayRead,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAVecGetArrayDOFRead(arg1::DM,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDAVecGetArrayDOFRead,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAVecRestoreArrayDOFRead(arg1::DM,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDAVecRestoreArrayDOFRead,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
 function DMDASplitComm2d(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Union{Ptr{MPI_Comm},StridedArray{MPI_Comm},Ptr{MPI_Comm},Ref{MPI_Comm}})
-    err = ccall((:DMDASplitComm2d,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{comm_type}),arg1.val,arg2,arg3,arg4,arg5)
+    err = ccall((:DMDASplitComm2d,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{comm_type}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDACreatePatchIS(arg1::DM,arg2::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg3::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg4::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMDACreatePatchIS,petscRealDouble),PetscErrorCode,(DM,Ptr{MatStencil},Ptr{MatStencil},Ptr{IS{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetLocalInfo(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DMDALocalInfo},StridedArray{DMDALocalInfo},Ptr{DMDALocalInfo},Ref{DMDALocalInfo}})
     ccall((:DMDAGetLocalInfo,petscRealDouble),PetscErrorCode,(DM,Ptr{DMDALocalInfo}),arg1,arg2)
-end 
+end
 =#
 function MatRegisterDAAD(arg0::Type{Float64})
     err = ccall((:MatRegisterDAAD,petscRealDouble),PetscErrorCode,())
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCreateDAAD(arg1::DM,arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     ccall((:MatCreateDAAD,petscRealDouble),PetscErrorCode,(DM,Ptr{Mat{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCreateSeqUSFFT(arg1::Vec{Float64},arg2::DM,arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     ccall((:MatCreateSeqUSFFT,petscRealDouble),PetscErrorCode,(Vec{Float64},DM,Ptr{Mat{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetGetMatrix(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDASetGetMatrix,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetBlockFills(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDASetBlockFills,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetRefinementFactor(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:DMDASetRefinementFactor,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetRefinementFactor(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetRefinementFactor,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetArray(arg0::Type{Float64},arg1::DM,arg2::PetscBool,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDAGetArray,petscRealDouble),PetscErrorCode,(DM,PetscBool,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDARestoreArray(arg0::Type{Float64},arg1::DM,arg2::PetscBool,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDARestoreArray,petscRealDouble),PetscErrorCode,(DM,PetscBool,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDACreatePF(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PF},StridedArray{PF},Ptr{PF},Ref{PF}})
     ccall((:DMDACreatePF,petscRealDouble),PetscErrorCode,(DM,Ptr{PF}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetNumCells(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetNumCells,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetCellPoint(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetCellPoint,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Int64,Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetNumVertices(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetNumVertices,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetNumFaces(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetNumFaces,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetHeightStratum(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetHeightStratum,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetDepthStratum(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetDepthStratum,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDACreateSection(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:DMDACreateSection,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{PetscSection}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAComputeCellGeometryFEM(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::PetscQuadrature,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMDAComputeCellGeometryFEM,petscRealDouble),PetscErrorCode,(DM,Int64,PetscQuadrature,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetTransitiveClosure(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::PetscBool,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMDAGetTransitiveClosure,petscRealDouble),PetscErrorCode,(DM,Int64,PetscBool,Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDARestoreTransitiveClosure(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::PetscBool,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMDARestoreTransitiveClosure,petscRealDouble),PetscErrorCode,(DM,Int64,PetscBool,Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAVecGetClosure(arg1::DM,arg2::PetscSection,arg3::Vec{Float64},arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMDAVecGetClosure,petscRealDouble),PetscErrorCode,(DM,PetscSection,Vec{Float64},Int64,Ptr{Int64},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAVecRestoreClosure(arg1::DM,arg2::PetscSection,arg3::Vec{Float64},arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMDAVecRestoreClosure,petscRealDouble),PetscErrorCode,(DM,PetscSection,Vec{Float64},Int64,Ptr{Int64},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAVecSetClosure(arg1::DM,arg2::PetscSection,arg3::Vec{Float64},arg4::Integer,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::InsertMode)
     ccall((:DMDAVecSetClosure,petscRealDouble),PetscErrorCode,(DM,PetscSection,Vec{Float64},Int64,Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetClosure(arg0::Type{Float64},arg1::DM,arg2::PetscSection,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMDAGetClosure,petscRealDouble),PetscErrorCode,(DM,PetscSection,Int64,Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDARestoreClosure(arg0::Type{Float64},arg1::DM,arg2::PetscSection,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMDARestoreClosure,petscRealDouble),PetscErrorCode,(DM,PetscSection,Int64,Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetClosureScalar(arg0::Type{Float64},arg1::DM,arg2::PetscSection,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMDAGetClosureScalar,petscRealDouble),PetscErrorCode,(DM,PetscSection,Int64,Ptr{Float64},Ptr{Int64},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDARestoreClosureScalar(arg0::Type{Float64},arg1::DM,arg2::PetscSection,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMDARestoreClosureScalar,petscRealDouble),PetscErrorCode,(DM,PetscSection,Int64,Ptr{Float64},Ptr{Int64},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetClosureScalar(arg0::Type{Float64},arg1::DM,arg2::PetscSection,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::InsertMode)
     ccall((:DMDASetClosureScalar,petscRealDouble),PetscErrorCode,(DM,PetscSection,Int64,Ptr{Float64},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAConvertToCell(arg0::Type{Float64},arg1::DM,arg2::MatStencil,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAConvertToCell,petscRealDouble),PetscErrorCode,(DM,MatStencil,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetVertexCoordinates(arg0::Type{Float64},arg1::DM,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Float64,arg7::Float64)
     ccall((:DMDASetVertexCoordinates,petscRealDouble),PetscErrorCode,(DM,Float64,Float64,Float64,Float64,Float64,Float64),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASetPreallocationCenterDimension(arg0::Type{Float64},arg1::DM,arg2::Integer)
     ccall((:DMDASetPreallocationCenterDimension,petscRealDouble),PetscErrorCode,(DM,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAGetPreallocationCenterDimension(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAGetPreallocationCenterDimension,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAProjectFunction(arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::InsertMode,arg5::Vec{Float64})
     ccall((:DMDAProjectFunction,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAProjectFunctionLocal(arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::InsertMode,arg5::Vec{Float64})
     ccall((:DMDAProjectFunctionLocal,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAComputeL2Diff(arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Vec{Float64},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMDAComputeL2Diff,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}},Vec{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDAComputeL2GradientDiff(arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Vec{Float64},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMDAComputeL2GradientDiff,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}},Vec{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCompositeCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMCompositeCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DM}),arg1.val,arg2)
-end 
+    ccall((:DMCompositeCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DM}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCompositeAddDM(arg0::Type{Float64},arg1::DM,arg2::DM)
     ccall((:DMCompositeAddDM,petscRealDouble),PetscErrorCode,(DM,DM),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCompositeSetCoupling(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMCompositeSetCoupling,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCompositeAddVecScatter(arg1::DM,arg2::VecScatter{Float64})
     ccall((:DMCompositeAddVecScatter,petscRealDouble),PetscErrorCode,(DM,VecScatter{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCompositeScatterArray(arg1::DM,arg2::Vec{Float64},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMCompositeScatterArray,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCompositeGatherArray(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMCompositeGatherArray,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCompositeGetNumberDM(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMCompositeGetNumberDM,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCompositeGetAccessArray(arg1::DM,arg2::Vec{Float64},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMCompositeGetAccessArray,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Int64,Ptr{Int64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCompositeRestoreAccessArray(arg1::DM,arg2::Vec{Float64},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMCompositeRestoreAccessArray,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Int64,Ptr{Int64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCompositeGetEntriesArray(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMCompositeGetEntriesArray,petscRealDouble),PetscErrorCode,(DM,Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCompositeGetGlobalISs(arg1::DM,arg2::Union{Ptr{Ptr{IS{Float64}}},StridedArray{Ptr{IS{Float64}}},Ptr{Ptr{IS{Float64}}},Ref{Ptr{IS{Float64}}}})
     ccall((:DMCompositeGetGlobalISs,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{IS{Float64}}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCompositeGetLocalISs(arg1::DM,arg2::Union{Ptr{Ptr{IS{Float64}}},StridedArray{Ptr{IS{Float64}}},Ptr{Ptr{IS{Float64}}},Ref{Ptr{IS{Float64}}}})
     ccall((:DMCompositeGetLocalISs,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{IS{Float64}}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMCompositeGetISLocalToGlobalMappings(arg1::DM,arg2::Union{Ptr{Ptr{ISLocalToGlobalMapping{Float64}}},StridedArray{Ptr{ISLocalToGlobalMapping{Float64}}},Ptr{Ptr{ISLocalToGlobalMapping{Float64}}},Ref{Ptr{ISLocalToGlobalMapping{Float64}}}})
     ccall((:DMCompositeGetISLocalToGlobalMappings,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{ISLocalToGlobalMapping{Float64}}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPatchCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPatchCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DM}),arg1.val,arg2)
-end 
+    ccall((:DMPatchCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DM}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPatchZoom(arg1::DM,arg2::Vec{Float64},arg3::MatStencil,arg4::MatStencil,arg5::MPI_Comm,arg6::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}},arg7::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}},arg8::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}})
-    ccall((:DMPatchZoom,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},MatStencil,MatStencil,comm_type,Ptr{DM},Ptr{PetscSF},Ptr{PetscSF}),arg1,arg2,arg3,arg4,arg5.val,arg6,arg7,arg8)
-end 
+    ccall((:DMPatchZoom,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},MatStencil,MatStencil,comm_type,Ptr{DM},Ptr{PetscSF},Ptr{PetscSF}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPatchSolve(arg0::Type{Float64},arg1::DM)
     ccall((:DMPatchSolve,petscRealDouble),PetscErrorCode,(DM,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPatchGetPatchSize(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}})
     ccall((:DMPatchGetPatchSize,petscRealDouble),PetscErrorCode,(DM,Ptr{MatStencil}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPatchSetPatchSize(arg0::Type{Float64},arg1::DM,arg2::MatStencil)
     ccall((:DMPatchSetPatchSize,petscRealDouble),PetscErrorCode,(DM,MatStencil),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPatchGetCommSize(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}})
     ccall((:DMPatchGetCommSize,petscRealDouble),PetscErrorCode,(DM,Ptr{MatStencil}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPatchSetCommSize(arg0::Type{Float64},arg1::DM,arg2::MatStencil)
     ccall((:DMPatchSetCommSize,petscRealDouble),PetscErrorCode,(DM,MatStencil),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPatchGetCoarse(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPatchGetCoarse,petscRealDouble),PetscErrorCode,(DM,Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPatchCreateGrid(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::MatStencil,arg4::MatStencil,arg5::MatStencil,arg6::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPatchCreateGrid,petscRealDouble),PetscErrorCode,(comm_type,Int64,MatStencil,MatStencil,MatStencil,Ptr{DM}),arg1.val,arg2,arg3,arg4,arg5,arg6)
-end 
+    ccall((:DMPatchCreateGrid,petscRealDouble),PetscErrorCode,(comm_type,Int64,MatStencil,MatStencil,MatStencil,Ptr{DM}),arg1,arg2,arg3,arg4,arg5,arg6)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscLimiterCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscLimiter},StridedArray{PetscLimiter},Ptr{PetscLimiter},Ref{PetscLimiter}})
-    ccall((:PetscLimiterCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscLimiter}),arg1.val,arg2)
-end 
+    ccall((:PetscLimiterCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscLimiter}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscLimiterDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscLimiter},StridedArray{PetscLimiter},Ptr{PetscLimiter},Ref{PetscLimiter}})
     ccall((:PetscLimiterDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscLimiter},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscLimiterSetType(arg0::Type{Float64},arg1::PetscLimiter,arg2::PetscLimiterType)
     ccall((:PetscLimiterSetType,petscRealDouble),PetscErrorCode,(PetscLimiter,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscLimiterGetType(arg0::Type{Float64},arg1::PetscLimiter,arg2::Union{Ptr{PetscLimiterType},StridedArray{PetscLimiterType},Ptr{PetscLimiterType},Ref{PetscLimiterType}})
     ccall((:PetscLimiterGetType,petscRealDouble),PetscErrorCode,(PetscLimiter,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscLimiterSetUp(arg0::Type{Float64},arg1::PetscLimiter)
     ccall((:PetscLimiterSetUp,petscRealDouble),PetscErrorCode,(PetscLimiter,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscLimiterSetFromOptions(arg0::Type{Float64},arg1::PetscLimiter)
     ccall((:PetscLimiterSetFromOptions,petscRealDouble),PetscErrorCode,(PetscLimiter,),arg1)
-end 
+end
 =#
 function PetscLimiterRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscLimiterRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -9190,45 +9190,45 @@ function PetscLimiterRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscLimiterLimit(arg0::Type{Float64},arg1::PetscLimiter,arg2::Float64,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscLimiterLimit,petscRealDouble),PetscErrorCode,(PetscLimiter,Float64,Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
 function PetscFVInitializePackage(arg0::Type{Float64})
     err = ccall((:PetscFVInitializePackage,petscRealDouble),PetscErrorCode,())
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscFV},StridedArray{PetscFV},Ptr{PetscFV},Ref{PetscFV}})
-    ccall((:PetscFVCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscFV}),arg1.val,arg2)
-end 
+    ccall((:PetscFVCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscFV}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscFV},StridedArray{PetscFV},Ptr{PetscFV},Ref{PetscFV}})
     ccall((:PetscFVDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscFV},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVSetType(arg0::Type{Float64},arg1::PetscFV,arg2::PetscFVType)
     ccall((:PetscFVSetType,petscRealDouble),PetscErrorCode,(PetscFV,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVGetType(arg0::Type{Float64},arg1::PetscFV,arg2::Union{Ptr{PetscFVType},StridedArray{PetscFVType},Ptr{PetscFVType},Ref{PetscFVType}})
     ccall((:PetscFVGetType,petscRealDouble),PetscErrorCode,(PetscFV,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVSetUp(arg0::Type{Float64},arg1::PetscFV)
     ccall((:PetscFVSetUp,petscRealDouble),PetscErrorCode,(PetscFV,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVSetFromOptions(arg0::Type{Float64},arg1::PetscFV)
     ccall((:PetscFVSetFromOptions,petscRealDouble),PetscErrorCode,(PetscFV,),arg1)
-end 
+end
 =#
 function PetscFVRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscFVRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -9240,130 +9240,130 @@ function PetscFVRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVSetLimiter(arg0::Type{Float64},arg1::PetscFV,arg2::PetscLimiter)
     ccall((:PetscFVSetLimiter,petscRealDouble),PetscErrorCode,(PetscFV,PetscLimiter),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVGetLimiter(arg0::Type{Float64},arg1::PetscFV,arg2::Union{Ptr{PetscLimiter},StridedArray{PetscLimiter},Ptr{PetscLimiter},Ref{PetscLimiter}})
     ccall((:PetscFVGetLimiter,petscRealDouble),PetscErrorCode,(PetscFV,Ptr{PetscLimiter}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVSetNumComponents(arg0::Type{Float64},arg1::PetscFV,arg2::Integer)
     ccall((:PetscFVSetNumComponents,petscRealDouble),PetscErrorCode,(PetscFV,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVGetNumComponents(arg0::Type{Float64},arg1::PetscFV,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscFVGetNumComponents,petscRealDouble),PetscErrorCode,(PetscFV,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVSetSpatialDimension(arg0::Type{Float64},arg1::PetscFV,arg2::Integer)
     ccall((:PetscFVSetSpatialDimension,petscRealDouble),PetscErrorCode,(PetscFV,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVGetSpatialDimension(arg0::Type{Float64},arg1::PetscFV,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscFVGetSpatialDimension,petscRealDouble),PetscErrorCode,(PetscFV,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVSetComputeGradients(arg0::Type{Float64},arg1::PetscFV,arg2::PetscBool)
     ccall((:PetscFVSetComputeGradients,petscRealDouble),PetscErrorCode,(PetscFV,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVGetComputeGradients(arg0::Type{Float64},arg1::PetscFV,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscFVGetComputeGradients,petscRealDouble),PetscErrorCode,(PetscFV,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVSetQuadrature(arg0::Type{Float64},arg1::PetscFV,arg2::PetscQuadrature)
     ccall((:PetscFVSetQuadrature,petscRealDouble),PetscErrorCode,(PetscFV,PetscQuadrature),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVGetQuadrature(arg0::Type{Float64},arg1::PetscFV,arg2::Union{Ptr{PetscQuadrature},StridedArray{PetscQuadrature},Ptr{PetscQuadrature},Ref{PetscQuadrature}})
     ccall((:PetscFVGetQuadrature,petscRealDouble),PetscErrorCode,(PetscFV,Ptr{PetscQuadrature}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVSetDualSpace(arg0::Type{Float64},arg1::PetscFV,arg2::PetscDualSpace)
     ccall((:PetscFVSetDualSpace,petscRealDouble),PetscErrorCode,(PetscFV,PetscDualSpace),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVGetDualSpace(arg0::Type{Float64},arg1::PetscFV,arg2::Union{Ptr{PetscDualSpace},StridedArray{PetscDualSpace},Ptr{PetscDualSpace},Ref{PetscDualSpace}})
     ccall((:PetscFVGetDualSpace,petscRealDouble),PetscErrorCode,(PetscFV,Ptr{PetscDualSpace}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVRefine(arg0::Type{Float64},arg1::PetscFV,arg2::Union{Ptr{PetscFV},StridedArray{PetscFV},Ptr{PetscFV},Ref{PetscFV}})
     ccall((:PetscFVRefine,petscRealDouble),PetscErrorCode,(PetscFV,Ptr{PetscFV}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVGetDefaultTabulation(arg0::Type{Float64},arg1::PetscFV,arg2::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg3::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscFVGetDefaultTabulation,petscRealDouble),PetscErrorCode,(PetscFV,Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVGetTabulation(arg0::Type{Float64},arg1::PetscFV,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg5::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg6::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscFVGetTabulation,petscRealDouble),PetscErrorCode,(PetscFV,Int64,Ptr{Float64},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVRestoreTabulation(arg0::Type{Float64},arg1::PetscFV,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg5::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg6::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscFVRestoreTabulation,petscRealDouble),PetscErrorCode,(PetscFV,Int64,Ptr{Float64},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVComputeGradient(arg0::Type{Float64},arg1::PetscFV,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscFVComputeGradient,petscRealDouble),PetscErrorCode,(PetscFV,Int64,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVIntegrateRHSFunction(arg0::Type{Float64},arg1::PetscFV,arg2::PetscDS,arg3::Integer,arg4::Integer,arg5::Union{Ptr{PetscFVFaceGeom},StridedArray{PetscFVFaceGeom},Ptr{PetscFVFaceGeom},Ref{PetscFVFaceGeom}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg10::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscFVIntegrateRHSFunction,petscRealDouble),PetscErrorCode,(PetscFV,PetscDS,Int64,Int64,Ptr{PetscFVFaceGeom},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscFVLeastSquaresSetMaxFaces(arg0::Type{Float64},arg1::PetscFV,arg2::Integer)
     ccall((:PetscFVLeastSquaresSetMaxFaces,petscRealDouble),PetscErrorCode,(PetscFV,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscPartitionerCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscPartitioner},StridedArray{PetscPartitioner},Ptr{PetscPartitioner},Ref{PetscPartitioner}})
-    ccall((:PetscPartitionerCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscPartitioner}),arg1.val,arg2)
-end 
+    ccall((:PetscPartitionerCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscPartitioner}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscPartitionerDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscPartitioner},StridedArray{PetscPartitioner},Ptr{PetscPartitioner},Ref{PetscPartitioner}})
     ccall((:PetscPartitionerDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscPartitioner},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscPartitionerSetType(arg0::Type{Float64},arg1::PetscPartitioner,arg2::PetscPartitionerType)
     ccall((:PetscPartitionerSetType,petscRealDouble),PetscErrorCode,(PetscPartitioner,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscPartitionerGetType(arg0::Type{Float64},arg1::PetscPartitioner,arg2::Union{Ptr{PetscPartitionerType},StridedArray{PetscPartitionerType},Ptr{PetscPartitionerType},Ref{PetscPartitionerType}})
     ccall((:PetscPartitionerGetType,petscRealDouble),PetscErrorCode,(PetscPartitioner,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscPartitionerSetUp(arg0::Type{Float64},arg1::PetscPartitioner)
     ccall((:PetscPartitionerSetUp,petscRealDouble),PetscErrorCode,(PetscPartitioner,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscPartitionerSetFromOptions(arg0::Type{Float64},arg1::PetscPartitioner)
     ccall((:PetscPartitionerSetFromOptions,petscRealDouble),PetscErrorCode,(PetscPartitioner,),arg1)
-end 
+end
 =#
 function PetscPartitionerRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscPartitionerRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -9375,1405 +9375,1405 @@ function PetscPartitionerRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscPartitionerPartition(arg1::PetscPartitioner,arg2::DM,arg3::PetscSection,arg4::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:PetscPartitionerPartition,petscRealDouble),PetscErrorCode,(PetscPartitioner,DM,PetscSection,Ptr{IS{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscPartitionerShellSetPartition(arg0::Type{Float64},arg1::PetscPartitioner,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscPartitionerShellSetPartition,petscRealDouble),PetscErrorCode,(PetscPartitioner,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DM}),arg1.val,arg2)
-end 
+    ccall((:DMPlexCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DM}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateCohesiveSubmesh(arg0::Type{Float64},arg1::DM,arg2::PetscBool,arg3::Union{ByteString,Symbol},arg4::Integer,arg5::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexCreateCohesiveSubmesh,petscRealDouble),PetscErrorCode,(DM,PetscBool,Cstring,Int64,Ptr{DM}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateFromCellList(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::PetscBool,arg7::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}},arg8::Integer,arg9::Union{Ptr{Cdouble},StridedArray{Cdouble},Ptr{Cdouble},Ref{Cdouble}},arg10::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateFromCellList,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,PetscBool,Ptr{Cint},Int64,Ptr{Cdouble},Ptr{DM}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
-end 
+    ccall((:DMPlexCreateFromCellList,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Int64,PetscBool,Ptr{Cint},Int64,Ptr{Cdouble},Ptr{DM}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateFromDAG(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMPlexCreateFromDAG,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateReferenceCell(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateReferenceCell,petscRealDouble),PetscErrorCode,(comm_type,Int64,PetscBool,Ptr{DM}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:DMPlexCreateReferenceCell,petscRealDouble),PetscErrorCode,(comm_type,Int64,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetChart(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetChart,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetChart(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer)
     ccall((:DMPlexSetChart,petscRealDouble),PetscErrorCode,(DM,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetConeSize(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetConeSize,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetConeSize(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer)
     ccall((:DMPlexSetConeSize,petscRealDouble),PetscErrorCode,(DM,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexAddConeSize(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer)
     ccall((:DMPlexAddConeSize,petscRealDouble),PetscErrorCode,(DM,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetCone(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexGetCone,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Ptr{Int64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetCone(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexSetCone,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexInsertCone(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:DMPlexInsertCone,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexInsertConeOrientation(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:DMPlexInsertConeOrientation,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetConeOrientation(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexGetConeOrientation,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Ptr{Int64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetConeOrientation(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexSetConeOrientation,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetSupportSize(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetSupportSize,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetSupportSize(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer)
     ccall((:DMPlexSetSupportSize,petscRealDouble),PetscErrorCode,(DM,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetSupport(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexGetSupport,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Ptr{Int64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetSupport(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexSetSupport,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexInsertSupport(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Integer)
     ccall((:DMPlexInsertSupport,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetConeSection(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:DMPlexGetConeSection,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscSection}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetSupportSection(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:DMPlexGetSupportSection,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscSection}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetCones(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexGetCones,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Int64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetConeOrientations(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexGetConeOrientations,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Int64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetMaxSizes(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetMaxSizes,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSymmetrize(arg0::Type{Float64},arg1::DM)
     ccall((:DMPlexSymmetrize,petscRealDouble),PetscErrorCode,(DM,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexStratify(arg0::Type{Float64},arg1::DM)
     ccall((:DMPlexStratify,petscRealDouble),PetscErrorCode,(DM,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexEqual(arg0::Type{Float64},arg1::DM,arg2::DM,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMPlexEqual,petscRealDouble),PetscErrorCode,(DM,DM,Ptr{PetscBool}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexReverseCell(arg0::Type{Float64},arg1::DM,arg2::Integer)
     ccall((:DMPlexReverseCell,petscRealDouble),PetscErrorCode,(DM,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexOrient(arg0::Type{Float64},arg1::DM)
     ccall((:DMPlexOrient,petscRealDouble),PetscErrorCode,(DM,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexInterpolate(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexInterpolate,petscRealDouble),PetscErrorCode,(DM,Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexUninterpolate(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexUninterpolate,petscRealDouble),PetscErrorCode,(DM,Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexLoad(arg1::PetscViewer{Float64},arg2::DM)
     ccall((:DMPlexLoad,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},DM),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPreallocateOperator(arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Mat{Float64},arg8::PetscBool)
     ccall((:DMPlexPreallocateOperator,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64},Mat{Float64},PetscBool),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetPointLocal(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetPointLocal,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPointLocalRead(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexPointLocalRead,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Float64},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPointLocalRef(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexPointLocalRef,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Float64},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetPointLocalField(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetPointLocalField,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPointLocalFieldRef(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexPointLocalFieldRef,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Ptr{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPointLocalFieldRead(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexPointLocalFieldRead,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Ptr{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetPointGlobal(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetPointGlobal,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPointGlobalRead(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexPointGlobalRead,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Float64},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPointGlobalRef(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexPointGlobalRef,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Float64},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetPointGlobalField(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetPointGlobalField,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPointGlobalFieldRef(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexPointGlobalFieldRef,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Ptr{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPointGlobalFieldRead(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexPointGlobalFieldRead,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Ptr{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelCreate(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     ccall((:DMLabelCreate,petscRealDouble),PetscErrorCode,(Cstring,Ptr{DMLabel}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelView(arg1::DMLabel,arg2::PetscViewer{Float64})
     ccall((:DMLabelView,petscRealDouble),PetscErrorCode,(DMLabel,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelDestroy(arg0::Type{Float64},arg1::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     ccall((:DMLabelDestroy,petscRealDouble),PetscErrorCode,(Ptr{DMLabel},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelDuplicate(arg0::Type{Float64},arg1::DMLabel,arg2::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     ccall((:DMLabelDuplicate,petscRealDouble),PetscErrorCode,(DMLabel,Ptr{DMLabel}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelGetName(arg0::Type{Float64},arg1::DMLabel,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:DMLabelGetName,petscRealDouble),PetscErrorCode,(DMLabel,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelGetValue(arg0::Type{Float64},arg1::DMLabel,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMLabelGetValue,petscRealDouble),PetscErrorCode,(DMLabel,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelSetValue(arg0::Type{Float64},arg1::DMLabel,arg2::Integer,arg3::Integer)
     ccall((:DMLabelSetValue,petscRealDouble),PetscErrorCode,(DMLabel,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelClearValue(arg0::Type{Float64},arg1::DMLabel,arg2::Integer,arg3::Integer)
     ccall((:DMLabelClearValue,petscRealDouble),PetscErrorCode,(DMLabel,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelInsertIS(arg1::DMLabel,arg2::IS{Float64},arg3::Integer)
     ccall((:DMLabelInsertIS,petscRealDouble),PetscErrorCode,(DMLabel,IS{Float64},Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelGetNumValues(arg0::Type{Float64},arg1::DMLabel,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMLabelGetNumValues,petscRealDouble),PetscErrorCode,(DMLabel,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelGetStratumBounds(arg0::Type{Float64},arg1::DMLabel,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMLabelGetStratumBounds,petscRealDouble),PetscErrorCode,(DMLabel,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelGetValueIS(arg1::DMLabel,arg2::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMLabelGetValueIS,petscRealDouble),PetscErrorCode,(DMLabel,Ptr{IS{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelStratumHasPoint(arg0::Type{Float64},arg1::DMLabel,arg2::Integer,arg3::Integer,arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMLabelStratumHasPoint,petscRealDouble),PetscErrorCode,(DMLabel,Int64,Int64,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelGetStratumSize(arg0::Type{Float64},arg1::DMLabel,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMLabelGetStratumSize,petscRealDouble),PetscErrorCode,(DMLabel,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelGetStratumIS(arg1::DMLabel,arg2::Integer,arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMLabelGetStratumIS,petscRealDouble),PetscErrorCode,(DMLabel,Int64,Ptr{IS{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelClearStratum(arg0::Type{Float64},arg1::DMLabel,arg2::Integer)
     ccall((:DMLabelClearStratum,petscRealDouble),PetscErrorCode,(DMLabel,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelCreateIndex(arg0::Type{Float64},arg1::DMLabel,arg2::Integer,arg3::Integer)
     ccall((:DMLabelCreateIndex,petscRealDouble),PetscErrorCode,(DMLabel,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelDestroyIndex(arg0::Type{Float64},arg1::DMLabel)
     ccall((:DMLabelDestroyIndex,petscRealDouble),PetscErrorCode,(DMLabel,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelHasValue(arg0::Type{Float64},arg1::DMLabel,arg2::Integer,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMLabelHasValue,petscRealDouble),PetscErrorCode,(DMLabel,Int64,Ptr{PetscBool}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelHasPoint(arg0::Type{Float64},arg1::DMLabel,arg2::Integer,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMLabelHasPoint,petscRealDouble),PetscErrorCode,(DMLabel,Int64,Ptr{PetscBool}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelFilter(arg0::Type{Float64},arg1::DMLabel,arg2::Integer,arg3::Integer)
     ccall((:DMLabelFilter,petscRealDouble),PetscErrorCode,(DMLabel,Int64,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelPermute(arg1::DMLabel,arg2::IS{Float64},arg3::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     ccall((:DMLabelPermute,petscRealDouble),PetscErrorCode,(DMLabel,IS{Float64},Ptr{DMLabel}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLabelDistribute(arg0::Type{Float64},arg1::DMLabel,arg2::PetscSF,arg3::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     ccall((:DMLabelDistribute,petscRealDouble),PetscErrorCode,(DMLabel,PetscSF,Ptr{DMLabel}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateLabel(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol})
     ccall((:DMPlexCreateLabel,petscRealDouble),PetscErrorCode,(DM,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetLabelValue(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetLabelValue,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64,Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetLabelValue(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol},arg3::Integer,arg4::Integer)
     ccall((:DMPlexSetLabelValue,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexClearLabelValue(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol},arg3::Integer,arg4::Integer)
     ccall((:DMPlexClearLabelValue,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64,Int64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetLabelSize(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetLabelSize,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetLabelIdIS(arg1::DM,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMPlexGetLabelIdIS,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{IS{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetStratumSize(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetStratumSize,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64,Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetStratumIS(arg1::DM,arg2::Union{ByteString,Symbol},arg3::Integer,arg4::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMPlexGetStratumIS,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64,Ptr{IS{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexClearLabelStratum(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol},arg3::Integer)
     ccall((:DMPlexClearLabelStratum,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetLabelOutput(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMPlexGetLabelOutput,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetLabelOutput(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol},arg3::PetscBool)
     ccall((:DMPlexSetLabelOutput,petscRealDouble),PetscErrorCode,(DM,Cstring,PetscBool),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscSectionCreateGlobalSectionLabel(arg0::Type{Float64},arg1::PetscSection,arg2::PetscSF,arg3::PetscBool,arg4::DMLabel,arg5::Integer,arg6::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:PetscSectionCreateGlobalSectionLabel,petscRealDouble),PetscErrorCode,(PetscSection,PetscSF,PetscBool,DMLabel,Int64,Ptr{PetscSection}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetNumLabels(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetNumLabels,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetLabelName(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:DMPlexGetLabelName,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Ptr{UInt8}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexHasLabel(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMPlexHasLabel,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetLabel(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     ccall((:DMPlexGetLabel,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{DMLabel}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetLabelByNum(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     ccall((:DMPlexGetLabelByNum,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{DMLabel}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexAddLabel(arg0::Type{Float64},arg1::DM,arg2::DMLabel)
     ccall((:DMPlexAddLabel,petscRealDouble),PetscErrorCode,(DM,DMLabel),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexRemoveLabel(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     ccall((:DMPlexRemoveLabel,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{DMLabel}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetCellNumbering(arg1::DM,arg2::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMPlexGetCellNumbering,petscRealDouble),PetscErrorCode,(DM,Ptr{IS{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetVertexNumbering(arg1::DM,arg2::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMPlexGetVertexNumbering,petscRealDouble),PetscErrorCode,(DM,Ptr{IS{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreatePointNumbering(arg1::DM,arg2::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMPlexCreatePointNumbering,petscRealDouble),PetscErrorCode,(DM,Ptr{IS{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetDepth(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetDepth,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetDepthLabel(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     ccall((:DMPlexGetDepthLabel,petscRealDouble),PetscErrorCode,(DM,Ptr{DMLabel}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetDepthStratum(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetDepthStratum,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetHeightStratum(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetHeightStratum,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetMeet(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexGetMeet,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetFullMeet(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexGetFullMeet,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexRestoreMeet(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexRestoreMeet,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetJoin(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexGetJoin,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetFullJoin(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexGetFullJoin,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexRestoreJoin(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexRestoreJoin,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetTransitiveClosure(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::PetscBool,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexGetTransitiveClosure,petscRealDouble),PetscErrorCode,(DM,Int64,PetscBool,Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexRestoreTransitiveClosure(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::PetscBool,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexRestoreTransitiveClosure,petscRealDouble),PetscErrorCode,(DM,Int64,PetscBool,Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGenerate(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexGenerate,petscRealDouble),PetscErrorCode,(DM,Cstring,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCopyCoordinates(arg0::Type{Float64},arg1::DM,arg2::DM)
     ccall((:DMPlexCopyCoordinates,petscRealDouble),PetscErrorCode,(DM,DM),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCopyLabels(arg0::Type{Float64},arg1::DM,arg2::DM)
     ccall((:DMPlexCopyLabels,petscRealDouble),PetscErrorCode,(DM,DM),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateDoublet(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::PetscBool,arg4::PetscBool,arg5::PetscBool,arg6::Float64,arg7::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateDoublet,petscRealDouble),PetscErrorCode,(comm_type,Int64,PetscBool,PetscBool,PetscBool,Float64,Ptr{DM}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+    ccall((:DMPlexCreateDoublet,petscRealDouble),PetscErrorCode,(comm_type,Int64,PetscBool,PetscBool,PetscBool,Float64,Ptr{DM}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateSquareBoundary(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexCreateSquareBoundary,petscRealDouble),PetscErrorCode,(DM,Ptr{Float64},Ptr{Float64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateCubeBoundary(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexCreateCubeBoundary,petscRealDouble),PetscErrorCode,(DM,Ptr{Float64},Ptr{Float64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateSquareMesh(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::DMBoundaryType,arg6::DMBoundaryType)
     ccall((:DMPlexCreateSquareMesh,petscRealDouble),PetscErrorCode,(DM,Ptr{Float64},Ptr{Float64},Ptr{Int64},DMBoundaryType,DMBoundaryType),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateBoxMesh(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateBoxMesh,petscRealDouble),PetscErrorCode,(comm_type,Int64,PetscBool,Ptr{DM}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:DMPlexCreateBoxMesh,petscRealDouble),PetscErrorCode,(comm_type,Int64,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateHexBoxMesh(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::DMBoundaryType,arg5::DMBoundaryType,arg6::DMBoundaryType,arg7::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateHexBoxMesh,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},DMBoundaryType,DMBoundaryType,DMBoundaryType,Ptr{DM}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+    ccall((:DMPlexCreateHexBoxMesh,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},DMBoundaryType,DMBoundaryType,DMBoundaryType,Ptr{DM}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateConeSection(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:DMPlexCreateConeSection,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscSection}),arg1,arg2)
-end 
+end
 =#
 function DMPlexInvertCell(arg0::Type{Float64},arg1::Integer,arg2::Integer,arg3::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
     err = ccall((:DMPlexInvertCell,petscRealDouble),PetscErrorCode,(Int64,Int64,Ptr{Cint}),arg1,arg2,arg3)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexLocalizeCoordinate(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMPlexLocalizeCoordinate,petscRealDouble),PetscErrorCode,(DM,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexLocalizeCoordinates(arg0::Type{Float64},arg1::DM)
     ccall((:DMPlexLocalizeCoordinates,petscRealDouble),PetscErrorCode,(DM,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCheckSymmetry(arg0::Type{Float64},arg1::DM)
     ccall((:DMPlexCheckSymmetry,petscRealDouble),PetscErrorCode,(DM,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCheckSkeleton(arg0::Type{Float64},arg1::DM,arg2::PetscBool,arg3::Integer)
     ccall((:DMPlexCheckSkeleton,petscRealDouble),PetscErrorCode,(DM,PetscBool,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCheckFaces(arg0::Type{Float64},arg1::DM,arg2::PetscBool,arg3::Integer)
     ccall((:DMPlexCheckFaces,petscRealDouble),PetscErrorCode,(DM,PetscBool,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexTriangleSetOptions(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol})
     ccall((:DMPlexTriangleSetOptions,petscRealDouble),PetscErrorCode,(DM,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexTetgenSetOptions(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol})
     ccall((:DMPlexTetgenSetOptions,petscRealDouble),PetscErrorCode,(DM,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateNeighborCSR(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexCreateNeighborCSR,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Ptr{Int64}},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetPartitioner(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscPartitioner},StridedArray{PetscPartitioner},Ptr{PetscPartitioner},Ref{PetscPartitioner}})
     ccall((:DMPlexGetPartitioner,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscPartitioner}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetPartitioner(arg0::Type{Float64},arg1::DM,arg2::PetscPartitioner)
     ccall((:DMPlexSetPartitioner,petscRealDouble),PetscErrorCode,(DM,PetscPartitioner),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreatePartition(arg1::DM,arg2::Union{ByteString,Symbol},arg3::Integer,arg4::PetscBool,arg5::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}},arg6::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg7::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}},arg8::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMPlexCreatePartition,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64,PetscBool,Ptr{PetscSection},Ptr{IS{Float64}},Ptr{PetscSection},Ptr{IS{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreatePartitionerGraph(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexCreatePartitionerGraph,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Ptr{Int64}},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreatePartitionClosure(arg1::DM,arg2::PetscSection,arg3::IS{Float64},arg4::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}},arg5::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMPlexCreatePartitionClosure,petscRealDouble),PetscErrorCode,(DM,PetscSection,IS{Float64},Ptr{PetscSection},Ptr{IS{Float64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPartitionLabelInvert(arg0::Type{Float64},arg1::DM,arg2::DMLabel,arg3::PetscSF,arg4::DMLabel)
     ccall((:DMPlexPartitionLabelInvert,petscRealDouble),PetscErrorCode,(DM,DMLabel,PetscSF,DMLabel),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPartitionLabelClosure(arg0::Type{Float64},arg1::DM,arg2::DMLabel)
     ccall((:DMPlexPartitionLabelClosure,petscRealDouble),PetscErrorCode,(DM,DMLabel),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPartitionLabelAdjacency(arg0::Type{Float64},arg1::DM,arg2::DMLabel)
     ccall((:DMPlexPartitionLabelAdjacency,petscRealDouble),PetscErrorCode,(DM,DMLabel),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPartitionLabelCreateSF(arg0::Type{Float64},arg1::DM,arg2::DMLabel,arg3::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}})
     ccall((:DMPlexPartitionLabelCreateSF,petscRealDouble),PetscErrorCode,(DM,DMLabel,Ptr{PetscSF}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexDistribute(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}},arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexDistribute,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{PetscSF},Ptr{DM}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexDistributeOverlap(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}},arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexDistributeOverlap,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{PetscSF},Ptr{DM}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexDistributeField(arg1::DM,arg2::PetscSF,arg3::PetscSection,arg4::Vec{Float64},arg5::PetscSection,arg6::Vec{Float64})
     ccall((:DMPlexDistributeField,petscRealDouble),PetscErrorCode,(DM,PetscSF,PetscSection,Vec{Float64},PetscSection,Vec{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexDistributeFieldIS(arg1::DM,arg2::PetscSF,arg3::PetscSection,arg4::IS{Float64},arg5::PetscSection,arg6::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMPlexDistributeFieldIS,petscRealDouble),PetscErrorCode,(DM,PetscSF,PetscSection,IS{Float64},PetscSection,Ptr{IS{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexDistributeData(arg0::Type{Float64},arg1::DM,arg2::PetscSF,arg3::PetscSection,arg4::MPI_Datatype,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::PetscSection,arg7::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMPlexDistributeData,petscRealDouble),PetscErrorCode,(DM,PetscSF,PetscSection,MPI_Datatype,Ptr{Void},PetscSection,Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexMigrate(arg0::Type{Float64},arg1::DM,arg2::PetscSF,arg3::DM)
     ccall((:DMPlexMigrate,petscRealDouble),PetscErrorCode,(DM,PetscSF,DM),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetAdjacencyUseCone(arg0::Type{Float64},arg1::DM,arg2::PetscBool)
     ccall((:DMPlexSetAdjacencyUseCone,petscRealDouble),PetscErrorCode,(DM,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetAdjacencyUseCone(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMPlexGetAdjacencyUseCone,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetAdjacencyUseClosure(arg0::Type{Float64},arg1::DM,arg2::PetscBool)
     ccall((:DMPlexSetAdjacencyUseClosure,petscRealDouble),PetscErrorCode,(DM,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetAdjacencyUseClosure(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMPlexGetAdjacencyUseClosure,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetAdjacencyUseAnchors(arg0::Type{Float64},arg1::DM,arg2::PetscBool)
     ccall((:DMPlexSetAdjacencyUseAnchors,petscRealDouble),PetscErrorCode,(DM,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetAdjacencyUseAnchors(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMPlexGetAdjacencyUseAnchors,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetAdjacency(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexGetAdjacency,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetOrdering(arg1::DM,arg2::MatOrderingType,arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMPlexGetOrdering,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{IS{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexPermute(arg1::DM,arg2::IS{Float64},arg3::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexPermute,petscRealDouble),PetscErrorCode,(DM,IS{Float64},Ptr{DM}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateProcessSF(arg1::DM,arg2::PetscSF,arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg4::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}})
     ccall((:DMPlexCreateProcessSF,petscRealDouble),PetscErrorCode,(DM,PetscSF,Ptr{IS{Float64}},Ptr{PetscSF}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateTwoSidedProcessSF(arg1::DM,arg2::PetscSF,arg3::PetscSection,arg4::IS{Float64},arg5::PetscSection,arg6::IS{Float64},arg7::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg8::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}})
     ccall((:DMPlexCreateTwoSidedProcessSF,petscRealDouble),PetscErrorCode,(DM,PetscSF,PetscSection,IS{Float64},PetscSection,IS{Float64},Ptr{IS{Float64}},Ptr{PetscSF}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexDistributeOwnership(arg1::DM,arg2::PetscSection,arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg4::PetscSection,arg5::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMPlexDistributeOwnership,petscRealDouble),PetscErrorCode,(DM,PetscSection,Ptr{IS{Float64}},PetscSection,Ptr{IS{Float64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateOverlap(arg1::DM,arg2::Integer,arg3::PetscSection,arg4::IS{Float64},arg5::PetscSection,arg6::IS{Float64},arg7::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     ccall((:DMPlexCreateOverlap,petscRealDouble),PetscErrorCode,(DM,Int64,PetscSection,IS{Float64},PetscSection,IS{Float64},Ptr{DMLabel}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateOverlapMigrationSF(arg0::Type{Float64},arg1::DM,arg2::PetscSF,arg3::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}})
     ccall((:DMPlexCreateOverlapMigrationSF,petscRealDouble),PetscErrorCode,(DM,PetscSF,Ptr{PetscSF}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexStratifyMigrationSF(arg0::Type{Float64},arg1::DM,arg2::PetscSF,arg3::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}})
     ccall((:DMPlexStratifyMigrationSF,petscRealDouble),PetscErrorCode,(DM,PetscSF,Ptr{PetscSF}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateSubmesh(arg0::Type{Float64},arg1::DM,arg2::DMLabel,arg3::Integer,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexCreateSubmesh,petscRealDouble),PetscErrorCode,(DM,DMLabel,Int64,Ptr{DM}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateHybridMesh(arg0::Type{Float64},arg1::DM,arg2::DMLabel,arg3::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}},arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexCreateHybridMesh,petscRealDouble),PetscErrorCode,(DM,DMLabel,Ptr{DMLabel},Ptr{DM}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetSubpointMap(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     ccall((:DMPlexGetSubpointMap,petscRealDouble),PetscErrorCode,(DM,Ptr{DMLabel}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetSubpointMap(arg0::Type{Float64},arg1::DM,arg2::DMLabel)
     ccall((:DMPlexSetSubpointMap,petscRealDouble),PetscErrorCode,(DM,DMLabel),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateSubpointIS(arg1::DM,arg2::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMPlexCreateSubpointIS,petscRealDouble),PetscErrorCode,(DM,Ptr{IS{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexMarkBoundaryFaces(arg0::Type{Float64},arg1::DM,arg2::DMLabel)
     ccall((:DMPlexMarkBoundaryFaces,petscRealDouble),PetscErrorCode,(DM,DMLabel),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexLabelComplete(arg0::Type{Float64},arg1::DM,arg2::DMLabel)
     ccall((:DMPlexLabelComplete,petscRealDouble),PetscErrorCode,(DM,DMLabel),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexLabelCohesiveComplete(arg0::Type{Float64},arg1::DM,arg2::DMLabel,arg3::DMLabel,arg4::PetscBool,arg5::DM)
     ccall((:DMPlexLabelCohesiveComplete,petscRealDouble),PetscErrorCode,(DM,DMLabel,DMLabel,PetscBool,DM),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexLabelAddCells(arg0::Type{Float64},arg1::DM,arg2::DMLabel)
     ccall((:DMPlexLabelAddCells,petscRealDouble),PetscErrorCode,(DM,DMLabel),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetRefinementLimit(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMPlexGetRefinementLimit,petscRealDouble),PetscErrorCode,(DM,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetRefinementLimit(arg0::Type{Float64},arg1::DM,arg2::Float64)
     ccall((:DMPlexSetRefinementLimit,petscRealDouble),PetscErrorCode,(DM,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetRefinementUniform(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMPlexGetRefinementUniform,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetRefinementUniform(arg0::Type{Float64},arg1::DM,arg2::PetscBool)
     ccall((:DMPlexSetRefinementUniform,petscRealDouble),PetscErrorCode,(DM,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetCoarseDM(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexGetCoarseDM,petscRealDouble),PetscErrorCode,(DM,Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetCoarseDM(arg0::Type{Float64},arg1::DM,arg2::DM)
     ccall((:DMPlexSetCoarseDM,petscRealDouble),PetscErrorCode,(DM,DM),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateCoarsePointIS(arg1::DM,arg2::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMPlexCreateCoarsePointIS,petscRealDouble),PetscErrorCode,(DM,Ptr{IS{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetNumFaceVertices(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetNumFaceVertices,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetOrientedFace(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg9::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMPlexGetOrientedFace,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Ptr{Int64},Int64,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetMinRadius(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMPlexGetMinRadius,petscRealDouble),PetscErrorCode,(DM,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetMinRadius(arg0::Type{Float64},arg1::DM,arg2::Float64)
     ccall((:DMPlexSetMinRadius,petscRealDouble),PetscErrorCode,(DM,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexComputeCellGeometryFVM(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMPlexComputeCellGeometryFVM,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexComputeGeometryFVM(arg1::DM,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMPlexComputeGeometryFVM,petscRealDouble),PetscErrorCode,(DM,Ptr{Vec{Float64}},Ptr{Vec{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexComputeGradientFVM(arg1::DM,arg2::PetscFV,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexComputeGradientFVM,petscRealDouble),PetscErrorCode,(DM,PetscFV,Vec{Float64},Vec{Float64},Ptr{DM}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexInsertBoundaryValues(arg1::DM,arg2::Vec{Float64},arg3::Float64,arg4::Vec{Float64},arg5::Vec{Float64},arg6::Vec{Float64})
     ccall((:DMPlexInsertBoundaryValues,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Float64,Vec{Float64},Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateSection(arg1::DM,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Integer,arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg9::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg10::IS{Float64},arg11::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}})
     ccall((:DMPlexCreateSection,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Ptr{Int64},Ptr{Int64},Int64,Ptr{Int64},Ptr{IS{Float64}},Ptr{IS{Float64}},IS{Float64},Ptr{PetscSection}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexComputeCellGeometryAffineFEM(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMPlexComputeCellGeometryAffineFEM,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexComputeCellGeometryFEM(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::PetscFE,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMPlexComputeCellGeometryFEM,petscRealDouble),PetscErrorCode,(DM,Int64,PetscFE,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexComputeGeometryFEM(arg1::DM,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMPlexComputeGeometryFEM,petscRealDouble),PetscErrorCode,(DM,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexVecGetClosure(arg1::DM,arg2::PetscSection,arg3::Vec{Float64},arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMPlexVecGetClosure,petscRealDouble),PetscErrorCode,(DM,PetscSection,Vec{Float64},Int64,Ptr{Int64},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexVecRestoreClosure(arg1::DM,arg2::PetscSection,arg3::Vec{Float64},arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMPlexVecRestoreClosure,petscRealDouble),PetscErrorCode,(DM,PetscSection,Vec{Float64},Int64,Ptr{Int64},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexVecSetClosure(arg1::DM,arg2::PetscSection,arg3::Vec{Float64},arg4::Integer,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::InsertMode)
     ccall((:DMPlexVecSetClosure,petscRealDouble),PetscErrorCode,(DM,PetscSection,Vec{Float64},Int64,Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexMatSetClosure(arg1::DM,arg2::PetscSection,arg3::PetscSection,arg4::Mat{Float64},arg5::Integer,arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::InsertMode)
     ccall((:DMPlexMatSetClosure,petscRealDouble),PetscErrorCode,(DM,PetscSection,PetscSection,Mat{Float64},Int64,Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexMatSetClosureRefined(arg1::DM,arg2::PetscSection,arg3::PetscSection,arg4::DM,arg5::PetscSection,arg6::PetscSection,arg7::Mat{Float64},arg8::Integer,arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg10::InsertMode)
     ccall((:DMPlexMatSetClosureRefined,petscRealDouble),PetscErrorCode,(DM,PetscSection,PetscSection,DM,PetscSection,PetscSection,Mat{Float64},Int64,Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexMatGetClosureIndicesRefined(arg0::Type{Float64},arg1::DM,arg2::PetscSection,arg3::PetscSection,arg4::DM,arg5::PetscSection,arg6::PetscSection,arg7::Integer,arg8::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg9::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexMatGetClosureIndicesRefined,petscRealDouble),PetscErrorCode,(DM,PetscSection,PetscSection,DM,PetscSection,PetscSection,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateClosureIndex(arg0::Type{Float64},arg1::DM,arg2::PetscSection)
     ccall((:DMPlexCreateClosureIndex,petscRealDouble),PetscErrorCode,(DM,PetscSection),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:DMPlexCreateFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateExodus(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateExodus,petscRealDouble),PetscErrorCode,(comm_type,Int64,PetscBool,Ptr{DM}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:DMPlexCreateExodus,petscRealDouble),PetscErrorCode,(comm_type,Int64,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateExodusFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateExodusFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:DMPlexCreateExodusFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateCGNS(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateCGNS,petscRealDouble),PetscErrorCode,(comm_type,Int64,PetscBool,Ptr{DM}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:DMPlexCreateCGNS,petscRealDouble),PetscErrorCode,(comm_type,Int64,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateCGNSFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateCGNSFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:DMPlexCreateCGNSFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateGmsh(arg1::MPI_Comm,arg2::PetscViewer{Float64},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateGmsh,petscRealDouble),PetscErrorCode,(comm_type,PetscViewer{Float64},PetscBool,Ptr{DM}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:DMPlexCreateGmsh,petscRealDouble),PetscErrorCode,(comm_type,PetscViewer{Float64},PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateGmshFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateGmshFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:DMPlexCreateGmshFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateFluent(arg1::MPI_Comm,arg2::PetscViewer{Float64},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateFluent,petscRealDouble),PetscErrorCode,(comm_type,PetscViewer{Float64},PetscBool,Ptr{DM}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:DMPlexCreateFluent,petscRealDouble),PetscErrorCode,(comm_type,PetscViewer{Float64},PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateFluentFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateFluentFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:DMPlexCreateFluentFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexConstructGhostCells(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Symbol},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexConstructGhostCells,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{Int64},Ptr{DM}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexConstructCohesiveCells(arg0::Type{Float64},arg1::DM,arg2::DMLabel,arg3::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexConstructCohesiveCells,petscRealDouble),PetscErrorCode,(DM,DMLabel,Ptr{DM}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetHybridBounds(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetHybridBounds,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetHybridBounds(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer)
     ccall((:DMPlexSetHybridBounds,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Int64,Int64),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetVTKCellHeight(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetVTKCellHeight,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetVTKCellHeight(arg0::Type{Float64},arg1::DM,arg2::Integer)
     ccall((:DMPlexSetVTKCellHeight,petscRealDouble),PetscErrorCode,(DM,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexVTKWriteAll(arg1::PetscObject,arg2::PetscViewer{Float64})
     ccall((:DMPlexVTKWriteAll,petscRealDouble),PetscErrorCode,(PetscObject,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetScale(arg0::Type{Float64},arg1::DM,arg2::PetscUnit,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMPlexGetScale,petscRealDouble),PetscErrorCode,(DM,PetscUnit,Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetScale(arg0::Type{Float64},arg1::DM,arg2::PetscUnit,arg3::Float64)
     ccall((:DMPlexSetScale,petscRealDouble),PetscErrorCode,(DM,PetscUnit,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexAddBoundary(arg0::Type{Float64},arg1::DM,arg2::PetscBool,arg3::Union{ByteString,Symbol},arg4::Union{ByteString,Symbol},arg5::Integer,arg6::Integer,arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg9::Integer,arg10::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg11::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexAddBoundary,petscRealDouble),PetscErrorCode,(DM,PetscBool,Cstring,Cstring,Int64,Int64,Ptr{Int64},Ptr{Void},Int64,Ptr{Int64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetNumBoundary(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetNumBoundary,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetBoundary(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg4::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}},arg9::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg10::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg11::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}},arg12::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMPlexGetBoundary,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{PetscBool},Ptr{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ptr{Int64},Ptr{Int64},Ptr{Ptr{Int64}},Ptr{Ptr{Void}},Ptr{Int64},Ptr{Ptr{Int64}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexIsBoundaryPoint(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:DMPlexIsBoundaryPoint,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{PetscBool}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCopyBoundary(arg0::Type{Float64},arg1::DM,arg2::DM)
     ccall((:DMPlexCopyBoundary,petscRealDouble),PetscErrorCode,(DM,DM),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexInsertBoundaryValuesFEM(arg1::DM,arg2::Vec{Float64})
     ccall((:DMPlexInsertBoundaryValuesFEM,petscRealDouble),PetscErrorCode,(DM,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetMaxProjectionHeight(arg0::Type{Float64},arg1::DM,arg2::Integer)
     ccall((:DMPlexSetMaxProjectionHeight,petscRealDouble),PetscErrorCode,(DM,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetMaxProjectionHeight(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetMaxProjectionHeight,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexProjectFunction(arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::InsertMode,arg5::Vec{Float64})
     ccall((:DMPlexProjectFunction,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexProjectFunctionLocal(arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::InsertMode,arg5::Vec{Float64})
     ccall((:DMPlexProjectFunctionLocal,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexProjectFieldLocal(arg1::DM,arg2::Vec{Float64},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::InsertMode,arg5::Vec{Float64})
     ccall((:DMPlexProjectFieldLocal,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Ptr{Ptr{Void}},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexComputeL2Diff(arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Vec{Float64},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMPlexComputeL2Diff,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}},Vec{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexComputeL2GradientDiff(arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Vec{Float64},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMPlexComputeL2GradientDiff,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}},Vec{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexComputeL2FieldDiff(arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Vec{Float64},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMPlexComputeL2FieldDiff,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}},Vec{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexComputeIntegralFEM(arg1::DM,arg2::Vec{Float64},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexComputeIntegralFEM,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Ptr{Float64},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexComputeInterpolatorFEM(arg1::DM,arg2::DM,arg3::Mat{Float64},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexComputeInterpolatorFEM,petscRealDouble),PetscErrorCode,(DM,DM,Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexComputeInjectorFEM(arg1::DM,arg2::DM,arg3::Union{Ptr{VecScatter{Float64}},StridedArray{VecScatter{Float64}},Ptr{VecScatter{Float64}},Ref{VecScatter{Float64}}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexComputeInjectorFEM,petscRealDouble),PetscErrorCode,(DM,DM,Ptr{VecScatter{Float64}},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateRigidBody(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{MatNullSpace},StridedArray{MatNullSpace},Ptr{MatNullSpace},Ref{MatNullSpace}})
     ccall((:DMPlexCreateRigidBody,petscRealDouble),PetscErrorCode,(DM,Ptr{MatNullSpace}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSNESComputeResidualFEM(arg1::DM,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexSNESComputeResidualFEM,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSNESComputeJacobianFEM(arg1::DM,arg2::Vec{Float64},arg3::Mat{Float64},arg4::Mat{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexSNESComputeJacobianFEM,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexTSComputeRHSFunctionFVM(arg1::DM,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexTSComputeRHSFunctionFVM,petscRealDouble),PetscErrorCode,(DM,Float64,Vec{Float64},Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexTSComputeIFunctionFEM(arg1::DM,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Vec{Float64},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexTSComputeIFunctionFEM,petscRealDouble),PetscErrorCode,(DM,Float64,Vec{Float64},Vec{Float64},Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexComputeRHSFunctionFVM(arg1::DM,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMPlexComputeRHSFunctionFVM,petscRealDouble),PetscErrorCode,(DM,Float64,Vec{Float64},Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetAnchors(arg1::DM,arg2::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}},arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMPlexGetAnchors,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscSection},Ptr{IS{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetAnchors(arg1::DM,arg2::PetscSection,arg3::IS{Float64})
     ccall((:DMPlexSetAnchors,petscRealDouble),PetscErrorCode,(DM,PetscSection,IS{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetReferenceTree(arg0::Type{Float64},arg1::DM,arg2::DM)
     ccall((:DMPlexSetReferenceTree,petscRealDouble),PetscErrorCode,(DM,DM),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetReferenceTree(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexGetReferenceTree,petscRealDouble),PetscErrorCode,(DM,Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexReferenceTreeGetChildSymmetry(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexReferenceTreeGetChildSymmetry,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexCreateDefaultReferenceTree(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMPlexCreateDefaultReferenceTree,petscRealDouble),PetscErrorCode,(comm_type,Int64,PetscBool,Ptr{DM}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:DMPlexCreateDefaultReferenceTree,petscRealDouble),PetscErrorCode,(comm_type,Int64,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSetTree(arg0::Type{Float64},arg1::DM,arg2::PetscSection,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexSetTree,petscRealDouble),PetscErrorCode,(DM,PetscSection,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetTree(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}},arg3::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}},arg4::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}},arg5::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}},arg6::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexGetTree,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscSection},Ptr{Ptr{Int64}},Ptr{Ptr{Int64}},Ptr{PetscSection},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetTreeParent(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMPlexGetTreeParent,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetTreeChildren(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:DMPlexGetTreeChildren,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Ptr{Ptr{Int64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexTreeRefineCell(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexTreeRefineCell,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{DM}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMRedundantCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::PetscMPIInt,arg3::Integer,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMRedundantCreate,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,Int64,Ptr{DM}),arg1.val,arg2,arg3,arg4)
-end 
+    ccall((:DMRedundantCreate,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,Int64,Ptr{DM}),arg1,arg2,arg3,arg4)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMRedundantSetSize(arg0::Type{Float64},arg1::DM,arg2::PetscMPIInt,arg3::Integer)
     ccall((:DMRedundantSetSize,petscRealDouble),PetscErrorCode,(DM,PetscMPIInt,Int64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMRedundantGetSize(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMRedundantGetSize,petscRealDouble),PetscErrorCode,(DM,Ptr{PetscMPIInt},Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMShellCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DM}),arg1.val,arg2)
-end 
+    ccall((:DMShellCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DM}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetMatrix(arg1::DM,arg2::Mat{Float64})
     ccall((:DMShellSetMatrix,petscRealDouble),PetscErrorCode,(DM,Mat{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetGlobalVector(arg1::DM,arg2::Vec{Float64})
     ccall((:DMShellSetGlobalVector,petscRealDouble),PetscErrorCode,(DM,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetLocalVector(arg1::DM,arg2::Vec{Float64})
     ccall((:DMShellSetLocalVector,petscRealDouble),PetscErrorCode,(DM,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetCreateGlobalVector(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMShellSetCreateGlobalVector,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetCreateLocalVector(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMShellSetCreateLocalVector,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetGlobalToLocal(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMShellSetGlobalToLocal,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetGlobalToLocalVecScatter(arg1::DM,arg2::VecScatter{Float64})
     ccall((:DMShellSetGlobalToLocalVecScatter,petscRealDouble),PetscErrorCode,(DM,VecScatter{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetLocalToGlobal(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMShellSetLocalToGlobal,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetLocalToGlobalVecScatter(arg1::DM,arg2::VecScatter{Float64})
     ccall((:DMShellSetLocalToGlobalVecScatter,petscRealDouble),PetscErrorCode,(DM,VecScatter{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetLocalToLocal(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMShellSetLocalToLocal,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetLocalToLocalVecScatter(arg1::DM,arg2::VecScatter{Float64})
     ccall((:DMShellSetLocalToLocalVecScatter,petscRealDouble),PetscErrorCode,(DM,VecScatter{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetCreateMatrix(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMShellSetCreateMatrix,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetCoarsen(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMShellSetCoarsen,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetRefine(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMShellSetRefine,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetCreateInterpolation(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMShellSetCreateInterpolation,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetCreateInjection(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMShellSetCreateInjection,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMShellSetCreateFieldDecomposition(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMShellSetCreateFieldDecomposition,petscRealDouble),PetscErrorCode,(DM,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGlobalToLocalBeginDefaultShell(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMGlobalToLocalBeginDefaultShell,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGlobalToLocalEndDefaultShell(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMGlobalToLocalEndDefaultShell,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLocalToGlobalBeginDefaultShell(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMLocalToGlobalBeginDefaultShell,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLocalToGlobalEndDefaultShell(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMLocalToGlobalEndDefaultShell,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLocalToLocalBeginDefaultShell(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMLocalToLocalBeginDefaultShell,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMLocalToLocalEndDefaultShell(arg1::DM,arg2::Vec{Float64},arg3::InsertMode,arg4::Vec{Float64})
     ccall((:DMLocalToLocalEndDefaultShell,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSlicedCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    ccall((:DMSlicedCreate,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{DM}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+    ccall((:DMSlicedCreate,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Int64,Ptr{Int64},Ptr{Int64},Ptr{Int64},Ptr{DM}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSlicedSetPreallocation(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMSlicedSetPreallocation,petscRealDouble),PetscErrorCode,(DM,Int64,Ptr{Int64},Int64,Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSlicedSetBlockFills(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMSlicedSetBlockFills,petscRealDouble),PetscErrorCode,(DM,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSlicedSetGhosts(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMSlicedSetGhosts,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Int64,Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
 function PetscDSInitializePackage(arg0::Type{Float64})
     err = ccall((:PetscDSInitializePackage,petscRealDouble),PetscErrorCode,())
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscDS},StridedArray{PetscDS},Ptr{PetscDS},Ref{PetscDS}})
-    ccall((:PetscDSCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDS}),arg1.val,arg2)
-end 
+    ccall((:PetscDSCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDS}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscDS},StridedArray{PetscDS},Ptr{PetscDS},Ref{PetscDS}})
     ccall((:PetscDSDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscDS},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetType(arg0::Type{Float64},arg1::PetscDS,arg2::PetscDSType)
     ccall((:PetscDSSetType,petscRealDouble),PetscErrorCode,(PetscDS,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetType(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{PetscDSType},StridedArray{PetscDSType},Ptr{PetscDSType},Ref{PetscDSType}})
     ccall((:PetscDSGetType,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetUp(arg0::Type{Float64},arg1::PetscDS)
     ccall((:PetscDSSetUp,petscRealDouble),PetscErrorCode,(PetscDS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetFromOptions(arg0::Type{Float64},arg1::PetscDS)
     ccall((:PetscDSSetFromOptions,petscRealDouble),PetscErrorCode,(PetscDS,),arg1)
-end 
+end
 =#
 function PetscDSRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscDSRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -10785,260 +10785,260 @@ function PetscDSRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetSpatialDimension(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscDSGetSpatialDimension,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetNumFields(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscDSGetNumFields,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetTotalDimension(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscDSGetTotalDimension,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetTotalBdDimension(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscDSGetTotalBdDimension,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetTotalComponents(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscDSGetTotalComponents,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetFieldOffset(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscDSGetFieldOffset,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetBdFieldOffset(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscDSGetBdFieldOffset,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetComponentOffset(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscDSGetComponentOffset,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetComponentOffsets(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:PetscDSGetComponentOffsets,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Ptr{Int64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetComponentBdOffsets(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:PetscDSGetComponentBdOffsets,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Ptr{Int64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetComponentDerivativeOffsets(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:PetscDSGetComponentDerivativeOffsets,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Ptr{Int64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetComponentBdDerivativeOffsets(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}})
     ccall((:PetscDSGetComponentBdDerivativeOffsets,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Ptr{Int64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetDiscretization(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
     ccall((:PetscDSGetDiscretization,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{PetscObject}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetDiscretization(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::PetscObject)
     ccall((:PetscDSSetDiscretization,petscRealDouble),PetscErrorCode,(PetscDS,Int64,PetscObject),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSAddDiscretization(arg0::Type{Float64},arg1::PetscDS,arg2::PetscObject)
     ccall((:PetscDSAddDiscretization,petscRealDouble),PetscErrorCode,(PetscDS,PetscObject),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetBdDiscretization(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
     ccall((:PetscDSGetBdDiscretization,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{PetscObject}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetBdDiscretization(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::PetscObject)
     ccall((:PetscDSSetBdDiscretization,petscRealDouble),PetscErrorCode,(PetscDS,Int64,PetscObject),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSAddBdDiscretization(arg0::Type{Float64},arg1::PetscDS,arg2::PetscObject)
     ccall((:PetscDSAddBdDiscretization,petscRealDouble),PetscErrorCode,(PetscDS,PetscObject),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetImplicit(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscDSGetImplicit,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{PetscBool}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetImplicit(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::PetscBool)
     ccall((:PetscDSSetImplicit,petscRealDouble),PetscErrorCode,(PetscDS,Int64,PetscBool),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetAdjacency(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscDSGetAdjacency,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{PetscBool},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetAdjacency(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::PetscBool,arg4::PetscBool)
     ccall((:PetscDSSetAdjacency,petscRealDouble),PetscErrorCode,(PetscDS,Int64,PetscBool,PetscBool),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetObjective(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:PetscDSGetObjective,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetObjective(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscDSSetObjective,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetResidual(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:PetscDSGetResidual,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetResidual(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscDSSetResidual,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetJacobian(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg6::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg7::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:PetscDSGetJacobian,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Int64,Ptr{Ptr{Void}},Ptr{Ptr{Void}},Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetJacobian(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscDSSetJacobian,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Int64,Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetRiemannSolver(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:PetscDSGetRiemannSolver,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetRiemannSolver(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscDSSetRiemannSolver,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetContext(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:PetscDSGetContext,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetContext(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscDSSetContext,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetBdResidual(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:PetscDSGetBdResidual,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetBdResidual(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscDSSetBdResidual,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetBdJacobian(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg6::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg7::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:PetscDSGetBdJacobian,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Int64,Ptr{Ptr{Void}},Ptr{Ptr{Void}},Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSSetBdJacobian(arg0::Type{Float64},arg1::PetscDS,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscDSSetBdJacobian,petscRealDouble),PetscErrorCode,(PetscDS,Int64,Int64,Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetTabulation(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Ptr{Ptr{Float64}}},StridedArray{Ptr{Ptr{Float64}}},Ptr{Ptr{Ptr{Float64}}},Ref{Ptr{Ptr{Float64}}}},arg3::Union{Ptr{Ptr{Ptr{Float64}}},StridedArray{Ptr{Ptr{Float64}}},Ptr{Ptr{Ptr{Float64}}},Ref{Ptr{Ptr{Float64}}}})
     ccall((:PetscDSGetTabulation,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Ptr{Ptr{Float64}}},Ptr{Ptr{Ptr{Float64}}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetBdTabulation(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Ptr{Ptr{Float64}}},StridedArray{Ptr{Ptr{Float64}}},Ptr{Ptr{Ptr{Float64}}},Ref{Ptr{Ptr{Float64}}}},arg3::Union{Ptr{Ptr{Ptr{Float64}}},StridedArray{Ptr{Ptr{Float64}}},Ptr{Ptr{Ptr{Float64}}},Ref{Ptr{Ptr{Float64}}}})
     ccall((:PetscDSGetBdTabulation,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Ptr{Ptr{Float64}}},Ptr{Ptr{Ptr{Float64}}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetEvaluationArrays(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg3::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscDSGetEvaluationArrays,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetWeakFormArrays(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg3::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg5::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg6::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg7::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscDSGetWeakFormArrays,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PetscDSGetRefCoordArrays(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg3::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:PetscDSGetRefCoordArrays,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
 function CharacteristicInitializePackage(arg0::Type{Float64})
     err = ccall((:CharacteristicInitializePackage,petscRealDouble),PetscErrorCode,())
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function CharacteristicCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{Characteristic},StridedArray{Characteristic},Ptr{Characteristic},Ref{Characteristic}})
-    ccall((:CharacteristicCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Characteristic}),arg1.val,arg2)
-end 
+    ccall((:CharacteristicCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Characteristic}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function CharacteristicSetType(arg0::Type{Float64},arg1::Characteristic,arg2::CharacteristicType)
     ccall((:CharacteristicSetType,petscRealDouble),PetscErrorCode,(Characteristic,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function CharacteristicSetUp(arg0::Type{Float64},arg1::Characteristic)
     ccall((:CharacteristicSetUp,petscRealDouble),PetscErrorCode,(Characteristic,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function CharacteristicSetVelocityInterpolation(arg1::Characteristic,arg2::DM,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:CharacteristicSetVelocityInterpolation,petscRealDouble),PetscErrorCode,(Characteristic,DM,Vec{Float64},Vec{Float64},Int64,Ptr{Int64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function CharacteristicSetVelocityInterpolationLocal(arg1::Characteristic,arg2::DM,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:CharacteristicSetVelocityInterpolationLocal,petscRealDouble),PetscErrorCode,(Characteristic,DM,Vec{Float64},Vec{Float64},Int64,Ptr{Int64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function CharacteristicSetFieldInterpolation(arg1::Characteristic,arg2::DM,arg3::Vec{Float64},arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:CharacteristicSetFieldInterpolation,petscRealDouble),PetscErrorCode,(Characteristic,DM,Vec{Float64},Int64,Ptr{Int64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function CharacteristicSetFieldInterpolationLocal(arg1::Characteristic,arg2::DM,arg3::Vec{Float64},arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:CharacteristicSetFieldInterpolationLocal,petscRealDouble),PetscErrorCode,(Characteristic,DM,Vec{Float64},Int64,Ptr{Int64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function CharacteristicSolve(arg1::Characteristic,arg2::Float64,arg3::Vec{Float64})
     ccall((:CharacteristicSolve,petscRealDouble),PetscErrorCode,(Characteristic,Float64,Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function CharacteristicDestroy(arg0::Type{Float64},arg1::Union{Ptr{Characteristic},StridedArray{Characteristic},Ptr{Characteristic},Ref{Characteristic}})
     ccall((:CharacteristicDestroy,petscRealDouble),PetscErrorCode,(Ptr{Characteristic},),arg1)
-end 
+end
 =#
 function CharacteristicRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:CharacteristicRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -11056,7 +11056,7 @@ function PCInitializePackage(arg0::Type{Float64})
 end
 
 function PCCreate(arg1::MPI_Comm,arg2::Union{Ptr{PC{Float64}},StridedArray{PC{Float64}},Ptr{PC{Float64}},Ref{PC{Float64}}})
-    err = ccall((:PCCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PC{Float64}}),arg1.val,arg2)
+    err = ccall((:PCCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PC{Float64}}),arg1,arg2)
     return err
 end
 
@@ -11887,15 +11887,15 @@ function PCPythonSetType(arg1::PC{Float64},arg2::Union{ByteString,Symbol})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PCSetDM(arg1::PC{Float64},arg2::DM)
     ccall((:PCSetDM,petscRealDouble),PetscErrorCode,(PC{Float64},DM),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PCGetDM(arg1::PC{Float64},arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:PCGetDM,petscRealDouble),PetscErrorCode,(PC{Float64},Ptr{DM}),arg1,arg2)
-end 
+end
 =#
 function PCSetApplicationContext(arg1::PC{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PCSetApplicationContext,petscRealDouble),PetscErrorCode,(PC{Float64},Ptr{Void}),arg1,arg2)
@@ -12086,10 +12086,10 @@ function PCBDDCSetLevels(arg1::PC{Float64},arg2::Integer)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function PCBDDCSetNullSpace(arg1::PC{Float64},arg2::MatNullSpace)
     ccall((:PCBDDCSetNullSpace,petscRealDouble),PetscErrorCode,(PC{Float64},MatNullSpace),arg1,arg2)
-end 
+end
 =#
 function PCBDDCSetDirichletBoundaries(arg1::PC{Float64},arg2::IS{Float64})
     err = ccall((:PCBDDCSetDirichletBoundaries,petscRealDouble),PetscErrorCode,(PC{Float64},IS{Float64}),arg1,arg2)
@@ -12297,7 +12297,7 @@ function KSPInitializePackage(arg0::Type{Float64})
 end
 
 function KSPCreate(arg1::MPI_Comm,arg2::Union{Ptr{KSP{Float64}},StridedArray{KSP{Float64}},Ptr{KSP{Float64}},Ref{KSP{Float64}}})
-    err = ccall((:KSPCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{KSP{Float64}}),arg1.val,arg2)
+    err = ccall((:KSPCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{KSP{Float64}}),arg1,arg2)
     return err
 end
 
@@ -12603,10 +12603,10 @@ function KSPChebyshevEstEigSet(arg1::KSP{Float64},arg2::Float64,arg3::Float64,ar
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPChebyshevEstEigSetRandom(arg1::KSP{Float64},arg2::PetscRandom)
     ccall((:KSPChebyshevEstEigSetRandom,petscRealDouble),PetscErrorCode,(KSP{Float64},PetscRandom),arg1,arg2)
-end 
+end
 =#
 function KSPChebyshevEstEigGetKSP(arg1::KSP{Float64},arg2::Union{Ptr{KSP{Float64}},StridedArray{KSP{Float64}},Ptr{KSP{Float64}},Ref{KSP{Float64}}})
     err = ccall((:KSPChebyshevEstEigGetKSP,petscRealDouble),PetscErrorCode,(KSP{Float64},Ptr{KSP{Float64}}),arg1,arg2)
@@ -13123,35 +13123,35 @@ function PCPostSolve(arg1::PC{Float64},arg2::KSP{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPMonitorLGResidualNormCreate(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{ByteString,Symbol},arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
     ccall((:KSPMonitorLGResidualNormCreate,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{Ptr{PetscObject}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPMonitorLGResidualNorm(arg1::KSP{Float64},arg2::Integer,arg3::Float64,arg4::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
     ccall((:KSPMonitorLGResidualNorm,petscRealDouble),PetscErrorCode,(KSP{Float64},Int64,Float64,Ptr{PetscObject}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPMonitorLGResidualNormDestroy(arg0::Type{Float64},arg1::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
     ccall((:KSPMonitorLGResidualNormDestroy,petscRealDouble),PetscErrorCode,(Ptr{Ptr{PetscObject}},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPMonitorLGTrueResidualNormCreate(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{ByteString,Symbol},arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
     ccall((:KSPMonitorLGTrueResidualNormCreate,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{Ptr{PetscObject}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPMonitorLGTrueResidualNorm(arg1::KSP{Float64},arg2::Integer,arg3::Float64,arg4::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
     ccall((:KSPMonitorLGTrueResidualNorm,petscRealDouble),PetscErrorCode,(KSP{Float64},Int64,Float64,Ptr{PetscObject}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPMonitorLGTrueResidualNormDestroy(arg0::Type{Float64},arg1::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
     ccall((:KSPMonitorLGTrueResidualNormDestroy,petscRealDouble),PetscErrorCode,(Ptr{Ptr{PetscObject}},),arg1)
-end 
+end
 =#
 function KSPMonitorLGRange(arg1::KSP{Float64},arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:KSPMonitorLGRange,petscRealDouble),PetscErrorCode,(KSP{Float64},Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
@@ -13168,50 +13168,50 @@ function PCShellSetPostSolve(arg1::PC{Float64},arg2::Union{Ptr{Void},StridedArra
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPFischerGuessCreate(arg1::KSP{Float64},arg2::Integer,arg3::Integer,arg4::Union{Ptr{KSPFischerGuess},StridedArray{KSPFischerGuess},Ptr{KSPFischerGuess},Ref{KSPFischerGuess}})
     ccall((:KSPFischerGuessCreate,petscRealDouble),PetscErrorCode,(KSP{Float64},Int64,Int64,Ptr{KSPFischerGuess}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPFischerGuessDestroy(arg0::Type{Float64},arg1::Union{Ptr{KSPFischerGuess},StridedArray{KSPFischerGuess},Ptr{KSPFischerGuess},Ref{KSPFischerGuess}})
     ccall((:KSPFischerGuessDestroy,petscRealDouble),PetscErrorCode,(Ptr{KSPFischerGuess},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPFischerGuessReset(arg0::Type{Float64},arg1::KSPFischerGuess)
     ccall((:KSPFischerGuessReset,petscRealDouble),PetscErrorCode,(KSPFischerGuess,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPFischerGuessUpdate(arg1::KSPFischerGuess,arg2::Vec{Float64})
     ccall((:KSPFischerGuessUpdate,petscRealDouble),PetscErrorCode,(KSPFischerGuess,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPFischerGuessFormGuess(arg1::KSPFischerGuess,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:KSPFischerGuessFormGuess,petscRealDouble),PetscErrorCode,(KSPFischerGuess,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPFischerGuessSetFromOptions(arg0::Type{Float64},arg1::KSPFischerGuess)
     ccall((:KSPFischerGuessSetFromOptions,petscRealDouble),PetscErrorCode,(KSPFischerGuess,),arg1)
-end 
+end
 =#
 function KSPSetUseFischerGuess(arg1::KSP{Float64},arg2::Integer,arg3::Integer)
     err = ccall((:KSPSetUseFischerGuess,petscRealDouble),PetscErrorCode,(KSP{Float64},Int64,Int64),arg1,arg2,arg3)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPSetFischerGuess(arg1::KSP{Float64},arg2::KSPFischerGuess)
     ccall((:KSPSetFischerGuess,petscRealDouble),PetscErrorCode,(KSP{Float64},KSPFischerGuess),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPGetFischerGuess(arg1::KSP{Float64},arg2::Union{Ptr{KSPFischerGuess},StridedArray{KSPFischerGuess},Ptr{KSPFischerGuess},Ref{KSPFischerGuess}})
     ccall((:KSPGetFischerGuess,petscRealDouble),PetscErrorCode,(KSP{Float64},Ptr{KSPFischerGuess}),arg1,arg2)
-end 
+end
 =#
 function MatCreateSchurComplement(arg1::Mat{Float64},arg2::Mat{Float64},arg3::Mat{Float64},arg4::Mat{Float64},arg5::Mat{Float64},arg6::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     err = ccall((:MatCreateSchurComplement,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},Mat{Float64},Mat{Float64},Mat{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
@@ -13273,20 +13273,20 @@ function MatCreateSchurComplementPmat(arg1::Mat{Float64},arg2::Mat{Float64},arg3
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPSetDM(arg1::KSP{Float64},arg2::DM)
     ccall((:KSPSetDM,petscRealDouble),PetscErrorCode,(KSP{Float64},DM),arg1,arg2)
-end 
+end
 =#
 function KSPSetDMActive(arg1::KSP{Float64},arg2::PetscBool)
     err = ccall((:KSPSetDMActive,petscRealDouble),PetscErrorCode,(KSP{Float64},PetscBool),arg1,arg2)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPGetDM(arg1::KSP{Float64},arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:KSPGetDM,petscRealDouble),PetscErrorCode,(KSP{Float64},Ptr{DM}),arg1,arg2)
-end 
+end
 =#
 function KSPSetApplicationContext(arg1::KSP{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:KSPSetApplicationContext,petscRealDouble),PetscErrorCode,(KSP{Float64},Ptr{Void}),arg1,arg2)
@@ -13313,1160 +13313,1160 @@ function KSPSetComputeInitialGuess(arg1::KSP{Float64},arg2::Union{Ptr{Void},Stri
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMKSPSetComputeOperators(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMKSPSetComputeOperators,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMKSPGetComputeOperators(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMKSPGetComputeOperators,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMKSPSetComputeRHS(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMKSPSetComputeRHS,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMKSPGetComputeRHS(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMKSPGetComputeRHS,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMKSPSetComputeInitialGuess(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMKSPSetComputeInitialGuess,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMKSPGetComputeInitialGuess(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMKSPGetComputeInitialGuess,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMGlobalToLocalSolve(arg1::DM,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:DMGlobalToLocalSolve,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexProjectField(arg1::DM,arg2::Vec{Float64},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::InsertMode,arg5::Vec{Float64})
     ccall((:DMPlexProjectField,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},Ptr{Ptr{Void}},InsertMode,Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
 function SNESInitializePackage(arg0::Type{Float64})
     err = ccall((:SNESInitializePackage,petscRealDouble),PetscErrorCode,())
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
-    ccall((:SNESCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{SNES}),arg1.val,arg2)
-end 
+    ccall((:SNESCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{SNES}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESReset(arg0::Type{Float64},arg1::SNES)
     ccall((:SNESReset,petscRealDouble),PetscErrorCode,(SNES,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESDestroy(arg0::Type{Float64},arg1::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:SNESDestroy,petscRealDouble),PetscErrorCode,(Ptr{SNES},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetType(arg0::Type{Float64},arg1::SNES,arg2::SNESType)
     ccall((:SNESSetType,petscRealDouble),PetscErrorCode,(SNES,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitor(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64)
     ccall((:SNESMonitor,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorSet(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESMonitorSet,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorCancel(arg0::Type{Float64},arg1::SNES)
     ccall((:SNESMonitorCancel,petscRealDouble),PetscErrorCode,(SNES,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorSAWs(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESMonitorSAWs,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorSAWsCreate(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:SNESMonitorSAWsCreate,petscRealDouble),PetscErrorCode,(SNES,Ptr{Ptr{Void}}),arg1,arg2)
-end 
+end
 =#
 function SNESMonitorSAWsDestroy(arg0::Type{Float64},arg1::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     err = ccall((:SNESMonitorSAWsDestroy,petscRealDouble),PetscErrorCode,(Ptr{Ptr{Void}},),arg1)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetConvergenceHistory(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Integer,arg5::PetscBool)
     ccall((:SNESSetConvergenceHistory,petscRealDouble),PetscErrorCode,(SNES,Ptr{Float64},Ptr{Int64},Int64,PetscBool),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetConvergenceHistory(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg3::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESGetConvergenceHistory,petscRealDouble),PetscErrorCode,(SNES,Ptr{Ptr{Float64}},Ptr{Ptr{Int64}},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetUp(arg0::Type{Float64},arg1::SNES)
     ccall((:SNESSetUp,petscRealDouble),PetscErrorCode,(SNES,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSolve(arg1::SNES,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:SNESSolve,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetErrorIfNotConverged(arg0::Type{Float64},arg1::SNES,arg2::PetscBool)
     ccall((:SNESSetErrorIfNotConverged,petscRealDouble),PetscErrorCode,(SNES,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetErrorIfNotConverged(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:SNESGetErrorIfNotConverged,petscRealDouble),PetscErrorCode,(SNES,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetWorkVecs(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESSetWorkVecs,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
 function SNESAddOptionsChecker(arg0::Type{Float64},arg1::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:SNESAddOptionsChecker,petscRealDouble),PetscErrorCode,(Ptr{Void},),arg1)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetUpdate(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESSetUpdate,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
 function SNESRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:SNESRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetKSP(arg1::SNES,arg2::Union{Ptr{KSP{Float64}},StridedArray{KSP{Float64}},Ptr{KSP{Float64}},Ref{KSP{Float64}}})
     ccall((:SNESGetKSP,petscRealDouble),PetscErrorCode,(SNES,Ptr{KSP{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetKSP(arg1::SNES,arg2::KSP{Float64})
     ccall((:SNESSetKSP,petscRealDouble),PetscErrorCode,(SNES,KSP{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetSolution(arg1::SNES,arg2::Vec{Float64})
     ccall((:SNESSetSolution,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetSolution(arg1::SNES,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:SNESGetSolution,petscRealDouble),PetscErrorCode,(SNES,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetSolutionUpdate(arg1::SNES,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:SNESGetSolutionUpdate,petscRealDouble),PetscErrorCode,(SNES,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetRhs(arg1::SNES,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:SNESGetRhs,petscRealDouble),PetscErrorCode,(SNES,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESView(arg1::SNES,arg2::PetscViewer{Float64})
     ccall((:SNESView,petscRealDouble),PetscErrorCode,(SNES,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLoad(arg1::SNES,arg2::PetscViewer{Float64})
     ccall((:SNESLoad,petscRealDouble),PetscErrorCode,(SNES,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESReasonViewFromOptions(arg0::Type{Float64},arg1::SNES)
     ccall((:SNESReasonViewFromOptions,petscRealDouble),PetscErrorCode,(SNES,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetOptionsPrefix(arg0::Type{Float64},arg1::SNES,arg2::Union{ByteString,Symbol})
     ccall((:SNESSetOptionsPrefix,petscRealDouble),PetscErrorCode,(SNES,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESAppendOptionsPrefix(arg0::Type{Float64},arg1::SNES,arg2::Union{ByteString,Symbol})
     ccall((:SNESAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(SNES,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetOptionsPrefix(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:SNESGetOptionsPrefix,petscRealDouble),PetscErrorCode,(SNES,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetFromOptions(arg0::Type{Float64},arg1::SNES)
     ccall((:SNESSetFromOptions,petscRealDouble),PetscErrorCode,(SNES,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatCreateSNESMF(arg1::SNES,arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     ccall((:MatCreateSNESMF,petscRealDouble),PetscErrorCode,(SNES,Ptr{Mat{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatMFFDComputeJacobian(arg1::SNES,arg2::Vec{Float64},arg3::Mat{Float64},arg4::Mat{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:MatMFFDComputeJacobian,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function MatDAADSetSNES(arg1::Mat{Float64},arg2::SNES)
     ccall((:MatDAADSetSNES,petscRealDouble),PetscErrorCode,(Mat{Float64},SNES),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetType(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{SNESType},StridedArray{SNESType},Ptr{SNESType},Ref{SNESType}})
     ccall((:SNESGetType,petscRealDouble),PetscErrorCode,(SNES,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorDefault(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESMonitorDefault,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorRange(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESMonitorRange,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorRatio(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESMonitorRatio,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorSetRatio(arg1::SNES,arg2::PetscViewer{Float64})
     ccall((:SNESMonitorSetRatio,petscRealDouble),PetscErrorCode,(SNES,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorSolution(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESMonitorSolution,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorResidual(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESMonitorResidual,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorSolutionUpdate(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESMonitorSolutionUpdate,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorDefaultShort(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESMonitorDefaultShort,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorDefaultField(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESMonitorDefaultField,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorJacUpdateSpectrum(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESMonitorJacUpdateSpectrum,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorFields(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESMonitorFields,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
 function KSPMonitorSNES(arg1::KSP{Float64},arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:KSPMonitorSNES,petscRealDouble),PetscErrorCode,(KSP{Float64},Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPMonitorSNESLGResidualNormCreate(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{ByteString,Symbol},arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
     ccall((:KSPMonitorSNESLGResidualNormCreate,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{Ptr{PetscObject}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPMonitorSNESLGResidualNorm(arg1::KSP{Float64},arg2::Integer,arg3::Float64,arg4::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
     ccall((:KSPMonitorSNESLGResidualNorm,petscRealDouble),PetscErrorCode,(KSP{Float64},Int64,Float64,Ptr{PetscObject}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function KSPMonitorSNESLGResidualNormDestroy(arg0::Type{Float64},arg1::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
     ccall((:KSPMonitorSNESLGResidualNormDestroy,petscRealDouble),PetscErrorCode,(Ptr{Ptr{PetscObject}},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetTolerances(arg0::Type{Float64},arg1::SNES,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Integer,arg6::Integer)
     ccall((:SNESSetTolerances,petscRealDouble),PetscErrorCode,(SNES,Float64,Float64,Float64,Int64,Int64),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetTolerances(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESGetTolerances,petscRealDouble),PetscErrorCode,(SNES,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetTrustRegionTolerance(arg0::Type{Float64},arg1::SNES,arg2::Float64)
     ccall((:SNESSetTrustRegionTolerance,petscRealDouble),PetscErrorCode,(SNES,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetIterationNumber(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESGetIterationNumber,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetIterationNumber(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESSetIterationNumber,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetNonlinearStepFailures(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESGetNonlinearStepFailures,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetMaxNonlinearStepFailures(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESSetMaxNonlinearStepFailures,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetMaxNonlinearStepFailures(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESGetMaxNonlinearStepFailures,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetNumberFunctionEvals(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESGetNumberFunctionEvals,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetLagPreconditioner(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESSetLagPreconditioner,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetLagPreconditioner(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESGetLagPreconditioner,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetLagJacobian(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESSetLagJacobian,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetLagJacobian(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESGetLagJacobian,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetLagPreconditionerPersists(arg0::Type{Float64},arg1::SNES,arg2::PetscBool)
     ccall((:SNESSetLagPreconditionerPersists,petscRealDouble),PetscErrorCode,(SNES,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetLagJacobianPersists(arg0::Type{Float64},arg1::SNES,arg2::PetscBool)
     ccall((:SNESSetLagJacobianPersists,petscRealDouble),PetscErrorCode,(SNES,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetGridSequence(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESSetGridSequence,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetGridSequence(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESGetGridSequence,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetLinearSolveIterations(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESGetLinearSolveIterations,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetLinearSolveFailures(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESGetLinearSolveFailures,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetMaxLinearSolveFailures(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESSetMaxLinearSolveFailures,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetMaxLinearSolveFailures(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESGetMaxLinearSolveFailures,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetCountersReset(arg0::Type{Float64},arg1::SNES,arg2::PetscBool)
     ccall((:SNESSetCountersReset,petscRealDouble),PetscErrorCode,(SNES,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESKSPSetUseEW(arg0::Type{Float64},arg1::SNES,arg2::PetscBool)
     ccall((:SNESKSPSetUseEW,petscRealDouble),PetscErrorCode,(SNES,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESKSPGetUseEW(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:SNESKSPGetUseEW,petscRealDouble),PetscErrorCode,(SNES,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESKSPSetParametersEW(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Float64,arg7::Float64,arg8::Float64)
     ccall((:SNESKSPSetParametersEW,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Float64,Float64,Float64,Float64,Float64),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESKSPGetParametersEW(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:SNESKSPGetParametersEW,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorLGCreate(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{ByteString,Symbol},arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
     ccall((:SNESMonitorLGCreate,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{Ptr{PetscObject}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorLGResidualNorm(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
     ccall((:SNESMonitorLGResidualNorm,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Ptr{PetscObject}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorLGDestroy(arg0::Type{Float64},arg1::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
     ccall((:SNESMonitorLGDestroy,petscRealDouble),PetscErrorCode,(Ptr{Ptr{PetscObject}},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMonitorLGRange(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESMonitorLGRange,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetApplicationContext(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESSetApplicationContext,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetApplicationContext(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESGetApplicationContext,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetComputeApplicationContext(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESSetComputeApplicationContext,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESPythonSetType(arg0::Type{Float64},arg1::SNES,arg2::Union{ByteString,Symbol})
     ccall((:SNESPythonSetType,petscRealDouble),PetscErrorCode,(SNES,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetFunctionDomainError(arg0::Type{Float64},arg1::SNES)
     ccall((:SNESSetFunctionDomainError,petscRealDouble),PetscErrorCode,(SNES,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetFunctionDomainError(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:SNESGetFunctionDomainError,petscRealDouble),PetscErrorCode,(SNES,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetConvergenceTest(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESSetConvergenceTest,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESConvergedDefault(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Union{Ptr{SNESConvergedReason},StridedArray{SNESConvergedReason},Ptr{SNESConvergedReason},Ref{SNESConvergedReason}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESConvergedDefault,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Float64,Float64,Ptr{SNESConvergedReason},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESConvergedSkip(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Union{Ptr{SNESConvergedReason},StridedArray{SNESConvergedReason},Ptr{SNESConvergedReason},Ref{SNESConvergedReason}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESConvergedSkip,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64,Float64,Float64,Ptr{SNESConvergedReason},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetConvergedReason(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{SNESConvergedReason},StridedArray{SNESConvergedReason},Ptr{SNESConvergedReason},Ref{SNESConvergedReason}})
     ccall((:SNESGetConvergedReason,petscRealDouble),PetscErrorCode,(SNES,Ptr{SNESConvergedReason}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetFunction(arg1::SNES,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:SNESGetFunction,petscRealDouble),PetscErrorCode,(SNES,Ptr{Vec{Float64}},Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESComputeFunction(arg1::SNES,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:SNESComputeFunction,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetJacobian(arg1::SNES,arg2::Mat{Float64},arg3::Mat{Float64},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESSetJacobian,petscRealDouble),PetscErrorCode,(SNES,Mat{Float64},Mat{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetJacobian(arg1::SNES,arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:SNESGetJacobian,petscRealDouble),PetscErrorCode,(SNES,Ptr{Mat{Float64}},Ptr{Mat{Float64}},Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESObjectiveComputeFunctionDefaultFD(arg1::SNES,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESObjectiveComputeFunctionDefaultFD,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESComputeJacobianDefault(arg1::SNES,arg2::Vec{Float64},arg3::Mat{Float64},arg4::Mat{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESComputeJacobianDefault,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESComputeJacobianDefaultColor(arg1::SNES,arg2::Vec{Float64},arg3::Mat{Float64},arg4::Mat{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESComputeJacobianDefaultColor,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetComputeInitialGuess(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESSetComputeInitialGuess,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetPicard(arg1::SNES,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Mat{Float64},arg5::Mat{Float64},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESSetPicard,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Ptr{Void},Mat{Float64},Mat{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetPicard(arg1::SNES,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg5::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg6::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg7::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:SNESGetPicard,petscRealDouble),PetscErrorCode,(SNES,Ptr{Vec{Float64}},Ptr{Ptr{Void}},Ptr{Mat{Float64}},Ptr{Mat{Float64}},Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetInitialFunction(arg1::SNES,arg2::Vec{Float64})
     ccall((:SNESSetInitialFunction,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetObjective(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESSetObjective,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetObjective(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:SNESGetObjective,petscRealDouble),PetscErrorCode,(SNES,Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESComputeObjective(arg1::SNES,arg2::Vec{Float64},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:SNESComputeObjective,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetNormSchedule(arg0::Type{Float64},arg1::SNES,arg2::SNESNormSchedule)
     ccall((:SNESSetNormSchedule,petscRealDouble),PetscErrorCode,(SNES,SNESNormSchedule),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetNormSchedule(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{SNESNormSchedule},StridedArray{SNESNormSchedule},Ptr{SNESNormSchedule},Ref{SNESNormSchedule}})
     ccall((:SNESGetNormSchedule,petscRealDouble),PetscErrorCode,(SNES,Ptr{SNESNormSchedule}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetFunctionType(arg0::Type{Float64},arg1::SNES,arg2::SNESFunctionType)
     ccall((:SNESSetFunctionType,petscRealDouble),PetscErrorCode,(SNES,SNESFunctionType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetFunctionType(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{SNESFunctionType},StridedArray{SNESFunctionType},Ptr{SNESFunctionType},Ref{SNESFunctionType}})
     ccall((:SNESGetFunctionType,petscRealDouble),PetscErrorCode,(SNES,Ptr{SNESFunctionType}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetNGS(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESSetNGS,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetNGS(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:SNESGetNGS,petscRealDouble),PetscErrorCode,(SNES,Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetUseNGS(arg0::Type{Float64},arg1::SNES,arg2::PetscBool)
     ccall((:SNESSetUseNGS,petscRealDouble),PetscErrorCode,(SNES,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetUseNGS(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:SNESGetUseNGS,petscRealDouble),PetscErrorCode,(SNES,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESComputeNGS(arg1::SNES,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:SNESComputeNGS,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNGSSetSweeps(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESNGSSetSweeps,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNGSGetSweeps(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESNGSGetSweeps,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNGSSetTolerances(arg0::Type{Float64},arg1::SNES,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Integer)
     ccall((:SNESNGSSetTolerances,petscRealDouble),PetscErrorCode,(SNES,Float64,Float64,Float64,Int64),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNGSGetTolerances(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESNGSGetTolerances,petscRealDouble),PetscErrorCode,(SNES,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESUpdateCheckJacobian(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESUpdateCheckJacobian,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESShellGetContext(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:SNESShellGetContext,petscRealDouble),PetscErrorCode,(SNES,Ptr{Ptr{Void}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESShellSetContext(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESShellSetContext,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESShellSetSolve(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESShellSetSolve,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{SNESLineSearch},StridedArray{SNESLineSearch},Ptr{SNESLineSearch},Ref{SNESLineSearch}})
-    ccall((:SNESLineSearchCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{SNESLineSearch}),arg1.val,arg2)
-end 
+    ccall((:SNESLineSearchCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{SNESLineSearch}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchReset(arg0::Type{Float64},arg1::SNESLineSearch)
     ccall((:SNESLineSearchReset,petscRealDouble),PetscErrorCode,(SNESLineSearch,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchView(arg1::SNESLineSearch,arg2::PetscViewer{Float64})
     ccall((:SNESLineSearchView,petscRealDouble),PetscErrorCode,(SNESLineSearch,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchDestroy(arg0::Type{Float64},arg1::Union{Ptr{SNESLineSearch},StridedArray{SNESLineSearch},Ptr{SNESLineSearch},Ref{SNESLineSearch}})
     ccall((:SNESLineSearchDestroy,petscRealDouble),PetscErrorCode,(Ptr{SNESLineSearch},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetType(arg0::Type{Float64},arg1::SNESLineSearch,arg2::SNESLineSearchType)
     ccall((:SNESLineSearchSetType,petscRealDouble),PetscErrorCode,(SNESLineSearch,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetFromOptions(arg0::Type{Float64},arg1::SNESLineSearch)
     ccall((:SNESLineSearchSetFromOptions,petscRealDouble),PetscErrorCode,(SNESLineSearch,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetFunction(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESLineSearchSetFunction,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetUp(arg0::Type{Float64},arg1::SNESLineSearch)
     ccall((:SNESLineSearchSetUp,petscRealDouble),PetscErrorCode,(SNESLineSearch,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchApply(arg1::SNESLineSearch,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Vec{Float64})
     ccall((:SNESLineSearchApply,petscRealDouble),PetscErrorCode,(SNESLineSearch,Vec{Float64},Vec{Float64},Ptr{Float64},Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchPreCheck(arg1::SNESLineSearch,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:SNESLineSearchPreCheck,petscRealDouble),PetscErrorCode,(SNESLineSearch,Vec{Float64},Vec{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchPostCheck(arg1::SNESLineSearch,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Vec{Float64},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:SNESLineSearchPostCheck,petscRealDouble),PetscErrorCode,(SNESLineSearch,Vec{Float64},Vec{Float64},Vec{Float64},Ptr{PetscBool},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetWorkVecs(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Integer)
     ccall((:SNESLineSearchSetWorkVecs,petscRealDouble),PetscErrorCode,(SNESLineSearch,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetPreCheck(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},ctx::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESLineSearchSetPreCheck,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{Void},Ptr{Void}),arg1,arg2,ctx)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetPostCheck(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},ctx::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESLineSearchSetPostCheck,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{Void},Ptr{Void}),arg1,arg2,ctx)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchGetPreCheck(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},ctx::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:SNESLineSearchGetPreCheck,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,ctx)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchGetPostCheck(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},ctx::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:SNESLineSearchGetPostCheck,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,ctx)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetVIFunctions(arg0::Type{Float64},arg1::SNESLineSearch,arg2::SNESLineSearchVIProjectFunc,arg3::SNESLineSearchVINormFunc)
     ccall((:SNESLineSearchSetVIFunctions,petscRealDouble),PetscErrorCode,(SNESLineSearch,SNESLineSearchVIProjectFunc,SNESLineSearchVINormFunc),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchGetVIFunctions(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{SNESLineSearchVIProjectFunc},StridedArray{SNESLineSearchVIProjectFunc},Ptr{SNESLineSearchVIProjectFunc},Ref{SNESLineSearchVIProjectFunc}},arg3::Union{Ptr{SNESLineSearchVINormFunc},StridedArray{SNESLineSearchVINormFunc},Ptr{SNESLineSearchVINormFunc},Ref{SNESLineSearchVINormFunc}})
     ccall((:SNESLineSearchGetVIFunctions,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{SNESLineSearchVIProjectFunc},Ptr{SNESLineSearchVINormFunc}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetSNES(arg0::Type{Float64},arg1::SNESLineSearch,arg2::SNES)
     ccall((:SNESLineSearchSetSNES,petscRealDouble),PetscErrorCode,(SNESLineSearch,SNES),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchGetSNES(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:SNESLineSearchGetSNES,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{SNES}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchGetTolerances(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESLineSearchGetTolerances,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetTolerances(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Float64,arg7::Integer)
     ccall((:SNESLineSearchSetTolerances,petscRealDouble),PetscErrorCode,(SNESLineSearch,Float64,Float64,Float64,Float64,Float64,Int64),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchPreCheckPicard(arg1::SNESLineSearch,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESLineSearchPreCheckPicard,petscRealDouble),PetscErrorCode,(SNESLineSearch,Vec{Float64},Vec{Float64},Ptr{PetscBool},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchGetLambda(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:SNESLineSearchGetLambda,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetLambda(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Float64)
     ccall((:SNESLineSearchSetLambda,petscRealDouble),PetscErrorCode,(SNESLineSearch,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchGetDamping(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:SNESLineSearchGetDamping,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetDamping(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Float64)
     ccall((:SNESLineSearchSetDamping,petscRealDouble),PetscErrorCode,(SNESLineSearch,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchGetOrder(arg0::Type{Float64},arg1::SNESLineSearch,order::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESLineSearchGetOrder,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{Int64}),arg1,order)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetOrder(arg0::Type{Float64},arg1::SNESLineSearch,order::Integer)
     ccall((:SNESLineSearchSetOrder,petscRealDouble),PetscErrorCode,(SNESLineSearch,Int64),arg1,order)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchGetReason(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{SNESLineSearchReason},StridedArray{SNESLineSearchReason},Ptr{SNESLineSearchReason},Ref{SNESLineSearchReason}})
     ccall((:SNESLineSearchGetReason,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{SNESLineSearchReason}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetReason(arg0::Type{Float64},arg1::SNESLineSearch,arg2::SNESLineSearchReason)
     ccall((:SNESLineSearchSetReason,petscRealDouble),PetscErrorCode,(SNESLineSearch,SNESLineSearchReason),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchGetVecs(arg1::SNESLineSearch,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg5::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg6::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:SNESLineSearchGetVecs,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{Vec{Float64}},Ptr{Vec{Float64}},Ptr{Vec{Float64}},Ptr{Vec{Float64}},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetVecs(arg1::SNESLineSearch,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Vec{Float64},arg5::Vec{Float64},arg6::Vec{Float64})
     ccall((:SNESLineSearchSetVecs,petscRealDouble),PetscErrorCode,(SNESLineSearch,Vec{Float64},Vec{Float64},Vec{Float64},Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchGetNorms(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:SNESLineSearchGetNorms,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetNorms(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Float64,arg3::Float64,arg4::Float64)
     ccall((:SNESLineSearchSetNorms,petscRealDouble),PetscErrorCode,(SNESLineSearch,Float64,Float64,Float64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchComputeNorms(arg0::Type{Float64},arg1::SNESLineSearch)
     ccall((:SNESLineSearchComputeNorms,petscRealDouble),PetscErrorCode,(SNESLineSearch,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetComputeNorms(arg0::Type{Float64},arg1::SNESLineSearch,arg2::PetscBool)
     ccall((:SNESLineSearchSetComputeNorms,petscRealDouble),PetscErrorCode,(SNESLineSearch,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchSetMonitor(arg0::Type{Float64},arg1::SNESLineSearch,arg2::PetscBool)
     ccall((:SNESLineSearchSetMonitor,petscRealDouble),PetscErrorCode,(SNESLineSearch,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchGetMonitor(arg1::SNESLineSearch,arg2::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
     ccall((:SNESLineSearchGetMonitor,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{PetscViewer{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchAppendOptionsPrefix(arg0::Type{Float64},arg1::SNESLineSearch,prefix::Union{ByteString,Symbol})
     ccall((:SNESLineSearchAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(SNESLineSearch,Cstring),arg1,prefix)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchGetOptionsPrefix(arg0::Type{Float64},arg1::SNESLineSearch,prefix::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:SNESLineSearchGetOptionsPrefix,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{Ptr{UInt8}}),arg1,prefix)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchShellSetUserFunc(arg0::Type{Float64},arg1::SNESLineSearch,arg2::SNESLineSearchUserFunc,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESLineSearchShellSetUserFunc,petscRealDouble),PetscErrorCode,(SNESLineSearch,SNESLineSearchUserFunc,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchShellGetUserFunc(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{SNESLineSearchUserFunc},StridedArray{SNESLineSearchUserFunc},Ptr{SNESLineSearchUserFunc},Ref{SNESLineSearchUserFunc}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:SNESLineSearchShellGetUserFunc,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{SNESLineSearchUserFunc},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchBTSetAlpha(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Float64)
     ccall((:SNESLineSearchBTSetAlpha,petscRealDouble),PetscErrorCode,(SNESLineSearch,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESLineSearchBTGetAlpha(arg0::Type{Float64},arg1::SNESLineSearch,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:SNESLineSearchBTGetAlpha,petscRealDouble),PetscErrorCode,(SNESLineSearch,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
 function SNESLineSearchRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:SNESLineSearchRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESVISetVariableBounds(arg1::SNES,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:SNESVISetVariableBounds,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESVISetComputeVariableBounds(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESVISetComputeVariableBounds,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESVIGetInactiveSet(arg1::SNES,arg2::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:SNESVIGetInactiveSet,petscRealDouble),PetscErrorCode,(SNES,Ptr{IS{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESVIGetActiveSetIS(arg1::SNES,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:SNESVIGetActiveSetIS,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Vec{Float64},Ptr{IS{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESVIComputeInactiveSetFnorm(arg1::SNES,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:SNESVIComputeInactiveSetFnorm,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Vec{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESVISetRedundancyCheck(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESVISetRedundancyCheck,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESTestLocalMin(arg0::Type{Float64},arg1::SNES)
     ccall((:SNESTestLocalMin,petscRealDouble),PetscErrorCode,(SNES,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESComputeJacobian(arg1::SNES,arg2::Vec{Float64},arg3::Mat{Float64},arg4::Mat{Float64})
     ccall((:SNESComputeJacobian,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Mat{Float64},Mat{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetDM(arg0::Type{Float64},arg1::SNES,arg2::DM)
     ccall((:SNESSetDM,petscRealDouble),PetscErrorCode,(SNES,DM),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetDM(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:SNESGetDM,petscRealDouble),PetscErrorCode,(SNES,Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetNPC(arg0::Type{Float64},arg1::SNES,arg2::SNES)
     ccall((:SNESSetNPC,petscRealDouble),PetscErrorCode,(SNES,SNES),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetNPC(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:SNESGetNPC,petscRealDouble),PetscErrorCode,(SNES,Ptr{SNES}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESHasNPC(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:SNESHasNPC,petscRealDouble),PetscErrorCode,(SNES,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESApplyNPC(arg1::SNES,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Vec{Float64})
     ccall((:SNESApplyNPC,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetNPCFunction(arg1::SNES,arg2::Vec{Float64},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:SNESGetNPCFunction,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESComputeFunctionDefaultNPC(arg1::SNES,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:SNESComputeFunctionDefaultNPC,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetNPCSide(arg0::Type{Float64},arg1::SNES,arg2::PCSide)
     ccall((:SNESSetNPCSide,petscRealDouble),PetscErrorCode,(SNES,PCSide),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetNPCSide(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{PCSide},StridedArray{PCSide},Ptr{PCSide},Ref{PCSide}})
     ccall((:SNESGetNPCSide,petscRealDouble),PetscErrorCode,(SNES,Ptr{PCSide}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESSetLineSearch(arg0::Type{Float64},arg1::SNES,arg2::SNESLineSearch)
     ccall((:SNESSetLineSearch,petscRealDouble),PetscErrorCode,(SNES,SNESLineSearch),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESGetLineSearch(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{SNESLineSearch},StridedArray{SNESLineSearch},Ptr{SNESLineSearch},Ref{SNESLineSearch}})
     ccall((:SNESGetLineSearch,petscRealDouble),PetscErrorCode,(SNES,Ptr{SNESLineSearch}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESRestrictHookAdd(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESRestrictHookAdd,petscRealDouble),PetscErrorCode,(SNES,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESRestrictHooksRun(arg0::Type{Float64},arg1::SNES,arg2::SNES)
     ccall((:SNESRestrictHooksRun,petscRealDouble),PetscErrorCode,(SNES,SNES),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSNESSetFunction(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMSNESSetFunction,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSNESGetFunction(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMSNESGetFunction,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSNESSetNGS(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMSNESSetNGS,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSNESGetNGS(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMSNESGetNGS,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSNESSetJacobian(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMSNESSetJacobian,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSNESGetJacobian(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMSNESGetJacobian,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSNESSetPicard(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMSNESSetPicard,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSNESGetPicard(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMSNESGetPicard,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSNESSetObjective(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMSNESSetObjective,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSNESGetObjective(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMSNESGetObjective,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASNESSetFunctionLocal(arg0::Type{Float64},arg1::DM,arg2::InsertMode,arg3::DMDASNESFunction,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDASNESSetFunctionLocal,petscRealDouble),PetscErrorCode,(DM,InsertMode,DMDASNESFunction,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASNESSetJacobianLocal(arg0::Type{Float64},arg1::DM,arg2::DMDASNESJacobian,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDASNESSetJacobianLocal,petscRealDouble),PetscErrorCode,(DM,DMDASNESJacobian,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASNESSetObjectiveLocal(arg0::Type{Float64},arg1::DM,arg2::DMDASNESObjective,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDASNESSetObjectiveLocal,petscRealDouble),PetscErrorCode,(DM,DMDASNESObjective,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDASNESSetPicardLocal(arg0::Type{Float64},arg1::DM,arg2::InsertMode,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDASNESSetPicardLocal,petscRealDouble),PetscErrorCode,(DM,InsertMode,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSNESGetGeometryFEM(arg1::DM,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMPlexSNESGetGeometryFEM,petscRealDouble),PetscErrorCode,(DM,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSNESGetGeometryFVM(arg1::DM,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMPlexSNESGetGeometryFVM,petscRealDouble),PetscErrorCode,(DM,Ptr{Vec{Float64}},Ptr{Vec{Float64}},Ptr{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexSNESGetGradientDM(arg0::Type{Float64},arg1::DM,arg2::PetscFV,arg3::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPlexSNESGetGradientDM,petscRealDouble),PetscErrorCode,(DM,PetscFV,Ptr{DM}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetCellFields(arg1::DM,arg2::Integer,arg3::Integer,arg4::Vec{Float64},arg5::Vec{Float64},arg6::Vec{Float64},arg7::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg8::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg9::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMPlexGetCellFields,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Vec{Float64},Vec{Float64},Vec{Float64},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexRestoreCellFields(arg1::DM,arg2::Integer,arg3::Integer,arg4::Vec{Float64},arg5::Vec{Float64},arg6::Vec{Float64},arg7::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg8::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg9::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMPlexRestoreCellFields,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Vec{Float64},Vec{Float64},Vec{Float64},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetFaceFields(arg1::DM,arg2::Integer,arg3::Integer,arg4::Vec{Float64},arg5::Vec{Float64},arg6::Vec{Float64},arg7::Vec{Float64},arg8::Vec{Float64},arg9::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg10::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMPlexGetFaceFields,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Vec{Float64},Vec{Float64},Vec{Float64},Vec{Float64},Vec{Float64},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexRestoreFaceFields(arg1::DM,arg2::Integer,arg3::Integer,arg4::Vec{Float64},arg5::Vec{Float64},arg6::Vec{Float64},arg7::Vec{Float64},arg8::Vec{Float64},arg9::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg10::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMPlexRestoreFaceFields,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Vec{Float64},Vec{Float64},Vec{Float64},Vec{Float64},Vec{Float64},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexGetFaceGeometry(arg1::DM,arg2::Integer,arg3::Integer,arg4::Vec{Float64},arg5::Vec{Float64},arg6::Union{Ptr{Ptr{PetscFVFaceGeom}},StridedArray{Ptr{PetscFVFaceGeom}},Ptr{Ptr{PetscFVFaceGeom}},Ref{Ptr{PetscFVFaceGeom}}},arg7::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMPlexGetFaceGeometry,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Vec{Float64},Vec{Float64},Ptr{Ptr{PetscFVFaceGeom}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexRestoreFaceGeometry(arg1::DM,arg2::Integer,arg3::Integer,arg4::Vec{Float64},arg5::Vec{Float64},arg6::Union{Ptr{Ptr{PetscFVFaceGeom}},StridedArray{Ptr{PetscFVFaceGeom}},Ptr{Ptr{PetscFVFaceGeom}},Ref{Ptr{PetscFVFaceGeom}}},arg7::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMPlexRestoreFaceGeometry,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Vec{Float64},Vec{Float64},Ptr{Ptr{PetscFVFaceGeom}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSNESSetFunctionLocal(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMSNESSetFunctionLocal,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSNESSetJacobianLocal(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMSNESSetJacobianLocal,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMultiblockSetFields(arg0::Type{Float64},arg1::SNES,arg2::Union{ByteString,Symbol},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESMultiblockSetFields,petscRealDouble),PetscErrorCode,(SNES,Cstring,Int64,Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMultiblockSetIS(arg1::SNES,arg2::Union{ByteString,Symbol},arg3::IS{Float64})
     ccall((:SNESMultiblockSetIS,petscRealDouble),PetscErrorCode,(SNES,Cstring,IS{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMultiblockSetBlockSize(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESMultiblockSetBlockSize,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMultiblockSetType(arg0::Type{Float64},arg1::SNES,arg2::PCCompositeType)
     ccall((:SNESMultiblockSetType,petscRealDouble),PetscErrorCode,(SNES,PCCompositeType),arg1,arg2)
-end 
+end
 =#
 function SNESMSRegister(arg0::Type{Float64},arg1::SNESMSType,arg2::Integer,arg3::Integer,arg4::Float64,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     err = ccall((:SNESMSRegister,petscRealDouble),PetscErrorCode,(Cstring,Int64,Int64,Float64,Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESMSSetType(arg0::Type{Float64},arg1::SNES,arg2::SNESMSType)
     ccall((:SNESMSSetType,petscRealDouble),PetscErrorCode,(SNES,Cstring),arg1,arg2)
-end 
+end
 =#
 function SNESMSFinalizePackage(arg0::Type{Float64})
     err = ccall((:SNESMSFinalizePackage,petscRealDouble),PetscErrorCode,())
@@ -14483,1245 +14483,1245 @@ function SNESMSRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNGMRESSetRestartType(arg0::Type{Float64},arg1::SNES,arg2::SNESNGMRESRestartType)
     ccall((:SNESNGMRESSetRestartType,petscRealDouble),PetscErrorCode,(SNES,SNESNGMRESRestartType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNGMRESSetSelectType(arg0::Type{Float64},arg1::SNES,arg2::SNESNGMRESSelectType)
     ccall((:SNESNGMRESSetSelectType,petscRealDouble),PetscErrorCode,(SNES,SNESNGMRESSelectType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNCGSetType(arg0::Type{Float64},arg1::SNES,arg2::SNESNCGType)
     ccall((:SNESNCGSetType,petscRealDouble),PetscErrorCode,(SNES,SNESNCGType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESQNSetType(arg0::Type{Float64},arg1::SNES,arg2::SNESQNType)
     ccall((:SNESQNSetType,petscRealDouble),PetscErrorCode,(SNES,SNESQNType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESQNSetScaleType(arg0::Type{Float64},arg1::SNES,arg2::SNESQNScaleType)
     ccall((:SNESQNSetScaleType,petscRealDouble),PetscErrorCode,(SNES,SNESQNScaleType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESQNSetRestartType(arg0::Type{Float64},arg1::SNES,arg2::SNESQNRestartType)
     ccall((:SNESQNSetRestartType,petscRealDouble),PetscErrorCode,(SNES,SNESQNRestartType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNASMGetType(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{PCASMType},StridedArray{PCASMType},Ptr{PCASMType},Ref{PCASMType}})
     ccall((:SNESNASMGetType,petscRealDouble),PetscErrorCode,(SNES,Ptr{PCASMType}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNASMSetType(arg0::Type{Float64},arg1::SNES,arg2::PCASMType)
     ccall((:SNESNASMSetType,petscRealDouble),PetscErrorCode,(SNES,PCASMType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNASMGetSubdomains(arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{SNES}},StridedArray{Ptr{SNES}},Ptr{Ptr{SNES}},Ref{Ptr{SNES}}},arg4::Union{Ptr{Ptr{VecScatter{Float64}}},StridedArray{Ptr{VecScatter{Float64}}},Ptr{Ptr{VecScatter{Float64}}},Ref{Ptr{VecScatter{Float64}}}},arg5::Union{Ptr{Ptr{VecScatter{Float64}}},StridedArray{Ptr{VecScatter{Float64}}},Ptr{Ptr{VecScatter{Float64}}},Ref{Ptr{VecScatter{Float64}}}},arg6::Union{Ptr{Ptr{VecScatter{Float64}}},StridedArray{Ptr{VecScatter{Float64}}},Ptr{Ptr{VecScatter{Float64}}},Ref{Ptr{VecScatter{Float64}}}})
     ccall((:SNESNASMGetSubdomains,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64},Ptr{Ptr{SNES}},Ptr{Ptr{VecScatter{Float64}}},Ptr{Ptr{VecScatter{Float64}}},Ptr{Ptr{VecScatter{Float64}}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNASMSetSubdomains(arg1::SNES,arg2::Integer,arg3::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}},arg4::Union{Ptr{VecScatter{Float64}},StridedArray{VecScatter{Float64}},Ptr{VecScatter{Float64}},Ref{VecScatter{Float64}}},arg5::Union{Ptr{VecScatter{Float64}},StridedArray{VecScatter{Float64}},Ptr{VecScatter{Float64}},Ref{VecScatter{Float64}}},arg6::Union{Ptr{VecScatter{Float64}},StridedArray{VecScatter{Float64}},Ptr{VecScatter{Float64}},Ref{VecScatter{Float64}}})
     ccall((:SNESNASMSetSubdomains,petscRealDouble),PetscErrorCode,(SNES,Int64,Ptr{SNES},Ptr{VecScatter{Float64}},Ptr{VecScatter{Float64}},Ptr{VecScatter{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNASMSetDamping(arg0::Type{Float64},arg1::SNES,arg2::Float64)
     ccall((:SNESNASMSetDamping,petscRealDouble),PetscErrorCode,(SNES,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNASMGetDamping(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:SNESNASMGetDamping,petscRealDouble),PetscErrorCode,(SNES,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNASMGetSubdomainVecs(arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}},arg4::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}},arg5::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}},arg6::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}})
     ccall((:SNESNASMGetSubdomainVecs,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64},Ptr{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESNASMSetComputeFinalJacobian(arg0::Type{Float64},arg1::SNES,arg2::PetscBool)
     ccall((:SNESNASMSetComputeFinalJacobian,petscRealDouble),PetscErrorCode,(SNES,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESCompositeSetType(arg0::Type{Float64},arg1::SNES,arg2::SNESCompositeType)
     ccall((:SNESCompositeSetType,petscRealDouble),PetscErrorCode,(SNES,SNESCompositeType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESCompositeAddSNES(arg0::Type{Float64},arg1::SNES,arg2::SNESType)
     ccall((:SNESCompositeAddSNES,petscRealDouble),PetscErrorCode,(SNES,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESCompositeGetSNES(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:SNESCompositeGetSNES,petscRealDouble),PetscErrorCode,(SNES,Int64,Ptr{SNES}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESCompositeGetNumber(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESCompositeGetNumber,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESCompositeSetDamping(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Float64)
     ccall((:SNESCompositeSetDamping,petscRealDouble),PetscErrorCode,(SNES,Int64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASSetType(arg0::Type{Float64},arg1::SNES,arg2::SNESFASType)
     ccall((:SNESFASSetType,petscRealDouble),PetscErrorCode,(SNES,SNESFASType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASGetType(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{SNESFASType},StridedArray{SNESFASType},Ptr{SNESFASType},Ref{SNESFASType}})
     ccall((:SNESFASGetType,petscRealDouble),PetscErrorCode,(SNES,Ptr{SNESFASType}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASSetLevels(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Union{Ptr{MPI_Comm},StridedArray{MPI_Comm},Ptr{MPI_Comm},Ref{MPI_Comm}})
     ccall((:SNESFASSetLevels,petscRealDouble),PetscErrorCode,(SNES,Int64,Ptr{comm_type}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASGetLevels(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:SNESFASGetLevels,petscRealDouble),PetscErrorCode,(SNES,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASGetCycleSNES(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:SNESFASGetCycleSNES,petscRealDouble),PetscErrorCode,(SNES,Int64,Ptr{SNES}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASSetNumberSmoothUp(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESFASSetNumberSmoothUp,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASSetNumberSmoothDown(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESFASSetNumberSmoothDown,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASSetCycles(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESFASSetCycles,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASSetMonitor(arg0::Type{Float64},arg1::SNES,arg2::PetscBool)
     ccall((:SNESFASSetMonitor,petscRealDouble),PetscErrorCode,(SNES,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASSetLog(arg0::Type{Float64},arg1::SNES,arg2::PetscBool)
     ccall((:SNESFASSetLog,petscRealDouble),PetscErrorCode,(SNES,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASSetGalerkin(arg0::Type{Float64},arg1::SNES,arg2::PetscBool)
     ccall((:SNESFASSetGalerkin,petscRealDouble),PetscErrorCode,(SNES,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASGetGalerkin(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:SNESFASGetGalerkin,petscRealDouble),PetscErrorCode,(SNES,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASCycleGetSmoother(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:SNESFASCycleGetSmoother,petscRealDouble),PetscErrorCode,(SNES,Ptr{SNES}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASCycleGetSmootherUp(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:SNESFASCycleGetSmootherUp,petscRealDouble),PetscErrorCode,(SNES,Ptr{SNES}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASCycleGetSmootherDown(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:SNESFASCycleGetSmootherDown,petscRealDouble),PetscErrorCode,(SNES,Ptr{SNES}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASCycleGetCorrection(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:SNESFASCycleGetCorrection,petscRealDouble),PetscErrorCode,(SNES,Ptr{SNES}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASCycleGetInterpolation(arg1::SNES,arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     ccall((:SNESFASCycleGetInterpolation,petscRealDouble),PetscErrorCode,(SNES,Ptr{Mat{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASCycleGetRestriction(arg1::SNES,arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     ccall((:SNESFASCycleGetRestriction,petscRealDouble),PetscErrorCode,(SNES,Ptr{Mat{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASCycleGetInjection(arg1::SNES,arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     ccall((:SNESFASCycleGetInjection,petscRealDouble),PetscErrorCode,(SNES,Ptr{Mat{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASCycleGetRScale(arg1::SNES,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:SNESFASCycleGetRScale,petscRealDouble),PetscErrorCode,(SNES,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASCycleSetCycles(arg0::Type{Float64},arg1::SNES,arg2::Integer)
     ccall((:SNESFASCycleSetCycles,petscRealDouble),PetscErrorCode,(SNES,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASCycleIsFine(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:SNESFASCycleIsFine,petscRealDouble),PetscErrorCode,(SNES,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASSetInterpolation(arg1::SNES,arg2::Integer,arg3::Mat{Float64})
     ccall((:SNESFASSetInterpolation,petscRealDouble),PetscErrorCode,(SNES,Int64,Mat{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASGetInterpolation(arg1::SNES,arg2::Integer,arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     ccall((:SNESFASGetInterpolation,petscRealDouble),PetscErrorCode,(SNES,Int64,Ptr{Mat{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASSetRestriction(arg1::SNES,arg2::Integer,arg3::Mat{Float64})
     ccall((:SNESFASSetRestriction,petscRealDouble),PetscErrorCode,(SNES,Int64,Mat{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASGetRestriction(arg1::SNES,arg2::Integer,arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     ccall((:SNESFASGetRestriction,petscRealDouble),PetscErrorCode,(SNES,Int64,Ptr{Mat{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASSetInjection(arg1::SNES,arg2::Integer,arg3::Mat{Float64})
     ccall((:SNESFASSetInjection,petscRealDouble),PetscErrorCode,(SNES,Int64,Mat{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASGetInjection(arg1::SNES,arg2::Integer,arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     ccall((:SNESFASGetInjection,petscRealDouble),PetscErrorCode,(SNES,Int64,Ptr{Mat{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASSetRScale(arg1::SNES,arg2::Integer,arg3::Vec{Float64})
     ccall((:SNESFASSetRScale,petscRealDouble),PetscErrorCode,(SNES,Int64,Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASGetRScale(arg1::SNES,arg2::Integer,arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:SNESFASGetRScale,petscRealDouble),PetscErrorCode,(SNES,Int64,Ptr{Vec{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASSetContinuation(arg0::Type{Float64},arg1::SNES,arg2::PetscBool)
     ccall((:SNESFASSetContinuation,petscRealDouble),PetscErrorCode,(SNES,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASGetSmoother(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:SNESFASGetSmoother,petscRealDouble),PetscErrorCode,(SNES,Int64,Ptr{SNES}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASGetSmootherUp(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:SNESFASGetSmootherUp,petscRealDouble),PetscErrorCode,(SNES,Int64,Ptr{SNES}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASGetSmootherDown(arg0::Type{Float64},arg1::SNES,arg2::Integer,arg3::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:SNESFASGetSmootherDown,petscRealDouble),PetscErrorCode,(SNES,Int64,Ptr{SNES}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASGetCoarseSolve(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:SNESFASGetCoarseSolve,petscRealDouble),PetscErrorCode,(SNES,Ptr{SNES}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASFullSetDownSweep(arg0::Type{Float64},arg1::SNES,arg2::PetscBool)
     ccall((:SNESFASFullSetDownSweep,petscRealDouble),PetscErrorCode,(SNES,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASCreateCoarseVec(arg1::SNES,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:SNESFASCreateCoarseVec,petscRealDouble),PetscErrorCode,(SNES,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESFASRestrict(arg1::SNES,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:SNESFASRestrict,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMSNESCheckFromOptions(arg1::SNES,arg2::Vec{Float64},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMSNESCheckFromOptions,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
 function TSInitializePackage(arg0::Type{Float64})
     err = ccall((:TSInitializePackage,petscRealDouble),PetscErrorCode,())
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{TS},StridedArray{TS},Ptr{TS},Ref{TS}})
-    ccall((:TSCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{TS}),arg1.val,arg2)
-end 
+    ccall((:TSCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{TS}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSClone(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TS},StridedArray{TS},Ptr{TS},Ref{TS}})
     ccall((:TSClone,petscRealDouble),PetscErrorCode,(TS,Ptr{TS}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSDestroy(arg0::Type{Float64},arg1::Union{Ptr{TS},StridedArray{TS},Ptr{TS},Ref{TS}})
     ccall((:TSDestroy,petscRealDouble),PetscErrorCode,(Ptr{TS},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetProblemType(arg0::Type{Float64},arg1::TS,arg2::TSProblemType)
     ccall((:TSSetProblemType,petscRealDouble),PetscErrorCode,(TS,TSProblemType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetProblemType(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSProblemType},StridedArray{TSProblemType},Ptr{TSProblemType},Ref{TSProblemType}})
     ccall((:TSGetProblemType,petscRealDouble),PetscErrorCode,(TS,Ptr{TSProblemType}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitor(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64})
     ccall((:TSMonitor,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorSet(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorSet,petscRealDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorCancel(arg0::Type{Float64},arg1::TS)
     ccall((:TSMonitorCancel,petscRealDouble),PetscErrorCode,(TS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetOptionsPrefix(arg0::Type{Float64},arg1::TS,arg2::Union{ByteString,Symbol})
     ccall((:TSSetOptionsPrefix,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAppendOptionsPrefix(arg0::Type{Float64},arg1::TS,arg2::Union{ByteString,Symbol})
     ccall((:TSAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetOptionsPrefix(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:TSGetOptionsPrefix,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetFromOptions(arg0::Type{Float64},arg1::TS)
     ccall((:TSSetFromOptions,petscRealDouble),PetscErrorCode,(TS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetUp(arg0::Type{Float64},arg1::TS)
     ccall((:TSSetUp,petscRealDouble),PetscErrorCode,(TS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSReset(arg0::Type{Float64},arg1::TS)
     ccall((:TSReset,petscRealDouble),PetscErrorCode,(TS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetSolution(arg1::TS,arg2::Vec{Float64})
     ccall((:TSSetSolution,petscRealDouble),PetscErrorCode,(TS,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetSolution(arg1::TS,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TSGetSolution,petscRealDouble),PetscErrorCode,(TS,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetSaveTrajectory(arg0::Type{Float64},arg1::TS)
     ccall((:TSSetSaveTrajectory,petscRealDouble),PetscErrorCode,(TS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSTrajectoryCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{TSTrajectory},StridedArray{TSTrajectory},Ptr{TSTrajectory},Ref{TSTrajectory}})
-    ccall((:TSTrajectoryCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{TSTrajectory}),arg1.val,arg2)
-end 
+    ccall((:TSTrajectoryCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{TSTrajectory}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSTrajectoryDestroy(arg0::Type{Float64},arg1::Union{Ptr{TSTrajectory},StridedArray{TSTrajectory},Ptr{TSTrajectory},Ref{TSTrajectory}})
     ccall((:TSTrajectoryDestroy,petscRealDouble),PetscErrorCode,(Ptr{TSTrajectory},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSTrajectorySetType(arg0::Type{Float64},arg1::TSTrajectory,arg2::TSTrajectoryType)
     ccall((:TSTrajectorySetType,petscRealDouble),PetscErrorCode,(TSTrajectory,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSTrajectorySet(arg1::TSTrajectory,arg2::TS,arg3::Integer,arg4::Float64,arg5::Vec{Float64})
     ccall((:TSTrajectorySet,petscRealDouble),PetscErrorCode,(TSTrajectory,TS,Int64,Float64,Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSTrajectoryGet(arg0::Type{Float64},arg1::TSTrajectory,arg2::TS,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSTrajectoryGet,petscRealDouble),PetscErrorCode,(TSTrajectory,TS,Int64,Ptr{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSTrajectorySetFromOptions(arg0::Type{Float64},arg1::TSTrajectory)
     ccall((:TSTrajectorySetFromOptions,petscRealDouble),PetscErrorCode,(TSTrajectory,),arg1)
-end 
+end
 =#
 function TSTrajectoryRegisterAll(arg0::Type{Float64})
     err = ccall((:TSTrajectoryRegisterAll,petscRealDouble),PetscErrorCode,())
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetCostGradients(arg1::TS,arg2::Integer,arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TSSetCostGradients,petscRealDouble),PetscErrorCode,(TS,Int64,Ptr{Vec{Float64}},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetCostGradients(arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}},arg4::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}})
     ccall((:TSGetCostGradients,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64},Ptr{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetCostIntegrand(arg0::Type{Float64},arg1::TS,arg2::Integer,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSSetCostIntegrand,petscRealDouble),PetscErrorCode,(TS,Int64,Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetCostIntegral(arg1::TS,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TSGetCostIntegral,petscRealDouble),PetscErrorCode,(TS,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdjointSetRHSJacobian(arg1::TS,arg2::Mat{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSAdjointSetRHSJacobian,petscRealDouble),PetscErrorCode,(TS,Mat{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdjointSolve(arg0::Type{Float64},arg1::TS)
     ccall((:TSAdjointSolve,petscRealDouble),PetscErrorCode,(TS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdjointSetSteps(arg0::Type{Float64},arg1::TS,arg2::Integer)
     ccall((:TSAdjointSetSteps,petscRealDouble),PetscErrorCode,(TS,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdjointComputeRHSJacobian(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Mat{Float64})
     ccall((:TSAdjointComputeRHSJacobian,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Mat{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdjointStep(arg0::Type{Float64},arg1::TS)
     ccall((:TSAdjointStep,petscRealDouble),PetscErrorCode,(TS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdjointSetUp(arg0::Type{Float64},arg1::TS)
     ccall((:TSAdjointSetUp,petscRealDouble),PetscErrorCode,(TS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdjointComputeDRDPFunction(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TSAdjointComputeDRDPFunction,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdjointComputeDRDYFunction(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TSAdjointComputeDRDYFunction,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdjointComputeCostIntegrand(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64})
     ccall((:TSAdjointComputeCostIntegrand,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetDuration(arg0::Type{Float64},arg1::TS,arg2::Integer,arg3::Float64)
     ccall((:TSSetDuration,petscRealDouble),PetscErrorCode,(TS,Int64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetDuration(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSGetDuration,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetExactFinalTime(arg0::Type{Float64},arg1::TS,arg2::TSExactFinalTimeOption)
     ccall((:TSSetExactFinalTime,petscRealDouble),PetscErrorCode,(TS,TSExactFinalTimeOption),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorDefault(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorDefault,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorDrawCtxCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Integer,arg9::Union{Ptr{TSMonitorDrawCtx},StridedArray{TSMonitorDrawCtx},Ptr{TSMonitorDrawCtx},Ref{TSMonitorDrawCtx}})
-    ccall((:TSMonitorDrawCtxCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Int64,Ptr{TSMonitorDrawCtx}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+    ccall((:TSMonitorDrawCtxCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Int64,Ptr{TSMonitorDrawCtx}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorDrawCtxDestroy(arg0::Type{Float64},arg1::Union{Ptr{TSMonitorDrawCtx},StridedArray{TSMonitorDrawCtx},Ptr{TSMonitorDrawCtx},Ref{TSMonitorDrawCtx}})
     ccall((:TSMonitorDrawCtxDestroy,petscRealDouble),PetscErrorCode,(Ptr{TSMonitorDrawCtx},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorDrawSolution(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorDrawSolution,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorDrawSolutionPhase(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorDrawSolutionPhase,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorDrawError(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorDrawError,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorSolutionBinary(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorSolutionBinary,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorSolutionVTK(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorSolutionVTK,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
 function TSMonitorSolutionVTKDestroy(arg0::Type{Float64},arg1::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:TSMonitorSolutionVTKDestroy,petscRealDouble),PetscErrorCode,(Ptr{Void},),arg1)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSStep(arg0::Type{Float64},arg1::TS)
     ccall((:TSStep,petscRealDouble),PetscErrorCode,(TS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSEvaluateStep(arg1::TS,arg2::Integer,arg3::Vec{Float64},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:TSEvaluateStep,petscRealDouble),PetscErrorCode,(TS,Int64,Vec{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSolve(arg1::TS,arg2::Vec{Float64})
     ccall((:TSSolve,petscRealDouble),PetscErrorCode,(TS,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetEquationType(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSEquationType},StridedArray{TSEquationType},Ptr{TSEquationType},Ref{TSEquationType}})
     ccall((:TSGetEquationType,petscRealDouble),PetscErrorCode,(TS,Ptr{TSEquationType}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetEquationType(arg0::Type{Float64},arg1::TS,arg2::TSEquationType)
     ccall((:TSSetEquationType,petscRealDouble),PetscErrorCode,(TS,TSEquationType),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetConvergedReason(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSConvergedReason},StridedArray{TSConvergedReason},Ptr{TSConvergedReason},Ref{TSConvergedReason}})
     ccall((:TSGetConvergedReason,petscRealDouble),PetscErrorCode,(TS,Ptr{TSConvergedReason}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetConvergedReason(arg0::Type{Float64},arg1::TS,arg2::TSConvergedReason)
     ccall((:TSSetConvergedReason,petscRealDouble),PetscErrorCode,(TS,TSConvergedReason),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetSolveTime(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSGetSolveTime,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetSNESIterations(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TSGetSNESIterations,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetKSPIterations(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TSGetKSPIterations,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetStepRejections(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TSGetStepRejections,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetMaxStepRejections(arg0::Type{Float64},arg1::TS,arg2::Integer)
     ccall((:TSSetMaxStepRejections,petscRealDouble),PetscErrorCode,(TS,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetSNESFailures(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TSGetSNESFailures,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetMaxSNESFailures(arg0::Type{Float64},arg1::TS,arg2::Integer)
     ccall((:TSSetMaxSNESFailures,petscRealDouble),PetscErrorCode,(TS,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetErrorIfStepFails(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
     ccall((:TSSetErrorIfStepFails,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSRollBack(arg0::Type{Float64},arg1::TS)
     ccall((:TSRollBack,petscRealDouble),PetscErrorCode,(TS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetTotalSteps(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TSGetTotalSteps,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetStages(arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}})
     ccall((:TSGetStages,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64},Ptr{Ptr{Vec{Float64}}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetInitialTimeStep(arg0::Type{Float64},arg1::TS,arg2::Float64,arg3::Float64)
     ccall((:TSSetInitialTimeStep,petscRealDouble),PetscErrorCode,(TS,Float64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetTimeStep(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSGetTimeStep,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetTime(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSGetTime,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetTime(arg0::Type{Float64},arg1::TS,arg2::Float64)
     ccall((:TSSetTime,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetTimeStepNumber(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TSGetTimeStepNumber,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetTimeStep(arg0::Type{Float64},arg1::TS,arg2::Float64)
     ccall((:TSSetTimeStep,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetPrevTime(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSGetPrevTime,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetRHSFunction(arg1::TS,arg2::Vec{Float64},arg3::TSRHSFunction,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSSetRHSFunction,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},TSRHSFunction,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetRHSFunction(arg1::TS,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{TSRHSFunction},StridedArray{TSRHSFunction},Ptr{TSRHSFunction},Ref{TSRHSFunction}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:TSGetRHSFunction,petscRealDouble),PetscErrorCode,(TS,Ptr{Vec{Float64}},Ptr{TSRHSFunction},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetRHSJacobian(arg1::TS,arg2::Mat{Float64},arg3::Mat{Float64},arg4::TSRHSJacobian,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSSetRHSJacobian,petscRealDouble),PetscErrorCode,(TS,Mat{Float64},Mat{Float64},TSRHSJacobian,Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetRHSJacobian(arg1::TS,arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg4::Union{Ptr{TSRHSJacobian},StridedArray{TSRHSJacobian},Ptr{TSRHSJacobian},Ref{TSRHSJacobian}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:TSGetRHSJacobian,petscRealDouble),PetscErrorCode,(TS,Ptr{Mat{Float64}},Ptr{Mat{Float64}},Ptr{TSRHSJacobian},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSRHSJacobianSetReuse(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
     ccall((:TSRHSJacobianSetReuse,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetSolutionFunction(arg0::Type{Float64},arg1::TS,arg2::TSSolutionFunction,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSSetSolutionFunction,petscRealDouble),PetscErrorCode,(TS,TSSolutionFunction,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetForcingFunction(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSSetForcingFunction,petscRealDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetIFunction(arg1::TS,arg2::Vec{Float64},arg3::TSIFunction,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSSetIFunction,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},TSIFunction,Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetIFunction(arg1::TS,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{TSIFunction},StridedArray{TSIFunction},Ptr{TSIFunction},Ref{TSIFunction}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:TSGetIFunction,petscRealDouble),PetscErrorCode,(TS,Ptr{Vec{Float64}},Ptr{TSIFunction},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetIJacobian(arg1::TS,arg2::Mat{Float64},arg3::Mat{Float64},arg4::TSIJacobian,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSSetIJacobian,petscRealDouble),PetscErrorCode,(TS,Mat{Float64},Mat{Float64},TSIJacobian,Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetIJacobian(arg1::TS,arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg4::Union{Ptr{TSIJacobian},StridedArray{TSIJacobian},Ptr{TSIJacobian},Ref{TSIJacobian}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:TSGetIJacobian,petscRealDouble),PetscErrorCode,(TS,Ptr{Mat{Float64}},Ptr{Mat{Float64}},Ptr{TSIJacobian},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSComputeRHSFunctionLinear(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSComputeRHSFunctionLinear,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSComputeRHSJacobianConstant(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Mat{Float64},arg5::Mat{Float64},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSComputeRHSJacobianConstant,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSComputeIFunctionLinear(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Vec{Float64},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSComputeIFunctionLinear,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSComputeIJacobianConstant(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Float64,arg6::Mat{Float64},arg7::Mat{Float64},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSComputeIJacobianConstant,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Float64,Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSComputeSolutionFunction(arg1::TS,arg2::Float64,arg3::Vec{Float64})
     ccall((:TSComputeSolutionFunction,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSComputeForcingFunction(arg1::TS,arg2::Float64,arg3::Vec{Float64})
     ccall((:TSComputeForcingFunction,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSComputeIJacobianDefaultColor(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Float64,arg6::Mat{Float64},arg7::Mat{Float64},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSComputeIJacobianDefaultColor,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Float64,Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetPreStep(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSSetPreStep,petscRealDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetPreStage(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSSetPreStage,petscRealDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetPostStage(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSSetPostStage,petscRealDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetPostStep(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSSetPostStep,petscRealDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPreStep(arg0::Type{Float64},arg1::TS)
     ccall((:TSPreStep,petscRealDouble),PetscErrorCode,(TS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPreStage(arg0::Type{Float64},arg1::TS,arg2::Float64)
     ccall((:TSPreStage,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPostStage(arg1::TS,arg2::Float64,arg3::Integer,arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TSPostStage,petscRealDouble),PetscErrorCode,(TS,Float64,Int64,Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPostStep(arg0::Type{Float64},arg1::TS)
     ccall((:TSPostStep,petscRealDouble),PetscErrorCode,(TS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetRetainStages(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
     ccall((:TSSetRetainStages,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSInterpolate(arg1::TS,arg2::Float64,arg3::Vec{Float64})
     ccall((:TSInterpolate,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetTolerances(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Float64,arg5::Vec{Float64})
     ccall((:TSSetTolerances,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Float64,Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetTolerances(arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TSGetTolerances,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64},Ptr{Vec{Float64}},Ptr{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSErrorWeightedNormInfinity(arg1::TS,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSErrorWeightedNormInfinity,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Vec{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSErrorWeightedNorm2(arg1::TS,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSErrorWeightedNorm2,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Vec{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSErrorWeightedNorm(arg1::TS,arg2::Vec{Float64},arg3::Vec{Float64},arg4::NormType,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSErrorWeightedNorm,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Vec{Float64},NormType,Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetCFLTimeLocal(arg0::Type{Float64},arg1::TS,arg2::Float64)
     ccall((:TSSetCFLTimeLocal,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetCFLTime(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSGetCFLTime,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPseudoSetTimeStep(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSPseudoSetTimeStep,petscRealDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPseudoTimeStepDefault(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSPseudoTimeStepDefault,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPseudoComputeTimeStep(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSPseudoComputeTimeStep,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPseudoSetMaxTimeStep(arg0::Type{Float64},arg1::TS,arg2::Float64)
     ccall((:TSPseudoSetMaxTimeStep,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPseudoSetVerifyTimeStep(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSPseudoSetVerifyTimeStep,petscRealDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPseudoVerifyTimeStepDefault(arg1::TS,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:TSPseudoVerifyTimeStepDefault,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Ptr{Void},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPseudoVerifyTimeStep(arg1::TS,arg2::Vec{Float64},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:TSPseudoVerifyTimeStep,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPseudoSetTimeStepIncrement(arg0::Type{Float64},arg1::TS,arg2::Float64)
     ccall((:TSPseudoSetTimeStepIncrement,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPseudoIncrementDtFromInitialDt(arg0::Type{Float64},arg1::TS)
     ccall((:TSPseudoIncrementDtFromInitialDt,petscRealDouble),PetscErrorCode,(TS,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSPythonSetType(arg0::Type{Float64},arg1::TS,arg2::Union{ByteString,Symbol})
     ccall((:TSPythonSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSComputeRHSFunction(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64})
     ccall((:TSComputeRHSFunction,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSComputeRHSJacobian(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Mat{Float64},arg5::Mat{Float64})
     ccall((:TSComputeRHSJacobian,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Mat{Float64},Mat{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSComputeIFunction(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Vec{Float64},arg6::PetscBool)
     ccall((:TSComputeIFunction,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Vec{Float64},PetscBool),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSComputeIJacobian(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Float64,arg6::Mat{Float64},arg7::Mat{Float64},arg8::PetscBool)
     ccall((:TSComputeIJacobian,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Float64,Mat{Float64},Mat{Float64},PetscBool),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSComputeLinearStability(arg0::Type{Float64},arg1::TS,arg2::Float64,arg3::Float64,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSComputeLinearStability,petscRealDouble),PetscErrorCode,(TS,Float64,Float64,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSVISetVariableBounds(arg1::TS,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:TSVISetVariableBounds,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSSetRHSFunction(arg0::Type{Float64},arg1::DM,arg2::TSRHSFunction,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMTSSetRHSFunction,petscRealDouble),PetscErrorCode,(DM,TSRHSFunction,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSGetRHSFunction(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{TSRHSFunction},StridedArray{TSRHSFunction},Ptr{TSRHSFunction},Ref{TSRHSFunction}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMTSGetRHSFunction,petscRealDouble),PetscErrorCode,(DM,Ptr{TSRHSFunction},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSSetRHSJacobian(arg0::Type{Float64},arg1::DM,arg2::TSRHSJacobian,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMTSSetRHSJacobian,petscRealDouble),PetscErrorCode,(DM,TSRHSJacobian,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSGetRHSJacobian(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{TSRHSJacobian},StridedArray{TSRHSJacobian},Ptr{TSRHSJacobian},Ref{TSRHSJacobian}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMTSGetRHSJacobian,petscRealDouble),PetscErrorCode,(DM,Ptr{TSRHSJacobian},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSSetIFunction(arg0::Type{Float64},arg1::DM,arg2::TSIFunction,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMTSSetIFunction,petscRealDouble),PetscErrorCode,(DM,TSIFunction,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSGetIFunction(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{TSIFunction},StridedArray{TSIFunction},Ptr{TSIFunction},Ref{TSIFunction}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMTSGetIFunction,petscRealDouble),PetscErrorCode,(DM,Ptr{TSIFunction},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSSetIJacobian(arg0::Type{Float64},arg1::DM,arg2::TSIJacobian,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMTSSetIJacobian,petscRealDouble),PetscErrorCode,(DM,TSIJacobian,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSGetIJacobian(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{TSIJacobian},StridedArray{TSIJacobian},Ptr{TSIJacobian},Ref{TSIJacobian}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMTSGetIJacobian,petscRealDouble),PetscErrorCode,(DM,Ptr{TSIJacobian},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSSetSolutionFunction(arg0::Type{Float64},arg1::DM,arg2::TSSolutionFunction,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMTSSetSolutionFunction,petscRealDouble),PetscErrorCode,(DM,TSSolutionFunction,Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSGetSolutionFunction(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{TSSolutionFunction},StridedArray{TSSolutionFunction},Ptr{TSSolutionFunction},Ref{TSSolutionFunction}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMTSGetSolutionFunction,petscRealDouble),PetscErrorCode,(DM,Ptr{TSSolutionFunction},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSSetForcingFunction(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMTSSetForcingFunction,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSGetForcingFunction(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMTSGetForcingFunction,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSGetMinRadius(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMTSGetMinRadius,petscRealDouble),PetscErrorCode,(DM,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSSetMinRadius(arg0::Type{Float64},arg1::DM,arg2::Float64)
     ccall((:DMTSSetMinRadius,petscRealDouble),PetscErrorCode,(DM,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSCheckFromOptions(arg1::TS,arg2::Vec{Float64},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMTSCheckFromOptions,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSSetIFunctionLocal(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMTSSetIFunctionLocal,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSSetIJacobianLocal(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMTSSetIJacobianLocal,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSSetRHSFunctionLocal(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMTSSetRHSFunctionLocal,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSSetIFunctionSerialize(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMTSSetIFunctionSerialize,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMTSSetIJacobianSerialize(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMTSSetIJacobianSerialize,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDATSSetRHSFunctionLocal(arg0::Type{Float64},arg1::DM,arg2::InsertMode,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDATSSetRHSFunctionLocal,petscRealDouble),PetscErrorCode,(DM,InsertMode,Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDATSSetRHSJacobianLocal(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDATSSetRHSJacobianLocal,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDATSSetIFunctionLocal(arg0::Type{Float64},arg1::DM,arg2::InsertMode,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDATSSetIFunctionLocal,petscRealDouble),PetscErrorCode,(DM,InsertMode,Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMDATSSetIJacobianLocal(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:DMDATSSetIJacobianLocal,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function DMPlexTSGetGeometryFVM(arg1::DM,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMPlexTSGetGeometryFVM,petscRealDouble),PetscErrorCode,(DM,Ptr{Vec{Float64}},Ptr{Vec{Float64}},Ptr{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
 function TSMonitorDMDARayDestroy(arg0::Type{Float64},arg1::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     err = ccall((:TSMonitorDMDARayDestroy,petscRealDouble),PetscErrorCode,(Ptr{Ptr{Void}},),arg1)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorDMDARay(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorDMDARay,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGDMDARay(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorLGDMDARay,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetType(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSType},StridedArray{TSType},Ptr{TSType},Ref{TSType}})
     ccall((:TSGetType,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetType(arg0::Type{Float64},arg1::TS,arg2::TSType)
     ccall((:TSSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
-end 
+end
 =#
 function TSRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:TSRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetSNES(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
     ccall((:TSGetSNES,petscRealDouble),PetscErrorCode,(TS,Ptr{SNES}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetSNES(arg0::Type{Float64},arg1::TS,arg2::SNES)
     ccall((:TSSetSNES,petscRealDouble),PetscErrorCode,(TS,SNES),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetKSP(arg1::TS,arg2::Union{Ptr{KSP{Float64}},StridedArray{KSP{Float64}},Ptr{KSP{Float64}},Ref{KSP{Float64}}})
     ccall((:TSGetKSP,petscRealDouble),PetscErrorCode,(TS,Ptr{KSP{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSView(arg1::TS,arg2::PetscViewer{Float64})
     ccall((:TSView,petscRealDouble),PetscErrorCode,(TS,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSLoad(arg1::TS,arg2::PetscViewer{Float64})
     ccall((:TSLoad,petscRealDouble),PetscErrorCode,(TS,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetApplicationContext(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSGetApplicationContext,petscRealDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGCtxCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Integer,arg9::Union{Ptr{TSMonitorLGCtx},StridedArray{TSMonitorLGCtx},Ptr{TSMonitorLGCtx},Ref{TSMonitorLGCtx}})
-    ccall((:TSMonitorLGCtxCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Int64,Ptr{TSMonitorLGCtx}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+    ccall((:TSMonitorLGCtxCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Int64,Ptr{TSMonitorLGCtx}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGCtxDestroy(arg0::Type{Float64},arg1::Union{Ptr{TSMonitorLGCtx},StridedArray{TSMonitorLGCtx},Ptr{TSMonitorLGCtx},Ref{TSMonitorLGCtx}})
     ccall((:TSMonitorLGCtxDestroy,petscRealDouble),PetscErrorCode,(Ptr{TSMonitorLGCtx},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGTimeStep(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorLGTimeStep,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGSolution(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorLGSolution,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGSetVariableNames(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:TSMonitorLGSetVariableNames,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGGetVariableNames(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}})
     ccall((:TSMonitorLGGetVariableNames,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{Ptr{UInt8}}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGCtxSetVariableNames(arg0::Type{Float64},arg1::TSMonitorLGCtx,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:TSMonitorLGCtxSetVariableNames,petscRealDouble),PetscErrorCode,(TSMonitorLGCtx,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGSetDisplayVariables(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:TSMonitorLGSetDisplayVariables,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGCtxSetDisplayVariables(arg0::Type{Float64},arg1::TSMonitorLGCtx,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:TSMonitorLGCtxSetDisplayVariables,petscRealDouble),PetscErrorCode,(TSMonitorLGCtx,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGSetTransform(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorLGSetTransform,petscRealDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGCtxSetTransform(arg0::Type{Float64},arg1::TSMonitorLGCtx,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorLGCtxSetTransform,petscRealDouble),PetscErrorCode,(TSMonitorLGCtx,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGError(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorLGError,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGSNESIterations(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorLGSNESIterations,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorLGKSPIterations(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorLGKSPIterations,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorEnvelopeCtxCreate(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSMonitorEnvelopeCtx},StridedArray{TSMonitorEnvelopeCtx},Ptr{TSMonitorEnvelopeCtx},Ref{TSMonitorEnvelopeCtx}})
     ccall((:TSMonitorEnvelopeCtxCreate,petscRealDouble),PetscErrorCode,(TS,Ptr{TSMonitorEnvelopeCtx}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorEnvelope(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorEnvelope,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorEnvelopeGetBounds(arg1::TS,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TSMonitorEnvelopeGetBounds,petscRealDouble),PetscErrorCode,(TS,Ptr{Vec{Float64}},Ptr{Vec{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorEnvelopeCtxDestroy(arg0::Type{Float64},arg1::Union{Ptr{TSMonitorEnvelopeCtx},StridedArray{TSMonitorEnvelopeCtx},Ptr{TSMonitorEnvelopeCtx},Ref{TSMonitorEnvelopeCtx}})
     ccall((:TSMonitorEnvelopeCtxDestroy,petscRealDouble),PetscErrorCode,(Ptr{TSMonitorEnvelopeCtx},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorSPEigCtxCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Integer,arg9::Union{Ptr{TSMonitorSPEigCtx},StridedArray{TSMonitorSPEigCtx},Ptr{TSMonitorSPEigCtx},Ref{TSMonitorSPEigCtx}})
-    ccall((:TSMonitorSPEigCtxCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Int64,Ptr{TSMonitorSPEigCtx}),arg1.val,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+    ccall((:TSMonitorSPEigCtxCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Int64,Ptr{TSMonitorSPEigCtx}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorSPEigCtxDestroy(arg0::Type{Float64},arg1::Union{Ptr{TSMonitorSPEigCtx},StridedArray{TSMonitorSPEigCtx},Ptr{TSMonitorSPEigCtx},Ref{TSMonitorSPEigCtx}})
     ccall((:TSMonitorSPEigCtxDestroy,petscRealDouble),PetscErrorCode,(Ptr{TSMonitorSPEigCtx},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSMonitorSPEig(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSMonitorSPEig,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetEventMonitor(arg0::Type{Float64},arg1::TS,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSSetEventMonitor,petscRealDouble),PetscErrorCode,(TS,Int64,Ptr{Int64},Ptr{PetscBool},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetEventTolerances(arg0::Type{Float64},arg1::TS,arg2::Float64,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSSetEventTolerances,petscRealDouble),PetscErrorCode,(TS,Float64,Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSSPSetType(arg0::Type{Float64},arg1::TS,arg2::TSSSPType)
     ccall((:TSSSPSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSSPGetType(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSSSPType},StridedArray{TSSSPType},Ptr{TSSSPType},Ref{TSSSPType}})
     ccall((:TSSSPGetType,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSSPSetNumStages(arg0::Type{Float64},arg1::TS,arg2::Integer)
     ccall((:TSSSPSetNumStages,petscRealDouble),PetscErrorCode,(TS,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSSPGetNumStages(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TSSSPGetNumStages,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
 function TSSSPFinalizePackage(arg0::Type{Float64})
     err = ccall((:TSSSPFinalizePackage,petscRealDouble),PetscErrorCode,())
@@ -15733,10 +15733,10 @@ function TSSSPInitializePackage(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetAdapt(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSAdapt},StridedArray{TSAdapt},Ptr{TSAdapt},Ref{TSAdapt}})
     ccall((:TSGetAdapt,petscRealDouble),PetscErrorCode,(TS,Ptr{TSAdapt}),arg1,arg2)
-end 
+end
 =#
 function TSAdaptRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:TSAdaptRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -15753,85 +15753,85 @@ function TSAdaptFinalizePackage(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{TSAdapt},StridedArray{TSAdapt},Ptr{TSAdapt},Ref{TSAdapt}})
-    ccall((:TSAdaptCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{TSAdapt}),arg1.val,arg2)
-end 
+    ccall((:TSAdaptCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{TSAdapt}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptSetType(arg0::Type{Float64},arg1::TSAdapt,arg2::TSAdaptType)
     ccall((:TSAdaptSetType,petscRealDouble),PetscErrorCode,(TSAdapt,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptSetOptionsPrefix(arg0::Type{Float64},arg1::TSAdapt,arg2::Union{ByteString,Symbol})
     ccall((:TSAdaptSetOptionsPrefix,petscRealDouble),PetscErrorCode,(TSAdapt,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptCandidatesClear(arg0::Type{Float64},arg1::TSAdapt)
     ccall((:TSAdaptCandidatesClear,petscRealDouble),PetscErrorCode,(TSAdapt,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptCandidateAdd(arg0::Type{Float64},arg1::TSAdapt,arg2::Union{ByteString,Symbol},arg3::Integer,arg4::Integer,arg5::Float64,arg6::Float64,arg7::PetscBool)
     ccall((:TSAdaptCandidateAdd,petscRealDouble),PetscErrorCode,(TSAdapt,Cstring,Int64,Int64,Float64,Float64,PetscBool),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptCandidatesGet(arg0::Type{Float64},arg1::TSAdapt,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}},arg4::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}},arg5::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg6::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:TSAdaptCandidatesGet,petscRealDouble),PetscErrorCode,(TSAdapt,Ptr{Int64},Ptr{Ptr{Int64}},Ptr{Ptr{Int64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptChoose(arg0::Type{Float64},arg1::TSAdapt,arg2::TS,arg3::Float64,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:TSAdaptChoose,petscRealDouble),PetscErrorCode,(TSAdapt,TS,Float64,Ptr{Int64},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptCheckStage(arg0::Type{Float64},arg1::TSAdapt,arg2::TS,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:TSAdaptCheckStage,petscRealDouble),PetscErrorCode,(TSAdapt,TS,Ptr{PetscBool}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptView(arg1::TSAdapt,arg2::PetscViewer{Float64})
     ccall((:TSAdaptView,petscRealDouble),PetscErrorCode,(TSAdapt,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptLoad(arg1::TSAdapt,arg2::PetscViewer{Float64})
     ccall((:TSAdaptLoad,petscRealDouble),PetscErrorCode,(TSAdapt,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptSetFromOptions(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::TSAdapt)
     ccall((:TSAdaptSetFromOptions,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},TSAdapt),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptReset(arg0::Type{Float64},arg1::TSAdapt)
     ccall((:TSAdaptReset,petscRealDouble),PetscErrorCode,(TSAdapt,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptDestroy(arg0::Type{Float64},arg1::Union{Ptr{TSAdapt},StridedArray{TSAdapt},Ptr{TSAdapt},Ref{TSAdapt}})
     ccall((:TSAdaptDestroy,petscRealDouble),PetscErrorCode,(Ptr{TSAdapt},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptSetMonitor(arg0::Type{Float64},arg1::TSAdapt,arg2::PetscBool)
     ccall((:TSAdaptSetMonitor,petscRealDouble),PetscErrorCode,(TSAdapt,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptSetStepLimits(arg0::Type{Float64},arg1::TSAdapt,arg2::Float64,arg3::Float64)
     ccall((:TSAdaptSetStepLimits,petscRealDouble),PetscErrorCode,(TSAdapt,Float64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAdaptSetCheckStage(arg0::Type{Float64},arg1::TSAdapt,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSAdaptSetCheckStage,petscRealDouble),PetscErrorCode,(TSAdapt,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
 function TSGLAdaptRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:TSGLAdaptRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -15848,40 +15848,40 @@ function TSGLAdaptFinalizePackage(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGLAdaptCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{TSGLAdapt},StridedArray{TSGLAdapt},Ptr{TSGLAdapt},Ref{TSGLAdapt}})
-    ccall((:TSGLAdaptCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{TSGLAdapt}),arg1.val,arg2)
-end 
+    ccall((:TSGLAdaptCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{TSGLAdapt}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGLAdaptSetType(arg0::Type{Float64},arg1::TSGLAdapt,arg2::TSGLAdaptType)
     ccall((:TSGLAdaptSetType,petscRealDouble),PetscErrorCode,(TSGLAdapt,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGLAdaptSetOptionsPrefix(arg0::Type{Float64},arg1::TSGLAdapt,arg2::Union{ByteString,Symbol})
     ccall((:TSGLAdaptSetOptionsPrefix,petscRealDouble),PetscErrorCode,(TSGLAdapt,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGLAdaptChoose(arg0::Type{Float64},arg1::TSGLAdapt,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Integer,arg7::Float64,arg8::Float64,arg9::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg10::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg11::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:TSGLAdaptChoose,petscRealDouble),PetscErrorCode,(TSGLAdapt,Int64,Ptr{Int64},Ptr{Float64},Ptr{Float64},Int64,Float64,Float64,Ptr{Int64},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGLAdaptView(arg1::TSGLAdapt,arg2::PetscViewer{Float64})
     ccall((:TSGLAdaptView,petscRealDouble),PetscErrorCode,(TSGLAdapt,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGLAdaptSetFromOptions(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::TSGLAdapt)
     ccall((:TSGLAdaptSetFromOptions,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},TSGLAdapt),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGLAdaptDestroy(arg0::Type{Float64},arg1::Union{Ptr{TSGLAdapt},StridedArray{TSGLAdapt},Ptr{TSGLAdapt},Ref{TSGLAdapt}})
     ccall((:TSGLAdaptDestroy,petscRealDouble),PetscErrorCode,(Ptr{TSGLAdapt},),arg1)
-end 
+end
 =#
 function TSGLAcceptRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::TSGLAcceptFunction)
     err = ccall((:TSGLAcceptRegister,petscRealDouble),PetscErrorCode,(Cstring,TSGLAcceptFunction),arg1,arg2)
@@ -15903,50 +15903,50 @@ function TSGLFinalizePackage(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGLSetType(arg0::Type{Float64},arg1::TS,arg2::TSGLType)
     ccall((:TSGLSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGLGetAdapt(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSGLAdapt},StridedArray{TSGLAdapt},Ptr{TSGLAdapt},Ref{TSGLAdapt}})
     ccall((:TSGLGetAdapt,petscRealDouble),PetscErrorCode,(TS,Ptr{TSGLAdapt}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGLSetAcceptType(arg0::Type{Float64},arg1::TS,arg2::TSGLAcceptType)
     ccall((:TSGLSetAcceptType,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSEIMEXSetMaxRows(arg0::Type{Float64},ts::TS,arg1::Integer)
     ccall((:TSEIMEXSetMaxRows,petscRealDouble),PetscErrorCode,(TS,Int64),ts,arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSEIMEXSetRowCol(arg0::Type{Float64},ts::TS,arg1::Integer,arg2::Integer)
     ccall((:TSEIMEXSetRowCol,petscRealDouble),PetscErrorCode,(TS,Int64,Int64),ts,arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSEIMEXSetOrdAdapt(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
     ccall((:TSEIMEXSetOrdAdapt,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSRKGetType(arg0::Type{Float64},ts::TS,arg1::Union{Ptr{TSRKType},StridedArray{TSRKType},Ptr{TSRKType},Ref{TSRKType}})
     ccall((:TSRKGetType,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),ts,arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSRKSetType(arg0::Type{Float64},ts::TS,arg1::TSRKType)
     ccall((:TSRKSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),ts,arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSRKSetFullyImplicit(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
     ccall((:TSRKSetFullyImplicit,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
-end 
+end
 =#
 function TSRKRegister(arg0::Type{Float64},arg1::TSRKType,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Integer,arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     err = ccall((:TSRKRegister,petscRealDouble),PetscErrorCode,(Cstring,Int64,Int64,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Int64,Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
@@ -15968,20 +15968,20 @@ function TSRKRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSARKIMEXGetType(arg0::Type{Float64},ts::TS,arg1::Union{Ptr{TSARKIMEXType},StridedArray{TSARKIMEXType},Ptr{TSARKIMEXType},Ref{TSARKIMEXType}})
     ccall((:TSARKIMEXGetType,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),ts,arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSARKIMEXSetType(arg0::Type{Float64},ts::TS,arg1::TSARKIMEXType)
     ccall((:TSARKIMEXSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),ts,arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSARKIMEXSetFullyImplicit(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
     ccall((:TSARKIMEXSetFullyImplicit,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
-end 
+end
 =#
 function TSARKIMEXRegister(arg0::Type{Float64},arg1::TSARKIMEXType,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg10::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg11::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg12::Integer,arg13::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg14::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     err = ccall((:TSARKIMEXRegister,petscRealDouble),PetscErrorCode,(Cstring,Int64,Int64,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Int64,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14)
@@ -16003,20 +16003,20 @@ function TSARKIMEXRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSRosWGetType(arg0::Type{Float64},ts::TS,arg1::Union{Ptr{TSRosWType},StridedArray{TSRosWType},Ptr{TSRosWType},Ref{TSRosWType}})
     ccall((:TSRosWGetType,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),ts,arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSRosWSetType(arg0::Type{Float64},ts::TS,arg1::TSRosWType)
     ccall((:TSRosWSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),ts,arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSRosWSetRecomputeJacobian(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
     ccall((:TSRosWSetRecomputeJacobian,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
-end 
+end
 =#
 function TSRosWRegister(arg0::Type{Float64},arg1::TSRosWType,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Integer,arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     err = ccall((:TSRosWRegister,petscRealDouble),PetscErrorCode,(Cstring,Int64,Int64,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Int64,Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
@@ -16043,70 +16043,70 @@ function TSRosWRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSThetaSetTheta(arg0::Type{Float64},arg1::TS,arg2::Float64)
     ccall((:TSThetaSetTheta,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSThetaGetTheta(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSThetaGetTheta,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSThetaGetEndpoint(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:TSThetaGetEndpoint,petscRealDouble),PetscErrorCode,(TS,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSThetaSetEndpoint(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
     ccall((:TSThetaSetEndpoint,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAlphaSetAdapt(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSAlphaSetAdapt,petscRealDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAlphaAdaptDefault(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TSAlphaAdaptDefault,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Ptr{Float64},Ptr{PetscBool},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAlphaSetRadius(arg0::Type{Float64},arg1::TS,arg2::Float64)
     ccall((:TSAlphaSetRadius,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAlphaSetParams(arg0::Type{Float64},arg1::TS,arg2::Float64,arg3::Float64,arg4::Float64)
     ccall((:TSAlphaSetParams,petscRealDouble),PetscErrorCode,(TS,Float64,Float64,Float64),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSAlphaGetParams(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TSAlphaGetParams,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSSetDM(arg0::Type{Float64},arg1::TS,arg2::DM)
     ccall((:TSSetDM,petscRealDouble),PetscErrorCode,(TS,DM),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TSGetDM(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:TSGetDM,petscRealDouble),PetscErrorCode,(TS,Ptr{DM}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESTSFormFunction(arg1::SNES,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESTSFormFunction,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function SNESTSFormJacobian(arg1::SNES,arg2::Vec{Float64},arg3::Mat{Float64},arg4::Mat{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:SNESTSFormJacobian,petscRealDouble),PetscErrorCode,(SNES,Vec{Float64},Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
 function VecFischer(arg1::Vec{Float64},arg2::Vec{Float64},arg3::Vec{Float64},arg4::Vec{Float64},arg5::Vec{Float64})
     err = ccall((:VecFischer,petscRealDouble),PetscErrorCode,(Vec{Float64},Vec{Float64},Vec{Float64},Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
@@ -16138,55 +16138,55 @@ function TaoFinalizePackage(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{Tao},StridedArray{Tao},Ptr{Tao},Ref{Tao}})
-    ccall((:TaoCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Tao}),arg1.val,arg2)
-end 
+    ccall((:TaoCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{Tao}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetFromOptions(arg0::Type{Float64},arg1::Tao)
     ccall((:TaoSetFromOptions,petscRealDouble),PetscErrorCode,(Tao,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetUp(arg0::Type{Float64},arg1::Tao)
     ccall((:TaoSetUp,petscRealDouble),PetscErrorCode,(Tao,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetType(arg0::Type{Float64},arg1::Tao,arg2::Union{ByteString,Symbol})
     ccall((:TaoSetType,petscRealDouble),PetscErrorCode,(Tao,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetType(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:TaoGetType,petscRealDouble),PetscErrorCode,(Tao,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetApplicationContext(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetApplicationContext,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetApplicationContext(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoGetApplicationContext,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoDestroy(arg0::Type{Float64},arg1::Union{Ptr{Tao},StridedArray{Tao},Ptr{Tao},Ref{Tao}})
     ccall((:TaoDestroy,petscRealDouble),PetscErrorCode,(Ptr{Tao},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetOptionsPrefix(arg0::Type{Float64},arg1::Tao,arg2::Union{ByteString,Symbol})
     ccall((:TaoSetOptionsPrefix,petscRealDouble),PetscErrorCode,(Tao,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoView(arg1::Tao,arg2::PetscViewer{Float64})
     ccall((:TaoView,petscRealDouble),PetscErrorCode,(Tao,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
 function TaoRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:TaoRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
@@ -16198,505 +16198,505 @@ function TaoRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetConvergedReason(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{TaoConvergedReason},StridedArray{TaoConvergedReason},Ptr{TaoConvergedReason},Ref{TaoConvergedReason}})
     ccall((:TaoGetConvergedReason,petscRealDouble),PetscErrorCode,(Tao,Ptr{TaoConvergedReason}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetSolutionStatus(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{TaoConvergedReason},StridedArray{TaoConvergedReason},Ptr{TaoConvergedReason},Ref{TaoConvergedReason}})
     ccall((:TaoGetSolutionStatus,petscRealDouble),PetscErrorCode,(Tao,Ptr{Int64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{TaoConvergedReason}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetConvergedReason(arg0::Type{Float64},arg1::Tao,arg2::TaoConvergedReason)
     ccall((:TaoSetConvergedReason,petscRealDouble),PetscErrorCode,(Tao,TaoConvergedReason),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetInitialVector(arg1::Tao,arg2::Vec{Float64})
     ccall((:TaoSetInitialVector,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetSolutionVector(arg1::Tao,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TaoGetSolutionVector,petscRealDouble),PetscErrorCode,(Tao,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetGradientVector(arg1::Tao,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TaoGetGradientVector,petscRealDouble),PetscErrorCode,(Tao,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetObjectiveRoutine(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetObjectiveRoutine,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetGradientRoutine(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetGradientRoutine,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetObjectiveAndGradientRoutine(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetObjectiveAndGradientRoutine,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetHessianRoutine(arg1::Tao,arg2::Mat{Float64},arg3::Mat{Float64},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetHessianRoutine,petscRealDouble),PetscErrorCode,(Tao,Mat{Float64},Mat{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetSeparableObjectiveRoutine(arg1::Tao,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetSeparableObjectiveRoutine,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetConstraintsRoutine(arg1::Tao,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetConstraintsRoutine,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetInequalityConstraintsRoutine(arg1::Tao,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetInequalityConstraintsRoutine,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetEqualityConstraintsRoutine(arg1::Tao,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetEqualityConstraintsRoutine,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetJacobianRoutine(arg1::Tao,arg2::Mat{Float64},arg3::Mat{Float64},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetJacobianRoutine,petscRealDouble),PetscErrorCode,(Tao,Mat{Float64},Mat{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetJacobianStateRoutine(arg1::Tao,arg2::Mat{Float64},arg3::Mat{Float64},arg4::Mat{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetJacobianStateRoutine,petscRealDouble),PetscErrorCode,(Tao,Mat{Float64},Mat{Float64},Mat{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetJacobianDesignRoutine(arg1::Tao,arg2::Mat{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetJacobianDesignRoutine,petscRealDouble),PetscErrorCode,(Tao,Mat{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetJacobianInequalityRoutine(arg1::Tao,arg2::Mat{Float64},arg3::Mat{Float64},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetJacobianInequalityRoutine,petscRealDouble),PetscErrorCode,(Tao,Mat{Float64},Mat{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetJacobianEqualityRoutine(arg1::Tao,arg2::Mat{Float64},arg3::Mat{Float64},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetJacobianEqualityRoutine,petscRealDouble),PetscErrorCode,(Tao,Mat{Float64},Mat{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetStateDesignIS(arg1::Tao,arg2::IS{Float64},arg3::IS{Float64})
     ccall((:TaoSetStateDesignIS,petscRealDouble),PetscErrorCode,(Tao,IS{Float64},IS{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeObjective(arg1::Tao,arg2::Vec{Float64},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TaoComputeObjective,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeSeparableObjective(arg1::Tao,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:TaoComputeSeparableObjective,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeGradient(arg1::Tao,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:TaoComputeGradient,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeObjectiveAndGradient(arg1::Tao,arg2::Vec{Float64},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Vec{Float64})
     ccall((:TaoComputeObjectiveAndGradient,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Ptr{Float64},Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeConstraints(arg1::Tao,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:TaoComputeConstraints,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeInequalityConstraints(arg1::Tao,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:TaoComputeInequalityConstraints,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeEqualityConstraints(arg1::Tao,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:TaoComputeEqualityConstraints,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoDefaultComputeGradient(arg1::Tao,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoDefaultComputeGradient,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoIsObjectiveDefined(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:TaoIsObjectiveDefined,petscRealDouble),PetscErrorCode,(Tao,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoIsGradientDefined(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:TaoIsGradientDefined,petscRealDouble),PetscErrorCode,(Tao,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoIsObjectiveAndGradientDefined(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:TaoIsObjectiveAndGradientDefined,petscRealDouble),PetscErrorCode,(Tao,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeHessian(arg1::Tao,arg2::Vec{Float64},arg3::Mat{Float64},arg4::Mat{Float64})
     ccall((:TaoComputeHessian,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Mat{Float64},Mat{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeJacobian(arg1::Tao,arg2::Vec{Float64},arg3::Mat{Float64},arg4::Mat{Float64})
     ccall((:TaoComputeJacobian,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Mat{Float64},Mat{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeJacobianState(arg1::Tao,arg2::Vec{Float64},arg3::Mat{Float64},arg4::Mat{Float64},arg5::Mat{Float64})
     ccall((:TaoComputeJacobianState,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Mat{Float64},Mat{Float64},Mat{Float64}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeJacobianEquality(arg1::Tao,arg2::Vec{Float64},arg3::Mat{Float64},arg4::Mat{Float64})
     ccall((:TaoComputeJacobianEquality,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Mat{Float64},Mat{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeJacobianInequality(arg1::Tao,arg2::Vec{Float64},arg3::Mat{Float64},arg4::Mat{Float64})
     ccall((:TaoComputeJacobianInequality,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Mat{Float64},Mat{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeJacobianDesign(arg1::Tao,arg2::Vec{Float64},arg3::Mat{Float64})
     ccall((:TaoComputeJacobianDesign,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Mat{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoDefaultComputeHessian(arg1::Tao,arg2::Vec{Float64},arg3::Mat{Float64},arg4::Mat{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoDefaultComputeHessian,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoDefaultComputeHessianColor(arg1::Tao,arg2::Vec{Float64},arg3::Mat{Float64},arg4::Mat{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoDefaultComputeHessianColor,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeDualVariables(arg1::Tao,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:TaoComputeDualVariables,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeDualVariables(arg1::Tao,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:TaoComputeDualVariables,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetVariableBounds(arg1::Tao,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:TaoSetVariableBounds,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetVariableBounds(arg1::Tao,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TaoGetVariableBounds,petscRealDouble),PetscErrorCode,(Tao,Ptr{Vec{Float64}},Ptr{Vec{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetDualVariables(arg1::Tao,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TaoGetDualVariables,petscRealDouble),PetscErrorCode,(Tao,Ptr{Vec{Float64}},Ptr{Vec{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetInequalityBounds(arg1::Tao,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:TaoSetInequalityBounds,petscRealDouble),PetscErrorCode,(Tao,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetInequalityBounds(arg1::Tao,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TaoGetInequalityBounds,petscRealDouble),PetscErrorCode,(Tao,Ptr{Vec{Float64}},Ptr{Vec{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetVariableBoundsRoutine(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetVariableBoundsRoutine,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoComputeVariableBounds(arg0::Type{Float64},arg1::Tao)
     ccall((:TaoComputeVariableBounds,petscRealDouble),PetscErrorCode,(Tao,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetTolerances(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TaoGetTolerances,petscRealDouble),PetscErrorCode,(Tao,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetTolerances(arg0::Type{Float64},arg1::Tao,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Float64)
     ccall((:TaoSetTolerances,petscRealDouble),PetscErrorCode,(Tao,Float64,Float64,Float64,Float64,Float64),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetConstraintTolerances(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TaoGetConstraintTolerances,petscRealDouble),PetscErrorCode,(Tao,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetConstraintTolerances(arg0::Type{Float64},arg1::Tao,arg2::Float64,arg3::Float64)
     ccall((:TaoSetConstraintTolerances,petscRealDouble),PetscErrorCode,(Tao,Float64,Float64),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetFunctionLowerBound(arg0::Type{Float64},arg1::Tao,arg2::Float64)
     ccall((:TaoSetFunctionLowerBound,petscRealDouble),PetscErrorCode,(Tao,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetInitialTrustRegionRadius(arg0::Type{Float64},arg1::Tao,arg2::Float64)
     ccall((:TaoSetInitialTrustRegionRadius,petscRealDouble),PetscErrorCode,(Tao,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetMaximumIterations(arg0::Type{Float64},arg1::Tao,arg2::Integer)
     ccall((:TaoSetMaximumIterations,petscRealDouble),PetscErrorCode,(Tao,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetMaximumFunctionEvaluations(arg0::Type{Float64},arg1::Tao,arg2::Integer)
     ccall((:TaoSetMaximumFunctionEvaluations,petscRealDouble),PetscErrorCode,(Tao,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetFunctionLowerBound(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TaoGetFunctionLowerBound,petscRealDouble),PetscErrorCode,(Tao,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetInitialTrustRegionRadius(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TaoGetInitialTrustRegionRadius,petscRealDouble),PetscErrorCode,(Tao,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetCurrentTrustRegionRadius(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TaoGetCurrentTrustRegionRadius,petscRealDouble),PetscErrorCode,(Tao,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetMaximumIterations(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TaoGetMaximumIterations,petscRealDouble),PetscErrorCode,(Tao,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetCurrentFunctionEvaluations(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TaoGetCurrentFunctionEvaluations,petscRealDouble),PetscErrorCode,(Tao,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetMaximumFunctionEvaluations(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TaoGetMaximumFunctionEvaluations,petscRealDouble),PetscErrorCode,(Tao,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetIterationNumber(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TaoGetIterationNumber,petscRealDouble),PetscErrorCode,(Tao,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetIterationNumber(arg0::Type{Float64},arg1::Tao,arg2::Integer)
     ccall((:TaoSetIterationNumber,petscRealDouble),PetscErrorCode,(Tao,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetTotalIterationNumber(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TaoGetTotalIterationNumber,petscRealDouble),PetscErrorCode,(Tao,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetTotalIterationNumber(arg0::Type{Float64},arg1::Tao,arg2::Integer)
     ccall((:TaoSetTotalIterationNumber,petscRealDouble),PetscErrorCode,(Tao,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetOptionsPrefix(arg0::Type{Float64},arg1::Tao,p::Union{ByteString,Symbol})
     ccall((:TaoSetOptionsPrefix,petscRealDouble),PetscErrorCode,(Tao,Cstring),arg1,p)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoAppendOptionsPrefix(arg0::Type{Float64},arg1::Tao,p::Union{ByteString,Symbol})
     ccall((:TaoAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(Tao,Cstring),arg1,p)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetOptionsPrefix(arg0::Type{Float64},arg1::Tao,p::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:TaoGetOptionsPrefix,petscRealDouble),PetscErrorCode,(Tao,Ptr{Ptr{UInt8}}),arg1,p)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoResetStatistics(arg0::Type{Float64},arg1::Tao)
     ccall((:TaoResetStatistics,petscRealDouble),PetscErrorCode,(Tao,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetKSP(arg1::Tao,arg2::Union{Ptr{KSP{Float64}},StridedArray{KSP{Float64}},Ptr{KSP{Float64}},Ref{KSP{Float64}}})
     ccall((:TaoGetKSP,petscRealDouble),PetscErrorCode,(Tao,Ptr{KSP{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetLinearSolveIterations(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TaoGetLinearSolveIterations,petscRealDouble),PetscErrorCode,(Tao,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{TaoLineSearch},StridedArray{TaoLineSearch},Ptr{TaoLineSearch},Ref{TaoLineSearch}})
-    ccall((:TaoLineSearchCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{TaoLineSearch}),arg1.val,arg2)
-end 
+    ccall((:TaoLineSearchCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{TaoLineSearch}),arg1,arg2)
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchSetFromOptions(arg0::Type{Float64},arg1::TaoLineSearch)
     ccall((:TaoLineSearchSetFromOptions,petscRealDouble),PetscErrorCode,(TaoLineSearch,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchSetUp(arg0::Type{Float64},arg1::TaoLineSearch)
     ccall((:TaoLineSearchSetUp,petscRealDouble),PetscErrorCode,(TaoLineSearch,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchDestroy(arg0::Type{Float64},arg1::Union{Ptr{TaoLineSearch},StridedArray{TaoLineSearch},Ptr{TaoLineSearch},Ref{TaoLineSearch}})
     ccall((:TaoLineSearchDestroy,petscRealDouble),PetscErrorCode,(Ptr{TaoLineSearch},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchView(arg1::TaoLineSearch,arg2::PetscViewer{Float64})
     ccall((:TaoLineSearchView,petscRealDouble),PetscErrorCode,(TaoLineSearch,PetscViewer{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchReset(arg0::Type{Float64},arg1::TaoLineSearch)
     ccall((:TaoLineSearchReset,petscRealDouble),PetscErrorCode,(TaoLineSearch,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchAppendOptionsPrefix(arg0::Type{Float64},arg1::TaoLineSearch,prefix::Union{ByteString,Symbol})
     ccall((:TaoLineSearchAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(TaoLineSearch,Cstring),arg1,prefix)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchGetOptionsPrefix(arg0::Type{Float64},arg1::TaoLineSearch,prefix::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:TaoLineSearchGetOptionsPrefix,petscRealDouble),PetscErrorCode,(TaoLineSearch,Ptr{Ptr{UInt8}}),arg1,prefix)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchApply(arg1::TaoLineSearch,arg2::Vec{Float64},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Vec{Float64},arg5::Vec{Float64},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{TaoLineSearchConvergedReason},StridedArray{TaoLineSearchConvergedReason},Ptr{TaoLineSearchConvergedReason},Ref{TaoLineSearchConvergedReason}})
     ccall((:TaoLineSearchApply,petscRealDouble),PetscErrorCode,(TaoLineSearch,Vec{Float64},Ptr{Float64},Vec{Float64},Vec{Float64},Ptr{Float64},Ptr{TaoLineSearchConvergedReason}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchGetStepLength(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TaoLineSearchGetStepLength,petscRealDouble),PetscErrorCode,(TaoLineSearch,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchGetStartingVector(arg1::TaoLineSearch,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TaoLineSearchGetStartingVector,petscRealDouble),PetscErrorCode,(TaoLineSearch,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchGetStepDirection(arg1::TaoLineSearch,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:TaoLineSearchGetStepDirection,petscRealDouble),PetscErrorCode,(TaoLineSearch,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchSetInitialStepLength(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Float64)
     ccall((:TaoLineSearchSetInitialStepLength,petscRealDouble),PetscErrorCode,(TaoLineSearch,Float64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchGetSolution(arg1::TaoLineSearch,arg2::Vec{Float64},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Vec{Float64},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{TaoLineSearchConvergedReason},StridedArray{TaoLineSearchConvergedReason},Ptr{TaoLineSearchConvergedReason},Ref{TaoLineSearchConvergedReason}})
     ccall((:TaoLineSearchGetSolution,petscRealDouble),PetscErrorCode,(TaoLineSearch,Vec{Float64},Ptr{Float64},Vec{Float64},Ptr{Float64},Ptr{TaoLineSearchConvergedReason}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchGetFullStepObjective(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TaoLineSearchGetFullStepObjective,petscRealDouble),PetscErrorCode,(TaoLineSearch,Ptr{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchGetNumberFunctionEvaluations(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TaoLineSearchGetNumberFunctionEvaluations,petscRealDouble),PetscErrorCode,(TaoLineSearch,Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchGetType(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     ccall((:TaoLineSearchGetType,petscRealDouble),PetscErrorCode,(TaoLineSearch,Ptr{Ptr{UInt8}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchSetType(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Union{ByteString,Symbol})
     ccall((:TaoLineSearchSetType,petscRealDouble),PetscErrorCode,(TaoLineSearch,Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchIsUsingTaoRoutines(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:TaoLineSearchIsUsingTaoRoutines,petscRealDouble),PetscErrorCode,(TaoLineSearch,Ptr{PetscBool}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchSetObjectiveAndGTSRoutine(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoLineSearchSetObjectiveAndGTSRoutine,petscRealDouble),PetscErrorCode,(TaoLineSearch,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchSetObjectiveRoutine(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoLineSearchSetObjectiveRoutine,petscRealDouble),PetscErrorCode,(TaoLineSearch,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchSetGradientRoutine(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoLineSearchSetGradientRoutine,petscRealDouble),PetscErrorCode,(TaoLineSearch,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchSetObjectiveAndGradientRoutine(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoLineSearchSetObjectiveAndGradientRoutine,petscRealDouble),PetscErrorCode,(TaoLineSearch,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchComputeObjective(arg1::TaoLineSearch,arg2::Vec{Float64},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TaoLineSearchComputeObjective,petscRealDouble),PetscErrorCode,(TaoLineSearch,Vec{Float64},Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchComputeGradient(arg1::TaoLineSearch,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:TaoLineSearchComputeGradient,petscRealDouble),PetscErrorCode,(TaoLineSearch,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchComputeObjectiveAndGradient(arg1::TaoLineSearch,arg2::Vec{Float64},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Vec{Float64})
     ccall((:TaoLineSearchComputeObjectiveAndGradient,petscRealDouble),PetscErrorCode,(TaoLineSearch,Vec{Float64},Ptr{Float64},Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchComputeObjectiveAndGTS(arg1::TaoLineSearch,arg2::Vec{Float64},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:TaoLineSearchComputeObjectiveAndGTS,petscRealDouble),PetscErrorCode,(TaoLineSearch,Vec{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchSetVariableBounds(arg1::TaoLineSearch,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:TaoLineSearchSetVariableBounds,petscRealDouble),PetscErrorCode,(TaoLineSearch,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
 function TaoLineSearchInitializePackage(arg0::Type{Float64})
     err = ccall((:TaoLineSearchInitializePackage,petscRealDouble),PetscErrorCode,())
@@ -16713,113 +16713,113 @@ function TaoLineSearchRegister(arg0::Type{Float64},arg1::Union{ByteString,Symbol
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLineSearchUseTaoRoutines(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Tao)
     ccall((:TaoLineSearchUseTaoRoutines,petscRealDouble),PetscErrorCode,(TaoLineSearch,Tao),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetLineSearch(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{TaoLineSearch},StridedArray{TaoLineSearch},Ptr{TaoLineSearch},Ref{TaoLineSearch}})
     ccall((:TaoGetLineSearch,petscRealDouble),PetscErrorCode,(Tao,Ptr{TaoLineSearch}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetConvergenceHistory(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Integer,arg7::PetscBool)
     ccall((:TaoSetConvergenceHistory,petscRealDouble),PetscErrorCode,(Tao,Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Int64},Int64,PetscBool),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGetConvergenceHistory(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg3::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg5::Union{Ptr{Ptr{Int64}},StridedArray{Ptr{Int64}},Ptr{Ptr{Int64}},Ref{Ptr{Int64}}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:TaoGetConvergenceHistory,petscRealDouble),PetscErrorCode,(Tao,Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Int64}},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetMonitor(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetMonitor,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoCancelMonitors(arg0::Type{Float64},arg1::Tao)
     ccall((:TaoCancelMonitors,petscRealDouble),PetscErrorCode,(Tao,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoDefaultMonitor(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoDefaultMonitor,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoDefaultSMonitor(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoDefaultSMonitor,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoDefaultCMonitor(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoDefaultCMonitor,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSolutionMonitor(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSolutionMonitor,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSeparableObjectiveMonitor(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSeparableObjectiveMonitor,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoGradientMonitor(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoGradientMonitor,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoStepDirectionMonitor(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoStepDirectionMonitor,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoDrawSolutionMonitor(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoDrawSolutionMonitor,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoDrawStepMonitor(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoDrawStepMonitor,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoDrawGradientMonitor(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoDrawGradientMonitor,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoAddLineSearchCounts(arg0::Type{Float64},arg1::Tao)
     ccall((:TaoAddLineSearchCounts,petscRealDouble),PetscErrorCode,(Tao,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoDefaultConvergenceTest(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoDefaultConvergenceTest,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSetConvergenceTest(arg0::Type{Float64},arg1::Tao,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:TaoSetConvergenceTest,petscRealDouble),PetscErrorCode,(Tao,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoSQPCONSetStateDesignIS(arg1::Tao,arg2::IS{Float64},arg3::IS{Float64})
     ccall((:TaoSQPCONSetStateDesignIS,petscRealDouble),PetscErrorCode,(Tao,IS{Float64},IS{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoLCLSetStateDesignIS(arg1::Tao,arg2::IS{Float64},arg3::IS{Float64})
     ccall((:TaoLCLSetStateDesignIS,petscRealDouble),PetscErrorCode,(Tao,IS{Float64},IS{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined symbols:
  function TaoMonitor(arg0::Type{Float64},arg1::Tao,arg2::Integer,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Float64,arg7::Union{Ptr{TaoConvergedReason},StridedArray{TaoConvergedReason},Ptr{TaoConvergedReason},Ref{TaoConvergedReason}})
     ccall((:TaoMonitor,petscRealDouble),PetscErrorCode,(Tao,Int64,Float64,Float64,Float64,Float64,Ptr{TaoConvergedReason}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#

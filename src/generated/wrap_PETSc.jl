@@ -26,6 +26,7 @@ PETSC_INCLUDE = "../../deps/RealDouble/petsc-3.6.0/include"
 petsc_header = [joinpath(PETSC_INCLUDE, "petsc.h")]
 #h1 = "/usr/include"
 h1 = "/usr/lib/gcc/x86_64-linux-gnu/4.8/include"  # get some C datatype definitions like size_t
+h2 = joinpath(PETSC_INCLUDE, "petscsys.h")
 #h2 = joinpath(PETSC_INCLUDE, "petsc/mpiuni")
 #h3 = joinpath(PETSC_INCLUDE, "petsc/private")
 #h4 = joinpath(PETSC_INCLUDE, "petsc/private/kernels")
@@ -35,7 +36,7 @@ clang_includes = ASCIIString[]
 push!(clang_includes, PETSC_INCLUDE)
 #push!(clang_includes, MPI_INCLUDE)
 push!(clang_includes, h1)
-#push!(clang_includes, h2)
+push!(clang_includes, h2)
 #push!(clang_includes, h3)
 #push!(clang_includes, h4)
 

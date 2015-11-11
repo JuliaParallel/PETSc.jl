@@ -2,6 +2,8 @@
 # common options: Orthogonilization type, KSP type, PC type
 # use PC context created as part of KSP
 
+export KSP, setoptions!
+
 type KSP{T, MType}
   pksp::C.KSP{T}
   ppc::C.PC{T}
@@ -97,7 +99,7 @@ function setoptions!(T::DataType, opts)
     end
 
     # now set the the option
-    chk(C.PetscOptionsSetValue(T, addPrefix(i[1]), i[2]))
+    chk(C.PetscOptionsSetValue(T, addPrefix(i[1]), string(i[2])))
   end  # end loop over opts
 
   return opts_orig, opts_unset
@@ -118,7 +120,7 @@ function unset_options!(T::DataType, opts_orig, opts_unset::Set)
 
   # reset options that had original values
   for i in opts_orig
-    chk(C.PetscOptionsSetValues(T, addPrefix(i[1]), i[2]))
+    chk(C.PetscOptionsSetValues(T, addPrefix(i[1]), string(i[2])))
   end
   # now reset the options that were not previously set
   for i in opts_unset
@@ -149,6 +151,14 @@ function A_ldiv_B!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T})
                    # decreases logging accurace of setup operations
 
 
+  # assemble the matrix
+  AssemblyBegin(ksp.A, C.MAT_FINAL_ASSEMBLY)
+  AssemblyEnd(ksp.A, C.MAT_FINAL_ASSEMBLY)
+
+  # assemble the vector
+  AssemblyBegin(x, C.MAT_FINAL_ASSEMBLY)
+  AssemblyEnd(x, C.MAT_FINAL_ASSEMBLY)
+ 
 #  chk(C.KSPSetFromOptions(ksp.pksp))
   chk(C.KSPSolve(ksp.pksp, b.p, x.p))
 

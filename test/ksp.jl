@@ -23,8 +23,16 @@ facts("\ntesting KSP") do
   b_julia[3] = RC(Complex(1,1))
 
   ksp = PETSc.KSP(A)
+  
+#  ksp_opts = Dict{UTF8String, Any}("-ksp_monitor" => string(PETSc.C.PETSC_DEFAULT))
+#  ksp_opts = Dict{UTF8String, Any}()
+#  println("ksp_opts = ", ksp_opts)
+  PETSc.setoptions!(ksp, ksp_monitor="")
 
-  x = PETSc.solve(ksp, b)
+  println("performing ksp solve")
+#  x = PETSc.solve(ksp, b)
+  x = ksp\b
+  println("finished ksp solve")
   x_julia = A_julia\b_julia
 
   for i=1:3

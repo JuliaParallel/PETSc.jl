@@ -30,7 +30,7 @@ end
 
 
 function PetscInitialize(lib::DataType)
-  PetscInitialize(lib, [])
+  PetscInitialize(lib, [""])
 end
 
 

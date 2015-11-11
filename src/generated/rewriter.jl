@@ -10,16 +10,16 @@ using DataStructures
 
 # used to modify function signatures
 type_dict = Dict{Any, Any} (
-:PetscScalar => :Complex128,
+:PetscScalar => :Float64,
 :PetscReal => :Float64,
 :PetscInt => :Int64,
 )
 
-const petsc_libname = :petscComplexDouble
+const petsc_libname = :petscRealDouble
 
 val_tmp = type_dict[:PetscScalar]
 type_dict_single = Dict{Any, Any} (
-:(Ptr{UInt8}) => Union{ByteString, Symbol}
+:(Ptr{UInt8}) => Union{ByteString, Symbol, Array{UInt8}}
 )
 
 
@@ -102,7 +102,7 @@ end
 # things to be replaced in function signatures only if they 
 # are top level (ie. this does a non recursive replace)
 sig_single_dict = Dict{Any, Any} (
-:(Ptr{UInt8}) => :(Union{ByteString, Symbol}),
+:(Ptr{UInt8}) => :(Union{ByteString, Symbol, Array{UInt8}}),
 :Int32 => :Integer,
 :Int64 => :Integer,
 :Cint => :Integer,

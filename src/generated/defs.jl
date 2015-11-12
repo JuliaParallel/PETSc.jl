@@ -5,38 +5,20 @@ export comm_type
 export MPI_Comm
 export PetscErrorCode
 export PetscBool
-export PetscInt
+export PetscInt # defined in depfile
 
-include("lib_locations.jl")
-#=
-#global const PETSC_DIR = ENV["PETSC_DIR"]
-#global const PETSC_ARCH = ENV["PETSC_ARCH"]
+const depfile = joinpath(dirname(@__FILE__), "..", "..", "deps", "deps.jl")
+isfile(depfile) || error("PETSc not properly installed. Please run Pkg.build(\"PETSc\")")
+include(depfile)
 
-pkgdir = Pkg.dir("PETSc")
-petsc_version = "3.6.0"
-petsc_arch = "arch-linux2-c-debug"
-#global const libpetsclocation = string(PETSC_DIR, "/", PETSC_ARCH, "/lib/", "libpetsc")
-#global const petsc1 = libpetsclocation
-global const petsc1 = joinpath(pkgdir, "deps/petsc-$petsc_version/$petsc_arch", "lib/libpetsc")
-println("petsc1 = ", petsc1)
-global const petsc2 = petsc1
-global const petsc3 = petsc1
-global const numlibs = 1  # number of libraries actually present
-#global const libpetsc = Libdl.dlopen(libpetsclocation)
-=#
-
-numlibs = 1
-
-
-global const petsc_libs = [:petscRealDouble, :petscRealSingle, :petscComplexDouble]
-global const petsc_type = [Float64, Float32, Complex128]
+const petsc_libs = [:petscRealDouble, :petscRealSingle, :petscComplexDouble]
+const petsc_type = [Float64, Float32, Complex128]
 
 typealias Scalar Union{Float32, Float64, Complex128}
 
-MPI_COMM_SELF = MPI.COMM_SELF
+const MPI_COMM_SELF = MPI.COMM_SELF
 typealias MPI_Comm MPI.Comm
 typealias comm_type typeof(MPI.COMM_WORLD.val)
-typealias PetscInt Int64
 
 # some auxiliary functions used by ccall wrappers
 function symbol_get_before(sym_arr)
@@ -67,5 +49,3 @@ function symbol_set_before(sym_arr)
   end
 
 end
-
-

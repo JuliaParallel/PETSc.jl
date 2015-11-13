@@ -130,11 +130,9 @@ Vec{T2}(a::Mat{T2}, transposed=false) =
                    mlocal=sizelocal(a,2))
 
 #############################################################################
-import Base: nnz
+Base.convert(::Type{C.Vec}, a::Mat) = a.p
 
-convert(::Type{C.Vec}, a::Mat) = a.p
-
-function size(a::Mat)
+function Base.size(a::Mat)
     m = Array(PetscInt, 1)
     n = Array(PetscInt, 1)
     chk(C.MatGetSize(a.p, m, n))
@@ -151,20 +149,20 @@ end
 lengthlocal(a::Mat) = prod(sizelocal(a))
 
 # this causes the assembly state of the underlying petsc matrix to be copied
-function similar{T, MType}(a::Mat{T, MType})
+function Base.similar{T, MType}(a::Mat{T, MType})
     p = Array(C.Mat{T}, 1)
     chk(C.MatDuplicate(a.p, C.MAT_DO_NOT_COPY_VALUES, p))
     Mat{T, MType}(p[1], comm=a.comm)
 end
 
-similar{T}(a::Mat{T}, ::Type{T}) = similar(a)
-similar{T}(a::Mat{T}, ::Type{T}, ::Type{PetscInt}) = similar(a)
-similar{T, MType}(a::Mat{T, MType}, ::Type{T}, m::Integer, n::Integer) =
+Base.similar{T}(a::Mat{T}, ::Type{T}) = similar(a)
+Base.similar{T}(a::Mat{T}, ::Type{T}, ::Type{PetscInt}) = similar(a)
+Base.similar{T, MType}(a::Mat{T, MType}, ::Type{T}, m::Integer, n::Integer) =
     (m,n) == size(a) ? similar(a) : Mat(T, m,n, comm=a.comm, mtype=MType)
-similar{T}(a::Mat, ::Type{T}, d::Tuple{Int,Int}) =
+Base.similar{T}(a::Mat, ::Type{T}, d::Tuple{Int,Int}) =
     similar(a, T, d...)
 
-function copy{T, MType}(a::Mat{T, MType})
+function Base.copy{T, MType}(a::Mat{T, MType})
     p = Array(C.Mat{T}, 1)
     chk(C.MatDuplicate(a.p, C.MAT_COPY_VALUES, p))
     Mat{T, MType}(p[1])
@@ -176,7 +174,7 @@ function getinfo(m::Mat, infotype::Integer=C.MAT_GLOBAL_SUM)
     info[1]
 end
 
-nnz(m::Mat) = int(getinfo(m).nz_used)
+Base.nnz(m::Mat) = int(getinfo(m).nz_used)
 
 #############################################################################
 
@@ -260,35 +258,37 @@ function setindex0!{T}(x::Mat{T}, v::Array{T},
     x
 end
 
-function setindex!{T}(x::Mat{T}, v::Number, i::Real, j::Real)
+import Base: setindex!
+
+function setindex!{T}(x::Mat{T}, v::Number, i::Integer, j::Integer)
     # can't call MatSetValue since that is a static inline function
     setindex0!(x, T[ v ],
-               PetscInt[ to_index(i) - 1 ],
-               PetscInt[ to_index(j) - 1 ])
+               PetscInt[ i - 1 ],
+               PetscInt[ j - 1 ])
     v
 end
-function setindex!{T3, T1<:Real, T2<:Real}(x::Mat{T3}, v::Array{T3},
+function setindex!{T3, T1<:Integer, T2<:Integer}(x::Mat{T3}, v::Array{T3},
                                        I::AbstractArray{T1},
                                        J::AbstractArray{T2})
-    I0 = PetscInt[ to_index(i)-1 for i in I ]
-    J0 = PetscInt[ to_index(j)-1 for j in J ]
+    I0 = PetscInt[ i-1 for i in I ]
+    J0 = PetscInt[ j-1 for j in J ]
+    setindex0!(x, v, I0, J0)
+end
+function setindex!{T2, T<:Integer}(x::Mat{T2}, v::Array{T2},
+                            i::Integer, J::AbstractArray{T})
+    I0 = PetscInt[ i-1 ]
+    J0 = PetscInt[ j-1 for j in J ]
     setindex0!(x, v, I0, J0)
 end
 function setindex!{T2, T<:Real}(x::Mat{T2}, v::Array{T2},
-                            i::Real, J::AbstractArray{T})
-    I0 = PetscInt[ to_index(i)-1 ]
-    J0 = PetscInt[ to_index(j)-1 for j in J ]
-    setindex0!(x, v, I0, J0)
-end
-function setindex!{T2, T<:Real}(x::Mat{T2}, v::Array{T2},
-                            I::AbstractArray{T}, j::Real)
-    I0 = PetscInt[ to_index(i)-1 for i in I ]
-    J0 = PetscInt[ to_index(j)-1 ]
+                            I::AbstractArray{T}, j::Integer)
+    I0 = PetscInt[ i-1 for i in I ]
+    J0 = PetscInt[ j-1 ]
     setindex0!(x, v, I0, J0)
 end
 
 
-setindex!{T1<:Real, T2<:Real}(x::Mat, v::Number,
+setindex!{T1<:Integer, T2<:Integer}(x::Mat, v::Number,
                               I::AbstractArray{T1},
                               J::AbstractArray{T2}) = iassemble(x) do
     for i in I
@@ -298,22 +298,22 @@ setindex!{T1<:Real, T2<:Real}(x::Mat, v::Number,
     end
     x
 end
-setindex!{T<:Real}(x::Mat, v::Number,
-                   i::Real, J::AbstractArray{T}) = iassemble(x) do
+setindex!{T<:Integer}(x::Mat, v::Number,
+                   i::Integer, J::AbstractArray{T}) = iassemble(x) do
     for j in J
         x[i,j] = v
     end
     x
 end
 setindex!{T<:Real}(x::Mat, v::Number,
-                   I::AbstractArray{T}, j::Real) = iassemble(x) do
+                   I::AbstractArray{T}, j::Integer) = iassemble(x) do
     for i in I
         x[i,j] = v
     end
     x
 end
 
-function setindex!{T0<:Real, T1<:Real, T2<:Real}(x::Mat, v::AbstractArray{T0},
+function setindex!{T0<:Number, T1<:Integer, T2<:Integer}(x::Mat, v::AbstractArray{T0},
                                                  I::AbstractArray{T1},
                                                  J::AbstractArray{T2})
     if length(v) != length(I)*length(J)
@@ -323,7 +323,7 @@ function setindex!{T0<:Real, T1<:Real, T2<:Real}(x::Mat, v::AbstractArray{T0},
     setindex!(x, v0, I, J)
 end
 
-function fill!(x::Mat, v::Number)
+function Base.fill!(x::Mat, v::Number)
 
 # the current behavior of fill! for SparseMatrixCSC
 # destroys the sparsity pattern of the matrix
@@ -349,6 +349,7 @@ function fill!(x::Mat, v::Number)
 end
 
 #############################################################################
+import Base.getindex
 
 # like getindex but for 0-based indices i and j
 function getindex0{T}(x::Mat{T}, i::Vector{PetscInt}, j::Vector{PetscInt})
@@ -360,23 +361,23 @@ function getindex0{T}(x::Mat{T}, i::Vector{PetscInt}, j::Vector{PetscInt})
     ni <= 1 || nj <= 1 ? reshape(v, ni, nj) : transpose(v)
 end
 
-getindex(a::Mat, i0::Real, i1::Real) =
-  getindex0(a, PetscInt[ to_index(i0)-1 ], PetscInt[ to_index(i1)-1 ])[1]
+getindex(a::Mat, i0::Integer, i1::Integer) =
+  getindex0(a, PetscInt[ i0-1 ], PetscInt[ i1-1 ])[1]
 
-getindex{T0<:Real,T1<:Real}(a::Mat,
+getindex{T0<:Integer,T1<:Integer}(a::Mat,
                             I0::AbstractArray{T0},
                             I1::AbstractArray{T1}) =
-  getindex0(a, PetscInt[ to_index(i0)-1 for i0 in I0 ],
-            PetscInt[ to_index(i1)-1 for i1 in I1 ])
+  getindex0(a, PetscInt[ i0-1 for i0 in I0 ],
+            PetscInt[ i1-1 for i1 in I1 ])
 
-getindex{T0<:Real}(a::Mat, I0::AbstractArray{T0}, i1::Real) =
-    reshape(getindex0(a, PetscInt[ to_index(i0)-1 for i0 in I0 ],
-                      PetscInt[ to_index(i1)-1 ]), length(I0))
+getindex{T0<:Integer}(a::Mat, I0::AbstractArray{T0}, i1::Integer) =
+    reshape(getindex0(a, PetscInt[ i0-1 for i0 in I0 ],
+                      PetscInt[ i1-1 ]), length(I0))
 
 
-getindex{T1<:Real}(a::Mat, i0::Real, I1::AbstractArray{T1}) =
-  getindex0(a, PetscInt[ to_index(i0)-1 ],
-            PetscInt[ to_index(i1)-1 for i1 in I1 ])
+getindex{T1<:Integer}(a::Mat, i0::Integer, I1::AbstractArray{T1}) =
+  getindex0(a, PetscInt[ i0-1 ],
+            PetscInt[ i1-1 for i1 in I1 ])
 
 #############################################################################
 # transposition etc.

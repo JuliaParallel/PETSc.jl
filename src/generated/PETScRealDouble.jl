@@ -3376,11 +3376,12 @@ function ISCreate(arg1::MPI_Comm,arg2::Union{Ptr{IS{Float64}},StridedArray{IS{Fl
     return err
 end
 
+#=
 function ISCreateGeneral(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},PetscCopyMode::Integer,arg4::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     err = ccall((:ISCreateGeneral,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Cint,Ptr{IS{Float64}}),arg1.val,arg2,arg3,PetscCopyMode,arg4)
     return err
 end
-
+=#
 function ISGeneralSetIndices(arg1::IS{Float64},arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},PetscCopyMode::Integer)
     err = ccall((:ISGeneralSetIndices,petscRealDouble),PetscErrorCode,(IS{Float64},Int64,Ptr{Int64},Cint),arg1,arg2,arg3,PetscCopyMode)
     return err

@@ -54,7 +54,14 @@ function VecDestroy(vec::Vec)
    # if Petsc has been finalized, let the OS deallocate the memory
 end
 
+function petscview{T}(vec::Vec{T})
+  viewer = C.PetscViewer{T}(C_NULL)
+  chk(C.VecView(vec.p, viewer))
+end
 
+
+
+export settype!, gettype, setsizes!
 
 function settype!(a::Vec, T::C.VecType)
     chk(C.VecSetType(a.p, T))
@@ -69,13 +76,15 @@ function gettype(a::Vec)
     p[1]
 end
 
-function setsizes!(x::Vec, m::Integer; mlocal::Integer=C.PETSC_DECIDE)
-    chk(C.VecSetSizes(x.p, m, mlocal))
+function setsizes!(x::Vec, mlocal::Integer; m::Integer=C.PETSC_DECIDE)
+    println("m = ", m)
+    println("mlocal = ", mlocal)
+    chk(C.VecSetSizes(x.p, mlocal, m))
     x
 end
 ##########################################################################
 import Base: convert, length, size, similar, copy
-export lengthlocal, sizelocal
+export lengthlocal, sizelocal, localpart
 
 convert(::Type{C.Vec}, v::Vec) = v.p
 
@@ -93,6 +102,16 @@ function lengthlocal(x::Vec)
 end
 sizelocal(x::Vec) = (lengthlocal(x),)
 sizelocal{T,n}(t::AbstractArray{T,n}, d) = (d>n ? 1 : sizelocal(t)[d])
+
+function localpart(v::Vec)
+# this function returns a range from the first to the last indicies (1 based)
+# this is different than the Petsc VecGetOwnershipRange function where
+# the max value is one more than the number of entries
+  low = Ref{PetscInt}()
+  high = Ref{PetscInt}()
+  chk(C.VecGetOwnershipRange(v.p, low, high))
+  return (low[]+1):(high[])
+end
 
 function similar{T, VType}(x::Vec{T, VType})
     p = Array(C.Vec{T}, 1)
@@ -141,7 +160,7 @@ function setindex0!{T}(x::Vec{T}, v::Array{T}, i::Array{PetscInt})
     if n != length(i)
         throw(ArgumentError("length(values) != length(indices)"))
     end
-
+#    println("  in setindex0, passed bounds check")
     chk(C.VecSetValues(x.p, n, i, v, x.insertmode))
     if !x.assembling
         AssemblyBegin(x)
@@ -152,6 +171,7 @@ end
 
 function setindex!{T}(x::Vec{T}, v::Number, i::Real)
     # can't call VecSetValue since that is a static inline function
+#    println("  calling setindex0")
     setindex0!(x, T[ v ], PetscInt[ to_index(i) - 1 ])
     v
 end
@@ -309,7 +329,7 @@ function norm{T <: Real}(x::Vec{T}, p::Number)
     v = Array(T, 1)
     n = p == 1 ? C.NORM_1 : p == 2 ? C.NORM_2 : p == Inf ? C.NORM_INFINITY :
        throw(ArgumentError("unrecognized Petsc norm $p"))
-    chk(C.VecNorm(x.p, n, p))
+    chk(C.VecNorm(x.p, n, v))
     v[1]
 end
 

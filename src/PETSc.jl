@@ -13,7 +13,7 @@ include("vec.jl")
 include("mat.jl")
 include("error.jl")
 include("ksp.jl")
-
+include("is.jl")
 
 #=
 function __init__()

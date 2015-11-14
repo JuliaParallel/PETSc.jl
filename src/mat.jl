@@ -1,5 +1,5 @@
 # AbstractMatrix wrapper around Petsc Mat
-export Mat
+export Mat, petscview
 #typealias pMat Ptr{Void} # Mat arguments in Petsc are pointers
 type Mat{T, MType} <: AbstractSparseMatrix{T,PetscInt}
     p::C.Mat{T}
@@ -22,7 +22,7 @@ function Mat{T}(::Type{T}, mtype=C.MatType=C.MATSEQ; comm=MPI.COMM_WORLD)
 #    p = Array(C.Mat{T}, 1)
     p = Ref{C.Mat{T}}()
     chk(C.MatCreate(comm, p))
-    Mat{T, mtype}(p[])
+    Mat{T, mtype}(p[], comm=comm)
 end
 
 
@@ -54,6 +54,10 @@ function MatDestroy(mat::Mat)
    # if Petsc has been finalized, let the OS deallocate the memory
 end
 
+function petscview{T}(mat::Mat{T})
+  viewer = C.PetscViewer{T}(C_NULL)
+  chk(C.MatView(mat.p, viewer))
+end
 
 
 function setoption!(m::Mat, option::C.MatOption, val::Bool)
@@ -243,9 +247,9 @@ function setindex0!{T}(x::Mat{T}, v::Array{T},
         throw(ArgumentError("length(values) != length(indices)"))
     end
 
-#    println("i = ", i)
-#    println("j = ", j)
-#    println("v = ", v)
+#    println("  i = ", i)
+#    println("  j = ", j)
+#    println("  v = ", v)
 
     chk(C.MatSetValues(x.p, ni, i, nj, j, v, x.insertmode))
 

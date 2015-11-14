@@ -20,6 +20,7 @@ function KSP{T, MType}(A::Mat{T, MType}, pc_mat::Mat{T, MType}=A)
   C.KSPGetPC(ksp, pc_arr)
   pc = pc_arr[1]
 
+  rank = MPI.Comm_rank(A.comm)
   chk(C.KSPSetOperators(ksp, A.p, pc_mat.p))
  # call KSPSetOptions from here 
 
@@ -63,7 +64,7 @@ function setoptions!{T, MType}(ksp::KSP{T, MType}; opts...)
  
   # reset the options in the databse
   unset_options!(T, opts_orig, opts_unset)
- 
+
   return nothing
 end
 
@@ -156,8 +157,11 @@ function A_ldiv_B!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T})
   AssemblyEnd(ksp.A, C.MAT_FINAL_ASSEMBLY)
 
   # assemble the vector
-  AssemblyBegin(x, C.MAT_FINAL_ASSEMBLY)
-  AssemblyEnd(x, C.MAT_FINAL_ASSEMBLY)
+  AssemblyBegin(b)
+  AssemblyEnd(b)
+ 
+  AssemblyBegin(x)
+  AssemblyEnd(x)
  
 #  chk(C.KSPSetFromOptions(ksp.pksp))
   chk(C.KSPSolve(ksp.pksp, b.p, x.p))

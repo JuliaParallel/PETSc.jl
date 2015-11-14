@@ -453,10 +453,8 @@ end
 function (*){T, VType}(A::Mat{T,VType}, B::Mat{T})
   p = Ptr{Float64}(0)
   p_arr = Array(C.Mat{T}, 1)
-  println("p_arr = ", p_arr)
   chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, real(T(2.0)), p_arr))
 
-  println("p_arr = ", p_arr)
 #  c_mat = C.Mat{T}(p_arr[1])
   new_mat = Mat{T, VType}(p_arr[1], comm=A.comm)
   return new_mat

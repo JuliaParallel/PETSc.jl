@@ -73,8 +73,8 @@ function setoptions!(T::DataType, opts)
 # opts is any iterable container of tuples containing a key and a value, both
 # strings
 
-  println("setting options")
-  println("typeof(opts) = ", typeof(opts))
+#  println("setting options")
+#  println("typeof(opts) = ", typeof(opts))
 
   len = Csize_t(256)
   string_buff = (Array(UInt8, len))
@@ -84,17 +84,17 @@ function setoptions!(T::DataType, opts)
   opts_unset = Set{UTF8String}()  # options without existing values
   isset = Ref{PetscBool}()
 
-  println("opts = ", opts)
+#  println("opts = ", opts)
   for i in opts
     # record the original option value
-    println("i = ", i)
-    println("typeof(i) = ", typeof(i))
+#    println("i = ", i)
+#    println("typeof(i) = ", typeof(i))
     chk(C.PetscOptionsGetString(T, null_str, addPrefix(i[1]), string_buff2, len, isset))
 
     if isset[] != 0  # if an option with the specified name was found
       str = bytestring(pointer(string_buff2))
       opts_orig[string(i[1])] = str
-      println("value of option $i is ", str)
+#      println("value of option $i is ", str)
     else  # option has not previously been set
       push!(opts_unset, string(i[1]))
     end

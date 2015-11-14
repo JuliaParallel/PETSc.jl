@@ -77,8 +77,6 @@ function gettype(a::Vec)
 end
 
 function setsizes!(x::Vec, mlocal::Integer; m::Integer=C.PETSC_DECIDE)
-    println("m = ", m)
-    println("mlocal = ", mlocal)
     chk(C.VecSetSizes(x.p, mlocal, m))
     x
 end

@@ -5,7 +5,7 @@ using PETSc
 function driver()
   xmin = 0
   xmax = 1
-  N = 500  # N+1 = # of grid points per processor
+  N = 5  # N+1 = # of grid points per processor
   mpi_rank = MPI.Comm_rank(MPI.COMM_WORLD) + 1
   mpi_size = MPI.Comm_size(MPI.COMM_WORLD) 
 

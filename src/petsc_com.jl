@@ -9,7 +9,7 @@ function __init__()
 
   for i in [Float64, Float32, Complex128]
     PetscInitialize(i)
-    println("initialized Petsc library ", i)
+#    println("initialized Petsc library ", i)
   end
 
   # we want Petsc to return errors to us, rather than using its own
@@ -41,7 +41,7 @@ end
 function PetscInitialize(lib::DataType, args,filename,help)
   # argument list starts with program name
   args = ["julia";args];
-  println("typeof(args) = ", typeof(args))
+#  println("typeof(args) = ", typeof(args))
   #
   #   If the user forgot to PetscFinalize() we do it for them, before restarting PETSc
   #
@@ -69,9 +69,9 @@ function PetscInitialize(lib::DataType, args,filename,help)
 #  ptrs = _jl_pre_exec(arr)
 #  err = ccall(Libdl.dlsym(libpetsc, :PetscInitializeNoPointers),Int32,(Int32,Ptr{Ptr{UInt8}},Ptr{UInt8},Ptr{UInt8}), length(ptrs), ptrs,cstring(filename),cstring(help));
 
-  println("typeof(arr) = ", typeof(arr))
-  println("typeof(filename) = ", typeof(bytestring(filename)))
-  println("typeof(help) = ", typeof(bytestring(help)))
+#  println("typeof(arr) = ", typeof(arr))
+#  println("typeof(filename) = ", typeof(bytestring(filename)))
+#  println("typeof(help) = ", typeof(bytestring(help)))
 
   val = length(arr)
   val_ptr = Int32[val]

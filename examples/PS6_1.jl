@@ -1,5 +1,5 @@
 # solve Problem Set 6 Problem 1
-using ArrayViews  # non-copying subarray package
+#using ArrayViews  # non-copying subarray package
 using PETSc
 
 function driver()
@@ -13,7 +13,7 @@ function driver()
   delta_x = (xmax - xmin)/(Npts_global)
   delta_t = delta_x
 
-  tmax = 1.0
+  tmax = 0.5
 
   solve(xmin, xmax, tmax, N, delta_t)#, ICFunc, BCL, BCR, src)
 end

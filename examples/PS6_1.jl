@@ -15,11 +15,11 @@ function driver()
 
   tmax = 0.5
 
-  solve(xmin, xmax, tmax, N, delta_t)#, ICFunc, BCL, BCR, src)
+  solve(xmin, xmax, tmax, N, delta_t)
 end
 
 
-function solve(xmin, xmax, tmax, N, delta_t)#,ICFunc::Function, BCL::Function, BCR::Function, source::Function)
+function solve(xmin, xmax, tmax, N, delta_t)
 # solves the advection-diffusion equation using centered differences in space
 # Crank-Nicolson in time
 # Dirchlet boundary condition on left, Neumann on the right
@@ -163,7 +163,7 @@ time = @elapsed for tstep=1:nStep  # loop over timesteps
     u_k = u_ghost[ i + ghost_offset ]
     u_k_1 = u_ghost[ i-1 + ghost_offset ]
     u_k_p1 = u_ghost[ i+1 + ghost_offset ]
-    src_val = source( (i-1)*delta_x, (tstep - 0.5)*delta_t) 
+    src_val = source(xmin + (i-1)*delta_x, (tstep - 0.5)*delta_t) 
     rhs[i] = stencil_l*u_k_1 + stencil_c*u_k  + stencil_r*u_k_p1 + delta_t*src_val
   end
 
@@ -172,7 +172,7 @@ time = @elapsed for tstep=1:nStep  # loop over timesteps
     u_k = u_ghost[i + ghost_offset]
     u_k_1 = u_ghost[i-1 + ghost_offset]
     u_k_p1 = u_ghost[i+1 + ghost_offset]
-    src_val = source( (i-1)*delta_x, (tstep - 0.5)*delta_t) 
+    src_val = source(xmin + (i-1)*delta_x, (tstep - 0.5)*delta_t) 
     rhs[i] = stencil_l*u_k_1 + stencil_c*u_k  + stencil_r*u_k_p1 + delta_t*src_val
   end
 
@@ -181,7 +181,7 @@ time = @elapsed for tstep=1:nStep  # loop over timesteps
     u_k = u_ghost[i + ghost_offset]
     u_k_1 = u_ghost[i-1 + ghost_offset]
     u_k_p1 = u_ghost[i+1 + ghost_offset]
-    src_val = source( (i-1)*delta_x, (tstep - 0.5)*delta_t) 
+    src_val = source(xmin + (i-1)*delta_x, (tstep - 0.5)*delta_t) 
     rhs[i] = stencil_l*u_k_1 + stencil_c*u_k  + stencil_r*u_k_p1 + delta_t*src_val
   end
 

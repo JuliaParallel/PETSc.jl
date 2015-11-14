@@ -5,7 +5,7 @@ using PETSc
 function driver()
   xmin = 0
   xmax = 1
-  N = 5  # N+1 = # of grid points per processor
+  N = 500  # N+1 = # of grid points per processor
   mpi_rank = MPI.Comm_rank(MPI.COMM_WORLD) + 1
   mpi_size = MPI.Comm_size(MPI.COMM_WORLD) 
 
@@ -57,14 +57,15 @@ r = delta_t/(delta_x^2)
 sigma = delta_t/delta_x
 nStep = convert(Int, div(tmax, delta_t))
 
-#=
+if mpi_rank == 1
 println("tmax = ", tmax)
 println("delta_x = ", delta_x)
 println("delta_t = ", delta_t)
 println("r = ", r)
 println("sigma = ", sigma)
 println("nStep = ", nStep)
-=#
+end
+
 
 # get the Petsc objects
 A, u_i, u_ghost, vec_scatter, rhs, ksp, uex, ctx, ghost_offset = createPetscData(mat_size, 3)
@@ -364,7 +365,7 @@ function createPetscData(mat_size, stencil_size)
 
   ctx = (is_local, is_ghost)  # avoid GC
   ksp = PETSc.KSP(A)
-  setoptions!(ksp; ksp_atol=1e-10, ksp_rtol=1e-8, ksp_monitor="")
+  setoptions!(ksp; ksp_atol=1e-12, ksp_rtol=1e-14, ksp_monitor="")
   
   return A, u_i, u_ghost, vec_scatter, rhs, ksp, uex, ctx, ghost_offset
 end

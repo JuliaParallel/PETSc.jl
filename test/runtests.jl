@@ -38,14 +38,14 @@ function RC(x::AbstractArray)
   end
 end
 
-#for ST in [Float64, Float32, Complex128]
-ST = Float64
+for ST in [Float64, Float32, Complex128]
+#ST = Float64
   println("\n\nTesting ", ST)
   include("error.jl")
   include("vec.jl")
   include("mat.jl")
   include("ksp.jl")
-#end
+end
 
 
 # it looks like all the libraries share an MPI session, so we can only

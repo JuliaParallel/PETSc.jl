@@ -11,15 +11,15 @@ type Vec{T,VType} <: AbstractVector{T}
     function Vec(p::C.Vec{T}; comm=MPI.COMM_SELF)  # default sequantial vector
         v = new(p, false, C.INSERT_VALUES, comm)
         chk(C.VecSetType(p, VType))  # set the type here to ensure it matches VType
-#        finalizer(v, VecDestroy)
+        finalizer(v, VecDestroy)
         return v
     end
 end
 
 function Vec{T}(::Type{T}, vtype::C.VecType=C.VECSEQ; comm=MPI.COMM_SELF)
     p = Array(C.Vec{T}, 1)
-    C.VecCreate(comm, p)
-    Vec{T, vtype}(p[1])
+    chk(C.VecCreate(comm, p))
+    Vec{T, vtype}(p[1]; comm=comm)
 end
 
 function Vec{T<:Scalar}(::Type{T}, len::Integer, vtype::C.VecType=C.VECSEQ;
@@ -292,7 +292,7 @@ function Base.At_mul_B{T<:Complex}(x::Vec{T}, y::Vec{T})
 end
 
 # pointwise operations on pairs of vectors (TODO: support in-place variants?)
-import Base: max, min, .*, ./
+import Base: max, min, .*, ./, .\
 for (f,pf) in ((:max,:VecPointwiseMax), (:min,:VecPointwiseMin),
                (:.*,:VecPointwiseMult), (:./,:VecPointwiseDivide))
     @eval function ($f)(x::Vec, y::Vec)
@@ -304,6 +304,7 @@ end
 (.*)(x::Vec, a::Number...) = scale(x, prod(a))
 (.*)(a::Number, x::Vec) = scale(x, a)
 (./)(x::Vec, a::Number) = scale(x, inv(a))
+(.\)(a::Number, x::Vec) = scale(x, inv(a))
 function (./)(a::Number, x::Vec)
     y = copy(x)
     chk(C.VecReciprocal(y.p))

@@ -49,3 +49,14 @@ function symbol_set_before(sym_arr)
   end
 
 end
+
+# TODO: auto-generate these
+function PetscObjectComm(::Type{Float64},arg1::Ptr)
+   ccall((:PetscObjectComm,petscRealDouble),comm_type,(Ptr{Void},),arg1)
+end
+function PetscObjectComm(::Type{Float32},arg1::Ptr)
+   ccall((:PetscObjectComm,petscRealSingle),comm_type,(Ptr{Void},),arg1)
+end
+function PetscObjectComm(::Type{Complex128},arg1::Ptr)
+   ccall((:PetscObjectComm,petscComplexDouble),comm_type,(Ptr{Void},),arg1)
+end

@@ -8,19 +8,20 @@ type Mat{T, MType} <: AbstractSparseMatrix{T,PetscInt}
     data::Any # keep a reference to anything needed for the Mat
               # -- needed if the Mat is a wrapper around a Julia object,
               #    to prevent the object from being garbage collected.
-    comm::MPI.Comm
-    function Mat(p::C.Mat{T}, data=nothing; comm=MPI.COMM_SELF)  # default sequantial matrix
-        A = new(p, false, C.INSERT_VALUES, data, comm)
+    function Mat(p::C.Mat{T}, data=nothing)
+        A = new(p, false, C.INSERT_VALUES, data)
         chk(C.MatSetType(p, MType))
         finalizer(A, MatDestroy)
         return A
     end
 end
 
+comm{T}(a::Mat{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
+
 function Mat{T}(::Type{T}, mtype=C.MatType=C.MATSEQ; comm=MPI.COMM_WORLD)
     p = Ref{C.Mat{T}}()
     chk(C.MatCreate(comm, p))
-    Mat{T, mtype}(p[], comm=comm)
+    Mat{T, mtype}(p[])
 end
 
 function Mat{T}(::Type{T}, m::Integer, n::Integer;
@@ -107,9 +108,9 @@ end
 # construct Vec for multiplication by a::Mat or transpose(a::Mat)
 const mat2vec = Dict{C.MatType, C.MatType}( :mpiaij => :aij, :seqaij => :seq )
 Vec{T2}(a::Mat{T2}, transposed=false) =
-  transposed ? Vec(T, size(a,1), comm=a.comm, T=mat2vec[gettype(a)],
+  transposed ? Vec(T, size(a,1), comm=comm(a), T=mat2vec[gettype(a)],
                    mlocal=sizelocal(a,1)) :
-               Vec(T, size(a,2), comm=a.comm, T=mat2vec[gettype(a)],
+               Vec(T, size(a,2), comm=comm(a), T=mat2vec[gettype(a)],
                    mlocal=sizelocal(a,2))
 
 #############################################################################
@@ -135,14 +136,14 @@ lengthlocal(a::Mat) = prod(sizelocal(a))
 function Base.similar{T, MType}(a::Mat{T, MType})
     p = Array(C.Mat{T}, 1)
     chk(C.MatDuplicate(a.p, C.MAT_DO_NOT_COPY_VALUES, p))
-    Mat{T, MType}(p[1], comm=a.comm)
+    Mat{T, MType}(p[1])
 end
 
 Base.similar{T}(a::Mat{T}, ::Type{T}) = similar(a)
 Base.similar{T,MType}(a::Mat{T,MType}, T2::Type) =
-    Mat(T2, size(a)..., comm=a.comm, mtype=MType)
+    Mat(T2, size(a)..., comm=comm(a), mtype=MType)
 Base.similar{T,MType}(a::Mat{T,MType}, T2::Type, m::Integer, n::Integer) =
-    (m,n) == size(a) && T2==T ? similar(a) : Mat(T2, m,n, comm=a.comm, mtype=MType)
+    (m,n) == size(a) && T2==T ? similar(a) : Mat(T2, m,n, comm=comm(a), mtype=MType)
 Base.similar(a::Mat, T::Type, Dims) = similar(a, T, d...)
 
 function Base.copy{T,MType}(a::Mat{T,MType})
@@ -356,7 +357,7 @@ for (f,pf) in ((:MatTranspose,:MatCreateTranspose), # acts like A.'
     @eval function $f{T, MType}(a::Mat{T, MType})
         p = Array(C.Mat{T}, 1)
         chk(C.$pf(a.p, p))
-        Mat{T, MType}(p[1], a, comm=a.comm)
+        Mat{T, MType}(p[1], a)
     end
 end
 
@@ -373,7 +374,7 @@ for (f,pf) in ((:transpose,:MatTranspose),(:ctranspose,:MatHermitianTranspose))
         function Base.$f{T}(a::Mat{T})
             p = Array(C.Mat{T}, 1)
             chk(C.$pf(a.p, C.MAT_INITIAL_MATRIX, p))
-            Mat(p[1], comm=a.comm)
+            Mat(p[1], comm=comm(a))
         end
     end
 end
@@ -399,7 +400,7 @@ import Base: .*, ./, .\, *, +, -, ==
 
 function (*){T, MType}(A::Mat{T}, x::Vec{T, MType})
   m = size(A, 1)
-  b = Vec(T, m, MType, comm=x.comm, mlocal=sizelocal(A,1))
+  b = Vec(T, m, MType, comm=comm(A), mlocal=sizelocal(A,1))
   chk(C.MatMult(A.p, x.p, b.p))
   return b
 end
@@ -417,7 +418,7 @@ function (*){T, MType}(A::Mat{T,MType}, B::Mat{T})
   p = Ptr{Float64}(0)
   p_arr = Array(C.Mat{T}, 1)
   chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, real(T)(C.PETSC_DEFAULT), p_arr))
-  new_mat = Mat{T, MType}(p_arr[1], comm=A.comm)
+  new_mat = Mat{T, MType}(p_arr[1])
   return new_mat
 end
 

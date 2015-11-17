@@ -271,8 +271,14 @@ function Base.norm{T<:Real}(x::Union{Vec{T},Vec{Complex{T}}}, p::Number)
     v[1]
 end
 
+if VERSION >= v"0.5.0-dev+8353" # JuliaLang/julia#13681
+    import Base.normalize!
+else
+    export normalize!
+end
+
 # computes v = norm(x,2), divides x by v, and returns v
-function Base.normalize!{T<:Scalar}(x::Vec{T})
+function normalize!{T<:Scalar}(x::Vec{T})
     v = Array(T, 1)
     chk(C.VecNormalize(x.p, v))
     v[1]

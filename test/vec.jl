@@ -362,4 +362,8 @@ let x = Vec(ST, 2), y = Vec(ST, 2)
     end
 end
 
+let x = rand(ST, 7)
+  @fact Vec(x) => x
+end
+
 end

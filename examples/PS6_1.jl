@@ -7,7 +7,7 @@ function driver()
   xmax = 1
   N = 5  # N+1 = # of grid points per processor
   mpi_rank = MPI.Comm_rank(MPI.COMM_WORLD) + 1
-  mpi_size = MPI.Comm_size(MPI.COMM_WORLD) 
+  mpi_size = MPI.Comm_size(MPI.COMM_WORLD)
 
   Npts_global = (mpi_size -1)*(N+1) + N + 2 - 2
   delta_x = (xmax - xmin)/(Npts_global)
@@ -42,7 +42,7 @@ function solve(xmin, xmax, tmax, N, delta_t)
 
 # calculate some values
 mpi_rank = MPI.Comm_rank(MPI.COMM_WORLD) + 1
-mpi_size = MPI.Comm_size(MPI.COMM_WORLD) 
+mpi_size = MPI.Comm_size(MPI.COMM_WORLD)
 
 if mpi_rank != mpi_size
   mat_size = N+1
@@ -98,7 +98,7 @@ end
 petscview(u_i)
 =#
 
-# scatter the initial condition u_i to u_ghost, so all procs have the values 
+# scatter the initial condition u_i to u_ghost, so all procs have the values
 # needed to evaluate their stencils
 scatter!(vec_scatter, u_i, u_ghost)
 
@@ -158,12 +158,12 @@ time = @elapsed for tstep=1:nStep  # loop over timesteps
   if mpi_rank == 1
     println("\ntstep = ", tstep)
   end
-  
+
   for i in interior_part
     u_k = u_ghost[ i + ghost_offset ]
     u_k_1 = u_ghost[ i-1 + ghost_offset ]
     u_k_p1 = u_ghost[ i+1 + ghost_offset ]
-    src_val = source(xmin + (i-1)*delta_x, (tstep - 0.5)*delta_t) 
+    src_val = source(xmin + (i-1)*delta_x, (tstep - 0.5)*delta_t)
     rhs[i] = stencil_l*u_k_1 + stencil_c*u_k  + stencil_r*u_k_p1 + delta_t*src_val
   end
 
@@ -172,7 +172,7 @@ time = @elapsed for tstep=1:nStep  # loop over timesteps
     u_k = u_ghost[i + ghost_offset]
     u_k_1 = u_ghost[i-1 + ghost_offset]
     u_k_p1 = u_ghost[i+1 + ghost_offset]
-    src_val = source(xmin + (i-1)*delta_x, (tstep - 0.5)*delta_t) 
+    src_val = source(xmin + (i-1)*delta_x, (tstep - 0.5)*delta_t)
     rhs[i] = stencil_l*u_k_1 + stencil_c*u_k  + stencil_r*u_k_p1 + delta_t*src_val
   end
 
@@ -181,7 +181,7 @@ time = @elapsed for tstep=1:nStep  # loop over timesteps
     u_k = u_ghost[i + ghost_offset]
     u_k_1 = u_ghost[i-1 + ghost_offset]
     u_k_p1 = u_ghost[i+1 + ghost_offset]
-    src_val = source(xmin + (i-1)*delta_x, (tstep - 0.5)*delta_t) 
+    src_val = source(xmin + (i-1)*delta_x, (tstep - 0.5)*delta_t)
     rhs[i] = stencil_l*u_k_1 + stencil_c*u_k  + stencil_r*u_k_p1 + delta_t*src_val
   end
 
@@ -296,28 +296,28 @@ end
 
 function createPetscData(mat_size, stencil_size)
 # create all the Petsc objects needed
-  
+
   mpi_rank = MPI.Comm_rank(MPI.COMM_WORLD) + 1
-  mpi_size = MPI.Comm_size(MPI.COMM_WORLD) 
+  mpi_size = MPI.Comm_size(MPI.COMM_WORLD)
 
   # left hand side matrix
   A = PETSc.Mat(Float64, PETSc.C.PETSC_DECIDE, PETSc.C.PETSC_DECIDE, mlocal=mat_size, nlocal=mat_size, nz=stencil_size, onz=1, comm=MPI.COMM_WORLD)
   A.assembling=true
 
   # solution at current timestep
-  u_i = Vec(Float64, PETSc.C.VECMPI, comm=MPI.COMM_WORLD); 
+  u_i = Vec(Float64, PETSc.C.VECMPI, comm=MPI.COMM_WORLD);
   u_i.assembling=true
-  setsizes!(u_i, mat_size)
+  resize!(u_i, mat_size)
 
   # right hand side
-  rhs = Vec(Float64, PETSc.C.VECMPI, comm=MPI.COMM_WORLD); 
+  rhs = Vec(Float64, PETSc.C.VECMPI, comm=MPI.COMM_WORLD);
   rhs.assembling=true
-  setsizes!(rhs, mat_size)
+  resize!(rhs, mat_size)
 
   # exact solution
-  uex = Vec(Float64, PETSc.C.VECMPI, comm=MPI.COMM_WORLD); 
+  uex = Vec(Float64, PETSc.C.VECMPI, comm=MPI.COMM_WORLD);
   uex.assembling=true
-  setsizes!(uex, mat_size)
+  resize!(uex, mat_size)
 
   # create a ghost vector that includes all points needed for each proc
   # to evaluate the rhs, duplicating the shared points.
@@ -335,7 +335,7 @@ function createPetscData(mat_size, stencil_size)
     idx_ghost = collect(ghost_startidx:ghost_endidx)
   elseif mpi_rank == mpi_size  # right boundary (Neumann BC)
     idx = collect( (start_idx-1):end_idx)
-    ghost_startidx = mat_size + (mpi_size-2)*(mat_size + 1) 
+    ghost_startidx = mat_size + (mpi_size-2)*(mat_size + 1)
     ghost_endidx = ghost_startidx + mat_size
     idx_ghost = collect(ghost_startidx:ghost_endidx)
   else  # interior
@@ -345,10 +345,10 @@ function createPetscData(mat_size, stencil_size)
     idx_ghost = collect(ghost_startidx:ghost_endidx)
   end
   ghost_offset = 2*(mpi_rank-1) # offset from u_i indices to ghost indices
-  # set up the vector  
+  # set up the vector
   nghost_local = length(idx_ghost)
-  u_ghost = Vec(Float64, PETSc.C.VECMPI, comm=MPI.COMM_WORLD); 
-  setsizes!(u_ghost, nghost_local)
+  u_ghost = Vec(Float64, PETSc.C.VECMPI, comm=MPI.COMM_WORLD);
+  resize!(u_ghost, mlocal=nghost_local)
   u_ghost.assembling=true
 
 #=
@@ -366,7 +366,7 @@ function createPetscData(mat_size, stencil_size)
   ctx = (is_local, is_ghost)  # avoid GC
   ksp = PETSc.KSP(A)
   setoptions!(ksp; ksp_atol=1e-12, ksp_rtol=1e-14, ksp_monitor="")
-  
+
   return A, u_i, u_ghost, vec_scatter, rhs, ksp, uex, ctx, ghost_offset
 end
 

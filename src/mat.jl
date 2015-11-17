@@ -31,7 +31,7 @@ function Mat{T}(::Type{T}, m::Integer, n::Integer;
     mtype::Symbol=C.MATMPIAIJ)
 
     mat = Mat(T, mtype, comm=comm)
-    setsizes!(mat, m, n, mlocal=mlocal, nlocal=nlocal)
+    resize!(mat, m, n, mlocal=mlocal, nlocal=nlocal)
     setpreallocation!(mat, nz=nz, nnz=nnz, onz=onz, onnz=onnz)
     setoption!(mat, C.MAT_ROW_ORIENTED, false)  # julia data is column major
 
@@ -59,9 +59,14 @@ end
 
 gettype{T,MT}(a::Mat{T,MT}) = MT
 
-# fixme: should be method of Base.resize!
-function setsizes!(a::Mat, m::Integer, n::Integer;
+function Base.resize!(a::Mat, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
                    mlocal::Integer=C.PETSC_DECIDE, nlocal::Integer=C.PETSC_DECIDE)
+    if m == mlocal == C.PETSC_DECIDE
+        throw(ArgumentError("either the global (m) or local (mlocal) #rows must be specified"))
+    end
+    if n == nlocal == C.PETSC_DECIDE
+        throw(ArgumentError("either the global (n) or local (nlocal) #cols must be specified"))
+    end
     chk(C.MatSetSizes(a.p, mlocal, nlocal, m, n))
     a
 end

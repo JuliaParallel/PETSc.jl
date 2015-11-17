@@ -4,7 +4,7 @@ facts("\n --- Testing Vector Function ---") do
 vtype = PETSc.C.VECMPI
 vec = PETSc.Vec(ST, vtype)
 #PETSc.settype!(vec, vtype)
-PETSc.setsizes!(vec, 4)
+resize!(vec, 4)
 len_ret = length(vec)
 
 @fact len_ret => 4

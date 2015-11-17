@@ -25,7 +25,7 @@ end
 function Vec{T<:Scalar}(::Type{T}, len::Integer, vtype::C.VecType=C.VECSEQ;
                         comm=MPI.COMM_SELF, mlocal::Integer=C.PETSC_DECIDE)
   vec = Vec(T, vtype; comm=comm)
-  setsizes!(vec, mlocal, m=len)
+  resize!(vec, len, mlocal=mlocal)
   vec
 end
 
@@ -43,12 +43,14 @@ function petscview{T}(vec::Vec{T})
   chk(C.VecView(vec.p, viewer))
 end
 
-export gettype, setsizes!
+export gettype
 
 gettype{T,VT}(a::Vec{T,VT}) = VT
 
-# todo: this should be a method of Base.resize!
-function setsizes!(x::Vec, mlocal::Integer; m::Integer=C.PETSC_DECIDE)
+function Base.resize!(x::Vec, m::Integer=C.PETSC_DECIDE; mlocal::Integer=C.PETSC_DECIDE)
+    if m == mlocal == C.PETSC_DECIDE
+        throw(ArgumentError("either the length (m) or local length (mlocal) must be specified"))
+    end
     chk(C.VecSetSizes(x.p, mlocal, m))
     x
 end

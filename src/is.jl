@@ -14,6 +14,8 @@ type IS{T}
   end
 end
 
+comm{T}(a::IS{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
+
 function ISDestroy{T}(o::IS{T})
   PetscFinalized(T) || C.ISDestroy(Ref(o.p))
 end
@@ -114,6 +116,8 @@ type VecScatter{T}
   end
 end
 
+comm{T}(a::VecScatter{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
+
 function VecScatterDestroy{T}(o::IS{T})
   PetscFinalized(T) || C.VecScatterDestroy(Ref(o.p))
 end
@@ -143,7 +147,7 @@ end
 function scatter!{T,I1,I2}(x::Vec{T}, ix::AbstractVector{I1},
                            y::Vec{T}, iy::AbstractVector{I2};
                           imode=C.INSERT_VALUES, smode=C.SCATTER_FORWARD)
-  scatter = VecScatter(x, IS(T, ix, comm=x.comm),
-                       y, IS(T, iy, comm=y.comm))
+  scatter = VecScatter(x, IS(T, ix, comm=comm(x)),
+                       y, IS(T, iy, comm=comm(y)))
   scatter!(scatter, x, y; imode=imode, smode=smode)
 end

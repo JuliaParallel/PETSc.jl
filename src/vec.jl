@@ -1,5 +1,5 @@
 # AbstractVector wrapper around PETSc Vec types
-export Vec
+export Vec, comm
 #typealias pVec Ptr{Void} # Vec arguments in Petsc are pointers
 # T is data type
 # VType is type of vector from C.VecType
@@ -10,19 +10,20 @@ type Vec{T,VType} <: AbstractVector{T}
     data::Any # keep a reference to anything needed for the Mat
               # -- needed if the Mat is a wrapper around a Julia object,
               #    to prevent the object from being garbage collected.
-    comm::MPI.Comm  # communicator this vector is defined on
-    function Vec(p::C.Vec{T}; comm=MPI.COMM_SELF)  # default sequantial vector
-        v = new(p, false, C.INSERT_VALUES, nothing, comm)
+    function Vec(p::C.Vec{T}, data=nothing)
+        v = new(p, false, C.INSERT_VALUES, data)
         chk(C.VecSetType(p, VType))  # set the type here to ensure it matches VType
         finalizer(v, VecDestroy)
         return v
     end
 end
 
+comm{T}(v::Vec{T}) = MPI.Comm(C.PetscObjectComm(T, v.p.pobj))
+
 function Vec{T}(::Type{T}, vtype::C.VecType=C.VECSEQ; comm=MPI.COMM_SELF)
     p = Array(C.Vec{T}, 1)
     chk(C.VecCreate(comm, p))
-    Vec{T, vtype}(p[1]; comm=comm)
+    Vec{T, vtype}(p[1])
 end
 
 function Vec{T<:Scalar}(::Type{T}, len::Integer, vtype::C.VecType=C.VECSEQ;
@@ -36,8 +37,7 @@ end
 function Vec{T<:Scalar}(v::Vector{T}; comm=MPI.COMM_SELF)
     p = Array(C.Vec{T}, 1)
     chk(C.VecCreateMPIWithArray(comm, 1, length(v), C.PETSC_DECIDE, v, p))
-    pv = Vec{T, C.VECMPI}(p[1]; comm=comm)
-    pv.data = v # prevent garbage collection of v
+    pv = Vec{T, C.VECMPI}(p[1], v)
     return pv
 end
 
@@ -100,16 +100,16 @@ end
 
 Base.similar{T}(x::Vec{T}, ::Type{T}) = similar(x)
 Base.similar{T,VType}(x::Vec{T,VType}, T2::Type) =
-    Vec(T2, length(x), VType; comm=x.comm, mlocal=lengthlocal(x))
+    Vec(T2, length(x), VType; comm=comm(x), mlocal=lengthlocal(x))
 
 function Base.similar{T,VType}(x::Vec{T,VType}, T2::Type, len::Union{Int,Dims})
     length(len) == 1 || throw(ArgumentError("expecting 1-dimensional size"))
-    len==length(x) && T2==T ? similar(x) : Vec(T2, len, VType; comm=x.comm)
+    len==length(x) && T2==T ? similar(x) : Vec(T2, len, VType; comm=comm(x))
 end
 
 function Base.similar{T,VType}(x::Vec{T,VType}, len::Union{Int,Dims})
     length(len) == 1 || throw(ArgumentError("expecting 1-dimensional size"))
-    len==length(x) ? similar(x) : Vec(T, len, VType; comm=x.comm)
+    len==length(x) ? similar(x) : Vec(T, len, VType; comm=comm(x))
 end
 
 function Base.copy(x::Vec)

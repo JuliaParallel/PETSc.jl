@@ -11,16 +11,18 @@ type KSP{T, MType}
   A::Mat{T, MType}
 end
 
+comm{T}(a::KSP{T}) = comm(A)
+
 function KSP{T, MType}(A::Mat{T, MType}, pc_mat::Mat{T, MType}=A)
   ksp_arr = Array(C.KSP{T}, 1)
   pc_arr = Array(C.PC{T}, 1)
 
-  chk(C.KSPCreate(A.comm, ksp_arr))
+  chk(C.KSPCreate(comm(A), ksp_arr))
   ksp = ksp_arr[1]
   C.KSPGetPC(ksp, pc_arr)
   pc = pc_arr[1]
 
-  rank = MPI.Comm_rank(A.comm)
+  rank = MPI.Comm_rank(comm(A))
   chk(C.KSPSetOperators(ksp, A.p, pc_mat.p))
  # call KSPSetOptions from here
 

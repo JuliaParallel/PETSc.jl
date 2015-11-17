@@ -38,13 +38,8 @@ function Mat{T}(::Type{T}, m::Integer, n::Integer;
     return mat
 end
 
-function MatDestroy(mat::Mat)
-  tmp = Array(PetscBool, 1)
-  C.PetscFinalized(eltype(mat), tmp)
-  if tmp[1] == 0  # if petsc has not been finalized yet
-    C.MatDestroy([mat.p])
-  end
-  # if Petsc has been finalized, let the OS deallocate the memory
+function MatDestroy{T}(mat::Mat{T})
+  PetscFinalized(T) || C.MatDestroy(Ref(mat.p))
 end
 
 function petscview{T}(mat::Mat{T})

@@ -3,54 +3,38 @@ export Vec
 #typealias pVec Ptr{Void} # Vec arguments in Petsc are pointers
 # T is data type
 # VType is type of vector from C.VecType
-type Vec{T, VType} <: AbstractVector{T}
+type Vec{T,VType} <: AbstractVector{T}
     p::C.Vec{T}
     assembling::Bool # whether we are in the middle of assemble(vec) do ..
     insertmode::C.InsertMode # current mode for setindex!
-    comm::MPI.Comm  # communicator this process is defined on
-    vectype::C.VecType
+    comm::MPI.Comm  # communicator this vector is defined on
     function Vec(p::C.Vec{T}; comm=MPI.COMM_SELF)  # default sequantial vector
-        v = new(p, false, C.INSERT_VALUES, comm, VType)
-        settype!(v, VType)  # set the type here to ensure it matches VType
-#        finalizer(v, VecDestroy)
+        v = new(p, false, C.INSERT_VALUES, comm)
+        chk(C.VecSetType(p, VType))  # set the type here to ensure it matches VType
+        finalizer(v, VecDestroy)
         return v
     end
 end
 
 function Vec{T}(::Type{T}, vtype::C.VecType=C.VECSEQ; comm=MPI.COMM_SELF)
     p = Array(C.Vec{T}, 1)
-    C.VecCreate(comm, p)
-    Vec{T, vtype}(p[1])
+    chk(C.VecCreate(comm, p))
+    Vec{T, vtype}(p[1]; comm=comm)
 end
 
-function Vec{T <: Scalar}(::Type{T}, len::Integer, vtype::C.VecType=C.VECSEQ ; comm=MPI.COMM_SELF)
-  p = Array(C.Vec{T}, 1)
-  C.VecCreate(comm, p)
-  vec = Vec{T, vtype}(p[1])
-#  settype!(vec, VType)
-  setsizes!(vec, len)
+function Vec{T<:Scalar}(::Type{T}, len::Integer, vtype::C.VecType=C.VECSEQ;
+                        comm=MPI.COMM_SELF, mlocal::Integer=C.PETSC_DECIDE)
+  vec = Vec(T, vtype; comm=comm)
+  setsizes!(vec, mlocal, m=len)
   vec
 end
 
-
-#=
-Vec(m::Integer;
-    mlocal::Integer=C.PETSC_DECIDE,
-    comm=PETSC_COMM_WORLD,
-    T::C.VecType`="mpi") =
-  setsizes!(settype!(Vec(comm=comm), T), m, mlocal=mlocal)
-=#
-
-
 function VecDestroy(vec::Vec)
-
   tmp = Array(PetscBool, 1)
   C.PetscFinalized(eltype(vec), tmp)
-
   if tmp[1] == 0  # if petsc has not been finalized yet
     C.VecDestroy([vec.p])
   end
-
    # if Petsc has been finalized, let the OS deallocate the memory
 end
 
@@ -59,39 +43,27 @@ function petscview{T}(vec::Vec{T})
   chk(C.VecView(vec.p, viewer))
 end
 
+export gettype, setsizes!
 
+gettype{T,VT}(a::Vec{T,VT}) = VT
 
-export settype!, gettype, setsizes!
-
-function settype!(a::Vec, T::C.VecType)
-    chk(C.VecSetType(a.p, T))
-    a
-end
-
-function gettype(a::Vec)
-    p = Array(C.VecType, 1)  # was UInt8
-#    p[1] = "a"  # need to initialize symbol array to something
-
-    chk(C.VecGetType(a.p, p))
-    p[1]
-end
-
+# todo: this should be a method of Base.resize!
 function setsizes!(x::Vec, mlocal::Integer; m::Integer=C.PETSC_DECIDE)
     chk(C.VecSetSizes(x.p, mlocal, m))
     x
 end
+
 ##########################################################################
-import Base: convert, length, size, similar, copy
 export lengthlocal, sizelocal, localpart
 
-convert(::Type{C.Vec}, v::Vec) = v.p
+Base.convert(::Type{C.Vec}, v::Vec) = v.p
 
-function length(x::Vec)
+function Base.length(x::Vec)
     sz = Array(PetscInt, 1)
     chk(C.VecGetSize(x.p, sz))
     Int(sz[1])
 end
-size(x::Vec) = (length(x),)
+Base.size(x::Vec) = (length(x),)
 
 function lengthlocal(x::Vec)
     sz = Array(PetscInt, 1)
@@ -111,30 +83,34 @@ function localpart(v::Vec)
   return (low[]+1):(high[])
 end
 
-function similar{T, VType}(x::Vec{T, VType})
+function Base.similar{T,VType}(x::Vec{T,VType})
     p = Array(C.Vec{T}, 1)
-    chk(C.VecDuplicate( x.p, p))
-    Vec{T, VType}(p[1])
+    chk(C.VecDuplicate(x.p, p))
+    Vec{T,VType}(p[1])
 end
 
+Base.similar{T}(x::Vec{T}, ::Type{T}) = similar(x)
+Base.similar{T,VType}(x::Vec{T,VType}, T2::Type) =
+    Vec(T2, length(x), VType; comm=x.comm, mlocal=lengthlocal(x))
 
-similar{T}(x::Vec{T}, ::Type{T}) = similar(x)
-function similar{T, VType}(x::Vec{T, VType}, ::Type{T}, len::Int)
-#    println("T = ", T)
-#    println("VType = ", VType)
+function Base.similar{T,VType}(x::Vec{T,VType}, T2::Type, len::Union{Int,Dims})
+    length(len) == 1 || throw(ArgumentError("expecting 1-dimensional size"))
+    len==length(x) && T2==T ? similar(x) : Vec(T2, len, VType; comm=x.comm)
+end
+
+function Base.similar{T,VType}(x::Vec{T,VType}, len::Union{Int,Dims})
+    length(len) == 1 || throw(ArgumentError("expecting 1-dimensional size"))
     len==length(x) ? similar(x) : Vec(T, len, VType; comm=x.comm)
 end
 
-similar{T, DType <: Integer}(x::Vec{T}, t::Type{T}, dims::Tuple{DType}) = similar(x, t, dims[1])
-
-function copy(x::Vec)
+function Base.copy(x::Vec)
     y = similar(x)
     chk(C.VecCopy(x.p, y.p))
     y
 end
 
 ##########################################################################
-import Base: setindex!, fill!, to_index
+import Base: setindex!
 export assemble, isassembled
 
 # for efficient vector assembly, put all calls to x[...] = ... inside
@@ -147,7 +123,6 @@ end
 function AssemblyEnd(x::Vec, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
   chk(C.VecAssemblyEnd(x.p))
 end
-
 
 isassembled(x::Vec) = !x.assembling
 # assemble(f::Function, x::Vec) is defined in mat.jl
@@ -167,42 +142,32 @@ function setindex0!{T}(x::Vec{T}, v::Array{T}, i::Array{PetscInt})
     x
 end
 
-function setindex!{T}(x::Vec{T}, v::Number, i::Real)
+function setindex!{T}(x::Vec{T}, v::Number, i::Integer)
     # can't call VecSetValue since that is a static inline function
-#    println("  calling setindex0")
-    setindex0!(x, T[ v ], PetscInt[ to_index(i) - 1 ])
+    setindex0!(x, T[ v ], PetscInt[ i - 1 ])
     v
 end
 
-# what is this function doing?
-#=
-function setindex!{T<: Scalar}(x::Vec{T}, v::Array{T}, I::AbstractArray{T})
-    I0 = PetscInt[ to_index(i)-1 for i in I ]
-    setindex0!(x, v, I0)
-end
-=#
-
-
 # set multiple entries to a single value
-setindex!{T<:Real}(x::Vec, v::Number, I::AbstractArray{T}) = assemble(x) do
+setindex!{T<:Integer}(x::Vec, v::Number, I::AbstractArray{T}) = assemble(x) do
     for i in I
         x[i] = v
     end
     x
 end
 
-function fill!{T}(x::Vec{T}, v::Number)
+function Base.fill!{T}(x::Vec{T}, v::Number)
     chk(C.VecSet(x.p, T(v)))
     return x
 end
 
-function setindex!(x::Vec, v::Number, I::Range{Int})
+function setindex!{T<:Integer}(x::Vec, v::Number, I::Range{T})
     if abs(step(I)) == 1 && minimum(I) == 1 && maximum(I) == length(x)
         fill!(x, v)
         return v
     else
-        # why use invoke here?
-        return invoke(setindex!, (Vec,typeof(v),AbstractVector{Int}), x,v,I)
+        # use invoke here to avoid a recursion loop
+        return invoke(setindex!, (Vec,typeof(v),AbstractVector{T}), x,v,I)
     end
 end
 
@@ -221,7 +186,6 @@ assemble(x) do
     x
 end
 
-
 # logical indexing
 setindex!(A::Vec, x::Number, I::AbstractArray{Bool}) = assemble(A) do
     for i = 1:length(I)
@@ -232,7 +196,7 @@ setindex!(A::Vec, x::Number, I::AbstractArray{Bool}) = assemble(A) do
     A
 end
 for T in (:(Array{T2}),:(AbstractArray{T2})) # avoid method ambiguities
-    @eval setindex!{T2 <: Scalar}(A::Vec, X::$T, I::AbstractArray{Bool}) = assemble(A) do
+    @eval setindex!{T2<:Scalar}(A::Vec, X::$T, I::AbstractArray{Bool}) = assemble(A) do
         c = 1
         for i = 1:length(I)
             if I[i]
@@ -240,7 +204,6 @@ for T in (:(Array{T2}),:(AbstractArray{T2})) # avoid method ambiguities
                 c += 1
             end
         end
-
         A
     end
 end
@@ -255,36 +218,30 @@ function getindex0{T}(x::Vec{T}, i::Vector{PetscInt})
     v
 end
 
-getindex(x::Vec, i::Real) = getindex0(x, PetscInt[to_index(i)-1])[1]
-
-#getindex{T<:Real}(x::Vec, I::AbstractVector{T}) =
-#  getindex0(x, PetscInt[ to_index(i)-1 for i in I ])
+getindex(x::Vec, i::Integer) = getindex0(x, PetscInt[i-1])[1]
 
 getindex(x::Vec, I::AbstractVector{PetscInt}) =
   getindex0(x, PetscInt[ (i-1) for i in I ])
 
-
 ##########################################################################
-import Base: abs, exp, log, conj, conj!, max, min, findmax, findmin, norm, maximum, minimum, .*, ./, +, -, scale!, dot, ==, !=, sum
-export normalize!, abs!, exp!, log!, chop!
 
+import Base: abs, exp, log, conj, conj!
+export abs!, exp!, log!
 for (f,pf) in ((:abs,:VecAbs), (:exp,:VecExp), (:log,:VecLog),
                (:conj,:VecConjugate))
     fb = symbol(string(f, "!"))
     @eval begin
         function $fb(x::Vec)
             chk(C.$pf(x.p))
-#            chk(ccall(($(Expr(:quote, pf)),petsc), PetscErrorCode,
- #                     (pVec,), x))
             x
         end
-
         $f(x::Vec) = $fb(copy(x))
     end
 end
 
 # skip for now
 #=
+export chop!
 function chop!(x::Vec, tol::Real)
     VecChop(x.c, tol)
     chk(ccall((:VecChop, petsc), PetscErrorCode, (pVec, PetscReal), x, tol))
@@ -292,38 +249,21 @@ function chop!(x::Vec, tol::Real)
 end
 =#
 
-
-# real versions
-for (f,pf, sf) in ((:findmax, :VecMax, :maximum), (:findmin, :VecMin, :minimum))
-#    ff = symbol(string("find", f))
+for (f, pf, sf) in ((:findmax, :VecMax, :maximum), (:findmin, :VecMin, :minimum))
     @eval begin
-        function $f{T <: Scalar}(x::Vec{T})
+        function Base.$f{T<:Real}(x::Vec{T})
             i = Array(PetscInt, 1)
             v = Array(T, 1)
             chk(C.$pf(x.p, i, v))
             (v[1], i[1]+1)
         end
-        $sf(x::Vec) = $f(x)[1]
+        Base.$sf{T<:Real}(x::Vec{T}) = $f(x)[1]
     end
 end
+# For complex numbers, VecMax and VecMin apparently return the max/min
+# real parts, which doesn't match Julia's maximum/minimum semantics.
 
-# complex versions
-for (f,pf) in ((:maximum, :VecMax), (:minimum, :VecMin))
-    ff = symbol(string("find", f))
-    @eval begin
-        function $ff{T}(x::Vec{Complex{T}})
-            i = Array(PetscInt, 1)
-            v = Array(T, 1)
-            chk(C.$pf(x.p, i, v))
-            (v[1], i[1]+1)
-        end
-        $f(x::Vec) = $ff(x)[1]
-    end
-end
-
-
-
-function norm{T <: Real}(x::Vec{T}, p::Number)
+function Base.norm{T<:Real}(x::Union{Vec{T},Vec{Complex{T}}}, p::Number)
     v = Array(T, 1)
     n = p == 1 ? C.NORM_1 : p == 2 ? C.NORM_2 : p == Inf ? C.NORM_INFINITY :
        throw(ArgumentError("unrecognized Petsc norm $p"))
@@ -331,42 +271,34 @@ function norm{T <: Real}(x::Vec{T}, p::Number)
     v[1]
 end
 
-function norm{T <: Real}(x::Vec{Complex{T}}, p::Number)
-    v = Array(PetscReal, 1)
-    n = p == 1 ? C.NORM_1 : p == 2 ? C.NORM_2 : p == Inf ? C.NORM_INFINITY :
-       throw(ArgumentError("unrecognized Petsc norm $p"))
-    chk(C.VecNorm(x.p, n, p))
-    v[1]
+if VERSION >= v"0.5.0-dev+8353" # JuliaLang/julia#13681
+    import Base.normalize!
+else
+    export normalize!
 end
-
-
-
 
 # computes v = norm(x,2), divides x by v, and returns v
-function normalize!{T <: Real}(x::Vec{T})
+function normalize!{T<:Scalar}(x::Vec{T})
     v = Array(T, 1)
     chk(C.VecNormalize(x.p, v))
     v[1]
 end
 
-function normalize!{T <: Real}(x::Vec{Complex{T}})
-    v = Array(T, 1)
-    chk(C.VecNormalize(x.p, v))
-    v[1]
-end
-
-
-
-
-function dot{T}(x::Vec{T}, y::Vec{T})
+function Base.dot{T}(x::Vec{T}, y::Vec{T})
     d = Array(T, 1)
-    chk(C.VecDot(x.p, y.p, d))
-    d[1]
+    chk(C.VecDot(y.p, x.p, d))
+    return d[1]
 end
 
-# TODO: also add dotu for unconjugated dot product?  should go in Base first
+# unconjugated dot product (called for x'*y)
+function Base.At_mul_B{T<:Complex}(x::Vec{T}, y::Vec{T})
+    d = Array(T, 1)
+    chk(C.VecTDot(x.p, y.p, d))
+    return d
+end
 
 # pointwise operations on pairs of vectors (TODO: support in-place variants?)
+import Base: max, min, .*, ./, .\
 for (f,pf) in ((:max,:VecPointwiseMax), (:min,:VecPointwiseMin),
                (:.*,:VecPointwiseMult), (:./,:VecPointwiseDivide))
     @eval function ($f)(x::Vec, y::Vec)
@@ -375,44 +307,47 @@ for (f,pf) in ((:max,:VecPointwiseMax), (:min,:VecPointwiseMin),
         w
     end
 end
+(.*)(x::Vec, a::Number...) = scale(x, prod(a))
+(.*)(a::Number, x::Vec) = scale(x, a)
+(./)(x::Vec, a::Number) = scale(x, inv(a))
+(.\)(a::Number, x::Vec) = scale(x, inv(a))
+function (./)(a::Number, x::Vec)
+    y = copy(x)
+    chk(C.VecReciprocal(y.p))
+    if a != 1.0
+        scale!(y, a)
+    end
+    y
+end
 
-function scale!{T}(x::Vec{T}, s::Number)
+function Base.scale!{T}(x::Vec{T}, s::Number)
     chk(C.VecScale(x.p, T(s)))
     x
 end
 
-function (+){T <: Scalar}(x::Vec{T}, a::Number...)
-    C.VecShift(x.p, T(sum(a)))
-    x
+import Base: +, -, scale!
+function (+){T<:Scalar}(x::Vec{T}, a::Number...)
+    y = copy(x)
+    chk(C.VecShift(y.p, T(sum(a))))
+    return y
 end
-
-
-(+){T <: Scalar}(a::Number, x::Vec{T}) = x + a
-(-){T <: Scalar}(x::Vec{T}, a::Number) = x + (-a)
+(+){T<:Scalar}(a::Number, x::Vec{T}) = x + a
+(-){T<:Scalar}(x::Vec{T}, a::Number) = x + (-a)
 (-)(x::Vec) = scale(x, -1)
-(-){T <: Scalar}(a::Number, x::Vec{T}) = (-x) + a
-(.*){T <: Scalar}(x::Vec{T}, a::Number...) = scale(x, prod(a))
-(.*){T <: Scalar}(a::Number, x::Vec{T}) = scale(x, a)
-(./){T <: Scalar}(x::Vec{T}, a::Number) = scale(x, 1/a)
-
-
-function (./)(a::Number, x::Vec)
-
-    chk(C.VecReciprocal(x.p))
-    if a != 1.0
-        scale!(x, a)
-    end
-    x
+function (-){T<:Scalar}(a::Number, x::Vec{T})
+    y = -x
+    chk(C.VecShift(y.p, T(-a)))
+    return y
 end
 
+import Base: ==
 function (==)(x::Vec, y::Vec)
     b = Array(PetscBool,1)
     chk(C.VecEqual(x.p, y.b, b))
     b[1] != 0
 end
-(!=)(x::Vec, y::Vec) = !(x == y)
 
-function sum{T}(x::Vec{T})
+function Base.sum{T}(x::Vec{T})
     s = Array(T,1)
     chk(C.VecSum(x.p, s))
     s[1]
@@ -423,99 +358,58 @@ export axpy!, aypx!, axpby!, axpbypcz!
 import Base.LinAlg.BLAS.axpy!
 
 # y <- alpha*x + y
-function axpy!{T}(alpha::Number, x::Vec{T}, y::Vec)
+function axpy!{T}(alpha::Number, x::Vec{T}, y::Vec{T})
     chk(C.VecAXPY(y.p, T(alpha), x.p))
     y
 end
 # w <- alpha*x + y
-function axpy!{T}(alpha::Number, x::Vec{T}, y::Vec, w::Vec)
+function axpy!{T}(alpha::Number, x::Vec{T}, y::Vec{T}, w::Vec{T})
     chk(C.VecWAXPY(w.p, T(alpha), x.p, y.p))
     y
 end
 # y <- alpha*y + x
-function aypx!{T}(x::Vec{T}, alpha::Number, y::Vec)
+function aypx!{T}(x::Vec{T}, alpha::Number, y::Vec{T})
     chk(C.VecAYPX( y.p, T(alpha), x.p))
     y
 end
 # y <- alpha*x + beta*y
-function axpby!{T}(alpha::Number, x::Vec{T}, beta::Number, y::Vec)
+function axpby!{T}(alpha::Number, x::Vec{T}, beta::Number, y::Vec{T})
     chk(C.VecAXPBY(y.p, T(alpha), T(beta), x.p))
     y
 end
 # z <- alpha*x + beta*y + gamma*z
-function axpbypcz!{T}(alpha::Number, x::Vec{T}, beta::Number, y::Vec,
-                   gamma::Number, z::Vec)
+function axpbypcz!{T}(alpha::Number, x::Vec{T}, beta::Number, y::Vec{T},
+                      gamma::Number, z::Vec{T})
     chk(C.VecAXPBYPCZ(z.p, T(alpha), T(beta), T(gamma), x.p, y.p))
     z
 end
 
-#=
-# y <- \sum_i alphax[i][1]*alphax[i][2] + y
-function axpy!{T<:Number}(alphax::AbstractVector{(T,Vec)}, y::Vec)
-    n = length(alphax)
-    alpha = Array(T, n)
-    x = Array(Vec, n)
-    for i = 1:n
-        ax = alphax[i]
-        alpha[i] = ax[1]
-        x[i] = ax[2]
-    end
-
-    maxpy!(y, alpha, x)
-end
-=#
-function maxpy!{T <: Number, VType}(y::Vec, alpha::AbstractArray, x::Array{Vec{T, VType}})
-
-  @assert length(alpha) == length(x)
-  n = length(x)
-  _x = Array(C.Vec{T}, n)
-  _alpha = Array(T, n)
-  for i=1:n
-    _x[i] = x[i].p
-    _alpha[i] = alpha[i]
-  end
-
-  C.VecMAXPY(y.p, n, alpha, _x)
-  y
+# y <- y + \sum_i alpha[i] * x[i]
+function axpy!{V<:Vec}(y::V, alpha::AbstractArray, x::AbstractArray{V})
+    n = length(x)
+    length(alpha) == n || throw(BoundsError())
+    _x = [X.p for X in x]
+    _alpha = eltype(y)[a for a in alpha]
+    C.VecMAXPY(y.p, n, _alpha, _x)
+    y
 end
 
 ##########################################################################
-# elementwise operations
+# element-wise vector operations:
+import Base: .*, ./, .^, +, -
 
-function (.*)(x::Vec, y::Vec)
-  z = similar(x)
-#  println("before mult, z = ", z)
-  chk(C.VecPointwiseMult(z.p, x.p, y.p))
-  return z
+for (f,pf) in ((:.*,:VecPointwiseMult), (:./,:VecPointwiseDivide), (:.^,:VecPow))
+    @eval function ($f)(x::Vec, y::Vec)
+        z = similar(x)
+        chk(C.$pf(z.p, x.p, y.p))
+        return z
+    end
 end
 
-
-function (./)(x::Vec, y::Vec)
-  z = similar(x)
-  chk(C.VecPointwiseDivide(z.p, x.p, y.p))
-  return z
+for (f,s) in ((:+,1), (:-,-1))
+    @eval function ($f){T}(x::Vec{T}, y::Vec{T})
+        z = similar(x)
+        chk(C.VecWAXPY(z.p, T($s), y.p, x.p))
+        return z
+    end
 end
-
-
-
-function (.^){T}(x::Vec{T}, y::Number)
-  z = copy(x)
-  chk(C.VecPow(z.p, T(y)))
-  return z
-end
-
-function (+){T}(x::Vec{T}, y::Vec{T})
-  z = similar(x)
-  chk(C.VecWAXPY(z.p, T(1), x.p, y.p))
-  return z
-end
-
-function (-){T}(x::Vec{T}, y::Vec{T})
-  z = similar(x)
-  chk(C.VecWAXPY(z.p, T(-1), y.p, x.p))
-  return z
-end
-
-
-
-

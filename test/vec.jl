@@ -9,7 +9,7 @@ len_ret = length(vec)
 
 @fact len_ret => 4
 size_ret = size(vec)
-@fact size_ret => (4,) 
+@fact size_ret => (4,)
 len_local = lengthlocal(vec)
 @fact len_local => 4
 size_local = sizelocal(vec)
@@ -120,8 +120,8 @@ println("vec4 = ", vec4)
 # reset vec4
 vec4_j = zeros(ST, length(vec4))
 for i=1:length(vec4)
-  vec4[i] = RC(complex(Float64(-i), Float64(-i))) 
-  vec4_j[i] = RC(complex(Float64(-i), Float64(-i))) 
+  vec4[i] = RC(complex(Float64(-i), Float64(-i)))
+  vec4_j[i] = RC(complex(Float64(-i), Float64(-i)))
 
 end
 
@@ -236,7 +236,7 @@ end
 
 println("testing 4 argument axpy")
 axpy!(vt, vec, vec2, vec4)
-vec4j = vt*vecj + vec2j 
+vec4j = vt*vecj + vec2j
 
 for i=1:length(vec)
   @fact vec2j[i] => vec2[i]
@@ -287,7 +287,7 @@ alphas = [vt2, vt3]
 println("vecs = ", vecs)
 println("typeof(vecs) = ", typeof(vecs))
 
-PETSc.maxpy!(vec4, alphas, vecs)
+axpy!(vec4, alphas, vecs)
 vec4j = vec4j + vt2*vecj + vt3*vec2j
 println("vec4 = ", vec4)
 println("vec4j = ", vec4j)
@@ -303,7 +303,7 @@ vec6j = zeros(ST, 3)
 
 for i=1:3
   i_float = Float64(i)
-  
+
   vec5[i] = RC(complex(i_float, i_float))
   vec6[i] = RC(complex(i_float+3, i_float+3))
   vec5j[i] = RC(complex(i_float, i_float))
@@ -348,11 +348,18 @@ for i=1:3
   @fact vec11[i] => roughly(vec11j[i])
 end
 
-
-
-
-
-
-
+# test unconjugated dot product
+let x = Vec(ST, 2), y = Vec(ST, 2)
+    copy!(y, [1, 1])
+    if ST <: Complex
+        copy!(x, [1, im])
+        @fact (x'*y)[1] => 1-im
+        @fact (x.'*y)[1] => 1+im
+    else
+        copy!(x, [2, 3])
+        @fact (x'*y)[1] => 5
+        @fact (x.'*y)[1] => 5
+    end
+end
 
 end

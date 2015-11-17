@@ -114,7 +114,7 @@ for i=1:3
   for j=1:3
     @fact mat6[i,j] => mat6j[i,j]
   end
-end 
+end
 
 vals_ret = mat6[idx, idy]
 @fact vals_ret => roughly(vals)
@@ -129,7 +129,7 @@ for i=1:3
   for j=1:3
     @fact mat7[i,j] => mat7j[i,j]
   end
-end 
+end
 
 vals_ret = mat7[1, idx]
 println("mat7 = ", mat7)
@@ -152,7 +152,7 @@ for i=1:3
   for j=1:3
     @fact mat8[i,j] => mat8j[i,j]
   end
-end 
+end
 
 vals_ret = mat8[idx, 1]
 @fact vals_ret => roughly(vals, atol= 1e-13)
@@ -168,7 +168,7 @@ for i=1:3
   for j=1:3
     @fact mat9[i,j] => mat9j[i,j]
   end
-end 
+end
 
 mat10 = PETSc.Mat(ST, 3, 3)
 mat10[idx, 1] = vt
@@ -179,7 +179,7 @@ for i=1:3
   for j=1:3
     @fact mat10[i,j] => mat10j[i,j]
   end
-end 
+end
 
 
 mat11 = PETSc.Mat(ST, 3, 3)
@@ -191,7 +191,7 @@ for i=1:3
   for j=1:3
     @fact mat11[i,j] => mat11j[i,j]
   end
-end 
+end
 
 
 
@@ -219,7 +219,7 @@ for i=1:3
   for j=1:3
     @fact mat13[i,j] => mat13j[i,j]
   end
-end 
+end
 
 
 # test conversion of values to a new type
@@ -234,7 +234,7 @@ for i=1:3
   for j=1:3
     @fact mat14[i,j] => mat14j[i,j]
   end
-end 
+end
 
 vt = RC(complex(1.,1))
 mat15 = PETSc.Mat(ST, 3,3)
@@ -245,7 +245,7 @@ for i=1:3
   for j=1:3
     @fact mat15[i,j] => roughly(vt)
   end
-end 
+end
 
 
 mat15jd = full(mat15)
@@ -253,7 +253,7 @@ for i=1:3
   for j=1:3
     @fact mat15[i,j] => roughly(mat15jd[i,j])
   end
-end 
+end
 
 # it appears get/set values don't work on a transposed matrix
 mat15_t = PETSc.MatTranspose(mat15)
@@ -264,7 +264,7 @@ for i=1:3
     println("mat15_t[j,i] = ", mat15_t[j, i])
     @fact mat15_t[j, i] => roughly(mat15[i,j])
   end
-end 
+end
 =#
 
 mat16 = PETSc.Mat(ST, 3, 3)
@@ -322,5 +322,20 @@ for i=1:3
   end
 end
 
+mat20= mat16+mat17
+mat20j = mat16j+mat17j
+for i=1:3
+  for j=1:3
+    @fact mat20[i,j] => roughly(mat20j[i,j])
+  end
+end
+
+mat21= mat16-mat17
+mat21j = mat16j-mat17j
+for i=1:3
+  for j=1:3
+    @fact mat21[i,j] => roughly(mat21j[i,j])
+  end
+end
 
 end

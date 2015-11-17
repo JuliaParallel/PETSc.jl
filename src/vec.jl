@@ -7,9 +7,12 @@ type Vec{T,VType} <: AbstractVector{T}
     p::C.Vec{T}
     assembling::Bool # whether we are in the middle of assemble(vec) do ..
     insertmode::C.InsertMode # current mode for setindex!
+    data::Any # keep a reference to anything needed for the Mat
+              # -- needed if the Mat is a wrapper around a Julia object,
+              #    to prevent the object from being garbage collected.
     comm::MPI.Comm  # communicator this vector is defined on
     function Vec(p::C.Vec{T}; comm=MPI.COMM_SELF)  # default sequantial vector
-        v = new(p, false, C.INSERT_VALUES, comm)
+        v = new(p, false, C.INSERT_VALUES, nothing, comm)
         chk(C.VecSetType(p, VType))  # set the type here to ensure it matches VType
         finalizer(v, VecDestroy)
         return v
@@ -27,6 +30,15 @@ function Vec{T<:Scalar}(::Type{T}, len::Integer, vtype::C.VecType=C.VECSEQ;
   vec = Vec(T, vtype; comm=comm)
   setsizes!(vec, mlocal, m=len)
   vec
+end
+
+# make a Vec that is a wrapper around v, where v stores the local data
+function Vec{T<:Scalar}(v::Vector{T}; comm=MPI.COMM_SELF)
+    p = Array(C.Vec{T}, 1)
+    chk(C.VecCreateMPIWithArray(comm, 1, length(v), C.PETSC_DECIDE, v, p))
+    pv = Vec{T, C.VECMPI}(p[1]; comm=comm)
+    pv.data = v # prevent garbage collection of v
+    return pv
 end
 
 function VecDestroy(vec::Vec)

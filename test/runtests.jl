@@ -45,6 +45,7 @@ for ST in [Float64, Float32, Complex128]
   include("vec.jl")
   include("mat.jl")
   include("ksp.jl")
+  include("is.jl")
 end
 
 

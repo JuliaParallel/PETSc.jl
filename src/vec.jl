@@ -41,13 +41,8 @@ function Vec{T<:Scalar}(v::Vector{T}; comm=MPI.COMM_SELF)
     return pv
 end
 
-function VecDestroy(vec::Vec)
-  tmp = Array(PetscBool, 1)
-  C.PetscFinalized(eltype(vec), tmp)
-  if tmp[1] == 0  # if petsc has not been finalized yet
-    C.VecDestroy([vec.p])
-  end
-   # if Petsc has been finalized, let the OS deallocate the memory
+function VecDestroy{T}(vec::Vec{T})
+  PetscFinalized(T) || C.VecDestroy(Ref(vec.p))
 end
 
 function petscview{T}(vec::Vec{T})

@@ -22,33 +22,24 @@ function KSP{T, MType}(A::Mat{T, MType}, pc_mat::Mat{T, MType}=A)
 
   rank = MPI.Comm_rank(A.comm)
   chk(C.KSPSetOperators(ksp, A.p, pc_mat.p))
- # call KSPSetOptions from here 
+ # call KSPSetOptions from here
 
   return KSP{T, MType}(ksp, pc, true, A)
 end  # add finalizer
 
 
-function KSPDestroy(ksp::KSP)
-
-  tmp = Array(PetscBool, 1)
-  C.PetscFinalized(eltype(mat), tmp)
-   
-  if tmp[1] == 0  # if petsc has not been finalized yet
-    if !ksp.own_pc
-      C.PCDestroy([ksp.ppc])
-    end
-
-    C.KSPDestroy([ksp.pksp])
+function KSPDestroy{T}(ksp::KSP{T})
+  if !PetscFinalized(T)
+    ksp.own_pc && C.PCDestroy(Ref(ksp.ppc))
+    C.KSPDestroy(Ref(ksp.pksp))
   end
-
-   # if Petsc has been finalized, let the OS deallocate the memory
 end
 
 function setoptions!{T, MType}(ksp::KSP{T, MType}; opts...)
 # sets some options in the options database, call KSPSetFromOptions, then reset the
 # opts becomes an Array of tuples
 # options database to the original state
-# this prevents unexpected dynamic phenomena like setting an option for one KSP 
+# this prevents unexpected dynamic phenomena like setting an option for one KSP
 # contex and having it still be set for another
 # the keys in the dictionary should have the prepended -
   # to get options we have to provide a string buffer of sufficient length
@@ -61,7 +52,7 @@ function setoptions!{T, MType}(ksp::KSP{T, MType}; opts...)
 
   # copy options into ksp object
   chk(C.KSPSetFromOptions(ksp.pksp))
- 
+
   # reset the options in the databse
   unset_options!(T, opts_orig, opts_unset)
 
@@ -137,7 +128,7 @@ function settolerances{T}(ksp::KSP{T}; rtol=1e-8, abstol=1e-12, dtol=1e5, maxits
   C.KSPSetTolerances(ksp, rtol, abstol, dtol, maxits)
 end
 
-# A ldiv B 
+# A ldiv B
 
 import Base: A_ldiv_B!
 function A_ldiv_B!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T})
@@ -159,10 +150,10 @@ function A_ldiv_B!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T})
   # assemble the vector
   AssemblyBegin(b)
   AssemblyEnd(b)
- 
+
   AssemblyBegin(x)
   AssemblyEnd(x)
- 
+
 #  chk(C.KSPSetFromOptions(ksp.pksp))
   chk(C.KSPSolve(ksp.pksp, b.p, x.p))
 
@@ -185,7 +176,3 @@ function (\){T}(ksp::KSP{T}, b::Vec{T})
   A_ldiv_B!(ksp, b, x)
   return x
 end
-
-
-
-  

@@ -108,4 +108,8 @@ function petsc_sizeof(t::C.PetscDataType)
     s[1]
 end
 
-
+function PetscFinalized(T::Type)
+  tmp = Array(PetscBool, 1)
+  C.PetscFinalized(T, tmp)
+  return tmp[1] != 0
+end

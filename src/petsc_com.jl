@@ -101,11 +101,10 @@ function PetscInitialize(lib::DataType, args,filename,help)
   return err
 end
 
-
 function petsc_sizeof(t::C.PetscDataType)
-    s = Array(Csize_t, 1)
-    chk(PetscDataTypeGetSize(C.petsc_type[1], t, s))
-    s[1]
+  s = Array(Csize_t, 1)
+  chk(PetscDataTypeGetSize(C.petsc_type[1], t, s))
+  s[1]
 end
 
 function PetscFinalized(T::Type)

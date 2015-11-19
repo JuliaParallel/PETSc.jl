@@ -8,6 +8,7 @@ include("options.jl")
 include("vec.jl")
 include("mat.jl")
 include("error.jl")
+include("pc.jl")
 include("ksp.jl")
 include("is.jl")
 

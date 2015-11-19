@@ -1,6 +1,6 @@
 # AbstractMatrix wrapper around Petsc Mat
 export Mat, petscview
-#typealias pMat Ptr{Void} # Mat arguments in Petsc are pointers
+
 type Mat{T, MType} <: AbstractSparseMatrix{T,PetscInt}
   p::C.Mat{T}
   assembling::Bool # whether we are in the middle of assemble(vec)
@@ -18,18 +18,18 @@ end
 
 comm{T}(a::Mat{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
 
-function Mat{T}(::Type{T}, mtype=C.MatType=C.MATSEQ; comm=MPI.COMM_WORLD)
+function Mat{T}(::Type{T}, mtype=C.MatType=C.MATSEQ; comm::MPI.Comm=MPI.COMM_WORLD)
   p = Ref{C.Mat{T}}()
   chk(C.MatCreate(comm, p))
   Mat{T, mtype}(p[])
 end
 
 function Mat{T}(::Type{T}, m::Integer, n::Integer;
-  mlocal::Integer=C.PETSC_DECIDE, nlocal::Integer=C.PETSC_DECIDE,
-  nz::Integer=16, nnz::AbstractVector=PetscInt[],
-  onz::Integer=0, onnz::AbstractVector=PetscInt[],
-  comm=MPI.COMM_WORLD,
-  mtype::Symbol=C.MATMPIAIJ)
+                mlocal::Integer=C.PETSC_DECIDE, nlocal::Integer=C.PETSC_DECIDE,
+                nz::Integer=16, nnz::AbstractVector=PetscInt[],
+                onz::Integer=0, onnz::AbstractVector=PetscInt[],
+                comm::MPI.Comm=MPI.COMM_WORLD,
+                mtype::Symbol=C.MATMPIAIJ)
 
   mat = Mat(T, mtype, comm=comm)
   resize!(mat, m, n, mlocal=mlocal, nlocal=nlocal)
@@ -117,26 +117,26 @@ Vec{T2}(a::Mat{T2}, transposed=false) =
 Base.convert(::Type{C.Mat}, a::Mat) = a.p
 
 function Base.size(a::Mat)
-  m = Array(PetscInt, 1)
-  n = Array(PetscInt, 1)
+  m = Ref{PetscInt}()
+  n = Ref{PetscInt}()
   chk(C.MatGetSize(a.p, m, n))
-  (Int(m[1]), Int(n[1]))
+  (Int(m[]), Int(n[]))
 end
 
 function sizelocal(a::Mat)
-  m = Array(PetscInt, 1)
-  n = Array(PetscInt, 1)
+  m = Ref{PetscInt}()
+  n = Ref{PetscInt}()
   chk(C.MatGetLocalSize(a.p, m, n))
-  (Int(m[1]), Int(n[1]))
+  (Int(m[]), Int(n[]))
 end
 
 lengthlocal(a::Mat) = prod(sizelocal(a))
 
 # this causes the assembly state of the underlying petsc matrix to be copied
 function Base.similar{T, MType}(a::Mat{T, MType})
-  p = Array(C.Mat{T}, 1)
+  p = Ref{C.Mat{T}}()
   chk(C.MatDuplicate(a.p, C.MAT_DO_NOT_COPY_VALUES, p))
-  Mat{T, MType}(p[1])
+  Mat{T, MType}(p[])
 end
 
 Base.similar{T}(a::Mat{T}, ::Type{T}) = similar(a)
@@ -149,15 +149,15 @@ Base.similar(a::Mat, T::Type, d::Dims) = similar(a, T, d...)
 Base.similar{T}(a::Mat{T}, d::Dims) = similar(a, T, d)
 
 function Base.copy{T,MType}(a::Mat{T,MType})
-  p = Array(C.Mat{T}, 1)
+  p = Ref{C.Mat{T}}()
   chk(C.MatDuplicate(a.p, C.MAT_COPY_VALUES, p))
-  Mat{T,MType}(p[1])
+  Mat{T,MType}(p[])
 end
 
 function getinfo(m::Mat, infotype::Integer=C.MAT_GLOBAL_SUM)
-  info = Array(C.MatInfo,1)
+  info = Ref{C.MatInfo}()
   chk(C.MatGetInfo(m.p, C.MatInfoType(infotype), info))
-  info[1]
+  info[]
 end
 
 Base.nnz(m::Mat) = int(getinfo(m).nz_used)
@@ -175,15 +175,13 @@ function AssemblyEnd(x::Mat, t::C.MatAssemblyType=C.MAT_FLUSH_ASSEMBLY)
   chk(C.MatAssemblyEnd(x.p, t))
 end
 
-function isassembled(x::Mat)
-  if x.assembling
-    return false
-  else
-    b = Array(PetscBool, 1)
-    chk(C.MatAssembled( x.p, b))
-    return b[1] != 0
-  end
+function isassembled(p::C.Mat)
+  b = Ref{PetscBool}()
+  chk(C.MatAssembled(p, b))
+  return b[] != 0
 end
+
+isassembled(x::Mat) = !x.assembling && isassembled(x.p)
 
 function assemble(f::Function, x::Union{Vec,Mat},
   insertmode=x.insertmode,
@@ -210,16 +208,25 @@ function assemble(f::Function, x::Union{Vec,Mat},
 end
 
 # finalize matrix assembly
-assemble(x::Union{Vec,Mat}) = assemble(() -> nothing, x)
+assemble(x::Union{Vec,Mat}) = isassembled(x) ? nothing : assemble(() -> nothing, x)
+
+# in ksp solve we need to finalize assembly from raw pointer:
+function assemble(p::C.Mat, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
+  if !isassembled(p)
+    chk(C.MatAssemblyBegin(p, t))
+    chk(C.MatAssemblyEnd(p, t))
+  end
+  return nothing
+end
 
 # intermediate assembly, before it is finally compressed for use
 iassemble(x::Union{Vec,Mat}) = assemble(() -> nothing, x, x.insertmode, C.MAT_FLUSH_ASSEMBLY)
 iassemble(f::Function, x::Mat, insertmode=x.insertmode) =
-assemble(f, x, insertmode, C.MAT_FLUSH_ASSEMBLY)
+  assemble(f, x, insertmode, C.MAT_FLUSH_ASSEMBLY)
 
 # like x[i,j] = v, but requires i,j to be 0-based indices for Petsc
 function setindex0!{T}(x::Mat{T}, v::Array{T},
-  i::Array{PetscInt}, j::Array{PetscInt})
+                       i::Array{PetscInt}, j::Array{PetscInt})
   ni = length(i)
   nj = length(j)
   if length(v) != ni*nj
@@ -356,9 +363,9 @@ for (f,pf) in ((:MatTranspose,:MatCreateTranspose), # acts like A.'
   (:MatNormal, :MatCreateNormal))      # acts like A'*A
   pfe = Expr(:quote, pf)
   @eval function $f{T, MType}(a::Mat{T, MType})
-    p = Array(C.Mat{T}, 1)
+    p = Ref{C.Mat{T}}()
     chk(C.$pf(a.p, p))
-    Mat{T, MType}(p[1], a)
+    Mat{T, MType}(p[], a)
   end
 end
 
@@ -373,9 +380,9 @@ for (f,pf) in ((:transpose,:MatTranspose),(:ctranspose,:MatHermitianTranspose))
     end
 
     function Base.$f{T}(a::Mat{T})
-      p = Array(C.Mat{T}, 1)
+      p = Ref{C.Mat{T}}()
       chk(C.$pf(a.p, C.MAT_INITIAL_MATRIX, p))
-      Mat(p[1], comm=comm(a))
+      Mat(p[], comm=comm(a))
     end
   end
 end
@@ -417,9 +424,9 @@ end
 
 function (*){T, MType}(A::Mat{T,MType}, B::Mat{T})
   p = Ptr{Float64}(0)
-  p_arr = Array(C.Mat{T}, 1)
+  p_arr = Ref{C.Mat{T}}()
   chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, real(T)(C.PETSC_DEFAULT), p_arr))
-  new_mat = Mat{T, MType}(p_arr[1])
+  new_mat = Mat{T, MType}(p_arr[])
   return new_mat
 end
 
@@ -437,7 +444,7 @@ end
 # operations on matrices
 
 function (==){T}(A::Mat{T}, b::Mat{T})
-  bool_arr = Array(PetscBool, 1)
+  bool_arr = Ref{PetscBool}()
   chk(C.MatEqual(A.p, b.p, bool_arr))
-  return bool_arr[1] != 0
+  return bool_arr[] != 0
 end

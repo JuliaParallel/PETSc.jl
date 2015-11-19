@@ -20,9 +20,8 @@ end
 
 # allow OPTIONS[k]=v to set options for all PETSc scalar types simultaneously
 function Base.setindex!(o::typeof(OPTIONS), v, k::SymOrStr)
-  vs = string(v) # only convert to a string once
   for opts in values(o)
-    opts[k] = vs
+    opts[k] = v
   end
   return v
 end
@@ -68,5 +67,5 @@ function withoptions{T<:Scalar}(f::Function, ::Type{T}, keyvals)
     end
   end
 end
-withoptions{T<:Scalar,K<:SymOrStr}(f::Function, ::Type{T}, keyvals::Pair{K}...) = withoptions(T, f, keyvals)
+withoptions{T<:Scalar,K<:SymOrStr}(f::Function, ::Type{T}, keyvals::Pair{K}...) = withoptions(f, T, keyvals)
 withoptions{T<:Scalar}(f::Function, ::Type{T}) = f() # handle empty keyvals case; see julia#10853

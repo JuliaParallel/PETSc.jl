@@ -34,11 +34,31 @@ function RC(x::AbstractArray)
   end
 end
 
-for ST in [Float64, Float32, Complex128]
+for ST in PETSc.C.petsc_type
   println("\n\nTesting ", ST)
   include("error.jl")
   include("vec.jl")
   include("mat.jl")
   include("ksp.jl")
   include("is.jl")
+end
+
+facts("\ntesting options") do
+    OPTIONS["foo"]=true
+    for ST in PETSc.C.petsc_type
+        @fact haskey(OPTIONS[ST], :foo) --> true
+        @fact OPTIONS[ST][:foo] --> "true"
+    end
+    OPTIONS["foo"]=nothing
+    for ST in PETSc.C.petsc_type
+        @fact haskey(OPTIONS[ST], :foo) --> false
+        OPTIONS[ST]["bar"] = 17
+        @fact pop!(OPTIONS[ST], "bar") --> "17"
+        @fact pop!(OPTIONS[ST], "bar", 23) --> 23
+        @fact haskey(OPTIONS[ST], :bar) --> false
+        withoptions(ST, "baz"=>"aloha") do
+            @fact OPTIONS[ST][:baz] --> "aloha"
+        end
+        @fact haskey(OPTIONS[ST], :baz) --> false
+    end
 end

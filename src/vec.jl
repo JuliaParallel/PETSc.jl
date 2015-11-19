@@ -1,8 +1,6 @@
 # AbstractVector wrapper around PETSc Vec types
 export Vec, comm
-#typealias pVec Ptr{Void} # Vec arguments in Petsc are pointers
-# T is data type
-# VType is type of vector from C.VecType
+
 type Vec{T,VType} <: AbstractVector{T}
   p::C.Vec{T}
   assembling::Bool # whether we are in the middle of assemble(vec)
@@ -20,24 +18,24 @@ end
 
 comm{T}(v::Vec{T}) = MPI.Comm(C.PetscObjectComm(T, v.p.pobj))
 
-function Vec{T}(::Type{T}, vtype::C.VecType=C.VECSEQ; comm=MPI.COMM_SELF)
-  p = Array(C.Vec{T}, 1)
+function Vec{T}(::Type{T}, vtype::C.VecType=C.VECSEQ; comm::MPI.Comm=MPI.COMM_SELF)
+  p = Ref{C.Vec{T}}()
   chk(C.VecCreate(comm, p))
-  Vec{T, vtype}(p[1])
+  Vec{T, vtype}(p[])
 end
 
 function Vec{T<:Scalar}(::Type{T}, len::Integer, vtype::C.VecType=C.VECSEQ;
-  comm=MPI.COMM_SELF, mlocal::Integer=C.PETSC_DECIDE)
+                        comm::MPI.Comm=MPI.COMM_SELF, mlocal::Integer=C.PETSC_DECIDE)
   vec = Vec(T, vtype; comm=comm)
   resize!(vec, len, mlocal=mlocal)
   vec
 end
 
 # make a Vec that is a wrapper around v, where v stores the local data
-function Vec{T<:Scalar}(v::Vector{T}; comm=MPI.COMM_SELF)
-  p = Array(C.Vec{T}, 1)
+function Vec{T<:Scalar}(v::Vector{T}; comm::MPI.Comm=MPI.COMM_SELF)
+  p = Ref{C.Vec{T}}()
   chk(C.VecCreateMPIWithArray(comm, 1, length(v), C.PETSC_DECIDE, v, p))
-  pv = Vec{T, C.VECMPI}(p[1], v)
+  pv = Vec{T, C.VECMPI}(p[], v)
   return pv
 end
 
@@ -68,16 +66,16 @@ export lengthlocal, sizelocal, localpart
 Base.convert(::Type{C.Vec}, v::Vec) = v.p
 
 function Base.length(x::Vec)
-  sz = Array(PetscInt, 1)
+  sz = Ref{PetscInt}()
   chk(C.VecGetSize(x.p, sz))
-  Int(sz[1])
+  Int(sz[])
 end
 Base.size(x::Vec) = (length(x),)
 
 function lengthlocal(x::Vec)
-  sz = Array(PetscInt, 1)
+  sz = Ref{PetscInt}()
   chk(C.VecGetLocalSize(x.p, sz))
-  sz[1]
+  sz[]
 end
 sizelocal(x::Vec) = (lengthlocal(x),)
 sizelocal{T,n}(t::AbstractArray{T,n}, d) = (d>n ? 1 : sizelocal(t)[d])
@@ -93,9 +91,9 @@ function localpart(v::Vec)
 end
 
 function Base.similar{T,VType}(x::Vec{T,VType})
-  p = Array(C.Vec{T}, 1)
+  p = Ref{C.Vec{T}}()
   chk(C.VecDuplicate(x.p, p))
-  Vec{T,VType}(p[1])
+  Vec{T,VType}(p[])
 end
 
 Base.similar{T}(x::Vec{T}, ::Type{T}) = similar(x)
@@ -104,12 +102,12 @@ Base.similar{T,VType}(x::Vec{T,VType}, T2::Type) =
 
 function Base.similar{T,VType}(x::Vec{T,VType}, T2::Type, len::Union{Int,Dims})
   length(len) == 1 || throw(ArgumentError("expecting 1-dimensional size"))
-  len==length(x) && T2==T ? similar(x) : Vec(T2, len, VType; comm=comm(x))
+  len[1]==length(x) && T2==T ? similar(x) : Vec(T2, len[1], VType; comm=comm(x))
 end
 
 function Base.similar{T,VType}(x::Vec{T,VType}, len::Union{Int,Dims})
   length(len) == 1 || throw(ArgumentError("expecting 1-dimensional size"))
-  len==length(x) ? similar(x) : Vec(T, len, VType; comm=comm(x))
+  len[1]==length(x) ? similar(x) : Vec(T, len[1], VType; comm=comm(x))
 end
 
 function Base.copy(x::Vec)
@@ -261,10 +259,10 @@ end
 for (f, pf, sf) in ((:findmax, :VecMax, :maximum), (:findmin, :VecMin, :minimum))
   @eval begin
     function Base.$f{T<:Real}(x::Vec{T})
-      i = Array(PetscInt, 1)
-      v = Array(T, 1)
+      i = Ref{PetscInt}()
+      v = Ref{T}
       chk(C.$pf(x.p, i, v))
-      (v[1], i[1]+1)
+      (v[], i[]+1)
     end
     Base.$sf{T<:Real}(x::Vec{T}) = $f(x)[1]
   end
@@ -273,11 +271,11 @@ end
 # real parts, which doesn't match Julia's maximum/minimum semantics.
 
 function Base.norm{T<:Real}(x::Union{Vec{T},Vec{Complex{T}}}, p::Number)
-  v = Array(T, 1)
+  v = Ref{T}
   n = p == 1 ? C.NORM_1 : p == 2 ? C.NORM_2 : p == Inf ? C.NORM_INFINITY :
   throw(ArgumentError("unrecognized Petsc norm $p"))
   chk(C.VecNorm(x.p, n, v))
-  v[1]
+  v[]
 end
 
 if VERSION >= v"0.5.0-dev+8353" # JuliaLang/julia#13681
@@ -288,15 +286,15 @@ end
 
 # computes v = norm(x,2), divides x by v, and returns v
 function normalize!{T<:Scalar}(x::Vec{T})
-  v = Array(T, 1)
+  v = Ref{T}()
   chk(C.VecNormalize(x.p, v))
-  v[1]
+  v[]
 end
 
 function Base.dot{T}(x::Vec{T}, y::Vec{T})
-  d = Array(T, 1)
+  d = Ref{T}()
   chk(C.VecDot(y.p, x.p, d))
-  return d[1]
+  return d[]
 end
 
 # unconjugated dot product (called for x'*y)
@@ -351,15 +349,15 @@ end
 
 import Base: ==
 function (==)(x::Vec, y::Vec)
-  b = Array(PetscBool,1)
+  b = Ref{PetscBool}()
   chk(C.VecEqual(x.p, y.b, b))
-  b[1] != 0
+  b[] != 0
 end
 
 function Base.sum{T}(x::Vec{T})
-  s = Array(T,1)
+  s = Ref{T}()
   chk(C.VecSum(x.p, s))
-  s[1]
+  s[]
 end
 
 ##########################################################################

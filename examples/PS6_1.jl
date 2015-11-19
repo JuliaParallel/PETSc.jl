@@ -364,8 +364,7 @@ function createPetscData(mat_size, stencil_size)
   vec_scatter = PETSc.VecScatter(u_i, is_local, u_ghost, is_ghost)
 
   ctx = (is_local, is_ghost)  # avoid GC
-  ksp = PETSc.KSP(A)
-  setoptions!(ksp; ksp_atol=1e-12, ksp_rtol=1e-14, ksp_monitor="")
+  ksp = PETSc.KSP(A, ksp_atol=1e-12, ksp_rtol=1e-14, ksp_monitor="")
 
   return A, u_i, u_ghost, vec_scatter, rhs, ksp, uex, ctx, ghost_offset
 end

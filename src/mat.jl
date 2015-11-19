@@ -141,10 +141,12 @@ end
 
 Base.similar{T}(a::Mat{T}, ::Type{T}) = similar(a)
 Base.similar{T,MType}(a::Mat{T,MType}, T2::Type) =
-Mat(T2, size(a)..., comm=comm(a), mtype=MType)
+  Mat(T2, size(a)..., comm=comm(a), mtype=MType)
 Base.similar{T,MType}(a::Mat{T,MType}, T2::Type, m::Integer, n::Integer) =
-(m,n) == size(a) && T2==T ? similar(a) : Mat(T2, m,n, comm=comm(a), mtype=MType)
-Base.similar(a::Mat, T::Type, Dims) = similar(a, T, d...)
+  (m,n) == size(a) && T2==T ? similar(a) : Mat(T2, m,n, comm=comm(a), mtype=MType)
+Base.similar{T,MType}(a::Mat{T,MType}, m::Integer, n::Integer) = similar(a, T, m, n)
+Base.similar(a::Mat, T::Type, d::Dims) = similar(a, T, d...)
+Base.similar{T}(a::Mat{T}, d::Dims) = similar(a, T, d)
 
 function Base.copy{T,MType}(a::Mat{T,MType})
   p = Array(C.Mat{T}, 1)

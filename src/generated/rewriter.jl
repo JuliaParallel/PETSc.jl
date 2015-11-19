@@ -19,7 +19,7 @@ const petsc_libname = :petscRealDouble
 
 val_tmp = type_dict[:PetscScalar]
 type_dict_single = Dict{Any, Any} (
-:(Ptr{UInt8}) => Union{ByteString, Symbol, Array{UInt8}}
+:(Ptr{UInt8}) => Union{Cstring, ByteString, Symbol, Array{UInt8}, Ptr{UInt8}}
 )
 
 # used to convert typealiases to immutable type definionts

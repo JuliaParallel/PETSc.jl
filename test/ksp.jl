@@ -13,24 +13,14 @@ facts("\ntesting KSP") do
   A[3,2] = RC(Complex(6, 6))  # make A non singular
   A_julia[3,2] = RC(Complex(6,6))
 
-  PETSc.AssemblyBegin(A, PETSc.C.MAT_FINAL_ASSEMBLY)
-
-  PETSc.AssemblyEnd(A, PETSc.C.MAT_FINAL_ASSEMBLY)
-
   b = PETSc.Vec(ST, 3, PETSc.C.VECMPI)
   b_julia = zeros(ST, 3)
   b[3] = RC(Complex(1, 1))
   b_julia[3] = RC(Complex(1,1))
 
-  ksp = PETSc.KSP(A)
-  
-#  ksp_opts = Dict{UTF8String, Any}("-ksp_monitor" => string(PETSc.C.PETSC_DEFAULT))
-#  ksp_opts = Dict{UTF8String, Any}()
-#  println("ksp_opts = ", ksp_opts)
-  PETSc.setoptions!(ksp, ksp_monitor="")
+  ksp = PETSc.KSP(A, ksp_monitor="")
 
   println("performing ksp solve")
-#  x = PETSc.solve(ksp, b)
   x = ksp\b
   println("finished ksp solve")
   x_julia = A_julia\b_julia

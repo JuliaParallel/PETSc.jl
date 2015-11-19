@@ -104,12 +104,12 @@ Base.similar{T,VType}(x::Vec{T,VType}, T2::Type) =
 
 function Base.similar{T,VType}(x::Vec{T,VType}, T2::Type, len::Union{Int,Dims})
   length(len) == 1 || throw(ArgumentError("expecting 1-dimensional size"))
-  len==length(x) && T2==T ? similar(x) : Vec(T2, len, VType; comm=comm(x))
+  len[1]==length(x) && T2==T ? similar(x) : Vec(T2, len[1], VType; comm=comm(x))
 end
 
 function Base.similar{T,VType}(x::Vec{T,VType}, len::Union{Int,Dims})
   length(len) == 1 || throw(ArgumentError("expecting 1-dimensional size"))
-  len==length(x) ? similar(x) : Vec(T, len, VType; comm=comm(x))
+  len[1]==length(x) ? similar(x) : Vec(T, len[1], VType; comm=comm(x))
 end
 
 function Base.copy(x::Vec)

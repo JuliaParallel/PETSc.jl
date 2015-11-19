@@ -657,7 +657,7 @@ end
     ccall((:PetscObjectsListGetGlobalNumbering,petscRealSingle),PetscErrorCode,(comm_type,Int64,Ptr{PetscObject},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
 end
 =#
-function PetscOptionsHasName(arg0::Type{Float32},arg1::Union{ByteString,Symbol},arg2::Union{ByteString,Symbol},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsHasName(arg0::Type{Float32},arg1::Union{Cstring,ByteString,Symbol},arg2::Union{ByteString,Symbol},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsHasName,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
@@ -702,7 +702,7 @@ function PetscOptionsGetBoolArray(arg0::Type{Float32},arg1::Union{ByteString,Sym
     return err
 end
 
-function PetscOptionsGetString(arg0::Type{Float32},arg1::Union{ByteString,Symbol},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetString(arg0::Type{Float32},arg1::Union{Cstring,ByteString,Symbol},arg2::Union{ByteString,Symbol},arg3::Union{ByteString,Symbol,Ptr{UInt8}},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetString,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end

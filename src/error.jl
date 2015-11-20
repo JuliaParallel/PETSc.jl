@@ -14,19 +14,22 @@ end
 immutable PetscError <: Exception
   errnum::PetscErrorCode
   msg::AbstractString
-  PetscError(n::Integer, m="") = new(convert(PetscErrorCode, n),
-  PetscErrorMessage(n))
+
+  function PetscError(n::Integer, msg::AbstractString="")
+    if isempty(msg)
+      new(PetscErrorCode(n), PetscErrorMessage(n))
+    else
+      new(PetscErrorMessage(n), msg)
+    end
+  end
 end
 
 # return error message string corresponding to errnum
 function PetscErrorMessage(errnum)
-  #    println("entered PetscErrorMessage")
-  arr = Array(Ptr{UInt8}, 1)
-  arr_ptr = pointer(arr)
+  msg_ptr = Ref{Ptr{UInt8}}(C_NULL)
   # use the first petsc library for all cases
-  C.PetscErrorMessage(C.petsc_type[1], errnum,  arr_ptr, Ref{Ptr{UInt8}}(0))
-  #    println("retrieved error message from petsc")
-  str = bytestring(arr[1])
-  #    println("error message = ", str)
-  #    msg[1] ==  ? "(unknown)" : bytestring(msg[1])
+  C.PetscErrorMessage(C.petsc_type[1], errnum, msg_ptr, Ref{Ptr{UInt8}}(C_NULL))
+  # error num strings are stored in a constant table so
+  # the pointer does not have to be free'd here
+  return bytestring(msg_ptr[])
 end

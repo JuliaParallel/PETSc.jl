@@ -62,3 +62,5 @@ facts("\ntesting options") do
         @fact haskey(OPTIONS[ST], :baz) --> false
     end
 end
+
+exitstatus()

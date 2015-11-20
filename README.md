@@ -77,9 +77,6 @@ This package requires MPI.jl, although it is not listed in the REQUIRE file beca
   Pkg.build("MPI")
 ```
 
-Currently, only MPI implementations where the Fortran communicator is the same as the C communictor are supported.  This is due to the current implementation of the MPI.jl package.  MPICH is one MPI implementation that satisfies this requirement.  Note that OPENMPI does not.
-
-
 ## Auto Generation Notes
 PETSc uses preprocessor variables to decide what code to include when compiling 
 the library.  Clang does not know what preprocessor variables were defined at 

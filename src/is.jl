@@ -109,6 +109,7 @@ export VecScatter
 # describes a scatter operation context (input/output index sets etc.)
 type VecScatter{T}
   p::C.VecScatter{T}
+
   function VecScatter(p::C.VecScatter{T})
     o = new(p)
     finalizer(o, VecScatterDestroy)
@@ -118,7 +119,7 @@ end
 
 comm{T}(a::VecScatter{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
 
-function VecScatterDestroy{T}(o::IS{T})
+function VecScatterDestroy{T}(o::VecScatter{T})
   PetscFinalized(T) || C.VecScatterDestroy(Ref(o.p))
 end
 

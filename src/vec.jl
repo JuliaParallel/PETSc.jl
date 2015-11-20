@@ -271,7 +271,7 @@ end
 # real parts, which doesn't match Julia's maximum/minimum semantics.
 
 function Base.norm{T<:Real}(x::Union{Vec{T},Vec{Complex{T}}}, p::Number)
-  v = Ref{T}
+  v = Ref{T}()
   n = p == 1 ? C.NORM_1 : p == 2 ? C.NORM_2 : p == Inf ? C.NORM_INFINITY :
   throw(ArgumentError("unrecognized Petsc norm $p"))
   chk(C.VecNorm(x.p, n, v))
@@ -285,7 +285,7 @@ else
 end
 
 # computes v = norm(x,2), divides x by v, and returns v
-function normalize!{T<:Scalar}(x::Vec{T})
+function normalize!{T<:Real}(x::Union{Vec{T},Vec{Complex{T}}})
   v = Ref{T}()
   chk(C.VecNormalize(x.p, v))
   v[]
@@ -314,6 +314,13 @@ for (f,pf) in ((:max,:VecPointwiseMax), (:min,:VecPointwiseMin),
     w
   end
 end
+
+import Base: +, -, scale!
+function Base.scale!{T}(x::Vec{T}, s::Number)
+  chk(C.VecScale(x.p, T(s)))
+  x
+end
+scale(x,s) = scale!(copy(x),s)
 (.*)(x::Vec, a::Number...) = scale(x, prod(a))
 (.*)(a::Number, x::Vec) = scale(x, a)
 (./)(x::Vec, a::Number) = scale(x, inv(a))
@@ -327,12 +334,6 @@ function (./)(a::Number, x::Vec)
   y
 end
 
-function Base.scale!{T}(x::Vec{T}, s::Number)
-  chk(C.VecScale(x.p, T(s)))
-  x
-end
-
-import Base: +, -, scale!
 function (+){T<:Scalar}(x::Vec{T}, a::Number...)
   y = copy(x)
   chk(C.VecShift(y.p, T(sum(a))))
@@ -350,7 +351,7 @@ end
 import Base: ==
 function (==)(x::Vec, y::Vec)
   b = Ref{PetscBool}()
-  chk(C.VecEqual(x.p, y.b, b))
+  chk(C.VecEqual(x.p, y.p, b))
   b[] != 0
 end
 

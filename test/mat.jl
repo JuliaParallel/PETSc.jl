@@ -5,6 +5,7 @@ mat = PETSc.Mat(ST, 3, 4)
 @fact size(mat) --> (3,4)
 
 @fact sizelocal(mat) --> (3,4)
+@fact lengthlocal(mat) --> 12
 
 mtype = PETSc.gettype(mat)
 @fact mtype --> PETSc.C.MATMPIAIJ
@@ -31,9 +32,14 @@ mat3 = similar(mat, ST, 4, 4)
 
 @fact size(mat3) --> (4,4)
 @fact mat2[1,1] --> not(mat[1,1])
+@fact_throws ArgumentError resize!(mat2)
+@fact_throws ArgumentError resize!(mat2,5,mlocal=2)
 
 mat4 = copy(mat)
 @fact mat4[1,1] --> roughly(mat[1, 1])
+
+mat5 = copy(mat)
+@fact conj(conj(mat5))[1,1] --> roughly(mat[1,1])
 
 println("getting matrix info")
 @fact PETSc.getinfo(mat4).block_size --> 1
@@ -277,6 +283,32 @@ context("test conversion of values to a new type") do
     mat21j = mat16j-mat17j
     for i=1:3, j=1:3
       @fact mat21[i,j] --> roughly(mat21j[i,j])
+    end
+    
+    mat22 = mat16/2
+    mat22j = mat16j/2
+
+    for i=1:3
+      for j=1:3
+        @fact mat22[i,j] --> roughly(mat22j[i,j])
+      end
+    end
+
+    mat23 = 2\mat16
+    mat23j = 2\mat16j
+
+    for i=1:3
+      for j=1:3
+        @fact mat23[i,j] --> roughly(mat23j[i,j])
+      end
+    end
+
+    mat24  = -mat16
+    mat24j = -mat16j
+    for i=1:3
+      for j=1:3
+        @fact mat24[i,j] --> roughly(mat24j[i,j])
+      end
     end
 end
 

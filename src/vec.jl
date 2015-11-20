@@ -344,7 +344,7 @@ end
 (-)(x::Vec) = scale(x, -1)
 function (-){T<:Scalar}(a::Number, x::Vec{T})
   y = -x
-  chk(C.VecShift(y.p, T(-a)))
+  chk(C.VecShift(y.p, T(a)))
   return y
 end
 

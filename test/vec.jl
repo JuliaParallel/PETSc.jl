@@ -188,22 +188,21 @@ for i=1:length(onevec)
     @fact multvec[i] --> 24*onevec[i]
 end
 
-println("testing + and -")
 addvec = copy(onevec)
+println("testing ==")
+@fact addvec == onevec --> true
+println("testing + and -")
 addvec = addvec + 2
 addvec = addvec - 2
 for i=1:length(onevec)
     @fact addvec[i] --> onevec[i]
 end
 addvec = copy(onevec)
-addvec = 2 + addvec
 addvec = 2 - addvec
+addvec = 2 + addvec
 for i=1:length(onevec)
-    @fact addvec[i] --> onevec[i]
+    @fact addvec[i] --> 3*onevec[i]
 end
-
-println("testing ==")
-@fact addvec == onevec --> true
 #=
 (max_val, max_index) = findmax(vec4)
 max_val_j, max_index_j = findmax(vec4_j)

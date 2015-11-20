@@ -5,10 +5,9 @@
 # wrap this around all PETSc ccalls, in order to catch exceptions
 function chk(errnum)
   if errnum != 0
-    println(STDERR, "Error number $errnum has occured")
     throw(PetscError(errnum))
   end
-  nothing
+  errnum
 end
 
 immutable PetscError <: Exception

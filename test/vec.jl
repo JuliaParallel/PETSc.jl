@@ -161,31 +161,31 @@ end
 println("onevec: ",onevec)
 
 @fact_throws ArgumentError norm(onevec,3)
-@fact norm(onevec,Inf) => 1
+@fact norm(onevec,Inf) --> 1
 normvec = copy(onevec)
 PETSc.normalize!(normvec)
-@fact norm(normvec,2) => one(ST)
+@fact norm(normvec,2) --> one(ST)
 
 println("testing scale!")
 scalevec = scale!(copy(onevec),2)
 for i=1:length(onevec)
-    @fact scalevec[i] => 2
+    @fact scalevec[i] --> 2
 end
 
 println("testing sum")
-@fact sum(onevec) => length(onevec)
+@fact sum(onevec) --> length(onevec)
 
 println("testing negation")
 minusvec = -onevec
 for i=1:length(onevec)
-    @fact minusvec[i] => -onevec[i]
+    @fact minusvec[i] --> -onevec[i]
 end
 
 println("testing *")
 multvec = copy(onevec)
 multvec = multvec * 2 * 3 * 4
 for i=1:length(onevec)
-    @fact multvec[i] => 24*onevec[i]
+    @fact multvec[i] --> 24*onevec[i]
 end
 
 println("testing + and -")
@@ -193,17 +193,17 @@ addvec = copy(onevec)
 addvec = addvec + 2
 addvec = addvec - 2
 for i=1:length(onevec)
-    @fact addvec[i] => onevec[i]
+    @fact addvec[i] --> onevec[i]
 end
 addvec = copy(onevec)
 addvec = 2 + addvec
 addvec = 2 - addvec
 for i=1:length(onevec)
-    @fact addvec[i] => onevec[i]
+    @fact addvec[i] --> onevec[i]
 end
 
 println("testing ==")
-@fact addvec == onevec => true
+@fact addvec == onevec --> true
 #=
 (max_val, max_index) = findmax(vec4)
 max_val_j, max_index_j = findmax(vec4_j)

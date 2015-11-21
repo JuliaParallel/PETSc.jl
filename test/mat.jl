@@ -24,6 +24,25 @@ mat[1,2] = vt1
 PETSc.assemble(mat)
 println("inserted an additional value after final assembly")
 
+#test real and imag
+rmat = similar(mat)
+rmat[1,1] = RC(complex(3., 0.))
+rmat[1,2] = RC(complex(4., 0.))
+PETSc.assemble(rmat)
+@fact real(mat)[1,1] --> rmat[1,1]
+@fact real(mat)[1,2] --> rmat[1,2]
+if ST <: Complex
+    @fact imag(mat)[1,1] --> rmat[1,1]
+    @fact imag(mat)[1,2] --> rmat[1,2]
+end
+
+#test diag
+dmat = similar(mat,3,3)
+dmat[1,1] = vt1
+assemble(dmat)
+d = diag(dmat)
+@fact d[1] --> vt1
+
 mat2 = similar(mat)
 
 @fact size(mat2) --> (3,4)
@@ -260,6 +279,20 @@ context("test conversion of values to a new type") do
     for i=1:3
       @fact vec2[i] --> vec2j[i]
     end
+    
+    vec3 = mat16.'*vec1
+    vec3j = mat16j.'*vec1j
+
+    for i=1:3
+      @fact vec3[i] --> vec3j[i]
+    end
+    
+    vec4 = mat16'*vec1
+    vec4j = mat16j'*vec1j
+
+    for i=1:3
+      @fact vec4[i] --> vec4j[i]
+    end
 
     mat18 = 2*mat16
     assemble(mat18)
@@ -316,6 +349,62 @@ context("test conversion of values to a new type") do
         @fact mat24[i,j] --> roughly(mat24j[i,j])
       end
     end
+    
+end
+
+println("Testing {c}transpose mults")    
+mat1  = PETSc.Mat(ST,3,3,mtype=PETSc.C.MATSEQAIJ)
+mat2  = PETSc.Mat(ST,3,3,mtype=PETSc.C.MATSEQAIJ)
+mat1j = zeros(ST,3,3)
+mat2j = zeros(ST,3,3)
+vt1 = RC(complex(3., 0.))
+vt2 = RC(complex(5., 5.))
+vt3 = RC(complex(4., 4.))
+vt4 = RC(complex(10., 0.))
+vt5 = RC(complex(1., 0.))
+mat1[1,1] = vt1
+mat1[1,2] = vt2
+mat1[2,1] = conj(vt2)
+mat1[1,3] = vt3
+mat1[3,1] = conj(vt3)
+mat1[2,2] = vt4
+mat1[3,3] = vt5
+mat1j[1,1] = vt1
+mat1j[1,2] = vt2
+mat1j[2,1] = conj(vt2)
+mat1j[1,3] = vt3
+mat1j[3,1] = conj(vt3)
+mat1j[2,2] = vt4
+mat1j[3,3] = vt5
+mat2[1,1] = vt1
+mat2[1,2] = vt2
+mat2[2,1] = vt2
+mat2[1,3] = vt3
+mat2[3,1] = vt3
+mat2[2,2] = vt4
+mat2[3,3] = vt5
+mat2j[1,1] = vt1
+mat2j[1,2] = vt2
+mat2j[2,1] = vt2
+mat2j[1,3] = vt3
+mat2j[3,1] = vt3
+mat2j[2,2] = vt4
+mat2j[3,3] = vt5
+PETSc.assemble(mat1)
+PETSc.assemble(mat2)
+@fact ishermitian(mat1) --> true
+@fact issym(mat2) --> true
+
+mat3 = mat1.'*mat2
+mat3j = mat1j.'*mat2j
+for i=1:3, j=1:3
+  @fact mat3[i,j] --> roughly(mat3j[i,j])
+end
+
+mat4 = mat1*mat2.'
+mat4j = mat1j*mat2j.'
+for i=1:3, j=1:3
+  @fact mat4[i,j] --> roughly(mat4j[i,j])
 end
 
 end

@@ -1,5 +1,16 @@
 facts("--- Testing Matrix Functions ---") do
 
+@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATMPIAIJ, nnz=collect(1:10))
+@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATMPIBAIJ, nnz=collect(1:10))
+@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATMPISBAIJ, nnz=collect(1:10))
+@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATMPIAIJ, onnz=collect(1:10))
+@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATMPIBAIJ, onnz=collect(1:10))
+@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATMPISBAIJ, onnz=collect(1:10))
+@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATBLOCKMAT, nnz=collect(1:10))
+@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATSEQAIJ, nnz=collect(1:10))
+@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATSEQBAIJ, nnz=collect(1:10))
+@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATSEQSBAIJ, nnz=collect(1:10))
+
 mat = PETSc.Mat(ST, 3, 4)
 
 @fact size(mat) --> (3,4)

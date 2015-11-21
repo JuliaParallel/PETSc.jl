@@ -69,10 +69,11 @@ end
 
 function setpreallocation!{T, MType}(a::Mat{T, MType};
   nz::Integer=16, nnz::AbstractVector=PetscInt[],
-  onz::Integer=0, onnz::AbstractVector=PetscInt[])
+  onz::Integer=0, onnz::AbstractVector=PetscInt[],
+  bs::Integer=16)
   if MType == C.MATSEQAIJ
     pnnz = if isempty(nnz)
-      Ptr{T}(0)
+      Ptr{PetscInt}(0)
     else
       if length(nnz) != size(a,1)
         throw(ArgumentError("length(nnz) must be # rows"))
@@ -99,6 +100,74 @@ function setpreallocation!{T, MType}(a::Mat{T, MType};
       isa(onnz,Vector{PetscInt}) ? onnz : PetscInt[ i for i in onnz ]
     end
     chk(C.MatMPIAIJSetPreallocation(a.p, nz, pnnz, onz, ponnz))
+  elseif MType == C.MATMPIBAIJ
+    mlocal = sizelocal(a,1)
+    pnnz = if isempty(nnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(nnz) != mlocal
+        throw(ArgumentError("length(nnz) must be # local rows"))
+      end
+      isa(nnz,Vector{PetscInt}) ? nnz : PetscInt[ i for i in nnz ]
+    end
+    ponnz = if isempty(onnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(onnz) != mlocal
+        throw(ArgumentError("length(onnz) must be # local rows"))
+      end
+      isa(onnz,Vector{PetscInt}) ? onnz : PetscInt[ i for i in onnz ]
+    end
+    chk(C.MatMPIBAIJSetPreallocation(a.p, bs, nz, pnnz, onz, ponnz))
+  elseif MType == C.MATMPISBAIJ
+    mlocal = sizelocal(a,1)
+    pnnz = if isempty(nnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(nnz) != mlocal
+        throw(ArgumentError("length(nnz) must be # local rows"))
+      end
+      isa(nnz,Vector{PetscInt}) ? nnz : PetscInt[ i for i in nnz ]
+    end
+    ponnz = if isempty(onnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(onnz) != mlocal
+        throw(ArgumentError("length(onnz) must be # local rows"))
+      end
+      isa(onnz,Vector{PetscInt}) ? onnz : PetscInt[ i for i in onnz ]
+    end
+    chk(C.MatMPISBAIJSetPreallocation(a.p, bs, nz, pnnz, onz, ponnz))
+  elseif MType == C.MATBLOCKMAT
+    pnnz = if isempty(nnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(nnz) != size(a,1)
+        throw(ArgumentError("length(nnz) must be # rows"))
+      end
+      isa(nnz,Vector{PetscInt}) ? nnz : PetscInt[ i for i in nnz ]
+    end
+    chk(C.MatBlockMatSetPreallocation(a.p, bs, nz, pnnz))
+  elseif MType == C.MATSEQBAIJ
+    pnnz = if isempty(nnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(nnz) != size(a,1)
+        throw(ArgumentError("length(nnz) must be # rows"))
+      end
+      isa(nnz,Vector{PetscInt}) ? nnz : PetscInt[ i for i in nnz ]
+    end
+    chk(C.MatSeqBAIJSetPreallocation(a.p, bs, nz, pnnz))
+  elseif MType == C.MATSEQSBAIJ
+    pnnz = if isempty(nnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(nnz) != size(a,1)
+        throw(ArgumentError("length(nnz) must be # rows"))
+      end
+      isa(nnz,Vector{PetscInt}) ? nnz : PetscInt[ i for i in nnz ]
+    end
+    chk(C.MatSeqSBAIJSetPreallocation(a.p, bs, nz, pnnz))
   else # TODO
     throw(ArgumentError("unsupported matrix type $T"))
   end

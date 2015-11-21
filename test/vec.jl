@@ -166,6 +166,26 @@ normvec = copy(onevec)
 PETSc.normalize!(normvec)
 @fact norm(normvec,2) --> one(ST)
 
+if ST <: Real
+    println("testing max and min")
+    maxvec = copy(onevec)
+    maxvec[1] = ST(2)
+    @fact maximum(maxvec) --> 2
+    @fact findmax(maxvec) --> (2.0,1)
+    minvec = copy(onevec)
+    minvec[1] = ST(0)
+    @fact minimum(minvec) --> 0
+    @fact findmin(minvec) --> (0.0,1)
+end
+
+println("testing pointwise max, min, /")
+div1vec = 2*copy(onevec)
+div2vec = 4*copy(onevec)
+@fact max(div1vec,div2vec) == div2vec --> true
+@fact min(div1vec,div2vec) == div1vec --> true
+@fact div1vec .* div2vec == 8*onevec --> true
+@fact div2vec ./ div1vec == div1vec --> true
+
 println("testing scale!")
 scalevec = scale!(copy(onevec),2)
 for i=1:length(onevec)
@@ -181,11 +201,32 @@ for i=1:length(onevec)
     @fact minusvec[i] --> -onevec[i]
 end
 
-println("testing *")
+println("testing * and /")
 multvec = copy(onevec)
 multvec = multvec * 2 * 3 * 4
 for i=1:length(onevec)
     @fact multvec[i] --> 24*onevec[i]
+end
+multvec = copy(onevec)
+multvec = 2 .* multvec
+for i=1:length(onevec)
+    @fact multvec[i] --> 2*onevec[i]
+end
+divvec = copy(onevec)
+divvec = divvec * 2 * 3
+divvec = divvec ./ 2
+for i=1:length(onevec)
+    @fact divvec[i] --> 3*onevec[i]
+end
+divvec = 3 .\ divvec
+for i=1:length(onevec)
+    @fact divvec[i] --> onevec[i]
+end
+
+divvec = 2*copy(onevec)
+divvec = 2 ./ divvec
+for i=1:length(onevec)
+    @fact divvec[i] --> onevec[i]
 end
 
 addvec = copy(onevec)
@@ -203,19 +244,6 @@ addvec = 2 + addvec
 for i=1:length(onevec)
     @fact addvec[i] --> 3*onevec[i]
 end
-#=
-(max_val, max_index) = findmax(vec4)
-max_val_j, max_index_j = findmax(vec4_j)
-
-@fact max_val --> roughly(maxval_j)
-@fact max_index --> max_index_j
-
-(min_val, min_index) = findmin(vec4)
-min_val_j, min_index_j = findmin(vec4_j)
-
-@fact min_val --> roughly(min_val_j)
-@fact min_index --> min_index_j
-=#
 
 #=
 val = norm(vec4, 1)

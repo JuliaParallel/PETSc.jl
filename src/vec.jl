@@ -260,7 +260,7 @@ for (f, pf, sf) in ((:findmax, :VecMax, :maximum), (:findmin, :VecMin, :minimum)
   @eval begin
     function Base.$f{T<:Real}(x::Vec{T})
       i = Ref{PetscInt}()
-      v = Ref{T}
+      v = Ref{T}()
       chk(C.$pf(x.p, i, v))
       (v[], i[]+1)
     end

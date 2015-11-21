@@ -28,6 +28,9 @@ mat2 = similar(mat)
 
 @fact size(mat2) --> (3,4)
 @fact mat2[1,1] --> not(mat[1,1])
+@fact size(similar(mat2, ST)) --> (3,4)
+@fact size(similar(mat2, 4, 4)) --> (4,4)
+@fact size(similar(mat2, (4, 4))) --> (4,4)
 mat3 = similar(mat, ST, 4, 4)
 
 @fact size(mat3) --> (4,4)
@@ -87,6 +90,9 @@ for i=1:dim
   i_float = Float64(i)
   @fact mat5[i,i] --> roughly(RC(complex(i_float, i_float)))
 end
+
+ctmat = copy(mat5)
+@fact transpose!(transpose!(copy(ctmat))) == mat5 --> true 
 
 mat6 = PETSc.Mat(ST, 3, 3)
 
@@ -294,8 +300,8 @@ context("test conversion of values to a new type") do
       end
     end
 
-    mat23 = 2\mat16
-    mat23j = 2\mat16j
+    mat23 = 2.\mat16
+    mat23j = 2.\mat16j
 
     for i=1:3
       for j=1:3

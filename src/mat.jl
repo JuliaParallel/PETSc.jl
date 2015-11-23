@@ -473,8 +473,14 @@ x
 end
 =#
 
-import Base: .*, ./, .\, *, +, -, ==, diag
+import Base: .*, ./, .\, *, +, -, ==, diag, trace
 import Base.LinAlg: At_mul_B, At_mul_B!, Ac_mul_B, Ac_mul_B!, A_mul_Bt, A_mul_Bt!, ishermitian, issym
+
+function Base.trace{T}(A::Mat{T})
+  trace_arr = Ref{T}()
+  chk(C.MatGetTrace(A.p,trace_arr))
+  return trace_arr[]
+end
 
 function Base.real{T<:Complex}(A::Mat{T})
   N = copy(A)

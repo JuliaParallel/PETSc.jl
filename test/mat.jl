@@ -57,6 +57,9 @@ assemble(dmat)
 d = diag(dmat)
 @fact d[1] --> vt1
 
+#test trace
+@fact trace(dmat) --> vt1
+
 mat2 = similar(mat)
 
 @fact size(mat2) --> (3,4)

@@ -2,7 +2,7 @@
 # common options: Orthogonilization type, KSP type, PC type
 # use PC context created as part of KSP
 
-export KSP
+export KSP, petscview
 
 ###########################################################################
 
@@ -20,6 +20,11 @@ comm{T}(a::KSP{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
 
 function KSPDestroy{T}(o::KSP{T})
   PetscFinalized(T) || C.KSPDestroy(Ref(o.p))
+end
+
+function petscview{T}(o::KSP{T})
+  viewer = C.PetscViewer{T}(C_NULL)
+  chk(C.KSPView(o.p, viewer))
 end
 
 """

@@ -35,6 +35,9 @@ mat[1,2] = vt1
 PETSc.assemble(mat)
 println("inserted an additional value after final assembly")
 
+#test nnz
+@fact nnz(mat) --> 2
+
 #test real and imag
 rmat = similar(mat)
 rmat[1,1] = RC(complex(3., 0.))
@@ -123,6 +126,7 @@ end
 
 ctmat = copy(mat5)
 @fact transpose!(transpose!(copy(ctmat))) == mat5 --> true 
+@fact transpose(transpose(ctmat)) == mat5 --> true
 
 mat6 = PETSc.Mat(ST, 3, 3)
 

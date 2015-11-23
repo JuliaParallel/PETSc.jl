@@ -229,7 +229,7 @@ function getinfo(m::Mat, infotype::Integer=C.MAT_GLOBAL_SUM)
   info[]
 end
 
-Base.nnz(m::Mat) = int(getinfo(m).nz_used)
+Base.nnz(m::Mat) = Int(getinfo(m).nz_used)
 
 #############################################################################
 
@@ -448,10 +448,10 @@ for (f,pf) in ((:transpose,:MatTranspose),(:ctranspose,:MatHermitianTranspose))
       a
     end
 
-    function Base.$f{T}(a::Mat{T})
+    function Base.$f{T,MType}(a::Mat{T,MType})
       p = Ref{C.Mat{T}}()
       chk(C.$pf(a.p, C.MAT_INITIAL_MATRIX, p))
-      Mat(p[], comm=comm(a))
+      Mat{T,MType}(p[])
     end
   end
 end

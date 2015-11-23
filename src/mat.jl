@@ -69,10 +69,11 @@ end
 
 function setpreallocation!{T, MType}(a::Mat{T, MType};
   nz::Integer=16, nnz::AbstractVector=PetscInt[],
-  onz::Integer=0, onnz::AbstractVector=PetscInt[])
+  onz::Integer=0, onnz::AbstractVector=PetscInt[],
+  bs::Integer=16)
   if MType == C.MATSEQAIJ
     pnnz = if isempty(nnz)
-      Ptr{T}(0)
+      Ptr{PetscInt}(0)
     else
       if length(nnz) != size(a,1)
         throw(ArgumentError("length(nnz) must be # rows"))
@@ -99,6 +100,74 @@ function setpreallocation!{T, MType}(a::Mat{T, MType};
       isa(onnz,Vector{PetscInt}) ? onnz : PetscInt[ i for i in onnz ]
     end
     chk(C.MatMPIAIJSetPreallocation(a.p, nz, pnnz, onz, ponnz))
+  elseif MType == C.MATMPIBAIJ
+    mlocal = sizelocal(a,1)
+    pnnz = if isempty(nnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(nnz) != mlocal
+        throw(ArgumentError("length(nnz) must be # local rows"))
+      end
+      isa(nnz,Vector{PetscInt}) ? nnz : PetscInt[ i for i in nnz ]
+    end
+    ponnz = if isempty(onnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(onnz) != mlocal
+        throw(ArgumentError("length(onnz) must be # local rows"))
+      end
+      isa(onnz,Vector{PetscInt}) ? onnz : PetscInt[ i for i in onnz ]
+    end
+    chk(C.MatMPIBAIJSetPreallocation(a.p, bs, nz, pnnz, onz, ponnz))
+  elseif MType == C.MATMPISBAIJ
+    mlocal = sizelocal(a,1)
+    pnnz = if isempty(nnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(nnz) != mlocal
+        throw(ArgumentError("length(nnz) must be # local rows"))
+      end
+      isa(nnz,Vector{PetscInt}) ? nnz : PetscInt[ i for i in nnz ]
+    end
+    ponnz = if isempty(onnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(onnz) != mlocal
+        throw(ArgumentError("length(onnz) must be # local rows"))
+      end
+      isa(onnz,Vector{PetscInt}) ? onnz : PetscInt[ i for i in onnz ]
+    end
+    chk(C.MatMPISBAIJSetPreallocation(a.p, bs, nz, pnnz, onz, ponnz))
+  elseif MType == C.MATBLOCKMAT
+    pnnz = if isempty(nnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(nnz) != size(a,1)
+        throw(ArgumentError("length(nnz) must be # rows"))
+      end
+      isa(nnz,Vector{PetscInt}) ? nnz : PetscInt[ i for i in nnz ]
+    end
+    chk(C.MatBlockMatSetPreallocation(a.p, bs, nz, pnnz))
+  elseif MType == C.MATSEQBAIJ
+    pnnz = if isempty(nnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(nnz) != size(a,1)
+        throw(ArgumentError("length(nnz) must be # rows"))
+      end
+      isa(nnz,Vector{PetscInt}) ? nnz : PetscInt[ i for i in nnz ]
+    end
+    chk(C.MatSeqBAIJSetPreallocation(a.p, bs, nz, pnnz))
+  elseif MType == C.MATSEQSBAIJ
+    pnnz = if isempty(nnz)
+      Ptr{PetscInt}(0)
+    else
+      if length(nnz) != size(a,1)
+        throw(ArgumentError("length(nnz) must be # rows"))
+      end
+      isa(nnz,Vector{PetscInt}) ? nnz : PetscInt[ i for i in nnz ]
+    end
+    chk(C.MatSeqSBAIJSetPreallocation(a.p, bs, nz, pnnz))
   else # TODO
     throw(ArgumentError("unsupported matrix type $T"))
   end
@@ -404,7 +473,41 @@ x
 end
 =#
 
-import Base: .*, ./, .\, *, +, -, ==
+import Base: .*, ./, .\, *, +, -, ==, diag
+import Base.LinAlg: At_mul_B, At_mul_B!, Ac_mul_B, Ac_mul_B!, A_mul_Bt, A_mul_Bt!, ishermitian, issym
+
+function Base.real{T<:Complex}(A::Mat{T})
+  N = copy(A)
+  chk(C.MatRealPart(N.p))
+  return N
+end
+Base.real{T<:Real}(A::Mat{T}) = A
+
+function Base.imag{T<:Complex}(A::Mat{T})
+  N = copy(A)
+  chk(C.MatImaginaryPart(N.p))
+  return N
+end
+
+function ishermitian{T}(A::Mat{T}, tol::Real=eps(real(float(one(T)))))
+  bool_arr = Ref{PetscBool}()
+  chk(C.MatIsHermitian(A.p, tol, bool_arr))
+  return bool_arr[] != 0
+end
+
+function issym{T}(A::Mat{T}, tol::Real=eps(real(float(one(T)))))
+  bool_arr = Ref{PetscBool}()
+  chk(C.MatIsSymmetric(A.p, tol, bool_arr))
+  return bool_arr[] != 0
+end
+
+#currently ONLY gets the main diagonal
+function diag{T}(A::Mat{T},vtype::C.VecType=C.VECSEQ)
+  m = size(A, 1)
+  b = Vec(T, m, vtype, comm=comm(A), mlocal=sizelocal(A,1))
+  chk(C.MatGetDiagonal(A.p,b.p))
+  return b
+end
 
 function (*){T, MType}(A::Mat{T}, x::Vec{T, MType})
   m = size(A, 1)
@@ -428,6 +531,47 @@ function (*){T, MType}(A::Mat{T,MType}, B::Mat{T})
   chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, real(T)(C.PETSC_DEFAULT), p_arr))
   new_mat = Mat{T, MType}(p_arr[])
   return new_mat
+end
+
+#these two only work for SEQAIJ
+function At_mul_B{T}(A::Mat{T}, B::Mat{T})
+  p = Ptr{Float64}(0)
+  p_arr = Ref{C.Mat{T}}()
+  chk(C.MatTransposeMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, real(T)(C.PETSC_DEFAULT), p_arr))
+  new_mat = Mat{T, C.MATSEQAIJ}(p_arr[])
+  return new_mat
+end
+
+function A_mul_Bt{T}(A::Mat{T}, B::Mat{T})
+  p = Ptr{Float64}(0)
+  p_arr = Ref{C.Mat{T}}()
+  chk(C.MatMatTransposeMult(A.p, B.p, C.MAT_INITIAL_MATRIX, real(T)(C.PETSC_DEFAULT), p_arr))
+  new_mat = Mat{T, C.MATSEQAIJ}(p_arr[])
+  return new_mat
+end
+
+function At_mul_B!{T, MType}(A::Mat{T}, x::Vec{T,MType}, y::Vec{T,MType})
+  chk(C.MatMultTranspose(A.p, x.p, y.p))
+  return y
+end
+
+function At_mul_B{T, MType}(A::Mat{T}, x::Vec{T,MType})
+  m = size(A, 1)
+  b = Vec(T, m, MType, comm=comm(A), mlocal=sizelocal(A,1))
+  chk(C.MatMultTranspose(A.p, x.p, b.p))
+  return b
+end
+
+function Ac_mul_B!{T, MType}(A::Mat{T}, x::Vec{T,MType}, y::Vec{T,MType})
+  chk(C.MatMultHermitianTranspose(A.p, x.p, y.p))
+  return y
+end
+
+function Ac_mul_B{T, MType}(A::Mat{T}, x::Vec{T,MType})
+  m = size(A, 1)
+  b = Vec(T, m, MType, comm=comm(A), mlocal=sizelocal(A,1))
+  chk(C.MatMultHermitianTranspose(A.p, x.p, b.p))
+  return b
 end
 
 for (f,s) in ((:+,1), (:-,-1))

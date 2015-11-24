@@ -42,6 +42,9 @@ for ST in PETSc.C.petsc_type
   include("ksp.jl")
   include("is.jl")
 end
+  
+println("Testing typesize")
+@fact PETSc.petsc_sizeof(PETSc.C.PETSC_BOOL) --> 4
 
 facts("\ntesting options") do
     OPTIONS["foo"]=true

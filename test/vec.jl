@@ -22,12 +22,19 @@ vec[1] = RC(vt)
 val_ret = vec[1]
 @fact vec[1] --> RC(vt)
 
-vec2 = similar(vec)
+vec2 = similar(vec,ST)
 PETSc.AssemblyBegin(vec2)
 PETSc.AssemblyEnd(vec2)
 val2_ret = vec2[1]
 
 @fact val2_ret --> not(val_ret)
+
+if gettype(vec2) == PETSc.C.VECSEQ
+  lv2 = localpart(vec2)
+  for i in 1:length(lv2)
+      @fact lv2[i] --> vec2[i]
+  end
+end
 
 vec3 = similar(vec, ST, 5)
 @fact length(vec3) --> 5
@@ -120,10 +127,12 @@ println("testing math functions")
 
 println("testing abs")
 vec4_j = abs(vec4_j)
+absv4  = abs(vec4)
 abs!(vec4)
 
 for i=eachindex(vec4)
   @fact vec4[i] --> vec4_j[i]
+  @fact absv4[i] --> vec4_j[i]
 end
 
 println("testing exp")

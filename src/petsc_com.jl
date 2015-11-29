@@ -53,7 +53,7 @@ end
 
 function petsc_sizeof(T::C.PetscDataType)
   sz = Array(Csize_t, 1)
-  chk(PetscDataTypeGetSize(C.petsc_type[1], T, sz))
+  chk(C.PetscDataTypeGetSize(C.petsc_type[1], T, sz))
   sz[1]
 end
 

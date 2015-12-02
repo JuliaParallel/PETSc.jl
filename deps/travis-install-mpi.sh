@@ -8,8 +8,9 @@ case "$os" in
         brew update
         brew upgrade cmake
         brew upgrade gcc
-        brew install openmpi --build-from-source
-    ;;
+        brew install openmpi --build-from-source --verbose |
+            sed -e 's/^.*$/./'
+        ;;
     Linux)
         case $1 in
           mpich1) set -x;

@@ -1,6 +1,7 @@
 language: julia
 os:
   - linux
+  - osx
 julia:
   - 0.4
   - nightly
@@ -9,17 +10,21 @@ notifications:
   email: false
 
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install build-essential gfortran perl g++ gcc cmake m4 git
-  - sudo apt-get install -y liblapack-dev liblapack-doc liblapack3gf
-  - sudo apt-get install -y libblas-dev libblas-doc libblas3gf
-  - echo `pwd`
+  - if [ `uname` = "Linux" ]; then
+      sudo apt-get update -qq;
+      sudo apt-get install build-essential gfortran perl g++ gcc cmake m4 git;
+      sudo apt-get install -y liblapack-dev liblapack-doc liblapack3gf;
+      sudo apt-get install -y libblas-dev libblas-doc libblas3gf;
+      echo `pwd`;
+    fi
 install:
   - ls ./deps
   - ls -lh ./deps/travis-install-mpi.sh
-  - sudo ./deps/travis-install-mpi.sh mpich3
- 
-  
+  - if [ `uname` = "Linux" ]; then
+      sudo ./deps/travis-install-mpi.sh mpich3;
+    elif [ `uname` = "Darwin" ]; then
+      sudo ./deps/travis-install-mpi.sh openmpi;
+    fi
 # uncomment the following lines to override the default test script
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi

@@ -63,6 +63,10 @@ facts("\ntesting options") do
             @fact OPTIONS[ST][:baz] --> "aloha"
         end
         @fact haskey(OPTIONS[ST], :baz) --> false
+        OPTIONS[ST]["whee"] = 12
+        delete!(OPTIONS[ST], "whee", 13)
+        @fact haskey(OPTIONS[ST], :whee) --> false
+        @fact isempty(similar(OPTIONS[ST])) --> true
     end
 end
 

@@ -33,6 +33,24 @@ facts("\nTesting KSP") do
   println("b = ", b)
   println(" x = ", x)
   println("ksp info:\n",petscview(kspg))
+  
+  pc   = PETSc.PC(ST,comm=comm(kspg),pc_type="jacobi")
+  PETSc.chk(PETSc.C.PCSetOperators(pc.p,A.p,A.p))
+  kspg = PETSc.KSP(pc, ksp_monitor="")
+  println("performing ksp GMRES solve with Jacobi preconditioner")
+  x = kspg\b
+  println("finished ksp solve")
+  x_julia = A_julia\b_julia
+
+  for i=1:3
+    @fact x[i] --> roughly(x_julia[i])
+  end
+
+  println("A = ", A)
+  println("b = ", b)
+  println(" x = ", x)
+  println("ksp info:\n",petscview(kspg))
+  println("pc info:\n",petscview(pc))
 
   kspb = PETSc.KSP(A, ksp_type="bcgs", ksp_monitor="")
   println("performing ksp BCGS solve")

@@ -1,4 +1,4 @@
-export PC
+export PC, petscview
 
 # preconditioner context
 type PC{T}
@@ -14,6 +14,11 @@ comm{T}(a::PC{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
 
 function PCDestroy{T}(o::PC{T})
   PetscFinalized(T) || C.PCDestroy(Ref(o.p))
+end
+
+function petscview{T}(o::PC{T})
+  viewer = C.PetscViewer{T}(C_NULL)
+  chk(C.PCView(o.p, viewer))
 end
 
 """

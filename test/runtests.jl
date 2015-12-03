@@ -41,14 +41,15 @@ end
 for ST in PETSc.C.petsc_type
   # @testset "Scalar type $ST" begin # uncomment when nested test results can be printed
     include("error.jl")
-    include("ksp.jl")
-    include("vec.jl")
     include("is.jl")
+    include("vec.jl")
+    include("ksp.jl")
     include("mat.jl")
+    include("snes.jl")
   # end
 end
 
-@test PETSc.petsc_sizeof(PETSc.C.PETSC_BOOL) == 4
+#@test PETSc.petsc_sizeof(PETSc.C.PETSC_BOOL) == 4
 
 @testset "Options" begin
     OPTIONS["foo"]=true

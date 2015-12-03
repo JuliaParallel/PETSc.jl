@@ -8,42 +8,104 @@ using DataStructures
 # isdefined(modulename, :name) -> Bool
 # use wrap_contex.commonbuf for dictionary of names that have been defined
 
-# used to modify function signatures
-type_dict = Dict{Any, Any} (
-  :PetscScalar => :Float64,
-  :PetscReal => :Float64,
-  :PetscInt => :Int64,
-)
-
-const petsc_libname = :petscRealDouble
-
 val_tmp = type_dict[:PetscScalar]
-type_dict_single = Dict{Any, Any} (
+type_dict_single = Dict{Any, Any}(
 :(Ptr{UInt8}) => Union{Cstring, ByteString, Symbol, Array{UInt8}, Ptr{UInt8}}
 )
-
 # used to convert typealiases to immutable type definionts
 # currently, if the key exists, it is converted
 # if value == 1, create new immutable type
 # otherwise replace key with value
 # also used for function signatures
-new_type_dict = Dict{Any, Any} (
+new_type_dict = Dict{Any, Any}(
   :Vec => :(Vec{$val_tmp}),
   :Mat => :(Mat{$val_tmp}),
+  :MatInfo => :(MatInfo{$val_tmp}),
+  :MatNullSpace => :(MatNullSpace{$val_tmp}),
+  :MatColoring => :(MatColoring{$val_tmp}),
+  :MatCoarsen => :(MatCoarsen{$val_tmp}),
+  :PetscCoarsenData => :(PetscCoarsenData{$val_tmp}),
+  :MatPartitioning => :(MatPartitioning{$val_tmp}),
+  :MatFDColoring => :(MatFDColoring{$val_tmp}),
+  :MatTransposeColoring => :(MatTransposeColoring{$val_tmp}),
   :KSP => :(KSP{$val_tmp}),
+  :KSPFischerGuess => :(KSPFischerGuess{$val_tmp}),
   :PC => :(PC{$val_tmp}),
+  :TS => :(TS{$val_tmp}),
+  :TSAdapt => :(TSAdapt{$val_tmp}),
+  :TSGLAdapt => :(TSGLAdapt{$val_tmp}),
+  :TSTrajectory => :(TSTrajectory{$val_tmp}),
+  :SNES => :(SNES{$val_tmp}),
+  :SNESLineSearch => :(SNESLineSearch{$val_tmp}),
+  :PF => :(PF{$val_tmp}),
+  :Tao => :(Tao{$val_tmp}),
+  :TaoLineSearch => :(TaoLineSearch{$val_tmp}),
+  :DM => :(DM{$val_tmp}),
+  :DMLabel => :(DMLabel{$val_tmp}),
+  :DMInterpolationInfo => :(DMInterpolationInfo{$val_tmp}),
+  :PetscSF => :(PetscSF{$val_tmp}),
+  :PetscFE => :(PetscFE{$val_tmp}),
+  :PetscFV => :(PetscFV{$val_tmp}),
+  :PetscSection => :(PetscSection{$val_tmp}),
+  :PetscQuadrature => :(PetscQuadrature{$val_tmp}),
+  :PetscSpace => :(PetscSpace{$val_tmp}),
+  :PetscPartitioner => :(PetscPartitioner{$val_tmp}),
+  :PetscLimiter => :(PetscLimiter{$val_tmp}),
+  :PetscObject => :(PetscObject{$val_tmp}),
+  :PetscDraw => :(PetscDraw{$val_tmp}),
+  :PetscDS => :(PetscDS{$val_tmp}),
+  :PetscDualSpace => :(PetscDualSpace{$val_tmp}),
+  :PetscDrawBar => :(PetscDrawBar{$val_tmp}),
+  :PetscDrawSP => :(PetscDrawSP{$val_tmp}),
+  :PetscDrawLG => :(PetscDrawLG{$val_tmp}),
+  :PetscDrawHG => :(PetscDrawHG{$val_tmp}),
+  :PetscDrawAxis => :(PetscDrawAxis{$val_tmp}),
+  :PetscMatlabEngine => :(PetscMatlabEngine{$val_tmp}),
+  :PetscRandom => :(PetscRandom{$val_tmp}),
+  :PetscContainer => :(PetscContainer{$val_tmp}),
   :PetscViewer => :(PetscViewer{$val_tmp}),
   :PetscOption => :(PetscOption{$val_tmp}),
+  :Characteristic => :(Characteristic{$val_tmp}),
   :IS => :(IS{$val_tmp}),
   :ISLocalToGlobalMapping => :(ISLocalToGlobalMapping{$val_tmp}),
   :ISColoring => :(ISColoring{$val_tmp}),
   :PetscLayout => :(PetscLayout{$val_tmp}),
   :VecScatter => :(VecScatter{$val_tmp}),
+  :PetscOptions => :(PetscOptions{$val_tmp}),
+  :PetscCDIntNd => :(PetscCDIntNd{$val_tmp}),
+  :PetscCDArrNd => :(PetscCDArrNd{$val_tmp}),
+  :PetscCoarsenData => :(PetscCoarsenData{$val_tmp}),
+)
+new_ntype_dict = Dict{Any, Any}(
+  :Vecs => :(Vecs{$val_tmp}),
+  :PetscClassRegLog => :(PetscClassRegLog{$val_tmp}),
+  :PetscClassPerfLog => :(PetscClassPerfLog{$val_tmp}),
+  :PetscEventRegLog => :(PetscEventRegLog{$val_tmp}),
+  :PetscEventPerfLog => :(PetscEventPerfLog{$val_tmp}),
+  :PetscStageLog => :(PetscStageLog{$val_tmp}),
+  :PetscSubcomm => :(PetscSubcomm{$val_tmp}),
+  :PetscSegBuffer => :(PetscSegBuffer{$val_tmp}),
+  :PetscBag => :(PetscBag{$val_tmp}),
+  :PetscBagItem => :(PetscBagItem{$val_tmp}),
+  :PetscTable => :(PetscTable{$val_tmp}),
+  :PetscIntStack => :(PetscIntStack{$val_tmp}),
+  :PetscDLLibrary => :(PetscDLLibrary{$val_tmp}),
+  :PetscFunctionList => :(PetscFunctionList{$val_tmp}),
+  :PetscObjectList => :(PetscObjectList{$val_tmp}),
+  :PetscLog => :(PetscLog{$val_tmp}),
+  :PetscToken => :(PetscToken{$val_tmp}),
+  :PetscViewers => :(PetscViewers{$val_tmp}),
+  :PetscDMLabel => :(PetscDMLabel{$val_tmp}),
+  :PetscDMBoundary => :(PetscDMBoundary{$val_tmp}),
+  :TSMonitorDrawCtx => :(TSMonitorDrawCtx{$val_tmp}),
+  :TSMonitorLGCtx => :(TSMonitorLGCtx{$val_tmp}),
+  :TSMonitorEnvelopeCtx => :(TSMonitorEnvelopeCtx{$val_tmp}),
+  :TSMonitorSPEigCtx => :(TSMonitorSPEigCtx{$val_tmp})
 )
 
 # definitions that will be provided, but don't come from Petsc
 # mostly MPI stuff
-const_defs = Dict{Any, Any} (
+const_defs = Dict{Any, Any}(
   :MPI_COMM_SELF => 1,
   :MPI_Comm => 1,
   :comm_type => 1,
@@ -51,7 +113,7 @@ const_defs = Dict{Any, Any} (
 
 # dictionary to hold names of types
 # that are aliased to Symbol
-symbol_type_dict = Dict{Any, Any} ()
+symbol_type_dict = Dict{Any, Any}()
 
 # create a string array mirroring a symbol array
 function send_symbol(x::AbstractArray)
@@ -72,7 +134,7 @@ function return_symbol(string_array::AbstractArray, x::AbstractArray)
 end
 
 # things to be recursively replaced in function signatures
-sig_rec_dict = Dict{Any, Any} ()
+sig_rec_dict = Dict{Any, Any}()
 
 for i in keys(type_dict)
   get!(sig_rec_dict, i, type_dict[i])
@@ -82,10 +144,14 @@ for i in keys(new_type_dict)
   get!(sig_rec_dict, i, new_type_dict[i])
 end
 
+for i in keys(new_ntype_dict)
+  get!(sig_rec_dict, i, new_ntype_dict[i])
+end
+
 # things to be replaced in function signatures only if they
 # are top level (ie. this does a non recursive replace)
-sig_single_dict = Dict{Any, Any} (
-  :(Ptr{UInt8}) => :(Union{ByteString, Symbol, Array{UInt8}}),
+sig_single_dict = Dict{Any, Any}(
+  :(Ptr{UInt8}) => :(Union{ByteString, Symbol, Array{UInt8}, Ptr{UInt8}}),
   :Int32 => :Integer,
   :Int64 => :Integer,
   :Cint => :Integer,
@@ -104,8 +170,12 @@ for i in values(new_type_dict)
   get!(sig_dummyarg_dict, i, 1)
 end
 
+for i in values(new_ntype_dict)
+  get!(sig_dummyarg_dict, i, 1)
+end
+
 # things to be recursively replaced in the ccall argument list
-ccall_rec_dict = Dict{Any, Any} (
+ccall_rec_dict = Dict{Any, Any}(
 :MPI_Comm => :comm_type
 )
 
@@ -119,12 +189,12 @@ end
 
 # things to be replace in the ccall argument list only if
 # they are top level (ie. this does a non recursive replace)
-ccall_single_dict = Dict{Any, Any} (
+ccall_single_dict = Dict{Any, Any}(
   :(Ptr{UInt8}) => :Cstring,
 )
 
 # things to be replaced recurisvely in typealias rhs
-typealias_rec_dict = Dict{Any, Any} ()
+typealias_rec_dict = Dict{Any, Any}()
 
 for i in keys(type_dict)
   get!(typealias_rec_dict, i, type_dict[i])
@@ -135,7 +205,7 @@ for i in keys(new_type_dict)
 end
 
 # dictionary of typealiases to exclude based on the lhs argument
-typealias_lhs_dict = Dict{Any, Any} ()
+typealias_lhs_dict = Dict{Any, Any}()
 
 for i in keys(type_dict)
   get!(typealias_lhs_dict, i, i)
@@ -145,21 +215,34 @@ end
 # this creates a potential loophole for string handling
 # because a Ptr{typealias} == Ptr{Ptr{UInt8}} will be
 # handled incorrectly
-typealias_single_dict = Dict{Any, Any} (
+typealias_single_dict = Dict{Any, Any}(
 :(Ptr{UInt8}) => :Symbol
 )
 
 # key = typealias rhs values to exclude
 # if values == 1, then create an immutable type
-typealias_exclude_dict = Dict{Any, Any} (
+typealias_exclude_dict = Dict{Any, Any}(
 )
 
 for i in keys(new_type_dict)
   get!(typealias_exclude_dict, i, 1)
 end
 
+for i in keys(new_ntype_dict)
+  get!(typealias_exclude_dict, i, 1)
+end
+
+# key = ntypealias rhs values to exclude
+# if values == 1, then create an immutable type
+ntypealias_exclude_dict = Dict{Any, Any}(
+)
+
+for i in keys(new_ntype_dict)
+  get!(ntypealias_exclude_dict, i, 1)
+end
+
 # things to be recurisvely replace in constant declaration rhs
-const_rec_dict = Dict{Any, Any} (
+const_rec_dict = Dict{Any, Any}(
 :NULL => :C_NULL
 )
 
@@ -171,23 +254,28 @@ for i in keys(new_type_dict)
   get!(const_rec_dict, i, new_type_dict[i])
 end
 
+for i in keys(new_ntype_dict)
+  get!(const_rec_dict, i, new_ntype_dict[i])
+end
+
 function petsc_rewriter(obuf)
+  aliasbuf = filter( x -> typeof(x) == Expr && x.head == :typealias, obuf)
+  aliasbuf = map( x -> fix_typealias(x), aliasbuf )
   for i=1:length(obuf)
     ex_i = obuf[i]  # obuf is an array of expressions
-
     if typeof(ex_i) == Expr
       head_i = ex_i.head  # function
       # each ex_i has 2 args, a function signature and a function body
 
       # figure out what kind of expression it is, do the right modification
-      if head_i == :function  # function declaration
-        obuf[i] = process_func(ex_i)
-      elseif ex_i.head == :const  # constant declaration
-        obuf[i] = process_const(ex_i)
-      elseif ex_i.head == :typealias  # typealias definition
+      if ex_i.head == :typealias  # typealias definition
         obuf[i] = fix_typealias(ex_i)
       elseif ex_i.head == :type
         obuf[i] = process_type(ex_i)
+      elseif head_i == :function  # function declaration
+        obuf[i] = process_func(ex_i)
+      elseif ex_i.head == :const  # constant declaration
+        obuf[i] = process_const(ex_i)
 
       else  # some other kind of expression
         println("not processing expression", ex_i)
@@ -227,11 +315,8 @@ end
 ##### functions to rewrite function signature #####
 function process_func(ex)
   @assert ex.head == :function  # this is a function declaration
-
   ex.args[1] = rewrite_sig(ex.args[1])  # function signature
   ex.args[2] = rewrite_body(ex.args[2])  # function body
-
-  println("processing function ", ex.args[1])
   # now check if any undefined type annotations remain
   sum = 0
   ex_sig = ex.args[1]
@@ -274,10 +359,8 @@ function add_body(ex)
   numargs_ccall = length(ex_body.args[1].args) - 3
   numargs_func = length(ex_sig.args) - 1
   offset = numargs_func - numargs_ccall  # skip any function args in excess of ccall args
-
   for i in keys(symbol_type_dict)
     for j=(2 + offset):length(ex_sig.args)  # loop over arguments to function
-      println("j = ", j)
       type_annot_j = ex_sig.args[j].args[2]  # get the teyp annotation
       argname_j = ex_sig.args[j].args[1]
       # check for arrays of symbols that need to be copied into a string array
@@ -392,14 +475,11 @@ function rewrite_sig(ex)  # rewrite the function signature
   # if yes, add paramterization, do search and replace PetscScalar -> S
   # also add macro
 
-  println("rewrite_sig ex = ", ex)
-
   # Process all arguments of the function
   # Replace all pointers with Unions(Ptr, AbstractArray...)
   # do any other transformations in ptr_dict
   for i=2:length(ex.args)
     # each of ex.args is an expression containing arg name, argtype
-    println("typeof(ex.args[$i]) = ", typeof(ex.args[i]))
     @assert typeof(ex.args[i]) == Expr  || typeof(ex.args[i]) == Symbol  # verify these are all expressions
     ex.args[i] = process_sig_arg(ex.args[i])  # process each expression
   end
@@ -612,7 +692,6 @@ end
 function fix_typealias(ex)
   @assert ex.head == :typealias
   new_type = ex.args[1]
-
   if haskey(typealias_exclude_dict, new_type)
     if typealias_exclude_dict[new_type] == 1
       # construct immutable type definition
@@ -620,10 +699,28 @@ function fix_typealias(ex)
       body = Expr(:block, fields)
       typename = Expr(:curly, new_type, :T)  # add static parameter T
       ex_new = Expr(:type, false, typename, body)
+      println(ex_new)
       return ex_new
     else
       if haskey(wc.common_buf, new_type)
         delete!(wc.common_buf, new_type)  # record that symbol is now undefined
+      end
+      return "# excluding $ex"
+    end
+  end
+  if haskey(ntypealias_exclude_dict, new_type)
+      println(new_type)
+    if ntypealias_exclude_dict[new_type] == 1
+      # construct immutable type definition
+      fields = Expr(:(::), :nobj, :(Ptr{Void}))
+      body = Expr(:block, fields)
+      typename = Expr(:curly, new_type, :T)  # add static parameter T
+      ex_new = Expr(:type, false, typename, body)
+      println(ex_new)
+      return ex_new
+    else
+      if haskey(wcrs.common_buf, new_type)
+        delete!(wcrs.common_buf, new_type)  # record that symbol is now undefined
       end
       return "# excluding $ex"
     end
@@ -684,19 +781,22 @@ function process_type(ex)
   # check that every type annotation is fully defined
   for i=1:length(ex_body.args)
     # if this is a type annotation expression
-    if typeof(ex_body.args[i]) == Expr && ex_body.args[i].head == :(::)
+   if typeof(ex_body.args[i]) == Expr && ex_body.args[i].head == :(::)
+      ex_body.args[i].args[2] = modify_typetag(ex_body.args[i].args[2])
       type_sym = ex_body.args[i].args[2]
       tmp = are_syms_defined(type_sym)
       if tmp != 0
+          println("ex: $ex, type_sym: $type_sym")
         new_name = ex.args[2]  # get the name of the type being declared
         delete!(wc.common_buf, new_name)
 
-        return "#= skipping type declaration with undefined symbols:\n$ex \n=#"
+       return "#= skipping type declaration with undefined symbols:\n$ex \n=#"
       end
     end
   end
-
-  return ex
+  typename = Expr(:curly, ex.args[2], :T)  # add static parameter T
+  ex_new = Expr(:type, false, typename, ex_body)
+  return ex_new
 end
 
 ##### Misc. functions ####
@@ -759,7 +859,6 @@ function are_syms_defined(ex)
   # check all symbols, see if they are defined by julia or by
   # the wrap contex
   undefined_syms = 0  # approximate counter of undefined symbols found
-
   if typeof(ex)  == Expr  # keep recursing
     for i=1:length(ex.args)
       undefined_syms +=  are_syms_defined(ex.args[i])

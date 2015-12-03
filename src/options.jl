@@ -29,7 +29,7 @@ end
 const _optionstr = Array(UInt8, 1024)
 function Base.get{T}(::Options{T}, k::SymOrStr, def)
   b = Ref{PetscBool}()
-  chk(C.PetscOptionsGetString(T, Cstring(Ptr{UInt8}(C_NULL)), string('-',k),
+  chk(C.PetscOptionsGetString(T, convert(Ptr{UInt8},C_NULL), string('-',k),
                               pointer(_optionstr), Csize_t(length(_optionstr)),
                               b))
   return b[] != 0 ? bytestring(pointer(_optionstr)) : def
@@ -37,7 +37,7 @@ end
 
 function Base.haskey{T}(::Options{T}, k::SymOrStr)
   b = Ref{PetscBool}()
-  chk(C.PetscOptionsHasName(T, Cstring(Ptr{UInt8}(C_NULL)), string('-',k), b))
+  chk(C.PetscOptionsHasName(T, Ptr{UInt8}(C_NULL), string('-',k), b))
   return b[] != 0
 end
 

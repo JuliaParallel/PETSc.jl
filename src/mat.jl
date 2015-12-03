@@ -223,8 +223,9 @@ function Base.copy{T,MType}(a::Mat{T,MType})
   Mat{T,MType}(p[])
 end
 
-function getinfo(m::Mat, infotype::Integer=C.MAT_GLOBAL_SUM)
-  info = Ref{C.MatInfo}()
+function getinfo{T}(m::Mat{T}, infotype::Integer=C.MAT_GLOBAL_SUM)
+  info = Ref{C.MatInfo{T}}()
+  println(typeof(info))
   chk(C.MatGetInfo(m.p, C.MatInfoType(infotype), info))
   info[]
 end

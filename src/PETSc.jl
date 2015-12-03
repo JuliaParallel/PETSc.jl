@@ -10,6 +10,7 @@ include("mat.jl")
 include("error.jl")
 include("pc.jl")
 include("ksp.jl")
+include("snes.jl")
 include("is.jl")
 
 end

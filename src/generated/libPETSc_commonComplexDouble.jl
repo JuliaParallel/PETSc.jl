@@ -36,7 +36,7 @@ const OMPI_SKIP_MPICXX = 1
 #= # Skipping MacroDefinition: PetscUnlikely ( cond ) ( cond ) =#
 #= # Skipping MacroDefinition: PetscLikely ( cond ) ( cond ) =#
 #= # Skipping MacroDefinition: PetscExpPassiveScalar ( a ) PetscExpScalar ( ) =#
-#skipping undefined const MPIU_REAL = MPI_FLOAT
+#skipping undefined const MPIU_REAL = MPI_DOUBLE
 #= # Skipping MacroDefinition: PetscSqrtReal ( a ) sqrt ( a ) =#
 #= # Skipping MacroDefinition: PetscExpReal ( a ) exp ( a ) =#
 #= # Skipping MacroDefinition: PetscLogReal ( a ) log ( a ) =#
@@ -55,7 +55,7 @@ const OMPI_SKIP_MPICXX = 1
 #= # Skipping MacroDefinition: PetscCeilReal ( a ) ceil ( a ) =#
 #= # Skipping MacroDefinition: PetscFloorReal ( a ) floor ( a ) =#
 #= # Skipping MacroDefinition: PetscFmodReal ( a , b ) fmod ( a , b ) =#
-#= # Skipping MacroDefinition: PetscTGamma ( a ) tgammaf ( a ) =#
+#= # Skipping MacroDefinition: PetscTGamma ( a ) tgamma ( a ) =#
 #skipping undefined const MPIU_SCALAR = MPIU_REAL
 #= # Skipping MacroDefinition: PetscRealPart ( a ) ( a ) =#
 #= # Skipping MacroDefinition: PetscImaginaryPart ( a ) ( ( PetscReal ) 0. ) =#
@@ -83,15 +83,15 @@ const OMPI_SKIP_MPICXX = 1
 const PETSC_PI = 3.141592653589793
 const PETSC_MAX_INT = 2147483647
 const PETSC_MIN_INT = -PETSC_MAX_INT - 1
-const PETSC_MAX_REAL = 3.4028234663852886e38
+const PETSC_MAX_REAL = 1.7976931348623157e308
 const PETSC_MIN_REAL = -PETSC_MAX_REAL
-const PETSC_MACHINE_EPSILON = 1.1920929e-7
-const PETSC_SQRT_MACHINE_EPSILON = 0.000345266983
-const PETSC_SMALL = 1.0e-5
+const PETSC_MACHINE_EPSILON = 2.220446049250313e-16
+const PETSC_SQRT_MACHINE_EPSILON = 1.490116119384766e-8
+const PETSC_SMALL = 1.0e-10
 const PETSC_INFINITY = PETSC_MAX_REAL / 4.0
 const PETSC_NINFINITY = -PETSC_INFINITY
 
-# excluding lhs of  typealias PetscReal Cfloat
+# excluding lhs of  typealias PetscReal Cdouble
 const PassiveReal = Float64
 
 # excluding lhs of  typealias PetscScalar PetscReal
@@ -152,8 +152,8 @@ const PETSC_FUNCTION = (UInt32)(12)
 const PETSC_STRING = (UInt32)(12)
 
 #= # end enum PetscDataType =#
-const PETSC_SCALAR = PETSC_FLOAT
-const PETSC_REAL = PETSC_FLOAT
+const PETSC_SCALAR = PETSC_DOUBLE
+const PETSC_REAL = PETSC_DOUBLE
 const PETSC_FORTRANADDR = PETSC_LONG
 
 #skipping undefined const MPIU_SUM = MPI_SUM
@@ -948,14 +948,12 @@ const PETSC_TRUE = (UInt32)(1)
 #= # end enum PetscBool =#
 typealias MatReal Float64
 
-#= skipping type declaration with undefined symbols:
-immutable petsc_mpiu_2scalar
-    a::PetscScalar
-    b::PetscScalar
-end 
-=#
-typealias PetscLogDouble Cdouble
+immutable petsc_mpiu_2scalar{T}
+    a::Complex128
+    b::Complex128
+end
 
+# excluding lhs of  typealias PetscLogDouble Cdouble
 #= # begin enum ANONYMOUS_4 =#
 typealias ANONYMOUS_4 UInt32
 
@@ -975,12 +973,21 @@ const PETSC_FUNCTION = (UInt32)(12)
 const PETSC_STRING = (UInt32)(12)
 
 #= # end enum ANONYMOUS_4 =#
-# skipping undefined typealias typealias PetscToken Ptr{_p_PetscToken}
-# skipping undefined typealias typealias PetscObject Ptr{_p_PetscObject}
+immutable PetscToken{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscObject{T}
+    pobj::Ptr{Void}
+end
+
 typealias PetscObjectId Petsc64bitInt
 typealias PetscObjectState Petsc64bitInt
 
-# skipping undefined typealias typealias PetscFunctionList Ptr{_n_PetscFunctionList}
+immutable PetscFunctionList{T}
+    pobj::Ptr{Void}
+end
+
 #= # begin enum ANONYMOUS_5 =#
 typealias ANONYMOUS_5 UInt32
 
@@ -1031,149 +1038,149 @@ const PETSC_FP_TRAP_OFF = (UInt32)(0)
 const PETSC_FP_TRAP_ON = (UInt32)(1)
 
 #= # end enum PetscFPTrap =#
-immutable Array_64_Ptr
-    d1::Ptr{UInt8}
-    d2::Ptr{UInt8}
-    d3::Ptr{UInt8}
-    d4::Ptr{UInt8}
-    d5::Ptr{UInt8}
-    d6::Ptr{UInt8}
-    d7::Ptr{UInt8}
-    d8::Ptr{UInt8}
-    d9::Ptr{UInt8}
-    d10::Ptr{UInt8}
-    d11::Ptr{UInt8}
-    d12::Ptr{UInt8}
-    d13::Ptr{UInt8}
-    d14::Ptr{UInt8}
-    d15::Ptr{UInt8}
-    d16::Ptr{UInt8}
-    d17::Ptr{UInt8}
-    d18::Ptr{UInt8}
-    d19::Ptr{UInt8}
-    d20::Ptr{UInt8}
-    d21::Ptr{UInt8}
-    d22::Ptr{UInt8}
-    d23::Ptr{UInt8}
-    d24::Ptr{UInt8}
-    d25::Ptr{UInt8}
-    d26::Ptr{UInt8}
-    d27::Ptr{UInt8}
-    d28::Ptr{UInt8}
-    d29::Ptr{UInt8}
-    d30::Ptr{UInt8}
-    d31::Ptr{UInt8}
-    d32::Ptr{UInt8}
-    d33::Ptr{UInt8}
-    d34::Ptr{UInt8}
-    d35::Ptr{UInt8}
-    d36::Ptr{UInt8}
-    d37::Ptr{UInt8}
-    d38::Ptr{UInt8}
-    d39::Ptr{UInt8}
-    d40::Ptr{UInt8}
-    d41::Ptr{UInt8}
-    d42::Ptr{UInt8}
-    d43::Ptr{UInt8}
-    d44::Ptr{UInt8}
-    d45::Ptr{UInt8}
-    d46::Ptr{UInt8}
-    d47::Ptr{UInt8}
-    d48::Ptr{UInt8}
-    d49::Ptr{UInt8}
-    d50::Ptr{UInt8}
-    d51::Ptr{UInt8}
-    d52::Ptr{UInt8}
-    d53::Ptr{UInt8}
-    d54::Ptr{UInt8}
-    d55::Ptr{UInt8}
-    d56::Ptr{UInt8}
-    d57::Ptr{UInt8}
-    d58::Ptr{UInt8}
-    d59::Ptr{UInt8}
-    d60::Ptr{UInt8}
-    d61::Ptr{UInt8}
-    d62::Ptr{UInt8}
-    d63::Ptr{UInt8}
-    d64::Ptr{UInt8}
+immutable Array_64_Ptr{T}
+    d1::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d2::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d3::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d4::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d5::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d6::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d7::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d8::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d9::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d10::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d11::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d12::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d13::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d14::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d15::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d16::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d17::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d18::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d19::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d20::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d21::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d22::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d23::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d24::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d25::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d26::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d27::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d28::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d29::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d30::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d31::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d32::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d33::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d34::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d35::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d36::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d37::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d38::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d39::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d40::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d41::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d42::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d43::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d44::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d45::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d46::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d47::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d48::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d49::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d50::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d51::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d52::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d53::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d54::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d55::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d56::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d57::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d58::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d59::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d60::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d61::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d62::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d63::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    d64::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
 end
 
-zero(::Type{Array_64_Ptr}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+zero(::Type{Array_64_Ptr}) = begin  # /home/kshyatt/.julia/v0.5/Clang/src/wrap_c.jl, line 266:
         Array_64_Ptr(fill(zero(Ptr{UInt8}),64)...)
     end
 
-immutable Array_64_Cint
-    d1::Cint
-    d2::Cint
-    d3::Cint
-    d4::Cint
-    d5::Cint
-    d6::Cint
-    d7::Cint
-    d8::Cint
-    d9::Cint
-    d10::Cint
-    d11::Cint
-    d12::Cint
-    d13::Cint
-    d14::Cint
-    d15::Cint
-    d16::Cint
-    d17::Cint
-    d18::Cint
-    d19::Cint
-    d20::Cint
-    d21::Cint
-    d22::Cint
-    d23::Cint
-    d24::Cint
-    d25::Cint
-    d26::Cint
-    d27::Cint
-    d28::Cint
-    d29::Cint
-    d30::Cint
-    d31::Cint
-    d32::Cint
-    d33::Cint
-    d34::Cint
-    d35::Cint
-    d36::Cint
-    d37::Cint
-    d38::Cint
-    d39::Cint
-    d40::Cint
-    d41::Cint
-    d42::Cint
-    d43::Cint
-    d44::Cint
-    d45::Cint
-    d46::Cint
-    d47::Cint
-    d48::Cint
-    d49::Cint
-    d50::Cint
-    d51::Cint
-    d52::Cint
-    d53::Cint
-    d54::Cint
-    d55::Cint
-    d56::Cint
-    d57::Cint
-    d58::Cint
-    d59::Cint
-    d60::Cint
-    d61::Cint
-    d62::Cint
-    d63::Cint
-    d64::Cint
+immutable Array_64_Cint{T}
+    d1::Integer
+    d2::Integer
+    d3::Integer
+    d4::Integer
+    d5::Integer
+    d6::Integer
+    d7::Integer
+    d8::Integer
+    d9::Integer
+    d10::Integer
+    d11::Integer
+    d12::Integer
+    d13::Integer
+    d14::Integer
+    d15::Integer
+    d16::Integer
+    d17::Integer
+    d18::Integer
+    d19::Integer
+    d20::Integer
+    d21::Integer
+    d22::Integer
+    d23::Integer
+    d24::Integer
+    d25::Integer
+    d26::Integer
+    d27::Integer
+    d28::Integer
+    d29::Integer
+    d30::Integer
+    d31::Integer
+    d32::Integer
+    d33::Integer
+    d34::Integer
+    d35::Integer
+    d36::Integer
+    d37::Integer
+    d38::Integer
+    d39::Integer
+    d40::Integer
+    d41::Integer
+    d42::Integer
+    d43::Integer
+    d44::Integer
+    d45::Integer
+    d46::Integer
+    d47::Integer
+    d48::Integer
+    d49::Integer
+    d50::Integer
+    d51::Integer
+    d52::Integer
+    d53::Integer
+    d54::Integer
+    d55::Integer
+    d56::Integer
+    d57::Integer
+    d58::Integer
+    d59::Integer
+    d60::Integer
+    d61::Integer
+    d62::Integer
+    d63::Integer
+    d64::Integer
 end
 
-zero(::Type{Array_64_Cint}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+zero(::Type{Array_64_Cint}) = begin  # /home/kshyatt/.julia/v0.5/Clang/src/wrap_c.jl, line 266:
         Array_64_Cint(fill(zero(Cint),64)...)
     end
 
-immutable Array_64_PetscBool
+immutable Array_64_PetscBool{T}
     d1::PetscBool
     d2::PetscBool
     d3::PetscBool
@@ -1240,17 +1247,17 @@ immutable Array_64_PetscBool
     d64::PetscBool
 end
 
-zero(::Type{Array_64_PetscBool}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+zero(::Type{Array_64_PetscBool}) = begin  # /home/kshyatt/.julia/v0.5/Clang/src/wrap_c.jl, line 266:
         Array_64_PetscBool(fill(zero(PetscBool),64)...)
     end
 
-immutable PetscStack
+immutable PetscStack{T}
     _function::Array_64_Ptr
     file::Array_64_Ptr
     line::Array_64_Cint
     petscroutine::Array_64_PetscBool
-    currentsize::Cint
-    hotdepth::Cint
+    currentsize::Integer
+    hotdepth::Integer
 end
 
 typealias PetscVoidStarFunction Ptr{Ptr{Void}}
@@ -1299,20 +1306,19 @@ immutable PetscOption{T}
     pobj::Ptr{Void}
 end
 
-#= skipping type declaration with undefined symbols:
-immutable PetscOptions
-    count::PetscInt
-    next::PetscOption
-    prefix::Ptr{UInt8}
-    pprefix::Ptr{UInt8}
-    title::Ptr{UInt8}
+immutable PetscOptions{T}
+    count::Integer
+    next::PetscOption{Complex128}
+    prefix::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    pprefix::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
+    title::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
     comm::MPI_Comm
     printhelp::PetscBool
     changedmethod::PetscBool
     alreadyprinted::PetscBool
-    object::PetscObject
-end 
-=#
+    object::PetscObject{Complex128}
+end
+
 typealias PetscDLHandle Ptr{Void}
 
 #= # begin enum ANONYMOUS_9 =#
@@ -1331,65 +1337,94 @@ const PETSC_DL_NOW = (UInt32)(1)
 const PETSC_DL_LOCAL = (UInt32)(2)
 
 #= # end enum PetscDLMode =#
-# skipping undefined typealias typealias PetscObjectList Ptr{_n_PetscObjectList}
-# skipping undefined typealias typealias PetscDLLibrary Ptr{_n_PetscDLLibrary}
+immutable PetscObjectList{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscDLLibrary{T}
+    pobj::Ptr{Void}
+end
+
 typealias PetscLogEvent Cint
 typealias PetscLogStage Cint
 
-# skipping undefined typealias typealias PetscIntStack Ptr{_n_PetscIntStack}
-immutable PetscClassRegInfo
-    name::Ptr{UInt8}
+immutable PetscIntStack{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscClassRegInfo{T}
+    name::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
     classid::PetscClassId
 end
 
-immutable PetscClassPerfInfo
+immutable PetscClassPerfInfo{T}
     id::PetscClassId
-    creations::Cint
-    destructions::Cint
-    mem::PetscLogDouble
-    descMem::PetscLogDouble
+    creations::Integer
+    destructions::Integer
+    mem::Float64
+    descMem::Float64
 end
 
-# skipping undefined typealias typealias PetscClassRegLog Ptr{_n_PetscClassRegLog}
-# skipping undefined typealias typealias PetscClassPerfLog Ptr{_n_PetscClassPerfLog}
-immutable PetscEventRegInfo
-    name::Ptr{UInt8}
+immutable PetscClassRegLog{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscClassPerfLog{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscEventRegInfo{T}
+    name::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
     classid::PetscClassId
 end
 
-immutable PetscEventPerfInfo
-    id::Cint
+immutable PetscEventPerfInfo{T}
+    id::Integer
     active::PetscBool
     visible::PetscBool
-    depth::Cint
-    count::Cint
-    flops::PetscLogDouble
-    flops2::PetscLogDouble
-    flopsTmp::PetscLogDouble
-    time::PetscLogDouble
-    time2::PetscLogDouble
-    timeTmp::PetscLogDouble
-    numMessages::PetscLogDouble
-    messageLength::PetscLogDouble
-    numReductions::PetscLogDouble
+    depth::Integer
+    count::Integer
+    flops::Float64
+    flops2::Float64
+    flopsTmp::Float64
+    time::Float64
+    time2::Float64
+    timeTmp::Float64
+    numMessages::Float64
+    messageLength::Float64
+    numReductions::Float64
 end
 
-# skipping undefined typealias typealias PetscEventRegLog Ptr{_n_PetscEventRegLog}
-# skipping undefined typealias typealias PetscEventPerfLog Ptr{_n_PetscEventPerfLog}
-#= skipping type declaration with undefined symbols:
-immutable PetscStageInfo
-    name::Ptr{UInt8}
+immutable PetscEventRegLog{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscEventPerfLog{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscStageInfo{T}
+    name::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}}
     used::PetscBool
     perfInfo::PetscEventPerfInfo
-    eventLog::PetscEventPerfLog
-    classLog::PetscClassPerfLog
-end 
-=#
-# skipping undefined typealias typealias PetscStageLog Ptr{_n_PetscStageLog}
-# skipping undefined typealias typealias PetscContainer Ptr{_p_PetscContainer}
+    eventLog::PetscEventPerfLog{Complex128}
+    classLog::PetscClassPerfLog{Complex128}
+end
+
+immutable PetscStageLog{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscContainer{T}
+    pobj::Ptr{Void}
+end
+
 typealias PetscRandomType Symbol
 
-# skipping undefined typealias typealias PetscRandom Ptr{_p_PetscRandom}
+immutable PetscRandom{T}
+    pobj::Ptr{Void}
+end
+
 #= # begin enum ANONYMOUS_10 =#
 typealias ANONYMOUS_10 UInt32
 
@@ -1464,19 +1499,49 @@ const PETSC_SUBCOMM_CONTIGUOUS = (UInt32)(1)
 const PETSC_SUBCOMM_INTERLACED = (UInt32)(2)
 
 #= # end enum PetscSubcommType =#
-# skipping undefined typealias typealias PetscSubcomm Ptr{_n_PetscSubcomm}
-# skipping undefined typealias typealias PetscSegBuffer Ptr{_n_PetscSegBuffer}
-# skipping undefined typealias typealias PetscBag Ptr{_n_PetscBag}
-# skipping undefined typealias typealias PetscBagItem Ptr{_n_PetscBagItem}
+immutable PetscSubcomm{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscSegBuffer{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscBag{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscBagItem{T}
+    pobj::Ptr{Void}
+end
+
 typealias PetscViewerType Symbol
 typealias PetscDrawType Symbol
 
-# skipping undefined typealias typealias PetscDraw Ptr{_p_PetscDraw}
-# skipping undefined typealias typealias PetscDrawAxis Ptr{_p_PetscDrawAxis}
-# skipping undefined typealias typealias PetscDrawLG Ptr{_p_PetscDrawLG}
-# skipping undefined typealias typealias PetscDrawSP Ptr{_p_PetscDrawSP}
-# skipping undefined typealias typealias PetscDrawHG Ptr{_p_PetscDrawHG}
-# skipping undefined typealias typealias PetscDrawBar Ptr{_p_PetscDrawBar}
+immutable PetscDraw{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscDrawAxis{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscDrawLG{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscDrawSP{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscDrawHG{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscDrawBar{T}
+    pobj::Ptr{Void}
+end
+
 #= # begin enum ANONYMOUS_14 =#
 typealias ANONYMOUS_14 UInt32
 
@@ -1563,13 +1628,22 @@ const PETSC_VTK_CELL_FIELD = (UInt32)(2)
 const PETSC_VTK_CELL_VECTOR_FIELD = (UInt32)(3)
 
 #= # end enum PetscViewerVTKFieldType =#
-# skipping undefined typealias typealias PetscViewers Ptr{_n_PetscViewers}
+immutable PetscViewers{T}
+    pobj::Ptr{Void}
+end
+
 typealias PetscBT Symbol
 
-# skipping undefined typealias typealias PetscTable Ptr{_n_PetscTable}
+immutable PetscTable{T}
+    pobj::Ptr{Void}
+end
+
 typealias PetscTablePosition Ptr{Int64}
 
-# skipping undefined typealias typealias PetscMatlabEngine Ptr{_p_PetscMatlabEngine}
+immutable PetscMatlabEngine{T}
+    pobj::Ptr{Void}
+end
+
 #= # begin enum ANONYMOUS_16 =#
 typealias ANONYMOUS_16 UInt32
 
@@ -1612,27 +1686,28 @@ const PETSC_BUTTON_CENTER_SHIFT = (UInt32)(5)
 const PETSC_BUTTON_RIGHT_SHIFT = (UInt32)(6)
 
 #= # end enum PetscDrawButton =#
-#= skipping type declaration with undefined symbols:
-immutable PetscDrawViewPorts
-    nports::PetscInt
-    xl::Ptr{PetscReal}
-    xr::Ptr{PetscReal}
-    yl::Ptr{PetscReal}
-    yr::Ptr{PetscReal}
-    draw::PetscDraw
-    port_xl::PetscReal
-    port_yl::PetscReal
-    port_xr::PetscReal
-    port_yr::PetscReal
-end 
-=#
-# skipping undefined typealias typealias PetscSF Ptr{_p_PetscSF}
-#= skipping type declaration with undefined symbols:
-immutable PetscSFNode
-    rank::PetscInt
-    index::PetscInt
-end 
-=#
+immutable PetscDrawViewPorts{T}
+    nports::Integer
+    xl::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}}
+    xr::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}}
+    yl::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}}
+    yr::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}}
+    draw::PetscDraw{Complex128}
+    port_xl::Float64
+    port_yl::Float64
+    port_xr::Float64
+    port_yr::Float64
+end
+
+immutable PetscSF{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscSFNode{T}
+    rank::Integer
+    index::Integer
+end
+
 immutable IS{T}
     pobj::Ptr{Void}
 end
@@ -1649,7 +1724,10 @@ immutable PetscLayout{T}
     pobj::Ptr{Void}
 end
 
-# skipping undefined typealias typealias PetscSection Ptr{_p_PetscSection}
+immutable PetscSection{T}
+    pobj::Ptr{Void}
+end
+
 typealias ISType Symbol
 
 #= # begin enum ANONYMOUS_18 =#
@@ -1752,7 +1830,10 @@ const VECOP_LOAD = (UInt32)(41)
 const VECOP_DUPLICATE = (UInt32)(0)
 
 #= # end enum VecOperation =#
-# skipping undefined typealias typealias Vecs Ptr{_n_Vecs}
+immutable Vecs{T}
+    pobj::Ptr{Void}
+end
+
 immutable Mat{T}
     pobj::Ptr{Void}
 end
@@ -1841,14 +1922,13 @@ const MAT_COMPOSITE_ADDITIVE = (UInt32)(0)
 const MAT_COMPOSITE_MULTIPLICATIVE = (UInt32)(1)
 
 #= # end enum MatCompositeType =#
-#= skipping type declaration with undefined symbols:
-immutable MatStencil
-    k::PetscInt
-    j::PetscInt
-    i::PetscInt
-    c::PetscInt
-end 
-=#
+immutable MatStencil{T}
+    k::Integer
+    j::Integer
+    i::Integer
+    c::Integer
+end
+
 #= # begin enum ANONYMOUS_29 =#
 typealias ANONYMOUS_29 UInt32
 
@@ -1937,17 +2017,17 @@ const MAT_COPY_VALUES = (UInt32)(1)
 const MAT_SHARE_NONZERO_PATTERN = (UInt32)(2)
 
 #= # end enum MatDuplicateOption =#
-immutable MatInfo
-    block_size::PetscLogDouble
-    nz_allocated::PetscLogDouble
-    nz_used::PetscLogDouble
-    nz_unneeded::PetscLogDouble
-    memory::PetscLogDouble
-    assemblies::PetscLogDouble
-    mallocs::PetscLogDouble
-    fill_ratio_given::PetscLogDouble
-    fill_ratio_needed::PetscLogDouble
-    factor_mallocs::PetscLogDouble
+immutable MatInfo{T}
+    block_size::Float64
+    nz_allocated::Float64
+    nz_used::Float64
+    nz_unneeded::Float64
+    memory::Float64
+    assemblies::Float64
+    mallocs::Float64
+    fill_ratio_given::Float64
+    fill_ratio_needed::Float64
+    factor_mallocs::Float64
 end
 
 #= # begin enum ANONYMOUS_32 =#
@@ -1986,21 +2066,20 @@ const MAT_SHIFT_POSITIVE_DEFINITE = (UInt32)(2)
 const MAT_SHIFT_INBLOCKS = (UInt32)(3)
 
 #= # end enum MatFactorShiftType =#
-#= skipping type declaration with undefined symbols:
-immutable MatFactorInfo
-    diagonal_fill::PetscReal
-    usedt::PetscReal
-    dt::PetscReal
-    dtcol::PetscReal
-    dtcount::PetscReal
-    fill::PetscReal
-    levels::PetscReal
-    pivotinblocks::PetscReal
-    zeropivot::PetscReal
-    shifttype::PetscReal
-    shiftamount::PetscReal
-end 
-=#
+immutable MatFactorInfo{T}
+    diagonal_fill::Float64
+    usedt::Float64
+    dt::Float64
+    dtcol::Float64
+    dtcount::Float64
+    fill::Float64
+    levels::Float64
+    pivotinblocks::Float64
+    zeropivot::Float64
+    shifttype::Float64
+    shiftamount::Float64
+end
+
 #= # begin enum ANONYMOUS_34 =#
 typealias ANONYMOUS_34 UInt32
 
@@ -2031,7 +2110,10 @@ const SOR_APPLY_UPPER = (UInt32)(64)
 const SOR_APPLY_LOWER = (UInt32)(128)
 
 #= # end enum MatSORType =#
-# skipping undefined typealias typealias MatColoring Ptr{_p_MatColoring}
+immutable MatColoring{T}
+    pobj::Ptr{Void}
+end
+
 typealias MatColoringType Symbol
 
 #= # begin enum ANONYMOUS_35 =#
@@ -2052,9 +2134,18 @@ const MAT_COLORING_WEIGHT_LF = (UInt32)(2)
 const MAT_COLORING_WEIGHT_SL = (UInt32)(3)
 
 #= # end enum MatColoringWeightType =#
-# skipping undefined typealias typealias MatFDColoring Ptr{_p_MatFDColoring}
-# skipping undefined typealias typealias MatTransposeColoring Ptr{_p_MatTransposeColoring}
-# skipping undefined typealias typealias MatPartitioning Ptr{_p_MatPartitioning}
+immutable MatFDColoring{T}
+    pobj::Ptr{Void}
+end
+
+immutable MatTransposeColoring{T}
+    pobj::Ptr{Void}
+end
+
+immutable MatPartitioning{T}
+    pobj::Ptr{Void}
+end
+
 typealias MatPartitioningType Symbol
 
 #= # begin enum ANONYMOUS_36 =#
@@ -2125,33 +2216,33 @@ const MP_PTSCOTCH_SAFETY = (UInt32)(3)
 const MP_PTSCOTCH_SCALABILITY = (UInt32)(4)
 
 #= # end enum MPPTScotchStrategyType =#
-# skipping undefined typealias typealias MatCoarsen Ptr{_p_MatCoarsen}
+immutable MatCoarsen{T}
+    pobj::Ptr{Void}
+end
+
 typealias MatCoarsenType Symbol
 
-#= skipping type declaration with undefined symbols:
-immutable PetscCDIntNd
-    next::Ptr{_PetscCDIntNd}
-    gid::PetscInt
-end 
-=#
-#= skipping type declaration with undefined symbols:
-immutable PetscCDArrNd
-    next::Ptr{_PetscCDArrNd}
-    array::Ptr{_PetscCDIntNd}
-end 
-=#
-#= skipping type declaration with undefined symbols:
-immutable PetscCoarsenData
-    pool_list::PetscCDArrNd
-    new_node::Ptr{PetscCDIntNd}
-    new_left::PetscInt
-    chk_sz::PetscInt
-    extra_nodes::Ptr{PetscCDIntNd}
-    array::Ptr{Ptr{PetscCDIntNd}}
-    size::PetscInt
-    mat::Mat
-end 
-=#
+immutable PetscCDIntNd{T}
+    next::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}}
+    gid::Integer
+end
+
+immutable PetscCDArrNd{T}
+    next::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}}
+    array::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}}
+end
+
+immutable PetscCoarsenData{T}
+    pool_list::PetscCDArrNd{Complex128}
+    new_node::Union{Ptr{PetscCDIntNd{Complex128}},StridedArray{PetscCDIntNd{Complex128}},Ptr{PetscCDIntNd{Complex128}},Ref{PetscCDIntNd{Complex128}}}
+    new_left::Integer
+    chk_sz::Integer
+    extra_nodes::Union{Ptr{PetscCDIntNd{Complex128}},StridedArray{PetscCDIntNd{Complex128}},Ptr{PetscCDIntNd{Complex128}},Ref{PetscCDIntNd{Complex128}}}
+    array::Union{Ptr{Ptr{PetscCDIntNd{Complex128}}},StridedArray{Ptr{PetscCDIntNd{Complex128}}},Ptr{Ptr{PetscCDIntNd{Complex128}}},Ref{Ptr{PetscCDIntNd{Complex128}}}}
+    size::Integer
+    mat::Mat{Complex128}
+end
+
 #= # begin enum ANONYMOUS_40 =#
 typealias ANONYMOUS_40 UInt32
 
@@ -2432,11 +2523,17 @@ const MATOP_FDCOLORING_SETUP = (UInt32)(142)
 const MATOP_MPICONCATENATESEQ = (UInt32)(144)
 
 #= # end enum MatOperation =#
-# skipping undefined typealias typealias MatNullSpace Ptr{_p_MatNullSpace}
+immutable MatNullSpace{T}
+    pobj::Ptr{Void}
+end
+
 # skipping undefined typealias typealias MatMFFD Ptr{_p_MatMFFD}
 typealias MatMFFDType Symbol
 
-# skipping undefined typealias typealias DM Ptr{_p_DM}
+immutable DM{T}
+    pobj::Ptr{Void}
+end
+
 #= # begin enum ANONYMOUS_41 =#
 typealias ANONYMOUS_41 UInt32
 
@@ -2457,17 +2554,32 @@ const DM_BOUNDARY_PERIODIC = (UInt32)(3)
 const DM_BOUNDARY_TWIST = (UInt32)(4)
 
 #= # end enum DMBoundaryType =#
-# skipping undefined typealias typealias PetscPartitioner Ptr{_p_PetscPartitioner}
-# skipping undefined typealias typealias PetscSpace Ptr{_p_PetscSpace}
-# skipping undefined typealias typealias PetscDualSpace Ptr{_p_PetscDualSpace}
-# skipping undefined typealias typealias PetscFE Ptr{_p_PetscFE}
-# skipping undefined typealias typealias PetscDS Ptr{_p_PetscDS}
-typealias DMType Symbol
-
-immutable NLF_DAAD
+immutable PetscPartitioner{T}
+    pobj::Ptr{Void}
 end
 
-typealias NLF Ptr{NLF_DAAD}
+immutable PetscSpace{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscDualSpace{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscFE{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscDS{T}
+    pobj::Ptr{Void}
+end
+
+typealias DMType Symbol
+
+immutable NLF_DAAD{T}
+end
+
+typealias NLF Ptr{Void}
 
 #= # begin enum ANONYMOUS_42 =#
 typealias ANONYMOUS_42 UInt32
@@ -2495,7 +2607,10 @@ const PETSC_UNIT_LUMINOSITY = (UInt32)(6)
 const NUM_PETSC_UNITS = (UInt32)(7)
 
 #= # end enum PetscUnit =#
-# skipping undefined typealias typealias DMInterpolationInfo Ptr{_DMInterpolationInfo}
+immutable DMInterpolationInfo{T}
+    pobj::Ptr{Void}
+end
+
 #= # begin enum ANONYMOUS_43 =#
 typealias ANONYMOUS_43 UInt32
 
@@ -2538,76 +2653,80 @@ const DMDA_ELEMENT_P1 = (UInt32)(0)
 const DMDA_ELEMENT_Q1 = (UInt32)(1)
 
 #= # end enum DMDAElementType =#
-#= skipping type declaration with undefined symbols:
-immutable DMDALocalInfo
-    dim::PetscInt
-    dof::PetscInt
-    sw::PetscInt
-    mx::PetscInt
-    my::PetscInt
-    mz::PetscInt
-    xs::PetscInt
-    ys::PetscInt
-    zs::PetscInt
-    xm::PetscInt
-    ym::PetscInt
-    zm::PetscInt
-    gxs::PetscInt
-    gys::PetscInt
-    gzs::PetscInt
-    gxm::PetscInt
-    gym::PetscInt
-    gzm::PetscInt
+immutable DMDALocalInfo{T}
+    dim::Integer
+    dof::Integer
+    sw::Integer
+    mx::Integer
+    my::Integer
+    mz::Integer
+    xs::Integer
+    ys::Integer
+    zs::Integer
+    xm::Integer
+    ym::Integer
+    zm::Integer
+    gxs::Integer
+    gys::Integer
+    gzs::Integer
+    gxm::Integer
+    gym::Integer
+    gzm::Integer
     bx::DMBoundaryType
     by::DMBoundaryType
     bz::DMBoundaryType
     st::DMDAStencilType
-    da::DM
-end 
-=#
+    da::DM{Complex128}
+end
+
 typealias PFType Symbol
 
-# skipping undefined typealias typealias PF Ptr{_p_PF}
+immutable PF{T}
+    pobj::Ptr{Void}
+end
+
 typealias AOType Symbol
 
-# skipping undefined typealias typealias PetscQuadrature Ptr{_p_PetscQuadrature}
-#= skipping type declaration with undefined symbols:
-immutable Array_3_PetscReal
-    d1::PetscReal
-    d2::PetscReal
-    d3::PetscReal
-end 
-=#
-#= skipping undefined expression zero(::Type{Array_3_PetscReal}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+immutable PetscQuadrature{T}
+    pobj::Ptr{Void}
+end
+
+immutable Array_3_PetscReal{T}
+    d1::Float64
+    d2::Float64
+    d3::Float64
+end
+
+zero(::Type{Array_3_PetscReal}) = begin  # /home/kshyatt/.julia/v0.5/Clang/src/wrap_c.jl, line 266:
         Array_3_PetscReal(fill(zero(Float64),3)...)
-    end =#
-#= skipping type declaration with undefined symbols:
-immutable Array_9_PetscReal
-    d1::PetscReal
-    d2::PetscReal
-    d3::PetscReal
-    d4::PetscReal
-    d5::PetscReal
-    d6::PetscReal
-    d7::PetscReal
-    d8::PetscReal
-    d9::PetscReal
-end 
-=#
-#= skipping undefined expression zero(::Type{Array_9_PetscReal}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+    end
+
+immutable Array_9_PetscReal{T}
+    d1::Float64
+    d2::Float64
+    d3::Float64
+    d4::Float64
+    d5::Float64
+    d6::Float64
+    d7::Float64
+    d8::Float64
+    d9::Float64
+end
+
+zero(::Type{Array_9_PetscReal}) = begin  # /home/kshyatt/.julia/v0.5/Clang/src/wrap_c.jl, line 266:
         Array_9_PetscReal(fill(zero(Float64),9)...)
-    end =#
-#= skipping type declaration with undefined symbols:
-immutable PetscFECellGeom
+    end
+
+immutable PetscFECellGeom{T}
     v0::Array_3_PetscReal
     J::Array_9_PetscReal
     invJ::Array_9_PetscReal
-    detJ::PetscReal
+    detJ::Float64
     n::Array_3_PetscReal
-    dim::PetscInt
-    dimEmbed::PetscInt
-end 
-=#
+    dim::Integer
+    dimEmbed::Integer
+end
+
 typealias PetscSpaceType Symbol
 typealias PetscDualSpaceType Symbol
 typealias PetscFEType Symbol
@@ -2628,67 +2747,71 @@ const DMDA_Y = (UInt32)(1)
 const DMDA_Z = (UInt32)(2)
 
 #= # end enum DMDADirection =#
-#= skipping type declaration with undefined symbols:
-immutable DMDACoor2d
-    x::PetscScalar
-    y::PetscScalar
-end 
-=#
-#= skipping type declaration with undefined symbols:
-immutable DMDACoor3d
-    x::PetscScalar
-    y::PetscScalar
-    z::PetscScalar
-end 
-=#
-# skipping undefined typealias typealias PetscLimiter Ptr{_p_PetscLimiter}
-# skipping undefined typealias typealias PetscFV Ptr{_p_PetscFV}
-#= skipping type declaration with undefined symbols:
-immutable Array_3_PetscScalar
-    d1::PetscScalar
-    d2::PetscScalar
-    d3::PetscScalar
-end 
-=#
-#= skipping undefined expression zero(::Type{Array_3_PetscScalar}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+immutable DMDACoor2d{T}
+    x::Complex128
+    y::Complex128
+end
+
+immutable DMDACoor3d{T}
+    x::Complex128
+    y::Complex128
+    z::Complex128
+end
+
+immutable PetscLimiter{T}
+    pobj::Ptr{Void}
+end
+
+immutable PetscFV{T}
+    pobj::Ptr{Void}
+end
+
+immutable Array_3_PetscScalar{T}
+    d1::Complex128
+    d2::Complex128
+    d3::Complex128
+end
+
+zero(::Type{Array_3_PetscScalar}) = begin  # /home/kshyatt/.julia/v0.5/Clang/src/wrap_c.jl, line 266:
         Array_3_PetscScalar(fill(zero(Complex128),3)...)
-    end =#
-#= skipping type declaration with undefined symbols:
-immutable Array_2_Array_3_PetscScalar
+    end
+
+immutable Array_2_Array_3_PetscScalar{T}
     d1::Array_3_PetscScalar
     d2::Array_3_PetscScalar
-end 
-=#
-#= skipping undefined expression zero(::Type{Array_2_Array_3_PetscScalar}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+end
+
+zero(::Type{Array_2_Array_3_PetscScalar}) = begin  # /home/kshyatt/.julia/v0.5/Clang/src/wrap_c.jl, line 266:
         Array_2_Array_3_PetscScalar(fill(zero(Array_3_PetscScalar),2)...)
-    end =#
-#= skipping type declaration with undefined symbols:
-immutable PetscFVFaceGeom
+    end
+
+immutable PetscFVFaceGeom{T}
     normal::Array_3_PetscReal
     centroid::Array_3_PetscReal
     grad::Array_2_Array_3_PetscScalar
-end 
-=#
-#= skipping type declaration with undefined symbols:
-immutable PetscFVCellGeom
+end
+
+immutable PetscFVCellGeom{T}
     centroid::Array_3_PetscReal
-    volume::PetscReal
-end 
-=#
+    volume::Float64
+end
+
 typealias PetscLimiterType Symbol
 typealias PetscFVType Symbol
 typealias PetscPartitionerType Symbol
 
-# skipping undefined typealias typealias DMLabel Ptr{_n_DMLabel}
+immutable DMLabel{T}
+    pobj::Ptr{Void}
+end
+
 # skipping undefined typealias typealias DMBoundary Ptr{_n_Boundary}
-#= skipping type declaration with undefined symbols:
-immutable JacActionCtx
-    dm::DM
-    u::Vec
-    J::Mat
-    user::Ptr{Void}
-end 
-=#
+immutable JacActionCtx{T}
+    dm::DM{Complex128}
+    u::Vec{Complex128}
+    J::Mat{Complex128}
+    user::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}}
+end
+
 typealias PetscDSType Symbol
 typealias PetscPointFunc Ptr{Void}
 typealias PetscPointJac Ptr{Void}
@@ -2696,7 +2819,10 @@ typealias PetscBdPointFunc Ptr{Void}
 typealias PetscBdPointJac Ptr{Void}
 typealias PetscRiemannFunc Ptr{Void}
 
-# skipping undefined typealias typealias Characteristic Ptr{_p_Characteristic}
+immutable Characteristic{T}
+    pobj::Ptr{Void}
+end
+
 typealias CharacteristicType Symbol
 
 immutable PC{T}
@@ -3026,7 +3152,10 @@ const KSP_CG_SYMMETRIC = (UInt32)(0)
 const KSP_CG_HERMITIAN = (UInt32)(1)
 
 #= # end enum KSPCGType =#
-# skipping undefined typealias typealias KSPFischerGuess Ptr{_p_KSPFischerGuess}
+immutable KSPFischerGuess{T}
+    pobj::Ptr{Void}
+end
+
 #= # begin enum ANONYMOUS_65 =#
 typealias ANONYMOUS_65 UInt32
 
@@ -3041,7 +3170,10 @@ const MAT_SCHUR_COMPLEMENT_AINV_DIAG = (UInt32)(0)
 const MAT_SCHUR_COMPLEMENT_AINV_LUMP = (UInt32)(1)
 
 #= # end enum MatSchurComplementAinvType =#
-# skipping undefined typealias typealias SNES Ptr{_p_SNES}
+immutable SNES{T}
+    pobj::Ptr{Void}
+end
+
 typealias SNESType Symbol
 
 #= # begin enum ANONYMOUS_66 =#
@@ -3120,7 +3252,10 @@ const SNES_FUNCTION_UNPRECONDITIONED = (Int32)(0)
 const SNES_FUNCTION_PRECONDITIONED = (Int32)(1)
 
 #= # end enum SNESFunctionType =#
-# skipping undefined typealias typealias SNESLineSearch Ptr{_p_LineSearch}
+immutable SNESLineSearch{T}
+    pobj::Ptr{Void}
+end
+
 typealias SNESLineSearchType Symbol
 typealias SNESLineSearchVIProjectFunc Ptr{Void}
 typealias SNESLineSearchVINormFunc Ptr{Void}
@@ -3294,7 +3429,10 @@ const SNES_FAS_FULL = (UInt32)(2)
 const SNES_FAS_KASKADE = (UInt32)(3)
 
 #= # end enum SNESFASType =#
-# skipping undefined typealias typealias TS Ptr{_p_TS}
+immutable TS{T}
+    pobj::Ptr{Void}
+end
+
 typealias TSType Symbol
 
 #= # begin enum ANONYMOUS_78 =#
@@ -3387,10 +3525,16 @@ const TS_EXACTFINALTIME_INTERPOLATE = (UInt32)(1)
 const TS_EXACTFINALTIME_MATCHSTEP = (UInt32)(2)
 
 #= # end enum TSExactFinalTimeOption =#
-# skipping undefined typealias typealias TSTrajectory Ptr{_p_TSTrajectory}
+immutable TSTrajectory{T}
+    pobj::Ptr{Void}
+end
+
 typealias TSTrajectoryType Symbol
 
-# skipping undefined typealias typealias TSMonitorDrawCtx Ptr{_n_TSMonitorDrawCtx}
+immutable TSMonitorDrawCtx{T}
+    pobj::Ptr{Void}
+end
+
 typealias TSRHSFunction Ptr{Void}
 typealias TSRHSJacobian Ptr{Void}
 typealias TSSolutionFunction Ptr{Void}
@@ -3401,23 +3545,37 @@ typealias DMDATSRHSJacobianLocal Ptr{Void}
 typealias DMDATSIFunctionLocal Ptr{Void}
 typealias DMDATSIJacobianLocal Ptr{Void}
 
-# skipping undefined typealias typealias TSMonitorLGCtx Ptr{_n_TSMonitorLGCtx}
-#= skipping type declaration with undefined symbols:
-immutable TSMonitorDMDARayCtx
-    ray::Vec
-    scatter::VecScatter
-    viewer::PetscViewer
-    lgctx::TSMonitorLGCtx
-end 
-=#
-# skipping undefined typealias typealias TSMonitorEnvelopeCtx Ptr{_n_TSMonitorEnvelopeCtx}
-# skipping undefined typealias typealias TSMonitorSPEigCtx Ptr{_n_TSMonitorSPEigCtx}
+immutable TSMonitorLGCtx{T}
+    pobj::Ptr{Void}
+end
+
+immutable TSMonitorDMDARayCtx{T}
+    ray::Vec{Complex128}
+    scatter::VecScatter{Complex128}
+    viewer::PetscViewer{Complex128}
+    lgctx::TSMonitorLGCtx{Complex128}
+end
+
+immutable TSMonitorEnvelopeCtx{T}
+    pobj::Ptr{Void}
+end
+
+immutable TSMonitorSPEigCtx{T}
+    pobj::Ptr{Void}
+end
+
 typealias TSSSPType Symbol
 
-# skipping undefined typealias typealias TSAdapt Ptr{_p_TSAdapt}
+immutable TSAdapt{T}
+    pobj::Ptr{Void}
+end
+
 typealias TSAdaptType Symbol
 
-# skipping undefined typealias typealias TSGLAdapt Ptr{_p_TSGLAdapt}
+immutable TSGLAdapt{T}
+    pobj::Ptr{Void}
+end
+
 typealias TSGLAdaptType Symbol
 typealias TSGLAcceptType Symbol
 typealias TSGLAcceptFunction Ptr{Void}
@@ -3442,7 +3600,10 @@ const TAO_SUBSET_MASK = (UInt32)(1)
 const TAO_SUBSET_MATRIXFREE = (UInt32)(2)
 
 #= # end enum TaoSubsetType =#
-# skipping undefined typealias typealias Tao Ptr{_p_Tao}
+immutable Tao{T}
+    pobj::Ptr{Void}
+end
+
 #= # begin enum ANONYMOUS_83 =#
 typealias ANONYMOUS_83 Cint
 
@@ -3483,7 +3644,10 @@ const TAO_DIVERGED_USER = (Int32)(-8)
 const TAO_CONTINUE_ITERATING = (Int32)(0)
 
 #= # end enum TaoConvergedReason =#
-# skipping undefined typealias typealias TaoLineSearch Ptr{_p_TaoLineSearch}
+immutable TaoLineSearch{T}
+    pobj::Ptr{Void}
+end
+
 #= # begin enum ANONYMOUS_84 =#
 typealias ANONYMOUS_84 Cint
 

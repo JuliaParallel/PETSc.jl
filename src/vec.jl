@@ -315,12 +315,12 @@ for (f,pf) in ((:max,:VecPointwiseMax), (:min,:VecPointwiseMin),
   end
 end
 
-import Base: +, -, scale!
+import Base: +, -
 function Base.scale!{T}(x::Vec{T}, s::Number)
   chk(C.VecScale(x.p, T(s)))
   x
 end
-scale(x,s) = scale!(copy(x),s)
+Base.scale{T}(x::Vec{T},s::Number) = scale!(copy(x),s)
 (.*)(x::Vec, a::Number...) = scale(x, prod(a))
 (.*)(a::Number, x::Vec) = scale(x, a)
 (./)(x::Vec, a::Number) = scale(x, inv(a))

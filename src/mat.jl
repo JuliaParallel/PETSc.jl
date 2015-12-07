@@ -473,13 +473,13 @@ x
 end
 =#
 
-import Base: .*, ./, .\, *, +, -, ==, diag, trace
-import Base.LinAlg: At_mul_B, At_mul_B!, Ac_mul_B, Ac_mul_B!, A_mul_Bt, A_mul_Bt!, ishermitian, issym
+import Base: .*, ./, .\, *, +, -, ==
+import Base.LinAlg: At_mul_B, At_mul_B!, Ac_mul_B, Ac_mul_B!, A_mul_Bt, A_mul_Bt!
 
 function Base.trace{T}(A::Mat{T})
-  trace_arr = Ref{T}()
-  chk(C.MatGetTrace(A.p,trace_arr))
-  return trace_arr[]
+  t = Ref{T}()
+  chk(C.MatGetTrace(A.p,t))
+  return t[]
 end
 
 function Base.real{T<:Complex}(A::Mat{T})
@@ -495,20 +495,20 @@ function Base.imag{T<:Complex}(A::Mat{T})
   return N
 end
 
-function ishermitian{T}(A::Mat{T}, tol::Real=eps(real(float(one(T)))))
+function Base.LinAlg.ishermitian{T}(A::Mat{T}, tol::Real=eps(real(float(one(T)))))
   bool_arr = Ref{PetscBool}()
   chk(C.MatIsHermitian(A.p, tol, bool_arr))
   return bool_arr[] != 0
 end
 
-function issym{T}(A::Mat{T}, tol::Real=eps(real(float(one(T)))))
+function Base.LinAlg.issym{T}(A::Mat{T}, tol::Real=eps(real(float(one(T)))))
   bool_arr = Ref{PetscBool}()
   chk(C.MatIsSymmetric(A.p, tol, bool_arr))
   return bool_arr[] != 0
 end
 
 #currently ONLY gets the main diagonal
-function diag{T}(A::Mat{T},vtype::C.VecType=C.VECSEQ)
+function Base.diag{T}(A::Mat{T},vtype::C.VecType=C.VECSEQ)
   m = size(A, 1)
   b = Vec(T, m, vtype, comm=comm(A), mlocal=sizelocal(A,1))
   chk(C.MatGetDiagonal(A.p,b.p))

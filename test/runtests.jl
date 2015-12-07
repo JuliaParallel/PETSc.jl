@@ -1,5 +1,9 @@
 using PETSc
-using FactCheck
+if VERSION >= v"0.5.0-dev+0"
+  using Base.Test
+else
+  using BaseTestNext
+end
 
 # determine scalar type of current run
 global ST = Float64  # scalar type
@@ -37,37 +41,35 @@ end
 for ST in PETSc.C.petsc_type
   println("\n\nTesting ", ST)
   include("error.jl")
-  include("vec.jl")
-  include("mat.jl")
   include("ksp.jl")
+  include("vec.jl")
   include("is.jl")
+  include("mat.jl")
 end
   
 println("Testing typesize")
-@fact PETSc.petsc_sizeof(PETSc.C.PETSC_BOOL) --> 4
+@test PETSc.petsc_sizeof(PETSc.C.PETSC_BOOL) == 4
 
-facts("\ntesting options") do
+@testset "testing options" begin
     OPTIONS["foo"]=true
     for ST in PETSc.C.petsc_type
-        @fact haskey(OPTIONS[ST], :foo) --> true
-        @fact OPTIONS[ST][:foo] --> "true"
+        @test haskey(OPTIONS[ST], :foo) == true
+        @test OPTIONS[ST][:foo] == "true"
     end
     OPTIONS["foo"]=nothing
     for ST in PETSc.C.petsc_type
-        @fact haskey(OPTIONS[ST], :foo) --> false
+        @test haskey(OPTIONS[ST], :foo) == false
         OPTIONS[ST]["bar"] = 17
-        @fact pop!(OPTIONS[ST], "bar") --> "17"
-        @fact pop!(OPTIONS[ST], "bar", 23) --> 23
-        @fact haskey(OPTIONS[ST], :bar) --> false
+        @test pop!(OPTIONS[ST], "bar") == "17"
+        @test pop!(OPTIONS[ST], "bar", 23) == 23
+        @test haskey(OPTIONS[ST], :bar) == false
         withoptions(ST, "baz"=>"aloha") do
-            @fact OPTIONS[ST][:baz] --> "aloha"
+            @test OPTIONS[ST][:baz] == "aloha"
         end
-        @fact haskey(OPTIONS[ST], :baz) --> false
+        @test haskey(OPTIONS[ST], :baz) == false
         OPTIONS[ST]["whee"] = 12
         delete!(OPTIONS[ST], "whee", 13)
-        @fact haskey(OPTIONS[ST], :whee) --> false
-        @fact isempty(similar(OPTIONS[ST])) --> true
+        @test !haskey(OPTIONS[ST], :whee)
+        @test isempty(similar(OPTIONS[ST]))
     end
 end
-
-exitstatus()

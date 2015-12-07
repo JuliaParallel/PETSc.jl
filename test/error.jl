@@ -1,5 +1,5 @@
-facts("--- Testing Error Handling ---") do
+@testset "Testing Error Handling" begin
   msg = PETSc.PetscErrorMessage(73)
-  @fact msg --> "Object is in wrong state"
-  @fact_throws PETSc.PetscError PETSc.chk(76)
+  @test msg == "Object is in wrong state"
+  @test_throws PETSc.PetscError PETSc.chk(76)
 end

@@ -39,34 +39,34 @@ function RC(x::AbstractArray)
 end
 
 for ST in PETSc.C.petsc_type
-  println("\n\nTesting ", ST)
-  include("error.jl")
-  include("ksp.jl")
-  include("vec.jl")
-  include("is.jl")
-  include("mat.jl")
+  # @testset "Scalar type $ST" begin # uncomment when nested test results can be printed
+    include("error.jl")
+    include("ksp.jl")
+    include("vec.jl")
+    include("is.jl")
+    include("mat.jl")
+  # end
 end
 
-println("Testing typesize")
 @test PETSc.petsc_sizeof(PETSc.C.PETSC_BOOL) == 4
 
-@testset "testing options" begin
+@testset "Options" begin
     OPTIONS["foo"]=true
     for ST in PETSc.C.petsc_type
-        @test haskey(OPTIONS[ST], :foo) == true
+        @test haskey(OPTIONS[ST], :foo)
         @test OPTIONS[ST][:foo] == "true"
     end
     OPTIONS["foo"]=nothing
     for ST in PETSc.C.petsc_type
-        @test haskey(OPTIONS[ST], :foo) == false
+        @test !haskey(OPTIONS[ST], :foo)
         OPTIONS[ST]["bar"] = 17
         @test pop!(OPTIONS[ST], "bar") == "17"
         @test pop!(OPTIONS[ST], "bar", 23) == 23
-        @test haskey(OPTIONS[ST], :bar) == false
+        @test !haskey(OPTIONS[ST], :bar)
         withoptions(ST, "baz"=>"aloha") do
             @test OPTIONS[ST][:baz] == "aloha"
         end
-        @test haskey(OPTIONS[ST], :baz) == false
+        @test !haskey(OPTIONS[ST], :baz)
         OPTIONS[ST]["whee"] = 12
         delete!(OPTIONS[ST], "whee", 13)
         @test !haskey(OPTIONS[ST], :whee)

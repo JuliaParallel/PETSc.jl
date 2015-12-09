@@ -1,8 +1,7 @@
 # create Vec
-@testset "Testing Vec" begin
+@testset "Vec{$ST}" begin
   vtype = PETSc.C.VECMPI
   vec = PETSc.Vec(ST, vtype)
-  #PETSc.settype!(vec, vtype)
   resize!(vec, 4)
   @test_throws ArgumentError resize!(vec)
   len_ret = length(vec)

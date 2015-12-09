@@ -8,7 +8,7 @@ function make_mat(dims=(3,4))
     return mat
 end
 
-@testset "Testing Matrix Functions" begin
+@testset "Mat{$ST}" begin
 
   @testset "Preallocator" begin
     for mt in [PETSc.C.MATMPIAIJ,PETSc.C.MATMPIBAIJ,PETSc.C.MATMPISBAIJ]
@@ -133,7 +133,7 @@ end
     @test transpose(transpose(ctmat)) == mat
   end
   vt = RC(complex(3., 3.))
-  @testset "array indexing" begin 
+  @testset "array indexing" begin
     vals = RC(complex(rand(3, 2), rand(3,2)))
     idx = Array(1:3)
     idy = Array(1:2)
@@ -156,7 +156,7 @@ end
       @test mat == matj
 
       vals_ret = mat[1, idx]
-      @test vals_ret.' ≈ vals[idx] 
+      @test vals_ret.' ≈ vals[idx]
     end
     @testset "x indexing" begin
       mat = PETSc.Mat(ST, 3, 3)
@@ -169,7 +169,7 @@ end
       vals_ret = mat[idx, 1]
       @test vals_ret ≈ vals
     end
-    @testset "x,y set and fetch" begin 
+    @testset "x,y set and fetch" begin
       mat = PETSc.Mat(ST, 3, 3)
       mat[idx, idy] = vt
       assemble(mat)
@@ -177,7 +177,7 @@ end
       matj[1:3, 1:2] = vt
       @test mat == matj
     end
-    @testset "x set and fetch" begin 
+    @testset "x set and fetch" begin
       mat = PETSc.Mat(ST, 3, 3)
       mat[idx, 1] = vt
       assemble(mat)
@@ -185,7 +185,7 @@ end
       matj[1:3, 1] = vt
       @test mat == mat
     end
-    @testset "y set and fetch" begin 
+    @testset "y set and fetch" begin
       mat = PETSc.Mat(ST, 3, 3)
       mat[1, idy] = vt
       assemble(mat)
@@ -222,7 +222,7 @@ end
       @test mat == matj
     end
   end
-    
+
   @testset "full and fill" begin
     vt = RC(complex(1.,1.))
     mat = PETSc.Mat(ST, 3, 3)
@@ -262,11 +262,11 @@ end
       result = mata*vec
       resultj = mataj*vecj
       @test result == resultj
-    
+
       result = mata.'*vec
       resultj = mataj.'*vecj
       @test result == resultj
-    
+
       result = mata'*vec
       resultj = mataj'*vecj
       @test result == resultj
@@ -304,7 +304,7 @@ end
       result  = -mata
       resultj = -mataj
       @test result == resultj
-    end 
+    end
   end
 
   @testset "Testing {c}transpose mults" begin

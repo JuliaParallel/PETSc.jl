@@ -1,6 +1,6 @@
 # Test index sets and vector gather/scatter
 
-@testset "Testing IS Functions" begin
+@testset "IS{$ST}" begin
   let i = IS(ST, 10:-2:1), j = sort(i)
     @test !issorted(i)
     @test issorted(j)

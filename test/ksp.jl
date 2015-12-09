@@ -1,4 +1,4 @@
-@testset "Testing KSP" begin
+@testset "KSP{$ST}" begin
   A = PETSc.Mat(ST, 3,3)
   A_julia = zeros(ST,3,3)
   for i=1:3
@@ -19,30 +19,26 @@
   b_julia[3] = RC(Complex(1,1))
 
   @testset "ksp GMRES solves" begin
-      kspg = PETSc.KSP(A, ksp_monitor="")
+      kspg = PETSc.KSP(A)
       x = kspg\b
       x_julia = A_julia\b_julia
-
       @test x ≈ x_julia
 
-      println("ksp info:\n",petscview(kspg))
-      
       pc   = PETSc.PC(ST,comm=comm(kspg),pc_type="jacobi")
       PETSc.chk(PETSc.C.PCSetOperators(pc.p,A.p,A.p))
-      kspg = PETSc.KSP(pc, ksp_monitor="")
+      kspg = PETSc.KSP(pc)
       x = kspg\b
       x_julia = A_julia\b_julia
 
       @test x ≈ x_julia
-      println("ksp info:\n",petscview(kspg))
-      println("pc info:\n",petscview(pc))
+      # fixme: test petscview without side effects, e.g.
+      # via PetscViewerStringOpen
   end
 
   @testset "ksp BCGS solves" begin
-      kspb = PETSc.KSP(A, ksp_type="bcgs", ksp_monitor="")
+      kspb = PETSc.KSP(A, ksp_type="bcgs")
       x = kspb\b
       x_julia = A_julia\b_julia
       @test x ≈ x_julia
-      println("ksp info:\n",petscview(kspb))
   end
 end

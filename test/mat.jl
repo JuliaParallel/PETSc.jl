@@ -1,428 +1,364 @@
-facts("--- Testing Matrix Functions ---") do
-
-@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATMPIAIJ, nnz=collect(1:10))
-@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATMPIBAIJ, nnz=collect(1:10))
-@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATMPISBAIJ, nnz=collect(1:10))
-@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATMPIAIJ, onnz=collect(1:10))
-@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATMPIBAIJ, onnz=collect(1:10))
-@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATMPISBAIJ, onnz=collect(1:10))
-@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATBLOCKMAT, nnz=collect(1:10))
-@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATSEQAIJ, nnz=collect(1:10))
-@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATSEQBAIJ, nnz=collect(1:10))
-@fact_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=PETSc.C.MATSEQSBAIJ, nnz=collect(1:10))
-
-mat = PETSc.Mat(ST, 3, 4)
-
-@fact size(mat) --> (3,4)
-
-@fact sizelocal(mat) --> (3,4)
-@fact lengthlocal(mat) --> 12
-
-mtype = PETSc.gettype(mat)
-@fact mtype --> PETSc.C.MATMPIAIJ
-
-
-# test set/get index
-vt1 = RC(complex(3., 3.))
-vt2 = RC(complex(5., 5.))
-mat[1,1] = vt1
-mat[1,2] = vt2
-PETSc.assemble(mat)
-val_ret = mat[1,1]
-@fact val_ret --> roughly(vt1)
-vt1 = RC(complex(4., 4.))
-mat[1,2] = vt1
-PETSc.assemble(mat)
-println("inserted an additional value after final assembly")
-
-#test nnz
-@fact nnz(mat) --> 2
-
-#test real and imag
-rmat = similar(mat)
-rmat[1,1] = RC(complex(3., 0.))
-rmat[1,2] = RC(complex(4., 0.))
-PETSc.assemble(rmat)
-@fact real(mat)[1,1] --> rmat[1,1]
-@fact real(mat)[1,2] --> rmat[1,2]
-if ST <: Complex
-    @fact imag(mat)[1,1] --> rmat[1,1]
-    @fact imag(mat)[1,2] --> rmat[1,2]
+function make_mat(dims=(3,4))
+    mat = PETSc.Mat(ST, dims...)
+    vt1 = RC(complex(3., 3.))
+    vt2 = RC(complex(5., 5.))
+    mat[1,1] = vt1
+    mat[1,2] = vt2
+    PETSc.assemble(mat)
+    return mat
 end
 
-#test diag
-dmat = similar(mat,3,3)
-dmat[1,1] = vt1
-assemble(dmat)
-d = diag(dmat)
-@fact d[1] --> vt1
+@testset "Testing Matrix Functions" begin
 
-#test trace
-@fact trace(dmat) --> vt1
-
-mat2 = similar(mat)
-
-@fact size(mat2) --> (3,4)
-@fact mat2[1,1] --> not(mat[1,1])
-@fact size(similar(mat2, ST)) --> (3,4)
-@fact size(similar(mat2, 4, 4)) --> (4,4)
-@fact size(similar(mat2, (4, 4))) --> (4,4)
-mat3 = similar(mat, ST, 4, 4)
-
-@fact size(mat3) --> (4,4)
-@fact mat2[1,1] --> not(mat[1,1])
-@fact_throws ArgumentError resize!(mat2)
-@fact_throws ArgumentError resize!(mat2,5,mlocal=2)
-
-mat4 = copy(mat)
-@fact mat4[1,1] --> roughly(mat[1, 1])
-
-mat5 = copy(mat)
-@fact conj(conj(mat5))[1,1] --> roughly(mat[1,1])
-
-println("getting matrix info")
-@fact PETSc.getinfo(mat4).block_size --> 1
-
-@fact isassembled(mat4) --> true
-
-println("mat = ", mat)
-println("size(mat) = ", size(mat))
-println("inserting value into mat")
-println("inserting value into mat3")
-mat3.assembling = false
-vt1 = RC(complex(3., 3.))
-vt2 = RC(complex(5., 5.))
-mat3[1,2] = vt1
-mat3[1,3] = vt2
-mat3.assembling = false
-PETSc.assemble(mat3)
-
-@fact mat3[1,2] --> vt1
-@fact mat3[1,3] --> vt2
-
-mat5 = Mat( ST, 3, 3)
-
-function increasing_diag()
-  println("inserting values into mat5")
-
-  (m,n) = size(mat5)
-  println("m,n = ", m, ", ", n)
-  dim = min(m, n)
-  println("dim = ", dim)
-
-  for i=1:dim
-    println("i = ", i)
-    i_float = Float64(i)
-    mat5[i,i] = RC(complex(i_float, i_float))
+  @testset "Preallocator" begin
+    for mt in [PETSc.C.MATMPIAIJ,PETSc.C.MATMPIBAIJ,PETSc.C.MATMPISBAIJ]
+      @test_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=mt, nnz=collect(1:10))
+      @test_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=mt, onnz=collect(1:10))
+    end
+    for mt in [PETSc.C.MATBLOCKMAT,PETSc.C.MATSEQAIJ,PETSc.C.MATSEQBAIJ,PETSc.C.MATSEQSBAIJ]
+      @test_throws ArgumentError PETSc.Mat(ST, 3, 4, mtype=mt, nnz=collect(1:10))
+    end
   end
-end
 
-assemble(increasing_diag, mat5)
+  vt1 = RC(complex(3., 3.))
+  vt2 = RC(complex(5., 5.))
+  @testset "Utility functions" begin
+    mat = make_mat()
 
-(m,n) = size(mat5)
-dim = min(m, n)
+    @test size(mat) == (3,4)
+    @test sizelocal(mat) == (3,4)
+    @test lengthlocal(mat) == 12
+    val_ret = mat[1,1]
+    vt1 = RC(complex(3., 3.))
+    @test val_ret ≈ vt1
+    vt1 = RC(complex(4., 4.))
+    mat[1,2] = vt1
+    PETSc.assemble(mat)
 
-for i=1:dim
-  i_float = Float64(i)
-  @fact mat5[i,i] --> roughly(RC(complex(i_float, i_float)))
-end
+    mtype = PETSc.gettype(mat)
+    @test mtype == PETSc.C.MATMPIAIJ
+    # test set/get index
+    vt1 = RC(complex(3., 3.))
+    vt2 = RC(complex(5., 5.))
+    mat[1,1] = vt1
+    mat[1,2] = vt2
+    PETSc.assemble(mat)
+    val_ret = mat[1,1]
+    @test val_ret ≈ vt1
+    vt1 = RC(complex(4., 4.))
+    mat[1,2] = vt1
+    PETSc.assemble(mat)
 
-ctmat = copy(mat5)
-@fact transpose!(transpose!(copy(ctmat))) == mat5 --> true 
-@fact transpose(transpose(ctmat)) == mat5 --> true
-
-mat6 = PETSc.Mat(ST, 3, 3)
-
-vals = RC(complex(rand(3, 2), rand(3,2)))
-idx = Array(1:3)
-idy = Array(1:2)
-
-mat6[idx, idy] = vals
-assemble(mat6)
-mat6j = zeros(ST, 3,3)
-mat6j[1:3, 1:2] = vals
-for i=1:3, j=1:3
-  @fact mat6[i,j] --> mat6j[i,j]
-end
-
-@fact mat6[idx,idy] --> roughly(vals)
-
-mat7 = PETSc.Mat(ST, 3, 3)
-vals = RC( complex(rand(3), rand(3)))
-mat7[1, idx] = vals
-assemble(mat7)
-mat7j = zeros(ST, 3,3)
-mat7j[1, idx] = vals
-for i=1:3, j=1:3
-  @fact mat7[i,j] --> mat7j[i,j]
-end
-
-vals_ret = mat7[1, idx]
-println("mat7 = ", mat7)
-println("vals = ", vals)
-println("vals_ret = ", vals_ret)
-for i=1:3
-  @fact vals_ret[i] --> roughly(vals[i])
-end
-
-mat8 = PETSc.Mat(ST, 3, 3)
-vals = RC(complex(rand(3), rand(3)))
-mat8[idx, 1] = vals
-assemble(mat8)
-mat8j = zeros(ST, 3,3)
-mat8j[idx, 1] = vals
-
-println("mat8 = ", mat8)
-for i=1:3, j=1:3
-  @fact mat8[i,j] --> mat8j[i,j]
-end
-
-vals_ret = mat8[idx, 1]
-@fact vals_ret --> roughly(vals, atol= 1e-13)
-
-mat9 = PETSc.Mat(ST, 3, 3)
-vt = RC(complex(3., 3.))
-mat9[idx, idy] = vt
-assemble(mat9)
-mat9j = zeros(ST, 3,3)
-mat9j[1:3, 1:2] = vt
-for i=1:3, j=1:3
-  @fact mat9[i,j] --> mat9j[i,j]
-end
-
-mat10 = PETSc.Mat(ST, 3, 3)
-mat10[idx, 1] = vt
-assemble(mat10)
-mat10j = zeros(ST, 3,3)
-mat10j[1:3, 1] = vt
-for i=1:3, j=1:3
-  @fact mat10[i,j] --> mat10j[i,j]
-end
-
-mat11 = PETSc.Mat(ST, 3, 3)
-mat11[1, idy] = vt
-assemble(mat11)
-mat11j = zeros(ST, 3,3)
-mat11j[1, 1:2] = vt
-for i=1:3, j=1:3
-  @fact mat11[i,j] --> mat11j[i,j]
-end
-
-context("test ranges and colon") do
-    mat12 = PETSc.Mat(ST, 3, 3)
-    mat12[1:3, 1:2] = vt
-    assemble(mat12)
-    mat12j = zeros(ST, 3,3)
-    mat12j[1:3, 1:2] = vt
-    for i=1:3, j=1:3
-      @fact mat12[i,j] --> mat12j[i,j]
+    #test nnz
+    @test nnz(mat) == 2
+  end
+  @testset "real and imag" begin
+    mat  = make_mat()
+    rmat = PETSc.Mat(ST, 3, 4)
+    rmat[1,1] = RC(complex(3., 0.))
+    rmat[1,2] = RC(complex(5., 0.))
+    PETSc.assemble(rmat)
+    @test real(mat)[1,1] == rmat[1,1]
+    @test real(mat)[1,2] == rmat[1,2]
+    if ST <: Complex
+        @test imag(mat)[1,1] == rmat[1,1]
+        @test imag(mat)[1,2] == rmat[1,2]
     end
+  end
+  @testset "diag and trace" begin
+    dmat = similar(make_mat(),3,3)
+    dmat[1,1] = vt1
+    assemble(dmat)
+    d = diag(dmat)
+    @test d[1] == vt1
+    @test trace(dmat) == vt1
+  end
+  @testset "similar and resize" begin
+    mat = similar(make_mat())
+    @test size(mat) == (3,4)
+    @test mat[1,1] != vt1
+    @test size(similar(mat, ST)) == (3,4)
+    @test size(similar(mat, 4, 4)) == (4,4)
+    @test size(similar(mat, (4, 4))) == (4,4)
+    @test mat[1,1] != make_mat()[1,1]
+    @test_throws ArgumentError resize!(mat)
+    @test_throws ArgumentError resize!(mat,5,mlocal=2)
+  end
+  @testset "copy and conj" begin
+    mat = similar(make_mat((4,4)))
+    @test size(mat) == (4,4)
+    mat2 = copy(mat)
+    @test mat2[1,1] ≈ mat[1, 1]
+    @test conj(conj(mat))[1,1] ≈ mat[1,1]
+  end
+  @testset "getting Mat info, inserting and assembling" begin
+    mat = make_mat()
+    @test PETSc.getinfo(mat).block_size == 1
+    @test isassembled(mat)
 
-    mat13 = PETSc.Mat(ST, 3, 3)
-    mat13[:, idy] = vt
-    assemble(mat13)
-    mat13j = zeros(ST, 3,3)
-    mat13j[:, 1:2] = vt
-    for i=1:3, j=1:3
-      @fact mat13[i,j] --> mat13j[i,j]
-    end
-end
+    mat2 = similar(mat, ST, 4, 4)
+    mat2.assembling = false
+    mat2[1,2] = vt1
+    mat2[1,3] = vt2
+    mat2.assembling = false
+    PETSc.assemble(mat2)
 
-context("test conversion of values to a new type") do
+    @test mat2[1,2] == vt1
+    @test mat2[1,3] == vt2
+    mat3 = Mat( ST, 3, 3)
 
-    vals = [1, 2, 3]
-    mat14 = PETSc.Mat(ST, 3, 3)
-    mat14[:, 1] = vt
-    assemble(mat14)
-    mat14j = zeros(ST, 3,3)
-    mat14j[:, 1] = vt
-    for i=1:3, j=1:3
-       @fact mat14[i,j] --> mat14j[i,j]
-    end
-
-    vt = RC(complex(1.,1))
-    mat15 = PETSc.Mat(ST, 3,3)
-    fill!(mat15, vt)
-    assemble(mat15)
-
-    for i=1:3, j=1:3
-      @fact mat15[i,j] --> roughly(vt)
-    end
-
-    mat15jd = full(mat15)
-    for i=1:3, j=1:3
-      @fact mat15[i,j] --> roughly(mat15jd[i,j])
-    end
-
-    # it appears get/set values don't work on a transposed matrix
-    mat15_t = PETSc.MatTranspose(mat15)
-    #=
-    #assemble(mat15_t)
-    for i=1:3
-      for j=1:3
-        println("mat15_t[j,i] = ", mat15_t[j, i])
-        @fact mat15_t[j, i] --> roughly(mat15[i,j])
+    function increasing_diag()
+      (m,n) = size(mat3)
+      dim = min(m, n)
+      for i=1:dim
+        i_float = Float64(i)
+        mat3[i,i] = RC(complex(i_float, i_float))
       end
     end
-    =#
 
-    mat16 = PETSc.Mat(ST, 3, 3)
-    mat17 = PETSc.Mat(ST, 3, 3)
-    mat16j = zeros(ST, 3, 3)
-    mat17j = zeros(ST, 3, 3)
-    vec1 = PETSc.Vec(ST, 3)
-    vec1j = zeros(ST, 3)
+    assemble(increasing_diag, mat3)
+
+    (m,n) = size(mat3)
+    dim = min(m, n)
+
+    for i=1:dim
+      i_float = Float64(i)
+      @test mat3[i,i] ≈ RC(complex(i_float, i_float))
+    end
+  end
+  @testset "transpose and transpose!" begin
+    mat = make_mat((3,3))
+    ctmat = copy(mat)
+    @test transpose!(transpose!(copy(ctmat))) == mat
+    @test transpose(transpose(ctmat)) == mat
+  end
+  vt = RC(complex(3., 3.))
+  @testset "array indexing" begin 
+    vals = RC(complex(rand(3, 2), rand(3,2)))
+    idx = Array(1:3)
+    idy = Array(1:2)
+    @testset "sub indexing" begin
+      mat = PETSc.Mat(ST, 3, 3)
+      mat[idx, idy] = vals
+      assemble(mat)
+      matj = zeros(ST, 3,3)
+      matj[1:3, 1:2] = vals
+      @test mat == matj
+      @test mat[idx,idy] ≈ vals
+    end
+    @testset "y indexing" begin
+      mat = PETSc.Mat(ST, 3, 3)
+      vals = RC( complex(rand(3), rand(3)))
+      mat[1, idx] = vals
+      assemble(mat)
+      matj = zeros(ST, 3,3)
+      matj[1, idx] = vals
+      @test mat == matj
+
+      vals_ret = mat[1, idx]
+      @test vals_ret.' ≈ vals[idx] 
+    end
+    @testset "x indexing" begin
+      mat = PETSc.Mat(ST, 3, 3)
+      vals = RC(complex(rand(3), rand(3)))
+      mat[idx, 1] = vals
+      assemble(mat)
+      matj = zeros(ST, 3,3)
+      matj[idx, 1] = vals
+      @test mat == matj
+      vals_ret = mat[idx, 1]
+      @test vals_ret ≈ vals
+    end
+    @testset "x,y set and fetch" begin 
+      mat = PETSc.Mat(ST, 3, 3)
+      mat[idx, idy] = vt
+      assemble(mat)
+      matj = zeros(ST, 3,3)
+      matj[1:3, 1:2] = vt
+      @test mat == matj
+    end
+    @testset "x set and fetch" begin 
+      mat = PETSc.Mat(ST, 3, 3)
+      mat[idx, 1] = vt
+      assemble(mat)
+      matj = zeros(ST, 3,3)
+      matj[1:3, 1] = vt
+      @test mat == mat
+    end
+    @testset "y set and fetch" begin 
+      mat = PETSc.Mat(ST, 3, 3)
+      mat[1, idy] = vt
+      assemble(mat)
+      matj = zeros(ST, 3,3)
+      matj[1, 1:2] = vt
+      @test mat == matj
+    end
+  end
+  @testset "test ranges and colon" begin
+    idy = Array(1:2)
+    @testset "submatrix" begin
+      mat = PETSc.Mat(ST, 3, 3)
+      mat[1:3, 1:2] = vt
+      assemble(mat)
+      matj = zeros(ST, 3,3)
+      matj[1:3, 1:2] = vt
+      @test mat == matj
+    end
+    @testset "on an axis with range" begin
+      mat = PETSc.Mat(ST, 3, 3)
+      mat[:, idy] = vt
+      assemble(mat)
+      matj = zeros(ST, 3,3)
+      matj[:, 1:2] = vt
+      @test mat == matj
+    end
+    @testset "on a column" begin
+      vals = [1, 2, 3]
+      mat = PETSc.Mat(ST, 3, 3)
+      mat[:, 1] = vt
+      assemble(mat)
+      matj = zeros(ST, 3,3)
+      matj[:, 1] = vt
+      @test mat == matj
+    end
+  end
+    
+  @testset "full and fill" begin
+    vt = RC(complex(1.,1.))
+    mat = PETSc.Mat(ST, 3, 3)
+    fill!(mat, vt)
+    assemble(mat)
+    @test mat == fill(vt,(3,3))
+    matjd = full(mat)
+    @test mat == matjd
+  end
+  @testset "test conversion of values to a new type" begin
+    mata = PETSc.Mat(ST, 3, 3)
+    matb = PETSc.Mat(ST, 3, 3)
+    mataj = zeros(ST, 3, 3)
+    matbj = zeros(ST, 3, 3)
+    vec = PETSc.Vec(ST, 3)
+    vecj = zeros(ST, 3)
     cnt = 1
     for i=1:3
       for j=1:3
         cnt_f = RC(complex(Float64(cnt), Float64(cnt)))
         cnt_f2 = RC(complex(Float64(cnt + 9), Float64(cnt + 9)))
 
-        mat16[i,j] = cnt_f
-        mat16j[i,j] = cnt_f
-        mat17[i,j] = cnt_f2
-        mat17j[i,j] = cnt_f2
+        mata[i,j] = cnt_f
+        mataj[i,j] = cnt_f
+        matb[i,j] = cnt_f2
+        matbj[i,j] = cnt_f2
         cnt += 1
       end
-      vec1[i] = RC(complex(Float64(i), i))
-      vec1j[i] = RC(complex(Float64(i), i))
+      vec[i] = RC(complex(Float64(i), i))
+      vecj[i] = RC(complex(Float64(i), i))
     end
 
-    assemble(mat16)
-    assemble(mat17)
+    assemble(mata)
+    assemble(matb)
 
-    vec2 = mat16*vec1
-    vec2j = mat16j*vec1j
-
-    for i=1:3
-      @fact vec2[i] --> vec2j[i]
-    end
+    @testset "matrix-vector product" begin
+      result = mata*vec
+      resultj = mataj*vecj
+      @test result == resultj
     
-    vec3 = mat16.'*vec1
-    vec3j = mat16j.'*vec1j
-
-    for i=1:3
-      @fact vec3[i] --> vec3j[i]
-    end
+      result = mata.'*vec
+      resultj = mataj.'*vecj
+      @test result == resultj
     
-    vec4 = mat16'*vec1
-    vec4j = mat16j'*vec1j
-
-    for i=1:3
-      @fact vec4[i] --> vec4j[i]
+      result = mata'*vec
+      resultj = mataj'*vecj
+      @test result == resultj
     end
-
-    mat18 = 2*mat16
-    assemble(mat18)
-    mat18j = 2*mat16j
-
-    println("mat18 = ", mat18)
-    println("mat18j = ", mat18j)
-    for i=1:3, j=1:3
-      @fact mat18[i,j] --> roughly(mat18j[i,j])
+    @testset "binary matrix operations" begin
+      result = mata + matb
+      assemble(result)
+      resultj = mataj + matbj
+      @test result == resultj
+      result = mata - matb
+      assemble(result)
+      resultj = mataj - matbj
+      @test result == resultj
+      result = mata * matb
+      assemble(result)
+      resultj = mataj * matbj
+      @test result == resultj
     end
+    @testset "matrix operations with numbers" begin
+      result = 2*mata
+      assemble(result)
+      resultj = 2*mataj
 
-    println("mat16 = ", mat16)
-    println("mat17 = ", mat17)
-    mat19 = mat16*mat17
-    mat19j = mat16j*mat17j
-    for i=1:3, j=1:3
-      @fact mat19[i,j] --> roughly(mat19j[i,j])
-    end
+      @test result == resultj
+      result = mata/2
+      assemble(result)
+      resultj = mataj/2
+      @test result == resultj
 
-    mat20= mat16+mat17
-    mat20j = mat16j+mat17j
-    for i=1:3, j=1:3
-      @fact mat20[i,j] --> roughly(mat20j[i,j])
-    end
+      result = 2.\mata
+      assemble(result)
+      resultj = 2.\mataj
+      @test result == resultj
 
-    mat21= mat16-mat17
-    mat21j = mat16j-mat17j
-    for i=1:3, j=1:3
-      @fact mat21[i,j] --> roughly(mat21j[i,j])
-    end
-    
-    mat22 = mat16/2
-    mat22j = mat16j/2
+      result  = -mata
+      resultj = -mataj
+      @test result == resultj
+    end 
+  end
 
-    for i=1:3
-      for j=1:3
-        @fact mat22[i,j] --> roughly(mat22j[i,j])
-      end
-    end
+  @testset "Testing {c}transpose mults" begin
+    mat1  = PETSc.Mat(ST,3,3,mtype=PETSc.C.MATSEQAIJ)
+    mat2  = PETSc.Mat(ST,3,3,mtype=PETSc.C.MATSEQAIJ)
+    mat1j = zeros(ST,3,3)
+    mat2j = zeros(ST,3,3)
+    vt1 = RC(complex(3., 0.))
+    vt2 = RC(complex(5., 5.))
+    vt3 = RC(complex(4., 4.))
+    vt4 = RC(complex(10., 0.))
+    vt5 = RC(complex(1., 0.))
+    mat1[1,1] = vt1
+    mat1[1,2] = vt2
+    mat1[2,1] = conj(vt2)
+    mat1[1,3] = vt3
+    mat1[3,1] = conj(vt3)
+    mat1[2,2] = vt4
+    mat1[3,3] = vt5
+    mat1j[1,1] = vt1
+    mat1j[1,2] = vt2
+    mat1j[2,1] = conj(vt2)
+    mat1j[1,3] = vt3
+    mat1j[3,1] = conj(vt3)
+    mat1j[2,2] = vt4
+    mat1j[3,3] = vt5
+    mat2[1,1] = vt1
+    mat2[1,2] = vt2
+    mat2[2,1] = vt2
+    mat2[1,3] = vt3
+    mat2[3,1] = vt3
+    mat2[2,2] = vt4
+    mat2[3,3] = vt5
+    mat2j[1,1] = vt1
+    mat2j[1,2] = vt2
+    mat2j[2,1] = vt2
+    mat2j[1,3] = vt3
+    mat2j[3,1] = vt3
+    mat2j[2,2] = vt4
+    mat2j[3,3] = vt5
+    PETSc.assemble(mat1)
+    PETSc.assemble(mat2)
+    @test ishermitian(mat1)
+    @test issym(mat2)
 
-    mat23 = 2.\mat16
-    mat23j = 2.\mat16j
+    mat3 = mat1.'*mat2
+    mat3j = mat1j.'*mat2j
+    assemble(mat3)
+    @test mat3 == mat3j
 
-    for i=1:3
-      for j=1:3
-        @fact mat23[i,j] --> roughly(mat23j[i,j])
-      end
-    end
-
-    mat24  = -mat16
-    mat24j = -mat16j
-    for i=1:3
-      for j=1:3
-        @fact mat24[i,j] --> roughly(mat24j[i,j])
-      end
-    end
-    
-end
-
-println("Testing {c}transpose mults")    
-mat1  = PETSc.Mat(ST,3,3,mtype=PETSc.C.MATSEQAIJ)
-mat2  = PETSc.Mat(ST,3,3,mtype=PETSc.C.MATSEQAIJ)
-mat1j = zeros(ST,3,3)
-mat2j = zeros(ST,3,3)
-vt1 = RC(complex(3., 0.))
-vt2 = RC(complex(5., 5.))
-vt3 = RC(complex(4., 4.))
-vt4 = RC(complex(10., 0.))
-vt5 = RC(complex(1., 0.))
-mat1[1,1] = vt1
-mat1[1,2] = vt2
-mat1[2,1] = conj(vt2)
-mat1[1,3] = vt3
-mat1[3,1] = conj(vt3)
-mat1[2,2] = vt4
-mat1[3,3] = vt5
-mat1j[1,1] = vt1
-mat1j[1,2] = vt2
-mat1j[2,1] = conj(vt2)
-mat1j[1,3] = vt3
-mat1j[3,1] = conj(vt3)
-mat1j[2,2] = vt4
-mat1j[3,3] = vt5
-mat2[1,1] = vt1
-mat2[1,2] = vt2
-mat2[2,1] = vt2
-mat2[1,3] = vt3
-mat2[3,1] = vt3
-mat2[2,2] = vt4
-mat2[3,3] = vt5
-mat2j[1,1] = vt1
-mat2j[1,2] = vt2
-mat2j[2,1] = vt2
-mat2j[1,3] = vt3
-mat2j[3,1] = vt3
-mat2j[2,2] = vt4
-mat2j[3,3] = vt5
-PETSc.assemble(mat1)
-PETSc.assemble(mat2)
-@fact ishermitian(mat1) --> true
-@fact issym(mat2) --> true
-
-mat3 = mat1.'*mat2
-mat3j = mat1j.'*mat2j
-for i=1:3, j=1:3
-  @fact mat3[i,j] --> roughly(mat3j[i,j])
-end
-
-mat4 = mat1*mat2.'
-mat4j = mat1j*mat2j.'
-for i=1:3, j=1:3
-  @fact mat4[i,j] --> roughly(mat4j[i,j])
-end
+    mat4 = mat1*mat2.'
+    mat4j = mat1j*mat2j.'
+    assemble(mat4)
+    @test mat4 == mat4j
+  end
 
 end

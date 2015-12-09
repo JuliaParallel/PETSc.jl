@@ -1,5 +1,5 @@
 using PETSc
-if VERSION >= v"0.5.0-dev+0"
+if VERSION >= v"0.5.0-dev+7720"
   using Base.Test
 else
   using BaseTestNext
@@ -46,7 +46,7 @@ for ST in PETSc.C.petsc_type
   include("is.jl")
   include("mat.jl")
 end
-  
+
 println("Testing typesize")
 @test PETSc.petsc_sizeof(PETSc.C.PETSC_BOOL) == 4
 

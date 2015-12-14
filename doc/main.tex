@@ -137,6 +137,7 @@ For both vectors and matrices, finalizers are used to perform memory managment w
 
 \subsubsection{Indexing and Assembly}
 Vectors and matrices can be indexed in the same mannor as Julia's builtin arrays.
+1-based indexing is used, and is internally converted to zero-based indexing used by PETSc.
 The use of ranges and arrays of indices is supported.
 For performance, it is recommented to use arrays of 64-bit integers (rather than 32-bit integers) so the array does not have to be converted, although this conversion will occur automatically if required.
 
@@ -158,6 +159,35 @@ where the first argument is a user supplied function that performs all insertion
 All the \ttt{A*\_mul\_B*} and most of the BLAS functionality of PETSc is available as well.
 
 \subsection{Index Sets} \label{sec:is}
+PETSc index sets are exposed using a 1-based index interface.
+Index sets are constructed using
+
+\begin{minted}{julia}
+IS{I<:Integer}(T::DataType, idx::AbstractArray{I}; comm::MPI.Comm=MPI.COMM_SELF)
+function IS{I<:Integer}(T::DataType, idx::Range{I}; comm::MPI.Comm=MPI.COMM_SELF)
+\end{minted}
+
+where the constructor takes an array of indices and the second efficiently creates a strided index set.
+
+Vector scatters are constructed using
+
+\begin{minted}{julia}
+function VecScatter{T}(x::Vec{T}, ix::IS{T}, y::Vec{T}, iy::IS{T})
+\end{minted}
+
+and performed using
+
+\begin{minted}{julia}
+function scatter!{T}(scatter::VecScatter{T}, x::Vec{T}, y::Vec{T}; imode=C.INSERT_VALUES, smode=C.SCATTER_FORWARD)
+\end{minted}
+
+Alternatively, the two steps can be combined
+\begin{minted}{julia}
+ function scatter!{T,I1,I2}(x::Vec{T}, ix::AbstractVector{I1},
+                           y::Vec{T}, iy::AbstractVector{I2};
+                          imode=C.INSERT_VALUES, smode=C.SCATTER_FORWARD)
+\end{minted}
+
 
 \subsection{Linear Solvers} \label{sec:ksp}
 

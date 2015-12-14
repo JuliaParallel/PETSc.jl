@@ -1,0 +1,19 @@
+#!/bin/bash
+# build the latex document and bibliography to produce a pdf
+# this scirpt uses pdflatex to compile the latex document and bibtex to
+# handle the bibliography
+
+
+pdflatex -shell-escape ./main.tex 
+
+if [[ $? -ne 0 ]] ; then
+  echo -e '\n===========================\n  Exiting ./buildit'
+  exit 1
+fi
+
+pdflatex -shell-escape ./main.tex 
+#bibtex ./main 
+#bibtex ./main 
+#pdflatex -shell-escape ./main.tex 
+#pdflatex -shell-escape ./main.tex
+

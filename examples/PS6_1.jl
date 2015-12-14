@@ -193,7 +193,7 @@ time = @elapsed for tstep=1:nStep  # loop over timesteps
     rhs[idx_end] = BCR(tstep*delta_t)
   end
 
-
+#=
   # view rhs
   PETSc.AssemblyBegin(rhs)
   PETSc.AssemblyEnd(rhs)
@@ -201,7 +201,7 @@ time = @elapsed for tstep=1:nStep  # loop over timesteps
     println("rhs = \n")
   end
   petscview(rhs)
-
+=#
 #=
   PETSc.AssemblyBegin(A, PETSc.C.MAT_FINAL_ASSEMBLY)
   PETSc.AssemblyEnd(A, PETSc.C.MAT_FINAL_ASSEMBLY)
@@ -210,6 +210,7 @@ time = @elapsed for tstep=1:nStep  # loop over timesteps
   end
   petscview(A)
 =#
+#=
   # view u_i
   PETSc.AssemblyBegin(u_i)
   PETSc.AssemblyEnd(u_i)
@@ -217,7 +218,7 @@ time = @elapsed for tstep=1:nStep  # loop over timesteps
     println("u_i = \n")
   end
   petscview(u_i)
-
+=#
 
   # solve for next time step, u_i gets overwritten with new solution
   A_ldiv_B!(ksp, rhs, u_i)
@@ -323,10 +324,6 @@ function createPetscData(mat_size, stencil_size)
   
   # solution at current timestep
   u_i = Vec(Float64, PETSc.C.VECMPI, comm=MPI.COMM_WORLD);
-  if mpi_rank == 1
-    println("typeof(u_i) = ", typeof(u_i))
-    println("u_i.p = ", u_i.p)
-  end
   u_i.assembling=true
   resize!(u_i, mlocal=mat_size)
 

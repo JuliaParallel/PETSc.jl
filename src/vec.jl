@@ -9,10 +9,6 @@ type Vec{T,VType} <: AbstractVector{T}
             # -- needed if the Mat is a wrapper around a Julia object,
             #    to prevent the object from being garbage collected.
   function Vec(p::C.Vec{T}, data=nothing)
-    mpi_rank = MPI.Comm_rank(MPI.COMM_WORLD) + 1
-    if mpi_rank == 1
-      println("creating vector with p = ", p)
-    end
     v = new(p, false, C.INSERT_VALUES, data)
     chk(C.VecSetType(p, VType))  # set the type here to ensure it matches VType
     finalizer(v, VecDestroy)
@@ -60,11 +56,6 @@ function Base.resize!(x::Vec, m::Integer=C.PETSC_DECIDE; mlocal::Integer=C.PETSC
   if m == mlocal == C.PETSC_DECIDE
     throw(ArgumentError("either the length (m) or local length (mlocal) must be specified"))
   end
-
-    mpi_rank = MPI.Comm_rank(MPI.COMM_WORLD) + 1
-    if mpi_rank == 1
-      println("sizing vector with p = ", x.p)
-    end
 
   chk(C.VecSetSizes(x.p, mlocal, m))
   x

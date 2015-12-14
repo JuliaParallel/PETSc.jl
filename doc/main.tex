@@ -58,7 +58,30 @@
 \maketitle
 
 \section{Introduction} \label{sec:intro}
-This document describes the current state of the Julia interface to the Portable, Extensible Toolkit for Scientific Computation (PETSc).
+This document describes the current state of the Julia interface to the Portable, Extensible Toolkit for Scientific Computation (PETSc).  An overview of the build system is given in section~\ref{sec:build}, followed by a description of the  feature sets in section~\ref{sec:features}.
+
+\section{Build System} \label{sec:build}
+Petsc supports operation on multiple data types through compile-time configuration of the library.
+Julia is a dynamic language featuring a multiple dispatch paradigm.
+Therefore, it is desirable to be able use PETSc with different datatypes simultaneiously. 
+To accomplish this, 3 versions of the library are built.
+This enables the element type of a PETSc vector or matrix to be either  a real double precision float, a real single precision float, or a complex double precision float.
+64-bit integers are used for indexing for all version of the library.
+Having 3 separate libraries and using multiple dispatch provides the appearance of datatype independence, but it is important to note that the three libraries remain separate, so mixed datatype operations are not supported.
+The build system automatically builds and configures PETSc when installing the Julia package.
+
+
+\section{Features} \label{sec:features}
+
+\subsection{Vectors and Matrices} \label{sec:arrays}
+
+\subsection{Index Sets} \label{sec:is}
+
+\subsection{Linear Solvers} \label{sec:ksp}
+
+\subsection{Options Database} \label{sec:options}
+
+
 \end{document}
 
 

@@ -72,8 +72,90 @@ The build system automatically builds and configures PETSc when installing the J
 
 
 \section{Features} \label{sec:features}
+This section describes the features supported by the high level interface, mirroring the feature sets described in the PETSc documentation.
+The high level interface is contained in the  module \ttt{PETSc}.
+Auto-generated wrappers for the standard PETSc C interface are located in the submodule \ttt{PETSc.C}.
+All objects are parameterized by the the datatype of the library in which they exist.
+This allows function calls to be dispatched to the proper library when an object is one of the arguments.
+All other functions require the datatype of be passed as the first argument.
 
 \subsection{Vectors and Matrices} \label{sec:arrays}
+\subsubsection{Construction}
+Vector and matrix objects are parameterized by their datatype as described above, and by the format used to store the underlying data.
+The signature of the vector object is
+
+\begin{minted}{julia}
+type Vec{T,VType} <: AbstractVector{T}
+  p::C.Vec{T}
+  assembling::Bool # whether we are in the middle of assemble(vec)
+  insertmode::C.InsertMode # current mode for setindex!
+  data::Any # keep a reference to anything needed for the Mat
+            # -- needed if the Mat is a wrapper around a Julia object,
+            #    to prevent the object from being garbage collected.
+
+\end{minted}
+
+Several (outer) constructors are available for vectors and matrices.
+\begin{minted}{julia}
+
+function Vec{T}(::Type{T}, vtype::C.VecType=C.VECSEQ; comm::MPI.Comm=MPI.COMM_SELF)
+
+function Vec{T<:Scalar}(::Type{T}, len::Integer, vtype::C.VecType=C.VECSEQ;
+                        comm::MPI.Comm=MPI.COMM_SELF, mlocal::Integer=C.PETSC_DECIDE)
+
+function Vec{T<:Scalar}(v::Vector{T}; comm::MPI.Comm=MPI.COMM_SELF)
+\end{minted}
+
+The first function creates a vector object in the PETSc library specified by the first argument.
+The other arguments specify the format used to store the vector and which MPI communicator to use.
+The list of possiblnames (identical to those from the C interface) can be accessed in \ttt{PETSc.C.formatname}.
+
+The second constructor creates the vector and sets its length, while the third one constructs a PETSc vector directly from a Julia vector.
+
+A similar set of constructors exist for matrices, with more arguments to specify the sparsity pattern.
+The constructors are
+
+\begin{minted}{julia}
+
+function Mat{T}(::Type{T}, mtype=C.MatType=C.MATSEQ; comm::MPI.Comm=MPI.COMM_WORLD)
+function Mat{T}(::Type{T}, m::Integer, n::Integer;
+                mlocal::Integer=C.PETSC_DECIDE, nlocal::Integer=C.PETSC_DECIDE,
+                nz::Integer=16, nnz::AbstractVector=PetscInt[],
+                onz::Integer=0, onnz::AbstractVector=PetscInt[],
+                comm::MPI.Comm=MPI.COMM_WORLD,
+                mtype::Symbol=C.MATMPIAIJ)
+
+\end{minted}
+
+The first constructor is similar to the first vector constructor.
+The second constructor creates a matrix, specifies its global dimensions with teh parameters \ttt{m} and \ttt{n}, or can optionally use the keyword arguments \ttt{mlocal} and \ttt{nlocal} to specify the local matrix size.
+In this case \ttt{PETSc.C.PETSC\_DECIDE} must be passed to \ttt{m} and \ttt{n}.
+The next four arguments are used to pre-allocate the storage for the matrix, and exactly mirror the arguments to the PETSc function \ttt{MATXXXXSetPreallocation}.
+The final arguments specify the MPI communicator and the matrix storage format.
+
+For both vectors and matrices, finalizers are used to perform memory managment when the objects are garbage collected, so the user is not required to explicitly destroy them.
+
+\subsubsection{Indexing and Assembly}
+Vectors and matrices can be indexed in the same mannor as Julia's builtin arrays.
+The use of ranges and arrays of indices is supported.
+For performance, it is recommented to use arrays of 64-bit integers (rather than 32-bit integers) so the array does not have to be converted, although this conversion will occur automatically if required.
+
+Because PETSc is intended for distributed memory computation, populating the a vector or matrix is separated into two steps, inserting values and assembling the values into the underlying data structure.
+PETSc supports two modes of inserting values, \ttt{PETSc.C.INSERT\_VALUES} and \ttt{PETSc.C.ADD\_VALUES}.
+The field \ttt{insertmode} of the Mat or Vec object  determines which is used for indexing.
+The functions \ttt{AssemblyBegin} and \ttt{AssemblyEnd} are available for both Mat and Vec objects to begin and end assembly of the values into the underlying data structure.
+These function are called after every insertion unless the field \ttt{assembling} of the Mat or Vec object is set to true.
+This is much more efficient, but the user must remember to perform assembly before usigng the matrix.
+
+It is also possible to combine the steps of insertion and assembly using
+\begin{minted}{julia}
+function assemble(f::Function, x::Union{Vec,Mat}
+\end{minted}
+where the first argument is a user supplied function that performs all insertion.
+\ttt{assemble} calls the function and then performs assembly.
+
+\subsubsection{Other functions}
+All the \ttt{A*\_mul\_B*} and most of the BLAS functionality of PETSc is available as well.
 
 \subsection{Index Sets} \label{sec:is}
 

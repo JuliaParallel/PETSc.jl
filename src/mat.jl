@@ -276,8 +276,12 @@ function assemble(f::Function, x::Union{Vec,Mat},
   end
 end
 
-# finalize matrix assembly
-assemble(x::Union{Vec,Mat}) = isassembled(x) ? nothing : assemble(() -> nothing, x)
+# force assembly even if it might not be necessary
+function assemble(x::Union{Vec,Mat}, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
+  AssemblyBegin(x, t)
+  AssemblyEnd(x,t)
+end
+
 
 # in ksp solve we need to finalize assembly from raw pointer:
 function assemble(p::C.Mat, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)

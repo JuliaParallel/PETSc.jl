@@ -231,6 +231,7 @@ function process_func(ex)
   ex.args[1] = rewrite_sig(ex.args[1])  # function signature
   ex.args[2] = rewrite_body(ex.args[2])  # function body
 
+  println("processing function ", ex.args[1])
   # now check if any undefined type annotations remain
   sum = 0
   ex_sig = ex.args[1]

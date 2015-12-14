@@ -193,14 +193,31 @@ time = @elapsed for tstep=1:nStep  # loop over timesteps
     rhs[idx_end] = BCR(tstep*delta_t)
   end
 
-#=  # view rhs
+
+  # view rhs
   PETSc.AssemblyBegin(rhs)
   PETSc.AssemblyEnd(rhs)
   if mpi_rank == 1
     println("rhs = \n")
   end
   petscview(rhs)
+
+#=
+  PETSc.AssemblyBegin(A, PETSc.C.MAT_FINAL_ASSEMBLY)
+  PETSc.AssemblyEnd(A, PETSc.C.MAT_FINAL_ASSEMBLY)
+   if mpi_rank == 1
+    println("A = \n")
+  end
+  petscview(A)
 =#
+  # view u_i
+  PETSc.AssemblyBegin(u_i)
+  PETSc.AssemblyEnd(u_i)
+  if mpi_rank == 1
+    println("u_i = \n")
+  end
+  petscview(u_i)
+
 
   # solve for next time step, u_i gets overwritten with new solution
   A_ldiv_B!(ksp, rhs, u_i)
@@ -303,21 +320,25 @@ function createPetscData(mat_size, stencil_size)
   # left hand side matrix
   A = PETSc.Mat(Float64, PETSc.C.PETSC_DECIDE, PETSc.C.PETSC_DECIDE, mlocal=mat_size, nlocal=mat_size, nz=stencil_size, onz=1, comm=MPI.COMM_WORLD)
   A.assembling=true
-
+  
   # solution at current timestep
   u_i = Vec(Float64, PETSc.C.VECMPI, comm=MPI.COMM_WORLD);
+  if mpi_rank == 1
+    println("typeof(u_i) = ", typeof(u_i))
+    println("u_i.p = ", u_i.p)
+  end
   u_i.assembling=true
-  resize!(u_i, mat_size)
+  resize!(u_i, mlocal=mat_size)
 
   # right hand side
   rhs = Vec(Float64, PETSc.C.VECMPI, comm=MPI.COMM_WORLD);
   rhs.assembling=true
-  resize!(rhs, mat_size)
+  resize!(rhs, mlocal=mat_size)
 
   # exact solution
   uex = Vec(Float64, PETSc.C.VECMPI, comm=MPI.COMM_WORLD);
   uex.assembling=true
-  resize!(uex, mat_size)
+  resize!(uex, mlocal=mat_size)
 
   # create a ghost vector that includes all points needed for each proc
   # to evaluate the rhs, duplicating the shared points.
@@ -344,6 +365,10 @@ function createPetscData(mat_size, stencil_size)
     ghost_endidx = ghost_startidx + mat_size + 1
     idx_ghost = collect(ghost_startidx:ghost_endidx)
   end
+  # bump everything up to 1-based indexing
+  idx += 1
+  idx_ghost += 1
+
   ghost_offset = 2*(mpi_rank-1) # offset from u_i indices to ghost indices
   # set up the vector
   nghost_local = length(idx_ghost)

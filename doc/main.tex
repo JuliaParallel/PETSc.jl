@@ -155,10 +155,18 @@ function assemble(f::Function, x::Union{Vec,Mat}
 where the first argument is a user supplied function that performs all insertion.
 \ttt{assemble} calls the function and then performs assembly.
 
-\subsubsection{Other functions}
+\subsubsection{Other Functions}
 All the \ttt{A*\_mul\_B*} and most of the BLAS functionality of PETSc is available as well.
+Basic operations (addition, subtraction, elementwise multiplication, elementwise division) are defined and overloaded to the standard Julia operators.
 
-\subsection{Index Sets} \label{sec:is}
+The \ttt{copy}, \ttt{similar}, \ttt{length}, and \ttt{size} functions are also defined for vectors.
+The \ttt{size}, \ttt{similar}, and \ttt{copy} functions are defined for matrices.
+The \ttt{length} and \ttt{size} functions currently refer to the global lengths and sizes.
+The functions \ttt{lengthlocal} and \ttt{sizelocal} give the local values.
+Matrix and vector norms can be calculated using the \ttt{norm} function.
+
+
+\subsection{Index Sets} \label{sec:is}a
 PETSc index sets are exposed using a 1-based index interface.
 Index sets are constructed using
 
@@ -219,6 +227,7 @@ function withoptions{T<:Scalar}(f::Function, ::Type{T}, keyvals)
 The \ttt{OPTIONS} is a dictionary-like object that sets the key-value pairs in the options databases of all 3 PETSc libraries.
 Internally, it is a dictionary which stores 3 sub-options objects, each of which can be used to set options in the options database of one particular PETSc library.
 Each sub-options object can be retrieved using the datatype of the PETSc library.
+An key that does not require a value should pass the empty string as the value.
 
 The \ttt{withoptions} function takes a set of keyword arguments, sets them in the options dictonary of the specified library, calls the user supplied function\ttt{f}, and then unsets the options.
 This is a useful way to temporarily set some options, call \ttt{*SetFromOptions} and then restore the options database to its original state.

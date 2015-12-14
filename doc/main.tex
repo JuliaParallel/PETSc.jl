@@ -190,9 +190,38 @@ Alternatively, the two steps can be combined
 
 
 \subsection{Linear Solvers} \label{sec:ksp}
+The Krylov Sub-Space solvers are available by constructing a KSP object:
+\begin{minted}{julia}
+KSP{T}(A::Mat{T}, PA::Mat{T}=A; kws...)
+\end{minted}
+
+where \ttt{A} is the linear operator and \ttt{PA}  is the linear operator used for constructing the preconditioner, with a default value of using \ttt{A} for both.
+Any additional keyword arguments are set as key-value pairs in the PETSc options databse, and then the C interface function \ttt{KSPSetFromOptions} is called to copy those values to the KSP object (see \ref{sec:options}).
+
+The functions
+\begin{minted}{julia}
+function Base.A_ldiv_B!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T})
+(\){T}(ksp::KSP{T}, b::Vec{T}) = A_ldiv_B!(ksp, b, similar(b, size(ksp, 2)))
+\end{minted}
+perform linear solves.
+The first function stores the result in \ttt{x}, while the second creates a new vector \ttt{x} and returns it.
+Both functions assemble the assemble the vectors and matrices they operate on and print a warning if the KSP solve does not converge.
+
 
 \subsection{Options Database} \label{sec:options}
+The PETSc options databse is used to set options that govern the behavior of PETSc.
+The options database can be accessed either by using the \ttt{OPTIONS} object or by calling the function 
 
+\begin{minted}{julia}
+function withoptions{T<:Scalar}(f::Function, ::Type{T}, keyvals)
+\end{minted}
+
+The \ttt{OPTIONS} is a dictionary-like object that sets the key-value pairs in the options databases of all 3 PETSc libraries.
+Internally, it is a dictionary which stores 3 sub-options objects, each of which can be used to set options in the options database of one particular PETSc library.
+Each sub-options object can be retrieved using the datatype of the PETSc library.
+
+The \ttt{withoptions} function takes a set of keyword arguments, sets them in the options dictonary of the specified library, calls the user supplied function\ttt{f}, and then unsets the options.
+This is a useful way to temporarily set some options, call \ttt{*SetFromOptions} and then restore the options database to its original state.
 
 \end{document}
 

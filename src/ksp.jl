@@ -106,17 +106,6 @@ end
 
 # x = A \ b
 function Base.A_ldiv_B!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T})
-#=
-  AssemblyBegin(_ksp_A(ksp), C.MAT_FINAL_ASSEMBLY )
-  AssemblyBegin(_ksp_A(ksp), C.MAT_FINAL_ASSEMBLY )
-
-  AssemblyBegin(x, C.MAT_FINAL_ASSEMBLY )
-  AssemblyBegin(x, C.MAT_FINAL_ASSEMBLY )
-
-  AssemblyBegin(b, C.MAT_FINAL_ASSEMBLY )
-  AssemblyBegin(b, C.MAT_FINAL_ASSEMBLY )
-=#
-  #TODO: figure out why these were not doing final assembly
   assemble(_ksp_A(ksp))
   assemble(b)
   assemble(x)

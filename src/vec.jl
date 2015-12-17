@@ -356,6 +356,15 @@ function (==)(x::Vec, y::Vec)
   b[] != 0
 end
 
+function (==)(x::Vec, y::AbstractArray)
+  flag = true
+  for i=1:length(x)
+    flag = flag && x[i] == y[i]
+  end
+
+  return flag
+end
+
 function Base.sum{T}(x::Vec{T})
   s = Ref{T}()
   chk(C.VecSum(x.p, s))
@@ -422,3 +431,61 @@ for (f,s) in ((:+,1), (:-,-1))
     return z
   end
 end
+
+
+##############################################################################
+export VecArray, VecArrayRestore
+type VecArray{T <: Scalar} <: AbstractArray{T, 1}
+  a::Array{T, 1}  # the array object constructed around the pointer
+  ref::Ref{Ptr{T}}  # reference to the pointer to the data
+  pobj::C.Vec{T}
+  isfinalized::Bool  # has this been finalized yet
+  function VecArray(a::Array, ref::Ref, ptr)
+    varr = new(a, ref, ptr, false)
+    # backup finalizer, shouldn't ever be used because users must call
+    # VecArrayRestore before their changes will take effect
+    finalizer(varr, VecArrayRestore)
+    return varr
+  end
+
+end
+
+function VecArray{T}(vec::Vec{T})
+
+  len = length(vec)
+
+  ref = Ref{Ptr{T}}()
+  chk(C.VecGetArray(vec.p, ref))
+  a = pointer_to_array(ref[], len)
+  return VecArray{T}(a, ref, vec.p)
+end
+
+#TODO: check if pobj was already finalized
+function VecArrayRestore{T}(varr::VecArray{T})
+
+  if !varr.isfinalized && !PetscFinalized(T) 
+    ptr = [varr.ref[]]
+    chk(C.VecRestoreArray(varr.pobj, ptr))
+  end 
+  varr.isfinalized = true
+end
+
+Base.linearindexing(varr::VecArray) = Base.linearindexing(varr.a)
+Base.size(varr::VecArray) = size(varr.a)
+
+# indexing
+getindex(varr::VecArray, i) = getindex(varr.a, i)
+setindex!(varr::VecArray, v, i) = setindex!(varr.a, v, i)
+
+Base.copy(varr::VecArray) = deepcopy(varr)
+
+function (==)(x::VecArray, y::AbstractArray)
+  flag = true
+  for i=1:length(x)
+    flag = flag && x[i] == y[i]
+  end
+
+  return flag
+end
+
+# what to do about similar?  it shouldn't be used?

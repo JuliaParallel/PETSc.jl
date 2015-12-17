@@ -57,6 +57,23 @@
 
   @test vec4[idx] == vals
 
+
+  vec5 = Vec(Float64, 4)
+  varr = VecArray(vec5)
+  @test length(vec5) == 4
+  vec5j = [1. 2 3 4]
+  for i=1:length(vec5)  varr[i] = vec5j[i] end
+  
+  @test varr[1] == vec5j[1]
+  @test varr == vec5j
+  
+  VecArrayRestore(varr)
+
+  @test vec5 == vec5j
+  
+  
+
+
   @testset "testing logical indexing" begin
       logicals = Array(Bool, length(vec4))
       for i=eachindex(logicals)

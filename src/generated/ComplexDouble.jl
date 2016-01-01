@@ -6,5 +6,4 @@ type_dict = Dict{Any, Any}(
   :PetscLogDouble => :Float64,
   :_PetscCDIntNd => :Void,
   :_PetscCDArrNd => :Void,
-  :NLF_DAAD => :Void,
 )

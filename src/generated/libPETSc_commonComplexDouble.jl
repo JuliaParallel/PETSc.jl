@@ -2579,7 +2579,7 @@ typealias DMType Symbol
 immutable NLF_DAAD{T}
 end
 
-typealias NLF Ptr{Void}
+typealias NLF Ptr{NLF_DAAD}
 
 #= # begin enum ANONYMOUS_42 =#
 typealias ANONYMOUS_42 UInt32

@@ -4573,7 +4573,7 @@ function VecSetValuesBlocked(arg1::Vec{Float32},arg2::Integer,arg3::Union{Ptr{In
 end
 
 function VecSetType(arg1::Vec{Float32},arg2::VecType)
-    err = ccall((:VecSetType,petscRealSingle),PetscErrorCode,(Vec{Float32},VecType),arg1,arg2)
+    err = ccall((:VecSetType,petscRealSingle),PetscErrorCode,(Vec{Float32},Cstring),arg1,arg2)
     return err
 end
 
@@ -5133,12 +5133,12 @@ function PetscSectionVecNorm(arg1::PetscSection{Float32},arg2::PetscSection{Floa
 end
 
 function MatGetFactor(arg1::Mat{Float32},arg2::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}},arg3::MatFactorType,arg4::Union{Ptr{Mat{Float32}},StridedArray{Mat{Float32}},Ptr{Mat{Float32}},Ref{Mat{Float32}}})
-    err = ccall((:MatGetFactor,petscRealSingle),PetscErrorCode,(Mat{Float32},Cstring,MatFactorType,Ptr{Mat{Float32}}),arg1,arg2,arg3,arg4)
+    err = ccall((:MatGetFactor,petscRealSingle),PetscErrorCode,(Mat{Float32},Cstring,Cstring,Ptr{Mat{Float32}}),arg1,arg2,arg3,arg4)
     return err
 end
 
 function MatGetFactorAvailable(arg1::Mat{Float32},arg2::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}},arg3::MatFactorType,arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:MatGetFactorAvailable,petscRealSingle),PetscErrorCode,(Mat{Float32},Cstring,MatFactorType,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
+    err = ccall((:MatGetFactorAvailable,petscRealSingle),PetscErrorCode,(Mat{Float32},Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -5153,12 +5153,12 @@ function MatGetFactorType(arg1::Mat{Float32},arg2::Union{Ptr{MatFactorType},Stri
 end
 
 function MatSolverPackageRegister(arg0::Type{Float32},arg1::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}},arg2::MatType,arg3::MatFactorType,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:MatSolverPackageRegister,petscRealSingle),PetscErrorCode,(Cstring,MatType,MatFactorType,Ptr{Void}),arg1,arg2,arg3,arg4)
+    err = ccall((:MatSolverPackageRegister,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
 function MatSolverPackageGet(arg0::Type{Float32},arg1::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}},arg2::MatType,arg3::MatFactorType,arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg6::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
-    err = ccall((:MatSolverPackageGet,petscRealSingle),PetscErrorCode,(Cstring,MatType,MatFactorType,Ptr{PetscBool},Ptr{PetscBool},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5,arg6)
+    err = ccall((:MatSolverPackageGet,petscRealSingle),PetscErrorCode,(Cstring,Cstring,Cstring,Ptr{PetscBool},Ptr{PetscBool},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
@@ -5178,7 +5178,7 @@ function MatSetSizes(arg1::Mat{Float32},arg2::Integer,arg3::Integer,arg4::Intege
 end
 
 function MatSetType(arg1::Mat{Float32},arg2::MatType)
-    err = ccall((:MatSetType,petscRealSingle),PetscErrorCode,(Mat{Float32},MatType),arg1,arg2)
+    err = ccall((:MatSetType,petscRealSingle),PetscErrorCode,(Mat{Float32},Cstring),arg1,arg2)
     return err
 end
 
@@ -5383,7 +5383,7 @@ function MatCompositeSetType(arg1::Mat{Float32},arg2::MatCompositeType)
 end
 
 function MatCreateFFT(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::MatType,arg5::Union{Ptr{Mat{Float32}},StridedArray{Mat{Float32}},Ptr{Mat{Float32}},Ref{Mat{Float32}}})
-    err = ccall((:MatCreateFFT,petscRealSingle),PetscErrorCode,(comm_type,Int64,Ptr{Int64},MatType,Ptr{Mat{Float32}}),arg1,arg2,arg3,arg4,arg5)
+    err = ccall((:MatCreateFFT,petscRealSingle),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Cstring,Ptr{Mat{Float32}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -5723,7 +5723,7 @@ function MatResidual(arg1::Mat{Float32},arg2::Vec{Float32},arg3::Vec{Float32},ar
 end
 
 function MatConvert(arg1::Mat{Float32},arg2::MatType,arg3::MatReuse,arg4::Union{Ptr{Mat{Float32}},StridedArray{Mat{Float32}},Ptr{Mat{Float32}},Ref{Mat{Float32}}})
-    err = ccall((:MatConvert,petscRealSingle),PetscErrorCode,(Mat{Float32},MatType,MatReuse,Ptr{Mat{Float32}}),arg1,arg2,arg3,arg4)
+    err = ccall((:MatConvert,petscRealSingle),PetscErrorCode,(Mat{Float32},Cstring,MatReuse,Ptr{Mat{Float32}}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -7213,7 +7213,7 @@ function MatNestGetSubMat(arg1::Mat{Float32},arg2::Integer,arg3::Integer,arg4::U
 end
 
 function MatNestSetVecType(arg1::Mat{Float32},arg2::VecType)
-    err = ccall((:MatNestSetVecType,petscRealSingle),PetscErrorCode,(Mat{Float32},VecType),arg1,arg2)
+    err = ccall((:MatNestSetVecType,petscRealSingle),PetscErrorCode,(Mat{Float32},Cstring),arg1,arg2)
     return err
 end
 
@@ -7593,7 +7593,7 @@ function DMSetOptionsPrefix(arg1::DM{Float32},arg2::Union{ByteString,Symbol,Arra
 end
 
 function DMSetVecType(arg1::DM{Float32},arg2::VecType)
-    err = ccall((:DMSetVecType,petscRealSingle),PetscErrorCode,(DM{Float32},VecType),arg1,arg2)
+    err = ccall((:DMSetVecType,petscRealSingle),PetscErrorCode,(DM{Float32},Cstring),arg1,arg2)
     return err
 end
 
@@ -7603,7 +7603,7 @@ function DMGetVecType(arg1::DM{Float32},arg2::Union{Ptr{VecType},StridedArray{Ve
 end
 
 function DMSetMatType(arg1::DM{Float32},arg2::MatType)
-    err = ccall((:DMSetMatType,petscRealSingle),PetscErrorCode,(DM{Float32},MatType),arg1,arg2)
+    err = ccall((:DMSetMatType,petscRealSingle),PetscErrorCode,(DM{Float32},Cstring),arg1,arg2)
     return err
 end
 

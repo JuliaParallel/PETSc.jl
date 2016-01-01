@@ -25,9 +25,9 @@ for (ts,arg) in ((:"RealSingle",:"PETSC_USE_REAL_SINGLE"),(:"RealDouble",:"PETSC
         h3 = "/home/kshyatt/mpi/openmpi/include"
         # Set up include paths
         clang_includes = ASCIIString[]
+        push!(clang_includes, h2)
         push!(clang_includes, PETSC_INCLUDE)
         push!(clang_includes, h1)
-        push!(clang_includes, h2)
         push!(clang_includes, h3)
 
 

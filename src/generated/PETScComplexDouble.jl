@@ -4573,7 +4573,7 @@ function VecSetValuesBlocked(arg1::Vec{Complex128},arg2::Integer,arg3::Union{Ptr
 end
 
 function VecSetType(arg1::Vec{Complex128},arg2::VecType)
-    err = ccall((:VecSetType,petscComplexDouble),PetscErrorCode,(Vec{Complex128},VecType),arg1,arg2)
+    err = ccall((:VecSetType,petscComplexDouble),PetscErrorCode,(Vec{Complex128},Cstring),arg1,arg2)
     return err
 end
 
@@ -5133,12 +5133,12 @@ function PetscSectionVecNorm(arg1::PetscSection{Complex128},arg2::PetscSection{C
 end
 
 function MatGetFactor(arg1::Mat{Complex128},arg2::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}},arg3::MatFactorType,arg4::Union{Ptr{Mat{Complex128}},StridedArray{Mat{Complex128}},Ptr{Mat{Complex128}},Ref{Mat{Complex128}}})
-    err = ccall((:MatGetFactor,petscComplexDouble),PetscErrorCode,(Mat{Complex128},Cstring,MatFactorType,Ptr{Mat{Complex128}}),arg1,arg2,arg3,arg4)
+    err = ccall((:MatGetFactor,petscComplexDouble),PetscErrorCode,(Mat{Complex128},Cstring,Cstring,Ptr{Mat{Complex128}}),arg1,arg2,arg3,arg4)
     return err
 end
 
 function MatGetFactorAvailable(arg1::Mat{Complex128},arg2::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}},arg3::MatFactorType,arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:MatGetFactorAvailable,petscComplexDouble),PetscErrorCode,(Mat{Complex128},Cstring,MatFactorType,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
+    err = ccall((:MatGetFactorAvailable,petscComplexDouble),PetscErrorCode,(Mat{Complex128},Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -5153,12 +5153,12 @@ function MatGetFactorType(arg1::Mat{Complex128},arg2::Union{Ptr{MatFactorType},S
 end
 
 function MatSolverPackageRegister(arg0::Type{Complex128},arg1::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}},arg2::MatType,arg3::MatFactorType,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:MatSolverPackageRegister,petscComplexDouble),PetscErrorCode,(Cstring,MatType,MatFactorType,Ptr{Void}),arg1,arg2,arg3,arg4)
+    err = ccall((:MatSolverPackageRegister,petscComplexDouble),PetscErrorCode,(Cstring,Cstring,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
 function MatSolverPackageGet(arg0::Type{Complex128},arg1::Union{ByteString,Symbol,Array{UInt8},Ptr{UInt8}},arg2::MatType,arg3::MatFactorType,arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg6::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
-    err = ccall((:MatSolverPackageGet,petscComplexDouble),PetscErrorCode,(Cstring,MatType,MatFactorType,Ptr{PetscBool},Ptr{PetscBool},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5,arg6)
+    err = ccall((:MatSolverPackageGet,petscComplexDouble),PetscErrorCode,(Cstring,Cstring,Cstring,Ptr{PetscBool},Ptr{PetscBool},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
@@ -5178,7 +5178,7 @@ function MatSetSizes(arg1::Mat{Complex128},arg2::Integer,arg3::Integer,arg4::Int
 end
 
 function MatSetType(arg1::Mat{Complex128},arg2::MatType)
-    err = ccall((:MatSetType,petscComplexDouble),PetscErrorCode,(Mat{Complex128},MatType),arg1,arg2)
+    err = ccall((:MatSetType,petscComplexDouble),PetscErrorCode,(Mat{Complex128},Cstring),arg1,arg2)
     return err
 end
 
@@ -5383,7 +5383,7 @@ function MatCompositeSetType(arg1::Mat{Complex128},arg2::MatCompositeType)
 end
 
 function MatCreateFFT(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::MatType,arg5::Union{Ptr{Mat{Complex128}},StridedArray{Mat{Complex128}},Ptr{Mat{Complex128}},Ref{Mat{Complex128}}})
-    err = ccall((:MatCreateFFT,petscComplexDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},MatType,Ptr{Mat{Complex128}}),arg1,arg2,arg3,arg4,arg5)
+    err = ccall((:MatCreateFFT,petscComplexDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Cstring,Ptr{Mat{Complex128}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -5723,7 +5723,7 @@ function MatResidual(arg1::Mat{Complex128},arg2::Vec{Complex128},arg3::Vec{Compl
 end
 
 function MatConvert(arg1::Mat{Complex128},arg2::MatType,arg3::MatReuse,arg4::Union{Ptr{Mat{Complex128}},StridedArray{Mat{Complex128}},Ptr{Mat{Complex128}},Ref{Mat{Complex128}}})
-    err = ccall((:MatConvert,petscComplexDouble),PetscErrorCode,(Mat{Complex128},MatType,MatReuse,Ptr{Mat{Complex128}}),arg1,arg2,arg3,arg4)
+    err = ccall((:MatConvert,petscComplexDouble),PetscErrorCode,(Mat{Complex128},Cstring,MatReuse,Ptr{Mat{Complex128}}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -7213,7 +7213,7 @@ function MatNestGetSubMat(arg1::Mat{Complex128},arg2::Integer,arg3::Integer,arg4
 end
 
 function MatNestSetVecType(arg1::Mat{Complex128},arg2::VecType)
-    err = ccall((:MatNestSetVecType,petscComplexDouble),PetscErrorCode,(Mat{Complex128},VecType),arg1,arg2)
+    err = ccall((:MatNestSetVecType,petscComplexDouble),PetscErrorCode,(Mat{Complex128},Cstring),arg1,arg2)
     return err
 end
 
@@ -7593,7 +7593,7 @@ function DMSetOptionsPrefix(arg1::DM{Complex128},arg2::Union{ByteString,Symbol,A
 end
 
 function DMSetVecType(arg1::DM{Complex128},arg2::VecType)
-    err = ccall((:DMSetVecType,petscComplexDouble),PetscErrorCode,(DM{Complex128},VecType),arg1,arg2)
+    err = ccall((:DMSetVecType,petscComplexDouble),PetscErrorCode,(DM{Complex128},Cstring),arg1,arg2)
     return err
 end
 
@@ -7603,7 +7603,7 @@ function DMGetVecType(arg1::DM{Complex128},arg2::Union{Ptr{VecType},StridedArray
 end
 
 function DMSetMatType(arg1::DM{Complex128},arg2::MatType)
-    err = ccall((:DMSetMatType,petscComplexDouble),PetscErrorCode,(DM{Complex128},MatType),arg1,arg2)
+    err = ccall((:DMSetMatType,petscComplexDouble),PetscErrorCode,(DM{Complex128},Cstring),arg1,arg2)
     return err
 end
 

@@ -191,6 +191,9 @@ end
 # they are top level (ie. this does a non recursive replace)
 ccall_single_dict = Dict{Any, Any}(
   :(Ptr{UInt8}) => :Cstring,
+  :(MatType) => :Cstring,
+  :(MatFactorType) => :Cstring,
+  :(VecType) => :Cstring,
 )
 
 # things to be replaced recurisvely in typealias rhs
@@ -261,6 +264,7 @@ end
 function petsc_rewriter(obuf)
   aliasbuf = filter( x -> typeof(x) == Expr && x.head == :typealias, obuf)
   aliasbuf = map( x -> fix_typealias(x), aliasbuf )
+  println("post alias ccall_single_dict: ",ccall_single_dict)
   for i=1:length(obuf)
     ex_i = obuf[i]  # obuf is an array of expressions
     if typeof(ex_i) == Expr
@@ -622,6 +626,7 @@ function process_ccall(ex)
   # args[4] = symbol, first argument name,
   # ...
   println("processing ccall ", ex)
+  println("ccall_single_dict: \n",ccall_single_dict)
   ex.args[1] = modify_libname(ex.args[1])  # change the library name
   ex.args[3] = modify_types(ex.args[3])
   println("changing argument names")
@@ -635,11 +640,11 @@ end
 
 function modify_types(ex)
   @assert ex.head == :tuple
-
   # do non recursive replace first
   for i=1:length(ex.args)
     println("checking if ", ex.args[i], " has entry in ccall_single_dict")
     println("ex.args[$i] before = ", ex.args[i])
+    println("ccall_single_dict: \n", ccall_single_dict)
     ex.args[i] = get(ccall_single_dict, ex.args[i], ex.args[i])
     println("  after = ", ex.args[i])
   end
@@ -740,11 +745,11 @@ function fix_typealias(ex)
 
   # do non recursive replacement
   rhs = get(typealias_single_dict, rhs, rhs)
-
   if rhs == :Symbol
     get!(ccall_rec_dict, lhs, :(Ptr{UInt8}))  # make the ccall argument a UInt8 recursive
     get!(ccall_single_dict, lhs, :Cstring)  # make it a cstring for single level replacement
     get!(symbol_type_dict, lhs, 1)  # record that this type is a symbol
+    println("TYPEALIAS SINGLE: lhs: $lhs rhs: $rhs")
   end
 
   # do recursive replacement

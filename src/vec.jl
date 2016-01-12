@@ -81,6 +81,7 @@ end
 sizelocal(x::Vec) = (lengthlocal(x),)
 sizelocal{T,n}(t::AbstractArray{T,n}, d) = (d>n ? 1 : sizelocal(t)[d])
 
+# TODO: iteration interface, some renaming
 function localpart(v::Vec)
   # this function returns a range from the first to the last indicies (1 based)
   # this is different than the Petsc VecGetOwnershipRange function where
@@ -358,11 +359,24 @@ end
 
 function (==)(x::Vec, y::AbstractArray)
   flag = true
-  for i=1:length(x)
-    flag = flag && x[i] == y[i]
+  x_arr = VecArray(x) 
+  for i=1:length(x_arr)  # do localpart, then MPI reduce
+    flag = flag && x_arr[i] == y[i]
+  end
+  VecArrayRestore(x_arr)
+
+  flag_int = convert(Int32, flag)  # Int32 is a MPI boolean
+  buf = Int32[flag_int]
+  # process 0 is root
+  recbuf = MPI.Reduce(buf, 1, MPI.LAND, 0, comm(x))
+
+  if  MPI.Comm_rank(comm(x)) == 0
+    buf[1] = recbuf[1]
   end
 
-  return flag
+  MPI.Bcast!(buf, 1, 0, comm(x))
+ 
+  return convert(Bool, buf[1]) 
 end
 
 function Base.sum{T}(x::Vec{T})
@@ -449,10 +463,10 @@ type VecArray{T <: Scalar} <: AbstractArray{T, 1}
   end
 
 end
-
+# name change: localvec
 function VecArray{T}(vec::Vec{T})
 
-  len = length(vec)
+  len = lengthlocal(vec)
 
   ref = Ref{Ptr{T}}()
   chk(C.VecGetArray(vec.p, ref))
@@ -472,13 +486,13 @@ end
 
 Base.linearindexing(varr::VecArray) = Base.linearindexing(varr.a)
 Base.size(varr::VecArray) = size(varr.a)
-
+Base.length(varr::VecArray) = size(varr)[1]
 # indexing
 getindex(varr::VecArray, i) = getindex(varr.a, i)
 setindex!(varr::VecArray, v, i) = setindex!(varr.a, v, i)
 
 Base.copy(varr::VecArray) = deepcopy(varr)
-
+ # just do vecarr.a == y
 function (==)(x::VecArray, y::AbstractArray)
   flag = true
   for i=1:length(x)

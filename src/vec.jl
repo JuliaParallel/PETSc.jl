@@ -16,23 +16,46 @@ type Vec{T,VType} <: AbstractVector{T}
   end
 end
 
+"""
+  Gets the MPI communicator of a vector.
+"""
 comm{T}(v::Vec{T}) = MPI.Comm(C.PetscObjectComm(T, v.p.pobj))
 
-function Vec{T}(::Type{T}, vtype::C.VecType=C.VECSEQ; comm::MPI.Comm=MPI.COMM_SELF)
+
+export gettype
+
+gettype{T,VT}(a::Vec{T,VT}) = VT
+
+
+"""
+  Create an empty, unsized vector.
+"""
+function Vec{T}(::Type{T}, vtype::C.VecType=C.VECSEQ; 
+                comm::MPI.Comm=MPI.COMM_SELF)
   p = Ref{C.Vec{T}}()
   chk(C.VecCreate(comm, p))
   Vec{T, vtype}(p[])
 end
 
-function Vec{T<:Scalar}(::Type{T}, len::Integer, vtype::C.VecType=C.VECSEQ;
-                        comm::MPI.Comm=MPI.COMM_SELF, mlocal::Integer=C.PETSC_DECIDE)
+"""
+  Create a vector, specifying the (global) length len and/or the local length
+  mlocal
+"""
+function Vec{T<:Scalar}(::Type{T}, len::Integer=C.PETSC_DECIDE,
+                         vtype::C.VecType=C.VECSEQ; 
+                         comm::MPI.Comm=MPI.COMM_SELF, 
+                         mlocal::Integer=C.PETSC_DECIDE)
   vec = Vec(T, vtype; comm=comm)
   resize!(vec, len, mlocal=mlocal)
   vec
 end
 
+"""
+  Make a PETSc vector out of an array.  If used in parallel, the array becomes
+  the local part of the PETSc vector
+"""
 # make a Vec that is a wrapper around v, where v stores the local data
-function Vec{T<:Scalar}(v::Vector{T}; comm::MPI.Comm=MPI.COMM_SELF)
+function Vec{T<:Scalar}(v::Vector{T}; comm::MPI.Comm=MPI.COMM_WORLD)
   p = Ref{C.Vec{T}}()
   chk(C.VecCreateMPIWithArray(comm, 1, length(v), C.PETSC_DECIDE, v, p))
   pv = Vec{T, C.VECMPI}(p[], v)
@@ -43,14 +66,13 @@ function VecDestroy{T}(vec::Vec{T})
   PetscFinalized(T) || C.VecDestroy(Ref(vec.p))
 end
 
+"""
+  Use the PETSc routine for veiwing a vector
+"""
 function petscview{T}(vec::Vec{T})
   viewer = C.PetscViewer{T}(C_NULL)
   chk(C.VecView(vec.p, viewer))
 end
-
-export gettype
-
-gettype{T,VT}(a::Vec{T,VT}) = VT
 
 function Base.resize!(x::Vec, m::Integer=C.PETSC_DECIDE; mlocal::Integer=C.PETSC_DECIDE)
   if m == mlocal == C.PETSC_DECIDE
@@ -66,11 +88,18 @@ export lengthlocal, sizelocal, localpart
 
 Base.convert(::Type{C.Vec}, v::Vec) = v.p
 
+"""
+  Get the global length of the vector
+"""
 function Base.length(x::Vec)
   sz = Ref{PetscInt}()
   chk(C.VecGetSize(x.p, sz))
   Int(sz[])
 end
+
+"""
+  Get the global size of the vector
+"""
 Base.size(x::Vec) = (length(x),)
 
 function lengthlocal(x::Vec)
@@ -78,7 +107,15 @@ function lengthlocal(x::Vec)
   chk(C.VecGetLocalSize(x.p, sz))
   sz[]
 end
+
+"""
+  Get the local length of the vector
+"""
 sizelocal(x::Vec) = (lengthlocal(x),)
+
+"""
+  Get local size of the vector
+"""
 sizelocal{T,n}(t::AbstractArray{T,n}, d) = (d>n ? 1 : sizelocal(t)[d])
 
 # TODO: iteration interface, some renaming

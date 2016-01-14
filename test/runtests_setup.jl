@@ -38,4 +38,13 @@ function RC(x::AbstractArray)
   end
 end
 
+# convert to PetscReal
+function RT(x::Number)
+  if ST == Float64 || ST == Complex128
+    return Float64(x)
+  else
+    return Float32(x)
+  end
+
+end
 

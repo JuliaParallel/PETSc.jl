@@ -61,7 +61,7 @@
   vec5 = Vec(Float64, 4)
   varr = VecArray(vec5)
   @test length(vec5) == 4
-  vec5j = [1. 2 3 4]
+  vec5j = [1., 2, 3, 4]
   for i=1:length(vec5)  varr[i] = vec5j[i] end
   
   @test varr[1] == vec5j[1]
@@ -101,6 +101,14 @@
       end
   end
   @testset "testing math functions" begin
+
+    @testset "testin chop" begin
+       jvec = RC([complex(1.0, 1.0), complex(2.0, 2.0), complex(3.0, 3.0)])
+       pvec = Vec(jvec)
+       chop!(pvec, RT(1.5))
+       jvec[1] = 0.0
+       @test pvec ≈ jvec
+    end 
 
     vec4_j = zeros(ST, length(vec4))
     for i=1:length(vec4)

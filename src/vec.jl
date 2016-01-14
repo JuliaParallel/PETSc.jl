@@ -63,9 +63,20 @@ function Vec{T<:Scalar}(v::Vector{T}; comm::MPI.Comm=MPI.COMM_WORLD)
 end
 
 function VecDestroy{T}(vec::Vec{T})
-  PetscFinalized(T) || C.VecDestroy(Ref(vec.p))
+  if !PetscFinalized(T)
+    C.VecDestroy(Ref(vec.p))
+    vec.p = C.Vec{T}(C_NULL)  # indicate the vector is finalized
+  end
 end
 
+# determine whether a vector has already been finalized
+function isfinalized(vec::Vec)
+  return isfinalized(vec.p)
+end
+
+function isfinalized(vec::C.Vec)
+  return vec.pobj == C_NULL
+end
 """
   Use the PETSc routine for veiwing a vector
 """
@@ -118,7 +129,6 @@ sizelocal(x::Vec) = (lengthlocal(x),)
 """
 sizelocal{T,n}(t::AbstractArray{T,n}, d) = (d>n ? 1 : sizelocal(t)[d])
 
-# TODO: iteration interface, some renaming
 function localpart(v::Vec)
   # this function returns a range from the first to the last indicies (1 based)
   # this is different than the Petsc VecGetOwnershipRange function where
@@ -285,15 +295,12 @@ for (f,pf) in ((:abs,:VecAbs), (:exp,:VecExp), (:log,:VecLog),
   end
 end
 
-# skip for now
-#=
 export chop!
 function chop!(x::Vec, tol::Real)
-VecChop(x.c, tol)
-chk(ccall((:VecChop, petsc), PetscErrorCode, (pVec, PetscReal), x, tol))
-x
+  chk(C.VecChop(x.p, tol))
+#  chk(ccall((:VecChop, petsc), PetscErrorCode, (pVec, PetscReal), x, tol))
+  x
 end
-=#
 
 for (f, pf, sf) in ((:findmax, :VecMax, :maximum), (:findmin, :VecMin, :minimum))
   @eval begin
@@ -514,7 +521,7 @@ end
 #TODO: check if pobj was already finalized
 function VecArrayRestore{T}(varr::VecArray{T})
 
-  if !varr.isfinalized && !PetscFinalized(T) 
+  if !varr.isfinalized && !PetscFinalized(T) && !isfinalized(varr.pobj)
     ptr = [varr.ref[]]
     chk(C.VecRestoreArray(varr.pobj, ptr))
   end 
@@ -531,12 +538,9 @@ setindex!(varr::VecArray, v, i) = setindex!(varr.a, v, i)
 Base.copy(varr::VecArray) = deepcopy(varr)
  # just do vecarr.a == y
 function (==)(x::VecArray, y::AbstractArray)
-  flag = true
-  for i=1:length(x)
-    flag = flag && x[i] == y[i]
-  end
-
-  return flag
+  println("typeof(x.a) = ", typeof(x.a))
+  println("typeof(y) = ", typeof(y))
+  return x.a == y
 end
 
 # what to do about similar?  it shouldn't be used?

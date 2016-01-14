@@ -403,11 +403,11 @@ end
 
 function (==)(x::Vec, y::AbstractArray)
   flag = true
-  x_arr = VecArray(x) 
+  x_arr = LocalArray(x) 
   for i=1:length(x_arr)  # do localpart, then MPI reduce
     flag = flag && x_arr[i] == y[i]
   end
-  VecArrayRestore(x_arr)
+  LocalArrayRestore(x_arr)
 
   flag_int = convert(Int32, flag)  # Int32 is a MPI boolean
   buf = Int32[flag_int]
@@ -492,34 +492,34 @@ end
 
 
 ##############################################################################
-export VecArray, VecArrayRestore
-type VecArray{T <: Scalar} <: AbstractArray{T, 1}
+export LocalArray, LocalArrayRestore
+type LocalArray{T <: Scalar} <: AbstractArray{T, 1}
   a::Array{T, 1}  # the array object constructed around the pointer
   ref::Ref{Ptr{T}}  # reference to the pointer to the data
   pobj::C.Vec{T}
   isfinalized::Bool  # has this been finalized yet
-  function VecArray(a::Array, ref::Ref, ptr)
+  function LocalArray(a::Array, ref::Ref, ptr)
     varr = new(a, ref, ptr, false)
     # backup finalizer, shouldn't ever be used because users must call
-    # VecArrayRestore before their changes will take effect
-    finalizer(varr, VecArrayRestore)
+    # LocalArrayRestore before their changes will take effect
+    finalizer(varr, LocalArrayRestore)
     return varr
   end
 
 end
 # name change: localvec
-function VecArray{T}(vec::Vec{T})
+function LocalArray{T}(vec::Vec{T})
 
   len = lengthlocal(vec)
 
   ref = Ref{Ptr{T}}()
   chk(C.VecGetArray(vec.p, ref))
   a = pointer_to_array(ref[], len)
-  return VecArray{T}(a, ref, vec.p)
+  return LocalArray{T}(a, ref, vec.p)
 end
 
 #TODO: check if pobj was already finalized
-function VecArrayRestore{T}(varr::VecArray{T})
+function LocalArrayRestore{T}(varr::LocalArray{T})
 
   if !varr.isfinalized && !PetscFinalized(T) && !isfinalized(varr.pobj)
     ptr = [varr.ref[]]
@@ -528,16 +528,16 @@ function VecArrayRestore{T}(varr::VecArray{T})
   varr.isfinalized = true
 end
 
-Base.linearindexing(varr::VecArray) = Base.linearindexing(varr.a)
-Base.size(varr::VecArray) = size(varr.a)
-Base.length(varr::VecArray) = size(varr)[1]
+Base.linearindexing(varr::LocalArray) = Base.linearindexing(varr.a)
+Base.size(varr::LocalArray) = size(varr.a)
+Base.length(varr::LocalArray) = size(varr)[1]
 # indexing
-getindex(varr::VecArray, i) = getindex(varr.a, i)
-setindex!(varr::VecArray, v, i) = setindex!(varr.a, v, i)
+getindex(varr::LocalArray, i) = getindex(varr.a, i)
+setindex!(varr::LocalArray, v, i) = setindex!(varr.a, v, i)
 
-Base.copy(varr::VecArray) = deepcopy(varr)
+Base.copy(varr::LocalArray) = deepcopy(varr)
  # just do vecarr.a == y
-function (==)(x::VecArray, y::AbstractArray)
+function (==)(x::LocalArray, y::AbstractArray)
   println("typeof(x.a) = ", typeof(x.a))
   println("typeof(y) = ", typeof(y))
   return x.a == y

@@ -59,7 +59,7 @@
 
 
   vec5 = Vec(Float64, 4)
-  varr = VecArray(vec5)
+  varr = LocalArray(vec5)
   @test length(vec5) == 4
   vec5j = [1., 2, 3, 4]
   for i=1:length(vec5)  varr[i] = vec5j[i] end
@@ -67,7 +67,7 @@
   @test varr[1] == vec5j[1]
   @test varr == vec5j
   
-  VecArrayRestore(varr)
+  LocalArrayRestore(varr)
 
   @test vec5 == vec5j
   

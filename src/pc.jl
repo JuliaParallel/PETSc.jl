@@ -5,14 +5,14 @@ type PC{T}
   p::C.PC{T}
   function PC(p::C.PC{T})
     o = new(p)
-    finalizer(o, PCDestroy)
+    finalizer(o, PetscDestroy)
     return o
   end
 end
 
 comm{T}(a::PC{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
 
-function PCDestroy{T}(o::PC{T})
+function PetscDestroy{T}(o::PC{T})
   PetscFinalized(T) || C.PCDestroy(Ref(o.p))
 end
 

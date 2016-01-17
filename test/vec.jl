@@ -32,7 +32,7 @@
 
   vec_tmp = Vec([1., 2, 3])
   @test PETSc.isfinalized(vec_tmp) == false
-  PETSc.VecDestroy(vec_tmp)
+  PETSc.PetscDestroy(vec_tmp)
   @test PETSc.isfinalized(vec_tmp) == true
 
   vec3 = similar(vec, ST, 5)

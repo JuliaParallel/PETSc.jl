@@ -11,14 +11,14 @@ type KSP{T}
   p::C.KSP{T}
   function KSP(p::C.KSP{T})
     o = new(p)
-    finalizer(o, KSPDestroy)
+    finalizer(o, PetscDestroy)
     return o
   end
 end
 
 comm{T}(a::KSP{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
 
-function KSPDestroy{T}(o::KSP{T})
+function PetscDestroy{T}(o::KSP{T})
   PetscFinalized(T) || C.KSPDestroy(Ref(o.p))
 end
 

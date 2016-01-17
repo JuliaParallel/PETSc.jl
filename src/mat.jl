@@ -11,7 +11,7 @@ type Mat{T, MType} <: AbstractSparseMatrix{T,PetscInt}
   function Mat(p::C.Mat{T}, data=nothing)
     A = new(p, false, C.INSERT_VALUES, data)
     chk(C.MatSetType(p, MType))
-    finalizer(A, MatDestroy)
+    finalizer(A, PetscDestroy)
     return A
   end
 end
@@ -39,12 +39,11 @@ function Mat{T}(::Type{T}, m::Integer, n::Integer;
   return mat
 end
 
-function MatDestroy{T}(mat::Mat{T})
+function PetscDestroy{T}(mat::Mat{T})
   if !PetscFinalized(T)
     C.MatDestroy(Ref(mat.p))
     mat.p = C.Mat{T}(C_NULL)  # indicate the vector is finalized
   end
-  PetscFinalized(T) || C.MatDestroy(Ref(mat.p))
 end
 
 function isfinalized(mat::Mat)

@@ -11,7 +11,7 @@ type Vec{T,VType} <: AbstractVector{T}
   function Vec(p::C.Vec{T}, data=nothing)
     v = new(p, false, C.INSERT_VALUES, data)
     chk(C.VecSetType(p, VType))  # set the type here to ensure it matches VType
-    finalizer(v, VecDestroy)
+    finalizer(v, PetscDestroy)
     return v
   end
 end
@@ -62,7 +62,7 @@ function Vec{T<:Scalar}(v::Vector{T}; comm::MPI.Comm=MPI.COMM_WORLD)
   return pv
 end
 
-function VecDestroy{T}(vec::Vec{T})
+function PetscDestroy{T}(vec::Vec{T})
   if !PetscFinalized(T)
     C.VecDestroy(Ref(vec.p))
     vec.p = C.Vec{T}(C_NULL)  # indicate the vector is finalized

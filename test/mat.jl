@@ -53,7 +53,7 @@ end
     @test nnz(mat) == 2
 
     @test PETSc.isfinalized(mat) == false
-    PETSc.MatDestroy(mat)
+    PETSc.PetscDestroy(mat)
     @test PETSc.isfinalized(mat) == true
   end
   @testset "real and imag" begin

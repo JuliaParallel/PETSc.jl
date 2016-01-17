@@ -218,6 +218,8 @@ Vec{T2}(a::Mat{T2}, transposed=false) =
 #############################################################################
 Base.convert(::Type{C.Mat}, a::Mat) = a.p
 
+export sizelocal, localranges, lengthlocal
+
 function Base.size(a::Mat)
   m = Ref{PetscInt}()
   n = Ref{PetscInt}()
@@ -230,6 +232,18 @@ function sizelocal(a::Mat)
   n = Ref{PetscInt}()
   chk(C.MatGetLocalSize(a.p, m, n))
   (Int(m[]), Int(n[]))
+end
+
+
+function localranges(a::Mat)
+  start_ref = Ref{PetscInt}()
+  end_1_ref = Ref{PetscInt}()
+  chk(C.MatGetOwnershipRange(a.p, start_ref, end_1_ref))
+  start_idx = start_ref[] + 1  # convert to 1 based index
+  end_idx = end_1_ref[]  # subtract 1 because petsc supplies 1 past the end,
+                         # then add 1 to convert to 1 based index
+
+  return start_idx:end_idx, 1:size(a, 2)
 end
 
 lengthlocal(a::Mat) = prod(sizelocal(a))
@@ -416,11 +430,11 @@ function Base.fill!(x::Mat, v::Number)
   if v == 0
     chk(C.MatZeroEntries(x.p))
   else
-    # FIXME: only loop over local rows
+    # FIXME: don't write to non-allocated entries
     iassemble(x) do
-      m,n = size(x)
-      for i in 1:m
-        for j in 1:n
+      rows, cols = localranges(x)
+      for i in rows
+        for j in cols
           x[i,j] = v
         end
       end

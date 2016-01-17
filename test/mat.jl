@@ -52,6 +52,10 @@ end
     #test nnz
     @test nnz(mat) == 2
 
+    rows, cols = localranges(mat)
+    @test rows == 1:size(mat, 1)
+    @test cols == 1:size(mat, 2)
+
     @test PETSc.isfinalized(mat) == false
     PETSc.PetscDestroy(mat)
     @test PETSc.isfinalized(mat) == true

@@ -16,24 +16,43 @@ type Mat{T, MType} <: AbstractSparseMatrix{T,PetscInt}
   end
 end
 
+"""
+  Get the communicator for the object
+"""
 comm{T}(a::Mat{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
 
+"""
+  Create an empty, unsized matrix
+"""
 function Mat{T}(::Type{T}, mtype::C.MatType=C.MATSEQ; comm::MPI.Comm=MPI.COMM_WORLD)
   p = Ref{C.Mat{T}}()
   chk(C.MatCreate(comm, p))
   Mat{T, mtype}(p[])
 end
 
+"""
+  Create a matrix of a particular size, optionally specifying the pre-allocation.
+  If pre-allocation is not specified, no preallocation is done
+"""
 function Mat{T}(::Type{T}, m::Integer, n::Integer;
                 mlocal::Integer=C.PETSC_DECIDE, nlocal::Integer=C.PETSC_DECIDE,
-                nz::Integer=16, nnz::AbstractVector=PetscInt[],
+                nz::Integer=0, nnz::AbstractVector=PetscInt[],
                 onz::Integer=0, onnz::AbstractVector=PetscInt[],
                 comm::MPI.Comm=MPI.COMM_WORLD,
                 mtype::Symbol=C.MATMPIAIJ)
 
   mat = Mat(T, mtype, comm=comm)
   resize!(mat, m, n, mlocal=mlocal, nlocal=nlocal)
-  setpreallocation!(mat, nz=nz, nnz=nnz, onz=onz, onnz=onnz)
+
+  # don't preallocate unless the user specified to do so, because
+  # after pre-allocation it is an error to try to change the sparsity pattern
+  # Before preallocation Petsc will dynamically allocate memory as needed
+  # slow but flexible.
+  if nz==0 && onz == 0  && nnz == PetscInt[] && onnz == PetscInt[]
+    chk(C.MatSetUp(mat.p)) 
+  else  # preallocate
+    setpreallocation!(mat, nz=nz, nnz=nnz, onz=onz, onnz=onnz)
+  end
   setoption!(mat, C.MAT_ROW_ORIENTED, false)  # julia data is column major
 
   return mat
@@ -46,6 +65,9 @@ function PetscDestroy{T}(mat::Mat{T})
   end
 end
 
+"""
+  Check if PetscDestroy has been called on this object already
+"""
 function isfinalized(mat::Mat)
   return isfinalized(mat.p)
 end

@@ -507,7 +507,6 @@ type LocalArray{T <: Scalar} <: AbstractArray{T, 1}
   end
 
 end
-# name change: localvec
 function LocalArray{T}(vec::Vec{T})
 
   len = lengthlocal(vec)
@@ -518,7 +517,6 @@ function LocalArray{T}(vec::Vec{T})
   return LocalArray{T}(a, ref, vec.p)
 end
 
-#TODO: check if pobj was already finalized
 function LocalArrayRestore{T}(varr::LocalArray{T})
 
   if !varr.isfinalized && !PetscFinalized(T) && !isfinalized(varr.pobj)

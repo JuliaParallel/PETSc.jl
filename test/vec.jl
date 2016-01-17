@@ -30,6 +30,11 @@
     @test lv2 == vec2
   end
 
+  vec_tmp = Vec([1., 2, 3])
+  @test PETSc.isfinalized(vec_tmp) == false
+  PETSc.VecDestroy(vec_tmp)
+  @test PETSc.isfinalized(vec_tmp) == true
+
   vec3 = similar(vec, ST, 5)
   @test length(vec3) == 5
 

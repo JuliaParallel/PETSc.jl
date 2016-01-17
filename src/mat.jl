@@ -18,7 +18,7 @@ end
 
 comm{T}(a::Mat{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
 
-function Mat{T}(::Type{T}, mtype=C.MatType=C.MATSEQ; comm::MPI.Comm=MPI.COMM_WORLD)
+function Mat{T}(::Type{T}, mtype::C.MatType=C.MATSEQ; comm::MPI.Comm=MPI.COMM_WORLD)
   p = Ref{C.Mat{T}}()
   chk(C.MatCreate(comm, p))
   Mat{T, mtype}(p[])
@@ -40,7 +40,19 @@ function Mat{T}(::Type{T}, m::Integer, n::Integer;
 end
 
 function MatDestroy{T}(mat::Mat{T})
+  if !PetscFinalized(T)
+    C.MatDestroy(Ref(mat.p))
+    mat.p = C.Mat{T}(C_NULL)  # indicate the vector is finalized
+  end
   PetscFinalized(T) || C.MatDestroy(Ref(mat.p))
+end
+
+function isfinalized(mat::Mat)
+  return isfinalized(mat.p)
+end
+
+function isfinalized(mat::C.Mat)
+  return mat.pobj == C_NULL
 end
 
 function petscview{T}(mat::Mat{T})

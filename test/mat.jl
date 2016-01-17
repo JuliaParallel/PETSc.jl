@@ -51,6 +51,10 @@ end
 
     #test nnz
     @test nnz(mat) == 2
+
+    @test PETSc.isfinalized(mat) == false
+    PETSc.MatDestroy(mat)
+    @test PETSc.isfinalized(mat) == true
   end
   @testset "real and imag" begin
     mat  = make_mat()

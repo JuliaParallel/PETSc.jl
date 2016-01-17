@@ -538,8 +538,6 @@ setindex!(varr::LocalArray, v, i) = setindex!(varr.a, v, i)
 Base.copy(varr::LocalArray) = deepcopy(varr)
  # just do vecarr.a == y
 function (==)(x::LocalArray, y::AbstractArray)
-  println("typeof(x.a) = ", typeof(x.a))
-  println("typeof(y) = ", typeof(y))
   return x.a == y
 end
 

@@ -9,14 +9,14 @@ type IS{T}
   p::C.IS{T}
   function IS(p::C.IS{T})
     o = new(p)
-    finalizer(o, ISDestroy)
+    finalizer(o, PetscDestroy)
     return o
   end
 end
 
 comm{T}(a::IS{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
 
-function ISDestroy{T}(o::IS{T})
+function PetscDestroy{T}(o::IS{T})
   PetscFinalized(T) || C.ISDestroy(Ref(o.p))
 end
 

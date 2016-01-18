@@ -35,11 +35,13 @@ output_file(hdr::ASCIIString) = "PETSc.jl"
 function wrap_cursor(name::ASCIIString, cursor)
   println("name = ", name)
   exc = true
+#= debug: wrap everything
   if length(name) > 0
     if name[1] == '_'
       exc = false
     end
   end
+=#
   return exc
 end
 

@@ -39,6 +39,7 @@ new_type_dict = Dict{Any, Any} (
   :ISColoring => :(ISColoring{$val_tmp}),
   :PetscLayout => :(PetscLayout{$val_tmp}),
   :VecScatter => :(VecScatter{$val_tmp}),
+  :AO => :(AO{$val_tmp})
 )
 
 # definitions that will be provided, but don't come from Petsc
@@ -171,9 +172,13 @@ for i in keys(new_type_dict)
   get!(const_rec_dict, i, new_type_dict[i])
 end
 
+
+#################################################################################
+
 function petsc_rewriter(obuf)
   for i=1:length(obuf)
     ex_i = obuf[i]  # obuf is an array of expressions
+    println("rewriting expression ", ex_i)
 
     if typeof(ex_i) == Expr
       head_i = ex_i.head  # function
@@ -613,6 +618,8 @@ function fix_typealias(ex)
   @assert ex.head == :typealias
   new_type = ex.args[1]
 
+  println("fixing typealias ", ex)
+
   if haskey(typealias_exclude_dict, new_type)
     if typealias_exclude_dict[new_type] == 1
       # construct immutable type definition
@@ -676,6 +683,9 @@ end
 
 ##### Type declaration functions #####
 function process_type(ex)
+
+  println("processing type declaration ", ex)
+
   # make all types (structs) immutable
   ex.args[1] = false
 

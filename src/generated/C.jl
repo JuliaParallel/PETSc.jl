@@ -8,6 +8,7 @@ include("libPETSc_commonRealDouble.jl")
 include("PETScRealDouble.jl")
 include("PETScRealSingle.jl")
 include("PETScComplexDouble.jl")
+include("error.jl")
 include("defs2.jl")
 
 end

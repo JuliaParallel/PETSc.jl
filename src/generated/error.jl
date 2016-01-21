@@ -1,5 +1,5 @@
 # PETSc error codes and error handling
-
+export chk, PetscError, PetscErrorMessage
 #typealias PetscErrorCode Cint # from petscsys.h
 
 # wrap this around all PETSc ccalls, in order to catch exceptions

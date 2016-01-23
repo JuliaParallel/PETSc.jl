@@ -3,11 +3,18 @@
 
 ##### Vec #####
 
+  function VecCreate{T}(::Type{T}; comm=MPI.COMM_WORLD)
+    vref = Ref{Vec{T}}()
+    chk(VecCreate(comm, vref))
+    return vref[]
+  end 
+
+
   function SetValues{T}(vec::Vec{T},idx::AbstractVector{PetscInt},
                                 vals::AbstractVector{T},
                                 flag::Integer=INSERT_VALUES)
 
-    chk(VecSetValues(vec, length(idx), idx, InsertMode(vals)))
+    chk(VecSetValues(vec, length(idx), idx, vals, InsertMode(flag)))
   end
 
   
@@ -30,7 +37,7 @@
 
 ##### Mat #####
 
-function MatCreateShell(arg1::MPI.Comm_type,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer, arg6::Ptr{Void}, dtype::Type{T}=Float64)
+function MatCreateShell{T}(arg1::MPI.Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer, arg6::Ptr{Void}, dtype::Type{T}=Float64)
   # arg6 is the user provided context
     arg7 = Ref{Mat{dtype}}()
     chk(MatCreateShell(arg1, arg2, arg3, arg5, arg6, arg6, arg7))
@@ -54,7 +61,7 @@ function MatShellGetContext(arg1::Mat{Float64})
     return arg2[]  # turn it into a julia object here?
 end
 
-  function SetValues(vec::Mat,idi::AbstractArray{PetscInt},idj::AbstractArray{PetscInt},array::AbstractArray{PetscScalar},flag::Integer)
+  function SetValues{ST}(vec::Mat,idi::AbstractArray{PetscInt},idj::AbstractArray{PetscInt},array::AbstractArray{ST},flag::Integer)
     # remember, only matrices can be inserted into a Petsc matrix
     # if array is a 3 by 3, then idi and idj are vectors of length 3
 
@@ -65,25 +72,25 @@ end
 
   end
 
-  function SetValuesBlocked(mat::Mat, idi::AbstractArray{PetscInt}, idj::AbstractArray{PetscInt}, v::AbstractArray{PetscScalar}, flag::Integer)
+  function SetValuesBlocked{ST}(mat::Mat, idi::AbstractArray{PetscInt}, idj::AbstractArray{PetscInt}, v::AbstractArray{ST}, flag::Integer)
 
     chk(MatSetValuesBlocked(mat, length(idi), idi, length(idj), idj, v, InsertMode(flag)))
   end
 
-  function MatSetOption(mat::PetscMat,arg2::MatOption,arg3::Bool)
+  function MatSetOption(mat::Mat,arg2::MatOption,arg3::Bool)
     chk(MatSetOption(mat, arg2, PetscBool(arg3)))
   end
 
-  function AssemblyBegin(obj::PetscMat,flg=MAT_FINAL_ASSEMBLY)
+  function AssemblyBegin(obj::Mat,flg=MAT_FINAL_ASSEMBLY)
     chk(MatAssemblyBegin(obj, MatAssemblyType(flg)))
   end
 
-  function AssemblyEnd(obj::PetscMat,flg=MAT_FINAL_ASSEMBLY)
+  function AssemblyEnd(obj::Mat,flg=MAT_FINAL_ASSEMBLY)
     chk(MatAssemblyEnd(obj, MatAssemblyType(flg)))
   end
 
 
-  function PetscMatGetValues(obj::PetscMat, idxm::Array{PetscInt, 1}, idxn::Array{PetscInt, 1}, v::Array{PetscScalar, 2})
+  function MatGetValues{ST}(obj::Mat, idxm::Array{PetscInt, 1}, idxn::Array{PetscInt, 1}, v::Array{ST, 2})
     # do check here to ensure v is the right shape
     chk(MatGetValues(obj, length(idxm), idxm, length(idxn), idxn, v))
 end

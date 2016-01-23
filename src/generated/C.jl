@@ -10,5 +10,5 @@ include("PETScRealSingle.jl")
 include("PETScComplexDouble.jl")
 include("error.jl")
 include("defs2.jl")
-
+include("c_funcs.jl")
 end

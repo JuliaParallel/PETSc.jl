@@ -24,7 +24,7 @@ comm{T}(a::Mat{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
 """
   Create an empty, unsized matrix
 """
-function Mat{T}(::Type{T}, mtype::C.MatType=C.MATSEQ; comm::MPI.Comm=MPI.COMM_WORLD)
+function Mat{T}(::Type{T}, mtype::C.MatType=C.MATSEQAIJ; comm::MPI.Comm=MPI.COMM_WORLD)
   p = Ref{C.Mat{T}}()
   chk(C.MatCreate(comm, p))
   Mat{T, mtype}(p[])
@@ -34,9 +34,9 @@ end
   Create a matrix of a particular size, optionally specifying the pre-allocation.
   If pre-allocation is not specified, no preallocation is done
 """
-function Mat{T}(::Type{T}, m::Integer, n::Integer;
+function Mat{T}(::Type{T}, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
                 mlocal::Integer=C.PETSC_DECIDE, nlocal::Integer=C.PETSC_DECIDE,
-                nz::Integer=0, nnz::AbstractVector=PetscInt[],
+                bs=1, nz::Integer=0, nnz::AbstractVector=PetscInt[],
                 onz::Integer=0, onnz::AbstractVector=PetscInt[],
                 comm::MPI.Comm=MPI.COMM_WORLD,
                 mtype::Symbol=C.MATMPIAIJ)
@@ -49,9 +49,12 @@ function Mat{T}(::Type{T}, m::Integer, n::Integer;
   # Before preallocation Petsc will dynamically allocate memory as needed
   # slow but flexible.
   if nz==0 && onz == 0  && nnz == PetscInt[] && onnz == PetscInt[]
+    if bs != 1
+      chk(C.MatSetBlockSize(mat.p, PetscInt(bs)))
+    end
     chk(C.MatSetUp(mat.p)) 
   else  # preallocate
-    setpreallocation!(mat, nz=nz, nnz=nnz, onz=onz, onnz=onnz)
+    setpreallocation!(mat, nz=nz, nnz=nnz, onz=onz, onnz=onnz, bs=bs)
   end
   setoption!(mat, C.MAT_ROW_ORIENTED, false)  # julia data is column major
 
@@ -103,7 +106,7 @@ end
 function setpreallocation!{T, MType}(a::Mat{T, MType};
   nz::Integer=16, nnz::AbstractVector=PetscInt[],
   onz::Integer=0, onnz::AbstractVector=PetscInt[],
-  bs::Integer=16)
+  bs::Integer=1)
   if MType == C.MATSEQAIJ
     pnnz = if isempty(nnz)
       Ptr{PetscInt}(0)

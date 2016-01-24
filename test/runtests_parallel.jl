@@ -2,8 +2,8 @@
 include("runtests_setup.jl")
 
 comm = MPI.COMM_WORLD
-comm_size = MPI.Comm_size(MPI.COMM_WORLD)
-comm_rank = MPI.Comm_rank(MPI.COMM_WORLD)
+global const comm_size = MPI.Comm_size(MPI.COMM_WORLD)
+global const comm_rank = MPI.Comm_rank(MPI.COMM_WORLD)
 
 
 
@@ -53,17 +53,7 @@ for ST in PETSc.C.petsc_type
     end
   end
 
-  if comm_rank == 0
-    println("rhs_global = ", rhs_global)
-    println("A_julia_global = ", A_julia_global)
-  end
-
-  #println("rhs = ", rhs)
-  #println("A_julia = ", A_julia)
   x_julia = A_julia\rhs
-  #println("x_julia = ", x_julia)
-
-
 
   include("vecp.jl")
   include("c_funcs.jl")

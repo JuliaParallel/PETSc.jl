@@ -61,18 +61,18 @@ function MatShellGetContext(arg1::Mat{Float64})
     return arg2[]  # turn it into a julia object here?
 end
 
-  function SetValues{ST}(vec::Mat,idi::AbstractArray{PetscInt},idj::AbstractArray{PetscInt},array::AbstractArray{ST},flag::Integer)
+  function SetValues{ST}(vec::Mat,idi::AbstractArray{PetscInt},idj::AbstractArray{PetscInt},array::AbstractArray{ST},flag::Integer=INSERT_VALUES)
     # remember, only matrices can be inserted into a Petsc matrix
     # if array is a 3 by 3, then idi and idj are vectors of length 3
 
 #    @assert length(idi)*length(idj) == length(array)
 
     # do check here to ensure array is the right shape (remember tranpose)
-    chk(MatSetValues(vec, length(idi), idi, length(idj, idj, array, InsertMode(flag))))
+    chk(MatSetValues(vec, length(idi), idi, length(idj), idj, array, InsertMode(flag)))
 
   end
 
-  function SetValuesBlocked{ST}(mat::Mat, idi::AbstractArray{PetscInt}, idj::AbstractArray{PetscInt}, v::AbstractArray{ST}, flag::Integer)
+  function SetValuesBlocked{ST}(mat::Mat, idi::AbstractArray{PetscInt}, idj::AbstractArray{PetscInt}, v::AbstractArray{ST}, flag::Integer=INSERT_VALUES)
 
     chk(MatSetValuesBlocked(mat, length(idi), idi, length(idj), idj, v, InsertMode(flag)))
   end
@@ -90,7 +90,7 @@ end
   end
 
 
-  function MatGetValues{ST}(obj::Mat, idxm::Array{PetscInt, 1}, idxn::Array{PetscInt, 1}, v::Array{ST, 2})
+  function GetValues{ST}(obj::Mat, idxm::AbstractArray{PetscInt, 1}, idxn::AbstractArray{PetscInt, 1}, v::AbstractArray{ST})
     # do check here to ensure v is the right shape
     chk(MatGetValues(obj, length(idxm), idxm, length(idxn), idxn, v))
 end

@@ -37,10 +37,10 @@
 
 ##### Mat #####
 
-function MatCreateShell{T}(arg1::MPI.Comm,arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer, arg6::Ptr{Void}, dtype::Type{T}=Float64)
+function MatCreateShell{T}(arg2::Integer,arg3::Integer,arg4::Integer,arg5::Integer, arg6::Ptr{Void}, dtype::Type{T}=Float64;arg1::MPI.Comm=MPI.COMM_WORLD)
   # arg6 is the user provided context
     arg7 = Ref{Mat{dtype}}()
-    chk(MatCreateShell(arg1, arg2, arg3, arg5, arg6, arg6, arg7))
+    chk(MatCreateShell(arg1, arg2, arg3, arg4, arg5, arg6, arg7))
 
     return Mat(arg7[])
 end
@@ -57,7 +57,7 @@ end
 function MatShellGetContext(arg1::Mat{Float64})
 # get the user provided context for the matrix shell
     arg2 = Ref{Ptr{Void}}()
-    chk(ccall((:MatShellGetContext,petscRealDouble),PetscErrorCode,(Mat{Float64},Ref{Ptr{Void}}),arg1.pobj,arg2))
+    chk(ccall((:MatShellGetContext,petscRealDouble),PetscErrorCode,(Mat{Float64},Ref{Ptr{Void}}),arg1,arg2))
     return arg2[]  # turn it into a julia object here?
 end
 

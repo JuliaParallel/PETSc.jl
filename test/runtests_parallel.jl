@@ -1,6 +1,25 @@
 # run tests in parallel
 include("runtests_setup.jl")
 
+
+function mymult{T}(A::PETSc.C.Mat{T}, x::PETSc.C.Vec, b::PETSc.C.Vec)
+# matrix multiplication function for the shell matrix A
+# A performs the action of A = diagm(1:sys_size)
+
+  bigx = Vec{T, PETSc.C.VECMPI}(x, first_instance=false)
+  bigb = Vec{T, PETSc.C.VECMPI}(b, first_instance=false)
+  localx = LocalArrayRead(bigx)
+  localb = LocalArray(bigb)
+  for i=1:length(localx)
+    localb[i] = i*localx[i]
+  end
+
+  LocalArrayRestore(localx)
+  LocalArrayRestore(localb)
+  return PETSc.C.PetscErrorCode(0)
+end
+
+
 comm = MPI.COMM_WORLD
 global const comm_size = MPI.Comm_size(MPI.COMM_WORLD)
 global const comm_rank = MPI.Comm_rank(MPI.COMM_WORLD)

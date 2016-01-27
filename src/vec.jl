@@ -8,10 +8,12 @@ type Vec{T,VType} <: AbstractVector{T}
   data::Any # keep a reference to anything needed for the Mat
             # -- needed if the Mat is a wrapper around a Julia object,
             #    to prevent the object from being garbage collected.
-  function Vec(p::C.Vec{T}, data=nothing)
+  function Vec(p::C.Vec{T}, data=nothing; first_instance::Bool=true)
     v = new(p, false, C.INSERT_VALUES, data)
-    chk(C.VecSetType(p, VType))  # set the type here to ensure it matches VType
-    finalizer(v, PetscDestroy)
+    if first_instance
+      chk(C.VecSetType(p, VType))  # set the type here to ensure it matches VType
+      finalizer(v, PetscDestroy)
+    end
     return v
   end
 end
@@ -63,7 +65,7 @@ function Vec{T<:Scalar}(v::Vector{T}; comm::MPI.Comm=MPI.COMM_WORLD)
 end
 
 function PetscDestroy{T}(vec::Vec{T})
-  if !PetscFinalized(T)
+  if !PetscFinalized(T)  && !isfinalized(vec)
     C.VecDestroy(Ref(vec.p))
     vec.p = C.Vec{T}(C_NULL)  # indicate the vector is finalized
   end
@@ -492,7 +494,8 @@ end
 
 
 ##############################################################################
-export LocalArray, LocalArrayRestore
+export LocalArray, LocalArrayRead, LocalArrayRestore
+
 type LocalArray{T <: Scalar} <: AbstractArray{T, 1}
   a::Array{T, 1}  # the array object constructed around the pointer
   ref::Ref{Ptr{T}}  # reference to the pointer to the data
@@ -526,16 +529,55 @@ function LocalArrayRestore{T}(varr::LocalArray{T})
   varr.isfinalized = true
 end
 
-Base.linearindexing(varr::LocalArray) = Base.linearindexing(varr.a)
-Base.size(varr::LocalArray) = size(varr.a)
-Base.length(varr::LocalArray) = size(varr)[1]
+
+
+
+# read only version
+type LocalArrayRead{T <: Scalar} <: AbstractArray{T, 1}
+  a::Array{T, 1}  # the array object constructed around the pointer
+  ref::Ref{Ptr{T}}  # reference to the pointer to the data
+  pobj::C.Vec{T}
+  isfinalized::Bool  # has this been finalized yet
+  function LocalArrayRead(a::Array, ref::Ref, ptr)
+    varr = new(a, ref, ptr, false)
+    # backup finalizer, shouldn't ever be used because users must call
+    # LocalArrayRestore before their changes will take effect
+    finalizer(varr, LocalArrayRestore)
+    return varr
+  end
+
+end
+function LocalArrayRead{T}(vec::Vec{T})
+
+  len = lengthlocal(vec)
+
+  ref = Ref{Ptr{T}}()
+  chk(C.VecGetArrayRead(vec.p, ref))
+  a = pointer_to_array(ref[], len)
+  return LocalArrayRead{T}(a, ref, vec.p)
+end
+
+function LocalArrayRestore{T}(varr::LocalArrayRead{T})
+
+  if !varr.isfinalized && !PetscFinalized(T) && !isfinalized(varr.pobj)
+    ptr = [varr.ref[]]
+    chk(C.VecRestoreArrayRead(varr.pobj, ptr))
+  end 
+  varr.isfinalized = true
+end
+
+
+typealias LocalArrays Union{LocalArray, LocalArrayRead}
+
+Base.linearindexing(varr::LocalArrays) = Base.linearindexing(varr.a)
+Base.size(varr::LocalArrays) = size(varr.a)
+Base.length(varr::LocalArrays) = size(varr)[1]
 # indexing
-getindex(varr::LocalArray, i) = getindex(varr.a, i)
+getindex(varr::LocalArrays, i) = getindex(varr.a, i)
 setindex!(varr::LocalArray, v, i) = setindex!(varr.a, v, i)
 
-Base.copy(varr::LocalArray) = deepcopy(varr)
- # just do vecarr.a == y
-function (==)(x::LocalArray, y::AbstractArray)
+Base.copy(varr::LocalArrays) = deepcopy(varr)
+function (==)(x::LocalArrays, y::AbstractArray)
   return x.a == y
 end
 

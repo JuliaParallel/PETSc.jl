@@ -75,7 +75,10 @@
   LocalArrayRestore(varr)
 
   @test vec5 == vec5j
-  
+
+  varr = LocalArrayRead(vec5)
+  for i=1:length(vec5) @test varr[i] ==  vec5[i] end
+  LocalArrayRestore(varr)
   
 
 

@@ -8,10 +8,13 @@ type Mat{T, MType} <: AbstractSparseMatrix{T,PetscInt}
   data::Any # keep a reference to anything needed for the Mat
             # -- needed if the Mat is a wrapper around a Julia object,
             #    to prevent the object from being garbage collected.
-  function Mat(p::C.Mat{T}, data=nothing)
+  function Mat(p::C.Mat{T}, data=nothing; first_instance::Bool=true)
     A = new(p, false, C.INSERT_VALUES, data)
-    chk(C.MatSetType(p, MType))
-    finalizer(A, PetscDestroy)
+    if first_instance  # if the pointer p has not been put into a 
+                       # Mat object before
+      chk(C.MatSetType(p, MType))
+      finalizer(A, PetscDestroy)
+    end
     return A
   end
 end
@@ -575,6 +578,13 @@ function (*){T, MType}(A::Mat{T}, x::Vec{T, MType})
   chk(C.MatMult(A.p, x.p, b.p))
   return b
 end
+
+function (*){T, MType}(A::Mat{T}, x::Vec{T, MType}, b::Vec{T})
+  chk(C.MatMult(A.p, x.p, b.p))
+  return b
+end
+
+
 
 function (.*){T, MType}(A::Mat{T, MType}, x::Number)
   Y = copy(A)

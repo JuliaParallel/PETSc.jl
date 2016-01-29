@@ -10,7 +10,7 @@ type Mat{T, MType} <: AbstractSparseMatrix{T,PetscInt}
             #    to prevent the object from being garbage collected.
   function Mat(p::C.Mat{T}, data=nothing; first_instance::Bool=true)
     A = new(p, false, C.INSERT_VALUES, data)
-    if first_instance  # if the pointer p has not been put into a 
+    if first_instance  # if the pointer p has not been put into a  # not necessary if reference counter
                        # Mat object before
       chk(C.MatSetType(p, MType))
       finalizer(A, PetscDestroy)

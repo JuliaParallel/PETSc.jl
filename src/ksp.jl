@@ -119,6 +119,35 @@ function Base.A_ldiv_B!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T})
   return x
 end
 
+# x = A.' \ b
+# Base.At_ldiv_B! does not exist? the non bang version does
+function KSPSolveTranspose!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T})
+  assemble(_ksp_A(ksp))
+  assemble(b)
+  assemble(x)
+  
+  chk(C.KSPSolveTranspose(ksp.p, b.p, x.p))
+
+  reason = Ref{Cint}()
+  chk(C.KSPGetConvergedReason(ksp.p, reason))
+  reason[] < 0 && warn("KSP solve did not converge")
+
+  return x
+end
+
+# is there nice syntax for this?
+export KSPSolveTranspose
+function KSPSolveTranspose{T}(ksp::KSP{T}, b::Vec{T})
+
+  x = similar(b, size(ksp, 1))
+  KSPSolveTranspose!(ksp, b, x)
+  return x
+end
+
+
+
+
+
 function Base.size(ksp::KSP)
   m = Ref{PetscInt}()
   n = Ref{PetscInt}()

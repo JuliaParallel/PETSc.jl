@@ -1,7 +1,5 @@
 @testset "KSP{$ST}" begin
   A = PETSc.Mat(ST, 3,3)
-  println("A = ", A)
-  println("typeof(A) = ", typeof(A))
   A_julia = zeros(ST,3,3)
   for i=1:3
     for j=1:3
@@ -24,6 +22,10 @@
       kspg = PETSc.KSP(A)
       x = kspg\b
       x_julia = A_julia\b_julia
+      @test x ≈ x_julia
+
+      x = KSPSolveTranspose(kspg, b)
+      x_julia = A_julia.'\b_julia
       @test x ≈ x_julia
 
       pc   = PETSc.PC(ST,comm=comm(kspg),pc_type="jacobi")

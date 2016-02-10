@@ -1,5 +1,7 @@
 @testset "KSP{$ST}" begin
   A = PETSc.Mat(ST, 3,3)
+  println("A = ", A)
+  println("typeof(A) = ", typeof(A))
   A_julia = zeros(ST,3,3)
   for i=1:3
     for j=1:3

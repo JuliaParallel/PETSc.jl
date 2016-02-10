@@ -21,21 +21,24 @@ typealias MPI_Comm MPI.Comm
 typealias comm_type MPI.CComm
 
 # some auxiliary functions used by ccall wrappers
+# get an array of pointers to UInt8s that is the same shape as 
+# the symbol array
+# does *not* allocate the pointers
 function symbol_get_before(sym_arr)
   ptr_arr = Array(Ptr{UInt8}, length(sym_arr))
-  println("ptr_arr = ", ptr_arr)
-  for i=1:length(sym_arr)
-    println("ptr_arr[$i] = ", ptr_arr[i])
-  end
+#  println("ptr_arr = ", ptr_arr)
+#  for i=1:length(sym_arr)
+#    println("ptr_arr[$i] = ", ptr_arr[i])
+#  end
 
   return pointer(ptr_arr), ptr_arr
 end
 
+# turn array of strings (UInt8 *) and  puts them into symbol array
 function symbol_get_after(ptr, sym_arr)
   ptr_arr = pointer_to_array(ptr, length(sym_arr))
 
   for i=1:length(sym_arr)
-    println("ptr_arr[$i] = ", ptr_arr[i])
     sym_arr[i] = bytestring(ptr_arr[i])
   end
 

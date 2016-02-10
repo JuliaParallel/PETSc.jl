@@ -1,30 +1,9 @@
 # run tests in parallel
 include("runtests_setup.jl")
 
-
-function mymult{T}(A::PETSc.C.Mat{T}, x::PETSc.C.Vec, b::PETSc.C.Vec)
-# matrix multiplication function for the shell matrix A
-# A performs the action of A = diagm(1:sys_size)
-
-  bigx = Vec{T, PETSc.C.VECMPI}(x, first_instance=false)
-  bigb = Vec{T, PETSc.C.VECMPI}(b, first_instance=false)
-  localx = LocalArrayRead(bigx)
-  localb = LocalArray(bigb)
-  for i=1:length(localx)
-    localb[i] = i*localx[i]
-  end
-
-  LocalArrayRestore(localx)
-  LocalArrayRestore(localb)
-  return PETSc.C.PetscErrorCode(0)
-end
-
-
 comm = MPI.COMM_WORLD
 global const comm_size = MPI.Comm_size(MPI.COMM_WORLD)
 global const comm_rank = MPI.Comm_rank(MPI.COMM_WORLD)
-
-
 
 # size of the system owned by this process (ie. local sys size)
 sys_size = PETSc.C.PetscInt(3)
@@ -33,9 +12,6 @@ sys_size = PETSc.C.PetscInt(3)
 # create these with smallest precision, so they can be promoted
 tmp3 = convert(Array{Complex64, 1}, [1.0 + 0im; 2.0 + 1.0im; 3.0 + 2.0im])
 tmp4 = convert( Array{Complex64, 2}, [1.0 + 1im   2 + 2im  3 + 3im; 4 + 4im  5 + 5im 7 + 7im; 7 + 7im 8 + 8im 9 + 9im])
-
-
-
 
 for ST in PETSc.C.petsc_type
   # @testset "Scalar type $ST" begin # uncomment when nested test results can be printed

@@ -20,6 +20,22 @@ end
     end
   end
 
+  @testset "Shell Matrix" begin
+    if ST == Float64  # until Clang works correctly
+      ctx = (2, 4)
+      mat = MatShell(ST, 3, 3, ctx)
+      ctx_ret = getcontext(mat)
+      @test ctx_ret == ctx_ret
+
+      f_ptr = cfunction(mymult, PETSc.C.PetscErrorCode, (PETSc.C.Mat{ST}, PETSc.C.Vec{ST}, PETSc.C.Vec{ST}))
+      setop!(mat, PETSc.C.MATOP_MULT, f_ptr)
+      x = Vec([1.0, 2, 3])
+      b = mat*x
+      @test b == [1.0, 4.0, 9.0]
+    end
+
+  end  # end testset Shell Matrix
+
   vt1 = RC(complex(3., 3.))
   vt2 = RC(complex(5., 5.))
   @testset "Utility functions" begin
@@ -37,6 +53,10 @@ end
 
     mtype = PETSc.gettype(mat)
     @test mtype == PETSc.C.MATMPIAIJ
+
+    mat_copy = Mat(mat.p)
+    @test mat_copy == mat
+
     # test set/get index
     vt1 = RC(complex(3., 3.))
     vt2 = RC(complex(5., 5.))

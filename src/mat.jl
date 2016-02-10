@@ -64,6 +64,57 @@ function Mat{T}(::Type{T}, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
   return mat
 end
 
+
+##### MatShell functions #####
+export MatShell, setop!, getcontext
+"""
+  Create a high level matrix from an already created matrix pointer
+"""
+function Mat{T}(ptr::C.Mat{T})
+# this is not type stable. Grr
+  sym_arr = Array(Symbol, 1)
+  chk(C.MatGetType(ptr, sym_arr))
+  mtype = sym_arr[1]
+  return Mat{T, mtype}(ptr, nothing, first_instance=false)
+end
+
+
+"""
+  Create a shell matrix with specified size.  The ctx tuple contains can be
+  accessed by any callback function.
+"""
+#TODO: type annotation for func?
+# must rename this because of (silent) method ambiguity
+function MatShell{T}(::Type{T}, mlocal::Integer, nlocal::Integer, ctx::Tuple=();  m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE, comm=MPI.COMM_WORLD)
+
+  mat_ptr = Ref{C.Mat{T}}()
+  ctx_ptr = pointer_from_objref(ctx)
+  chk(C.MatCreateShell(comm, mlocal, nlocal, m, n, ctx_ptr, mat_ptr))
+  return Mat{T, C.MATSHELL}(mat_ptr[], ctx)  # protect ctx from gc
+end
+
+"""
+  Provide a callback function for a particular matrix operation.  op is a 
+  Petsc enum value inidcating the operation, and func is a void pointer 
+  (obtained from cfunction() ) that performs the operation.
+
+  The function should take the low level Petsc objects (defined in the C module)
+  rather than the high level ones defined in this file.  Methods are provided 
+  to turn the low level object into a high level one.
+
+"""
+function setop!{T}(mat::Mat{T, C.MATSHELL}, op::C.MatOperation, func::Ptr{Void})
+
+  chk(C.MatShellSetOperation(mat.p, op, func))
+end
+
+function getcontext{T}(mat::Mat{T, C.MATSHELL})
+
+  ctx_ptr = C.MatShellGetContext(mat.p)
+  return unsafe_pointer_to_objref(ctx_ptr)
+end
+
+
 function PetscDestroy{T}(mat::Mat{T})
   if !PetscFinalized(T)
     C.MatDestroy(Ref(mat.p))

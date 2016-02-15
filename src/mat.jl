@@ -1,7 +1,8 @@
 # AbstractMatrix wrapper around Petsc Mat
 export Mat, petscview
 
-type Mat{T, MType} <: AbstractSparseMatrix{T,PetscInt}
+abstract PetscMat{T} <: AbstractSparseMatrix{T, PetscInt}
+type Mat{T, MType} <: PetscMat{T}
   p::C.Mat{T}
   assembling::Bool # whether we are in the middle of assemble(vec)
   insertmode::C.InsertMode # current mode for setindex!
@@ -10,14 +11,32 @@ type Mat{T, MType} <: AbstractSparseMatrix{T,PetscInt}
             #    to prevent the object from being garbage collected.
   function Mat(p::C.Mat{T}, data=nothing; first_instance::Bool=true)
     A = new(p, false, C.INSERT_VALUES, data)
-    if first_instance  # if the pointer p has not been put into a  # not necessary if reference counter
-                       # Mat object before
+    if first_instance  # if the pointer p has not been put into a Mat before
       chk(C.MatSetType(p, MType))
       finalizer(A, PetscDestroy)
     end
+    
     return A
   end
 end
+
+type SubMat{T, MType} <: PetscMat{T}
+  p::C.Mat{T}
+  assembling::Bool # whether we are in the middle of assemble(vec)
+  insertmode::C.InsertMode # current mode for setindex!
+  data::Any # keep a reference to anything needed for the Mat
+            # -- needed if the Mat is a wrapper around a Julia object,
+            #    to prevent the object from being garbage collected.
+            # in general, we *must* keep a copy of the parent matrix, because
+            # creating a submatrix does not increase the reference count
+            # in Petsc (for some unknown reason)
+  function SubMat(p::C.Mat{T}, data=nothing)
+    A = new(p, false, C.INSERT_VALUES, data)
+    finalizer(A, SubMatRestore)
+    return A
+  end
+end
+
 
 """
   Get the communicator for the object
@@ -64,6 +83,12 @@ function Mat{T}(::Type{T}, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
   return mat
 end
 
+function Mat{T, MType}(mat::Mat{T, MType}, isrow::IS{T}, iscol::IS{T})
+
+  submat = ref{C.Mat{T}}()
+  chk(C.MatGetLocalSubMatrix(mat.p, isrow.p, iscol.p, submat))
+  return SubMat{T, MType}(submat[], mat)
+end
 
 ##### MatShell functions #####
 export MatShell, setop!, getcontext
@@ -410,6 +435,22 @@ function setindex0!{T}(x::Mat{T}, v::Array{T},
     throw(ArgumentError("length(values) != length(indices)"))
   end
   chk(C.MatSetValues(x.p, ni, i, nj, j, v, x.insertmode))
+  if !x.assembling
+    AssemblyBegin(x,C.MAT_FLUSH_ASSEMBLY)
+    AssemblyEnd(x,C.MAT_FLUSH_ASSEMBLY)
+  end
+  x
+end
+
+# like setindex0 above, but for submatrices.  the indices i and j must 
+# be *local* indices
+function setindex0!{T}(x::SubMat{T}, v::Array{T}, i::Array{PetscInt}, j::Array{PetscInt})
+  ni = length(i)
+  nj = length(j)
+  if length(v) != ni*nj
+    throw(ArgumentError("length(values) != length(indices)"))
+  end
+  chk(C.MatSetValuesLocal(x.p, ni, i, nj, j, v, x.insertmode))
   if !x.assembling
     AssemblyBegin(x,C.MAT_FLUSH_ASSEMBLY)
     AssemblyEnd(x,C.MAT_FLUSH_ASSEMBLY)

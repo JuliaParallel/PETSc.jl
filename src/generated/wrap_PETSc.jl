@@ -1,18 +1,18 @@
 # Script to wrap PETSc header files with Julia code
-
+#=
 using Clang_orig.cindex
 using Clang_orig.wrap_c
 using Compat
 
 import Clang_orig.wrap_c.repr_jl
+=#
 
-#=
 using Clang.cindex
 using Clang.wrap_c
 using Compat
 
 import Clang.wrap_c.repr_jl
-=#
+
 include("rewriter.jl")
 PETSC_INCLUDE = "../../deps/RealDouble/petsc-3.6.0/include"
 ARCH_INCLUDE = "../../deps/RealDouble/petsc-3.6.0/arch-linux2-c-debug/include"  # TEMPORARY

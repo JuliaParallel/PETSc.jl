@@ -86,7 +86,7 @@ end
 # things to be replaced in function signatures only if they
 # are top level (ie. this does a non recursive replace)
 sig_single_dict = Dict{Any, Any} (
-  :(Ptr{UInt8}) => :(Union{ByteString, Symbol, Array{UInt8}}),
+  :(Ptr{UInt8}) => :(Union{ByteString, Cstring, Symbol, Array{UInt8}, Ptr{UInt8}}),
   :Int32 => :Integer,
   :Int64 => :Integer,
   :Cint => :Integer,

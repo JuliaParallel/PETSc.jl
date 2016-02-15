@@ -6,17 +6,26 @@ using Compat
 
 import Clang_orig.wrap_c.repr_jl
 
+#=
+using Clang.cindex
+using Clang.wrap_c
+using Compat
+
+import Clang.wrap_c.repr_jl
+=#
 include("rewriter.jl")
 PETSC_INCLUDE = "../../deps/RealDouble/petsc-3.6.0/include"
+ARCH_INCLUDE = "../../deps/RealDouble/petsc-3.6.0/arch-linux2-c-debug/include"  # TEMPORARY
 petsc_header = [joinpath(PETSC_INCLUDE, "petsc.h")]
 h1 = "/usr/lib/gcc/x86_64-linux-gnu/4.8/include"  # get some C datatype definitions like size_t
 h2 = joinpath(PETSC_INCLUDE, "petscsys.h")
-
+h3 = joinpath(ARCH_INCLUDE, "petscconf.h")
 # Set up include paths
 clang_includes = ASCIIString[]
 push!(clang_includes, PETSC_INCLUDE)
 push!(clang_includes, h1)
 push!(clang_includes, h2)
+push!(clang_includes, h3)
 
 
 println("clang_includes = ", clang_includes)

@@ -1,8 +1,8 @@
 # AbstractMatrix wrapper around Petsc Mat
-export Mat, petscview
+export Mat, petscview, SubMat
 
-abstract PetscMat{T} <: AbstractSparseMatrix{T, PetscInt}
-type Mat{T, MType} <: PetscMat{T}
+abstract PetscMat{T, MType} <: AbstractSparseMatrix{T, PetscInt}
+type Mat{T, MType} <: PetscMat{T, MType}
   p::C.Mat{T}
   assembling::Bool # whether we are in the middle of assemble(vec)
   insertmode::C.InsertMode # current mode for setindex!
@@ -41,7 +41,7 @@ end
 """
   Get the communicator for the object
 """
-comm{T}(a::Mat{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
+comm{T}(a::PetscMat{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
 
 """
   Create an empty, unsized matrix
@@ -83,9 +83,17 @@ function Mat{T}(::Type{T}, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
   return mat
 end
 
-function Mat{T, MType}(mat::Mat{T, MType}, isrow::IS{T}, iscol::IS{T})
+function SubMat{T, MType}(mat::Mat{T, MType}, isrow::IS{T}, iscol::IS{T})
 
-  submat = ref{C.Mat{T}}()
+  # create the local to global mapping for mat first
+  # this only needs to be done the first time
+  if !has_local_to_global_mapping(mat)
+    rmap, cmap = local_to_global_mapping(mat)
+    set_local_to_global_mapping(mat, rmap, cmap)  
+  end
+
+  # now we can actually create the submatrix
+  submat = Ref{C.Mat{T}}()
   chk(C.MatGetLocalSubMatrix(mat.p, isrow.p, iscol.p, submat))
   return SubMat{T, MType}(submat[], mat)
 end
@@ -150,7 +158,7 @@ end
 """
   Check if PetscDestroy has been called on this object already
 """
-function isfinalized(mat::Mat)
+function isfinalized(mat::PetscMat)
   return isfinalized(mat.p)
 end
 
@@ -158,7 +166,7 @@ function isfinalized(mat::C.Mat)
   return mat.pobj == C_NULL
 end
 
-function petscview{T}(mat::Mat{T})
+function petscview{T}(mat::PetscMat{T})
   viewer = C.PetscViewer{T}(C_NULL)
   chk(C.MatView(mat.p, viewer))
 end
@@ -168,7 +176,7 @@ function setoption!(m::Mat, option::C.MatOption, val::Bool)
   m
 end
 
-gettype{T,MT}(a::Mat{T,MT}) = MT
+gettype{T,MT}(a::PetscMat{T,MT}) = MT
 
 function Base.resize!(a::Mat, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
   mlocal::Integer=C.PETSC_DECIDE, nlocal::Integer=C.PETSC_DECIDE)
@@ -291,33 +299,39 @@ end
 
 # construct Vec for multiplication by a::Mat or transpose(a::Mat)
 const mat2vec = Dict{C.MatType, C.MatType}( :mpiaij => :aij, :seqaij => :seq )
-Vec{T2}(a::Mat{T2}, transposed=false) =
+Vec{T2}(a::PetscMat{T2}, transposed=false) =
   transposed ? Vec(T, size(a,1), comm=comm(a), T=mat2vec[gettype(a)],
   mlocal=sizelocal(a,1)) :
   Vec(T, size(a,2), comm=comm(a), T=mat2vec[gettype(a)],
   mlocal=sizelocal(a,2))
 
 #############################################################################
-Base.convert(::Type{C.Mat}, a::Mat) = a.p
+Base.convert(::Type{C.Mat}, a::PetscMat) = a.p
 
 export sizelocal, localranges, lengthlocal
 
-function Base.size(a::Mat)
+function Base.size(a::PetscMat)
   m = Ref{PetscInt}()
   n = Ref{PetscInt}()
   chk(C.MatGetSize(a.p, m, n))
   (Int(m[]), Int(n[]))
 end
 
-function sizelocal(a::Mat)
+function sizelocal(a::PetscMat)
   m = Ref{PetscInt}()
   n = Ref{PetscInt}()
   chk(C.MatGetLocalSize(a.p, m, n))
   (Int(m[]), Int(n[]))
 end
 
+"""
+  This function returns two Range object corresponding the global indices
+  of the rows and columns of the matrix A.
 
-function localranges(a::Mat)
+  The function has the same limiations as Petsc's MatGetOwnershipRange, 
+  in that it assumes the rows of the matrix are divided up contigously.
+"""
+function localranges(a::PetscMat)
   start_ref = Ref{PetscInt}()
   end_1_ref = Ref{PetscInt}()
   chk(C.MatGetOwnershipRange(a.p, start_ref, end_1_ref))
@@ -328,25 +342,62 @@ function localranges(a::Mat)
   return start_idx:end_idx, 1:size(a, 2)
 end
 
-lengthlocal(a::Mat) = prod(sizelocal(a))
+function localIS{T}(A::PetscMat{T})
+
+  rows, cols = localranges(A)
+  rowis = IS(T, rows, comm(A))
+  colis = IS(T, cols, comm(A))
+  return rowis, colis
+end
+
+function local_to_global_mapping(A::PetscMat{T})
+
+  # localIS creates strided index sets, which require only constant
+  # memory 
+  rowis, colis = localIS(A)
+  row_ltog = ISLocalToGobalMapping(rowis)
+  col_ltog = ISLocalToGlobalMapping(colis)
+  return row_ltog, col_ltog
+end
+
+# need a better name
+function set_local_to_global_mapping{T}(A::PetscMat{T}, rmap::ISLocalToGlobalMapping{T}, cmap::ISLocalToGlobalMapping{T})
+
+  chk(C.MatSetLocalToGlobalMapping(A.p, rmap.p, cmap.p))
+end
+
+function has_local_to_global_mapping{T}(A::PetscMat{T})
+
+  rmap_ref = Ref{C.ISLocalToGlobalMapping}()
+  cmap_ref = Ref{C.ISLocalToGlobalMapping}()
+  chk(C.MatGetLocalToGlobalMapping(A.p, rmap_reef, cmap_ref))
+
+  rmap = rmap_ref[]
+  cmap = cmap_ref[]
+  
+  return rmap.p != C_NULL && cmap.p != C_NULL
+end
+
+
+lengthlocal(a::PetscMat) = prod(sizelocal(a))
 
 # this causes the assembly state of the underlying petsc matrix to be copied
-function Base.similar{T, MType}(a::Mat{T, MType})
+function Base.similar{T, MType}(a::PetscMat{T, MType})
   p = Ref{C.Mat{T}}()
   chk(C.MatDuplicate(a.p, C.MAT_DO_NOT_COPY_VALUES, p))
   Mat{T, MType}(p[])
 end
 
-Base.similar{T}(a::Mat{T}, ::Type{T}) = similar(a)
-Base.similar{T,MType}(a::Mat{T,MType}, T2::Type) =
+Base.similar{T}(a::PetscMat{T}, ::Type{T}) = similar(a)
+Base.similar{T,MType}(a::PetscMat{T,MType}, T2::Type) =
   Mat(T2, size(a)..., comm=comm(a), mtype=MType)
-Base.similar{T,MType}(a::Mat{T,MType}, T2::Type, m::Integer, n::Integer) =
+Base.similar{T,MType}(a::PetscMat{T,MType}, T2::Type, m::Integer, n::Integer) =
   (m,n) == size(a) && T2==T ? similar(a) : Mat(T2, m,n, comm=comm(a), mtype=MType)
-Base.similar{T,MType}(a::Mat{T,MType}, m::Integer, n::Integer) = similar(a, T, m, n)
-Base.similar(a::Mat, T::Type, d::Dims) = similar(a, T, d...)
-Base.similar{T}(a::Mat{T}, d::Dims) = similar(a, T, d)
+Base.similar{T,MType}(a::PetscMat{T,MType}, m::Integer, n::Integer) = similar(a, T, m, n)
+Base.similar(a::PetscMat, T::Type, d::Dims) = similar(a, T, d...)
+Base.similar{T}(a::PetscMat{T}, d::Dims) = similar(a, T, d)
 
-function Base.copy{T,MType}(a::Mat{T,MType})
+function Base.copy{T,MType}(a::PetscMat{T,MType})
   p = Ref{C.Mat{T}}()
   chk(C.MatDuplicate(a.p, C.MAT_COPY_VALUES, p))
   Mat{T,MType}(p[])
@@ -365,11 +416,11 @@ Base.nnz(m::Mat) = Int(getinfo(m).nz_used)
 # for efficient matrix assembly, put all calls to A[...] = ... inside
 # assemble(A) do ... end
 
-function AssemblyBegin(x::Mat, t::C.MatAssemblyType=C.MAT_FLUSH_ASSEMBLY)
+function AssemblyBegin(x::PetscMat, t::C.MatAssemblyType=C.MAT_FLUSH_ASSEMBLY)
   chk(C.MatAssemblyBegin(x.p, t))
 end
 
-function AssemblyEnd(x::Mat, t::C.MatAssemblyType=C.MAT_FLUSH_ASSEMBLY)
+function AssemblyEnd(x::PetscMat, t::C.MatAssemblyType=C.MAT_FLUSH_ASSEMBLY)
   chk(C.MatAssemblyEnd(x.p, t))
 end
 
@@ -379,9 +430,9 @@ function isassembled(p::C.Mat)
   return b[] != 0
 end
 
-isassembled(x::Mat) = !x.assembling && isassembled(x.p)
+isassembled(x::PetscMat) = !x.assembling && isassembled(x.p)
 
-function assemble(f::Function, x::Union{Vec,Mat},
+function assemble(f::Function, x::Union{Vec,PetscMat},
   insertmode=x.insertmode,
   assemblytype::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
   if x.insertmode != insertmode && x.assembling
@@ -406,7 +457,7 @@ function assemble(f::Function, x::Union{Vec,Mat},
 end
 
 # force assembly even if it might not be necessary
-function assemble(x::Union{Vec,Mat}, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
+function assemble(x::Union{Vec,PetscMat}, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
   AssemblyBegin(x, t)
   AssemblyEnd(x,t)
 end
@@ -422,8 +473,8 @@ function assemble(p::C.Mat, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
 end
 
 # intermediate assembly, before it is finally compressed for use
-iassemble(x::Union{Vec,Mat}) = assemble(() -> nothing, x, x.insertmode, C.MAT_FLUSH_ASSEMBLY)
-iassemble(f::Function, x::Mat, insertmode=x.insertmode) =
+iassemble(x::Union{Vec,PetscMat}) = assemble(() -> nothing, x, x.insertmode, C.MAT_FLUSH_ASSEMBLY)
+iassemble(f::Function, x::PetscMat, insertmode=x.insertmode) =
   assemble(f, x, insertmode, C.MAT_FLUSH_ASSEMBLY)
 
 # like x[i,j] = v, but requires i,j to be 0-based indices for Petsc
@@ -460,34 +511,34 @@ end
 
 import Base: setindex!
 
-function setindex!{T}(x::Mat{T}, v::Number, i::Integer, j::Integer)
+function setindex!{T}(x::PetscMat{T}, v::Number, i::Integer, j::Integer)
   # can't call MatSetValue since that is a static inline function
   setindex0!(x, T[ v ],
   PetscInt[ i - 1 ],
   PetscInt[ j - 1 ])
   v
 end
-function setindex!{T3, T1<:Integer, T2<:Integer}(x::Mat{T3}, v::Array{T3},
+function setindex!{T3, T1<:Integer, T2<:Integer}(x::PetscMat{T3}, v::Array{T3},
   I::AbstractArray{T1},
   J::AbstractArray{T2})
   I0 = PetscInt[ i-1 for i in I ]
   J0 = PetscInt[ j-1 for j in J ]
   setindex0!(x, v, I0, J0)
 end
-function setindex!{T2, T<:Integer}(x::Mat{T2}, v::Array{T2},
+function setindex!{T2, T<:Integer}(x::PetscMat{T2}, v::Array{T2},
   i::Integer, J::AbstractArray{T})
   I0 = PetscInt[ i-1 ]
   J0 = PetscInt[ j-1 for j in J ]
   setindex0!(x, v, I0, J0)
 end
-function setindex!{T2, T<:Real}(x::Mat{T2}, v::Array{T2},
+function setindex!{T2, T<:Real}(x::PetscMat{T2}, v::Array{T2},
   I::AbstractArray{T}, j::Integer)
   I0 = PetscInt[ i-1 for i in I ]
   J0 = PetscInt[ j-1 ]
   setindex0!(x, v, I0, J0)
 end
 
-setindex!{T1<:Integer, T2<:Integer}(x::Mat, v::Number,
+setindex!{T1<:Integer, T2<:Integer}(x::PetscMat, v::Number,
 I::AbstractArray{T1},
 J::AbstractArray{T2}) = iassemble(x) do
   for i in I
@@ -497,14 +548,14 @@ J::AbstractArray{T2}) = iassemble(x) do
   end
   x
 end
-setindex!{T<:Integer}(x::Mat, v::Number,
+setindex!{T<:Integer}(x::PetscMat, v::Number,
 i::Integer, J::AbstractArray{T}) = iassemble(x) do
   for j in J
     x[i,j] = v
   end
   x
 end
-setindex!{T<:Integer}(x::Mat, v::Number,
+setindex!{T<:Integer}(x::PetscMat, v::Number,
 I::AbstractArray{T}, j::Integer) = iassemble(x) do
   for i in I
     x[i,j] = v
@@ -512,7 +563,7 @@ I::AbstractArray{T}, j::Integer) = iassemble(x) do
   x
 end
 
-function setindex!{T0<:Number, T1<:Integer, T2<:Integer}(x::Mat, v::AbstractArray{T0},
+function setindex!{T0<:Number, T1<:Integer, T2<:Integer}(x::PetscMat, v::AbstractArray{T0},
   I::AbstractArray{T1},
   J::AbstractArray{T2})
   if length(v) != length(I)*length(J)
@@ -524,7 +575,7 @@ end
 
 # fill! is not a very sensible function to call for sparse matrices,
 # but we might as well have it, especially for the v=0 case
-function Base.fill!(x::Mat, v::Number)
+function Base.fill!(x::PetscMat, v::Number)
   if v == 0
     chk(C.MatZeroEntries(x.p))
   else
@@ -553,16 +604,16 @@ function getindex0{T}(x::Mat{T}, i::Vector{PetscInt}, j::Vector{PetscInt})
   ni <= 1 || nj <= 1 ? reshape(v, ni, nj) : transpose(v)
 end
 
-getindex(a::Mat, i0::Integer, i1::Integer) =
+getindex(a::PetscMat, i0::Integer, i1::Integer) =
   getindex0(a, PetscInt[ i0-1 ], PetscInt[ i1-1 ])[1]
 
-getindex{T0<:Integer,T1<:Integer}(a::Mat, I0::AbstractArray{T0}, I1::AbstractArray{T1}) =
+getindex{T0<:Integer,T1<:Integer}(a::PetscMat, I0::AbstractArray{T0}, I1::AbstractArray{T1}) =
   getindex0(a, PetscInt[ i0-1 for i0 in I0 ], PetscInt[ i1-1 for i1 in I1 ])
 
-getindex{T0<:Integer}(a::Mat, I0::AbstractArray{T0}, i1::Integer) =
+getindex{T0<:Integer}(a::PetscMat, I0::AbstractArray{T0}, i1::Integer) =
   reshape(getindex0(a, PetscInt[ i0-1 for i0 in I0 ], PetscInt[ i1-1 ]), length(I0))
 
-getindex{T1<:Integer}(a::Mat, i0::Integer, I1::AbstractArray{T1}) =
+getindex{T1<:Integer}(a::PetscMat, i0::Integer, I1::AbstractArray{T1}) =
   getindex0(a, PetscInt[ i0-1 ], PetscInt[ i1-1 for i1 in I1 ])
 
 #############################################################################
@@ -570,7 +621,7 @@ getindex{T1<:Integer}(a::Mat, i0::Integer, I1::AbstractArray{T1}) =
 
 export MatTranspose
 
-function Base.full(a::Mat)
+function Base.full(a::PetscMat)
   m,n = size(a)
   a[1:m, 1:n]
 end
@@ -580,7 +631,7 @@ end
 for (f,pf) in ((:MatTranspose,:MatCreateTranspose), # acts like A.'
   (:MatNormal, :MatCreateNormal))      # acts like A'*A
   pfe = Expr(:quote, pf)
-  @eval function $f{T, MType}(a::Mat{T, MType})
+  @eval function $f{T, MType}(a::PetscMat{T, MType})
     p = Ref{C.Mat{T}}()
     chk(C.$pf(a.p, p))
     Mat{T, MType}(p[], a)
@@ -591,13 +642,13 @@ for (f,pf) in ((:transpose,:MatTranspose),(:ctranspose,:MatHermitianTranspose))
   fb = symbol(string(f,"!"))
   pfe = Expr(:quote, pf)
   @eval begin
-    function Base.$fb(a::Mat)
+    function Base.$fb(a::PetscMat)
       pa = [a.p]
       chk(C.$pf(a.p, C.MAT_REUSE_MATRIX, pa))
       a
     end
 
-    function Base.$f{T,MType}(a::Mat{T,MType})
+    function Base.$f{T,MType}(a::PetscMat{T,MType})
       p = Ref{C.Mat{T}}()
       chk(C.$pf(a.p, C.MAT_INITIAL_MATRIX, p))
       Mat{T,MType}(p[])
@@ -605,11 +656,11 @@ for (f,pf) in ((:transpose,:MatTranspose),(:ctranspose,:MatHermitianTranspose))
   end
 end
 
-function Base.conj!(a::Mat)
+function Base.conj!(a::PetscMat)
   chk(C.MatConjugate(a.p))
   a
 end
-Base.conj(a::Mat) = conj!(copy(a))
+Base.conj(a::PetscMat) = conj!(copy(a))
 
 #############################################################################
 # simple math operations
@@ -625,69 +676,69 @@ end
 import Base: .*, ./, .\, *, +, -, ==
 import Base.LinAlg: At_mul_B, At_mul_B!, Ac_mul_B, Ac_mul_B!, A_mul_Bt, A_mul_Bt!
 
-function Base.trace{T}(A::Mat{T})
+function Base.trace{T}(A::PetscMat{T})
   t = Ref{T}()
   chk(C.MatGetTrace(A.p,t))
   return t[]
 end
 
-function Base.real{T<:Complex}(A::Mat{T})
+function Base.real{T<:Complex}(A::PetscMat{T})
   N = copy(A)
   chk(C.MatRealPart(N.p))
   return N
 end
-Base.real{T<:Real}(A::Mat{T}) = A
+Base.real{T<:Real}(A::PetscMat{T}) = A
 
-function Base.imag{T<:Complex}(A::Mat{T})
+function Base.imag{T<:Complex}(A::PetscMat{T})
   N = copy(A)
   chk(C.MatImaginaryPart(N.p))
   return N
 end
 
-function Base.LinAlg.ishermitian{T}(A::Mat{T}, tol::Real=eps(real(float(one(T)))))
+function Base.LinAlg.ishermitian{T}(A::PetscMat{T}, tol::Real=eps(real(float(one(T)))))
   bool_arr = Ref{PetscBool}()
   chk(C.MatIsHermitian(A.p, tol, bool_arr))
   return bool_arr[] != 0
 end
 
-function Base.LinAlg.issym{T}(A::Mat{T}, tol::Real=eps(real(float(one(T)))))
+function Base.LinAlg.issym{T}(A::PetscMat{T}, tol::Real=eps(real(float(one(T)))))
   bool_arr = Ref{PetscBool}()
   chk(C.MatIsSymmetric(A.p, tol, bool_arr))
   return bool_arr[] != 0
 end
 
 #currently ONLY gets the main diagonal
-function Base.diag{T}(A::Mat{T},vtype::C.VecType=C.VECSEQ)
+function Base.diag{T}(A::PetscMat{T},vtype::C.VecType=C.VECSEQ)
   m = size(A, 1)
   b = Vec(T, m, vtype, comm=comm(A), mlocal=sizelocal(A,1))
   chk(C.MatGetDiagonal(A.p,b.p))
   return b
 end
 
-function (*){T, MType}(A::Mat{T}, x::Vec{T, MType})
+function (*){T, MType}(A::PetscMat{T}, x::Vec{T, MType})
   m = size(A, 1)
   b = Vec(T, m, MType, comm=comm(A), mlocal=sizelocal(A,1))
   chk(C.MatMult(A.p, x.p, b.p))
   return b
 end
 
-function (*){T, MType}(A::Mat{T}, x::Vec{T, MType}, b::Vec{T})
+function (*){T, MType}(A::PetscMat{T}, x::Vec{T, MType}, b::Vec{T})
   chk(C.MatMult(A.p, x.p, b.p))
   return b
 end
 
 
 
-function (.*){T, MType}(A::Mat{T, MType}, x::Number)
+function (.*){T, MType}(A::PetscMat{T, MType}, x::Number)
   Y = copy(A)
   chk(C.MatScale(Y.p, T(x)))
   return Y
 end
-(.*){T, MType}(x::Number, A::Mat{T, MType}) = A .* x
-(./){T, MType}(A::Mat{T, MType}, x::Number) = A .* inv(x)
-(.\){T, MType}(x::Number, A::Mat{T, MType}) = A .* inv(x)
+(.*){T, MType}(x::Number, A::PetscMat{T, MType}) = A .* x
+(./){T, MType}(A::PetscMat{T, MType}, x::Number) = A .* inv(x)
+(.\){T, MType}(x::Number, A::PetscMat{T, MType}) = A .* inv(x)
 
-function (*){T, MType}(A::Mat{T,MType}, B::Mat{T})
+function (*){T, MType}(A::PetscMat{T,MType}, B::PetscMat{T})
   p = Ptr{Float64}(0)
   p_arr = Ref{C.Mat{T}}()
   chk(C.MatMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, real(T)(C.PETSC_DEFAULT), p_arr))
@@ -696,7 +747,7 @@ function (*){T, MType}(A::Mat{T,MType}, B::Mat{T})
 end
 
 #these two only work for SEQAIJ
-function At_mul_B{T}(A::Mat{T}, B::Mat{T})
+function At_mul_B{T}(A::PetscMat{T}, B::PetscMat{T})
   p = Ptr{Float64}(0)
   p_arr = Ref{C.Mat{T}}()
   chk(C.MatTransposeMatMult(A.p, B.p, C.MAT_INITIAL_MATRIX, real(T)(C.PETSC_DEFAULT), p_arr))
@@ -704,7 +755,7 @@ function At_mul_B{T}(A::Mat{T}, B::Mat{T})
   return new_mat
 end
 
-function A_mul_Bt{T}(A::Mat{T}, B::Mat{T})
+function A_mul_Bt{T}(A::PetscMat{T}, B::PetscMat{T})
   p = Ptr{Float64}(0)
   p_arr = Ref{C.Mat{T}}()
   chk(C.MatMatTransposeMult(A.p, B.p, C.MAT_INITIAL_MATRIX, real(T)(C.PETSC_DEFAULT), p_arr))
@@ -712,24 +763,24 @@ function A_mul_Bt{T}(A::Mat{T}, B::Mat{T})
   return new_mat
 end
 
-function At_mul_B!{T, MType}(A::Mat{T}, x::Vec{T,MType}, y::Vec{T,MType})
+function At_mul_B!{T, MType}(A::PetscMat{T}, x::Vec{T,MType}, y::Vec{T,MType})
   chk(C.MatMultTranspose(A.p, x.p, y.p))
   return y
 end
 
-function At_mul_B{T, MType}(A::Mat{T}, x::Vec{T,MType})
+function At_mul_B{T, MType}(A::PetscMat{T}, x::Vec{T,MType})
   m = size(A, 1)
   b = Vec(T, m, MType, comm=comm(A), mlocal=sizelocal(A,1))
   chk(C.MatMultTranspose(A.p, x.p, b.p))
   return b
 end
 
-function Ac_mul_B!{T, MType}(A::Mat{T}, x::Vec{T,MType}, y::Vec{T,MType})
+function Ac_mul_B!{T, MType}(A::PetscMat{T}, x::Vec{T,MType}, y::Vec{T,MType})
   chk(C.MatMultHermitianTranspose(A.p, x.p, y.p))
   return y
 end
 
-function Ac_mul_B{T, MType}(A::Mat{T}, x::Vec{T,MType})
+function Ac_mul_B{T, MType}(A::PetscMat{T}, x::Vec{T,MType})
   m = size(A, 1)
   b = Vec(T, m, MType, comm=comm(A), mlocal=sizelocal(A,1))
   chk(C.MatMultHermitianTranspose(A.p, x.p, b.p))
@@ -737,19 +788,19 @@ function Ac_mul_B{T, MType}(A::Mat{T}, x::Vec{T,MType})
 end
 
 for (f,s) in ((:+,1), (:-,-1))
-  @eval function ($f){T}(A::Mat{T}, B::Mat{T})
+  @eval function ($f){T}(A::PetscMat{T}, B::PetscMat{T})
     Y = copy(A)
     chk(C.MatAXPY(Y.p, T($s), B.p, C.DIFFERENT_NONZERO_PATTERN))
     return Y
   end
 end
 
-(-){T, MType}(A::Mat{T, MType}) = A * (-1)
+(-){T, MType}(A::PetscMat{T, MType}) = A * (-1)
 
 # there don't appear to be PETSc functions for pointwise
 # operations on matrices
 
-function (==){T}(A::Mat{T}, b::Mat{T})
+function (==){T}(A::PetscMat{T}, b::PetscMat{T})
   bool_arr = Ref{PetscBool}()
   chk(C.MatEqual(A.p, b.p, bool_arr))
   return bool_arr[] != 0

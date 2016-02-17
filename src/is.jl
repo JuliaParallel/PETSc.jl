@@ -103,6 +103,55 @@ function Base.convert{T<:Integer}(::Type{Vector{T}}, idx::IS)
 end
 Base.Set(i::IS) = Set(Vector{Int}(i))
 
+###############################################################################
+# we expose a 1 based API, but internally ISLoalToGlobalMappings are zero based
+
+# WARNING: untests pending Clang
+export ISLocalToGlobalMapping
+
+type ISLocalToGlobalMapping{T}
+  p::C.ISLocalToGlobalMapping{T}
+  function ISLocalToGlobalMapping(p::C.ISLocalToGlobalMapping{T})
+    o = new(p)
+    finalizer(o, PetscDestroy)
+    return o
+  end
+end
+
+
+# zero based, not exported
+function _ISLocalToGlobalMapping{T}(::Type{T}, indices::AbstractArray{PetscInt}, bs=1; comm=MPI_COMM_WORLD, copymode=C.PETSC_COPY_VALUES)
+
+  isltog = Ref{C.ISLocalToGlobalMapping}()
+  chk(C.ISLocalToGlobalMappingCreate(comm, bs, length(indices), indices, copymode, isltog))
+
+  return ISLocalToGlobalMapping(isltog[])
+end
+
+# one based, exported
+function ISLocalToGlobalMapping{T, I}(::Type{T}, indices::AbstractArray{PetscInt}, bs=1; comm=MPI_COMM_WORLD, copymode=C.PETSC_COPY_VALUES)
+
+  indices_0 = PetscInt[ i-1 for i in indices]
+  return _ISLocalToGlobalMapping(t, indices, bs=bs, comm=comm, copymode=copymode)
+
+end
+
+function ISLocalToGlobalMapping{T}(is::IS{T})
+
+  isltog = Ref{C.ISLocalToGlobalMapping}()
+  chk(C.ISLocalToGlobalMappingCreateIS(is.p, isltog))
+  return ISLocalToGlobalMapping(isltog[])
+end
+
+
+comm{T}(a::ISLocalToGlobalMapping{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
+
+function PetscDestroy{T}(o::ISLocalToGlobalMapping{T})
+  PetscFinalized(T) || C.ISLocalToGlobalMappingDestroy(Ref(o.p))
+end
+
+
+
 ###########################################################################
 export VecScatter
 

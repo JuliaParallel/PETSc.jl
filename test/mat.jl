@@ -25,7 +25,9 @@ end
       ctx = (2, 4)
       mat = MatShell(ST, 3, 3, ctx)
       ctx_ret = getcontext(mat)
-      @test ctx_ret == ctx_ret
+      println("ctx = ", ctx)
+      println("ctx_ret = ", ctx_ret)
+      @test ctx_ret == ctx
 
       f_ptr = cfunction(mymult, PETSc.C.PetscErrorCode, (PETSc.C.Mat{ST}, PETSc.C.Vec{ST}, PETSc.C.Vec{ST}))
       setop!(mat, PETSc.C.MATOP_MULT, f_ptr)
@@ -221,6 +223,24 @@ end
       matj[1, 1:2] = vt
       @test mat == matj
     end
+  end
+
+  @testset "SubMatrix" begin
+    mat = PETSc.Mat(ST, 6, 6, nz=6)
+    for i=1:6
+      for j=1:6
+        mat[i,j] = i*6 + j
+      end
+    end
+    assemble(mat, PETSc.C.MAT_FLUSH_ASSEMBLY) 
+#    petscview(mat)
+    isx = IS(Float64, [1, 2, 3])
+    isy = IS(Float64, [1, 2])
+#    println("mat = ", mat)
+    println("isx = ", isx)
+    smat = PETSc.SubMat(mat, isx, isx)
+    smat[1,1] = 2.0
+#    petscview(smat)
   end
   @testset "test ranges and colon" begin
     idy = Array(1:2)

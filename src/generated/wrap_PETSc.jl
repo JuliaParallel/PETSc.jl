@@ -23,9 +23,10 @@ h3 = joinpath(ARCH_INCLUDE, "petscconf.h")
 # Set up include paths
 clang_includes = ASCIIString[]
 push!(clang_includes, PETSC_INCLUDE)
+push!(clang_includes, ARCH_INCLUDE)
 push!(clang_includes, h1)
-push!(clang_includes, h2)
-push!(clang_includes, h3)
+#push!(clang_includes, h2)
+#push!(clang_includes, h3)
 
 
 println("clang_includes = ", clang_includes)

@@ -25,8 +25,6 @@ end
       ctx = (2, 4)
       mat = MatShell(ST, 3, 3, ctx)
       ctx_ret = getcontext(mat)
-      println("ctx = ", ctx)
-      println("ctx_ret = ", ctx_ret)
       @test ctx_ret == ctx
 
       f_ptr = cfunction(mymult, PETSc.C.PetscErrorCode, (PETSc.C.Mat{ST}, PETSc.C.Vec{ST}, PETSc.C.Vec{ST}))
@@ -234,13 +232,15 @@ end
     end
     assemble(mat, PETSc.C.MAT_FLUSH_ASSEMBLY) 
 #    petscview(mat)
-    isx = IS(Float64, [1, 2, 3])
-    isy = IS(Float64, [1, 2])
-#    println("mat = ", mat)
-    println("isx = ", isx)
+    isx = IS(ST, [1, 2, 3])
+    isy = IS(ST, [1, 2])
     smat = PETSc.SubMat(mat, isx, isx)
-    smat[1,1] = 2.0
-#    petscview(smat)
+    val = RC(complex(2.0, 2.0))
+
+    smat[1,1] =val
+    SubMatRestore(smat)
+    assemble(mat)
+    @test mat[1,1] == val
   end
   @testset "test ranges and colon" begin
     idy = Array(1:2)

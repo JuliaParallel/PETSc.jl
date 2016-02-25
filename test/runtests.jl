@@ -1,11 +1,11 @@
 include("runtests_setup.jl")
-
+println("testing types: ", PETSc.C.petsc_type)
 for ST in PETSc.C.petsc_type
   # @testset "Scalar type $ST" begin # uncomment when nested test results can be printed
-#    include("error.jl")
-#    include("ksp.jl")
-#    include("vec.jl")
-#    include("is.jl")
+    include("error.jl")
+    include("ksp.jl")
+    include("vec.jl")
+    include("is.jl")
     include("mat.jl")
   # end
 end

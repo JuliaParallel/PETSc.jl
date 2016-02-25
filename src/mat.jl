@@ -83,6 +83,15 @@ function Mat{T}(::Type{T}, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
   return mat
 end
 
+
+"""
+  Gets the a submatrix that references the entries in the original matrix.
+  isrow and iscol contain the *local* indicies of the rows and columns to get.
+  The matrix must have a LocalToGlobalMapping for this to work, therefore a 
+  default one is created if the matrix does not already have one registered.
+  The default mapping assumes the matrix is divided up into contiguous block
+  of rows.  This is true of AIJ matrices but may not be for other matrix types.
+"""
 function SubMat{T, MType}(mat::Mat{T, MType}, isrow::IS{T}, iscol::IS{T})
 
   # create the local to global mapping for mat first
@@ -95,7 +104,14 @@ function SubMat{T, MType}(mat::Mat{T, MType}, isrow::IS{T}, iscol::IS{T})
   # now we can actually create the submatrix
   submat = Ref{C.Mat{T}}()
   chk(C.MatGetLocalSubMatrix(mat.p, isrow.p, iscol.p, submat))
-  return SubMat{T, MType}(submat[], mat)
+  # keep the data needed for the finalizer
+  return SubMat{T, MType}(submat[], (mat, isrow, iscol))  
+end
+
+export SubMatRestore
+function SubMatRestore{T}(smat::SubMat{T})
+
+  C.MatRestoreLocalSubMatrix(smat.data[1].p, smat.data[2].p, smat.data[3].p, Ref(smat.p))
 end
 
 ##### MatShell functions #####
@@ -345,17 +361,17 @@ end
 function localIS{T}(A::PetscMat{T})
 
   rows, cols = localranges(A)
-  rowis = IS(T, rows, comm(A))
-  colis = IS(T, cols, comm(A))
+  rowis = IS(T, rows, comm=comm(A))
+  colis = IS(T, cols, comm=comm(A))
   return rowis, colis
 end
 
-function local_to_global_mapping(A::PetscMat{T})
+function local_to_global_mapping(A::PetscMat)
 
   # localIS creates strided index sets, which require only constant
   # memory 
   rowis, colis = localIS(A)
-  row_ltog = ISLocalToGobalMapping(rowis)
+  row_ltog = ISLocalToGlobalMapping(rowis)
   col_ltog = ISLocalToGlobalMapping(colis)
   return row_ltog, col_ltog
 end
@@ -368,14 +384,14 @@ end
 
 function has_local_to_global_mapping{T}(A::PetscMat{T})
 
-  rmap_ref = Ref{C.ISLocalToGlobalMapping}()
-  cmap_ref = Ref{C.ISLocalToGlobalMapping}()
-  chk(C.MatGetLocalToGlobalMapping(A.p, rmap_reef, cmap_ref))
+  rmap_ref = Ref{C.ISLocalToGlobalMapping{T}}()
+  cmap_ref = Ref{C.ISLocalToGlobalMapping{T}}()
+  chk(C.MatGetLocalToGlobalMapping(A.p, rmap_ref, cmap_ref))
 
   rmap = rmap_ref[]
   cmap = cmap_ref[]
   
-  return rmap.p != C_NULL && cmap.p != C_NULL
+  return rmap.pobj != C_NULL && cmap.pobj != C_NULL
 end
 
 

@@ -8,19 +8,26 @@ using DataStructures
 # isdefined(modulename, :name) -> Bool
 # use wrap_contex.commonbuf for dictionary of names that have been defined
 
+############################################################################### Only these parameters need to be modified for the different
+# version of PETSc
+
 # used to modify function signatures
 type_dict = Dict{Any, Any} (
-  :PetscScalar => :Float64,
+  :PetscScalar => :Complex128,
   :PetscReal => :Float64,
   :PetscInt => :Int64,
 )
 
-const petsc_libname = :petscRealDouble
+const petsc_libname = :petscComplexDouble
+
+##############################################################################
+
 
 val_tmp = type_dict[:PetscScalar]
 type_dict_single = Dict{Any, Any} (
 :(Ptr{UInt8}) => Union{Cstring, ByteString, Symbol, Array{UInt8}, Ptr{UInt8}}
 )
+
 
 # used to convert typealiases to immutable type definionts
 # currently, if the key exists, it is converted

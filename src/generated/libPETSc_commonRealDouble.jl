@@ -30,17 +30,18 @@ const OMPI_SKIP_MPICXX = 1
 #= # Skipping MacroDefinition: PetscAttrMPIPointerWithType ( bufno , typeno ) __attribute__ ( ( pointer_with_type_tag ( MPI , bufno , typeno ) ) ) =#
 #= # Skipping MacroDefinition: PetscAttrMPITypeTag ( type ) __attribute__ ( ( type_tag_for_datatype ( MPI , type ) ) ) =#
 #= # Skipping MacroDefinition: PetscAttrMPITypeTagLayoutCompatible ( type ) __attribute__ ( ( type_tag_for_datatype ( MPI , type , layout_compatible ) ) ) =#
-#skipping undefined const MPIU_INT = MPI_INT
-#skipping undefined const MPIU_INT64 = MPI_LONG_LONG_INT
-#skipping undefined const MPIU_SIZE_T = MPI_UNSIGNED
-#= # Skipping MacroDefinition: PetscUnlikely ( cond ) ( cond ) =#
-#= # Skipping MacroDefinition: PetscLikely ( cond ) ( cond ) =#
+#skipping undefined const MPIU_INT = MPI_INT64_T
+#skipping undefined const MPIU_INT64 = MPI_INT64_T
+#skipping undefined const MPIU_SIZE_T = MPI_UNSIGNED_LONG
+#= # Skipping MacroDefinition: PetscUnlikely ( cond ) __builtin_expect ( ! ! ( cond ) , 0 ) =#
+#= # Skipping MacroDefinition: PetscLikely ( cond ) __builtin_expect ( ! ! ( cond ) , 1 ) =#
 #= # Skipping MacroDefinition: PetscExpPassiveScalar ( a ) PetscExpScalar ( ) =#
 #skipping undefined const MPIU_REAL = MPI_FLOAT
 #= # Skipping MacroDefinition: PetscSqrtReal ( a ) sqrt ( a ) =#
 #= # Skipping MacroDefinition: PetscExpReal ( a ) exp ( a ) =#
 #= # Skipping MacroDefinition: PetscLogReal ( a ) log ( a ) =#
 #= # Skipping MacroDefinition: PetscLog10Real ( a ) log10 ( a ) =#
+#= # Skipping MacroDefinition: PetscLog2Real ( a ) log2 ( a ) =#
 #= # Skipping MacroDefinition: PetscSinReal ( a ) sin ( a ) =#
 #= # Skipping MacroDefinition: PetscCosReal ( a ) cos ( a ) =#
 #= # Skipping MacroDefinition: PetscTanReal ( a ) tan ( a ) =#
@@ -56,6 +57,27 @@ const OMPI_SKIP_MPICXX = 1
 #= # Skipping MacroDefinition: PetscFloorReal ( a ) floor ( a ) =#
 #= # Skipping MacroDefinition: PetscFmodReal ( a , b ) fmod ( a , b ) =#
 #= # Skipping MacroDefinition: PetscTGamma ( a ) tgammaf ( a ) =#
+const PETSC_HAVE_COMPLEX = 1
+
+#= # Skipping MacroDefinition: PetscRealPartComplex ( a ) crealf ( a ) =#
+#= # Skipping MacroDefinition: PetscImaginaryPartComplex ( a ) cimagf ( a ) =#
+#= # Skipping MacroDefinition: PetscAbsComplex ( a ) cabsf ( a ) =#
+#= # Skipping MacroDefinition: PetscConjComplex ( a ) conjf ( a ) =#
+#= # Skipping MacroDefinition: PetscSqrtComplex ( a ) csqrtf ( a ) =#
+#= # Skipping MacroDefinition: PetscPowComplex ( a , b ) cpowf ( a , b ) =#
+#= # Skipping MacroDefinition: PetscExpComplex ( a ) cexpf ( a ) =#
+#= # Skipping MacroDefinition: PetscLogComplex ( a ) clogf ( a ) =#
+#= # Skipping MacroDefinition: PetscSinComplex ( a ) csinf ( a ) =#
+#= # Skipping MacroDefinition: PetscCosComplex ( a ) ccosf ( a ) =#
+#= # Skipping MacroDefinition: PetscAsinComplex ( a ) casinf ( a ) =#
+#= # Skipping MacroDefinition: PetscAcosComplex ( a ) cacosf ( a ) =#
+#= # Skipping MacroDefinition: PetscTanComplex ( a ) ctanf ( a ) =#
+#= # Skipping MacroDefinition: PetscSinhComplex ( a ) csinhf ( a ) =#
+#= # Skipping MacroDefinition: PetscCoshComplex ( a ) ccoshf ( a ) =#
+#= # Skipping MacroDefinition: PetscTanhComplex ( a ) ctanhf ( a ) =#
+#skipping undefined const MPIU_C_DOUBLE_COMPLEX = MPI_C_DOUBLE_COMPLEX
+#skipping undefined const MPIU_C_COMPLEX = MPI_C_COMPLEX
+#skipping undefined const MPIU_COMPLEX = MPIU_C_COMPLEX
 #skipping undefined const MPIU_SCALAR = MPIU_REAL
 #= # Skipping MacroDefinition: PetscRealPart ( a ) ( a ) =#
 #= # Skipping MacroDefinition: PetscImaginaryPart ( a ) ( ( PetscReal ) 0. ) =#
@@ -81,7 +103,7 @@ const OMPI_SKIP_MPICXX = 1
 #= # Skipping MacroDefinition: PetscAbsReal ( a ) ( ( ( a ) < 0 ) ? - ( a ) : ( a ) ) =#
 #= # Skipping MacroDefinition: PetscSqr ( a ) ( ( a ) * ( a ) ) =#
 const PETSC_PI = 3.141592653589793
-const PETSC_MAX_INT = 2147483647
+const PETSC_MAX_INT = 9223372036854775807
 const PETSC_MIN_INT = -PETSC_MAX_INT - 1
 const PETSC_MAX_REAL = 3.4028234663852886e38
 const PETSC_MIN_REAL = -PETSC_MAX_REAL
@@ -98,7 +120,6 @@ const PassiveReal = Float64
 const PassiveScalar = Float64
 
 #skipping undefined const MPIU_MATSCALAR = MPIU_SCALAR
-#skipping undefined const MPIU_2INT = MPI_2INT
 const PETSC_NULL = C_NULL
 const PETSC_IGNORE = C_NULL
 const PETSC_DECIDE = -1
@@ -201,27 +222,34 @@ const PETSC_ERR_MAX_VALUE = 93
 
 #= # Skipping MacroDefinition: PetscStringizeArg ( a ) # a =#
 #= # Skipping MacroDefinition: PetscStringize ( a ) PetscStringizeArg ( a ) =#
-#= # Skipping MacroDefinition: SETERRQ ( c , n , s ) =#
-#= # Skipping MacroDefinition: SETERRQ1 ( c , n , s , a1 ) =#
-#= # Skipping MacroDefinition: SETERRQ2 ( c , n , s , a1 , a2 ) =#
-#= # Skipping MacroDefinition: SETERRQ3 ( c , n , s , a1 , a2 , a3 ) =#
-#= # Skipping MacroDefinition: SETERRQ4 ( c , n , s , a1 , a2 , a3 , a4 ) =#
-#= # Skipping MacroDefinition: SETERRQ5 ( c , n , s , a1 , a2 , a3 , a4 , a5 ) =#
-#= # Skipping MacroDefinition: SETERRQ6 ( c , n , s , a1 , a2 , a3 , a4 , a5 , a6 ) =#
-#= # Skipping MacroDefinition: SETERRQ7 ( c , n , s , a1 , a2 , a3 , a4 , a5 , a6 , a7 ) =#
-#= # Skipping MacroDefinition: SETERRQ8 ( c , n , s , a1 , a2 , a3 , a4 , a5 , a6 , a7 , a8 ) =#
-#= # Skipping MacroDefinition: SETERRABORT ( comm , n , s ) =#
-#= # Skipping MacroDefinition: CHKERRQ ( n ) ; =#
-#= # Skipping MacroDefinition: CHKERRABORT ( comm , n ) ; =#
-#= # Skipping MacroDefinition: CHKERRCONTINUE ( n ) ; =#
+#= # Skipping MacroDefinition: SETERRQ ( comm , n , s ) return PetscError ( comm , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_INITIAL , s ) =#
+#= # Skipping MacroDefinition: SETERRQ1 ( comm , n , s , a1 ) return PetscError ( comm , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_INITIAL , s , a1 ) =#
+#= # Skipping MacroDefinition: SETERRQ2 ( comm , n , s , a1 , a2 ) return PetscError ( comm , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_INITIAL , s , a1 , a2 ) =#
+#= # Skipping MacroDefinition: SETERRQ3 ( comm , n , s , a1 , a2 , a3 ) return PetscError ( comm , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_INITIAL , s , a1 , a2 , a3 ) =#
+#= # Skipping MacroDefinition: SETERRQ4 ( comm , n , s , a1 , a2 , a3 , a4 ) return PetscError ( comm , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_INITIAL , s , a1 , a2 , a3 , a4 ) =#
+#= # Skipping MacroDefinition: SETERRQ5 ( comm , n , s , a1 , a2 , a3 , a4 , a5 ) return PetscError ( comm , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_INITIAL , s , a1 , a2 , a3 , a4 , a5 ) =#
+#= # Skipping MacroDefinition: SETERRQ6 ( comm , n , s , a1 , a2 , a3 , a4 , a5 , a6 ) return PetscError ( comm , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_INITIAL , s , a1 , a2 , a3 , a4 , a5 , a6 ) =#
+#= # Skipping MacroDefinition: SETERRQ7 ( comm , n , s , a1 , a2 , a3 , a4 , a5 , a6 , a7 ) return PetscError ( comm , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_INITIAL , s , a1 , a2 , a3 , a4 , a5 , a6 , a7 ) =#
+#= # Skipping MacroDefinition: SETERRQ8 ( comm , n , s , a1 , a2 , a3 , a4 , a5 , a6 , a7 , a8 ) return PetscError ( comm , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_INITIAL , s , a1 , a2 , a3 , a4 , a5 , a6 , a7 , a8 ) =#
+#= # Skipping MacroDefinition: SETERRABORT ( comm , n , s ) do { PetscError ( comm , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_INITIAL , s ) ; MPI_Abort ( comm , n ) ; } while ( 0 ) =#
+#= # Skipping MacroDefinition: CHKERRQ ( n ) do { if ( PetscUnlikely ( n ) ) return PetscError ( PETSC_COMM_SELF , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_REPEAT , " " ) ; } while ( 0 ) =#
+#= # Skipping MacroDefinition: CHKERRV ( n ) do { if ( PetscUnlikely ( n ) ) { n = PetscError ( PETSC_COMM_SELF , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_REPEAT , " " ) ; return ; } } while ( 0 ) =#
+#= # Skipping MacroDefinition: CHKERRABORT ( comm , n ) do { if ( PetscUnlikely ( n ) ) { PetscError ( PETSC_COMM_SELF , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_REPEAT , " " ) ; MPI_Abort ( comm , n ) ; } } while ( 0 ) =#
+#= # Skipping MacroDefinition: CHKERRCONTINUE ( n ) do { if ( PetscUnlikely ( n ) ) { PetscError ( PETSC_COMM_SELF , __LINE__ , PETSC_FUNCTION_NAME , __FILE__ , n , PETSC_ERROR_REPEAT , " " ) ; } } while ( 0 ) =#
+#= # Skipping MacroDefinition: CHKMEMQ do { PetscErrorCode _7_ierr = PetscMallocValidate ( __LINE__ , PETSC_FUNCTION_NAME , __FILE__ ) ; CHKERRQ ( _7_ierr ) ; } while ( 0 ) =#
+#= # Skipping MacroDefinition: CHKMEMA PetscMallocValidate ( __LINE__ , PETSC_FUNCTION_NAME , __FILE__ ) =#
 const PETSCSTACKSIZE = 64
 
-#= # Skipping MacroDefinition: PetscStackPushNoCheck ( funct , petsc_routine , hot ) do { } while ( 0 ) =#
-#= # Skipping MacroDefinition: PetscStackPopNoCheck do { } while ( 0 ) =#
-#= # Skipping MacroDefinition: PetscFunctionReturn ( a ) return ( a ) =#
-#= # Skipping MacroDefinition: PetscFunctionReturnVoid ( ) return =#
-#skipping undefined const PetscStackPop = CHKMEMQ
-#= # Skipping MacroDefinition: PetscStackPush ( f ) CHKMEMQ =#
+#= # Skipping MacroDefinition: PetscStackPushNoCheck ( funct , petsc_routine , hot ) do { PetscStackSAWsTakeAccess ( ) ; if ( petscstack && ( petscstack -> currentsize < PETSCSTACKSIZE ) ) { petscstack -> function [ petscstack -> currentsize ] = funct ; petscstack -> file [ petscstack -> currentsize ] = __FILE__ ; petscstack -> line [ petscstack -> currentsize ] = __LINE__ ; petscstack -> petscroutine [ petscstack -> currentsize ] = petsc_routine ; petscstack -> currentsize ++ ; } if ( petscstack ) { petscstack -> hotdepth += ( hot || petscstack -> hotdepth ) ; } PetscStackSAWsGrantAccess ( ) ; } while ( 0 ) =#
+#= # Skipping MacroDefinition: PetscStackPopNoCheck do { PetscStackSAWsTakeAccess ( ) ; if ( petscstack && petscstack -> currentsize > 0 ) { petscstack -> currentsize -- ; petscstack -> function [ petscstack -> currentsize ] = 0 ; petscstack -> file [ petscstack -> currentsize ] = 0 ; petscstack -> line [ petscstack -> currentsize ] = 0 ; petscstack -> petscroutine [ petscstack -> currentsize ] = PETSC_FALSE ; } if ( petscstack ) { petscstack -> hotdepth = PetscMax ( petscstack -> hotdepth - 1 , 0 ) ; } PetscStackSAWsGrantAccess ( ) ; } while ( 0 ) =#
+#= # Skipping MacroDefinition: PetscFunctionBegin do { PetscStackPushNoCheck ( PETSC_FUNCTION_NAME , PETSC_TRUE , PETSC_FALSE ) ; PetscCheck__FUNCT__ ( ) ; PetscRegister__FUNCT__ ( ) ; } while ( 0 ) =#
+#= # Skipping MacroDefinition: PetscFunctionBeginHot do { PetscStackPushNoCheck ( PETSC_FUNCTION_NAME , PETSC_TRUE , PETSC_TRUE ) ; PetscCheck__FUNCT__ ( ) ; PetscRegister__FUNCT__ ( ) ; } while ( 0 ) =#
+#= # Skipping MacroDefinition: PetscFunctionBeginUser do { PetscStackPushNoCheck ( PETSC_FUNCTION_NAME , PETSC_FALSE , PETSC_FALSE ) ; PetscCheck__FUNCT__ ( ) ; PetscRegister__FUNCT__ ( ) ; } while ( 0 ) =#
+#= # Skipping MacroDefinition: PetscCheck__FUNCT__ ( ) do { PetscBool _sc1 , _sc2 ; PetscStrcmpNoError ( PETSC_FUNCTION_NAME , __FUNCT__ , & _sc1 ) ; PetscStrcmpNoError ( __FUNCT__ , "User provided function" , & _sc2 ) ; if ( ! _sc1 && ! _sc2 ) { printf ( "%s:%d: __FUNCT__=\"%s\" does not agree with %s=\"%s\"\n" , __FILE__ , __LINE__ , __FUNCT__ , PetscStringize ( PETSC_FUNCTION_NAME ) , PETSC_FUNCTION_NAME ) ; } } while ( 0 ) =#
+#= # Skipping MacroDefinition: PetscStackPush ( n ) do { PetscStackPushNoCheck ( n , PETSC_FALSE , PETSC_FALSE ) ; CHKMEMQ ; } while ( 0 ) =#
+#= # Skipping MacroDefinition: PetscStackPop do { CHKMEMQ ; PetscStackPopNoCheck ; } while ( 0 ) =#
+#= # Skipping MacroDefinition: PetscFunctionReturn ( a ) do { PetscStackPopNoCheck ; return ( a ) ; } while ( 0 ) =#
+#= # Skipping MacroDefinition: PetscFunctionReturnVoid ( ) do { PetscStackPopNoCheck ; return ; } while ( 0 ) =#
 #= # Skipping MacroDefinition: PetscStackCall ( name , routine ) do { PetscStackPush ( name ) ; routine ; PetscStackPop ; } while ( 0 ) =#
 #= # Skipping MacroDefinition: PetscStackCallStandard ( func , args ) do { PetscStackPush ( # func ) ; ierr = func args ; PetscStackPop ; if ( ierr ) SETERRQ1 ( PETSC_COMM_SELF , PETSC_ERR_LIB , "Error in %s()" , # func ) ; } while ( 0 ) =#
 const PETSC_SMALLEST_CLASSID = 1211211
@@ -263,56 +291,42 @@ const PETSC_SMALLEST_CLASSID = 1211211
 #= # Skipping MacroDefinition: PetscNot ( a ) ( ( a ) ? PETSC_FALSE : PETSC_TRUE ) =#
 const PETSC_EVENT = 1311311
 
-#= # Skipping MacroDefinition: PetscInfo ( A , S ) 0 =#
-#= # Skipping MacroDefinition: PetscInfo1 ( A , S , a1 ) 0 =#
-#= # Skipping MacroDefinition: PetscInfo2 ( A , S , a1 , a2 ) 0 =#
-#= # Skipping MacroDefinition: PetscInfo3 ( A , S , a1 , a2 , a3 ) 0 =#
-#= # Skipping MacroDefinition: PetscInfo4 ( A , S , a1 , a2 , a3 , a4 ) 0 =#
-#= # Skipping MacroDefinition: PetscInfo5 ( A , S , a1 , a2 , a3 , a4 , a5 ) 0 =#
-#= # Skipping MacroDefinition: PetscInfo6 ( A , S , a1 , a2 , a3 , a4 , a5 , a6 ) 0 =#
-#= # Skipping MacroDefinition: PetscInfo7 ( A , S , a1 , a2 , a3 , a4 , a5 , a6 , a7 ) 0 =#
-#= # Skipping MacroDefinition: PetscLogFlops ( n ) 0 =#
-#= # Skipping MacroDefinition: PetscLogEventActivate ( a ) 0 =#
-#= # Skipping MacroDefinition: PetscLogEventDeactivate ( a ) 0 =#
-#= # Skipping MacroDefinition: PetscLogEventActivateClass ( a ) 0 =#
-#= # Skipping MacroDefinition: PetscLogEventDeactivateClass ( a ) 0 =#
-#= # Skipping MacroDefinition: PetscLogEventSetActiveAll ( a , b ) 0 =#
-const PetscLogPLB = 0
-const PetscLogPLE = 0
-const PetscLogPHC = 0
-const PetscLogPHD = 0
+#= # Skipping MacroDefinition: PetscInfo ( A , S ) PetscInfo_Private ( PETSC_FUNCTION_NAME , A , S ) =#
+#= # Skipping MacroDefinition: PetscInfo1 ( A , S , a1 ) PetscInfo_Private ( PETSC_FUNCTION_NAME , A , S , a1 ) =#
+#= # Skipping MacroDefinition: PetscInfo2 ( A , S , a1 , a2 ) PetscInfo_Private ( PETSC_FUNCTION_NAME , A , S , a1 , a2 ) =#
+#= # Skipping MacroDefinition: PetscInfo3 ( A , S , a1 , a2 , a3 ) PetscInfo_Private ( PETSC_FUNCTION_NAME , A , S , a1 , a2 , a3 ) =#
+#= # Skipping MacroDefinition: PetscInfo4 ( A , S , a1 , a2 , a3 , a4 ) PetscInfo_Private ( PETSC_FUNCTION_NAME , A , S , a1 , a2 , a3 , a4 ) =#
+#= # Skipping MacroDefinition: PetscInfo5 ( A , S , a1 , a2 , a3 , a4 , a5 ) PetscInfo_Private ( PETSC_FUNCTION_NAME , A , S , a1 , a2 , a3 , a4 , a5 ) =#
+#= # Skipping MacroDefinition: PetscInfo6 ( A , S , a1 , a2 , a3 , a4 , a5 , a6 ) PetscInfo_Private ( PETSC_FUNCTION_NAME , A , S , a1 , a2 , a3 , a4 , a5 , a6 ) =#
+#= # Skipping MacroDefinition: PetscInfo7 ( A , S , a1 , a2 , a3 , a4 , a5 , a6 , a7 ) PetscInfo_Private ( PETSC_FUNCTION_NAME , A , S , a1 , a2 , a3 , a4 , a5 , a6 , a7 ) =#
+const PETSC_FLOPS_PER_OP = 1.0
 
-#= # Skipping MacroDefinition: PetscGetFlops ( a ) ( * ( a ) = 0.0 , 0 ) =#
-#= # Skipping MacroDefinition: PetscLogEventBegin ( e , o1 , o2 , o3 , o4 ) 0 =#
-#= # Skipping MacroDefinition: PetscLogEventEnd ( e , o1 , o2 , o3 , o4 ) 0 =#
-#= # Skipping MacroDefinition: PetscLogEventBarrierBegin ( e , o1 , o2 , o3 , o4 , cm ) 0 =#
-#= # Skipping MacroDefinition: PetscLogEventBarrierEnd ( e , o1 , o2 , o3 , o4 , cm ) 0 =#
-#= # Skipping MacroDefinition: PetscLogObjectParents ( p , n , c ) 0 =#
-#= # Skipping MacroDefinition: PetscLogObjectCreate ( h ) 0 =#
-#= # Skipping MacroDefinition: PetscLogObjectDestroy ( h ) 0 =#
-#= # Skipping MacroDefinition: PetscLogDestroy ( ) 0 =#
-#= # Skipping MacroDefinition: PetscLogStagePush ( a ) 0 =#
-#= # Skipping MacroDefinition: PetscLogStagePop ( ) 0 =#
-#= # Skipping MacroDefinition: PetscLogStageRegister ( a , b ) 0 =#
-#= # Skipping MacroDefinition: PetscLogStagePrint ( a , flg ) 0 =#
-#= # Skipping MacroDefinition: PetscLogView ( viewer ) 0 =#
-#= # Skipping MacroDefinition: PetscLogViewFromOptions ( ) 0 =#
-#= # Skipping MacroDefinition: PetscLogBegin ( ) 0 =#
-#= # Skipping MacroDefinition: PetscLogTraceBegin ( file ) 0 =#
-#= # Skipping MacroDefinition: PetscLogSet ( lb , le ) 0 =#
-#= # Skipping MacroDefinition: PetscLogAllBegin ( ) 0 =#
-#= # Skipping MacroDefinition: PetscLogDump ( c ) 0 =#
-#= # Skipping MacroDefinition: PetscLogEventRegister ( a , b , c ) 0 =#
-#= # Skipping MacroDefinition: PetscLogObjects ( a ) 0 =#
-#= # Skipping MacroDefinition: PetscLogActions ( a ) 0 =#
-#= # Skipping MacroDefinition: MPI_Startall_irecv ( count , number , requests ) MPI_Startall ( number , requests ) =#
-#= # Skipping MacroDefinition: MPI_Startall_isend ( count , number , requests ) MPI_Startall ( number , requests ) =#
-#= # Skipping MacroDefinition: MPI_Start_isend ( count , requests ) MPI_Start ( requests ) =#
-#= # Skipping MacroDefinition: PetscLogStageGetId ( a , b ) ( * ( b ) = 0 , 0 ) =#
-#= # Skipping MacroDefinition: PetscLogStageSetActive ( a , b ) 0 =#
-#= # Skipping MacroDefinition: PetscLogStageGetActive ( a , b ) 0 =#
-#= # Skipping MacroDefinition: PetscLogStageGetVisible ( a , b ) 0 =#
-#= # Skipping MacroDefinition: PetscLogStageSetVisible ( a , b ) 0 =#
+#= # Skipping MacroDefinition: PetscLogObjectParents ( p , n , d ) 0 ; { int _i ; for ( _i = 0 ; _i < n ; _i ++ ) { ierr = PetscLogObjectParent ( ( PetscObject ) p , ( PetscObject ) ( d ) [ _i ] ) ; CHKERRQ ( ierr ) ; } } =#
+#= # Skipping MacroDefinition: PetscLogObjectCreate ( h ) ( ( PetscLogPHC ) ? ( * PetscLogPHC ) ( ( PetscObject ) h ) : 0 ) =#
+#= # Skipping MacroDefinition: PetscLogObjectDestroy ( h ) ( ( PetscLogPHD ) ? ( * PetscLogPHD ) ( ( PetscObject ) h ) : 0 ) =#
+#= # Skipping MacroDefinition: PetscLogEventBarrierBegin ( e , o1 , o2 , o3 , o4 , cm ) ( ( ( PetscLogPLB && petsc_stageLog -> stageInfo [ petsc_stageLog -> curStage ] . perfInfo . active && petsc_stageLog -> stageInfo [ petsc_stageLog -> curStage ] . eventLog -> eventInfo [ e ] . active ) ? ( PetscLogEventBegin ( ( e ) , o1 , o2 , o3 , o4 ) || MPI_Barrier ( cm ) || PetscLogEventEnd ( ( e ) , o1 , o2 , o3 , o4 ) ) : 0 ) || PetscLogEventBegin ( ( e ) + 1 , o1 , o2 , o3 , o4 ) ) =#
+#= # Skipping MacroDefinition: PetscLogEventBegin ( e , o1 , o2 , o3 , o4 ) ( ( ( PetscLogPLB && petsc_stageLog -> stageInfo [ petsc_stageLog -> curStage ] . perfInfo . active && petsc_stageLog -> stageInfo [ petsc_stageLog -> curStage ] . eventLog -> eventInfo [ e ] . active ) ? ( * PetscLogPLB ) ( ( e ) , 0 , ( PetscObject ) ( o1 ) , ( PetscObject ) ( o2 ) , ( PetscObject ) ( o3 ) , ( PetscObject ) ( o4 ) ) : 0 ) ) =#
+#= # Skipping MacroDefinition: PetscLogEventBarrierEnd ( e , o1 , o2 , o3 , o4 , cm ) PetscLogEventEnd ( e + 1 , o1 , o2 , o3 , o4 ) =#
+#= # Skipping MacroDefinition: PetscLogEventEnd ( e , o1 , o2 , o3 , o4 ) ( ( ( PetscLogPLE && petsc_stageLog -> stageInfo [ petsc_stageLog -> curStage ] . perfInfo . active && petsc_stageLog -> stageInfo [ petsc_stageLog -> curStage ] . eventLog -> eventInfo [ e ] . active ) ? ( * PetscLogPLE ) ( ( e ) , 0 , ( PetscObject ) ( o1 ) , ( PetscObject ) ( o2 ) , ( PetscObject ) ( o3 ) , ( PetscObject ) ( o4 ) ) : 0 ) ) =#
+#= # Skipping MacroDefinition: MPI_Irecv ( buf , count , datatype , source , tag , comm , request ) ( ( petsc_irecv_ct ++ , 0 ) || PetscMPITypeSize ( & petsc_irecv_len , count , datatype ) || MPI_Irecv ( buf , count , datatype , source , tag , comm , request ) ) =#
+#= # Skipping MacroDefinition: MPI_Isend ( buf , count , datatype , dest , tag , comm , request ) ( ( petsc_isend_ct ++ , 0 ) || PetscMPITypeSize ( & petsc_isend_len , count , datatype ) || MPI_Isend ( buf , count , datatype , dest , tag , comm , request ) ) =#
+#= # Skipping MacroDefinition: MPI_Startall_irecv ( count , number , requests ) ( ( petsc_irecv_ct += ( PetscLogDouble ) ( number ) , 0 ) || PetscMPITypeSize ( & petsc_irecv_len , count , MPIU_SCALAR ) || MPI_Startall ( number , requests ) ) =#
+#= # Skipping MacroDefinition: MPI_Startall_isend ( count , number , requests ) ( ( petsc_isend_ct += ( PetscLogDouble ) ( number ) , 0 ) || PetscMPITypeSize ( & petsc_isend_len , count , MPIU_SCALAR ) || MPI_Startall ( number , requests ) ) =#
+#= # Skipping MacroDefinition: MPI_Start_isend ( count , requests ) ( ( petsc_isend_ct ++ , 0 ) || PetscMPITypeSize ( & petsc_isend_len , count , MPIU_SCALAR ) || MPI_Start ( requests ) ) =#
+#= # Skipping MacroDefinition: MPI_Recv ( buf , count , datatype , source , tag , comm , status ) ( ( petsc_recv_ct ++ , 0 ) || PetscMPITypeSize ( & petsc_recv_len , count , datatype ) || MPI_Recv ( buf , count , datatype , source , tag , comm , status ) ) =#
+#= # Skipping MacroDefinition: MPI_Send ( buf , count , datatype , dest , tag , comm ) ( ( petsc_send_ct ++ , 0 ) || PetscMPITypeSize ( & petsc_send_len , count , datatype ) || MPI_Send ( buf , count , datatype , dest , tag , comm ) ) =#
+#= # Skipping MacroDefinition: MPI_Wait ( request , status ) ( ( petsc_wait_ct ++ , petsc_sum_of_waits_ct ++ , 0 ) || MPI_Wait ( request , status ) ) =#
+#= # Skipping MacroDefinition: MPI_Waitany ( a , b , c , d ) ( ( petsc_wait_any_ct ++ , petsc_sum_of_waits_ct ++ , 0 ) || MPI_Waitany ( a , b , c , d ) ) =#
+#= # Skipping MacroDefinition: MPI_Waitall ( count , array_of_requests , array_of_statuses ) ( ( petsc_wait_all_ct ++ , petsc_sum_of_waits_ct += ( PetscLogDouble ) ( count ) , 0 ) || MPI_Waitall ( count , array_of_requests , array_of_statuses ) ) =#
+#= # Skipping MacroDefinition: MPI_Allreduce ( sendbuf , recvbuf , count , datatype , op , comm ) ( ( petsc_allreduce_ct += PetscMPIParallelComm ( comm ) , 0 ) || MPI_Allreduce ( sendbuf , recvbuf , count , datatype , op , comm ) ) =#
+#= # Skipping MacroDefinition: MPI_Alltoall ( sendbuf , sendcount , sendtype , recvbuf , recvcount , recvtype , comm ) ( ( petsc_allreduce_ct += PetscMPIParallelComm ( comm ) , 0 ) || PetscMPITypeSize ( & petsc_send_len , sendcount , sendtype ) || MPI_Alltoall ( sendbuf , sendcount , sendtype , recvbuf , recvcount , recvtype , comm ) ) =#
+#= # Skipping MacroDefinition: MPI_Alltoallv ( sendbuf , sendcnts , sdispls , sendtype , recvbuf , recvcnts , rdispls , recvtype , comm ) ( ( petsc_allreduce_ct += PetscMPIParallelComm ( comm ) , 0 ) || PetscMPITypeSizeComm ( comm , & petsc_send_len , sendcnts , sendtype ) || MPI_Alltoallv ( sendbuf , sendcnts , sdispls , sendtype , recvbuf , recvcnts , rdispls , recvtype , comm ) ) =#
+#= # Skipping MacroDefinition: MPI_Allgather ( sendbuf , sendcount , sendtype , recvbuf , recvcount , recvtype , comm ) ( ( petsc_gather_ct += PetscMPIParallelComm ( comm ) , 0 ) || MPI_Allgather ( sendbuf , sendcount , sendtype , recvbuf , recvcount , recvtype , comm ) ) =#
+#= # Skipping MacroDefinition: MPI_Allgatherv ( sendbuf , sendcount , sendtype , recvbuf , recvcount , displs , recvtype , comm ) ( ( petsc_gather_ct += PetscMPIParallelComm ( comm ) , 0 ) || MPI_Allgatherv ( sendbuf , sendcount , sendtype , recvbuf , recvcount , displs , recvtype , comm ) ) =#
+#= # Skipping MacroDefinition: MPI_Gather ( sendbuf , sendcount , sendtype , recvbuf , recvcount , recvtype , root , comm ) ( ( petsc_gather_ct ++ , 0 ) || PetscMPITypeSize ( & petsc_send_len , sendcount , sendtype ) || MPI_Gather ( sendbuf , sendcount , sendtype , recvbuf , recvcount , recvtype , root , comm ) ) =#
+#= # Skipping MacroDefinition: MPI_Gatherv ( sendbuf , sendcount , sendtype , recvbuf , recvcount , displs , recvtype , root , comm ) ( ( petsc_gather_ct ++ , 0 ) || PetscMPITypeSize ( & petsc_send_len , sendcount , sendtype ) || MPI_Gatherv ( sendbuf , sendcount , sendtype , recvbuf , recvcount , displs , recvtype , root , comm ) ) =#
+#= # Skipping MacroDefinition: MPI_Scatter ( sendbuf , sendcount , sendtype , recvbuf , recvcount , recvtype , root , comm ) ( ( petsc_scatter_ct ++ , 0 ) || PetscMPITypeSize ( & petsc_recv_len , recvcount , recvtype ) || MPI_Scatter ( sendbuf , sendcount , sendtype , recvbuf , recvcount , recvtype , root , comm ) ) =#
+#= # Skipping MacroDefinition: MPI_Scatterv ( sendbuf , sendcount , displs , sendtype , recvbuf , recvcount , recvtype , root , comm ) ( ( petsc_scatter_ct ++ , 0 ) || PetscMPITypeSize ( & petsc_recv_len , recvcount , recvtype ) || MPI_Scatterv ( sendbuf , sendcount , displs , sendtype , recvbuf , recvcount , recvtype , root , comm ) ) =#
 #= # Skipping MacroDefinition: PetscPreLoadBegin ( flag , name ) do { PetscBool PetscPreLoading = flag ; int PetscPreLoadMax , PetscPreLoadIt ; PetscLogStage _stageNum ; PetscErrorCode _3_ierr ; _3_ierr = PetscOptionsGetBool ( NULL , "-preload" , & PetscPreLoading , NULL ) ; CHKERRQ ( _3_ierr ) ; PetscPreLoadMax = ( int ) ( PetscPreLoading ) ; PetscPreLoadingUsed = PetscPreLoading ? PETSC_TRUE : PetscPreLoadingUsed ; for ( PetscPreLoadIt = 0 ; PetscPreLoadIt <= PetscPreLoadMax ; PetscPreLoadIt ++ ) { PetscPreLoadingOn = PetscPreLoading ; _3_ierr = PetscBarrier ( NULL ) ; CHKERRQ ( _3_ierr ) ; if ( PetscPreLoadIt > 0 ) { _3_ierr = PetscLogStageGetId ( name , & _stageNum ) ; CHKERRQ ( _3_ierr ) ; } else { _3_ierr = PetscLogStageRegister ( name , & _stageNum ) ; CHKERRQ ( _3_ierr ) ; } _3_ierr = PetscLogStageSetActive ( _stageNum , ( PetscBool ) ( ! PetscPreLoadMax || PetscPreLoadIt ) ) ; _3_ierr = PetscLogStagePush ( _stageNum ) ; CHKERRQ ( _3_ierr ) ; =#
 #= # Skipping MacroDefinition: PetscPreLoadEnd ( ) _3_ierr = PetscLogStagePop ( ) ; CHKERRQ ( _3_ierr ) ; PetscPreLoading = PETSC_FALSE ; } \
 #} while ( 0 ) =#
@@ -322,7 +336,8 @@ const PETSC_MPI_INT_MAX = 2147483647
 const PETSC_MPI_INT_MIN = -2147483647
 const PETSC_BLAS_INT_MAX = 2147483647
 const PETSC_BLAS_INT_MIN = -2147483647
-const PETSC_MAX_PATH_LEN = 4096
+
+#skipping undefined const PETSC_MAX_PATH_LEN = MAXPATHLEN
 const PETSCRAND = symbol("rand")
 const PETSCRAND48 = symbol("rand48")
 const PETSCSPRNG = symbol("sprng")
@@ -442,10 +457,7 @@ const NORM_1_AND_2 = (UInt32)(4)
 #= # end enum NormType =#
 const NORM_MAX = NORM_INFINITY
 
-#= # Skipping MacroDefinition: VecLockGet ( x , arg ) * ( arg ) = 0 =#
-#= # Skipping MacroDefinition: VecLockPush ( x ) 0 =#
-#= # Skipping MacroDefinition: VecLockPop ( x ) 0 =#
-#= # Skipping MacroDefinition: VecLocked ( x , arg ) =#
+#= # Skipping MacroDefinition: VecLocked ( x , arg ) do { PetscInt _st ; PetscErrorCode __ierr = VecLockGet ( x , & _st ) ; CHKERRQ ( __ierr ) ; if ( _st > 0 ) SETERRQ1 ( PETSC_COMM_SELF , PETSC_ERR_ARG_WRONGSTATE , " Vec is locked read only, argument # %d" , arg ) ; } while ( 0 ) =#
 const MATSAME = symbol("same")
 const MATMAIJ = symbol("maij")
 const MATSEQMAIJ = symbol("seqmaij")
@@ -913,9 +925,9 @@ typealias PetscEnum UInt32
 const ENUM_DUMMY = (UInt32)(0)
 
 #= # end enum PetscEnum =#
-typealias Petsc64bitInt Cint
+typealias Petsc64bitInt Int64
 
-# excluding lhs of  typealias PetscInt Cint
+# excluding lhs of  typealias PetscInt Petsc64bitInt
 typealias PetscBLASInt Cint
 
 #= # begin enum ANONYMOUS_2 =#
@@ -946,6 +958,24 @@ const PETSC_FALSE = (UInt32)(0)
 const PETSC_TRUE = (UInt32)(1)
 
 #= # end enum PetscBool =#
+# skipping undefined typealias typealias PetscComplex Complex
+#= # begin enum ANONYMOUS_4 =#
+typealias ANONYMOUS_4 UInt32
+
+const PETSC_SCALAR_DOUBLE = (UInt32)(0)
+const PETSC_SCALAR_SINGLE = (UInt32)(1)
+const PETSC_SCALAR_LONG_DOUBLE = (UInt32)(2)
+
+#= # end enum ANONYMOUS_4 =#
+#= # begin enum PetscScalarPrecision =#
+typealias PetscScalarPrecision UInt32
+
+const PETSC_SCALAR_DOUBLE = (UInt32)(0)
+const PETSC_SCALAR_SINGLE = (UInt32)(1)
+const PETSC_SCALAR_LONG_DOUBLE = (UInt32)(2)
+
+#= # end enum PetscScalarPrecision =#
+typealias MatScalar Float64
 typealias MatReal Float64
 
 #= skipping type declaration with undefined symbols:
@@ -954,10 +984,32 @@ immutable petsc_mpiu_2scalar
     b::PetscScalar
 end 
 =#
+#= skipping type declaration with undefined symbols:
+immutable petsc_mpiu_2int
+    a::PetscInt
+    b::PetscInt
+end 
+=#
+#= # begin enum ANONYMOUS_5 =#
+typealias ANONYMOUS_5 UInt32
+
+const PETSC_COPY_VALUES = (UInt32)(0)
+const PETSC_OWN_POINTER = (UInt32)(1)
+const PETSC_USE_POINTER = (UInt32)(2)
+
+#= # end enum ANONYMOUS_5 =#
+#= # begin enum PetscCopyMode =#
+typealias PetscCopyMode UInt32
+
+const PETSC_COPY_VALUES = (UInt32)(0)
+const PETSC_OWN_POINTER = (UInt32)(1)
+const PETSC_USE_POINTER = (UInt32)(2)
+
+#= # end enum PetscCopyMode =#
 typealias PetscLogDouble Cdouble
 
-#= # begin enum ANONYMOUS_4 =#
-typealias ANONYMOUS_4 UInt32
+#= # begin enum ANONYMOUS_6 =#
+typealias ANONYMOUS_6 UInt32
 
 const PETSC_INT = (UInt32)(0)
 const PETSC_DOUBLE = (UInt32)(1)
@@ -974,7 +1026,7 @@ const PETSC_OBJECT = (UInt32)(11)
 const PETSC_FUNCTION = (UInt32)(12)
 const PETSC_STRING = (UInt32)(12)
 
-#= # end enum ANONYMOUS_4 =#
+#= # end enum ANONYMOUS_6 =#
 immutable _p_PetscToken
 end
 
@@ -992,8 +1044,8 @@ end
 
 typealias PetscFunctionList Ptr{_n_PetscFunctionList}
 
-#= # begin enum ANONYMOUS_5 =#
-typealias ANONYMOUS_5 UInt32
+#= # begin enum ANONYMOUS_7 =#
+typealias ANONYMOUS_7 UInt32
 
 const FILE_MODE_READ = (UInt32)(0)
 const FILE_MODE_WRITE = (UInt32)(1)
@@ -1001,7 +1053,7 @@ const FILE_MODE_APPEND = (UInt32)(2)
 const FILE_MODE_UPDATE = (UInt32)(3)
 const FILE_MODE_APPEND_UPDATE = (UInt32)(4)
 
-#= # end enum ANONYMOUS_5 =#
+#= # end enum ANONYMOUS_7 =#
 #= # begin enum PetscFileMode =#
 typealias PetscFileMode UInt32
 
@@ -1012,14 +1064,14 @@ const FILE_MODE_UPDATE = (UInt32)(3)
 const FILE_MODE_APPEND_UPDATE = (UInt32)(4)
 
 #= # end enum PetscFileMode =#
-#= # begin enum ANONYMOUS_6 =#
-typealias ANONYMOUS_6 UInt32
+#= # begin enum ANONYMOUS_8 =#
+typealias ANONYMOUS_8 UInt32
 
 const PETSC_ERROR_INITIAL = (UInt32)(0)
 const PETSC_ERROR_REPEAT = (UInt32)(1)
 const PETSC_ERROR_IN_CXX = (UInt32)(2)
 
-#= # end enum ANONYMOUS_6 =#
+#= # end enum ANONYMOUS_8 =#
 #= # begin enum PetscErrorType =#
 typealias PetscErrorType UInt32
 
@@ -1028,13 +1080,13 @@ const PETSC_ERROR_REPEAT = (UInt32)(1)
 const PETSC_ERROR_IN_CXX = (UInt32)(2)
 
 #= # end enum PetscErrorType =#
-#= # begin enum ANONYMOUS_7 =#
-typealias ANONYMOUS_7 UInt32
+#= # begin enum ANONYMOUS_9 =#
+typealias ANONYMOUS_9 UInt32
 
 const PETSC_FP_TRAP_OFF = (UInt32)(0)
 const PETSC_FP_TRAP_ON = (UInt32)(1)
 
-#= # end enum ANONYMOUS_7 =#
+#= # end enum ANONYMOUS_9 =#
 #= # begin enum PetscFPTrap =#
 typealias PetscFPTrap UInt32
 
@@ -1109,7 +1161,7 @@ immutable Array_64_Ptr
     d64::Ptr{UInt8}
 end
 
-zero(::Type{Array_64_Ptr}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+zero(::Type{Array_64_Ptr}) = begin  # /home/jared/.julia/v0.4/Clang/src/wrap_c.jl, line 266:
         Array_64_Ptr(fill(zero(Ptr{UInt8}),64)...)
     end
 
@@ -1180,7 +1232,7 @@ immutable Array_64_Cint
     d64::Cint
 end
 
-zero(::Type{Array_64_Cint}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+zero(::Type{Array_64_Cint}) = begin  # /home/jared/.julia/v0.4/Clang/src/wrap_c.jl, line 266:
         Array_64_Cint(fill(zero(Cint),64)...)
     end
 
@@ -1251,7 +1303,7 @@ immutable Array_64_PetscBool
     d64::PetscBool
 end
 
-zero(::Type{Array_64_PetscBool}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+zero(::Type{Array_64_PetscBool}) = begin  # /home/jared/.julia/v0.4/Clang/src/wrap_c.jl, line 266:
         Array_64_PetscBool(fill(zero(PetscBool),64)...)
     end
 
@@ -1275,8 +1327,8 @@ immutable PetscViewer{T}
     pobj::Ptr{Void}
 end
 
-#= # begin enum ANONYMOUS_8 =#
-typealias ANONYMOUS_8 UInt32
+#= # begin enum ANONYMOUS_10 =#
+typealias ANONYMOUS_10 UInt32
 
 const OPTION_INT = (UInt32)(0)
 const OPTION_BOOL = (UInt32)(1)
@@ -1291,7 +1343,7 @@ const OPTION_ELIST = (UInt32)(9)
 const OPTION_BOOL_ARRAY = (UInt32)(10)
 const OPTION_STRING_ARRAY = (UInt32)(11)
 
-#= # end enum ANONYMOUS_8 =#
+#= # end enum ANONYMOUS_10 =#
 #= # begin enum PetscOptionType =#
 typealias PetscOptionType UInt32
 
@@ -1359,14 +1411,14 @@ end
 =#
 typealias PetscDLHandle Ptr{Void}
 
-#= # begin enum ANONYMOUS_9 =#
-typealias ANONYMOUS_9 UInt32
+#= # begin enum ANONYMOUS_11 =#
+typealias ANONYMOUS_11 UInt32
 
 const PETSC_DL_DECIDE = (UInt32)(0)
 const PETSC_DL_NOW = (UInt32)(1)
 const PETSC_DL_LOCAL = (UInt32)(2)
 
-#= # end enum ANONYMOUS_9 =#
+#= # end enum ANONYMOUS_11 =#
 #= # begin enum PetscDLMode =#
 typealias PetscDLMode UInt32
 
@@ -1498,14 +1550,14 @@ end
 
 typealias PetscRandom Ptr{_p_PetscRandom}
 
-#= # begin enum ANONYMOUS_10 =#
-typealias ANONYMOUS_10 UInt32
+#= # begin enum ANONYMOUS_12 =#
+typealias ANONYMOUS_12 UInt32
 
 const PETSC_BINARY_SEEK_SET = (UInt32)(0)
 const PETSC_BINARY_SEEK_CUR = (UInt32)(1)
 const PETSC_BINARY_SEEK_END = (UInt32)(2)
 
-#= # end enum ANONYMOUS_10 =#
+#= # end enum ANONYMOUS_12 =#
 #= # begin enum PetscBinarySeekType =#
 typealias PetscBinarySeekType UInt32
 
@@ -1514,14 +1566,14 @@ const PETSC_BINARY_SEEK_CUR = (UInt32)(1)
 const PETSC_BINARY_SEEK_END = (UInt32)(2)
 
 #= # end enum PetscBinarySeekType =#
-#= # begin enum ANONYMOUS_11 =#
-typealias ANONYMOUS_11 Cint
+#= # begin enum ANONYMOUS_13 =#
+typealias ANONYMOUS_13 Cint
 
 const PETSC_BUILDTWOSIDED_NOTSET = (Int32)(-1)
 const PETSC_BUILDTWOSIDED_ALLREDUCE = (Int32)(0)
 const PETSC_BUILDTWOSIDED_IBARRIER = (Int32)(1)
 
-#= # end enum ANONYMOUS_11 =#
+#= # end enum ANONYMOUS_13 =#
 #= # begin enum PetscBuildTwoSidedType =#
 typealias PetscBuildTwoSidedType Cint
 
@@ -1530,8 +1582,8 @@ const PETSC_BUILDTWOSIDED_ALLREDUCE = (Int32)(0)
 const PETSC_BUILDTWOSIDED_IBARRIER = (Int32)(1)
 
 #= # end enum PetscBuildTwoSidedType =#
-#= # begin enum ANONYMOUS_12 =#
-typealias ANONYMOUS_12 UInt32
+#= # begin enum ANONYMOUS_14 =#
+typealias ANONYMOUS_14 UInt32
 
 const NOT_SET_VALUES = (UInt32)(0)
 const INSERT_VALUES = (UInt32)(1)
@@ -1542,7 +1594,7 @@ const ADD_ALL_VALUES = (UInt32)(5)
 const INSERT_BC_VALUES = (UInt32)(6)
 const ADD_BC_VALUES = (UInt32)(7)
 
-#= # end enum ANONYMOUS_12 =#
+#= # end enum ANONYMOUS_14 =#
 #= # begin enum InsertMode =#
 typealias InsertMode UInt32
 
@@ -1556,14 +1608,14 @@ const INSERT_BC_VALUES = (UInt32)(6)
 const ADD_BC_VALUES = (UInt32)(7)
 
 #= # end enum InsertMode =#
-#= # begin enum ANONYMOUS_13 =#
-typealias ANONYMOUS_13 UInt32
+#= # begin enum ANONYMOUS_15 =#
+typealias ANONYMOUS_15 UInt32
 
 const PETSC_SUBCOMM_GENERAL = (UInt32)(0)
 const PETSC_SUBCOMM_CONTIGUOUS = (UInt32)(1)
 const PETSC_SUBCOMM_INTERLACED = (UInt32)(2)
 
-#= # end enum ANONYMOUS_13 =#
+#= # end enum ANONYMOUS_15 =#
 #= # begin enum PetscSubcommType =#
 typealias PetscSubcommType UInt32
 
@@ -1631,8 +1683,8 @@ end
 
 typealias PetscDrawBar Ptr{_p_PetscDrawBar}
 
-#= # begin enum ANONYMOUS_14 =#
-typealias ANONYMOUS_14 UInt32
+#= # begin enum ANONYMOUS_16 =#
+typealias ANONYMOUS_16 UInt32
 
 const PETSC_VIEWER_DEFAULT = (UInt32)(0)
 const PETSC_VIEWER_ASCII_MATLAB = (UInt32)(1)
@@ -1664,7 +1716,7 @@ const PETSC_VIEWER_NATIVE = (UInt32)(26)
 const PETSC_VIEWER_HDF5_VIZ = (UInt32)(27)
 const PETSC_VIEWER_NOFORMAT = (UInt32)(28)
 
-#= # end enum ANONYMOUS_14 =#
+#= # end enum ANONYMOUS_16 =#
 #= # begin enum PetscViewerFormat =#
 typealias PetscViewerFormat UInt32
 
@@ -1699,15 +1751,15 @@ const PETSC_VIEWER_HDF5_VIZ = (UInt32)(27)
 const PETSC_VIEWER_NOFORMAT = (UInt32)(28)
 
 #= # end enum PetscViewerFormat =#
-#= # begin enum ANONYMOUS_15 =#
-typealias ANONYMOUS_15 UInt32
+#= # begin enum ANONYMOUS_17 =#
+typealias ANONYMOUS_17 UInt32
 
 const PETSC_VTK_POINT_FIELD = (UInt32)(0)
 const PETSC_VTK_POINT_VECTOR_FIELD = (UInt32)(1)
 const PETSC_VTK_CELL_FIELD = (UInt32)(2)
 const PETSC_VTK_CELL_VECTOR_FIELD = (UInt32)(3)
 
-#= # end enum ANONYMOUS_15 =#
+#= # end enum ANONYMOUS_17 =#
 #= # begin enum PetscViewerVTKFieldType =#
 typealias PetscViewerVTKFieldType UInt32
 
@@ -1723,10 +1775,17 @@ end
 typealias PetscViewers Ptr{_n_PetscViewers}
 typealias PetscBT Symbol
 
+#= skipping type declaration with undefined symbols:
 immutable _n_PetscTable
-end
-
-typealias PetscTable Ptr{_n_PetscTable}
+    keytable::Ptr{PetscInt}
+    table::Ptr{PetscInt}
+    count::PetscInt
+    tablesize::PetscInt
+    head::PetscInt
+    maxkey::PetscInt
+end 
+=#
+# skipping undefined typealias typealias PetscTable Ptr{_n_PetscTable}
 typealias PetscTablePosition Ptr{Int64}
 
 immutable _p_PetscMatlabEngine
@@ -1734,15 +1793,15 @@ end
 
 typealias PetscMatlabEngine Ptr{_p_PetscMatlabEngine}
 
-#= # begin enum ANONYMOUS_16 =#
-typealias ANONYMOUS_16 UInt32
+#= # begin enum ANONYMOUS_18 =#
+typealias ANONYMOUS_18 UInt32
 
 const PETSC_DRAW_MARKER_CROSS = (UInt32)(0)
 const PETSC_DRAW_MARKER_POINT = (UInt32)(1)
 const PETSC_DRAW_MARKER_PLUS = (UInt32)(2)
 const PETSC_DRAW_MARKER_CIRCLE = (UInt32)(3)
 
-#= # end enum ANONYMOUS_16 =#
+#= # end enum ANONYMOUS_18 =#
 #= # begin enum PetscDrawMarkerType =#
 typealias PetscDrawMarkerType UInt32
 
@@ -1752,8 +1811,8 @@ const PETSC_DRAW_MARKER_PLUS = (UInt32)(2)
 const PETSC_DRAW_MARKER_CIRCLE = (UInt32)(3)
 
 #= # end enum PetscDrawMarkerType =#
-#= # begin enum ANONYMOUS_17 =#
-typealias ANONYMOUS_17 UInt32
+#= # begin enum ANONYMOUS_19 =#
+typealias ANONYMOUS_19 UInt32
 
 const PETSC_BUTTON_NONE = (UInt32)(0)
 const PETSC_BUTTON_LEFT = (UInt32)(1)
@@ -1763,7 +1822,7 @@ const PETSC_BUTTON_LEFT_SHIFT = (UInt32)(4)
 const PETSC_BUTTON_CENTER_SHIFT = (UInt32)(5)
 const PETSC_BUTTON_RIGHT_SHIFT = (UInt32)(6)
 
-#= # end enum ANONYMOUS_17 =#
+#= # end enum ANONYMOUS_19 =#
 #= # begin enum PetscDrawButton =#
 typealias PetscDrawButton UInt32
 
@@ -1846,13 +1905,13 @@ end
 typealias PetscSection Ptr{_p_PetscSection}
 typealias ISType Symbol
 
-#= # begin enum ANONYMOUS_18 =#
-typealias ANONYMOUS_18 UInt32
+#= # begin enum ANONYMOUS_20 =#
+typealias ANONYMOUS_20 UInt32
 
 const IS_GTOLM_MASK = (UInt32)(0)
 const IS_GTOLM_DROP = (UInt32)(1)
 
-#= # end enum ANONYMOUS_18 =#
+#= # end enum ANONYMOUS_20 =#
 #= # begin enum ISGlobalToLocalMappingType =#
 typealias ISGlobalToLocalMappingType UInt32
 
@@ -1860,13 +1919,13 @@ const IS_GTOLM_MASK = (UInt32)(0)
 const IS_GTOLM_DROP = (UInt32)(1)
 
 #= # end enum ISGlobalToLocalMappingType =#
-#= # begin enum ANONYMOUS_19 =#
-typealias ANONYMOUS_19 UInt32
+#= # begin enum ANONYMOUS_21 =#
+typealias ANONYMOUS_21 UInt32
 
 const IS_COLORING_GLOBAL = (UInt32)(0)
 const IS_COLORING_GHOSTED = (UInt32)(1)
 
-#= # end enum ANONYMOUS_19 =#
+#= # end enum ANONYMOUS_21 =#
 #= # begin enum ISColoringType =#
 typealias ISColoringType UInt32
 
@@ -1874,7 +1933,7 @@ const IS_COLORING_GLOBAL = (UInt32)(0)
 const IS_COLORING_GHOSTED = (UInt32)(1)
 
 #= # end enum ISColoringType =#
-typealias PETSC_IS_COLOR_VALUE_TYPE UInt32
+typealias ISColoringValue UInt16
 
 immutable _p_Vec
 end
@@ -1890,8 +1949,8 @@ immutable VecScatter{T}
     pobj::Ptr{Void}
 end
 
-#= # begin enum ANONYMOUS_20 =#
-typealias ANONYMOUS_20 UInt32
+#= # begin enum ANONYMOUS_22 =#
+typealias ANONYMOUS_22 UInt32
 
 const SCATTER_FORWARD = (UInt32)(0)
 const SCATTER_REVERSE = (UInt32)(1)
@@ -1899,7 +1958,7 @@ const SCATTER_FORWARD_LOCAL = (UInt32)(2)
 const SCATTER_REVERSE_LOCAL = (UInt32)(3)
 const SCATTER_LOCAL = (UInt32)(2)
 
-#= # end enum ANONYMOUS_20 =#
+#= # end enum ANONYMOUS_22 =#
 #= # begin enum ScatterMode =#
 typealias ScatterMode UInt32
 
@@ -1912,8 +1971,8 @@ const SCATTER_LOCAL = (UInt32)(2)
 #= # end enum ScatterMode =#
 typealias VecType Symbol
 
-#= # begin enum ANONYMOUS_21 =#
-typealias ANONYMOUS_21 UInt32
+#= # begin enum ANONYMOUS_23 =#
+typealias ANONYMOUS_23 UInt32
 
 const NORM_1 = (UInt32)(0)
 const NORM_2 = (UInt32)(1)
@@ -1921,14 +1980,14 @@ const NORM_FROBENIUS = (UInt32)(2)
 const NORM_INFINITY = (UInt32)(3)
 const NORM_1_AND_2 = (UInt32)(4)
 
-#= # end enum ANONYMOUS_21 =#
-#= # begin enum ANONYMOUS_22 =#
-typealias ANONYMOUS_22 UInt32
+#= # end enum ANONYMOUS_23 =#
+#= # begin enum ANONYMOUS_24 =#
+typealias ANONYMOUS_24 UInt32
 
 const VEC_IGNORE_OFF_PROC_ENTRIES = (UInt32)(0)
 const VEC_IGNORE_NEGATIVE_INDICES = (UInt32)(1)
 
-#= # end enum ANONYMOUS_22 =#
+#= # end enum ANONYMOUS_24 =#
 #= # begin enum VecOption =#
 typealias VecOption UInt32
 
@@ -1936,14 +1995,14 @@ const VEC_IGNORE_OFF_PROC_ENTRIES = (UInt32)(0)
 const VEC_IGNORE_NEGATIVE_INDICES = (UInt32)(1)
 
 #= # end enum VecOption =#
-#= # begin enum ANONYMOUS_23 =#
-typealias ANONYMOUS_23 UInt32
+#= # begin enum ANONYMOUS_25 =#
+typealias ANONYMOUS_25 UInt32
 
 const VECOP_VIEW = (UInt32)(33)
 const VECOP_LOAD = (UInt32)(41)
 const VECOP_DUPLICATE = (UInt32)(0)
 
-#= # end enum ANONYMOUS_23 =#
+#= # end enum ANONYMOUS_25 =#
 #= # begin enum VecOperation =#
 typealias VecOperation UInt32
 
@@ -1968,8 +2027,8 @@ end
 
 typealias MatType Symbol
 
-#= # begin enum ANONYMOUS_24 =#
-typealias ANONYMOUS_24 UInt32
+#= # begin enum ANONYMOUS_26 =#
+typealias ANONYMOUS_26 UInt32
 
 const MAT_FACTOR_NONE = (UInt32)(0)
 const MAT_FACTOR_LU = (UInt32)(1)
@@ -1978,7 +2037,7 @@ const MAT_FACTOR_ILU = (UInt32)(3)
 const MAT_FACTOR_ICC = (UInt32)(4)
 const MAT_FACTOR_ILUDT = (UInt32)(5)
 
-#= # end enum ANONYMOUS_24 =#
+#= # end enum ANONYMOUS_26 =#
 #= # begin enum MatFactorType =#
 typealias MatFactorType UInt32
 
@@ -1990,14 +2049,14 @@ const MAT_FACTOR_ICC = (UInt32)(4)
 const MAT_FACTOR_ILUDT = (UInt32)(5)
 
 #= # end enum MatFactorType =#
-#= # begin enum ANONYMOUS_25 =#
-typealias ANONYMOUS_25 UInt32
+#= # begin enum ANONYMOUS_27 =#
+typealias ANONYMOUS_27 UInt32
 
 const MAT_INITIAL_MATRIX = (UInt32)(0)
 const MAT_REUSE_MATRIX = (UInt32)(1)
 const MAT_IGNORE_MATRIX = (UInt32)(2)
 
-#= # end enum ANONYMOUS_25 =#
+#= # end enum ANONYMOUS_27 =#
 #= # begin enum MatReuse =#
 typealias MatReuse UInt32
 
@@ -2006,13 +2065,13 @@ const MAT_REUSE_MATRIX = (UInt32)(1)
 const MAT_IGNORE_MATRIX = (UInt32)(2)
 
 #= # end enum MatReuse =#
-#= # begin enum ANONYMOUS_26 =#
-typealias ANONYMOUS_26 UInt32
+#= # begin enum ANONYMOUS_28 =#
+typealias ANONYMOUS_28 UInt32
 
 const MAT_DO_NOT_GET_VALUES = (UInt32)(0)
 const MAT_GET_VALUES = (UInt32)(1)
 
-#= # end enum ANONYMOUS_26 =#
+#= # end enum ANONYMOUS_28 =#
 #= # begin enum MatGetSubMatrixOption =#
 typealias MatGetSubMatrixOption UInt32
 
@@ -2020,14 +2079,14 @@ const MAT_DO_NOT_GET_VALUES = (UInt32)(0)
 const MAT_GET_VALUES = (UInt32)(1)
 
 #= # end enum MatGetSubMatrixOption =#
-#= # begin enum ANONYMOUS_27 =#
-typealias ANONYMOUS_27 UInt32
+#= # begin enum ANONYMOUS_29 =#
+typealias ANONYMOUS_29 UInt32
 
 const DIFFERENT_NONZERO_PATTERN = (UInt32)(0)
 const SUBSET_NONZERO_PATTERN = (UInt32)(1)
 const SAME_NONZERO_PATTERN = (UInt32)(2)
 
-#= # end enum ANONYMOUS_27 =#
+#= # end enum ANONYMOUS_29 =#
 #= # begin enum MatStructure =#
 typealias MatStructure UInt32
 
@@ -2036,13 +2095,13 @@ const SUBSET_NONZERO_PATTERN = (UInt32)(1)
 const SAME_NONZERO_PATTERN = (UInt32)(2)
 
 #= # end enum MatStructure =#
-#= # begin enum ANONYMOUS_28 =#
-typealias ANONYMOUS_28 UInt32
+#= # begin enum ANONYMOUS_30 =#
+typealias ANONYMOUS_30 UInt32
 
 const MAT_COMPOSITE_ADDITIVE = (UInt32)(0)
 const MAT_COMPOSITE_MULTIPLICATIVE = (UInt32)(1)
 
-#= # end enum ANONYMOUS_28 =#
+#= # end enum ANONYMOUS_30 =#
 #= # begin enum MatCompositeType =#
 typealias MatCompositeType UInt32
 
@@ -2058,13 +2117,13 @@ immutable MatStencil
     c::PetscInt
 end 
 =#
-#= # begin enum ANONYMOUS_29 =#
-typealias ANONYMOUS_29 UInt32
+#= # begin enum ANONYMOUS_31 =#
+typealias ANONYMOUS_31 UInt32
 
 const MAT_FLUSH_ASSEMBLY = (UInt32)(1)
 const MAT_FINAL_ASSEMBLY = (UInt32)(0)
 
-#= # end enum ANONYMOUS_29 =#
+#= # end enum ANONYMOUS_31 =#
 #= # begin enum MatAssemblyType =#
 typealias MatAssemblyType UInt32
 
@@ -2072,8 +2131,8 @@ const MAT_FLUSH_ASSEMBLY = (UInt32)(1)
 const MAT_FINAL_ASSEMBLY = (UInt32)(0)
 
 #= # end enum MatAssemblyType =#
-#= # begin enum ANONYMOUS_30 =#
-typealias ANONYMOUS_30 Cint
+#= # begin enum ANONYMOUS_32 =#
+typealias ANONYMOUS_32 Cint
 
 const MAT_OPTION_MIN = (Int32)(-5)
 const MAT_NEW_NONZERO_LOCATION_ERR = (Int32)(-4)
@@ -2100,7 +2159,7 @@ const MAT_NO_OFF_PROC_ENTRIES = (Int32)(17)
 const MAT_NEW_NONZERO_LOCATIONS = (Int32)(18)
 const MAT_OPTION_MAX = (Int32)(19)
 
-#= # end enum ANONYMOUS_30 =#
+#= # end enum ANONYMOUS_32 =#
 #= # begin enum MatOption =#
 typealias MatOption Cint
 
@@ -2130,14 +2189,14 @@ const MAT_NEW_NONZERO_LOCATIONS = (Int32)(18)
 const MAT_OPTION_MAX = (Int32)(19)
 
 #= # end enum MatOption =#
-#= # begin enum ANONYMOUS_31 =#
-typealias ANONYMOUS_31 UInt32
+#= # begin enum ANONYMOUS_33 =#
+typealias ANONYMOUS_33 UInt32
 
 const MAT_DO_NOT_COPY_VALUES = (UInt32)(0)
 const MAT_COPY_VALUES = (UInt32)(1)
 const MAT_SHARE_NONZERO_PATTERN = (UInt32)(2)
 
-#= # end enum ANONYMOUS_31 =#
+#= # end enum ANONYMOUS_33 =#
 #= # begin enum MatDuplicateOption =#
 typealias MatDuplicateOption UInt32
 
@@ -2159,14 +2218,14 @@ immutable MatInfo
     factor_mallocs::PetscLogDouble
 end
 
-#= # begin enum ANONYMOUS_32 =#
-typealias ANONYMOUS_32 UInt32
+#= # begin enum ANONYMOUS_34 =#
+typealias ANONYMOUS_34 UInt32
 
 const MAT_LOCAL = (UInt32)(1)
 const MAT_GLOBAL_MAX = (UInt32)(2)
 const MAT_GLOBAL_SUM = (UInt32)(3)
 
-#= # end enum ANONYMOUS_32 =#
+#= # end enum ANONYMOUS_34 =#
 #= # begin enum MatInfoType =#
 typealias MatInfoType UInt32
 
@@ -2177,15 +2236,15 @@ const MAT_GLOBAL_SUM = (UInt32)(3)
 #= # end enum MatInfoType =#
 typealias MatOrderingType Symbol
 
-#= # begin enum ANONYMOUS_33 =#
-typealias ANONYMOUS_33 UInt32
+#= # begin enum ANONYMOUS_35 =#
+typealias ANONYMOUS_35 UInt32
 
 const MAT_SHIFT_NONE = (UInt32)(0)
 const MAT_SHIFT_NONZERO = (UInt32)(1)
 const MAT_SHIFT_POSITIVE_DEFINITE = (UInt32)(2)
 const MAT_SHIFT_INBLOCKS = (UInt32)(3)
 
-#= # end enum ANONYMOUS_33 =#
+#= # end enum ANONYMOUS_35 =#
 #= # begin enum MatFactorShiftType =#
 typealias MatFactorShiftType UInt32
 
@@ -2210,8 +2269,8 @@ immutable MatFactorInfo
     shiftamount::PetscReal
 end 
 =#
-#= # begin enum ANONYMOUS_34 =#
-typealias ANONYMOUS_34 UInt32
+#= # begin enum ANONYMOUS_36 =#
+typealias ANONYMOUS_36 UInt32
 
 const SOR_FORWARD_SWEEP = (UInt32)(1)
 const SOR_BACKWARD_SWEEP = (UInt32)(2)
@@ -2224,7 +2283,7 @@ const SOR_EISENSTAT = (UInt32)(32)
 const SOR_APPLY_UPPER = (UInt32)(64)
 const SOR_APPLY_LOWER = (UInt32)(128)
 
-#= # end enum ANONYMOUS_34 =#
+#= # end enum ANONYMOUS_36 =#
 #= # begin enum MatSORType =#
 typealias MatSORType UInt32
 
@@ -2246,15 +2305,15 @@ end
 typealias MatColoring Ptr{_p_MatColoring}
 typealias MatColoringType Symbol
 
-#= # begin enum ANONYMOUS_35 =#
-typealias ANONYMOUS_35 UInt32
+#= # begin enum ANONYMOUS_37 =#
+typealias ANONYMOUS_37 UInt32
 
 const MAT_COLORING_WEIGHT_RANDOM = (UInt32)(0)
 const MAT_COLORING_WEIGHT_LEXICAL = (UInt32)(1)
 const MAT_COLORING_WEIGHT_LF = (UInt32)(2)
 const MAT_COLORING_WEIGHT_SL = (UInt32)(3)
 
-#= # end enum ANONYMOUS_35 =#
+#= # end enum ANONYMOUS_37 =#
 #= # begin enum MatColoringWeightType =#
 typealias MatColoringWeightType UInt32
 
@@ -2280,8 +2339,8 @@ end
 typealias MatPartitioning Ptr{_p_MatPartitioning}
 typealias MatPartitioningType Symbol
 
-#= # begin enum ANONYMOUS_36 =#
-typealias ANONYMOUS_36 UInt32
+#= # begin enum ANONYMOUS_38 =#
+typealias ANONYMOUS_38 UInt32
 
 const MP_CHACO_MULTILEVEL = (UInt32)(1)
 const MP_CHACO_SPECTRAL = (UInt32)(2)
@@ -2289,7 +2348,7 @@ const MP_CHACO_LINEAR = (UInt32)(4)
 const MP_CHACO_RANDOM = (UInt32)(5)
 const MP_CHACO_SCATTERED = (UInt32)(6)
 
-#= # end enum ANONYMOUS_36 =#
+#= # end enum ANONYMOUS_38 =#
 #= # begin enum MPChacoGlobalType =#
 typealias MPChacoGlobalType UInt32
 
@@ -2300,13 +2359,13 @@ const MP_CHACO_RANDOM = (UInt32)(5)
 const MP_CHACO_SCATTERED = (UInt32)(6)
 
 #= # end enum MPChacoGlobalType =#
-#= # begin enum ANONYMOUS_37 =#
-typealias ANONYMOUS_37 UInt32
+#= # begin enum ANONYMOUS_39 =#
+typealias ANONYMOUS_39 UInt32
 
 const MP_CHACO_KERNIGHAN = (UInt32)(1)
 const MP_CHACO_NONE = (UInt32)(2)
 
-#= # end enum ANONYMOUS_37 =#
+#= # end enum ANONYMOUS_39 =#
 #= # begin enum MPChacoLocalType =#
 typealias MPChacoLocalType UInt32
 
@@ -2314,13 +2373,13 @@ const MP_CHACO_KERNIGHAN = (UInt32)(1)
 const MP_CHACO_NONE = (UInt32)(2)
 
 #= # end enum MPChacoLocalType =#
-#= # begin enum ANONYMOUS_38 =#
-typealias ANONYMOUS_38 UInt32
+#= # begin enum ANONYMOUS_40 =#
+typealias ANONYMOUS_40 UInt32
 
 const MP_CHACO_LANCZOS = (UInt32)(0)
 const MP_CHACO_RQI = (UInt32)(1)
 
-#= # end enum ANONYMOUS_38 =#
+#= # end enum ANONYMOUS_40 =#
 #= # begin enum MPChacoEigenType =#
 typealias MPChacoEigenType UInt32
 
@@ -2328,8 +2387,8 @@ const MP_CHACO_LANCZOS = (UInt32)(0)
 const MP_CHACO_RQI = (UInt32)(1)
 
 #= # end enum MPChacoEigenType =#
-#= # begin enum ANONYMOUS_39 =#
-typealias ANONYMOUS_39 UInt32
+#= # begin enum ANONYMOUS_41 =#
+typealias ANONYMOUS_41 UInt32
 
 const MP_PTSCOTCH_QUALITY = (UInt32)(0)
 const MP_PTSCOTCH_SPEED = (UInt32)(1)
@@ -2337,7 +2396,7 @@ const MP_PTSCOTCH_BALANCE = (UInt32)(2)
 const MP_PTSCOTCH_SAFETY = (UInt32)(3)
 const MP_PTSCOTCH_SCALABILITY = (UInt32)(4)
 
-#= # end enum ANONYMOUS_39 =#
+#= # end enum ANONYMOUS_41 =#
 #= # begin enum MPPTScotchStrategyType =#
 typealias MPPTScotchStrategyType UInt32
 
@@ -2402,8 +2461,8 @@ immutable PetscCoarsenData
     mat::Mat
 end 
 =#
-#= # begin enum ANONYMOUS_40 =#
-typealias ANONYMOUS_40 UInt32
+#= # begin enum ANONYMOUS_42 =#
+typealias ANONYMOUS_42 UInt32
 
 const MATOP_SET_VALUES = (UInt32)(0)
 const MATOP_GET_ROW = (UInt32)(1)
@@ -2541,7 +2600,7 @@ const MATOP_RESIDUAL = (UInt32)(141)
 const MATOP_FDCOLORING_SETUP = (UInt32)(142)
 const MATOP_MPICONCATENATESEQ = (UInt32)(144)
 
-#= # end enum ANONYMOUS_40 =#
+#= # end enum ANONYMOUS_42 =#
 #= # begin enum MatOperation =#
 typealias MatOperation UInt32
 
@@ -2698,8 +2757,8 @@ end
 
 typealias DM Ptr{_p_DM}
 
-#= # begin enum ANONYMOUS_41 =#
-typealias ANONYMOUS_41 UInt32
+#= # begin enum ANONYMOUS_43 =#
+typealias ANONYMOUS_43 UInt32
 
 const DM_BOUNDARY_NONE = (UInt32)(0)
 const DM_BOUNDARY_GHOSTED = (UInt32)(1)
@@ -2707,7 +2766,7 @@ const DM_BOUNDARY_MIRROR = (UInt32)(2)
 const DM_BOUNDARY_PERIODIC = (UInt32)(3)
 const DM_BOUNDARY_TWIST = (UInt32)(4)
 
-#= # end enum ANONYMOUS_41 =#
+#= # end enum ANONYMOUS_43 =#
 #= # begin enum DMBoundaryType =#
 typealias DMBoundaryType UInt32
 
@@ -2749,8 +2808,8 @@ end
 
 typealias NLF Ptr{NLF_DAAD}
 
-#= # begin enum ANONYMOUS_42 =#
-typealias ANONYMOUS_42 UInt32
+#= # begin enum ANONYMOUS_44 =#
+typealias ANONYMOUS_44 UInt32
 
 const PETSC_UNIT_LENGTH = (UInt32)(0)
 const PETSC_UNIT_MASS = (UInt32)(1)
@@ -2761,7 +2820,7 @@ const PETSC_UNIT_AMOUNT = (UInt32)(5)
 const PETSC_UNIT_LUMINOSITY = (UInt32)(6)
 const NUM_PETSC_UNITS = (UInt32)(7)
 
-#= # end enum ANONYMOUS_42 =#
+#= # end enum ANONYMOUS_44 =#
 #= # begin enum PetscUnit =#
 typealias PetscUnit UInt32
 
@@ -2788,13 +2847,13 @@ immutable _DMInterpolationInfo
 end 
 =#
 # skipping undefined typealias typealias DMInterpolationInfo Ptr{_DMInterpolationInfo}
-#= # begin enum ANONYMOUS_43 =#
-typealias ANONYMOUS_43 UInt32
+#= # begin enum ANONYMOUS_45 =#
+typealias ANONYMOUS_45 UInt32
 
 const DMDA_STENCIL_STAR = (UInt32)(0)
 const DMDA_STENCIL_BOX = (UInt32)(1)
 
-#= # end enum ANONYMOUS_43 =#
+#= # end enum ANONYMOUS_45 =#
 #= # begin enum DMDAStencilType =#
 typealias DMDAStencilType UInt32
 
@@ -2802,13 +2861,13 @@ const DMDA_STENCIL_STAR = (UInt32)(0)
 const DMDA_STENCIL_BOX = (UInt32)(1)
 
 #= # end enum DMDAStencilType =#
-#= # begin enum ANONYMOUS_44 =#
-typealias ANONYMOUS_44 UInt32
+#= # begin enum ANONYMOUS_46 =#
+typealias ANONYMOUS_46 UInt32
 
 const DMDA_Q0 = (UInt32)(0)
 const DMDA_Q1 = (UInt32)(1)
 
-#= # end enum ANONYMOUS_44 =#
+#= # end enum ANONYMOUS_46 =#
 #= # begin enum DMDAInterpolationType =#
 typealias DMDAInterpolationType UInt32
 
@@ -2816,13 +2875,13 @@ const DMDA_Q0 = (UInt32)(0)
 const DMDA_Q1 = (UInt32)(1)
 
 #= # end enum DMDAInterpolationType =#
-#= # begin enum ANONYMOUS_45 =#
-typealias ANONYMOUS_45 UInt32
+#= # begin enum ANONYMOUS_47 =#
+typealias ANONYMOUS_47 UInt32
 
 const DMDA_ELEMENT_P1 = (UInt32)(0)
 const DMDA_ELEMENT_Q1 = (UInt32)(1)
 
-#= # end enum ANONYMOUS_45 =#
+#= # end enum ANONYMOUS_47 =#
 #= # begin enum DMDAElementType =#
 typealias DMDAElementType UInt32
 
@@ -2863,6 +2922,14 @@ immutable _p_PF
 end
 
 typealias PF Ptr{_p_PF}
+
+immutable _p_AO
+end
+
+immutable AO{T}
+    pobj::Ptr{Void}
+end
+
 typealias AOType Symbol
 
 immutable _p_PetscQuadrature
@@ -2877,7 +2944,7 @@ immutable Array_3_PetscReal
     d3::PetscReal
 end 
 =#
-#= skipping undefined expression zero(::Type{Array_3_PetscReal}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+#= skipping undefined expression zero(::Type{Array_3_PetscReal}) = begin  # /home/jared/.julia/v0.4/Clang/src/wrap_c.jl, line 266:
         Array_3_PetscReal(fill(zero(Float64),3)...)
     end =#
 #= skipping type declaration with undefined symbols:
@@ -2893,7 +2960,7 @@ immutable Array_9_PetscReal
     d9::PetscReal
 end 
 =#
-#= skipping undefined expression zero(::Type{Array_9_PetscReal}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+#= skipping undefined expression zero(::Type{Array_9_PetscReal}) = begin  # /home/jared/.julia/v0.4/Clang/src/wrap_c.jl, line 266:
         Array_9_PetscReal(fill(zero(Float64),9)...)
     end =#
 #= skipping type declaration with undefined symbols:
@@ -2911,14 +2978,14 @@ typealias PetscSpaceType Symbol
 typealias PetscDualSpaceType Symbol
 typealias PetscFEType Symbol
 
-#= # begin enum ANONYMOUS_46 =#
-typealias ANONYMOUS_46 UInt32
+#= # begin enum ANONYMOUS_48 =#
+typealias ANONYMOUS_48 UInt32
 
 const DMDA_X = (UInt32)(0)
 const DMDA_Y = (UInt32)(1)
 const DMDA_Z = (UInt32)(2)
 
-#= # end enum ANONYMOUS_46 =#
+#= # end enum ANONYMOUS_48 =#
 #= # begin enum DMDADirection =#
 typealias DMDADirection UInt32
 
@@ -2957,7 +3024,7 @@ immutable Array_3_PetscScalar
     d3::PetscScalar
 end 
 =#
-#= skipping undefined expression zero(::Type{Array_3_PetscScalar}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+#= skipping undefined expression zero(::Type{Array_3_PetscScalar}) = begin  # /home/jared/.julia/v0.4/Clang/src/wrap_c.jl, line 266:
         Array_3_PetscScalar(fill(zero(Float64),3)...)
     end =#
 #= skipping type declaration with undefined symbols:
@@ -2966,7 +3033,7 @@ immutable Array_2_Array_3_PetscScalar
     d2::Array_3_PetscScalar
 end 
 =#
-#= skipping undefined expression zero(::Type{Array_2_Array_3_PetscScalar}) = begin  # /home/jared/.julia/v0.4/Clang_orig/src/wrap_c.jl, line 270:
+#= skipping undefined expression zero(::Type{Array_2_Array_3_PetscScalar}) = begin  # /home/jared/.julia/v0.4/Clang/src/wrap_c.jl, line 266:
         Array_2_Array_3_PetscScalar(fill(zero(Array_3_PetscScalar),2)...)
     end =#
 #= skipping type declaration with undefined symbols:
@@ -3025,24 +3092,24 @@ end
 
 typealias PCType Symbol
 
-#= # begin enum ANONYMOUS_47 =#
-typealias ANONYMOUS_47 Cint
+#= # begin enum ANONYMOUS_49 =#
+typealias ANONYMOUS_49 Cint
 
 const PC_SIDE_DEFAULT = (Int32)(-1)
 const PC_LEFT = (Int32)(0)
 const PC_RIGHT = (Int32)(1)
 const PC_SYMMETRIC = (Int32)(2)
 
-#= # end enum ANONYMOUS_47 =#
-#= # begin enum ANONYMOUS_48 =#
-typealias ANONYMOUS_48 Cint
+#= # end enum ANONYMOUS_49 =#
+#= # begin enum ANONYMOUS_50 =#
+typealias ANONYMOUS_50 Cint
 
 const PCRICHARDSON_CONVERGED_RTOL = (Int32)(2)
 const PCRICHARDSON_CONVERGED_ATOL = (Int32)(3)
 const PCRICHARDSON_CONVERGED_ITS = (Int32)(4)
 const PCRICHARDSON_DIVERGED_DTOL = (Int32)(-4)
 
-#= # end enum ANONYMOUS_48 =#
+#= # end enum ANONYMOUS_50 =#
 #= # begin enum PCRichardsonConvergedReason =#
 typealias PCRichardsonConvergedReason Cint
 
@@ -3052,14 +3119,14 @@ const PCRICHARDSON_CONVERGED_ITS = (Int32)(4)
 const PCRICHARDSON_DIVERGED_DTOL = (Int32)(-4)
 
 #= # end enum PCRichardsonConvergedReason =#
-#= # begin enum ANONYMOUS_49 =#
-typealias ANONYMOUS_49 UInt32
+#= # begin enum ANONYMOUS_51 =#
+typealias ANONYMOUS_51 UInt32
 
 const PC_JACOBI_DIAGONAL = (UInt32)(0)
 const PC_JACOBI_ROWMAX = (UInt32)(1)
 const PC_JACOBI_ROWSUM = (UInt32)(2)
 
-#= # end enum ANONYMOUS_49 =#
+#= # end enum ANONYMOUS_51 =#
 #= # begin enum PCJacobiType =#
 typealias PCJacobiType UInt32
 
@@ -3068,15 +3135,15 @@ const PC_JACOBI_ROWMAX = (UInt32)(1)
 const PC_JACOBI_ROWSUM = (UInt32)(2)
 
 #= # end enum PCJacobiType =#
-#= # begin enum ANONYMOUS_50 =#
-typealias ANONYMOUS_50 UInt32
+#= # begin enum ANONYMOUS_52 =#
+typealias ANONYMOUS_52 UInt32
 
 const PC_ASM_BASIC = (UInt32)(3)
 const PC_ASM_RESTRICT = (UInt32)(1)
 const PC_ASM_INTERPOLATE = (UInt32)(2)
 const PC_ASM_NONE = (UInt32)(0)
 
-#= # end enum ANONYMOUS_50 =#
+#= # end enum ANONYMOUS_52 =#
 #= # begin enum PCASMType =#
 typealias PCASMType UInt32
 
@@ -3086,15 +3153,15 @@ const PC_ASM_INTERPOLATE = (UInt32)(2)
 const PC_ASM_NONE = (UInt32)(0)
 
 #= # end enum PCASMType =#
-#= # begin enum ANONYMOUS_51 =#
-typealias ANONYMOUS_51 UInt32
+#= # begin enum ANONYMOUS_53 =#
+typealias ANONYMOUS_53 UInt32
 
 const PC_GASM_BASIC = (UInt32)(3)
 const PC_GASM_RESTRICT = (UInt32)(1)
 const PC_GASM_INTERPOLATE = (UInt32)(2)
 const PC_GASM_NONE = (UInt32)(0)
 
-#= # end enum ANONYMOUS_51 =#
+#= # end enum ANONYMOUS_53 =#
 #= # begin enum PCGASMType =#
 typealias PCGASMType UInt32
 
@@ -3104,8 +3171,8 @@ const PC_GASM_INTERPOLATE = (UInt32)(2)
 const PC_GASM_NONE = (UInt32)(0)
 
 #= # end enum PCGASMType =#
-#= # begin enum ANONYMOUS_52 =#
-typealias ANONYMOUS_52 UInt32
+#= # begin enum ANONYMOUS_54 =#
+typealias ANONYMOUS_54 UInt32
 
 const PC_COMPOSITE_ADDITIVE = (UInt32)(0)
 const PC_COMPOSITE_MULTIPLICATIVE = (UInt32)(1)
@@ -3113,7 +3180,7 @@ const PC_COMPOSITE_SYMMETRIC_MULTIPLICATIVE = (UInt32)(2)
 const PC_COMPOSITE_SPECIAL = (UInt32)(3)
 const PC_COMPOSITE_SCHUR = (UInt32)(4)
 
-#= # end enum ANONYMOUS_52 =#
+#= # end enum ANONYMOUS_54 =#
 #= # begin enum PCCompositeType =#
 typealias PCCompositeType UInt32
 
@@ -3124,8 +3191,8 @@ const PC_COMPOSITE_SPECIAL = (UInt32)(3)
 const PC_COMPOSITE_SCHUR = (UInt32)(4)
 
 #= # end enum PCCompositeType =#
-#= # begin enum ANONYMOUS_53 =#
-typealias ANONYMOUS_53 UInt32
+#= # begin enum ANONYMOUS_55 =#
+typealias ANONYMOUS_55 UInt32
 
 const PC_FIELDSPLIT_SCHUR_PRE_SELF = (UInt32)(0)
 const PC_FIELDSPLIT_SCHUR_PRE_SELFP = (UInt32)(1)
@@ -3133,7 +3200,7 @@ const PC_FIELDSPLIT_SCHUR_PRE_A11 = (UInt32)(2)
 const PC_FIELDSPLIT_SCHUR_PRE_USER = (UInt32)(3)
 const PC_FIELDSPLIT_SCHUR_PRE_FULL = (UInt32)(4)
 
-#= # end enum ANONYMOUS_53 =#
+#= # end enum ANONYMOUS_55 =#
 #= # begin enum PCFieldSplitSchurPreType =#
 typealias PCFieldSplitSchurPreType UInt32
 
@@ -3144,15 +3211,15 @@ const PC_FIELDSPLIT_SCHUR_PRE_USER = (UInt32)(3)
 const PC_FIELDSPLIT_SCHUR_PRE_FULL = (UInt32)(4)
 
 #= # end enum PCFieldSplitSchurPreType =#
-#= # begin enum ANONYMOUS_54 =#
-typealias ANONYMOUS_54 UInt32
+#= # begin enum ANONYMOUS_56 =#
+typealias ANONYMOUS_56 UInt32
 
 const PC_FIELDSPLIT_SCHUR_FACT_DIAG = (UInt32)(0)
 const PC_FIELDSPLIT_SCHUR_FACT_LOWER = (UInt32)(1)
 const PC_FIELDSPLIT_SCHUR_FACT_UPPER = (UInt32)(2)
 const PC_FIELDSPLIT_SCHUR_FACT_FULL = (UInt32)(3)
 
-#= # end enum ANONYMOUS_54 =#
+#= # end enum ANONYMOUS_56 =#
 #= # begin enum PCFieldSplitSchurFactType =#
 typealias PCFieldSplitSchurFactType UInt32
 
@@ -3162,14 +3229,14 @@ const PC_FIELDSPLIT_SCHUR_FACT_UPPER = (UInt32)(2)
 const PC_FIELDSPLIT_SCHUR_FACT_FULL = (UInt32)(3)
 
 #= # end enum PCFieldSplitSchurFactType =#
-#= # begin enum ANONYMOUS_55 =#
-typealias ANONYMOUS_55 UInt32
+#= # begin enum ANONYMOUS_57 =#
+typealias ANONYMOUS_57 UInt32
 
 const PC_PARMS_GLOBAL_RAS = (UInt32)(0)
 const PC_PARMS_GLOBAL_SCHUR = (UInt32)(1)
 const PC_PARMS_GLOBAL_BJ = (UInt32)(2)
 
-#= # end enum ANONYMOUS_55 =#
+#= # end enum ANONYMOUS_57 =#
 #= # begin enum PCPARMSGlobalType =#
 typealias PCPARMSGlobalType UInt32
 
@@ -3178,15 +3245,15 @@ const PC_PARMS_GLOBAL_SCHUR = (UInt32)(1)
 const PC_PARMS_GLOBAL_BJ = (UInt32)(2)
 
 #= # end enum PCPARMSGlobalType =#
-#= # begin enum ANONYMOUS_56 =#
-typealias ANONYMOUS_56 UInt32
+#= # begin enum ANONYMOUS_58 =#
+typealias ANONYMOUS_58 UInt32
 
 const PC_PARMS_LOCAL_ILU0 = (UInt32)(0)
 const PC_PARMS_LOCAL_ILUK = (UInt32)(1)
 const PC_PARMS_LOCAL_ILUT = (UInt32)(2)
 const PC_PARMS_LOCAL_ARMS = (UInt32)(3)
 
-#= # end enum ANONYMOUS_56 =#
+#= # end enum ANONYMOUS_58 =#
 #= # begin enum PCPARMSLocalType =#
 typealias PCPARMSLocalType UInt32
 
@@ -3199,22 +3266,22 @@ const PC_PARMS_LOCAL_ARMS = (UInt32)(3)
 typealias PCGAMGType Symbol
 typealias PCGAMGClassicalType Symbol
 
-#= # begin enum ANONYMOUS_57 =#
-typealias ANONYMOUS_57 UInt32
+#= # begin enum ANONYMOUS_59 =#
+typealias ANONYMOUS_59 UInt32
 
 const PC_MG_MULTIPLICATIVE = (UInt32)(0)
 const PC_MG_ADDITIVE = (UInt32)(1)
 const PC_MG_FULL = (UInt32)(2)
 const PC_MG_KASKADE = (UInt32)(3)
 
-#= # end enum ANONYMOUS_57 =#
-#= # begin enum ANONYMOUS_58 =#
-typealias ANONYMOUS_58 UInt32
+#= # end enum ANONYMOUS_59 =#
+#= # begin enum ANONYMOUS_60 =#
+typealias ANONYMOUS_60 UInt32
 
 const PC_MG_CYCLE_V = (UInt32)(1)
 const PC_MG_CYCLE_W = (UInt32)(2)
 
-#= # end enum ANONYMOUS_58 =#
+#= # end enum ANONYMOUS_60 =#
 #= # begin enum PCMGCycleType =#
 typealias PCMGCycleType UInt32
 
@@ -3222,13 +3289,13 @@ const PC_MG_CYCLE_V = (UInt32)(1)
 const PC_MG_CYCLE_W = (UInt32)(2)
 
 #= # end enum PCMGCycleType =#
-#= # begin enum ANONYMOUS_59 =#
-typealias ANONYMOUS_59 UInt32
+#= # begin enum ANONYMOUS_61 =#
+typealias ANONYMOUS_61 UInt32
 
 const PC_EXOTIC_FACE = (UInt32)(0)
 const PC_EXOTIC_WIREBASKET = (UInt32)(1)
 
-#= # end enum ANONYMOUS_59 =#
+#= # end enum ANONYMOUS_61 =#
 #= # begin enum PCExoticType =#
 typealias PCExoticType UInt32
 
@@ -3245,13 +3312,13 @@ end
 
 typealias KSPType Symbol
 
-#= # begin enum ANONYMOUS_60 =#
-typealias ANONYMOUS_60 UInt32
+#= # begin enum ANONYMOUS_62 =#
+typealias ANONYMOUS_62 UInt32
 
 const KSP_FCG_TRUNC_TYPE_STANDARD = (UInt32)(0)
 const KSP_FCG_TRUNC_TYPE_NOTAY = (UInt32)(1)
 
-#= # end enum ANONYMOUS_60 =#
+#= # end enum ANONYMOUS_62 =#
 #= # begin enum KSPFCGTruncationType =#
 typealias KSPFCGTruncationType UInt32
 
@@ -3259,14 +3326,14 @@ const KSP_FCG_TRUNC_TYPE_STANDARD = (UInt32)(0)
 const KSP_FCG_TRUNC_TYPE_NOTAY = (UInt32)(1)
 
 #= # end enum KSPFCGTruncationType =#
-#= # begin enum ANONYMOUS_61 =#
-typealias ANONYMOUS_61 UInt32
+#= # begin enum ANONYMOUS_63 =#
+typealias ANONYMOUS_63 UInt32
 
 const KSP_GMRES_CGS_REFINE_NEVER = (UInt32)(0)
 const KSP_GMRES_CGS_REFINE_IFNEEDED = (UInt32)(1)
 const KSP_GMRES_CGS_REFINE_ALWAYS = (UInt32)(2)
 
-#= # end enum ANONYMOUS_61 =#
+#= # end enum ANONYMOUS_63 =#
 #= # begin enum KSPGMRESCGSRefinementType =#
 typealias KSPGMRESCGSRefinementType UInt32
 
@@ -3275,8 +3342,8 @@ const KSP_GMRES_CGS_REFINE_IFNEEDED = (UInt32)(1)
 const KSP_GMRES_CGS_REFINE_ALWAYS = (UInt32)(2)
 
 #= # end enum KSPGMRESCGSRefinementType =#
-#= # begin enum ANONYMOUS_62 =#
-typealias ANONYMOUS_62 Cint
+#= # begin enum ANONYMOUS_64 =#
+typealias ANONYMOUS_64 Cint
 
 const KSP_NORM_DEFAULT = (Int32)(-1)
 const KSP_NORM_NONE = (Int32)(0)
@@ -3284,9 +3351,9 @@ const KSP_NORM_PRECONDITIONED = (Int32)(1)
 const KSP_NORM_UNPRECONDITIONED = (Int32)(2)
 const KSP_NORM_NATURAL = (Int32)(3)
 
-#= # end enum ANONYMOUS_62 =#
-#= # begin enum ANONYMOUS_63 =#
-typealias ANONYMOUS_63 Cint
+#= # end enum ANONYMOUS_64 =#
+#= # begin enum ANONYMOUS_65 =#
+typealias ANONYMOUS_65 Cint
 
 const KSP_CONVERGED_RTOL_NORMAL = (Int32)(1)
 const KSP_CONVERGED_ATOL_NORMAL = (Int32)(9)
@@ -3309,7 +3376,7 @@ const KSP_DIVERGED_INDEFINITE_MAT = (Int32)(-10)
 const KSP_DIVERGED_PCSETUP_FAILED = (Int32)(-11)
 const KSP_CONVERGED_ITERATING = (Int32)(0)
 
-#= # end enum ANONYMOUS_63 =#
+#= # end enum ANONYMOUS_65 =#
 #= # begin enum KSPConvergedReason =#
 typealias KSPConvergedReason Cint
 
@@ -3335,13 +3402,13 @@ const KSP_DIVERGED_PCSETUP_FAILED = (Int32)(-11)
 const KSP_CONVERGED_ITERATING = (Int32)(0)
 
 #= # end enum KSPConvergedReason =#
-#= # begin enum ANONYMOUS_64 =#
-typealias ANONYMOUS_64 UInt32
+#= # begin enum ANONYMOUS_66 =#
+typealias ANONYMOUS_66 UInt32
 
 const KSP_CG_SYMMETRIC = (UInt32)(0)
 const KSP_CG_HERMITIAN = (UInt32)(1)
 
-#= # end enum ANONYMOUS_64 =#
+#= # end enum ANONYMOUS_66 =#
 #= # begin enum KSPCGType =#
 typealias KSPCGType UInt32
 
@@ -3361,13 +3428,13 @@ immutable _p_KSPFischerGuess
 end 
 =#
 # skipping undefined typealias typealias KSPFischerGuess Ptr{_p_KSPFischerGuess}
-#= # begin enum ANONYMOUS_65 =#
-typealias ANONYMOUS_65 UInt32
+#= # begin enum ANONYMOUS_67 =#
+typealias ANONYMOUS_67 UInt32
 
 const MAT_SCHUR_COMPLEMENT_AINV_DIAG = (UInt32)(0)
 const MAT_SCHUR_COMPLEMENT_AINV_LUMP = (UInt32)(1)
 
-#= # end enum ANONYMOUS_65 =#
+#= # end enum ANONYMOUS_67 =#
 #= # begin enum MatSchurComplementAinvType =#
 typealias MatSchurComplementAinvType UInt32
 
@@ -3381,8 +3448,8 @@ end
 typealias SNES Ptr{_p_SNES}
 typealias SNESType Symbol
 
-#= # begin enum ANONYMOUS_66 =#
-typealias ANONYMOUS_66 Cint
+#= # begin enum ANONYMOUS_68 =#
+typealias ANONYMOUS_68 Cint
 
 const SNES_CONVERGED_FNORM_ABS = (Int32)(2)
 const SNES_CONVERGED_FNORM_RELATIVE = (Int32)(3)
@@ -3399,7 +3466,7 @@ const SNES_DIVERGED_INNER = (Int32)(-7)
 const SNES_DIVERGED_LOCAL_MIN = (Int32)(-8)
 const SNES_CONVERGED_ITERATING = (Int32)(0)
 
-#= # end enum ANONYMOUS_66 =#
+#= # end enum ANONYMOUS_68 =#
 #= # begin enum SNESConvergedReason =#
 typealias SNESConvergedReason Cint
 
@@ -3419,8 +3486,8 @@ const SNES_DIVERGED_LOCAL_MIN = (Int32)(-8)
 const SNES_CONVERGED_ITERATING = (Int32)(0)
 
 #= # end enum SNESConvergedReason =#
-#= # begin enum ANONYMOUS_67 =#
-typealias ANONYMOUS_67 Cint
+#= # begin enum ANONYMOUS_69 =#
+typealias ANONYMOUS_69 Cint
 
 const SNES_NORM_DEFAULT = (Int32)(-1)
 const SNES_NORM_NONE = (Int32)(0)
@@ -3429,7 +3496,7 @@ const SNES_NORM_INITIAL_ONLY = (Int32)(2)
 const SNES_NORM_FINAL_ONLY = (Int32)(3)
 const SNES_NORM_INITIAL_FINAL_ONLY = (Int32)(4)
 
-#= # end enum ANONYMOUS_67 =#
+#= # end enum ANONYMOUS_69 =#
 #= # begin enum SNESNormSchedule =#
 typealias SNESNormSchedule Cint
 
@@ -3441,14 +3508,14 @@ const SNES_NORM_FINAL_ONLY = (Int32)(3)
 const SNES_NORM_INITIAL_FINAL_ONLY = (Int32)(4)
 
 #= # end enum SNESNormSchedule =#
-#= # begin enum ANONYMOUS_68 =#
-typealias ANONYMOUS_68 Cint
+#= # begin enum ANONYMOUS_70 =#
+typealias ANONYMOUS_70 Cint
 
 const SNES_FUNCTION_DEFAULT = (Int32)(-1)
 const SNES_FUNCTION_UNPRECONDITIONED = (Int32)(0)
 const SNES_FUNCTION_PRECONDITIONED = (Int32)(1)
 
-#= # end enum ANONYMOUS_68 =#
+#= # end enum ANONYMOUS_70 =#
 #= # begin enum SNESFunctionType =#
 typealias SNESFunctionType Cint
 
@@ -3467,8 +3534,8 @@ typealias SNESLineSearchVINormFunc Ptr{Void}
 typealias SNESLineSearchApplyFunc Ptr{Void}
 typealias SNESLineSearchUserFunc Ptr{Void}
 
-#= # begin enum ANONYMOUS_69 =#
-typealias ANONYMOUS_69 UInt32
+#= # begin enum ANONYMOUS_71 =#
+typealias ANONYMOUS_71 UInt32
 
 const SNES_LINESEARCH_SUCCEEDED = (UInt32)(0)
 const SNES_LINESEARCH_FAILED_NANORINF = (UInt32)(1)
@@ -3477,7 +3544,7 @@ const SNES_LINESEARCH_FAILED_REDUCT = (UInt32)(3)
 const SNES_LINESEARCH_FAILED_USER = (UInt32)(4)
 const SNES_LINESEARCH_FAILED_FUNCTION = (UInt32)(5)
 
-#= # end enum ANONYMOUS_69 =#
+#= # end enum ANONYMOUS_71 =#
 #= # begin enum SNESLineSearchReason =#
 typealias SNESLineSearchReason UInt32
 
@@ -3494,14 +3561,14 @@ typealias DMDASNESJacobian Ptr{Void}
 typealias DMDASNESObjective Ptr{Void}
 typealias SNESMSType Symbol
 
-#= # begin enum ANONYMOUS_70 =#
-typealias ANONYMOUS_70 UInt32
+#= # begin enum ANONYMOUS_72 =#
+typealias ANONYMOUS_72 UInt32
 
 const SNES_NGMRES_RESTART_NONE = (UInt32)(0)
 const SNES_NGMRES_RESTART_PERIODIC = (UInt32)(1)
 const SNES_NGMRES_RESTART_DIFFERENCE = (UInt32)(2)
 
-#= # end enum ANONYMOUS_70 =#
+#= # end enum ANONYMOUS_72 =#
 #= # begin enum SNESNGMRESRestartType =#
 typealias SNESNGMRESRestartType UInt32
 
@@ -3510,14 +3577,14 @@ const SNES_NGMRES_RESTART_PERIODIC = (UInt32)(1)
 const SNES_NGMRES_RESTART_DIFFERENCE = (UInt32)(2)
 
 #= # end enum SNESNGMRESRestartType =#
-#= # begin enum ANONYMOUS_71 =#
-typealias ANONYMOUS_71 UInt32
+#= # begin enum ANONYMOUS_73 =#
+typealias ANONYMOUS_73 UInt32
 
 const SNES_NGMRES_SELECT_NONE = (UInt32)(0)
 const SNES_NGMRES_SELECT_DIFFERENCE = (UInt32)(1)
 const SNES_NGMRES_SELECT_LINESEARCH = (UInt32)(2)
 
-#= # end enum ANONYMOUS_71 =#
+#= # end enum ANONYMOUS_73 =#
 #= # begin enum SNESNGMRESSelectType =#
 typealias SNESNGMRESSelectType UInt32
 
@@ -3526,8 +3593,8 @@ const SNES_NGMRES_SELECT_DIFFERENCE = (UInt32)(1)
 const SNES_NGMRES_SELECT_LINESEARCH = (UInt32)(2)
 
 #= # end enum SNESNGMRESSelectType =#
-#= # begin enum ANONYMOUS_72 =#
-typealias ANONYMOUS_72 UInt32
+#= # begin enum ANONYMOUS_74 =#
+typealias ANONYMOUS_74 UInt32
 
 const SNES_NCG_FR = (UInt32)(0)
 const SNES_NCG_PRP = (UInt32)(1)
@@ -3535,7 +3602,7 @@ const SNES_NCG_HS = (UInt32)(2)
 const SNES_NCG_DY = (UInt32)(3)
 const SNES_NCG_CD = (UInt32)(4)
 
-#= # end enum ANONYMOUS_72 =#
+#= # end enum ANONYMOUS_74 =#
 #= # begin enum SNESNCGType =#
 typealias SNESNCGType UInt32
 
@@ -3546,8 +3613,8 @@ const SNES_NCG_DY = (UInt32)(3)
 const SNES_NCG_CD = (UInt32)(4)
 
 #= # end enum SNESNCGType =#
-#= # begin enum ANONYMOUS_73 =#
-typealias ANONYMOUS_73 UInt32
+#= # begin enum ANONYMOUS_75 =#
+typealias ANONYMOUS_75 UInt32
 
 const SNES_QN_SCALE_DEFAULT = (UInt32)(0)
 const SNES_QN_SCALE_NONE = (UInt32)(1)
@@ -3555,7 +3622,7 @@ const SNES_QN_SCALE_SHANNO = (UInt32)(2)
 const SNES_QN_SCALE_LINESEARCH = (UInt32)(3)
 const SNES_QN_SCALE_JACOBIAN = (UInt32)(4)
 
-#= # end enum ANONYMOUS_73 =#
+#= # end enum ANONYMOUS_75 =#
 #= # begin enum SNESQNScaleType =#
 typealias SNESQNScaleType UInt32
 
@@ -3566,15 +3633,15 @@ const SNES_QN_SCALE_LINESEARCH = (UInt32)(3)
 const SNES_QN_SCALE_JACOBIAN = (UInt32)(4)
 
 #= # end enum SNESQNScaleType =#
-#= # begin enum ANONYMOUS_74 =#
-typealias ANONYMOUS_74 UInt32
+#= # begin enum ANONYMOUS_76 =#
+typealias ANONYMOUS_76 UInt32
 
 const SNES_QN_RESTART_DEFAULT = (UInt32)(0)
 const SNES_QN_RESTART_NONE = (UInt32)(1)
 const SNES_QN_RESTART_POWELL = (UInt32)(2)
 const SNES_QN_RESTART_PERIODIC = (UInt32)(3)
 
-#= # end enum ANONYMOUS_74 =#
+#= # end enum ANONYMOUS_76 =#
 #= # begin enum SNESQNRestartType =#
 typealias SNESQNRestartType UInt32
 
@@ -3584,14 +3651,14 @@ const SNES_QN_RESTART_POWELL = (UInt32)(2)
 const SNES_QN_RESTART_PERIODIC = (UInt32)(3)
 
 #= # end enum SNESQNRestartType =#
-#= # begin enum ANONYMOUS_75 =#
-typealias ANONYMOUS_75 UInt32
+#= # begin enum ANONYMOUS_77 =#
+typealias ANONYMOUS_77 UInt32
 
 const SNES_QN_LBFGS = (UInt32)(0)
 const SNES_QN_BROYDEN = (UInt32)(1)
 const SNES_QN_BADBROYDEN = (UInt32)(2)
 
-#= # end enum ANONYMOUS_75 =#
+#= # end enum ANONYMOUS_77 =#
 #= # begin enum SNESQNType =#
 typealias SNESQNType UInt32
 
@@ -3600,14 +3667,14 @@ const SNES_QN_BROYDEN = (UInt32)(1)
 const SNES_QN_BADBROYDEN = (UInt32)(2)
 
 #= # end enum SNESQNType =#
-#= # begin enum ANONYMOUS_76 =#
-typealias ANONYMOUS_76 UInt32
+#= # begin enum ANONYMOUS_78 =#
+typealias ANONYMOUS_78 UInt32
 
 const SNES_COMPOSITE_ADDITIVE = (UInt32)(0)
 const SNES_COMPOSITE_MULTIPLICATIVE = (UInt32)(1)
 const SNES_COMPOSITE_ADDITIVEOPTIMAL = (UInt32)(2)
 
-#= # end enum ANONYMOUS_76 =#
+#= # end enum ANONYMOUS_78 =#
 #= # begin enum SNESCompositeType =#
 typealias SNESCompositeType UInt32
 
@@ -3616,15 +3683,15 @@ const SNES_COMPOSITE_MULTIPLICATIVE = (UInt32)(1)
 const SNES_COMPOSITE_ADDITIVEOPTIMAL = (UInt32)(2)
 
 #= # end enum SNESCompositeType =#
-#= # begin enum ANONYMOUS_77 =#
-typealias ANONYMOUS_77 UInt32
+#= # begin enum ANONYMOUS_79 =#
+typealias ANONYMOUS_79 UInt32
 
 const SNES_FAS_MULTIPLICATIVE = (UInt32)(0)
 const SNES_FAS_ADDITIVE = (UInt32)(1)
 const SNES_FAS_FULL = (UInt32)(2)
 const SNES_FAS_KASKADE = (UInt32)(3)
 
-#= # end enum ANONYMOUS_77 =#
+#= # end enum ANONYMOUS_79 =#
 #= # begin enum SNESFASType =#
 typealias SNESFASType UInt32
 
@@ -3640,13 +3707,13 @@ end
 typealias TS Ptr{_p_TS}
 typealias TSType Symbol
 
-#= # begin enum ANONYMOUS_78 =#
-typealias ANONYMOUS_78 UInt32
+#= # begin enum ANONYMOUS_80 =#
+typealias ANONYMOUS_80 UInt32
 
 const TS_LINEAR = (UInt32)(0)
 const TS_NONLINEAR = (UInt32)(1)
 
-#= # end enum ANONYMOUS_78 =#
+#= # end enum ANONYMOUS_80 =#
 #= # begin enum TSProblemType =#
 typealias TSProblemType UInt32
 
@@ -3654,8 +3721,8 @@ const TS_LINEAR = (UInt32)(0)
 const TS_NONLINEAR = (UInt32)(1)
 
 #= # end enum TSProblemType =#
-#= # begin enum ANONYMOUS_79 =#
-typealias ANONYMOUS_79 Cint
+#= # begin enum ANONYMOUS_81 =#
+typealias ANONYMOUS_81 Cint
 
 const TS_EQ_UNSPECIFIED = (Int32)(-1)
 const TS_EQ_EXPLICIT = (Int32)(0)
@@ -3671,7 +3738,7 @@ const TS_EQ_DAE_IMPLICIT_INDEX2 = (Int32)(1200)
 const TS_EQ_DAE_IMPLICIT_INDEX3 = (Int32)(1300)
 const TS_EQ_DAE_IMPLICIT_INDEXHI = (Int32)(1500)
 
-#= # end enum ANONYMOUS_79 =#
+#= # end enum ANONYMOUS_81 =#
 #= # begin enum TSEquationType =#
 typealias TSEquationType Cint
 
@@ -3690,8 +3757,8 @@ const TS_EQ_DAE_IMPLICIT_INDEX3 = (Int32)(1300)
 const TS_EQ_DAE_IMPLICIT_INDEXHI = (Int32)(1500)
 
 #= # end enum TSEquationType =#
-#= # begin enum ANONYMOUS_80 =#
-typealias ANONYMOUS_80 Cint
+#= # begin enum ANONYMOUS_82 =#
+typealias ANONYMOUS_82 Cint
 
 const TS_CONVERGED_ITERATING = (Int32)(0)
 const TS_CONVERGED_TIME = (Int32)(1)
@@ -3701,7 +3768,7 @@ const TS_CONVERGED_EVENT = (Int32)(4)
 const TS_DIVERGED_NONLINEAR_SOLVE = (Int32)(-1)
 const TS_DIVERGED_STEP_REJECTED = (Int32)(-2)
 
-#= # end enum ANONYMOUS_80 =#
+#= # end enum ANONYMOUS_82 =#
 #= # begin enum TSConvergedReason =#
 typealias TSConvergedReason Cint
 
@@ -3714,14 +3781,14 @@ const TS_DIVERGED_NONLINEAR_SOLVE = (Int32)(-1)
 const TS_DIVERGED_STEP_REJECTED = (Int32)(-2)
 
 #= # end enum TSConvergedReason =#
-#= # begin enum ANONYMOUS_81 =#
-typealias ANONYMOUS_81 UInt32
+#= # begin enum ANONYMOUS_83 =#
+typealias ANONYMOUS_83 UInt32
 
 const TS_EXACTFINALTIME_STEPOVER = (UInt32)(0)
 const TS_EXACTFINALTIME_INTERPOLATE = (UInt32)(1)
 const TS_EXACTFINALTIME_MATCHSTEP = (UInt32)(2)
 
-#= # end enum ANONYMOUS_81 =#
+#= # end enum ANONYMOUS_83 =#
 #= # begin enum TSExactFinalTimeOption =#
 typealias TSExactFinalTimeOption UInt32
 
@@ -3791,14 +3858,14 @@ typealias TSRKType Symbol
 typealias TSARKIMEXType Symbol
 typealias TSRosWType Symbol
 
-#= # begin enum ANONYMOUS_82 =#
-typealias ANONYMOUS_82 UInt32
+#= # begin enum ANONYMOUS_84 =#
+typealias ANONYMOUS_84 UInt32
 
 const TAO_SUBSET_SUBVEC = (UInt32)(0)
 const TAO_SUBSET_MASK = (UInt32)(1)
 const TAO_SUBSET_MATRIXFREE = (UInt32)(2)
 
-#= # end enum ANONYMOUS_82 =#
+#= # end enum ANONYMOUS_84 =#
 #= # begin enum TaoSubsetType =#
 typealias TaoSubsetType UInt32
 
@@ -3812,8 +3879,8 @@ end
 
 typealias Tao Ptr{_p_Tao}
 
-#= # begin enum ANONYMOUS_83 =#
-typealias ANONYMOUS_83 Cint
+#= # begin enum ANONYMOUS_85 =#
+typealias ANONYMOUS_85 Cint
 
 const TAO_CONVERGED_FATOL = (Int32)(1)
 const TAO_CONVERGED_FRTOL = (Int32)(2)
@@ -3831,7 +3898,7 @@ const TAO_DIVERGED_TR_REDUCTION = (Int32)(-7)
 const TAO_DIVERGED_USER = (Int32)(-8)
 const TAO_CONTINUE_ITERATING = (Int32)(0)
 
-#= # end enum ANONYMOUS_83 =#
+#= # end enum ANONYMOUS_85 =#
 #= # begin enum TaoConvergedReason =#
 typealias TaoConvergedReason Cint
 
@@ -3857,8 +3924,8 @@ end
 
 typealias TaoLineSearch Ptr{_p_TaoLineSearch}
 
-#= # begin enum ANONYMOUS_84 =#
-typealias ANONYMOUS_84 Cint
+#= # begin enum ANONYMOUS_86 =#
+typealias ANONYMOUS_86 Cint
 
 const TAOLINESEARCH_FAILED_INFORNAN = (Int32)(-1)
 const TAOLINESEARCH_FAILED_BADPARAMETER = (Int32)(-2)
@@ -3873,7 +3940,7 @@ const TAOLINESEARCH_HALTED_LOWERBOUND = (Int32)(6)
 const TAOLINESEARCH_HALTED_RTOL = (Int32)(7)
 const TAOLINESEARCH_HALTED_USER = (Int32)(8)
 
-#= # end enum ANONYMOUS_84 =#
+#= # end enum ANONYMOUS_86 =#
 #= # begin enum TaoLineSearchConvergedReason =#
 typealias TaoLineSearchConvergedReason Cint
 

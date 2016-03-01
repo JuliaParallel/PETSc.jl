@@ -8597,7 +8597,7 @@ function AOInitializePackage(arg0::Type{Complex128})
 end
 
 function AOCreate(arg1::MPI_Comm,arg2::Union{Ptr{AO{Complex128}},StridedArray{AO{Complex128}},Ptr{AO{Complex128}},Ref{AO{Complex128}}})
-    err = ccall((:AOCreate,petscComplexDouble),PetscErrorCode,(comm_type,Ptr{AO{Complex128}{Complex128}}),arg1,arg2)
+    err = ccall((:AOCreate,petscComplexDouble),PetscErrorCode,(comm_type,Ptr{AO{Complex128}}),arg1,arg2)
     return err
 end
 
@@ -8612,32 +8612,32 @@ function AOSetFromOptions(arg1::AO{Complex128})
 end
 
 function AOCreateBasic(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{AO{Complex128}},StridedArray{AO{Complex128}},Ptr{AO{Complex128}},Ref{AO{Complex128}}})
-    err = ccall((:AOCreateBasic,petscComplexDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{AO{Complex128}{Complex128}}),arg1,arg2,arg3,arg4,arg5)
+    err = ccall((:AOCreateBasic,petscComplexDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{AO{Complex128}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function AOCreateBasicIS(arg1::IS{Complex128},arg2::IS{Complex128},arg3::Union{Ptr{AO{Complex128}},StridedArray{AO{Complex128}},Ptr{AO{Complex128}},Ref{AO{Complex128}}})
-    err = ccall((:AOCreateBasicIS,petscComplexDouble),PetscErrorCode,(IS{Complex128},IS{Complex128},Ptr{AO{Complex128}{Complex128}}),arg1,arg2,arg3)
+    err = ccall((:AOCreateBasicIS,petscComplexDouble),PetscErrorCode,(IS{Complex128},IS{Complex128},Ptr{AO{Complex128}}),arg1,arg2,arg3)
     return err
 end
 
 function AOCreateMemoryScalable(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{AO{Complex128}},StridedArray{AO{Complex128}},Ptr{AO{Complex128}},Ref{AO{Complex128}}})
-    err = ccall((:AOCreateMemoryScalable,petscComplexDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{AO{Complex128}{Complex128}}),arg1,arg2,arg3,arg4,arg5)
+    err = ccall((:AOCreateMemoryScalable,petscComplexDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{AO{Complex128}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function AOCreateMemoryScalableIS(arg1::IS{Complex128},arg2::IS{Complex128},arg3::Union{Ptr{AO{Complex128}},StridedArray{AO{Complex128}},Ptr{AO{Complex128}},Ref{AO{Complex128}}})
-    err = ccall((:AOCreateMemoryScalableIS,petscComplexDouble),PetscErrorCode,(IS{Complex128},IS{Complex128},Ptr{AO{Complex128}{Complex128}}),arg1,arg2,arg3)
+    err = ccall((:AOCreateMemoryScalableIS,petscComplexDouble),PetscErrorCode,(IS{Complex128},IS{Complex128},Ptr{AO{Complex128}}),arg1,arg2,arg3)
     return err
 end
 
 function AOCreateMapping(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{AO{Complex128}},StridedArray{AO{Complex128}},Ptr{AO{Complex128}},Ref{AO{Complex128}}})
-    err = ccall((:AOCreateMapping,petscComplexDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{AO{Complex128}{Complex128}}),arg1,arg2,arg3,arg4,arg5)
+    err = ccall((:AOCreateMapping,petscComplexDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{AO{Complex128}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function AOCreateMappingIS(arg1::IS{Complex128},arg2::IS{Complex128},arg3::Union{Ptr{AO{Complex128}},StridedArray{AO{Complex128}},Ptr{AO{Complex128}},Ref{AO{Complex128}}})
-    err = ccall((:AOCreateMappingIS,petscComplexDouble),PetscErrorCode,(IS{Complex128},IS{Complex128},Ptr{AO{Complex128}{Complex128}}),arg1,arg2,arg3)
+    err = ccall((:AOCreateMappingIS,petscComplexDouble),PetscErrorCode,(IS{Complex128},IS{Complex128},Ptr{AO{Complex128}}),arg1,arg2,arg3)
     return err
 end
 
@@ -8652,7 +8652,7 @@ function AOViewFromOptions(A::AO{Complex128},obj::PetscObject,name::Union{ByteSt
 end
 
 function AODestroy(arg1::Union{Ptr{AO{Complex128}},StridedArray{AO{Complex128}},Ptr{AO{Complex128}},Ref{AO{Complex128}}})
-    err = ccall((:AODestroy,petscComplexDouble),PetscErrorCode,(Ptr{AO{Complex128}{Complex128}},),arg1)
+    err = ccall((:AODestroy,petscComplexDouble),PetscErrorCode,(Ptr{AO{Complex128}},),arg1)
     return err
 end
 
@@ -9365,7 +9365,7 @@ function DMDASetAOType(arg0::Type{Complex128},arg1::DM,arg2::AOType)
 end
 
 function DMDAGetAO(arg1::DM,arg2::Union{Ptr{AO{Complex128}},StridedArray{AO{Complex128}},Ptr{AO{Complex128}},Ref{AO{Complex128}}})
-    err = ccall((:DMDAGetAO,petscComplexDouble),PetscErrorCode,(DM,Ptr{AO{Complex128}{Complex128}}),arg1,arg2)
+    err = ccall((:DMDAGetAO,petscComplexDouble),PetscErrorCode,(DM,Ptr{AO{Complex128}}),arg1,arg2)
     return err
 end
 

@@ -13,12 +13,12 @@ using DataStructures
 
 # used to modify function signatures
 type_dict = Dict{Any, Any} (
-  :PetscScalar => :Float64,
+  :PetscScalar => :Complex128,
   :PetscReal => :Float64,
   :PetscInt => :Int64,
 )
 
-const petsc_libname = :petscRealDouble
+const petsc_libname = :petscComplexDouble
 
 ##############################################################################
 

@@ -8597,7 +8597,7 @@ function AOInitializePackage(arg0::Type{Float64})
 end
 
 function AOCreate(arg1::MPI_Comm,arg2::Union{Ptr{AO{Float64}},StridedArray{AO{Float64}},Ptr{AO{Float64}},Ref{AO{Float64}}})
-    err = ccall((:AOCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{AO{Float64}{Float64}}),arg1,arg2)
+    err = ccall((:AOCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{AO{Float64}}),arg1,arg2)
     return err
 end
 
@@ -8612,32 +8612,32 @@ function AOSetFromOptions(arg1::AO{Float64})
 end
 
 function AOCreateBasic(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{AO{Float64}},StridedArray{AO{Float64}},Ptr{AO{Float64}},Ref{AO{Float64}}})
-    err = ccall((:AOCreateBasic,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{AO{Float64}{Float64}}),arg1,arg2,arg3,arg4,arg5)
+    err = ccall((:AOCreateBasic,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{AO{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function AOCreateBasicIS(arg1::IS{Float64},arg2::IS{Float64},arg3::Union{Ptr{AO{Float64}},StridedArray{AO{Float64}},Ptr{AO{Float64}},Ref{AO{Float64}}})
-    err = ccall((:AOCreateBasicIS,petscRealDouble),PetscErrorCode,(IS{Float64},IS{Float64},Ptr{AO{Float64}{Float64}}),arg1,arg2,arg3)
+    err = ccall((:AOCreateBasicIS,petscRealDouble),PetscErrorCode,(IS{Float64},IS{Float64},Ptr{AO{Float64}}),arg1,arg2,arg3)
     return err
 end
 
 function AOCreateMemoryScalable(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{AO{Float64}},StridedArray{AO{Float64}},Ptr{AO{Float64}},Ref{AO{Float64}}})
-    err = ccall((:AOCreateMemoryScalable,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{AO{Float64}{Float64}}),arg1,arg2,arg3,arg4,arg5)
+    err = ccall((:AOCreateMemoryScalable,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{AO{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function AOCreateMemoryScalableIS(arg1::IS{Float64},arg2::IS{Float64},arg3::Union{Ptr{AO{Float64}},StridedArray{AO{Float64}},Ptr{AO{Float64}},Ref{AO{Float64}}})
-    err = ccall((:AOCreateMemoryScalableIS,petscRealDouble),PetscErrorCode,(IS{Float64},IS{Float64},Ptr{AO{Float64}{Float64}}),arg1,arg2,arg3)
+    err = ccall((:AOCreateMemoryScalableIS,petscRealDouble),PetscErrorCode,(IS{Float64},IS{Float64},Ptr{AO{Float64}}),arg1,arg2,arg3)
     return err
 end
 
 function AOCreateMapping(arg1::MPI_Comm,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{AO{Float64}},StridedArray{AO{Float64}},Ptr{AO{Float64}},Ref{AO{Float64}}})
-    err = ccall((:AOCreateMapping,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{AO{Float64}{Float64}}),arg1,arg2,arg3,arg4,arg5)
+    err = ccall((:AOCreateMapping,petscRealDouble),PetscErrorCode,(comm_type,Int64,Ptr{Int64},Ptr{Int64},Ptr{AO{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
 function AOCreateMappingIS(arg1::IS{Float64},arg2::IS{Float64},arg3::Union{Ptr{AO{Float64}},StridedArray{AO{Float64}},Ptr{AO{Float64}},Ref{AO{Float64}}})
-    err = ccall((:AOCreateMappingIS,petscRealDouble),PetscErrorCode,(IS{Float64},IS{Float64},Ptr{AO{Float64}{Float64}}),arg1,arg2,arg3)
+    err = ccall((:AOCreateMappingIS,petscRealDouble),PetscErrorCode,(IS{Float64},IS{Float64},Ptr{AO{Float64}}),arg1,arg2,arg3)
     return err
 end
 
@@ -8652,7 +8652,7 @@ function AOViewFromOptions(A::AO{Float64},obj::PetscObject,name::Union{ByteStrin
 end
 
 function AODestroy(arg1::Union{Ptr{AO{Float64}},StridedArray{AO{Float64}},Ptr{AO{Float64}},Ref{AO{Float64}}})
-    err = ccall((:AODestroy,petscRealDouble),PetscErrorCode,(Ptr{AO{Float64}{Float64}},),arg1)
+    err = ccall((:AODestroy,petscRealDouble),PetscErrorCode,(Ptr{AO{Float64}},),arg1)
     return err
 end
 
@@ -9365,7 +9365,7 @@ function DMDASetAOType(arg0::Type{Float64},arg1::DM,arg2::AOType)
 end
 
 function DMDAGetAO(arg1::DM,arg2::Union{Ptr{AO{Float64}},StridedArray{AO{Float64}},Ptr{AO{Float64}},Ref{AO{Float64}}})
-    err = ccall((:DMDAGetAO,petscRealDouble),PetscErrorCode,(DM,Ptr{AO{Float64}{Float64}}),arg1,arg2)
+    err = ccall((:DMDAGetAO,petscRealDouble),PetscErrorCode,(DM,Ptr{AO{Float64}}),arg1,arg2)
     return err
 end
 

@@ -4,7 +4,7 @@
 export IS # index sets
 # Note: we expose a 1-base Julian index interface, but internally
 # PETSc's indices are 0-based.
-
+#TODO: support block versions
 type IS{T}
   p::C.IS{T}
   function IS(p::C.IS{T})
@@ -106,7 +106,6 @@ Base.Set(i::IS) = Set(Vector{Int}(i))
 ###############################################################################
 # we expose a 1 based API, but internally ISLoalToGlobalMappings are zero based
 
-# WARNING: untests pending Clang
 export ISLocalToGlobalMapping
 
 type ISLocalToGlobalMapping{T}

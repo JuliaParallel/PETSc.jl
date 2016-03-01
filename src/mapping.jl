@@ -1,8 +1,8 @@
-# Application Ordering (AO) and LocalToGlobalMapping functionality
+# Application Ordering (AO
 # exposes 1-based indexing interface, although there is a zero based interface
 # underneath
 # this is WIP pending Clang getting AOs right
-
+export AO, map_petsc_to_app!, map_app_to_petsc!
 type AO{T}
   p::C.AO{T}
 
@@ -14,10 +14,10 @@ type AO{T}
 end
 
 # zero based, using arrays
-function _AO(::Type{T}, app_idx::AbstractArray{PetscInt, 1}, 
+function AO_{T}(::Type{T}, app_idx::AbstractArray{PetscInt, 1}, 
             petsc_idx::AbstractArray{PetscInt, 1}; comm=MPI.COMM_WORLD, basic=true )
 
-  ao_ref = Ref{AO{T}}()
+  ao_ref = Ref{C.AO{T}}()
   if basic  # mapping is one-to-one and onto
     chk(C.AOCreateBasic(comm, length(app_idx), app_idx, petsc_idx, ao_ref))
   else  # worse performance
@@ -31,9 +31,9 @@ end
 # zero based, using index sets
 # because index sets are already zero based, this function can be exposed
 # directly
-function AO( app_idx::IS{T}, petsc_idx::IS{T}; basic=true )
+function AO{T}( app_idx::IS{T}, petsc_idx::IS{T}; basic=true )
 
-  ao_ref = Ref{AO{T}}()
+  ao_ref = Ref{C.AO{T}}()
   if basic  # mapping is one-to-one and onto
     chk(C.AOCreateBasicIS( app_idx, petsc_idx, ao_ref))
   else  # worse performance
@@ -44,12 +44,12 @@ function AO( app_idx::IS{T}, petsc_idx::IS{T}; basic=true )
 end
 
 # one based interface
-function _AO(::Type{T}, app_idx::AbstractArray{PetscInt, 1}, 
-            petsc_idx::AbstractArray{PetscInt, 1}; comm=MPI.COMM_WORLD, basic=true )
+function AO{T, I1 <: Integer, I2 <: Integer}(::Type{T}, app_idx::AbstractArray{I1, 1}, 
+            petsc_idx::AbstractArray{I2, 1}; comm=MPI.COMM_WORLD, basic=true )
 
-  app_idx0 = PetscInt[app_idx - 1]
-  petsc_idx0 = PetscInt[petsc_idx - 1]
-  _A0(T, app_idx0, petsc_idx0; comm=comm, basic=basic)
+  app_idx0 = PetscInt[app_idx[i] - 1 for i in length(app_idx)]
+  petsc_idx0 = PetscInt[petsc_idx[i] - 1 for i in length(petsc_idx)]
+  AO_(T, app_idx0, petsc_idx0; comm=comm, basic=basic)
 end
 
 
@@ -104,7 +104,7 @@ function map_app_to_petsc!(ao::AO, idx::AbstractArray)
     idx[i] -= 1
   end
 
-  chk(C.AOApplicationToPEtsc(ao.p, length(idx), idx))
+  chk(C.AOApplicationToPetsc(ao.p, length(idx), idx))
 
   # increment back to 1-based indices
    for i=1:length(idx)
@@ -112,6 +112,10 @@ function map_app_to_petsc!(ao::AO, idx::AbstractArray)
    end
 end
 
-function map_app_to_Petsc!(ao::AO, is::IS)
-  chk(C.AOApllicationToPetscIS(ao.p, is))
+function map_app_to_petsc!(ao::AO, is::IS)
+  chk(C.AOApplicationToPetscIS(ao.p, is.p))
+end
+
+function mapp_petsc_to_app!(ao::AO, is::IS)
+  chk(C.AOPetscToApplicationIS(ao.p, is.p))
 end

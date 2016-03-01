@@ -40,7 +40,7 @@ function Vec{T}(::Type{T}, vtype::C.VecType=C.VECSEQ;
 end
 
 """
-  Create a vector, specifying the (global) length len and/or the local length
+  Create a vector, specifying the (global) length len or the local length
   mlocal
 """
 function Vec{T<:Scalar}(::Type{T}, len::Integer=C.PETSC_DECIDE,

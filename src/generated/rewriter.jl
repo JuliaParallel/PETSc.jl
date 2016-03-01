@@ -13,12 +13,12 @@ using DataStructures
 
 # used to modify function signatures
 type_dict = Dict{Any, Any} (
-  :PetscScalar => :Complex128,
+  :PetscScalar => :Float64,
   :PetscReal => :Float64,
   :PetscInt => :Int64,
 )
 
-const petsc_libname = :petscComplexDouble
+const petsc_libname = :petscRealDouble
 
 ##############################################################################
 
@@ -230,6 +230,8 @@ function petsc_rewriter(obuf)
     else
       println("not processing ", typeof(ex_i))
     end  # end if Expr
+
+    println("final expression = ", obuf[i])
   end
 
   return obuf  # return modified obuf
@@ -240,10 +242,20 @@ end
 function process_func(ex)
   @assert ex.head == :function  # this is a function declaration
 
+  println("at beginning of process_func, processing function ", ex.args[1])
+  println("with body ", ex.args[2])
+
+
+
   ex.args[1] = rewrite_sig(ex.args[1])  # function signature
+
+  println("after rewrite_sig, processing function ", ex.args[1])
+  println("with body ", ex.args[2])
+
   ex.args[2] = rewrite_body(ex.args[2])  # function body
 
   println("processing function ", ex.args[1])
+  println("with body ", ex.args[2])
   # now check if any undefined type annotations remain
   sum = 0
   ex_sig = ex.args[1]
@@ -289,7 +301,7 @@ function add_body(ex)
 
   for i in keys(symbol_type_dict)
     for j=(2 + offset):length(ex_sig.args)  # loop over arguments to function
-      println("j = ", j)
+#      println("j = ", j)
       type_annot_j = ex_sig.args[j].args[2]  # get the teyp annotation
       argname_j = ex_sig.args[j].args[1]
       # check for arrays of symbols that need to be copied into a string array
@@ -474,11 +486,11 @@ end
 
 function modify_typetag(ex)
   # do non recursive replace first
-  ex = get(sig_single_dict, ex, ex)
+  ex = deepcopy(get(sig_single_dict, ex, ex))
 
   # now do recursive search and replace
   for i in keys(sig_rec_dict)
-    ex = replace_symbol(ex, i, sig_rec_dict[i])
+    ex = deepcopy(replace_symbol(ex, i, sig_rec_dict[i]))
   end
 
   # should make sure there are no nested pointers?
@@ -486,7 +498,7 @@ function modify_typetag(ex)
   if typeof(ex) == Expr
     # replace pointer with Union of ptr, array, c_null
     if ex.head == :curly && ex.args[1] == :Ptr
-      ptr_type = ex.args[2]
+      ptr_type = deepcopy(ex.args[2])
       ex =  :(Union{Ptr{$ptr_type}, StridedArray{$ptr_type}, Ptr{$ptr_type}, Ref{$ptr_type}})
     end
   end
@@ -576,12 +588,17 @@ function modify_types(ex)
     println("  after = ", ex.args[i])
   end
 
+  println("  after all non-recursive replacements = ", ex.args)
+
+  println("  ccall_rec_dict = ", ccall_rec_dict)
   # do recursive replacement
   for i in keys(ccall_rec_dict)
     for j=1:length(ex.args)
       ex.args[j] = replace_symbol(ex.args[j], i, ccall_rec_dict[i])
     end
   end
+
+  println("  after recursive replacement = ", ex.args)
 
   return deepcopy(ex)
 end

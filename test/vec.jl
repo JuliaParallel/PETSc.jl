@@ -71,7 +71,7 @@
   
   @test varr[1] == vec5j[1]
   @test varr == vec5j
-  
+
   LocalArrayRestore(varr)
 
   @test vec5 == vec5j
@@ -81,6 +81,9 @@
   LocalArrayRestore(varr)
   
 
+  # test mlocal constructor
+  vec5 = Vec(ST, mlocal=3)
+  @test length(vec5) == 3
 
   @testset "testing logical indexing" begin
       logicals = Array(Bool, length(vec4))

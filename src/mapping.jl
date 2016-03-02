@@ -16,7 +16,8 @@ end
 # zero based, using arrays
 function AO_{T}(::Type{T}, app_idx::AbstractArray{PetscInt, 1}, 
             petsc_idx::AbstractArray{PetscInt, 1}; comm=MPI.COMM_WORLD, basic=true )
-
+  println("app_idx = ", app_idx)
+  println("petsc_idx = ", petsc_idx)
   ao_ref = Ref{C.AO{T}}()
   if basic  # mapping is one-to-one and onto
     chk(C.AOCreateBasic(comm, length(app_idx), app_idx, petsc_idx, ao_ref))
@@ -35,9 +36,9 @@ function AO{T}( app_idx::IS{T}, petsc_idx::IS{T}; basic=true )
 
   ao_ref = Ref{C.AO{T}}()
   if basic  # mapping is one-to-one and onto
-    chk(C.AOCreateBasicIS( app_idx, petsc_idx, ao_ref))
+    chk(C.AOCreateBasicIS( app_idx.p, petsc_idx.p, ao_ref))
   else  # worse performance
-    chk(C.AOCreateMappingIS(app_idx, petsc_idx, ao_ref))
+    chk(C.AOCreateMappingIS(app_idx.p, petsc_idx.p, ao_ref))
   end
 
   return AO{T}(ao_ref[])
@@ -47,8 +48,10 @@ end
 function AO{T, I1 <: Integer, I2 <: Integer}(::Type{T}, app_idx::AbstractArray{I1, 1}, 
             petsc_idx::AbstractArray{I2, 1}; comm=MPI.COMM_WORLD, basic=true )
 
-  app_idx0 = PetscInt[app_idx[i] - 1 for i in length(app_idx)]
-  petsc_idx0 = PetscInt[petsc_idx[i] - 1 for i in length(petsc_idx)]
+  app_idx0 = PetscInt[app_idx[i] - 1 for i=1:length(app_idx)]
+  petsc_idx0 = PetscInt[petsc_idx[i] - 1 for i=1:length(petsc_idx)]
+  println("app_idx0 = ", app_idx0)
+  println("petsc_idx0 = ", petsc_idx0)
   AO_(T, app_idx0, petsc_idx0; comm=comm, basic=basic)
 end
 
@@ -56,8 +59,8 @@ end
 function PetscDestroy{T}(ao::AO{T})
 
   if !PetscFinalized(T)
-    chk(C.AODestroy(Ref(ao)))
-    ao.p = C.AO(C_NULL)
+    chk(C.AODestroy(Ref(ao.p)))
+    ao.p = C.AO{T}(C_NULL)
   end
 end
 
@@ -94,7 +97,7 @@ function map_petsc_to_app!(ao::AO, idx::AbstractArray)
 end
 
 function map_petsc_to_app!(ao::AO, is::IS)
-  chk(C.AOPetscToApplicationIS(ao.p, is))
+  chk(C.AOPetscToApplicationIS(ao.p, is.p))
 end
 
 function map_app_to_petsc!(ao::AO, idx::AbstractArray)
@@ -114,8 +117,4 @@ end
 
 function map_app_to_petsc!(ao::AO, is::IS)
   chk(C.AOApplicationToPetscIS(ao.p, is.p))
-end
-
-function mapp_petsc_to_app!(ao::AO, is::IS)
-  chk(C.AOPetscToApplicationIS(ao.p, is.p))
 end

@@ -32,7 +32,7 @@ gettype{T,VT}(a::Vec{T,VT}) = VT
 """
   Create an empty, unsized vector.
 """
-function Vec{T}(::Type{T}, vtype::C.VecType=C.VECSEQ; 
+function Vec{T}(::Type{T}, vtype::C.VecType=C.VECMPI; 
                 comm::MPI.Comm=MPI.COMM_SELF)
   p = Ref{C.Vec{T}}()
   chk(C.VecCreate(comm, p))
@@ -45,7 +45,7 @@ end
 """
 #TODO: make default VECMPI
 function Vec{T<:Scalar}(::Type{T}, len::Integer=C.PETSC_DECIDE;
-                         vtype::C.VecType=C.VECSEQ,
+                         vtype::C.VecType=C.VECMPI,
                          comm::MPI.Comm=MPI.COMM_SELF, 
                          mlocal::Integer=C.PETSC_DECIDE)
   vec = Vec(T, vtype; comm=comm)

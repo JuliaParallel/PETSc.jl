@@ -274,7 +274,7 @@
       @test vec4j == vec4
     end
     @testset "testing .*, ./, .^" begin
-      vec5 = Vec(ST, 3, PETSc.C.VECMPI)
+      vec5 = Vec(ST, 3, vtype=PETSc.C.VECMPI)
       vec6 = similar(vec5)
       vec5j = zeros(ST, 3)
       vec6j = zeros(ST, 3)

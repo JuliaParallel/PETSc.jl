@@ -726,14 +726,14 @@ end
 #currently ONLY gets the main diagonal
 function Base.diag{T}(A::PetscMat{T},vtype::C.VecType=C.VECSEQ)
   m = size(A, 1)
-  b = Vec(T, m, vtype, comm=comm(A), mlocal=sizelocal(A,1))
+  b = Vec(T, m, vtype=vtype, comm=comm(A), mlocal=sizelocal(A,1))
   chk(C.MatGetDiagonal(A.p,b.p))
   return b
 end
 
 function (*){T, MType}(A::PetscMat{T}, x::Vec{T, MType})
   m = size(A, 1)
-  b = Vec(T, m, MType, comm=comm(A), mlocal=sizelocal(A,1))
+  b = Vec(T, m, vtype=MType, comm=comm(A), mlocal=sizelocal(A,1))
   chk(C.MatMult(A.p, x.p, b.p))
   return b
 end
@@ -786,7 +786,7 @@ end
 
 function At_mul_B{T, MType}(A::PetscMat{T}, x::Vec{T,MType})
   m = size(A, 1)
-  b = Vec(T, m, MType, comm=comm(A), mlocal=sizelocal(A,1))
+  b = Vec(T, m, vtype=MType, comm=comm(A), mlocal=sizelocal(A,1))
   chk(C.MatMultTranspose(A.p, x.p, b.p))
   return b
 end
@@ -798,7 +798,7 @@ end
 
 function Ac_mul_B{T, MType}(A::PetscMat{T}, x::Vec{T,MType})
   m = size(A, 1)
-  b = Vec(T, m, MType, comm=comm(A), mlocal=sizelocal(A,1))
+  b = Vec(T, m, vtype=MType, comm=comm(A), mlocal=sizelocal(A,1))
   chk(C.MatMultHermitianTranspose(A.p, x.p, b.p))
   return b
 end

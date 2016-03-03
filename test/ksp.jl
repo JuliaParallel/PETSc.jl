@@ -13,7 +13,7 @@
   A[3,2] = RC(Complex(6,6))  # make A non singular
   A_julia[3,2] = RC(Complex(6,6))
 
-  b = PETSc.Vec(ST, 3, PETSc.C.VECMPI)
+  b = PETSc.Vec(ST, 3, vtype=PETSc.C.VECMPI)
   b_julia = zeros(ST, 3)
   b[3] = RC(Complex(1,1))
   b_julia[3] = RC(Complex(1,1))

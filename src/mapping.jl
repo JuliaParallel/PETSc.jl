@@ -16,8 +16,6 @@ end
 # zero based, using arrays
 function AO_{T}(::Type{T}, app_idx::AbstractArray{PetscInt, 1}, 
             petsc_idx::AbstractArray{PetscInt, 1}; comm=MPI.COMM_WORLD, basic=true )
-  println("app_idx = ", app_idx)
-  println("petsc_idx = ", petsc_idx)
   ao_ref = Ref{C.AO{T}}()
   if basic  # mapping is one-to-one and onto
     chk(C.AOCreateBasic(comm, length(app_idx), app_idx, petsc_idx, ao_ref))
@@ -50,8 +48,6 @@ function AO{T, I1 <: Integer, I2 <: Integer}(::Type{T}, app_idx::AbstractArray{I
 
   app_idx0 = PetscInt[app_idx[i] - 1 for i=1:length(app_idx)]
   petsc_idx0 = PetscInt[petsc_idx[i] - 1 for i=1:length(petsc_idx)]
-  println("app_idx0 = ", app_idx0)
-  println("petsc_idx0 = ", petsc_idx0)
   AO_(T, app_idx0, petsc_idx0; comm=comm, basic=basic)
 end
 

@@ -54,11 +54,18 @@ end
 =#
 
 # TODO: make this work for non Float64
-function MatShellGetContext(arg1::Mat{Float64})
-# get the user provided context for the matrix shell
-    arg2 = Ref{Ptr{Void}}()
-    chk(ccall((:MatShellGetContext,petscRealDouble),PetscErrorCode,(Mat{Float64},Ref{Ptr{Void}}),arg1,arg2))
-    return arg2[]  # turn it into a julia object here?
+for (T, P) in ( (Float64, petscRealDouble), (Float32, petscRealSingle), (Complex128, petscComplexDouble) )
+  @eval begin
+    function MatShellGetContext(arg1::Mat{$T})
+    # get the user provided context for the matrix shell
+        arg2 = Ref{Ptr{Void}}()
+        # this doesn't work because the Petsc developers were sloppy with their
+        # void pointers
+    #    chk(MatShellGetContext(arg1, arg2))
+        chk(ccall((:MatShellGetContext,$P),PetscErrorCode,(Mat{$T},Ref{Ptr{Void}}),arg1,arg2))
+        return arg2[]  # turn it into a julia object here?
+    end
+  end
 end
 
   function SetValues{ST}(vec::Mat,idi::AbstractArray{PetscInt},idj::AbstractArray{PetscInt},array::AbstractArray{ST},flag::Integer=INSERT_VALUES)

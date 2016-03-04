@@ -21,7 +21,7 @@ end
   end
 
   @testset "Shell Matrix" begin
-    if ST == Float64  # until Clang works correctly
+#    if ST == Float64  # until Clang works correctly
       ctx = (2, 4)
       mat = MatShell(ST, 3, 3, ctx)
       ctx_ret = getcontext(mat)
@@ -29,10 +29,10 @@ end
 
       f_ptr = cfunction(mymult, PETSc.C.PetscErrorCode, (PETSc.C.Mat{ST}, PETSc.C.Vec{ST}, PETSc.C.Vec{ST}))
       setop!(mat, PETSc.C.MATOP_MULT, f_ptr)
-      x = Vec([1.0, 2, 3])
+      x = Vec(ST[1.0, 2, 3])
       b = mat*x
-      @test b == [1.0, 4.0, 9.0]
-    end
+      @test b == ST[1.0, 4.0, 9.0]
+#    end
 
   end  # end testset Shell Matrix
 

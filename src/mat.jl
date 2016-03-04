@@ -132,7 +132,6 @@ end
   Create a shell matrix with specified size.  The ctx tuple contains can be
   accessed by any callback function.
 """
-#TODO: type annotation for func?
 # must rename this because of (silent) method ambiguity
 function MatShell{T}(::Type{T}, mlocal::Integer, nlocal::Integer, ctx::Tuple=();  m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE, comm=MPI.COMM_WORLD)
 

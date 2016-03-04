@@ -53,7 +53,6 @@ function MatShellSetOperation(arg1::Mat,arg2::MatOperation,arg3::Ptr{Void})
 end
 =#
 
-# TODO: make this work for non Float64
 for (T, P) in ( (Float64, petscRealDouble), (Float32, petscRealSingle), (Complex128, petscComplexDouble) )
   @eval begin
     function MatShellGetContext(arg1::Mat{$T})

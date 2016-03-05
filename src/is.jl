@@ -128,6 +128,8 @@ function _ISLocalToGlobalMapping{T}(::Type{T}, indices::AbstractArray{PetscInt},
 end
 
 # one based, exported
+#TODO: add a data argument to ISLocalToGlobalMapping, to store intermediate
+# array for copymode = don't copy
 function ISLocalToGlobalMapping{T, I <: Integer}(::Type{T}, indices::AbstractArray{I}, bs=1; comm=MPI_COMM_WORLD, copymode=C.PETSC_COPY_VALUES)
 
   indices_0 = PetscInt[ i-1 for i in indices]

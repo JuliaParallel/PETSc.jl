@@ -216,17 +216,120 @@ whether a \texttt{Mat} already has a \texttt{LocalToGlobalMapping} registered.
 \subsection{Mappings and Index Sets} \label{sec:is}a
 The PETSc \texttt{ISLocalToGlobalMapping} is now supported and exposes a 
 1-based interface.
-Describe ISLocalToGlobalMapping
-Describe ApplicationOrdering
+They can be created using:
+
+\begin{minted}{julia}
+function ISLocalToGlobalMapping{T, I <: Integer}(::Type{T}, indices::AbstractArray{I}, bs=1; comm=MPI_COMM_WORLD, copymode=C.PETSC_COPY_VALUES)
+\end{minted}
+
+\noindent where the indices are 1-based and \texttt{bs} indicates the block size of the 
+index set.  Currently only the default \texttt{copymode} is supported,
+but additional modes will be supported in the future.  For
+
+Alternatively, an existing index set can be used:
+\begin{minted}{julia}
+function ISLocalToGlobalMapping{T}(is::IS{T})
+\end{minted}
+
+\hfill \break
+
+The PETSc ApplicationOrdering (\texttt{AO}) is supported as well.
+They can be created using:
+
+\begin{minted}{julia}
+function AO{T, I1 <: Integer, I2 <: Integer}(::Type{T}, 
+            app_idx::AbstractArray{I1, 1}, petsc_idx::AbstractArray{I2, 1}; 
+            comm=MPI.COMM_WORLD, basic=true )
+\end{minted}
+
+\noindent where \texttt{app\_idx} is the application indices and 
+\texttt{petsca\_idx} are
+the PETSc indices the application indices are mapped to.  Both sets of 
+indices are 1-based.
+
+Alternatively, index sets can be used to create the \texttt{AO}
+\begin{minted}{julia}
+function AO{T}( app_idx::IS{T}, petsc_idx::IS{T}; basic=true )
+\end{minted}
+
+\noindent An array of application indices can be transformed to PETSc indicies using
+the function
+
+\begin{minted}{julia}
+function map_app_to_petsc!(ao::AO, idx::AbstractArray)
+\end{minted}
+
+\noindent or the inverse transformation can be applied with
+
+\begin{minted}{julia}
+function map_petsc_to_app!(ao::AO, idx::AbstractArray)
+\end{minted}
+
+\noindent The same operations can b e done on index sets:
+
+\begin{minted}{julia}
+function map_app_to_petsc!(ao::AO, is::IS)
+function map_petsc_to_app!(ao::AO, is::IS)
+\end{minted}
+
 
 
 \subsection{Linear Solvers} \label{sec:ksp}
-Describe KSPSolveTranspose!
-Mention that shell matrices work
+In addition to the standard matrix solve described in the previous report, 
+transposed solves are supported as well
+
+\begin{minted}{julia}
+function KSPSolveTranspose!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T})
+\end{minted}
+
+where the \texttt{KSP} object is constructed as described previously and 
+contains all the options that specify how to perform the solve.  This
+allows multiple solves (with different right hand sides) to be performed 
+with a single \texttt{KSP} context.  There is also a version that allocates 
+the output vector:
+
+\begin{minted}{julia}
+function KSPSolveTranspose{T}(ksp::KSP{T}, b::Vec{T})
+\end{minted}
+
+Note that shell matrices can be used for KSP solves if the appropriate 
+matrix-vector multiplication function is registered with the matrix.
 
 \subsection{Miscellaneous}
-Improved Clang wrapping
-C interface MatSetValues, MatSetValuesBlocked
+Several improvements to the interface have been made that do not neatly fit 
+into one of the above catagories.
+First, the automatically generated wrappers of the C interface have been 
+been improved.  Certain C types are more accurately mapped to their Julia 
+counterparts, and additional enumerated values that were not previously
+captured are now correctly generated.
+
+Second, several functions that are part of the PETSc C interface have had
+more usable Julia definitions created, taking advantage of the fact that Julia
+arrays know their own sizes:
+
+\begin{minted}{julia}
+function SetValues{T}(vec::C.Vec{T},idx::AbstractVector{PetscInt},
+                                vals::AbstractVector{T},
+                                flag::Integer=INSERT_VALUES)
+
+function GetValues{T}(vec::C.Vec{T}, idx::AbstractArray{PetscInt,1}, 
+                             y::AbstractArray{T,1})
+function SetValues{ST}(vec::C.Mat,idi::AbstractArray{PetscInt},
+                       idj::AbstractArray{PetscInt}, array::AbstractArray{ST},
+                       flag::Integer=INSERT_VALUES)
+
+function SetValuesBlocked{ST}(mat::C.Mat, idi::AbstractArray{PetscInt}, 
+                          idj::AbstractArray{PetscInt}, v::AbstractArray{ST}, 
+                          flag::Integer=INSERT_VALUES)
+
+function GetValues{ST}(obj::C.Mat, idxm::AbstractArray{PetscInt, 1}, 
+                   idxn::AbstractArray{PetscInt, 1}, v::AbstractArray{ST})
+\end{minted}
+
+\noindent These functions are much more restrictive than those in the high-level
+interface, but they never make temporary copies, which are sometimes 
+necessary in the high-level interface.
+
 \end{document}
 
 

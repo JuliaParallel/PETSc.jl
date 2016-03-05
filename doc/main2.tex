@@ -123,7 +123,7 @@ providing distinct behavior for the \texttt{SubMat}.  All functions which
 are provided for \texttt{Mat}s are also provided for \texttt{SubMat}s.
 In particular, a \texttt{SubMat} can be indexed using the standard Julia
 indexing notation, where the indices are the local indices (rather than global
-indices, which are used for \texttt{Mat}s).
+indices used for \texttt{Mat}s).
 
 A \texttt{Mat} must have a \texttt{LocalToGlobalMapping} registered in order
 to create a \texttt{SubMat}.  The outer constructor
@@ -135,7 +135,7 @@ function SubMat{T, MType}(mat::Mat{T, MType}, isrow::IS{T}, iscol::IS{T})
 \noindent creates and registers a default \texttt{LocalToGlobalMapping} if needed.  
 The default \texttt{LocalToGlobalMapping} relies on the PETSc 
 \texttt{MatGetOwnershipRange} function to determine the range of rows
-assigned to each process, which will return the correct values for all 
+assigned to each process.  This function will return the correct values for all 
 \texttt{AIJ} matrices, but may not for the less commonly used matrix formats.
 The index sets \texttt{isrow} and \texttt{iscol} determine which rows and
 columns of the parent \texttt{Mat} are mapped to the \texttt{SubMat}.
@@ -145,7 +145,9 @@ Julia interface.  A shell matrix can be created via:
 
 \begin{minted}{julia}
 
-function MatShell{T}(::Type{T}, mlocal::Integer, nlocal::Integer, ctx::Tuple=();  m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE, comm=MPI.COMM_WORLD)
+function MatShell{T}(::Type{T}, mlocal::Integer, nlocal::Integer, ctx::Tuple=();
+                  m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE, 
+                  comm=MPI.COMM_WORLD)
 \end{minted}
 
 \noindent where the standard arguments determine the size of the matrix object.
@@ -168,10 +170,12 @@ function setop!{T}(mat::Mat{T, C.MATSHELL}, op::C.MatOperation, func::Ptr{Void})
 
 \noindent where \texttt{op} is an enumerated value (available in the PETSc.C module) that specifies what operation the function performs, and
 \texttt{func} is a function pointer (typically created using the Julia \texttt{cfunction} function) that has the right signature for the specified function.
-Note that the function must as argument the low-level versions of all the PETSc
+Note that the function must take as arguments the low-level versions of all the PETSc
 objects (ie. PETSc.C.Mat instead of PETSc.Mat).  These objects can be safely
 wrapped inside the high-level objects by calling their inner constructors with
-the keyword argument \texttt{first\_instance} set to false.  For example, 
+the keyword argument \texttt{first\_instance} set to false.  
+
+For example, 
 matrix-vector multiplication for a shell matrix can be defined with the 
 function:
 
@@ -180,7 +184,7 @@ function:
 function mymult{T}(A::PETSc.C.Mat{T}, x::PETSc.C.Vec, b::PETSc.C.Vec)
 
   # wrap low level objects into high level ones
-  bigA = Mat{T. PETSc.C.MATSHELL}(A, first_instance=false)
+  bigA = Mat{T, PETSc.C.MATSHELL}(A, first_instance=false)
   bigx = Vec{T, PETSc.C.VECMPI}(x, first_instance=false)
   bigb = Vec{T, PETSc.C.VECMPI}(b, first_instance=false)
 
@@ -213,18 +217,21 @@ the rows and columns of \texttt{Mat}s.  They can be registered with the
 \texttt{has\_local\_to\_global\_mapping} returns a boolean value indicating
 whether a \texttt{Mat} already has a \texttt{LocalToGlobalMapping} registered.
 
-\subsection{Mappings and Index Sets} \label{sec:is}a
+\subsection{Mappings and Index Sets} \label{sec:is}
 The PETSc \texttt{ISLocalToGlobalMapping} is now supported and exposes a 
 1-based interface.
 They can be created using:
 
 \begin{minted}{julia}
-function ISLocalToGlobalMapping{T, I <: Integer}(::Type{T}, indices::AbstractArray{I}, bs=1; comm=MPI_COMM_WORLD, copymode=C.PETSC_COPY_VALUES)
+function ISLocalToGlobalMapping{T, I <: Integer}(::Type{T}, 
+                                indices::AbstractArray{I}, bs=1; 
+                                comm=MPI_COMM_WORLD, 
+                                copymode=C.PETSC_COPY_VALUES)
 \end{minted}
 
 \noindent where the indices are 1-based and \texttt{bs} indicates the block size of the 
 index set.  Currently only the default \texttt{copymode} is supported,
-but additional modes will be supported in the future.  For
+but additional modes will be supported in the future.
 
 Alternatively, an existing index set can be used:
 \begin{minted}{julia}
@@ -245,7 +252,10 @@ function AO{T, I1 <: Integer, I2 <: Integer}(::Type{T},
 \noindent where \texttt{app\_idx} is the application indices and 
 \texttt{petsc\_idx} are
 the PETSc indices the application indices are mapped to.  Both sets of 
-indices are 1-based.
+indices are 1-based.  The \texttt{basic} is determines the internal
+representation of the mapping.  If \texttt{basic} is true, then
+the mapping must be one-to-one and onto, otherwise \texttt{basic} must
+be false, although this results in poorer performance.
 
 Alternatively, index sets can be used to create the \texttt{AO}
 \begin{minted}{julia}
@@ -276,13 +286,13 @@ function map_petsc_to_app!(ao::AO, is::IS)
 
 \subsection{Linear Solvers} \label{sec:ksp}
 In addition to the standard matrix solve described in the previous report, 
-transposed solves are supported as well
+transposed solves are supported as well:
 
 \begin{minted}{julia}
 function KSPSolveTranspose!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T})
 \end{minted}
 
-where the \texttt{KSP} object is constructed as described previously and 
+\noindent where the \texttt{KSP} object is constructed as described previously and 
 contains all the options that specify how to perform the solve.  This
 allows multiple solves (with different right hand sides) to be performed 
 with a single \texttt{KSP} context.  There is also a version that allocates 

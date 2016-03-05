@@ -43,7 +43,6 @@ end
   Create a vector, specifying the (global) length len or the local length
   mlocal
 """
-#TODO: make default VECMPI
 function Vec{T<:Scalar}(::Type{T}, len::Integer=C.PETSC_DECIDE;
                          vtype::C.VecType=C.VECMPI,
                          comm::MPI.Comm=MPI.COMM_SELF, 

@@ -5,7 +5,7 @@ using PETSc
 function driver()
   xmin = 0
   xmax = 1
-  N = 5  # N+1 = # of grid points per processor
+  N = 50  # N+1 = # of grid points per processor
   mpi_rank = MPI.Comm_rank(MPI.COMM_WORLD) + 1
   mpi_size = MPI.Comm_size(MPI.COMM_WORLD)
 
@@ -13,7 +13,7 @@ function driver()
   delta_x = (xmax - xmin)/(Npts_global)
   delta_t = delta_x
 
-  tmax = 0.5
+  tmax = 5.0
 
   solve(xmin, xmax, tmax, N, delta_t)
 end
@@ -89,15 +89,6 @@ if mpi_rank == mpi_size
   u_i[idx_end] = 2*delta_x*BCR(0) + u_i[idx_end-2]
 end
 
-#PETSc.AssemblyBegin(u_i)
-#PETSc.AssemblyEnd(u_i)
-#=
-if mpi_rank == 1
-  println("u_initial = \n")
-end
-petscview(u_i)
-=#
-
 # scatter the initial condition u_i to u_ghost, so all procs have the values
 # needed to evaluate their stencils
 scatter!(vec_scatter, u_i, u_ghost)
@@ -134,29 +125,22 @@ if mpi_rank > 1  # all processes except leftmost
   A[idx_start, idx_start+1] = stencil_r
 end
 if mpi_rank != mpi_size # all processes except rightmost
-#  println("p$mpi_rank doing idx_end = ", idx_end)
   A[idx_end, idx_end-1] = stencil_l
   A[idx_end, idx_end] = stencil_c
   A[idx_end, idx_end+1] = stencil_r
 end
-
-#=
-  println("A = \n")
-  PETSc.AssemblyBegin(A, PETSc.C.MAT_FINAL_ASSEMBLY)
-  PETSc.AssemblyEnd(A, PETSc.C.MAT_FINAL_ASSEMBLY)
-  petscview(A)
-=#
 
 # create rhs stencil
 stencil_l = r/2 + sigma/4
 stencil_c = 1 - r
 stencil_r = r/2 - sigma/4
 
+print("\n")
 time = @elapsed for tstep=1:nStep  # loop over timesteps
 # advance from timestep tstep to tstep + 1
 
   if mpi_rank == 1
-    println("\ntstep = ", tstep)
+    println("tstep = ", tstep)
   end
 
   for i in interior_part
@@ -193,58 +177,13 @@ time = @elapsed for tstep=1:nStep  # loop over timesteps
     rhs[idx_end] = BCR(tstep*delta_t)
   end
 
-#=
-  # view rhs
-  PETSc.AssemblyBegin(rhs)
-  PETSc.AssemblyEnd(rhs)
-  if mpi_rank == 1
-    println("rhs = \n")
-  end
-  petscview(rhs)
-=#
-#=
-  PETSc.AssemblyBegin(A, PETSc.C.MAT_FINAL_ASSEMBLY)
-  PETSc.AssemblyEnd(A, PETSc.C.MAT_FINAL_ASSEMBLY)
-   if mpi_rank == 1
-    println("A = \n")
-  end
-  petscview(A)
-=#
-#=
-  # view u_i
-  PETSc.AssemblyBegin(u_i)
-  PETSc.AssemblyEnd(u_i)
-  if mpi_rank == 1
-    println("u_i = \n")
-  end
-  petscview(u_i)
-=#
 
   # solve for next time step, u_i gets overwritten with new solution
   A_ldiv_B!(ksp, rhs, u_i)
 
-#=  # view new solution
-  PETSc.AssemblyBegin(u_i)
-  PETSc.AssemblyEnd(u_i)
-  if mpi_rank == 1
-    println("u_initial = \n")
-  end
-  petscview(u_i)
-=#
-
   # scatter u_i into u_ghost, which is used to calculate the rhs
   # this is necessary because Petsc does not allow fetching off process values
   scatter!(vec_scatter, u_i, u_ghost)
-
-#=  # view the result of the scatter
-  PETSc.AssemblyBegin(u_ghost)
-  PETSc.AssemblyEnd(u_ghost)
-  if mpi_rank == 1
-    println("u_ghost = \n")
-  end
-  petscview(u_ghost)
-=#
-
 
 end
 
@@ -278,10 +217,9 @@ max_err = norm(u_err, Inf)
 sleep(2)
 if mpi_rank == 1
   println("max error = ", max_err)
-else
-  sleep(5)
 end
 
+MPI.Barrier(MPI.COMM_WORLD)
 
 return u_i, delta_t*(nStep)
 
@@ -373,13 +311,6 @@ function createPetscData(mat_size, stencil_size)
   resize!(u_ghost, mlocal=nghost_local)
   u_ghost.assembling=true
 
-#=
-  println("p$mpi_rank mat_size = ", mat_size)
-  println("p$mpi_rank start_idx = ", start_idx)
-  println("p$mpi_rank end_idx = ", end_idx)
-  println("p$mpi_rank idx = ", idx)
-  println("p$mpi_rank idx_ghost = ", idx_ghost)
-=#
   # create the scatter
   is_local = PETSc.IS(Float64, idx, comm=MPI.COMM_WORLD)
   is_ghost = PETSc.IS(Float64, idx_ghost, comm=MPI.COMM_WORLD)

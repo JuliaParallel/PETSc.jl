@@ -53,7 +53,7 @@
 \section{Introduction} \label{sec:intro}
 This document describes the changes to the Julia interface to the Portable, Extensible Toolkit for Scientific Computation (PETSc) since the previous report.
 Several new features are supported, particularly those related to mapping 
-and parallel bookkeeping, and additional functionallity is added to existing
+and parallel bookkeeping, and additional functionality is added to existing
 features.
 
 
@@ -199,7 +199,7 @@ end
 Several additional functions are supported for PETSc vectors and matrices.
 For \texttt{Vecs}, the function \texttt{localpart} returns a Julia \texttt{Range} object that describes the range of global indices that are owned by the 
 local process.
-For \texttt{Mats}, the analagous function is \texttt{localranges}, which 
+For \texttt{Mats}, the analogous function is \texttt{localranges}, which 
 returns 2 \texttt{Range} objects describing the ownership of rows and columns
 of the matrix.  Note that this function has the same assumptions as the PETSc
 \texttt{MatGetOwnershipRange} described above.
@@ -243,7 +243,7 @@ function AO{T, I1 <: Integer, I2 <: Integer}(::Type{T},
 \end{minted}
 
 \noindent where \texttt{app\_idx} is the application indices and 
-\texttt{petsca\_idx} are
+\texttt{petsc\_idx} are
 the PETSc indices the application indices are mapped to.  Both sets of 
 indices are 1-based.
 
@@ -252,7 +252,7 @@ Alternatively, index sets can be used to create the \texttt{AO}
 function AO{T}( app_idx::IS{T}, petsc_idx::IS{T}; basic=true )
 \end{minted}
 
-\noindent An array of application indices can be transformed to PETSc indicies using
+\noindent An array of application indices can be transformed to PETSc indices using
 the function
 
 \begin{minted}{julia}
@@ -297,7 +297,7 @@ matrix-vector multiplication function is registered with the matrix.
 
 \subsection{Miscellaneous}
 Several improvements to the interface have been made that do not neatly fit 
-into one of the above catagories.
+into one of the above categories.
 First, the automatically generated wrappers of the C interface have been 
 been improved.  Certain C types are more accurately mapped to their Julia 
 counterparts, and additional enumerated values that were not previously

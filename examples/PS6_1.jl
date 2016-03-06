@@ -13,7 +13,7 @@ function driver()
   delta_x = (xmax - xmin)/(Npts_global)
   delta_t = delta_x
 
-  tmax = 5.0
+  tmax = 4.0
 
   solve(xmin, xmax, tmax, N, delta_t)
 end
@@ -219,11 +219,22 @@ if mpi_rank == 1
   println("max error = ", max_err)
 end
 
+writeU(u_i, N, nStep)
 MPI.Barrier(MPI.COMM_WORLD)
 
 return u_i, delta_t*(nStep)
 
 end
+
+function writeU(u_i, N, tsteps)
+
+  mpi_rank = MPI.Comm_rank(MPI.COMM_WORLD) + 1
+  larr = LocalArray(u_i)
+  fname = string("u_", tsteps, "_", mpi_rank, ".dat")
+  writedlm(fname, larr[1:(N+1)])
+end
+
+  
 
 
 function ICFunc(x)

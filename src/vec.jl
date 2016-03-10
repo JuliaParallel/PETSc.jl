@@ -64,6 +64,50 @@ function Vec{T<:Scalar}(v::Vector{T}; comm::MPI.Comm=MPI.COMM_WORLD)
   return pv
 end
 
+export VecGhost, VecLocal, restore
+
+
+"""
+  Make a PETSc vector with space for ghost values
+"""
+# making mlocal the position and mglobal the keyword argument is inconsistent
+# with the other Vec constructors, but it makes more sense here
+function VecGhost{T<:Scalar, I <: Integer}(::Type{T}, mlocal::Integer, 
+                  ghost_idx::Array{I,1}; comm=MPI.COMM_WORLD, m=C.PETSC_DECIDE, bs=1)
+
+    nghost = length(ghost_idx)
+    ghost_idx2 = [ PetscInt(i -1) for i in ghost_idx]
+
+    vref = Ref{C.Vec{T}}()
+    if bs == 1
+      chk(C.VecCreateGhost(comm, mlocal, m, nghost, ghost_idx2, vref))
+    elseif bs > 1
+      chk(C.VecCreateGhostBlock(comm, bs, mlocal, mlocal, m, nghost, ghost_idx2, vref))
+    else
+      println(STDERR, "WARNING: unsupported block size requested, bs = ", bs)
+    end
+
+    return Vec{T, C.VECMPI}(vref[])
+end
+
+function VecLocal{T <:Scalar}( v::Vec{T, C.VECMPI})
+
+  vref = Ref{C.Vec{T}}()
+  chk(C.VecGhostGetLocalForm(v.p, vref))
+  # store v to use with Get/Restore LocalForm
+  # Petsc reference counting solves the gc problem
+  return Vec{T, C.VECSEQ}(vref[], v)
+end
+
+#TODO: use restore for all types of restoring a local view
+function restore{T}(v::Vec{T, C.VECSEQ})
+
+  vp = v.data
+  vref = Ref(v.p)
+  chk(C.VecGhostRestoreLocalForm(vp.p, vref))
+end
+
+
 function PetscDestroy{T}(vec::Vec{T})
   if !PetscFinalized(T)  && !isfinalized(vec)
     C.VecDestroy(Ref(vec.p))
@@ -96,7 +140,46 @@ function Base.resize!(x::Vec, m::Integer=C.PETSC_DECIDE; mlocal::Integer=C.PETSC
   x
 end
 
-##########################################################################
+###############################################################################
+export ghost_begin!, ghost_end!, scatter!, ghost_update!
+# ghost vectors: essential methods
+function ghost_begin!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES,
+                               smode=C.SCATTER_FORWARD)
+    chk(C.VecGhostUpdateBegin(v.p, imode, smode))
+    return v
+end
+
+function ghost_end!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES,
+                               smode=C.SCATTER_FORWARD)
+    chk(C.VecGhostUpdateEnd(v.p, imode, smode))
+    return v
+end
+
+# ghost vectors: helpful methods
+function scatter!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES, smode=C.SCATTER_FORWARD)
+
+  ghost_begin!(v, imode=imode, smode=smode)
+  ghost_end!(v, imode=imode, smode=smode)
+end
+
+# is there a way to specify all varargs must be same type?
+# this can't be named scatter! because of ambiguity with the index set scatter!
+function ghost_update!(v...; imode=C.INSERT_VALUES, smode=C.SCATTER_FORWARD)
+
+  for i in v
+    ghost_begin!(i, imode=imode, smode=smode)
+  end
+
+  for i in v
+    ghost_end!(i, imode=imode, smode=smode)
+  end
+
+  return v
+end
+
+
+
+###############################################################################
 export lengthlocal, sizelocal, localpart
 
 Base.convert(::Type{C.Vec}, v::Vec) = v.p

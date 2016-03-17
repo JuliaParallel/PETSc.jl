@@ -13,12 +13,12 @@ using DataStructures
 
 # used to modify function signatures
 type_dict = Dict{Any, Any} (
-  :PetscScalar => :Complex128,
-  :PetscReal => :Float64,
+  :PetscScalar => :Float32,
+  :PetscReal => :Float32,
   :PetscInt => :Int64,
 )
 
-const petsc_libname = :petscComplexDouble
+const petsc_libname = :petscRealSingle
 
 ##############################################################################
 
@@ -46,7 +46,8 @@ new_type_dict = Dict{Any, Any} (
   :ISColoring => :(ISColoring{$val_tmp}),
   :PetscLayout => :(PetscLayout{$val_tmp}),
   :VecScatter => :(VecScatter{$val_tmp}),
-  :AO => :(AO{$val_tmp})
+  :AO => :(AO{$val_tmp}),
+  :TS => :(TS{$val_tmp})
 )
 
 # definitions that will be provided, but don't come from Petsc

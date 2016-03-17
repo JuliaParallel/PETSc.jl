@@ -15632,88 +15632,88 @@ function TSInitializePackage(arg0::Type{Float64})
     return err
 end
 
-function TSCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{TS},StridedArray{TS},Ptr{TS},Ref{TS}})
-    err = ccall((:TSCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{TS}),arg1,arg2)
+function TSCreate(arg1::MPI_Comm,arg2::Union{Ptr{TS{Float64}},StridedArray{TS{Float64}},Ptr{TS{Float64}},Ref{TS{Float64}}})
+    err = ccall((:TSCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{TS{Float64}}),arg1,arg2)
     return err
 end
 
-function TSClone(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TS},StridedArray{TS},Ptr{TS},Ref{TS}})
-    err = ccall((:TSClone,petscRealDouble),PetscErrorCode,(TS,Ptr{TS}),arg1,arg2)
+function TSClone(arg1::TS{Float64},arg2::Union{Ptr{TS{Float64}},StridedArray{TS{Float64}},Ptr{TS{Float64}},Ref{TS{Float64}}})
+    err = ccall((:TSClone,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{TS{Float64}}),arg1,arg2)
     return err
 end
 
-function TSDestroy(arg0::Type{Float64},arg1::Union{Ptr{TS},StridedArray{TS},Ptr{TS},Ref{TS}})
-    err = ccall((:TSDestroy,petscRealDouble),PetscErrorCode,(Ptr{TS},),arg1)
+function TSDestroy(arg1::Union{Ptr{TS{Float64}},StridedArray{TS{Float64}},Ptr{TS{Float64}},Ref{TS{Float64}}})
+    err = ccall((:TSDestroy,petscRealDouble),PetscErrorCode,(Ptr{TS{Float64}},),arg1)
     return err
 end
 
-function TSSetProblemType(arg0::Type{Float64},arg1::TS,arg2::TSProblemType)
-    err = ccall((:TSSetProblemType,petscRealDouble),PetscErrorCode,(TS,TSProblemType),arg1,arg2)
+function TSSetProblemType(arg1::TS{Float64},arg2::TSProblemType)
+    err = ccall((:TSSetProblemType,petscRealDouble),PetscErrorCode,(TS{Float64},TSProblemType),arg1,arg2)
     return err
 end
 
-function TSGetProblemType(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSProblemType},StridedArray{TSProblemType},Ptr{TSProblemType},Ref{TSProblemType}})
-    err = ccall((:TSGetProblemType,petscRealDouble),PetscErrorCode,(TS,Ptr{TSProblemType}),arg1,arg2)
+function TSGetProblemType(arg1::TS{Float64},arg2::Union{Ptr{TSProblemType},StridedArray{TSProblemType},Ptr{TSProblemType},Ref{TSProblemType}})
+    err = ccall((:TSGetProblemType,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{TSProblemType}),arg1,arg2)
     return err
 end
 
-function TSMonitor(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64})
-    err = ccall((:TSMonitor,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64}),arg1,arg2,arg3,arg4)
+function TSMonitor(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64})
+    err = ccall((:TSMonitor,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSMonitorSet(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorSet,petscRealDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
+function TSMonitorSet(arg1::TS{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorSet,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSMonitorCancel(arg0::Type{Float64},arg1::TS)
-    err = ccall((:TSMonitorCancel,petscRealDouble),PetscErrorCode,(TS,),arg1)
+function TSMonitorCancel(arg1::TS{Float64})
+    err = ccall((:TSMonitorCancel,petscRealDouble),PetscErrorCode,(TS{Float64},),arg1)
     return err
 end
 
-function TSSetOptionsPrefix(arg0::Type{Float64},arg1::TS,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
-    err = ccall((:TSSetOptionsPrefix,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSSetOptionsPrefix(arg1::TS{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+    err = ccall((:TSSetOptionsPrefix,petscRealDouble),PetscErrorCode,(TS{Float64},Cstring),arg1,arg2)
     return err
 end
 
-function TSAppendOptionsPrefix(arg0::Type{Float64},arg1::TS,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
-    err = ccall((:TSAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSAppendOptionsPrefix(arg1::TS{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+    err = ccall((:TSAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(TS{Float64},Cstring),arg1,arg2)
     return err
 end
 
-function TSGetOptionsPrefix(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
-    err = ccall((:TSGetOptionsPrefix,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2)
+function TSGetOptionsPrefix(arg1::TS{Float64},arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
+    err = ccall((:TSGetOptionsPrefix,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{UInt8}}),arg1,arg2)
     return err
 end
 
-function TSSetFromOptions(arg0::Type{Float64},arg1::TS)
-    err = ccall((:TSSetFromOptions,petscRealDouble),PetscErrorCode,(TS,),arg1)
+function TSSetFromOptions(arg1::TS{Float64})
+    err = ccall((:TSSetFromOptions,petscRealDouble),PetscErrorCode,(TS{Float64},),arg1)
     return err
 end
 
-function TSSetUp(arg0::Type{Float64},arg1::TS)
-    err = ccall((:TSSetUp,petscRealDouble),PetscErrorCode,(TS,),arg1)
+function TSSetUp(arg1::TS{Float64})
+    err = ccall((:TSSetUp,petscRealDouble),PetscErrorCode,(TS{Float64},),arg1)
     return err
 end
 
-function TSReset(arg0::Type{Float64},arg1::TS)
-    err = ccall((:TSReset,petscRealDouble),PetscErrorCode,(TS,),arg1)
+function TSReset(arg1::TS{Float64})
+    err = ccall((:TSReset,petscRealDouble),PetscErrorCode,(TS{Float64},),arg1)
     return err
 end
 
-function TSSetSolution(arg1::TS,arg2::Vec{Float64})
-    err = ccall((:TSSetSolution,petscRealDouble),PetscErrorCode,(TS,Vec{Float64}),arg1,arg2)
+function TSSetSolution(arg1::TS{Float64},arg2::Vec{Float64})
+    err = ccall((:TSSetSolution,petscRealDouble),PetscErrorCode,(TS{Float64},Vec{Float64}),arg1,arg2)
     return err
 end
 
-function TSGetSolution(arg1::TS,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:TSGetSolution,petscRealDouble),PetscErrorCode,(TS,Ptr{Vec{Float64}}),arg1,arg2)
+function TSGetSolution(arg1::TS{Float64},arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
+    err = ccall((:TSGetSolution,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Vec{Float64}}),arg1,arg2)
     return err
 end
 
-function TSSetSaveTrajectory(arg0::Type{Float64},arg1::TS)
-    err = ccall((:TSSetSaveTrajectory,petscRealDouble),PetscErrorCode,(TS,),arg1)
+function TSSetSaveTrajectory(arg1::TS{Float64})
+    err = ccall((:TSSetSaveTrajectory,petscRealDouble),PetscErrorCode,(TS{Float64},),arg1)
     return err
 end
 
@@ -15732,13 +15732,13 @@ function TSTrajectorySetType(arg0::Type{Float64},arg1::TSTrajectory,arg2::TSTraj
     return err
 end
 
-function TSTrajectorySet(arg1::TSTrajectory,arg2::TS,arg3::Integer,arg4::Float64,arg5::Vec{Float64})
-    err = ccall((:TSTrajectorySet,petscRealDouble),PetscErrorCode,(TSTrajectory,TS,Int64,Float64,Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
+function TSTrajectorySet(arg1::TSTrajectory,arg2::TS{Float64},arg3::Integer,arg4::Float64,arg5::Vec{Float64})
+    err = ccall((:TSTrajectorySet,petscRealDouble),PetscErrorCode,(TSTrajectory,TS{Float64},Int64,Float64,Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSTrajectoryGet(arg0::Type{Float64},arg1::TSTrajectory,arg2::TS,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSTrajectoryGet,petscRealDouble),PetscErrorCode,(TSTrajectory,TS,Int64,Ptr{Float64}),arg1,arg2,arg3,arg4)
+function TSTrajectoryGet(arg1::TSTrajectory,arg2::TS{Float64},arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSTrajectoryGet,petscRealDouble),PetscErrorCode,(TSTrajectory,TS{Float64},Int64,Ptr{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -15752,88 +15752,88 @@ function TSTrajectoryRegisterAll(arg0::Type{Float64})
     return err
 end
 
-function TSSetCostGradients(arg1::TS,arg2::Integer,arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:TSSetCostGradients,petscRealDouble),PetscErrorCode,(TS,Int64,Ptr{Vec{Float64}},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
+function TSSetCostGradients(arg1::TS{Float64},arg2::Integer,arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
+    err = ccall((:TSSetCostGradients,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Ptr{Vec{Float64}},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSGetCostGradients(arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}},arg4::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}})
-    err = ccall((:TSGetCostGradients,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64},Ptr{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}}),arg1,arg2,arg3,arg4)
+function TSGetCostGradients(arg1::TS{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}},arg4::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}})
+    err = ccall((:TSGetCostGradients,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Int64},Ptr{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSSetCostIntegrand(arg0::Type{Float64},arg1::TS,arg2::Integer,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetCostIntegrand,petscRealDouble),PetscErrorCode,(TS,Int64,Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
+function TSSetCostIntegrand(arg1::TS{Float64},arg2::Integer,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetCostIntegrand,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function TSGetCostIntegral(arg1::TS,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:TSGetCostIntegral,petscRealDouble),PetscErrorCode,(TS,Ptr{Vec{Float64}}),arg1,arg2)
+function TSGetCostIntegral(arg1::TS{Float64},arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
+    err = ccall((:TSGetCostIntegral,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Vec{Float64}}),arg1,arg2)
     return err
 end
 
-function TSAdjointSetRHSJacobian(arg1::TS,arg2::Mat{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSAdjointSetRHSJacobian,petscRealDouble),PetscErrorCode,(TS,Mat{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
+function TSAdjointSetRHSJacobian(arg1::TS{Float64},arg2::Mat{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSAdjointSetRHSJacobian,petscRealDouble),PetscErrorCode,(TS{Float64},Mat{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSAdjointSolve(arg0::Type{Float64},arg1::TS)
-    err = ccall((:TSAdjointSolve,petscRealDouble),PetscErrorCode,(TS,),arg1)
+function TSAdjointSolve(arg1::TS{Float64})
+    err = ccall((:TSAdjointSolve,petscRealDouble),PetscErrorCode,(TS{Float64},),arg1)
     return err
 end
 
-function TSAdjointSetSteps(arg0::Type{Float64},arg1::TS,arg2::Integer)
-    err = ccall((:TSAdjointSetSteps,petscRealDouble),PetscErrorCode,(TS,Int64),arg1,arg2)
+function TSAdjointSetSteps(arg1::TS{Float64},arg2::Integer)
+    err = ccall((:TSAdjointSetSteps,petscRealDouble),PetscErrorCode,(TS{Float64},Int64),arg1,arg2)
     return err
 end
 
-function TSAdjointComputeRHSJacobian(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Mat{Float64})
-    err = ccall((:TSAdjointComputeRHSJacobian,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Mat{Float64}),arg1,arg2,arg3,arg4)
+function TSAdjointComputeRHSJacobian(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Mat{Float64})
+    err = ccall((:TSAdjointComputeRHSJacobian,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Mat{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSAdjointStep(arg0::Type{Float64},arg1::TS)
-    err = ccall((:TSAdjointStep,petscRealDouble),PetscErrorCode,(TS,),arg1)
+function TSAdjointStep(arg1::TS{Float64})
+    err = ccall((:TSAdjointStep,petscRealDouble),PetscErrorCode,(TS{Float64},),arg1)
     return err
 end
 
-function TSAdjointSetUp(arg0::Type{Float64},arg1::TS)
-    err = ccall((:TSAdjointSetUp,petscRealDouble),PetscErrorCode,(TS,),arg1)
+function TSAdjointSetUp(arg1::TS{Float64})
+    err = ccall((:TSAdjointSetUp,petscRealDouble),PetscErrorCode,(TS{Float64},),arg1)
     return err
 end
 
-function TSAdjointComputeDRDPFunction(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:TSAdjointComputeDRDPFunction,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
+function TSAdjointComputeDRDPFunction(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
+    err = ccall((:TSAdjointComputeDRDPFunction,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSAdjointComputeDRDYFunction(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:TSAdjointComputeDRDYFunction,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
+function TSAdjointComputeDRDYFunction(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
+    err = ccall((:TSAdjointComputeDRDYFunction,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSAdjointComputeCostIntegrand(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64})
-    err = ccall((:TSAdjointComputeCostIntegrand,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4)
+function TSAdjointComputeCostIntegrand(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64})
+    err = ccall((:TSAdjointComputeCostIntegrand,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSSetDuration(arg0::Type{Float64},arg1::TS,arg2::Integer,arg3::Float64)
-    err = ccall((:TSSetDuration,petscRealDouble),PetscErrorCode,(TS,Int64,Float64),arg1,arg2,arg3)
+function TSSetDuration(arg1::TS{Float64},arg2::Integer,arg3::Float64)
+    err = ccall((:TSSetDuration,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64),arg1,arg2,arg3)
     return err
 end
 
-function TSGetDuration(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSGetDuration,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64},Ptr{Float64}),arg1,arg2,arg3)
+function TSGetDuration(arg1::TS{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSGetDuration,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Int64},Ptr{Float64}),arg1,arg2,arg3)
     return err
 end
 
-function TSSetExactFinalTime(arg0::Type{Float64},arg1::TS,arg2::TSExactFinalTimeOption)
-    err = ccall((:TSSetExactFinalTime,petscRealDouble),PetscErrorCode,(TS,TSExactFinalTimeOption),arg1,arg2)
+function TSSetExactFinalTime(arg1::TS{Float64},arg2::TSExactFinalTimeOption)
+    err = ccall((:TSSetExactFinalTime,petscRealDouble),PetscErrorCode,(TS{Float64},TSExactFinalTimeOption),arg1,arg2)
     return err
 end
 
-function TSMonitorDefault(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorDefault,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorDefault(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorDefault,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -15847,28 +15847,28 @@ function TSMonitorDrawCtxDestroy(arg0::Type{Float64},arg1::Union{Ptr{TSMonitorDr
     return err
 end
 
-function TSMonitorDrawSolution(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorDrawSolution,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorDrawSolution(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorDrawSolution,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorDrawSolutionPhase(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorDrawSolutionPhase,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorDrawSolutionPhase(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorDrawSolutionPhase,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorDrawError(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorDrawError,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorDrawError(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorDrawError,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorSolutionBinary(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorSolutionBinary,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorSolutionBinary(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorSolutionBinary,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorSolutionVTK(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorSolutionVTK,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorSolutionVTK(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorSolutionVTK,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -15877,383 +15877,383 @@ function TSMonitorSolutionVTKDestroy(arg0::Type{Float64},arg1::Union{Ptr{Void},S
     return err
 end
 
-function TSStep(arg0::Type{Float64},arg1::TS)
-    err = ccall((:TSStep,petscRealDouble),PetscErrorCode,(TS,),arg1)
+function TSStep(arg1::TS{Float64})
+    err = ccall((:TSStep,petscRealDouble),PetscErrorCode,(TS{Float64},),arg1)
     return err
 end
 
-function TSEvaluateStep(arg1::TS,arg2::Integer,arg3::Vec{Float64},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:TSEvaluateStep,petscRealDouble),PetscErrorCode,(TS,Int64,Vec{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
+function TSEvaluateStep(arg1::TS{Float64},arg2::Integer,arg3::Vec{Float64},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+    err = ccall((:TSEvaluateStep,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Vec{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSSolve(arg1::TS,arg2::Vec{Float64})
-    err = ccall((:TSSolve,petscRealDouble),PetscErrorCode,(TS,Vec{Float64}),arg1,arg2)
+function TSSolve(arg1::TS{Float64},arg2::Vec{Float64})
+    err = ccall((:TSSolve,petscRealDouble),PetscErrorCode,(TS{Float64},Vec{Float64}),arg1,arg2)
     return err
 end
 
-function TSGetEquationType(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSEquationType},StridedArray{TSEquationType},Ptr{TSEquationType},Ref{TSEquationType}})
-    err = ccall((:TSGetEquationType,petscRealDouble),PetscErrorCode,(TS,Ptr{TSEquationType}),arg1,arg2)
+function TSGetEquationType(arg1::TS{Float64},arg2::Union{Ptr{TSEquationType},StridedArray{TSEquationType},Ptr{TSEquationType},Ref{TSEquationType}})
+    err = ccall((:TSGetEquationType,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{TSEquationType}),arg1,arg2)
     return err
 end
 
-function TSSetEquationType(arg0::Type{Float64},arg1::TS,arg2::TSEquationType)
-    err = ccall((:TSSetEquationType,petscRealDouble),PetscErrorCode,(TS,TSEquationType),arg1,arg2)
+function TSSetEquationType(arg1::TS{Float64},arg2::TSEquationType)
+    err = ccall((:TSSetEquationType,petscRealDouble),PetscErrorCode,(TS{Float64},TSEquationType),arg1,arg2)
     return err
 end
 
-function TSGetConvergedReason(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSConvergedReason},StridedArray{TSConvergedReason},Ptr{TSConvergedReason},Ref{TSConvergedReason}})
-    err = ccall((:TSGetConvergedReason,petscRealDouble),PetscErrorCode,(TS,Ptr{TSConvergedReason}),arg1,arg2)
+function TSGetConvergedReason(arg1::TS{Float64},arg2::Union{Ptr{TSConvergedReason},StridedArray{TSConvergedReason},Ptr{TSConvergedReason},Ref{TSConvergedReason}})
+    err = ccall((:TSGetConvergedReason,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{TSConvergedReason}),arg1,arg2)
     return err
 end
 
-function TSSetConvergedReason(arg0::Type{Float64},arg1::TS,arg2::TSConvergedReason)
-    err = ccall((:TSSetConvergedReason,petscRealDouble),PetscErrorCode,(TS,TSConvergedReason),arg1,arg2)
+function TSSetConvergedReason(arg1::TS{Float64},arg2::TSConvergedReason)
+    err = ccall((:TSSetConvergedReason,petscRealDouble),PetscErrorCode,(TS{Float64},TSConvergedReason),arg1,arg2)
     return err
 end
 
-function TSGetSolveTime(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSGetSolveTime,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSGetSolveTime(arg1::TS{Float64},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSGetSolveTime,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSGetSNESIterations(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSGetSNESIterations,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSGetSNESIterations(arg1::TS{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSGetSNESIterations,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Int64}),arg1,arg2)
     return err
 end
 
-function TSGetKSPIterations(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSGetKSPIterations,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSGetKSPIterations(arg1::TS{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSGetKSPIterations,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Int64}),arg1,arg2)
     return err
 end
 
-function TSGetStepRejections(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSGetStepRejections,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSGetStepRejections(arg1::TS{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSGetStepRejections,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Int64}),arg1,arg2)
     return err
 end
 
-function TSSetMaxStepRejections(arg0::Type{Float64},arg1::TS,arg2::Integer)
-    err = ccall((:TSSetMaxStepRejections,petscRealDouble),PetscErrorCode,(TS,Int64),arg1,arg2)
+function TSSetMaxStepRejections(arg1::TS{Float64},arg2::Integer)
+    err = ccall((:TSSetMaxStepRejections,petscRealDouble),PetscErrorCode,(TS{Float64},Int64),arg1,arg2)
     return err
 end
 
-function TSGetSNESFailures(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSGetSNESFailures,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSGetSNESFailures(arg1::TS{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSGetSNESFailures,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Int64}),arg1,arg2)
     return err
 end
 
-function TSSetMaxSNESFailures(arg0::Type{Float64},arg1::TS,arg2::Integer)
-    err = ccall((:TSSetMaxSNESFailures,petscRealDouble),PetscErrorCode,(TS,Int64),arg1,arg2)
+function TSSetMaxSNESFailures(arg1::TS{Float64},arg2::Integer)
+    err = ccall((:TSSetMaxSNESFailures,petscRealDouble),PetscErrorCode,(TS{Float64},Int64),arg1,arg2)
     return err
 end
 
-function TSSetErrorIfStepFails(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSSetErrorIfStepFails,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSSetErrorIfStepFails(arg1::TS{Float64},arg2::PetscBool)
+    err = ccall((:TSSetErrorIfStepFails,petscRealDouble),PetscErrorCode,(TS{Float64},PetscBool),arg1,arg2)
     return err
 end
 
-function TSRollBack(arg0::Type{Float64},arg1::TS)
-    err = ccall((:TSRollBack,petscRealDouble),PetscErrorCode,(TS,),arg1)
+function TSRollBack(arg1::TS{Float64})
+    err = ccall((:TSRollBack,petscRealDouble),PetscErrorCode,(TS{Float64},),arg1)
     return err
 end
 
-function TSGetTotalSteps(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSGetTotalSteps,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSGetTotalSteps(arg1::TS{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSGetTotalSteps,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Int64}),arg1,arg2)
     return err
 end
 
-function TSGetStages(arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}})
-    err = ccall((:TSGetStages,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64},Ptr{Ptr{Vec{Float64}}}),arg1,arg2,arg3)
+function TSGetStages(arg1::TS{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}})
+    err = ccall((:TSGetStages,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Int64},Ptr{Ptr{Vec{Float64}}}),arg1,arg2,arg3)
     return err
 end
 
-function TSSetInitialTimeStep(arg0::Type{Float64},arg1::TS,arg2::Float64,arg3::Float64)
-    err = ccall((:TSSetInitialTimeStep,petscRealDouble),PetscErrorCode,(TS,Float64,Float64),arg1,arg2,arg3)
+function TSSetInitialTimeStep(arg1::TS{Float64},arg2::Float64,arg3::Float64)
+    err = ccall((:TSSetInitialTimeStep,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Float64),arg1,arg2,arg3)
     return err
 end
 
-function TSGetTimeStep(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSGetTimeStep,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSGetTimeStep(arg1::TS{Float64},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSGetTimeStep,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSGetTime(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSGetTime,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSGetTime(arg1::TS{Float64},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSGetTime,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSSetTime(arg0::Type{Float64},arg1::TS,arg2::Float64)
-    err = ccall((:TSSetTime,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSSetTime(arg1::TS{Float64},arg2::Float64)
+    err = ccall((:TSSetTime,petscRealDouble),PetscErrorCode,(TS{Float64},Float64),arg1,arg2)
     return err
 end
 
-function TSGetTimeStepNumber(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSGetTimeStepNumber,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSGetTimeStepNumber(arg1::TS{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSGetTimeStepNumber,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Int64}),arg1,arg2)
     return err
 end
 
-function TSSetTimeStep(arg0::Type{Float64},arg1::TS,arg2::Float64)
-    err = ccall((:TSSetTimeStep,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSSetTimeStep(arg1::TS{Float64},arg2::Float64)
+    err = ccall((:TSSetTimeStep,petscRealDouble),PetscErrorCode,(TS{Float64},Float64),arg1,arg2)
     return err
 end
 
-function TSGetPrevTime(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSGetPrevTime,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSGetPrevTime(arg1::TS{Float64},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSGetPrevTime,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSSetRHSFunction(arg1::TS,arg2::Vec{Float64},arg3::TSRHSFunction,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetRHSFunction,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},TSRHSFunction,Ptr{Void}),arg1,arg2,arg3,arg4)
+function TSSetRHSFunction(arg1::TS{Float64},arg2::Vec{Float64},arg3::TSRHSFunction,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetRHSFunction,petscRealDouble),PetscErrorCode,(TS{Float64},Vec{Float64},TSRHSFunction,Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSGetRHSFunction(arg1::TS,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{TSRHSFunction},StridedArray{TSRHSFunction},Ptr{TSRHSFunction},Ref{TSRHSFunction}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
-    err = ccall((:TSGetRHSFunction,petscRealDouble),PetscErrorCode,(TS,Ptr{Vec{Float64}},Ptr{TSRHSFunction},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
+function TSGetRHSFunction(arg1::TS{Float64},arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{TSRHSFunction},StridedArray{TSRHSFunction},Ptr{TSRHSFunction},Ref{TSRHSFunction}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+    err = ccall((:TSGetRHSFunction,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Vec{Float64}},Ptr{TSRHSFunction},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSSetRHSJacobian(arg1::TS,arg2::Mat{Float64},arg3::Mat{Float64},arg4::TSRHSJacobian,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetRHSJacobian,petscRealDouble),PetscErrorCode,(TS,Mat{Float64},Mat{Float64},TSRHSJacobian,Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSSetRHSJacobian(arg1::TS{Float64},arg2::Mat{Float64},arg3::Mat{Float64},arg4::TSRHSJacobian,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetRHSJacobian,petscRealDouble),PetscErrorCode,(TS{Float64},Mat{Float64},Mat{Float64},TSRHSJacobian,Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSGetRHSJacobian(arg1::TS,arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg4::Union{Ptr{TSRHSJacobian},StridedArray{TSRHSJacobian},Ptr{TSRHSJacobian},Ref{TSRHSJacobian}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
-    err = ccall((:TSGetRHSJacobian,petscRealDouble),PetscErrorCode,(TS,Ptr{Mat{Float64}},Ptr{Mat{Float64}},Ptr{TSRHSJacobian},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5)
+function TSGetRHSJacobian(arg1::TS{Float64},arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg4::Union{Ptr{TSRHSJacobian},StridedArray{TSRHSJacobian},Ptr{TSRHSJacobian},Ref{TSRHSJacobian}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+    err = ccall((:TSGetRHSJacobian,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Mat{Float64}},Ptr{Mat{Float64}},Ptr{TSRHSJacobian},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSRHSJacobianSetReuse(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSRHSJacobianSetReuse,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSRHSJacobianSetReuse(arg1::TS{Float64},arg2::PetscBool)
+    err = ccall((:TSRHSJacobianSetReuse,petscRealDouble),PetscErrorCode,(TS{Float64},PetscBool),arg1,arg2)
     return err
 end
 
-function TSSetSolutionFunction(arg0::Type{Float64},arg1::TS,arg2::TSSolutionFunction,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetSolutionFunction,petscRealDouble),PetscErrorCode,(TS,TSSolutionFunction,Ptr{Void}),arg1,arg2,arg3)
+function TSSetSolutionFunction(arg1::TS{Float64},arg2::TSSolutionFunction,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetSolutionFunction,petscRealDouble),PetscErrorCode,(TS{Float64},TSSolutionFunction,Ptr{Void}),arg1,arg2,arg3)
     return err
 end
 
-function TSSetForcingFunction(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetForcingFunction,petscRealDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+function TSSetForcingFunction(arg1::TS{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetForcingFunction,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
     return err
 end
 
-function TSSetIFunction(arg1::TS,arg2::Vec{Float64},arg3::TSIFunction,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetIFunction,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},TSIFunction,Ptr{Void}),arg1,arg2,arg3,arg4)
+function TSSetIFunction(arg1::TS{Float64},arg2::Vec{Float64},arg3::TSIFunction,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetIFunction,petscRealDouble),PetscErrorCode,(TS{Float64},Vec{Float64},TSIFunction,Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSGetIFunction(arg1::TS,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{TSIFunction},StridedArray{TSIFunction},Ptr{TSIFunction},Ref{TSIFunction}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
-    err = ccall((:TSGetIFunction,petscRealDouble),PetscErrorCode,(TS,Ptr{Vec{Float64}},Ptr{TSIFunction},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
+function TSGetIFunction(arg1::TS{Float64},arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{TSIFunction},StridedArray{TSIFunction},Ptr{TSIFunction},Ref{TSIFunction}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+    err = ccall((:TSGetIFunction,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Vec{Float64}},Ptr{TSIFunction},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSSetIJacobian(arg1::TS,arg2::Mat{Float64},arg3::Mat{Float64},arg4::TSIJacobian,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetIJacobian,petscRealDouble),PetscErrorCode,(TS,Mat{Float64},Mat{Float64},TSIJacobian,Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSSetIJacobian(arg1::TS{Float64},arg2::Mat{Float64},arg3::Mat{Float64},arg4::TSIJacobian,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetIJacobian,petscRealDouble),PetscErrorCode,(TS{Float64},Mat{Float64},Mat{Float64},TSIJacobian,Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSGetIJacobian(arg1::TS,arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg4::Union{Ptr{TSIJacobian},StridedArray{TSIJacobian},Ptr{TSIJacobian},Ref{TSIJacobian}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
-    err = ccall((:TSGetIJacobian,petscRealDouble),PetscErrorCode,(TS,Ptr{Mat{Float64}},Ptr{Mat{Float64}},Ptr{TSIJacobian},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5)
+function TSGetIJacobian(arg1::TS{Float64},arg2::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg3::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}},arg4::Union{Ptr{TSIJacobian},StridedArray{TSIJacobian},Ptr{TSIJacobian},Ref{TSIJacobian}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+    err = ccall((:TSGetIJacobian,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Mat{Float64}},Ptr{Mat{Float64}},Ptr{TSIJacobian},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSComputeRHSFunctionLinear(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSComputeRHSFunctionLinear,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSComputeRHSFunctionLinear(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSComputeRHSFunctionLinear,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSComputeRHSJacobianConstant(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Mat{Float64},arg5::Mat{Float64},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSComputeRHSJacobianConstant,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
+function TSComputeRHSJacobianConstant(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Mat{Float64},arg5::Mat{Float64},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSComputeRHSJacobianConstant,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function TSComputeIFunctionLinear(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Vec{Float64},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSComputeIFunctionLinear,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
+function TSComputeIFunctionLinear(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Vec{Float64},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSComputeIFunctionLinear,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Vec{Float64},Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function TSComputeIJacobianConstant(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Float64,arg6::Mat{Float64},arg7::Mat{Float64},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSComputeIJacobianConstant,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Float64,Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function TSComputeIJacobianConstant(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Float64,arg6::Mat{Float64},arg7::Mat{Float64},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSComputeIJacobianConstant,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Vec{Float64},Float64,Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function TSComputeSolutionFunction(arg1::TS,arg2::Float64,arg3::Vec{Float64})
-    err = ccall((:TSComputeSolutionFunction,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64}),arg1,arg2,arg3)
+function TSComputeSolutionFunction(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64})
+    err = ccall((:TSComputeSolutionFunction,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64}),arg1,arg2,arg3)
     return err
 end
 
-function TSComputeForcingFunction(arg1::TS,arg2::Float64,arg3::Vec{Float64})
-    err = ccall((:TSComputeForcingFunction,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64}),arg1,arg2,arg3)
+function TSComputeForcingFunction(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64})
+    err = ccall((:TSComputeForcingFunction,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64}),arg1,arg2,arg3)
     return err
 end
 
-function TSComputeIJacobianDefaultColor(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Float64,arg6::Mat{Float64},arg7::Mat{Float64},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSComputeIJacobianDefaultColor,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Float64,Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function TSComputeIJacobianDefaultColor(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Float64,arg6::Mat{Float64},arg7::Mat{Float64},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSComputeIJacobianDefaultColor,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Vec{Float64},Float64,Mat{Float64},Mat{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function TSSetPreStep(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetPreStep,petscRealDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
+function TSSetPreStep(arg1::TS{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetPreStep,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Void}),arg1,arg2)
     return err
 end
 
-function TSSetPreStage(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetPreStage,petscRealDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
+function TSSetPreStage(arg1::TS{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetPreStage,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Void}),arg1,arg2)
     return err
 end
 
-function TSSetPostStage(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetPostStage,petscRealDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
+function TSSetPostStage(arg1::TS{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetPostStage,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Void}),arg1,arg2)
     return err
 end
 
-function TSSetPostStep(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetPostStep,petscRealDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
+function TSSetPostStep(arg1::TS{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetPostStep,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Void}),arg1,arg2)
     return err
 end
 
-function TSPreStep(arg0::Type{Float64},arg1::TS)
-    err = ccall((:TSPreStep,petscRealDouble),PetscErrorCode,(TS,),arg1)
+function TSPreStep(arg1::TS{Float64})
+    err = ccall((:TSPreStep,petscRealDouble),PetscErrorCode,(TS{Float64},),arg1)
     return err
 end
 
-function TSPreStage(arg0::Type{Float64},arg1::TS,arg2::Float64)
-    err = ccall((:TSPreStage,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSPreStage(arg1::TS{Float64},arg2::Float64)
+    err = ccall((:TSPreStage,petscRealDouble),PetscErrorCode,(TS{Float64},Float64),arg1,arg2)
     return err
 end
 
-function TSPostStage(arg1::TS,arg2::Float64,arg3::Integer,arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:TSPostStage,petscRealDouble),PetscErrorCode,(TS,Float64,Int64,Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
+function TSPostStage(arg1::TS{Float64},arg2::Float64,arg3::Integer,arg4::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
+    err = ccall((:TSPostStage,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Int64,Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSPostStep(arg0::Type{Float64},arg1::TS)
-    err = ccall((:TSPostStep,petscRealDouble),PetscErrorCode,(TS,),arg1)
+function TSPostStep(arg1::TS{Float64})
+    err = ccall((:TSPostStep,petscRealDouble),PetscErrorCode,(TS{Float64},),arg1)
     return err
 end
 
-function TSSetRetainStages(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSSetRetainStages,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSSetRetainStages(arg1::TS{Float64},arg2::PetscBool)
+    err = ccall((:TSSetRetainStages,petscRealDouble),PetscErrorCode,(TS{Float64},PetscBool),arg1,arg2)
     return err
 end
 
-function TSInterpolate(arg1::TS,arg2::Float64,arg3::Vec{Float64})
-    err = ccall((:TSInterpolate,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64}),arg1,arg2,arg3)
+function TSInterpolate(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64})
+    err = ccall((:TSInterpolate,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64}),arg1,arg2,arg3)
     return err
 end
 
-function TSSetTolerances(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Float64,arg5::Vec{Float64})
-    err = ccall((:TSSetTolerances,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Float64,Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
+function TSSetTolerances(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Float64,arg5::Vec{Float64})
+    err = ccall((:TSSetTolerances,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Float64,Vec{Float64}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSGetTolerances(arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:TSGetTolerances,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64},Ptr{Vec{Float64}},Ptr{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4,arg5)
+function TSGetTolerances(arg1::TS{Float64},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
+    err = ccall((:TSGetTolerances,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Float64},Ptr{Vec{Float64}},Ptr{Float64},Ptr{Vec{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSErrorWeightedNormInfinity(arg1::TS,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSErrorWeightedNormInfinity,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Vec{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
+function TSErrorWeightedNormInfinity(arg1::TS{Float64},arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSErrorWeightedNormInfinity,petscRealDouble),PetscErrorCode,(TS{Float64},Vec{Float64},Vec{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSErrorWeightedNorm2(arg1::TS,arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSErrorWeightedNorm2,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Vec{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
+function TSErrorWeightedNorm2(arg1::TS{Float64},arg2::Vec{Float64},arg3::Vec{Float64},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSErrorWeightedNorm2,petscRealDouble),PetscErrorCode,(TS{Float64},Vec{Float64},Vec{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSErrorWeightedNorm(arg1::TS,arg2::Vec{Float64},arg3::Vec{Float64},arg4::NormType,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSErrorWeightedNorm,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Vec{Float64},NormType,Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
+function TSErrorWeightedNorm(arg1::TS{Float64},arg2::Vec{Float64},arg3::Vec{Float64},arg4::NormType,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSErrorWeightedNorm,petscRealDouble),PetscErrorCode,(TS{Float64},Vec{Float64},Vec{Float64},NormType,Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSSetCFLTimeLocal(arg0::Type{Float64},arg1::TS,arg2::Float64)
-    err = ccall((:TSSetCFLTimeLocal,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSSetCFLTimeLocal(arg1::TS{Float64},arg2::Float64)
+    err = ccall((:TSSetCFLTimeLocal,petscRealDouble),PetscErrorCode,(TS{Float64},Float64),arg1,arg2)
     return err
 end
 
-function TSGetCFLTime(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSGetCFLTime,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSGetCFLTime(arg1::TS{Float64},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSGetCFLTime,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSPseudoSetTimeStep(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSPseudoSetTimeStep,petscRealDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+function TSPseudoSetTimeStep(arg1::TS{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSPseudoSetTimeStep,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
     return err
 end
 
-function TSPseudoTimeStepDefault(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSPseudoTimeStepDefault,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64},Ptr{Void}),arg1,arg2,arg3)
+function TSPseudoTimeStepDefault(arg1::TS{Float64},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSPseudoTimeStepDefault,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Float64},Ptr{Void}),arg1,arg2,arg3)
     return err
 end
 
-function TSPseudoComputeTimeStep(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSPseudoComputeTimeStep,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSPseudoComputeTimeStep(arg1::TS{Float64},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSPseudoComputeTimeStep,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSPseudoSetMaxTimeStep(arg0::Type{Float64},arg1::TS,arg2::Float64)
-    err = ccall((:TSPseudoSetMaxTimeStep,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSPseudoSetMaxTimeStep(arg1::TS{Float64},arg2::Float64)
+    err = ccall((:TSPseudoSetMaxTimeStep,petscRealDouble),PetscErrorCode,(TS{Float64},Float64),arg1,arg2)
     return err
 end
 
-function TSPseudoSetVerifyTimeStep(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSPseudoSetVerifyTimeStep,petscRealDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+function TSPseudoSetVerifyTimeStep(arg1::TS{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSPseudoSetVerifyTimeStep,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
     return err
 end
 
-function TSPseudoVerifyTimeStepDefault(arg1::TS,arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:TSPseudoVerifyTimeStepDefault,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Ptr{Void},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
+function TSPseudoVerifyTimeStepDefault(arg1::TS{Float64},arg2::Vec{Float64},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+    err = ccall((:TSPseudoVerifyTimeStepDefault,petscRealDouble),PetscErrorCode,(TS{Float64},Vec{Float64},Ptr{Void},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSPseudoVerifyTimeStep(arg1::TS,arg2::Vec{Float64},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:TSPseudoVerifyTimeStep,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
+function TSPseudoVerifyTimeStep(arg1::TS{Float64},arg2::Vec{Float64},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+    err = ccall((:TSPseudoVerifyTimeStep,petscRealDouble),PetscErrorCode,(TS{Float64},Vec{Float64},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSPseudoSetTimeStepIncrement(arg0::Type{Float64},arg1::TS,arg2::Float64)
-    err = ccall((:TSPseudoSetTimeStepIncrement,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSPseudoSetTimeStepIncrement(arg1::TS{Float64},arg2::Float64)
+    err = ccall((:TSPseudoSetTimeStepIncrement,petscRealDouble),PetscErrorCode,(TS{Float64},Float64),arg1,arg2)
     return err
 end
 
-function TSPseudoIncrementDtFromInitialDt(arg0::Type{Float64},arg1::TS)
-    err = ccall((:TSPseudoIncrementDtFromInitialDt,petscRealDouble),PetscErrorCode,(TS,),arg1)
+function TSPseudoIncrementDtFromInitialDt(arg1::TS{Float64})
+    err = ccall((:TSPseudoIncrementDtFromInitialDt,petscRealDouble),PetscErrorCode,(TS{Float64},),arg1)
     return err
 end
 
-function TSPythonSetType(arg0::Type{Float64},arg1::TS,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
-    err = ccall((:TSPythonSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSPythonSetType(arg1::TS{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+    err = ccall((:TSPythonSetType,petscRealDouble),PetscErrorCode,(TS{Float64},Cstring),arg1,arg2)
     return err
 end
 
-function TSComputeRHSFunction(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64})
-    err = ccall((:TSComputeRHSFunction,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4)
+function TSComputeRHSFunction(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64})
+    err = ccall((:TSComputeRHSFunction,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSComputeRHSJacobian(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Mat{Float64},arg5::Mat{Float64})
-    err = ccall((:TSComputeRHSJacobian,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Mat{Float64},Mat{Float64}),arg1,arg2,arg3,arg4,arg5)
+function TSComputeRHSJacobian(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Mat{Float64},arg5::Mat{Float64})
+    err = ccall((:TSComputeRHSJacobian,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Mat{Float64},Mat{Float64}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSComputeIFunction(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Vec{Float64},arg6::PetscBool)
-    err = ccall((:TSComputeIFunction,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Vec{Float64},PetscBool),arg1,arg2,arg3,arg4,arg5,arg6)
+function TSComputeIFunction(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Vec{Float64},arg6::PetscBool)
+    err = ccall((:TSComputeIFunction,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Vec{Float64},Vec{Float64},PetscBool),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function TSComputeIJacobian(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Float64,arg6::Mat{Float64},arg7::Mat{Float64},arg8::PetscBool)
-    err = ccall((:TSComputeIJacobian,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Float64,Mat{Float64},Mat{Float64},PetscBool),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function TSComputeIJacobian(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Float64,arg6::Mat{Float64},arg7::Mat{Float64},arg8::PetscBool)
+    err = ccall((:TSComputeIJacobian,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Vec{Float64},Float64,Mat{Float64},Mat{Float64},PetscBool),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function TSComputeLinearStability(arg0::Type{Float64},arg1::TS,arg2::Float64,arg3::Float64,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSComputeLinearStability,petscRealDouble),PetscErrorCode,(TS,Float64,Float64,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
+function TSComputeLinearStability(arg1::TS{Float64},arg2::Float64,arg3::Float64,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSComputeLinearStability,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Float64,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSVISetVariableBounds(arg1::TS,arg2::Vec{Float64},arg3::Vec{Float64})
-    err = ccall((:TSVISetVariableBounds,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
+function TSVISetVariableBounds(arg1::TS{Float64},arg2::Vec{Float64},arg3::Vec{Float64})
+    err = ccall((:TSVISetVariableBounds,petscRealDouble),PetscErrorCode,(TS{Float64},Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
     return err
 end
 
@@ -16327,8 +16327,8 @@ function DMTSSetMinRadius(arg0::Type{Float64},arg1::DM,arg2::Float64)
     return err
 end
 
-function DMTSCheckFromOptions(arg1::TS,arg2::Vec{Float64},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
-    err = ccall((:DMTSCheckFromOptions,petscRealDouble),PetscErrorCode,(TS,Vec{Float64},Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
+function DMTSCheckFromOptions(arg1::TS{Float64},arg2::Vec{Float64},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+    err = ccall((:DMTSCheckFromOptions,petscRealDouble),PetscErrorCode,(TS{Float64},Vec{Float64},Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -16387,25 +16387,25 @@ function TSMonitorDMDARayDestroy(arg0::Type{Float64},arg1::Union{Ptr{Ptr{Void}},
     return err
 end
 
-function TSMonitorDMDARay(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorDMDARay,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorDMDARay(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorDMDARay,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorLGDMDARay(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGDMDARay,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorLGDMDARay(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGDMDARay,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSGetType(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSType},StridedArray{TSType},Ptr{TSType},Ref{TSType}})
+function TSGetType(arg1::TS{Float64},arg2::Union{Ptr{TSType},StridedArray{TSType},Ptr{TSType},Ref{TSType}})
     (arg2_,tmp) = symbol_get_before(arg2)
-    err = ccall((:TSGetType,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2_)
+    err = ccall((:TSGetType,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{UInt8}}),arg1,arg2_)
     symbol_get_after(arg2_,arg2)
     return err
 end
 
-function TSSetType(arg0::Type{Float64},arg1::TS,arg2::TSType)
-    err = ccall((:TSSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSSetType(arg1::TS{Float64},arg2::TSType)
+    err = ccall((:TSSetType,petscRealDouble),PetscErrorCode,(TS{Float64},Cstring),arg1,arg2)
     return err
 end
 
@@ -16414,43 +16414,43 @@ function TSRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Ar
     return err
 end
 
-function TSGetSNES(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
-    err = ccall((:TSGetSNES,petscRealDouble),PetscErrorCode,(TS,Ptr{SNES}),arg1,arg2)
+function TSGetSNES(arg1::TS{Float64},arg2::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
+    err = ccall((:TSGetSNES,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{SNES}),arg1,arg2)
     return err
 end
 
-function TSSetSNES(arg0::Type{Float64},arg1::TS,arg2::SNES)
-    err = ccall((:TSSetSNES,petscRealDouble),PetscErrorCode,(TS,SNES),arg1,arg2)
+function TSSetSNES(arg1::TS{Float64},arg2::SNES)
+    err = ccall((:TSSetSNES,petscRealDouble),PetscErrorCode,(TS{Float64},SNES),arg1,arg2)
     return err
 end
 
-function TSGetKSP(arg1::TS,arg2::Union{Ptr{KSP{Float64}},StridedArray{KSP{Float64}},Ptr{KSP{Float64}},Ref{KSP{Float64}}})
-    err = ccall((:TSGetKSP,petscRealDouble),PetscErrorCode,(TS,Ptr{KSP{Float64}}),arg1,arg2)
+function TSGetKSP(arg1::TS{Float64},arg2::Union{Ptr{KSP{Float64}},StridedArray{KSP{Float64}},Ptr{KSP{Float64}},Ref{KSP{Float64}}})
+    err = ccall((:TSGetKSP,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{KSP{Float64}}),arg1,arg2)
     return err
 end
 
-function TSView(arg1::TS,arg2::PetscViewer{Float64})
-    err = ccall((:TSView,petscRealDouble),PetscErrorCode,(TS,PetscViewer{Float64}),arg1,arg2)
+function TSView(arg1::TS{Float64},arg2::PetscViewer{Float64})
+    err = ccall((:TSView,petscRealDouble),PetscErrorCode,(TS{Float64},PetscViewer{Float64}),arg1,arg2)
     return err
 end
 
-function TSLoad(arg1::TS,arg2::PetscViewer{Float64})
-    err = ccall((:TSLoad,petscRealDouble),PetscErrorCode,(TS,PetscViewer{Float64}),arg1,arg2)
+function TSLoad(arg1::TS{Float64},arg2::PetscViewer{Float64})
+    err = ccall((:TSLoad,petscRealDouble),PetscErrorCode,(TS{Float64},PetscViewer{Float64}),arg1,arg2)
     return err
 end
 
-function TSViewFromOptions(arg0::Type{Float64},A::TS,obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
-    err = ccall((:TSViewFromOptions,petscRealDouble),PetscErrorCode,(TS,PetscObject,Cstring),A,obj,name)
+function TSViewFromOptions(A::TS{Float64},obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+    err = ccall((:TSViewFromOptions,petscRealDouble),PetscErrorCode,(TS{Float64},PetscObject,Cstring),A,obj,name)
     return err
 end
 
-function TSSetApplicationContext(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetApplicationContext,petscRealDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
+function TSSetApplicationContext(arg1::TS{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetApplicationContext,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Void}),arg1,arg2)
     return err
 end
 
-function TSGetApplicationContext(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSGetApplicationContext,petscRealDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
+function TSGetApplicationContext(arg1::TS{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSGetApplicationContext,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Void}),arg1,arg2)
     return err
 end
 
@@ -16464,23 +16464,23 @@ function TSMonitorLGCtxDestroy(arg0::Type{Float64},arg1::Union{Ptr{TSMonitorLGCt
     return err
 end
 
-function TSMonitorLGTimeStep(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGTimeStep,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorLGTimeStep(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGTimeStep,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorLGSolution(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGSolution,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorLGSolution(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGSolution,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorLGSetVariableNames(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
-    err = ccall((:TSMonitorLGSetVariableNames,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2)
+function TSMonitorLGSetVariableNames(arg1::TS{Float64},arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
+    err = ccall((:TSMonitorLGSetVariableNames,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{UInt8}}),arg1,arg2)
     return err
 end
 
-function TSMonitorLGGetVariableNames(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}})
-    err = ccall((:TSMonitorLGGetVariableNames,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{Ptr{UInt8}}}),arg1,arg2)
+function TSMonitorLGGetVariableNames(arg1::TS{Float64},arg2::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}})
+    err = ccall((:TSMonitorLGGetVariableNames,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{Ptr{UInt8}}}),arg1,arg2)
     return err
 end
 
@@ -16489,8 +16489,8 @@ function TSMonitorLGCtxSetVariableNames(arg0::Type{Float64},arg1::TSMonitorLGCtx
     return err
 end
 
-function TSMonitorLGSetDisplayVariables(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
-    err = ccall((:TSMonitorLGSetDisplayVariables,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2)
+function TSMonitorLGSetDisplayVariables(arg1::TS{Float64},arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
+    err = ccall((:TSMonitorLGSetDisplayVariables,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{UInt8}}),arg1,arg2)
     return err
 end
 
@@ -16499,8 +16499,8 @@ function TSMonitorLGCtxSetDisplayVariables(arg0::Type{Float64},arg1::TSMonitorLG
     return err
 end
 
-function TSMonitorLGSetTransform(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGSetTransform,petscRealDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
+function TSMonitorLGSetTransform(arg1::TS{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGSetTransform,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -16509,33 +16509,33 @@ function TSMonitorLGCtxSetTransform(arg0::Type{Float64},arg1::TSMonitorLGCtx,arg
     return err
 end
 
-function TSMonitorLGError(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGError,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorLGError(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGError,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorLGSNESIterations(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGSNESIterations,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorLGSNESIterations(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGSNESIterations,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorLGKSPIterations(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGKSPIterations,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorLGKSPIterations(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGKSPIterations,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorEnvelopeCtxCreate(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSMonitorEnvelopeCtx},StridedArray{TSMonitorEnvelopeCtx},Ptr{TSMonitorEnvelopeCtx},Ref{TSMonitorEnvelopeCtx}})
-    err = ccall((:TSMonitorEnvelopeCtxCreate,petscRealDouble),PetscErrorCode,(TS,Ptr{TSMonitorEnvelopeCtx}),arg1,arg2)
+function TSMonitorEnvelopeCtxCreate(arg1::TS{Float64},arg2::Union{Ptr{TSMonitorEnvelopeCtx},StridedArray{TSMonitorEnvelopeCtx},Ptr{TSMonitorEnvelopeCtx},Ref{TSMonitorEnvelopeCtx}})
+    err = ccall((:TSMonitorEnvelopeCtxCreate,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{TSMonitorEnvelopeCtx}),arg1,arg2)
     return err
 end
 
-function TSMonitorEnvelope(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorEnvelope,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorEnvelope(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorEnvelope,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorEnvelopeGetBounds(arg1::TS,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
-    err = ccall((:TSMonitorEnvelopeGetBounds,petscRealDouble),PetscErrorCode,(TS,Ptr{Vec{Float64}},Ptr{Vec{Float64}}),arg1,arg2,arg3)
+function TSMonitorEnvelopeGetBounds(arg1::TS{Float64},arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
+    err = ccall((:TSMonitorEnvelopeGetBounds,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Vec{Float64}},Ptr{Vec{Float64}}),arg1,arg2,arg3)
     return err
 end
 
@@ -16554,40 +16554,40 @@ function TSMonitorSPEigCtxDestroy(arg0::Type{Float64},arg1::Union{Ptr{TSMonitorS
     return err
 end
 
-function TSMonitorSPEig(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorSPEig,petscRealDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorSPEig(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Vec{Float64},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorSPEig,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Float64,Vec{Float64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSSetEventMonitor(arg0::Type{Float64},arg1::TS,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetEventMonitor,petscRealDouble),PetscErrorCode,(TS,Int64,Ptr{Int64},Ptr{PetscBool},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function TSSetEventMonitor(arg1::TS{Float64},arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetEventMonitor,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Ptr{Int64},Ptr{PetscBool},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
-function TSSetEventTolerances(arg0::Type{Float64},arg1::TS,arg2::Float64,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSSetEventTolerances,petscRealDouble),PetscErrorCode,(TS,Float64,Ptr{Float64}),arg1,arg2,arg3)
+function TSSetEventTolerances(arg1::TS{Float64},arg2::Float64,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSSetEventTolerances,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Ptr{Float64}),arg1,arg2,arg3)
     return err
 end
 
-function TSSSPSetType(arg0::Type{Float64},arg1::TS,arg2::TSSSPType)
-    err = ccall((:TSSSPSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSSSPSetType(arg1::TS{Float64},arg2::TSSSPType)
+    err = ccall((:TSSSPSetType,petscRealDouble),PetscErrorCode,(TS{Float64},Cstring),arg1,arg2)
     return err
 end
 
-function TSSSPGetType(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSSSPType},StridedArray{TSSSPType},Ptr{TSSSPType},Ref{TSSSPType}})
+function TSSSPGetType(arg1::TS{Float64},arg2::Union{Ptr{TSSSPType},StridedArray{TSSSPType},Ptr{TSSSPType},Ref{TSSSPType}})
     (arg2_,tmp) = symbol_get_before(arg2)
-    err = ccall((:TSSSPGetType,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2_)
+    err = ccall((:TSSSPGetType,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{UInt8}}),arg1,arg2_)
     symbol_get_after(arg2_,arg2)
     return err
 end
 
-function TSSSPSetNumStages(arg0::Type{Float64},arg1::TS,arg2::Integer)
-    err = ccall((:TSSSPSetNumStages,petscRealDouble),PetscErrorCode,(TS,Int64),arg1,arg2)
+function TSSSPSetNumStages(arg1::TS{Float64},arg2::Integer)
+    err = ccall((:TSSSPSetNumStages,petscRealDouble),PetscErrorCode,(TS{Float64},Int64),arg1,arg2)
     return err
 end
 
-function TSSSPGetNumStages(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSSSPGetNumStages,petscRealDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSSSPGetNumStages(arg1::TS{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSSSPGetNumStages,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Int64}),arg1,arg2)
     return err
 end
 
@@ -16601,8 +16601,8 @@ function TSSSPInitializePackage(arg0::Type{Float64})
     return err
 end
 
-function TSGetAdapt(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSAdapt},StridedArray{TSAdapt},Ptr{TSAdapt},Ref{TSAdapt}})
-    err = ccall((:TSGetAdapt,petscRealDouble),PetscErrorCode,(TS,Ptr{TSAdapt}),arg1,arg2)
+function TSGetAdapt(arg1::TS{Float64},arg2::Union{Ptr{TSAdapt},StridedArray{TSAdapt},Ptr{TSAdapt},Ref{TSAdapt}})
+    err = ccall((:TSGetAdapt,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{TSAdapt}),arg1,arg2)
     return err
 end
 
@@ -16651,13 +16651,13 @@ function TSAdaptCandidatesGet(arg0::Type{Float64},arg1::TSAdapt,arg2::Union{Ptr{
     return err
 end
 
-function TSAdaptChoose(arg0::Type{Float64},arg1::TSAdapt,arg2::TS,arg3::Float64,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:TSAdaptChoose,petscRealDouble),PetscErrorCode,(TSAdapt,TS,Float64,Ptr{Int64},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
+function TSAdaptChoose(arg1::TSAdapt,arg2::TS{Float64},arg3::Float64,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+    err = ccall((:TSAdaptChoose,petscRealDouble),PetscErrorCode,(TSAdapt,TS{Float64},Float64,Ptr{Int64},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function TSAdaptCheckStage(arg0::Type{Float64},arg1::TSAdapt,arg2::TS,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:TSAdaptCheckStage,petscRealDouble),PetscErrorCode,(TSAdapt,TS,Ptr{PetscBool}),arg1,arg2,arg3)
+function TSAdaptCheckStage(arg1::TSAdapt,arg2::TS{Float64},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+    err = ccall((:TSAdaptCheckStage,petscRealDouble),PetscErrorCode,(TSAdapt,TS{Float64},Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
 
@@ -16771,50 +16771,50 @@ function TSGLFinalizePackage(arg0::Type{Float64})
     return err
 end
 
-function TSGLSetType(arg0::Type{Float64},arg1::TS,arg2::TSGLType)
-    err = ccall((:TSGLSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSGLSetType(arg1::TS{Float64},arg2::TSGLType)
+    err = ccall((:TSGLSetType,petscRealDouble),PetscErrorCode,(TS{Float64},Cstring),arg1,arg2)
     return err
 end
 
-function TSGLGetAdapt(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{TSGLAdapt},StridedArray{TSGLAdapt},Ptr{TSGLAdapt},Ref{TSGLAdapt}})
-    err = ccall((:TSGLGetAdapt,petscRealDouble),PetscErrorCode,(TS,Ptr{TSGLAdapt}),arg1,arg2)
+function TSGLGetAdapt(arg1::TS{Float64},arg2::Union{Ptr{TSGLAdapt},StridedArray{TSGLAdapt},Ptr{TSGLAdapt},Ref{TSGLAdapt}})
+    err = ccall((:TSGLGetAdapt,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{TSGLAdapt}),arg1,arg2)
     return err
 end
 
-function TSGLSetAcceptType(arg0::Type{Float64},arg1::TS,arg2::TSGLAcceptType)
-    err = ccall((:TSGLSetAcceptType,petscRealDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSGLSetAcceptType(arg1::TS{Float64},arg2::TSGLAcceptType)
+    err = ccall((:TSGLSetAcceptType,petscRealDouble),PetscErrorCode,(TS{Float64},Cstring),arg1,arg2)
     return err
 end
 
-function TSEIMEXSetMaxRows(arg0::Type{Float64},ts::TS,arg1::Integer)
-    err = ccall((:TSEIMEXSetMaxRows,petscRealDouble),PetscErrorCode,(TS,Int64),ts,arg1)
+function TSEIMEXSetMaxRows(ts::TS{Float64},arg1::Integer)
+    err = ccall((:TSEIMEXSetMaxRows,petscRealDouble),PetscErrorCode,(TS{Float64},Int64),ts,arg1)
     return err
 end
 
-function TSEIMEXSetRowCol(arg0::Type{Float64},ts::TS,arg1::Integer,arg2::Integer)
-    err = ccall((:TSEIMEXSetRowCol,petscRealDouble),PetscErrorCode,(TS,Int64,Int64),ts,arg1,arg2)
+function TSEIMEXSetRowCol(ts::TS{Float64},arg1::Integer,arg2::Integer)
+    err = ccall((:TSEIMEXSetRowCol,petscRealDouble),PetscErrorCode,(TS{Float64},Int64,Int64),ts,arg1,arg2)
     return err
 end
 
-function TSEIMEXSetOrdAdapt(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSEIMEXSetOrdAdapt,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSEIMEXSetOrdAdapt(arg1::TS{Float64},arg2::PetscBool)
+    err = ccall((:TSEIMEXSetOrdAdapt,petscRealDouble),PetscErrorCode,(TS{Float64},PetscBool),arg1,arg2)
     return err
 end
 
-function TSRKGetType(arg0::Type{Float64},ts::TS,arg1::Union{Ptr{TSRKType},StridedArray{TSRKType},Ptr{TSRKType},Ref{TSRKType}})
+function TSRKGetType(ts::TS{Float64},arg1::Union{Ptr{TSRKType},StridedArray{TSRKType},Ptr{TSRKType},Ref{TSRKType}})
     (arg1_,tmp) = symbol_get_before(arg1)
-    err = ccall((:TSRKGetType,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),ts,arg1_)
+    err = ccall((:TSRKGetType,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{UInt8}}),ts,arg1_)
     symbol_get_after(arg1_,arg1)
     return err
 end
 
-function TSRKSetType(arg0::Type{Float64},ts::TS,arg1::TSRKType)
-    err = ccall((:TSRKSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),ts,arg1)
+function TSRKSetType(ts::TS{Float64},arg1::TSRKType)
+    err = ccall((:TSRKSetType,petscRealDouble),PetscErrorCode,(TS{Float64},Cstring),ts,arg1)
     return err
 end
 
-function TSRKSetFullyImplicit(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSRKSetFullyImplicit,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSRKSetFullyImplicit(arg1::TS{Float64},arg2::PetscBool)
+    err = ccall((:TSRKSetFullyImplicit,petscRealDouble),PetscErrorCode,(TS{Float64},PetscBool),arg1,arg2)
     return err
 end
 
@@ -16838,20 +16838,20 @@ function TSRKRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-function TSARKIMEXGetType(arg0::Type{Float64},ts::TS,arg1::Union{Ptr{TSARKIMEXType},StridedArray{TSARKIMEXType},Ptr{TSARKIMEXType},Ref{TSARKIMEXType}})
+function TSARKIMEXGetType(ts::TS{Float64},arg1::Union{Ptr{TSARKIMEXType},StridedArray{TSARKIMEXType},Ptr{TSARKIMEXType},Ref{TSARKIMEXType}})
     (arg1_,tmp) = symbol_get_before(arg1)
-    err = ccall((:TSARKIMEXGetType,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),ts,arg1_)
+    err = ccall((:TSARKIMEXGetType,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{UInt8}}),ts,arg1_)
     symbol_get_after(arg1_,arg1)
     return err
 end
 
-function TSARKIMEXSetType(arg0::Type{Float64},ts::TS,arg1::TSARKIMEXType)
-    err = ccall((:TSARKIMEXSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),ts,arg1)
+function TSARKIMEXSetType(ts::TS{Float64},arg1::TSARKIMEXType)
+    err = ccall((:TSARKIMEXSetType,petscRealDouble),PetscErrorCode,(TS{Float64},Cstring),ts,arg1)
     return err
 end
 
-function TSARKIMEXSetFullyImplicit(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSARKIMEXSetFullyImplicit,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSARKIMEXSetFullyImplicit(arg1::TS{Float64},arg2::PetscBool)
+    err = ccall((:TSARKIMEXSetFullyImplicit,petscRealDouble),PetscErrorCode,(TS{Float64},PetscBool),arg1,arg2)
     return err
 end
 
@@ -16875,20 +16875,20 @@ function TSARKIMEXRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-function TSRosWGetType(arg0::Type{Float64},ts::TS,arg1::Union{Ptr{TSRosWType},StridedArray{TSRosWType},Ptr{TSRosWType},Ref{TSRosWType}})
+function TSRosWGetType(ts::TS{Float64},arg1::Union{Ptr{TSRosWType},StridedArray{TSRosWType},Ptr{TSRosWType},Ref{TSRosWType}})
     (arg1_,tmp) = symbol_get_before(arg1)
-    err = ccall((:TSRosWGetType,petscRealDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),ts,arg1_)
+    err = ccall((:TSRosWGetType,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{UInt8}}),ts,arg1_)
     symbol_get_after(arg1_,arg1)
     return err
 end
 
-function TSRosWSetType(arg0::Type{Float64},ts::TS,arg1::TSRosWType)
-    err = ccall((:TSRosWSetType,petscRealDouble),PetscErrorCode,(TS,Cstring),ts,arg1)
+function TSRosWSetType(ts::TS{Float64},arg1::TSRosWType)
+    err = ccall((:TSRosWSetType,petscRealDouble),PetscErrorCode,(TS{Float64},Cstring),ts,arg1)
     return err
 end
 
-function TSRosWSetRecomputeJacobian(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSRosWSetRecomputeJacobian,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSRosWSetRecomputeJacobian(arg1::TS{Float64},arg2::PetscBool)
+    err = ccall((:TSRosWSetRecomputeJacobian,petscRealDouble),PetscErrorCode,(TS{Float64},PetscBool),arg1,arg2)
     return err
 end
 
@@ -16917,58 +16917,58 @@ function TSRosWRegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-function TSThetaSetTheta(arg0::Type{Float64},arg1::TS,arg2::Float64)
-    err = ccall((:TSThetaSetTheta,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSThetaSetTheta(arg1::TS{Float64},arg2::Float64)
+    err = ccall((:TSThetaSetTheta,petscRealDouble),PetscErrorCode,(TS{Float64},Float64),arg1,arg2)
     return err
 end
 
-function TSThetaGetTheta(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSThetaGetTheta,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSThetaGetTheta(arg1::TS{Float64},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSThetaGetTheta,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSThetaGetEndpoint(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:TSThetaGetEndpoint,petscRealDouble),PetscErrorCode,(TS,Ptr{PetscBool}),arg1,arg2)
+function TSThetaGetEndpoint(arg1::TS{Float64},arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+    err = ccall((:TSThetaGetEndpoint,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{PetscBool}),arg1,arg2)
     return err
 end
 
-function TSThetaSetEndpoint(arg0::Type{Float64},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSThetaSetEndpoint,petscRealDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSThetaSetEndpoint(arg1::TS{Float64},arg2::PetscBool)
+    err = ccall((:TSThetaSetEndpoint,petscRealDouble),PetscErrorCode,(TS{Float64},PetscBool),arg1,arg2)
     return err
 end
 
-function TSAlphaSetAdapt(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSAlphaSetAdapt,petscRealDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+function TSAlphaSetAdapt(arg1::TS{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSAlphaSetAdapt,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
     return err
 end
 
-function TSAlphaAdaptDefault(arg1::TS,arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSAlphaAdaptDefault,petscRealDouble),PetscErrorCode,(TS,Float64,Vec{Float64},Vec{Float64},Ptr{Float64},Ptr{PetscBool},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function TSAlphaAdaptDefault(arg1::TS{Float64},arg2::Float64,arg3::Vec{Float64},arg4::Vec{Float64},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSAlphaAdaptDefault,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Vec{Float64},Vec{Float64},Ptr{Float64},Ptr{PetscBool},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
-function TSAlphaSetRadius(arg0::Type{Float64},arg1::TS,arg2::Float64)
-    err = ccall((:TSAlphaSetRadius,petscRealDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSAlphaSetRadius(arg1::TS{Float64},arg2::Float64)
+    err = ccall((:TSAlphaSetRadius,petscRealDouble),PetscErrorCode,(TS{Float64},Float64),arg1,arg2)
     return err
 end
 
-function TSAlphaSetParams(arg0::Type{Float64},arg1::TS,arg2::Float64,arg3::Float64,arg4::Float64)
-    err = ccall((:TSAlphaSetParams,petscRealDouble),PetscErrorCode,(TS,Float64,Float64,Float64),arg1,arg2,arg3,arg4)
+function TSAlphaSetParams(arg1::TS{Float64},arg2::Float64,arg3::Float64,arg4::Float64)
+    err = ccall((:TSAlphaSetParams,petscRealDouble),PetscErrorCode,(TS{Float64},Float64,Float64,Float64),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSAlphaGetParams(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSAlphaGetParams,petscRealDouble),PetscErrorCode,(TS,Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
+function TSAlphaGetParams(arg1::TS{Float64},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSAlphaGetParams,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSSetDM(arg0::Type{Float64},arg1::TS,arg2::DM)
-    err = ccall((:TSSetDM,petscRealDouble),PetscErrorCode,(TS,DM),arg1,arg2)
+function TSSetDM(arg1::TS{Float64},arg2::DM)
+    err = ccall((:TSSetDM,petscRealDouble),PetscErrorCode,(TS{Float64},DM),arg1,arg2)
     return err
 end
 
-function TSGetDM(arg0::Type{Float64},arg1::TS,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    err = ccall((:TSGetDM,petscRealDouble),PetscErrorCode,(TS,Ptr{DM}),arg1,arg2)
+function TSGetDM(arg1::TS{Float64},arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
+    err = ccall((:TSGetDM,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{DM}),arg1,arg2)
     return err
 end
 

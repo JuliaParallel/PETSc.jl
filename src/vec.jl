@@ -18,6 +18,17 @@ type Vec{T,VType} <: AbstractVector{T}
   end
 end
 
+global const NullVec1 = Vec(C.Vec{Float64}(C_NULL))
+global const NullVec2 = Vec(C.Vec{Complex128}(C_NULL))
+global const NullVec3 = Vec(C.Vec{Float32}(C_NULL))
+"""
+  Null vectors, used in place of void pointers in the C
+  API
+"""
+global const NullVec{DataType, Vec}(Float64 => NullVec1,
+                                    Complex128 => NullVec2,
+                                    Float32 => NullVec3)
+
 """
   Gets the MPI communicator of a vector.
 """
@@ -123,6 +134,9 @@ end
 function isfinalized(vec::C.Vec)
   return vec.pobj == C_NULL
 end
+
+global const is_nullvec = isfinalized  # another name for doing the same check
+
 """
   Use the PETSc routine for veiwing a vector
 """

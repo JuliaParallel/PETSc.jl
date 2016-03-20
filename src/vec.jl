@@ -18,14 +18,15 @@ type Vec{T,VType} <: AbstractVector{T}
   end
 end
 
-global const NullVec1 = Vec(C.Vec{Float64}(C_NULL))
-global const NullVec2 = Vec(C.Vec{Complex128}(C_NULL))
-global const NullVec3 = Vec(C.Vec{Float32}(C_NULL))
+
+global const NullVec1 = Vec{Float64, C.VECSTANDARD}(C.Vec{Float64}(C_NULL), first_instance=false)
+global const NullVec2 = Vec{Complex128, C.VECSTANDARD}(C.Vec{Complex128}(C_NULL), first_instance=false)
+global const NullVec3 = Vec{Float32, C.VECSTANDARD}(C.Vec{Float32}(C_NULL), first_instance=false)
 """
   Null vectors, used in place of void pointers in the C
   API
 """
-global const NullVec{DataType, Vec}(Float64 => NullVec1,
+global const NullVec = Dict{DataType, Vec}(Float64 => NullVec1,
                                     Complex128 => NullVec2,
                                     Float32 => NullVec3)
 

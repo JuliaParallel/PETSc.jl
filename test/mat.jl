@@ -204,6 +204,12 @@ end
       matj = zeros(ST, 3,3)
       matj[1:3, 1:2] = vt
       @test mat == matj
+
+      mat = PETSc.Mat(ST, 3,3)
+      vals = rand(ST, 3,3)
+      mat[1:3, 1:3] = vals
+      assemble(mat)
+      @test mat == vals
     end
     @testset "x set and fetch" begin
       mat = PETSc.Mat(ST, 3, 3)

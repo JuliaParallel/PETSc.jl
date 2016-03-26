@@ -7,6 +7,7 @@ for ST in PETSc.C.petsc_type
     include("vec.jl")
     include("is.jl")
     include("mat.jl")
+    include("ts.jl")
   # end
 end
 

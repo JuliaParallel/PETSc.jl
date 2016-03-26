@@ -186,6 +186,9 @@ function petscview{T}(mat::PetscMat{T})
   chk(C.MatView(mat.p, viewer))
 end
 
+
+export setoption!, gettype
+
 function setoption!(m::Mat, option::C.MatOption, val::Bool)
   chk(C.MatSetOption(m.p, option, PetscBool(val)))
   m
@@ -315,9 +318,9 @@ end
 # construct Vec for multiplication by a::Mat or transpose(a::Mat)
 const mat2vec = Dict{C.MatType, C.MatType}( :mpiaij => :aij, :seqaij => :seq )
 Vec{T2}(a::PetscMat{T2}, transposed=false) =
-  transposed ? Vec(T, size(a,1), comm=comm(a), T=mat2vec[gettype(a)],
+  transposed ? Vec(T2, size(a,1), comm=comm(a), T=mat2vec[gettype(a)],
   mlocal=sizelocal(a,1)) :
-  Vec(T, size(a,2), comm=comm(a), T=mat2vec[gettype(a)],
+  Vec(T2, size(a,2), comm=comm(a), T=mat2vec[gettype(a)],
   mlocal=sizelocal(a,2))
 
 #############################################################################

@@ -1,5 +1,5 @@
 # AbstractVector wrapper around PETSc Vec types
-export Vec, comm
+export Vec, comm, NullVec
 
 type Vec{T,VType} <: AbstractVector{T}
   p::C.Vec{T}

@@ -1,11 +1,14 @@
 # functions for PETSc TS (time stepping) algorithms
-
+export TS, set_ic, set_times, solve!, set_rhs_function, set_rhs_jac
+export ComputeRHSFunctionLinear, ComputeRHSJacobianConstant
 
 type TS{T}
   p::C.TS{T}
-  data
-  function TS(p, data=nothing, first_instance=false)
-    ts = new(p, data)
+  data::Array{Any, 1}  # hold the various ctx tuples
+  function TS(p, data=nothing; first_instance=false)
+    data_arr = Array(Any, 0)
+    ts = new(p, data_arr)
+    push!(ts.data, data)
 
     if first_instance
       finalizer(ts, PetscDestroy)
@@ -33,6 +36,15 @@ function isfinalized(ts::C.TS)
   return ts.pobj == C_NULL
 end
 
+"""
+  Most preferred constructor: taake ProblemType, method from options
+  database
+"""
+function TS{T<:Scalar}(::Type{T} ;comm=MPI.COMM_WORLD)
+  ts = Ref{C.TS{T}}()
+  chk(C.TSCreate(comm, ts))
+  return TS{T}(ts[])
+end
 
 """
   Preferred constructor: set problem type explicitly, get method from
@@ -40,18 +52,17 @@ end
 """
 function TS{T<:Scalar}(::Type{T}, tsptype::C.TSProblemType; comm=MPI.COMM_WORLD)
 
-  ts = Ref{C.TS{T}}()
-  chk(C.TSCreate(comm, ts))
-  chk(C.TSSetProblemType(ts[], tsptype))
+  ts = TS(T, comm=comm)
+  chk(C.TSSetProblemType(ts.p, tsptype))
 
-  return TS{T}(ts[])
+  return ts
 end
 
 
 """
   More explicit constructor: set problem type, method directly
 """
-function TS{T<:Scalar}(tsptype::C.TSProblemType, tstype::C.TSType; 
+function TS{T<:Scalar}(::Type{T}, tsptype::C.TSProblemType, tstype::C.TSType; 
                        comm=MPI.COMM_WORLD)
 
   ts = TS(T, tsptype, comm=comm)
@@ -72,7 +83,7 @@ end
     nsteps: maximum number of steps
     tmax: maximum time value
 """
-function set_times(ts::TS{T}, t0, dt0,  nsteps::Integer, tmax)
+function set_times{T<:Scalar}(ts::TS{T}, t0, dt0,  nsteps::Integer, tmax)
   TR = real(T)  # PetscReal
 
   chk(C.TSSetInitialTimeStep(ts.p, TR(t0), TR(dt0)))
@@ -102,13 +113,29 @@ function solve!{T}(ts::TS{T})
 end
 
 
-function set_rhs_function{T}(ts::TS{T}, r::Vec{T} f::Function, ctx=())
+###############################################################################
+# right hand side function
+
+"""
+  Sets the function that evalutes u_t = g(u, t) for an ODE.
+  The function must have the signature:
+
+  f(TS, t, U, F, ctx)
+
+  where TS is a TS object,
+  t is the current time
+  u is the current state vector
+  F is the vector to be populated with u_t
+  ctx is the user supplied context tuple (empty tuple if not provided)
+"""
+function set_rhs_function{T}(ts::TS{T}, r::Vec{T}, f::Function, ctx=())
 
   ctx_outer = (f, ctx)
+  push!(ts.data, ctx_outer)
   ctx_ptr = pointer_from_objref(ctx_outer)
-  treal = real(T)
+  Treal = real(T)
   # this this pre-compilable?
-  fptr = cfunction(rhs_wrapper, PetscErrorCode, (C.TS{T}, treal, C.Vec{T}, C.Vec{T}, Ptr{Void}))
+  fptr = cfunction(rhs_wrapper, PetscErrorCode, (C.TS{T}, Treal, C.Vec{T}, C.Vec{T}, Ptr{Void}))
 
   chk(C.TSSetRHSFunction(ts.p, r.p, fptr, ctx_ptr))
 end
@@ -118,34 +145,83 @@ end
   to PETSc as the right hand side function, and calls the user supplied
   function internally.  The user supplied function must be the first
   component of the ctx tuple
+
 """
 function rhs_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, F::C.Vec{T}, ctx_ptr::Ptr{Void})
 
+  Treal = real(T)
   # transform into high level objects
   bigts = TS{T}(ts, first_instance=false)
 
-  tref = Ref{C.VecType}()
+  tref = Array(C.VecType, 1)
+#  tref = Ref{C.VecType}()
   chk(C.VecGetType(u, tref))
-  bigu = Vec{T, tref[]}(u, first_instance=false)
+  bigu = Vec{T, tref[1]}(u, first_instance=false)
 
-  tref2 = Ref{C.VecType}()
+  tref2 = Array(C.VecType, 1)
+#  tref2 = Ref{C.VecType}()
   chk(C.VecGetType(F, tref2))
-  bigF = Vec{T, tref2[]}(F, first_instance=false)
+  bigF = Vec{T, tref2[1]}(F, first_instance=false)
 
   ctx = unsafe_pointer_to_objref(ctx_ptr)
   func = ctx[1]
   ctx_inner = ctx[2]  # the user provided ctx
 
-  ret_status = func(bigts, t, bigu, bigF, ctx_inner)
-
+  ret_status = func(bigts, Treal(t), bigu, bigF, ctx_inner)
   return PetscErrorCode(ret_status)
 end
 
 # a PETSc provided rhs function for the linear, time invarient coefficient
 # matrix case
 
-function ComputeRHSFunctionLinear(ts::TS, t, u::Vec, F::vec, ctx)
+function ComputeRHSFunctionLinear(ts::TS, t, u::Vec, F::Vec, ctx::Tuple)
 
   # this is amusing, wrapping things just to unwrap them again
   C.TSComputeRHSFunctionLinear(ts.p, t, u.p, F.p, C_NULL)
+end
+
+###############################################################################
+# right hand side jacobian
+
+function set_rhs_jac{T}(ts::TS{T}, A::Mat{T}, B::Mat{T}, f::Function, ctx=())
+
+  ctx_outer = (f, ctx)
+  push!(ts.data, ctx_outer)
+  ctx_ptr = pointer_from_objref(ctx_outer)
+  Treal = real(T)
+  # this this pre-compilable?
+  fptr = cfunction(rhs_jac_wrapper, PetscErrorCode, (C.TS{T}, Treal, C.Vec{T}, C.Mat{T}, C.Mat{T}, Ptr{Void}))
+
+  chk(C.TSSetRHSJacobian(ts.p, A.p, B.p, fptr, ctx_ptr))
+end
+
+
+
+function rhs_jac_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, A::C.Mat{T}, B::C.Mat{T}, ctx_ptr::Ptr{Void})
+
+  Treal = real(T) 
+  bigts = TS{T}(ts, first_instance=false)
+  tref = Ref{C.VecType}()
+  chk(C.VecGetType(u, tref))
+  bigu = Vec{T, tref[]}(u, first_instance=false)
+
+  tref2 = Ref{C.MatType}()
+  chk(C.MatGetType(A, tref2))
+  bigA = Mat{T, tref2[]}(A, first_instance=false)
+
+  bigB = Mat{T, tref2[]}(B, first_instance=false)
+
+  ctx = unsafe_pointer_to_objref(ctx_ptr)
+  func = ctx[1]
+  ctx_inner = ctx[2]
+
+  ret_status = func(bigts, Treal(t), bigu, bigA, bigB, ctx_inner)
+
+  return PetscErrorCode(ret_status)
+end
+
+# a PETSc provided rhs jacobian function for time invarient jacobians
+function ComputeRHSJacobianConstant(ts::TS, t, u::Vec, A::Mat, B::Mat, ctx::Tuple)
+
+  chk(C.TSComputeRHSJacobianConstant(ts.p, t, u.p, A.p, B.p, C_NULL))
 end

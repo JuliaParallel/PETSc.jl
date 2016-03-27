@@ -21,7 +21,7 @@ if haskey(ENV, "JULIA_PETSC_OPT")
 else
   println("Performing standard (debug) build")
   debug=1
-  opts_flags = ""
+  opt_flags = ""
 end
 
 # the PETSc configure script does not support Python 3, so we need to

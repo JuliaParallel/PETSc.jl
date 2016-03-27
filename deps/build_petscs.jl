@@ -13,6 +13,17 @@ end
 
 const verbose=false # change to true for verbose compilation output
 
+# optimize or debug build
+if haskey(ENV, "JULIA_PETSC_OPT")
+  println("Performing optimized build")
+  debug=0
+  opt_flags = "COPTFLAGS='-O3 -march=native -mtune=native' -CXXOPTFLAGS='-O3 -march=native -mtune=native' FOPTFLAGS='-O3 -march=native -mtune=native'"
+else
+  println("Performing standard (debug) build")
+  debug=1
+  opts_flags = ""
+end
+
 # the PETSc configure script does not support Python 3, so we need to
 # find Python 2 if we can:
 pyconfigvar(python::AbstractString, var::AbstractString) = chomp(readall(`$python -c "import distutils.sysconfig; print(distutils.sysconfig.get_config_var('$var'))"`))
@@ -46,7 +57,7 @@ for scalar_type in ("real", "complex"), precision in ("double", "single")
     withenv("PETSC_DIR"=>nothing, "PETSC_ARCH"=>nothing) do
       println("CONFIGURING PETSc $name_i...")
       PETSC_ARCH=""
-      for line in eachline(`$python configure --with-64-bit-indices=true --with-scalar-type=$scalar_type --with-precision=$precision`)
+      for line in eachline(`$python configure --with-64-bit-indices=true --with-scalar-type=$scalar_type --with-precision=$precision --with-debugging=$debug $opt_flags`)
         verbose && print("    $line")
         if ismatch(r"^\s*PETSC_ARCH:", line)
           PETSC_ARCH = chomp(split(line)[2])

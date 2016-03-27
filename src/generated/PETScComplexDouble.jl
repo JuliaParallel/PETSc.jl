@@ -15632,88 +15632,88 @@ function TSInitializePackage(arg0::Type{Complex128})
     return err
 end
 
-function TSCreate(arg0::Type{Complex128},arg1::MPI_Comm,arg2::Union{Ptr{TS},StridedArray{TS},Ptr{TS},Ref{TS}})
-    err = ccall((:TSCreate,petscComplexDouble),PetscErrorCode,(comm_type,Ptr{TS}),arg1,arg2)
+function TSCreate(arg1::MPI_Comm,arg2::Union{Ptr{TS{Complex128}},StridedArray{TS{Complex128}},Ptr{TS{Complex128}},Ref{TS{Complex128}}})
+    err = ccall((:TSCreate,petscComplexDouble),PetscErrorCode,(comm_type,Ptr{TS{Complex128}}),arg1,arg2)
     return err
 end
 
-function TSClone(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{TS},StridedArray{TS},Ptr{TS},Ref{TS}})
-    err = ccall((:TSClone,petscComplexDouble),PetscErrorCode,(TS,Ptr{TS}),arg1,arg2)
+function TSClone(arg1::TS{Complex128},arg2::Union{Ptr{TS{Complex128}},StridedArray{TS{Complex128}},Ptr{TS{Complex128}},Ref{TS{Complex128}}})
+    err = ccall((:TSClone,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{TS{Complex128}}),arg1,arg2)
     return err
 end
 
-function TSDestroy(arg0::Type{Complex128},arg1::Union{Ptr{TS},StridedArray{TS},Ptr{TS},Ref{TS}})
-    err = ccall((:TSDestroy,petscComplexDouble),PetscErrorCode,(Ptr{TS},),arg1)
+function TSDestroy(arg1::Union{Ptr{TS{Complex128}},StridedArray{TS{Complex128}},Ptr{TS{Complex128}},Ref{TS{Complex128}}})
+    err = ccall((:TSDestroy,petscComplexDouble),PetscErrorCode,(Ptr{TS{Complex128}},),arg1)
     return err
 end
 
-function TSSetProblemType(arg0::Type{Complex128},arg1::TS,arg2::TSProblemType)
-    err = ccall((:TSSetProblemType,petscComplexDouble),PetscErrorCode,(TS,TSProblemType),arg1,arg2)
+function TSSetProblemType(arg1::TS{Complex128},arg2::TSProblemType)
+    err = ccall((:TSSetProblemType,petscComplexDouble),PetscErrorCode,(TS{Complex128},TSProblemType),arg1,arg2)
     return err
 end
 
-function TSGetProblemType(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{TSProblemType},StridedArray{TSProblemType},Ptr{TSProblemType},Ref{TSProblemType}})
-    err = ccall((:TSGetProblemType,petscComplexDouble),PetscErrorCode,(TS,Ptr{TSProblemType}),arg1,arg2)
+function TSGetProblemType(arg1::TS{Complex128},arg2::Union{Ptr{TSProblemType},StridedArray{TSProblemType},Ptr{TSProblemType},Ref{TSProblemType}})
+    err = ccall((:TSGetProblemType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{TSProblemType}),arg1,arg2)
     return err
 end
 
-function TSMonitor(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128})
-    err = ccall((:TSMonitor,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128}),arg1,arg2,arg3,arg4)
+function TSMonitor(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128})
+    err = ccall((:TSMonitor,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSMonitorSet(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorSet,petscComplexDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
+function TSMonitorSet(arg1::TS{Complex128},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorSet,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSMonitorCancel(arg0::Type{Complex128},arg1::TS)
-    err = ccall((:TSMonitorCancel,petscComplexDouble),PetscErrorCode,(TS,),arg1)
+function TSMonitorCancel(arg1::TS{Complex128})
+    err = ccall((:TSMonitorCancel,petscComplexDouble),PetscErrorCode,(TS{Complex128},),arg1)
     return err
 end
 
-function TSSetOptionsPrefix(arg0::Type{Complex128},arg1::TS,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
-    err = ccall((:TSSetOptionsPrefix,petscComplexDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSSetOptionsPrefix(arg1::TS{Complex128},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+    err = ccall((:TSSetOptionsPrefix,petscComplexDouble),PetscErrorCode,(TS{Complex128},Cstring),arg1,arg2)
     return err
 end
 
-function TSAppendOptionsPrefix(arg0::Type{Complex128},arg1::TS,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
-    err = ccall((:TSAppendOptionsPrefix,petscComplexDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSAppendOptionsPrefix(arg1::TS{Complex128},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+    err = ccall((:TSAppendOptionsPrefix,petscComplexDouble),PetscErrorCode,(TS{Complex128},Cstring),arg1,arg2)
     return err
 end
 
-function TSGetOptionsPrefix(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
-    err = ccall((:TSGetOptionsPrefix,petscComplexDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2)
+function TSGetOptionsPrefix(arg1::TS{Complex128},arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
+    err = ccall((:TSGetOptionsPrefix,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Ptr{UInt8}}),arg1,arg2)
     return err
 end
 
-function TSSetFromOptions(arg0::Type{Complex128},arg1::TS)
-    err = ccall((:TSSetFromOptions,petscComplexDouble),PetscErrorCode,(TS,),arg1)
+function TSSetFromOptions(arg1::TS{Complex128})
+    err = ccall((:TSSetFromOptions,petscComplexDouble),PetscErrorCode,(TS{Complex128},),arg1)
     return err
 end
 
-function TSSetUp(arg0::Type{Complex128},arg1::TS)
-    err = ccall((:TSSetUp,petscComplexDouble),PetscErrorCode,(TS,),arg1)
+function TSSetUp(arg1::TS{Complex128})
+    err = ccall((:TSSetUp,petscComplexDouble),PetscErrorCode,(TS{Complex128},),arg1)
     return err
 end
 
-function TSReset(arg0::Type{Complex128},arg1::TS)
-    err = ccall((:TSReset,petscComplexDouble),PetscErrorCode,(TS,),arg1)
+function TSReset(arg1::TS{Complex128})
+    err = ccall((:TSReset,petscComplexDouble),PetscErrorCode,(TS{Complex128},),arg1)
     return err
 end
 
-function TSSetSolution(arg1::TS,arg2::Vec{Complex128})
-    err = ccall((:TSSetSolution,petscComplexDouble),PetscErrorCode,(TS,Vec{Complex128}),arg1,arg2)
+function TSSetSolution(arg1::TS{Complex128},arg2::Vec{Complex128})
+    err = ccall((:TSSetSolution,petscComplexDouble),PetscErrorCode,(TS{Complex128},Vec{Complex128}),arg1,arg2)
     return err
 end
 
-function TSGetSolution(arg1::TS,arg2::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
-    err = ccall((:TSGetSolution,petscComplexDouble),PetscErrorCode,(TS,Ptr{Vec{Complex128}}),arg1,arg2)
+function TSGetSolution(arg1::TS{Complex128},arg2::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
+    err = ccall((:TSGetSolution,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Vec{Complex128}}),arg1,arg2)
     return err
 end
 
-function TSSetSaveTrajectory(arg0::Type{Complex128},arg1::TS)
-    err = ccall((:TSSetSaveTrajectory,petscComplexDouble),PetscErrorCode,(TS,),arg1)
+function TSSetSaveTrajectory(arg1::TS{Complex128})
+    err = ccall((:TSSetSaveTrajectory,petscComplexDouble),PetscErrorCode,(TS{Complex128},),arg1)
     return err
 end
 
@@ -15732,13 +15732,13 @@ function TSTrajectorySetType(arg0::Type{Complex128},arg1::TSTrajectory,arg2::TST
     return err
 end
 
-function TSTrajectorySet(arg1::TSTrajectory,arg2::TS,arg3::Integer,arg4::Float64,arg5::Vec{Complex128})
-    err = ccall((:TSTrajectorySet,petscComplexDouble),PetscErrorCode,(TSTrajectory,TS,Int64,Float64,Vec{Complex128}),arg1,arg2,arg3,arg4,arg5)
+function TSTrajectorySet(arg1::TSTrajectory,arg2::TS{Complex128},arg3::Integer,arg4::Float64,arg5::Vec{Complex128})
+    err = ccall((:TSTrajectorySet,petscComplexDouble),PetscErrorCode,(TSTrajectory,TS{Complex128},Int64,Float64,Vec{Complex128}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSTrajectoryGet(arg0::Type{Complex128},arg1::TSTrajectory,arg2::TS,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSTrajectoryGet,petscComplexDouble),PetscErrorCode,(TSTrajectory,TS,Int64,Ptr{Float64}),arg1,arg2,arg3,arg4)
+function TSTrajectoryGet(arg1::TSTrajectory,arg2::TS{Complex128},arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSTrajectoryGet,petscComplexDouble),PetscErrorCode,(TSTrajectory,TS{Complex128},Int64,Ptr{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -15752,88 +15752,88 @@ function TSTrajectoryRegisterAll(arg0::Type{Complex128})
     return err
 end
 
-function TSSetCostGradients(arg1::TS,arg2::Integer,arg3::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}},arg4::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
-    err = ccall((:TSSetCostGradients,petscComplexDouble),PetscErrorCode,(TS,Int64,Ptr{Vec{Complex128}},Ptr{Vec{Complex128}}),arg1,arg2,arg3,arg4)
+function TSSetCostGradients(arg1::TS{Complex128},arg2::Integer,arg3::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}},arg4::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
+    err = ccall((:TSSetCostGradients,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Ptr{Vec{Complex128}},Ptr{Vec{Complex128}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSGetCostGradients(arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Vec{Complex128}}},StridedArray{Ptr{Vec{Complex128}}},Ptr{Ptr{Vec{Complex128}}},Ref{Ptr{Vec{Complex128}}}},arg4::Union{Ptr{Ptr{Vec{Complex128}}},StridedArray{Ptr{Vec{Complex128}}},Ptr{Ptr{Vec{Complex128}}},Ref{Ptr{Vec{Complex128}}}})
-    err = ccall((:TSGetCostGradients,petscComplexDouble),PetscErrorCode,(TS,Ptr{Int64},Ptr{Ptr{Vec{Complex128}}},Ptr{Ptr{Vec{Complex128}}}),arg1,arg2,arg3,arg4)
+function TSGetCostGradients(arg1::TS{Complex128},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Vec{Complex128}}},StridedArray{Ptr{Vec{Complex128}}},Ptr{Ptr{Vec{Complex128}}},Ref{Ptr{Vec{Complex128}}}},arg4::Union{Ptr{Ptr{Vec{Complex128}}},StridedArray{Ptr{Vec{Complex128}}},Ptr{Ptr{Vec{Complex128}}},Ref{Ptr{Vec{Complex128}}}})
+    err = ccall((:TSGetCostGradients,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Int64},Ptr{Ptr{Vec{Complex128}}},Ptr{Ptr{Vec{Complex128}}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSSetCostIntegrand(arg0::Type{Complex128},arg1::TS,arg2::Integer,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetCostIntegrand,petscComplexDouble),PetscErrorCode,(TS,Int64,Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
+function TSSetCostIntegrand(arg1::TS{Complex128},arg2::Integer,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetCostIntegrand,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Ptr{Void},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function TSGetCostIntegral(arg1::TS,arg2::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
-    err = ccall((:TSGetCostIntegral,petscComplexDouble),PetscErrorCode,(TS,Ptr{Vec{Complex128}}),arg1,arg2)
+function TSGetCostIntegral(arg1::TS{Complex128},arg2::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
+    err = ccall((:TSGetCostIntegral,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Vec{Complex128}}),arg1,arg2)
     return err
 end
 
-function TSAdjointSetRHSJacobian(arg1::TS,arg2::Mat{Complex128},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSAdjointSetRHSJacobian,petscComplexDouble),PetscErrorCode,(TS,Mat{Complex128},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
+function TSAdjointSetRHSJacobian(arg1::TS{Complex128},arg2::Mat{Complex128},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSAdjointSetRHSJacobian,petscComplexDouble),PetscErrorCode,(TS{Complex128},Mat{Complex128},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSAdjointSolve(arg0::Type{Complex128},arg1::TS)
-    err = ccall((:TSAdjointSolve,petscComplexDouble),PetscErrorCode,(TS,),arg1)
+function TSAdjointSolve(arg1::TS{Complex128})
+    err = ccall((:TSAdjointSolve,petscComplexDouble),PetscErrorCode,(TS{Complex128},),arg1)
     return err
 end
 
-function TSAdjointSetSteps(arg0::Type{Complex128},arg1::TS,arg2::Integer)
-    err = ccall((:TSAdjointSetSteps,petscComplexDouble),PetscErrorCode,(TS,Int64),arg1,arg2)
+function TSAdjointSetSteps(arg1::TS{Complex128},arg2::Integer)
+    err = ccall((:TSAdjointSetSteps,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64),arg1,arg2)
     return err
 end
 
-function TSAdjointComputeRHSJacobian(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Mat{Complex128})
-    err = ccall((:TSAdjointComputeRHSJacobian,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Mat{Complex128}),arg1,arg2,arg3,arg4)
+function TSAdjointComputeRHSJacobian(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Mat{Complex128})
+    err = ccall((:TSAdjointComputeRHSJacobian,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Mat{Complex128}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSAdjointStep(arg0::Type{Complex128},arg1::TS)
-    err = ccall((:TSAdjointStep,petscComplexDouble),PetscErrorCode,(TS,),arg1)
+function TSAdjointStep(arg1::TS{Complex128})
+    err = ccall((:TSAdjointStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},),arg1)
     return err
 end
 
-function TSAdjointSetUp(arg0::Type{Complex128},arg1::TS)
-    err = ccall((:TSAdjointSetUp,petscComplexDouble),PetscErrorCode,(TS,),arg1)
+function TSAdjointSetUp(arg1::TS{Complex128})
+    err = ccall((:TSAdjointSetUp,petscComplexDouble),PetscErrorCode,(TS{Complex128},),arg1)
     return err
 end
 
-function TSAdjointComputeDRDPFunction(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
-    err = ccall((:TSAdjointComputeDRDPFunction,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Ptr{Vec{Complex128}}),arg1,arg2,arg3,arg4)
+function TSAdjointComputeDRDPFunction(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
+    err = ccall((:TSAdjointComputeDRDPFunction,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Ptr{Vec{Complex128}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSAdjointComputeDRDYFunction(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
-    err = ccall((:TSAdjointComputeDRDYFunction,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Ptr{Vec{Complex128}}),arg1,arg2,arg3,arg4)
+function TSAdjointComputeDRDYFunction(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
+    err = ccall((:TSAdjointComputeDRDYFunction,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Ptr{Vec{Complex128}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSAdjointComputeCostIntegrand(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128})
-    err = ccall((:TSAdjointComputeCostIntegrand,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Vec{Complex128}),arg1,arg2,arg3,arg4)
+function TSAdjointComputeCostIntegrand(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128})
+    err = ccall((:TSAdjointComputeCostIntegrand,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Vec{Complex128}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSSetDuration(arg0::Type{Complex128},arg1::TS,arg2::Integer,arg3::Float64)
-    err = ccall((:TSSetDuration,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64),arg1,arg2,arg3)
+function TSSetDuration(arg1::TS{Complex128},arg2::Integer,arg3::Float64)
+    err = ccall((:TSSetDuration,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64),arg1,arg2,arg3)
     return err
 end
 
-function TSGetDuration(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSGetDuration,petscComplexDouble),PetscErrorCode,(TS,Ptr{Int64},Ptr{Float64}),arg1,arg2,arg3)
+function TSGetDuration(arg1::TS{Complex128},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSGetDuration,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Int64},Ptr{Float64}),arg1,arg2,arg3)
     return err
 end
 
-function TSSetExactFinalTime(arg0::Type{Complex128},arg1::TS,arg2::TSExactFinalTimeOption)
-    err = ccall((:TSSetExactFinalTime,petscComplexDouble),PetscErrorCode,(TS,TSExactFinalTimeOption),arg1,arg2)
+function TSSetExactFinalTime(arg1::TS{Complex128},arg2::TSExactFinalTimeOption)
+    err = ccall((:TSSetExactFinalTime,petscComplexDouble),PetscErrorCode,(TS{Complex128},TSExactFinalTimeOption),arg1,arg2)
     return err
 end
 
-function TSMonitorDefault(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorDefault,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorDefault(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorDefault,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -15847,28 +15847,28 @@ function TSMonitorDrawCtxDestroy(arg0::Type{Complex128},arg1::Union{Ptr{TSMonito
     return err
 end
 
-function TSMonitorDrawSolution(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorDrawSolution,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorDrawSolution(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorDrawSolution,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorDrawSolutionPhase(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorDrawSolutionPhase,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorDrawSolutionPhase(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorDrawSolutionPhase,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorDrawError(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorDrawError,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorDrawError(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorDrawError,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorSolutionBinary(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorSolutionBinary,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorSolutionBinary(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorSolutionBinary,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorSolutionVTK(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorSolutionVTK,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorSolutionVTK(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorSolutionVTK,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
@@ -15877,383 +15877,383 @@ function TSMonitorSolutionVTKDestroy(arg0::Type{Complex128},arg1::Union{Ptr{Void
     return err
 end
 
-function TSStep(arg0::Type{Complex128},arg1::TS)
-    err = ccall((:TSStep,petscComplexDouble),PetscErrorCode,(TS,),arg1)
+function TSStep(arg1::TS{Complex128})
+    err = ccall((:TSStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},),arg1)
     return err
 end
 
-function TSEvaluateStep(arg1::TS,arg2::Integer,arg3::Vec{Complex128},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:TSEvaluateStep,petscComplexDouble),PetscErrorCode,(TS,Int64,Vec{Complex128},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
+function TSEvaluateStep(arg1::TS{Complex128},arg2::Integer,arg3::Vec{Complex128},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+    err = ccall((:TSEvaluateStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Vec{Complex128},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSSolve(arg1::TS,arg2::Vec{Complex128})
-    err = ccall((:TSSolve,petscComplexDouble),PetscErrorCode,(TS,Vec{Complex128}),arg1,arg2)
+function TSSolve(arg1::TS{Complex128},arg2::Vec{Complex128})
+    err = ccall((:TSSolve,petscComplexDouble),PetscErrorCode,(TS{Complex128},Vec{Complex128}),arg1,arg2)
     return err
 end
 
-function TSGetEquationType(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{TSEquationType},StridedArray{TSEquationType},Ptr{TSEquationType},Ref{TSEquationType}})
-    err = ccall((:TSGetEquationType,petscComplexDouble),PetscErrorCode,(TS,Ptr{TSEquationType}),arg1,arg2)
+function TSGetEquationType(arg1::TS{Complex128},arg2::Union{Ptr{TSEquationType},StridedArray{TSEquationType},Ptr{TSEquationType},Ref{TSEquationType}})
+    err = ccall((:TSGetEquationType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{TSEquationType}),arg1,arg2)
     return err
 end
 
-function TSSetEquationType(arg0::Type{Complex128},arg1::TS,arg2::TSEquationType)
-    err = ccall((:TSSetEquationType,petscComplexDouble),PetscErrorCode,(TS,TSEquationType),arg1,arg2)
+function TSSetEquationType(arg1::TS{Complex128},arg2::TSEquationType)
+    err = ccall((:TSSetEquationType,petscComplexDouble),PetscErrorCode,(TS{Complex128},TSEquationType),arg1,arg2)
     return err
 end
 
-function TSGetConvergedReason(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{TSConvergedReason},StridedArray{TSConvergedReason},Ptr{TSConvergedReason},Ref{TSConvergedReason}})
-    err = ccall((:TSGetConvergedReason,petscComplexDouble),PetscErrorCode,(TS,Ptr{TSConvergedReason}),arg1,arg2)
+function TSGetConvergedReason(arg1::TS{Complex128},arg2::Union{Ptr{TSConvergedReason},StridedArray{TSConvergedReason},Ptr{TSConvergedReason},Ref{TSConvergedReason}})
+    err = ccall((:TSGetConvergedReason,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{TSConvergedReason}),arg1,arg2)
     return err
 end
 
-function TSSetConvergedReason(arg0::Type{Complex128},arg1::TS,arg2::TSConvergedReason)
-    err = ccall((:TSSetConvergedReason,petscComplexDouble),PetscErrorCode,(TS,TSConvergedReason),arg1,arg2)
+function TSSetConvergedReason(arg1::TS{Complex128},arg2::TSConvergedReason)
+    err = ccall((:TSSetConvergedReason,petscComplexDouble),PetscErrorCode,(TS{Complex128},TSConvergedReason),arg1,arg2)
     return err
 end
 
-function TSGetSolveTime(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSGetSolveTime,petscComplexDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSGetSolveTime(arg1::TS{Complex128},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSGetSolveTime,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSGetSNESIterations(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSGetSNESIterations,petscComplexDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSGetSNESIterations(arg1::TS{Complex128},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSGetSNESIterations,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Int64}),arg1,arg2)
     return err
 end
 
-function TSGetKSPIterations(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSGetKSPIterations,petscComplexDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSGetKSPIterations(arg1::TS{Complex128},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSGetKSPIterations,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Int64}),arg1,arg2)
     return err
 end
 
-function TSGetStepRejections(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSGetStepRejections,petscComplexDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSGetStepRejections(arg1::TS{Complex128},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSGetStepRejections,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Int64}),arg1,arg2)
     return err
 end
 
-function TSSetMaxStepRejections(arg0::Type{Complex128},arg1::TS,arg2::Integer)
-    err = ccall((:TSSetMaxStepRejections,petscComplexDouble),PetscErrorCode,(TS,Int64),arg1,arg2)
+function TSSetMaxStepRejections(arg1::TS{Complex128},arg2::Integer)
+    err = ccall((:TSSetMaxStepRejections,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64),arg1,arg2)
     return err
 end
 
-function TSGetSNESFailures(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSGetSNESFailures,petscComplexDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSGetSNESFailures(arg1::TS{Complex128},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSGetSNESFailures,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Int64}),arg1,arg2)
     return err
 end
 
-function TSSetMaxSNESFailures(arg0::Type{Complex128},arg1::TS,arg2::Integer)
-    err = ccall((:TSSetMaxSNESFailures,petscComplexDouble),PetscErrorCode,(TS,Int64),arg1,arg2)
+function TSSetMaxSNESFailures(arg1::TS{Complex128},arg2::Integer)
+    err = ccall((:TSSetMaxSNESFailures,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64),arg1,arg2)
     return err
 end
 
-function TSSetErrorIfStepFails(arg0::Type{Complex128},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSSetErrorIfStepFails,petscComplexDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSSetErrorIfStepFails(arg1::TS{Complex128},arg2::PetscBool)
+    err = ccall((:TSSetErrorIfStepFails,petscComplexDouble),PetscErrorCode,(TS{Complex128},PetscBool),arg1,arg2)
     return err
 end
 
-function TSRollBack(arg0::Type{Complex128},arg1::TS)
-    err = ccall((:TSRollBack,petscComplexDouble),PetscErrorCode,(TS,),arg1)
+function TSRollBack(arg1::TS{Complex128})
+    err = ccall((:TSRollBack,petscComplexDouble),PetscErrorCode,(TS{Complex128},),arg1)
     return err
 end
 
-function TSGetTotalSteps(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSGetTotalSteps,petscComplexDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSGetTotalSteps(arg1::TS{Complex128},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSGetTotalSteps,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Int64}),arg1,arg2)
     return err
 end
 
-function TSGetStages(arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Vec{Complex128}}},StridedArray{Ptr{Vec{Complex128}}},Ptr{Ptr{Vec{Complex128}}},Ref{Ptr{Vec{Complex128}}}})
-    err = ccall((:TSGetStages,petscComplexDouble),PetscErrorCode,(TS,Ptr{Int64},Ptr{Ptr{Vec{Complex128}}}),arg1,arg2,arg3)
+function TSGetStages(arg1::TS{Complex128},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Vec{Complex128}}},StridedArray{Ptr{Vec{Complex128}}},Ptr{Ptr{Vec{Complex128}}},Ref{Ptr{Vec{Complex128}}}})
+    err = ccall((:TSGetStages,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Int64},Ptr{Ptr{Vec{Complex128}}}),arg1,arg2,arg3)
     return err
 end
 
-function TSSetInitialTimeStep(arg0::Type{Complex128},arg1::TS,arg2::Float64,arg3::Float64)
-    err = ccall((:TSSetInitialTimeStep,petscComplexDouble),PetscErrorCode,(TS,Float64,Float64),arg1,arg2,arg3)
+function TSSetInitialTimeStep(arg1::TS{Complex128},arg2::Float64,arg3::Float64)
+    err = ccall((:TSSetInitialTimeStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Float64),arg1,arg2,arg3)
     return err
 end
 
-function TSGetTimeStep(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSGetTimeStep,petscComplexDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSGetTimeStep(arg1::TS{Complex128},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSGetTimeStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSGetTime(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSGetTime,petscComplexDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSGetTime(arg1::TS{Complex128},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSGetTime,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSSetTime(arg0::Type{Complex128},arg1::TS,arg2::Float64)
-    err = ccall((:TSSetTime,petscComplexDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSSetTime(arg1::TS{Complex128},arg2::Float64)
+    err = ccall((:TSSetTime,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64),arg1,arg2)
     return err
 end
 
-function TSGetTimeStepNumber(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSGetTimeStepNumber,petscComplexDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSGetTimeStepNumber(arg1::TS{Complex128},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSGetTimeStepNumber,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Int64}),arg1,arg2)
     return err
 end
 
-function TSSetTimeStep(arg0::Type{Complex128},arg1::TS,arg2::Float64)
-    err = ccall((:TSSetTimeStep,petscComplexDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSSetTimeStep(arg1::TS{Complex128},arg2::Float64)
+    err = ccall((:TSSetTimeStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64),arg1,arg2)
     return err
 end
 
-function TSGetPrevTime(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSGetPrevTime,petscComplexDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSGetPrevTime(arg1::TS{Complex128},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSGetPrevTime,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSSetRHSFunction(arg1::TS,arg2::Vec{Complex128},arg3::TSRHSFunction,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetRHSFunction,petscComplexDouble),PetscErrorCode,(TS,Vec{Complex128},TSRHSFunction,Ptr{Void}),arg1,arg2,arg3,arg4)
+function TSSetRHSFunction(arg1::TS{Complex128},arg2::Vec{Complex128},arg3::TSRHSFunction,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetRHSFunction,petscComplexDouble),PetscErrorCode,(TS{Complex128},Vec{Complex128},TSRHSFunction,Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSGetRHSFunction(arg1::TS,arg2::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}},arg3::Union{Ptr{TSRHSFunction},StridedArray{TSRHSFunction},Ptr{TSRHSFunction},Ref{TSRHSFunction}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
-    err = ccall((:TSGetRHSFunction,petscComplexDouble),PetscErrorCode,(TS,Ptr{Vec{Complex128}},Ptr{TSRHSFunction},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
+function TSGetRHSFunction(arg1::TS{Complex128},arg2::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}},arg3::Union{Ptr{TSRHSFunction},StridedArray{TSRHSFunction},Ptr{TSRHSFunction},Ref{TSRHSFunction}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+    err = ccall((:TSGetRHSFunction,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Vec{Complex128}},Ptr{TSRHSFunction},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSSetRHSJacobian(arg1::TS,arg2::Mat{Complex128},arg3::Mat{Complex128},arg4::TSRHSJacobian,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetRHSJacobian,petscComplexDouble),PetscErrorCode,(TS,Mat{Complex128},Mat{Complex128},TSRHSJacobian,Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSSetRHSJacobian(arg1::TS{Complex128},arg2::Mat{Complex128},arg3::Mat{Complex128},arg4::TSRHSJacobian,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetRHSJacobian,petscComplexDouble),PetscErrorCode,(TS{Complex128},Mat{Complex128},Mat{Complex128},TSRHSJacobian,Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSGetRHSJacobian(arg1::TS,arg2::Union{Ptr{Mat{Complex128}},StridedArray{Mat{Complex128}},Ptr{Mat{Complex128}},Ref{Mat{Complex128}}},arg3::Union{Ptr{Mat{Complex128}},StridedArray{Mat{Complex128}},Ptr{Mat{Complex128}},Ref{Mat{Complex128}}},arg4::Union{Ptr{TSRHSJacobian},StridedArray{TSRHSJacobian},Ptr{TSRHSJacobian},Ref{TSRHSJacobian}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
-    err = ccall((:TSGetRHSJacobian,petscComplexDouble),PetscErrorCode,(TS,Ptr{Mat{Complex128}},Ptr{Mat{Complex128}},Ptr{TSRHSJacobian},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5)
+function TSGetRHSJacobian(arg1::TS{Complex128},arg2::Union{Ptr{Mat{Complex128}},StridedArray{Mat{Complex128}},Ptr{Mat{Complex128}},Ref{Mat{Complex128}}},arg3::Union{Ptr{Mat{Complex128}},StridedArray{Mat{Complex128}},Ptr{Mat{Complex128}},Ref{Mat{Complex128}}},arg4::Union{Ptr{TSRHSJacobian},StridedArray{TSRHSJacobian},Ptr{TSRHSJacobian},Ref{TSRHSJacobian}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+    err = ccall((:TSGetRHSJacobian,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Mat{Complex128}},Ptr{Mat{Complex128}},Ptr{TSRHSJacobian},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSRHSJacobianSetReuse(arg0::Type{Complex128},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSRHSJacobianSetReuse,petscComplexDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSRHSJacobianSetReuse(arg1::TS{Complex128},arg2::PetscBool)
+    err = ccall((:TSRHSJacobianSetReuse,petscComplexDouble),PetscErrorCode,(TS{Complex128},PetscBool),arg1,arg2)
     return err
 end
 
-function TSSetSolutionFunction(arg0::Type{Complex128},arg1::TS,arg2::TSSolutionFunction,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetSolutionFunction,petscComplexDouble),PetscErrorCode,(TS,TSSolutionFunction,Ptr{Void}),arg1,arg2,arg3)
+function TSSetSolutionFunction(arg1::TS{Complex128},arg2::TSSolutionFunction,arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetSolutionFunction,petscComplexDouble),PetscErrorCode,(TS{Complex128},TSSolutionFunction,Ptr{Void}),arg1,arg2,arg3)
     return err
 end
 
-function TSSetForcingFunction(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetForcingFunction,petscComplexDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+function TSSetForcingFunction(arg1::TS{Complex128},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetForcingFunction,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
     return err
 end
 
-function TSSetIFunction(arg1::TS,arg2::Vec{Complex128},arg3::TSIFunction,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetIFunction,petscComplexDouble),PetscErrorCode,(TS,Vec{Complex128},TSIFunction,Ptr{Void}),arg1,arg2,arg3,arg4)
+function TSSetIFunction(arg1::TS{Complex128},arg2::Vec{Complex128},arg3::TSIFunction,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetIFunction,petscComplexDouble),PetscErrorCode,(TS{Complex128},Vec{Complex128},TSIFunction,Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSGetIFunction(arg1::TS,arg2::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}},arg3::Union{Ptr{TSIFunction},StridedArray{TSIFunction},Ptr{TSIFunction},Ref{TSIFunction}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
-    err = ccall((:TSGetIFunction,petscComplexDouble),PetscErrorCode,(TS,Ptr{Vec{Complex128}},Ptr{TSIFunction},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
+function TSGetIFunction(arg1::TS{Complex128},arg2::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}},arg3::Union{Ptr{TSIFunction},StridedArray{TSIFunction},Ptr{TSIFunction},Ref{TSIFunction}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+    err = ccall((:TSGetIFunction,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Vec{Complex128}},Ptr{TSIFunction},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSSetIJacobian(arg1::TS,arg2::Mat{Complex128},arg3::Mat{Complex128},arg4::TSIJacobian,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetIJacobian,petscComplexDouble),PetscErrorCode,(TS,Mat{Complex128},Mat{Complex128},TSIJacobian,Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSSetIJacobian(arg1::TS{Complex128},arg2::Mat{Complex128},arg3::Mat{Complex128},arg4::TSIJacobian,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetIJacobian,petscComplexDouble),PetscErrorCode,(TS{Complex128},Mat{Complex128},Mat{Complex128},TSIJacobian,Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSGetIJacobian(arg1::TS,arg2::Union{Ptr{Mat{Complex128}},StridedArray{Mat{Complex128}},Ptr{Mat{Complex128}},Ref{Mat{Complex128}}},arg3::Union{Ptr{Mat{Complex128}},StridedArray{Mat{Complex128}},Ptr{Mat{Complex128}},Ref{Mat{Complex128}}},arg4::Union{Ptr{TSIJacobian},StridedArray{TSIJacobian},Ptr{TSIJacobian},Ref{TSIJacobian}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
-    err = ccall((:TSGetIJacobian,petscComplexDouble),PetscErrorCode,(TS,Ptr{Mat{Complex128}},Ptr{Mat{Complex128}},Ptr{TSIJacobian},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5)
+function TSGetIJacobian(arg1::TS{Complex128},arg2::Union{Ptr{Mat{Complex128}},StridedArray{Mat{Complex128}},Ptr{Mat{Complex128}},Ref{Mat{Complex128}}},arg3::Union{Ptr{Mat{Complex128}},StridedArray{Mat{Complex128}},Ptr{Mat{Complex128}},Ref{Mat{Complex128}}},arg4::Union{Ptr{TSIJacobian},StridedArray{TSIJacobian},Ptr{TSIJacobian},Ref{TSIJacobian}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+    err = ccall((:TSGetIJacobian,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Mat{Complex128}},Ptr{Mat{Complex128}},Ptr{TSIJacobian},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSComputeRHSFunctionLinear(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSComputeRHSFunctionLinear,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSComputeRHSFunctionLinear(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSComputeRHSFunctionLinear,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSComputeRHSJacobianConstant(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Mat{Complex128},arg5::Mat{Complex128},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSComputeRHSJacobianConstant,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Mat{Complex128},Mat{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
+function TSComputeRHSJacobianConstant(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Mat{Complex128},arg5::Mat{Complex128},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSComputeRHSJacobianConstant,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Mat{Complex128},Mat{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function TSComputeIFunctionLinear(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Vec{Complex128},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSComputeIFunctionLinear,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Vec{Complex128},Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
+function TSComputeIFunctionLinear(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Vec{Complex128},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSComputeIFunctionLinear,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Vec{Complex128},Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function TSComputeIJacobianConstant(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Float64,arg6::Mat{Complex128},arg7::Mat{Complex128},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSComputeIJacobianConstant,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Vec{Complex128},Float64,Mat{Complex128},Mat{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function TSComputeIJacobianConstant(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Float64,arg6::Mat{Complex128},arg7::Mat{Complex128},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSComputeIJacobianConstant,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Vec{Complex128},Float64,Mat{Complex128},Mat{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function TSComputeSolutionFunction(arg1::TS,arg2::Float64,arg3::Vec{Complex128})
-    err = ccall((:TSComputeSolutionFunction,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128}),arg1,arg2,arg3)
+function TSComputeSolutionFunction(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128})
+    err = ccall((:TSComputeSolutionFunction,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128}),arg1,arg2,arg3)
     return err
 end
 
-function TSComputeForcingFunction(arg1::TS,arg2::Float64,arg3::Vec{Complex128})
-    err = ccall((:TSComputeForcingFunction,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128}),arg1,arg2,arg3)
+function TSComputeForcingFunction(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128})
+    err = ccall((:TSComputeForcingFunction,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128}),arg1,arg2,arg3)
     return err
 end
 
-function TSComputeIJacobianDefaultColor(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Float64,arg6::Mat{Complex128},arg7::Mat{Complex128},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSComputeIJacobianDefaultColor,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Vec{Complex128},Float64,Mat{Complex128},Mat{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function TSComputeIJacobianDefaultColor(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Float64,arg6::Mat{Complex128},arg7::Mat{Complex128},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSComputeIJacobianDefaultColor,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Vec{Complex128},Float64,Mat{Complex128},Mat{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function TSSetPreStep(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetPreStep,petscComplexDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
+function TSSetPreStep(arg1::TS{Complex128},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetPreStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Void}),arg1,arg2)
     return err
 end
 
-function TSSetPreStage(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetPreStage,petscComplexDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
+function TSSetPreStage(arg1::TS{Complex128},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetPreStage,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Void}),arg1,arg2)
     return err
 end
 
-function TSSetPostStage(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetPostStage,petscComplexDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
+function TSSetPostStage(arg1::TS{Complex128},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetPostStage,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Void}),arg1,arg2)
     return err
 end
 
-function TSSetPostStep(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetPostStep,petscComplexDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
+function TSSetPostStep(arg1::TS{Complex128},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetPostStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Void}),arg1,arg2)
     return err
 end
 
-function TSPreStep(arg0::Type{Complex128},arg1::TS)
-    err = ccall((:TSPreStep,petscComplexDouble),PetscErrorCode,(TS,),arg1)
+function TSPreStep(arg1::TS{Complex128})
+    err = ccall((:TSPreStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},),arg1)
     return err
 end
 
-function TSPreStage(arg0::Type{Complex128},arg1::TS,arg2::Float64)
-    err = ccall((:TSPreStage,petscComplexDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSPreStage(arg1::TS{Complex128},arg2::Float64)
+    err = ccall((:TSPreStage,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64),arg1,arg2)
     return err
 end
 
-function TSPostStage(arg1::TS,arg2::Float64,arg3::Integer,arg4::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
-    err = ccall((:TSPostStage,petscComplexDouble),PetscErrorCode,(TS,Float64,Int64,Ptr{Vec{Complex128}}),arg1,arg2,arg3,arg4)
+function TSPostStage(arg1::TS{Complex128},arg2::Float64,arg3::Integer,arg4::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
+    err = ccall((:TSPostStage,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Int64,Ptr{Vec{Complex128}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSPostStep(arg0::Type{Complex128},arg1::TS)
-    err = ccall((:TSPostStep,petscComplexDouble),PetscErrorCode,(TS,),arg1)
+function TSPostStep(arg1::TS{Complex128})
+    err = ccall((:TSPostStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},),arg1)
     return err
 end
 
-function TSSetRetainStages(arg0::Type{Complex128},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSSetRetainStages,petscComplexDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSSetRetainStages(arg1::TS{Complex128},arg2::PetscBool)
+    err = ccall((:TSSetRetainStages,petscComplexDouble),PetscErrorCode,(TS{Complex128},PetscBool),arg1,arg2)
     return err
 end
 
-function TSInterpolate(arg1::TS,arg2::Float64,arg3::Vec{Complex128})
-    err = ccall((:TSInterpolate,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128}),arg1,arg2,arg3)
+function TSInterpolate(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128})
+    err = ccall((:TSInterpolate,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128}),arg1,arg2,arg3)
     return err
 end
 
-function TSSetTolerances(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Float64,arg5::Vec{Complex128})
-    err = ccall((:TSSetTolerances,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Float64,Vec{Complex128}),arg1,arg2,arg3,arg4,arg5)
+function TSSetTolerances(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Float64,arg5::Vec{Complex128})
+    err = ccall((:TSSetTolerances,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Float64,Vec{Complex128}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSGetTolerances(arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
-    err = ccall((:TSGetTolerances,petscComplexDouble),PetscErrorCode,(TS,Ptr{Float64},Ptr{Vec{Complex128}},Ptr{Float64},Ptr{Vec{Complex128}}),arg1,arg2,arg3,arg4,arg5)
+function TSGetTolerances(arg1::TS{Complex128},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
+    err = ccall((:TSGetTolerances,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Float64},Ptr{Vec{Complex128}},Ptr{Float64},Ptr{Vec{Complex128}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSErrorWeightedNormInfinity(arg1::TS,arg2::Vec{Complex128},arg3::Vec{Complex128},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSErrorWeightedNormInfinity,petscComplexDouble),PetscErrorCode,(TS,Vec{Complex128},Vec{Complex128},Ptr{Float64}),arg1,arg2,arg3,arg4)
+function TSErrorWeightedNormInfinity(arg1::TS{Complex128},arg2::Vec{Complex128},arg3::Vec{Complex128},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSErrorWeightedNormInfinity,petscComplexDouble),PetscErrorCode,(TS{Complex128},Vec{Complex128},Vec{Complex128},Ptr{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSErrorWeightedNorm2(arg1::TS,arg2::Vec{Complex128},arg3::Vec{Complex128},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSErrorWeightedNorm2,petscComplexDouble),PetscErrorCode,(TS,Vec{Complex128},Vec{Complex128},Ptr{Float64}),arg1,arg2,arg3,arg4)
+function TSErrorWeightedNorm2(arg1::TS{Complex128},arg2::Vec{Complex128},arg3::Vec{Complex128},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSErrorWeightedNorm2,petscComplexDouble),PetscErrorCode,(TS{Complex128},Vec{Complex128},Vec{Complex128},Ptr{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSErrorWeightedNorm(arg1::TS,arg2::Vec{Complex128},arg3::Vec{Complex128},arg4::NormType,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSErrorWeightedNorm,petscComplexDouble),PetscErrorCode,(TS,Vec{Complex128},Vec{Complex128},NormType,Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
+function TSErrorWeightedNorm(arg1::TS{Complex128},arg2::Vec{Complex128},arg3::Vec{Complex128},arg4::NormType,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSErrorWeightedNorm,petscComplexDouble),PetscErrorCode,(TS{Complex128},Vec{Complex128},Vec{Complex128},NormType,Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSSetCFLTimeLocal(arg0::Type{Complex128},arg1::TS,arg2::Float64)
-    err = ccall((:TSSetCFLTimeLocal,petscComplexDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSSetCFLTimeLocal(arg1::TS{Complex128},arg2::Float64)
+    err = ccall((:TSSetCFLTimeLocal,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64),arg1,arg2)
     return err
 end
 
-function TSGetCFLTime(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSGetCFLTime,petscComplexDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSGetCFLTime(arg1::TS{Complex128},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSGetCFLTime,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSPseudoSetTimeStep(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSPseudoSetTimeStep,petscComplexDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+function TSPseudoSetTimeStep(arg1::TS{Complex128},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSPseudoSetTimeStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
     return err
 end
 
-function TSPseudoTimeStepDefault(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSPseudoTimeStepDefault,petscComplexDouble),PetscErrorCode,(TS,Ptr{Float64},Ptr{Void}),arg1,arg2,arg3)
+function TSPseudoTimeStepDefault(arg1::TS{Complex128},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSPseudoTimeStepDefault,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Float64},Ptr{Void}),arg1,arg2,arg3)
     return err
 end
 
-function TSPseudoComputeTimeStep(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSPseudoComputeTimeStep,petscComplexDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSPseudoComputeTimeStep(arg1::TS{Complex128},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSPseudoComputeTimeStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSPseudoSetMaxTimeStep(arg0::Type{Complex128},arg1::TS,arg2::Float64)
-    err = ccall((:TSPseudoSetMaxTimeStep,petscComplexDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSPseudoSetMaxTimeStep(arg1::TS{Complex128},arg2::Float64)
+    err = ccall((:TSPseudoSetMaxTimeStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64),arg1,arg2)
     return err
 end
 
-function TSPseudoSetVerifyTimeStep(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSPseudoSetVerifyTimeStep,petscComplexDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+function TSPseudoSetVerifyTimeStep(arg1::TS{Complex128},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSPseudoSetVerifyTimeStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
     return err
 end
 
-function TSPseudoVerifyTimeStepDefault(arg1::TS,arg2::Vec{Complex128},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:TSPseudoVerifyTimeStepDefault,petscComplexDouble),PetscErrorCode,(TS,Vec{Complex128},Ptr{Void},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
+function TSPseudoVerifyTimeStepDefault(arg1::TS{Complex128},arg2::Vec{Complex128},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+    err = ccall((:TSPseudoVerifyTimeStepDefault,petscComplexDouble),PetscErrorCode,(TS{Complex128},Vec{Complex128},Ptr{Void},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSPseudoVerifyTimeStep(arg1::TS,arg2::Vec{Complex128},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:TSPseudoVerifyTimeStep,petscComplexDouble),PetscErrorCode,(TS,Vec{Complex128},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
+function TSPseudoVerifyTimeStep(arg1::TS{Complex128},arg2::Vec{Complex128},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+    err = ccall((:TSPseudoVerifyTimeStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},Vec{Complex128},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSPseudoSetTimeStepIncrement(arg0::Type{Complex128},arg1::TS,arg2::Float64)
-    err = ccall((:TSPseudoSetTimeStepIncrement,petscComplexDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSPseudoSetTimeStepIncrement(arg1::TS{Complex128},arg2::Float64)
+    err = ccall((:TSPseudoSetTimeStepIncrement,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64),arg1,arg2)
     return err
 end
 
-function TSPseudoIncrementDtFromInitialDt(arg0::Type{Complex128},arg1::TS)
-    err = ccall((:TSPseudoIncrementDtFromInitialDt,petscComplexDouble),PetscErrorCode,(TS,),arg1)
+function TSPseudoIncrementDtFromInitialDt(arg1::TS{Complex128})
+    err = ccall((:TSPseudoIncrementDtFromInitialDt,petscComplexDouble),PetscErrorCode,(TS{Complex128},),arg1)
     return err
 end
 
-function TSPythonSetType(arg0::Type{Complex128},arg1::TS,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
-    err = ccall((:TSPythonSetType,petscComplexDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSPythonSetType(arg1::TS{Complex128},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+    err = ccall((:TSPythonSetType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Cstring),arg1,arg2)
     return err
 end
 
-function TSComputeRHSFunction(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128})
-    err = ccall((:TSComputeRHSFunction,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Vec{Complex128}),arg1,arg2,arg3,arg4)
+function TSComputeRHSFunction(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128})
+    err = ccall((:TSComputeRHSFunction,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Vec{Complex128}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSComputeRHSJacobian(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Mat{Complex128},arg5::Mat{Complex128})
-    err = ccall((:TSComputeRHSJacobian,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Mat{Complex128},Mat{Complex128}),arg1,arg2,arg3,arg4,arg5)
+function TSComputeRHSJacobian(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Mat{Complex128},arg5::Mat{Complex128})
+    err = ccall((:TSComputeRHSJacobian,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Mat{Complex128},Mat{Complex128}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSComputeIFunction(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Vec{Complex128},arg6::PetscBool)
-    err = ccall((:TSComputeIFunction,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Vec{Complex128},Vec{Complex128},PetscBool),arg1,arg2,arg3,arg4,arg5,arg6)
+function TSComputeIFunction(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Vec{Complex128},arg6::PetscBool)
+    err = ccall((:TSComputeIFunction,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Vec{Complex128},Vec{Complex128},PetscBool),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function TSComputeIJacobian(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Float64,arg6::Mat{Complex128},arg7::Mat{Complex128},arg8::PetscBool)
-    err = ccall((:TSComputeIJacobian,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Vec{Complex128},Float64,Mat{Complex128},Mat{Complex128},PetscBool),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
+function TSComputeIJacobian(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Float64,arg6::Mat{Complex128},arg7::Mat{Complex128},arg8::PetscBool)
+    err = ccall((:TSComputeIJacobian,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Vec{Complex128},Float64,Mat{Complex128},Mat{Complex128},PetscBool),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function TSComputeLinearStability(arg0::Type{Complex128},arg1::TS,arg2::Float64,arg3::Float64,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSComputeLinearStability,petscComplexDouble),PetscErrorCode,(TS,Float64,Float64,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
+function TSComputeLinearStability(arg1::TS{Complex128},arg2::Float64,arg3::Float64,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSComputeLinearStability,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Float64,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSVISetVariableBounds(arg1::TS,arg2::Vec{Complex128},arg3::Vec{Complex128})
-    err = ccall((:TSVISetVariableBounds,petscComplexDouble),PetscErrorCode,(TS,Vec{Complex128},Vec{Complex128}),arg1,arg2,arg3)
+function TSVISetVariableBounds(arg1::TS{Complex128},arg2::Vec{Complex128},arg3::Vec{Complex128})
+    err = ccall((:TSVISetVariableBounds,petscComplexDouble),PetscErrorCode,(TS{Complex128},Vec{Complex128},Vec{Complex128}),arg1,arg2,arg3)
     return err
 end
 
@@ -16327,8 +16327,8 @@ function DMTSSetMinRadius(arg0::Type{Complex128},arg1::DM,arg2::Float64)
     return err
 end
 
-function DMTSCheckFromOptions(arg1::TS,arg2::Vec{Complex128},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
-    err = ccall((:DMTSCheckFromOptions,petscComplexDouble),PetscErrorCode,(TS,Vec{Complex128},Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
+function DMTSCheckFromOptions(arg1::TS{Complex128},arg2::Vec{Complex128},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}},arg4::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+    err = ccall((:DMTSCheckFromOptions,petscComplexDouble),PetscErrorCode,(TS{Complex128},Vec{Complex128},Ptr{Ptr{Void}},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -16387,25 +16387,25 @@ function TSMonitorDMDARayDestroy(arg0::Type{Complex128},arg1::Union{Ptr{Ptr{Void
     return err
 end
 
-function TSMonitorDMDARay(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorDMDARay,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorDMDARay(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorDMDARay,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorLGDMDARay(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGDMDARay,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorLGDMDARay(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGDMDARay,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSGetType(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{TSType},StridedArray{TSType},Ptr{TSType},Ref{TSType}})
+function TSGetType(arg1::TS{Complex128},arg2::Union{Ptr{TSType},StridedArray{TSType},Ptr{TSType},Ref{TSType}})
     (arg2_,tmp) = symbol_get_before(arg2)
-    err = ccall((:TSGetType,petscComplexDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2_)
+    err = ccall((:TSGetType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Ptr{UInt8}}),arg1,arg2_)
     symbol_get_after(arg2_,arg2)
     return err
 end
 
-function TSSetType(arg0::Type{Complex128},arg1::TS,arg2::TSType)
-    err = ccall((:TSSetType,petscComplexDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSSetType(arg1::TS{Complex128},arg2::TSType)
+    err = ccall((:TSSetType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Cstring),arg1,arg2)
     return err
 end
 
@@ -16414,43 +16414,43 @@ function TSRegister(arg0::Type{Complex128},arg1::Union{ByteString,Cstring,Symbol
     return err
 end
 
-function TSGetSNES(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
-    err = ccall((:TSGetSNES,petscComplexDouble),PetscErrorCode,(TS,Ptr{SNES}),arg1,arg2)
+function TSGetSNES(arg1::TS{Complex128},arg2::Union{Ptr{SNES},StridedArray{SNES},Ptr{SNES},Ref{SNES}})
+    err = ccall((:TSGetSNES,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{SNES}),arg1,arg2)
     return err
 end
 
-function TSSetSNES(arg0::Type{Complex128},arg1::TS,arg2::SNES)
-    err = ccall((:TSSetSNES,petscComplexDouble),PetscErrorCode,(TS,SNES),arg1,arg2)
+function TSSetSNES(arg1::TS{Complex128},arg2::SNES)
+    err = ccall((:TSSetSNES,petscComplexDouble),PetscErrorCode,(TS{Complex128},SNES),arg1,arg2)
     return err
 end
 
-function TSGetKSP(arg1::TS,arg2::Union{Ptr{KSP{Complex128}},StridedArray{KSP{Complex128}},Ptr{KSP{Complex128}},Ref{KSP{Complex128}}})
-    err = ccall((:TSGetKSP,petscComplexDouble),PetscErrorCode,(TS,Ptr{KSP{Complex128}}),arg1,arg2)
+function TSGetKSP(arg1::TS{Complex128},arg2::Union{Ptr{KSP{Complex128}},StridedArray{KSP{Complex128}},Ptr{KSP{Complex128}},Ref{KSP{Complex128}}})
+    err = ccall((:TSGetKSP,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{KSP{Complex128}}),arg1,arg2)
     return err
 end
 
-function TSView(arg1::TS,arg2::PetscViewer{Complex128})
-    err = ccall((:TSView,petscComplexDouble),PetscErrorCode,(TS,PetscViewer{Complex128}),arg1,arg2)
+function TSView(arg1::TS{Complex128},arg2::PetscViewer{Complex128})
+    err = ccall((:TSView,petscComplexDouble),PetscErrorCode,(TS{Complex128},PetscViewer{Complex128}),arg1,arg2)
     return err
 end
 
-function TSLoad(arg1::TS,arg2::PetscViewer{Complex128})
-    err = ccall((:TSLoad,petscComplexDouble),PetscErrorCode,(TS,PetscViewer{Complex128}),arg1,arg2)
+function TSLoad(arg1::TS{Complex128},arg2::PetscViewer{Complex128})
+    err = ccall((:TSLoad,petscComplexDouble),PetscErrorCode,(TS{Complex128},PetscViewer{Complex128}),arg1,arg2)
     return err
 end
 
-function TSViewFromOptions(arg0::Type{Complex128},A::TS,obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
-    err = ccall((:TSViewFromOptions,petscComplexDouble),PetscErrorCode,(TS,PetscObject,Cstring),A,obj,name)
+function TSViewFromOptions(A::TS{Complex128},obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+    err = ccall((:TSViewFromOptions,petscComplexDouble),PetscErrorCode,(TS{Complex128},PetscObject,Cstring),A,obj,name)
     return err
 end
 
-function TSSetApplicationContext(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetApplicationContext,petscComplexDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
+function TSSetApplicationContext(arg1::TS{Complex128},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetApplicationContext,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Void}),arg1,arg2)
     return err
 end
 
-function TSGetApplicationContext(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSGetApplicationContext,petscComplexDouble),PetscErrorCode,(TS,Ptr{Void}),arg1,arg2)
+function TSGetApplicationContext(arg1::TS{Complex128},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSGetApplicationContext,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Void}),arg1,arg2)
     return err
 end
 
@@ -16464,23 +16464,23 @@ function TSMonitorLGCtxDestroy(arg0::Type{Complex128},arg1::Union{Ptr{TSMonitorL
     return err
 end
 
-function TSMonitorLGTimeStep(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGTimeStep,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorLGTimeStep(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGTimeStep,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorLGSolution(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGSolution,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorLGSolution(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGSolution,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorLGSetVariableNames(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
-    err = ccall((:TSMonitorLGSetVariableNames,petscComplexDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2)
+function TSMonitorLGSetVariableNames(arg1::TS{Complex128},arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
+    err = ccall((:TSMonitorLGSetVariableNames,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Ptr{UInt8}}),arg1,arg2)
     return err
 end
 
-function TSMonitorLGGetVariableNames(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}})
-    err = ccall((:TSMonitorLGGetVariableNames,petscComplexDouble),PetscErrorCode,(TS,Ptr{Ptr{Ptr{UInt8}}}),arg1,arg2)
+function TSMonitorLGGetVariableNames(arg1::TS{Complex128},arg2::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}})
+    err = ccall((:TSMonitorLGGetVariableNames,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Ptr{Ptr{UInt8}}}),arg1,arg2)
     return err
 end
 
@@ -16489,8 +16489,8 @@ function TSMonitorLGCtxSetVariableNames(arg0::Type{Complex128},arg1::TSMonitorLG
     return err
 end
 
-function TSMonitorLGSetDisplayVariables(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
-    err = ccall((:TSMonitorLGSetDisplayVariables,petscComplexDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2)
+function TSMonitorLGSetDisplayVariables(arg1::TS{Complex128},arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
+    err = ccall((:TSMonitorLGSetDisplayVariables,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Ptr{UInt8}}),arg1,arg2)
     return err
 end
 
@@ -16499,8 +16499,8 @@ function TSMonitorLGCtxSetDisplayVariables(arg0::Type{Complex128},arg1::TSMonito
     return err
 end
 
-function TSMonitorLGSetTransform(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGSetTransform,petscComplexDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
+function TSMonitorLGSetTransform(arg1::TS{Complex128},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGSetTransform,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
@@ -16509,33 +16509,33 @@ function TSMonitorLGCtxSetTransform(arg0::Type{Complex128},arg1::TSMonitorLGCtx,
     return err
 end
 
-function TSMonitorLGError(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGError,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorLGError(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGError,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorLGSNESIterations(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGSNESIterations,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorLGSNESIterations(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGSNESIterations,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorLGKSPIterations(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorLGKSPIterations,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorLGKSPIterations(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorLGKSPIterations,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorEnvelopeCtxCreate(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{TSMonitorEnvelopeCtx},StridedArray{TSMonitorEnvelopeCtx},Ptr{TSMonitorEnvelopeCtx},Ref{TSMonitorEnvelopeCtx}})
-    err = ccall((:TSMonitorEnvelopeCtxCreate,petscComplexDouble),PetscErrorCode,(TS,Ptr{TSMonitorEnvelopeCtx}),arg1,arg2)
+function TSMonitorEnvelopeCtxCreate(arg1::TS{Complex128},arg2::Union{Ptr{TSMonitorEnvelopeCtx},StridedArray{TSMonitorEnvelopeCtx},Ptr{TSMonitorEnvelopeCtx},Ref{TSMonitorEnvelopeCtx}})
+    err = ccall((:TSMonitorEnvelopeCtxCreate,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{TSMonitorEnvelopeCtx}),arg1,arg2)
     return err
 end
 
-function TSMonitorEnvelope(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorEnvelope,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorEnvelope(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorEnvelope,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSMonitorEnvelopeGetBounds(arg1::TS,arg2::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}},arg3::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
-    err = ccall((:TSMonitorEnvelopeGetBounds,petscComplexDouble),PetscErrorCode,(TS,Ptr{Vec{Complex128}},Ptr{Vec{Complex128}}),arg1,arg2,arg3)
+function TSMonitorEnvelopeGetBounds(arg1::TS{Complex128},arg2::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}},arg3::Union{Ptr{Vec{Complex128}},StridedArray{Vec{Complex128}},Ptr{Vec{Complex128}},Ref{Vec{Complex128}}})
+    err = ccall((:TSMonitorEnvelopeGetBounds,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Vec{Complex128}},Ptr{Vec{Complex128}}),arg1,arg2,arg3)
     return err
 end
 
@@ -16554,40 +16554,40 @@ function TSMonitorSPEigCtxDestroy(arg0::Type{Complex128},arg1::Union{Ptr{TSMonit
     return err
 end
 
-function TSMonitorSPEig(arg1::TS,arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSMonitorSPEig,petscComplexDouble),PetscErrorCode,(TS,Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
+function TSMonitorSPEig(arg1::TS{Complex128},arg2::Integer,arg3::Float64,arg4::Vec{Complex128},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSMonitorSPEig,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Float64,Vec{Complex128},Ptr{Void}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function TSSetEventMonitor(arg0::Type{Complex128},arg1::TS,arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSSetEventMonitor,petscComplexDouble),PetscErrorCode,(TS,Int64,Ptr{Int64},Ptr{PetscBool},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function TSSetEventMonitor(arg1::TS{Complex128},arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSSetEventMonitor,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Ptr{Int64},Ptr{PetscBool},Ptr{Void},Ptr{Void},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
-function TSSetEventTolerances(arg0::Type{Complex128},arg1::TS,arg2::Float64,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSSetEventTolerances,petscComplexDouble),PetscErrorCode,(TS,Float64,Ptr{Float64}),arg1,arg2,arg3)
+function TSSetEventTolerances(arg1::TS{Complex128},arg2::Float64,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSSetEventTolerances,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Ptr{Float64}),arg1,arg2,arg3)
     return err
 end
 
-function TSSSPSetType(arg0::Type{Complex128},arg1::TS,arg2::TSSSPType)
-    err = ccall((:TSSSPSetType,petscComplexDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSSSPSetType(arg1::TS{Complex128},arg2::TSSSPType)
+    err = ccall((:TSSSPSetType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Cstring),arg1,arg2)
     return err
 end
 
-function TSSSPGetType(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{TSSSPType},StridedArray{TSSSPType},Ptr{TSSSPType},Ref{TSSSPType}})
+function TSSSPGetType(arg1::TS{Complex128},arg2::Union{Ptr{TSSSPType},StridedArray{TSSSPType},Ptr{TSSSPType},Ref{TSSSPType}})
     (arg2_,tmp) = symbol_get_before(arg2)
-    err = ccall((:TSSSPGetType,petscComplexDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),arg1,arg2_)
+    err = ccall((:TSSSPGetType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Ptr{UInt8}}),arg1,arg2_)
     symbol_get_after(arg2_,arg2)
     return err
 end
 
-function TSSSPSetNumStages(arg0::Type{Complex128},arg1::TS,arg2::Integer)
-    err = ccall((:TSSSPSetNumStages,petscComplexDouble),PetscErrorCode,(TS,Int64),arg1,arg2)
+function TSSSPSetNumStages(arg1::TS{Complex128},arg2::Integer)
+    err = ccall((:TSSSPSetNumStages,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64),arg1,arg2)
     return err
 end
 
-function TSSSPGetNumStages(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
-    err = ccall((:TSSSPGetNumStages,petscComplexDouble),PetscErrorCode,(TS,Ptr{Int64}),arg1,arg2)
+function TSSSPGetNumStages(arg1::TS{Complex128},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+    err = ccall((:TSSSPGetNumStages,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Int64}),arg1,arg2)
     return err
 end
 
@@ -16601,8 +16601,8 @@ function TSSSPInitializePackage(arg0::Type{Complex128})
     return err
 end
 
-function TSGetAdapt(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{TSAdapt},StridedArray{TSAdapt},Ptr{TSAdapt},Ref{TSAdapt}})
-    err = ccall((:TSGetAdapt,petscComplexDouble),PetscErrorCode,(TS,Ptr{TSAdapt}),arg1,arg2)
+function TSGetAdapt(arg1::TS{Complex128},arg2::Union{Ptr{TSAdapt},StridedArray{TSAdapt},Ptr{TSAdapt},Ref{TSAdapt}})
+    err = ccall((:TSGetAdapt,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{TSAdapt}),arg1,arg2)
     return err
 end
 
@@ -16651,13 +16651,13 @@ function TSAdaptCandidatesGet(arg0::Type{Complex128},arg1::TSAdapt,arg2::Union{P
     return err
 end
 
-function TSAdaptChoose(arg0::Type{Complex128},arg1::TSAdapt,arg2::TS,arg3::Float64,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:TSAdaptChoose,petscComplexDouble),PetscErrorCode,(TSAdapt,TS,Float64,Ptr{Int64},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
+function TSAdaptChoose(arg1::TSAdapt,arg2::TS{Complex128},arg3::Float64,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+    err = ccall((:TSAdaptChoose,petscComplexDouble),PetscErrorCode,(TSAdapt,TS{Complex128},Float64,Ptr{Int64},Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function TSAdaptCheckStage(arg0::Type{Complex128},arg1::TSAdapt,arg2::TS,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:TSAdaptCheckStage,petscComplexDouble),PetscErrorCode,(TSAdapt,TS,Ptr{PetscBool}),arg1,arg2,arg3)
+function TSAdaptCheckStage(arg1::TSAdapt,arg2::TS{Complex128},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+    err = ccall((:TSAdaptCheckStage,petscComplexDouble),PetscErrorCode,(TSAdapt,TS{Complex128},Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
 
@@ -16771,50 +16771,50 @@ function TSGLFinalizePackage(arg0::Type{Complex128})
     return err
 end
 
-function TSGLSetType(arg0::Type{Complex128},arg1::TS,arg2::TSGLType)
-    err = ccall((:TSGLSetType,petscComplexDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSGLSetType(arg1::TS{Complex128},arg2::TSGLType)
+    err = ccall((:TSGLSetType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Cstring),arg1,arg2)
     return err
 end
 
-function TSGLGetAdapt(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{TSGLAdapt},StridedArray{TSGLAdapt},Ptr{TSGLAdapt},Ref{TSGLAdapt}})
-    err = ccall((:TSGLGetAdapt,petscComplexDouble),PetscErrorCode,(TS,Ptr{TSGLAdapt}),arg1,arg2)
+function TSGLGetAdapt(arg1::TS{Complex128},arg2::Union{Ptr{TSGLAdapt},StridedArray{TSGLAdapt},Ptr{TSGLAdapt},Ref{TSGLAdapt}})
+    err = ccall((:TSGLGetAdapt,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{TSGLAdapt}),arg1,arg2)
     return err
 end
 
-function TSGLSetAcceptType(arg0::Type{Complex128},arg1::TS,arg2::TSGLAcceptType)
-    err = ccall((:TSGLSetAcceptType,petscComplexDouble),PetscErrorCode,(TS,Cstring),arg1,arg2)
+function TSGLSetAcceptType(arg1::TS{Complex128},arg2::TSGLAcceptType)
+    err = ccall((:TSGLSetAcceptType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Cstring),arg1,arg2)
     return err
 end
 
-function TSEIMEXSetMaxRows(arg0::Type{Complex128},ts::TS,arg1::Integer)
-    err = ccall((:TSEIMEXSetMaxRows,petscComplexDouble),PetscErrorCode,(TS,Int64),ts,arg1)
+function TSEIMEXSetMaxRows(ts::TS{Complex128},arg1::Integer)
+    err = ccall((:TSEIMEXSetMaxRows,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64),ts,arg1)
     return err
 end
 
-function TSEIMEXSetRowCol(arg0::Type{Complex128},ts::TS,arg1::Integer,arg2::Integer)
-    err = ccall((:TSEIMEXSetRowCol,petscComplexDouble),PetscErrorCode,(TS,Int64,Int64),ts,arg1,arg2)
+function TSEIMEXSetRowCol(ts::TS{Complex128},arg1::Integer,arg2::Integer)
+    err = ccall((:TSEIMEXSetRowCol,petscComplexDouble),PetscErrorCode,(TS{Complex128},Int64,Int64),ts,arg1,arg2)
     return err
 end
 
-function TSEIMEXSetOrdAdapt(arg0::Type{Complex128},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSEIMEXSetOrdAdapt,petscComplexDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSEIMEXSetOrdAdapt(arg1::TS{Complex128},arg2::PetscBool)
+    err = ccall((:TSEIMEXSetOrdAdapt,petscComplexDouble),PetscErrorCode,(TS{Complex128},PetscBool),arg1,arg2)
     return err
 end
 
-function TSRKGetType(arg0::Type{Complex128},ts::TS,arg1::Union{Ptr{TSRKType},StridedArray{TSRKType},Ptr{TSRKType},Ref{TSRKType}})
+function TSRKGetType(ts::TS{Complex128},arg1::Union{Ptr{TSRKType},StridedArray{TSRKType},Ptr{TSRKType},Ref{TSRKType}})
     (arg1_,tmp) = symbol_get_before(arg1)
-    err = ccall((:TSRKGetType,petscComplexDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),ts,arg1_)
+    err = ccall((:TSRKGetType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Ptr{UInt8}}),ts,arg1_)
     symbol_get_after(arg1_,arg1)
     return err
 end
 
-function TSRKSetType(arg0::Type{Complex128},ts::TS,arg1::TSRKType)
-    err = ccall((:TSRKSetType,petscComplexDouble),PetscErrorCode,(TS,Cstring),ts,arg1)
+function TSRKSetType(ts::TS{Complex128},arg1::TSRKType)
+    err = ccall((:TSRKSetType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Cstring),ts,arg1)
     return err
 end
 
-function TSRKSetFullyImplicit(arg0::Type{Complex128},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSRKSetFullyImplicit,petscComplexDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSRKSetFullyImplicit(arg1::TS{Complex128},arg2::PetscBool)
+    err = ccall((:TSRKSetFullyImplicit,petscComplexDouble),PetscErrorCode,(TS{Complex128},PetscBool),arg1,arg2)
     return err
 end
 
@@ -16838,20 +16838,20 @@ function TSRKRegisterDestroy(arg0::Type{Complex128})
     return err
 end
 
-function TSARKIMEXGetType(arg0::Type{Complex128},ts::TS,arg1::Union{Ptr{TSARKIMEXType},StridedArray{TSARKIMEXType},Ptr{TSARKIMEXType},Ref{TSARKIMEXType}})
+function TSARKIMEXGetType(ts::TS{Complex128},arg1::Union{Ptr{TSARKIMEXType},StridedArray{TSARKIMEXType},Ptr{TSARKIMEXType},Ref{TSARKIMEXType}})
     (arg1_,tmp) = symbol_get_before(arg1)
-    err = ccall((:TSARKIMEXGetType,petscComplexDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),ts,arg1_)
+    err = ccall((:TSARKIMEXGetType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Ptr{UInt8}}),ts,arg1_)
     symbol_get_after(arg1_,arg1)
     return err
 end
 
-function TSARKIMEXSetType(arg0::Type{Complex128},ts::TS,arg1::TSARKIMEXType)
-    err = ccall((:TSARKIMEXSetType,petscComplexDouble),PetscErrorCode,(TS,Cstring),ts,arg1)
+function TSARKIMEXSetType(ts::TS{Complex128},arg1::TSARKIMEXType)
+    err = ccall((:TSARKIMEXSetType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Cstring),ts,arg1)
     return err
 end
 
-function TSARKIMEXSetFullyImplicit(arg0::Type{Complex128},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSARKIMEXSetFullyImplicit,petscComplexDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSARKIMEXSetFullyImplicit(arg1::TS{Complex128},arg2::PetscBool)
+    err = ccall((:TSARKIMEXSetFullyImplicit,petscComplexDouble),PetscErrorCode,(TS{Complex128},PetscBool),arg1,arg2)
     return err
 end
 
@@ -16875,20 +16875,20 @@ function TSARKIMEXRegisterDestroy(arg0::Type{Complex128})
     return err
 end
 
-function TSRosWGetType(arg0::Type{Complex128},ts::TS,arg1::Union{Ptr{TSRosWType},StridedArray{TSRosWType},Ptr{TSRosWType},Ref{TSRosWType}})
+function TSRosWGetType(ts::TS{Complex128},arg1::Union{Ptr{TSRosWType},StridedArray{TSRosWType},Ptr{TSRosWType},Ref{TSRosWType}})
     (arg1_,tmp) = symbol_get_before(arg1)
-    err = ccall((:TSRosWGetType,petscComplexDouble),PetscErrorCode,(TS,Ptr{Ptr{UInt8}}),ts,arg1_)
+    err = ccall((:TSRosWGetType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Ptr{UInt8}}),ts,arg1_)
     symbol_get_after(arg1_,arg1)
     return err
 end
 
-function TSRosWSetType(arg0::Type{Complex128},ts::TS,arg1::TSRosWType)
-    err = ccall((:TSRosWSetType,petscComplexDouble),PetscErrorCode,(TS,Cstring),ts,arg1)
+function TSRosWSetType(ts::TS{Complex128},arg1::TSRosWType)
+    err = ccall((:TSRosWSetType,petscComplexDouble),PetscErrorCode,(TS{Complex128},Cstring),ts,arg1)
     return err
 end
 
-function TSRosWSetRecomputeJacobian(arg0::Type{Complex128},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSRosWSetRecomputeJacobian,petscComplexDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSRosWSetRecomputeJacobian(arg1::TS{Complex128},arg2::PetscBool)
+    err = ccall((:TSRosWSetRecomputeJacobian,petscComplexDouble),PetscErrorCode,(TS{Complex128},PetscBool),arg1,arg2)
     return err
 end
 
@@ -16917,58 +16917,58 @@ function TSRosWRegisterDestroy(arg0::Type{Complex128})
     return err
 end
 
-function TSThetaSetTheta(arg0::Type{Complex128},arg1::TS,arg2::Float64)
-    err = ccall((:TSThetaSetTheta,petscComplexDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSThetaSetTheta(arg1::TS{Complex128},arg2::Float64)
+    err = ccall((:TSThetaSetTheta,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64),arg1,arg2)
     return err
 end
 
-function TSThetaGetTheta(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSThetaGetTheta,petscComplexDouble),PetscErrorCode,(TS,Ptr{Float64}),arg1,arg2)
+function TSThetaGetTheta(arg1::TS{Complex128},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSThetaGetTheta,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function TSThetaGetEndpoint(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
-    err = ccall((:TSThetaGetEndpoint,petscComplexDouble),PetscErrorCode,(TS,Ptr{PetscBool}),arg1,arg2)
+function TSThetaGetEndpoint(arg1::TS{Complex128},arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+    err = ccall((:TSThetaGetEndpoint,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{PetscBool}),arg1,arg2)
     return err
 end
 
-function TSThetaSetEndpoint(arg0::Type{Complex128},arg1::TS,arg2::PetscBool)
-    err = ccall((:TSThetaSetEndpoint,petscComplexDouble),PetscErrorCode,(TS,PetscBool),arg1,arg2)
+function TSThetaSetEndpoint(arg1::TS{Complex128},arg2::PetscBool)
+    err = ccall((:TSThetaSetEndpoint,petscComplexDouble),PetscErrorCode,(TS{Complex128},PetscBool),arg1,arg2)
     return err
 end
 
-function TSAlphaSetAdapt(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSAlphaSetAdapt,petscComplexDouble),PetscErrorCode,(TS,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
+function TSAlphaSetAdapt(arg1::TS{Complex128},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSAlphaSetAdapt,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
     return err
 end
 
-function TSAlphaAdaptDefault(arg1::TS,arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
-    err = ccall((:TSAlphaAdaptDefault,petscComplexDouble),PetscErrorCode,(TS,Float64,Vec{Complex128},Vec{Complex128},Ptr{Float64},Ptr{PetscBool},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
+function TSAlphaAdaptDefault(arg1::TS{Complex128},arg2::Float64,arg3::Vec{Complex128},arg4::Vec{Complex128},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg7::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+    err = ccall((:TSAlphaAdaptDefault,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Vec{Complex128},Vec{Complex128},Ptr{Float64},Ptr{PetscBool},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
 
-function TSAlphaSetRadius(arg0::Type{Complex128},arg1::TS,arg2::Float64)
-    err = ccall((:TSAlphaSetRadius,petscComplexDouble),PetscErrorCode,(TS,Float64),arg1,arg2)
+function TSAlphaSetRadius(arg1::TS{Complex128},arg2::Float64)
+    err = ccall((:TSAlphaSetRadius,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64),arg1,arg2)
     return err
 end
 
-function TSAlphaSetParams(arg0::Type{Complex128},arg1::TS,arg2::Float64,arg3::Float64,arg4::Float64)
-    err = ccall((:TSAlphaSetParams,petscComplexDouble),PetscErrorCode,(TS,Float64,Float64,Float64),arg1,arg2,arg3,arg4)
+function TSAlphaSetParams(arg1::TS{Complex128},arg2::Float64,arg3::Float64,arg4::Float64)
+    err = ccall((:TSAlphaSetParams,petscComplexDouble),PetscErrorCode,(TS{Complex128},Float64,Float64,Float64),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSAlphaGetParams(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
-    err = ccall((:TSAlphaGetParams,petscComplexDouble),PetscErrorCode,(TS,Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
+function TSAlphaGetParams(arg1::TS{Complex128},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+    err = ccall((:TSAlphaGetParams,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function TSSetDM(arg0::Type{Complex128},arg1::TS,arg2::DM)
-    err = ccall((:TSSetDM,petscComplexDouble),PetscErrorCode,(TS,DM),arg1,arg2)
+function TSSetDM(arg1::TS{Complex128},arg2::DM)
+    err = ccall((:TSSetDM,petscComplexDouble),PetscErrorCode,(TS{Complex128},DM),arg1,arg2)
     return err
 end
 
-function TSGetDM(arg0::Type{Complex128},arg1::TS,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
-    err = ccall((:TSGetDM,petscComplexDouble),PetscErrorCode,(TS,Ptr{DM}),arg1,arg2)
+function TSGetDM(arg1::TS{Complex128},arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
+    err = ccall((:TSGetDM,petscComplexDouble),PetscErrorCode,(TS{Complex128},Ptr{DM}),arg1,arg2)
     return err
 end
 

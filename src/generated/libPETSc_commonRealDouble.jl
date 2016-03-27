@@ -3704,7 +3704,10 @@ const SNES_FAS_KASKADE = (UInt32)(3)
 immutable _p_TS
 end
 
-typealias TS Ptr{_p_TS}
+immutable TS{T}
+    pobj::Ptr{Void}
+end
+
 typealias TSType Symbol
 
 #= # begin enum ANONYMOUS_80 =#

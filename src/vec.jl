@@ -509,8 +509,7 @@ function (==)(x::Vec, y::AbstractArray)
   end
   LocalArrayRestore(x_arr)
 
-  flag_int = convert(Int32, flag)  # Int32 is a MPI boolean
-  buf = Int32[flag_int]
+  buf = Int8[flag]
   # process 0 is root
   recbuf = MPI.Reduce(buf, 1, MPI.LAND, 0, comm(x))
 

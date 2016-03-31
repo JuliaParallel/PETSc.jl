@@ -225,3 +225,94 @@ function ComputeRHSJacobianConstant(ts::TS, t, u::Vec, A::Mat, B::Mat, ctx::Tupl
 
   chk(C.TSComputeRHSJacobianConstant(ts.p, t, u.p, A.p, B.p, C_NULL))
 end
+
+###############################################################################
+# left hand side function
+
+function set_lhs_function{T}(ts::TS{T}, res::Vec{T}, f::Function, ctx::Tuple=())
+
+  ctx_outer = (f, ctx)
+  push!(ts.data, ctx_outer)
+  ctx_ptr = pointer_from_objref(ctx_outer)
+  Treal = real(T)
+
+  fptr = cfunction(lhs_wrapper, PetscErrorCode, (C.TS{T}, Treal, C.Vec{T}, C.Vec{T}, C.Vec{T}, Ptr{Void}))
+
+  chk(C.TSSetIFunction(ts.p, res.p, fptr, ctx_ptr))
+  return nothing
+end
+
+function lhs_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, ut::C.Vec{T}, F::C.Vec{T}, ctx::Ptr{Void})
+
+  Treal = real(T)
+  # transform into high level objects
+  bigts = TS{T}(ts, first_instance=false)
+
+  tref = Array(C.VecType, 1)
+#  tref = Ref{C.VecType}()
+  chk(C.VecGetType(u, tref))
+  bigu = Vec{T, tref[1]}(u, first_instance=false)
+
+  tref2 = Array(C.VecType, 1)
+  chk(C.VecGetType(ut, tref))
+  bigut = Vec{T, tref2[1]}(u, first_instance=false)
+
+  tref3 = Array(C.VecType, 1)
+#  tref2 = Ref{C.VecType}()
+  chk(C.VecGetType(F, tref3))
+  bigF = Vec{T, tref3[1]}(F, first_instance=false)
+
+  ctx = unsafe_pointer_to_objref(ctx_ptr)
+  func = ctx[1]
+  ctx_inner = ctx[2]  # the user provided ctx
+
+  ret_status = func(bigts, Treal(t), bigu, bigut, bigF, ctx_inner)
+  return PetscErrorCode(ret_status)
+end
+
+###############################################################################
+# left hand side jacobian
+
+function set_lhs_jac{T}(ts::TS{T}, A::Mat{T}, B::Mat{T}, f::Function, ctx::Tuple=())
+
+  ctx_outer = (f, ctx)
+  push!(ts.data, ctx_outer)
+  ctx_ptr = pointer_from_objref(ctx_outer)
+  Treal = real(T)
+
+  fptr = cfunction(lhs_jac_wrapper, PetscErrorCode, (C.TS{T}, Treal, C.Vec{T}, C.Vec{T}, Treal, C.Mat{T}, C.Mat{T}, Ptr{Void}))
+
+  chk(C.TSSetIJacobian(ts.p, A.p, B.p, fptr, ctx_ptr))
+end
+
+
+function lhs_jac_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, ut::C.Vec{T}, a, A::C.Mat{T}, B::C.Mat{T}, ctx::Ptr{Void})
+
+  Treal = real(T) 
+  bigts = TS{T}(ts, first_instance=false)
+
+  tref = Ref{C.VecType}()
+  chk(C.VecGetType(u, tref))
+  bigu = Vec{T, tref[]}(u, first_instance=false)
+
+  tref2 = Ref{C.VecType}()
+  chk(C.VecGetType(ut, tref2))
+  bigut = Vec{T, tref2[]}(ut, first_instance=false)
+
+
+  tref3 = Ref{C.MatType}()
+  chk(C.MatGetType(A, tref3))
+  bigA = Mat{T, tref3[]}(A, first_instance=false)
+
+  tref4 = Ref{C.MatType}()
+  chk(C.MatGetType(A, tref4))
+  bigB = Mat{T, tref4[]}(B, first_instance=false)
+
+  ctx = unsafe_pointer_to_objref(ctx_ptr)
+  func = ctx[1]
+  ctx_inner = ctx[2]  # the user provided ctx
+
+  ret_status = func(bigts, bigu, bigut, Treal(a), bigA, bigB, ctx_inner)
+  return PetscErrorCode(ret_status)
+end
+

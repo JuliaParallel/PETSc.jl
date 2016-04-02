@@ -11,7 +11,7 @@
 
   @test length(vec1) == 3*comm_size
   @test vec1 == vec1j
-  @test vec != vec1j2
+  @test vec1 != vec1j2
 
   # ghost vectors
   # figure out global indices of ghost points
@@ -54,7 +54,17 @@
   end
 
 
+  vec = Vec([1.0, 2.0, 3.0])
+  @test length(vec) == comm_size*3
+  @test lengthlocal(vec) == 3
 
+  vec_arr = LocalArray(vec)
+  @test length(vec_arr) == 3
+  LocalArrayRestore(vec_arr)
+
+  vec_arr = LocalArrayRead(vec)
+  @test length(vec_arr) == 3
+  LocalArrayRestore(vec_arr)
 
   @testset "Application Ordering{$ST}" begin
 

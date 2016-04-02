@@ -620,7 +620,7 @@ end
 function LocalArrayRestore{T}(varr::LocalArray{T})
 
   if !varr.isfinalized && !PetscFinalized(T) && !isfinalized(varr.pobj)
-    ptr = [varr.ref[]]
+    ptr = varr.ref
     chk(C.VecRestoreArray(varr.pobj, ptr))
   end 
   varr.isfinalized = true

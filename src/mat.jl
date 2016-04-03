@@ -186,6 +186,13 @@ function petscview{T}(mat::PetscMat{T})
   chk(C.MatView(mat.p, viewer))
 end
 
+function petscwrite{T}(mat::PetscMat{T}, fname)
+  viewer_ref = Ref{C.PetscViewer{T}}()
+  chk(C.PetscViewerASCIIOpen(comm(mat), fname, viewer_ref))
+  chk(C.MatView(mat.p, viewer_ref[]))
+  chk(C.PetscViewerDestroy(viewer_ref))
+end
+
 
 export setoption!, gettype
 

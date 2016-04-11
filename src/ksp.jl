@@ -105,18 +105,13 @@ function _ksp_A{T}(ksp::KSP{T})
 end
 
 # x = A \ b
-function Base.A_ldiv_B!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T}, f=STDOUT)
+function Base.A_ldiv_B!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T})
 
   assemble(_ksp_A(ksp))
-  println(f, "assembled A"); flush(f)
   assemble(b)
-  println(f, "assembled b"); flush(f)
   assemble(x)
-  println(f, "assembled x"); flush(f)
 
-  println(f, "about to perform solve"); flush(f)
   chk(C.KSPSolve(ksp.p, b.p, x.p))
-  println(f, "finished performing solve"); flush(f)
 
   reason = Ref{Cint}()
   chk(C.KSPGetConvergedReason(ksp.p, reason))
@@ -149,10 +144,6 @@ function KSPSolveTranspose{T}(ksp::KSP{T}, b::Vec{T})
   KSPSolveTranspose!(ksp, b, x)
   return x
 end
-
-
-
-
 
 function Base.size(ksp::KSP)
   m = Ref{PetscInt}()

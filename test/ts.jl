@@ -134,5 +134,6 @@ ST = Float32
     @test u[i] ≈ u_julia[i]
   end
 
-
+  PETSc.PetscDestroy(ts)
+  @test PETSc.isfinalized(ts)
 end

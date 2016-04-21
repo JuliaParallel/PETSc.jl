@@ -20,9 +20,8 @@ end
 
 
 function PetscDestroy{T}(ts::TS{T})
-
-  if !PetscFinalized(T)  && !isfinalized(vec)
-    ts_ref = Ref(ts)
+  if !PetscFinalized(T) && !isfinalized(ts)
+    ts_ref = Ref(ts.p)
     chk(C.TSDestroy(ts_ref))
     ts.p = C.TS{T}(C_NULL)
   end

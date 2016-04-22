@@ -130,9 +130,15 @@
       vec4_j = abs(vec4_j)
       absv4  = abs(vec4)
       abs!(vec4)
-
-      @test vec4 == vec4_j
-      @test absv4 == vec4_j
+      if VERSION >= v"0.5.0-dev+0"
+          @test real(vec4) ≈ vec4_j
+          @test real(absv4) ≈ vec4_j
+          @test imag(vec4) ≈ zeros(vec4_j)
+          @test imag(absv4) ≈ zeros(vec4_j)
+      else
+          @test vec4 == vec4_j
+          @test absv4 == vec4_j
+      end
     end
     @testset "testing exp" begin
       vec4_j = exp(vec4_j)

@@ -40,10 +40,23 @@ ST = Float32
 
   solve!(ts, u)
 
+  # same as above, but using set_ic
+  ts = TS(ST, PETSc.C.TS_LINEAR, PETSc.C.TSEULER)
+
+  set_rhs_function(ts, NullVec[ST], rhs1)
+  set_rhs_jac(ts, A, A, ComputeRHSJacobianConstant)
+
+  set_times(ts, 0.0, 0.1, 10, 50.0)  # limited by number of timesteps
+
+  u = Vec(ST, 2)
+  u[1] = 1.0
+  u[2] = 1.0
+  set_ic(ts, u)
+  solve!(ts)
+
 #  petscview(u)
   @test u[1] ≈ ST(2.0)
   @test u[2] ≈ ST(3.0)
-
 
   # solve the 1D heat equation u_t = u_xx with 2nd order space, linear time
   # homogneous Dirchlet BCs
@@ -134,5 +147,6 @@ ST = Float32
     @test u[i] ≈ u_julia[i]
   end
 
-
+  PETSc.PetscDestroy(ts)
+  @test PETSc.isfinalized(ts)
 end

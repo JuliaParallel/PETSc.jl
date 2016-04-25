@@ -60,6 +60,13 @@ end
 
 """
   More explicit constructor: set problem type, method directly
+
+`tsptype` sets the problem type and can be one of the following:
+* `TS_LINEAR` - a linear set of ODEs 
+* `TS_NONLINEAR` - a nonlinear set of ODEs or DEAs
+
+`tstype` sets the method used to solve the problem. More information
+about the possible methods is available at the official PETSc [docs](http://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/TS/TSType.html).
 """
 function TS{T<:Scalar}(::Type{T}, tsptype::C.TSProblemType, tstype::C.TSType; 
                        comm=MPI.COMM_WORLD)

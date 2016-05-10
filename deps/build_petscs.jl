@@ -94,7 +94,9 @@ for scalar_type in ("real", "complex"), precision in ("double", "single")
         end
       end
       isempty(PETSC_ARCH) && error("couldn't determine PETSC_ARCH")
-      PETSC_DIR = abspath(name_i, petsc_name, name_i)
+      println("PETSC_ARCH = ", PETSC_ARCH)
+      PETSC_DIR = pwd()  # because we cd into this directory
+      println("PETSC_DIR = ", PETSC_DIR)
       arches[name_i] = (PETSC_DIR, PETSC_ARCH)
       println("BUILDING PETSc $name_i...")
       for line in eachline(`make MAKE_NP=$CPU_CORES PETSC_DIR=$(pwd()) PETSC_ARCH=$PETSC_ARCH`)

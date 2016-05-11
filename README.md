@@ -82,6 +82,7 @@ For all the variables listed below, `name` is one of `RealDouble`, `RealSingle`,
 or `ComplexDouble`, and specifies which version of the library the variable
 describes.
 
+### What to build
 If the varibles `JULIA_PETSC_name_DIR` and `JULIA_PETSC_name_ARCH` are set to 
 the `PETSC_DIR` and `PETSC_ARCH` of an existing PETSc installation, the build 
 system will use that PETSc installation for the version of PETSc specified by
@@ -90,9 +91,17 @@ system will use that PETSc installation for the version of PETSc specified by
 If the variable `JULIA_PETSC_name_NOBUILD` exists (the value does not matter),
 then the package will not build a version the `name`d version of PETSc.
 
+### How to build it
 If the variable `JULIA_PETSC_OPT` exists (the value does not matter), then 
 a set of default optimization flags are passed to the PETSc `configure` 
 script.
+
+If the variable `JULIA_PETSC_FLAGS` exists and `JULIA_PETSC_OPT` does not, 
+its value is used passed to the 
+PETSc configure script (for all builds).  The user should *never* specify `--with-64-bit-indices`, `--with-scalar-type` or `--with-precision`, because this 
+would break the build process for the different version of PETSc.
+
+If neither of the above variables exist, a standard build is performed.
 
 
 ## Auto Generation Notes

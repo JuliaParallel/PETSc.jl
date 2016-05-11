@@ -14,12 +14,12 @@ build_any = false  # whether or not to build anything
 have_petsc = Array(Bool, 3)  # whether or not each version of Petsc is usable
 for (i, name) in enumerate(build_names)
   if haskey(ENV, string("JULIA_PETSC_", name, "_DIR")) || haskey(ENV, string("JULIA_PETSC_", name, "_ARCH"))
-    if !(haskey(ENV, string("JULIA_PETSC_", name, "_DIR")) && haskey(ENV, "JULIA_PETSC_", name, "_DIR"))
+    if !(haskey(ENV, string("JULIA_PETSC_", name, "_DIR")) && haskey(ENV, string("JULIA_PETSC_", name, "_DIR")))
       error("Must have either both or neither DIR and ARCH for JULIA_PETSC_$name")
     else
       build_control[name] = false
       have_petsc[i] = true
-      arches[name] = (env[string("JULIA_PETSC_",name, "_DIR")], env[string("JULIA_PETSC_", name, "_ARCH")])
+      arches[name] = (ENV[string("JULIA_PETSC_",name, "_DIR")], ENV[string("JULIA_PETSC_", name, "_ARCH")])
     end
   elseif haskey(ENV, string("JULIA_PETSC_", name, "_NOBUILD"))
     build_control[name] = false

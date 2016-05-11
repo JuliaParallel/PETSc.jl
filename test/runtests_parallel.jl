@@ -13,46 +13,48 @@ sys_size = PETSc.C.PetscInt(3)
 tmp3 = convert(Array{Complex64, 1}, [1.0 + 0im; 2.0 + 1.0im; 3.0 + 2.0im])
 tmp4 = convert( Array{Complex64, 2}, [1.0 + 1im   2 + 2im  3 + 3im; 4 + 4im  5 + 5im 7 + 7im; 7 + 7im 8 + 8im 9 + 9im])
 
-for ST in PETSc.C.petsc_type
-  # @testset "Scalar type $ST" begin # uncomment when nested test results can be printed
+for (i, ST) in enumerate(PETSc.C.petsc_type)
+  if PETSc.have_petsc[i]
+    # @testset "Scalar type $ST" begin # uncomment when nested test results can be printed
 
-  # Have both local and global versions of system for testing
-  global A_julia = zeros(ST, sys_size, sys_size)
-  global rhs = zeros(ST, sys_size)
-  global A_julia_global = zeros(ST, comm_size*sys_size, comm_size*sys_size)
-  global rhs_global = zeros(ST, comm_size*sys_size)
+    # Have both local and global versions of system for testing
+    global A_julia = zeros(ST, sys_size, sys_size)
+    global rhs = zeros(ST, sys_size)
+    global A_julia_global = zeros(ST, comm_size*sys_size, comm_size*sys_size)
+    global rhs_global = zeros(ST, comm_size*sys_size)
 
-  # create right hand side
-  for i=1:sys_size
-    rhs[i] = convert(ST, RC(tmp3[i]))
+    # create right hand side
+    for i=1:sys_size
+      rhs[i] = convert(ST, RC(tmp3[i]))
 
-    for j=0:(comm_size - 1)  # global 
-      idx = i + j*sys_size
-      rhs_global[idx] = convert(ST, RC(tmp3[i]))
-    end    
+      for j=0:(comm_size - 1)  # global 
+        idx = i + j*sys_size
+        rhs_global[idx] = convert(ST, RC(tmp3[i]))
+      end    
 
 
-  end
-
-  # create matrix A
-  for i=1:sys_size
-    for j=1:sys_size
-      A_julia[i,j] = convert(ST, RC(tmp4[i,j]))
-
-      for k=0:(comm_size - 1)
-        idxm = i + k*sys_size
-        idxn = j + k*sys_size
-        A_julia_global[idxm, idxn] = convert(ST, RC(tmp4[i,j]) )
-      end
- 
     end
+
+    # create matrix A
+    for i=1:sys_size
+      for j=1:sys_size
+        A_julia[i,j] = convert(ST, RC(tmp4[i,j]))
+
+        for k=0:(comm_size - 1)
+          idxm = i + k*sys_size
+          idxn = j + k*sys_size
+          A_julia_global[idxm, idxn] = convert(ST, RC(tmp4[i,j]) )
+        end
+   
+      end
+    end
+
+    x_julia = A_julia\rhs
+
+    include("vecp.jl")
+    include("c_funcs.jl")
+    # end
   end
-
-  x_julia = A_julia\rhs
-
-  include("vecp.jl")
-  include("c_funcs.jl")
-  # end
 end
 
 

@@ -4,7 +4,13 @@
 [![codecov.io](http://codecov.io/github/JuliaParallel/PETSc.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaParallel/PETSc.jl?branch=master)
 [![Coverage Status](https://coveralls.io/repos/JuliaParallel/PETSc.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/JuliaParallel/PETSc.jl?branch=master)
 
-This package provides a high level interface for PETSc, enabling the use of PETSc as an `AbstractArray`.  A low level interface is also available in the submodule `PETSc.C`.
+This package provides a high level interface for PETSc, enabling the use of PETSc as an `AbstractArray`.  
+A low level interface is also available in the submodule `PETSc.C`.
+The package supports 64-bit integers the `PetscInt` type described in 
+the PETSc documentation, and `Float64`, `Float32`, and `Complex128` for the 
+`PetscScalar` type.  In a default build of the package, all types can be used
+simultaneously, using multiple dispatch to determine which version of PETSc
+to use.
 
 This package requires the [MPI.jl package](https://github.com/JuliaParallel/MPI.jl) be installed.  Once it is installed you should be able to run both Julia and Petsc in parallel using MPI for all communication.  The testing verifies that PETSc can be used both serially and in parallel.
 
@@ -61,21 +67,33 @@ functionality is the current priority.
 
 
 ## Building PETSc
-Building the package will build build the 3 versions of PETSc in the `/deps` 
- directory, and writes the file `lib_locations.jl` to the `/src/generated` 
+By default, building the package will build 3 versions of PETSc in the `/deps` 
+ directory, and writes the file `lib_locations.jl` to the `/deps` 
  directory to tell the package the location of the libraries.  Note that 
 this builds the debug versions of PETSc, which are recommended to use for all 
 development.  If you wish to do high performance computations, you should 
 build the optimized versions of the library.  See the PETSc website for 
 details.
 
-## Installing [MPI.jl](https://github.com/JuliaParallel/MPI.jl)
-This package requires MPI.jl, although it is not listed in the REQUIRE file because that would download the release version of MPI.jl, which does not work.  Instead, you must use the master branch.  After you have an MPI implementation installed, `Pkg.build("Petsc")` will install it and then PETSc, according to the description above.  If you wish to install it manually, do:
+If you wish to build fewer than 3 version of PETSc or to use your own build 
+of PETSc rather than having the package build it for you, there a several 
+environmental variables that control what the build system will do.
+For all the variables listed below, `name` is one of `RealDouble`, `RealSingle`,
+or `ComplexDouble`, and specifies which version of the library the variable
+describes.
 
-```jl
-  Pkg.clone("MPI")
-  Pkg.build("MPI")
-```
+If the varibles `JULIA_PETSC_name_DIR` and `JULIA_PETSC_name_ARCH` are set to 
+the `PETSC_DIR` and `PETSC_ARCH` of an existing PETSc installation, the build 
+system will use that PETSc installation for the version of PETSc specified by
+`name`.
+
+If the variable `JULIA_PETSC_name_NOBUILD` exists (the value does not matter),
+then the package will not build a version the `name`d version of PETSc.
+
+If the variable `JULIA_PETSC_OPT` exists (the value does not matter), then 
+a set of default optimization flags are passed to the PETSc `configure` 
+script.
+
 
 ## Auto Generation Notes
 PETSc uses preprocessor variables to decide what code to include when compiling 

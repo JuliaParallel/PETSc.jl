@@ -267,7 +267,7 @@ end
 
 ##########################################################################
 import Base: setindex!
-export assemble, isassembled
+export assemble, isassembled, AssemblyBegin, AssemblyEnd
 
 # for efficient vector assembly, put all calls to x[...] = ... inside
 # assemble(x) do ... end

@@ -1,5 +1,6 @@
 # functions for PETSc TS (time stepping) algorithms
 export TS, set_ic, set_times, solve!, set_rhs_function, set_rhs_jac
+export set_lhs_function, set_lhs_jac
 export ComputeRHSFunctionLinear, ComputeRHSJacobianConstant
 
 type TS{T}
@@ -241,7 +242,7 @@ function set_lhs_function{T}(ts::TS{T}, res::Vec{T}, f::Function, ctx::Tuple=())
   return nothing
 end
 
-function lhs_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, ut::C.Vec{T}, F::C.Vec{T}, ctx::Ptr{Void})
+function lhs_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, ut::C.Vec{T}, F::C.Vec{T}, ctx_ptr::Ptr{Void})
 
   Treal = real(T)
   # transform into high level objects
@@ -253,8 +254,8 @@ function lhs_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, ut::C.Vec{T}, F::C.Vec{T}, 
   bigu = Vec{T, tref[1]}(u, first_instance=false)
 
   tref2 = Array(C.VecType, 1)
-  chk(C.VecGetType(ut, tref))
-  bigut = Vec{T, tref2[1]}(u, first_instance=false)
+  chk(C.VecGetType(ut, tref2))
+  bigut = Vec{T, tref2[1]}(ut, first_instance=false)
 
   tref3 = Array(C.VecType, 1)
 #  tref2 = Ref{C.VecType}()
@@ -285,27 +286,27 @@ function set_lhs_jac{T}(ts::TS{T}, A::Mat{T}, B::Mat{T}, f::Function, ctx::Tuple
 end
 
 
-function lhs_jac_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, ut::C.Vec{T}, a, A::C.Mat{T}, B::C.Mat{T}, ctx::Ptr{Void})
+function lhs_jac_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, ut::C.Vec{T}, a, A::C.Mat{T}, B::C.Mat{T}, ctx_ptr::Ptr{Void})
 
   Treal = real(T) 
   bigts = TS{T}(ts, first_instance=false)
 
-  tref = Ref{C.VecType}()
+  tref = Array(C.VecType, 1)
   chk(C.VecGetType(u, tref))
-  bigu = Vec{T, tref[]}(u, first_instance=false)
+  bigu = Vec{T, tref[1]}(u, first_instance=false)
 
-  tref2 = Ref{C.VecType}()
+  tref2 = Array(C.VecType, 1)
   chk(C.VecGetType(ut, tref2))
-  bigut = Vec{T, tref2[]}(ut, first_instance=false)
+  bigut = Vec{T, tref2[1]}(ut, first_instance=false)
 
 
-  tref3 = Ref{C.MatType}()
+  tref3 = Array(C.VecType, 1)
   chk(C.MatGetType(A, tref3))
-  bigA = Mat{T, tref3[]}(A, first_instance=false)
+  bigA = Mat{T, tref3[1]}(A, first_instance=false)
 
-  tref4 = Ref{C.MatType}()
-  chk(C.MatGetType(A, tref4))
-  bigB = Mat{T, tref4[]}(B, first_instance=false)
+  tref4 = Array(C.VecType, 1)
+  chk(C.MatGetType(B, tref4))
+  bigB = Mat{T, tref4[1]}(B, first_instance=false)
 
   ctx = unsafe_pointer_to_objref(ctx_ptr)
   func = ctx[1]

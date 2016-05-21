@@ -184,15 +184,19 @@ ST = Float64
     dx = ctx[1]
     nx = length(u)
     u_arr = LocalArrayRead(u)
+    println("u_arr = ", u_arr)
     ut_arr = LocalArrayRead(ut)
+    println("ut_arr = ", ut_arr)
     f_arr = LocalArray(F)
 
-    f_arr[1] = 0.0
-    f_arr[nx] = 0.0
+    f_arr[1] = u_arr[1]
+    f_arr[nx] = u_arr[nx]
 
     for i=2:(nx-1)
       f_arr[i] = ut[i] - (u_arr[i-1]/dx + -2*u_arr[i]/dx + u_arr[i+1]/dx)
     end
+
+    println("f_arr = ", f_arr)
 
     LocalArrayRestore(u_arr)
     LocalArrayRestore(ut_arr)
@@ -201,7 +205,7 @@ ST = Float64
     return 0
   end
 
-  function lhs_jacobian(ts::TS, u::Vec, ut::Vec, t, A::Mat, B::Mat, ctx)
+  function lhs_jacobian(ts::TS, u::Vec, ut::Vec, a, A::Mat, B::Mat, ctx)
     dx = ctx[1]
     nx, ny = size(A)
     A[1,1] = 1.0
@@ -209,19 +213,18 @@ ST = Float64
 
     for i=2:(nx-1)
       A[i, i-1] = -1/dx
-      A[i, i] = 2/dx
+      A[i, i] = 2/dx + a
       A[i, i+1] = -1/dx
     end
 
     AssemblyBegin(A, PETSc.C.MAT_FINAL_ASSEMBLY)
     AssemblyEnd(A, PETSc.C.MAT_FINAL_ASSEMBLY)
-    println("A.p = ", A.p)
-    println("B.p = ", B.p)
+    petscview(A)
 
     return 0
   end
 
-  ts = TS(ST, PETSc.C.TS_LINEAR, PETSc.C.TSBEULER)
+  ts = TS(ST, PETSc.C.TS_NONLINEAR, PETSc.C.TSBEULER)
 
   A = Mat(ST, nx, nx, nz = 3)
   A[1,1] = 1.0

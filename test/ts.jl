@@ -1,9 +1,9 @@
-
+#=
 using PETSc
 using BaseTestNext
 # test timestepping (TS) functions
 ST = Float64
-
+=#
 
 @testset "TS" begin
   # solve the equation f =  [u1;u2] = [t + 1; 2t + 1] using forward Euler
@@ -184,9 +184,7 @@ ST = Float64
     dx = ctx[1]
     nx = length(u)
     u_arr = LocalArrayRead(u)
-    println("u_arr = ", u_arr)
     ut_arr = LocalArrayRead(ut)
-    println("ut_arr = ", ut_arr)
     f_arr = LocalArray(F)
 
     f_arr[1] = u_arr[1]
@@ -195,8 +193,6 @@ ST = Float64
     for i=2:(nx-1)
       f_arr[i] = ut[i] - (u_arr[i-1]/dx + -2*u_arr[i]/dx + u_arr[i+1]/dx)
     end
-
-    println("f_arr = ", f_arr)
 
     LocalArrayRestore(u_arr)
     LocalArrayRestore(ut_arr)
@@ -219,12 +215,11 @@ ST = Float64
 
     AssemblyBegin(A, PETSc.C.MAT_FINAL_ASSEMBLY)
     AssemblyEnd(A, PETSc.C.MAT_FINAL_ASSEMBLY)
-    petscview(A)
 
     return 0
   end
 
-  ts = TS(ST, PETSc.C.TS_NONLINEAR, PETSc.C.TSBEULER)
+  ts = TS(ST, PETSc.C.TS_LINEAR, PETSc.C.TSBEULER)
 
   A = Mat(ST, nx, nx, nz = 3)
   A[1,1] = 1.0
@@ -251,11 +246,9 @@ ST = Float64
   set_times(ts, 0.0, dt, nsteps , 50.0)  # limited by number of timesteps
   AssemblyBegin(u)
   AssemblyEnd(u)
-  println("isfinalized(ts) = ", PETSc.isfinalized(ts))
   solve!(ts, u)
 
   for i=1:nx
-    println("i = ", i, ", u_petsc = ", u[i], ", u_julia = ", u_julia[i])
     @test u[i] ≈ u_julia[i]
   end
 

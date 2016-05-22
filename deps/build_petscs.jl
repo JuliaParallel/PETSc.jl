@@ -6,6 +6,25 @@ fmt = ".tar.gz"
 # download Petsc if needed
 file_name = string(petsc_name, fmt)
 
+const buildopts_fname = "buildopts.conf"
+
+# load build options from last build
+const fpath = joinpath(dirname(@__FILE__), buildopts_fname)
+if isfile(fpath)
+  println("USING build options in file ", fpath)
+  envvars = readdlm(fpath)
+  for entry = 1:size(envvars, 1)
+    key = envvars[entry, 1]
+    val =  envvars[entry, 2]
+    if haskey(ENV, key)
+      println("WARNING: build option $key cannot be specified as both environmental variable and buildopts.conf option, ignoring value from file...")
+    else
+      ENV[key] = val
+    end
+  end
+end
+
+
 # figure out what to build
 const build_names = ["RealDouble", "RealSingle", "ComplexDouble"]
 build_control = Dict() # dirname => whether or not to build it
@@ -32,7 +51,33 @@ for (i, name) in enumerate(build_names)
   end
 end
       
+# write options to file used for rebuild
+suffixes_name = ["_DIR", "_ARCH", "_NOBUILD"] 
+suffixes_noname = ["_OPT", "_FLAGS"]
+envvars = Dict{Any, Any}()
+for (i, name) in enumerate(build_names)
+  for suf in suffixes_name
+    key_i = string("JULIA_PETSC_", name, suf)
+    if haskey(ENV, key_i)
+      envvars[key_i] = ENV[key_i]
+    end
+  end
 
+  for suf in suffixes_noname
+    key_i = string("JULIA_PETSC_", suf)
+    if haskey(ENV, key_i)
+      envvars[key_i] = ENV[key_i]
+    end
+  end
+end
+
+f = open(fpath, "w")
+for (key, val) in envvars
+  println(f, key, " ", val)
+end
+close(f)
+
+# proceed with the build
 
 if !isfile(file_name) && build_any
   println("DOWNLOADING $file_name")
@@ -102,9 +147,9 @@ for scalar_type in ("real", "complex"), precision in ("double", "single")
         end
       end
       isempty(PETSC_ARCH) && error("couldn't determine PETSC_ARCH")
-      println("PETSC_ARCH = ", PETSC_ARCH)
+#      println("PETSC_ARCH = ", PETSC_ARCH)
       PETSC_DIR = pwd()  # because we cd into this directory
-      println("PETSC_DIR = ", PETSC_DIR)
+#      println("PETSC_DIR = ", PETSC_DIR)
       arches[name_i] = (PETSC_DIR, PETSC_ARCH)
       println("BUILDING PETSc $name_i...")
       for line in eachline(`make MAKE_NP=$CPU_CORES PETSC_DIR=$(pwd()) PETSC_ARCH=$PETSC_ARCH`)

@@ -147,8 +147,8 @@ end
   (obtained from cfunction() ) that performs the operation.
 
   The function should take the low level Petsc objects (defined in the C module)
-  rather than the high level ones defined in this file.  Methods are provided 
-  to turn the low level object into a high level one.
+  rather than the high level ones defined in this file.  There are constructors
+  to create a high level object from a low level one
 
 """
 function setop!{T}(mat::Mat{T, C.MATSHELL}, op::C.MatOperation, func::Ptr{Void})
@@ -156,13 +156,20 @@ function setop!{T}(mat::Mat{T, C.MATSHELL}, op::C.MatOperation, func::Ptr{Void})
   chk(C.MatShellSetOperation(mat.p, op, func))
 end
 
+"""
+  Get the tuple of user provided data passed in when the shell matrix was 
+  created.
+"""
 function getcontext{T}(mat::Mat{T, C.MATSHELL})
 
   ctx_ptr = C.MatShellGetContext(mat.p)
   return unsafe_pointer_to_objref(ctx_ptr)
 end
 
-
+"""
+  Destroy a Mat object and the underlying data structure, if the object
+  has not already been finalized
+"""
 function PetscDestroy{T}(mat::Mat{T})
   if !PetscFinalized(T)
     C.MatDestroy(Ref(mat.p))
@@ -181,11 +188,17 @@ function isfinalized(mat::C.Mat)
   return mat.pobj == C_NULL
 end
 
+"""
+  Print a Petsc matrix to STDOUT
+"""
 function petscview{T}(mat::PetscMat{T})
   viewer = C.PetscViewer{T}(C_NULL)
   chk(C.MatView(mat.p, viewer))
 end
 
+"""
+  Print a Petsc matrix to a named file, in text format
+"""
 function petscwrite{T}(mat::PetscMat{T}, fname)
   viewer_ref = Ref{C.PetscViewer{T}}()
   chk(C.PetscViewerASCIIOpen(comm(mat), fname, viewer_ref))
@@ -196,11 +209,19 @@ end
 
 export setoption!, gettype
 
+"""
+  Pass values to the Petsc function MatSetOption.  Note that the handful of 
+  options that can be passed here should not be confused with those for the
+  global options database
+"""
 function setoption!(m::Mat, option::C.MatOption, val::Bool)
   chk(C.MatSetOption(m.p, option, PetscBool(val)))
   m
 end
 
+"""
+  Get the format of the matrix.
+"""
 gettype{T,MT}(a::PetscMat{T,MT}) = MT
 
 function Base.resize!(a::Mat, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
@@ -215,6 +236,9 @@ function Base.resize!(a::Mat, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECI
   a
 end
 
+"""
+  Preallocates the sparsity pattern for (B)AIJ matrices.
+"""
 function setpreallocation!{T, MType}(a::Mat{T, MType};
   nz::Integer=16, nnz::AbstractVector=PetscInt[],
   onz::Integer=0, onnz::AbstractVector=PetscInt[],
@@ -322,8 +346,15 @@ function setpreallocation!{T, MType}(a::Mat{T, MType};
   a
 end
 
+"""
+  Maps Matrix formats to the corresponding vector format
+"""
 # construct Vec for multiplication by a::Mat or transpose(a::Mat)
 const mat2vec = Dict{C.MatType, C.MatType}( :mpiaij => :aij, :seqaij => :seq )
+
+"""
+  Construct a vector suitable for multiplying by the given matrix
+"""
 Vec{T2}(a::PetscMat{T2}, transposed=false) =
   transposed ? Vec(T2, size(a,1), comm=comm(a), T=mat2vec[gettype(a)],
   mlocal=sizelocal(a,1)) :
@@ -335,6 +366,9 @@ Base.convert(::Type{C.Mat}, a::PetscMat) = a.p
 
 export sizelocal, localranges, lengthlocal
 
+"""
+  Returns the global dimensions of the matrix
+"""
 function Base.size(a::PetscMat)
   m = Ref{PetscInt}()
   n = Ref{PetscInt}()
@@ -342,6 +376,9 @@ function Base.size(a::PetscMat)
   (Int(m[]), Int(n[]))
 end
 
+"""
+  Returns the local dimensions of the matrix
+"""
 function sizelocal(a::PetscMat)
   m = Ref{PetscInt}()
   n = Ref{PetscInt}()
@@ -367,6 +404,10 @@ function localranges(a::PetscMat)
   return start_idx:end_idx, 1:size(a, 2)
 end
 
+"""
+  Constructs 2 index sets that map from the local row and columns to the
+  global rows and columns
+"""
 function localIS{T}(A::PetscMat{T})
 
   rows, cols = localranges(A)
@@ -375,6 +416,9 @@ function localIS{T}(A::PetscMat{T})
   return rowis, colis
 end
 
+"""
+  Construct ISLocalToGlobalMappings for the the rows and columns of the matrix
+"""
 function local_to_global_mapping(A::PetscMat)
 
   # localIS creates strided index sets, which require only constant
@@ -386,11 +430,17 @@ function local_to_global_mapping(A::PetscMat)
 end
 
 # need a better name
+"""
+  Registers the ISLocalToGlobalMappings with the matrix
+"""
 function set_local_to_global_mapping{T}(A::PetscMat{T}, rmap::ISLocalToGlobalMapping{T}, cmap::ISLocalToGlobalMapping{T})
 
   chk(C.MatSetLocalToGlobalMapping(A.p, rmap.p, cmap.p))
 end
 
+"""
+  Check if the local to global mappings have been registered
+"""
 function has_local_to_global_mapping{T}(A::PetscMat{T})
 
   rmap_ref = Ref{C.ISLocalToGlobalMapping{T}}()
@@ -403,7 +453,9 @@ function has_local_to_global_mapping{T}(A::PetscMat{T})
   return rmap.pobj != C_NULL && cmap.pobj != C_NULL
 end
 
-
+"""
+  prod(sizelocal))
+"""
 lengthlocal(a::PetscMat) = prod(sizelocal(a))
 
 # this causes the assembly state of the underlying petsc matrix to be copied
@@ -428,35 +480,61 @@ function Base.copy{T,MType}(a::PetscMat{T,MType})
   Mat{T,MType}(p[])
 end
 
+"""
+  Get the MatInfo struct for the matrix
+"""
 function getinfo(m::Mat, infotype::Integer=C.MAT_GLOBAL_SUM)
   info = Ref{C.MatInfo}()
   chk(C.MatGetInfo(m.p, C.MatInfoType(infotype), info))
   info[]
 end
 
+"""
+  Number of non-zero entries that have been assigned to
+"""
 Base.nnz(m::Mat) = Int(getinfo(m).nz_used)
 
 #############################################################################
 
 # for efficient matrix assembly, put all calls to A[...] = ... inside
 # assemble(A) do ... end
-
+"""
+  Start assembling the matrix (the implmentations probably post 
+  non-blocking sends and received)
+"""
 function AssemblyBegin(x::PetscMat, t::C.MatAssemblyType=C.MAT_FLUSH_ASSEMBLY)
   chk(C.MatAssemblyBegin(x.p, t))
 end
 
+"""
+  Finish assembling the matrix
+"""
 function AssemblyEnd(x::PetscMat, t::C.MatAssemblyType=C.MAT_FLUSH_ASSEMBLY)
   chk(C.MatAssemblyEnd(x.p, t))
 end
 
+"""
+  Check if the matrix is assembled or not
+"""
 function isassembled(p::C.Mat)
   b = Ref{PetscBool}()
   chk(C.MatAssembled(p, b))
   return b[] != 0
 end
 
+"""
+  Check if the matrix is assembled
+"""
+# why does this check x.assembling?
 isassembled(x::PetscMat) = !x.assembling && isassembled(x.p)
 
+"""
+  This function provides a mechanism for efficiently inserting values into
+  and then assembling Petsc matrices and vectors.  The function f must be a 
+  zero argument function.
+
+  This function can be used with the do block syntax.
+"""
 function assemble(f::Function, x::Union{Vec,PetscMat},
   insertmode=x.insertmode,
   assemblytype::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
@@ -482,6 +560,9 @@ function assemble(f::Function, x::Union{Vec,PetscMat},
 end
 
 # force assembly even if it might not be necessary
+"""
+  Assemble the Petsc object
+"""
 function assemble(x::Union{Vec,PetscMat}, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
   AssemblyBegin(x, t)
   AssemblyEnd(x,t)
@@ -489,6 +570,9 @@ end
 
 
 # in ksp solve we need to finalize assembly from raw pointer:
+"""
+  Low level assemble function
+"""
 function assemble(p::C.Mat, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
   if !isassembled(p)
     chk(C.MatAssemblyBegin(p, t))
@@ -498,6 +582,10 @@ function assemble(p::C.Mat, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
 end
 
 # intermediate assembly, before it is finally compressed for use
+"""
+  Perform a flush assembly (take stashed values and put them into the matrix,
+  but don't squeeze out any preallocated space that has not been used yet
+"""
 iassemble(x::Union{Vec,PetscMat}) = assemble(() -> nothing, x, x.insertmode, C.MAT_FLUSH_ASSEMBLY)
 iassemble(f::Function, x::PetscMat, insertmode=x.insertmode) =
   assemble(f, x, insertmode, C.MAT_FLUSH_ASSEMBLY)
@@ -600,6 +688,13 @@ end
 
 # fill! is not a very sensible function to call for sparse matrices,
 # but we might as well have it, especially for the v=0 case
+"""
+  Fill the matrix with the specified values.
+
+  Currently, this function either destroys the sparsity pattern or 
+  gives an error, unless v = 0, in which case it zeros out the non-zero 
+  entries without changing the sparsity pattern
+"""
 function Base.fill!(x::PetscMat, v::Number)
   if v == 0
     chk(C.MatZeroEntries(x.p))
@@ -646,13 +741,19 @@ getindex{T1<:Integer}(a::PetscMat, i0::Integer, I1::AbstractArray{T1}) =
 
 export MatTranspose
 
+"""
+  Create a dense Julia matrix for a Petsc sparse matrix.  This only works
+  for SEQ matrices
+"""
 function Base.full(a::PetscMat)
   m,n = size(a)
   a[1:m, 1:n]
 end
 
-# create a new matrix wrapping around A for matrix-vector multiplication
-# but which does not actually require new storage
+"""
+ create a new matrix wrapping around A for matrix-vector multiplication
+ but which does not actually require new storage
+"""
 for (f,pf) in ((:MatTranspose,:MatCreateTranspose), # acts like A.'
   (:MatNormal, :MatCreateNormal))      # acts like A'*A
   pfe = Expr(:quote, pf)

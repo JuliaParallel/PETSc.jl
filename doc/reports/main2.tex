@@ -1,0 +1,350 @@
+%\documentclass[letter,12pt]{article}
+\documentclass{article}
+%\usepackage[margin=0.6in]{geometry}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+%\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{color}
+\usepackage{minted}
+\usepackage{fullpage}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{courier}
+\usepackage{booktabs}
+\usepackage{wrapfig}
+\usepackage{placeins}
+\usepackage{units}
+\newcommand{\ttt}{\texttt}
+\newcommand{\die}{\partial}
+
+\usepackage{cite}
+
+%\renewcommand{\citeleft}{\textcolor{red}{[}}
+%\renewcommand{\citeright}{\textcolor{red}{]}}
+
+%\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+ colorlinks=true,
+ citecolor=blue,
+ linkcolor=red,
+ urlcolor=blue}
+
+
+\title{Julia-Petsc Interface II}
+\begin{comment}
+\author{
+  Jared Crean\thanks{Graduate Student, Rensselaer Polytechnic Institute}, \
+  Katharine Hyatt\thanks{Graduate Student, University of California Santa Barbara}, \ and
+  Steven G. Johnson\thanks{Associate Professor, Massachusetts Institute of Technology},
+}
+\end{comment}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Introduction} \label{sec:intro}
+This document describes the changes to the Julia interface to the Portable, Extensible Toolkit for Scientific Computation (PETSc) since the previous report.
+Several new features are supported, particularly those related to mapping 
+and parallel bookkeeping, and additional functionality is added to existing
+features.
+
+
+
+\section{Features} \label{sec:features}
+
+\subsection{Vectors and Matrices} \label{sec:arrays}
+\subsection{Construction}
+\subsubsection{Vectors}
+An additional \texttt{Vec} constructor has been added:
+\begin{minted}{julia}
+function Vec{T<:Scalar}(v::Vector{T}; comm::MPI.Comm=MPI.COMM_WORLD)
+\end{minted}
+\noindent which takes a Julia 1 dimensional array and creates a PETSc VECMPI, without
+copying the array.  The array is automatically protected from garbage 
+collection until the \texttt{Vec} object is itself garbage collected.
+If called in parallel, the vector that each process supplies becomes the local
+part of the PETSc vector.
+
+Additionally, the ability to get the array that underlies the local part of
+a PETSc \texttt{Vec} is now supported through \texttt{LocalArray} type:
+
+\begin{minted}{julia}
+type LocalArray{T <: Scalar} <: AbstractArray{T, 1}
+\end{minted}
+
+\noindent which supports all the standard indexing behavior of a standard Julia 
+1 dimensional array.  Indexing this array is significantly faster than 
+indexing the \texttt{Vec} object because the \texttt{LocalArray} has direct
+access to the underlying memory.
+The outer constructor for this type is:
+
+\begin{minted}{julia}
+function LocalArray{T}(vec::Vec{T})
+\end{minted}
+
+\noindent A read only version is also supported:
+
+\begin{minted}{julia}
+function LocalArrayRead{T}(vec::Vec{T})
+\end{minted}
+
+\noindent The function 
+\begin{minted}{julia}
+function LocalArrayRestore{T}(varr::Union{LocalArray{T}, LocalArrayRead{T}})
+\end{minted}
+
+\noindent should be called when operations on either type of \texttt{LocalArray} are 
+completed.
+
+\subsubsection{Matrices}
+The PETSc \texttt{SubMatrix} functionality is exposed through the 
+\texttt{SubMat} type:
+\begin{minted}{julia}
+type SubMat{T, MType} <: PetscMat{T}
+  p::C.Mat{T}
+  assembling::Bool # whether we are in the middle of assemble
+  insertmode::C.InsertMode # current mode for setindex!
+  data::Any # keep a reference to anything needed for the Mat
+end
+
+\end{minted}
+
+\noindent Although the fields and type parameters of this type are identical to the
+standard \texttt{Mat} type, the creation of a distinct type facilitates
+providing distinct behavior for the \texttt{SubMat}.  All functions which
+are provided for \texttt{Mat}s are also provided for \texttt{SubMat}s.
+In particular, a \texttt{SubMat} can be indexed using the standard Julia
+indexing notation, where the indices are the local indices (rather than global
+indices used for \texttt{Mat}s).
+
+A \texttt{Mat} must have a \texttt{LocalToGlobalMapping} registered in order
+to create a \texttt{SubMat}.  The outer constructor
+
+\begin{minted}{julia}
+function SubMat{T, MType}(mat::Mat{T, MType}, isrow::IS{T}, iscol::IS{T})
+\end{minted}
+
+\noindent creates and registers a default \texttt{LocalToGlobalMapping} if needed.  
+The default \texttt{LocalToGlobalMapping} relies on the PETSc 
+\texttt{MatGetOwnershipRange} function to determine the range of rows
+assigned to each process.  This function will return the correct values for all 
+\texttt{AIJ} matrices, but may not for the less commonly used matrix formats.
+The index sets \texttt{isrow} and \texttt{iscol} determine which rows and
+columns of the parent \texttt{Mat} are mapped to the \texttt{SubMat}.
+
+Shell matrices (ie. matrix free linear operators) are now supported by the 
+Julia interface.  A shell matrix can be created via:
+
+\begin{minted}{julia}
+
+function MatShell{T}(::Type{T}, mlocal::Integer, nlocal::Integer, ctx::Tuple=();
+                  m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE, 
+                  comm=MPI.COMM_WORLD)
+\end{minted}
+
+\noindent where the standard arguments determine the size of the matrix object.
+The \texttt{ctx} argument is a user supplied tuple that can be retrieved from 
+within any callback function defined for the matrix, as a means of passing
+additional arguments.  The \texttt{ctx} can be retrieved using the function
+
+\begin{minted}{julia}
+function getcontext{T}(mat::Mat{T, C.MATSHELL})
+\end{minted}
+
+\noindent which returns the tuple.
+
+Callback functions that perform matrix operations can be registered using 
+the function:
+
+\begin{minted}{julia}
+function setop!{T}(mat::Mat{T, C.MATSHELL}, op::C.MatOperation, func::Ptr{Void})
+\end{minted}
+
+\noindent where \texttt{op} is an enumerated value (available in the PETSc.C module) that specifies what operation the function performs, and
+\texttt{func} is a function pointer (typically created using the Julia \texttt{cfunction} function) that has the right signature for the specified function.
+Note that the function must take as arguments the low-level versions of all the PETSc
+objects (ie. PETSc.C.Mat instead of PETSc.Mat).  These objects can be safely
+wrapped inside the high-level objects by calling their inner constructors with
+the keyword argument \texttt{first\_instance} set to false.  
+
+For example, 
+matrix-vector multiplication for a shell matrix can be defined with the 
+function:
+
+
+\begin{minted}{julia}
+function mymult{T}(A::PETSc.C.Mat{T}, x::PETSc.C.Vec, b::PETSc.C.Vec)
+
+  # wrap low level objects into high level ones
+  bigA = Mat{T, PETSc.C.MATSHELL}(A, first_instance=false)
+  bigx = Vec{T, PETSc.C.VECMPI}(x, first_instance=false)
+  bigb = Vec{T, PETSc.C.VECMPI}(b, first_instance=false)
+
+  # retrieve the user supplied tuple
+  ctx = getcontext(bigA)
+
+  # do matrix-vector multiplication here
+  
+
+  return PetscErrorCode(0)
+end
+\end{minted}
+
+
+\subsection{Operations}
+Several additional functions are supported for PETSc vectors and matrices.
+For \texttt{Vecs}, the function \texttt{localpart} returns a Julia \texttt{Range} object that describes the range of global indices that are owned by the 
+local process.
+For \texttt{Mats}, the analogous function is \texttt{localranges}, which 
+returns 2 \texttt{Range} objects describing the ownership of rows and columns
+of the matrix.  Note that this function has the same assumptions as the PETSc
+\texttt{MatGetOwnershipRange} described above.
+The function \texttt{localIS} creates an index set that provides the same 
+information.
+
+The function \texttt{local\_to\_global\_mapping} returns two 
+\texttt{ISLocalToGlobalMapping}s that describe the same information for 
+the rows and columns of \texttt{Mat}s.  They can be registered with the
+\texttt{Mat} using the function \texttt{set\_local\_to\_global\_mapping}.
+\texttt{has\_local\_to\_global\_mapping} returns a boolean value indicating
+whether a \texttt{Mat} already has a \texttt{LocalToGlobalMapping} registered.
+
+\subsection{Mappings and Index Sets} \label{sec:is}
+The PETSc \texttt{ISLocalToGlobalMapping} is now supported and exposes a 
+1-based interface.
+They can be created using:
+
+\begin{minted}{julia}
+function ISLocalToGlobalMapping{T, I <: Integer}(::Type{T}, 
+                                indices::AbstractArray{I}, bs=1; 
+                                comm=MPI_COMM_WORLD, 
+                                copymode=C.PETSC_COPY_VALUES)
+\end{minted}
+
+\noindent where the indices are 1-based and \texttt{bs} indicates the block size of the 
+index set.  Currently only the default \texttt{copymode} is supported,
+but additional modes will be supported in the future.
+
+Alternatively, an existing index set can be used:
+\begin{minted}{julia}
+function ISLocalToGlobalMapping{T}(is::IS{T})
+\end{minted}
+
+\hfill \break
+
+The PETSc ApplicationOrdering (\texttt{AO}) is supported as well.
+They can be created using:
+
+\begin{minted}{julia}
+function AO{T, I1 <: Integer, I2 <: Integer}(::Type{T}, 
+            app_idx::AbstractArray{I1, 1}, petsc_idx::AbstractArray{I2, 1}; 
+            comm=MPI.COMM_WORLD, basic=true )
+\end{minted}
+
+\noindent where \texttt{app\_idx} is the application indices and 
+\texttt{petsc\_idx} are
+the PETSc indices the application indices are mapped to.  Both sets of 
+indices are 1-based.  The \texttt{basic} is determines the internal
+representation of the mapping.  If \texttt{basic} is true, then
+the mapping must be one-to-one and onto, otherwise \texttt{basic} must
+be false, although this results in poorer performance.
+
+Alternatively, index sets can be used to create the \texttt{AO}
+\begin{minted}{julia}
+function AO{T}( app_idx::IS{T}, petsc_idx::IS{T}; basic=true )
+\end{minted}
+
+\noindent An array of application indices can be transformed to PETSc indices using
+the function
+
+\begin{minted}{julia}
+function map_app_to_petsc!(ao::AO, idx::AbstractArray)
+\end{minted}
+
+\noindent or the inverse transformation can be applied with
+
+\begin{minted}{julia}
+function map_petsc_to_app!(ao::AO, idx::AbstractArray)
+\end{minted}
+
+\noindent The same operations can b e done on index sets:
+
+\begin{minted}{julia}
+function map_app_to_petsc!(ao::AO, is::IS)
+function map_petsc_to_app!(ao::AO, is::IS)
+\end{minted}
+
+
+
+\subsection{Linear Solvers} \label{sec:ksp}
+In addition to the standard matrix solve described in the previous report, 
+transposed solves are supported as well:
+
+\begin{minted}{julia}
+function KSPSolveTranspose!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T})
+\end{minted}
+
+\noindent where the \texttt{KSP} object is constructed as described previously and 
+contains all the options that specify how to perform the solve.  This
+allows multiple solves (with different right hand sides) to be performed 
+with a single \texttt{KSP} context.  There is also a version that allocates 
+the output vector:
+
+\begin{minted}{julia}
+function KSPSolveTranspose{T}(ksp::KSP{T}, b::Vec{T})
+\end{minted}
+
+Note that shell matrices can be used for KSP solves if the appropriate 
+matrix-vector multiplication function is registered with the matrix.
+
+\subsection{Miscellaneous}
+Several improvements to the interface have been made that do not neatly fit 
+into one of the above categories.
+First, the automatically generated wrappers of the C interface have been 
+been improved.  Certain C types are more accurately mapped to their Julia 
+counterparts, and additional enumerated values that were not previously
+captured are now correctly generated.
+
+Second, several functions that are part of the PETSc C interface have had
+more usable Julia definitions created, taking advantage of the fact that Julia
+arrays know their own sizes:
+
+\begin{minted}{julia}
+function SetValues{T}(vec::C.Vec{T},idx::AbstractVector{PetscInt},
+                                vals::AbstractVector{T},
+                                flag::Integer=INSERT_VALUES)
+
+function GetValues{T}(vec::C.Vec{T}, idx::AbstractArray{PetscInt,1}, 
+                             y::AbstractArray{T,1})
+function SetValues{ST}(vec::C.Mat,idi::AbstractArray{PetscInt},
+                       idj::AbstractArray{PetscInt}, array::AbstractArray{ST},
+                       flag::Integer=INSERT_VALUES)
+
+function SetValuesBlocked{ST}(mat::C.Mat, idi::AbstractArray{PetscInt}, 
+                          idj::AbstractArray{PetscInt}, v::AbstractArray{ST}, 
+                          flag::Integer=INSERT_VALUES)
+
+function GetValues{ST}(obj::C.Mat, idxm::AbstractArray{PetscInt, 1}, 
+                   idxn::AbstractArray{PetscInt, 1}, v::AbstractArray{ST})
+\end{minted}
+
+\noindent These functions are much more restrictive than those in the high-level
+interface, but they never make temporary copies, which are sometimes 
+necessary in the high-level interface.
+
+\end{document}
+
+
+
+
+
+
+

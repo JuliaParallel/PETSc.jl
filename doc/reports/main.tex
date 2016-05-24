@@ -1,0 +1,242 @@
+%\documentclass[letter,12pt]{article}
+\documentclass{article}
+%\usepackage[margin=0.6in]{geometry}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+%\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{color}
+\usepackage{minted}
+\usepackage{fullpage}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{courier}
+\usepackage{booktabs}
+\usepackage{wrapfig}
+\usepackage{placeins}
+\usepackage{units}
+\newcommand{\ttt}{\texttt}
+\newcommand{\die}{\partial}
+
+\usepackage{cite}
+
+%\renewcommand{\citeleft}{\textcolor{red}{[}}
+%\renewcommand{\citeright}{\textcolor{red}{]}}
+
+%\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+ colorlinks=true,
+ citecolor=blue,
+ linkcolor=red,
+ urlcolor=blue}
+
+
+\title{Julia-Petsc Interface}
+\begin{comment}
+\author{
+  Jared Crean\thanks{Graduate Student, Rensselaer Polytechnic Institute}, \
+  Katharine Hyatt\thanks{Graduate Student, University of California Santa Barbara}, \ and
+  Steven G. Johnson\thanks{Associate Professor, Massachusetts Institute of Technology},
+}
+\end{comment}
+%  \thanks{Graduate Student, Department of Mechanical, Nuclear, and Aerospace Engineering, 110 8th Street, Troy, NY 12180, Student Member} \
+
+%\author{
+%  Jason E. Hicken\thanks{Assistant Professor, Department of Mechanical, Aerospace, and Nuclear Engineering, Member AIAA} \ and
+%  Anthony Ashley\thanks{Graduate Student, Department of Mechanical, Aerospace,
+%    and Nuclear Engineering, Student Member AIAA}    
+%}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Introduction} \label{sec:intro}
+This document describes the current state of the Julia interface to the Portable, Extensible Toolkit for Scientific Computation (PETSc).  An overview of the build system is given in section~\ref{sec:build}, followed by a description of the  feature sets in section~\ref{sec:features}.
+
+\section{Build System} \label{sec:build}
+Petsc supports operation on multiple data types through compile-time configuration of the library.
+Julia is a dynamic language featuring a multiple dispatch paradigm.
+Therefore, it is desirable to be able use PETSc with different datatypes simultaneously. 
+To accomplish this, 3 versions of the library are built.
+This enables the element type of a PETSc vector or matrix to be either  a real double precision float, a real single precision float, or a complex double precision float.
+64-bit integers are used for indexing for all version of the library.
+Having 3 separate libraries and using multiple dispatch provides the appearance of datatype independence, but it is important to note that the three libraries remain separate, so mixed datatype operations are not supported.
+The build system automatically builds and configures PETSc when installing the Julia package.
+
+
+\section{Features} \label{sec:features}
+This section describes the features supported by the high level interface, mirroring the feature sets described in the PETSc documentation.
+The high level interface is contained in the  module \ttt{PETSc}.
+Auto-generated wrappers for the standard PETSc C interface are located in the sub-module \ttt{PETSc.C}.
+All objects are parameterized by the the datatype of the library in which they exist.
+This allows function calls to be dispatched to the proper library when an object is one of the arguments.
+All other functions require the datatype of be passed as the first argument.
+
+\subsection{Vectors and Matrices} \label{sec:arrays}
+\subsubsection{Construction}
+Vector and matrix objects are parameterized by their datatype as described above, and by the format used to store the underlying data.
+The signature of the vector object is
+
+\begin{minted}{julia}
+type Vec{T,VType} <: AbstractVector{T}
+  p::C.Vec{T}
+  assembling::Bool # whether we are in the middle of assemble(vec)
+  insertmode::C.InsertMode # current mode for setindex!
+  data::Any # keep a reference to anything needed for the Mat
+            # -- needed if the Mat is a wrapper around a Julia object,
+            #    to prevent the object from being garbage collected.
+
+\end{minted}
+
+Several (outer) constructors are available for vectors and matrices.
+\begin{minted}{julia}
+
+function Vec{T}(::Type{T}, vtype::C.VecType=C.VECSEQ; comm::MPI.Comm=MPI.COMM_SELF)
+
+function Vec{T<:Scalar}(::Type{T}, len::Integer, vtype::C.VecType=C.VECSEQ;
+                        comm::MPI.Comm=MPI.COMM_SELF, mlocal::Integer=C.PETSC_DECIDE)
+
+function Vec{T<:Scalar}(v::Vector{T}; comm::MPI.Comm=MPI.COMM_SELF)
+\end{minted}
+
+The first function creates a vector object in the PETSc library specified by the first argument.
+The other arguments specify the format used to store the vector and which MPI communicator to use.
+The list of possiblnames (identical to those from the C interface) can be accessed in \ttt{PETSc.C.formatname}.
+
+The second constructor creates the vector and sets its length, while the third one constructs a PETSc vector directly from a Julia vector.
+
+A similar set of constructors exist for matrices, with more arguments to specify the sparsity pattern.
+The constructors are
+
+\begin{minted}{julia}
+
+function Mat{T}(::Type{T}, mtype=C.MatType=C.MATSEQ; comm::MPI.Comm=MPI.COMM_WORLD)
+function Mat{T}(::Type{T}, m::Integer, n::Integer;
+                mlocal::Integer=C.PETSC_DECIDE, nlocal::Integer=C.PETSC_DECIDE,
+                nz::Integer=16, nnz::AbstractVector=PetscInt[],
+                onz::Integer=0, onnz::AbstractVector=PetscInt[],
+                comm::MPI.Comm=MPI.COMM_WORLD,
+                mtype::Symbol=C.MATMPIAIJ)
+
+\end{minted}
+
+The first constructor is similar to the first vector constructor.
+The second constructor creates a matrix, specifies its global dimensions with the parameters \ttt{m} and \ttt{n}, or can optionally use the keyword arguments \ttt{mlocal} and \ttt{nlocal} to specify the local matrix size.
+In this case \ttt{PETSc.C.PETSC\_DECIDE} must be passed to \ttt{m} and \ttt{n}.
+The next four arguments are used to pre-allocate the storage for the matrix, and exactly mirror the arguments to the PETSc function \ttt{MATXXXXSetPreallocation}.
+The final arguments specify the MPI communicator and the matrix storage format.
+
+For both vectors and matrices, finalizers are used to perform memory management when the objects are garbage collected, so the user is not required to explicitly destroy them.
+
+\subsubsection{Indexing and Assembly}
+Vectors and matrices can be indexed in the same manner as Julia's built-in arrays.
+1-based indexing is used, and is internally converted to zero-based indexing used by PETSc.
+The use of ranges and arrays of indices is supported.
+For performance, it is recommended to use arrays of 64-bit integers (rather than 32-bit integers) so the array does not have to be converted, although this conversion will occur automatically if required.
+
+Because PETSc is intended for distributed memory computation, populating the a vector or matrix is separated into two steps, inserting values and assembling the values into the underlying data structure.
+PETSc supports two modes of inserting values, \ttt{PETSc.C.INSERT\_VALUES} and \ttt{PETSc.C.ADD\_VALUES}.
+The field \ttt{insertmode} of the Mat or Vec object  determines which is used for indexing.
+The functions \ttt{AssemblyBegin} and \ttt{AssemblyEnd} are available for both Mat and Vec objects to begin and end assembly of the values into the underlying data structure.
+These function are called after every insertion unless the field \ttt{assembling} of the Mat or Vec object is set to true.
+This is much more efficient, but the user must remember to perform assembly before using the matrix.
+
+It is also possible to combine the steps of insertion and assembly using
+\begin{minted}{julia}
+function assemble(f::Function, x::Union{Vec,Mat}
+\end{minted}
+where the first argument is a user supplied function that performs all insertion.
+\ttt{assemble} calls the function and then performs assembly.
+
+\subsubsection{Other Functions}
+All the \ttt{A*\_mul\_B*} and most of the BLAS functionality of PETSc is available as well.
+Basic operations (addition, subtraction, element-wise multiplication, element-wise division) are defined and overloaded to the standard Julia operators.
+
+The \ttt{copy}, \ttt{similar}, \ttt{length}, and \ttt{size} functions are also defined for vectors.
+The \ttt{size}, \ttt{similar}, and \ttt{copy} functions are defined for matrices.
+The \ttt{length} and \ttt{size} functions currently refer to the global lengths and sizes.
+The functions \ttt{lengthlocal} and \ttt{sizelocal} give the local values.
+Matrix and vector norms can be calculated using the \ttt{norm} function.
+
+
+\subsection{Index Sets} \label{sec:is}a
+PETSc index sets are exposed using a 1-based index interface.
+Index sets are constructed using
+
+\begin{minted}{julia}
+IS{I<:Integer}(T::DataType, idx::AbstractArray{I}; comm::MPI.Comm=MPI.COMM_SELF)
+function IS{I<:Integer}(T::DataType, idx::Range{I}; comm::MPI.Comm=MPI.COMM_SELF)
+\end{minted}
+
+where the constructor takes an array of indices and the second efficiently creates a strided index set.
+
+Vector scatters are constructed using
+
+\begin{minted}{julia}
+function VecScatter{T}(x::Vec{T}, ix::IS{T}, y::Vec{T}, iy::IS{T})
+\end{minted}
+
+and performed using
+
+\begin{minted}{julia}
+function scatter!{T}(scatter::VecScatter{T}, x::Vec{T}, y::Vec{T}; imode=C.INSERT_VALUES, smode=C.SCATTER_FORWARD)
+\end{minted}
+
+Alternatively, the two steps can be combined
+\begin{minted}{julia}
+ function scatter!{T,I1,I2}(x::Vec{T}, ix::AbstractVector{I1},
+                           y::Vec{T}, iy::AbstractVector{I2};
+                          imode=C.INSERT_VALUES, smode=C.SCATTER_FORWARD)
+\end{minted}
+
+
+\subsection{Linear Solvers} \label{sec:ksp}
+The Krylov Sub-Space solvers are available by constructing a KSP object:
+\begin{minted}{julia}
+KSP{T}(A::Mat{T}, PA::Mat{T}=A; kws...)
+\end{minted}
+
+where \ttt{A} is the linear operator and \ttt{PA}  is the linear operator used for constructing the preconditioner, with a default value of using \ttt{A} for both.
+Any additional keyword arguments are set as key-value pairs in the PETSc options database, and then the C interface function \ttt{KSPSetFromOptions} is called to copy those values to the KSP object (see \ref{sec:options}).
+
+The functions
+\begin{minted}{julia}
+function Base.A_ldiv_B!{T}(ksp::KSP{T}, b::Vec{T}, x::Vec{T})
+(\){T}(ksp::KSP{T}, b::Vec{T}) = A_ldiv_B!(ksp, b, similar(b, size(ksp, 2)))
+\end{minted}
+perform linear solves.
+The first function stores the result in \ttt{x}, while the second creates a new vector \ttt{x} and returns it.
+Both functions assemble the assemble the vectors and matrices they operate on and print a warning if the KSP solve does not converge.
+
+
+\subsection{Options Database} \label{sec:options}
+The PETSc options database is used to set options that govern the behavior of PETSc.
+The options database can be accessed either by using the \ttt{OPTIONS} object or by calling the function 
+
+\begin{minted}{julia}
+function withoptions{T<:Scalar}(f::Function, ::Type{T}, keyvals)
+\end{minted}
+
+The \ttt{OPTIONS} is a dictionary-like object that sets the key-value pairs in the options databases of all 3 PETSc libraries.
+Internally, it is a dictionary which stores 3 sub-options objects, each of which can be used to set options in the options database of one particular PETSc library.
+Each sub-options object can be retrieved using the datatype of the PETSc library.
+An key that does not require a value should pass the empty string as the value.
+
+The \ttt{withoptions} function takes a set of keyword arguments, sets them in the options dictionary of the specified library, calls the user supplied function\ttt{f}, and then unsets the options.
+This is a useful way to temporarily set some options, call \ttt{*SetFromOptions} and then restore the options database to its original state.
+
+\end{document}
+
+
+
+
+
+
+

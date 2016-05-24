@@ -750,10 +750,12 @@ function Base.full(a::PetscMat)
   a[1:m, 1:n]
 end
 
+#=
 """
  create a new matrix wrapping around A for matrix-vector multiplication
  but which does not actually require new storage
 """
+=#
 for (f,pf) in ((:MatTranspose,:MatCreateTranspose), # acts like A.'
   (:MatNormal, :MatCreateNormal))      # acts like A'*A
   pfe = Expr(:quote, pf)

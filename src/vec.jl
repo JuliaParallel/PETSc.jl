@@ -237,10 +237,11 @@ export lengthlocal, sizelocal, localpart
 
 Base.convert(::Type{C.Vec}, v::Vec) = v.p
 
+import Base.length
 @doc """
   Get the global length of the vector
 """
-function Base.length(x::Vec)
+function length(x::Vec)
   sz = Ref{PetscInt}()
   chk(C.VecGetSize(x.p, sz))
   Int(sz[])

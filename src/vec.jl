@@ -1,6 +1,14 @@
 # AbstractVector wrapper around PETSc Vec types
 export Vec, comm, NullVec
 
+@doc """
+  Construct a high level Vec object from a low level C.Vec.
+  The data field is used to protect things from GC.
+  A finalizer is attached to deallocate the memory of the underlying C.Vec, unless 
+  first_instance is set to true.
+  If assembling is false, then every call to setindex! also calls AssembleBegin and 
+  AssembleEnd.
+"""
 type Vec{T,VType} <: AbstractVector{T}
   p::C.Vec{T}
   assembling::Bool # whether we are in the middle of assemble(vec)
@@ -18,11 +26,11 @@ type Vec{T,VType} <: AbstractVector{T}
   end
 end
 
-
 global const NullVec1 = Vec{Float64, C.VECSTANDARD}(C.Vec{Float64}(C_NULL), first_instance=false)
 global const NullVec2 = Vec{Complex128, C.VECSTANDARD}(C.Vec{Complex128}(C_NULL), first_instance=false)
 global const NullVec3 = Vec{Float32, C.VECSTANDARD}(C.Vec{Float32}(C_NULL), first_instance=false)
-"""
+
+@doc """
   Null vectors, used in place of void pointers in the C
   API
 """
@@ -30,7 +38,7 @@ global const NullVec = Dict{DataType, Vec}(Float64 => NullVec1,
                                     Complex128 => NullVec2,
                                     Float32 => NullVec3)
 
-"""
+@doc """
   Gets the MPI communicator of a vector.
 """
 comm{T}(v::Vec{T}) = MPI.Comm(C.PetscObjectComm(T, v.p.pobj))
@@ -38,10 +46,13 @@ comm{T}(v::Vec{T}) = MPI.Comm(C.PetscObjectComm(T, v.p.pobj))
 
 export gettype
 
+@doc """
+  Get the symbol that is the format of the vector
+"""
 gettype{T,VT}(a::Vec{T,VT}) = VT
 
 
-"""
+@doc """
   Create an empty, unsized vector.
 """
 function Vec{T}(::Type{T}, vtype::C.VecType=C.VECMPI; 
@@ -51,7 +62,7 @@ function Vec{T}(::Type{T}, vtype::C.VecType=C.VECMPI;
   Vec{T, vtype}(p[])
 end
 
-"""
+@doc """
   Create a vector, specifying the (global) length len or the local length
   mlocal
 """
@@ -64,7 +75,7 @@ function Vec{T<:Scalar}(::Type{T}, len::Integer=C.PETSC_DECIDE;
   vec
 end
 
-"""
+@doc """
   Make a PETSc vector out of an array.  If used in parallel, the array becomes
   the local part of the PETSc vector
 """
@@ -79,8 +90,9 @@ end
 export VecGhost, VecLocal, restore
 
 
-"""
-  Make a PETSc vector with space for ghost values
+@doc """
+  Make a PETSc vector with space for ghost values.  ghost_idx are the 
+  global indices that will be copied into the ghost space.
 """
 # making mlocal the position and mglobal the keyword argument is inconsistent
 # with the other Vec constructors, but it makes more sense here
@@ -102,6 +114,11 @@ function VecGhost{T<:Scalar, I <: Integer}(::Type{T}, mlocal::Integer,
     return Vec{T, C.VECMPI}(vref[])
 end
 
+@doc """
+  Create a VECSEQ that contains both the local and the ghost values of the 
+  original vector.  The underlying memory for the orignal and output vectors
+  alias.
+"""
 function VecLocal{T <:Scalar}( v::Vec{T, C.VECMPI})
 
   vref = Ref{C.Vec{T}}()
@@ -112,6 +129,9 @@ function VecLocal{T <:Scalar}( v::Vec{T, C.VECMPI})
 end
 
 #TODO: use restore for all types of restoring a local view
+@doc """
+  Tell Petsc the VecLocal is no longer needed
+"""
 function restore{T}(v::Vec{T, C.VECSEQ})
 
   vp = v.data
@@ -120,6 +140,9 @@ function restore{T}(v::Vec{T, C.VECSEQ})
 end
 
 
+@doc """
+  The Petsc function to deallocate Vec objects
+"""
 function PetscDestroy{T}(vec::Vec{T})
   if !PetscFinalized(T)  && !isfinalized(vec)
     C.VecDestroy(Ref(vec.p))
@@ -127,7 +150,9 @@ function PetscDestroy{T}(vec::Vec{T})
   end
 end
 
-# determine whether a vector has already been finalized
+@doc """
+  Determine whether a vector has already been finalized
+"""
 function isfinalized(vec::Vec)
   return isfinalized(vec.p)
 end
@@ -138,8 +163,8 @@ end
 
 global const is_nullvec = isfinalized  # another name for doing the same check
 
-"""
-  Use the PETSc routine for veiwing a vector
+@doc """
+  Use the PETSc routine for printing a vector to stdout
 """
 function petscview{T}(vec::Vec{T})
   viewer = C.PetscViewer{T}(C_NULL)
@@ -158,12 +183,19 @@ end
 ###############################################################################
 export ghost_begin!, ghost_end!, scatter!, ghost_update!
 # ghost vectors: essential methods
+@doc """
+  Start communication to update the ghost values (on other processes) from the local
+  values
+"""
 function ghost_begin!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES,
                                smode=C.SCATTER_FORWARD)
     chk(C.VecGhostUpdateBegin(v.p, imode, smode))
     return v
 end
 
+@doc """
+  Finish communication for updating ghost values
+"""
 function ghost_end!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES,
                                smode=C.SCATTER_FORWARD)
     chk(C.VecGhostUpdateEnd(v.p, imode, smode))
@@ -171,6 +203,9 @@ function ghost_end!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES,
 end
 
 # ghost vectors: helpful methods
+@doc """
+  Convenience method for calling both ghost_begin! and ghost_end!
+"""
 function scatter!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES, smode=C.SCATTER_FORWARD)
 
   ghost_begin!(v, imode=imode, smode=smode)
@@ -179,6 +214,9 @@ end
 
 # is there a way to specify all varargs must be same type?
 # this can't be named scatter! because of ambiguity with the index set scatter!
+@doc """
+  Convenience method for calling ghost_begin! and ghost_end! for multiple vectors
+"""
 function ghost_update!(v...; imode=C.INSERT_VALUES, smode=C.SCATTER_FORWARD)
 
   for i in v
@@ -199,7 +237,7 @@ export lengthlocal, sizelocal, localpart
 
 Base.convert(::Type{C.Vec}, v::Vec) = v.p
 
-"""
+@doc """
   Get the global length of the vector
 """
 function Base.length(x::Vec)
@@ -208,11 +246,14 @@ function Base.length(x::Vec)
   Int(sz[])
 end
 
-"""
+@doc """
   Get the global size of the vector
 """
 Base.size(x::Vec) = (length(x),)
 
+@doc """
+  Get the length of the local portion of the vector
+"""
 function lengthlocal(x::Vec)
   sz = Ref{PetscInt}()
   chk(C.VecGetLocalSize(x.p, sz))
@@ -220,7 +261,7 @@ function lengthlocal(x::Vec)
 end
 
 """
-  Get the local length of the vector
+  Get the local size of the vector
 """
 sizelocal(x::Vec) = (lengthlocal(x),)
 
@@ -229,6 +270,12 @@ sizelocal(x::Vec) = (lengthlocal(x),)
 """
 sizelocal{T,n}(t::AbstractArray{T,n}, d) = (d>n ? 1 : sizelocal(t)[d])
 
+@doc """
+  Get the range of global indices that define the local part of the vector.
+  Internally, this calls the Petsc function VecGetOwnershipRange, and has
+  the same limitations as that function, namely that some vector formats do 
+  not have a well defined contiguous range.
+"""
 function localpart(v::Vec)
   # this function returns a range from the first to the last indicies (1 based)
   # this is different than the Petsc VecGetOwnershipRange function where
@@ -271,19 +318,30 @@ export assemble, isassembled, AssemblyBegin, AssemblyEnd
 
 # for efficient vector assembly, put all calls to x[...] = ... inside
 # assemble(x) do ... end
+@doc """
+  Start communication to assemble stashed values into the vector
+"""
 function AssemblyBegin(x::Vec, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
   # the t parameter is unused for vectors
   chk(C.VecAssemblyBegin(x.p))
 end
 
+@doc """
+  Finish communication for assembling the vector
+"""
 function AssemblyEnd(x::Vec, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
   chk(C.VecAssemblyEnd(x.p))
 end
 
+@doc """
+  Check if a vector is assembled (ie. does not have stashed values)
+"""
 isassembled(x::Vec) = !x.assembling
 # assemble(f::Function, x::Vec) is defined in mat.jl
 
-# like x[i] = v, but requires i to be 0-based indices for Petsc
+@doc """
+  Like setindex, but requires the indices be 0-base
+"""
 function setindex0!{T}(x::Vec{T}, v::Array{T}, i::Array{PetscInt})
   n = length(v)
   if n != length(i)
@@ -327,6 +385,7 @@ function setindex!{T<:Integer}(x::Vec, v::Number, I::Range{T})
   end
 end
 
+#TODO: make this a single call to VecSetValues
 setindex!{T<:Real}(x::Vec, V::AbstractArray, I::AbstractArray{T}) =
 assemble(x) do
   if length(V) != length(I)
@@ -430,7 +489,9 @@ else
   export normalize!
 end
 
-# computes v = norm(x,2), divides x by v, and returns v
+@doc """
+  computes v = norm(x,2), divides x by v, and returns v
+"""
 function normalize!{T<:Real}(x::Union{Vec{T},Vec{Complex{T}}})
   v = Ref{T}()
   chk(C.VecNormalize(x.p, v))
@@ -593,6 +654,10 @@ end
 ##############################################################################
 export LocalArray, LocalArrayRead, LocalArrayRestore
 
+@doc """
+  Object representing the local part of the array, accessing the memory directly.
+  Supports all the same indexing as a regular Array
+"""
 type LocalArray{T <: Scalar} <: AbstractArray{T, 1}
   a::Array{T, 1}  # the array object constructed around the pointer
   ref::Ref{Ptr{T}}  # reference to the pointer to the data
@@ -607,6 +672,11 @@ type LocalArray{T <: Scalar} <: AbstractArray{T, 1}
   end
 
 end
+
+@doc """
+  Get the LocalArray of a vector.  Users must call LocalArrayRestore when
+  finished updating the vector
+"""
 function LocalArray{T}(vec::Vec{T})
 
   len = lengthlocal(vec)
@@ -617,6 +687,9 @@ function LocalArray{T}(vec::Vec{T})
   return LocalArray{T}(a, ref, vec.p)
 end
 
+@doc """
+  Tell Petsc the LocalArray is no longer being used
+"""
 function LocalArrayRestore{T}(varr::LocalArray{T})
 
   if !varr.isfinalized && !PetscFinalized(T) && !isfinalized(varr.pobj)
@@ -626,10 +699,9 @@ function LocalArrayRestore{T}(varr::LocalArray{T})
   varr.isfinalized = true
 end
 
-
-
-
-# read only version
+@doc """
+  Get read-only access to the memory underlying a Petsc vector
+"""
 type LocalArrayRead{T <: Scalar} <: AbstractArray{T, 1}
   a::Array{T, 1}  # the array object constructed around the pointer
   ref::Ref{Ptr{T}}  # reference to the pointer to the data
@@ -644,6 +716,11 @@ type LocalArrayRead{T <: Scalar} <: AbstractArray{T, 1}
   end
 
 end
+
+@doc """
+  Get the LocalArrayRead of a vector.  Users must call LocalArrayRestore when 
+  finished with the object.
+"""
 function LocalArrayRead{T}(vec::Vec{T})
 
   len = lengthlocal(vec)
@@ -663,7 +740,9 @@ function LocalArrayRestore{T}(varr::LocalArrayRead{T})
   varr.isfinalized = true
 end
 
-
+@doc """
+  Typealias for both kinds of LocalArrays
+"""
 typealias LocalArrays Union{LocalArray, LocalArrayRead}
 
 Base.linearindexing(varr::LocalArrays) = Base.linearindexing(varr.a)

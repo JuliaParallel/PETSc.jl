@@ -5,3 +5,5 @@ deps/deps.jl
 deps/petsc-*.tar.gz
 *.jl.cov
 *.jl.mem
+docs/build/
+docs/site/

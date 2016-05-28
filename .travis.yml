@@ -17,7 +17,6 @@ before_install:
       sudo apt-get install -y libblas-dev libblas-doc libblas3gf;
       echo `pwd`;
     fi
-  - openssl aes-256-cbc -K $encrypted_635359c38c78_key -iv $encrypted_635359c38c78_iv -in .documenter.enc -out .documenter -d
 install:
   - ls ./deps
   - ls -lh ./deps/travis-install-mpi.sh

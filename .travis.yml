@@ -4,7 +4,7 @@ os:
   - osx
 julia:
   - 0.4
-  - nightly
+# - nightly  # need to fix this
 
 notifications:
   email: false
@@ -17,6 +17,7 @@ before_install:
       sudo apt-get install -y libblas-dev libblas-doc libblas3gf;
       echo `pwd`;
     fi
+  - openssl aes-256-cbc -K $encrypted_635359c38c78_key -iv $encrypted_635359c38c78_iv -in .documenter.enc -out .documenter -d
 install:
   - ls ./deps
   - ls -lh ./deps/travis-install-mpi.sh
@@ -37,3 +38,5 @@ script:
 after_success:
   - echo $TRAVIS_JULIA_VERSION
   - julia -e 'Pkg.add("Coverage"); cd(Pkg.dir("PETSc")); using Coverage; Coveralls.submit(process_folder()); Codecov.submit(process_folder())'
+  - julia -e 'Pkg.clone("https://github.com/MichaelHatherly/Documenter.jl")'
+  - julia -e 'cd(Pkg.dir("PETSc")); include(joinpath("docs", "make.jl"))'

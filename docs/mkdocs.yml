@@ -14,9 +14,9 @@ extra_javascript:
 
 markdown_extensions:
     - extra
-        - tables
-            - fenced_code
-                - mdx_math
+    - tables
+    - fenced_code
+    - mdx_math
 
 docs_dir: 'build'
 

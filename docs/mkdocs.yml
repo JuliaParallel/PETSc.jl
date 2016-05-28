@@ -1,7 +1,7 @@
-site_name:        PACKAGE_NAME.jl
-repo_url:         https://github.com/USER_NAME/PACKAGE_NAME.jl
-site_description: Description...
-site_author:      USER_NAME
+site_name:        PETSc.jl
+repo_url:         https://github.com/JuliaParallel/PETSc.jl
+site_description: Julia Petsc interface documentation
+site_author:      JaredCrean2
 
 theme: readthedocs
 

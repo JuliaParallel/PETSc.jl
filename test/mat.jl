@@ -25,6 +25,8 @@ end
       ctx = (2, 4)
       mat = MatShell(ST, 3, 3, ctx)
       ctx_ret = getcontext(mat)
+#      println("typeof(ctx) = ", typeof(ctx))
+#      println("typeof(ctx_ret) = ", typeof(ctx_ret))
       @test ctx_ret == ctx
 
       f_ptr = cfunction(mymult, PETSc.C.PetscErrorCode, (PETSc.C.Mat{ST}, PETSc.C.Vec{ST}, PETSc.C.Vec{ST}))

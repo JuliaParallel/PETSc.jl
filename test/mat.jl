@@ -127,10 +127,8 @@ end
     @test isassembled(mat)
 
     mat2 = similar(mat, ST, 4, 4)
-    mat2.assembling = false
     mat2[1,2] = vt1
     mat2[1,3] = vt2
-    mat2.assembling = false
     PETSc.assemble(mat2)
 
     @test mat2[1,2] == vt1
@@ -309,6 +307,7 @@ end
       end
       vec[i] = RC(complex(Float64(i), i))
       vecj[i] = RC(complex(Float64(i), i))
+      assemble(vec)
     end
 
     assemble(mata)

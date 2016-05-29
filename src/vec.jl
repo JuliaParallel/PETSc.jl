@@ -11,7 +11,7 @@ export Vec, comm, NullVec
 """
 type Vec{T,VType} <: AbstractVector{T}
   p::C.Vec{T}
-  assembling::Bool # whether we are in the middle of assemble(vec)
+  assembled::Bool # whether are all values have been assembled
   insertmode::C.InsertMode # current mode for setindex!
   data::Any # keep a reference to anything needed for the Mat
             # -- needed if the Mat is a wrapper around a Julia object,
@@ -317,7 +317,9 @@ function Base.similar{T,VType}(x::Vec{T,VType}, len::Union{Int,Dims})
 end
 
 function Base.copy(x::Vec)
+  AssemblyBegin(x)
   y = similar(x)
+  AssemblyEnd(x)
   chk(C.VecCopy(x.p, y.p))
   y
 end
@@ -330,9 +332,11 @@ export assemble, isassembled, AssemblyBegin, AssemblyEnd
 # assemble(x) do ... end
  """
   Start communication to assemble stashed values into the vector
+
+  The MatAssemblyType is not needed for vectors, but is provided for 
+  compatability with the Mat case
 """
 function AssemblyBegin(x::Vec, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
-  # the t parameter is unused for vectors
   chk(C.VecAssemblyBegin(x.p))
 end
 
@@ -341,12 +345,13 @@ end
 """
 function AssemblyEnd(x::Vec, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
   chk(C.VecAssemblyEnd(x.p))
+  x.assembled = true
 end
 
  """
   Check if a vector is assembled (ie. does not have stashed values)
 """
-isassembled(x::Vec) = !x.assembling
+isassembled(x::Vec) = x.assembled
 # assemble(f::Function, x::Vec) is defined in mat.jl
 
  """
@@ -359,10 +364,7 @@ function setindex0!{T}(x::Vec{T}, v::Array{T}, i::Array{PetscInt})
   end
   #    println("  in setindex0, passed bounds check")
   chk(C.VecSetValues(x.p, n, i, v, x.insertmode))
-  if !x.assembling
-    AssemblyBegin(x)
-    AssemblyEnd(x)
-  end
+  x.assembled = false
   x
 end
 

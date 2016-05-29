@@ -7,25 +7,31 @@ function __init__()
     MPI.Init()
   end
 
-  PetscInitialize(Float32)
-  PetscInitialize(Float64)
-  PetscInitialize(Complex128)
+  for i=1:3
+    if have_petsc[i]
+      PetscInitialize(petsc_type[i])
+    end
+  end
 
   # we want Petsc to return errors to us, rather than using its own
   # error handlers, so that we can catch error codes and throw exceptions
   # need to do this for all Petsc versions
 
   for i=1:3
-    libname = C.petsc_libs[i]
-    val = @eval(cglobal((:PetscIgnoreErrorHandler, C.$libname)))
-    C.PetscPushErrorHandler(C.petsc_type[i], val, C_NULL)
+    if have_petsc[i]
+      libname = C.petsc_libs[i]
+      val = @eval(cglobal((:PetscIgnoreErrorHandler, C.$libname)))
+      C.PetscPushErrorHandler(C.petsc_type[i], val, C_NULL)
+    end
   end
 
   # register atexit finalizers for the Petsc libraries
   atexit() do
-    C.PetscFinalize(Float32)
-    C.PetscFinalize(Float64)
-    C.PetscFinalize(Complex128)
+    for i=1:3
+      if have_petsc[i]
+        C.PetscFinalize(petsc_type[i])
+      end
+    end
   end
 end
 

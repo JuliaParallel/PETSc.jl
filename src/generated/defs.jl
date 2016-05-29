@@ -6,7 +6,7 @@ export MPI_Comm
 export PetscErrorCode
 export PetscBool
 export PetscInt # defined in depfile
-
+export have_petsc, petsc_libs, petsc_type
 const depfile = joinpath(dirname(@__FILE__), "..", "..", "deps", "deps.jl")
 isfile(depfile) || error("PETSc not properly installed. Please run Pkg.build(\"PETSc\")")
 include(depfile)

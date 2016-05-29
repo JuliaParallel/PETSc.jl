@@ -26,18 +26,27 @@ type Vec{T,VType} <: AbstractVector{T}
   end
 end
 
-global const NullVec1 = Vec{Float64, C.VECSTANDARD}(C.Vec{Float64}(C_NULL), first_instance=false)
-global const NullVec2 = Vec{Complex128, C.VECSTANDARD}(C.Vec{Complex128}(C_NULL), first_instance=false)
-global const NullVec3 = Vec{Float32, C.VECSTANDARD}(C.Vec{Float32}(C_NULL), first_instance=false)
 
 @doc """
   Null vectors, used in place of void pointers in the C
   API
 """
-global const NullVec = Dict{DataType, Vec}(Float64 => NullVec1,
-                                    Complex128 => NullVec2,
-                                    Float32 => NullVec3)
+global const NullVec = Dict{DataType, Vec}()
 
+
+if have_petsc[1]
+  global const NullVec1 = Vec{Float64, C.VECSTANDARD}(C.Vec{Float64}(C_NULL), first_instance=false)
+  NullVec[Float64] = NullVec1
+end
+if have_petsc[2]
+  global const NullVec2 = Vec{Float32, C.VECSTANDARD}(C.Vec{Float32}(C_NULL), first_instance=false)
+  NullVec[Float32] = NullVec2
+end
+if have_petsc[3]
+  global const NullVec3 = Vec{Complex128, C.VECSTANDARD}(C.Vec{Complex128}(C_NULL), first_instance=false)
+  NullVec[Complex128] = NullVec3
+
+end
 @doc """
   Gets the MPI communicator of a vector.
 """

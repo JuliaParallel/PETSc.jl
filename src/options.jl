@@ -18,6 +18,7 @@ function Base.setindex!{T}(::Options{T}, v::Void, k::SymOrStr)
   return v
 end
 
+# PETSc complains if you don't use an option, remove this?
 # allow OPTIONS[k]=v to set options for all PETSc scalar types simultaneously
 function Base.setindex!(o::typeof(OPTIONS), v, k::SymOrStr)
   for opts in values(o)

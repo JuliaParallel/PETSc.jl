@@ -4,7 +4,7 @@ export Mat, petscview, SubMat
 abstract PetscMat{T, MType} <: AbstractSparseMatrix{T, PetscInt}
 type Mat{T, MType} <: PetscMat{T, MType}
   p::C.Mat{T}
-  assembling::Bool # whether we are in the middle of assemble(vec)
+  assembled::Bool # whether we are in the middle of assemble(vec)
   insertmode::C.InsertMode # current mode for setindex!
   data::Any # keep a reference to anything needed for the Mat
             # -- needed if the Mat is a wrapper around a Julia object,
@@ -22,7 +22,7 @@ end
 
 type SubMat{T, MType} <: PetscMat{T}
   p::C.Mat{T}
-  assembling::Bool # whether we are in the middle of assemble(vec)
+  assembled::Bool # whether we are in the middle of assemble(vec)
   insertmode::C.InsertMode # current mode for setindex!
   data::Any # keep a reference to anything needed for the Mat
             # -- needed if the Mat is a wrapper around a Julia object,
@@ -511,6 +511,9 @@ end
 """
 function AssemblyEnd(x::PetscMat, t::C.MatAssemblyType=C.MAT_FLUSH_ASSEMBLY)
   chk(C.MatAssemblyEnd(x.p, t))
+  if t == C.MAT_FINAL_ASSEMBLY
+    x.assembled = true
+  end
 end
 
 """
@@ -526,7 +529,7 @@ end
   Check if the matrix is assembled
 """
 # why does this check x.assembling?
-isassembled(x::PetscMat) = !x.assembling && isassembled(x.p)
+isassembled(x::PetscMat) = x.assembled && isassembled(x.p)
 
 """
   This function provides a mechanism for efficiently inserting values into
@@ -538,23 +541,18 @@ isassembled(x::PetscMat) = !x.assembling && isassembled(x.p)
 function assemble(f::Function, x::Union{Vec,PetscMat},
   insertmode=x.insertmode,
   assemblytype::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
-  if x.insertmode != insertmode && x.assembling
+  if x.insertmode != insertmode && !x.assembled
     error("nested assemble with different insertmodes not allowed")
   end
-  old_assembling = x.assembling
   old_insertmode = x.insertmode
-  try
-    x.assembling = true
+  try  # what is the purpose of the try - finally?
     x.insertmode = insertmode
     result = f()
-    if !old_assembling # don't Assemble if we are in nested assemble
-      AssemblyBegin(x, assemblytype)
-      yield() # do async computations while messages are in transit
-      AssemblyEnd(x, assemblytype)
-    end
     return result
   finally
-    x.assembling = old_assembling
+    AssemblyBegin(x, assemblytype)
+    yield() # do async computations while messages are in transit
+    AssemblyEnd(x, assemblytype)
     x.insertmode = old_insertmode
   end
 end
@@ -564,8 +562,8 @@ end
   Assemble the Petsc object
 """
 function assemble(x::Union{Vec,PetscMat}, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
-  AssemblyBegin(x, t)
-  AssemblyEnd(x,t)
+    AssemblyBegin(x, t)
+    AssemblyEnd(x,t)
 end
 
 
@@ -599,10 +597,7 @@ function setindex0!{T}(x::Mat{T}, v::Array{T},
     throw(ArgumentError("length(values) != length(indices)"))
   end
   chk(C.MatSetValues(x.p, ni, i, nj, j, v, x.insertmode))
-  if !x.assembling
-    AssemblyBegin(x,C.MAT_FLUSH_ASSEMBLY)
-    AssemblyEnd(x,C.MAT_FLUSH_ASSEMBLY)
-  end
+  x.assembled = false
   x
 end
 
@@ -615,10 +610,7 @@ function setindex0!{T}(x::SubMat{T}, v::Array{T}, i::Array{PetscInt}, j::Array{P
     throw(ArgumentError("length(values) != length(indices)"))
   end
   chk(C.MatSetValuesLocal(x.p, ni, i, nj, j, v, x.insertmode))
-  if !x.assembling
-    AssemblyBegin(x,C.MAT_FLUSH_ASSEMBLY)
-    AssemblyEnd(x,C.MAT_FLUSH_ASSEMBLY)
-  end
+  x.assembled = false
   x
 end
 

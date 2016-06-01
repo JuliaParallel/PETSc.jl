@@ -340,12 +340,10 @@
     map!(sin, x)
     map!(sin, y)
     @test x ≈ y
-    println("finished first test")
     x2 = map(sin, x)
     y2 = map(sin, y)
     @test x2 ≈ y2
-    println("finished second test")
-#=
+
     function myfunc(a, b)
       return a + b
     end
@@ -355,7 +353,5 @@
     map!(myfunc, x3, x2, x)
     map!(myfunc, y3, y2, y)
     @test x3 ≈ y3
-    println("finished third test")
-=#
   end
 end

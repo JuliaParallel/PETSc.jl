@@ -626,7 +626,6 @@ Applys f element-wise to src to populate dest.  If src is a ghost vector,
 then f is applied to the ghost elements as well as the local elements.
 """
 function map!{T}(f, dest::Vec{T}, src::Vec)
-  println("called single vector map")
   if length(dest) != length(src)
     throw(ArgumentError("Vectors must be same length"))
   end
@@ -638,31 +637,53 @@ function map!{T}(f, dest::Vec{T}, src::Vec)
   LocalArrayRestore(dest_arr)
   LocalArrayRestore(src_arr)
 end
-#=
-function map!(f, dest::Vec, srcs::Vec...)
-  println("called varargs map")
+
+"""
+  Multiple source vector map.  All vectors must have the local and global 
+  lengths.  If some a ghost vectors and some are not, the map is applied
+  only to the local part
+"""
+function map!{T, T2}(f, dest::Vec{T}, src1::Vec{T}, src2::Vec{T2},  src_rest::Vec{T2}...)
+
+  # annoying workaround for #13651
+  srcs = (src1, src2, src_rest...)
   # check lengths
-  min_length = typemax(Int)
   for src in srcs
     srclen = length(src)
+    srclen_local = lengthlocal(src)
     if length(dest) < srclen
       throw(ArgumentError("Length of destination must be greater than source"))
     end
 
-    if srclen < min_length
-      min_length = srclen
+    if lengthlocal(dest) < srclen_local
+      throw(ArgumentError("Local length of destination must be greater than source"))
     end
   end
   
   # extract the arrays
   n = length(srcs)
-  src_arrs = Array(LocalArrayRead{T}, n)
-  println("typeof(srcs) = ", typeof(srcs))
+  len = 0
+  len_prev = 0
+  src_arrs = Array(LocalArrayRead{T2}, n)
+  use_length_local = false
   for (idx, src) in enumerate(srcs)
-    println("typeof(src) = ", typeof(src))
     src_arrs[idx] = LocalArrayRead(src)
+
+    # check of length of arrays are same or not
+    len = length(src_arrs[idx])
+    if len != len_prev && idx != 1 && !use_length_local
+      use_length_local = true
+    end
+    len_prev = len
   end
   dest_arr = LocalArray(dest)
+
+  # if not all same, do only the local part (which must be the same for all)
+  if use_length_local
+    min_length = lenth(src1)
+  else
+    min_length = length(src_arrs[1])
+  end
 
   # do the map
   vals = Array(T, n)
@@ -679,10 +700,6 @@ function map!(f, dest::Vec, srcs::Vec...)
   end
   LocalArrayRestore(dest_arr)
 end
-=#
-
-
-
 
 ##########################################################################
 export axpy!, aypx!, axpby!, axpbypcz!

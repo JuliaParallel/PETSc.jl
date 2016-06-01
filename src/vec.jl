@@ -34,7 +34,7 @@ type Vec{T,VType} <: AbstractVector{T}
   end
 end
 
-import Base: show, showcompact
+import Base: show, showcompact, writemime
 function show(io::IO, x::Vec)
 
   myrank = MPI.Comm_rank(comm(x))
@@ -54,6 +54,8 @@ end
 
 
 showcompact(io::IO, x::Vec) = show(io, x)
+writemime(io::IO, ::MIME"text/plain", x::Vec) = show(io, x)
+
 """
   Null vectors, used in place of void pointers in the C
   API

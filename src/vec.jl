@@ -599,6 +599,91 @@ function Base.sum{T}(x::Vec{T})
   s[]
 end
 
+###############################################################################
+# map and friends
+import Base: map!, map
+# this should be inhertied from base
+#=
+function map(f, c)
+  out = copy(c)
+  for (idx, val) in enumerate(c)
+    out_idx = similar(val)
+    map!(f, out_idx, val)
+    out[idx] = out_idx
+  end
+
+  return out
+end
+=#
+#TODO: c should be a varargs, but that makes it ambiguous with map! defined
+# below
+function map!(f, c)
+  map!(f, c, c)
+end
+
+"""
+Applys f element-wise to src to populate dest.  If src is a ghost vector,
+then f is applied to the ghost elements as well as the local elements.
+"""
+function map!{T}(f, dest::Vec{T}, src::Vec)
+  println("called single vector map")
+  if length(dest) != length(src)
+    throw(ArgumentError("Vectors must be same length"))
+  end
+  dest_arr = LocalArray(dest)
+  src_arr = LocalArrayRead(src)
+  for (idx, val) in enumerate(src)
+    dest[idx] = f(val)
+  end
+  LocalArrayRestore(dest_arr)
+  LocalArrayRestore(src_arr)
+end
+#=
+function map!(f, dest::Vec, srcs::Vec...)
+  println("called varargs map")
+  # check lengths
+  min_length = typemax(Int)
+  for src in srcs
+    srclen = length(src)
+    if length(dest) < srclen
+      throw(ArgumentError("Length of destination must be greater than source"))
+    end
+
+    if srclen < min_length
+      min_length = srclen
+    end
+  end
+  
+  # extract the arrays
+  n = length(srcs)
+  src_arrs = Array(LocalArrayRead{T}, n)
+  println("typeof(srcs) = ", typeof(srcs))
+  for (idx, src) in enumerate(srcs)
+    println("typeof(src) = ", typeof(src))
+    src_arrs[idx] = LocalArrayRead(src)
+  end
+  dest_arr = LocalArray(dest)
+
+  # do the map
+  vals = Array(T, n)
+  for i=1:min_length  # TODO: make this the minimum array length
+    for j=1:n  # extract values
+      vals[j] = src_arrs[j][i]
+    end
+    dest_arr[i] = f(vals...)
+  end
+
+  # restore the arrays
+  for src_arr in src_arrs
+    LocalArrayRestore(src_arr)
+  end
+  LocalArrayRestore(dest_arr)
+end
+=#
+
+
+
+
 ##########################################################################
 export axpy!, aypx!, axpby!, axpbypcz!
 import Base.LinAlg.BLAS.axpy!

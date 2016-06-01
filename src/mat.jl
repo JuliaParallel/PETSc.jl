@@ -1,16 +1,25 @@
 # AbstractMatrix wrapper around Petsc Mat
 export Mat, petscview, SubMat
 
+"""
+  A Petsc matrix.
+
+  Unlike Vecs, the Petsc implementation keeps track of the local assembly 
+  state, so the Julia type does not have to.
+  `verify_assembled`: if true, verify all processes are assembled, if false,
+                      only local process
+  `insertmode`: C.InsertMode used by `setindex!`
+"""  
 abstract PetscMat{T, MType} <: AbstractSparseMatrix{T, PetscInt}
 type Mat{T, MType} <: PetscMat{T, MType}
   p::C.Mat{T}
-  assembled::Bool # whether we are in the middle of assemble(vec)
+  verify_assembled::Bool # check all processes assembled state or just current
   insertmode::C.InsertMode # current mode for setindex!
   data::Any # keep a reference to anything needed for the Mat
             # -- needed if the Mat is a wrapper around a Julia object,
             #    to prevent the object from being garbage collected.
-  function Mat(p::C.Mat{T}, data=nothing; first_instance::Bool=true)
-    A = new(p, false, C.INSERT_VALUES, data)
+  function Mat(p::C.Mat{T}, data=nothing; first_instance::Bool=true, verify_assembled=true)
+    A = new(p, verify_assembled, C.INSERT_VALUES, data)
     if first_instance  # if the pointer p has not been put into a Mat before
       chk(C.MatSetType(p, MType))
       finalizer(A, PetscDestroy)
@@ -22,7 +31,7 @@ end
 
 type SubMat{T, MType} <: PetscMat{T}
   p::C.Mat{T}
-  assembled::Bool # whether we are in the middle of assemble(vec)
+  verify_assembled::Bool
   insertmode::C.InsertMode # current mode for setindex!
   data::Any # keep a reference to anything needed for the Mat
             # -- needed if the Mat is a wrapper around a Julia object,
@@ -30,8 +39,8 @@ type SubMat{T, MType} <: PetscMat{T}
             # in general, we *must* keep a copy of the parent matrix, because
             # creating a submatrix does not increase the reference count
             # in Petsc (for some unknown reason)
-  function SubMat(p::C.Mat{T}, data=nothing)
-    A = new(p, false, C.INSERT_VALUES, data)
+  function SubMat(p::C.Mat{T}, data=nothing; verify_assembled=true)
+    A = new(p, verify_assembled, C.INSERT_VALUES, data)
     finalizer(A, SubMatRestore)
     return A
   end
@@ -105,7 +114,7 @@ function SubMat{T, MType}(mat::Mat{T, MType}, isrow::IS{T}, iscol::IS{T})
   submat = Ref{C.Mat{T}}()
   chk(C.MatGetLocalSubMatrix(mat.p, isrow.p, iscol.p, submat))
   # keep the data needed for the finalizer
-  return SubMat{T, MType}(submat[], (mat, isrow, iscol))  
+  return SubMat{T, MType}(submat[], (mat, isrow, iscol), verify_assembled=mat.verify_assembled)  
 end
 
 export SubMatRestore
@@ -501,6 +510,7 @@ Base.nnz(m::Mat) = Int(getinfo(m).nz_used)
 """
   Start assembling the matrix (the implmentations probably post 
   non-blocking sends and received)
+
 """
 function AssemblyBegin(x::PetscMat, t::C.MatAssemblyType=C.MAT_FLUSH_ASSEMBLY)
   chk(C.MatAssemblyBegin(x.p, t))
@@ -511,9 +521,6 @@ end
 """
 function AssemblyEnd(x::PetscMat, t::C.MatAssemblyType=C.MAT_FLUSH_ASSEMBLY)
   chk(C.MatAssemblyEnd(x.p, t))
-  if t == C.MAT_FINAL_ASSEMBLY
-    x.assembled = true
-  end
 end
 
 """
@@ -526,10 +533,22 @@ function isassembled(p::C.Mat)
 end
 
 """
-  Check if the matrix is assembled
+  Check if the matrix is assembled.  Whether all processes assembly state 
+  is checked or only the local process is determined by `x.verify_assembled`.
+
+  `local_only` forces only the local process to be checked, regardless of 
+  `x.verify_assembled`.
 """
-# why does this check x.assembling?
-isassembled(x::PetscMat) = x.assembled && isassembled(x.p)
+function isassembled(x::PetscMat; local_only=false)
+  val = isassembled(x.p)
+  if !local_only
+    if x.verify_assembled
+      val = MPI.Allreduce(Int32(val), MPI.LAND, comm(x))
+    end
+  end
+
+  return Bool(val)
+end
 
 """
   This function provides a mechanism for efficiently inserting values into
@@ -541,7 +560,7 @@ isassembled(x::PetscMat) = x.assembled && isassembled(x.p)
 function assemble(f::Function, x::Union{Vec,PetscMat},
   insertmode=x.insertmode,
   assemblytype::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
-  if x.insertmode != insertmode && !x.assembled
+  if x.insertmode != insertmode && !isassembled(x, local_only=true)
     error("nested assemble with different insertmodes not allowed")
   end
   old_insertmode = x.insertmode
@@ -562,8 +581,8 @@ end
   Assemble the Petsc object
 """
 function assemble(x::Union{Vec,PetscMat}, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
-    AssemblyBegin(x, t)
-    AssemblyEnd(x,t)
+  AssemblyBegin(x, t)
+  AssemblyEnd(x,t)
 end
 
 
@@ -597,7 +616,6 @@ function setindex0!{T}(x::Mat{T}, v::Array{T},
     throw(ArgumentError("length(values) != length(indices)"))
   end
   chk(C.MatSetValues(x.p, ni, i, nj, j, v, x.insertmode))
-  x.assembled = false
   x
 end
 
@@ -610,7 +628,6 @@ function setindex0!{T}(x::SubMat{T}, v::Array{T}, i::Array{PetscInt}, j::Array{P
     throw(ArgumentError("length(values) != length(indices)"))
   end
   chk(C.MatSetValuesLocal(x.p, ni, i, nj, j, v, x.insertmode))
-  x.assembled = false
   x
 end
 

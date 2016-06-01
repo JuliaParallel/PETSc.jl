@@ -34,8 +34,27 @@ type Vec{T,VType} <: AbstractVector{T}
   end
 end
 
+import Base: show, showcompact
+function show(io::IO, x::Vec)
 
- """
+  myrank = MPI.Comm_rank(comm(x))
+  if myrank == 0
+    println("Petsc Vec of lenth ", length(x))
+  end
+  if isassembled(x)
+    println(io, "Process ", myrank, " entries:")
+    x_arr = LocalArrayRead(x)
+    show(io, x_arr)
+    LocalArrayRestore(x_arr)
+  else
+    println(io, "Process ", myrank, " not assembled")
+  end
+
+end
+
+
+showcompact(io::IO, x::Vec) = show(io, x)
+"""
   Null vectors, used in place of void pointers in the C
   API
 """

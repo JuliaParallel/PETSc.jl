@@ -626,9 +626,13 @@ Applys f element-wise to src to populate dest.  If src is a ghost vector,
 then f is applied to the ghost elements as well as the local elements.
 """
 function map!{T}(f, dest::Vec{T}, src::Vec)
-  if length(dest) != length(src)
-    throw(ArgumentError("Vectors must be same length"))
+  if length(dest) < length(src)
+    throw(ArgumentError("Length of dest must be >= src"))
   end
+  if localpart(dest)[1] != localpart(src)[1]
+    throw(ArgumentError("Local length of dest must be >= src"))
+  end
+
   dest_arr = LocalArray(dest)
   src_arr = LocalArrayRead(src)
   try
@@ -651,15 +655,17 @@ function map!{T, T2}(f, dest::Vec{T}, src1::Vec{T}, src2::Vec{T2},  src_rest::Ve
   # annoying workaround for #13651
   srcs = (src1, src2, src_rest...)
   # check lengths
+  dest_localrange = localpart(dest)
+  dest_len = length(dest)
   for src in srcs
     srclen = length(src)
-    srclen_local = lengthlocal(src)
-    if length(dest) < srclen
+    srcrange_local = localpart(src)
+    if dest_len < srclen
       throw(ArgumentError("Length of destination must be greater than source"))
     end
 
-    if lengthlocal(dest) < srclen_local
-      throw(ArgumentError("Local length of destination must be greater than source"))
+    if dest_localrange[1] != srcrange_local[1]
+      throw(ArgumentError("start of local part of src and dest must be aligned"))
     end
   end
   

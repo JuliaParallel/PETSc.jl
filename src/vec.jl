@@ -631,11 +631,14 @@ function map!{T}(f, dest::Vec{T}, src::Vec)
   end
   dest_arr = LocalArray(dest)
   src_arr = LocalArrayRead(src)
-  for (idx, val) in enumerate(src)
-    dest[idx] = f(val)
+  try
+    for (idx, val) in enumerate(src)
+      dest[idx] = f(val)
+    end
+  finally
+    LocalArrayRestore(dest_arr)
+    LocalArrayRestore(src_arr)
   end
-  LocalArrayRestore(dest_arr)
-  LocalArrayRestore(src_arr)
 end
 
 """
@@ -666,39 +669,40 @@ function map!{T, T2}(f, dest::Vec{T}, src1::Vec{T}, src2::Vec{T2},  src_rest::Ve
   len_prev = 0
   src_arrs = Array(LocalArrayRead{T2}, n)
   use_length_local = false
-  for (idx, src) in enumerate(srcs)
-    src_arrs[idx] = LocalArrayRead(src)
 
-    # check of length of arrays are same or not
-    len = length(src_arrs[idx])
-    if len != len_prev && idx != 1 && !use_length_local
-      use_length_local = true
-    end
-    len_prev = len
-  end
   dest_arr = LocalArray(dest)
+  try 
+    for (idx, src) in enumerate(srcs)
+      src_arrs[idx] = LocalArrayRead(src)
 
-  # if not all same, do only the local part (which must be the same for all)
-  if use_length_local
-    min_length = lenth(src1)
-  else
-    min_length = length(src_arrs[1])
-  end
-
-  # do the map
-  vals = Array(T, n)
-  for i=1:min_length  # TODO: make this the minimum array length
-    for j=1:n  # extract values
-      vals[j] = src_arrs[j][i]
+      # check of length of arrays are same or not
+      len = length(src_arrs[idx])
+      if len != len_prev && idx != 1 && !use_length_local
+        use_length_local = true
+      end
+      len_prev = len
     end
-    dest_arr[i] = f(vals...)
-  end
 
-  # restore the arrays
-  for src_arr in src_arrs
-    LocalArrayRestore(src_arr)
+    # if not all same, do only the local part (which must be the same for all)
+    if use_length_local
+      min_length = lenth(src1)
+    else
+      min_length = length(src_arrs[1])
+    end
+      # do the map
+      vals = Array(T, n)
+      for i=1:min_length  # TODO: make this the minimum array length
+        for j=1:n  # extract values
+          vals[j] = src_arrs[j][i]
+        end
+        dest_arr[i] = f(vals...)
+      end
+  finally # restore the arrays
+    for src_arr in src_arrs
+      LocalArrayRestore(src_arr)
+    end
+    LocalArrayRestore(dest_arr)
   end
-  LocalArrayRestore(dest_arr)
 end
 
 ##########################################################################

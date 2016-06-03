@@ -602,21 +602,8 @@ end
 ###############################################################################
 # map and friends
 import Base: map!, map
-# this should be inhertied from base
-#=
-function map(f, c)
-  out = copy(c)
-  for (idx, val) in enumerate(c)
-    out_idx = similar(val)
-    map!(f, out_idx, val)
-    out[idx] = out_idx
-  end
+#map() should be inherited from base
 
-  return out
-end
-=#
-#TODO: c should be a varargs, but that makes it ambiguous with map! defined
-# below
 function map!(f, c)
   map!(f, c, c)
 end
@@ -630,7 +617,7 @@ function map!{T}(f, dest::Vec{T}, src::Vec)
     throw(ArgumentError("Length of dest must be >= src"))
   end
   if localpart(dest)[1] != localpart(src)[1]
-    throw(ArgumentError("Local length of dest must be >= src"))
+    throw(ArgumentError("start of local part of src and dest must be aligned"))
   end
 
   dest_arr = LocalArray(dest)

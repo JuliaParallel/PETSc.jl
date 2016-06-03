@@ -1036,7 +1036,7 @@ export LocalArray, LocalArrayRead, LocalArrayRestore
   Object representing the local part of the array, accessing the memory directly.
   Supports all the same indexing as a regular Array
 """
-type LocalArray{T <: Scalar} <: AbstractArray{T, 1}
+type LocalArray{T <: Scalar} <: DenseArray{T, 1}
   a::Array{T, 1}  # the array object constructed around the pointer
   ref::Ref{Ptr{T}}  # reference to the pointer to the data
   pobj::C.Vec{T}
@@ -1080,7 +1080,7 @@ end
  """
   Get read-only access to the memory underlying a Petsc vector
 """
-type LocalArrayRead{T <: Scalar} <: AbstractArray{T, 1}
+type LocalArrayRead{T <: Scalar} <: DenseArray{T, 1}
   a::Array{T, 1}  # the array object constructed around the pointer
   ref::Ref{Ptr{T}}  # reference to the pointer to the data
   pobj::C.Vec{T}
@@ -1121,15 +1121,15 @@ end
  """
   Typealias for both kinds of LocalArrays
 """
-typealias LocalArrays Union{LocalArray, LocalArrayRead}
+typealias LocalArrays{T} Union{LocalArray{T}, LocalArrayRead{T}}
 
-Base.linearindexing(varr::LocalArrays) = Base.linearindexing(varr.a)
 Base.size(varr::LocalArrays) = size(varr.a)
-Base.length(varr::LocalArrays) = size(varr)[1]
 # indexing
 getindex(varr::LocalArrays, i) = getindex(varr.a, i)
 setindex!(varr::LocalArray, v, i) = setindex!(varr.a, v, i)
-
+Base.unsafe_convert{T}(::Type{Ptr{T}}, a::LocalArrays{T}) = Base.unsafe_convert(Ptr{T}, a.a)
+Base.stride(a::LocalArrays, d::Integer) = stride(a.a, d)
+Base.similar(a::LocalArrays, T=eltype(a), dims=size(a)) = similar(a.a, T, dims)
 Base.copy(varr::LocalArrays) = deepcopy(varr)
 function (==)(x::LocalArrays, y::AbstractArray)
   return x.a == y

@@ -68,11 +68,19 @@
   vec5 = Vec(Float64, 4)
   varr = LocalArray(vec5)
   @test length(vec5) == 4
+  @test length(varr) == length(vec5)
+  @test stride(varr, 1) == 1
   vec5j = [1., 2, 3, 4]
   for i=1:length(vec5)  varr[i] = vec5j[i] end
   
   @test varr[1] == vec5j[1]
   @test varr == vec5j
+
+  varr2 = similar(varr)
+  T2 = eltype(varr)
+  @test typeof(varr2) == Array{eltype(T2), 1}
+  ptr = Base.unsafe_convert(Ptr{T2}, varr) 
+  @test ptr == varr.ref[]
 
   LocalArrayRestore(varr)
 

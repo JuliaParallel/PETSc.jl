@@ -762,7 +762,6 @@ setindex!(varr::LocalArray, v, i) = setindex!(varr.a, v, i)
 Base.unsafe_convert{T}(::Type{Ptr{T}}, a::LocalArrays{T}) = Base.unsafe_convert(Ptr{T}, a.a)
 Base.stride(a::LocalArrays, d::Integer) = stride(a.a, d)
 Base.similar(a::LocalArrays, T=eltype(a), dims=size(a)) = similar(a.a, T, dims)
-Base.copy(varr::LocalArrays) = deepcopy(varr)
 function (==)(x::LocalArrays, y::AbstractArray)
   return x.a == y
 end

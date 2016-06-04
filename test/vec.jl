@@ -333,4 +333,25 @@
   let x = rand(ST, 7)
     @test Vec(x) == x
   end
+
+  @testset "map" begin
+    x = rand(3)
+    y = Vec(x)
+    map!(sin, x)
+    map!(sin, y)
+    @test x ≈ y
+    x2 = map(sin, x)
+    y2 = map(sin, y)
+    @test x2 ≈ y2
+
+    function myfunc(a, b)
+      return a + b
+    end
+
+    x3 = copy(x2)
+    y3 = copy(y2)
+    map!(myfunc, x3, x2, x)
+    map!(myfunc, y3, y2, y)
+    @test x3 ≈ y3
+  end
 end

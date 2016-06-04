@@ -599,6 +599,105 @@ function Base.sum{T}(x::Vec{T})
   s[]
 end
 
+###############################################################################
+# map and friends
+import Base: map!, map
+#map() should be inherited from base
+
+function map!(f, c)
+  map!(f, c, c)
+end
+
+"""
+Applys f element-wise to src to populate dest.  If src is a ghost vector,
+then f is applied to the ghost elements as well as the local elements.
+"""
+function map!{T}(f, dest::Vec{T}, src::Vec)
+  if length(dest) < length(src)
+    throw(ArgumentError("Length of dest must be >= src"))
+  end
+  if localpart(dest)[1] != localpart(src)[1]
+    throw(ArgumentError("start of local part of src and dest must be aligned"))
+  end
+
+  dest_arr = LocalArray(dest)
+  src_arr = LocalArrayRead(src)
+  try
+    for (idx, val) in enumerate(src)
+      dest[idx] = f(val)
+    end
+  finally
+    LocalArrayRestore(dest_arr)
+    LocalArrayRestore(src_arr)
+  end
+end
+
+"""
+  Multiple source vector map.  All vectors must have the local and global 
+  lengths.  If some a ghost vectors and some are not, the map is applied
+  only to the local part
+"""
+function map!{T, T2}(f, dest::Vec{T}, src1::Vec{T}, src2::Vec{T2},  src_rest::Vec{T2}...)
+
+  # annoying workaround for #13651
+  srcs = (src1, src2, src_rest...)
+  # check lengths
+  dest_localrange = localpart(dest)
+  dest_len = length(dest)
+  for src in srcs
+    srclen = length(src)
+    srcrange_local = localpart(src)
+    if dest_len < srclen
+      throw(ArgumentError("Length of destination must be greater than source"))
+    end
+
+    if dest_localrange[1] != srcrange_local[1]
+      throw(ArgumentError("start of local part of src and dest must be aligned"))
+    end
+  end
+  
+  # extract the arrays
+  n = length(srcs)
+  len = 0
+  len_prev = 0
+  src_arrs = Array(LocalArrayRead{T2}, n)
+  use_length_local = false
+
+  dest_arr = LocalArray(dest)
+  try 
+    for (idx, src) in enumerate(srcs)
+      src_arrs[idx] = LocalArrayRead(src)
+
+      # check of length of arrays are same or not
+      len = length(src_arrs[idx])
+      if len != len_prev && idx != 1 && !use_length_local
+        use_length_local = true
+      end
+      len_prev = len
+    end
+
+    # if not all same, do only the local part (which must be the same for all)
+    if use_length_local
+      min_length = lenth(src1)
+    else
+      min_length = length(src_arrs[1])
+    end
+      # do the map
+      vals = Array(T, n)
+      for i=1:min_length  # TODO: make this the minimum array length
+        for j=1:n  # extract values
+          vals[j] = src_arrs[j][i]
+        end
+        dest_arr[i] = f(vals...)
+      end
+  finally # restore the arrays
+    for src_arr in src_arrs
+      LocalArrayRestore(src_arr)
+    end
+    LocalArrayRestore(dest_arr)
+  end
+end
+
 ##########################################################################
 export axpy!, aypx!, axpby!, axpbypcz!
 import Base.LinAlg.BLAS.axpy!

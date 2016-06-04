@@ -171,6 +171,10 @@ KSP(pc::PC; kws...)
 <p><a id='Base.length' href='#Base.length'>#</a>
 <strong><code>Base.length</code></strong> &mdash; <em>Function</em>.</p>
 <p>Get the global length of the vector</p>
+<p><a id='Base.map!' href='#Base.map!'>#</a>
+<strong><code>Base.map!</code></strong> &mdash; <em>Function</em>.</p>
+<p>Multiple source vector map.  All vectors must have the local and global    lengths.  If some a ghost vectors and some are not, the map is applied   only to the local part</p>
+<p>Applys f element-wise to src to populate dest.  If src is a ghost vector, then f is applied to the ghost elements as well as the local elements.</p>
 <p><a id='Base.size' href='#Base.size'>#</a>
 <strong><code>Base.size</code></strong> &mdash; <em>Function</em>.</p>
 <p>Returns the global dimensions of the matrix</p>
@@ -352,5 +356,5 @@ KSP(pc::PC; kws...)
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-06-04 20:03:35.678287
+Build Date UTC : 2016-06-04 20:08:26.525940
 -->

@@ -52,7 +52,8 @@
 
 \section{Introduction} \label{sec:intro}
 This document describes the changes to the Julia interface to the Portable, Extensible Toolkit for Scientific Computation (PETSc) since the previous report.
-New functionality in the form of a new vector type, build system improvements, and indexing changes are included.
+New functionality in the form of a new vector type, build system improvements, and indexing changes are included, as well as an interface to the PETSc Time Stepping (TS)
+component.
 
 
 \section{Vectors}
@@ -63,7 +64,7 @@ PETSc ghost vectors are now supported via the outer constructor
 function VecGhost{T<:Scalar, I <: Integer}(::Type{T}, mlocal::Integer, 
                   ghost_idx::Array{I,1}; comm=MPI.COMM_WORLD, m=C.PETSC_DECIDE, bs=1)
 \end{minted}
-\noindent wich allows the user to specify the number of entries in the vector 
+\noindent which allows the user to specify the number of entries in the vector 
 that are locally owned and the global indices of entries owned by other 
 processes whose data will be needed by the current process.  This is useful
 for eg. finite difference stencils near a parallel boundary, to ensure all the 
@@ -85,7 +86,7 @@ while the third is a convenience method for calling both in a single function
 call.  It should be noted that calling \texttt{ghost\_begin!}, doing some 
 local computation, and then calling \texttt{ghost\_end!}, can be more efficient
 than calling \ttt{scatter!} because non-blocking communication may be used to
-send the datai while the computating is taking place.  
+send the data while the computation is taking place.  
 Also, the \texttt{smode} parameter controls the direction of
 the update, ie. copying owner values to the ghosts or ghost values to the owner.
 \texttt{imode} controls whether the new values are added to the existing 
@@ -150,7 +151,7 @@ avoid the extra \texttt{MPI\_Allreduce} calls and attain better performance.
 \section{Build System}
 The build system has been improved to increase flexibility and user input, by
 recognizing certain environmental variables.  This has several facets.  
-First, the build system can be directed to use an exising build of PETSc 
+First, the build system can be directed to use an existing build of PETSc 
 rather than build a new one by setting the \texttt{PETSC\_DIR} and 
 \texttt{PETSC\_ARCH} for that build in the variables 
 \texttt{JULIA\_PETSC\_name\_DIR} and \texttt{JULIA\_PETSC\_name\_ARCH}, where \texttt{name} identify the datatype of the build (\texttt{RealDouble}, 
@@ -170,10 +171,118 @@ which does additional error checking at the expense of some performance.
 As a convenience, the \texttt{JULIA\_PETSC\_OPT}, variable can be set to tell
 the build system to use a set of default optimization flags.
 
+\section{TS}
+An interface to the PETSc component for time-stepping Ordinary Differential
+Equations (ODEs) and Differential Algebraic Equations (DAEs) has been created.
+The TS time is defined as
 
+\begin{minted}{julia}
+type TS{T}
+  p::C.TS{T}
+  data::Array{Any, 1}  # hold the various ctx tuples
+end
+\end{minted}
 
+Several outer constructors are available
+
+\begin{minted}{julia}
+function TS{T<:Scalar}(::Type{T}; comm=MPI.COMM_WORLD)
+function TS{T<:Scalar}(::Type{T}, tsptype::C.TSProblemType; comm=MPI.COMM_WORLD)
+function TS{T<:Scalar}(::Type{T}, tsptype::C.TSProblemType, tstype::C.TSType; 
+                       comm=MPI.COMM_WORLD)
+\end{minted}
+
+\noindent which offer increasing levels of specificity.  The first constructor
+takes the problem type and the time stepping method from the PETSc options 
+database, where the problem type tells PETSc whether the system is linear or
+non-linear. The second constructor takes the problem type as an argument and
+the method from the options database, and the third one takes both as arguments.
+
+The function
+\begin{minted}{julia}
+function set_ic{T<:Scalar}(ts::TS{T}, u::Vec{T}) 
+\end{minted}
+
+\noindent uses the current value of \texttt{u} as the initial condition for 
+the time stepping.
+
+The function
+\begin{minted}{julia}
+function set_times{T<:Scalar}(ts::TS{T}, t0, dt0,  nsteps::Integer, tmax)
+\end{minted}
+
+\noindent sets the initial time value, the time step sizes, the maximum number
+of time steps, and the maximum time value for the time stepping run.
+
+To solve the problem, two functions are available
+\begin{minted}{julia}
+function solve!{T}(ts::TS{T})
+function solve!{T}(ts::TS{T}, vec::Vec{T})
+\end{minted}
+
+The first method is uses in conjunction with \texttt{set\_ic}, while the 
+second takes the initial condition in the vector \texttt{vec}.
+
+The system being time-stepped is described to PETSc in two parts.  The first is 
+the right hand side, which is time stepped explicitly, and the second is the 
+left hand side, which is time stepped implicitly.  In general, PETSc requires 
+functions to evaluate the right and left hand side functions and their 
+Jacobians  in order to time step.  These functions are provided to PETSc via
+
+\begin{minted}{julia}
+function set_rhs_function{T}(ts::TS{T}, r::Vec{T}, f::Function, ctx=())
+function set_rhs_jac{T}(ts::TS{T}, A::Mat{T}, B::Mat{T}, f::Function, ctx=())
+function set_lhs_function{T}(ts::TS{T}, res::Vec{T}, f::Function, ctx::Tuple=())
+function set_lhs_jac{T}(ts::TS{T}, A::Mat{T}, B::Mat{T}, f::Function, ctx::Tuple=())
+\end{minted}
+For \texttt{set\_rhs\_function}, the function \texttt{f} must have the 
+signature
+
+\begin{minted}{julia}
+function f(ts::TS, t::Real, u::Vec, F::Vec, ctx)
+\end{minted}
+
+where \texttt{u} is the vector containing the current solution and \texttt{F}
+is the vector to be populated with the right hand side function.  \texttt{ctx}
+is the tuple passed into \texttt{set\_rhs\_function}.  The tuple provides a 
+mechanism to pass any data needed by the function though PETSc to the function.
+\texttt{t} is current time value.
+
+For \texttt{set\_rhs\_jac}, the function must have the signature
+
+\begin{minted}{julia}
+function f(ts::TS, t::Real, u::Vec, A::mat, B::Mat, ctx)
+\end{minted}
+
+where \texttt{u} is the same as before, \texttt{A} and \texttt{B} are the 
+Jacobian matrices for the linear solve and pre-conditioning, respectively.  
+\texttt{ctx} is the tuple passed into \texttt{set\_rhs\_jac}.
+
+The function for \texttt{set\_lhs\_function} must have the signature
+
+\begin{minted}{julia}
+function f(ts::TS, t::Real, u::Vec, ut::Vec, F::Vec, ctx)
+\end{minted}
+where all the arguments are the same as the function for 
+\texttt{set\_right\_function} with the addition of \texttt{ut}, which contains
+the current time derivative of the solution.
+
+For \texttt{set\_lhs\_jac}, the function must have the signature
+
+\begin{minted}{julia}
+function f(ts::TS, u::Vec, ut::Vec, a::Real, A::Mat, B::Mat, ctx)
+\end{minted}
+where \texttt{a} is the shift applied to the diagonal of the matrix, as 
+described in the PETSc documentation.  All other arguments are as described
+previously.
+
+For some time stepping methods such as explicit Euler, the Jacobian is not 
+required.  In this case the function \texttt{PETSc.ComputeRHSJacobianConstant}
+can be passed into \texttt{set\_rhs\_jac}.
+
+It is important to note that the functions do not need to be c-callable, 
+because of the use of wrappers within the PETSc.jl package.
 \end{document}
-
 
 
 

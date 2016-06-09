@@ -1,0 +1,201 @@
+\documentclass{beamer}
+
+%\input{odl_preamble.tex}
+% The amssymb package provides various useful mathematical symbols
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx} % for includegraphics
+\usepackage{xspace} % needed for \eg, \ie, \etc
+\usepackage{bm} % for bold math
+\usepackage{threeparttable} % for tables with footnotes
+%\usepackage{subfigure}
+\usepackage[ruled,lined,linesnumbered]{algorithm2e}
+
+% hyperref must be last
+% Commented out 20151129 - AA
+%\usepackage{hyperref}
+%\hypersetup{
+%  colorlinks=true,
+%  linkcolor=red,
+%  citecolor=green,
+%  urlcolor=blue
+%}
+  
+% We often use mathcal for functions
+\newcommand{\fnc}[1]{\ensuremath{\mathcal{#1}}}
+\newcommand{\vecfnc}[1]{\ensuremath{\boldsymbol{\mathcal{#1}}}} % vector function
+
+% matrices are often math sans serif type
+\newcommand{\mat}[1]{\ensuremath{\mathsf{#1}}}
+
+% SBP operator matrices
+
+% command latin phrases and other short-forms
+\newcommand{\etal}[0]{{\em et~al.\@}\xspace}
+\newcommand{\eg}[0]{{e.g.\@}\xspace}
+\newcommand{\ie}[0]{{i.e.\@}\xspace}
+\newcommand{\viz}[0]{{viz.\@}\xspace}
+\newcommand{\resp}[0]{{resp.\@}\xspace}
+
+% Misc. commands
+\newcommand{\ignore}[1]{} % comment out large sections of code
+
+%\usepackage{cite}
+%\usepackage{graphicx}
+\usepackage{subcaption}
+
+\usepackage[scale=2]{ccicons}
+%\usepackage{bm}
+\usepackage{tikz}
+%\graphicspath{{./results/nozzle/}}
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amsthm}
+%\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsbsy}
+\usepackage{amsopn}
+\usepackage{array}
+%\usepackage[labelformat=empty]{subfig}
+%\usepackage{subfigure}
+%\usepackage{subfig}
+\usepackage{verbatim}
+\usepackage{minted}
+%\usepackage{subfigmat} 
+%\usepackage{bm}
+%\usepackage{threeparttable}
+%%\usepackage{dcolumn}
+\newcolumntype{d}{D{.}{.}{-1}}
+%\usepackage{hhline}
+%\usepackage{xspace}
+%\usepackage[ruled,linesnumbered]{algorithm2e}
+
+\newcommand{\ttt}{\texttt}
+\newcommand{\die}{\partial}
+%\newcommand{\ds}{\mathrm{d}s}
+
+
+
+
+%  \bibliographystyle{plain}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetheme{Berlin}
+\usecolortheme{beaver}
+
+\beamertemplatenavigationsymbolsempty
+%\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+\captionsetup[figure]{labelformat=empty}
+%\setbeamertemplate{footline}[frame number]
+%\addtobeamertemplate{footline}[frame number]
+\expandafter\def\expandafter\insertshorttitle\expandafter{%
+  \insertshorttitle\hfill%
+  \insertframenumber\,/\,\inserttotalframenumber}
+  
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Table of Contents}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\title{Julia Petsc Interface}
+%\subtitle{Volume Integration, Edge Stabilization, Administration}
+%\author[]{Jared Crean, Kinshuk Panda, Anthony Ashley, Jason Hicken}
+%\author[Jared Crean, Kinshuk Panda,Anthony Ashley,Jason Hicken]{Jared Crean, Kinshuk Panda, Anthony Ashley, Jason Hicken}
+%\institute{Rensselaer Polytechnic Institute}
+\date{January 6, 2016}
+%\titlegraphic{\includegraphics[width=\textwidth]{logo_both4.png}}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{What is Petsc?}
+Portable, Extensible Toolkit for Scientific Computation, provides all the 
+capabilities needed to assembled and solve systems of linear and non-linear 
+arising from discretizing partial differential equations
+\begin{itemize}
+  \item Vec: distributed memory vectors
+  \item Mat: distributed memory sparse matrices
+  \item Mappings: Index Sets, Application Orderings, Local to Global Mappings
+  \item KSP: Krylov solvers for linear systems
+  \item SNES: Non-linear equation solvers (globalized Newton)
+  \item TS: time stepping for ODEs and DAEs
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Motivation: Summation-by-parts Operators}
+
+\end{frame}
+
+
+\begin{frame}{Simplex Operators}
+
+\end{frame}
+
+
+
+\begin{frame}{Conclusion}
+We have made progress on a PDE solver framework useful for optimization.
+
+\hfill \break
+\textcolor{red}{Edge stabilization is not suitable for explicit time marching methods!}
+
+\hfill \break
+Future work
+\begin{itemize}
+  \item Investigate skew-symmetric discretization
+  \item Investigate stabilizations that do not impose a timestep restriction
+\end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}
+\begin{center} \usebeamerfont*{frametitle} \usebeamercolor[fg]{frametitle}
+Any Questions?
+\end{center}
+
+\end{frame}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -395,6 +395,7 @@ function isassembled(x::Vec, local_only=false)
     val = x.assembled
   end
 
+  println("val = ", val)
   return Bool(val)
 end
 

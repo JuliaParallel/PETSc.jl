@@ -357,6 +357,53 @@ function Base.copy(x::Vec)
   y
 end
 
+###############################################################################
+"""
+  Constructs 2 index sets that map from the local row and columns to the
+  global rows and columns
+"""
+function localIS{T}(A::PetscVec{T})
+
+  cols = localpart(A)
+  rowis = IS(T, rows, comm=comm(A))
+  return rowis
+end
+
+"""
+  Construct ISLocalToGlobalMappings for the the rows and columns of the matrix
+"""
+function local_to_global_mapping(A::PetscVec)
+
+  # localIS creates strided index sets, which require only constant
+  # memory 
+  rowis, = localIS(A)
+  row_ltog = ISLocalToGlobalMapping(rowis)
+  return row_ltog
+end
+
+# need a better name
+"""
+  Registers the ISLocalToGlobalMappings with the matrix
+"""
+function set_local_to_global_mapping{T}(A::PetscVec{T}, rmap::ISLocalToGlobalMapping{T})
+
+  chk(C.VecSetLocalToGlobalMapping(A.p, rmap.p))
+end
+
+"""
+  Check if the local to global mappings have been registered
+"""
+function has_local_to_global_mapping{T}(A::PetscVec{T})
+
+  rmap_ref = Ref{C.ISLocalToGlobalMapping{T}}()
+  chk(C.VecGetLocalToGlobalMapping(A.p, rmap_re))
+
+  rmap = rmap_ref[]
+  
+  return rmap.pobj != C_NULL
+end
+
+
 ##########################################################################
 import Base: setindex!
 export assemble, isassembled, AssemblyBegin, AssemblyEnd
@@ -377,6 +424,12 @@ function AssemblyBegin(x::Vec, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
   chk(C.VecAssemblyBegin(x.p))
 end
 
+"""
+  Generic fallback for AbstractArray, no-op
+"""
+function AssemblyBegin(x::AbstractArray, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
+
+end
  """
   Finish communication for assembling the vector
 """
@@ -402,6 +455,14 @@ function isassembled(x::Vec, local_only=false)
   return Bool(val)
 end
 
+"""
+  Generic fallback for AbstractArray, no-op
+"""
+function AssemblyEnd(x::AbstractArray, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
+
+end
+
+isassemble(x::AbstractArray) = true
 # assemble(f::Function, x::Vec) is defined in mat.jl
 
  """
@@ -503,30 +564,33 @@ getindex(x::Vec, I::AbstractVector{PetscInt}) =
 ##########################################################################
 # more indexing
 # 0-based (to avoid temporary copies)
+
+export set_values!, set_values_blocked!, set_values_local!, set_values_local_blocked!
+
 function set_values!{T <: Scalar}(x::Vec{T}, idxs::DenseArray{PetscInt}, 
-                                 vals::DenseArray{T}, o::C.InsertMode)
+                                 vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
 
   chk(C.VecSetValues(x.p, length(idxs), idxs, vals, o))
 end
 
 function set_values!{T <: Scalar, I <: Integer}(x::Vec{T}, idxs::DenseArray{I},
-                                         vals::DenseArray{T}, o::C.InsertMode)
+                                         vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
 
   # convert idxs to PetscInt
   p_idxs = PetscInt[ i for i in idxs]
-  set_values(x, p_idxs, vals, o)
+  set_values!(x, p_idxs, vals, o)
 end
 
-function set_values!(x::AbstractVector, idxs::AbstractArray, vals::AbstractArray
-                     o::C.InsertMode)
+function set_values!(x::AbstractVector, idxs::AbstractArray, vals::AbstractArray,
+                     o::C.InsertMode=C.INSERT_VALUES)
 
   if o == C.INSERT_VALUES
-    for i in idxs
-      x[i + 1] = vals[i]
+    for i=1:length(idxs)
+      x[idxs[i] + 1] = vals[i]
     end
   elseif o == C.ADD_VALUES
-    for i in idxs
-      x[i + 1] += vals[i]
+    for i=1:length(idxs)
+      x[idxs[i] + 1] += vals[i]
     end
   else
     throw(ArgumentError("Unsupported InsertMode"))
@@ -535,20 +599,75 @@ end
 
 
 function set_values_blocked!{T <: Scalar}(x::Vec{T}, idxs::DenseArray{PetscInt},
-                                          vals::DenseArray{T}, o::C.InsertMode)
+                                          vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
 
   chk(C.VecSetValuesBlocked(x.p, length(idxs), idxs, vals, o))
 end
 
 function set_values_blocked!{T <: Scalar, I <: Integer}(x::Vec{T}, 
                              idxs::DenseArray{I}, vals::DenseArray{T}, 
-                             o::C.InsertMode)
+                             o::C.InsertMode=x.insertmode)
  
   p_idxs = PetscInt[ i for i in idxs]
-  set_values_blocked(x, p_idxs, vals, o)
+  set_values_blocked!(x, p_idxs, vals, o)
 end
 
-# this only applies to blocked vectors, so skip for Julia vectors
+# julia doesn't have blocked vectors, so skip
+
+
+function set_values_local!{T <: Scalar}(x::Vec{T}, idxs::DenseArray{PetscInt},
+                                       vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  chk(C.VecSetValuesLocal(x.p, length(idxs), idxs, vals, o))
+end
+
+function set_values_local!{T <: Scalar, I <: Integer}(x::Vec{T}, 
+                           idxs::DenseArray{I}, vals::DenseArray{T}, 
+                           o::C.InsertMode=x.insertmode)
+
+  p_idxs = PetscInt[ i for i in idxs]
+  set_values_local!(x, p_idxs, vals, o)
+end
+
+# for julia vectors, local = global
+function set_values_local!(x::AbstractArray, idxs::AbstractArray, 
+                           vals::AbstractArray, o::C.InsertMode=C.INSERT_VALUES)
+
+  if o == C.INSERT_VALUES
+    for i=1:length(idxs)
+      x[idxs[i] + 1] = vals[i]
+    end
+  elseif o == C.ADD_VALUES
+    for i=1:length(idxs)
+      x[idxs[i] + 1] += vals[i]
+    end
+  else
+    throw(ArgumentError("Unsupported InsertMode"))
+  end
+
+end
+
+
+function set_values_blocked_local!{T <: Scalar}(x::Vec{T}, 
+                                   idxs::DenseArray{PetscInt},
+                                   vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  chk(C.VetSetValuesBlocked(x.p, length(idxs), idxs, vals, o))
+end
+
+
+function set_values_blocked_local!{T <: Scalar, I <: Integer}(x::Vec{T}, 
+                           idxs::DenseArray{I}, vals::DenseArray{T}, 
+                           o::C.InsertMode=x.insertmode)
+
+  p_idxs = PetscInt[ i for i in idxs]
+  set_values_blocked_local!(x, p_idxs, vals, o)
+end
+
+# julia doesn't have blocked vectors, so skip
+
+
+
 
 
                              

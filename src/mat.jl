@@ -580,7 +580,7 @@ end
 """
   Assemble the Petsc object
 """
-function assemble(x::Union{Vec,PetscMat}, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
+function assemble(x::AbstractArray, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
   AssemblyBegin(x, t)
   AssemblyEnd(x,t)
 end
@@ -606,6 +606,8 @@ end
 iassemble(x::Union{Vec,PetscMat}) = assemble(() -> nothing, x, x.insertmode, C.MAT_FLUSH_ASSEMBLY)
 iassemble(f::Function, x::PetscMat, insertmode=x.insertmode) =
   assemble(f, x, insertmode, C.MAT_FLUSH_ASSEMBLY)
+
+iassemble(x::AbstractArray) = assemble(x, C.MAT_FLUSH_ASSEMBLY)
 
 # like x[i,j] = v, but requires i,j to be 0-based indices for Petsc
 function setindex0!{T}(x::Mat{T}, v::Array{T},

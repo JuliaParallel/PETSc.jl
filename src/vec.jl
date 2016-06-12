@@ -712,26 +712,6 @@ function restore{T}(varr::LocalVectorWrite{T})
   varr.isfinalized = true
 end
 
-
-#=
-@doc """
-  Get read-only access to the memory underlying a Petsc vector
-"""
-type LocalArrayRead{T <: Scalar} <: DenseArray{T, 1}
-  a::Array{T, 1}  # the array object constructed around the pointer
-  ref::Ref{Ptr{T}}  # reference to the pointer to the data
-  pobj::C.Vec{T}
-  isfinalized::Bool  # has this been finalized yet
-  function LocalArrayRead(a::Array, ref::Ref, ptr)
-    varr = new(a, ref, ptr, false)
-    # backup finalizer, shouldn't ever be used because users must call
-    # LocalArrayRestore before their changes will take effect
-    finalizer(varr, LocalArrayRestore)
-    return varr
-  end
-
-end
-=#
 @doc """
   Get the LocalArrayRead of a vector.  Users must call restore when 
   finished with the object.
@@ -766,8 +746,7 @@ setindex!(varr::LocalVectorWrite, v, i) = setindex!(varr.a, v, i)
 Base.unsafe_convert{T}(::Type{Ptr{T}}, a::LocalVector{T}) = Base.unsafe_convert(Ptr{T}, a.a)
 Base.stride(a::LocalVector, d::Integer) = stride(a.a, d)
 Base.similar(a::LocalVector, T=eltype(a), dims=size(a)) = similar(a.a, T, dims)
+
 function (==)(x::LocalVector, y::AbstractArray)
   return x.a == y
 end
-
-# what to do about similar?  it shouldn't be used?

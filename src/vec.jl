@@ -1132,8 +1132,7 @@ setindex!(varr::LocalVectorWrite, v, i) = setindex!(varr.a, v, i)
 Base.unsafe_convert{T}(::Type{Ptr{T}}, a::LocalVector{T}) = Base.unsafe_convert(Ptr{T}, a.a)
 Base.stride(a::LocalVector, d::Integer) = stride(a.a, d)
 Base.similar(a::LocalVector, T=eltype(a), dims=size(a)) = similar(a.a, T, dims)
+
 function (==)(x::LocalVector, y::AbstractArray)
   return x.a == y
 end
-
-# what to do about similar?  it shouldn't be used?

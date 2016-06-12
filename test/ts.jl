@@ -17,11 +17,11 @@ ST = Float64
   # evaluate rhs u_t
   function rhs1(ts::TS, t, u::Vec, f::Vec, ctx)
 
-    f_local = LocalArray(f)
+    f_local = LocalVector(f)
 
     f_local[1] = 1.0
     f_local[2] = 2.0
-    LocalArrayRestore(f_local)
+    LocalVectorRestore(f_local)
 
     return 0
   end
@@ -110,8 +110,8 @@ ST = Float64
   function rhs_func(ts::TS, t, u::Vec, F::Vec, ctx)
     dx = ctx[1]
     nx = length(u)
-    u_arr = LocalArrayRead(u)
-    f_arr = LocalArray(F)
+    u_arr = LocalVector_readonly(u)
+    f_arr = LocalVector(F)
 
     f_arr[1] = 0.0
     f_arr[nx] = 0.0
@@ -120,8 +120,8 @@ ST = Float64
       f_arr[i] = u_arr[i-1]/dx + -2*u_arr[i]/dx + u_arr[i+1]/dx
     end
 
-    LocalArrayRestore(u_arr)
-    LocalArrayRestore(f_arr)
+    LocalVectorRestore(u_arr)
+    LocalVectorRestore(f_arr)
 
     return 0
   end
@@ -185,9 +185,9 @@ ST = Float64
   function lhs_func(ts::TS, t, u::Vec, ut::Vec, F::Vec, ctx)
     dx = ctx[1]
     nx = length(u)
-    u_arr = LocalArrayRead(u)
-    ut_arr = LocalArrayRead(ut)
-    f_arr = LocalArray(F)
+    u_arr = LocalVector_readonly(u)
+    ut_arr = LocalVector_readonly(ut)
+    f_arr = LocalVector(F)
 
     f_arr[1] = u_arr[1]
     f_arr[nx] = u_arr[nx]
@@ -196,9 +196,9 @@ ST = Float64
       f_arr[i] = ut[i] - (u_arr[i-1]/dx + -2*u_arr[i]/dx + u_arr[i+1]/dx)
     end
 
-    LocalArrayRestore(u_arr)
-    LocalArrayRestore(ut_arr)
-    LocalArrayRestore(f_arr)
+    LocalVectorRestore(u_arr)
+    LocalVectorRestore(ut_arr)
+    LocalVectorRestore(f_arr)
 
     return 0
   end

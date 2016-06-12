@@ -98,15 +98,15 @@
     @test unsafe_pointer_to_objref(ctx_ret) == ctx
 
     x = Vec(ST[1:sys_size;])
-    xlocal = LocalArray(x)
+    xlocal = LocalVector(x)
     b = Vec(zeros(ST, sys_size))
     *(C, x, b)
     gc()  # avoid a finalizer problem
-    blocal = LocalArray(b)
+    blocal = LocalVector(b)
     for i=1:length(blocal)
       @test blocal[i] == ST(i*i)
     end
 
-    LocalArrayRestore(blocal)
+    LocalVectorRestore(blocal)
   end
 end 

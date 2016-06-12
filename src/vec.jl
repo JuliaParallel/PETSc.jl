@@ -574,11 +574,11 @@ end
 
 function (==)(x::Vec, y::AbstractArray)
   flag = true
-  x_arr = LocalArray(x) 
+  x_arr = LocalVector(x) 
   for i=1:length(x_arr)  # do localpart, then MPI reduce
     flag = flag && x_arr[i] == y[i]
   end
-  LocalArrayRestore(x_arr)
+  LocalVectorRestore(x_arr)
 
   buf = Int8[flag]
   # process 0 is root
@@ -662,45 +662,48 @@ end
 
 
 ##############################################################################
-export LocalArray, LocalArrayRead, LocalArrayRestore
+export LocalVector, LocalVector_readonly, LocalVectorRestore
 
 @doc """
   Object representing the local part of the array, accessing the memory directly.
   Supports all the same indexing as a regular Array
 """
-type LocalArray{T <: Scalar} <: DenseArray{T, 1}
+type LocalVector{T <: Scalar, ReadOnly} <: DenseArray{T, 1}
   a::Array{T, 1}  # the array object constructed around the pointer
   ref::Ref{Ptr{T}}  # reference to the pointer to the data
   pobj::C.Vec{T}
   isfinalized::Bool  # has this been finalized yet
-  function LocalArray(a::Array, ref::Ref, ptr)
+  function LocalVector(a::Array, ref::Ref, ptr)
     varr = new(a, ref, ptr, false)
     # backup finalizer, shouldn't ever be used because users must call
-    # LocalArrayRestore before their changes will take effect
-    finalizer(varr, LocalArrayRestore)
+    # LocalVectorRestore before their changes will take effect
+    finalizer(varr, LocalVectorRestore)
     return varr
   end
 
 end
 
+typealias LocalVectorRead{T} LocalVector{T, true}
+typealias LocalVectorWrite{T} LocalVector{T, false}
+
 @doc """
   Get the LocalArray of a vector.  Users must call LocalArrayRestore when
   finished updating the vector
 """
-function LocalArray{T}(vec::Vec{T})
+function LocalVector{T}(vec::Vec{T})
 
   len = lengthlocal(vec)
 
   ref = Ref{Ptr{T}}()
   chk(C.VecGetArray(vec.p, ref))
   a = pointer_to_array(ref[], len)
-  return LocalArray{T}(a, ref, vec.p)
+  return LocalVector{T, false}(a, ref, vec.p)
 end
 
 @doc """
   Tell Petsc the LocalArray is no longer being used
 """
-function LocalArrayRestore{T}(varr::LocalArray{T})
+function LocalVectorRestore{T}(varr::LocalVectorWrite{T})
 
   if !varr.isfinalized && !PetscFinalized(T) && !isfinalized(varr.pobj)
     ptr = varr.ref
@@ -709,6 +712,8 @@ function LocalArrayRestore{T}(varr::LocalArray{T})
   varr.isfinalized = true
 end
 
+
+#=
 @doc """
   Get read-only access to the memory underlying a Petsc vector
 """
@@ -726,22 +731,22 @@ type LocalArrayRead{T <: Scalar} <: DenseArray{T, 1}
   end
 
 end
-
+=#
 @doc """
-  Get the LocalArrayRead of a vector.  Users must call LocalArrayRestore when 
+  Get the LocalArrayRead of a vector.  Users must call LocalVectorRestore when 
   finished with the object.
 """
-function LocalArrayRead{T}(vec::Vec{T})
+function LocalVector_readonly{T}(vec::Vec{T})
 
   len = lengthlocal(vec)
 
   ref = Ref{Ptr{T}}()
   chk(C.VecGetArrayRead(vec.p, ref))
   a = pointer_to_array(ref[], len)
-  return LocalArrayRead{T}(a, ref, vec.p)
+  return LocalVector{T, true}(a, ref, vec.p)
 end
 
-function LocalArrayRestore{T}(varr::LocalArrayRead{T})
+function LocalVectorRestore{T}(varr::LocalVectorRead{T})
 
   if !varr.isfinalized && !PetscFinalized(T) && !isfinalized(varr.pobj)
     ptr = [varr.ref[]]
@@ -753,16 +758,15 @@ end
 @doc """
   Typealias for both kinds of LocalArrays
 """
-typealias LocalArrays{T} Union{LocalArray{T}, LocalArrayRead{T}}
 
-Base.size(varr::LocalArrays) = size(varr.a)
+Base.size(varr::LocalVector) = size(varr.a)
 # indexing
-getindex(varr::LocalArrays, i) = getindex(varr.a, i)
-setindex!(varr::LocalArray, v, i) = setindex!(varr.a, v, i)
-Base.unsafe_convert{T}(::Type{Ptr{T}}, a::LocalArrays{T}) = Base.unsafe_convert(Ptr{T}, a.a)
-Base.stride(a::LocalArrays, d::Integer) = stride(a.a, d)
-Base.similar(a::LocalArrays, T=eltype(a), dims=size(a)) = similar(a.a, T, dims)
-function (==)(x::LocalArrays, y::AbstractArray)
+getindex(varr::LocalVector, i) = getindex(varr.a, i)
+setindex!(varr::LocalVectorWrite, v, i) = setindex!(varr.a, v, i)
+Base.unsafe_convert{T}(::Type{Ptr{T}}, a::LocalVector{T}) = Base.unsafe_convert(Ptr{T}, a.a)
+Base.stride(a::LocalVector, d::Integer) = stride(a.a, d)
+Base.similar(a::LocalVector, T=eltype(a), dims=size(a)) = similar(a.a, T, dims)
+function (==)(x::LocalVector, y::AbstractArray)
   return x.a == y
 end
 

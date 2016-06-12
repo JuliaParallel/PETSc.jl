@@ -65,7 +65,7 @@
 
 
   vec5 = Vec(Float64, 4)
-  varr = LocalArray(vec5)
+  varr = LocalVector(vec5)
   @test length(vec5) == 4
   @test length(varr) == length(vec5)
   @test stride(varr, 1) == 1
@@ -81,13 +81,13 @@
   ptr = Base.unsafe_convert(Ptr{T2}, varr) 
   @test ptr == varr.ref[]
 
-  LocalArrayRestore(varr)
+  LocalVectorRestore(varr)
 
   @test vec5 == vec5j
 
-  varr = LocalArrayRead(vec5)
+  varr = LocalVector_readonly(vec5)
   for i=1:length(vec5) @test varr[i] ==  vec5[i] end
-  LocalArrayRestore(varr)
+  LocalVectorRestore(varr)
   
 
   # test mlocal constructor

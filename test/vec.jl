@@ -82,13 +82,13 @@
   ptr = Base.unsafe_convert(Ptr{T2}, varr) 
   @test ptr == varr.ref[]
 
-  LocalVectorRestore(varr)
+  restore(varr)
 
   @test vec5 == vec5j
 
   varr = LocalVector_readonly(vec5)
   for i=1:length(vec5) @test varr[i] ==  vec5[i] end
-  LocalVectorRestore(varr)
+  restore(varr)
   
 
   # test mlocal constructor

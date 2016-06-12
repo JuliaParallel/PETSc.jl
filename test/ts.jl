@@ -21,7 +21,7 @@ ST = Float64
 
     f_local[1] = 1.0
     f_local[2] = 2.0
-    LocalVectorRestore(f_local)
+    restore(f_local)
 
     return 0
   end
@@ -120,8 +120,8 @@ ST = Float64
       f_arr[i] = u_arr[i-1]/dx + -2*u_arr[i]/dx + u_arr[i+1]/dx
     end
 
-    LocalVectorRestore(u_arr)
-    LocalVectorRestore(f_arr)
+    restore(u_arr)
+    restore(f_arr)
 
     return 0
   end
@@ -196,9 +196,9 @@ ST = Float64
       f_arr[i] = ut[i] - (u_arr[i-1]/dx + -2*u_arr[i]/dx + u_arr[i+1]/dx)
     end
 
-    LocalVectorRestore(u_arr)
-    LocalVectorRestore(ut_arr)
-    LocalVectorRestore(f_arr)
+    restore(u_arr)
+    restore(ut_arr)
+    restore(f_arr)
 
     return 0
   end

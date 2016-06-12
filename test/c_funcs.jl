@@ -107,6 +107,6 @@
       @test blocal[i] == ST(i*i)
     end
 
-    LocalVectorRestore(blocal)
+    restore(blocal)
   end
 end 

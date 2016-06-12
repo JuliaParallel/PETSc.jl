@@ -847,7 +847,7 @@ function (==)(x::Vec, y::AbstractArray)
   for i=1:length(x_arr)  # do localpart, then MPI reduce
     flag = flag && x_arr[i] == y[i]
   end
-  LocalVectorRestore(x_arr)
+  restore(x_arr)
 
   buf = Int8[flag]
   # process 0 is root
@@ -1030,7 +1030,7 @@ end
 
 
 ##############################################################################
-export LocalVector, LocalVector_readonly, LocalVectorRestore
+export LocalVector, LocalVector_readonly, restore
 
  """
   Object representing the local part of the array, accessing the memory directly.
@@ -1044,8 +1044,8 @@ type LocalVector{T <: Scalar, ReadOnly} <: DenseArray{T, 1}
   function LocalVector(a::Array, ref::Ref, ptr)
     varr = new(a, ref, ptr, false)
     # backup finalizer, shouldn't ever be used because users must call
-    # LocalVectorRestore before their changes will take effect
-    finalizer(varr, LocalVectorRestore)
+    # restore before their changes will take effect
+    finalizer(varr, restore)
     return varr
   end
 
@@ -1071,7 +1071,7 @@ end
 """
   Tell Petsc the LocalArray is no longer being used
 """
-function LocalVectorRestore{T}(varr::LocalVectorWrite{T})
+function restore{T}(varr::LocalVectorWrite{T})
 
   if !varr.isfinalized && !PetscFinalized(T) && !isfinalized(varr.pobj)
     ptr = varr.ref
@@ -1112,7 +1112,7 @@ function LocalVector_readonly{T}(vec::Vec{T})
   return LocalVector{T, true}(a, ref, vec.p)
 end
 
-function LocalVectorRestore{T}(varr::LocalVectorRead{T})
+function restore{T}(varr::LocalVectorRead{T})
 
   if !varr.isfinalized && !PetscFinalized(T) && !isfinalized(varr.pobj)
     ptr = [varr.ref[]]

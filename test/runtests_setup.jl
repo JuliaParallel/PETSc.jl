@@ -60,8 +60,8 @@ function mymult{T}(A::PETSc.C.Mat{T}, x::PETSc.C.Vec, b::PETSc.C.Vec)
     localb[i] = i*localx[i]
   end
 
-  LocalVectorRestore(localx)
-  LocalVectorRestore(localb)
+  restore(localx)
+  restore(localb)
   return PETSc.C.PetscErrorCode(0)
 end
 

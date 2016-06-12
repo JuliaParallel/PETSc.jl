@@ -97,11 +97,13 @@ gettype{T,VT}(a::Vec{T,VT}) = VT
  """
   Create an empty, unsized vector.
 """
-function Vec{T}(::Type{T}, vtype::C.VecType=C.VECMPI; 
+function Vec{T}(::Type{T}, vtype::C.VecType=C.VECMPI; bs=1,
                 comm::MPI.Comm=MPI.COMM_WORLD)
   p = Ref{C.Vec{T}}()
   chk(C.VecCreate(comm, p))
-  Vec{T, vtype}(p[])
+  v = Vec{T, vtype}(p[])
+  set_block_size(v, bs)
+  v
 end
 
  """
@@ -109,10 +111,10 @@ end
   mlocal
 """
 function Vec{T<:Scalar}(::Type{T}, len::Integer=C.PETSC_DECIDE;
-                         vtype::C.VecType=C.VECMPI,
+                         vtype::C.VecType=C.VECMPI,  bs=1,
                          comm::MPI.Comm=MPI.COMM_WORLD, 
                          mlocal::Integer=C.PETSC_DECIDE)
-  vec = Vec(T, vtype; comm=comm)
+  vec = Vec(T, vtype; comm=comm, bs=bs)
   resize!(vec, len, mlocal=mlocal)
   vec
 end
@@ -127,6 +129,10 @@ function Vec{T<:Scalar}(v::Vector{T}; comm::MPI.Comm=MPI.COMM_WORLD)
   chk(C.VecCreateMPIWithArray(comm, 1, length(v), C.PETSC_DECIDE, v, p))
   pv = Vec{T, C.VECMPI}(p[], v)
   return pv
+end
+
+function set_block_size{T<:Scalar}(v::Vec{T}, bs::Integer)
+  chk(C.VecSetBlockSize(v.p, bs))
 end
 
 export VecGhost, VecLocal, restore

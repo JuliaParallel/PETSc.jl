@@ -382,6 +382,16 @@
       @test y[idxs[i]+1] ≈ vals[i]
     end
 
+    y2 = Vec(ST, 5, bs=2)
+    idxs = Int32[0]
+    vals = ST[1, 2]
+    set_values_blocked!(y2, idxs, vals)
+    @test y2[idxs[1]+1] ≈ vals[1]
+    @test y2[idxs[1]+2] ≈ vals[2]
+
+
+
+
 
 
   end

@@ -388,8 +388,9 @@ end
   the local process to be checked, regardless of `x.verify_assembled`.
 """
 function isassembled(x::Vec, local_only=false)
-
+  myrank = MPI.Comm_rank(comm(x))
   if x.verify_assembled && !local_only
+    println("process", myrank, "Int(x.assembled) = ", Int32(x.assembled))
     val = MPI.Allreduce(Int32(x.assembled), MPI.LAND, comm(x))
   else
     val = x.assembled

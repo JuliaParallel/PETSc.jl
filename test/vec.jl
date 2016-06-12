@@ -370,6 +370,8 @@
     end
 
     vals = ST[2,3]
+    ltog = local_to_global_mapping(y)
+    set_local_to_global_mapping(y, ltog)
     set_values_local!(x, idxs, vals)
     set_values_local!(y, idxs, vals)
     assemble(x)

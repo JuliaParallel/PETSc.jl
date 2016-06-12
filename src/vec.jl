@@ -521,7 +521,7 @@ getindex(x::Vec, I::AbstractVector{PetscInt}) =
 # more indexing
 # 0-based (to avoid temporary copies)
 
-export set_values!, set_values_blocked!, set_values_local!, set_values_local_blocked!
+export set_values!, set_values_blocked!, set_values_local!, set_values_blocked_local!
 
 function set_values!{T <: Scalar}(x::Vec{T}, idxs::DenseArray{PetscInt}, 
                                  vals::DenseArray{T}, o::C.InsertMode=x.insertmode)

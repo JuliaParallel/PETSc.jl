@@ -358,42 +358,44 @@ function Base.copy(x::Vec)
 end
 
 ###############################################################################
-"""
-  Constructs 2 index sets that map from the local row and columns to the
-  global rows and columns
-"""
-function localIS{T}(A::PetscVec{T})
+export localIS, local_to_global_mapping, set_local_to_global_mapping, has_local_to_global_mapping
 
-  cols = localpart(A)
+"""
+  Constructs index set mapping from local indexing to global indexing, based 
+  on localpart()
+"""
+function localIS{T}(A::Vec{T})
+
+  rows = localpart(A)
   rowis = IS(T, rows, comm=comm(A))
   return rowis
 end
 
 """
-  Construct ISLocalToGlobalMappings for the the rows and columns of the matrix
+  Construct ISLocalToGlobalMappings for the vector
 """
-function local_to_global_mapping(A::PetscVec)
+function local_to_global_mapping(A::Vec)
 
   # localIS creates strided index sets, which require only constant
   # memory 
-  rowis, = localIS(A)
+  rowis = localIS(A)
   row_ltog = ISLocalToGlobalMapping(rowis)
   return row_ltog
 end
 
 # need a better name
 """
-  Registers the ISLocalToGlobalMappings with the matrix
+  Registers the ISLocalToGlobalMapping with the Vec
 """
-function set_local_to_global_mapping{T}(A::PetscVec{T}, rmap::ISLocalToGlobalMapping{T})
+function set_local_to_global_mapping{T}(A::Vec{T}, rmap::ISLocalToGlobalMapping{T})
 
   chk(C.VecSetLocalToGlobalMapping(A.p, rmap.p))
 end
 
 """
-  Check if the local to global mappings have been registered
+  Check if the local to global mapping has been registered
 """
-function has_local_to_global_mapping{T}(A::PetscVec{T})
+function has_local_to_global_mapping{T}(A::Vec{T})
 
   rmap_ref = Ref{C.ISLocalToGlobalMapping{T}}()
   chk(C.VecGetLocalToGlobalMapping(A.p, rmap_re))

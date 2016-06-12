@@ -389,6 +389,12 @@
     @test y2[idxs[1]+1] ≈ vals[1]
     @test y2[idxs[1]+2] ≈ vals[2]
 
+    vals = ST[2,3]
+    set_values_blocked_local!(y2, idxs, vals)
+    @test y2[idxs[1]+1] ≈ vals[1]
+    @test y2[idxs[1]+2] ≈ vals[2]
+
+
 
 
 

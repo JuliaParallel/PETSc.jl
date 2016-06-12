@@ -466,7 +466,7 @@ function set_values!{T <: Scalar, I <: Integer}(x::Vec{T}, idxs::DenseArray{I},
 end
 
 function set_values!(x::AbstractVector, idxs::AbstractArray, vals::AbstractArray
-                    o::C.InsertMode)
+                     o::C.InsertMode)
 
   if o == C.INSERT_VALUES
     for i in idxs
@@ -480,6 +480,26 @@ function set_values!(x::AbstractVector, idxs::AbstractArray, vals::AbstractArray
     throw(ArgumentError("Unsupported InsertMode"))
   end
 end
+
+
+function set_values_blocked!{T <: Scalar}(x::Vec{T}, idxs::DenseArray{PetscInt},
+                                          vals::DenseArray{T}, o::C.InsertMode)
+
+  chk(C.VecSetValuesBlocked(x.p, length(idxs), idxs, vals, o))
+end
+
+function set_values_blocked!{T <: Scalar, I <: Integer}(x::Vec{T}, 
+                             idxs::DenseArray{I}, vals::DenseArray{T}, 
+                             o::C.InsertMode)
+ 
+  p_idxs = PetscInt[ i for i in idxs]
+  set_values_blocked(x, p_idxs, vals, o)
+end
+
+# this only applies to blocked vectors, so skip for Julia vectors
+
+
+                             
 
 ###############################################################################
 import Base: abs, exp, log, conj, conj!

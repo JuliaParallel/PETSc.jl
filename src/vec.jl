@@ -501,7 +501,39 @@ getindex(x::Vec, I::AbstractVector{PetscInt}) =
   getindex0(x, PetscInt[ (i-1) for i in I ])
 
 ##########################################################################
+# more indexing
+# 0-based (to avoid temporary copies)
+function set_values!{T <: Scalar}(x::Vec{T}, idxs::DenseArray{PetscInt}, 
+                                 vals::DenseArray{T}, o::C.InsertMode)
 
+  chk(C.VecSetValues(x.p, length(idxs), idxs, vals, o))
+end
+
+function set_values!{T <: Scalar, I <: Integer}(x::Vec{T}, idxs::DenseArray{I},
+                                         vals::DenseArray{T}, o::C.InsertMode)
+
+  # convert idxs to PetscInt
+  p_idxs = PetscInt[ i for i in idxs]
+  set_values(x, p_idxs, vals, o)
+end
+
+function set_values!(x::AbstractVector, idxs::AbstractArray, vals::AbstractArray
+                    o::C.InsertMode)
+
+  if o == C.INSERT_VALUES
+    for i in idxs
+      x[i + 1] = vals[i]
+    end
+  elseif o == C.ADD_VALUES
+    for i in idxs
+      x[i + 1] += vals[i]
+    end
+  else
+    throw(ArgumentError("Unsupported InsertMode"))
+  end
+end
+
+###############################################################################
 import Base: abs, exp, log, conj, conj!
 export abs!, exp!, log!
 for (f,pf) in ((:abs,:VecAbs), (:exp,:VecExp), (:log,:VecLog),

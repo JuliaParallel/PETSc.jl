@@ -36,6 +36,13 @@ function isfinalized(ts::C.TS)
   return ts.pobj == C_NULL
 end
 
+#get the internal KSP object for this TS
+function KSP{T}(ts::TS{T})
+  ksp_c = Ref{C.KSP{T}}()
+  chk(C.TSGetKSP(ts.p, ksp_c))
+  return KSP{T}(ksp_c[])
+end
+
 """
   Most preferred constructor: taake ProblemType, method from options
   database

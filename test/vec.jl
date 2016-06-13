@@ -382,18 +382,22 @@
       @test y[idxs[i]+1] ≈ vals[i]
     end
 
-    y2 = Vec(ST, 5, bs=2)
+    y2 = Vec(ST, 6, bs=2)
     idxs = Int32[0]
     vals = ST[1, 2]
     set_values_blocked!(y2, idxs, vals)
     @test y2[idxs[1]+1] ≈ vals[1]
     @test y2[idxs[1]+2] ≈ vals[2]
-
+#=
+    rng = localpart(y2)
+    println("rng = ", rng)
+    ltog = local_to_global_mapping(y2)
+    set_local_to_global_mapping(y2, ltog)
     vals = ST[2,3]
     set_values_blocked_local!(y2, idxs, vals)
     @test y2[idxs[1]+1] ≈ vals[1]
     @test y2[idxs[1]+2] ≈ vals[2]
-
+=#
 
 
 

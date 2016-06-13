@@ -21,20 +21,21 @@ function PetscDestroy{T}(o::IS{T})
 end
 
 # internal constructor, takes array of zero-based indices:
-function IS_(T::DataType, idx::Array{PetscInt}; comm::MPI.Comm=MPI.COMM_SELF)
+function IS_{T<:Scalar}(::Type{T}, idx::Array{PetscInt}; comm::MPI.Comm=MPI.COMM_SELF)
   is_c = Ref{C.IS{T}}()
   chk(C.ISCreateGeneral(comm, length(idx), idx, C.PETSC_COPY_VALUES, is_c))
   return IS{T}(is_c[])
 end
 
-IS{I<:Integer}(T::DataType, idx::AbstractArray{I}; comm::MPI.Comm=MPI.COMM_SELF) =
+IS{I<:Integer, T<:Scalar}(::Type{T}, idx::AbstractArray{I}; comm::MPI.Comm=MPI.COMM_SELF) =
   IS_(T, PetscInt[i-1 for i in idx]; comm=comm)
 
-function IS{I<:Integer}(T::DataType, idx::Range{I}; comm::MPI.Comm=MPI.COMM_SELF)
+function IS{I<:Integer, T<:Scalar}(::Type{T}, idx::Range{I}; comm::MPI.Comm=MPI.COMM_SELF)
   is_c = Ref{C.IS{T}}()
   chk(C.ISCreateStride(comm, length(idx), start(idx)-1, step(idx), is_c))
   return IS{T}(is_c[])
 end
+
 
 function Base.copy{T}(i::IS{T})
   is_c = Ref{C.IS{T}}()

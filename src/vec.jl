@@ -608,7 +608,7 @@ function set_values_blocked_local!{T <: Scalar}(x::Vec{T},
                                    idxs::DenseArray{PetscInt},
                                    vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
 
-  chk(C.VetSetValuesBlocked(x.p, length(idxs), idxs, vals, o))
+  chk(C.VecSetValuesBlockedLocal(x.p, length(idxs), idxs, vals, o))
 end
 
 

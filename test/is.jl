@@ -24,4 +24,12 @@
     VS = VecScatter(x, IS(ST, 2:3, comm=comm(x)), y, IS(ST, 1:2, comm=comm(y)))
     @test scatter!(copy(VS),x,y) == [17,24]
   end
+
+  let
+    idx = 2:4
+    is = IS(Float64, idx)
+    bs = 2
+    set_blocksize(is, bs)
+    @test get_blocksize(is) == bs
+  end
 end

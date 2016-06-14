@@ -102,6 +102,12 @@ function set_block_size{T<:Scalar}(v::Vec{T}, bs::Integer)
   chk(C.VecSetBlockSize(v.p, bs))
 end
 
+function get_blocksize{T<:Scalar}(v::Vec{T})
+  bs = Ref{PetscInt}()
+  chk(C.VecGetBlockSize(v.p, bs))
+  return Int(bs[])
+end
+
 export VecGhost, VecLocal, restore
 
 
@@ -302,6 +308,22 @@ function localpart(v::Vec)
   return (low[]+1):(high[])
 end
 
+"""
+  Similar to localpart, but returns the range of block indices
+"""
+function localpart_block(v::Vec)
+  low = Ref{PetscInt}()
+  high = Ref{PetscInt}()
+  chk(C.VecGetOwnershipRange(v.p, low, high))
+  bs = get_blocksize(v)
+  low_b = div(low[], bs); high_b = div(high[]-1, bs)
+  ret = (low_b+1):(high_b+1)
+  println("ret = ", ret)
+
+  return ret
+end
+
+
 function Base.similar{T,VType}(x::Vec{T,VType})
   p = Ref{C.Vec{T}}()
   chk(C.VecDuplicate(x.p, p))
@@ -343,14 +365,29 @@ function localIS{T}(A::Vec{T})
 end
 
 """
-  Construct ISLocalToGlobalMappings for the vector
+  Like localIS, but returns a block index IS
+"""
+function localIS_block{T}(A::Vec{T})
+  rows = localpart_block(A)
+  rowis = IS(T, rows, comm=comm(A))
+  set_blocksize(rowis, get_blocksize(A))
+  return rowis
+end
+"""
+  Construct ISLocalToGlobalMappings for the vector.  If a block vector, 
+  create a block index set
 """
 function local_to_global_mapping(A::Vec)
 
   # localIS creates strided index sets, which require only constant
-  # memory 
-  rowis = localIS(A)
+  # memory
+  if get_blocksize(A) == 1
+    rowis = localIS(A)
+  else 
+    rowis = localIS_block(A)
+  end
   row_ltog = ISLocalToGlobalMapping(rowis)
+
   return row_ltog
 end
 

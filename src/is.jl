@@ -36,6 +36,7 @@ function IS{I<:Integer, T<:Scalar}(::Type{T}, idx::Range{I}; comm::MPI.Comm=MPI.
   return IS{T}(is_c[])
 end
 
+#function ISBlock{I<:Integer, T<:Scalar}(::Type{T}, idx::
 
 function Base.copy{T}(i::IS{T})
   is_c = Ref{C.IS{T}}()
@@ -104,6 +105,22 @@ function Base.convert{T<:Integer}(::Type{Vector{T}}, idx::IS)
 end
 Base.Set(i::IS) = Set(Vector{Int}(i))
 
+export set_blocksize, get_blocksize
+
+function set_blocksize(is::IS, bs::Integer)
+  chk(C.ISSetBlockSize(is.p, bs))
+end
+
+function get_blocksize(is::IS)
+  bs = Ref{PetscInt}()
+  chk(C.ISGetBlockSize(is.p, bs))
+  return Int(bs[])
+end
+
+function petscview{T}(is::IS{T})
+  viewer = C.PetscViewer{T}(C_NULL)
+  chk(C.ISView(is.p, viewer))
+end
 
 
 ###############################################################################
@@ -152,6 +169,11 @@ comm{T}(a::ISLocalToGlobalMapping{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
 
 function PetscDestroy{T}(o::ISLocalToGlobalMapping{T})
   PetscFinalized(T) || C.ISLocalToGlobalMappingDestroy(Ref(o.p))
+end
+
+function petscview{T}(is::ISLocalToGlobalMapping{T})
+  viewer = C.PetscViewer{T}(C_NULL)
+  chk(C.ISLocalToGlobalMappingView(is.p, viewer))
 end
 
 

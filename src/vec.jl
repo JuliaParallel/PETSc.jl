@@ -78,7 +78,11 @@ end
 @doc """
   Gets the MPI communicator of a vector.
 """
-comm{T}(v::Vec{T}) = MPI.Comm(C.PetscObjectComm(T, v.p.pobj))
+function comm{T}(v::Vec{T})
+  ccomm = MPI.CComm(C.PetscObjectComm(T, v.p.pobj))
+  fcomm = convert(MPI.Comm, ccomm)
+  return fcomm
+end
 
 
 export gettype
@@ -389,7 +393,14 @@ end
 function isassembled(x::Vec, local_only=false)
   myrank = MPI.Comm_rank(comm(x))
   if x.verify_assembled && !local_only
-    println("process", myrank, "Int(x.assembled) = ", Int32(x.assembled))
+    println("process", myrank, " Int32(x.assembled) = ", Int32(x.assembled))
+    val1 = Int32(x.assembled)
+    println("val = ", val1)
+    commx = comm(x)
+    println("typeof(commx) = ", typeof(commx))
+    println("commx = ", commx)
+    println("comm_world = ", MPI.COMM_WORLD)
+    flush(STDOUT)
     val = MPI.Allreduce(Int32(x.assembled), MPI.LAND, comm(x))
   else
     val = x.assembled

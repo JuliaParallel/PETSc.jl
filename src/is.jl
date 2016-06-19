@@ -1,7 +1,7 @@
 # index sets and vector scatters
 
 ###########################################################################
-export IS # index sets
+export IS, ISBlock # index sets
 # Note: we expose a 1-base Julian index interface, but internally
 # PETSc's indices are 0-based.
 #TODO: support block versions
@@ -21,22 +21,33 @@ function PetscDestroy{T}(o::IS{T})
 end
 
 # internal constructor, takes array of zero-based indices:
-function IS_{T<:Scalar}(::Type{T}, idx::Array{PetscInt}; comm::MPI.Comm=MPI.COMM_SELF)
+function IS_{T<:Scalar}(::Type{T}, idx::Array{PetscInt}; comm::MPI.Comm=MPI.COMM_WORLD)
   is_c = Ref{C.IS{T}}()
   chk(C.ISCreateGeneral(comm, length(idx), idx, C.PETSC_COPY_VALUES, is_c))
   return IS{T}(is_c[])
 end
 
-IS{I<:Integer, T<:Scalar}(::Type{T}, idx::AbstractArray{I}; comm::MPI.Comm=MPI.COMM_SELF) =
+IS{I<:Integer, T<:Scalar}(::Type{T}, idx::AbstractArray{I}; comm::MPI.Comm=MPI.COMM_WORLD) =
   IS_(T, PetscInt[i-1 for i in idx]; comm=comm)
 
-function IS{I<:Integer, T<:Scalar}(::Type{T}, idx::Range{I}; comm::MPI.Comm=MPI.COMM_SELF)
+function IS{I<:Integer, T<:Scalar}(::Type{T}, idx::Range{I}; comm::MPI.Comm=MPI.COMM_WORLD)
   is_c = Ref{C.IS{T}}()
   chk(C.ISCreateStride(comm, length(idx), start(idx)-1, step(idx), is_c))
   return IS{T}(is_c[])
 end
 
-#function ISBlock{I<:Integer, T<:Scalar}(::Type{T}, idx::
+# there is no Strided block index set, so convert everything to an array
+function ISBlock{I<:Integer, T<:Scalar}(::Type{T}, bs::Integer,  idx::AbstractArray{I}; comm=MPI.COMM_WORLD)
+  idx_0 = PetscInt[i-1 for i in idx]
+  return ISBlock_(T, bs, idx_0, comm=comm)
+end
+
+function ISBlock_{T}(::Type{T}, bs::Integer, idx::AbstractArray{PetscInt};comm=MPI.COMM_WORLD)
+  is_c = Ref{C.IS{T}}()
+  chk(C.ISCreateBlock(comm, bs, length(idx), idx, C.PETSC_COPY_VALUES, is_c))
+  return IS{T}(is_c[])
+end
+
 
 function Base.copy{T}(i::IS{T})
   is_c = Ref{C.IS{T}}()

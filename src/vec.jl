@@ -64,25 +64,27 @@ gettype{T,VT}(a::Vec{T,VT}) = VT
  """
   Create an empty, unsized vector.
 """
-function Vec{T}(::Type{T}, vtype::C.VecType=C.VECMPI; bs=1,
+function Vec{T}(::Type{T}, vtype::C.VecType=C.VECMPI;
                 comm::MPI.Comm=MPI.COMM_WORLD)
   p = Ref{C.Vec{T}}()
   chk(C.VecCreate(comm, p))
   v = Vec{T, vtype}(p[])
-  set_block_size(v, bs)
   v
 end
 
  """
   Create a vector, specifying the (global) length len or the local length
-  mlocal
+  mlocal.  Even if the blocksize is > 1, teh lengths are always number of 
+  elements in the vector, not number of block elements.  Thus
+  len % blocksize must = 0.
 """
 function Vec{T<:Scalar}(::Type{T}, len::Integer=C.PETSC_DECIDE;
                          vtype::C.VecType=C.VECMPI,  bs=1,
                          comm::MPI.Comm=MPI.COMM_WORLD, 
                          mlocal::Integer=C.PETSC_DECIDE)
-  vec = Vec(T, vtype; comm=comm, bs=bs)
+  vec = Vec(T, vtype; comm=comm)
   resize!(vec, len, mlocal=mlocal)
+  set_block_size(vec, bs)
   vec
 end
 
@@ -318,7 +320,6 @@ function localpart_block(v::Vec)
   bs = get_blocksize(v)
   low_b = div(low[], bs); high_b = div(high[]-1, bs)
   ret = (low_b+1):(high_b+1)
-  println("ret = ", ret)
 
   return ret
 end
@@ -369,8 +370,9 @@ end
 """
 function localIS_block{T}(A::Vec{T})
   rows = localpart_block(A)
-  rowis = IS(T, rows, comm=comm(A))
-  set_blocksize(rowis, get_blocksize(A))
+  bs = get_blocksize(A)
+  rowis = ISBlock(T, bs, rows, comm=comm(A))
+#  set_blocksize(rowis, get_blocksize(A))
   return rowis
 end
 """

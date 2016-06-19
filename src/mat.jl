@@ -72,7 +72,7 @@ function Mat{T}(::Type{T}, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
   # slow but flexible.
   if nz==0 && onz == 0  && nnz == PetscInt[] && onnz == PetscInt[]
     if bs != 1
-      chk(C.MatSetBlockSize(mat.p, PetscInt(bs)))
+      set_blocksize(mat.p, bs)
     end
     chk(C.MatSetUp(mat.p)) 
   else  # preallocate
@@ -204,6 +204,17 @@ function petscwrite{T}(mat::PetscMat{T}, fname)
   chk(C.PetscViewerASCIIOpen(comm(mat), fname, viewer_ref))
   chk(C.MatView(mat.p, viewer_ref[]))
   chk(C.PetscViewerDestroy(viewer_ref))
+end
+
+
+function set_block_size{T<:Scalar}(A::Mat{T}, bs::Integer)
+  chk(C.MatSetBlockSize(A.p, bs))
+end
+
+function get_blocksize{T<:Scalar}(A::Mat{T})
+  bs = Ref{PetscInt}()
+  chk(C.MatGetBlockSize(A.p, bs))
+  return Int(bs[])
 end
 
 
@@ -405,6 +416,23 @@ function localranges(a::PetscMat)
 end
 
 """
+  Similar to localpart, but returns the range of block indices
+"""
+function localpart_block(A::Mat)
+  low = Ref{PetscInt}()
+  high = Ref{PetscInt}()
+  chk(C.MatGetOwnershipRange(A.p, low, high))
+  bs = get_blocksize(A)
+  low_b = div(low[], bs); high_b = div(high[]-1, bs)
+  rows = (low_b+1):(high_b+1)
+  cols = 1:div(size(A, 2), bs)
+
+  return rows, cols
+end
+
+
+
+"""
   Constructs 2 index sets that map from the local row and columns to the
   global rows and columns
 """
@@ -417,13 +445,30 @@ function localIS{T}(A::PetscMat{T})
 end
 
 """
+  Like localIS, but returns a block index IS
+"""
+function localIS_block{T}(A::Mat{T})
+  rows, cols = localpart_block(A)
+  bs = get_blocksize(A)
+  rowis = ISBlock(T, bs, rows, comm=comm(A))
+  colis = ISBlock(T, bs, cols, comm=comm(A))
+#  set_blocksize(rowis, get_blocksize(A))
+  return rowis, colis
+end
+
+
+"""
   Construct ISLocalToGlobalMappings for the the rows and columns of the matrix
 """
 function local_to_global_mapping(A::PetscMat)
 
   # localIS creates strided index sets, which require only constant
   # memory 
-  rowis, colis = localIS(A)
+  if get_blocksize(A) == 1
+    rowis, colis = localIS(A)
+  else
+    rowis, colis = localIS_block(A)
+  end
   row_ltog = ISLocalToGlobalMapping(rowis)
   col_ltog = ISLocalToGlobalMapping(colis)
   return row_ltog, col_ltog

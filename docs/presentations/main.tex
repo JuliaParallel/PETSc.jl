@@ -138,11 +138,15 @@ Parallelization through MPI
 \begin{itemize}
   \item Clang.jl reads the Petsc header files, generates equivalent Julia code (if given the right preprocessor flags)
   \item Write high level interface on top of generated wrappers
+    \begin{itemize}
+      \item \texttt{AbstractArray}
+      \item Backslash
+    \end{itemize}
 \end{itemize}
+\hfill
 
+Requires linking to multiple versions of Petsc
 
-talk about high levle interfaces
-mention multiple library linking
 \end{frame}
 
 \begin{comment}
@@ -190,7 +194,7 @@ Extended to distributed memory
 \begin{frame}{Krylov Solvers}
 \hfill
 
-A wide variety of Krylov methods and pre-conditioners are available
+A wide variety of Krylov methods and preconditioners are available
 \begin{itemize}
   \item GMRES, fGMRES, lGMRES, ...
   \item iLU(k), Jacobi, block Jacobian, SOR, ...
@@ -203,9 +207,20 @@ Backslash on a PETSc matrix uses default settings, users can create KSP object f
 \end{frame}
 
 \begin{frame}[fragile]{Iterative Solve Example}
-go into KSP here
+\begin{minted}{julia}
+n = 5
+A = Mat(Float64, n,n)
+b = Vec(Float64, n)
+A[1,1] = 1; b[1] = 0
+A[n,n] = 1; b[n] = 0
 
-show example
+for i=2:n-1
+  A[i, (i-1):(i+1)] = [1.0, -2.0, 1.0]
+  b[i] = i
+end
+assemble(A); assemble(b)
+x = A\b
+\end{minted}
 \end{frame}
 
 \begin{frame}[fragile]{Options Paradigm}
@@ -218,10 +233,10 @@ Petsc uses an global database to set all the options for its components
 
 Ex.
 \begin{minted}{julia}
-  Options[Float64]("ksp_type") = "fgmres"
-  Options[Float64]("ksp_gmres_modifiedgramschmidt") = ""
-  Options[Float64]("pc_type") = "ilu"
-  Options[Float64]("pc_factor_levels") = "3"
+  OPTIONS[Float64]["ksp_type"] = "fgmres"
+  OPTIONS[Float64]["ksp_gmres_modifiedgramschmidt"] = ""
+  OPTIONS[Float64]["pc_type"] = "ilu"
+  OPTIONS[Float64]["pc_factor_levels"] = "3"
 \end{minted}
 
 \end{frame}
@@ -251,8 +266,7 @@ The user forms the system, PETSc contains the algorithms to solve it
 
 \begin{frame}
 \begin{center} \usebeamerfont*{frametitle} \usebeamercolor[fg]{frametitle}
-Any Questions?
-add Petsc URL
+  Check it out: \hyperref[https://github.com/JuliaParallel/PETSc.jl]{https://github.com/JuliaParallel/PETSc.jl}
 \end{center}
 
 \end{frame}

@@ -24,9 +24,16 @@
       x_julia = A_julia\b_julia
       @test x ≈ x_julia
 
+      x = A\b
+      @test x ≈ x_julia
+
       x = KSPSolveTranspose(kspg, b)
       x_julia = A_julia.'\b_julia
       @test x ≈ x_julia
+
+      x = KSPSolveTranspose(A, b)
+      @test x ≈ x_julia
+
 
       pc   = PETSc.PC(ST,comm=comm(kspg),pc_type="jacobi")
       PETSc.chk(PETSc.C.PCSetOperators(pc.p,A.p,A.p))

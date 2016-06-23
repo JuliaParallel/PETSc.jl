@@ -155,3 +155,11 @@ Base.size{T}(ksp::KSP{T}, dim::Integer) = dim > 2 ? 1 : size(ksp)[dim]
 
 import Base: \
 (\){T}(ksp::KSP{T}, b::Vec{T}) = A_ldiv_B!(ksp, b, similar(b, size(ksp, 2)))
+
+# Mat fallbacks
+(\){T}(A::Mat{T}, b::Vec{T}) = KSP(A)\b
+Base.A_ldiv_B!{T}(A::Mat{T}, b::Vec{T}, x::Vec{T}) = Base.A_ldiv_B!(KSP(A), b, x)
+
+KSPSolveTranspose{T}(A::Mat{T}, b::Vec{T}) = KSPSolveTranspose(KSP(A), b)
+KSPSolveTranspose{T}(A::Mat{T}, b::Vec{T}, x::Vec{T}) = KSPSOlveTranspose(KSP(A), x, b)
+

@@ -39,7 +39,9 @@ ST = Float64
   u[2] = 1.0
 
   solve!(ts, u)
-
+  #not sure how to test this other than "doesn't explode everywhere"
+  ksp = KSP(ts)
+  
   # same as above, but using set_ic
   ts = TS(ST, PETSc.C.TS_LINEAR, PETSc.C.TSEULER)
 

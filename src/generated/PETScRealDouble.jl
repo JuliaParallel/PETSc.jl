@@ -572,7 +572,7 @@ function PetscObjectDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscObject},Str
     return err
 end
 
-function PetscObjectGetComm(arg0::Type{Float64},arg1::PetscObject,arg2::Union{Ptr{MPI_Comm},StridedArray{MPI_Comm},Ptr{MPI_Comm},Ref{MPI_Comm}})
+function PetscObjectGetComm(arg0::Type{Float64},arg1::Ptr{Void},arg2::Union{Ptr{MPI_Comm},StridedArray{MPI_Comm},Ptr{MPI_Comm},Ref{MPI.CComm}})
     err = ccall((:PetscObjectGetComm,petscRealDouble),PetscErrorCode,(PetscObject,Ptr{comm_type}),arg1,arg2)
     return err
 end

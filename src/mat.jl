@@ -543,7 +543,7 @@ function isassembled(x::PetscMat; local_only=false)
   val = isassembled(x.p)
   if !local_only
     if x.verify_assembled
-      val = MPI.Allreduce(Int32(val), MPI.LAND, comm(x))
+      val = MPI.Allreduce(Int8(val), MPI.LAND, comm(x))
     end
   end
 

@@ -394,8 +394,6 @@ end
 function isassembled(x::Vec, local_only=false)
   myrank = MPI.Comm_rank(comm(x))
   if x.verify_assembled && !local_only
-    val1 = Int32(x.assembled)
-    commx = comm(x)
     val = MPI.Allreduce(Int8(x.assembled), MPI.LAND, comm(x))
   else
     val = x.assembled

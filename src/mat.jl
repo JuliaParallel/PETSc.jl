@@ -806,7 +806,7 @@ function set_values!(x::Matrix{T}, idxm::AbstractArray, idxn::AbstractArray, v::
       colidx = idxn[col]
       for row = 1:length(idxm)
         rowidx = idxm[row]
-        x[rowidx, colidx] = v[row, col]
+        x[rowidx+1, colidx+1] = v[row, col]
       end
     end
   else
@@ -814,7 +814,7 @@ function set_values!(x::Matrix{T}, idxm::AbstractArray, idxn::AbstractArray, v::
       colidx = idxn[col]
       for row = 1:length(idxm)
         rowidx = idxm[row]
-        x[rowidx, colidx] += v[row, col]
+        x[rowidx+1, colidx+1] += v[row, col]
       end
     end
   end

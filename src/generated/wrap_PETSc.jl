@@ -43,7 +43,7 @@ lib_file(hdr::ASCIIString) = "petsc"
 output_file(hdr::ASCIIString) = "PETSc.jl"
 
 function wrap_cursor(name::ASCIIString, cursor)
-  println("name = ", name)
+  println("\nwrapping name = ", name)
   exc = true
 #= debug: wrap everything
   if length(name) > 0

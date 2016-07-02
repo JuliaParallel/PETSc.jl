@@ -1,7 +1,7 @@
 # index sets and vector scatters
 
 ###########################################################################
-export IS # index sets
+export IS, ISBlock # index sets
 # Note: we expose a 1-base Julian index interface, but internally
 # PETSc's indices are 0-based.
 #TODO: support block versions
@@ -21,20 +21,33 @@ function PetscDestroy{T}(o::IS{T})
 end
 
 # internal constructor, takes array of zero-based indices:
-function IS_(T::DataType, idx::Array{PetscInt}; comm::MPI.Comm=MPI.COMM_SELF)
+function IS_{T<:Scalar}(::Type{T}, idx::Array{PetscInt}; comm::MPI.Comm=MPI.COMM_WORLD)
   is_c = Ref{C.IS{T}}()
   chk(C.ISCreateGeneral(comm, length(idx), idx, C.PETSC_COPY_VALUES, is_c))
   return IS{T}(is_c[])
 end
 
-IS{I<:Integer}(T::DataType, idx::AbstractArray{I}; comm::MPI.Comm=MPI.COMM_SELF) =
+IS{I<:Integer, T<:Scalar}(::Type{T}, idx::AbstractArray{I}; comm::MPI.Comm=MPI.COMM_WORLD) =
   IS_(T, PetscInt[i-1 for i in idx]; comm=comm)
 
-function IS{I<:Integer}(T::DataType, idx::Range{I}; comm::MPI.Comm=MPI.COMM_SELF)
+function IS{I<:Integer, T<:Scalar}(::Type{T}, idx::Range{I}; comm::MPI.Comm=MPI.COMM_WORLD)
   is_c = Ref{C.IS{T}}()
   chk(C.ISCreateStride(comm, length(idx), start(idx)-1, step(idx), is_c))
   return IS{T}(is_c[])
 end
+
+# there is no Strided block index set, so convert everything to an array
+function ISBlock{I<:Integer, T<:Scalar}(::Type{T}, bs::Integer,  idx::AbstractArray{I}; comm=MPI.COMM_WORLD)
+  idx_0 = PetscInt[i-1 for i in idx]
+  return ISBlock_(T, bs, idx_0, comm=comm)
+end
+
+function ISBlock_{T}(::Type{T}, bs::Integer, idx::AbstractArray{PetscInt};comm=MPI.COMM_WORLD)
+  is_c = Ref{C.IS{T}}()
+  chk(C.ISCreateBlock(comm, bs, length(idx), idx, C.PETSC_COPY_VALUES, is_c))
+  return IS{T}(is_c[])
+end
+
 
 function Base.copy{T}(i::IS{T})
   is_c = Ref{C.IS{T}}()
@@ -103,6 +116,24 @@ function Base.convert{T<:Integer}(::Type{Vector{T}}, idx::IS)
 end
 Base.Set(i::IS) = Set(Vector{Int}(i))
 
+export set_blocksize, get_blocksize
+
+function set_blocksize(is::IS, bs::Integer)
+  chk(C.ISSetBlockSize(is.p, bs))
+end
+
+function get_blocksize(is::IS)
+  bs = Ref{PetscInt}()
+  chk(C.ISGetBlockSize(is.p, bs))
+  return Int(bs[])
+end
+
+function petscview{T}(is::IS{T})
+  viewer = C.PetscViewer{T}(C_NULL)
+  chk(C.ISView(is.p, viewer))
+end
+
+
 ###############################################################################
 # we expose a 1 based API, but internally ISLoalToGlobalMappings are zero based
 
@@ -151,54 +182,9 @@ function PetscDestroy{T}(o::ISLocalToGlobalMapping{T})
   PetscFinalized(T) || C.ISLocalToGlobalMappingDestroy(Ref(o.p))
 end
 
-
-
-###########################################################################
-export VecScatter
-
-# describes a scatter operation context (input/output index sets etc.)
-type VecScatter{T}
-  p::C.VecScatter{T}
-
-  function VecScatter(p::C.VecScatter{T})
-    o = new(p)
-    finalizer(o, VecScatterDestroy)
-    return o
-  end
+function petscview{T}(is::ISLocalToGlobalMapping{T})
+  viewer = C.PetscViewer{T}(C_NULL)
+  chk(C.ISLocalToGlobalMappingView(is.p, viewer))
 end
 
-comm{T}(a::VecScatter{T}) = MPI.Comm(C.PetscObjectComm(T, a.p.pobj))
 
-function VecScatterDestroy{T}(o::VecScatter{T})
-  PetscFinalized(T) || C.VecScatterDestroy(Ref(o.p))
-end
-
-function VecScatter{T}(x::Vec{T}, ix::IS{T}, y::Vec{T}, iy::IS{T})
-  scatter_c = Ref{C.VecScatter{T}}()
-  chk(C.VecScatterCreate(x.p, ix.p, y.p, iy.p, scatter_c))
-  return VecScatter{T}(scatter_c[])
-end
-
-function Base.copy{T}(i::VecScatter{T})
-  vs_c = Ref{C.VecScatter{T}}()
-  chk(C.VecScatterCopy(i.p, vs_c))
-  return VecScatter{T}(vs_c[])
-end
-
-###########################################################################
-export scatter!
-
-function scatter!{T}(scatter::VecScatter{T}, x::Vec{T}, y::Vec{T}; imode=C.INSERT_VALUES, smode=C.SCATTER_FORWARD)
-  chk(C.VecScatterBegin(scatter.p, x.p, y.p, imode, smode))
-  yield() # do async computations while messages are in transit
-  chk(C.VecScatterEnd(scatter.p, x.p, y.p, imode, smode))
-  return y
-end
-
-function scatter!{T,I1,I2}(x::Vec{T}, ix::AbstractVector{I1},
-                           y::Vec{T}, iy::AbstractVector{I2};
-                          imode=C.INSERT_VALUES, smode=C.SCATTER_FORWARD)
-  scatter = VecScatter(x, IS(T, ix, comm=comm(x)),
-                       y, IS(T, iy, comm=comm(y)))
-  scatter!(scatter, x, y; imode=imode, smode=smode)
-end

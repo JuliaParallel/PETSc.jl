@@ -355,4 +355,57 @@
     map!(myfunc, y3, y2, y)
     @test x3 ≈ y3
   end
+
+  @testset "advanced indexing" begin
+    x = zeros(ST, 5)
+    y = Vec(ST, 5)
+    idxs = Int32[0, 1]
+    vals = ST[1, 2]
+    set_values!(x, idxs, vals)
+    set_values!(y, idxs, vals)
+    assemble(x)
+    assemble(y)
+    for i=1:length(idxs)
+      @test x[idxs[i]+1] ≈ vals[i]
+      @test y[idxs[i]+1] ≈ vals[i]
+    end
+
+    vals = ST[2,3]
+    ltog = local_to_global_mapping(y)
+    set_local_to_global_mapping(y, ltog)
+    set_values_local!(x, idxs, vals)
+    set_values_local!(y, idxs, vals)
+    assemble(x)
+    assemble(y)
+    for i=1:length(idxs)
+      @test x[idxs[i]+1] ≈ vals[i]
+      @test y[idxs[i]+1] ≈ vals[i]
+    end
+
+    y2 = Vec(ST, 4, bs=2)
+    @test get_blocksize(y2) == 2
+    idxs = Int32[0]
+    vals = ST[1, 2]
+    set_values_blocked!(y2, idxs, vals)
+    @test y2[idxs[1]+1] ≈ vals[1]
+    @test y2[idxs[1]+2] ≈ vals[2]
+
+
+    rng = localpart(y2)
+    ltog = local_to_global_mapping(y2)
+    set_local_to_global_mapping(y2, ltog)
+    idx = Int32[1]
+    vals = ST[2,3]
+    set_values_blocked_local!(y2, idxs, vals)
+    @test y2[idxs[1]+1] ≈ vals[1]
+    @test y2[idxs[1]+2] ≈ vals[2]
+
+
+
+
+
+
+
+  end
+
 end

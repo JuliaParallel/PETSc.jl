@@ -97,23 +97,27 @@ gettype{T,VT}(a::Vec{T,VT}) = VT
  """
   Create an empty, unsized vector.
 """
-function Vec{T}(::Type{T}, vtype::C.VecType=C.VECMPI; 
+function Vec{T}(::Type{T}, vtype::C.VecType=C.VECMPI;
                 comm::MPI.Comm=MPI.COMM_WORLD)
   p = Ref{C.Vec{T}}()
   chk(C.VecCreate(comm, p))
-  Vec{T, vtype}(p[])
+  v = Vec{T, vtype}(p[])
+  v
 end
 
  """
   Create a vector, specifying the (global) length len or the local length
-  mlocal
+  mlocal.  Even if the blocksize is > 1, teh lengths are always number of 
+  elements in the vector, not number of block elements.  Thus
+  len % blocksize must = 0.
 """
 function Vec{T<:Scalar}(::Type{T}, len::Integer=C.PETSC_DECIDE;
-                         vtype::C.VecType=C.VECMPI,
+                         vtype::C.VecType=C.VECMPI,  bs=1,
                          comm::MPI.Comm=MPI.COMM_WORLD, 
                          mlocal::Integer=C.PETSC_DECIDE)
   vec = Vec(T, vtype; comm=comm)
   resize!(vec, len, mlocal=mlocal)
+  set_block_size(vec, bs)
   vec
 end
 
@@ -127,6 +131,16 @@ function Vec{T<:Scalar}(v::Vector{T}; comm::MPI.Comm=MPI.COMM_WORLD)
   chk(C.VecCreateMPIWithArray(comm, 1, length(v), C.PETSC_DECIDE, v, p))
   pv = Vec{T, C.VECMPI}(p[], v)
   return pv
+end
+
+function set_block_size{T<:Scalar}(v::Vec{T}, bs::Integer)
+  chk(C.VecSetBlockSize(v.p, bs))
+end
+
+function get_blocksize{T<:Scalar}(v::Vec{T})
+  bs = Ref{PetscInt}()
+  chk(C.VecGetBlockSize(v.p, bs))
+  return Int(bs[])
 end
 
 export VecGhost, VecLocal, restore
@@ -329,6 +343,21 @@ function localpart(v::Vec)
   return (low[]+1):(high[])
 end
 
+"""
+  Similar to localpart, but returns the range of block indices
+"""
+function localpart_block(v::Vec)
+  low = Ref{PetscInt}()
+  high = Ref{PetscInt}()
+  chk(C.VecGetOwnershipRange(v.p, low, high))
+  bs = get_blocksize(v)
+  low_b = div(low[], bs); high_b = div(high[]-1, bs)
+  ret = (low_b+1):(high_b+1)
+
+  return ret
+end
+
+
 function Base.similar{T,VType}(x::Vec{T,VType})
   p = Ref{C.Vec{T}}()
   chk(C.VecDuplicate(x.p, p))
@@ -357,6 +386,71 @@ function Base.copy(x::Vec)
   y
 end
 
+###############################################################################
+export localIS, local_to_global_mapping, set_local_to_global_mapping, has_local_to_global_mapping
+
+"""
+  Constructs index set mapping from local indexing to global indexing, based 
+  on localpart()
+"""
+function localIS{T}(A::Vec{T})
+
+  rows = localpart(A)
+  rowis = IS(T, rows, comm=comm(A))
+  return rowis
+end
+
+"""
+  Like localIS, but returns a block index IS
+"""
+function localIS_block{T}(A::Vec{T})
+  rows = localpart_block(A)
+  bs = get_blocksize(A)
+  rowis = ISBlock(T, bs, rows, comm=comm(A))
+#  set_blocksize(rowis, get_blocksize(A))
+  return rowis
+end
+"""
+  Construct ISLocalToGlobalMappings for the vector.  If a block vector, 
+  create a block index set
+"""
+function local_to_global_mapping(A::Vec)
+
+  # localIS creates strided index sets, which require only constant
+  # memory
+  if get_blocksize(A) == 1
+    rowis = localIS(A)
+  else 
+    rowis = localIS_block(A)
+  end
+  row_ltog = ISLocalToGlobalMapping(rowis)
+
+  return row_ltog
+end
+
+# need a better name
+"""
+  Registers the ISLocalToGlobalMapping with the Vec
+"""
+function set_local_to_global_mapping{T}(A::Vec{T}, rmap::ISLocalToGlobalMapping{T})
+
+  chk(C.VecSetLocalToGlobalMapping(A.p, rmap.p))
+end
+
+"""
+  Check if the local to global mapping has been registered
+"""
+function has_local_to_global_mapping{T}(A::Vec{T})
+
+  rmap_ref = Ref{C.ISLocalToGlobalMapping{T}}()
+  chk(C.VecGetLocalToGlobalMapping(A.p, rmap_re))
+
+  rmap = rmap_ref[]
+  
+  return rmap.pobj != C_NULL
+end
+
+
 ##########################################################################
 import Base: setindex!
 export assemble, isassembled, AssemblyBegin, AssemblyEnd
@@ -377,6 +471,12 @@ function AssemblyBegin(x::Vec, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
   chk(C.VecAssemblyBegin(x.p))
 end
 
+"""
+  Generic fallback for AbstractArray, no-op
+"""
+function AssemblyBegin(x::AbstractArray, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
+
+end
  """
   Finish communication for assembling the vector
 """
@@ -402,6 +502,14 @@ function isassembled(x::Vec, local_only=false)
   return Bool(val)
 end
 
+"""
+  Generic fallback for AbstractArray, no-op
+"""
+function AssemblyEnd(x::AbstractArray, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
+
+end
+
+isassemble(x::AbstractArray) = true
 # assemble(f::Function, x::Vec) is defined in mat.jl
 
  """
@@ -501,7 +609,116 @@ getindex(x::Vec, I::AbstractVector{PetscInt}) =
   getindex0(x, PetscInt[ (i-1) for i in I ])
 
 ##########################################################################
+# more indexing
+# 0-based (to avoid temporary copies)
+export set_values!, set_values_blocked!, set_values_local!, set_values_blocked_local!
 
+function set_values!{T <: Scalar}(x::Vec{T}, idxs::DenseArray{PetscInt}, 
+                                 vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  chk(C.VecSetValues(x.p, length(idxs), idxs, vals, o))
+end
+
+function set_values!{T <: Scalar, I <: Integer}(x::Vec{T}, idxs::DenseArray{I},
+                                         vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  # convert idxs to PetscInt
+  p_idxs = PetscInt[ i for i in idxs]
+  set_values!(x, p_idxs, vals, o)
+end
+
+function set_values!(x::AbstractVector, idxs::AbstractArray, vals::AbstractArray,
+                     o::C.InsertMode=C.INSERT_VALUES)
+
+  if o == C.INSERT_VALUES
+    for i=1:length(idxs)
+      x[idxs[i] + 1] = vals[i]
+    end
+  elseif o == C.ADD_VALUES
+    for i=1:length(idxs)
+      x[idxs[i] + 1] += vals[i]
+    end
+  else
+    throw(ArgumentError("Unsupported InsertMode"))
+  end
+end
+
+
+function set_values_blocked!{T <: Scalar}(x::Vec{T}, idxs::DenseArray{PetscInt},
+                                          vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  chk(C.VecSetValuesBlocked(x.p, length(idxs), idxs, vals, o))
+end
+
+function set_values_blocked!{T <: Scalar, I <: Integer}(x::Vec{T}, 
+                             idxs::DenseArray{I}, vals::DenseArray{T}, 
+                             o::C.InsertMode=x.insertmode)
+ 
+  p_idxs = PetscInt[ i for i in idxs]
+  set_values_blocked!(x, p_idxs, vals, o)
+end
+
+# julia doesn't have blocked vectors, so skip
+
+
+function set_values_local!{T <: Scalar}(x::Vec{T}, idxs::DenseArray{PetscInt},
+                                       vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  chk(C.VecSetValuesLocal(x.p, length(idxs), idxs, vals, o))
+end
+
+function set_values_local!{T <: Scalar, I <: Integer}(x::Vec{T}, 
+                           idxs::DenseArray{I}, vals::DenseArray{T}, 
+                           o::C.InsertMode=x.insertmode)
+
+  p_idxs = PetscInt[ i for i in idxs]
+  set_values_local!(x, p_idxs, vals, o)
+end
+
+# for julia vectors, local = global
+function set_values_local!(x::AbstractArray, idxs::AbstractArray, 
+                           vals::AbstractArray, o::C.InsertMode=C.INSERT_VALUES)
+
+  if o == C.INSERT_VALUES
+    for i=1:length(idxs)
+      x[idxs[i] + 1] = vals[i]
+    end
+  elseif o == C.ADD_VALUES
+    for i=1:length(idxs)
+      x[idxs[i] + 1] += vals[i]
+    end
+  else
+    throw(ArgumentError("Unsupported InsertMode"))
+  end
+
+end
+
+
+function set_values_blocked_local!{T <: Scalar}(x::Vec{T}, 
+                                   idxs::DenseArray{PetscInt},
+                                   vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  chk(C.VecSetValuesBlockedLocal(x.p, length(idxs), idxs, vals, o))
+end
+
+
+function set_values_blocked_local!{T <: Scalar, I <: Integer}(x::Vec{T}, 
+                           idxs::DenseArray{I}, vals::DenseArray{T}, 
+                           o::C.InsertMode=x.insertmode)
+
+  p_idxs = PetscInt[ i for i in idxs]
+  set_values_blocked_local!(x, p_idxs, vals, o)
+end
+
+# julia doesn't have blocked vectors, so skip
+
+
+
+
+
+                             
+
+###############################################################################
 import Base: abs, exp, log, conj, conj!
 export abs!, exp!, log!
 for (f,pf) in ((:abs,:VecAbs), (:exp,:VecExp), (:log,:VecLog),

@@ -785,6 +785,8 @@ getindex{T1<:Integer}(a::PetscMat, i0::Integer, I1::AbstractArray{T1}) =
 
 #############################################################################
 # zero based indexing
+
+# global, non-block
 function set_values!{T <: Scalar}(x::Mat{T}, idxm::DenseArray{PetscInt}, idxn::DenseArray{PetscInt}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
   # v should be m x n
 
@@ -798,6 +800,29 @@ function set_values!{T <: Scalar, I1 <: Integer, I2 :< Integer}(x::Mat{T}, idxm:
   set_values!(x, _idxm, _idxn, v, o)
 end
 
+function set_values!(x::Matrix{T}, idxm::AbstractArray, idxn::AbstractArray, v::AbstractArray, o::C.InsertMode=C.INSERT_VALUES)
+  if o == C.INSERT_VALUES
+    for col = 1:length(idxn)
+      colidx = idxn[col]
+      for row = 1:length(idxm)
+        rowidx = idxm[row]
+        x[rowidx, colidx] = v[row, col]
+      end
+    end
+  else
+    for col = 1:length(idxn)
+      colidx = idxn[col]
+      for row = 1:length(idxm)
+        rowidx = idxm[row]
+        x[rowidx, colidx] += v[row, col]
+      end
+    end
+  end
+
+end
+
+
+# global, block
 function set_values_blocked!{T <: Scalar}(x::Mat{T}, idxm::DenseArray{PetscInt}, idxn::DenseArray{PetscInt}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
 
   # vals should be m*bs x n*bs
@@ -811,6 +836,7 @@ function set_values_blocked!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T
   set_values_blocked!(x, _idxm, _idxn, v, o)
 end
 
+# local, non-block
 function set_values_local!{T <: Scalar}(x::Mat{T}, idxm::DenseArray{PetscInt}, idxn::DenseArray{PetscInt}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
 
   chk(C.MatSetValuesLocal(x.p, length(idxm), idxm, length(idxn), idxn, v, o))
@@ -823,6 +849,12 @@ function set_values_local!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T},
   set_values_local!(x, idxm, idxn, v, o)
 end
 
+function set_values_local!(x::Matrix, idxm::AbstractArray, idxn::AbstractArray, v::AbstractArray, o::C.InsertMode=C.INSERT_VALUES)
+
+  set_values!(x, idxm, idxn, v, o)
+end
+
+# local, block
 function set_values_blocked_local!{T <: Scalar}(x::Mat{T}, idxm::DenseArray{PetscInt}, idxn::DenseArray{PetscInt}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
 
   chk(C.MatSetValuesBlockedLocal(x.p, length(idxm), idxm, length(idxn), idxn, v, o))
@@ -834,11 +866,6 @@ function set_values_blocked_local!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x:
   _idxn = PetscInt[ i for i in idxn]
   set_values_blocked_local!(x, _idxm, _idxn, v, o)
 end
-
-
-
-
-
 
 
 ###############################################################################

@@ -21,6 +21,7 @@
   vec2 = similar(vec,ST)
   PETSc.AssemblyBegin(vec2)
   PETSc.AssemblyEnd(vec2)
+
   @test isassembled(vec2)
   val2_ret = vec2[1]
 

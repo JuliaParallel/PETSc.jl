@@ -568,6 +568,7 @@ function process_ccall(ex)
   # ...
   println("processing ccall ", ex)
   ex.args[1] = modify_libname(ex.args[1])  # change the library name
+  ex.args[2] = modify_rettype(ex.args[2]) # change return type
   ex.args[3] = modify_types(ex.args[3])
   println("changing argument names")
   ex3 = ex.args[3]  # get expression of argument types
@@ -576,6 +577,13 @@ function process_ccall(ex)
   @assert ex3.head == :tuple
 
   return ex
+end
+
+function modify_rettype(ex)
+
+  println("modifying return type")
+  println("ex = ", ex)
+  return deepcopy(ex)
 end
 
 function modify_types(ex)

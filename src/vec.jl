@@ -5,19 +5,27 @@ export Vec, comm, NullVec
   Construct a high level Vec object from a low level C.Vec.
   The data field is used to protect things from GC.
   A finalizer is attached to deallocate the memory of the underlying C.Vec, unless 
-  first_instance is set to true.
-  If assembling is false, then every call to setindex! also calls AssembleBegin and 
-  AssembleEnd.
+  `first_instance` is set to true.
+  `assembled` indicates when values are set via `setindex!` and is reset by
+   `AssemblyEnd`
+   `verify_assembled` when true, calls to `isassembled` verify all processes
+   have `assembled` = true, when false, only the local assembly state is 
+   checked.  This essentially makes the user responsible for assembling 
+  the vector before passing it into functions that will use it (like KSP
+  solves, etc.).
+
 """
 type Vec{T,VType} <: AbstractVector{T}
   p::C.Vec{T}
-  assembling::Bool # whether we are in the middle of assemble(vec)
+  assembled::Bool # whether are all values have been assembled
+  verify_assembled::Bool # check whether all processes are assembled
   insertmode::C.InsertMode # current mode for setindex!
   data::Any # keep a reference to anything needed for the Mat
             # -- needed if the Mat is a wrapper around a Julia object,
             #    to prevent the object from being garbage collected.
-  function Vec(p::C.Vec{T}, data=nothing; first_instance::Bool=true)
-    v = new(p, false, C.INSERT_VALUES, data)
+  function Vec(p::C.Vec{T}, data=nothing; first_instance::Bool=true, 
+               verify_assembled::Bool=true)
+    v = new(p, false, verify_assembled, C.INSERT_VALUES, data)
     if first_instance
       chk(C.VecSetType(p, VType))  # set the type here to ensure it matches VType
       finalizer(v, PetscDestroy)
@@ -26,8 +34,28 @@ type Vec{T,VType} <: AbstractVector{T}
   end
 end
 
+import Base: show, showcompact, writemime
+function show(io::IO, x::Vec)
 
- """
+  myrank = MPI.Comm_rank(comm(x))
+  if myrank == 0
+    println("Petsc Vec of lenth ", length(x))
+  end
+  if isassembled(x)
+    println(io, "Process ", myrank, " entries:")
+    x_arr = LocalArrayRead(x)
+    show(io, x_arr)
+    LocalArrayRestore(x_arr)
+  else
+    println(io, "Process ", myrank, " not assembled")
+  end
+end
+
+
+showcompact(io::IO, x::Vec) = show(io, x)
+writemime(io::IO, ::MIME"text/plain", x::Vec) = show(io, x)
+
+"""
   Null vectors, used in place of void pointers in the C
   API
 """
@@ -50,7 +78,12 @@ end
  """
   Gets the MPI communicator of a vector.
 """
-comm{T}(v::Vec{T}) = MPI.Comm(C.PetscObjectComm(T, v.p.pobj))
+function comm{T}(v::Vec{T})
+  rcomm = Ref{MPI.CComm}()
+  ccomm = C.PetscObjectComm(T, v.p.pobj)
+  fcomm = convert(MPI.Comm, ccomm)
+  return fcomm
+end
 
 
 export gettype
@@ -317,7 +350,9 @@ function Base.similar{T,VType}(x::Vec{T,VType}, len::Union{Int,Dims})
 end
 
 function Base.copy(x::Vec)
+  AssemblyBegin(x)
   y = similar(x)
+  AssemblyEnd(x)
   chk(C.VecCopy(x.p, y.p))
   y
 end
@@ -330,9 +365,15 @@ export assemble, isassembled, AssemblyBegin, AssemblyEnd
 # assemble(x) do ... end
  """
   Start communication to assemble stashed values into the vector
+
+  The MatAssemblyType is not needed for vectors, but is provided for 
+  compatability with the Mat case.
+
+  Unless vec.verify_assembled == false, users must *never* call the 
+  C functions VecAssemblyBegin, VecAssemblyEnd and VecSetValues, they must
+  call AssemblyBegin, AssemblyEnd, and setindex!.
 """
 function AssemblyBegin(x::Vec, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
-  # the t parameter is unused for vectors
   chk(C.VecAssemblyBegin(x.p))
 end
 
@@ -341,12 +382,26 @@ end
 """
 function AssemblyEnd(x::Vec, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
   chk(C.VecAssemblyEnd(x.p))
+  x.assembled = true
 end
 
- """
-  Check if a vector is assembled (ie. does not have stashed values)
 """
-isassembled(x::Vec) = !x.assembling
+  Check if a vector is assembled (ie. does not have stashed values).  If 
+  `x.verify_assembled`, the assembly state of all processes is checked, 
+  otherwise only the local process is checked. `local_only` forces only 
+  the local process to be checked, regardless of `x.verify_assembled`.
+"""
+function isassembled(x::Vec, local_only=false)
+  myrank = MPI.Comm_rank(comm(x))
+  if x.verify_assembled && !local_only
+    val = MPI.Allreduce(Int8(x.assembled), MPI.LAND, comm(x))
+  else
+    val = x.assembled
+  end
+
+  return Bool(val)
+end
+
 # assemble(f::Function, x::Vec) is defined in mat.jl
 
  """
@@ -359,10 +414,7 @@ function setindex0!{T}(x::Vec{T}, v::Array{T}, i::Array{PetscInt})
   end
   #    println("  in setindex0, passed bounds check")
   chk(C.VecSetValues(x.p, n, i, v, x.insertmode))
-  if !x.assembling
-    AssemblyBegin(x)
-    AssemblyEnd(x)
-  end
+  x.assembled = false
   x
 end
 

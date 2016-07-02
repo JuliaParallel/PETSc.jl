@@ -17,7 +17,7 @@ const petsc_type = [Float64, Float32, Complex128]
 typealias Scalar Union{Float32, Float64, Complex128}
 
 const MPI_COMM_SELF = MPI.COMM_SELF
-typealias MPI_Comm MPI.Comm
+typealias MPI_Comm Union{MPI.CComm, MPI.Comm}
 typealias comm_type MPI.CComm
 
 # some auxiliary functions used by ccall wrappers

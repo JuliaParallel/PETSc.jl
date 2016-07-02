@@ -106,10 +106,7 @@
           <div role="main">
             <div class="section">
               
-                <p><a id='PETSc.LocalArrays' href='#PETSc.LocalArrays'>#</a>
-<strong><code>PETSc.LocalArrays</code></strong> &mdash; <em>Constant</em>.</p>
-<p>Typealias for both kinds of LocalArrays</p>
-<p><a id='PETSc.NullVec' href='#PETSc.NullVec'>#</a>
+                <p><a id='PETSc.NullVec' href='#PETSc.NullVec'>#</a>
 <strong><code>PETSc.NullVec</code></strong> &mdash; <em>Constant</em>.</p>
 <p>Null vectors, used in place of void pointers in the C   API</p>
 <p><a id='PETSc.mat2vec' href='#PETSc.mat2vec'>#</a>
@@ -127,12 +124,9 @@ KSP(pc::PC; kws...)
 <p>The following keyword options control the stopping criteria for iterative solvers: * <code>ksp_rtol=x</code>: <code>x</code> is relative decrease in residual norm * <code>ksp_atol=x</code>: <code>x</code> is absolute decrease in residual norm * <code>ksp_divtol=x</code>: <code>x</code> is amount residual can increase before method is considered to be diverging * <code>ksp_max_it=n</code>: <code>n</code> is the max number of iterations * <code>ksp_converged_use_initial_residual_norm=true</code>: use initial residual norm for computing relative convergence * <code>ksp_converged_use_min_initial_residual_norm=true</code>: use min of initial residual norm and <code>b</code> for computing relative convergence * <code>ksp_error_if_not_converged=true</code>: generate error if solver does not converge * <code>ksp_convergence_test=:default</code> or <code>:skip</code>: use the default convergence test (tolerances and <code>max_it</code>) or skip convergence tests and run until <code>max_it</code> is reached * <code>ksp_norm_type=n</code>: in residual tests, use norm type <code>n</code>, one of default (<code>PETSc.C.KSP_NORM_DEFAULT</code>), none (<code>PETSc.C.KSP_NORM_NONE</code>), of the preconditioned residual (<code>PETSc.C.KSP_NORM_PRECONDITIONED</code>), the true residual (<code>PETSc.C.KSP_NORM_UNPRECONDITIONED</code>), or the "natural" norm (<code>PETSc.C.KSP_NORM_NATURAL</code>) * <code>ksp_check_norm_iteration=n</code>: compute residual norm starting on iteration <code>n</code> * <code>ksp_lag_norm=true</code>: lag the calculation of the residual norm by one iteration (trades off reduced communication for an additional iteration)</p>
 <p>The following options control output that monitors the progress of the solver (default none). * <code>ksp_monitor=filename</code>: print the residual norm at each iteration to <code>filename</code> (<code>""</code> for <code>STDOUT</code>) * <code>ksp_monitor_short=filename</code>: print preconditioned residual norm with fewer digits * <code>ksp_monitor_range=filename</code>: prints the percentage of residual elements that are more then 10% of the maximum value * <code>ksp_monitor_true_residual=filename</code>: print true residual norm * <code>ksp_monitor_singular_value=filename</code>: print extreme singular values (via Lanczos or Arnoldi process as the linear system is solved) * <code>ksp_monitor_solution=true</code>: plot solution graphically * <code>ksp_monitor_lg_residualnorm=true</code>: plot preconditioned residual norm graphically * <code>ksp_monitor_lg_true_residualnorm=true</code>: plot preconditioned and true residual norm graphically * <code>ksp_monitor_lg_range=true</code>: plot preconditioned residual norm and range of residual values * <code>ksp_monitor_cancel=true</code>: remove any hardwired monitor routines * <code>ksp_compute_singularvalues=true</code>: print extreme singular values (via Lanczos or Arnoldi process as the linear system is solved)</p>
 <p>In addition, if default preconditioner is being used, then any of the preconditioner options (see <code>PC</code>) can be specified to control this preconditioner (e.g. <code>pc_type</code>).</p>
-<p><a id='PETSc.LocalArray' href='#PETSc.LocalArray'>#</a>
-<strong><code>PETSc.LocalArray</code></strong> &mdash; <em>Type</em>.</p>
+<p><a id='PETSc.LocalVector' href='#PETSc.LocalVector'>#</a>
+<strong><code>PETSc.LocalVector</code></strong> &mdash; <em>Type</em>.</p>
 <p>Object representing the local part of the array, accessing the memory directly.   Supports all the same indexing as a regular Array</p>
-<p><a id='PETSc.LocalArrayRead' href='#PETSc.LocalArrayRead'>#</a>
-<strong><code>PETSc.LocalArrayRead</code></strong> &mdash; <em>Type</em>.</p>
-<p>Get read-only access to the memory underlying a Petsc vector</p>
 <p><a id='PETSc.Mat' href='#PETSc.Mat'>#</a>
 <strong><code>PETSc.Mat</code></strong> &mdash; <em>Type</em>.</p>
 <p>Create a high level matrix from an already created matrix pointer</p>
@@ -195,9 +189,9 @@ KSP(pc::PC; kws...)
 <p>Generic fallback for AbstractArray, no-op</p>
 <p>Finish assembling the matrix</p>
 <p>Finish communication for assembling the vector</p>
-<p><a id='PETSc.LocalArrayRestore' href='#PETSc.LocalArrayRestore'>#</a>
-<strong><code>PETSc.LocalArrayRestore</code></strong> &mdash; <em>Function</em>.</p>
-<p>Tell Petsc the LocalArray is no longer being used</p>
+<p><a id='PETSc.LocalVector_readonly' href='#PETSc.LocalVector_readonly'>#</a>
+<strong><code>PETSc.LocalVector_readonly</code></strong> &mdash; <em>Function</em>.</p>
+<p>Get the LocalVector_readonly of a vector.  Users must call restore when    finished with the object.</p>
 <p><a id='PETSc.MatShell' href='#PETSc.MatShell'>#</a>
 <strong><code>PETSc.MatShell</code></strong> &mdash; <em>Function</em>.</p>
 <p>Create a shell matrix with specified size.  The ctx tuple contains can be   accessed by any callback function.</p>
@@ -296,6 +290,7 @@ KSP(pc::PC; kws...)
 <p>Print a Petsc matrix to a named file, in text format</p>
 <p><a id='PETSc.restore' href='#PETSc.restore'>#</a>
 <strong><code>PETSc.restore</code></strong> &mdash; <em>Function</em>.</p>
+<p>Tell Petsc the LocalVector is no longer being used</p>
 <p>Tell Petsc the VecLocal is no longer needed</p>
 <p><a id='PETSc.rhs_wrapper' href='#PETSc.rhs_wrapper'>#</a>
 <strong><code>PETSc.rhs_wrapper</code></strong> &mdash; <em>Function</em>.</p>
@@ -377,5 +372,5 @@ KSP(pc::PC; kws...)
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-07-02 21:48:54.483097
+Build Date UTC : 2016-07-02 23:07:47.739415
 -->

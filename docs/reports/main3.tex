@@ -74,8 +74,8 @@ updated, the functions
 \begin{minted}{julia}
 function ghost_begin!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES,
                                  smode=C.SCATTER_FORWARD)
-
 function ghost_end!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES,
+                               smode=C.SCATTER_FORWARD)
 function scatter!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES, 
                              smode=C.SCATTER_FORWARD)
 \end{minted}
@@ -84,9 +84,9 @@ function scatter!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES,
 to the local values.  The first two functions begin and end the ghost update, 
 while the third is a convenience method for calling both in a single function 
 call.  It should be noted that calling \texttt{ghost\_begin!}, doing some 
-local computation, and then calling \texttt{ghost\_end!}, can be more efficient
+local computation, and then calling \texttt{ghost\_end!} can be more efficient
 than calling \ttt{scatter!} because non-blocking communication may be used to
-send the data while the computation is taking place.  
+send the data while the computating is taking place.  
 Also, the \texttt{smode} parameter controls the direction of
 the update, ie. copying owner values to the ghosts or ghost values to the owner.
 \texttt{imode} controls whether the new values are added to the existing 
@@ -127,8 +127,8 @@ In previous versions of PETSc.jl, the functions \texttt{AssemblyBegin} and
 \texttt{AssemblyEnd} were called after each call to \texttt{MatSetValues} and
 \texttt{VecSetValues} via indexing notation.  Because these are collective 
 operations, all processes had to making the same number of indexing calls, 
-otherwise the code would deadlock, and would generally cause very poor parallel
-performance due to network latency.
+otherwise the code would deadlock, and would generally have very poor parallel
+performance due to network latency in the non-deadlocking case.
 
 To address this, a new field was added 
 to both the \texttt{Mat} and \texttt{Vec} types, called 
@@ -151,7 +151,7 @@ avoid the extra \texttt{MPI\_Allreduce} calls and attain better performance.
 \section{Build System}
 The build system has been improved to increase flexibility and user input, by
 recognizing certain environmental variables.  This has several facets.  
-First, the build system can be directed to use an existing build of PETSc 
+First, the build system can be directed to use an exising build of PETSc 
 rather than build a new one by setting the \texttt{PETSC\_DIR} and 
 \texttt{PETSC\_ARCH} for that build in the variables 
 \texttt{JULIA\_PETSC\_name\_DIR} and \texttt{JULIA\_PETSC\_name\_ARCH}, where \texttt{name} identify the datatype of the build (\texttt{RealDouble}, 
@@ -172,7 +172,7 @@ As a convenience, the \texttt{JULIA\_PETSC\_OPT}, variable can be set to tell
 the build system to use a set of default optimization flags.
 
 \section{TS}
-An interface to the PETSc component for time-stepping Ordinary Differential
+An interface to the PETSc component for timestepping Ordinary Differential
 Equations (ODEs) and Differential Algebraic Equations (DAEs) has been created.
 The TS time is defined as
 
@@ -183,7 +183,7 @@ type TS{T}
 end
 \end{minted}
 
-Several outer constructors are available
+Several outer constructers are available
 
 \begin{minted}{julia}
 function TS{T<:Scalar}(::Type{T}; comm=MPI.COMM_WORLD)
@@ -203,7 +203,7 @@ The function
 function set_ic{T<:Scalar}(ts::TS{T}, u::Vec{T}) 
 \end{minted}
 
-\noindent uses the current value of \texttt{u} as the initial condition for 
+\noindent sets the current value of \texttt{u} as the initial condition for 
 the time stepping.
 
 The function
@@ -223,7 +223,7 @@ function solve!{T}(ts::TS{T}, vec::Vec{T})
 The first method is uses in conjunction with \texttt{set\_ic}, while the 
 second takes the initial condition in the vector \texttt{vec}.
 
-The system being time-stepped is described to PETSc in two parts.  The first is 
+The system being timestepped is described to PETSc in two parts.  The first is 
 the right hand side, which is time stepped explicitly, and the second is the 
 left hand side, which is time stepped implicitly.  In general, PETSc requires 
 functions to evaluate the right and left hand side functions and their 
@@ -254,7 +254,7 @@ For \texttt{set\_rhs\_jac}, the function must have the signature
 function f(ts::TS, t::Real, u::Vec, A::mat, B::Mat, ctx)
 \end{minted}
 
-where \texttt{u} is the same as before, \texttt{A} and \texttt{B} are the 
+\noindent where \texttt{u} is the same as before, \texttt{A} and \texttt{B} are the 
 Jacobian matrices for the linear solve and pre-conditioning, respectively.  
 \texttt{ctx} is the tuple passed into \texttt{set\_rhs\_jac}.
 
@@ -263,7 +263,8 @@ The function for \texttt{set\_lhs\_function} must have the signature
 \begin{minted}{julia}
 function f(ts::TS, t::Real, u::Vec, ut::Vec, F::Vec, ctx)
 \end{minted}
-where all the arguments are the same as the function for 
+
+\noindent where all the arguments are the same as the function for 
 \texttt{set\_right\_function} with the addition of \texttt{ut}, which contains
 the current time derivative of the solution.
 
@@ -272,7 +273,7 @@ For \texttt{set\_lhs\_jac}, the function must have the signature
 \begin{minted}{julia}
 function f(ts::TS, u::Vec, ut::Vec, a::Real, A::Mat, B::Mat, ctx)
 \end{minted}
-where \texttt{a} is the shift applied to the diagonal of the matrix, as 
+\noindent where \texttt{a} is the shift applied to the diagonal of the matrix, as 
 described in the PETSc documentation.  All other arguments are as described
 previously.
 

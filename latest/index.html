@@ -185,12 +185,14 @@ KSP(pc::PC; kws...)
 <p>Get the global size of the vector</p>
 <p><a id='PETSc.AssemblyBegin' href='#PETSc.AssemblyBegin'>#</a>
 <strong><code>PETSc.AssemblyBegin</code></strong> &mdash; <em>Function</em>.</p>
+<p>Generic fallback for AbstractArray, no-op</p>
 <p>Start assembling the matrix (the implmentations probably post    non-blocking sends and received)</p>
 <p>Start communication to assemble stashed values into the vector</p>
 <p>The MatAssemblyType is not needed for vectors, but is provided for    compatability with the Mat case.</p>
 <p>Unless vec.verify_assembled == false, users must <em>never</em> call the    C functions VecAssemblyBegin, VecAssemblyEnd and VecSetValues, they must   call AssemblyBegin, AssemblyEnd, and setindex!.</p>
 <p><a id='PETSc.AssemblyEnd' href='#PETSc.AssemblyEnd'>#</a>
 <strong><code>PETSc.AssemblyEnd</code></strong> &mdash; <em>Function</em>.</p>
+<p>Generic fallback for AbstractArray, no-op</p>
 <p>Finish assembling the matrix</p>
 <p>Finish communication for assembling the vector</p>
 <p><a id='PETSc.LocalArrayRestore' href='#PETSc.LocalArrayRestore'>#</a>
@@ -241,6 +243,7 @@ KSP(pc::PC; kws...)
 <p><a id='PETSc.has_local_to_global_mapping' href='#PETSc.has_local_to_global_mapping'>#</a>
 <strong><code>PETSc.has_local_to_global_mapping</code></strong> &mdash; <em>Function</em>.</p>
 <p>Check if the local to global mappings have been registered</p>
+<p>Check if the local to global mapping has been registered</p>
 <p><a id='PETSc.iassemble' href='#PETSc.iassemble'>#</a>
 <strong><code>PETSc.iassemble</code></strong> &mdash; <em>Function</em>.</p>
 <p>Perform a flush assembly (take stashed values and put them into the matrix,   but don't squeeze out any preallocated space that has not been used yet</p>
@@ -261,12 +264,20 @@ KSP(pc::PC; kws...)
 <p><a id='PETSc.localIS' href='#PETSc.localIS'>#</a>
 <strong><code>PETSc.localIS</code></strong> &mdash; <em>Function</em>.</p>
 <p>Constructs 2 index sets that map from the local row and columns to the   global rows and columns</p>
+<p>Constructs index set mapping from local indexing to global indexing, based    on localpart()</p>
+<p><a id='PETSc.localIS_block' href='#PETSc.localIS_block'>#</a>
+<strong><code>PETSc.localIS_block</code></strong> &mdash; <em>Function</em>.</p>
+<p>Like localIS, but returns a block index IS</p>
 <p><a id='PETSc.local_to_global_mapping' href='#PETSc.local_to_global_mapping'>#</a>
 <strong><code>PETSc.local_to_global_mapping</code></strong> &mdash; <em>Function</em>.</p>
 <p>Construct ISLocalToGlobalMappings for the the rows and columns of the matrix</p>
+<p>Construct ISLocalToGlobalMappings for the vector.  If a block vector,    create a block index set</p>
 <p><a id='PETSc.localpart' href='#PETSc.localpart'>#</a>
 <strong><code>PETSc.localpart</code></strong> &mdash; <em>Function</em>.</p>
 <p>Get the range of global indices that define the local part of the vector.   Internally, this calls the Petsc function VecGetOwnershipRange, and has   the same limitations as that function, namely that some vector formats do    not have a well defined contiguous range.</p>
+<p><a id='PETSc.localpart_block' href='#PETSc.localpart_block'>#</a>
+<strong><code>PETSc.localpart_block</code></strong> &mdash; <em>Function</em>.</p>
+<p>Similar to localpart, but returns the range of block indices</p>
 <p><a id='PETSc.localranges' href='#PETSc.localranges'>#</a>
 <strong><code>PETSc.localranges</code></strong> &mdash; <em>Function</em>.</p>
 <p>This function returns two Range object corresponding the global indices   of the rows and columns of the matrix A.</p>
@@ -293,6 +304,7 @@ KSP(pc::PC; kws...)
 <p><a id='PETSc.set_local_to_global_mapping' href='#PETSc.set_local_to_global_mapping'>#</a>
 <strong><code>PETSc.set_local_to_global_mapping</code></strong> &mdash; <em>Function</em>.</p>
 <p>Registers the ISLocalToGlobalMappings with the matrix</p>
+<p>Registers the ISLocalToGlobalMapping with the Vec</p>
 <p><a id='PETSc.set_rhs_function' href='#PETSc.set_rhs_function'>#</a>
 <strong><code>PETSc.set_rhs_function</code></strong> &mdash; <em>Function</em>.</p>
 <p>Sets the function that evalutes u_t = g(u, t) for an ODE.   The function must have the signature:</p>
@@ -363,5 +375,5 @@ KSP(pc::PC; kws...)
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-07-02 19:47:32.872204
+Build Date UTC : 2016-07-02 20:56:20.952202
 -->

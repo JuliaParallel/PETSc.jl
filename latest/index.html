@@ -268,6 +268,7 @@ KSP(pc::PC; kws...)
 <p><a id='PETSc.localIS_block' href='#PETSc.localIS_block'>#</a>
 <strong><code>PETSc.localIS_block</code></strong> &mdash; <em>Function</em>.</p>
 <p>Like localIS, but returns a block index IS</p>
+<p>Like localIS, but returns a block index IS</p>
 <p><a id='PETSc.local_to_global_mapping' href='#PETSc.local_to_global_mapping'>#</a>
 <strong><code>PETSc.local_to_global_mapping</code></strong> &mdash; <em>Function</em>.</p>
 <p>Construct ISLocalToGlobalMappings for the the rows and columns of the matrix</p>
@@ -277,6 +278,7 @@ KSP(pc::PC; kws...)
 <p>Get the range of global indices that define the local part of the vector.   Internally, this calls the Petsc function VecGetOwnershipRange, and has   the same limitations as that function, namely that some vector formats do    not have a well defined contiguous range.</p>
 <p><a id='PETSc.localpart_block' href='#PETSc.localpart_block'>#</a>
 <strong><code>PETSc.localpart_block</code></strong> &mdash; <em>Function</em>.</p>
+<p>Similar to localpart, but returns the range of block indices</p>
 <p>Similar to localpart, but returns the range of block indices</p>
 <p><a id='PETSc.localranges' href='#PETSc.localranges'>#</a>
 <strong><code>PETSc.localranges</code></strong> &mdash; <em>Function</em>.</p>
@@ -375,5 +377,5 @@ KSP(pc::PC; kws...)
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-07-02 20:56:20.952202
+Build Date UTC : 2016-07-02 21:48:54.483097
 -->

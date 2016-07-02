@@ -44,7 +44,7 @@ function KSP{T}(ts::TS{T})
 end
 
 """
-  Most preferred constructor: taake ProblemType, method from options
+  Most preferred constructor: take ProblemType, method from options
   database
 """
 function TS{T<:Scalar}(::Type{T} ;comm=MPI.COMM_WORLD)

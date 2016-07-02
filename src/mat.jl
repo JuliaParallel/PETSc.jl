@@ -72,7 +72,7 @@ function Mat{T}(::Type{T}, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
   # slow but flexible.
   if nz==0 && onz == 0  && nnz == PetscInt[] && onnz == PetscInt[]
     if bs != 1
-      set_blocksize(mat.p, bs)
+      set_block_size(mat, bs)
     end
     chk(C.MatSetUp(mat.p)) 
   else  # preallocate
@@ -793,14 +793,14 @@ function set_values!{T <: Scalar}(x::Mat{T}, idxm::DenseArray{PetscInt}, idxn::D
   chk(C.MatSetValues(x.p, length(idxm), idxm, length(idxn), idxn, v, o))
 end
 
-function set_values!{T <: Scalar, I1 <: Integer, I2 :< Integer}(x::Mat{T}, idxm::DenseArray{I1}, idxn::DenseArray{I2}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+function set_values!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T}, idxm::DenseArray{I1}, idxn::DenseArray{I2}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
 
   _idxm = PetscInt[ i for i in idxm]
   _idxn = PetscInt[ i for i in idxn]
   set_values!(x, _idxm, _idxn, v, o)
 end
 
-function set_values!(x::Matrix{T}, idxm::AbstractArray, idxn::AbstractArray, v::AbstractArray, o::C.InsertMode=C.INSERT_VALUES)
+function set_values!(x::Matrix, idxm::AbstractArray, idxn::AbstractArray, v::AbstractArray, o::C.InsertMode=C.INSERT_VALUES)
   if o == C.INSERT_VALUES
     for col = 1:length(idxn)
       colidx = idxn[col]

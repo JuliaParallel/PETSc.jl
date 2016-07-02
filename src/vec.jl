@@ -49,7 +49,6 @@ function show(io::IO, x::Vec)
   else
     println(io, "Process ", myrank, " not assembled")
   end
-
 end
 
 
@@ -386,7 +385,7 @@ function AssemblyEnd(x::Vec, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
   x.assembled = true
 end
 
- """
+"""
   Check if a vector is assembled (ie. does not have stashed values).  If 
   `x.verify_assembled`, the assembly state of all processes is checked, 
   otherwise only the local process is checked. `local_only` forces only 

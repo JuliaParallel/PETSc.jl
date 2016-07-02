@@ -81,7 +81,7 @@ function Mat{T}(::Type{T}, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
   # slow but flexible.
   if nz==0 && onz == 0  && nnz == PetscInt[] && onnz == PetscInt[]
     if bs != 1
-      chk(C.MatSetBlockSize(mat.p, PetscInt(bs)))
+      set_block_size(mat, bs)
     end
     chk(C.MatSetUp(mat.p)) 
   else  # preallocate
@@ -213,6 +213,17 @@ function petscwrite{T}(mat::PetscMat{T}, fname)
   chk(C.PetscViewerASCIIOpen(comm(mat), fname, viewer_ref))
   chk(C.MatView(mat.p, viewer_ref[]))
   chk(C.PetscViewerDestroy(viewer_ref))
+end
+
+
+function set_block_size{T<:Scalar}(A::Mat{T}, bs::Integer)
+  chk(C.MatSetBlockSize(A.p, bs))
+end
+
+function get_blocksize{T<:Scalar}(A::Mat{T})
+  bs = Ref{PetscInt}()
+  chk(C.MatGetBlockSize(A.p, bs))
+  return Int(bs[])
 end
 
 
@@ -414,6 +425,23 @@ function localranges(a::PetscMat)
 end
 
 """
+  Similar to localpart, but returns the range of block indices
+"""
+function localpart_block(A::Mat)
+  low = Ref{PetscInt}()
+  high = Ref{PetscInt}()
+  chk(C.MatGetOwnershipRange(A.p, low, high))
+  bs = get_blocksize(A)
+  low_b = div(low[], bs); high_b = div(high[]-1, bs)
+  rows = (low_b+1):(high_b+1)
+  cols = 1:div(size(A, 2), bs)
+
+  return rows, cols
+end
+
+
+
+"""
   Constructs 2 index sets that map from the local row and columns to the
   global rows and columns
 """
@@ -426,13 +454,30 @@ function localIS{T}(A::PetscMat{T})
 end
 
 """
+  Like localIS, but returns a block index IS
+"""
+function localIS_block{T}(A::Mat{T})
+  rows, cols = localpart_block(A)
+  bs = get_blocksize(A)
+  rowis = ISBlock(T, bs, rows, comm=comm(A))
+  colis = ISBlock(T, bs, cols, comm=comm(A))
+#  set_blocksize(rowis, get_blocksize(A))
+  return rowis, colis
+end
+
+
+"""
   Construct ISLocalToGlobalMappings for the the rows and columns of the matrix
 """
 function local_to_global_mapping(A::PetscMat)
 
   # localIS creates strided index sets, which require only constant
   # memory 
-  rowis, colis = localIS(A)
+  if get_blocksize(A) == 1
+    rowis, colis = localIS(A)
+  else
+    rowis, colis = localIS_block(A)
+  end
   row_ltog = ISLocalToGlobalMapping(rowis)
   col_ltog = ISLocalToGlobalMapping(colis)
   return row_ltog, col_ltog
@@ -748,6 +793,91 @@ getindex{T1<:Integer}(a::PetscMat, i0::Integer, I1::AbstractArray{T1}) =
   getindex0(a, PetscInt[ i0-1 ], PetscInt[ i1-1 for i1 in I1 ])
 
 #############################################################################
+# zero based indexing
+
+# global, non-block
+function set_values!{T <: Scalar}(x::Mat{T}, idxm::DenseArray{PetscInt}, idxn::DenseArray{PetscInt}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+  # v should be m x n
+
+  chk(C.MatSetValues(x.p, length(idxm), idxm, length(idxn), idxn, v, o))
+end
+
+function set_values!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T}, idxm::DenseArray{I1}, idxn::DenseArray{I2}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  _idxm = PetscInt[ i for i in idxm]
+  _idxn = PetscInt[ i for i in idxn]
+  set_values!(x, _idxm, _idxn, v, o)
+end
+
+function set_values!(x::Matrix, idxm::AbstractArray, idxn::AbstractArray, v::AbstractArray, o::C.InsertMode=C.INSERT_VALUES)
+  if o == C.INSERT_VALUES
+    for col = 1:length(idxn)
+      colidx = idxn[col]
+      for row = 1:length(idxm)
+        rowidx = idxm[row]
+        x[rowidx+1, colidx+1] = v[row, col]
+      end
+    end
+  else
+    for col = 1:length(idxn)
+      colidx = idxn[col]
+      for row = 1:length(idxm)
+        rowidx = idxm[row]
+        x[rowidx+1, colidx+1] += v[row, col]
+      end
+    end
+  end
+
+end
+
+
+# global, block
+function set_values_blocked!{T <: Scalar}(x::Mat{T}, idxm::DenseArray{PetscInt}, idxn::DenseArray{PetscInt}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  # vals should be m*bs x n*bs
+  chk(C.MatSetValuesBlocked(x.p, length(idxm), idxm, length(idxn), idxn, v, o))
+end
+
+function set_values_blocked!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T}, idxm::DenseArray{I1}, idxn::DenseArray{I2}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  _idxm = PetscInt[ i for i in idxm]
+  _idxn = PetscInt[ i for i in idxn]
+  set_values_blocked!(x, _idxm, _idxn, v, o)
+end
+
+# local, non-block
+function set_values_local!{T <: Scalar}(x::Mat{T}, idxm::DenseArray{PetscInt}, idxn::DenseArray{PetscInt}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  chk(C.MatSetValuesLocal(x.p, length(idxm), idxm, length(idxn), idxn, v, o))
+end
+
+function set_values_local!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T}, idxm::DenseArray{I1}, idxn::DenseArray{I2}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  _idxm = PetscInt[ i for i in idxm]
+  _idxn = PetscInt[ i for i in idxn]
+  set_values_local!(x, idxm, idxn, v, o)
+end
+
+function set_values_local!(x::Matrix, idxm::AbstractArray, idxn::AbstractArray, v::AbstractArray, o::C.InsertMode=C.INSERT_VALUES)
+
+  set_values!(x, idxm, idxn, v, o)
+end
+
+# local, block
+function set_values_blocked_local!{T <: Scalar}(x::Mat{T}, idxm::DenseArray{PetscInt}, idxn::DenseArray{PetscInt}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  chk(C.MatSetValuesBlockedLocal(x.p, length(idxm), idxm, length(idxn), idxn, v, o))
+end
+
+function set_values_blocked_local!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T}, idxm::DenseArray{I1}, idxn::DenseArray{I2}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+
+  _idxm = PetscInt[ i for i in idxm]
+  _idxn = PetscInt[ i for i in idxn]
+  set_values_blocked_local!(x, _idxm, _idxn, v, o)
+end
+
+
+###############################################################################
 # transposition etc.
 
 export MatTranspose

@@ -286,6 +286,81 @@ end
     matjd = full(mat)
     @test mat == matjd
   end
+
+  function check_mats(a, b)
+    for i=1:size(a, 2)
+      for j=1:size(a, 1)
+        @test a[i, j] ≈ b[i,j]
+      end
+    end
+  end
+  @testset "0-based indexing " begin
+    mat = PETSc.Mat(ST, 3, 3)
+    matj = zeros(ST, 3, 3)
+    idx = PetscInt[1, 2]
+    idy = PetscInt[0, 1]
+    vals = ST[1.0 2.0; 3.0 4.0]
+    set_values!(mat, idx, idy, vals)
+    set_values!(matj, idx, idy, vals)
+    assemble(mat)
+    check_mats(mat, matj)
+
+    maprow, mapcol = local_to_global_mapping(mat)
+    set_local_to_global_mapping(mat, maprow, mapcol)
+    vals = 2*vals
+    set_values_local!(mat, idx, idy, vals)
+    set_values_local!(matj, idx, idy, vals)
+    assemble(mat)
+    check_mats(mat, matj)
+
+    bs=2
+    mat = PETSc.Mat(ST, 6, 6, bs=bs)
+    matj = zeros(ST, 12, 12)
+    idx = [0, 1]
+    idy = [0, 1, 2]
+    vals = rand(ST, bs*length(idx), bs*length(idy))
+    set_values_blocked!(mat, idx, idy, vals)
+    assemble(mat)
+    for j=1:length(idy)
+      start_idy = idy[j]*bs
+      for i=1:length(idx)
+        start_idx = idx[i]*bs
+        for k=1:bs
+          for p=1:bs
+            colidx = start_idy + k
+            rowidx = start_idx + p
+            @test mat[rowidx, colidx] ≈ vals[(i-1)*bs + p, (j-1)*bs + k]
+          end
+        end
+      end
+    end
+
+    vals = 2*vals
+    maprow, mapcol = local_to_global_mapping(mat)
+    set_local_to_global_mapping(mat, maprow, mapcol)
+    set_values_blocked_local!(mat,  idx, idy, vals)
+    assemble(mat)
+    for j=1:length(idy)
+      start_idy = idy[j]*bs
+      for i=1:length(idx)
+        start_idx = idx[i]*bs
+        for k=1:bs
+          for p=1:bs
+            colidx = start_idy + k
+            rowidx = start_idx + p
+            @test mat[rowidx, colidx] ≈ vals[(i-1)*bs + p, (j-1)*bs + k]
+          end
+        end
+      end
+    end
+
+
+        
+
+
+
+
+  end
   @testset "test conversion of values to a new type" begin
     mata = PETSc.Mat(ST, 3, 3)
     matb = PETSc.Mat(ST, 3, 3)

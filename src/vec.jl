@@ -713,7 +713,7 @@ function restore{T}(varr::LocalVectorWrite{T})
 end
 
 @doc """
-  Get the LocalArrayRead of a vector.  Users must call restore when 
+  Get a readonly version of LocalVector.  Users must call restore when 
   finished with the object.
 """
 function LocalVector_readonly{T}(vec::Vec{T})
@@ -734,10 +734,6 @@ function restore{T}(varr::LocalVectorRead{T})
   end 
   varr.isfinalized = true
 end
-
-@doc """
-  Typealias for both kinds of LocalArrays
-"""
 
 Base.size(varr::LocalVector) = size(varr.a)
 # indexing

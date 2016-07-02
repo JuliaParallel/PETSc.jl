@@ -145,6 +145,10 @@ KSP(pc::PC; kws...)
 
 <p>Create a preconditioner (PC) context, given the matrix <code>A</code> of the linear system to be solved, and optionally a different matrix <code>PA</code> from which the preconditioner is constructed.</p>
 <p>The remaining keywords specify zero or more additional options: * <code>pc_type="a"</code>: use preconditioning algorithm <code>a</code> * <code>pc_use_amat=true</code>: use Amat (instead of Pmat) to define preconditioner in nested inner solves * ... additional options that depend on the preconditioner type ...</p>
+<p><a id='PETSc.PetscMat' href='#PETSc.PetscMat'>#</a>
+<strong><code>PETSc.PetscMat</code></strong> &mdash; <em>Type</em>.</p>
+<p>A Petsc matrix.</p>
+<p>Unlike Vecs, the Petsc implementation keeps track of the local assembly    state, so the Julia type does not have to.   <code>verify_assembled</code>: if true, verify all processes are assembled, if false,                       only local process   <code>insertmode</code>: C.InsertMode used by <code>setindex!</code></p>
 <p><a id='PETSc.SubMat' href='#PETSc.SubMat'>#</a>
 <strong><code>PETSc.SubMat</code></strong> &mdash; <em>Type</em>.</p>
 <p>Gets the a submatrix that references the entries in the original matrix.   isrow and iscol contain the <em>local</em> indicies of the rows and columns to get.   The matrix must have a LocalToGlobalMapping for this to work, therefore a    default one is created if the matrix does not already have one registered.   The default mapping assumes the matrix is divided up into contiguous block   of rows.  This is true of AIJ matrices but may not be for other matrix types.</p>
@@ -157,7 +161,7 @@ KSP(pc::PC; kws...)
 <p>Most preferred constructor: taake ProblemType, method from options   database</p>
 <p><a id='PETSc.Vec' href='#PETSc.Vec'>#</a>
 <strong><code>PETSc.Vec</code></strong> &mdash; <em>Type</em>.</p>
-<p>Construct a high level Vec object from a low level C.Vec.   The data field is used to protect things from GC.   A finalizer is attached to deallocate the memory of the underlying C.Vec, unless    first_instance is set to true.   If assembling is false, then every call to setindex! also calls AssembleBegin and    AssembleEnd.</p>
+<p>Construct a high level Vec object from a low level C.Vec.   The data field is used to protect things from GC.   A finalizer is attached to deallocate the memory of the underlying C.Vec, unless    <code>first_instance</code> is set to true.   <code>assembled</code> indicates when values are set via <code>setindex!</code> and is reset by    <code>AssemblyEnd</code>    <code>verify_assembled</code> when true, calls to <code>isassembled</code> verify all processes    have <code>assembled</code> = true, when false, only the local assembly state is     checked.  This essentially makes the user responsible for assembling    the vector before passing it into functions that will use it (like KSP   solves, etc.).</p>
 <p><a id='Base.SparseMatrix.nnz' href='#Base.SparseMatrix.nnz'>#</a>
 <strong><code>Base.SparseMatrix.nnz</code></strong> &mdash; <em>Function</em>.</p>
 <p>Number of non-zero entries that have been assigned to</p>
@@ -183,6 +187,8 @@ KSP(pc::PC; kws...)
 <strong><code>PETSc.AssemblyBegin</code></strong> &mdash; <em>Function</em>.</p>
 <p>Start assembling the matrix (the implmentations probably post    non-blocking sends and received)</p>
 <p>Start communication to assemble stashed values into the vector</p>
+<p>The MatAssemblyType is not needed for vectors, but is provided for    compatability with the Mat case.</p>
+<p>Unless vec.verify_assembled == false, users must <em>never</em> call the    C functions VecAssemblyBegin, VecAssemblyEnd and VecSetValues, they must   call AssemblyBegin, AssemblyEnd, and setindex!.</p>
 <p><a id='PETSc.AssemblyEnd' href='#PETSc.AssemblyEnd'>#</a>
 <strong><code>PETSc.AssemblyEnd</code></strong> &mdash; <em>Function</em>.</p>
 <p>Finish assembling the matrix</p>
@@ -240,9 +246,10 @@ KSP(pc::PC; kws...)
 <p>Perform a flush assembly (take stashed values and put them into the matrix,   but don't squeeze out any preallocated space that has not been used yet</p>
 <p><a id='PETSc.isassembled' href='#PETSc.isassembled'>#</a>
 <strong><code>PETSc.isassembled</code></strong> &mdash; <em>Function</em>.</p>
-<p>Check if the matrix is assembled</p>
+<p>Check if the matrix is assembled.  Whether all processes assembly state    is checked or only the local process is determined by <code>x.verify_assembled</code>.</p>
+<p><code>local_only</code> forces only the local process to be checked, regardless of    <code>x.verify_assembled</code>.</p>
 <p>Check if the matrix is assembled or not</p>
-<p>Check if a vector is assembled (ie. does not have stashed values)</p>
+<p>Check if a vector is assembled (ie. does not have stashed values).  If    <code>x.verify_assembled</code>, the assembly state of all processes is checked,    otherwise only the local process is checked. <code>local_only</code> forces only    the local process to be checked, regardless of <code>x.verify_assembled</code>.</p>
 <p><a id='PETSc.isfinalized' href='#PETSc.isfinalized'>#</a>
 <strong><code>PETSc.isfinalized</code></strong> &mdash; <em>Function</em>.</p>
 <p>Check if PetscDestroy has been called on this object already</p>
@@ -356,5 +363,5 @@ KSP(pc::PC; kws...)
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-07-01 03:07:46.314315
+Build Date UTC : 2016-07-02 19:47:32.872204
 -->

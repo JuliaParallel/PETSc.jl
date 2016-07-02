@@ -43,9 +43,9 @@ function show(io::IO, x::Vec)
   end
   if isassembled(x)
     println(io, "Process ", myrank, " entries:")
-    x_arr = LocalArrayRead(x)
+    x_arr = LocalVector_readonly(x)
     show(io, x_arr)
-    LocalArrayRestore(x_arr)
+    restore(x_arr)
   else
     println(io, "Process ", myrank, " not assembled")
   end
@@ -889,15 +889,15 @@ function map!{T}(f, dest::Vec{T}, src::Vec)
     throw(ArgumentError("start of local part of src and dest must be aligned"))
   end
 
-  dest_arr = LocalArray(dest)
-  src_arr = LocalArrayRead(src)
+  dest_arr = LocalVector(dest)
+  src_arr = LocalVector_readonly(src)
   try
     for (idx, val) in enumerate(src)
       dest[idx] = f(val)
     end
   finally
-    LocalArrayRestore(dest_arr)
-    LocalArrayRestore(src_arr)
+    restore(dest_arr)
+    restore(src_arr)
   end
 end
 
@@ -929,13 +929,13 @@ function map!{T, T2}(f, dest::Vec{T}, src1::Vec{T}, src2::Vec{T2},  src_rest::Ve
   n = length(srcs)
   len = 0
   len_prev = 0
-  src_arrs = Array(LocalArrayRead{T2}, n)
+  src_arrs = Array(LocalVectorRead{T2}, n)
   use_length_local = false
 
-  dest_arr = LocalArray(dest)
+  dest_arr = LocalVector(dest)
   try 
     for (idx, src) in enumerate(srcs)
-      src_arrs[idx] = LocalArrayRead(src)
+      src_arrs[idx] = LocalVector_readonly(src)
 
       # check of length of arrays are same or not
       len = length(src_arrs[idx])
@@ -961,9 +961,9 @@ function map!{T, T2}(f, dest::Vec{T}, src1::Vec{T}, src2::Vec{T2},  src_rest::Ve
       end
   finally # restore the arrays
     for src_arr in src_arrs
-      LocalArrayRestore(src_arr)
+      restore(src_arr)
     end
-    LocalArrayRestore(dest_arr)
+    restore(dest_arr)
   end
 end
 
@@ -1051,11 +1051,11 @@ type LocalVector{T <: Scalar, ReadOnly} <: DenseArray{T, 1}
 
 end
 
-
 typealias LocalVectorRead{T} LocalVector{T, true}
 typealias LocalVectorWrite{T} LocalVector{T, false}
+
 """
-  Get the LocalArray of a vector.  Users must call LocalArrayRestore when
+  Get the LocalVector of a vector.  Users must call restore when
   finished updating the vector
 """
 function LocalVector{T}(vec::Vec{T})
@@ -1069,7 +1069,7 @@ function LocalVector{T}(vec::Vec{T})
 end
 
 """
-  Tell Petsc the LocalArray is no longer being used
+  Tell Petsc the LocalVector is no longer being used
 """
 function restore{T}(varr::LocalVectorWrite{T})
 
@@ -1081,25 +1081,7 @@ function restore{T}(varr::LocalVectorWrite{T})
 end
 
 """
-  Get read-only access to the memory underlying a Petsc vector
-"""
-type LocalArrayRead{T <: Scalar} <: DenseArray{T, 1}
-  a::Array{T, 1}  # the array object constructed around the pointer
-  ref::Ref{Ptr{T}}  # reference to the pointer to the data
-  pobj::C.Vec{T}
-  isfinalized::Bool  # has this been finalized yet
-  function LocalArrayRead(a::Array, ref::Ref, ptr)
-    varr = new(a, ref, ptr, false)
-    # backup finalizer, shouldn't ever be used because users must call
-    # LocalArrayRestore before their changes will take effect
-    finalizer(varr, LocalArrayRestore)
-    return varr
-  end
-
-end
-
-"""
-  Get the LocalArrayRead of a vector.  Users must call LocalArrayRestore when 
+  Get the LocalVector_readonly of a vector.  Users must call restore when 
   finished with the object.
 """
 function LocalVector_readonly{T}(vec::Vec{T})
@@ -1120,10 +1102,6 @@ function restore{T}(varr::LocalVectorRead{T})
   end 
   varr.isfinalized = true
 end
-
-"""
-  Typealias for both kinds of LocalArrays
-"""
 
 Base.size(varr::LocalVector) = size(varr.a)
 # indexing

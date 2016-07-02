@@ -54,14 +54,14 @@ function mymult{T}(A::PETSc.C.Mat{T}, x::PETSc.C.Vec, b::PETSc.C.Vec)
 
   bigx = Vec{T, PETSc.C.VECMPI}(x, first_instance=false)
   bigb = Vec{T, PETSc.C.VECMPI}(b, first_instance=false)
-  localx = LocalArrayRead(bigx)
-  localb = LocalArray(bigb)
+  localx = LocalVector_readonly(bigx)
+  localb = LocalVector(bigb)
   for i=1:length(localx)
     localb[i] = i*localx[i]
   end
 
-  LocalArrayRestore(localx)
-  LocalArrayRestore(localb)
+  restore(localx)
+  restore(localb)
   return PETSc.C.PetscErrorCode(0)
 end
 

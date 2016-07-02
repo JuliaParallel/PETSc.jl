@@ -58,13 +58,13 @@
   @test length(vec) == comm_size*3
   @test lengthlocal(vec) == 3
 
-  vec_arr = LocalArray(vec)
+  vec_arr = LocalVector(vec)
   @test length(vec_arr) == 3
-  LocalArrayRestore(vec_arr)
+  restore(vec_arr)
 
-  vec_arr = LocalArrayRead(vec)
+  vec_arr = LocalVector_readonly(vec)
   @test length(vec_arr) == 3
-  LocalArrayRestore(vec_arr)
+  restore(vec_arr)
 
   @testset "Application Ordering{$ST}" begin
 

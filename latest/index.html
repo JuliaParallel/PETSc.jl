@@ -152,7 +152,7 @@ KSP(pc::PC; kws...)
 <p><code>tsptype</code> sets the problem type and can be one of the following: * <code>TS_LINEAR</code> - a linear set of ODEs  * <code>TS_NONLINEAR</code> - a nonlinear set of ODEs or DEAs</p>
 <p><code>tstype</code> sets the method used to solve the problem. More information about the possible methods is available at the official PETSc <a href="http://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/TS/TSType.html">docs</a>.</p>
 <p>Preferred constructor: set problem type explicitly, get method from   options database</p>
-<p>Most preferred constructor: taake ProblemType, method from options   database</p>
+<p>Most preferred constructor: take ProblemType, method from options   database</p>
 <p><a id='PETSc.Vec' href='#PETSc.Vec'>#</a>
 <strong><code>PETSc.Vec</code></strong> &mdash; <em>Type</em>.</p>
 <p>Construct a high level Vec object from a low level C.Vec.   The data field is used to protect things from GC.   A finalizer is attached to deallocate the memory of the underlying C.Vec, unless    <code>first_instance</code> is set to true.   <code>assembled</code> indicates when values are set via <code>setindex!</code> and is reset by    <code>AssemblyEnd</code>    <code>verify_assembled</code> when true, calls to <code>isassembled</code> verify all processes    have <code>assembled</code> = true, when false, only the local assembly state is     checked.  This essentially makes the user responsible for assembling    the vector before passing it into functions that will use it (like KSP   solves, etc.).</p>
@@ -372,5 +372,5 @@ KSP(pc::PC; kws...)
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-07-02 23:07:47.739415
+Build Date UTC : 2016-07-03 00:08:04.641170
 -->

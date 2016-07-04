@@ -363,6 +363,13 @@ end
     @test A == B
     info = PETSc.getinfo(B)
     @test info.mallocs == 0
+
+    A2 = full(A)
+    B2 = Mat(B)
+    assemble(B2)
+    @test A2 == B2
+    info = PETSc.getinfo(B2)
+    @test info.mallocs == 0
   end
 
   @testset "test conversion of values to a new type" begin

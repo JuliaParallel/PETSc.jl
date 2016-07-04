@@ -145,6 +145,53 @@ function Mat{T}(A::SparseMatrixCSC{T})
   return PA
 end
 
+"""
+  Construct at MATSEQAIJ from an AbstractArray.  The argument droptol is
+  used to determine what size entry is considered non-zero
+"""
+function Mat{T}(A::AbstractArray{T}; droptol=0.0)
+
+  m, n = size(A)
+
+  # count non-zeros
+  nz = zeros(PetscInt, m)
+  for i=1:n
+    for j=1:m
+      val = A[j, i]
+      if abs(val) > droptol
+        nz[j] += 1
+      end
+    end
+  end
+
+  # create matrix
+  PA = Mat(T, m, n, nnz=nz, mtype=C.MATSEQAIJ)
+
+  # copy values
+  maxrow = maximum(nz)
+  idx = PetscInt[0]
+  idy = zeros(PetscInt, maxrow)
+  vals = zeros(T, maxrow)
+  for i=1:m
+    idx[1] = i-1
+    pos = 1
+    for j=1:n
+      val = A[i, j]
+      if abs(val) > droptol
+        idy[pos] = j - 1
+        vals[pos] = val
+        pos += 1
+      end
+    end
+    idy_view = sub(idy, 1:(pos-1))
+    set_values!(PA, idx, idy_view, vals)
+  end
+
+  return PA
+end
+
+
+
 
 """
   Gets the a submatrix that references the entries in the original matrix.
@@ -1129,10 +1176,17 @@ function (==){T}(A::PetscMat{T}, b::PetscMat{T})
   return bool_arr[] != 0
 end
 
+# needed for disambiguation
+function (==){T}(A::PetscMat{T, C.MATSEQAIJ}, B::PetscMat{T})
+  bool_arr = Ref{PetscBool}()
+  chk(C.MatEqual(A.p, b.p, bool_arr))
+  return bool_arr[] != 0
+end
+
 """
-  Equality test for SparseMatrixCSC and PetscMat, SEQ only
+  Equality test for AbstractArray and PetscMat, SEQ only
 """
-function (==){T}(A::PetscMat{T, C.MATSEQAIJ}, B::SparseMatrixCSC)
+function (==){T}(A::PetscMat{T, C.MATSEQAIJ}, B::AbstractArray)
   if size(A) != size(B)
     throw(ArgumentError("Matrices must be same size"))
   end
@@ -1148,3 +1202,5 @@ function (==){T}(A::PetscMat{T, C.MATSEQAIJ}, B::SparseMatrixCSC)
 
   return isame
 end
+
+

@@ -370,6 +370,16 @@ end
     @test A2 == B2
     info = PETSc.getinfo(B2)
     @test info.mallocs == 0
+
+    dtol = 1e-16
+    A3 = ST[1. 2 3; 4 5 6; 7 8 dtol/10]
+    B3 = Mat(A3, droptol=dtol)
+    assemble(B3)
+    A3b = copy(A3)
+    A3b[3, 3] = 0
+    @test A3b == B3
+    info = PETSc.getinfo(B3)
+    @test info.nz_used == 8
   end
 
   @testset "test conversion of values to a new type" begin

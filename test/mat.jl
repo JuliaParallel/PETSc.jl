@@ -354,13 +354,17 @@ end
       end
     end
 
-
-        
-
-
-
-
   end
+
+  @testset "Sparse Matrix conversion" begin
+    A = sprand(10, 10, 0.1)
+    B = Mat(A)
+    assemble(B)
+    @test A == B
+    info = PETSc.getinfo(B)
+    @test info.mallocs == 0
+  end
+
   @testset "test conversion of values to a new type" begin
     mata = PETSc.Mat(ST, 3, 3)
     matb = PETSc.Mat(ST, 3, 3)

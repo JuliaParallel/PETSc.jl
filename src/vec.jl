@@ -613,14 +613,16 @@ getindex(x::Vec, I::AbstractVector{PetscInt}) =
 # 0-based (to avoid temporary copies)
 export set_values!, set_values_blocked!, set_values_local!, set_values_blocked_local!
 
-function set_values!{T <: Scalar}(x::Vec{T}, idxs::DenseArray{PetscInt}, 
-                                 vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
+#TODO: in 0.5, use boundscheck macro to verify stride=1
+
+function set_values!{T <: Scalar}(x::Vec{T}, idxs::StridedVecOrMat{PetscInt}, 
+                                 vals::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
   chk(C.VecSetValues(x.p, length(idxs), idxs, vals, o))
 end
 
-function set_values!{T <: Scalar, I <: Integer}(x::Vec{T}, idxs::DenseArray{I},
-                                         vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
+function set_values!{T <: Scalar, I <: Integer}(x::Vec{T}, idxs::StridedVecOrMat{I},
+                                         vals::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
   # convert idxs to PetscInt
   p_idxs = PetscInt[ i for i in idxs]
@@ -644,14 +646,14 @@ function set_values!(x::AbstractVector, idxs::AbstractArray, vals::AbstractArray
 end
 
 
-function set_values_blocked!{T <: Scalar}(x::Vec{T}, idxs::DenseArray{PetscInt},
-                                          vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
+function set_values_blocked!{T <: Scalar}(x::Vec{T}, idxs::StridedVecOrMat{PetscInt},
+                                          vals::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
   chk(C.VecSetValuesBlocked(x.p, length(idxs), idxs, vals, o))
 end
 
 function set_values_blocked!{T <: Scalar, I <: Integer}(x::Vec{T}, 
-                             idxs::DenseArray{I}, vals::DenseArray{T}, 
+                             idxs::StridedVecOrMat{I}, vals::StridedVecOrMat{T}, 
                              o::C.InsertMode=x.insertmode)
  
   p_idxs = PetscInt[ i for i in idxs]
@@ -661,14 +663,14 @@ end
 # julia doesn't have blocked vectors, so skip
 
 
-function set_values_local!{T <: Scalar}(x::Vec{T}, idxs::DenseArray{PetscInt},
-                                       vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
+function set_values_local!{T <: Scalar}(x::Vec{T}, idxs::StridedVecOrMat{PetscInt},
+                                       vals::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
   chk(C.VecSetValuesLocal(x.p, length(idxs), idxs, vals, o))
 end
 
 function set_values_local!{T <: Scalar, I <: Integer}(x::Vec{T}, 
-                           idxs::DenseArray{I}, vals::DenseArray{T}, 
+                           idxs::StridedVecOrMat{I}, vals::StridedVecOrMat{T}, 
                            o::C.InsertMode=x.insertmode)
 
   p_idxs = PetscInt[ i for i in idxs]
@@ -695,15 +697,15 @@ end
 
 
 function set_values_blocked_local!{T <: Scalar}(x::Vec{T}, 
-                                   idxs::DenseArray{PetscInt},
-                                   vals::DenseArray{T}, o::C.InsertMode=x.insertmode)
+                                   idxs::StridedVecOrMat{PetscInt},
+                                   vals::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
   chk(C.VecSetValuesBlockedLocal(x.p, length(idxs), idxs, vals, o))
 end
 
 
 function set_values_blocked_local!{T <: Scalar, I <: Integer}(x::Vec{T}, 
-                           idxs::DenseArray{I}, vals::DenseArray{T}, 
+                           idxs::StridedVecOrMat{I}, vals::StridedVecOrMat{T}, 
                            o::C.InsertMode=x.insertmode)
 
   p_idxs = PetscInt[ i for i in idxs]

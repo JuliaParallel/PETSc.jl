@@ -92,6 +92,106 @@ function Mat{T}(::Type{T}, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
   return mat
 end
 
+"""
+  Make a MATSEQ Petsc matrix for a SparseMatrixCSC.  This preserve the 
+  sparsity pattern of the matrix
+"""
+function Mat{T}(A::SparseMatrixCSC{T})
+  m, n = size(A)
+
+  # count number of non-zeros in each row
+  nz = zeros(PetscInt, m)
+  for i=1:n  # loop over columns
+    idx_start = A.colptr[i]
+    idx_end = A.colptr[i+1]-1
+    for j=idx_start:idx_end
+      rownum = A.rowval[j]
+      nz[rownum] += 1
+    end
+  end
+
+  # create the matrix
+  PA = Mat(T, m, n, nnz=nz, mtype=C.MATSEQAIJ)
+
+  # copy values
+  # create array large enough to hold all values in a column
+  maxcol = 0
+  for i=1:n
+    nvals = A.colptr[i+1] - A.colptr[i]
+    if nvals > maxcol
+      maxcol = nvals
+    end
+  end
+  idx = Array(PetscInt, maxcol)
+  idy = PetscInt[0]
+  
+  for i=1:n
+    idy[1] = i-1
+    idx_start = A.colptr[i]
+    idx_end = A.colptr[i+1]-1
+    # convert indices to PetscInts, zero-based
+    pos=1
+    for j=idx_start:idx_end
+      idx[pos] = A.rowval[j] - 1
+      pos += 1
+    end
+
+    # get subarray of only the needed entries
+    idx_view = sub(idx, 1:(pos-1))
+    vals = sub(A.nzval, idx_start:idx_end)
+    set_values!(PA, idx_view, idy, vals)
+  end
+
+  return PA
+end
+
+"""
+  Construct at MATSEQAIJ from an AbstractArray.  The argument droptol is
+  used to determine what size entry is considered non-zero
+"""
+function Mat{T}(A::AbstractArray{T}; droptol=0.0)
+
+  m, n = size(A)
+
+  # count non-zeros
+  nz = zeros(PetscInt, m)
+  for i=1:n
+    for j=1:m
+      val = A[j, i]
+      if abs(val) > droptol
+        nz[j] += 1
+      end
+    end
+  end
+
+  # create matrix
+  PA = Mat(T, m, n, nnz=nz, mtype=C.MATSEQAIJ)
+
+  # copy values
+  maxrow = maximum(nz)
+  idx = PetscInt[0]
+  idy = zeros(PetscInt, maxrow)
+  vals = zeros(T, maxrow)
+  for i=1:m
+    idx[1] = i-1
+    pos = 1
+    for j=1:n
+      val = A[i, j]
+      if abs(val) > droptol
+        idy[pos] = j - 1
+        vals[pos] = val
+        pos += 1
+      end
+    end
+    idy_view = sub(idy, 1:(pos-1))
+    set_values!(PA, idx, idy_view, vals)
+  end
+
+  return PA
+end
+
+
+
 
 """
   Gets the a submatrix that references the entries in the original matrix.
@@ -794,15 +894,16 @@ getindex{T1<:Integer}(a::PetscMat, i0::Integer, I1::AbstractArray{T1}) =
 
 #############################################################################
 # zero based indexing
+#TODO: in 0.5, use boundscheck macro to verify stride=1
 
 # global, non-block
-function set_values!{T <: Scalar}(x::Mat{T}, idxm::DenseArray{PetscInt}, idxn::DenseArray{PetscInt}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+function set_values!{T <: Scalar}(x::Mat{T}, idxm::StridedVecOrMat{PetscInt}, idxn::StridedVecOrMat{PetscInt}, v::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
   # v should be m x n
 
   chk(C.MatSetValues(x.p, length(idxm), idxm, length(idxn), idxn, v, o))
 end
 
-function set_values!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T}, idxm::DenseArray{I1}, idxn::DenseArray{I2}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+function set_values!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T}, idxm::StridedVecOrMat{I1}, idxn::StridedVecOrMat{I2}, v::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
   _idxm = PetscInt[ i for i in idxm]
   _idxn = PetscInt[ i for i in idxn]
@@ -832,13 +933,13 @@ end
 
 
 # global, block
-function set_values_blocked!{T <: Scalar}(x::Mat{T}, idxm::DenseArray{PetscInt}, idxn::DenseArray{PetscInt}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+function set_values_blocked!{T <: Scalar}(x::Mat{T}, idxm::StridedVecOrMat{PetscInt}, idxn::StridedVecOrMat{PetscInt}, v::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
   # vals should be m*bs x n*bs
   chk(C.MatSetValuesBlocked(x.p, length(idxm), idxm, length(idxn), idxn, v, o))
 end
 
-function set_values_blocked!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T}, idxm::DenseArray{I1}, idxn::DenseArray{I2}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+function set_values_blocked!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T}, idxm::StridedVecOrMat{I1}, idxn::StridedVecOrMat{I2}, v::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
   _idxm = PetscInt[ i for i in idxm]
   _idxn = PetscInt[ i for i in idxn]
@@ -846,12 +947,12 @@ function set_values_blocked!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T
 end
 
 # local, non-block
-function set_values_local!{T <: Scalar}(x::Mat{T}, idxm::DenseArray{PetscInt}, idxn::DenseArray{PetscInt}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+function set_values_local!{T <: Scalar}(x::Mat{T}, idxm::StridedVecOrMat{PetscInt}, idxn::StridedVecOrMat{PetscInt}, v::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
   chk(C.MatSetValuesLocal(x.p, length(idxm), idxm, length(idxn), idxn, v, o))
 end
 
-function set_values_local!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T}, idxm::DenseArray{I1}, idxn::DenseArray{I2}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+function set_values_local!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T}, idxm::StridedVecOrMat{I1}, idxn::StridedVecOrMat{I2}, v::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
   _idxm = PetscInt[ i for i in idxm]
   _idxn = PetscInt[ i for i in idxn]
@@ -864,12 +965,12 @@ function set_values_local!(x::Matrix, idxm::AbstractArray, idxn::AbstractArray, 
 end
 
 # local, block
-function set_values_blocked_local!{T <: Scalar}(x::Mat{T}, idxm::DenseArray{PetscInt}, idxn::DenseArray{PetscInt}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+function set_values_blocked_local!{T <: Scalar}(x::Mat{T}, idxm::StridedVecOrMat{PetscInt}, idxn::StridedVecOrMat{PetscInt}, v::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
   chk(C.MatSetValuesBlockedLocal(x.p, length(idxm), idxm, length(idxn), idxn, v, o))
 end
 
-function set_values_blocked_local!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T}, idxm::DenseArray{I1}, idxn::DenseArray{I2}, v::DenseArray{T}, o::C.InsertMode=x.insertmode)
+function set_values_blocked_local!{T <: Scalar, I1 <: Integer, I2 <: Integer}(x::Mat{T}, idxm::StridedVecOrMat{I1}, idxn::StridedVecOrMat{I2}, v::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
   _idxm = PetscInt[ i for i in idxm]
   _idxn = PetscInt[ i for i in idxn]
@@ -1074,3 +1175,32 @@ function (==){T}(A::PetscMat{T}, b::PetscMat{T})
   chk(C.MatEqual(A.p, b.p, bool_arr))
   return bool_arr[] != 0
 end
+
+# needed for disambiguation
+function (==){T}(A::PetscMat{T, C.MATSEQAIJ}, B::PetscMat{T})
+  bool_arr = Ref{PetscBool}()
+  chk(C.MatEqual(A.p, b.p, bool_arr))
+  return bool_arr[] != 0
+end
+
+"""
+  Equality test for AbstractArray and PetscMat, SEQ only
+"""
+function (==){T}(A::PetscMat{T, C.MATSEQAIJ}, B::AbstractArray)
+  if size(A) != size(B)
+    throw(ArgumentError("Matrices must be same size"))
+  end
+
+  m, n = size(B)
+
+  isame = true
+  for i=1:n
+    for j=1:m
+      isame = isame && A[i, j] == B[i,j]
+    end
+  end
+
+  return isame
+end
+
+

@@ -1203,4 +1203,56 @@ function (==){T}(A::PetscMat{T, C.MATSEQAIJ}, B::AbstractArray)
   return isame
 end
 
+###############################################################################
+# MatRow: accessing the structure of each row of a matrix
+"""
+  Object that enables access to a single row of a sparse matrix.
+
+  Users *must* call restore when done with a MatRow, before attempting to 
+  create another one.
+"""
+type MatRow{T, mtype}
+  mat::Mat{T, mtype}  # the matrix to which the rows belong
+  row::Int
+  ref_ncols::Ref{PetscInt}  # reference to the number of columns
+  ref_cols::Ref{Ptr{PetscInt}}  # reference to the column indices
+  ref_vals::Ref{Ptr{T}}  # reference to the values at the column indices
+  ncols::Int
+  cols::Array{PetscInt, 1}
+  vals::Array{T, 1}
+
+  function MatRow(A::Mat{T}, row::Integer, ref_ncols::Ref{PetscInt}, ref_cols::Ref{Ptr{PetscInt}}, ref_vals::Ref{Ptr{T}})
+    ncols = ref_ncols[]
+    cols = pointer_to_array(ref_cols[], ncols)
+    vals = pointer_to_array(ref_vals[], ncols)
+
+    obj = new(A, row, ref_ncols, ref_cols, ref_vals, ncols, cols, vals)
+    finalizer(obj, restore)
+
+    return obj
+  end
+end
+
+function MatRow{T, mtype}(A::Mat{T, mtype}, row::Integer)
+
+  ref_ncols = Ref{PetscInt}()
+  ref_cols = Ref{Ptr{PetscInt}}()
+  ref_vals = Ref{Ptr{T}}()
+  chk(C.MatGetRow(A.p, row-1, ref_ncols, ref_cols, ref_vals))
+  return MatRow{T, mtype}(A, row, ref_ncols, ref_cols, ref_vals)
+end
+
+function restore{T}(row::MatRow{T})
+  if !PetscFinalized(T) && !isfinalized(row.mat)
+    chk(C.MatRestoreRow(row.mat.p, row.row-1, row.ref_ncols, row.ref_cols, row.ref_vals))
+  end
+end
+
+### indexing on a MatRow ###
+import Base: length, size
+length(A::MatRow) = A.ncols
+size(A::MatRow) = (A.ncols,)
+getcol(A::MatRow, i) =  A.cols[i] + 1
+getval(A::MatRow, i) = A.vals[i]
+
 

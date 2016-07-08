@@ -1233,6 +1233,9 @@ type MatRow{T, mtype}
   end
 end
 
+"""
+  Preferred constructor for a MatRow
+"""
 function MatRow{T, mtype}(A::Mat{T, mtype}, row::Integer)
 
   ref_ncols = Ref{PetscInt}()
@@ -1242,6 +1245,20 @@ function MatRow{T, mtype}(A::Mat{T, mtype}, row::Integer)
   return MatRow{T, mtype}(A, row, ref_ncols, ref_cols, ref_vals)
 end
 
+"""
+  Count the number of non-zeros in a row of the matrix.  This temporarily
+  creates a MatRow object, so it cannot be used if one already exists
+"""
+function count_row_nz{T}(A::Mat{T}, row::Integer)
+  ref_ncols = Ref{PetscInt}()
+  ref_cols = Ref{Ptr{PetscInt}}(C_NULL)
+  ref_vals = Ref{Ptr{T}}(C_NULL)
+  chk(C.MatGetRow(A.p, row-1, ref_ncols, ref_cols, ref_vals))
+  ncols = ref_ncols[]
+  chk(C.MatRestoreRow(A.p, row-1, ref_ncols, ref_cols, ref_vals))
+  
+  return ncols
+end
 function restore{T}(row::MatRow{T})
   if !PetscFinalized(T) && !isfinalized(row.mat)
     chk(C.MatRestoreRow(row.mat.p, row.row-1, row.ref_ncols, row.ref_cols, row.ref_vals))

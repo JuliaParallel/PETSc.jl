@@ -530,17 +530,20 @@ end
     row = PETSc.MatRow(mat, 1)
     @test PETSc.getcol(row, 1) == 1
     restore(row)
+    @test PETSc.count_row_nz(mat, 1) == 1
 
     row = PETSc.MatRow(mat, 2)
     @test PETSc.getcol(row, 1) == 2
     @test PETSc.getcol(row, 2) == 3
     restore(row)
+    @test PETSc.count_row_nz(mat, 2) == 2
 
     row = PETSc.MatRow(mat, 3)
     @test PETSc.getcol(row, 1) == 1
     @test PETSc.getcol(row, 2) == 2
     @test PETSc.getcol(row, 3) == 3
     restore(row)
+    @test PETSc.count_row_nz(mat, 3) == 3
   end
 
 end

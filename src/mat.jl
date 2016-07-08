@@ -1273,3 +1273,82 @@ getcol(A::MatRow, i) =  A.cols[i] + 1
 getval(A::MatRow, i) = A.vals[i]
 
 
+import Base.kron
+"""
+  Kronecker product for SEQ matrices only.  The output is a non-block matrix
+  even if the inputs are block
+"""
+function kron{T}(A::Mat{T, C.MATSEQAIJ}, B::Mat{T, C.MATSEQAIJ})
+  if (A.p == B.p)
+    throw(ArgumentError("A and B cannot be same matrix"))
+  end
+
+  Am = size(A, 1); An = size(A, 2)
+  Bm = size(B, 1); Bn = size(B, 2)
+  # step 1: figure out size, sparsity pattern of result
+  A_nz = zeros(Int, Am)
+  B_nz = zeros(Int, Bm)
+  for i=1:Am
+    A_nz[i] = count_row_nz(A, i)
+  end
+  for i=1:Bm
+    B_nz[i] = count_row_nz(B, i)
+  end
+
+  Dm = Am*Bm
+  Dn = size(A, 2)*size(B, 2)
+  D_nz = zeros(PetscInt, Dm)
+  for i=1:Am
+    println("i = ", i)
+    A_nz_i = A_nz[i]
+    for j=1:Bm
+      println("  j = ", j)
+      pos = (i-1)*Am + j
+      println("  pos = ", pos)
+      D_nz[pos] = A_nz_i*B_nz[j]
+    end
+  end
+
+  println("A_nz = \n", A_nz)
+  println("B_nz = \n", B_nz)
+  println("D_nz = \n", D_nz)
+  # create matrix
+  # can't use C becaue that is the module name
+  D = Mat(T, Dm, Dn, nnz=D_nz, mtype=C.MATSEQAIJ)
+
+  # step 2: populate C, one row at a time
+  max_entries = maximum(D_nz)
+  D_colidx = zeros(PetscInt, max_entries)
+  D_vals = zeros(T, max_entries)
+  D_rowidx = zeros(PetscInt, 1)
+
+  for i=1:Am
+    rowA = MatRow(A, i)
+    for j=1:Bm
+      rowB = MatRow(B, j)
+      rowidx = (i-1)*Am + j
+
+      pos = 1  # position in C_vals, C_colidx
+      for k=1:length(rowA)
+        Aval = getval(rowA, k)
+        Aidx = getcol(rowA, k)
+        for p=1:length(rowB)
+          Bval = getval(rowB, p)
+          Bidx = getcol(rowB, p)
+          D_colidx[pos] = (Aidx - 1)*An + Bidx - 1
+          D_vals[pos] = Aval*Bval
+          pos += 1
+        end
+      end
+
+      D_rowidx[1] = rowidx - 1
+      idx_extract = sub(D_colidx, 1:(pos-1))
+      vals_extract = sub(D_vals, 1:(pos-1))
+      set_values!(D, D_rowidx, idx_extract, vals_extract)
+      restore(rowB)
+    end
+    restore(rowA)
+  end
+
+  return D
+end

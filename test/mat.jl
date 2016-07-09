@@ -512,4 +512,38 @@ end
     @test mat4 == mat4j
   end
 
+  @testset "MatRow" begin
+    matj = [1. 0 0; 0 2 3; 4 5 6];
+    mat = Mat(matj)
+    assemble(mat)
+    val = 1
+    for i=1:3
+      row_i = PETSc.MatRow(mat, i)
+      @test length(row_i) == i
+      for j=1:length(row_i)
+        @test PETSc.getval(row_i, j) ≈ val
+        val += 1
+      end
+      restore(row_i)
+    end
+
+    row = PETSc.MatRow(mat, 1)
+    @test PETSc.getcol(row, 1) == 1
+    restore(row)
+    @test PETSc.count_row_nz(mat, 1) == 1
+
+    row = PETSc.MatRow(mat, 2)
+    @test PETSc.getcol(row, 1) == 2
+    @test PETSc.getcol(row, 2) == 3
+    restore(row)
+    @test PETSc.count_row_nz(mat, 2) == 2
+
+    row = PETSc.MatRow(mat, 3)
+    @test PETSc.getcol(row, 1) == 1
+    @test PETSc.getcol(row, 2) == 2
+    @test PETSc.getcol(row, 3) == 3
+    restore(row)
+    @test PETSc.count_row_nz(mat, 3) == 3
+  end
+
 end

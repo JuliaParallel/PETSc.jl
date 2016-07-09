@@ -1262,6 +1262,8 @@ end
 function restore{T}(row::MatRow{T})
   if !PetscFinalized(T) && !isfinalized(row.mat)
     chk(C.MatRestoreRow(row.mat.p, row.row-1, row.ref_ncols, row.ref_cols, row.ref_vals))
+
+    return nothing  # return type stability
   end
 end
 
@@ -1285,6 +1287,8 @@ function kron{T}(A::Mat{T, C.MATSEQAIJ}, B::Mat{T, C.MATSEQAIJ})
 
   Am = size(A, 1); An = size(A, 2)
   Bm = size(B, 1); Bn = size(B, 2)
+  println("size(A) = ", Am, ", ", An)
+  println("size(B) = ", Bm, ", ", Bm)
   # step 1: figure out size, sparsity pattern of result
   A_nz = zeros(Int, Am)
   B_nz = zeros(Int, Bm)
@@ -1299,19 +1303,13 @@ function kron{T}(A::Mat{T, C.MATSEQAIJ}, B::Mat{T, C.MATSEQAIJ})
   Dn = size(A, 2)*size(B, 2)
   D_nz = zeros(PetscInt, Dm)
   for i=1:Am
-    println("i = ", i)
     A_nz_i = A_nz[i]
     for j=1:Bm
-      println("  j = ", j)
-      pos = (i-1)*Am + j
-      println("  pos = ", pos)
+      pos = (i-1)*Bm + j
       D_nz[pos] = A_nz_i*B_nz[j]
     end
   end
 
-  println("A_nz = \n", A_nz)
-  println("B_nz = \n", B_nz)
-  println("D_nz = \n", D_nz)
   # create matrix
   # can't use C becaue that is the module name
   D = Mat(T, Dm, Dn, nnz=D_nz, mtype=C.MATSEQAIJ)
@@ -1326,7 +1324,7 @@ function kron{T}(A::Mat{T, C.MATSEQAIJ}, B::Mat{T, C.MATSEQAIJ})
     rowA = MatRow(A, i)
     for j=1:Bm
       rowB = MatRow(B, j)
-      rowidx = (i-1)*Am + j
+      rowidx = (i-1)*Bm + j
 
       pos = 1  # position in C_vals, C_colidx
       for k=1:length(rowA)
@@ -1335,7 +1333,7 @@ function kron{T}(A::Mat{T, C.MATSEQAIJ}, B::Mat{T, C.MATSEQAIJ})
         for p=1:length(rowB)
           Bval = getval(rowB, p)
           Bidx = getcol(rowB, p)
-          D_colidx[pos] = (Aidx - 1)*An + Bidx - 1
+          D_colidx[pos] = (Aidx - 1)*Bn + Bidx - 1
           D_vals[pos] = Aval*Bval
           pos += 1
         end

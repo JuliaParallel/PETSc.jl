@@ -546,4 +546,53 @@ end
     @test PETSc.count_row_nz(mat, 3) == 3
   end
 
+  @testset "kron" begin
+    function testrun(Aj, Bj)
+      # A and B are julia matrices of some kind
+      A = Mat(Aj); B = Mat(Bj)
+      assemble(A); assemble(B)
+      Cj = kron(Aj, Bj)
+      C = kron(A, B)
+      assemble(C)
+      m, n = size(C)
+      C2 = C[1:m, 1:n]
+      @test C2 ≈ Cj
+    end
+
+    # case 1
+    Aj = ST[1. 0 0; 0 1 0; 0 0 1]
+    testrun(Aj, Aj)
+
+    # case 2
+    Aj = ST[1. 2 0; 3 4 5; 0 6 7]
+    testrun(Aj, Aj)
+
+
+    n = 10
+    Aj = rand(ST, n, n)
+    testrun(Aj, Aj)
+
+
+    m = 3
+    n = 2
+    Aj = rand(ST, m, n)
+    testrun(Aj, Aj)
+
+
+    m1 = 3
+    n1 = 2
+    m2 = 4
+    n2 = 5
+    Aj = rand(ST, m1, n1)
+    Bj = rand(ST, m2, n2)
+    testrun(Aj, Bj)
+
+    m1 = 5
+    m2 = 7
+    n1 = 8
+    n2 = 10
+    Aj = sprand(m1, n1, 0.01)
+    Bj = sprand(m2, n2, 0.01)
+    testrun(Aj, Bj)
+  end
 end

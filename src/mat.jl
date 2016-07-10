@@ -1283,8 +1283,8 @@ function kron{T}(A::Mat{T, C.MATSEQAIJ}, B::Mat{T, C.MATSEQAIJ})
     throw(ArgumentError("A and B cannot be same matrix"))
   end
 
-  Am = size(A, 1); An = size(A, 2)
-  Bm = size(B, 1); Bn = size(B, 2)
+  Am, An = size(A)
+  Bm, Bn = size(B)
   # step 1: figure out size, sparsity pattern of result
   A_nz = zeros(Int, Am)
   B_nz = zeros(Int, Bm)
@@ -1296,16 +1296,8 @@ function kron{T}(A::Mat{T, C.MATSEQAIJ}, B::Mat{T, C.MATSEQAIJ})
   end
 
   Dm = Am*Bm
-  Dn = size(A, 2)*size(B, 2)
-  D_nz = zeros(PetscInt, Dm)
-  for i=1:Am
-    A_nz_i = A_nz[i]
-    for j=1:Bm
-      pos = (i-1)*Bm + j
-      D_nz[pos] = A_nz_i*B_nz[j]
-    end
-  end
-
+  Dn = An*Bn
+  D_nz = getDnzs(A_nz, B_nz)
   # create matrix
   # can't use C becaue that is the module name
   D = Mat(T, Dm, Dn, nnz=D_nz, mtype=C.MATSEQAIJ)
@@ -1346,3 +1338,107 @@ function kron{T}(A::Mat{T, C.MATSEQAIJ}, B::Mat{T, C.MATSEQAIJ})
 
   return D
 end
+
+function getDnzs(A_nz, B_nz)
+# this function computes the number of non-zeros in D = kron(A, B), where A_nz and
+# B_nz are the number of non-zeros in each row of A and B, respectively
+
+  Am = length(A_nz)
+  Bm = length(B_nz)
+
+  Dm = length(A_nz)*length(B_nz)
+  D_nz = zeros(PetscInt, Dm)
+  for i=1:Am
+    A_nz_i = A_nz[i]
+    for j=1:Bm
+      pos = (i-1)*Bm + j
+      D_nz[pos] = A_nz_i*B_nz[j]
+    end
+  end
+
+  return D_nz
+end
+
+function getmax_nz_col(A::SparseMatrixCSC)
+  Am, An = size(A)
+  A_maxnz = 0
+  for i=1:An
+    val = A.colptr[i+1] - A.colptr[i]
+    if val > A_maxnz
+      A_maxnz = val
+    end
+  end
+
+  return A_maxnz
+end
+
+
+function PetscKron{T <: Scalar}(A::SparseMatrixCSC{T}, B::SparseMatrixCSC{T})
+
+  Am = size(A, 1); An = size(A, 2)
+  Bm = size(B, 1); Bn = size(B, 2)
+  # step 1: figure out size, sparsity pattern of result by counting  non-zeros in
+  #         each row
+  A_nz = zeros(Int, Am)
+  B_nz = zeros(Int, Bm)
+
+  for i in A.rowval
+    A_nz[i] += 1
+  end
+  for i in B.rowval
+    B_nz[i] += 1
+  end
+
+  Dm = Am*Bm
+  Dn = An*Bn
+  D_nz = getDnzs(A_nz, B_nz)
+  # create matrix
+  # can't use C becaue that is the module name
+  D = Mat(T, Dm, Dn, nnz=D_nz, mtype=C.MATSEQAIJ)
+
+  # now figure out the maximum number of non-zeros in any column of D
+  A_maxnz = getmax_nz_col(A)
+  B_maxnz = getmax_nz_col(B)
+  max_entries = A_maxnz * B_maxnz
+
+  D_rowidx = zeros(PetscInt, max_entries)
+  D_vals = zeros(T, max_entries)
+  D_colidx = zeros(PetscInt, 1)
+
+  # loop over columns of A and B
+  for i=1:An
+    col_start = A.colptr[i]
+    col_end = A.colptr[i+1] - 1
+    A_rowidx = unsafe_view(A.rowval, col_start:col_end)
+    A_vals = unsafe_view(A.nzval, col_start:col_end)
+    for j=1:Bn
+      col_start = B.colptr[j]
+      col_end = B.colptr[j+1] - 1
+      B_rowidx = unsafe_view(B.rowval, col_start:col_end)
+      B_vals = unsafe_view(B.nzval, col_start:col_end)
+
+      pos = 1
+      for k=1:length(A_vals)
+        Aval = A_vals[k]
+        Aidx = A_rowidx[k]
+        for p=1:length(B_vals)
+          Bval = B_vals[p]
+          Bidx = B_rowidx[p]
+
+          D_vals[pos] = Aval*Bval
+          D_rowidx[pos] = (Aidx-1)*Bm + Bidx - 1
+          pos += 1
+        end
+      end
+
+      D_colidx[1] = (i-1)*Bn + j - 1
+      rowidx_extract = unsafe_view(D_rowidx, 1:(pos-1))
+      vals_extract = unsafe_view(D_vals, 1:(pos-1))
+      set_values!(D, rowidx_extract, D_colidx, vals_extract)
+    end
+  end
+
+  return D
+end
+
+ 

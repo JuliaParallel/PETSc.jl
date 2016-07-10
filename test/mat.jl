@@ -594,5 +594,40 @@ end
     Aj = sprand(m1, n1, 0.01)
     Bj = sprand(m2, n2, 0.01)
     testrun(Aj, Bj)
+
+    function testkron(Aj, Bj)
+      m1, n1 = size(Aj)
+      m2, n2 = size(Bj)
+      Cj = kron(Aj, Bj)
+      C = PETSc.PetscKron(Aj, Bj)
+      assemble(C)
+      C_full = C[1:(m1*m2), 1:(n1*n2)]
+      Cj_full = full(Cj)
+    #  @test Cj_full ≈ C_full
+    end
+    
+#    println("\n----- Case 1 -----")
+    Aj = sparse(eye(3, 3))
+    testkron(Aj, Aj) 
+
+#    println("\n----- Case 2 -----")
+    Aj = sparse([1. 2 0; 3 4 5; 0 6 7])
+    testkron(Aj, Aj)
+
+#    println("\n----- Case 3 -----")
+    Aj = sparse([1. 2 3; 4 5 6; 7 8 9])
+    Bj = sparse([10. 11 12 13; 14 15 16 17; 18 19 20 21])
+    testkron(Aj, Bj)
+
+#    println("\n----- Case 4 -----")
+    Aj = sparse([1. 2 ; 4 5 ; 7 8 ])
+    Bj = sparse([10. 11 12 13 22; 14 15 16 17 23; 18 19 20 21 24])
+    testkron(Aj, Bj)
+
+#    println("\n----- Case 5 -----")
+    Aj = sprand(10, 15, 0.01)
+    Bj = sprand(7, 21, 0.01)
+    testkron(Aj, Bj)
+
   end
 end

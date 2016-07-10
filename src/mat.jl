@@ -1436,6 +1436,7 @@ function PetscKron{T <: Scalar}(A::SparseMatrixCSC{T}, B::SparseMatrixCSC{T})
       vals_extract = unsafe_view(D_vals, 1:(pos-1))
       set_values!(D, rowidx_extract, D_colidx, vals_extract)
     end
+#    assemble(D, C.MAT_FLUSH_ASSEMBLY)
   end
 
   return D

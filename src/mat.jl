@@ -1372,13 +1372,14 @@ function getmax_nz_col(A::SparseMatrixCSC)
   return A_maxnz
 end
 
-
+"""
+  Kronecker product of A and B where the result is a Petsc Mat
+"""
 function PetscKron{T <: Scalar}(A::SparseMatrixCSC{T}, B::SparseMatrixCSC{T})
 
   Am = size(A, 1); An = size(A, 2)
   Bm = size(B, 1); Bn = size(B, 2)
-  # step 1: figure out size, sparsity pattern of result by counting  non-zeros in
-  #         each row
+
   A_nz = zeros(Int, Am)
   B_nz = zeros(Int, Bm)
 
@@ -1395,6 +1396,20 @@ function PetscKron{T <: Scalar}(A::SparseMatrixCSC{T}, B::SparseMatrixCSC{T})
   # create matrix
   # can't use C becaue that is the module name
   D = Mat(T, Dm, Dn, nnz=D_nz, mtype=C.MATSEQAIJ)
+  # because the Mat constructor is type unstable, use a function barrier
+  PetscKron(A, B, D)
+
+  return D
+end
+
+"""
+  Kronecker product of A and B, storing the result in D.  D should already be 
+  pre-allocated with the right sparsity pattern
+"""
+@noinline function PetscKron{T <: Scalar}(A::SparseMatrixCSC{T}, B::SparseMatrixCSC{T}, D::Mat{T})
+
+  Am = size(A, 1); An = size(A, 2)
+  Bm = size(B, 1); Bn = size(B, 2)
 
   # now figure out the maximum number of non-zeros in any column of D
   A_maxnz = getmax_nz_col(A)
@@ -1434,6 +1449,8 @@ function PetscKron{T <: Scalar}(A::SparseMatrixCSC{T}, B::SparseMatrixCSC{T})
       D_colidx[1] = (i-1)*Bn + j - 1
       rowidx_extract = unsafe_view(D_rowidx, 1:(pos-1))
       vals_extract = unsafe_view(D_vals, 1:(pos-1))
+
+#      chk(C.MatSetValues(D.p, length(rowidx_extract), rowidx_extract, length(D_colidx), D_colidx, vals_extract, C.INSERT_VALUES))
       set_values!(D, rowidx_extract, D_colidx, vals_extract)
     end
 #    assemble(D, C.MAT_FLUSH_ASSEMBLY)

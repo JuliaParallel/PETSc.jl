@@ -1211,16 +1211,13 @@ end
   Users *must* call restore when done with a MatRow, before attempting to 
   create another one.
 """
-type MatRow{T, mtype}
-  mat::Mat{T, mtype}  # the matrix to which the rows belong
+immutable MatRow{T}
+  mat::C.Mat{T}  # the matrix to which the rows belong
   row::Int
-  ref_ncols::Ref{PetscInt}  # reference to the number of columns
-  ref_cols::Ref{Ptr{PetscInt}}  # reference to the column indices
-  ref_vals::Ref{Ptr{T}}  # reference to the values at the column indices
   ncols::Int
-  cols::Array{PetscInt, 1}
-  vals::Array{T, 1}
-
+  cols_ptr::Ptr{PetscInt}
+  vals_ptr::Ptr{T}
+#=
   function MatRow(A::Mat{T}, row::Integer, ref_ncols::Ref{PetscInt}, ref_cols::Ref{Ptr{PetscInt}}, ref_vals::Ref{Ptr{T}})
     ncols = ref_ncols[]
     cols = pointer_to_array(ref_cols[], ncols)
@@ -1231,6 +1228,7 @@ type MatRow{T, mtype}
 
     return obj
   end
+=#
 end
 
 """
@@ -1242,7 +1240,7 @@ function MatRow{T, mtype}(A::Mat{T, mtype}, row::Integer)
   ref_cols = Ref{Ptr{PetscInt}}()
   ref_vals = Ref{Ptr{T}}()
   chk(C.MatGetRow(A.p, row-1, ref_ncols, ref_cols, ref_vals))
-  return MatRow{T, mtype}(A, row, ref_ncols, ref_cols, ref_vals)
+  return MatRow{T}(A.p, row, ref_ncols[], ref_cols[], ref_vals[])
 end
 
 """
@@ -1260,16 +1258,205 @@ function count_row_nz{T}(A::Mat{T}, row::Integer)
   return ncols
 end
 function restore{T}(row::MatRow{T})
-  if !PetscFinalized(T) && !isfinalized(row.mat)
-    chk(C.MatRestoreRow(row.mat.p, row.row-1, row.ref_ncols, row.ref_cols, row.ref_vals))
-  end
+#  if !PetscFinalized(T) && !isfinalized(row.mat)
+    C.MatRestoreRow(row.mat, row.row-1, Ref(PetscInt(row.ncols)), Ref{Ptr{PetscInt}}(C_NULL), Ref{Ptr{T}}(C_NULL))
+
+#    return nothing  # return type stability
+#  end
 end
 
 ### indexing on a MatRow ###
 import Base: length, size
 length(A::MatRow) = A.ncols
 size(A::MatRow) = (A.ncols,)
-getcol(A::MatRow, i) =  A.cols[i] + 1
-getval(A::MatRow, i) = A.vals[i]
+getcol(A::MatRow, i) = unsafe_load(A.cols_ptr, i) + 1
+getval(A::MatRow, i) = unsafe_load(A.vals_ptr, i)
 
 
+import Base.kron
+"""
+  Kronecker product for SEQ matrices only.  The output is a non-block matrix
+  even if the inputs are block
+"""
+function kron{T}(A::Mat{T, C.MATSEQAIJ}, B::Mat{T, C.MATSEQAIJ})
+  if (A.p == B.p)
+    throw(ArgumentError("A and B cannot be same matrix"))
+  end
+
+  Am, An = size(A)
+  Bm, Bn = size(B)
+  # step 1: figure out size, sparsity pattern of result
+  A_nz = zeros(Int, Am)
+  B_nz = zeros(Int, Bm)
+  for i=1:Am
+    A_nz[i] = count_row_nz(A, i)
+  end
+  for i=1:Bm
+    B_nz[i] = count_row_nz(B, i)
+  end
+
+  Dm = Am*Bm
+  Dn = An*Bn
+  D_nz = getDnzs(A_nz, B_nz)
+  # create matrix
+  # can't use C becaue that is the module name
+  D = Mat(T, Dm, Dn, nnz=D_nz, mtype=C.MATSEQAIJ)
+
+  # step 2: populate C, one row at a time
+  max_entries = maximum(D_nz)
+  D_colidx = zeros(PetscInt, max_entries)
+  D_vals = zeros(T, max_entries)
+  D_rowidx = zeros(PetscInt, 1)
+
+  for i=1:Am
+    rowA = MatRow(A, i)
+    for j=1:Bm
+      rowB = MatRow(B, j)
+      rowidx = (i-1)*Bm + j
+
+      pos = 1  # position in C_vals, C_colidx
+      for k=1:length(rowA)
+        Aval = getval(rowA, k)
+        Aidx = getcol(rowA, k)
+        for p=1:length(rowB)
+          Bval = getval(rowB, p)
+          Bidx = getcol(rowB, p)
+          D_colidx[pos] = (Aidx - 1)*Bn + Bidx - 1
+          D_vals[pos] = Aval*Bval
+          pos += 1
+        end
+      end
+
+      D_rowidx[1] = rowidx - 1
+      idx_extract = sub(D_colidx, 1:(pos-1))
+      vals_extract = sub(D_vals, 1:(pos-1))
+      set_values!(D, D_rowidx, idx_extract, vals_extract)
+      restore(rowB)
+    end
+    restore(rowA)
+  end
+
+  return D
+end
+
+function getDnzs(A_nz, B_nz)
+# this function computes the number of non-zeros in D = kron(A, B), where A_nz and
+# B_nz are the number of non-zeros in each row of A and B, respectively
+
+  Am = length(A_nz)
+  Bm = length(B_nz)
+
+  Dm = length(A_nz)*length(B_nz)
+  D_nz = zeros(PetscInt, Dm)
+  for i=1:Am
+    A_nz_i = A_nz[i]
+    for j=1:Bm
+      pos = (i-1)*Bm + j
+      D_nz[pos] = A_nz_i*B_nz[j]
+    end
+  end
+
+  return D_nz
+end
+
+function getmax_nz_col(A::SparseMatrixCSC)
+  Am, An = size(A)
+  A_maxnz = 0
+  for i=1:An
+    val = A.colptr[i+1] - A.colptr[i]
+    if val > A_maxnz
+      A_maxnz = val
+    end
+  end
+
+  return A_maxnz
+end
+
+"""
+  Kronecker product of A and B where the result is a Petsc Mat
+"""
+function PetscKron{T <: Scalar}(A::SparseMatrixCSC{T}, B::SparseMatrixCSC{T})
+
+  Am = size(A, 1); An = size(A, 2)
+  Bm = size(B, 1); Bn = size(B, 2)
+
+  A_nz = zeros(Int, Am)
+  B_nz = zeros(Int, Bm)
+
+  for i in A.rowval
+    A_nz[i] += 1
+  end
+  for i in B.rowval
+    B_nz[i] += 1
+  end
+
+  Dm = Am*Bm
+  Dn = An*Bn
+  D_nz = getDnzs(A_nz, B_nz)
+  # create matrix
+  # can't use C becaue that is the module name
+  D = Mat(T, Dm, Dn, nnz=D_nz, mtype=C.MATSEQAIJ)
+  # because the Mat constructor is type unstable, use a function barrier
+  PetscKron(A, B, D)
+
+  return D
+end
+
+"""
+  Kronecker product of A and B, storing the result in D.  D should already be 
+  pre-allocated with the right sparsity pattern
+"""
+@noinline function PetscKron{T <: Scalar}(A::SparseMatrixCSC{T}, B::SparseMatrixCSC{T}, D::Mat{T})
+
+  Am = size(A, 1); An = size(A, 2)
+  Bm = size(B, 1); Bn = size(B, 2)
+
+  # now figure out the maximum number of non-zeros in any column of D
+  A_maxnz = getmax_nz_col(A)
+  B_maxnz = getmax_nz_col(B)
+  max_entries = A_maxnz * B_maxnz
+
+  D_rowidx = zeros(PetscInt, max_entries)
+  D_vals = zeros(T, max_entries)
+  D_colidx = zeros(PetscInt, 1)
+
+  # loop over columns of A and B
+  for i=1:An
+    col_start = A.colptr[i]
+    col_end = A.colptr[i+1] - 1
+    A_rowidx = unsafe_view(A.rowval, col_start:col_end)
+    A_vals = unsafe_view(A.nzval, col_start:col_end)
+    for j=1:Bn
+      col_start = B.colptr[j]
+      col_end = B.colptr[j+1] - 1
+      B_rowidx = unsafe_view(B.rowval, col_start:col_end)
+      B_vals = unsafe_view(B.nzval, col_start:col_end)
+
+      pos = 1
+      for k=1:length(A_vals)
+        Aval = A_vals[k]
+        Aidx = A_rowidx[k]
+        for p=1:length(B_vals)
+          Bval = B_vals[p]
+          Bidx = B_rowidx[p]
+
+          D_vals[pos] = Aval*Bval
+          D_rowidx[pos] = (Aidx-1)*Bm + Bidx - 1
+          pos += 1
+        end
+      end
+
+      D_colidx[1] = (i-1)*Bn + j - 1
+      rowidx_extract = unsafe_view(D_rowidx, 1:(pos-1))
+      vals_extract = unsafe_view(D_vals, 1:(pos-1))
+
+#      chk(C.MatSetValues(D.p, length(rowidx_extract), rowidx_extract, length(D_colidx), D_colidx, vals_extract, C.INSERT_VALUES))
+      set_values!(D, rowidx_extract, D_colidx, vals_extract)
+    end
+#    assemble(D, C.MAT_FLUSH_ASSEMBLY)
+  end
+
+  return D
+end
+
+ 

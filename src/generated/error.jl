@@ -31,5 +31,9 @@ function PetscErrorMessage(errnum)
   C.PetscErrorMessage(C.petsc_type[1], errnum, msg_ptr, Ref{Ptr{UInt8}}(C_NULL))
   # error num strings are stored in a constant table so
   # the pointer does not have to be free'd here
-  return bytestring(msg_ptr[])
+  if msg_ptr[] == C_NULL
+    return "Petsc did not supply an error message"
+  else
+    return bytestring(msg_ptr[])
+  end
 end

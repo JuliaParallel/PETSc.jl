@@ -185,10 +185,10 @@ KSP(pc::PC; kws...)
 <p>Construct a high level Vec object from a low level C.Vec.   The data field is used to protect things from GC.   A finalizer is attached to deallocate the memory of the underlying C.Vec, unless    <code>first_instance</code> is set to true.   <code>assembled</code> indicates when values are set via <code>setindex!</code> and is reset by    <code>AssemblyEnd</code>    <code>verify_assembled</code> when true, calls to <code>isassembled</code> verify all processes    have <code>assembled</code> = true, when false, only the local assembly state is     checked.  This essentially makes the user responsible for assembling    the vector before passing it into functions that will use it (like KSP   solves, etc.).</p>
 <p><a id='PETSc.Vec' href='#PETSc.Vec'>#</a>
 <strong><code>PETSc.Vec</code></strong> &mdash; <em>Type</em>.</p>
-<p>Create a vector, specifying the (global) length len or the local length   mlocal.  Even if the blocksize is &gt; 1, teh lengths are always number of    elements in the vector, not number of block elements.  Thus   len % blocksize must = 0.</p>
+<p>Construct a vector suitable for multiplying by the given matrix</p>
 <p><a id='PETSc.Vec' href='#PETSc.Vec'>#</a>
 <strong><code>PETSc.Vec</code></strong> &mdash; <em>Type</em>.</p>
-<p>Construct a vector suitable for multiplying by the given matrix</p>
+<p>Create a vector, specifying the (global) length len or the local length   mlocal.  Even if the blocksize is &gt; 1, teh lengths are always number of    elements in the vector, not number of block elements.  Thus   len % blocksize must = 0.</p>
 <p><a id='PETSc.Vec-Tuple{Array{T<:Union{Complex{Float64},Float32,Float64},1}}' href='#PETSc.Vec-Tuple{Array{T<:Union{Complex{Float64},Float32,Float64},1}}'>#</a>
 <strong><code>PETSc.Vec</code></strong> &mdash; <em>Method</em>.</p>
 <p>Make a PETSc vector out of an array.  If used in parallel, the array becomes   the local part of the PETSc vector</p>
@@ -205,6 +205,9 @@ KSP(pc::PC; kws...)
 <p><a id='Base.full-Tuple{PETSc.PetscMat{T,MType}}' href='#Base.full-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
 <strong><code>Base.full</code></strong> &mdash; <em>Method</em>.</p>
 <p>Create a dense Julia matrix for a Petsc sparse matrix.  This only works   for SEQ matrices</p>
+<p><a id='Base.kron-Tuple{PETSc.Mat{T,:seqaij},PETSc.Mat{T,:seqaij}}' href='#Base.kron-Tuple{PETSc.Mat{T,:seqaij},PETSc.Mat{T,:seqaij}}'>#</a>
+<strong><code>Base.kron</code></strong> &mdash; <em>Method</em>.</p>
+<p>Kronecker product for SEQ matrices only.  The output is a non-block matrix   even if the inputs are block</p>
 <p><a id='Base.length-Tuple{PETSc.Vec{T,VType}}' href='#Base.length-Tuple{PETSc.Vec{T,VType}}'>#</a>
 <strong><code>Base.length</code></strong> &mdash; <em>Method</em>.</p>
 <p>Get the global length of the vector</p>
@@ -252,6 +255,12 @@ KSP(pc::PC; kws...)
 <p><a id='PETSc.PetscDestroy-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.PetscDestroy-Tuple{PETSc.Vec{T,VType}}'>#</a>
 <strong><code>PETSc.PetscDestroy</code></strong> &mdash; <em>Method</em>.</p>
 <p>The Petsc function to deallocate Vec objects</p>
+<p><a id='PETSc.PetscKron-Tuple{SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},PETSc.Mat{T<:Union{Complex{Float64},Float32,Float64},MType}}' href='#PETSc.PetscKron-Tuple{SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},PETSc.Mat{T<:Union{Complex{Float64},Float32,Float64},MType}}'>#</a>
+<strong><code>PETSc.PetscKron</code></strong> &mdash; <em>Method</em>.</p>
+<p>Kronecker product of A and B, storing the result in D.  D should already be    pre-allocated with the right sparsity pattern</p>
+<p><a id='PETSc.PetscKron-Tuple{SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer}}' href='#PETSc.PetscKron-Tuple{SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer}}'>#</a>
+<strong><code>PETSc.PetscKron</code></strong> &mdash; <em>Method</em>.</p>
+<p>Kronecker product of A and B where the result is a Petsc Mat</p>
 <p><a id='PETSc.VecGhost-Tuple{Type{T<:Union{Complex{Float64},Float32,Float64}},Integer,Array{I<:Integer,1}}' href='#PETSc.VecGhost-Tuple{Type{T<:Union{Complex{Float64},Float32,Float64}},Integer,Array{I<:Integer,1}}'>#</a>
 <strong><code>PETSc.VecGhost</code></strong> &mdash; <em>Method</em>.</p>
 <p>Make a PETSc vector with space for ghost values.  ghost_idx are the    global indices that will be copied into the ghost space.</p>
@@ -260,14 +269,14 @@ KSP(pc::PC; kws...)
 <p>Create a VECSEQ that contains both the local and the ghost values of the    original vector.  The underlying memory for the orignal and output vectors   alias.</p>
 <p><a id='PETSc.assemble' href='#PETSc.assemble'>#</a>
 <strong><code>PETSc.assemble</code></strong> &mdash; <em>Function</em>.</p>
-<p>Assemble the Petsc object</p>
+<p>Low level assemble function</p>
 <p><a id='PETSc.assemble' href='#PETSc.assemble'>#</a>
 <strong><code>PETSc.assemble</code></strong> &mdash; <em>Function</em>.</p>
 <p>This function provides a mechanism for efficiently inserting values into   and then assembling Petsc matrices and vectors.  The function f must be a    zero argument function.</p>
 <p>This function can be used with the do block syntax.</p>
 <p><a id='PETSc.assemble' href='#PETSc.assemble'>#</a>
 <strong><code>PETSc.assemble</code></strong> &mdash; <em>Function</em>.</p>
-<p>Low level assemble function</p>
+<p>Assemble the Petsc object</p>
 <p><a id='PETSc.comm-Tuple{PETSc.PetscMat{T,MType}}' href='#PETSc.comm-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
 <strong><code>PETSc.comm</code></strong> &mdash; <em>Method</em>.</p>
 <p>Get the communicator for the object</p>
@@ -466,5 +475,5 @@ KSP(pc::PC; kws...)
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-07-09 18:51:25.942461
+Build Date UTC : 2016-07-19 02:01:58.059518
 -->

@@ -1,7 +1,8 @@
 @testset "C functions {$ST}" begin
 
  v_ptr = PETSc.C.VecCreate(ST)
- b = Vec{ST, :mpi}(v_ptr)
+ chk(C.VecSetType(v_ptr, PETSc.C.VECMPI))
+ b = Vec{ST}(v_ptr)
  resize!(b, mlocal=sys_size)
  global_indices = localpart(b) - 1  # zero based
   for i=1:sys_size

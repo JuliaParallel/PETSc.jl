@@ -247,8 +247,6 @@ function MatShell{T}(::Type{T}, mlocal::Integer, nlocal::Integer, ctx::Tuple=();
   mat_ptr = Ref{C.Mat{T}}()
   ctx_ptr = pointer_from_objref(ctx)
   chk(C.MatCreateShell(comm, mlocal, nlocal, m, n, ctx_ptr, mat_ptr))
-  #TODO: remove unneeded MatSetType
-  chk(C.MatSetType(mat_ptr[], C.MATSHELL))
   return Mat{T}(mat_ptr[], ctx)  # protect ctx from gc
 end
 
@@ -1106,14 +1104,15 @@ function Base.diag{T}(A::PetscMat{T},vtype::C.VecType=C.VECSEQ)
   return b
 end
 
-function (*){T, MType}(A::PetscMat{T}, x::Vec{T, MType})
+function (*){T}(A::PetscMat{T}, x::Vec{T})
   m = size(A, 1)
+  MType = gettype(x)
   b = Vec(T, m, vtype=MType, comm=comm(A), mlocal=sizelocal(A,1))
   chk(C.MatMult(A.p, x.p, b.p))
   return b
 end
 
-function (*){T, MType}(A::PetscMat{T}, x::Vec{T, MType}, b::Vec{T})
+function (*){T,}(A::PetscMat{T}, x::Vec{T}, b::Vec{T})
   chk(C.MatMult(A.p, x.p, b.p))
   return b
 end
@@ -1154,25 +1153,27 @@ function A_mul_Bt{T}(A::PetscMat{T}, B::PetscMat{T})
   return new_mat
 end
 
-function At_mul_B!{T, MType}(A::PetscMat{T}, x::Vec{T,MType}, y::Vec{T,MType})
+function At_mul_B!{T}(A::PetscMat{T}, x::Vec{T}, y::Vec{T})
   chk(C.MatMultTranspose(A.p, x.p, y.p))
   return y
 end
 
-function At_mul_B{T, MType}(A::PetscMat{T}, x::Vec{T,MType})
+function At_mul_B{T}(A::PetscMat{T}, x::Vec{T})
   m = size(A, 1)
+  MType = gettype(x)
   b = Vec(T, m, vtype=MType, comm=comm(A), mlocal=sizelocal(A,1))
   chk(C.MatMultTranspose(A.p, x.p, b.p))
   return b
 end
 
-function Ac_mul_B!{T, MType}(A::PetscMat{T}, x::Vec{T,MType}, y::Vec{T,MType})
+function Ac_mul_B!{T}(A::PetscMat{T}, x::Vec{T}, y::Vec{T})
   chk(C.MatMultHermitianTranspose(A.p, x.p, y.p))
   return y
 end
 
-function Ac_mul_B{T, MType}(A::PetscMat{T}, x::Vec{T,MType})
+function Ac_mul_B{T}(A::PetscMat{T}, x::Vec{T})
   m = size(A, 1)
+  MType = gettype(x)
   b = Vec(T, m, vtype=MType, comm=comm(A), mlocal=sizelocal(A,1))
   chk(C.MatMultHermitianTranspose(A.p, x.p, b.p))
   return b

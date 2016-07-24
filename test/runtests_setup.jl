@@ -52,8 +52,8 @@ function mymult{T}(A::PETSc.C.Mat{T}, x::PETSc.C.Vec, b::PETSc.C.Vec)
 # matrix multiplication function for the shell matrix A
 # A performs the action of A = diagm(1:sys_size)
 
-  bigx = Vec{T, PETSc.C.VECMPI}(x, first_instance=false)
-  bigb = Vec{T, PETSc.C.VECMPI}(b, first_instance=false)
+  bigx = Vec{T}(x, first_instance=false)
+  bigb = Vec{T}(b, first_instance=false)
   localx = LocalVector_readonly(bigx)
   localb = LocalVector(bigb)
   for i=1:length(localx)

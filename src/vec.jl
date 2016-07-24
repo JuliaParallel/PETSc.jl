@@ -27,7 +27,6 @@ type Vec{T} <: AbstractVector{T}
                verify_assembled::Bool=true)
     v = new(p, false, verify_assembled, C.INSERT_VALUES, data)
     if first_instance
-#      chk(C.VecSetType(p, VType))  # set the type here to ensure it matches VType
       finalizer(v, PetscDestroy)
     end
     return v

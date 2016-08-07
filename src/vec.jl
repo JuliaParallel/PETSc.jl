@@ -52,7 +52,7 @@ end
 
 
 showcompact(io::IO, x::Vec) = show(io, x)
-writemime(io::IO, ::MIME"text/plain", x::Vec) = show(io, x)
+#writemime(io::IO, ::MIME"text/plain", x::Vec) = show(io, x)
 
 """
   Null vectors, used in place of void pointers in the C
@@ -88,7 +88,7 @@ end
 export gettype
 
  """
-  Get the symbol that is the format of the vector
+  Get the Symbol that is the format of the vector
 """
 function gettype{T}(a::Vec{T})
   sym_arr = Array(C.VecType, 1)
@@ -735,7 +735,7 @@ import Base: abs, exp, log, conj, conj!
 export abs!, exp!, log!
 for (f,pf) in ((:abs,:VecAbs), (:exp,:VecExp), (:log,:VecLog),
   (:conj,:VecConjugate))
-  fb = symbol(string(f, "!"))
+  fb = Symbol(string(f, "!"))
   @eval begin
     function $fb(x::Vec)
       chk(C.$pf(x.p))
@@ -1023,7 +1023,7 @@ end
 ##########################################################################
 # element-wise vector operations:
 import Base: .*, ./, .^, +, -
-
+#=
 for (f,pf) in ((:.*,:VecPointwiseMult), (:./,:VecPointwiseDivide), (:.^,:VecPow))
   @eval function ($f)(x::Vec, y::Vec)
     z = similar(x)
@@ -1031,6 +1031,7 @@ for (f,pf) in ((:.*,:VecPointwiseMult), (:./,:VecPointwiseDivide), (:.^,:VecPow)
     return z
   end
 end
+=#
 
 for (f,s) in ((:+,1), (:-,-1))
   @eval function ($f){T}(x::Vec{T}, y::Vec{T})

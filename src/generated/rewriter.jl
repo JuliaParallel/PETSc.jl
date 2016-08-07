@@ -25,7 +25,7 @@ const petsc_libname = :petscRealSingle
 
 val_tmp = type_dict[:PetscScalar]
 type_dict_single = Dict{Any, Any} (
-:(Ptr{UInt8}) => Union{Cstring, ByteString, Symbol, Array{UInt8}, Ptr{UInt8}}
+:(Ptr{UInt8}) => Union{Cstring, Symbol, Array{UInt8}, Ptr{UInt8}}
 )
 
 
@@ -76,7 +76,7 @@ end
 # get a string array and turn it into a symbol array
 function return_symbol(string_array::AbstractArray, x::AbstractArray)
   for i=1:length(x)
-    x[i] = bytestring(string_array[i])
+    x[i] = unsafe_string(string_array[i])
   end
 end
 
@@ -94,7 +94,7 @@ end
 # things to be replaced in function signatures only if they
 # are top level (ie. this does a non recursive replace)
 sig_single_dict = Dict{Any, Any} (
-  :(Ptr{UInt8}) => :(Union{ByteString, Cstring, Symbol, Array{UInt8}, Ptr{UInt8}}),
+  :(Ptr{UInt8}) => :(Union{Cstring, Symbol, Array{UInt8}, Ptr{UInt8}}),
   :Int32 => :Integer,
   :Int64 => :Integer,
   :Cint => :Integer,

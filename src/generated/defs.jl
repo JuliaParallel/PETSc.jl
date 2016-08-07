@@ -39,7 +39,8 @@ function symbol_get_after(ptr, sym_arr)
   ptr_arr = pointer_to_array(ptr, length(sym_arr))
 
   for i=1:length(sym_arr)
-    sym_arr[i] = bytestring(ptr_arr[i])
+    # this string had better be null terminated...
+    sym_arr[i] = unsafe_string(ptr_arr[i])
   end
 
 end
@@ -48,7 +49,7 @@ function symbol_set_before(sym_arr)
   str_arr = similar(sym_arr, UTF8String)
 
   for i=1:length(str_arr)
-    str_arr[i] = bytestring(sym_arr[i])
+    str_arr[i] = sym_arr[i]
   end
 
 end

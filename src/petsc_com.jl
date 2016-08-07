@@ -42,7 +42,7 @@ PetscInitialize(lib::DataType, args) = PetscInitialize(lib, args, "", "")
 function PetscInitialize(lib::DataType, args, filename, help)
   # argument list starts with program name
   args = filter(a->!isempty(a), args)
-  args = map(bytestring, vcat("julia", args))
+  args = map(String, vcat("julia", args))
 
   nargs = Int32[length(args)]
 
@@ -51,7 +51,7 @@ function PetscInitialize(lib::DataType, args, filename, help)
   args_ptr_ptr = [pointer(args_ptr)]
   args_ptr_ptr_ptr = pointer(args_ptr_ptr)
 
-  err = C.PetscInitialize(lib, nargs, args_ptr_ptr_ptr, bytestring(filename), bytestring(help))
+  err = C.PetscInitialize(lib, nargs, args_ptr_ptr_ptr, filename, help)
   if err != 0
     error("PETSc initialization error, code: $err")
   end

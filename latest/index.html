@@ -109,9 +109,6 @@
                 <p><a id='PETSc.NullVec' href='#PETSc.NullVec'>#</a>
 <strong><code>PETSc.NullVec</code></strong> &mdash; <em>Constant</em>.</p>
 <p>Null vectors, used in place of void pointers in the C   API</p>
-<p><a id='PETSc.mat2vec' href='#PETSc.mat2vec'>#</a>
-<strong><code>PETSc.mat2vec</code></strong> &mdash; <em>Constant</em>.</p>
-<p>Maps Matrix formats to the corresponding vector format</p>
 <p><a id='PETSc.KSP-Tuple{PETSc.PC{T}}' href='#PETSc.KSP-Tuple{PETSc.PC{T}}'>#</a>
 <strong><code>PETSc.KSP</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>KSP(A::Mat, PA=A; kws...)
@@ -127,7 +124,7 @@ KSP(pc::PC; kws...)
 <p><a id='PETSc.LocalVector' href='#PETSc.LocalVector'>#</a>
 <strong><code>PETSc.LocalVector</code></strong> &mdash; <em>Type</em>.</p>
 <p>Object representing the local part of the array, accessing the memory directly.   Supports all the same indexing as a regular Array</p>
-<p><a id='PETSc.LocalVector-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.LocalVector-Tuple{PETSc.Vec{T,VType}}'>#</a>
+<p><a id='PETSc.LocalVector-Tuple{PETSc.Vec{T}}' href='#PETSc.LocalVector-Tuple{PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.LocalVector</code></strong> &mdash; <em>Method</em>.</p>
 <p>Get the LocalVector of a vector.  Users must call restore when   finished updating the vector</p>
 <p><a id='PETSc.Mat' href='#PETSc.Mat'>#</a>
@@ -145,13 +142,6 @@ KSP(pc::PC; kws...)
 <p><a id='PETSc.Mat-Tuple{SparseMatrixCSC{T,Ti<:Integer}}' href='#PETSc.Mat-Tuple{SparseMatrixCSC{T,Ti<:Integer}}'>#</a>
 <strong><code>PETSc.Mat</code></strong> &mdash; <em>Method</em>.</p>
 <p>Make a MATSEQ Petsc matrix for a SparseMatrixCSC.  This preserve the    sparsity pattern of the matrix</p>
-<p><a id='PETSc.MatRow' href='#PETSc.MatRow'>#</a>
-<strong><code>PETSc.MatRow</code></strong> &mdash; <em>Type</em>.</p>
-<p>Object that enables access to a single row of a sparse matrix.</p>
-<p>Users <em>must</em> call restore when done with a MatRow, before attempting to    create another one.</p>
-<p><a id='PETSc.MatRow-Tuple{PETSc.Mat{T,mtype},Integer}' href='#PETSc.MatRow-Tuple{PETSc.Mat{T,mtype},Integer}'>#</a>
-<strong><code>PETSc.MatRow</code></strong> &mdash; <em>Method</em>.</p>
-<p>Preferred constructor for a MatRow</p>
 <p><a id='PETSc.PC-Tuple{Type{T}}' href='#PETSc.PC-Tuple{Type{T}}'>#</a>
 <strong><code>PETSc.PC</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>PC(A::Mat, PA=A, kws...)
@@ -159,11 +149,7 @@ KSP(pc::PC; kws...)
 
 <p>Create a preconditioner (PC) context, given the matrix <code>A</code> of the linear system to be solved, and optionally a different matrix <code>PA</code> from which the preconditioner is constructed.</p>
 <p>The remaining keywords specify zero or more additional options: * <code>pc_type="a"</code>: use preconditioning algorithm <code>a</code> * <code>pc_use_amat=true</code>: use Amat (instead of Pmat) to define preconditioner in nested inner solves * ... additional options that depend on the preconditioner type ...</p>
-<p><a id='PETSc.PetscMat' href='#PETSc.PetscMat'>#</a>
-<strong><code>PETSc.PetscMat</code></strong> &mdash; <em>Type</em>.</p>
-<p>A Petsc matrix.</p>
-<p>Unlike Vecs, the Petsc implementation keeps track of the local assembly    state, so the Julia type does not have to.   <code>verify_assembled</code>: if true, verify all processes are assembled, if false,                       only local process   <code>insertmode</code>: C.InsertMode used by <code>setindex!</code></p>
-<p><a id='PETSc.SubMat-Tuple{PETSc.Mat{T,MType},PETSc.IS{T},PETSc.IS{T}}' href='#PETSc.SubMat-Tuple{PETSc.Mat{T,MType},PETSc.IS{T},PETSc.IS{T}}'>#</a>
+<p><a id='PETSc.SubMat-Tuple{PETSc.Mat{T},PETSc.IS{T},PETSc.IS{T}}' href='#PETSc.SubMat-Tuple{PETSc.Mat{T},PETSc.IS{T},PETSc.IS{T}}'>#</a>
 <strong><code>PETSc.SubMat</code></strong> &mdash; <em>Method</em>.</p>
 <p>Gets the a submatrix that references the entries in the original matrix.   isrow and iscol contain the <em>local</em> indicies of the rows and columns to get.   The matrix must have a LocalToGlobalMapping for this to work, therefore a    default one is created if the matrix does not already have one registered.   The default mapping assumes the matrix is divided up into contiguous block   of rows.  This is true of AIJ matrices but may not be for other matrix types.</p>
 <p><a id='PETSc.TS-Tuple{Type{T<:Union{Complex{Float64},Float32,Float64}},UInt32,Symbol}' href='#PETSc.TS-Tuple{Type{T<:Union{Complex{Float64},Float32,Float64}},UInt32,Symbol}'>#</a>
@@ -185,44 +171,16 @@ KSP(pc::PC; kws...)
 <p>Construct a high level Vec object from a low level C.Vec.   The data field is used to protect things from GC.   A finalizer is attached to deallocate the memory of the underlying C.Vec, unless    <code>first_instance</code> is set to true.   <code>assembled</code> indicates when values are set via <code>setindex!</code> and is reset by    <code>AssemblyEnd</code>    <code>verify_assembled</code> when true, calls to <code>isassembled</code> verify all processes    have <code>assembled</code> = true, when false, only the local assembly state is     checked.  This essentially makes the user responsible for assembling    the vector before passing it into functions that will use it (like KSP   solves, etc.).</p>
 <p><a id='PETSc.Vec' href='#PETSc.Vec'>#</a>
 <strong><code>PETSc.Vec</code></strong> &mdash; <em>Type</em>.</p>
-<p>Construct a vector suitable for multiplying by the given matrix</p>
+<p>Create a vector, specifying the (global) length len or the local length   mlocal.  Even if the blocksize is &gt; 1, teh lengths are always number of    elements in the vector, not number of block elements.  Thus   len % blocksize must = 0.</p>
 <p><a id='PETSc.Vec' href='#PETSc.Vec'>#</a>
 <strong><code>PETSc.Vec</code></strong> &mdash; <em>Type</em>.</p>
-<p>Create a vector, specifying the (global) length len or the local length   mlocal.  Even if the blocksize is &gt; 1, teh lengths are always number of    elements in the vector, not number of block elements.  Thus   len % blocksize must = 0.</p>
+<p>Construct a vector suitable for multiplying by the given matrix</p>
 <p><a id='PETSc.Vec-Tuple{Array{T<:Union{Complex{Float64},Float32,Float64},1}}' href='#PETSc.Vec-Tuple{Array{T<:Union{Complex{Float64},Float32,Float64},1}}'>#</a>
 <strong><code>PETSc.Vec</code></strong> &mdash; <em>Method</em>.</p>
 <p>Make a PETSc vector out of an array.  If used in parallel, the array becomes   the local part of the PETSc vector</p>
-<p><a id='Base.==-Tuple{PETSc.PetscMat{T,:seqaij},AbstractArray{T,N}}' href='#Base.==-Tuple{PETSc.PetscMat{T,:seqaij},AbstractArray{T,N}}'>#</a>
-<strong><code>Base.==</code></strong> &mdash; <em>Method</em>.</p>
-<p>Equality test for AbstractArray and PetscMat, SEQ only</p>
-<p><a id='Base.SparseMatrix.nnz-Tuple{PETSc.Mat{T,MType}}' href='#Base.SparseMatrix.nnz-Tuple{PETSc.Mat{T,MType}}'>#</a>
-<strong><code>Base.SparseMatrix.nnz</code></strong> &mdash; <em>Method</em>.</p>
-<p>Number of non-zero entries that have been assigned to</p>
-<p><a id='Base.fill!-Tuple{PETSc.PetscMat{T,MType},Number}' href='#Base.fill!-Tuple{PETSc.PetscMat{T,MType},Number}'>#</a>
-<strong><code>Base.fill!</code></strong> &mdash; <em>Method</em>.</p>
-<p>Fill the matrix with the specified values.</p>
-<p>Currently, this function either destroys the sparsity pattern or    gives an error, unless v = 0, in which case it zeros out the non-zero    entries without changing the sparsity pattern</p>
-<p><a id='Base.full-Tuple{PETSc.PetscMat{T,MType}}' href='#Base.full-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
-<strong><code>Base.full</code></strong> &mdash; <em>Method</em>.</p>
-<p>Create a dense Julia matrix for a Petsc sparse matrix.  This only works   for SEQ matrices</p>
-<p><a id='Base.kron-Tuple{PETSc.Mat{T,:seqaij},PETSc.Mat{T,:seqaij}}' href='#Base.kron-Tuple{PETSc.Mat{T,:seqaij},PETSc.Mat{T,:seqaij}}'>#</a>
-<strong><code>Base.kron</code></strong> &mdash; <em>Method</em>.</p>
-<p>Kronecker product for SEQ matrices only.  The output is a non-block matrix   even if the inputs are block</p>
-<p><a id='Base.length-Tuple{PETSc.Vec{T,VType}}' href='#Base.length-Tuple{PETSc.Vec{T,VType}}'>#</a>
-<strong><code>Base.length</code></strong> &mdash; <em>Method</em>.</p>
-<p>Get the global length of the vector</p>
-<p><a id='Base.map!-Tuple{Any,PETSc.Vec{T,VType},PETSc.Vec{T,VType},PETSc.Vec{T2,VType},Vararg{PETSc.Vec{T2,VType}}}' href='#Base.map!-Tuple{Any,PETSc.Vec{T,VType},PETSc.Vec{T,VType},PETSc.Vec{T2,VType},Vararg{PETSc.Vec{T2,VType}}}'>#</a>
-<strong><code>Base.map!</code></strong> &mdash; <em>Method</em>.</p>
-<p>Multiple source vector map.  All vectors must have the local and global    lengths.  If some a ghost vectors and some are not, the map is applied   only to the local part</p>
-<p><a id='Base.map!-Tuple{Any,PETSc.Vec{T,VType},PETSc.Vec{T,VType}}' href='#Base.map!-Tuple{Any,PETSc.Vec{T,VType},PETSc.Vec{T,VType}}'>#</a>
-<strong><code>Base.map!</code></strong> &mdash; <em>Method</em>.</p>
-<p>Applys f element-wise to src to populate dest.  If src is a ghost vector, then f is applied to the ghost elements as well as the local elements.</p>
-<p><a id='Base.size-Tuple{PETSc.PetscMat{T,MType}}' href='#Base.size-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
-<strong><code>Base.size</code></strong> &mdash; <em>Method</em>.</p>
-<p>Returns the global dimensions of the matrix</p>
-<p><a id='Base.size-Tuple{PETSc.Vec{T,VType}}' href='#Base.size-Tuple{PETSc.Vec{T,VType}}'>#</a>
-<strong><code>Base.size</code></strong> &mdash; <em>Method</em>.</p>
-<p>Get the global size of the vector</p>
+<p><a id='PETSc.AssemblyBegin' href='#PETSc.AssemblyBegin'>#</a>
+<strong><code>PETSc.AssemblyBegin</code></strong> &mdash; <em>Function</em>.</p>
+<p>Start assembling the matrix (the implmentations probably post    non-blocking sends and received)</p>
 <p><a id='PETSc.AssemblyBegin' href='#PETSc.AssemblyBegin'>#</a>
 <strong><code>PETSc.AssemblyBegin</code></strong> &mdash; <em>Function</em>.</p>
 <p>Start communication to assemble stashed values into the vector</p>
@@ -231,45 +189,27 @@ KSP(pc::PC; kws...)
 <p><a id='PETSc.AssemblyBegin' href='#PETSc.AssemblyBegin'>#</a>
 <strong><code>PETSc.AssemblyBegin</code></strong> &mdash; <em>Function</em>.</p>
 <p>Generic fallback for AbstractArray, no-op</p>
-<p><a id='PETSc.AssemblyBegin' href='#PETSc.AssemblyBegin'>#</a>
-<strong><code>PETSc.AssemblyBegin</code></strong> &mdash; <em>Function</em>.</p>
-<p>Start assembling the matrix (the implmentations probably post    non-blocking sends and received)</p>
+<p><a id='PETSc.AssemblyEnd' href='#PETSc.AssemblyEnd'>#</a>
+<strong><code>PETSc.AssemblyEnd</code></strong> &mdash; <em>Function</em>.</p>
+<p>Finish assembling the matrix</p>
 <p><a id='PETSc.AssemblyEnd' href='#PETSc.AssemblyEnd'>#</a>
 <strong><code>PETSc.AssemblyEnd</code></strong> &mdash; <em>Function</em>.</p>
 <p>Finish communication for assembling the vector</p>
 <p><a id='PETSc.AssemblyEnd' href='#PETSc.AssemblyEnd'>#</a>
 <strong><code>PETSc.AssemblyEnd</code></strong> &mdash; <em>Function</em>.</p>
 <p>Generic fallback for AbstractArray, no-op</p>
-<p><a id='PETSc.AssemblyEnd' href='#PETSc.AssemblyEnd'>#</a>
-<strong><code>PETSc.AssemblyEnd</code></strong> &mdash; <em>Function</em>.</p>
-<p>Finish assembling the matrix</p>
-<p><a id='PETSc.LocalVector_readonly-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.LocalVector_readonly-Tuple{PETSc.Vec{T,VType}}'>#</a>
+<p><a id='PETSc.LocalVector_readonly-Tuple{PETSc.Vec{T}}' href='#PETSc.LocalVector_readonly-Tuple{PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.LocalVector_readonly</code></strong> &mdash; <em>Method</em>.</p>
 <p>Get the LocalVector_readonly of a vector.  Users must call restore when    finished with the object.</p>
 <p><a id='PETSc.MatShell' href='#PETSc.MatShell'>#</a>
 <strong><code>PETSc.MatShell</code></strong> &mdash; <em>Function</em>.</p>
 <p>Create a shell matrix with specified size.  The ctx tuple contains can be   accessed by any callback function.</p>
-<p><a id='PETSc.PetscDestroy-Tuple{PETSc.Mat{T,MType}}' href='#PETSc.PetscDestroy-Tuple{PETSc.Mat{T,MType}}'>#</a>
-<strong><code>PETSc.PetscDestroy</code></strong> &mdash; <em>Method</em>.</p>
-<p>Destroy a Mat object and the underlying data structure, if the object   has not already been finalized</p>
-<p><a id='PETSc.PetscDestroy-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.PetscDestroy-Tuple{PETSc.Vec{T,VType}}'>#</a>
-<strong><code>PETSc.PetscDestroy</code></strong> &mdash; <em>Method</em>.</p>
-<p>The Petsc function to deallocate Vec objects</p>
-<p><a id='PETSc.PetscKron-Tuple{SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},PETSc.Mat{T<:Union{Complex{Float64},Float32,Float64},MType}}' href='#PETSc.PetscKron-Tuple{SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},PETSc.Mat{T<:Union{Complex{Float64},Float32,Float64},MType}}'>#</a>
-<strong><code>PETSc.PetscKron</code></strong> &mdash; <em>Method</em>.</p>
-<p>Kronecker product of A and B, storing the result in D.  D should already be    pre-allocated with the right sparsity pattern</p>
-<p><a id='PETSc.PetscKron-Tuple{SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer}}' href='#PETSc.PetscKron-Tuple{SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer}}'>#</a>
-<strong><code>PETSc.PetscKron</code></strong> &mdash; <em>Method</em>.</p>
-<p>Kronecker product of A and B where the result is a Petsc Mat</p>
 <p><a id='PETSc.VecGhost-Tuple{Type{T<:Union{Complex{Float64},Float32,Float64}},Integer,Array{I<:Integer,1}}' href='#PETSc.VecGhost-Tuple{Type{T<:Union{Complex{Float64},Float32,Float64}},Integer,Array{I<:Integer,1}}'>#</a>
 <strong><code>PETSc.VecGhost</code></strong> &mdash; <em>Method</em>.</p>
 <p>Make a PETSc vector with space for ghost values.  ghost_idx are the    global indices that will be copied into the ghost space.</p>
-<p><a id='PETSc.VecLocal-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64},:mpi}}' href='#PETSc.VecLocal-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64},:mpi}}'>#</a>
+<p><a id='PETSc.VecLocal-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64}}}' href='#PETSc.VecLocal-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64}}}'>#</a>
 <strong><code>PETSc.VecLocal</code></strong> &mdash; <em>Method</em>.</p>
 <p>Create a VECSEQ that contains both the local and the ghost values of the    original vector.  The underlying memory for the orignal and output vectors   alias.</p>
-<p><a id='PETSc.assemble' href='#PETSc.assemble'>#</a>
-<strong><code>PETSc.assemble</code></strong> &mdash; <em>Function</em>.</p>
-<p>Low level assemble function</p>
 <p><a id='PETSc.assemble' href='#PETSc.assemble'>#</a>
 <strong><code>PETSc.assemble</code></strong> &mdash; <em>Function</em>.</p>
 <p>This function provides a mechanism for efficiently inserting values into   and then assembling Petsc matrices and vectors.  The function f must be a    zero argument function.</p>
@@ -277,126 +217,96 @@ KSP(pc::PC; kws...)
 <p><a id='PETSc.assemble' href='#PETSc.assemble'>#</a>
 <strong><code>PETSc.assemble</code></strong> &mdash; <em>Function</em>.</p>
 <p>Assemble the Petsc object</p>
-<p><a id='PETSc.comm-Tuple{PETSc.PetscMat{T,MType}}' href='#PETSc.comm-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
+<p><a id='PETSc.assemble' href='#PETSc.assemble'>#</a>
+<strong><code>PETSc.assemble</code></strong> &mdash; <em>Function</em>.</p>
+<p>Low level assemble function</p>
+<p><a id='PETSc.comm-Tuple{PETSc.PetscMat{T}}' href='#PETSc.comm-Tuple{PETSc.PetscMat{T}}'>#</a>
 <strong><code>PETSc.comm</code></strong> &mdash; <em>Method</em>.</p>
 <p>Get the communicator for the object</p>
-<p><a id='PETSc.comm-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.comm-Tuple{PETSc.Vec{T,VType}}'>#</a>
+<p><a id='PETSc.comm-Tuple{PETSc.Vec{T}}' href='#PETSc.comm-Tuple{PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.comm</code></strong> &mdash; <em>Method</em>.</p>
 <p>Gets the MPI communicator of a vector.</p>
-<p><a id='PETSc.count_row_nz-Tuple{PETSc.Mat{T,MType},Integer}' href='#PETSc.count_row_nz-Tuple{PETSc.Mat{T,MType},Integer}'>#</a>
-<strong><code>PETSc.count_row_nz</code></strong> &mdash; <em>Method</em>.</p>
-<p>Count the number of non-zeros in a row of the matrix.  This temporarily   creates a MatRow object, so it cannot be used if one already exists</p>
-<p><a id='PETSc.getcontext-Tuple{PETSc.Mat{T,:shell}}' href='#PETSc.getcontext-Tuple{PETSc.Mat{T,:shell}}'>#</a>
+<p><a id='PETSc.getcontext-Tuple{PETSc.Mat{T}}' href='#PETSc.getcontext-Tuple{PETSc.Mat{T}}'>#</a>
 <strong><code>PETSc.getcontext</code></strong> &mdash; <em>Method</em>.</p>
 <p>Get the tuple of user provided data passed in when the shell matrix was    created.</p>
-<p><a id='PETSc.getinfo' href='#PETSc.getinfo'>#</a>
-<strong><code>PETSc.getinfo</code></strong> &mdash; <em>Function</em>.</p>
-<p>Get the MatInfo struct for the matrix</p>
-<p><a id='PETSc.gettype-Tuple{PETSc.PetscMat{T,MT}}' href='#PETSc.gettype-Tuple{PETSc.PetscMat{T,MT}}'>#</a>
+<p><a id='PETSc.gettype-Tuple{PETSc.PetscMat{T}}' href='#PETSc.gettype-Tuple{PETSc.PetscMat{T}}'>#</a>
 <strong><code>PETSc.gettype</code></strong> &mdash; <em>Method</em>.</p>
 <p>Get the format of the matrix.</p>
-<p><a id='PETSc.gettype-Tuple{PETSc.Vec{T,VT}}' href='#PETSc.gettype-Tuple{PETSc.Vec{T,VT}}'>#</a>
+<p><a id='PETSc.gettype-Tuple{PETSc.Vec{T}}' href='#PETSc.gettype-Tuple{PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.gettype</code></strong> &mdash; <em>Method</em>.</p>
 <p>Get the symbol that is the format of the vector</p>
-<p><a id='PETSc.ghost_begin!-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64},:mpi}}' href='#PETSc.ghost_begin!-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64},:mpi}}'>#</a>
+<p><a id='PETSc.ghost_begin!-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64}}}' href='#PETSc.ghost_begin!-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64}}}'>#</a>
 <strong><code>PETSc.ghost_begin!</code></strong> &mdash; <em>Method</em>.</p>
 <p>Start communication to update the ghost values (on other processes) from the local   values</p>
-<p><a id='PETSc.ghost_end!-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64},:mpi}}' href='#PETSc.ghost_end!-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64},:mpi}}'>#</a>
+<p><a id='PETSc.ghost_end!-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64}}}' href='#PETSc.ghost_end!-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64}}}'>#</a>
 <strong><code>PETSc.ghost_end!</code></strong> &mdash; <em>Method</em>.</p>
 <p>Finish communication for updating ghost values</p>
 <p><a id='PETSc.ghost_update!-Tuple' href='#PETSc.ghost_update!-Tuple'>#</a>
 <strong><code>PETSc.ghost_update!</code></strong> &mdash; <em>Method</em>.</p>
 <p>Convenience method for calling ghost_begin! and ghost_end! for multiple vectors</p>
-<p><a id='PETSc.has_local_to_global_mapping-Tuple{PETSc.PetscMat{T,MType}}' href='#PETSc.has_local_to_global_mapping-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
+<p><a id='PETSc.has_local_to_global_mapping-Tuple{PETSc.PetscMat{T}}' href='#PETSc.has_local_to_global_mapping-Tuple{PETSc.PetscMat{T}}'>#</a>
 <strong><code>PETSc.has_local_to_global_mapping</code></strong> &mdash; <em>Method</em>.</p>
 <p>Check if the local to global mappings have been registered</p>
-<p><a id='PETSc.has_local_to_global_mapping-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.has_local_to_global_mapping-Tuple{PETSc.Vec{T,VType}}'>#</a>
+<p><a id='PETSc.has_local_to_global_mapping-Tuple{PETSc.Vec{T}}' href='#PETSc.has_local_to_global_mapping-Tuple{PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.has_local_to_global_mapping</code></strong> &mdash; <em>Method</em>.</p>
 <p>Check if the local to global mapping has been registered</p>
-<p><a id='PETSc.iassemble-Tuple{Union{PETSc.PetscMat{T,MType},PETSc.Vec{T,VType}}}' href='#PETSc.iassemble-Tuple{Union{PETSc.PetscMat{T,MType},PETSc.Vec{T,VType}}}'>#</a>
-<strong><code>PETSc.iassemble</code></strong> &mdash; <em>Method</em>.</p>
-<p>Perform a flush assembly (take stashed values and put them into the matrix,   but don't squeeze out any preallocated space that has not been used yet</p>
 <p><a id='PETSc.isassembled' href='#PETSc.isassembled'>#</a>
 <strong><code>PETSc.isassembled</code></strong> &mdash; <em>Function</em>.</p>
 <p>Check if a vector is assembled (ie. does not have stashed values).  If    <code>x.verify_assembled</code>, the assembly state of all processes is checked,    otherwise only the local process is checked. <code>local_only</code> forces only    the local process to be checked, regardless of <code>x.verify_assembled</code>.</p>
 <p><a id='PETSc.isassembled-Tuple{PETSc.C.Mat{T}}' href='#PETSc.isassembled-Tuple{PETSc.C.Mat{T}}'>#</a>
 <strong><code>PETSc.isassembled</code></strong> &mdash; <em>Method</em>.</p>
 <p>Check if the matrix is assembled or not</p>
-<p><a id='PETSc.isassembled-Tuple{PETSc.PetscMat{T,MType}}' href='#PETSc.isassembled-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
+<p><a id='PETSc.isassembled-Tuple{PETSc.PetscMat{T}}' href='#PETSc.isassembled-Tuple{PETSc.PetscMat{T}}'>#</a>
 <strong><code>PETSc.isassembled</code></strong> &mdash; <em>Method</em>.</p>
 <p>Check if the matrix is assembled.  Whether all processes assembly state    is checked or only the local process is determined by <code>x.verify_assembled</code>.</p>
 <p><code>local_only</code> forces only the local process to be checked, regardless of    <code>x.verify_assembled</code>.</p>
-<p><a id='PETSc.isfinalized-Tuple{PETSc.PetscMat{T,MType}}' href='#PETSc.isfinalized-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
-<strong><code>PETSc.isfinalized</code></strong> &mdash; <em>Method</em>.</p>
-<p>Check if PetscDestroy has been called on this object already</p>
-<p><a id='PETSc.isfinalized-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.isfinalized-Tuple{PETSc.Vec{T,VType}}'>#</a>
-<strong><code>PETSc.isfinalized</code></strong> &mdash; <em>Method</em>.</p>
-<p>Determine whether a vector has already been finalized</p>
-<p><a id='PETSc.lengthlocal-Tuple{PETSc.PetscMat{T,MType}}' href='#PETSc.lengthlocal-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
+<p><a id='PETSc.lengthlocal-Tuple{PETSc.PetscMat{T}}' href='#PETSc.lengthlocal-Tuple{PETSc.PetscMat{T}}'>#</a>
 <strong><code>PETSc.lengthlocal</code></strong> &mdash; <em>Method</em>.</p>
 <p>prod(sizelocal))</p>
-<p><a id='PETSc.lengthlocal-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.lengthlocal-Tuple{PETSc.Vec{T,VType}}'>#</a>
+<p><a id='PETSc.lengthlocal-Tuple{PETSc.Vec{T}}' href='#PETSc.lengthlocal-Tuple{PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.lengthlocal</code></strong> &mdash; <em>Method</em>.</p>
 <p>Get the length of the local portion of the vector</p>
-<p><a id='PETSc.localIS-Tuple{PETSc.PetscMat{T,MType}}' href='#PETSc.localIS-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
+<p><a id='PETSc.localIS-Tuple{PETSc.PetscMat{T}}' href='#PETSc.localIS-Tuple{PETSc.PetscMat{T}}'>#</a>
 <strong><code>PETSc.localIS</code></strong> &mdash; <em>Method</em>.</p>
 <p>Constructs 2 index sets that map from the local row and columns to the   global rows and columns</p>
-<p><a id='PETSc.localIS-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.localIS-Tuple{PETSc.Vec{T,VType}}'>#</a>
+<p><a id='PETSc.localIS-Tuple{PETSc.Vec{T}}' href='#PETSc.localIS-Tuple{PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.localIS</code></strong> &mdash; <em>Method</em>.</p>
 <p>Constructs index set mapping from local indexing to global indexing, based    on localpart()</p>
-<p><a id='PETSc.localIS_block-Tuple{PETSc.Mat{T,MType}}' href='#PETSc.localIS_block-Tuple{PETSc.Mat{T,MType}}'>#</a>
-<strong><code>PETSc.localIS_block</code></strong> &mdash; <em>Method</em>.</p>
-<p>Like localIS, but returns a block index IS</p>
-<p><a id='PETSc.localIS_block-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.localIS_block-Tuple{PETSc.Vec{T,VType}}'>#</a>
-<strong><code>PETSc.localIS_block</code></strong> &mdash; <em>Method</em>.</p>
-<p>Like localIS, but returns a block index IS</p>
-<p><a id='PETSc.local_to_global_mapping-Tuple{PETSc.PetscMat{T,MType}}' href='#PETSc.local_to_global_mapping-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
+<p><a id='PETSc.local_to_global_mapping-Tuple{PETSc.PetscMat{T}}' href='#PETSc.local_to_global_mapping-Tuple{PETSc.PetscMat{T}}'>#</a>
 <strong><code>PETSc.local_to_global_mapping</code></strong> &mdash; <em>Method</em>.</p>
 <p>Construct ISLocalToGlobalMappings for the the rows and columns of the matrix</p>
-<p><a id='PETSc.local_to_global_mapping-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.local_to_global_mapping-Tuple{PETSc.Vec{T,VType}}'>#</a>
+<p><a id='PETSc.local_to_global_mapping-Tuple{PETSc.Vec{T}}' href='#PETSc.local_to_global_mapping-Tuple{PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.local_to_global_mapping</code></strong> &mdash; <em>Method</em>.</p>
 <p>Construct ISLocalToGlobalMappings for the vector.  If a block vector,    create a block index set</p>
-<p><a id='PETSc.localpart-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.localpart-Tuple{PETSc.Vec{T,VType}}'>#</a>
+<p><a id='PETSc.localpart-Tuple{PETSc.Vec{T}}' href='#PETSc.localpart-Tuple{PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.localpart</code></strong> &mdash; <em>Method</em>.</p>
 <p>Get the range of global indices that define the local part of the vector.   Internally, this calls the Petsc function VecGetOwnershipRange, and has   the same limitations as that function, namely that some vector formats do    not have a well defined contiguous range.</p>
-<p><a id='PETSc.localpart_block-Tuple{PETSc.Mat{T,MType}}' href='#PETSc.localpart_block-Tuple{PETSc.Mat{T,MType}}'>#</a>
-<strong><code>PETSc.localpart_block</code></strong> &mdash; <em>Method</em>.</p>
-<p>Similar to localpart, but returns the range of block indices</p>
-<p><a id='PETSc.localpart_block-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.localpart_block-Tuple{PETSc.Vec{T,VType}}'>#</a>
-<strong><code>PETSc.localpart_block</code></strong> &mdash; <em>Method</em>.</p>
-<p>Similar to localpart, but returns the range of block indices</p>
-<p><a id='PETSc.localranges-Tuple{PETSc.PetscMat{T,MType}}' href='#PETSc.localranges-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
+<p><a id='PETSc.localranges-Tuple{PETSc.PetscMat{T}}' href='#PETSc.localranges-Tuple{PETSc.PetscMat{T}}'>#</a>
 <strong><code>PETSc.localranges</code></strong> &mdash; <em>Method</em>.</p>
 <p>This function returns two Range object corresponding the global indices   of the rows and columns of the matrix A.</p>
 <p>The function has the same limiations as Petsc's MatGetOwnershipRange,    in that it assumes the rows of the matrix are divided up contigously.</p>
-<p><a id='PETSc.normalize!-Tuple{Union{PETSc.Vec{Complex{T<:Real},VType},PETSc.Vec{T<:Real,VType}}}' href='#PETSc.normalize!-Tuple{Union{PETSc.Vec{Complex{T<:Real},VType},PETSc.Vec{T<:Real,VType}}}'>#</a>
+<p><a id='PETSc.normalize!-Tuple{Union{PETSc.Vec{Complex{T<:Real}},PETSc.Vec{T<:Real}}}' href='#PETSc.normalize!-Tuple{Union{PETSc.Vec{Complex{T<:Real}},PETSc.Vec{T<:Real}}}'>#</a>
 <strong><code>PETSc.normalize!</code></strong> &mdash; <em>Method</em>.</p>
 <p>computes v = norm(x,2), divides x by v, and returns v</p>
-<p><a id='PETSc.petscview-Tuple{PETSc.PetscMat{T,MType}}' href='#PETSc.petscview-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
+<p><a id='PETSc.petscview-Tuple{PETSc.PetscMat{T}}' href='#PETSc.petscview-Tuple{PETSc.PetscMat{T}}'>#</a>
 <strong><code>PETSc.petscview</code></strong> &mdash; <em>Method</em>.</p>
 <p>Print a Petsc matrix to STDOUT</p>
-<p><a id='PETSc.petscview-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.petscview-Tuple{PETSc.Vec{T,VType}}'>#</a>
+<p><a id='PETSc.petscview-Tuple{PETSc.Vec{T}}' href='#PETSc.petscview-Tuple{PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.petscview</code></strong> &mdash; <em>Method</em>.</p>
 <p>Use the PETSc routine for printing a vector to stdout</p>
-<p><a id='PETSc.petscwrite-Tuple{PETSc.PetscMat{T,MType},Any}' href='#PETSc.petscwrite-Tuple{PETSc.PetscMat{T,MType},Any}'>#</a>
-<strong><code>PETSc.petscwrite</code></strong> &mdash; <em>Method</em>.</p>
-<p>Print a Petsc matrix to a named file, in text format</p>
 <p><a id='PETSc.restore-Tuple{PETSc.LocalVector{T,false}}' href='#PETSc.restore-Tuple{PETSc.LocalVector{T,false}}'>#</a>
 <strong><code>PETSc.restore</code></strong> &mdash; <em>Method</em>.</p>
 <p>Tell Petsc the LocalVector is no longer being used</p>
-<p><a id='PETSc.restore-Tuple{PETSc.Vec{T,:seq}}' href='#PETSc.restore-Tuple{PETSc.Vec{T,:seq}}'>#</a>
+<p><a id='PETSc.restore-Tuple{PETSc.Vec{T}}' href='#PETSc.restore-Tuple{PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.restore</code></strong> &mdash; <em>Method</em>.</p>
 <p>Tell Petsc the VecLocal is no longer needed</p>
-<p><a id='PETSc.rhs_wrapper-Tuple{PETSc.C.TS{T},Any,PETSc.C.Vec{T},PETSc.C.Vec{T},Ptr{Void}}' href='#PETSc.rhs_wrapper-Tuple{PETSc.C.TS{T},Any,PETSc.C.Vec{T},PETSc.C.Vec{T},Ptr{Void}}'>#</a>
-<strong><code>PETSc.rhs_wrapper</code></strong> &mdash; <em>Method</em>.</p>
-<p>Wrapper for the right hand side function.  This function is always passed   to PETSc as the right hand side function, and calls the user supplied   function internally.  The user supplied function must be the first   component of the ctx tuple</p>
-<p><a id='PETSc.scatter!-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64},:mpi}}' href='#PETSc.scatter!-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64},:mpi}}'>#</a>
+<p><a id='PETSc.scatter!-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64}}}' href='#PETSc.scatter!-Tuple{PETSc.Vec{T<:Union{Complex{Float64},Float32,Float64}}}'>#</a>
 <strong><code>PETSc.scatter!</code></strong> &mdash; <em>Method</em>.</p>
 <p>Convenience method for calling both ghost_begin! and ghost_end!</p>
-<p><a id='PETSc.set_local_to_global_mapping-Tuple{PETSc.PetscMat{T,MType},PETSc.ISLocalToGlobalMapping{T},PETSc.ISLocalToGlobalMapping{T}}' href='#PETSc.set_local_to_global_mapping-Tuple{PETSc.PetscMat{T,MType},PETSc.ISLocalToGlobalMapping{T},PETSc.ISLocalToGlobalMapping{T}}'>#</a>
+<p><a id='PETSc.set_local_to_global_mapping-Tuple{PETSc.PetscMat{T},PETSc.ISLocalToGlobalMapping{T},PETSc.ISLocalToGlobalMapping{T}}' href='#PETSc.set_local_to_global_mapping-Tuple{PETSc.PetscMat{T},PETSc.ISLocalToGlobalMapping{T},PETSc.ISLocalToGlobalMapping{T}}'>#</a>
 <strong><code>PETSc.set_local_to_global_mapping</code></strong> &mdash; <em>Method</em>.</p>
 <p>Registers the ISLocalToGlobalMappings with the matrix</p>
-<p><a id='PETSc.set_local_to_global_mapping-Tuple{PETSc.Vec{T,VType},PETSc.ISLocalToGlobalMapping{T}}' href='#PETSc.set_local_to_global_mapping-Tuple{PETSc.Vec{T,VType},PETSc.ISLocalToGlobalMapping{T}}'>#</a>
+<p><a id='PETSc.set_local_to_global_mapping-Tuple{PETSc.Vec{T},PETSc.ISLocalToGlobalMapping{T}}' href='#PETSc.set_local_to_global_mapping-Tuple{PETSc.Vec{T},PETSc.ISLocalToGlobalMapping{T}}'>#</a>
 <strong><code>PETSc.set_local_to_global_mapping</code></strong> &mdash; <em>Method</em>.</p>
 <p>Registers the ISLocalToGlobalMapping with the Vec</p>
 <p><a id='PETSc.set_rhs_function' href='#PETSc.set_rhs_function'>#</a>
@@ -407,34 +317,124 @@ KSP(pc::PC; kws...)
 <p><a id='PETSc.set_times-Tuple{PETSc.TS{T<:Union{Complex{Float64},Float32,Float64}},Any,Any,Integer,Any}' href='#PETSc.set_times-Tuple{PETSc.TS{T<:Union{Complex{Float64},Float32,Float64}},Any,Any,Integer,Any}'>#</a>
 <strong><code>PETSc.set_times</code></strong> &mdash; <em>Method</em>.</p>
 <p>Set the times related quantities:     t0 : initial time value     dt0: initial time step     nsteps: maximum number of steps     tmax: maximum time value</p>
-<p><a id='PETSc.setindex0!-Tuple{PETSc.Vec{T,VType},Array{T,N},Array{Int64,N}}' href='#PETSc.setindex0!-Tuple{PETSc.Vec{T,VType},Array{T,N},Array{Int64,N}}'>#</a>
-<strong><code>PETSc.setindex0!</code></strong> &mdash; <em>Method</em>.</p>
-<p>Like setindex, but requires the indices be 0-base</p>
-<p><a id='PETSc.setop!-Tuple{PETSc.Mat{T,:shell},UInt32,Ptr{Void}}' href='#PETSc.setop!-Tuple{PETSc.Mat{T,:shell},UInt32,Ptr{Void}}'>#</a>
+<p><a id='PETSc.setop!-Tuple{PETSc.Mat{T},UInt32,Ptr{Void}}' href='#PETSc.setop!-Tuple{PETSc.Mat{T},UInt32,Ptr{Void}}'>#</a>
 <strong><code>PETSc.setop!</code></strong> &mdash; <em>Method</em>.</p>
 <p>Provide a callback function for a particular matrix operation.  op is a    Petsc enum value inidcating the operation, and func is a void pointer    (obtained from cfunction() ) that performs the operation.</p>
 <p>The function should take the low level Petsc objects (defined in the C module)   rather than the high level ones defined in this file.  There are constructors   to create a high level object from a low level one</p>
-<p><a id='PETSc.setoption!-Tuple{PETSc.Mat{T,MType},Int32,Bool}' href='#PETSc.setoption!-Tuple{PETSc.Mat{T,MType},Int32,Bool}'>#</a>
+<p><a id='PETSc.setoption!-Tuple{PETSc.Mat{T},Int32,Bool}' href='#PETSc.setoption!-Tuple{PETSc.Mat{T},Int32,Bool}'>#</a>
 <strong><code>PETSc.setoption!</code></strong> &mdash; <em>Method</em>.</p>
 <p>Pass values to the Petsc function MatSetOption.  Note that the handful of    options that can be passed here should not be confused with those for the   global options database</p>
-<p><a id='PETSc.setpreallocation!-Tuple{PETSc.Mat{T,MType}}' href='#PETSc.setpreallocation!-Tuple{PETSc.Mat{T,MType}}'>#</a>
-<strong><code>PETSc.setpreallocation!</code></strong> &mdash; <em>Method</em>.</p>
-<p>Preallocates the sparsity pattern for (B)AIJ matrices.</p>
 <p><a id='PETSc.sizelocal-Tuple{AbstractArray{T,n},Any}' href='#PETSc.sizelocal-Tuple{AbstractArray{T,n},Any}'>#</a>
 <strong><code>PETSc.sizelocal</code></strong> &mdash; <em>Method</em>.</p>
 <p>Get local size of the vector</p>
-<p><a id='PETSc.sizelocal-Tuple{PETSc.PetscMat{T,MType}}' href='#PETSc.sizelocal-Tuple{PETSc.PetscMat{T,MType}}'>#</a>
+<p><a id='PETSc.sizelocal-Tuple{PETSc.PetscMat{T}}' href='#PETSc.sizelocal-Tuple{PETSc.PetscMat{T}}'>#</a>
 <strong><code>PETSc.sizelocal</code></strong> &mdash; <em>Method</em>.</p>
 <p>Returns the local dimensions of the matrix</p>
-<p><a id='PETSc.sizelocal-Tuple{PETSc.Vec{T,VType}}' href='#PETSc.sizelocal-Tuple{PETSc.Vec{T,VType}}'>#</a>
+<p><a id='PETSc.sizelocal-Tuple{PETSc.Vec{T}}' href='#PETSc.sizelocal-Tuple{PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.sizelocal</code></strong> &mdash; <em>Method</em>.</p>
 <p>Get the local size of the vector</p>
-<p><a id='PETSc.solve!-Tuple{PETSc.TS{T},PETSc.Vec{T,VType}}' href='#PETSc.solve!-Tuple{PETSc.TS{T},PETSc.Vec{T,VType}}'>#</a>
+<p><a id='PETSc.solve!-Tuple{PETSc.TS{T},PETSc.Vec{T}}' href='#PETSc.solve!-Tuple{PETSc.TS{T},PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.solve!</code></strong> &mdash; <em>Method</em>.</p>
 <p>Solve the system using the initial condition provided in vec</p>
 <p><a id='PETSc.solve!-Tuple{PETSc.TS{T}}' href='#PETSc.solve!-Tuple{PETSc.TS{T}}'>#</a>
 <strong><code>PETSc.solve!</code></strong> &mdash; <em>Method</em>.</p>
 <p>Solve the system using the intitial condition proived by set_ic</p>
+<p><a id='PETSc.mat2vec' href='#PETSc.mat2vec'>#</a>
+<strong><code>PETSc.mat2vec</code></strong> &mdash; <em>Constant</em>.</p>
+<p>Maps Matrix formats to the corresponding vector format</p>
+<p><a id='PETSc.MatRow' href='#PETSc.MatRow'>#</a>
+<strong><code>PETSc.MatRow</code></strong> &mdash; <em>Type</em>.</p>
+<p>Object that enables access to a single row of a sparse matrix.</p>
+<p>Users <em>must</em> call restore when done with a MatRow, before attempting to    create another one.</p>
+<p><a id='PETSc.MatRow-Tuple{PETSc.Mat{T},Integer}' href='#PETSc.MatRow-Tuple{PETSc.Mat{T},Integer}'>#</a>
+<strong><code>PETSc.MatRow</code></strong> &mdash; <em>Method</em>.</p>
+<p>Preferred constructor for a MatRow</p>
+<p><a id='PETSc.PetscMat' href='#PETSc.PetscMat'>#</a>
+<strong><code>PETSc.PetscMat</code></strong> &mdash; <em>Type</em>.</p>
+<p>A Petsc matrix.</p>
+<p>Unlike Vecs, the Petsc implementation keeps track of the local assembly    state, so the Julia type does not have to.   <code>verify_assembled</code>: if true, verify all processes are assembled, if false,                       only local process   <code>insertmode</code>: C.InsertMode used by <code>setindex!</code></p>
+<p><a id='Base.==-Tuple{PETSc.PetscMat{T},AbstractArray{T,N}}' href='#Base.==-Tuple{PETSc.PetscMat{T},AbstractArray{T,N}}'>#</a>
+<strong><code>Base.==</code></strong> &mdash; <em>Method</em>.</p>
+<p>Equality test for AbstractArray and PetscMat, SEQ only</p>
+<p><a id='Base.SparseMatrix.nnz-Tuple{PETSc.Mat{T}}' href='#Base.SparseMatrix.nnz-Tuple{PETSc.Mat{T}}'>#</a>
+<strong><code>Base.SparseMatrix.nnz</code></strong> &mdash; <em>Method</em>.</p>
+<p>Number of non-zero entries that have been assigned to</p>
+<p><a id='Base.fill!-Tuple{PETSc.PetscMat{T},Number}' href='#Base.fill!-Tuple{PETSc.PetscMat{T},Number}'>#</a>
+<strong><code>Base.fill!</code></strong> &mdash; <em>Method</em>.</p>
+<p>Fill the matrix with the specified values.</p>
+<p>Currently, this function either destroys the sparsity pattern or    gives an error, unless v = 0, in which case it zeros out the non-zero    entries without changing the sparsity pattern</p>
+<p><a id='Base.full-Tuple{PETSc.PetscMat{T}}' href='#Base.full-Tuple{PETSc.PetscMat{T}}'>#</a>
+<strong><code>Base.full</code></strong> &mdash; <em>Method</em>.</p>
+<p>Create a dense Julia matrix for a Petsc sparse matrix.  This only works   for SEQ matrices</p>
+<p><a id='Base.kron-Tuple{PETSc.Mat{T},PETSc.Mat{T}}' href='#Base.kron-Tuple{PETSc.Mat{T},PETSc.Mat{T}}'>#</a>
+<strong><code>Base.kron</code></strong> &mdash; <em>Method</em>.</p>
+<p>Kronecker product for SEQ matrices only.  The output is a non-block matrix   even if the inputs are block</p>
+<p><a id='Base.length-Tuple{PETSc.Vec{T}}' href='#Base.length-Tuple{PETSc.Vec{T}}'>#</a>
+<strong><code>Base.length</code></strong> &mdash; <em>Method</em>.</p>
+<p>Get the global length of the vector</p>
+<p><a id='Base.map!-Tuple{Any,PETSc.Vec{T},PETSc.Vec{T},PETSc.Vec{T2},Vararg{PETSc.Vec{T2}}}' href='#Base.map!-Tuple{Any,PETSc.Vec{T},PETSc.Vec{T},PETSc.Vec{T2},Vararg{PETSc.Vec{T2}}}'>#</a>
+<strong><code>Base.map!</code></strong> &mdash; <em>Method</em>.</p>
+<p>Multiple source vector map.  All vectors must have the local and global    lengths.  If some a ghost vectors and some are not, the map is applied   only to the local part</p>
+<p><a id='Base.map!-Tuple{Any,PETSc.Vec{T},PETSc.Vec{T}}' href='#Base.map!-Tuple{Any,PETSc.Vec{T},PETSc.Vec{T}}'>#</a>
+<strong><code>Base.map!</code></strong> &mdash; <em>Method</em>.</p>
+<p>Applys f element-wise to src to populate dest.  If src is a ghost vector, then f is applied to the ghost elements as well as the local elements.</p>
+<p><a id='Base.size-Tuple{PETSc.PetscMat{T}}' href='#Base.size-Tuple{PETSc.PetscMat{T}}'>#</a>
+<strong><code>Base.size</code></strong> &mdash; <em>Method</em>.</p>
+<p>Returns the global dimensions of the matrix</p>
+<p><a id='Base.size-Tuple{PETSc.Vec{T}}' href='#Base.size-Tuple{PETSc.Vec{T}}'>#</a>
+<strong><code>Base.size</code></strong> &mdash; <em>Method</em>.</p>
+<p>Get the global size of the vector</p>
+<p><a id='PETSc.PetscDestroy-Tuple{PETSc.Mat{T}}' href='#PETSc.PetscDestroy-Tuple{PETSc.Mat{T}}'>#</a>
+<strong><code>PETSc.PetscDestroy</code></strong> &mdash; <em>Method</em>.</p>
+<p>Destroy a Mat object and the underlying data structure, if the object   has not already been finalized</p>
+<p><a id='PETSc.PetscDestroy-Tuple{PETSc.Vec{T}}' href='#PETSc.PetscDestroy-Tuple{PETSc.Vec{T}}'>#</a>
+<strong><code>PETSc.PetscDestroy</code></strong> &mdash; <em>Method</em>.</p>
+<p>The Petsc function to deallocate Vec objects</p>
+<p><a id='PETSc.PetscKron-Tuple{SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},PETSc.Mat{T<:Union{Complex{Float64},Float32,Float64}}}' href='#PETSc.PetscKron-Tuple{SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},PETSc.Mat{T<:Union{Complex{Float64},Float32,Float64}}}'>#</a>
+<strong><code>PETSc.PetscKron</code></strong> &mdash; <em>Method</em>.</p>
+<p>Kronecker product of A and B, storing the result in D.  D should already be    pre-allocated with the right sparsity pattern</p>
+<p><a id='PETSc.PetscKron-Tuple{SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer}}' href='#PETSc.PetscKron-Tuple{SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer},SparseMatrixCSC{T<:Union{Complex{Float64},Float32,Float64},Ti<:Integer}}'>#</a>
+<strong><code>PETSc.PetscKron</code></strong> &mdash; <em>Method</em>.</p>
+<p>Kronecker product of A and B where the result is a Petsc Mat</p>
+<p><a id='PETSc.count_row_nz-Tuple{PETSc.Mat{T},Integer}' href='#PETSc.count_row_nz-Tuple{PETSc.Mat{T},Integer}'>#</a>
+<strong><code>PETSc.count_row_nz</code></strong> &mdash; <em>Method</em>.</p>
+<p>Count the number of non-zeros in a row of the matrix.  This temporarily   creates a MatRow object, so it cannot be used if one already exists</p>
+<p><a id='PETSc.getinfo' href='#PETSc.getinfo'>#</a>
+<strong><code>PETSc.getinfo</code></strong> &mdash; <em>Function</em>.</p>
+<p>Get the MatInfo struct for the matrix</p>
+<p><a id='PETSc.iassemble-Tuple{Union{PETSc.PetscMat{T},PETSc.Vec{T}}}' href='#PETSc.iassemble-Tuple{Union{PETSc.PetscMat{T},PETSc.Vec{T}}}'>#</a>
+<strong><code>PETSc.iassemble</code></strong> &mdash; <em>Method</em>.</p>
+<p>Perform a flush assembly (take stashed values and put them into the matrix,   but don't squeeze out any preallocated space that has not been used yet</p>
+<p><a id='PETSc.isfinalized-Tuple{PETSc.PetscMat{T}}' href='#PETSc.isfinalized-Tuple{PETSc.PetscMat{T}}'>#</a>
+<strong><code>PETSc.isfinalized</code></strong> &mdash; <em>Method</em>.</p>
+<p>Check if PetscDestroy has been called on this object already</p>
+<p><a id='PETSc.isfinalized-Tuple{PETSc.Vec{T}}' href='#PETSc.isfinalized-Tuple{PETSc.Vec{T}}'>#</a>
+<strong><code>PETSc.isfinalized</code></strong> &mdash; <em>Method</em>.</p>
+<p>Determine whether a vector has already been finalized</p>
+<p><a id='PETSc.localIS_block-Tuple{PETSc.Mat{T}}' href='#PETSc.localIS_block-Tuple{PETSc.Mat{T}}'>#</a>
+<strong><code>PETSc.localIS_block</code></strong> &mdash; <em>Method</em>.</p>
+<p>Like localIS, but returns a block index IS</p>
+<p><a id='PETSc.localIS_block-Tuple{PETSc.Vec{T}}' href='#PETSc.localIS_block-Tuple{PETSc.Vec{T}}'>#</a>
+<strong><code>PETSc.localIS_block</code></strong> &mdash; <em>Method</em>.</p>
+<p>Like localIS, but returns a block index IS</p>
+<p><a id='PETSc.localpart_block-Tuple{PETSc.Mat{T}}' href='#PETSc.localpart_block-Tuple{PETSc.Mat{T}}'>#</a>
+<strong><code>PETSc.localpart_block</code></strong> &mdash; <em>Method</em>.</p>
+<p>Similar to localpart, but returns the range of block indices</p>
+<p><a id='PETSc.localpart_block-Tuple{PETSc.Vec{T}}' href='#PETSc.localpart_block-Tuple{PETSc.Vec{T}}'>#</a>
+<strong><code>PETSc.localpart_block</code></strong> &mdash; <em>Method</em>.</p>
+<p>Similar to localpart, but returns the range of block indices</p>
+<p><a id='PETSc.petscwrite-Tuple{PETSc.PetscMat{T},Any}' href='#PETSc.petscwrite-Tuple{PETSc.PetscMat{T},Any}'>#</a>
+<strong><code>PETSc.petscwrite</code></strong> &mdash; <em>Method</em>.</p>
+<p>Print a Petsc matrix to a named file, in text format</p>
+<p><a id='PETSc.rhs_wrapper-Tuple{PETSc.C.TS{T},Any,PETSc.C.Vec{T},PETSc.C.Vec{T},Ptr{Void}}' href='#PETSc.rhs_wrapper-Tuple{PETSc.C.TS{T},Any,PETSc.C.Vec{T},PETSc.C.Vec{T},Ptr{Void}}'>#</a>
+<strong><code>PETSc.rhs_wrapper</code></strong> &mdash; <em>Method</em>.</p>
+<p>Wrapper for the right hand side function.  This function is always passed   to PETSc as the right hand side function, and calls the user supplied   function internally.  The user supplied function must be the first   component of the ctx tuple</p>
+<p><a id='PETSc.setindex0!-Tuple{PETSc.Vec{T},Array{T,N},Array{Int64,N}}' href='#PETSc.setindex0!-Tuple{PETSc.Vec{T},Array{T,N},Array{Int64,N}}'>#</a>
+<strong><code>PETSc.setindex0!</code></strong> &mdash; <em>Method</em>.</p>
+<p>Like setindex, but requires the indices be 0-base</p>
+<p><a id='PETSc.setpreallocation!-Tuple{PETSc.Mat{T}}' href='#PETSc.setpreallocation!-Tuple{PETSc.Mat{T}}'>#</a>
+<strong><code>PETSc.setpreallocation!</code></strong> &mdash; <em>Method</em>.</p>
+<p>Preallocates the sparsity pattern for (B)AIJ matrices.</p>
 <h1 id="_1">=</h1>
 <p>=# #order = [:type, :function]</p>
               
@@ -475,5 +475,5 @@ KSP(pc::PC; kws...)
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-07-19 02:01:58.059518
+Build Date UTC : 2016-08-07 20:59:17.077455
 -->

@@ -1,7 +1,8 @@
 @testset "C functions {$ST}" begin
 
  v_ptr = PETSc.C.VecCreate(ST)
- b = Vec{ST, :mpi}(v_ptr)
+ chk(C.VecSetType(v_ptr, PETSc.C.VECMPI))
+ b = Vec{ST}(v_ptr)
  resize!(b, mlocal=sys_size)
  global_indices = localpart(b) - 1  # zero based
   for i=1:sys_size
@@ -88,7 +89,7 @@
     ctx = (1, 2, 3)
     ctx_ptr = pointer_from_objref(ctx)
     c_ptr = PETSc.C.MatCreateShell(sys_size, sys_size, PETSc.C.PETSC_DETERMINE, PETSc.C.PETSC_DETERMINE, ctx_ptr)
-    C = Mat{ST, PETSc.C.MATSHELL}(c_ptr)
+    C = Mat{ST}(c_ptr)
    
      
     f_ptr = cfunction(mymult, PETSc.C.PetscErrorCode, (PETSc.C.Mat{ST}, PETSc.C.Vec{ST}, PETSc.C.Vec{ST}))

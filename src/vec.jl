@@ -15,7 +15,7 @@ export Vec, comm, NullVec
   solves, etc.).
 
 """
-type Vec{T,VType} <: AbstractVector{T}
+type Vec{T} <: AbstractVector{T}
   p::C.Vec{T}
   assembled::Bool # whether are all values have been assembled
   verify_assembled::Bool # check whether all processes are assembled
@@ -27,7 +27,6 @@ type Vec{T,VType} <: AbstractVector{T}
                verify_assembled::Bool=true)
     v = new(p, false, verify_assembled, C.INSERT_VALUES, data)
     if first_instance
-      chk(C.VecSetType(p, VType))  # set the type here to ensure it matches VType
       finalizer(v, PetscDestroy)
     end
     return v
@@ -63,15 +62,15 @@ global const NullVec = Dict{DataType, Vec}()
 
 
 if have_petsc[1]
-  global const NullVec1 = Vec{Float64, C.VECSTANDARD}(C.Vec{Float64}(C_NULL), first_instance=false)
+  global const NullVec1 = Vec{Float64}(C.Vec{Float64}(C_NULL), first_instance=false)
   NullVec[Float64] = NullVec1
 end
 if have_petsc[2]
-  global const NullVec2 = Vec{Float32, C.VECSTANDARD}(C.Vec{Float32}(C_NULL), first_instance=false)
+  global const NullVec2 = Vec{Float32}(C.Vec{Float32}(C_NULL), first_instance=false)
   NullVec[Float32] = NullVec2
 end
 if have_petsc[3]
-  global const NullVec3 = Vec{Complex128, C.VECSTANDARD}(C.Vec{Complex128}(C_NULL), first_instance=false)
+  global const NullVec3 = Vec{Complex128}(C.Vec{Complex128}(C_NULL), first_instance=false)
   NullVec[Complex128] = NullVec3
 
 end
@@ -91,7 +90,11 @@ export gettype
  """
   Get the symbol that is the format of the vector
 """
-gettype{T,VT}(a::Vec{T,VT}) = VT
+function gettype{T}(a::Vec{T})
+  sym_arr = Array(C.VecType, 1)
+  chk(C.VecGetType(a.p, sym_arr))
+  return sym_arr[1]
+end
 
 
  """
@@ -101,7 +104,8 @@ function Vec{T}(::Type{T}, vtype::C.VecType=C.VECMPI;
                 comm::MPI.Comm=MPI.COMM_WORLD)
   p = Ref{C.Vec{T}}()
   chk(C.VecCreate(comm, p))
-  v = Vec{T, vtype}(p[])
+  chk(C.VecSetType(p[], vtype)) 
+  v = Vec{T}(p[])
   v
 end
 
@@ -129,7 +133,7 @@ end
 function Vec{T<:Scalar}(v::Vector{T}; comm::MPI.Comm=MPI.COMM_WORLD)
   p = Ref{C.Vec{T}}()
   chk(C.VecCreateMPIWithArray(comm, 1, length(v), C.PETSC_DECIDE, v, p))
-  pv = Vec{T, C.VECMPI}(p[], v)
+  pv = Vec{T}(p[], v)
   return pv
 end
 
@@ -153,7 +157,7 @@ export VecGhost, VecLocal, restore
 # making mlocal the position and mglobal the keyword argument is inconsistent
 # with the other Vec constructors, but it makes more sense here
 function VecGhost{T<:Scalar, I <: Integer}(::Type{T}, mlocal::Integer, 
-                  ghost_idx::Array{I,1}; comm=MPI.COMM_WORLD, m=C.PETSC_DECIDE, bs=1)
+                  ghost_idx::Array{I,1}; comm=MPI.COMM_WORLD, m=C.PETSC_DECIDE, bs=1, vtype=C.VECMPI)
 
     nghost = length(ghost_idx)
     ghost_idx2 = [ PetscInt(i -1) for i in ghost_idx]
@@ -167,7 +171,9 @@ function VecGhost{T<:Scalar, I <: Integer}(::Type{T}, mlocal::Integer,
       println(STDERR, "WARNING: unsupported block size requested, bs = ", bs)
     end
 
-    return Vec{T, C.VECMPI}(vref[])
+    chk(C.VecSetType(vref[], vtype))
+
+    return Vec{T}(vref[])
 end
 
  """
@@ -175,20 +181,20 @@ end
   original vector.  The underlying memory for the orignal and output vectors
   alias.
 """
-function VecLocal{T <:Scalar}( v::Vec{T, C.VECMPI})
+function VecLocal{T <:Scalar}( v::Vec{T})
 
   vref = Ref{C.Vec{T}}()
   chk(C.VecGhostGetLocalForm(v.p, vref))
   # store v to use with Get/Restore LocalForm
   # Petsc reference counting solves the gc problem
-  return Vec{T, C.VECSEQ}(vref[], v)
+  return Vec{T}(vref[], v)
 end
 
 #TODO: use restore for all types of restoring a local view
  """
   Tell Petsc the VecLocal is no longer needed
 """
-function restore{T}(v::Vec{T, C.VECSEQ})
+function restore{T}(v::Vec{T})
 
   vp = v.data
   vref = Ref(v.p)
@@ -243,7 +249,7 @@ export ghost_begin!, ghost_end!, scatter!, ghost_update!
   Start communication to update the ghost values (on other processes) from the local
   values
 """
-function ghost_begin!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES,
+function ghost_begin!{T<:Scalar}(v::Vec{T}; imode=C.INSERT_VALUES,
                                smode=C.SCATTER_FORWARD)
     chk(C.VecGhostUpdateBegin(v.p, imode, smode))
     return v
@@ -252,7 +258,7 @@ end
  """
   Finish communication for updating ghost values
 """
-function ghost_end!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES,
+function ghost_end!{T<:Scalar}(v::Vec{T}; imode=C.INSERT_VALUES,
                                smode=C.SCATTER_FORWARD)
     chk(C.VecGhostUpdateEnd(v.p, imode, smode))
     return v
@@ -262,7 +268,7 @@ end
  """
   Convenience method for calling both ghost_begin! and ghost_end!
 """
-function scatter!{T<:Scalar}(v::Vec{T, C.VECMPI}; imode=C.INSERT_VALUES, smode=C.SCATTER_FORWARD)
+function scatter!{T<:Scalar}(v::Vec{T}; imode=C.INSERT_VALUES, smode=C.SCATTER_FORWARD)
 
   ghost_begin!(v, imode=imode, smode=smode)
   ghost_end!(v, imode=imode, smode=smode)
@@ -358,22 +364,26 @@ function localpart_block(v::Vec)
 end
 
 
-function Base.similar{T,VType}(x::Vec{T,VType})
+function Base.similar{T}(x::Vec{T})
   p = Ref{C.Vec{T}}()
   chk(C.VecDuplicate(x.p, p))
-  Vec{T,VType}(p[])
+  Vec{T}(p[])
 end
 
 Base.similar{T}(x::Vec{T}, ::Type{T}) = similar(x)
-Base.similar{T,VType}(x::Vec{T,VType}, T2::Type) =
+function Base.similar{T}(x::Vec{T}, T2::Type)
+  VType = gettype(x)
   Vec(T2, length(x), VType; comm=comm(x), mlocal=lengthlocal(x))
+end
 
-function Base.similar{T,VType}(x::Vec{T,VType}, T2::Type, len::Union{Int,Dims})
+function Base.similar{T}(x::Vec{T}, T2::Type, len::Union{Int,Dims})
+  VType = gettype(x)
   length(len) == 1 || throw(ArgumentError("expecting 1-dimensional size"))
   len[1]==length(x) && T2==T ? similar(x) : Vec(T2, len[1], vtype=VType; comm=comm(x))
 end
 
-function Base.similar{T,VType}(x::Vec{T,VType}, len::Union{Int,Dims})
+function Base.similar{T}(x::Vec{T}, len::Union{Int,Dims})
+  VType = gettype(x)
   length(len) == 1 || throw(ArgumentError("expecting 1-dimensional size"))
   len[1]==length(x) ? similar(x) : Vec(T, len[1], vtype=VType; comm=comm(x))
 end

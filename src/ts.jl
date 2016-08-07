@@ -166,16 +166,8 @@ function rhs_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, F::C.Vec{T}, ctx_ptr::Ptr{V
   Treal = real(T)
   # transform into high level objects
   bigts = TS{T}(ts, first_instance=false)
-
-  tref = Array(C.VecType, 1)
-#  tref = Ref{C.VecType}()
-  chk(C.VecGetType(u, tref))
-  bigu = Vec{T, tref[1]}(u, first_instance=false)
-
-  tref2 = Array(C.VecType, 1)
-#  tref2 = Ref{C.VecType}()
-  chk(C.VecGetType(F, tref2))
-  bigF = Vec{T, tref2[1]}(F, first_instance=false)
+  bigu = Vec{T}(u, first_instance=false)
+  bigF = Vec{T}(F, first_instance=false)
 
   ctx = unsafe_pointer_to_objref(ctx_ptr)
   func = ctx[1]
@@ -215,15 +207,9 @@ function rhs_jac_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, A::C.Mat{T}, B::C.Mat{T
 
   Treal = real(T) 
   bigts = TS{T}(ts, first_instance=false)
-  tref = Ref{C.VecType}()
-  chk(C.VecGetType(u, tref))
-  bigu = Vec{T, tref[]}(u, first_instance=false)
-
-  tref2 = Ref{C.MatType}()
-  chk(C.MatGetType(A, tref2))
-  bigA = Mat{T, tref2[]}(A, first_instance=false)
-
-  bigB = Mat{T, tref2[]}(B, first_instance=false)
+  bigu = Vec{T}(u, first_instance=false)
+  bigA = Mat{T}(A, first_instance=false)
+  bigB = Mat{T}(B, first_instance=false)
 
   ctx = unsafe_pointer_to_objref(ctx_ptr)
   func = ctx[1]
@@ -261,20 +247,9 @@ function lhs_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, ut::C.Vec{T}, F::C.Vec{T}, 
   Treal = real(T)
   # transform into high level objects
   bigts = TS{T}(ts, first_instance=false)
-
-  tref = Array(C.VecType, 1)
-#  tref = Ref{C.VecType}()
-  chk(C.VecGetType(u, tref))
-  bigu = Vec{T, tref[1]}(u, first_instance=false)
-
-  tref2 = Array(C.VecType, 1)
-  chk(C.VecGetType(ut, tref2))
-  bigut = Vec{T, tref2[1]}(ut, first_instance=false)
-
-  tref3 = Array(C.VecType, 1)
-#  tref2 = Ref{C.VecType}()
-  chk(C.VecGetType(F, tref3))
-  bigF = Vec{T, tref3[1]}(F, first_instance=false)
+  bigu = Vec{T}(u, first_instance=false)
+  bigut = Vec{T}(ut, first_instance=false)
+  bigF = Vec{T}(F, first_instance=false)
 
   ctx = unsafe_pointer_to_objref(ctx_ptr)
   func = ctx[1]
@@ -304,23 +279,10 @@ function lhs_jac_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, ut::C.Vec{T}, a, A::C.M
 
   Treal = real(T) 
   bigts = TS{T}(ts, first_instance=false)
-
-  tref = Array(C.VecType, 1)
-  chk(C.VecGetType(u, tref))
-  bigu = Vec{T, tref[1]}(u, first_instance=false)
-
-  tref2 = Array(C.VecType, 1)
-  chk(C.VecGetType(ut, tref2))
-  bigut = Vec{T, tref2[1]}(ut, first_instance=false)
-
-
-  tref3 = Array(C.VecType, 1)
-  chk(C.MatGetType(A, tref3))
-  bigA = Mat{T, tref3[1]}(A, first_instance=false)
-
-  tref4 = Array(C.VecType, 1)
-  chk(C.MatGetType(B, tref4))
-  bigB = Mat{T, tref4[1]}(B, first_instance=false)
+  bigu = Vec{T}(u, first_instance=false)
+  bigut = Vec{T}(ut, first_instance=false)
+  bigA = Mat{T}(A, first_instance=false)
+  bigB = Mat{T}(B, first_instance=false)
 
   ctx = unsafe_pointer_to_objref(ctx_ptr)
   func = ctx[1]

@@ -92,7 +92,7 @@ function KSP{T}(pc::PC{T}; kws...)
   return KSP{T}(ksp)
 end
 
-KSP{T}(A::Mat{T}, PA::Mat{T}=A; kws...) = KSP(PC(A, PA; kws...); ksp...)
+KSP{T}(A::Mat{T}, PA::Mat{T}=A; kws...) = KSP(PC(A, PA; kws...); kws...)
 
 # Retrieve a reference to the matrix in the KSP object, as a raw C.Mat
 # pointer.  Note that we should not wrap this in a Mat object, or

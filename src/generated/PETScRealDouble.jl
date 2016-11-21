@@ -72,15 +72,15 @@ function PetscMallocClear(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscMallocDump(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscMallocDump,petscRealDouble),PetscErrorCode,(Ptr{FILE},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscMallocDumpLog(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscMallocDumpLog,petscRealDouble),PetscErrorCode,(Ptr{FILE},),arg1)
-end 
+end
 =#
 function PetscMallocGetCurrentUsage(arg0::Type{Float64},arg1::Union{Ptr{PetscLogDouble},StridedArray{PetscLogDouble},Ptr{PetscLogDouble},Ref{PetscLogDouble}})
     err = ccall((:PetscMallocGetCurrentUsage,petscRealDouble),PetscErrorCode,(Ptr{PetscLogDouble},),arg1)
@@ -102,7 +102,7 @@ function PetscMallocGetDebug(arg0::Type{Float64},arg1::Union{Ptr{PetscBool},Stri
     return err
 end
 
-function PetscMallocValidate(arg0::Type{Float64},arg1::Integer,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscMallocValidate(arg0::Type{Float64},arg1::Integer,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscMallocValidate,petscRealDouble),PetscErrorCode,(Cint,Cstring,Cstring),arg1,arg2,arg3)
     return err
 end
@@ -122,22 +122,22 @@ function PetscMallocGetDumpLog(arg0::Type{Float64},arg1::Union{Ptr{PetscBool},St
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscDataTypeToMPIDataType(arg0::Type{Float64},arg1::PetscDataType,arg2::Union{Ptr{MPI_Datatype},StridedArray{MPI_Datatype},Ptr{MPI_Datatype},Ref{MPI_Datatype}})
     ccall((:PetscDataTypeToMPIDataType,petscRealDouble),PetscErrorCode,(PetscDataType,Ptr{MPI_Datatype}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscMPIDataTypeToPetscDataType(arg0::Type{Float64},arg1::MPI_Datatype,arg2::Union{Ptr{PetscDataType},StridedArray{PetscDataType},Ptr{PetscDataType},Ref{PetscDataType}})
     ccall((:PetscMPIDataTypeToPetscDataType,petscRealDouble),PetscErrorCode,(MPI_Datatype,Ptr{PetscDataType}),arg1,arg2)
-end 
+end
 =#
 function PetscDataTypeGetSize(arg0::Type{Float64},arg1::PetscDataType,arg2::Union{Ptr{Csize_t},StridedArray{Csize_t},Ptr{Csize_t},Ref{Csize_t}})
     err = ccall((:PetscDataTypeGetSize,petscRealDouble),PetscErrorCode,(PetscDataType,Ptr{Csize_t}),arg1,arg2)
     return err
 end
 
-function PetscDataTypeFromString(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscDataType},StridedArray{PetscDataType},Ptr{PetscDataType},Ref{PetscDataType}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscDataTypeFromString(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscDataType},StridedArray{PetscDataType},Ptr{PetscDataType},Ref{PetscDataType}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscDataTypeFromString,petscRealDouble),PetscErrorCode,(Cstring,Ptr{PetscDataType},Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
@@ -157,12 +157,12 @@ function PetscMemcmp(arg0::Type{Float64},arg1::Union{Ptr{Void},StridedArray{Void
     return err
 end
 
-function PetscStrlen(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Csize_t},StridedArray{Csize_t},Ptr{Csize_t},Ref{Csize_t}})
+function PetscStrlen(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Csize_t},StridedArray{Csize_t},Ptr{Csize_t},Ref{Csize_t}})
     err = ccall((:PetscStrlen,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Csize_t}),arg1,arg2)
     return err
 end
 
-function PetscStrToArray(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::UInt8,arg3::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}},arg4::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}})
+function PetscStrToArray(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::UInt8,arg3::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}},arg4::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}})
     err = ccall((:PetscStrToArray,petscRealDouble),PetscErrorCode,(Cstring,UInt8,Ptr{Cint},Ptr{Ptr{Ptr{UInt8}}}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -172,92 +172,92 @@ function PetscStrToArrayDestroy(arg0::Type{Float64},arg1::Integer,arg2::Union{Pt
     return err
 end
 
-function PetscStrcmp(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscStrcmp(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscStrcmp,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
 
-function PetscStrgrt(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscStrgrt(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscStrgrt,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
 
-function PetscStrcasecmp(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscStrcasecmp(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscStrcasecmp,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
 
-function PetscStrncmp(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t,arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscStrncmp(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t,arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscStrncmp,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscStrcpy(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscStrcpy(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscStrcpy,petscRealDouble),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
     return err
 end
 
-function PetscStrcat(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscStrcat(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscStrcat,petscRealDouble),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
     return err
 end
 
-function PetscStrncat(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t)
+function PetscStrncat(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t)
     err = ccall((:PetscStrncat,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Csize_t),arg1,arg2,arg3)
     return err
 end
 
-function PetscStrncpy(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t)
+function PetscStrncpy(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t)
     err = ccall((:PetscStrncpy,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Csize_t),arg1,arg2,arg3)
     return err
 end
 
-function PetscStrchr(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::UInt8,arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
+function PetscStrchr(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::UInt8,arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     err = ccall((:PetscStrchr,petscRealDouble),PetscErrorCode,(Cstring,UInt8,Ptr{Ptr{UInt8}}),arg1,arg2,arg3)
     return err
 end
 
-function PetscStrtolower(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscStrtolower(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscStrtolower,petscRealDouble),PetscErrorCode,(Cstring,),arg1)
     return err
 end
 
-function PetscStrtoupper(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscStrtoupper(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscStrtoupper,petscRealDouble),PetscErrorCode,(Cstring,),arg1)
     return err
 end
 
-function PetscStrrchr(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::UInt8,arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
+function PetscStrrchr(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::UInt8,arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     err = ccall((:PetscStrrchr,petscRealDouble),PetscErrorCode,(Cstring,UInt8,Ptr{Ptr{UInt8}}),arg1,arg2,arg3)
     return err
 end
 
-function PetscStrstr(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
+function PetscStrstr(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     err = ccall((:PetscStrstr,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{Ptr{UInt8}}),arg1,arg2,arg3)
     return err
 end
 
-function PetscStrrstr(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
+function PetscStrrstr(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     err = ccall((:PetscStrrstr,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{Ptr{UInt8}}),arg1,arg2,arg3)
     return err
 end
 
-function PetscStrendswith(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscStrendswith(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscStrendswith,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
 
-function PetscStrbeginswith(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscStrbeginswith(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscStrbeginswith,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
 
-function PetscStrendswithwhich(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+function PetscStrendswithwhich(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     err = ccall((:PetscStrendswithwhich,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Ptr{UInt8}},Ptr{Int64}),arg1,arg2,arg3)
     return err
 end
 
-function PetscStrallocpy(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
+function PetscStrallocpy(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     err = ccall((:PetscStrallocpy,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Ptr{UInt8}}),arg1,arg2)
     return err
 end
@@ -282,17 +282,17 @@ function PetscStrNArrayDestroy(arg0::Type{Float64},arg1::Integer,arg2::Union{Ptr
     return err
 end
 
-function PetscStrreplace(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t)
+function PetscStrreplace(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t)
     err = ccall((:PetscStrreplace,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscStrcmpNoError(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscStrcmpNoError(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscStrcmpNoError,petscRealDouble),Void,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
 
-function PetscTokenCreate(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::UInt8,arg3::Union{Ptr{PetscToken},StridedArray{PetscToken},Ptr{PetscToken},Ref{PetscToken}})
+function PetscTokenCreate(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::UInt8,arg3::Union{Ptr{PetscToken},StridedArray{PetscToken},Ptr{PetscToken},Ref{PetscToken}})
     err = ccall((:PetscTokenCreate,petscRealDouble),PetscErrorCode,(Cstring,UInt8,Ptr{PetscToken}),arg1,arg2,arg3)
     return err
 end
@@ -307,12 +307,12 @@ function PetscTokenDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscToken},Strid
     return err
 end
 
-function PetscEListFind(arg0::Type{Float64},arg1::Integer,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscEListFind(arg0::Type{Float64},arg1::Integer,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscEListFind,petscRealDouble),PetscErrorCode,(Int64,Ptr{Ptr{UInt8}},Cstring,Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscEnumFind(arg0::Type{Float64},arg1::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{PetscEnum},Ref{PetscEnum}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscEnumFind(arg0::Type{Float64},arg1::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{PetscEnum},Ref{PetscEnum}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscEnumFind,petscRealDouble),PetscErrorCode,(Ptr{Ptr{UInt8}},Cstring,Ptr{PetscEnum},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -322,15 +322,15 @@ function PetscMaxSum(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{Int64},S
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MPIULong_Send(arg0::Type{Float64},arg1::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg2::Integer,arg3::MPI_Datatype,arg4::PetscMPIInt,arg5::PetscMPIInt,arg6::MPI_Comm)
     ccall((:MPIULong_Send,petscRealDouble),PetscErrorCode,(Ptr{Void},Int64,MPI_Datatype,PetscMPIInt,PetscMPIInt,comm_type),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MPIULong_Recv(arg0::Type{Float64},arg1::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg2::Integer,arg3::MPI_Datatype,arg4::PetscMPIInt,arg5::PetscMPIInt,arg6::MPI_Comm)
     ccall((:MPIULong_Recv,petscRealDouble),PetscErrorCode,(Ptr{Void},Int64,MPI_Datatype,PetscMPIInt,PetscMPIInt,comm_type),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
 function PetscErrorPrintfInitialize(arg0::Type{Float64})
     err = ccall((:PetscErrorPrintfInitialize,petscRealDouble),PetscErrorCode,())
@@ -342,37 +342,37 @@ function PetscErrorMessage(arg0::Type{Float64},arg1::Integer,arg2::Union{Ptr{Ptr
     return err
 end
 
-function PetscTraceBackErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscTraceBackErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscTraceBackErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function PetscIgnoreErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscIgnoreErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscIgnoreErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function PetscEmacsClientErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscEmacsClientErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscEmacsClientErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function PetscMPIAbortErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscMPIAbortErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscMPIAbortErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function PetscAbortErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscAbortErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscAbortErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function PetscAttachDebuggerErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscAttachDebuggerErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscAttachDebuggerErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function PetscReturnErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscReturnErrorHandler(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscErrorCode,arg6::PetscErrorType,arg7::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscReturnErrorHandler,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,PetscErrorCode,PetscErrorType,Cstring,Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
@@ -427,10 +427,10 @@ function PetscStackCopy(arg0::Type{Float64},arg1::Union{Ptr{PetscStack},StridedA
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscStackPrint(arg0::Type{Float64},arg1::Union{Ptr{PetscStack},StridedArray{PetscStack},Ptr{PetscStack},Ref{PetscStack}},arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscStackPrint,petscRealDouble),PetscErrorCode,(Ptr{PetscStack},Ptr{FILE}),arg1,arg2)
-end 
+end
 =#
 function PetscStackActive(arg0::Type{Float64})
     err = ccall((:PetscStackActive,petscRealDouble),PetscBool,())
@@ -442,17 +442,17 @@ function PetscStackCreate(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscStackView(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscStackView,petscRealDouble),PetscErrorCode,(Ptr{FILE},),arg1)
-end 
+end
 =#
 function PetscStackDestroy(arg0::Type{Float64})
     err = ccall((:PetscStackDestroy,petscRealDouble),PetscErrorCode,())
     return err
 end
 
-function PetscClassIdRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscClassId},StridedArray{PetscClassId},Ptr{PetscClassId},Ref{PetscClassId}})
+function PetscClassIdRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscClassId},StridedArray{PetscClassId},Ptr{PetscClassId},Ref{PetscClassId}})
     err = ccall((:PetscClassIdRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{PetscClassId}),arg1,arg2)
     return err
 end
@@ -472,12 +472,12 @@ function PetscMemorySetGetMaximumUsage(arg0::Type{Float64})
     return err
 end
 
-function PetscMemoryTrace(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscMemoryTrace(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscMemoryTrace,petscRealDouble),PetscErrorCode,(Cstring,),arg1)
     return err
 end
 
-function PetscInfoAllow(arg0::Type{Float64},arg1::PetscBool,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscInfoAllow(arg0::Type{Float64},arg1::PetscBool,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscInfoAllow,petscRealDouble),PetscErrorCode,(PetscBool,Cstring),arg1,arg2)
     return err
 end
@@ -487,12 +487,12 @@ function PetscSleep(arg0::Type{Float64},arg1::Float64)
     return err
 end
 
-function PetscInitialize(arg0::Type{Float64},arg1::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}},arg2::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscInitialize(arg0::Type{Float64},arg1::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}},arg2::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscInitialize,petscRealDouble),PetscErrorCode,(Ptr{Cint},Ptr{Ptr{Ptr{UInt8}}},Cstring,Cstring),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscInitializeNoPointers(arg0::Type{Float64},arg1::Integer,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscInitializeNoPointers(arg0::Type{Float64},arg1::Integer,arg2::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscInitializeNoPointers,petscRealDouble),PetscErrorCode,(Cint,Ptr{Ptr{UInt8}},Cstring,Cstring),arg1,arg2,arg3,arg4)
     return err
 end
@@ -547,7 +547,7 @@ function PetscSysInitializePackage(arg0::Type{Float64})
     return err
 end
 
-function PetscPythonInitialize(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscPythonInitialize(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscPythonInitialize,petscRealDouble),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
     return err
 end
@@ -562,7 +562,7 @@ function PetscPythonPrintError(arg0::Type{Float64})
     return err
 end
 
-function PetscPythonMonitorSet(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscPythonMonitorSet(arg0::Type{Float64},arg1::PetscObject,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscPythonMonitorSet,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
     return err
 end
@@ -587,7 +587,7 @@ function PetscObjectGetClassName(arg0::Type{Float64},arg1::PetscObject,arg2::Uni
     return err
 end
 
-function PetscObjectSetType(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscObjectSetType(arg0::Type{Float64},arg1::PetscObject,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscObjectSetType,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
     return err
 end
@@ -602,7 +602,7 @@ function PetscObjectGetType(arg0::Type{Float64},arg1::PetscObject,arg2::Union{Pt
     return err
 end
 
-function PetscObjectSetName(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscObjectSetName(arg0::Type{Float64},arg1::PetscObject,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscObjectSetName,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
     return err
 end
@@ -647,22 +647,22 @@ function PetscObjectGetNewTag(arg0::Type{Float64},arg1::PetscObject,arg2::Union{
     return err
 end
 
-function PetscObjectCompose(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscObject)
+function PetscObjectCompose(arg0::Type{Float64},arg1::PetscObject,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscObject)
     err = ccall((:PetscObjectCompose,petscRealDouble),PetscErrorCode,(PetscObject,Cstring,PetscObject),arg1,arg2,arg3)
     return err
 end
 
-function PetscObjectRemoveReference(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscObjectRemoveReference(arg0::Type{Float64},arg1::PetscObject,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscObjectRemoveReference,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
     return err
 end
 
-function PetscObjectQuery(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
+function PetscObjectQuery(arg0::Type{Float64},arg1::PetscObject,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
     err = ccall((:PetscObjectQuery,petscRealDouble),PetscErrorCode,(PetscObject,Cstring,Ptr{PetscObject}),arg1,arg2,arg3)
     return err
 end
 
-function PetscObjectComposeFunction_Private(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscObjectComposeFunction_Private(arg0::Type{Float64},arg1::PetscObject,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscObjectComposeFunction_Private,petscRealDouble),PetscErrorCode,(PetscObject,Cstring,Ptr{Void}),arg1,arg2,arg3)
     return err
 end
@@ -702,92 +702,92 @@ function PetscObjectsListGetGlobalNumbering(arg0::Type{Float64},arg1::MPI_Comm,a
     return err
 end
 
-function PetscOptionsHasName(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsHasName(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsHasName,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
 
-function PetscOptionsGetInt(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetInt(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetInt,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscOptionsGetBool(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetBool(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetBool,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscOptionsGetReal(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetReal(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetReal,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscOptionsGetScalar(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetScalar(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetScalar,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscOptionsGetIntArray(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetIntArray(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetIntArray,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{Int64},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscOptionsGetRealArray(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetRealArray(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetRealArray,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{Float64},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscOptionsGetScalarArray(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetScalarArray(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetScalarArray,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{Float64},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscOptionsGetBoolArray(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetBoolArray(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetBoolArray,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{PetscBool},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscOptionsGetString(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetString(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetString,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscOptionsGetStringArray(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetStringArray(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetStringArray,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{Ptr{UInt8}},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscOptionsGetEList(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetEList(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg4::Integer,arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetEList,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{Ptr{UInt8}},Int64,Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function PetscOptionsGetEnum(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg4::Union{Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{PetscEnum},Ref{PetscEnum}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetEnum(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg4::Union{Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{PetscEnum},Ref{PetscEnum}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetEnum,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{Ptr{UInt8}},Ptr{PetscEnum},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscOptionsGetEnumArray(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg4::Union{Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{PetscEnum},Ref{PetscEnum}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetEnumArray(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg4::Union{Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{PetscEnum},Ref{PetscEnum}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetEnumArray,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{Ptr{UInt8}},Ptr{PetscEnum},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function PetscOptionsValidKey(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsValidKey(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsValidKey,petscRealDouble),PetscErrorCode,(Cstring,Ptr{PetscBool}),arg1,arg2)
     return err
 end
 
-function PetscOptionsSetAlias(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscOptionsSetAlias(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscOptionsSetAlias,petscRealDouble),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
     return err
 end
 
-function PetscOptionsSetValue(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscOptionsSetValue(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscOptionsSetValue,petscRealDouble),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
     return err
 end
 
-function PetscOptionsClearValue(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscOptionsClearValue(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscOptionsClearValue,petscRealDouble),PetscErrorCode,(Cstring,),arg1)
     return err
 end
@@ -797,7 +797,7 @@ function PetscOptionsAllUsed(arg0::Type{Float64},arg1::Union{Ptr{Int64},StridedA
     return err
 end
 
-function PetscOptionsUsed(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsUsed(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsUsed,petscRealDouble),PetscErrorCode,(Cstring,Ptr{PetscBool}),arg1,arg2)
     return err
 end
@@ -817,17 +817,17 @@ function PetscOptionsCreate(arg0::Type{Float64})
     return err
 end
 
-function PetscOptionsInsert(arg0::Type{Float64},arg1::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}},arg2::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscOptionsInsert(arg0::Type{Float64},arg1::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}},arg2::Union{Ptr{Ptr{Ptr{UInt8}}},StridedArray{Ptr{Ptr{UInt8}}},Ptr{Ptr{Ptr{UInt8}}},Ref{Ptr{Ptr{UInt8}}}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscOptionsInsert,petscRealDouble),PetscErrorCode,(Ptr{Cint},Ptr{Ptr{Ptr{UInt8}}},Cstring),arg1,arg2,arg3)
     return err
 end
 
-function PetscOptionsInsertFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool)
+function PetscOptionsInsertFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool)
     err = ccall((:PetscOptionsInsertFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool),arg1,arg2,arg3)
     return err
 end
 
-function PetscOptionsInsertString(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscOptionsInsertString(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscOptionsInsertString,petscRealDouble),PetscErrorCode,(Cstring,),arg1)
     return err
 end
@@ -842,7 +842,7 @@ function PetscOptionsClear(arg0::Type{Float64})
     return err
 end
 
-function PetscOptionsPrefixPush(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscOptionsPrefixPush(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscOptionsPrefixPush,petscRealDouble),PetscErrorCode,(Cstring,),arg1)
     return err
 end
@@ -852,7 +852,7 @@ function PetscOptionsPrefixPop(arg0::Type{Float64})
     return err
 end
 
-function PetscOptionsReject(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscOptionsReject(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscOptionsReject,petscRealDouble),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
     return err
 end
@@ -862,22 +862,22 @@ function PetscOptionsGetAll(arg0::Type{Float64},arg1::Union{Ptr{Ptr{UInt8}},Stri
     return err
 end
 
-function PetscOptionsGetenv(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetenv(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetenv,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscOptionsStringToInt(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+function PetscOptionsStringToInt(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     err = ccall((:PetscOptionsStringToInt,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Int64}),arg1,arg2)
     return err
 end
 
-function PetscOptionsStringToReal(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+function PetscOptionsStringToReal(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     err = ccall((:PetscOptionsStringToReal,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Float64}),arg1,arg2)
     return err
 end
 
-function PetscOptionsStringToBool(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsStringToBool(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsStringToBool,petscRealDouble),PetscErrorCode,(Cstring,Ptr{PetscBool}),arg1,arg2)
     return err
 end
@@ -892,120 +892,120 @@ function PetscOptionsMonitorCancel(arg0::Type{Float64})
     return err
 end
 
-function PetscOptionsMonitorDefault(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscOptionsMonitorDefault(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscOptionsMonitorDefault,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Ptr{Void}),arg1,arg2,arg3)
     return err
 end
 
-#= skipping function with undefined symbols: 
- function PetscOptionsBegin_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::MPI_Comm,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsBegin_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::MPI_Comm,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     ccall((:PetscOptionsBegin_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},comm_type,Cstring,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscObjectOptionsBegin_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::PetscObject)
     ccall((:PetscObjectOptionsBegin_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},PetscObject),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscOptionsEnd_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}})
     ccall((:PetscOptionsEnd_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsHead(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsHead(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     ccall((:PetscOptionsHead,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsEnum_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::PetscEnum,arg7::Union{Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{PetscEnum},Ref{PetscEnum}},arg8::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsEnum_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::PetscEnum,arg7::Union{Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{PetscEnum},Ref{PetscEnum}},arg8::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsEnum_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Ptr{UInt8}},PetscEnum,Ptr{PetscEnum},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsInt_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsInt_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Integer,arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsInt_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Int64,Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsReal_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Float64,arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsReal_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Float64,arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsReal_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Float64,Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsScalar_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Float64,arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsScalar_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Float64,arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsScalar_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Float64,Ptr{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsName_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsName_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsName_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsString_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg6::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg7::Csize_t,arg8::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsString_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg6::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg7::Csize_t,arg8::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsString_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsBool_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscBool,arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsBool_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscBool,arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsBool_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,PetscBool,Ptr{PetscBool},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsBoolGroupBegin_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsBoolGroupBegin_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsBoolGroupBegin_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsBoolGroup_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsBoolGroup_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsBoolGroup_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsBoolGroupEnd_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsBoolGroupEnd_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsBoolGroupEnd_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsFList_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscFunctionList,arg6::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg7::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Csize_t,arg9::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsFList_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::PetscFunctionList,arg6::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg7::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Csize_t,arg9::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsFList_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,PetscFunctionList,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsEList_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::Integer,arg7::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg9::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsEList_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::Integer,arg7::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg8::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg9::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsEList_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Ptr{UInt8}},Int64,Cstring,Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsRealArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsRealArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsRealArray_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Float64},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsScalarArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsScalarArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsScalarArray_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Float64},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsIntArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsIntArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsIntArray_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Int64},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsStringArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsStringArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsStringArray_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Ptr{UInt8}},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsBoolArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsBoolArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg6::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsBoolArray_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscBool},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscOptionsEnumArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::Union{Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{PetscEnum},Ref{PetscEnum}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsEnumArray_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::Union{Ptr{PetscEnum},StridedArray{PetscEnum},Ptr{PetscEnum},Ref{PetscEnum}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsEnumArray_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{Ptr{UInt8}},Ptr{PetscEnum},Ptr{Int64},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
 function PetscOptionsSetFromOptions(arg0::Type{Float64})
     err = ccall((:PetscOptionsSetFromOptions,petscRealDouble),PetscErrorCode,())
@@ -1017,7 +1017,7 @@ function PetscOptionsSAWsDestroy(arg0::Type{Float64})
     return err
 end
 
-function PetscMemoryShowUsage(arg1::PetscViewer{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscMemoryShowUsage(arg1::PetscViewer{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscMemoryShowUsage,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -1032,22 +1032,22 @@ function PetscObjectView(arg1::PetscObject,arg2::PetscViewer{Float64})
     return err
 end
 
-function PetscObjectQueryFunction_Private(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+function PetscObjectQueryFunction_Private(arg0::Type{Float64},arg1::PetscObject,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     err = ccall((:PetscObjectQueryFunction_Private,petscRealDouble),PetscErrorCode,(PetscObject,Cstring,Ptr{Ptr{Void}}),arg1,arg2,arg3)
     return err
 end
 
-function PetscObjectSetOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscObjectSetOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscObjectSetOptionsPrefix,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
     return err
 end
 
-function PetscObjectAppendOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscObjectAppendOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscObjectAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
     return err
 end
 
-function PetscObjectPrependOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscObjectPrependOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscObjectPrependOptionsPrefix,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
     return err
 end
@@ -1057,7 +1057,7 @@ function PetscObjectGetOptionsPrefix(arg0::Type{Float64},arg1::PetscObject,arg2:
     return err
 end
 
-function PetscObjectChangeTypeName(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscObjectChangeTypeName(arg0::Type{Float64},arg1::PetscObject,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscObjectChangeTypeName,petscRealDouble),PetscErrorCode,(PetscObject,Cstring),arg1,arg2)
     return err
 end
@@ -1072,7 +1072,7 @@ function PetscObjectRegisterDestroyAll(arg0::Type{Float64})
     return err
 end
 
-function PetscObjectViewFromOptions(arg0::Type{Float64},arg1::PetscObject,arg2::PetscObject,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscObjectViewFromOptions(arg0::Type{Float64},arg1::PetscObject,arg2::PetscObject,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscObjectViewFromOptions,petscRealDouble),PetscErrorCode,(PetscObject,PetscObject,Cstring),arg1,arg2,arg3)
     return err
 end
@@ -1082,7 +1082,7 @@ function PetscObjectName(arg0::Type{Float64},arg1::PetscObject)
     return err
 end
 
-function PetscObjectTypeCompare(arg0::Type{Float64},arg1::PetscObject,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscObjectTypeCompare(arg0::Type{Float64},arg1::PetscObject,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscObjectTypeCompare,petscRealDouble),PetscErrorCode,(PetscObject,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
@@ -1097,7 +1097,7 @@ function PetscRegisterFinalizeAll(arg0::Type{Float64})
     return err
 end
 
-function PetscDLOpen(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::PetscDLMode,arg3::Union{Ptr{PetscDLHandle},StridedArray{PetscDLHandle},Ptr{PetscDLHandle},Ref{PetscDLHandle}})
+function PetscDLOpen(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::PetscDLMode,arg3::Union{Ptr{PetscDLHandle},StridedArray{PetscDLHandle},Ptr{PetscDLHandle},Ref{PetscDLHandle}})
     err = ccall((:PetscDLOpen,petscRealDouble),PetscErrorCode,(Cstring,PetscDLMode,Ptr{PetscDLHandle}),arg1,arg2,arg3)
     return err
 end
@@ -1107,7 +1107,7 @@ function PetscDLClose(arg0::Type{Float64},arg1::Union{Ptr{PetscDLHandle},Strided
     return err
 end
 
-function PetscDLSym(arg0::Type{Float64},arg1::PetscDLHandle,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+function PetscDLSym(arg0::Type{Float64},arg1::PetscDLHandle,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     err = ccall((:PetscDLSym,petscRealDouble),PetscErrorCode,(PetscDLHandle,Cstring,Ptr{Ptr{Void}}),arg1,arg2,arg3)
     return err
 end
@@ -1117,17 +1117,17 @@ function PetscMallocGetStack(arg0::Type{Float64},arg1::Union{Ptr{Void},StridedAr
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscObjectsDump(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg2::PetscBool)
     ccall((:PetscObjectsDump,petscRealDouble),PetscErrorCode,(Ptr{FILE},PetscBool),arg1,arg2)
-end 
+end
 =#
 function PetscObjectListDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscObjectList},StridedArray{PetscObjectList},Ptr{PetscObjectList},Ref{PetscObjectList}})
     err = ccall((:PetscObjectListDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscObjectList},),arg1)
     return err
 end
 
-function PetscObjectListFind(arg0::Type{Float64},arg1::PetscObjectList,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
+function PetscObjectListFind(arg0::Type{Float64},arg1::PetscObjectList,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscObject},StridedArray{PetscObject},Ptr{PetscObject},Ref{PetscObject}})
     err = ccall((:PetscObjectListFind,petscRealDouble),PetscErrorCode,(PetscObjectList,Cstring,Ptr{PetscObject}),arg1,arg2,arg3)
     return err
 end
@@ -1137,12 +1137,12 @@ function PetscObjectListReverseFind(arg0::Type{Float64},arg1::PetscObjectList,ar
     return err
 end
 
-function PetscObjectListAdd(arg0::Type{Float64},arg1::Union{Ptr{PetscObjectList},StridedArray{PetscObjectList},Ptr{PetscObjectList},Ref{PetscObjectList}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscObject)
+function PetscObjectListAdd(arg0::Type{Float64},arg1::Union{Ptr{PetscObjectList},StridedArray{PetscObjectList},Ptr{PetscObjectList},Ref{PetscObjectList}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscObject)
     err = ccall((:PetscObjectListAdd,petscRealDouble),PetscErrorCode,(Ptr{PetscObjectList},Cstring,PetscObject),arg1,arg2,arg3)
     return err
 end
 
-function PetscObjectListRemoveReference(arg0::Type{Float64},arg1::Union{Ptr{PetscObjectList},StridedArray{PetscObjectList},Ptr{PetscObjectList},Ref{PetscObjectList}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscObjectListRemoveReference(arg0::Type{Float64},arg1::Union{Ptr{PetscObjectList},StridedArray{PetscObjectList},Ptr{PetscObjectList},Ref{PetscObjectList}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscObjectListRemoveReference,petscRealDouble),PetscErrorCode,(Ptr{PetscObjectList},Cstring),arg1,arg2)
     return err
 end
@@ -1152,7 +1152,7 @@ function PetscObjectListDuplicate(arg0::Type{Float64},arg1::PetscObjectList,arg2
     return err
 end
 
-function PetscFunctionListAdd_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscFunctionList},StridedArray{PetscFunctionList},Ptr{PetscFunctionList},Ref{PetscFunctionList}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscFunctionListAdd_Private(arg0::Type{Float64},arg1::Union{Ptr{PetscFunctionList},StridedArray{PetscFunctionList},Ptr{PetscFunctionList},Ref{PetscFunctionList}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscFunctionListAdd_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscFunctionList},Cstring,Ptr{Void}),arg1,arg2,arg3)
     return err
 end
@@ -1162,15 +1162,15 @@ function PetscFunctionListDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscFunct
     return err
 end
 
-function PetscFunctionListFind_Private(arg0::Type{Float64},arg1::PetscFunctionList,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+function PetscFunctionListFind_Private(arg0::Type{Float64},arg1::PetscFunctionList,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     err = ccall((:PetscFunctionListFind_Private,petscRealDouble),PetscErrorCode,(PetscFunctionList,Cstring,Ptr{Ptr{Void}}),arg1,arg2,arg3)
     return err
 end
 
-#= skipping function with undefined symbols: 
- function PetscFunctionListPrintTypes(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg6::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg7::PetscFunctionList,arg8::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+#= skipping function with undefined Symbols:
+ function PetscFunctionListPrintTypes(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg6::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg7::PetscFunctionList,arg8::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     ccall((:PetscFunctionListPrintTypes,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE},Cstring,Cstring,Cstring,Cstring,PetscFunctionList,Cstring),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
 function PetscFunctionListDuplicate(arg0::Type{Float64},arg1::PetscFunctionList,arg2::Union{Ptr{PetscFunctionList},StridedArray{PetscFunctionList},Ptr{PetscFunctionList},Ref{PetscFunctionList}})
     err = ccall((:PetscFunctionListDuplicate,petscRealDouble),PetscErrorCode,(PetscFunctionList,Ptr{PetscFunctionList}),arg1,arg2)
@@ -1187,17 +1187,17 @@ function PetscFunctionListGet(arg0::Type{Float64},arg1::PetscFunctionList,arg2::
     return err
 end
 
-function PetscDLLibraryAppend(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{PetscDLLibrary},Ref{PetscDLLibrary}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscDLLibraryAppend(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{PetscDLLibrary},Ref{PetscDLLibrary}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscDLLibraryAppend,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDLLibrary},Cstring),arg1,arg2,arg3)
     return err
 end
 
-function PetscDLLibraryPrepend(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{PetscDLLibrary},Ref{PetscDLLibrary}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscDLLibraryPrepend(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{PetscDLLibrary},Ref{PetscDLLibrary}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscDLLibraryPrepend,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDLLibrary},Cstring),arg1,arg2,arg3)
     return err
 end
 
-function PetscDLLibrarySym(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{PetscDLLibrary},Ref{PetscDLLibrary}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+function PetscDLLibrarySym(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{PetscDLLibrary},Ref{PetscDLLibrary}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     err = ccall((:PetscDLLibrarySym,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscDLLibrary},Cstring,Cstring,Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
@@ -1207,12 +1207,12 @@ function PetscDLLibraryPrintPath(arg0::Type{Float64},arg1::PetscDLLibrary)
     return err
 end
 
-function PetscDLLibraryRetrieve(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscDLLibraryRetrieve(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscDLLibraryRetrieve,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscDLLibraryOpen(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{PetscDLLibrary},Ref{PetscDLLibrary}})
+function PetscDLLibraryOpen(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscDLLibrary},StridedArray{PetscDLLibrary},Ptr{PetscDLLibrary},Ref{PetscDLLibrary}})
     err = ccall((:PetscDLLibraryOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Ptr{PetscDLLibrary}),arg1,arg2,arg3)
     return err
 end
@@ -1247,10 +1247,10 @@ function PetscBarrier(arg0::Type{Float64},arg1::PetscObject)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscMPIDump(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscMPIDump,petscRealDouble),PetscErrorCode,(Ptr{FILE},),arg1)
-end 
+end
 =#
 function PetscInfoDeactivateClass(arg0::Type{Float64},arg1::PetscClassId)
     err = ccall((:PetscInfoDeactivateClass,petscRealDouble),PetscErrorCode,(PetscClassId,),arg1)
@@ -1302,10 +1302,10 @@ function PetscLogAllBegin(arg0::Type{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscLogTraceBegin(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscLogTraceBegin,petscRealDouble),PetscErrorCode,(Ptr{FILE},),arg1)
-end 
+end
 =#
 function PetscLogActions(arg0::Type{Float64},arg1::PetscBool)
     err = ccall((:PetscLogActions,petscRealDouble),PetscErrorCode,(PetscBool,),arg1)
@@ -1337,7 +1337,7 @@ function PetscLogViewFromOptions(arg0::Type{Float64})
     return err
 end
 
-function PetscLogDump(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscLogDump(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscLogDump,petscRealDouble),PetscErrorCode,(Cstring,),arg1)
     return err
 end
@@ -1347,7 +1347,7 @@ function PetscGetFlops(arg0::Type{Float64},arg1::Union{Ptr{PetscLogDouble},Strid
     return err
 end
 
-function PetscLogStageRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscLogStage},StridedArray{PetscLogStage},Ptr{PetscLogStage},Ref{PetscLogStage}})
+function PetscLogStageRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscLogStage},StridedArray{PetscLogStage},Ptr{PetscLogStage},Ref{PetscLogStage}})
     err = ccall((:PetscLogStageRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{PetscLogStage}),arg1,arg2)
     return err
 end
@@ -1382,12 +1382,12 @@ function PetscLogStageGetVisible(arg0::Type{Float64},arg1::PetscLogStage,arg2::U
     return err
 end
 
-function PetscLogStageGetId(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscLogStage},StridedArray{PetscLogStage},Ptr{PetscLogStage},Ref{PetscLogStage}})
+function PetscLogStageGetId(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscLogStage},StridedArray{PetscLogStage},Ptr{PetscLogStage},Ref{PetscLogStage}})
     err = ccall((:PetscLogStageGetId,petscRealDouble),PetscErrorCode,(Cstring,Ptr{PetscLogStage}),arg1,arg2)
     return err
 end
 
-function PetscLogEventRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::PetscClassId,arg3::Union{Ptr{PetscLogEvent},StridedArray{PetscLogEvent},Ptr{PetscLogEvent},Ref{PetscLogEvent}})
+function PetscLogEventRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::PetscClassId,arg3::Union{Ptr{PetscLogEvent},StridedArray{PetscLogEvent},Ptr{PetscLogEvent},Ref{PetscLogEvent}})
     err = ccall((:PetscLogEventRegister,petscRealDouble),PetscErrorCode,(Cstring,PetscClassId,Ptr{PetscLogEvent}),arg1,arg2,arg3)
     return err
 end
@@ -1417,7 +1417,7 @@ function PetscLogEventDeactivateClass(arg0::Type{Float64},arg1::PetscClassId)
     return err
 end
 
-function PetscLogEventGetId(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscLogEvent},StridedArray{PetscLogEvent},Ptr{PetscLogEvent},Ref{PetscLogEvent}})
+function PetscLogEventGetId(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{PetscLogEvent},StridedArray{PetscLogEvent},Ptr{PetscLogEvent},Ref{PetscLogEvent}})
     err = ccall((:PetscLogEventGetId,petscRealDouble),PetscErrorCode,(Cstring,Ptr{PetscLogEvent}),arg1,arg2)
     return err
 end
@@ -1437,15 +1437,15 @@ function PetscLogEventZeroFlops(arg0::Type{Float64},arg1::PetscLogEvent)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscMPITypeSize(arg0::Type{Float64},buff::Union{Ptr{PetscLogDouble},StridedArray{PetscLogDouble},Ptr{PetscLogDouble},Ref{PetscLogDouble}},count::PetscMPIInt,_type::MPI_Datatype)
     ccall((:PetscMPITypeSize,petscRealDouble),PetscErrorCode,(Ptr{PetscLogDouble},PetscMPIInt,MPI_Datatype),buff,count,_type)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscMPITypeSizeComm(arg0::Type{Float64},comm::MPI_Comm,buff::Union{Ptr{PetscLogDouble},StridedArray{PetscLogDouble},Ptr{PetscLogDouble},Ref{PetscLogDouble}},counts::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},_type::MPI_Datatype)
     ccall((:PetscMPITypeSizeComm,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscLogDouble},Ptr{PetscMPIInt},MPI_Datatype),comm,buff,counts,_type)
-end 
+end
 =#
 function PetscMPIParallelComm(arg0::Type{Float64},comm::MPI_Comm)
     err = ccall((:PetscMPIParallelComm,petscRealDouble),Cint,(comm_type,),comm)
@@ -1482,72 +1482,72 @@ function PetscIntStackEmpty(arg0::Type{Float64},arg1::PetscIntStack,arg2::Union{
     return err
 end
 
-function PetscFixFilename(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscFixFilename(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscFixFilename,petscRealDouble),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
     return err
 end
 
-#= skipping function with undefined symbols: 
- function PetscFOpen(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
+#= skipping function with undefined Symbols:
+ function PetscFOpen(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
     ccall((:PetscFOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{Ptr{FILE}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscFClose(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscFClose,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscVSNPrintf(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{Csize_t},StridedArray{Csize_t},Ptr{Csize_t},Ref{Csize_t}},arg5::Union{Ptr{__va_list_tag},StridedArray{__va_list_tag},Ptr{__va_list_tag},Ref{__va_list_tag}})
+#= skipping function with undefined Symbols:
+ function PetscVSNPrintf(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{Csize_t},StridedArray{Csize_t},Ptr{Csize_t},Ref{Csize_t}},arg5::Union{Ptr{__va_list_tag},StridedArray{__va_list_tag},Ptr{__va_list_tag},Ref{__va_list_tag}})
     ccall((:PetscVSNPrintf,petscRealDouble),PetscErrorCode,(Cstring,Csize_t,Cstring,Ptr{Csize_t},Ptr{__va_list_tag}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscVFPrintfDefault(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{__va_list_tag},StridedArray{__va_list_tag},Ptr{__va_list_tag},Ref{__va_list_tag}})
+#= skipping function with undefined Symbols:
+ function PetscVFPrintfDefault(arg0::Type{Float64},arg1::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{__va_list_tag},StridedArray{__va_list_tag},Ptr{__va_list_tag},Ref{__va_list_tag}})
     ccall((:PetscVFPrintfDefault,petscRealDouble),PetscErrorCode,(Ptr{FILE},Cstring,Ptr{__va_list_tag}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscPOpen(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
+#= skipping function with undefined Symbols:
+ function PetscPOpen(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
     ccall((:PetscPOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cstring,Ptr{Ptr{FILE}}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscPClose(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg3::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
     ccall((:PetscPClose,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE},Ptr{Cint}),arg1,arg2,arg3)
-end 
+end
 =#
-function PetscPOpenSetMachine(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscPOpenSetMachine(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscPOpenSetMachine,petscRealDouble),PetscErrorCode,(Cstring,),arg1)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscSynchronizedFlush(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscSynchronizedFlush,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscSynchronizedFGets(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg3::Csize_t,arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+#= skipping function with undefined Symbols:
+ function PetscSynchronizedFGets(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg3::Csize_t,arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     ccall((:PetscSynchronizedFGets,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE},Csize_t,Cstring),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscStartMatlab(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
+#= skipping function with undefined Symbols:
+ function PetscStartMatlab(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
     ccall((:PetscStartMatlab,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{Ptr{FILE}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
- function PetscStartJava(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
+#= skipping function with undefined Symbols:
+ function PetscStartJava(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
     ccall((:PetscStartJava,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{Ptr{FILE}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
 function PetscGetPetscDir(arg0::Type{Float64},arg1::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}})
     err = ccall((:PetscGetPetscDir,petscRealDouble),PetscErrorCode,(Ptr{Ptr{UInt8}},),arg1)
     return err
 end
 
-function PetscPopUpSelect(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
+function PetscPopUpSelect(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg6::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
     err = ccall((:PetscPopUpSelect,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Ptr{Ptr{UInt8}},Ptr{Cint}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
@@ -1602,15 +1602,15 @@ function PetscMemzero(arg0::Type{Float64},a::Union{Ptr{Void},StridedArray{Void},
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MPIU_File_write_all(arg0::Type{Float64},arg1::MPI_File,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::PetscMPIInt,arg4::MPI_Datatype,arg5::Union{Ptr{MPI_Status},StridedArray{MPI_Status},Ptr{MPI_Status},Ref{MPI_Status}})
     ccall((:MPIU_File_write_all,petscRealDouble),PetscErrorCode,(MPI_File,Ptr{Void},PetscMPIInt,MPI_Datatype,Ptr{MPI_Status}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MPIU_File_read_all(arg0::Type{Float64},arg1::MPI_File,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::PetscMPIInt,arg4::MPI_Datatype,arg5::Union{Ptr{MPI_Status},StridedArray{MPI_Status},Ptr{MPI_Status},Ref{MPI_Status}})
     ccall((:MPIU_File_read_all,petscRealDouble),PetscErrorCode,(MPI_File,Ptr{Void},PetscMPIInt,MPI_Datatype,Ptr{MPI_Status}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
 function PetscBLASIntCast(arg0::Type{Float64},a::Integer,b::Union{Ptr{PetscBLASInt},StridedArray{PetscBLASInt},Ptr{PetscBLASInt},Ref{PetscBLASInt}})
     err = ccall((:PetscBLASIntCast,petscRealDouble),PetscErrorCode,(Int64,Ptr{PetscBLASInt}),a,b)
@@ -1622,37 +1622,37 @@ function PetscMPIIntCast(arg0::Type{Float64},a::Integer,b::Union{Ptr{PetscMPIInt
     return err
 end
 
-function PetscGetArchType(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
+function PetscGetArchType(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
     err = ccall((:PetscGetArchType,petscRealDouble),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
-function PetscGetHostName(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
+function PetscGetHostName(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
     err = ccall((:PetscGetHostName,petscRealDouble),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
-function PetscGetUserName(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
+function PetscGetUserName(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
     err = ccall((:PetscGetUserName,petscRealDouble),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
-function PetscGetProgramName(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
+function PetscGetProgramName(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
     err = ccall((:PetscGetProgramName,petscRealDouble),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
-function PetscSetProgramName(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscSetProgramName(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscSetProgramName,petscRealDouble),PetscErrorCode,(Cstring,),arg1)
     return err
 end
 
-function PetscGetDate(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
+function PetscGetDate(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
     err = ccall((:PetscGetDate,petscRealDouble),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
-function PetscGetVersion(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
+function PetscGetVersion(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
     err = ccall((:PetscGetVersion,petscRealDouble),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
@@ -1762,7 +1762,7 @@ function PetscSetDisplay(arg0::Type{Float64})
     return err
 end
 
-function PetscGetDisplay(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
+function PetscGetDisplay(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
     err = ccall((:PetscGetDisplay,petscRealDouble),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
@@ -1772,7 +1772,7 @@ function PetscRandomInitializePackage(arg0::Type{Float64})
     return err
 end
 
-function PetscRandomRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscRandomRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscRandomRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -1788,13 +1788,13 @@ function PetscRandomSetFromOptions(arg0::Type{Float64},arg1::PetscRandom)
 end
 
 function PetscRandomGetType(arg0::Type{Float64},arg1::PetscRandom,arg2::Union{Ptr{PetscRandomType},StridedArray{PetscRandomType},Ptr{PetscRandomType},Ref{PetscRandomType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PetscRandomGetType,petscRealDouble),PetscErrorCode,(PetscRandom,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
-function PetscRandomViewFromOptions(arg0::Type{Float64},A::PetscRandom,obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscRandomViewFromOptions(arg0::Type{Float64},A::PetscRandom,obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscRandomViewFromOptions,petscRealDouble),PetscErrorCode,(PetscRandom,PetscObject,Cstring),A,obj,name)
     return err
 end
@@ -1849,37 +1849,37 @@ function PetscRandomDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscRandom},Str
     return err
 end
 
-function PetscGetFullPath(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t)
+function PetscGetFullPath(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t)
     err = ccall((:PetscGetFullPath,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Csize_t),arg1,arg2,arg3)
     return err
 end
 
-function PetscGetRelativePath(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t)
+function PetscGetRelativePath(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t)
     err = ccall((:PetscGetRelativePath,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Csize_t),arg1,arg2,arg3)
     return err
 end
 
-function PetscGetWorkingDirectory(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
+function PetscGetWorkingDirectory(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
     err = ccall((:PetscGetWorkingDirectory,petscRealDouble),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
-function PetscGetRealPath(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscGetRealPath(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscGetRealPath,petscRealDouble),PetscErrorCode,(Cstring,Cstring),arg1,arg2)
     return err
 end
 
-function PetscGetHomeDirectory(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
+function PetscGetHomeDirectory(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Csize_t)
     err = ccall((:PetscGetHomeDirectory,petscRealDouble),PetscErrorCode,(Cstring,Csize_t),arg1,arg2)
     return err
 end
 
-function PetscTestFile(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::UInt8,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscTestFile(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::UInt8,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscTestFile,petscRealDouble),PetscErrorCode,(Cstring,UInt8,Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
 
-function PetscTestDirectory(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::UInt8,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscTestDirectory(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::UInt8,arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscTestDirectory,petscRealDouble),PetscErrorCode,(Cstring,UInt8,Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
@@ -1904,7 +1904,7 @@ function PetscBinaryWrite(arg0::Type{Float64},arg1::Integer,arg2::Union{Ptr{Void
     return err
 end
 
-function PetscBinaryOpen(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::PetscFileMode,arg3::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
+function PetscBinaryOpen(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::PetscFileMode,arg3::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
     err = ccall((:PetscBinaryOpen,petscRealDouble),PetscErrorCode,(Cstring,PetscFileMode,Ptr{Cint}),arg1,arg2,arg3)
     return err
 end
@@ -1924,47 +1924,47 @@ function PetscSharedWorkingDirectory(arg0::Type{Float64},arg1::MPI_Comm,arg2::Un
     return err
 end
 
-function PetscGetTmp(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t)
+function PetscGetTmp(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t)
     err = ccall((:PetscGetTmp,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Csize_t),arg1,arg2,arg3)
     return err
 end
 
-function PetscFileRetrieve(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscFileRetrieve(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscFileRetrieve,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscLs(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscLs(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscLs,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscOpenSocket(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Integer,arg3::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
+function PetscOpenSocket(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Integer,arg3::Union{Ptr{Cint},StridedArray{Cint},Ptr{Cint},Ref{Cint}})
     err = ccall((:PetscOpenSocket,petscRealDouble),PetscErrorCode,(Cstring,Cint,Ptr{Cint}),arg1,arg2,arg3)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscBinarySeek(arg0::Type{Float64},arg1::Integer,arg2::off_t,arg3::PetscBinarySeekType,arg4::Union{Ptr{off_t},StridedArray{off_t},Ptr{off_t},Ref{off_t}})
     ccall((:PetscBinarySeek,petscRealDouble),PetscErrorCode,(Cint,off_t,PetscBinarySeekType,Ptr{off_t}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscBinarySynchronizedSeek(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::off_t,arg4::PetscBinarySeekType,arg5::Union{Ptr{off_t},StridedArray{off_t},Ptr{off_t},Ref{off_t}})
     ccall((:PetscBinarySynchronizedSeek,petscRealDouble),PetscErrorCode,(comm_type,Cint,off_t,PetscBinarySeekType,Ptr{off_t}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
 function PetscByteSwap(arg0::Type{Float64},arg1::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg2::PetscDataType,arg3::Integer)
     err = ccall((:PetscByteSwap,petscRealDouble),PetscErrorCode,(Ptr{Void},PetscDataType,Int64),arg1,arg2,arg3)
     return err
 end
 
-function PetscSetDebugTerminal(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscSetDebugTerminal(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscSetDebugTerminal,petscRealDouble),PetscErrorCode,(Cstring,),arg1)
     return err
 end
 
-function PetscSetDebugger(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::PetscBool)
+function PetscSetDebugger(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::PetscBool)
     err = ccall((:PetscSetDebugger,petscRealDouble),PetscErrorCode,(Cstring,PetscBool),arg1,arg2)
     return err
 end
@@ -1974,7 +1974,7 @@ function PetscSetDefaultDebugger(arg0::Type{Float64})
     return err
 end
 
-function PetscSetDebuggerFromString(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscSetDebuggerFromString(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscSetDebuggerFromString,petscRealDouble),PetscErrorCode,(Cstring,),arg1)
     return err
 end
@@ -2004,20 +2004,20 @@ function PetscGatherMessageLengths2(arg0::Type{Float64},arg1::MPI_Comm,arg2::Pet
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscPostIrecvInt(arg0::Type{Float64},arg1::MPI_Comm,arg2::PetscMPIInt,arg3::PetscMPIInt,arg4::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg5::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg6::Union{Ptr{Ptr{Ptr{Int64}}},StridedArray{Ptr{Ptr{Int64}}},Ptr{Ptr{Ptr{Int64}}},Ref{Ptr{Ptr{Int64}}}},arg7::Union{Ptr{Ptr{MPI_Request}},StridedArray{Ptr{MPI_Request}},Ptr{Ptr{MPI_Request}},Ref{Ptr{MPI_Request}}})
     ccall((:PetscPostIrecvInt,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{Ptr{Ptr{Int64}}},Ptr{Ptr{MPI_Request}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscPostIrecvScalar(arg0::Type{Float64},arg1::MPI_Comm,arg2::PetscMPIInt,arg3::PetscMPIInt,arg4::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg5::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg6::Union{Ptr{Ptr{Ptr{Float64}}},StridedArray{Ptr{Ptr{Float64}}},Ptr{Ptr{Ptr{Float64}}},Ref{Ptr{Ptr{Float64}}}},arg7::Union{Ptr{Ptr{MPI_Request}},StridedArray{Ptr{MPI_Request}},Ptr{Ptr{MPI_Request}},Ref{Ptr{MPI_Request}}})
     ccall((:PetscPostIrecvScalar,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,PetscMPIInt,Ptr{PetscMPIInt},Ptr{PetscMPIInt},Ptr{Ptr{Ptr{Float64}}},Ptr{Ptr{MPI_Request}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscCommBuildTwoSided(arg0::Type{Float64},arg1::MPI_Comm,arg2::PetscMPIInt,arg3::MPI_Datatype,arg4::Integer,arg5::Union{Ptr{PetscMPIInt},StridedArray{PetscMPIInt},Ptr{PetscMPIInt},Ref{PetscMPIInt}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Ptr{PetscMPIInt}},StridedArray{Ptr{PetscMPIInt}},Ptr{Ptr{PetscMPIInt}},Ref{Ptr{PetscMPIInt}}},arg9::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     ccall((:PetscCommBuildTwoSided,petscRealDouble),PetscErrorCode,(comm_type,PetscMPIInt,MPI_Datatype,Int64,Ptr{PetscMPIInt},Ptr{Void},Ptr{Int64},Ptr{Ptr{PetscMPIInt}},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+end
 =#
 function PetscCommBuildTwoSidedSetType(arg0::Type{Float64},arg1::MPI_Comm,arg2::PetscBuildTwoSidedType)
     err = ccall((:PetscCommBuildTwoSidedSetType,petscRealDouble),PetscErrorCode,(comm_type,PetscBuildTwoSidedType),arg1,arg2)
@@ -2129,52 +2129,52 @@ function PetscSegBufferGetInts(arg0::Type{Float64},seg::PetscSegBuffer,count::In
     return err
 end
 
-function PetscCitationsRegister(arg0::Type{Float64},cit::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},set::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscCitationsRegister(arg0::Type{Float64},cit::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},set::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscCitationsRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{PetscBool}),cit,set)
     return err
 end
 
-function PetscURLShorten(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t)
+function PetscURLShorten(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t)
     err = ccall((:PetscURLShorten,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Csize_t),arg1,arg2,arg3)
     return err
 end
 
-function PetscGoogleDriveAuthorize(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t)
+function PetscGoogleDriveAuthorize(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t)
     err = ccall((:PetscGoogleDriveAuthorize,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscGoogleDriveRefresh(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t)
+function PetscGoogleDriveRefresh(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t)
     err = ccall((:PetscGoogleDriveRefresh,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscGoogleDriveUpload(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscGoogleDriveUpload(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscGoogleDriveUpload,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring),arg1,arg2,arg3)
     return err
 end
 
-function PetscBoxAuthorize(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t)
+function PetscBoxAuthorize(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t)
     err = ccall((:PetscBoxAuthorize,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Csize_t),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscBoxRefresh(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Csize_t)
+function PetscBoxRefresh(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Csize_t)
     err = ccall((:PetscBoxRefresh,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cstring,Csize_t),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscTextBelt(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscTextBelt(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscTextBelt,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscPullJSONValue(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscPullJSONValue(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t,arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscPullJSONValue,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Cstring,Csize_t,Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscPushJSONValue(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t)
+function PetscPushJSONValue(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Csize_t)
     err = ccall((:PetscPushJSONValue,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Cstring,Csize_t),arg1,arg2,arg3,arg4)
     return err
 end
@@ -2194,52 +2194,52 @@ function PetscBagGetData(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Ptr{
     return err
 end
 
-function PetscBagRegisterReal(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Float64,arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscBagRegisterReal(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Float64,arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscBagRegisterReal,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Float64,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscBagRegisterRealArray(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscBagRegisterRealArray(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscBagRegisterRealArray,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Int64,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscBagRegisterString(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg6::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscBagRegisterString(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg6::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscBagRegisterString,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Int64,Cstring,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function PetscBagRegisterScalar(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Float64,arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscBagRegisterScalar(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Float64,arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscBagRegisterScalar,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Float64,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscBagRegisterInt(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscBagRegisterInt(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscBagRegisterInt,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Int64,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscBagRegister64bitInt(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Petsc64bitInt,arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscBagRegister64bitInt(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Petsc64bitInt,arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscBagRegister64bitInt,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Petsc64bitInt,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscBagRegisterIntArray(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscBagRegisterIntArray(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscBagRegisterIntArray,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Int64,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscBagRegisterEnum(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg4::PetscEnum,arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg6::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscBagRegisterEnum(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Ptr{UInt8}},StridedArray{Ptr{UInt8}},Ptr{Ptr{UInt8}},Ref{Ptr{UInt8}}},arg4::PetscEnum,arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg6::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscBagRegisterEnum,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Ptr{Ptr{UInt8}},PetscEnum,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-function PetscBagRegisterBool(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::PetscBool,arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscBagRegisterBool(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::PetscBool,arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscBagRegisterBool,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},PetscBool,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscBagRegisterBoolArray(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscBagRegisterBoolArray(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscBagRegisterBoolArray,petscRealDouble),PetscErrorCode,(PetscBag,Ptr{Void},Int64,Cstring,Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
@@ -2259,12 +2259,12 @@ function PetscBagGetName(arg0::Type{Float64},arg1::PetscBag,arg2::Union{Ptr{Ptr{
     return err
 end
 
-function PetscBagSetName(arg0::Type{Float64},arg1::PetscBag,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscBagSetName(arg0::Type{Float64},arg1::PetscBag,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscBagSetName,petscRealDouble),PetscErrorCode,(PetscBag,Cstring,Cstring),arg1,arg2,arg3)
     return err
 end
 
-function PetscBagSetOptionsPrefix(arg0::Type{Float64},arg1::PetscBag,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscBagSetOptionsPrefix(arg0::Type{Float64},arg1::PetscBag,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscBagSetOptionsPrefix,petscRealDouble),PetscErrorCode,(PetscBag,Cstring),arg1,arg2)
     return err
 end
@@ -2319,7 +2319,7 @@ function PetscViewerInitializePackage(arg0::Type{Float64})
     return err
 end
 
-function PetscViewerRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscViewerRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscViewerRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -2334,22 +2334,22 @@ function PetscViewerSetFromOptions(arg1::PetscViewer{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscViewerASCIIOpenWithFILE(arg1::MPI_Comm,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}},arg3::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
     ccall((:PetscViewerASCIIOpenWithFILE,petscRealDouble),PetscErrorCode,(comm_type,Ptr{FILE},Ptr{PetscViewer{Float64}}),arg1,arg2,arg3)
-end 
+end
 =#
-function PetscViewerASCIIOpen(arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
+function PetscViewerASCIIOpen(arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
     err = ccall((:PetscViewerASCIIOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscViewerASCIISetFILE(arg1::PetscViewer{Float64},arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscViewerASCIISetFILE,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{FILE}),arg1,arg2)
-end 
+end
 =#
-function PetscViewerBinaryOpen(arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscFileMode,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
+function PetscViewerBinaryOpen(arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscFileMode,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
     err = ccall((:PetscViewerBinaryOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -2374,32 +2374,32 @@ function PetscViewerBinaryGetUseMPIIO(arg1::PetscViewer{Float64},arg2::Union{Ptr
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscViewerBinaryGetMPIIODescriptor(arg1::PetscViewer{Float64},arg2::Union{Ptr{MPI_File},StridedArray{MPI_File},Ptr{MPI_File},Ref{MPI_File}})
     ccall((:PetscViewerBinaryGetMPIIODescriptor,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{MPI_File}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscViewerBinaryGetMPIIOOffset(arg1::PetscViewer{Float64},arg2::Union{Ptr{MPI_Offset},StridedArray{MPI_Offset},Ptr{MPI_Offset},Ref{MPI_Offset}})
     ccall((:PetscViewerBinaryGetMPIIOOffset,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{MPI_Offset}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscViewerBinaryAddMPIIOOffset(arg1::PetscViewer{Float64},arg2::MPI_Offset)
     ccall((:PetscViewerBinaryAddMPIIOOffset,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},MPI_Offset),arg1,arg2)
-end 
+end
 =#
-function PetscViewerSocketOpen(arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
+function PetscViewerSocketOpen(arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
     err = ccall((:PetscViewerSocketOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cint,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscViewerStringOpen(arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
+function PetscViewerStringOpen(arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Csize_t,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
     err = ccall((:PetscViewerStringOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Csize_t,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscViewerDrawOpen(arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
+function PetscViewerDrawOpen(arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
     err = ccall((:PetscViewerDrawOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
@@ -2409,25 +2409,25 @@ function PetscViewerDrawSetDrawType(arg1::PetscViewer{Float64},arg2::PetscDrawTy
     return err
 end
 
-function PetscViewerMathematicaOpen(arg1::MPI_Comm,arg2::Integer,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
+function PetscViewerMathematicaOpen(arg1::MPI_Comm,arg2::Integer,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
     err = ccall((:PetscViewerMathematicaOpen,petscRealDouble),PetscErrorCode,(comm_type,Cint,Cstring,Cstring,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscViewerSiloOpen(arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
+function PetscViewerSiloOpen(arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
     err = ccall((:PetscViewerSiloOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3)
     return err
 end
 
-function PetscViewerMatlabOpen(arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscFileMode,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
+function PetscViewerMatlabOpen(arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscFileMode,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
     err = ccall((:PetscViewerMatlabOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
 function PetscViewerGetType(arg1::PetscViewer{Float64},arg2::Union{Ptr{PetscViewerType},StridedArray{PetscViewerType},Ptr{PetscViewerType},Ref{PetscViewerType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PetscViewerGetType,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -2471,17 +2471,17 @@ function PetscViewerView(arg1::PetscViewer{Float64},arg2::PetscViewer{Float64})
     return err
 end
 
-function PetscViewerViewFromOptions(A::PetscViewer{Float64},obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscViewerViewFromOptions(A::PetscViewer{Float64},obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscViewerViewFromOptions,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},PetscObject,Cstring),A,obj,name)
     return err
 end
 
-function PetscViewerSetOptionsPrefix(arg1::PetscViewer{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscViewerSetOptionsPrefix(arg1::PetscViewer{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscViewerSetOptionsPrefix,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
     return err
 end
 
-function PetscViewerAppendOptionsPrefix(arg1::PetscViewer{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscViewerAppendOptionsPrefix(arg1::PetscViewer{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscViewerAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -2516,20 +2516,20 @@ function PetscViewerFlush(arg1::PetscViewer{Float64})
     return err
 end
 
-function PetscOptionsGetViewer(arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}},arg5::Union{Ptr{PetscViewerFormat},StridedArray{PetscViewerFormat},Ptr{PetscViewerFormat},Ref{PetscViewerFormat}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetViewer(arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}},arg5::Union{Ptr{PetscViewerFormat},StridedArray{PetscViewerFormat},Ptr{PetscViewerFormat},Ref{PetscViewerFormat}},arg6::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetViewer,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Ptr{PetscViewer{Float64}},Ptr{PetscViewerFormat},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
 
-#= skipping function with undefined symbols: 
- function PetscOptionsViewer_Private(arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}},arg6::Union{Ptr{PetscViewerFormat},StridedArray{PetscViewerFormat},Ptr{PetscViewerFormat},Ref{PetscViewerFormat}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+#= skipping function with undefined Symbols:
+ function PetscOptionsViewer_Private(arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}},arg6::Union{Ptr{PetscViewerFormat},StridedArray{PetscViewerFormat},Ptr{PetscViewerFormat},Ref{PetscViewerFormat}},arg7::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     ccall((:PetscOptionsViewer_Private,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},Cstring,Cstring,Cstring,Ptr{PetscViewer{Float64}},Ptr{PetscViewerFormat},Ptr{PetscBool}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscViewerASCIIGetPointer(arg1::PetscViewer{Float64},arg2::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
     ccall((:PetscViewerASCIIGetPointer,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{FILE}}),arg1,arg2)
-end 
+end
 =#
 function PetscViewerFileGetMode(arg1::PetscViewer{Float64},arg2::Union{Ptr{PetscFileMode},StridedArray{PetscFileMode},Ptr{PetscFileMode},Ref{PetscFileMode}})
     err = ccall((:PetscViewerFileGetMode,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{PetscFileMode}),arg1,arg2)
@@ -2596,10 +2596,10 @@ function PetscViewerBinaryGetDescriptor(arg1::PetscViewer{Float64},arg2::Union{P
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscViewerBinaryGetInfoPointer(arg1::PetscViewer{Float64},arg2::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
     ccall((:PetscViewerBinaryGetInfoPointer,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{FILE}}),arg1,arg2)
-end 
+end
 =#
 function PetscViewerBinaryRead(arg1::PetscViewer{Float64},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::PetscDataType)
     err = ccall((:PetscViewerBinaryRead,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{Void},Int64,Ptr{Int64},PetscDataType),arg1,arg2,arg3,arg4,arg5)
@@ -2611,7 +2611,7 @@ function PetscViewerBinaryWrite(arg1::PetscViewer{Float64},arg2::Union{Ptr{Void}
     return err
 end
 
-function PetscViewerStringSetString(arg1::PetscViewer{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer)
+function PetscViewerStringSetString(arg1::PetscViewer{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer)
     err = ccall((:PetscViewerStringSetString,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Cstring,Int64),arg1,arg2,arg3)
     return err
 end
@@ -2641,7 +2641,7 @@ function PetscViewerDrawGetPause(arg1::PetscViewer{Float64},arg2::Union{Ptr{Floa
     return err
 end
 
-function PetscViewerDrawSetInfo(arg1::PetscViewer{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer)
+function PetscViewerDrawSetInfo(arg1::PetscViewer{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer)
     err = ccall((:PetscViewerDrawSetInfo,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Cstring,Cstring,Cint,Cint,Cint,Cint),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
@@ -2661,7 +2661,7 @@ function PetscViewerDrawGetBounds(arg1::PetscViewer{Float64},arg2::Union{Ptr{Int
     return err
 end
 
-function PetscViewerSocketSetConnection(arg1::PetscViewer{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer)
+function PetscViewerSocketSetConnection(arg1::PetscViewer{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer)
     err = ccall((:PetscViewerSocketSetConnection,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Cstring,Cint),arg1,arg2,arg3)
     return err
 end
@@ -2711,7 +2711,7 @@ function PetscViewerBinaryWriteStringArray(arg1::PetscViewer{Float64},arg2::Unio
     return err
 end
 
-function PetscViewerFileSetName(arg1::PetscViewer{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscViewerFileSetName(arg1::PetscViewer{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscViewerFileSetName,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -2721,10 +2721,10 @@ function PetscViewerFileGetName(arg1::PetscViewer{Float64},arg2::Union{Ptr{Ptr{U
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscViewerVUGetPointer(arg1::PetscViewer{Float64},arg2::Union{Ptr{Ptr{FILE}},StridedArray{Ptr{FILE}},Ptr{Ptr{FILE}},Ref{Ptr{FILE}}})
     ccall((:PetscViewerVUGetPointer,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Ptr{Ptr{FILE}}),arg1,arg2)
-end 
+end
 =#
 function PetscViewerVUSetVecSeen(arg1::PetscViewer{Float64},arg2::PetscBool)
     err = ccall((:PetscViewerVUSetVecSeen,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},PetscBool),arg1,arg2)
@@ -2756,7 +2756,7 @@ function PetscViewerMathematicaGetName(arg1::PetscViewer{Float64},arg2::Union{Pt
     return err
 end
 
-function PetscViewerMathematicaSetName(arg1::PetscViewer{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscViewerMathematicaSetName(arg1::PetscViewer{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscViewerMathematicaSetName,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -2776,7 +2776,7 @@ function PetscViewerSiloGetName(arg1::PetscViewer{Float64},arg2::Union{Ptr{Ptr{U
     return err
 end
 
-function PetscViewerSiloSetName(arg1::PetscViewer{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscViewerSiloSetName(arg1::PetscViewer{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscViewerSiloSetName,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -2791,7 +2791,7 @@ function PetscViewerSiloGetMeshName(arg1::PetscViewer{Float64},arg2::Union{Ptr{P
     return err
 end
 
-function PetscViewerSiloSetMeshName(arg1::PetscViewer{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscViewerSiloSetMeshName(arg1::PetscViewer{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscViewerSiloSetMeshName,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -2801,7 +2801,7 @@ function PetscViewerSiloClearMeshName(arg1::PetscViewer{Float64})
     return err
 end
 
-function PetscViewerNetcdfOpen(arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscFileMode,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
+function PetscViewerNetcdfOpen(arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscFileMode,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
     err = ccall((:PetscViewerNetcdfOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -2816,7 +2816,7 @@ function PetscViewerVTKAddField(arg1::PetscViewer{Float64},arg2::PetscObject,Pet
     return err
 end
 
-function PetscViewerVTKOpen(arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscFileMode,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
+function PetscViewerVTKOpen(arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscFileMode,arg4::Union{Ptr{PetscViewer{Float64}},StridedArray{PetscViewer{Float64}},Ptr{PetscViewer{Float64}},Ref{PetscViewer{Float64}}})
     err = ccall((:PetscViewerVTKOpen,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscFileMode,Ptr{PetscViewer{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -2891,17 +2891,17 @@ function PetscViewerFlowControlEndWorker(viewer::PetscViewer{Float64},mcnt::Unio
     return err
 end
 
-function PetscViewerMatlabPutArray(arg1::PetscViewer{Float64},arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscViewerMatlabPutArray(arg1::PetscViewer{Float64},arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscViewerMatlabPutArray,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Cint,Cint,Ptr{Float64},Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscViewerMatlabGetArray(arg1::PetscViewer{Float64},arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscViewerMatlabGetArray(arg1::PetscViewer{Float64},arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscViewerMatlabGetArray,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Cint,Cint,Ptr{Float64},Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscViewerMatlabPutVariable(arg1::PetscViewer{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscViewerMatlabPutVariable(arg1::PetscViewer{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscViewerMatlabPutVariable,petscRealDouble),PetscErrorCode,(PetscViewer{Float64},Cstring,Ptr{Void}),arg1,arg2,arg3)
     return err
 end
@@ -2976,77 +2976,77 @@ function PetscBTClear(arg0::Type{Float64},array::PetscBT,index::Integer)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscHash(arg0::Type{Float64},ta::PetscTable,x::Culong)
     ccall((:PetscHash,petscRealDouble),Culong,(PetscTable,Culong),ta,x)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscTableCreate(arg0::Type{Float64},arg1::Integer,arg2::Integer,arg3::Union{Ptr{PetscTable},StridedArray{PetscTable},Ptr{PetscTable},Ref{PetscTable}})
     ccall((:PetscTableCreate,petscRealDouble),PetscErrorCode,(Int64,Int64,Ptr{PetscTable}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscTableCreateCopy(arg0::Type{Float64},arg1::PetscTable,arg2::Union{Ptr{PetscTable},StridedArray{PetscTable},Ptr{PetscTable},Ref{PetscTable}})
     ccall((:PetscTableCreateCopy,petscRealDouble),PetscErrorCode,(PetscTable,Ptr{PetscTable}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscTableDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscTable},StridedArray{PetscTable},Ptr{PetscTable},Ref{PetscTable}})
     ccall((:PetscTableDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscTable},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscTableGetCount(arg0::Type{Float64},arg1::PetscTable,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscTableGetCount,petscRealDouble),PetscErrorCode,(PetscTable,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscTableIsEmpty(arg0::Type{Float64},arg1::PetscTable,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscTableIsEmpty,petscRealDouble),PetscErrorCode,(PetscTable,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscTableAddExpand(arg0::Type{Float64},arg1::PetscTable,arg2::Integer,arg3::Integer,arg4::InsertMode)
     ccall((:PetscTableAddExpand,petscRealDouble),PetscErrorCode,(PetscTable,Int64,Int64,InsertMode),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscTableAddCountExpand(arg0::Type{Float64},arg1::PetscTable,arg2::Integer)
     ccall((:PetscTableAddCountExpand,petscRealDouble),PetscErrorCode,(PetscTable,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscTableGetHeadPosition(arg0::Type{Float64},arg1::PetscTable,arg2::Union{Ptr{PetscTablePosition},StridedArray{PetscTablePosition},Ptr{PetscTablePosition},Ref{PetscTablePosition}})
     ccall((:PetscTableGetHeadPosition,petscRealDouble),PetscErrorCode,(PetscTable,Ptr{PetscTablePosition}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscTableGetNext(arg0::Type{Float64},arg1::PetscTable,arg2::Union{Ptr{PetscTablePosition},StridedArray{PetscTablePosition},Ptr{PetscTablePosition},Ref{PetscTablePosition}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscTableGetNext,petscRealDouble),PetscErrorCode,(PetscTable,Ptr{PetscTablePosition},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscTableRemoveAll(arg0::Type{Float64},arg1::PetscTable)
     ccall((:PetscTableRemoveAll,petscRealDouble),PetscErrorCode,(PetscTable,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscTableAdd(arg0::Type{Float64},ta::PetscTable,key::Integer,data::Integer,imode::InsertMode)
     ccall((:PetscTableAdd,petscRealDouble),PetscErrorCode,(PetscTable,Int64,Int64,InsertMode),ta,key,data,imode)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscTableAddCount(arg0::Type{Float64},ta::PetscTable,key::Integer)
     ccall((:PetscTableAddCount,petscRealDouble),PetscErrorCode,(PetscTable,Int64),ta,key)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscTableFind(arg0::Type{Float64},ta::PetscTable,key::Integer,data::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:PetscTableFind,petscRealDouble),PetscErrorCode,(PetscTable,Int64,Ptr{Int64}),ta,key,data)
-end 
+end
 =#
-function PetscMatlabEngineCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscMatlabEngine},StridedArray{PetscMatlabEngine},Ptr{PetscMatlabEngine},Ref{PetscMatlabEngine}})
+function PetscMatlabEngineCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscMatlabEngine},StridedArray{PetscMatlabEngine},Ptr{PetscMatlabEngine},Ref{PetscMatlabEngine}})
     err = ccall((:PetscMatlabEngineCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Ptr{PetscMatlabEngine}),arg1,arg2,arg3)
     return err
 end
@@ -3061,10 +3061,10 @@ function PetscMatlabEngineGetOutput(arg0::Type{Float64},arg1::PetscMatlabEngine,
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscMatlabEnginePrintOutput(arg0::Type{Float64},arg1::PetscMatlabEngine,arg2::Union{Ptr{FILE},StridedArray{FILE},Ptr{FILE},Ref{FILE}})
     ccall((:PetscMatlabEnginePrintOutput,petscRealDouble),PetscErrorCode,(PetscMatlabEngine,Ptr{FILE}),arg1,arg2)
-end 
+end
 =#
 function PetscMatlabEnginePut(arg0::Type{Float64},arg1::PetscMatlabEngine,arg2::PetscObject)
     err = ccall((:PetscMatlabEnginePut,petscRealDouble),PetscErrorCode,(PetscMatlabEngine,PetscObject),arg1,arg2)
@@ -3076,12 +3076,12 @@ function PetscMatlabEngineGet(arg0::Type{Float64},arg1::PetscMatlabEngine,arg2::
     return err
 end
 
-function PetscMatlabEnginePutArray(arg0::Type{Float64},arg1::PetscMatlabEngine,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscMatlabEnginePutArray(arg0::Type{Float64},arg1::PetscMatlabEngine,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscMatlabEnginePutArray,petscRealDouble),PetscErrorCode,(PetscMatlabEngine,Cint,Cint,Ptr{Float64},Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscMatlabEngineGetArray(arg0::Type{Float64},arg1::PetscMatlabEngine,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscMatlabEngineGetArray(arg0::Type{Float64},arg1::PetscMatlabEngine,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscMatlabEngineGetArray,petscRealDouble),PetscErrorCode,(PetscMatlabEngine,Cint,Cint,Ptr{Float64},Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
@@ -3096,15 +3096,15 @@ function PetscDrawInitializePackage(arg0::Type{Float64})
     return err
 end
 
-function PetscDrawRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscDrawRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscDrawRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
 
 function PetscDrawGetType(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{PetscDrawType},StridedArray{PetscDrawType},Ptr{PetscDrawType},Ref{PetscDrawType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PetscDrawGetType,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -3113,7 +3113,7 @@ function PetscDrawSetType(arg0::Type{Float64},arg1::PetscDraw,arg2::PetscDrawTyp
     return err
 end
 
-function PetscDrawCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
+function PetscDrawCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
     err = ccall((:PetscDrawCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{PetscDraw}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
@@ -3123,12 +3123,12 @@ function PetscDrawSetFromOptions(arg0::Type{Float64},arg1::PetscDraw)
     return err
 end
 
-function PetscDrawSetSave(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool)
+function PetscDrawSetSave(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool)
     err = ccall((:PetscDrawSetSave,petscRealDouble),PetscErrorCode,(PetscDraw,Cstring,PetscBool),arg1,arg2,arg3)
     return err
 end
 
-function PetscDrawSetSaveFinalImage(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscDrawSetSaveFinalImage(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscDrawSetSaveFinalImage,petscRealDouble),PetscErrorCode,(PetscDraw,Cstring),arg1,arg2)
     return err
 end
@@ -3138,17 +3138,17 @@ function PetscDrawView(arg1::PetscDraw,arg2::PetscViewer{Float64})
     return err
 end
 
-function PetscDrawViewFromOptions(arg0::Type{Float64},A::PetscDraw,obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscDrawViewFromOptions(arg0::Type{Float64},A::PetscDraw,obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscDrawViewFromOptions,petscRealDouble),PetscErrorCode,(PetscDraw,PetscObject,Cstring),A,obj,name)
     return err
 end
 
-function PetscDrawOpenX(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
+function PetscDrawOpenX(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
     err = ccall((:PetscDrawOpenX,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{PetscDraw}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function PetscDrawOpenGLUT(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
+function PetscDrawOpenGLUT(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Union{Ptr{PetscDraw},StridedArray{PetscDraw},Ptr{PetscDraw},Ref{PetscDraw}})
     err = ccall((:PetscDrawOpenGLUT,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{PetscDraw}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
@@ -3278,27 +3278,27 @@ function PetscDrawTensorContour(arg0::Type{Float64},arg1::PetscDraw,arg2::Intege
     return err
 end
 
-function PetscDrawString(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer,arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscDrawString(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer,arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscDrawString,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Cint,Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscDrawStringCentered(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer,arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscDrawStringCentered(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer,arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscDrawStringCentered,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Cint,Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function PetscDrawStringBoxed(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer,arg5::Integer,arg6::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+function PetscDrawStringBoxed(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer,arg5::Integer,arg6::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     err = ccall((:PetscDrawStringBoxed,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Cint,Cint,Cstring,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
 
-function PetscDrawStringBoxedSize(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+function PetscDrawStringBoxedSize(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     err = ccall((:PetscDrawStringBoxedSize,petscRealDouble),PetscErrorCode,(PetscDraw,Cstring,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function PetscDrawStringVertical(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer,arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscDrawStringVertical(arg0::Type{Float64},arg1::PetscDraw,arg2::Float64,arg3::Float64,arg4::Integer,arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscDrawStringVertical,petscRealDouble),PetscErrorCode,(PetscDraw,Float64,Float64,Cint,Cstring),arg1,arg2,arg3,arg4,arg5)
     return err
 end
@@ -3338,12 +3338,12 @@ function PetscDrawGetCoordinates(arg0::Type{Float64},arg1::PetscDraw,arg2::Union
     return err
 end
 
-function PetscDrawSetTitle(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscDrawSetTitle(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscDrawSetTitle,petscRealDouble),PetscErrorCode,(PetscDraw,Cstring),arg1,arg2)
     return err
 end
 
-function PetscDrawAppendTitle(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscDrawAppendTitle(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscDrawAppendTitle,petscRealDouble),PetscErrorCode,(PetscDraw,Cstring),arg1,arg2)
     return err
 end
@@ -3408,7 +3408,7 @@ function PetscDrawEOP(arg0::Type{Float64},arg1::PetscDraw)
     return err
 end
 
-function PetscDrawSetDisplay(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscDrawSetDisplay(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscDrawSetDisplay,petscRealDouble),PetscErrorCode,(PetscDraw,Cstring),arg1,arg2)
     return err
 end
@@ -3463,25 +3463,25 @@ function PetscDrawZoom(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{Void}
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscDrawViewPortsCreate(arg0::Type{Float64},arg1::PetscDraw,arg2::Integer,arg3::Union{Ptr{Ptr{PetscDrawViewPorts}},StridedArray{Ptr{PetscDrawViewPorts}},Ptr{Ptr{PetscDrawViewPorts}},Ref{Ptr{PetscDrawViewPorts}}})
     ccall((:PetscDrawViewPortsCreate,petscRealDouble),PetscErrorCode,(PetscDraw,Int64,Ptr{Ptr{PetscDrawViewPorts}}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscDrawViewPortsCreateRect(arg0::Type{Float64},arg1::PetscDraw,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Ptr{PetscDrawViewPorts}},StridedArray{Ptr{PetscDrawViewPorts}},Ptr{Ptr{PetscDrawViewPorts}},Ref{Ptr{PetscDrawViewPorts}}})
     ccall((:PetscDrawViewPortsCreateRect,petscRealDouble),PetscErrorCode,(PetscDraw,Int64,Int64,Ptr{Ptr{PetscDrawViewPorts}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscDrawViewPortsDestroy(arg0::Type{Float64},arg1::Union{Ptr{PetscDrawViewPorts},StridedArray{PetscDrawViewPorts},Ptr{PetscDrawViewPorts},Ref{PetscDrawViewPorts}})
     ccall((:PetscDrawViewPortsDestroy,petscRealDouble),PetscErrorCode,(Ptr{PetscDrawViewPorts},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscDrawViewPortsSet(arg0::Type{Float64},arg1::Union{Ptr{PetscDrawViewPorts},StridedArray{PetscDrawViewPorts},Ptr{PetscDrawViewPorts},Ref{PetscDrawViewPorts}},arg2::Integer)
     ccall((:PetscDrawViewPortsSet,petscRealDouble),PetscErrorCode,(Ptr{PetscDrawViewPorts},Int64),arg1,arg2)
-end 
+end
 =#
 function PetscDrawAxisCreate(arg0::Type{Float64},arg1::PetscDraw,arg2::Union{Ptr{PetscDrawAxis},StridedArray{PetscDrawAxis},Ptr{PetscDrawAxis},Ref{PetscDrawAxis}})
     err = ccall((:PetscDrawAxisCreate,petscRealDouble),PetscErrorCode,(PetscDraw,Ptr{PetscDrawAxis}),arg1,arg2)
@@ -3518,7 +3518,7 @@ function PetscDrawAxisSetColors(arg0::Type{Float64},arg1::PetscDrawAxis,arg2::In
     return err
 end
 
-function PetscDrawAxisSetLabels(arg0::Type{Float64},arg1::PetscDrawAxis,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscDrawAxisSetLabels(arg0::Type{Float64},arg1::PetscDrawAxis,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscDrawAxisSetLabels,petscRealDouble),PetscErrorCode,(PetscDrawAxis,Cstring,Cstring,Cstring),arg1,arg2,arg3,arg4)
     return err
 end
@@ -3824,13 +3824,13 @@ function ISSetType(arg1::IS{Float64},arg2::ISType)
 end
 
 function ISGetType(arg1::IS{Float64},arg2::Union{Ptr{ISType},StridedArray{ISType},Ptr{ISType},Ref{ISType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:ISGetType,petscRealDouble),PetscErrorCode,(IS{Float64},Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
-function ISRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function ISRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:ISRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -3960,7 +3960,7 @@ function ISView(arg1::IS{Float64},arg2::PetscViewer{Float64})
     return err
 end
 
-function ISViewFromOptions(A::IS{Float64},obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function ISViewFromOptions(A::IS{Float64},obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:ISViewFromOptions,petscRealDouble),PetscErrorCode,(IS{Float64},PetscObject,Cstring),A,obj,name)
     return err
 end
@@ -4235,7 +4235,7 @@ function ISColoringView(arg1::ISColoring{Float64},arg2::PetscViewer{Float64})
     return err
 end
 
-function ISColoringViewFromOptions(arg1::ISColoring{Float64},arg2::PetscObject,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function ISColoringViewFromOptions(arg1::ISColoring{Float64},arg2::PetscObject,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:ISColoringViewFromOptions,petscRealDouble),PetscErrorCode,(ISColoring{Float64},PetscObject,Cstring),arg1,arg2,arg3)
     return err
 end
@@ -4400,7 +4400,7 @@ function PetscSectionGetFieldName(arg0::Type{Float64},arg1::PetscSection,arg2::I
     return err
 end
 
-function PetscSectionSetFieldName(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscSectionSetFieldName(arg0::Type{Float64},arg1::PetscSection,arg2::Integer,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscSectionSetFieldName,petscRealDouble),PetscErrorCode,(PetscSection,Int64,Cstring),arg1,arg2,arg3)
     return err
 end
@@ -4575,7 +4575,7 @@ function PetscSectionView(arg1::PetscSection,arg2::PetscViewer{Float64})
     return err
 end
 
-function PetscSectionViewFromOptions(arg0::Type{Float64},A::PetscSection,obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscSectionViewFromOptions(arg0::Type{Float64},A::PetscSection,obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscSectionViewFromOptions,petscRealDouble),PetscErrorCode,(PetscSection,PetscObject,Cstring),A,obj,name)
     return err
 end
@@ -4705,7 +4705,7 @@ function VecSetFromOptions(arg1::Vec{Float64})
     return err
 end
 
-function VecViewFromOptions(A::Vec{Float64},B::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function VecViewFromOptions(A::Vec{Float64},B::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:VecViewFromOptions,petscRealDouble),PetscErrorCode,(Vec{Float64},PetscObject,Cstring),A,B,name)
     return err
 end
@@ -4725,12 +4725,12 @@ function VecZeroEntries(arg1::Vec{Float64})
     return err
 end
 
-function VecSetOptionsPrefix(arg1::Vec{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function VecSetOptionsPrefix(arg1::Vec{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:VecSetOptionsPrefix,petscRealDouble),PetscErrorCode,(Vec{Float64},Cstring),arg1,arg2)
     return err
 end
 
-function VecAppendOptionsPrefix(arg1::Vec{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function VecAppendOptionsPrefix(arg1::Vec{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:VecAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(Vec{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -5065,7 +5065,7 @@ function VecStashView(arg1::Vec{Float64},arg2::PetscViewer{Float64})
     return err
 end
 
-function VecStashViewFromOptions(arg1::Vec{Float64},arg2::PetscObject,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function VecStashViewFromOptions(arg1::Vec{Float64},arg2::PetscObject,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:VecStashViewFromOptions,petscRealDouble),PetscErrorCode,(Vec{Float64},PetscObject,Cstring),arg1,arg2,arg3)
     return err
 end
@@ -5101,13 +5101,13 @@ function VecSetType(arg1::Vec{Float64},arg2::VecType)
 end
 
 function VecGetType(arg1::Vec{Float64},arg2::Union{Ptr{VecType},StridedArray{VecType},Ptr{VecType},Ref{VecType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:VecGetType,petscRealDouble),PetscErrorCode,(Vec{Float64},Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
-function VecRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function VecRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:VecRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -5152,7 +5152,7 @@ function VecScatterView(arg1::VecScatter{Float64},arg2::PetscViewer{Float64})
     return err
 end
 
-function VecScatterViewFromOptions(A::VecScatter{Float64},obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function VecScatterViewFromOptions(A::VecScatter{Float64},obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:VecScatterViewFromOptions,petscRealDouble),PetscErrorCode,(VecScatter{Float64},PetscObject,Cstring),A,obj,name)
     return err
 end
@@ -5617,25 +5617,25 @@ function PetscViewerMathematicaPutVector(arg1::PetscViewer{Float64},arg2::Vec{Fl
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function VecsDestroy(arg0::Type{Float64},arg1::Vecs)
     ccall((:VecsDestroy,petscRealDouble),PetscErrorCode,(Vecs,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function VecsCreateSeq(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Vecs},StridedArray{Vecs},Ptr{Vecs},Ref{Vecs}})
     ccall((:VecsCreateSeq,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Vecs}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function VecsCreateSeqWithArray(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg5::Union{Ptr{Vecs},StridedArray{Vecs},Ptr{Vecs},Ref{Vecs}})
     ccall((:VecsCreateSeqWithArray,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{Float64},Ptr{Vecs}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function VecsDuplicate(arg0::Type{Float64},arg1::Vecs,arg2::Union{Ptr{Vecs},StridedArray{Vecs},Ptr{Vecs},Ref{Vecs}})
     ccall((:VecsDuplicate,petscRealDouble),PetscErrorCode,(Vecs,Ptr{Vecs}),arg1,arg2)
-end 
+end
 =#
 function VecNestGetSubVecs(arg1::Vec{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Vec{Float64}}},StridedArray{Ptr{Vec{Float64}}},Ptr{Ptr{Vec{Float64}}},Ref{Ptr{Vec{Float64}}}})
     err = ccall((:VecNestGetSubVecs,petscRealDouble),PetscErrorCode,(Vec{Float64},Ptr{Int64},Ptr{Ptr{Vec{Float64}}}),arg1,arg2,arg3)
@@ -5667,7 +5667,7 @@ function VecNestGetSize(arg1::Vec{Float64},arg2::Union{Ptr{Int64},StridedArray{I
     return err
 end
 
-function PetscOptionsGetVec(arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Vec{Float64},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function PetscOptionsGetVec(arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Vec{Float64},arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscOptionsGetVec,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Vec{Float64},Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -5707,12 +5707,12 @@ function PetscSectionVecNorm(arg1::PetscSection,arg2::PetscSection,arg3::Vec{Flo
     return err
 end
 
-function MatGetFactor(arg1::Mat{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::MatFactorType,arg4::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
+function MatGetFactor(arg1::Mat{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::MatFactorType,arg4::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     err = ccall((:MatGetFactor,petscRealDouble),PetscErrorCode,(Mat{Float64},Cstring,MatFactorType,Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function MatGetFactorAvailable(arg1::Mat{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::MatFactorType,arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function MatGetFactorAvailable(arg1::Mat{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::MatFactorType,arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:MatGetFactorAvailable,petscRealDouble),PetscErrorCode,(Mat{Float64},Cstring,MatFactorType,Ptr{PetscBool}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -5727,12 +5727,12 @@ function MatGetFactorType(arg1::Mat{Float64},arg2::Union{Ptr{MatFactorType},Stri
     return err
 end
 
-function MatSolverPackageRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::MatType,arg3::MatFactorType,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function MatSolverPackageRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::MatType,arg3::MatFactorType,arg4::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:MatSolverPackageRegister,petscRealDouble),PetscErrorCode,(Cstring,Cstring,MatFactorType,Ptr{Void}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function MatSolverPackageGet(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::MatType,arg3::MatFactorType,arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg6::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
+function MatSolverPackageGet(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::MatType,arg3::MatFactorType,arg4::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg5::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}},arg6::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     err = ccall((:MatSolverPackageGet,petscRealDouble),PetscErrorCode,(Cstring,Cstring,MatFactorType,Ptr{PetscBool},Ptr{PetscBool},Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5,arg6)
     return err
 end
@@ -5762,27 +5762,27 @@ function MatSetFromOptions(arg1::Mat{Float64})
     return err
 end
 
-function MatViewFromOptions(A::Mat{Float64},obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function MatViewFromOptions(A::Mat{Float64},obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:MatViewFromOptions,petscRealDouble),PetscErrorCode,(Mat{Float64},PetscObject,Cstring),A,obj,name)
     return err
 end
 
-function MatRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function MatRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:MatRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
 
-function MatRegisterBaseName(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function MatRegisterBaseName(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:MatRegisterBaseName,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Cstring),arg1,arg2,arg3)
     return err
 end
 
-function MatSetOptionsPrefix(arg1::Mat{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function MatSetOptionsPrefix(arg1::Mat{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:MatSetOptionsPrefix,petscRealDouble),PetscErrorCode,(Mat{Float64},Cstring),arg1,arg2)
     return err
 end
 
-function MatAppendOptionsPrefix(arg1::Mat{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function MatAppendOptionsPrefix(arg1::Mat{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:MatAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(Mat{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -6002,7 +6002,7 @@ function MatCreateLocalRef(arg1::Mat{Float64},arg2::IS{Float64},arg3::IS{Float64
     return err
 end
 
-function MatPythonSetType(arg1::Mat{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function MatPythonSetType(arg1::Mat{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:MatPythonSetType,petscRealDouble),PetscErrorCode,(Mat{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -6082,15 +6082,15 @@ function MatSetRandom(arg1::Mat{Float64},arg2::PetscRandom)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatSetValuesStencil(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg4::Integer,arg5::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::InsertMode)
     ccall((:MatSetValuesStencil,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{MatStencil},Int64,Ptr{MatStencil},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatSetValuesBlockedStencil(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg4::Integer,arg5::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::InsertMode)
     ccall((:MatSetValuesBlockedStencil,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{MatStencil},Int64,Ptr{MatStencil},Ptr{Float64},InsertMode),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
 function MatSetStencil(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Integer)
     err = ccall((:MatSetStencil,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{Int64},Ptr{Int64},Int64),arg1,arg2,arg3,arg4,arg5)
@@ -6133,9 +6133,9 @@ function MatGetOption(arg1::Mat{Float64},arg2::MatOption,arg3::Union{Ptr{PetscBo
 end
 
 function MatGetType(arg1::Mat{Float64},arg2::Union{Ptr{MatType},StridedArray{MatType},Ptr{MatType},Ref{MatType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:MatGetType,petscRealDouble),PetscErrorCode,(Mat{Float64},Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -6494,15 +6494,15 @@ function MatZeroRowsIS(arg1::Mat{Float64},arg2::IS{Float64},arg3::Float64,arg4::
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatZeroRowsStencil(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg4::Float64,arg5::Vec{Float64},arg6::Vec{Float64})
     ccall((:MatZeroRowsStencil,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{MatStencil},Float64,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatZeroRowsColumnsStencil(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg4::Float64,arg5::Vec{Float64},arg6::Vec{Float64})
     ccall((:MatZeroRowsColumnsStencil,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{MatStencil},Float64,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
 function MatZeroRowsColumns(arg1::Mat{Float64},arg2::Integer,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Float64,arg5::Vec{Float64},arg6::Vec{Float64})
     err = ccall((:MatZeroRowsColumns,petscRealDouble),PetscErrorCode,(Mat{Float64},Int64,Ptr{Int64},Float64,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4,arg5,arg6)
@@ -7029,7 +7029,7 @@ function MatGetOrderingList(arg0::Type{Float64},arg1::Union{Ptr{PetscFunctionLis
     return err
 end
 
-function MatOrderingRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function MatOrderingRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:MatOrderingRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -7044,60 +7044,60 @@ function MatCreateLaplacian(arg1::Mat{Float64},arg2::Float64,arg3::PetscBool,arg
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatFactorInfoInitialize(arg0::Type{Float64},arg1::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatFactorInfoInitialize,petscRealDouble),PetscErrorCode,(Ptr{MatFactorInfo},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatCholeskyFactor(arg1::Mat{Float64},arg2::IS{Float64},arg3::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatCholeskyFactor,petscRealDouble),PetscErrorCode,(Mat{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatCholeskyFactorSymbolic(arg1::Mat{Float64},arg2::Mat{Float64},arg3::IS{Float64},arg4::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatCholeskyFactorSymbolic,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatCholeskyFactorNumeric(arg1::Mat{Float64},arg2::Mat{Float64},arg3::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatCholeskyFactorNumeric,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatLUFactor(arg1::Mat{Float64},arg2::IS{Float64},arg3::IS{Float64},arg4::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatLUFactor,petscRealDouble),PetscErrorCode,(Mat{Float64},IS{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatILUFactor(arg1::Mat{Float64},arg2::IS{Float64},arg3::IS{Float64},arg4::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatILUFactor,petscRealDouble),PetscErrorCode,(Mat{Float64},IS{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatLUFactorSymbolic(arg1::Mat{Float64},arg2::Mat{Float64},arg3::IS{Float64},arg4::IS{Float64},arg5::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatLUFactorSymbolic,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},IS{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatILUFactorSymbolic(arg1::Mat{Float64},arg2::Mat{Float64},arg3::IS{Float64},arg4::IS{Float64},arg5::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatILUFactorSymbolic,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},IS{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4,arg5)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatICCFactorSymbolic(arg1::Mat{Float64},arg2::Mat{Float64},arg3::IS{Float64},arg4::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatICCFactorSymbolic,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatICCFactor(arg1::Mat{Float64},arg2::IS{Float64},arg3::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatICCFactor,petscRealDouble),PetscErrorCode,(Mat{Float64},IS{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatLUFactorNumeric(arg1::Mat{Float64},arg2::Mat{Float64},arg3::Union{Ptr{MatFactorInfo},StridedArray{MatFactorInfo},Ptr{MatFactorInfo},Ref{MatFactorInfo}})
     ccall((:MatLUFactorNumeric,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},Ptr{MatFactorInfo}),arg1,arg2,arg3)
-end 
+end
 =#
 function MatGetInertia(arg1::Mat{Float64},arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     err = ccall((:MatGetInertia,petscRealDouble),PetscErrorCode,(Mat{Float64},Ptr{Int64},Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4)
@@ -7134,10 +7134,10 @@ function MatSolveTransposeAdd(arg1::Mat{Float64},arg2::Vec{Float64},arg3::Vec{Fl
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatSolves(arg1::Mat{Float64},arg2::Vecs,arg3::Vecs)
     ccall((:MatSolves,petscRealDouble),PetscErrorCode,(Mat{Float64},Vecs,Vecs),arg1,arg2,arg3)
-end 
+end
 =#
 function MatSetUnfactored(arg1::Mat{Float64})
     err = ccall((:MatSetUnfactored,petscRealDouble),PetscErrorCode,(Mat{Float64},),arg1)
@@ -7204,7 +7204,7 @@ function MatColoringApply(arg1::MatColoring,arg2::Union{Ptr{ISColoring{Float64}}
     return err
 end
 
-function MatColoringRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function MatColoringRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:MatColoringRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -7349,7 +7349,7 @@ function MatPartitioningDestroy(arg0::Type{Float64},arg1::Union{Ptr{MatPartition
     return err
 end
 
-function MatPartitioningRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function MatPartitioningRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:MatPartitioningRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -7365,9 +7365,9 @@ function MatPartitioningSetFromOptions(arg0::Type{Float64},arg1::MatPartitioning
 end
 
 function MatPartitioningGetType(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{Ptr{MatPartitioningType},StridedArray{MatPartitioningType},Ptr{MatPartitioningType},Ref{MatPartitioningType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:MatPartitioningGetType,petscRealDouble),PetscErrorCode,(MatPartitioning,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -7436,12 +7436,12 @@ function MatPartitioningChacoGetEigenNumber(arg0::Type{Float64},arg1::MatPartiti
     return err
 end
 
-function MatPartitioningPartySetGlobal(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function MatPartitioningPartySetGlobal(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:MatPartitioningPartySetGlobal,petscRealDouble),PetscErrorCode,(MatPartitioning,Cstring),arg1,arg2)
     return err
 end
 
-function MatPartitioningPartySetLocal(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function MatPartitioningPartySetLocal(arg0::Type{Float64},arg1::MatPartitioning,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:MatPartitioningPartySetLocal,petscRealDouble),PetscErrorCode,(MatPartitioning,Cstring),arg1,arg2)
     return err
 end
@@ -7506,10 +7506,10 @@ function MatCoarsenSetStrictAggs(arg0::Type{Float64},arg1::MatCoarsen,arg2::Pets
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function MatCoarsenGetData(arg0::Type{Float64},arg1::MatCoarsen,arg2::Union{Ptr{Ptr{PetscCoarsenData}},StridedArray{Ptr{PetscCoarsenData}},Ptr{Ptr{PetscCoarsenData}},Ref{Ptr{PetscCoarsenData}}})
     ccall((:MatCoarsenGetData,petscRealDouble),PetscErrorCode,(MatCoarsen,Ptr{Ptr{PetscCoarsenData}}),arg1,arg2)
-end 
+end
 =#
 function MatCoarsenApply(arg0::Type{Float64},arg1::MatCoarsen)
     err = ccall((:MatCoarsenApply,petscRealDouble),PetscErrorCode,(MatCoarsen,),arg1)
@@ -7521,7 +7521,7 @@ function MatCoarsenDestroy(arg0::Type{Float64},arg1::Union{Ptr{MatCoarsen},Strid
     return err
 end
 
-function MatCoarsenRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function MatCoarsenRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:MatCoarsenRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -7537,13 +7537,13 @@ function MatCoarsenSetFromOptions(arg0::Type{Float64},arg1::MatCoarsen)
 end
 
 function MatCoarsenGetType(arg0::Type{Float64},arg1::MatCoarsen,arg2::Union{Ptr{MatCoarsenType},StridedArray{MatCoarsenType},Ptr{MatCoarsenType},Ref{MatCoarsenType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:MatCoarsenGetType,petscRealDouble),PetscErrorCode,(MatCoarsen,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
-function MatCoarsenViewFromOptions(arg0::Type{Float64},A::MatCoarsen,obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function MatCoarsenViewFromOptions(arg0::Type{Float64},A::MatCoarsen,obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:MatCoarsenViewFromOptions,petscRealDouble),PetscErrorCode,(MatCoarsen,PetscObject,Cstring),A,obj,name)
     return err
 end
@@ -7768,7 +7768,7 @@ function MatMFFDGetH(arg1::Mat{Float64},arg2::Union{Ptr{Float64},StridedArray{Fl
     return err
 end
 
-function MatMFFDSetOptionsPrefix(arg1::Mat{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function MatMFFDSetOptionsPrefix(arg1::Mat{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:MatMFFDSetOptionsPrefix,petscRealDouble),PetscErrorCode,(Mat{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -7788,7 +7788,7 @@ function MatMFFDSetType(arg1::Mat{Float64},arg2::MatMFFDType)
     return err
 end
 
-function MatMFFDRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function MatMFFDRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:MatMFFDRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -7894,13 +7894,13 @@ function DMSetType(arg0::Type{Float64},arg1::DM,arg2::DMType)
 end
 
 function DMGetType(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DMType},StridedArray{DMType},Ptr{DMType},Ref{DMType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:DMGetType,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
-function DMRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function DMRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:DMRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -7960,22 +7960,22 @@ function DMClearGlobalVectors(arg0::Type{Float64},arg1::DM)
     return err
 end
 
-function DMGetNamedGlobalVector(arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
+function DMGetNamedGlobalVector(arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     err = ccall((:DMGetNamedGlobalVector,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{Vec{Float64}}),arg1,arg2,arg3)
     return err
 end
 
-function DMRestoreNamedGlobalVector(arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
+function DMRestoreNamedGlobalVector(arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     err = ccall((:DMRestoreNamedGlobalVector,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{Vec{Float64}}),arg1,arg2,arg3)
     return err
 end
 
-function DMGetNamedLocalVector(arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
+function DMGetNamedLocalVector(arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     err = ccall((:DMGetNamedLocalVector,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{Vec{Float64}}),arg1,arg2,arg3)
     return err
 end
 
-function DMRestoreNamedLocalVector(arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
+function DMRestoreNamedLocalVector(arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     err = ccall((:DMRestoreNamedLocalVector,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{Vec{Float64}}),arg1,arg2,arg3)
     return err
 end
@@ -8075,7 +8075,7 @@ function DMSetFromOptions(arg0::Type{Float64},arg1::DM)
     return err
 end
 
-function DMViewFromOptions(arg0::Type{Float64},A::DM,obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function DMViewFromOptions(arg0::Type{Float64},A::DM,obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:DMViewFromOptions,petscRealDouble),PetscErrorCode,(DM,PetscObject,Cstring),A,obj,name)
     return err
 end
@@ -8230,7 +8230,7 @@ function DMSubDomainRestrict(arg1::DM,arg2::VecScatter{Float64},arg3::VecScatter
     return err
 end
 
-function DMSetOptionsPrefix(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function DMSetOptionsPrefix(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:DMSetOptionsPrefix,petscRealDouble),PetscErrorCode,(DM,Cstring),arg1,arg2)
     return err
 end
@@ -8241,9 +8241,9 @@ function DMSetVecType(arg0::Type{Float64},arg1::DM,arg2::VecType)
 end
 
 function DMGetVecType(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{VecType},StridedArray{VecType},Ptr{VecType},Ref{VecType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:DMGetVecType,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -8253,9 +8253,9 @@ function DMSetMatType(arg0::Type{Float64},arg1::DM,arg2::MatType)
 end
 
 function DMGetMatType(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{MatType},StridedArray{MatType},Ptr{MatType},Ref{MatType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:DMGetMatType,petscRealDouble),PetscErrorCode,(DM,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -8349,17 +8349,17 @@ function MatSetDM(arg1::Mat{Float64},arg2::DM)
     return err
 end
 
-function DMPrintCellVector(arg0::Type{Float64},arg1::Integer,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+function DMPrintCellVector(arg0::Type{Float64},arg1::Integer,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     err = ccall((:DMPrintCellVector,petscRealDouble),PetscErrorCode,(Int64,Cstring,Int64,Ptr{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function DMPrintCellMatrix(arg0::Type{Float64},arg1::Integer,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+function DMPrintCellMatrix(arg0::Type{Float64},arg1::Integer,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     err = ccall((:DMPrintCellMatrix,petscRealDouble),PetscErrorCode,(Int64,Cstring,Int64,Int64,Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
 
-function DMPrintLocalVec(arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Float64,arg4::Vec{Float64})
+function DMPrintLocalVec(arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Float64,arg4::Vec{Float64})
     err = ccall((:DMPrintLocalVec,petscRealDouble),PetscErrorCode,(DM,Cstring,Float64,Vec{Float64}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -8434,7 +8434,7 @@ function DMSetOutputSequenceNumber(arg0::Type{Float64},arg1::DM,arg2::Integer,ar
     return err
 end
 
-function DMOutputSequenceLoad(arg1::DM,arg2::PetscViewer{Float64},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
+function DMOutputSequenceLoad(arg1::DM,arg2::PetscViewer{Float64},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     err = ccall((:DMOutputSequenceLoad,petscRealDouble),PetscErrorCode,(DM,PetscViewer{Float64},Cstring,Int64,Ptr{Float64}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
@@ -8469,65 +8469,65 @@ function DMSetField(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::PetscObject
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMInterpolationCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{DMInterpolationInfo},StridedArray{DMInterpolationInfo},Ptr{DMInterpolationInfo},Ref{DMInterpolationInfo}})
     ccall((:DMInterpolationCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{DMInterpolationInfo}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMInterpolationSetDim(arg0::Type{Float64},arg1::DMInterpolationInfo,arg2::Integer)
     ccall((:DMInterpolationSetDim,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMInterpolationGetDim(arg0::Type{Float64},arg1::DMInterpolationInfo,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMInterpolationGetDim,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMInterpolationSetDof(arg0::Type{Float64},arg1::DMInterpolationInfo,arg2::Integer)
     ccall((:DMInterpolationSetDof,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Int64),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMInterpolationGetDof(arg0::Type{Float64},arg1::DMInterpolationInfo,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMInterpolationGetDof,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Ptr{Int64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMInterpolationAddPoints(arg0::Type{Float64},arg1::DMInterpolationInfo,arg2::Integer,arg3::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:DMInterpolationAddPoints,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Int64,Ptr{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMInterpolationSetUp(arg0::Type{Float64},arg1::DMInterpolationInfo,arg2::DM,arg3::PetscBool)
     ccall((:DMInterpolationSetUp,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,DM,PetscBool),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMInterpolationGetCoordinates(arg1::DMInterpolationInfo,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMInterpolationGetCoordinates,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMInterpolationGetVector(arg1::DMInterpolationInfo,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMInterpolationGetVector,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMInterpolationRestoreVector(arg1::DMInterpolationInfo,arg2::Union{Ptr{Vec{Float64}},StridedArray{Vec{Float64}},Ptr{Vec{Float64}},Ref{Vec{Float64}}})
     ccall((:DMInterpolationRestoreVector,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,Ptr{Vec{Float64}}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMInterpolationEvaluate(arg1::DMInterpolationInfo,arg2::DM,arg3::Vec{Float64},arg4::Vec{Float64})
     ccall((:DMInterpolationEvaluate,petscRealDouble),PetscErrorCode,(DMInterpolationInfo,DM,Vec{Float64},Vec{Float64}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMInterpolationDestroy(arg0::Type{Float64},arg1::Union{Ptr{DMInterpolationInfo},StridedArray{DMInterpolationInfo},Ptr{DMInterpolationInfo},Ref{DMInterpolationInfo}})
     ccall((:DMInterpolationDestroy,petscRealDouble),PetscErrorCode,(Ptr{DMInterpolationInfo},),arg1)
-end 
+end
 =#
 function PFCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::Integer,arg4::Union{Ptr{PF},StridedArray{PF},Ptr{PF},Ref{PF}})
     err = ccall((:PFCreate,petscRealDouble),PetscErrorCode,(comm_type,Int64,Int64,Ptr{PF}),arg1,arg2,arg3,arg4)
@@ -8559,7 +8559,7 @@ function PFInitializePackage(arg0::Type{Float64})
     return err
 end
 
-function PFRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PFRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PFRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -8575,9 +8575,9 @@ function PFSetFromOptions(arg0::Type{Float64},arg1::PF)
 end
 
 function PFGetType(arg0::Type{Float64},arg1::PF,arg2::Union{Ptr{PFType},StridedArray{PFType},Ptr{PFType},Ref{PFType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PFGetType,petscRealDouble),PetscErrorCode,(PF,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -8586,7 +8586,7 @@ function PFView(arg1::PF,arg2::PetscViewer{Float64})
     return err
 end
 
-function PFViewFromOptions(arg0::Type{Float64},A::PF,obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PFViewFromOptions(arg0::Type{Float64},A::PF,obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PFViewFromOptions,petscRealDouble),PetscErrorCode,(PF,PetscObject,Cstring),A,obj,name)
     return err
 end
@@ -8646,7 +8646,7 @@ function AOView(arg1::AO{Float64},arg2::PetscViewer{Float64})
     return err
 end
 
-function AOViewFromOptions(A::AO{Float64},obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function AOViewFromOptions(A::AO{Float64},obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:AOViewFromOptions,petscRealDouble),PetscErrorCode,(AO{Float64},PetscObject,Cstring),A,obj,name)
     return err
 end
@@ -8662,13 +8662,13 @@ function AOSetType(arg1::AO{Float64},arg2::AOType)
 end
 
 function AOGetType(arg1::AO{Float64},arg2::Union{Ptr{AOType},StridedArray{AOType},Ptr{AOType},Ref{AOType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:AOGetType,petscRealDouble),PetscErrorCode,(AO{Float64},Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
-function AORegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function AORegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:AORegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -8814,9 +8814,9 @@ function PetscSpaceSetType(arg0::Type{Float64},arg1::PetscSpace,arg2::PetscSpace
 end
 
 function PetscSpaceGetType(arg0::Type{Float64},arg1::PetscSpace,arg2::Union{Ptr{PetscSpaceType},StridedArray{PetscSpaceType},Ptr{PetscSpaceType},Ref{PetscSpaceType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PetscSpaceGetType,petscRealDouble),PetscErrorCode,(PetscSpace,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -8830,7 +8830,7 @@ function PetscSpaceSetFromOptions(arg0::Type{Float64},arg1::PetscSpace)
     return err
 end
 
-function PetscSpaceViewFromOptions(arg0::Type{Float64},A::PetscSpace,B::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscSpaceViewFromOptions(arg0::Type{Float64},A::PetscSpace,B::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscSpaceViewFromOptions,petscRealDouble),PetscErrorCode,(PetscSpace,PetscObject,Cstring),A,B,name)
     return err
 end
@@ -8840,7 +8840,7 @@ function PetscSpaceView(arg1::PetscSpace,arg2::PetscViewer{Float64})
     return err
 end
 
-function PetscSpaceRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscSpaceRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscSpaceRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -8931,9 +8931,9 @@ function PetscDualSpaceSetType(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Pe
 end
 
 function PetscDualSpaceGetType(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Union{Ptr{PetscDualSpaceType},StridedArray{PetscDualSpaceType},Ptr{PetscDualSpaceType},Ref{PetscDualSpaceType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PetscDualSpaceGetType,petscRealDouble),PetscErrorCode,(PetscDualSpace,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -8947,7 +8947,7 @@ function PetscDualSpaceSetFromOptions(arg0::Type{Float64},arg1::PetscDualSpace)
     return err
 end
 
-function PetscDualSpaceViewFromOptions(arg0::Type{Float64},A::PetscDualSpace,B::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscDualSpaceViewFromOptions(arg0::Type{Float64},A::PetscDualSpace,B::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscDualSpaceViewFromOptions,petscRealDouble),PetscErrorCode,(PetscDualSpace,PetscObject,Cstring),A,B,name)
     return err
 end
@@ -8957,7 +8957,7 @@ function PetscDualSpaceView(arg1::PetscDualSpace,arg2::PetscViewer{Float64})
     return err
 end
 
-function PetscDualSpaceRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscDualSpaceRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscDualSpaceRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -9002,10 +9002,10 @@ function PetscDualSpaceCreateReferenceCell(arg0::Type{Float64},arg1::PetscDualSp
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscDualSpaceApply(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Integer,arg3::Union{Ptr{PetscFECellGeom},StridedArray{PetscFECellGeom},Ptr{PetscFECellGeom},Ref{PetscFECellGeom}},arg4::Integer,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscDualSpaceApply,petscRealDouble),PetscErrorCode,(PetscDualSpace,Int64,Ptr{PetscFECellGeom},Int64,Ptr{Void},Ptr{Void},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
 function PetscDualSpaceLagrangeGetContinuity(arg0::Type{Float64},arg1::PetscDualSpace,arg2::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:PetscDualSpaceLagrangeGetContinuity,petscRealDouble),PetscErrorCode,(PetscDualSpace,Ptr{PetscBool}),arg1,arg2)
@@ -9048,9 +9048,9 @@ function PetscFESetType(arg0::Type{Float64},arg1::PetscFE,arg2::PetscFEType)
 end
 
 function PetscFEGetType(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{PetscFEType},StridedArray{PetscFEType},Ptr{PetscFEType},Ref{PetscFEType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PetscFEGetType,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -9064,7 +9064,7 @@ function PetscFESetFromOptions(arg0::Type{Float64},arg1::PetscFE)
     return err
 end
 
-function PetscFEViewFromOptions(arg0::Type{Float64},A::PetscFE,B::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscFEViewFromOptions(arg0::Type{Float64},A::PetscFE,B::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscFEViewFromOptions,petscRealDouble),PetscErrorCode,(PetscFE,PetscObject,Cstring),A,B,name)
     return err
 end
@@ -9074,7 +9074,7 @@ function PetscFEView(arg1::PetscFE,arg2::PetscViewer{Float64})
     return err
 end
 
-function PetscFERegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscFERegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscFERegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -9084,7 +9084,7 @@ function PetscFERegisterDestroy(arg0::Type{Float64})
     return err
 end
 
-function PetscFECreateDefault(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::PetscBool,arg5::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg6::Integer,arg7::Union{Ptr{PetscFE},StridedArray{PetscFE},Ptr{PetscFE},Ref{PetscFE}})
+function PetscFECreateDefault(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Integer,arg4::PetscBool,arg5::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg6::Integer,arg7::Union{Ptr{PetscFE},StridedArray{PetscFE},Ptr{PetscFE},Ref{PetscFE}})
     err = ccall((:PetscFECreateDefault,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,PetscBool,Cstring,Int64,Ptr{PetscFE}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
@@ -9179,30 +9179,30 @@ function PetscFERefine(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{PetscFE
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscFEIntegrate(arg0::Type{Float64},arg1::PetscFE,arg2::PetscDS,arg3::Integer,arg4::Integer,arg5::Union{Ptr{PetscFECellGeom},StridedArray{PetscFECellGeom},Ptr{PetscFECellGeom},Ref{PetscFECellGeom}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::PetscDS,arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscFEIntegrate,petscRealDouble),PetscErrorCode,(PetscFE,PetscDS,Int64,Int64,Ptr{PetscFECellGeom},Ptr{Float64},PetscDS,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscFEIntegrateResidual(arg0::Type{Float64},arg1::PetscFE,arg2::PetscDS,arg3::Integer,arg4::Integer,arg5::Union{Ptr{PetscFECellGeom},StridedArray{PetscFECellGeom},Ptr{PetscFECellGeom},Ref{PetscFECellGeom}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::PetscDS,arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg10::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscFEIntegrateResidual,petscRealDouble),PetscErrorCode,(PetscFE,PetscDS,Int64,Int64,Ptr{PetscFECellGeom},Ptr{Float64},Ptr{Float64},PetscDS,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscFEIntegrateBdResidual(arg0::Type{Float64},arg1::PetscFE,arg2::PetscDS,arg3::Integer,arg4::Integer,arg5::Union{Ptr{PetscFECellGeom},StridedArray{PetscFECellGeom},Ptr{PetscFECellGeom},Ref{PetscFECellGeom}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::PetscDS,arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg10::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscFEIntegrateBdResidual,petscRealDouble),PetscErrorCode,(PetscFE,PetscDS,Int64,Int64,Ptr{PetscFECellGeom},Ptr{Float64},Ptr{Float64},PetscDS,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscFEIntegrateJacobian(arg0::Type{Float64},arg1::PetscFE,arg2::PetscDS,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{PetscFECellGeom},StridedArray{PetscFECellGeom},Ptr{PetscFECellGeom},Ref{PetscFECellGeom}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg9::PetscDS,arg10::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg11::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscFEIntegrateJacobian,petscRealDouble),PetscErrorCode,(PetscFE,PetscDS,Int64,Int64,Int64,Ptr{PetscFECellGeom},Ptr{Float64},Ptr{Float64},PetscDS,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscFEIntegrateBdJacobian(arg0::Type{Float64},arg1::PetscFE,arg2::PetscDS,arg3::Integer,arg4::Integer,arg5::Integer,arg6::Union{Ptr{PetscFECellGeom},StridedArray{PetscFECellGeom},Ptr{PetscFECellGeom},Ref{PetscFECellGeom}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg9::PetscDS,arg10::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg11::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscFEIntegrateBdJacobian,petscRealDouble),PetscErrorCode,(PetscFE,PetscDS,Int64,Int64,Int64,Ptr{PetscFECellGeom},Ptr{Float64},Ptr{Float64},PetscDS,Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
-end 
+end
 =#
 function PetscFECompositeGetMapping(arg0::Type{Float64},arg1::PetscFE,arg2::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg3::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg4::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}},arg5::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     err = ccall((:PetscFECompositeGetMapping,petscRealDouble),PetscErrorCode,(PetscFE,Ptr{Int64},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5)
@@ -9409,7 +9409,7 @@ function DMDAGetReducedDMDA(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Uni
     return err
 end
 
-function DMDASetFieldName(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function DMDASetFieldName(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:DMDASetFieldName,petscRealDouble),PetscErrorCode,(DM,Int64,Cstring),arg1,arg2,arg3)
     return err
 end
@@ -9429,7 +9429,7 @@ function DMDAGetFieldNames(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Ptr{Ptr{
     return err
 end
 
-function DMDASetCoordinateName(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function DMDASetCoordinateName(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:DMDASetCoordinateName,petscRealDouble),PetscErrorCode,(DM,Int64,Cstring),arg1,arg2,arg3)
     return err
 end
@@ -9559,15 +9559,15 @@ function DMDASplitComm2d(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMDACreatePatchIS(arg1::DM,arg2::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg3::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}},arg4::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     ccall((:DMDACreatePatchIS,petscRealDouble),PetscErrorCode,(DM,Ptr{MatStencil},Ptr{MatStencil},Ptr{IS{Float64}}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMDAGetLocalInfo(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DMDALocalInfo},StridedArray{DMDALocalInfo},Ptr{DMDALocalInfo},Ref{DMDALocalInfo}})
     ccall((:DMDAGetLocalInfo,petscRealDouble),PetscErrorCode,(DM,Ptr{DMDALocalInfo}),arg1,arg2)
-end 
+end
 =#
 function MatRegisterDAAD(arg0::Type{Float64})
     err = ccall((:MatRegisterDAAD,petscRealDouble),PetscErrorCode,())
@@ -9709,10 +9709,10 @@ function DMDASetClosureScalar(arg0::Type{Float64},arg1::DM,arg2::PetscSection,ar
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMDAConvertToCell(arg0::Type{Float64},arg1::DM,arg2::MatStencil,arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     ccall((:DMDAConvertToCell,petscRealDouble),PetscErrorCode,(DM,MatStencil,Ptr{Int64}),arg1,arg2,arg3)
-end 
+end
 =#
 function DMDASetVertexCoordinates(arg0::Type{Float64},arg1::DM,arg2::Float64,arg3::Float64,arg4::Float64,arg5::Float64,arg6::Float64,arg7::Float64)
     err = ccall((:DMDASetVertexCoordinates,petscRealDouble),PetscErrorCode,(DM,Float64,Float64,Float64,Float64,Float64,Float64),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
@@ -9819,45 +9819,45 @@ function DMPatchCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{DM},St
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMPatchZoom(arg1::DM,arg2::Vec{Float64},arg3::MatStencil,arg4::MatStencil,arg5::MPI_Comm,arg6::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}},arg7::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}},arg8::Union{Ptr{PetscSF},StridedArray{PetscSF},Ptr{PetscSF},Ref{PetscSF}})
     ccall((:DMPatchZoom,petscRealDouble),PetscErrorCode,(DM,Vec{Float64},MatStencil,MatStencil,comm_type,Ptr{DM},Ptr{PetscSF},Ptr{PetscSF}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
-end 
+end
 =#
 function DMPatchSolve(arg0::Type{Float64},arg1::DM)
     err = ccall((:DMPatchSolve,petscRealDouble),PetscErrorCode,(DM,),arg1)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMPatchGetPatchSize(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}})
     ccall((:DMPatchGetPatchSize,petscRealDouble),PetscErrorCode,(DM,Ptr{MatStencil}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMPatchSetPatchSize(arg0::Type{Float64},arg1::DM,arg2::MatStencil)
     ccall((:DMPatchSetPatchSize,petscRealDouble),PetscErrorCode,(DM,MatStencil),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMPatchGetCommSize(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{MatStencil},StridedArray{MatStencil},Ptr{MatStencil},Ref{MatStencil}})
     ccall((:DMPatchGetCommSize,petscRealDouble),PetscErrorCode,(DM,Ptr{MatStencil}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMPatchSetCommSize(arg0::Type{Float64},arg1::DM,arg2::MatStencil)
     ccall((:DMPatchSetCommSize,petscRealDouble),PetscErrorCode,(DM,MatStencil),arg1,arg2)
-end 
+end
 =#
 function DMPatchGetCoarse(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     err = ccall((:DMPatchGetCoarse,petscRealDouble),PetscErrorCode,(DM,Ptr{DM}),arg1,arg2)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMPatchCreateGrid(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3::MatStencil,arg4::MatStencil,arg5::MatStencil,arg6::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     ccall((:DMPatchCreateGrid,petscRealDouble),PetscErrorCode,(comm_type,Int64,MatStencil,MatStencil,MatStencil,Ptr{DM}),arg1,arg2,arg3,arg4,arg5,arg6)
-end 
+end
 =#
 function PetscLimiterCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{PetscLimiter},StridedArray{PetscLimiter},Ptr{PetscLimiter},Ref{PetscLimiter}})
     err = ccall((:PetscLimiterCreate,petscRealDouble),PetscErrorCode,(comm_type,Ptr{PetscLimiter}),arg1,arg2)
@@ -9875,9 +9875,9 @@ function PetscLimiterSetType(arg0::Type{Float64},arg1::PetscLimiter,arg2::PetscL
 end
 
 function PetscLimiterGetType(arg0::Type{Float64},arg1::PetscLimiter,arg2::Union{Ptr{PetscLimiterType},StridedArray{PetscLimiterType},Ptr{PetscLimiterType},Ref{PetscLimiterType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PetscLimiterGetType,petscRealDouble),PetscErrorCode,(PetscLimiter,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -9891,7 +9891,7 @@ function PetscLimiterSetFromOptions(arg0::Type{Float64},arg1::PetscLimiter)
     return err
 end
 
-function PetscLimiterViewFromOptions(arg0::Type{Float64},A::PetscLimiter,B::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscLimiterViewFromOptions(arg0::Type{Float64},A::PetscLimiter,B::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscLimiterViewFromOptions,petscRealDouble),PetscErrorCode,(PetscLimiter,PetscObject,Cstring),A,B,name)
     return err
 end
@@ -9901,7 +9901,7 @@ function PetscLimiterView(arg1::PetscLimiter,arg2::PetscViewer{Float64})
     return err
 end
 
-function PetscLimiterRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscLimiterRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscLimiterRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -9937,9 +9937,9 @@ function PetscFVSetType(arg0::Type{Float64},arg1::PetscFV,arg2::PetscFVType)
 end
 
 function PetscFVGetType(arg0::Type{Float64},arg1::PetscFV,arg2::Union{Ptr{PetscFVType},StridedArray{PetscFVType},Ptr{PetscFVType},Ref{PetscFVType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PetscFVGetType,petscRealDouble),PetscErrorCode,(PetscFV,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -9953,7 +9953,7 @@ function PetscFVSetFromOptions(arg0::Type{Float64},arg1::PetscFV)
     return err
 end
 
-function PetscFVViewFromOptions(arg0::Type{Float64},A::PetscFV,B::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscFVViewFromOptions(arg0::Type{Float64},A::PetscFV,B::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscFVViewFromOptions,petscRealDouble),PetscErrorCode,(PetscFV,PetscObject,Cstring),A,B,name)
     return err
 end
@@ -9963,7 +9963,7 @@ function PetscFVView(arg1::PetscFV,arg2::PetscViewer{Float64})
     return err
 end
 
-function PetscFVRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscFVRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscFVRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -10058,10 +10058,10 @@ function PetscFVComputeGradient(arg0::Type{Float64},arg1::PetscFV,arg2::Integer,
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function PetscFVIntegrateRHSFunction(arg0::Type{Float64},arg1::PetscFV,arg2::PetscDS,arg3::Integer,arg4::Integer,arg5::Union{Ptr{PetscFVFaceGeom},StridedArray{PetscFVFaceGeom},Ptr{PetscFVFaceGeom},Ref{PetscFVFaceGeom}},arg6::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg7::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg8::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg9::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}},arg10::Union{Ptr{Float64},StridedArray{Float64},Ptr{Float64},Ref{Float64}})
     ccall((:PetscFVIntegrateRHSFunction,petscRealDouble),PetscErrorCode,(PetscFV,PetscDS,Int64,Int64,Ptr{PetscFVFaceGeom},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64},Ptr{Float64}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)
-end 
+end
 =#
 function PetscFVLeastSquaresSetMaxFaces(arg0::Type{Float64},arg1::PetscFV,arg2::Integer)
     err = ccall((:PetscFVLeastSquaresSetMaxFaces,petscRealDouble),PetscErrorCode,(PetscFV,Int64),arg1,arg2)
@@ -10084,9 +10084,9 @@ function PetscPartitionerSetType(arg0::Type{Float64},arg1::PetscPartitioner,arg2
 end
 
 function PetscPartitionerGetType(arg0::Type{Float64},arg1::PetscPartitioner,arg2::Union{Ptr{PetscPartitionerType},StridedArray{PetscPartitionerType},Ptr{PetscPartitionerType},Ref{PetscPartitionerType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PetscPartitionerGetType,petscRealDouble),PetscErrorCode,(PetscPartitioner,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -10100,7 +10100,7 @@ function PetscPartitionerSetFromOptions(arg0::Type{Float64},arg1::PetscPartition
     return err
 end
 
-function PetscPartitionerViewFromOptions(arg0::Type{Float64},A::PetscPartitioner,B::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscPartitionerViewFromOptions(arg0::Type{Float64},A::PetscPartitioner,B::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscPartitionerViewFromOptions,petscRealDouble),PetscErrorCode,(PetscPartitioner,PetscObject,Cstring),A,B,name)
     return err
 end
@@ -10110,7 +10110,7 @@ function PetscPartitionerView(arg1::PetscPartitioner,arg2::PetscViewer{Float64})
     return err
 end
 
-function PetscPartitionerRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscPartitionerRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscPartitionerRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -10135,7 +10135,7 @@ function DMPlexCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{Ptr{DM},Str
     return err
 end
 
-function DMPlexCreateCohesiveSubmesh(arg0::Type{Float64},arg1::DM,arg2::PetscBool,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
+function DMPlexCreateCohesiveSubmesh(arg0::Type{Float64},arg1::DM,arg2::PetscBool,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     err = ccall((:DMPlexCreateCohesiveSubmesh,petscRealDouble),PetscErrorCode,(DM,PetscBool,Cstring,Int64,Ptr{DM}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
@@ -10365,7 +10365,7 @@ function DMPlexPointGlobalFieldRead(arg0::Type{Float64},arg1::DM,arg2::Integer,a
     return err
 end
 
-function DMLabelCreate(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
+function DMLabelCreate(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     err = ccall((:DMLabelCreate,petscRealDouble),PetscErrorCode,(Cstring,Ptr{DMLabel}),arg1,arg2)
     return err
 end
@@ -10480,57 +10480,57 @@ function DMLabelDistribute(arg0::Type{Float64},arg1::DMLabel,arg2::PetscSF,arg3:
     return err
 end
 
-function DMPlexCreateLabel(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function DMPlexCreateLabel(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:DMPlexCreateLabel,petscRealDouble),PetscErrorCode,(DM,Cstring),arg1,arg2)
     return err
 end
 
-function DMPlexGetLabelValue(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+function DMPlexGetLabelValue(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     err = ccall((:DMPlexGetLabelValue,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64,Ptr{Int64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function DMPlexSetLabelValue(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer)
+function DMPlexSetLabelValue(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer)
     err = ccall((:DMPlexSetLabelValue,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64,Int64),arg1,arg2,arg3,arg4)
     return err
 end
 
-function DMPlexClearLabelValue(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer)
+function DMPlexClearLabelValue(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer)
     err = ccall((:DMPlexClearLabelValue,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64,Int64),arg1,arg2,arg3,arg4)
     return err
 end
 
-function DMPlexGetLabelSize(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+function DMPlexGetLabelSize(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     err = ccall((:DMPlexGetLabelSize,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{Int64}),arg1,arg2,arg3)
     return err
 end
 
-function DMPlexGetLabelIdIS(arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
+function DMPlexGetLabelIdIS(arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     err = ccall((:DMPlexGetLabelIdIS,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{IS{Float64}}),arg1,arg2,arg3)
     return err
 end
 
-function DMPlexGetStratumSize(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+function DMPlexGetStratumSize(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     err = ccall((:DMPlexGetStratumSize,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64,Ptr{Int64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function DMPlexGetStratumIS(arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
+function DMPlexGetStratumIS(arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     err = ccall((:DMPlexGetStratumIS,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64,Ptr{IS{Float64}}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function DMPlexClearLabelStratum(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer)
+function DMPlexClearLabelStratum(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer)
     err = ccall((:DMPlexClearLabelStratum,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64),arg1,arg2,arg3)
     return err
 end
 
-function DMPlexGetLabelOutput(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function DMPlexGetLabelOutput(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:DMPlexGetLabelOutput,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
 
-function DMPlexSetLabelOutput(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool)
+function DMPlexSetLabelOutput(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool)
     err = ccall((:DMPlexSetLabelOutput,petscRealDouble),PetscErrorCode,(DM,Cstring,PetscBool),arg1,arg2,arg3)
     return err
 end
@@ -10550,12 +10550,12 @@ function DMPlexGetLabelName(arg0::Type{Float64},arg1::DM,arg2::Integer,arg3::Uni
     return err
 end
 
-function DMPlexHasLabel(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
+function DMPlexHasLabel(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{PetscBool},StridedArray{PetscBool},Ptr{PetscBool},Ref{PetscBool}})
     err = ccall((:DMPlexHasLabel,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{PetscBool}),arg1,arg2,arg3)
     return err
 end
 
-function DMPlexGetLabel(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
+function DMPlexGetLabel(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     err = ccall((:DMPlexGetLabel,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{DMLabel}),arg1,arg2,arg3)
     return err
 end
@@ -10570,7 +10570,7 @@ function DMPlexAddLabel(arg0::Type{Float64},arg1::DM,arg2::DMLabel)
     return err
 end
 
-function DMPlexRemoveLabel(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
+function DMPlexRemoveLabel(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{DMLabel},StridedArray{DMLabel},Ptr{DMLabel},Ref{DMLabel}})
     err = ccall((:DMPlexRemoveLabel,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{DMLabel}),arg1,arg2,arg3)
     return err
 end
@@ -10650,7 +10650,7 @@ function DMPlexRestoreTransitiveClosure(arg0::Type{Float64},arg1::DM,arg2::Integ
     return err
 end
 
-function DMPlexGenerate(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
+function DMPlexGenerate(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     err = ccall((:DMPlexGenerate,petscRealDouble),PetscErrorCode,(DM,Cstring,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -10730,12 +10730,12 @@ function DMPlexCheckFaces(arg0::Type{Float64},arg1::DM,arg2::PetscBool,arg3::Int
     return err
 end
 
-function DMPlexTriangleSetOptions(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function DMPlexTriangleSetOptions(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:DMPlexTriangleSetOptions,petscRealDouble),PetscErrorCode,(DM,Cstring),arg1,arg2)
     return err
 end
 
-function DMPlexTetgenSetOptions(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function DMPlexTetgenSetOptions(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:DMPlexTetgenSetOptions,petscRealDouble),PetscErrorCode,(DM,Cstring),arg1,arg2)
     return err
 end
@@ -10755,7 +10755,7 @@ function DMPlexSetPartitioner(arg0::Type{Float64},arg1::DM,arg2::PetscPartitione
     return err
 end
 
-function DMPlexCreatePartition(arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::PetscBool,arg5::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}},arg6::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg7::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}},arg8::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
+function DMPlexCreatePartition(arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::PetscBool,arg5::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}},arg6::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}},arg7::Union{Ptr{PetscSection},StridedArray{PetscSection},Ptr{PetscSection},Ref{PetscSection}},arg8::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     err = ccall((:DMPlexCreatePartition,petscRealDouble),PetscErrorCode,(DM,Cstring,Int64,PetscBool,Ptr{PetscSection},Ptr{IS{Float64}},Ptr{PetscSection},Ptr{IS{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8)
     return err
 end
@@ -10810,10 +10810,10 @@ function DMPlexDistributeFieldIS(arg1::DM,arg2::PetscSF,arg3::PetscSection,arg4:
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMPlexDistributeData(arg0::Type{Float64},arg1::DM,arg2::PetscSF,arg3::PetscSection,arg4::MPI_Datatype,arg5::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg6::PetscSection,arg7::Union{Ptr{Ptr{Void}},StridedArray{Ptr{Void}},Ptr{Ptr{Void}},Ref{Ptr{Void}}})
     ccall((:DMPlexDistributeData,petscRealDouble),PetscErrorCode,(DM,PetscSF,PetscSection,MPI_Datatype,Ptr{Void},PetscSection,Ptr{Ptr{Void}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
 function DMPlexMigrate(arg0::Type{Float64},arg1::DM,arg2::PetscSF,arg3::DM)
     err = ccall((:DMPlexMigrate,petscRealDouble),PetscErrorCode,(DM,PetscSF,DM),arg1,arg2,arg3)
@@ -11070,7 +11070,7 @@ function DMPlexCreateClosureIndex(arg0::Type{Float64},arg1::DM,arg2::PetscSectio
     return err
 end
 
-function DMPlexCreateFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
+function DMPlexCreateFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     err = ccall((:DMPlexCreateFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -11080,7 +11080,7 @@ function DMPlexCreateExodus(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg
     return err
 end
 
-function DMPlexCreateExodusFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
+function DMPlexCreateExodusFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     err = ccall((:DMPlexCreateExodusFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -11090,7 +11090,7 @@ function DMPlexCreateCGNS(arg0::Type{Float64},arg1::MPI_Comm,arg2::Integer,arg3:
     return err
 end
 
-function DMPlexCreateCGNSFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
+function DMPlexCreateCGNSFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     err = ccall((:DMPlexCreateCGNSFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -11100,7 +11100,7 @@ function DMPlexCreateGmsh(arg1::MPI_Comm,arg2::PetscViewer{Float64},arg3::PetscB
     return err
 end
 
-function DMPlexCreateGmshFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
+function DMPlexCreateGmshFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     err = ccall((:DMPlexCreateGmshFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -11110,12 +11110,12 @@ function DMPlexCreateFluent(arg1::MPI_Comm,arg2::PetscViewer{Float64},arg3::Pets
     return err
 end
 
-function DMPlexCreateFluentFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
+function DMPlexCreateFluentFromFile(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::PetscBool,arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     err = ccall((:DMPlexCreateFluentFromFile,petscRealDouble),PetscErrorCode,(comm_type,Cstring,PetscBool,Ptr{DM}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function DMPlexConstructGhostCells(arg0::Type{Float64},arg1::DM,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
+function DMPlexConstructGhostCells(arg0::Type{Float64},arg1::DM,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg4::Union{Ptr{DM},StridedArray{DM},Ptr{DM},Ref{DM}})
     err = ccall((:DMPlexConstructGhostCells,petscRealDouble),PetscErrorCode,(DM,Cstring,Ptr{Int64},Ptr{DM}),arg1,arg2,arg3,arg4)
     return err
 end
@@ -11160,7 +11160,7 @@ function DMPlexSetScale(arg0::Type{Float64},arg1::DM,arg2::PetscUnit,arg3::Float
     return err
 end
 
-function DMPlexAddBoundary(arg0::Type{Float64},arg1::DM,arg2::PetscBool,arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Integer,arg6::Integer,arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg9::Integer,arg10::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg11::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function DMPlexAddBoundary(arg0::Type{Float64},arg1::DM,arg2::PetscBool,arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg5::Integer,arg6::Integer,arg7::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg8::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg9::Integer,arg10::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg11::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:DMPlexAddBoundary,petscRealDouble),PetscErrorCode,(DM,PetscBool,Cstring,Cstring,Int64,Int64,Ptr{Int64},Ptr{Void},Int64,Ptr{Int64},Ptr{Void}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11)
     return err
 end
@@ -11506,9 +11506,9 @@ function PetscDSSetType(arg0::Type{Float64},arg1::PetscDS,arg2::PetscDSType)
 end
 
 function PetscDSGetType(arg0::Type{Float64},arg1::PetscDS,arg2::Union{Ptr{PetscDSType},StridedArray{PetscDSType},Ptr{PetscDSType},Ref{PetscDSType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PetscDSGetType,petscRealDouble),PetscErrorCode,(PetscDS,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -11522,7 +11522,7 @@ function PetscDSSetFromOptions(arg0::Type{Float64},arg1::PetscDS)
     return err
 end
 
-function PetscDSViewFromOptions(arg0::Type{Float64},A::PetscDS,B::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PetscDSViewFromOptions(arg0::Type{Float64},A::PetscDS,B::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PetscDSViewFromOptions,petscRealDouble),PetscErrorCode,(PetscDS,PetscObject,Cstring),A,B,name)
     return err
 end
@@ -11532,7 +11532,7 @@ function PetscDSView(arg1::PetscDS,arg2::PetscViewer{Float64})
     return err
 end
 
-function PetscDSRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PetscDSRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PetscDSRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -11797,7 +11797,7 @@ function CharacteristicDestroy(arg0::Type{Float64},arg1::Union{Ptr{Characteristi
     return err
 end
 
-function CharacteristicRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function CharacteristicRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:CharacteristicRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -11823,9 +11823,9 @@ function PCSetType(arg1::PC{Float64},arg2::PCType)
 end
 
 function PCGetType(arg1::PC{Float64},arg2::Union{Ptr{PCType},StridedArray{PCType},Ptr{PCType},Ref{PCType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PCGetType,petscRealDouble),PetscErrorCode,(PC{Float64},Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -11924,7 +11924,7 @@ function PCGetUseAmat(arg1::PC{Float64},arg2::Union{Ptr{PetscBool},StridedArray{
     return err
 end
 
-function PCRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function PCRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:PCRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -11984,17 +11984,17 @@ function PCLoad(arg1::PC{Float64},arg2::PetscViewer{Float64})
     return err
 end
 
-function PCViewFromOptions(A::PC{Float64},obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PCViewFromOptions(A::PC{Float64},obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PCViewFromOptions,petscRealDouble),PetscErrorCode,(PC{Float64},PetscObject,Cstring),A,obj,name)
     return err
 end
 
-function PCSetOptionsPrefix(arg1::PC{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PCSetOptionsPrefix(arg1::PC{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PCSetOptionsPrefix,petscRealDouble),PetscErrorCode,(PC{Float64},Cstring),arg1,arg2)
     return err
 end
 
-function PCAppendOptionsPrefix(arg1::PC{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PCAppendOptionsPrefix(arg1::PC{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PCAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(PC{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -12164,7 +12164,7 @@ function PCShellGetContext(arg1::PC{Float64},arg2::Union{Ptr{Ptr{Void}},StridedA
     return err
 end
 
-function PCShellSetName(arg1::PC{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PCShellSetName(arg1::PC{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PCShellSetName,petscRealDouble),PetscErrorCode,(PC{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -12189,7 +12189,7 @@ function PCFactorSetShiftAmount(arg1::PC{Float64},arg2::Float64)
     return err
 end
 
-function PCFactorSetMatSolverPackage(arg1::PC{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PCFactorSetMatSolverPackage(arg1::PC{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PCFactorSetMatSolverPackage,petscRealDouble),PetscErrorCode,(PC{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -12489,7 +12489,7 @@ function PCSPAISetSp(arg1::PC{Float64},arg2::Integer)
     return err
 end
 
-function PCHYPRESetType(arg1::PC{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PCHYPRESetType(arg1::PC{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PCHYPRESetType,petscRealDouble),PetscErrorCode,(PC{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -12534,7 +12534,7 @@ function PCBJacobiGetTotalBlocks(arg1::PC{Float64},arg2::Union{Ptr{Int64},Stride
     return err
 end
 
-function PCFieldSplitSetFields(arg1::PC{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+function PCFieldSplitSetFields(arg1::PC{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}},arg5::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     err = ccall((:PCFieldSplitSetFields,petscRealDouble),PetscErrorCode,(PC{Float64},Cstring,Int64,Ptr{Int64},Ptr{Int64}),arg1,arg2,arg3,arg4,arg5)
     return err
 end
@@ -12554,12 +12554,12 @@ function PCFieldSplitSetBlockSize(arg1::PC{Float64},arg2::Integer)
     return err
 end
 
-function PCFieldSplitSetIS(arg1::PC{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::IS{Float64})
+function PCFieldSplitSetIS(arg1::PC{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::IS{Float64})
     err = ccall((:PCFieldSplitSetIS,petscRealDouble),PetscErrorCode,(PC{Float64},Cstring,IS{Float64}),arg1,arg2,arg3)
     return err
 end
 
-function PCFieldSplitGetIS(arg1::PC{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
+function PCFieldSplitGetIS(arg1::PC{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{Ptr{IS{Float64}},StridedArray{IS{Float64}},Ptr{IS{Float64}},Ref{IS{Float64}}})
     err = ccall((:PCFieldSplitGetIS,petscRealDouble),PetscErrorCode,(PC{Float64},Cstring,Ptr{IS{Float64}}),arg1,arg2,arg3)
     return err
 end
@@ -12644,7 +12644,7 @@ function PCSetCoordinates(arg1::PC{Float64},arg2::Integer,arg3::Integer,arg4::Un
     return err
 end
 
-function PCPythonSetType(arg1::PC{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function PCPythonSetType(arg1::PC{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:PCPythonSetType,petscRealDouble),PetscErrorCode,(PC{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -12740,9 +12740,9 @@ function PCGAMGSetType(arg1::PC{Float64},arg2::PCGAMGType)
 end
 
 function PCGAMGGetType(arg1::PC{Float64},arg2::Union{Ptr{PCGAMGType},StridedArray{PCGAMGType},Ptr{PCGAMGType},Ref{PCGAMGType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PCGAMGGetType,petscRealDouble),PetscErrorCode,(PC{Float64},Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -12761,7 +12761,7 @@ function PCGAMGSetUseASMAggs(arg1::PC{Float64},arg2::PetscBool)
     return err
 end
 
-function PCGAMGSetSolverType(arg1::PC{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer)
+function PCGAMGSetSolverType(arg1::PC{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer)
     err = ccall((:PCGAMGSetSolverType,petscRealDouble),PetscErrorCode,(PC{Float64},Cstring,Int64),arg1,arg2,arg3)
     return err
 end
@@ -12822,9 +12822,9 @@ function PCGAMGClassicalSetType(arg1::PC{Float64},arg2::PCGAMGClassicalType)
 end
 
 function PCGAMGClassicalGetType(arg1::PC{Float64},arg2::Union{Ptr{PCGAMGClassicalType},StridedArray{PCGAMGClassicalType},Ptr{PCGAMGClassicalType},Ref{PCGAMGClassicalType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:PCGAMGClassicalGetType,petscRealDouble),PetscErrorCode,(PC{Float64},Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -13069,9 +13069,9 @@ function KSPSetType(arg1::KSP{Float64},arg2::KSPType)
 end
 
 function KSPGetType(arg1::KSP{Float64},arg2::Union{Ptr{KSPType},StridedArray{KSPType},Ptr{KSPType},Ref{KSPType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:KSPGetType,petscRealDouble),PetscErrorCode,(KSP{Float64},Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -13115,7 +13115,7 @@ function KSPSetSkipPCSetFromOptions(arg1::KSP{Float64},arg2::PetscBool)
     return err
 end
 
-function KSPRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function KSPRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:KSPRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -13660,12 +13660,12 @@ function KSPGetOperatorsSet(arg1::KSP{Float64},arg2::Union{Ptr{PetscBool},Stride
     return err
 end
 
-function KSPSetOptionsPrefix(arg1::KSP{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function KSPSetOptionsPrefix(arg1::KSP{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:KSPSetOptionsPrefix,petscRealDouble),PetscErrorCode,(KSP{Float64},Cstring),arg1,arg2)
     return err
 end
 
-function KSPAppendOptionsPrefix(arg1::KSP{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function KSPAppendOptionsPrefix(arg1::KSP{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:KSPAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(KSP{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -13715,7 +13715,7 @@ function KSPLoad(arg1::KSP{Float64},arg2::PetscViewer{Float64})
     return err
 end
 
-function KSPViewFromOptions(A::KSP{Float64},obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function KSPViewFromOptions(A::KSP{Float64},obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:KSPViewFromOptions,petscRealDouble),PetscErrorCode,(KSP{Float64},PetscObject,Cstring),A,obj,name)
     return err
 end
@@ -13925,7 +13925,7 @@ function KSPGLTRGetLambda(arg1::KSP{Float64},arg2::Union{Ptr{Float64},StridedArr
     return err
 end
 
-function KSPPythonSetType(arg1::KSP{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function KSPPythonSetType(arg1::KSP{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:KSPPythonSetType,petscRealDouble),PetscErrorCode,(KSP{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -13940,7 +13940,7 @@ function PCPostSolve(arg1::PC{Float64},arg2::KSP{Float64})
     return err
 end
 
-function KSPMonitorLGResidualNormCreate(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
+function KSPMonitorLGResidualNormCreate(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
     err = ccall((:KSPMonitorLGResidualNormCreate,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{Ptr{PetscObject}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
@@ -13955,7 +13955,7 @@ function KSPMonitorLGResidualNormDestroy(arg0::Type{Float64},arg1::Union{Ptr{Ptr
     return err
 end
 
-function KSPMonitorLGTrueResidualNormCreate(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
+function KSPMonitorLGTrueResidualNormCreate(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
     err = ccall((:KSPMonitorLGTrueResidualNormCreate,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{Ptr{PetscObject}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
@@ -13985,50 +13985,50 @@ function PCShellSetPostSolve(arg1::PC{Float64},arg2::Union{Ptr{Void},StridedArra
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function KSPFischerGuessCreate(arg1::KSP{Float64},arg2::Integer,arg3::Integer,arg4::Union{Ptr{KSPFischerGuess},StridedArray{KSPFischerGuess},Ptr{KSPFischerGuess},Ref{KSPFischerGuess}})
     ccall((:KSPFischerGuessCreate,petscRealDouble),PetscErrorCode,(KSP{Float64},Int64,Int64,Ptr{KSPFischerGuess}),arg1,arg2,arg3,arg4)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function KSPFischerGuessDestroy(arg0::Type{Float64},arg1::Union{Ptr{KSPFischerGuess},StridedArray{KSPFischerGuess},Ptr{KSPFischerGuess},Ref{KSPFischerGuess}})
     ccall((:KSPFischerGuessDestroy,petscRealDouble),PetscErrorCode,(Ptr{KSPFischerGuess},),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function KSPFischerGuessReset(arg0::Type{Float64},arg1::KSPFischerGuess)
     ccall((:KSPFischerGuessReset,petscRealDouble),PetscErrorCode,(KSPFischerGuess,),arg1)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function KSPFischerGuessUpdate(arg1::KSPFischerGuess,arg2::Vec{Float64})
     ccall((:KSPFischerGuessUpdate,petscRealDouble),PetscErrorCode,(KSPFischerGuess,Vec{Float64}),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function KSPFischerGuessFormGuess(arg1::KSPFischerGuess,arg2::Vec{Float64},arg3::Vec{Float64})
     ccall((:KSPFischerGuessFormGuess,petscRealDouble),PetscErrorCode,(KSPFischerGuess,Vec{Float64},Vec{Float64}),arg1,arg2,arg3)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function KSPFischerGuessSetFromOptions(arg0::Type{Float64},arg1::KSPFischerGuess)
     ccall((:KSPFischerGuessSetFromOptions,petscRealDouble),PetscErrorCode,(KSPFischerGuess,),arg1)
-end 
+end
 =#
 function KSPSetUseFischerGuess(arg1::KSP{Float64},arg2::Integer,arg3::Integer)
     err = ccall((:KSPSetUseFischerGuess,petscRealDouble),PetscErrorCode,(KSP{Float64},Int64,Int64),arg1,arg2,arg3)
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function KSPSetFischerGuess(arg1::KSP{Float64},arg2::KSPFischerGuess)
     ccall((:KSPSetFischerGuess,petscRealDouble),PetscErrorCode,(KSP{Float64},KSPFischerGuess),arg1,arg2)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function KSPGetFischerGuess(arg1::KSP{Float64},arg2::Union{Ptr{KSPFischerGuess},StridedArray{KSPFischerGuess},Ptr{KSPFischerGuess},Ref{KSPFischerGuess}})
     ccall((:KSPGetFischerGuess,petscRealDouble),PetscErrorCode,(KSP{Float64},Ptr{KSPFischerGuess}),arg1,arg2)
-end 
+end
 =#
 function MatCreateSchurComplement(arg1::Mat{Float64},arg2::Mat{Float64},arg3::Mat{Float64},arg4::Mat{Float64},arg5::Mat{Float64},arg6::Union{Ptr{Mat{Float64}},StridedArray{Mat{Float64}},Ptr{Mat{Float64}},Ref{Mat{Float64}}})
     err = ccall((:MatCreateSchurComplement,petscRealDouble),PetscErrorCode,(Mat{Float64},Mat{Float64},Mat{Float64},Mat{Float64},Mat{Float64},Ptr{Mat{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6)
@@ -14270,7 +14270,7 @@ function SNESSetUpdate(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{Void},Stri
     return err
 end
 
-function SNESRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function SNESRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:SNESRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -14315,7 +14315,7 @@ function SNESLoad(arg1::SNES,arg2::PetscViewer{Float64})
     return err
 end
 
-function SNESViewFromOptions(arg0::Type{Float64},A::SNES,obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function SNESViewFromOptions(arg0::Type{Float64},A::SNES,obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:SNESViewFromOptions,petscRealDouble),PetscErrorCode,(SNES,PetscObject,Cstring),A,obj,name)
     return err
 end
@@ -14330,12 +14330,12 @@ function SNESReasonViewFromOptions(arg0::Type{Float64},arg1::SNES)
     return err
 end
 
-function SNESSetOptionsPrefix(arg0::Type{Float64},arg1::SNES,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function SNESSetOptionsPrefix(arg0::Type{Float64},arg1::SNES,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:SNESSetOptionsPrefix,petscRealDouble),PetscErrorCode,(SNES,Cstring),arg1,arg2)
     return err
 end
 
-function SNESAppendOptionsPrefix(arg0::Type{Float64},arg1::SNES,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function SNESAppendOptionsPrefix(arg0::Type{Float64},arg1::SNES,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:SNESAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(SNES,Cstring),arg1,arg2)
     return err
 end
@@ -14366,9 +14366,9 @@ function MatDAADSetSNES(arg1::Mat{Float64},arg2::SNES)
 end
 
 function SNESGetType(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{SNESType},StridedArray{SNESType},Ptr{SNESType},Ref{SNESType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:SNESGetType,petscRealDouble),PetscErrorCode,(SNES,Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -14432,7 +14432,7 @@ function KSPMonitorSNES(arg1::KSP{Float64},arg2::Integer,arg3::Float64,arg4::Uni
     return err
 end
 
-function KSPMonitorSNESLGResidualNormCreate(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
+function KSPMonitorSNESLGResidualNormCreate(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
     err = ccall((:KSPMonitorSNESLGResidualNormCreate,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{Ptr{PetscObject}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
@@ -14577,7 +14577,7 @@ function SNESKSPGetParametersEW(arg0::Type{Float64},arg1::SNES,arg2::Union{Ptr{I
     return err
 end
 
-function SNESMonitorLGCreate(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
+function SNESMonitorLGCreate(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer,arg5::Integer,arg6::Integer,arg7::Union{Ptr{Ptr{PetscObject}},StridedArray{Ptr{PetscObject}},Ptr{Ptr{PetscObject}},Ref{Ptr{PetscObject}}})
     err = ccall((:SNESMonitorLGCreate,petscRealDouble),PetscErrorCode,(Cstring,Cstring,Cint,Cint,Cint,Cint,Ptr{Ptr{PetscObject}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
@@ -14612,7 +14612,7 @@ function SNESSetComputeApplicationContext(arg0::Type{Float64},arg1::SNES,arg2::U
     return err
 end
 
-function SNESPythonSetType(arg0::Type{Float64},arg1::SNES,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function SNESPythonSetType(arg0::Type{Float64},arg1::SNES,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:SNESPythonSetType,petscRealDouble),PetscErrorCode,(SNES,Cstring),arg1,arg2)
     return err
 end
@@ -15007,7 +15007,7 @@ function SNESLineSearchGetMonitor(arg1::SNESLineSearch,arg2::Union{Ptr{PetscView
     return err
 end
 
-function SNESLineSearchAppendOptionsPrefix(arg0::Type{Float64},arg1::SNESLineSearch,prefix::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function SNESLineSearchAppendOptionsPrefix(arg0::Type{Float64},arg1::SNESLineSearch,prefix::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:SNESLineSearchAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(SNESLineSearch,Cstring),arg1,prefix)
     return err
 end
@@ -15037,7 +15037,7 @@ function SNESLineSearchBTGetAlpha(arg0::Type{Float64},arg1::SNESLineSearch,arg2:
     return err
 end
 
-function SNESLineSearchRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function SNESLineSearchRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:SNESLineSearchRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -15272,15 +15272,15 @@ function DMPlexRestoreFaceFields(arg1::DM,arg2::Integer,arg3::Integer,arg4::Vec{
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMPlexGetFaceGeometry(arg1::DM,arg2::Integer,arg3::Integer,arg4::Vec{Float64},arg5::Vec{Float64},arg6::Union{Ptr{Ptr{PetscFVFaceGeom}},StridedArray{Ptr{PetscFVFaceGeom}},Ptr{Ptr{PetscFVFaceGeom}},Ref{Ptr{PetscFVFaceGeom}}},arg7::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMPlexGetFaceGeometry,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Vec{Float64},Vec{Float64},Ptr{Ptr{PetscFVFaceGeom}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function DMPlexRestoreFaceGeometry(arg1::DM,arg2::Integer,arg3::Integer,arg4::Vec{Float64},arg5::Vec{Float64},arg6::Union{Ptr{Ptr{PetscFVFaceGeom}},StridedArray{Ptr{PetscFVFaceGeom}},Ptr{Ptr{PetscFVFaceGeom}},Ref{Ptr{PetscFVFaceGeom}}},arg7::Union{Ptr{Ptr{Float64}},StridedArray{Ptr{Float64}},Ptr{Ptr{Float64}},Ref{Ptr{Float64}}})
     ccall((:DMPlexRestoreFaceGeometry,petscRealDouble),PetscErrorCode,(DM,Int64,Int64,Vec{Float64},Vec{Float64},Ptr{Ptr{PetscFVFaceGeom}},Ptr{Ptr{Float64}}),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
-end 
+end
 =#
 function DMSNESSetFunctionLocal(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}},arg3::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:DMSNESSetFunctionLocal,petscRealDouble),PetscErrorCode,(DM,Ptr{Void},Ptr{Void}),arg1,arg2,arg3)
@@ -15292,12 +15292,12 @@ function DMSNESSetJacobianLocal(arg0::Type{Float64},arg1::DM,arg2::Union{Ptr{Voi
     return err
 end
 
-function SNESMultiblockSetFields(arg0::Type{Float64},arg1::SNES,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
+function SNESMultiblockSetFields(arg0::Type{Float64},arg1::SNES,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Union{Ptr{Int64},StridedArray{Int64},Ptr{Int64},Ref{Int64}})
     err = ccall((:SNESMultiblockSetFields,petscRealDouble),PetscErrorCode,(SNES,Cstring,Int64,Ptr{Int64}),arg1,arg2,arg3,arg4)
     return err
 end
 
-function SNESMultiblockSetIS(arg1::SNES,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::IS{Float64})
+function SNESMultiblockSetIS(arg1::SNES,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::IS{Float64})
     err = ccall((:SNESMultiblockSetIS,petscRealDouble),PetscErrorCode,(SNES,Cstring,IS{Float64}),arg1,arg2,arg3)
     return err
 end
@@ -15672,12 +15672,12 @@ function TSMonitorCancel(arg1::TS{Float64})
     return err
 end
 
-function TSSetOptionsPrefix(arg1::TS{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TSSetOptionsPrefix(arg1::TS{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TSSetOptionsPrefix,petscRealDouble),PetscErrorCode,(TS{Float64},Cstring),arg1,arg2)
     return err
 end
 
-function TSAppendOptionsPrefix(arg1::TS{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TSAppendOptionsPrefix(arg1::TS{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TSAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(TS{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -15837,7 +15837,7 @@ function TSMonitorDefault(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::Ve
     return err
 end
 
-function TSMonitorDrawCtxCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Integer,arg9::Union{Ptr{TSMonitorDrawCtx},StridedArray{TSMonitorDrawCtx},Ptr{TSMonitorDrawCtx},Ref{TSMonitorDrawCtx}})
+function TSMonitorDrawCtxCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Integer,arg9::Union{Ptr{TSMonitorDrawCtx},StridedArray{TSMonitorDrawCtx},Ptr{TSMonitorDrawCtx},Ref{TSMonitorDrawCtx}})
     err = ccall((:TSMonitorDrawCtxCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Int64,Ptr{TSMonitorDrawCtx}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
     return err
 end
@@ -16222,7 +16222,7 @@ function TSPseudoIncrementDtFromInitialDt(arg1::TS{Float64})
     return err
 end
 
-function TSPythonSetType(arg1::TS{Float64},arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TSPythonSetType(arg1::TS{Float64},arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TSPythonSetType,petscRealDouble),PetscErrorCode,(TS{Float64},Cstring),arg1,arg2)
     return err
 end
@@ -16398,9 +16398,9 @@ function TSMonitorLGDMDARay(arg1::TS{Float64},arg2::Integer,arg3::Float64,arg4::
 end
 
 function TSGetType(arg1::TS{Float64},arg2::Union{Ptr{TSType},StridedArray{TSType},Ptr{TSType},Ref{TSType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:TSGetType,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -16409,7 +16409,7 @@ function TSSetType(arg1::TS{Float64},arg2::TSType)
     return err
 end
 
-function TSRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function TSRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:TSRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -16439,7 +16439,7 @@ function TSLoad(arg1::TS{Float64},arg2::PetscViewer{Float64})
     return err
 end
 
-function TSViewFromOptions(A::TS{Float64},obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TSViewFromOptions(A::TS{Float64},obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TSViewFromOptions,petscRealDouble),PetscErrorCode,(TS{Float64},PetscObject,Cstring),A,obj,name)
     return err
 end
@@ -16454,7 +16454,7 @@ function TSGetApplicationContext(arg1::TS{Float64},arg2::Union{Ptr{Void},Strided
     return err
 end
 
-function TSMonitorLGCtxCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Integer,arg9::Union{Ptr{TSMonitorLGCtx},StridedArray{TSMonitorLGCtx},Ptr{TSMonitorLGCtx},Ref{TSMonitorLGCtx}})
+function TSMonitorLGCtxCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Integer,arg9::Union{Ptr{TSMonitorLGCtx},StridedArray{TSMonitorLGCtx},Ptr{TSMonitorLGCtx},Ref{TSMonitorLGCtx}})
     err = ccall((:TSMonitorLGCtxCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Int64,Ptr{TSMonitorLGCtx}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
     return err
 end
@@ -16544,7 +16544,7 @@ function TSMonitorEnvelopeCtxDestroy(arg0::Type{Float64},arg1::Union{Ptr{TSMonit
     return err
 end
 
-function TSMonitorSPEigCtxCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Integer,arg9::Union{Ptr{TSMonitorSPEigCtx},StridedArray{TSMonitorSPEigCtx},Ptr{TSMonitorSPEigCtx},Ref{TSMonitorSPEigCtx}})
+function TSMonitorSPEigCtxCreate(arg0::Type{Float64},arg1::MPI_Comm,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg4::Integer,arg5::Integer,arg6::Integer,arg7::Integer,arg8::Integer,arg9::Union{Ptr{TSMonitorSPEigCtx},StridedArray{TSMonitorSPEigCtx},Ptr{TSMonitorSPEigCtx},Ref{TSMonitorSPEigCtx}})
     err = ccall((:TSMonitorSPEigCtxCreate,petscRealDouble),PetscErrorCode,(comm_type,Cstring,Cstring,Cint,Cint,Cint,Cint,Int64,Ptr{TSMonitorSPEigCtx}),arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9)
     return err
 end
@@ -16575,9 +16575,9 @@ function TSSSPSetType(arg1::TS{Float64},arg2::TSSSPType)
 end
 
 function TSSSPGetType(arg1::TS{Float64},arg2::Union{Ptr{TSSSPType},StridedArray{TSSSPType},Ptr{TSSSPType},Ref{TSSSPType}})
-    (arg2_,tmp) = symbol_get_before(arg2)
+    (arg2_,tmp) = Symbol_get_before(arg2)
     err = ccall((:TSSSPGetType,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{UInt8}}),arg1,arg2_)
-    symbol_get_after(arg2_,arg2)
+    Symbol_get_after(arg2_,arg2)
     return err
 end
 
@@ -16606,7 +16606,7 @@ function TSGetAdapt(arg1::TS{Float64},arg2::Union{Ptr{TSAdapt},StridedArray{TSAd
     return err
 end
 
-function TSAdaptRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function TSAdaptRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:TSAdaptRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -16631,7 +16631,7 @@ function TSAdaptSetType(arg0::Type{Float64},arg1::TSAdapt,arg2::TSAdaptType)
     return err
 end
 
-function TSAdaptSetOptionsPrefix(arg0::Type{Float64},arg1::TSAdapt,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TSAdaptSetOptionsPrefix(arg0::Type{Float64},arg1::TSAdapt,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TSAdaptSetOptionsPrefix,petscRealDouble),PetscErrorCode,(TSAdapt,Cstring),arg1,arg2)
     return err
 end
@@ -16641,7 +16641,7 @@ function TSAdaptCandidatesClear(arg0::Type{Float64},arg1::TSAdapt)
     return err
 end
 
-function TSAdaptCandidateAdd(arg0::Type{Float64},arg1::TSAdapt,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer,arg5::Float64,arg6::Float64,arg7::PetscBool)
+function TSAdaptCandidateAdd(arg0::Type{Float64},arg1::TSAdapt,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg3::Integer,arg4::Integer,arg5::Float64,arg6::Float64,arg7::PetscBool)
     err = ccall((:TSAdaptCandidateAdd,petscRealDouble),PetscErrorCode,(TSAdapt,Cstring,Int64,Int64,Float64,Float64,PetscBool),arg1,arg2,arg3,arg4,arg5,arg6,arg7)
     return err
 end
@@ -16671,10 +16671,10 @@ function TSAdaptLoad(arg1::TSAdapt,arg2::PetscViewer{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function TSAdaptSetFromOptions(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::TSAdapt)
     ccall((:TSAdaptSetFromOptions,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},TSAdapt),arg1,arg2)
-end 
+end
 =#
 function TSAdaptReset(arg0::Type{Float64},arg1::TSAdapt)
     err = ccall((:TSAdaptReset,petscRealDouble),PetscErrorCode,(TSAdapt,),arg1)
@@ -16701,7 +16701,7 @@ function TSAdaptSetCheckStage(arg0::Type{Float64},arg1::TSAdapt,arg2::Union{Ptr{
     return err
 end
 
-function TSGLAdaptRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function TSGLAdaptRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:TSGLAdaptRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -16726,7 +16726,7 @@ function TSGLAdaptSetType(arg0::Type{Float64},arg1::TSGLAdapt,arg2::TSGLAdaptTyp
     return err
 end
 
-function TSGLAdaptSetOptionsPrefix(arg0::Type{Float64},arg1::TSGLAdapt,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TSGLAdaptSetOptionsPrefix(arg0::Type{Float64},arg1::TSGLAdapt,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TSGLAdaptSetOptionsPrefix,petscRealDouble),PetscErrorCode,(TSGLAdapt,Cstring),arg1,arg2)
     return err
 end
@@ -16741,22 +16741,22 @@ function TSGLAdaptView(arg1::TSGLAdapt,arg2::PetscViewer{Float64})
     return err
 end
 
-#= skipping function with undefined symbols: 
+#= skipping function with undefined Symbols:
  function TSGLAdaptSetFromOptions(arg0::Type{Float64},arg1::Union{Ptr{PetscOptions},StridedArray{PetscOptions},Ptr{PetscOptions},Ref{PetscOptions}},arg2::TSGLAdapt)
     ccall((:TSGLAdaptSetFromOptions,petscRealDouble),PetscErrorCode,(Ptr{PetscOptions},TSGLAdapt),arg1,arg2)
-end 
+end
 =#
 function TSGLAdaptDestroy(arg0::Type{Float64},arg1::Union{Ptr{TSGLAdapt},StridedArray{TSGLAdapt},Ptr{TSGLAdapt},Ref{TSGLAdapt}})
     err = ccall((:TSGLAdaptDestroy,petscRealDouble),PetscErrorCode,(Ptr{TSGLAdapt},),arg1)
     return err
 end
 
-function TSGLAcceptRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::TSGLAcceptFunction)
+function TSGLAcceptRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::TSGLAcceptFunction)
     err = ccall((:TSGLAcceptRegister,petscRealDouble),PetscErrorCode,(Cstring,TSGLAcceptFunction),arg1,arg2)
     return err
 end
 
-function TSGLRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function TSGLRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:TSGLRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -16802,9 +16802,9 @@ function TSEIMEXSetOrdAdapt(arg1::TS{Float64},arg2::PetscBool)
 end
 
 function TSRKGetType(ts::TS{Float64},arg1::Union{Ptr{TSRKType},StridedArray{TSRKType},Ptr{TSRKType},Ref{TSRKType}})
-    (arg1_,tmp) = symbol_get_before(arg1)
+    (arg1_,tmp) = Symbol_get_before(arg1)
     err = ccall((:TSRKGetType,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{UInt8}}),ts,arg1_)
-    symbol_get_after(arg1_,arg1)
+    Symbol_get_after(arg1_,arg1)
     return err
 end
 
@@ -16839,9 +16839,9 @@ function TSRKRegisterDestroy(arg0::Type{Float64})
 end
 
 function TSARKIMEXGetType(ts::TS{Float64},arg1::Union{Ptr{TSARKIMEXType},StridedArray{TSARKIMEXType},Ptr{TSARKIMEXType},Ref{TSARKIMEXType}})
-    (arg1_,tmp) = symbol_get_before(arg1)
+    (arg1_,tmp) = Symbol_get_before(arg1)
     err = ccall((:TSARKIMEXGetType,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{UInt8}}),ts,arg1_)
-    symbol_get_after(arg1_,arg1)
+    Symbol_get_after(arg1_,arg1)
     return err
 end
 
@@ -16876,9 +16876,9 @@ function TSARKIMEXRegisterDestroy(arg0::Type{Float64})
 end
 
 function TSRosWGetType(ts::TS{Float64},arg1::Union{Ptr{TSRosWType},StridedArray{TSRosWType},Ptr{TSRosWType},Ref{TSRosWType}})
-    (arg1_,tmp) = symbol_get_before(arg1)
+    (arg1_,tmp) = Symbol_get_before(arg1)
     err = ccall((:TSRosWGetType,petscRealDouble),PetscErrorCode,(TS{Float64},Ptr{Ptr{UInt8}}),ts,arg1_)
-    symbol_get_after(arg1_,arg1)
+    Symbol_get_after(arg1_,arg1)
     return err
 end
 
@@ -17027,7 +17027,7 @@ function TaoSetUp(arg0::Type{Float64},arg1::Tao)
     return err
 end
 
-function TaoSetType(arg0::Type{Float64},arg1::Tao,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TaoSetType(arg0::Type{Float64},arg1::Tao,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TaoSetType,petscRealDouble),PetscErrorCode,(Tao,Cstring),arg1,arg2)
     return err
 end
@@ -17052,7 +17052,7 @@ function TaoDestroy(arg0::Type{Float64},arg1::Union{Ptr{Tao},StridedArray{Tao},P
     return err
 end
 
-function TaoSetOptionsPrefix(arg0::Type{Float64},arg1::Tao,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TaoSetOptionsPrefix(arg0::Type{Float64},arg1::Tao,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TaoSetOptionsPrefix,petscRealDouble),PetscErrorCode,(Tao,Cstring),arg1,arg2)
     return err
 end
@@ -17062,7 +17062,7 @@ function TaoView(arg1::Tao,arg2::PetscViewer{Float64})
     return err
 end
 
-function TaoViewFromOptions(arg0::Type{Float64},A::Tao,obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TaoViewFromOptions(arg0::Type{Float64},A::Tao,obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TaoViewFromOptions,petscRealDouble),PetscErrorCode,(Tao,PetscObject,Cstring),A,obj,name)
     return err
 end
@@ -17072,7 +17072,7 @@ function TaoSolve(arg0::Type{Float64},arg1::Tao)
     return err
 end
 
-function TaoRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function TaoRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:TaoRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end
@@ -17412,12 +17412,12 @@ function TaoSetTotalIterationNumber(arg0::Type{Float64},arg1::Tao,arg2::Integer)
     return err
 end
 
-function TaoSetOptionsPrefix(arg0::Type{Float64},arg1::Tao,p::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TaoSetOptionsPrefix(arg0::Type{Float64},arg1::Tao,p::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TaoSetOptionsPrefix,petscRealDouble),PetscErrorCode,(Tao,Cstring),arg1,p)
     return err
 end
 
-function TaoAppendOptionsPrefix(arg0::Type{Float64},arg1::Tao,p::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TaoAppendOptionsPrefix(arg0::Type{Float64},arg1::Tao,p::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TaoAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(Tao,Cstring),arg1,p)
     return err
 end
@@ -17467,12 +17467,12 @@ function TaoLineSearchView(arg1::TaoLineSearch,arg2::PetscViewer{Float64})
     return err
 end
 
-function TaoLineSearchViewFromOptions(arg0::Type{Float64},A::TaoLineSearch,obj::PetscObject,name::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TaoLineSearchViewFromOptions(arg0::Type{Float64},A::TaoLineSearch,obj::PetscObject,name::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TaoLineSearchViewFromOptions,petscRealDouble),PetscErrorCode,(TaoLineSearch,PetscObject,Cstring),A,obj,name)
     return err
 end
 
-function TaoLineSearchSetOptionsPrefix(arg0::Type{Float64},arg1::TaoLineSearch,prefix::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TaoLineSearchSetOptionsPrefix(arg0::Type{Float64},arg1::TaoLineSearch,prefix::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TaoLineSearchSetOptionsPrefix,petscRealDouble),PetscErrorCode,(TaoLineSearch,Cstring),arg1,prefix)
     return err
 end
@@ -17482,7 +17482,7 @@ function TaoLineSearchReset(arg0::Type{Float64},arg1::TaoLineSearch)
     return err
 end
 
-function TaoLineSearchAppendOptionsPrefix(arg0::Type{Float64},arg1::TaoLineSearch,prefix::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TaoLineSearchAppendOptionsPrefix(arg0::Type{Float64},arg1::TaoLineSearch,prefix::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TaoLineSearchAppendOptionsPrefix,petscRealDouble),PetscErrorCode,(TaoLineSearch,Cstring),arg1,prefix)
     return err
 end
@@ -17537,7 +17537,7 @@ function TaoLineSearchGetType(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Unio
     return err
 end
 
-function TaoLineSearchSetType(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
+function TaoLineSearchSetType(arg0::Type{Float64},arg1::TaoLineSearch,arg2::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}})
     err = ccall((:TaoLineSearchSetType,petscRealDouble),PetscErrorCode,(TaoLineSearch,Cstring),arg1,arg2)
     return err
 end
@@ -17602,7 +17602,7 @@ function TaoLineSearchFinalizePackage(arg0::Type{Float64})
     return err
 end
 
-function TaoLineSearchRegister(arg0::Type{Float64},arg1::Union{ByteString,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
+function TaoLineSearchRegister(arg0::Type{Float64},arg1::Union{String,Cstring,Symbol,Array{UInt8},Ptr{UInt8}},arg2::Union{Ptr{Void},StridedArray{Void},Ptr{Void},Ref{Void}})
     err = ccall((:TaoLineSearchRegister,petscRealDouble),PetscErrorCode,(Cstring,Ptr{Void}),arg1,arg2)
     return err
 end

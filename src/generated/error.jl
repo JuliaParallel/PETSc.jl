@@ -34,6 +34,6 @@ function PetscErrorMessage(errnum)
   if msg_ptr[] == C_NULL
     return "Petsc did not supply an error message"
   else
-    return bytestring(msg_ptr[])
+    return string(msg_ptr[])
   end
 end

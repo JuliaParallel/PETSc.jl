@@ -5,6 +5,10 @@ function __init__()
   # initialize MPI first so Petsc won't finalize it
   if !MPI.Initialized()
     MPI.Init()
+    # flag to finalize MPI at exit
+    mpi_init = true
+  else
+    mpi_init = false
   end
 
   for i=1:3
@@ -31,6 +35,9 @@ function __init__()
       if have_petsc[i]
         C.PetscFinalize(petsc_type[i])
       end
+    end
+    if mpi_init
+      MPI.Finalize()
     end
   end
 end

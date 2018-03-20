@@ -1,9 +1,5 @@
 using PETSc
-if VERSION >= v"0.5.0-dev+7720"
-  using Base.Test
-else
-  using BaseTestNext
-end
+using Base.Test
 
 # determine scalar type of current run
 global ST = Float64  # scalar type
@@ -64,5 +60,3 @@ function mymult{T}(A::PETSc.C.Mat{T}, x::PETSc.C.Vec, b::PETSc.C.Vec)
   restore(localb)
   return PETSc.C.PetscErrorCode(0)
 end
-
-

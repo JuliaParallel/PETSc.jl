@@ -1028,7 +1028,7 @@ for (f,pf) in ((:MatTranspose,:MatCreateTranspose), # acts like A.'
 end
 
 for (f,pf) in ((:transpose,:MatTranspose),(:ctranspose,:MatHermitianTranspose))
-  fb = symbol(string(f,"!"))
+  fb = Symbol(string(f,"!"))
   pfe = Expr(:quote, pf)
   @eval begin
     function Base.$fb(a::PetscMat)

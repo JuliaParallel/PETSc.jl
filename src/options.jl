@@ -2,8 +2,8 @@
 # dictionary-like object that is analogous to the Julia Base.ENV object
 # for environment variables.
 
-type Options{T<:Scalar} <: Associative{ByteString,ByteString}; end
-const OPTIONS = [T => Options{T}() for T in C.petsc_type]
+type Options{T<:Scalar} <: Associative{String,String}; end
+const OPTIONS = Dict(T => Options{T}() for T in C.petsc_type)
 export OPTIONS, withoptions
 
 typealias SymOrStr Union{AbstractString,Symbol}
@@ -33,7 +33,7 @@ function Base.get{T}(::Options{T}, k::SymOrStr, def)
   chk(C.PetscOptionsGetString(T, Cstring(Ptr{UInt8}(C_NULL)), string('-',k),
                               pointer(_optionstr), Csize_t(length(_optionstr)),
                               b))
-  return b[] != 0 ? bytestring(pointer(_optionstr)) : def
+  return b[] != 0 ? unsafe_string(pointer(_optionstr)) : def
 end
 
 function Base.haskey{T}(::Options{T}, k::SymOrStr)
@@ -42,7 +42,7 @@ function Base.haskey{T}(::Options{T}, k::SymOrStr)
   return b[] != 0
 end
 
-Base.similar(::Options) = Dict{ByteString,ByteString}()
+Base.similar(::Options) = Dict{String,String}()
 
 Base.pop!(o::Options, k::SymOrStr) = (v = o[k]; o[k] = nothing; v)
 Base.pop!(o::Options, k::SymOrStr, def) = haskey(o,k) ? pop!(o,k) : def

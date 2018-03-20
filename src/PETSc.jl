@@ -2,7 +2,6 @@ module PETSc
 
 import MPI
 export PetscInt
-using ArrayViews
 include(joinpath("generated", "C.jl"))
 using .C
 include("petsc_com.jl")

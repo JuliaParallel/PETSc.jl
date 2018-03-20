@@ -50,9 +50,9 @@ for (i, name) in enumerate(build_names)
     build_any = true
   end
 end
-      
+
 # write options to file used for rebuild
-suffixes_name = ["_DIR", "_ARCH", "_NOBUILD"] 
+suffixes_name = ["_DIR", "_ARCH", "_NOBUILD"]
 suffixes_noname = ["_OPT", "_FLAGS"]
 envvars = Dict{Any, Any}()
 for (i, name) in enumerate(build_names)
@@ -108,7 +108,7 @@ end
 # the PETSc configure script does not support Python 3, so we need to
 # find Python 2 if we can:
 if build_any
-  pyconfigvar(python::AbstractString, var::AbstractString) = chomp(readall(`$python -c "import distutils.sysconfig; print(distutils.sysconfig.get_config_var('$var'))"`))
+  pyconfigvar(python::AbstractString, var::AbstractString) = chomp(readstring(`$python -c "import distutils.sysconfig; print(distutils.sysconfig.get_config_var('$var'))"`))
   pythonvers(python) = VersionNumber(pyconfigvar(python, "VERSION"))
   pythonok(python) = try
     return pythonvers(python) < v"3"
@@ -140,7 +140,7 @@ for scalar_type in ("real", "complex"), precision in ("double", "single")
     withenv("PETSC_DIR"=>nothing, "PETSC_ARCH"=>nothing) do
       println("CONFIGURING PETSc $name_i...")
       PETSC_ARCH=""
-      for line in eachline(`$python configure --with-64-bit-indices=true --with-scalar-type=$scalar_type --with-precision=$precision $opt_flags`)
+      for line in eachline(`$python configure --with-fc=0 --with-cxx=0 --with-64-bit-indices=true --with-scalar-type=$scalar_type --with-precision=$precision $opt_flags`)
         verbose && print("    $line")
         if ismatch(r"^\s*PETSC_ARCH:", line)
           PETSC_ARCH = chomp(split(line)[2])
@@ -152,11 +152,11 @@ for scalar_type in ("real", "complex"), precision in ("double", "single")
 #      println("PETSC_DIR = ", PETSC_DIR)
       arches[name_i] = (PETSC_DIR, PETSC_ARCH)
       println("BUILDING PETSc $name_i...")
-      for line in eachline(`make MAKE_NP=$CPU_CORES PETSC_DIR=$(pwd()) PETSC_ARCH=$PETSC_ARCH`)
+      for line in eachline(`make MAKE_NP=$(Sys.CPU_CORES) PETSC_DIR=$(pwd()) PETSC_ARCH=$PETSC_ARCH`)
         verbose && print("    $line")
       end
       println("TESTING PETSc $name_i...")
-      for line in eachline(`make MAKE_NP=$CPU_CORES PETSC_DIR=$(pwd()) PETSC_ARCH=$PETSC_ARCH test`)
+      for line in eachline(`make MAKE_NP=$(Sys.CPU_CORES) PETSC_DIR=$(pwd()) PETSC_ARCH=$PETSC_ARCH test`)
         verbose && print("    $line")
       end
     end

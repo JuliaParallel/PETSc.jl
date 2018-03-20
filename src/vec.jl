@@ -4,13 +4,13 @@ export Vec, comm, NullVec
  """
   Construct a high level Vec object from a low level C.Vec.
   The data field is used to protect things from GC.
-  A finalizer is attached to deallocate the memory of the underlying C.Vec, unless 
+  A finalizer is attached to deallocate the memory of the underlying C.Vec, unless
   `first_instance` is set to true.
   `assembled` indicates when values are set via `setindex!` and is reset by
    `AssemblyEnd`
    `verify_assembled` when true, calls to `isassembled` verify all processes
-   have `assembled` = true, when false, only the local assembly state is 
-   checked.  This essentially makes the user responsible for assembling 
+   have `assembled` = true, when false, only the local assembly state is
+   checked.  This essentially makes the user responsible for assembling
   the vector before passing it into functions that will use it (like KSP
   solves, etc.).
 
@@ -23,7 +23,7 @@ type Vec{T} <: AbstractVector{T}
   data::Any # keep a reference to anything needed for the Mat
             # -- needed if the Mat is a wrapper around a Julia object,
             #    to prevent the object from being garbage collected.
-  function Vec(p::C.Vec{T}, data=nothing; first_instance::Bool=true, 
+  function Vec(p::C.Vec{T}, data=nothing; first_instance::Bool=true,
                verify_assembled::Bool=true)
     v = new(p, false, verify_assembled, C.INSERT_VALUES, data)
     if first_instance
@@ -33,9 +33,7 @@ type Vec{T} <: AbstractVector{T}
   end
 end
 
-import Base: show, showcompact, writemime
-function show(io::IO, x::Vec)
-
+function Base.show(io::IO, x::Vec)
   myrank = MPI.Comm_rank(comm(x))
   if myrank == 0
     println("Petsc Vec of lenth ", length(x))
@@ -49,10 +47,6 @@ function show(io::IO, x::Vec)
     println(io, "Process ", myrank, " not assembled")
   end
 end
-
-
-showcompact(io::IO, x::Vec) = show(io, x)
-writemime(io::IO, ::MIME"text/plain", x::Vec) = show(io, x)
 
 """
   Null vectors, used in place of void pointers in the C
@@ -88,7 +82,7 @@ end
 export gettype
 
  """
-  Get the symbol that is the format of the vector
+  Get the Symbol that is the format of the vector
 """
 function gettype{T}(a::Vec{T})
   sym_arr = Array(C.VecType, 1)
@@ -104,20 +98,20 @@ function Vec{T}(::Type{T}, vtype::C.VecType=C.VECMPI;
                 comm::MPI.Comm=MPI.COMM_WORLD)
   p = Ref{C.Vec{T}}()
   chk(C.VecCreate(comm, p))
-  chk(C.VecSetType(p[], vtype)) 
+  chk(C.VecSetType(p[], vtype))
   v = Vec{T}(p[])
   v
 end
 
  """
   Create a vector, specifying the (global) length len or the local length
-  mlocal.  Even if the blocksize is > 1, teh lengths are always number of 
+  mlocal.  Even if the blocksize is > 1, teh lengths are always number of
   elements in the vector, not number of block elements.  Thus
   len % blocksize must = 0.
 """
 function Vec{T<:Scalar}(::Type{T}, len::Integer=C.PETSC_DECIDE;
                          vtype::C.VecType=C.VECMPI,  bs=1,
-                         comm::MPI.Comm=MPI.COMM_WORLD, 
+                         comm::MPI.Comm=MPI.COMM_WORLD,
                          mlocal::Integer=C.PETSC_DECIDE)
   vec = Vec(T, vtype; comm=comm)
   resize!(vec, len, mlocal=mlocal)
@@ -151,12 +145,12 @@ export VecGhost, VecLocal, restore
 
 
  """
-  Make a PETSc vector with space for ghost values.  ghost_idx are the 
+  Make a PETSc vector with space for ghost values.  ghost_idx are the
   global indices that will be copied into the ghost space.
 """
 # making mlocal the position and mglobal the keyword argument is inconsistent
 # with the other Vec constructors, but it makes more sense here
-function VecGhost{T<:Scalar, I <: Integer}(::Type{T}, mlocal::Integer, 
+function VecGhost{T<:Scalar, I <: Integer}(::Type{T}, mlocal::Integer,
                   ghost_idx::Array{I,1}; comm=MPI.COMM_WORLD, m=C.PETSC_DECIDE, bs=1, vtype=C.VECMPI)
 
     nghost = length(ghost_idx)
@@ -177,7 +171,7 @@ function VecGhost{T<:Scalar, I <: Integer}(::Type{T}, mlocal::Integer,
 end
 
  """
-  Create a VECSEQ that contains both the local and the ghost values of the 
+  Create a VECSEQ that contains both the local and the ghost values of the
   original vector.  The underlying memory for the orignal and output vectors
   alias.
 """
@@ -336,7 +330,7 @@ sizelocal{T,n}(t::AbstractArray{T,n}, d) = (d>n ? 1 : sizelocal(t)[d])
  """
   Get the range of global indices that define the local part of the vector.
   Internally, this calls the Petsc function VecGetOwnershipRange, and has
-  the same limitations as that function, namely that some vector formats do 
+  the same limitations as that function, namely that some vector formats do
   not have a well defined contiguous range.
 """
 function localpart(v::Vec)
@@ -400,7 +394,7 @@ end
 export localIS, local_to_global_mapping, set_local_to_global_mapping, has_local_to_global_mapping
 
 """
-  Constructs index set mapping from local indexing to global indexing, based 
+  Constructs index set mapping from local indexing to global indexing, based
   on localpart()
 """
 function localIS{T}(A::Vec{T})
@@ -421,7 +415,7 @@ function localIS_block{T}(A::Vec{T})
   return rowis
 end
 """
-  Construct ISLocalToGlobalMappings for the vector.  If a block vector, 
+  Construct ISLocalToGlobalMappings for the vector.  If a block vector,
   create a block index set
 """
 function local_to_global_mapping(A::Vec)
@@ -430,7 +424,7 @@ function local_to_global_mapping(A::Vec)
   # memory
   if get_blocksize(A) == 1
     rowis = localIS(A)
-  else 
+  else
     rowis = localIS_block(A)
   end
   row_ltog = ISLocalToGlobalMapping(rowis)
@@ -456,7 +450,7 @@ function has_local_to_global_mapping{T}(A::Vec{T})
   chk(C.VecGetLocalToGlobalMapping(A.p, rmap_re))
 
   rmap = rmap_ref[]
-  
+
   return rmap.pobj != C_NULL
 end
 
@@ -470,10 +464,10 @@ export assemble, isassembled, AssemblyBegin, AssemblyEnd
  """
   Start communication to assemble stashed values into the vector
 
-  The MatAssemblyType is not needed for vectors, but is provided for 
+  The MatAssemblyType is not needed for vectors, but is provided for
   compatability with the Mat case.
 
-  Unless vec.verify_assembled == false, users must *never* call the 
+  Unless vec.verify_assembled == false, users must *never* call the
   C functions VecAssemblyBegin, VecAssemblyEnd and VecSetValues, they must
   call AssemblyBegin, AssemblyEnd, and setindex!.
 """
@@ -496,9 +490,9 @@ function AssemblyEnd(x::Vec, t::C.MatAssemblyType=C.MAT_FINAL_ASSEMBLY)
 end
 
 """
-  Check if a vector is assembled (ie. does not have stashed values).  If 
-  `x.verify_assembled`, the assembly state of all processes is checked, 
-  otherwise only the local process is checked. `local_only` forces only 
+  Check if a vector is assembled (ie. does not have stashed values).  If
+  `x.verify_assembled`, the assembly state of all processes is checked,
+  otherwise only the local process is checked. `local_only` forces only
   the local process to be checked, regardless of `x.verify_assembled`.
 """
 function isassembled(x::Vec, local_only=false)
@@ -625,7 +619,7 @@ export set_values!, set_values_blocked!, set_values_local!, set_values_blocked_l
 
 #TODO: in 0.5, use boundscheck macro to verify stride=1
 
-function set_values!{T <: Scalar}(x::Vec{T}, idxs::StridedVecOrMat{PetscInt}, 
+function set_values!{T <: Scalar}(x::Vec{T}, idxs::StridedVecOrMat{PetscInt},
                                  vals::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
   chk(C.VecSetValues(x.p, length(idxs), idxs, vals, o))
@@ -662,10 +656,10 @@ function set_values_blocked!{T <: Scalar}(x::Vec{T}, idxs::StridedVecOrMat{Petsc
   chk(C.VecSetValuesBlocked(x.p, length(idxs), idxs, vals, o))
 end
 
-function set_values_blocked!{T <: Scalar, I <: Integer}(x::Vec{T}, 
-                             idxs::StridedVecOrMat{I}, vals::StridedVecOrMat{T}, 
+function set_values_blocked!{T <: Scalar, I <: Integer}(x::Vec{T},
+                             idxs::StridedVecOrMat{I}, vals::StridedVecOrMat{T},
                              o::C.InsertMode=x.insertmode)
- 
+
   p_idxs = PetscInt[ i for i in idxs]
   set_values_blocked!(x, p_idxs, vals, o)
 end
@@ -679,8 +673,8 @@ function set_values_local!{T <: Scalar}(x::Vec{T}, idxs::StridedVecOrMat{PetscIn
   chk(C.VecSetValuesLocal(x.p, length(idxs), idxs, vals, o))
 end
 
-function set_values_local!{T <: Scalar, I <: Integer}(x::Vec{T}, 
-                           idxs::StridedVecOrMat{I}, vals::StridedVecOrMat{T}, 
+function set_values_local!{T <: Scalar, I <: Integer}(x::Vec{T},
+                           idxs::StridedVecOrMat{I}, vals::StridedVecOrMat{T},
                            o::C.InsertMode=x.insertmode)
 
   p_idxs = PetscInt[ i for i in idxs]
@@ -688,7 +682,7 @@ function set_values_local!{T <: Scalar, I <: Integer}(x::Vec{T},
 end
 
 # for julia vectors, local = global
-function set_values_local!(x::AbstractArray, idxs::AbstractArray, 
+function set_values_local!(x::AbstractArray, idxs::AbstractArray,
                            vals::AbstractArray, o::C.InsertMode=C.INSERT_VALUES)
 
   if o == C.INSERT_VALUES
@@ -706,7 +700,7 @@ function set_values_local!(x::AbstractArray, idxs::AbstractArray,
 end
 
 
-function set_values_blocked_local!{T <: Scalar}(x::Vec{T}, 
+function set_values_blocked_local!{T <: Scalar}(x::Vec{T},
                                    idxs::StridedVecOrMat{PetscInt},
                                    vals::StridedVecOrMat{T}, o::C.InsertMode=x.insertmode)
 
@@ -714,8 +708,8 @@ function set_values_blocked_local!{T <: Scalar}(x::Vec{T},
 end
 
 
-function set_values_blocked_local!{T <: Scalar, I <: Integer}(x::Vec{T}, 
-                           idxs::StridedVecOrMat{I}, vals::StridedVecOrMat{T}, 
+function set_values_blocked_local!{T <: Scalar, I <: Integer}(x::Vec{T},
+                           idxs::StridedVecOrMat{I}, vals::StridedVecOrMat{T},
                            o::C.InsertMode=x.insertmode)
 
   p_idxs = PetscInt[ i for i in idxs]
@@ -728,14 +722,14 @@ end
 
 
 
-                             
+
 
 ###############################################################################
 import Base: abs, exp, log, conj, conj!
 export abs!, exp!, log!
 for (f,pf) in ((:abs,:VecAbs), (:exp,:VecExp), (:log,:VecLog),
   (:conj,:VecConjugate))
-  fb = symbol(string(f, "!"))
+  fb = Symbol(string(f, "!"))
   @eval begin
     function $fb(x::Vec)
       chk(C.$pf(x.p))
@@ -855,7 +849,7 @@ end
 
 function (==)(x::Vec, y::AbstractArray)
   flag = true
-  x_arr = LocalVector(x) 
+  x_arr = LocalVector(x)
   for i=1:length(x_arr)  # do localpart, then MPI reduce
     flag = flag && x_arr[i] == y[i]
   end
@@ -870,8 +864,8 @@ function (==)(x::Vec, y::AbstractArray)
   end
 
   MPI.Bcast!(buf, 1, 0, comm(x))
- 
-  return convert(Bool, buf[1]) 
+
+  return convert(Bool, buf[1])
 end
 
 function Base.sum{T}(x::Vec{T})
@@ -914,7 +908,7 @@ function map!{T}(f, dest::Vec{T}, src::Vec)
 end
 
 """
-  Multiple source vector map.  All vectors must have the local and global 
+  Multiple source vector map.  All vectors must have the local and global
   lengths.  If some a ghost vectors and some are not, the map is applied
   only to the local part
 """
@@ -936,7 +930,7 @@ function map!{T, T2}(f, dest::Vec{T}, src1::Vec{T}, src2::Vec{T2},  src_rest::Ve
       throw(ArgumentError("start of local part of src and dest must be aligned"))
     end
   end
-  
+
   # extract the arrays
   n = length(srcs)
   len = 0
@@ -945,7 +939,7 @@ function map!{T, T2}(f, dest::Vec{T}, src1::Vec{T}, src2::Vec{T2},  src_rest::Ve
   use_length_local = false
 
   dest_arr = LocalVector(dest)
-  try 
+  try
     for (idx, src) in enumerate(srcs)
       src_arrs[idx] = LocalVector_readonly(src)
 
@@ -1088,12 +1082,12 @@ function restore{T}(varr::LocalVectorWrite{T})
   if !varr.isfinalized && !PetscFinalized(T) && !isfinalized(varr.pobj)
     ptr = varr.ref
     chk(C.VecRestoreArray(varr.pobj, ptr))
-  end 
+  end
   varr.isfinalized = true
 end
 
 """
-  Get the LocalVector_readonly of a vector.  Users must call restore when 
+  Get the LocalVector_readonly of a vector.  Users must call restore when
   finished with the object.
 """
 function LocalVector_readonly{T}(vec::Vec{T})
@@ -1111,7 +1105,7 @@ function restore{T}(varr::LocalVectorRead{T})
   if !varr.isfinalized && !PetscFinalized(T) && !isfinalized(varr.pobj)
     ptr = [varr.ref[]]
     chk(C.VecRestoreArrayRead(varr.pobj, ptr))
-  end 
+  end
   varr.isfinalized = true
 end
 

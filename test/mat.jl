@@ -162,7 +162,7 @@ end
   end
   vt = RC(complex(3., 3.))
   @testset "array indexing" begin
-    vals = RC(complex(rand(3, 2), rand(3,2)))
+    vals = RC(complex.(rand(3, 2), rand(3,2)))
     idx = Array(1:3)
     idy = Array(1:2)
     @testset "view indexing" begin
@@ -176,7 +176,7 @@ end
     end
     @testset "y indexing" begin
       mat = PETSc.Mat(ST, 3, 3)
-      vals = RC( complex(rand(3), rand(3)))
+      vals = RC( complex.(rand(3), rand(3)))
       mat[1, idx] = vals
       assemble(mat)
       matj = zeros(ST, 3,3)
@@ -499,7 +499,7 @@ end
     PETSc.assemble(mat1)
     PETSc.assemble(mat2)
     @test ishermitian(mat1)
-    @test issym(mat2)
+    @test issymmetric(mat2)
 
     mat3 = mat1.'*mat2
     mat3j = mat1j.'*mat2j

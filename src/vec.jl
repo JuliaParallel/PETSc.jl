@@ -553,7 +553,7 @@ function setindex!{T<:Integer}(x::Vec, v::Number, I::Range{T})
     return v
   else
     # use invoke here to avoid a recursion loop
-    return invoke(setindex!, (Vec,typeof(v),AbstractVector{T}), x,v,I)
+    return invoke(setindex!, Tuple{Vec,typeof(v),AbstractVector{T}}, x,v,I)
   end
 end
 
@@ -933,7 +933,7 @@ function map!{F,T,T2}(f::F, dest::Vec{T}, src1::Vec{T}, src2::Vec{T2},  src_rest
   n = length(srcs)
   len = 0
   len_prev = 0
-  src_arrs = Array(LocalVectorRead{T2}, n)
+  src_arrs = Array{LocalVectorRead{T2}}(n)
   use_length_local = false
 
   dest_arr = LocalVector(dest)
@@ -1113,7 +1113,7 @@ getindex(varr::LocalVector, i) = getindex(varr.a, i)
 setindex!(varr::LocalVectorWrite, v, i) = setindex!(varr.a, v, i)
 Base.unsafe_convert{T}(::Type{Ptr{T}}, a::LocalVector{T}) = Base.unsafe_convert(Ptr{T}, a.a)
 Base.stride(a::LocalVector, d::Integer) = stride(a.a, d)
-Base.similar(a::LocalVector, T=eltype(a), dims=size(a)) = similar(a.a, T, dims)
+Base.similar(a::LocalVector, T::Type=eltype(a), dims::Dims{1}=size(a)) = similar(a.a, T, dims)
 
 function (==)(x::LocalVector, y::AbstractArray)
   return x.a == y

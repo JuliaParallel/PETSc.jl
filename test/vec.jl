@@ -137,7 +137,7 @@
       vec4_j[i] = RC(complex(Float64(-i), Float64(-i)))
     end
     @testset "testing abs" begin
-      vec4_j = abs(vec4_j)
+      vec4_j = abs.(vec4_j)
       absv4  = abs(vec4)
       abs!(vec4)
       if VERSION >= v"0.5.0-dev+0"

@@ -38,12 +38,12 @@ function PetscPowRealInt(arg0::Type{Float32},base::Float32,power::Integer)
 end
 
 function PetscPowScalarInt(arg0::Type{Float32},base::Float32,power::Integer)
-    err = ccall((:PetscPowScalarInt,petscRealSingle),PetscScalar,(Float32,Int64),base,power)
+    err = ccall((:PetscPowScalarInt,petscRealSingle),Float32,(Float32,Int64),base,power)
     return err
 end
 
 function PetscPowScalarReal(arg0::Type{Float32},base::Float32,power::Float32)
-    err = ccall((:PetscPowScalarReal,petscRealSingle),PetscScalar,(Float32,Float32),base,power)
+    err = ccall((:PetscPowScalarReal,petscRealSingle),Float32,(Float32,Float32),base,power)
     return err
 end
 

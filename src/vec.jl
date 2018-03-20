@@ -795,27 +795,27 @@ function Base.At_mul_B{T<:Complex}(x::Vec{T}, y::Vec{T})
 end
 
 # pointwise operations on pairs of vectors (TODO: support in-place variants?)
-import Base: max, min, .*, ./, .\
+import Base: broadcast
 for (f,pf) in ((:max,:VecPointwiseMax), (:min,:VecPointwiseMin),
   (:.*,:VecPointwiseMult), (:./,:VecPointwiseDivide))
-  @eval function ($f)(x::Vec, y::Vec)
+  @eval function broadcast(::typeof($f), x::Vec, y::Vec)
     w = similar(x)
     chk(C.$pf(w.p, x.p, y.p))
     w
   end
 end
 
-import Base: +, -
+import Base: +, -, *, /, \
 function Base.scale!{T}(x::Vec{T}, s::Number)
   chk(C.VecScale(x.p, T(s)))
   x
 end
-Base.scale{T}(x::Vec{T},s::Number) = scale!(copy(x),s)
-(.*)(x::Vec, a::Number...) = scale(x, prod(a))
-(.*)(a::Number, x::Vec) = scale(x, a)
-(./)(x::Vec, a::Number) = scale(x, inv(a))
-(.\)(a::Number, x::Vec) = scale(x, inv(a))
-function (./)(a::Number, x::Vec)
+scale{T}(x::Vec{T},s::Number) = scale!(copy(x),s)
+(*)(x::Vec, a::Number...) = scale(x, prod(a))
+(*)(a::Number, x::Vec) = scale(x, a)
+(/)(x::Vec, a::Number) = scale(x, inv(a))
+(\)(a::Number, x::Vec) = scale(x, inv(a))
+function Base.broadcast(::typeof(/), a::Number, x::Vec)
   y = copy(x)
   chk(C.VecReciprocal(y.p))
   if a != 1.0

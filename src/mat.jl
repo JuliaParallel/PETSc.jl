@@ -1090,7 +1090,7 @@ function Base.LinAlg.ishermitian{T}(A::PetscMat{T}, tol::Real=eps(real(float(one
   return bool_arr[] != 0
 end
 
-function Base.LinAlg.issym{T}(A::PetscMat{T}, tol::Real=eps(real(float(one(T)))))
+function Base.LinAlg.issymmetric{T}(A::PetscMat{T}, tol::Real=eps(real(float(one(T)))))
   bool_arr = Ref{PetscBool}()
   chk(C.MatIsSymmetric(A.p, tol, bool_arr))
   return bool_arr[] != 0

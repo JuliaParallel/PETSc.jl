@@ -59,13 +59,13 @@ function PetscInitialize(lib::DataType, args, filename, help)
 end
 
 function petsc_sizeof(T::C.PetscDataType)
-  sz = Array(Csize_t, 1)
+  sz = Array{Csize_t}(1)
   chk(C.PetscDataTypeGetSize(C.petsc_type[1], T, sz))
   sz[1]
 end
 
 function PetscFinalized(T::Type)
-  ret = Array(PetscBool, 1)
+  ret = Array{PetscBool}(1)
   C.PetscFinalized(T, ret)
   ret[1] != 0
 end

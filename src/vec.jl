@@ -85,7 +85,7 @@ export gettype
   Get the Symbol that is the format of the vector
 """
 function gettype{T}(a::Vec{T})
-  sym_arr = Array(C.VecType, 1)
+  sym_arr = Array{C.VecType}(1)
   chk(C.VecGetType(a.p, sym_arr))
   return sym_arr[1]
 end
@@ -789,7 +789,7 @@ end
 
 # unconjugated dot product (called for x'*y)
 function Base.At_mul_B{T<:Complex}(x::Vec{T}, y::Vec{T})
-  d = Array(T, 1)
+  d = Array{T}(1)
   chk(C.VecTDot(x.p, y.p, d))
   return d
 end
@@ -956,7 +956,7 @@ function map!{F,T,T2}(f::F, dest::Vec{T}, src1::Vec{T}, src2::Vec{T2},  src_rest
       min_length = length(src_arrs[1])
     end
       # do the map
-      vals = Array(T, n)
+      vals = Array{T}(n)
       for i=1:min_length  # TODO: make this the minimum array length
         for j=1:n  # extract values
           vals[j] = src_arrs[j][i]

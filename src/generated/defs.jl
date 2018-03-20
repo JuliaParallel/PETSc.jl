@@ -25,7 +25,7 @@ typealias comm_type MPI.CComm
 # the Symbol array
 # does *not* allocate the pointers
 function symbol_get_before(sym_arr)
-  ptr_arr = Array(Ptr{UInt8}, length(sym_arr))
+  ptr_arr = Array{Ptr{UInt8}}(length(sym_arr))
 #  println("ptr_arr = ", ptr_arr)
 #  for i=1:length(sym_arr)
 #    println("ptr_arr[$i] = ", ptr_arr[i])

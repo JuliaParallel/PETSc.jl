@@ -122,7 +122,7 @@ function Mat{T}(A::SparseMatrixCSC{T})
       maxcol = nvals
     end
   end
-  idx = Array(PetscInt, maxcol)
+  idx = Array{PetscInt}(maxcol)
   idy = PetscInt[0]
 
   for i=1:n
@@ -349,7 +349,7 @@ end
   Get the format of the matrix.
 """
 function gettype(a::PetscMat)
-  sym_arr = Array(C.MatType, 1)
+  sym_arr = Array{C.MatType}(1)
   chk(C.MatGetType(a.p, sym_arr))
   return sym_arr[1]
 end
@@ -894,7 +894,7 @@ import Base.getindex
 function getindex0{T}(x::Mat{T}, i::Vector{PetscInt}, j::Vector{PetscInt})
   ni = length(i)
   nj = length(j)
-  v = Array(T, nj, ni) # row-major!
+  v = Array{T}(nj, ni) # row-major!
   chk(C.MatGetValues(x.p, ni, i, nj, j, v))
   ni <= 1 || nj <= 1 ? reshape(v, ni, nj) : transpose(v)
 end

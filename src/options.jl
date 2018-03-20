@@ -27,7 +27,7 @@ function Base.setindex!(o::typeof(OPTIONS), v, k::SymOrStr)
   return v
 end
 
-const _optionstr = Array(UInt8, 1024)
+const _optionstr = Array{UInt8}(1024)
 function Base.get{T}(::Options{T}, k::SymOrStr, def)
   b = Ref{PetscBool}()
   chk(C.PetscOptionsGetString(T, Cstring(Ptr{UInt8}(C_NULL)), string('-',k),

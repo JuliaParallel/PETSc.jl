@@ -72,14 +72,14 @@
   @test stride(varr, 1) == 1
   vec5j = [1., 2, 3, 4]
   for i=1:length(vec5)  varr[i] = vec5j[i] end
-  
+
   @test varr[1] == vec5j[1]
   @test varr == vec5j
 
   varr2 = similar(varr)
   T2 = eltype(varr)
   @test typeof(varr2) == Array{eltype(T2), 1}
-  ptr = Base.unsafe_convert(Ptr{T2}, varr) 
+  ptr = Base.unsafe_convert(Ptr{T2}, varr)
   @test ptr == varr.ref[]
 
   restore(varr)
@@ -89,14 +89,14 @@
   varr = LocalVector_readonly(vec5)
   for i=1:length(vec5) @test varr[i] ==  vec5[i] end
   restore(varr)
-  
+
 
   # test mlocal constructor
   vec5 = Vec(ST, mlocal=3)
   @test length(vec5) == 3
 
   @testset "testing logical indexing" begin
-      logicals = Array(Bool, length(vec4))
+      logicals = Array{Bool}(length(vec4))
       for i=eachindex(logicals)
         logicals[i] = false
       end
@@ -129,7 +129,7 @@
        chop!(pvec, RT(1.5))
        jvec[1] = 0.0
        @test pvec ≈ jvec
-    end 
+    end
 
     vec4_j = zeros(ST, length(vec4))
     for i=1:length(vec4)
@@ -281,7 +281,7 @@
         @test vec4j == vec4
       end
 
-      vecs = Array(typeof(vec), 2)
+      vecs = Array{typeof(vec)}(2)
       vecs[1] = vec
       vecs[2] = vec2
       alphas = [vt2, vt3]

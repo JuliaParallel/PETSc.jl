@@ -30,7 +30,7 @@ const build_names = ["RealDouble", "RealSingle", "ComplexDouble"]
 build_control = Dict() # dirname => whether or not to build it
 arches = Dict() # dict of dirname => (PETSC_DIR, PETSC_ARCH)
 build_any = false  # whether or not to build anything
-have_petsc = Array(Bool, 3)  # whether or not each version of Petsc is usable
+have_petsc = Array{Bool}(3)  # whether or not each version of Petsc is usable
 for (i, name) in enumerate(build_names)
   if haskey(ENV, string("JULIA_PETSC_", name, "_DIR")) || haskey(ENV, string("JULIA_PETSC_", name, "_ARCH"))
     if !(haskey(ENV, string("JULIA_PETSC_", name, "_DIR")) && haskey(ENV, string("JULIA_PETSC_", name, "_DIR")))

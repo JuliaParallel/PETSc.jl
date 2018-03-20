@@ -7,7 +7,7 @@ type TS{T}
   p::C.TS{T}
   data::Array{Any, 1}  # hold the various ctx tuples
   function TS(p, data=nothing; first_instance=false)
-    data_arr = Array(Any, 0)
+    data_arr = Array{Any}(0)
     ts = new(p, data_arr)
     push!(ts.data, data)
 
@@ -70,13 +70,13 @@ end
   More explicit constructor: set problem type, method directly
 
 `tsptype` sets the problem type and can be one of the following:
-* `TS_LINEAR` - a linear set of ODEs 
+* `TS_LINEAR` - a linear set of ODEs
 * `TS_NONLINEAR` - a nonlinear set of ODEs or DEAs
 
 `tstype` sets the method used to solve the problem. More information
 about the possible methods is available at the official PETSc [docs](http://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/TS/TSType.html).
 """
-function TS{T<:Scalar}(::Type{T}, tsptype::C.TSProblemType, tstype::C.TSType; 
+function TS{T<:Scalar}(::Type{T}, tsptype::C.TSProblemType, tstype::C.TSType;
                        comm=MPI.COMM_WORLD)
 
   ts = TS(T, tsptype, comm=comm)
@@ -86,7 +86,7 @@ function TS{T<:Scalar}(::Type{T}, tsptype::C.TSProblemType, tstype::C.TSType;
 end
 
 
-function set_ic{T<:Scalar}(ts::TS{T}, u::Vec{T}) 
+function set_ic{T<:Scalar}(ts::TS{T}, u::Vec{T})
   chk(C.TSSetSolution(ts.p, u.p))
 end
 
@@ -205,7 +205,7 @@ end
 
 function rhs_jac_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, A::C.Mat{T}, B::C.Mat{T}, ctx_ptr::Ptr{Void})
 
-  Treal = real(T) 
+  Treal = real(T)
   bigts = TS{T}(ts, first_instance=false)
   bigu = Vec{T}(u, first_instance=false)
   bigA = Mat{T}(A, first_instance=false)
@@ -277,7 +277,7 @@ end
 
 function lhs_jac_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, ut::C.Vec{T}, a, A::C.Mat{T}, B::C.Mat{T}, ctx_ptr::Ptr{Void})
 
-  Treal = real(T) 
+  Treal = real(T)
   bigts = TS{T}(ts, first_instance=false)
   bigu = Vec{T}(u, first_instance=false)
   bigut = Vec{T}(ut, first_instance=false)
@@ -291,4 +291,3 @@ function lhs_jac_wrapper{T}(ts::C.TS{T}, t, u::C.Vec{T}, ut::C.Vec{T}, a, A::C.M
   ret_status = func(bigts, bigu, bigut, Treal(a), bigA, bigB, ctx_inner)
   return PetscErrorCode(ret_status)
 end
-

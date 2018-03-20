@@ -4,12 +4,12 @@ export Mat, petscview, SubMat
 """
   A Petsc matrix.
 
-  Unlike Vecs, the Petsc implementation keeps track of the local assembly 
+  Unlike Vecs, the Petsc implementation keeps track of the local assembly
   state, so the Julia type does not have to.
   `verify_assembled`: if true, verify all processes are assembled, if false,
                       only local process
   `insertmode`: C.InsertMode used by `setindex!`
-"""  
+"""
 abstract PetscMat{T} <: AbstractSparseMatrix{T, PetscInt}
 type Mat{T} <: PetscMat{T}
   p::C.Mat{T}
@@ -23,7 +23,7 @@ type Mat{T} <: PetscMat{T}
     if first_instance  # if the pointer p has not been put into a Mat before
       finalizer(A, PetscDestroy)
     end
-    
+
     return A
   end
 end
@@ -83,7 +83,7 @@ function Mat{T}(::Type{T}, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
     if bs != 1
       set_block_size(mat, bs)
     end
-    chk(C.MatSetUp(mat.p)) 
+    chk(C.MatSetUp(mat.p))
   else  # preallocate
     setpreallocation!(mat, nz=nz, nnz=nnz, onz=onz, onnz=onnz, bs=bs)
   end
@@ -93,7 +93,7 @@ function Mat{T}(::Type{T}, m::Integer=C.PETSC_DECIDE, n::Integer=C.PETSC_DECIDE;
 end
 
 """
-  Make a MATSEQ Petsc matrix for a SparseMatrixCSC.  This preserve the 
+  Make a MATSEQ Petsc matrix for a SparseMatrixCSC.  This preserve the
   sparsity pattern of the matrix
 """
 function Mat{T}(A::SparseMatrixCSC{T})
@@ -124,7 +124,7 @@ function Mat{T}(A::SparseMatrixCSC{T})
   end
   idx = Array(PetscInt, maxcol)
   idy = PetscInt[0]
-  
+
   for i=1:n
     idy[1] = i-1
     idx_start = A.colptr[i]
@@ -137,8 +137,8 @@ function Mat{T}(A::SparseMatrixCSC{T})
     end
 
     # get subarray of only the needed entries
-    idx_view = sub(idx, 1:(pos-1))
-    vals = sub(A.nzval, idx_start:idx_end)
+    idx_view = view(idx, 1:(pos-1))
+    vals = view(A.nzval, idx_start:idx_end)
     set_values!(PA, idx_view, idy, vals)
   end
 
@@ -183,7 +183,7 @@ function Mat{T}(A::AbstractArray{T}; droptol=0.0)
         pos += 1
       end
     end
-    idy_view = sub(idy, 1:(pos-1))
+    idy_view = view(idy, 1:(pos-1))
     set_values!(PA, idx, idy_view, vals)
   end
 
@@ -196,7 +196,7 @@ end
 """
   Gets the a submatrix that references the entries in the original matrix.
   isrow and iscol contain the *local* indicies of the rows and columns to get.
-  The matrix must have a LocalToGlobalMapping for this to work, therefore a 
+  The matrix must have a LocalToGlobalMapping for this to work, therefore a
   default one is created if the matrix does not already have one registered.
   The default mapping assumes the matrix is divided up into contiguous block
   of rows.  This is true of AIJ matrices but may not be for other matrix types.
@@ -207,14 +207,14 @@ function SubMat{T}(mat::Mat{T}, isrow::IS{T}, iscol::IS{T})
   # this only needs to be done the first time
   if !has_local_to_global_mapping(mat)
     rmap, cmap = local_to_global_mapping(mat)
-    set_local_to_global_mapping(mat, rmap, cmap)  
+    set_local_to_global_mapping(mat, rmap, cmap)
   end
 
   # now we can actually create the submatrix
   submat = Ref{C.Mat{T}}()
   chk(C.MatGetLocalSubMatrix(mat.p, isrow.p, iscol.p, submat))
   # keep the data needed for the finalizer
-  return SubMat{T}(submat[], (mat, isrow, iscol), verify_assembled=mat.verify_assembled)  
+  return SubMat{T}(submat[], (mat, isrow, iscol), verify_assembled=mat.verify_assembled)
 end
 
 export SubMatRestore
@@ -251,8 +251,8 @@ function MatShell{T}(::Type{T}, mlocal::Integer, nlocal::Integer, ctx::Tuple=();
 end
 
 """
-  Provide a callback function for a particular matrix operation.  op is a 
-  Petsc enum value inidcating the operation, and func is a void pointer 
+  Provide a callback function for a particular matrix operation.  op is a
+  Petsc enum value inidcating the operation, and func is a void pointer
   (obtained from cfunction() ) that performs the operation.
 
   The function should take the low level Petsc objects (defined in the C module)
@@ -269,7 +269,7 @@ function setop!{T}(mat::Mat{T}, op::C.MatOperation, func::Ptr{Void})
 end
 
 """
-  Get the tuple of user provided data passed in when the shell matrix was 
+  Get the tuple of user provided data passed in when the shell matrix was
   created.
 """
 function getcontext(mat::Mat)
@@ -336,7 +336,7 @@ end
 export setoption!, gettype
 
 """
-  Pass values to the Petsc function MatSetOption.  Note that the handful of 
+  Pass values to the Petsc function MatSetOption.  Note that the handful of
   options that can be passed here should not be confused with those for the
   global options database
 """
@@ -521,7 +521,7 @@ end
   This function returns two Range object corresponding the global indices
   of the rows and columns of the matrix A.
 
-  The function has the same limiations as Petsc's MatGetOwnershipRange, 
+  The function has the same limiations as Petsc's MatGetOwnershipRange,
   in that it assumes the rows of the matrix are divided up contigously.
 """
 function localranges(a::PetscMat)
@@ -583,7 +583,7 @@ end
 function local_to_global_mapping(A::PetscMat)
 
   # localIS creates strided index sets, which require only constant
-  # memory 
+  # memory
   if get_blocksize(A) == 1
     rowis, colis = localIS(A)
   else
@@ -614,7 +614,7 @@ function has_local_to_global_mapping{T}(A::PetscMat{T})
 
   rmap = rmap_ref[]
   cmap = cmap_ref[]
-  
+
   return rmap.pobj != C_NULL && cmap.pobj != C_NULL
 end
 
@@ -644,8 +644,8 @@ function Base.similar{T}(a::PetscMat{T}, T2::Type, m::Integer, n::Integer)
 end
 
 Base.similar{T}(a::PetscMat{T}, m::Integer, n::Integer) = similar(a, T, m, n)
-Base.similar(a::PetscMat, T::Type, d::Dims) = similar(a, T, d...)
-Base.similar{T}(a::PetscMat{T}, d::Dims) = similar(a, T, d)
+Base.similar(a::PetscMat, T::Type, d::Dims{2}) = similar(a, T, d...)
+Base.similar{T}(a::PetscMat{T}, d::Dims{2}) = similar(a, T, d)
 
 function Base.copy{T}(a::PetscMat{T})
   p = Ref{C.Mat{T}}()
@@ -672,7 +672,7 @@ Base.nnz(m::Mat) = Int(getinfo(m).nz_used)
 # for efficient matrix assembly, put all calls to A[...] = ... inside
 # assemble(A) do ... end
 """
-  Start assembling the matrix (the implmentations probably post 
+  Start assembling the matrix (the implmentations probably post
   non-blocking sends and received)
 
 """
@@ -697,10 +697,10 @@ function isassembled(p::C.Mat)
 end
 
 """
-  Check if the matrix is assembled.  Whether all processes assembly state 
+  Check if the matrix is assembled.  Whether all processes assembly state
   is checked or only the local process is determined by `x.verify_assembled`.
 
-  `local_only` forces only the local process to be checked, regardless of 
+  `local_only` forces only the local process to be checked, regardless of
   `x.verify_assembled`.
 """
 function isassembled(x::PetscMat; local_only=false)
@@ -716,7 +716,7 @@ end
 
 """
   This function provides a mechanism for efficiently inserting values into
-  and then assembling Petsc matrices and vectors.  The function f must be a 
+  and then assembling Petsc matrices and vectors.  The function f must be a
   zero argument function.
 
   This function can be used with the do block syntax.
@@ -785,7 +785,7 @@ function setindex0!{T}(x::Mat{T}, v::Array{T},
   x
 end
 
-# like setindex0 above, but for submatrices.  the indices i and j must 
+# like setindex0 above, but for submatrices.  the indices i and j must
 # be *local* indices
 function setindex0!{T}(x::SubMat{T}, v::Array{T}, i::Array{PetscInt}, j::Array{PetscInt})
   ni = length(i)
@@ -866,8 +866,8 @@ end
 """
   Fill the matrix with the specified values.
 
-  Currently, this function either destroys the sparsity pattern or 
-  gives an error, unless v = 0, in which case it zeros out the non-zero 
+  Currently, this function either destroys the sparsity pattern or
+  gives an error, unless v = 0, in which case it zeros out the non-zero
   entries without changing the sparsity pattern
 """
 function Base.fill!(x::PetscMat, v::Number)
@@ -1233,7 +1233,7 @@ end
 """
   Object that enables access to a single row of a sparse matrix.
 
-  Users *must* call restore when done with a MatRow, before attempting to 
+  Users *must* call restore when done with a MatRow, before attempting to
   create another one.
 """
 immutable MatRow{T}
@@ -1242,18 +1242,6 @@ immutable MatRow{T}
   ncols::Int
   cols_ptr::Ptr{PetscInt}
   vals_ptr::Ptr{T}
-#=
-  function MatRow(A::Mat{T}, row::Integer, ref_ncols::Ref{PetscInt}, ref_cols::Ref{Ptr{PetscInt}}, ref_vals::Ref{Ptr{T}})
-    ncols = ref_ncols[]
-    cols = pointer_to_array(ref_cols[], ncols)
-    vals = pointer_to_array(ref_vals[], ncols)
-
-    obj = new(A, row, ref_ncols, ref_cols, ref_vals, ncols, cols, vals)
-    finalizer(obj, restore)
-
-    return obj
-  end
-=#
 end
 
 """
@@ -1279,7 +1267,7 @@ function count_row_nz{T}(A::Mat{T}, row::Integer)
   chk(C.MatGetRow(A.p, row-1, ref_ncols, ref_cols, ref_vals))
   ncols = ref_ncols[]
   chk(C.MatRestoreRow(A.p, row-1, ref_ncols, ref_cols, ref_vals))
-  
+
   return ncols
 end
 function restore{T}(row::MatRow{T})
@@ -1357,8 +1345,8 @@ function kron{T}(A::Mat{T}, B::Mat{T})
       end
 
       D_rowidx[1] = rowidx - 1
-      idx_extract = sub(D_colidx, 1:(pos-1))
-      vals_extract = sub(D_vals, 1:(pos-1))
+      idx_extract = view(D_colidx, 1:(pos-1))
+      vals_extract = view(D_vals, 1:(pos-1))
       set_values!(D, D_rowidx, idx_extract, vals_extract)
       restore(rowB)
     end
@@ -1432,7 +1420,7 @@ function PetscKron{T <: Scalar}(A::SparseMatrixCSC{T}, B::SparseMatrixCSC{T})
 end
 
 """
-  Kronecker product of A and B, storing the result in D.  D should already be 
+  Kronecker product of A and B, storing the result in D.  D should already be
   pre-allocated with the right sparsity pattern
 """
 @noinline function PetscKron{T <: Scalar}(A::SparseMatrixCSC{T}, B::SparseMatrixCSC{T}, D::Mat{T})
@@ -1453,13 +1441,13 @@ end
   for i=1:An
     col_start = A.colptr[i]
     col_end = A.colptr[i+1] - 1
-    A_rowidx = unsafe_view(A.rowval, col_start:col_end)
-    A_vals = unsafe_view(A.nzval, col_start:col_end)
+    A_rowidx = view(A.rowval, col_start:col_end)
+    A_vals = view(A.nzval, col_start:col_end)
     for j=1:Bn
       col_start = B.colptr[j]
       col_end = B.colptr[j+1] - 1
-      B_rowidx = unsafe_view(B.rowval, col_start:col_end)
-      B_vals = unsafe_view(B.nzval, col_start:col_end)
+      B_rowidx = view(B.rowval, col_start:col_end)
+      B_vals = view(B.nzval, col_start:col_end)
 
       pos = 1
       for k=1:length(A_vals)
@@ -1476,8 +1464,8 @@ end
       end
 
       D_colidx[1] = (i-1)*Bn + j - 1
-      rowidx_extract = unsafe_view(D_rowidx, 1:(pos-1))
-      vals_extract = unsafe_view(D_vals, 1:(pos-1))
+      rowidx_extract = view(D_rowidx, 1:(pos-1))
+      vals_extract = view(D_vals, 1:(pos-1))
 
 #      chk(C.MatSetValues(D.p, length(rowidx_extract), rowidx_extract, length(D_colidx), D_colidx, vals_extract, C.INSERT_VALUES))
       set_values!(D, rowidx_extract, D_colidx, vals_extract)
@@ -1487,5 +1475,3 @@ end
 
   return D
 end
-
- 

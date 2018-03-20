@@ -165,7 +165,7 @@ end
     vals = RC(complex(rand(3, 2), rand(3,2)))
     idx = Array(1:3)
     idy = Array(1:2)
-    @testset "sub indexing" begin
+    @testset "view indexing" begin
       mat = PETSc.Mat(ST, 3, 3)
       mat[idx, idy] = vals
       assemble(mat)
@@ -236,7 +236,7 @@ end
         mat[i,j] = i*6 + j
       end
     end
-    assemble(mat, PETSc.C.MAT_FLUSH_ASSEMBLY) 
+    assemble(mat, PETSc.C.MAT_FLUSH_ASSEMBLY)
 #    petscview(mat)
     isx = IS(ST, [1, 2, 3])
     isy = IS(ST, [1, 2])
@@ -605,10 +605,10 @@ end
       Cj_full = full(Cj)
     #  @test Cj_full ≈ C_full
     end
-    
+
 #    println("\n----- Case 1 -----")
     Aj = sparse(eye(3, 3))
-    testkron(Aj, Aj) 
+    testkron(Aj, Aj)
 
 #    println("\n----- Case 2 -----")
     Aj = sparse([1. 2 0; 3 4 5; 0 6 7])

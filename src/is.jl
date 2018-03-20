@@ -110,7 +110,7 @@ Base.maximum(i::IS) = extrema(i)[2]
 function Base.convert{T<:Integer}(::Type{Vector{T}}, idx::IS)
   pref = Ref{Ptr{PetscInt}}()
   chk(C.ISGetIndices(idx.p, pref))
-  inds = Int[i+1 for i in pointer_to_array(pref[], lengthlocal(idx))]
+  inds = Int[i+1 for i in unsafe_wrap(Array, pref[], lengthlocal(idx))]
   chk(C.ISRestoreIndices(idx.p, pref))
   return inds
 end

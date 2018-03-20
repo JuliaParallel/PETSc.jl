@@ -36,7 +36,7 @@ end
 
 # turn array of strings (UInt8 *) and  puts them into Symbol array
 function symbol_get_after(ptr, sym_arr)
-  ptr_arr = pointer_to_array(ptr, length(sym_arr))
+  ptr_arr = unsafe_wrap(Array, ptr, length(sym_arr))
 
   for i=1:length(sym_arr)
     sym_arr[i] = unsafe_string(ptr_arr[i])

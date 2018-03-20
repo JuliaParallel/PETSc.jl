@@ -370,15 +370,13 @@ function Base.similar{T}(x::Vec{T}, T2::Type)
   Vec(T2, length(x), VType; comm=comm(x), mlocal=lengthlocal(x))
 end
 
-function Base.similar{T}(x::Vec{T}, T2::Type, len::Union{Int,Dims})
+function Base.similar{T}(x::Vec{T}, T2::Type, len::Union{Int,Dims{1}})
   VType = gettype(x)
-  length(len) == 1 || throw(ArgumentError("expecting 1-dimensional size"))
   len[1]==length(x) && T2==T ? similar(x) : Vec(T2, len[1], vtype=VType; comm=comm(x))
 end
 
-function Base.similar{T}(x::Vec{T}, len::Union{Int,Dims})
+function Base.similar{T}(x::Vec{T}, len::Union{Int,Dims{1}})
   VType = gettype(x)
-  length(len) == 1 || throw(ArgumentError("expecting 1-dimensional size"))
   len[1]==length(x) ? similar(x) : Vec(T, len[1], vtype=VType; comm=comm(x))
 end
 
@@ -760,7 +758,7 @@ end
 # For complex numbers, VecMax and VecMin apparently return the max/min
 # real parts, which doesn't match Julia's maximum/minimum semantics.
 
-function Base.norm{T<:Real}(x::Union{Vec{T},Vec{Complex{T}}}, p::Number)
+function Base.norm{T<:Real}(x::Union{Vec{T},Vec{Complex{T}}}, p::Real)
   v = Ref{T}()
   n = p == 1 ? C.NORM_1 : p == 2 ? C.NORM_2 : p == Inf ? C.NORM_INFINITY :
   throw(ArgumentError("unrecognized Petsc norm $p"))
@@ -887,7 +885,7 @@ end
 Applys f element-wise to src to populate dest.  If src is a ghost vector,
 then f is applied to the ghost elements as well as the local elements.
 """
-function map!{T}(f, dest::Vec{T}, src::Vec)
+function map!{T,F}(f::F, dest::Vec{T}, src::Vec)
   if length(dest) < length(src)
     throw(ArgumentError("Length of dest must be >= src"))
   end
@@ -912,7 +910,7 @@ end
   lengths.  If some a ghost vectors and some are not, the map is applied
   only to the local part
 """
-function map!{T, T2}(f, dest::Vec{T}, src1::Vec{T}, src2::Vec{T2},  src_rest::Vec{T2}...)
+function map!{F,T,T2}(f::F, dest::Vec{T}, src1::Vec{T}, src2::Vec{T2},  src_rest::Vec{T2}...)
 
   # annoying workaround for #13651
   srcs = (src1, src2, src_rest...)
@@ -1070,7 +1068,7 @@ function LocalVector{T}(vec::Vec{T})
 
   ref = Ref{Ptr{T}}()
   chk(C.VecGetArray(vec.p, ref))
-  a = pointer_to_array(ref[], len)
+  a = unsafe_wrap(Array, ref[], len)
   return LocalVector{T, false}(a, ref, vec.p)
 end
 
@@ -1096,7 +1094,7 @@ function LocalVector_readonly{T}(vec::Vec{T})
 
   ref = Ref{Ptr{T}}()
   chk(C.VecGetArrayRead(vec.p, ref))
-  a = pointer_to_array(ref[], len)
+  a = unsafe_wrap(Array, ref[], len)
   return LocalVector{T, true}(a, ref, vec.p)
 end
 

@@ -10,14 +10,22 @@ const buildopts_fname = "buildopts.conf"
 
 # load build options from last build
 const fpath = joinpath(dirname(@__FILE__), buildopts_fname)
-if isfile(fpath)
+# Below, checking filesize(fpath) > 0 cannot avoid the cases where all lines are commented.
+# readdlm generates an error in that case.  Such an error can be avoided after fixing Issue 16248.
+if isfile(fpath) && filesize(fpath) > 0
   println("USING build options in file ", fpath)
-  envvars = readdlm(fpath)
+  envvars = Matrix{Any}()
+  try
+    envvars = readdlm(fpath)
+  catch e
+    warn(e)
+    warn("error while reading custom PETSc build options in $fpath; ignore custom options and proceed")
+  end
   for entry = 1:size(envvars, 1)
     key = envvars[entry, 1]
     val =  envvars[entry, 2]
     if haskey(ENV, key)
-      println("WARNING: build option $key cannot be specified as both environmental variable and buildopts.conf option, ignoring value from file...")
+      warn("build option $key cannot be specified as both environmental variable and buildopts.conf option, ignoring value from file...")
     else
       ENV[key] = val
     end

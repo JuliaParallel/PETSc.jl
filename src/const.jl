@@ -37,7 +37,7 @@ function DataTypeFromString(name::AbstractString)
     @chk ccall((:PetscDataTypeFromString, libpetsc), PetscErrorCode,
                (Cstring, Ptr{PetscDataType}, Ptr{PetscBool}),
                name, dtype_ref, found_ref)
-    found_ref[] == PETSC_TRUE ? dtype_ref[] : nothing
+    return found_ref[] == PETSC_TRUE ? dtype_ref[] : nothing
 end
 function PetscDataTypeGetSize(dtype::PetscDataType)
     datasize_ref = Ref{Csize_t}()
@@ -76,6 +76,11 @@ const Petsc64bitInt       = Int64
 const PetscLogDouble      = Cdouble
 const PetscViewer         = Ptr{Cvoid}
 
+
+@enum InsertMode NOT_SET_VALUES INSERT_VALUES ADD_VALUES MAX_VALUES MIN_VALUES INSERT_ALL_VALUES ADD_ALL_VALUES INSERT_BC_VALUES ADD_BC_VALUES
+
+
+
 @enum NormType begin
     NORM_1 = 0
     NORM_2 = 1
@@ -83,6 +88,8 @@ const PetscViewer         = Ptr{Cvoid}
     NORM_INFINITY = 3
     NORM_1_AND_2 = 4
 end
+
+@enum MatAssemblyType MAT_FLUSH_ASSEMBLY=1 MAT_FINAL_ASSEMBLY=0
 
 @enum MatFactorType begin
     MAT_FACTOR_NONE     = 0

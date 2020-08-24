@@ -1,3 +1,40 @@
+
+const CKSP = Ptr{Cvoid}
+
+
+mutable struct KSP
+    ptr::Ptr{Cvoid}
+    comm::MPI.Comm
+end
+
+# allows us to pass XXMat objects directly into CMat ccall signatures
+function Base.cconvert(::Type{CKSP}, obj::KSP)
+  obj.ptr
+end
+
+# allows us to pass XXMat objects directly into Ptr{CMat} ccall signatures
+function Base.unsafe_convert(::Type{Ptr{CKSP}}, obj::KSP)
+    convert(Ptr{CKSP}, pointer_from_objref(obj))
+end
+
+function KSP(comm::MPI.Comm)
+    ksp = KSP(C_NULL, comm)
+    @chk ccall((:KSPCreate, libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CKSP}), comm, ksp)
+    return ksp
+end
+
+function destroy(ksp::KSP)
+    @chk ccall((:KSPDestroy, libpetsc), PetscErrorCode, (Ptr{CKSP},), ksp)
+    return nothing
+end
+
+function setoperators!(ksp::KSP, A::AbstractMat, P::AbstractMat)
+    @chk ccall((:KSPSetOperators, libpetsc), PetscErrorCode, (CKSP, CMat, CMat), ksp, A, P)
+    return nothing
+end
+
+
+
 # provide some most commonly used options, leave rest as low level
 # common options: Orthogonilization type, KSP type, PC type
 # use PC context created as part of KSP

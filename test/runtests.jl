@@ -1,19 +1,13 @@
-include("runtests_setup.jl")
-println("testing types: ", PETSc.C.petsc_type)
-for (i, ST) in enumerate(PETSc.C.petsc_type)
-  if PETSc.have_petsc[i]
-    println("testing datatype ", ST)
-  # @testset "Scalar type $ST" begin # uncomment when nested test results can be printed
-    include("error.jl")
-    include("ksp.jl")
-    include("vec.jl")
-    include("is.jl")
-    include("mat.jl")
-    include("ts.jl")
-  end
-  # end
-end
+using Test
+using PETSc, MPI, LinearAlgebra
 
-@test PETSc.petsc_sizeof(PETSc.C.PETSC_BOOL) == 4
+MPI.Init()
+PETSc.initialize()
+
+x = randn(100)
+v = PETSc.SeqVec(MPI.COMM_SELF, x)
+
+@test norm(x) ≈ norm(v) rtol=eps()
 
 
+PETSc.finalize()

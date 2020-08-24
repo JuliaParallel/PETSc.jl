@@ -1,18 +1,11 @@
 module PETSc
 
-import MPI
-export PetscInt
-using ArrayViews
-include(joinpath("generated", "C.jl"))
-using .C
-include("petsc_com.jl")
-include("options.jl")
-include("is.jl")
+using MPI, LinearAlgebra
+
+using PETSc_jll
+
+include("const.jl")
+include("init.jl")
 include("vec.jl")
-include("mat.jl")
-include("vec_scatter.jl")
-include("pc.jl")
-include("ksp.jl")
-include("mapping.jl")
-include("ts.jl")
+
 end

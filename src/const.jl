@@ -8,6 +8,9 @@ macro chk(expr)
     :((errcode = $(esc(expr))) == 0 || throw(PetscError(errcode)))
 end
 
+const PETSC_DEFAULT = -2
+
+
 @enum PetscBool PETSC_FALSE PETSC_TRUE
 
 @enum PetscDataType begin

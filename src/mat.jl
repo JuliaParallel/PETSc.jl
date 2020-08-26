@@ -1,6 +1,6 @@
 const CMat = Ptr{Cvoid}
 
-abstract type AbstractMat <: AbstractMatrix{PetscScalar} end
+abstract type AbstractMat <: AbstractSparseMatrix{PetscScalar, PetscInt} end
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
 function Base.cconvert(::Type{CMat}, obj::AbstractMat)
@@ -67,7 +67,40 @@ function SeqAIJMat(S::SparseMatrixCSC)
     return M
 end
 
-function LinearAlgebra.norm(M::AbstractMat, normtype=NORM_FROBENIUS)
+Base.eltype(::Type{A}) where {A<:AbstractMat} = PetscScalar
+Base.eltype(A::AbstractMat) = PetscScalar
+
+function Base.size(A::AbstractMat)
+    m = Ref{PetscInt}()
+    n = Ref{PetscInt}()
+    @chk ccall((:MatGetSize, libpetsc), PetscErrorCode, 
+        (CMat, Ptr{PetscInt}, Ptr{PetscInt}), 
+        A, m, n)
+    return (m[], n[])
+end
+function Base.:(==)(A::AbstractMat, B::AbstractMat)
+    fr = Ref{PetscBool}()
+    @chk ccall((:MatEqual, libpetsc), PetscErrorCode, 
+         (CMat, CMat, Ptr{PetscBool}), 
+         A, B, fr)
+    return fr[] == PETSC_TRUE
+end
+
+function LinearAlgebra.issymmetric(A::AbstractMat; tol=zero(PetscReal))
+    fr = Ref{PetscBool}()
+    @chk ccall((:MatIsSymmetric, libpetsc), PetscErrorCode,
+        (CMat, PetscReal, Ptr{PetscBool}),
+        A, tol, fr)
+    return fr[] == PETSC_TRUE
+end
+function LinearAlgebra.ishermitian(A::AbstractMat; tol=zero(PetscReal))
+    fr = Ref{PetscBool}()
+    @chk ccall((:MatIsHermitian, libpetsc), PetscErrorCode,
+        (CMat, PetscReal, Ptr{PetscBool}),
+        A, tol, fr)
+    return fr[] == PETSC_TRUE
+end
+function LinearAlgebra.norm(M::AbstractMat, normtype::NormType=NORM_FROBENIUS)
     r_val = Ref{PetscReal}()
     @chk ccall((:MatNorm, libpetsc), PetscErrorCode, 
         (CMat, NormType, Ptr{PetscReal}),
@@ -79,12 +112,10 @@ function LinearAlgebra.mul!(y::AbstractVec, M::AbstractMat, x::AbstractVec)
     @chk ccall((:MatMult, libpetsc), PetscErrorCode, (CMat, CVec, CVec), M, x, y)
     return y
 end
-
 function LinearAlgebra.mul!(y::AbstractVec, M::Adjoint{T,A}, x::AbstractVec) where {T,A<:AbstractMat}
     @chk ccall((:MatMultHermitianTranspose, libpetsc), PetscErrorCode, (CMat, CVec, CVec), parent(M), x, y)
     return y
 end
-
 function LinearAlgebra.mul!(y::AbstractVec, M::Transpose{T,A}, x::AbstractVec) where {T,A<:AbstractMat}
     @chk ccall((:MatMultTranspose, libpetsc), PetscErrorCode, (CMat, CVec, CVec), parent(M), x, y)
     return y

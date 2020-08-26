@@ -65,3 +65,8 @@ function solve!(x::AbstractVec, ksp::KSP, b::AbstractVec)
     @chk ccall((:KSPSolve, libpetsc), PetscErrorCode, 
       (CKSP, CVec, CVec), ksp, b, x)
 end
+
+function solve!(x::AbstractVec, ksp::Transpose{T,K}, b::AbstractVec) where {T,K <: KSP}
+  @chk ccall((:KSPSolveTranspose, libpetsc), PetscErrorCode, 
+    (CKSP, CVec, CVec), ksp, b, x)
+end

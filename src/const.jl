@@ -34,50 +34,8 @@ const PETSC_DEFAULT = -2
     PETSC_INT64             = 17
 end
 
-function DataTypeFromString(name::AbstractString)
-    dtype_ref = Ref{PetscDataType}()
-    found_ref = Ref{PetscBool}()
-    @chk ccall((:PetscDataTypeFromString, libpetsc), PetscErrorCode,
-               (Cstring, Ptr{PetscDataType}, Ptr{PetscBool}),
-               name, dtype_ref, found_ref)
-    return found_ref[] == PETSC_TRUE ? dtype_ref[] : nothing
-end
-function PetscDataTypeGetSize(dtype::PetscDataType)
-    datasize_ref = Ref{Csize_t}()
-    @chk ccall((:PetscDataTypeGetSize, libpetsc), PetscErrorCode,
-               (PetscDataType, Ptr{Csize_t}), 
-               dtype, datasize_ref)
-    return datasize_ref[]
-end
-
-
-const PETSC_REAL = DataTypeFromString("Real")
-const PETSC_SCALAR = DataTypeFromString("Scalar")
-
-const PetscReal =
-    PETSC_REAL == PETSC_DOUBLE ? Cdouble :
-    PETSC_REAL == PETSC_FLOAT ? Cfloat :
-    error("PETSC_REAL = $PETSC_REAL not supported.")
-
-const PetscComplex = Complex{PetscReal}
-
-const PetscScalar =
-    PETSC_SCALAR == PETSC_REAL ? PetscReal :
-    PETSC_SCALAR == PETSC_COMPLEX ? PetscComplex :
-    error("PETSC_SCALAR = $PETSC_SCALAR not supported.")
-
-const PETSC_INT_SIZE = PetscDataTypeGetSize(PETSC_INT)
-
-const PetscInt =
-    PETSC_INT_SIZE == 4 ? Int32 :
-    PETSC_INT_SIZE == 8 ? Int64 :
-    error("PETSC_INT_SIZE = $PETSC_INT_SIZE not supported.")
-
-# TODO: PetscBLASInt, PetscMPIInt
-
 const Petsc64bitInt       = Int64
 const PetscLogDouble      = Cdouble
-const PetscViewer         = Ptr{Cvoid}
 
 
 @enum InsertMode NOT_SET_VALUES INSERT_VALUES ADD_VALUES MAX_VALUES MIN_VALUES INSERT_ALL_VALUES ADD_ALL_VALUES INSERT_BC_VALUES ADD_BC_VALUES

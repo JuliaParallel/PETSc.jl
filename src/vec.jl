@@ -1,51 +1,98 @@
 
 const CVec = Ptr{Cvoid}
 
-abstract type AbstractVec <: AbstractVector{PetscScalar} end
+abstract type AbstractVec{T} <: AbstractVector{T} end
 
 # allows us to pass XXVec objects directly into CVec ccall signatures
-function Base.cconvert(::Type{CVec}, obj::AbstractVec)
-    obj.vec
-end
-
+Base.cconvert(::Type{CVec}, obj::AbstractVec) = obj.ptr
 # allows us to pass XXVec objects directly into Ptr{CVec} ccall signatures
-function Base.unsafe_convert(::Type{Ptr{CVec}}, obj::AbstractVec)
+Base.unsafe_convert(::Type{Ptr{CVec}}, obj::AbstractVec) =
     convert(Ptr{CVec}, pointer_from_objref(obj))
-end
 
-mutable struct SeqVec <: AbstractVec
-    vec::CVec
+"""
+    VecSeq(v::Vector)
+
+A standard, sequentially-stored serial PETSc vector.
+
+This reuses `v` as storage, and so `v` should not be `resize!`-ed while the PETSc object exists.
+
+Call `destroy` once finished.
+
+https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Vec/VecCreateSeqWithArray.html
+"""
+mutable struct VecSeq{T} <: AbstractVec{T}
+    ptr::CVec
     comm::MPI.Comm
-    array::Vector{PetscScalar}
+    array::Vector{T}
 end
+Base.eltype(::Type{V}) where {V<:AbstractVec{T}} where T = T
+Base.eltype(v::AbstractVec{T}) where {T} = T
 
-function SeqVec(comm::MPI.Comm, X::Vector{PetscScalar}; blocksize=1)
-    v = SeqVec(C_NULL, comm, X)
-    @chk ccall((:VecCreateSeqWithArray, libpetsc), PetscErrorCode,
-               (MPI.MPI_Comm, PetscInt, PetscInt, Ptr{PetscScalar}, Ptr{CVec}),
-               comm, blocksize, length(X), X, v)
-    return v
-end
+
+@for_libpetsc begin
+    function VecSeq(comm::MPI.Comm, X::Vector{$PetscScalar}; blocksize=1)
+        v = VecSeq(C_NULL, comm, X)
+        @chk ccall((:VecCreateSeqWithArray, $libpetsc), PetscErrorCode,
+                (MPI.MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CVec}),
+                comm, blocksize, length(X), X, v)
+        return v
+    end
+    function destroy(v::AbstractVec{$PetscScalar})
+        @chk ccall((:VecDestroy, $libpetsc), PetscErrorCode, (Ptr{CVec},), v)
+        return nothing
+    end
+    function Base.length(v::AbstractVec{$PetscScalar})
+        r_sz = Ref{$PetscInt}()
+        @chk ccall((:VecGetSize, $libpetsc), PetscErrorCode, 
+          (CVec, Ptr{$PetscInt}), v, r_sz)
+        return r_sz[]
+    end
+    function LinearAlgebra.norm(v::AbstractVec{$PetscScalar}, normtype::NormType=NORM_2)
+        r_val = Ref{$PetscReal}()
+        @chk ccall((:VecNorm, $libpetsc), PetscErrorCode,
+                   (CVec, NormType, Ptr{$PetscReal}),
+                   v, normtype,r_val)
+        return r_val[]
+    end
     
-function destroy(v::AbstractVec)
-    @chk ccall((:VecDestroy, libpetsc), PetscErrorCode, (Ptr{CVec},), v)
-    return nothing
+    function assemblybegin(V::AbstractVec{$PetscScalar})
+        @chk ccall((:VecAssemblyBegin, $libpetsc), PetscErrorCode, (CVec,), V)
+        return nothing
+    end    
+    function assemblyend(V::AbstractVec{$PetscScalar})
+        @chk ccall((:VecAssemblyEnd, $libpetsc), PetscErrorCode, (CVec,), V)
+        return nothing
+    end
+
+    function ownershiprange(vec::AbstractVec{$PetscScalar})
+        r_lo = Ref{$PetscInt}()
+        r_hi = Ref{$PetscInt}()
+        @chk ccall((:VecGetOwnershipRange, $libpetsc), PetscErrorCode,
+          (CVec, Ptr{$PetscInt}, Ptr{$PetscInt}), vec, r_lo, r_hi)
+        r_lo[]:(r_hi[]-$PetscInt(1))
+    end
 end
 
-function LinearAlgebra.norm(v::AbstractVec, normtype::NormType=NORM_2)
-    r_val = Ref{PetscReal}()
-    @chk ccall((:VecNorm, libpetsc), PetscErrorCode,
-               (CVec, NormType, Ptr{PetscReal}),
-               v, normtype,r_val)
-    return r_val[]
-end
+VecSeq(X::Vector{T}; kwargs...) where {T} = VecSeq(MPI.COMM_SELF, X; kwargs...)
 
-function assemblybegin(V::AbstractVec)
-    @chk ccall((:VecAssemblyBegin, libpetsc), PetscErrorCode, (CVec,), V)
+
+
+"""
+    ownership_range(vec::AbstractVec)
+
+The range of indices owned by this processor, assuming that the vectors are laid out with the first n1 elements on the first processor, next n2 elements on the second, etc. For certain parallel layouts this range may not be well defined. 
+
+Note: unlike the C function, the range returned is inclusive (`idx_first:idx_last`)
+
+https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Vec/VecGetOwnershipRange.html
+""" 
+ownershiprange
+
+#=
+function View(vec::AbstractVec, viewer::Viewer=ViewerStdout(vec.comm))
+    @chk ccall((:VecView, libpetsc), PetscErrorCode, 
+                (CVec, CPetscViewer),
+            vec, viewer);
     return nothing
 end
-
-function assemblyend(V::AbstractVec)
-    @chk ccall((:VecAssemblyEnd, libpetsc), PetscErrorCode, (CVec,), V)
-    return nothing
-end
+=#

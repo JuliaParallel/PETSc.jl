@@ -2,6 +2,11 @@
 using Libdl
 const libs = [PETSc_jll.libpetsc]
 
+function initialize(libhdl::Ptr{Cvoid})
+  PetscInitializeNoArguments_ptr = dlsym(libhdl, :PetscInitializeNoArguments)
+  @chk ccall(PetscInitializeNoArguments_ptr, PetscErrorCode, ())
+end
+
 
 function DataTypeFromString(libhdl::Ptr{Cvoid}, name::AbstractString)
     PetscDataTypeFromString_ptr = dlsym(libhdl, :PetscDataTypeFromString)
@@ -24,6 +29,7 @@ end
 
 const libtypes = map(libs) do lib
     libhdl = dlopen(lib)
+    initialize(libhdl)
     PETSC_REAL = DataTypeFromString(libhdl, "Real")
     PETSC_SCALAR = DataTypeFromString(libhdl, "Scalar")
     PETSC_INT_SIZE = PetscDataTypeGetSize(libhdl, PETSC_INT)

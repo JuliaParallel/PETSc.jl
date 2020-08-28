@@ -1,9 +1,12 @@
 
 const CKSP = Ptr{Cvoid}
 
-mutable struct KSP{T}
+mutable struct KSP{T} <: Factorization{T}
     ptr::Ptr{Cvoid}
     comm::MPI.Comm
+    # keep around so that they don't get gc'ed
+    A
+    P
 end
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
@@ -12,6 +15,9 @@ Base.cconvert(::Type{CKSP}, obj::KSP) = obj.ptr
 Base.unsafe_convert(::Type{Ptr{CKSP}}, obj::KSP) =
     convert(Ptr{CKSP}, pointer_from_objref(obj))
 
+Base.eltype(ksp::KSP{T}) where {T} = T
+LinearAlgebra.transpose(ksp) = LinearAlgebra.Transpose(ksp)
+LinearAlgebra.adjoint(ksp) = LinearAlgebra.Adjoint(ksp)
 
 const CPC = Ptr{Cvoid}
 mutable struct PC{T}
@@ -24,7 +30,7 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
 
 @for_libpetsc begin
     function KSP{$PetscScalar}(comm::MPI.Comm)
-        ksp = KSP{$PetscScalar}(C_NULL, comm)
+        ksp = KSP{$PetscScalar}(C_NULL, comm, nothing, nothing)
         @chk ccall((:KSPCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CKSP}), comm, ksp)
         return ksp
     end
@@ -34,6 +40,8 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
     end
     function setoperators!(ksp::KSP{$PetscScalar}, A::AbstractMat{$PetscScalar}, P::AbstractMat{$PetscScalar})
         @chk ccall((:KSPSetOperators, $libpetsc), PetscErrorCode, (CKSP, CMat, CMat), ksp, A, P)
+        ksp.A = A
+        ksp.P = P
         return nothing
     end
 
@@ -46,12 +54,16 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
         @chk ccall((:PCSetType, $libpetsc), PetscErrorCode, (CPC, Cstring), pc, pctype)
         return nothing
     end
-    function settolerances!(ksp::KSP{$PetscScalar}; rtol=PETSC_DEFAULT, atol=PETSC_DEFAULT, dtol=PETSC_DEFAULT, maxits=PETSC_DEFAULT)
+    function settolerances!(ksp::KSP{$PetscScalar}; rtol=PETSC_DEFAULT, atol=PETSC_DEFAULT, divtol=PETSC_DEFAULT, max_it=PETSC_DEFAULT)
         @chk ccall((:KSPSetTolerances, $libpetsc), PetscErrorCode, 
                     (CKSP, $PetscReal, $PetscReal, $PetscReal, $PetscInt),
-                    ksp, rtol, atol, dtol, maxits)
+                    ksp, rtol, atol, divtol, max_it)
         return nothing
     end
+    function setfromoptions!(ksp::KSP{$PetscScalar})
+        @chk ccall((:KSPSetFromOptions, $libpetsc), PetscErrorCode, (CKSP,), ksp)
+    end
+
 
     function iters(ksp::KSP{$PetscScalar})
         r_its = Ref{$PetscInt}()
@@ -70,17 +82,34 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
         @chk ccall((:KSPSolve, $libpetsc), PetscErrorCode, 
         (CKSP, CVec, CVec), ksp, b, x)
     end
-    function solve!(x::AbstractVec{$PetscScalar}, ksp::Transpose{T,K}, b::AbstractVec{$PetscScalar}) where {T,K <: KSP{$PetscScalar}}
+    function solve!(x::AbstractVec{$PetscScalar}, tksp::Transpose{T,K}, b::AbstractVec{$PetscScalar}) where {T,K <: KSP{$PetscScalar}}
         @chk ccall((:KSPSolveTranspose, $libpetsc), PetscErrorCode, 
-        (CKSP, CVec, CVec), ksp, b, x)
+        (CKSP, CVec, CVec), parent(tksp), b, x)
     end
+    
 end
 
-function KSP(A::AbstractMat{T}, P::AbstractMat{T}=A) where {T}
+solve!(x::AbstractVec{T}, aksp::Adjoint{T,K}, b::AbstractVec{T}) where {K <: KSP{T}} where {T<:Real} =
+    solve!(x, transpose(parent(aksp)), y)
+
+function KSP(A::AbstractMat{T}, P::AbstractMat{T}=A; kwargs...) where {T}
     ksp = KSP{T}(A.comm)
     setoperators!(ksp, A, P)
+    if !isempty(kwargs)
+        opts = Options{T}(kwargs...)
+        global_opts = GlobalOptions{T}()
+        push!(global_opts, opts)
+        setfromoptions!(ksp)
+        pop!(global_opts)
+        destroy(opts)
+    end
     return ksp
 end
+
+
+
+
+
 
 """
     iters(ksp::KSP)

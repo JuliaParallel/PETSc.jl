@@ -27,7 +27,7 @@ mutable struct VecSeq{T} <: AbstractVec{T}
 end
 Base.eltype(::Type{V}) where {V<:AbstractVec{T}} where T = T
 Base.eltype(v::AbstractVec{T}) where {T} = T
-
+Base.size(v::AbstractVec) = (length(v),)
 
 @for_libpetsc begin
     function VecSeq(comm::MPI.Comm, X::Vector{$PetscScalar}; blocksize=1)

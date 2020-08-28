@@ -3,7 +3,7 @@ const CMat = Ptr{Cvoid}
 abstract type AbstractMat{T} <: AbstractMatrix{T} end
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
-Base.cconvert(::Type{CMat}, obj::AbstractMat) = obj.mat
+Base.cconvert(::Type{CMat}, obj::AbstractMat) = obj.ptr
 # allows us to pass XXMat objects directly into Ptr{CMat} ccall signatures
 Base.unsafe_convert(::Type{Ptr{CMat}}, obj::AbstractMat) =
     convert(Ptr{CMat}, pointer_from_objref(obj))
@@ -11,25 +11,61 @@ Base.unsafe_convert(::Type{Ptr{CMat}}, obj::AbstractMat) =
 
 Base.eltype(::Type{A}) where {A<:AbstractMat{T}} where {T} = T
 Base.eltype(A::AbstractMat{T}) where {T} = T
-    
+
+"""
+    MatSeqAIJ{T}
+
+PETSc sparse array using AIJ format (also known as a compressed sparse row or CSR format).
+
+Memory allocation is handled by PETSc.
+"""
 mutable struct MatSeqAIJ{T} <: AbstractMat{T}
-    mat::CMat
+    ptr::CMat
     comm::MPI.Comm
 end
 
+"""
+    MatSeqDense{T}
+
+PETSc dense array. This wraps a Julia `Matrix{T}` object.
+"""
+mutable struct MatSeqDense{T} <: AbstractMat{T}
+    ptr::CMat
+    comm::MPI.Comm
+    array::Matrix{T}
+end
+
 @for_libpetsc begin
-    function MatSeqAIJ{$PetscScalar}(comm::MPI.Comm, m::Integer, n::Integer, nnz::Vector{$PetscInt})
+    function MatSeqAIJ{$PetscScalar}(m::Integer, n::Integer, nnz::Vector{$PetscInt})
+        comm = MPI.COMM_SELF
         mat = MatSeqAIJ{$PetscScalar}(C_NULL, comm)
         @chk ccall((:MatCreateSeqAIJ, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
                 comm, m, n, 0, nnz, mat)
         return mat
     end
+    function MatSeqDense(A::Matrix{$PetscScalar})
+        comm = MPI.COMM_SELF
+        mat = MatSeqDense(C_NULL, comm, A)
+        @chk ccall((:MatCreateSeqDense, $libpetsc), PetscErrorCode, 
+            (MPI.MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CMat}),
+            comm, size(A,1), size(A,2), A, mat)
+        return mat
+    end
+
 
     function destroy(M::AbstractMat{$PetscScalar})
         @chk ccall((:MatDestroy, $libpetsc), PetscErrorCode, (Ptr{CMat},), M)
         return nothing
     end
+
+    function setvalues!(M::AbstractMat{$PetscScalar}, row0idxs::Vector{$PetscInt}, col0idxs::Vector{$PetscInt}, rowvals::Array{$PetscScalar}, insertmode::InsertMode)
+        @chk ccall((:MatSetValues, $libpetsc), PetscErrorCode, 
+            (CMat, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar},InsertMode),
+            M, length(row0idxs), row0idxs, length(col0idxs), col0idxs, rowvals, insertmode)
+        return nothing
+    end
+
 
     function Base.setindex!(M::AbstractMat{$PetscScalar}, val, i::Integer, j::Integer)    
         @chk ccall((:MatSetValues, $libpetsc), PetscErrorCode, 
@@ -112,7 +148,7 @@ function MatSeqAIJ(S::SparseMatrixCSC{T}) where {T}
     for r in S.rowval
         nnz[r] += 1
     end
-    M = MatSeqAIJ{T}(MPI.COMM_SELF, m, n, nnz)
+    M = MatSeqAIJ{T}(m, n, nnz)
     for j = 1:n
         for ii = S.colptr[j]:S.colptr[j+1]-1
             i = S.rowval[ii]
@@ -123,4 +159,5 @@ function MatSeqAIJ(S::SparseMatrixCSC{T}) where {T}
     return M
 end
 
-
+AbstractMat(A::Matrix) = MatSeqDense(A)
+AbstractMat(A::SparseMatrixCSC) = MatSeqAIJ(A)

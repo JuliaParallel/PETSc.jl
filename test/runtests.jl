@@ -18,25 +18,24 @@ M = PETSc.MatSeqAIJ(S)
 
 w = PETSc.VecSeq(zeros(m))
 
-mul!(w, transpose(M), v)
-@test w.array ≈ transpose(S)*x 
-
-
 mul!(w, M, v)
 @test w.array ≈ S*x 
 
-
-ksp = PETSc.KSP(M)
+ksp = PETSc.KSP(M; ksp_rtol=1e-8)
+#PETSc.settolerances!(ksp; rtol=1e-8)
 
 pc = PETSc.PC(ksp)
 PETSc.settype!(pc, "jacobi")
-PETSc.settolerances!(ksp; rtol=1e-8)
 
 u = PETSc.VecSeq(randn(n))
 PETSc.solve!(u, ksp, w)
-
 @test S*u.array ≈ w.array  rtol=1e-8
 
+mul!(w, transpose(M), v)
+@test w.array ≈ transpose(S)*x 
+
+PETSc.solve!(u, transpose(ksp), w)
+@test transpose(S)*u.array ≈ w.array  rtol=1e-8
 
 
 PETSc.destroy(ksp)

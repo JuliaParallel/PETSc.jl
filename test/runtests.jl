@@ -23,7 +23,7 @@ w = PETSc.VecSeq(zeros(m))
 mul!(w, M, v)
 @test w.array ≈ S*x 
 
-ksp = PETSc.KSP(M; ksp_rtol=1e-8, pc_type="jacobi")
+ksp = PETSc.KSP(M; ksp_rtol=1e-8, pc_type="jacobi", ksp_monitor=true)
 #PETSc.settolerances!(ksp; rtol=1e-8)
 
 @test PETSc.gettype(ksp) == "gmres" # default

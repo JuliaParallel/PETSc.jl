@@ -20,7 +20,7 @@ end
     function Base.setindex!(opts::Options{$PetscScalar}, val, key)
         @chk ccall((:PetscOptionsSetValue, $libpetsc), PetscErrorCode,
             (CPetscOptions, Cstring, Cstring), 
-            opts, string('-',key), string(val))
+            opts, string('-',key), val == true ? C_NULL : string(val))
     end
 
     function destroy(opts::Options{$PetscScalar})

@@ -9,6 +9,8 @@ m,n = 20,20
 x = randn(n)
 v = PETSc.VecSeq(x)
 
+PETSc.view(v)
+
 @test norm(x) ≈ norm(v) rtol=10eps()
 
 S = sprand(m,n,0.1) + I

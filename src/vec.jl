@@ -72,6 +72,13 @@ Base.size(v::AbstractVec) = (length(v),)
           (CVec, Ptr{$PetscInt}, Ptr{$PetscInt}), vec, r_lo, r_hi)
         r_lo[]:(r_hi[]-$PetscInt(1))
     end
+
+    function view(vec::AbstractVec{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(vec.comm))
+        @chk ccall((:VecView, $libpetsc), PetscErrorCode, 
+                    (CVec, CPetscViewer),
+                vec, viewer);
+        return nothing
+    end
 end
 
 VecSeq(X::Vector{T}; kwargs...) where {T} = VecSeq(MPI.COMM_SELF, X; kwargs...)
@@ -89,11 +96,3 @@ https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Vec/VecGetOwnership
 """ 
 ownershiprange
 
-#=
-function View(vec::AbstractVec, viewer::Viewer=ViewerStdout(vec.comm))
-    @chk ccall((:VecView, libpetsc), PetscErrorCode, 
-                (CVec, CPetscViewer),
-            vec, viewer);
-    return nothing
-end
-=#

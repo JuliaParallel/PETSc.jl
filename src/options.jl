@@ -43,3 +43,13 @@ function Options{T}(ps::Pair...) where {T}
     end
     return opts
 end
+
+function with(f, opts::Options{T}) where {T}
+  global_opts = GlobalOptions{T}()
+  push!(global_opts, opts)
+  try
+    f()
+  finally
+    pop!(global_opts)
+  end
+end

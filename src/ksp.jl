@@ -9,6 +9,7 @@ mutable struct KSP{T} <: Factorization{T}
     # keep around so that they don't get gc'ed
     A
     P
+    opts::Options{T}
 end
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
@@ -32,8 +33,9 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
     convert(Ptr{CPC}, pointer_from_objref(obj))
 
 @for_libpetsc begin
-    function KSP{$PetscScalar}(comm::MPI.Comm)
-        ksp = KSP{$PetscScalar}(C_NULL, comm, nothing, nothing)
+    function KSP{$PetscScalar}(comm::MPI.Comm; kwargs...)
+        opts = Options{$PetscScalar}(kwargs...)
+        ksp = KSP{$PetscScalar}(C_NULL, comm, nothing, nothing, opts)
         @chk ccall((:KSPCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CKSP}), comm, ksp)
         return ksp
     end
@@ -91,12 +93,16 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
         return r_rnorm[]
     end
     function solve!(x::AbstractVec{$PetscScalar}, ksp::KSP{$PetscScalar}, b::AbstractVec{$PetscScalar})
-        @chk ccall((:KSPSolve, $libpetsc), PetscErrorCode, 
-        (CKSP, CVec, CVec), ksp, b, x)
+        with(ksp.opts) do
+            @chk ccall((:KSPSolve, $libpetsc), PetscErrorCode, 
+            (CKSP, CVec, CVec), ksp, b, x)
+        end
     end
     function solve!(x::AbstractVec{$PetscScalar}, tksp::Transpose{T,K}, b::AbstractVec{$PetscScalar}) where {T,K <: KSP{$PetscScalar}}
-        @chk ccall((:KSPSolveTranspose, $libpetsc), PetscErrorCode, 
-        (CKSP, CVec, CVec), parent(tksp), b, x)
+        with(ksp.opts) do
+            @chk ccall((:KSPSolveTranspose, $libpetsc), PetscErrorCode, 
+            (CKSP, CVec, CVec), parent(tksp), b, x)
+        end
     end
     
 end
@@ -105,17 +111,11 @@ solve!(x::AbstractVec{T}, aksp::Adjoint{T,K}, b::AbstractVec{T}) where {K <: KSP
     solve!(x, transpose(parent(aksp)), y)
 
 function KSP(A::AbstractMat{T}, P::AbstractMat{T}=A; kwargs...) where {T}
-    ksp = KSP{T}(A.comm)
+    ksp = KSP{T}(A.comm; kwargs...)
     setoperators!(ksp, A, P)
-
-    # set options
-    opts = Options{T}(kwargs...)
-    global_opts = GlobalOptions{T}()
-    push!(global_opts, opts)
-    setfromoptions!(ksp)
-    pop!(global_opts)
-    destroy(opts)
-
+    with(ksp.opts) do
+        setfromoptions!(ksp)
+    end
     return ksp
 end
 

@@ -42,6 +42,7 @@ end
         @chk ccall((:MatCreateSeqAIJ, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
                 comm, m, n, 0, nnz, mat)
+        finalizer(destroy, mat)
         return mat
     end
     function MatSeqDense(A::Matrix{$PetscScalar})
@@ -50,6 +51,7 @@ end
         @chk ccall((:MatCreateSeqDense, $libpetsc), PetscErrorCode, 
             (MPI.MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CMat}),
             comm, size(A,1), size(A,2), A, mat)
+        finalizer(destroy, mat)
         return mat
     end
 

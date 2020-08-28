@@ -21,11 +21,13 @@ w = PETSc.VecSeq(zeros(m))
 mul!(w, M, v)
 @test w.array ≈ S*x 
 
-ksp = PETSc.KSP(M; ksp_rtol=1e-8)
+ksp = PETSc.KSP(M; ksp_rtol=1e-8, pc_type="jacobi")
 #PETSc.settolerances!(ksp; rtol=1e-8)
 
+@test PETSc.gettype(ksp) == "gmres" # default
+
 pc = PETSc.PC(ksp)
-PETSc.settype!(pc, "jacobi")
+@test PETSc.gettype(pc) == "jacobi"
 
 u = PETSc.VecSeq(randn(n))
 PETSc.solve!(u, ksp, w)

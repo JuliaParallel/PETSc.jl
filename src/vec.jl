@@ -35,6 +35,7 @@ Base.size(v::AbstractVec) = (length(v),)
         @chk ccall((:VecCreateSeqWithArray, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CVec}),
                 comm, blocksize, length(X), X, v)
+        finalizer(destroy, v)
         return v
     end
     function destroy(v::AbstractVec{$PetscScalar})

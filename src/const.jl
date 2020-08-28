@@ -37,7 +37,6 @@ end
 const Petsc64bitInt       = Int64
 const PetscLogDouble      = Cdouble
 
-
 @enum InsertMode NOT_SET_VALUES INSERT_VALUES ADD_VALUES MAX_VALUES MIN_VALUES INSERT_ALL_VALUES ADD_ALL_VALUES INSERT_BC_VALUES ADD_BC_VALUES
 
 

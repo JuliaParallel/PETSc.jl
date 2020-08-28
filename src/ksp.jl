@@ -1,5 +1,7 @@
 
 const CKSP = Ptr{Cvoid}
+const CKSPType = Cstring
+
 
 mutable struct KSP{T} <: Factorization{T}
     ptr::Ptr{Cvoid}
@@ -23,6 +25,7 @@ const CPC = Ptr{Cvoid}
 mutable struct PC{T}
     ptr::CPC
 end
+const CPCType = Cstring
 
 Base.cconvert(::Type{CPC}, obj::PC) = obj.ptr
 Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) = 
@@ -64,7 +67,16 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
         @chk ccall((:KSPSetFromOptions, $libpetsc), PetscErrorCode, (CKSP,), ksp)
     end
 
-
+    function gettype(ksp::KSP{$PetscScalar})
+        t_r = Ref{CKSPType}()
+        @chk ccall((:KSPGetType, $libpetsc), PetscErrorCode, (CKSP, Ptr{CKSPType}),  ksp, t_r)
+        return unsafe_string(t_r[])
+    end
+    function gettype(pc::PC{$PetscScalar})
+        t_r = Ref{CPCType}()
+        @chk ccall((:PCGetType, $libpetsc), PetscErrorCode, (CPC, Ptr{CPCType}),  pc, t_r)
+        return unsafe_string(t_r[])
+    end
     function iters(ksp::KSP{$PetscScalar})
         r_its = Ref{$PetscInt}()
         @chk ccall((:KSPGetIterationNumber, $libpetsc), PetscErrorCode, 
@@ -95,14 +107,15 @@ solve!(x::AbstractVec{T}, aksp::Adjoint{T,K}, b::AbstractVec{T}) where {K <: KSP
 function KSP(A::AbstractMat{T}, P::AbstractMat{T}=A; kwargs...) where {T}
     ksp = KSP{T}(A.comm)
     setoperators!(ksp, A, P)
-    if !isempty(kwargs)
-        opts = Options{T}(kwargs...)
-        global_opts = GlobalOptions{T}()
-        push!(global_opts, opts)
-        setfromoptions!(ksp)
-        pop!(global_opts)
-        destroy(opts)
-    end
+
+    # set options
+    opts = Options{T}(kwargs...)
+    global_opts = GlobalOptions{T}()
+    push!(global_opts, opts)
+    setfromoptions!(ksp)
+    pop!(global_opts)
+    destroy(opts)
+
     return ksp
 end
 

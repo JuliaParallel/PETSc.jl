@@ -13,8 +13,10 @@ end
 
 @for_libpetsc begin
     function Options{$PetscScalar}()
+        initialize($PetscScalar)
         opts = Options{$PetscScalar}(C_NULL)
         @chk ccall((:PetscOptionsCreate, $libpetsc), PetscErrorCode, (Ptr{CPetscOptions},), opts)
+        finalizer(destroy, opts)
         return opts
     end
     function Base.setindex!(opts::Options{$PetscScalar}, val, key)
@@ -24,7 +26,9 @@ end
     end
 
     function destroy(opts::Options{$PetscScalar})
+        finalized($PetscScalar) ||
         @chk ccall((:PetscOptionsDestroy, $libpetsc), PetscErrorCode, (Ptr{CPetscOptions},), opts)
+        return nothing
     end
 
     function Base.push!(::GlobalOptions{$PetscScalar}, opts::Options{$PetscScalar})

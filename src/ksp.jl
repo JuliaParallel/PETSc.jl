@@ -34,12 +34,17 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
 
 @for_libpetsc begin
     function KSP{$PetscScalar}(comm::MPI.Comm; kwargs...)
+        initialize($PetscScalar)
         opts = Options{$PetscScalar}(kwargs...)
         ksp = KSP{$PetscScalar}(C_NULL, comm, nothing, nothing, opts)
         @chk ccall((:KSPCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CKSP}), comm, ksp)
+        if comm == MPI.COMM_SELF
+            finalizer(destroy, ksp)
+        end
         return ksp
     end
     function destroy(ksp::KSP{$PetscScalar})
+        finalized($PetscScalar) ||
         @chk ccall((:KSPDestroy, $libpetsc), PetscErrorCode, (Ptr{CKSP},), ksp)
         return nothing
     end
@@ -85,6 +90,12 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
         (KSP, Ptr{$PetscInt}), ksp, r_its)
         return r_its[]
     end
+    function view(ksp::KSP{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(ksp.comm))
+        @chk ccall((:KSPView, $libpetsc), PetscErrorCode, 
+                    (CKSP, CPetscViewer),
+                ksp, viewer);
+        return nothing
+    end
 
     function resnorm(ksp::KSP{$PetscScalar})
         r_rnorm = Ref{$PetscReal}()
@@ -99,12 +110,12 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
         end
     end
     function solve!(x::AbstractVec{$PetscScalar}, tksp::Transpose{T,K}, b::AbstractVec{$PetscScalar}) where {T,K <: KSP{$PetscScalar}}
+        ksp = parent(tksp)
         with(ksp.opts) do
             @chk ccall((:KSPSolveTranspose, $libpetsc), PetscErrorCode, 
-            (CKSP, CVec, CVec), parent(tksp), b, x)
+            (CKSP, CVec, CVec), ksp, b, x)
         end
     end
-    
 end
 
 solve!(x::AbstractVec{T}, aksp::Adjoint{T,K}, b::AbstractVec{T}) where {K <: KSP{T}} where {T<:Real} =
@@ -119,8 +130,18 @@ function KSP(A::AbstractMat{T}, P::AbstractMat{T}=A; kwargs...) where {T}
     return ksp
 end
 
-
-
+function Base.show(io::IO, ksp::KSP)
+    old_stdout = stdout
+    try
+        rd, = redirect_stdout()
+        view(ksp)
+        Libc.flush_cstdio()
+        flush(stdout)
+        write(io, readavailable(rd))
+    finally
+        redirect_stdout(old_stdout)
+    end
+end
 
 
 

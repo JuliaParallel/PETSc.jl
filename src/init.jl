@@ -1,21 +1,36 @@
 
 @for_libpetsc begin
-    function initialize(::Type{$PetscScalar})
-        @chk ccall((:PetscInitializeNoArguments, $libpetsc), PetscErrorCode, ())
+    function initialized(::Type{$PetscScalar})
+        r_flag = Ref{PetscBool}()
+        @chk ccall((:PetscInitialized, $libpetsc), PetscErrorCode, (Ptr{PetscBool},), r_flag)
+        return r_flag[] == PETSC_TRUE
     end
-    function finalize(::Type{$PetscScalar})
-        @chk ccall((:PetscFinalize, $libpetsc), PetscErrorCode, ())
+    function initialize(::Type{$PetscScalar})
+        if !initialized($PetscScalar)
+            MPI.Initialized() || MPI.Init()
+            @chk ccall((:PetscInitializeNoArguments, $libpetsc), PetscErrorCode, ())
+            atexit(() -> finalize($PetscScalar))
+        end
+        return nothing
+    end
+    function finalized(::Type{$PetscScalar})
+        r_flag = Ref{PetscBool}()
+        @chk ccall((:PetscFinalized, $libpetsc), PetscErrorCode, (Ptr{PetscBool},), r_flag)
+        return r_flag[] == PETSC_TRUE
+    end
+    function finalize(::Type{$PetscScalar} )
+        if !finalized($PetscScalar)
+            @chk ccall((:PetscFinalize, $libpetsc), PetscErrorCode, ())
+        end
+        return nothing
     end 
 end
 
-
 function initialize()
-    for T in scalar_types
-        initialize(T)
-    end
+    map(initialize, scalar_types)
+    return nothing
 end
 function finalize()
-    for T in scalar_types
-        finalize(T)
-    end
+    map(finalize, scalar_types)
+    return nothing
 end

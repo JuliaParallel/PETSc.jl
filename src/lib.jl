@@ -1,6 +1,6 @@
 
 using Libdl
-const libs = [PETSc_jll.libpetsc]
+const libs = (PETSc_jll.libpetsc, )
 
 function initialize(libhdl::Ptr{Cvoid})
   PetscInitializeNoArguments_ptr = dlsym(libhdl, :PetscInitializeNoArguments)
@@ -49,6 +49,7 @@ const libtypes = map(libs) do lib
         PETSC_INT_SIZE == 8 ? Int64 :
         error("PETSC_INT_SIZE = $PETSC_INT_SIZE not supported.")
 
+    # TODO: PetscBLASInt, PetscMPIInt ?
     return (lib, PetscScalar, PetscReal, PetscInt)
 end
 
@@ -63,4 +64,3 @@ macro for_libpetsc(expr)
 end
 
 @for_libpetsc inttype(::Type{$PetscScalar}) = $PetscInt
-# TODO: PetscBLASInt, PetscMPIInt

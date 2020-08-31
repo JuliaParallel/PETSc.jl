@@ -21,6 +21,22 @@ end
     end
 end
 
+# ideally we would capture the output directly, but this looks difficult
+# easiest option is to redirect stdout
+# based on suggestion from https://github.com/JuliaLang/julia/issues/32567
+function _show(io::IO, obj)
+    old_stdout = stdout
+    try
+        rd, = redirect_stdout()
+        view(obj)
+        Libc.flush_cstdio()
+        flush(stdout)
+        write(io, readavailable(rd))
+    finally
+        redirect_stdout(old_stdout)
+    end
+end
+
 
 #=
 # PETSc_jll isn't built with X support

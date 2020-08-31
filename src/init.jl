@@ -9,6 +9,10 @@
         if !initialized($PetscScalar)
             MPI.Initialized() || MPI.Init()
             @chk ccall((:PetscInitializeNoArguments, $libpetsc), PetscErrorCode, ())
+
+            # disable signal handler
+            @chk ccall((:PetscPopSignalHandler, $libpetsc), PetscErrorCode, ())
+
             atexit(() -> finalize($PetscScalar))
         end
         return nothing

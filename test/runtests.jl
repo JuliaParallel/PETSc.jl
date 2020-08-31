@@ -28,8 +28,8 @@ pc = PETSc.PC(ksp)
 @test PETSc.gettype(pc) == "jacobi"
 
 u = PETSc.VecSeq(randn(n))
-PETSc.solve!(u, ksp, w)
-@test S*u.array ≈ w.array  rtol=1e-8
+y = ksp \ w.array
+@test S*y ≈ w.array  rtol=1e-8
 
 mul!(w, transpose(M), v)
 @test w.array ≈ transpose(S)*x 

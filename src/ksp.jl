@@ -108,6 +108,7 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
             @chk ccall((:KSPSolve, $libpetsc), PetscErrorCode, 
             (CKSP, CVec, CVec), ksp, b, x)
         end
+        return x
     end
     function solve!(x::AbstractVec{$PetscScalar}, tksp::Transpose{T,K}, b::AbstractVec{$PetscScalar}) where {T,K <: KSP{$PetscScalar}}
         ksp = parent(tksp)
@@ -115,12 +116,29 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
             @chk ccall((:KSPSolveTranspose, $libpetsc), PetscErrorCode, 
             (CKSP, CVec, CVec), ksp, b, x)
         end
+        return x
     end
 end
 
+# no generic Adjoint solve defined, but for Real we can use Adjoint
 solve!(x::AbstractVec{T}, aksp::Adjoint{T,K}, b::AbstractVec{T}) where {K <: KSP{T}} where {T<:Real} =
     solve!(x, transpose(parent(aksp)), y)
 
+LinearAlgebra.ldiv!(x::AbstractVec{T}, ksp::KSP{T}, b::AbstractVec{T}) where {T} = solve!(x, ksp, b)
+function LinearAlgebra.ldiv!(x::AbstractVector{T}, ksp::KSP{T}, b::AbstractVector{T}) where {T}
+    parent(solve!(AbstractVec(x), ksp, AbstractVec(b)))
+end
+
+Base.:\(ksp::KSP{T}, b::AbstractVector{T}) where {T} = ldiv!(similar(b), ksp, b)
+
+
+"""
+    KSP(A, P; options...)
+
+Construct a PETSc Krylov subspace solver.
+
+Any PETSc options prefixed with `ksp_` and `pc_` can be passed as keywords.
+"""
 function KSP(A::AbstractMat{T}, P::AbstractMat{T}=A; kwargs...) where {T}
     ksp = KSP{T}(A.comm; kwargs...)
     setoperators!(ksp, A, P)
@@ -130,19 +148,7 @@ function KSP(A::AbstractMat{T}, P::AbstractMat{T}=A; kwargs...) where {T}
     return ksp
 end
 
-function Base.show(io::IO, ksp::KSP)
-    old_stdout = stdout
-    try
-        rd, = redirect_stdout()
-        view(ksp)
-        Libc.flush_cstdio()
-        flush(stdout)
-        write(io, readavailable(rd))
-    finally
-        redirect_stdout(old_stdout)
-    end
-end
-
+Base.show(io::IO, ksp::KSP) = _show(io, ksp)
 
 
 """

@@ -85,6 +85,10 @@ Base.parent(v::AbstractVec) = v.array
     end
 end
 
+function Base.show(io::IO, ::MIME"text/plain", vec::AbstractVec)
+    _show(io, vec)
+end
+
 VecSeq(X::Vector{T}; kwargs...) where {T} = VecSeq(MPI.COMM_SELF, X; kwargs...)
 AbstractVec(X::AbstractVector) = VecSeq(X)
 

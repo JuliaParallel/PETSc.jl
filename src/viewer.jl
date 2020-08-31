@@ -19,6 +19,24 @@ end
         ptr = ccall((:PETSC_VIEWER_STDOUT_, $libpetsc), CPetscViewer, (MPI.MPI_Comm,), comm)
         return ViewerStdout{$PetscScalar}(ptr, comm)
     end
+    function Base.push!(viewer::Viewer{$PetscScalar}, format::PetscViewerFormat)
+        @chk ccall((:PetscViewerPushFormat, $libpetsc), PetscErrorCode, (CPetscViewer,PetscViewerFormat), viewer, format)
+        return nothing
+    end
+    function Base.pop!(viewer::Viewer{$PetscScalar})
+        @chk ccall((:PetscViewerPopFormat, $libpetsc), PetscErrorCode, (CPetscViewer,), viewer)
+        return nothing
+    end
+
+end
+
+function with(f, viewer::Viewer, format::PetscViewerFormat)
+    push!(viewer, format)
+    try
+        f()
+    finally
+        pop!(viewer)
+    end
 end
 
 # ideally we would capture the output directly, but this looks difficult
@@ -37,6 +55,7 @@ function _show(io::IO, obj)
     end
     return nothing
 end
+
 
 
 #=

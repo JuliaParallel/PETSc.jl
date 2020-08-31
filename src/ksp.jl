@@ -122,14 +122,15 @@ end
 
 # no generic Adjoint solve defined, but for Real we can use Adjoint
 solve!(x::AbstractVec{T}, aksp::Adjoint{T,K}, b::AbstractVec{T}) where {K <: KSP{T}} where {T<:Real} =
-    solve!(x, transpose(parent(aksp)), y)
+    solve!(x, transpose(parent(aksp)), b)
 
-LinearAlgebra.ldiv!(x::AbstractVec{T}, ksp::KSP{T}, b::AbstractVec{T}) where {T} = solve!(x, ksp, b)
-function LinearAlgebra.ldiv!(x::AbstractVector{T}, ksp::KSP{T}, b::AbstractVector{T}) where {T}
+const KSPAT{T} = Union{KSP{T}, Transpose{T, KSP{T}}, Adjoint{T, KSP{T}}}
+
+LinearAlgebra.ldiv!(x::AbstractVec{T}, ksp::KSPAT{T}, b::AbstractVec{T}) where {T} = solve!(x, ksp, b)
+function LinearAlgebra.ldiv!(x::AbstractVector{T}, ksp::KSPAT{T}, b::AbstractVector{T}) where {T}
     parent(solve!(AbstractVec(x), ksp, AbstractVec(b)))
 end
-
-Base.:\(ksp::KSP{T}, b::AbstractVector{T}) where {T} = ldiv!(similar(b), ksp, b)
+Base.:\(ksp::KSPAT{T}, b::AbstractVector{T}) where {T} = ldiv!(similar(b), ksp, b)
 
 
 """

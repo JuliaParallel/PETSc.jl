@@ -88,6 +88,13 @@ end
         @chk ccall((:MatAssemblyEnd, $libpetsc), PetscErrorCode, (CMat, MatAssemblyType), M, t)
         return nothing
     end
+    function view(mat::AbstractMat{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(mat.comm))
+        @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
+                    (CMat, CPetscViewer),
+                mat, viewer);
+        return nothing
+    end
+
 
     function Base.size(A::AbstractMat{$PetscScalar})
         m = Ref{$PetscInt}()
@@ -164,5 +171,13 @@ function MatSeqAIJ(S::SparseMatrixCSC{T}) where {T}
     return M
 end
 
+function Base.show(io::IO, ::MIME"text/plain", mat::AbstractMat)
+    _show(io, mat)
+end
 AbstractMat(A::Matrix) = MatSeqDense(A)
 AbstractMat(A::SparseMatrixCSC) = MatSeqAIJ(A)
+
+const MatAT{T} = Union{AbstractMat{T}, Transpose{T, <:AbstractMat{T}}, Adjoint{T, <:AbstractMat{T}}}
+
+LinearAlgebra.mul!(y::AbstractVector{T}, M::MatAT{T}, x::AbstractVector{T}) where {T} =
+    parent(LinearAlgebra.mul!(AbstractVec(y), M, AbstractVec(x)))

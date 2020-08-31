@@ -1,3 +1,6 @@
+# define common PETSc constants
+# this excludes configurable constants (e.g. PetscScalar) which are set in lib.jl
+
 const PetscErrorCode      = Cint
 
 struct PetscError <: Exception

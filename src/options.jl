@@ -1,15 +1,22 @@
 
 const CPetscOptions = Ptr{Cvoid}
 
-mutable struct Options{T}
+#TODO: should it be <: AbstractDict{String,String}?
+abstract type AbstractOptions{T}
+end
+
+struct GlobalOptions{T} <: AbstractOptions{T}
+end
+Base.cconvert(::Type{CPetscOptions}, obj::GlobalOptions) = C_NULL
+
+mutable struct Options{T} <: AbstractOptions{T}
     ptr::CPetscOptions
 end
 Base.cconvert(::Type{CPetscOptions}, obj::Options) = obj.ptr
+
 Base.unsafe_convert(::Type{Ptr{CPetscOptions}}, obj::Options) =
     convert(Ptr{CPetscOptions}, pointer_from_objref(obj))
 
-struct GlobalOptions{T}
-end
 
 @for_libpetsc begin
     function Options{$PetscScalar}()
@@ -19,12 +26,6 @@ end
         finalizer(destroy, opts)
         return opts
     end
-    function Base.setindex!(opts::Options{$PetscScalar}, val, key)
-        @chk ccall((:PetscOptionsSetValue, $libpetsc), PetscErrorCode,
-            (CPetscOptions, Cstring, Cstring), 
-            opts, string('-',key), val == true ? C_NULL : string(val))
-    end
-
     function destroy(opts::Options{$PetscScalar})
         finalized($PetscScalar) ||
         @chk ccall((:PetscOptionsDestroy, $libpetsc), PetscErrorCode, (Ptr{CPetscOptions},), opts)
@@ -39,7 +40,25 @@ end
         @chk ccall((:PetscOptionsPop, $libpetsc), PetscErrorCode, ())
         return nothing
     end
+    function Base.setindex!(opts::AbstractOptions{$PetscScalar}, val, key)
+        @chk ccall((:PetscOptionsSetValue, $libpetsc), PetscErrorCode,
+            (CPetscOptions, Cstring, Cstring), 
+            opts, string('-',key), val == true ? C_NULL : string(val))
+    end
+
+    function view(opts::AbstractOptions{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(MPI.COMM_SELF))
+        @chk ccall((:PetscOptionsView, $libpetsc), PetscErrorCode, 
+                  (CPetscOptions, CPetscViewer),
+                  opts, viewer);
+        return nothing
+    end
 end
+
+"""
+    Options{T}(kw => arg, ...)
+
+
+"""
 function Options{T}(ps::Pair...) where {T}
     opts = Options{T}()
     for (k,v) in ps
@@ -48,6 +67,13 @@ function Options{T}(ps::Pair...) where {T}
     return opts
 end
 
+Base.show(io::IO, opts::AbstractOptions) = _show(io, opts)
+
+"""
+    with(f, opts::Options)
+
+Call `f()` with the [`Options`](@ref) `opts` set temporarily (in addition to any global options).
+"""
 function with(f, opts::Options{T}) where {T}
   global_opts = GlobalOptions{T}()
   push!(global_opts, opts)

@@ -35,6 +35,7 @@ function _show(io::IO, obj)
     finally
         redirect_stdout(old_stdout)
     end
+    return nothing
 end
 
 

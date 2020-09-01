@@ -1,72 +1,85 @@
-# interface to the PETSc options database(s), by providing an OPTIONS[T]
-# dictionary-like object that is analogous to the Julia Base.ENV object
-# for environment variables.
 
-type Options{T<:Scalar} <: Associative{ByteString,ByteString}; end
-const OPTIONS = [T => Options{T}() for T in C.petsc_type]
-export OPTIONS, withoptions
+const CPetscOptions = Ptr{Cvoid}
 
-typealias SymOrStr Union{AbstractString,Symbol}
-
-function Base.setindex!{T}(::Options{T}, v, k::SymOrStr)
-  chk(C.PetscOptionsSetValue(T, string('-',k), string(v)))
-  return v
+#TODO: should it be <: AbstractDict{String,String}?
+abstract type AbstractOptions{T}
 end
 
-function Base.setindex!{T}(::Options{T}, v::Void, k::SymOrStr)
-  chk(C.PetscOptionsClearValue(T, string('-',k)))
-  return v
+struct GlobalOptions{T} <: AbstractOptions{T}
 end
+Base.cconvert(::Type{CPetscOptions}, obj::GlobalOptions) = C_NULL
 
-# PETSc complains if you don't use an option, remove this?
-# allow OPTIONS[k]=v to set options for all PETSc scalar types simultaneously
-function Base.setindex!(o::typeof(OPTIONS), v, k::SymOrStr)
-  for opts in values(o)
-    opts[k] = v
-  end
-  return v
+mutable struct Options{T} <: AbstractOptions{T}
+    ptr::CPetscOptions
 end
+Base.cconvert(::Type{CPetscOptions}, obj::Options) = obj.ptr
 
-const _optionstr = Array(UInt8, 1024)
-function Base.get{T}(::Options{T}, k::SymOrStr, def)
-  b = Ref{PetscBool}()
-  chk(C.PetscOptionsGetString(T, Cstring(Ptr{UInt8}(C_NULL)), string('-',k),
-                              pointer(_optionstr), Csize_t(length(_optionstr)),
-                              b))
-  return b[] != 0 ? bytestring(pointer(_optionstr)) : def
-end
+Base.unsafe_convert(::Type{Ptr{CPetscOptions}}, obj::Options) =
+    convert(Ptr{CPetscOptions}, pointer_from_objref(obj))
 
-function Base.haskey{T}(::Options{T}, k::SymOrStr)
-  b = Ref{PetscBool}()
-  chk(C.PetscOptionsHasName(T, Cstring(Ptr{UInt8}(C_NULL)), string('-',k), b))
-  return b[] != 0
-end
 
-Base.similar(::Options) = Dict{ByteString,ByteString}()
-
-Base.pop!(o::Options, k::SymOrStr) = (v = o[k]; o[k] = nothing; v)
-Base.pop!(o::Options, k::SymOrStr, def) = haskey(o,k) ? pop!(o,k) : def
-Base.delete!(o::Options, k::SymOrStr) = (o[k] = nothing; o)
-Base.delete!(o::Options, k::SymOrStr, def) = haskey(o,k) ? delete!(o,k) : def
-
-# need to override show: default show function doesn't work because
-# there seems to be no way to iterate over the PETSc options database (grr).
-Base.show{T}(io::IO, ::Options{T}) = print(io, "PETSc{$T} options database")
-
-# temporarily set some options, call f, and then unset them; like withenv
-function withoptions{T<:Scalar}(f::Function, ::Type{T}, keyvals)
-  old = Dict{SymOrStr,Any}()
-  o = OPTIONS[T]
-  for (key,val) in keyvals
-    old[key] = get(o,key,nothing)
-    val !== nothing ? (o[key]=val) : delete!(o, key)
-  end
-  try f()
-  finally
-    for (key,val) in old
-      val !== nothing ? (o[key]=val) : delete!(o, key)
+@for_libpetsc begin
+    function Options{$PetscScalar}()
+        initialize($PetscScalar)
+        opts = Options{$PetscScalar}(C_NULL)
+        @chk ccall((:PetscOptionsCreate, $libpetsc), PetscErrorCode, (Ptr{CPetscOptions},), opts)
+        finalizer(destroy, opts)
+        return opts
     end
+    function destroy(opts::Options{$PetscScalar})
+        finalized($PetscScalar) ||
+        @chk ccall((:PetscOptionsDestroy, $libpetsc), PetscErrorCode, (Ptr{CPetscOptions},), opts)
+        return nothing
+    end
+
+    function Base.push!(::GlobalOptions{$PetscScalar}, opts::Options{$PetscScalar})
+        @chk ccall((:PetscOptionsPush, $libpetsc), PetscErrorCode, (CPetscOptions,), opts)
+        return nothing
+    end
+    function Base.pop!(::GlobalOptions{$PetscScalar})
+        @chk ccall((:PetscOptionsPop, $libpetsc), PetscErrorCode, ())
+        return nothing
+    end
+    function Base.setindex!(opts::AbstractOptions{$PetscScalar}, val, key)
+        @chk ccall((:PetscOptionsSetValue, $libpetsc), PetscErrorCode,
+            (CPetscOptions, Cstring, Cstring), 
+            opts, string('-',key), val == true ? C_NULL : string(val))
+    end
+
+    function view(opts::AbstractOptions{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(MPI.COMM_SELF))
+        @chk ccall((:PetscOptionsView, $libpetsc), PetscErrorCode, 
+                  (CPetscOptions, CPetscViewer),
+                  opts, viewer);
+        return nothing
+    end
+end
+
+"""
+    Options{T}(kw => arg, ...)
+
+
+"""
+function Options{T}(ps::Pair...) where {T}
+    opts = Options{T}()
+    for (k,v) in ps
+        opts[k] = v
+    end
+    return opts
+end
+
+Base.show(io::IO, opts::AbstractOptions) = _show(io, opts)
+
+"""
+    with(f, opts::Options)
+
+Call `f()` with the [`Options`](@ref) `opts` set temporarily (in addition to any global options).
+"""
+function with(f, opts::Options{T}) where {T}
+  global_opts = GlobalOptions{T}()
+  push!(global_opts, opts)
+  try
+    f()
+  finally
+    pop!(global_opts)
   end
 end
-withoptions{T<:Scalar,K<:SymOrStr}(f::Function, ::Type{T}, keyvals::Pair{K}...) = withoptions(f, T, keyvals)
-withoptions{T<:Scalar}(f::Function, ::Type{T}) = f() # handle empty keyvals case; see julia#10853

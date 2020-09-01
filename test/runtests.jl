@@ -1,19 +1,45 @@
-include("runtests_setup.jl")
-println("testing types: ", PETSc.C.petsc_type)
-for (i, ST) in enumerate(PETSc.C.petsc_type)
-  if PETSc.have_petsc[i]
-    println("testing datatype ", ST)
-  # @testset "Scalar type $ST" begin # uncomment when nested test results can be printed
-    include("error.jl")
-    include("ksp.jl")
-    include("vec.jl")
-    include("is.jl")
-    include("mat.jl")
-    include("ts.jl")
-  end
-  # end
-end
+using Test
+using PETSc, MPI, LinearAlgebra, SparseArrays
 
-@test PETSc.petsc_sizeof(PETSc.C.PETSC_BOOL) == 4
+m,n = 20,20
+x = randn(n)
+V = PETSc.VecSeq(x)
 
 
+@test norm(x) ≈ norm(V) rtol=10eps()
+
+S = sprand(m,n,0.1) + I
+M = PETSc.MatSeqAIJ(S)
+
+@test norm(S) ≈ norm(M) rtol=10eps()
+
+w = M*x
+@test w ≈ S*x 
+
+ksp = PETSc.KSP(M; ksp_rtol=1e-8, pc_type="jacobi", ksp_monitor=true)
+#PETSc.settolerances!(ksp; rtol=1e-8)
+
+@test PETSc.gettype(ksp) == "gmres" # default
+
+pc = PETSc.PC(ksp)
+@test PETSc.gettype(pc) == "jacobi"
+
+y = ksp \ w
+@test S*y ≈ w  rtol=1e-8
+
+
+w = M'*x
+@test w ≈ S'*x 
+
+y = ksp' \ w
+@test S'*y ≈ w rtol=1e-8
+
+
+f!(y,x) = y .= 2 .*x
+
+M = PETSc.MatShell{Float64}(f!,10,10)
+
+x = rand(10)
+
+@test M*x ≈ 2x
+@test PETSc.KSP(M) \ x ≈ x/2

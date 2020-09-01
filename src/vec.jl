@@ -1,3 +1,8 @@
+# AbstractVec
+#   - VecSeq: wrap
+#   - VecMPI (TODO)
+#   - VecGhost (TODO)
+# for the MPI variants we won't be able to attach finalizers, as destroy needs to be called collectively.
 
 const CVec = Ptr{Cvoid}
 
@@ -12,11 +17,11 @@ Base.unsafe_convert(::Type{Ptr{CVec}}, obj::AbstractVec) =
 """
     VecSeq(v::Vector)
 
-A standard, sequentially-stored serial PETSc vector.
+A standard, sequentially-stored serial PETSc vector, wrapping the Julia vector `v`.
 
-This reuses `v` as storage, and so `v` should not be `resize!`-ed while the PETSc object exists.
+This reuses the array `v` as storage, and so `v` should not be `resize!`-ed or otherwise have its length modified while the PETSc object exists.
 
-Call `destroy` once finished.
+This should only be need to be called for more advanced uses, for most simple usecases, users should be able to pass `Vector`s directly and have the wrapping performed automatically
 
 https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Vec/VecCreateSeqWithArray.html
 """
@@ -81,6 +86,26 @@ Base.parent(v::AbstractVec) = v.array
         @chk ccall((:VecView, $libpetsc), PetscErrorCode, 
                     (CVec, CPetscViewer),
                 vec, viewer);
+        return nothing
+    end
+
+    function localsize(v::AbstractVec{$PetscScalar})
+        return r_sz[]
+    end
+    
+    function unsafe_localarray(::Type{$PetscScalar}, cv::CVec)
+        r_pv = Ref{Ptr{$PetscScalar}}()
+        @chk ccall((:VecGetArray, $libpetsc), PetscErrorCode,
+            (CVec, Ptr{Ptr{$PetscScalar}}), cv, r_pv)
+        r_sz = Ref{$PetscInt}()
+        @chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode, 
+            (CVec, Ptr{$PetscInt}), cv, r_sz)
+        v = unsafe_wrap(Array, r_pv[], r_sz[]; own = false)
+        finalizer(_ -> restore(cv, r_pv[]), v)
+        return v
+    end
+    function restore(cv::CVec, ptr::Ptr{$PetscScalar})
+        @chk ccall((:VecRestoreArray, $libpetsc), PetscErrorCode, (CVec, Ptr{Ptr{$PetscScalar}}), cv, Ref(ptr))
         return nothing
     end
 end

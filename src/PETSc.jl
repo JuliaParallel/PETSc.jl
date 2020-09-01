@@ -11,6 +11,7 @@ include("viewer.jl")
 include("options.jl")
 include("vec.jl")
 include("mat.jl")
+include("matshell.jl")
 include("ksp.jl")
 
 end

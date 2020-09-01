@@ -33,3 +33,13 @@ w = M'*x
 
 y = ksp' \ w
 @test S'*y ≈ w rtol=1e-8
+
+
+f!(y,x) = y .= 2 .*x
+
+M = PETSc.MatShell{Float64}(f!,10,10)
+
+x = rand(10)
+
+@test M*x ≈ 2x
+@test PETSc.KSP(M) \ x ≈ x/2

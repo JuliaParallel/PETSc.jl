@@ -35,6 +35,8 @@ mutable struct MatSeqDense{T} <: AbstractMat{T}
     array::Matrix{T}
 end
 
+
+
 @for_libpetsc begin
     function MatSeqAIJ{$PetscScalar}(m::Integer, n::Integer, nnz::Vector{$PetscInt})
         initialize($PetscScalar)
@@ -56,6 +58,7 @@ end
         finalizer(destroy, mat)
         return mat
     end
+
 
 
     function destroy(M::AbstractMat{$PetscScalar})

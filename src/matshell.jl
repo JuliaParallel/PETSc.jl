@@ -1,5 +1,10 @@
 """
-MatShell{T}
+    MatShell{T}(obj, m, n)
+
+Create a `m×n` PETSc shell matrix object wrapping `obj`.
+
+If `obj` is a `Function`, then the multiply action `obj(y,x)`; otherwise it calls `mul!(y, obj, x)`.
+This can be changed by `PETSc._mul!`.
 
 """
 mutable struct MatShell{T,A} <: AbstractMat{T}

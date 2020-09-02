@@ -11,6 +11,7 @@ mutable struct KSP{T} <: Factorization{T}
     P  # preconditioning operator
     opts::Options{T}
 end
+scalartype(::KSP{T}) where {T} = T
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
 Base.cconvert(::Type{CKSP}, obj::KSP) = obj.ptr
@@ -25,7 +26,9 @@ LinearAlgebra.adjoint(ksp) = LinearAlgebra.Adjoint(ksp)
 const CPC = Ptr{Cvoid}
 mutable struct PC{T}
     ptr::CPC
+    comm::MPI.Comm
 end
+scalartype(::PC{T}) where {T} = T
 const CPCType = Cstring
 
 Base.cconvert(::Type{CPC}, obj::PC) = obj.ptr
@@ -56,8 +59,10 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
     end
 
     function PC(ksp::KSP{$PetscScalar})
-        pc = PC{$PetscScalar}(C_NULL)
+        pc = PC{$PetscScalar}(C_NULL, ksp.comm)
         @chk ccall((:KSPGetPC, $libpetsc), PetscErrorCode, (CKSP, Ptr{CPC}), ksp, pc)
+        incref(pc)
+        finalizer(decref, pc)
         return pc
     end
     function destroy(pc::PC{$PetscScalar})

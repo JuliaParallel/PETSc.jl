@@ -9,6 +9,7 @@ mutable struct SNES{T,V<:AbstractVec,A}
     vec::V
     obj::A
 end
+scalartype(::SNES{T}) where {T} = T
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
 Base.cconvert(::Type{CSNES}, obj::SNES) = obj.ptr

@@ -13,10 +13,10 @@ mutable struct Options{T} <: AbstractOptions{T}
     ptr::CPetscOptions
 end
 Base.cconvert(::Type{CPetscOptions}, obj::Options) = obj.ptr
-
 Base.unsafe_convert(::Type{Ptr{CPetscOptions}}, obj::Options) =
     convert(Ptr{CPetscOptions}, pointer_from_objref(obj))
 
+scalartype(::Options{T}) where {T} = T
 
 @for_libpetsc begin
     function Options{$PetscScalar}()

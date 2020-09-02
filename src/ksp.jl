@@ -7,8 +7,8 @@ mutable struct KSP{T} <: Factorization{T}
     ptr::Ptr{Cvoid}
     comm::MPI.Comm
     # keep around so that they don't get gc'ed
-    A
-    P
+    A  # Operator
+    P  # preconditioning operator
     opts::Options{T}
 end
 
@@ -60,6 +60,12 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
         @chk ccall((:KSPGetPC, $libpetsc), PetscErrorCode, (CKSP, Ptr{CPC}), ksp, pc)
         return pc
     end
+    function destroy(pc::PC{$PetscScalar})
+        finalized($PetscScalar) ||
+        @chk ccall((:PCDestroy, $libpetsc), PetscErrorCode, (Ptr{CPC},), pc)
+        return nothing
+    end
+
     function settype!(pc::PC{$PetscScalar}, pctype::String)
         @chk ccall((:PCSetType, $libpetsc), PetscErrorCode, (CPC, Cstring), pc, pctype)
         return nothing
@@ -96,6 +102,13 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
                 ksp, viewer);
         return nothing
     end
+    function view(pc::PC{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(pc.comm))
+        @chk ccall((:PCView, $libpetsc), PetscErrorCode, 
+                    (CPC, CPetscViewer),
+                pc, viewer);
+        return nothing
+    end
+
 
     function resnorm(ksp::KSP{$PetscScalar})
         r_rnorm = Ref{$PetscReal}()

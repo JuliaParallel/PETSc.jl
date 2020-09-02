@@ -7,6 +7,7 @@ using PETSc_jll
 include("const.jl")
 include("lib.jl")
 include("init.jl")
+include("ref.jl")
 include("viewer.jl")
 include("options.jl")
 include("vec.jl")

@@ -57,7 +57,7 @@ const scalar_types = map(x -> x[2], libtypes)
 
 macro for_libpetsc(expr)
   quote
-    for (lib, PetscScalar, PetscReal, PetscInt) in libtypes
+    for (libpetsc, PetscScalar, PetscReal, PetscInt) in libtypes
       @eval esc($expr)
     end
   end

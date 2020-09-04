@@ -4,13 +4,14 @@ const CKSPType = Cstring
 
 
 mutable struct KSP{T} <: Factorization{T}
-    ptr::Ptr{Cvoid}
+    ptr::CKSP
     comm::MPI.Comm
     # keep around so that they don't get gc'ed
     A  # Operator
     P  # preconditioning operator
     opts::Options{T}
 end
+
 scalartype(::KSP{T}) where {T} = T
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
@@ -19,7 +20,7 @@ Base.cconvert(::Type{CKSP}, obj::KSP) = obj.ptr
 Base.unsafe_convert(::Type{Ptr{CKSP}}, obj::KSP) =
     convert(Ptr{CKSP}, pointer_from_objref(obj))
 
-Base.eltype(ksp::KSP{T}) where {T} = T
+Base.eltype(::KSP{T}) where {T} = T
 LinearAlgebra.transpose(ksp) = LinearAlgebra.Transpose(ksp)
 LinearAlgebra.adjoint(ksp) = LinearAlgebra.Adjoint(ksp)
 
@@ -62,7 +63,7 @@ LinearAlgebra.adjoint(ksp) = LinearAlgebra.Adjoint(ksp)
 
     function gettype(ksp::KSP{$PetscScalar})
         t_r = Ref{CKSPType}()
-        @chk ccall((:KSPGetType, $libpetsc), PetscErrorCode, (CKSP, Ptr{CKSPType}),  ksp, t_r)
+        @chk ccall((:KSPGetType, $libpetsc), PetscErrorCode, (CKSP, Ptr{CKSPType}), ksp, t_r)
         return unsafe_string(t_r[])
     end
 
@@ -79,13 +80,6 @@ LinearAlgebra.adjoint(ksp) = LinearAlgebra.Adjoint(ksp)
                 ksp, viewer);
         return nothing
     end
-    function view(pc::PC{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(pc.comm))
-        @chk ccall((:PCView, $libpetsc), PetscErrorCode, 
-                    (CPC, CPetscViewer),
-                pc, viewer);
-        return nothing
-    end
-
 
     function resnorm(ksp::KSP{$PetscScalar})
         r_rnorm = Ref{$PetscReal}()

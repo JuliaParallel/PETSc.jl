@@ -36,4 +36,11 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
         return unsafe_string(t_r[])
     end
 
+    function view(pc::PC{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(pc.comm))
+        @chk ccall((:PCView, $libpetsc), PetscErrorCode,
+                    (CPC, CPetscViewer),
+                pc, viewer);
+        return nothing
+    end
+
 end

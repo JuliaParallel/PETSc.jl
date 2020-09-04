@@ -13,5 +13,6 @@ include("vec.jl")
 include("mat.jl")
 include("matshell.jl")
 include("ksp.jl")
+include("pc.jl")
 
 end

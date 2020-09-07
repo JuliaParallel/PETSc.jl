@@ -1,5 +1,0 @@
-julia 0.4
-BaseTestNext
-Compat
-ArrayViews
-MPI

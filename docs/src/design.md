@@ -25,7 +25,7 @@
 
 
 - For convenience, attach finalizers to call `destroy` for single-process ("sequential") objects (`VecSeq`, `MatSeqXXX`, or any others where `comm = MPI.COMM_SELF`). 
-  - We can't do distributed objects (i.e. `VecMPI`), as `destroy` needs to be called collectively on all MPI ranks.
+  - We can't attach finalizers for distributed objects (i.e. `VecMPI`), as `destroy` needs to be called collectively on all MPI ranks.
   - Appears to be safe for users to call `destroy` manually if finalizer already defined 
     * TODO: check this with PETSc devs
   - Unclear how to handle objects that are contained within others, e.g. `PC` from `KSPGetPC`, `KSP` from `SNESGetKSP`, etc.
@@ -49,5 +49,10 @@
 
 
 - For cases where PETSc needs to call Julia functions (`MatShell`, `SNES`), PETSc provides a mechanism to pass through a context pointer. We can use this to pass through a pointer to the object itself via `pointer_from_objref`.
+  * Can we pass `NULL` to vec/matrix args? What does that do?
+  - What should the callback interface look like?
+  - How to handle errors from within callbacks?
 
 
+- TODO: Error handling:
+  - https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Sys/PetscPushErrorHandler.htmls

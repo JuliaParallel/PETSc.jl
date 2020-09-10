@@ -6,12 +6,12 @@ const CSNESType = Cstring
 mutable struct SNES{T}
     ptr::CSNES
     comm::MPI.Comm
+    opts::Options{T}
     fn!
     fn_vec
     update_jac!
     jac_A
     jac_P
-    opts::Options{T}
 end
 
 scalartype(::SNES{T}) where {T} = T
@@ -51,7 +51,7 @@ end
     function SNES{$PetscScalar}(comm::MPI.Comm; kwargs...)
         initialize($PetscScalar)
         opts = Options{$PetscScalar}(kwargs...)
-        snes = SNES{$PetscScalar}(C_NULL, comm, nothing, nothing, opts)
+        snes = SNES{$PetscScalar}(C_NULL, comm, opts, nothing, nothing, nothing, nothing, nothing)
         @chk ccall((:SNESCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CSNES}), comm, snes)
         
         with(snes.opts) do 
@@ -119,7 +119,7 @@ end
         @assert snes.jac_A.ptr == cA
         @assert snes.jac_P.ptr == cP
         x = unsafe_localarray($PetscScalar, cx)
-        snes.update_jac!(x, snes.A, snes.P)
+        snes.update_jac!(x, snes.jac_A, snes.jac_P)
         Base.finalize(x)
         return $PetscInt(0)
     end
@@ -134,7 +134,8 @@ end
                 snes, A, P, jacptr, ctx)
         end
         snes.update_jac! = update_jac!
-
+        snes.jac_A = A
+        snes.jac_P = P
         return nothing
     end
 
@@ -149,9 +150,11 @@ end
     function solve!(x::AbstractVec{$PetscScalar}, snes::SNES{$PetscScalar})
         with(snes.opts) do
             @chk ccall((:SNESSolve, $libpetsc), PetscErrorCode, 
-            (CSNES, CVec, CVec), snes, b, C_NULL)
+            (CSNES, CVec, CVec), snes, C_NULL, x)
         end
         return x
     end
 
 end
+
+solve!(x::AbstractVector{T}, snes::SNES{T}) where {T} = parent(solve!(AbstractVec(x), snes))

@@ -32,7 +32,6 @@ ksp = PETSc.KSP(
     ksp_type = "cg",
     ksp_rtol = 1e-8,
     pc_type = "gamg",
-    # I think these are not being set properly:
     mg_levels_ksp_type = "chebyshev",
     mg_levels_ksp_max_it = 3,
     mg_levels_pc_type = "bjacobi",
@@ -46,9 +45,11 @@ x = PETSc.VecSeq(zeros(m))
 b = PETSc.VecSeq(randn(n))
 PETSc.solve!(x, ksp, b)
 
+#=
 PETSc.destroy(ksp)
 PETSc.destroy(M)
 PETSc.destroy(b)
 PETSc.destroy(x)
 
 PETSc.finalize()
+=#

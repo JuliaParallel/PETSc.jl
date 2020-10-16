@@ -7,6 +7,7 @@
 const CVec = Ptr{Cvoid}
 
 abstract type AbstractVec{T} <: AbstractVector{T} end
+scalartype(::AbstractVec{T}) where {T} = T
 
 # allows us to pass XXVec objects directly into CVec ccall signatures
 Base.cconvert(::Type{CVec}, obj::AbstractVec) = obj.ptr

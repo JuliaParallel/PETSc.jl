@@ -48,8 +48,8 @@ MatShell{T}(obj, m, n) where {T} = MatShell{T}(obj, MPI.COMM_SELF, m, n, m, n)
         ptr = r_ctx[]
         mat = unsafe_pointer_to_objref(ptr)
 
-        x = unsafe_localarray($PetscScalar, cx)
-        y = unsafe_localarray($PetscScalar, cy)
+        x = unsafe_localarray($PetscScalar, cx; write=false)
+        y = unsafe_localarray($PetscScalar, cy; read=false)
 
         _mul!(y,mat,x)
 
@@ -57,5 +57,5 @@ MatShell{T}(obj, m, n) where {T} = MatShell{T}(obj, MPI.COMM_SELF, m, n, m, n)
         Base.finalize(x)
         return $PetscInt(0)
     end
-    
+
 end

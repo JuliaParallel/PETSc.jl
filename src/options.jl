@@ -5,6 +5,11 @@ const CPetscOptions = Ptr{Cvoid}
 abstract type AbstractOptions{T}
 end
 
+"""
+    GlobalOptions{T}()
+
+The PETSc global options database.
+"""
 struct GlobalOptions{T} <: AbstractOptions{T}
 end
 Base.cconvert(::Type{CPetscOptions}, obj::GlobalOptions) = C_NULL
@@ -42,12 +47,12 @@ scalartype(::Options{T}) where {T} = T
     end
     function Base.setindex!(opts::AbstractOptions{$PetscScalar}, val, key)
         @chk ccall((:PetscOptionsSetValue, $libpetsc), PetscErrorCode,
-            (CPetscOptions, Cstring, Cstring), 
+            (CPetscOptions, Cstring, Cstring),
             opts, string('-',key), val == true ? C_NULL : string(val))
     end
 
     function view(opts::AbstractOptions{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(MPI.COMM_SELF))
-        @chk ccall((:PetscOptionsView, $libpetsc), PetscErrorCode, 
+        @chk ccall((:PetscOptionsView, $libpetsc), PetscErrorCode,
                   (CPetscOptions, CPetscViewer),
                   opts, viewer);
         return nothing
@@ -57,7 +62,7 @@ end
 """
     Options{T}(kw => arg, ...)
 
-
+Create a new PETSc options database.
 """
 function Options{T}(ps::Pair...) where {T}
     opts = Options{T}()

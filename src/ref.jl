@@ -7,11 +7,9 @@
     end
 
     function decref(::Type{$PetscScalar}, obj)
-        if !finalized($PetscScalar) 
+        if !finalized($PetscScalar)
             @chk ccall((:PetscObjectDereference, $libpetsc), PetscErrorCode, (Ptr{Cvoid},), obj)
-            if nrefs($PetscScalar, obj) == 0
-                obj.ptr = C_NULL
-            end
+            obj.ptr = C_NULL
         end
         return nothing
     end
@@ -27,14 +25,16 @@ end
 """
     incref(obj)
 
-Increment the reference counter fo `obj`. This usually only needs to be called when accessing objects owned by other objects, e.g. via `KSPGetPC`.
+Increment the reference counter fo `obj`.
+This usually only needs to be called when accessing objects owned by other objects, e.g. via `KSPGetPC`.
 """
 incref(obj) = incref(scalartype(obj), obj)
 
 """
     decref(obj)
 
-Decrement the reference counter for `obj`. We use this instead of `destroy`, as it will only clean up when the reference counter hits zero.
+Decrement the reference counter for `obj`.
+TODO: use this instead of `destroy`, as it will only clean up when the reference counter hits zero.
 """
 decref(obj) = decref(scalartype(obj), obj)
 

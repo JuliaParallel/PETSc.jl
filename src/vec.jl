@@ -54,7 +54,7 @@ Base.parent(v::AbstractVec) = v.array
     end
     function Base.length(v::AbstractVec{$PetscScalar})
         r_sz = Ref{$PetscInt}()
-        @chk ccall((:VecGetSize, $libpetsc), PetscErrorCode, 
+        @chk ccall((:VecGetSize, $libpetsc), PetscErrorCode,
           (CVec, Ptr{$PetscInt}), v, r_sz)
         return r_sz[]
     end
@@ -65,11 +65,11 @@ Base.parent(v::AbstractVec) = v.array
                    v, normtype,r_val)
         return r_val[]
     end
-    
+
     function assemblybegin(V::AbstractVec{$PetscScalar})
         @chk ccall((:VecAssemblyBegin, $libpetsc), PetscErrorCode, (CVec,), V)
         return nothing
-    end    
+    end
     function assemblyend(V::AbstractVec{$PetscScalar})
         @chk ccall((:VecAssemblyEnd, $libpetsc), PetscErrorCode, (CVec,), V)
         return nothing
@@ -84,7 +84,7 @@ Base.parent(v::AbstractVec) = v.array
     end
 
     function view(vec::AbstractVec{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(vec.comm))
-        @chk ccall((:VecView, $libpetsc), PetscErrorCode, 
+        @chk ccall((:VecView, $libpetsc), PetscErrorCode,
                     (CVec, CPetscViewer),
                 vec, viewer);
         return nothing
@@ -93,23 +93,58 @@ Base.parent(v::AbstractVec) = v.array
     function localsize(v::AbstractVec{$PetscScalar})
         return r_sz[]
     end
-    
-    function unsafe_localarray(::Type{$PetscScalar}, cv::CVec)
+
+    function unsafe_localarray(::Type{$PetscScalar}, cv::CVec; read::Bool=true, write::Bool=true)
         r_pv = Ref{Ptr{$PetscScalar}}()
-        @chk ccall((:VecGetArray, $libpetsc), PetscErrorCode,
-            (CVec, Ptr{Ptr{$PetscScalar}}), cv, r_pv)
+        if write
+            if read
+                @chk ccall((:VecGetArray, $libpetsc), PetscErrorCode,
+                    (CVec, Ptr{Ptr{$PetscScalar}}), cv, r_pv)
+            else
+                @chk ccall((:VecGetArrayWrite, $libpetsc), PetscErrorCode,
+                    (CVec, Ptr{Ptr{$PetscScalar}}), cv, r_pv)
+            end
+        else
+            @chk ccall((:VecGetArrayRead, $libpetsc), PetscErrorCode,
+                (CVec, Ptr{Ptr{$PetscScalar}}), cv, r_pv)
+        end
         r_sz = Ref{$PetscInt}()
-        @chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode, 
+        @chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode,
             (CVec, Ptr{$PetscInt}), cv, r_sz)
         v = unsafe_wrap(Array, r_pv[], r_sz[]; own = false)
-        finalizer(_ -> restore(cv, r_pv[]), v)
+
+        if write
+            if read
+                finalizer(v) do v
+                    @chk ccall((:VecRestoreArray, $libpetsc), PetscErrorCode, (CVec, Ptr{Ptr{$PetscScalar}}), cv, Ref(pointer(v)))
+                    return nothing
+                end
+            else
+                finalizer(v) do v
+                    @chk ccall((:VecRestoreArrayWrite, $libpetsc), PetscErrorCode, (CVec, Ptr{Ptr{$PetscScalar}}), cv, Ref(pointer(v)))
+                    return nothing
+                end
+            end
+        else
+            finalizer(v) do v
+                @chk ccall((:VecRestoreArrayRead, $libpetsc), PetscErrorCode, (CVec, Ptr{Ptr{$PetscScalar}}), cv, Ref(pointer(v)))
+                return nothing
+            end
+        end
         return v
     end
-    function restore(cv::CVec, ptr::Ptr{$PetscScalar})
-        @chk ccall((:VecRestoreArray, $libpetsc), PetscErrorCode, (CVec, Ptr{Ptr{$PetscScalar}}), cv, Ref(ptr))
-        return nothing
-    end
 end
+
+"""
+    unsafe_localarray(PetscScalar, ptr:CVec; read=true, write=true)
+
+Return an `Array{PetscScalar}` containing local portion of the PETSc data.
+
+`finalize` should be called on the `Array` before the data can be used.
+
+Use `read=false` if the array is write-only; `write=false` if read-only.
+"""
+unsafe_localarray
 
 function Base.show(io::IO, ::MIME"text/plain", vec::AbstractVec)
     _show(io, vec)
@@ -122,11 +157,11 @@ AbstractVec(X::AbstractVector) = VecSeq(X)
 """
     ownership_range(vec::AbstractVec)
 
-The range of indices owned by this processor, assuming that the vectors are laid out with the first n1 elements on the first processor, next n2 elements on the second, etc. For certain parallel layouts this range may not be well defined. 
+The range of indices owned by this processor, assuming that the vectors are laid out with the first n1 elements on the first processor, next n2 elements on the second, etc. For certain parallel layouts this range may not be well defined.
 
 Note: unlike the C function, the range returned is inclusive (`idx_first:idx_last`)
 
 https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Vec/VecGetOwnershipRange.html
-""" 
+"""
 ownershiprange
 

@@ -11,9 +11,9 @@
   * TODO: GPU support: need separate ones for CUDA as well?
 
 
-- Lazily initialize each library if an object of that parameter is constructed.
+- We lazily initialize each library if an object of that parameter is constructed.
   - Also initialize MPI if not already initialized
-    * TODO: check what thread level is required?
+    * TODO: what MPI thread level is required?
   - Add `atexit` hook to finalize PETSc (this should be okay with MPI `atexit`, due to LIFO)
   - Disable the PETSc signal handler
 

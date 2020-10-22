@@ -34,7 +34,8 @@ incref(obj) = incref(scalartype(obj), obj)
     decref(obj)
 
 Decrement the reference counter for `obj`.
-TODO: use this instead of `destroy`, as it will only clean up when the reference counter hits zero.
+
+In general we don't need to use this, as we can call `destroy` instead.
 """
 decref(obj) = decref(scalartype(obj), obj)
 

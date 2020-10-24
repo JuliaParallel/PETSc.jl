@@ -5,17 +5,29 @@ const CPCType = Cstring
 
 mutable struct PC{T}
     ptr::Ptr{Cvoid}
+    comm::MPI.Comm
 end
 
 Base.cconvert(::Type{CPC}, obj::PC) = obj.ptr
 Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
     convert(Ptr{CPC}, pointer_from_objref(obj))
 
+scalartype(::PC{T}) where {T} = T
+
 @for_libpetsc begin
 
+    function PC{$PetscScalar}(comm::MPI.Comm)
+        pc = PC{$PetscScalar}(C_NULL, comm)
+        @chk ccall((:PCCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CPC}), comm, pc)
+        finalizer(destroy, pc)
+        return pc
+    end
+
     function PC(ksp::KSP{$PetscScalar})
-        pc = PC{$PetscScalar}(C_NULL)
+        pc = PC{$PetscScalar}(C_NULL, ksp.comm)
         @chk ccall((:KSPGetPC, $libpetsc), PetscErrorCode, (CKSP, Ptr{CPC}), ksp, pc)
+        incref(pc) # need to manually increment the reference counter
+        finalizer(destroy, pc)
         return pc
     end
 
@@ -27,6 +39,11 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
 
     function settype!(pc::PC{$PetscScalar}, pctype::String)
         @chk ccall((:PCSetType, $libpetsc), PetscErrorCode, (CPC, Cstring), pc, pctype)
+        return nothing
+    end
+
+    function setpc!(ksp::KSP{$PetscScalar}, pc::PC{$PetscScalar})
+        @chk ccall((:KSPSetPC, $libpetsc), PetscErrorCode, (CKSP, CPC), ksp, pc)
         return nothing
     end
 
@@ -44,3 +61,6 @@ Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
     end
 
 end
+
+
+Base.show(io::IO, pc::PC) = _show(io, pc)

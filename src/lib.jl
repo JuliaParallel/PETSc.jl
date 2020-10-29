@@ -41,7 +41,7 @@ const libtypes = map(libs) do lib
 
     PetscScalar =
         PETSC_SCALAR == PETSC_REAL ? PetscReal :
-        PETSC_SCALAR == PETSC_COMPLEX ? Comlex{PetscReal} :
+        PETSC_SCALAR == PETSC_COMPLEX ? Complex{PetscReal} :
         error("PETSC_SCALAR = $PETSC_SCALAR not supported.")
     
     PetscInt =

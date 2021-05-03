@@ -13,17 +13,45 @@ Base.cconvert(::Type{CDMStag}, obj::DMStag) = obj.ptr
 Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
     convert(Ptr{CDMStag}, pointer_from_objref(obj))
 
-Base.eltype(::DMStag{T}) where {T} = T
+#Base.eltype(::DMStag{T}) where {T} = T
 
 @for_libpetsc begin
 
-    function DMStagCreate1d{$PetscScalar}(comm::MPI.Comm, bndx::DMBoundaryType, M::Int32,dof0::Int32,dof1::Int32,stencilType::DMStagStencilType,stencilWidth::Int32,lx::Vector{Int32})
+    function DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dof0 ,dof1 ,stencilType::DMStagStencilType,stencilWidth ,lx::Vector)
+        
         dm = DMStag{$PetscScalar}(C_NULL, comm)
-        #@chk ccall((:DMStagCreate1d, $libpetsc), PetscErrorCode,
-        #        (MPI.MPI_Comm, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt, $PetscInt, Ptr{CDMStag}),
-        #        comm, bndx, M,dof0,dof1,stencilType,stencilWidth,lx,dm)
+
+        @chk ccall((:DMStagCreate1d, $libpetsc), PetscErrorCode,
+                (MPI.MPI_Comm, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt,  Ptr{$PetscInt}, Ptr{CDMStag}),
+                comm, bndx, M,dof0,dof1,stencilType,stencilWidth,lx, dm )
+        
+        @chk ccall((:DMSetUp, $libpetsc), PetscErrorCode, (Ptr{CDMStag}, ), dm )
+
+       # if comm == MPI.COMM_SELF
+       #     finalizer(destroy, dm)
+       # end
+        
         return dm
     end
+
+
+    function DMStagGetGlobalSizes(dm::DMStag)
+
+        M = Ref{$PetscInt}()
+        N = Ref{$PetscInt}()
+        P = Ref{$PetscInt}()
+
+        @chk ccall((:DMStagGetGlobalSizes, $libpetsc), PetscErrorCode,
+            (CDMStag, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}), 
+            dm, M, N, P )
+
+        return M[], N[], P[]    
+    end
+
+
+
+
+
 
 
 

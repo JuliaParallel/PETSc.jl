@@ -14,6 +14,20 @@ end
 const PETSC_DEFAULT = -2
 
 
+@enum DMBoundaryType begin
+    DM_BOUNDARY_NONE 
+    DM_BOUNDARY_GHOSTED 
+    DM_BOUNDARY_MIRROR 
+    DM_BOUNDARY_PERIODIC 
+    DM_BOUNDARY_TWIST
+end
+
+@enum DMStagStencilType begin
+    DMSTAG_STENCIL_NONE
+    DMSTAG_STENCIL_STAR
+    DMSTAG_STENCIL_BOX
+end
+
 @enum PetscBool PETSC_FALSE PETSC_TRUE
 
 @enum PetscDataType begin

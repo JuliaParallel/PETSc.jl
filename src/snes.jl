@@ -14,6 +14,7 @@ mutable struct SNES{T}
     jac_P
 end
 
+
 scalartype(::SNES{T}) where {T} = T
 
 Base.cconvert(::Type{CSNES}, obj::SNES) = obj.ptr
@@ -21,6 +22,7 @@ Base.unsafe_convert(::Type{Ptr{CSNES}}, obj::SNES) =
     convert(Ptr{CSNES}, pointer_from_objref(obj))
 
 Base.eltype(::SNES{T}) where {T} = T
+
 
 # How to handle Jacobians?
 #  - https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/SNES/SNESComputeJacobianDefault.html
@@ -111,8 +113,6 @@ end
         return nothing
     end
 
-
-
     function (::SNESJac{$PetscScalar})(csnes::CSNES, cx::CVec, cA::CMat, cP::CMat, ctx::Ptr{Cvoid})::$PetscInt
         snes = unsafe_pointer_to_objref(ctx)
         @assert snes.ptr == csnes
@@ -155,6 +155,9 @@ end
         return x
     end
 
+
 end
 
 solve!(x::AbstractVector{T}, snes::SNES{T}) where {T} = parent(solve!(AbstractVec(x), snes))
+
+Base.show(io::IO, snes::SNES) = _show(io, snes)

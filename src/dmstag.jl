@@ -27,14 +27,17 @@ Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
         
         @chk ccall((:DMSetUp, $libpetsc), PetscErrorCode, (Ptr{CDMStag}, ), dm )
 
-       # if comm == MPI.COMM_SELF
-       #     finalizer(destroy, dm)
-       # end
+        if comm == MPI.COMM_SELF
+            finalizer(destroy, dm)
+        end
         
         return dm
     end
 
-
+    """
+        Gets the global size of the DMStag object
+            M,N,P = DMStagGetGlobalSizes(dm::DMStag)
+    """
     function DMStagGetGlobalSizes(dm::DMStag)
 
         M = Ref{$PetscInt}()
@@ -49,12 +52,31 @@ Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
     end
 
 
+    """
+        Destroys the DMStag object
+    """
+    function destroy(dm::DMStag{$PetscScalar})
+        finalized($PetscScalar) ||
+            @chk ccall((:DMDestroy, $libpetsc), PetscErrorCode, (Ptr{CDMStag},), dm)
+        return nothing
+    end
 
+    """
+        Retrieves the Type of the DMStag object
+    """
+    function gettype(dm::DMStag{$PetscScalar})
+        t_r = Ref{CDMStagType}()
+        @chk ccall((:DMGetType, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CDMStagType}), dm, t_r)
+        return unsafe_string(t_r[])
+    end
 
-
-
-
+    function view(dm::DMStag{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(dm.comm))
+        @chk ccall((:DMView, $libpetsc), PetscErrorCode, 
+                    (CDMStag, CPetscViewer),
+                dm, viewer);
+        return nothing
+    end
 
 end
 
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Base.show(io::IO, dm::DMStag) = _show(io, dm)

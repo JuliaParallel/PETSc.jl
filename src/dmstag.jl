@@ -237,6 +237,36 @@ Base.eltype(::DMStag{T}) where {T} = T
 
     end
 
+    """
+        Get number of DOF associated with each stratum of the grid 
+        
+        Usage:
+
+            dofVertex, dofEdge, dofFace, dofElement = DMStagGetDOF(dm::DMStag, dofVertex, dofEdge, dofFace, dofElement; kwargs...)
+
+                dm              -   the DMStag object 
+                dof0 	- the number of points per 0-cell (vertex/node)
+	            dof1 	- the number of points per 1-cell (element in 1D, edge in 2D and 3D)
+	            dof2 	- the number of points per 2-cell (element in 2D, face in 3D)
+	            dof3 	- the number of points per 3-cell (element in 3D) 
+
+    """
+
+    function DMStagGetDOF(dm::DMStag{$PetscScalar})
+
+        dof0 = Ref{$PetscInt}()
+        dof1 = Ref{$PetscInt}()
+        dof2 = Ref{$PetscInt}()
+        dof3 = Ref{$PetscInt}()
+
+        @chk ccall((:DMStagGetDOF, $libpetsc), PetscErrorCode, 
+        (CDMStag, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}), 
+        dm, dof0, dof1, dof2, dof3)
+        
+        return dof0[],dof1[],dof2[],dof3[]
+
+    end
+
 
     """
         Gets the global size of the DMStag object

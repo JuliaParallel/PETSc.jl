@@ -33,16 +33,16 @@ Base.eltype(::DMStag{T}) where {T} = T
                 dofCenter       -   [=1] number of degrees of freedom per element/edge/1-cell
                 stencilType     -   ghost/halo region type: DMSTAG_STENCIL_BOX or DMSTAG_STENCIL_NONE
                 stencilWidth    -   width, in elements, of halo/ghost region
-                lx              -   [Optional] array of local sizes, of length equal to the comm size, summing to M
+                lx              -   [Optional] Vector of local sizes, of length equal to the comm size, summing to M
                 kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
 
     """
-    function DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dofVertex=1,dofCenter=1,stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX,stencilWidth=2, lx::Vector=[]; kwargs...)
-        
+    function DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dofVertex=1,dofCenter=1,stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX,stencilWidth=2, lx=C_NULL; kwargs...)
+
         opts = Options{$PetscScalar}(kwargs...)
 
         dm  = DMStag{$PetscScalar}(C_NULL, comm, 1, opts)   # retrieve options
-
+        
         @chk ccall((:DMStagCreate1d, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt,  Ptr{$PetscInt}, Ptr{CDMStag}),
                 comm, bndx, M,dofVertex,dofCenter,stencilType,stencilWidth,lx, dm )
@@ -51,7 +51,8 @@ Base.eltype(::DMStag{T}) where {T} = T
             setfromoptions!(dm)
         end
 
-        DMSetUp(dm);        
+        DMSetUp(dm);
+
         if comm == MPI.COMM_SELF
             finalizer(destroy, dm)
         end
@@ -61,7 +62,7 @@ Base.eltype(::DMStag{T}) where {T} = T
 
     function DMSetUp(dm::DMStag{$PetscScalar})
 
-        @chk ccall((:DMSetUp, $libpetsc), PetscErrorCode, (Ptr{CDMStag}, ), dm )
+        @chk ccall((:DMSetUp, $libpetsc), PetscErrorCode, (CDMStag, ), dm )
 
         return nothing
     end
@@ -91,16 +92,45 @@ Base.eltype(::DMStag{T}) where {T} = T
         return M[], N[], P[]    
     end
 
+
+
     """
-        Sets coordinates for a DMStag object
+        Sets coordinates for a DMStag object using the Product (1D arrays)
     """
-    function DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin::Float64, xmax::Float64, ymin::Float64, ymax::Float64, zmin::Float64, zmax::Float64)
+    function DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin, xmax, ymin, ymax, zmin, zmax)
         
         @chk ccall((:DMStagSetUniformCoordinatesProduct, $libpetsc), PetscErrorCode,
-                    (Ptr{CDMStag},  $PetscScalar, $PetscScalar, $PetscScalar, 
-                                    $PetscScalar, $PetscScalar, $PetscScalar), 
+                    ( CDMStag,   $PetscScalar, $PetscScalar, $PetscScalar, 
+                                $PetscScalar, $PetscScalar, $PetscScalar), 
                             dm, xmin, xmax, ymin, ymax, zmin, zmax)
 
+        return nothing
+    end
+
+    """
+        Sets uniform coordinates for a 1D DMStag object 
+            DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax)
+    """
+    function DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax)
+        DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin, xmax, 0.0, 0.0, 0.0, 0.0);
+        return nothing
+    end
+
+    """
+        Sets uniform coordinates for a 2D DMStag object 
+            DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax, ymin, ymax)
+    """
+    function DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax, ymin, ymax)
+        DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin, xmax, ymin, ymax, 0.0, 0.0);
+        return nothing
+    end
+
+    """
+    Sets uniform coordinates for a 3D DMStag object 
+        DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax, ymin, ymax, zmin, zmax)
+    """
+    function DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax, ymin, ymax, zmin, zmax)
+        DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin, xmax, ymin, ymax, zmin, zmax);
         return nothing
     end
 
@@ -182,6 +212,13 @@ Base.eltype(::DMStag{T}) where {T} = T
             end
     end
 
+    function  DMStagSetStencilWidth(dm::DMStag, stencilWidth::Int64)
+
+        @chk ccall((:DMStagSetStencilWidth, $libpetsc), PetscErrorCode,
+             (CDMStag,  $PetscInt), dm, stencilWidth)
+
+        return nothing
+    end
 
     """
         returns the # of dimensions of the DMStag object

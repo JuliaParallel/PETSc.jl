@@ -67,7 +67,9 @@ Create a new PETSc options database.
 function Options{T}(ps::Pair...) where {T}
     opts = Options{T}()
     for (k,v) in ps
-        opts[k] = v
+        if  v!=false
+            opts[k] = v
+        end
     end
     return opts
 end

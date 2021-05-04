@@ -35,6 +35,23 @@ Base.eltype(::DMStag{T}) where {T} = T
         return dm
     end
 
+    function DMStagCreate2d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M, N, m, n, dof0, dof1, dof2, stencilType::DMStagStencilType, stencilWidth, lx::Vector, ly::Vector)
+        
+        dm = DMStag{$PetscScalar}(C_NULL, comm, 2)
+
+        @chk ccall((:DMStagCreate2d, $libpetsc), PetscErrorCode,
+                (MPI.MPI_Comm, DMBoundaryType, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt, Ptr{$PetscInt},  Ptr{$PetscInt}, Ptr{CDMStag}),
+                comm, bndx, bndy, M, N, m, n ,dof0 ,dof1 ,dof2 ,stencilType ,stencilWidth ,lx ,ly ,dm )
+        
+        @chk ccall((:DMSetUp, $libpetsc), PetscErrorCode, (Ptr{CDMStag}, ), dm )
+
+        if comm == MPI.COMM_SELF
+            finalizer(destroy, dm)
+        end
+        
+        return dm
+    end
+
     """
         Gets the global size of the DMStag object
             M,N,P = DMStagGetGlobalSizes(dm::DMStag)

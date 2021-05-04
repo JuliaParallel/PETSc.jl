@@ -155,18 +155,86 @@ Base.eltype(::DMStag{T}) where {T} = T
         return dm
     end
 
+    """
+        sets up the data structures inside a DM object 
+        
+        Usage:
+
+            DMSetUp(dm::DMStag)
+
+                dm              -   the DMStag object 
+
+    """
+
     function DMSetUp(dm::DMStag{$PetscScalar})
 
         @chk ccall((:DMSetUp, $libpetsc), PetscErrorCode, (CDMStag, ), dm )
 
         return nothing
     end
+
+    """
+        sets parameters in a DM from the options database 
+        
+        Usage:
+
+            setfromoptions!(dm::DMStag)
+
+                dm              -   the DMStag object 
+
+    """
    
     function setfromoptions!(dm::DMStag{$PetscScalar})
 
         @chk ccall((:DMSetFromOptions, $libpetsc), PetscErrorCode, (CDMStag, ), dm )
 
         return nothing
+    end
+
+
+    
+    """
+        Creates a compatible DMStag with different dof/stratum 
+        
+        Usage:
+
+            dm = DMStagCreateCompatibleDMStag(dm::DMStag, dofVertex, dofEdge, dofFace, dofElement; kwargs...)
+
+                dm              -   the DMStag object 
+                dofVertex       -   [=0] number of degrees of freedom per vertex/point/node/0-cell
+                dofEdge         -   [=0] number of degrees of freedom per edge/1-cell 
+                dofFace         -   [=0] number of degrees of freedom per face/2-cell 
+                dofElement      -   [=0] number of degrees of freedom per element/3-cell 
+                kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
+
+    """
+
+    function DMStagCreateCompatibleDMStag(dm::DMStag{$PetscScalar}, dofVertex=0, dofEdge=0, dofFace=0, dofElement=0; kwargs...)
+
+        comm  = MPI.COMM_SELF
+
+        dim   = DMGetDimension(dm)
+
+        opts  = Options{$PetscScalar}(kwargs...)
+
+        dmnew = DMStag{$PetscScalar}(C_NULL, comm, dim, opts)
+
+        @chk ccall((:DMStagCreateCompatibleDMStag, $libpetsc), PetscErrorCode, 
+        (CDMStag, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{CDMStag}), 
+        dm, dofVertex, dofEdge, dofFace, dofElement, dmnew)
+
+        with(dm.opts) do
+            setfromoptions!(dmnew)
+        end
+
+        DMSetUp(dmnew);
+
+        if comm == MPI.COMM_SELF
+            finalizer(destroy, dmnew)
+        end
+        
+        return dmnew
+
     end
 
 

@@ -37,6 +37,8 @@ dm = PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY
 
 dm = PETSc.DMStagCreate3d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,20,20,20,1,1,1,2,2,2,2,PETSc.DMSTAG_STENCIL_BOX,1,[],[],[])
 
+dmnew = PETSc.DMStagCreateCompatibleDMStag(dm,1,1,2,2)
+
 # Set coordinates 
 PETSc.DMStagSetUniformCoordinates(dm, 0, 10)
 

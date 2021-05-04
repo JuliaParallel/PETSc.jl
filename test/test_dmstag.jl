@@ -28,7 +28,7 @@ dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMST
 @test PETSc.DMStagGetCorners(dm) == (0,20,1)
 
 # DOF
-@test PETSc.DMStagGetDOF(dm) == (2,2,0,0)
+@test PETSc.DMStagGetDOF(dm) == (2,2)
 
 # Destroy
 PETSc.destroy(dm)

@@ -262,8 +262,14 @@ Base.eltype(::DMStag{T}) where {T} = T
         @chk ccall((:DMStagGetDOF, $libpetsc), PetscErrorCode, 
         (CDMStag, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}), 
         dm, dof0, dof1, dof2, dof3)
-        
-        return dof0[],dof1[],dof2[],dof3[]
+
+        if dm.dim==1
+            return  dof0[],dof1[]   
+        elseif dm.dim==2
+            return dof0[],dof1[],dof2[]
+        elseif dm.dim==3
+            return dof0[],dof1[],dof2[],dof3[]
+        end
 
     end
 

@@ -26,9 +26,10 @@ dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMST
 # Destroy
 PETSc.destroy(dm)
 
-# Create new struc
-dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_PERIODIC,200,2,2,PETSc.DMSTAG_STENCIL_BOX,2,[])
+# Create new struct and pass keyword arguments
+dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_PERIODIC,200,2,2; stag_grid_x=199);
 
+#PETSc.DMStagSetUniformCoordinatesProduct(dm, 0.0, 10.0, 0., 0., 0., 0.)
 
 #end
 

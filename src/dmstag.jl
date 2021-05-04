@@ -6,6 +6,7 @@ mutable struct DMStag{T} <: Factorization{T}
     ptr::CDMStag
     comm::MPI.Comm
     dim::Int64
+    opts::Options{T}
 end
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
@@ -18,16 +19,39 @@ Base.eltype(::DMStag{T}) where {T} = T
 
 @for_libpetsc begin
 
-    function DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dof0 ,dof1 ,stencilType::DMStagStencilType,stencilWidth ,lx::Vector)
+    """
+        Creates a 1D DMStag object
         
-        dm = DMStag{$PetscScalar}(C_NULL, comm, 1)
+        Usage:
+
+            dm = DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dofVertex, dofCenter, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth=1, lx::Vector=[]; kwargs...)
+
+                comm            -   MPI communicator
+                bndx            -   boundary type: DM_BOUNDARY_NONE, DM_BOUNDARY_PERIODIC, or DM_BOUNDARY_GHOSTED. 
+                M               -   global number of grid points
+                dofVertex       -   [=1] number of degrees of freedom per vertex/point/node/0-cell
+                dofCenter       -   [=1] number of degrees of freedom per element/edge/1-cell
+                stencilType     -   ghost/halo region type: DMSTAG_STENCIL_BOX or DMSTAG_STENCIL_NONE
+                stencilWidth    -   width, in elements, of halo/ghost region
+                lx              -   [Optional] array of local sizes, of length equal to the comm size, summing to M
+                kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
+
+    """
+    function DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dofVertex=1,dofCenter=1,stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX,stencilWidth=2, lx::Vector=[]; kwargs...)
+        
+        opts = Options{$PetscScalar}(kwargs...)
+
+        dm  = DMStag{$PetscScalar}(C_NULL, comm, 1, opts)   # retrieve options
 
         @chk ccall((:DMStagCreate1d, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt,  Ptr{$PetscInt}, Ptr{CDMStag}),
-                comm, bndx, M,dof0,dof1,stencilType,stencilWidth,lx, dm )
-        
-        @chk ccall((:DMSetUp, $libpetsc), PetscErrorCode, (Ptr{CDMStag}, ), dm )
+                comm, bndx, M,dofVertex,dofCenter,stencilType,stencilWidth,lx, dm )
 
+        with(dm.opts) do
+            setfromoptions!(dm)
+        end
+
+        DMSetUp(dm);        
         if comm == MPI.COMM_SELF
             finalizer(destroy, dm)
         end
@@ -35,11 +59,26 @@ Base.eltype(::DMStag{T}) where {T} = T
         return dm
     end
 
+    function DMSetUp(dm::DMStag{$PetscScalar})
+
+        @chk ccall((:DMSetUp, $libpetsc), PetscErrorCode, (Ptr{CDMStag}, ), dm )
+
+        return nothing
+    end
+   
+    function setfromoptions!(dm::DMStag{$PetscScalar})
+
+        @chk ccall((:DMSetFromOptions, $libpetsc), PetscErrorCode, (CDMStag, ), dm )
+
+        return nothing
+    end
+
+
     """
         Gets the global size of the DMStag object
             M,N,P = DMStagGetGlobalSizes(dm::DMStag)
     """
-    function DMStagGetGlobalSizes(dm::DMStag)
+    function DMStagGetGlobalSizes(dm::DMStag{$PetscScalar})
 
         M = Ref{$PetscInt}()
         N = Ref{$PetscInt}()
@@ -52,6 +91,18 @@ Base.eltype(::DMStag{T}) where {T} = T
         return M[], N[], P[]    
     end
 
+    """
+        Sets coordinates for a DMStag object
+    """
+    function DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin::Float64, xmax::Float64, ymin::Float64, ymax::Float64, zmin::Float64, zmax::Float64)
+        
+        @chk ccall((:DMStagSetUniformCoordinatesProduct, $libpetsc), PetscErrorCode,
+                    (Ptr{CDMStag},  $PetscScalar, $PetscScalar, $PetscScalar, 
+                                    $PetscScalar, $PetscScalar, $PetscScalar), 
+                            dm, xmin, xmax, ymin, ymax, zmin, zmax)
+
+        return nothing
+    end
 
     """
         Destroys the DMStag object

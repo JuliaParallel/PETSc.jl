@@ -66,7 +66,7 @@ Base.eltype(::DMStag{T}) where {T} = T
         
         Usage:
 
-            dm = DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M, N, m, n, dofVertex, dofEdge, dofElement, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth, lx, ly; kwargs...)
+            dm = DMStagCreate2d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M, N, m, n, dofVertex, dofEdge, dofElement, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth, lx, ly; kwargs...)
 
                 comm            -   MPI communicator
                 bndx,bndy       -   boundary type: DM_BOUNDARY_NONE, DM_BOUNDARY_PERIODIC, or DM_BOUNDARY_GHOSTED. 
@@ -93,6 +93,54 @@ Base.eltype(::DMStag{T}) where {T} = T
         @chk ccall((:DMStagCreate2d, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, DMBoundaryType, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt, Ptr{$PetscInt},  Ptr{$PetscInt}, Ptr{CDMStag}),
                 comm, bndx, bndy, M, N, m, n ,dofVertex ,dofEdge ,dofElement ,stencilType ,stencilWidth ,lx ,ly ,dm )
+        
+        with(dm.opts) do
+            setfromoptions!(dm)
+        end
+
+        DMSetUp(dm);
+
+        if comm == MPI.COMM_SELF
+            finalizer(destroy, dm)
+        end
+        
+        return dm
+    end
+
+    """
+        Creates a 3D DMStag object
+        
+        Usage:
+
+            dm = DMStagCreate3d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M, N, P, m, n, p, dofVertex, dofEdge, dofFace, dofElement, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth, lx, ly, lz; kwargs...)
+
+                comm            -   MPI communicator
+                bndx,bndy,bndz  -   boundary type: DM_BOUNDARY_NONE, DM_BOUNDARY_PERIODIC, or DM_BOUNDARY_GHOSTED. 
+                M,N,P           -   global number of grid points
+                m,n,p           -   number of ranks in the x,y directions (may be PETSC_DECIDE TO do) 
+                dofVertex       -   [=1] number of degrees of freedom per vertex/point/node/0-cell
+                dofEdge         -   [=1] number of degrees of freedom per edge/1-cell 
+                dofFace         -   [=1] number of degrees of freedom per face/2-cell 
+                dofElement      -   [=1] number of degrees of freedom per element/3-cell 
+                stencilType     -   ghost/halo region type: DMSTAG_STENCIL_BOX or DMSTAG_STENCIL_NONE
+                stencilWidth    -   width, in elements, of halo/ghost region
+                lx,ly,lz        -   [Optional] arrays of local x,y element counts, of length equal to m,n, summing to M,N 
+                kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
+
+    """
+
+    function DMStagCreate3d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M, N, P, m=C_NULL, n=C_NULL, p=C_NULL, dofVertex=1, dofEdge=1, dofFace=1, dofElement=1, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth=2, lx=C_NULL, ly=C_NULL, lz=C_NULL; kwargs...)
+        
+        if isempty(lx); lx = C_NULL; end
+        if isempty(ly); ly = C_NULL; end
+        if isempty(lz); lz = C_NULL; end
+        opts = Options{$PetscScalar}(kwargs...)
+        
+        dm = DMStag{$PetscScalar}(C_NULL, comm, 3, opts)
+
+        @chk ccall((:DMStagCreate3d, $libpetsc), PetscErrorCode,
+                (MPI.MPI_Comm, DMBoundaryType, DMBoundaryType, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt, Ptr{$PetscInt},  Ptr{$PetscInt},  Ptr{$PetscInt}, Ptr{CDMStag}),
+                comm, bndx, bndy, bndz, M, N, P, m, n ,p ,dofVertex ,dofEdge ,dofFace ,dofElement ,stencilType ,stencilWidth ,lx ,ly ,lz ,dm )
         
         with(dm.opts) do
             setfromoptions!(dm)

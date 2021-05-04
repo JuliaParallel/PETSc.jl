@@ -42,7 +42,7 @@ end
 ```
     Wrapper which makes it easier to compute the jacobian using automatic differntiation
 ```
-function  ForwardDiff_routine(x)
+function  ForwardDiff_res(x)
 
     f   = zero(x)               # vector of zeros, of same type as e
     FormResidual!(f,x);
@@ -51,36 +51,16 @@ function  ForwardDiff_routine(x)
 end
 
 ```
-    This copies a julia sparse matrix to PETSc MatSeqAIJ format
-```
-function Mat_JuliaToPETSc!(J::PETSc.MatSeqAIJ, J_julia::SparseMatrixCSC)
-
-    for i = 1:size(J_julia,1)
-        col = J_julia[i,:];
-        row = ones(Int32,length(col.nzind))*i;
-        for j=1:length(col.nzind)
-            J[i, col.nzind[j]] = col.nzval[j];
-        end
-    end
-    PETSc.assemble(J);  # finalize assembly
-
-end
-
-```
     Computes the jacobian, given solution vector x
 ```
 function FormJacobian!(x, args...)
 
-    J        =   args[1];        # preconditioner = args[2], in case we want it to be different from J
+    J        =  args[1];        # preconditioner = args[2], in case we want it to be different from J
 
     # Use AD to compute jacobian; by transferring x into sparse, the output will be sparse
-    J_julia  =   ForwardDiff.jacobian(ForwardDiff_routine,sparse(x));
+    J_julia  =  ForwardDiff.jacobian(ForwardDiff_res,sparse(x));
 
-    if typeof(J) <: PETSc.AbstractMat
-        Mat_JuliaToPETSc!(J, J_julia);  # transfer julia sparse matrix 2 petsc
-    else
-        J .= J_julia;
-    end
+    J       .=  J_julia;   # copy to petsc format
 end
 
 

@@ -14,7 +14,7 @@ Base.cconvert(::Type{CDMStag}, obj::DMStag) = obj.ptr
 Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
     convert(Ptr{CDMStag}, pointer_from_objref(obj))
 
-#Base.eltype(::DMStag{T}) where {T} = T
+Base.eltype(::DMStag{T}) where {T} = T
 
 @for_libpetsc begin
 
@@ -81,7 +81,6 @@ Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
     """ 
         Gets the corners of the DMStag grid
             x,m,nExtrax = DMStagGetCorners(dm:DMStag)   in 1D
-
     """
     function  DMStagGetCorners(dm::DMStag)
 
@@ -109,22 +108,40 @@ Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
                 return x[], y[], z[], m[],n[],p[], nExtrax[],nExtray[],nExtraz[]    
             end
     end
-   
+    
     """
-        returns the dimension of the DMStag object
+        returns the types of the boundary of the DMStag object in x/y/z direction 
+            Bx = DMStagGetBoundaryTypes(dm::DMStag) in 1D
+    """
+    function  DMStagGetBoundaryTypes(dm::DMStag)
+
+        Bx = Ref{$DMBoundaryType}()
+        By = Ref{$DMBoundaryType}()
+        Bz = Ref{$DMBoundaryType}()
+      
+        @chk ccall((:DMStagGetBoundaryTypes, $libpetsc), PetscErrorCode,
+            (CDMStag,   Ptr{$DMBoundaryType}, Ptr{$DMBoundaryType}, Ptr{$DMBoundaryType}), dm, Bx,By,Bz)
+
+            if dm.dim==1
+                return Bx[]    
+            elseif dm.dim==2
+                return Bx[], By[]
+            elseif dm.dim==3
+                return Bx[], By[], Bz[]
+            end
+    end
+
+
+    """
+        returns the # of dimensions of the DMStag object
     """
     function DMGetDimension(dm::DMStag)
         dim = Ref{$PetscInt}()
 
-        @chk ccall((:DMStagGetCorners, $libpetsc), PetscErrorCode,
-                    (CDMStag,Ptr{$PetscInt}), dm, dim )
+        @chk ccall((:DMGetDimension, $libpetsc), PetscErrorCode, (CDMStag,Ptr{$PetscInt}), dm, dim )
 
         return dim[]
     end
-
-
-   # DMStagGetCorners(DM dm,PetscInt *x,PetscInt *y,PetscInt *z,PetscInt *m,PetscInt *n,PetscInt *p,PetscInt *nExtrax,PetscInt *nExtray,PetscInt *nExtraz)
-
 
 end
 

@@ -17,11 +17,17 @@ dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMST
 # Test gettype
 @test PETSc.gettype(dm) == "stag"               
 
+# Boundary
+@test PETSc.DMStagGetBoundaryTypes(dm)==PETSc.DM_BOUNDARY_NONE
+
+# Corners
+@test PETSc.DMStagGetCorners(dm) == (0,0,0)
+
 # Destroy
-#PETSc.destroy(dm)
+PETSc.destroy(dm)
 
 # Create new struc
-#dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,200,2,2,PETSc.DMSTAG_STENCIL_BOX,2,[])
+dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_PERIODIC,200,2,2,PETSc.DMSTAG_STENCIL_BOX,2,[])
 
 
 #end

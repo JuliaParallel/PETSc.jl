@@ -39,6 +39,7 @@ Base.eltype(::DMStag{T}) where {T} = T
     """
     function DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dofVertex=1,dofCenter=1,stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX,stencilWidth=2, lx=C_NULL; kwargs...)
 
+        if isempty(lx); lx = C_NULL; end
         opts = Options{$PetscScalar}(kwargs...)
 
         dm  = DMStag{$PetscScalar}(C_NULL, comm, 1, opts)   # retrieve options
@@ -60,15 +61,44 @@ Base.eltype(::DMStag{T}) where {T} = T
         return dm
     end
 
-    function DMStagCreate2d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M, N, m, n, dof0, dof1, dof2, stencilType::DMStagStencilType, stencilWidth, lx::Vector, ly::Vector)
+    """
+        Creates a 2D DMStag object
         
-        dm = DMStag{$PetscScalar}(C_NULL, comm, 2)
+        Usage:
+
+            dm = DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M, N, m, n, dofVertex, dofEdge, dofElement, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth, lx, ly; kwargs...)
+
+                comm            -   MPI communicator
+                bndx,bndy       -   boundary type: DM_BOUNDARY_NONE, DM_BOUNDARY_PERIODIC, or DM_BOUNDARY_GHOSTED. 
+                M,N             -   global number of grid points
+                m,n             -   number of ranks in the x,y directions (may be PETSC_DECIDE TO do) 
+                dofVertex       -   [=1] number of degrees of freedom per vertex/point/node/0-cell
+                dofEdge         -   [=1] number of degrees of freedom per edge/1-cell 
+                dofElement      -   [=1] number of degrees of freedom per element/2-cell 
+                stencilType     -   ghost/halo region type: DMSTAG_STENCIL_BOX or DMSTAG_STENCIL_NONE
+                stencilWidth    -   width, in elements, of halo/ghost region
+                lx,ly           -   [Optional] arrays of local x,y element counts, of length equal to m,n, summing to M,N 
+                kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
+
+    """
+
+    function DMStagCreate2d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M, N, m=C_NULL, n=C_NULL, dofVertex=1, dofEdge=1, dofElement=1, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth=2, lx=C_NULL, ly=C_NULL; kwargs...)
+        
+        if isempty(lx); lx = C_NULL; end
+        if isempty(ly); ly = C_NULL; end
+        opts = Options{$PetscScalar}(kwargs...)
+        
+        dm = DMStag{$PetscScalar}(C_NULL, comm, 2, opts)
 
         @chk ccall((:DMStagCreate2d, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, DMBoundaryType, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt, Ptr{$PetscInt},  Ptr{$PetscInt}, Ptr{CDMStag}),
-                comm, bndx, bndy, M, N, m, n ,dof0 ,dof1 ,dof2 ,stencilType ,stencilWidth ,lx ,ly ,dm )
+                comm, bndx, bndy, M, N, m, n ,dofVertex ,dofEdge ,dofElement ,stencilType ,stencilWidth ,lx ,ly ,dm )
         
-        @chk ccall((:DMSetUp, $libpetsc), PetscErrorCode, (Ptr{CDMStag}, ), dm )
+        with(dm.opts) do
+            setfromoptions!(dm)
+        end
+
+        DMSetUp(dm);
 
         if comm == MPI.COMM_SELF
             finalizer(destroy, dm)

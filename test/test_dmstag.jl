@@ -18,10 +18,10 @@ dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMST
 @test PETSc.gettype(dm) == "stag"               
 
 # Destroy
-PETSc.destroy(dm)
+#PETSc.destroy(dm)
 
-# Destroy
-dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,200,2,2,PETSc.DMSTAG_STENCIL_BOX,2,[])
+# Create new struc
+#dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,200,2,2,PETSc.DMSTAG_STENCIL_BOX,2,[])
 
 
 #end

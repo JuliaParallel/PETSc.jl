@@ -5,6 +5,7 @@ const CDMStagType = Cstring
 mutable struct DMStag{T} <: Factorization{T}
     ptr::CDMStag
     comm::MPI.Comm
+    dim::Int64
 end
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
@@ -19,7 +20,7 @@ Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
 
     function DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dof0 ,dof1 ,stencilType::DMStagStencilType,stencilWidth ,lx::Vector)
         
-        dm = DMStag{$PetscScalar}(C_NULL, comm)
+        dm = DMStag{$PetscScalar}(C_NULL, comm, 1)
 
         @chk ccall((:DMStagCreate1d, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt,  Ptr{$PetscInt}, Ptr{CDMStag}),
@@ -76,6 +77,54 @@ Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
                 dm, viewer);
         return nothing
     end
+
+    """ 
+        Gets the corners of the DMStag grid
+            x,m,nExtrax = DMStagGetCorners(dm:DMStag)   in 1D
+
+    """
+    function  DMStagGetCorners(dm::DMStag)
+
+        x = Ref{$PetscInt}()
+        y = Ref{$PetscInt}()
+        z = Ref{$PetscInt}()
+        m = Ref{$PetscInt}()
+        n = Ref{$PetscInt}()
+        p = Ref{$PetscInt}()
+        nExtrax = Ref{$PetscInt}()
+        nExtray = Ref{$PetscInt}()
+        nExtraz = Ref{$PetscInt}()
+        
+        @chk ccall((:DMStagGetCorners, $libpetsc), PetscErrorCode,
+            (CDMStag,   Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt},
+                        Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt},
+                        Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}), 
+            dm, x,y,z, m,n,p, nExtrax,nExtray,nExtraz )
+
+            if dm.dim==1
+                return x[], m[], nExtrax[]    
+            elseif dm.dim==2
+                return x[], y[], m[],n[], nExtrax[],nExtray[]    
+            elseif dm.dim==3
+                return x[], y[], z[], m[],n[],p[], nExtrax[],nExtray[],nExtraz[]    
+            end
+    end
+   
+    """
+        returns the dimension of the DMStag object
+    """
+    function DMGetDimension(dm::DMStag)
+        dim = Ref{$PetscInt}()
+
+        @chk ccall((:DMStagGetCorners, $libpetsc), PetscErrorCode,
+                    (CDMStag,Ptr{$PetscInt}), dm, dim )
+
+        return dim[]
+    end
+
+
+   # DMStagGetCorners(DM dm,PetscInt *x,PetscInt *y,PetscInt *z,PetscInt *m,PetscInt *n,PetscInt *p,PetscInt *nExtrax,PetscInt *nExtray,PetscInt *nExtraz)
+
 
 end
 

@@ -16,7 +16,7 @@ M = PETSc.MatSeqAIJ(S)
 w = M*x
 @test w ≈ S*x
 
-ksp = PETSc.KSP(M; ksp_rtol=1e-8, pc_type="jacobi", ksp_monitor=true)
+ksp = PETSc.KSP(M; ksp_rtol=1e-8, pc_type="jacobi", ksp_monitor=false)
 #PETSc.settolerances!(ksp; rtol=1e-8)
 
 @test PETSc.gettype(ksp) == "gmres" # default

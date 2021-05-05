@@ -35,7 +35,6 @@ Base.eltype(::DMStag{T}) where {T} = T
                 stencilWidth    -   width, in elements, of halo/ghost region
                 lx              -   [Optional] Vector of local sizes, of length equal to the comm size, summing to M
                 kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
-
     """
     function DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dofVertex=1,dofCenter=1,stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX,stencilWidth=2, lx=C_NULL; kwargs...)
 
@@ -79,9 +78,7 @@ Base.eltype(::DMStag{T}) where {T} = T
                 stencilWidth    -   width, in elements, of halo/ghost region
                 lx,ly           -   [Optional] arrays of local x,y element counts, of length equal to m,n, summing to M,N 
                 kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
-
     """
-
     function DMStagCreate2d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M, N, m=C_NULL, n=C_NULL, dofVertex=1, dofEdge=1, dofElement=1, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth=2, lx=C_NULL, ly=C_NULL; kwargs...)
         
         if isempty(lx); lx = C_NULL; end
@@ -126,9 +123,7 @@ Base.eltype(::DMStag{T}) where {T} = T
                 stencilWidth    -   width, in elements, of halo/ghost region
                 lx,ly,lz        -   [Optional] arrays of local x,y element counts, of length equal to m,n, summing to M,N 
                 kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
-
     """
-
     function DMStagCreate3d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M, N, P, m=C_NULL, n=C_NULL, p=C_NULL, dofVertex=1, dofEdge=1, dofFace=1, dofElement=1, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth=2, lx=C_NULL, ly=C_NULL, lz=C_NULL; kwargs...)
         
         if isempty(lx); lx = C_NULL; end
@@ -163,9 +158,7 @@ Base.eltype(::DMStag{T}) where {T} = T
             DMSetUp(dm::DMStag)
 
                 dm              -   the DMStag object 
-
     """
-
     function DMSetUp(dm::DMStag{$PetscScalar})
 
         @chk ccall((:DMSetUp, $libpetsc), PetscErrorCode, (CDMStag, ), dm )
@@ -181,9 +174,7 @@ Base.eltype(::DMStag{T}) where {T} = T
             setfromoptions!(dm::DMStag)
 
                 dm              -   the DMStag object 
-
     """
-   
     function setfromoptions!(dm::DMStag{$PetscScalar})
 
         @chk ccall((:DMSetFromOptions, $libpetsc), PetscErrorCode, (CDMStag, ), dm )
@@ -206,9 +197,7 @@ Base.eltype(::DMStag{T}) where {T} = T
                 dofFace         -   [=0] number of degrees of freedom per face/2-cell 
                 dofElement      -   [=0] number of degrees of freedom per element/3-cell 
                 kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
-
     """
-
     function DMStagCreateCompatibleDMStag(dm::DMStag{$PetscScalar}, dofVertex=0, dofEdge=0, dofFace=0, dofElement=0; kwargs...)
 
         comm  = MPI.COMM_SELF
@@ -251,7 +240,6 @@ Base.eltype(::DMStag{T}) where {T} = T
 	            dof3 	- the number of points per 3-cell (element in 3D) 
 
     """
-
     function DMStagGetDOF(dm::DMStag{$PetscScalar})
 
         dof0 = Ref{$PetscInt}()

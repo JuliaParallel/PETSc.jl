@@ -1,7 +1,6 @@
 # Attempt at include dmstag functions
 const CDMStag = Ptr{Cvoid}
 const CDMStagType = Cstring
-#const CDMStagStencil = Ptr{Cvoid}
 
 mutable struct DMStag{T} <: Factorization{T}
     ptr::CDMStag
@@ -10,14 +9,15 @@ mutable struct DMStag{T} <: Factorization{T}
     opts::Options{T}
 end
 
-struct DMSTAGSTENCIL
+mutable struct DMSTAGSTENCIL
     loc::DMStagStencilLocation
     i::Int64
     j::Int64
     k::Int64
     c::Int64
 end
-struct DMSTAGSTENCIL_C
+
+mutable struct DMSTAGSTENCIL_C
     loc::DMStagStencilLocation
     i::Cint
     j::Cint
@@ -409,20 +409,6 @@ Base.eltype(::DMStag{T}) where {T} = T
         return v
     end
 
-    
-    function DMProductGetDM(dm::DMStag, slot)
-     
-        opts = Options{$PetscScalar}()
-        subDM  = DMStag{$PetscScalar}(C_NULL, dm.comm, 1, opts)   # retrieve options
-
-
-        ccall((:DMProductGetDM, $libpetsc), PetscErrorCode, (CDMStag, $PetscInt, Ptr{CDMStag}), dm, slot, subDM)
-
-        return subDM
-
-    end
-
-
     """
     This extracts a local vector from the DMStag object
             NOTE: for now this is initialized sequentially; MPI should be added
@@ -464,15 +450,12 @@ Base.eltype(::DMStag{T}) where {T} = T
         #  NOTE: in doing this, we assume here that startGhost=0 in all dimensions.
         dim_vec             =   [entriesPerElement; collect(nGhost[2])];  
 
-        @show dim_vec
-
-        # julia and 
-        #X                   =   unsafe_wrap(Array, pointer(v.array),Tuple(dim_vec), own=false)
+        # Wrap julia vector to new vector
         X                   =   unsafe_wrap(Array, pointer(v.array),prod(dim_vec), own=false)
         
         # reshape to correct format
         X  = reshape(v.array, Tuple(dim_vec))
-        X1 = PermutedDimsArray(X, Tuple([2:dim+1;1]));
+        X1 = PermutedDimsArray(X, Tuple([2:dim+1;1]));   # permute to take care of different array ordering in C/Julia
        
         return X1
     end
@@ -642,8 +625,8 @@ Base.eltype(::DMStag{T}) where {T} = T
             error("The length of the pos and val vectors shuld be the same!")
         end
         @chk ccall((:DMStagVecSetValuesStencil, $libpetsc), PetscErrorCode,
-                    (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}, InsertMode), 
-                        dm, cv, n, pos, val, insertMode)
+             (CDMStag, CVec, $PetscInt, DMStagStencil_c, $PetscScalar, InsertMode), 
+             dm, cv, n, pos, val, insertMode)
 
         return nothing
     end

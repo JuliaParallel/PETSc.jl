@@ -57,6 +57,9 @@ PETSc.DMStagSetUniformCoordinates(dm, 0, 10)
 vec_test_global     = PETSc.DMCreateGlobalVector(dm)
 vec_test            = PETSc.DMCreateLocalVector(dm)
 
+#PETSc.DMStagStencil{$PetscScalar}(C_NULL, PETSc.DMSTAG_LEFT,0,0,0,0)
+pos = PETSc.DMStagStencil(C_NULL, PETSc.DMSTAG_LEFT,0,0,0,0)
+#PETSc.DMStagVecSetValuesStencil(dm, vec_test_global.ptr, 1, pos.ptr, 12, PETSc.INSERT_VALUES)
 #X = PETSc.DMStagVecGetArray(dm,vec_test.ptr)
 
 # Simply extract an array from the local vector

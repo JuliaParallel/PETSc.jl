@@ -1,12 +1,31 @@
 # Attempt at include dmstag functions
 const CDMStag = Ptr{Cvoid}
 const CDMStagType = Cstring
+const CDMStagStencil = Ptr{Cvoid}
 
 mutable struct DMStag{T} <: Factorization{T}
     ptr::CDMStag
     comm::MPI.Comm
     dim::Int64
     opts::Options{T}
+end
+
+mutable struct DMStagStencil
+    ptr::CDMStagStencil
+    loc::DMStagStencilLocation
+    i::Int64
+    j::Int64
+    k::Int64
+    c::Int64
+end
+
+mutable struct DMStagStencil_c
+    ptr::CDMStagStencil
+    loc::DMStagStencilLocation
+    i::Cint
+    j::Cint
+    k::Cint
+    c::Cint
 end
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
@@ -16,6 +35,25 @@ Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
     convert(Ptr{CDMStag}, pointer_from_objref(obj))
 
 Base.eltype(::DMStag{T}) where {T} = T
+
+# allows us to pass XXMat objects directly into CMat ccall signatures
+Base.cconvert(::Type{CDMStagStencil}, obj::DMStagStencil) = obj.ptr
+# allows us to pass XXMat objects directly into Ptr{CMat} ccall signatures
+Base.unsafe_convert(::Type{Ptr{CDMStagStencil}}, obj::DMStagStencil) =
+    convert(Ptr{DMStagStencil}, pointer_from_objref(obj))
+
+
+Base.cconvert(::Type{DMStagStencil_c}, v::DMStagStencil) = 
+(v.i, 
+v.j,
+v.k,
+v.c);
+
+Base.unsafe_convert(::Type{DMStagStencil_c}, v::Tuple) = 
+DMStagStencil_c( v[1], 
+v[2], 
+v[3], 
+v[4]);
 
 @for_libpetsc begin
 
@@ -587,6 +625,15 @@ Base.eltype(::DMStag{T}) where {T} = T
 
         @chk ccall((:DMStagSetStencilWidth, $libpetsc), PetscErrorCode,
              (CDMStag,  $PetscInt), dm, stencilWidth)
+
+        return nothing
+    end
+
+    function  DMStagVecSetValuesStencil(dm::DMStag, cv::CVec, n, pos::CDMStagStencil, val, insertMode::InsertMode)
+
+        @chk ccall((:DMStagVecSetValuesStencil, $libpetsc), PetscErrorCode,
+             (CDMStag, CVec, $PetscInt, CDMStagStencil, $PetscScalar, InsertMode), 
+             dm, cv, n, pos, val, insertMode)
 
         return nothing
     end

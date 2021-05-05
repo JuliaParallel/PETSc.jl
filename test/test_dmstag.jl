@@ -58,8 +58,8 @@ vec_test_global     = PETSc.DMCreateGlobalVector(dm)
 vec_test            = PETSc.DMCreateLocalVector(dm)
 vec_test_2D         = PETSc.DMCreateLocalVector(dm_2D)
 
-pos = PETSc.DMStagStencil(C_NULL, PETSc.DMSTAG_LEFT,0,0,0,0)
-#PETSc.DMStagVecSetValuesStencil(dm, vec_test_global.ptr, 1, pos.ptr, 12, PETSc.INSERT_VALUES)
+pos = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,0,0,0,0)
+PETSc.DMStagVecSetValuesStencil(dm, vec_test_global.ptr, 1, pos, 12, PETSc.INSERT_VALUES)
 
 # Simply extract an array from the local vector
 #x = PETSc.unsafe_localarray(Float64, vec_test.ptr; read=true, write=false)

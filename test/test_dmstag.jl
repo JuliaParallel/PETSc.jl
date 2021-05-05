@@ -34,10 +34,10 @@ dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMST
 PETSc.destroy(dm)
 
 # Create new struct and pass keyword arguments
-dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,200,1,0; stag_grid_x=100);
+dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,200,2,1; stag_grid_x=100);
 @test PETSc.DMStagGetGlobalSizes(dm) == 100
 
-dm_2D = PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,20,21,1,1,2,2,2,PETSc.DMSTAG_STENCIL_BOX,2,[],[])
+dm_2D = PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,20,21,1,1,1,1,1,PETSc.DMSTAG_STENCIL_BOX,2)
 @test PETSc.DMStagGetGlobalSizes(dm_2D) == (20, 21)
 
 dm_3D = PETSc.DMStagCreate3d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,20,21,22,1,1,1,2,2,2,2,PETSc.DMSTAG_STENCIL_BOX,1,[],[],[])
@@ -50,17 +50,16 @@ dmnew = PETSc.DMStagCreateCompatibleDMStag(dm_3D,1,1,2,2)
 PETSc.DMStagSetUniformCoordinates(dm, 0, 10)
 
 # retrieve coordinate and value slots
-@test PETSc.DMStagGetProductCoordinateLocationSlot(dm, PETSc.DMSTAG_RIGHT) == 1
-@test PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_RIGHT, 0) ==1
+#@test PETSc.DMStagGetProductCoordinateLocationSlot(dm, PETSc.DMSTAG_RIGHT) == 1
+#@test PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_RIGHT, 0) ==1
 
 # Create a global and local Vec from the DMStag
 vec_test_global     = PETSc.DMCreateGlobalVector(dm)
 vec_test            = PETSc.DMCreateLocalVector(dm)
+vec_test_2D         = PETSc.DMCreateLocalVector(dm_2D)
 
-#PETSc.DMStagStencil{$PetscScalar}(C_NULL, PETSc.DMSTAG_LEFT,0,0,0,0)
 pos = PETSc.DMStagStencil(C_NULL, PETSc.DMSTAG_LEFT,0,0,0,0)
 #PETSc.DMStagVecSetValuesStencil(dm, vec_test_global.ptr, 1, pos.ptr, 12, PETSc.INSERT_VALUES)
-#X = PETSc.DMStagVecGetArray(dm,vec_test.ptr)
 
 # Simply extract an array from the local vector
 #x = PETSc.unsafe_localarray(Float64, vec_test.ptr; read=true, write=false)
@@ -91,4 +90,11 @@ V   # this correctly shows the modified array values in the vector
 #
 # In practice this is likely not hugely important; we should simply keep in mind to not 
 # change the values locally
+
+
+# Test retrieving an array from the DMStag:
+X = PETSc.DMStagVecGetArray(dm_2D,vec_test_2D)
+
+
+
 

@@ -15,6 +15,7 @@ Base.cconvert(::Type{CVec}, obj::AbstractVec) = obj.ptr
 Base.unsafe_convert(::Type{Ptr{CVec}}, obj::AbstractVec) =
     convert(Ptr{CVec}, pointer_from_objref(obj))
 
+
 """
     VecSeq(v::Vector)
 
@@ -36,6 +37,13 @@ Base.eltype(::Type{V}) where {V<:AbstractVec{T}} where T = T
 Base.eltype(v::AbstractVec{T}) where {T} = T
 Base.size(v::AbstractVec) = (length(v),)
 Base.parent(v::AbstractVec) = v.array
+
+# this allows setting V[1:2] = 3:4 on a PetscVec (more convenient)
+function Base.setindex!(v::AbstractVec, val, I)
+    v.array[I]=val
+end
+Base.getindex(v::AbstractVec, I) = v.array[I]
+
 
 @for_libpetsc begin
     function VecSeq(comm::MPI.Comm, X::Vector{$PetscScalar}; blocksize=1)

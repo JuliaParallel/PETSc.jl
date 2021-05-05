@@ -238,7 +238,7 @@ v[4]);
     """
     function DMStagCreateCompatibleDMStag(dm::DMStag{$PetscScalar}, dofVertex=0, dofEdge=0, dofFace=0, dofElement=0; kwargs...)
 
-        comm  = MPI.COMM_SELF
+        comm  = dm.comm
 
         dim   = DMGetDimension(dm)
 
@@ -368,18 +368,20 @@ v[4]);
 
     # NOT WORKING YET
     function DMStagGetProductCoordinateArrays(dm::DMStag)
-        
-        arrX = Ref{$PetscScalar}()
-        arrY = Ref{$PetscScalar}()
-        arrZ = Ref{$PetscScalar}()
+
+        arrX = Ref{Ptr{$PetscScalar}}()
+        arrY = Ref{Ptr{$PetscScalar}}()
+        arrZ = Ref{Ptr{$PetscScalar}}()
 
         @chk ccall((:DMStagGetProductCoordinateArrays, $libpetsc), PetscErrorCode,
-            ( CDMStag,   Ptr{$PetscScalar}, Ptr{$PetscScalar}, Ptr{$PetscScalar}), 
+            ( CDMStag,   Ref{Ptr{$PetscScalar}}, Ref{Ptr{$PetscScalar}}, Ref{Ptr{$PetscScalar}}), 
                 dm, arrX, arrY, arrZ)
+     
 
+        x = unsafe_localarray($PetscScalar, cx; write=false)
 
         
-        return arrX, arrY, arrZ        
+        return arrX, x
 
     end
 
@@ -415,60 +417,34 @@ v[4]);
         v.array = unsafe_localarray($PetscScalar, v.ptr; write=write_val, read=read_val)
         
         return v
-    end
+    end 
 
-    function DMStagVecGetArray(dm::DMStag, cv::CVec)
-        ## NOT WORKING YET!
 
-        # the following works, so lets reproduce it first
-        #X = PETSc.unsafe_localarray(Float64, cv; read=true, write=false)
-        if 1==0
-            # copy of what we do before, but spelled out (not for array)
-            r_pv = Ref{Ptr{$PetscScalar}}()
-     
-            @chk ccall((:DMStagVecGetArrayRead, $libpetsc), PetscErrorCode,
-                (CDMStag, CVec, Ptr{$PetscScalar}), dm, cv, r_pv)
+    """
+        Retrieves an array that holds values on the DMStag
             
-            len_array = localsize(cv);    
+            Array =  DMStagVecGetArray(dm::DMStag, v::AbstractVec)
 
-            X = unsafe_wrap(Array, r_pv[], len_array*2; own = false)
+        Once you are done with work on the array, release the memory with
+                
+            finalize(Array)
 
+    """
+    function DMStagVecGetArray(dm::DMStag, v::AbstractVec)
+        # Note: there is actually no need to call PETSc again, as Julia has the possibility 
+        # to wrap an existing array into another one. Our vec already has the array wrapper, 
+        # so we reshape that 
 
-        end
-
-        if 1==1
-        
-            #  r_pv = Ref{Ptr{$PetscScalar}}()
-            
-            len_array = localsize(cv);    
-
-            #VecGetArray2d(Vec x,PetscInt m,PetscInt n,PetscInt mstart,PetscInt nstart,PetscScalar **a[])
-
-            
-            m = len_array;
-            n = 2;
-            mstart = 0
-            nstart = 0
-
-
-            entriesPerElement = PETSc.DMStagGetEntriesPerElement(dm)
-            nGhost = PETSc.DMStagGetGhostCorners(dm)
-            @show nGhost, entriesPerElement
-            X = zeros(nGhost[2],entriesPerElement);
-
-            @chk ccall((:VecGetArray2d, $libpetsc), PetscErrorCode,
-                (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}), 
-                    cv, nGhost[2],entriesPerElement, nGhost[1], 0, X)
-            
-            
-            #X = unsafe_wrap(Array, r_pv[], len_array; own = false)
-
-
-        end
+        entriesPerElement   =   DMStagGetEntriesPerElement(dm)
+        nGhost              =   DMStagGetGhostCorners(dm)
+        dim                 =   DMGetDimension(dm);         
       
+        # Dimensions of new array (see the PETSc DMStagVecGetArrayRead routine)
+        #  NOTE: in doing this, we assume here that startGhost=0 in all dimensions.
+        dim_vec             =   [collect(nGhost[2]); entriesPerElement];  
+        X                   =   unsafe_wrap(Array, pointer(v.array),Tuple(dim_vec), own=false)
 
         return X
-
     end
 
     """
@@ -591,11 +567,11 @@ v[4]);
             dm, x,y,z, m,n,p)
 
             if dm.dim==1
-                return x[], m[]  
+                return (x[],), (m[],)  
             elseif dm.dim==2
-                return x[], y[], m[],n[]    
+                return (x[], y[]), (m[],n[])    
             elseif dm.dim==3
-                return x[], y[], z[], m[],n[],p[]   
+                return (x[], y[], z[]), (m[],n[],p[])   
             end
     end
 

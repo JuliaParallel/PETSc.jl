@@ -361,14 +361,15 @@ Base.eltype(::DMStag{T}) where {T} = T
         This extracts a global vector from the DMStag object
             NOTE: for now this is initialized sequentially; MPI should be added
     """
-    function DMCreateGlobalVector(dm::DMStag)
+    function DMCreateGlobalVector(dm::DMStag; write_val=true, read_val=true)
 
         v = VecSeq(C_NULL, dm.comm, [0.0])  # empty vector
         
         ccall((:DMCreateGlobalVector, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
 
-        # extract array of values from new vector
-        v.array = unsafe_localarray($PetscScalar, v.ptr; write=true)
+        # Link a julia array to the values from the new vector
+        # If we modify values here, it will automatically be changed in the PetcVec as well
+        v.array = unsafe_localarray($PetscScalar, v.ptr; write=write_val, read=read_val)
         
         return v
     end
@@ -377,14 +378,15 @@ Base.eltype(::DMStag{T}) where {T} = T
     This extracts a local vector from the DMStag object
             NOTE: for now this is initialized sequentially; MPI should be added
     """
-    function DMCreateLocalVector(dm::DMStag)
+    function DMCreateLocalVector(dm::DMStag; write_val=true, read_val=true)
 
         v = VecSeq(C_NULL, dm.comm, [0.0])  # empty vector
         
         ccall((:DMCreateLocalVector, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
 
-        # extract array of values from new vector
-        v.array = unsafe_localarray($PetscScalar, v.ptr; write=true)
+        # Link a julia array to the values from the new vector
+        # If we modify values here, it will automatically be changed in the PetcVec as well
+        v.array = unsafe_localarray($PetscScalar, v.ptr; write=write_val, read=read_val)
         
         return v
     end

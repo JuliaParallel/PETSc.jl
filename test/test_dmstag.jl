@@ -53,16 +53,16 @@ PETSc.DMStagSetUniformCoordinates(dm, 0, 10)
 @test PETSc.DMStagGetProductCoordinateLocationSlot(dm, PETSc.DMSTAG_RIGHT) == 1
 @test PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_RIGHT, 0) ==1
 
-# Create a global Vec from the DMStag
-vec_test  = PETSc.DMCreateLocalVector(dm)
+# Create a global and local Vec from the DMStag
+vec_test_global     = PETSc.DMCreateGlobalVector(dm)
+vec_test            = PETSc.DMCreateLocalVector(dm)
 
-X = PETSc.DMStagVecGetArray(dm,vec_test.ptr)
+#X = PETSc.DMStagVecGetArray(dm,vec_test.ptr)
 
 # Simply extract an array from the local vector
 #x = PETSc.unsafe_localarray(Float64, vec_test.ptr; read=true, write=false)
 
 entriesPerElement = PETSc.DMStagGetEntriesPerElement(dm)
-
 
 x,m = PETSc.DMStagGetGhostCorners(dm)
 
@@ -83,5 +83,9 @@ finalize(x_local)                             # delete local array after local u
 V   # this correctly shows the modified array values in the vector
 
 # What I don't understand is that even in the case that we read the array
-# as read-only, 
+# as read-only, changing the values in the julia array modifies them in the PetscVec 
+# (that seems to defy the purpose of having a read-only option)
+#
+# In practice this is likely not hugely important; we should simply keep in mind to not 
+# change the values locally
 

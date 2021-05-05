@@ -275,14 +275,19 @@ Base.eltype(::DMStag{T}) where {T} = T
         @chk ccall((:DMStagGetGlobalSizes, $libpetsc), PetscErrorCode,
             (CDMStag, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}), 
             dm, M, N, P )
-
-        return M[], N[], P[]    
+        
+        if dm.dim==1    
+            return M[]
+        elseif dm.dim==2
+            return M[], N[] 
+        elseif dm.dim==3
+            return M[], N[], P[]    
+        end
     end
 
 
-
     """
-        Sets coordinates for a DMStag object using the Product (1D arrays)
+        Sets coordinates for a DMStag object using the Product method to specify coordinates (1D arrays)
     """
     function DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin, xmax, ymin, ymax, zmin, zmax)
         
@@ -313,12 +318,164 @@ Base.eltype(::DMStag{T}) where {T} = T
     end
 
     """
-    Sets uniform coordinates for a 3D DMStag object 
-        DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax, ymin, ymax, zmin, zmax)
+        Sets uniform coordinates for a 3D DMStag object 
+            DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax, ymin, ymax, zmin, zmax)
     """
     function DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax, ymin, ymax, zmin, zmax)
         DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin, xmax, ymin, ymax, zmin, zmax);
         return nothing
+    end
+
+
+
+    # NOT WORKING YET
+    function DMStagGetProductCoordinateArrays(dm::DMStag)
+        
+        arrX = Ref{$PetscScalar}()
+        arrY = Ref{$PetscScalar}()
+        arrZ = Ref{$PetscScalar}()
+
+        @chk ccall((:DMStagGetProductCoordinateArrays, $libpetsc), PetscErrorCode,
+            ( CDMStag,   Ptr{$PetscScalar}, Ptr{$PetscScalar}, Ptr{$PetscScalar}), 
+                dm, arrX, arrY, arrZ)
+
+
+        
+        return arrX, arrY, arrZ        
+
+    end
+
+    """
+        This extracts a global vector from the DMStag object
+            NOTE: for now this is initialized sequentially; MPI should be added
+    """
+    function DMCreateGlobalVector(dm::DMStag; write_val=true, read_val=true)
+
+        v = VecSeq(C_NULL, dm.comm, [0.0])  # empty vector
+        
+        ccall((:DMCreateGlobalVector, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
+
+        # Link a julia array to the values from the new vector
+        # If we modify values here, it will automatically be changed in the PetcVec as well
+        v.array = unsafe_localarray($PetscScalar, v.ptr; write=write_val, read=read_val)
+        
+        return v
+    end
+
+    """
+    This extracts a local vector from the DMStag object
+            NOTE: for now this is initialized sequentially; MPI should be added
+    """
+    function DMCreateLocalVector(dm::DMStag; write_val=true, read_val=true)
+
+        v = VecSeq(C_NULL, dm.comm, [0.0])  # empty vector
+        
+        ccall((:DMCreateLocalVector, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
+
+        # Link a julia array to the values from the new vector
+        # If we modify values here, it will automatically be changed in the PetcVec as well
+        v.array = unsafe_localarray($PetscScalar, v.ptr; write=write_val, read=read_val)
+        
+        return v
+    end
+
+    function DMStagVecGetArray(dm::DMStag, cv::CVec)
+        ## NOT WORKING YET!
+
+        # the following works, so lets reproduce it first
+        #X = PETSc.unsafe_localarray(Float64, cv; read=true, write=false)
+        if 1==0
+            # copy of what we do before, but spelled out (not for array)
+            r_pv = Ref{Ptr{$PetscScalar}}()
+     
+            @chk ccall((:DMStagVecGetArrayRead, $libpetsc), PetscErrorCode,
+                (CDMStag, CVec, Ptr{$PetscScalar}), dm, cv, r_pv)
+            
+            len_array = localsize(cv);    
+
+            X = unsafe_wrap(Array, r_pv[], len_array*2; own = false)
+
+
+        end
+
+        if 1==1
+        
+            #  r_pv = Ref{Ptr{$PetscScalar}}()
+            
+            len_array = localsize(cv);    
+
+            #VecGetArray2d(Vec x,PetscInt m,PetscInt n,PetscInt mstart,PetscInt nstart,PetscScalar **a[])
+
+            
+            m = len_array;
+            n = 2;
+            mstart = 0
+            nstart = 0
+
+
+            entriesPerElement = PETSc.DMStagGetEntriesPerElement(dm)
+            nGhost = PETSc.DMStagGetGhostCorners(dm)
+            @show nGhost, entriesPerElement
+            X = zeros(nGhost[2],entriesPerElement);
+
+            @chk ccall((:VecGetArray2d, $libpetsc), PetscErrorCode,
+                (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}), 
+                    cv, nGhost[2],entriesPerElement, nGhost[1], 0, X)
+            
+            
+            #X = unsafe_wrap(Array, r_pv[], len_array; own = false)
+
+
+        end
+      
+
+        return X
+
+    end
+
+    """
+        Retrieves a coordinate slot from a DMStag object, if the coordinates are set as ProductCoordinate 
+            slot = DMStagGetProductCoordinateLocationSlot(dm::DMStag,loc::DMStagStencilLocation)
+    """
+    function DMStagGetProductCoordinateLocationSlot(dm::DMStag,loc::DMStagStencilLocation)
+        slot = Ref{$PetscInt}()
+        @chk ccall((:DMStagGetProductCoordinateLocationSlot, $libpetsc), PetscErrorCode,
+                    ( CDMStag,   DMStagStencilLocation, Ptr{$PetscInt}), dm, loc, slot)
+
+        return slot[]
+    end
+
+
+    function DMStagGetEntriesPerElement(dm::DMStag)
+        entriesPerElement = Ref{$PetscInt}()
+        @chk ccall((:DMStagGetEntriesPerElement, $libpetsc), PetscErrorCode,
+                    ( CDMStag,  Ptr{$PetscInt}), dm,  entriesPerElement)
+
+        return entriesPerElement[]
+    end
+
+    """
+    Retrieves a coordinate slot from a DMStag object, if the coordinates are set as ProductCoordinate 
+
+        slot = DMStagGetLocationSlot(dm::DMStag,loc::DMStagStencilLocation, c)
+        
+        Input Parameters
+            dm	    - the DMStag object
+            loc	    - location relative to an element
+            c	    - component
+        
+        Output Parameter
+
+            slot	- index to use
+
+    """
+    function DMStagGetLocationSlot(dm::DMStag,loc::DMStagStencilLocation, c)
+        
+        slot = Ref{$PetscInt}()
+        @chk ccall((:DMStagGetLocationSlot, $libpetsc), PetscErrorCode,
+                    ( CDMStag,   DMStagStencilLocation, $PetscInt, Ptr{$PetscInt}), dm, loc, c, slot)
+
+        return slot[]
     end
 
     """
@@ -377,6 +534,33 @@ Base.eltype(::DMStag{T}) where {T} = T
             end
     end
     
+    """ 
+    Gets the corners of the DMStag grid including the ghost nodes
+        x,m = DMStagGetGhostCorners(dm:DMStag)   in 1D
+    """
+    function  DMStagGetGhostCorners(dm::DMStag)
+
+        x = Ref{$PetscInt}()
+        y = Ref{$PetscInt}()
+        z = Ref{$PetscInt}()
+        m = Ref{$PetscInt}()
+        n = Ref{$PetscInt}()
+        p = Ref{$PetscInt}()
+        
+        @chk ccall((:DMStagGetGhostCorners, $libpetsc), PetscErrorCode,
+            (CDMStag,   Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt},
+                        Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}), 
+            dm, x,y,z, m,n,p)
+
+            if dm.dim==1
+                return x[], m[]  
+            elseif dm.dim==2
+                return x[], y[], m[],n[]    
+            elseif dm.dim==3
+                return x[], y[], z[], m[],n[],p[]   
+            end
+    end
+
     """
         returns the types of the boundary of the DMStag object in x/y/z direction 
             Bx = DMStagGetBoundaryTypes(dm::DMStag) in 1D
@@ -406,6 +590,9 @@ Base.eltype(::DMStag{T}) where {T} = T
 
         return nothing
     end
+
+
+ 
 
     """
         returns the # of dimensions of the DMStag object

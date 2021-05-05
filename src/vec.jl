@@ -90,7 +90,10 @@ Base.parent(v::AbstractVec) = v.array
         return nothing
     end
 
-    function localsize(v::AbstractVec{$PetscScalar})
+    function localsize(cv::CVec)
+        r_sz = Ref{$PetscInt}()
+        @chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode,
+            (CVec, Ptr{$PetscInt}), cv, r_sz)
         return r_sz[]
     end
 
@@ -105,10 +108,12 @@ Base.parent(v::AbstractVec) = v.array
                     (CVec, Ptr{Ptr{$PetscScalar}}), cv, r_pv)
             end
         else
+            println("BORIS: calling VecGetArrayRead")
             @chk ccall((:VecGetArrayRead, $libpetsc), PetscErrorCode,
                 (CVec, Ptr{Ptr{$PetscScalar}}), cv, r_pv)
         end
         r_sz = Ref{$PetscInt}()
+        
         @chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode,
             (CVec, Ptr{$PetscInt}), cv, r_sz)
         v = unsafe_wrap(Array, r_pv[], r_sz[]; own = false)
@@ -155,7 +160,7 @@ AbstractVec(X::AbstractVector) = VecSeq(X)
 
 
 """
-    ownership_range(vec::AbstractVec)
+    ownershiprange(vec::AbstractVec)
 
 The range of indices owned by this processor, assuming that the vectors are laid out with the first n1 elements on the first processor, next n2 elements on the second, etc. For certain parallel layouts this range may not be well defined.
 

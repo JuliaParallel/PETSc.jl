@@ -16,7 +16,7 @@ PETSc.destroy(dm)
 dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMSTAG_STENCIL_BOX,2,[20])
 
 # Test get size
-@test PETSc.DMStagGetGlobalSizes(dm) == (20, 0, 0)
+@test PETSc.DMStagGetGlobalSizes(dm) == 20
 
 # Test gettype
 @test PETSc.gettype(dm) == "stag"               
@@ -34,17 +34,58 @@ dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMST
 PETSc.destroy(dm)
 
 # Create new struct and pass keyword arguments
-dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_PERIODIC,200,2,2; stag_grid_x=199);
+dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,200,1,0; stag_grid_x=100);
+@test PETSc.DMStagGetGlobalSizes(dm) == 100
 
-dm = PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,20,20,1,1,2,2,2,PETSc.DMSTAG_STENCIL_BOX,2,[],[])
+dm_2D = PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,20,21,1,1,2,2,2,PETSc.DMSTAG_STENCIL_BOX,2,[],[])
+@test PETSc.DMStagGetGlobalSizes(dm_2D) == (20, 21)
 
-dm = PETSc.DMStagCreate3d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,20,20,20,1,1,1,2,2,2,2,PETSc.DMSTAG_STENCIL_BOX,1,[],[],[])
+dm_3D = PETSc.DMStagCreate3d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,20,21,22,1,1,1,2,2,2,2,PETSc.DMSTAG_STENCIL_BOX,1,[],[],[])
+@test PETSc.DMStagGetGlobalSizes(dm_3D) == (20, 21, 22)
 
-dmnew = PETSc.DMStagCreateCompatibleDMStag(dm,1,1,2,2)
+dmnew = PETSc.DMStagCreateCompatibleDMStag(dm_3D,1,1,2,2)
+@test PETSc.DMStagGetGlobalSizes(dmnew) == (20, 21, 22)
 
 # Set coordinates 
 PETSc.DMStagSetUniformCoordinates(dm, 0, 10)
 
-#end
+# retrieve coordinate and value slots
+@test PETSc.DMStagGetProductCoordinateLocationSlot(dm, PETSc.DMSTAG_RIGHT) == 1
+@test PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_RIGHT, 0) ==1
 
-#PETSc.finalize()
+# Create a global and local Vec from the DMStag
+vec_test_global     = PETSc.DMCreateGlobalVector(dm)
+vec_test            = PETSc.DMCreateLocalVector(dm)
+
+#X = PETSc.DMStagVecGetArray(dm,vec_test.ptr)
+
+# Simply extract an array from the local vector
+#x = PETSc.unsafe_localarray(Float64, vec_test.ptr; read=true, write=false)
+
+entriesPerElement = PETSc.DMStagGetEntriesPerElement(dm)
+
+x,m = PETSc.DMStagGetGhostCorners(dm)
+
+
+# testing how to set values in a local vector:
+#
+# Note; this test really belongs to a Vec test & should be pushed to a different test file
+X = rand(10)
+V = PETSc.VecSeq(X)
+
+# create a local Julia array from the vector which we can modify (write=true)
+x_local = PETSc.unsafe_localarray(Float64, V.ptr);  # create a local array
+
+x_local[8:10] .= x_local[8:10]*2 .+ 100       # modify the julia array
+
+finalize(x_local)                             # delete local array after local use
+
+V   # this correctly shows the modified array values in the vector
+
+# What I don't understand is that even in the case that we read the array
+# as read-only, changing the values in the julia array modifies them in the PetscVec 
+# (that seems to defy the purpose of having a read-only option)
+#
+# In practice this is likely not hugely important; we should simply keep in mind to not 
+# change the values locally
+

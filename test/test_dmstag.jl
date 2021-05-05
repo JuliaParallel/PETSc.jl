@@ -34,8 +34,8 @@ dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMST
 PETSc.destroy(dm)
 
 # Create new struct and pass keyword arguments
-dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,200,2,1; stag_grid_x=100);
-@test PETSc.DMStagGetGlobalSizes(dm) == 100
+dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,200,2,2; stag_grid_x=10);
+@test PETSc.DMStagGetGlobalSizes(dm) == 10
 
 dm_2D = PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,20,21,1,1,1,1,1,PETSc.DMSTAG_STENCIL_BOX,2)
 @test PETSc.DMStagGetGlobalSizes(dm_2D) == (20, 21)
@@ -49,6 +49,9 @@ dmnew = PETSc.DMStagCreateCompatibleDMStag(dm_3D,1,1,2,2)
 # Set coordinates 
 PETSc.DMStagSetUniformCoordinates(dm, 0, 10)
 
+# retrieve DM with coordinates
+#subDM = PETSc.DMProductGetDM(dm, 0)
+
 # retrieve coordinate and value slots
 #@test PETSc.DMStagGetProductCoordinateLocationSlot(dm, PETSc.DMSTAG_RIGHT) == 1
 #@test PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_RIGHT, 0) ==1
@@ -57,9 +60,6 @@ PETSc.DMStagSetUniformCoordinates(dm, 0, 10)
 vec_test_global     = PETSc.DMCreateGlobalVector(dm)
 vec_test            = PETSc.DMCreateLocalVector(dm)
 vec_test_2D         = PETSc.DMCreateLocalVector(dm_2D)
-
-pos = PETSc.DMStagStencil(C_NULL, PETSc.DMSTAG_LEFT,0,0,0,0)
-#PETSc.DMStagVecSetValuesStencil(dm, vec_test_global.ptr, 1, pos.ptr, 12, PETSc.INSERT_VALUES)
 
 # Simply extract an array from the local vector
 #x = PETSc.unsafe_localarray(Float64, vec_test.ptr; read=true, write=false)
@@ -93,8 +93,26 @@ V   # this correctly shows the modified array values in the vector
 
 
 # Test retrieving an array from the DMStag:
-X = PETSc.DMStagVecGetArray(dm_2D,vec_test_2D)
+X = PETSc.DMStagVecGetArray(dm_2D,vec_test_2D);
 
 
 
 
+#PETSc.DMStagVecGetValuesStencil(dm, vec_test_global.ptr, [pos], [12.0], PETSc.INSERT_VALUES)
+
+vec_test.array[1:10] = 1:10
+
+pos1 = PETSc.DMStagStencil_c(PETSc.DMSTAG_RIGHT,3,0,0,1)
+
+#PETSc.DMStagVecGetValueStencil(dm, vec_test.ptr, pos1) # this sets a single value
+PETSc.DMStagVecGetValueStencil(dm, vec_test.ptr, PETSc.DMStagStencil_c(PETSc.DMSTAG_RIGHT,3,0,0,1)) # this sets a single value
+
+X_1D = PETSc.DMStagVecGetArray(dm,vec_test);
+
+
+
+
+#PETSc.DMStagVecGetValuesStencil(dm, vec_test.ptr, [pos1; pos2])
+
+
+#PETSc.DMStagGetProductCoordinateArrays(dm)

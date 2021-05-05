@@ -1,7 +1,7 @@
 # Attempt at include dmstag functions
 const CDMStag = Ptr{Cvoid}
 const CDMStagType = Cstring
-const CDMStagStencil = Ptr{Cvoid}
+#const CDMStagStencil = Ptr{Cvoid}
 
 mutable struct DMStag{T} <: Factorization{T}
     ptr::CDMStag
@@ -10,23 +10,24 @@ mutable struct DMStag{T} <: Factorization{T}
     opts::Options{T}
 end
 
-mutable struct DMStagStencil
-    ptr::CDMStagStencil
+struct DMSTAGSTENCIL
     loc::DMStagStencilLocation
     i::Int64
     j::Int64
     k::Int64
     c::Int64
 end
-
-mutable struct DMStagStencil_c
-    ptr::CDMStagStencil
+struct DMSTAGSTENCIL_C
     loc::DMStagStencilLocation
     i::Cint
     j::Cint
     k::Cint
     c::Cint
 end
+
+const DMStagStencil     = DMSTAGSTENCIL
+const DMStagStencil_c   = DMSTAGSTENCIL_C
+
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
 Base.cconvert(::Type{CDMStag}, obj::DMStag) = obj.ptr
@@ -37,23 +38,18 @@ Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
 Base.eltype(::DMStag{T}) where {T} = T
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
-Base.cconvert(::Type{CDMStagStencil}, obj::DMStagStencil) = obj.ptr
+#Base.cconvert(::Type{CDMStagStencil}, obj::DMStagStencil) = obj
 # allows us to pass XXMat objects directly into Ptr{CMat} ccall signatures
-Base.unsafe_convert(::Type{Ptr{CDMStagStencil}}, obj::DMStagStencil) =
-    convert(Ptr{DMStagStencil}, pointer_from_objref(obj))
 
 
-Base.cconvert(::Type{DMStagStencil_c}, v::DMStagStencil) = 
-(v.i, 
-v.j,
-v.k,
-v.c);
+#Base.cconvert(::Type{DMStagStencil_c}, v::DMStagStencil) = (v.loc, v.i, v.j,v.k, v.c);
 
-Base.unsafe_convert(::Type{DMStagStencil_c}, v::Tuple) = 
-DMStagStencil_c( v[1], 
-v[2], 
-v[3], 
-v[4]);
+#Base.unsafe_convert(::Type{DMStagStencil_c}, v::Tuple) = DMStagStencil_c(v[1], v[2], v[3], v[4], v[5]);
+#Base.unsafe_convert(::Type{CDMStagStencil}, v::DMStagStencil) = DMStagStencil_c(v.loc, v.i, v.j, v.k, v.c);
+
+
+#Base.unsafe_convert(::Type{DMStagStencil_c}, v::Tuple) = 
+#    DMStagStencil_c( v[1], v[2], v[3], v[4]);
 
 @for_libpetsc begin
 
@@ -366,22 +362,33 @@ v[4]);
 
 
 
-    # NOT WORKING YET
+    # NOT WORKING YET!
     function DMStagGetProductCoordinateArrays(dm::DMStag)
 
-        arrX = Ref{Ptr{$PetscScalar}}()
+      #  arrX = Ref{Ptr{$PetscScalar}}()
         arrY = Ref{Ptr{$PetscScalar}}()
         arrZ = Ref{Ptr{$PetscScalar}}()
 
+        #arrX = zeros(20,2)
+
+        array_ref = Ref{Ptr{$PetscScalar}}()
+
         @chk ccall((:DMStagGetProductCoordinateArrays, $libpetsc), PetscErrorCode,
-            ( CDMStag,   Ref{Ptr{$PetscScalar}}, Ref{Ptr{$PetscScalar}}, Ref{Ptr{$PetscScalar}}), 
-                dm, arrX, arrY, arrZ)
+            ( CDMStag,   Ref{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}), 
+                dm, array_ref, arrY, arrZ)
      
-
-        x = unsafe_localarray($PetscScalar, cx; write=false)
-
+        arrX = unsafe_wrap(Array, array_ref[], 20)
+      #same  r_sz = Ref{$PetscInt}()
         
-        return arrX, x
+        #@chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode,
+        #            (CVec, Ptr{$PetscInt}), arrX, r_sz)
+      #  x_local = PETSc.unsafe_localarray(Float64, arrX)
+
+        #v = unsafe_wrap(Array, arrX[], r_sz[]; own = false)
+
+        #x = unsafe_localarray($PetscScalar, arrX; write=false)
+        
+        return arrX
 
     end
 
@@ -401,6 +408,20 @@ v[4]);
         
         return v
     end
+
+    
+    function DMProductGetDM(dm::DMStag, slot)
+     
+        opts = Options{$PetscScalar}()
+        subDM  = DMStag{$PetscScalar}(C_NULL, dm.comm, 1, opts)   # retrieve options
+
+
+        ccall((:DMProductGetDM, $libpetsc), PetscErrorCode, (CDMStag, $PetscInt, Ptr{CDMStag}), dm, slot, subDM)
+
+        return subDM
+
+    end
+
 
     """
     This extracts a local vector from the DMStag object
@@ -441,10 +462,19 @@ v[4]);
       
         # Dimensions of new array (see the PETSc DMStagVecGetArrayRead routine)
         #  NOTE: in doing this, we assume here that startGhost=0 in all dimensions.
-        dim_vec             =   [collect(nGhost[2]); entriesPerElement];  
-        X                   =   unsafe_wrap(Array, pointer(v.array),Tuple(dim_vec), own=false)
+        dim_vec             =   [entriesPerElement; collect(nGhost[2])];  
 
-        return X
+        @show dim_vec
+
+        # julia and 
+        #X                   =   unsafe_wrap(Array, pointer(v.array),Tuple(dim_vec), own=false)
+        X                   =   unsafe_wrap(Array, pointer(v.array),prod(dim_vec), own=false)
+        
+        # reshape to correct format
+        X  = reshape(v.array, Tuple(dim_vec))
+        X1 = PermutedDimsArray(X, Tuple([2:dim+1;1]));
+       
+        return X1
     end
 
     """
@@ -605,13 +635,31 @@ v[4]);
         return nothing
     end
 
-    function  DMStagVecSetValuesStencil(dm::DMStag, cv::CVec, n, pos::CDMStagStencil, val, insertMode::InsertMode)
+    function  DMStagVecSetValuesStencil(dm::DMStag, cv::CVec, pos::Vector{DMStagStencil}, val::Vector{Float64}, insertMode::InsertMode)
 
+        n = length(val);
+        if length(pos) != length(val)
+            error("The length of the pos and val vectors shuld be the same!")
+        end
         @chk ccall((:DMStagVecSetValuesStencil, $libpetsc), PetscErrorCode,
-             (CDMStag, CVec, $PetscInt, CDMStagStencil, $PetscScalar, InsertMode), 
-             dm, cv, n, pos, val, insertMode)
+                    (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}, InsertMode), 
+                        dm, cv, n, pos, val, insertMode)
 
         return nothing
+    end
+
+    """
+        This sets a single value in a DMStag Vec
+    """
+    function  DMStagVecGetValueStencil(dm::DMStag, cv::CVec, pos::DMStagStencil_c)
+
+        n=1;
+        val = Ref{$PetscScalar}()
+        @chk ccall((:DMStagVecGetValuesStencil, $libpetsc), PetscErrorCode,
+                    (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}), 
+                        dm, cv, n, Ref{DMStagStencil_c}(pos), val)
+    
+        return val[]
     end
 
 

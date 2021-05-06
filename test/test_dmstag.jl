@@ -102,17 +102,27 @@ X = PETSc.DMStagVecGetArray(dm_2D,vec_test_2D);
 
 vec_test.array[1:10] = 1:10
 
-pos1 = PETSc.DMStagStencil_c(PETSc.DMSTAG_RIGHT,3,0,0,1)
-
-#PETSc.DMStagVecGetValueStencil(dm, vec_test.ptr, pos1) # this sets a single value
-PETSc.DMStagVecGetValueStencil(dm, vec_test.ptr, PETSc.DMStagStencil_c(PETSc.DMSTAG_RIGHT,3,0,0,1)) # this sets a single value
-
 X_1D = PETSc.DMStagVecGetArray(dm,vec_test);
 
+pos1 = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,1,0,0,1)
+pos2 = PETSc.DMStagStencil_c(PETSc.DMSTAG_RIGHT,4,0,0,0)
 
+#PETSc.DMStagVecGetValuesStencil(dm, vec_test.ptr, pos1) # this sets a single value
+#PETSc.DMStagVecGetValueStencil(dm, vec_test.ptr, PETSc.DMStagStencil_c(PETSc.DMSTAG_RIGHT,3,0,0,1)) # this sets a single value
+PETSc.DMStagVecGetValueStencil(dm, vec_test.ptr, pos1) # this sets a single value
+
+
+PETSc.DMStagVecGetValuesStencil(dm, vec_test.ptr, [pos2]) # this sets a single valu
 
 
 #PETSc.DMStagVecGetValuesStencil(dm, vec_test.ptr, [pos1; pos2])
 
 
 #PETSc.DMStagGetProductCoordinateArrays(dm)
+
+
+# See if local2global works
+vec_test_global .= 0;
+vec_test        .= 0;
+vec_test[1:end] = 1:length(vec_test);
+PETSc.DMLocalToGlobal(dm, vec_test, PETSc.INSERT_VALUES, vec_test_global)

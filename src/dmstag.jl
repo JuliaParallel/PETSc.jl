@@ -35,21 +35,16 @@ Base.cconvert(::Type{CDMStag}, obj::DMStag) = obj.ptr
 Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
     convert(Ptr{CDMStag}, pointer_from_objref(obj))
 
+
 Base.eltype(::DMStag{T}) where {T} = T
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
-#Base.cconvert(::Type{CDMStagStencil}, obj::DMStagStencil) = obj
-# allows us to pass XXMat objects directly into Ptr{CMat} ccall signatures
+#Base.cconvert(::Type{DMStagStencil_c}, obj::Ref{DMStagStencil}) = obj
+#Base.cconvert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc, v.i, v.j,v.k, v.c)
 
-
-#Base.cconvert(::Type{DMStagStencil_c}, v::DMStagStencil) = (v.loc, v.i, v.j,v.k, v.c);
-
+Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc, v.i, v.j,v.k, v.c)
 #Base.unsafe_convert(::Type{DMStagStencil_c}, v::Tuple) = DMStagStencil_c(v[1], v[2], v[3], v[4], v[5]);
-#Base.unsafe_convert(::Type{CDMStagStencil}, v::DMStagStencil) = DMStagStencil_c(v.loc, v.i, v.j, v.k, v.c);
 
-
-#Base.unsafe_convert(::Type{DMStagStencil_c}, v::Tuple) = 
-#    DMStagStencil_c( v[1], v[2], v[3], v[4]);
 
 @for_libpetsc begin
 
@@ -618,23 +613,24 @@ Base.eltype(::DMStag{T}) where {T} = T
         return nothing
     end
 
-    function  DMStagVecSetValuesStencil(dm::DMStag, cv::CVec, pos::Vector{DMStagStencil}, val::Vector{Float64}, insertMode::InsertMode)
+    """
+        This gets values in a DMStag Vec
+    """
+    function  DMStagVecGetValuesStencil(dm::DMStag, cv::CVec, pos::Vector{DMStagStencil_c})
 
-        n = length(val);
-        if length(pos) != length(val)
-            error("The length of the pos and val vectors shuld be the same!")
-        end
-        @chk ccall((:DMStagVecSetValuesStencil, $libpetsc), PetscErrorCode,
-             (CDMStag, CVec, $PetscInt, DMStagStencil_c, $PetscScalar, InsertMode), 
-             dm, cv, n, pos, val, insertMode)
+        n   =   length(pos)
+        val =   Ref{Ptr{$PetscScalar}}()
+        @chk ccall((:DMStagVecGetValuesStencil, $libpetsc), PetscErrorCode,
+                    (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}), 
+                        dm, cv, n, Ref{DMStagStencil_c}(pos), val)
 
-        return nothing
+        return val[]
     end
 
     """
-        This sets a single value in a DMStag Vec
+        This gets a single value from a DMStag Vec
     """
-    function  DMStagVecGetValueStencil(dm::DMStag, cv::CVec, pos::DMStagStencil_c)
+    function  DMStagVecGetValueStencil(dm::DMStag, cv::CVec, pos::DMStagStencil)
 
         n=1;
         val = Ref{$PetscScalar}()
@@ -646,6 +642,16 @@ Base.eltype(::DMStag{T}) where {T} = T
     end
 
 
+    function  DMStagVecGetValueStencil(dm::DMStag, cv::CVec, pos::DMStagStencil_c)
+
+        n=1;
+        val = Ref{$PetscScalar}()
+        @chk ccall((:DMStagVecGetValuesStencil, $libpetsc), PetscErrorCode,
+                    (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}), 
+                        dm, cv, n, Ref{DMStagStencil_c}(pos), val)
+    
+        return val[]
+    end
  
 
     """
@@ -658,6 +664,22 @@ Base.eltype(::DMStag{T}) where {T} = T
 
         return dim[]
     end
+
+
+
+    """
+        Copies Local to global vector
+    """
+    function DMLocalToGlobal(dm::DMStag,l::AbstractVec, mode::InsertMode,g::AbstractVec)
+
+        @chk ccall((:DMLocalToGlobal, $libpetsc), PetscErrorCode,
+        (CDMStag, CVec, InsertMode, CVec), 
+            dm, l.ptr, mode, g.ptr)
+
+        return nothing
+    end
+
+
 
 end
 

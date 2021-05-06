@@ -34,8 +34,8 @@ dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMST
 PETSc.destroy(dm)
 
 # Create new struct and pass keyword arguments
-dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,200,2,2; stag_grid_x=10);
-@test PETSc.DMStagGetGlobalSizes(dm) == 10
+dm_1D = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,200,2,2; stag_grid_x=10);
+@test PETSc.DMStagGetGlobalSizes(dm_1D) == 10
 
 dm_2D = PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,20,21,1,1,1,1,1,PETSc.DMSTAG_STENCIL_BOX,2)
 @test PETSc.DMStagGetGlobalSizes(dm_2D) == (20, 21)
@@ -43,11 +43,12 @@ dm_2D = PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUND
 dm_3D = PETSc.DMStagCreate3d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,20,21,22,1,1,1,2,2,2,2,PETSc.DMSTAG_STENCIL_BOX,1,[],[],[])
 @test PETSc.DMStagGetGlobalSizes(dm_3D) == (20, 21, 22)
 
+# copy struct
 dmnew = PETSc.DMStagCreateCompatibleDMStag(dm_3D,1,1,2,2)
 @test PETSc.DMStagGetGlobalSizes(dmnew) == (20, 21, 22)
 
 # Set coordinates 
-PETSc.DMStagSetUniformCoordinates(dm, 0, 10)
+PETSc.DMStagSetUniformCoordinates(dm_1D, 0, 10)
 
 # retrieve DM with coordinates
 #subDM = PETSc.DMProductGetDM(dm, 0)
@@ -57,72 +58,73 @@ PETSc.DMStagSetUniformCoordinates(dm, 0, 10)
 #@test PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_RIGHT, 0) ==1
 
 # Create a global and local Vec from the DMStag
-vec_test_global     = PETSc.DMCreateGlobalVector(dm)
-vec_test            = PETSc.DMCreateLocalVector(dm)
+vec_test_global     = PETSc.DMCreateGlobalVector(dm_1D)
+vec_test            = PETSc.DMCreateLocalVector(dm_1D)
 vec_test_2D         = PETSc.DMCreateLocalVector(dm_2D)
 
 # Simply extract an array from the local vector
 #x = PETSc.unsafe_localarray(Float64, vec_test.ptr; read=true, write=false)
 
-entriesPerElement = PETSc.DMStagGetEntriesPerElement(dm)
+entriesPerElement = PETSc.DMStagGetEntriesPerElement(dm_1D)
 
-x,m = PETSc.DMStagGetGhostCorners(dm)
+x,m = PETSc.DMStagGetGhostCorners(dm_1D)
 
 
 # testing how to set values in a local vector:
 #
 # Note; this test really belongs to a Vec test & should be pushed to a different test file
-X = rand(10)
-V = PETSc.VecSeq(X)
+v       =   rand(10)
+v[10]   =   1;
+V       =   PETSc.VecSeq(v)
 
+
+# VEC test
 # create a local Julia array from the vector which we can modify (write=true)
-x_local = PETSc.unsafe_localarray(Float64, V.ptr);  # create a local array
+x_local =   PETSc.unsafe_localarray(Float64, V.ptr, write=true);    # create a local array from the vector
+x_local[8:10] .= x_local[8:10]*2 .+ 100                             # modify the julia array
+finalize(x_local)                                                   # delete local array after local use
+@test v[10] == 102                                                  # check
 
-x_local[8:10] .= x_local[8:10]*2 .+ 100       # modify the julia array
-
-finalize(x_local)                             # delete local array after local use
-
-V   # this correctly shows the modified array values in the vector
-
-# What I don't understand is that even in the case that we read the array
+# Note: What I don't understand is that even in the case that we read the array
 # as read-only, changing the values in the julia array modifies them in the PetscVec 
 # (that seems to defy the purpose of having a read-only option)
 #
 # In practice this is likely not hugely important; we should simply keep in mind to not 
 # change the values locally
 
-
 # Test retrieving an array from the DMStag:
 X = PETSc.DMStagVecGetArray(dm_2D,vec_test_2D);
+X[1,1,1] = 1;
 
 
-
-
-#PETSc.DMStagVecGetValuesStencil(dm, vec_test_global.ptr, [pos], [12.0], PETSc.INSERT_VALUES)
-
-vec_test.array[1:10] = 1:10
-
-X_1D = PETSc.DMStagVecGetArray(dm,vec_test);
-
-pos1 = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,1,0,0,1)
-pos2 = PETSc.DMStagStencil_c(PETSc.DMSTAG_RIGHT,4,0,0,0)
-
-#PETSc.DMStagVecGetValuesStencil(dm, vec_test.ptr, pos1) # this sets a single value
-#PETSc.DMStagVecGetValueStencil(dm, vec_test.ptr, PETSc.DMStagStencil_c(PETSc.DMSTAG_RIGHT,3,0,0,1)) # this sets a single value
-PETSc.DMStagVecGetValueStencil(dm, vec_test.ptr, pos1) # this sets a single value
-
-
-PETSc.DMStagVecGetValuesStencil(dm, vec_test.ptr, [pos2]) # this sets a single valu
-
-
-#PETSc.DMStagVecGetValuesStencil(dm, vec_test.ptr, [pos1; pos2])
-
-
-#PETSc.DMStagGetProductCoordinateArrays(dm)
-
-
-# See if local2global works
+# See if DMLocalToGlobal works
 vec_test_global .= 0;
 vec_test        .= 0;
 vec_test[1:end] = 1:length(vec_test);
-PETSc.DMLocalToGlobal(dm, vec_test, PETSc.INSERT_VALUES, vec_test_global)
+PETSc.DMLocalToGlobal(dm_1D, vec_test, PETSc.INSERT_VALUES, vec_test_global)
+@test vec_test_global[20]==20
+
+# test GlobalToLocal as well. 
+# NOTE: as we currently only have VecSeq, parallel halos are not yet tested with this
+
+# Test DMStagVecGetArray for a 1D case
+vec_test.array[1:10] = 1:10
+X_1D = PETSc.DMStagVecGetArray(dm_1D,vec_test);
+
+
+# Create two stencil locations
+pos1 = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,1,0,0,1)
+pos2 = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,4,0,0,0)
+
+# Retrieve value from stencil. NOTE: need 
+val = PETSc.DMStagVecGetValueStencil(dm_1D, vec_test, pos1) # this gets a single value
+@test val==6
+
+# Set single value in global vector using stencil
+#PETSc.DMStagVecSetValueStencil(dm_1D, vec_test_global, pos2, 2222.2, PETSc.INSERT_VALUES)
+
+
+#PETSc.DMStagVecGetValuesStencil(dm, vec_test.ptr, [pos2]) # this sets a single valu
+
+
+#PETSc.DMStagVecGetValuesStencil(dm, vec_test.ptr, [pos1; pos2])

@@ -616,7 +616,8 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     """
         This gets values in a DMStag Vec
     """
-    function  DMStagVecGetValuesStencil(dm::DMStag, cv::CVec, pos::Vector{DMStagStencil_c})
+    function  DMStagVecGetValuesStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::Vector{DMStagStencil_c})
+        # NOT WORKING (YET)
 
         n   =   length(pos)
         val =   Ref{Ptr{$PetscScalar}}()
@@ -630,28 +631,44 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     """
         This gets a single value from a DMStag Vec
     """
-    function  DMStagVecGetValueStencil(dm::DMStag, cv::CVec, pos::DMStagStencil)
+    function  DMStagVecGetValueStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil)
 
         n=1;
         val = Ref{$PetscScalar}()
         @chk ccall((:DMStagVecGetValuesStencil, $libpetsc), PetscErrorCode,
                     (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}), 
-                        dm, cv, n, Ref{DMStagStencil_c}(pos), val)
+                        dm, vec.ptr, n, Ref{DMStagStencil_c}(pos), val)
     
         return val[]
     end
 
-
-    function  DMStagVecGetValueStencil(dm::DMStag, cv::CVec, pos::DMStagStencil_c)
+    
+    function  DMStagVecGetValueStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil_c)
 
         n=1;
         val = Ref{$PetscScalar}()
         @chk ccall((:DMStagVecGetValuesStencil, $libpetsc), PetscErrorCode,
                     (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}), 
-                        dm, cv, n, Ref{DMStagStencil_c}(pos), val)
+                        dm, vec.ptr, n, Ref{DMStagStencil_c}(pos), val)
     
         return val[]
     end
+
+    """
+        This gets a single value from a DMStag Vec
+    """
+    function  DMStagVecSetValueStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil, val, insertMode::InsertMode)
+        #DMStagVecSetValuesStencil(DM dm,Vec vec,PetscInt n,const DMStagStencil *pos,const PetscScalar *val,InsertMode insertMode)
+        #DMStagVecGetValuesStencil(DM dm, Vec vec,PetscInt n,const DMStagStencil *pos,PetscScalar *val)
+
+        n=1;
+        @chk ccall((:DMStagVecSetValuesStencil, $libpetsc), PetscErrorCode,
+                    (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, $PetscScalar, InsertMode), 
+                        dm, vec.ptr, n, Ref{DMStagStencil_c}(pos), val, insertMode)
+
+        return val[]
+    end
+
  
 
     """

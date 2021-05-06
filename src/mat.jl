@@ -73,7 +73,6 @@ end
         return nothing
     end
 
-
     function Base.setindex!(M::AbstractMat{$PetscScalar}, val, i::Integer, j::Integer)    
         @chk ccall((:MatSetValues, $libpetsc), PetscErrorCode, 
             (CMat, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}, InsertMode),
@@ -81,6 +80,13 @@ end
         return val
     end
 
+    function assembled(A::AbstractMat{$PetscScalar})
+        fr = Ref{PetscBool}()
+        @chk ccall((:MatAssembled, $libpetsc), PetscErrorCode,
+            (CMat, Ptr{PetscBool}),
+            A, fr)
+        return fr[]== PETSC_TRUE
+    end
 
     function assemblybegin(M::AbstractMat{$PetscScalar}, t::MatAssemblyType=MAT_FINAL_ASSEMBLY)
         @chk ccall((:MatAssemblyBegin, $libpetsc), PetscErrorCode, (CMat, MatAssemblyType), M, t)
@@ -92,10 +98,15 @@ end
     end
     function view(mat::AbstractMat{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(mat.comm))
         # determine if assembled. Otherwise use a different viewer
-     
-        @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
-                    (CMat, CPetscViewer),
-                mat, viewer);
+        if assembled(mat)
+            @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
+                        (CMat, CPetscViewer),
+                    mat, viewer);
+        else
+            println("Matrix object")
+            println("  size: $(size(mat))")
+            println("  Not yet assembled")
+        end
         return nothing
     end
 
@@ -106,7 +117,6 @@ end
             M, 1, Ref{$PetscInt}(i-1), 1, Ref{$PetscInt}(j-1), val)
         return val[]
     end
-
 
     function Base.size(A::AbstractMat{$PetscScalar})
         m = Ref{$PetscInt}()

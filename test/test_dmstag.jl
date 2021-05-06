@@ -137,15 +137,27 @@ pos3 = PETSc.DMStagStencil_c(PETSc.DMSTAG_LEFT,1,0,0,1)
 # Create matrix from dm object, Note: can only be viewed once it is assembled!
 A = PETSc.DMCreateMatrix(dm_1D);  # 
 @test size(A) == (42,42)
+PETSc.assembled(A)
 
-#A[1,1]= 1.0
+# set some values using normal indices:
+A[1,1]= 1.0
+A[1,10]= 1.0
+
+# Set values using the DMStagStencil indices
+PETSc.DMStagMatSetValueStencil(dm_1D, A, pos1, pos1, 11.1, PETSc.INSERT_VALUES)
+
+# Assemble matrix
+PETSc.assemble(A)
+@test A[1,10] == 1.0 
 
 
+# Reads a value from the matrix, using the stencil structure
+@test PETSc.DMStagMatGetValueStencil(dm_1D, A, pos1, pos1)==11.1
 
 
-#PETSc.DMStagVecGetValuesStencil(dm, vec_test.ptr, [pos2]) # this sets a single valu
+#PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test.ptr, [pos2]) # this sets a single valu
 
-#PETSc.DMStagVecGetValuesStencil(dm, vec_test.ptr, [pos1; pos2])
+#PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test.ptr, [pos1; pos2])
 
 
 #end

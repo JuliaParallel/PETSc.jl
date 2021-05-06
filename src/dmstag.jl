@@ -582,19 +582,6 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
 
-    """
-        This gets a single value from a DMStag Vec
-    """
-    function  DMStagVecGetValueStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil)
-
-        n=1;
-        val = Ref{$PetscScalar}()
-        @chk ccall((:DMStagVecGetValuesStencil, $libpetsc), PetscErrorCode,
-                    (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}), 
-                        dm, vec.ptr, n, Ref{DMStagStencil_c}(pos), val)
-    
-        return val[]
-    end
 
     """
         This puts a single value inside a global vector using DMStagStencil
@@ -621,7 +608,80 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return nothing
     end
 
- 
+
+    """
+        This gets a single value from a DMStag Vec
+    """
+    function  DMStagVecGetValueStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil)
+
+        n=1;
+        val = Ref{$PetscScalar}()
+        @chk ccall((:DMStagVecGetValuesStencil, $libpetsc), PetscErrorCode,
+                    (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}), 
+                        dm, vec.ptr, n, Ref{DMStagStencil_c}(pos), val)
+    
+        return val[]
+    end
+
+    """
+        This reads a single value from a matrix DMStagStencil
+        
+        Syntax:
+         val =  DMStagMatGetValueStencil(dm::DMStag,mat::AbstractMat, posRow::DMStagStencil,  posCol::DMStagStencil)
+
+        Input Parameters:
+
+            dm	    - the DMStag object
+            mat	    - the Mat
+            posRow	- the location of the row of the set value, given by a DMStagStencil struct
+            posCol	- the location of the row of the set value, given by a DMStagStencil struct
+        
+        Output:
+            val	    - the value
+    """
+    function  DMStagMatGetValueStencil(dm::DMStag, mat::AbstractMat{$PetscScalar},  posRow::DMStagStencil, posCol::DMStagStencil)
+
+        nRow= 1;
+        nCol= 1;
+        val = Ref{$PetscScalar}()
+        @chk  ccall((:DMStagMatGetValuesStencil, $libpetsc), PetscErrorCode,
+                    (CDMStag, CMat, $PetscInt, Ptr{DMStagStencil_c}, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}), 
+                        dm, mat.ptr, nRow, Ref{DMStagStencil_c}(posRow), nCol, Ref{DMStagStencil_c}(posCol), val)
+    
+        return val[]
+    end
+
+    """
+        This puts a single value inside a matrix using DMStagStencil position
+    
+    Syntax:
+        DMStagMatSetValueStencil(dm::DMStag,mat::AbstractMat, posRow::DMStagStencil,  posCol::DMStagStencil, val::Float64, insertMode::InsertMode)
+
+    Input Parameters:
+
+        dm	        - the DMStag object
+        mat	        - the Mat
+        posRow	    - the location of the row of the set value, given by a DMStagStencil struct
+        posCol	    - the location of the row of the set value, given by a DMStagStencil struct
+        val	        - the value to be set
+        insertMode	- INSERT_VALUES or ADD_VALUES
+    
+    Output:
+        none
+    """
+    function  DMStagMatSetValueStencil(dm::DMStag, mat::AbstractMat{$PetscScalar},  posRow::DMStagStencil, posCol::DMStagStencil, val, insertMode::InsertMode)
+
+        nRow= 1;
+        nCol= 1;
+        @chk ccall((:DMStagMatSetValuesStencil, $libpetsc), PetscErrorCode,
+                    (CDMStag, CMat, $PetscInt, Ptr{DMStagStencil_c},  $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}, InsertMode), 
+                        dm, mat.ptr, nRow, Ref{DMStagStencil_c}(posRow), nCol, Ref{$DMStagStencil_c}(posCol), Ref{$PetscScalar}(val), insertMode)
+
+        return nothing
+    end
+
+
+
     """
         returns the # of dimensions of the DMStag object
     """
@@ -676,6 +736,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         
         return mat
     end
+
 
 
     # NOT WORKING YET!

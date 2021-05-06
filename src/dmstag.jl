@@ -314,6 +314,13 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         end
     end
 
+    function Base.size(dm::DMStag{$PetscScalar})
+        size = DMStagGetGlobalSizes(dm)
+        
+        return size
+    end
+
+
     """
         Gets the local size of the DMStag object
             M,N,P = DMStagGetLocalSizes(dm::DMStag)

@@ -177,43 +177,65 @@ vec_2D .= 0.0;
 
 
 
-# This is an experimental routine that retrieves the local array related to a certain 
-T_cen = PETSc.DMStagGetArrayLocationSlot(dm_2D,vec_test_2D, PETSc.DMSTAG_ELEMENT, 0)
-
 # Make a loop over all points 
+PETSc.destroy(dm_2D);
+
+
+dofCenter       =   0;
+dofEdge         =   1;
+dofVertex       =   0
+stencilWidth    =   0;
+dm_2D = PETSc.DMStagCreate2d(MPI.COMM_SELF,
+                                PETSc.DM_BOUNDARY_GHOSTED,
+                                PETSc.DM_BOUNDARY_GHOSTED,
+                                10,11,
+                                PETSc.PETSC_DECIDE,PETSc.PETSC_DECIDE,
+                                dofVertex,dofEdge,dofCenter,
+                                PETSc.DMSTAG_STENCIL_BOX,stencilWidth)
+
 vec_test_2D_global      =   PETSc.DMCreateGlobalVector(dm_2D)
 vec_test_2D_local       =   PETSc.DMCreateLocalVector(dm_2D)
 
 nStart, nEnd, nExtra    =   PETSc.DMStagGetCorners(dm_2D)
+#nStart, nEnd            =   PETSc.DMStagGetGhostCorners(dm_2D)
+
 for ix=nStart[1]:nEnd[1]-1
     for iy=nStart[2]:nEnd[2]-1
         
         # DOF at the center point
         dof     = 0;
-        pos     = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
-        value   = ix; 
+        pos     = PETSc.DMStagStencil(PETSc.DMSTAG_DOWN,ix,iy,0,dof)
+        value   = ix+10; 
         PETSc.DMStagVecSetValueStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
 
-        dof     = 1;
-        pos     = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
+        dof     = 0;
+        pos     = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,ix,iy,0,dof)
         value   = 33; 
         PETSc.DMStagVecSetValueStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
         
+      #  dof     = 1;
+      #  pos     = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,ix,iy,0,dof)
+      #  value   = 44; 
+      #  PETSc.DMStagVecSetValueStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
+        
+      #  dof     = 0;
+      #  pos     = PETSc.DMStagStencil(PETSc.DMSTAG_FRONT,ix,iy,0,dof)
+      #  value   = 55; 
+      #  PETSc.DMStagVecSetValueStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
+        
     end
 end
-
 PETSc.assemble(vec_test_2D_global) # assemble global vector
 
-PETSc.DMGlobalToLocal(dm_2D,vec_test_2D_global, PETSc.INSERT_VALUES,vec_test_2D_local)
+
+PETSc.DMGlobalToLocal(dm_2D,vec_test_2D_global, PETSc.INSERT_VALUES,vec_test_2D_local)   # copy global 2 local vector and update ghost points
+PETSc.DMStagVecGetArray(dm_2D,vec_test_2D_local);           # extract arrays with all DOF (mostly for visualizing)
 
 
-
-PETSc.DMStagVecGetArray(dm_2D,vec_test_2D_local);
-
+# This is an experimental routine that retrieves the local array related to a certain 
+Xarray = PETSc.DMStagGetArrayLocationSlot(dm_2D,vec_test_2D_local, PETSc.DMSTAG_DOWN, 0)
 
 #end
-
-
 
 
 

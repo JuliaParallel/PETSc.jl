@@ -60,8 +60,6 @@ end
         return mat
     end
 
-
-
     function destroy(M::AbstractMat{$PetscScalar})
         finalized($PetscScalar) ||
         @chk ccall((:MatDestroy, $libpetsc), PetscErrorCode, (Ptr{CMat},), M)
@@ -93,10 +91,20 @@ end
         return nothing
     end
     function view(mat::AbstractMat{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(mat.comm))
+        # determine if assembled. Otherwise use a different viewer
+     
         @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
                     (CMat, CPetscViewer),
                 mat, viewer);
         return nothing
+    end
+
+    function Base.getindex(M::AbstractMat{$PetscScalar}, i::Integer, j::Integer)    
+        val = Ref{$PetscScalar}()
+        @chk ccall((:MatGetValues, $libpetsc), PetscErrorCode, 
+            (CMat, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}),
+            M, 1, Ref{$PetscInt}(i-1), 1, Ref{$PetscInt}(j-1), val)
+        return val[]
     end
 
 

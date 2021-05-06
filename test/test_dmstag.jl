@@ -138,8 +138,13 @@ pos3 = PETSc.DMStagStencil_c(PETSc.DMSTAG_LEFT,1,0,0,1)
 A = PETSc.DMCreateMatrix(dm_1D);  # 
 @test size(A) == (42,42)
 
-#A[1,1]= 1.0
+# set some values:
+A[1,1]= 1.0
+A[1,10]= 1.0
 
+# Assemble matrix
+PETSc.assemble(A)
+@test A[1,10] = 1.0 
 
 
 

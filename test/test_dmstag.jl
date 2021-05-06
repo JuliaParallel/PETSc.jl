@@ -70,13 +70,14 @@ entriesPerElement = PETSc.DMStagGetEntriesPerElement(dm_1D)
 x,m = PETSc.DMStagGetGhostCorners(dm_1D)
 
 
+# VEC test
 # testing how to set values in a local vector:
 #
 # Note; this test really belongs to a Vec test & should be pushed to a different test file
 v       =   rand(10)
 v[10]   =   1;
 V       =   PETSc.VecSeq(v)
-
+@test V[10] == 1
 
 # VEC test
 # create a local Julia array from the vector which we can modify (write=true)
@@ -96,7 +97,6 @@ finalize(x_local)                                                   # delete loc
 X = PETSc.DMStagVecGetArray(dm_2D,vec_test_2D);
 X[1,1,1] = 1;
 
-
 # See if DMLocalToGlobal works
 vec_test_global .= 0;
 vec_test        .= 0;
@@ -110,21 +110,42 @@ PETSc.DMLocalToGlobal(dm_1D, vec_test, PETSc.INSERT_VALUES, vec_test_global)
 # Test DMStagVecGetArray for a 1D case
 vec_test.array[1:10] = 1:10
 X_1D = PETSc.DMStagVecGetArray(dm_1D,vec_test);
-
+@test X_1D[2,3] == 7.0
 
 # Create two stencil locations
 pos1 = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,1,0,0,1)
+@test pos1.c == 1
 pos2 = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,4,0,0,0)
+@test pos2.loc == PETSc.DMSTAG_RIGHT
+@test pos2.i == 4
 
-# Retrieve value from stencil. NOTE: need 
+# Retrieve value from stencil
 val = PETSc.DMStagVecGetValueStencil(dm_1D, vec_test, pos1) # this gets a single value
 @test val==6
 
 # Set single value in global vector using stencil
-#PETSc.DMStagVecSetValueStencil(dm_1D, vec_test_global, pos2, 2222.2, PETSc.INSERT_VALUES)
+PETSc.DMStagVecSetValueStencil(dm_1D, vec_test_global, pos2, 2222.2, PETSc.INSERT_VALUES)
+@test vec_test_global[21] == 2222.2
+
+pos3 = PETSc.DMStagStencil_c(PETSc.DMSTAG_LEFT,1,0,0,1)
+
+# NOTE: setting/getting multiple values is somehow not working for me. Can be called
+#  by creating a wrapper
+#val = PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test, [pos3; pos3]) 
+
+
+# Create matrix from dm object, Note: can only be viewed once it is assembled!
+A = PETSc.DMCreateMatrix(dm_1D);  # 
+@test size(A) == (42,42)
+
+#A[1,1]= 1.0
+
+
 
 
 #PETSc.DMStagVecGetValuesStencil(dm, vec_test.ptr, [pos2]) # this sets a single valu
 
-
 #PETSc.DMStagVecGetValuesStencil(dm, vec_test.ptr, [pos1; pos2])
+
+
+#end

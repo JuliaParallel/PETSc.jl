@@ -355,38 +355,6 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return nothing
     end
 
-
-
-    # NOT WORKING YET!
-    function DMStagGetProductCoordinateArrays(dm::DMStag)
-
-      #  arrX = Ref{Ptr{$PetscScalar}}()
-        arrY = Ref{Ptr{$PetscScalar}}()
-        arrZ = Ref{Ptr{$PetscScalar}}()
-
-        #arrX = zeros(20,2)
-
-        array_ref = Ref{Ptr{$PetscScalar}}()
-
-        @chk ccall((:DMStagGetProductCoordinateArrays, $libpetsc), PetscErrorCode,
-            ( CDMStag,   Ref{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}), 
-                dm, array_ref, arrY, arrZ)
-     
-        arrX = unsafe_wrap(Array, array_ref[], 20)
-      #same  r_sz = Ref{$PetscInt}()
-        
-        #@chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode,
-        #            (CVec, Ptr{$PetscInt}), arrX, r_sz)
-      #  x_local = PETSc.unsafe_localarray(Float64, arrX)
-
-        #v = unsafe_wrap(Array, arrX[], r_sz[]; own = false)
-
-        #x = unsafe_localarray($PetscScalar, arrX; write=false)
-        
-        return arrX
-
-    end
-
     """
         This extracts a global vector from the DMStag object
             NOTE: for now this is initialized sequentially; MPI should be added
@@ -613,20 +581,6 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return nothing
     end
 
-    """
-        This gets values in a DMStag Vec
-    """
-    function  DMStagVecGetValuesStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::Vector{DMStagStencil_c})
-        # NOT WORKING (YET)
-
-        n   =   length(pos)
-        val =   Ref{Ptr{$PetscScalar}}()
-        @chk ccall((:DMStagVecGetValuesStencil, $libpetsc), PetscErrorCode,
-                    (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}), 
-                        dm, cv, n, Ref{DMStagStencil_c}(pos), val)
-
-        return val[]
-    end
 
     """
         This gets a single value from a DMStag Vec
@@ -642,35 +596,32 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return val[]
     end
 
-    
-    function  DMStagVecGetValueStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil_c)
-
-        n=1;
-        val = Ref{$PetscScalar}()
-        @chk ccall((:DMStagVecGetValuesStencil, $libpetsc), PetscErrorCode,
-                    (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}), 
-                        dm, vec.ptr, n, Ref{DMStagStencil_c}(pos), val)
-    
-        return val[]
-    end
-
     """
-        This gets a single value from a DMStag Vec
+        This puts a single value inside a global vector using DMStagStencil
+        
+        Syntax:
+            DMStagVecSetValueStencil(dm::DMStag,vec::Abstractvec, pos::DMStagStencil, val::Float64, insertMode::InsertMode)
+
+        Input Parameters:
+
+            dm	- the DMStag object
+            vec	- the Vec
+            pos	- the location of the set values, given by a DMStagStencil struct
+            val	- the value to be set
+            insertMode	- INSERT_VALUES or ADD_VALUES
+
     """
     function  DMStagVecSetValueStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil, val, insertMode::InsertMode)
-        #DMStagVecSetValuesStencil(DM dm,Vec vec,PetscInt n,const DMStagStencil *pos,const PetscScalar *val,InsertMode insertMode)
-        #DMStagVecGetValuesStencil(DM dm, Vec vec,PetscInt n,const DMStagStencil *pos,PetscScalar *val)
 
         n=1;
         @chk ccall((:DMStagVecSetValuesStencil, $libpetsc), PetscErrorCode,
-                    (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, $PetscScalar, InsertMode), 
-                        dm, vec.ptr, n, Ref{DMStagStencil_c}(pos), val, insertMode)
+                    (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}, InsertMode), 
+                        dm, vec.ptr, n, Ref{DMStagStencil_c}(pos), Ref{$PetscScalar}(val), insertMode)
 
-        return val[]
+        return nothing
     end
 
  
-
     """
         returns the # of dimensions of the DMStag object
     """
@@ -681,7 +632,6 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
         return dim[]
     end
-
 
 
     """
@@ -696,7 +646,69 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return nothing
     end
 
+    """
+        Generates a matrix from a DMStag object. 
+            The type is a MatSeqAIJ is we are on 1 core 
 
+        Syntax:
+            mat = DMCreateMatrix(dm::DMStag)
+
+        Input Parameters:
+
+            dm	- the DMStag object
+           
+        Input Parameters:
+
+            mat	- the matrix of type MatSeqAIJ (on 1 core) 
+    """
+    function DMCreateMatrix(dm::DMStag)
+        # Note: the matrix cannot be viewed yet, as it remains unassembled
+        #  ideally, we should modify the viewer to take care of this case
+
+        if dm.comm==MPI.COMM_SELF
+            mat = MatSeqAIJ{$PetscScalar}(C_NULL, dm.comm)
+        elseif dm.comm==MPI.COMM_WORLD
+            error("MatMPIAIJ still to be implemented")
+        end
+
+        @chk ccall((:DMCreateMatrix, $libpetsc), PetscErrorCode,
+                    (CDMStag, Ptr{CMat}), dm, mat)
+        
+        return mat
+    end
+
+
+    # NOT WORKING YET!
+    function DMStagGetProductCoordinateArrays(dm::DMStag)
+
+        #  arrX = Ref{Ptr{$PetscScalar}}()
+          arrY = Ref{Ptr{$PetscScalar}}()
+          arrZ = Ref{Ptr{$PetscScalar}}()
+  
+          #arrX = zeros(20,2)
+  
+          array_ref = Ref{Ptr{$PetscScalar}}()
+  
+          @chk ccall((:DMStagGetProductCoordinateArrays, $libpetsc), PetscErrorCode,
+              ( CDMStag,   Ref{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}), 
+                  dm, array_ref, arrY, arrZ)
+       
+          arrX = unsafe_wrap(Array, array_ref[], 20)
+        #same  r_sz = Ref{$PetscInt}()
+          
+          #@chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode,
+          #            (CVec, Ptr{$PetscInt}), arrX, r_sz)
+        #  x_local = PETSc.unsafe_localarray(Float64, arrX)
+  
+          #v = unsafe_wrap(Array, arrX[], r_sz[]; own = false)
+  
+          #x = unsafe_localarray($PetscScalar, arrX; write=false)
+          
+          return arrX
+  
+      end
+      
+   
 
 end
 

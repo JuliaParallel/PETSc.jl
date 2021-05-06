@@ -314,6 +314,30 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         end
     end
 
+    """
+        Gets the local size of the DMStag object
+            M,N,P = DMStagGetLocalSizes(dm::DMStag)
+    """
+    function DMStagGetLocalSizes(dm::DMStag{$PetscScalar})
+
+        M = Ref{$PetscInt}()
+        N = Ref{$PetscInt}()
+        P = Ref{$PetscInt}()
+
+        @chk ccall((:DMStagGetLocalSizes, $libpetsc), PetscErrorCode,
+            (CDMStag, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}), 
+            dm, M, N, P )
+        
+        if dm.dim==1    
+            return M[]
+        elseif dm.dim==2
+            return M[], N[] 
+        elseif dm.dim==3
+            return M[], N[], P[]    
+        end
+    end
+
+   
 
     """
         Sets coordinates for a DMStag object using the Product method to specify coordinates (1D arrays)
@@ -424,6 +448,22 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
+        This is a convenience routine that extracts an array related to a certain DOF
+    """
+    function DMStagGetArrayLocationSlot(dm::DMStag, v::AbstractVec, loc::DMStagStencilLocation, dof::Int)
+        entriesPerElement   =   DMStagGetEntriesPerElement(dm)
+        nGhost              =   DMStagGetGhostCorners(dm)
+        dim                 =   DMGetDimension(dm);  
+        slot                =   DMStagGetLocationSlot(dm, loc, dof); 
+        len                 =   length(v.array);
+
+        Array               =   Base.view(v.array,1+slot:entriesPerElement:len)
+
+        return Array
+    end
+
+
+    """
         Retrieves a coordinate slot from a DMStag object, if the coordinates are set as ProductCoordinate 
             slot = DMStagGetProductCoordinateLocationSlot(dm::DMStag,loc::DMStagStencilLocation)
     """
@@ -444,6 +484,15 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return entriesPerElement[]
     end
 
+
+    function DMStagGetStencilWidth(dm::DMStag)
+        stencilWidth = Ref{$PetscInt}()
+        @chk ccall((:DMStagGetStencilWidth, $libpetsc), PetscErrorCode,
+                    ( CDMStag,  Ptr{$PetscInt}), dm,  stencilWidth)
+
+        return stencilWidth[]
+    end
+
     """
     Retrieves a coordinate slot from a DMStag object, if the coordinates are set as ProductCoordinate 
 
@@ -452,7 +501,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         Input Parameters
             dm	    - the DMStag object
             loc	    - location relative to an element
-            c	    - component
+            c	    - component ( the degree of freedom)
         
         Output Parameter
 
@@ -516,11 +565,11 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
             dm, x,y,z, m,n,p, nExtrax,nExtray,nExtraz )
 
             if dm.dim==1
-                return x[], m[], nExtrax[]    
+                return (x[],), (m[],), (nExtrax[],)    
             elseif dm.dim==2
-                return x[], y[], m[],n[], nExtrax[],nExtray[]    
+                return (x[], y[]), (m[],n[]), (nExtrax[],nExtray[])    
             elseif dm.dim==3
-                return x[], y[], z[], m[],n[],p[], nExtrax[],nExtray[],nExtraz[]    
+                return (x[], y[], z[]), (m[],n[],p[]), (nExtrax[],nExtray[],nExtraz[])    
             end
     end
     
@@ -581,6 +630,42 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return nothing
     end
 
+    """
+        Info about the # of ranks
+    """
+    function  DMStagGetNumRanks(dm::DMStag)
+
+        nRanks0 = Ref{$PetscInt}()
+        nRanks1 = Ref{$PetscInt}()
+        nRanks2 = Ref{$PetscInt}()
+        
+        @chk ccall((:DMStagGetNumRanks, $libpetsc), PetscErrorCode,
+            (CDMStag, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}), dm, nRanks0,nRanks1,nRanks1)
+            
+        if dm.dim==1
+            return nRanks0[]
+        elseif dm.dim==2
+            return nRanks0[], nRanks1[]
+        elseif dm.dim==3
+            return nRanks0[], nRanks1[], nRanks2[]
+        end
+    end
+
+    # NOT WORKING!
+    function  DMStagGetOwnershipRanges(dm::DMStag, lx::Array{$PetscInt},  ly::Array{$PetscInt}, lz::Array{$PetscInt})
+
+        nx = DMStagGetNumRanks(dm)
+
+        
+        @chk ccall((:DMStagGetOwnershipRanges, $libpetsc), PetscErrorCode,
+            (CDMStag, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}), dm, lx,ly,lz)
+
+
+       # lx_vec     = unsafe_wrap(Vector{$PetscInt},lx[],  nx)
+
+    #    return lx
+     
+    end
 
 
     """
@@ -651,6 +736,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return val[]
     end
 
+    
     """
         This puts a single value inside a matrix using DMStagStencil position
     
@@ -682,6 +768,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
 
 
+  
     """
         returns the # of dimensions of the DMStag object
     """
@@ -705,6 +792,19 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
         return nothing
     end
+
+    """
+    Copies Global to Local vector
+    """
+    function DMGlobalToLocal(dm::DMStag,g::AbstractVec, mode::InsertMode,l::AbstractVec)
+
+        @chk ccall((:DMGlobalToLocal, $libpetsc), PetscErrorCode,
+        (CDMStag, CVec, InsertMode, CVec), 
+            dm, g.ptr, mode, l.ptr)
+
+        return nothing
+    end
+
 
     """
         Generates a matrix from a DMStag object. 
@@ -738,6 +838,47 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
 
+    function DMStagGetStencilType(dm::DMStag)
+        stencilType =  Ref{DMStagStencilType}()
+
+        @chk ccall((:DMStagGetStencilType, $libpetsc), PetscErrorCode, (CDMStag, Ptr{DMStagStencilType}), dm, stencilType)
+
+        return stencilType[]
+    end
+
+    """
+    DMStagGetIsFirstRank
+
+        get boolean value for whether this rank is first in each direction in the rank grid 
+            Arguments corresponding to higher dimensions are ignored for 1D and 2D grids. These arguments may be set to NULL in this case.
+
+    """
+    function DMStagGetIsFirstRank(dm::DMStag)
+        fr_X = Ref{PetscBool}()
+        fr_Y = Ref{PetscBool}()
+        fr_Z = Ref{PetscBool}()
+        
+        @chk ccall((:DMStagGetIsFirstRank, $libpetsc), PetscErrorCode, (CDMStag, Ptr{PetscBool}, Ptr{PetscBool}, Ptr{PetscBool}), dm, fr_X, fr_Y, fr_Z)
+        
+        return fr_X[]== PETSC_TRUE, fr_Y[]== PETSC_TRUE, fr_Z[]== PETSC_TRUE
+    end
+
+
+
+    """
+    DMStagGetIsLastRank
+
+        get boolean value for whether this rank is last in each direction in the rank grid 
+    """
+    function DMStagGetIsLastRank(dm::DMStag)
+        fr_X = Ref{PetscBool}()
+        fr_Y = Ref{PetscBool}()
+        fr_Z = Ref{PetscBool}()
+        
+        @chk ccall((:DMStagGetIsLastRank, $libpetsc), PetscErrorCode, (CDMStag, Ptr{PetscBool}, Ptr{PetscBool}, Ptr{PetscBool}), dm, fr_X, fr_Y, fr_Z)
+        
+        return fr_X[]== PETSC_TRUE, fr_Y[]== PETSC_TRUE, fr_Z[]== PETSC_TRUE
+    end
 
     # NOT WORKING YET!
     function DMStagGetProductCoordinateArrays(dm::DMStag)

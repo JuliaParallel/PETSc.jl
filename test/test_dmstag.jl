@@ -17,15 +17,20 @@ dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMST
 
 # Test get size
 @test PETSc.DMStagGetGlobalSizes(dm) == 20
+@test PETSc.DMStagGetLocalSizes(dm) == 20
 
 # Test gettype
 @test PETSc.gettype(dm) == "stag"               
+
+# Info about ranks
+@test PETSc.DMStagGetIsFirstRank(dm) == (true,false,false)
+@test PETSc.DMStagGetIsLastRank(dm) == (true,false,false)
 
 # Boundary
 @test PETSc.DMStagGetBoundaryTypes(dm)==PETSc.DM_BOUNDARY_NONE
 
 # Corners
-@test PETSc.DMStagGetCorners(dm) == (0,20,1)
+@test PETSc.DMStagGetCorners(dm) == ((0,), (20,), (1,))
 
 # DOF
 @test PETSc.DMStagGetDOF(dm) == (2,2)
@@ -50,12 +55,15 @@ dmnew = PETSc.DMStagCreateCompatibleDMStag(dm_3D,1,1,2,2)
 # Set coordinates 
 PETSc.DMStagSetUniformCoordinates(dm_1D, 0, 10)
 
+# Stencil width
+@test  PETSc.DMStagGetStencilWidth(dm_1D)==2
+
 # retrieve DM with coordinates
-#subDM = PETSc.DMProductGetDM(dm, 0)
+#subDM = PETSc.DMProductGetDM(dm_1D, 0)
 
 # retrieve coordinate and value slots
 #@test PETSc.DMStagGetProductCoordinateLocationSlot(dm, PETSc.DMSTAG_RIGHT) == 1
-#@test PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_RIGHT, 0) ==1
+#@test PETSc.DMStagGetLocationSlot(dm_1D, PETSc.DMSTAG_RIGHT, 0) ==4
 
 # Create a global and local Vec from the DMStag
 vec_test_global     = PETSc.DMCreateGlobalVector(dm_1D)
@@ -69,6 +77,7 @@ entriesPerElement = PETSc.DMStagGetEntriesPerElement(dm_1D)
 
 x,m = PETSc.DMStagGetGhostCorners(dm_1D)
 
+@test PETSc.DMStagGetStencilType(dm_1D)==PETSc.DMSTAG_STENCIL_BOX 
 
 # VEC test
 # testing how to set values in a local vector:
@@ -119,6 +128,7 @@ pos2 = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,4,0,0,0)
 @test pos2.loc == PETSc.DMSTAG_RIGHT
 @test pos2.i == 4
 
+
 # Retrieve value from stencil
 val = PETSc.DMStagVecGetValueStencil(dm_1D, vec_test, pos1) # this gets a single value
 @test val==6
@@ -150,14 +160,67 @@ PETSc.DMStagMatSetValueStencil(dm_1D, A, pos1, pos1, 11.1, PETSc.INSERT_VALUES)
 PETSc.assemble(A)
 @test A[1,10] == 1.0 
 
-
 # Reads a value from the matrix, using the stencil structure
 @test PETSc.DMStagMatGetValueStencil(dm_1D, A, pos1, pos1)==11.1
 
+# Info about ranks
+@test PETSc.DMStagGetNumRanks(dm_1D)==1
+@test PETSc.DMStagGetLocationSlot(dm_1D, PETSc.DMSTAG_LEFT,1)  == 1
 
 #PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test.ptr, [pos2]) # this sets a single valu
 
 #PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test.ptr, [pos1; pos2])
 
+# testing different ways to retrieve/set values
+vec_2D  = PETSc.DMCreateLocalVector(dm_2D)
+vec_2D .= 0.0;
+
+
+
+# This is an experimental routine that retrieves the local array related to a certain 
+T_cen = PETSc.DMStagGetArrayLocationSlot(dm_2D,vec_test_2D, PETSc.DMSTAG_ELEMENT, 0)
+
+# Make a loop over all points 
+vec_test_2D_global      =   PETSc.DMCreateGlobalVector(dm_2D)
+vec_test_2D_local       =   PETSc.DMCreateLocalVector(dm_2D)
+
+nStart, nEnd, nExtra    =   PETSc.DMStagGetCorners(dm_2D)
+for ix=nStart[1]:nEnd[1]-1
+    for iy=nStart[2]:nEnd[2]-1
+        
+        # DOF at the center point
+        dof     = 0;
+        pos     = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
+        value   = ix; 
+        PETSc.DMStagVecSetValueStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
+
+        dof     = 1;
+        pos     = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
+        value   = 33; 
+        PETSc.DMStagVecSetValueStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
+        
+    end
+end
+
+PETSc.assemble(vec_test_2D_global) # assemble global vector
+
+PETSc.DMGlobalToLocal(dm_2D,vec_test_2D_global, PETSc.INSERT_VALUES,vec_test_2D_local)
+
+
+
+PETSc.DMStagVecGetArray(dm_2D,vec_test_2D_local);
+
 
 #end
+
+
+
+
+
+
+# NOT WORKING YET
+#lx = zeros(Int32,1);
+#ly = zeros(Int32,1);
+#lz = zeros(Int32,1);
+#PETSc.DMStagGetOwnershipRanges(dm_1D,lx,ly,lz)
+

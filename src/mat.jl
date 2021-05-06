@@ -103,6 +103,7 @@ end
                         (CMat, CPetscViewer),
                     mat, viewer);
         else
+            # not yet assembled
             println("Matrix object")
             println("  size: $(size(mat))")
             println("  Not yet assembled")

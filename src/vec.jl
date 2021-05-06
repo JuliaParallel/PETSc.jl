@@ -116,7 +116,6 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
                     (CVec, Ptr{Ptr{$PetscScalar}}), cv, r_pv)
             end
         else
-            println("BORIS: calling VecGetArrayRead")
             @chk ccall((:VecGetArrayRead, $libpetsc), PetscErrorCode,
                 (CVec, Ptr{Ptr{$PetscScalar}}), cv, r_pv)
         end

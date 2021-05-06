@@ -92,15 +92,30 @@ end
 
 # Compute initial solution
 nx   =   5;
-nz   =   5;
-x0   =   -5;
-xend =    5;
-z0   = - 10;
-zend =    0;
+x0   =   0;
+xend =   1;
 
-dm  = PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,nx,nz,1,1,0,0,1,PETSc.DMSTAG_STENCIL_BOX,2);
-PETSc.DMStagSetUniformCoordinates(dm, x0, xend, z0, zend);
-x   =   PETSc.DMCreateGlobalVector(dm);
+# create dmstag for solution and setup
+dm  = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,nx,1,1,PETSc.DMSTAG_STENCIL_BOX,1);
+# creat uniform coordinates
+PETSc.DMStagSetUniformCoordinates(dm, x0, xend);
+#determine boundary type
+bnd =   PETSc.DMStagGetBoundaryTypes(dm);
+
+a = 1.0; b = 2.0; c = 1.0;
+if bnd == PETSc.DM_BOUNDARY_PERIODIC
+    b = a;
+    c = 0.0;
+end
+
+
+x       = PETSc.DMCreateGlobalVector(dm);
+x_Local = PETSc.DMCreateLocalVector(dm);
+x_array = PETSc.DMStagVecGetArray(dm,x_Local);
+#need coordinate stuff
+start,n,nExtra = PETSc.DMStagGetCorners(dm);
+iu = PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_LEFT, 0);
+ip = PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_ELEMENT, 0);
 
 #FormInitialGuess!(dm,x);
 

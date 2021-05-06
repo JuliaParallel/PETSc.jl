@@ -55,8 +55,8 @@ PETSc.DMStagSetUniformCoordinates(dm_1D, 0, 10)
 
 # retrieve coordinate and value slots
 #@test PETSc.DMStagGetProductCoordinateLocationSlot(dm, PETSc.DMSTAG_RIGHT) == 1
-#@test PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_RIGHT, 0) ==1
-
+@test PETSc.DMStagGetLocationSlot(dm_1D, PETSc.DMSTAG_RIGHT, 0) ==4
+#g = PETSc.DMStagGetLocationSlot(dm_1D, PETSc.DMSTAG_RIGHT, 0)
 # Create a global and local Vec from the DMStag
 vec_test_global     = PETSc.DMCreateGlobalVector(dm_1D)
 vec_test            = PETSc.DMCreateLocalVector(dm_1D)

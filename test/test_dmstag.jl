@@ -53,18 +53,24 @@ dmnew = PETSc.DMStagCreateCompatibleDMStag(dm_3D,1,1,2,2)
 @test PETSc.DMStagGetGlobalSizes(dmnew) == (20, 21, 22)
 
 # Set coordinates 
-PETSc.DMStagSetUniformCoordinates(dm_1D, 0, 10)
+PETSc.DMStagSetUniformCoordinatesExplicit(dm_1D, 0, 10)
 
 # Stencil width
 @test  PETSc.DMStagGetStencilWidth(dm_1D)==2
 
 # retrieve DM with coordinates
-#subDM = PETSc.DMProductGetDM(dm_1D, 0)
+DMcoord = PETSc.DMGetCoordinateDM(dm_1D)
+# create coordinate local vector
+vec_coord = PETSc.DMGetCoordinatesLocal(dm_1D);
+# retreive coordinate array
+X_coord = PETSc.DMStagVecGetArray(DMcoord, vec_coord);
+@test X_coord[1,2] == 0.5
 
+#arr_coord = PETSc.DMStagVecGetArrayRead(DMcoord, vec_coord)
 # retrieve coordinate and value slots
 #@test PETSc.DMStagGetProductCoordinateLocationSlot(dm, PETSc.DMSTAG_RIGHT) == 1
-#@test PETSc.DMStagGetLocationSlot(dm_1D, PETSc.DMSTAG_RIGHT, 0) ==4
-
+@test PETSc.DMStagGetLocationSlot(dm_1D, PETSc.DMSTAG_RIGHT, 0) ==4
+#g = PETSc.DMStagGetLocationSlot(dm_1D, PETSc.DMSTAG_RIGHT, 0)
 # Create a global and local Vec from the DMStag
 vec_test_global     = PETSc.DMCreateGlobalVector(dm_1D)
 vec_test            = PETSc.DMCreateLocalVector(dm_1D)

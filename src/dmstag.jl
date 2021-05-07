@@ -329,6 +329,19 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
+        Sets coordinates for a DMStag object using the Explicit method to specify coordinates (1D arrays)
+    """
+    function DMStagSetUniformCoordinatesExplicit(dm::DMStag, xmin, xmax, ymin=0, ymax=0, zmin=0, zmax=0)
+        
+        @chk ccall((:DMStagSetUniformCoordinatesExplicit, $libpetsc), PetscErrorCode,
+                    ( CDMStag,   $PetscScalar, $PetscScalar, $PetscScalar, 
+                                $PetscScalar, $PetscScalar, $PetscScalar), 
+                            dm, xmin, xmax, ymin, ymax, zmin, zmax)
+
+        return nothing
+    end
+
+    """
         Sets uniform coordinates for a 1D DMStag object 
             DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax)
     """
@@ -768,6 +781,56 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
           return arrX
   
       end
+
+      """
+        Gets the DM that prescribes coordinate layout and scatters between global and local coordinates 
+      """
+      function DMGetCoordinateDM(dm::DMStag; kwargs...)
+
+        comm  = dm.comm
+
+        dim   = DMGetDimension(dm)
+
+        opts  = Options{$PetscScalar}(kwargs...)
+
+        dmnew = DMStag{$PetscScalar}(C_NULL, comm, dim, opts)
+
+        @chk ccall((:DMGetCoordinateDM, $libpetsc), PetscErrorCode,
+        (CDMStag, Ptr{CDMStag}), 
+         dm, dmnew)
+
+        return dmnew
+    end
+
+    """
+        Gets a local vector with the coordinates associated with the DM. 
+    """
+    function DMGetCoordinatesLocal(dm::DMStag; write_val=true, read_val=true)
+
+        v = VecSeq(C_NULL, dm.comm, [0.0])  # empty vector
+        
+        ccall((:DMGetCoordinatesLocal, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
+
+        # Link a julia array to the values from the new vector
+        # If we modify values here, it will automatically be changed in the PetcVec as well
+        v.array = unsafe_localarray($PetscScalar, v.ptr; write=write_val, read=read_val)
+        
+        return v
+    end
+
+    """
+        get read-only access to a local array (needs to translate the pointer into an array)
+    """
+    function DMStagVecGetArrayRead(dm::DMStag, v::AbstractVec)
+
+        X = Ref{$PetscScalar}()
+        
+        ccall((:DMStagVecGetArrayRead, $libpetsc), PetscErrorCode, (CDMStag, CVec, Ptr{$PetscScalar}), dm, v, X)
+
+
+       
+        return X
+    end
       
    
 

@@ -117,6 +117,14 @@ start,n,nExtra = PETSc.DMStagGetCorners(dm);
 iu = PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_LEFT, 0);
 ip = PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_ELEMENT, 0);
 
+dmForcing = PETSc.DMStagCreateCompatibleDMStag(dm,1,0)
+f         = PETSc.DMCreateGlobalVector(dmForcing);
+fLocal    = PETSc.DMCreateLocalVector(dmForcing);
+f        .= c;
+fLocal   .= c;
+
+A   = PETSc.DMCreateMatrix(dm);
+rhs = PETSc.DMCreateGlobalVector(dm);
 #FormInitialGuess!(dm,x);
 
 # Compute initial jacobian using a julia structure to obtain the nonzero structure

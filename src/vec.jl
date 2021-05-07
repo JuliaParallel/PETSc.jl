@@ -82,6 +82,10 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
         @chk ccall((:VecAssemblyEnd, $libpetsc), PetscErrorCode, (CVec,), V)
         return nothing
     end
+    function assemble(V::AbstractVec{$PetscScalar})
+        assemblybegin(V)
+        assemblyend(V)
+    end
 
     function ownershiprange(vec::AbstractVec{$PetscScalar})
         r_lo = Ref{$PetscInt}()

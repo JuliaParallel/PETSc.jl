@@ -169,6 +169,9 @@ end
         @chk ccall((:MatMultTranspose, $libpetsc), PetscErrorCode, (CMat, CVec, CVec), parent(M), x, y)
         return y
     end
+
+   
+
 end    
 
 function assemble(M::AbstractMat, t::MatAssemblyType=MAT_FINAL_ASSEMBLY)
@@ -192,6 +195,16 @@ function MatSeqAIJ(S::SparseMatrixCSC{T}) where {T}
     end
     assemble(M)
     return M
+end
+
+function Base.copyto!(M::PETSc.MatSeqAIJ{T}, S::SparseMatrixCSC{T}) where {T}
+    for j = 1:size(S,2)
+        for ii = S.colptr[j]:S.colptr[j+1]-1
+            i = S.rowval[ii]
+            M[i,j] = S.nzval[ii]
+        end
+    end
+    assemble(M);  
 end
 
 function Base.show(io::IO, ::MIME"text/plain", mat::AbstractMat)

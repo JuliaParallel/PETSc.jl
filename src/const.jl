@@ -12,7 +12,7 @@ macro chk(expr)
 end
 
 const PETSC_DEFAULT = -2
-
+const PETSC_DECIDE =  -1
 
 @enum DMBoundaryType begin
     DM_BOUNDARY_NONE 

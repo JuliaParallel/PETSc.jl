@@ -98,7 +98,7 @@ xend =   1;
 # create dmstag for solution and setup
 dm  = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,nx,1,1,PETSc.DMSTAG_STENCIL_BOX,1);
 # creat uniform coordinates
-PETSc.DMStagSetUniformCoordinates(dm, x0, xend);
+PETSc.DMStagSetUniformCoordinatesExplicit(dm, x0, xend);
 #determine boundary type
 bnd =   PETSc.DMStagGetBoundaryTypes(dm);
 
@@ -108,16 +108,24 @@ if bnd == PETSc.DM_BOUNDARY_PERIODIC
     c = 0.0;
 end
 
-
-x       = PETSc.DMCreateGlobalVector(dm);
-x_Local = PETSc.DMCreateLocalVector(dm);
-x_array = PETSc.DMStagVecGetArray(dm,x_Local);
-#need coordinate stuff
+#Compute reference solution on the grid, using direct array access
+x         = PETSc.DMCreateGlobalVector(dm);
+x_Local   = PETSc.DMCreateLocalVector(dm);
+x_array   = PETSc.DMStagVecGetArray(dm,x_Local);
+dm_coord  = PETSc.DMGetCoordinateDM(dm);
+vec_coord = PETSc.DMGetCoordinatesLocal(dm);
+X_coord = PETSc.DMStagVecGetArray(dm_coord, vec_coord);
 start,n,nExtra = PETSc.DMStagGetCorners(dm);
+
+# Get the correct entries for each of our variables in local element-wise storage
 iu = PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_LEFT, 0);
 ip = PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_ELEMENT, 0);
+ixu = PETSc.DMStagGetLocationSlot(dm_coord, PETSc.DMSTAG_LEFT, 0);
+ixp = PETSc.DMStagGetLocationSlot(dm_coord, PETSc.DMSTAG_ELEMENT, 0);
 
-dmForcing = PETSc.DMStagCreateCompatibleDMStag(dm,1,0)
+#x_array[]
+
+dmForcing = PETSc.DMStagCreateCompatibleDMStag(dm,1,0);
 f         = PETSc.DMCreateGlobalVector(dmForcing);
 fLocal    = PETSc.DMCreateLocalVector(dmForcing);
 f        .= c;

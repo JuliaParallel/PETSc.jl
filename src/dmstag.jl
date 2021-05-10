@@ -635,7 +635,10 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
             dm, x,y,z, m,n,p, nExtrax,nExtray,nExtraz )
 
             if dm.dim==1
-                return (x[],), (m[],), (nExtrax[],)    
+                X = (x[],)
+                M = (m[],)
+                NEXTRA = (nExtrax[],)
+                return X[1], M[1], NEXTRA[1]    
             elseif dm.dim==2
                 return (x[], y[]), (m[],n[]), (nExtrax[],nExtray[])    
             elseif dm.dim==3

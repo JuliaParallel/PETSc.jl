@@ -30,7 +30,7 @@ dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMST
 @test PETSc.DMStagGetBoundaryTypes(dm)==PETSc.DM_BOUNDARY_NONE
 
 # Corners
-@test PETSc.DMStagGetCorners(dm) == ((0,), (20,), (1,))
+@test PETSc.DMStagGetCorners(dm) == (0, 20, 1)
 
 # DOF
 @test PETSc.DMStagGetDOF(dm) == (2,2)

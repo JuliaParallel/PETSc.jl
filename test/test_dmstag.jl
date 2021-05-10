@@ -366,7 +366,6 @@ end
 # Main SNES part
 using ForwardDiff, SparseArrays
 PJ           =      PETSc.DMCreateMatrix(user_ctx.dm);                  # extract (global) matrix from DMStag
-FormJacobian!(x_g.ptr, PJ, PJ, user_ctx)                                # preallocate the nonzero structure of the jacobian
 
 julia_vec    =      0;
 S = PETSc.SNES{Float64}(MPI.COMM_SELF, julia_vec; 

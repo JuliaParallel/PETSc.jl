@@ -91,7 +91,7 @@ end
 
 
 # Compute initial solution
-nx   =   5;
+nx   =   3;
 x0   =   0;
 xend =   1;
 
@@ -126,6 +126,7 @@ ixp = PETSc.DMStagGetLocationSlot(dm_coord, PETSc.DMSTAG_ELEMENT, 0);
 x_array[1:end  ,iu+1] .= a  .+ (b .- a .- (c./2.0)) .* X_coord[1:end,ixu+1] .+ (c./2.0).*X_coord[1:end,ixu+1].*X_coord[1:end,ixu+1];
 x_array[1:end-1,ip+1] .= b .- a .- (c./2.0) .+ c .* X_coord[1:end-1,ixp+1];
 
+PETSc.DMLocalToGlobal(dm, x_Local, PETSc.INSERT_VALUES, x)
 dmForcing = PETSc.DMStagCreateCompatibleDMStag(dm,1,0);
 f         = PETSc.DMCreateGlobalVector(dmForcing);
 fLocal    = PETSc.DMCreateLocalVector(dmForcing);

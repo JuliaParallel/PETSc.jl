@@ -434,13 +434,15 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
 
     """
-        Retrieves an array that holds values on the DMStag
+        Retrieves a local array that holds local values (including ghost points) of the DMStag
             
             Array =  DMStagVecGetArray(dm::DMStag, v::AbstractVec)
 
-        Once you are done with work on the array, release the memory with
+        Once you are done with work on the array, you MUST release the memory with
                 
-            finalize(Array)
+            Base.finalize(Array)
+
+        Otherwise the values are not returned correctly to v    
 
     """
     function DMStagVecGetArray(dm::DMStag, v::AbstractVec)
@@ -448,13 +450,32 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         # to wrap an existing array into another one. Our vec already has the array wrapper, 
         # so we reshape that 
 
-        # also: note that we are calling a helper function with a julia vector as input
-        #  this is done to make it easier
-        X1 = DMStagVecGetArray(dm, v.array) 
+        # Extract array from vector. Note: we need to release this by calling 
+        # Base.finalize on X1!
+        v.array     =   unsafe_localarray($PetscScalar, v.ptr;  write=true, read=true)
+
+        X1          =   DMStagVecGetArray(dm, v.array) 
         
         return X1
     end
 
+    """
+       As DMStagVecGetArray, but with only reading the memory (not writing values back)
+       
+    """
+    function DMStagVecGetArrayRead(dm::DMStag, v::AbstractVec)
+        # Note: there is actually no need to call PETSc again, as Julia has the possibility 
+        # to wrap an existing array into another one. Our vec already has the array wrapper, 
+        # so we reshape that 
+
+        # Extract array from vector. Note: we need to release this by calling 
+        # finalize on X1!
+        v.array     =   unsafe_localarray($PetscScalar, v.ptr;  write=false, read=true)
+
+        X1          =   DMStagVecGetArray(dm, v.array) 
+        
+        return X1
+    end
 
     function DMStagVecGetArray(dm::DMStag, v)
 
@@ -474,6 +495,8 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
        
         return X1
     end
+
+
 
     """
         Julia routine that extracts an array related to a certain DOF. 
@@ -495,21 +518,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
                         Modifying values in Array will update v
 
     """
-    function DMStagGetArrayLocationSlot(dm::DMStag, v::AbstractVec, loc::DMStagStencilLocation, dof::Int)
-        entriesPerElement   =   DMStagGetEntriesPerElement(dm)
-        dim                 =   DMGetDimension(dm);  
-        slot                =   DMStagGetLocationSlot(dm, loc, dof); 
-        slot_start          =   mod(slot,entriesPerElement);          # figure out which component we are interested in
-
-        ArrayFull           =   DMStagVecGetArray(dm, v);             # obtain access to full array
-
-        # now extract only the dimension belonging to the current point
-        Array               =   selectdim(ArrayFull,dim+1, slot_start+1);
-
-        return Array
-    end
-
-    function DMStagGetArrayLocationSlot(dm::DMStag, v, loc::DMStagStencilLocation, dof::Int)
+    function DMStagGetGhostArrayLocationSlot(dm::DMStag, v::AbstractVec, loc::DMStagStencilLocation, dof::Int)
         entriesPerElement   =   DMStagGetEntriesPerElement(dm)
         dim                 =   DMGetDimension(dm);  
         slot                =   DMStagGetLocationSlot(dm, loc, dof); 
@@ -1009,22 +1018,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         
         return v
     end
-
-    """
-        get read-only access to a local array (needs to translate the pointer into an array)
-    """
-    function DMStagVecGetArrayRead(dm::DMStag, v::AbstractVec)
-
-        X = Ref{$PetscScalar}()
-        
-        ccall((:DMStagVecGetArrayRead, $libpetsc), PetscErrorCode, (CDMStag, CVec, Ptr{$PetscScalar}), dm, v, X)
-
-
-       
-        return X
-    end
-      
-   
+ 
 
 end
 

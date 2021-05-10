@@ -1,6 +1,8 @@
 using Test
 using PETSc, MPI, LinearAlgebra, SparseArrays
 
+PETSc.initialize()
+
 m,n = 20,20
 x = randn(n)
 V = PETSc.VecSeq(x)
@@ -66,29 +68,12 @@ M = PETSc.MatShell{Float64}(f!,10,10)
 x = rand(10)
 
 @test M*x ≈ 2x
-@test PETSc.KSP(M) \ x ≈ x/2
+#@test PETSc.KSP(M) \ x ≈ x/2
 
 
-function F!(fx, x)
-  fx[1] = x[1]^2 + x[1]*x[2] - 3
-  fx[2] = x[1]*x[2] + x[2]^2 - 6
-end
-
-J = zeros(2,2)
-PJ = PETSc.MatSeqDense(J)
-function updateJ!(x, args...)
-    J[1,1] = 2x[1] + x[2]
-    J[1,2] = x[1]
-    J[2,1] = x[2]
-    J[2,2] = x[1] + 2x[2]
-end
-
-S = PETSc.SNES{Float64}(MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
-PETSc.setfunction!(S, F!, PETSc.VecSeq(zeros(2)))
-PETSc.setjacobian!(S, updateJ!, PJ, PJ)
-@test PETSc.solve!([2.0,3.0], S) ≈ [1.0,2.0] rtol=1e-4
+include("test_snes.jl")
+#include("test_dmstag.jl")
 
 
 
-
-include("test_dmstag.jl")
+#PETSc.finalize()

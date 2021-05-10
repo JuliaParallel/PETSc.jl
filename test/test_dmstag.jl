@@ -256,21 +256,34 @@ pos     = PETSc.DMStagStencil(PETSc.DMSTAG_DOWN,2,2,0,dof)
 
 if 1==0
 
-# Construct a 1D test case for a diffusion solver, with 1 DOF @ the center
-nx      =   10;
-dm_1D   =   PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,nx,0,1);
-v_g     =   PETSc.DMCreateGlobalVector(dm_1D)
-v_l     =   PETSc.DMCreateLocalVector(dm_1D)
+# Define a struct that holds data we need in the local routines    
+mutable struct Data
+    dm
+    x_l
+    f_l
+end
+user_ctx = Data(nothing, nothing, nothing);  # holds data we need in the local 
 
-function FormResidual!(cx_global,cfx_global, args...)
-    # In PETSc, x and fx are global vectors. locally, we however deal with local vectors
+# Construct a 1D test case for a diffusion solver, with 1 DOF @ the center
+nx              =   10;
+user_ctx.dm     =   PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,nx,1,0);
+x_g             =   PETSc.DMCreateGlobalVector(dm_1D)
+f_g             =   PETSc.DMCreateGlobalVector(dm_1D)
+user_ctx.x_l    =   PETSc.DMCreateLocalVector(dm_1D)
+user_ctx.f_l    =   PETSc.DMCreateLocalVector(dm_1D)
+
+
+function FormRes!(cx_g,cfx_g, user_data)
+    # In PETSc, cx and cfx are pointers to global vectors. 
+    PETSc.DMGlobalToLocal(user_ctx.dm,cx_g,  PETSc.INSERT_VALUES,user_ctx.x_l) 
+    PETSc.DMGlobalToLocal(user_ctx.dm,cfx_g, PETSc.INSERT_VALUES,user_ctx.f_l) 
 
     # perhaps copy global -> local
     @show x, typeof(x)
 
     # Retrieve an array with T @ vertex points
     #  NOTE: we stil need to work on the case that points are defined @ center points 
-    T           =   PETSc.DMStagGetArrayLocationSlot(dm_1D,x, PETSc.DMSTAG_ELEMENT, 0); 
+    T           =   PETSc.DMStagGetArrayLocationSlot(user_ctx.dm,user_ctx.x_l, PETSc.DMSTAG_ELEMENT, 0); 
     #P           =   PETSc.DMStagGetArrayLocationSlot(dm_1D,x, PETSc.DMSTAG_LEFT, 0); 
 
     fT          =   PETSc.DMStagGetArrayLocationSlot(dm_1D,f, PETSc.DMSTAG_ELEMENT, 0); 
@@ -295,6 +308,7 @@ end
 
 
 function  ForwardDiff_res(x)
+
     f   = zero(x)               # vector of zeros, of same type as e
     FormResidual!(f,x);
     return f;

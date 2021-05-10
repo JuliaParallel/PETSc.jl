@@ -857,23 +857,36 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     """
         Copies Local to global vector
     """
-    function DMLocalToGlobal(dm::DMStag,l::AbstractVec, mode::InsertMode,g::AbstractVec)
+    function DMLocalToGlobal(dm::DMStag,l::AbstractVec{$PetscScalar}, mode::InsertMode,g::AbstractVec{$PetscScalar})
+
+        DMLocalToGlobal(dm,l.ptr, mode,g.ptr)
+
+        return nothing
+    end
+    function DMLocalToGlobal(dm::DMStag,l::CVec, mode::InsertMode,g::CVec)
 
         @chk ccall((:DMLocalToGlobal, $libpetsc), PetscErrorCode,
         (CDMStag, CVec, InsertMode, CVec), 
-            dm, l.ptr, mode, g.ptr)
+            dm, l, mode, g)
 
         return nothing
     end
 
     """
-    Copies Global to Local vector
+        Copies Global to Local vector
     """
-    function DMGlobalToLocal(dm::DMStag,g::AbstractVec, mode::InsertMode,l::AbstractVec)
+    function DMGlobalToLocal(dm::DMStag,g::AbstractVec{$PetscScalar}, mode::InsertMode,l::AbstractVec{$PetscScalar})
+
+        DMGlobalToLocal(dm,g.ptr, mode::InsertMode,l.ptr)
+
+        return nothing
+    end
+
+    function DMGlobalToLocal(dm::DMStag,g::CVec, mode::InsertMode,l::CVec)
 
         @chk ccall((:DMGlobalToLocal, $libpetsc), PetscErrorCode,
         (CDMStag, CVec, InsertMode, CVec), 
-            dm, g.ptr, mode, l.ptr)
+            dm, g, mode, l)
 
         return nothing
     end

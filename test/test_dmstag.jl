@@ -187,10 +187,10 @@ vec_2D .= 0.0;
 PETSc.destroy(dm_2D);
 
 
-dofCenter       =   0;
+dofCenter       =   1;
 dofEdge         =   1;
 dofVertex       =   0
-stencilWidth    =   0;
+stencilWidth    =   1;
 dm_2D = PETSc.DMStagCreate2d(MPI.COMM_SELF,
                                 PETSc.DM_BOUNDARY_GHOSTED,
                                 PETSc.DM_BOUNDARY_GHOSTED,
@@ -219,10 +219,10 @@ for ix=nStart[1]:nEnd[1]-1
         value   = 33; 
         PETSc.DMStagVecSetValueStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
         
-      #  dof     = 1;
-      #  pos     = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,ix,iy,0,dof)
-      #  value   = 44; 
-      #  PETSc.DMStagVecSetValueStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
+        dof     = 0;
+        pos     = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
+        value   = 44; 
+        PETSc.DMStagVecSetValueStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
         
       #  dof     = 0;
       #  pos     = PETSc.DMStagStencil(PETSc.DMSTAG_FRONT,ix,iy,0,dof)
@@ -233,15 +233,58 @@ for ix=nStart[1]:nEnd[1]-1
 end
 PETSc.assemble(vec_test_2D_global) # assemble global vector
 
-
 PETSc.DMGlobalToLocal(dm_2D,vec_test_2D_global, PETSc.INSERT_VALUES,vec_test_2D_local)   # copy global 2 local vector and update ghost points
-PETSc.DMStagVecGetArray(dm_2D,vec_test_2D_local);           # extract arrays with all DOF (mostly for visualizing)
+X2D_dofs = PETSc.DMStagVecGetArray(dm_2D,vec_test_2D_local)           # extract arrays with all DOF (mostly for visualizing)
+
+# Retrieve a local array 
+Xarray = PETSc.DMStagGetArrayLocationSlot(dm_2D,vec_test_2D_local, PETSc.DMSTAG_LEFT, 0)
+
+@test sum(X2D_dofs[:,:,2]-Xarray)==0        # check if the local 
 
 
-# This is an experimental routine that retrieves the local array related to a certain 
-Xarray = PETSc.DMStagGetArrayLocationSlot(dm_2D,vec_test_2D_local, PETSc.DMSTAG_DOWN, 0)
+# retrieve value back from the local array and check that it agrees with the 
+dof     = 0;
+pos     = PETSc.DMStagStencil(PETSc.DMSTAG_DOWN,2,2,0,dof)
+@test PETSc.DMStagVecGetValueStencil(dm_2D, vec_test_2D_local, pos) == 12.0
 
-#end
+#PETSc.destroy(dm_2D)
+
+# Construct a 1D test case for a diffusion solver, with 1 DOF @ the center
+nx      =   50;
+dm_1D   =   PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,nx,1,0);
+v_g     =   PETSc.DMCreateGlobalVector(dm_1D)
+v_l     =   PETSc.DMCreateLocalVector(dm_1D)
+
+function Residual(x)
+
+    # Retrieve an array with T @ vertex points
+    #  NOTE: we stil need to work on the case that points are defined @ center points 
+    T           =     PETSc.DMStagGetArrayLocationSlot(dm_1D,x, PETSc.DMSTAG_LEFT, 0); # includes ghost points
+    
+    n           =     length(T);    # array length
+    f           =     zero(T)       # same type as x   
+    
+    # compute the FD stencil
+    dx          =     1.0/(n-1);
+    f[1]        =     T[1]-1.;                                  # left BC
+    f[2:n-1]    =     (T[3:n] - 2*T[2:n-1] + T[1:n-2])/dx^2     # steady state diffusion
+    f[n]        =     T[n]-10.;                                 # right BC
+
+    return f
+end
+
+using ForwardDiff, SparseArrays
+J           =       ForwardDiff.jacobian(Residual, (v_l.array));        # compute jacobian automatically
+J           =       sparse(J);                                          # Create sparse matrix from this
+
+A           =       PETSc.DMCreateMatrix(dm_1D);                        # extract (global) matrix from DMStag
+A          .=       J;                                                  # set values in PETSc matrix
+
+ksp         =       PETSc.KSP(A; ksp_rtol=1e-8, ksp_monitor=true)       # create KSP object
+sol         =       PETSc.DMCreateGlobalVector(dm_1D);
+rhs         =      -Residual(sol.array);                               # initial rhs vector
+
+sol_julia   =       ksp\rhs;                                            # solve, using ksp
 
 
 
@@ -251,4 +294,6 @@ Xarray = PETSc.DMStagGetArrayLocationSlot(dm_2D,vec_test_2D_local, PETSc.DMSTAG_
 #ly = zeros(Int32,1);
 #lz = zeros(Int32,1);
 #PETSc.DMStagGetOwnershipRanges(dm_1D,lx,ly,lz)
+
+#end
 

@@ -316,7 +316,6 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
     function Base.size(dm::DMStag{$PetscScalar})
         size = DMStagGetGlobalSizes(dm)
-        
         return size
     end
 
@@ -449,42 +448,84 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         # to wrap an existing array into another one. Our vec already has the array wrapper, 
         # so we reshape that 
 
+        # also: note that we are calling a helper function with a julia vector as input
+        #  this is done to make it easier
+        X1 = DMStagVecGetArray(dm, v.array) 
+        
+        return X1
+    end
+
+
+    function DMStagVecGetArray(dm::DMStag, v)
+
         entriesPerElement   =   DMStagGetEntriesPerElement(dm)
         nGhost              =   DMStagGetGhostCorners(dm)
         dim                 =   DMGetDimension(dm);         
       
         # Dimensions of new array (see the PETSc DMStagVecGetArrayRead routine)
-        #  NOTE: in doing this, we assume here that startGhost=0 in all dimensions.
         dim_vec             =   [entriesPerElement; collect(nGhost[2])];  
 
-        # Wrap julia vector to new vector
-        X                   =   unsafe_wrap(Array, pointer(v.array),prod(dim_vec), own=false)
+        # Wrap julia vector to new vector.
+        X                   =    Base.view(v,:);
         
         # reshape to correct format
-        X  = reshape(v.array, Tuple(dim_vec))
-        X1 = PermutedDimsArray(X, Tuple([2:dim+1;1]));   # permute to take care of different array ordering in C/Julia
+        X                   =   reshape(v, Tuple(dim_vec))
+        X1                  =   PermutedDimsArray(X, Tuple([2:dim+1;1]));   # permute to take care of different array ordering in C/Julia
        
         return X1
     end
 
     """
-        This is a convenience routine that extracts an array related to a certain DOF
+        Julia routine that extracts an array related to a certain DOF. 
+        Modifying values in the array will change them in the local PetscVec. Use LocalToGlobal to update global vector values
+
+        Usage:
+
+            Array = DMStagGetArrayLocationSlot(dm::DMStag, v::AbstractVec, loc::DMStagStencilLocation, dof::Int)
+
+        Input:
+            dm      -   the DMStag object 
+            v 	    -   the local vector as obtained with DMCreateLocalVector
+            loc  	-   a DMStagStencilLocation
+            dof 	-   the degree of freedom on loc, which you want to extracts
+        
+        Output:
+
+            Array 	-   local array that includes the ghost points, that is linked to the vector v. 
+                        Modifying values in Array will update v
+
     """
     function DMStagGetArrayLocationSlot(dm::DMStag, v::AbstractVec, loc::DMStagStencilLocation, dof::Int)
         entriesPerElement   =   DMStagGetEntriesPerElement(dm)
-        nGhost              =   DMStagGetGhostCorners(dm)
         dim                 =   DMGetDimension(dm);  
         slot                =   DMStagGetLocationSlot(dm, loc, dof); 
-        len                 =   length(v.array);
+        slot_start          =   mod(slot,entriesPerElement);          # figure out which component we are interested in
 
-        Array               =   Base.view(v.array,1+slot:entriesPerElement:len)
+        ArrayFull           =   DMStagVecGetArray(dm, v);             # obtain access to full array
+
+        # now extract only the dimension belonging to the current point
+        Array               =   selectdim(ArrayFull,dim+1, slot_start+1);
 
         return Array
     end
 
+    function DMStagGetArrayLocationSlot(dm::DMStag, v, loc::DMStagStencilLocation, dof::Int)
+        entriesPerElement   =   DMStagGetEntriesPerElement(dm)
+        dim                 =   DMGetDimension(dm);  
+        slot                =   DMStagGetLocationSlot(dm, loc, dof); 
+        slot_start          =   mod(slot,entriesPerElement);          # figure out which component we are interested in
+
+        ArrayFull           =   DMStagVecGetArray(dm, v);             # obtain access to full array
+
+        # now extract only the dimension belonging to the current point
+        Array               =   selectdim(ArrayFull,dim+1, slot_start+1);
+
+        return Array
+    end
 
     """
         Retrieves a coordinate slot from a DMStag object, if the coordinates are set as ProductCoordinate 
+
             slot = DMStagGetProductCoordinateLocationSlot(dm::DMStag,loc::DMStagStencilLocation)
     """
     function DMStagGetProductCoordinateLocationSlot(dm::DMStag,loc::DMStagStencilLocation)

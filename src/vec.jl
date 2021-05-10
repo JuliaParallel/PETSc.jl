@@ -52,6 +52,7 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
         @chk ccall((:VecCreateSeqWithArray, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CVec}),
                 comm, blocksize, length(X), X, v)
+        v.array =   unsafe_localarray(Float64, v.ptr, write=true);          # link local julia array with PETSc Vec
         finalizer(destroy, v)
         return v
     end
@@ -107,6 +108,16 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
         @chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode,
             (CVec, Ptr{$PetscInt}), cv, r_sz)
         return r_sz[]
+    end
+
+    function setvalues!(vec::AbstractVec{$PetscScalar},idxs,vals, insertmode::InsertMode)
+        idxs = Vector(Int32,idxs);
+        vals = Vector(vals);
+  
+        @chk ccall((:VecSetValues, $libpetsc), PetscErrorCode, 
+                 (CVec, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar},InsertMode), vec, length(idxs), idxs, vals, insertmode)
+        return nothing
+
     end
 
     function unsafe_localarray(::Type{$PetscScalar}, cv::CVec; read::Bool=true, write::Bool=true)

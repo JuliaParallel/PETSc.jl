@@ -477,7 +477,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return X1
     end
 
-    function DMStagVecGetArray(dm::DMStag, v)
+    function DMStagVecGetArray(dm::DMStag, v::Vector)
 
         entriesPerElement   =   DMStagGetEntriesPerElement(dm)
         nGhost              =   DMStagGetGhostCorners(dm)
@@ -495,7 +495,6 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
        
         return X1
     end
-
 
 
     """
@@ -518,13 +517,25 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
                         Modifying values in Array will update v
 
     """
-    function DMStagGetGhostArrayLocationSlot(dm::DMStag, v::AbstractVec, loc::DMStagStencilLocation, dof::Int)
+    function DMStagGetGhostArrayLocationSlot(dm::DMStag, v::AbstractVec{$PetscScalar}, loc::DMStagStencilLocation, dof::Int)
         entriesPerElement   =   DMStagGetEntriesPerElement(dm)
         dim                 =   DMGetDimension(dm);  
         slot                =   DMStagGetLocationSlot(dm, loc, dof); 
         slot_start          =   mod(slot,entriesPerElement);          # figure out which component we are interested in
 
         ArrayFull           =   DMStagVecGetArray(dm, v);             # obtain access to full array
+
+        # now extract only the dimension belonging to the current point
+        Array               =   selectdim(ArrayFull,dim+1, slot_start+1);
+
+        return Array
+    end
+
+    function DMStagGetGhostArrayLocationSlot(dm::DMStag, ArrayFull::PermutedDimsArray, loc::DMStagStencilLocation, dof::Int)
+        entriesPerElement   =   DMStagGetEntriesPerElement(dm)
+        dim                 =   DMGetDimension(dm);  
+        slot                =   DMStagGetLocationSlot(dm, loc, dof); 
+        slot_start          =   mod(slot,entriesPerElement);          # figure out which component we are interested in
 
         # now extract only the dimension belonging to the current point
         Array               =   selectdim(ArrayFull,dim+1, slot_start+1);
@@ -863,6 +874,12 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
         return nothing
     end
+    function DMLocalToGlobal(dm::DMStag,l::AbstractVec{$PetscScalar}, mode::InsertMode,g::CVec)
+
+        DMLocalToGlobal(dm,l.ptr, mode,g)
+
+        return nothing
+    end
     function DMLocalToGlobal(dm::DMStag,l::CVec, mode::InsertMode,g::CVec)
 
         @chk ccall((:DMLocalToGlobal, $libpetsc), PetscErrorCode,
@@ -878,6 +895,13 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     function DMGlobalToLocal(dm::DMStag,g::AbstractVec{$PetscScalar}, mode::InsertMode,l::AbstractVec{$PetscScalar})
 
         DMGlobalToLocal(dm,g.ptr, mode::InsertMode,l.ptr)
+
+        return nothing
+    end
+
+    function DMGlobalToLocal(dm::DMStag,g::CVec, mode::InsertMode,l::AbstractVec{$PetscScalar})
+
+        DMGlobalToLocal(dm,g, mode::InsertMode,l.ptr)
 
         return nothing
     end

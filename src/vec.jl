@@ -52,7 +52,6 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
         @chk ccall((:VecCreateSeqWithArray, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CVec}),
                 comm, blocksize, length(X), X, v)
-        v.array =   unsafe_localarray(Float64, v.ptr, write=true);          # link local julia array with PETSc Vec
         finalizer(destroy, v)
         return v
     end
@@ -99,7 +98,7 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
     function view(vec::AbstractVec{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(vec.comm))
         @chk ccall((:VecView, $libpetsc), PetscErrorCode,
                     (CVec, CPetscViewer),
-                vec, viewer);
+                vec.ptr, viewer);
         return nothing
     end
 

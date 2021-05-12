@@ -1,10 +1,3 @@
-# This implements src/snes/examples/tutorials/ex2.c from PETSc using the PETSc.jl package, using SNES
-#
-# This is the same as SNES_ex2b.j, except that we show how automatic differentiation can be used to
-# compute the jacobian. 
-#
-# Newton method to solve u'' + u^{2} = f, sequentially.
-
 using PETSc, MPI, LinearAlgebra, SparseArrays, Plots, ForwardDiff
 
 if ~MPI.Initialized()
@@ -13,85 +6,12 @@ end
 
 PETSc.initialize()
 
-```
-    Computes initial guess 
-```
-function FormInitialGuess!(dm,x)
-
-    x_Local = PETSc.DMCreateLocalVector(dm);
-    x_array = PETSc.DMStagVecGetArray(dm,x_Local);
-    x_array[1:2,1:2] .= 1;
-    PETSc.DMLocalToGlobal(dm, x_Local, PETSc.INSERT_VALUES, x)
-end
-
-```
-    Computes the residual f, given solution vector x
-```
-function FormResidual!(f,x)
-    n       =   length(x);
-    xp      =   LinRange(0.0,1.0, n);
-    F       =   6.0.*xp .+ (xp .+1.e-12).^6.0;      # define source term function
-    
-    dx      =   1.0/(n-1.0);
-    f[1]    =   x[1] - 0.0;
-    for i=2:n-1
-        f[i] = (x[i-1] - 2.0*x[i] + x[i+1])/dx^2 + x[i]*x[i] - F[i]
-    end
-    f[n]    =   x[n] - 1.0;
-
-end
-
-```
-    Wrapper which makes it easier to compute the jacobian using automatic differntiation
-```
-function  ForwardDiff_routine(x)
-
-    f   = zero(x)               # vector of zeros, of same type as e
-    FormResidual!(f,x);
-
-    return f;
-end
-
-```
-    This copies a julia sparse matrix to PETSc MatSeqAIJ format
-```
-function Mat_JuliaToPETSc!(J::PETSc.MatSeqAIJ, J_julia::SparseMatrixCSC)
-
-    for i = 1:size(J_julia,1)
-        col = J_julia[i,:];
-        row = ones(Int32,length(col.nzind))*i;
-        for j=1:length(col.nzind)
-            J[i, col.nzind[j]] = col.nzval[j];
-        end
-    end
-    PETSc.assemble(J);  # finalize assembly
-
-end
-
-```
-    Computes the jacobian, given solution vector x
-```
-function FormJacobian!(x, args...)
-
-    J        =   args[1];        # preconditioner = args[2], in case we want it to be different from J
-
-    # Use AD to compute jacobian; by transferring x into sparse, the output will be sparse
-    J_julia  =   ForwardDiff.jacobian(ForwardDiff_routine,sparse(x));
-
-    if typeof(J) <: PETSc.AbstractMat
-        Mat_JuliaToPETSc!(J, J_julia);  # transfer julia sparse matrix 2 petsc
-    else
-        J .= J_julia;
-    end
-end
-
-
 # ==========================================
 # Main code 
 
 
 # Compute initial solution
-nx   =   5;
+nx   =   3;
 x0   =   0;
 xend =   1;
 
@@ -109,9 +29,9 @@ if bnd == PETSc.DM_BOUNDARY_PERIODIC
 end
 
 #Compute reference solution on the grid, using direct array access
-x         = PETSc.DMCreateGlobalVector(dm);
-x_Local   = PETSc.DMCreateLocalVector(dm);
-x_array   = PETSc.DMStagVecGetArray(dm,x_Local);
+xa        = PETSc.DMCreateGlobalVector(dm);
+xa_Local  = PETSc.DMCreateLocalVector(dm);
+xa_array  = PETSc.DMStagVecGetArray(dm,xa_Local);
 dm_coord  = PETSc.DMGetCoordinateDM(dm);
 vec_coord = PETSc.DMGetCoordinatesLocal(dm);
 X_coord = PETSc.DMStagVecGetArray(dm_coord, vec_coord);
@@ -123,8 +43,10 @@ ip = PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_ELEMENT, 0);
 ixu = PETSc.DMStagGetLocationSlot(dm_coord, PETSc.DMSTAG_LEFT, 0);
 ixp = PETSc.DMStagGetLocationSlot(dm_coord, PETSc.DMSTAG_ELEMENT, 0);
 
-#x_array[]
+xa_array[1:end  ,iu+1] .= a  .+ (b .- a .- (c./2.0)) .* X_coord[1:end,ixu+1] .+ (c./2.0).*X_coord[1:end,ixu+1].*X_coord[1:end,ixu+1];
+xa_array[1:end-1,ip+1] .= b .- a .- (c./2.0) .+ c .* X_coord[1:end-1,ixp+1];
 
+PETSc.DMLocalToGlobal(dm, xa_Local, PETSc.INSERT_VALUES, xa)
 dmForcing = PETSc.DMStagCreateCompatibleDMStag(dm,1,0);
 f         = PETSc.DMCreateGlobalVector(dmForcing);
 fLocal    = PETSc.DMCreateLocalVector(dmForcing);
@@ -133,34 +55,93 @@ fLocal   .= c;
 
 A   = PETSc.DMCreateMatrix(dm);
 rhs = PETSc.DMCreateGlobalVector(dm);
-#FormInitialGuess!(dm,x);
 
-# Compute initial jacobian using a julia structure to obtain the nonzero structure
-# Note that we can also obtain this structure in a different manner
-#Jstruct  = zeros(n,n);
-#FormJacobian!(x, Jstruct);                              # jacobian in julia form
-#Jsp      =   sparse(Float64.(abs.(Jstruct) .> 0))       # sparse julia, with 1.0 in nonzero spots
-#PJ       =   PETSc.MatSeqAIJ(Jsp);                      # transfer to PETSc (initialize matrix with correct nonzero pattern)
+for e in start:start+n-1
 
-# Setup SNES
-#x_s = PETSc.VecSeq(x);                  # solution vector
-#res = PETSc.VecSeq(zeros(size(x)));     # residual vector
+    pos1 = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,e,0,0,0);
+    val1 = 0.0;
+    PETSc.DMStagVecSetValueStencil(dm, rhs, pos1, val1, PETSc.INSERT_VALUES);
 
-#S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
-#        snes_rtol=1e-12, 
-#        snes_monitor=true, 
-#        snes_converged_reason=true);
-#PETSc.setfunction!(S, FormResidual!, res)
-#PETSc.setjacobian!(S, FormJacobian!, PJ, PJ)
+    pos2 = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,e,0,0,0);
+    if e == start
+        val2 = a;
+    else
+        val2 = PETSc.DMStagVecGetValueStencil(dmForcing, fLocal, pos2);
+    end
+    PETSc.DMStagVecSetValueStencil(dm, rhs, pos2, val2, PETSc.INSERT_VALUES);
 
-# solve
-#PETSc.solve!(x_s, S);
+    if e == start+n-1
+        pos3 = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,e,0,0,0);
+        val3 = b;
+        PETSc.DMStagVecSetValueStencil(dm, rhs, pos3, val3, PETSc.INSERT_VALUES);
+    end
+end
 
-# Extract & plot solution
-#x_sol = x_s.array;                  # convert solution to julia format
-#FormResidual!(res.array,x_sol)      # just for checking, compute residual
-#@show norm(res.array)
+PETSc.assemble(rhs)
 
-#plot(LinRange(0,1,n),x_sol,xlabel="width",ylabel="solution")
+for e in start:start+n-1
+    row = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,e,0,0,0);
+    if e == start
+        val1 = 1.0;
+        PETSc.DMStagMatSetValueStencil(dm, A, row, row, val1, PETSc.INSERT_VALUES);
+    else
+        col1 = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,e,0,0,0);
+        col2 = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,e-1,0,0,0);
+
+        xp1 = PETSc.DMStagVecGetValueStencil(dm_coord, vec_coord, col1);
+        xp2 = PETSc.DMStagVecGetValueStencil(dm_coord, vec_coord, col2);
+        h   = xp1-xp2;
+        #print("h = ", h,", xp1 = ",xp1,", xp2 = ",xp2,"\n")
+        
+        val1 = 1.0/h;
+        val2 = -1.0/h;
+        val3 = 0.0;
+
+        PETSc.DMStagMatSetValueStencil(dm, A, row, col1, val1, PETSc.INSERT_VALUES);
+        PETSc.DMStagMatSetValueStencil(dm, A, row, col2, val2, PETSc.INSERT_VALUES);
+        PETSc.DMStagMatSetValueStencil(dm, A, row, row , val3, PETSc.INSERT_VALUES);
+    end
+    if e == start+n-1
+        row2 = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,e,0,0,0);
+        val4 = 1.0
+        PETSc.DMStagMatSetValueStencil(dm, A, row2, row2, val4, PETSc.INSERT_VALUES);
+    end
+
+    row  = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,e,0,0,0);
+    col1 = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,e,0,0,0);
+    col2 = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,e,0,0,0);
+
+    xu1 = PETSc.DMStagVecGetValueStencil(dm_coord, vec_coord, col1);
+    xu2 = PETSc.DMStagVecGetValueStencil(dm_coord, vec_coord, col2);
+    h   = xu1-xu2;
+
+    val1 = -1.0/h;
+    val2 = 1.0/h;
+    val3 = 1.0;
+
+    PETSc.DMStagMatSetValueStencil(dm, A, row, col1, val1, PETSc.INSERT_VALUES);
+    PETSc.DMStagMatSetValueStencil(dm, A, row, col2, val2, PETSc.INSERT_VALUES);
+    PETSc.DMStagMatSetValueStencil(dm, A, row, row , val3, PETSc.INSERT_VALUES);
+end
+
+PETSc.assemble(A)
+
+x   = PETSc.DMCreateGlobalVector(dm);
+ksp = PETSc.KSP(A);
+PETSc.solve!(x,ksp,rhs);
+
+xLocal    = PETSc.DMCreateLocalVector(dm);
+PETSc.DMGlobalToLocal(dm,x, PETSc.INSERT_VALUES,xLocal)
+xu         =   PETSc.DMStagGetGhostArrayLocationSlot(dm,xLocal, PETSc.DMSTAG_LEFT, 0);
+xp         =   PETSc.DMStagGetGhostArrayLocationSlot(dm,xLocal, PETSc.DMSTAG_ELEMENT, 0);
+
+print("u_array = ",xu,"\np_array = ",xp,"\n");
+
+xa_norm    = LinearAlgebra.norm(xa);
+error      = xa.-x
+error_norm = LinearAlgebra.norm(error);
+errRel     = error_norm/xa_norm;
+
+print("Error (abs): ",error_norm,"\nError (rel): ",errRel,"\n");
 
 #PETSc.finalize()

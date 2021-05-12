@@ -267,11 +267,24 @@ user_ctx = Data(nothing, nothing, nothing);  # holds data we need in the local
 
 # Construct a 1D test case for a diffusion solver, with 1 DOF @ the center
 nx              =   21;
-user_ctx.dm     =   PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,nx,1,1);
+#user_ctx.dm     =   PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,nx,1,1);
+user_ctx.dm     =   PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_GHOSTED,nx,1,1, PETSc.DMSTAG_STENCIL_BOX,1);
+
+
 x_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
 f_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
 user_ctx.x_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
 user_ctx.f_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
+
+
+
+ArrayLocal      =   PETSc.DMStagVecGetArray(user_ctx.dm, user_ctx.x_l);
+Nstart, Nend   =     PETSc.DMStagGetCentralNodes(user_ctx.dm); 
+ArrayLocal[Nstart[1]:Nend[1]] .= 1
+
+PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.x_l, PETSc.INSERT_VALUES, x_g) 
+
+
 
 
 function FormRes!(cfx_g, cx_g, user_ctx)
@@ -299,31 +312,37 @@ function FormRes!(cfx_g, cx_g, user_ctx)
 end
 
 function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
-     # Compute the local residual. The vectors include ghost points 
+    # Compute the local residual. The vectors include ghost points 
 
-     T              =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x, PETSc.DMSTAG_LEFT,    0); 
-     P              =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x, PETSc.DMSTAG_ELEMENT, 0); 
- 
-     fT             =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f, PETSc.DMSTAG_LEFT,    0); 
-     fP             =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f, PETSc.DMSTAG_ELEMENT, 0); 
-     
-     # compute the FD stencil
-     nT             =     length(T);    # array length
-     dx             =     1.0/(nT-1);
-     xp             =     LinRange(0.0,1.0, nT);
-     F              =     6.0.*xp .+ (xp .+1.e-12).^6.0;      # define source term function
-     
-     # Nonlinear equation @ nodal points
-     fT[1]          =     T[1]-0.5;                                 # left BC
-     fT[2:nT-1]     =     (T[3:nT] - 2*T[2:nT-1] + T[1:nT-2])/dx^2  + T[2:nT-1].*T[2:nT-1] - F[2:nT-1] # NL diffusion with source term
-     fT[nT]         =     T[nT]-2.0;                                # right BC
+    T              =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x, PETSc.DMSTAG_LEFT,    0); 
+    fT             =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f, PETSc.DMSTAG_LEFT,    0); 
     
-     # second, non-coupled, equation @ center points
-     nP             =     length(P)-1;    
-     dx             =     1.0/(nP-1);
-     fP[1]          =     P[1]-30.;                                 # left BC
-     fP[2:nP-1]     =     (P[3:nP] - 2*P[2:nP-1] + P[1:nP-2])/dx^2  # steady state diffusion
-     fP[nP]         =     P[nP]-20.;                                    # right BC
+    P              =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x, PETSc.DMSTAG_ELEMENT, 0); 
+    fP             =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f, PETSc.DMSTAG_ELEMENT, 0); 
+     
+    # compute the FD stencil
+    sx, sn          =     PETSc.DMStagGetCentralNodes(dm);          # indices of (center/element) points, not including ghost values. 
+    sx_g, nx_g      =     PETSc.DMStagGetGhostCorners(user_ctx.dm); # start and end of loop including ghost points
+    s, n, e         =     PETSc.DMStagGetCorners(user_ctx.dm); # start and end of loop including ghost points
+
+    nT             =     length(T);                                 # array length
+    dx             =     1.0/(n[1]-1);   
+    xp             =     (sx_g[1]:nx_g[1]).*dx;                     # coordinates including ghost points (to define source term)
+    F              =     6.0.*xp .+ (xp .+1.e-12).^6.0;             # define source term function
+     
+    # Nonlinear equation @ nodal points
+    ind            =     sx[1]:sn[1]+1;                             #  There is one more "vertex" point
+    i              =     ind[2:end-1]                                   
+    fT[ind[1]]     =     T[ind[1]  ]-0.5;                           # left BC
+    fT[ind[end]]   =     T[ind[end]]-2.0;                           # right BC
+    fT[i]          =     (T[i .+ 1] - 2*T[i] + T[i .- 1])/dx^2  + T[i].*T[i] - F[i] # NL diffusion with source term
+    
+    # second, non-coupled, equation @ center points
+    ind            =     sx[1]:sn[1]+0;                             #  There is one more "vertex" point
+    i              =     ind[2:end-1] 
+    fP[ind[1]]     =     P[ind[1]]-30.;                             # left BC
+    fP[ind[end]]   =     P[ind[end]]-20.;                           # right BC
+    fP[i]          =     (P[i .+ 1] - 2*P[i] + P[i .- 1])/dx^2      # steady state diffusion
 
 end
 
@@ -332,11 +351,10 @@ function  ForwardDiff_res(x, user_ctx)
 
     ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all local x-data
     ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, f);        # array with all local residual
-    
+  
     ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx);
 
-    # As the residual vector f is linked with ArrayLocal_f, we don't need to
-    # pass ArrayLocal_f back to f
+    # As the residual vector f is linked with ArrayLocal_f, we don't need to pass ArrayLocal_f back
 
     return f;
 end
@@ -356,11 +374,11 @@ function FormJacobian!(cx_g, J, P, user_ctx)
 
     J_julia         =   ForwardDiff.jacobian(f_Residual,x);  
 
-    # @show J_julia, size(J_julia)
-    n                =   size(P,1)
-    J               .=   sparse(J_julia[1:n,1:n]);       
+    # Note: since x is the LOCAL vector, J_julia also ends up having the same size.
+    ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);
+    J              .=   sparse(J_julia[ind,ind]);       
 
-   return J_julia
+   return J_julia, ind
 end
 
 # Main SNES part
@@ -384,10 +402,10 @@ PETSc.solve!(x_g, S);
 
 # check
 @test x_g[4] ≈ 29.5
-@test x_g[11] ≈ 0.7167 rtol=1e-4
+@test x_g[11] ≈ 0.6792 rtol=1e-4
 
 
-#J_julia = FormJacobian!(x_g.ptr, PJ, PJ, user_ctx)
+J_julia = FormJacobian!(x_g.ptr, PJ, PJ, user_ctx)
 
 #
 # -----------------

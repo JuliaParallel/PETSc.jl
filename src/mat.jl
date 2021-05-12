@@ -118,6 +118,15 @@ end
             M, 1, Ref{$PetscInt}(i-1), 1, Ref{$PetscInt}(j-1), val)
         return val[]
     end
+    
+    function ownershiprange(M::AbstractMat{$PetscScalar})
+        r_lo = Ref{$PetscInt}()
+        r_hi = Ref{$PetscInt}()
+        @chk ccall((:MatGetOwnershipRange, $libpetsc), PetscErrorCode,
+          (CMat, Ptr{$PetscInt}, Ptr{$PetscInt}), M, r_lo, r_hi)
+        r_lo[]:(r_hi[]-$PetscInt(1))
+    end
+
 
     function Base.size(A::AbstractMat{$PetscScalar})
         m = Ref{$PetscInt}()

@@ -343,7 +343,17 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         end
     end
 
-   
+    function DMStagGetEntries(dm::DMStag)
+        # doesn't work, as it cannot find the name of the routine. 
+        # Changed in more recent PETSc version?
+
+        entries = Ref{$PetscInt}()
+        @chk ccall((:DMStagGetEntries, $libpetsc), PetscErrorCode,
+                    ( CDMStag,  Ptr{$PetscInt}), dm,  entries)
+
+        return entries[]
+    end
+
 
     """
         Sets coordinates for a DMStag object using the Product method to specify coordinates (1D arrays)
@@ -496,6 +506,8 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return X1
     end
 
+
+    
 
     """
         Julia routine that extracts an array related to a certain DOF. 
@@ -685,6 +697,28 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
+        This is a convenience routine that gives the starting & end 
+            of the central nodes, which can be used in combination 
+    """
+    function DMStagGetCentralNodes(dm::DMStag)
+        # in Julia, indices in arrays start @ 1, whereas they can go negative in C
+        # This routine  
+
+        g_start, g_N    =   DMStagGetGhostCorners(dm);
+        g_width         =   DMStagGetStencilWidth(dm);
+        start,N, nExtra =   DMStagGetCorners(dm);
+        
+        Cen_start       =   zeros(Int64,dm.dim)
+        for i=1:length(g_start)
+            Cen_start[i] = -g_start[i] + 1;
+        end
+
+        Cen_end         =   Cen_start  .+ N .- 1;
+        return Cen_start, Cen_end
+    end
+
+
+    """
         returns the types of the boundary of the DMStag object in x/y/z direction 
             Bx = DMStagGetBoundaryTypes(dm::DMStag) in 1D
     """
@@ -724,7 +758,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         nRanks2 = Ref{$PetscInt}()
         
         @chk ccall((:DMStagGetNumRanks, $libpetsc), PetscErrorCode,
-            (CDMStag, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}), dm, nRanks0,nRanks1,nRanks1)
+            (CDMStag, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}), dm, nRanks0,nRanks1,nRanks2)
             
         if dm.dim==1
             return nRanks0[]
@@ -733,6 +767,18 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         elseif dm.dim==3
             return nRanks0[], nRanks1[], nRanks2[]
         end
+    end
+
+    """
+        Set # of ranks
+    """
+    function  DMStagSetNumRanks(dm::DMStag, nRanks0::Int32, nRanks1=1::Int32, nRanks2=1::Int32)
+
+        
+        @chk ccall((:DMStagSetNumRanks, $libpetsc), PetscErrorCode,
+            (CDMStag, $PetscInt, $PetscInt, $PetscInt), dm, nRanks0,nRanks1,nRanks2)
+            
+        return nothing
     end
 
     # NOT WORKING!
@@ -820,6 +866,25 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return val[]
     end
 
+    """ 
+        Utility routine to give the non-ghosted indices in the local vector 
+        that contribute to the global vector
+    """
+    function LocalInGlobalIndices(dm::DMStag)
+        # note: this can likely be done more efficiently and will have to be modified in parallel
+        ind_g   =   DMCreateGlobalVector(dm)
+        v_ind_l =   DMCreateLocalVector(dm)
+
+        ind_l   = unsafe_localarray(Float64, v_ind_l.ptr);
+        for i=1:length(ind_l)
+            ind_l[i] = i
+        end
+        
+        DMLocalToGlobal(dm,v_ind_l, INSERT_VALUES, ind_g);
+
+        return Int64.(ind_g.array)
+
+    end
     
     """
         This puts a single value inside a matrix using DMStagStencil position

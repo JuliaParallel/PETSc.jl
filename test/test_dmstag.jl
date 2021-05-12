@@ -277,16 +277,6 @@ user_ctx.x_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
 user_ctx.f_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
 
 
-
-ArrayLocal      =   PETSc.DMStagVecGetArray(user_ctx.dm, user_ctx.x_l);
-Nstart, Nend   =     PETSc.DMStagGetCentralNodes(user_ctx.dm); 
-ArrayLocal[Nstart[1]:Nend[1]] .= 1
-
-PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.x_l, PETSc.INSERT_VALUES, x_g) 
-
-
-
-
 function FormRes!(cfx_g, cx_g, user_ctx)
 
     # Note that in PETSc, cx and cfx are pointers to global vectors. 
@@ -410,6 +400,84 @@ J_julia = FormJacobian!(x_g.ptr, PJ, PJ, user_ctx)
 #
 # -----------------
 
+
+
+# -----------------
+# 2D example
+dofVertex   =   0
+dofEdge     =   0
+dofCenter   =   1
+nx,nz       =   14,25
+user_ctx.dm =   PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_GHOSTED,PETSc.DM_BOUNDARY_NONE,nx,nz,1,1,dofVertex,dofEdge,dofCenter,PETSc.DMSTAG_STENCIL_BOX,1)
+PJ           =      PETSc.DMCreateMatrix(user_ctx.dm);                  # extract (global) matrix from DMStag
+x_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
+f_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
+user_ctx.x_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
+user_ctx.f_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
+
+
+function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
+    # Compute the local residual. The vectors include ghost points 
+
+    T              =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x, PETSc.DMSTAG_LEFT,    0); 
+    fT             =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f, PETSc.DMSTAG_LEFT,    0); 
+    
+   # P              =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x, PETSc.DMSTAG_ELEMENT, 0); 
+   # fP             =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f, PETSc.DMSTAG_ELEMENT, 0); 
+     
+    # compute the FD stencil
+    sx, sn          =     PETSc.DMStagGetCentralNodes(dm);          # indices of (center/element) points, not including ghost values. 
+    s, n, e         =     PETSc.DMStagGetCorners(user_ctx.dm);      # start and end of loop including ghost points
+
+    nT             =     length(T);                                 # array length
+    dx             =     1.0/(n[1]-1);   
+    dz             =     1.0/(n[2]-1);   
+    
+    # set Ghost points for BC'S
+    T[1,:] = T[2,:];        # zero flux
+    T[end,:] = T[end-1,:];        # zero flux
+    
+  
+    # Diffusion @ center points
+    indx           =     sx[1]:sn[1];                             #  There is one more "vertex" point
+    indz           =     sx[2]:sn[2];                             
+    ix             =     indx[1:end]        # use ghost points in x         
+    iz             =     indz[2:end-1]         
+    fT[:,indz[1]]   =    T[:,indz[1]  ] .- 0.5;                             # left BC
+    fT[:,indz[end]] =    T[:,indz[end]] .- 2.0;                             # right BC
+
+    fT[ix,iz]       =    (T[ix .+ 1,iz] - 2*T[ix,iz] + T[ix .- 1,iz])/dx^2   + 
+                         (T[ix,iz .+ 1] - 2*T[ix,iz] + T[ix,iz .- 1])/dz^2 
+    
+    # second, non-coupled, equation @ center points
+    #ind            =     sx[1]:sn[1]+0;                             #  There is one more "vertex" point
+    #i              =     ind[2:end-1] 
+    #fP[ind[1]]     =     P[ind[1]]-30.;                             # left BC
+    #fP[ind[end]]   =     P[ind[end]]-20.;                           # right BC
+    #fP[i]          =     (P[i .+ 1] - 2*P[i] + P[i .- 1])/dx^2      # steady state diffusion
+
+end
+
+julia_vec    =      0;
+S = PETSc.SNES{Float64}(MPI.COMM_SELF, julia_vec; 
+        snes_rtol=1e-12, 
+        snes_monitor=true, 
+        pc_type="none",
+        snes_monitor_true_residual=true, 
+        snes_converged_reason=true);
+S.user_ctx  =       user_ctx;
+
+PETSc.setfunction!(S, FormRes!, f_g)
+PETSc.setjacobian!(S, FormJacobian!, PJ, PJ)
+
+# Solve 2D system
+PETSc.solve!(x_g, S);
+
+T_2d =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l, PETSc.DMSTAG_LEFT,    0); 
+
+@test T_2d[5,5] ≈ 0.75 rtol=1e-4
+#
+# -----------------
 
 # NOT WORKING YET - we do however need this in parallel
 #lx = zeros(Int32,1);

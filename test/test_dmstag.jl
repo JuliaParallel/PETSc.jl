@@ -267,8 +267,8 @@ user_ctx = Data(nothing, nothing, nothing);  # holds data we need in the local
 
 # Construct a 1D test case for a diffusion solver, with 1 DOF @ the center
 nx              =   21;
-#user_ctx.dm     =   PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,nx,1,1);
-user_ctx.dm     =   PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_GHOSTED,nx,1,1, PETSc.DMSTAG_STENCIL_BOX,1);
+user_ctx.dm     =   PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,nx,1,1);
+#user_ctx.dm     =   PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_GHOSTED,nx,1,1, PETSc.DMSTAG_STENCIL_BOX,1);
 
 
 x_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
@@ -329,7 +329,7 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     
     # second, non-coupled, equation @ center points
     ind            =     sx[1]:sn[1]+0;                             #  There is one more "vertex" point
-    i              =     ind[2:end-1] 
+    i              =     ind[2:end-1];                             
     fP[ind[1]]     =     P[ind[1]]-30.;                             # left BC
     fP[ind[end]]   =     P[ind[end]]-20.;                           # right BC
     fP[i]          =     (P[i .+ 1] - 2*P[i] + P[i .- 1])/dx^2      # steady state diffusion
@@ -401,7 +401,6 @@ J_julia = FormJacobian!(x_g.ptr, PJ, PJ, user_ctx)
 # -----------------
 
 
-
 # -----------------
 # 2D example
 dofVertex   =   0
@@ -434,17 +433,22 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     dz             =     1.0/(n[2]-1);   
     
     # set Ghost points for BC'S
-    T[1,:] = T[2,:];        # zero flux
-    T[end,:] = T[end-1,:];        # zero flux
-    
+    bnd            =    PETSc.DMStagGetBoundaryTypes(user_ctx.dm) 
+    if bnd[1] == PETSc.DM_BOUNDARY_GHOSTED
+        T[1,:]     =    T[2,:];        # zero flux; dT/dx=0
+        T[end,:]   =    T[end-1,:];    # zero flux
+
+        T[1,:]     =    T[end-1,:];        # zero flux; dT/dx=0
+        T[end-1,:] =    T[end-1,:];    # zero flux   
+    end
   
     # Diffusion @ center points
     indx           =     sx[1]:sn[1];                             #  There is one more "vertex" point
     indz           =     sx[2]:sn[2];                             
-    ix             =     indx[1:end]        # use ghost points in x         
+    ix             =     indx[1:end]                             # use ghost points in x         
     iz             =     indz[2:end-1]         
-    fT[:,indz[1]]   =    T[:,indz[1]  ] .- 0.5;                             # left BC
-    fT[:,indz[end]] =    T[:,indz[end]] .- 2.0;                             # right BC
+    fT[:,indz[1]]   =    T[:,indz[1]  ] .- 0.5;                             # bottom BC
+    fT[:,indz[end]] =    T[:,indz[end]] .- 2.0;                             # top BC
 
     fT[ix,iz]       =    (T[ix .+ 1,iz] - 2*T[ix,iz] + T[ix .- 1,iz])/dx^2   + 
                          (T[ix,iz .+ 1] - 2*T[ix,iz] + T[ix,iz .- 1])/dz^2 
@@ -473,7 +477,7 @@ PETSc.setjacobian!(S, FormJacobian!, PJ, PJ)
 # Solve 2D system
 PETSc.solve!(x_g, S);
 
-T_2d =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l, PETSc.DMSTAG_LEFT,    0); 
+T2d =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l, PETSc.DMSTAG_LEFT,    0); 
 
 @test T_2d[5,5] ≈ 0.75 rtol=1e-4
 #

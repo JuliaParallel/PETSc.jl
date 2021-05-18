@@ -79,14 +79,18 @@ end
 mutable struct Data
     dm
     dmCoeff
+    coeff_g
     eta1
     eta2
+    rho1
+    rho2
     g
     dt
     dz
-    De
+    xlim
+    zlim
 end
-user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
+user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
 
 
 function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
@@ -165,13 +169,13 @@ end
 
 function PopulateCoefficientData!(ctx)
 
-    coeff_g             =   PETSc.DMCreateGlobalVector(user_ctx.dmCoeff);
+    user_ctx.coeff_g    =   PETSc.DMCreateGlobalVector(user_ctx.dmCoeff);
     coeff_l             =   PETSc.DMCreateLocalVector(user_ctx.dmCoeff);
     coeff_array         =   PETSc.DMStagVecGetArray(user_ctx.dmCoeff,coeff_l);
 
     dm_coord  = PETSc.DMGetCoordinateDM(user_ctx.dmCoeff);
     vec_coord = PETSc.DMGetCoordinatesLocal(user_ctx.dmCoeff);
-    X_coord = PETSc.DMStagVecGetArray(dm_coord, vec_coord);
+    coord     = PETSc.DMStagVecGetArray(dm_coord, vec_coord);
     start,n,nExtra = PETSc.DMStagGetCorners(user_ctx.dmCoeff);
 
     # Get the correct entries for each of our variables in local element-wise storage
@@ -179,26 +183,63 @@ function PopulateCoefficientData!(ctx)
     irc = PETSc.DMStagGetLocationSlot(user_ctx.dmCoeff, PETSc.DMSTAG_DOWN_LEFT, 1);       # location rho corner
     iee = PETSc.DMStagGetLocationSlot(user_ctx.dmCoeff, PETSc.DMSTAG_ELEMENT, 0);         # location eta element
     ixc = PETSc.DMStagGetLocationSlot(dm_coord, PETSc.DMSTAG_DOWN_LEFT, 0); # location coord corner
-    ixe = PETSc.DMStagGetLocationSlot(dm_coord, PETSc.DMSTAG_ELEMENT, 0);   # location corner element
+    ixe = PETSc.DMStagGetLocationSlot(dm_coord, PETSc.DMSTAG_ELEMENT, 0);   # location coord element
 
-    #print(coeff_g," \n",coeff_l,"\n", coeff_array)
+    # Element nodes (eta)
 
-    coeff_array[start[1]+1:start[1]+n[1],start[2]+1:start[2]+n[2],ixc+1] .= 1;
+    Coeff          = coeff_array[:,:,iee+1];
+    X_coord        = coord[:,:,ixe+1];
+    index1         = findall(x -> GetPhase(user_ctx,x,1),X_coord);
+    Coeff[index1] .= user_ctx.eta1;
 
-    print(coeff_array,"\n")
+    index2         = findall(x -> GetPhase(user_ctx,x,2),X_coord);
+    Coeff[index2] .= user_ctx.eta2;
 
+    coeff_array[:,:,iee+1] .= Coeff;
+
+    # Corner nodes (rho and eta)
+
+    CoeffE         = coeff_array[:,:,iec+1];
+    CoeffR         = coeff_array[:,:,irc+1];
+    X_coord        = coord[:,:,ixc+1];
+    index1         = findall(x -> GetPhase(user_ctx,x,1),X_coord);
+    CoeffE[index1].= user_ctx.eta1;
+    CoeffR[index1].= user_ctx.rho1;
+
+    index2         = findall(x -> GetPhase(user_ctx,x,2),X_coord);
+    CoeffE[index2].= user_ctx.eta2;
+    CoeffR[index2].= user_ctx.rho2;
+
+    coeff_array[:,:,iec+1] .= CoeffE;
+    coeff_array[:,:,irc+1] .= CoeffR;
+
+    PETSc.DMLocalToGlobal(user_ctx.dmCoeff,coeff_l, PETSc.INSERT_VALUES, user_ctx.coeff_g);
+
+
+end
+
+function GetPhase(ctx,x,n)
+    if x < (ctx.xlim[2]-ctx.xlim[1])/2
+        if n == 1 return true else return false end
+    else
+        if n == 1 return false else return true end
+    end
 end
 
 
 # Main Solver
 nx               =   5;
 nz               =   5;
-xlim             =   [0,1];
-zlim             =   [0,1];
+user_ctx.xlim    =   [0,1];
+user_ctx.zlim    =   [0,1];
+xlim             =   user_ctx.xlim;
+zlim             =   user_ctx.zlim;
 dx               =   (xlim[2]-xlim[1])/nx;
 dz               =   (zlim[2]-zlim[1])/nz;
 user_ctx.eta1    =   1;          # viscosity matrix
-user_ctx.eta2    =   1;          # viscosity anomaly
+user_ctx.eta2    =   2;          # viscosity anomaly
+user_ctx.rho1    =   3;          # viscosity matrix
+user_ctx.rho2    =   4;          # viscosity anomaly
 user_ctx.g       =   -1;
 #user_ctx.dt     =   2e-2;       # Note that the timestep has to be tuned a bit depending on the   
 user_ctx.dm      =   PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,nx,nz,1,1,0,1,1,PETSc.DMSTAG_STENCIL_BOX,1);  # V edge, P Element

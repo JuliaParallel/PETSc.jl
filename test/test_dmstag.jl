@@ -479,7 +479,7 @@ PETSc.solve!(x_g, S);
 
 T2d =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l, PETSc.DMSTAG_LEFT,    0); 
 
-@test T_2d[5,5] ≈ 0.75 rtol=1e-4
+@test T2d[5,5] ≈ 0.75 rtol=1e-3
 #
 # -----------------
 

@@ -179,14 +179,19 @@ function PopulateCoefficientData!(ctx)
     irc = PETSc.DMStagGetLocationSlot(user_ctx.dmCoeff, PETSc.DMSTAG_DOWN_LEFT, 1);       # location rho corner
     iee = PETSc.DMStagGetLocationSlot(user_ctx.dmCoeff, PETSc.DMSTAG_ELEMENT, 0);         # location eta element
     ixc = PETSc.DMStagGetLocationSlot(dm_coord, PETSc.DMSTAG_DOWN_LEFT, 0); # location coord corner
-    ixe = PETSc.DMStagGetLocationSlot(dm_coord, PETSc.DMSTAG_ELEMENT, 0);   # location corner element
+    ixe = PETSc.DMStagGetLocationSlot(dm_coord, PETSc.DMSTAG_ELEMENT, 0);   # location coord element
 
     #print(coeff_g," \n",coeff_l,"\n", coeff_array)
 
-    coeff_array[start[1]+1:start[1]+n[1],start[2]+1:start[2]+n[2],ixc+1] .= 1;
+    coeff_E = coeff_array[start[1]+1:start[1]+n[1],start[2]+1:start[2]+n[2],ixe+1];
+    findall(x -> getEta(x),coeff_E)
 
-    print(coeff_array,"\n")
+    #print("size coeff_g is ",size(coeff_g),"\nsize coeff_l is ",size(coeff_l),"\nsize coeff_array is ",size(coeff_array),"\n")
+    print(coeff_E)
+end
 
+function GetEta(ctx,x,z)
+    if x
 end
 
 

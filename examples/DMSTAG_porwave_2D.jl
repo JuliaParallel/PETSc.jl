@@ -1,18 +1,17 @@
-# This is an example of a 1D viscoelastic porosity wave as described in 
+# This is an example of a 2D viscoelastic porosity wave as described in 
 # Vasyliev et al. Geophysical Research Letters (25), 17. p. 3239-3242
 # 
-# It simulates how a pulse of magma migrates upwards in the Earth, which 
-# can be described by a set of coupled nonlinear PDE's
 #
 # This example only requires the specification of a residual routine; automatic
-# differentiation is used to generate the jacobian.  
+# differentiation is used to generate the jacobian. See the equivalent 1D version
+# as well. 
+# This example also shows how to employ ghost points to set lateral boundary conditions  
 
 using PETSc, MPI
 using Plots
 using SparseArrays, SparseDiffTools, ForwardDiff
 
 PETSc.initialize()
-
 
 
 function FormRes!(cfx_g, cx_g, user_ctx)
@@ -64,7 +63,6 @@ function  f(out, x, user_ctx)
 end
 
 
-
 function FormJacobian!(cx_g, J, P, user_ctx)
     # This requires several steps:
     #
@@ -107,7 +105,7 @@ function FormJacobian!(cx_g, J, P, user_ctx)
    return jac, ind
 end
 
-# Define a struct that holds data we need in the local SNES routines below   
+# Define a struct that holds data we need in the residual SNES routines below   
 mutable struct Data
     dm
     x_l
@@ -115,12 +113,13 @@ mutable struct Data
     xold_g
     f_l
     dt
+    dx
     dz
     De
     jac
     colors
 end
-user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
+user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
 
 
 function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
@@ -129,6 +128,7 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     m           =   2.0
     dt          =   user_ctx.dt;
     dz          =   user_ctx.dz;
+    dx          =   user_ctx.dx;
     De          =   user_ctx.De;
 
     Phi         =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x   ,   PETSc.DMSTAG_ELEMENT,   0); 
@@ -140,25 +140,37 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     res_Pe      =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f,      PETSc.DMSTAG_ELEMENT,   1); 
     
     # compute the FD stencil
-    sx, sn          =     PETSc.DMStagGetCentralNodes(dm);          # indices of (center/element) points, not including ghost values.
-    
+    sx, sn              =   PETSc.DMStagGetCentralNodes(dm);          # indices of (center/element) points, not including ghost values.
+
     # Porosity residual @ center points
-    iz                  =   sx[1]+1:sn[1]-1;            # Phi is on center points
-    res_Phi[iz[1]-1]    =   Phi[iz[1]-1]   - 1.0;       # Bottom BC
-    res_Phi[iz[end]+1]  =   Phi[iz[end]+1] - 1.0;       # Top BC
-    res_Phi[iz]         =   (Phi[iz] - Phi_old[iz])/dt + De.*(Pe[iz]-Pe_old[iz])/dt + (Phi[iz].^m)   .* Pe[iz]
-   
+    ix                  =   sx[1]:sn[1];           
+    iz                  =   sx[2]:sn[2];            
+    res_Phi[ix,iz]      =   (Phi[ix,iz] - Phi_old[ix,iz])/dt + De.*(Pe[ix,iz]-Pe_old[ix,iz])/dt + (Phi[ix,iz].^m) .* Pe[ix,iz]
+    
     # Pressure update @ nodal points
-    iz                  =   sx[1]+1:sn[1]-1;            # Pe is on center points as well (dof=2)
-    res_Pe[iz[1]-1]     =   Pe[iz[1]-1]   - 0.;         # Bottom BC
-    res_Pe[iz[end]+1]   =   Pe[iz[end]+1] - 0.;         # Top BC
-    res_Pe[iz]          =   De.*(Pe[iz]-Pe_old[iz])/dt -   ( ((0.5*(Phi[iz .+ 1] + Phi[iz .+ 0])).^n) .* ( (Pe[iz .+ 1] - Pe[iz     ])/dz .+ 1.0)  -
-                                                             ((0.5*(Phi[iz .- 1] + Phi[iz .+ 0])).^n) .* ( (Pe[iz     ] - Pe[iz .- 1])/dz .+ 1.0))/dz  +    
-                                                             (Phi[iz].^m)   .* Pe[iz];
+    ix                  =   sx[1]:sn[1];                # lateral BC's are set using ghost points
+    iz                  =   sx[2]+1:sn[2]-1;            # constant Pe on top and bottom, so this is only for center points
+    Pe[ix[1]-1,:]       =   Pe[ix[1],:];                # ghost points on left and right size (here: flux free)
+    Pe[ix[end]+1,:]     =   Pe[ix[end],:];
+    res_Pe[:,iz[1]-1]   =   Pe[:,iz[1]-1]   .- 0.;      # bottom BC
+    res_Pe[:,iz[end]+1] =   Pe[:,iz[end]+1] .- 0.;      # top BC
+
+  
+    res_Pe[ix,iz]       =   De*( Pe[ix,iz] - Pe_old[ix,iz])/dt +
+                                (Phi[ix,iz].^m).* Pe[ix,iz]     -
+                                ((   ((0.5.*(Phi[ix,iz .+ 1] + Phi[ix    ,iz ])).^n) .* ( (Pe[ix,iz .+ 1] - Pe[ix, iz     ])/dz .+ 1.0)  -
+                                     ((0.5.*(Phi[ix,iz .- 1] + Phi[ix    ,iz ])).^n) .* ( (Pe[ix,iz     ] - Pe[ix, iz .- 1])/dz .+ 1.0))/dz)  
+                             -  ((   ((0.5.*(Phi[ix,iz     ] + Phi[ix.+ 1,iz ])).^n) .* ( (Pe[ix.+ 1,iz ] - Pe[ix, iz     ])/dx       )  -
+                                     ((0.5.*(Phi[ix,iz     ] + Phi[ix.- 1,iz ])).^n) .* ( (Pe[ix    ,iz ] - Pe[ix.- 1,iz  ])/dx       ))/dx)
+                               
+        
+    # remark to the lines above: these are long, multi line, expressions. For code readability, I chopped them up over several lines. 
+    # In that case you MUST put the +/- sign at the end of every line. If not, some lines will not be evaluated but the code will still run, which is tricky to spot
+
 
     # Cleanup
-    Base.finalize(Phi);    Base.finalize(Phi_old);       
-    Base.finalize(Pe);     Base.finalize(Pe_old);       
+    Base.finalize(Phi);  Base.finalize(Phi_old);       
+    Base.finalize(Pe);   Base.finalize(Pe_old);       
 
 end
 
@@ -170,15 +182,20 @@ function SetInitialPerturbations(user_ctx, x_g)
     DMcoord     =   PETSc.DMGetCoordinateDM(user_ctx.dm)
     vec_coord   =   PETSc.DMGetCoordinatesLocal(user_ctx.dm);
     Coord       =   PETSc.DMStagVecGetArray(DMcoord, vec_coord);
-    Z_cen       =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,Coord, PETSc.DMSTAG_ELEMENT,    0); # center (has 1 extra)
-    user_ctx.dz =   Z_cen[2]-Z_cen[1];
+    X_cen       =   Coord[:,:,1]; 
+    Z_cen       =   Coord[:,:,2]; 
+    
+    user_ctx.dz =   Z_cen[2,2]-Z_cen[2,1];
+    user_ctx.dx =   X_cen[1,2]-X_cen[2,2];
 
-    Phi         =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT, 0); 
-    Pe          =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT, 1); 
+    Phi         =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT, 0); # center
+    Pe          =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT, 1); # center
+    
     Phi_old     =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.xold_l,  PETSc.DMSTAG_ELEMENT, 0); 
     Pe_old      =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.xold_l,  PETSc.DMSTAG_ELEMENT, 1); 
     
-    Phi0 =1.0; dPhi1=8.0; dPhi2=1.0; z1=0.0; z2=40.0; lambda=1.0
+    
+    Phi0 =1.0; dPhi1=8.0; dPhi2=1.0; z1=0.0; z2=40.0; x1=0.0; x2=0.0; lambda=1.0
     dPe1        =   dPhi1/user_ctx.De; 
     dPe2        =   dPhi2/user_ctx.De;
     
@@ -191,18 +208,23 @@ function SetInitialPerturbations(user_ctx, x_g)
     # Copy local into global residual vector
     PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.x_l, PETSc.INSERT_VALUES, x_g) 
 
-    # send back coordinates
-    return Z_cen
+    # send back coordinates (mainly for plotting)
+    return X_cen, Z_cen
 end
 
 
-# Main Solver
-nx              =   1001;
-L               =   150;
-user_ctx.De     =   1e-2;        # Deborah number
-user_ctx.dt     =   5e-5;        # Note that the timestep has to be tuned a bit depending on De in order to obtain convergence     
-user_ctx.dm     =   PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,nx,0,2);  # both Phi and Pe are on center points 
-PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dm, -20, L)            # set coordinates
+# Main solver
+nx, nz          =   100, 101;
+W, L            =   10,150;
+
+user_ctx.De     =   1e-1;        # Deborah number
+user_ctx.dt     =   1e-5;       # Note that the timestep has to be tuned a bit depending on the     
+
+# Both Pe and Phi are @ defined centers
+user_ctx.dm =   PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_GHOSTED,PETSc.DM_BOUNDARY_NONE,nx,nz,1,1,0,0,2,PETSc.DMSTAG_STENCIL_BOX,1)
+
+
+PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dm, -W/2, W/2, -20, L) # set coordinates
 x_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
 
 
@@ -215,10 +237,17 @@ J               =   PETSc.DMCreateMatrix(user_ctx.dm);                  # Jacobi
 
 
 # initial non-zero structure of jacobian
-Z_cen           =   SetInitialPerturbations(user_ctx, x_g)
+X_cen, Z_cen    =   SetInitialPerturbations(user_ctx, x_g)
 
-x0              =   PETSc.VecSeq(rand(size(x_g,1)));
-J_julia,ind     =   FormJacobian!(x0.ptr, J, J, user_ctx)
+# plotting stuff initial setup
+Phi         =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT,   0); 
+Pe          =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT,   1); 
+Phi_pl      =   Phi[2:end-1,2:end-1];
+Pe_pl       =   Pe[2:end-1,2:end-1]
+xc_1D,zc_1D =   X_cen[2:end-1,2], Z_cen[2,2:end-1];
+
+#heatmap(xc_1D,zc_1D,Phi_pl', xlabel="Width", ylabel="Depth", title="Phi")
+heatmap(xc_1D,zc_1D,Pe_pl', xlabel="Width", ylabel="Depth", title="Pe")
 
 
 S = PETSc.SNES{Float64}(MPI.COMM_SELF, 0; 
@@ -230,18 +259,20 @@ S = PETSc.SNES{Float64}(MPI.COMM_SELF, 0;
 S.user_ctx  =       user_ctx;
 
 
-SetInitialPerturbations(user_ctx, x_g)
+#SetInitialPerturbations(user_ctx, x_g)
 
 PETSc.setfunction!(S, FormRes!, f_g)
 PETSc.setjacobian!(S, FormJacobian!, J, J)
 
+
+
 # Preparation of visualisation
 ENV["GKSwstype"]="nul"; 
-if isdir("viz_out")==true
-    rm("viz_out", recursive=true)
+if isdir("viz2D_out")==true
+    rm("viz2D_out", recursive=true)
 end
-mkdir("viz_out") 
-loadpath = "./viz_out/"; anim = Animation(loadpath,String[])
+mkdir("viz2D_out") 
+loadpath = "./viz2D_out/"; anim = Animation(loadpath,String[])
 
 
 time = 0.0;
@@ -250,7 +281,7 @@ while time<25.0
     global time, Z, Z_cen, it
 
     # Solve one (nonlinear) timestep
-    PETSc.solve!(x_g, S);
+   @time PETSc.solve!(x_g, S);
 
     # Update old local values
     user_ctx.xold_g  =  x_g;
@@ -266,11 +297,15 @@ while time<25.0
         Phi         =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT, 0); 
         Pe          =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT, 1); 
 
-        p1 = plot(Phi[1:end-1], Z_cen[1:end-1],  ylabel="Z", xlabel="ϕ",  xlims=( 0.0, 6.0), label=:none, title="De=$(user_ctx.De)"); 
-        p2 = plot(Pe[1:end-1],  Z_cen[1:end-1]    ,                       xlabel="Pe", xlims=(-1.25, 1.25), label=:none, title="$(round(time;sigdigits=3))"); 
-       # p1 = plot(Phi[1:end-1], Z_cen[1:end-1],  ylabel="Z", xlabel="ϕ",   label=:none, title="De=$(user_ctx.De)"); 
-       # p2 = plot(Pe[1:end-1],  Z_cen[1:end-1]    ,                       xlabel="Pe",  label=:none, title="$(round(time;sigdigits=3))"); 
+        #p1 = plot(Phi[2,2:end-1], zc_1D,  ylabel="Z", xlabel="ϕ",  xlims=( 0.0, 2.0), label=:none, title="De=$(user_ctx.De)"); 
+        #p2 = plot(Pe[2,2:end-1],  zc_1D ,                       xlabel="Pe", xlims=(-0.1, 0.1), label=:none, title="$(round(time;sigdigits=3))"); 
+        p1 = plot(Phi[2,2:end-1], zc_1D,  ylabel="Z", xlabel="ϕ", label=:none, title="De=$(user_ctx.De)"); 
+        p2 = plot(Pe[2,2:end-1],  zc_1D ,                       xlabel="Pe",  label=:none, title="$(round(time;sigdigits=3))"); 
         
+        #p1 = heatmap(xc_1D,zc_1D,Phi_pl', xlabel="Width", ylabel="Depth", title="Phi")
+        #p2 = heatmap(xc_1D,zc_1D,Pe_pl', xlabel="Width", ylabel="Depth", title="Pe")
+
+
         plot(p1, p2, layout=(1,2)); frame(anim)
 
         Base.finalize(Pe);  Base.finalize(Phi)
@@ -280,4 +315,4 @@ while time<25.0
     
 end
 
-gif(anim, "Example_1D.gif", fps = 15)   # create a gif animation
+gif(anim, "Example_2D.gif", fps = 15)   # create a gif animation

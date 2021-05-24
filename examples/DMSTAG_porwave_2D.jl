@@ -74,36 +74,33 @@ function FormJacobian!(cx_g, J, P, user_ctx)
     PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
     x               =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false, read=true)
 
-
     if isnothing(user_ctx.jac)
-        # Compute sparsity pattern of jacobian. This is relatvely slow, but only has to be done once.
-        # Theoretically, more efficient tools for this exists (jacobian_sparsity in the SparsityDetection.jl package),
-        # but they don't seem to work with the PETSc approach we use. Therefore we employ      
-        f_Residual  =   (x -> ForwardDiff_res(x, user_ctx));        # pass additional arguments into the routine
-        J_julia     =   ForwardDiff.jacobian(f_Residual,x);  
-
-        # employ sparse structure to compute jacobian - to be moved inside routines
-        jac         =   sparse(J_julia);
-        colors      =   matrix_colors(jac)          # the number of nonzeros per row
-
+        error("You first have to define the sparsity pattern of the jacobian")
     else
         jac     =   user_ctx.jac;
         colors  =   user_ctx.colors;
-
     end
     out         =   similar(x);
         
-   f_Res           =   ((out,x)->f(out, x, user_ctx));        # pass additional arguments into the routine
-   forwarddiff_color_jacobian!(jac, f_Res, x, colorvec = colors)
+    f_Res           =   ((out,x)->f(out, x, user_ctx));        # pass additional arguments into the routine
+
+    if isnothing(user_ctx.jac_cache)
+        # Allocate data required for jacobian computations
+        user_ctx.jac_cache = ForwardColorJacCache(f_Res,x; colorvec=colors, sparsity = jac);
+    end
+
+    @time forwarddiff_color_jacobian!(jac, f_Res, x, user_ctx.jac_cache);
 
     ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);    # extr
     J              .=   jac[ind,ind];    
+
 
     user_ctx.jac    =   jac;
     user_ctx.colors =   colors;
     
    return jac, ind
 end
+
 
 # Define a struct that holds data we need in the residual SNES routines below   
 mutable struct Data
@@ -118,9 +115,89 @@ mutable struct Data
     De
     jac
     colors
+    jac_cache
 end
-user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
+user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
 
+function ComputeSparsityPatternJacobian(x_l, user_ctx)
+    # This computes the sparsity pattern of our jacobian by hand. 
+    # That is signficantly faster than the automatic method, yet you will have to analyze your residual routine for it.
+    #
+    # As you will see, there are however any similaries between the two routines, so it is usually not all that difficult
+    # to define this
+
+    AddInd!(i, array) =  append!(i,vec(array));   # small helper routine for readability of the lines below
+
+    n               =   length(x_l);
+    ind_x           =   Vector(1:n);
+    ind_f           =   Vector(1:n);
+    ArrayLocal_x    =   PETSc.DMStagVecGetArray(user_ctx.dm, ind_x);        # array with all local x-data
+    ArrayLocal_f    =   PETSc.DMStagVecGetArray(user_ctx.dm, ind_f);        # array with all local residual
+    
+    Phi             =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x   ,   PETSc.DMSTAG_ELEMENT,   0); 
+    Pe              =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x   ,   PETSc.DMSTAG_ELEMENT,   1); 
+    res_Phi         =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_f,      PETSc.DMSTAG_ELEMENT,   0); 
+    res_Pe          =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_f,      PETSc.DMSTAG_ELEMENT,   1); 
+    
+    # compute the FD stencil
+    sx, sn              =   PETSc.DMStagGetCentralNodes(user_ctx.dm);          # indices of (center/element) points, not including ghost values.    
+
+    # Porosity residual @ center points
+    ix                  =   sx[1]:sn[1];           
+    iz                  =   sx[2]:sn[2];      
+
+    #res_Phi[ix,iz]      =   (Phi[ix,iz] - Phi_old[ix,iz])/dt + De.*(Pe[ix,iz]-Pe_old[ix,iz])/dt + (Phi[ix,iz].^m) .* Pe[ix,iz]
+    i,j                 =   Vector{Int64}(), Vector{Int64}()
+    AddInd!(i,res_Phi[ix,iz]), AddInd!(j,Phi[ix,iz]);   #   (Phi[ix,iz])/dt term
+    AddInd!(i,res_Phi[ix,iz]), AddInd!(j,Pe[ix,iz]);    #   new non-zeros because of (Phi[ix,iz].^m) .* Pe[ix,iz] term
+   
+    # Pressure update @ nodal points
+    ix                  =   sx[1]:sn[1];                # lateral BC's are set using ghost points
+    iz                  =   sx[2]+1:sn[2]-1;            # constant Pe on top and bottom, so this is only for center points
+    Pe[ix[1]-1,:]       =   Pe[ix[1],:];                # ghost points on left and right size (here: flux free)
+    Pe[ix[end]+1,:]     =   Pe[ix[end],:];
+
+    # BC's
+    AddInd!(i, res_Pe[:,iz[1]-1]),      AddInd!(j,Pe[:,iz[1]-1]);       # bottom BC
+    AddInd!(i, res_Pe[:,iz[end]+1]),    AddInd!(j,Pe[:,iz[end]+1]);     # top BC
+    
+    
+#    res_Pe[ix,iz]       =   De*( Pe[ix,iz] - Pe_old[ix,iz])/dt +
+#    (Phi[ix,iz].^m).* Pe[ix,iz]     -
+#    ((   ((0.5.*(Phi[ix,iz .+ 1] + Phi[ix    ,iz ])).^n) .* ( (Pe[ix,iz .+ 1] - Pe[ix, iz     ])/dz .+ 1.0)  -
+#         ((0.5.*(Phi[ix,iz .- 1] + Phi[ix    ,iz ])).^n) .* ( (Pe[ix,iz     ] - Pe[ix, iz .- 1])/dz .+ 1.0))/dz)  
+# -  ((   ((0.5.*(Phi[ix,iz     ] + Phi[ix.+ 1,iz ])).^n) .* ( (Pe[ix.+ 1,iz ] - Pe[ix, iz     ])/dx       )  -
+#         ((0.5.*(Phi[ix,iz     ] + Phi[ix.- 1,iz ])).^n) .* ( (Pe[ix    ,iz ] - Pe[ix.- 1,iz  ])/dx       ))/dx)
+    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j,Phi[ix,iz]);          # new part of (Phi[ix,iz].^m).* Pe[ix,iz] 
+    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j,Phi[ix,iz .+ 1 ]);    # Phi[ix,iz .+ 1]
+    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j,Phi[ix,iz .- 1 ]);    # 
+    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j,Phi[ix .- 1, iz]);    # 
+    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j,Phi[ix .+ 1, iz]);    # 
+    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j, Pe[ix,iz]      );    # De*( Pe[ix,iz] - Pe_old[ix,iz])/dt
+    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j, Pe[ix .+ 1, iz]);    # Pe[ix.+ 1,iz ]
+    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j, Pe[ix .- 1, iz]);    # Pe[ix.- 1,iz ]
+    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j, Pe[ix, iz .- 1]);    # Pe[ix ,iz - 1]
+    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j, Pe[ix, iz .+ 1]);    # Pe[ix ,iz + 1]
+ 
+    jac                 =   sparse(i,j,ones(Float64,length(i[:])),n,n); # create the sparse jacobian
+    colors              =   matrix_colors(jac)                          # the number of nonzeros per row
+    return jac, colors
+end
+
+
+function ComputeSparsityPatternJacobian_automatic(x_l, user_ctx)
+    # This computes the sparsity pattern and coloring of the jacobian automatically
+    # This will works for any equation but is slow @ high resolutions 
+    
+    f_Residual  =   (x -> ForwardDiff_res(x, user_ctx));        # pass additional arguments into the routine
+    J_julia     =   ForwardDiff.jacobian(f_Residual,x_l*0 .+ 1);  
+
+    # employ sparse structure to compute jacobian - to be moved inside routines
+    jac         =   sparse(J_julia);
+    colors      =   matrix_colors(jac)          # the number of nonzeros per row
+
+    return jac, colors
+end
 
 function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     # Compute the local residual. The vectors include ghost points 
@@ -141,10 +218,10 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     
     # compute the FD stencil
     sx, sn              =   PETSc.DMStagGetCentralNodes(dm);          # indices of (center/element) points, not including ghost values.
-
+    
     # Porosity residual @ center points
     ix                  =   sx[1]:sn[1];           
-    iz                  =   sx[2]:sn[2];            
+    iz                  =   sx[2]:sn[2];      
     res_Phi[ix,iz]      =   (Phi[ix,iz] - Phi_old[ix,iz])/dt + De.*(Pe[ix,iz]-Pe_old[ix,iz])/dt + (Phi[ix,iz].^m) .* Pe[ix,iz]
     
     # Pressure update @ nodal points
@@ -214,8 +291,8 @@ end
 
 
 # Main solver
-nx, nz          =   100, 101;
-W, L            =   10,150;
+nx, nz          =   100, 500;
+W, L            =   100,150;
 
 user_ctx.De     =   1e-1;        # Deborah number
 user_ctx.dt     =   1e-5;       # Note that the timestep has to be tuned a bit depending on the     
@@ -250,6 +327,14 @@ xc_1D,zc_1D =   X_cen[2:end-1,2], Z_cen[2,2:end-1];
 heatmap(xc_1D,zc_1D,Pe_pl', xlabel="Width", ylabel="Depth", title="Pe")
 
 
+# Compute sparsity & coloring
+# do this in case you solve new equations:
+#@time user_ctx.jac, user_ctx.colors = ComputeSparsityPatternJacobian_automatic(user_ctx.x_l.array, user_ctx);   
+
+# much faster, but requires reformulation in case you solve new equations:
+@time user_ctx.jac, user_ctx.colors = ComputeSparsityPatternJacobian(user_ctx.x_l.array, user_ctx);    
+
+
 S = PETSc.SNES{Float64}(MPI.COMM_SELF, 0; 
         snes_rtol=1e-12, 
         snes_monitor=true, 
@@ -257,6 +342,9 @@ S = PETSc.SNES{Float64}(MPI.COMM_SELF, 0;
         snes_monitor_true_residual=true, 
         snes_converged_reason=true);
 S.user_ctx  =       user_ctx;
+
+
+if true
 
 
 #SetInitialPerturbations(user_ctx, x_g)
@@ -275,10 +363,10 @@ mkdir("viz2D_out")
 loadpath = "./viz2D_out/"; anim = Animation(loadpath,String[])
 
 
-time = 0.0;
+t    = 0.0;
 it   = 1;
-while time<25.0
-    global time, Z, Z_cen, it
+while t < 25.0
+    global t, Z, Z_cen, it
 
     # Solve one (nonlinear) timestep
    @time PETSc.solve!(x_g, S);
@@ -289,7 +377,7 @@ while time<25.0
     PETSc.DMGlobalToLocal(user_ctx.dm, user_ctx.xold_g,  PETSc.INSERT_VALUES,  user_ctx.xold_l) 
 
     # Update time
-    time += user_ctx.dt;
+    t    += user_ctx.dt;
     it   += 1;
 
     if mod(it,200)==0  # Visualisation
@@ -300,19 +388,19 @@ while time<25.0
         #p1 = plot(Phi[2,2:end-1], zc_1D,  ylabel="Z", xlabel="ϕ",  xlims=( 0.0, 2.0), label=:none, title="De=$(user_ctx.De)"); 
         #p2 = plot(Pe[2,2:end-1],  zc_1D ,                       xlabel="Pe", xlims=(-0.1, 0.1), label=:none, title="$(round(time;sigdigits=3))"); 
         p1 = plot(Phi[2,2:end-1], zc_1D,  ylabel="Z", xlabel="ϕ", label=:none, title="De=$(user_ctx.De)"); 
-        p2 = plot(Pe[2,2:end-1],  zc_1D ,                       xlabel="Pe",  label=:none, title="$(round(time;sigdigits=3))"); 
+        p2 = plot(Pe[2,2:end-1],  zc_1D ,                       xlabel="Pe",  label=:none, title="$(round(t;sigdigits=3))"); 
         
         #p1 = heatmap(xc_1D,zc_1D,Phi_pl', xlabel="Width", ylabel="Depth", title="Phi")
         #p2 = heatmap(xc_1D,zc_1D,Pe_pl', xlabel="Width", ylabel="Depth", title="Pe")
-
 
         plot(p1, p2, layout=(1,2)); frame(anim)
 
         Base.finalize(Pe);  Base.finalize(Phi)
     end
 
-    println("Timestep $it, time=$time")
+    println("Timestep $it, time=$t")
     
 end
 
 gif(anim, "Example_2D.gif", fps = 15)   # create a gif animation
+end

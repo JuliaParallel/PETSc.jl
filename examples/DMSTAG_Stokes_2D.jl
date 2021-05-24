@@ -90,7 +90,7 @@ mutable struct Data
     eta2
     rho1
     rho2
-    g
+    gz
     dt
     dx
     dz
@@ -103,43 +103,54 @@ user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, n
 function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     # Compute the local residual. The vectors include ghost points 
 
+    P       = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_ELEMENT, 0);
+    Vx      = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_LEFT, 0);
+    Vz      = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_DOWN, 0);
+
+    f_p     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_f,     PETSc.DMSTAG_ELEMENT, 0);
+    f_x     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_f,     PETSc.DMSTAG_LEFT, 0);
+    f_z     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_f,     PETSc.DMSTAG_DOWN, 0);
+
+    RhoC    = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff,user_ctx.coeff_l,     PETSc.DMSTAG_DOWN_LEFT, 1);
+
     Txx,Tzz,Txz = ComputeStresses!(user_ctx, ArrayLocal_x);
-#    n           =   2.0
-#    m           =   3.0
-#    dt          =   user_ctx.dt;
-#    dz          =   user_ctx.dz;
-#    De          =   user_ctx.De;
-#
-#    Phi         =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x   ,   PETSc.DMSTAG_ELEMENT,   0); 
-#    Phi_old     =   PETSc.DMStagGetGhostArrayLocationSlot(dm,user_ctx.xold_l,   PETSc.DMSTAG_ELEMENT,   0); 
-#    Pe          =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x   ,   PETSc.DMSTAG_LEFT,      0); 
-#    Pe_old      =   PETSc.DMStagGetGhostArrayLocationSlot(dm,user_ctx.xold_l,   PETSc.DMSTAG_LEFT,      0); 
-#    
-#    res_Phi     =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f,      PETSc.DMSTAG_ELEMENT,   0); 
-#    res_Pe      =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f,      PETSc.DMSTAG_LEFT,      0); 
-#    
-#    # compute the FD stencil
-#    nPhi        =   length(Phi)-1;    # array length
-#    
-#    # Porosity residual @ center points
-#    i               =   2:nPhi-1
-#    res_Phi[1]      =   Phi[1]   -1.0;                                  # left BC
-#    res_Phi[nPhi]   =   Phi[nPhi]-1.0;                                  # right BC
-#    res_Phi[i]      =   (Phi[i] - Phi_old[i])/dt +   ((Phi[i .+ 0].^n) .* ( (Pe[i .+ 1] - Pe[i     ])/dz .+ 1.0)  
-#                                                    - (Phi[i .- 1].^n) .* ( (Pe[i     ] - Pe[i .- 1])/dz .+ 1.0))/dz
-#   
-#    # Pressure update @ nodal points
-#    nP              =    length(Pe);    
-#    i               =    2:nP-1
-#    res_Pe[1]       =    Pe[1]  - 0.;                                   # left BC
-#    res_Pe[nP]      =    Pe[nP] - 0.;                                   # right BC
-#    res_Pe[i]       =    De.*(Pe[i]-Pe_old[i])/dt -   ((Phi[i .+ 0].^n) .* ( (Pe[i .+ 1] - Pe[i     ])/dz .+ 1.0)  
-#                                                     - (Phi[i .- 1].^n) .* ( (Pe[i     ] - Pe[i .- 1])/dz .+ 1.0))/dz +    (Phi[i].^m)   .* Pe[i];
-#
-#    # Cleanup
-#    Base.finalize(Phi);    Base.finalize(Phi_old);       
-#    Base.finalize(Pe);     Base.finalize(Pe_old);       
-#                                           
+
+    dx = user_ctx.dx;
+    dz = user_ctx.dz;
+
+    sx, sn  = PETSc.DMStagGetCentralNodes(user_ctx.dm); #indices of central points
+
+    ix      =   sx[1]:sn[1];           
+    iz      =   sx[2]:sn[2];
+
+    # Force balance f(x)
+
+    f_x[ix[1]    ,:] .= 0;    #Dirichlet
+    f_x[ix[end]+1,:] .= 0;
+
+    f_x[ix[2]:ix[end],iz] .= .-(P[  ix[2]:ix[end],iz]    .- P[  ix[1]:ix[end-1],iz])./dx .+
+                               (Txx[ix[2]:ix[end],iz]    .- Txx[ix[1]:ix[end-1],iz])./dx .+
+                               (Txz[ix[2]:ix[end],iz.+1] .- Txz[ix[2]:ix[end]  ,iz])./dz;
+
+    # Force balance f(z)
+
+    f_z[:,iz[1]    ] .= 0;    #Dirichlet
+    f_z[:,iz[end]+1] .= 0;
+
+    f_z[ix,iz[2]:iz[end]] .= .-(P[ix,   iz[2]:iz[end]]    .- P[ix,   iz[1]:iz[end-1]])./dz .+
+                               (Tzz[ ix,iz[2]:iz[end]]    .- Tzz[ ix,iz[1]:iz[end-1]])./dz .+
+                               (Txz[ ix.+1,iz[2]:iz[end]] .- Txz[ ix,iz[2]:iz[end]  ])./dx .+
+                               (RhoC[ix.+1,iz[2]:iz[end]] .+ RhoC[ix,iz[2]:iz[end]  ]) .* 0.5 .* user_ctx.gz;
+
+    # Mass balance f(p)
+
+    f_p[ix,iz] .= (Vx[ix.+1,iz].-Vx[ix,iz])./dx .+ (Vz[ix,iz.+1].-Vz[ix,iz])./dz;
+
+    # Cleanup
+    Base.finalize(Vx);    Base.finalize(Vz);       
+    Base.finalize(P);     Base.finalize(RhoC);
+    Base.finalize(Txx);   Base.finalize(Tzz);       
+    Base.finalize(Txz);   Base.finalize(RhoC);                                           
 end
 
 function ComputeStresses!(user_ctx, ArrayLocal_x)
@@ -300,7 +311,7 @@ user_ctx.eta1    =   1;          # viscosity matrix
 user_ctx.eta2    =   2;          # viscosity anomaly
 user_ctx.rho1    =   3;          # viscosity matrix
 user_ctx.rho2    =   4;          # viscosity anomaly
-user_ctx.g       =   -1;
+user_ctx.gz      =   -1;
 #user_ctx.dt     =   2e-2;       # Note that the timestep has to be tuned a bit depending on the   
 user_ctx.dm           =   PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_GHOSTED,PETSc.DM_BOUNDARY_GHOSTED,nx,nz,1,1,0,1,1,PETSc.DMSTAG_STENCIL_BOX,1);  # V edge, P Element
 PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dm, xlim[1], xlim[2], zlim[1], zlim[2]);            # set coordinates

@@ -15,13 +15,13 @@ PETSc.initialize()
 
 
 
-function FormRes!(cfx_g, cx_g, user_ctx)
+function FormRes!(f_g, x_g, user_ctx)
 
     # Note that in PETSc, cx and cfx are pointers to global vectors. 
     
     # Copy global to local vectors
-    PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
-    PETSc.DMGlobalToLocal(user_ctx.dm, cfx_g, PETSc.INSERT_VALUES,  user_ctx.f_l) 
+    PETSc.DMGlobalToLocal(user_ctx.dm, x_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
+    PETSc.DMGlobalToLocal(user_ctx.dm, f_g, PETSc.INSERT_VALUES,  user_ctx.f_l) 
 
     # Retrieve arrays from the local vectors
     ArrayLocal_x     =   PETSc.DMStagVecGetArrayRead(user_ctx.dm,   user_ctx.x_l);      # array with all local x-data
@@ -79,58 +79,116 @@ end
 mutable struct Data
     dm
     dmCoeff
-    coeff_g
+    dmEps
+    dmTau
+    coeff_l
+    Eps_l
+    Tau_l
+    x_l
+    f_l
     eta1
     eta2
     rho1
     rho2
     g
     dt
+    dx
     dz
     xlim
     zlim
 end
-user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
+user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
 
 
 function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     # Compute the local residual. The vectors include ghost points 
-    n           =   2.0
-    m           =   3.0
-    dt          =   user_ctx.dt;
-    dz          =   user_ctx.dz;
-    De          =   user_ctx.De;
 
-    Phi         =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x   ,   PETSc.DMSTAG_ELEMENT,   0); 
-    Phi_old     =   PETSc.DMStagGetGhostArrayLocationSlot(dm,user_ctx.xold_l,   PETSc.DMSTAG_ELEMENT,   0); 
-    Pe          =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x   ,   PETSc.DMSTAG_LEFT,      0); 
-    Pe_old      =   PETSc.DMStagGetGhostArrayLocationSlot(dm,user_ctx.xold_l,   PETSc.DMSTAG_LEFT,      0); 
-    
-    res_Phi     =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f,      PETSc.DMSTAG_ELEMENT,   0); 
-    res_Pe      =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f,      PETSc.DMSTAG_LEFT,      0); 
-    
-    # compute the FD stencil
-    nPhi        =   length(Phi)-1;    # array length
-    
-    # Porosity residual @ center points
-    i               =   2:nPhi-1
-    res_Phi[1]      =   Phi[1]   -1.0;                                  # left BC
-    res_Phi[nPhi]   =   Phi[nPhi]-1.0;                                  # right BC
-    res_Phi[i]      =   (Phi[i] - Phi_old[i])/dt +   ((Phi[i .+ 0].^n) .* ( (Pe[i .+ 1] - Pe[i     ])/dz .+ 1.0)  
-                                                    - (Phi[i .- 1].^n) .* ( (Pe[i     ] - Pe[i .- 1])/dz .+ 1.0))/dz
-   
-    # Pressure update @ nodal points
-    nP              =    length(Pe);    
-    i               =    2:nP-1
-    res_Pe[1]       =    Pe[1]  - 0.;                                   # left BC
-    res_Pe[nP]      =    Pe[nP] - 0.;                                   # right BC
-    res_Pe[i]       =    De.*(Pe[i]-Pe_old[i])/dt -   ((Phi[i .+ 0].^n) .* ( (Pe[i .+ 1] - Pe[i     ])/dz .+ 1.0)  
-                                                     - (Phi[i .- 1].^n) .* ( (Pe[i     ] - Pe[i .- 1])/dz .+ 1.0))/dz +    (Phi[i].^m)   .* Pe[i];
+    Txx,Tzz,Txz = ComputeStresses!(user_ctx, ArrayLocal_x);
+#    n           =   2.0
+#    m           =   3.0
+#    dt          =   user_ctx.dt;
+#    dz          =   user_ctx.dz;
+#    De          =   user_ctx.De;
+#
+#    Phi         =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x   ,   PETSc.DMSTAG_ELEMENT,   0); 
+#    Phi_old     =   PETSc.DMStagGetGhostArrayLocationSlot(dm,user_ctx.xold_l,   PETSc.DMSTAG_ELEMENT,   0); 
+#    Pe          =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x   ,   PETSc.DMSTAG_LEFT,      0); 
+#    Pe_old      =   PETSc.DMStagGetGhostArrayLocationSlot(dm,user_ctx.xold_l,   PETSc.DMSTAG_LEFT,      0); 
+#    
+#    res_Phi     =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f,      PETSc.DMSTAG_ELEMENT,   0); 
+#    res_Pe      =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f,      PETSc.DMSTAG_LEFT,      0); 
+#    
+#    # compute the FD stencil
+#    nPhi        =   length(Phi)-1;    # array length
+#    
+#    # Porosity residual @ center points
+#    i               =   2:nPhi-1
+#    res_Phi[1]      =   Phi[1]   -1.0;                                  # left BC
+#    res_Phi[nPhi]   =   Phi[nPhi]-1.0;                                  # right BC
+#    res_Phi[i]      =   (Phi[i] - Phi_old[i])/dt +   ((Phi[i .+ 0].^n) .* ( (Pe[i .+ 1] - Pe[i     ])/dz .+ 1.0)  
+#                                                    - (Phi[i .- 1].^n) .* ( (Pe[i     ] - Pe[i .- 1])/dz .+ 1.0))/dz
+#   
+#    # Pressure update @ nodal points
+#    nP              =    length(Pe);    
+#    i               =    2:nP-1
+#    res_Pe[1]       =    Pe[1]  - 0.;                                   # left BC
+#    res_Pe[nP]      =    Pe[nP] - 0.;                                   # right BC
+#    res_Pe[i]       =    De.*(Pe[i]-Pe_old[i])/dt -   ((Phi[i .+ 0].^n) .* ( (Pe[i .+ 1] - Pe[i     ])/dz .+ 1.0)  
+#                                                     - (Phi[i .- 1].^n) .* ( (Pe[i     ] - Pe[i .- 1])/dz .+ 1.0))/dz +    (Phi[i].^m)   .* Pe[i];
+#
+#    # Cleanup
+#    Base.finalize(Phi);    Base.finalize(Phi_old);       
+#    Base.finalize(Pe);     Base.finalize(Pe_old);       
+#                                           
+end
 
-    # Cleanup
-    Base.finalize(Phi);    Base.finalize(Phi_old);       
-    Base.finalize(Pe);     Base.finalize(Pe_old);       
-                                           
+function ComputeStresses!(user_ctx, ArrayLocal_x)
+    
+    Exx,Ezz,Exz = ComputeStrainRates!(user_ctx, ArrayLocal_x);
+
+    Txx     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmTau,user_ctx.Tau_l,     PETSc.DMSTAG_ELEMENT, 0);
+    Tzz     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmTau,user_ctx.Tau_l,     PETSc.DMSTAG_ELEMENT, 1);
+    Txz     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmTau,user_ctx.Tau_l,     PETSc.DMSTAG_DOWN_LEFT, 0);
+
+    EtaE    = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff,user_ctx.coeff_l,     PETSc.DMSTAG_ELEMENT, 0);
+    EtaC    = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff,user_ctx.coeff_l,     PETSc.DMSTAG_DOWN_LEFT, 0);
+
+    Txx    .= 2 .* EtaE .* Exx;
+    Tzz    .= 2 .* EtaE .* Ezz;
+    Txz    .= 2 .* EtaC .* Exz;
+
+    return Txx,Tzz,Txz
+    
+end
+
+function ComputeStrainRates!(user_ctx, ArrayLocal_x)
+
+    dx = user_ctx.dx;
+    dz = user_ctx.dz;
+
+    Vx      = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_LEFT, 0);
+    Vz      = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_DOWN, 0);
+    Exx     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmEps,user_ctx.Eps_l,     PETSc.DMSTAG_ELEMENT, 0);
+    Ezz     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmEps,user_ctx.Eps_l,     PETSc.DMSTAG_ELEMENT, 1);
+    Exz     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmEps,user_ctx.Eps_l,     PETSc.DMSTAG_DOWN_LEFT, 0);
+    sx, sn  = PETSc.DMStagGetCentralNodes(user_ctx.dm); #indices of central points
+
+    ix      =   sx[1]:sn[1];           
+    iz      =   sx[2]:sn[2];
+
+    Vx[:,iz[1]-1]   .=  Vx[:,iz[1]];                # ghost points on left and right size (here: free slip)
+    Vx[:,iz[end]+1] .=  Vx[:,iz[end]];
+    Vz[ix[1]-1,:]   .=  Vz[ix[1],:];
+    Vx[ix[end]+1,:] .=  Vx[ix[end],:];
+     
+    DivV                              = (Vx[ix.+1,iz].-Vx[ix,iz])./dx .+ (Vz[ix,iz.+1].-Vz[ix,iz])./dz;
+    Exx[ix,iz]                       .= (Vx[ix.+1,iz].-Vx[ix,iz])./dx .- 1/3 .* DivV;
+    Ezz[ix,iz]                       .= (Vz[ix,iz.+1].-Vz[ix,iz])./dz .- 1/3 .* DivV;
+    Exz[sx[1]:sn[1]+1,sx[2]:sn[2]+1] .= 0.5.*((Vx[sx[1]:sn[1].+1,sx[2]:sn[2].+1].-Vx[sx[1]:sn[1].+1,sx[2].-1:sn[2]])./dz .+
+                                              (Vz[sx[1]:sn[1].+1,sx[2]:sn[2].+1].-Vz[sx[1].-1:sn[1],sx[2]:sn[2].+1])./dx);
+
+    return Exx,Ezz,Exz
+
 end
 
 
@@ -161,7 +219,7 @@ function SetInitialPerturbations(user_ctx, x_g)
     Pe_old     .=          -dPe1 .*exp.( -(Z .- z1).^2.0) -   dPe2.*exp.( -(Z .- z2).^2.0);
 
     # Copy local into global residual vector
-    PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.x_l, PETSc.INSERT_VALUES, x_g) 
+    PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.x_l, PETSc.INSERT_VALUES, x_g); 
 
     # send back coordinates
     return Z, Z_cen
@@ -169,9 +227,8 @@ end
 
 function PopulateCoefficientData!(ctx)
 
-    user_ctx.coeff_g    =   PETSc.DMCreateGlobalVector(user_ctx.dmCoeff);
-    coeff_l             =   PETSc.DMCreateLocalVector(user_ctx.dmCoeff);
-    coeff_array         =   PETSc.DMStagVecGetArray(user_ctx.dmCoeff,coeff_l);
+    user_ctx.coeff_l    =   PETSc.DMCreateLocalVector(user_ctx.dmCoeff);
+    coeff_array         =   PETSc.DMStagVecGetArray(user_ctx.dmCoeff,user_ctx.coeff_l);
 
     dm_coord  = PETSc.DMGetCoordinateDM(user_ctx.dmCoeff);
     vec_coord = PETSc.DMGetCoordinatesLocal(user_ctx.dmCoeff);
@@ -213,8 +270,6 @@ function PopulateCoefficientData!(ctx)
     coeff_array[:,:,iec+1] .= CoeffE;
     coeff_array[:,:,irc+1] .= CoeffR;
 
-    PETSc.DMLocalToGlobal(user_ctx.dmCoeff,coeff_l, PETSc.INSERT_VALUES, user_ctx.coeff_g);
-
 
 end
 
@@ -226,6 +281,11 @@ function GetPhase(ctx,x,n)
     end
 end
 
+function SetVecX!(user_ctx,x_g)
+    user_ctx.x_l .= 0; 
+    PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.x_l, PETSc.INSERT_VALUES, x_g);
+end
+
 
 # Main Solver
 nx               =   5;
@@ -234,34 +294,41 @@ user_ctx.xlim    =   [0,1];
 user_ctx.zlim    =   [0,1];
 xlim             =   user_ctx.xlim;
 zlim             =   user_ctx.zlim;
-dx               =   (xlim[2]-xlim[1])/nx;
-dz               =   (zlim[2]-zlim[1])/nz;
+user_ctx.dx      =   (xlim[2]-xlim[1])/nx;
+user_ctx.dz      =   (zlim[2]-zlim[1])/nz;
 user_ctx.eta1    =   1;          # viscosity matrix
 user_ctx.eta2    =   2;          # viscosity anomaly
 user_ctx.rho1    =   3;          # viscosity matrix
 user_ctx.rho2    =   4;          # viscosity anomaly
 user_ctx.g       =   -1;
 #user_ctx.dt     =   2e-2;       # Note that the timestep has to be tuned a bit depending on the   
-user_ctx.dm      =   PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,nx,nz,1,1,0,1,1,PETSc.DMSTAG_STENCIL_BOX,1);  # V edge, P Element
+user_ctx.dm           =   PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_GHOSTED,PETSc.DM_BOUNDARY_GHOSTED,nx,nz,1,1,0,1,1,PETSc.DMSTAG_STENCIL_BOX,1);  # V edge, P Element
 PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dm, xlim[1], xlim[2], zlim[1], zlim[2]);            # set coordinates
-user_ctx.dmCoeff =   PETSc.DMStagCreateCompatibleDMStag(user_ctx.dm,2,0,1,0);   # rho and eta on VERTEX, eta on ELEMENT
-PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dmCoeff, xlim[1], xlim[2], zlim[1], zlim[2]);  
+user_ctx.dmCoeff      =   PETSc.DMStagCreateCompatibleDMStag(user_ctx.dm,2,0,1,0);   # rho and eta on VERTEX, eta on ELEMENT
+PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dmCoeff, xlim[1], xlim[2], zlim[1], zlim[2]);
+user_ctx.dmEps =   PETSc.DMStagCreateCompatibleDMStag(user_ctx.dm,1,0,2,0);   # Exz on VERTEX, Exx and Ezz on ELEMENT
+PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dmEps, xlim[1], xlim[2], zlim[1], zlim[2]);
+user_ctx.dmTau =   PETSc.DMStagCreateCompatibleDMStag(user_ctx.dm,1,0,2,0);   # Txz on VERTEX, Txx and Tzz on ELEMENT
+PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dmTau, xlim[1], xlim[2], zlim[1], zlim[2]);
 
 PopulateCoefficientData!(user_ctx);
 
-#x_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
-#f_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
-#user_ctx.x_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
+x_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm);
+f_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm);
+user_ctx.x_l    =   PETSc.DMCreateLocalVector(user_ctx.dm);
+user_ctx.Eps_l  =   PETSc.DMCreateLocalVector(user_ctx.dmEps);
+user_ctx.Tau_l  =   PETSc.DMCreateLocalVector(user_ctx.dmTau);
 #user_ctx.xold_l =   PETSc.DMCreateLocalVector(user_ctx.dm)
 #user_ctx.xold_g =   PETSc.DMCreateGlobalVector(user_ctx.dm)
-#user_ctx.f_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
-#J               =   PETSc.DMCreateMatrix(user_ctx.dm);                  # Jacobian from DMStag
+user_ctx.f_l    =   PETSc.DMCreateLocalVector(user_ctx.dm);
+J               =   PETSc.DMCreateMatrix(user_ctx.dm);                  # Jacobian from DMStag
 
 
 # initial non-zero structure of jacobian
 #Z, Z_cen        =   SetInitialPerturbations(user_ctx, x_g)
+SetVecX!(user_ctx,x_g);
 
-#x0              =   PETSc.VecSeq(rand(size(x_g,1)));
+x0              =   PETSc.VecSeq(rand(size(x_g,1)));
 #J_julia         =   FormJacobian!(x0.ptr, J, J, user_ctx)
 
 

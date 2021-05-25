@@ -236,8 +236,8 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     res_Pe[ix,iz]       =   De*( Pe[ix,iz] - Pe_old[ix,iz])/dt +
                                 (Phi[ix,iz].^m).* Pe[ix,iz]     -
                                 ((   ((0.5.*(Phi[ix,iz .+ 1] + Phi[ix    ,iz ])).^n) .* ( (Pe[ix,iz .+ 1] - Pe[ix, iz     ])/dz .+ 1.0)  -
-                                     ((0.5.*(Phi[ix,iz .- 1] + Phi[ix    ,iz ])).^n) .* ( (Pe[ix,iz     ] - Pe[ix, iz .- 1])/dz .+ 1.0))/dz)  
-                             -  ((   ((0.5.*(Phi[ix,iz     ] + Phi[ix.+ 1,iz ])).^n) .* ( (Pe[ix.+ 1,iz ] - Pe[ix, iz     ])/dx       )  -
+                                     ((0.5.*(Phi[ix,iz .- 1] + Phi[ix    ,iz ])).^n) .* ( (Pe[ix,iz     ] - Pe[ix, iz .- 1])/dz .+ 1.0))/dz)  -
+                                ((   ((0.5.*(Phi[ix,iz     ] + Phi[ix.+ 1,iz ])).^n) .* ( (Pe[ix.+ 1,iz ] - Pe[ix, iz     ])/dx       )  -
                                      ((0.5.*(Phi[ix,iz     ] + Phi[ix.- 1,iz ])).^n) .* ( (Pe[ix    ,iz ] - Pe[ix.- 1,iz  ])/dx       ))/dx)
                                
         

@@ -1,0 +1,33 @@
+name: Coverage
+on:
+  - pull_request
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2.2.0
+
+    - name: Set up Julia
+      uses: julia-actions/setup-julia@latest
+      with:
+        version: 1.6
+        arch: x64
+
+    - name: Test with coverage
+      run: |
+        julia --project -e 'using Pkg; Pkg.instantiate()'
+        julia --project -e 'using Pkg; Pkg.test(coverage=true)'
+
+    - name: Generate coverage file
+      run: julia --project -e 'using Pkg; Pkg.add("Coverage");
+                               using Coverage;
+                               LCOV.writefile("coverage-lcov.info", Codecov.process_folder())'
+      if: success()
+
+    - name: Submit coverage
+      uses: codecov/codecov-action@v1.0.7
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+      if: success()

@@ -1,6 +1,6 @@
 # PETSc
 
-[![Build Status](https://travis-ci.org/JuliaParallel/PETSc.jl.svg?branch=master)](https://travis-ci.org/JuliaParallel/PETSc.jl)
+[![Build Status](https://github.com/JuliaParallel/PETSc.jl/workflows/CI/badge.svg)](https://github.com/JuliaParallel/PETSc.jl/actions/workflows/ci.yml)
 [![codecov.io](http://codecov.io/github/JuliaParallel/PETSc.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaParallel/PETSc.jl?branch=master)
 [![Coverage Status](https://coveralls.io/repos/JuliaParallel/PETSc.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/JuliaParallel/PETSc.jl?branch=master)
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaParallel.github.io/PETSc.jl/latest)

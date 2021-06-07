@@ -4,7 +4,7 @@
 #
 # Newton method to solve u'' + u^{2} = f, sequentially.
 
-using PETSc, MPI, LinearAlgebra, SparseArrays, Plots
+using PETSc, MPI, LinearAlgebra, SparseArrays, UnicodePlots
 
 if ~MPI.Initialized()
     MPI.Init()
@@ -117,6 +117,6 @@ x_sol = x_s.array;                  # convert solution to julia format
 FormResidual!(res.array,x_sol)      # just for checking, compute residual
 @show norm(res.array)
 
-plot(LinRange(0,1,n),x_sol,xlabel="width",ylabel="solution")
+lineplot(LinRange(0,1,n),x_sol,xlabel="width",ylabel="solution")
 
 #PETSc.finalize()

@@ -13,6 +13,10 @@ This package can be added with the julia command:
 ```julia
 ]add https://github.com/JuliaParallel/PETSc.jl
 ```
+The installation can be tested with
+```julia
+]test PETSc
+```
 
 ## Caveats
 

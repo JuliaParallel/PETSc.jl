@@ -88,3 +88,4 @@ PETSc.setfunction!(S, F!, PETSc.VecSeq(zeros(2)))
 PETSc.setjacobian!(S, updateJ!, PJ, PJ)
 @test PETSc.solve!([2.0,3.0], S) ≈ [1.0,2.0] rtol=1e-4
 
+include("examples.jl")

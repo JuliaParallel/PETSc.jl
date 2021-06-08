@@ -41,8 +41,8 @@ ksp = PETSc.KSP(
 )
 
 # initial guess
-x = PETSc.VecSeq(zeros(m))
-b = PETSc.VecSeq(randn(n))
+x = PETSc.VecSeq(zeros(T, m))
+b = PETSc.VecSeq(randn(T, n))
 PETSc.solve!(x, ksp, b)
 
 #=

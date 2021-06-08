@@ -1,7 +1,7 @@
 using Test
 using PETSc, MPI, LinearAlgebra, SparseArrays
 
-MPI.Init()
+MPI.Initialized() || MPI.Init()
 PETSc.initialize()
 
 # Constructs the central finite-difference approximation of -∇² for an lx×ly box of nx×ny points

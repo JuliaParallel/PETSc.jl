@@ -18,38 +18,39 @@ function laplace(T, nx::Integer, ny::Integer=nx, lx::Integer=1, ly::Integer=lx)
     return A
 end
 
-T = Float64
-nx = 20
-S = laplace(T, nx)
+for T in PETSc.scalar_types
+  nx = 20
+  S = laplace(T, nx)
 
-m, n = size(S)
-M = PETSc.MatSeqAIJ(S)
+  m, n = size(S)
+  M = PETSc.MatSeqAIJ(S)
 
-ksp = PETSc.KSP(
-    M;
-    ksp_monitor_true_residual = true,
-    ksp_view = true,
-    ksp_type = "cg",
-    ksp_rtol = 1e-8,
-    pc_type = "gamg",
-    mg_levels_ksp_type = "chebyshev",
-    mg_levels_ksp_max_it = 3,
-    mg_levels_pc_type = "bjacobi",
-    mg_levels_sub_pc_type = "icc",
-    mg_coarse_ksp_type = "preonly",
-    mg_coarse_pc_type = "cholesky",
-)
+  ksp = PETSc.KSP(
+                  M;
+                  ksp_monitor_true_residual = true,
+                  ksp_view = true,
+                  ksp_type = "cg",
+                  ksp_rtol = 1e-8,
+                  pc_type = "gamg",
+                  mg_levels_ksp_type = "chebyshev",
+                  mg_levels_ksp_max_it = 3,
+                  mg_levels_pc_type = "bjacobi",
+                  mg_levels_sub_pc_type = "icc",
+                  mg_coarse_ksp_type = "preonly",
+                  mg_coarse_pc_type = "cholesky",
+                 )
 
-# initial guess
-x = PETSc.VecSeq(zeros(T, m))
-b = PETSc.VecSeq(randn(T, n))
-PETSc.solve!(x, ksp, b)
+  # initial guess
+  x = PETSc.VecSeq(zeros(T, m))
+  b = PETSc.VecSeq(randn(T, n))
+  PETSc.solve!(x, ksp, b)
 
-#=
-PETSc.destroy(ksp)
-PETSc.destroy(M)
-PETSc.destroy(b)
-PETSc.destroy(x)
+  #=
+  PETSc.destroy(ksp)
+  PETSc.destroy(M)
+  PETSc.destroy(b)
+  PETSc.destroy(x)
 
-PETSc.finalize()
-=#
+  PETSc.finalize()
+  =#
+end

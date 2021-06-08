@@ -1,6 +1,24 @@
 
 using Libdl
-const libs = (PETSc_jll.libpetsc, )
+
+function getlibs()
+  libs = ()
+  petsc_libs = ENV["JULIA_PETSC_LIBRARY"]
+
+  flags = Libdl.RTLD_LAZY | Libdl.RTLD_DEEPBIND | Libdl.RTLD_GLOBAL
+
+  for petsc_lib in Base.parse_load_path(petsc_libs)
+    libs = (libs..., (petsc_lib, flags))
+  end
+  return libs
+end
+
+const libs = @static if !haskey(ENV, "JULIA_PETSC_LIBRARY")
+  using PETSc_jll
+  ((PETSc_jll.libpetsc,),)
+else
+  getlibs()
+end
 
 function initialize(libhdl::Ptr{Cvoid})
   PetscInitializeNoArguments_ptr = dlsym(libhdl, :PetscInitializeNoArguments)
@@ -28,7 +46,7 @@ function PetscDataTypeGetSize(libhdl::Ptr{Cvoid}, dtype::PetscDataType)
 end
 
 const libtypes = map(libs) do lib
-    libhdl = dlopen(lib)
+    libhdl = dlopen(lib...)
     initialize(libhdl)
     PETSC_REAL = DataTypeFromString(libhdl, "Real")
     PETSC_SCALAR = DataTypeFromString(libhdl, "Scalar")
@@ -50,10 +68,11 @@ const libtypes = map(libs) do lib
         error("PETSC_INT_SIZE = $PETSC_INT_SIZE not supported.")
 
     # TODO: PetscBLASInt, PetscMPIInt ?
-    return (lib, PetscScalar, PetscReal, PetscInt)
+    return (lib[1], PetscScalar, PetscReal, PetscInt)
 end
 
 const scalar_types = map(x -> x[2], libtypes)
+@assert length(scalar_types) == length(unique(scalar_types))
 
 macro for_libpetsc(expr)
   quote

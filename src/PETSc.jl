@@ -2,8 +2,6 @@ module PETSc
 
 using MPI, LinearAlgebra, SparseArrays
 
-using PETSc_jll
-
 include("const.jl")
 include("lib.jl")
 include("init.jl")

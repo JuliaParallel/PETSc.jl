@@ -93,4 +93,5 @@ PETSc.initialize()
   @test PETSc.solve!([2.0,3.0], S) ≈ [1.0,2.0] rtol=1e-4
 end
 
+include("dmda.jl")
 include("examples.jl")

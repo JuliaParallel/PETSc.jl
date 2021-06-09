@@ -101,6 +101,10 @@ PETSc.initialize()
                 @test da_info.stencil_type == PETSc.DMDA_STENCIL_BOX
                 @test da_info.stencil_width == stencil_width
                 # In this case we cannot check the numbers locally
+
+                # TODO: Need a better test?
+                ksp = PETSc.KSP(da)
+                @test PETSc.gettype(ksp) == "gmres"
             end
         end
     end
@@ -199,7 +203,11 @@ end
                 @test da_info.stencil_type == stencil_type
                 @test da_info.stencil_width == stencil_width
 
-                #TODO: Test with specific distribution of processors and sizes
+                # TODO: Test with specific distribution of processors and sizes
+
+                # TODO: Need a better test?
+                ksp = PETSc.KSP(da)
+                @test PETSc.gettype(ksp) == "gmres"
             end
         end
     end
@@ -313,7 +321,11 @@ end
                 @test da_info.stencil_type == stencil_type
                 @test da_info.stencil_width == stencil_width
 
-                #TODO: Test with specific distribution of processors and sizes
+                # TODO: Test with specific distribution of processors and sizes
+
+                # TODO: Need a better test?
+                ksp = PETSc.KSP(da)
+                @test PETSc.gettype(ksp) == "gmres"
             end
         end
     end

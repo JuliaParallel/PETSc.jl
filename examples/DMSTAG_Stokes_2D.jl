@@ -27,6 +27,8 @@ function FormRes!(f_g, x_g, user_ctx)
     ArrayLocal_x     =   PETSc.DMStagVecGetArrayRead(user_ctx.dm,   user_ctx.x_l);      # array with all local x-data
     ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm,       user_ctx.f_l);      # array with all local residual
     
+    print("going through FormRes \n")
+
     # Compute local residual 
     ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
 
@@ -35,7 +37,7 @@ function FormRes!(f_g, x_g, user_ctx)
     Base.finalize(ArrayLocal_f)
 
     # Copy local into global residual vector
-    PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.f_l, PETSc.INSERT_VALUES, cfx_g) 
+    PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.f_l, PETSc.INSERT_VALUES, f_g) 
 
 end
 
@@ -44,6 +46,8 @@ function  ForwardDiff_res(x, user_ctx)
 
     ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all local x-data
     ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, f);        # array with all local residual
+
+    #@show typeof(x) typeof(f)
     
     ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx);
 
@@ -52,6 +56,16 @@ function  ForwardDiff_res(x, user_ctx)
 
     return f;
 end
+
+#function  f(out, x, user_ctx)
+#
+#    ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all local x-data
+#    ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, out);        # array with all local residual
+#    
+#    ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx);
+#
+#    return nothing
+#end
 
 function FormJacobian!(cx_g, J, P, user_ctx)
     # This requires several steps:
@@ -62,13 +76,15 @@ function FormJacobian!(cx_g, J, P, user_ctx)
 
     # Extract the local vector
     PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
-    x               =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false, read=true)
+    x               =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false, read=true);
+
+    @show typeof(x) typeof(user_ctx.x_l)
 
     f_Residual      =   (x -> ForwardDiff_res(x, user_ctx));        # pass additional arguments into the routine
 
     J_julia         =   ForwardDiff.jacobian(f_Residual,x);  
 
-    # @show J_julia, size(J_julia)
+    @show J_julia, size(J_julia)
     n                =   size(P,1)
     J               .=   sparse(J_julia[1:n,1:n]);       
 
@@ -103,6 +119,8 @@ user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, n
 function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     # Compute the local residual. The vectors include ghost points 
 
+    print("going through ComputeLocalResidual \n")
+
     P       = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_ELEMENT, 0);
     Vx      = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_LEFT, 0);
     Vz      = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_DOWN, 0);
@@ -114,6 +132,8 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     RhoC    = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff,user_ctx.coeff_l,     PETSc.DMSTAG_DOWN_LEFT, 1);
 
     Txx,Tzz,Txz = ComputeStresses!(user_ctx, ArrayLocal_x);
+
+    print("Exiting computeStresses \n")
 
     dx = user_ctx.dx;
     dz = user_ctx.dz;
@@ -128,60 +148,74 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     f_x[ix[1]    ,:] .= 0;    #Dirichlet
     f_x[ix[end]+1,:] .= 0;
 
-    f_x[ix[2]:ix[end],iz] .= .-(P[  ix[2]:ix[end],iz]    .- P[  ix[1]:ix[end-1],iz])./dx .+
-                               (Txx[ix[2]:ix[end],iz]    .- Txx[ix[1]:ix[end-1],iz])./dx .+
-                               (Txz[ix[2]:ix[end],iz.+1] .- Txz[ix[2]:ix[end]  ,iz])./dz;
+    f_x[ix[2]:ix[end],iz] .= .-(P[ix[2]:ix[end],iz] .- P[ix[1]:ix[end-1],iz])./dx .+
+                               (Txx[2:end,:]        .- Txx[1:end-1,:])       ./dx .+
+                               (Txz[2:end-1,2:end]  .- Txz[2:end-1,1:end-1]) ./dz;
 
     # Force balance f(z)
 
     f_z[:,iz[1]    ] .= 0;    #Dirichlet
     f_z[:,iz[end]+1] .= 0;
 
-    f_z[ix,iz[2]:iz[end]] .= .-(P[ix,   iz[2]:iz[end]]    .- P[ix,   iz[1]:iz[end-1]])./dz .+
-                               (Tzz[ ix,iz[2]:iz[end]]    .- Tzz[ ix,iz[1]:iz[end-1]])./dz .+
-                               (Txz[ ix.+1,iz[2]:iz[end]] .- Txz[ ix,iz[2]:iz[end]  ])./dx .+
+    f_z[ix,iz[2]:iz[end]] .= .-(P[ix,iz[2]:iz[end]] .- P[ix,iz[1]:iz[end-1]])./dz .+
+                               (Tzz[:,2:end]        .- Tzz[:,1:end-1])       ./dz .+
+                               (Txz[ 2:end,2:end-1] .- Txz[1:end-1,2:end-1]) ./dx .+
                                (RhoC[ix.+1,iz[2]:iz[end]] .+ RhoC[ix,iz[2]:iz[end]  ]) .* 0.5 .* user_ctx.gz;
 
     # Mass balance f(p)
 
     f_p[ix,iz] .= (Vx[ix.+1,iz].-Vx[ix,iz])./dx .+ (Vz[ix,iz.+1].-Vz[ix,iz])./dz;
 
+    #println(f_x,"\n\n",f_z,"\n\n",f_p,"\n\n")
+
+    #print("f_x = ",f_x," \n f_z = ",f_z," \n f_p = ",f_p,"\n ArrayLocal_f = ",ArrayLocal_f)
+
     # Cleanup
-    Base.finalize(Vx);    Base.finalize(Vz);       
-    Base.finalize(P);     Base.finalize(RhoC);
-    Base.finalize(Txx);   Base.finalize(Tzz);       
-    Base.finalize(Txz);   Base.finalize(RhoC);                                           
+    #Base.finalize(Vx);    Base.finalize(Vz);       
+    #Base.finalize(P);     Base.finalize(RhoC);
+    #Base.finalize(Txx);   Base.finalize(Tzz);       
+    #Base.finalize(Txz);   Base.finalize(RhoC);                                         
 end
 
 function ComputeStresses!(user_ctx, ArrayLocal_x)
+
+    print("going through ComputeStresses \n")
     
     Exx,Ezz,Exz = ComputeStrainRates!(user_ctx, ArrayLocal_x);
 
-    Txx     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmTau,user_ctx.Tau_l,     PETSc.DMSTAG_ELEMENT, 0);
-    Tzz     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmTau,user_ctx.Tau_l,     PETSc.DMSTAG_ELEMENT, 1);
-    Txz     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmTau,user_ctx.Tau_l,     PETSc.DMSTAG_DOWN_LEFT, 0);
+    print("Exiting ComputeStrainrates \n")
 
     EtaE    = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff,user_ctx.coeff_l,     PETSc.DMSTAG_ELEMENT, 0);
     EtaC    = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff,user_ctx.coeff_l,     PETSc.DMSTAG_DOWN_LEFT, 0);
+    sx, sn  = PETSc.DMStagGetCentralNodes(user_ctx.dm); #indices of central points
 
-    Txx    .= 2 .* EtaE .* Exx;
-    Tzz    .= 2 .* EtaE .* Ezz;
-    Txz    .= 2 .* EtaC .* Exz;
+    ix      =   sx[1]:sn[1];           
+    iz      =   sx[2]:sn[2];
+
+    Txx    = 2 .* EtaE[ix,iz] .* Exx;
+    Tzz    = 2 .* EtaE[ix,iz] .* Ezz;
+    Txz    = 2 .* EtaC[sx[1]:sn[1]+1,sx[2]:sn[2]+1] .* Exz;
+
+    #println(Txx,"\n\n",Tzz,"\n\n",Txz,"\n\n")
+
+    #println(EtaE,"\n\n",EtaC,"\n\n")
 
     return Txx,Tzz,Txz
+
+    Base.finalize(Exx);   Base.finalize(Ezz);       
+    Base.finalize(Exz);  
     
 end
 
 function ComputeStrainRates!(user_ctx, ArrayLocal_x)
+
+    print("going through ComputeStrainRates \n")
 
     dx = user_ctx.dx;
     dz = user_ctx.dz;
 
     Vx      = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_LEFT, 0);
     Vz      = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_DOWN, 0);
-    Exx     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmEps,user_ctx.Eps_l,     PETSc.DMSTAG_ELEMENT, 0);
-    Ezz     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmEps,user_ctx.Eps_l,     PETSc.DMSTAG_ELEMENT, 1);
-    Exz     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmEps,user_ctx.Eps_l,     PETSc.DMSTAG_DOWN_LEFT, 0);
     sx, sn  = PETSc.DMStagGetCentralNodes(user_ctx.dm); #indices of central points
 
     ix      =   sx[1]:sn[1];           
@@ -191,13 +225,22 @@ function ComputeStrainRates!(user_ctx, ArrayLocal_x)
     Vx[:,iz[end]+1] .=  Vx[:,iz[end]];
     Vz[ix[1]-1,:]   .=  Vz[ix[1],:];
     Vx[ix[end]+1,:] .=  Vx[ix[end],:];
-     
+    #@show typeof(Exx) typeof(Vx) typeof(ArrayLocal_x)
     DivV                              = (Vx[ix.+1,iz].-Vx[ix,iz])./dx .+ (Vz[ix,iz.+1].-Vz[ix,iz])./dz;
-    Exx[ix,iz]                       .= (Vx[ix.+1,iz].-Vx[ix,iz])./dx .- 1/3 .* DivV;
-    Ezz[ix,iz]                       .= (Vz[ix,iz.+1].-Vz[ix,iz])./dz .- 1/3 .* DivV;
-    Exz[sx[1]:sn[1]+1,sx[2]:sn[2]+1] .= 0.5.*((Vx[sx[1]:sn[1].+1,sx[2]:sn[2].+1].-Vx[sx[1]:sn[1].+1,sx[2].-1:sn[2]])./dz .+
-                                              (Vz[sx[1]:sn[1].+1,sx[2]:sn[2].+1].-Vz[sx[1].-1:sn[1],sx[2]:sn[2].+1])./dx);
+    
+    #Exx[ix,iz]                       .= Ezz[ix,iz]; #(Vx[ix.+1,iz].-Vx[ix,iz])./dx .- 1/3 .* DivV;
+    #Ezz[ix,iz]                       .= 1; #(Vz[ix,iz.+1].-Vz[ix,iz])./dz .- 1/3 .* DivV;
+    #Exz[sx[1]:sn[1]+1,sx[2]:sn[2]+1] .= 0.5.*((Vx[sx[1]:sn[1].+1,sx[2]:sn[2].+1].-Vx[sx[1]:sn[1].+1,sx[2].-1:sn[2]])./dz .+
+    #                                          (Vz[sx[1]:sn[1].+1,sx[2]:sn[2].+1].-Vz[sx[1].-1:sn[1],sx[2]:sn[2].+1])./dx);
 
+    Exx = (Vx[ix.+1,iz].-Vx[ix,iz])./dx .- 1/3 .* DivV;
+    Ezz = (Vz[ix,iz.+1].-Vz[ix,iz])./dz .- 1/3 .* DivV;
+    Exz = 0.5.*((Vx[sx[1]:sn[1].+1,sx[2]:sn[2].+1].-Vx[sx[1]:sn[1].+1,sx[2].-1:sn[2]])./dz .+
+                (Vz[sx[1]:sn[1].+1,sx[2]:sn[2].+1].-Vz[sx[1].-1:sn[1],sx[2]:sn[2].+1])./dx);
+
+    #print("Exx = ",Exx," \n Ezz = ",Ezz,"Exz = ",Exz)
+    #println(Exx,"\n\n",Ezz,"\n\n",Exz)
+    
     return Exx,Ezz,Exz
 
 end
@@ -340,22 +383,23 @@ J               =   PETSc.DMCreateMatrix(user_ctx.dm);                  # Jacobi
 SetVecX!(user_ctx,x_g);
 
 x0              =   PETSc.VecSeq(rand(size(x_g,1)));
-#J_julia         =   FormJacobian!(x0.ptr, J, J, user_ctx)
+FormRes!(f_g, x0, user_ctx);
+J_julia     =   FormJacobian!(x0, J, J, user_ctx);
 
 
-#S = PETSc.SNES{Float64}(MPI.COMM_SELF, 0; 
-#        snes_rtol=1e-12, 
-#        snes_monitor=true, 
-#        snes_max_it = 500,
-#        snes_monitor_true_residual=true, 
-#        snes_converged_reason=true);
-#S.user_ctx  =       user_ctx;
+S = PETSc.SNES{Float64}(MPI.COMM_SELF, 0; 
+        snes_rtol=1e-12, 
+        snes_monitor=true, 
+        snes_max_it = 500,
+        snes_monitor_true_residual=true, 
+        snes_converged_reason=true);
+S.user_ctx  =       user_ctx;
 
 
 #SetInitialPerturbations(user_ctx, x_g)
 
-#PETSc.setfunction!(S, FormRes!, f_g)
-#PETSc.setjacobian!(S, FormJacobian!, J, J)
+PETSc.setfunction!(S, FormRes!, f_g)
+PETSc.setjacobian!(S, FormJacobian!, J, J)
 
 # Preparation of visualisation
 #ENV["GKSwstype"]="nul"; 
@@ -372,7 +416,7 @@ x0              =   PETSc.VecSeq(rand(size(x_g,1)));
 #    global time, Z, Z_cen, it
 #
 #    # Solve one (nonlinear) timestep
-#    PETSc.solve!(x_g, S);
+    PETSc.solve!(x_g, S);
 #
 #    # Update old local values
 #    user_ctx.xold_g  =  x_g;

@@ -100,26 +100,28 @@ function DMDAGetGhostCorners end
             points_per_proc
         end
         da = DM{$PetscScalar, $PetscLib}(C_NULL, opts)
-        @chk ccall(
-            (:DMDACreate1d, $libpetsc),
-            PetscErrorCode,
-            (
-                MPI.MPI_Comm,
-                DMBoundaryType,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                Ptr{$PetscInt},
-                Ptr{CDM},
-            ),
-            comm,
-            boundary_type,
-            global_dim,
-            dof_per_node,
-            stencil_width,
-            ref_points_per_proc,
-            da,
-        )
+        with(da.opts) do
+            @chk ccall(
+                (:DMDACreate1d, $libpetsc),
+                PetscErrorCode,
+                (
+                    MPI.MPI_Comm,
+                    DMBoundaryType,
+                    $PetscInt,
+                    $PetscInt,
+                    $PetscInt,
+                    Ptr{$PetscInt},
+                    Ptr{CDM},
+                ),
+                comm,
+                boundary_type,
+                global_dim,
+                dof_per_node,
+                stencil_width,
+                ref_points_per_proc,
+                da,
+            )
+        end
         # We can only let the garbage collect finalize when we do not need to
         # worry about MPI (since garbage collection is asyncronous)
         if comm == MPI.COMM_SELF
@@ -158,38 +160,40 @@ function DMDAGetGhostCorners end
             points_per_proc_y
         end
         da = DM{$PetscScalar, $PetscLib}(C_NULL, opts)
-        @chk ccall(
-            (:DMDACreate2d, $libpetsc),
-            PetscErrorCode,
-            (
-                MPI.MPI_Comm,
-                DMBoundaryType,
-                DMBoundaryType,
-                DMDAStencilType,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                Ptr{$PetscInt},
-                Ptr{$PetscInt},
-                Ptr{CDM},
-            ),
-            comm,
-            boundary_type_x,
-            boundary_type_y,
-            stencil_type,
-            global_dim_x,
-            global_dim_y,
-            procs_x,
-            procs_y,
-            dof_per_node,
-            stencil_width,
-            ref_points_per_proc_x,
-            ref_points_per_proc_y,
-            da,
-        )
+        with(da.opts) do
+            @chk ccall(
+                (:DMDACreate2d, $libpetsc),
+                PetscErrorCode,
+                (
+                    MPI.MPI_Comm,
+                    DMBoundaryType,
+                    DMBoundaryType,
+                    DMDAStencilType,
+                    $PetscInt,
+                    $PetscInt,
+                    $PetscInt,
+                    $PetscInt,
+                    $PetscInt,
+                    $PetscInt,
+                    Ptr{$PetscInt},
+                    Ptr{$PetscInt},
+                    Ptr{CDM},
+                ),
+                comm,
+                boundary_type_x,
+                boundary_type_y,
+                stencil_type,
+                global_dim_x,
+                global_dim_y,
+                procs_x,
+                procs_y,
+                dof_per_node,
+                stencil_width,
+                ref_points_per_proc_x,
+                ref_points_per_proc_y,
+                da,
+            )
+        end
         # We can only let the garbage collect finalize when we do not need to
         # worry about MPI (since garbage collection is asyncronous)
         if comm == MPI.COMM_SELF
@@ -238,46 +242,48 @@ function DMDAGetGhostCorners end
             points_per_proc_z
         end
         da = DM{$PetscScalar, $PetscLib}(C_NULL, opts)
-        @chk ccall(
-            (:DMDACreate3d, $libpetsc),
-            PetscErrorCode,
-            (
-                MPI.MPI_Comm,
-                DMBoundaryType,
-                DMBoundaryType,
-                DMBoundaryType,
-                DMDAStencilType,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                Ptr{$PetscInt},
-                Ptr{$PetscInt},
-                Ptr{$PetscInt},
-                Ptr{CDM},
-            ),
-            comm,
-            boundary_type_x,
-            boundary_type_y,
-            boundary_type_z,
-            stencil_type,
-            global_dim_x,
-            global_dim_y,
-            global_dim_z,
-            procs_x,
-            procs_y,
-            procs_z,
-            dof_per_node,
-            stencil_width,
-            ref_points_per_proc_x,
-            ref_points_per_proc_y,
-            ref_points_per_proc_z,
-            da,
-        )
+        with(da.opts) do
+            @chk ccall(
+                (:DMDACreate3d, $libpetsc),
+                PetscErrorCode,
+                (
+                    MPI.MPI_Comm,
+                    DMBoundaryType,
+                    DMBoundaryType,
+                    DMBoundaryType,
+                    DMDAStencilType,
+                    $PetscInt,
+                    $PetscInt,
+                    $PetscInt,
+                    $PetscInt,
+                    $PetscInt,
+                    $PetscInt,
+                    $PetscInt,
+                    $PetscInt,
+                    Ptr{$PetscInt},
+                    Ptr{$PetscInt},
+                    Ptr{$PetscInt},
+                    Ptr{CDM},
+                ),
+                comm,
+                boundary_type_x,
+                boundary_type_y,
+                boundary_type_z,
+                stencil_type,
+                global_dim_x,
+                global_dim_y,
+                global_dim_z,
+                procs_x,
+                procs_y,
+                procs_z,
+                dof_per_node,
+                stencil_width,
+                ref_points_per_proc_x,
+                ref_points_per_proc_y,
+                ref_points_per_proc_z,
+                da,
+            )
+        end
         # We can only let the garbage collect finalize when we do not need to
         # worry about MPI (since garbage collection is asyncronous)
         if comm == MPI.COMM_SELF
@@ -366,7 +372,7 @@ function DMDAGetGhostCorners end
         corners .+= 1
         return (
             lower = corners,
-            upper = corners .+ local_size .- 1,
+            upper = corners .+ local_size .- $PetscInt(1),
             size = local_size,
         )
     end

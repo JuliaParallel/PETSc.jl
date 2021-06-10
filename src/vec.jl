@@ -26,6 +26,18 @@ mutable struct VecSeq{T} <: AbstractVec{T}
     array::Vector{T}
 end
 
+"""
+    Vec(v::CVec)
+
+Container for an abstract PETSc vector
+
+# External Links
+$(_doc_external("Vec/Vec"))
+"""
+mutable struct Vec{T} <: AbstractVec{T}
+    ptr::CVec
+end
+
 Base.eltype(::Type{V}) where {V<:AbstractVec{T}} where T = T
 Base.eltype(v::AbstractVec{T}) where {T} = T
 Base.size(v::AbstractVec) = (length(v),)
@@ -131,14 +143,43 @@ end
 
 """
     unsafe_localarray(PetscScalar, ptr:CVec; read=true, write=true)
+    unsafe_localarray(ptr:AbstractVec; read=true, write=true)
 
 Return an `Array{PetscScalar}` containing local portion of the PETSc data.
 
-`finalize` should be called on the `Array` before the data can be used.
-
 Use `read=false` if the array is write-only; `write=false` if read-only.
+
+!!! note
+    `Base.finalize` should be called on the `Array` before the data can be used.
 """
 unsafe_localarray
+
+unsafe_localarray(v::AbstractVec{T}; kwargs...) where {T} =
+    unsafe_localarray(T, v.ptr; kwargs...)
+
+"""
+    map_unsafe_localarray!(f!, x::AbstractVec{T}; read=true, write=true)
+
+Convert `x` to an `Array{T}` and apply the function `f!`.
+
+Use `read=false` if the array is write-only; `write=false` if read-only.
+
+# Examples
+```julia-repl
+julia> map_unsafe_localarray(x; write=true) do x
+   @. x .*= 2
+end
+
+!!! note
+    `Base.finalize` should is automatically called on the array.
+"""
+function map_unsafe_localarray!(f!, v::AbstractVec{T}; kwargs...) where {T}
+    array = unsafe_localarray(T, v.ptr; kwargs...)
+    f!(array)
+    Base.finalize(array)
+end
+
+
 
 function Base.show(io::IO, ::MIME"text/plain", vec::AbstractVec)
     _show(io, vec)

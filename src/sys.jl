@@ -26,7 +26,7 @@ end
             AbstractKSP{$PetscScalar},
             AbstractMat{$PetscScalar},
             AbstractVec{$PetscScalar},
-            AbstractDM{$PetscLib},
+            AbstractDM{$PetscScalar},
         },
     )
         comm = MPI.Comm()

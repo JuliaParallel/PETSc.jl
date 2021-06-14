@@ -9,7 +9,7 @@
 
 using PETSc, MPI
 using Plots
-using ForwardDiff, SparseArrays
+using ForwardDiff, SparseArrays, SparseDiffTools
 
 PETSc.initialize()
 
@@ -27,7 +27,7 @@ function FormRes!(f_g, x_g, user_ctx)
     ArrayLocal_x     =   PETSc.DMStagVecGetArrayRead(user_ctx.dm,   user_ctx.x_l);      # array with all local x-data
     ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm,       user_ctx.f_l);      # array with all local residual
     
-    print("going through FormRes \n")
+    #print("going through FormRes \n")
 
     # Compute local residual 
     ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
@@ -57,6 +57,30 @@ function  ForwardDiff_res(x, user_ctx)
     return f;
 end
 
+function ComputeSparsityPatternJacobian_automatic(x_l, user_ctx)
+    # This computes the sparsity pattern and coloring of the jacobian automatically
+    # This will works for any equation but is slow @ high resolutions 
+    
+    f_Residual  =   (x -> ForwardDiff_res(x, user_ctx));        # pass additional arguments into the routine
+    J_julia     =   ForwardDiff.jacobian(f_Residual,x_l*0 .+ 1);  
+
+    # employ sparse structure to compute jacobian - to be moved inside routines
+    jac         =   sparse(J_julia);
+    colors      =   matrix_colors(jac)          # the number of nonzeros per row
+
+    return jac, colors
+end
+
+function  f(out, x, user_ctx)
+
+    ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all local x-data
+    ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, out);        # array with all local residual
+    
+    ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx);
+
+    return nothing
+end
+
 #function  f(out, x, user_ctx)
 #
 #    ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all local x-data
@@ -78,17 +102,39 @@ function FormJacobian!(cx_g, J, P, user_ctx)
     PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
     x               =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false, read=true);
 
-    @show typeof(x) typeof(user_ctx.x_l)
+    #@show typeof(x) typeof(user_ctx.x_l)
 
-    f_Residual      =   (x -> ForwardDiff_res(x, user_ctx));        # pass additional arguments into the routine
+    if isnothing(user_ctx.jac)
+        error("You first have to define the sparsity pattern of the jacobian")
+    else
+        jac     =   user_ctx.jac;
+        colors  =   user_ctx.colors;
+    end
+    out         =   similar(x);
 
-    J_julia         =   ForwardDiff.jacobian(f_Residual,x);  
+    f_Res           =   ((out,x)->f(out, x, user_ctx));
 
-    @show J_julia, size(J_julia)
-    n                =   size(P,1)
-    J               .=   sparse(J_julia[1:n,1:n]);       
+    if isnothing(user_ctx.jac_cache)
+        # Allocate data required for jacobian computations
+        user_ctx.jac_cache = ForwardColorJacCache(f_Res,x; colorvec=colors, sparsity = jac);
+    end
 
-   return J_julia
+    forwarddiff_color_jacobian!(jac, f_Res, x, user_ctx.jac_cache);
+
+    
+    #n                =   size(P,1)
+    #J               .=   sparse(J_julia[1:n,1:n]);
+    ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);    # extr
+
+    # @show size(J) size(J_julia[ind,ind])
+    J              .=   jac[ind,ind];
+
+    user_ctx.jac    =   jac;
+    user_ctx.colors =   colors;
+    #J               =   J_julia[ind,ind];
+
+
+   return jac, ind
 end
 
 # Define a struct that holds data we need in the local SNES routines below   
@@ -112,14 +158,19 @@ mutable struct Data
     dz
     xlim
     zlim
+    jac
+    jac_cache
+    colors
 end
-user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
+user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
 
 
 function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     # Compute the local residual. The vectors include ghost points 
 
-    print("going through ComputeLocalResidual \n")
+    #print("going through ComputeLocalResidual \n")
+
+    Txx,Tzz,Txz = ComputeStresses!(user_ctx, ArrayLocal_x);
 
     P       = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_ELEMENT, 0);
     Vx      = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_LEFT, 0);
@@ -131,9 +182,9 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
 
     RhoC    = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff,user_ctx.coeff_l,     PETSc.DMSTAG_DOWN_LEFT, 1);
 
-    Txx,Tzz,Txz = ComputeStresses!(user_ctx, ArrayLocal_x);
+    #Txx,Tzz,Txz = ComputeStresses!(user_ctx, ArrayLocal_x);
 
-    print("Exiting computeStresses \n")
+    #print("Exiting computeStresses \n")
 
     dx = user_ctx.dx;
     dz = user_ctx.dz;
@@ -145,8 +196,8 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
 
     # Force balance f(x)
 
-    f_x[ix[1]    ,:] .= 0;    #Dirichlet
-    f_x[ix[end]+1,:] .= 0;
+    f_x[ix[1]    ,:] .= Vx[ix[1]    ,:] .- 0.0;    #Dirichlet
+    f_x[ix[end]+1,:] .= Vx[ix[end]+1,:] .+ 0.0;
 
     f_x[ix[2]:ix[end],iz] .= .-(P[ix[2]:ix[end],iz] .- P[ix[1]:ix[end-1],iz])./dx .+
                                (Txx[2:end,:]        .- Txx[1:end-1,:])       ./dx .+
@@ -154,8 +205,8 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
 
     # Force balance f(z)
 
-    f_z[:,iz[1]    ] .= 0;    #Dirichlet
-    f_z[:,iz[end]+1] .= 0;
+    f_z[:,iz[1]    ] .= Vz[:,iz[1]    ] .- 0.0;    #Dirichlet
+    f_z[:,iz[end]+1] .= Vz[:,iz[end]+1] .+ 0.0;
 
     f_z[ix,iz[2]:iz[end]] .= .-(P[ix,iz[2]:iz[end]] .- P[ix,iz[1]:iz[end-1]])./dz .+
                                (Tzz[:,2:end]        .- Tzz[:,1:end-1])       ./dz .+
@@ -179,11 +230,11 @@ end
 
 function ComputeStresses!(user_ctx, ArrayLocal_x)
 
-    print("going through ComputeStresses \n")
+    #print("going through ComputeStresses \n")
     
     Exx,Ezz,Exz = ComputeStrainRates!(user_ctx, ArrayLocal_x);
 
-    print("Exiting ComputeStrainrates \n")
+    #print("Exiting ComputeStrainrates \n")
 
     EtaE    = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff,user_ctx.coeff_l,     PETSc.DMSTAG_ELEMENT, 0);
     EtaC    = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff,user_ctx.coeff_l,     PETSc.DMSTAG_DOWN_LEFT, 0);
@@ -209,7 +260,7 @@ end
 
 function ComputeStrainRates!(user_ctx, ArrayLocal_x)
 
-    print("going through ComputeStrainRates \n")
+    #print("going through ComputeStrainRates \n")
 
     dx = user_ctx.dx;
     dz = user_ctx.dz;
@@ -224,7 +275,7 @@ function ComputeStrainRates!(user_ctx, ArrayLocal_x)
     Vx[:,iz[1]-1]   .=  Vx[:,iz[1]];                # ghost points on left and right size (here: free slip)
     Vx[:,iz[end]+1] .=  Vx[:,iz[end]];
     Vz[ix[1]-1,:]   .=  Vz[ix[1],:];
-    Vx[ix[end]+1,:] .=  Vx[ix[end],:];
+    Vz[ix[end]+1,:] .=  Vz[ix[end],:];
     #@show typeof(Exx) typeof(Vx) typeof(ArrayLocal_x)
     DivV                              = (Vx[ix.+1,iz].-Vx[ix,iz])./dx .+ (Vz[ix,iz.+1].-Vz[ix,iz])./dz;
     
@@ -342,8 +393,8 @@ end
 
 
 # Main Solver
-nx               =   5;
-nz               =   5;
+nx               =   32;
+nz               =   32;
 user_ctx.xlim    =   [0,1];
 user_ctx.zlim    =   [0,1];
 xlim             =   user_ctx.xlim;
@@ -382,24 +433,82 @@ J               =   PETSc.DMCreateMatrix(user_ctx.dm);                  # Jacobi
 #Z, Z_cen        =   SetInitialPerturbations(user_ctx, x_g)
 SetVecX!(user_ctx,x_g);
 
-x0              =   PETSc.VecSeq(rand(size(x_g,1)));
-FormRes!(f_g, x0, user_ctx);
-J_julia     =   FormJacobian!(x0, J, J, user_ctx);
+user_ctx.jac, user_ctx.colors = ComputeSparsityPatternJacobian_automatic(user_ctx.x_l.array, user_ctx);
+
+#x0              =   PETSc.VecSeq(rand(size(x_g,1)));
+#FormRes!(f_g, x0, user_ctx);
+#J_julia,ind     =   FormJacobian!(x0, J, J, user_ctx);
+
+FormRes!(f_g, x_g, user_ctx);
+J_julia,ind     =   FormJacobian!(x_g, J, J, user_ctx);
+
+#@show J
+
+sol = J\f_g     # julia vector
+x_g .= sol;     # copy to PETSc vecror
+
+# Copy solution to local vector
+PETSc.DMGlobalToLocal(user_ctx.dm, x_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
+
+# Extract solution
+Vx  =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm, user_ctx.x_l,   PETSc.DMSTAG_LEFT,      0); 
+Vz  =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm, user_ctx.x_l,   PETSc.DMSTAG_DOWN,      0); 
+P   =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm, user_ctx.x_l,   PETSc.DMSTAG_ELEMENT,   0); 
+
+sx, sn  = PETSc.DMStagGetCentralNodes(user_ctx.dm); #indices of central points
+
+ix      =   sx[1]:sn[1];           
+iz      =   sx[2]:sn[2];
+
+Vx  =   Vx[sx[1]:sn[1]+1,iz];
+Vz  =   Vz[ix,sx[2]:sn[2]+1];
+P   =    P[ix,iz];
+
+Vx_cen = (Vx[2:end,:]  + Vx[1:end-1,:])/2;
+Vz_cen = (Vz[:,2:end]  + Vz[:,1:end-1])/2;
+
+#get coordinates
+
+dm_coord  = PETSc.DMGetCoordinateDM(user_ctx.dmCoeff);
+vec_coord = PETSc.DMGetCoordinatesLocal(user_ctx.dmCoeff);
+
+XCoord_e = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_ELEMENT         ,      0); # location coord corner
+ZCoord_e = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_ELEMENT         ,      1); # location coord corner
+XCoord_c = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_DOWN_LEFT,      0);   # location coord element
+ZCoord_c = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_DOWN_LEFT,      1);   # location coord element
+
+XCoord_e = XCoord_e[ix,iz];
+ZCoord_e = ZCoord_e[ix,iz];
+XCoord_c = XCoord_c[sx[1]:sn[1]+1,sx[2]:sn[2]+1];
+ZCoord_c = ZCoord_c[sx[1]:sn[1]+1,sx[2]:sn[2]+1];
+
+xe_1D    = XCoord_e[:,1];
+ze_1D    = ZCoord_e[1,:];
+xc_1D    = XCoord_c[:,1];
+zc_1D    = ZCoord_c[1,:];
+
+# Plot
+heatmap(xe_1D,ze_1D, P', xlabel="Width", ylabel="Depth", title="Pressure")
+heatmap(xe_1D,zc_1D, Vz', xlabel="Width", ylabel="Depth", title="Vz")
+heatmap(xc_1D,ze_1D, Vx', xlabel="Width", ylabel="Depth", title="Vx")
 
 
-S = PETSc.SNES{Float64}(MPI.COMM_SELF, 0; 
-        snes_rtol=1e-12, 
-        snes_monitor=true, 
-        snes_max_it = 500,
-        snes_monitor_true_residual=true, 
-        snes_converged_reason=true);
-S.user_ctx  =       user_ctx;
-
+#S = PETSc.SNES{Float64}(MPI.COMM_SELF, 0; 
+#        snes_rtol=1e-12, 
+#        snes_monitor=true, 
+#        snes_max_it = 500,
+#        snes_monitor_true_residual=true, 
+#        snes_converged_reason=true);
+#S.user_ctx  =       user_ctx;
+#
 
 #SetInitialPerturbations(user_ctx, x_g)
 
-PETSc.setfunction!(S, FormRes!, f_g)
-PETSc.setjacobian!(S, FormJacobian!, J, J)
+#PETSc.setfunction!(S, FormRes!, f_g)
+#PETSc.setjacobian!(S, FormJacobian!, J, J)
+
+#FormRes!(f_g, x_g, user_ctx);   
+#FormJacobian!(x_g, J, J, user_ctx);
 
 # Preparation of visualisation
 #ENV["GKSwstype"]="nul"; 
@@ -416,7 +525,7 @@ PETSc.setjacobian!(S, FormJacobian!, J, J)
 #    global time, Z, Z_cen, it
 #
 #    # Solve one (nonlinear) timestep
-    PETSc.solve!(x_g, S);
+#sol = J\f_g     # julia vector
 #
 #    # Update old local values
 #    user_ctx.xold_g  =  x_g;

@@ -129,6 +129,8 @@ function FormJacobian!(cx_g, J, P, user_ctx)
     # @show size(J) size(J_julia[ind,ind])
     J              .=   jac[ind,ind];
 
+    #@show J
+
     user_ctx.jac    =   jac;
     user_ctx.colors =   colors;
     #J               =   J_julia[ind,ind];
@@ -214,8 +216,8 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
                                (RhoC[ix.+1,iz[2]:iz[end]] .+ RhoC[ix,iz[2]:iz[end]  ]) .* 0.5 .* user_ctx.gz;
 
     # Mass balance f(p)
-
-    f_p[ix,iz] .= (Vx[ix.+1,iz].-Vx[ix,iz])./dx .+ (Vz[ix,iz.+1].-Vz[ix,iz])./dz;
+    kappa = 1e2;                   # penalty term
+    f_p[ix,iz] .= (Vx[ix.+1,iz].-Vx[ix,iz])./dx .+ (Vz[ix,iz.+1].-Vz[ix,iz])./dz .+ 1/kappa*P[ix,iz];
 
     #println(f_x,"\n\n",f_z,"\n\n",f_p,"\n\n")
 
@@ -439,13 +441,30 @@ user_ctx.jac, user_ctx.colors = ComputeSparsityPatternJacobian_automatic(user_ct
 #FormRes!(f_g, x0, user_ctx);
 #J_julia,ind     =   FormJacobian!(x0, J, J, user_ctx);
 
-FormRes!(f_g, x_g, user_ctx);
-J_julia,ind     =   FormJacobian!(x_g, J, J, user_ctx);
+#FormRes!(f_g, x_g, user_ctx);
+#J_julia,ind     =   FormJacobian!(x_g, J, J, user_ctx);
 
 #@show J
 
-sol = J\f_g     # julia vector
-x_g .= sol;     # copy to PETSc vecror
+#sol = J\f_g     # julia vector
+#x_g .= sol;     # copy to PETSc vector
+
+#Setting up SNES
+
+S = PETSc.SNES{Float64}(MPI.COMM_SELF, 0; 
+        snes_rtol=1e-12, 
+        snes_monitor=true, 
+        snes_max_it = 500,
+        snes_monitor_true_residual=true, 
+        snes_converged_reason=true);
+S.user_ctx  =       user_ctx;
+
+
+PETSc.setfunction!(S, FormRes!, f_g)
+PETSc.setjacobian!(S, FormJacobian!, J, J)
+
+#Solve
+PETSc.solve!(x_g, S);
 
 # Copy solution to local vector
 PETSc.DMGlobalToLocal(user_ctx.dm, x_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
@@ -488,18 +507,12 @@ xc_1D    = XCoord_c[:,1];
 zc_1D    = ZCoord_c[1,:];
 
 # Plot
-heatmap(xe_1D,ze_1D, P', xlabel="Width", ylabel="Depth", title="Pressure")
-heatmap(xe_1D,zc_1D, Vz', xlabel="Width", ylabel="Depth", title="Vz")
+#heatmap(xe_1D,ze_1D, P', xlabel="Width", ylabel="Depth", title="Pressure")
+#heatmap(xe_1D,zc_1D, Vz', xlabel="Width", ylabel="Depth", title="Vz")
 heatmap(xc_1D,ze_1D, Vx', xlabel="Width", ylabel="Depth", title="Vx")
 
 
-#S = PETSc.SNES{Float64}(MPI.COMM_SELF, 0; 
-#        snes_rtol=1e-12, 
-#        snes_monitor=true, 
-#        snes_max_it = 500,
-#        snes_monitor_true_residual=true, 
-#        snes_converged_reason=true);
-#S.user_ctx  =       user_ctx;
+
 #
 
 #SetInitialPerturbations(user_ctx, x_g)

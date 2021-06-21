@@ -444,7 +444,8 @@ xc_1D    = XCoord_c[:,1];
 zc_1D    = ZCoord_c[1,:];
 
 # Plot
-heatmap(xe_1D,ze_1D, P', xlabel="Width", ylabel="Depth", title="Pressure")
-#heatmap(xe_1D,zc_1D, Vz', xlabel="Width", ylabel="Depth", title="Vz")
-#heatmap(xc_1D,ze_1D, Vx', xlabel="Width", ylabel="Depth", title="Vx")
+p1 = heatmap(xe_1D,ze_1D, P', xlabel="Width", ylabel="Depth", title="Pressure",aspect_ratio = 1)
+p2 = heatmap(xe_1D,zc_1D, Vz', xlabel="Width", ylabel="Depth", title="Vz",aspect_ratio = 1)
+p3 = heatmap(xc_1D,ze_1D, Vx', xlabel="Width", ylabel="Depth", title="Vx",aspect_ratio = 1)
 quiver!(XCoord_e[:],ZCoord_e[:],quiver=(Vx_cen[:]*0.02,Vz_cen[:]*0.02), color=:white)
+plot(p1, p2, p3, layout = (3, 1), legend = false)

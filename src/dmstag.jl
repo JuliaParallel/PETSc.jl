@@ -49,21 +49,19 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 @for_libpetsc begin
 
     """
-        Creates a 1D DMStag object
-        
-        Usage:
+    Creates a 1D DMStag object
 
-            dm = DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dofVertex, dofCenter, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth=1, lx::Vector=[]; kwargs...)
+        dm = DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dofVertex, dofCenter, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth=2, lx=C_NULL; kwargs...)
 
-                comm            -   MPI communicator
-                bndx            -   boundary type: DM_BOUNDARY_NONE, DM_BOUNDARY_PERIODIC, or DM_BOUNDARY_GHOSTED. 
-                M               -   global number of grid points
-                dofVertex       -   [=1] number of degrees of freedom per vertex/point/node/0-cell
-                dofCenter       -   [=1] number of degrees of freedom per element/edge/1-cell
-                stencilType     -   ghost/halo region type: DMSTAG_STENCIL_BOX or DMSTAG_STENCIL_NONE
-                stencilWidth    -   width, in elements, of halo/ghost region
-                lx              -   [Optional] Vector of local sizes, of length equal to the comm size, summing to M
-                kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
+            comm            -   MPI communicator
+            bndx            -   boundary type: DM_BOUNDARY_NONE, DM_BOUNDARY_PERIODIC, or DM_BOUNDARY_GHOSTED. 
+            M               -   global number of grid points
+            dofVertex       -   [=1] number of degrees of freedom per vertex/point/node/0-cell
+            dofCenter       -   [=1] number of degrees of freedom per element/edge/1-cell
+            stencilType     -   ghost/halo region type: DMSTAG_STENCIL_BOX or DMSTAG_STENCIL_NONE
+            stencilWidth    -   width, in elements, of halo/ghost region
+            lx              -   [Optional] Vector of local sizes, of length equal to the comm size, summing to M
+            kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
     """
     function DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dofVertex=1,dofCenter=1,stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX,stencilWidth=2, lx=C_NULL; kwargs...)
 
@@ -90,23 +88,21 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        Creates a 2D DMStag object
-        
-        Usage:
+    Creates a 2D DMStag object
 
-            dm = DMStagCreate2d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M, N, m, n, dofVertex, dofEdge, dofElement, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth, lx, ly; kwargs...)
+        dm = DMStagCreate2d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M, N, m, n, dofVertex, dofEdge, dofElement, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth, lx, ly; kwargs...)
 
-                comm            -   MPI communicator
-                bndx,bndy       -   boundary type: DM_BOUNDARY_NONE, DM_BOUNDARY_PERIODIC, or DM_BOUNDARY_GHOSTED. 
-                M,N             -   global number of grid points
-                m,n             -   number of ranks in the x,y directions (may be PETSC_DECIDE TO do) 
-                dofVertex       -   [=1] number of degrees of freedom per vertex/point/node/0-cell
-                dofEdge         -   [=1] number of degrees of freedom per edge/1-cell 
-                dofElement      -   [=1] number of degrees of freedom per element/2-cell 
-                stencilType     -   ghost/halo region type: DMSTAG_STENCIL_BOX or DMSTAG_STENCIL_NONE
-                stencilWidth    -   width, in elements, of halo/ghost region
-                lx,ly           -   [Optional] arrays of local x,y element counts, of length equal to m,n, summing to M,N 
-                kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
+            comm            -   MPI communicator
+            bndx,bndy       -   boundary type: DM_BOUNDARY_NONE, DM_BOUNDARY_PERIODIC, or DM_BOUNDARY_GHOSTED. 
+            M,N             -   global number of grid points
+            m,n             -   number of ranks in the x,y directions (may be PETSC_DECIDE TO do) 
+            dofVertex       -   [=1] number of degrees of freedom per vertex/point/node/0-cell
+            dofEdge         -   [=1] number of degrees of freedom per edge/1-cell 
+            dofElement      -   [=1] number of degrees of freedom per element/2-cell 
+            stencilType     -   ghost/halo region type: DMSTAG_STENCIL_BOX or DMSTAG_STENCIL_NONE
+            stencilWidth    -   width, in elements, of halo/ghost region
+            lx,ly           -   [Optional] arrays of local x,y element counts, of length equal to m,n, summing to M,N 
+            kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
     """
     function DMStagCreate2d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M, N, m=C_NULL, n=C_NULL, dofVertex=1, dofEdge=1, dofElement=1, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth=2, lx=C_NULL, ly=C_NULL; kwargs...)
         
@@ -134,24 +130,22 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        Creates a 3D DMStag object
-        
-        Usage:
+    Creates a 3D DMStag object
 
-            dm = DMStagCreate3d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M, N, P, m, n, p, dofVertex, dofEdge, dofFace, dofElement, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth, lx, ly, lz; kwargs...)
+        dm = DMStagCreate3d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M, N, P, m, n, p, dofVertex, dofEdge, dofFace, dofElement, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth, lx, ly, lz; kwargs...)
 
-                comm            -   MPI communicator
-                bndx,bndy,bndz  -   boundary type: DM_BOUNDARY_NONE, DM_BOUNDARY_PERIODIC, or DM_BOUNDARY_GHOSTED. 
-                M,N,P           -   global number of grid points
-                m,n,p           -   number of ranks in the x,y directions (may be PETSC_DECIDE TO do) 
-                dofVertex       -   [=1] number of degrees of freedom per vertex/point/node/0-cell
-                dofEdge         -   [=1] number of degrees of freedom per edge/1-cell 
-                dofFace         -   [=1] number of degrees of freedom per face/2-cell 
-                dofElement      -   [=1] number of degrees of freedom per element/3-cell 
-                stencilType     -   ghost/halo region type: DMSTAG_STENCIL_BOX or DMSTAG_STENCIL_NONE
-                stencilWidth    -   width, in elements, of halo/ghost region
-                lx,ly,lz        -   [Optional] arrays of local x,y element counts, of length equal to m,n, summing to M,N 
-                kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
+            comm            -   MPI communicator
+            bndx,bndy,bndz  -   boundary type: DM_BOUNDARY_NONE, DM_BOUNDARY_PERIODIC, or DM_BOUNDARY_GHOSTED. 
+            M,N,P           -   global number of grid points
+            m,n,p           -   number of ranks in the x,y directions (may be PETSC_DECIDE TO do) 
+            dofVertex       -   [=1] number of degrees of freedom per vertex/point/node/0-cell
+            dofEdge         -   [=1] number of degrees of freedom per edge/1-cell 
+            dofFace         -   [=1] number of degrees of freedom per face/2-cell 
+            dofElement      -   [=1] number of degrees of freedom per element/3-cell 
+            stencilType     -   ghost/halo region type: DMSTAG_STENCIL_BOX or DMSTAG_STENCIL_NONE
+            stencilWidth    -   width, in elements, of halo/ghost region
+            lx,ly,lz        -   [Optional] arrays of local x,y element counts, of length equal to m,n, summing to M,N 
+            kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
     """
     function DMStagCreate3d(comm::MPI.Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M, N, P, m=C_NULL, n=C_NULL, p=C_NULL, dofVertex=1, dofEdge=1, dofFace=1, dofElement=1, stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, stencilWidth=2, lx=C_NULL, ly=C_NULL, lz=C_NULL; kwargs...)
         
@@ -180,13 +174,11 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        sets up the data structures inside a DM object 
-        
-        Usage:
+    sets up the data structures inside a DM object 
 
-            DMSetUp(dm::DMStag)
+        DMSetUp(dm::DMStag)
 
-                dm              -   the DMStag object 
+            dm    -   the DMStag object 
     """
     function DMSetUp(dm::DMStag{$PetscScalar})
 
@@ -196,13 +188,11 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        sets parameters in a DM from the options database 
-        
-        Usage:
+    sets parameters in a DM from the options database 
 
-            setfromoptions!(dm::DMStag)
+        setfromoptions!(dm::DMStag)
 
-                dm              -   the DMStag object 
+            dm              -   the DMStag object 
     """
     function setfromoptions!(dm::DMStag{$PetscScalar})
 
@@ -214,18 +204,16 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
     
     """
-        Creates a compatible DMStag with different dof/stratum 
-        
-        Usage:
+    Creates a compatible DMStag with different dof/stratum 
 
-            dm = DMStagCreateCompatibleDMStag(dm::DMStag, dofVertex, dofEdge, dofFace, dofElement; kwargs...)
+        dm = DMStagCreateCompatibleDMStag(dm::DMStag, dofVertex, dofEdge, dofFace, dofElement; kwargs...)
 
-                dm              -   the DMStag object 
-                dofVertex       -   [=0] number of degrees of freedom per vertex/point/node/0-cell
-                dofEdge         -   [=0] number of degrees of freedom per edge/1-cell 
-                dofFace         -   [=0] number of degrees of freedom per face/2-cell 
-                dofElement      -   [=0] number of degrees of freedom per element/3-cell 
-                kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
+            dm              -   the DMStag object 
+            dofVertex       -   [=0] number of degrees of freedom per vertex/point/node/0-cell
+            dofEdge         -   [=0] number of degrees of freedom per edge/1-cell 
+            dofFace         -   [=0] number of degrees of freedom per face/2-cell 
+            dofElement      -   [=0] number of degrees of freedom per element/3-cell 
+            kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
     """
     function DMStagCreateCompatibleDMStag(dm::DMStag{$PetscScalar}, dofVertex=0, dofEdge=0, dofFace=0, dofElement=0; kwargs...)
 
@@ -256,17 +244,15 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        Get number of DOF associated with each stratum of the grid 
-        
-        Usage:
+    Get number of DOF associated with each stratum of the grid 
 
-            dofVertex, dofEdge, dofFace, dofElement = DMStagGetDOF(dm::DMStag, dofVertex, dofEdge, dofFace, dofElement; kwargs...)
+        dof0, dof1, dof2, dof3 = DMStagGetDOF(dm::DMStag)
 
-                dm              -   the DMStag object 
-                dof0 	- the number of points per 0-cell (vertex/node)
-	            dof1 	- the number of points per 1-cell (element in 1D, edge in 2D and 3D)
-	            dof2 	- the number of points per 2-cell (element in 2D, face in 3D)
-	            dof3 	- the number of points per 3-cell (element in 3D) 
+            dm      - the DMStag object 
+            dof0 	- the number of points per 0-cell (vertex/node)
+	        dof1 	- the number of points per 1-cell (element in 1D, edge in 2D and 3D)
+	        dof2 	- the number of points per 2-cell (element in 2D, face in 3D)
+	        dof3 	- the number of points per 3-cell (element in 3D) 
 
     """
     function DMStagGetDOF(dm::DMStag{$PetscScalar})
@@ -292,8 +278,12 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
 
     """
-        Gets the global size of the DMStag object
-            M,N,P = DMStagGetGlobalSizes(dm::DMStag)
+    Gets the global size of the DMStag object
+
+        M,N,P = DMStagGetGlobalSizes(dm::DMStag)
+
+            dm      - the DMStag object 
+            M,N,P   - size in x,y,z
     """
     function DMStagGetGlobalSizes(dm::DMStag{$PetscScalar})
 
@@ -314,6 +304,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         end
     end
 
+
     function Base.size(dm::DMStag{$PetscScalar})
         size = DMStagGetGlobalSizes(dm)
         return size
@@ -321,8 +312,12 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
 
     """
-        Gets the local size of the DMStag object
-            M,N,P = DMStagGetLocalSizes(dm::DMStag)
+    Gets the local size of the DMStag object
+
+        M,N,P = DMStagGetLocalSizes(dm::DMStag)
+
+            dm      - the DMStag object 
+            M,N,P   - size in x,y,z
     """
     function DMStagGetLocalSizes(dm::DMStag{$PetscScalar})
 
@@ -343,6 +338,15 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         end
     end
 
+    """
+    get number of native entries in the global representation 
+
+        entries = DMStagGetEntries(dm::DMStag)
+
+            dm      - the DMStag object 
+            entries - number of rank-native entries in the global representation 
+    """
+
     function DMStagGetEntries(dm::DMStag)
         # doesn't work, as it cannot find the name of the routine. 
         # Changed in more recent PETSc version?
@@ -356,9 +360,14 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
 
     """
-        Sets coordinates for a DMStag object using the Product method to specify coordinates (1D arrays)
+    Set the coordinate DM to be a DMProduct of 1D DMStag objects, each of which have a coordinate DM (also a 1d DMStag) holding uniform coordinates. 
+
+        DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin, xmax, ymin=0, ymax=0, zmin=0, zmax=0)
+
+            dm 	                           - the DMStag object 
+            xmin,xmax,ymin,ymax,zmin,zmax  - maximum and minimum global coordinate values
     """
-    function DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin, xmax, ymin, ymax, zmin, zmax)
+    function DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin, xmax, ymin=0, ymax=0, zmin=0, zmax=0)
         
         @chk ccall((:DMStagSetUniformCoordinatesProduct, $libpetsc), PetscErrorCode,
                     ( CDMStag,   $PetscScalar, $PetscScalar, $PetscScalar, 
@@ -369,7 +378,12 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        Sets coordinates for a DMStag object using the Explicit method to specify coordinates (1D arrays)
+    set DMStag coordinates to be a uniform grid, storing all values
+
+        DMStagSetUniformCoordinatesExplicit(dm::DMStag, xmin, xmax, ymin=0, ymax=0, zmin=0, zmax=0)
+
+            dm 	                          - the DMStag object
+	        xmin,xmax,ymin,ymax,zmin,zmax - maximum and minimum global coordinate values 
     """
     function DMStagSetUniformCoordinatesExplicit(dm::DMStag, xmin, xmax, ymin=0, ymax=0, zmin=0, zmax=0)
         
@@ -382,35 +396,13 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        Sets uniform coordinates for a 1D DMStag object 
-            DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax)
-    """
-    function DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax)
-        DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin, xmax, 0.0, 0.0, 0.0, 0.0);
-        return nothing
-    end
+    Creates a global vector from a DM object 
+    NOTE: for now this is initialized sequentially; MPI should be added
 
-    """
-        Sets uniform coordinates for a 2D DMStag object 
-            DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax, ymin, ymax)
-    """
-    function DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax, ymin, ymax)
-        DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin, xmax, ymin, ymax, 0.0, 0.0);
-        return nothing
-    end
+        vec = DMCreateGlobalVector(dm::DMStag; write_val=true, read_val=true)
 
-    """
-        Sets uniform coordinates for a 3D DMStag object 
-            DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax, ymin, ymax, zmin, zmax)
-    """
-    function DMStagSetUniformCoordinates(dm::DMStag, xmin, xmax, ymin, ymax, zmin, zmax)
-        DMStagSetUniformCoordinatesProduct(dm::DMStag, xmin, xmax, ymin, ymax, zmin, zmax);
-        return nothing
-    end
-
-    """
-        This extracts a global vector from the DMStag object
-            NOTE: for now this is initialized sequentially; MPI should be added
+            dm 	- the DM object
+            vec - the global vector
     """
     function DMCreateGlobalVector(dm::DMStag; write_val=true, read_val=true)
 
@@ -426,8 +418,13 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-    This extracts a local vector from the DMStag object
-            NOTE: for now this is initialized sequentially; MPI should be added
+    Creates a local vector from a DM object 
+    NOTE: for now this is initialized sequentially; MPI should be added
+
+        vec = DMCreateLocalVector(dm::DMStag; write_val=true, read_val=true)
+
+            dm 	- the DM object
+            vec - the local vector
     """
     function DMCreateLocalVector(dm::DMStag; write_val=true, read_val=true)
 
@@ -444,15 +441,19 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
 
     """
-        Retrieves a local array that holds local values (including ghost points) of the DMStag
+    get access to local array (including ghost points) of the DMStag
             
-            Array =  DMStagVecGetArray(dm::DMStag, v::AbstractVec)
+        Array =  DMStagVecGetArray(dm::DMStag, v::AbstractVec)
 
-        Once you are done with work on the array, you MUST release the memory with
+            dm 	  - the DMStag object
+            vec   - the Vec object 
+            Array - the array
+
+    Once you are done with work on the array, you MUST release the memory with
                 
-            Base.finalize(Array)
+        Base.finalize(Array)
 
-        Otherwise the values are not returned correctly to v    
+    Otherwise the values are not returned correctly to v    
 
     """
     function DMStagVecGetArray(dm::DMStag, v::AbstractVec)
@@ -470,7 +471,13 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-       As DMStagVecGetArray, but with only reading the memory (not writing values back)
+    get read-only access to a local array (including ghost points) of the DMStag
+
+        Array =  DMStagVecGetArrayRead(dm::DMStag, v::AbstractVec)
+
+            dm 	  - the DMStag object
+            vec   - the Vec object 
+            Array - the read-only array
        
     """
     function DMStagVecGetArrayRead(dm::DMStag, v::AbstractVec)
@@ -515,13 +522,14 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
         Usage:
 
-            Array = DMStagGetArrayLocationSlot(dm::DMStag, v::AbstractVec, loc::DMStagStencilLocation, dof::Int)
+            Array = DMStagGetGhostArrayLocationSlot(dm::DMStag, v::AbstractVec              , loc::DMStagStencilLocation, dof::Int)
+            Array = DMStagGetGhostArrayLocationSlot(dm::DMStag, ArrayFull::PermutedDimsArray, loc::DMStagStencilLocation, dof::Int)
 
         Input:
-            dm      -   the DMStag object 
-            v 	    -   the local vector as obtained with DMCreateLocalVector
-            loc  	-   a DMStagStencilLocation
-            dof 	-   the degree of freedom on loc, which you want to extracts
+            dm           -   the DMStag object 
+            v,ArrayFull  -   the local vector as obtained with DMCreateLocalVector, can also be a local array
+            loc  	     -   a DMStagStencilLocation
+            dof 	     -   the degree of freedom on loc, which you want to extracts
         
         Output:
 
@@ -556,9 +564,13 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        Retrieves a coordinate slot from a DMStag object, if the coordinates are set as ProductCoordinate 
+    get slot for use with local product coordinate arrays 
 
-            slot = DMStagGetProductCoordinateLocationSlot(dm::DMStag,loc::DMStagStencilLocation)
+        slot = DMStagGetProductCoordinateLocationSlot(dm::DMStag,loc::DMStagStencilLocation)
+
+            dm 	    - the DMStag object
+            loc 	- the grid location 
+            slot 	- the index to use in local arrays
     """
     function DMStagGetProductCoordinateLocationSlot(dm::DMStag,loc::DMStagStencilLocation)
         slot = Ref{$PetscInt}()
@@ -568,7 +580,14 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return slot[]
     end
 
+    """
+    get number of entries per element in the local representation 
 
+        entriesPerElement = DMStagGetEntriesPerElement(dm::DMStag)
+
+            dm 	              - the DMStag objects
+            entriesPerElement - number of entries associated with each element in the local representation
+    """
     function DMStagGetEntriesPerElement(dm::DMStag)
         entriesPerElement = Ref{$PetscInt}()
         @chk ccall((:DMStagGetEntriesPerElement, $libpetsc), PetscErrorCode,
@@ -577,7 +596,14 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return entriesPerElement[]
     end
 
+    """
+    get elementwise stencil width 
 
+        stencilWidth = DMStagGetStencilWidth(dm::DMStag)
+
+            dm 	         - the DMStag objects
+            stencilWidth - stencil/halo/ghost width in elements
+    """
     function DMStagGetStencilWidth(dm::DMStag)
         stencilWidth = Ref{$PetscInt}()
         @chk ccall((:DMStagGetStencilWidth, $libpetsc), PetscErrorCode,
@@ -587,17 +613,13 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-    Retrieves a coordinate slot from a DMStag object, if the coordinates are set as ProductCoordinate 
+    get index to use in accessing raw local arrays 
 
         slot = DMStagGetLocationSlot(dm::DMStag,loc::DMStagStencilLocation, c)
         
-        Input Parameters
             dm	    - the DMStag object
             loc	    - location relative to an element
             c	    - component ( the degree of freedom)
-        
-        Output Parameter
-
             slot	- index to use
 
     """
@@ -611,7 +633,11 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        Destroys the DMStag object
+    Destroys a DM
+
+        destroy(dm::DMStag)
+
+            dm 	- the DM object to destroy
     """
     function destroy(dm::DMStag{$PetscScalar})
         finalized($PetscScalar) ||
@@ -620,7 +646,12 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        Retrieves the Type of the DMStag object
+    Gets the DM type name (as a string) from the DM
+
+        type = gettype(dm::DMStag)
+
+            dm 	 - The DM
+            type - The DM type name 
     """
     function gettype(dm::DMStag{$PetscScalar})
         t_r = Ref{CDMStagType}()
@@ -628,6 +659,14 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return unsafe_string(t_r[])
     end
 
+    """
+    Views a DM
+
+    view(dm::DMStag, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(dm.comm))
+
+            dm 	   - the DM object to view 
+            viewer - the viewer 
+    """
     function view(dm::DMStag{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(dm.comm))
         @chk ccall((:DMView, $libpetsc), PetscErrorCode, 
                     (CDMStag, CPetscViewer),
@@ -636,8 +675,15 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """ 
-        Gets the corners of the DMStag grid
-            x,m,nExtrax = DMStagGetCorners(dm:DMStag)   in 1D
+    return global element indices of the local region (excluding ghost points) 
+        
+        x,m,nExtrax = DMStagGetCorners(dm:DMStag)   in 1D
+        x[],m[],nExtrax[] = DMStagGetCorners(dm:DMStag)   in 2D or 3D
+
+            dm 	    - the DMStag object
+            x,y,z 	- starting element indices in each direction
+            m,n,p 	- element widths in each direction
+            nExtrax,nExtray,nExtraz 	- number of extra partial elements in each direction. 
     """
     function  DMStagGetCorners(dm::DMStag)
 
@@ -670,8 +716,15 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
     
     """ 
-    Gets the corners of the DMStag grid including the ghost nodes
-        x,m = DMStagGetGhostCorners(dm:DMStag)   in 1D
+    return global element indices of the local region (including ghost points) 
+        
+        x,m,nExtrax = DMStagGetCorners(dm:DMStag)   in 1D
+        x[],m[],nExtrax[] = DMStagGetCorners(dm:DMStag)   in 2D or 3D
+
+            dm 	    - the DMStag object
+            x,y,z 	- starting element indices in each direction
+            m,n,p 	- element widths in each direction
+            nExtrax,nExtray,nExtraz 	- number of extra partial elements in each direction. 
     """
     function  DMStagGetGhostCorners(dm::DMStag)
 
@@ -688,7 +741,10 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
             dm, x,y,z, m,n,p)
 
             if dm.dim==1
-                return (x[],), (m[],)  
+                X = (x[],)
+                M = (m[],)
+                NEXTRA = (nExtrax[],)
+                return X[1], M[1], NEXTRA[1]
             elseif dm.dim==2
                 return (x[], y[]), (m[],n[])    
             elseif dm.dim==3
@@ -697,8 +753,12 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        This is a convenience routine that gives the starting & end 
-            of the central nodes, which can be used in combination 
+    Return indices of start and end of the central nodes of a local array built from the input dm (excluding ghost nodes)    
+    
+        Cen_start, Cen_end = DMStagGetCentralNodes(dm::DMStag)
+
+            dm 	                - the DMStag object
+            Cen_start, Cen_end 	- indices of start and finish of central nodes
     """
     function DMStagGetCentralNodes(dm::DMStag)
         # in Julia, indices in arrays start @ 1, whereas they can go negative in C
@@ -719,8 +779,13 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
 
     """
-        returns the types of the boundary of the DMStag object in x/y/z direction 
-            Bx = DMStagGetBoundaryTypes(dm::DMStag) in 1D
+    get boundary types
+        
+        Bx = DMStagGetBoundaryTypes(dm::DMStag) in 1D
+        Bx,By,Bz = DMStagGetBoundaryTypes(dm::DMStag) in 3D
+
+            dm 	     - the DMStag object 
+            Bx,By,Bz - boundary types
     """
     function  DMStagGetBoundaryTypes(dm::DMStag)
 
@@ -740,6 +805,15 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
             end
     end
 
+    """
+    set elementwise stencil width in dm
+        
+        DMStagSetStencilWidth(dm::DMStag, stencilWidth::Int64)
+        Bx,By,Bz = DMStagGetBoundaryTypes(dm::DMStag) in 3D
+
+            dm 	         - the DMStag object 
+            stencilWidth - stencil/halo/ghost width in elements 
+    """
     function  DMStagSetStencilWidth(dm::DMStag, stencilWidth::Int64)
 
         @chk ccall((:DMStagSetStencilWidth, $libpetsc), PetscErrorCode,
@@ -749,7 +823,13 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        Info about the # of ranks
+    get number of ranks in each direction in the global grid decomposition
+
+        nRanks0 = DMStagGetNumRanks(dm::DMStag) in 1D
+        nRanks0,nRanks1,nRanks2 = DMStagGetNumRanks(dm::DMStag) in 3D
+
+            dm 	                     - the DMStag object 
+            nRanks0,nRanks1,nRanks2  - number of ranks in each direction in the grid decomposition
     """
     function  DMStagGetNumRanks(dm::DMStag)
 
@@ -770,7 +850,12 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        Set # of ranks
+    set ranks in each direction in the global rank grid. Arguments corresponding to higher dimensions are ignored for 1D and 2D grids.  
+
+        DMStagSetNumRanks(dm::DMStag, nRanks0::Int32, nRanks1=1::Int32, nRanks2=1::Int32)
+
+            	dm 	                        - the DMStag object
+	            nRanks0,nRanks1,nRanks2 	- number of ranks in each direction 
     """
     function  DMStagSetNumRanks(dm::DMStag, nRanks0::Int32, nRanks1=1::Int32, nRanks2=1::Int32)
 
@@ -801,17 +886,14 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     """
         This puts a single value inside a global vector using DMStagStencil
         
-        Syntax:
             DMStagVecSetValueStencil(dm::DMStag,vec::Abstractvec, pos::DMStagStencil, val::Float64, insertMode::InsertMode)
 
-        Input Parameters:
 
-            dm	- the DMStag object
-            vec	- the Vec
-            pos	- the location of the set values, given by a DMStagStencil struct
-            val	- the value to be set
-            insertMode	- INSERT_VALUES or ADD_VALUES
-
+                dm	- the DMStag object
+                vec	- the Vec
+                pos	- the location of the set values, given by a DMStagStencil struct
+                val	- the value to be set
+                insertMode	- INSERT_VALUES or ADD_VALUES
     """
     function  DMStagVecSetValueStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil, val, insertMode::InsertMode)
 
@@ -825,7 +907,15 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
 
     """
-        This gets a single value from a DMStag Vec
+    get vector values using grid indexing (currently only valid for a single value)
+
+        val = DMStagVecGetValueStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil)
+
+            dm 	- the DMStag object
+            vec - the vector object
+            n 	- the number of values to obtain
+            pos - locations to obtain values from (as an array of DMStagStencil values) 
+            val - value at the point 
     """
     function  DMStagVecGetValueStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil)
 
@@ -839,19 +929,14 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        This reads a single value from a matrix DMStagStencil
+    This reads a single value from a matrix DMStagStencil
         
-        Syntax:
-         val =  DMStagMatGetValueStencil(dm::DMStag,mat::AbstractMat, posRow::DMStagStencil,  posCol::DMStagStencil)
-
-        Input Parameters:
+        val =  DMStagMatGetValueStencil(dm::DMStag,mat::AbstractMat, posRow::DMStagStencil,  posCol::DMStagStencil)
 
             dm	    - the DMStag object
             mat	    - the Mat
             posRow	- the location of the row of the set value, given by a DMStagStencil struct
             posCol	- the location of the row of the set value, given by a DMStagStencil struct
-        
-        Output:
             val	    - the value
     """
     function  DMStagMatGetValueStencil(dm::DMStag, mat::AbstractMat{$PetscScalar},  posRow::DMStagStencil, posCol::DMStagStencil)
@@ -867,8 +952,12 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """ 
-        Utility routine to give the non-ghosted indices in the local vector 
-        that contribute to the global vector
+        Give the non-ghosted indices in the local vector that contribute to the global vector
+
+            indices = LocalInGlobalIndices(dm::DMStag)
+
+                dm	    - the DMStag object
+                indices - local indices
     """
     function LocalInGlobalIndices(dm::DMStag)
         # note: this can likely be done more efficiently and will have to be modified in parallel
@@ -887,22 +976,16 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
     
     """
-        This puts a single value inside a matrix using DMStagStencil position
+    This puts a single value inside a matrix using DMStagStencil position
     
-    Syntax:
         DMStagMatSetValueStencil(dm::DMStag,mat::AbstractMat, posRow::DMStagStencil,  posCol::DMStagStencil, val::Float64, insertMode::InsertMode)
 
-    Input Parameters:
-
-        dm	        - the DMStag object
-        mat	        - the Mat
-        posRow	    - the location of the row of the set value, given by a DMStagStencil struct
-        posCol	    - the location of the row of the set value, given by a DMStagStencil struct
-        val	        - the value to be set
-        insertMode	- INSERT_VALUES or ADD_VALUES
-    
-    Output:
-        none
+            dm	        - the DMStag object
+            mat	        - the Mat
+            posRow	    - the location of the row of the set value, given by a DMStagStencil struct
+            posCol	    - the location of the row of the set value, given by a DMStagStencil struct
+            val	        - the value to be set
+            insertMode	- INSERT_VALUES or ADD_VALUES
     """
     function  DMStagMatSetValueStencil(dm::DMStag, mat::AbstractMat{$PetscScalar},  posRow::DMStagStencil, posCol::DMStagStencil, val, insertMode::InsertMode)
 
@@ -919,7 +1002,12 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
   
     """
-        returns the # of dimensions of the DMStag object
+    Return the topological dimension of the DM
+
+        dim = DMGetDimension(dm::DMStag)
+
+            dm 	- The DM
+            dim - dimensions
     """
     function DMGetDimension(dm::DMStag)
         dim = Ref{$PetscInt}()
@@ -931,7 +1019,15 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
 
     """
-        Copies Local to global vector
+    updates global vectors from local vectors 
+
+        DMLocalToGlobal(dm::DMStag,l::AbstractVec{$PetscScalar}, mode::InsertMode,g::AbstractVec{$PetscScalar})
+        DMLocalToGlobal(dm::DMStag,l::AbstractVec{$PetscScalar}, mode::InsertMode,g::CVec)
+
+            dm 	 - the DM object
+	        l 	 - the local vector
+	        mode - if INSERT_VALUES then no parallel communication is used, if ADD_VALUES then all ghost points from the same base point accumulate into that base point.
+	        g 	 - the global vector 
     """
     function DMLocalToGlobal(dm::DMStag,l::AbstractVec{$PetscScalar}, mode::InsertMode,g::AbstractVec{$PetscScalar})
 
@@ -954,8 +1050,17 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return nothing
     end
 
+    
     """
-        Copies Global to Local vector
+    update local vectors from global vector 
+
+        DMGlobalToLocal(dm::DMStag,g::AbstractVec{$PetscScalar}, mode::InsertMode,l::AbstractVec{$PetscScalar})
+        DMGlobalToLocal(dm::DMStag,g::CVec, mode::InsertMode,l::AbstractVec{$PetscScalar})
+
+            dm 	 - the DM object
+	        g 	 - the global vector
+	        mode - INSERT_VALUES or ADD_VALUES
+	        l 	 - the local vector 
     """
     function DMGlobalToLocal(dm::DMStag,g::AbstractVec{$PetscScalar}, mode::InsertMode,l::AbstractVec{$PetscScalar})
 
@@ -982,18 +1087,11 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
 
     """
-        Generates a matrix from a DMStag object. 
-            The type is a MatSeqAIJ is we are on 1 core 
+    Generates a matrix from a DMStag object. The type is a MatSeqAIJ is we are on 1 core 
 
-        Syntax:
-            mat = DMCreateMatrix(dm::DMStag)
-
-        Input Parameters:
+        mat = DMCreateMatrix(dm::DMStag)
 
             dm	- the DMStag object
-           
-        Input Parameters:
-
             mat	- the matrix of type MatSeqAIJ (on 1 core) 
     """
     function DMCreateMatrix(dm::DMStag)
@@ -1012,7 +1110,14 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return mat
     end
 
+    """
+    get elementwise ghost/halo stencil type
 
+        stencilType = DMStagGetStencilType(dm::DMStag)
+
+            dm 	        - the DMStag object
+            stencilType - the elementwise ghost stencil type: DMSTAG_STENCIL_BOX, DMSTAG_STENCIL_STAR, or DMSTAG_STENCIL_NONE
+    """
     function DMStagGetStencilType(dm::DMStag)
         stencilType =  Ref{DMStagStencilType}()
 
@@ -1022,11 +1127,12 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-    DMStagGetIsFirstRank
+    get boolean value for whether this rank is first in each direction in the rank grid. Arguments corresponding to higher dimensions are ignored for 1D and 2D grids. These arguments may be set to NULL in this case.
 
-        get boolean value for whether this rank is first in each direction in the rank grid 
-            Arguments corresponding to higher dimensions are ignored for 1D and 2D grids. These arguments may be set to NULL in this case.
+        fr_X,fr_Y,fr_Z = DMStagGetIsFirstRank(dm::DMStag)
 
+            dm 	           - the DMStag object
+            fr_X,fr_Y,fr_Z - whether this rank is first in each direction
     """
     function DMStagGetIsFirstRank(dm::DMStag)
         fr_X = Ref{PetscBool}()
@@ -1041,9 +1147,12 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
 
     """
-    DMStagGetIsLastRank
+    get boolean value for whether this rank is last in each direction in the rank grid 
 
-        get boolean value for whether this rank is last in each direction in the rank grid 
+        fr_X,fr_Y,fr_Z = DMStagGetIsLastRank(dm::DMStag)
+
+            dm 	           - the DMStag object
+            fr_X,fr_Y,fr_Z - whether this rank is last in each direction
     """
     function DMStagGetIsLastRank(dm::DMStag)
         fr_X = Ref{PetscBool}()
@@ -1085,9 +1194,15 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
   
       end
 
-      """
-        Gets the DM that prescribes coordinate layout and scatters between global and local coordinates 
-      """
+    """
+    Gets the DM that prescribes coordinate layout and scatters between global and local coordinates
+
+        dmnew = DMGetCoordinateDM(dm::DMStag; kwargs...)
+
+            dm 	           - the DMStag object
+            kwargs...      -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
+            dmnew          - Coordinate dm
+    """
       function DMGetCoordinateDM(dm::DMStag; kwargs...)
 
         comm  = dm.comm
@@ -1106,7 +1221,12 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-        Gets a local vector with the coordinates associated with the DM. 
+    Gets a local vector with the coordinates associated with the DM.
+
+        v = DMGetCoordinatesLocal(dm::DMStag; write_val=true, read_val=true)
+
+            dm 	- the DMStag object
+            v   - coordinate local vector
     """
     function DMGetCoordinatesLocal(dm::DMStag; write_val=true, read_val=true)
 

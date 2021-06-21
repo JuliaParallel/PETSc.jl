@@ -99,7 +99,7 @@ z0   = - 10;
 zend =    0;
 
 dm  = PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,nx,nz,1,1,0,0,1,PETSc.DMSTAG_STENCIL_BOX,2);
-PETSc.DMStagSetUniformCoordinates(dm, x0, xend, z0, zend);
+PETSc.DMStagSetUniformCoordinatesExplicit(dm, x0, xend, z0, zend);
 x   =   PETSc.DMCreateGlobalVector(dm);
 
 #FormInitialGuess!(dm,x);

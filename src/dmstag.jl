@@ -662,7 +662,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     """
     Views a DM
 
-    view(dm::DMStag, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(dm.comm))
+    view(dm::DMStag, viewer::Viewer=ViewerStdout(dm.comm))
 
             dm 	   - the DM object to view 
             viewer - the viewer 
@@ -909,7 +909,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     """
     get vector values using grid indexing (currently only valid for a single value)
 
-        val = DMStagVecGetValueStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil)
+        val = DMStagVecGetValueStencil(dm::DMStag, vec::AbstractVec, pos::DMStagStencil)
 
             dm 	- the DMStag object
             vec - the vector object
@@ -1021,8 +1021,8 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     """
     updates global vectors from local vectors 
 
-        DMLocalToGlobal(dm::DMStag,l::AbstractVec{$PetscScalar}, mode::InsertMode,g::AbstractVec{$PetscScalar})
-        DMLocalToGlobal(dm::DMStag,l::AbstractVec{$PetscScalar}, mode::InsertMode,g::CVec)
+        DMLocalToGlobal(dm::DMStag,l::AbstractVec, mode::InsertMode,g::AbstractVec)
+        DMLocalToGlobal(dm::DMStag,l::AbstractVec, mode::InsertMode,g::CVec)
 
             dm 	 - the DM object
 	        l 	 - the local vector
@@ -1054,8 +1054,8 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     """
     update local vectors from global vector 
 
-        DMGlobalToLocal(dm::DMStag,g::AbstractVec{$PetscScalar}, mode::InsertMode,l::AbstractVec{$PetscScalar})
-        DMGlobalToLocal(dm::DMStag,g::CVec, mode::InsertMode,l::AbstractVec{$PetscScalar})
+        DMGlobalToLocal(dm::DMStag,g::AbstractVec, mode::InsertMode,l::AbstractVec)
+        DMGlobalToLocal(dm::DMStag,g::CVec, mode::InsertMode,l::AbstractVec)
 
             dm 	 - the DM object
 	        g 	 - the global vector

@@ -409,6 +409,7 @@ PETSc.DMGlobalToLocal(user_ctx.dm, x_g,  PETSc.INSERT_VALUES,  user_ctx.x_l);
 Vx  =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm, user_ctx.x_l,   PETSc.DMSTAG_LEFT,      0); 
 Vz  =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm, user_ctx.x_l,   PETSc.DMSTAG_DOWN,      0); 
 P   =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm, user_ctx.x_l,   PETSc.DMSTAG_ELEMENT,   0); 
+Eta =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff, user_ctx.coeff_l,   PETSc.DMSTAG_ELEMENT,   0); 
 
 # Getting indices for center nodes (not ghost)
 sx, sn  = PETSc.DMStagGetCentralNodes(user_ctx.dm);
@@ -419,6 +420,7 @@ iz      =   sx[2]:sn[2];
 Vx  =   Vx[sx[1]:sn[1]+1,iz];
 Vz  =   Vz[ix,sx[2]:sn[2]+1];
 P   =    P[ix,iz];
+Eta =  Eta[ix,iz];
 
 # Compute central average velocities
 Vx_cen = (Vx[2:end,:]  + Vx[1:end-1,:])/2;
@@ -428,8 +430,8 @@ Vz_cen = (Vz[:,2:end]  + Vz[:,1:end-1])/2;
 dm_coord  = PETSc.DMGetCoordinateDM(user_ctx.dmCoeff);
 vec_coord = PETSc.DMGetCoordinatesLocal(user_ctx.dmCoeff);
 
-XCoord_e = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_ELEMENT         ,      0); # location coord corner
-ZCoord_e = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_ELEMENT         ,      1); # location coord corner
+XCoord_e = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_ELEMENT  ,      0); # location coord corner
+ZCoord_e = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_ELEMENT  ,      1); # location coord corner
 XCoord_c = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_DOWN_LEFT,      0);   # location coord element
 ZCoord_c = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_DOWN_LEFT,      1);   # location coord element
 
@@ -447,5 +449,6 @@ zc_1D    = ZCoord_c[1,:];
 p1 = heatmap(xe_1D,ze_1D, P', xlabel="Width", ylabel="Depth", title="Pressure",aspect_ratio = 1)
 p2 = heatmap(xe_1D,zc_1D, Vz', xlabel="Width", ylabel="Depth", title="Vz",aspect_ratio = 1)
 p3 = heatmap(xc_1D,ze_1D, Vx', xlabel="Width", ylabel="Depth", title="Vx",aspect_ratio = 1)
-quiver!(XCoord_e[:],ZCoord_e[:],quiver=(Vx_cen[:]*0.02,Vz_cen[:]*0.02), color=:white)
-plot(p1, p2, p3, layout = (3, 1), legend = false)
+#quiver!(XCoord_e[:],ZCoord_e[:],quiver=(Vx_cen[:]*0.02,Vz_cen[:]*0.02), color=:white,aspect_ratio = 1)
+p4 = heatmap(xe_1D,ze_1D, Eta', xlabel="Width", ylabel="Depth", title="Eta",aspect_ratio = 1)
+plot(p1, p2, p3, p4, layout = (2, 2), legend = false)

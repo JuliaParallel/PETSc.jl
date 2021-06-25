@@ -913,12 +913,13 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     """
     This reads a single value from a matrix DMStagStencil
         
-        val =  DMStagMatGetValueStencil(dm::DMStag,mat::AbstractMat, posRow::DMStagStencil,  posCol::DMStagStencil)
+        val =  DMStagMatGetValuesStencil(dm::DMStag,mat::AbstractMat, posRow::DMStagStencil,  posCol::DMStagStencil)
+        DMStagMatGetValuesStencil(dm::DMStag, mat::AbstractMat{PetscScalar}, nRow,  posRow::Vector{DMStagStencil}, nCol, posCol::Vector{DMStagStencil})
 
             dm	    - the DMStag object
             mat	    - the Mat
-            posRow	- the location of the row of the set value, given by a DMStagStencil struct
-            posCol	- the location of the row of the set value, given by a DMStagStencil struct
+            posRow	- the location of the row of the set value, given by a DMStagStencil struct (as a vector)
+            posCol	- the location of the row of the set value, given by a DMStagStencil struct (as a vector)
             val	    - the value
     """
     function  DMStagMatGetValuesStencil(dm::DMStag, mat::AbstractMat{$PetscScalar},  posRow::DMStagStencil, posCol::DMStagStencil)

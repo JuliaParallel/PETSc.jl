@@ -60,20 +60,20 @@ for e in start:start+n-1
 
     pos1 = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,e,0,0,0);
     val1 = 0.0;
-    PETSc.DMStagVecSetValueStencil(dm, rhs, pos1, val1, PETSc.INSERT_VALUES);
+    PETSc.DMStagVecSetValuesStencil(dm, rhs, pos1, val1, PETSc.INSERT_VALUES);
 
     pos2 = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,e,0,0,0);
     if e == start
         val2 = a;
     else
-        val2 = PETSc.DMStagVecGetValueStencil(dmForcing, fLocal, pos2);
+        val2 = PETSc.DMStagVecGetValuesStencil(dmForcing, fLocal, pos2);
     end
-    PETSc.DMStagVecSetValueStencil(dm, rhs, pos2, val2, PETSc.INSERT_VALUES);
+    PETSc.DMStagVecSetValuesStencil(dm, rhs, pos2, val2, PETSc.INSERT_VALUES);
 
     if e == start+n-1
         pos3 = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,e,0,0,0);
         val3 = b;
-        PETSc.DMStagVecSetValueStencil(dm, rhs, pos3, val3, PETSc.INSERT_VALUES);
+        PETSc.DMStagVecSetValuesStencil(dm, rhs, pos3, val3, PETSc.INSERT_VALUES);
     end
 end
 
@@ -83,13 +83,13 @@ for e in start:start+n-1
     row = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,e,0,0,0);
     if e == start
         val1 = 1.0;
-        PETSc.DMStagMatSetValueStencil(dm, A, row, row, val1, PETSc.INSERT_VALUES);
+        PETSc.DMStagMatSetValuesStencil(dm, A, row, row, val1, PETSc.INSERT_VALUES);
     else
         col1 = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,e,0,0,0);
         col2 = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,e-1,0,0,0);
 
-        xp1 = PETSc.DMStagVecGetValueStencil(dm_coord, vec_coord, col1);
-        xp2 = PETSc.DMStagVecGetValueStencil(dm_coord, vec_coord, col2);
+        xp1 = PETSc.DMStagVecGetValuesStencil(dm_coord, vec_coord, col1);
+        xp2 = PETSc.DMStagVecGetValuesStencil(dm_coord, vec_coord, col2);
         h   = xp1-xp2;
         #print("h = ", h,", xp1 = ",xp1,", xp2 = ",xp2,"\n")
         
@@ -97,31 +97,31 @@ for e in start:start+n-1
         val2 = -1.0/h;
         val3 = 0.0;
 
-        PETSc.DMStagMatSetValueStencil(dm, A, row, col1, val1, PETSc.INSERT_VALUES);
-        PETSc.DMStagMatSetValueStencil(dm, A, row, col2, val2, PETSc.INSERT_VALUES);
-        PETSc.DMStagMatSetValueStencil(dm, A, row, row , val3, PETSc.INSERT_VALUES);
+        PETSc.DMStagMatSetValuesStencil(dm, A, row, col1, val1, PETSc.INSERT_VALUES);
+        PETSc.DMStagMatSetValuesStencil(dm, A, row, col2, val2, PETSc.INSERT_VALUES);
+        PETSc.DMStagMatSetValuesStencil(dm, A, row, row , val3, PETSc.INSERT_VALUES);
     end
     if e == start+n-1
         row2 = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,e,0,0,0);
         val4 = 1.0
-        PETSc.DMStagMatSetValueStencil(dm, A, row2, row2, val4, PETSc.INSERT_VALUES);
+        PETSc.DMStagMatSetValuesStencil(dm, A, row2, row2, val4, PETSc.INSERT_VALUES);
     end
 
     row  = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,e,0,0,0);
     col1 = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,e,0,0,0);
     col2 = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,e,0,0,0);
 
-    xu1 = PETSc.DMStagVecGetValueStencil(dm_coord, vec_coord, col1);
-    xu2 = PETSc.DMStagVecGetValueStencil(dm_coord, vec_coord, col2);
+    xu1 = PETSc.DMStagVecGetValuesStencil(dm_coord, vec_coord, col1);
+    xu2 = PETSc.DMStagVecGetValuesStencil(dm_coord, vec_coord, col2);
     h   = xu1-xu2;
 
     val1 = -1.0/h;
     val2 = 1.0/h;
     val3 = 1.0;
 
-    PETSc.DMStagMatSetValueStencil(dm, A, row, col1, val1, PETSc.INSERT_VALUES);
-    PETSc.DMStagMatSetValueStencil(dm, A, row, col2, val2, PETSc.INSERT_VALUES);
-    PETSc.DMStagMatSetValueStencil(dm, A, row, row , val3, PETSc.INSERT_VALUES);
+    PETSc.DMStagMatSetValuesStencil(dm, A, row, col1, val1, PETSc.INSERT_VALUES);
+    PETSc.DMStagMatSetValuesStencil(dm, A, row, col2, val2, PETSc.INSERT_VALUES);
+    PETSc.DMStagMatSetValuesStencil(dm, A, row, row , val3, PETSc.INSERT_VALUES);
 end
 
 PETSc.assemble(A)

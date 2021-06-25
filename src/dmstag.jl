@@ -174,7 +174,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-    sets up the data structures inside a DM object 
+    sets up the data structures inside a DM object (automatically called in the DMStagCreate routines) 
 
         DMSetUp(dm::DMStag)
 
@@ -188,7 +188,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
 
     """
-    sets parameters in a DM from the options database 
+    sets parameters in a DM from the options database (automatically called in the DMStagCreate routines)
 
         setfromoptions!(dm::DMStag)
 
@@ -338,26 +338,6 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         end
     end
 
-    """
-    get number of native entries in the global representation 
-
-        entries = DMStagGetEntries(dm::DMStag)
-
-            dm      - the DMStag object 
-            entries - number of rank-native entries in the global representation 
-    """
-
-    function DMStagGetEntries(dm::DMStag)
-        # doesn't work, as it cannot find the name of the routine. 
-        # Changed in more recent PETSc version?
-
-        entries = Ref{$PetscInt}()
-        @chk ccall((:DMStagGetEntries, $libpetsc), PetscErrorCode,
-                    ( CDMStag,  Ptr{$PetscInt}), dm,  entries)
-
-        return entries[]
-    end
-
 
     """
     Set the coordinate DM to be a DMProduct of 1D DMStag objects, each of which have a coordinate DM (also a 1d DMStag) holding uniform coordinates. 
@@ -376,6 +356,23 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
 
         return nothing
     end
+
+    function DMStagGetProductCoordinateArraysRead(dm::DMStag)
+
+        Arrx = Ref{$PetscScalar}()
+        Arry = Ref{$PetscScalar}()
+        Arrz = Ref{$PetscScalar}()
+
+        #Arrx = C_NULL
+        #Arry = C_NULL
+        #Arrz = C_NULL
+
+        ccall((:DMStagGetProductCoordinateArraysRead, $libpetsc), PetscErrorCode, (CDMStag, Ptr{$PetscScalar}, Ptr{$PetscScalar}, Ptr{$PetscScalar}), dm, Arrx, Arry, Arrz)
+        
+        return Arrx[],Arry[],Arrz[]
+    end
+
+
 
     """
     set DMStag coordinates to be a uniform grid, storing all values
@@ -718,13 +715,12 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     """ 
     return global element indices of the local region (including ghost points) 
         
-        x,m,nExtrax = DMStagGetCorners(dm:DMStag)   in 1D
-        x[],m[],nExtrax[] = DMStagGetCorners(dm:DMStag)   in 2D or 3D
+        x,m = DMStagGetCorners(dm:DMStag)   in 1D
+        x[],m[] = DMStagGetCorners(dm:DMStag)   in 2D or 3D
 
             dm 	    - the DMStag object
             x,y,z 	- starting element indices in each direction
             m,n,p 	- element widths in each direction
-            nExtrax,nExtray,nExtraz 	- number of extra partial elements in each direction. 
     """
     function  DMStagGetGhostCorners(dm::DMStag)
 
@@ -743,8 +739,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
             if dm.dim==1
                 X = (x[],)
                 M = (m[],)
-                NEXTRA = (nExtrax[],)
-                return X[1], M[1], NEXTRA[1]
+                return X[1], M[1]
             elseif dm.dim==2
                 return (x[], y[]), (m[],n[])    
             elseif dm.dim==3
@@ -805,22 +800,6 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
             end
     end
 
-    """
-    set elementwise stencil width in dm
-        
-        DMStagSetStencilWidth(dm::DMStag, stencilWidth::Int64)
-        Bx,By,Bz = DMStagGetBoundaryTypes(dm::DMStag) in 3D
-
-            dm 	         - the DMStag object 
-            stencilWidth - stencil/halo/ghost width in elements 
-    """
-    function  DMStagSetStencilWidth(dm::DMStag, stencilWidth::Int64)
-
-        @chk ccall((:DMStagSetStencilWidth, $libpetsc), PetscErrorCode,
-             (CDMStag,  $PetscInt), dm, stencilWidth)
-
-        return nothing
-    end
 
     """
     get number of ranks in each direction in the global grid decomposition
@@ -849,53 +828,21 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         end
     end
 
-    """
-    set ranks in each direction in the global rank grid. Arguments corresponding to higher dimensions are ignored for 1D and 2D grids.  
-
-        DMStagSetNumRanks(dm::DMStag, nRanks0::Int32, nRanks1=1::Int32, nRanks2=1::Int32)
-
-            	dm 	                        - the DMStag object
-	            nRanks0,nRanks1,nRanks2 	- number of ranks in each direction 
-    """
-    function  DMStagSetNumRanks(dm::DMStag, nRanks0::Int32, nRanks1=1::Int32, nRanks2=1::Int32)
-
-        
-        @chk ccall((:DMStagSetNumRanks, $libpetsc), PetscErrorCode,
-            (CDMStag, $PetscInt, $PetscInt, $PetscInt), dm, nRanks0,nRanks1,nRanks2)
-            
-        return nothing
-    end
-
-    # NOT WORKING!
-    function  DMStagGetOwnershipRanges(dm::DMStag, lx::Array{$PetscInt},  ly::Array{$PetscInt}, lz::Array{$PetscInt})
-
-        nx = DMStagGetNumRanks(dm)
-
-        
-        @chk ccall((:DMStagGetOwnershipRanges, $libpetsc), PetscErrorCode,
-            (CDMStag, Ptr{Cint}, Ptr{Cint}, Ptr{Cint}), dm, lx,ly,lz)
-
-
-       # lx_vec     = unsafe_wrap(Vector{$PetscInt},lx[],  nx)
-
-    #    return lx
-     
-    end
-
 
     """
-        This puts a single value inside a global vector using DMStagStencil
-        
-            DMStagVecSetValueStencil(dm::DMStag,vec::Abstractvec, pos::DMStagStencil, val::Float64, insertMode::InsertMode)
+    This puts values inside a global vector using DMStagStencil
+    
+        DMStagVecSetValuesStencil(dm::DMStag,vec::Abstractvec, pos::DMStagStencil, val::Float64, insertMode::InsertMode)
+        DMStagVecSetValuesStencil(dm::DMStag, vec::AbstractVec{PetscScalar}, n, pos::Vector{DMStagStencil}, values::Vector{PetscScalar}, insertMode::InsertMode)    
 
-
-                dm	- the DMStag object
-                vec	- the Vec
-                pos	- the location of the set values, given by a DMStagStencil struct
-                val	- the value to be set
-                insertMode	- INSERT_VALUES or ADD_VALUES
+            dm	- the DMStag object
+            vec	- the Vec
+            n   - the number of values (do not fill if only 1)
+            pos	- the location of the set values, given by a DMStagStencil struct
+            val	- the value to be set
+            insertMode	- INSERT_VALUES or ADD_VALUES
     """
-    function  DMStagVecSetValueStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil, val, insertMode::InsertMode)
+    function  DMStagVecSetValuesStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil, val, insertMode::InsertMode)
 
         n=1;
         @chk ccall((:DMStagVecSetValuesStencil, $libpetsc), PetscErrorCode,
@@ -905,19 +852,35 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         return nothing
     end
 
+    function  DMStagVecSetValuesStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, n, pos::Vector{$DMStagStencil}, values::Vector{$PetscScalar}, insertMode::InsertMode)
+
+        i = 1;
+        while i <= n
+            pos0 = pos[i];
+            val  = values[i];
+            m=1;
+            @chk ccall((:DMStagVecSetValuesStencil, $libpetsc), PetscErrorCode,
+                        (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}, InsertMode), 
+                            dm, vec.ptr, m, Ref{DMStagStencil_c}(pos0), Ref{$PetscScalar}(val), insertMode)
+        i += 1;
+        end
+        return nothing
+    end
+
 
     """
-    get vector values using grid indexing (currently only valid for a single value)
+    get vector values using grid indexing
 
-        val = DMStagVecGetValueStencil(dm::DMStag, vec::AbstractVec, pos::DMStagStencil)
+        val = DMStagVecGetValuesStencil(dm::DMStag, vec::AbstractVec, pos::DMStagStencil)
+        val = DMStagVecGetValuesStencil(dm::DMStag, vec::AbstractVec, n, pos::Vector{DMStagStencil})
 
             dm 	- the DMStag object
             vec - the vector object
-            n 	- the number of values to obtain
+            n 	- the number of values to obtain (do not fill if only one)
             pos - locations to obtain values from (as an array of DMStagStencil values) 
             val - value at the point 
     """
-    function  DMStagVecGetValueStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil)
+    function  DMStagVecGetValuesStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil)
 
         n=1;
         val = Ref{$PetscScalar}()
@@ -926,6 +889,25 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
                         dm, vec.ptr, n, Ref{DMStagStencil_c}(pos), val)
     
         return val[]
+    end
+
+    function  DMStagVecGetValuesStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, n, pos::Vector{$DMStagStencil})
+
+        i = 1;
+        values = zeros(n);
+        while i <= n
+            pos0 = pos[i];
+            m=1;
+            val = Ref{$PetscScalar}()
+            @chk ccall((:DMStagVecGetValuesStencil, $libpetsc), PetscErrorCode,
+                        (CDMStag, CVec, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}), 
+                            dm, vec.ptr, m, Ref{DMStagStencil_c}(pos0), val)
+
+            
+            values[i] = val[];
+            i += 1;
+        end
+        return values
     end
 
     """
@@ -939,7 +921,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
             posCol	- the location of the row of the set value, given by a DMStagStencil struct
             val	    - the value
     """
-    function  DMStagMatGetValueStencil(dm::DMStag, mat::AbstractMat{$PetscScalar},  posRow::DMStagStencil, posCol::DMStagStencil)
+    function  DMStagMatGetValuesStencil(dm::DMStag, mat::AbstractMat{$PetscScalar},  posRow::DMStagStencil, posCol::DMStagStencil)
 
         nRow= 1;
         nCol= 1;
@@ -949,6 +931,30 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
                         dm, mat.ptr, nRow, Ref{DMStagStencil_c}(posRow), nCol, Ref{DMStagStencil_c}(posCol), val)
     
         return val[]
+    end
+
+    function  DMStagMatGetValuesStencil(dm::DMStag, mat::AbstractMat{$PetscScalar}, nRow,  posRow::Vector{$DMStagStencil}, nCol, posCol::Vector{$DMStagStencil})
+
+        i = 1;
+        j = 1;
+        values = zeros(nRow*nCol);
+        while i <= nRow
+            while j <= nCol
+                posr = posRow[i];
+                posc = posCol[j];
+                n_Row= 1;
+                n_Col= 1;
+                val = Ref{$PetscScalar}()
+                @chk  ccall((:DMStagMatGetValuesStencil, $libpetsc), PetscErrorCode,
+                            (CDMStag, CMat, $PetscInt, Ptr{DMStagStencil_c}, $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}), 
+                                dm, mat.ptr, n_Row, Ref{DMStagStencil_c}(posr), n_Col, Ref{DMStagStencil_c}(posc), val)
+                values[i*j] = val[]
+                j += 1;
+            end
+            i += 1;
+        end
+
+        return values
     end
 
     """ 
@@ -976,18 +982,19 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
     end
     
     """
-    This puts a single value inside a matrix using DMStagStencil position
+    This puts values inside a matrix using DMStagStencil position
     
-        DMStagMatSetValueStencil(dm::DMStag,mat::AbstractMat, posRow::DMStagStencil,  posCol::DMStagStencil, val::Float64, insertMode::InsertMode)
+        DMStagMatSetValuesStencil(dm::DMStag,mat::AbstractMat, posRow::DMStagStencil,  posCol::DMStagStencil, val::Float64, insertMode::InsertMode)
+        DMStagMatSetValuesStencil(dm::DMStag, mat::AbstractMat, nRow,  posRow::Vector{DMStagStencil}, nCol, posCol::Vector{DMStagStencil}, values::Vector{PetscScalar}, insertMode::InsertMode)
 
             dm	        - the DMStag object
             mat	        - the Mat
-            posRow	    - the location of the row of the set value, given by a DMStagStencil struct
-            posCol	    - the location of the row of the set value, given by a DMStagStencil struct
+            posRow	    - the location of the row of the set value, given by a DMStagStencil struct (as a vector)
+            posCol	    - the location of the row of the set value, given by a DMStagStencil struct (as a vector)
             val	        - the value to be set
             insertMode	- INSERT_VALUES or ADD_VALUES
     """
-    function  DMStagMatSetValueStencil(dm::DMStag, mat::AbstractMat{$PetscScalar},  posRow::DMStagStencil, posCol::DMStagStencil, val, insertMode::InsertMode)
+    function  DMStagMatSetValuesStencil(dm::DMStag, mat::AbstractMat{$PetscScalar},  posRow::DMStagStencil, posCol::DMStagStencil, val, insertMode::InsertMode)
 
         nRow= 1;
         nCol= 1;
@@ -995,6 +1002,28 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
                     (CDMStag, CMat, $PetscInt, Ptr{DMStagStencil_c},  $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}, InsertMode), 
                         dm, mat.ptr, nRow, Ref{DMStagStencil_c}(posRow), nCol, Ref{$DMStagStencil_c}(posCol), Ref{$PetscScalar}(val), insertMode)
 
+        return nothing
+    end
+
+    function  DMStagMatSetValuesStencil(dm::DMStag, mat::AbstractMat{$PetscScalar}, nRow,  posRow::Vector{$DMStagStencil}, nCol, posCol::Vector{$DMStagStencil}, values::Vector{$PetscScalar}, insertMode::InsertMode)
+
+
+        i = 1;
+        j = 1;
+        while i <= nRow
+            while j <= nCol
+                posr = posRow[i];
+                posc = posCol[j];
+                val  = values[i*j];
+                n_Row= 1;
+                n_Col= 1;
+                @chk ccall((:DMStagMatSetValuesStencil, $libpetsc), PetscErrorCode,
+                            (CDMStag, CMat, $PetscInt, Ptr{DMStagStencil_c},  $PetscInt, Ptr{DMStagStencil_c}, Ptr{$PetscScalar}, InsertMode), 
+                                dm, mat.ptr, n_Row, Ref{DMStagStencil_c}(posr), n_Col, Ref{$DMStagStencil_c}(posc), Ref{$PetscScalar}(val), insertMode)
+            j += 1;
+            end
+        i += 1;
+        end
         return nothing
     end
 
@@ -1163,36 +1192,6 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         
         return fr_X[]== PETSC_TRUE, fr_Y[]== PETSC_TRUE, fr_Z[]== PETSC_TRUE
     end
-
-    # NOT WORKING YET!
-    function DMStagGetProductCoordinateArrays(dm::DMStag)
-
-        #  arrX = Ref{Ptr{$PetscScalar}}()
-          arrY = Ref{Ptr{$PetscScalar}}()
-          arrZ = Ref{Ptr{$PetscScalar}}()
-  
-          #arrX = zeros(20,2)
-  
-          array_ref = Ref{Ptr{$PetscScalar}}()
-  
-          @chk ccall((:DMStagGetProductCoordinateArrays, $libpetsc), PetscErrorCode,
-              ( CDMStag,   Ref{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}), 
-                  dm, array_ref, arrY, arrZ)
-       
-          arrX = unsafe_wrap(Array, array_ref[], 20)
-        #same  r_sz = Ref{$PetscInt}()
-          
-          #@chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode,
-          #            (CVec, Ptr{$PetscInt}), arrX, r_sz)
-        #  x_local = PETSc.unsafe_localarray(Float64, arrX)
-  
-          #v = unsafe_wrap(Array, arrX[], r_sz[]; own = false)
-  
-          #x = unsafe_localarray($PetscScalar, arrX; write=false)
-          
-          return arrX
-  
-      end
 
     """
     Gets the DM that prescribes coordinate layout and scatters between global and local coordinates

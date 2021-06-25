@@ -52,8 +52,11 @@ dm_3D = PETSc.DMStagCreate3d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUND
 dmnew = PETSc.DMStagCreateCompatibleDMStag(dm_3D,1,1,2,2)
 @test PETSc.DMStagGetGlobalSizes(dmnew) == (20, 21, 22)
 
+dm_ghosted = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_GHOSTED,200,2,2; stag_grid_x=10);
+
 # Set coordinates 
 PETSc.DMStagSetUniformCoordinatesExplicit(dm_1D, 0, 10)
+PETSc.DMStagSetUniformCoordinatesProduct(dm_3D, 0, 10, 0, 11, 0, 12)
 
 # Stencil width
 @test  PETSc.DMStagGetStencilWidth(dm_1D)==2
@@ -64,11 +67,13 @@ DMcoord = PETSc.DMGetCoordinateDM(dm_1D)
 # create coordinate local vector
 vec_coord = PETSc.DMGetCoordinatesLocal(dm_1D);
 
-# retrieve coordinate array
+# retrieve coordinate array (explicit)
 X_coord = PETSc.DMStagVecGetArray(DMcoord, vec_coord);
 @test X_coord[1,2] == 0.5
 
-#arr_coord = PETSc.DMStagVecGetArrayRead(DMcoord, vec_coord)
+# retreive coordinate array (product)
+#x_coord,y_coord,z_coord = PETSc.DMStagGetProductCoordinateArraysRead(dm_3D);
+
 # retrieve coordinate and value slots
 #@test PETSc.DMStagGetProductCoordinateLocationSlot(dm, PETSc.DMSTAG_RIGHT) == 1
 @test PETSc.DMStagGetLocationSlot(dm_1D, PETSc.DMSTAG_RIGHT, 0) ==4
@@ -81,9 +86,17 @@ vec_test_2D         = PETSc.DMCreateLocalVector(dm_2D)
 # Simply extract an array from the local vector
 #x = PETSc.unsafe_localarray(Float64, vec_test.ptr; read=true, write=false)
 
-entriesPerElement = PETSc.DMStagGetEntriesPerElement(dm_1D)
+@test PETSc.DMGetDimension(dm_1D) == 1
 
-x,m = PETSc.DMStagGetGhostCorners(dm_1D)
+@test PETSc.DMStagGetEntriesPerElement(dm_1D)==4
+
+@test PETSc.DMStagGetGhostCorners(dm_1D)==(0,11)
+
+ix,in = PETSc.DMStagGetCentralNodes(dm_ghosted);
+@test ix[1] == 3
+
+ind = PETSc.LocalInGlobalIndices(dm_ghosted);
+@test ind[1] == 9
 
 @test PETSc.DMStagGetStencilType(dm_1D)==PETSc.DMSTAG_STENCIL_BOX 
 
@@ -116,7 +129,10 @@ X[end,end,end] = 111;
 
 @test vec_test_2D[end]==111.0     # check if modifying the array affects the vecror
 
+Base.finalize(X)
 
+Z = PETSc.DMStagVecGetArrayRead(dm_2D, vec_test_2D);
+@test Z[end,end,end]==111.
 # See if DMLocalToGlobal works
 vec_test_global .= 0;
 vec_test        .= 0;
@@ -124,7 +140,11 @@ vec_test[1:end] = 1:length(vec_test);
 PETSc.DMLocalToGlobal(dm_1D, vec_test, PETSc.INSERT_VALUES, vec_test_global)
 @test vec_test_global[20]==20
 
-# test GlobalToLocal as well. 
+vec_test_global[1] = 42;
+
+PETSc.DMGlobalToLocal(dm_1D,vec_test_global, PETSc.INSERT_VALUES,vec_test);
+@test vec_test[1] == 42;
+
 # NOTE: as we currently only have VecSeq, parallel halos are not yet tested with this
 
 # Test DMStagVecGetArray for a 1D case
@@ -139,14 +159,22 @@ pos2 = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,4,0,0,0)
 @test pos2.loc == PETSc.DMSTAG_RIGHT
 @test pos2.i == 4
 
+pos = [pos1, pos2];
 
 # Retrieve value from stencil
-val = PETSc.DMStagVecGetValueStencil(dm_1D, vec_test, pos1) # this gets a single value
+val = PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test, pos1) # this gets a single value
 @test val==6
+vals = PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test, 2, pos) # this gets a single value
+@test vals[1] == 6
 
 # Set single value in global vector using stencil
-PETSc.DMStagVecSetValueStencil(dm_1D, vec_test_global, pos2, 2222.2, PETSc.INSERT_VALUES)
-@test vec_test_global[21] == 2222.2
+val1 = [2222.2, 3.2];
+PETSc.DMStagVecSetValuesStencil(dm_1D, vec_test_global, pos1, val1[1], PETSc.INSERT_VALUES)
+@test vec_test_global[6] == 2222.2
+PETSc.DMStagVecSetValuesStencil(dm_1D, vec_test_global, 2, pos, val1, PETSc.INSERT_VALUES)
+@test vec_test_global[21] == 3.2
+
+
 
 pos3 = PETSc.DMStagStencil_c(PETSc.DMSTAG_LEFT,1,0,0,1)
 
@@ -165,14 +193,16 @@ A[1,1]= 1.0
 A[1,10]= 1.0
 
 # Set values using the DMStagStencil indices
-PETSc.DMStagMatSetValueStencil(dm_1D, A, pos1, pos1, 11.1, PETSc.INSERT_VALUES)
+PETSc.DMStagMatSetValuesStencil(dm_1D, A, pos1, pos1, 11.1, PETSc.INSERT_VALUES)
+PETSc.DMStagMatSetValuesStencil(dm_1D, A, 1, [pos2], 2, pos, val1, PETSc.INSERT_VALUES)
 
 # Assemble matrix
 PETSc.assemble(A)
 @test A[1,10] == 1.0 
 
 # Reads a value from the matrix, using the stencil structure
-@test PETSc.DMStagMatGetValueStencil(dm_1D, A, pos1, pos1)==11.1
+@test PETSc.DMStagMatGetValuesStencil(dm_1D, A, pos1, pos1)==11.1
+@test PETSc.DMStagMatGetValuesStencil(dm_1D, A, 1, [pos2], 2, pos)==val1
 
 # Info about ranks
 @test PETSc.DMStagGetNumRanks(dm_1D)==1
@@ -217,22 +247,22 @@ for ix=nStart[1]:nEnd[1]-1
         dof     = 0;
         pos     = PETSc.DMStagStencil(PETSc.DMSTAG_DOWN,ix,iy,0,dof)
         value   = ix+10; 
-        PETSc.DMStagVecSetValueStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
+        PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
 
         dof     = 0;
         pos     = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,ix,iy,0,dof)
         value   = 33; 
-        PETSc.DMStagVecSetValueStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
+        PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
         
         dof     = 0;
         pos     = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
         value   = 44; 
-        PETSc.DMStagVecSetValueStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
+        PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
         
       #  dof     = 0;
       #  pos     = PETSc.DMStagStencil(PETSc.DMSTAG_FRONT,ix,iy,0,dof)
       #  value   = 55; 
-      #  PETSc.DMStagVecSetValueStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
+      #  PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
         
     end
 end
@@ -251,7 +281,7 @@ Xarray = PETSc.DMStagGetGhostArrayLocationSlot(dm_2D,vec_test_2D_local, PETSc.DM
 # retrieve value back from the local array and check that it agrees with the 
 dof     = 0;
 pos     = PETSc.DMStagStencil(PETSc.DMSTAG_DOWN,2,2,0,dof)
-@test PETSc.DMStagVecGetValueStencil(dm_2D, vec_test_2D_local, pos) == 12.0
+@test PETSc.DMStagVecGetValuesStencil(dm_2D, vec_test_2D_local, pos) == 12.0
 
 
 # -----------------

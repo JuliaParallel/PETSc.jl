@@ -1,12 +1,13 @@
 using Test
 using PETSc, MPI
+using ForwardDiff, SparseArrays
 
 if ~MPI.Initialized()
     MPI.Init()
 end
 PETSc.initialize()
 
-#@testset "DMSTAG routines" begin
+@testset "DMSTAG routines" begin
 
 # Create 1D DMStag
 dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMSTAG_STENCIL_BOX,2)
@@ -242,27 +243,27 @@ nStart, nEnd, nExtra    =   PETSc.DMStagGetCorners(dm_2D)
 
 for ix=nStart[1]:nEnd[1]-1
     for iy=nStart[2]:nEnd[2]-1
-        
+        local dof
         # DOF at the center point
         dof     = 0;
-        pos     = PETSc.DMStagStencil(PETSc.DMSTAG_DOWN,ix,iy,0,dof)
+        posA    = PETSc.DMStagStencil(PETSc.DMSTAG_DOWN,ix,iy,0,dof)
         value   = ix+10; 
-        PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
+        PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posA, value, PETSc.INSERT_VALUES)
 
         dof     = 0;
-        pos     = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,ix,iy,0,dof)
+        posB    = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,ix,iy,0,dof)
         value   = 33; 
-        PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
+        PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posB, value, PETSc.INSERT_VALUES)
         
         dof     = 0;
-        pos     = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
+        posC    = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
         value   = 44; 
-        PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
+        PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posC, value, PETSc.INSERT_VALUES)
         
       #  dof     = 0;
-      #  pos     = PETSc.DMStagStencil(PETSc.DMSTAG_FRONT,ix,iy,0,dof)
+      #  pos4    = PETSc.DMStagStencil(PETSc.DMSTAG_FRONT,ix,iy,0,dof)
       #  value   = 55; 
-      #  PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, pos, value, PETSc.INSERT_VALUES)
+      #  PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, pos4, value, PETSc.INSERT_VALUES)
         
     end
 end
@@ -402,7 +403,6 @@ function FormJacobian!(cx_g, J, P, user_ctx)
 end
 
 # Main SNES part
-using ForwardDiff, SparseArrays
 PJ           =      PETSc.DMCreateMatrix(user_ctx.dm);                  # extract (global) matrix from DMStag
 
 julia_vec    =      0;
@@ -513,11 +513,11 @@ T2d =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l, PETSc.DM
 #
 # -----------------
 
-# NOT WORKING YET - we do however need this in parallel
+# NOT WORKING YET - we do however need this when we run in parallel
 #lx = zeros(Int32,1);
 #ly = zeros(Int32,1);
 #lz = zeros(Int32,1);
 #PETSc.DMStagGetOwnershipRanges(dm_1D,lx,ly,lz)
 
 
-
+end

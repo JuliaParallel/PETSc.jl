@@ -178,6 +178,8 @@ end
 end
 
 """
+    snes = SNES{PetscScalar}(comm::MPI.Comm, julia_vec=1; kwargs...)
+
 Creates a SNES object
 
     Usage:
@@ -192,7 +194,7 @@ Creates a SNES object
     Output:
         snes        -   the snes object
 """
-snes
+#snes
 
 solve!(x::AbstractVector{T}, snes::SNES{T}) where {T} = parent(solve!(AbstractVec(x), snes))
 

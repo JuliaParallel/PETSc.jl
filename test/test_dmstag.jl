@@ -288,12 +288,12 @@ pos     = PETSc.DMStagStencil(PETSc.DMSTAG_DOWN,2,2,0,dof)
 # Example of SNES, with AD jacobian
 
 # Define a struct that holds data we need in the local SNES routines below   
-mutable struct Data
+mutable struct Data_1
     dm
     x_l
     f_l
 end
-user_ctx = Data(nothing, nothing, nothing);  # holds data we need in the local 
+user_ctx = Data_1(nothing, nothing, nothing);  # holds data we need in the local 
 
 # Construct a 1D test case for a diffusion solver, with 1 DOF @ the center
 nx              =   21;

@@ -72,7 +72,7 @@ x = rand(10)
 
 
 include("test_snes.jl")
-#include("test_dmstag.jl")
+include("test_dmstag.jl")
 
 
 

@@ -442,8 +442,8 @@ xc_1D    = XCoord_c[:,1];
 zc_1D    = ZCoord_c[1,:];
 
 # Plot
-CreatePlots = false;        # set to false by default such that testing does not require Plots
-if CreatePlots
+CreatePlots = true;        # set to false by default such that testing does not require Plots
+if CreatePlots==true
     using Plots
 
     p1 = heatmap(xe_1D,ze_1D, P', xlabel="Width", ylabel="Depth", title="Pressure",aspect_ratio = 1)

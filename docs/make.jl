@@ -1,15 +1,5 @@
 using Documenter, PETSc
 
-#makedocs(modules = [PETSc])
-
-#deploydocs(
-#  deps = Deps.pip("mkdocs", "python-markdown-math"),
-#  repo = "github.com/JuliaParallel/PETSc.jl.git",
-#  julia = "0.4",
-#)
-
-#using Documenter
-
 DocMeta.setdocmeta!(PETSc, :DocTestSetup, :(using PETSc); recursive=true)
 
 makedocs(;
@@ -29,11 +19,3 @@ makedocs(;
         "List of functions"  => "listfunctions.md"
     ],
 )
-
-#deploydocs(;
-#    repo="github.com/JuliaGeodynamics/GeophysicalModelGenerator.jl.git",
-#    branch = "gh-pages",
-#    target = "build",
-#    devbranch = "main",
-#    devurl = "dev",
-#)

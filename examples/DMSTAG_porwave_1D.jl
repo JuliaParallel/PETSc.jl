@@ -1,6 +1,7 @@
 # This is an example of a 1D viscoelastic porosity wave as described in 
 # Vasyliev et al. Geophysical Research Letters (25), 17. p. 3239-3242
-# 
+# https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/98GL52358
+#
 # It simulates how a pulse of magma migrates upwards in the Earth, which 
 # can be described by a set of coupled nonlinear PDE's
 #
@@ -8,11 +9,15 @@
 # differentiation is used to generate the jacobian.  
 
 using PETSc, MPI
-using Plots
+
 using SparseArrays, SparseDiffTools, ForwardDiff
 
 PETSc.initialize()
 
+CreatePlots = false;
+if CreatePlots==true
+    using Plots
+end
 
 
 function FormRes!(cfx_g, cx_g, user_ctx)
@@ -108,7 +113,7 @@ function FormJacobian!(cx_g, J, P, user_ctx)
 end
 
 # Define a struct that holds data we need in the local SNES routines below   
-mutable struct Data
+mutable struct Data_PorWav1D
     dm
     x_l
     xold_l
@@ -120,7 +125,7 @@ mutable struct Data
     jac
     colors
 end
-user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
+user_ctx = Data_PorWav1D(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
 
 
 function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
@@ -199,8 +204,11 @@ end
 # Main Solver
 nx              =   1001;
 L               =   150;
-user_ctx.De     =   1e-2;        # Deborah number
-user_ctx.dt     =   5e-5;        # Note that the timestep has to be tuned a bit depending on De in order to obtain convergence     
+#user_ctx.De     =   1e-2;        # Deborah number
+#user_ctx.dt     =   5e-5;        # Note that the timestep has to be tuned a bit depending on De in order to obtain convergence     
+user_ctx.De     =   1e2;
+user_ctx.dt     =   1e-2;        # Note that the timestep has to be tuned a bit depending on De in order to obtain convergence     
+
 user_ctx.dm     =   PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,nx,0,2);  # both Phi and Pe are on center points 
 PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dm, -20, L)            # set coordinates
 x_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
@@ -236,17 +244,19 @@ PETSc.setfunction!(S, FormRes!, f_g)
 PETSc.setjacobian!(S, FormJacobian!, J, J)
 
 # Preparation of visualisation
-ENV["GKSwstype"]="nul"; 
-if isdir("viz_out")==true
-    rm("viz_out", recursive=true)
+if CreatePlots
+    ENV["GKSwstype"]="nul"; 
+    if isdir("viz_out")==true
+        rm("viz_out", recursive=true)
+    end
+    mkdir("viz_out") 
+    loadpath = "./viz_out/"; anim = Animation(loadpath,String[])
 end
-mkdir("viz_out") 
-loadpath = "./viz_out/"; anim = Animation(loadpath,String[])
 
 
 time = 0.0;
 it   = 1;
-while time<25.0
+while time<2.5
     global time, Z, Z_cen, it
 
     # Solve one (nonlinear) timestep
@@ -261,13 +271,15 @@ while time<25.0
     time += user_ctx.dt;
     it   += 1;
 
-    if mod(it,200)==0  # Visualisation
+    if (mod(it,200)==0) & (CreatePlots==true) # Visualisation
         # Extract values and plot 
         Phi         =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT, 0); 
         Pe          =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT, 1); 
 
-        p1 = plot(Phi[1:end-1], Z_cen[1:end-1],  ylabel="Z", xlabel="ϕ",  xlims=( 0.0, 6.0), label=:none, title="De=$(user_ctx.De)"); 
-        p2 = plot(Pe[1:end-1],  Z_cen[1:end-1]    ,                       xlabel="Pe", xlims=(-1.25, 1.25), label=:none, title="$(round(time;sigdigits=3))"); 
+        p1 = plot(Phi[1:end-1], Z_cen[1:end-1],  ylabel="Z", xlabel="ϕ",  xlims=( 0.0, 2.0), label=:none, title="De=$(user_ctx.De)"); 
+        #p2 = plot(Pe[1:end-1],  Z_cen[1:end-1]    ,                       xlabel="Pe", xlims=(-1.25, 1.25), label=:none, title="$(round(time;sigdigits=3))"); 
+        p2 = plot(Pe[1:end-1],  Z_cen[1:end-1]    ,                       xlabel="Pe", xlims=(-0.025, 0.01), label=:none, title="$(round(time;sigdigits=3))"); 
+        
        # p1 = plot(Phi[1:end-1], Z_cen[1:end-1],  ylabel="Z", xlabel="ϕ",   label=:none, title="De=$(user_ctx.De)"); 
        # p2 = plot(Pe[1:end-1],  Z_cen[1:end-1]    ,                       xlabel="Pe",  label=:none, title="$(round(time;sigdigits=3))"); 
         
@@ -280,4 +292,6 @@ while time<25.0
     
 end
 
-gif(anim, "Example_1D.gif", fps = 15)   # create a gif animation
+if CreatePlots==true
+    gif(anim, "Example_1D.gif", fps = 15)   # create a gif animation
+end

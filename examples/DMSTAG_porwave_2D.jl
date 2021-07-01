@@ -1,3 +1,4 @@
+# EXCLUDE FROM TESTING
 # This is an example of a 2D viscoelastic porosity wave as described in 
 # Vasyliev et al. Geophysical Research Letters (25), 17. p. 3239-3242
 # 
@@ -103,7 +104,7 @@ end
 
 
 # Define a struct that holds data we need in the residual SNES routines below   
-mutable struct Data
+mutable struct Data_PorWav2D
     dm
     x_l
     xold_l
@@ -117,7 +118,7 @@ mutable struct Data
     colors
     jac_cache
 end
-user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
+user_ctx = Data_PorWav2D(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
 
 function ComputeSparsityPatternJacobian(x_l, user_ctx)
     # This computes the sparsity pattern of our jacobian by hand. 
@@ -369,7 +370,7 @@ while t < 25.0
     global t, Z, Z_cen, it
 
     # Solve one (nonlinear) timestep
-   @time PETSc.solve!(x_g, S);
+    PETSc.solve!(x_g, S);
 
     # Update old local values
     user_ctx.xold_g  =  x_g;
@@ -380,7 +381,7 @@ while t < 25.0
     t    += user_ctx.dt;
     it   += 1;
 
-    if mod(it,200)==0  # Visualisation
+    if mod(it,20)==0  # Visualisation
         # Extract values and plot 
         Phi         =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT, 0); 
         Pe          =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT, 1); 

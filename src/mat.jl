@@ -131,7 +131,7 @@ end
     function Base.size(A::AbstractMat{$PetscScalar})
         m = Ref{$PetscInt}()
         n = Ref{$PetscInt}()
-        @chk ccall((:MatGetSize, libpetsc), PetscErrorCode, 
+        @chk ccall((:MatGetSize, $libpetsc), PetscErrorCode,
             (CMat, Ptr{$PetscInt}, Ptr{$PetscInt}), 
             A, m, n)
         return (m[], n[])

@@ -48,7 +48,7 @@ scalartype(::Options{T}) where {T} = T
     function Base.setindex!(opts::AbstractOptions{$PetscScalar}, val, key)
         @chk ccall((:PetscOptionsSetValue, $libpetsc), PetscErrorCode,
             (CPetscOptions, Cstring, Cstring),
-            opts, string('-',key), val == true ? C_NULL : string(val))
+            opts, string('-',key), (val === true || isnothing(val)) ? C_NULL : string(val))
     end
 
     function view(opts::AbstractOptions{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(MPI.COMM_SELF))

@@ -14,15 +14,12 @@
 #      | Tzz | = |   0   2*eta  0  |  | Ezz |                   |   Linear viscous (isotropic) rheology
 #      | Txz |   |   0     0   eta |  | Exz |        
 #
-# This exemple also uses the Automatic differenciation package ForwardDiff
+# This example also uses the Automatic differentiation package ForwardDiff
 
 using PETSc, MPI
-using Plots
 using ForwardDiff, SparseArrays, SparseDiffTools
 
 PETSc.initialize()
-
-
 
 function FormRes!(f_g, x_g, user_ctx)
     
@@ -125,12 +122,11 @@ function FormJacobian!(cx_g, J, P, user_ctx)
     user_ctx.jac    =   jac;
     user_ctx.colors =   colors;
 
-
    return jac, ind
 end
 
 # Define a struct that holds data we need in the local SNES routines below   
-mutable struct Data
+mutable struct Data_Stokes2D
     # DMs and vectors
     dm
     dmCoeff
@@ -154,7 +150,7 @@ mutable struct Data
     jac_cache
     colors
 end
-user_ctx = Data(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
+user_ctx = Data_Stokes2D(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
 
 
 function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
@@ -446,9 +442,20 @@ xc_1D    = XCoord_c[:,1];
 zc_1D    = ZCoord_c[1,:];
 
 # Plot
-p1 = heatmap(xe_1D,ze_1D, P', xlabel="Width", ylabel="Depth", title="Pressure",aspect_ratio = 1)
-p2 = heatmap(xe_1D,zc_1D, Vz', xlabel="Width", ylabel="Depth", title="Vz",aspect_ratio = 1)
-p3 = heatmap(xc_1D,ze_1D, Vx', xlabel="Width", ylabel="Depth", title="Vx",aspect_ratio = 1)
-#quiver!(XCoord_e[:],ZCoord_e[:],quiver=(Vx_cen[:]*0.02,Vz_cen[:]*0.02), color=:white,aspect_ratio = 1)
-p4 = heatmap(xe_1D,ze_1D, Eta', xlabel="Width", ylabel="Depth", title="Eta",aspect_ratio = 1)
-plot(p1, p2, p3, p4, layout = (2, 2), legend = false)
+CreatePlots = false;        # set to false by default such that testing does not require Plots
+if CreatePlots
+    using Plots
+
+    p1 = heatmap(xe_1D,ze_1D, P', xlabel="Width", ylabel="Depth", title="Pressure",aspect_ratio = 1)
+    p2 = heatmap(xe_1D,zc_1D, Vz', xlabel="Width", ylabel="Depth", title="Vz",aspect_ratio = 1)
+    p3 = heatmap(xc_1D,ze_1D, Vx', xlabel="Width", ylabel="Depth", title="Vx",aspect_ratio = 1)
+    #quiver!(XCoord_e[:],ZCoord_e[:],quiver=(Vx_cen[:]*0.02,Vz_cen[:]*0.02), color=:white,aspect_ratio = 1)
+    p4 = heatmap(xe_1D,ze_1D, Eta', xlabel="Width", ylabel="Depth", title="Eta",aspect_ratio = 1)
+    plot(p1, p2, p3, p4, layout = (2, 2), legend = false)
+
+end
+
+# check if the solution makes sense
+using LinearAlgebra, Test
+check =  norm(user_ctx.x_l)
+@test check ≈ 31.54688642064483 

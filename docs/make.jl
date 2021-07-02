@@ -1,9 +1,21 @@
 using Documenter, PETSc
 
-makedocs(modules = [PETSc])
+DocMeta.setdocmeta!(PETSc, :DocTestSetup, :(using PETSc); recursive=true)
 
-deploydocs(
-  deps = Deps.pip("mkdocs", "python-markdown-math"),
-  repo = "github.com/JuliaParallel/PETSc.jl.git",
-  julia = "0.4",
+makedocs(;
+    modules=[PETSc],
+    repo="https://github.com/JuliaParallel/PETSc/{commit}{path}#{line}",
+    sitename="PETSc.jl",
+    format=Documenter.HTML(;
+        prettyurls=get(ENV, "CI", "false") == "true",
+        canonical="https://github.com/JuliaParallel/PETSc.jl",
+        assets=String[],
+    ),
+    pages=[
+        "Home" => "index.md",
+        "PETSc" => Any[
+            "Mat" =>  "mat.md",
+        ],
+        "List of functions"  => "listfunctions.md"
+    ],
 )

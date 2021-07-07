@@ -27,7 +27,7 @@ LinearAlgebra.adjoint(ksp) = LinearAlgebra.Adjoint(ksp)
 @for_libpetsc begin
 
     function KSP{$PetscScalar}(comm::MPI.Comm; kwargs...)
-        initialize($PetscScalar)
+        @assert initialized($PetscScalar)
         opts = Options{$PetscScalar}(kwargs...)
         ksp = KSP{$PetscScalar}(C_NULL, comm, nothing, nothing, opts)
         @chk ccall((:KSPCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CKSP}), comm, ksp)

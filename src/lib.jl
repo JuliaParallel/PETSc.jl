@@ -71,6 +71,9 @@ const petsclibs = map(libs) do lib
         PETSC_INT_SIZE == 8 ? Int64 :
         error("PETSC_INT_SIZE = $PETSC_INT_SIZE not supported.")
 
+    PetscFinalize_ptr = dlsym(libhdl, :PetscFinalize)
+    @chk ccall(PetscFinalize_ptr, PetscErrorCode, ())
+
     # TODO: PetscBLASInt, PetscMPIInt ?
     return PetscLibType{PetscScalar,PetscInt}(lib[1])
 end

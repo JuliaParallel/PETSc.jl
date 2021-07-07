@@ -83,7 +83,7 @@ Base.parent(v::AbstractVec) = v.array
         r_lo[]:(r_hi[]-$PetscInt(1))
     end
 
-    function view(vec::AbstractVec{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(vec.comm))
+    function view(vec::AbstractVec{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib))
         @chk ccall((:VecView, $libpetsc), PetscErrorCode,
                     (CVec, CPetscViewer),
                 vec, viewer);

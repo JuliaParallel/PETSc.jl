@@ -104,7 +104,7 @@ end
         return unsafe_string(t_r[])
     end
 
-    function view(snes::SNES{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(snes.comm))
+    function view(snes::SNES{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, snes.comm))
         @chk ccall((:SNESView, $libpetsc), PetscErrorCode,
                     (CSNES, CPetscViewer),
                 snes, viewer);

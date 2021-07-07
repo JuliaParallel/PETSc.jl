@@ -51,7 +51,7 @@ scalartype(::Options{T}) where {T} = T
             opts, string('-',key), (val === true || isnothing(val)) ? C_NULL : string(val))
     end
 
-    function view(opts::AbstractOptions{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(MPI.COMM_SELF))
+    function view(opts::AbstractOptions{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib))
         @chk ccall((:PetscOptionsView, $libpetsc), PetscErrorCode,
                   (CPetscOptions, CPetscViewer),
                   opts, viewer);

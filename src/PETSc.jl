@@ -2,9 +2,12 @@ module PETSc
 
 using MPI, LinearAlgebra, SparseArrays
 
-using PETSc_jll
+MPI.Initialized() || MPI.Init()
+
+using Libdl
 
 include("const.jl")
+include("startup.jl")
 include("lib.jl")
 include("init.jl")
 include("ref.jl")

@@ -39,7 +39,7 @@ Base.parent(v::AbstractVec) = v.array
 
 @for_libpetsc begin
     function VecSeq(comm::MPI.Comm, X::Vector{$PetscScalar}; blocksize=1)
-        initialize($PetscScalar)
+        @assert initialized($PetscScalar)
         v = VecSeq(C_NULL, comm, X)
         @chk ccall((:VecCreateSeqWithArray, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CVec}),

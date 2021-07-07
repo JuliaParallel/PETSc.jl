@@ -25,7 +25,7 @@ scalartype(::Options{T}) where {T} = T
 
 @for_libpetsc begin
     function Options{$PetscScalar}()
-        initialize($PetscScalar)
+        @assert initialized($PetscScalar)
         opts = Options{$PetscScalar}(C_NULL)
         @chk ccall((:PetscOptionsCreate, $libpetsc), PetscErrorCode, (Ptr{CPetscOptions},), opts)
         finalizer(destroy, opts)

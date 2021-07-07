@@ -40,7 +40,7 @@ end
 
 @for_libpetsc begin
     function MatSeqAIJ{$PetscScalar}(m::Integer, n::Integer, nnz::Vector{$PetscInt})
-        initialize($PetscScalar)
+        @assert initialized($PetscScalar)
         comm = MPI.COMM_SELF
         mat = MatSeqAIJ{$PetscScalar}(C_NULL, comm)
         @chk ccall((:MatCreateSeqAIJ, $libpetsc), PetscErrorCode,
@@ -50,7 +50,7 @@ end
         return mat
     end
     function MatSeqDense(A::Matrix{$PetscScalar})
-        initialize($PetscScalar)
+        @assert initialized($PetscScalar)
         comm = MPI.COMM_SELF
         mat = MatSeqDense(C_NULL, comm, A)
         @chk ccall((:MatCreateSeqDense, $libpetsc), PetscErrorCode, 

@@ -39,7 +39,7 @@ Base.parent(v::AbstractVec) = v.array
 
 @for_libpetsc begin
     function VecSeq(comm::MPI.Comm, X::Vector{$PetscScalar}; blocksize=1)
-        @assert initialized($PetscScalar)
+        @assert initialized($petsclib)
         v = VecSeq(C_NULL, comm, X)
         @chk ccall((:VecCreateSeqWithArray, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CVec}),
@@ -48,7 +48,7 @@ Base.parent(v::AbstractVec) = v.array
         return v
     end
     function destroy(v::AbstractVec{$PetscScalar})
-        finalized($PetscScalar) ||
+        finalized($petsclib) ||
         @chk ccall((:VecDestroy, $libpetsc), PetscErrorCode, (Ptr{CVec},), v)
         return nothing
     end

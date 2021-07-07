@@ -32,7 +32,7 @@ scalartype(::PC{T}) where {T} = T
     end
 
     function destroy(pc::PC{$PetscScalar})
-        finalized($PetscScalar) ||
+        finalized($petsclib) ||
         @chk ccall((:PCDestroy, $libpetsc), PetscErrorCode, (Ptr{CPC},), pc)
         return nothing
     end

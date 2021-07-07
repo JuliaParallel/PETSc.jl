@@ -7,12 +7,12 @@ A container for specific PETSc libraries.
 All other containers for PETSc objects should be typed on this to ensure that
 dispatch is correct.
 """
-struct PetscLibType{PetscScalar,PetscInt,LibType}
+struct PetscLibType{PetscScalar, PetscInt, LibType}
     petsc_library::LibType
 end
-function PetscLibType{ST,IT}(petsc_library) where {ST,IT}
+function PetscLibType{ST, IT}(petsc_library) where {ST, IT}
     LT = typeof(petsc_library)
-    return PetscLibType{ST,IT,LT}(petsc_library)
+    return PetscLibType{ST, IT, LT}(petsc_library)
 end
 
 """
@@ -21,7 +21,8 @@ end
 return the scalar type for the associated `petsclib`
 """
 scalartype(::PetscLibType{ST}) where {ST} = ST
-scalartype(::Type{PetscLib}) where {PetscLib<:PetscLibType{ST}} where {ST} = ST
+scalartype(::Type{PetscLib}) where {PetscLib <: PetscLibType{ST}} where {ST} =
+    ST
 
 """
     realtype(petsclib::PetscLibType)
@@ -29,16 +30,18 @@ scalartype(::Type{PetscLib}) where {PetscLib<:PetscLibType{ST}} where {ST} = ST
 return the real type for the associated `petsclib`
 """
 realtype(::PetscLibType{ST}) where {ST} = real(ST)
-realtype(::Type{PetscLib}) where {PetscLib<:PetscLibType{ST}} where {ST} = real(ST)
+realtype(::Type{PetscLib}) where {PetscLib <: PetscLibType{ST}} where {ST} =
+    real(ST)
 
 """
     inttype(petsclib::PetscLibType)
 
 return the int type for the associated `petsclib`
 """
-inttype(::PetscLibType{ST,IT}) where {ST,IT} = IT
-inttype(::Type{PetscLib}) where {PetscLib<:PetscLibType{ST,IT}} where {ST,IT} = IT
-
+inttype(::PetscLibType{ST, IT}) where {ST, IT} = IT
+inttype(
+    ::Type{PetscLib},
+) where {PetscLib <: PetscLibType{ST, IT}} where {ST, IT} = IT
 
 function initialize(libhdl::Ptr{Cvoid})
     PetscInitializeNoArguments_ptr = dlsym(libhdl, :PetscInitializeNoArguments)
@@ -49,7 +52,8 @@ const petsclibs = map(libs) do lib
     libhdl = dlopen(lib...)
 
     # initialize petsc
-    PetscInitializeNoArguments_ptr = dlsym(libhdl, :PetscInitializeNoArguments)
+    PetscInitializeNoArguments_ptr =
+        dlsym(libhdl, :PetscInitializeNoArguments)
     @chk ccall(PetscInitializeNoArguments_ptr, PetscErrorCode, ())
 
     PETSC_REAL = DataTypeFromString(libhdl, "Real")
@@ -75,7 +79,7 @@ const petsclibs = map(libs) do lib
     @chk ccall(PetscFinalize_ptr, PetscErrorCode, ())
 
     # TODO: PetscBLASInt, PetscMPIInt ?
-    return PetscLibType{PetscScalar,PetscInt}(lib[1])
+    return PetscLibType{PetscScalar, PetscInt}(lib[1])
 end
 
 # New macro is really to track the update
@@ -87,7 +91,7 @@ macro for_petsc(expr)
 
             # types we dispatch on
             PetscLib = typeof(petsclib)
-            UnionPetscLib = Union{PetscLib,Type{PetscLib}}
+            UnionPetscLib = Union{PetscLib, Type{PetscLib}}
 
             PetscScalar = scalartype(petsclib)
             PetscReal = realtype(petsclib)
@@ -107,7 +111,7 @@ macro for_libpetsc(expr)
 
             # types we dispatch on
             PetscLib = typeof(petsclib)
-            UnionPetscLib = Union{PetscLib,Type{PetscLib}}
+            UnionPetscLib = Union{PetscLib, Type{PetscLib}}
 
             PetscScalar = scalartype(petsclib)
             PetscReal = realtype(petsclib)

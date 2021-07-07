@@ -27,7 +27,7 @@ LinearAlgebra.adjoint(ksp) = LinearAlgebra.Adjoint(ksp)
 @for_libpetsc begin
 
     function KSP{$PetscScalar}(comm::MPI.Comm; kwargs...)
-        @assert initialized($PetscScalar)
+        @assert initialized($petsclib)
         opts = Options{$PetscScalar}(kwargs...)
         ksp = KSP{$PetscScalar}(C_NULL, comm, nothing, nothing, opts)
         @chk ccall((:KSPCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CKSP}), comm, ksp)
@@ -38,7 +38,7 @@ LinearAlgebra.adjoint(ksp) = LinearAlgebra.Adjoint(ksp)
     end
 
     function destroy(ksp::KSP{$PetscScalar})
-        finalized($PetscScalar) ||
+        finalized($petsclib) ||
         @chk ccall((:KSPDestroy, $libpetsc), PetscErrorCode, (Ptr{CKSP},), ksp)
         return nothing
     end

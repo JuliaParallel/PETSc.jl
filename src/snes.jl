@@ -12,7 +12,7 @@ mutable struct SNES{T}
     update_jac!
     jac_A
     jac_P
-    julia_vec::Cint 
+    use_julia_vec::Bool 
     user_ctx
 end
 

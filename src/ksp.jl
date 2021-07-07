@@ -74,7 +74,7 @@ LinearAlgebra.adjoint(ksp) = LinearAlgebra.Adjoint(ksp)
         return r_its[]
     end
 
-    function view(ksp::KSP{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(ksp.comm))
+    function view(ksp::KSP{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, ksp.comm))
         @chk ccall((:KSPView, $libpetsc), PetscErrorCode, 
                     (CKSP, CPetscViewer),
                 ksp, viewer);

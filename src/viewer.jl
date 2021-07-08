@@ -28,7 +28,7 @@ end
 
 @for_petsc function ViewerStdout(
     ::$UnionPetscLib,
-    comm::MPI.Comm = MPI.COMM_SELF,
+    comm::MPI.Comm,
 )
     ptr = ccall(
         (:PETSC_VIEWER_STDOUT_, $petsc_library),

@@ -2,10 +2,11 @@
 const CKSP = Ptr{Cvoid}
 const CKSPType = Cstring
 
+abstract type AbstractKSP{T, PetscLib} <: Factorization{T} end
 
-mutable struct KSP{T, PetscLib} <: Factorization{T}
+mutable struct KSP{T, PetscLib} <: AbstractKSP{T, PetscLib}
     ptr::CKSP
-    comm::MPI.Comm
+    __comm__::MPI.Comm # Do not access directly use `getcomm(ksp)`
     # keep around so that they don't get gc'ed
     A  # Operator
     P  # preconditioning operator
@@ -74,7 +75,7 @@ LinearAlgebra.adjoint(ksp) = LinearAlgebra.Adjoint(ksp)
         return r_its[]
     end
 
-    function view(ksp::KSP{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, ksp.comm))
+    function view(ksp::KSP{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(ksp)))
         @chk ccall((:KSPView, $libpetsc), PetscErrorCode, 
                     (CKSP, CPetscViewer),
                 ksp, viewer);
@@ -128,7 +129,7 @@ Construct a PETSc Krylov subspace solver.
 Any PETSc options prefixed with `ksp_` and `pc_` can be passed as keywords.
 """
 function KSP(A::AbstractMat{T}, P::AbstractMat{T}=A; kwargs...) where {T}
-    ksp = KSP{T}(A.comm; kwargs...)
+    ksp = KSP{T}(getcomm(A); kwargs...)
     setoperators!(ksp, A, P)
     with(ksp.opts) do
         setfromoptions!(ksp)

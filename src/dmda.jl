@@ -26,8 +26,10 @@ end
     )
 
 Creates a 1-D distributed array with the options specified using keyword
-arguments;
-see [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMDA/DMDACreate1d.html)
+arguments.
+
+# External Links
+$(_doc_external("DMDA/DMDACreate1d"))
 """
 function DMDACreate1d end
 
@@ -98,8 +100,10 @@ end
     )
 
 Creates a 2-D distributed array with the options specified using keyword
-arguments;
-see [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMDA/DMDACreate2d.html)
+arguments.
+
+# External Links
+$(_doc_external("DMDA/DMDACreate2d"))
 """
 function DMDACreate2d end
 
@@ -199,8 +203,10 @@ end
     )
 
 Creates a 3-D distributed array with the options specified using keyword
-arguments;
-see [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMDA/DMDACreate3d.html)
+arguments.
+
+# External Links
+$(_doc_external("DMDA/DMDACreate3d"))
 """
 function DMDACreate3d end
 
@@ -297,8 +303,10 @@ end
 """
     DMDAGetInfo(da::AbstractDM)
 
-Get the info associated with the distributed array `da`;
-see [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMDA/DMDAGetInfo.html)
+Get the info associated with the distributed array `da`.
+
+# External Links
+$(_doc_external("DMDA/DMDAGetInfo"))
 """
 function DMDAGetInfo end
 
@@ -359,8 +367,10 @@ end
     DMDAGetCorners(da::AbstractDM)
 
 Returns a `NamedTuple` with the global indices (excluding ghost points) of the
-`lower` and `upper` corners as well as the `size`;
-see [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMDA/DMDAGetCorners.html)
+`lower` and `upper` corners as well as the `size`.
+
+# External Links
+$(_doc_external("DMDA/DMDAGetCorners"))
 """
 function DMDAGetCorners end
 
@@ -400,8 +410,10 @@ end
     DMDAGetGhostCorners(da::AbstractDM)
 
 Returns a `NamedTuple` with the global indices (including ghost points) of the
-`lower` and `upper` corners as well as the `size`;
-see [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMDA/DMDAGetGhostCorners.html)
+`lower` and `upper` corners as well as the `size`.
+
+# External Links
+$(_doc_external("DMDA/DMDAGetGhostCorners"))
 """
 function DMDAGetGhostCorners end
 

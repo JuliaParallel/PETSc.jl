@@ -382,7 +382,7 @@ end
     Arry = Ref{$PetscScalar}()
     Arrz = Ref{$PetscScalar}()
 
-    ccall((:DMStagGetProductCoordinateArraysRead, $libpetsc), PetscErrorCode, (CDMStag, Ptr{$PetscScalar}, Ptr{$PetscScalar}, Ptr{$PetscScalar}), dm, Arrx, Arry, Arrz)
+    @chk ccall((:DMStagGetProductCoordinateArraysRead, $libpetsc), PetscErrorCode, (CDMStag, Ptr{$PetscScalar}, Ptr{$PetscScalar}, Ptr{$PetscScalar}), dm, Arrx, Arry, Arrz)
         
     return Arrx[],Arry[],Arrz[]
 end
@@ -424,7 +424,7 @@ function DMCreateGlobalVector end
 
     v = VecSeq(C_NULL, dm.comm, [0.0])  # empty vector
         
-    ccall((:DMCreateGlobalVector, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
+    @chk ccall((:DMCreateGlobalVector, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
 
     # Link a julia array to the values from the new vector
     # If we modify values here, it will automatically be changed in the PetcVec as well
@@ -449,7 +449,7 @@ function DMCreateLocalVector end
 
     v = VecSeq(C_NULL, dm.comm, [0.0])  # empty vector
         
-    ccall((:DMCreateLocalVector, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
+    @chk ccall((:DMCreateLocalVector, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
 
     # Link a julia array to the values from the new vector
     # If we modify values here, it will automatically be changed in the PetcVec as well
@@ -1193,9 +1193,9 @@ end
 
 @for_libpetsc function DMLocalToGlobal(dm::DMStag,l::CVec, mode::InsertMode,g::CVec)
 
-@chk ccall((:DMLocalToGlobal, $libpetsc), PetscErrorCode,
-(CDMStag, CVec, InsertMode, CVec), 
-    dm, l, mode, g)
+    @chk ccall((:DMLocalToGlobal, $libpetsc), PetscErrorCode,
+    (CDMStag, CVec, InsertMode, CVec), 
+        dm, l, mode, g)
 
     return nothing
 end
@@ -1368,7 +1368,7 @@ function DMGetCoordinatesLocal end
 
     v = VecSeq(C_NULL, dm.comm, [0.0])  # empty vector
         
-    ccall((:DMGetCoordinatesLocal, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
+    @chk ccall((:DMGetCoordinatesLocal, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
 
     # Link a julia array to the values from the new vector
     # If we modify values here, it will automatically be changed in the PetcVec as well

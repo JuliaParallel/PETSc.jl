@@ -1,7 +1,8 @@
 # PETSc
 
 [![Build Status](https://github.com/JuliaParallel/PETSc.jl/workflows/CI/badge.svg)](https://github.com/JuliaParallel/PETSc.jl/actions/workflows/ci.yml)
-[![doc latest](https://img.shields.io/badge/docs-latest-blue.svg)](https://juliaparallel.github.io/PETSc.jl/latest/)
+[![doc dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliaparallel.github.io/PETSc.jl/dev/)
+
 
 This package provides a low level interface for
 [PETSc](https://www.mcs.anl.gov/petsc/)

@@ -1,3 +1,5 @@
+include("options.jl")
+
 using Test
 using PETSc, MPI, LinearAlgebra, SparseArrays
 PETSc.initialize()

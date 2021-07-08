@@ -11,7 +11,8 @@ end
 """
     DMSetUp!(da::DM)
 
-see [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DM/DMSetUp.html)
+# External Links
+$(_doc_external("DM/DMSetUp"))
 """
 function DMSetUp! end
 

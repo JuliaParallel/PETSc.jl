@@ -104,8 +104,8 @@ res = PETSc.VecSeq(zeros(size(x)));     # residual vector
 
 S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
         snes_rtol=1e-12, 
-        snes_monitor=true, 
-        snes_converged_reason=true);
+        snes_monitor=nothing,
+        snes_converged_reason=nothing);
 PETSc.setfunction!(S, FormResidual!, res)
 PETSc.setjacobian!(S, FormJacobian!, PJ, PJ)
 

@@ -3,10 +3,10 @@ const CSNES = Ptr{Cvoid}
 const CSNESType = Cstring
 
 
-mutable struct SNES{T}
+mutable struct SNES{T, PetscLib}
     ptr::CSNES
     comm::MPI.Comm
-    opts::Options{T}
+    opts::Options{PetscLib}
     fn!
     fn_vec
     update_jac!
@@ -50,8 +50,8 @@ end
 
     function SNES{$PetscScalar}(comm::MPI.Comm; kwargs...)
         @assert initialized($petsclib)
-        opts = Options{$PetscScalar}(kwargs...)
-        snes = SNES{$PetscScalar}(C_NULL, comm, opts, nothing, nothing, nothing, nothing, nothing)
+        opts = Options($petsclib, kwargs...)
+        snes = SNES{$PetscScalar, $PetscLib}(C_NULL, comm, opts, nothing, nothing, nothing, nothing, nothing)
         @chk ccall((:SNESCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CSNES}), comm, snes)
 
         with(snes.opts) do

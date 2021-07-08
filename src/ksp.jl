@@ -3,13 +3,13 @@ const CKSP = Ptr{Cvoid}
 const CKSPType = Cstring
 
 
-mutable struct KSP{T} <: Factorization{T}
+mutable struct KSP{T, PetscLib} <: Factorization{T}
     ptr::CKSP
     comm::MPI.Comm
     # keep around so that they don't get gc'ed
     A  # Operator
     P  # preconditioning operator
-    opts::Options{T}
+    opts::Options{PetscLib}
 end
 
 scalartype(::KSP{T}) where {T} = T
@@ -28,8 +28,8 @@ LinearAlgebra.adjoint(ksp) = LinearAlgebra.Adjoint(ksp)
 
     function KSP{$PetscScalar}(comm::MPI.Comm; kwargs...)
         @assert initialized($petsclib)
-        opts = Options{$PetscScalar}(kwargs...)
-        ksp = KSP{$PetscScalar}(C_NULL, comm, nothing, nothing, opts)
+        opts = Options($petsclib, kwargs...)
+        ksp = KSP{$PetscScalar, $PetscLib}(C_NULL, comm, nothing, nothing, opts)
         @chk ccall((:KSPCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CKSP}), comm, ksp)
         if comm == MPI.COMM_SELF
             finalizer(destroy, ksp)
@@ -111,13 +111,13 @@ end
 solve!(x::AbstractVec{T}, aksp::Adjoint{T,K}, b::AbstractVec{T}) where {K <: KSP{T}} where {T<:Real} =
     solve!(x, transpose(parent(aksp)), b)
 
-const KSPAT{T} = Union{KSP{T}, Transpose{T, KSP{T}}, Adjoint{T, KSP{T}}}
+const KSPAT{T, LT} = Union{KSP{T, LT}, Transpose{T, KSP{T, LT}}, Adjoint{T, KSP{T, LT}}}
 
-LinearAlgebra.ldiv!(x::AbstractVec{T}, ksp::KSPAT{T}, b::AbstractVec{T}) where {T} = solve!(x, ksp, b)
-function LinearAlgebra.ldiv!(x::AbstractVector{T}, ksp::KSPAT{T}, b::AbstractVector{T}) where {T}
+LinearAlgebra.ldiv!(x::AbstractVec{T}, ksp::KSPAT{T, LT}, b::AbstractVec{T}) where {T, LT} = solve!(x, ksp, b)
+function LinearAlgebra.ldiv!(x::AbstractVector{T}, ksp::KSPAT{T, LT}, b::AbstractVector{T}) where {T, LT}
     parent(solve!(AbstractVec(x), ksp, AbstractVec(b)))
 end
-Base.:\(ksp::KSPAT{T}, b::AbstractVector{T}) where {T} = ldiv!(similar(b), ksp, b)
+Base.:\(ksp::KSPAT{T, LT}, b::AbstractVector{T}) where {T, LT} = ldiv!(similar(b), ksp, b)
 
 
 """

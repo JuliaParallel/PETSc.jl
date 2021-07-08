@@ -195,3 +195,29 @@ function with(f, opts::Options{T}) where {T}
         pop!(global_opts)
     end
 end
+
+"""
+    parse_options(args::Vector{String})
+
+Parse the `args` vector into a `NamedTuple` that can be used as the options for
+the PETSc solvers.
+
+```sh
+julia --project file.jl -ksp_monitor -pc_type mg -ksp_view
+```
+"""
+function parse_options(args::Vector{String})
+    i = 1
+    opts = Dict{Symbol, Union{String, Nothing}}()
+    while i <= length(args)
+        @assert args[i][1] == '-' && length(args[i]) > 1
+        if i == length(args) || args[i + 1][1] == '-'
+            opts[Symbol(args[i][2:end])] = nothing
+            i = i + 1
+        else
+            opts[Symbol(args[i][2:end])] = args[i + 1]
+            i = i + 2
+        end
+    end
+    return NamedTuple(opts)
+end

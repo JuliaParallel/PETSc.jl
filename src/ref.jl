@@ -7,7 +7,7 @@
     end
 
     function decref(::Type{$PetscScalar}, obj)
-        if !finalized($PetscScalar)
+        if !finalized($petsclib)
             @chk ccall((:PetscObjectDereference, $libpetsc), PetscErrorCode, (Ptr{Cvoid},), obj)
             obj.ptr = C_NULL
         end

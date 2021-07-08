@@ -49,7 +49,7 @@ end
 @for_libpetsc begin
 
     function SNES{$PetscScalar}(comm::MPI.Comm; kwargs...)
-        initialize($PetscScalar)
+        @assert initialized($petsclib)
         opts = Options{$PetscScalar}(kwargs...)
         snes = SNES{$PetscScalar}(C_NULL, comm, opts, nothing, nothing, nothing, nothing, nothing)
         @chk ccall((:SNESCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CSNES}), comm, snes)
@@ -89,7 +89,7 @@ end
     end
 
     function destroy(snes::SNES{$PetscScalar})
-        finalized($PetscScalar) ||
+        finalized($petsclib) ||
             @chk ccall((:SNESDestroy, $libpetsc), PetscErrorCode, (Ptr{CSNES},), snes)
         return nothing
     end
@@ -104,7 +104,7 @@ end
         return unsafe_string(t_r[])
     end
 
-    function view(snes::SNES{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(snes.comm))
+    function view(snes::SNES{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, snes.comm))
         @chk ccall((:SNESView, $libpetsc), PetscErrorCode,
                     (CSNES, CPetscViewer),
                 snes, viewer);

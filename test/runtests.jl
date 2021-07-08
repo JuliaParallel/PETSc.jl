@@ -73,7 +73,7 @@ PETSc.initialize()
   @test PETSc.KSP(M) \ x ≈ x/2
 
 
-  function F!(fx, x)
+  function F!(fx, x, args...)
     fx[1] = x[1]^2 + x[1]*x[2] - 3
     fx[2] = x[1]*x[2] + x[2]^2 - 6
   end
@@ -93,4 +93,7 @@ PETSc.initialize()
   @test PETSc.solve!([2.0,3.0], S) ≈ [1.0,2.0] rtol=1e-4
 end
 
-include("examples.jl")
+
+include("test_dmstag.jl")
+include("examples.jl") 
+

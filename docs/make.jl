@@ -11,6 +11,7 @@ makedocs(;
         "Getting Started" => "man/getting_started.md",
         "PETSc" => Any[
             "Mat" =>  "man/mat.md",
+            "DMStag" =>  "man/dmstag.md",
         ],
         "List of functions"  => "man/listfunctions.md"
     ],

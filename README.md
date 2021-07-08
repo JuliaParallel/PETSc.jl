@@ -4,8 +4,7 @@
 [![doc dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliaparallel.github.io/PETSc.jl/dev/)
 
 
-This package provides a low level interface for
-[PETSc](https://www.mcs.anl.gov/petsc/)
+This package provides a low level interface for [PETSc](https://www.mcs.anl.gov/petsc/) and allows combining julia features (such as automatic differentiation) with the PETSc infrastructure and nonlinear solvers.
 
 ## Installation
 

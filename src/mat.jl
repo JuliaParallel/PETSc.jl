@@ -60,8 +60,6 @@ end
         return mat
     end
 
-
-
     function destroy(M::AbstractMat{$PetscScalar})
         finalized($petsclib) ||
         @chk ccall((:MatDestroy, $libpetsc), PetscErrorCode, (Ptr{CMat},), M)
@@ -75,7 +73,6 @@ end
         return nothing
     end
 
-
     function Base.setindex!(M::AbstractMat{$PetscScalar}, val, i::Integer, j::Integer)    
         @chk ccall((:MatSetValues, $libpetsc), PetscErrorCode, 
             (CMat, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}, InsertMode),
@@ -83,6 +80,13 @@ end
         return val
     end
 
+    function assembled(A::AbstractMat{$PetscScalar})
+        fr = Ref{PetscBool}()
+        @chk ccall((:MatAssembled, $libpetsc), PetscErrorCode,
+            (CMat, Ptr{PetscBool}),
+            A, fr)
+        return fr[]== PETSC_TRUE
+    end
 
     function assemblybegin(M::AbstractMat{$PetscScalar}, t::MatAssemblyType=MAT_FINAL_ASSEMBLY)
         @chk ccall((:MatAssemblyBegin, $libpetsc), PetscErrorCode, (CMat, MatAssemblyType), M, t)
@@ -93,10 +97,30 @@ end
         return nothing
     end
     function view(mat::AbstractMat{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, mat.comm))
-        @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
-                    (CMat, CPetscViewer),
-                mat, viewer);
+        if assembled(mat)
+            @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
+                        (CMat, CPetscViewer),
+                    mat, viewer);
+        else
+            error("not yet assembled")
+        end
         return nothing
+    end
+
+    function Base.getindex(M::AbstractMat{$PetscScalar}, i::Integer, j::Integer)    
+        val = Ref{$PetscScalar}()
+        @chk ccall((:MatGetValues, $libpetsc), PetscErrorCode, 
+            (CMat, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}),
+            M, 1, Ref{$PetscInt}(i-1), 1, Ref{$PetscInt}(j-1), val)
+        return val[]
+    end
+    
+    function ownershiprange(M::AbstractMat{$PetscScalar})
+        r_lo = Ref{$PetscInt}()
+        r_hi = Ref{$PetscInt}()
+        @chk ccall((:MatGetOwnershipRange, $libpetsc), PetscErrorCode,
+          (CMat, Ptr{$PetscInt}, Ptr{$PetscInt}), M, r_lo, r_hi)
+        r_lo[]:(r_hi[]-$PetscInt(1))
     end
 
 

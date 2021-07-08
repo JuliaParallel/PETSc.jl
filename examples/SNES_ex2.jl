@@ -40,7 +40,7 @@ end
 ```
     Computes the residual f, given solution vector x
 ```
-function FormResidual!(f,x)
+function FormResidual!(f,x, args...)
     n   =   length(x);
     xp  =   LinRange(0.0,1.0, n);
     F   .=  6.0.*xp .+ (xp .+1.e-12).^6.0;      # define source term function
@@ -116,6 +116,7 @@ PETSc.solve!(x_s, S);
 x_sol = x_s.array;                  # convert solution to julia format
 FormResidual!(res.array,x_sol)      # just for checking, compute residual
 @show norm(res.array)
+
 
 lineplot(LinRange(0,1,n),x_sol,xlabel="width",ylabel="solution")
 

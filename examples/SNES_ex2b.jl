@@ -25,7 +25,7 @@ end
 ```
     Computes the residual f, given solution vector x
 ```
-function FormResidual!(f,x)
+function FormResidual!(f,x, args...)
     n       =   length(x);
     xp      =   LinRange(0.0,1.0, n);
     F       =   6.0.*xp .+ (xp .+1.e-12).^6.0;      # define source term function

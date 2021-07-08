@@ -31,5 +31,6 @@ include("matshell.jl")
 include("ksp.jl")
 include("pc.jl")
 include("snes.jl")
+include("dmstag.jl")
 
 end

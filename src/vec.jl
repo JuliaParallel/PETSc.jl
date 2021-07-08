@@ -47,7 +47,7 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
 
 @for_libpetsc begin
     function VecSeq(comm::MPI.Comm, X::Vector{$PetscScalar}; blocksize=1)
-        initialize($PetscScalar)
+        @assert initialized($petsclib)
         v = VecSeq(C_NULL, comm, X)
         @chk ccall((:VecCreateSeqWithArray, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CVec}),
@@ -56,7 +56,7 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
         return v
     end
     function destroy(v::AbstractVec{$PetscScalar})
-        finalized($PetscScalar) ||
+        finalized($petsclib) ||
         @chk ccall((:VecDestroy, $libpetsc), PetscErrorCode, (Ptr{CVec},), v)
         return nothing
     end
@@ -95,7 +95,7 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
         r_lo[]:(r_hi[]-$PetscInt(1))
     end
 
-    function view(vec::AbstractVec{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(vec.comm))
+    function view(vec::AbstractVec{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib))
         @chk ccall((:VecView, $libpetsc), PetscErrorCode,
                     (CVec, CPetscViewer),
                 vec.ptr, viewer);

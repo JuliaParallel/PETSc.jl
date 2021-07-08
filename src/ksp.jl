@@ -156,7 +156,7 @@ struct Fn_KSPComputeOperators{T} end
         return ksp
     end
 
-    function KSPSetDM!(ksp::KSP{$PetscScalar}, dm::AbstractDM{$PetscScalar})
+    function KSPSetDM!(ksp::KSP{$PetscScalar}, dm::AbstractDM{$PetscLib})
         with(ksp.opts) do
             @chk ccall((:KSPSetDM, $libpetsc), PetscErrorCode, (CKSP, CDM), ksp, dm)
         end
@@ -173,7 +173,7 @@ struct Fn_KSPComputeOperators{T} end
             ksp,
             t_dm,
         )
-        dm = DM{$PetscScalar, $PetscLib}(t_dm[])
+        dm = DM{$PetscLib}(t_dm[])
         return dm
     end
 
@@ -280,7 +280,8 @@ Any PETSc options prefixed with `ksp_` and `pc_` can be passed as keywords.
 
 see [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/KSP/KSPSetDM.html)
 """
-function KSP(dm::AbstractDM{T}; kwargs...) where {T}
+function KSP(dm::AbstractDM{PetscLib}; kwargs...) where {PetscLib}
+    T = scalartype(PetscLib)
     ksp = KSP{T}(getcomm(dm); kwargs...)
     KSPSetDM!(ksp, dm)
     setfromoptions!(ksp)

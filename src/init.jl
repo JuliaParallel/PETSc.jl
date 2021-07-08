@@ -96,18 +96,3 @@ function finalized end
     )
     return r_flag[] == PETSC_TRUE
 end
-
-"""
-    PETSc.finalize()
-
-Finalize PETSc for scalar type `T`. If no `T` is provided, then it will be
-finalized for all supported scalar types.
-
-It is generally not necessary to call this function directly, as it is added as
-an [`atexit`](https://docs.julialang.org/en/v1/base/base/#Base.atexit) hook in
-[`PETSc.initialize`](@ref).
-"""
-function finalize()
-    map(finalize, scalar_types)
-    return nothing
-end

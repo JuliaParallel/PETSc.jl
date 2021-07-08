@@ -96,25 +96,14 @@ end
         @chk ccall((:MatAssemblyEnd, $libpetsc), PetscErrorCode, (CMat, MatAssemblyType), M, t)
         return nothing
     end
-<<<<<<< HEAD
-    function view(mat::AbstractMat{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(mat.comm))
-        # determine if assembled. Otherwise use a different viewer
+    function view(mat::AbstractMat{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, mat.comm))
         if assembled(mat)
             @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
                         (CMat, CPetscViewer),
                     mat, viewer);
         else
-            # not yet assembled
-            println("Matrix object")
-            println("  size: $(size(mat))")
-            println("  Not yet assembled")
+            error("not yet assembled")
         end
-=======
-    function view(mat::AbstractMat{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, mat.comm))
-        @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
-                    (CMat, CPetscViewer),
-                mat, viewer);
->>>>>>> master
         return nothing
     end
 

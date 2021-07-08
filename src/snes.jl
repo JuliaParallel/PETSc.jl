@@ -56,10 +56,10 @@ end
 
 @for_libpetsc begin
 
-    function SNES{$PetscScalar}(comm::MPI.Comm, julia_vec=1; kwargs...)
-        initialize($PetscScalar)
+    function SNES{$PetscScalar}(comm::MPI.Comm, use_julia_vec=true; kwargs...)
+        @assert initialized($petsclib)
         opts = Options{$PetscScalar}(kwargs...)
-        snes = SNES{$PetscScalar}(C_NULL, comm, opts, nothing, nothing, nothing, nothing, nothing,julia_vec,nothing)
+        snes = SNES{$PetscScalar}(C_NULL, comm, opts, nothing, nothing, nothing, nothing, nothing,use_julia_vec,nothing)
         @chk ccall((:SNESCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CSNES}), comm, snes)
 
         with(snes.opts) do

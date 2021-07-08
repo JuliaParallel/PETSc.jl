@@ -43,6 +43,9 @@ PETSc.initialize()
                 )
                 PETSc.DMSetUp!(da)
 
+                @test PETSc.gettype(da) == "da"
+                @test PETSc.DMGetDimension(da) == 1
+
                 da_info = PETSc.DMDAGetInfo(da)
                 corners = PETSc.DMDAGetCorners(da)
                 ghost_corners = PETSc.DMDAGetGhostCorners(da)
@@ -81,6 +84,8 @@ PETSc.initialize()
                     da_refine = da_refine,
                 )
                 PETSc.DMSetUp!(da)
+                @test PETSc.gettype(da) == "da"
+                @test PETSc.DMGetDimension(da) == 1
 
                 da_info = PETSc.DMDAGetInfo(da)
 
@@ -152,6 +157,8 @@ end
                     nothing,
                 )
                 PETSc.DMSetUp!(da)
+                @test PETSc.gettype(da) == "da"
+                @test PETSc.DMGetDimension(da) == 2
 
                 da_info = PETSc.DMDAGetInfo(da)
 
@@ -182,6 +189,8 @@ end
                     da_refine = da_refine,
                 )
                 PETSc.DMSetUp!(da)
+                @test PETSc.gettype(da) == "da"
+                @test PETSc.DMGetDimension(da) == 2
 
                 da_info = PETSc.DMDAGetInfo(da)
 
@@ -261,6 +270,8 @@ end
                     nothing,
                 )
                 PETSc.DMSetUp!(da)
+                @test PETSc.gettype(da) == "da"
+                @test PETSc.DMGetDimension(da) == 3
 
                 da_info = PETSc.DMDAGetInfo(da)
 
@@ -296,6 +307,8 @@ end
                     da_refine = da_refine,
                 )
                 PETSc.DMSetUp!(da)
+                @test PETSc.gettype(da) == "da"
+                @test PETSc.DMGetDimension(da) == 3
 
                 da_info = PETSc.DMDAGetInfo(da)
 
@@ -330,6 +343,4 @@ end
         end
     end
 end
-nothing
-
 nothing

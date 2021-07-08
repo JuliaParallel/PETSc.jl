@@ -33,7 +33,7 @@ PETSc.initialize()
 
                 # Set the points
                 da = PETSc.DMDACreate1d(
-                    PetscScalar,
+                    petsclib,
                     comm,
                     boundary_type,
                     global_size,
@@ -71,7 +71,7 @@ PETSc.initialize()
                 # Do not set the points and test option parsing
                 da_refine = 2
                 da = PETSc.DMDACreate1d(
-                    PetscScalar,
+                    petsclib,
                     comm,
                     boundary_type,
                     global_size,
@@ -137,7 +137,7 @@ end
 
                 # Set the points
                 da = PETSc.DMDACreate2d(
-                    PetscScalar,
+                    petsclib,
                     comm,
                     boundary_type_x,
                     boundary_type_y,
@@ -166,7 +166,7 @@ end
                 # test refinement
                 da_refine = 2
                 da = PETSc.DMDACreate2d(
-                    PetscScalar,
+                    petsclib,
                     comm,
                     boundary_type_x,
                     boundary_type_y,
@@ -242,7 +242,7 @@ end
 
                 # Set the points
                 da = PETSc.DMDACreate3d(
-                    PetscScalar,
+                    petsclib,
                     comm,
                     boundary_type_x,
                     boundary_type_y,
@@ -276,7 +276,7 @@ end
                 # test refinement
                 da_refine = 2
                 da = PETSc.DMDACreate3d(
-                    PetscScalar,
+                    petsclib,
                     comm,
                     boundary_type_x,
                     boundary_type_y,

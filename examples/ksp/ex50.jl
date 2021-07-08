@@ -116,7 +116,7 @@ function jacobian!(
     return 0
 end
 
-function main(PetscScalar; comm = MPI.COMM_WORLD, options...)
+function main(petsclib; comm = MPI.COMM_WORLD, options...)
     boundary_type = (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE)
     stencil_type = PETSc.DMDA_STENCIL_STAR
     global_size = (11, 11)
@@ -149,7 +149,7 @@ function main(PetscScalar; comm = MPI.COMM_WORLD, options...)
     end
 
     da = PETSc.DMDACreate2d(
-        PetscScalar,
+        petsclib,
         comm,
         boundary_type...,
         stencil_type,
@@ -171,5 +171,6 @@ function main(PetscScalar; comm = MPI.COMM_WORLD, options...)
     PETSc.solve!(ksp)
 end
 
-main(Float64)
-# main(Float32)
+for petsclib in PETSc.petsclibs
+    main(petsclib)
+end

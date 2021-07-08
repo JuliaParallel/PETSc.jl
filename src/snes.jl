@@ -3,17 +3,15 @@ const CSNES = Ptr{Cvoid}
 const CSNESType = Cstring
 
 
-mutable struct SNES{T}
+mutable struct SNES{T, PetscLib}
     ptr::CSNES
     comm::MPI.Comm
-    opts::Options{T}
+    opts::Options{PetscLib}
     fn!
     fn_vec
     update_jac!
     jac_A
     jac_P
-    use_julia_vec::Bool 
-    user_ctx
 end
 
 scalartype(::SNES{T}) where {T} = T
@@ -34,15 +32,9 @@ end
 
 struct SNESJac{T}
 end
-struct SNESFn_julia{T}
-end
-struct SNESJac_julia{T}
-end
 
 
 #=
-Note: in parallel, cx/cfx should be global vectors
-
 function _snesfn(csnes::CSNES, cx::CVec, cfx::CVec, ctx::Ptr{Cvoid})
     snes = unsafe_pointer_to_objref(ctx)
     snes.Feval(cfx, cx)
@@ -56,10 +48,10 @@ end
 
 @for_libpetsc begin
 
-    function SNES{$PetscScalar}(comm::MPI.Comm, use_julia_vec=true; kwargs...)
+    function SNES{$PetscScalar}(comm::MPI.Comm; kwargs...)
         @assert initialized($petsclib)
-        opts = Options{$PetscScalar}(kwargs...)
-        snes = SNES{$PetscScalar}(C_NULL, comm, opts, nothing, nothing, nothing, nothing, nothing,use_julia_vec,nothing)
+        opts = Options($petsclib, kwargs...)
+        snes = SNES{$PetscScalar, $PetscLib}(C_NULL, comm, opts, nothing, nothing, nothing, nothing, nothing)
         @chk ccall((:SNESCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CSNES}), comm, snes)
 
         with(snes.opts) do
@@ -75,16 +67,11 @@ end
 
     function (::SNESFn{$PetscScalar})(csnes::CSNES, cx::CVec, cfx::CVec, ctx::Ptr{Cvoid})::$PetscInt
         snes = unsafe_pointer_to_objref(ctx)
-
-        if snes.use_julia_vec    # we pass julia vecs
-            x = unsafe_localarray($PetscScalar, cx; write=false)
-            fx = unsafe_localarray($PetscScalar, cfx; read=false)
-            snes.fn!(fx, x, snes.user_ctx)
-            Base.finalize(x)
-            Base.finalize(fx)
-        else                    # pass pointers to PETSc vectors
-            snes.fn!(cfx, cx, snes.user_ctx)
-        end
+        x = unsafe_localarray($PetscScalar, cx; write=false)
+        fx = unsafe_localarray($PetscScalar, cfx; read=false)
+        snes.fn!(fx, x)
+        Base.finalize(x)
+        Base.finalize(fx)
         return $PetscInt(0)
     end
 
@@ -124,20 +111,16 @@ end
         return nothing
     end
 
+
+
     function (::SNESJac{$PetscScalar})(csnes::CSNES, cx::CVec, cA::CMat, cP::CMat, ctx::Ptr{Cvoid})::$PetscInt
         snes = unsafe_pointer_to_objref(ctx)
         @assert snes.ptr == csnes
         @assert snes.jac_A.ptr == cA
         @assert snes.jac_P.ptr == cP
-        
-        if snes.use_julia_vec    # pass julia vecs
-            x  = unsafe_localarray($PetscScalar, cx; write=false)
-            snes.update_jac!(x, snes.jac_A, snes.jac_P, snes.user_ctx)
-            Base.finalize(x)
-        else                    # pass pointers to PETSc vectors
-            snes.update_jac!(cx, snes.jac_A, snes.jac_P, snes.user_ctx)
-        end
-
+        x = unsafe_localarray($PetscScalar, cx; write=false)
+        snes.update_jac!(x, snes.jac_A, snes.jac_P)
+        Base.finalize(x)
         return $PetscInt(0)
     end
 
@@ -156,6 +139,7 @@ end
         return nothing
     end
 
+
     function solve!(x::AbstractVec{$PetscScalar}, snes::SNES{$PetscScalar}, b::AbstractVec{$PetscScalar})
         with(snes.opts) do
             @chk ccall((:SNESSolve, $libpetsc), PetscErrorCode,
@@ -170,7 +154,6 @@ end
         end
         return x
     end
-
 
 end
 

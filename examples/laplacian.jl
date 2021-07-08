@@ -27,8 +27,8 @@ for T in PETSc.scalar_types
 
   ksp = PETSc.KSP(
                   M;
-                  ksp_monitor_true_residual = true,
-                  ksp_view = true,
+                  ksp_monitor_true_residual = nothing,
+                  ksp_view = nothing,
                   ksp_type = "cg",
                   ksp_rtol = 1e-8,
                   pc_type = "gamg",

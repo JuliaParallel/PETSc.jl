@@ -1,5 +1,6 @@
 using Test
 using PETSc, MPI, LinearAlgebra, SparseArrays
+PETSc.initialize()
 
 @testset "Tests" begin
   m,n = 20,20

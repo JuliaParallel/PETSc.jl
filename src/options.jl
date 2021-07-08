@@ -25,14 +25,14 @@ scalartype(::Options{T}) where {T} = T
 
 @for_libpetsc begin
     function Options{$PetscScalar}()
-        initialize($PetscScalar)
+        @assert initialized($petsclib)
         opts = Options{$PetscScalar}(C_NULL)
         @chk ccall((:PetscOptionsCreate, $libpetsc), PetscErrorCode, (Ptr{CPetscOptions},), opts)
         finalizer(destroy, opts)
         return opts
     end
     function destroy(opts::Options{$PetscScalar})
-        finalized($PetscScalar) ||
+        finalized($petsclib) ||
         @chk ccall((:PetscOptionsDestroy, $libpetsc), PetscErrorCode, (Ptr{CPetscOptions},), opts)
         return nothing
     end
@@ -51,7 +51,7 @@ scalartype(::Options{T}) where {T} = T
             opts, string('-',key), (val === true || isnothing(val)) ? C_NULL : string(val))
     end
 
-    function view(opts::AbstractOptions{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(MPI.COMM_SELF))
+    function view(opts::AbstractOptions{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib))
         @chk ccall((:PetscOptionsView, $libpetsc), PetscErrorCode,
                   (CPetscOptions, CPetscViewer),
                   opts, viewer);

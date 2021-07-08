@@ -32,7 +32,7 @@ scalartype(::PC{T}) where {T} = T
     end
 
     function destroy(pc::PC{$PetscScalar})
-        finalized($PetscScalar) ||
+        finalized($petsclib) ||
         @chk ccall((:PCDestroy, $libpetsc), PetscErrorCode, (Ptr{CPC},), pc)
         return nothing
     end
@@ -53,7 +53,7 @@ scalartype(::PC{T}) where {T} = T
         return unsafe_string(t_r[])
     end
 
-    function view(pc::PC{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(pc.comm))
+    function view(pc::PC{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, pc.comm))
         @chk ccall((:PCView, $libpetsc), PetscErrorCode,
                     (CPC, CPetscViewer),
                 pc, viewer);

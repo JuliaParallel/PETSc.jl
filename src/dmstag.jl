@@ -638,7 +638,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         dm 	- the DM object to destroy
     """
     function destroy(dm::DMStag{$PetscScalar})
-        finalized($PetscScalar) ||
+        finalized($petsclib) ||
             @chk ccall((:DMDestroy, $libpetsc), PetscErrorCode, (Ptr{CDMStag},), dm)
         return nothing
     end
@@ -665,7 +665,7 @@ Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc,
         dm      - the DM object to view 
         viewer  - the viewer 
     """
-    function view(dm::DMStag{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(dm.comm))
+    function view(dm::DMStag{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, dm.comm))
         @chk ccall((:DMView, $libpetsc), PetscErrorCode, 
                     (CDMStag, CPetscViewer),
                 dm, viewer);

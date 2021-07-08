@@ -40,7 +40,7 @@ end
 
 @for_libpetsc begin
     function MatSeqAIJ{$PetscScalar}(m::Integer, n::Integer, nnz::Vector{$PetscInt})
-        initialize($PetscScalar)
+        @assert initialized($petsclib)
         comm = MPI.COMM_SELF
         mat = MatSeqAIJ{$PetscScalar}(C_NULL, comm)
         @chk ccall((:MatCreateSeqAIJ, $libpetsc), PetscErrorCode,
@@ -50,7 +50,7 @@ end
         return mat
     end
     function MatSeqDense(A::Matrix{$PetscScalar})
-        initialize($PetscScalar)
+        @assert initialized($petsclib)
         comm = MPI.COMM_SELF
         mat = MatSeqDense(C_NULL, comm, A)
         @chk ccall((:MatCreateSeqDense, $libpetsc), PetscErrorCode, 
@@ -61,7 +61,7 @@ end
     end
 
     function destroy(M::AbstractMat{$PetscScalar})
-        finalized($PetscScalar) ||
+        finalized($petsclib) ||
         @chk ccall((:MatDestroy, $libpetsc), PetscErrorCode, (Ptr{CMat},), M)
         return nothing
     end
@@ -96,17 +96,13 @@ end
         @chk ccall((:MatAssemblyEnd, $libpetsc), PetscErrorCode, (CMat, MatAssemblyType), M, t)
         return nothing
     end
-    function view(mat::AbstractMat{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(mat.comm))
-        # determine if assembled. Otherwise use a different viewer
+    function view(mat::AbstractMat{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, mat.comm))
         if assembled(mat)
             @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
                         (CMat, CPetscViewer),
                     mat, viewer);
         else
-            # not yet assembled
-            println("Matrix object")
-            println("  size: $(size(mat))")
-            println("  Not yet assembled")
+            error("not yet assembled")
         end
         return nothing
     end

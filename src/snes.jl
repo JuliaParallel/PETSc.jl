@@ -12,10 +12,9 @@ mutable struct SNES{T}
     update_jac!
     jac_A
     jac_P
-    julia_vec::Cint 
+    use_julia_vec::Bool 
     user_ctx
 end
-
 
 scalartype(::SNES{T}) where {T} = T
 
@@ -24,7 +23,6 @@ Base.unsafe_convert(::Type{Ptr{CSNES}}, obj::SNES) =
     convert(Ptr{CSNES}, pointer_from_objref(obj))
 
 Base.eltype(::SNES{T}) where {T} = T
-
 
 # How to handle Jacobians?
 #  - https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/SNES/SNESComputeJacobianDefault.html
@@ -58,10 +56,10 @@ end
 
 @for_libpetsc begin
 
-    function SNES{$PetscScalar}(comm::MPI.Comm, julia_vec=1; kwargs...)
-        initialize($PetscScalar)
+    function SNES{$PetscScalar}(comm::MPI.Comm, use_julia_vec=true; kwargs...)
+        @assert initialized($petsclib)
         opts = Options{$PetscScalar}(kwargs...)
-        snes = SNES{$PetscScalar}(C_NULL, comm, opts, nothing, nothing, nothing, nothing, nothing,julia_vec,nothing)
+        snes = SNES{$PetscScalar}(C_NULL, comm, opts, nothing, nothing, nothing, nothing, nothing,use_julia_vec,nothing)
         @chk ccall((:SNESCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CSNES}), comm, snes)
 
         with(snes.opts) do
@@ -78,7 +76,7 @@ end
     function (::SNESFn{$PetscScalar})(csnes::CSNES, cx::CVec, cfx::CVec, ctx::Ptr{Cvoid})::$PetscInt
         snes = unsafe_pointer_to_objref(ctx)
 
-        if snes.julia_vec==1    # we pass julia vecs
+        if snes.use_julia_vec    # we pass julia vecs
             x = unsafe_localarray($PetscScalar, cx; write=false)
             fx = unsafe_localarray($PetscScalar, cfx; read=false)
             snes.fn!(fx, x, snes.user_ctx)
@@ -89,7 +87,6 @@ end
         end
         return $PetscInt(0)
     end
-
 
     function setfunction!(snes::SNES{$PetscScalar}, fn!, vec::AbstractVec{$PetscScalar})
         ctx = pointer_from_objref(snes)
@@ -104,9 +101,8 @@ end
         return nothing
     end
 
-    
     function destroy(snes::SNES{$PetscScalar})
-        finalized($PetscScalar) ||
+        finalized($petsclib) ||
             @chk ccall((:SNESDestroy, $libpetsc), PetscErrorCode, (Ptr{CSNES},), snes)
         return nothing
     end
@@ -121,7 +117,7 @@ end
         return unsafe_string(t_r[])
     end
 
-    function view(snes::SNES{$PetscScalar}, viewer::Viewer{$PetscScalar}=ViewerStdout{$PetscScalar}(snes.comm))
+    function view(snes::SNES{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, snes.comm))
         @chk ccall((:SNESView, $libpetsc), PetscErrorCode,
                     (CSNES, CPetscViewer),
                 snes, viewer);
@@ -134,7 +130,7 @@ end
         @assert snes.jac_A.ptr == cA
         @assert snes.jac_P.ptr == cP
         
-        if snes.julia_vec==1    # pass julia vecs
+        if snes.use_julia_vec    # pass julia vecs
             x  = unsafe_localarray($PetscScalar, cx; write=false)
             snes.update_jac!(x, snes.jac_A, snes.jac_P, snes.user_ctx)
             Base.finalize(x)
@@ -148,6 +144,7 @@ end
     function setjacobian!(snes::SNES{$PetscScalar}, update_jac!, A::AbstractMat{$PetscScalar}, P::AbstractMat{$PetscScalar}=A)
         ctx = pointer_from_objref(snes)
         jacptr = @cfunction(SNESJac{$PetscScalar}(), $PetscInt, (CSNES, CVec, CMat, CMat, Ptr{Cvoid}))
+
         with(snes.opts) do
             @chk ccall((:SNESSetJacobian, $libpetsc), PetscErrorCode,
                 (CSNES, CMat, CMat, Ptr{Cvoid}, Ptr{Cvoid}),
@@ -177,25 +174,4 @@ end
 
 end
 
-"""
-    snes = SNES{PetscScalar}(comm::MPI.Comm, julia_vec=1; kwargs...)
-
-Creates a SNES object
-
-    Usage:
-        snes = SNES{PetscScalar}(comm::MPI.Comm, julia_vec=1; kwargs...)
-
-    Input:
-        comm:       -   MPI communicator
-        julia_vec   -   indicates whether we want to have julia vectors or pointers to the PETSc vectors 
-                        within the update_jac! and fn! user routines. Julia vectors are fine on 1 core,
-                        but on multiple cores the PETSc pointers are more useful as we operate on the local 
-                        portion of the vector, but pass globa vectors in/out 
-    Output:
-        snes        -   the snes object
-"""
-#snes
-
 solve!(x::AbstractVector{T}, snes::SNES{T}) where {T} = parent(solve!(AbstractVec(x), snes))
-
-Base.show(io::IO, snes::SNES) = _show(io, snes)

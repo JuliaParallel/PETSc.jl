@@ -1,36 +1,69 @@
+const CPetscViewer = Ptr{Cvoid}
 
-# we need to parametrise by type so we know which library to call
-abstract type Viewer{T} end
+"""
+    AbstractViewer{PetscLib <: PetscLibType}
 
-const CPetscViewer         = Ptr{Cvoid}
+Abstract type of PETSc viewer.
 
-Base.cconvert(::Type{CPetscViewer}, obj::Viewer) = obj.ptr
-Base.unsafe_convert(::Type{Ptr{CPetscViewer}}, obj::Viewer) = 
+Manual: [`PetscViewer`](https://petsc.org/release/docs/manualpages/Viewer/PetscViewer.html)
+"""
+abstract type AbstractViewer{PetscLib <: PetscLibType} end
+
+Base.cconvert(::Type{CPetscViewer}, obj::AbstractViewer) = obj.ptr
+
+Base.unsafe_convert(::Type{Ptr{CPetscViewer}}, obj::AbstractViewer) =
     convert(Ptr{CPetscViewer}, pointer_from_objref(obj))
 
+"""
+    ViewerStdout(petsclib, comm = MPI.COMM_SELF)
 
-mutable struct ViewerStdout{T} <: Viewer{T}
+Create an ASCII `PetscViewer` for the `comm`
+
+Manual: [`PETSC_VIEWER_STDOUT_`](https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_.html)
+"""
+mutable struct ViewerStdout{PetscLib} <: AbstractViewer{PetscLib}
     ptr::CPetscViewer
     comm::MPI.Comm
 end
 
-@for_libpetsc begin
-    function ViewerStdout{$PetscScalar}(comm::MPI.Comm=MPI.COMM_SELF)
-        ptr = ccall((:PETSC_VIEWER_STDOUT_, $libpetsc), CPetscViewer, (MPI.MPI_Comm,), comm)
-        return ViewerStdout{$PetscScalar}(ptr, comm)
-    end
-    function Base.push!(viewer::Viewer{$PetscScalar}, format::PetscViewerFormat)
-        @chk ccall((:PetscViewerPushFormat, $libpetsc), PetscErrorCode, (CPetscViewer,PetscViewerFormat), viewer, format)
-        return nothing
-    end
-    function Base.pop!(viewer::Viewer{$PetscScalar})
-        @chk ccall((:PetscViewerPopFormat, $libpetsc), PetscErrorCode, (CPetscViewer,), viewer)
-        return nothing
-    end
-
+@for_petsc function ViewerStdout(
+    ::$UnionPetscLib,
+    comm::MPI.Comm = MPI.COMM_SELF,
+)
+    ptr = ccall(
+        (:PETSC_VIEWER_STDOUT_, $petsc_library),
+        CPetscViewer,
+        (MPI.MPI_Comm,),
+        comm,
+    )
+    return ViewerStdout{$PetscLib}(ptr, comm)
 end
 
-function with(f, viewer::Viewer, format::PetscViewerFormat)
+@for_petsc function Base.push!(
+    viewer::AbstractViewer{$PetscLib},
+    format::PetscViewerFormat,
+)
+    @chk ccall(
+        (:PetscViewerPushFormat, $petsc_library),
+        PetscErrorCode,
+        (CPetscViewer, PetscViewerFormat),
+        viewer,
+        format,
+    )
+    return nothing
+end
+
+@for_petsc function Base.pop!(viewer::AbstractViewer{$PetscLib})
+    @chk ccall(
+        (:PetscViewerPopFormat, $petsc_library),
+        PetscErrorCode,
+        (CPetscViewer,),
+        viewer,
+    )
+    return nothing
+end
+
+function with(f, viewer::AbstractViewer, format::PetscViewerFormat)
     push!(viewer, format)
     try
         f()
@@ -56,11 +89,9 @@ function _show(io::IO, obj)
     return nothing
 end
 
-
-
 #=
 # PETSc_jll isn't built with X support
-mutable struct ViewerDraw <: Viewer
+mutable struct ViewerDraw <: AbstractViewer
     ptr::CPetscViewer
     comm::MPI.Comm
 end

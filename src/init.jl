@@ -3,7 +3,8 @@
 
 Check if `petsclib` is initialized
 
-Manual: [`PetscInitialized`](https://petsc.org/release/docs/manualpages/Sys/PetscInitialized.html)
+# External Links
+$(_doc_external("Sys/PetscInitialized"))
 """
 function Initialized end
 @for_petsc function initialized(::$UnionPetscLib)
@@ -26,11 +27,12 @@ will be initialized.
 Additionally:
  - This will initialize MPI if it has not already been initialized.
  - It will disable the PETSc signal handler (via
-   [`PetscPopSignalHandler`](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Sys/PetscPopSignalHandler.html))
+   $(_petsc_link("Sys/PetscPopSignalHandler"))
  - Add an [`atexit`](https://docs.julialang.org/en/v1/base/base/#Base.atexit)
    hook to call [`PETSc.finalize`](@ref).
 
-Manual: [`PetscInitializeNoArguments`](https://petsc.org/release/docs/manualpages/Sys/PetscInitializeNoArguments.html)
+# External Links
+$(_doc_external("Sys/PetscInitializeNoArguments"))
 """
 function Initialize end
 
@@ -62,7 +64,8 @@ end
 Finalize the `petsclib`, if no `petsclib` is given then all `PETSc.petsclibs`
 will be finalized.
 
-Manual: [`PetscFinalize`](https://petsc.org/release/docs/manualpages/Sys/PetscFinalize.html)
+# External Links
+$(_doc_external("Sys/PetscFinalize"))
 """
 function finalize end
 
@@ -83,7 +86,8 @@ end
 
 Check if `petsclib` is finalized
 
-Manual: [`PetscFinalized`](https://petsc.org/release/docs/manualpages/Sys/PetscFinalized.html)
+# External Links
+$(_doc_external("Sys/PetscFinalized"))
 """
 function finalized end
 @for_petsc function finalized(::$UnionPetscLib)

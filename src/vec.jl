@@ -28,7 +28,7 @@ https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Vec/VecCreateSeqWit
 """
 mutable struct VecSeq{T} <: AbstractVec{T}
     ptr::CVec
-    comm::MPI.Comm
+    __comm__::MPI.Comm # Do not access directly use `getcomm(vec)`
     array::Vector{T}
 end
 
@@ -83,7 +83,7 @@ Base.parent(v::AbstractVec) = v.array
         r_lo[]:(r_hi[]-$PetscInt(1))
     end
 
-    function view(vec::AbstractVec{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib))
+    function view(vec::AbstractVec{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(vec)))
         @chk ccall((:VecView, $libpetsc), PetscErrorCode,
                     (CVec, CPetscViewer),
                 vec, viewer);

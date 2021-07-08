@@ -78,7 +78,7 @@ end
     function (::SNESFn{$PetscScalar})(csnes::CSNES, cx::CVec, cfx::CVec, ctx::Ptr{Cvoid})::$PetscInt
         snes = unsafe_pointer_to_objref(ctx)
 
-        if snes.julia_vec==1    # we pass julia vecs
+        if snes.use_julia_vec    # we pass julia vecs
             x = unsafe_localarray($PetscScalar, cx; write=false)
             fx = unsafe_localarray($PetscScalar, cfx; read=false)
             snes.fn!(fx, x, snes.user_ctx)
@@ -134,7 +134,7 @@ end
         @assert snes.jac_A.ptr == cA
         @assert snes.jac_P.ptr == cP
         
-        if snes.julia_vec==1    # pass julia vecs
+        if snes.use_julia_vec    # pass julia vecs
             x  = unsafe_localarray($PetscScalar, cx; write=false)
             snes.update_jac!(x, snes.jac_A, snes.jac_P, snes.user_ctx)
             Base.finalize(x)

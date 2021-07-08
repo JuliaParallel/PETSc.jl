@@ -83,3 +83,24 @@ using PETSc
         PETSc.finalize(petsclib)
     end
 end
+
+@testset "parse_options tests" begin
+    @test begin
+        run(`julia --project -e "using PETSc
+                                 using Test
+                                 opts = PETSc.parse_options(ARGS)
+                                 @test length(opts) == 4
+                                 @test opts.ksp_monitor === nothing
+                                 @test opts.ksp_view === nothing
+                                 @test opts.pc_type === \"mg\"
+                                 @test opts.da_grid_x === \"100\"
+                                 @test_throws ErrorException opts.bad_opt
+                                 "
+                                 --
+                                 -ksp_monitor
+                                 -da_grid_x 100
+                                 -ksp_view
+                                 -pc_type mg`)
+        true
+    end
+end

@@ -20,6 +20,8 @@ deploydocs(;
     repo="github.com/JuliaParallel/PETSc.jl.git",
     branch = "gh-pages",
     target = "build",
-    devbranch = "main",
+    devbranch = "master",
     devurl = "dev",
+    forcepush=true,
+    push_preview = true
 )

@@ -74,7 +74,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagCreate1d end
 
-@for_petsc function DMStagCreate1d(
+@for_libpetsc function DMStagCreate1d(
     comm::MPI.Comm, 
     bndx::DMBoundaryType, 
     M, 
@@ -164,7 +164,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagCreate2d end
 
-@for_petsc function DMStagCreate2d(
+@for_libpetsc function DMStagCreate2d(
     comm::MPI.Comm, 
     bndx::DMBoundaryType, 
     bndy::DMBoundaryType, 
@@ -261,7 +261,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagCreate3d end
 
-@for_petsc function DMStagCreate3d(
+@for_libpetsc function DMStagCreate3d(
     comm::MPI.Comm, 
     bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, 
     M, N, P, 
@@ -336,7 +336,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMSetUp end
 
-@for_petsc function DMSetUp(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function DMSetUp(dm::DMStag{$PetscScalar,$PetscInt})
 
     @chk ccall((:DMSetUp, $libpetsc), PetscErrorCode, (CDMStag, ), dm )
 
@@ -354,7 +354,7 @@ More info on [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/man
 """
 function setfromoptions! end
 
-@for_petsc function setfromoptions!(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function setfromoptions!(dm::DMStag{$PetscScalar,$PetscInt})
 
     @chk ccall((:DMSetFromOptions, $libpetsc), PetscErrorCode, (CDMStag, ), dm )
 
@@ -385,7 +385,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagCreateCompatibleDMStag end
 
-@for_petsc function DMStagCreateCompatibleDMStag(
+@for_libpetsc function DMStagCreateCompatibleDMStag(
     dm::DMStag{$PetscScalar,$PetscInt}, 
     dofVertex=0, 
     dofEdge=0, 
@@ -449,7 +449,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 function DMStagGetDOF end
 
 
-@for_petsc function DMStagGetDOF(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function DMStagGetDOF(dm::DMStag{$PetscScalar,$PetscInt})
 
     dof0 = Ref{$PetscInt}()
     dof1 = Ref{$PetscInt}()
@@ -493,7 +493,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetGlobalSizes end
 
-@for_petsc function DMStagGetGlobalSizes(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function DMStagGetGlobalSizes(dm::DMStag{$PetscScalar,$PetscInt})
 
     M = Ref{$PetscInt}()
     N = Ref{$PetscInt}()
@@ -518,7 +518,7 @@ function DMStagGetGlobalSizes end
 end
 
 
-@for_petsc function Base.size(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function Base.size(dm::DMStag{$PetscScalar,$PetscInt})
     size = DMStagGetGlobalSizes(dm)
     return size
 end
@@ -536,7 +536,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetLocalSizes end
 
-@for_petsc function DMStagGetLocalSizes(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function DMStagGetLocalSizes(dm::DMStag{$PetscScalar,$PetscInt})
 
     M = Ref{$PetscInt}()
     N = Ref{$PetscInt}()
@@ -577,7 +577,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagSetUniformCoordinatesProduct end
 
-@for_petsc function DMStagSetUniformCoordinatesProduct(
+@for_libpetsc function DMStagSetUniformCoordinatesProduct(
     dm::DMStag, 
     xmin, xmax, 
     ymin=0, ymax=0, 
@@ -599,7 +599,7 @@ function DMStagSetUniformCoordinatesProduct end
     return nothing
 end
 
-@for_petsc function DMStagGetProductCoordinateArraysRead(dm::DMStag)
+@for_libpetsc function DMStagGetProductCoordinateArraysRead(dm::DMStag)
 
     Arrx = Ref{$PetscScalar}()
     Arry = Ref{$PetscScalar}()
@@ -635,7 +635,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagSetUniformCoordinatesExplicit end
 
-@for_petsc function DMStagSetUniformCoordinatesExplicit(
+@for_libpetsc function DMStagSetUniformCoordinatesExplicit(
     dm::DMStag, 
     xmin, xmax, 
     ymin=0, ymax=0, 
@@ -675,7 +675,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMCreateGlobalVector end
 
-@for_petsc function DMCreateGlobalVector(
+@for_libpetsc function DMCreateGlobalVector(
     dm::DMStag; 
     write_val=true, read_val=true
     )
@@ -707,7 +707,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMCreateLocalVector end
 
-@for_petsc function DMCreateLocalVector(
+@for_libpetsc function DMCreateLocalVector(
     dm::DMStag; 
     write_val=true, read_val=true
     )
@@ -741,7 +741,7 @@ Otherwise the values are not returned correctly to v
 """
 function DMStagVecGetArray end
 
-@for_petsc function DMStagVecGetArray(dm::DMStag, v::AbstractVec)
+@for_libpetsc function DMStagVecGetArray(dm::DMStag, v::AbstractVec)
     # Note: there is actually no need to call PETSc again, as Julia has the possibility 
     # to wrap an existing array into another one. Our vec already has the array wrapper, 
     # so we reshape that 
@@ -766,7 +766,7 @@ Get read-only access to a local array (including ghost points) of the DMStag
 """
 function DMStagVecGetArrayRead end
 
-@for_petsc function DMStagVecGetArrayRead(dm::DMStag, v::AbstractVec)
+@for_libpetsc function DMStagVecGetArrayRead(dm::DMStag, v::AbstractVec)
     # Note: there is actually no need to call PETSc again, as Julia has the possibility 
     # to wrap an existing array into another one. Our vec already has the array wrapper, 
     # so we reshape that 
@@ -837,7 +837,7 @@ Usage:
 """
 function DMStagGetGhostArrayLocationSlot end
 
-@for_petsc function DMStagGetGhostArrayLocationSlot(
+@for_libpetsc function DMStagGetGhostArrayLocationSlot(
     dm::DMStag, 
     v::AbstractVec{$PetscScalar}, 
     loc::DMStagStencilLocation, 
@@ -891,7 +891,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetProductCoordinateLocationSlot end
 
-@for_petsc function DMStagGetProductCoordinateLocationSlot(
+@for_libpetsc function DMStagGetProductCoordinateLocationSlot(
     dm::DMStag,
     loc::DMStagStencilLocation
     )
@@ -923,7 +923,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-master/docs/manualpages/
 """
 function DMStagGetEntriesPerElement end
 
-@for_petsc function DMStagGetEntriesPerElement(dm::DMStag)
+@for_libpetsc function DMStagGetEntriesPerElement(dm::DMStag)
     entriesPerElement = Ref{$PetscInt}()
     @chk ccall((:DMStagGetEntriesPerElement, $libpetsc), PetscErrorCode,
                 ( 
@@ -949,7 +949,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetStencilWidth end
 
-@for_petsc function DMStagGetStencilWidth(dm::DMStag)
+@for_libpetsc function DMStagGetStencilWidth(dm::DMStag)
     stencilWidth = Ref{$PetscInt}()
     @chk ccall((:DMStagGetStencilWidth, $libpetsc), PetscErrorCode,
                 ( CDMStag,  Ptr{$PetscInt}), dm,  stencilWidth)
@@ -976,7 +976,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetLocationSlot end
 
-@for_petsc function DMStagGetLocationSlot(dm::DMStag,loc::DMStagStencilLocation, c)
+@for_libpetsc function DMStagGetLocationSlot(dm::DMStag,loc::DMStagStencilLocation, c)
         
     slot = Ref{$PetscInt}()
     @chk ccall((:DMStagGetLocationSlot, $libpetsc), PetscErrorCode,
@@ -1006,7 +1006,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function destroy end
 
-@for_petsc function destroy(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function destroy(dm::DMStag{$PetscScalar,$PetscInt})
     finalized($petsclib) ||
         @chk ccall((:DMDestroy, $libpetsc), PetscErrorCode, (Ptr{CDMStag},), dm)
     return nothing
@@ -1024,7 +1024,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function gettype end
 
-@for_petsc function gettype(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function gettype(dm::DMStag{$PetscScalar,$PetscInt})
     t_r = Ref{CDMStagType}()
     @chk ccall((:DMGetType, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CDMStagType}), dm, t_r)
     return unsafe_string(t_r[])
@@ -1042,7 +1042,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function view end
 
-@for_petsc function view(dm::DMStag{$PetscScalar,$PetscInt}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, dm.comm))
+@for_libpetsc function view(dm::DMStag{$PetscScalar,$PetscInt}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, dm.comm))
     @chk ccall((:DMView, $libpetsc), PetscErrorCode, 
                 (CDMStag, CPetscViewer),
             dm, viewer);
@@ -1065,7 +1065,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetCorners end
 
-@for_petsc function  DMStagGetCorners(dm::DMStag)
+@for_libpetsc function  DMStagGetCorners(dm::DMStag)
 
     x = Ref{$PetscInt}()
     y = Ref{$PetscInt}()
@@ -1116,7 +1116,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetGhostCorners end
 
-@for_petsc function  DMStagGetGhostCorners(dm::DMStag)
+@for_libpetsc function  DMStagGetGhostCorners(dm::DMStag)
 
     x = Ref{$PetscInt}()
     y = Ref{$PetscInt}()
@@ -1157,7 +1157,7 @@ Return indices of start and end of the central nodes of a local array built from
 """
 function DMStagGetCentralNodes end
 
-@for_petsc function DMStagGetCentralNodes(dm::DMStag)
+@for_libpetsc function DMStagGetCentralNodes(dm::DMStag)
     # in Julia, indices in arrays start @ 1, whereas they can go negative in C
     # This routine  
 
@@ -1188,7 +1188,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetBoundaryTypes end
 
-@for_petsc function DMStagGetBoundaryTypes(dm::DMStag)
+@for_libpetsc function DMStagGetBoundaryTypes(dm::DMStag)
 
     Bx = Ref{$DMBoundaryType}()
     By = Ref{$DMBoundaryType}()
@@ -1226,7 +1226,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetNumRanks end
 
-@for_petsc function  DMStagGetNumRanks(dm::DMStag)
+@for_libpetsc function  DMStagGetNumRanks(dm::DMStag)
 
     nRanks0 = Ref{$PetscInt}()
     nRanks1 = Ref{$PetscInt}()
@@ -1273,7 +1273,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagVecSetValuesStencil end
 
-@for_petsc function  DMStagVecSetValuesStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil, val, insertMode::InsertMode)
+@for_libpetsc function  DMStagVecSetValuesStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil, val, insertMode::InsertMode)
 
     n=1;
     @chk ccall((:DMStagVecSetValuesStencil, $libpetsc), PetscErrorCode,
@@ -1320,7 +1320,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagVecSetValuesStencil end
 
-@for_petsc function  DMStagVecSetValuesStencil(
+@for_libpetsc function  DMStagVecSetValuesStencil(
     dm::DMStag, 
     vec::AbstractVec{$PetscScalar}, 
     n,
@@ -1375,7 +1375,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagVecGetValuesStencil end
 
-@for_petsc function  DMStagVecGetValuesStencil(
+@for_libpetsc function  DMStagVecGetValuesStencil(
     dm::DMStag, 
     vec::AbstractVec{$PetscScalar}, 
     pos::DMStagStencil
@@ -1422,7 +1422,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagVecGetValuesStencil end
 
-@for_petsc function  DMStagVecGetValuesStencil(
+@for_libpetsc function  DMStagVecGetValuesStencil(
     dm::DMStag, 
     vec::AbstractVec{$PetscScalar}, 
     n,
@@ -1476,7 +1476,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagMatGetValuesStencil end
 
-@for_petsc function  DMStagMatGetValuesStencil(
+@for_libpetsc function  DMStagMatGetValuesStencil(
     dm::DMStag, 
     mat::AbstractMat{$PetscScalar},  
     posRow::DMStagStencil, 
@@ -1530,7 +1530,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagMatGetValuesStencil end
 
-@for_petsc function  DMStagMatGetValuesStencil(
+@for_libpetsc function  DMStagMatGetValuesStencil(
     dm::DMStag,
     mat::AbstractMat{$PetscScalar}, 
     nRow,  
@@ -1628,7 +1628,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagMatSetValuesStencil end
 
-@for_petsc function  DMStagMatSetValuesStencil(
+@for_libpetsc function  DMStagMatSetValuesStencil(
     dm::DMStag, 
     mat::AbstractMat{$PetscScalar},  
     posRow::DMStagStencil, 
@@ -1688,7 +1688,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagMatSetValuesStencil end
 
-@for_petsc function  DMStagMatSetValuesStencil(
+@for_libpetsc function  DMStagMatSetValuesStencil(
     dm::DMStag, 
     mat::AbstractMat{$PetscScalar}, 
     nRow,  
@@ -1749,7 +1749,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMGetDimension end
 
-@for_petsc function DMGetDimension(dm::DMStag)
+@for_libpetsc function DMGetDimension(dm::DMStag)
     dim = Ref{$PetscInt}()
 
     @chk ccall((:DMGetDimension, $libpetsc), PetscErrorCode, (CDMStag,Ptr{$PetscInt}), dm, dim )
@@ -1789,7 +1789,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMLocalToGlobal end
 
-@for_petsc function DMLocalToGlobal(
+@for_libpetsc function DMLocalToGlobal(
     dm::DMStag,
     l::AbstractVec{$PetscScalar}, 
     mode::InsertMode,
@@ -1801,7 +1801,7 @@ function DMLocalToGlobal end
     return nothing
 end
 
-@for_petsc function DMLocalToGlobal(
+@for_libpetsc function DMLocalToGlobal(
     dm::DMStag,
     l::AbstractVec{$PetscScalar}, 
     mode::InsertMode,
@@ -1813,7 +1813,7 @@ end
     return nothing
 end
 
-@for_petsc function DMLocalToGlobal(
+@for_libpetsc function DMLocalToGlobal(
     dm::DMStag,
     l::CVec, 
     mode::InsertMode,
@@ -1837,7 +1837,7 @@ end
 end
 
 
-@for_petsc function DMGlobalToLocal(
+@for_libpetsc function DMGlobalToLocal(
     dm::DMStag,
     g::AbstractVec{$PetscScalar}, 
     mode::InsertMode,
@@ -1850,7 +1850,7 @@ end
 end
 
 
-@for_petsc function DMGlobalToLocal(
+@for_libpetsc function DMGlobalToLocal(
     dm::DMStag,
     g::CVec, 
     mode::InsertMode,
@@ -1893,7 +1893,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMGlobalToLocal end
 
-@for_petsc function DMGlobalToLocal(
+@for_libpetsc function DMGlobalToLocal(
     dm::DMStag,
     g::CVec, 
     mode::InsertMode,
@@ -1929,7 +1929,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMCreateMatrix end
 
-@for_petsc function DMCreateMatrix(dm::DMStag)
+@for_libpetsc function DMCreateMatrix(dm::DMStag)
     # Note: the matrix cannot be viewed yet, as it remains unassembled
     #  ideally, we should modify the viewer to take care of this case
 
@@ -1957,7 +1957,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetStencilType end
 
-@for_petsc function DMStagGetStencilType(dm::DMStag)
+@for_libpetsc function DMStagGetStencilType(dm::DMStag)
     stencilType =  Ref{DMStagStencilType}()
 
     @chk ccall((:DMStagGetStencilType, $libpetsc), PetscErrorCode, 
@@ -1984,7 +1984,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetIsFirstRank end
 
-@for_petsc function DMStagGetIsFirstRank(dm::DMStag)
+@for_libpetsc function DMStagGetIsFirstRank(dm::DMStag)
     fr_X = Ref{PetscBool}()
     fr_Y = Ref{PetscBool}()
     fr_Z = Ref{PetscBool}()
@@ -2015,7 +2015,7 @@ From [PETSc Manual])(https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpage
 """
 function DMStagGetIsLastRank end
 
-@for_petsc function DMStagGetIsLastRank(dm::DMStag)
+@for_libpetsc function DMStagGetIsLastRank(dm::DMStag)
     fr_X = Ref{PetscBool}()
     fr_Y = Ref{PetscBool}()
     fr_Z = Ref{PetscBool}()
@@ -2045,7 +2045,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMGetCoordinateDM end
 
-@for_petsc function DMGetCoordinateDM(dm::DMStag; kwargs...)
+@for_libpetsc function DMGetCoordinateDM(dm::DMStag; kwargs...)
 
     comm  = dm.comm
 
@@ -2074,7 +2074,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMGetCoordinatesLocal end
 
-@for_petsc function DMGetCoordinatesLocal(dm::DMStag; write_val=true, read_val=true)
+@for_libpetsc function DMGetCoordinatesLocal(dm::DMStag; write_val=true, read_val=true)
 
     v = VecSeq(C_NULL, dm.comm, [0.0])  # empty vector
         

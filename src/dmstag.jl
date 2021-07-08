@@ -63,7 +63,7 @@ Creates a 1D DMStag object.
 """
 function DMStagCreate1d end
 
-@for_petsc function DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dofVertex=1,dofCenter=1,stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX,stencilWidth=2, lx=C_NULL; kwargs...)
+@for_libpetsc function DMStagCreate1d(comm::MPI.Comm, bndx::DMBoundaryType, M, dofVertex=1,dofCenter=1,stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX,stencilWidth=2, lx=C_NULL; kwargs...)
 
     if isempty(lx); lx = C_NULL; end
     opts = Options{$PetscScalar}(kwargs...)

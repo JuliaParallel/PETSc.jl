@@ -2,10 +2,10 @@
 const CDMStag = Ptr{Cvoid}
 const CDMStagType = Cstring
 
-mutable struct DMStag{T} <: Factorization{T}
+mutable struct DMStag{T, PetscInt} <: Factorization{T}
     ptr::CDMStag
     comm::MPI.Comm
-    dim::Int64
+    dim::PetscInt
     opts::Options{T}
 end
 
@@ -36,7 +36,7 @@ Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
     convert(Ptr{CDMStag}, pointer_from_objref(obj))
 
 
-Base.eltype(::DMStag{T}) where {T} = T
+Base.eltype(::DMStag{T,PetscInt}) where {T,PetscInt} = T,PetscInt
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
 #Base.cconvert(::Type{DMStagStencil_c}, obj::Ref{DMStagStencil}) = obj
@@ -68,7 +68,7 @@ function DMStagCreate1d end
     if isempty(lx); lx = C_NULL; end
     opts = Options{$PetscScalar}(kwargs...)
 
-    dm  = DMStag{$PetscScalar}(C_NULL, comm, 1, opts)   # retrieve options
+    dm  = DMStag{$PetscScalar,$PetscInt}(C_NULL, comm, 1, opts)   # retrieve options
         
     @chk ccall((:DMStagCreate1d, $libpetsc), PetscErrorCode,
             (MPI.MPI_Comm, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt,  Ptr{$PetscInt}, Ptr{CDMStag}),
@@ -112,7 +112,7 @@ function DMStagCreate2d end
     if isempty(ly); ly = C_NULL; end
     opts = Options{$PetscScalar}(kwargs...)
         
-    dm = DMStag{$PetscScalar}(C_NULL, comm, 2, opts)
+    dm = DMStag{$PetscScalar,$PetscInt}(C_NULL, comm, 2, opts)
 
     @chk ccall((:DMStagCreate2d, $libpetsc), PetscErrorCode,
             (MPI.MPI_Comm, DMBoundaryType, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt, Ptr{$PetscInt},  Ptr{$PetscInt}, Ptr{CDMStag}),
@@ -159,7 +159,7 @@ function DMStagCreate3d end
     if isempty(lz); lz = C_NULL; end
     opts = Options{$PetscScalar}(kwargs...)
         
-    dm = DMStag{$PetscScalar}(C_NULL, comm, 3, opts)
+    dm = DMStag{$PetscScalar,$PetscInt}(C_NULL, comm, 3, opts)
 
     @chk ccall((:DMStagCreate3d, $libpetsc), PetscErrorCode,
             (MPI.MPI_Comm, DMBoundaryType, DMBoundaryType, DMBoundaryType, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, DMStagStencilType, $PetscInt, Ptr{$PetscInt},  Ptr{$PetscInt},  Ptr{$PetscInt}, Ptr{CDMStag}),
@@ -187,7 +187,7 @@ Sets up the data structures inside a DM object (automatically called in the DMSt
 """
 function DMSetUp end
 
-@for_libpetsc function DMSetUp(dm::DMStag{$PetscScalar})
+@for_libpetsc function DMSetUp(dm::DMStag{$PetscScalar,$PetscInt})
 
     @chk ccall((:DMSetUp, $libpetsc), PetscErrorCode, (CDMStag, ), dm )
 
@@ -203,7 +203,7 @@ Sets parameters in a DM from the options database (automatically called in the D
 """
 function setfromoptions! end
 
-@for_libpetsc function setfromoptions!(dm::DMStag{$PetscScalar})
+@for_libpetsc function setfromoptions!(dm::DMStag{$PetscScalar,$PetscInt})
 
     @chk ccall((:DMSetFromOptions, $libpetsc), PetscErrorCode, (CDMStag, ), dm )
 
@@ -226,7 +226,7 @@ Creates a compatible DMStag with different dof/stratum
 """
 function DMStagCreateCompatibleDMStag end
 
-@for_libpetsc function DMStagCreateCompatibleDMStag(dm::DMStag{$PetscScalar}, dofVertex=0, dofEdge=0, dofFace=0, dofElement=0; kwargs...)
+@for_libpetsc function DMStagCreateCompatibleDMStag(dm::DMStag{$PetscScalar,$PetscInt}, dofVertex=0, dofEdge=0, dofFace=0, dofElement=0; kwargs...)
 
     comm  = dm.comm
 
@@ -234,7 +234,7 @@ function DMStagCreateCompatibleDMStag end
 
     opts  = Options{$PetscScalar}(kwargs...)
 
-    dmnew = DMStag{$PetscScalar}(C_NULL, comm, dim, opts)
+    dmnew = DMStag{$PetscScalar,$PetscInt}(C_NULL, comm, dim, opts)
 
     @chk ccall((:DMStagCreateCompatibleDMStag, $libpetsc), PetscErrorCode, 
     (CDMStag, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{CDMStag}), 
@@ -268,7 +268,7 @@ Get number of DOF associated with each stratum of the grid.
 function DMStagGetDOF end
 
 
-@for_libpetsc function DMStagGetDOF(dm::DMStag{$PetscScalar})
+@for_libpetsc function DMStagGetDOF(dm::DMStag{$PetscScalar,$PetscInt})
 
     dof0 = Ref{$PetscInt}()
     dof1 = Ref{$PetscInt}()
@@ -300,7 +300,7 @@ Gets the global size of the DMStag object
 """
 function DMStagGetGlobalSizes end
 
-@for_libpetsc function DMStagGetGlobalSizes(dm::DMStag{$PetscScalar})
+@for_libpetsc function DMStagGetGlobalSizes(dm::DMStag{$PetscScalar,$PetscInt})
 
     M = Ref{$PetscInt}()
     N = Ref{$PetscInt}()
@@ -320,7 +320,7 @@ function DMStagGetGlobalSizes end
 end
 
 
-@for_libpetsc function Base.size(dm::DMStag{$PetscScalar})
+@for_libpetsc function Base.size(dm::DMStag{$PetscScalar,$PetscInt})
     size = DMStagGetGlobalSizes(dm)
     return size
 end
@@ -336,7 +336,7 @@ Gets the local size of the DMStag object
 """
 function DMStagGetLocalSizes end
 
-@for_libpetsc function DMStagGetLocalSizes(dm::DMStag{$PetscScalar})
+@for_libpetsc function DMStagGetLocalSizes(dm::DMStag{$PetscScalar,$PetscInt})
 
     M = Ref{$PetscInt}()
     N = Ref{$PetscInt}()
@@ -674,7 +674,7 @@ Destroys a DMSTAG object and releases the memory
 """
 function destroy end
 
-@for_libpetsc function destroy(dm::DMStag{$PetscScalar})
+@for_libpetsc function destroy(dm::DMStag{$PetscScalar,$PetscInt})
     finalized($petsclib) ||
         @chk ccall((:DMDestroy, $libpetsc), PetscErrorCode, (Ptr{CDMStag},), dm)
     return nothing
@@ -690,7 +690,7 @@ Gets the DM type name (as a string) from the DM.
 """
 function gettype end
 
-@for_libpetsc function gettype(dm::DMStag{$PetscScalar})
+@for_libpetsc function gettype(dm::DMStag{$PetscScalar,$PetscInt})
     t_r = Ref{CDMStagType}()
     @chk ccall((:DMGetType, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CDMStagType}), dm, t_r)
     return unsafe_string(t_r[])
@@ -706,7 +706,7 @@ Views a DMSTAG object.
 """
 function view end
 
-@for_libpetsc function view(dm::DMStag{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, dm.comm))
+@for_libpetsc function view(dm::DMStag{$PetscScalar,$PetscInt}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, dm.comm))
     @chk ccall((:DMView, $libpetsc), PetscErrorCode, 
                 (CDMStag, CPetscViewer),
             dm, viewer);
@@ -1345,7 +1345,7 @@ function DMGetCoordinateDM end
 
     opts  = Options{$PetscScalar}(kwargs...)
 
-    dmnew = DMStag{$PetscScalar}(C_NULL, comm, dim, opts)
+    dmnew = DMStag{$PetscScalar,$PetscInt}(C_NULL, comm, dim, opts)
 
     @chk ccall((:DMGetCoordinateDM, $libpetsc), PetscErrorCode,
     (CDMStag, Ptr{CDMStag}), 

@@ -26,7 +26,7 @@ Container for an abstract PETSc matrix
 
 See [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Mat/Mat.html)
 """
-struct Mat{T} <: AbstractMat{T}
+mutable struct Mat{T} <: AbstractMat{T}
     ptr::CMat
 end
 
@@ -263,6 +263,19 @@ function MatSetValuesStencil! end
         return val
     end
 
+    function Base.getindex(M::AbstractMat{$PetscScalar}, i::Integer, j::Integer)
+        val = Ref{$PetscScalar}()
+        @chk ccall((:MatGetValues, $libpetsc), PetscErrorCode,
+            (CMat,
+             $PetscInt, Ptr{$PetscInt},
+             $PetscInt, Ptr{$PetscInt},
+             Ptr{$PetscScalar}),
+            M,
+            1, Ref{$PetscInt}(i-1),
+            1, Ref{$PetscInt}(j-1),
+            val)
+        return val[]
+    end
 
     function assemblybegin(M::AbstractMat{$PetscScalar}, t::MatAssemblyType=MAT_FINAL_ASSEMBLY)
         @chk ccall((:MatAssemblyBegin, $libpetsc), PetscErrorCode, (CMat, MatAssemblyType), M, t)

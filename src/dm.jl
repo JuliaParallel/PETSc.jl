@@ -111,3 +111,27 @@ function view(::DM) end
     )
     return nothing
 end
+
+"""
+    DMCreateMatrix(dm::DM)
+
+Generates a matrix from the `dm` object.
+
+# External Links
+$(_doc_external("DM/DMCreateMatrix"))
+"""
+function DMCreateMatrix end
+
+@for_petsc function DMCreateMatrix(dm::DM{$PetscLib})
+    mat = Mat{$PetscScalar}(C_NULL)
+
+    @chk ccall(
+        (:DMCreateMatrix, $petsc_library),
+        PetscErrorCode,
+        (CDM, Ptr{CMat}),
+        dm,
+        mat,
+    )
+
+    return mat
+end

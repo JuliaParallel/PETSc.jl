@@ -9,7 +9,7 @@ This can be changed by defining `PETSc._mul!`.
 """
 mutable struct MatShell{T,A} <: AbstractMat{T}
     ptr::CMat
-    __comm__::MPI.Comm # Do not access directly use `getcomm(matshell)`
+    comm::MPI.Comm
     obj::A
 end
 

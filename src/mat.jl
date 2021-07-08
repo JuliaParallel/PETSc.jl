@@ -22,7 +22,7 @@ Memory allocation is handled by PETSc.
 """
 mutable struct MatSeqAIJ{T} <: AbstractMat{T}
     ptr::CMat
-    __comm__::MPI.Comm # Do not access directly use `getcomm(mat)`
+    comm::MPI.Comm
 end
 
 """
@@ -32,7 +32,7 @@ PETSc dense array. This wraps a Julia `Matrix{T}` object.
 """
 mutable struct MatSeqDense{T} <: AbstractMat{T}
     ptr::CMat
-    __comm__::MPI.Comm # Do not access directly use `getcomm(mat)`
+    comm::MPI.Comm
     array::Matrix{T}
 end
 
@@ -92,7 +92,7 @@ end
         @chk ccall((:MatAssemblyEnd, $libpetsc), PetscErrorCode, (CMat, MatAssemblyType), M, t)
         return nothing
     end
-    function view(mat::AbstractMat{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(mat)))
+    function view(mat::AbstractMat{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, mat.comm))
         @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
                     (CMat, CPetscViewer),
                 mat, viewer);

@@ -22,4 +22,6 @@ deploydocs(;
     target = "build",
     devbranch = "master",
     devurl = "dev",
+    forcepush=true,
+    push_preview = true
 )

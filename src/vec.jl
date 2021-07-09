@@ -29,7 +29,6 @@ $(_doc_external("Vec/VecCreateSeqWithArray"))
 """
 mutable struct VecSeq{T} <: AbstractVec{T}
     ptr::CVec
-    comm::MPI.Comm
     array::Vector{T}
 end
 
@@ -41,7 +40,7 @@ Base.parent(v::AbstractVec) = v.array
 @for_libpetsc begin
     function VecSeq(comm::MPI.Comm, X::Vector{$PetscScalar}; blocksize=1)
         @assert initialized($petsclib)
-        v = VecSeq(C_NULL, comm, X)
+        v = VecSeq(C_NULL, X)
         @chk ccall((:VecCreateSeqWithArray, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CVec}),
                 comm, blocksize, length(X), X, v)
@@ -84,7 +83,7 @@ Base.parent(v::AbstractVec) = v.array
         r_lo[]:(r_hi[]-$PetscInt(1))
     end
 
-    function view(vec::AbstractVec{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, vec.comm))
+    function view(vec::AbstractVec{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(vec)))
         @chk ccall((:VecView, $libpetsc), PetscErrorCode,
                     (CVec, CPetscViewer),
                 vec, viewer);

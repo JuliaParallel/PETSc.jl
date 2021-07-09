@@ -5,7 +5,6 @@ const CPCType = Cstring
 
 mutable struct PC{T}
     ptr::Ptr{Cvoid}
-    comm::MPI.Comm
 end
 
 Base.cconvert(::Type{CPC}, obj::PC) = obj.ptr
@@ -17,14 +16,14 @@ scalartype(::PC{T}) where {T} = T
 @for_libpetsc begin
 
     function PC{$PetscScalar}(comm::MPI.Comm)
-        pc = PC{$PetscScalar}(C_NULL, comm)
+        pc = PC{$PetscScalar}(C_NULL)
         @chk ccall((:PCCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CPC}), comm, pc)
         finalizer(destroy, pc)
         return pc
     end
 
     function PC(ksp::KSP{$PetscScalar})
-        pc = PC{$PetscScalar}(C_NULL, ksp.comm)
+        pc = PC{$PetscScalar}(C_NULL)
         @chk ccall((:KSPGetPC, $libpetsc), PetscErrorCode, (CKSP, Ptr{CPC}), ksp, pc)
         incref(pc) # need to manually increment the reference counter
         finalizer(destroy, pc)
@@ -53,7 +52,7 @@ scalartype(::PC{T}) where {T} = T
         return unsafe_string(t_r[])
     end
 
-    function view(pc::PC{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, pc.comm))
+    function view(pc::PC{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(pc)))
         @chk ccall((:PCView, $libpetsc), PetscErrorCode,
                     (CPC, CPetscViewer),
                 pc, viewer);

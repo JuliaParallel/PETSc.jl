@@ -2,8 +2,9 @@
 const CKSP = Ptr{Cvoid}
 const CKSPType = Cstring
 
+abstract type AbstractKSP{T, PetscLib} <: Factorization{T} end
 
-mutable struct KSP{T, PetscLib} <: Factorization{T}
+mutable struct KSP{T, PetscLib} <: AbstractKSP{T, PetscLib}
     ptr::CKSP
     comm::MPI.Comm
     # keep around so that they don't get gc'ed
@@ -144,7 +145,8 @@ Base.show(io::IO, ksp::KSP) = _show(io, ksp)
 
 Gets the current iteration number; if the `solve!` is complete, returns the number of iterations used.
 
-https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/KSP/KSPGetIterationNumber.html
+# External Links
+$(_doc_external("KSP/KSPGetIterationNumber"))
 """
 iters
 
@@ -154,7 +156,8 @@ iters
 
 Gets the last (approximate preconditioned) residual norm that has been computed.
 
-https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/KSP/KSPGetResidualNorm.html
+# External Links
+$(_doc_external("KSP/KSPGetResidualNorm"))
 """
 resnorm
 

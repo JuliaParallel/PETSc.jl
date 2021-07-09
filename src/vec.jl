@@ -25,7 +25,8 @@ This reuses the array `v` as storage, and so `v` should not be `resize!`-ed or o
 
 This should only be need to be called for more advanced uses, for most simple usecases, users should be able to pass `Vector`s directly and have the wrapping performed automatically
 
-https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Vec/VecCreateSeqWithArray.html
+# External Links
+$(_doc_external("Vec/VecCreateSeqWithArray"))
 """
 mutable struct VecSeq{T} <: AbstractVec{T}
     ptr::CVec
@@ -95,7 +96,7 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
         r_lo[]:(r_hi[]-$PetscInt(1))
     end
 
-    function view(vec::AbstractVec{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib))
+    function view(vec::AbstractVec{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, vec.comm))
         @chk ccall((:VecView, $libpetsc), PetscErrorCode,
                     (CVec, CPetscViewer),
                 vec.ptr, viewer);
@@ -187,7 +188,8 @@ The range of indices owned by this processor, assuming that the vectors are laid
 
 Note: unlike the C function, the range returned is inclusive (`idx_first:idx_last`)
 
-https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/Vec/VecGetOwnershipRange.html
+# External Links
+$(_doc_external("Vec/VecGetOwnershipRange"))
 """
 ownershiprange
 

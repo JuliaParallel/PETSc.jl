@@ -68,7 +68,8 @@ julia> opt["bad_key"]
 ERROR: KeyError: key "bad_key" not found
 ```
 
-Manual: [`PetscOptionsCreate`](https://petsc.org/release/docs/manualpages/Sys/PetscOptionsCreate.html)
+# External Links
+$(_doc_external("Sys/PetscOptionsCreate"))
 """
 mutable struct Options{T} <: AbstractOptions{T}
     ptr::CPetscOptions

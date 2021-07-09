@@ -5,7 +5,8 @@ const CPetscViewer = Ptr{Cvoid}
 
 Abstract type of PETSc viewer.
 
-Manual: [`PetscViewer`](https://petsc.org/release/docs/manualpages/Viewer/PetscViewer.html)
+# External Links
+$(_doc_external("Viewer/PetscViewer"))
 """
 abstract type AbstractViewer{PetscLib <: PetscLibType} end
 
@@ -19,7 +20,8 @@ Base.unsafe_convert(::Type{Ptr{CPetscViewer}}, obj::AbstractViewer) =
 
 Create an ASCII `PetscViewer` for the `comm`
 
-Manual: [`PETSC_VIEWER_STDOUT_`](https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_.html)
+# External Links
+$(_doc_external("Viewer/PETSC_VIEWER_STDOUT_"))
 """
 mutable struct ViewerStdout{PetscLib} <: AbstractViewer{PetscLib}
     ptr::CPetscViewer
@@ -28,7 +30,7 @@ end
 
 @for_petsc function ViewerStdout(
     ::$UnionPetscLib,
-    comm::MPI.Comm = MPI.COMM_SELF,
+    comm::MPI.Comm,
 )
     ptr = ccall(
         (:PETSC_VIEWER_STDOUT_, $petsc_library),

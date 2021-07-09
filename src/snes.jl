@@ -5,7 +5,6 @@ const CSNESType = Cstring
 
 mutable struct SNES{T, PetscLib}
     ptr::CSNES
-    comm::MPI.Comm
     opts::Options{PetscLib}
     fn!
     fn_vec
@@ -51,7 +50,7 @@ end
     function SNES{$PetscScalar}(comm::MPI.Comm; kwargs...)
         @assert initialized($petsclib)
         opts = Options($petsclib, kwargs...)
-        snes = SNES{$PetscScalar, $PetscLib}(C_NULL, comm, opts, nothing, nothing, nothing, nothing, nothing)
+        snes = SNES{$PetscScalar, $PetscLib}(C_NULL, opts, nothing, nothing, nothing, nothing, nothing)
         @chk ccall((:SNESCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CSNES}), comm, snes)
 
         with(snes.opts) do
@@ -104,7 +103,7 @@ end
         return unsafe_string(t_r[])
     end
 
-    function view(snes::SNES{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, snes.comm))
+    function view(snes::SNES{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(snes)))
         @chk ccall((:SNESView, $libpetsc), PetscErrorCode,
                     (CSNES, CPetscViewer),
                 snes, viewer);

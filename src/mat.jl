@@ -22,7 +22,6 @@ Memory allocation is handled by PETSc.
 """
 mutable struct MatSeqAIJ{T} <: AbstractMat{T}
     ptr::CMat
-    comm::MPI.Comm
 end
 
 """
@@ -32,7 +31,6 @@ PETSc dense array. This wraps a Julia `Matrix{T}` object.
 """
 mutable struct MatSeqDense{T} <: AbstractMat{T}
     ptr::CMat
-    comm::MPI.Comm
     array::Matrix{T}
 end
 
@@ -42,7 +40,7 @@ end
     function MatSeqAIJ{$PetscScalar}(m::Integer, n::Integer, nnz::Vector{$PetscInt})
         @assert initialized($petsclib)
         comm = MPI.COMM_SELF
-        mat = MatSeqAIJ{$PetscScalar}(C_NULL, comm)
+        mat = MatSeqAIJ{$PetscScalar}(C_NULL)
         @chk ccall((:MatCreateSeqAIJ, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
                 comm, m, n, 0, nnz, mat)
@@ -52,7 +50,7 @@ end
     function MatSeqDense(A::Matrix{$PetscScalar})
         @assert initialized($petsclib)
         comm = MPI.COMM_SELF
-        mat = MatSeqDense(C_NULL, comm, A)
+        mat = MatSeqDense(C_NULL, A)
         @chk ccall((:MatCreateSeqDense, $libpetsc), PetscErrorCode, 
             (MPI.MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CMat}),
             comm, size(A,1), size(A,2), A, mat)
@@ -92,7 +90,7 @@ end
         @chk ccall((:MatAssemblyEnd, $libpetsc), PetscErrorCode, (CMat, MatAssemblyType), M, t)
         return nothing
     end
-    function view(mat::AbstractMat{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, mat.comm))
+    function view(mat::AbstractMat{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(mat)))
         @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
                     (CMat, CPetscViewer),
                 mat, viewer);

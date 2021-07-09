@@ -221,6 +221,7 @@ end
         end
     end
 end
+
 @testset "DMDACreate3D" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
@@ -345,18 +346,18 @@ end
 end
 
 @testset "DMCreateMatrix" begin
+    comm = MPI.COMM_WORLD
+    mpirank = MPI.Comm_rank(comm)
+    mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
-        comm = MPI.Comm_dup(MPI.COMM_SELF)
         PetscScalar = PETSc.scalartype(petsclib)
         PetscInt = PETSc.inttype(petsclib)
         boundary_type = PETSc.DM_BOUNDARY_NONE
         dof_per_node = 1
         stencil_width = 1
         number_points = 10
-        points_per_proc = [PetscInt(number_points)]
-        global_size = points_per_proc[end]
-        gl = 0
-        gr = 0
+        points_per_proc = [PetscInt(10) for i in 1:mpisize]
+        global_size = sum(points_per_proc)
         # Set the points
         da = PETSc.DMDACreate1d(
             petsclib,
@@ -372,46 +373,38 @@ end
 
         # Build the 1-D Laplacian FD matrix
         Sten = PETSc.MatStencil{PetscInt}
-        col = Vector{Sten}(undef, 3)
-        row = Vector{Sten}(undef, 1)
-        val = Vector{PetscScalar}(undef, 3)
+        col = Vector{Sten}(undef, 2)
+        row = Vector{Sten}(undef, 2)
+        val = Vector{PetscScalar}(undef, 4)
         corners = PETSc.DMDAGetCorners(da)
 
-        for i in corners.lower[1]:corners.upper[1]
+        for i in corners.lower[1]:min(corners.upper[1], global_size-1)
             row[1] = Sten(i = i)
-            num = 1
-            fill!(val, 0)
-            if i > 1
-                val[num] = -1
-                col[num] = Sten(i = i - 1)
-                num += 1
-            end
-            if i < global_size[1]
-                val[num] = -1
-                col[num] = Sten(i = i + 1)
-                num += 1
-            end
-            val[num] = -sum(val)
-            col[num] = Sten(i = i)
+            row[2] = Sten(i = i+1)
+            col[1] = Sten(i = i)
+            col[2] = Sten(i = i+1)
+            val .= [-1, 1, 1, -1]
             PETSc.MatSetValuesStencil!(
                 mat,
                 row,
                 col,
                 val,
-                PETSc.INSERT_VALUES;
-                num_cols = num,
+                PETSc.ADD_VALUES
             )
         end
 
         PETSc.assemblybegin(mat)
         PETSc.assemblyend(mat)
 
-        # Check the the entries in the matrix are correct
-        @test mat[1, 1:2] == [1, -1]
-        for r in 2:(number_points - 1)
-            @test mat[r, (r - 1):(r + 1)] == [-1, 2, -1]
+        for i in corners.lower[1]:corners.upper[1]
+          if i == 1
+            @test mat[i, i:i+1] == [-1, 1]
+          elseif i == global_size
+            @test mat[i, i-1:i] == [1, -1]
+          else
+            @test mat[i, i-1:i+1] == [1, -2, 1]
+          end
         end
-        @test mat[end, (end - 1):end] == [-1, 1]
     end
 end
 

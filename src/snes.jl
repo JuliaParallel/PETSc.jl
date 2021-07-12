@@ -156,4 +156,7 @@ end
 
 end
 
-solve!(x::AbstractVector{T}, snes::SNES{T}) where {T} = parent(solve!(AbstractVec(x), snes))
+function solve!(x::AbstractVector{T}, snes::SNES{T}) where {T}
+    x_ = AbstractVec(x)
+    Base.GC.@preserve x_ parent(solve!(x_, snes))
+end

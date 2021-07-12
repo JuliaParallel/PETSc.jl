@@ -194,5 +194,8 @@ AbstractMat(A::SparseMatrixCSC) = MatSeqAIJ(A)
 
 const MatAT{T} = Union{AbstractMat{T}, Transpose{T, <:AbstractMat{T}}, Adjoint{T, <:AbstractMat{T}}}
 
-LinearAlgebra.mul!(y::AbstractVector{T}, M::MatAT{T}, x::AbstractVector{T}) where {T} =
-    parent(LinearAlgebra.mul!(AbstractVec(y), M, AbstractVec(x)))
+function LinearAlgebra.mul!(y::AbstractVector{T}, M::MatAT{T}, x::AbstractVector{T}) where {T}
+    y_ = AbstractVec(y)
+    x_ = AbstractVec(x)
+    Base.GC.@preserve y_ x_ parent(LinearAlgebra.mul!(y_, M, x_))
+end

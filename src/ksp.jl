@@ -115,7 +115,9 @@ const KSPAT{T, LT} = Union{KSP{T, LT}, Transpose{T, KSP{T, LT}}, Adjoint{T, KSP{
 
 LinearAlgebra.ldiv!(x::AbstractVec{T}, ksp::KSPAT{T, LT}, b::AbstractVec{T}) where {T, LT} = solve!(x, ksp, b)
 function LinearAlgebra.ldiv!(x::AbstractVector{T}, ksp::KSPAT{T, LT}, b::AbstractVector{T}) where {T, LT}
-    parent(solve!(AbstractVec(x), ksp, AbstractVec(b)))
+    b_ = AbstractVec(b)
+    x_ = AbstractVec(x)
+    Base.GC.@preserve x_ b_ parent(solve!(x_, ksp, b_))
 end
 Base.:\(ksp::KSPAT{T, LT}, b::AbstractVector{T}) where {T, LT} = ldiv!(similar(b), ksp, b)
 

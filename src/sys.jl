@@ -5,7 +5,7 @@ const UnionPetscTypes = Union{
     AbstractMat,
     AbstractKSP,
     AbstractViewer,
-    SNES,
+    AbstractSNES,
     PC,
     Options,
 }

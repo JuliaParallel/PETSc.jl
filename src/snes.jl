@@ -3,7 +3,9 @@ const CSNES = Ptr{Cvoid}
 const CSNESType = Cstring
 
 
-mutable struct SNES{T, PetscLib}
+abstract type AbstractSNES{T, PetscLib} end
+
+mutable struct SNES{T, PetscLib} <: AbstractSNES{T, PetscLib}
     ptr::CSNES
     opts::Options{PetscLib}
     fn!
@@ -13,9 +15,9 @@ mutable struct SNES{T, PetscLib}
     jac_P
 end
 
-scalartype(::SNES{T}) where {T} = T
+scalartype(::AbstractSNES{T}) where {T} = T
 
-Base.eltype(::SNES{T}) where {T} = T
+Base.eltype(::AbstractSNES{T}) where {T} = T
 
 # How to handle Jacobians?
 #  - https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/SNES/SNESComputeJacobianDefault.html
@@ -70,7 +72,7 @@ end
         return $PetscInt(0)
     end
 
-    function setfunction!(snes::SNES{$PetscScalar}, fn!, vec::AbstractVec{$PetscScalar})
+    function setfunction!(snes::AbstractSNES{$PetscScalar}, fn!, vec::AbstractVec{$PetscScalar})
         ctx = pointer_from_objref(snes)
         fptr = @cfunction(SNESFn{$PetscScalar}(), $PetscInt, (CSNES, CVec, CVec, Ptr{Cvoid}))
         with(snes.opts) do
@@ -83,23 +85,23 @@ end
         return nothing
     end
 
-    function destroy(snes::SNES{$PetscScalar})
+    function destroy(snes::AbstractSNES{$PetscScalar})
         finalized($petsclib) ||
             @chk ccall((:SNESDestroy, $libpetsc), PetscErrorCode, (Ptr{CSNES},), snes)
         return nothing
     end
 
-    function setfromoptions!(snes::SNES{$PetscScalar})
+    function setfromoptions!(snes::AbstractSNES{$PetscScalar})
         @chk ccall((:SNESSetFromOptions, $libpetsc), PetscErrorCode, (CSNES,), snes)
     end
 
-    function gettype(snes::SNES{$PetscScalar})
+    function gettype(snes::AbstractSNES{$PetscScalar})
         t_r = Ref{CSNESType}()
         @chk ccall((:SNESGetType, $libpetsc), PetscErrorCode, (CSNES, Ptr{CSNESType}), snes, t_r)
         return unsafe_string(t_r[])
     end
 
-    function view(snes::SNES{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(snes)))
+    function view(snes::AbstractSNES{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(snes)))
         @chk ccall((:SNESView, $libpetsc), PetscErrorCode,
                     (CSNES, CPetscViewer),
                 snes, viewer);
@@ -119,7 +121,7 @@ end
         return $PetscInt(0)
     end
 
-    function setjacobian!(snes::SNES{$PetscScalar}, update_jac!, A::AbstractMat{$PetscScalar}, P::AbstractMat{$PetscScalar}=A)
+    function setjacobian!(snes::AbstractSNES{$PetscScalar}, update_jac!, A::AbstractMat{$PetscScalar}, P::AbstractMat{$PetscScalar}=A)
         ctx = pointer_from_objref(snes)
         jacptr = @cfunction(SNESJac{$PetscScalar}(), $PetscInt, (CSNES, CVec, CMat, CMat, Ptr{Cvoid}))
 
@@ -135,14 +137,14 @@ end
     end
 
 
-    function solve!(x::AbstractVec{$PetscScalar}, snes::SNES{$PetscScalar}, b::AbstractVec{$PetscScalar})
+    function solve!(x::AbstractVec{$PetscScalar}, snes::AbstractSNES{$PetscScalar}, b::AbstractVec{$PetscScalar})
         with(snes.opts) do
             @chk ccall((:SNESSolve, $libpetsc), PetscErrorCode,
             (CSNES, CVec, CVec), snes, b, x)
         end
         return x
     end
-    function solve!(x::AbstractVec{$PetscScalar}, snes::SNES{$PetscScalar})
+    function solve!(x::AbstractVec{$PetscScalar}, snes::AbstractSNES{$PetscScalar})
         with(snes.opts) do
             @chk ccall((:SNESSolve, $libpetsc), PetscErrorCode,
             (CSNES, CVec, CVec), snes, C_NULL, x)
@@ -152,4 +154,4 @@ end
 
 end
 
-solve!(x::AbstractVector{T}, snes::SNES{T}) where {T} = parent(solve!(AbstractVec(x), snes))
+solve!(x::AbstractVector{T}, snes::AbstractSNES{T}) where {T} = parent(solve!(AbstractVec(x), snes))

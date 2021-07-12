@@ -3,11 +3,13 @@ const CPC = Ptr{Cvoid}
 const CPCType = Cstring
 
 
-mutable struct PC{T}
+abstract type AbstractPC{T} end
+
+mutable struct PC{T} <: AbstractPC{T}
     ptr::Ptr{Cvoid}
 end
 
-scalartype(::PC{T}) where {T} = T
+scalartype(::AbstractPC{T}) where {T} = T
 
 @for_libpetsc begin
 
@@ -26,29 +28,29 @@ scalartype(::PC{T}) where {T} = T
         return pc
     end
 
-    function destroy(pc::PC{$PetscScalar})
+    function destroy(pc::AbstractPC{$PetscScalar})
         finalized($petsclib) ||
         @chk ccall((:PCDestroy, $libpetsc), PetscErrorCode, (Ptr{CPC},), pc)
         return nothing
     end
 
-    function settype!(pc::PC{$PetscScalar}, pctype::String)
+    function settype!(pc::AbstractPC{$PetscScalar}, pctype::String)
         @chk ccall((:PCSetType, $libpetsc), PetscErrorCode, (CPC, Cstring), pc, pctype)
         return nothing
     end
 
-    function setpc!(ksp::KSP{$PetscScalar}, pc::PC{$PetscScalar})
+    function setpc!(ksp::KSP{$PetscScalar}, pc::AbstractPC{$PetscScalar})
         @chk ccall((:KSPSetPC, $libpetsc), PetscErrorCode, (CKSP, CPC), ksp, pc)
         return nothing
     end
 
-    function gettype(pc::PC{$PetscScalar})
+    function gettype(pc::AbstractPC{$PetscScalar})
         t_r = Ref{CPCType}()
         @chk ccall((:PCGetType, $libpetsc), PetscErrorCode, (CPC, Ptr{CPCType}),  pc, t_r)
         return unsafe_string(t_r[])
     end
 
-    function view(pc::PC{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(pc)))
+    function view(pc::AbstractPC{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(pc)))
         @chk ccall((:PCView, $libpetsc), PetscErrorCode,
                     (CPC, CPetscViewer),
                 pc, viewer);
@@ -58,4 +60,4 @@ scalartype(::PC{T}) where {T} = T
 end
 
 
-Base.show(io::IO, pc::PC) = _show(io, pc)
+Base.show(io::IO, pc::AbstractPC) = _show(io, pc)

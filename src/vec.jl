@@ -9,12 +9,6 @@ const CVec = Ptr{Cvoid}
 abstract type AbstractVec{T} <: AbstractVector{T} end
 scalartype(::AbstractVec{T}) where {T} = T
 
-# allows us to pass XXVec objects directly into CVec ccall signatures
-Base.cconvert(::Type{CVec}, obj::AbstractVec) = obj.ptr
-# allows us to pass XXVec objects directly into Ptr{CVec} ccall signatures
-Base.unsafe_convert(::Type{Ptr{CVec}}, obj::AbstractVec) =
-    convert(Ptr{CVec}, pointer_from_objref(obj))
-
 """
     VecSeq(v::Vector)
 

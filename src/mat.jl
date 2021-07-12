@@ -3,13 +3,6 @@ const CMat = Ptr{Cvoid}
 abstract type AbstractMat{T} <: AbstractMatrix{T} end
 scalartype(::AbstractMat{T}) where {T} = T
 
-# allows us to pass XXMat objects directly into CMat ccall signatures
-Base.cconvert(::Type{CMat}, obj::AbstractMat) = obj.ptr
-# allows us to pass XXMat objects directly into Ptr{CMat} ccall signatures
-Base.unsafe_convert(::Type{Ptr{CMat}}, obj::AbstractMat) =
-    convert(Ptr{CMat}, pointer_from_objref(obj))
-
-
 Base.eltype(::Type{A}) where {A<:AbstractMat{T}} where {T} = T
 Base.eltype(A::AbstractMat{T}) where {T} = T
 

@@ -10,11 +10,6 @@ $(_doc_external("Viewer/PetscViewer"))
 """
 abstract type AbstractViewer{PetscLib <: PetscLibType} end
 
-Base.cconvert(::Type{CPetscViewer}, obj::AbstractViewer) = obj.ptr
-
-Base.unsafe_convert(::Type{Ptr{CPetscViewer}}, obj::AbstractViewer) =
-    convert(Ptr{CPetscViewer}, pointer_from_objref(obj))
-
 """
     ViewerStdout(petsclib, comm = MPI.COMM_SELF)
 

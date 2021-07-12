@@ -74,9 +74,6 @@ $(_doc_external("Sys/PetscOptionsCreate"))
 mutable struct Options{T} <: AbstractOptions{T}
     ptr::CPetscOptions
 end
-Base.cconvert(::Type{CPetscOptions}, obj::Options) = obj.ptr
-Base.unsafe_convert(::Type{Ptr{CPetscOptions}}, obj::Options) =
-    convert(Ptr{CPetscOptions}, pointer_from_objref(obj))
 
 Options(petsclib; kwargs...) = Options(petsclib, kwargs...)
 function Options(petsclib, ps::Pair...)

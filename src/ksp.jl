@@ -14,12 +14,6 @@ end
 
 scalartype(::KSP{T}) where {T} = T
 
-# allows us to pass XXMat objects directly into CMat ccall signatures
-Base.cconvert(::Type{CKSP}, obj::KSP) = obj.ptr
-# allows us to pass XXMat objects directly into Ptr{CMat} ccall signatures
-Base.unsafe_convert(::Type{Ptr{CKSP}}, obj::KSP) =
-    convert(Ptr{CKSP}, pointer_from_objref(obj))
-
 Base.eltype(::KSP{T}) where {T} = T
 LinearAlgebra.transpose(ksp) = LinearAlgebra.Transpose(ksp)
 LinearAlgebra.adjoint(ksp) = LinearAlgebra.Adjoint(ksp)

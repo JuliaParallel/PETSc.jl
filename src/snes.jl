@@ -15,10 +15,6 @@ end
 
 scalartype(::SNES{T}) where {T} = T
 
-Base.cconvert(::Type{CSNES}, obj::SNES) = obj.ptr
-Base.unsafe_convert(::Type{Ptr{CSNES}}, obj::SNES) =
-    convert(Ptr{CSNES}, pointer_from_objref(obj))
-
 Base.eltype(::SNES{T}) where {T} = T
 
 # How to handle Jacobians?

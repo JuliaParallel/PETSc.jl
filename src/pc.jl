@@ -7,10 +7,6 @@ mutable struct PC{T}
     ptr::Ptr{Cvoid}
 end
 
-Base.cconvert(::Type{CPC}, obj::PC) = obj.ptr
-Base.unsafe_convert(::Type{Ptr{CPC}}, obj::PC) =
-    convert(Ptr{CPC}, pointer_from_objref(obj))
-
 scalartype(::PC{T}) where {T} = T
 
 @for_libpetsc begin

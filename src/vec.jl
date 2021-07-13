@@ -139,6 +139,51 @@ Base.parent(v::AbstractVec) = v.array
         end
         return v
     end
+
+    function Base.fill!(v::AbstractVec{$PetscScalar}, x)
+        @chk ccall((:VecSet, $libpetsc),
+                   PetscErrorCode,
+                   (CVec, $PetscScalar),
+                   v, $PetscScalar(x))
+        return v
+    end
+
+    function Base.setindex!(
+        v::AbstractVec{$PetscScalar},
+        val,
+        i::Integer,
+    )
+        @chk ccall(
+            (:VecSetValues, $libpetsc),
+            PetscErrorCode,
+            (CVec, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}, InsertMode),
+            v,
+            1,
+            Ref{$PetscInt}(i - 1),
+            Ref{$PetscScalar}(val),
+            INSERT_VALUES,
+        )
+
+        return val
+    end
+
+    function Base.getindex(
+        v::AbstractVec{$PetscScalar},
+        i::Integer,
+    )
+        vals = [$PetscScalar(0)]
+        @chk ccall(
+            (:VecGetValues, $libpetsc),
+            PetscErrorCode,
+            (CVec, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}),
+            v,
+            1,
+            Ref{$PetscInt}(i - 1),
+            vals,
+        )
+
+        return vals[1]
+    end
 end
 
 """
@@ -201,3 +246,85 @@ $(_doc_external("Vec/VecGetOwnershipRange"))
 """
 ownershiprange
 
+"""
+    setvalues!(
+        vector::AbstractVec{PetscScalar},
+        indices::Vector{PetscInt},
+        vals::Vector{PetscScalar},
+        mode::InsertMode;
+        num_vals = length(ind)
+    )
+
+Insert a set of values into the `vector`. Equivalent to one of the following
+depending on the `mode`
+```julia
+vector[indices[1:num_vals]] .= vals[1:num_vals]
+vector[indices[1:num_vals]] .+= vals[1:num_vals]
+```
+
+!!! warning
+    `indices` should use 0-based indexing!
+
+# External Links
+$(_doc_external("Vec/VecSetValues"))
+"""
+function setvalues!(::AbstractVec) end
+
+@for_libpetsc function setvalues!(
+    vec::AbstractVec{$PetscScalar},
+    inds::Vector{$PetscInt},
+    vals::Vector{$PetscScalar},
+    mode::InsertMode;
+    num_vals = length(inds)
+)
+    @chk ccall(
+         (:VecSetValues, $libpetsc),
+         PetscErrorCode,
+         (CVec, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}, InsertMode),
+         vec,
+         num_vals,
+         inds,
+         vals,
+         mode,
+    )
+    return vals
+end
+
+"""
+    getvalues!(
+        vector::AbstractVec{PetscScalar},
+        indices::Vector{PetscInt},
+        vals::Vector{PetscScalar};
+        num_vals = length(inds)
+    )
+
+Get a set of values from the `vector`. Equivalent to one of the following
+```julia
+vals[1:num_vals] .= vector[indices[1:num_vals]]
+```
+
+!!! warning
+    `indices` should use 0-based indexing!
+
+# External Links
+$(_doc_external("Vec/VecGetValues"))
+"""
+function getvalues!(::AbstractVec) end
+
+@for_libpetsc function getvalues!(
+    vec::AbstractVec{$PetscScalar},
+    inds::Vector{$PetscInt},
+    vals::Vector{$PetscScalar};
+    num_vals = length(inds)
+)
+    @chk ccall(
+         (:VecGetValues, $libpetsc),
+         PetscErrorCode,
+         (CVec, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}),
+         vec,
+         num_vals,
+         inds,
+         vals,
+    )
+    return vals
+end

@@ -135,3 +135,119 @@ function DMCreateMatrix end
 
     return mat
 end
+
+"""
+    DMCreateLocalVector(dm::DM)
+
+returns a local vector from the `dm` object.
+
+# External Links
+$(_doc_external("DM/DMCreateLocalVector"))
+"""
+function DMCreateLocalVector end
+
+@for_petsc function DMCreateLocalVector(dm::DM{$PetscLib})
+    vec = Vec{$PetscScalar}(C_NULL)
+
+    @chk ccall(
+        (:DMCreateLocalVector, $petsc_library),
+        PetscErrorCode,
+        (CDM, Ptr{CVec}),
+        dm,
+        vec,
+    )
+
+    return vec
+end
+
+"""
+    DMCreateGlobalVector(dm::DM; write::Bool = true, read::Bool = true)
+
+returns a global vector from the `dm` object.
+
+# External Links
+$(_doc_external("DM/DMCreateGlobalVector"))
+"""
+function DMCreateGlobalVector end
+
+@for_petsc function DMCreateGlobalVector(dm::DM{$PetscLib})
+    vec = Vec{$PetscScalar}(C_NULL)
+
+    @chk ccall(
+        (:DMCreateGlobalVector, $petsc_library),
+        PetscErrorCode,
+        (CDM, Ptr{CVec}),
+        dm,
+        vec,
+    )
+
+    return vec
+end
+
+"""
+    DMLocalToGlobal!(
+        dm::DM
+        local_vec::AbstractVec,
+        mode::InsertMode,
+        global_vec::AbstractVec,
+    )
+
+Updates `global_vec` from `local_vec` using the `dm` with insert `mode`
+
+# External Links
+$(_doc_external("DM/DMLocalToGlobal"))
+"""
+function DMLocalToGlobal! end
+
+@for_petsc function DMLocalToGlobal!(
+    dm::DM{$PetscLib},
+    local_vec::AbstractVec,
+    mode::InsertMode,
+    global_vec::AbstractVec,
+)
+    @chk ccall(
+        (:DMLocalToGlobal, $petsc_library),
+        PetscErrorCode,
+        (CDM, CVec, InsertMode, CVec),
+        dm,
+        local_vec,
+        mode,
+        global_vec,
+    )
+
+    return nothing
+end
+
+"""
+    DMGlobalToLocal!(
+        dm::DM
+        global_vec::AbstractVec,
+        mode::InsertMode,
+        local_vec::AbstractVec,
+    )
+
+Updates `local_vec` from `global_vec` using the `dm` with insert `mode`
+
+# External Links
+$(_doc_external("DM/DMGlobalToLocal"))
+"""
+function DMGlobalToLocal! end
+
+@for_petsc function DMGlobalToLocal!(
+    dm::DM{$PetscLib},
+    global_vec::AbstractVec,
+    mode::InsertMode,
+    local_vec::AbstractVec,
+)
+    @chk ccall(
+        (:DMGlobalToLocal, $petsc_library),
+        PetscErrorCode,
+        (CDM, CVec, InsertMode, CVec),
+        dm,
+        global_vec,
+        mode,
+        local_vec,
+    )
+
+    return nothing
+end

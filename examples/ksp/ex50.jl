@@ -1,3 +1,5 @@
+# INCLUDE IN MPI TEST
+
 using PETSc, MPI, Printf
 MPI.Initialized() || MPI.Init()
 PETSc.initialize()

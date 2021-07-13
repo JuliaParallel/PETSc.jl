@@ -114,6 +114,7 @@ PETSc.initialize()
         end
     end
 end
+
 @testset "DMDACreate2D" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
@@ -378,32 +379,91 @@ end
         val = Vector{PetscScalar}(undef, 4)
         corners = PETSc.DMDAGetCorners(da)
 
-        for i in corners.lower[1]:min(corners.upper[1], global_size-1)
+        for i in corners.lower[1]:min(corners.upper[1], global_size - 1)
             row[1] = Sten(i = i)
-            row[2] = Sten(i = i+1)
+            row[2] = Sten(i = i + 1)
             col[1] = Sten(i = i)
-            col[2] = Sten(i = i+1)
+            col[2] = Sten(i = i + 1)
             val .= [-1, 1, 1, -1]
-            PETSc.MatSetValuesStencil!(
-                mat,
-                row,
-                col,
-                val,
-                PETSc.ADD_VALUES
-            )
+            PETSc.MatSetValuesStencil!(mat, row, col, val, PETSc.ADD_VALUES)
         end
 
         PETSc.assemblybegin(mat)
         PETSc.assemblyend(mat)
 
         for i in corners.lower[1]:corners.upper[1]
-          if i == 1
-            @test mat[i, i:i+1] == [-1, 1]
-          elseif i == global_size
-            @test mat[i, i-1:i] == [1, -1]
-          else
-            @test mat[i, i-1:i+1] == [1, -2, 1]
-          end
+            if i == 1
+                @test mat[i, i:(i + 1)] == [-1, 1]
+            elseif i == global_size
+                @test mat[i, (i - 1):i] == [1, -1]
+            else
+                @test mat[i, (i - 1):(i + 1)] == [1, -2, 1]
+            end
+        end
+    end
+end
+
+@testset "DM Vectors" begin
+    comm = MPI.COMM_WORLD
+    mpirank = MPI.Comm_rank(comm)
+    mpisize = MPI.Comm_size(comm)
+    for petsclib in PETSc.petsclibs
+        PetscScalar = PETSc.scalartype(petsclib)
+        PetscInt = PETSc.inttype(petsclib)
+        boundary_type = PETSc.DM_BOUNDARY_NONE
+        dof_per_node = 1
+        stencil_width = 1
+        number_points = 10
+        points_per_proc = [PetscInt(10) for i in 1:mpisize]
+        global_size = sum(points_per_proc)
+        # Set the points
+        da = PETSc.DMDACreate1d(
+            petsclib,
+            comm,
+            boundary_type,
+            global_size,
+            dof_per_node,
+            stencil_width,
+            points_per_proc,
+        )
+        PETSc.DMSetUp!(da)
+
+        corners = PETSc.DMDAGetCorners(da)
+
+        # Create the local and global vectors
+        local_vec = PETSc.DMCreateLocalVector(da)
+        global_vec = PETSc.DMCreateGlobalVector(da)
+
+        # Fill everything with some data
+        fill!(local_vec, mpirank)
+        fill!(global_vec, mpisize)
+
+        # Add the local values to the global values
+        PETSc.DMLocalToGlobal!(da, local_vec, PETSc.ADD_VALUES, global_vec)
+
+        # end points added with neighbor due to ghost of size 1
+        bot_val = mpisize + mpirank + (mpirank == 0 ? 0 : mpirank - 1)
+        top_val = mpisize + mpirank + (mpirank == mpisize - 1 ? 0 : mpirank + 1)
+        @test global_vec[corners.lower[1]] == bot_val
+        @test global_vec[corners.upper[1]] == top_val
+
+        # Center is just self plus the global
+        for i in (corners.lower[1] + 1):(corners.upper[1] - 1)
+            @test global_vec[i] == mpisize + mpirank
+        end
+
+        # reset the local values with the global values
+        PETSc.DMGlobalToLocal!(da, global_vec, PETSc.INSERT_VALUES, local_vec)
+
+        # My first value and my ghost should be the bot/top values
+        @test local_vec[1] == bot_val
+        @test local_vec[2] == bot_val
+        @test local_vec[end - 1] == top_val
+        @test local_vec[end] == top_val
+
+        # interior is just self plus the global
+        for i in 3:(length(local_vec) - 2)
+            @test local_vec[i] == mpisize + mpirank
         end
     end
 end

@@ -173,7 +173,7 @@ struct Fn_KSPComputeOperators{T} end
             ksp,
             t_dm,
         )
-        dm = DM{$PetscLib}(t_dm[])
+        dm = PetscDM{$PetscLib}(t_dm[])
         return dm
     end
 

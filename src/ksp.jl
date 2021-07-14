@@ -164,7 +164,7 @@ struct Fn_KSPComputeOperators{T} end
         return nothing
     end
 
-    function KSPGetDM(ksp::AbstractKSP{$PetscScalar})
+    function DMDA(ksp::AbstractKSP{$PetscScalar})
         t_dm = Ref{CDM}()
         @chk ccall(
             (:KSPGetDM, $libpetsc),
@@ -173,7 +173,7 @@ struct Fn_KSPComputeOperators{T} end
             ksp,
             t_dm,
         )
-        dm = PetscDM{$PetscLib}(t_dm[])
+        dm = DMDA{$PetscLib}(t_dm[])
         return dm
     end
 

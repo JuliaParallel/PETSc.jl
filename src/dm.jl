@@ -1,12 +1,13 @@
 const CDM = Ptr{Cvoid}
 
 abstract type AbstractDM{PetscLib} end
-mutable struct DM{PetscLib} <: AbstractDM{PetscLib}
+
+# Mainly for DM we do not know the type of, namely ones returned by PETSc
+# functions such as `KSPGetDM`
+mutable struct PetscDM{PetscLib} <: AbstractDM{PetscLib}
     ptr::CDM
-    opts::Options{PetscLib}
-    DM{PetscLib}(ptr, opts = Options(PetscLib)) where {PetscLib} =
-        new{PetscLib}(ptr, opts)
 end
+
 
 """
     DMSetUp!(da::DM, opts=da.opts)
@@ -45,8 +46,8 @@ function DMSetFromOptions! end
 end
 
 @for_petsc begin
-    function destroy(da::DM{$PetscLib})
-        finalized($PetscScalar) || @chk ccall(
+    function destroy(da::AbstractDM{$PetscLib})
+        finalized($PetscLib) || @chk ccall(
             (:DMDestroy, $petsc_library),
             PetscErrorCode,
             (Ptr{CDM},),
@@ -58,7 +59,7 @@ end
 end
 
 """
-    DMGetDimension(dm::DM)
+    DMGetDimension(dm::AbstractDM)
 
 Return the topological dimension of the `dm`
 
@@ -67,7 +68,7 @@ $(_doc_external("DM/DMGetDimension"))
 """
 function DMGetDimension end
 
-@for_petsc function DMGetDimension(dm::DM{$PetscLib})
+@for_petsc function DMGetDimension(dm::AbstractDM{$PetscLib})
     dim = Ref{$PetscInt}()
 
     @chk ccall(
@@ -82,16 +83,16 @@ function DMGetDimension end
 end
 
 """
-    gettype(dm::DM)
+    gettype(dm::AbstractDM)
 
 Gets type name of the `dm`
 
 # External Links
 $(_doc_external("DM/DMGetType"))
 """
-function gettype(::DM) end
+function gettype(::AbstractDM) end
 
-@for_petsc function gettype(dm::DM{$PetscLib})
+@for_petsc function gettype(dm::AbstractDM{$PetscLib})
     t_r = Ref{Cstring}()
     @chk ccall(
         (:DMGetType, $petsc_library),
@@ -104,17 +105,17 @@ function gettype(::DM) end
 end
 
 """
-    view(dm::DM, viewer::Viewer=ViewerStdout(petsclib, getcomm(dm)))
+    view(dm::AbstractDM, viewer::Viewer=ViewerStdout(petsclib, getcomm(dm)))
 
 view a `dm` with `viewer`
 
 # External Links
 $(_doc_external("DM/DMView"))
 """
-function view(::DM) end
+function view(::AbstractDM) end
 
 @for_petsc function view(
-    dm::DM{$PetscLib},
+    dm::AbstractDM{$PetscLib},
     viewer::AbstractViewer{$PetscLib} = ViewerStdout($petsclib, getcomm(dm)),
 )
     @chk ccall(
@@ -128,7 +129,7 @@ function view(::DM) end
 end
 
 """
-    DMCreateMatrix(dm::DM)
+    DMCreateMatrix(dm::AbstractDM)
 
 Generates a matrix from the `dm` object.
 
@@ -137,7 +138,7 @@ $(_doc_external("DM/DMCreateMatrix"))
 """
 function DMCreateMatrix end
 
-@for_petsc function DMCreateMatrix(dm::DM{$PetscLib})
+@for_petsc function DMCreateMatrix(dm::AbstractDM{$PetscLib})
     mat = Mat{$PetscScalar}(C_NULL)
 
     @chk ccall(
@@ -152,7 +153,7 @@ function DMCreateMatrix end
 end
 
 """
-    DMCreateLocalVector(dm::DM)
+    DMCreateLocalVector(dm::AbstractDM)
 
 returns a local vector from the `dm` object.
 
@@ -161,7 +162,7 @@ $(_doc_external("DM/DMCreateLocalVector"))
 """
 function DMCreateLocalVector end
 
-@for_petsc function DMCreateLocalVector(dm::DM{$PetscLib})
+@for_petsc function DMCreateLocalVector(dm::AbstractDM{$PetscLib})
     vec = Vec{$PetscScalar}(C_NULL)
 
     @chk ccall(
@@ -185,7 +186,7 @@ $(_doc_external("DM/DMCreateGlobalVector"))
 """
 function DMCreateGlobalVector end
 
-@for_petsc function DMCreateGlobalVector(dm::DM{$PetscLib})
+@for_petsc function DMCreateGlobalVector(dm::AbstractDM{$PetscLib})
     vec = Vec{$PetscScalar}(C_NULL)
 
     @chk ccall(
@@ -201,7 +202,7 @@ end
 
 """
     DMLocalToGlobal!(
-        dm::DM
+        dm::AbstractDM
         local_vec::AbstractVec,
         mode::InsertMode,
         global_vec::AbstractVec,
@@ -215,7 +216,7 @@ $(_doc_external("DM/DMLocalToGlobal"))
 function DMLocalToGlobal! end
 
 @for_petsc function DMLocalToGlobal!(
-    dm::DM{$PetscLib},
+    dm::AbstractDM{$PetscLib},
     local_vec::AbstractVec,
     mode::InsertMode,
     global_vec::AbstractVec,
@@ -249,7 +250,7 @@ $(_doc_external("DM/DMGlobalToLocal"))
 function DMGlobalToLocal! end
 
 @for_petsc function DMGlobalToLocal!(
-    dm::DM{$PetscLib},
+    dm::AbstractDM{$PetscLib},
     global_vec::AbstractVec,
     mode::InsertMode,
     local_vec::AbstractVec,
@@ -269,20 +270,18 @@ end
 
 """
     DMGetCoordinateDM(
-        dm::DM
+        dm::AbstractDM
     )
 
-Create a `DM` for the coordinates of `dm`.
+Create a `coord_dm` for the coordinates of `dm`.
 
 # External Links
 $(_doc_external("DM/DMGetCoordinateDM"))
 """
 function DMGetCoordinateDM end
 
-@for_petsc function DMGetCoordinateDM(
-    dm::DM{$PetscLib},
-)
-    coord_dm = DM{$PetscLib}(C_NULL)
+@for_petsc function DMGetCoordinateDM(dm::AbstractDM{$PetscLib})
+    coord_dm = empty(dm)
     @chk ccall(
         (:DMGetCoordinateDM, $petsc_library),
         PetscErrorCode,
@@ -290,13 +289,15 @@ function DMGetCoordinateDM end
         dm,
         coord_dm,
     )
+    # If this fails then the `empty` call above is probably a bad idea!
+    @assert gettype(dm) == gettype(coord_dm)
 
     return coord_dm
 end
 
 """
     DMGetCoordinatesLocal(
-        dm::DM
+        dm::AbstractDM
     )
 
 Gets a local vector with the coordinates associated with `dm`.
@@ -306,9 +307,7 @@ $(_doc_external("DM/DMGetCoordinatesLocal"))
 """
 function DMGetCoordinatesLocal end
 
-@for_petsc function DMGetCoordinatesLocal(
-    dm::DM{$PetscLib},
-)
+@for_petsc function DMGetCoordinatesLocal(dm::AbstractDM{$PetscLib})
     coord_vec = Vec{$PetscScalar}(C_NULL)
     @chk ccall(
         (:DMGetCoordinatesLocal, $petsc_library),

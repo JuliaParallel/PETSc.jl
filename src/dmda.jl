@@ -448,3 +448,56 @@ function DMDAGetGhostCorners end
         size = local_size,
     )
 end
+
+"""
+    DMDASetUniformCoordinates!(
+        da::AbstractDM
+        xyzmin::NTuple{N, Real},
+        xyzmax::NTuple{N, Real},
+    ) where {N}
+
+Set uniform coordinates for the `da` using the lower and upper corners defined
+by the `NTuple`s `xyzmin` and `xyzmax`. If `N` is less than the dimension of the
+`da` then the value of the trailing coordinates is set to `0`.
+
+# External Links
+$(_doc_external("DMDA/DMDASetUniformCoordinates"))
+"""
+function DMDASetUniformCoordinates! end
+
+@for_petsc function DMDASetUniformCoordinates!(
+    da::AbstractDM{$PetscLib},
+    xyzmin::NTuple{N, Real},
+    xyzmax::NTuple{N, Real},
+) where {N}
+    xmin = $PetscReal(xyzmin[1])
+    xmax = $PetscReal(xyzmax[1])
+
+    ymin = (N > 1) ? $PetscReal(xyzmin[2]) : $PetscReal(0)
+    ymax = (N > 1) ? $PetscReal(xyzmax[2]) : $PetscReal(0)
+
+    zmin = (N > 2) ? $PetscReal(xyzmin[3]) : $PetscReal(0)
+    zmax = (N > 2) ? $PetscReal(xyzmax[3]) : $PetscReal(0)
+
+    @chk ccall(
+        (:DMDASetUniformCoordinates, $petsc_library),
+        PetscErrorCode,
+        (
+            CDM,
+            $PetscReal,
+            $PetscReal,
+            $PetscReal,
+            $PetscReal,
+            $PetscReal,
+            $PetscReal,
+        ),
+        da,
+        xmin,
+        xmax,
+        ymin,
+        ymax,
+        zmin,
+        zmax,
+    )
+    return nothing
+end

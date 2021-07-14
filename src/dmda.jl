@@ -25,7 +25,7 @@ end
 
 return an uninitialized `DMDA` struct.
 """
-Base.empty(::DMDA{PetscLib}) where PetscLib = DMDA{PetscLib}(C_NULL)
+Base.empty(::DMDA{PetscLib}) where {PetscLib} = DMDA{PetscLib}(C_NULL)
 
 """
     DMDACreate1d(
@@ -44,8 +44,8 @@ Base.empty(::DMDA{PetscLib}) where PetscLib = DMDA{PetscLib}(C_NULL)
 Creates a 1-D distributed array with the options specified using keyword
 arguments.
 
-If keyword argument `dmsetfromoptions == true` then `DMSetFromOptions!` called.
-If keyword argument `dmsetup == true` then `DMSetUp!` is called.
+If keyword argument `dmsetfromoptions == true` then `setfromoptions!` called.
+If keyword argument `dmsetup == true` then `setup!` is called.
 
 # External Links
 $(_doc_external("DMDA/DMDACreate1d"))
@@ -60,8 +60,8 @@ function DMDACreate1d end
     dof_per_node,
     stencil_width,
     points_per_proc::Union{Nothing, Vector{$PetscInt}};
-    dmsetfromoptions=true,
-    dmsetup=true,
+    dmsetfromoptions = true,
+    dmsetup = true,
     options...,
 )
     opts = Options($petsclib, options...)
@@ -94,8 +94,8 @@ function DMDACreate1d end
             da,
         )
     end
-    dmsetfromoptions && DMSetFromOptions!(da)
-    dmsetup && DMSetUp!(da)
+    dmsetfromoptions && setfromoptions!(da)
+    dmsetup && setup!(da)
     # We can only let the garbage collect finalize when we do not need to
     # worry about MPI (since garbage collection is asyncronous)
     if comm == MPI.COMM_SELF
@@ -127,8 +127,8 @@ end
 Creates a 2-D distributed array with the options specified using keyword
 arguments.
 
-If keyword argument `dmsetfromoptions == true` then `DMSetFromOptions!` called.
-If keyword argument `dmsetup == true` then `DMSetUp!` is called.
+If keyword argument `dmsetfromoptions == true` then `setfromoptions!` called.
+If keyword argument `dmsetup == true` then `setup!` is called.
 
 # External Links
 $(_doc_external("DMDA/DMDACreate2d"))
@@ -149,8 +149,8 @@ function DMDACreate2d end
     stencil_width,
     points_per_proc_x::Union{Nothing, Vector{$PetscInt}},
     points_per_proc_y::Union{Nothing, Vector{$PetscInt}};
-    dmsetfromoptions=true,
-    dmsetup=true,
+    dmsetfromoptions = true,
+    dmsetup = true,
     options...,
 )
     opts = Options($petsclib, options...)
@@ -201,8 +201,8 @@ function DMDACreate2d end
             da,
         )
     end
-    dmsetfromoptions && DMSetFromOptions!(da)
-    dmsetup && DMSetUp!(da)
+    dmsetfromoptions && setfromoptions!(da)
+    dmsetup && setup!(da)
     # We can only let the garbage collect finalize when we do not need to
     # worry about MPI (since garbage collection is asyncronous)
     if comm == MPI.COMM_SELF
@@ -212,7 +212,7 @@ function DMDACreate2d end
 end
 
 """
-    DMDACreate2d(
+    DMDACreate3d(
         ::PetscLib
         comm::MPI.Comm,
         boundary_type_x::DMBoundaryType,
@@ -239,8 +239,8 @@ end
 Creates a 3-D distributed array with the options specified using keyword
 arguments.
 
-If keyword argument `dmsetfromoptions == true` then `DMSetFromOptions!` called.
-If keyword argument `dmsetup == true` then `DMSetUp!` is called.
+If keyword argument `dmsetfromoptions == true` then `setfromoptions!` called.
+If keyword argument `dmsetup == true` then `setup!` is called.
 
 # External Links
 $(_doc_external("DMDA/DMDACreate3d"))
@@ -265,8 +265,8 @@ function DMDACreate3d end
     points_per_proc_x::Union{Nothing, Vector{$PetscInt}},
     points_per_proc_y::Union{Nothing, Vector{$PetscInt}},
     points_per_proc_z::Union{Nothing, Vector{$PetscInt}};
-    dmsetfromoptions=true,
-    dmsetup=true,
+    dmsetfromoptions = true,
+    dmsetup = true,
     options...,
 )
     opts = Options($petsclib, options...)
@@ -331,8 +331,8 @@ function DMDACreate3d end
             da,
         )
     end
-    dmsetfromoptions && DMSetFromOptions!(da)
-    dmsetup && DMSetUp!(da)
+    dmsetfromoptions && setfromoptions!(da)
+    dmsetup && setup!(da)
     # We can only let the garbage collect finalize when we do not need to
     # worry about MPI (since garbage collection is asyncronous)
     if comm == MPI.COMM_SELF
@@ -342,16 +342,16 @@ function DMDACreate3d end
 end
 
 """
-    DMDAGetInfo(da::AbstractDM)
+    getinfo(da::DMDA)
 
 Get the info associated with the distributed array `da`.
 
 # External Links
 $(_doc_external("DMDA/DMDAGetInfo"))
 """
-function DMDAGetInfo end
+getinfo(::DMDA)
 
-@for_petsc function DMDAGetInfo(da::AbstractDM{$PetscLib})
+@for_petsc function getinfo(da::DMDA{$PetscLib})
     dim = [$PetscInt(0)]
     glo_size = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
     procs_per_dim = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
@@ -405,7 +405,7 @@ function DMDAGetInfo end
 end
 
 """
-    DMDAGetCorners(da::AbstractDM)
+    getcorners(da::DMDA)
 
 Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 `lower` and `upper` corners as well as the `size`.
@@ -413,9 +413,9 @@ Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 # External Links
 $(_doc_external("DMDA/DMDAGetCorners"))
 """
-function DMDAGetCorners end
+function getcorners end
 
-@for_petsc function DMDAGetCorners(da::AbstractDM{$PetscLib})
+@for_petsc function getcorners(da::DMDA{$PetscLib})
     info = DMDALocalInfo{$PetscInt}()
     corners = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
     local_size = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
@@ -448,7 +448,7 @@ function DMDAGetCorners end
 end
 
 """
-    DMDAGetGhostCorners(da::AbstractDM)
+    getghostcorners(da::DMDA)
 
 Returns a `NamedTuple` with the global indices (including ghost points) of the
 `lower` and `upper` corners as well as the `size`.
@@ -456,9 +456,9 @@ Returns a `NamedTuple` with the global indices (including ghost points) of the
 # External Links
 $(_doc_external("DMDA/DMDAGetGhostCorners"))
 """
-function DMDAGetGhostCorners end
+function getghostcorners end
 
-@for_petsc function DMDAGetGhostCorners(da::AbstractDM{$PetscLib})
+@for_petsc function getghostcorners(da::DMDA{$PetscLib})
     info = DMDALocalInfo{$PetscInt}()
     corners = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
     local_size = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
@@ -491,8 +491,8 @@ function DMDAGetGhostCorners end
 end
 
 """
-    DMDASetUniformCoordinates!(
-        da::AbstractDM
+    setuniformcoordinates!(
+        da::DMDA
         xyzmin::NTuple{N, Real},
         xyzmax::NTuple{N, Real},
     ) where {N}
@@ -504,10 +504,10 @@ by the `NTuple`s `xyzmin` and `xyzmax`. If `N` is less than the dimension of the
 # External Links
 $(_doc_external("DMDA/DMDASetUniformCoordinates"))
 """
-function DMDASetUniformCoordinates! end
+function setuniformcoordinates! end
 
-@for_petsc function DMDASetUniformCoordinates!(
-    da::AbstractDM{$PetscLib},
+@for_petsc function setuniformcoordinates!(
+    da::DMDA{$PetscLib},
     xyzmin::NTuple{N, Real},
     xyzmax::NTuple{N, Real},
 ) where {N}

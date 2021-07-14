@@ -13,10 +13,10 @@ function rhs!(
     ksp::PETSc.AbstractKSP{PetscScalar},
     b_vec::PETSc.AbstractVec{PetscScalar},
 ) where {PetscScalar}
-    dm = PETSc.KSPGetDM(ksp)
+    dm = PETSc.DMDA(ksp)
     comm = PETSc.getcomm(ksp)
-    corners = PETSc.DMDAGetCorners(dm)
-    global_size = PETSc.DMDAGetInfo(dm).global_size[1:2]
+    corners = PETSc.getcorners(dm)
+    global_size = PETSc.getinfo(dm).global_size[1:2]
 
     # Grid spacing in each direction
     h = PetscScalar(1) ./ global_size
@@ -54,11 +54,11 @@ function jacobian!(
     J::PETSc.AbstractMat{PetscScalar},
     jac::PETSc.AbstractMat{PetscScalar},
 ) where {PetscScalar}
-    dm = PETSc.KSPGetDM(ksp)
-    corners = PETSc.DMDAGetCorners(dm)
+    dm = PETSc.DMDA(ksp)
+    corners = PETSc.getcorners(dm)
     PetscInt = eltype(corners.size)
 
-    global_size = PETSc.DMDAGetInfo(dm).global_size[1:2]
+    global_size = PETSc.getinfo(dm).global_size[1:2]
 
     # Grid spacing in each direction
     h = PetscScalar(1) ./ global_size

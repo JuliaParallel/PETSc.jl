@@ -43,11 +43,11 @@ PETSc.initialize()
                 )
 
                 @test PETSc.gettype(da) == "da"
-                @test PETSc.DMGetDimension(da) == 1
+                @test PETSc.getdimension(da) == 1
 
-                da_info = PETSc.DMDAGetInfo(da)
-                corners = PETSc.DMDAGetCorners(da)
-                ghost_corners = PETSc.DMDAGetGhostCorners(da)
+                da_info = PETSc.getinfo(da)
+                corners = PETSc.getcorners(da)
+                ghost_corners = PETSc.getghostcorners(da)
 
                 @test da_info.dim == 1
                 @test da_info.global_size == [global_size, 1, 1]
@@ -83,9 +83,9 @@ PETSc.initialize()
                     da_refine = da_refine,
                 )
                 @test PETSc.gettype(da) == "da"
-                @test PETSc.DMGetDimension(da) == 1
+                @test PETSc.getdimension(da) == 1
 
-                da_info = PETSc.DMDAGetInfo(da)
+                da_info = PETSc.getinfo(da)
 
                 @test da_info.dim == 1
                 if boundary_type == PETSc.DM_BOUNDARY_PERIODIC
@@ -156,9 +156,9 @@ end
                     nothing,
                 )
                 @test PETSc.gettype(da) == "da"
-                @test PETSc.DMGetDimension(da) == 2
+                @test PETSc.getdimension(da) == 2
 
-                da_info = PETSc.DMDAGetInfo(da)
+                da_info = PETSc.getinfo(da)
 
                 @test da_info.global_size == [global_size_x, global_size_y, 1]
                 @test da_info.dim == 2
@@ -187,9 +187,9 @@ end
                     da_refine = da_refine,
                 )
                 @test PETSc.gettype(da) == "da"
-                @test PETSc.DMGetDimension(da) == 2
+                @test PETSc.getdimension(da) == 2
 
-                da_info = PETSc.DMDAGetInfo(da)
+                da_info = PETSc.getinfo(da)
 
                 # Compute refined global size
                 ref_global_size_x =
@@ -268,9 +268,9 @@ end
                     nothing,
                 )
                 @test PETSc.gettype(da) == "da"
-                @test PETSc.DMGetDimension(da) == 3
+                @test PETSc.getdimension(da) == 3
 
-                da_info = PETSc.DMDAGetInfo(da)
+                da_info = PETSc.getinfo(da)
 
                 @test da_info.global_size ==
                       [global_size_x, global_size_y, global_size_z]
@@ -304,9 +304,9 @@ end
                     da_refine = da_refine,
                 )
                 @test PETSc.gettype(da) == "da"
-                @test PETSc.DMGetDimension(da) == 3
+                @test PETSc.getdimension(da) == 3
 
-                da_info = PETSc.DMDAGetInfo(da)
+                da_info = PETSc.getinfo(da)
 
                 # Compute refined global size
                 ref_global_size_x =
@@ -340,7 +340,7 @@ end
     end
 end
 
-@testset "DMCreateMatrix" begin
+@testset "creatematrix" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
@@ -363,14 +363,14 @@ end
             stencil_width,
             points_per_proc,
         )
-        mat = PETSc.DMCreateMatrix(da)
+        mat = PETSc.creatematrix(da)
 
         # Build the 1-D Laplacian FD matrix
         Sten = PETSc.MatStencil{PetscInt}
         col = Vector{Sten}(undef, 2)
         row = Vector{Sten}(undef, 2)
         val = Vector{PetscScalar}(undef, 4)
-        corners = PETSc.DMDAGetCorners(da)
+        corners = PETSc.getcorners(da)
 
         for i in corners.lower[1]:min(corners.upper[1], global_size - 1)
             row[1] = Sten(i = i)
@@ -420,18 +420,18 @@ end
             points_per_proc,
         )
 
-        corners = PETSc.DMDAGetCorners(da)
+        corners = PETSc.getcorners(da)
 
         # Create the local and global vectors
-        local_vec = PETSc.DMCreateLocalVector(da)
-        global_vec = PETSc.DMCreateGlobalVector(da)
+        local_vec = PETSc.createlocalvector(da)
+        global_vec = PETSc.createglobalvector(da)
 
         # Fill everything with some data
         fill!(local_vec, mpirank)
         fill!(global_vec, mpisize)
 
         # Add the local values to the global values
-        PETSc.DMLocalToGlobal!(da, local_vec, PETSc.ADD_VALUES, global_vec)
+        PETSc.update!(global_vec, local_vec, PETSc.ADD_VALUES)
 
         # end points added with neighbor due to ghost of size 1
         bot_val = mpisize + mpirank + (mpirank == 0 ? 0 : mpirank - 1)
@@ -445,7 +445,7 @@ end
         end
 
         # reset the local values with the global values
-        PETSc.DMGlobalToLocal!(da, global_vec, PETSc.INSERT_VALUES, local_vec)
+        PETSc.update!(local_vec, global_vec, PETSc.INSERT_VALUES)
 
         # My first value and my ghost should be the bot/top values
         @test local_vec[1] == bot_val
@@ -459,10 +459,11 @@ end
         end
 
         # Test DM Coordinates
-        coord_da = PETSc.DMGetCoordinateDM(da)
+        coord_da = PETSc.getcoordinateDM(da)
+        # Crank it up to 11!
         xmin, xmax = 0, 11
-        PETSc.DMDASetUniformCoordinates!(coord_da, (xmin,), (xmax,))
-        coord_vec = PETSc.DMGetCoordinatesLocal(coord_da)
+        PETSc.setuniformcoordinates!(coord_da, (xmin,), (xmax,))
+        coord_vec = PETSc.getcoordinateslocal(coord_da)
         Δx = (xmax - xmin) / (global_size - 1)
 
         # Figure out the values we should have in the coordinate vector

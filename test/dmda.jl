@@ -403,7 +403,7 @@ end
     end
 end
 
-@testset "DM Vectors" begin
+@testset "DM Vectors and Coordinates" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
@@ -464,6 +464,20 @@ end
         # interior is just self plus the global
         for i in 3:(length(local_vec) - 2)
             @test local_vec[i] == mpisize + mpirank
+        end
+
+        # Test DM Coordinates
+        coord_da = PETSc.DMGetCoordinateDM(da)
+        xmin, xmax = 0, 11
+        PETSc.DMDASetUniformCoordinates!(coord_da, (xmin,), (xmax,))
+        coord_vec = PETSc.DMGetCoordinatesLocal(coord_da)
+        Δx = (xmax - xmin) / (global_size - 1)
+
+        # Figure out the values we should have in the coordinate vector
+        ghost_lower = corners.lower[1] - (mpirank == 0 ? 0 : 1)
+        ghost_upper = corners.upper[1] + (mpirank == mpisize - 1 ? 0 : 1)
+        for (loc, glo) in enumerate(ghost_lower:ghost_upper)
+            @test coord_vec[loc] ≈ (glo - 1) * Δx
         end
     end
 end

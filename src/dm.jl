@@ -251,3 +251,57 @@ function DMGlobalToLocal! end
 
     return nothing
 end
+
+"""
+    DMGetCoordinateDM(
+        dm::DM
+    )
+
+Create a `DM` for the coordinates of `dm`.
+
+# External Links
+$(_doc_external("DM/DMGetCoordinateDM"))
+"""
+function DMGetCoordinateDM end
+
+@for_petsc function DMGetCoordinateDM(
+    dm::DM{$PetscLib},
+)
+    coord_dm = DM{$PetscLib}(C_NULL)
+    @chk ccall(
+        (:DMGetCoordinateDM, $petsc_library),
+        PetscErrorCode,
+        (CDM, Ptr{CDM}),
+        dm,
+        coord_dm,
+    )
+
+    return coord_dm
+end
+
+"""
+    DMGetCoordinatesLocal(
+        dm::DM
+    )
+
+Gets a local vector with the coordinates associated with `dm`.
+
+# External Links
+$(_doc_external("DM/DMGetCoordinatesLocal"))
+"""
+function DMGetCoordinatesLocal end
+
+@for_petsc function DMGetCoordinatesLocal(
+    dm::DM{$PetscLib},
+)
+    coord_vec = Vec{$PetscScalar}(C_NULL)
+    @chk ccall(
+        (:DMGetCoordinatesLocal, $petsc_library),
+        PetscErrorCode,
+        (CDM, Ptr{CVec}),
+        dm,
+        coord_vec,
+    )
+
+    return coord_vec
+end

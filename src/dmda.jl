@@ -13,6 +13,20 @@ mutable struct DMDALocalInfo{IT}
     DMDALocalInfo{IT}() where {IT} = new{IT}()
 end
 
+mutable struct DMDA{PetscLib} <: AbstractDM{PetscLib}
+    ptr::CDM
+    opts::Options{PetscLib}
+    DMDA{PetscLib}(ptr, opts = Options(PetscLib)) where {PetscLib} =
+        new{PetscLib}(ptr, opts)
+end
+
+"""
+    empty(da::DMDA)
+
+return an uninitialized `DMDA` struct.
+"""
+Base.empty(::DMDA{PetscLib}) where PetscLib = DMDA{PetscLib}(C_NULL)
+
 """
     DMDACreate1d(
         ::PetscLib
@@ -57,7 +71,7 @@ function DMDACreate1d end
         @assert length(points_per_proc) == MPI.Comm_size(comm)
         points_per_proc
     end
-    da = DM{$PetscLib}(C_NULL, opts)
+    da = DMDA{$PetscLib}(C_NULL, opts)
     with(da.opts) do
         @chk ccall(
             (:DMDACreate1d, $petsc_library),
@@ -152,7 +166,7 @@ function DMDACreate2d end
         @assert length(points_per_proc_y) == procs_y
         points_per_proc_y
     end
-    da = DM{$PetscLib}(C_NULL, opts)
+    da = DMDA{$PetscLib}(C_NULL, opts)
     with(da.opts) do
         @chk ccall(
             (:DMDACreate2d, $petsc_library),
@@ -274,7 +288,7 @@ function DMDACreate3d end
         @assert length(points_per_proc_z) == procs_z
         points_per_proc_z
     end
-    da = DM{$PetscLib}(C_NULL, opts)
+    da = DMDA{$PetscLib}(C_NULL, opts)
     with(da.opts) do
         @chk ccall(
             (:DMDACreate3d, $petsc_library),

@@ -9,23 +9,38 @@ mutable struct DM{PetscLib} <: AbstractDM{PetscLib}
 end
 
 """
-    DMSetUp!(da::DM)
+    DMSetUp!(da::DM, opts=da.opts)
 
 # External Links
 $(_doc_external("DM/DMSetUp"))
 """
 function DMSetUp! end
 
-@for_petsc function DMSetUp!(da::DM{$PetscLib})
-    with(da.opts) do
+@for_petsc function DMSetUp!(da::AbstractDM{$PetscLib}, opts::Options = da.opts)
+    with(opts) do
+        @chk ccall((:DMSetUp, $petsc_library), PetscErrorCode, (CDM,), da)
+    end
+end
+
+"""
+    DMSetFromOptions!(da::DM, opts=da.opts)
+
+# External Links
+$(_doc_external("DM/DMSetFromOptions"))
+"""
+function DMSetFromOptions! end
+
+@for_petsc function DMSetFromOptions!(
+    da::AbstractDM{$PetscLib},
+    opts::Options = da.opts,
+)
+    with(opts) do
         @chk ccall(
             (:DMSetFromOptions, $petsc_library),
             PetscErrorCode,
             (CDM,),
             da,
         )
-
-        @chk ccall((:DMSetUp, $petsc_library), PetscErrorCode, (CDM,), da)
     end
 end
 

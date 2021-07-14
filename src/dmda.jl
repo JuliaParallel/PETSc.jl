@@ -22,11 +22,16 @@ end
         dof_per_node,
         stencil_width,
         points_per_proc::Union{Nothing, Vector{PetscInt}};
+        dmsetfromoptions=true,
+        dmsetup=true,
         options...
     )
 
 Creates a 1-D distributed array with the options specified using keyword
 arguments.
+
+If keyword argument `dmsetfromoptions == true` then `DMSetFromOptions!` called.
+If keyword argument `dmsetup == true` then `DMSetUp!` is called.
 
 # External Links
 $(_doc_external("DMDA/DMDACreate1d"))
@@ -41,6 +46,8 @@ function DMDACreate1d end
     dof_per_node,
     stencil_width,
     points_per_proc::Union{Nothing, Vector{$PetscInt}};
+    dmsetfromoptions=true,
+    dmsetup=true,
     options...,
 )
     opts = Options($petsclib, options...)
@@ -73,6 +80,8 @@ function DMDACreate1d end
             da,
         )
     end
+    dmsetfromoptions && DMSetFromOptions!(da)
+    dmsetup && DMSetUp!(da)
     # We can only let the garbage collect finalize when we do not need to
     # worry about MPI (since garbage collection is asyncronous)
     if comm == MPI.COMM_SELF
@@ -96,11 +105,16 @@ end
         stencil_width,
         points_per_proc_x::Union{Nothing, Vector{PetscInt}};
         points_per_proc_y::Union{Nothing, Vector{PetscInt}};
+        dmsetfromoptions=true,
+        dmsetup=true,
         options...
     )
 
 Creates a 2-D distributed array with the options specified using keyword
 arguments.
+
+If keyword argument `dmsetfromoptions == true` then `DMSetFromOptions!` called.
+If keyword argument `dmsetup == true` then `DMSetUp!` is called.
 
 # External Links
 $(_doc_external("DMDA/DMDACreate2d"))
@@ -121,6 +135,8 @@ function DMDACreate2d end
     stencil_width,
     points_per_proc_x::Union{Nothing, Vector{$PetscInt}},
     points_per_proc_y::Union{Nothing, Vector{$PetscInt}};
+    dmsetfromoptions=true,
+    dmsetup=true,
     options...,
 )
     opts = Options($petsclib, options...)
@@ -171,6 +187,8 @@ function DMDACreate2d end
             da,
         )
     end
+    dmsetfromoptions && DMSetFromOptions!(da)
+    dmsetup && DMSetUp!(da)
     # We can only let the garbage collect finalize when we do not need to
     # worry about MPI (since garbage collection is asyncronous)
     if comm == MPI.COMM_SELF
@@ -199,11 +217,16 @@ end
         points_per_proc_x::Union{Nothing, Vector{PetscInt}};
         points_per_proc_y::Union{Nothing, Vector{PetscInt}};
         points_per_proc_z::Union{Nothing, Vector{PetscInt}};
+        dmsetfromoptions=true,
+        dmsetup=true,
         options...
     )
 
 Creates a 3-D distributed array with the options specified using keyword
 arguments.
+
+If keyword argument `dmsetfromoptions == true` then `DMSetFromOptions!` called.
+If keyword argument `dmsetup == true` then `DMSetUp!` is called.
 
 # External Links
 $(_doc_external("DMDA/DMDACreate3d"))
@@ -228,6 +251,8 @@ function DMDACreate3d end
     points_per_proc_x::Union{Nothing, Vector{$PetscInt}},
     points_per_proc_y::Union{Nothing, Vector{$PetscInt}},
     points_per_proc_z::Union{Nothing, Vector{$PetscInt}};
+    dmsetfromoptions=true,
+    dmsetup=true,
     options...,
 )
     opts = Options($petsclib, options...)
@@ -292,6 +317,8 @@ function DMDACreate3d end
             da,
         )
     end
+    dmsetfromoptions && DMSetFromOptions!(da)
+    dmsetup && DMSetUp!(da)
     # We can only let the garbage collect finalize when we do not need to
     # worry about MPI (since garbage collection is asyncronous)
     if comm == MPI.COMM_SELF

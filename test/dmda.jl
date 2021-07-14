@@ -41,7 +41,6 @@ PETSc.initialize()
                     stencil_width,
                     points_per_proc,
                 )
-                PETSc.DMSetUp!(da)
 
                 @test PETSc.gettype(da) == "da"
                 @test PETSc.DMGetDimension(da) == 1
@@ -83,7 +82,6 @@ PETSc.initialize()
                     nothing;
                     da_refine = da_refine,
                 )
-                PETSc.DMSetUp!(da)
                 @test PETSc.gettype(da) == "da"
                 @test PETSc.DMGetDimension(da) == 1
 
@@ -157,7 +155,6 @@ end
                     nothing,
                     nothing,
                 )
-                PETSc.DMSetUp!(da)
                 @test PETSc.gettype(da) == "da"
                 @test PETSc.DMGetDimension(da) == 2
 
@@ -189,7 +186,6 @@ end
                     nothing;
                     da_refine = da_refine,
                 )
-                PETSc.DMSetUp!(da)
                 @test PETSc.gettype(da) == "da"
                 @test PETSc.DMGetDimension(da) == 2
 
@@ -271,7 +267,6 @@ end
                     nothing,
                     nothing,
                 )
-                PETSc.DMSetUp!(da)
                 @test PETSc.gettype(da) == "da"
                 @test PETSc.DMGetDimension(da) == 3
 
@@ -308,7 +303,6 @@ end
                     nothing;
                     da_refine = da_refine,
                 )
-                PETSc.DMSetUp!(da)
                 @test PETSc.gettype(da) == "da"
                 @test PETSc.DMGetDimension(da) == 3
 
@@ -369,7 +363,6 @@ end
             stencil_width,
             points_per_proc,
         )
-        PETSc.DMSetUp!(da)
         mat = PETSc.DMCreateMatrix(da)
 
         # Build the 1-D Laplacian FD matrix
@@ -426,7 +419,6 @@ end
             stencil_width,
             points_per_proc,
         )
-        PETSc.DMSetUp!(da)
 
         corners = PETSc.DMDAGetCorners(da)
 

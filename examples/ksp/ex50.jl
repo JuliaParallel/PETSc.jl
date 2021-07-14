@@ -163,8 +163,6 @@ function main(petsclib; comm = MPI.COMM_WORLD, options...)
         opts...,
     )
 
-    PETSc.DMSetUp!(da)
-
     ksp = PETSc.KSP(da; opts...)
 
     PETSc.KSPSetComputeRHS!(ksp, rhs!)

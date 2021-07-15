@@ -35,7 +35,7 @@ for target in JLLEnvs.JLL_ENV_TRIPLES[1:1]
 
     args = get_default_args(target)
     push!(args, "-I$petsc_include_dir")
-    push!(args, "-I$mpich_include_dir")
+    push!(args, "-isystem$mpich_include_dir")
 
     header_files = [petsc_h]
 

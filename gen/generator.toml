@@ -5,6 +5,22 @@ use_julia_native_enum_type = true
 use_deterministic_symbol = true
 auto_mutability = true
 
+printer_blacklist = [
+    # Remove the stuff we get from MPI.jl
+    "MPI_Datatype",
+    "MPI_Comm",
+    "MPI_Group",
+    "MPI_Win",
+    "ADIOI_FileD",
+    "MPI_File",
+    "MPI_Op",
+    "MPI_Request",
+    "MPI_Info",
+    "MPI_Aint",
+    "MPI_Offset",
+    "MPI_Status",
+]
+
 [codegen]
 use_ccall_macro = true
 

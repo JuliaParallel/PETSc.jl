@@ -1,0 +1,13 @@
+[general]
+library_name = "libpetsc"
+
+use_julia_native_enum_type = true
+use_deterministic_symbol = true
+auto_mutability = true
+
+[codegen]
+use_ccall_macro = true
+
+[codegen.macro]
+macro_mode = "basic"
+

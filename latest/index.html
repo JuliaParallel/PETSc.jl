@@ -168,16 +168,19 @@ KSP(pc::PC; kws...)
 <p>Create an empty, unsized vector.</p>
 <p><a id='PETSc.Vec' href='#PETSc.Vec'>#</a>
 <strong><code>PETSc.Vec</code></strong> &mdash; <em>Type</em>.</p>
+<p>Construct a vector suitable for multiplying by the given matrix</p>
+<p><a id='PETSc.Vec' href='#PETSc.Vec'>#</a>
+<strong><code>PETSc.Vec</code></strong> &mdash; <em>Type</em>.</p>
 <p>Construct a high level Vec object from a low level C.Vec.   The data field is used to protect things from GC.   A finalizer is attached to deallocate the memory of the underlying C.Vec, unless    <code>first_instance</code> is set to true.   <code>assembled</code> indicates when values are set via <code>setindex!</code> and is reset by    <code>AssemblyEnd</code>    <code>verify_assembled</code> when true, calls to <code>isassembled</code> verify all processes    have <code>assembled</code> = true, when false, only the local assembly state is     checked.  This essentially makes the user responsible for assembling    the vector before passing it into functions that will use it (like KSP   solves, etc.).</p>
 <p><a id='PETSc.Vec' href='#PETSc.Vec'>#</a>
 <strong><code>PETSc.Vec</code></strong> &mdash; <em>Type</em>.</p>
 <p>Create a vector, specifying the (global) length len or the local length   mlocal.  Even if the blocksize is &gt; 1, teh lengths are always number of    elements in the vector, not number of block elements.  Thus   len % blocksize must = 0.</p>
-<p><a id='PETSc.Vec' href='#PETSc.Vec'>#</a>
-<strong><code>PETSc.Vec</code></strong> &mdash; <em>Type</em>.</p>
-<p>Construct a vector suitable for multiplying by the given matrix</p>
 <p><a id='PETSc.Vec-Tuple{Array{T<:Union{Complex{Float64},Float32,Float64},1}}' href='#PETSc.Vec-Tuple{Array{T<:Union{Complex{Float64},Float32,Float64},1}}'>#</a>
 <strong><code>PETSc.Vec</code></strong> &mdash; <em>Method</em>.</p>
 <p>Make a PETSc vector out of an array.  If used in parallel, the array becomes   the local part of the PETSc vector</p>
+<p><a id='PETSc.AssemblyBegin' href='#PETSc.AssemblyBegin'>#</a>
+<strong><code>PETSc.AssemblyBegin</code></strong> &mdash; <em>Function</em>.</p>
+<p>Generic fallback for AbstractArray, no-op</p>
 <p><a id='PETSc.AssemblyBegin' href='#PETSc.AssemblyBegin'>#</a>
 <strong><code>PETSc.AssemblyBegin</code></strong> &mdash; <em>Function</em>.</p>
 <p>Start assembling the matrix (the implmentations probably post    non-blocking sends and received)</p>
@@ -186,8 +189,8 @@ KSP(pc::PC; kws...)
 <p>Start communication to assemble stashed values into the vector</p>
 <p>The MatAssemblyType is not needed for vectors, but is provided for    compatability with the Mat case.</p>
 <p>Unless vec.verify_assembled == false, users must <em>never</em> call the    C functions VecAssemblyBegin, VecAssemblyEnd and VecSetValues, they must   call AssemblyBegin, AssemblyEnd, and setindex!.</p>
-<p><a id='PETSc.AssemblyBegin' href='#PETSc.AssemblyBegin'>#</a>
-<strong><code>PETSc.AssemblyBegin</code></strong> &mdash; <em>Function</em>.</p>
+<p><a id='PETSc.AssemblyEnd' href='#PETSc.AssemblyEnd'>#</a>
+<strong><code>PETSc.AssemblyEnd</code></strong> &mdash; <em>Function</em>.</p>
 <p>Generic fallback for AbstractArray, no-op</p>
 <p><a id='PETSc.AssemblyEnd' href='#PETSc.AssemblyEnd'>#</a>
 <strong><code>PETSc.AssemblyEnd</code></strong> &mdash; <em>Function</em>.</p>
@@ -195,9 +198,6 @@ KSP(pc::PC; kws...)
 <p><a id='PETSc.AssemblyEnd' href='#PETSc.AssemblyEnd'>#</a>
 <strong><code>PETSc.AssemblyEnd</code></strong> &mdash; <em>Function</em>.</p>
 <p>Finish communication for assembling the vector</p>
-<p><a id='PETSc.AssemblyEnd' href='#PETSc.AssemblyEnd'>#</a>
-<strong><code>PETSc.AssemblyEnd</code></strong> &mdash; <em>Function</em>.</p>
-<p>Generic fallback for AbstractArray, no-op</p>
 <p><a id='PETSc.LocalVector_readonly-Tuple{PETSc.Vec{T}}' href='#PETSc.LocalVector_readonly-Tuple{PETSc.Vec{T}}'>#</a>
 <strong><code>PETSc.LocalVector_readonly</code></strong> &mdash; <em>Method</em>.</p>
 <p>Get the LocalVector_readonly of a vector.  Users must call restore when    finished with the object.</p>
@@ -475,5 +475,5 @@ KSP(pc::PC; kws...)
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-08-07 20:59:17.077455
+Build Date UTC : 2016-10-10 04:00:26.189626
 -->

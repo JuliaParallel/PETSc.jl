@@ -2,7 +2,6 @@
 const CPC = Ptr{Cvoid}
 const CPCType = Cstring
 
-
 abstract type AbstractPC{T} end
 
 mutable struct PC{T} <: AbstractPC{T}

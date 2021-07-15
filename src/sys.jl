@@ -7,6 +7,7 @@ const UnionPetscTypes = Union{
     AbstractViewer,
     AbstractSNES,
     AbstractPC,
+    AbstractDM,
     Options,
 }
 
@@ -19,17 +20,18 @@ function Base.unsafe_convert(::Type{Ptr{CPetscObject}}, obj::UnionPetscTypes)
     convert(Ptr{CPetscObject}, pointer_from_objref(obj))
 end
 
-@for_libpetsc begin
+@for_petsc begin
     function getcomm(
         obj::Union{
             AbstractKSP{$PetscScalar},
             AbstractMat{$PetscScalar},
             AbstractVec{$PetscScalar},
+            AbstractDM{$PetscLib},
         },
     )
         comm = MPI.Comm()
         @chk ccall(
-            (:PetscObjectGetComm, $libpetsc),
+            (:PetscObjectGetComm, $petsc_library),
             PetscErrorCode,
             (CPetscObject, Ptr{MPI.MPI_Comm}),
             obj,
@@ -42,7 +44,7 @@ end
         #=
         # Call the PetscCommDuplicate to increase reference count
         @chk ccall(
-            (:PetscCommDuplicate, $libpetsc),
+            (:PetscCommDuplicate, $petsc_library),
             PetscErrorCode,
             (MPI.MPI_Comm, Ptr{MPI.MPI_Comm}, Ptr{Cvoid}),
             comm,
@@ -60,13 +62,13 @@ end
 
 #=
 #XXX Not sure why this doesn't work
-@for_libpetsc begin
+@for_petsc begin
     function PetscCommDestroy(
         comm::MPI.Comm
     )
         @show comm.val
         @chk ccall(
-            (:PetscCommDestroy, $libpetsc),
+            (:PetscCommDestroy, $petsc_library),
             PetscErrorCode,
             (Ptr{MPI.MPI_Comm},),
             comm,

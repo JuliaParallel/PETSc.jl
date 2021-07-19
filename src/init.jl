@@ -6,16 +6,10 @@ Check if `petsclib` is initialized
 # External Links
 $(_doc_external("Sys/PetscInitialized"))
 """
-function Initialized end
-@for_petsc function initialized(::$UnionPetscLib)
-    r_flag = Ref{PetscBool}()
-    @chk ccall(
-        (:PetscInitialized, $petsc_library),
-        PetscErrorCode,
-        (Ptr{PetscBool},),
-        r_flag,
-    )
-    return r_flag[] == PETSC_TRUE
+function initialized(petsclib)
+    r_flag = Ref{LibPETSc.PetscBool}()
+    LibPETSc.PetscInitialized(petsclib, r_flag)
+    return r_flag[] == LibPETSc.PETSC_TRUE
 end
 
 """
@@ -34,26 +28,20 @@ Additionally:
 # External Links
 $(_doc_external("Sys/PetscInitializeNoArguments"))
 """
-function Initialize end
-
 function initialize()
     map(initialize, petsclibs)
     return nothing
 end
 
-@for_petsc function initialize(::$UnionPetscLib)
-    if !initialized($petsclib)
+function initialize(petsclib)
+    if !initialized(petsclib)
         MPI.Initialized() || MPI.Init()
-        @chk ccall(
-            (:PetscInitializeNoArguments, $petsc_library),
-            PetscErrorCode,
-            (),
-        )
+        LibPETSc.PetscInitializeNoArguments(petsclib)
 
         # disable signal handler
-        @chk ccall((:PetscPopSignalHandler, $petsc_library), PetscErrorCode, ())
+        LibPETSc.PetscPopSignalHandler(petsclib)
 
-        atexit(() -> finalize($petsclib))
+        atexit(() -> finalize(petsclib))
     end
     return nothing
 end
@@ -67,16 +55,14 @@ will be finalized.
 # External Links
 $(_doc_external("Sys/PetscFinalize"))
 """
-function finalize end
-
 function finalize()
     map(finalize, petsclibs)
     return nothing
 end
 
-@for_petsc function finalize(::$UnionPetscLib)
-    if !finalized($petsclib)
-        @chk ccall((:PetscFinalize, $petsc_library), PetscErrorCode, ())
+function finalize(petsclib)
+    if !finalized(petsclib)
+        LibPETSc.PetscFinalize(petsclib)
     end
     return nothing
 end
@@ -89,14 +75,8 @@ Check if `petsclib` is finalized
 # External Links
 $(_doc_external("Sys/PetscFinalized"))
 """
-function finalized end
-@for_petsc function finalized(::$UnionPetscLib)
-    r_flag = Ref{PetscBool}()
-    @chk ccall(
-        (:PetscFinalized, $petsc_library),
-        PetscErrorCode,
-        (Ptr{PetscBool},),
-        r_flag,
-    )
-    return r_flag[] == PETSC_TRUE
+function finalized(petsclib)
+    r_flag = Ref{LibPETSc.PetscBool}()
+    LibPETSc.PetscFinalized(petsclib, r_flag)
+    return r_flag[] == LibPETSc.PETSC_TRUE
 end

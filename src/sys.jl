@@ -1,6 +1,6 @@
 const CPetscObject = Ptr{Cvoid}
 
-const UnionPetscTypes = Union{Options, AbstractVec}
+const UnionPetscTypes = Union{Options, AbstractVec, AbstractMat}
 
 # allows us to pass PETSc_XXX objects directly into CXXX ccall signatures
 Base.cconvert(::Type{CPetscObject}, obj::UnionPetscTypes) = obj
@@ -12,7 +12,7 @@ function Base.unsafe_convert(::Type{Ptr{CPetscObject}}, obj::UnionPetscTypes)
 end
 
 function getcomm(
-        obj::Union{AbstractVec{PetscLib}},
+    obj::Union{AbstractVec{PetscLib}, AbstractMat{PetscLib}},
 ) where {PetscLib}
     comm = MPI.Comm()
     LibPETSc.PetscObjectGetComm(PetscLib, obj, comm)

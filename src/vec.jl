@@ -52,7 +52,7 @@ function VecSeq(
     petsclib::PetscLib,
     array::Vector{PetscScalar};
     blocksize = 1,
-) where {PetscLib, PetscScalar}
+) where {PetscLib <: PetscLibType, PetscScalar}
     comm = MPI.COMM_SELF
     @assert initialized(petsclib)
     @assert PetscScalar == petsclib.PetscScalar

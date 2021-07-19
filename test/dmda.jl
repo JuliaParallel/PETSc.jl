@@ -1,13 +1,13 @@
 using Test
 using PETSc, MPI
 MPI.Initialized() || MPI.Init()
-PETSc.initialize()
 
 @testset "DMDACreate1D" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
         PetscScalar = PETSc.scalartype(petsclib)
         PetscInt = PETSc.inttype(petsclib)
         # Loop over all boundary types and try to use them
@@ -108,8 +108,10 @@ PETSc.initialize()
                 # TODO: Need a better test?
                 ksp = PETSc.KSP(da)
                 @test PETSc.gettype(ksp) == "gmres"
+
             end
         end
+        PETSc.finalize(petsclib)
     end
 end
 
@@ -122,6 +124,7 @@ end
     for petsclib in PETSc.petsclibs
         PetscScalar = PETSc.scalartype(petsclib)
         PetscInt = PETSc.inttype(petsclib)
+        PETSc.initialize(petsclib)
         # Loop over all boundary types and stencil types
         for stencil_type in instances(PETSc.DMDAStencilType),
             boundary_type_y in instances(PETSc.DMBoundaryType),
@@ -216,6 +219,7 @@ end
                 @test PETSc.gettype(ksp) == "gmres"
             end
         end
+        PETSc.finalize(petsclib)
     end
 end
 
@@ -229,6 +233,7 @@ end
     for petsclib in PETSc.petsclibs
         PetscScalar = PETSc.scalartype(petsclib)
         PetscInt = PETSc.inttype(petsclib)
+        PETSc.initialize(petsclib)
         # Loop over all boundary types and stencil types
         for stencil_type in instances(PETSc.DMDAStencilType),
             boundary_type_z in instances(PETSc.DMBoundaryType),
@@ -337,6 +342,7 @@ end
                 @test PETSc.gettype(ksp) == "gmres"
             end
         end
+        PETSc.finalize(petsclib)
     end
 end
 
@@ -345,6 +351,7 @@ end
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
         PetscScalar = PETSc.scalartype(petsclib)
         PetscInt = PETSc.inttype(petsclib)
         boundary_type = PETSc.DM_BOUNDARY_NONE
@@ -393,6 +400,7 @@ end
                 @test mat[i, (i - 1):(i + 1)] == [1, -2, 1]
             end
         end
+        PETSc.finalize(petsclib)
     end
 end
 
@@ -401,6 +409,7 @@ end
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
         PetscScalar = PETSc.scalartype(petsclib)
         PetscInt = PETSc.inttype(petsclib)
         boundary_type = PETSc.DM_BOUNDARY_NONE
@@ -472,6 +481,7 @@ end
         for (loc, glo) in enumerate(ghost_lower:ghost_upper)
             @test coord_vec[loc] ≈ (glo - 1) * Δx
         end
+        PETSc.finalize(petsclib)
     end
 end
 

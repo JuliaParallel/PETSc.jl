@@ -1,4 +1,3 @@
-using Libdl
 """
     PetscLibType{PetscScalar, PetscInt}(petsc_library)
 
@@ -13,6 +12,19 @@ end
 function PetscLibType{ST, IT}(petsc_library) where {ST, IT}
     LT = typeof(petsc_library)
     return PetscLibType{ST, IT, LT}(petsc_library)
+end
+const UnionPetscLibType = Union{PetscLibType, Type{PetscLibType}}
+
+function Base.getproperty(petsclib::PetscLibType, name::Symbol)
+  if name == :PetscScalar
+    return scalartype(petsclib)
+  elseif name == :PetscReal
+    return realtype(petsclib)
+  elseif name == :PetscInt
+    return inttype(petsclib)
+  else
+    return getfield(petsclib, name)
+  end
 end
 
 """
@@ -96,33 +108,13 @@ macro for_petsc(expr)
             PetscScalar = scalartype(petsclib)
             PetscReal = realtype(petsclib)
             PetscInt = inttype(petsclib)
+            PetscComplex = complex(PetscReal)
 
             @eval esc($expr)
         end
     end
 end
 
-# TODO: Remove this macro once we have switch over to @for_petsc macro
-macro for_libpetsc(expr)
-    quote
-        for petsclib in petsclibs
-            # String for the library
-            libpetsc = petsclib.petsc_library
-
-            # types we dispatch on
-            PetscLib = typeof(petsclib)
-            UnionPetscLib = Union{PetscLib, Type{PetscLib}}
-
-            PetscScalar = scalartype(petsclib)
-            PetscReal = realtype(petsclib)
-            PetscInt = inttype(petsclib)
-
-            @eval esc($expr)
-        end
-    end
+@for_petsc begin
+  getlib(::Type{$PetscLib}) = $petsclib
 end
-
-# TODO: These should be removed!
-const scalar_types = map(x -> scalartype(x), petsclibs)
-@assert length(scalar_types) == length(unique(scalar_types))
-@for_libpetsc inttype(::Type{$PetscScalar}) = $PetscInt

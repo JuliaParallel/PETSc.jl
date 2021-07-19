@@ -1,10 +1,11 @@
 module PETSc
-
-using MPI, LinearAlgebra, SparseArrays
-
+using MPI
 MPI.Initialized() || MPI.Init()
 
-using Libdl
+include("LibPETSc.jl")
+using .LibPETSc
+
+using MPI, LinearAlgebra, SparseArrays
 
 function _petsc_link(fname)
     """
@@ -18,22 +19,19 @@ function _doc_external(fname)
     """
 end
 
-include("const.jl")
-include("startup.jl")
-include("lib.jl")
 include("init.jl")
-include("ref.jl")
-include("viewer.jl")
-include("options.jl")
-include("vec.jl")
-include("mat.jl")
-include("matshell.jl")
-include("dm.jl")
-include("dmda.jl")
-include("dmstag.jl")
-include("ksp.jl")
-include("pc.jl")
-include("snes.jl")
-include("sys.jl")
+# include("ref.jl")
+# include("viewer.jl")
+# include("options.jl")
+# include("vec.jl")
+# include("mat.jl")
+# include("matshell.jl")
+# include("dm.jl")
+# include("dmda.jl")
+# include("dmstag.jl")
+# include("ksp.jl")
+# include("pc.jl")
+# include("snes.jl")
+# include("sys.jl")
 
 end

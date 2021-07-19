@@ -172,5 +172,7 @@ function main(petsclib; comm = MPI.COMM_WORLD, options...)
 end
 
 for petsclib in PETSc.petsclibs
-    main(petsclib)
+    if PETSc.scalartype(petsclib) <: Real
+        main(petsclib)
+    end
 end

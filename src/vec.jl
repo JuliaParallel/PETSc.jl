@@ -18,12 +18,10 @@ Base.eltype(
 ) where {PetscLib, PetscScalar} = PetscScalar
 Base.size(v::AbstractVec) = (length(v),)
 
-# allows us to pass XXVec objects directly into CVec ccall signatures
-Base.cconvert(::Type{CVec}, obj::AbstractVec) = obj.ptr
-# allows us to pass XXVec objects directly into Ptr{CVec} ccall signatures
-Base.unsafe_convert(::Type{Ptr{CVec}}, obj::AbstractVec) =
-    convert(Ptr{CVec}, pointer_from_objref(obj))
-
+mutable struct WrapVec{PetscLib, PetscScalar} <:
+               AbstractVec{PetscLib, PetscScalar}
+    ptr::CVec
+end
 
 """
     VecSeq(petsclib, v::Vector)

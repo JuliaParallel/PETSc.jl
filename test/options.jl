@@ -1,7 +1,7 @@
 using Test
 using PETSc
 
-@testset "options tests" begin
+@testset "options" begin
     kw_opts = (
         ksp_monitor = nothing,
         ksp_view = true,
@@ -84,7 +84,7 @@ using PETSc
     end
 end
 
-@testset "parse_options tests" begin
+@testset "parse_options" begin
     @test begin
         julia = joinpath(Sys.BINDIR, Base.julia_exename())
         run(`$(julia) --project -e "using PETSc

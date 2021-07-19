@@ -14,6 +14,8 @@ The PETSc global options database.
 """
 struct GlobalOptions{PetscLib} <: AbstractOptions{PetscLib} end
 Base.cconvert(::Type{CPetscOptions}, obj::GlobalOptions) = C_NULL
+GlobalOptions(::PetscLib) where PetscLib = GlobalOptions{PetscLib}()
+
 
 """
     Options{PetscLib <: PetscLibType}(kw -> arg, ...)
@@ -75,6 +77,15 @@ mutable struct Options{T} <: AbstractOptions{T}
     ptr::CPetscOptions
 end
 
+function Options(petsclib::PetscLibType)
+  @assert initialized(petsclib)
+  PetscLib = typeof(petsclib)
+  opts = Options{PetscLib}(C_NULL)
+  LibPETSc.PetscOptionsCreate(petsclib, opts)
+  finalizer(x->LibPETSc.PetscOptionsDestroy(PetscLib, x), opts)
+  return opts
+end
+
 Options(petsclib; kwargs...) = Options(petsclib, kwargs...)
 function Options(petsclib, ps::Pair...)
     opts = Options(petsclib)
@@ -84,70 +95,35 @@ function Options(petsclib, ps::Pair...)
     return opts
 end
 
-@for_petsc function Options(::$UnionPetscLib)
-    opts = Options{$PetscLib}(C_NULL)
-    @assert initialized($PetscLib)
-    @chk ccall(
-        (:PetscOptionsCreate, $petsc_library),
-        PetscErrorCode,
-        (Ptr{CPetscOptions},),
-        opts,
-    )
-    finalizer(finalize, opts)
-    return opts
-end
-
-@for_petsc function finalize(opts::Options{$PetscLib})
-    finalized($PetscLib) || @chk ccall(
-        (:PetscOptionsDestroy, $petsc_library),
-        PetscErrorCode,
-        (Ptr{CPetscOptions},),
-        opts,
-    )
+function Base.push!(
+    ::GlobalOptions{PetscLib},
+    opts::Options{PetscLib},
+) where PetscLib
+    LibPETSc.PetscOptionsPush(PetscLib, opts)
     return nothing
 end
 
-@for_petsc function Base.push!(
-    ::GlobalOptions{$PetscLib},
-    opts::Options{$PetscLib},
-)
-    @chk ccall(
-        (:PetscOptionsPush, $petsc_library),
-        PetscErrorCode,
-        (CPetscOptions,),
-        opts,
-    )
+function Base.pop!(::GlobalOptions{PetscLib}) where PetscLib
+    LibPETSc.PetscOptionsPop(PetscLib)
     return nothing
 end
 
-@for_petsc function Base.pop!(::GlobalOptions{$PetscLib})
-    @chk ccall((:PetscOptionsPop, $petsc_library), PetscErrorCode, ())
-    return nothing
-end
-
-@for_petsc function Base.setindex!(opts::AbstractOptions{$PetscLib}, val, key)
+function Base.setindex!(opts::AbstractOptions{PetscLib}, val, key) where PetscLib
     val === true && (val = nothing)
     val === false && (return val)
 
-    @chk ccall(
-        (:PetscOptionsSetValue, $petsc_library),
-        PetscErrorCode,
-        (CPetscOptions, Cstring, Cstring),
-        opts,
-        string('-', key),
-        isnothing(val) ? C_NULL : string(val),
-    )
+    LibPETSc.PetscOptionsSetValue(PetscLib,
+                                  opts,
+                                  string('-', key),
+                                  isnothing(val) ? C_NULL : string(val))
 
     return val
 end
 
-@for_petsc function Base.getindex(opts::AbstractOptions{$PetscLib}, key)
+function Base.getindex(opts::AbstractOptions{PetscLib}, key) where PetscLib
     val = Vector{UInt8}(undef, 256)
     set_ref = Ref{PetscBool}()
-    @chk ccall(
-        (:PetscOptionsGetString, $petsc_library),
-        PetscErrorCode,
-        (CPetscOptions, Cstring, Cstring, Ptr{UInt8}, Csize_t, Ptr{PetscBool}),
+    LibPETSc.PetscOptionsGetString(PetscLib,
         opts,
         C_NULL,
         string('-', key),
@@ -160,21 +136,13 @@ end
     return val
 end
 
-@for_petsc function view(
-    opts::AbstractOptions{$PetscLib},
-    viewer::AbstractViewer{$PetscLib} = ViewerStdout($PetscLib, MPI.COMM_SELF),
-)
-    @chk ccall(
-        (:PetscOptionsView, $petsc_library),
-        PetscErrorCode,
-        (CPetscOptions, CPetscViewer),
-        opts,
-        viewer,
-    )
+function view(
+    opts::AbstractOptions{PetscLib},
+    viewer = LibPETSc.PETSC_VIEWER_STDOUT_(PetscLib, MPI.COMM_SELF)
+) where PetscLib
+    LibPETSc.PetscOptionsView(PetscLib, opts, viewer)
     return nothing
 end
-
-@for_petsc GlobalOptions(::$UnionPetscLib) = GlobalOptions{$PetscLib}()
 
 Base.show(io::IO, opts::AbstractOptions) = _show(io, opts)
 
@@ -184,8 +152,8 @@ Base.show(io::IO, opts::AbstractOptions) = _show(io, opts)
 Call `f()` with the [`Options`](@ref) `opts` set temporarily (in addition to any
 global options).
 """
-function with(f, opts::Options{T}) where {T}
-    global_opts = GlobalOptions{T}()
+function with(f, opts::Options{PetscLib}) where {PetscLib}
+    global_opts = GlobalOptions{PetscLib}()
     push!(global_opts, opts)
     try
         f()

@@ -1,3 +1,27 @@
+# ideally we would capture the output directly, but this looks difficult
+# easiest option is to redirect stdout
+# based on suggestion from https://github.com/JuliaLang/julia/issues/32567
+function _show(io::IO, obj)
+    old_stdout = stdout
+    try
+        rd, = redirect_stdout()
+        view(obj)
+
+        # Since not all MPI ranks are guaranteed to print we put in a newline
+        # that we remove with the write since readavailable will hang if there
+        # is no data in the stream
+        println()
+
+        Libc.flush_cstdio()
+        flush(stdout)
+        write(io, readavailable(rd)[1:(end - 1)])
+    finally
+        redirect_stdout(old_stdout)
+    end
+    return nothing
+end
+
+#=
 const CPetscViewer = Ptr{Cvoid}
 
 """
@@ -67,29 +91,7 @@ function with(f, viewer::AbstractViewer, format::PetscViewerFormat)
         pop!(viewer)
     end
 end
-
-# ideally we would capture the output directly, but this looks difficult
-# easiest option is to redirect stdout
-# based on suggestion from https://github.com/JuliaLang/julia/issues/32567
-function _show(io::IO, obj)
-    old_stdout = stdout
-    try
-        rd, = redirect_stdout()
-        view(obj)
-
-        # Since not all MPI ranks are guaranteed to print we put in a newline
-        # that we remove with the write since readavailable will hang if there
-        # is no data in the stream
-        println()
-
-        Libc.flush_cstdio()
-        flush(stdout)
-        write(io, readavailable(rd)[1:end-1])
-    finally
-        redirect_stdout(old_stdout)
-    end
-    return nothing
-end
+=#
 
 #=
 # PETSc_jll isn't built with X support

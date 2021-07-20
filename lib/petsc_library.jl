@@ -23,7 +23,7 @@ const PetscViewer = Ptr{Cvoid}
 const PetscObject = Ptr{Cvoid}
 const Vec = Ptr{Cvoid}
 const Mat = Ptr{Cvoid}
-const PetscObject = Ptr{Cvoid}
+const VecType = Cstring
 
 const __darwin_off_t = Int64
 
@@ -12789,8 +12789,6 @@ end
     SCATTER_REVERSE_LOCAL = 3
     # SCATTER_LOCAL = 2
 end
-
-const VecType = Ptr{Cchar}
 
 @for_petsc function VecScatterSetType(::$UnionPetscLib, arg1, arg2)
     @chk ccall(

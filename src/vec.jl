@@ -577,3 +577,10 @@ function ghostupdateend!(
     LibPETSc.VecGhostUpdateEnd(PetscLib, vec, insertmode, scattermode)
     return nothing
 end
+
+
+function getpetsctype(vec::AbstractVec{PetscLib}) where PetscLib
+    name_r = Ref{LibPETSc.VecType}()
+    LibPETSc.VecGetType(PetscLib, vec, name_r)
+    return unsafe_string(name_r[])
+end

@@ -63,6 +63,8 @@ using LinearAlgebra: norm
                 @test x == julia_x
             end
 
+            @test "mpi" == PETSc.getpetsctype(petsc_x)
+
             PETSc.destroy(petsc_x)
 
         end

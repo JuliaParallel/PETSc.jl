@@ -1,9 +1,3 @@
-# AbstractVec
-#   - VecSeqWithArray: wrap
-#   - VecMPI (TODO)
-#   - VecGhost (TODO)
-# for the MPI variants we won't be able to attach finalizers, as destroy needs to be called collectively.
-
 const CVec = Ptr{Cvoid}
 
 abstract type AbstractVec{PetscLib, PetscScalar} <: AbstractVector{PetscScalar} end
@@ -101,11 +95,182 @@ function VecSeqWithArray(
     VecSeqWithArray(getlib(PetscLib), x...; kw...)
 end
 
+"""
+    VecSeq(petsclib, n::Int)
+
+A standard, sequentially-stored serial PETSc vector for `petsclib.PetscScalar`
+of length `n`.
+
+# External Links
+$(_doc_external("Vec/VecCreateSeq"))
+"""
+mutable struct VecSeq{PetscLib, PetscScalar} <:
+               AbstractVec{PetscLib, PetscScalar}
+    ptr::CVec
+end
+
+function VecSeq(petsclib::PetscLib, n::Int) where {PetscLib <: PetscLibType}
+    comm = MPI.COMM_SELF
+    @assert initialized(petsclib)
+    v = VecSeq{PetscLib, petsclib.PetscScalar}(C_NULL)
+    LibPETSc.VecCreateSeq(petsclib, comm, n, v)
+    finalizer(destroy, v)
+    return v
+end
+
+"""
+    VecMPI(
+         petsclib,
+         comm:MPI.Comm,
+         local_length;
+         global_length = PETSC_DETERMINE
+    )
+
+An sequentially-stored MPI PETSc vector for `petsclib.PetscScalar` of local
+length `local_length` and global length `global_length` without ghost elements.
+
+If `global_length isa Int` then `local_length` can be set to `PETSC_DECIDE`.
+
+# External Links
+$(_doc_external("Vec/VecCreateMPI"))
+
+!!! note
+
+    The user is responsible for calling `destroy(vec)` on the `Vec` since
+    this cannot be handled by the garbage collector do to the MPI nature of the
+    object.
+"""
+mutable struct VecMPI{PetscLib, PetscScalar} <:
+               AbstractVec{PetscLib, PetscScalar}
+    ptr::CVec
+end
+
+function VecMPI(
+    petsclib::PetscLib,
+    comm::MPI.Comm,
+    local_length;
+    global_length = PETSC_DETERMINE,
+) where {PetscLib <: PetscLibType}
+    @assert initialized(petsclib)
+    @assert local_length != PETSC_DECIDE || global_length != PETSC_DETERMINE
+    v = VecMPI{PetscLib, petsclib.PetscScalar}(C_NULL)
+    LibPETSc.VecCreateMPI(petsclib, comm, local_length, global_length, v)
+    return v
+end
+
+"""
+    VecGhost(
+         petsclib,
+         comm:MPI.Comm,
+         local_length
+         ghost::Vector{PetscInt};
+         global_length = PETSC_DETERMINE,
+         num_ghost = length(ghost),
+    )
+
+An sequentially-stored MPI PETSc vector for `petsclib.PetscScalar` of local
+length `local_length` and global length `global_length` with ghost elements.
+
+If `global_length isa Int` then `local_length` can be set to `PETSC_DECIDE`.
+
+# External Links
+$(_doc_external("Vec/VecCreateGhost"))
+
+!!! note
+
+    The user is responsible for calling `destroy(vec)` on the `Vec` since
+    this cannot be handled by the garbage collector do to the MPI nature of the
+    object.
+"""
+mutable struct VecGhost{PetscLib, PetscScalar} <:
+               AbstractVec{PetscLib, PetscScalar}
+    ptr::CVec
+end
+
+function VecGhost(
+    petsclib::PetscLib,
+    comm::MPI.Comm,
+    local_length,
+    ghost::Vector{PetscInt};
+    global_length = PETSC_DETERMINE,
+    num_ghost = length(ghost),
+) where {PetscLib <: PetscLibType, PetscInt}
+    @assert initialized(petsclib)
+    @assert PetscInt == PetscLib.PetscInt
+    @assert local_length != PETSC_DECIDE || global_length != PETSC_DETERMINE
+    v = VecGhost{PetscLib, petsclib.PetscScalar}(C_NULL)
+    LibPETSc.VecCreateGhost(
+        petsclib,
+        comm,
+        local_length,
+        global_length,
+        num_ghost,
+        ghost,
+        v,
+    )
+    return v
+end
+
 function Base.length(v::AbstractVec{PetscLib}) where {PetscLib}
     PetscInt = PetscLib.PetscInt
     r_sz = Ref{PetscInt}()
     LibPETSc.VecGetSize(PetscLib, v, r_sz)
     return r_sz[]
+end
+
+function Base.getindex(v::AbstractVec{PetscLib}, i::Integer) where {PetscLib}
+    vals = [PetscLib.PetscScalar(0)]
+    LibPETSc.VecGetValues(PetscLib, v, 1, Ref{PetscLib.PetscInt}(i - 1), vals)
+    return vals[1]
+end
+
+"""
+    setvalues!(
+        v::AbstractVec,
+        indices::Vector{PetscInt},
+        vals::Array{PetscScalar},
+        insertmode::InsertMode,
+    )
+
+Assign the values `vals` in 0-based global `indices` of `vec`. The `insertmode`
+can be `INSERT_VALUES` or `ADD_VALUES`.
+
+!!! warning
+    This function uses 0-based indexing!
+
+# External Links
+$(_doc_external("Vec/VecSetValues"))
+"""
+function setvalues!(
+    v::AbstractVec{PetscLib},
+    idxs0::Vector{PetscInt},
+    vals::Array{PetscScalar},
+    insertmode::InsertMode;
+    num_idxs = length(idxs0)
+) where {PetscLib, PetscInt, PetscScalar}
+    @assert length(vals) >= num_idxs
+    @assert PetscInt == PetscLib.PetscInt
+    @assert PetscScalar == PetscLib.PetscScalar
+    LibPETSc.VecSetValues(PetscLib, v, num_idxs, idxs0, vals, insertmode)
+    return nothing
+end
+
+
+function Base.setindex!(
+    v::AbstractVec{PetscLib},
+    val,
+    i::Integer,
+) where {PetscLib}
+    LibPETSc.VecSetValues(
+        PetscLib,
+        v,
+        1,
+        Ref{PetscLib.PetscInt}(i - 1),
+        Ref{PetscLib.PetscScalar}(val),
+        INSERT_VALUES,
+    )
+
+    return val
 end
 
 function locallength(v::AbstractVec{PetscLib}) where {PetscLib}
@@ -136,7 +301,7 @@ Base.show(io::IO, vec::AbstractVec) = _show(io, vec)
 Base.show(io::IO, ::MIME"text/plain", vec::AbstractVec) = _show(io, vec)
 
 """
-    ownership_range(vec::AbstractVec, [base_one = true])
+    ownershiprange(vec::AbstractVec, [base_one = true])
 
 The range of indices owned by this processor, assuming that the `vec` is laid
 out with the first `n1` elements on the first processor, next `n2` elements on
@@ -249,15 +414,28 @@ function with_unsafe_localarray!(f!, v::AbstractVec; kwargs...)
     Base.finalize(array)
 end
 
-#=
-@for_libpetsc begin
-    function assemblybegin(V::AbstractVec{$PetscScalar})
-        @chk ccall((:VecAssemblyBegin, $libpetsc), PetscErrorCode, (CVec,), V)
-        return nothing
-    end
-    function assemblyend(V::AbstractVec{$PetscScalar})
-        @chk ccall((:VecAssemblyEnd, $libpetsc), PetscErrorCode, (CVec,), V)
-        return nothing
-    end
+"""
+    assemblybegin!(vec::AbstractVec)
+
+Begin assembling `vec`
+
+# External Links
+$(_doc_external("Vec/VecAssemblyBegin"))
+"""
+function assemblybegin!(vec::AbstractVec{PetscLib}) where {PetscLib}
+    LibPETSc.VecAssemblyBegin(PetscLib, vec)
+    return nothing
 end
-=#
+
+"""
+    assemblyend!(vec::AbstractVec)
+
+Finish assembling `vec`
+
+# External Links
+$(_doc_external("Vec/VecAssemblyEnd"))
+"""
+function assemblyend!(vec::AbstractVec{PetscLib}) where {PetscLib}
+    LibPETSc.VecAssemblyEnd(PetscLib, vec)
+    return nothing
+end

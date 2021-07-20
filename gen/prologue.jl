@@ -23,3 +23,4 @@ const PetscViewer = Ptr{Cvoid}
 const PetscObject = Ptr{Cvoid}
 const Vec = Ptr{Cvoid}
 const Mat = Ptr{Cvoid}
+const VecType = Cstring

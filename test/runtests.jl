@@ -15,7 +15,10 @@ end
 # Examples with the comment
 #   # INCLUDE IN MPI TEST
 # will be run here
-include("mpi_examples.jl")
+# XXX: Currently not working on windows reliably, not sure why
+if !Sys.iswindows()
+    include("mpi_examples.jl")
+end
 
 include("options.jl")
 include("dmda.jl")

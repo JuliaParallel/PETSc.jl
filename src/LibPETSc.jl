@@ -31,7 +31,11 @@ export PetscLibType,
     NORM_INFINITY,
     NORM_1_AND_2,
     PETSC_DETERMINE,
-    PETSC_DECIDE
+    PETSC_DECIDE,
+    SCATTER_FORWARD,
+    SCATTER_REVERSE,
+    SCATTER_FORWARD_LOCAL,
+    SCATTER_REVERSE_LOCAL
 
 include("LibPETSc_const.jl")
 include("LibPETSc_startup.jl")

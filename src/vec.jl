@@ -255,6 +255,33 @@ function setvalues!(
     return nothing
 end
 
+"""
+    getvalues!(
+        vals::Array{PetscScalar},
+        v::AbstractVec,
+        indices::Vector{PetscInt},
+    )
+
+Get the 0-based global `indices` of `vec` into the preallocated array `vals`.
+
+!!! warning
+    This function uses 0-based indexing!
+
+# External Links
+$(_doc_external("Vec/VecGetValues"))
+"""
+function getvalues!(
+    vals::Array{PetscScalar},
+    v::AbstractVec{PetscLib},
+    idxs0::Vector{PetscInt};
+    num_idxs = length(idxs0)
+) where {PetscLib, PetscInt, PetscScalar}
+    @assert length(vals) >= num_idxs
+    @assert PetscInt == PetscLib.PetscInt
+    @assert PetscScalar == PetscLib.PetscScalar
+    LibPETSc.VecGetValues(PetscLib, v, num_idxs, idxs0, vals)
+    return nothing
+end
 
 function Base.setindex!(
     v::AbstractVec{PetscLib},
@@ -437,5 +464,117 @@ $(_doc_external("Vec/VecAssemblyEnd"))
 """
 function assemblyend!(vec::AbstractVec{PetscLib}) where {PetscLib}
     LibPETSc.VecAssemblyEnd(PetscLib, vec)
+    return nothing
+end
+
+mutable struct LocalVec{PetscLib, PetscScalar, GVec} <:
+               AbstractVec{PetscLib, PetscScalar}
+    ptr::CVec
+    gvec::GVec
+end
+function LocalVec(gvec::AbstractVec{PetscLib}) where {PetscLib}
+    GVec = typeof(gvec)
+    PetscScalar = PetscLib.PetscScalar
+    LocalVec{PetscLib, PetscScalar, GVec}(C_NULL, gvec)
+end
+
+"""
+    getlocalform(vec::AbstractVec)
+
+Obtains the local ghosted representation of a [`Vec`](@ref).
+
+!!! note
+
+    When done with the object the user should call [`restorelocalform!`](@ref)
+
+# External Links
+$(_doc_external("Vec/VecGhostGetLocalForm"))
+"""
+function getlocalform(gvec::AbstractVec{PetscLib}) where PetscLib
+    lvec = LocalVec(gvec)
+    LibPETSc.VecGhostGetLocalForm(PetscLib, gvec, lvec)
+    if lvec.ptr == C_NULL
+        restorelocalform!(lvec)
+        throw(ArgumentError("no local form for vector"))
+    end
+    return lvec
+end
+
+"""
+    restorelocalform!(local_vec::LocalVec)
+
+Restore the `local_vec` to the associated global vector after a call to
+[`getlocalform`](@ref).
+
+# External Links
+$(_doc_external("Vec/VecGhostRestoreLocalForm"))
+"""
+function restorelocalform!(lvec::LocalVec{PetscLib}) where PetscLib
+    LibPETSc.VecGhostRestoreLocalForm(PetscLib, lvec.gvec, lvec)
+    lvec.ptr = C_NULL
+    return lvec.gvec
+end
+
+"""
+    withlocalform(f::Function, vec::AbstractVec)
+
+Convert `vec` to a `LocalVec` and apply the function `f!`.
+
+```julia-repl
+julia> withlocalform(vec) do l_vec
+   # Do something with l_vec
+end
+```
+
+!!! note
+
+    This wrapper handles the calling of [`restorelocalform!`](@ref) before
+    returning.
+"""
+function withlocalform(f!, vec::AbstractVec)
+    lvec = getlocalform(vec)
+    f!(lvec)
+    restorelocalform!(lvec)
+end
+
+"""
+    ghostupdatebegin!(
+        vec::AbstractVec,
+        insertmode = INSERT_VALUES,
+        scattermode = SCATTER_FORWARD,
+    )
+
+Begins scattering `vec` to the local or global representations
+
+# External Links
+$(_doc_external("Vec/VecGhostUpdateBegin"))
+"""
+function ghostupdatebegin!(
+    vec::AbstractVec{PetscLib},
+    insertmode = INSERT_VALUES,
+    scattermode = SCATTER_FORWARD,
+) where PetscLib
+    LibPETSc.VecGhostUpdateBegin(PetscLib, vec, insertmode, scattermode)
+    return nothing
+end
+
+"""
+    ghostupdateend!(
+        vec::AbstractVec,
+        insertmode = INSERT_VALUES,
+        scattermode = SCATTER_FORWARD,
+    )
+
+Finishes scattering `vec` to the local or global representations
+
+# External Links
+$(_doc_external("Vec/VecGhostUpdateEnd"))
+"""
+function ghostupdateend!(
+    vec::AbstractVec{PetscLib},
+    insertmode = INSERT_VALUES,
+    scattermode = SCATTER_FORWARD,
+) where PetscLib
+    LibPETSc.VecGhostUpdateEnd(PetscLib, vec, insertmode, scattermode)
     return nothing
 end

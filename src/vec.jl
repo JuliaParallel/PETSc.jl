@@ -1,5 +1,5 @@
 # AbstractVec
-#   - VecSeq: wrap
+#   - VecSeqWithArray: wrap
 #   - VecMPI (TODO)
 #   - VecGhost (TODO)
 # for the MPI variants we won't be able to attach finalizers, as destroy needs to be called collectively.
@@ -18,13 +18,39 @@ Base.eltype(
 ) where {PetscLib, PetscScalar} = PetscScalar
 Base.size(v::AbstractVec) = (length(v),)
 
-mutable struct WrapVec{PetscLib, PetscScalar} <:
-               AbstractVec{PetscLib, PetscScalar}
-    ptr::CVec
+function destroy(v::AbstractVec{PetscLib}) where {PetscLib}
+    finalized(PetscLib) || LibPETSc.VecDestroy(PetscLib, v)
+    return nothing
 end
 
 """
-    VecSeq(petsclib, v::Vector)
+    VecPtr(petsclib, v::CVec, own)
+
+Container type for a PETSc Vec that is just a raw pointer.
+
+If the `own` then the finalizer is set on the vector; calling `destroy` when
+`!own` is a no-op.
+"""
+mutable struct VecPtr{PetscLib, PetscScalar} <:
+               AbstractVec{PetscLib, PetscScalar}
+    ptr::CVec
+end
+function VecPtr(
+    petsclib::PetscLib,
+    ptr::CVec,
+    own,
+) where {PetscLib <: PetscLibType}
+    v = VecPtr{PetscLib, petsclib.PetscScalar}(ptr)
+    if seq_finalize && occursin("seq", getpetsctype(v))
+        finalizer(destroy, v)
+    end
+    return v
+end
+VecPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} =
+    VecPtr(getlib(PetscLib), x...)
+
+"""
+    VecSeqWithArray(petsclib, v::Vector)
 
 A standard, sequentially-stored serial PETSc vector, wrapping the Julia vector
 `v`.
@@ -39,14 +65,14 @@ performed automatically
 # External Links
 $(_doc_external("Vec/VecCreateSeqWithArray"))
 """
-mutable struct VecSeq{PetscLib, PetscScalar} <:
+mutable struct VecSeqWithArray{PetscLib, PetscScalar} <:
                AbstractVec{PetscLib, PetscScalar}
     ptr::CVec
     array::Vector{PetscScalar}
 end
-Base.parent(v::VecSeq) = v.array
+Base.parent(v::VecSeqWithArray) = v.array
 
-function VecSeq(
+function VecSeqWithArray(
     petsclib::PetscLib,
     array::Vector{PetscScalar};
     blocksize = 1,
@@ -54,7 +80,7 @@ function VecSeq(
     comm = MPI.COMM_SELF
     @assert initialized(petsclib)
     @assert PetscScalar == petsclib.PetscScalar
-    v = VecSeq{PetscLib, PetscScalar}(C_NULL, array)
+    v = VecSeqWithArray{PetscLib, PetscScalar}(C_NULL, array)
     LibPETSc.VecCreateSeqWithArray(
         petsclib,
         comm,
@@ -66,23 +92,23 @@ function VecSeq(
     finalizer(destroy, v)
     return v
 end
-
-function destroy(v::AbstractVec{PetscLib}) where {PetscLib}
-    finalized(PetscLib) || LibPETSc.VecDestroy(PetscLib, v)
-    return nothing
+function VecSeqWithArray(
+    ::Type{PetscLib},
+    x...;
+    kw...,
+) where {PetscLib <: PetscLibType}
+    VecSeqWithArray(getlib(PetscLib), x...; kw...)
 end
 
 function Base.length(v::AbstractVec{PetscLib}) where {PetscLib}
-    petsclib = getlib(PetscLib)
-    PetscInt = petsclib.PetscInt
+    PetscInt = PetscLib.PetscInt
     r_sz = Ref{PetscInt}()
     LibPETSc.VecGetSize(PetscLib, v, r_sz)
     return r_sz[]
 end
 
 function locallength(v::AbstractVec{PetscLib}) where {PetscLib}
-    petsclib = getlib(PetscLib)
-    PetscInt = petsclib.PetscInt
+    PetscInt = PetscLib.PetscInt
     r_sz = Ref{PetscInt}()
     LibPETSc.VecGetLocalSize(PetscLib, v, r_sz)
     return r_sz[]
@@ -92,8 +118,7 @@ function LinearAlgebra.norm(
     v::AbstractVec{PetscLib},
     normtype::LibPETSc.NormType = LibPETSc.NORM_2,
 ) where {PetscLib}
-    petsclib = getlib(PetscLib)
-    PetscReal = petsclib.PetscReal
+    PetscReal = PetscLib.PetscReal
     r_val = Ref{PetscReal}()
     LibPETSc.VecNorm(PetscLib, v, normtype, r_val)
     return r_val[]
@@ -131,8 +156,7 @@ function ownershiprange(
     vec::AbstractVec{PetscLib},
     base_one::Bool = true,
 ) where {PetscLib}
-    petsclib = getlib(PetscLib)
-    PetscInt = petsclib.PetscInt
+    PetscInt = PetscLib.PetscInt
     r_lo = Ref{PetscInt}()
     r_hi = Ref{PetscInt}()
     LibPETSc.VecGetOwnershipRange(PetscLib, vec, r_lo, r_hi)
@@ -163,8 +187,7 @@ function unsafe_localarray(
     read::Bool = true,
     write::Bool = true,
 ) where {PetscLib}
-    petsclib = getlib(PetscLib)
-    PetscScalar = petsclib.PetscScalar
+    PetscScalar = PetscLib.PetscScalar
     r_pv = Ref{Ptr{PetscScalar}}()
     if write && read
         LibPETSc.VecGetArray(PetscLib, vec, r_pv)

@@ -164,9 +164,8 @@ function assemblyend(
 end
 
 function Base.size(A::AbstractMat{PetscLib}) where {PetscLib}
-    petsclib = getlib(PetscLib)
-    m = Ref{petsclib.PetscInt}()
-    n = Ref{petsclib.PetscInt}()
+    m = Ref{PetscLib.PetscInt}()
+    n = Ref{PetscLib.PetscInt}()
     LibPETSc.MatGetSize(PetscLib, A, m, n)
     return (m[], n[])
 end
@@ -219,8 +218,8 @@ function setvalues!(
     num_rows = length(row0idxs),
     num_cols = length(col0idxs),
 ) where {PetscLib, PetscScalar, PetscInt}
-    @assert PetscScalar == getlib(PetscLib).PetscScalar
-    @assert PetscInt == getlib(PetscLib).PetscInt
+    @assert PetscScalar == PetscLib.PetscScalar
+    @assert PetscInt == PetscLib.PetscInt
     LibPETSc.MatSetValues(
         PetscLib,
         M,
@@ -240,8 +239,8 @@ function Base.setindex!(
     i::Integer,
     j::Integer,
 ) where {PetscLib}
-    PetscInt = getlib(PetscLib).PetscInt
-    PetscScalar = getlib(PetscLib).PetscScalar
+    PetscInt = PetscLib.PetscInt
+    PetscScalar = PetscLib.PetscScalar
     setvalues!(
         M,
         [PetscInt(i - 1)],
@@ -256,7 +255,7 @@ function LinearAlgebra.norm(
     M::AbstractMat{PetscLib},
     normtype::NormType = NORM_FROBENIUS,
 ) where {PetscLib}
-    PetscReal = getlib(PetscLib).PetscReal
+    PetscReal = PetscLib.PetscReal
     r_val = Ref{PetscReal}()
     LibPETSc.MatNorm(PetscLib, M, normtype, r_val)
     return r_val[]
@@ -300,13 +299,12 @@ function LinearAlgebra.mul!(
     M::MatAT{PetscLib, PetscScalar},
     x::Vector{PetscScalar},
 ) where {PetscScalar, PetscLib}
-    parent(
-        LinearAlgebra.mul!(
-            VecSeq(getlib(PetscLib), y),
-            M,
-            VecSeq(getlib(PetscLib), x),
-        ),
+    LinearAlgebra.mul!(
+        VecSeqWithArray(PetscLib, y),
+        M,
+        VecSeqWithArray(PetscLib, x),
     )
+    return y
 end
 
 function LinearAlgebra.issymmetric(

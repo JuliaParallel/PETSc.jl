@@ -42,9 +42,9 @@ function (::MatOp{PetscLib, PetscInt, LibPETSc.MATOP_MULT})(
     ptr = r_ctx[]
     mat = unsafe_pointer_to_objref(ptr)
 
-    PetscScalar = getlib(PetscLib).PetscScalar
-    x = unsafe_localarray(WrapVec{PetscLib, PetscScalar}(cx); write = false)
-    y = unsafe_localarray(WrapVec{PetscLib, PetscScalar}(cy); read = false)
+    PetscScalar = PetscLib.PetscScalar
+    x = unsafe_localarray(VecPtr(PetscLib, cx); write = false)
+    y = unsafe_localarray(VecPtr(PetscLib, cy); read = false)
 
     _mul!(y, mat, x)
 

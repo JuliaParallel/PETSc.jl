@@ -2,13 +2,13 @@ using Test
 using PETSc
 using LinearAlgebra: norm
 
-@testset "VecSeq" begin
+@testset "VecSeqWithArray" begin
     N = 10
     for petsclib in PETSc.petsclibs
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         x = rand(PetscScalar, N)
-        petsc_x = PETSc.VecSeq(petsclib, x)
+        petsc_x = PETSc.VecSeqWithArray(petsclib, x)
         @test length(petsc_x) == N
         @test norm(petsc_x) ≈ norm(x)
 

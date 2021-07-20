@@ -64,8 +64,8 @@ using LinearAlgebra: norm, mul!, Adjoint, Transpose, issymmetric, ishermitian
 
         x = PetscScalar.(Array(1:num_cols))
         y = zeros(PetscScalar, num_rows)
-        vec_x = PETSc.VecSeq(petsclib, copy(x))
-        vec_y = PETSc.VecSeq(petsclib, copy(y))
+        vec_x = PETSc.VecSeqWithArray(petsclib, copy(x))
+        vec_y = PETSc.VecSeqWithArray(petsclib, copy(y))
 
         # Test mul!
         mul!(vec_y, D, vec_x)

@@ -13,9 +13,9 @@ function PetscLibType{ST, IT}(petsc_library) where {ST, IT}
     LT = typeof(petsc_library)
     return PetscLibType{ST, IT, LT}(petsc_library)
 end
-const UnionPetscLibType = Union{PetscLibType, Type{PetscLibType}}
+const UnionPetscLibType = Union{PetscLibType, Type{<:PetscLibType}}
 
-function Base.getproperty(petsclib::PetscLibType, name::Symbol)
+function Base.getproperty(petsclib::UnionPetscLibType, name::Symbol)
   if name == :PetscScalar
     return scalartype(petsclib)
   elseif name == :PetscReal

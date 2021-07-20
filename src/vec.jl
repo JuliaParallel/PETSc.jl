@@ -30,8 +30,19 @@ $(_doc_external("Vec/VecCreateSeqWithArray"))
 """
 mutable struct VecSeq{T} <: AbstractVec{T}
     ptr::CVec
-    comm::MPI.Comm
     array::Vector{T}
+end
+
+"""
+    Vec(v::CVec)
+
+Container for an abstract PETSc vector
+
+# External Links
+$(_doc_external("Vec/Vec"))
+"""
+mutable struct Vec{T} <: AbstractVec{T}
+    ptr::CVec
 end
 
 Base.eltype(::Type{V}) where {V<:AbstractVec{T}} where T = T
@@ -49,7 +60,7 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
 @for_libpetsc begin
     function VecSeq(comm::MPI.Comm, X::Vector{$PetscScalar}; blocksize=1)
         @assert initialized($petsclib)
-        v = VecSeq(C_NULL, comm, X)
+        v = VecSeq(C_NULL, X)
         @chk ccall((:VecCreateSeqWithArray, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{CVec}),
                 comm, blocksize, length(X), X, v)
@@ -96,7 +107,7 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
         r_lo[]:(r_hi[]-$PetscInt(1))
     end
 
-    function view(vec::AbstractVec{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, vec.comm))
+    function view(vec::AbstractVec{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(vec)))
         @chk ccall((:VecView, $libpetsc), PetscErrorCode,
                     (CVec, CPetscViewer),
                 vec.ptr, viewer);
@@ -160,18 +171,92 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
         end
         return v
     end
+
+    function Base.fill!(v::AbstractVec{$PetscScalar}, x)
+        @chk ccall((:VecSet, $libpetsc),
+                   PetscErrorCode,
+                   (CVec, $PetscScalar),
+                   v, $PetscScalar(x))
+        return v
+    end
+
+    function Base.setindex!(
+        v::AbstractVec{$PetscScalar},
+        val,
+        i::Integer,
+    )
+        @chk ccall(
+            (:VecSetValues, $libpetsc),
+            PetscErrorCode,
+            (CVec, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}, InsertMode),
+            v,
+            1,
+            Ref{$PetscInt}(i - 1),
+            Ref{$PetscScalar}(val),
+            INSERT_VALUES,
+        )
+
+        return val
+    end
+
+    function Base.getindex(
+        v::AbstractVec{$PetscScalar},
+        i::Integer,
+    )
+        vals = [$PetscScalar(0)]
+        @chk ccall(
+            (:VecGetValues, $libpetsc),
+            PetscErrorCode,
+            (CVec, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}),
+            v,
+            1,
+            Ref{$PetscInt}(i - 1),
+            vals,
+        )
+
+        return vals[1]
+    end
 end
 
 """
     unsafe_localarray(PetscScalar, ptr:CVec; read=true, write=true)
+    unsafe_localarray(ptr:AbstractVec; read=true, write=true)
 
 Return an `Array{PetscScalar}` containing local portion of the PETSc data.
 
-`finalize` should be called on the `Array` before the data can be used.
-
 Use `read=false` if the array is write-only; `write=false` if read-only.
+
+!!! note
+    `Base.finalize` should be called on the `Array` before the data can be used.
 """
 unsafe_localarray
+
+unsafe_localarray(v::AbstractVec{T}; kwargs...) where {T} =
+    unsafe_localarray(T, v.ptr; kwargs...)
+
+"""
+    map_unsafe_localarray!(f!, x::AbstractVec{T}; read=true, write=true)
+
+Convert `x` to an `Array{T}` and apply the function `f!`.
+
+Use `read=false` if the array is write-only; `write=false` if read-only.
+
+# Examples
+```julia-repl
+julia> map_unsafe_localarray(x; write=true) do x
+   @. x .*= 2
+end
+
+!!! note
+    `Base.finalize` should is automatically called on the array.
+"""
+function map_unsafe_localarray!(f!, v::AbstractVec{T}; kwargs...) where {T}
+    array = unsafe_localarray(T, v.ptr; kwargs...)
+    f!(array)
+    Base.finalize(array)
+end
+
+
 
 function Base.show(io::IO, ::MIME"text/plain", vec::AbstractVec)
     _show(io, vec)
@@ -193,3 +278,85 @@ $(_doc_external("Vec/VecGetOwnershipRange"))
 """
 ownershiprange
 
+"""
+    setvalues!(
+        vector::AbstractVec{PetscScalar},
+        indices::Vector{PetscInt},
+        vals::Vector{PetscScalar},
+        mode::InsertMode;
+        num_vals = length(ind)
+    )
+
+Insert a set of values into the `vector`. Equivalent to one of the following
+depending on the `mode`
+```julia
+vector[indices[1:num_vals]] .= vals[1:num_vals]
+vector[indices[1:num_vals]] .+= vals[1:num_vals]
+```
+
+!!! warning
+    `indices` should use 0-based indexing!
+
+# External Links
+$(_doc_external("Vec/VecSetValues"))
+"""
+function setvalues!(::AbstractVec) end
+
+@for_libpetsc function setvalues!(
+    vec::AbstractVec{$PetscScalar},
+    inds::Vector{$PetscInt},
+    vals::Vector{$PetscScalar},
+    mode::InsertMode;
+    num_vals = length(inds)
+)
+    @chk ccall(
+         (:VecSetValues, $libpetsc),
+         PetscErrorCode,
+         (CVec, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}, InsertMode),
+         vec,
+         num_vals,
+         inds,
+         vals,
+         mode,
+    )
+    return vals
+end
+
+"""
+    getvalues!(
+        vector::AbstractVec{PetscScalar},
+        indices::Vector{PetscInt},
+        vals::Vector{PetscScalar};
+        num_vals = length(inds)
+    )
+
+Get a set of values from the `vector`. Equivalent to one of the following
+```julia
+vals[1:num_vals] .= vector[indices[1:num_vals]]
+```
+
+!!! warning
+    `indices` should use 0-based indexing!
+
+# External Links
+$(_doc_external("Vec/VecGetValues"))
+"""
+function getvalues!(::AbstractVec) end
+
+@for_libpetsc function getvalues!(
+    vec::AbstractVec{$PetscScalar},
+    inds::Vector{$PetscInt},
+    vals::Vector{$PetscScalar};
+    num_vals = length(inds)
+)
+    @chk ccall(
+         (:VecGetValues, $libpetsc),
+         PetscErrorCode,
+         (CVec, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}),
+         vec,
+         num_vals,
+         inds,
+         vals,
+    )
+    return vals
+end

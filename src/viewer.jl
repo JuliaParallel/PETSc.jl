@@ -10,11 +10,6 @@ $(_doc_external("Viewer/PetscViewer"))
 """
 abstract type AbstractViewer{PetscLib <: PetscLibType} end
 
-Base.cconvert(::Type{CPetscViewer}, obj::AbstractViewer) = obj.ptr
-
-Base.unsafe_convert(::Type{Ptr{CPetscViewer}}, obj::AbstractViewer) =
-    convert(Ptr{CPetscViewer}, pointer_from_objref(obj))
-
 """
     ViewerStdout(petsclib, comm = MPI.COMM_SELF)
 
@@ -25,7 +20,6 @@ $(_doc_external("Viewer/PETSC_VIEWER_STDOUT_"))
 """
 mutable struct ViewerStdout{PetscLib} <: AbstractViewer{PetscLib}
     ptr::CPetscViewer
-    comm::MPI.Comm
 end
 
 @for_petsc function ViewerStdout(
@@ -38,7 +32,7 @@ end
         (MPI.MPI_Comm,),
         comm,
     )
-    return ViewerStdout{$PetscLib}(ptr, comm)
+    return ViewerStdout{$PetscLib}(ptr)
 end
 
 @for_petsc function Base.push!(
@@ -82,9 +76,15 @@ function _show(io::IO, obj)
     try
         rd, = redirect_stdout()
         view(obj)
+
+        # Since not all MPI ranks are guaranteed to print we put in a newline
+        # that we remove with the write since readavailable will hang if there
+        # is no data in the stream
+        println()
+
         Libc.flush_cstdio()
         flush(stdout)
-        write(io, readavailable(rd))
+        write(io, readavailable(rd)[1:end-1])
     finally
         redirect_stdout(old_stdout)
     end

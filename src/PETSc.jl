@@ -28,9 +28,12 @@ include("options.jl")
 include("vec.jl")
 include("mat.jl")
 include("matshell.jl")
+include("dm.jl")
+include("dmda.jl")
 include("ksp.jl")
 include("pc.jl")
 include("snes.jl")
 include("dmstag.jl")
+include("sys.jl")
 
 end

@@ -12,7 +12,7 @@ macro chk(expr)
 end
 
 const PETSC_DEFAULT = -2
-const PETSC_DECIDE =  -1
+const PETSC_DECIDE = PETSC_DETERMINE = -1
 
 @enum DMBoundaryType begin
     DM_BOUNDARY_NONE 
@@ -160,4 +160,17 @@ end
     DMSTAG_FRONT_UP_LEFT
     DMSTAG_FRONT_UP
     DMSTAG_FRONT_UP_RIGHT
+end
+
+@enum DMBoundaryType begin
+  DM_BOUNDARY_NONE=0
+  DM_BOUNDARY_GHOSTED=1
+  DM_BOUNDARY_MIRROR=2
+  DM_BOUNDARY_PERIODIC=3
+  DM_BOUNDARY_TWIST=4
+end
+
+@enum DMDAStencilType begin
+  DMDA_STENCIL_STAR = 0
+  DMDA_STENCIL_BOX = 1
 end

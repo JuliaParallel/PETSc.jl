@@ -9,7 +9,6 @@ This can be changed by defining `PETSc._mul!`.
 """
 mutable struct MatShell{T,A} <: AbstractMat{T}
     ptr::CMat
-    comm::MPI.Comm
     obj::A
 end
 
@@ -30,7 +29,7 @@ MatShell{T}(obj, m, n) where {T} = MatShell{T}(obj, MPI.COMM_SELF, m, n, m, n)
 
 @for_libpetsc begin
     function MatShell{$PetscScalar}(obj::A, comm::MPI.Comm, m, n, M, N) where {A}
-        mat = MatShell{$PetscScalar,A}(C_NULL, comm, obj)
+        mat = MatShell{$PetscScalar,A}(C_NULL, obj)
         # we use the MatShell object itsel
         ctx = pointer_from_objref(mat)
         @chk ccall((:MatCreateShell, $libpetsc), PetscErrorCode,

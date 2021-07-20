@@ -29,7 +29,9 @@ export PetscLibType,
     NORM_2,
     NORM_FROBENIUS,
     NORM_INFINITY,
-    NORM_1_AND_2
+    NORM_1_AND_2,
+    PETSC_DETERMINE,
+    PETSC_DECIDE
 
 include("LibPETSc_const.jl")
 include("LibPETSc_startup.jl")

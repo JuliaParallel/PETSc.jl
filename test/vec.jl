@@ -38,3 +38,25 @@ using LinearAlgebra: norm
         PETSc.finalize(petsclib)
     end
 end
+
+@testset "VecSeq" begin
+    N = 10
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        petsc_x = PETSc.VecSeq(petsclib, N)
+        @test length(petsc_x) == N
+
+        @test PETSc.ownershiprange(petsc_x) == 1:N
+        @test PETSc.ownershiprange(petsc_x, false) == 0:(N - 1)
+
+        x = rand(PetscScalar, N)
+        PETSc.with_unsafe_localarray!(petsc_x) do x2
+            x2 .= x
+        end
+        @test norm(petsc_x) ≈ norm(x)
+
+        PETSc.destroy(petsc_x)
+        PETSc.finalize(petsclib)
+    end
+end

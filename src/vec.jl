@@ -413,12 +413,9 @@ function unsafe_localarray(
 end
 
 """
-    with_unsafe_localarray!(
-        f!,
-        x::AbstractVec;
-        read=true,
-        write=true,
-    )
+    withlocalarray!(f!, x::AbstractVec; read=true, write=true)
+    withlocalarray!(f!, xs...; read=true, write=true)
+    withlocalarray!(f!, xs::NTuple{N, AbstractVec}...; read=true, write=true)
 
 Convert `x` to an `Array{PetscScalar}` using [`unsafe_localarray`](@ref) and
 apply the function `f!`.
@@ -434,11 +431,17 @@ end
 !!! note
     `Base.finalize` is automatically called on the array.
 """
-function with_unsafe_localarray!(f!, v::AbstractVec; kwargs...)
-    array = unsafe_localarray(v; kwargs...)
-    f!(array)
-    Base.finalize(array)
+function with_localarray!(f!, vecs::NTuple{N, AbstractVec}; kwargs...) where N
+    arrays = map(vecs) do v
+        unsafe_localarray(v; kwargs...)
+    end
+    val = f!(arrays...)
+    map(arrays) do array
+        Base.finalize(array)
+    end
+    return val
 end
+withlocalarray!(f!, vecs...; kwargs...) = withlocalarray!(f!, vecs; kwargs...)
 
 """
     assemblybegin!(vec::AbstractVec)

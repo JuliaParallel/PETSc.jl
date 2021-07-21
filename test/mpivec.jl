@@ -59,7 +59,7 @@ using LinearAlgebra: norm
             # 1-based
             @test petsc_x[rng .+ 1] == julia_x
 
-            PETSc.with_unsafe_localarray!(petsc_x) do x
+            PETSc.withlocalarray!(petsc_x) do x
                 @test x == julia_x
             end
 

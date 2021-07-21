@@ -14,14 +14,14 @@ using LinearAlgebra: norm, mul!, Adjoint, Transpose, issymmetric, ishermitian
 
         @test size(A) == (num_rows, num_cols)
         B = PETSc.MatSeqAIJ(petsclib, num_rows, num_cols, nz_int)
-        PETSc.assemble(A)
-        PETSc.assemble(B)
+        PETSc.assemble!(A)
+        PETSc.assemble!(B)
         # both empty
         @test A == B
 
         C = PETSc.MatSeqAIJ(petsclib, num_rows, num_cols, nz_vec)
         @test size(A) == (num_rows, num_cols)
-        PETSc.assemble(C)
+        PETSc.assemble!(C)
         # both empty
         @test A == C
 
@@ -30,7 +30,7 @@ using LinearAlgebra: norm, mul!, Adjoint, Transpose, issymmetric, ishermitian
             D[1, [1, 2]] .= [1, 2]
             D[2, [3, 4]] .= [3, 4]
             D[5, [3, 4]] .= [3, 4]
-            PETSc.assemble(D)
+            PETSc.assemble!(D)
 
             DJ = zeros(PetscScalar, num_rows, num_cols)
             DJ[1, [1, 2]] .= [1, 2]
@@ -41,7 +41,7 @@ using LinearAlgebra: norm, mul!, Adjoint, Transpose, issymmetric, ishermitian
             D[1, [1, 2]] .= [1, 2im]
             D[2, [3, 4]] .= [3, 4im]
             D[5, [3, 4]] .= [3, 4im]
-            PETSc.assemble(D)
+            PETSc.assemble!(D)
 
             DJ = zeros(PetscScalar, num_rows, num_cols)
             DJ[1, [1, 2]] .= [1, 2im]
@@ -53,7 +53,7 @@ using LinearAlgebra: norm, mul!, Adjoint, Transpose, issymmetric, ishermitian
         E[2, [1, 3, 4]] .= [1, 3, 4]
         E[3, [3, 4]] .= [3, 4]
         E[4, [5]] .= [6]
-        PETSc.assemble(E)
+        PETSc.assemble!(E)
 
         @test A != E
         @test D != E
@@ -87,13 +87,13 @@ using LinearAlgebra: norm, mul!, Adjoint, Transpose, issymmetric, ishermitian
             A[1, 1] = 1
             A[2, 1] = -2
             A[1, 2] = -2
-            PETSc.assemble(A)
+            PETSc.assemble!(A)
 
             B = PETSc.MatSeqAIJ(petsclib, 5, 5, 2)
             B[1, 1] = 1
             B[2, 1] = 2
             B[1, 2] = -2
-            PETSc.assemble(B)
+            PETSc.assemble!(B)
 
             @test issymmetric(A)
             @test ishermitian(A)
@@ -104,13 +104,13 @@ using LinearAlgebra: norm, mul!, Adjoint, Transpose, issymmetric, ishermitian
             A[1, 1] = 1
             A[2, 1] = -2 + im
             A[1, 2] = -2 - im
-            PETSc.assemble(A)
+            PETSc.assemble!(A)
 
             B = PETSc.MatSeqAIJ(petsclib, 5, 5, 2)
             B[1, 1] = 1
             B[2, 1] = -2 + im
             B[1, 2] = -2 + im
-            PETSc.assemble(B)
+            PETSc.assemble!(B)
             @test !issymmetric(A)
             @test ishermitian(A)
             @test issymmetric(B)

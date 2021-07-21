@@ -103,6 +103,109 @@ function MatSeqDense(
 end
 
 """
+    MatAIJ(
+        petsclib::PetscLib,
+        comm::MPI.Comm,
+        loc_num_rows::Integer,
+        loc_num_cols::Integer,
+        diag_nonzeros::Union{Integer, Vector},
+        off_diag_nonzeros::Union{Integer, Vector};
+        glo_num_rows = PETSC_DETERMINE,
+        glo_num_cols = PETSC_DETERMINE,
+        setup = true
+    ) where {PetscLib <: PetscLibType}
+
+Create an MPI PETSc sparse array on the `comm` using AIJ format (also known as a
+compressed sparse row or CSR format) of size `glo_num_rows X glo_num_cols` with
+local size `loc_num_rows X loc_num_cols`.
+
+The diagonal block and off-diagonal block non-zeros are `diag_nonzeros` and
+`off_diag_nonzeros` which can be either an integer (same for all rows) or a
+Vector of `PetscInt`s with on entry per row.
+
+Memory allocation is handled by PETSc and garbage collection can be used.
+
+If `glo_num_rows isa Integer` or `glo_num_cols isa Integer` then the
+corresponding local variable can be `PETSC_DECIDE`.
+
+If `setup == true` then [`setup!`](@ref) is called
+
+# External Links
+$(_doc_external("Mat/MatCreateAIJ"))
+$(_doc_external("Mat/MatSetUp"))
+
+!!! note
+
+    The user is responsible for calling `destroy(mat)` on the `MatAIJ` since
+    this cannot be handled by the garbage collector do to the MPI nature of the
+    object.
+"""
+mutable struct MatAIJ{PetscLib, PetscScalar} <:
+               AbstractMat{PetscLib, PetscScalar}
+    ptr::CMat
+end
+
+function MatAIJ(
+    petsclib::PetscLib,
+    comm::MPI.Comm,
+    loc_num_rows::Integer,
+    loc_num_cols::Integer,
+    diag_nonzeros::Union{Integer, Vector},
+    off_diag_nonzeros::Union{Integer, Vector};
+    glo_num_rows = PETSC_DETERMINE,
+    glo_num_cols = PETSC_DETERMINE,
+    setup = true,
+) where {PetscLib <: PetscLibType}
+    @assert initialized(petsclib)
+    PetscScalar = petsclib.PetscScalar
+    mat = MatAIJ{PetscLib, PetscScalar}(C_NULL)
+    if diag_nonzeros isa Integer
+        diag_nonzero = diag_nonzeros
+        diag_nonzeros = C_NULL
+    else
+        diag_nonzero = -1
+    end
+    if off_diag_nonzeros isa Integer
+        off_diag_nonzero = off_diag_nonzeros
+        off_diag_nonzeros = C_NULL
+    else
+        off_diag_nonzero = -1
+    end
+
+    LibPETSc.MatCreateAIJ(
+        petsclib,
+        comm,
+        loc_num_rows,
+        loc_num_cols,
+        glo_num_rows,
+        glo_num_cols,
+        diag_nonzero,
+        diag_nonzeros,
+        off_diag_nonzero,
+        off_diag_nonzeros,
+        mat,
+    )
+
+    setup && setup!(mat)
+
+    return mat
+end
+
+"""
+    setup!(mat::AbstractMat)
+
+Set up the interal data for `mat`
+
+# External Links
+$(_doc_external("Mat/MatSetUp"))
+"""
+function setup!(mat::AbstractMat{PetscLib}) where {PetscLib}
+    @assert initialized(PetscLib)
+    LibPETSc.MatSetUp(PetscLib, mat)
+    return mat
+end
+
+"""
     assemble!(M::AbstractMat[, t::MatAssemblyType = MAT_FINAL_ASSEMBLY)
 
 Assemble the matrix `M` with assembly type `t`.
@@ -151,6 +254,35 @@ function assemblyend!(
 ) where {PetscLib}
     LibPETSc.MatAssemblyEnd(PetscLib, M, t)
     return M
+end
+
+"""
+    ownershiprange(mat::AbstractMat, [base_one = true])
+
+The range of row indices owned by this processor, assuming that the `mat` is
+laid out with the first `n1` rows on the first processor, next `n2` rows on the
+second, etc. For certain parallel layouts this range may not be well defined.
+
+If the optional argument `base_one == true` then base-1 indexing is used,
+otherwise base-0 index is used.
+
+!!! note
+
+    unlike the C function, the range returned is inclusive (`idx_first:idx_last`)
+
+# External Links
+$(_doc_external("Mat/MatGetOwnershipRange"))
+"""
+function ownershiprange(
+    mat::AbstractMat{PetscLib},
+    base_one::Bool = true,
+) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    r_lo = Ref{PetscInt}()
+    r_hi = Ref{PetscInt}()
+    LibPETSc.MatGetOwnershipRange(PetscLib, mat, r_lo, r_hi)
+    return base_one ? ((r_lo[] + PetscInt(1)):(r_hi[])) :
+           ((r_lo[]):(r_hi[] - PetscInt(1)))
 end
 
 function Base.size(A::AbstractMat{PetscLib}) where {PetscLib}
@@ -344,3 +476,41 @@ function Base.copyto!(M::PETSc.MatSeqAIJ{T}, S::SparseMatrixCSC{T}) where {T}
     assemble(M);  
 end
 =#
+
+"""
+    createvecs(
+        M::AbstractMat{PetscLib},
+    )
+
+Returns vectors `V` which are compatible with `M`. A right compatible vectors is
+`V.right` and a left compatible vector is `V.left`; positionally these are
+returned as `(right, left)`
+
+The created vectors are not garbage collected and should be destroyed with
+[`destroy`](@ref).
+
+# External Links
+$(_doc_external("Mat/MatCreateVecs"))
+"""
+function createvecs(M::AbstractMat{PetscLib}) where {PetscLib}
+    r_right = Ref{CVec}()
+    r_left = Ref{CVec}()
+    LibPETSc.MatCreateVecs(PetscLib, M, r_right, r_left)
+    right = VecPtr(PetscLib, r_right[], true)
+    left = VecPtr(PetscLib, r_left[], true)
+    return (right = right, left = left)
+end
+
+"""
+    getpetsctype(mat::AbstractMat)
+
+return a string with the matrix type
+
+# External Links
+$(_doc_external("Mat/MatGetType"))
+"""
+function getpetsctype(mat::AbstractMat{PetscLib}) where {PetscLib}
+    name_r = Ref{LibPETSc.MatType}()
+    LibPETSc.MatGetType(PetscLib, mat, name_r)
+    return unsafe_string(name_r[])
+end

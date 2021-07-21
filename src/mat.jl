@@ -17,26 +17,10 @@ function destroy(M::AbstractMat{PetscLib}) where {PetscLib}
 end
 
 """
-    MatSeqAIJ{PetscLib, PetscScalar}
-
-PETSc sparse array using AIJ format (also known as a compressed sparse row or
-CSR format).
-
-Memory allocation is handled by PETSc.
-
-# External Links
-$(_doc_external("Mat/MatCreateSeqAIJ"))
-"""
-mutable struct MatSeqAIJ{PetscLib, PetscScalar} <:
-               AbstractMat{PetscLib, PetscScalar}
-    ptr::CMat
-end
-
-"""
     MatSeqAIJ(petsclib, num_rows, num_cols, nonzeros)
 
-Create a PETSc sparse array using AIJ format (also known as a compressed sparse
-row or CSR format) of size `num_rows X num_cols` with `nonzeros` per row
+Create a PETSc serial sparse array using AIJ format (also known as a compressed
+sparse row or CSR format) of size `num_rows X num_cols` with `nonzeros` per row
 
 If `nonzeros` is an `Integer` the same number of non-zeros will be used for each
 row, if `nonzeros` is a `Vector{PetscInt}` then one value must be specified for
@@ -47,6 +31,11 @@ Memory allocation is handled by PETSc and garbage collection can be used.
 # External Links
 $(_doc_external("Mat/MatCreateSeqAIJ"))
 """
+mutable struct MatSeqAIJ{PetscLib, PetscScalar} <:
+               AbstractMat{PetscLib, PetscScalar}
+    ptr::CMat
+end
+
 function MatSeqAIJ(
     petsclib::PetscLib,
     num_rows::Integer,
@@ -114,53 +103,54 @@ function MatSeqDense(
 end
 
 """
-    assemble(M::AbstractMat[, t::MatAssemblyType = MAT_FINAL_ASSEMBLY)
+    assemble!(M::AbstractMat[, t::MatAssemblyType = MAT_FINAL_ASSEMBLY)
 
 Assemble the matrix `M` with assembly type `t`.
 
-For overlapping assembly see [`assemblybegin`](@ref) and  [`assemblyend`](@ref)
+For overlapping assembly see [`assemblybegin!`](@ref) and  [`assemblyend!`](@ref)
 
 # External Links
 $(_doc_external("Mat/MatAssemblyBegin"))
 $(_doc_external("Mat/MatAssemblyEnd"))
 """
-function assemble(M::AbstractMat, t::MatAssemblyType = MAT_FINAL_ASSEMBLY)
-    assemblybegin(M, t)
-    assemblyend(M, t)
+function assemble!(M::AbstractMat, t::MatAssemblyType = MAT_FINAL_ASSEMBLY)
+    assemblybegin!(M, t)
+    assemblyend!(M, t)
+    return M
 end
 
 """
-    assemblybegin(M::AbstractMat[, t::MatAssemblyType = MAT_FINAL_ASSEMBLY)
+    assemblybegin!(M::AbstractMat[, t::MatAssemblyType = MAT_FINAL_ASSEMBLY)
 
 Begin assembly of the matrix `M` with assembly type `t`; finished with
-[`assemblyend`](@ref).
+[`assemblyend!`](@ref).
 
 # External Links
 $(_doc_external("Mat/MatAssemblyBegin"))
 """
-function assemblybegin(
+function assemblybegin!(
     M::AbstractMat{PetscLib},
     t::MatAssemblyType = MAT_FINAL_ASSEMBLY,
 ) where {PetscLib}
     LibPETSc.MatAssemblyBegin(PetscLib, M, t)
-    return nothing
+    return M
 end
 
 """
-    assemblyend(M::AbstractMat[, t::MatAssemblyType = MAT_FINAL_ASSEMBLY)
+    assemblyend!(M::AbstractMat[, t::MatAssemblyType = MAT_FINAL_ASSEMBLY)
 
 Finish assembly of the matrix `M` with assembly type `t`; start assembly with
-[`assemblybegin`](@ref).
+[`assemblybegin!`](@ref).
 
 # External Links
 $(_doc_external("Mat/MatAssemblyEnd"))
 """
-function assemblyend(
+function assemblyend!(
     M::AbstractMat{PetscLib},
     t::MatAssemblyType = MAT_FINAL_ASSEMBLY,
 ) where {PetscLib}
     LibPETSc.MatAssemblyEnd(PetscLib, M, t)
-    return nothing
+    return M
 end
 
 function Base.size(A::AbstractMat{PetscLib}) where {PetscLib}
@@ -195,7 +185,7 @@ Base.show(io::IO, ::MIME"text/plain", mat::AbstractMat) = _show(io, mat)
         row0idxs::Vector{PetscInt},
         col0idxs::Vector{PetscInt},
         rowvals::Array{PetscScalar},
-        insertmode::InsertMode;
+        insertmode::InsertMode = INSERT_VALUES;
         num_rows = length(row0idxs),
         num_cols = length(col0idxs)
     )
@@ -214,7 +204,7 @@ function setvalues!(
     row0idxs::Vector{PetscInt},
     col0idxs::Vector{PetscInt},
     rowvals::Array{PetscScalar},
-    insertmode::InsertMode;
+    insertmode::InsertMode = INSERT_VALUES;
     num_rows = length(row0idxs),
     num_cols = length(col0idxs),
 ) where {PetscLib, PetscScalar, PetscInt}

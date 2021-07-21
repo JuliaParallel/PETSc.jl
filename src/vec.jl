@@ -129,7 +129,8 @@ end
 An sequentially-stored MPI PETSc vector for `petsclib.PetscScalar` of local
 length `local_length` and global length `global_length` without ghost elements.
 
-If `global_length isa Int` then `local_length` can be set to `PETSC_DECIDE`.
+If `global_length isa Int` then `local_length` can be set to `PETSC_DECIDE` in
+which case PETSc will decide the local_length.
 
 # External Links
 $(_doc_external("Vec/VecCreateMPI"))

@@ -30,7 +30,7 @@ using LinearAlgebra: norm
         @test PETSc.ownershiprange(petsc_x) == 1:N
         @test PETSc.ownershiprange(petsc_x, false) == 0:(N - 1)
 
-        PETSc.with_unsafe_localarray!(petsc_x) do x2
+        PETSc.withlocalarray!(petsc_x) do x2
             @test x2 == x
         end
 
@@ -51,7 +51,7 @@ end
         @test PETSc.ownershiprange(petsc_x, false) == 0:(N - 1)
 
         x = rand(PetscScalar, N)
-        PETSc.with_unsafe_localarray!(petsc_x) do x2
+        PETSc.withlocalarray!(petsc_x) do x2
             x2 .= x
         end
         @test norm(petsc_x) ≈ norm(x)

@@ -43,13 +43,11 @@ function (::MatOp{PetscLib, PetscInt, LibPETSc.MATOP_MULT})(
     mat = unsafe_pointer_to_objref(ptr)
 
     PetscScalar = PetscLib.PetscScalar
-    x = unsafe_localarray(VecPtr(PetscLib, cx); write = false)
-    y = unsafe_localarray(VecPtr(PetscLib, cy); read = false)
+    x = VecPtr(PetscLib, cx, false)
+    y = VecPtr(PetscLib, cy, false)
 
     _mul!(y, mat, x)
 
-    Base.finalize(y)
-    Base.finalize(x)
     return PetscInt(0)
 end
 

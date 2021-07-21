@@ -247,7 +247,7 @@ function setvalues!(
     idxs0::Vector{PetscInt},
     vals::Array{PetscScalar},
     insertmode::InsertMode;
-    num_idxs = length(idxs0)
+    num_idxs = length(idxs0),
 ) where {PetscLib, PetscInt, PetscScalar}
     @assert length(vals) >= num_idxs
     @assert PetscInt == PetscLib.PetscInt
@@ -275,7 +275,7 @@ function getvalues!(
     vals::Array{PetscScalar},
     v::AbstractVec{PetscLib},
     idxs0::Vector{PetscInt};
-    num_idxs = length(idxs0)
+    num_idxs = length(idxs0),
 ) where {PetscLib, PetscInt, PetscScalar}
     @assert length(vals) >= num_idxs
     @assert PetscInt == PetscLib.PetscInt
@@ -433,7 +433,7 @@ end
 !!! note
     `Base.finalize` is automatically called on the array.
 """
-function with_localarray!(f!, vecs::NTuple{N, AbstractVec}; kwargs...) where N
+function withlocalarray!(f!, vecs::NTuple{N, AbstractVec}; kwargs...) where {N}
     arrays = map(vecs) do v
         unsafe_localarray(v; kwargs...)
     end
@@ -470,6 +470,23 @@ function assemblyend!(vec::AbstractVec{PetscLib}) where {PetscLib}
     return nothing
 end
 
+"""
+    assemble!(v::AbstractVec)
+
+Assemble the vector `v`.
+
+For overlapping assembly see [`assemblybegin!`](@ref) and  [`assemblyend!`](@ref)
+
+# External Links
+$(_doc_external("Vec/VecAssemblyBegin"))
+$(_doc_external("Vec/VecAssemblyEnd"))
+"""
+function assemble!(v::AbstractVec)
+    assemblybegin!(v)
+    assemblyend!(v)
+    return v
+end
+
 mutable struct LocalVec{PetscLib, PetscScalar, GVec} <:
                AbstractVec{PetscLib, PetscScalar}
     ptr::CVec
@@ -493,7 +510,7 @@ Obtains the local ghosted representation of a [`Vec`](@ref).
 # External Links
 $(_doc_external("Vec/VecGhostGetLocalForm"))
 """
-function getlocalform(gvec::AbstractVec{PetscLib}) where PetscLib
+function getlocalform(gvec::AbstractVec{PetscLib}) where {PetscLib}
     lvec = LocalVec(gvec)
     LibPETSc.VecGhostGetLocalForm(PetscLib, gvec, lvec)
     if lvec.ptr == C_NULL
@@ -512,7 +529,7 @@ Restore the `local_vec` to the associated global vector after a call to
 # External Links
 $(_doc_external("Vec/VecGhostRestoreLocalForm"))
 """
-function restorelocalform!(lvec::LocalVec{PetscLib}) where PetscLib
+function restorelocalform!(lvec::LocalVec{PetscLib}) where {PetscLib}
     LibPETSc.VecGhostRestoreLocalForm(PetscLib, lvec.gvec, lvec)
     lvec.ptr = C_NULL
     return lvec.gvec
@@ -556,7 +573,7 @@ function ghostupdatebegin!(
     vec::AbstractVec{PetscLib},
     insertmode = INSERT_VALUES,
     scattermode = SCATTER_FORWARD,
-) where PetscLib
+) where {PetscLib}
     LibPETSc.VecGhostUpdateBegin(PetscLib, vec, insertmode, scattermode)
     return nothing
 end
@@ -577,13 +594,20 @@ function ghostupdateend!(
     vec::AbstractVec{PetscLib},
     insertmode = INSERT_VALUES,
     scattermode = SCATTER_FORWARD,
-) where PetscLib
+) where {PetscLib}
     LibPETSc.VecGhostUpdateEnd(PetscLib, vec, insertmode, scattermode)
     return nothing
 end
 
+"""
+    getpetsctype(vec::AbstractVec)
 
-function getpetsctype(vec::AbstractVec{PetscLib}) where PetscLib
+return a string with the vector type
+
+# External Links
+$(_doc_external("Vec/VecGetType"))
+"""
+function getpetsctype(vec::AbstractVec{PetscLib}) where {PetscLib}
     name_r = Ref{LibPETSc.VecType}()
     LibPETSc.VecGetType(PetscLib, vec, name_r)
     return unsafe_string(name_r[])

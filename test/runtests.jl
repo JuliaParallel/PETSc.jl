@@ -23,10 +23,8 @@ end
 include("options.jl")
 include("dmda.jl")
 include("old_test.jl")
+include("test_dmstag.jl")
 
 # Run the examples to make sure they are all work
 include("examples.jl")
-
-include("test_dmstag.jl")
-include("examples.jl") 
 

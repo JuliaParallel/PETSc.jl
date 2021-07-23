@@ -291,8 +291,20 @@ function MatSetValuesStencil! end
         @chk ccall((:MatAssemblyEnd, $libpetsc), PetscErrorCode, (CMat, MatAssemblyType), M, t)
         return nothing
     end
-    function view(mat::AbstractMat{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, mat.comm))
+    #function view(mat::AbstractMat{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, mat.comm))
+    #    if assembled(mat)
+    #        @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
+    #                    (CMat, CPetscViewer),
+    #                mat, viewer);
+    #    else
+    #        error("not yet assembled")
+    #    end
+    #    return nothing
+    #end
+    function view(mat::AbstractMat{$PetscScalar})
         if assembled(mat)
+            comm = getcomm(mat);
+            viewver = ViewerStdout($petsclib, mat.comm);
             @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
                         (CMat, CPetscViewer),
                     mat, viewer);

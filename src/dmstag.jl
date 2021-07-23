@@ -2,11 +2,11 @@
 const CDMStag = Ptr{Cvoid}
 const CDMStagType = Cstring
 
-mutable struct DMStag{T, PetscInt} <: Factorization{T}
+mutable struct DMStag{T, PetscLib} <: Factorization{T}
     ptr::CDMStag
     comm::MPI.Comm
-    dim::PetscInt
-    opts::Options{T}
+    #dim::PetscInt
+    opts::Options{PetscLib}
 end
 
 mutable struct DMSTAGSTENCIL
@@ -87,9 +87,11 @@ function DMStagCreate1d end
     )
 
     if isempty(lx); lx = C_NULL; end
-    opts = Options{$PetscScalar}(kwargs...)
+    #opts = Options{$PetscScalar}(kwargs...)
+    opts = Options($petsclib, kwargs...)
 
-    dm  = DMStag{$PetscScalar,$PetscInt}(C_NULL, comm, 1, opts)   # retrieve options
+    #dm  = DMStag{$PetscScalar,$PetscInt}(C_NULL, comm, 1, opts)   # retrieve options
+    dm  = DMStag{$PetscScalar,$PetscLib}(C_NULL, comm, opts)   # retrieve options
         
     @chk ccall((:DMStagCreate1d, $libpetsc), PetscErrorCode,
             (
@@ -181,9 +183,11 @@ function DMStagCreate2d end
         
     if isempty(lx); lx = C_NULL; end
     if isempty(ly); ly = C_NULL; end
-    opts = Options{$PetscScalar}(kwargs...)
+    #opts = Options{$PetscScalar}(kwargs...)
+    opts = Options($petsclib, kwargs...)
+
         
-    dm = DMStag{$PetscScalar,$PetscInt}(C_NULL, comm, 2, opts)
+    dm = DMStag{$PetscScalar,$PetscLib}(C_NULL, comm, opts)
 
     @chk ccall((:DMStagCreate2d, $libpetsc), PetscErrorCode,
             (
@@ -279,9 +283,9 @@ function DMStagCreate3d end
     if isempty(lx); lx = C_NULL; end
     if isempty(ly); ly = C_NULL; end
     if isempty(lz); lz = C_NULL; end
-    opts = Options{$PetscScalar}(kwargs...)
+    opts = Options($petsclib, kwargs...)
         
-    dm = DMStag{$PetscScalar,$PetscInt}(C_NULL, comm, 3, opts)
+    dm = DMStag{$PetscScalar,$PetscLib}(C_NULL, comm, opts)
 
     @chk ccall((:DMStagCreate3d, $libpetsc), PetscErrorCode,
             (
@@ -336,7 +340,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMSetUp end
 
-@for_libpetsc function DMSetUp(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function DMSetUp(dm::DMStag{$PetscScalar,$PetscLib})
 
     @chk ccall((:DMSetUp, $libpetsc), PetscErrorCode, (CDMStag, ), dm )
 
@@ -354,7 +358,7 @@ More info on [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/man
 """
 function setfromoptions! end
 
-@for_libpetsc function setfromoptions!(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function setfromoptions!(dm::DMStag{$PetscScalar,$PetscLib})
 
     @chk ccall((:DMSetFromOptions, $libpetsc), PetscErrorCode, (CDMStag, ), dm )
 
@@ -386,7 +390,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 function DMStagCreateCompatibleDMStag end
 
 @for_libpetsc function DMStagCreateCompatibleDMStag(
-    dm::DMStag{$PetscScalar,$PetscInt}, 
+    dm::DMStag{$PetscScalar,$PetscLib}, 
     dofVertex=0, 
     dofEdge=0, 
     dofFace=0, 
@@ -396,11 +400,9 @@ function DMStagCreateCompatibleDMStag end
 
     comm  = dm.comm
 
-    dim   = DMGetDimension(dm)
+    opts = Options($petsclib, kwargs...)
 
-    opts  = Options{$PetscScalar}(kwargs...)
-
-    dmnew = DMStag{$PetscScalar,$PetscInt}(C_NULL, comm, dim, opts)
+    dmnew = DMStag{$PetscScalar,$PetscLib}(C_NULL, comm, opts)
 
     @chk ccall((:DMStagCreateCompatibleDMStag, $libpetsc), PetscErrorCode, 
     (
@@ -449,7 +451,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 function DMStagGetDOF end
 
 
-@for_libpetsc function DMStagGetDOF(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function DMStagGetDOF(dm::DMStag{$PetscScalar,$PetscLib})
 
     dof0 = Ref{$PetscInt}()
     dof1 = Ref{$PetscInt}()
@@ -470,11 +472,13 @@ function DMStagGetDOF end
     dof3
     )
 
-    if dm.dim==1
+    dim   = DMGetDimension(dm)
+
+    if dim==1
         return  dof0[],dof1[]   
-    elseif dm.dim==2
+    elseif dim==2
         return dof0[],dof1[],dof2[]
-    elseif dm.dim==3
+    elseif dim==3
         return dof0[],dof1[],dof2[],dof3[]
     end
 
@@ -493,7 +497,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetGlobalSizes end
 
-@for_libpetsc function DMStagGetGlobalSizes(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function DMStagGetGlobalSizes(dm::DMStag{$PetscScalar,$PetscLib})
 
     M = Ref{$PetscInt}()
     N = Ref{$PetscInt}()
@@ -507,18 +511,20 @@ function DMStagGetGlobalSizes end
         dm,
         M, N, P 
         )
+
+        dim   = DMGetDimension(dm)
         
-    if dm.dim==1    
+    if dim==1    
         return M[]
-    elseif dm.dim==2
+    elseif dim==2
         return M[], N[] 
-    elseif dm.dim==3
+    elseif dim==3
         return M[], N[], P[]    
     end
 end
 
 
-@for_libpetsc function Base.size(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function Base.size(dm::DMStag{$PetscScalar,$PetscLib})
     size = DMStagGetGlobalSizes(dm)
     return size
 end
@@ -536,7 +542,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetLocalSizes end
 
-@for_libpetsc function DMStagGetLocalSizes(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function DMStagGetLocalSizes(dm::DMStag{$PetscScalar,$PetscLib})
 
     M = Ref{$PetscInt}()
     N = Ref{$PetscInt}()
@@ -550,12 +556,14 @@ function DMStagGetLocalSizes end
         dm, 
         M, N, P 
         )
+
+        dim   = DMGetDimension(dm)
         
-    if dm.dim==1    
+    if dim==1    
         return M[]
-    elseif dm.dim==2
+    elseif dim==2
         return M[], N[] 
-    elseif dm.dim==3
+    elseif dim==3
         return M[], N[], P[]    
     end
 end
@@ -599,6 +607,7 @@ function DMStagSetUniformCoordinatesProduct end
     return nothing
 end
 
+# NEED TO BE REPAIRED
 @for_libpetsc function DMStagGetProductCoordinateArraysRead(dm::DMStag)
 
     Arrx = Ref{$PetscScalar}()
@@ -680,7 +689,7 @@ function DMCreateGlobalVector end
     write_val=true, read_val=true
     )
 
-    v = VecSeq(C_NULL, dm.comm, [0.0])  # empty vector
+    v = VecSeq(C_NULL, [0.0])  # empty vector
         
     @chk ccall((:DMCreateGlobalVector, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
 
@@ -712,7 +721,7 @@ function DMCreateLocalVector end
     write_val=true, read_val=true
     )
 
-    v = VecSeq(C_NULL, dm.comm, [0.0])  # empty vector
+    v = VecSeq(C_NULL, [0.0])  # empty vector
         
     @chk ccall((:DMCreateLocalVector, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
 
@@ -891,6 +900,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagGetProductCoordinateLocationSlot end
 
+#REPAIR THAT AS WELL (OR GET RID OF...)
 @for_libpetsc function DMStagGetProductCoordinateLocationSlot(
     dm::DMStag,
     loc::DMStagStencilLocation
@@ -1006,7 +1016,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function destroy end
 
-@for_libpetsc function destroy(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function destroy(dm::DMStag{$PetscScalar,$PetscLib})
     finalized($petsclib) ||
         @chk ccall((:DMDestroy, $libpetsc), PetscErrorCode, (Ptr{CDMStag},), dm)
     return nothing
@@ -1024,7 +1034,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function gettype end
 
-@for_libpetsc function gettype(dm::DMStag{$PetscScalar,$PetscInt})
+@for_libpetsc function gettype(dm::DMStag{$PetscScalar,$PetscLib})
     t_r = Ref{CDMStagType}()
     @chk ccall((:DMGetType, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CDMStagType}), dm, t_r)
     return unsafe_string(t_r[])
@@ -1042,7 +1052,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function view end
 
-@for_libpetsc function view(dm::DMStag{$PetscScalar,$PetscInt}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, dm.comm))
+@for_libpetsc function view(dm::DMStag{$PetscScalar,$PetscLib}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, dm.comm))
     @chk ccall((:DMView, $libpetsc), PetscErrorCode, 
                 (CDMStag, CPetscViewer),
             dm, viewer);
@@ -1090,14 +1100,16 @@ function DMStagGetCorners end
         nExtrax,nExtray,nExtraz 
         )
 
-        if dm.dim==1
+        dim = DMGetDimension(dm);
+
+        if dim==1
             X = (x[],)
             M = (m[],)
             NEXTRA = (nExtrax[],)
             return X[1], M[1], NEXTRA[1]    
-        elseif dm.dim==2
+        elseif dim==2
             return (x[], y[]), (m[],n[]), (nExtrax[],nExtray[])    
-        elseif dm.dim==3
+        elseif dim==3
             return (x[], y[], z[]), (m[],n[],p[]), (nExtrax[],nExtray[],nExtraz[])    
         end
 end
@@ -1136,13 +1148,15 @@ function DMStagGetGhostCorners end
         m,n,p
         )
 
-        if dm.dim==1
+        dim =   DMGetDimension(dm);
+
+        if dim==1
             X = (x[],)
             M = (m[],)
             return X[1], M[1]
-        elseif dm.dim==2
+        elseif dim==2
             return (x[], y[]), (m[],n[])    
-        elseif dm.dim==3
+        elseif dim==3
             return (x[], y[], z[]), (m[],n[],p[])   
         end
 end
@@ -1164,8 +1178,9 @@ function DMStagGetCentralNodes end
     g_start, g_N    =   DMStagGetGhostCorners(dm);
     g_width         =   DMStagGetStencilWidth(dm);
     start,N, nExtra =   DMStagGetCorners(dm);
+    dim             =   DMGetDimension(dm); 
         
-    Cen_start       =   zeros(Int64,dm.dim)
+    Cen_start       =   zeros(Int64,dim)
     for i=1:length(g_start)
         Cen_start[i] = -g_start[i] + 1;
     end
@@ -1203,11 +1218,13 @@ function DMStagGetBoundaryTypes end
         Bx,By,Bz
         )
 
-        if dm.dim==1
+        dim = DMGetDimension(dm); 
+
+        if dim==1
             return Bx[]    
-        elseif dm.dim==2
+        elseif dim==2
             return Bx[], By[]
-        elseif dm.dim==3
+        elseif dim==3
             return Bx[], By[], Bz[]
         end
 end
@@ -1240,12 +1257,14 @@ function DMStagGetNumRanks end
         dm, 
         nRanks0,nRanks1,nRanks2
         )
+
+        dim = DMGetDimension(dm); 
             
-    if dm.dim==1
+    if dim==1
         return nRanks0[]
-    elseif dm.dim==2
+    elseif dim==2
         return nRanks0[], nRanks1[]
-    elseif dm.dim==3
+    elseif dim==3
         return nRanks0[], nRanks1[], nRanks2[]
     end
 end
@@ -1934,7 +1953,7 @@ function DMCreateMatrix end
     #  ideally, we should modify the viewer to take care of this case
 
     if dm.comm==MPI.COMM_SELF
-        mat = MatSeqAIJ{$PetscScalar}(C_NULL, dm.comm)
+        mat = MatSeqAIJ{$PetscScalar}(C_NULL)
     elseif dm.comm==MPI.COMM_WORLD
         error("MatMPIAIJ still to be implemented")
     end

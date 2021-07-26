@@ -13,6 +13,7 @@ mutable struct SNES{T, PetscLib} <: AbstractSNES{T, PetscLib}
     update_jac!
     jac_A
     jac_P
+    user_ctx    # Useful to transfer vectors and dms into the residual function
 end
 
 scalartype(::AbstractSNES{T}) where {T} = T
@@ -48,7 +49,7 @@ end
     function SNES{$PetscScalar}(comm::MPI.Comm; kwargs...)
         @assert initialized($petsclib)
         opts = Options($petsclib, kwargs...)
-        snes = SNES{$PetscScalar, $PetscLib}(C_NULL, opts, nothing, nothing, nothing, nothing, nothing)
+        snes = SNES{$PetscScalar, $PetscLib}(C_NULL, opts, nothing, nothing, nothing, nothing, nothing, nothing)
         @chk ccall((:SNESCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CSNES}), comm, snes)
 
         with(snes.opts) do
@@ -64,11 +65,12 @@ end
 
     function (::SNESFn{$PetscScalar})(csnes::CSNES, cx::CVec, cfx::CVec, ctx::Ptr{Cvoid})::$PetscInt
         snes = unsafe_pointer_to_objref(ctx)
-        x = unsafe_localarray($PetscScalar, cx; write=false)
-        fx = unsafe_localarray($PetscScalar, cfx; read=false)
-        snes.fn!(fx, x)
-        Base.finalize(x)
-        Base.finalize(fx)
+        #x = unsafe_localarray($PetscScalar, cx; write=false)
+        #fx = unsafe_localarray($PetscScalar, cfx; read=false)
+        #snes.fn!(fx, x, snes.user_ctx)
+        snes.fn!(cfx, cx, snes.user_ctx)
+        #Base.finalize(x)
+        #Base.finalize(fx)
         return $PetscInt(0)
     end
 
@@ -115,9 +117,10 @@ end
         @assert snes.ptr == csnes
         @assert snes.jac_A.ptr == cA
         @assert snes.jac_P.ptr == cP
-        x = unsafe_localarray($PetscScalar, cx; write=false)
-        snes.update_jac!(x, snes.jac_A, snes.jac_P)
-        Base.finalize(x)
+        #x = unsafe_localarray($PetscScalar, cx; write=false)
+        #snes.update_jac!(x, snes.jac_A, snes.jac_P,snes.user_ctx)
+        snes.update_jac!(cx, snes.jac_A, snes.jac_P,snes.user_ctx)
+        #Base.finalize(x)
         return $PetscInt(0)
     end
 

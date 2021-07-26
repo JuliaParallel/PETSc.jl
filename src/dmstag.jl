@@ -2068,11 +2068,9 @@ function DMGetCoordinateDM end
 
     comm  = dm.comm
 
-    dim   = DMGetDimension(dm)
+    opts = Options($petsclib, kwargs...)
 
-    opts  = Options{$PetscScalar}(kwargs...)
-
-    dmnew = DMStag{$PetscScalar,$PetscInt}(C_NULL, comm, dim, opts)
+    dmnew = DMStag{$PetscScalar,$PetscLib}(C_NULL, comm, opts)   # retrieve options
 
     @chk ccall((:DMGetCoordinateDM, $libpetsc), PetscErrorCode,
     (CDMStag, Ptr{CDMStag}), 
@@ -2095,7 +2093,7 @@ function DMGetCoordinatesLocal end
 
 @for_libpetsc function DMGetCoordinatesLocal(dm::DMStag; write_val=true, read_val=true)
 
-    v = VecSeq(C_NULL, dm.comm, [0.0])  # empty vector
+    v = VecSeq(C_NULL, [0.0])  # empty vector
         
     @chk ccall((:DMGetCoordinatesLocal, $libpetsc), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
 

@@ -304,7 +304,7 @@ function MatSetValuesStencil! end
     function view(mat::AbstractMat{$PetscScalar})
         if assembled(mat)
             comm = getcomm(mat);
-            viewver = ViewerStdout($petsclib, mat.comm);
+            viewer = ViewerStdout($petsclib, comm);
             @chk ccall((:MatView, $libpetsc), PetscErrorCode, 
                         (CMat, CPetscViewer),
                     mat, viewer);

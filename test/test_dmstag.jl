@@ -405,8 +405,7 @@ end
 # Main SNES part
 PJ           =      PETSc.DMCreateMatrix(user_ctx.dm);                  # extract (global) matrix from DMStag
 
-julia_vec    =      0;
-S = PETSc.SNES{Float64}(MPI.COMM_SELF, julia_vec; 
+S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
         snes_rtol=1e-12, 
         snes_monitor=true, 
         pc_type="none",
@@ -492,8 +491,7 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
 
 end
 
-julia_vec    =      0;
-S = PETSc.SNES{Float64}(MPI.COMM_SELF, julia_vec; 
+S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
         snes_rtol=1e-12, 
         snes_monitor=true, 
         pc_type="none",

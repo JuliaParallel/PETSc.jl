@@ -71,18 +71,24 @@ PETSc.initialize()
   @test PETSc.KSP(M) \ x ≈ x/2
 
 
-  function F!(fx, x)
+  function F!(cfx, cx, a)
+    x = PETSc.unsafe_localarray(Float64,cx)
+    fx = PETSc.unsafe_localarray(Float64,cfx)
     fx[1] = x[1]^2 + x[1]*x[2] - 3
     fx[2] = x[1]*x[2] + x[2]^2 - 6
+    Base.finalize(x)
+    Base.finalize(fx)
   end
 
   J = zeros(2,2)
   PJ = PETSc.MatSeqDense(J)
-  function updateJ!(x, args...)
+  function updateJ!(cx, args...)
+    x = PETSc.unsafe_localarray(Float64,cx)
     J[1,1] = 2x[1] + x[2]
     J[1,2] = x[1]
     J[2,1] = x[2]
     J[2,2] = x[1] + 2x[2]
+    Base.finalize(x)
   end
 
   S = PETSc.SNES{Float64}(MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")

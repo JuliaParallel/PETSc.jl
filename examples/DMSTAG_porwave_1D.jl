@@ -229,7 +229,7 @@ x0              =   PETSc.VecSeq(rand(size(x_g,1)));
 J_julia,ind     =   FormJacobian!(x0.ptr, J, J, user_ctx)
 
 
-S = PETSc.SNES{Float64}(MPI.COMM_SELF, 0; 
+S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
         snes_rtol=1e-12, 
         snes_monitor=true, 
         snes_max_it = 500,

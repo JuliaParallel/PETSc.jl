@@ -383,7 +383,7 @@ SetVecX!(user_ctx,x_g);
 user_ctx.jac, user_ctx.colors = ComputeSparsityPatternJacobian_automatic(user_ctx.x_l.array, user_ctx);
 
 #Setting up SNES
-S = PETSc.SNES{Float64}(MPI.COMM_SELF, 0; 
+S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
         snes_rtol=1e-12, 
         snes_monitor=true, 
         snes_max_it = 500,

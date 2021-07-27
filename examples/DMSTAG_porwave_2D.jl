@@ -336,7 +336,7 @@ heatmap(xc_1D,zc_1D,Pe_pl', xlabel="Width", ylabel="Depth", title="Pe")
 @time user_ctx.jac, user_ctx.colors = ComputeSparsityPatternJacobian(user_ctx.x_l.array, user_ctx);    
 
 
-S = PETSc.SNES{Float64}(MPI.COMM_SELF, 0; 
+S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
         snes_rtol=1e-12, 
         snes_monitor=true, 
         snes_max_it = 500,

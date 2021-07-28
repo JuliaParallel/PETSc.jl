@@ -9,24 +9,15 @@ mutable struct DMStag{T, PetscLib} <: Factorization{T}
     opts::Options{PetscLib}
 end
 
-mutable struct DMSTAGSTENCIL
+mutable struct DMSTAGSTENCIL{PetscInt}
     loc::DMStagStencilLocation
-    i::Int64
-    j::Int64
-    k::Int64
-    c::Int64
-end
-
-mutable struct DMSTAGSTENCIL_C
-    loc::DMStagStencilLocation
-    i::Cint
-    j::Cint
-    k::Cint
-    c::Cint
+    i::PetscInt
+    j::PetscInt
+    k::PetscInt
+    c::PetscInt
 end
 
 const DMStagStencil     = DMSTAGSTENCIL
-const DMStagStencil_c   = DMSTAGSTENCIL_C
 
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
@@ -37,13 +28,6 @@ Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
 
 
 Base.eltype(::DMStag{T,PetscInt}) where {T,PetscInt} = T,PetscInt
-
-# allows us to pass XXMat objects directly into CMat ccall signatures
-#Base.cconvert(::Type{DMStagStencil_c}, obj::Ref{DMStagStencil}) = obj
-#Base.cconvert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc, v.i, v.j,v.k, v.c)
-
-Base.convert(::Type{DMStagStencil_c}, v::DMStagStencil) = DMStagStencil_c(v.loc, v.i, v.j,v.k, v.c)
-#Base.unsafe_convert(::Type{DMStagStencil_c}, v::Tuple) = DMStagStencil_c(v[1], v[2], v[3], v[4], v[5]);
 
 
 """
@@ -1292,7 +1276,7 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagVecSetValuesStencil end
 
-@for_libpetsc function  DMStagVecSetValuesStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil, val, insertMode::InsertMode)
+@for_libpetsc function  DMStagVecSetValuesStencil(dm::DMStag, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil{$PetscInt}, val, insertMode::InsertMode)
 
     n=1;
     @chk ccall((:DMStagVecSetValuesStencil, $libpetsc), PetscErrorCode,
@@ -1300,14 +1284,14 @@ function DMStagVecSetValuesStencil end
                     CDMStag, 
                     CVec, 
                     $PetscInt, 
-                    Ptr{DMStagStencil_c}, 
+                    Ptr{DMStagStencil{$PetscInt}}, 
                     Ptr{$PetscScalar}, 
                     InsertMode
                 ), 
                 dm, 
                 vec.ptr, 
                 n, 
-                Ref{DMStagStencil_c}(pos), 
+                Ref{DMStagStencil{$PetscInt}}(pos), 
                 Ref{$PetscScalar}(val), 
                 insertMode
                 )
@@ -1343,7 +1327,7 @@ function DMStagVecSetValuesStencil end
     dm::DMStag, 
     vec::AbstractVec{$PetscScalar}, 
     n,
-    pos::Vector{$DMStagStencil}, 
+    pos::Vector{$DMStagStencil{$PetscInt}}, 
     values::Vector{$PetscScalar}, 
     insertMode::InsertMode
     )
@@ -1358,14 +1342,14 @@ function DMStagVecSetValuesStencil end
                         CDMStag, 
                         CVec, 
                         $PetscInt, 
-                        Ptr{DMStagStencil_c}, 
+                        Ptr{DMStagStencil{$PetscInt}}, 
                         Ptr{$PetscScalar}, 
                         InsertMode
                     ), 
                     dm, 
                     vec.ptr, 
                     m, 
-                    Ref{DMStagStencil_c}(pos0), 
+                    Ref{DMStagStencil{$PetscInt}}(pos0), 
                     Ref{$PetscScalar}(val), 
                     insertMode
                     )
@@ -1407,13 +1391,13 @@ function DMStagVecGetValuesStencil end
                     CDMStag, 
                     CVec, 
                     $PetscInt, 
-                    Ptr{DMStagStencil_c}, 
+                    Ptr{DMStagStencil{$PetscInt}}, 
                     Ptr{$PetscScalar}
                 ), 
                 dm, 
                 vec.ptr, 
                 n, 
-                Ref{DMStagStencil_c}(pos), 
+                Ref{DMStagStencil{$PetscInt}}(pos), 
                 val
                 )
     
@@ -1445,7 +1429,7 @@ function DMStagVecGetValuesStencil end
     dm::DMStag, 
     vec::AbstractVec{$PetscScalar}, 
     n,
-    pos::Vector{$DMStagStencil}
+    pos::Vector{$DMStagStencil{$PetscInt}}
     )
 
     i = 1;
@@ -1459,13 +1443,13 @@ function DMStagVecGetValuesStencil end
                         CDMStag, 
                         CVec, 
                         $PetscInt, 
-                        Ptr{DMStagStencil_c}, 
+                        Ptr{DMStagStencil{$PetscInt}}, 
                         Ptr{$PetscScalar}
                     ), 
                     dm, 
                     vec.ptr, 
                     m, 
-                    Ref{DMStagStencil_c}(pos0), 
+                    Ref{DMStagStencil{$PetscInt}}(pos0), 
                     val
                     )
             
@@ -1510,17 +1494,17 @@ function DMStagMatGetValuesStencil end
                     CDMStag, 
                     CMat, 
                     $PetscInt, 
-                    Ptr{DMStagStencil_c}, 
+                    Ptr{DMStagStencil{$PetscInt}}, 
                     $PetscInt, 
-                    Ptr{DMStagStencil_c}, 
+                    Ptr{DMStagStencil{$PetscInt}}, 
                     Ptr{$PetscScalar}
                 ), 
                 dm, 
                 mat.ptr, 
                 nRow, 
-                Ref{DMStagStencil_c}(posRow), 
+                Ref{DMStagStencil{$PetscInt}}(posRow), 
                 nCol, 
-                Ref{DMStagStencil_c}(posCol), 
+                Ref{DMStagStencil{$PetscInt}}(posCol), 
                 val
                 )
 
@@ -1553,9 +1537,9 @@ function DMStagMatGetValuesStencil end
     dm::DMStag,
     mat::AbstractMat{$PetscScalar}, 
     nRow,  
-    posRow::Vector{$DMStagStencil}, 
+    posRow::Vector{$DMStagStencil{$PetscInt}}, 
     nCol, 
-    posCol::Vector{$DMStagStencil}
+    posCol::Vector{$DMStagStencil{$PetscInt}}
     )
 
     i = 1;
@@ -1573,17 +1557,17 @@ function DMStagMatGetValuesStencil end
                             CDMStag, 
                             CMat, 
                             $PetscInt, 
-                            Ptr{DMStagStencil_c}, 
+                            Ptr{DMStagStencil{$PetscInt}}, 
                             $PetscInt, 
-                            Ptr{DMStagStencil_c}, 
+                            Ptr{DMStagStencil{$PetscInt}}, 
                             Ptr{$PetscScalar}
                         ), 
                         dm, 
                         mat.ptr, 
                         n_Row, 
-                        Ref{DMStagStencil_c}(posr), 
+                        Ref{DMStagStencil{$PetscInt}}(posr), 
                         n_Col, 
-                        Ref{DMStagStencil_c}(posc), 
+                        Ref{DMStagStencil{$PetscInt}}(posc), 
                         val
                         )
             values[i*j] = val[]
@@ -1663,18 +1647,18 @@ function DMStagMatSetValuesStencil end
                     CDMStag, 
                     CMat, 
                     $PetscInt, 
-                    Ptr{DMStagStencil_c},  
+                    Ptr{DMStagStencil{$PetscInt}},  
                     $PetscInt, 
-                    Ptr{DMStagStencil_c}, 
+                    Ptr{DMStagStencil{$PetscInt}}, 
                     Ptr{$PetscScalar}, 
                     InsertMode
                 ), 
                 dm, 
                 mat.ptr, 
                 nRow, 
-                Ref{DMStagStencil_c}(posRow), 
+                Ref{DMStagStencil{$PetscInt}}(posRow), 
                 nCol, 
-                Ref{$DMStagStencil_c}(posCol), 
+                Ref{$DMStagStencil{$PetscInt}}(posCol), 
                 Ref{$PetscScalar}(val), 
                 insertMode
                 )
@@ -1711,9 +1695,9 @@ function DMStagMatSetValuesStencil end
     dm::DMStag, 
     mat::AbstractMat{$PetscScalar}, 
     nRow,  
-    posRow::Vector{$DMStagStencil}, 
+    posRow::Vector{$DMStagStencil{$PetscInt}}, 
     nCol, 
-    posCol::Vector{$DMStagStencil}, 
+    posCol::Vector{$DMStagStencil{$PetscInt}}, 
     values::Vector{$PetscScalar}, 
     insertMode::InsertMode
     )
@@ -1733,18 +1717,18 @@ function DMStagMatSetValuesStencil end
                             CDMStag, 
                             CMat, 
                             $PetscInt, 
-                            Ptr{DMStagStencil_c},  
+                            Ptr{DMStagStencil{$PetscInt}},  
                             $PetscInt, 
-                            Ptr{DMStagStencil_c}, 
+                            Ptr{DMStagStencil{$PetscInt}}, 
                             Ptr{$PetscScalar}, 
                             InsertMode
                         ), 
                         dm, 
                         mat.ptr, 
                         n_Row, 
-                        Ref{DMStagStencil_c}(posr), 
+                        Ref{DMStagStencil{$PetscInt}}(posr), 
                         n_Col, 
-                        Ref{$DMStagStencil_c}(posc), 
+                        Ref{$DMStagStencil{$PetscInt}}(posc), 
                         Ref{$PetscScalar}(val), 
                         insertMode
                         )

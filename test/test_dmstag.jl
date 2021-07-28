@@ -7,6 +7,10 @@ if ~MPI.Initialized()
 end
 PETSc.initialize()
 
+petsclib = PETSc.petsclibs[1]
+PetscScalar = PETSc.scalartype(petsclib)
+PetscInt = PETSc.inttype(petsclib)
+
 @testset "DMSTAG routines" begin
 
 # Create 1D DMStag
@@ -154,9 +158,9 @@ X_1D = PETSc.DMStagVecGetArray(dm_1D,vec_test);
 @test X_1D[2,3] == 7.0
 
 # Create two stencil locations
-pos1 = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,1,0,0,1)
+pos1 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,1,0,0,1)
 @test pos1.c == 1
-pos2 = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,4,0,0,0)
+pos2 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_RIGHT,4,0,0,0)
 @test pos2.loc == PETSc.DMSTAG_RIGHT
 @test pos2.i == 4
 
@@ -165,7 +169,7 @@ pos = [pos1, pos2];
 # Retrieve value from stencil
 val = PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test, pos1) # this gets a single value
 @test val==6
-vals = PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test, 2, pos) # this gets a single value
+vals = PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test, 2, pos) # this gets an array of values
 @test vals[1] == 6
 
 # Set single value in global vector using stencil
@@ -177,7 +181,7 @@ PETSc.DMStagVecSetValuesStencil(dm_1D, vec_test_global, 2, pos, val1, PETSc.INSE
 
 
 
-pos3 = PETSc.DMStagStencil_c(PETSc.DMSTAG_LEFT,1,0,0,1)
+pos3 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,1,0,0,1)
 
 # NOTE: setting/getting multiple values is somehow not working for me. Can be called
 #  by creating a wrapper
@@ -246,17 +250,17 @@ for ix=nStart[1]:nEnd[1]-1
         local dof
         # DOF at the center point
         dof     = 0;
-        posA    = PETSc.DMStagStencil(PETSc.DMSTAG_DOWN,ix,iy,0,dof)
+        posA    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_DOWN,ix,iy,0,dof)
         value   = ix+10; 
         PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posA, value, PETSc.INSERT_VALUES)
 
         dof     = 0;
-        posB    = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,ix,iy,0,dof)
+        posB    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,ix,iy,0,dof)
         value   = 33; 
         PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posB, value, PETSc.INSERT_VALUES)
         
         dof     = 0;
-        posC    = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
+        posC    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
         value   = 44; 
         PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posC, value, PETSc.INSERT_VALUES)
         
@@ -281,7 +285,7 @@ Xarray = PETSc.DMStagGetGhostArrayLocationSlot(dm_2D,vec_test_2D_local, PETSc.DM
 
 # retrieve value back from the local array and check that it agrees with the 
 dof     = 0;
-pos     = PETSc.DMStagStencil(PETSc.DMSTAG_DOWN,2,2,0,dof)
+pos     = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_DOWN,2,2,0,dof)
 @test PETSc.DMStagVecGetValuesStencil(dm_2D, vec_test_2D_local, pos) == 12.0
 
 

@@ -1,17 +1,22 @@
 using Test
 using PETSc, MPI
 using ForwardDiff, SparseArrays
+MPI.Initialized() || MPI.Init()
+#PETSc.initialize()
 
-if ~MPI.Initialized()
-    MPI.Init()
-end
-PETSc.initialize()
-
-petsclib = PETSc.petsclibs[1]
-PetscScalar = PETSc.scalartype(petsclib)
-PetscInt = PETSc.inttype(petsclib)
+#petsclib = PETSc.petsclibs[1]
+#PetscScalar = PETSc.scalartype(petsclib)
+#PetscInt = PETSc.inttype(petsclib)
 
 @testset "DMSTAG routines" begin
+
+#comm = MPI.COMM_WORLD
+#mpirank = MPI.Comm_rank(comm)
+#mpisize = MPI.Comm_size(comm)
+for petsclib in PETSc.petsclibs
+PETSc.initialize(petsclib)
+PetscScalar = PETSc.scalartype(petsclib)
+PetscInt = PETSc.inttype(petsclib)
 
 # Create 1D DMStag
 dm = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMSTAG_STENCIL_BOX,2)
@@ -288,9 +293,27 @@ dof     = 0;
 pos     = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_DOWN,2,2,0,dof)
 @test PETSc.DMStagVecGetValuesStencil(dm_2D, vec_test_2D_local, pos) == 12.0
 
+PETSc.finalize(petsclib)
+end
+end
 
 # -----------------
 # Example of SNES, with AD jacobian
+
+@testset "DMSTAG_AND_SNES" begin
+    #comm = MPI.COMM_WORLD
+    #mpirank = MPI.Comm_rank(comm)
+    #mpisize = MPI.Comm_size(comm)
+
+    petsclib = PETSc.petsclibs[1]
+    PETSc.initialize(petsclib)
+    PetscScalar = PETSc.scalartype(petsclib)
+    PetscInt = PETSc.inttype(petsclib)
+
+#for petsclib in PETSc.petsclibs
+#PETSc.initialize(petsclib)
+#PetscScalar = PETSc.scalartype(petsclib)
+#PetscInt = PETSc.inttype(petsclib)
 
 # Define a struct that holds data we need in the local SNES routines below   
 mutable struct Data_1
@@ -520,6 +543,7 @@ T2d =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l, PETSc.DM
 #ly = zeros(Int32,1);
 #lz = zeros(Int32,1);
 #PETSc.DMStagGetOwnershipRanges(dm_1D,lx,ly,lz)
+PETSc.finalize(petsclib)
 
-
+#end
 end

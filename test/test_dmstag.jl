@@ -453,6 +453,8 @@ PETSc.solve!(x_g, S);
 
 J_julia = FormJacobian!(x_g.ptr, PJ, PJ, user_ctx)
 
+PETSc.finalize(petsclib)
+
 end
 end
 

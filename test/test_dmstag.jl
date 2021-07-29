@@ -305,15 +305,15 @@ end
     #mpirank = MPI.Comm_rank(comm)
     #mpisize = MPI.Comm_size(comm)
 
-    petsclib = PETSc.petsclibs[1]
-    PETSc.initialize(petsclib)
-    PetscScalar = PETSc.scalartype(petsclib)
-    PetscInt = PETSc.inttype(petsclib)
+    #petsclib = PETSc.petsclibs[1]
+    #PETSc.initialize(petsclib)
+    #PetscScalar = PETSc.scalartype(petsclib)
+    #PetscInt = PETSc.inttype(petsclib)
 
-#for petsclib in PETSc.petsclibs
-#PETSc.initialize(petsclib)
-#PetscScalar = PETSc.scalartype(petsclib)
-#PetscInt = PETSc.inttype(petsclib)
+for petsclib in PETSc.petsclibs
+PETSc.initialize(petsclib)
+PetscScalar = PETSc.scalartype(petsclib)
+PetscInt = PETSc.inttype(petsclib)
 
 # Define a struct that holds data we need in the local SNES routines below   
 mutable struct Data_1
@@ -453,12 +453,29 @@ PETSc.solve!(x_g, S);
 
 J_julia = FormJacobian!(x_g.ptr, PJ, PJ, user_ctx)
 
+end
+end
+
 #
 # -----------------
 
 
 # -----------------
 # 2D example
+@testset "DMSTAG_AND_SNES_2D" begin
+
+for petsclib in PETSc.petsclibs
+    PETSc.initialize(petsclib)
+    PetscScalar = PETSc.scalartype(petsclib)
+    PetscInt = PETSc.inttype(petsclib)
+
+mutable struct Data_1
+    dm
+    x_l
+    f_l
+end
+user_ctx = Data_1(nothing, nothing, nothing);  # holds data we need in the local 
+
 dofVertex   =   0
 dofEdge     =   0
 dofCenter   =   1
@@ -470,6 +487,43 @@ f_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
 user_ctx.x_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
 user_ctx.f_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
 
+
+function FormRes!(cfx_g, cx_g, user_ctx)
+
+    # Note that in PETSc, cx and cfx are pointers to global vectors. 
+    
+    # Copy global to local vectors
+    PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
+    PETSc.DMGlobalToLocal(user_ctx.dm, cfx_g, PETSc.INSERT_VALUES,  user_ctx.f_l) 
+
+    # Retrieve arrays from the local vectors
+    ArrayLocal_x     =   PETSc.DMStagVecGetArrayRead(user_ctx.dm, user_ctx.x_l);  # array with all local x-data
+    ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, user_ctx.f_l);      # array with all local residual
+    
+    # Compute local residual 
+    ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
+
+    # Finalize local arrays
+    Base.finalize(ArrayLocal_x)
+    Base.finalize(ArrayLocal_f)
+
+    # Copy local into global residual vector
+    PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.f_l, PETSc.INSERT_VALUES, cfx_g) 
+
+end
+
+function  ForwardDiff_res(x, user_ctx)
+    f   = zero(x)               # vector of zeros, of same type as x (local vector)
+
+    ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all local x-data
+    ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, f);        # array with all local residual
+  
+    ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx);
+
+    # As the residual vector f is linked with ArrayLocal_f, we don't need to pass ArrayLocal_f back
+
+    return f;
+end
 
 function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     # Compute the local residual. The vectors include ghost points 
@@ -518,6 +572,28 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
 
 end
 
+function FormJacobian!(cx_g, J, P, user_ctx)
+    # This requires several steps:
+    #
+    #   1) Extract local vector from global solution (x) vector
+    #   2) Compute local jacobian from the residual routine (note that
+    #       this routine requires julia vectors as input)
+
+    # Extract the local vector
+    PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
+    x               =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false, read=true)
+
+    f_Residual      =   (x -> ForwardDiff_res(x, user_ctx));        # pass additional arguments into the routine
+
+    J_julia         =   ForwardDiff.jacobian(f_Residual,x);  
+
+    # Note: since x is the LOCAL vector, J_julia also ends up having the same size.
+    ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);
+    J              .=   sparse(J_julia[ind,ind]);       
+
+   return J_julia, ind
+end
+
 S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
         snes_rtol=1e-12, 
         snes_monitor=true, 
@@ -545,5 +621,5 @@ T2d =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l, PETSc.DM
 #PETSc.DMStagGetOwnershipRanges(dm_1D,lx,ly,lz)
 PETSc.finalize(petsclib)
 
-#end
+end
 end

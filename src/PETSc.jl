@@ -30,10 +30,10 @@ include("mat.jl")
 include("matshell.jl")
 include("dm.jl")
 include("dmda.jl")
+include("dmstag.jl")
 include("ksp.jl")
 include("pc.jl")
 include("snes.jl")
-include("dmstag.jl")
 include("sys.jl")
 
 end

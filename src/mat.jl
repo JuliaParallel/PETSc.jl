@@ -314,13 +314,13 @@ function MatSetValuesStencil! end
         return nothing
     end
 
-    function Base.getindex(M::AbstractMat{$PetscScalar}, i::Integer, j::Integer)    
-        val = Ref{$PetscScalar}()
-        @chk ccall((:MatGetValues, $libpetsc), PetscErrorCode, 
-            (CMat, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}),
-            M, 1, Ref{$PetscInt}(i-1), 1, Ref{$PetscInt}(j-1), val)
-        return val[]
-    end
+    #function Base.getindex(M::AbstractMat{$PetscScalar}, i::Integer, j::Integer)    
+    #    val = Ref{$PetscScalar}()
+    #    @chk ccall((:MatGetValues, $libpetsc), PetscErrorCode, 
+    #        (CMat, $PetscInt, Ptr{$PetscInt}, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar}),
+    #        M, 1, Ref{$PetscInt}(i-1), 1, Ref{$PetscInt}(j-1), val)
+    #    return val[]
+    #end
     
     function ownershiprange(M::AbstractMat{$PetscScalar})
         r_lo = Ref{$PetscInt}()

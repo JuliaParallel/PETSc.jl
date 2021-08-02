@@ -5,9 +5,9 @@ const CDMStagType = Cstring
 mutable struct DMStag{PetscLib} <: AbstractDM{PetscLib}
     ptr::CDMStag
     opts::Options{PetscLib}
-
+    
     DMStag{PetscLib}(ptr, opts = Options(PetscLib)) where {PetscLib} =
-        new{PetscLib}(ptr, opts)
+    new{PetscLib}(ptr, opts)
 end
 
 """
@@ -352,35 +352,37 @@ function DMStagCreateCompatibleDMStag end
     dofEdge=0, 
     dofFace=0, 
     dofElement=0; 
-    kwargs...
+    dmsetfromoptions=true,
+    dmsetup=true,
+    options...
     )
 
-    opts = Options($petsclib, kwargs...)
+    opts = Options($petsclib, options...)
 
     dmnew = DMStag{$PetscLib}(C_NULL, opts)
-
-    @chk ccall((:DMStagCreateCompatibleDMStag, $petsc_library), PetscErrorCode, 
-    (
-        CDMStag, 
-        $PetscInt, 
-        $PetscInt, 
-        $PetscInt, 
-        $PetscInt, 
-        Ptr{CDMStag}
-    ), 
-    dm, 
-    dofVertex, 
-    dofEdge, 
-    dofFace, 
-    dofElement, 
-    dmnew
-    )
+    comm  = getcomm(dm);
 
     with(dm.opts) do
-        setfromoptions!(dmnew)
+        @chk ccall((:DMStagCreateCompatibleDMStag, $petsc_library), PetscErrorCode, 
+        (
+            CDMStag, 
+            $PetscInt, 
+            $PetscInt, 
+            $PetscInt, 
+            $PetscInt, 
+            Ptr{CDMStag}
+        ), 
+        dm, 
+        dofVertex, 
+        dofEdge, 
+        dofFace, 
+        dofElement, 
+        dmnew
+        )
     end
 
-    DMSetUp(dmnew);
+    dmsetfromoptions && setfromoptions!(dm)
+    dmsetup && setup!(dm)
 
     if comm == MPI.COMM_SELF
         finalizer(destroy, dmnew)
@@ -730,9 +732,9 @@ function DMStagVecGetArray end
 
     # Extract array from vector. Note: we need to release this by calling 
     # Base.finalize on X1!
-    v.array     =   unsafe_localarray($PetscScalar, v.ptr;  write=true, read=true)
+    array       =   unsafe_localarray($PetscScalar, v.ptr;  write=true, read=true)
 
-    X1          =   DMStagVecGetArray(dm, v.array) 
+    X1          =   DMStagVecGetArray(dm, array) 
         
     return X1
 end
@@ -755,9 +757,9 @@ function DMStagVecGetArrayRead end
 
     # Extract array from vector. Note: we need to release this by calling 
     # finalize on X1!
-    v.array     =   unsafe_localarray($PetscScalar, v.ptr;  write=false, read=true)
+    array       =   unsafe_localarray($PetscScalar, v.ptr;  write=false, read=true)
 
-    X1          =   DMStagVecGetArray(dm, v.array) 
+    X1          =   DMStagVecGetArray(dm, array) 
         
     return X1
 end
@@ -772,11 +774,11 @@ function DMStagVecGetArray end
 @for_petsc function DMStagVecGetArray(dm::DMStag{$PetscLib}, v::Vector)
 
     entriesPerElement   =   DMStagGetEntriesPerElement(dm)
-    nGhost              =   DMStagGetGhostCorners(dm)
+    ghost_corners       =   getghostcorners(dm);
     dim                 =   getdimension(dm);         
-      
+
     # Dimensions of new array (see the PETSc DMStagVecGetArrayRead routine)
-    dim_vec             =   [entriesPerElement; collect(nGhost[2])];  
+    dim_vec             =   [entriesPerElement; collect(ghost_corners.size[1:dim])];  
 
     # Wrap julia vector to new vector.
     X                   =    Base.view(v,:);
@@ -1153,20 +1155,22 @@ Return indices of start and end of the central nodes of a local array built from
 function DMStagGetCentralNodes end
 
 @for_petsc function DMStagGetCentralNodes(dm::DMStag)
-    # in Julia, indices in arrays start @ 1, whereas they can go negative in C
-    # This routine  
-
-    g_start, g_N    =   DMStagGetGhostCorners(dm);  # MODIFY
+    # In Julia, indices in arrays start @ 1, whereas they can go negative in C
+    
+    #g_start, g_N    =   getghostcorners(dm);  # MODIFY
+    gc               =   getghostcorners(dm);  
     g_width         =   DMStagGetStencilWidth(dm);
-    start,N, nExtra =   DMStagGetCorners(dm);       # MODIFY
+
+    #start,N, nExtra =   getcorners(dm);       # MODIFY
+    c               =   getcorners(dm); 
     dim             =   getdimension(dm); 
         
     Cen_start       =   zeros(Int64,dim)
-    for i=1:length(g_start)
-        Cen_start[i] = -g_start[i] + 1;
+    for i=1:dim
+        Cen_start[i] = -gc.lower[i] + 1;
     end
 
-    Cen_end         =   Cen_start  .+ N .- 1;
+    Cen_end         =   Cen_start  .+ c.size[1:dim] .- 1;
     return Cen_start, Cen_end
 end
 
@@ -1273,7 +1277,12 @@ From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages
 """
 function DMStagVecSetValuesStencil end
 
-@for_petsc function  DMStagVecSetValuesStencil(dm::DMStag{$PetscLib}, vec::AbstractVec{$PetscScalar}, pos::DMStagStencil{$PetscInt}, val, insertMode::InsertMode)
+@for_petsc function  DMStagVecSetValuesStencil(
+        dm::DMStag{$PetscLib}, 
+        vec::AbstractVec{$PetscScalar}, 
+        pos::DMStagStencil{$PetscInt}, 
+        val, 
+        insertMode::InsertMode)
 
     n=1;
     @chk ccall((:DMStagVecSetValuesStencil, $petsc_library), PetscErrorCode,
@@ -1323,7 +1332,7 @@ function DMStagVecSetValuesStencil end
 @for_petsc function  DMStagVecSetValuesStencil(
     dm::DMStag{$PetscLib}, 
     vec::AbstractVec{$PetscScalar}, 
-    n,
+    n::Integer,
     pos::Vector{$DMStagStencil{$PetscInt}}, 
     values::Vector{$PetscScalar}, 
     insertMode::InsertMode
@@ -1590,8 +1599,9 @@ function LocalInGlobalIndices(dm::DMStag)
     # note: this can likely be done more efficiently and will have to be modified in parallel
     ind_g   =   createlocalvector(dm)
     v_ind_l =   createglobalvector(dm)
+    @show ind_g
 
-    ind_l   = unsafe_localarray(Float64, v_ind_l.ptr);
+    ind_l   =   unsafe_localarray(Float64, v_ind_l.ptr);
     for i=1:length(ind_l)
         ind_l[i] = i
     end
@@ -1599,9 +1609,7 @@ function LocalInGlobalIndices(dm::DMStag)
     #DMLocalToGlobal(dm,v_ind_l, INSERT_VALUES, ind_g);
     update!(ind_g, v_ind_l, INSERT_VALUES);
     
-
     return Int64.(ind_g.array)
-
 end
     
 """

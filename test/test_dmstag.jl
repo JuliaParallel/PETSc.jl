@@ -7,7 +7,7 @@ MPI.Initialized() || MPI.Init()
 #PetscScalar = PETSc.scalartype(petsclib)
 #PetscInt = PETSc.inttype(petsclib)
 
-@testset "DMStag 1D" begin
+@testset "DMStagCreate1d" begin
 
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
@@ -21,12 +21,13 @@ MPI.Initialized() || MPI.Init()
         dm = PETSc.DMStagCreate1d(
                 petsclib,
                 comm,
-                PETSc.DM_BOUNDARY_NONE,
+                PETSc.DM_BOUNDARY_PERIODIC,
                 20,
                 2,
                 2,
                 PETSc.DMSTAG_STENCIL_BOX,
                 2)
+        @test PETSc.DMStagGetBoundaryTypes(dm)==PETSc.DM_BOUNDARY_PERIODIC                
         PETSc.destroy(dm)
 
         # Create 1D DMStag with array of local @ of points
@@ -68,7 +69,8 @@ MPI.Initialized() || MPI.Init()
         # Create new struct and pass keyword arguments
         dm_1D = PETSc.DMStagCreate1d(petsclib,comm,PETSc.DM_BOUNDARY_NONE,200,2,2; stag_grid_x=10);
         @test PETSc.DMStagGetGlobalSizes(dm_1D) == 10
-        
+        @test PETSc.DMStagGetEntriesPerElement(dm_1D)==4
+
         # Stencil width & type
         @test  PETSc.DMStagGetStencilWidth(dm_1D)==2
         @test  PETSc.DMStagGetBoundaryTypes(dm_1D) == PETSc.DM_BOUNDARY_NONE
@@ -83,8 +85,23 @@ MPI.Initialized() || MPI.Init()
         @test corners.size[1]==10       # keyword overrides the specified value
         @test  PETSc.DMStagGetBoundaryTypes(dm_ghosted) == PETSc.DM_BOUNDARY_GHOSTED
 
+        ix,in = PETSc.DMStagGetCentralNodes(dm_ghosted);
+
+
+# To be checked:
+        # @test ix[1] == 3       ## TP BE CHECKED: THIS WAS THE ORIGINAL ANSWER
+#        @test ix[1] == 2 
+
+        #ind = PETSc.LocalInGlobalIndices(dm_ghosted);
+
+#        ind_g   =   PETSc.createlocalvector(dm_ghosted)
+#        @show ind_g typeof(ind_g)
+
+   #     @test ind[1] == 9
+
+
         # simple test to retrieve the KSP object
-        # NOTE: need to implement a similar SNES object
+        # NOTE: need to implement a similar SNES routine
         ksp = PETSc.KSP(dm_ghosted)
         @test PETSc.gettype(ksp)=="gmres"
 
@@ -95,11 +112,95 @@ MPI.Initialized() || MPI.Init()
 end
 
 
+@testset "DMStagCreate2d" begin
+
+    comm = MPI.COMM_WORLD
+    mpirank = MPI.Comm_rank(comm)
+    mpisize = MPI.Comm_size(comm)
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = PETSc.scalartype(petsclib)
+        PetscInt    = PETSc.inttype(petsclib)
+
+        # Create 2D DMStag
+        dm_2D = PETSc.DMStagCreate2d(petsclib, comm,
+                PETSc.DM_BOUNDARY_NONE,
+                PETSc.DM_BOUNDARY_NONE,
+                20,
+                21,
+                1,
+                1,
+                1,
+                1,
+                1,
+                PETSc.DMSTAG_STENCIL_BOX,
+                2)
+        
+        @test PETSc.DMStagGetGlobalSizes(dm_2D) == (20,21)
+        corners = PETSc.getcorners(dm_2D)
+        @test corners.size  == [20,21,0]
+        @test corners.extra == [1, 1, 0]
+        @test corners.lower == [1, 1, 1]
+        @test corners.upper == [20,21,0]
+        
+        
+        PETSc.finalize(petsclib)
+    end 
+end
 
 
-#=
+@testset "DMStagCreate3d" begin
+
+    comm = MPI.COMM_WORLD
+    mpirank = MPI.Comm_rank(comm)
+    mpisize = MPI.Comm_size(comm)
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = PETSc.scalartype(petsclib)
+        PetscInt    = PETSc.inttype(petsclib)
+
+        # Create 3D DMStag
+        dm_3D = PETSc.DMStagCreate3d(petsclib,comm,
+                PETSc.DM_BOUNDARY_NONE,
+                PETSc.DM_BOUNDARY_NONE,
+                PETSc.DM_BOUNDARY_NONE,
+                20,
+                21,
+                22,
+                1,
+                1,
+                1,
+                2,
+                2,
+                2,
+                2,
+                PETSc.DMSTAG_STENCIL_BOX,
+                1,
+                [],
+                [],
+                [])
+        @test PETSc.DMStagGetGlobalSizes(dm_3D) == (20, 21, 22)
+
+        # copy struct
+        dmnew = PETSc.DMStagCreateCompatibleDMStag(dm_3D,1,1,2,2)
+        @test PETSc.DMStagGetGlobalSizes(dmnew) == (20, 21, 22)
+
+
+        @test PETSc.DMStagGetGlobalSizes(dm_3D) == (20,21,22)
+        corners = PETSc.getcorners(dm_3D)
+        @test corners.size  == [20,21,22]
+        @test corners.extra == [1, 1, 1]
+        @test corners.lower == [1, 1, 1]
+        @test corners.upper == [20,21,22]
+        
+        
+        PETSc.finalize(petsclib)
+    end
+end
+
+
+
 @testset "DMStag Vectors and Coordinates" begin
-
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
@@ -112,170 +213,126 @@ end
         dm_1D = PETSc.DMStagCreate1d(petsclib,comm,PETSc.DM_BOUNDARY_NONE,200,2,2; stag_grid_x=10);
         @test PETSc.DMStagGetGlobalSizes(dm_1D) == 10
         
-        
         # Set coordinates 
         PETSc.setuniformcoordinates!(dm_1D, (0,), (10,))
-        
-        PETSc.destroy(dm_1D);
 
+        DMcoord = PETSc.getcoordinateDM(dm_1D)
+        @test PETSc.gettype(DMcoord)=="stag"
+
+        # Retrieve array with staggered coordinates
+        coord_vec   = PETSc.getcoordinateslocal(dm_1D)
+        X_coord     = PETSc.DMStagVecGetArray(DMcoord, coord_vec);  
+        @test  X_coord[1,2] == 0.5
+      
         # Set coordinates using product (1D) arrays 
         dm_1D = PETSc.DMStagCreate1d(petsclib,comm,PETSc.DM_BOUNDARY_NONE,200,2,2; stag_grid_x=10);
         PETSc.setuniformcoordinatesproduct!(dm_1D, (0,), (10,))
 
         # retrieve DM with coordinates
-        #DMcoord = PETSc.getcoordinateDM(dm_1D)
-        
-        DMcoord = PETSc.DMGetCoordinateDM(dm_1D)
-        DMcoord_1 = PETSc.getcoordinateDM(dm_1D)
-        @show DMcoord, DMcoord_1
+        DMcoord = PETSc.getcoordinateDM(dm_1D)
+        @test PETSc.gettype(DMcoord)=="product"
+        coord_vec   = PETSc.getcoordinateslocal(dm_1D)
 
-        # create coordinate local vector
-       # vec_coord = PETSc.DMGetCoordinatesLocal(petsclib, dm_1D);
-        #vec_coord = PETSc.DMGetCoordinatesLocal(petsclib,DMcoord);
+        # Note: retrieving 1D coordinate vectors using the "product" type appears broken
+        #  This is something to be looked at later
+        #x_coord,y_coord,z_coord = PETSc.DMStagGetProductCoordinateArraysRead(dm_1D); # BROKEN
+
+        PETSc.DMStagGetLocationSlot(dm_1D, PETSc.DMSTAG_RIGHT, 0) ==4
+        @test PETSc.DMStagGetProductCoordinateLocationSlot(dm_1D, PETSc.DMSTAG_RIGHT) == 2
+        
+        global_vec      = PETSc.createglobalvector(dm_1D)
+        local_vec       = PETSc.createlocalvector(dm_1D)
+        
+        # Fill everything with some data
+        fill!(local_vec, mpisize)
+        fill!(global_vec, mpisize)
+        @test global_vec[3] == 1.0
+
+        # Add the local values to the global values
+        PETSc.update!(global_vec, local_vec, PETSc.ADD_VALUES)
+        @test global_vec[3] == 2.0
+        
+      
+
+        # PETSc.destroy(DMcoord);
        
-        # retrieve coordinate array (explicit)
-   #     X_coord = PETSc.DMStagVecGetArray(DMcoord, vec_coord);
-   #     @test X_coord[1,2] == 0.5
 
-
-        #dm_ghosted = PETSc.DMStagCreate1d(petsclib,comm,PETSc.DM_BOUNDARY_GHOSTED,200,2,2; stag_grid_x=10);
+        # Do 2D tests
+        dm_2D = PETSc.DMStagCreate2d(petsclib, comm,
+            PETSc.DM_BOUNDARY_NONE,
+            PETSc.DM_BOUNDARY_NONE,
+            3,
+            4,
+            1,
+            1,
+            1,
+            1,
+            1,
+            PETSc.DMSTAG_STENCIL_BOX,
+            2)
         
-       PETSc.finalize(petsclib)
-    end
-end
-=#
+        PETSc.setuniformcoordinates!(dm_2D, (1,3), (10,11))
+        coord_vec   = PETSc.getcoordinateslocal(dm_2D)
+     
+        # Retrieve array with staggered coordinates
+        DMcoord_2D = PETSc.getcoordinateDM(dm_2D)
+        X_coord_2D = PETSc.DMStagVecGetArray(DMcoord_2D, coord_vec);  
+       
+        @test X_coord_2D[3,3,1] ≈ 7.0
+        @test X_coord_2D[3,4,2] ≈ 9.0
+        @test X_coord_2D[3,3,3] ≈ 8.5
+        @test X_coord_2D[3,3,4] ≈ 7.0
 
+        vec_test_2D     = PETSc.createlocalvector(dm_2D)
+        X               = PETSc.DMStagVecGetArray(dm_2D,vec_test_2D);
+        X[end,end,end] = 111;                   # modify 3D array @ some point and DOF
+        @test vec_test_2D[end]==111.0           # verify that this modified the vector as well
+        Base.finalize(X)                        # release from memory
 
-
-# TO BE MOVED TO DIFFERENT LOOP        
-#        dm_2D = PETSc.DMStagCreate2d(petsclib, comm,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,20,21,1,1,1,1,1,PETSc.DMSTAG_STENCIL_BOX,2)
-#        @test PETSc.DMStagGetGlobalSizes(dm_2D) == (20, 21)
-#        dm_3D = PETSc.DMStagCreate3d(petsclib,comm,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,PETSc.DM_BOUNDARY_NONE,20,21,22,1,1,1,2,2,2,2,PETSc.DMSTAG_STENCIL_BOX,1,[],[],[])
-#        @test PETSc.DMStagGetGlobalSizes(dm_3D) == (20, 21, 22)
-
-        # copy struct
-#        dmnew = PETSc.DMStagCreateCompatibleDMStag(dm_3D,1,1,2,2)
-#        @test PETSc.DMStagGetGlobalSizes(dmnew) == (20, 21, 22)
-
-#=
-
-        # retrieve coordinate array (explicit)
-        X_coord = PETSc.DMStagVecGetArray(DMcoord, vec_coord);
-        @test X_coord[1,2] == 0.5
-
-
-        # retreive coordinate array (product)
-        #x_coord,y_coord,z_coord = PETSc.DMStagGetProductCoordinateArraysRead(dm_3D);
-
-        # retrieve coordinate and value slots
-        #@test PETSc.DMStagGetProductCoordinateLocationSlot(dm, PETSc.DMSTAG_RIGHT) == 1
-        @test PETSc.DMStagGetLocationSlot(dm_1D, PETSc.DMSTAG_RIGHT, 0) ==4
-        #g = PETSc.DMStagGetLocationSlot(dm_1D, PETSc.DMSTAG_RIGHT, 0)
-        # Create a global and local Vec from the DMStag
-        vec_test_global     = PETSc.DMCreateGlobalVector(dm_1D)
-        vec_test            = PETSc.DMCreateLocalVector(dm_1D)
-        vec_test_2D         = PETSc.DMCreateLocalVector(dm_2D)
-
-        # Simply extract an array from the local vector
-        #x = PETSc.unsafe_localarray(Float64, vec_test.ptr; read=true, write=false)
-
-        @test PETSc.DMGetDimension(dm_1D) == 1
-
-        @test PETSc.DMStagGetEntriesPerElement(dm_1D)==4
-
-        @test PETSc.DMStagGetGhostCorners(dm_1D)==(0,11)
-
-        ix,in = PETSc.DMStagGetCentralNodes(dm_ghosted);
-        @show ix
-        @test ix[1] == 3
-
-        ind = PETSc.LocalInGlobalIndices(dm_ghosted);
-        @test ind[1] == 9
-
-        @test PETSc.DMStagGetStencilType(dm_1D)==PETSc.DMSTAG_STENCIL_BOX 
-
-        # VEC test
-        # testing how to set values in a local vector:
-        #
-        # Note; this test really belongs to a Vec test & should be pushed to a different test file
-        v       =   rand(10)
-        v[10]   =   1;
-        V       =   PETSc.VecSeq(v)
-        @test V[10] == 1
-
-        # VEC test
-        # create a local Julia array from the vector which we can modify (write=true)
-        x_local =   PETSc.unsafe_localarray(Float64, V.ptr, write=true);    # create a local array from the vector
-        x_local[8:10] .= x_local[8:10]*2 .+ 100                             # modify the julia array
-        finalize(x_local)                                                   # delete local array after local use
-        @test v[10] == 102                                                  # check
-
-        # Note: What I don't understand is that even in the case that we read the array
-        # as read-only, changing the values in the julia array modifies them in the PetscVec 
-        # (that seems to defy the purpose of having a read-only option)
-        #
-        # In practice this is likely not hugely important; we should simply keep in mind to not 
-        # change the values locally
-
-        # Test retrieving an array from the DMStag:
-        X = PETSc.DMStagVecGetArray(dm_2D,vec_test_2D);
-        X[end,end,end] = 111;
-
-        @test vec_test_2D[end]==111.0     # check if modifying the array affects the vecror
-
-        Base.finalize(X)
-
-        Z = PETSc.DMStagVecGetArrayRead(dm_2D, vec_test_2D);
-        @test Z[end,end,end]==111.
-        # See if DMLocalToGlobal works
-        vec_test_global .= 0;
-        vec_test        .= 0;
-        vec_test[1:end] = 1:length(vec_test);
-        PETSc.DMLocalToGlobal(dm_1D, vec_test, PETSc.INSERT_VALUES, vec_test_global)
-        @test vec_test_global[20]==20
-
-        vec_test_global[1] = 42;
-
-        PETSc.DMGlobalToLocal(dm_1D,vec_test_global, PETSc.INSERT_VALUES,vec_test);
-        @test vec_test[1] == 42;
-
-        # NOTE: as we currently only have VecSeq, parallel halos are not yet tested with this
-
-        # Test DMStagVecGetArray for a 1D case
-        vec_test.array[1:10] = 1:10
-        X_1D = PETSc.DMStagVecGetArray(dm_1D,vec_test);
-        @test X_1D[2,3] == 7.0
-
-        # Create two stencil locations
+        #test stencil locations
         pos1 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,1,0,0,1)
         @test pos1.c == 1
         pos2 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_RIGHT,4,0,0,0)
+        pos  = [pos1, pos2]
         @test pos2.loc == PETSc.DMSTAG_RIGHT
         @test pos2.i == 4
 
-        pos = [pos1, pos2];
-
         # Retrieve value from stencil
-        val = PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test, pos1) # this gets a single value
-        @test val==6
-        vals = PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test, 2, pos) # this gets an array of values
+        vec_test       = PETSc.createlocalvector(dm_1D)
+        vec_test      .= 1:length(vec_test)                 # point wise copy of data to PetscVec
+        val             = PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test, pos1) # this gets a single value
+        @test val ==6
+        vals            = PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test, 2, pos)     # this gets an array of values
         @test vals[1] == 6
 
-        # Set single value in global vector using stencil
-        val1 = [2222.2, 3.2];
-        PETSc.DMStagVecSetValuesStencil(dm_1D, vec_test_global, pos1, val1[1], PETSc.INSERT_VALUES)
-        @test vec_test_global[6] == 2222.2
-        PETSc.DMStagVecSetValuesStencil(dm_1D, vec_test_global, 2, pos, val1, PETSc.INSERT_VALUES)
-        @test vec_test_global[21] == 3.2
+        X_1D            = PETSc.DMStagVecGetArray(dm_1D,vec_test);
+        @test X_1D[2,3] == 7.0
 
-
+        # Set values using stencils
+        vec_test_global = PETSc.createglobalvector(dm_1D)
+        val1 = PetscScalar.([2222.2, 3.2]);
+        PETSc.DMStagVecSetValuesStencil(dm_1D, vec_test_global,    pos1, val1[1],   PETSc.INSERT_VALUES)
+        @test vec_test_global[6] ≈ 2222.2
+        PETSc.DMStagVecSetValuesStencil(dm_1D, vec_test_global, 2, pos,  val1,      PETSc.INSERT_VALUES)
+        @test vec_test_global[21] ≈ 3.2
 
         pos3 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,1,0,0,1)
+        val = PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test, 2, [pos3; pos3]) 
+        @test val[2] == 6.0
+        PETSc.destroy(dm_1D);
 
-        # NOTE: setting/getting multiple values is somehow not working for me. Can be called
-        #  by creating a wrapper
-        #val = PETSc.DMStagVecGetValuesStencil(dm_1D, vec_test, [pos3; pos3]) 
+        PETSc.finalize(petsclib)
+    end
+end
 
+
+#=      
+        Z = PETSc.DMStagVecGetArrayRead(dm_2D, vec_test_2D);
+        @test Z[end,end,end]==111.
+        
+      
+
+        # NOTE: as we currently only have VecSeq, parallel halos are not yet tested with this
 
         # Create matrix from dm object, Note: can only be viewed once it is assembled!
         A = PETSc.DMCreateMatrix(dm_1D);  # 

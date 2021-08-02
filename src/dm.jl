@@ -315,8 +315,13 @@ function getcoordinateDM end
         dm,
         coord_dm,
     )
+
     # If this fails then the `empty` call above is probably a bad idea!
-    @assert gettype(dm) == gettype(coord_dm)
+    if gettype(coord_dm) != "product"
+        @assert gettype(dm) == gettype(coord_dm)
+    else
+        @assert gettype(dm) == "stag"   # product can only be used with stag
+    end
 
     return coord_dm
 end

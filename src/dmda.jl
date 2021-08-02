@@ -413,7 +413,7 @@ Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 # External Links
 $(_doc_external("DMDA/DMDAGetCorners"))
 """
-function getcorners end
+function getcorners(da::DMDA) end
 
 @for_petsc function getcorners(da::DMDA{$PetscLib})
     info = DMDALocalInfo{$PetscInt}()
@@ -456,7 +456,7 @@ Returns a `NamedTuple` with the global indices (including ghost points) of the
 # External Links
 $(_doc_external("DMDA/DMDAGetGhostCorners"))
 """
-function getghostcorners end
+function getghostcorners(da::DMDA) end
 
 @for_petsc function getghostcorners(da::DMDA{$PetscLib})
     info = DMDALocalInfo{$PetscInt}()

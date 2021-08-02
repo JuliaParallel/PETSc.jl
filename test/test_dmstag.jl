@@ -18,8 +18,6 @@ MPI.Initialized() || MPI.Init()
         PetscInt    = PETSc.inttype(petsclib)
 
         # Create 1D DMStag
-        @show petsclib
-
         dm = PETSc.DMStagCreate1d(
                 petsclib,
                 comm,
@@ -33,13 +31,14 @@ MPI.Initialized() || MPI.Init()
 
         # Create 1D DMStag with array of local @ of points
         dm = PETSc.DMStagCreate1d(petsclib,comm,PETSc.DM_BOUNDARY_NONE,20,2,2,PETSc.DMSTAG_STENCIL_BOX,2,[20])
-    
+        
         # Test get size
         @test PETSc.DMStagGetGlobalSizes(dm) == 20
         @test PETSc.DMStagGetLocalSizes(dm) == 20
 
-        # Test gettype
-        @test PETSc.gettype(dm) == "stag"               
+        # Test 
+        @test PETSc.gettype(dm) == "stag"      
+        @test PETSc.getdimension(dm) == 1         
 
         # Info about ranks
         @test PETSc.DMStagGetIsFirstRank(dm) == (true,false,false)
@@ -49,7 +48,18 @@ MPI.Initialized() || MPI.Init()
         @test PETSc.DMStagGetBoundaryTypes(dm)==PETSc.DM_BOUNDARY_NONE
 
         # Corners
-        @test PETSc.DMStagGetCorners(dm) == (0, 20, 1)
+        corners         = PETSc.getcorners(dm)
+        ghost_corners   = PETSc.getghostcorners(dm)
+      
+        @test corners.lower[1] == 1
+        @test corners.upper[1] == 20
+        @test corners.size[1]  == 20
+        @test corners.extra[1] == 1
+        
+        @test ghost_corners.lower[1] == 1
+        @test ghost_corners.upper[1] == 21
+        @test ghost_corners.size[1]  == 21
+        @test ghost_corners.extra[1]  == 0
 
         # DOF
         @test PETSc.DMStagGetDOF(dm) == (2,2)
@@ -59,29 +69,35 @@ MPI.Initialized() || MPI.Init()
         dm_1D = PETSc.DMStagCreate1d(petsclib,comm,PETSc.DM_BOUNDARY_NONE,200,2,2; stag_grid_x=10);
         @test PETSc.DMStagGetGlobalSizes(dm_1D) == 10
         
-        # Stencil width
+        # Stencil width & type
         @test  PETSc.DMStagGetStencilWidth(dm_1D)==2
+        @test  PETSc.DMStagGetBoundaryTypes(dm_1D) == PETSc.DM_BOUNDARY_NONE
 
-        # retrieve DM with coordinates
-      #  DMcoord = PETSc.DMGetCoordinateDM(petsclib,dm_1D)
+        PETSc.destroy(dm_1D)
 
-        # create coordinate local vector
-       # vec_coord = PETSc.DMGetCoordinatesLocal(petsclib, dm_1D);
-        #vec_coord = PETSc.DMGetCoordinatesLocal(petsclib,DMcoord);
-       
-        # retrieve coordinate array (explicit)
-   #     X_coord = PETSc.DMStagVecGetArray(DMcoord, vec_coord);
-   #     @test X_coord[1,2] == 0.5
-
-
+        # test ghosted array set using keywords
         dm_ghosted = PETSc.DMStagCreate1d(petsclib,comm,PETSc.DM_BOUNDARY_GHOSTED,200,2,2; stag_grid_x=10);
+        @test  PETSc.DMStagGetStencilWidth(dm_ghosted)==2
+        corners         = PETSc.getcorners(dm_ghosted)
         
-       PETSc.finalize(petsclib)
+        @test corners.size[1]==10       # keyword overrides the specified value
+        @test  PETSc.DMStagGetBoundaryTypes(dm_ghosted) == PETSc.DM_BOUNDARY_GHOSTED
+
+        # simple test to retrieve the KSP object
+        # NOTE: need to implement a similar SNES object
+        ksp = PETSc.KSP(dm_ghosted)
+        @test PETSc.gettype(ksp)=="gmres"
+
+        PETSc.destroy(dm_ghosted)
+
+        PETSc.finalize(petsclib)
     end
 end
 
 
 
+
+#=
 @testset "DMStag Vectors and Coordinates" begin
 
     comm = MPI.COMM_WORLD
@@ -95,17 +111,23 @@ end
         # Create 1D DMStag
         dm_1D = PETSc.DMStagCreate1d(petsclib,comm,PETSc.DM_BOUNDARY_NONE,200,2,2; stag_grid_x=10);
         @test PETSc.DMStagGetGlobalSizes(dm_1D) == 10
-           
+        
+        
         # Set coordinates 
         PETSc.setuniformcoordinates!(dm_1D, (0,), (10,))
         
-       # PETSc.DMStagSetUniformCoordinatesProduct(dm_3D, 0, 10, 0, 11, 0, 12)
+        PETSc.destroy(dm_1D);
 
-        # Stencil width
-     #   @test  PETSc.DMStagGetStencilWidth(dm_1D)==2
+        # Set coordinates using product (1D) arrays 
+        dm_1D = PETSc.DMStagCreate1d(petsclib,comm,PETSc.DM_BOUNDARY_NONE,200,2,2; stag_grid_x=10);
+        PETSc.setuniformcoordinatesproduct!(dm_1D, (0,), (10,))
 
         # retrieve DM with coordinates
-      #  DMcoord = PETSc.DMGetCoordinateDM(petsclib,dm_1D)
+        #DMcoord = PETSc.getcoordinateDM(dm_1D)
+        
+        DMcoord = PETSc.DMGetCoordinateDM(dm_1D)
+        DMcoord_1 = PETSc.getcoordinateDM(dm_1D)
+        @show DMcoord, DMcoord_1
 
         # create coordinate local vector
        # vec_coord = PETSc.DMGetCoordinatesLocal(petsclib, dm_1D);
@@ -121,7 +143,7 @@ end
        PETSc.finalize(petsclib)
     end
 end
-
+=#
 
 
 

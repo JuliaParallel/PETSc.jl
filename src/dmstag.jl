@@ -43,7 +43,8 @@ Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
     dm = DMStagCreate1d(::PetscLib,
         comm::MPI.Comm, 
         bndx::DMBoundaryType, 
-        M, dofVertex, 
+        M, 
+        dofVertex, 
         dofCenter, 
         stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, 
         stencilWidth=2, 
@@ -1145,12 +1146,12 @@ end
 =#
 
 """
-    Cen_start, Cen_end = DMStagGetCentralNodes(dm::DMStag)
+    Indices = DMStagGetCentralNodes(dm::DMStag)
     
 Return indices of start and end of the central nodes of a local array built from the input `dm` (excluding ghost nodes).   
 
-    dm 	                - the DMStag object
-    Cen_start, Cen_end 	- indices of start and finish of central nodes
+    dm 	        - the DMStag object
+    Indices 	- indices of lower and upper range of center and vertex nodes
 """
 function DMStagGetCentralNodes end
 
@@ -1158,20 +1159,22 @@ function DMStagGetCentralNodes end
     # In Julia, indices in arrays start @ 1, whereas they can go negative in C
     
     #g_start, g_N    =   getghostcorners(dm);  # MODIFY
-    gc               =   getghostcorners(dm);  
-    g_width         =   DMStagGetStencilWidth(dm);
-
+    gc              =   getghostcorners(dm);  
+  
     #start,N, nExtra =   getcorners(dm);       # MODIFY
     c               =   getcorners(dm); 
-    dim             =   getdimension(dm); 
-        
-    Cen_start       =   zeros(Int64,dim)
-    for i=1:dim
-        Cen_start[i] = -gc.lower[i] + 1;
-    end
 
-    Cen_end         =   Cen_start  .+ c.size[1:dim] .- 1;
-    return Cen_start, Cen_end
+    # Note that we add the +1 for julia/petsc consistency
+    center = (  x= (c.lower[1]+1):(c.upper[1]+1),
+                y= (c.lower[2]+1):(c.upper[2]+1),  
+                z= (c.lower[3]+1):(c.upper[3]+1) )
+
+    vertex = (  x=c.lower[1]+1:c.upper[1]+2 ,
+                y=c.lower[2]+1:c.upper[2]+2 ,  
+                z=c.lower[3]+1:c.upper[3]+2 )
+
+    return (center=center, vertex=vertex)
+            
 end
 
 
@@ -1597,19 +1600,19 @@ function LocalInGlobalIndices end
 
 function LocalInGlobalIndices(dm::DMStag)
     # note: this can likely be done more efficiently and will have to be modified in parallel
-    ind_g   =   createlocalvector(dm)
-    v_ind_l =   createglobalvector(dm)
-    @show ind_g
+    ind_g   =   createglobalvector(dm)
+    v_ind_l =   createlocalvector(dm)
 
-    ind_l   =   unsafe_localarray(Float64, v_ind_l.ptr);
-    for i=1:length(ind_l)
-        ind_l[i] = i
+    # Set indices in local vector
+    for i=1:length(v_ind_l)
+        v_ind_l[i] = i
     end
-        
-    #DMLocalToGlobal(dm,v_ind_l, INSERT_VALUES, ind_g);
-    update!(ind_g, v_ind_l, INSERT_VALUES);
+    @show v_ind_l
+    update!(ind_g, v_ind_l, INSERT_VALUES); # update global vector
     
-    return Int64.(ind_g.array)
+    #@show v_ind_l ind_g
+
+    return Int64.(ind_g)
 end
     
 """

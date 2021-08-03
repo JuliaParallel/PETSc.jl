@@ -1,3 +1,7 @@
+# EXCLUDE FROM TESTING
+# NOTE: This is temporarily not working until we merge the DMSTAG routines with the new Clang branch
+#
+#
 # This is an example of a 1D viscoelastic porosity wave as described in 
 # Vasyliev et al. Geophysical Research Letters (25), 17. p. 3239-3242
 # https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/98GL52358
@@ -145,16 +149,17 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     res_Pe      =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f,      PETSc.DMSTAG_ELEMENT,   1); 
     
     # compute the FD stencil
-    sx, sn          =     PETSc.DMStagGetCentralNodes(dm);          # indices of (center/element) points, not including ghost values.
+    ind         =     PETSc.DMStagGetCentralNodes(dm);          # indices of (center/element) points, not including ghost values.
     
     # Porosity residual @ center points
-    iz                  =   sx[1]+1:sn[1]-1;            # Phi is on center points
+    iz                  =   ind.Center.lower[1]+1:ind.Center.upper[1]-1;            # Phi is on center points
     res_Phi[iz[1]-1]    =   Phi[iz[1]-1]   - 1.0;       # Bottom BC
     res_Phi[iz[end]+1]  =   Phi[iz[end]+1] - 1.0;       # Top BC
     res_Phi[iz]         =   (Phi[iz] - Phi_old[iz])/dt + De.*(Pe[iz]-Pe_old[iz])/dt + (Phi[iz].^m)   .* Pe[iz]
    
     # Pressure update @ nodal points
-    iz                  =   sx[1]+1:sn[1]-1;            # Pe is on center points as well (dof=2)
+    iz                  =   ind.Vertex.lower[1]+1:ind.Vertex.upper[1]-1;     
+    #iz                  =   sx[1]+1:sn[1]-1;            # Pe is on center points as well (dof=2)
     res_Pe[iz[1]-1]     =   Pe[iz[1]-1]   - 0.;         # Bottom BC
     res_Pe[iz[end]+1]   =   Pe[iz[end]+1] - 0.;         # Top BC
     res_Pe[iz]          =   De.*(Pe[iz]-Pe_old[iz])/dt -   ( ((0.5*(Phi[iz .+ 1] + Phi[iz .+ 0])).^n) .* ( (Pe[iz .+ 1] - Pe[iz     ])/dz .+ 1.0)  -

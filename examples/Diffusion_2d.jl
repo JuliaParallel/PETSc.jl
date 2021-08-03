@@ -1,3 +1,6 @@
+# EXCLUDE FROM TESTING
+# NOTE: This is temporarily not working until we merge the DMSTAG routines with the new Clang branch
+#
 # This implements src/snes/examples/tutorials/ex2.c from PETSc using the PETSc.jl package, using SNES
 #
 # This is the same as SNES_ex2b.j, except that we show how automatic differentiation can be used to

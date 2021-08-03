@@ -1,3 +1,7 @@
+# EXCLUDE FROM TESTING
+# NOTE: This is temporarily not working until we merge the DMSTAG routines with the new Clang branch
+#
+#
 # This shows how to solve the 2D incompressible Stokes equations using SNES solvers,
 # using a staggered grid discretization and a Velocity-Pressure formulation
 #   

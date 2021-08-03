@@ -1,3 +1,8 @@
+# EXCLUDE FROM TESTING
+# NOTE: This is temporarily not working until we merge the DMSTAG routines with the new Clang branch
+#
+#
+# 1D staggered FD example
 using PETSc, MPI, LinearAlgebra, SparseArrays, Plots, ForwardDiff
 
 if ~MPI.Initialized()

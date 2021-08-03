@@ -47,8 +47,8 @@ MPI.Initialized() || MPI.Init()
 
                 da_info = PETSc.getinfo(da)
                 corners = PETSc.getcorners(da)
+                
                 ghost_corners = PETSc.getghostcorners(da)
-
                 @test da_info.dim == 1
                 @test da_info.global_size == [global_size, 1, 1]
                 @test da_info.procs_per_dim == [mpisize, 1, 1]

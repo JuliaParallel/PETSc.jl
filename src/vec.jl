@@ -9,6 +9,13 @@ const CVec = Ptr{Cvoid}
 abstract type AbstractVec{T} <: AbstractVector{T} end
 scalartype(::AbstractVec{T}) where {T} = T
 
+# allows us to pass XXVec objects directly into CVec ccall signatures
+Base.cconvert(::Type{CVec}, obj::AbstractVec) = obj.ptr
+# allows us to pass XXVec objects directly into Ptr{CVec} ccall signatures
+Base.unsafe_convert(::Type{Ptr{CVec}}, obj::AbstractVec) =
+    convert(Ptr{CVec}, pointer_from_objref(obj))
+
+
 """
     VecSeq(v::Vector)
 
@@ -42,6 +49,13 @@ Base.eltype(::Type{V}) where {V<:AbstractVec{T}} where T = T
 Base.eltype(v::AbstractVec{T}) where {T} = T
 Base.size(v::AbstractVec) = (length(v),)
 Base.parent(v::AbstractVec) = v.array
+
+# this allows setting V[1:2] = 3:4 on a PetscVec (more convenient)
+function Base.setindex!(v::AbstractVec, val, I)
+    v.array[I]=val
+end
+Base.getindex(v::AbstractVec, I) = v.array[I]
+
 
 @for_libpetsc begin
     function VecSeq(comm::MPI.Comm, X::Vector{$PetscScalar}; blocksize=1)
@@ -80,6 +94,10 @@ Base.parent(v::AbstractVec) = v.array
         @chk ccall((:VecAssemblyEnd, $libpetsc), PetscErrorCode, (CVec,), V)
         return nothing
     end
+    function assemble(V::AbstractVec{$PetscScalar})
+        assemblybegin(V)
+        assemblyend(V)
+    end
 
     function ownershiprange(vec::AbstractVec{$PetscScalar})
         r_lo = Ref{$PetscInt}()
@@ -92,12 +110,25 @@ Base.parent(v::AbstractVec) = v.array
     function view(vec::AbstractVec{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(vec)))
         @chk ccall((:VecView, $libpetsc), PetscErrorCode,
                     (CVec, CPetscViewer),
-                vec, viewer);
+                vec.ptr, viewer);
         return nothing
     end
 
-    function localsize(v::AbstractVec{$PetscScalar})
+    function localsize(cv::CVec)
+        r_sz = Ref{$PetscInt}()
+        @chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode,
+            (CVec, Ptr{$PetscInt}), cv, r_sz)
         return r_sz[]
+    end
+
+    function setvalues!(vec::AbstractVec{$PetscScalar},idxs,vals, insertmode::InsertMode)
+        idxs = Vector(Int32,idxs);
+        vals = Vector(vals);
+  
+        @chk ccall((:VecSetValues, $libpetsc), PetscErrorCode, 
+                 (CVec, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar},InsertMode), vec, length(idxs), idxs, vals, insertmode)
+        return nothing
+
     end
 
     function unsafe_localarray(::Type{$PetscScalar}, cv::CVec; read::Bool=true, write::Bool=true)
@@ -115,6 +146,7 @@ Base.parent(v::AbstractVec) = v.array
                 (CVec, Ptr{Ptr{$PetscScalar}}), cv, r_pv)
         end
         r_sz = Ref{$PetscInt}()
+        
         @chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode,
             (CVec, Ptr{$PetscInt}), cv, r_sz)
         v = unsafe_wrap(Array, r_pv[], r_sz[]; own = false)
@@ -235,7 +267,7 @@ AbstractVec(X::AbstractVector) = VecSeq(X)
 
 
 """
-    ownership_range(vec::AbstractVec)
+    ownershiprange(vec::AbstractVec)
 
 The range of indices owned by this processor, assuming that the vectors are laid out with the first n1 elements on the first processor, next n2 elements on the second, etc. For certain parallel layouts this range may not be well defined.
 

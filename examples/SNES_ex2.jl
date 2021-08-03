@@ -40,8 +40,20 @@ end
 ```
     Computes the residual f, given solution vector x
 ```
-function FormResidual!(f,x)
+function FormResidual!(cf,cx, args...)
+    if typeof(cx) <: Vector{Float64}
+        x = cx;
+    else
+        x   =   PETSc.unsafe_localarray(Float64,cx)
+    end
+    if typeof(cf) <: Vector{Float64}
+        f = cf;
+    else
+        f   =   PETSc.unsafe_localarray(Float64,cf)
+    end
     n   =   length(x);
+    print("Length of x is ", n, "\n");
+    print("f is ", f,"\n");
     xp  =   LinRange(0.0,1.0, n);
     F   .=  6.0.*xp .+ (xp .+1.e-12).^6.0;      # define source term function
     
@@ -51,6 +63,8 @@ function FormResidual!(f,x)
         f[i] = (x[i-1] - 2.0*x[i] + x[i+1])/dx^2 + x[i]*x[i] - F[i]
     end
     f[n]    = x[n] - 1.0;
+    Base.finalize(x)
+    Base.finalize(f)
 
 end
 
@@ -59,6 +73,7 @@ end
 ```
 function FormJacobian!(x, args...)
 
+    #x = PETSc.unsafe_localarray(Float64,cx)
     J   =   args[1];        # preconditioner = args[2], in case we want it to be different from J
     n   =   length(x);
     dx  =   1.0/(n-1.0);
@@ -77,6 +92,7 @@ function FormJacobian!(x, args...)
     if typeof(J) <: PETSc.AbstractMat
         PETSc.assemble(J);  # finalize assembly
     end
+    Base.finalize(x)
 end
 
 
@@ -116,6 +132,7 @@ PETSc.solve!(x_s, S);
 x_sol = x_s.array;                  # convert solution to julia format
 FormResidual!(res.array,x_sol)      # just for checking, compute residual
 @show norm(res.array)
+
 
 lineplot(LinRange(0,1,n),x_sol,xlabel="width",ylabel="solution")
 

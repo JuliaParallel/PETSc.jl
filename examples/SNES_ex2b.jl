@@ -25,7 +25,17 @@ end
 ```
     Computes the residual f, given solution vector x
 ```
-function FormResidual!(f,x)
+function FormResidual!(cf,cx, args...)
+    if typeof(cx) <: Ptr{Nothing}
+        x   =   PETSc.unsafe_localarray(Float64,cx)
+    else
+        x   = cx;
+    end
+    if typeof(cf) <: Ptr{Nothing}
+        f   =   PETSc.unsafe_localarray(Float64,cf)
+    else
+        f   = cf;
+    end
     n       =   length(x);
     xp      =   LinRange(0.0,1.0, n);
     F       =   6.0.*xp .+ (xp .+1.e-12).^6.0;      # define source term function
@@ -36,6 +46,8 @@ function FormResidual!(f,x)
         f[i] = (x[i-1] - 2.0*x[i] + x[i+1])/dx^2 + x[i]*x[i] - F[i]
     end
     f[n]    =   x[n] - 1.0;
+    Base.finalize(x)
+    Base.finalize(f)
 
 end
 
@@ -53,8 +65,13 @@ end
 ```
     Computes the jacobian, given solution vector x
 ```
-function FormJacobian!(x, args...)
+function FormJacobian!(cx, args...)
 
+    if typeof(cx) <: Ptr{Nothing}
+        x   =   PETSc.unsafe_localarray(Float64,cx)
+    else
+        x   =   cx;
+    end
     J        =  args[1];        # preconditioner = args[2], in case we want it to be different from J
 
     # Use AD to compute jacobian; by transferring x into sparse, the output will be sparse

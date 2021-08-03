@@ -23,7 +23,9 @@ const PetscViewer = Ptr{Cvoid}
 const PetscObject = Ptr{Cvoid}
 const Vec = Ptr{Cvoid}
 const Mat = Ptr{Cvoid}
+const KSP = Ptr{Cvoid}
 const VecType = Cstring
+const KSPType = Cstring
 
 const __darwin_off_t = Int64
 
@@ -51030,12 +51032,6 @@ end
 @for_petsc function KSPInitializePackage(::$UnionPetscLib)
     @chk ccall((:KSPInitializePackage, $petsc_library), PetscErrorCode, ())
 end
-
-mutable struct _p_KSP end
-
-const KSP = Ptr{_p_KSP}
-
-const KSPType = Ptr{Cchar}
 
 @for_petsc function KSPCreate(::$UnionPetscLib, arg1, arg2)
     @chk ccall(

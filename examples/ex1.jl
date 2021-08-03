@@ -1,7 +1,3 @@
-# EXCLUDE FROM TESTING
-# NOTE: This is temporarily not working until we merge the DMSTAG routines with the new Clang branch
-#
-#
 # 1D staggered FD example
 using PETSc, MPI, LinearAlgebra, SparseArrays, Plots, ForwardDiff
 
@@ -9,7 +5,8 @@ if ~MPI.Initialized()
     MPI.Init()
 end
 
-PETSc.initialize()
+petsclib=PETSc.petsclibs[1];
+PETSc.initialize(petsclib)
 
 # ==========================================
 # Main code 
@@ -21,9 +18,9 @@ x0   =   0;
 xend =   1;
 
 # create dmstag for solution and setup
-dm  = PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,nx,1,1,PETSc.DMSTAG_STENCIL_BOX,1);
+dm  = PETSc.DMStagCreate1d(petsclib,MPI.COMM_WORLD,PETSc.DM_BOUNDARY_NONE,nx,1,1,PETSc.DMSTAG_STENCIL_BOX,1);
 # creat uniform coordinates
-PETSc.DMStagSetUniformCoordinatesExplicit(dm, x0, xend);
+PETSc.setuniformcoordinates!(dm, (x0,), (xend,));
 #determine boundary type
 bnd =   PETSc.DMStagGetBoundaryTypes(dm);
 
@@ -34,13 +31,15 @@ if bnd == PETSc.DM_BOUNDARY_PERIODIC
 end
 
 #Compute reference solution on the grid, using direct array access
-xa        = PETSc.DMCreateGlobalVector(dm);
-xa_Local  = PETSc.DMCreateLocalVector(dm);
+xa        = PETSc.createglobalvector(dm);
+xa_Local  = PETSc.createlocalvector(dm);
 xa_array  = PETSc.DMStagVecGetArray(dm,xa_Local);
-dm_coord  = PETSc.DMGetCoordinateDM(dm);
-vec_coord = PETSc.DMGetCoordinatesLocal(dm);
-X_coord = PETSc.DMStagVecGetArray(dm_coord, vec_coord);
-start,n,nExtra = PETSc.DMStagGetCorners(dm);
+dm_coord  = PETSc.getcoordinateDM(dm);
+vec_coord = PETSc.getcoordinateslocal(dm);
+X_coord   = PETSc.DMStagVecGetArray(dm, vec_coord);
+
+corners    =    PETSc.getcorners(dm);
+#start,n,nExtra = PETSc.DMStagGetCorners(dm);
 
 # Get the correct entries for each of our variables in local element-wise storage
 iu = PETSc.DMStagGetLocationSlot(dm, PETSc.DMSTAG_LEFT, 0);
@@ -51,31 +50,32 @@ ixp = PETSc.DMStagGetLocationSlot(dm_coord, PETSc.DMSTAG_ELEMENT, 0);
 xa_array[1:end  ,iu+1] .= a  .+ (b .- a .- (c./2.0)) .* X_coord[1:end,ixu+1] .+ (c./2.0).*X_coord[1:end,ixu+1].*X_coord[1:end,ixu+1];
 xa_array[1:end-1,ip+1] .= b .- a .- (c./2.0) .+ c .* X_coord[1:end-1,ixp+1];
 
-PETSc.DMLocalToGlobal(dm, xa_Local, PETSc.INSERT_VALUES, xa)
+#PETSc.DMLocalToGlobal(dm, xa_Local, PETSc.INSERT_VALUES, xa)
+PETSc.update!(xa,xa_Local, PETSc.INSERT_VALUES)
 dmForcing = PETSc.DMStagCreateCompatibleDMStag(dm,1,0);
-f         = PETSc.DMCreateGlobalVector(dmForcing);
-fLocal    = PETSc.DMCreateLocalVector(dmForcing);
+f         = PETSc.createglobalvector(dmForcing);
+fLocal    = PETSc.createlocalvector(dmForcing);
 f        .= c;
 fLocal   .= c;
 
-A   = PETSc.DMCreateMatrix(dm);
-rhs = PETSc.DMCreateGlobalVector(dm);
+A   = PETSc.creatematrix(dm);
+rhs = PETSc.createglobalvector(dm);
 
-for e in start:start+n-1
+for e in corners.lower[1]-1:corners.upper[1]-1
 
     pos1 = PETSc.DMStagStencil(PETSc.DMSTAG_ELEMENT,e,0,0,0);
     val1 = 0.0;
     PETSc.DMStagVecSetValuesStencil(dm, rhs, pos1, val1, PETSc.INSERT_VALUES);
 
     pos2 = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,e,0,0,0);
-    if e == start
+    if e == corners.lower[1]
         val2 = a;
     else
         val2 = PETSc.DMStagVecGetValuesStencil(dmForcing, fLocal, pos2);
     end
     PETSc.DMStagVecSetValuesStencil(dm, rhs, pos2, val2, PETSc.INSERT_VALUES);
 
-    if e == start+n-1
+    if e == corners.upper[1]-1
         pos3 = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,e,0,0,0);
         val3 = b;
         PETSc.DMStagVecSetValuesStencil(dm, rhs, pos3, val3, PETSc.INSERT_VALUES);
@@ -84,9 +84,11 @@ end
 
 PETSc.assemble(rhs)
 
-for e in start:start+n-1
+for e in corners.lower[1]-1:corners.upper[1]-1
+    # Note that PETSc ordering is zero-based 
+
     row = PETSc.DMStagStencil(PETSc.DMSTAG_LEFT,e,0,0,0);
-    if e == start
+    if e == corners.lower[1]-1
         val1 = 1.0;
         PETSc.DMStagMatSetValuesStencil(dm, A, row, row, val1, PETSc.INSERT_VALUES);
     else
@@ -106,7 +108,7 @@ for e in start:start+n-1
         PETSc.DMStagMatSetValuesStencil(dm, A, row, col2, val2, PETSc.INSERT_VALUES);
         PETSc.DMStagMatSetValuesStencil(dm, A, row, row , val3, PETSc.INSERT_VALUES);
     end
-    if e == start+n-1
+    if e == corners.upper[1]-1
         row2 = PETSc.DMStagStencil(PETSc.DMSTAG_RIGHT,e,0,0,0);
         val4 = 1.0
         PETSc.DMStagMatSetValuesStencil(dm, A, row2, row2, val4, PETSc.INSERT_VALUES);
@@ -131,12 +133,12 @@ end
 
 PETSc.assemble(A)
 
-x   = PETSc.DMCreateGlobalVector(dm);
+x   = PETSc.createglobalvector(dm);
 ksp = PETSc.KSP(A);
 PETSc.solve!(x,ksp,rhs);
 
-xLocal    = PETSc.DMCreateLocalVector(dm);
-PETSc.DMGlobalToLocal(dm,x, PETSc.INSERT_VALUES,xLocal)
+xLocal    = PETSc.createlocalvector(dm);
+PETSc.update!(xLocal, x, PETSc.INSERT_VALUES);
 xu         =   PETSc.DMStagGetGhostArrayLocationSlot(dm,xLocal, PETSc.DMSTAG_LEFT, 0);
 xp         =   PETSc.DMStagGetGhostArrayLocationSlot(dm,xLocal, PETSc.DMSTAG_ELEMENT, 0);
 
@@ -149,4 +151,4 @@ errRel     = error_norm/xa_norm;
 
 print("Error (abs): ",error_norm,"\nError (rel): ",errRel,"\n");
 
-#PETSc.finalize()
+PETSc.finalize(petsclib)

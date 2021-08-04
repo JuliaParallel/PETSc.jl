@@ -7,15 +7,15 @@ MPI.Initialized() || MPI.Init()
 using Libdl
 
 function _petsc_link(fname)
-"""
-[`$fname`](https://petsc.org/release/docs/manualpages/$fname.html)
-"""
+    """
+    [`$fname`](https://petsc.org/release/docs/manualpages/$fname.html)
+    """
 end
 
 function _doc_external(fname)
-"""
-- PETSc Manual: $(_petsc_link(fname))
-"""
+    """
+    - PETSc Manual: $(_petsc_link(fname))
+    """
 end
 
 include("const.jl")

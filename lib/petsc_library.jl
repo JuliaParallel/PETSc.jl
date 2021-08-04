@@ -1,3 +1,7 @@
+#
+# START OF PROLOGUE
+#
+
 using MPI
 const MPI_Comm = MPI.MPI_Comm
 const MPI_Datatype = MPI.MPI_Datatype
@@ -22,10 +26,17 @@ const PetscOptions = Ptr{Cvoid}
 const PetscViewer = Ptr{Cvoid}
 const PetscObject = Ptr{Cvoid}
 const Vec = Ptr{Cvoid}
-const Mat = Ptr{Cvoid}
-const KSP = Ptr{Cvoid}
 const VecType = Cstring
+const Mat = Ptr{Cvoid}
+const MatType = Cstring
+const KSP = Ptr{Cvoid}
 const KSPType = Cstring
+const DM = Ptr{Cvoid}
+const DMType = Cstring
+
+#
+# END OF PROLOGUE
+#
 
 const __darwin_off_t = Int64
 
@@ -18412,8 +18423,6 @@ end
     )
 end
 
-const MatType = Ptr{Cchar}
-
 const MatSolverType = Ptr{Cchar}
 
 @enum MatFactorType::UInt32 begin
@@ -26357,10 +26366,6 @@ end
     )
 end
 
-mutable struct _p_DM end
-
-const DM = Ptr{_p_DM}
-
 @enum DMBoundaryType::UInt32 begin
     DM_BOUNDARY_NONE = 0
     DM_BOUNDARY_GHOSTED = 1
@@ -26987,8 +26992,6 @@ const PetscWeakForm = Ptr{_p_PetscWeakForm}
 @for_petsc function DMInitializePackage(::$UnionPetscLib)
     @chk ccall((:DMInitializePackage, $petsc_library), PetscErrorCode, ())
 end
-
-const DMType = Ptr{Cchar}
 
 @for_petsc function DMCreate(::$UnionPetscLib, arg1, arg2)
     @chk ccall(

@@ -1,3 +1,7 @@
+#
+# START OF PROLOGUE
+#
+
 using MPI
 const MPI_Comm = MPI.MPI_Comm
 const MPI_Datatype = MPI.MPI_Datatype
@@ -22,7 +26,14 @@ const PetscOptions = Ptr{Cvoid}
 const PetscViewer = Ptr{Cvoid}
 const PetscObject = Ptr{Cvoid}
 const Vec = Ptr{Cvoid}
-const Mat = Ptr{Cvoid}
-const KSP = Ptr{Cvoid}
 const VecType = Cstring
+const Mat = Ptr{Cvoid}
+const MatType = Cstring
+const KSP = Ptr{Cvoid}
 const KSPType = Cstring
+const DM = Ptr{Cvoid}
+const DMType = Cstring
+
+#
+# END OF PROLOGUE
+#

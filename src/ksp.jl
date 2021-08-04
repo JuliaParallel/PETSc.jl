@@ -1,27 +1,145 @@
-
 const CKSP = Ptr{Cvoid}
 const CKSPType = Cstring
 
-abstract type AbstractKSP{T, PetscLib} <: Factorization{T} end
+abstract type AbstractKSP{PetscLib, PetscScalar} <: Factorization{PetscScalar} end
 
-Base.@kwdef mutable struct KSP{T, PetscLib} <: AbstractKSP{T, PetscLib}
+Base.@kwdef mutable struct KSP{PetscLib, PetscScalar} <:
+                           AbstractKSP{PetscLib, PetscScalar}
     ptr::CKSP = C_NULL
-    opts::Options{PetscLib}
-    # Stuff to keep around so that they don't get gc'ed
-    _A = nothing
-    _P = nothing
-    _dm = nothing
-    # Function pointers
-    ComputeRHS! = nothing
-    ComputeOperators! = nothing
+    opts::Options{PetscLib} = Options(PetscLib)
+    A::Union{AbstractMat, Nothing} = nothing
+    P::Union{AbstractMat, Nothing} = nothing
 end
 
+"""
+    KSP(A::AbstractMat, P::AbstractMat{PetscLib} = A; options...)
+
+Create a `KSP` using the matrix `A` and preconditioner construction matrix `P`
+with the `options`.
+
+The communicator is obtained from `A` and if it has size `1` then the garbage
+collector is set, otherwise the user is responsible for calling
+[`destroy`](@ref).
+
+# External Links
+$(_doc_external("KSP/KSPCreate"))
+$(_doc_external("KSP/KSPSetOperators"))
+$(_doc_external("KSP/KSPSetFromOptions"))
+"""
+function KSP(
+    A::AbstractMat{PetscLib},
+    P::AbstractMat{PetscLib} = A;
+    options...,
+) where {PetscLib}
+    @assert initialized(PetscLib)
+    opts = Options(PetscLib; options...)
+    PetscScalar = PetscLib.PetscScalar
+    ksp = KSP{PetscLib, PetscScalar}(opts = opts)
+    comm = getcomm(A)
+
+    with(ksp.opts) do
+        LibPETSc.KSPCreate(PetscLib, comm, ksp)
+    end
+
+    setoperators!(ksp, A, P)
+    setfromoptions!(ksp)
+
+    # If there is only one rank we can finalize the KSP with GC
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, ksp)
+    end
+
+    return ksp
+end
+
+function setoperators!(
+    ksp::AbstractKSP{PetscLib},
+    A::AbstractMat{PetscLib},
+    P::AbstractMat{PetscLib} = A,
+) where {PetscLib}
+    LibPETSc.KSPSetOperators(PetscLib, ksp, A, P)
+    ksp.A = A
+    ksp.P = P
+    return ksp
+end
+
+function setfromoptions!(ksp::AbstractKSP{PetscLib}) where {PetscLib}
+    with(ksp.opts) do
+        LibPETSc.KSPSetFromOptions(PetscLib, ksp)
+    end
+end
+
+function destroy(ksp::AbstractKSP{PetscLib}) where {PetscLib}
+    finalized(PetscLib) || LibPETSc.MatDestroy(PetscLib, ksp)
+    return nothing
+end
+
+function solve!(
+    x::AbstractVec{PetscLib},
+    ksp::AbstractKSP{PetscLib},
+    b::AbstractVec{PetscLib},
+) where {PetscLib}
+    with(ksp.opts) do
+        LibPETSc.KSPSolve(PetscLib, ksp, b, x)
+    end
+    return x
+end
+
+"""
+    createvecs(ksp::AbstractKSP; nright = 0, nleft = 0)
+
+Create `nright` right and `nleft` left vectors compatible with the `ksp`.
+Returned object `V` has `Tuple` members `V.right` and `V.left` containing the
+vectors.
+
+# External Links
+$(_doc_external("KSP/KSPCreateVecs"))
+"""
+function createvecs(
+    ksp::AbstractKSP{PetscLib};
+    nright = 0,
+    nleft = 0,
+) where {PetscLib}
+    # pointer of pointers to the base vectors
+    r_right_vs = Ref{Ptr{CVec}}()
+    r_left_vs = Ref{Ptr{CVec}}()
+
+    # create 1 right and left vector
+    LibPETSc.KSPCreateVecs(PetscLib, ksp, 1, r_right_vs, 1, r_left_vs)
+
+    # create right vectors
+    a_v = unsafe_wrap(Array, r_right_vs[], 1; own = false)
+    v = VecPtr(PetscLib, a_v[1], false)
+    right = ntuple(i -> similar(v), nright)
+
+    # create left vectors
+    a_v = unsafe_wrap(Array, r_left_vs[], 1; own = false)
+    v = VecPtr(PetscLib, a_v[1], false)
+    left = ntuple(i -> similar(v), nleft)
+
+    LibPETSc.VecDestroyVecs(PetscLib, 1, r_right_vs)
+    LibPETSc.VecDestroyVecs(PetscLib, 1, r_left_vs)
+
+    (right = right, left = left)
+end
+
+function LinearAlgebra.ldiv!(x::AbstractVec, ksp::AbstractKSP, b::AbstractVec)
+    solve!(x, ksp, b)
+end
+
+function Base.:\(ksp::AbstractKSP, b::AbstractVec)
+    x = createvecs(ksp; nleft = 1).left[1]
+    ldiv!(x, ksp, b)
+    return x
+end
+
+#=
+#
+# OLD WRAPPERS
+#
 struct WrappedKSP{T, PetscLib} <: AbstractKSP{T, PetscLib}
     ptr::CKSP
 end
-
-scalartype(::KSP{T}) where {T} = T
-Base.eltype(::KSP{T}) where {T} = T
 
 LinearAlgebra.transpose(ksp) = LinearAlgebra.Transpose(ksp)
 LinearAlgebra.adjoint(ksp) = LinearAlgebra.Adjoint(ksp)
@@ -69,32 +187,6 @@ Type used to wrap `ComputeOperators!` functions in KSP
 struct Fn_KSPComputeOperators{T} end
 
 @for_libpetsc begin
-
-    function KSP{$PetscScalar}(comm::MPI.Comm; kwargs...)
-        @assert initialized($petsclib)
-        opts = Options($petsclib, kwargs...)
-        ksp = KSP{$PetscScalar, $PetscLib}(opts=opts)
-        with(ksp.opts) do
-          @chk ccall((:KSPCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CKSP}), comm, ksp)
-        end
-        if comm == MPI.COMM_SELF
-            finalizer(destroy, ksp)
-        end
-        return ksp
-    end
-
-    function destroy(ksp::KSP{$PetscScalar})
-        finalized($petsclib) ||
-        @chk ccall((:KSPDestroy, $libpetsc), PetscErrorCode, (Ptr{CKSP},), ksp)
-        return nothing
-    end
-
-    function setoperators!(ksp::KSP{$PetscScalar}, A::AbstractMat{$PetscScalar}, P::AbstractMat{$PetscScalar})
-        @chk ccall((:KSPSetOperators, $libpetsc), PetscErrorCode, (CKSP, CMat, CMat), ksp, A, P)
-        ksp._A = A
-        ksp._P = P
-        return nothing
-    end
 
     function (::Fn_KSPComputeRHS{$PetscScalar})(
         new_ksp_ptr::CKSP,
@@ -184,12 +276,6 @@ struct Fn_KSPComputeOperators{T} end
         return nothing
     end
 
-    function setfromoptions!(ksp::KSP{$PetscScalar})
-        with(ksp.opts) do
-            @chk ccall((:KSPSetFromOptions, $libpetsc), PetscErrorCode, (CKSP,), ksp)
-        end
-    end
-
     function gettype(ksp::KSP{$PetscScalar})
         t_r = Ref{CKSPType}()
         @chk ccall((:KSPGetType, $libpetsc), PetscErrorCode, (CKSP, Ptr{CKSPType}), ksp, t_r)
@@ -215,14 +301,6 @@ struct Fn_KSPComputeOperators{T} end
         @chk ccall((:KSPGetResidualNorm, $libpetsc), PetscErrorCode, 
         (KSP, Ptr{$PetscReal}), ksp, r_rnorm)
         return r_rnorm[]
-    end
-
-    function solve!(x::AbstractVec{$PetscScalar}, ksp::KSP{$PetscScalar}, b::AbstractVec{$PetscScalar})
-        with(ksp.opts) do
-            @chk ccall((:KSPSolve, $libpetsc), PetscErrorCode, 
-            (CKSP, CVec, CVec), ksp, b, x)
-        end
-        return x
     end
 
     function solve!(ksp::KSP{$PetscScalar})
@@ -256,21 +334,6 @@ function LinearAlgebra.ldiv!(x::AbstractVector{T}, ksp::KSPAT{T, LT}, b::Abstrac
 end
 Base.:\(ksp::KSPAT{T, LT}, b::AbstractVector{T}) where {T, LT} = ldiv!(similar(b), ksp, b)
 
-
-"""
-    KSP(A, P; options...)
-
-Construct a PETSc Krylov subspace solver.
-
-Any PETSc options prefixed with `ksp_` and `pc_` can be passed as keywords.
-"""
-function KSP(A::AbstractMat{T}, P::AbstractMat{T}=A; kwargs...) where {T}
-    ksp = KSP{T}(getcomm(A); kwargs...)
-    setoperators!(ksp, A, P)
-    setfromoptions!(ksp)
-    return ksp
-end
-
 """
     KSP(da::AbstractDM; options...)
 
@@ -290,7 +353,6 @@ end
 
 Base.show(io::IO, ksp::KSP) = _show(io, ksp)
 
-
 """
     iters(ksp::KSP)
 
@@ -301,7 +363,6 @@ $(_doc_external("KSP/KSPGetIterationNumber"))
 """
 iters
 
-
 """
     resnorm(ksp::KSP)
 
@@ -311,4 +372,4 @@ Gets the last (approximate preconditioned) residual norm that has been computed.
 $(_doc_external("KSP/KSPGetResidualNorm"))
 """
 resnorm
-
+=#

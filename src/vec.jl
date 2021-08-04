@@ -612,3 +612,10 @@ function getpetsctype(vec::AbstractVec{PetscLib}) where {PetscLib}
     LibPETSc.VecGetType(PetscLib, vec, name_r)
     return unsafe_string(name_r[])
 end
+
+function Base.similar(v::AbstractVec{PetscLib}) where {PetscLib}
+    r_x = Ref{CVec}()
+    LibPETSc.VecDuplicate(PetscLib, v, r_x)
+    x = VecPtr(PetscLib, r_x[], true)
+    return x
+end

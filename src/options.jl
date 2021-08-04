@@ -77,7 +77,7 @@ mutable struct Options{T} <: AbstractOptions{T}
     ptr::CPetscOptions
 end
 
-function Options(petsclib::PetscLibType)
+function Options_(petsclib::PetscLibType)
   @assert initialized(petsclib)
   PetscLib = typeof(petsclib)
   opts = Options{PetscLib}(C_NULL)
@@ -86,9 +86,10 @@ function Options(petsclib::PetscLibType)
   return opts
 end
 
-Options(petsclib; kwargs...) = Options(petsclib, kwargs...)
-function Options(petsclib, ps::Pair...)
-    opts = Options(petsclib)
+Options(petsclib::PetscLibType; kwargs...) = Options_(petsclib, kwargs...)
+Options(PetscLib::Type{<:PetscLibType}; kwargs...) = Options_(getlib(PetscLib), kwargs...)
+function Options_(petsclib::PetscLibType, ps::Pair...)
+    opts = Options_(petsclib)
     for (k, v) in ps
         opts[k] = v
     end

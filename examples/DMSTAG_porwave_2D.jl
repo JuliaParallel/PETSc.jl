@@ -1,6 +1,5 @@
 # EXCLUDE FROM TESTING
-# NOTE: This is temporarily not working until we merge the DMSTAG routines with the new Clang branch
-#
+# Note: this is excluded as it would slow doen the tests too much
 #
 # This is an example of a 2D viscoelastic porosity wave as described in 
 # Vasyliev et al. Geophysical Research Letters (25), 17. p. 3239-3242

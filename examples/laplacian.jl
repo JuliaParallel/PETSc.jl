@@ -18,8 +18,8 @@ function laplace(T, nx::Integer, ny::Integer=nx, lx::Integer=1, ly::Integer=lx)
     return A
 end
 
+nx = 20
 for T in PETSc.scalar_types
-  nx = 20
   S = laplace(T, nx)
 
   m, n = size(S)
@@ -27,8 +27,8 @@ for T in PETSc.scalar_types
 
   ksp = PETSc.KSP(
                   M;
-                  ksp_monitor_true_residual = nothing,
-                  ksp_view = nothing,
+                  ksp_monitor_true_residual = false,
+                  ksp_view = false,
                   ksp_type = "cg",
                   ksp_rtol = 1e-8,
                   pc_type = "gamg",

@@ -1,7 +1,7 @@
 # This implements src/snes/examples/tutorials/ex2.c from PETSc using the PETSc.jl package, using SNES
 #
-# Note that yhe PETSc.jl package does currently not support MPI-parallel cases (even when PETSC_jll does support it)
-#
+# This solves the equations sequentially
+# 
 # Newton method to solve u'' + u^{2} = f, sequentially.
 
 using PETSc, MPI, LinearAlgebra, SparseArrays, UnicodePlots
@@ -10,20 +10,21 @@ if ~MPI.Initialized()
     MPI.Init()
 end
 
-PETSc.initialize()
+petsclib = PETSc.petsclibs[1]
+PETSc.initialize(petsclib)
 
-```
+"""    
     Computes initial guess 
-```
+"""
 function FormInitialGuess!(x)
     for i=1:length(x)
         x[i] = 0.50;
     end
 end
 
-```
+""" 
     Computes rhs forcing function 
-```
+""" 
 function SetInitialArrays(n)
     h =  1.0/(n-1.0)
     F = zeros(n);
@@ -37,48 +38,54 @@ function SetInitialArrays(n)
     return F
 end
 
-```
+"""
     Computes the residual f, given solution vector x
-```
+"""
 function FormResidual!(cf,cx, args...)
-    if typeof(cx) <: Vector{Float64}
-        x = cx;
+    if typeof(cx) <: Ptr{Nothing}
+        # When this routine is called from PETSc, cx is a pointer to a global vector
+        # That's why we have to transfer it first to 
+        x   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cx)
     else
-        x   =   PETSc.unsafe_localarray(Float64,cx)
+        x   = cx;
     end
-    if typeof(cf) <: Vector{Float64}
-        f = cf;
+    if typeof(cf) <: Ptr{Nothing}
+        f   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cf)
     else
-        f   =   PETSc.unsafe_localarray(Float64,cf)
+        f   = cf;
     end
-    n   =   length(x);
-    print("Length of x is ", n, "\n");
-    print("f is ", f,"\n");
-    xp  =   LinRange(0.0,1.0, n);
-    F   .=  6.0.*xp .+ (xp .+1.e-12).^6.0;      # define source term function
+    n       =   length(x);
+    xp      =   LinRange(0.0,1.0, n);
+    F       =   6.0.*xp .+ (xp .+1.e-12).^6.0;      # define source term function
     
     dx      =   1.0/(n-1.0);
-    f[1]    = x[1] - 0.0;
+    f[1]    =   x[1] - 0.0;
     for i=2:n-1
         f[i] = (x[i-1] - 2.0*x[i] + x[i+1])/dx^2 + x[i]*x[i] - F[i]
     end
-    f[n]    = x[n] - 1.0;
+    f[n]    =   x[n] - 1.0;
     Base.finalize(x)
     Base.finalize(f)
 
 end
 
-```
-    Computes the jacobian, given solution vector x
-```
-function FormJacobian!(x, args...)
 
-    #x = PETSc.unsafe_localarray(Float64,cx)
+"""
+    Computes the jacobian, given solution vector x
+"""
+function FormJacobian!(cx, args...)
+
+    if typeof(cx) <: Ptr{Nothing}
+        x   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cx)
+    else
+        x   =   cx;
+    end
+
     J   =   args[1];        # preconditioner = args[2], in case we want it to be different from J
     n   =   length(x);
     dx  =   1.0/(n-1.0);
     
-    # interior points
+    # interior points (hand-coded jacobian)
     for i=2:n-1
         J[i,i-1] = 1.0/dx^2;
         J[i,i  ] = -2.0/dx^2 + 2.0*x[i];
@@ -91,7 +98,9 @@ function FormJacobian!(x, args...)
   
     if typeof(J) <: PETSc.AbstractMat
         PETSc.assemble(J);  # finalize assembly
+    
     end
+
     Base.finalize(x)
 end
 
@@ -116,12 +125,12 @@ PJ       =   PETSc.MatSeqAIJ(Jsp);                      # transfer to
 
 # Setup snes
 x_s = PETSc.VecSeq(x);                  # solution vector
-res = PETSc.VecSeq(zeros(size(x)));     # residual vector
+res = PETSc.VecSeq(F);     # residual vector
 
-S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
+S = PETSc.SNES{Float64}(PETSc.petsclibs[1],MPI.COMM_WORLD; 
         snes_rtol=1e-12, 
-        snes_monitor=nothing,
-        snes_converged_reason=nothing);
+        snes_monitor=false,
+        snes_converged_reason=false);
 PETSc.setfunction!(S, FormResidual!, res)
 PETSc.setjacobian!(S, FormJacobian!, PJ, PJ)
 
@@ -131,9 +140,10 @@ PETSc.solve!(x_s, S);
 # Extract & plot solution
 x_sol = x_s.array;                  # convert solution to julia format
 FormResidual!(res.array,x_sol)      # just for checking, compute residual
+
 @show norm(res.array)
 
+PETSc.finalize(petsclib)
 
+# plot solution in REPL
 lineplot(LinRange(0,1,n),x_sol,xlabel="width",ylabel="solution")
-
-#PETSc.finalize()

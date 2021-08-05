@@ -1,38 +1,46 @@
 # This implements src/snes/examples/tutorials/ex2.c from PETSc using the PETSc.jl package, using SNES
 #
-# This is the same as SNES_ex2b.j, except that we show how automatic differentiation can be used to
-# compute the jacobian. 
+# This is the same as SNES_ex2.jl, except that we show how automatic differentiation can be used to
+# compute the jacobian. That implies that the user does not have to provide a hand-coded jacobian.
+# Note that the way we compute the jacobian here is not very efficient as we do not use the sparsity structure of the 
+# matrix; see the other examples for faster implementions. 
 #
 # Newton method to solve u'' + u^{2} = f, sequentially.
 
 using PETSc, MPI, LinearAlgebra, SparseArrays, UnicodePlots, ForwardDiff
+using Test
+
 
 if ~MPI.Initialized()
     MPI.Init()
 end
 
-PETSc.initialize()
 
-```
+petsclib = PETSc.petsclibs[1]
+PETSc.initialize(petsclib)
+
+"""
     Computes initial guess 
-```
+"""
 function FormInitialGuess!(x)
     for i=1:length(x)
         x[i] = 0.50;
     end
 end
 
-```
+"""
     Computes the residual f, given solution vector x
-```
+"""
 function FormResidual!(cf,cx, args...)
     if typeof(cx) <: Ptr{Nothing}
-        x   =   PETSc.unsafe_localarray(Float64,cx)
+        # When this routine is called from PETSc, cx is a pointer to a global vector
+        # That's why we have to transfer it first to 
+        x   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cx)
     else
         x   = cx;
     end
     if typeof(cf) <: Ptr{Nothing}
-        f   =   PETSc.unsafe_localarray(Float64,cf)
+        f   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cf)
     else
         f   = cf;
     end
@@ -51,24 +59,24 @@ function FormResidual!(cf,cx, args...)
 
 end
 
-```
+"""
     Wrapper which makes it easier to compute the jacobian using automatic differntiation
-```
+"""
 function  ForwardDiff_res(x)
 
-    f   = zero(x)               # vector of zeros, of same type as e
+    f   = zero(x)               # vector of zeros, of same type as x
     FormResidual!(f,x);
 
     return f;
 end
 
-```
+"""
     Computes the jacobian, given solution vector x
-```
+"""
 function FormJacobian!(cx, args...)
 
     if typeof(cx) <: Ptr{Nothing}
-        x   =   PETSc.unsafe_localarray(Float64,cx)
+        x   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cx)
     else
         x   =   cx;
     end
@@ -102,7 +110,7 @@ PJ       =   PETSc.MatSeqAIJ(Jsp);                      # transfer to PETSc (ini
 x_s = PETSc.VecSeq(x);                  # solution vector
 res = PETSc.VecSeq(zeros(size(x)));     # residual vector
 
-S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
+S = PETSc.SNES{Float64}(PETSc.petsclibs[1],MPI.COMM_SELF; 
         snes_rtol=1e-12, 
         snes_monitor=nothing,
         snes_converged_reason=nothing);
@@ -115,8 +123,10 @@ PETSc.solve!(x_s, S);
 # Extract & plot solution
 x_sol = x_s.array;                  # convert solution to julia format
 FormResidual!(res.array,x_sol)      # just for checking, compute residual
+
 @show norm(res.array)
 
-lineplot(LinRange(0,1,n),x_sol,xlabel="width",ylabel="solution")
+PETSc.finalize(petsclib)
 
-#PETSc.finalize()
+# plot solution in REPL
+lineplot(LinRange(0,1,n),x_sol,xlabel="width",ylabel="solution")

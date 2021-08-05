@@ -1,7 +1,3 @@
-# EXCLUDE FROM TESTING
-# NOTE: This is temporarily not working until we merge the DMSTAG routines with the new Clang branch
-#
-#
 # This shows how to solve the 2D incompressible Stokes equations using SNES solvers,
 # using a staggered grid discretization and a Velocity-Pressure formulation
 #   
@@ -23,14 +19,15 @@
 using PETSc, MPI
 using ForwardDiff, SparseArrays, SparseDiffTools
 
-PETSc.initialize()
+petsclib = PETSc.petsclibs[1];
+PETSc.initialize(petsclib)
 
-function FormRes!(f_g, x_g, user_ctx)
+function FormRes!(ptr_fx_g, ptr_x_g, user_ctx)
     
     # Copy global to local vectors
-    PETSc.DMGlobalToLocal(user_ctx.dm, x_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
-    PETSc.DMGlobalToLocal(user_ctx.dm, f_g, PETSc.INSERT_VALUES,  user_ctx.f_l) 
-
+    PETSc.update!(user_ctx.x_l, ptr_x_g,   PETSc.INSERT_VALUES) 
+    PETSc.update!(user_ctx.f_l, ptr_fx_g,  PETSc.INSERT_VALUES) 
+   
     # Retrieve arrays from the local vectors
     ArrayLocal_x     =   PETSc.DMStagVecGetArrayRead(user_ctx.dm,   user_ctx.x_l);      # array with all local x-data (solution array)
     ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm,       user_ctx.f_l);      # array with all local residual
@@ -43,8 +40,8 @@ function FormRes!(f_g, x_g, user_ctx)
     Base.finalize(ArrayLocal_f)
 
     # Copy local into global residual vector
-    PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.f_l, PETSc.INSERT_VALUES, f_g) 
-
+    PETSc.update!( ptr_fx_g, user_ctx.f_l, PETSc.INSERT_VALUES) 
+   
 end
 
 function  ForwardDiff_res(x, user_ctx)
@@ -75,7 +72,7 @@ function ComputeSparsityPatternJacobian_automatic(x_l, user_ctx)
     return jac, colors
 end
 
-function  f(out, x, user_ctx)
+function  func(out, x, user_ctx)
 
     ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);          # array with all local x-data (solition array)
     ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, out);        # array with all local residual
@@ -85,7 +82,7 @@ function  f(out, x, user_ctx)
     return nothing
 end
 
-function FormJacobian!(cx_g, J, P, user_ctx)
+function FormJacobian!(ptr_x_g, J, P, user_ctx)
     # This requires several steps:
     #
     #   1) Extract local vector from global solution (x) vector
@@ -94,11 +91,11 @@ function FormJacobian!(cx_g, J, P, user_ctx)
     #   3) Store the matrix inside the global Petsc matrix J
 
     # Extract the local vector
-    PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
+    #PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
+    PETSc.update!(user_ctx.x_l, ptr_x_g, PETSc.INSERT_VALUES)
     x               =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false, read=true);
 
     # Check the sparsity pattern
-
     if isnothing(user_ctx.jac)
         error("You first have to define the sparsity pattern of the jacobian")
     else
@@ -107,7 +104,7 @@ function FormJacobian!(cx_g, J, P, user_ctx)
     end
     out         =   similar(x);
 
-    f_Res           =   ((out,x)->f(out, x, user_ctx));  # pass additional arguments into the routine
+    f_Res           =   ((out,x)->func(out, x, user_ctx));  # pass additional arguments into the routine
 
     if isnothing(user_ctx.jac_cache)
         # Allocate data required for jacobian computations
@@ -120,8 +117,13 @@ function FormJacobian!(cx_g, J, P, user_ctx)
 
     # Store global Jacobian inside Petsc Matrix
     ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);
-    J              .=   jac[ind,ind];
-
+    if PETSc.assembled(J) == false
+        println("Assembling J")
+        J           =   PETSc.MatSeqAIJ(sparse(jac[ind,ind]));
+    else
+        J           .=   sparse(jac[ind,ind]);       
+    end
+    
     # Store Julia matrix and coloring
     user_ctx.jac    =   jac;
     user_ctx.colors =   colors;
@@ -180,10 +182,11 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     dz = user_ctx.dz;
 
     # Getting global indices for the local vectors
-    sx, sn  = PETSc.DMStagGetCentralNodes(user_ctx.dm); #indices of central points
+    ind                 =   PETSc.DMStagGetIndices(dm);          # indices of (center/element) points, not including ghost values.
+    #sx, sn  = PETSc.DMStagGetCentralNodes(user_ctx.dm); #indices of central points
 
-    ix      =   sx[1]:sn[1];           
-    iz      =   sx[2]:sn[2];
+    ix      =   ind.center[1];           
+    iz      =   ind.center[1];
 
     # Horizontal force balance f(x)
 
@@ -231,14 +234,16 @@ function ComputeStresses!(user_ctx, ArrayLocal_x)
     EtaC    = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff,user_ctx.coeff_l,     PETSc.DMSTAG_DOWN_LEFT, 0);
     
     # Getting indices for center nodes (not ghost)
-    sx, sn  = PETSc.DMStagGetCentralNodes(user_ctx.dm); #indices of central points
-    ix      =   sx[1]:sn[1];           
-    iz      =   sx[2]:sn[2];
-
+    ind     = PETSc.DMStagGetIndices(user_ctx.dm); #indices of central points
+    #ix      =   sx[1]:sn[1];           
+    #iz      =   sx[2]:sn[2];
+    ix  = ind.center[1];
+    iz  = ind.center[1];
+    
     # Compute shear stresses
     Txx    = 2 .* EtaE[ix,iz] .* Exx;
     Tzz    = 2 .* EtaE[ix,iz] .* Ezz;
-    Txz    = 2 .* EtaC[sx[1]:sn[1]+1,sx[2]:sn[2]+1] .* Exz;
+    Txz    = 2 .* EtaC[ix[1]:ix[end]+1,iz[1]:iz[end]+1] .* Exz;
 
     return Txx,Tzz,Txz
 
@@ -258,9 +263,12 @@ function ComputeStrainRates!(user_ctx, ArrayLocal_x)
     dz = user_ctx.dz;
 
     # Getting indices for center nodes (not ghost)
-    sx, sn  = PETSc.DMStagGetCentralNodes(user_ctx.dm); #indices of central points
-    ix      =   sx[1]:sn[1];           
-    iz      =   sx[2]:sn[2];
+    ind  = PETSc.DMStagGetIndices(user_ctx.dm); #indices of central points
+    #ix      =   sx[1]:sn[1];           
+    #iz      =   sx[2]:sn[2];
+    ix      =   ind.center[1];
+    iz      =   ind.center[2];
+    
 
     # Set ghost points (free slip)
     Vx[:,iz[1]-1]   .=  Vx[:,iz[1]];                # ghost points on left and right size (here: free slip)
@@ -272,24 +280,24 @@ function ComputeStrainRates!(user_ctx, ArrayLocal_x)
     DivV  = (Vx[ix.+1,iz].-Vx[ix,iz])./dx .+ (Vz[ix,iz.+1].-Vz[ix,iz])./dz;
     Exx   = (Vx[ix.+1,iz].-Vx[ix,iz])./dx .- 1/3 .* DivV;
     Ezz   = (Vz[ix,iz.+1].-Vz[ix,iz])./dz .- 1/3 .* DivV;
-    Exz   = 0.5.*((Vx[sx[1]:sn[1].+1,sx[2]:sn[2].+1].-Vx[sx[1]:sn[1].+1,sx[2].-1:sn[2]])./dz .+
-                  (Vz[sx[1]:sn[1].+1,sx[2]:sn[2].+1].-Vz[sx[1].-1:sn[1],sx[2]:sn[2].+1])./dx);
+    Exz   = 0.5.*((Vx[ix[1]:ix[end].+1,iz[1]:iz[end].+1].-Vx[ix[1]:ix[end].+1,iz[1].-1:iz[end]])./dz .+
+                  (Vz[ix[1]:ix[end].+1,iz[1]:iz[end].+1].-Vz[ix[1].-1:ix[end],iz[1]:iz[end].+1])./dx);
     
     return Exx,Ezz,Exz
 
 end
 
-function PopulateCoefficientData!(ctx)
+function PopulateCoefficientData!(user_ctx)
 
     # Create coefficient local vector and array (to store eta and rho)
-    user_ctx.coeff_l    =   PETSc.DMCreateLocalVector(user_ctx.dmCoeff);
+    user_ctx.coeff_l    =   PETSc.createlocalvector(user_ctx.dmCoeff);
     coeff_array         =   PETSc.DMStagVecGetArray(user_ctx.dmCoeff,user_ctx.coeff_l);
 
     # Create Coordinates dm, local vector and array
-    dm_coord  = PETSc.DMGetCoordinateDM(user_ctx.dmCoeff);
-    vec_coord = PETSc.DMGetCoordinatesLocal(user_ctx.dmCoeff);
+    dm_coord  = PETSc.getcoordinateDM(user_ctx.dmCoeff);
+    vec_coord = PETSc.getcoordinateslocal(user_ctx.dmCoeff);
     coord     = PETSc.DMStagVecGetArray(dm_coord, vec_coord);
-    start,n,nExtra = PETSc.DMStagGetCorners(user_ctx.dmCoeff);
+   # start,n,nExtra = PETSc.DMStagGetCorners(user_ctx.dmCoeff);
 
     # Get the correct entries for each of our variables in local element-wise storage
     iec = PETSc.DMStagGetLocationSlot(user_ctx.dmCoeff, PETSc.DMSTAG_DOWN_LEFT, 0);  # location eta corner
@@ -343,12 +351,16 @@ end
 function SetVecX!(user_ctx,x_g)
     # Set first guess for vector x to 0
     user_ctx.x_l .= 0; 
-    PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.x_l, PETSc.INSERT_VALUES, x_g);
+    #PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.x_l, PETSc.INSERT_VALUES, x_g);
+    PETSc.update!(x_g,user_ctx.x_l, PETSc.INSERT_VALUES);
+    
 end
 
 
 # Main Solver
 nx, nz           =   32, 32;                  # number of nodes is x and z direction
+#nx, nz           =   8, 8;                  # number of nodes is x and z direction
+
 user_ctx.xlim    =   [0,2];                   # x and z dimensions
 user_ctx.zlim    =   [0,1];
 xlim             =   user_ctx.xlim;
@@ -363,7 +375,7 @@ user_ctx.gz      =   -1;                     # gravity magnitude
 user_ctx.kappa   =   1e2;                    # incompressible penaly term
 
 # Create Solution and coefficient DMs
-user_ctx.dm           =   PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_GHOSTED,PETSc.DM_BOUNDARY_GHOSTED,nx,nz,1,1,0,1,1,PETSc.DMSTAG_STENCIL_BOX,1);  # V edge, P Element
+user_ctx.dm           =   PETSc.DMStagCreate2d(petsclib,MPI.COMM_SELF,PETSc.DM_BOUNDARY_GHOSTED,PETSc.DM_BOUNDARY_GHOSTED,nx,nz,1,1,0,1,1,PETSc.DMSTAG_STENCIL_BOX,1);  # V edge, P Element
 PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dm, xlim[1], xlim[2], zlim[1], zlim[2]);            # set coordinates
 user_ctx.dmCoeff      =   PETSc.DMStagCreateCompatibleDMStag(user_ctx.dm,2,0,1,0);   # rho and eta on VERTEX, eta on ELEMENT
 PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dmCoeff, xlim[1], xlim[2], zlim[1], zlim[2]);
@@ -372,22 +384,27 @@ PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dmCoeff, xlim[1], xlim[2], zl
 PopulateCoefficientData!(user_ctx);
 
 # Create solution and residual vectors
-x_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm);
-f_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm);
-user_ctx.x_l    =   PETSc.DMCreateLocalVector(user_ctx.dm);
-user_ctx.f_l    =   PETSc.DMCreateLocalVector(user_ctx.dm);
+x_g             =   PETSc.createglobalvector(user_ctx.dm);
+f_g             =   PETSc.createglobalvector(user_ctx.dm);
+user_ctx.x_l    =   PETSc.createlocalvector(user_ctx.dm);
+user_ctx.f_l    =   PETSc.createlocalvector(user_ctx.dm);
 
 # Create Petsc matrix for Jacobian
-J               =   PETSc.DMCreateMatrix(user_ctx.dm);
+J               =   PETSc.creatematrix(user_ctx.dm);
 
 # Set first guess values for solution vector
 SetVecX!(user_ctx,x_g);
 
 # Compute jacobian sparcity pattern
-user_ctx.jac, user_ctx.colors = ComputeSparsityPatternJacobian_automatic(user_ctx.x_l.array, user_ctx);
+x_l               =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false, read=true)
+
+user_ctx.jac, user_ctx.colors = ComputeSparsityPatternJacobian_automatic(user_ctx.x_l, user_ctx);
+ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);    # extract indices
+J           =   PETSc.MatSeqAIJ(sparse(user_ctx.jac[ind,ind]));
+
 
 #Setting up SNES
-S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
+S = PETSc.SNES{Float64}(petsclib,MPI.COMM_SELF; 
         snes_rtol=1e-12, 
         snes_monitor=true, 
         snes_max_it = 500,
@@ -403,7 +420,7 @@ PETSc.setjacobian!(S, FormJacobian!, J, J)
 PETSc.solve!(x_g, S);
 
 # Copy solution to local vector
-PETSc.DMGlobalToLocal(user_ctx.dm, x_g,  PETSc.INSERT_VALUES,  user_ctx.x_l);
+PETSc.update!(user_ctx.x_l, x_g,  PETSc.INSERT_VALUES);
 
 # Extract solution
 Vx  =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm, user_ctx.x_l,   PETSc.DMSTAG_LEFT,      0); 
@@ -412,13 +429,13 @@ P   =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm, user_ctx.x_l,   PETSc
 Eta =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff, user_ctx.coeff_l,   PETSc.DMSTAG_ELEMENT,   0); 
 
 # Getting indices for center nodes (not ghost)
-sx, sn  = PETSc.DMStagGetCentralNodes(user_ctx.dm);
-ix      =   sx[1]:sn[1];           
-iz      =   sx[2]:sn[2];
+ind     = PETSc.DMStagGetIndices(user_ctx.dm);
+ix      =   ind.center[1];           
+iz      =   ind.center[2];       
 
 # Getting rid of ghost points
-Vx  =   Vx[sx[1]:sn[1]+1,iz];
-Vz  =   Vz[ix,sx[2]:sn[2]+1];
+Vx  =   Vx[ix[1]:ix[end]+1,iz];
+Vz  =   Vz[ix,iz[1]:iz[end]+1];
 P   =    P[ix,iz];
 Eta =  Eta[ix,iz];
 
@@ -427,8 +444,8 @@ Vx_cen = (Vx[2:end,:]  + Vx[1:end-1,:])/2;
 Vz_cen = (Vz[:,2:end]  + Vz[:,1:end-1])/2;
 
 #get coordinates
-dm_coord  = PETSc.DMGetCoordinateDM(user_ctx.dmCoeff);
-vec_coord = PETSc.DMGetCoordinatesLocal(user_ctx.dmCoeff);
+dm_coord  = PETSc.getcoordinateDM(user_ctx.dmCoeff);
+vec_coord = PETSc.getcoordinateslocal(user_ctx.dmCoeff);
 
 XCoord_e = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_ELEMENT  ,      0); # location coord corner
 ZCoord_e = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_ELEMENT  ,      1); # location coord corner
@@ -437,8 +454,8 @@ ZCoord_c = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DM
 
 XCoord_e = XCoord_e[ix,iz];
 ZCoord_e = ZCoord_e[ix,iz];
-XCoord_c = XCoord_c[sx[1]:sn[1]+1,sx[2]:sn[2]+1];
-ZCoord_c = ZCoord_c[sx[1]:sn[1]+1,sx[2]:sn[2]+1];
+XCoord_c = XCoord_c[ix[1]:ix[end]+1,iz[1]:iz[end]+1];
+ZCoord_c = ZCoord_c[ix[1]:ix[end]+1,iz[1]:iz[end]+1];
 
 xe_1D    = XCoord_e[:,1];
 ze_1D    = ZCoord_e[1,:];
@@ -446,14 +463,14 @@ xc_1D    = XCoord_c[:,1];
 zc_1D    = ZCoord_c[1,:];
 
 # Plot
-CreatePlots = true;        # set to false by default such that testing does not require Plots
+CreatePlots = false;        # set to false by default such that testing does not require Plots
 if CreatePlots==true
     using Plots
 
     p1 = heatmap(xe_1D,ze_1D, P', xlabel="Width", ylabel="Depth", title="Pressure",aspect_ratio = 1)
     p2 = heatmap(xe_1D,zc_1D, Vz', xlabel="Width", ylabel="Depth", title="Vz",aspect_ratio = 1)
     p3 = heatmap(xc_1D,ze_1D, Vx', xlabel="Width", ylabel="Depth", title="Vx",aspect_ratio = 1)
-    #quiver!(XCoord_e[:],ZCoord_e[:],quiver=(Vx_cen[:]*0.02,Vz_cen[:]*0.02), color=:white,aspect_ratio = 1)
+    quiver!(XCoord_e[:],ZCoord_e[:],quiver=(Vx_cen[:]*0.02,Vz_cen[:]*0.02), color=:white,aspect_ratio = 1)
     p4 = heatmap(xe_1D,ze_1D, Eta', xlabel="Width", ylabel="Depth", title="Eta",aspect_ratio = 1)
     plot(p1, p2, p3, p4, layout = (2, 2), legend = false)
 

@@ -24,6 +24,7 @@ include("options.jl")
 include("dmda.jl")
 include("old_test.jl")
 include("test_dmstag.jl")
+include("test_snes.jl")
 
 # Run the examples to make sure they all work
 include("examples.jl")

@@ -28,16 +28,12 @@ end
 
 const DMStagStencil     = DMSTAGSTENCIL
 
-
 # allows us to pass XXMat objects directly into CMat ccall signatures
 Base.cconvert(::Type{CDMStag}, obj::DMStag) = obj.ptr
+
 # allows us to pass XXMat objects directly into Ptr{CMat} ccall signatures
 Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
     convert(Ptr{CDMStag}, pointer_from_objref(obj))
-
-
-#Base.eltype(::DMStag{T,PetscInt}) where {T,PetscInt} = T,PetscInt
-
 
 """
     dm = DMStagCreate1d(::PetscLib,
@@ -343,7 +339,8 @@ Creates a compatible DMStag with different dof/stratum
         dofElement      -   [=0] number of degrees of freedom per element/3-cell 
         kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagCreateCompatibleDMStag.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagCreateCompatibleDMStag"))
 """
 function DMStagCreateCompatibleDMStag end
 
@@ -404,7 +401,8 @@ Get number of DOF associated with each stratum of the grid.
     dof2 	- the number of points per 2-cell (element in 2D, face in 3D)
     dof3 	- the number of points per 3-cell (element in 3D)     
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagGetDOF.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagGetDOF"))
 """
 function DMStagGetDOF end
 
@@ -451,7 +449,8 @@ Gets the global size of the DMStag object
     dm      - the DMStag object 
     M,N,P   - size in x,y,z
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagGetGlobalSizes.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagGetGlobalSizes"))
 """
 function DMStagGetGlobalSizes end
 
@@ -496,7 +495,8 @@ Gets the local size of the DMStag object
     dm      - the DMStag object 
     M,N,P   - size in x,y,z
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagGetLocalSizes.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagGetLocalSizes"))
 """
 function DMStagGetLocalSizes end
 
@@ -611,7 +611,8 @@ Set DMStag coordinates to be a uniform grid, storing all values.
     dm                            - the DMStag object
     xmin,xmax,ymin,ymax,zmin,zmax - maximum and minimum global coordinate values 
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagSetUniformCoordinatesExplicit.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagSetUniformCoordinatesExplicit"))
 """
 function DMStagSetUniformCoordinatesExplicit end
 
@@ -638,76 +639,6 @@ function DMStagSetUniformCoordinatesExplicit end
     return nothing
 end
 
-#=
-# replaced with createglobalvector in dm.jl
-"""
-    vec = DMCreateGlobalVector(
-        dm::DMStag; 
-        write_val=true, read_val=true
-        )
-    
-Creates a global vector from a DM object. 
-
-NOTE: for now this is initialized sequentially; MPI should be added
-
-        dm 	- the DM object
-        vec - the global vector
-
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DM/DMCreateGlobalVector.html) 
-"""
-function DMCreateGlobalVector end
-
-@for_petsc function DMCreateGlobalVector(
-    dm::DMStag{$PetscLib}; 
-    write_val=true, read_val=true
-    )
-
-    v = VecSeq(C_NULL, [0.0])  # empty vector
-        
-    @chk ccall((:DMCreateGlobalVector, $petsc_library), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
-
-    # Link a julia array to the values from the new vector
-    # If we modify values here, it will automatically be changed in the PetcVec as well
-    v.array = unsafe_localarray($PetscScalar, v.ptr; write=write_val, read=read_val)
-        
-    return v
-end
-=#
-
-#=
-# replaced with createlocalvector?
-"""
-    vec = DMCreateLocalVector(dm::DMStag; 
-    write_val=true, read_val=true
-    )
-    
-Creates a local vector from a DM object.
-
-NOTE: for now this is initialized sequentially; MPI should be added
-
-        dm 	- the DM object
-        vec - the local vector
-
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DM/DMCreateLocalVector.html)
-"""
-function DMCreateLocalVector end
-
-@for_petsc function DMCreateLocalVector(
-    dm::DMStag{$PetscLib}; 
-    write_val=true, read_val=true
-    )
-
-    v = VecSeq(C_NULL, [0.0])  # empty vector
-        
-    @chk ccall((:DMCreateLocalVector, $petsc_library), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
-
-    # Link a julia array to the values from the new vector
-    # If we modify values here, it will automatically be changed in the PetcVec as well
-    v.array = unsafe_localarray($PetscScalar, v.ptr; write=write_val, read=read_val)
-        
-    return v
-end 
-=#
 
 """
     Array =  DMStagVecGetArray(dm::DMStag, v::AbstractVec)
@@ -867,7 +798,8 @@ Get slot for use with local product coordinate arrays.
     loc     - the grid location 
     slot    - the index to use in local arrays
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagGetProductCoordinateLocationSlot.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagGetProductCoordinateLocationSlot"))
 """
 function DMStagGetProductCoordinateLocationSlot end
 
@@ -900,7 +832,8 @@ Get number of entries per element in the local representation.
     dm                - the DMStag objects
     entriesPerElement - number of entries associated with each element in the local representation
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-master/docs/manualpages/DMSTAG/DMStagGetEntriesPerElement.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagGetEntriesPerElement"))
 """
 function DMStagGetEntriesPerElement end
 
@@ -926,7 +859,8 @@ Get elementwise stencil width.
     dm           - the DMStag objects
     stencilWidth - stencil/halo/ghost width in elements
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagGetStencilWidth.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagGetStencilWidth"))
 """
 function DMStagGetStencilWidth end
 
@@ -953,7 +887,8 @@ Get index to use in accessing raw local arrays.
     c       - component ( the degree of freedom)
     slot    - index to use
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagGetLocationSlot.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagGetLocationSlot"))
 """
 function DMStagGetLocationSlot end
 
@@ -983,9 +918,10 @@ Destroys a DMSTAG object and releases the memory
 
     dm 	- the DM object to destroy
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DM/DMDestroy.html)
+# External Links
+$(_doc_external("DM/DMDestroy"))
 """
-function destroy end
+function destroy(dm::DMStag) end
 
 @for_petsc function destroy(dm::DMStag{$PetscLib})
     finalized($petsclib) ||
@@ -993,185 +929,39 @@ function destroy end
     return nothing
 end
 
-#=
-# MOVED TO dm.jl
 """
-    type = gettype(dm::DMStag)
-
-Gets the DM type name (as a string) from the DM.
-
-    dm  - The DM
-    type- The DM type name
-        
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DM/DMGetType.html)
-"""
-function gettype end
-
-@for_petsc function gettype(dm::DMStag{$PetscLib})
-    t_r = Ref{CDMStagType}()
-    @chk ccall((:DMGetType, $petsc_library), PetscErrorCode, (CDMStag, Ptr{CDMStagType}), dm, t_r)
-    return unsafe_string(t_r[])
-end
-
-
-# REPLACED WITH ROUTINE IN DM.JL
-"""
-    view(dm::DMStag, viewer::Viewer=ViewerStdout(dm.comm))
+    Indices = DMStagGetIndices(dm::DMStag)
     
-Views a DMSTAG object.
-
-    dm      - the DM object to view 
-    viewer  - the viewer 
-
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DM/DMView.html)
-"""
-#function view end
-
-#@for_petsc function view(dm::DMStag{$PetscLib}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, MPI.MPI_COMM_SELF))
-#    @chk ccall((:DMView, $petsc_library), PetscErrorCode, 
-#                (CDMStag, CPetscViewer),
-#            dm, viewer);
-#    return nothing
-#end
-=#
-
-#=
-# REPLACED WITH PETSc.getcorners
-""" 
-        
-    x,m,nExtrax = DMStagGetCorners(dm:DMStag)   in 1D
-    x[],m[],nExtrax[] = DMStagGetCorners(dm:DMStag)   in 2D or 3D
-
-Returns the global element indices of the local region (excluding ghost points). 
-
-    dm 	    - the DMStag object
-    x,y,z 	- starting element indices in each direction
-    m,n,p 	- element widths in each direction
-    nExtrax,nExtray,nExtraz 	- number of extra partial elements in each direction. 
-
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagGetCorners.html)
-"""
-function DMStagGetCorners end
-
-@for_petsc function  DMStagGetCorners(dm::DMStag{$PetscLib})
-
-    x = Ref{$PetscInt}()
-    y = Ref{$PetscInt}()
-    z = Ref{$PetscInt}()
-    m = Ref{$PetscInt}()
-    n = Ref{$PetscInt}()
-    p = Ref{$PetscInt}()
-    nExtrax = Ref{$PetscInt}()
-    nExtray = Ref{$PetscInt}()
-    nExtraz = Ref{$PetscInt}()
-        
-    @chk ccall((:DMStagGetCorners, $petsc_library), PetscErrorCode,
-        (
-            CDMStag,   
-            Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt},
-            Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt},
-            Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}
-        ), 
-        dm, 
-        x,y,z, 
-        m,n,p, 
-        nExtrax,nExtray,nExtraz 
-        )
-
-        dim = getdimension(dm);
-
-        if dim==1
-            X = (x[],)
-            M = (m[],)
-            NEXTRA = (nExtrax[],)
-            return X[1], M[1], NEXTRA[1]    
-        elseif dim==2
-            return (x[], y[]), (m[],n[]), (nExtrax[],nExtray[])    
-        elseif dim==3
-            return (x[], y[], z[]), (m[],n[],p[]), (nExtrax[],nExtray[],nExtraz[])    
-        end
-end
-=#
-
-#@for_petsc PETSc.getcorners(dm::DMStag{$PetscLib}) = DMStagGetCorners(dm::DMStag{$PetscLib})
-
-#=
-# REPLACED WITH PETSc.getghostcorners
-""" 
-    x,m = DMStagGetGhostCorners(dm:DMStag)   in 1D
-    x[],m[] = DMStagGetGhostCorners(dm:DMStag)   in 2D or 3D
-    
-Return global element indices of the local region (including ghost points). 
-       
-    dm 	    - the DMStag object
-    x[] 	- starting element indices in each direction
-    m[] 	- element widths in each direction
-
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagGetGhostCorners.html)
-"""
-function DMStagGetGhostCorners end
-
-@for_petsc function  DMStagGetGhostCorners(dm::DMStag)
-
-    x = Ref{$PetscInt}()
-    y = Ref{$PetscInt}()
-    z = Ref{$PetscInt}()
-    m = Ref{$PetscInt}()
-    n = Ref{$PetscInt}()
-    p = Ref{$PetscInt}()
-        
-    @chk ccall((:DMStagGetGhostCorners, $petsc_library), PetscErrorCode,
-        (
-            CDMStag,   
-            Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt},
-            Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}
-        ), 
-        dm, 
-        x,y,z, 
-        m,n,p
-        )
-
-        dim =   getdimension(dm);
-
-        if dim==1
-            X = (x[],)
-            M = (m[],)
-            return X[1], M[1]
-        elseif dim==2
-            return (x[], y[]), (m[],n[])    
-        elseif dim==3
-            return (x[], y[], z[]), (m[],n[],p[])   
-        end
-end
-=#
-
-"""
-    Indices = DMStagGetCentralNodes(dm::DMStag)
-    
-Return indices of start and end of the central nodes of a local array built from the input `dm` (excluding ghost nodes).   
+Return indices of start and end of the central/vertex nodes of a local array built from the input `dm`. 
+This takes ghost points into account and helps    
 
     dm 	        - the DMStag object
     Indices 	- indices of lower and upper range of center and vertex nodes
 """
-function DMStagGetCentralNodes end
+function DMStagGetIndices end
 
-@for_petsc function DMStagGetCentralNodes(dm::DMStag)
+@for_petsc function DMStagGetIndices(dm::DMStag)
     # In Julia, indices in arrays start @ 1, whereas they can go negative in C
-    
-    #g_start, g_N    =   getghostcorners(dm);  # MODIFY
     gc              =   getghostcorners(dm);  
-  
-    #start,N, nExtra =   getcorners(dm);       # MODIFY
     c               =   getcorners(dm); 
 
-    # Note that we add the +1 for julia/petsc consistency
-    center = (  x= (c.lower[1]+1):(c.upper[1]+1),
-                y= (c.lower[2]+1):(c.upper[2]+1),  
-                z= (c.lower[3]+1):(c.upper[3]+1) )
+    # If we have ghosted boundaries, we need to shift the start/end points, as ghosted 
+    # boundaries are treated in PETSc with negative numbers, whereas in Julia everything is 1-based
 
-    vertex = (  x=c.lower[1]+1:c.upper[1]+2 ,
-                y=c.lower[2]+1:c.upper[2]+2 ,  
-                z=c.lower[3]+1:c.upper[3]+2 )
+    # NOTE: we have not yet tested this in parallel
+    Diff            =   c.lower - gc.lower;
+    Start           =   c.lower + Diff;
+    End             =   Start + c.size - ones(Int64,3);
+
+    # Note that we add the shift for julia/petsc consistency
+    shift = 0;
+    center = (  x= Start[1]:End[1],
+                y= Start[2]:End[2],  
+                z= Start[3]:End[3] )
+
+    vertex = (  x= Start[1]:End[1]+1 ,
+                y= Start[2]:End[2]+1 ,  
+                z= Start[3]:End[3]+1 )
 
     return (center=center, vertex=vertex)
             
@@ -1187,7 +977,8 @@ Get boundary types.
         dm 	     - the DMStag object 
         Bx,By,Bz - boundary types
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagGetBoundaryTypes.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagGetBoundaryTypes"))
 """
 function DMStagGetBoundaryTypes end
 
@@ -1227,7 +1018,8 @@ Get number of ranks in each direction in the global grid decomposition.
         dm 	                     - the DMStag object 
         nRanks0,nRanks1,nRanks2  - number of ranks in each direction in the grid decomposition
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagGetNumRanks.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagGetNumRanks"))
 """
 function DMStagGetNumRanks end
 
@@ -1276,7 +1068,8 @@ This puts a value inside a global vector using DMStagStencil.
     val - the value to be set
     insertMode  - INSERT_VALUES or ADD_VALUES
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagVecSetValuesStencil.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagVecSetValuesStencil"))
 """
 function DMStagVecSetValuesStencil end
 
@@ -1328,7 +1121,8 @@ This puts values inside a global vector using DMStagStencil
     val - the value to be set
     insertMode  - INSERT_VALUES or ADD_VALUES
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagVecSetValuesStencil.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagVecGetValuesStencil"))
 """
 function DMStagVecSetValuesStencil end
 
@@ -1383,7 +1177,8 @@ Get vector values using grid indexing
     pos - locations to obtain values from (as an array of DMStagStencil values) 
     val - value at the point 
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagVecGetValuesStencil.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagVecGetValuesStencil"))
 """
 function DMStagVecGetValuesStencil end
 
@@ -1430,7 +1225,8 @@ Get vector values using grid indexing.
     pos - locations to obtain values from (as an array of DMStagStencil values) 
     val - value at the point 
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagVecGetValuesStencil.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagVecGetValuesStencil"))
 """
 function DMStagVecGetValuesStencil end
 
@@ -1484,7 +1280,8 @@ This reads a single value from a matrix DMStagStencil
     posCol  - the location of the row of the set value, given by a DMStagStencil struct (as a vector)
     val     - the value
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagMatGetValuesStencil.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagMatGetValuesStencil"))
 """
 function DMStagMatGetValuesStencil end
 
@@ -1538,7 +1335,9 @@ This reads a single value from a matrix DMStagStencil.
     posCol  - the location of the row of the set value, given by a DMStagStencil struct (as a vector)
     val     - the value
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagMatGetValuesStencil.html)
+
+# External Links
+$(_doc_external("DMSTAG/DMStagMatGetValuesStencil"))
 """
 function DMStagMatGetValuesStencil end
 
@@ -1603,16 +1402,14 @@ function LocalInGlobalIndices(dm::DMStag)
     ind_g   =   createglobalvector(dm)
     v_ind_l =   createlocalvector(dm)
 
-    # Set indices in local vector
-    for i=1:length(v_ind_l)
-        v_ind_l[i] = i
+    for i=1:length(ind_g)
+        ind_g[i] = i
     end
-    @show v_ind_l
-    update!(ind_g, v_ind_l, INSERT_VALUES); # update global vector
-    
-    #@show v_ind_l ind_g
+    update!(v_ind_l, ind_g, INSERT_VALUES); # update local vector
 
-    return Int64.(ind_g)
+    ix = findall( real(v_ind_l) .> 0 ); #adding real here such that it works with Complex PetscLib as well
+
+    return ix
 end
     
 """
@@ -1637,7 +1434,8 @@ This puts values inside a matrix using DMStagStencil position.
     val	        - the value to be set
     insertMode	- INSERT_VALUES or ADD_VALUES
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagMatSetValuesStencil.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagMatSetValuesStencil"))
 """
 function DMStagMatSetValuesStencil end
 
@@ -1697,7 +1495,8 @@ This puts values inside a matrix using DMStagStencil position
     val	        - the value to be set
     insertMode	- INSERT_VALUES or ADD_VALUES
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagMatSetValuesStencil.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagMatSetValuesStencil"))
 """
 function DMStagMatSetValuesStencil end
 
@@ -1749,29 +1548,7 @@ function DMStagMatSetValuesStencil end
     return nothing
 end
 
-#=
-# REPLACED WITH   PETSc.getdimension
-"""
-    dim = DMGetDimension(dm::DMStag)
-
-Return the topological dimension of the DM.
-
-    dm 	- The DM
-    dim - dimensions
-
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DM/DMGetDimension.html)
-"""
-function DMGetDimension end
-
-@for_petsc function DMGetDimension(dm::DMStag)
-    dim = Ref{$PetscInt}()
-
-    @chk ccall((:DMGetDimension, $petsc_library), PetscErrorCode, (CDMStag,Ptr{$PetscInt}), dm, dim )
-
-    return dim[]
-end
-=#
-
+# NOTE: We should likely rewrite this to make it consistent with update!, which has a slighlt different calling sequence
 """
     DMLocalToGlobal(
         dm::DMStag,
@@ -1786,8 +1563,10 @@ Updates global vectors from local vectors.
     l 	 - the local vector
     mode - if INSERT_VALUES then no parallel communication is used, if ADD_VALUES then all ghost points from the same base point accumulate into that base point.
     g 	 - the global vector    
+    
+# External Links
+$(_doc_external("DM/DMLocalToGlobal"))
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DM/DMLocalToGlobal.html)
 """
 function DMLocalToGlobal end
 
@@ -1797,7 +1576,6 @@ function DMLocalToGlobal end
     g::AbstractVec{$PetscScalar}
     )
 
-    #DMLocalToGlobal(dm,l.ptr, mode,g.ptr)
     update!(l,g,mode);
 
     return nothing
@@ -1809,37 +1587,10 @@ end
     g::CVec
     )
 
-    #DMLocalToGlobal(dm,l.ptr, mode,g)
     update!(l,g,mode);
 
     return nothing
 end
-
-#=
-# replaced with update!
-@for_petsc function DMLocalToGlobal(
-    dm::DMStag{$PetscLib},
-    l::CVec, 
-    mode::InsertMode,
-    g::CVec
-    )
-
-    @chk ccall((:DMLocalToGlobal, $petsc_library), PetscErrorCode,
-    (
-        CDMStag, 
-        CVec, 
-        InsertMode, 
-        CVec
-    ), 
-    dm, 
-    l, 
-    mode, 
-    g)
-
-
-    return nothing
-end
-=#
 
 @for_petsc function DMGlobalToLocal(
     g::AbstractVec{$PetscScalar}, 
@@ -1847,7 +1598,6 @@ end
     l::AbstractVec{$PetscScalar}
     )
 
-    #DMGlobalToLocal(dm,g.ptr, mode::InsertMode,l.ptr)
     update!(g,l,mode)
 
     return nothing
@@ -1859,88 +1609,11 @@ end
     mode::InsertMode,
     l::AbstractVec{$PetscScalar}
     )
-
-   # DMGlobalToLocal(dm,g, mode::InsertMode,l.ptr)
     update!(g,l,mode)
 
     return nothing
 end
 
-#=
-# replaced with update!
-"""
-    DMGlobalToLocal(
-        dm::DMStag,
-        g::CVec, 
-        mode::InsertMode,
-        l::CVec
-        )
-
-Update local vectors from global vector.
-
-    dm   - the DM object
-    g    - the global vector
-    mode - INSERT_VALUES or ADD_VALUES
-    l    - the local vector 
-
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DM/DMGlobalToLocal.html)
-"""
-function DMGlobalToLocal end
-
-@for_petsc function DMGlobalToLocal(
-    dm::DMStag{$PetscLib},
-    g::CVec, 
-    mode::InsertMode,
-    l::CVec
-    )
-
-    @chk ccall((:DMGlobalToLocal, $petsc_library), PetscErrorCode,
-    (
-        CDMStag, 
-        CVec, 
-        InsertMode, 
-        CVec
-    ), 
-    dm, 
-    g, 
-    mode, 
-    l
-    )
-
-    return nothing
-end
-=#
-
-#=
-# REPLACED WITH PETSc.creatematrix?
-"""
-    mat = DMCreateMatrix(dm::DMStag)
-
-Generates a matrix from a DMStag object. The type is a MatSeqAIJ is we are on 1 core.
-
-    dm  - the DMStag object
-    mat - the matrix of type MatSeqAIJ (on 1 core) 
-
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DM/DMCreateMatrix.html)
-"""
-function DMCreateMatrix end
-
-@for_petsc function DMCreateMatrix(dm::DMStag)
-    # Note: the matrix cannot be viewed yet, as it remains unassembled
-    #  ideally, we should modify the viewer to take care of this case
-
-    if dm.comm==MPI.COMM_SELF
-        mat = MatSeqAIJ{$PetscScalar}(C_NULL)
-    elseif dm.comm==MPI.COMM_WORLD
-        error("MatMPIAIJ still to be implemented")
-    end
-
-    @chk ccall((:DMCreateMatrix, $petsc_library), PetscErrorCode,
-                (CDMStag, Ptr{CMat}), dm, mat)
-        
-    return mat
-end
-=#
 
 """
     stencilType = DMStagGetStencilType(dm::DMStag)
@@ -1950,7 +1623,8 @@ Get elementwise ghost/halo stencil type.
     dm          - the DMStag object
     stencilType - the elementwise ghost stencil type: DMSTAG_STENCIL_BOX, DMSTAG_STENCIL_STAR, or DMSTAG_STENCIL_NONE
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagGetStencilType.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagGetStencilType"))
 """
 function DMStagGetStencilType end
 
@@ -1977,7 +1651,8 @@ Returns boolean value to indicate whether this rank is first in each direction i
     dm             - the DMStag object
     fr_X,fr_Y,fr_Z - whether this rank is first in each direction
 
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagGetIsFirstRank.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagGetIsFirstRank"))
 """
 function DMStagGetIsFirstRank end
 
@@ -2008,7 +1683,8 @@ Returns boolean value to indicate whether this rank is last in each direction in
     dm             - the DMStag object
     fr_X,fr_Y,fr_Z - whether this rank is last in each direction
 
-From [PETSc Manual])(https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DMSTAG/DMStagGetIsLastRank.html)
+# External Links
+$(_doc_external("DMSTAG/DMStagGetIsLastRank"))
 """
 function DMStagGetIsLastRank end
 
@@ -2028,67 +1704,6 @@ function DMStagGetIsLastRank end
         
     return fr_X[]== PETSC_TRUE, fr_Y[]== PETSC_TRUE, fr_Z[]== PETSC_TRUE
 end
-
-#=
-# REPLACED WITH getcoordinateDM
-"""
-    dmnew = DMGetCoordinateDM(dm::DMStag; kwargs...)
-
-Gets the DM that prescribes coordinate layout and scatters between global and local coordinates.
-
-    dm          -    the DMStag object
-    kwargs...   -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
-    dmnew       -    Coordinate DM
-
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DM/DMGetCoordinateDM.html)
-"""
-function DMGetCoordinateDM end
-
-@for_petsc function DMGetCoordinateDM(
-    dm::DMStag{$PetscLib}; kwargs...)
-
-    opts = Options($PetscLib, kwargs...)
-
-    dmnew = DMStag{$PetscLib}(C_NULL, opts)   # retrieve options
-
-    @chk ccall((:DMGetCoordinateDM, $petsc_library), PetscErrorCode,
-    (CDMStag, Ptr{CDMStag}), 
-     dm, dmnew)
-
-    return dmnew
-end
-=#
-
-#=
-# replaced with getcoordinateslocal
-"""
-    v = DMGetCoordinatesLocal(dm::DMStag; write_val=true, read_val=true)
-
-Gets a local vector with the coordinates associated with the DM.
-
-    dm 	- the DMStag object
-    v   - coordinate local vector
-
-From [PETSc Manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/DM/DMGetCoordinatesLocal.html)
-"""
-function DMGetCoordinatesLocal end
-
-@for_petsc function DMGetCoordinatesLocal(
-    ::$UnionPetscLib,
-    dm::DMStag; write_val=true, read_val=true)
-
-    # Should probably be a parallel vector
-    v = VecSeq(C_NULL, [0.0])  # empty vector
-        
-    @chk ccall((:DMGetCoordinatesLocal, $petsc_library), PetscErrorCode, (CDMStag, Ptr{CVec}), dm, v)
-
-    # Link a julia array to the values from the new vector
-    # If we modify values here, it will automatically be changed in the PetcVec as well
-    v.array = unsafe_localarray($PetscScalar, v.ptr; write=write_val, read=read_val)
-        
-    return v
-end
-=# 
 
 """
     setuniformcoordinates!(
@@ -2155,7 +1770,6 @@ $(_doc_external("DMSTAG/DMStagGetCorners"))
 function getcorners(dm::DMStag) end
 
 @for_petsc function getcorners(dm::DMStag{$PetscLib})
-  #  info = DMDALocalInfo{$PetscInt}()
     corners     = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
     local_size  = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
     nExtra      = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]   

@@ -43,18 +43,40 @@ function _snesjac(csnes::CSNES, cx::CVec, cAmat::CMat, cPmat::CMat, ctx::Ptr{Cvo
     snes.Jeval(cAmat, cPmat, cx)
 end
 =#
+"""
+    SNES{PetscScalar}(
+        ::UnionPetscLib,
+        comm::MPI.Comm; 
+        snessetfromoptions = true,
+        options...)
 
-@for_libpetsc begin
+Initializes a `SNES` nonlinear solver object
+"""
+function SNES() end
 
-    function SNES{$PetscScalar}(comm::MPI.Comm; kwargs...)
+@for_petsc  function SNES{$PetscScalar}(
+        ::$UnionPetscLib,
+        comm::MPI.Comm; 
+        snessetfromoptions = true,
+        options...)
+        
         @assert initialized($petsclib)
-        opts = Options($petsclib, kwargs...)
+        opts = Options($petsclib, options...)
         snes = SNES{$PetscScalar, $PetscLib}(C_NULL, opts, nothing, nothing, nothing, nothing, nothing, nothing)
-        @chk ccall((:SNESCreate, $libpetsc), PetscErrorCode, (MPI.MPI_Comm, Ptr{CSNES}), comm, snes)
-
+        
         with(snes.opts) do
-            setfromoptions!(snes)
+        
+            @chk ccall(
+                (:SNESCreate, $petsc_library), 
+                PetscErrorCode, 
+                (MPI.MPI_Comm, 
+                Ptr{CSNES}), 
+                comm,
+                snes)
+
         end
+     
+        snessetfromoptions && setfromoptions!(snes)
 
         if comm == MPI.COMM_SELF
             finalizer(destroy, snes)
@@ -62,6 +84,7 @@ end
         return snes
     end
 
+@for_libpetsc begin
 
     function (::SNESFn{$PetscScalar})(csnes::CSNES, cx::CVec, cfx::CVec, ctx::Ptr{Cvoid})::$PetscInt
         snes = unsafe_pointer_to_objref(ctx)

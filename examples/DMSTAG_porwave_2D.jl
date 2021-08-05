@@ -1,6 +1,5 @@
 # EXCLUDE FROM TESTING
-# NOTE: This is temporarily not working until we merge the DMSTAG routines with the new Clang branch
-#
+# Note: this is excluded as it would slow doen the tests too much
 #
 # This is an example of a 2D viscoelastic porosity wave as described in 
 # Vasyliev et al. Geophysical Research Letters (25), 17. p. 3239-3242
@@ -15,17 +14,17 @@ using PETSc, MPI
 using Plots
 using SparseArrays, SparseDiffTools, ForwardDiff
 
-PETSc.initialize()
+petsclib = PETSc.petsclibs[1];
+PETSc.initialize(petsclib)
 
-
-function FormRes!(cfx_g, cx_g, user_ctx)
+function FormRes!(ptr_fx_g, ptr_x_g, user_ctx)
 
     # Note that in PETSc, cx and cfx are pointers to global vectors. 
     
     # Copy global to local vectors
-    PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
-    PETSc.DMGlobalToLocal(user_ctx.dm, cfx_g, PETSc.INSERT_VALUES,  user_ctx.f_l) 
-
+    PETSc.update!(user_ctx.x_l, ptr_x_g,   PETSc.INSERT_VALUES) 
+    PETSc.update!(user_ctx.f_l, ptr_fx_g,  PETSc.INSERT_VALUES) 
+    
     # Retrieve arrays from the local vectors
     ArrayLocal_x     =   PETSc.DMStagVecGetArrayRead(user_ctx.dm,   user_ctx.x_l);      # array with all local x-data
     ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm,       user_ctx.f_l);      # array with all local residual
@@ -38,7 +37,8 @@ function FormRes!(cfx_g, cx_g, user_ctx)
     Base.finalize(ArrayLocal_f)
 
     # Copy local into global residual vector
-    PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.f_l, PETSc.INSERT_VALUES, cfx_g) 
+    PETSc.update!(ptr_fx_g, user_ctx.f_l, PETSc.INSERT_VALUES)
+    #PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.f_l, PETSc.INSERT_VALUES, cfx_g) 
 
 end
 
@@ -56,7 +56,7 @@ function  ForwardDiff_res(x, user_ctx)
     return f;
 end
 
-function  f(out, x, user_ctx)
+function  func(out, x, user_ctx)
 
     ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all local x-data
     ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, out);        # array with all local residual
@@ -67,7 +67,7 @@ function  f(out, x, user_ctx)
 end
 
 
-function FormJacobian!(cx_g, J, P, user_ctx)
+function FormJacobian!(ptr_x_g, J, P, user_ctx)
     # This requires several steps:
     #
     #   1) Extract local vector from global solution (x) vector
@@ -75,29 +75,36 @@ function FormJacobian!(cx_g, J, P, user_ctx)
     #       this routine requires julia vectors as input)
 
     # Extract the local vector
-    PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
+    PETSc.update!(user_ctx.x_l, ptr_x_g, PETSc.INSERT_VALUES)
     x               =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false, read=true)
 
     if isnothing(user_ctx.jac)
-        error("You first have to define the sparsity pattern of the jacobian")
+        # Compute sparsity pattern of jacobian. This is relatvely slow, but only has to be done once.
+        # Theoretically, more efficient tools for this exists (jacobian_sparsity in the SparsityDetection.jl package),
+        # but they don't seem to work with the PETSc approach we use. Therefore we employ      
+        f_Residual  =   (x -> ForwardDiff_res(x, user_ctx));        # pass additional arguments into the routine
+        J_julia     =   ForwardDiff.jacobian(f_Residual,x);  
+
+        # employ sparse structure to compute jacobian - to be moved inside routines
+        jac         =   sparse(J_julia);
+        colors      =   matrix_colors(jac)          # the number of nonzeros per row
+
     else
         jac     =   user_ctx.jac;
         colors  =   user_ctx.colors;
     end
     out         =   similar(x);
         
-    f_Res           =   ((out,x)->f(out, x, user_ctx));        # pass additional arguments into the routine
+    f_Res           =   ((out,x)->func(out, x, user_ctx));        # pass additional arguments into the routine
+    forwarddiff_color_jacobian!(jac, f_Res, x, colorvec = colors)
 
-    if isnothing(user_ctx.jac_cache)
-        # Allocate data required for jacobian computations
-        user_ctx.jac_cache = ForwardColorJacCache(f_Res,x; colorvec=colors, sparsity = jac);
+    ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);    # extract indices
+    if PETSc.assembled(J) == false
+        println("Assembling J")
+        J           =   PETSc.MatSeqAIJ(sparse(jac[ind,ind]));
+    else
+        J           .=   sparse(jac[ind,ind]);       
     end
-
-    @time forwarddiff_color_jacobian!(jac, f_Res, x, user_ctx.jac_cache);
-
-    ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);    # extr
-    J              .=   jac[ind,ind];    
-
 
     user_ctx.jac    =   jac;
     user_ctx.colors =   colors;
@@ -123,12 +130,13 @@ mutable struct Data_PorWav2D
 end
 user_ctx = Data_PorWav2D(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
 
-function ComputeSparsityPatternJacobian(x_l, user_ctx)
+function ComputeSparsityPatternJacobian(x_l_vec, user_ctx)
     # This computes the sparsity pattern of our jacobian by hand. 
     # That is signficantly faster than the automatic method, yet you will have to analyze your residual routine for it.
     #
     # As you will see, there are however any similaries between the two routines, so it is usually not all that difficult
     # to define this
+    x_l               =   PETSc.unsafe_localarray(Float64, x_l_vec.ptr;  write=false, read=true)
 
     AddInd!(i, array) =  append!(i,vec(array));   # small helper routine for readability of the lines below
 
@@ -144,11 +152,11 @@ function ComputeSparsityPatternJacobian(x_l, user_ctx)
     res_Pe          =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_f,      PETSc.DMSTAG_ELEMENT,   1); 
     
     # compute the FD stencil
-    sx, sn              =   PETSc.DMStagGetCentralNodes(user_ctx.dm);          # indices of (center/element) points, not including ghost values.    
+    ind             =   PETSc.DMStagGetIndices(user_ctx.dm);          # indices of (center/element) points, not including ghost values.    
 
     # Porosity residual @ center points
-    ix                  =   sx[1]:sn[1];           
-    iz                  =   sx[2]:sn[2];      
+    ix                  =   ind.center[1];           
+    iz                  =   ind.center[2];      
 
     #res_Phi[ix,iz]      =   (Phi[ix,iz] - Phi_old[ix,iz])/dt + De.*(Pe[ix,iz]-Pe_old[ix,iz])/dt + (Phi[ix,iz].^m) .* Pe[ix,iz]
     i,j                 =   Vector{Int64}(), Vector{Int64}()
@@ -156,14 +164,18 @@ function ComputeSparsityPatternJacobian(x_l, user_ctx)
     AddInd!(i,res_Phi[ix,iz]), AddInd!(j,Pe[ix,iz]);    #   new non-zeros because of (Phi[ix,iz].^m) .* Pe[ix,iz] term
    
     # Pressure update @ nodal points
-    ix                  =   sx[1]:sn[1];                # lateral BC's are set using ghost points
-    iz                  =   sx[2]+1:sn[2]-1;            # constant Pe on top and bottom, so this is only for center points
+    ix                  =   ind.center[1];                # lateral BC's are set using ghost points
+    iz                  =   ind.center[2];            # constant Pe on top and bottom, so this is only for center points
+    ix_c = ix[1:end];
+    iz_c = iz[2:end-1];
+    
+
     Pe[ix[1]-1,:]       =   Pe[ix[1],:];                # ghost points on left and right size (here: flux free)
     Pe[ix[end]+1,:]     =   Pe[ix[end],:];
 
     # BC's
-    AddInd!(i, res_Pe[:,iz[1]-1]),      AddInd!(j,Pe[:,iz[1]-1]);       # bottom BC
-    AddInd!(i, res_Pe[:,iz[end]+1]),    AddInd!(j,Pe[:,iz[end]+1]);     # top BC
+    AddInd!(i, res_Pe[:,iz[1]]),      AddInd!(j,Pe[:,iz[1]]);       # bottom BC
+    AddInd!(i, res_Pe[:,iz[end]]),    AddInd!(j,Pe[:,iz[end]]);     # top BC
     
     
 #    res_Pe[ix,iz]       =   De*( Pe[ix,iz] - Pe_old[ix,iz])/dt +
@@ -172,16 +184,16 @@ function ComputeSparsityPatternJacobian(x_l, user_ctx)
 #         ((0.5.*(Phi[ix,iz .- 1] + Phi[ix    ,iz ])).^n) .* ( (Pe[ix,iz     ] - Pe[ix, iz .- 1])/dz .+ 1.0))/dz)  
 # -  ((   ((0.5.*(Phi[ix,iz     ] + Phi[ix.+ 1,iz ])).^n) .* ( (Pe[ix.+ 1,iz ] - Pe[ix, iz     ])/dx       )  -
 #         ((0.5.*(Phi[ix,iz     ] + Phi[ix.- 1,iz ])).^n) .* ( (Pe[ix    ,iz ] - Pe[ix.- 1,iz  ])/dx       ))/dx)
-    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j,Phi[ix,iz]);          # new part of (Phi[ix,iz].^m).* Pe[ix,iz] 
-    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j,Phi[ix,iz .+ 1 ]);    # Phi[ix,iz .+ 1]
-    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j,Phi[ix,iz .- 1 ]);    # 
-    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j,Phi[ix .- 1, iz]);    # 
-    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j,Phi[ix .+ 1, iz]);    # 
-    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j, Pe[ix,iz]      );    # De*( Pe[ix,iz] - Pe_old[ix,iz])/dt
-    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j, Pe[ix .+ 1, iz]);    # Pe[ix.+ 1,iz ]
-    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j, Pe[ix .- 1, iz]);    # Pe[ix.- 1,iz ]
-    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j, Pe[ix, iz .- 1]);    # Pe[ix ,iz - 1]
-    AddInd!(i, res_Pe[ix,iz]),  AddInd!(j, Pe[ix, iz .+ 1]);    # Pe[ix ,iz + 1]
+    AddInd!(i, res_Pe[ix_c,iz_c]),  AddInd!(j,Phi[ix_c,iz_c]);          # new part of (Phi[ix,iz].^m).* Pe[ix,iz] 
+    AddInd!(i, res_Pe[ix_c,iz_c]),  AddInd!(j,Phi[ix_c,iz_c .+ 1 ]);    # Phi[ix,iz .+ 1]
+    AddInd!(i, res_Pe[ix_c,iz_c]),  AddInd!(j,Phi[ix_c,iz_c .- 1 ]);    # 
+    AddInd!(i, res_Pe[ix_c,iz_c]),  AddInd!(j,Phi[ix_c .- 1, iz_c]);    # 
+    AddInd!(i, res_Pe[ix_c,iz_c]),  AddInd!(j,Phi[ix_c .+ 1, iz_c]);    # 
+    AddInd!(i, res_Pe[ix_c,iz_c]),  AddInd!(j, Pe[ix_c,iz_c]      );    # De*( Pe[ix,iz] - Pe_old[ix,iz])/dt
+    AddInd!(i, res_Pe[ix_c,iz_c]),  AddInd!(j, Pe[ix_c .+ 1, iz_c]);    # Pe[ix.+ 1,iz ]
+    AddInd!(i, res_Pe[ix_c,iz_c]),  AddInd!(j, Pe[ix_c .- 1, iz_c]);    # Pe[ix.- 1,iz ]
+    AddInd!(i, res_Pe[ix_c,iz_c]),  AddInd!(j, Pe[ix_c, iz_c .- 1]);    # Pe[ix ,iz - 1]
+    AddInd!(i, res_Pe[ix_c,iz_c]),  AddInd!(j, Pe[ix_c, iz_c .+ 1]);    # Pe[ix ,iz + 1]
  
     jac                 =   sparse(i,j,ones(Float64,length(i[:])),n,n); # create the sparse jacobian
     colors              =   matrix_colors(jac)                          # the number of nonzeros per row
@@ -221,28 +233,31 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     res_Pe      =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f,      PETSc.DMSTAG_ELEMENT,   1); 
     
     # compute the FD stencil
-    sx, sn              =   PETSc.DMStagGetCentralNodes(dm);          # indices of (center/element) points, not including ghost values.
+    ind                 =   PETSc.DMStagGetIndices(dm);          # indices of (center/element) points, not including ghost values.
     
     # Porosity residual @ center points
-    ix                  =   sx[1]:sn[1];           
-    iz                  =   sx[2]:sn[2];      
-    res_Phi[ix,iz]      =   (Phi[ix,iz] - Phi_old[ix,iz])/dt + De.*(Pe[ix,iz]-Pe_old[ix,iz])/dt + (Phi[ix,iz].^m) .* Pe[ix,iz]
-    
-    # Pressure update @ nodal points
-    ix                  =   sx[1]:sn[1];                # lateral BC's are set using ghost points
-    iz                  =   sx[2]+1:sn[2]-1;            # constant Pe on top and bottom, so this is only for center points
+    ix                  =   ind.center[1];           
+    iz                  =   ind.center[2];   
+    ix_c                =   ix[1:end];
+    iz_c                =   iz[1:end];
+    res_Phi[ix_c,iz_c]  =   (Phi[ix_c,iz_c] - Phi_old[ix_c,iz_c])/dt + De.*(Pe[ix_c,iz_c]-Pe_old[ix_c,iz_c])/dt + (Phi[ix_c,iz_c].^m) .* Pe[ix_c,iz_c]
+   
+    # Pressure update @ center points
+    ix                  =   ind.center[1];              # lateral BC's are set using ghost points
+    iz                  =   ind.center[2];              # constant Pe on top and bottom, so this is only for center points
+    ix_c                =   ix[1:end];
+    iz_c                =   iz[2:end-1];
     Pe[ix[1]-1,:]       =   Pe[ix[1],:];                # ghost points on left and right size (here: flux free)
-    Pe[ix[end]+1,:]     =   Pe[ix[end],:];
-    res_Pe[:,iz[1]-1]   =   Pe[:,iz[1]-1]   .- 0.;      # bottom BC
-    res_Pe[:,iz[end]+1] =   Pe[:,iz[end]+1] .- 0.;      # top BC
+    Pe[ix[end]+1 ,:]    =   Pe[ix[end],:];
+    res_Pe[:,iz[1]]     =   Pe[:,iz[1]]   .- 0.;        # bottom BC
+    res_Pe[:,iz[end]]   =   Pe[:,iz[end]] .- 0.;        # top BC
 
-  
-    res_Pe[ix,iz]       =   De*( Pe[ix,iz] - Pe_old[ix,iz])/dt +
-                                (Phi[ix,iz].^m).* Pe[ix,iz]     -
-                                ((   ((0.5.*(Phi[ix,iz .+ 1] + Phi[ix    ,iz ])).^n) .* ( (Pe[ix,iz .+ 1] - Pe[ix, iz     ])/dz .+ 1.0)  -
-                                     ((0.5.*(Phi[ix,iz .- 1] + Phi[ix    ,iz ])).^n) .* ( (Pe[ix,iz     ] - Pe[ix, iz .- 1])/dz .+ 1.0))/dz)  -
-                                ((   ((0.5.*(Phi[ix,iz     ] + Phi[ix.+ 1,iz ])).^n) .* ( (Pe[ix.+ 1,iz ] - Pe[ix, iz     ])/dx       )  -
-                                     ((0.5.*(Phi[ix,iz     ] + Phi[ix.- 1,iz ])).^n) .* ( (Pe[ix    ,iz ] - Pe[ix.- 1,iz  ])/dx       ))/dx)
+    res_Pe[ix_c,iz_c]   =   De*( Pe[ix_c,iz_c] - Pe_old[ix_c,iz_c])/dt +
+                                  (Phi[ix_c,iz_c].^m).* Pe[ix_c,iz_c]     -
+                                ((   ((0.5.*(Phi[ix_c,iz_c .+ 1] + Phi[ix_c    ,iz_c ])).^n) .* ( (Pe[ix_c,iz_c .+ 1] - Pe[ix_c, iz_c     ])/dz .+ 1.0)  -
+                                     ((0.5.*(Phi[ix_c,iz_c .- 1] + Phi[ix_c    ,iz_c ])).^n) .* ( (Pe[ix_c,iz_c     ] - Pe[ix_c, iz_c .- 1])/dz .+ 1.0))/dz); #  -
+                                ((   ((0.5.*(Phi[ix_c,iz_c     ] + Phi[ix_c.+ 1,iz_c ])).^n) .* ( (Pe[ix_c.+ 1,iz_c ] - Pe[ix_c, iz_c     ])/dx       )  -
+                                     ((0.5.*(Phi[ix_c,iz_c     ] + Phi[ix_c.- 1,iz_c ])).^n) .* ( (Pe[ix_c    ,iz_c ] - Pe[ix_c.- 1,iz_c  ])/dx       ))/dx)
                                
         
     # remark to the lines above: these are long, multi line, expressions. For code readability, I chopped them up over several lines. 
@@ -260,8 +275,8 @@ function SetInitialPerturbations(user_ctx, x_g)
     # Computes the initial perturbations as in the paper
 
     # Retrieve coordinates from DMStag
-    DMcoord     =   PETSc.DMGetCoordinateDM(user_ctx.dm)
-    vec_coord   =   PETSc.DMGetCoordinatesLocal(user_ctx.dm);
+    DMcoord     =   PETSc.getcoordinateDM(user_ctx.dm)
+    vec_coord   =   PETSc.getcoordinateslocal(user_ctx.dm);
     Coord       =   PETSc.DMStagVecGetArray(DMcoord, vec_coord);
     X_cen       =   Coord[:,:,1]; 
     Z_cen       =   Coord[:,:,2]; 
@@ -275,7 +290,6 @@ function SetInitialPerturbations(user_ctx, x_g)
     Phi_old     =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.xold_l,  PETSc.DMSTAG_ELEMENT, 0); 
     Pe_old      =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.xold_l,  PETSc.DMSTAG_ELEMENT, 1); 
     
-    
     Phi0 =1.0; dPhi1=8.0; dPhi2=1.0; z1=0.0; z2=40.0; x1=0.0; x2=0.0; lambda=1.0
     dPe1        =   dPhi1/user_ctx.De; 
     dPe2        =   dPhi2/user_ctx.De;
@@ -287,7 +301,7 @@ function SetInitialPerturbations(user_ctx, x_g)
     Pe_old     .=          -dPe1 .*exp.( -((Z_cen .- z1).^2.0)/lambda^2) -   dPe2.*exp.( -((Z_cen .- z2).^2.0)/lambda^2);
 
     # Copy local into global residual vector
-    PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.x_l, PETSc.INSERT_VALUES, x_g) 
+    PETSc.update!(x_g, user_ctx.x_l, PETSc.INSERT_VALUES);
 
     # send back coordinates (mainly for plotting)
     return X_cen, Z_cen
@@ -296,25 +310,32 @@ end
 
 # Main solver
 nx, nz          =   100, 500;
+#nx, nz          =   6, 5;
 W, L            =   100,150;
 
-user_ctx.De     =   1e-1;        # Deborah number
-user_ctx.dt     =   1e-5;       # Note that the timestep has to be tuned a bit depending on the     
+#user_ctx.De     =   1e-1;        # Deborah number
+#user_ctx.dt     =   1e-5;       # Note that the timestep has to be tuned a bit depending on the     
+
+user_ctx.De     =   1e2;
+user_ctx.dt     =   1e-2;        # Note that the timestep has to be tuned a bit depending on De in order to obtain convergence     
 
 # Both Pe and Phi are @ defined centers
-user_ctx.dm =   PETSc.DMStagCreate2d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_GHOSTED,PETSc.DM_BOUNDARY_NONE,nx,nz,1,1,0,0,2,PETSc.DMSTAG_STENCIL_BOX,1)
+user_ctx.dm =   PETSc.DMStagCreate2d(petsclib,MPI.COMM_WORLD,
+    PETSc.DM_BOUNDARY_GHOSTED,
+    PETSc.DM_BOUNDARY_NONE,
+    nx,nz,1,1,0,0,2,PETSc.DMSTAG_STENCIL_BOX,1)
 
 
 PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dm, -W/2, W/2, -20, L) # set coordinates
-x_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
+x_g             =   PETSc.createglobalvector(user_ctx.dm)
 
 
-f_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
-user_ctx.x_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
-user_ctx.xold_l =   PETSc.DMCreateLocalVector(user_ctx.dm)
-user_ctx.xold_g =   PETSc.DMCreateGlobalVector(user_ctx.dm)
-user_ctx.f_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
-J               =   PETSc.DMCreateMatrix(user_ctx.dm);                  # Jacobian from DMStag
+f_g             =   PETSc.createglobalvector(user_ctx.dm)
+user_ctx.x_l    =   PETSc.createlocalvector(user_ctx.dm)
+user_ctx.xold_l =   PETSc.createlocalvector(user_ctx.dm)
+user_ctx.xold_g =   PETSc.createglobalvector(user_ctx.dm)
+user_ctx.f_l    =   PETSc.createlocalvector(user_ctx.dm)
+J               =   PETSc.creatematrix(user_ctx.dm);                  # Jacobian from DMStag
 
 
 # initial non-zero structure of jacobian
@@ -333,13 +354,18 @@ heatmap(xc_1D,zc_1D,Pe_pl', xlabel="Width", ylabel="Depth", title="Pe")
 
 # Compute sparsity & coloring
 # do this in case you solve new equations:
-#@time user_ctx.jac, user_ctx.colors = ComputeSparsityPatternJacobian_automatic(user_ctx.x_l.array, user_ctx);   
+#@time user_ctx.jac, user_ctx.colors = ComputeSparsityPatternJacobian_automatic(user_ctx.x_l, user_ctx);   
 
 # much faster, but requires reformulation in case you solve new equations:
-@time user_ctx.jac, user_ctx.colors = ComputeSparsityPatternJacobian(user_ctx.x_l.array, user_ctx);    
+@time user_ctx.jac, user_ctx.colors = ComputeSparsityPatternJacobian(user_ctx.x_l, user_ctx);    
+
+ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);    # extract indices
+J           =   PETSc.MatSeqAIJ(sparse(user_ctx.jac[ind,ind]));
+
+#
 
 
-S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
+S = PETSc.SNES{Float64}(petsclib,MPI.COMM_WORLD; 
         snes_rtol=1e-12, 
         snes_monitor=true, 
         snes_max_it = 500,
@@ -355,8 +381,6 @@ if true
 
 PETSc.setfunction!(S, FormRes!, f_g)
 PETSc.setjacobian!(S, FormJacobian!, J, J)
-
-
 
 # Preparation of visualisation
 ENV["GKSwstype"]="nul"; 
@@ -377,8 +401,8 @@ while t < 25.0
 
     # Update old local values
     user_ctx.xold_g  =  x_g;
-    PETSc.DMGlobalToLocal(user_ctx.dm, x_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
-    PETSc.DMGlobalToLocal(user_ctx.dm, user_ctx.xold_g,  PETSc.INSERT_VALUES,  user_ctx.xold_l) 
+    PETSc.update!(user_ctx.x_l, x_g,  PETSc.INSERT_VALUES) 
+    PETSc.update!(user_ctx.xold_l, user_ctx.xold_g,  PETSc.INSERT_VALUES) 
 
     # Update time
     t    += user_ctx.dt;

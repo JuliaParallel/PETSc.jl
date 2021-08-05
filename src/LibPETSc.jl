@@ -35,7 +35,17 @@ export PetscLibType,
     SCATTER_FORWARD,
     SCATTER_REVERSE,
     SCATTER_FORWARD_LOCAL,
-    SCATTER_REVERSE_LOCAL
+    SCATTER_REVERSE_LOCAL,
+    DMBoundaryType,
+    DM_BOUNDARY_NONE,
+    DM_BOUNDARY_GHOSTED,
+    DM_BOUNDARY_MIRROR,
+    DM_BOUNDARY_PERIODIC,
+    DM_BOUNDARY_TWIST,
+    DMDAStencilType,
+    DMDA_STENCIL_STAR,
+    DMDA_STENCIL_BOX,
+    MatStencil
 
 include("LibPETSc_const.jl")
 include("LibPETSc_startup.jl")

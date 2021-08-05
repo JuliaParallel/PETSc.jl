@@ -1,6 +1,90 @@
 const CDM = Ptr{Cvoid}
 abstract type AbstractDM{PetscLib} end
 
+function destroy(dm::AbstractDM{PetscLib}) where {PetscLib}
+    finalized(PetscLib) || LibPETSc.DMDestroy(PetscLib, dm)
+    dm.ptr = C_NULL
+    return nothing
+end
+
+"""
+    setfromoptions!(dm::DM, opts=dm.opts)
+
+# External Links
+$(_doc_external("DM/DMSetFromOptions"))
+"""
+function setfromoptions!(
+    dm::AbstractDM{PetscLib},
+    opts::Options = dm.opts,
+) where {PetscLib}
+    with(opts) do
+        LibPETSc.DMSetFromOptions(PetscLib, dm)
+    end
+end
+
+"""
+    setup!(dm::DM, opts=dm.opts)
+
+# External Links
+$(_doc_external("DM/DMSetUp"))
+"""
+function setup!(
+    dm::AbstractDM{PetscLib},
+    opts::Options = dm.opts,
+) where {PetscLib}
+    with(opts) do
+        LibPETSc.DMSetUp(PetscLib, dm)
+    end
+end
+
+"""
+    gettype(dm::AbstractDM)
+
+Gets type name of the `dm`
+
+# External Links
+$(_doc_external("DM/DMGetType"))
+"""
+function gettype(dm::AbstractDM{PetscLib}) where {PetscLib}
+    t_r = Ref{Cstring}()
+    LibPETSc.DMGetType(PetscLib, dm, t_r)
+    return unsafe_string(t_r[])
+end
+
+"""
+    getdimension(dm::AbstractDM)
+
+Return the topological dimension of the `dm`
+
+# External Links
+$(_doc_external("DM/DMGetDimension"))
+"""
+function getdimension(dm::AbstractDM{PetscLib}) where {PetscLib}
+    r_dim = Ref{PetscLib.PetscInt}()
+    LibPETSc.DMGetDimension(PetscLib, dm, r_dim)
+    return r_dim[]
+end
+
+"""
+    MatAIJ(dm::AbstractDM)
+
+Generates a matrix from the `dm` object.
+
+# External Links
+$(_doc_external("DM/DMCreateMatrix"))
+"""
+function MatAIJ(dm::AbstractDM{PetscLib}) where {PetscLib}
+    mat = MatAIJ{PetscLib, PetscLib.PetscScalar}(C_NULL)
+
+    LibPETSc.DMCreateMatrix(PetscLib, dm, mat)
+
+    return mat
+end
+
+#=
+#
+# OLD WRAPPERS
+#
 """
     DMLocalVec(v::CVec, dm::AbstractDM)
 
@@ -37,101 +121,6 @@ end
 # functions such as `KSPGetDM`
 mutable struct PetscDM{PetscLib} <: AbstractDM{PetscLib}
     ptr::CDM
-end
-
-"""
-    setup!(da::DM, opts=da.opts)
-
-# External Links
-$(_doc_external("DM/DMSetUp"))
-"""
-function setup! end
-
-@for_petsc function setup!(da::AbstractDM{$PetscLib}, opts::Options = da.opts)
-    with(opts) do
-        @chk ccall((:DMSetUp, $petsc_library), PetscErrorCode, (CDM,), da)
-    end
-end
-
-"""
-    setfromoptions!(da::DM, opts=da.opts)
-
-# External Links
-$(_doc_external("DM/DMSetFromOptions"))
-"""
-function setfromoptions! end
-
-@for_petsc function setfromoptions!(
-    da::AbstractDM{$PetscLib},
-    opts::Options = da.opts,
-)
-    with(opts) do
-        @chk ccall(
-            (:DMSetFromOptions, $petsc_library),
-            PetscErrorCode,
-            (CDM,),
-            da,
-        )
-    end
-end
-
-@for_petsc begin
-    function destroy(da::AbstractDM{$PetscLib})
-        finalized($PetscLib) || @chk ccall(
-            (:DMDestroy, $petsc_library),
-            PetscErrorCode,
-            (Ptr{CDM},),
-            da,
-        )
-        da.ptr = C_NULL
-        return nothing
-    end
-end
-
-"""
-    getdimension(dm::AbstractDM)
-
-Return the topological dimension of the `dm`
-
-# External Links
-$(_doc_external("DM/DMGetDimension"))
-"""
-function getdimension(::AbstractDM) end
-
-@for_petsc function getdimension(dm::AbstractDM{$PetscLib})
-    dim = Ref{$PetscInt}()
-
-    @chk ccall(
-        (:DMGetDimension, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{$PetscInt}),
-        dm,
-        dim,
-    )
-
-    return dim[]
-end
-
-"""
-    gettype(dm::AbstractDM)
-
-Gets type name of the `dm`
-
-# External Links
-$(_doc_external("DM/DMGetType"))
-"""
-function gettype(::AbstractDM) end
-
-@for_petsc function gettype(dm::AbstractDM{$PetscLib})
-    t_r = Ref{Cstring}()
-    @chk ccall(
-        (:DMGetType, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{Cstring}),
-        dm,
-        t_r,
-    )
-    return unsafe_string(t_r[])
 end
 
 """
@@ -520,3 +509,4 @@ function getcoordinateslocal end
 
     return coord_vec
 end
+=#

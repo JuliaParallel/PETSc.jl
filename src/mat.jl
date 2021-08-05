@@ -342,7 +342,53 @@ function setvalues!(
 ) where {PetscLib, PetscScalar, PetscInt}
     @assert PetscScalar == PetscLib.PetscScalar
     @assert PetscInt == PetscLib.PetscInt
+    @assert num_rows * num_cols <= length(rowvals)
     LibPETSc.MatSetValues(
+        PetscLib,
+        M,
+        num_rows,
+        row0idxs,
+        num_cols,
+        col0idxs,
+        rowvals,
+        insertmode,
+    )
+    return nothing
+end
+
+"""
+    setvalues!(
+        M::AbstractMat{PetscLib},
+        row0idxs::Vector{MatStencil{PetscInt}},
+        col0idxs::Vector{MatStencil{PetscInt}},
+        rowvals::Array{PetscScalar},
+        insertmode::InsertMode = INSERT_VALUES;
+        num_rows = length(row0idxs),
+        num_cols = length(col0idxs)
+    )
+
+Set values of the matrix `M` with base-0  row and column indices `row0idxs` and
+`col0idxs` inserting the values `rowvals`.
+
+If the keyword arguments `num_rows` or `num_cols` is specified then only the
+first `num_rows * num_cols` values of `rowvals` will be used.
+
+# External Links
+$(_doc_external("Mat/MatSetValuesStencil"))
+"""
+function setvalues!(
+    M::AbstractMat{PetscLib},
+    row0idxs::Vector{MatStencil{PetscInt}},
+    col0idxs::Vector{MatStencil{PetscInt}},
+    rowvals::Array{PetscScalar},
+    insertmode::InsertMode = INSERT_VALUES;
+    num_rows = length(row0idxs),
+    num_cols = length(col0idxs),
+) where {PetscLib, PetscScalar, PetscInt}
+    @assert PetscScalar == PetscLib.PetscScalar
+    @assert PetscInt == PetscLib.PetscInt
+    @assert num_rows * num_cols <= length(rowvals)
+    LibPETSc.MatSetValuesStencil(
         PetscLib,
         M,
         num_rows,
@@ -371,6 +417,108 @@ function Base.setindex!(
         INSERT_VALUES,
     )
     return val
+end
+
+function Base.setindex!(
+    M::AbstractMat{PetscLib},
+    val,
+    i::CartesianIndex{N},
+    j::CartesianIndex{N},
+) where {PetscLib, N}
+    PetscInt = PetscLib.PetscInt
+    PetscScalar = PetscLib.PetscScalar
+    ms_i = MatStencil{PetscInt}(
+        N < 3 ? 0 : i[3] - 1,
+        N < 2 ? 0 : i[2] - 1,
+        i[1] - 1,
+        N < 4 ? 0 : i[4] - 1,
+    )
+    ms_j = MatStencil{PetscInt}(
+        N < 3 ? 0 : j[3] - 1,
+        N < 2 ? 0 : j[2] - 1,
+        j[1] - 1,
+        N < 4 ? 0 : j[4] - 1,
+    )
+    setvalues!(M, [ms_i], [ms_j], [PetscScalar(val)], INSERT_VALUES)
+    return val
+end
+
+function addindex!(
+    M::AbstractMat{PetscLib},
+    val,
+    i::CartesianIndex{N},
+    j::CartesianIndex{N},
+) where {PetscLib, N}
+    PetscInt = PetscLib.PetscInt
+    PetscScalar = PetscLib.PetscScalar
+    ms_i = MatStencil{PetscInt}(
+        N < 3 ? 0 : i[3] - 1,
+        N < 2 ? 0 : i[2] - 1,
+        i[1] - 1,
+        N < 4 ? 0 : i[4] - 1,
+    )
+    ms_j = MatStencil{PetscInt}(
+        N < 3 ? 0 : j[3] - 1,
+        N < 2 ? 0 : j[2] - 1,
+        j[1] - 1,
+        N < 4 ? 0 : j[4] - 1,
+    )
+    setvalues!(M, [ms_i], [ms_j], [PetscScalar(val)], ADD_VALUES)
+    return val
+end
+
+"""
+    getvalues!(
+        rowvals::Array{PetscScalar};
+        M::AbstractMat{PetscLib},
+        row0idxs::Vector{PetscInt},
+        col0idxs::Vector{PetscInt},
+        num_rows = length(row0idxs),
+        num_cols = length(col0idxs)
+    )
+
+get values of the matrix `M` with base-0  row and column indices `row0idxs` and
+`col0idxs` inserting the values `rowvals`.
+
+If the keyword arguments `num_rows` or `num_cols` is specified then only the
+first `num_rows * num_cols` values of `rowvals` will be used.
+
+# External Links
+$(_doc_external("Mat/MatGetValues"))
+"""
+function getvalues!(
+    rowvals::Array{PetscScalar},
+    M::AbstractMat{PetscLib},
+    row0idxs::Vector{PetscInt},
+    col0idxs::Vector{PetscInt};
+    num_rows = length(row0idxs),
+    num_cols = length(col0idxs),
+) where {PetscLib, PetscScalar, PetscInt}
+    @assert PetscScalar == PetscLib.PetscScalar
+    @assert PetscInt == PetscLib.PetscInt
+    @assert num_rows * num_cols <= length(rowvals)
+    LibPETSc.MatGetValues(
+        PetscLib,
+        M,
+        num_rows,
+        row0idxs,
+        num_cols,
+        col0idxs,
+        rowvals,
+    )
+    return nothing
+end
+
+function Base.getindex(
+    M::AbstractMat{PetscLib},
+    i::Integer,
+    j::Integer,
+) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    PetscScalar = PetscLib.PetscScalar
+    v_array = [zero(PetscScalar)]
+    getvalues!(v_array, M, [PetscInt(i - 1)], [PetscInt(j - 1)])
+    return @inbounds v_array[1]
 end
 
 function LinearAlgebra.norm(

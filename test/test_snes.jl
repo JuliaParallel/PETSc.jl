@@ -10,7 +10,6 @@ MPI.Initialized() || MPI.Init()
   mpisize = MPI.Comm_size(comm)
 
 
-  petsclib = PETSc.petsclibs[1]
   for petsclib in PETSc.petsclibs
       PETSc.initialize(petsclib)
       PetscScalar = PETSc.scalartype(petsclib)

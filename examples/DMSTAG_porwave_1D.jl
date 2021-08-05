@@ -1,7 +1,3 @@
-# EXCLUDE FROM TESTING
-# NOTE: This is temporarily not working until we merge the DMSTAG routines with the new Clang branch
-#
-#
 # This is an example of a 1D viscoelastic porosity wave as described in 
 # Vasyliev et al. Geophysical Research Letters (25), 17. p. 3239-3242
 # https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/98GL52358
@@ -16,7 +12,8 @@ using PETSc, MPI
 
 using SparseArrays, SparseDiffTools, ForwardDiff
 
-PETSc.initialize()
+petsclib = PETSc.petsclibs[1];
+PETSc.initialize(petsclib)
 
 CreatePlots = false;
 if CreatePlots==true
@@ -24,14 +21,14 @@ if CreatePlots==true
 end
 
 
-function FormRes!(cfx_g, cx_g, user_ctx)
+function FormRes!(ptr_fx_g, ptr_x_g, user_ctx)
 
     # Note that in PETSc, cx and cfx are pointers to global vectors. 
     
     # Copy global to local vectors
-    PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
-    PETSc.DMGlobalToLocal(user_ctx.dm, cfx_g, PETSc.INSERT_VALUES,  user_ctx.f_l) 
-
+    PETSc.update!(user_ctx.x_l, ptr_x_g,   PETSc.INSERT_VALUES) 
+    PETSc.update!(user_ctx.f_l, ptr_fx_g,  PETSc.INSERT_VALUES) 
+    
     # Retrieve arrays from the local vectors
     ArrayLocal_x     =   PETSc.DMStagVecGetArrayRead(user_ctx.dm,   user_ctx.x_l);      # array with all local x-data
     ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm,       user_ctx.f_l);      # array with all local residual
@@ -44,8 +41,8 @@ function FormRes!(cfx_g, cx_g, user_ctx)
     Base.finalize(ArrayLocal_f)
 
     # Copy local into global residual vector
-    PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.f_l, PETSc.INSERT_VALUES, cfx_g) 
-
+    PETSc.update!( ptr_fx_g, user_ctx.f_l, PETSc.INSERT_VALUES) 
+   
 end
 
 function  ForwardDiff_res(x, user_ctx)
@@ -62,7 +59,8 @@ function  ForwardDiff_res(x, user_ctx)
     return f;
 end
 
-function  f(out, x, user_ctx)
+
+function  func(out, x, user_ctx)
 
     ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all local x-data
     ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, out);        # array with all local residual
@@ -74,7 +72,7 @@ end
 
 
 
-function FormJacobian!(cx_g, J, P, user_ctx)
+function FormJacobian!(ptr_x_g, J, P, user_ctx)
     # This requires several steps:
     #
     #   1) Extract local vector from global solution (x) vector
@@ -82,7 +80,9 @@ function FormJacobian!(cx_g, J, P, user_ctx)
     #       this routine requires julia vectors as input)
 
     # Extract the local vector
-    PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
+    PETSc.update!(user_ctx.x_l, ptr_x_g, PETSc.INSERT_VALUES)
+    #PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
+
     x               =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false, read=true)
 
 
@@ -104,16 +104,20 @@ function FormJacobian!(cx_g, J, P, user_ctx)
     end
     out         =   similar(x);
         
-   f_Res           =   ((out,x)->f(out, x, user_ctx));        # pass additional arguments into the routine
+   f_Res           =   ((out,x)->func(out, x, user_ctx));        # pass additional arguments into the routine
    forwarddiff_color_jacobian!(jac, f_Res, x, colorvec = colors)
 
-    ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);    # extr
-    J              .=   jac[ind,ind];    
+    ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);    # extract indices
+    if PETSc.assembled(J) == false
+        J           =   PETSc.MatSeqAIJ(sparse(jac[ind,ind]));
+    else
+        J           .=   sparse(jac[ind,ind]);       
+    end
 
     user_ctx.jac    =   jac;
     user_ctx.colors =   colors;
     
-   return jac, ind
+   return jac[ind,ind], ind
 end
 
 # Define a struct that holds data we need in the local SNES routines below   
@@ -149,22 +153,23 @@ function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
     res_Pe      =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f,      PETSc.DMSTAG_ELEMENT,   1); 
     
     # compute the FD stencil
-    ind         =     PETSc.DMStagGetCentralNodes(dm);          # indices of (center/element) points, not including ghost values.
-    
+    ind         =     PETSc.DMStagGetIndices(dm);          # indices of (center/element) points, not including ghost values.
+ 
     # Porosity residual @ center points
-    iz                  =   ind.Center.lower[1]+1:ind.Center.upper[1]-1;            # Phi is on center points
-    res_Phi[iz[1]-1]    =   Phi[iz[1]-1]   - 1.0;       # Bottom BC
-    res_Phi[iz[end]+1]  =   Phi[iz[end]+1] - 1.0;       # Top BC
-    res_Phi[iz]         =   (Phi[iz] - Phi_old[iz])/dt + De.*(Pe[iz]-Pe_old[iz])/dt + (Phi[iz].^m)   .* Pe[iz]
+    iz                  =   ind.center[1];                # Phi is on center points
+    iz_c                =   iz[2:end-1];                  # central points
+    res_Phi[iz[1]]      =   Phi[iz[1]]   - 1.0;           # Bottom BC
+    res_Phi[iz[end]]    =   Phi[iz[end]] - 1.0;           # Top BC
+    res_Phi[iz_c]       =   (Phi[iz_c] - Phi_old[iz_c])/dt + De.*(Pe[iz_c]-Pe_old[iz_c])/dt + (Phi[iz_c].^m)   .* Pe[iz_c]
    
-    # Pressure update @ nodal points
-    iz                  =   ind.Vertex.lower[1]+1:ind.Vertex.upper[1]-1;     
-    #iz                  =   sx[1]+1:sn[1]-1;            # Pe is on center points as well (dof=2)
-    res_Pe[iz[1]-1]     =   Pe[iz[1]-1]   - 0.;         # Bottom BC
-    res_Pe[iz[end]+1]   =   Pe[iz[end]+1] - 0.;         # Top BC
-    res_Pe[iz]          =   De.*(Pe[iz]-Pe_old[iz])/dt -   ( ((0.5*(Phi[iz .+ 1] + Phi[iz .+ 0])).^n) .* ( (Pe[iz .+ 1] - Pe[iz     ])/dz .+ 1.0)  -
-                                                             ((0.5*(Phi[iz .- 1] + Phi[iz .+ 0])).^n) .* ( (Pe[iz     ] - Pe[iz .- 1])/dz .+ 1.0))/dz  +    
-                                                             (Phi[iz].^m)   .* Pe[iz];
+    # Pressure update @ center points
+    iz                  =   ind.center[1]; 
+    iz_c                =   iz[2:end-1];                  
+    res_Pe[iz[1]]       =   Pe[iz[1]]   - 0.;         # Bottom BC
+    res_Pe[iz[end]]     =   Pe[iz[end]] - 0.;         # Top BC
+    res_Pe[iz_c]        =   De.*(Pe[iz_c]-Pe_old[iz_c])/dt - ( ((0.5*(Phi[iz_c .+ 1] + Phi[iz_c .+ 0])).^n) .* ( (Pe[iz_c .+ 1] - Pe[iz_c     ])/dz .+ 1.0)  -
+                                                               ((0.5*(Phi[iz_c .- 1] + Phi[iz_c .+ 0])).^n) .* ( (Pe[iz_c     ] - Pe[iz_c .- 1])/dz .+ 1.0))/dz  +    
+                                                                (Phi[iz_c].^m)   .* Pe[iz_c];
 
     # Cleanup
     Base.finalize(Phi);    Base.finalize(Phi_old);       
@@ -177,8 +182,8 @@ function SetInitialPerturbations(user_ctx, x_g)
     # Computes the initial perturbations as in the paper
 
     # Retrieve coordinates from DMStag
-    DMcoord     =   PETSc.DMGetCoordinateDM(user_ctx.dm)
-    vec_coord   =   PETSc.DMGetCoordinatesLocal(user_ctx.dm);
+    DMcoord     =   PETSc.getcoordinateDM(user_ctx.dm)
+    vec_coord   =   PETSc.getcoordinateslocal(user_ctx.dm);
     Coord       =   PETSc.DMStagVecGetArray(DMcoord, vec_coord);
     Z_cen       =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,Coord, PETSc.DMSTAG_ELEMENT,    0); # center (has 1 extra)
     user_ctx.dz =   Z_cen[2]-Z_cen[1];
@@ -199,7 +204,8 @@ function SetInitialPerturbations(user_ctx, x_g)
     Pe_old     .=          -dPe1 .*exp.( -((Z_cen .- z1).^2.0)/lambda^2) -   dPe2.*exp.( -((Z_cen .- z2).^2.0)/lambda^2);
 
     # Copy local into global residual vector
-    PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.x_l, PETSc.INSERT_VALUES, x_g) 
+    #PETSc.DMLocalToGlobal(user_ctx.dm,user_ctx.x_l, PETSc.INSERT_VALUES, x_g) 
+    PETSc.update!(x_g, user_ctx.x_l, PETSc.INSERT_VALUES);
 
     # send back coordinates
     return Z_cen
@@ -214,27 +220,29 @@ L               =   150;
 user_ctx.De     =   1e2;
 user_ctx.dt     =   1e-2;        # Note that the timestep has to be tuned a bit depending on De in order to obtain convergence     
 
-user_ctx.dm     =   PETSc.DMStagCreate1d(MPI.COMM_SELF,PETSc.DM_BOUNDARY_NONE,nx,0,2);  # both Phi and Pe are on center points 
+user_ctx.dm     =   PETSc.DMStagCreate1d(petsclib, MPI.COMM_WORLD,PETSc.DM_BOUNDARY_NONE,nx,0,2);  # both Phi and Pe are on center points 
 PETSc.DMStagSetUniformCoordinatesExplicit(user_ctx.dm, -20, L)            # set coordinates
-x_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
+x_g             =   PETSc.createglobalvector(user_ctx.dm)
 
 
-f_g             =   PETSc.DMCreateGlobalVector(user_ctx.dm)
-user_ctx.x_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
-user_ctx.xold_l =   PETSc.DMCreateLocalVector(user_ctx.dm)
-user_ctx.xold_g =   PETSc.DMCreateGlobalVector(user_ctx.dm)
-user_ctx.f_l    =   PETSc.DMCreateLocalVector(user_ctx.dm)
-J               =   PETSc.DMCreateMatrix(user_ctx.dm);                  # Jacobian from DMStag
+f_g             =   PETSc.createglobalvector(user_ctx.dm)
+user_ctx.x_l    =   PETSc.createlocalvector(user_ctx.dm)
+user_ctx.xold_l =   PETSc.createlocalvector(user_ctx.dm)
+user_ctx.xold_g =   PETSc.createglobalvector(user_ctx.dm)
+user_ctx.f_l    =   PETSc.createlocalvector(user_ctx.dm)
+J               =   PETSc.creatematrix(user_ctx.dm);                  # Jacobian from DMStag
 
 
 # initial non-zero structure of jacobian
 Z_cen           =   SetInitialPerturbations(user_ctx, x_g)
 
-x0              =   PETSc.VecSeq(rand(size(x_g,1)));
-J_julia,ind     =   FormJacobian!(x0.ptr, J, J, user_ctx)
+x0              =   PETSc.createglobalvector(user_ctx.dm);
+x0[1:length(x0)] .= 1
+J_julia,ind     =   FormJacobian!(x0, J, J, user_ctx)
+J               =      PETSc.MatSeqAIJ(J_julia)  
 
 
-S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
+S = PETSc.SNES{Float64}(petsclib, MPI.COMM_SELF; 
         snes_rtol=1e-12, 
         snes_monitor=true, 
         snes_max_it = 500,
@@ -269,14 +277,14 @@ while time<2.5
 
     # Update old local values
     user_ctx.xold_g  =  x_g;
-    PETSc.DMGlobalToLocal(user_ctx.dm, x_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
-    PETSc.DMGlobalToLocal(user_ctx.dm, user_ctx.xold_g,  PETSc.INSERT_VALUES,  user_ctx.xold_l) 
+    PETSc.update!(user_ctx.x_l, x_g,  PETSc.INSERT_VALUES,  ) 
+    PETSc.update!(user_ctx.xold_l, user_ctx.xold_g,  PETSc.INSERT_VALUES,  ) 
 
     # Update time
     time += user_ctx.dt;
     it   += 1;
 
-    if (mod(it,200)==0) & (CreatePlots==true) # Visualisation
+    if (mod(it,20)==0) & (CreatePlots==true) # Visualisation
         # Extract values and plot 
         Phi         =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT, 0); 
         Pe          =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l,     PETSc.DMSTAG_ELEMENT, 1); 

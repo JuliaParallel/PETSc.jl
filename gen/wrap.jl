@@ -14,8 +14,8 @@ mutable struct State
 end
 
 function pass(x, state, f = (x, state) -> nothing)
-    f(x, state)
-    if length(x) > 0
+    res = f(x, state)
+    if res && length(x) > 0
         for a in x
             pass(a, state, f)
         end
@@ -33,7 +33,8 @@ function add_chk(x, state)
         @assert body isa CSTParser.EXPR && body.head == :block
         @assert length(body) == 1
 
-        # Clang.jl-generated ccalls should be directly part of a function definition
+        # Clang.jl-generated ccalls should be directly part of a function
+        # definition
         call = body.args[1]
         if call isa CSTParser.EXPR &&
            call.head == :call &&
@@ -53,6 +54,7 @@ function add_chk(x, state)
             end
         end
     end
+    true
 end
 
 # make every function have $UnionPetscLib as the first argument
@@ -62,7 +64,8 @@ function add_UnionPetscLib(x, state)
         @assert body isa CSTParser.EXPR && body.head == :block
         @assert length(body) == 1
 
-        # Clang.jl-generated ccalls should be directly part of a function definition
+        # Clang.jl-generated ccalls should be directly part of a function
+        # definition
         call = body.args[1]
         if call isa CSTParser.EXPR &&
            call.head == :call &&
@@ -76,6 +79,7 @@ function add_UnionPetscLib(x, state)
             )
         end
     end
+    true
 end
 
 # make every function have $UnionPetscLib as the first argument
@@ -85,7 +89,8 @@ function add_for_petsc(x, state)
         @assert body isa CSTParser.EXPR && body.head == :block
         @assert length(body) == 1
 
-        # Clang.jl-generated ccalls should be directly part of a function definition
+        # Clang.jl-generated ccalls should be directly part of a function
+        # definition
         call = body.args[1]
         if call isa CSTParser.EXPR && (
             (call.head == :call && call[1].val == "ccall") ||
@@ -94,13 +99,45 @@ function add_for_petsc(x, state)
             push!(state.edits, Edit(state.offset, "@for_petsc "))
         end
     end
+    true
 end
 
-# make every function have $UnionPetscLib as the first argument
-function add_for_interpolate(x, state, val)
+# interpolate the `val` in the functions with `@for_petsc`
+function add_interpolations(x, state, vals)
+    # skip structs
+    if x isa CSTParser.EXPR && x.head == :struct
+        return false
+    end
+    if x isa CSTParser.EXPR && x.head == :IDENTIFIER && x.val in vals
+        push!(state.edits, Edit(state.offset, "\$"))
+    end
+    true
+end
+
+function add_struct_types(x, state, name, val)
+    # skip structs
+    if x isa CSTParser.EXPR && x.head == :struct
+        return false
+    end
     if x isa CSTParser.EXPR && x.head == :IDENTIFIER && x.val == val
         push!(state.edits, Edit(state.offset, "\$"))
     end
+    true
+end
+
+# Make the `structs` have type values `vals`
+function add_struct_type(x, state, structs, vals)
+    # XXX: Maybe not the best way to do this...
+    if x isa CSTParser.EXPR && x.head == :IDENTIFIER && x.val in structs
+        push!(
+            state.edits,
+            Edit(
+                state.offset + length(x.val),
+                "{" * reduce((x, y) -> "" * x * "," * y, vals) * "}",
+            ),
+        )
+    end
+    true
 end
 
 # make petsc_library
@@ -117,10 +154,12 @@ function mangle_functions(output_file)
             add_UnionPetscLib,
             add_chk,
             add_for_petsc,
-            (x, s) -> add_for_interpolate(x, s, "PetscReal"),
-            (x, s) -> add_for_interpolate(x, s, "PetscInt"),
-            (x, s) -> add_for_interpolate(x, s, "PetscComplex"),
-            (x, s) -> add_for_interpolate(x, s, "PetscScalar"),
+            (x, s) -> add_struct_type(x, s, ("MatStencil",), ("PetscInt",)),
+            (x, s) -> add_interpolations(
+                x,
+                s,
+                ("PetscReal", "PetscInt", "PetscComplex", "PetscScalar"),
+            ),
         )
             state = State(0, Edit[])
             ast = CSTParser.parse(text, true)

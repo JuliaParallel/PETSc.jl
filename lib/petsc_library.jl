@@ -20349,6 +20349,77 @@ end
     )
 end
 
+struct MatStencil{PetscInt}
+    k::PetscInt
+    j::PetscInt
+    i::PetscInt
+    c::PetscInt
+end
+
+@for_petsc function MatSetValuesStencil(
+    ::$UnionPetscLib,
+    arg1,
+    arg2,
+    arg3,
+    arg4,
+    arg5,
+    arg6,
+    arg7,
+)
+    @chk ccall(
+        (:MatSetValuesStencil, $petsc_library),
+        PetscErrorCode,
+        (
+            Mat,
+            $PetscInt,
+            Ptr{MatStencil{$PetscInt}},
+            $PetscInt,
+            Ptr{MatStencil{$PetscInt}},
+            Ptr{$PetscScalar},
+            InsertMode,
+        ),
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+        arg5,
+        arg6,
+        arg7,
+    )
+end
+
+@for_petsc function MatSetValuesBlockedStencil(
+    ::$UnionPetscLib,
+    arg1,
+    arg2,
+    arg3,
+    arg4,
+    arg5,
+    arg6,
+    arg7,
+)
+    @chk ccall(
+        (:MatSetValuesBlockedStencil, $petsc_library),
+        PetscErrorCode,
+        (
+            Mat,
+            $PetscInt,
+            Ptr{MatStencil{$PetscInt}},
+            $PetscInt,
+            Ptr{MatStencil{$PetscInt}},
+            Ptr{$PetscScalar},
+            InsertMode,
+        ),
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+        arg5,
+        arg6,
+        arg7,
+    )
+end
+
 @for_petsc function MatSetStencil(
     ::$UnionPetscLib,
     arg1,
@@ -21882,6 +21953,50 @@ end
         arg3,
         arg4,
         arg5,
+    )
+end
+
+@for_petsc function MatZeroRowsStencil(
+    ::$UnionPetscLib,
+    arg1,
+    arg2,
+    arg3,
+    arg4,
+    arg5,
+    arg6,
+)
+    @chk ccall(
+        (:MatZeroRowsStencil, $petsc_library),
+        PetscErrorCode,
+        (Mat, $PetscInt, Ptr{MatStencil{$PetscInt}}, $PetscScalar, Vec, Vec),
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+        arg5,
+        arg6,
+    )
+end
+
+@for_petsc function MatZeroRowsColumnsStencil(
+    ::$UnionPetscLib,
+    arg1,
+    arg2,
+    arg3,
+    arg4,
+    arg5,
+    arg6,
+)
+    @chk ccall(
+        (:MatZeroRowsColumnsStencil, $petsc_library),
+        PetscErrorCode,
+        (Mat, $PetscInt, Ptr{MatStencil{$PetscInt}}, $PetscScalar, Vec, Vec),
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+        arg5,
+        arg6,
     )
 end
 
@@ -34569,6 +34684,32 @@ end
     )
 end
 
+@for_petsc function DMDACreatePatchIS(
+    ::$UnionPetscLib,
+    arg1,
+    arg2,
+    arg3,
+    arg4,
+    arg5,
+)
+    @chk ccall(
+        (:DMDACreatePatchIS, $petsc_library),
+        PetscErrorCode,
+        (
+            DM,
+            Ptr{MatStencil{$PetscInt}},
+            Ptr{MatStencil{$PetscInt}},
+            Ptr{IS},
+            PetscBool,
+        ),
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+        arg5,
+    )
+end
+
 @for_petsc function MatRegisterDAAD(::$UnionPetscLib)
     @chk ccall((:MatRegisterDAAD, $petsc_library), PetscErrorCode, ())
 end
@@ -34894,6 +35035,17 @@ end
     )
 end
 
+@for_petsc function DMDAConvertToCell(::$UnionPetscLib, arg1, arg2, arg3)
+    @chk ccall(
+        (:DMDAConvertToCell, $petsc_library),
+        PetscErrorCode,
+        (DM, MatStencil{$PetscInt}, Ptr{$PetscInt}),
+        arg1,
+        arg2,
+        arg3,
+    )
+end
+
 @for_petsc function DMDASetVertexCoordinates(
     ::$UnionPetscLib,
     arg1,
@@ -35167,8 +35319,80 @@ end
     )
 end
 
+@for_petsc function DMPatchZoom(
+    ::$UnionPetscLib,
+    arg1,
+    arg2,
+    arg3,
+    arg4,
+    arg5,
+    arg6,
+    arg7,
+)
+    @chk ccall(
+        (:DMPatchZoom, $petsc_library),
+        PetscErrorCode,
+        (
+            DM,
+            MatStencil{$PetscInt},
+            MatStencil{$PetscInt},
+            MPI_Comm,
+            Ptr{DM},
+            Ptr{PetscSF},
+            Ptr{PetscSF},
+        ),
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+        arg5,
+        arg6,
+        arg7,
+    )
+end
+
 @for_petsc function DMPatchSolve(::$UnionPetscLib, arg1)
     @chk ccall((:DMPatchSolve, $petsc_library), PetscErrorCode, (DM,), arg1)
+end
+
+@for_petsc function DMPatchGetPatchSize(::$UnionPetscLib, arg1, arg2)
+    @chk ccall(
+        (:DMPatchGetPatchSize, $petsc_library),
+        PetscErrorCode,
+        (DM, Ptr{MatStencil{$PetscInt}}),
+        arg1,
+        arg2,
+    )
+end
+
+@for_petsc function DMPatchSetPatchSize(::$UnionPetscLib, arg1, arg2)
+    @chk ccall(
+        (:DMPatchSetPatchSize, $petsc_library),
+        PetscErrorCode,
+        (DM, MatStencil{$PetscInt}),
+        arg1,
+        arg2,
+    )
+end
+
+@for_petsc function DMPatchGetCommSize(::$UnionPetscLib, arg1, arg2)
+    @chk ccall(
+        (:DMPatchGetCommSize, $petsc_library),
+        PetscErrorCode,
+        (DM, Ptr{MatStencil{$PetscInt}}),
+        arg1,
+        arg2,
+    )
+end
+
+@for_petsc function DMPatchSetCommSize(::$UnionPetscLib, arg1, arg2)
+    @chk ccall(
+        (:DMPatchSetCommSize, $petsc_library),
+        PetscErrorCode,
+        (DM, MatStencil{$PetscInt}),
+        arg1,
+        arg2,
+    )
 end
 
 @for_petsc function DMPatchGetCoarse(::$UnionPetscLib, arg1, arg2)
@@ -35178,6 +35402,35 @@ end
         (DM, Ptr{DM}),
         arg1,
         arg2,
+    )
+end
+
+@for_petsc function DMPatchCreateGrid(
+    ::$UnionPetscLib,
+    arg1,
+    arg2,
+    arg3,
+    arg4,
+    arg5,
+    arg6,
+)
+    @chk ccall(
+        (:DMPatchCreateGrid, $petsc_library),
+        PetscErrorCode,
+        (
+            MPI_Comm,
+            $PetscInt,
+            MatStencil{$PetscInt},
+            MatStencil{$PetscInt},
+            MatStencil{$PetscInt},
+            Ptr{DM},
+        ),
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+        arg5,
+        arg6,
     )
 end
 

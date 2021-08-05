@@ -3,7 +3,7 @@ using MPI: mpiexec
 
 # Do the MPI tests first so we do not have mpi running inside MPI
 @testset "mpi tests" begin
-    for file in ("mpivec.jl", "mpimat.jl", "ksp.jl")
+    for file in ("mpivec.jl", "mpimat.jl", "ksp.jl", "dmda.jl")
         @test mpiexec() do mpi_cmd
             cmd =
                 `$mpi_cmd -n 4 $(Base.julia_cmd()) --startup-file=no --project $file`
@@ -19,3 +19,4 @@ include("vec.jl")
 include("mat.jl")
 include("matshell.jl")
 include("ksp.jl")
+include("dmda.jl")

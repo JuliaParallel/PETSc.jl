@@ -1,3 +1,343 @@
+abstract type AbstractDMDA{PetscLib} <: AbstractDM{PetscLib} end
+
+mutable struct DMDA{PetscLib} <: AbstractDMDA{PetscLib}
+    ptr::CDM
+    opts::Options{PetscLib}
+end
+
+"""
+    DMDA(
+        petsclib::PetscLib
+        comm::MPI.Comm,
+        boundary_type::NTuple{D, DMBoundaryType},
+        global_dim::NTuple{D, Integer},
+        dof_per_node::Integer,
+        stencil_width::Integer,
+        stencil_type;
+        points_per_proc::Tuple,
+        processors::Tuple,
+        setfromoptions = true,
+        dmsetup = true,
+        options...
+    )
+
+Creates a D-dimensional distributed array with the options specified using
+keyword arguments.
+
+If keyword argument `points_per_proc[k] isa Vector{petsclib.PetscInt}` then this
+specifies the points per processor in dimension `k`.
+
+If keyword argument `processors[k] isa Integer` then this specifies the number of
+processors used in dimension `k`; ignored when `D == 1`.
+
+If keyword argument `setfromoptions == true` then `setfromoptions!` called.
+
+If keyword argument `dmsetup == true` then `setup!` is called.
+
+When `D == 1` the `stencil_type` argument is not required and ignored if
+specified.
+
+# External Links
+$(_doc_external("DMDA/DMDACreate1d"))
+$(_doc_external("DMDA/DMDACreate2d"))
+$(_doc_external("DMDA/DMDACreate3d"))
+"""
+function DMDA(
+    petsclib::PetscLib,
+    comm::MPI.Comm,
+    boundary_type::NTuple{1, DMBoundaryType},
+    global_dim::NTuple{1, Integer},
+    dof_per_node::Integer,
+    stencil_width::Integer,
+    stencil_type = nothing;
+    points_per_proc::Tuple = (nothing,),
+    processors = nothing,
+    setfromoptions = true,
+    dmsetup = true,
+    options...,
+) where {PetscLib}
+    opts = Options(petsclib; options...)
+    da = DMDA{PetscLib}(C_NULL, opts)
+
+    @assert length(points_per_proc) == 1
+
+    ref_points_per_proc =
+        if isnothing(points_per_proc[1]) || points_per_proc[1] == PETSC_DECIDE
+            C_NULL
+        else
+            @assert points_per_proc[1] isa Array{PetscLib.PetscInt}
+            @assert length(points_per_proc[1]) == MPI.Comm_size(comm)
+            points_per_proc[1]
+        end
+
+    with(da.opts) do
+        LibPETSc.DMDACreate1d(
+            PetscLib,
+            comm,
+            boundary_type[1],
+            global_dim[1],
+            dof_per_node,
+            stencil_width,
+            ref_points_per_proc,
+            da,
+        )
+    end
+    setfromoptions && setfromoptions!(da)
+    dmsetup && setup!(da)
+
+    # We can only let the garbage collect finalize when we do not need to
+    # worry about MPI (since garbage collection is asyncronous)
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, da)
+    end
+    return da
+end
+
+function DMDA(
+    petsclib::PetscLib,
+    comm::MPI.Comm,
+    boundary_type::NTuple{2, DMBoundaryType},
+    global_dim::NTuple{2, Integer},
+    dof_per_node::Integer,
+    stencil_width::Integer,
+    stencil_type;
+    points_per_proc::Tuple = (nothing, nothing),
+    processors::Tuple = (PETSC_DECIDE, PETSC_DECIDE),
+    setfromoptions = true,
+    dmsetup = true,
+    options...,
+) where {PetscLib}
+    opts = Options(petsclib; options...)
+    da = DMDA{PetscLib}(C_NULL, opts)
+
+    @assert length(points_per_proc) == 2
+
+    ref_points_per_proc = ntuple(2) do d
+        if isnothing(points_per_proc[d]) || points_per_proc[d] == PETSC_DECIDE
+            C_NULL
+        else
+            @assert points_per_proc[d] isa Array{PetscLib.PetscInt}
+            @assert length(points_per_proc[d]) == MPI.Comm_size(comm)
+            points_per_proc[d]
+        end
+    end
+
+    with(da.opts) do
+        LibPETSc.DMDACreate2d(
+            PetscLib,
+            comm,
+            boundary_type[1],
+            boundary_type[2],
+            stencil_type,
+            global_dim[1],
+            global_dim[2],
+            processors[1],
+            processors[2],
+            dof_per_node,
+            stencil_width,
+            ref_points_per_proc[1],
+            ref_points_per_proc[2],
+            da,
+        )
+    end
+    setfromoptions && setfromoptions!(da)
+    dmsetup && setup!(da)
+
+    # We can only let the garbage collect finalize when we do not need to
+    # worry about MPI (since garbage collection is asyncronous)
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, da)
+    end
+    return da
+end
+
+function DMDA(
+    petsclib::PetscLib,
+    comm::MPI.Comm,
+    boundary_type::NTuple{3, DMBoundaryType},
+    global_dim::NTuple{3, Integer},
+    dof_per_node::Integer,
+    stencil_width::Integer,
+    stencil_type;
+    points_per_proc::Tuple = (nothing, nothing, nothing),
+    processors::Tuple = (PETSC_DECIDE, PETSC_DECIDE, PETSC_DECIDE),
+    setfromoptions = true,
+    dmsetup = true,
+    options...,
+) where {PetscLib}
+    opts = Options(petsclib; options...)
+    da = DMDA{PetscLib}(C_NULL, opts)
+
+    @assert length(points_per_proc) == 3
+
+    ref_points_per_proc = ntuple(3) do d
+        if isnothing(points_per_proc[d]) || points_per_proc[d] == PETSC_DECIDE
+            C_NULL
+        else
+            @assert points_per_proc[d] isa Array{PetscLib.PetscInt}
+            @assert length(points_per_proc[d]) == MPI.Comm_size(comm)
+            points_per_proc[d]
+        end
+    end
+
+    with(da.opts) do
+        LibPETSc.DMDACreate3d(
+            PetscLib,
+            comm,
+            boundary_type[1],
+            boundary_type[2],
+            boundary_type[3],
+            stencil_type,
+            global_dim[1],
+            global_dim[2],
+            global_dim[3],
+            processors[1],
+            processors[2],
+            processors[3],
+            dof_per_node,
+            stencil_width,
+            ref_points_per_proc[1],
+            ref_points_per_proc[2],
+            ref_points_per_proc[3],
+            da,
+        )
+    end
+    setfromoptions && setfromoptions!(da)
+    dmsetup && setup!(da)
+
+    # We can only let the garbage collect finalize when we do not need to
+    # worry about MPI (since garbage collection is asyncronous)
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, da)
+    end
+    return da
+end
+
+"""
+    getinfo(da::AbstractDMDA)
+
+Get the info associated with the distributed array `da`. Returns `V` which has
+fields
+
+ - `dim`
+ - `global_size` (`Tuple` of length 3)
+ - `procs_per_dim` (`Tuple` of length 3)
+ - `dof_per_node`
+ - `boundary_type` (`Tuple` of length 3)
+ - `stencil_width`
+ - `stencil_type`
+
+# External Links
+$(_doc_external("DMDA/DMDAGetInfo"))
+"""
+function getinfo(da::AbstractDMDA{PetscLib}) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+
+    dim = [PetscInt(0)]
+    glo_size = [PetscInt(0), PetscInt(0), PetscInt(0)]
+    procs_per_dim = [PetscInt(0), PetscInt(0), PetscInt(0)]
+    dof_per_node = [PetscInt(0)]
+    stencil_width = [PetscInt(0)]
+    boundary_type = [DM_BOUNDARY_NONE, DM_BOUNDARY_NONE, DM_BOUNDARY_NONE]
+    stencil_type = [DMDA_STENCIL_STAR]
+
+    LibPETSc.DMDAGetInfo(
+        PetscLib,
+        da,
+        dim,
+        Ref(glo_size, 1),
+        Ref(glo_size, 2),
+        Ref(glo_size, 3),
+        Ref(procs_per_dim, 1),
+        Ref(procs_per_dim, 2),
+        Ref(procs_per_dim, 3),
+        dof_per_node,
+        stencil_width,
+        Ref(boundary_type, 1),
+        Ref(boundary_type, 2),
+        Ref(boundary_type, 3),
+        stencil_type,
+    )
+
+    return (
+        dim = dim[1],
+        global_size = (glo_size...,),
+        procs_per_dim = (procs_per_dim...,),
+        dof_per_node = dof_per_node[1],
+        boundary_type = (boundary_type...,),
+        stencil_width = stencil_width[1],
+        stencil_type = stencil_type[1],
+    )
+end
+
+"""
+    getcorners(da::AbstractDMDA)
+
+Returns a `NamedTuple` with the global indices (excluding ghost points) of the
+`lower` and `upper` corners as well as the `size`.
+
+# External Links
+$(_doc_external("DMDA/DMDAGetCorners"))
+"""
+function getcorners(da::AbstractDMDA{PetscLib}) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    corners = [PetscInt(0), PetscInt(0), PetscInt(0)]
+    local_size = [PetscInt(0), PetscInt(0), PetscInt(0)]
+    LibPETSc.DMDAGetCorners(
+        PetscLib,
+        da,
+        Ref(corners, 1),
+        Ref(corners, 2),
+        Ref(corners, 3),
+        Ref(local_size, 1),
+        Ref(local_size, 2),
+        Ref(local_size, 3),
+    )
+    corners .+= 1
+    upper = corners .+ local_size .- PetscInt(1)
+    return (
+        lower = CartesianIndex(corners...),
+        upper = CartesianIndex(upper...),
+        size = (local_size...,),
+    )
+end
+
+"""
+    getghostcorners(da::AbstractDMDA)
+
+Returns a `NamedTuple` with the global indices (including ghost points) of the
+`lower` and `upper` corners as well as the `size`.
+
+# External Links
+$(_doc_external("DMDA/DMDAGetGhostCorners"))
+"""
+function getghostcorners(da::AbstractDMDA{PetscLib}) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    corners = [PetscInt(0), PetscInt(0), PetscInt(0)]
+    local_size = [PetscInt(0), PetscInt(0), PetscInt(0)]
+    LibPETSc.DMDAGetGhostCorners(
+        PetscLib,
+        da,
+        Ref(corners, 1),
+        Ref(corners, 2),
+        Ref(corners, 3),
+        Ref(local_size, 1),
+        Ref(local_size, 2),
+        Ref(local_size, 3),
+    )
+    corners .+= 1
+    upper = corners .+ local_size .- PetscInt(1)
+    return (
+        lower = CartesianIndex(corners...),
+        upper = CartesianIndex(upper...),
+        size = (local_size...,),
+    )
+end
+
+#=
+#
+# OLD WRAPPERS
+#
 mutable struct DMDALocalInfo{IT}
     dim::IT
     dof_per_node::IT
@@ -26,469 +366,6 @@ end
 return an uninitialized `DMDA` struct.
 """
 Base.empty(::DMDA{PetscLib}) where {PetscLib} = DMDA{PetscLib}(C_NULL)
-
-"""
-    DMDACreate1d(
-        ::PetscLib
-        comm::MPI.Comm,
-        boundary_type::DMBoundaryType,
-        global_dim,
-        dof_per_node,
-        stencil_width,
-        points_per_proc::Union{Nothing, Vector{PetscInt}};
-        dmsetfromoptions=true,
-        dmsetup=true,
-        options...
-    )
-
-Creates a 1-D distributed array with the options specified using keyword
-arguments.
-
-If keyword argument `dmsetfromoptions == true` then `setfromoptions!` called.
-If keyword argument `dmsetup == true` then `setup!` is called.
-
-# External Links
-$(_doc_external("DMDA/DMDACreate1d"))
-"""
-function DMDACreate1d end
-
-@for_petsc function DMDACreate1d(
-    ::$UnionPetscLib,
-    comm::MPI.Comm,
-    boundary_type::DMBoundaryType,
-    global_dim,
-    dof_per_node,
-    stencil_width,
-    points_per_proc::Union{Nothing, Vector{$PetscInt}};
-    dmsetfromoptions = true,
-    dmsetup = true,
-    options...,
-)
-    opts = Options($petsclib, options...)
-    ref_points_per_proc = if isnothing(points_per_proc)
-        C_NULL
-    else
-        @assert length(points_per_proc) == MPI.Comm_size(comm)
-        points_per_proc
-    end
-    da = DMDA{$PetscLib}(C_NULL, opts)
-    with(da.opts) do
-        @chk ccall(
-            (:DMDACreate1d, $petsc_library),
-            PetscErrorCode,
-            (
-                MPI.MPI_Comm,
-                DMBoundaryType,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                Ptr{$PetscInt},
-                Ptr{CDM},
-            ),
-            comm,
-            boundary_type,
-            global_dim,
-            dof_per_node,
-            stencil_width,
-            ref_points_per_proc,
-            da,
-        )
-    end
-    dmsetfromoptions && setfromoptions!(da)
-    dmsetup && setup!(da)
-    # We can only let the garbage collect finalize when we do not need to
-    # worry about MPI (since garbage collection is asyncronous)
-    if comm == MPI.COMM_SELF
-        finalizer(destroy, da)
-    end
-    return da
-end
-
-"""
-    DMDACreate2d(
-        ::PetscLib
-        comm::MPI.Comm,
-        boundary_type_x::DMBoundaryType,
-        boundary_type_y::DMBoundaryType,
-        stencil_type::DMDAStencilType,
-        global_dim_x,
-        global_dim_y,
-        procs_x,
-        procs_y,
-        dof_per_node,
-        stencil_width,
-        points_per_proc_x::Union{Nothing, Vector{PetscInt}};
-        points_per_proc_y::Union{Nothing, Vector{PetscInt}};
-        dmsetfromoptions=true,
-        dmsetup=true,
-        options...
-    )
-
-Creates a 2-D distributed array with the options specified using keyword
-arguments.
-
-If keyword argument `dmsetfromoptions == true` then `setfromoptions!` called.
-If keyword argument `dmsetup == true` then `setup!` is called.
-
-# External Links
-$(_doc_external("DMDA/DMDACreate2d"))
-"""
-function DMDACreate2d end
-
-@for_petsc function DMDACreate2d(
-    ::$UnionPetscLib,
-    comm::MPI.Comm,
-    boundary_type_x::DMBoundaryType,
-    boundary_type_y::DMBoundaryType,
-    stencil_type::DMDAStencilType,
-    global_dim_x,
-    global_dim_y,
-    procs_x,
-    procs_y,
-    dof_per_node,
-    stencil_width,
-    points_per_proc_x::Union{Nothing, Vector{$PetscInt}},
-    points_per_proc_y::Union{Nothing, Vector{$PetscInt}};
-    dmsetfromoptions = true,
-    dmsetup = true,
-    options...,
-)
-    opts = Options($petsclib, options...)
-    ref_points_per_proc_x = if isnothing(points_per_proc_x)
-        C_NULL
-    else
-        @assert length(points_per_proc_x) == procs_x
-        points_per_proc_x
-    end
-    ref_points_per_proc_y = if isnothing(points_per_proc_y)
-        C_NULL
-    else
-        @assert length(points_per_proc_y) == procs_y
-        points_per_proc_y
-    end
-    da = DMDA{$PetscLib}(C_NULL, opts)
-    with(da.opts) do
-        @chk ccall(
-            (:DMDACreate2d, $petsc_library),
-            PetscErrorCode,
-            (
-                MPI.MPI_Comm,
-                DMBoundaryType,
-                DMBoundaryType,
-                DMDAStencilType,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                Ptr{$PetscInt},
-                Ptr{$PetscInt},
-                Ptr{CDM},
-            ),
-            comm,
-            boundary_type_x,
-            boundary_type_y,
-            stencil_type,
-            global_dim_x,
-            global_dim_y,
-            procs_x,
-            procs_y,
-            dof_per_node,
-            stencil_width,
-            ref_points_per_proc_x,
-            ref_points_per_proc_y,
-            da,
-        )
-    end
-    dmsetfromoptions && setfromoptions!(da)
-    dmsetup && setup!(da)
-    # We can only let the garbage collect finalize when we do not need to
-    # worry about MPI (since garbage collection is asyncronous)
-    if comm == MPI.COMM_SELF
-        finalizer(destroy, da)
-    end
-    return da
-end
-
-"""
-    DMDACreate3d(
-        ::PetscLib
-        comm::MPI.Comm,
-        boundary_type_x::DMBoundaryType,
-        boundary_type_y::DMBoundaryType,
-        boundary_type_z::DMBoundaryType,
-        stencil_type::DMDAStencilType,
-        global_dim_x,
-        global_dim_y,
-        global_dim_z,
-        procs_x,
-        procs_y,
-        procs_z,
-        global_dim_z,
-        dof_per_node,
-        stencil_width,
-        points_per_proc_x::Union{Nothing, Vector{PetscInt}};
-        points_per_proc_y::Union{Nothing, Vector{PetscInt}};
-        points_per_proc_z::Union{Nothing, Vector{PetscInt}};
-        dmsetfromoptions=true,
-        dmsetup=true,
-        options...
-    )
-
-Creates a 3-D distributed array with the options specified using keyword
-arguments.
-
-If keyword argument `dmsetfromoptions == true` then `setfromoptions!` called.
-If keyword argument `dmsetup == true` then `setup!` is called.
-
-# External Links
-$(_doc_external("DMDA/DMDACreate3d"))
-"""
-function DMDACreate3d end
-
-@for_petsc function DMDACreate3d(
-    ::$UnionPetscLib,
-    comm::MPI.Comm,
-    boundary_type_x::DMBoundaryType,
-    boundary_type_y::DMBoundaryType,
-    boundary_type_z::DMBoundaryType,
-    stencil_type::DMDAStencilType,
-    global_dim_x,
-    global_dim_y,
-    global_dim_z,
-    procs_x,
-    procs_y,
-    procs_z,
-    dof_per_node,
-    stencil_width,
-    points_per_proc_x::Union{Nothing, Vector{$PetscInt}},
-    points_per_proc_y::Union{Nothing, Vector{$PetscInt}},
-    points_per_proc_z::Union{Nothing, Vector{$PetscInt}};
-    dmsetfromoptions = true,
-    dmsetup = true,
-    options...,
-)
-    opts = Options($petsclib, options...)
-    ref_points_per_proc_x = if isnothing(points_per_proc_x)
-        C_NULL
-    else
-        @assert length(points_per_proc_x) == procs_x
-        points_per_proc_x
-    end
-    ref_points_per_proc_y = if isnothing(points_per_proc_y)
-        C_NULL
-    else
-        @assert length(points_per_proc_y) == procs_y
-        points_per_proc_y
-    end
-    ref_points_per_proc_z = if isnothing(points_per_proc_z)
-        C_NULL
-    else
-        @assert length(points_per_proc_z) == procs_z
-        points_per_proc_z
-    end
-    da = DMDA{$PetscLib}(C_NULL, opts)
-    with(da.opts) do
-        @chk ccall(
-            (:DMDACreate3d, $petsc_library),
-            PetscErrorCode,
-            (
-                MPI.MPI_Comm,
-                DMBoundaryType,
-                DMBoundaryType,
-                DMBoundaryType,
-                DMDAStencilType,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                $PetscInt,
-                Ptr{$PetscInt},
-                Ptr{$PetscInt},
-                Ptr{$PetscInt},
-                Ptr{CDM},
-            ),
-            comm,
-            boundary_type_x,
-            boundary_type_y,
-            boundary_type_z,
-            stencil_type,
-            global_dim_x,
-            global_dim_y,
-            global_dim_z,
-            procs_x,
-            procs_y,
-            procs_z,
-            dof_per_node,
-            stencil_width,
-            ref_points_per_proc_x,
-            ref_points_per_proc_y,
-            ref_points_per_proc_z,
-            da,
-        )
-    end
-    dmsetfromoptions && setfromoptions!(da)
-    dmsetup && setup!(da)
-    # We can only let the garbage collect finalize when we do not need to
-    # worry about MPI (since garbage collection is asyncronous)
-    if comm == MPI.COMM_SELF
-        finalizer(destroy, da)
-    end
-    return da
-end
-
-"""
-    getinfo(da::DMDA)
-
-Get the info associated with the distributed array `da`.
-
-# External Links
-$(_doc_external("DMDA/DMDAGetInfo"))
-"""
-getinfo(::DMDA)
-
-@for_petsc function getinfo(da::DMDA{$PetscLib})
-    dim = [$PetscInt(0)]
-    glo_size = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
-    procs_per_dim = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
-    dof_per_node = [$PetscInt(0)]
-    stencil_width = [$PetscInt(0)]
-    boundary_type = [DM_BOUNDARY_NONE, DM_BOUNDARY_NONE, DM_BOUNDARY_NONE]
-    stencil_type = [DMDA_STENCIL_STAR]
-    @chk ccall(
-        (:DMDAGetInfo, $petsc_library),
-        PetscErrorCode,
-        (
-            CDM,
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{DMBoundaryType},
-            Ref{DMBoundaryType},
-            Ref{DMBoundaryType},
-            Ref{DMDAStencilType},
-        ),
-        da,
-        dim,
-        Ref(glo_size, 1),
-        Ref(glo_size, 2),
-        Ref(glo_size, 3),
-        Ref(procs_per_dim, 1),
-        Ref(procs_per_dim, 2),
-        Ref(procs_per_dim, 3),
-        dof_per_node,
-        stencil_width,
-        Ref(boundary_type, 1),
-        Ref(boundary_type, 2),
-        Ref(boundary_type, 3),
-        stencil_type,
-    )
-    return (
-        dim = dim[1],
-        global_size = glo_size,
-        procs_per_dim = procs_per_dim,
-        dof_per_node = dof_per_node[1],
-        boundary_type = boundary_type,
-        stencil_width = stencil_width[1],
-        stencil_type = stencil_type[1],
-    )
-end
-
-"""
-    getcorners(da::DMDA)
-
-Returns a `NamedTuple` with the global indices (excluding ghost points) of the
-`lower` and `upper` corners as well as the `size`.
-
-# External Links
-$(_doc_external("DMDA/DMDAGetCorners"))
-"""
-function getcorners(da::DMDA) end
-
-@for_petsc function getcorners(da::DMDA{$PetscLib})
-    info = DMDALocalInfo{$PetscInt}()
-    corners = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
-    local_size = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
-    @chk ccall(
-        (:DMDAGetCorners, $petsc_library),
-        PetscErrorCode,
-        (
-            CDM,
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-        ),
-        da,
-        Ref(corners, 1),
-        Ref(corners, 2),
-        Ref(corners, 3),
-        Ref(local_size, 1),
-        Ref(local_size, 2),
-        Ref(local_size, 3),
-    )
-    corners .+= 1
-    return (
-        lower = corners,
-        upper = corners .+ local_size .- $PetscInt(1),
-        size = local_size,
-    )
-end
-
-"""
-    getghostcorners(da::DMDA)
-
-Returns a `NamedTuple` with the global indices (including ghost points) of the
-`lower` and `upper` corners as well as the `size`.
-
-# External Links
-$(_doc_external("DMDA/DMDAGetGhostCorners"))
-"""
-function getghostcorners(da::DMDA) end
-
-@for_petsc function getghostcorners(da::DMDA{$PetscLib})
-    info = DMDALocalInfo{$PetscInt}()
-    corners = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
-    local_size = [$PetscInt(0), $PetscInt(0), $PetscInt(0)]
-    @chk ccall(
-        (:DMDAGetGhostCorners, $petsc_library),
-        PetscErrorCode,
-        (
-            CDM,
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-            Ref{$PetscInt},
-        ),
-        da,
-        Ref(corners, 1),
-        Ref(corners, 2),
-        Ref(corners, 3),
-        Ref(local_size, 1),
-        Ref(local_size, 2),
-        Ref(local_size, 3),
-    )
-    corners .+= 1
-    return (
-        lower = corners,
-        upper = corners .+ local_size .- 1,
-        size = local_size,
-    )
-end
 
 """
     setuniformcoordinates!(
@@ -542,3 +419,4 @@ function setuniformcoordinates! end
     )
     return nothing
 end
+=#

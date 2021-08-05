@@ -2,20 +2,20 @@
 
 
 - [Getting started](#getting-started)
-    - [1a. Installation using pre-build libraries](#1a-installation-using-pre-build-libraries)
-    - [1b. Installation using pre-build libraries](#1b-installation-using-pre-build-libraries)
+    - [1a. Installation using pre-built libraries](#1a-installation-using-pre-built-libraries)
+    - [1b. Installation using pre-built libraries](#1b-installation-using-pre-built-libraries)
     - [2. Solving a linear system of equations](#2-solving-a-linear-system-of-equations)
     - [3. Nonlinear example](#3-nonlinear-example)
 
-### 1a. Installation using pre-build libraries 
+### 1a. Installation using pre-built libraries 
 The easiest way to install the package is: 
 ```julia
 julia> ]
 (@v1.6) pkg> add https://github.com/JuliaParallel/PETSc.jl
 ```
-which will install a pre-build PETSc library (`PETSc_jll`) as well as `MPI.jl` on your system. This will work both in serial and in parallel on your machine.
+which will install a pre-built PETSc library (`PETSc_jll`) as well as `MPI.jl` on your system. This will work both in serial and in parallel on your machine.
 
-### 1b. Installation using pre-build libraries 
+### 1b. Installation using pre-built libraries 
 On many high-performance clusters, you will have to use the provided `MPI` installation for that cluster and the default download above will not be sufficient. Alternatively, you may be interested in a PETSc installation that comes with additional external packages. Ensure that this PETSc installation is compiled as a dynamic (and not a static) library, after which you need to set the environmental variable `JULIA_PETSC_LIBRARY` to link to your PETSc installation: 
 
 ```

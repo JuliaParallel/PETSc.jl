@@ -118,7 +118,7 @@ PJ       =   PETSc.MatSeqAIJ(Jsp);                      # transfer to
 x_s = PETSc.VecSeq(x);                  # solution vector
 res = PETSc.VecSeq(zeros(size(x)));     # residual vector
 
-S = PETSc.SNES{Float64}(MPI.COMM_SELF; 
+S = PETSc.SNES{Float64}(PETSc.petsclibs[1],MPI.COMM_SELF; 
         snes_rtol=1e-12, 
         snes_monitor=nothing,
         snes_converged_reason=nothing);

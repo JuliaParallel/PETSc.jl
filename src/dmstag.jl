@@ -30,6 +30,7 @@ const DMStagStencil     = DMSTAGSTENCIL
 
 # allows us to pass XXMat objects directly into CMat ccall signatures
 Base.cconvert(::Type{CDMStag}, obj::DMStag) = obj.ptr
+
 # allows us to pass XXMat objects directly into Ptr{CMat} ccall signatures
 Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
     convert(Ptr{CDMStag}, pointer_from_objref(obj))
@@ -929,32 +930,38 @@ function destroy(dm::DMStag) end
 end
 
 """
-    Indices = DMStagGetCentralNodes(dm::DMStag)
+    Indices = DMStagGetIndices(dm::DMStag)
     
-Return indices of start and end of the central nodes of a local array built from the input `dm` (excluding ghost nodes).   
+Return indices of start and end of the central/vertex nodes of a local array built from the input `dm`. 
+This takes ghost points into account and helps    
 
     dm 	        - the DMStag object
     Indices 	- indices of lower and upper range of center and vertex nodes
 """
-function DMStagGetCentralNodes end
+function DMStagGetIndices end
 
-@for_petsc function DMStagGetCentralNodes(dm::DMStag)
+@for_petsc function DMStagGetIndices(dm::DMStag)
     # In Julia, indices in arrays start @ 1, whereas they can go negative in C
-    
-    #g_start, g_N    =   getghostcorners(dm);  # MODIFY
     gc              =   getghostcorners(dm);  
-  
-    #start,N, nExtra =   getcorners(dm);       # MODIFY
     c               =   getcorners(dm); 
 
-    # Note that we add the +1 for julia/petsc consistency
-    center = (  x= (c.lower[1]+1):(c.upper[1]+1),
-                y= (c.lower[2]+1):(c.upper[2]+1),  
-                z= (c.lower[3]+1):(c.upper[3]+1) )
+    # If we have ghosted boundaries, we need to shift the start/end points, as ghosted 
+    # boundaries are treated in PETSc with negative numbers, whereas in Julia everything is 1-based
 
-    vertex = (  x=c.lower[1]+1:c.upper[1]+2 ,
-                y=c.lower[2]+1:c.upper[2]+2 ,  
-                z=c.lower[3]+1:c.upper[3]+2 )
+    # NOTE: we have not yet tested this in parallel
+    Diff            =   c.lower - gc.lower;
+    Start           =   c.lower + Diff;
+    End             =   Start + c.size - ones(Int64,3);
+
+    # Note that we add the shift for julia/petsc consistency
+    shift = 0;
+    center = (  x= Start[1]:End[1],
+                y= Start[2]:End[2],  
+                z= Start[3]:End[3] )
+
+    vertex = (  x= Start[1]:End[1]+1 ,
+                y= Start[2]:End[2]+1 ,  
+                z= Start[3]:End[3]+1 )
 
     return (center=center, vertex=vertex)
             
@@ -1395,14 +1402,14 @@ function LocalInGlobalIndices(dm::DMStag)
     ind_g   =   createglobalvector(dm)
     v_ind_l =   createlocalvector(dm)
 
-    # Set indices in local vector
-    for i=1:length(v_ind_l)
-        v_ind_l[i] = i
+    for i=1:length(ind_g)
+        ind_g[i] = i
     end
-    
-    update!(ind_g, v_ind_l, INSERT_VALUES); # update global vector
+    update!(v_ind_l, ind_g, INSERT_VALUES); # update local vector
 
-    return Int64.(ind_g)
+    ix = findall( real(v_ind_l) .> 0 ); #adding real here such that it works with Complex PetscLib as well
+
+    return ix
 end
     
 """

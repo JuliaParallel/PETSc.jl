@@ -18,7 +18,7 @@ PETSc.initialize()
   w = M*x
   @test w ≈ S*x
 
-  ksp = PETSc.KSP(M; ksp_rtol=1e-8, pc_type="jacobi", ksp_monitor=nothing)
+  ksp = PETSc.KSP(M; ksp_rtol=1e-8, pc_type="jacobi", ksp_monitor=false)
   #PETSc.settolerances!(ksp; rtol=1e-8)
 
   @test PETSc.gettype(ksp) == "gmres" # default
@@ -91,7 +91,7 @@ PETSc.initialize()
     Base.finalize(x)
   end
 
-  S = PETSc.SNES{Float64}(MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
+  S = PETSc.SNES{Float64}(PETSc.petsclibs[1],MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
   PETSc.setfunction!(S, F!, PETSc.VecSeq(zeros(2)))
   PETSc.setjacobian!(S, updateJ!, PJ, PJ)
   @test PETSc.solve!([2.0,3.0], S) ≈ [1.0,2.0] rtol=1e-4

@@ -7,6 +7,8 @@ auto_mutability = true
 prologue_file_path = "./prologue.jl"
 # epilogue_file_path = "./epilogue.jl"
 
+auto_mutability_blacklist = ["MatStencil"]
+
 printer_blacklist = [
 #
 # Defined in the prologue
@@ -201,23 +203,6 @@ printer_blacklist = [
   "VecTaggerRelativeGetBox",
   "VecTaggerCDFSetBox",
   "VecTaggerCDFGetBox",
-#
-# Need MatStencil to work with interpotated values
-#
-  "MatStencil",
-  "MatSetValuesStencil",
-  "MatSetValuesBlockedStencil",
-  "MatZeroRowsStencil",
-  "MatZeroRowsColumnsStencil",
-  "DMDACreatePatchIS",
-  "DMDAConvertToCell",
-  "DMDAConvertToCell",
-  "DMPatchZoom",
-  "DMPatchGetPatchSize",
-  "DMPatchSetPatchSize",
-  "DMPatchGetCommSize",
-  "DMPatchSetCommSize",
-  "DMPatchCreateGrid",
 #
 # Need MatFactorInfo to work with interpotated values
 #

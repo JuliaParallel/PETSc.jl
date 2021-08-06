@@ -52,6 +52,18 @@ function KSP(
     return ksp
 end
 
+"""
+    KSP([petsclib,] A::SparseMatrixCSC; options...)
+
+Create a [`KSP`](@ref) with the sparse matrix `A` using the `petsclib`. If
+`petsclib` is not given, the default library will be used`.
+"""
+KSP(petsclib, A::SparseMatrixCSC; kwargs...) =
+    KSP(MatSeqAIJ(petsclib, A); kwargs...)
+function KSP(A::SparseMatrixCSC{PetscScalar}; kwargs...) where {PetscScalar}
+    KSP(MatSeqAIJ(getlib(; PetscScalar = PetscScalar), A); kwargs...)
+end
+
 function setoperators!(
     ksp::AbstractKSP{PetscLib},
     A::AbstractMat{PetscLib},
@@ -130,6 +142,30 @@ end
 function Base.:\(ksp::AbstractKSP, b::AbstractVec)
     x = createvecs(ksp; nleft = 1).left[1]
     ldiv!(x, ksp, b)
+    return x
+end
+
+function Base.:\(
+    ksp::AbstractKSP{PetscLib},
+    b::Vector{PetscScalar},
+) where {PetscLib, PetscScalar}
+    @assert PetscScalar == PetscLib.PetscScalar
+    @assert MPI.Comm_size(getcomm(ksp)) == 1
+
+    petsc_b = VecSeqWithArray(PetscLib, b)
+    petsc_x = createvecs(ksp; nleft = 1).left[1]
+
+    ldiv!(petsc_x, ksp, petsc_b)
+
+    x = similar(b, length(petsc_x))
+
+    withlocalarray!(petsc_x; read = true, write = false) do y
+        x .= y
+    end
+
+    destroy(petsc_b)
+    destroy(petsc_x)
+
     return x
 end
 

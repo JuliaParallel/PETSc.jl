@@ -3,6 +3,7 @@ using MPI
 MPI.Initialized() || MPI.Init()
 using PETSc
 using LinearAlgebra: mul!
+using SparseArrays: spdiagm
 
 @testset "KSP" begin
     comm = MPI.COMM_WORLD
@@ -77,6 +78,44 @@ using LinearAlgebra: mul!
         PETSc.destroy(A)
         PETSc.destroy(y)
         PETSc.destroy(b)
+        PETSc.finalize(petsclib)
+    end
+end
+
+if MPI.Comm_rank(MPI.COMM_WORLD) == 0
+    @testset "KSP with SparseMatrixCSC" begin
+        comm = MPI.COMM_SELF
+        n = 10
+
+        for petsclib in PETSc.petsclibs
+            PETSc.initialize(petsclib)
+            PetscScalar = petsclib.PetscScalar
+            PetscInt = petsclib.PetscInt
+
+            A = spdiagm(
+                -1 => ones(PetscScalar, n - 1),
+                0 => -2ones(PetscScalar, n),
+                1 => ones(PetscScalar, n - 1),
+            )
+
+            ksp = PETSc.KSP(petsclib, A)
+            b = rand(PetscScalar, 10)
+            @test ksp \ b ≈ Matrix(A) \ b
+            PETSc.destroy(ksp)
+
+            if PetscInt == Int64
+                ksp = PETSc.KSP(A)
+                @test ksp \ b ≈ Matrix(A) \ b
+                PETSc.destroy(ksp)
+            end
+            PETSc.finalize(petsclib)
+        end
+    end
+else
+    # Even though only rank 0 is running the test all ranks need to initialize
+    # PETSc
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
         PETSc.finalize(petsclib)
     end
 end

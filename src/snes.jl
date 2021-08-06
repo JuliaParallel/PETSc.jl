@@ -74,9 +74,9 @@ function SNES() end
                 comm,
                 snes)
 
+            snessetfromoptions && setfromoptions!(snes)
+
         end
-     
-        snessetfromoptions && setfromoptions!(snes)
 
         if comm == MPI.COMM_SELF
             finalizer(destroy, snes)

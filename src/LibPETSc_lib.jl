@@ -15,6 +15,15 @@ function PetscLibType{ST, IT}(petsc_library) where {ST, IT}
 end
 const UnionPetscLibType = Union{PetscLibType, Type{<:PetscLibType}}
 
+"""
+    getlib(; PetscScalar = Float64, PetscInt = Int64)
+
+Return the `PetscLibType` with the associated parameters
+"""
+function getlib(; PetscScalar = Float64, PetscInt = Int64)
+    return PetscLibType{PetscScalar, PetscInt}()
+end
+
 function Base.getproperty(petsclib::UnionPetscLibType, name::Symbol)
     if name == :PetscScalar
         return scalartype(petsclib)
@@ -116,5 +125,6 @@ macro for_petsc(expr)
 end
 
 @for_petsc begin
-  getlib(::Type{$PetscLib}) = $petsclib
+    getlib(::Type{$PetscLib}) = $petsclib
+    PetscLibType{$PetscScalar, $PetscInt}() = $petsclib
 end

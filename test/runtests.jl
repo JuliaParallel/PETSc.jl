@@ -18,6 +18,7 @@ include("mpi_examples.jl")
 
 # Run the serial tests
 include("init.jl")
+include("lib.jl")
 include("options.jl")
 include("vec.jl")
 include("mat.jl")

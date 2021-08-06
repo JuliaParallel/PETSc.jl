@@ -22,6 +22,8 @@ Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 SparseDiffTools = "47a9eef4-7e08-11e9-0b38-333d64bd3804"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [targets]
-test = ["ForwardDiff", "UnicodePlots", "Test", "Plots", "SparseDiffTools", "Printf"]
+test = ["ForwardDiff", "UnicodePlots", "Test", "Plots", "SparseDiffTools",
+"Printf", "Random"]

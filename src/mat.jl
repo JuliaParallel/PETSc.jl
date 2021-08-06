@@ -595,25 +595,34 @@ function LinearAlgebra.ishermitian(
     return fr[] == PETSC_TRUE
 end
 
-#=
-function MatSeqAIJ(S::SparseMatrixCSC{T}) where {T}
-    PetscInt = inttype(T)
-    m,n = size(S)
-    nnz = zeros(PetscInt,m)
+function MatSeqAIJ(
+    petsclib,
+    S::SparseMatrixCSC{PetscScalar},
+) where {PetscScalar}
+    @assert petsclib.PetscScalar == PetscScalar
+
+    PetscInt = petsclib.PetscInt
+
+    m, n = size(S)
+    # Calculate non-zeros per row
+    nnz = zeros(PetscInt, m)
+
     for r in S.rowval
         nnz[r] += 1
     end
-    M = MatSeqAIJ{T}(m, n, nnz)
-    for j = 1:n
-        for ii = S.colptr[j]:S.colptr[j+1]-1
+
+    M = MatSeqAIJ(petsclib, m, n, nnz)
+    for j in 1:n
+        for ii in S.colptr[j]:(S.colptr[j + 1] - 1)
             i = S.rowval[ii]
-            M[i,j] = S.nzval[ii]
+            M[i, j] = S.nzval[ii]
         end
     end
-    assemble(M)
+    assemble!(M)
     return M
 end
 
+#=
 function Base.copyto!(M::PETSc.MatSeqAIJ{T}, S::SparseMatrixCSC{T}) where {T}
     for j = 1:size(S,2)
         for ii = S.colptr[j]:S.colptr[j+1]-1

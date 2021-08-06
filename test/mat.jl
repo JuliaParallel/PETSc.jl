@@ -1,6 +1,8 @@
 using Test
 using PETSc
 using LinearAlgebra: norm, mul!, Adjoint, Transpose, issymmetric, ishermitian
+using SparseArrays: sprand
+using Random
 
 @testset "MatSeqAIJ" begin
     num_rows, num_cols = 5, 7
@@ -116,6 +118,10 @@ using LinearAlgebra: norm, mul!, Adjoint, Transpose, issymmetric, ishermitian
             @test issymmetric(B)
             @test !ishermitian(B)
         end
+
+        Random.seed!(777)
+        A = sprand(PetscScalar, 10, 10, 0.2)
+        @test A == PETSc.MatSeqAIJ(petsclib, A)
 
         PETSc.finalize(petsclib)
     end

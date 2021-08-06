@@ -569,7 +569,7 @@ end
                 snes_view=false,
                 snes_monitor=true, 
                 ksp_view=true,
-                pc_type="none",
+                # pc_type="none",
                 snes_monitor_true_residual=false, 
                 snes_converged_reason=false);
         S.user_ctx  =       user_ctx;

@@ -1,3 +1,5 @@
+using Test
+
 function find_sources(path::String, sources=String[])
   if isdir(path)
     for entry in readdir(path)
@@ -11,8 +13,12 @@ end
 
 @testset "examples" begin
   examples_dir = joinpath(@__DIR__, "..", "examples")
+  stale_examples_dir = joinpath(@__DIR__, "..", "examples", "stale")
+
   examples = find_sources(examples_dir)
-  filter!(file -> readline(file) != "# EXCLUDE FROM TESTING", examples)
+  stale_examples = find_sources(stale_examples_dir)
+
+  filter!(file -> file ∉ stale_examples && readline(file) != "# EXCLUDE FROM TESTING", examples)
 
   @testset "$(basename(example))" for example in examples
     code = """

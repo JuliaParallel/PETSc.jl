@@ -12,6 +12,10 @@ using MPI: mpiexec
     end
 end
 
+# run example with MPI that include comment line
+# INCLUDE IN MPI TEST
+include("mpi_examples.jl")
+
 # Run the serial tests
 include("init.jl")
 include("options.jl")
@@ -20,3 +24,8 @@ include("mat.jl")
 include("matshell.jl")
 include("ksp.jl")
 include("dmda.jl")
+
+# Run the examples
+# Exclude examples with first line comment
+# EXCLUDE FROM TESTING
+include("examples.jl")

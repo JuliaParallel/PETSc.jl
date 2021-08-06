@@ -14,8 +14,12 @@ end
 
 @testset "mpi examples" begin
   examples_dir = joinpath(@__DIR__, "..", "examples")
+  stale_examples_dir = joinpath(@__DIR__, "..", "examples", "stale")
+
   examples = find_sources(examples_dir)
-  filter!(file -> readline(file) == "# INCLUDE IN MPI TEST", examples)
+  stale_examples = find_sources(stale_examples_dir)
+
+  filter!(file -> file ∉ stale_examples && readline(file) == "# INCLUDE IN MPI TEST", examples)
 
   @testset "$(basename(example))" for example in examples
     code = """

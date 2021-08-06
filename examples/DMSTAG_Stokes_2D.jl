@@ -8,11 +8,11 @@
 #   -dP/dz + dTxz/dx + dTzz/dz = rho*g                          |   Vertical force balance
 #   
 #   with:
-#       Exx = dVx/dx, Ezz=dVz/dz, Exy= 0.5*(dVx/dz + dVz/dx)    |   Strain rate definition
+#       Exx = dVx/dx, Ezz = dVz/dz, Exz = 0.5*(dVx/dz + dVz/dx) |   Strain rate definition
 #
-#      | Txx |   | 2*eta   0    0  |  | Exx |
-#      | Tzz | = |   0   2*eta  0  |  | Ezz |                   |   Linear viscous (isotropic) rheology
-#      | Txz |   |   0     0   eta |  | Exz |        
+#      | Txx |   | 2*eta   0     0   |  | Exx |
+#      | Tzz | = |   0   2*eta   0   |  | Ezz |                 |   Linear viscous (isotropic) rheology
+#      | Txz |   |   0     0   2*eta |  | Exz |
 #
 # This example also uses the Automatic differentiation package ForwardDiff
 

@@ -111,8 +111,10 @@ function SNES() end
     end
 
     function destroy(snes::AbstractSNES{$PetscScalar})
-        finalized($petsclib) ||
+        if snes.age == getlib(PetscLib).age && !(finalized(PetscLib)) && snes.ptr != C_NULL
             @chk ccall((:SNESDestroy, $libpetsc), PetscErrorCode, (Ptr{CSNES},), snes)
+        end
+        snes.ptr = C_NULL
         return nothing
     end
 

@@ -13,7 +13,13 @@ Base.eltype(
 Base.size(v::AbstractVec) = (length(v),)
 
 function destroy(v::AbstractVec{PetscLib}) where {PetscLib}
-    finalized(PetscLib) || LibPETSc.VecDestroy(PetscLib, v)
+    if !(finalized(PetscLib)) &&
+       v.age == getlib(PetscLib).age &&
+       v.ptr != C_NULL &&
+       (!hasfield(typeof(v), :own) || v.own)
+        LibPETSc.VecDestroy(PetscLib, v)
+    end
+    v.ptr = C_NULL
     return nothing
 end
 
@@ -28,14 +34,17 @@ If the `own` then the finalizer is set on the vector; calling `destroy` when
 mutable struct VecPtr{PetscLib, PetscScalar} <:
                AbstractVec{PetscLib, PetscScalar}
     ptr::CVec
+    age::Int
+    own::Bool
 end
 function VecPtr(
     petsclib::PetscLib,
     ptr::CVec,
     own,
 ) where {PetscLib <: PetscLibType}
-    v = VecPtr{PetscLib, petsclib.PetscScalar}(ptr)
-    if seq_finalize && occursin("seq", getpetsctype(v))
+    v = VecPtr{PetscLib, petsclib.PetscScalar}(ptr, petsclib.age, own)
+    comm = getcomm(v)
+    if own && MPI.Comm_size(comm) == 1
         finalizer(destroy, v)
     end
     return v
@@ -63,6 +72,7 @@ mutable struct VecSeqWithArray{PetscLib, PetscScalar} <:
                AbstractVec{PetscLib, PetscScalar}
     ptr::CVec
     array::Vector{PetscScalar}
+    age::Int
 end
 Base.parent(v::VecSeqWithArray) = v.array
 
@@ -74,7 +84,7 @@ function VecSeqWithArray(
     comm = MPI.COMM_SELF
     @assert initialized(petsclib)
     @assert PetscScalar == petsclib.PetscScalar
-    v = VecSeqWithArray{PetscLib, PetscScalar}(C_NULL, array)
+    v = VecSeqWithArray{PetscLib, PetscScalar}(C_NULL, array, petsclib.age)
     LibPETSc.VecCreateSeqWithArray(
         petsclib,
         comm,
@@ -106,12 +116,13 @@ $(_doc_external("Vec/VecCreateSeq"))
 mutable struct VecSeq{PetscLib, PetscScalar} <:
                AbstractVec{PetscLib, PetscScalar}
     ptr::CVec
+    age::Int
 end
 
 function VecSeq(petsclib::PetscLib, n::Int) where {PetscLib <: PetscLibType}
     comm = MPI.COMM_SELF
     @assert initialized(petsclib)
-    v = VecSeq{PetscLib, petsclib.PetscScalar}(C_NULL)
+    v = VecSeq{PetscLib, petsclib.PetscScalar}(C_NULL, petsclib.age)
     LibPETSc.VecCreateSeq(petsclib, comm, n, v)
     finalizer(destroy, v)
     return v
@@ -143,6 +154,7 @@ $(_doc_external("Vec/VecCreateMPI"))
 mutable struct VecMPI{PetscLib, PetscScalar} <:
                AbstractVec{PetscLib, PetscScalar}
     ptr::CVec
+    age::Int
 end
 
 function VecMPI(
@@ -153,7 +165,7 @@ function VecMPI(
 ) where {PetscLib <: PetscLibType}
     @assert initialized(petsclib)
     @assert local_length != PETSC_DECIDE || global_length != PETSC_DETERMINE
-    v = VecMPI{PetscLib, petsclib.PetscScalar}(C_NULL)
+    v = VecMPI{PetscLib, petsclib.PetscScalar}(C_NULL, petsclib.age)
     LibPETSc.VecCreateMPI(petsclib, comm, local_length, global_length, v)
     return v
 end
@@ -185,6 +197,7 @@ $(_doc_external("Vec/VecCreateGhost"))
 mutable struct VecGhost{PetscLib, PetscScalar} <:
                AbstractVec{PetscLib, PetscScalar}
     ptr::CVec
+    age::Int
 end
 
 function VecGhost(
@@ -198,7 +211,7 @@ function VecGhost(
     @assert initialized(petsclib)
     @assert PetscInt == PetscLib.PetscInt
     @assert local_length != PETSC_DECIDE || global_length != PETSC_DETERMINE
-    v = VecGhost{PetscLib, petsclib.PetscScalar}(C_NULL)
+    v = VecGhost{PetscLib, petsclib.PetscScalar}(C_NULL, petsclib.age)
     LibPETSc.VecCreateGhost(
         petsclib,
         comm,
@@ -491,11 +504,12 @@ mutable struct LocalVec{PetscLib, PetscScalar, GVec} <:
                AbstractVec{PetscLib, PetscScalar}
     ptr::CVec
     gvec::GVec
+    age::Int
 end
 function LocalVec(gvec::AbstractVec{PetscLib}) where {PetscLib}
     GVec = typeof(gvec)
     PetscScalar = PetscLib.PetscScalar
-    LocalVec{PetscLib, PetscScalar, GVec}(C_NULL, gvec)
+    LocalVec{PetscLib, PetscScalar, GVec}(C_NULL, gvec, getlib(PetscLib).age)
 end
 
 """

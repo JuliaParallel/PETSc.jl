@@ -12,7 +12,12 @@ Base.eltype(
 ) where {PetscLib, PetscScalar} = PetscScalar
 
 function destroy(M::AbstractMat{PetscLib}) where {PetscLib}
-    finalized(PetscLib) || LibPETSc.MatDestroy(PetscLib, M)
+    if !(finalized(PetscLib)) &&
+       M.age == getlib(PetscLib).age &&
+       M.ptr != C_NULL
+        LibPETSc.MatDestroy(PetscLib, M)
+    end
+    M.ptr = C_NULL
     return nothing
 end
 
@@ -34,6 +39,7 @@ $(_doc_external("Mat/MatCreateSeqAIJ"))
 mutable struct MatSeqAIJ{PetscLib, PetscScalar} <:
                AbstractMat{PetscLib, PetscScalar}
     ptr::CMat
+    age::Int
 end
 
 function MatSeqAIJ(
@@ -45,7 +51,7 @@ function MatSeqAIJ(
     comm = MPI.COMM_SELF
     @assert initialized(petsclib)
     PetscScalar = petsclib.PetscScalar
-    mat = MatSeqAIJ{PetscLib, PetscScalar}(C_NULL)
+    mat = MatSeqAIJ{PetscLib, PetscScalar}(C_NULL, petsclib.age)
     if nonzeros isa Integer
         LibPETSc.MatCreateSeqAIJ(
             petsclib,
@@ -87,6 +93,7 @@ mutable struct MatSeqDense{PetscLib, PetscScalar} <:
                AbstractMat{PetscLib, PetscScalar}
     ptr::CMat
     array::Matrix{PetscScalar}
+    age::Int
 end
 
 function MatSeqDense(
@@ -96,7 +103,7 @@ function MatSeqDense(
     comm = MPI.COMM_SELF
     @assert initialized(petsclib)
     @assert PetscScalar == petsclib.PetscScalar
-    mat = MatSeqDense{PetscLib, PetscScalar}(C_NULL, A)
+    mat = MatSeqDense{PetscLib, PetscScalar}(C_NULL, A, petsclib.age)
     LibPETSc.MatCreateSeqDense(petsclib, comm, size(A, 1), size(A, 2), A, mat)
     finalizer(destroy, mat)
     return mat
@@ -143,6 +150,7 @@ $(_doc_external("Mat/MatSetUp"))
 mutable struct MatAIJ{PetscLib, PetscScalar} <:
                AbstractMat{PetscLib, PetscScalar}
     ptr::CMat
+    age::Int
 end
 
 function MatAIJ(
@@ -158,7 +166,7 @@ function MatAIJ(
 ) where {PetscLib <: PetscLibType}
     @assert initialized(petsclib)
     PetscScalar = petsclib.PetscScalar
-    mat = MatAIJ{PetscLib, PetscScalar}(C_NULL)
+    mat = MatAIJ{PetscLib, PetscScalar}(C_NULL, petsclib.age)
     if diag_nonzeros isa Integer
         diag_nonzero = diag_nonzeros
         diag_nonzeros = C_NULL

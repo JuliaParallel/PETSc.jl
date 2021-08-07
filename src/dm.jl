@@ -2,7 +2,12 @@ const CDM = Ptr{Cvoid}
 abstract type AbstractDM{PetscLib} end
 
 function destroy(dm::AbstractDM{PetscLib}) where {PetscLib}
-    finalized(PetscLib) || LibPETSc.DMDestroy(PetscLib, dm)
+    if !(finalized(PetscLib)) &&
+       dm.age == getlib(PetscLib).age &&
+       dm.ptr != C_NULL &&
+       (!hasfield(typeof(dm), :own) || dm.own)
+        LibPETSc.DMDestroy(PetscLib, dm)
+    end
     dm.ptr = C_NULL
     return nothing
 end
@@ -74,7 +79,7 @@ Generates a matrix from the `dm` object.
 $(_doc_external("DM/DMCreateMatrix"))
 """
 function MatAIJ(dm::AbstractDM{PetscLib}) where {PetscLib}
-    mat = MatAIJ{PetscLib, PetscLib.PetscScalar}(C_NULL)
+    mat = MatAIJ{PetscLib, PetscLib.PetscScalar}(C_NULL, getlib(PetscLib).age)
 
     LibPETSc.DMCreateMatrix(PetscLib, dm, mat)
 
@@ -341,7 +346,6 @@ function update!(local_ptr::CVec, global_vec::DMGlobalVec, mode::InsertMode) end
     return nothing
 end
 
-
 """
     update!(
         local_vec::DMLocalVec,
@@ -367,7 +371,6 @@ function update!(local_vec::DMLocalVec, global_vec::DMGlobalVec, mode::InsertMod
 
     return nothing
 end
-
 
 #=
 @for_petsc function update!(

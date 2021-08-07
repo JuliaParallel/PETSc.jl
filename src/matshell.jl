@@ -28,6 +28,7 @@ mutable struct MatShell{PetscLib, PetscScalar, OType} <:
                AbstractMat{PetscLib, PetscScalar}
     ptr::CMat
     obj::OType
+    age::Int
 end
 
 struct MatOp{PetscLib, PetscInt, Op} end
@@ -73,7 +74,7 @@ LibPETSc.@for_petsc function MatShell(
     global_rows = LibPETSc.PETSC_DECIDE,
     global_cols = LibPETSc.PETSC_DECIDE,
 ) where {OType}
-    mat = MatShell{$PetscLib, $PetscScalar, OType}(C_NULL, obj)
+    mat = MatShell{$PetscLib, $PetscScalar, OType}(C_NULL, obj, petsclib.age)
 
     # we use the MatShell object itself
     ctx = pointer_from_objref(mat)

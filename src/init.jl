@@ -36,6 +36,7 @@ end
 function initialize(petsclib)
     if !initialized(petsclib)
         MPI.Initialized() || MPI.Init()
+        petsclib.age += 1
         LibPETSc.PetscInitializeNoArguments(petsclib)
 
         # disable signal handler
@@ -62,6 +63,7 @@ end
 
 function finalize(petsclib)
     if !finalized(petsclib)
+        petsclib.age += 1
         LibPETSc.PetscFinalize(petsclib)
     end
     return nothing

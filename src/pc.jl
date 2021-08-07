@@ -28,8 +28,10 @@ scalartype(::AbstractPC{T}) where {T} = T
     end
 
     function destroy(pc::AbstractPC{$PetscScalar})
-        finalized($petsclib) ||
-        @chk ccall((:PCDestroy, $libpetsc), PetscErrorCode, (Ptr{CPC},), pc)
+        if pc.age == getlib(PetscLib).age && !(finalized(PetscLib)) && pc.ptr != C_NULL
+            @chk ccall((:PCDestroy, $libpetsc), PetscErrorCode, (Ptr{CPC},), pc)
+        end
+        pc.ptr = C_NULL
         return nothing
     end
 

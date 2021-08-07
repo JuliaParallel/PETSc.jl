@@ -3,6 +3,7 @@ abstract type AbstractDMDA{PetscLib} <: AbstractDM{PetscLib} end
 mutable struct DMDA{PetscLib} <: AbstractDMDA{PetscLib}
     ptr::CDM
     opts::Options{PetscLib}
+    age::Int
 end
 
 """
@@ -57,7 +58,7 @@ function DMDA(
     options...,
 ) where {PetscLib}
     opts = Options(petsclib; options...)
-    da = DMDA{PetscLib}(C_NULL, opts)
+    da = DMDA{PetscLib}(C_NULL, opts, petsclib.age)
 
     @assert length(points_per_proc) == 1
 
@@ -108,7 +109,7 @@ function DMDA(
     options...,
 ) where {PetscLib}
     opts = Options(petsclib; options...)
-    da = DMDA{PetscLib}(C_NULL, opts)
+    da = DMDA{PetscLib}(C_NULL, opts, petsclib.age)
 
     @assert length(points_per_proc) == 2
 
@@ -166,7 +167,7 @@ function DMDA(
     options...,
 ) where {PetscLib}
     opts = Options(petsclib; options...)
-    da = DMDA{PetscLib}(C_NULL, opts)
+    da = DMDA{PetscLib}(C_NULL, opts, petsclib.age)
 
     @assert length(points_per_proc) == 3
 

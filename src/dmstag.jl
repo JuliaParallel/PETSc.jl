@@ -924,8 +924,10 @@ $(_doc_external("DM/DMDestroy"))
 function destroy(dm::DMStag) end
 
 @for_petsc function destroy(dm::DMStag{$PetscLib})
-    finalized($petsclib) ||
+    if dm.age == getlib(PetscLib).age && !(finalized(PetscLib)) && dm.ptr == C_NULL
         @chk ccall((:DMDestroy, $petsc_library), PetscErrorCode, (Ptr{CDMStag},), dm)
+    end
+    dm.ptr = C_NULL
     return nothing
 end
 

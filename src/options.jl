@@ -75,15 +75,26 @@ $(_doc_external("Sys/PetscOptionsCreate"))
 """
 mutable struct Options{T} <: AbstractOptions{T}
     ptr::CPetscOptions
+    age::Int
 end
 
 function Options_(petsclib::PetscLibType)
   @assert initialized(petsclib)
   PetscLib = typeof(petsclib)
-  opts = Options{PetscLib}(C_NULL)
+  opts = Options{PetscLib}(C_NULL, petsclib.age)
   LibPETSc.PetscOptionsCreate(petsclib, opts)
-  finalizer(x->LibPETSc.PetscOptionsDestroy(PetscLib, x), opts)
+  finalizer(destroy, opts)
   return opts
+end
+
+function destroy(opts::AbstractOptions{PetscLib}) where {PetscLib}
+    if !(finalized(PetscLib)) &&
+       opts.age == getlib(PetscLib).age &&
+       opts.ptr != C_NULL
+        LibPETSc.PetscOptionsDestroy(PetscLib, opts)
+    end
+    opts.ptr = C_NULL
+    return nothing
 end
 
 Options(petsclib::PetscLibType; kwargs...) = Options_(petsclib, kwargs...)

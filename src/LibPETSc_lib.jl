@@ -6,12 +6,13 @@ A container for specific PETSc libraries.
 All other containers for PETSc objects should be typed on this to ensure that
 dispatch is correct.
 """
-struct PetscLibType{PetscScalar, PetscInt, LibType}
+mutable struct PetscLibType{PetscScalar, PetscInt, LibType}
     petsc_library::LibType
+    age::Int
 end
 function PetscLibType{ST, IT}(petsc_library) where {ST, IT}
     LT = typeof(petsc_library)
-    return PetscLibType{ST, IT, LT}(petsc_library)
+    return PetscLibType{ST, IT, LT}(petsc_library, 0)
 end
 const UnionPetscLibType = Union{PetscLibType, Type{<:PetscLibType}}
 

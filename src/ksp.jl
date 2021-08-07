@@ -9,6 +9,7 @@ Base.@kwdef mutable struct KSP{PetscLib, PetscScalar} <:
     opts::Options{PetscLib} = Options(PetscLib)
     A::Union{AbstractMat, Nothing} = nothing
     P::Union{AbstractMat, Nothing} = nothing
+    age::Int
 end
 
 """
@@ -34,7 +35,7 @@ function KSP(
     @assert initialized(PetscLib)
     opts = Options(PetscLib; options...)
     PetscScalar = PetscLib.PetscScalar
-    ksp = KSP{PetscLib, PetscScalar}(opts = opts)
+    ksp = KSP{PetscLib, PetscScalar}(opts = opts, age = getlib(PetscLib).age)
     comm = getcomm(A)
 
     with(ksp.opts) do
@@ -82,7 +83,12 @@ function setfromoptions!(ksp::AbstractKSP{PetscLib}) where {PetscLib}
 end
 
 function destroy(ksp::AbstractKSP{PetscLib}) where {PetscLib}
-    finalized(PetscLib) || LibPETSc.KSPDestroy(PetscLib, ksp)
+    if !(finalized(PetscLib)) &&
+       ksp.age == getlib(PetscLib).age &&
+       ksp.ptr != C_NULL
+        LibPETSc.KSPDestroy(PetscLib, ksp)
+    end
+    ksp.ptr = C_NULL
     return nothing
 end
 

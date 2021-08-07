@@ -1,10 +1,6 @@
-deps/ComplexDouble/
-deps/RealDouble/
-deps/RealSingle/
-deps/deps.jl
-deps/petsc-*.tar.gz
-*.jl.cov
-*.jl.mem
+*.swp
+*.DS_Store
+*~
 docs/build/
 docs/site/
 Manifest.toml

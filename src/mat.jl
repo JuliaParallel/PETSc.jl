@@ -196,6 +196,10 @@ function MatAIJ(
 
     setup && setup!(mat)
 
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, mat)
+    end
+
     return mat
 end
 

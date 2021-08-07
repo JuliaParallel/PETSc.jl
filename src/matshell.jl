@@ -97,7 +97,7 @@ LibPETSc.@for_petsc function MatShell(
     )
     LibPETSc.MatShellSetOperation(petsclib, mat, LibPETSc.MATOP_MULT, mulptr)
 
-    if comm == MPI.COMM_SELF
+    if MPI.Comm_size(comm) == 1
         finalizer(destroy, mat)
     end
 

@@ -83,6 +83,10 @@ function MatAIJ(dm::AbstractDM{PetscLib}) where {PetscLib}
 
     LibPETSc.DMCreateMatrix(PetscLib, dm, mat)
 
+    if MPI.Comm_size(getcomm(mat)) == 1
+        finalizer(destroy, mat)
+    end
+
     return mat
 end
 

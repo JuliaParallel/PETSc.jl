@@ -167,6 +167,9 @@ function VecMPI(
     @assert local_length != PETSC_DECIDE || global_length != PETSC_DETERMINE
     v = VecMPI{PetscLib, petsclib.PetscScalar}(C_NULL, petsclib.age)
     LibPETSc.VecCreateMPI(petsclib, comm, local_length, global_length, v)
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, v)
+    end
     return v
 end
 
@@ -221,6 +224,9 @@ function VecGhost(
         ghost,
         v,
     )
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, v)
+    end
     return v
 end
 

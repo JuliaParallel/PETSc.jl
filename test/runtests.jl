@@ -2,11 +2,18 @@ using Test
 using MPI: mpiexec
 
 # Do the MPI tests first so we do not have mpi running inside MPI
-for file in ("mpivec.jl", "mpimat.jl", "ksp.jl", "dmda.jl")
+mpi_tests = ("mpivec.jl", "mpimat.jl", "ksp.jl")
+
+# XXX: We have problems with MPI and Windows with this test
+if !(Sys.iswindows())
+    mpi_tests = (mpi_tests..., "dmda.jl")
+end
+
+for file in mpi_tests
     @testset "MPI test: $file" begin
         @test mpiexec() do mpi_cmd
             cmd =
-            `$mpi_cmd -n 4 $(Base.julia_cmd()) --startup-file=no --project $file`
+                `$mpi_cmd -n 4 $(Base.julia_cmd()) --startup-file=no --project $file`
             success(pipeline(cmd, stderr = stderr))
         end
     end

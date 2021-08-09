@@ -11,7 +11,7 @@
 The easiest way to install the package is: 
 ```julia
 julia> ]
-(@v1.6) pkg> add https://github.com/JuliaParallel/PETSc.jl
+(@v1.6) pkg> add PETSc
 ```
 which will install a pre-built PETSc library (`PETSc_jll`) as well as `MPI.jl` on your system. This will work both in serial and in parallel on your machine.
 

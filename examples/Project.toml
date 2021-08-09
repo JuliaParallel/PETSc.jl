@@ -1,0 +1,4 @@
+[deps]
+PETSc = "ace2c81b-2b5f-4b1e-a30d-d662738edfe0"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"

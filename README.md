@@ -10,7 +10,7 @@ This package provides a low level interface for [PETSc](https://www.mcs.anl.gov/
 
 This package can be added with the julia command:
 ```julia
-]add https://github.com/JuliaParallel/PETSc.jl
+]add PETSc
 ```
 The installation can be tested with
 ```julia

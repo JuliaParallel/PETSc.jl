@@ -3,13 +3,30 @@ const CKSPType = Cstring
 
 abstract type AbstractKSP{PetscLib, PetscScalar} <: Factorization{PetscScalar} end
 
-Base.@kwdef mutable struct KSP{PetscLib, PetscScalar} <:
-                           AbstractKSP{PetscLib, PetscScalar}
-    ptr::CKSP = C_NULL
-    opts::Options{PetscLib} = Options(PetscLib)
-    A::Union{AbstractMat, Nothing} = nothing
-    P::Union{AbstractMat, Nothing} = nothing
+mutable struct KSP{PetscLib, PetscScalar} <: AbstractKSP{PetscLib, PetscScalar}
+    ptr::CKSP
+    opts::Options{PetscLib}
     age::Int
+    function KSP{PetscLib}(comm, opts) where {PetscLib}
+        PetscScalar = PetscLib.PetscScalar
+        ksp = new{PetscLib, PetscScalar}(C_NULL, opts, getlib(PetscLib).age)
+        with(ksp.opts) do
+            LibPETSc.KSPCreate(PetscLib, comm, ksp)
+        end
+
+        # If there is only one rank we can finalize the KSP with GC
+        if MPI.Comm_size(comm) == 1
+            finalizer(destroy, ksp)
+        end
+
+        return ksp
+    end
+end
+
+function setfromoptions!(ksp::AbstractKSP{PetscLib}) where {PetscLib}
+    with(ksp.opts) do
+        LibPETSc.KSPSetFromOptions(PetscLib, ksp)
+    end
 end
 
 """
@@ -33,23 +50,21 @@ function KSP(
     options...,
 ) where {PetscLib}
     @assert initialized(PetscLib)
-    opts = Options(PetscLib; options...)
-    PetscScalar = PetscLib.PetscScalar
-    ksp = KSP{PetscLib, PetscScalar}(opts = opts, age = getlib(PetscLib).age)
-    comm = getcomm(A)
 
-    with(ksp.opts) do
-        LibPETSc.KSPCreate(PetscLib, comm, ksp)
-    end
+    ksp = KSP{PetscLib}(getcomm(A), Options(PetscLib; options...))
 
     setoperators!(ksp, A, P)
+
     setfromoptions!(ksp)
 
-    # If there is only one rank we can finalize the KSP with GC
-    if MPI.Comm_size(comm) == 1
-        finalizer(destroy, ksp)
-    end
-
+    return ksp
+end
+function setoperators!(
+    ksp::AbstractKSP{PetscLib},
+    A::AbstractMat{PetscLib},
+    P::AbstractMat{PetscLib} = A,
+) where {PetscLib}
+    LibPETSc.KSPSetOperators(PetscLib, ksp, A, P)
     return ksp
 end
 
@@ -63,23 +78,6 @@ KSP(petsclib, A::SparseMatrixCSC; kwargs...) =
     KSP(MatSeqAIJ(petsclib, A); kwargs...)
 function KSP(A::SparseMatrixCSC{PetscScalar}; kwargs...) where {PetscScalar}
     KSP(MatSeqAIJ(getlib(; PetscScalar = PetscScalar), A); kwargs...)
-end
-
-function setoperators!(
-    ksp::AbstractKSP{PetscLib},
-    A::AbstractMat{PetscLib},
-    P::AbstractMat{PetscLib} = A,
-) where {PetscLib}
-    LibPETSc.KSPSetOperators(PetscLib, ksp, A, P)
-    ksp.A = A
-    ksp.P = P
-    return ksp
-end
-
-function setfromoptions!(ksp::AbstractKSP{PetscLib}) where {PetscLib}
-    with(ksp.opts) do
-        LibPETSc.KSPSetFromOptions(PetscLib, ksp)
-    end
 end
 
 function destroy(ksp::AbstractKSP{PetscLib}) where {PetscLib}
@@ -290,14 +288,6 @@ struct Fn_KSPComputeOperators{T} end
         return ksp
     end
 
-    function KSPSetDM!(ksp::KSP{$PetscScalar}, dm::AbstractDM{$PetscLib})
-        with(ksp.opts) do
-            @chk ccall((:KSPSetDM, $libpetsc), PetscErrorCode, (CKSP, CDM), ksp, dm)
-        end
-        ksp._dm = dm
-        return nothing
-    end
-
     function DMDA(ksp::AbstractKSP{$PetscScalar})
         t_dm = Ref{CDM}()
         @chk ccall(
@@ -375,23 +365,6 @@ function LinearAlgebra.ldiv!(x::AbstractVector{T}, ksp::KSPAT{T, LT}, b::Abstrac
     parent(solve!(AbstractVec(x), ksp, AbstractVec(b)))
 end
 Base.:\(ksp::KSPAT{T, LT}, b::AbstractVector{T}) where {T, LT} = ldiv!(similar(b), ksp, b)
-
-"""
-    KSP(da::AbstractDM; options...)
-
-Construct a PETSc Krylov subspace solver from the distributed mesh
-
-Any PETSc options prefixed with `ksp_` and `pc_` can be passed as keywords.
-
-see [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/KSP/KSPSetDM.html)
-"""
-function KSP(dm::AbstractDM{PetscLib}; kwargs...) where {PetscLib}
-    T = scalartype(PetscLib)
-    ksp = KSP{T}(getcomm(dm); kwargs...)
-    KSPSetDM!(ksp, dm)
-    setfromoptions!(ksp)
-    return ksp
-end
 
 Base.show(io::IO, ksp::KSP) = _show(io, ksp)
 

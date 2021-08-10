@@ -3,13 +3,32 @@ const CKSPType = Cstring
 
 abstract type AbstractKSP{PetscLib, PetscScalar} <: Factorization{PetscScalar} end
 
+"""
+    KSPPtr(petsclib, ksp::CKS, own)
+
+Container type for a PETSc KSP that is just a raw pointer.
+"""
+mutable struct KSPPtr{PetscLib, PetscScalar} <:
+               AbstractKSP{PetscLib, PetscScalar}
+    ptr::CKSP
+    age::Int
+end
+
 mutable struct KSP{PetscLib, PetscScalar} <: AbstractKSP{PetscLib, PetscScalar}
     ptr::CKSP
     opts::Options{PetscLib}
     age::Int
+    computerhs! # Needed for KSPSetComputeRHS
+    computeops! # Needed for KSPSetComputeOperators
     function KSP{PetscLib}(comm, opts) where {PetscLib}
         PetscScalar = PetscLib.PetscScalar
-        ksp = new{PetscLib, PetscScalar}(C_NULL, opts, getlib(PetscLib).age)
+        ksp = new{PetscLib, PetscScalar}(
+            C_NULL,
+            opts,
+            getlib(PetscLib).age,
+            nothing,
+            nothing,
+        )
         with(ksp.opts) do
             LibPETSc.KSPCreate(PetscLib, comm, ksp)
         end
@@ -80,6 +99,153 @@ function KSP(A::SparseMatrixCSC{PetscScalar}; kwargs...) where {PetscScalar}
     KSP(MatSeqAIJ(getlib(; PetscScalar = PetscScalar), A); kwargs...)
 end
 
+"""
+    KSP(da::AbstractDM; options...)
+
+Construct a PETSc Krylov subspace solver from the distributed mesh
+
+Any PETSc options prefixed with `ksp_` and `pc_` can be passed as keywords.
+
+# External Links
+$(_doc_external("KSP/KSPCreate"))
+$(_doc_external("KSP/KSPSetDM"))
+$(_doc_external("KSP/KSPSetFromOptions"))
+"""
+function KSP(dm::AbstractDM{PetscLib}; options...) where {PetscLib}
+    @assert initialized(PetscLib)
+
+    comm = getcomm(dm)
+
+    ksp = KSP{PetscLib}(comm, Options(PetscLib; options...))
+
+    KSPSetDM!(ksp, dm)
+
+    setfromoptions!(ksp)
+
+    return ksp
+end
+function KSPSetDM!(
+    ksp::AbstractKSP{PetscLib},
+    dm::AbstractDM{PetscLib},
+) where {PetscLib}
+    with(ksp.opts) do
+        LibPETSc.KSPSetDM(PetscLib, ksp, dm)
+    end
+    return ksp
+end
+#
+# Wrapper for calls to setcomputerhs!
+mutable struct Fn_KSPComputeRHS{PetscLib, PetscInt} end
+function (w::Fn_KSPComputeRHS{PetscLib, PetscInt})(
+    new_ksp_ptr::CKSP,
+    cb::CVec,
+    ksp_ptr::Ptr{Cvoid},
+)::PetscInt where {PetscLib, PetscInt}
+    PetscScalar = PetscLib.PetscScalar
+    new_ksp = KSPPtr{PetscLib, PetscScalar}(new_ksp_ptr, getlib(PetscLib).age)
+    b = VecPtr(PetscLib, cb, false)
+    ksp = unsafe_pointer_to_objref(ksp_ptr)
+    ierr = ksp.computerhs!(b, new_ksp)
+    return PetscLib.PetscInt(ierr)
+end
+
+"""
+    setcomputerhs!(ksp::AbstractKSP, rhs!::Function)
+    setcomputerhs!(rhs!::Function, ksp::AbstractKSP)
+
+Define `rhs!` to be the right-hand side function of the `ksp`. A call to
+`rhs!(b, new_ksp)` should set the elements of the PETSc vector `b` based on the
+`new_ksp`.
+
+!!! note
+
+    The `new_ksp` passed to `rhs!` may not be the same as the `ksp` passed to
+    `setcomputerhs!`.
+
+# External Links
+$(_doc_external("KSP/KSPSetComputeRHS"))
+"""
+setcomputerhs!(ksp::AbstractKSP, rhs!) = setcomputerhs!(rhs!, ksp)
+# We have to use the macro here because of the @cfunction
+LibPETSc.@for_petsc function setcomputerhs!(rhs!, ksp::KSP{$PetscLib})
+    # We must wrap the user function in our own object
+    fptr = @cfunction(
+        Fn_KSPComputeRHS{$PetscLib, $PetscInt}(),
+        $PetscInt,
+        (CKSP, CVec, Ptr{Cvoid})
+    )
+    # set the computerhs! in the ksp
+    ksp.computerhs! = rhs!
+    LibPETSc.KSPSetComputeRHS($PetscLib, ksp, fptr, pointer_from_objref(ksp))
+    return ksp
+end
+
+# Wrapper for calls to setcomputerhs!
+mutable struct Fn_KSPComputeOperators{PetscLib, PetscInt} end
+function (w::Fn_KSPComputeOperators{PetscLib, PetscInt})(
+    new_ksp_ptr::CKSP,
+    cA::CMat,
+    cP::CMat,
+    ksp_ptr::Ptr{Cvoid},
+)::PetscInt where {PetscLib, PetscInt}
+    PetscScalar = PetscLib.PetscScalar
+    new_ksp = KSPPtr{PetscLib, PetscScalar}(new_ksp_ptr, getlib(PetscLib).age)
+    A = MatPtr{PetscLib, PetscScalar}(cA, getlib(PetscLib).age)
+    P = MatPtr{PetscLib, PetscScalar}(cP, getlib(PetscLib).age)
+    ksp = unsafe_pointer_to_objref(ksp_ptr)
+    ierr = ksp.computeops!(A, P, new_ksp)
+    return PetscLib.PetscInt(ierr)
+end
+
+"""
+    setcomputeoperators!(ksp::AbstractKSP, ops!::Function)
+    setcomputeoperators!(ops!::Function, ksp::AbstractKSP)
+
+Define `ops!` to be the compute operators function for the `ksp`. A call to
+`ops!(A, P, new_ksp)` should set the elements of the PETSc matrix linear
+operator `A` and preconditioning matrix `P` based on the `new_ksp`.
+
+!!! note
+
+    The `new_ksp` passed to `ops!` may not be the same as the `ksp` passed to
+    `setcomputeoperators!`.
+
+# External Links
+$(_doc_external("KSP/KSPSetComputeOperators"))
+"""
+setcomputeoperators!(ksp::AbstractKSP, ops!) = setcomputeoperators!(ops!, ksp)
+# We have to use the macro here because of the @cfunction
+LibPETSc.@for_petsc function setcomputeoperators!(ops!, ksp::KSP{$PetscLib})
+    # We must wrap the user function in our own object
+    fptr = @cfunction(
+        Fn_KSPComputeOperators{$PetscLib, $PetscInt}(),
+        $PetscInt,
+        (CKSP, CMat, CMat, Ptr{Cvoid})
+    )
+    # set the computerhs! in the ksp
+    ksp.computeops! = ops!
+    LibPETSc.KSPSetComputeOperators($PetscLib, ksp, fptr, pointer_from_objref(ksp))
+    return ksp
+end
+
+"""
+    getDMDA(ksp::AbstractKSP)
+
+Get `dmda` for `ksp`
+
+The returned `dmda` is owned by the `ksp`
+
+# External Links
+$(_doc_external("KSP/KSPGetDM"))
+"""
+function getDMDA(ksp::AbstractKSP{PetscLib}) where PetscLib
+    t_dmda = Ref{CDM}()
+    LibPETSc.KSPGetDM(PetscLib, ksp, t_dmda)
+    dmda = DMDAPtr{PetscLib}(t_dmda[], getlib(PetscLib).age, false)
+    return dmda
+end
+
+
 function destroy(ksp::AbstractKSP{PetscLib}) where {PetscLib}
     if !(finalized(PetscLib)) &&
        ksp.age == getlib(PetscLib).age &&
@@ -99,6 +265,15 @@ function solve!(
         LibPETSc.KSPSolve(PetscLib, ksp, b, x)
     end
     return x
+end
+
+function solve!(
+    ksp::AbstractKSP{PetscLib},
+) where {PetscLib}
+    with(ksp.opts) do
+        LibPETSc.KSPSolve(PetscLib, ksp, C_NULL, C_NULL)
+    end
+    return ksp
 end
 
 """
@@ -171,6 +346,22 @@ function Base.:\(
     destroy(petsc_x)
 
     return x
+end
+
+"""
+    getsolution(ksp)
+
+returns the solution vector stored in the `ksp`. This function does not make a
+new copy of the vector, it merely returns the vector stored in the `ksp`
+
+# External Links
+$(_doc_external("KSP/KSPGetSolution"))
+"""
+function getsolution(ksp::AbstractKSP{PetscLib}) where PetscLib
+    r_v = Ref{CVec}()
+    LibPETSc.KSPGetSolution(PetscLib, ksp, r_v)
+    v = VecPtr(PetscLib, r_v[], false)
+    return v
 end
 
 #=

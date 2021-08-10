@@ -6,6 +6,12 @@ mutable struct DMDA{PetscLib} <: AbstractDMDA{PetscLib}
     age::Int
 end
 
+mutable struct DMDAPtr{PetscLib} <: AbstractDMDA{PetscLib}
+    ptr::CDM
+    age::Int
+    own::Bool
+end
+
 """
     DMDA(
         petsclib::PetscLib

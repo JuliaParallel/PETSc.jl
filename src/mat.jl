@@ -22,6 +22,17 @@ function destroy(M::AbstractMat{PetscLib}) where {PetscLib}
 end
 
 """
+    MatPtr(petsclib, mat::CMat)
+
+Container type for a PETSc Mat that is just a raw pointer.
+"""
+mutable struct MatPtr{PetscLib, PetscScalar} <:
+               AbstractMat{PetscLib, PetscScalar}
+    ptr::CMat
+    age::Int
+end
+
+"""
     MatSeqAIJ(petsclib, num_rows, num_cols, nonzeros)
 
 Create a PETSc serial sparse array using AIJ format (also known as a compressed

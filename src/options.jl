@@ -181,7 +181,7 @@ Parse the `args` vector into a `NamedTuple` that can be used as the options for
 the PETSc solvers.
 
 ```sh
-julia --project file.jl -ksp_monitor -pc_type mg -ksp_view
+julia --project file.jl -ksp_monitor -pc_type mg -ksp_view -da_refine=1
 ```
 """
 function parse_options(args::Vector{String})
@@ -190,7 +190,14 @@ function parse_options(args::Vector{String})
     while i <= length(args)
         @assert args[i][1] == '-' && length(args[i]) > 1
         if i == length(args) || args[i + 1][1] == '-'
-            opts[Symbol(args[i][2:end])] = nothing
+            token = split(args[i][2:end], "=")
+            if length(token) == 1
+                opts[Symbol(token[1])] = nothing
+            elseif length(token) == 2
+                opts[Symbol(token[1])] = token[2]
+            else
+                error("invalid argument: $(args[i])")
+            end
             i = i + 1
         else
             opts[Symbol(args[i][2:end])] = args[i + 1]

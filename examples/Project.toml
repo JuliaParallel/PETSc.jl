@@ -1,4 +1,6 @@
 [deps]
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+MPI = "da04e1cc-30fd-572f-bb4f-1f8673147195"
 PETSc = "ace2c81b-2b5f-4b1e-a30d-d662738edfe0"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"

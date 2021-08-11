@@ -2,7 +2,6 @@ module LibPETSc
 
 using Libdl
 using MPI
-MPI.Initialized() || MPI.Init()
 
 export PetscLibType,
     petsclibs,

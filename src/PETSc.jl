@@ -1,6 +1,5 @@
 module PETSc
 using MPI
-MPI.Initialized() || MPI.Init()
 
 include("LibPETSc.jl")
 using .LibPETSc

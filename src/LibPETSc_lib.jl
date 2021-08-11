@@ -70,41 +70,10 @@ function initialize(libhdl::Ptr{Cvoid})
     @chk ccall(PetscInitializeNoArguments_ptr, PetscErrorCode, ())
 end
 
-const petsclibs = map(libs) do lib
-    libhdl = dlopen(lib...)
-
-    # initialize petsc
-    PetscInitializeNoArguments_ptr =
-        dlsym(libhdl, :PetscInitializeNoArguments)
-    @chk ccall(PetscInitializeNoArguments_ptr, PetscErrorCode, ())
-
-    PETSC_REAL = DataTypeFromString(libhdl, "Real")
-    PETSC_SCALAR = DataTypeFromString(libhdl, "Scalar")
-    PETSC_INT_SIZE = PetscDataTypeGetSize(libhdl, PETSC_INT)
-
-    PetscReal =
-        PETSC_REAL == PETSC_DOUBLE ? Cdouble :
-        PETSC_REAL == PETSC_FLOAT ? Cfloat :
-        error("PETSC_REAL = $PETSC_REAL not supported.")
-
-    PetscScalar =
-        PETSC_SCALAR == PETSC_REAL ? PetscReal :
-        PETSC_SCALAR == PETSC_COMPLEX ? Complex{PetscReal} :
-        error("PETSC_SCALAR = $PETSC_SCALAR not supported.")
-
-    PetscInt =
-        PETSC_INT_SIZE == 4 ? Int32 :
-        PETSC_INT_SIZE == 8 ? Int64 :
-        error("PETSC_INT_SIZE = $PETSC_INT_SIZE not supported.")
-
-    PetscFinalize_ptr = dlsym(libhdl, :PetscFinalize)
-    @chk ccall(PetscFinalize_ptr, PetscErrorCode, ())
-
-    # TODO: PetscBLASInt, PetscMPIInt ?
+const petsclibs = map(libs) do (lib, PetscScalar, PetscInt)
     return PetscLibType{PetscScalar, PetscInt}(lib[1])
 end
 
-# New macro is really to track the update
 macro for_petsc(expr)
     quote
         for petsclib in petsclibs

@@ -31,6 +31,8 @@ const Mat = Ptr{Cvoid}
 const MatType = Cstring
 const KSP = Ptr{Cvoid}
 const KSPType = Cstring
+const SNES = Ptr{Cvoid}
+const SNESType = Cstring
 const DM = Ptr{Cvoid}
 const DMType = Cstring
 

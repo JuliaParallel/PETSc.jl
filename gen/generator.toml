@@ -19,6 +19,7 @@ printer_blacklist = [
   "Mat", "_p_Mat", "MatType",
   "Vec", "_p_Vec", "VecType",
   "KSP", "_p_KSP", "KSPType",
+  "SNES", "_p_SNES", "SNESType",
   "DM", "_p_DM", "DMType",
 #
 # Remove types defined in const.jl

@@ -87,7 +87,7 @@ end
 @testset "parse_options tests" begin
     @test begin
         julia = joinpath(Sys.BINDIR, Base.julia_exename())
-        run(`$(julia) --project -e "using PETSc
+        run(`$(julia) --startup-file=no --project -e "using PETSc
                                  using Test
                                  opts = PETSc.parse_options(ARGS)
                                  @test length(opts) == 4

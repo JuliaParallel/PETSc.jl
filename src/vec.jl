@@ -433,9 +433,12 @@ function unsafe_localarray(
 end
 
 """
-    withlocalarray!(f!, x::AbstractVec; read=true, write=true)
-    withlocalarray!(f!, xs...; read=true, write=true)
-    withlocalarray!(f!, xs::NTuple{N, AbstractVec}...; read=true, write=true)
+    withlocalarray!(
+        f!,
+        vecs::NTuple{N, AbstractVec};
+        read::Union{Bool, NTuple{N, Bool}} = true,
+        write::Union{Bool, NTuple{N, Bool}} = true,
+    )
 
 Convert `x` to an `Array{PetscScalar}` using [`unsafe_localarray`](@ref) and
 apply the function `f!`.
@@ -444,16 +447,33 @@ Use `read=false` if the array is write-only; `write=false` if read-only.
 
 # Examples
 ```julia-repl
-julia> map_unsafe_localarray(x; write=true) do x
+julia> withlocalarray!(x; write=true) do x
    @. x .*= 2
+end
+
+julia> withlocalarray!(
+           x,
+           y;
+           read = (false, true),
+           write = (true, false)
+       ) do x, y
+   @. x .= 2 .+ y
 end
 
 !!! note
     `Base.finalize` is automatically called on the array.
 """
-function withlocalarray!(f!, vecs::NTuple{N, AbstractVec}; kwargs...) where {N}
-    arrays = map(vecs) do v
-        unsafe_localarray(v; kwargs...)
+function withlocalarray!(
+    f!,
+    vecs::NTuple{N, AbstractVec};
+    read::Union{Bool, NTuple{N, Bool}} = true,
+    write::Union{Bool, NTuple{N, Bool}} = true,
+) where {N}
+    read isa NTuple{N, Bool} || (read = ntuple(_ -> read, N))
+    write isa NTuple{N, Bool} || (write = ntuple(_ -> write, N))
+
+    arrays = map(vecs, read, write) do v, r, w
+        unsafe_localarray(v; read = r, write = w)
     end
     val = f!(arrays...)
     map(arrays) do array

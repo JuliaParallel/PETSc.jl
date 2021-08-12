@@ -31,6 +31,8 @@ const Mat = Ptr{Cvoid}
 const MatType = Cstring
 const KSP = Ptr{Cvoid}
 const KSPType = Cstring
+const SNES = Ptr{Cvoid}
+const SNESType = Cstring
 const DM = Ptr{Cvoid}
 const DMType = Cstring
 
@@ -55342,12 +55344,6 @@ end
         arg6,
     )
 end
-
-mutable struct _p_SNES end
-
-const SNES = Ptr{_p_SNES}
-
-const SNESType = Ptr{Cchar}
 
 @for_petsc function SNESInitializePackage(::$UnionPetscLib)
     @chk ccall((:SNESInitializePackage, $petsc_library), PetscErrorCode, ())

@@ -345,28 +345,6 @@ end
 #
 # OLD WRAPPERS
 #
-mutable struct DMDALocalInfo{IT}
-    dim::IT
-    dof_per_node::IT
-    stencil_width::IT
-    global_size::NTuple{3, IT}
-    local_start::NTuple{3, IT}
-    local_size::NTuple{3, IT}
-    ghosted_local_start::NTuple{3, IT}
-    ghosted_local_size::NTuple{3, IT}
-    boundary_type::NTuple{3, DMBoundaryType}
-    stencil_type::DMDAStencilType
-    ___padding___::NTuple{5, IT}
-    DMDALocalInfo{IT}() where {IT} = new{IT}()
-end
-
-mutable struct DMDA{PetscLib} <: AbstractDM{PetscLib}
-    ptr::CDM
-    opts::Options{PetscLib}
-    DMDA{PetscLib}(ptr, opts = Options(PetscLib)) where {PetscLib} =
-        new{PetscLib}(ptr, opts)
-end
-
 """
     empty(da::DMDA)
 

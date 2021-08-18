@@ -341,16 +341,13 @@ function getghostcorners(da::AbstractDMDA{PetscLib}) where {PetscLib}
     )
 end
 
-#=
-#
-# OLD WRAPPERS
-#
 """
-    empty(da::DMDA)
+    similar(da::DMDA)
 
 return an uninitialized `DMDA` struct.
 """
-Base.empty(::DMDA{PetscLib}) where {PetscLib} = DMDA{PetscLib}(C_NULL)
+Base.empty(da::DMDA{PetscLib}) where {PetscLib} =
+    DMDA{PetscLib}(C_NULL, da.opts, da.age)
 
 """
     setuniformcoordinates!(
@@ -366,34 +363,23 @@ by the `NTuple`s `xyzmin` and `xyzmax`. If `N` is less than the dimension of the
 # External Links
 $(_doc_external("DMDA/DMDASetUniformCoordinates"))
 """
-function setuniformcoordinates! end
-
-@for_petsc function setuniformcoordinates!(
-    da::DMDA{$PetscLib},
+function setuniformcoordinates!(
+    da::DMDA{PetscLib},
     xyzmin::NTuple{N, Real},
     xyzmax::NTuple{N, Real},
-) where {N}
-    xmin = $PetscReal(xyzmin[1])
-    xmax = $PetscReal(xyzmax[1])
+) where {N, PetscLib}
+    PetscReal = PetscLib.PetscReal
+    xmin = PetscReal(xyzmin[1])
+    xmax = PetscReal(xyzmax[1])
 
-    ymin = (N > 1) ? $PetscReal(xyzmin[2]) : $PetscReal(0)
-    ymax = (N > 1) ? $PetscReal(xyzmax[2]) : $PetscReal(0)
+    ymin = (N > 1) ? PetscReal(xyzmin[2]) : PetscReal(0)
+    ymax = (N > 1) ? PetscReal(xyzmax[2]) : PetscReal(0)
 
-    zmin = (N > 2) ? $PetscReal(xyzmin[3]) : $PetscReal(0)
-    zmax = (N > 2) ? $PetscReal(xyzmax[3]) : $PetscReal(0)
+    zmin = (N > 2) ? PetscReal(xyzmin[3]) : PetscReal(0)
+    zmax = (N > 2) ? PetscReal(xyzmax[3]) : PetscReal(0)
 
-    @chk ccall(
-        (:DMDASetUniformCoordinates, $petsc_library),
-        PetscErrorCode,
-        (
-            CDM,
-            $PetscReal,
-            $PetscReal,
-            $PetscReal,
-            $PetscReal,
-            $PetscReal,
-            $PetscReal,
-        ),
+    LibPETSc.DMDASetUniformCoordinates(
+        PetscLib,
         da,
         xmin,
         xmax,
@@ -402,6 +388,5 @@ function setuniformcoordinates! end
         zmin,
         zmax,
     )
-    return nothing
+    return da
 end
-=#

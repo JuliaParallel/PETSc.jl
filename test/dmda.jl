@@ -472,13 +472,15 @@ end
             @test local_vec[i] == mpisize + mpirank
         end
 
-        #=
+        PETSc.destroy(global_vec)
+        PETSc.destroy(local_vec)
+
         # Test DM Coordinates
         coord_da = PETSc.getcoordinateDM(da)
         # Crank it up to 11!
         xmin, xmax = 0, 11
         PETSc.setuniformcoordinates!(coord_da, (xmin,), (xmax,))
-        coord_vec = PETSc.getcoordinateslocal(coord_da)
+        coord_vec = PETSc.coordinatesDMLocalVec(coord_da)
         Δx = (xmax - xmin) / (global_size - 1)
 
         # Figure out the values we should have in the coordinate vector
@@ -487,7 +489,11 @@ end
         for (loc, glo) in enumerate(ghost_lower:ghost_upper)
             @test coord_vec[loc] ≈ (glo - 1) * Δx
         end
-        =#
+
+        PETSc.destroy(coord_vec)
+        PETSc.destroy(da)
+        PETSc.destroy(coord_da)
+
         PETSc.finalize(petsclib)
     end
 end

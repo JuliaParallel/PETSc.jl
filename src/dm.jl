@@ -103,12 +103,17 @@ mutable struct DMLocalVec{PetscLib, PetscScalar, DMT <: AbstractDM} <:
     ptr::CVec
     age::Int
     dm::DMT
+    own::Bool
 end
 function DMLocalVec(dm::AbstractDM{PetscLib}) where {PetscLib}
     petsclib = getlib(PetscLib)
     PetscScalar = petsclib.PetscScalar
-    vec =
-        DMLocalVec{PetscLib, PetscScalar, typeof(dm)}(C_NULL, petsclib.age, dm)
+    vec = DMLocalVec{PetscLib, PetscScalar, typeof(dm)}(
+        C_NULL,
+        petsclib.age,
+        dm,
+        true,
+    )
 
     LibPETSc.DMCreateLocalVector(PetscLib, dm, vec)
 
@@ -132,12 +137,17 @@ mutable struct DMGlobalVec{PetscLib, PetscScalar, DMT <: AbstractDM} <:
     ptr::CVec
     age::Int
     dm::DMT
+    own::Bool
 end
 function DMGlobalVec(dm::AbstractDM{PetscLib}) where {PetscLib}
     petsclib = getlib(PetscLib)
     PetscScalar = petsclib.PetscScalar
-    vec =
-        DMGlobalVec{PetscLib, PetscScalar, typeof(dm)}(C_NULL, petsclib.age, dm)
+    vec = DMGlobalVec{PetscLib, PetscScalar, typeof(dm)}(
+        C_NULL,
+        petsclib.age,
+        dm,
+        true,
+    )
 
     LibPETSc.DMCreateGlobalVector(PetscLib, dm, vec)
 
@@ -312,12 +322,59 @@ function updateend!(
     return local_vec
 end
 
+"""
+    getcoordinateDM(dm::AbstractDM)
+
+Create a `coord_dm` for the coordinates of `dm`.
+
+# External Links
+$(_doc_external("DM/DMGetCoordinateDM"))
+"""
+function getcoordinateDM(dm::AbstractDM{PetscLib}) where {PetscLib}
+    coord_dm = empty(dm)
+    LibPETSc.DMGetCoordinateDM(PetscLib, dm, coord_dm)
+
+    if gettype(dm) == "stag"
+        @assert gettype(coord_dm) == "product"
+    else
+        @assert gettype(coord_dm) == gettype(dm)
+    end
+
+    if MPI.Comm_size(getcomm(coord_dm)) == 1
+        finalizer(destroy, coord_dm)
+    end
+
+    return coord_dm
+end
+
+"""
+    coordinatesDMLocalVec(dm::AbstractDM)
+
+Gets a local vector with the coordinates associated with `dm`.
+
+# External Links
+$(_doc_external("DM/DMGetCoordinatesLocal"))
+"""
+function coordinatesDMLocalVec(dm::AbstractDM{PetscLib}) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    PetscScalar = petsclib.PetscScalar
+    coord_vec = DMLocalVec{PetscLib, PetscScalar, typeof(dm)}(
+        C_NULL,
+        petsclib.age,
+        dm,
+        false,
+    )
+    LibPETSc.DMGetCoordinatesLocal(PetscLib, dm, coord_vec)
+
+    return coord_vec
+end
+
 #=
 #
 # OLD WRAPPERS
 #
 """
-    view(dm::AbstractDM, viewer::Viewer=ViewerStdout(petsclib, getcomm(dm)))
+    view(dm::AbstractDM, [viewer])
 
 view a `dm` with `viewer`
 
@@ -340,56 +397,4 @@ function view(::AbstractDM) end
     return nothing
 end
 
-"""
-    getcoordinateDM(dm::AbstractDM)
-
-Create a `coord_dm` for the coordinates of `dm`.
-
-# External Links
-$(_doc_external("DM/DMGetCoordinateDM"))
-"""
-function getcoordinateDM end
-
-@for_petsc function getcoordinateDM(dm::AbstractDM{$PetscLib})
-    coord_dm = empty(dm)
-    @chk ccall(
-        (:DMGetCoordinateDM, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{CDM}),
-        dm,
-        coord_dm,
-    )
-
-    # If this fails then the `empty` call above is probably a bad idea!
-    if gettype(coord_dm) != "product"
-        @assert gettype(dm) == gettype(coord_dm)
-    else
-        @assert gettype(dm) == "stag"   # product can only be used with stag
-    end
-
-    return coord_dm
-end
-
-"""
-    getcoordinateslocal(dm::AbstractDM)
-
-Gets a local vector with the coordinates associated with `dm`.
-
-# External Links
-$(_doc_external("DM/DMGetCoordinatesLocal"))
-"""
-function getcoordinateslocal end
-
-@for_petsc function getcoordinateslocal(dm::AbstractDM{$PetscLib})
-    coord_vec = DMLocalVec(C_NULL, dm)
-    @chk ccall(
-        (:DMGetCoordinatesLocal, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{CVec}),
-        dm,
-        coord_vec,
-    )
-
-    return coord_vec
-end
 =#

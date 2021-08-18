@@ -359,7 +359,7 @@ end
                 PETSc.DMDA_STENCIL_STAR;
                 # Force processor distribution so that we know how to go from
                 # Stencil to Linear easily
-                processors = (ntuple(i->1, dim-1)..., mpisize)
+                processors = (ntuple(i -> 1, dim - 1)..., mpisize),
             )
             mat = PETSc.MatAIJ(da)
 
@@ -382,7 +382,7 @@ end
 
             PETSc.assemble!(mat)
 
-            ind = LinearIndices(ntuple(i->1:global_size[i], 3))
+            ind = LinearIndices(ntuple(i -> 1:global_size[i], 3))
             for ci in (corners.lower):(corners.upper)
                 i = ind[ci]
                 @test mat[i, i] == -2dim
@@ -405,111 +405,74 @@ end
     end
 end
 
-#=
 @testset "DM Vectors and Coordinates" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
         PETSc.initialize(petsclib)
-        PetscScalar = PETSc.scalartype(petsclib)
-        PetscInt = PETSc.inttype(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt = petsclib.PetscInt
+
         boundary_type = PETSc.DM_BOUNDARY_NONE
         dof_per_node = 1
         stencil_width = 1
         number_points = 10
         points_per_proc = [PetscInt(10) for i in 1:mpisize]
         global_size = sum(points_per_proc)
+
         # Set the points
-        da = PETSc.DMDACreate1d(
+        da = PETSc.DMDA(
             petsclib,
             comm,
-            boundary_type,
-            global_size,
+            (boundary_type,),
+            (global_size,),
             dof_per_node,
-            stencil_width,
-            points_per_proc,
+            stencil_width;
+            points_per_proc = (points_per_proc,),
         )
 
         corners = PETSc.getcorners(da)
 
         # Create the local and global vectors
-        local_vec = PETSc.createlocalvector(da)
-        global_vec = PETSc.createglobalvector(da)
+        local_vec = PETSc.DMLocalVec(da)
+        global_vec = PETSc.DMGlobalVec(da)
+        bot_val = 0
+        top_val = 0
 
-        bot_val = 0; top_val = 0;
-        for i=1:4
-            # Fill everything with some data
-            fill!(local_vec, mpirank)
-            fill!(global_vec, mpisize)
+        # Fill everything with some data
+        fill!(local_vec, mpirank)
+        fill!(global_vec, mpisize)
 
-            # Add the local values to the global values using the high-level routine
-            if i==1
-                # 1) Use the high-level routine to do this
-                PETSc.update!(global_vec, local_vec, PETSc.ADD_VALUES)
-            elseif i==2
-                # 2) Use pointer to local vector
-                PETSc.update!(global_vec, local_vec.ptr, PETSc.ADD_VALUES)
-            elseif i==3
-                # 3) Use pointer to global vector
-                PETSc.update!(global_vec.ptr, local_vec, PETSc.ADD_VALUES)
-            elseif i==4
-                # 4) Use low-level routines
-                PETSc.update_local2global!(global_vec.ptr, local_vec.ptr, PETSc.ADD_VALUES, local_vec.dm)
-            
-            end
+        # add the local values to the global values
+        PETSc.update!(global_vec, local_vec, PETSc.ADD_VALUES)
 
-            # end points added with neighbor due to ghost of size 1
-            bot_val = mpisize + mpirank + (mpirank == 0 ? 0 : mpirank - 1)
-            top_val = mpisize + mpirank + (mpirank == mpisize - 1 ? 0 : mpirank + 1)
-            @test global_vec[corners.lower[1]] == bot_val
-            @test global_vec[corners.upper[1]] == top_val
+        # end points added with neighbor due to ghost of size 1
+        bot_val = mpisize + mpirank + (mpirank == 0 ? 0 : mpirank - 1)
+        top_val = mpisize + mpirank + (mpirank == mpisize - 1 ? 0 : mpirank + 1)
+        @test global_vec[corners.lower[1]] == bot_val
+        @test global_vec[corners.upper[1]] == top_val
 
-            # Center is just self plus the global
-            for i in (corners.lower[1] + 1):(corners.upper[1] - 1)
-                @test global_vec[i] == mpisize + mpirank
-            end
+        # Center is just self plus the global
+        for i in (corners.lower[1] + 1):(corners.upper[1] - 1)
+            @test global_vec[i] == mpisize + mpirank
         end
 
-        # Reset the local values with the global values. 
-        # This mainy tests the different local to global update! implementations
-        for i=1:4
+        # reset the local values with the global values
+        PETSc.update!(local_vec, global_vec, PETSc.INSERT_VALUES)
 
-            # There are different implementations of copying global to local vectors
-            # That is useful if this is combined with SNES routines, as they only 
-            # return the pointers to the vectors (not the full struct)
-            if i==1
-                # 1) Use the high-level routine to do the copy
-                PETSc.update!(local_vec, global_vec, PETSc.INSERT_VALUES)
+        # My first value and my ghost should be the bot/top values
+        @test local_vec[1] == bot_val
+        @test local_vec[2] == bot_val
+        @test local_vec[end - 1] == top_val
+        @test local_vec[end] == top_val
 
-            elseif i==2
-                # 2) Use a routine where a pointer to the global vector is mixed with a local vector
-                PETSc.update!(local_vec, global_vec.ptr, PETSc.INSERT_VALUES)
-
-            elseif i==3
-                # 3) Use a routine where a global vector is mixed with a pointer to a local vector
-                PETSc.update!(local_vec.ptr, global_vec, PETSc.INSERT_VALUES)
-
-            elseif i==4
-                # 4) Use the low-level (pointer) routine to do the same (not)
-                PETSc.update_global2local!(local_vec.ptr, global_vec.ptr, PETSc.INSERT_VALUES, global_vec.dm); # Note that this is a lower-level function that is not typically used
-                
-            end
-
-            # My first value and my ghost should be the bot/top values
-            @test local_vec[1] == bot_val
-            @test local_vec[2] == bot_val
-            @test local_vec[end - 1] == top_val
-            @test local_vec[end] == top_val
-    
-            # interior is just self plus the global
-            for i in 3:(length(local_vec) - 2)
-                @test local_vec[i] == mpisize + mpirank
-            end
-        
+        # interior is just self plus the global
+        for i in 3:(length(local_vec) - 2)
+            @test local_vec[i] == mpisize + mpirank
         end
 
-     
+        #=
         # Test DM Coordinates
         coord_da = PETSc.getcoordinateDM(da)
         # Crank it up to 11!
@@ -524,9 +487,9 @@ end
         for (loc, glo) in enumerate(ghost_lower:ghost_upper)
             @test coord_vec[loc] ≈ (glo - 1) * Δx
         end
+        =#
         PETSc.finalize(petsclib)
     end
 end
-=#
 
 nothing

@@ -90,48 +90,232 @@ function MatAIJ(dm::AbstractDM{PetscLib}) where {PetscLib}
     return mat
 end
 
+"""
+    DMLocalVec(dm::AbstractDM)
+
+returns a local vector from the `dm` object (has space for ghost).
+
+# External Links
+$(_doc_external("DM/DMCreateLocalVector"))
+"""
+mutable struct DMLocalVec{PetscLib, PetscScalar, DMT <: AbstractDM} <:
+               AbstractVec{PetscLib, PetscScalar}
+    ptr::CVec
+    age::Int
+    dm::DMT
+end
+function DMLocalVec(dm::AbstractDM{PetscLib}) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    PetscScalar = petsclib.PetscScalar
+    vec =
+        DMLocalVec{PetscLib, PetscScalar, typeof(dm)}(C_NULL, petsclib.age, dm)
+
+    LibPETSc.DMCreateLocalVector(PetscLib, dm, vec)
+
+    if MPI.Comm_size(getcomm(vec)) == 1
+        finalizer(destroy, vec)
+    end
+
+    return vec
+end
+
+"""
+    DMGlobalVec(dm::AbstractDM)
+
+returns a global vector from the `dm` object.
+
+# External Links
+$(_doc_external("DM/DMCreateGlobalVector"))
+"""
+mutable struct DMGlobalVec{PetscLib, PetscScalar, DMT <: AbstractDM} <:
+               AbstractVec{PetscLib, PetscScalar}
+    ptr::CVec
+    age::Int
+    dm::DMT
+end
+function DMGlobalVec(dm::AbstractDM{PetscLib}) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    PetscScalar = petsclib.PetscScalar
+    vec =
+        DMGlobalVec{PetscLib, PetscScalar, typeof(dm)}(C_NULL, petsclib.age, dm)
+
+    LibPETSc.DMCreateGlobalVector(PetscLib, dm, vec)
+
+    if MPI.Comm_size(getcomm(vec)) == 1
+        finalizer(destroy, vec)
+    end
+
+    return vec
+end
+
+"""
+    update!(
+        local_vec::DMLocalVec,
+        global_vec::AbstractVec,
+        mode::InsertMode,
+    )
+
+Updates `local_vec` from the `global_vec` with insert `mode`.
+
+Communication and computation can be overlapped with [`updatebegin!`](@ref) and
+[`updateend!`](@ref)
+
+# External Links
+$(_doc_external("DM/DMGlobalToLocal"))
+$(_doc_external("DM/DMGlobalToLocalBegin"))
+$(_doc_external("DM/DMGlobalToLocalEnd"))
+"""
+function update!(
+    local_vec::DMLocalVec{PetscLib},
+    global_vec::AbstractVec,
+    mode::InsertMode,
+) where {PetscLib}
+    updatebegin!(local_vec, global_vec, mode)
+    return updateend!(local_vec, global_vec, mode)
+end
+
+"""
+    updatebegin!(
+        local_vec::DMLocalVec,
+        global_vec::AbstractVec,
+        mode::InsertMode,
+    )
+
+Begin update of `local_vec` from the `global_vec` with insert `mode`.
+
+# External Links
+$(_doc_external("DM/DMGlobalToLocalBegin"))
+"""
+function updatebegin!(
+    local_vec::DMLocalVec{PetscLib},
+    global_vec::AbstractVec,
+    mode::InsertMode,
+) where {PetscLib}
+    LibPETSc.DMGlobalToLocalBegin(
+        PetscLib,
+        local_vec.dm,
+        global_vec,
+        mode,
+        local_vec,
+    )
+
+    return nothing
+end
+
+"""
+    updateend!(
+        local_vec::DMLocalVec,
+        global_vec::AbstractVec,
+        mode::InsertMode,
+    )
+
+End update of `local_vec` from the `global_vec` with insert `mode`.
+
+# External Links
+$(_doc_external("DM/DMGlobalToLocalEnd"))
+"""
+function updateend!(
+    local_vec::DMLocalVec{PetscLib},
+    global_vec::AbstractVec,
+    mode::InsertMode,
+) where {PetscLib}
+    LibPETSc.DMGlobalToLocalEnd(
+        PetscLib,
+        local_vec.dm,
+        global_vec,
+        mode,
+        local_vec,
+    )
+
+    return local_vec
+end
+
+"""
+    update!(
+        global_vec::AbstractVec,
+        local_vec::DMLocalVec,
+        mode::InsertMode,
+    )
+
+Updates `global_vec` from the `local_vec` with insert `mode`.
+
+Communication and computation can be overlapped with [`updatebegin!`](@ref) and
+[`updateend!`](@ref)
+
+# External Links
+$(_doc_external("DM/DMLocalToGlobal"))
+$(_doc_external("DM/DMLocalToGlobalBegin"))
+$(_doc_external("DM/DMLocalToGlobalEnd"))
+"""
+function update!(
+    global_vec::AbstractVec,
+    local_vec::DMLocalVec{PetscLib},
+    mode::InsertMode,
+) where {PetscLib}
+    updatebegin!(global_vec, local_vec, mode)
+    return updateend!(global_vec, local_vec, mode)
+end
+
+"""
+    updatebegin!(
+        global_vec::AbstractVec,
+        local_vec::DMLocalVec,
+        mode::InsertMode,
+    )
+
+Begin update of `global_vec` from the `local_vec` with insert `mode`.
+
+# External Links
+$(_doc_external("DM/DMLocalToGlobalBegin"))
+"""
+function updatebegin!(
+    global_vec::AbstractVec,
+    local_vec::DMLocalVec{PetscLib},
+    mode::InsertMode,
+) where {PetscLib}
+    LibPETSc.DMLocalToGlobalBegin(
+        PetscLib,
+        local_vec.dm,
+        local_vec,
+        mode,
+        global_vec,
+    )
+
+    return nothing
+end
+
+"""
+    updateend!(
+        global_vec::AbstractVec,
+        local_vec::DMLocalVec,
+        mode::InsertMode,
+    )
+
+End update of `global_vec` from the `local_vec` with insert `mode`.
+
+# External Links
+$(_doc_external("DM/DMLocalToGlobalEnd"))
+"""
+function updateend!(
+    global_vec::AbstractVec,
+    local_vec::DMLocalVec{PetscLib},
+    mode::InsertMode,
+) where {PetscLib}
+    LibPETSc.DMLocalToGlobalEnd(
+        PetscLib,
+        local_vec.dm,
+        local_vec,
+        mode,
+        global_vec,
+    )
+
+    return local_vec
+end
+
 #=
 #
 # OLD WRAPPERS
 #
-"""
-    DMLocalVec(v::CVec, dm::AbstractDM)
-
-Container for an PETSc vector we know is "local"
-
-# External Links
-$(_doc_external("Vec/Vec"))
-"""
-mutable struct DMLocalVec{PetscLib, T, T_DM} <: AbstractVec{T}
-    ptr::CVec
-    dm::T_DM
-    function DMLocalVec(ptr, dm::AbstractDM{PetscLib}) where {PetscLib}
-        new{PetscLib, scalartype(PetscLib), typeof(dm)}(ptr, dm)
-    end
-end
-
-"""
-    DMGlobalVec(v::CVec, dm::AbstractDM)
-
-Container for an PETSc vector we know is "global"
-
-# External Links
-$(_doc_external("Vec/Vec"))
-"""
-mutable struct DMGlobalVec{PetscLib, T, T_DM} <: AbstractVec{T}
-    ptr::CVec
-    dm::T_DM
-    function DMGlobalVec(ptr, dm::AbstractDM{PetscLib}) where {PetscLib}
-        new{PetscLib, scalartype(PetscLib), typeof(dm)}(ptr, dm)
-    end
-end
-
-# Mainly for DM we do not know the type of, namely ones returned by PETSc
-# functions such as `KSPGetDM`
-mutable struct PetscDM{PetscLib} <: AbstractDM{PetscLib}
-    ptr::CDM
-end
-
 """
     view(dm::AbstractDM, viewer::Viewer=ViewerStdout(petsclib, getcomm(dm)))
 
@@ -153,314 +337,6 @@ function view(::AbstractDM) end
         dm,
         viewer,
     )
-    return nothing
-end
-
-"""
-    creatematrix(dm::AbstractDM)
-
-Generates a matrix from the `dm` object.
-
-# External Links
-$(_doc_external("DM/DMCreateMatrix"))
-"""
-function creatematrix end
-
-@for_petsc function creatematrix(dm::AbstractDM{$PetscLib})
-    mat = Mat{$PetscScalar}(C_NULL)
-
-    @chk ccall(
-        (:DMCreateMatrix, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{CMat}),
-        dm,
-        mat,
-    )
-
-    return mat
-end
-
-"""
-    createlocalvector(dm::AbstractDM)
-
-returns a local vector from the `dm` object.
-
-# External Links
-$(_doc_external("DM/DMCreateLocalVector"))
-"""
-function createlocalvector end
-
-@for_petsc function createlocalvector(dm::AbstractDM{$PetscLib})
-    vec = DMLocalVec(C_NULL, dm)
-
-    @chk ccall(
-        (:DMCreateLocalVector, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{CVec}),
-        dm,
-        vec,
-    )
-
-    return vec
-end
-
-"""
-    createglobalvector(dm::DM; write::Bool = true, read::Bool = true)
-
-returns a global vector from the `dm` object.
-
-# External Links
-$(_doc_external("DM/DMCreateGlobalVector"))
-"""
-function createglobalvector end
-
-@for_petsc function createglobalvector(dm::AbstractDM{$PetscLib})
-    vec = DMGlobalVec(C_NULL, dm)
-
-    @chk ccall(
-        (:DMCreateGlobalVector, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{CVec}),
-        dm,
-        vec,
-    )
-
-    return vec
-end
-
-"""
-    update!(
-        global_vec::DMGlobalVec,
-        local_vec::DMLocalVec,
-        mode::InsertMode,
-    )
-
-Updates `global_vec` from `local_vec` with insert `mode`
-
-# External Links
-$(_doc_external("DM/DMLocalToGlobal"))
-"""
-function update!( global_vec::DMGlobalVec, local_vec::DMLocalVec, mode::InsertMode) end
-
-@for_petsc function update!(
-    global_vec::DMGlobalVec{$PetscLib},
-    local_vec::DMLocalVec{$PetscLib},
-    mode::InsertMode
-)
-    @assert local_vec.dm === global_vec.dm
-
-    update_local2global!( global_vec.ptr, local_vec.ptr, mode, local_vec.dm);
-
-    return nothing
-end
-
-"""
-    update!(
-        global_vec::DMGlobalVec,
-        local_ptr::CVec,
-        mode::InsertMode,
-    )
-
-Updates `global_vec` from a pointer to a local vector `local_ptr` with insert `mode`
-
-# External Links
-$(_doc_external("DM/DMLocalToGlobal"))
-"""
-function update!( global_vec::DMGlobalVec, local_ptr::CVec, mode::InsertMode) end
-
-@for_petsc function update!(
-    global_vec::DMGlobalVec{$PetscLib},
-    local_ptr::CVec,
-    mode::InsertMode
-)
-    update_local2global!( global_vec.ptr, local_ptr, mode, global_vec.dm);
-
-    return nothing
-end
-
-"""
-    update!(
-        global_ptr::CVec,
-        local_vec::DMLocalVec,
-        mode::InsertMode,
-    )
-
-Updates pointer to global vec `global_ptr` from `local_vec` with insert `mode`
-
-# External Links
-$(_doc_external("DM/DMLocalToGlobal"))
-"""
-function update!( global_vec::DMGlobalVec, local_ptr::CVec, mode::InsertMode) end
-
-@for_petsc function update!(
-    global_ptr::CVec,
-    local_vec::DMLocalVec{$PetscLib},
-    mode::InsertMode
-)
-    update_local2global!( global_ptr, local_vec.ptr, mode, local_vec.dm);
-
-    return nothing
-end
-
-"""
-    update!(
-        local_vec::DMLocalVec,
-        global_ptr::CVec,
-        mode::InsertMode,
-    )
-
-Updates `local_vec` from pointer to global vec `global_ptr` with insert `mode`
-
-# External Links
-$(_doc_external("DM/DMGlobalToLocal"))
-"""
-function update!(local_vec::DMLocalVec,global_ptr::CVec, mode::InsertMode) end
-
-@for_petsc function update!(
-    local_vec::DMLocalVec{$PetscLib},
-    global_ptr::CVec,
-    mode::InsertMode,
-)
-
-    update_global2local!( local_vec.ptr, global_ptr, mode, local_vec.dm);
-    return nothing
-end
-
-"""
-    update!(
-        local_ptr::CVec,
-        global_vec::DMGlobalVec
-        mode::InsertMode,
-    )
-
-Updates pointer to local vec `local_ptr` from `global_vec` with insert `mode`
-
-# External Links
-$(_doc_external("DM/DMGlobalToLocal"))
-"""
-function update!(local_ptr::CVec, global_vec::DMGlobalVec, mode::InsertMode) end
-
-@for_petsc function update!(
-    local_ptr::CVec,
-    global_vec::DMGlobalVec{$PetscLib},
-    mode::InsertMode,
-)
-
-    update_global2local!( local_ptr, global_vec.ptr, mode, global_vec.dm);
-    return nothing
-end
-
-"""
-    update!(
-        local_vec::DMLocalVec,
-        global_vec::DMGlobalVec,
-        mode::InsertMode
-    )
-
-Updates `local_vec` from a pointer to a global vec `global_ptr` with insert `mode`
-
-# External Links
-$(_doc_external("DM/DMGlobalToLocal"))
-"""
-function update!(local_vec::DMLocalVec, global_vec::DMGlobalVec, mode::InsertMode) end
-
-@for_petsc function update!(
-    local_vec::DMLocalVec{$PetscLib},
-    global_vec::DMGlobalVec{$PetscLib},
-    mode::InsertMode
-)
-    @assert local_vec.dm === global_vec.dm
-
-    update_global2local!( local_vec.ptr, global_vec.ptr, mode, local_vec.dm);
-
-    return nothing
-end
-
-#=
-@for_petsc function update!(
-    local_ptr::CVec,
-    global_vec::DMGlobalVec{$PetscLib},
-    mode::InsertMode,
-)
-    @chk ccall(
-        (:DMGlobalToLocal, $petsc_library),
-        PetscErrorCode,
-        (CDM, CVec, InsertMode, CVec),
-        global_vec.dm,
-        global_vec,
-        mode,
-        local_ptr,
-    )
-
-    return nothing
-end
-=#
-
-"""
-    update_local2global!(
-        global_ptr::CVec,
-        local_ptr::CVec,
-        mode::InsertMode,
-        dm::AbstractDM
-    )
-
-Updates pointer of `global_vec` from pointer of `local_vec` with insert `mode`. 
-Both vectors should belong to the same `dm`
-
-This is a low-level routine that is typically called by `update!`
-"""
-function update_local2global! end
-
-@for_petsc function update_local2global!(
-    global_ptr::CVec,
-    local_ptr::CVec,
-    mode::InsertMode,
-    dm::AbstractDM{$PetscLib}
-)
-    @chk ccall(
-        (:DMLocalToGlobal, $petsc_library),
-        PetscErrorCode,
-        (CDM, CVec, InsertMode, CVec),
-        dm,
-        local_ptr,
-        mode,
-        global_ptr,
-    )
-
-    return nothing
-end
-
-"""
-    update_global2local!(
-        local_ptr::CVec,
-        global_ptr::CVec,
-        mode::InsertMode,
-        dm::AbstractDM
-    )
-
-Updates pointer to `local` vector from pointer to `global` vector with insert `mode`, assuming that both belong to the same `dm`
-
-This is a low-level routine that is typically called by `update!`
-
-"""
-function update_global2local! end
-
-@for_petsc function update_global2local!(
-    local_ptr::CVec,
-    global_ptr::CVec,
-    mode::InsertMode,
-    dm::AbstractDM{$PetscLib}
-)
-    @chk ccall(
-        (:DMGlobalToLocal, $petsc_library),
-        PetscErrorCode,
-        (CDM, CVec, InsertMode, CVec),
-        dm,
-        global_ptr,
-        mode,
-        local_ptr,
-    )
-
     return nothing
 end
 

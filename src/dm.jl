@@ -352,6 +352,8 @@ end
 
 Gets a local vector with the coordinates associated with `dm`.
 
+Note that the returned vector is borrowed from the `dm` and is not a new vector.
+
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocal"))
 """
@@ -369,10 +371,6 @@ function coordinatesDMLocalVec(dm::AbstractDM{PetscLib}) where {PetscLib}
     return coord_vec
 end
 
-#=
-#
-# OLD WRAPPERS
-#
 """
     view(dm::AbstractDM, [viewer])
 
@@ -381,20 +379,10 @@ view a `dm` with `viewer`
 # External Links
 $(_doc_external("DM/DMView"))
 """
-function view(::AbstractDM) end
-
-@for_petsc function view(
-    dm::AbstractDM{$PetscLib},
-    viewer::AbstractViewer{$PetscLib} = ViewerStdout($petsclib, getcomm(dm)),
-)
-    @chk ccall(
-        (:DMView, $petsc_library),
-        PetscErrorCode,
-        (CDM, CPetscViewer),
-        dm,
-        viewer,
-    )
+function view(
+    dm::AbstractDM{PetscLib},
+    viewer = LibPETSc.PETSC_VIEWER_STDOUT_(PetscLib, getcomm(dm)),
+) where {PetscLib}
+    LibPETSc.DMView(PetscLib, dm, viewer)
     return nothing
 end
-
-=#

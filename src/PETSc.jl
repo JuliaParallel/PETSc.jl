@@ -30,7 +30,7 @@ include("dmda.jl")
 # include("dmstag.jl")
 include("ksp.jl")
 # include("pc.jl")
-# include("snes.jl")
+include("snes.jl")
 include("sys.jl")
 
 end

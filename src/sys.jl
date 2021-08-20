@@ -1,6 +1,6 @@
 const CPetscObject = Ptr{Cvoid}
 
-const UnionPetscTypes = Union{Options, AbstractVec, AbstractMat, AbstractKSP, AbstractDM}
+const UnionPetscTypes = Union{Options, AbstractVec, AbstractMat, AbstractKSP, AbstractSNES, AbstractDM}
 
 # allows us to pass PETSc_XXX objects directly into CXXX ccall signatures
 Base.cconvert(::Type{CPetscObject}, obj::UnionPetscTypes) = obj
@@ -16,6 +16,7 @@ function getcomm(
         AbstractVec{PetscLib},
         AbstractMat{PetscLib},
         AbstractKSP{PetscLib},
+        AbstractSNES{PetscLib},
         AbstractDM{PetscLib},
     },
 ) where {PetscLib}

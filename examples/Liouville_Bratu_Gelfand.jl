@@ -72,8 +72,7 @@ PETSc.setDM!(snes, da)
 x = PETSc.DMGlobalVec(da)
 PETSc.withlocalarray!(x; read = false) do l_x
     corners = PETSc.getcorners(da)
-    l_x = reshape(l_x, Int64.(corners.size)...)
-
+    
     # Get the global grid dimensions
     Nq = PETSc.getinfo(da).global_size
 
@@ -83,12 +82,7 @@ PETSc.withlocalarray!(x; read = false) do l_x
     interior = (int_min):(int_max)
 
     # Allows us to adress the local array with global indexing
-    ox = OffsetArray(
-        l_x,
-        (corners.lower[1]):(corners.upper[1]),
-        (corners.lower[2]):(corners.upper[2]),
-        (corners.lower[3]):(corners.upper[3]),
-    )
+    ox = PETSc.getlocalarraydof(da, l_x);
 
     # Set up the global coordinates in each direction
     # -1 to 1 when Nq > 1 and 0 otherwise
@@ -140,19 +134,10 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
         read = (false, true),
         write = (true, false),
     ) do fx, x
+
         # reshape the array and allow for global indexing
-        fx = OffsetArray(
-            reshape(fx, Int64.(corners.size)...),
-            (corners.lower[1]):(corners.upper[1]),
-            (corners.lower[2]):(corners.upper[2]),
-            (corners.lower[3]):(corners.upper[3]),
-        )
-        x = OffsetArray(
-            reshape(x, Int64.(ghostcorners.size)...),
-            (ghostcorners.lower[1]):(ghostcorners.upper[1]),
-            (ghostcorners.lower[2]):(ghostcorners.upper[2]),
-            (ghostcorners.lower[3]):(ghostcorners.upper[3]),
-        )
+        fx = PETSc.getlocalarraydof(da, fx);
+        x  = PETSc.getlocalarraydof(da, x);
 
         # Store a tuple of stencils in each direction
         stencils = (
@@ -238,13 +223,8 @@ PETSc.setjacobian!(snes, J) do J, snes, g_x
     # Get a local array of the solution vector
     PETSc.withlocalarray!(g_x; write = false) do x
         # reshape so we can use multi-D indexing
-        x = OffsetArray(
-            reshape(x, Int64.(corners.size)...),
-            (corners.lower[1]):(corners.upper[1]),
-            (corners.lower[2]):(corners.upper[2]),
-            (corners.lower[3]):(corners.upper[3]),
-        )
-
+        x = PETSc.getlocalarraydof(da, x);
+       
         # loop over indices and set the function value
         for ind in ((corners.lower):(corners.upper))
             # If on the boundary just set equal to the incoming data

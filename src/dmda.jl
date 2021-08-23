@@ -447,16 +447,16 @@ end
 
 
 """
-    getlocalarraydof(da::AbstractDMDA, dof::Int64, l_x::Vector)
+    getlocalarraydof(da::AbstractDMDA, l_x::Vector;  dof::Int64=1)
 
 Returns a view of a local Array for the degree of freedom `dof`, given a local array l_x.
 Note that in julia, the first degree of freedom is 1 (and not 0). 
 
 """
 function getlocalarraydof(
-    da::DMDA{PetscLib},
-    l_x::Vector,
-    dof::Int64
+    da::AbstractDM{PetscLib},
+    l_x::Vector;
+    dof::Int64=1
 ) where {PetscLib}
 
     dof_da      = [1];

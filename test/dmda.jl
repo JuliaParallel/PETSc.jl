@@ -528,8 +528,8 @@ end
         # Retrieve local array of the 2 DOF DMDA and set values
         x = PETSc.DMGlobalVec(da_2D)
         PETSc.withlocalarray!(x; read = false) do l_x
-           Array_1 = PETSc.getlocalarraydof(da_2D,l_x, 1);  # first DOF
-           Array_2 = PETSc.getlocalarraydof(da_2D,l_x, 2);  # second DOF
+           Array_1 = PETSc.getlocalarraydof(da_2D,l_x);          # first DOF
+           Array_2 = PETSc.getlocalarraydof(da_2D,l_x,  dof=2);  # second DOF
            Array_1 .= 11.1              
            Array_2 .= 22.2
         end

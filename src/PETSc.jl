@@ -5,7 +5,7 @@ include("LibPETSc.jl")
 using .LibPETSc
 
 using MPI, LinearAlgebra, SparseArrays
-using OffsetArrays: OffsetArray
+using OffsetArrays
 
 function _petsc_link(fname)
     """

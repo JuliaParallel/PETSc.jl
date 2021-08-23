@@ -494,6 +494,37 @@ end
         PETSc.destroy(da)
         PETSc.destroy(coord_da)
 
+
+        # Test setting coordinates in 2D & retrieving values
+        global_size_x, global_size_y = 10,12
+
+        # Create 2D DMDA
+        da = PETSc.DMDA(
+            petsclib,
+            comm,
+            (boundary_type,boundary_type),
+            (global_size_x,global_size_y),
+            dof_per_node,
+            stencil_width,
+            PETSc.DMDA_STENCIL_STAR
+        )
+
+        # Set uniform coordinates
+        xmin, xmax =    0, 11
+        ymin, ymax =    -20, 20
+        Δx         =    (xmax - xmin) / (global_size_x - 1)     # only needed for testing
+        Δy         =    (ymax - ymin) / (global_size_y - 1)     # only needed for testing
+        
+        PETSc.setuniformcoordinates!(da, (xmin,ymin), (xmax,ymax))
+
+        # Retrieve local coordinate array (shaped accordingly)
+        Coord = PETSc.getlocalcoordinatearray(da);
+        corners = PETSc.getcorners(da);
+        for i in ((corners.lower):(corners.upper))
+            @test Coord.X[i] ≈ (i[1]-1)*Δx + xmin
+            @test Coord.Y[i] ≈ (i[2]-1)*Δy + ymin
+        end
+
         PETSc.finalize(petsclib)
     end
 end

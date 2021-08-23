@@ -447,11 +447,11 @@ Use `read=false` if the array is write-only; `write=false` if read-only.
 
 # Examples
 ```julia-repl
-julia> map_unsafe_localarray(x; write=true) do x
+julia> withlocalarray!(x; write=true) do x
    @. x .*= 2
 end
 
-julia> map_unsafe_localarray(
+julia> withlocalarray!(
            x,
            y;
            read = (false, true),

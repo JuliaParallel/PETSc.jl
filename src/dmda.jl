@@ -390,3 +390,57 @@ function setuniformcoordinates!(
     )
     return da
 end
+
+
+
+"""
+    getlocalcoordinatearray(da::AbstractDMDA)
+
+Returns a `NamedTuple` with OffsetArrays that contain the local coordinates and that can be addressed uisng global indices
+
+"""
+function getlocalcoordinatearray(
+    da::DMDA{PetscLib},
+) where {PetscLib}
+
+coord_vec = PETSc.coordinatesDMLocalVec(da);                # retrieve local coordinates
+array1D   = PETSc.unsafe_localarray(coord_vec; read=true);  # array
+dim       = [0];
+PETSc.LibPETSc.DMGetCoordinateDim(PetscLib, da, dim);
+dim       = dim[1];
+corners   = PETSc.getcorners(da);
+
+X         = reshape(array1D[1:dim:end],Int64.(corners.size)...);    # x-coordinates
+
+oX        = OffsetArray(
+            X,
+            (corners.lower[1]):(corners.upper[1]),
+            (corners.lower[2]):(corners.upper[2]),
+            (corners.lower[3]):(corners.upper[3])
+)
+
+oY,oZ     = [],[];
+if dim>1
+    Y     = reshape(array1D[2:dim:end],Int64.(corners.size)...);    # y-coordinates
+    oY    = OffsetArray(
+        Y,
+        (corners.lower[1]):(corners.upper[1]),
+        (corners.lower[2]):(corners.upper[2]),
+        (corners.lower[3]):(corners.upper[3]))
+        )
+end
+if dim>2
+    Z     = reshape(array1D[3:dim:end],Int64.(corners.size)...);    # z-coordinates
+    oZ    = OffsetArray(
+        Z,
+        (corners.lower[1]):(corners.upper[1]),
+        (corners.lower[2]):(corners.upper[2]),
+        (corners.lower[3]):(corners.upper[3])
+        )
+end
+
+return (X=oX, 
+        Y=oY,
+        Z=oZ)
+end
+

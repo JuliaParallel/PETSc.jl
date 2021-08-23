@@ -406,7 +406,7 @@ function getlocalcoordinatearray(
 coord_vec = PETSc.coordinatesDMLocalVec(da);                # retrieve local coordinates
 array1D   = PETSc.unsafe_localarray(coord_vec; read=true);  # array
 dim       = [0];
-PETSc.LibPETSc.DMGetCoordinateDim(PetscLib, da, dim);
+LibPETSc.DMGetCoordinateDim(PetscLib, da, dim);
 dim       = dim[1];
 corners   = PETSc.getcorners(da);
 
@@ -417,7 +417,7 @@ oX        = OffsetArray(
             (corners.lower[1]):(corners.upper[1]),
             (corners.lower[2]):(corners.upper[2]),
             (corners.lower[3]):(corners.upper[3])
-)
+            )
 
 oY,oZ     = [],[];
 if dim>1
@@ -426,7 +426,7 @@ if dim>1
         Y,
         (corners.lower[1]):(corners.upper[1]),
         (corners.lower[2]):(corners.upper[2]),
-        (corners.lower[3]):(corners.upper[3]))
+        (corners.lower[3]):(corners.upper[3])
         )
 end
 if dim>2
@@ -444,3 +444,27 @@ return (X=oX,
         Z=oZ)
 end
 
+
+
+"""
+    getlocalarraydof(da::AbstractDMDA, dof::Int64, l_x::Vector)
+
+Returns a view of a local Array for the degree of freedom `dof`, given a local array l_x.
+Note that in julia, the first degree of freedom is 1 (and not 0). 
+
+"""
+function getlocalarraydof(
+    da::DMDA{PetscLib},
+    l_x::Vector,
+    dof::Int64
+) where {PetscLib}
+
+    dof_da      = [1];
+    LibPETSc.DMDAGetDof(PetscLib,da,dof_da);    # number of DOF of current DMDA
+    corners     = PETSc.getcorners(da);
+    n           = length(l_x);
+    Arr         = Base.view(l_x,dof:dof_da[1]:n)
+    Arr         = reshape(Arr, Int64.(corners.size)...)
+
+    return Arr
+end

@@ -490,16 +490,14 @@ end
             @test coord_vec[loc] ≈ (glo - 1) * Δx
         end
 
-        PETSc.destroy(coord_vec)
-        PETSc.destroy(da)
-        PETSc.destroy(coord_da)
-
+      
 
         # Test setting coordinates in 2D & retrieving values
         global_size_x, global_size_y = 10,12
+        dof_per_node = 2
 
         # Create 2D DMDA
-        da = PETSc.DMDA(
+        da_2D = PETSc.DMDA(
             petsclib,
             comm,
             (boundary_type,boundary_type),
@@ -515,16 +513,32 @@ end
         Δx         =    (xmax - xmin) / (global_size_x - 1)     # only needed for testing
         Δy         =    (ymax - ymin) / (global_size_y - 1)     # only needed for testing
         
-        PETSc.setuniformcoordinates!(da, (xmin,ymin), (xmax,ymax))
+        PETSc.setuniformcoordinates!(da_2D, (xmin,ymin), (xmax,ymax))
 
         # Retrieve local coordinate array (shaped accordingly)
-        Coord = PETSc.getlocalcoordinatearray(da);
+        Coord = PETSc.getlocalcoordinatearray(da_2D);
+
+        # Check
         corners = PETSc.getcorners(da);
         for i in ((corners.lower):(corners.upper))
             @test Coord.X[i] ≈ (i[1]-1)*Δx + xmin
             @test Coord.Y[i] ≈ (i[2]-1)*Δy + ymin
         end
 
+        # Retrieve local array of the 2 DOF DMDA and set values
+        x = PETSc.DMGlobalVec(da_2D)
+        PETSc.withlocalarray!(x; read = false) do l_x
+           Array_1 = PETSc.getlocalarraydof(da_2D,l_x, 1);  # first DOF
+           Array_2 = PETSc.getlocalarraydof(da_2D,l_x, 2);  # second DOF
+           Array_1 .= 11.1              
+           Array_2 .= 22.2
+        end
+        @test sum(x) ≈ PetscScalar(3996)        # check sum
+
+        PETSc.destroy(coord_vec)
+        PETSc.destroy(da)
+        PETSc.destroy(coord_da)
+        
         PETSc.finalize(petsclib)
     end
 end

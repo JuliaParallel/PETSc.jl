@@ -425,18 +425,18 @@ function getlocalcoordinatearray(da::DMDA{PetscLib}) where {PetscLib}
 end
 
 """
-    getlocalarraydof(da::AbstractDMDA, l_x::Vector;  dof::Int64=1, ghost=true)
+    getlocalarraydof(da::AbstractDMDA, l_x::Vector;  dof::Int64=1)
 
 Returns a view of a local Array for the degree of freedom `dof`, given a local
-array l_x that may have ghost values (`ghost=true`) or not.  Note that in julia,
-the first degree of freedom is 1 (and not 0).
+array `l_x`.
+
+Note that in julia, the first degree of freedom is 1 (and not 0).
 
 """
 function getlocalarraydof(
     da::AbstractDM{PetscLib},
     l_x::Vector;
-    dof::Int64 = 1,
-    ghost = true,
+    dof::Integer = 1
 ) where {PetscLib}
     dof_da = [1]
     # number of DOF that the DMDA has
@@ -444,28 +444,30 @@ function getlocalarraydof(
     Arr = @view l_x[dof:dof_da[1]:end]
 
     # reshape into array with global numbering
-    oArr = reshapelocalarray(Arr, da, ghost = ghost)
+    oArr = reshapelocalarray(Arr, da)
 
     return oArr
 end
 
 """
-    reshapelocalarray(Arr, da::AbstractDM{PetscLib}; ghost=false)
+    reshapelocalarray(Arr, da::AbstractDM{PetscLib})
 
 Returns an array with the same data as `Arr` but reshaped as an array that can
-be addressed with global indexing. The keyword argument `ghost` indicates
-whether the local vector contains ghost values.
+be addressed with global indexing.
 """
 function reshapelocalarray(
     Arr,
-    da::AbstractDM{PetscLib};
-    ghost = false,
+    da::AbstractDM{PetscLib}
 ) where {PetscLib}
-    if ghost
-        corners = PETSc.getghostcorners(da)
-    else
-        corners = PETSc.getcorners(da)
+
+    # First we try to use a ghosted size
+    corners = getghostcorners(da)
+    # If this is two big for the array use non-ghosted
+    if length(Arr) < prod(corners.size)
+        corners = getcorners(da)
     end
+    @assert length(Arr) == prod(corners.size)
+
     oArr = OffsetArray(
         reshape(Arr, Int64.(corners.size)...),
         (corners.lower[1]):(corners.upper[1]),

@@ -528,8 +528,8 @@ end
         x_l = PETSc.DMLocalVec(da_2D)
 
         PETSc.withlocalarray!(x_l; read = false) do l_x
-            Array_1 = PETSc.getlocalarraydof(da_2D, l_x, ghost = true)     # first DOF
-            Array_2 = PETSc.getlocalarraydof(da_2D, l_x, dof = 2, ghost = true)     # second DOF
+            Array_1 = PETSc.getlocalarraydof(da_2D, l_x)     # first DOF
+            Array_2 = PETSc.getlocalarraydof(da_2D, l_x, dof = 2)     # second DOF
             Array_1 .= 11.1
             Array_2 .= 22.2
         end

@@ -69,10 +69,11 @@ snes = PETSc.SNES(petsclib, comm; opts...)
 PETSc.setDM!(snes, da)
 
 # Set up the initial guess
-x = PETSc.DMGlobalVec(da)
-PETSc.withlocalarray!(x; read = false) do l_x
+x  = PETSc.DMGlobalVec(da)
+xl = PETSc.DMLocalVec(da)
+PETSc.withlocalarray!(xl; read = false) do l_x
     corners = PETSc.getcorners(da)
-    
+
     # Get the global grid dimensions
     Nq = PETSc.getinfo(da).global_size
 
@@ -108,6 +109,7 @@ PETSc.withlocalarray!(x; read = false) do l_x
             )
     end
 end
+PETSc.update!(x,xl, PETSc.INSERT_VALUES)    # update local -> global
 
 # Set up the nonlinear function
 r = similar(x)
@@ -136,8 +138,8 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     ) do fx, x
 
         # reshape the array and allow for global indexing
-        fx = PETSc.getlocalarraydof(da, fx);
-        x  = PETSc.getlocalarraydof(da, x);
+        x  = PETSc.reshapelocalarray(x,  da, ghost=true);
+        fx = PETSc.reshapelocalarray(fx, da, ghost=false);
 
         # Store a tuple of stencils in each direction
         stencils = (
@@ -223,8 +225,8 @@ PETSc.setjacobian!(snes, J) do J, snes, g_x
     # Get a local array of the solution vector
     PETSc.withlocalarray!(g_x; write = false) do x
         # reshape so we can use multi-D indexing
-        x = PETSc.getlocalarraydof(da, x);
-       
+        x = PETSc.reshapelocalarray(x, da);
+
         # loop over indices and set the function value
         for ind in ((corners.lower):(corners.upper))
             # If on the boundary just set equal to the incoming data

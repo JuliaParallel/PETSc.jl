@@ -519,21 +519,27 @@ end
         Coord = PETSc.getlocalcoordinatearray(da_2D);
 
         # Check
-        corners = PETSc.getcorners(da);
+        corners = PETSc.getcorners(da_2D);
         for i in ((corners.lower):(corners.upper))
             @test Coord.X[i] ≈ (i[1]-1)*Δx + xmin
             @test Coord.Y[i] ≈ (i[2]-1)*Δy + ymin
         end
 
         # Retrieve local array of the 2 DOF DMDA and set values
-        x = PETSc.DMGlobalVec(da_2D)
-        PETSc.withlocalarray!(x; read = false) do l_x
+        x_g = PETSc.DMGlobalVec(da_2D)
+        x_l = PETSc.DMLocalVec(da_2D)
+        
+        PETSc.withlocalarray!(x_l; read = false) do l_x
            Array_1 = PETSc.getlocalarraydof(da_2D,l_x);          # first DOF
            Array_2 = PETSc.getlocalarraydof(da_2D,l_x,  dof=2);  # second DOF
            Array_1 .= 11.1              
            Array_2 .= 22.2
         end
-        @test sum(x) ≈ PetscScalar(3996)        # check sum
+        PETSc.update!(x_g, x_l, PETSc.INSERT_VALUES)    # add local values tp global vector
+       
+        sum_val = [PetscScalar(0)]                      # compute sum 
+        PETSc.LibPETSc.VecSum(petsclib, x_g, sum_val)       
+        @test sum_val[1] ≈ PetscScalar(3996)        # check sum
 
         PETSc.destroy(coord_vec)
         PETSc.destroy(da)

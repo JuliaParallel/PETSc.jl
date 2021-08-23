@@ -391,91 +391,81 @@ function setuniformcoordinates!(
     return da
 end
 
-
-
 """
     getlocalcoordinatearray(da::AbstractDMDA)
 
-Returns a `NamedTuple` with OffsetArrays that contain the local coordinates and that can be addressed uisng global indices
+Returns a `NamedTuple` with OffsetArrays that contain the local coordinates and
+that can be addressed uisng global indices
 
 """
-function getlocalcoordinatearray(
-    da::DMDA{PetscLib},
-) where {PetscLib}
+function getlocalcoordinatearray(da::DMDA{PetscLib}) where {PetscLib}
+    coord_vec = PETSc.coordinatesDMLocalVec(da)                # retrieve local coordinates
+    array1D = PETSc.unsafe_localarray(coord_vec; read = true)  # array
+    dim = [0]
+    LibPETSc.DMGetCoordinateDim(PetscLib, da, dim)
+    dim = dim[1]
+    corners = PETSc.getghostcorners(da)
 
-coord_vec = PETSc.coordinatesDMLocalVec(da);                # retrieve local coordinates
-array1D   = PETSc.unsafe_localarray(coord_vec; read=true);  # array
-dim       = [0];
-LibPETSc.DMGetCoordinateDim(PetscLib, da, dim);
-dim       = dim[1];
-corners   = PETSc.getghostcorners(da);
+    X = reshapelocalarray(array1D[1:dim:end], da, ghost = true)                              # reshape into array with global numbering
 
-X = reshapelocalarray(array1D[1:dim:end], da, ghost=true);                              # reshape into array with global numbering
+    Y, Z = [], []
+    if dim > 1
+        Y = reshapelocalarray(array1D[2:dim:end], da, ghost = true)                          # reshape into array with global numbering
+    end
+    if dim > 2
+        Z = reshapelocalarray(array1D[3:dim:end], da, ghost = true)                          # reshape into array with global numbering
+    end
 
-Y,Z     = [],[];
-if dim>1
-    Y = reshapelocalarray(array1D[2:dim:end], da, ghost=true);                          # reshape into array with global numbering
+    return (X = X, Y = Y, Z = Z)
 end
-if dim>2
-    Z = reshapelocalarray(array1D[3:dim:end], da, ghost=true);                          # reshape into array with global numbering
-end
-
-return (X=X, 
-        Y=Y,
-        Z=Z)
-end
-
-
 
 """
     getlocalarraydof(da::AbstractDMDA, l_x::Vector;  dof::Int64=1, ghost=true)
 
-Returns a view of a local Array for the degree of freedom `dof`, given a local array l_x that may have ghost values (`ghost=true`) or not.
-Note that in julia, the first degree of freedom is 1 (and not 0). 
+Returns a view of a local Array for the degree of freedom `dof`, given a local
+array l_x that may have ghost values (`ghost=true`) or not.  Note that in julia,
+the first degree of freedom is 1 (and not 0).
 
 """
 function getlocalarraydof(
     da::AbstractDM{PetscLib},
     l_x::Vector;
-    dof::Int64=1,
-    ghost=true,
+    dof::Int64 = 1,
+    ghost = true,
 ) where {PetscLib}
+    dof_da = [1]
+    LibPETSc.DMDAGetDof(PetscLib, da, dof_da)    # number of DOF that the DMDA has
+    n = length(l_x)
+    Arr = Base.view(l_x, dof:dof_da[1]:n)
 
-    dof_da      = [1];
-    LibPETSc.DMDAGetDof(PetscLib,da,dof_da);    # number of DOF that the DMDA has
-    n           = length(l_x);
-    Arr         = Base.view(l_x,dof:dof_da[1]:n)
-
-    oArr = reshapelocalarray(Arr, da, ghost=ghost);    # reshape into array with global numbering
+    oArr = reshapelocalarray(Arr, da, ghost = ghost)    # reshape into array with global numbering
 
     return oArr
 end
 
-
 """
-    oArr = reshapelocalarray(Arr, da::AbstractDM{PetscLib}; ghost=false);
+    reshapelocalarray(Arr, da::AbstractDM{PetscLib}; ghost=false)
 
-Reshapes a local vector `Arr` into an OffsetArray `oArr` that can be addressed using global ordering. `ghost` indicates whether the local vector contains ghost values 
-
+Returns an array with the same data as `Arr` but reshaped as an array that can
+be addressed with global indexing. The keyword argument `ghost` indicates
+whether the local vector contains ghost values.
 """
 function reshapelocalarray(
     Arr,
     da::AbstractDM{PetscLib};
-    ghost=false
+    ghost = false,
 ) where {PetscLib}
-
     if ghost
-        corners     = PETSc.getghostcorners(da);
+        corners = PETSc.getghostcorners(da)
     else
-        corners     = PETSc.getcorners(da);
+        corners = PETSc.getcorners(da)
     end
     oArr = OffsetArray(
-            reshape(Arr, Int64.(corners.size)...),
-            (corners.lower[1]):(corners.upper[1]),
-            (corners.lower[2]):(corners.upper[2]),
-            (corners.lower[3]):(corners.upper[3]),
+        reshape(Arr, Int64.(corners.size)...),
+        (corners.lower[1]):(corners.upper[1]),
+        (corners.lower[2]):(corners.upper[2]),
+        (corners.lower[3]):(corners.upper[3]),
     )
 
     return oArr
 end
-

@@ -490,61 +490,59 @@ end
             @test coord_vec[loc] ≈ (glo - 1) * Δx
         end
 
-      
-
         # Test setting coordinates in 2D & retrieving values
-        global_size_x, global_size_y = 10,12
+        global_size_x, global_size_y = 10, 12
         dof_per_node = 2
 
         # Create 2D DMDA
         da_2D = PETSc.DMDA(
             petsclib,
             comm,
-            (boundary_type,boundary_type),
-            (global_size_x,global_size_y),
+            (boundary_type, boundary_type),
+            (global_size_x, global_size_y),
             dof_per_node,
             stencil_width,
-            PETSc.DMDA_STENCIL_STAR
+            PETSc.DMDA_STENCIL_STAR,
         )
 
         # Set uniform coordinates
-        xmin, xmax =    0, 11
-        ymin, ymax =    -20, 20
-        Δx         =    (xmax - xmin) / (global_size_x - 1)     # only needed for testing
-        Δy         =    (ymax - ymin) / (global_size_y - 1)     # only needed for testing
-        
-        PETSc.setuniformcoordinates!(da_2D, (xmin,ymin), (xmax,ymax))
+        xmin, xmax = 0, 11
+        ymin, ymax = -20, 20
+        Δx = (xmax - xmin) / (global_size_x - 1)     # only needed for testing
+        Δy = (ymax - ymin) / (global_size_y - 1)     # only needed for testing
+
+        PETSc.setuniformcoordinates!(da_2D, (xmin, ymin), (xmax, ymax))
 
         # Retrieve local coordinate array (shaped accordingly)
-        Coord = PETSc.getlocalcoordinatearray(da_2D);
+        Coord = PETSc.getlocalcoordinatearray(da_2D)
 
         # Check
-        corners = PETSc.getcorners(da_2D);
+        corners = PETSc.getcorners(da_2D)
         for i in ((corners.lower):(corners.upper))
-            @test Coord.X[i] ≈ (i[1]-1)*Δx + xmin
-            @test Coord.Y[i] ≈ (i[2]-1)*Δy + ymin
+            @test Coord.X[i] ≈ (i[1] - 1) * Δx + xmin
+            @test Coord.Y[i] ≈ (i[2] - 1) * Δy + ymin
         end
 
         # Retrieve local array of the 2 DOF DMDA and set values
         x_g = PETSc.DMGlobalVec(da_2D)
         x_l = PETSc.DMLocalVec(da_2D)
-        
+
         PETSc.withlocalarray!(x_l; read = false) do l_x
-           Array_1 = PETSc.getlocalarraydof(da_2D,l_x,         ghost=true);     # first DOF
-           Array_2 = PETSc.getlocalarraydof(da_2D,l_x,  dof=2, ghost=true);     # second DOF
-           Array_1 .= 11.1              
-           Array_2 .= 22.2
+            Array_1 = PETSc.getlocalarraydof(da_2D, l_x, ghost = true)     # first DOF
+            Array_2 = PETSc.getlocalarraydof(da_2D, l_x, dof = 2, ghost = true)     # second DOF
+            Array_1 .= 11.1
+            Array_2 .= 22.2
         end
         PETSc.update!(x_g, x_l, PETSc.INSERT_VALUES)    # add local values tp global vector
-       
+
         sum_val = [PetscScalar(0)]                      # compute sum of parallel 
-        PETSc.LibPETSc.VecSum(petsclib, x_g, sum_val)       
+        PETSc.LibPETSc.VecSum(petsclib, x_g, sum_val)
         @test sum_val[1] ≈ PetscScalar(3996)            # check sum of global vector
 
         PETSc.destroy(coord_vec)
         PETSc.destroy(da)
         PETSc.destroy(coord_da)
-        
+
         PETSc.finalize(petsclib)
     end
 end

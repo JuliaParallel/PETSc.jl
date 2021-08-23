@@ -416,7 +416,7 @@ oX        = OffsetArray(
             X,
             (corners.lower[1]):(corners.upper[1]),
             (corners.lower[2]):(corners.upper[2]),
-            (corners.lower[3]):(corners.upper[3])
+            (corners.lower[3]):(corners.upper[3]),
             )
 
 oY,oZ     = [],[];
@@ -426,7 +426,7 @@ if dim>1
         Y,
         (corners.lower[1]):(corners.upper[1]),
         (corners.lower[2]):(corners.upper[2]),
-        (corners.lower[3]):(corners.upper[3])
+        (corners.lower[3]):(corners.upper[3]),
         )
 end
 if dim>2
@@ -435,7 +435,7 @@ if dim>2
         Z,
         (corners.lower[1]):(corners.upper[1]),
         (corners.lower[2]):(corners.upper[2]),
-        (corners.lower[3]):(corners.upper[3])
+        (corners.lower[3]):(corners.upper[3]),
         )
 end
 

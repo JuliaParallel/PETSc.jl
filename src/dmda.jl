@@ -438,7 +438,8 @@ function getlocalarraydof(
     l_x::Vector;
     dof::Integer = 1
 ) where {PetscLib}
-    dof_da = [1]
+    PetscInt = PetscLib.PetscInt
+    dof_da = [PetscInt(1)]
     # number of DOF that the DMDA has
     LibPETSc.DMDAGetDof(PetscLib, da, dof_da)
     Arr = @view l_x[dof:dof_da[1]:end]

@@ -400,13 +400,13 @@ that can be addressed uisng global indices
 """
 function getlocalcoordinatearray(da::DMDA{PetscLib}) where {PetscLib}
     # retrieve local coordinates
-    coord_vec = PETSc.coordinatesDMLocalVec(da)
+    coord_vec = coordinatesDMLocalVec(da)
     # array
-    array1D = PETSc.unsafe_localarray(coord_vec; read = true)
+    array1D = unsafe_localarray(coord_vec; read = true)
     dim = [0]
     LibPETSc.DMGetCoordinateDim(PetscLib, da, dim)
     dim = dim[1]
-    corners = PETSc.getghostcorners(da)
+    corners = getghostcorners(da)
 
     # reshape into array with global numbering
     X = reshapelocalarray(array1D[1:dim:end], da, ghost = true)

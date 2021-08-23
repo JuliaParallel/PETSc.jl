@@ -530,16 +530,16 @@ end
         x_l = PETSc.DMLocalVec(da_2D)
         
         PETSc.withlocalarray!(x_l; read = false) do l_x
-           Array_1 = PETSc.getlocalarraydof(da_2D,l_x);          # first DOF
-           Array_2 = PETSc.getlocalarraydof(da_2D,l_x,  dof=2);  # second DOF
+           Array_1 = PETSc.getlocalarraydof(da_2D,l_x,         ghost=true);     # first DOF
+           Array_2 = PETSc.getlocalarraydof(da_2D,l_x,  dof=2, ghost=true);     # second DOF
            Array_1 .= 11.1              
            Array_2 .= 22.2
         end
         PETSc.update!(x_g, x_l, PETSc.INSERT_VALUES)    # add local values tp global vector
        
-        sum_val = [PetscScalar(0)]                      # compute sum 
+        sum_val = [PetscScalar(0)]                      # compute sum of parallel 
         PETSc.LibPETSc.VecSum(petsclib, x_g, sum_val)       
-        @test sum_val[1] ≈ PetscScalar(3996)        # check sum
+        @test sum_val[1] ≈ PetscScalar(3996)            # check sum of global vector
 
         PETSc.destroy(coord_vec)
         PETSc.destroy(da)

@@ -428,25 +428,25 @@ end
 
 
 """
-    getlocalarraydof(da::AbstractDMDA, l_x::Vector;  dof::Int64=1)
+    getlocalarraydof(da::AbstractDMDA, l_x::Vector;  dof::Int64=1, ghost=true)
 
-Returns a view of a local Array for the degree of freedom `dof`, given a local array l_x.
+Returns a view of a local Array for the degree of freedom `dof`, given a local array l_x that may have ghost values (`ghost=true`) or not.
 Note that in julia, the first degree of freedom is 1 (and not 0). 
 
 """
 function getlocalarraydof(
     da::AbstractDM{PetscLib},
     l_x::Vector;
-    dof::Int64=1
+    dof::Int64=1,
+    ghost=true,
 ) where {PetscLib}
 
     dof_da      = [1];
     LibPETSc.DMDAGetDof(PetscLib,da,dof_da);    # number of DOF that the DMDA has
-    corners     = PETSc.getghostcorners(da);
     n           = length(l_x);
     Arr         = Base.view(l_x,dof:dof_da[1]:n)
 
-    oArr = reshapelocalarray(Arr, da, ghost=true);    # reshape into array with global numbering
+    oArr = reshapelocalarray(Arr, da, ghost=ghost);    # reshape into array with global numbering
 
     return oArr
 end

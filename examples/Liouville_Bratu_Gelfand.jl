@@ -117,7 +117,7 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     # Get the DMDA associated with the snes
     da = PETSc.getDMDA(snes)
 
-    # Get a local vector and transfer the data from the global vecto
+    # Get a local vector and transfer the data from the global vector into it
     l_x = PETSc.DMLocalVec(da)
     PETSc.update!(l_x, g_x, PETSc.INSERT_VALUES)
 

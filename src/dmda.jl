@@ -399,21 +399,26 @@ that can be addressed uisng global indices
 
 """
 function getlocalcoordinatearray(da::DMDA{PetscLib}) where {PetscLib}
-    coord_vec = PETSc.coordinatesDMLocalVec(da)                # retrieve local coordinates
-    array1D = PETSc.unsafe_localarray(coord_vec; read = true)  # array
+    # retrieve local coordinates
+    coord_vec = PETSc.coordinatesDMLocalVec(da)
+    # array
+    array1D = PETSc.unsafe_localarray(coord_vec; read = true)
     dim = [0]
     LibPETSc.DMGetCoordinateDim(PetscLib, da, dim)
     dim = dim[1]
     corners = PETSc.getghostcorners(da)
 
-    X = reshapelocalarray(array1D[1:dim:end], da, ghost = true)                              # reshape into array with global numbering
+    # reshape into array with global numbering
+    X = reshapelocalarray(array1D[1:dim:end], da, ghost = true)
 
     Y, Z = [], []
     if dim > 1
-        Y = reshapelocalarray(array1D[2:dim:end], da, ghost = true)                          # reshape into array with global numbering
+        # reshape into array with global numbering
+        Y = reshapelocalarray(array1D[2:dim:end], da, ghost = true)
     end
     if dim > 2
-        Z = reshapelocalarray(array1D[3:dim:end], da, ghost = true)                          # reshape into array with global numbering
+        # reshape into array with global numbering
+        Z = reshapelocalarray(array1D[3:dim:end], da, ghost = true)
     end
 
     return (X = X, Y = Y, Z = Z)
@@ -434,11 +439,13 @@ function getlocalarraydof(
     ghost = true,
 ) where {PetscLib}
     dof_da = [1]
-    LibPETSc.DMDAGetDof(PetscLib, da, dof_da)    # number of DOF that the DMDA has
+    # number of DOF that the DMDA has
+    LibPETSc.DMDAGetDof(PetscLib, da, dof_da)
     n = length(l_x)
     Arr = Base.view(l_x, dof:dof_da[1]:n)
 
-    oArr = reshapelocalarray(Arr, da, ghost = ghost)    # reshape into array with global numbering
+    # reshape into array with global numbering
+    oArr = reshapelocalarray(Arr, da, ghost = ghost)
 
     return oArr
 end

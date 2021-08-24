@@ -139,7 +139,7 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
 
         # reshape the array and allow for global indexing
         x = PETSc.reshapelocalarray(x, da)
-        fx = PETSc.reshapelocalarray(fx, da,)
+        fx = PETSc.reshapelocalarray(fx, da)
 
         # Store a tuple of stencils in each direction
         stencils = (

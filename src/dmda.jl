@@ -392,18 +392,18 @@ function setuniformcoordinates!(
 end
 
 """
-    getlocalcoordinatearray(da::AbstractDMDA)
+    getlocalcoordinatearray(da::AbstractDM)
 
 Returns a `NamedTuple` with OffsetArrays that contain the local coordinates and
 that can be addressed uisng global indices
 
 """
-function getlocalcoordinatearray(da::DMDA{PetscLib}) where {PetscLib}
+function getlocalcoordinatearray(da::AbstractDM{PetscLib}) where {PetscLib}
     # retrieve local coordinates
     coord_vec = coordinatesDMLocalVec(da)
     # array
-    array1D = unsafe_localarray(coord_vec; read = true)
-    dim = [0]
+    array1D = unsafe_localarray(coord_vec; read = true, write = false)
+    dim = [PetscLib.PetscInt(0)]
     LibPETSc.DMGetCoordinateDim(PetscLib, da, dim)
     dim = dim[1]
     corners = getghostcorners(da)
@@ -451,14 +451,15 @@ function getlocalarraydof(
 end
 
 """
-    reshapelocalarray(Arr, da::AbstractDM{PetscLib})
+    reshapelocalarray(Arr, da::AbstractDM{PetscLib}, dof::Integer=1)
 
 Returns an array with the same data as `Arr` but reshaped as an array that can
 be addressed with global indexing.
 """
 function reshapelocalarray(
     Arr,
-    da::AbstractDM{PetscLib}
+    da::AbstractDM{PetscLib},
+    dof::Integer = 1,
 ) where {PetscLib}
 
     # First we try to use a ghosted size

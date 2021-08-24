@@ -19,9 +19,9 @@ using LinearAlgebra: norm
 using ForwardDiff
 using SparseArrays, SparseDiffTools, ForwardDiff
 
+
 opts = if !isinteractive()
     PETSc.parse_options(ARGS)
-    CreatePlots = false;
 else
     (ksp_monitor = false, 
     ksp_rtol=1e-10,
@@ -34,10 +34,14 @@ else
     snes_max_linear_solve_fail=1000,
     snes_mf_operator=false,
     )
-    CreatePlots==true
-    using Plots
+   
 end
 
+CreatePlots = false;
+if isinteractive()
+    CreatePlots=true
+    using Plots
+end
 
 
 
@@ -46,6 +50,8 @@ comm = MPI.COMM_WORLD
 
 # Set our PETSc Scalar Type
 PetscScalar = Float64
+PetscInt    = Int64
+
 
 # get the PETSc lib with our chosen `PetscScalar` type
 petsclib = PETSc.getlib(; PetscScalar = PetscScalar)
@@ -90,8 +96,6 @@ snes = PETSc.SNES(petsclib, comm; opts...)
 
 # add the da to the snes
 PETSc.setDM!(snes, da)
-
-
 
 # Sets the initial profiles
 g_x = PETSc.DMGlobalVec(da)
@@ -139,7 +143,7 @@ function ComputeLocalResidual!(fx, x, x_old, da)
     Phi_old = PETSc.getlocalarraydof(da, x_old, dof = 1) 
     Pe_old  = PETSc.getlocalarraydof(da, x_old, dof = 2) 
     
-    # The local residual vectors do no include ghost points
+    # The local residual vectors do not include ghost points
     res_Phi = PETSc.getlocalarraydof(da, fx, dof = 1) 
     res_Pe  = PETSc.getlocalarraydof(da, fx, dof = 2) 
 
@@ -216,8 +220,6 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     return 0
 end
 
-
-
 J = PETSc.MatAIJ(da)    # initialize space for the matrix from the dmda
 PETSc.setjacobian!(snes, J, J) do J, snes, g_x
     # Get the DMDA associated with the snes
@@ -241,17 +243,12 @@ PETSc.setjacobian!(snes, J, J) do J, snes, g_x
             #  that is SLOW; using SparsityDetection & SparseDiffTools this can likely be made faster 
             S     =   sparse(ForwardDiff.jacobian(f_Residual, x_julia));
             
-            # Set values in PETSc matrix from local sparse matrix 
-            # NOTE: This won't work in parallel and assumes that the matrix has been initialized beforehand
-            #   Once we determine the first row of this processor, we can likely make it work in parallel.
-            #   Would be good to move it to a separate routine in that case.
-            m, n = size(S)
-            for j in 1:n
-                for ii in S.colptr[j]:(S.colptr[j + 1] - 1)
-                    i = S.rowval[ii]
-                    J[i, j] = S.nzval[ii]
-                end
-            end
+            # Get the non-ghosted part of the local matrix
+            ind_local = PETSc.LocalInGlobalIndices(da) 
+            S = S[ind_local,ind_local];
+            
+            # Copy sparse to PETSc matrix
+            copyto!(J,S);   
 
     end
 
@@ -263,7 +260,6 @@ PETSc.setjacobian!(snes, J, J) do J, snes, g_x
     
     return 0
 end
-
 
 
 # Timestep loop

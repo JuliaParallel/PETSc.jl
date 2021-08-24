@@ -386,3 +386,49 @@ function view(
     LibPETSc.DMView(PetscLib, dm, viewer)
     return nothing
 end
+
+
+""" 
+    indices = LocalInGlobalIndices(dm::AbstractDM{PetscLib})
+
+Give the non-ghosted indices in the local vector that contribute to the global vector.
+    dm      - the DMStag object
+    indices - local indices
+"""
+function LocalInGlobalIndices(
+        dm::AbstractDM{PetscLib}
+    ) where {PetscLib}
+
+    # Note: this is a bit of a hack; it seems likely that PETSc has a better way to extract this info
+    # Will it work with DMStag?
+
+    #ind_g   =   DMGlobalVec(dm)
+    v_ind_l =   DMLocalVec(dm)
+    v_ind_l .=  0.0;
+    corners =   getcorners(dm);
+    PetscInt = PetscLib.PetscInt
+    ndof    = [PetscInt(1)]
+    LibPETSc.DMDAGetDof(PetscLib, dm, ndof); ndof=ndof[1];
+
+    PETSc.withlocalarray!(v_ind_l; read = false, write=true) do l_x
+        for idof=1:ndof
+            Array = PETSc.getlocalarraydof(dm, l_x, dof = idof)     # first DOF
+            for i in ((corners.lower):(corners.upper))
+                Array[i] = 1.0
+            end
+        end
+    end 
+    
+#=
+  
+
+    for i=1:length(ind_g)
+        ind_g[i] = i
+    end
+    update!(v_ind_l, ind_g, INSERT_VALUES); # update local vector
+=#
+
+    ix = findall( real(v_ind_l) .> 0.0 ); 
+
+    return ix
+end

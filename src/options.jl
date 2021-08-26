@@ -206,3 +206,21 @@ function parse_options(args::Vector{String})
     end
     return NamedTuple(opts)
 end
+
+"""
+    typedget(opt::NamedTuple, key::Symbol, default::T)
+
+Similar to [`get`](@ref) but ensures that the returned value is the same type as
+the default value.
+"""
+function typedget(opt::NamedTuple, key::Symbol, default::T) where {T}
+    v = get(opt, key, default)
+    if !(v isa T)
+        if T <: String
+            v = string(v)
+        else
+            v = v isa String ? parse(T, v) : convert(T, v)
+        end
+    end
+    return v
+end

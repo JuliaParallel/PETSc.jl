@@ -514,13 +514,13 @@ end
         PETSc.setuniformcoordinates!(da_2D, (xmin, ymin), (xmax, ymax))
 
         # Retrieve local coordinate array (shaped accordingly)
-        Coord = PETSc.getlocalcoordinatearray(da_2D)
+        coord = PETSc.getlocalcoordinatearray(da_2D)
 
         # Check
         corners = PETSc.getcorners(da_2D)
         for i in ((corners.lower):(corners.upper))
-            @test Coord.X[i] ≈ (i[1] - 1) * Δx + xmin
-            @test Coord.Y[i] ≈ (i[2] - 1) * Δy + ymin
+            @test coord[1, i] ≈ (i[1] - 1) * Δx + xmin
+            @test coord[2, i] ≈ (i[2] - 1) * Δy + ymin
         end
 
         # Retrieve local array of the 2 DOF DMDA and set values

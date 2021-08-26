@@ -124,7 +124,7 @@ PETSc.withlocalarray!(g_x; read = false) do l_x
     Pe = PETSc.getlocalarraydof(da, l_x, dof = 2)
 
     # retrieve arrays with local coordinates
-    Coord = PETSc.getlocalcoordinatearray(da)
+    coord = PETSc.getlocalcoordinatearray(da)
 
     Phi0 = 1
     dPhi1 = 8
@@ -139,11 +139,11 @@ PETSc.withlocalarray!(g_x; read = false) do l_x
     for i in ((corners.lower):(corners.upper))
         Phi[i] =
             Phi0 +
-            dPhi1 * exp(-((Coord.X[i] - z1)^2) / lambda^2) +
-            dPhi2 * exp(-((Coord.X[i] - z2)^2) / lambda^2)
+            dPhi1 * exp(-((coord[1, i] - z1)^2) / lambda^2) +
+            dPhi2 * exp(-((coord[1, i] - z2)^2) / lambda^2)
         Pe[i] =
-            -dPe1 * exp(-((Coord.X[i] - z1)^2) / lambda^2) -
-            dPe2 * exp(-((Coord.X[i] - z2)^2) / lambda^2)
+            -dPe1 * exp(-((coord[1, i] - z1)^2) / lambda^2) -
+            dPe2 * exp(-((coord[1, i] - z2)^2) / lambda^2)
     end
 end
 
@@ -204,13 +204,13 @@ function ComputeLocalResidual!(fx, x)
     iz_m1 = CartesianIndex(0, 0, -1)  # iz - 1
 
     # Coordinates and spacing (assumed constant)
-    Coord = PETSc.getlocalcoordinatearray(da)
-    Δx = Coord.X[corners.lower + ix_p1] - Coord.X[corners.lower]
+    coord = PETSc.getlocalcoordinatearray(da)
+    Δx = coord[1, corners.lower + ix_p1] - coord[1, corners.lower]
     if dim > 1
-        Δy = Coord.Y[corners.lower + iy_p1] - Coord.Y[corners.lower]
+        Δy = coord[2, corners.lower + iy_p1] - coord[2, corners.lower]
     end
     if dim == 3
-        Δz = Coord.Z[corners.lower + iz_p1] - Coord.Z[corners.lower]
+        Δz = coord[1, corners.lower + iz_p1] - coord[1, corners.lower]
     end
 
     # corners.lower
@@ -382,8 +382,8 @@ while (it < max_it && time < max_time)
 
     # Visualisation
     if (mod(it, 20) == 0 && CreatePlots == true)
-        Coord = PETSc.getlocalcoordinatearray(da)
-        x = Coord.X[:]
+        coord = PETSc.getlocalcoordinatearray(da)
+        x = coord[1, :, :, :]
         time_vec = ones(size(x)) * time
         #=
         p1 = plot!(

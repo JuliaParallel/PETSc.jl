@@ -408,20 +408,7 @@ function getlocalcoordinatearray(da::AbstractDMDA{PetscLib}) where {PetscLib}
     dim = dim[1]
     corners = getghostcorners(da)
 
-    # reshape into array with global numbering
-    X = reshapelocalarray(@view(array1D[1:dim:end]), da)
-
-    Y, Z = [], []
-    if dim > 1
-        # reshape into array with global numbering
-        Y = reshapelocalarray(@view(array1D[2:dim:end]), da)
-    end
-    if dim > 2
-        # reshape into array with global numbering
-        Z = reshapelocalarray(@view(array1D[3:dim:end]), da)
-    end
-
-    return (X = X, Y = Y, Z = Z)
+    return reshapelocalarray(array1D, da, dim)
 end
 
 """
@@ -451,7 +438,7 @@ function getlocalarraydof(
 end
 
 """
-    reshapelocalarray(Arr, da::AbstractDMDA{PetscLib}, dof::Integer=1)
+    reshapelocalarray(Arr, da::AbstractDMDA{PetscLib})
 
 Returns an array with the same data as `Arr` but reshaped as an array that can
 be addressed with global indexing.
@@ -459,7 +446,6 @@ be addressed with global indexing.
 function reshapelocalarray(
     Arr,
     da::AbstractDMDA{PetscLib},
-    dof::Integer = 1,
 ) where {PetscLib}
 
     # First we try to use a ghosted size
@@ -508,4 +494,35 @@ function localinteriorlinearindex(da::AbstractDMDA{PetscLib}) where PetscLib
     upper = CartesianIndex(ndof, ghost_corners.upper)
     ind_local = LinearIndices(lower:upper)[:, l_inds][:]
     return ind_local
+end
+
+"""
+    reshapelocalarray(Arr, da::AbstractDMDA{PetscLib}, ndof)
+
+Returns an array with the same data as `Arr` but reshaped as an array that can
+be addressed with global indexing.
+"""
+function reshapelocalarray(
+    Arr,
+    da::AbstractDMDA{PetscLib},
+    ndof::Integer,
+) where {PetscLib}
+
+    # First we try to use a ghosted size
+    corners = getghostcorners(da)
+    # If this is two big for the array use non-ghosted
+    if length(Arr) < prod(corners.size) * ndof
+        corners = getcorners(da)
+    end
+    @assert length(Arr) == prod(corners.size) * ndof
+
+    oArr = OffsetArray(
+        reshape(Arr, Int64(ndof), Int64.(corners.size)...),
+        1:ndof,
+        (corners.lower[1]):(corners.upper[1]),
+        (corners.lower[2]):(corners.upper[2]),
+        (corners.lower[3]):(corners.upper[3]),
+    )
+
+    return oArr
 end

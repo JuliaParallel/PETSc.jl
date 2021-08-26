@@ -338,8 +338,8 @@ PETSc.setjacobian!(snes, J, J) do J, snes, g_x
             jac_prototype = jac,
         )
 
-        # Get the non-ghosted part of the local matrix
-        ind_local = PETSc.LocalInGlobalIndices(da)
+        ind_local = PETSc.localinteriorlinearindex(da)
+
         S = S[ind_local, ind_local]
 
         # Copy local sparse matrix to parallel PETSc matrix

@@ -1,4 +1,4 @@
-# EXCLUDE FROM TESTING
+# INCLUDE IN MPI TEST
 #=
 In this example we solve the 1D viscoelastic porosity wave equations which
 describe how magma ascends in the Earth's mantle.  The equations are discussed

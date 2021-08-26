@@ -24,7 +24,6 @@ using OffsetArrays: OffsetArray
 using LinearAlgebra: norm
 using ForwardDiff
 using SparseArrays
-using SparseArrays
 using SparseDiffTools
 
 # when not run interactive options can be passed via commandline arguments:
@@ -226,8 +225,8 @@ function ComputeLocalResidual!(fx, x)
                 De * (Pe[i] - Pe_old[i]) / dt +
                 (Phi[i]^m) * Pe[i]
 
-            Phi_c_p1 = 0.5 * (Phi[i + ix_p1] + Phi[i])
-            Phi_c_m1 = 0.5 * (Phi[i + ix_m1] + Phi[i])
+            Phi_c_p1 = (Phi[i + ix_p1] + Phi[i]) / 2
+            Phi_c_m1 = (Phi[i + ix_m1] + Phi[i]) / 2
 
             res_Pe[i] =
                 De * (Pe[i] - Pe_old[i]) / dt -
@@ -237,8 +236,8 @@ function ComputeLocalResidual!(fx, x)
                 ) / Δx + (Phi[i]^m) * Pe[i]
             if dim > 1
                 # Derivatives in y-direction (for 2D and 3D)
-                Phi_c_p1 = 0.5 * (Phi[i + iy_p1] + Phi[i])
-                Phi_c_m1 = 0.5 * (Phi[i + iy_m1] + Phi[i])
+                Phi_c_p1 = (Phi[i + iy_p1] + Phi[i]) / 2
+                Phi_c_m1 = (Phi[i + iy_m1] + Phi[i]) / 2
                 res_Pe[i] =
                     res_Pe[i] +
                     (
@@ -248,8 +247,8 @@ function ComputeLocalResidual!(fx, x)
             end
             if dim == 3
                 # Derivatives in z-direction (for 3D)
-                Phi_c_p1 = 0.5 * (Phi[i + iz_p1] + Phi[i])
-                Phi_c_m1 = 0.5 * (Phi[i + iz_m1] + Phi[i])
+                Phi_c_p1 = (Phi[i + iz_p1] + Phi[i]) / 2
+                Phi_c_m1 = (Phi[i + iz_m1] + Phi[i]) / 2
                 res_Pe[i] =
                     res_Pe[i] +
                     (

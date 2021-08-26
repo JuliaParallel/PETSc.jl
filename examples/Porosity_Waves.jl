@@ -23,8 +23,12 @@ using PETSc
 using OffsetArrays: OffsetArray
 using LinearAlgebra: norm
 using ForwardDiff
-using SparseArrays, SparseDiffTools
+using SparseArrays
+using SparseArrays
+using SparseDiffTools
 
+# when not run interactive options can be passed via commandline arguments:
+# julia --project=examples examples/Porosity_Waves.jl -Nq1 101 -snes_monitor
 opts = if !isinteractive()
     PETSc.parse_options(ARGS)
 else
@@ -39,13 +43,18 @@ else
         snes_max_funcs = 10000,
         snes_max_linear_solve_fail = 1000,
         snes_mf_operator = false,
+        Nq1 = 101,
+        max_it = 2000,
+        max_time = 25
     )
 end
 
-CreatePlots = isinteractive()
-if CreatePlots
-    CreatePlots = true
+# To use plotting either `]add Plots`
+CreatePlots = isinteractive() && try
     using Plots
+    true
+catch
+    false
 end
 
 # Set our MPI communicator
@@ -56,29 +65,33 @@ PetscScalar = Float64
 PetscInt = Int64
 
 # get the PETSc lib with our chosen `PetscScalar` type
-petsclib = PETSc.getlib(; PetscScalar = PetscScalar)
+petsclib = PETSc.getlib(; PetscScalar = PetscScalar, PetscInt = PetscInt)
 
 # Initialize PETSc
 PETSc.initialize(petsclib)
 
 # dimensionality of the problem
-dim = haskey(opts, :dim) ? opts.dim : 2
+dim = PETSc.typedget(opts, :dim, 2)
 
 # Set the total number of grid points in each direction
-Nq = (101, 5, 5)
+Nq1 = PETSc.typedget(opts, :Nq1, 11)
+
+Nq = (Nq1, 5, 5)
 Nq = Nq[1:dim]
+
+max_it = PETSc.typedget(opts, :max_it, 10)
+max_time = PETSc.typedget(opts, :max_time, 25)
 
 # Set the boundary conditions on each side (Dirichlet in direction of gravity)
 bcs = (
     PETSc.DM_BOUNDARY_NONE,
     PETSc.DM_BOUNDARY_GHOSTED,
     PETSc.DM_BOUNDARY_GHOSTED,
-)
-bcs = bcs[1:dim];
+   )[1:dim]
 
 # Set parameters
-n = PetscScalar(3)
-m = PetscScalar(2)
+n = 3
+m = 2
 De = PetscScalar(1e2)
 dt = PetscScalar(1e-2)
 
@@ -110,15 +123,16 @@ PETSc.withlocalarray!(g_x; read = false) do l_x
 
     Phi = PETSc.getlocalarraydof(da, l_x, dof = 1)
     Pe = PETSc.getlocalarraydof(da, l_x, dof = 2)
+
     # retrieve arrays with local coordinates
     Coord = PETSc.getlocalcoordinatearray(da)
 
-    Phi0 = PetscScalar(1.0)
-    dPhi1 = PetscScalar(8.0)
-    dPhi2 = PetscScalar(1.0)
-    z1 = PetscScalar(0.0)
-    z2 = PetscScalar(40.0)
-    lambda = PetscScalar(1.0)
+    Phi0 = 1
+    dPhi1 = 8
+    dPhi2 = 1
+    z1 = 0
+    z2 = 40
+    lambda = 1
     dPe1 = dPhi1 / De
     dPe2 = dPhi2 / De
 
@@ -126,11 +140,11 @@ PETSc.withlocalarray!(g_x; read = false) do l_x
     for i in ((corners.lower):(corners.upper))
         Phi[i] =
             Phi0 +
-            dPhi1 * exp(-((Coord.X[i] - z1)^2.0) / lambda^2) +
-            dPhi2 * exp(-((Coord.X[i] - z2)^2.0) / lambda^2)
+            dPhi1 * exp(-((Coord.X[i] - z1)^2) / lambda^2) +
+            dPhi2 * exp(-((Coord.X[i] - z2)^2) / lambda^2)
         Pe[i] =
-            -dPe1 * exp(-((Coord.X[i] - z1)^2.0) / lambda^2) -
-            dPe2 * exp(-((Coord.X[i] - z2)^2.0) / lambda^2)
+            -dPe1 * exp(-((Coord.X[i] - z1)^2) / lambda^2) -
+            dPe2 * exp(-((Coord.X[i] - z2)^2) / lambda^2)
     end
 end
 
@@ -183,11 +197,11 @@ function ComputeLocalResidual!(fx, x)
     end
 
     # Stencil
-    ix_p1 = CartesianIndex(1, 0, 0)  # ix + 1
+    ix_p1 = CartesianIndex(1, 0, 0)   # ix + 1
     ix_m1 = CartesianIndex(-1, 0, 0)  # ix - 1
-    iy_p1 = CartesianIndex(0, 1, 0)  # iy + 1
+    iy_p1 = CartesianIndex(0, 1, 0)   # iy + 1
     iy_m1 = CartesianIndex(0, -1, 0)  # iy - 1
-    iz_p1 = CartesianIndex(0, 0, 1)  # iz + 1
+    iz_p1 = CartesianIndex(0, 0, 1)   # iz + 1
     iz_m1 = CartesianIndex(0, 0, -1)  # iz - 1
 
     # Coordinates and spacing (assumed constant)
@@ -203,8 +217,8 @@ function ComputeLocalResidual!(fx, x)
     # corners.lower
     for i in ((corners.lower):(corners.upper))
         if (i[1] == 1 || i[1] == Nq[1])   # Dirichlet upper/lower BC's
-            res_Phi[i] = Phi[i] - 1.0
-            res_Pe[i] = Pe[i] - 0.0
+            res_Phi[i] = Phi[i] - 1
+            res_Pe[i] = Pe[i] - 0
 
         else                            # Central points
             res_Phi[i] =
@@ -218,8 +232,8 @@ function ComputeLocalResidual!(fx, x)
             res_Pe[i] =
                 De * (Pe[i] - Pe_old[i]) / dt -
                 (
-                    (Phi_c_p1^n) * ((Pe[i + ix_p1] - Pe[i]) / Δx + 1.0) -
-                    (Phi_c_m1^n) * ((Pe[i] - Pe[i + ix_m1]) / Δx + 1.0)
+                    (Phi_c_p1^n) * ((Pe[i + ix_p1] - Pe[i]) / Δx + 1) -
+                    (Phi_c_m1^n) * ((Pe[i] - Pe[i + ix_m1]) / Δx + 1)
                 ) / Δx + (Phi[i]^m) * Pe[i]
             if dim > 1
                 # Derivatives in y-direction (for 2D and 3D)
@@ -343,8 +357,8 @@ PETSc.setjacobian!(snes, J, J) do J, snes, g_x
 end
 
 # Timestep loop
-time, it = 0.0, 1;
-while (it < 2000 && time < 25)
+time, it = PetscScalar(0), 1;
+while (it < max_it && time < max_time)
     global time, it, x_old, g_xold, g_x
 
     # Solve nonlinear system of equations
@@ -363,7 +377,7 @@ while (it < 2000 && time < 25)
     it += 1
 
     # Update the x_old values (Phi_old, Pe_old) on every processor
-    Base.finalize(x_old) # Free the previous x_old vector
+    finalize(x_old) # Free the previous x_old vector
     PETSc.update!(l_xold, g_x, PETSc.INSERT_VALUES) # Update
     x_old = PETSc.unsafe_localarray(l_xold, read = true, write = false)
 
@@ -418,7 +432,7 @@ end
 
 PETSc.destroy(J)
 PETSc.destroy(g_x)
-Base.finalize(x_old);
+finalize(x_old);
 PETSc.destroy(r)
 PETSc.destroy(snes)
 PETSc.destroy(da)

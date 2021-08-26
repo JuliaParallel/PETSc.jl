@@ -24,7 +24,6 @@ using OffsetArrays: OffsetArray
 using LinearAlgebra: norm
 using ForwardDiff
 using SparseArrays, SparseDiffTools
-using Plots
 
 opts = if !isinteractive()
     PETSc.parse_options(ARGS)
@@ -43,8 +42,8 @@ else
     )
 end
 
-CreatePlots = false;
-if isinteractive()
+CreatePlots = isinteractive()
+if CreatePlots
     CreatePlots = true
     using Plots
 end

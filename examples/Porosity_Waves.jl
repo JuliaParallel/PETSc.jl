@@ -42,8 +42,8 @@ else
         snes_max_funcs = 10000,
         snes_max_linear_solve_fail = 1000,
         snes_mf_operator = false,
-        Nq1 = 101,
-        max_it = 2000,
+        Nq1 = 501,
+        max_it = 4000,
         max_time = 25
     )
 end
@@ -70,7 +70,7 @@ petsclib = PETSc.getlib(; PetscScalar = PetscScalar, PetscInt = PetscInt)
 PETSc.initialize(petsclib)
 
 # dimensionality of the problem
-dim = PETSc.typedget(opts, :dim, 2)
+dim = PETSc.typedget(opts, :dim, 1)
 
 # Set the total number of grid points in each direction
 Nq1 = PETSc.typedget(opts, :Nq1, 11)
@@ -388,6 +388,7 @@ while (it < max_it && time < max_time)
     if (mod(it, 20) == 0 && CreatePlots == true)
         coord = PETSc.getlocalcoordinatearray(da)
         x = coord[1, :, :, :]
+        x = x[:,1,1]
         time_vec = ones(size(x)) * time
         #=
         p1 = plot!(
@@ -410,25 +411,27 @@ while (it < max_it && time < max_time)
         =#
 
         p2 = plot!(
-            time_vec,
             x,
+            time_vec,
             g_x[1:2:end],
             zlabel = "Phi",
             title = "De=$(De)",
-            xlabel = "time",
-            ylabel = "depth",
+            ylabel = "time",
+            xlabel = "depth",
             linecolor = :blue,
             legend = :none,
-            ylims = (-20, 150),
-            xlims = (0, 25),
+            xlims = (-20, 150),
+            ylims = (0, 25),
             zlims = (0, 2),
+            #zlims = (0, 5),            
             camera = (20, 82),
             dpi = 300,
         )    # Pe
         savefig(p2, "Phi_porositywave")
     end
-
-    println("Timestep $it, time=$time")
+    if MPI.Comm_rank(comm) == 0
+        println("Timestep $it, time=$time")
+    end
 end
 
 # Do some clean up

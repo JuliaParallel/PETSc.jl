@@ -528,9 +528,13 @@ end
         x_l = PETSc.DMLocalVec(da_2D)
 
         PETSc.withlocalarray!(x_l; read = false) do l_x
-            Array_1 = PETSc.getlocalarraydof(da_2D, l_x)     # first DOF
-            Array_2 = PETSc.getlocalarraydof(da_2D, l_x, dof = 2)     # second DOF
+            x = PETSc.reshapelocalarray(l_x, da_2D)
+            @test 2 == size(x, 1)
+
+            Array_1 = @view x[1, :, :, :]
             Array_1 .= 11.1
+
+            Array_2 = @view x[2, :, :, :]
             Array_2 .= 22.2
         end
         PETSc.update!(x_g, x_l, PETSc.INSERT_VALUES)    # add local values tp global vector

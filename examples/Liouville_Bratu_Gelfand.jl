@@ -83,7 +83,7 @@ PETSc.withlocalarray!(xl; read = false) do l_x
     interior = (int_min):(int_max)
 
     # Allows us to adress the local array with global indexing
-    ox = PETSc.getlocalarraydof(da, l_x)
+    ox = @view PETSc.reshapelocalarray(l_x, da)[1, :, :, :]
 
     # Set up the global coordinates in each direction
     # -1 to 1 when Nq > 1 and 0 otherwise
@@ -138,8 +138,8 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     ) do fx, x
 
         # reshape the array and allow for global indexing
-        x = PETSc.reshapelocalarray(x, da)
-        fx = PETSc.reshapelocalarray(fx, da)
+        x = @view PETSc.reshapelocalarray(x, da)[1, :, :, :]
+        fx = @view PETSc.reshapelocalarray(fx, da)[1, :, :, :]
 
         # Store a tuple of stencils in each direction
         stencils = (
@@ -223,9 +223,9 @@ PETSc.setjacobian!(snes, J) do J, snes, g_x
     weights = (Δy * Δz / Δx, Δx * Δz / Δy, Δx * Δy / Δz)
 
     # Get a local array of the solution vector
-    PETSc.withlocalarray!(g_x; write = false) do x
+    PETSc.withlocalarray!(g_x; write = false) do l_x
         # reshape so we can use multi-D indexing
-        x = PETSc.reshapelocalarray(x, da)
+        x = @view PETSc.reshapelocalarray(l_x, da)[1, :, :, :]
 
         # loop over indices and set the function value
         for ind in ((corners.lower):(corners.upper))

@@ -210,16 +210,64 @@ end
 """
     typedget(opt::NamedTuple, key::Symbol, default::T)
 
-Similar to [`get`](@ref) but ensures that the returned value is the same type as
-the default value.
+Parse `opt` similar to [`get`](@ref) but ensures that the returned value is the
+same type as the default value. When `T <: NTuple` keys that result in a single
+value will be filled into an `NTuple` of the same length as `T`; in the case of
+strings it is parsed using [`split`](@ref) with comma delimiter
+
+# Examples
+```julia-repl
+julia> opt = (tup = (1, 2, 3), string_tup = "1,2,3", string_int = "4", int = 4)
+(tup = (1, 2, 3), string_tup = "1,2,3", string_int = "4", int = 4)
+
+julia> typedget(opt, :int, 7)
+4
+
+julia> typedget(opt, :bad_key, 7)
+7
+
+julia> typedget(opt, :tup, (1, 1, 1))
+(1, 2, 3)
+
+julia> typedget(opt, :string_tup, (1, 1, 1))
+tokens = SubString{String}["1", "2", "3"]
+(1, 2, 3)
+
+julia> typedget(opt, :string_int, (1, 1, 1))
+tokens = SubString{String}["4"]
+(4, 4, 4)
+
+julia> typedget(opt, :int, (1, 1, 1))
+(4, 4, 4)
+
+julia> typedget(opt, :int, (1., 1., 1.))
+(4.0, 4.0, 4.0)
+```
 """
 function typedget(opt::NamedTuple, key::Symbol, default::T) where {T}
     v = get(opt, key, default)
     if !(v isa T)
         if T <: String
-            v = string(v)
+            return string(v)
+        elseif v isa String
+            if T <: NTuple
+                ET = T.types[1]
+                tokens = split(v, ",")
+                if length(tokens) == 1
+                    return ntuple(_ -> parse(ET, tokens[1]), length(T.types))
+                else
+                    return ntuple(j -> parse(ET, tokens[j]), length(T.types))
+                end
+            else
+                return parse(T, v)
+            end
         else
-            v = v isa String ? parse(T, v) : convert(T, v)
+            if T <: NTuple && !(v isa Tuple)
+                ET = T.types[1]
+                return ntuple(j -> convert(ET, v), length(T.types))
+            else
+                return convert(T, v)
+            end
         end
     end
     return v

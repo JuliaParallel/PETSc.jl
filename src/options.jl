@@ -14,8 +14,7 @@ The PETSc global options database.
 """
 struct GlobalOptions{PetscLib} <: AbstractOptions{PetscLib} end
 Base.cconvert(::Type{CPetscOptions}, obj::GlobalOptions) = C_NULL
-GlobalOptions(::PetscLib) where PetscLib = GlobalOptions{PetscLib}()
-
+GlobalOptions(::PetscLib) where {PetscLib} = GlobalOptions{PetscLib}()
 
 """
     Options{PetscLib <: PetscLibType}(kw -> arg, ...)
@@ -79,12 +78,12 @@ mutable struct Options{T} <: AbstractOptions{T}
 end
 
 function Options_(petsclib::PetscLibType)
-  @assert initialized(petsclib)
-  PetscLib = typeof(petsclib)
-  opts = Options{PetscLib}(C_NULL, petsclib.age)
-  LibPETSc.PetscOptionsCreate(petsclib, opts)
-  finalizer(destroy, opts)
-  return opts
+    @assert initialized(petsclib)
+    PetscLib = typeof(petsclib)
+    opts = Options{PetscLib}(C_NULL, petsclib.age)
+    LibPETSc.PetscOptionsCreate(petsclib, opts)
+    finalizer(destroy, opts)
+    return opts
 end
 
 function destroy(opts::AbstractOptions{PetscLib}) where {PetscLib}
@@ -98,7 +97,8 @@ function destroy(opts::AbstractOptions{PetscLib}) where {PetscLib}
 end
 
 Options(petsclib::PetscLibType; kwargs...) = Options_(petsclib, kwargs...)
-Options(PetscLib::Type{<:PetscLibType}; kwargs...) = Options_(getlib(PetscLib), kwargs...)
+Options(PetscLib::Type{<:PetscLibType}; kwargs...) =
+    Options_(getlib(PetscLib), kwargs...)
 function Options_(petsclib::PetscLibType, ps::Pair...)
     opts = Options_(petsclib)
     for (k, v) in ps
@@ -110,32 +110,39 @@ end
 function Base.push!(
     ::GlobalOptions{PetscLib},
     opts::Options{PetscLib},
-) where PetscLib
+) where {PetscLib}
     LibPETSc.PetscOptionsPush(PetscLib, opts)
     return nothing
 end
 
-function Base.pop!(::GlobalOptions{PetscLib}) where PetscLib
+function Base.pop!(::GlobalOptions{PetscLib}) where {PetscLib}
     LibPETSc.PetscOptionsPop(PetscLib)
     return nothing
 end
 
-function Base.setindex!(opts::AbstractOptions{PetscLib}, val, key) where PetscLib
+function Base.setindex!(
+    opts::AbstractOptions{PetscLib},
+    val,
+    key,
+) where {PetscLib}
     val === true && (val = nothing)
     val === false && (return val)
 
-    LibPETSc.PetscOptionsSetValue(PetscLib,
-                                  opts,
-                                  string('-', key),
-                                  isnothing(val) ? C_NULL : string(val))
+    LibPETSc.PetscOptionsSetValue(
+        PetscLib,
+        opts,
+        string('-', key),
+        isnothing(val) ? C_NULL : string(val),
+    )
 
     return val
 end
 
-function Base.getindex(opts::AbstractOptions{PetscLib}, key) where PetscLib
+function Base.getindex(opts::AbstractOptions{PetscLib}, key) where {PetscLib}
     val = Vector{UInt8}(undef, 256)
     set_ref = Ref{PetscBool}()
-    LibPETSc.PetscOptionsGetString(PetscLib,
+    LibPETSc.PetscOptionsGetString(
+        PetscLib,
         opts,
         C_NULL,
         string('-', key),
@@ -150,8 +157,8 @@ end
 
 function view(
     opts::AbstractOptions{PetscLib},
-    viewer = LibPETSc.PETSC_VIEWER_STDOUT_(PetscLib, MPI.COMM_SELF)
-) where PetscLib
+    viewer = LibPETSc.PETSC_VIEWER_STDOUT_(PetscLib, MPI.COMM_SELF),
+) where {PetscLib}
     LibPETSc.PetscOptionsView(PetscLib, opts, viewer)
     return nothing
 end
@@ -210,16 +217,64 @@ end
 """
     typedget(opt::NamedTuple, key::Symbol, default::T)
 
-Similar to [`get`](@ref) but ensures that the returned value is the same type as
-the default value.
+Parse `opt` similar to [`get`](@ref) but ensures that the returned value is the
+same type as the default value. When `T <: NTuple` keys that result in a single
+value will be filled into an `NTuple` of the same length as `T`; in the case of
+strings it is parsed using [`split`](@ref) with comma delimiter
+
+# Examples
+```julia-repl
+julia> opt = (tup = (1, 2, 3), string_tup = "1,2,3", string_int = "4", int = 4)
+(tup = (1, 2, 3), string_tup = "1,2,3", string_int = "4", int = 4)
+
+julia> typedget(opt, :int, 7)
+4
+
+julia> typedget(opt, :bad_key, 7)
+7
+
+julia> typedget(opt, :tup, (1, 1, 1))
+(1, 2, 3)
+
+julia> typedget(opt, :string_tup, (1, 1, 1))
+tokens = SubString{String}["1", "2", "3"]
+(1, 2, 3)
+
+julia> typedget(opt, :string_int, (1, 1, 1))
+tokens = SubString{String}["4"]
+(4, 4, 4)
+
+julia> typedget(opt, :int, (1, 1, 1))
+(4, 4, 4)
+
+julia> typedget(opt, :int, (1., 1., 1.))
+(4.0, 4.0, 4.0)
+```
 """
 function typedget(opt::NamedTuple, key::Symbol, default::T) where {T}
     v = get(opt, key, default)
     if !(v isa T)
         if T <: String
-            v = string(v)
+            return string(v)
+        elseif v isa String
+            if T <: NTuple
+                ET = T.types[1]
+                tokens = split(v, ",")
+                if length(tokens) == 1
+                    return ntuple(_ -> parse(ET, tokens[1]), length(T.types))
+                else
+                    return ntuple(j -> parse(ET, tokens[j]), length(T.types))
+                end
+            else
+                return parse(T, v)
+            end
         else
-            v = v isa String ? parse(T, v) : convert(T, v)
+            if T <: NTuple && !(v isa Tuple)
+                ET = T.types[1]
+                return ntuple(j -> convert(ET, v), length(T.types))
+            else
+                return convert(T, v)
+            end
         end
     end
     return v

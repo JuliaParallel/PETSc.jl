@@ -514,13 +514,13 @@ end
         PETSc.setuniformcoordinates!(da_2D, (xmin, ymin), (xmax, ymax))
 
         # Retrieve local coordinate array (shaped accordingly)
-        Coord = PETSc.getlocalcoordinatearray(da_2D)
+        coord = PETSc.getlocalcoordinatearray(da_2D)
 
         # Check
         corners = PETSc.getcorners(da_2D)
         for i in ((corners.lower):(corners.upper))
-            @test Coord.X[i] ≈ (i[1] - 1) * Δx + xmin
-            @test Coord.Y[i] ≈ (i[2] - 1) * Δy + ymin
+            @test coord[1, i] ≈ (i[1] - 1) * Δx + xmin
+            @test coord[2, i] ≈ (i[2] - 1) * Δy + ymin
         end
 
         # Retrieve local array of the 2 DOF DMDA and set values
@@ -528,9 +528,13 @@ end
         x_l = PETSc.DMLocalVec(da_2D)
 
         PETSc.withlocalarray!(x_l; read = false) do l_x
-            Array_1 = PETSc.getlocalarraydof(da_2D, l_x)     # first DOF
-            Array_2 = PETSc.getlocalarraydof(da_2D, l_x, dof = 2)     # second DOF
+            x = PETSc.reshapelocalarray(l_x, da_2D)
+            @test 2 == size(x, 1)
+
+            Array_1 = @view x[1, :, :, :]
             Array_1 .= 11.1
+
+            Array_2 = @view x[2, :, :, :]
             Array_2 .= 22.2
         end
         PETSc.update!(x_g, x_l, PETSc.INSERT_VALUES)    # add local values tp global vector

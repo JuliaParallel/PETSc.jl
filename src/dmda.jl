@@ -392,13 +392,13 @@ function setuniformcoordinates!(
 end
 
 """
-    getlocalcoordinatearray(da::AbstractDM)
+    getlocalcoordinatearray(da::AbstractDMDA)
 
 Returns a `NamedTuple` with OffsetArrays that contain the local coordinates and
 that can be addressed uisng global indices
 
 """
-function getlocalcoordinatearray(da::AbstractDM{PetscLib}) where {PetscLib}
+function getlocalcoordinatearray(da::AbstractDMDA{PetscLib}) where {PetscLib}
     # retrieve local coordinates
     coord_vec = coordinatesDMLocalVec(da)
     # array
@@ -408,70 +408,72 @@ function getlocalcoordinatearray(da::AbstractDM{PetscLib}) where {PetscLib}
     dim = dim[1]
     corners = getghostcorners(da)
 
-    # reshape into array with global numbering
-    X = reshapelocalarray(@view(array1D[1:dim:end]), da)
-
-    Y, Z = [], []
-    if dim > 1
-        # reshape into array with global numbering
-        Y = reshapelocalarray(@view(array1D[2:dim:end]), da)
-    end
-    if dim > 2
-        # reshape into array with global numbering
-        Z = reshapelocalarray(@view(array1D[3:dim:end]), da)
-    end
-
-    return (X = X, Y = Y, Z = Z)
+    return reshapelocalarray(array1D, da, dim)
 end
 
 """
-    getlocalarraydof(da::AbstractDMDA, l_x::Vector;  dof::Int64=1)
+    localinteriorlinearindex(dmda::AbstractDMDA)
 
-Returns a view of a local Array for the degree of freedom `dof`, given a local
-array `l_x`.
+returns the linear indices associated with the degrees of freedom own by this
+MPI rank embedded in the ghost index space for the `dmda`
+"""
+function localinteriorlinearindex(da::AbstractDMDA{PetscLib}) where PetscLib
+    # Determine the indices of the linear indices of the local part of the
+    # matrix we own
+    ghost_corners = PETSc.getghostcorners(da)
+    corners = PETSc.getcorners(da)
 
-Note that in julia, the first degree of freedom is 1 (and not 0).
+    # First compute the Cartesian indices for the local portion we own
+    offset = ghost_corners.lower - CartesianIndex(1, 1, 1)
+    l_inds = ((corners.lower):(corners.upper)) .- offset
+
+    # Create a grid of indices with ghost then extract only the local part
+    lower = CartesianIndex(1, ghost_corners.lower)
+    upper = CartesianIndex(ndofs(da), ghost_corners.upper)
+    ind_local = LinearIndices(lower:upper)[:, l_inds][:]
+    return ind_local
+end
 
 """
-function getlocalarraydof(
-    da::AbstractDM{PetscLib},
-    l_x::Vector;
-    dof::Integer = 1
-) where {PetscLib}
+    ndofs(da::AbstractDMDA)
+
+Return the number of dofs in for `da`
+
+# External Links
+$(_doc_external("DMDA/DMDAGetDof"))
+"""
+function ndofs(da::AbstractDMDA{PetscLib}) where PetscLib
     PetscInt = PetscLib.PetscInt
-    dof_da = [PetscInt(1)]
+    ndof = [PetscInt(0)]
+
     # number of DOF that the DMDA has
-    LibPETSc.DMDAGetDof(PetscLib, da, dof_da)
-    Arr = @view l_x[dof:dof_da[1]:end]
-
-    # reshape into array with global numbering
-    oArr = reshapelocalarray(Arr, da)
-
-    return oArr
+    LibPETSc.DMDAGetDof(PetscLib, da, ndof)
+    return @inbounds ndof[1]
 end
 
 """
-    reshapelocalarray(Arr, da::AbstractDM{PetscLib}, dof::Integer=1)
+    reshapelocalarray(Arr, da::AbstractDMDA{PetscLib}[, ndof = ndofs(da)])
 
 Returns an array with the same data as `Arr` but reshaped as an array that can
 be addressed with global indexing.
 """
 function reshapelocalarray(
     Arr,
-    da::AbstractDM{PetscLib},
-    dof::Integer = 1,
+    da::AbstractDMDA{PetscLib},
+    ndof::Integer = ndofs(da),
 ) where {PetscLib}
 
     # First we try to use a ghosted size
     corners = getghostcorners(da)
     # If this is two big for the array use non-ghosted
-    if length(Arr) < prod(corners.size)
+    if length(Arr) < prod(corners.size) * ndof
         corners = getcorners(da)
     end
-    @assert length(Arr) == prod(corners.size)
+    @assert length(Arr) == prod(corners.size) * ndof
 
     oArr = OffsetArray(
-        reshape(Arr, Int64.(corners.size)...),
+        reshape(Arr, Int64(ndof), Int64.(corners.size)...),
+        1:ndof,
         (corners.lower[1]):(corners.upper[1]),
         (corners.lower[2]):(corners.upper[2]),
         (corners.lower[3]):(corners.upper[3]),

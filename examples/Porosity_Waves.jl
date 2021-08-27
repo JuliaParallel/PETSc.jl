@@ -120,11 +120,12 @@ g_x = PETSc.DMGlobalVec(da)
 PETSc.withlocalarray!(g_x; read = false) do l_x
     corners = PETSc.getcorners(da)
 
-    Phi = PETSc.getlocalarraydof(da, l_x, dof = 1)
-    Pe = PETSc.getlocalarraydof(da, l_x, dof = 2)
+    x = PETSc.reshapelocalarray(l_x, da)
+    Phi = @view x[1, :, :, :]
+    Pe = @view x[2, :, :, :]
 
     # retrieve arrays with local coordinates
-    Coord = PETSc.getlocalcoordinatearray(da)
+    coord = PETSc.getlocalcoordinatearray(da)
 
     Phi0 = 1
     dPhi1 = 8
@@ -139,11 +140,11 @@ PETSc.withlocalarray!(g_x; read = false) do l_x
     for i in ((corners.lower):(corners.upper))
         Phi[i] =
             Phi0 +
-            dPhi1 * exp(-((Coord.X[i] - z1)^2) / lambda^2) +
-            dPhi2 * exp(-((Coord.X[i] - z2)^2) / lambda^2)
+            dPhi1 * exp(-((coord[1, i] - z1)^2) / lambda^2) +
+            dPhi2 * exp(-((coord[1, i] - z2)^2) / lambda^2)
         Pe[i] =
-            -dPe1 * exp(-((Coord.X[i] - z1)^2) / lambda^2) -
-            dPe2 * exp(-((Coord.X[i] - z2)^2) / lambda^2)
+            -dPe1 * exp(-((coord[1, i] - z1)^2) / lambda^2) -
+            dPe2 * exp(-((coord[1, i] - z2)^2) / lambda^2)
     end
 end
 
@@ -154,18 +155,21 @@ PETSc.update!(l_xold, g_xold, PETSc.INSERT_VALUES)
 x_old = PETSc.unsafe_localarray(l_xold, read = true, write = false)
 
 # Routine wuth julia-only input/output vectors that computes the local residual
-function ComputeLocalResidual!(fx, x)
+function ComputeLocalResidual!(l_fx, l_x)
 
     # Compute the local residual.
-    # The local vectors of x/x_old include ghost points
-    Phi = PETSc.getlocalarraydof(da, x, dof = 1)
-    Pe = PETSc.getlocalarraydof(da, x, dof = 2)
-    Phi_old = PETSc.getlocalarraydof(da, x_old, dof = 1)
-    Pe_old = PETSc.getlocalarraydof(da, x_old, dof = 2)
+    # The local vectors of l_x/x_old include ghost points
+    x = PETSc.reshapelocalarray(l_x, da)
+    Phi = @view x[1, :, :, :]
+    Pe = @view x[2, :, :, :]
+    x_old_reshaped = PETSc.reshapelocalarray(x_old, da)
+    Phi_old = @view x_old_reshaped[1, :, :, :]
+    Pe_old = @view x_old_reshaped[2, :, :, :]
 
     # The local residual vectors do not include ghost points
-    res_Phi = PETSc.getlocalarraydof(da, fx, dof = 1)
-    res_Pe = PETSc.getlocalarraydof(da, fx, dof = 2)
+    fx = PETSc.reshapelocalarray(l_fx, da)
+    res_Phi = @view fx[1, :, :, :]
+    res_Pe = @view fx[2, :, :, :]
 
     # Global grid size
     Nq = PETSc.getinfo(da).global_size
@@ -204,13 +208,13 @@ function ComputeLocalResidual!(fx, x)
     iz_m1 = CartesianIndex(0, 0, -1)  # iz - 1
 
     # Coordinates and spacing (assumed constant)
-    Coord = PETSc.getlocalcoordinatearray(da)
-    Δx = Coord.X[corners.lower + ix_p1] - Coord.X[corners.lower]
+    coord = PETSc.getlocalcoordinatearray(da)
+    Δx = coord[1, corners.lower + ix_p1] - coord[1, corners.lower]
     if dim > 1
-        Δy = Coord.Y[corners.lower + iy_p1] - Coord.Y[corners.lower]
+        Δy = coord[2, corners.lower + iy_p1] - coord[2, corners.lower]
     end
     if dim == 3
-        Δz = Coord.Z[corners.lower + iz_p1] - Coord.Z[corners.lower]
+        Δz = coord[1, corners.lower + iz_p1] - coord[1, corners.lower]
     end
 
     # corners.lower
@@ -338,8 +342,8 @@ PETSc.setjacobian!(snes, J, J) do J, snes, g_x
             jac_prototype = jac,
         )
 
-        # Get the non-ghosted part of the local matrix
-        ind_local = PETSc.LocalInGlobalIndices(da)
+        ind_local = PETSc.localinteriorlinearindex(da)
+
         S = S[ind_local, ind_local]
 
         # Copy local sparse matrix to parallel PETSc matrix
@@ -382,8 +386,8 @@ while (it < max_it && time < max_time)
 
     # Visualisation
     if (mod(it, 20) == 0 && CreatePlots == true)
-        Coord = PETSc.getlocalcoordinatearray(da)
-        x = Coord.X[:]
+        coord = PETSc.getlocalcoordinatearray(da)
+        x = coord[1, :, :, :]
         time_vec = ones(size(x)) * time
         #=
         p1 = plot!(

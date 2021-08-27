@@ -392,13 +392,13 @@ function setuniformcoordinates!(
 end
 
 """
-    getlocalcoordinatearray(da::AbstractDM)
+    getlocalcoordinatearray(da::AbstractDMDA)
 
 Returns a `NamedTuple` with OffsetArrays that contain the local coordinates and
 that can be addressed uisng global indices
 
 """
-function getlocalcoordinatearray(da::AbstractDM{PetscLib}) where {PetscLib}
+function getlocalcoordinatearray(da::AbstractDMDA{PetscLib}) where {PetscLib}
     # retrieve local coordinates
     coord_vec = coordinatesDMLocalVec(da)
     # array
@@ -434,7 +434,7 @@ Note that in julia, the first degree of freedom is 1 (and not 0).
 
 """
 function getlocalarraydof(
-    da::AbstractDM{PetscLib},
+    da::AbstractDMDA{PetscLib},
     l_x::Vector;
     dof::Integer = 1
 ) where {PetscLib}
@@ -451,14 +451,14 @@ function getlocalarraydof(
 end
 
 """
-    reshapelocalarray(Arr, da::AbstractDM{PetscLib}, dof::Integer=1)
+    reshapelocalarray(Arr, da::AbstractDMDA{PetscLib}, dof::Integer=1)
 
 Returns an array with the same data as `Arr` but reshaped as an array that can
 be addressed with global indexing.
 """
 function reshapelocalarray(
     Arr,
-    da::AbstractDM{PetscLib},
+    da::AbstractDMDA{PetscLib},
     dof::Integer = 1,
 ) where {PetscLib}
 

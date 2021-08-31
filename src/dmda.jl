@@ -390,3 +390,94 @@ function setuniformcoordinates!(
     )
     return da
 end
+
+"""
+    getlocalcoordinatearray(da::AbstractDMDA)
+
+Returns a `NamedTuple` with OffsetArrays that contain the local coordinates and
+that can be addressed uisng global indices
+
+"""
+function getlocalcoordinatearray(da::AbstractDMDA{PetscLib}) where {PetscLib}
+    # retrieve local coordinates
+    coord_vec = coordinatesDMLocalVec(da)
+    # array
+    array1D = unsafe_localarray(coord_vec; read = true, write = false)
+    dim = [PetscLib.PetscInt(0)]
+    LibPETSc.DMGetCoordinateDim(PetscLib, da, dim)
+    dim = dim[1]
+    corners = getghostcorners(da)
+
+    return reshapelocalarray(array1D, da, dim)
+end
+
+"""
+    localinteriorlinearindex(dmda::AbstractDMDA)
+
+returns the linear indices associated with the degrees of freedom own by this
+MPI rank embedded in the ghost index space for the `dmda`
+"""
+function localinteriorlinearindex(da::AbstractDMDA{PetscLib}) where PetscLib
+    # Determine the indices of the linear indices of the local part of the
+    # matrix we own
+    ghost_corners = PETSc.getghostcorners(da)
+    corners = PETSc.getcorners(da)
+
+    # First compute the Cartesian indices for the local portion we own
+    offset = ghost_corners.lower - CartesianIndex(1, 1, 1)
+    l_inds = ((corners.lower):(corners.upper)) .- offset
+
+    # Create a grid of indices with ghost then extract only the local part
+    lower = CartesianIndex(1, ghost_corners.lower)
+    upper = CartesianIndex(ndofs(da), ghost_corners.upper)
+    ind_local = LinearIndices(lower:upper)[:, l_inds][:]
+    return ind_local
+end
+
+"""
+    ndofs(da::AbstractDMDA)
+
+Return the number of dofs in for `da`
+
+# External Links
+$(_doc_external("DMDA/DMDAGetDof"))
+"""
+function ndofs(da::AbstractDMDA{PetscLib}) where PetscLib
+    PetscInt = PetscLib.PetscInt
+    ndof = [PetscInt(0)]
+
+    # number of DOF that the DMDA has
+    LibPETSc.DMDAGetDof(PetscLib, da, ndof)
+    return @inbounds ndof[1]
+end
+
+"""
+    reshapelocalarray(Arr, da::AbstractDMDA{PetscLib}[, ndof = ndofs(da)])
+
+Returns an array with the same data as `Arr` but reshaped as an array that can
+be addressed with global indexing.
+"""
+function reshapelocalarray(
+    Arr,
+    da::AbstractDMDA{PetscLib},
+    ndof::Integer = ndofs(da),
+) where {PetscLib}
+
+    # First we try to use a ghosted size
+    corners = getghostcorners(da)
+    # If this is two big for the array use non-ghosted
+    if length(Arr) < prod(corners.size) * ndof
+        corners = getcorners(da)
+    end
+    @assert length(Arr) == prod(corners.size) * ndof
+
+    oArr = OffsetArray(
+        reshape(Arr, Int64(ndof), Int64.(corners.size)...),
+        1:ndof,
+        (corners.lower[1]):(corners.upper[1]),
+        (corners.lower[2]):(corners.upper[2]),
+        (corners.lower[3]):(corners.upper[3]),
+    )
+
+    return oArr
+end

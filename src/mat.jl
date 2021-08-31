@@ -645,16 +645,23 @@ function MatSeqAIJ(
     return M
 end
 
-#=
-function Base.copyto!(M::PETSc.MatSeqAIJ{T}, S::SparseMatrixCSC{T}) where {T}
-    for j = 1:size(S,2)
-        for ii = S.colptr[j]:S.colptr[j+1]-1
+# Copy a local sparse matrix to a PETSc matrix
+function Base.copyto!(
+    M::AbstractMat{PetscLib},
+    S::SparseMatrixCSC,
+) where {PetscLib}
+    row_rng = ownershiprange(M, false)
+    row_start = row_rng[1]
+    _, n = size(S)
+    for j in 1:n
+        for ii in S.colptr[j]:(S.colptr[j + 1] - 1)
             i = S.rowval[ii]
-            M[i,j] = S.nzval[ii]
+            M[i + row_start, j + row_start] = S.nzval[ii]
         end
     end
-    assemble(M);  
 end
+
+#=
 =#
 
 """

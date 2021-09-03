@@ -3,20 +3,20 @@
 # based on suggestion from https://github.com/JuliaLang/julia/issues/32567
 function _show(io::IO, obj)
     old_stdout = stdout
+    rd, = redirect_stdout()
+    # to prevent the pipe from filling up
+    # based on
+    # https://github.com/JuliaDocs/IOCapture.jl/blob/d8b27045cec8953e0e5a8d719ca1692b3a6d0d02/src/IOCapture.jl#L107-L108
+    task = @async write(io, rd)
     try
-        rd, = redirect_stdout()
         view(obj)
-
-        # Since not all MPI ranks are guaranteed to print we put in a newline
-        # that we remove with the write since readavailable will hang if there
-        # is no data in the stream
-        println()
 
         Libc.flush_cstdio()
         flush(stdout)
-        write(io, readavailable(rd)[1:(end - 1)])
     finally
+        close(rd)
         redirect_stdout(old_stdout)
+        wait(task)
     end
     return nothing
 end

@@ -289,7 +289,7 @@ $(_doc_external("DMDA/DMDAGetCorners"))
 function getcorners(da::AbstractDMDA{PetscLib}) where {PetscLib}
     PetscInt = PetscLib.PetscInt
     corners = [PetscInt(0), PetscInt(0), PetscInt(0)]
-    local_size = [PetscInt(0), PetscInt(0), PetscInt(0)]
+    local_size = [PetscInt(1), PetscInt(1), PetscInt(1)]
     LibPETSc.DMDAGetCorners(
         PetscLib,
         da,
@@ -332,6 +332,9 @@ function getghostcorners(da::AbstractDMDA{PetscLib}) where {PetscLib}
         Ref(local_size, 2),
         Ref(local_size, 3),
     )
+    map!(local_size, local_size) do v
+        v == 0 ? 1 : v
+    end
     corners .+= 1
     upper = corners .+ local_size .- PetscInt(1)
     return (
@@ -452,7 +455,7 @@ function ndofs(da::AbstractDMDA{PetscLib}) where PetscLib
 end
 
 """
-    reshapelocalarray(Arr, da::AbstractDMDA{PetscLib}[, ndof = ndofs(da)])
+    reshapelocalarray(Arr, da::AbstractDMDA{PetscLib}, ndof = ndofs(da))
 
 Returns an array with the same data as `Arr` but reshaped as an array that can
 be addressed with global indexing.

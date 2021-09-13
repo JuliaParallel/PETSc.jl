@@ -1,3 +1,4 @@
+#= Original DMSTAG
 # Attempt at include dmstag functions
 const CDMStag = Ptr{Cvoid}
 const CDMStagType = Cstring
@@ -1863,3 +1864,4 @@ end
 
 
 Base.show(io::IO, dm::DMStag) = _show(io, dm)
+=#

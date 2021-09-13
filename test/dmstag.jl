@@ -81,6 +81,11 @@ MPI.Initialized() || MPI.Init()
                 @test ghost_corners.size ==
                       (points_per_proc[mpirank + 1] + gl + gr, 1, 1)
 
+                @test PETSc.boundarytypes(dm) === (
+                    boundary_type,
+                    PETSc.DM_BOUNDARY_NONE,
+                    PETSc.DM_BOUNDARY_NONE,
+                )
                 PETSc.destroy(dm)
             end
         end

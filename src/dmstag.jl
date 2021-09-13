@@ -115,6 +115,9 @@ end
 Returns an `NTuple{3, Bool}` of whether this MPI rank is last rank in each
 dimension of the `dm`
 
+Only the first `getdimension(dm)` values are set; trailing values set to
+`DM_BOUNDARY_NONE`.
+
 # External Links
 $(_doc_external("DMDA/DMStagGetIsLastRank"))
 """
@@ -224,101 +227,27 @@ function getghostcorners(dm::AbstractDMStag{PetscLib}) where {PetscLib}
     )
 end
 
-#
-#= Original DMSTAG
 """
-    dm = DMStagCreate1d(::PetscLib,
-        comm::MPI.Comm, 
-        bndx::DMBoundaryType, 
-        M, 
-        dofVertex, 
-        dofCenter, 
-        stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, 
-        stencilWidth=2, 
-        lx=C_NULL; 
-        dmsetfromoptions=true,
-        dmsetup=true,
-        options...
-        )
+    boundarytypes(dm::AbstractDMStag)
 
-Creates a 1D DMStag object.
-        ::PetscLib      -   PETSc library,
-        comm            -   MPI communicator
-        bndx            -   boundary type: DM_BOUNDARY_NONE, DM_BOUNDARY_PERIODIC, or DM_BOUNDARY_GHOSTED. 
-        M               -   global number of grid points
-        dofVertex       -   [=1] number of degrees of freedom per vertex/point/node/0-cell
-        dofCenter       -   [=1] number of degrees of freedom per element/edge/1-cell
-        stencilType     -   ghost/halo region type: DMSTAG_STENCIL_BOX or DMSTAG_STENCIL_NONE
-        stencilWidth    -   width, in elements, of halo/ghost region
-        lx              -   [Optional] Vector of local sizes, of length equal to the comm size, summing to M
-        options...      -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
-
-Creates a 1-D distributed staggered array with the options specified using keyword
-arguments.
-
-If keyword argument `dmsetfromoptions == true` then `setfromoptions!` called.
-If keyword argument `dmsetup == true` then `setup!` is called.
+Returns an `NTuple{3, DMBoundaryType}` with boundary types for the given
+staggered `dm`. on
 
 # External Links
-$(_doc_external("DMSTAG/DMStagCreate1d"))
-
+$(_doc_external("DMSTAG/DMStagGetBoundaryTypes"))
 """
-function DMStagCreate1d end
+function boundarytypes(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    Bx = Ref{DMBoundaryType}(DM_BOUNDARY_NONE)
+    By = Ref{DMBoundaryType}(DM_BOUNDARY_NONE)
+    Bz = Ref{DMBoundaryType}(DM_BOUNDARY_NONE)
 
-@for_petsc function DMStagCreate1d(
-    ::$UnionPetscLib,
-    comm::MPI.Comm, 
-    bndx::DMBoundaryType, 
-    M, 
-    dofVertex=1,
-    dofCenter=1,
-    stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX,
-    stencilWidth=2, 
-    lx=C_NULL;
-    dmsetfromoptions = true,
-    dmsetup = true, 
-    options...,
-)
+    LibPETSc.DMStagGetBoundaryTypes(PetscLib, dm, Bx, By, Bz)
 
-    if isempty(lx); lx = C_NULL; end
-    opts = Options($petsclib, options...)
-    dm   = DMStag{$PetscLib}(C_NULL, opts)   # retrieve options
-    with(dm.opts) do
-
-        @chk ccall(
-                (:DMStagCreate1d, $petsc_library), 
-                PetscErrorCode,
-                (
-                    MPI.MPI_Comm, 
-                    DMBoundaryType, 
-                    $PetscInt, 
-                    $PetscInt, 
-                    $PetscInt, 
-                    DMStagStencilType, 
-                    $PetscInt,  
-                    Ptr{$PetscInt}, 
-                    Ptr{CDMStag}
-                ),
-                comm, 
-                bndx, 
-                M,
-                dofVertex,
-                dofCenter,
-                stencilType,
-                stencilWidth,
-                lx, 
-                dm 
-                )
-    end
-    dmsetfromoptions && setfromoptions!(dm)
-    dmsetup && setup!(dm)
-
-    if comm == MPI.COMM_SELF
-        finalizer(destroy, dm)
-    end
-        
-    return dm
+    return (Bx[], By[], Bz[])
 end
+
+#
+#= Original DMSTAG
 
 """
     dm = DMStagCreate2d(
@@ -1068,46 +997,6 @@ function DMStagGetIndices end
 
     return (center=center, vertex=vertex)
             
-end
-
-"""
-    Bx = DMStagGetBoundaryTypes(dm::DMStag) in 1D
-    Bx,By,Bz = DMStagGetBoundaryTypes(dm::DMStag) in 3D
-
-Get boundary types.
-
-        dm 	     - the DMStag object 
-        Bx,By,Bz - boundary types
-
-# External Links
-$(_doc_external("DMSTAG/DMStagGetBoundaryTypes"))
-"""
-function DMStagGetBoundaryTypes end
-
-@for_petsc function DMStagGetBoundaryTypes(dm::DMStag)
-
-    Bx = Ref{$DMBoundaryType}()
-    By = Ref{$DMBoundaryType}()
-    Bz = Ref{$DMBoundaryType}()
-      
-    @chk ccall((:DMStagGetBoundaryTypes, $petsc_library), PetscErrorCode,
-        (
-            CDMStag,   
-            Ptr{$DMBoundaryType}, Ptr{$DMBoundaryType}, Ptr{$DMBoundaryType}
-        ), 
-        dm, 
-        Bx,By,Bz
-        )
-
-        dim = getdimension(dm); 
-
-        if dim==1
-            return Bx[]    
-        elseif dim==2
-            return Bx[], By[]
-        elseif dim==3
-            return Bx[], By[], Bz[]
-        end
 end
 
 """

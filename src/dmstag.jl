@@ -12,6 +12,49 @@ mutable struct DMStagPtr{PetscLib} <: AbstractDMStag{PetscLib}
     own::Bool
 end
 
+"""
+    DMStag(
+        petsclib::PetscLib
+        comm::MPI.Comm,
+        boundary_type::NTuple{D, DMBoundaryType},
+        global_dim::NTuple{D, Integer},
+        dof_per_node::NTuple{1 + D, Integer},
+        stencil_width::Integer,
+        stencil_type = DMSTAG_STENCIL_BOX;
+        points_per_proc::Tuple,
+        processors::Tuple,
+        setfromoptions = true,
+        dmsetup = true,
+        options...
+    )
+
+Creates a D-dimensional distributed staggered array with the options specified
+using keyword arguments.
+
+The Tuple `dof_per_node` specifies how many degrees of freedom are at all the
+staggerings in the order:
+ - 1D: `(vertex, element)`
+ - 2D: `(vertex, edge, element)`
+ - 3D: `(vertex, edge, face, element)`
+
+If keyword argument `points_per_proc[k] isa Vector{petsclib.PetscInt}` then this
+specifies the points per processor in dimension `k`.
+
+If keyword argument `processors[k] isa Integer` then this specifies the number of
+processors used in dimension `k`; ignored when `D == 1`.
+
+If keyword argument `setfromoptions == true` then `setfromoptions!` called.
+
+If keyword argument `dmsetup == true` then `setup!` is called.
+
+When `D == 1` the `stencil_type` argument is not required and ignored if
+specified.
+
+# External Links
+$(_doc_external("DMSTAG/DMStagCreate1d"))
+$(_doc_external("DMSTAG/DMStagCreate2d"))
+$(_doc_external("DMSTAG/DMStagCreate3d"))
+"""
 function DMStag(
     petsclib::PetscLib,
     comm::MPI.Comm,
@@ -65,6 +108,131 @@ function DMStag(
     return dm
 end
 
+function DMStag(
+    petsclib::PetscLib,
+    comm::MPI.Comm,
+    boundary_type::NTuple{2, DMBoundaryType},
+    global_dim::NTuple{2, Integer},
+    dof_per_node::NTuple{3, Integer},
+    stencil_width::Integer,
+    stencil_type = DMSTAG_STENCIL_BOX;
+    points_per_proc::Tuple = (nothing, nothing),
+    processors::Tuple = (PETSC_DECIDE, PETSC_DECIDE),
+    dmsetfromoptions = true,
+    dmsetup = true,
+    options...,
+) where {PetscLib}
+    opts = Options(petsclib; options...)
+    dm = DMStag{PetscLib}(C_NULL, opts, petsclib.age)
+
+    ref_points_per_proc = ntuple(2) do d
+        if isnothing(points_per_proc[d]) || points_per_proc[d] == PETSC_DECIDE
+            C_NULL
+        else
+            @assert points_per_proc[d] isa Array{PetscLib.PetscInt}
+            @assert length(points_per_proc[d]) == MPI.Comm_size(comm)
+            points_per_proc[d]
+        end
+    end
+
+    with(dm.opts) do
+        LibPETSc.DMStagCreate2d(
+            PetscLib,
+            comm,
+            boundary_type[1],
+            boundary_type[2],
+            global_dim[1],
+            global_dim[2],
+            processors[1],
+            processors[2],
+            dof_per_node[1],
+            dof_per_node[2],
+            dof_per_node[3],
+            stencil_type,
+            stencil_width,
+            ref_points_per_proc[1],
+            ref_points_per_proc[2],
+            dm,
+        )
+    end
+
+    dmsetfromoptions && setfromoptions!(dm)
+    dmsetup && setup!(dm)
+
+    # We can only let the garbage collect finalize when we do not need to
+    # worry about MPI (since garbage collection is asyncronous)
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, dm)
+    end
+
+    return dm
+end
+
+function DMStag(
+    petsclib::PetscLib,
+    comm::MPI.Comm,
+    boundary_type::NTuple{3, DMBoundaryType},
+    global_dim::NTuple{3, Integer},
+    dof_per_node::NTuple{4, Integer},
+    stencil_width::Integer,
+    stencil_type = DMSTAG_STENCIL_BOX;
+    points_per_proc::Tuple = (nothing, nothing, nothing),
+    processors::Tuple = (PETSC_DECIDE, PETSC_DECIDE, PETSC_DECIDE),
+    dmsetfromoptions = true,
+    dmsetup = true,
+    options...,
+) where {PetscLib}
+    opts = Options(petsclib; options...)
+    dm = DMStag{PetscLib}(C_NULL, opts, petsclib.age)
+
+    ref_points_per_proc = ntuple(3) do d
+        if isnothing(points_per_proc[d]) || points_per_proc[d] == PETSC_DECIDE
+            C_NULL
+        else
+            @assert points_per_proc[d] isa Array{PetscLib.PetscInt}
+            @assert length(points_per_proc[d]) == MPI.Comm_size(comm)
+            points_per_proc[d]
+        end
+    end
+
+    with(dm.opts) do
+        LibPETSc.DMStagCreate3d(
+            PetscLib,
+            comm,
+            boundary_type[1],
+            boundary_type[2],
+            boundary_type[3],
+            global_dim[1],
+            global_dim[2],
+            global_dim[3],
+            processors[1],
+            processors[2],
+            processors[3],
+            dof_per_node[1],
+            dof_per_node[2],
+            dof_per_node[3],
+            dof_per_node[4],
+            stencil_type,
+            stencil_width,
+            ref_points_per_proc[1],
+            ref_points_per_proc[2],
+            ref_points_per_proc[3],
+            dm,
+        )
+    end
+
+    dmsetfromoptions && setfromoptions!(dm)
+    dmsetup && setup!(dm)
+
+    # We can only let the garbage collect finalize when we do not need to
+    # worry about MPI (since garbage collection is asyncronous)
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, dm)
+    end
+
+    return dm
+end
+
 """
     globalsize(dm::AbstractDMStag)
 
@@ -77,13 +245,20 @@ $(_doc_external("DMStag/DMStagGetGlobalSizes"))
 """
 function globalsize(dm::AbstractDMStag{PetscLib}) where {PetscLib}
     PetscInt = PetscLib.PetscInt
-    M = Ref{PetscInt}(1)
-    N = Ref{PetscInt}(1)
-    P = Ref{PetscInt}(1)
+    global_size = [PetscInt(1), PetscInt(1), PetscInt(1)]
 
-    LibPETSc.DMStagGetGlobalSizes(PetscLib, dm, M, N, P)
+    LibPETSc.DMStagGetGlobalSizes(
+        PetscLib,
+        dm,
+        Ref(global_size, 1),
+        Ref(global_size, 2),
+        Ref(global_size, 3),
+    )
 
-    return (M[], N[], P[])
+    map!(global_size, global_size) do v
+        v == 0 ? 1 : v
+    end
+    return (global_size[1], global_size[2], global_size[3])
 end
 Base.size(dm::AbstractDMStag) = globalsize(dm)
 
@@ -100,13 +275,20 @@ $(_doc_external("DMStag/DMStagGetLocalSizes"))
 """
 function localsize(dm::AbstractDMStag{PetscLib}) where {PetscLib}
     PetscInt = PetscLib.PetscInt
-    M = Ref{PetscInt}(1)
-    N = Ref{PetscInt}(1)
-    P = Ref{PetscInt}(1)
+    local_size = [PetscInt(1), PetscInt(1), PetscInt(1)]
 
-    LibPETSc.DMStagGetLocalSizes(PetscLib, dm, M, N, P)
+    LibPETSc.DMStagGetLocalSizes(
+        PetscLib,
+        dm,
+        Ref(local_size, 1),
+        Ref(local_size, 2),
+        Ref(local_size, 3),
+    )
 
-    return (M[], N[], P[])
+    map!(local_size, local_size) do v
+        v == 0 ? 1 : v
+    end
+    return (local_size[1], local_size[2], local_size[3])
 end
 
 """

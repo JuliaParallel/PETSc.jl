@@ -12,7 +12,7 @@ MPI.Initialized() || MPI.Init()
         PetscInt = petsclib.PetscInt
 
         dof_per_node = (3, 4)
-        stencil_width = 5
+        stencil_width = 3
 
         for boundary_type in instances(PETSc.DMBoundaryType)
 
@@ -42,10 +42,10 @@ MPI.Initialized() || MPI.Init()
                 @test PETSc.gettype(dm) == "stag"
                 @test PETSc.getdimension(dm) == 1
                 @test PETSc.globalsize(dm) ===
-                      (global_size, PetscInt(0), PetscInt(0))
-                @test size(dm) === (global_size, PetscInt(0), PetscInt(0))
+                      (global_size, PetscInt(1), PetscInt(1))
+                @test size(dm) === (global_size, PetscInt(1), PetscInt(1))
                 @test PETSc.localsize(dm) ===
-                      (points_per_proc[mpirank + 1], PetscInt(0), PetscInt(0))
+                      (points_per_proc[mpirank + 1], PetscInt(1), PetscInt(1))
 
                 corners = PETSc.getcorners(dm)
                 @test corners.lower ==
@@ -86,6 +86,192 @@ MPI.Initialized() || MPI.Init()
                     PETSc.DM_BOUNDARY_NONE,
                     PETSc.DM_BOUNDARY_NONE,
                 )
+                PETSc.destroy(dm)
+            end
+        end
+    end
+end
+
+@testset "DMStagCreate2d" begin
+    comm = MPI.COMM_WORLD
+    mpirank = MPI.Comm_rank(comm)
+    mpisize = MPI.Comm_size(comm)
+    global_size_x = 100
+    global_size_y = 45
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt = petsclib.PetscInt
+
+        dof_per_node = (3, 4, 5)
+        stencil_width = 5
+
+        for boundary_type_y in instances(PETSc.DMBoundaryType),
+            boundary_type_x in instances(PETSc.DMBoundaryType)
+
+            # DMStag cannot be used with these boundary types
+            boundary_type_x ∈
+            (PETSc.DM_BOUNDARY_MIRROR, PETSc.DM_BOUNDARY_TWIST) && continue
+            boundary_type_y ∈
+            (PETSc.DM_BOUNDARY_MIRROR, PETSc.DM_BOUNDARY_TWIST) && continue
+
+            @testset "$boundary_type_x, $boundary_type_y" begin
+                dm = PETSc.DMStag(
+                    petsclib,
+                    comm,
+                    (boundary_type_x, boundary_type_y),
+                    (global_size_x, global_size_y),
+                    dof_per_node,
+                    stencil_width,
+                )
+
+                @test PETSc.gettype(dm) == "stag"
+                @test PETSc.getdimension(dm) == 2
+                @test PETSc.globalsize(dm) === (
+                    PetscInt(global_size_x),
+                    PetscInt(global_size_y),
+                    PetscInt(1),
+                )
+                @test size(dm) === (
+                    PetscInt(global_size_x),
+                    PetscInt(global_size_y),
+                    PetscInt(1),
+                )
+
+                corners = PETSc.getcorners(dm)
+                ghost_corners = PETSc.getghostcorners(dm)
+                isfirst = PETSc.isfirstrank(dm)
+                islast = PETSc.islastrank(dm)
+
+                bt = (boundary_type_x, boundary_type_y, PETSc.DM_BOUNDARY_NONE)
+                for d in 1:3
+                    # Check left side ghost_corners and corner
+                    if d == 3
+                        @test corners.lower[d] == ghost_corners.lower[d]
+                    elseif !isfirst[d] || bt[d] != PETSc.DM_BOUNDARY_NONE
+                        @test corners.lower[d] ==
+                              ghost_corners.lower[d] + stencil_width
+                    else
+                        @test corners.lower[d] == ghost_corners.lower[d]
+                    end
+
+                    # Check right side ghost_corners and corner
+                    if d == 3
+                        @test corners.upper[d] == ghost_corners.upper[d]
+                    elseif bt[d] != PETSc.DM_BOUNDARY_NONE
+                        @test corners.upper[d] ==
+                              ghost_corners.upper[d] - stencil_width
+                    elseif !islast[d]
+                        @test corners.upper[d] ==
+                              ghost_corners.upper[d] - stencil_width
+                    else
+                        @test corners.upper[d] == ghost_corners.upper[d] - 1
+                    end
+
+                    # Check the nextra
+                    if islast[d] && bt[d] != PETSc.DM_BOUNDARY_PERIODIC
+                        @test corners.nextra[d] == 1
+                    else
+                        @test corners.nextra[d] == 0
+                    end
+                end
+
+                @test PETSc.boundarytypes(dm) ===
+                      (boundary_type_x, boundary_type_y, PETSc.DM_BOUNDARY_NONE)
+
+                PETSc.destroy(dm)
+            end
+        end
+    end
+end
+
+@testset "DMStagCreate3d" begin
+    comm = MPI.COMM_WORLD
+    mpirank = MPI.Comm_rank(comm)
+    mpisize = MPI.Comm_size(comm)
+    global_size_x = 20
+    global_size_y = 25
+    global_size_z = 30
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt = petsclib.PetscInt
+
+        dof_per_node = (2, 3, 4, 5)
+        stencil_width = 5
+
+        for boundary_type_z in instances(PETSc.DMBoundaryType),
+            boundary_type_y in instances(PETSc.DMBoundaryType),
+            boundary_type_x in instances(PETSc.DMBoundaryType)
+
+            # DMStag cannot be used with these boundary types
+            boundary_type_x ∈
+            (PETSc.DM_BOUNDARY_MIRROR, PETSc.DM_BOUNDARY_TWIST) && continue
+            boundary_type_y ∈
+            (PETSc.DM_BOUNDARY_MIRROR, PETSc.DM_BOUNDARY_TWIST) && continue
+            boundary_type_z ∈
+            (PETSc.DM_BOUNDARY_MIRROR, PETSc.DM_BOUNDARY_TWIST) && continue
+
+            @testset "$boundary_type_x, $boundary_type_y, $boundary_type_z" begin
+                dm = PETSc.DMStag(
+                    petsclib,
+                    comm,
+                    (boundary_type_x, boundary_type_y, boundary_type_z),
+                    (global_size_x, global_size_y, global_size_z),
+                    dof_per_node,
+                    stencil_width,
+                )
+
+                @test PETSc.gettype(dm) == "stag"
+                @test PETSc.getdimension(dm) == 3
+                @test PETSc.globalsize(dm) === (
+                    PetscInt(global_size_x),
+                    PetscInt(global_size_y),
+                    PetscInt(global_size_z),
+                )
+                @test size(dm) === (
+                    PetscInt(global_size_x),
+                    PetscInt(global_size_y),
+                    PetscInt(global_size_z),
+                )
+
+                corners = PETSc.getcorners(dm)
+                ghost_corners = PETSc.getghostcorners(dm)
+                isfirst = PETSc.isfirstrank(dm)
+                islast = PETSc.islastrank(dm)
+
+                bt = (boundary_type_x, boundary_type_y, boundary_type_z)
+                for d in 1:3
+                    # Check left side ghost_corners and corner
+                    if !isfirst[d] || bt[d] != PETSc.DM_BOUNDARY_NONE
+                        @test corners.lower[d] ==
+                              ghost_corners.lower[d] + stencil_width
+                    else
+                        @test corners.lower[d] == ghost_corners.lower[d]
+                    end
+
+                    # Check right side ghost_corners and corner
+                    if bt[d] != PETSc.DM_BOUNDARY_NONE
+                        @test corners.upper[d] ==
+                              ghost_corners.upper[d] - stencil_width
+                    elseif !islast[d]
+                        @test corners.upper[d] ==
+                              ghost_corners.upper[d] - stencil_width
+                    else
+                        @test corners.upper[d] == ghost_corners.upper[d] - 1
+                    end
+
+                    # Check the nextra
+                    if islast[d] && bt[d] != PETSc.DM_BOUNDARY_PERIODIC
+                        @test corners.nextra[d] == 1
+                    else
+                        @test corners.nextra[d] == 0
+                    end
+                end
+
+                @test PETSc.boundarytypes(dm) ===
+                      (boundary_type_x, boundary_type_y, boundary_type_z)
+
                 PETSc.destroy(dm)
             end
         end

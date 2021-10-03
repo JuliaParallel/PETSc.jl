@@ -39,13 +39,15 @@ Lets consider the following elliptic equation:
 
 ```julia
 julia> using PETSc
+julia> petsclib = PETSc.petsclibs[1]
+julia> PETSc.initialize(petsclib)
 julia> n   =  11
 julia> Δx  =  1. / (n - 1)
 ```
 
 Let's first define the matrix with coefficients:
 ```julia
-julia> nnz =  ones(Int32,n); nnz[2:n-1] .= 3;
+julia> nnz =  ones(Int64,n); nnz[2:n-1] .= 3;
 julia> A   =  PETSc.MatSeqAIJ{Float64}(n,n,nnz);
 julia> for i=2:n-1
             A[i,i-1] =  1/Δx^2
@@ -132,9 +134,15 @@ f = \binom{ x^2 + x y  - 3} {x y + y^2  - 6}
 
 In order to solve this, we need to provide a residual function that computes ``f``:
 ```julia
-julia> function F!(fx, x)
+julia> function F!(cfx, cx, args...)
+         x     = PETSc.unsafe_localarray(Float64, cx;  write=false)   # read array
+         fx    = PETSc.unsafe_localarray(Float64, cfx; read=false)    # write array
+         
          fx[1] = x[1]^2 + x[1]*x[2] - 3
          fx[2] = x[1]*x[2] + x[2]^2 - 6
+         
+          Base.finalize(fx)
+          Base.finalize(x)
        end
 ```
 
@@ -153,17 +161,20 @@ y & x + 2y  \\
 ```
 In Julia, this is:
 ```julia
-julia> function updateJ!(x, args...)
+julia> function updateJ!(cx, J, args...)
+            x      = PETSc.unsafe_localarray(Float64, cx;  write=false)
             J[1,1] = 2x[1] + x[2]
             J[1,2] = x[1]
             J[2,1] = x[2]
             J[2,2] = x[1] + 2x[2]
+            Base.finalize(x)
+            PETSc.assemble(J)          
         end
 ```
 In order to solve this using the PETSc nonlinear equation solvers, you first define the `SNES` solver together with the jacobian and residual functions as 
 ```julia
 julia> using PETSc, MPI
-julia> S = PETSc.SNES{Float64}(MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
+julia> S = PETSc.SNES{Float64}(petsclib,MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
 julia> PETSc.setfunction!(S, F!, PETSc.VecSeq(zeros(2)))
 julia> J = zeros(2,2)
 julia> PJ = PETSc.MatSeqDense(J)

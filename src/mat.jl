@@ -159,16 +159,16 @@ function MatSetValuesStencil! end
         return nullspace
     end
 
-    function MatNullSpace{$PetscScalar}(comm::MPI.Comm, has_constant, n::Int, vecs::Vector{<:PETSc.AbstractVec{$PetscScalar}})
-        @assert PETSc.initialized($petsclib)
+    function MatNullSpace{$PetscScalar}(comm::MPI.Comm, has_constant, n::Int, vecs::Vector{<:AbstractVec{$PetscScalar}})
+        @assert initialized($petsclib)
         @assert n == length(vecs)
         nullspace = MatNullSpace{$PetscScalar}(C_NULL, comm)
-        PETSc.@chk ccall((:MatNullSpaceCreate, $libpetsc), PETSc.PetscErrorCode,
+        @chk ccall((:MatNullSpaceCreate, $libpetsc), PetscErrorCode,
                 (MPI.MPI_Comm,
-                PETSc.PetscBool,
+                PetscBool,
                 $PetscInt,
-                Ptr{PETSc.CVec},
-                Ptr{PETSc.CMatNullSpace}
+                Ptr{CVec},
+                Ptr{CMatNullSpace}
                 ),
                 comm, has_constant, n, vecs[1], nullspace)
         return nullspace

@@ -27,7 +27,7 @@ using SparseArrays
 using SparseDiffTools
 
 # when not run interactive options can be passed via commandline arguments:
-# julia --project=examples examples/Porosity_Waves.jl -Nq1 101 -snes_monitor
+# julia --project=examples examples/porosity_waves.jl -Nq1 101 -snes_monitor
 opts = if !isinteractive()
     PETSc.parse_options(ARGS)
 else

@@ -233,6 +233,49 @@ function DMStag(
     return dm
 end
 
+function DMStag(
+    petsclib::PetscLib,
+    dm::AbstractDMStag{PetscLib},
+    dof_per_node::Union{NTuple{2,Int},NTuple{3,Int},NTuple{4,Int}},
+    dmsetfromoptions = true,
+    dmsetup = true,
+    options...,
+) where {PetscLib}
+    opts = Options(petsclib; options...)
+    dmnew = DMStag{PetscLib}(C_NULL, opts, petsclib.age)
+
+    s = size(dof_per_node,1)
+
+    dof_per_node_C = [0,0,0,0]
+
+    for (i, value) in enumerate(dof_per_node)
+        dof_per_node_C[i] = value
+    end
+
+
+    with(dm.opts) do
+        LibPETSc.DMStagCreateCompatibleDMStag(
+            PetscLib,
+            dm,
+            dof_per_node_C[1],
+            dof_per_node_C[2],
+            dof_per_node_C[3],
+            dof_per_node_C[4],
+            dmnew,
+        )
+    end
+
+    dmsetfromoptions && setfromoptions!(dmnew)
+    dmsetup && setup!(dmnew)
+
+    comm  = getcomm(dm);
+
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, dmnew)
+    end    
+
+    return dmnew
+end
 """
     globalsize(dm::AbstractDMStag)
 
@@ -426,6 +469,23 @@ function boundarytypes(dm::AbstractDMStag{PetscLib}) where {PetscLib}
     LibPETSc.DMStagGetBoundaryTypes(PetscLib, dm, Bx, By, Bz)
 
     return (Bx[], By[], Bz[])
+end
+
+function getdof(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    dofs = [PetscInt(1), PetscInt(1), PetscInt(1), PetscInt(1)]
+
+    LibPETSc.DMStagGetDOF(
+        PetscLib,
+        dm,
+        Ref(dofs, 1),
+        Ref(dofs, 2),
+        Ref(dofs, 3),
+        Ref(dofs, 4),
+    )
+    
+
+    return (dofs[1], dofs[2], dofs[3], dofs[4])
 end
 
 #

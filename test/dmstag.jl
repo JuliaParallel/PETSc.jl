@@ -41,7 +41,6 @@ MPI.Initialized() || MPI.Init()
                 )
 
                 dmnew = PETSc.DMStag(
-                    petsclib,
                     dm,
                     dof_per_nodec,
                 )
@@ -137,7 +136,6 @@ end
                 )
 
                 dmnew = PETSc.DMStag(
-                    petsclib,
                     dm,
                     dof_per_nodec,
                 )
@@ -244,7 +242,6 @@ end
                 )
 
                 dmnew = PETSc.DMStag(
-                    petsclib,
                     dm,
                     dof_per_nodec,
                 )

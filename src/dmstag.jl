@@ -234,13 +234,13 @@ function DMStag(
 end
 
 function DMStag(
-    petsclib::PetscLib,
     dm::AbstractDMStag{PetscLib},
     dof_per_node::Union{NTuple{2,Int},NTuple{3,Int},NTuple{4,Int}},
     dmsetfromoptions = true,
     dmsetup = true,
     options...,
 ) where {PetscLib}
+    petsclib = getlib(PetscLib)
     opts = Options(petsclib; options...)
     dmnew = DMStag{PetscLib}(C_NULL, opts, petsclib.age)
 
@@ -492,7 +492,7 @@ function getdof(dm::AbstractDMStag{PetscLib}) where {PetscLib}
     elseif dim == 3
         return (dofs[1], dofs[2], dofs[3], dofs[4])
     else
-        error("DimensionMismatch")
+        error("DimensionNonSupported")
     end
 end
 

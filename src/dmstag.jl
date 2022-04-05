@@ -483,9 +483,17 @@ function getdof(dm::AbstractDMStag{PetscLib}) where {PetscLib}
         Ref(dofs, 3),
         Ref(dofs, 4),
     )
-    
 
-    return (dofs[1], dofs[2], dofs[3], dofs[4])
+    dim = getdimension(dm)
+    if dim == 1
+        return (dofs[1], dofs[2])
+    elseif dim == 2
+        return (dofs[1], dofs[2], dofs[3])
+    elseif dim == 3
+        return (dofs[1], dofs[2], dofs[3], dofs[4])
+    else
+        error("DimensionMismatch")
+    end
 end
 
 #

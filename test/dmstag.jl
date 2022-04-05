@@ -49,8 +49,8 @@ MPI.Initialized() || MPI.Init()
                 @test PETSc.gettype(dm) == "stag"
                 @test PETSc.gettype(dmnew) == "stag"
                 @test PETSc.getdimension(dm) == 1
-                @test PETSc.getdof(dm) == (3, 4, 0, 0)
-                @test PETSc.getdof(dmnew) == (4, 3, 0, 0)
+                @test PETSc.getdof(dm) == (3, 4)
+                @test PETSc.getdof(dmnew) == (4, 3)
                 @test PETSc.globalsize(dm) ===
                       (global_size, PetscInt(1), PetscInt(1))
                 @test size(dm) === (global_size, PetscInt(1), PetscInt(1))
@@ -145,8 +145,8 @@ end
                 @test PETSc.gettype(dm) == "stag"
                 @test PETSc.gettype(dmnew) == "stag"
                 @test PETSc.getdimension(dm) == 2
-                @test PETSc.getdof(dm) == (3, 4, 5, 0)
-                @test PETSc.getdof(dmnew) == (4, 3, 0, 0)
+                @test PETSc.getdof(dm) == (3, 4, 5)
+                @test PETSc.getdof(dmnew) == (4, 3, 0)
                 @test PETSc.globalsize(dm) === (
                     PetscInt(global_size_x),
                     PetscInt(global_size_y),

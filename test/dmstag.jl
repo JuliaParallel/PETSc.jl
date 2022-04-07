@@ -96,6 +96,7 @@ MPI.Initialized() || MPI.Init()
                     PETSc.DM_BOUNDARY_NONE,
                 )
                 PETSc.destroy(dm)
+                PETSc.destroy(dmnew)
             end
         end
     end
@@ -198,6 +199,7 @@ end
                       (boundary_type_x, boundary_type_y, PETSc.DM_BOUNDARY_NONE)
 
                 PETSc.destroy(dm)
+                PETSc.destroy(dmnew)
             end
         end
     end
@@ -300,6 +302,7 @@ end
                       (boundary_type_x, boundary_type_y, boundary_type_z)
 
                 PETSc.destroy(dm)
+                PETSc.destroy(dmnew)
             end
         end
     end

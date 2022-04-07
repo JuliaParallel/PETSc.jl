@@ -496,6 +496,80 @@ function getdof(dm::AbstractDMStag{PetscLib}) where {PetscLib}
     end
 end
 
+function setuniformcoordinates!(
+    dm::AbstractDMStag{PetscLib},
+    xyzmin::Union{NTuple{1,Int},NTuple{2,Int},NTuple{3,Int}},
+    xyzmax::Union{NTuple{1,Int},NTuple{2,Int},NTuple{3,Int}},
+    ) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+
+    xmin = xyzmin[1]
+    xmax = xyzmax[1]
+
+    s = size(xyzmin,1)
+
+    ymin = (s > 1) ? xyzmin[2] : PetscInt(0)
+    ymax = (s > 1) ? xyzmax[2] : PetscInt(0)
+
+    zmin = (s > 2) ? xyzmin[3] : PetscInt(0)
+    zmax = (s > 2) ? xyzmax[3] : PetscInt(0)
+
+    LibPETSc.DMStagSetUniformCoordinatesProduct(
+        PetscLib,
+        dm,
+        xmin,
+        xmax,
+        ymin,
+        ymax,
+        zmin,
+        zmax,
+    )
+
+    return nothing
+end
+
+function getcoordinatearray(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscScalar = PetscLib.PetscScalar
+
+    xP = Ref{Ptr{Ptr{PetscScalar}}}(C_NULL)
+    yP = Ref{Ptr{Ptr{PetscScalar}}}(C_NULL)
+    zP = Ref{Ptr{Ptr{PetscScalar}}}(C_NULL)
+
+    LibPETSc.DMStagGetProductCoordinateArrays(
+        PetscLib,
+        dm,
+        xP,
+        yP,
+        zP
+    )
+
+    corners = getghostcorners(dm)
+    mstart  = corners.lower
+    s       = corners.size
+
+    
+    xP = Base.unsafe_load(xP[],mstart[1])
+    xArray = unsafe_wrap(Array, xP, (2,s[1]); own = false)
+    if yP[] != (C_NULL)
+        yP = Base.unsafe_load(yP[],mstart[2])
+        yArray = unsafe_wrap(Array, yP, (2,s[2]); own = false)
+    else 
+        yArray = nothing
+    end
+    if zP[] != (C_NULL)
+        zP = Base.unsafe_load(zP[],mstart[3])
+        zArray = unsafe_wrap(Array, zP, (2,s[3]); own = false)
+    else
+        zArray = nothing
+    end
+
+    #TO DO: OFFSET ARRAY JULIA SIDE FOR PARRALEL
+
+    return xArray,yArray,zArray
+
+end
+
+
 #
 #= Original DMSTAG
 

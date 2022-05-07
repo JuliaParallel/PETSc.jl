@@ -12,6 +12,8 @@ mutable struct DMStagPtr{PetscLib} <: AbstractDMStag{PetscLib}
     own::Bool
 end
 
+#abstract type DMStagStencilLocation{PetscLib} end
+
 """
     DMStag(
         petsclib::PetscLib
@@ -546,29 +548,121 @@ function getcoordinatearray(dm::AbstractDMStag{PetscLib}) where {PetscLib}
     corners = getghostcorners(dm)
     mstart  = corners.lower
     s       = corners.size
-
     
     xP = Base.unsafe_load(xP[],mstart[1])
     xArray = unsafe_wrap(Array, xP, (2,s[1]); own = false)
+    xArrayO = OffsetArray(xArray,CartesianIndex(1,mstart[1]):CartesianIndex(2,mstart[1]+s[1]-1))
     if yP[] != (C_NULL)
         yP = Base.unsafe_load(yP[],mstart[2])
         yArray = unsafe_wrap(Array, yP, (2,s[2]); own = false)
+        yArrayO = OffsetArray(yArray,CartesianIndex(1,mstart[2]):CartesianIndex(2,mstart[2]+s[2]-1))
     else 
-        yArray = nothing
+        yArrayO = nothing
     end
     if zP[] != (C_NULL)
         zP = Base.unsafe_load(zP[],mstart[3])
         zArray = unsafe_wrap(Array, zP, (2,s[3]); own = false)
+        zArrayO = OffsetArray(zArray,CartesianIndex(1,mstart[3]):CartesianIndex(2,mstart[3]+s[3]-1))
     else
-        zArray = nothing
+        zArrayO = nothing
     end
 
-    #TO DO: OFFSET ARRAY JULIA SIDE FOR PARRALEL
-
-    return xArray,yArray,zArray
+    return xArrayO,yArrayO,zArrayO
 
 end
 
+function getentriesperelement(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    entriesPerElement = [PetscInt(1)]
+
+    LibPETSc.DMStagGetEntriesPerElement(
+        PetscLib,
+        dm,
+        Ref(entriesPerElement,1)
+    )
+
+    return entriesPerElement[1]
+end
+
+
+
+function vecgetarray(dm::AbstractDMStag{PetscLib}, v::AbstractVec{PetscLib}) where {PetscLib}
+    # Note: there is actually no need to call PETSc again, as Julia has the possibility 
+    # to wrap an existing array into another one. Our vec already has the array wrapper, 
+    # so we reshape that 
+
+    # Extract array from vector. Note: we need to release this by calling 
+    # Base.finalize on X1!
+    X1       =   unsafe_localarray(v;  write=true, read=true)
+
+    array          =   vecgetarray(dm, X1) 
+        
+    return array
+end
+
+function vecgetarray(dm::AbstractDMStag{PetscLib}, v::Vector) where {PetscLib}
+
+    entriesPerElement   =   getentriesperelement(dm)
+    ghost_corners       =   getghostcorners(dm)
+    dim                 =   getdimension(dm) 
+
+    # Dimensions of new array (see the PETSc DMStagVecGetArrayRead routine)
+    dim_vec             =   [entriesPerElement; collect(ghost_corners.size[1:dim])]
+
+    # Wrap julia vector to new vector.
+    X                   =    Base.view(v,:)
+
+    @show X
+        
+    # reshape to correct format
+    X                   =   reshape(v, Tuple(dim_vec))
+    array               =   PermutedDimsArray(X, Tuple([2:dim+1;1]))   # permute to take care of different array ordering in C/Julia
+       
+    return array
+end  
+
+function getlocationslot(
+    dm::AbstractDMStag{PetscLib},
+    loc::DMStagStencilLocation, 
+    dof::Integer
+    ) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    slot = [PetscInt(1)]
+
+    LibPETSc.DMStagGetEntriesPerElement(
+        PetscLib,
+        dm,
+        loc,
+        dof,
+        Ref(slot,1)
+    )
+
+    return slot[]
+end
+
+#=
+
+function DMStagGetGhostArrayLocationSlot(
+    dm::AbstractDMStag{PetscLib}, 
+    v::AbstractVec{PetscLib}, 
+    loc::DMStagStencilLocation, 
+    dof::Integer
+    )
+
+    entriesPerElement   =   getentriesperelement(dm)
+    dim                 =   getdimension(dm);  
+    slot                =   DMStagGetLocationSlot(dm, loc, dof); 
+    slot_start          =   mod(slot,entriesPerElement);          # figure out which component we are interested in
+
+    ArrayFull           =   DMStagVecGetArray(dm, v);             # obtain access to full array
+
+    # now extract only the dimension belonging to the current point
+    Array               =   selectdim(ArrayFull,dim+1, slot_start+1);
+
+    return Array
+end
+
+=#
 
 #
 #= Original DMSTAG

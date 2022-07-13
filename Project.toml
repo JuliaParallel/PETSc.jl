@@ -11,7 +11,7 @@ PETSc_jll = "8fa3689e-f0b9-5420-9873-adf6ccf46f2d"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]
-MPI = "0.15, 0.16, 0.17, 0.18, 0.19"
+MPI = "0.15, 0.16, 0.17, 0.18, 0.19, 0.20"
 PETSc_jll = "3.15.2"
 julia = "1.3"
 

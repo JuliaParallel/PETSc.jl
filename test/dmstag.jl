@@ -12,6 +12,7 @@ MPI.Initialized() || MPI.Init()
         PetscInt = petsclib.PetscInt
 
         dof_per_node = (3, 4)
+        dof_per_nodec= (4, 3)
         stencil_width = 3
 
         for boundary_type in instances(PETSc.DMBoundaryType)
@@ -39,8 +40,16 @@ MPI.Initialized() || MPI.Init()
                     points_per_proc = (points_per_proc,),
                 )
 
+                dmnew = PETSc.DMStag(
+                    dm,
+                    dof_per_nodec,
+                )
+
                 @test PETSc.gettype(dm) == "stag"
+                @test PETSc.gettype(dmnew) == "stag"
                 @test PETSc.getdimension(dm) == 1
+                @test PETSc.getdof(dm) == (3, 4)
+                @test PETSc.getdof(dmnew) == (4, 3)
                 @test PETSc.globalsize(dm) ===
                       (global_size, PetscInt(1), PetscInt(1))
                 @test size(dm) === (global_size, PetscInt(1), PetscInt(1))
@@ -87,6 +96,7 @@ MPI.Initialized() || MPI.Init()
                     PETSc.DM_BOUNDARY_NONE,
                 )
                 PETSc.destroy(dm)
+                PETSc.destroy(dmnew)
             end
         end
     end
@@ -104,6 +114,7 @@ end
         PetscInt = petsclib.PetscInt
 
         dof_per_node = (3, 4, 5)
+        dof_per_nodec= (4,3)
         stencil_width = 5
 
         for boundary_type_y in instances(PETSc.DMBoundaryType),
@@ -125,8 +136,16 @@ end
                     stencil_width,
                 )
 
+                dmnew = PETSc.DMStag(
+                    dm,
+                    dof_per_nodec,
+                )
+
                 @test PETSc.gettype(dm) == "stag"
+                @test PETSc.gettype(dmnew) == "stag"
                 @test PETSc.getdimension(dm) == 2
+                @test PETSc.getdof(dm) == (3, 4, 5)
+                @test PETSc.getdof(dmnew) == (4, 3, 0)
                 @test PETSc.globalsize(dm) === (
                     PetscInt(global_size_x),
                     PetscInt(global_size_y),
@@ -180,6 +199,7 @@ end
                       (boundary_type_x, boundary_type_y, PETSc.DM_BOUNDARY_NONE)
 
                 PETSc.destroy(dm)
+                PETSc.destroy(dmnew)
             end
         end
     end
@@ -198,6 +218,7 @@ end
         PetscInt = petsclib.PetscInt
 
         dof_per_node = (2, 3, 4, 5)
+        dof_per_nodec= (4,3)
         stencil_width = 5
 
         for boundary_type_z in instances(PETSc.DMBoundaryType),
@@ -222,8 +243,16 @@ end
                     stencil_width,
                 )
 
+                dmnew = PETSc.DMStag(
+                    dm,
+                    dof_per_nodec,
+                )
+
                 @test PETSc.gettype(dm) == "stag"
+                @test PETSc.gettype(dmnew) == "stag"
                 @test PETSc.getdimension(dm) == 3
+                @test PETSc.getdof(dm) == (2, 3, 4, 5)
+                @test PETSc.getdof(dmnew) == (4, 3, 0, 0)
                 @test PETSc.globalsize(dm) === (
                     PetscInt(global_size_x),
                     PetscInt(global_size_y),
@@ -273,6 +302,7 @@ end
                       (boundary_type_x, boundary_type_y, boundary_type_z)
 
                 PETSc.destroy(dm)
+                PETSc.destroy(dmnew)
             end
         end
     end

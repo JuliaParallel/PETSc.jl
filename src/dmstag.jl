@@ -12,6 +12,8 @@ mutable struct DMStagPtr{PetscLib} <: AbstractDMStag{PetscLib}
     own::Bool
 end
 
+#abstract type DMStagStencilLocation{PetscLib} end
+
 """
     DMStag(
         petsclib::PetscLib
@@ -233,6 +235,49 @@ function DMStag(
     return dm
 end
 
+function DMStag(
+    dm::AbstractDMStag{PetscLib},
+    dof_per_node::Union{NTuple{2,Int},NTuple{3,Int},NTuple{4,Int}},
+    dmsetfromoptions = true,
+    dmsetup = true,
+    options...,
+) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    opts = Options(petsclib; options...)
+    dmnew = DMStag{PetscLib}(C_NULL, opts, petsclib.age)
+
+    s = size(dof_per_node,1)
+
+    dof_per_node_C = [0,0,0,0]
+
+    for (i, value) in enumerate(dof_per_node)
+        dof_per_node_C[i] = value
+    end
+
+
+    with(dm.opts) do
+        LibPETSc.DMStagCreateCompatibleDMStag(
+            PetscLib,
+            dm,
+            dof_per_node_C[1],
+            dof_per_node_C[2],
+            dof_per_node_C[3],
+            dof_per_node_C[4],
+            dmnew,
+        )
+    end
+
+    dmsetfromoptions && setfromoptions!(dmnew)
+    dmsetup && setup!(dmnew)
+
+    comm  = getcomm(dm);
+
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, dmnew)
+    end    
+
+    return dmnew
+end
 """
     globalsize(dm::AbstractDMStag)
 
@@ -427,6 +472,197 @@ function boundarytypes(dm::AbstractDMStag{PetscLib}) where {PetscLib}
 
     return (Bx[], By[], Bz[])
 end
+
+function getdof(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    dofs = [PetscInt(1), PetscInt(1), PetscInt(1), PetscInt(1)]
+
+    LibPETSc.DMStagGetDOF(
+        PetscLib,
+        dm,
+        Ref(dofs, 1),
+        Ref(dofs, 2),
+        Ref(dofs, 3),
+        Ref(dofs, 4),
+    )
+
+    dim = getdimension(dm)
+    if dim == 1
+        return (dofs[1], dofs[2])
+    elseif dim == 2
+        return (dofs[1], dofs[2], dofs[3])
+    elseif dim == 3
+        return (dofs[1], dofs[2], dofs[3], dofs[4])
+    else
+        error("DimensionNonSupported")
+    end
+end
+
+function setuniformcoordinates!(
+    dm::AbstractDMStag{PetscLib},
+    xyzmin::Union{NTuple{1,Int},NTuple{2,Int},NTuple{3,Int}},
+    xyzmax::Union{NTuple{1,Int},NTuple{2,Int},NTuple{3,Int}},
+    ) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+
+    xmin = xyzmin[1]
+    xmax = xyzmax[1]
+
+    s = size(xyzmin,1)
+
+    ymin = (s > 1) ? xyzmin[2] : PetscInt(0)
+    ymax = (s > 1) ? xyzmax[2] : PetscInt(0)
+
+    zmin = (s > 2) ? xyzmin[3] : PetscInt(0)
+    zmax = (s > 2) ? xyzmax[3] : PetscInt(0)
+
+    LibPETSc.DMStagSetUniformCoordinatesProduct(
+        PetscLib,
+        dm,
+        xmin,
+        xmax,
+        ymin,
+        ymax,
+        zmin,
+        zmax,
+    )
+
+    return nothing
+end
+
+function getcoordinatearray(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscScalar = PetscLib.PetscScalar
+
+    xP = Ref{Ptr{Ptr{PetscScalar}}}(C_NULL)
+    yP = Ref{Ptr{Ptr{PetscScalar}}}(C_NULL)
+    zP = Ref{Ptr{Ptr{PetscScalar}}}(C_NULL)
+
+    LibPETSc.DMStagGetProductCoordinateArrays(
+        PetscLib,
+        dm,
+        xP,
+        yP,
+        zP
+    )
+
+    corners = getghostcorners(dm)
+    mstart  = corners.lower
+    s       = corners.size
+    
+    xP = Base.unsafe_load(xP[],mstart[1])
+    xArray = unsafe_wrap(Array, xP, (2,s[1]); own = false)
+    xArrayO = OffsetArray(xArray,CartesianIndex(1,mstart[1]):CartesianIndex(2,mstart[1]+s[1]-1))
+    if yP[] != (C_NULL)
+        yP = Base.unsafe_load(yP[],mstart[2])
+        yArray = unsafe_wrap(Array, yP, (2,s[2]); own = false)
+        yArrayO = OffsetArray(yArray,CartesianIndex(1,mstart[2]):CartesianIndex(2,mstart[2]+s[2]-1))
+    else 
+        yArrayO = nothing
+    end
+    if zP[] != (C_NULL)
+        zP = Base.unsafe_load(zP[],mstart[3])
+        zArray = unsafe_wrap(Array, zP, (2,s[3]); own = false)
+        zArrayO = OffsetArray(zArray,CartesianIndex(1,mstart[3]):CartesianIndex(2,mstart[3]+s[3]-1))
+    else
+        zArrayO = nothing
+    end
+
+    return xArrayO,yArrayO,zArrayO
+
+end
+
+function getentriesperelement(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    entriesPerElement = [PetscInt(1)]
+
+    LibPETSc.DMStagGetEntriesPerElement(
+        PetscLib,
+        dm,
+        Ref(entriesPerElement,1)
+    )
+
+    return entriesPerElement[1]
+end
+
+
+
+function vecgetarray(dm::AbstractDMStag{PetscLib}, v::AbstractVec{PetscLib}) where {PetscLib}
+    # Note: there is actually no need to call PETSc again, as Julia has the possibility 
+    # to wrap an existing array into another one. Our vec already has the array wrapper, 
+    # so we reshape that 
+
+    # Extract array from vector. Note: we need to release this by calling 
+    # Base.finalize on X1!
+    X1       =   unsafe_localarray(v;  write=true, read=true)
+
+    array          =   vecgetarray(dm, X1) 
+        
+    return array
+end
+
+function vecgetarray(dm::AbstractDMStag{PetscLib}, v::Vector) where {PetscLib}
+
+    entriesPerElement   =   getentriesperelement(dm)
+    ghost_corners       =   getghostcorners(dm)
+    dim                 =   getdimension(dm) 
+
+    # Dimensions of new array (see the PETSc DMStagVecGetArrayRead routine)
+    dim_vec             =   [entriesPerElement; collect(ghost_corners.size[1:dim])]
+
+    # Wrap julia vector to new vector.
+    X                   =    Base.view(v,:)
+
+    @show X
+        
+    # reshape to correct format
+    X                   =   reshape(v, Tuple(dim_vec))
+    array               =   PermutedDimsArray(X, Tuple([2:dim+1;1]))   # permute to take care of different array ordering in C/Julia
+       
+    return array
+end  
+
+function getlocationslot(
+    dm::AbstractDMStag{PetscLib},
+    loc::DMStagStencilLocation, 
+    dof::Integer
+    ) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    slot = [PetscInt(1)]
+
+    LibPETSc.DMStagGetEntriesPerElement(
+        PetscLib,
+        dm,
+        loc,
+        dof,
+        Ref(slot,1)
+    )
+
+    return slot[]
+end
+
+#=
+
+function DMStagGetGhostArrayLocationSlot(
+    dm::AbstractDMStag{PetscLib}, 
+    v::AbstractVec{PetscLib}, 
+    loc::DMStagStencilLocation, 
+    dof::Integer
+    )
+
+    entriesPerElement   =   getentriesperelement(dm)
+    dim                 =   getdimension(dm);  
+    slot                =   DMStagGetLocationSlot(dm, loc, dof); 
+    slot_start          =   mod(slot,entriesPerElement);          # figure out which component we are interested in
+
+    ArrayFull           =   DMStagVecGetArray(dm, v);             # obtain access to full array
+
+    # now extract only the dimension belonging to the current point
+    Array               =   selectdim(ArrayFull,dim+1, slot_start+1);
+
+    return Array
+end
+
+=#
 
 #
 #= Original DMSTAG

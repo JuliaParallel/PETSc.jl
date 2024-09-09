@@ -3,6 +3,9 @@
 [![Build Status](https://github.com/JuliaParallel/PETSc.jl/workflows/CI/badge.svg)](https://github.com/JuliaParallel/PETSc.jl/actions/workflows/ci.yml)
 [![doc dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliaparallel.github.io/PETSc.jl/dev/)
 
+> [!WARNING]  
+> `PETSc.jl` is currently broken and not being maintained because of lack of time. If you are interested to help fix it, please contact us.
+
 
 This package provides a low level interface for [PETSc](https://www.mcs.anl.gov/petsc/) and allows combining julia features (such as automatic differentiation) with the PETSc infrastructure and nonlinear solvers.
 

@@ -20,7 +20,7 @@ PETSc_dir = Pkg.Artifacts.ensure_artifact_installed("PETSc", PETSc_toml)
 MPICH_toml = joinpath(dirname(pathof(MPICH_jll)), "..", "Artifacts.toml")
 MPICH_dir = Pkg.Artifacts.ensure_artifact_installed("MPICH", MPICH_toml)
 
-petsc_include_dir = joinpath(PETSc_dir, "include") |> normpath
+petsc_include_dir = joinpath(PETSc_dir, "lib", "petsc", "double_real_Int64", "include") |> normpath
 petsc_h = joinpath(petsc_include_dir, "petsc.h")
 @assert isfile(petsc_h)
 

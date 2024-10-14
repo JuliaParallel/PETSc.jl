@@ -60,7 +60,7 @@ function _mul!(
     mat.obj(y, x)
 end
 
-function _mul!(y, mat::MatShell, x) where {T}
+function _mul!(y, mat::MatShell, x)
     LinearAlgebra.mul!(y, mat.obj, x)
 end
 

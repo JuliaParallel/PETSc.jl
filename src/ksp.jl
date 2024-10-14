@@ -1,4 +1,3 @@
-
 const CKSP = Ptr{Cvoid}
 const CKSPType = Cstring
 
@@ -38,7 +37,7 @@ Set the right-hand side function `ComputeRHS!` for the `ksp` using the user
 `(::KSP{Number}, ::Vec, ::Ptr)`;
 see [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/KSP/KSPSetComputeRHS.html)
 """
-function KSPSetComputeRHS! end
+#function KSPSetComputeRHS! end
 
 """
     struct Fn_KSPComputeRHS{T} end
@@ -59,7 +58,7 @@ user `ctx`. `ComputeOperators!` should be callable with four arguments of type
 `(::KSP{Number}, ::Mat, ::Mat, ::Ptr)`;
 see [PETSc manual](https://www.mcs.anl.gov/petsc/petsc-current/docs/manualpages/KSP/KSPSetComputeOperators.html)
 """
-function KSPSetComputeOperators! end
+#function KSPSetComputeOperators! end
 
 """
     struct Fn_KSPComputeOperators{T} end

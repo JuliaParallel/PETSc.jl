@@ -114,18 +114,24 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
         return nothing
     end
 
+    #    This function just overwrites the same function multiple times
+    #    because there is no way to dispatch to the right version based on the
+    #    function signature (which operates on Ptr{Void}). Disable for now
+    #    since it is not used anywhere.
+    #=
     function localsize(cv::CVec)
         r_sz = Ref{$PetscInt}()
         @chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode,
             (CVec, Ptr{$PetscInt}), cv, r_sz)
         return r_sz[]
     end
+    =#
 
     function setvalues!(vec::AbstractVec{$PetscScalar},idxs,vals, insertmode::InsertMode)
         idxs = Vector(Int32,idxs);
         vals = Vector(vals);
-  
-        @chk ccall((:VecSetValues, $libpetsc), PetscErrorCode, 
+
+        @chk ccall((:VecSetValues, $libpetsc), PetscErrorCode,
                  (CVec, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscScalar},InsertMode), vec, length(idxs), idxs, vals, insertmode)
         return nothing
 
@@ -146,7 +152,7 @@ Base.getindex(v::AbstractVec, I) = v.array[I]
                 (CVec, Ptr{Ptr{$PetscScalar}}), cv, r_pv)
         end
         r_sz = Ref{$PetscInt}()
-        
+
         @chk ccall((:VecGetLocalSize, $libpetsc), PetscErrorCode,
             (CVec, Ptr{$PetscInt}), cv, r_sz)
         v = unsafe_wrap(Array, r_pv[], r_sz[]; own = false)

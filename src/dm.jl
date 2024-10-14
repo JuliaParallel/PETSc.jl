@@ -59,7 +59,7 @@ end
 # External Links
 $(_doc_external("DM/DMSetFromOptions"))
 """
-function setfromoptions! end
+#function setfromoptions! end
 
 @for_petsc function setfromoptions!(
     da::AbstractDM{$PetscLib},
@@ -96,7 +96,7 @@ Return the topological dimension of the `dm`
 # External Links
 $(_doc_external("DM/DMGetDimension"))
 """
-function getdimension(::AbstractDM) end
+#function getdimension(::AbstractDM) end
 
 @for_petsc function getdimension(dm::AbstractDM{$PetscLib})
     dim = Ref{$PetscInt}()
@@ -120,7 +120,7 @@ Gets type name of the `dm`
 # External Links
 $(_doc_external("DM/DMGetType"))
 """
-function gettype(::AbstractDM) end
+#function gettype(::AbstractDM) end
 
 @for_petsc function gettype(dm::AbstractDM{$PetscLib})
     t_r = Ref{Cstring}()
@@ -142,7 +142,7 @@ view a `dm` with `viewer`
 # External Links
 $(_doc_external("DM/DMView"))
 """
-function view(::AbstractDM) end
+#function view(::AbstractDM) end
 
 @for_petsc function view(
     dm::AbstractDM{$PetscLib},
@@ -166,7 +166,7 @@ Generates a matrix from the `dm` object.
 # External Links
 $(_doc_external("DM/DMCreateMatrix"))
 """
-function creatematrix end
+#function creatematrix end
 
 @for_petsc function creatematrix(dm::AbstractDM{$PetscLib})
     mat = Mat{$PetscScalar}(C_NULL)
@@ -190,7 +190,7 @@ returns a local vector from the `dm` object.
 # External Links
 $(_doc_external("DM/DMCreateLocalVector"))
 """
-function createlocalvector end
+#function createlocalvector end
 
 @for_petsc function createlocalvector(dm::AbstractDM{$PetscLib})
     vec = DMLocalVec(C_NULL, dm)
@@ -214,7 +214,7 @@ returns a global vector from the `dm` object.
 # External Links
 $(_doc_external("DM/DMCreateGlobalVector"))
 """
-function createglobalvector end
+#function createglobalvector end
 
 @for_petsc function createglobalvector(dm::AbstractDM{$PetscLib})
     vec = DMGlobalVec(C_NULL, dm)
@@ -268,7 +268,7 @@ Updates `global_vec` from a pointer to a local vector `local_ptr` with insert `m
 # External Links
 $(_doc_external("DM/DMLocalToGlobal"))
 """
-function update!( global_vec::DMGlobalVec, local_ptr::CVec, mode::InsertMode) end
+#function update!( global_vec::DMGlobalVec, local_ptr::CVec, mode::InsertMode) end
 
 @for_petsc function update!(
     global_vec::DMGlobalVec{$PetscLib},
@@ -292,7 +292,7 @@ Updates pointer to global vec `global_ptr` from `local_vec` with insert `mode`
 # External Links
 $(_doc_external("DM/DMLocalToGlobal"))
 """
-function update!( global_vec::DMGlobalVec, local_ptr::CVec, mode::InsertMode) end
+#function update!( global_vec::DMGlobalVec, local_ptr::CVec, mode::InsertMode) end
 
 @for_petsc function update!(
     global_ptr::CVec,
@@ -316,7 +316,7 @@ Updates `local_vec` from pointer to global vec `global_ptr` with insert `mode`
 # External Links
 $(_doc_external("DM/DMGlobalToLocal"))
 """
-function update!(local_vec::DMLocalVec,global_ptr::CVec, mode::InsertMode) end
+#function update!(local_vec::DMLocalVec,global_ptr::CVec, mode::InsertMode) end
 
 @for_petsc function update!(
     local_vec::DMLocalVec{$PetscLib},
@@ -340,7 +340,7 @@ Updates pointer to local vec `local_ptr` from `global_vec` with insert `mode`
 # External Links
 $(_doc_external("DM/DMGlobalToLocal"))
 """
-function update!(local_ptr::CVec, global_vec::DMGlobalVec, mode::InsertMode) end
+#function update!(local_ptr::CVec, global_vec::DMGlobalVec, mode::InsertMode) end
 
 @for_petsc function update!(
     local_ptr::CVec,
@@ -408,12 +408,12 @@ end
         dm::AbstractDM
     )
 
-Updates pointer of `global_vec` from pointer of `local_vec` with insert `mode`. 
+Updates pointer of `global_vec` from pointer of `local_vec` with insert `mode`.
 Both vectors should belong to the same `dm`
 
 This is a low-level routine that is typically called by `update!`
 """
-function update_local2global! end
+#function update_local2global! end
 
 @for_petsc function update_local2global!(
     global_ptr::CVec,
@@ -476,7 +476,7 @@ Create a `coord_dm` for the coordinates of `dm`.
 # External Links
 $(_doc_external("DM/DMGetCoordinateDM"))
 """
-function getcoordinateDM end
+#function getcoordinateDM end
 
 @for_petsc function getcoordinateDM(dm::AbstractDM{$PetscLib})
     coord_dm = empty(dm)
@@ -506,7 +506,7 @@ Gets a local vector with the coordinates associated with `dm`.
 # External Links
 $(_doc_external("DM/DMGetCoordinatesLocal"))
 """
-function getcoordinateslocal end
+#function getcoordinateslocal end
 
 @for_petsc function getcoordinateslocal(dm::AbstractDM{$PetscLib})
     coord_vec = DMLocalVec(C_NULL, dm)

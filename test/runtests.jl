@@ -28,4 +28,3 @@ include("test_snes.jl")
 
 # Run the examples to make sure they all work
 include("examples.jl")
-

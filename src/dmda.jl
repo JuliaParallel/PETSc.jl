@@ -50,7 +50,7 @@ If keyword argument `dmsetup == true` then `setup!` is called.
 # External Links
 $(_doc_external("DMDA/DMDACreate1d"))
 """
-function DMDACreate1d end
+#function DMDACreate1d end
 
 @for_petsc function DMDACreate1d(
     ::$UnionPetscLib,
@@ -133,7 +133,7 @@ If keyword argument `dmsetup == true` then `setup!` is called.
 # External Links
 $(_doc_external("DMDA/DMDACreate2d"))
 """
-function DMDACreate2d end
+#function DMDACreate2d end
 
 @for_petsc function DMDACreate2d(
     ::$UnionPetscLib,
@@ -245,7 +245,7 @@ If keyword argument `dmsetup == true` then `setup!` is called.
 # External Links
 $(_doc_external("DMDA/DMDACreate3d"))
 """
-function DMDACreate3d end
+#function DMDACreate3d end
 
 @for_petsc function DMDACreate3d(
     ::$UnionPetscLib,
@@ -349,7 +349,7 @@ Get the info associated with the distributed array `da`.
 # External Links
 $(_doc_external("DMDA/DMDAGetInfo"))
 """
-getinfo(::DMDA)
+#getinfo(::DMDA)
 
 @for_petsc function getinfo(da::DMDA{$PetscLib})
     dim = [$PetscInt(0)]
@@ -413,7 +413,7 @@ Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 # External Links
 $(_doc_external("DMDA/DMDAGetCorners"))
 """
-function getcorners(da::DMDA) end
+#function getcorners(da::DMDA) end
 
 @for_petsc function getcorners(da::DMDA{$PetscLib})
     info = DMDALocalInfo{$PetscInt}()
@@ -456,7 +456,7 @@ Returns a `NamedTuple` with the global indices (including ghost points) of the
 # External Links
 $(_doc_external("DMDA/DMDAGetGhostCorners"))
 """
-function getghostcorners(da::DMDA) end
+#function getghostcorners(da::DMDA) end
 
 @for_petsc function getghostcorners(da::DMDA{$PetscLib})
     info = DMDALocalInfo{$PetscInt}()
@@ -504,7 +504,7 @@ by the `NTuple`s `xyzmin` and `xyzmax`. If `N` is less than the dimension of the
 # External Links
 $(_doc_external("DMDA/DMDASetUniformCoordinates"))
 """
-function setuniformcoordinates! end
+#function setuniformcoordinates! end
 
 @for_petsc function setuniformcoordinates!(
     da::DMDA{$PetscLib},

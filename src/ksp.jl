@@ -178,7 +178,7 @@ struct Fn_KSPComputeOperators{T} end
     end
 
     function settolerances!(ksp::KSP{$PetscScalar}; rtol=PETSC_DEFAULT, atol=PETSC_DEFAULT, divtol=PETSC_DEFAULT, max_it=PETSC_DEFAULT)
-        @chk ccall((:KSPSetTolerances, $libpetsc), PetscErrorCode, 
+        @chk ccall((:KSPSetTolerances, $libpetsc), PetscErrorCode,
                     (CKSP, $PetscReal, $PetscReal, $PetscReal, $PetscInt),
                     ksp, rtol, atol, divtol, max_it)
         return nothing
@@ -198,13 +198,13 @@ struct Fn_KSPComputeOperators{T} end
 
     function iters(ksp::KSP{$PetscScalar})
         r_its = Ref{$PetscInt}()
-        @chk ccall((:KSPGetIterationNumber, $libpetsc), PetscErrorCode, 
-        (KSP, Ptr{$PetscInt}), ksp, r_its)
+        @chk ccall((:KSPGetIterationNumber, $libpetsc), PetscErrorCode,
+        (CKSP, Ptr{$PetscInt}), ksp, r_its)
         return r_its[]
     end
 
     function view(ksp::KSP{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, getcomm(ksp)))
-        @chk ccall((:KSPView, $libpetsc), PetscErrorCode, 
+        @chk ccall((:KSPView, $libpetsc), PetscErrorCode,
                     (CKSP, CPetscViewer),
                 ksp, viewer);
         return nothing
@@ -212,14 +212,14 @@ struct Fn_KSPComputeOperators{T} end
 
     function resnorm(ksp::KSP{$PetscScalar})
         r_rnorm = Ref{$PetscReal}()
-        @chk ccall((:KSPGetResidualNorm, $libpetsc), PetscErrorCode, 
-        (KSP, Ptr{$PetscReal}), ksp, r_rnorm)
+        @chk ccall((:KSPGetResidualNorm, $libpetsc), PetscErrorCode,
+        (CKSP, Ptr{$PetscReal}), ksp, r_rnorm)
         return r_rnorm[]
     end
 
     function solve!(x::AbstractVec{$PetscScalar}, ksp::KSP{$PetscScalar}, b::AbstractVec{$PetscScalar})
         with(ksp.opts) do
-            @chk ccall((:KSPSolve, $libpetsc), PetscErrorCode, 
+            @chk ccall((:KSPSolve, $libpetsc), PetscErrorCode,
             (CKSP, CVec, CVec), ksp, b, x)
         end
         return x
@@ -227,7 +227,7 @@ struct Fn_KSPComputeOperators{T} end
 
     function solve!(ksp::KSP{$PetscScalar})
         with(ksp.opts) do
-            @chk ccall((:KSPSolve, $libpetsc), PetscErrorCode, 
+            @chk ccall((:KSPSolve, $libpetsc), PetscErrorCode,
             (CKSP, CVec, CVec), ksp, C_NULL, C_NULL)
         end
         return nothing
@@ -236,7 +236,7 @@ struct Fn_KSPComputeOperators{T} end
     function solve!(x::AbstractVec{$PetscScalar}, tksp::Transpose{T,K}, b::AbstractVec{$PetscScalar}) where {T,K <: KSP{$PetscScalar}}
         ksp = parent(tksp)
         with(ksp.opts) do
-            @chk ccall((:KSPSolveTranspose, $libpetsc), PetscErrorCode, 
+            @chk ccall((:KSPSolveTranspose, $libpetsc), PetscErrorCode,
             (CKSP, CVec, CVec), ksp, b, x)
         end
         return x
@@ -311,4 +311,3 @@ Gets the last (approximate preconditioned) residual norm that has been computed.
 $(_doc_external("KSP/KSPGetResidualNorm"))
 """
 resnorm
-

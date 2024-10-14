@@ -20,9 +20,7 @@ The installation can be tested with
 
 By default, the package uses a pre-built binary of
 [`PETSc`](https://github.com/JuliaBinaryWrappers/PETSc_jll.jl) along with a
-default installation of `MPI.jl`. Note that the distributed version of PETSc is using real,
-`Float64` numbers; build details can be found
-[here](https://github.com/JuliaPackaging/Yggdrasil/blob/master/P/PETSc/build_tarballs.jl)
+default installation of `MPI.jl`.
 
 ## System Builds
 

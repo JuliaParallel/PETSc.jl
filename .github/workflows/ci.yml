@@ -48,8 +48,7 @@ jobs:
             ${{ runner.os }}-
       - uses: julia-actions/julia-buildpkg@latest
       - name: use MPICH_jll
-        shell: julia --color=yes 
-        #--project=test {0}
+        shell: julia --color=yes --project=. {0}
         run: |
           #using Pkg
           #Pkg.add("MPIPreferences")
@@ -57,3 +56,5 @@ jobs:
           MPIPreferences.use_jll_binary("MPICH_jll", export_prefs=true)
           rm("test/Manifest.toml")
       - uses: julia-actions/julia-runtest@latest
+        #shell: julia --color=yes --project=test {0}
+        

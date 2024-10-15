@@ -32,7 +32,9 @@ do_mpi = true
 
     run(`$(mpiexec()) -n 2 $(Base.julia_cmd()) --threads=1 --check-bounds=yes --project=$(dirname(@__DIR__)) $(abspath("01-hello.jl"))`)
 
-    run(`$(mpiexec()) -n 2 $(Base.julia_cmd()) --threads=1 --check-bounds=yes --project=$(dirname(@__DIR__)) $(abspath("dmda.jl"))`)
+    #run(`$(mpiexec()) -n 2 $(Base.julia_cmd()) --threads=1 --check-bounds=yes --project=$(dirname(@__DIR__)) $(abspath("dmda.jl"))`)
+    run(`$(mpiexec()) -n 2 $(Base.julia_cmd()) --threads=1 --check-bounds=yes --project=$(dirname(@__DIR__)) $(abspath("test_snes.jl"))`)
+    
    # cmd = `$(mpiexec())  -n 4 $(Base.julia_cmd()) --project dmda.jl`
 
     @info "Finished parallel tests"

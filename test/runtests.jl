@@ -20,6 +20,9 @@ do_mpi = true
 
 
 @testset   "MPI" begin
+    using MPI
+    MPI.install_mpiexecjl(force=true)
+
     # Do a dummy `@test true`:
     # If the process errors out the testset would error out as well,
     # cf. https://github.com/JuliaParallel/MPI.jl/pull/391
@@ -27,8 +30,9 @@ do_mpi = true
 
     @info "Starting parallel tests"
 
-    run(`$(mpiexec()) -n 2 $(Base.julia_cmd()) --threads=1 --check-bounds=yes --project=$(dirname(@__DIR__)) $(abspath("01-hello.jl"))`)
-   # run(`$(mpiexec()) -n 2 $(Base.julia_cmd()) --threads=1 --check-bounds=yes --project=$(dirname(@__DIR__)) $(abspath("dmda.jl"))`)
+    run(`mpiexecjl -n 2 $(Base.julia_cmd()) --threads=1 --check-bounds=yes --project=$(dirname(@__DIR__)) $(abspath("01-hello.jl"))`)
+
+    run(`mpiexecjl -n 2 $(Base.julia_cmd()) --threads=1 --check-bounds=yes --project=$(dirname(@__DIR__)) $(abspath("dmda.jl"))`)
    # cmd = `$(mpiexec())  -n 4 $(Base.julia_cmd()) --project dmda.jl`
 
     @info "Finished parallel tests"

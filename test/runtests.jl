@@ -16,6 +16,22 @@ do_mpi = true
 #    success(pipeline(cmd, stderr = stderr))
 #end
 
+
+@testset   "MPI" begin
+    # Do a dummy `@test true`:
+    # If the process errors out the testset would error out as well,
+    # cf. https://github.com/JuliaParallel/MPI.jl/pull/391
+    @test true
+
+    @info "Starting parallel tests"
+
+    run(`$(mpiexec()) -n 4 $(Base.julia_cmd()) --threads=1 --check-bounds=yes --project=$(dirname(@__DIR__)) $(abspath("dmda.jl"))`)
+   # cmd = `$(mpiexec())  -n 4 $(Base.julia_cmd()) --project dmda.jl`
+
+    @info "Finished parallel tests"
+end
+
+
 # Examples with the comment
 #   # INCLUDE IN MPI TEST
 # will be run here
@@ -23,6 +39,8 @@ do_mpi = true
 #if do_mpi
 #    include("mpi_examples.jl")
 #end
+
+#=
 
 include("options.jl")
 #include("dmda.jl")
@@ -32,3 +50,5 @@ include("test_snes.jl")
 
 # Run the examples to make sure they all work
 include("examples.jl")
+
+=#

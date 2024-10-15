@@ -29,7 +29,7 @@ jobs:
           #- ubuntu-latest
           #- windows-latest
         arch:
-          - x64 
+          - aarch64 
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2

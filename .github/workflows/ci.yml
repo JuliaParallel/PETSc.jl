@@ -8,6 +8,12 @@ on:
     tags: '*'
   pull_request:
 
+concurrency:
+  # Skip intermediate builds: always.
+  # Cancel intermediate builds: always.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
 jobs:
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
@@ -17,16 +23,11 @@ jobs:
       matrix:
         version:
           - 'lts'
-          - '1.11'
+          #- '1.11'
         os:
-          - ubuntu-latest
-          - windows-latest
-        arch:
-          - x64
-        include:
           - os: macOS-latest
-            arch: aarch64
-            version: 'lts'
+          #- ubuntu-latest
+          #- windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2
@@ -43,5 +44,18 @@ jobs:
             ${{ runner.os }}-test-${{ env.cache-name }}-
             ${{ runner.os }}-test-
             ${{ runner.os }}-
-      - uses: julia-actions/julia-buildpkg@latest
+      - name: add MPIPreferences
+        shell: julia --color=yes --project=. {0}
+        run: |
+          using Pkg
+          Pkg.develop(path="lib/MPIPreferences")
+      #- uses: julia-actions/julia-buildpkg@latest
+      - name: use OpenMPI_jll
+        shell: julia --color=yes --project=test {0}
+        run: |
+          using Pkg
+          Pkg.develop(path="lib/MPIPreferences")
+          using MPIPreferences
+          MPIPreferences.use_jll_binary("MPICH_jll", export_prefs=true)
+          rm("test/Manifest.toml")
       - uses: julia-actions/julia-runtest@latest

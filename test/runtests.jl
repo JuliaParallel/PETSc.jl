@@ -1,6 +1,8 @@
 using Test
-using MPI
+using MPI: MPI, mpiexec
 
+import MPIPreferences
+@info "Testing PETSc.jl with" MPIPreferences.binary MPIPreferences.abi
 
 do_mpi = true
 #if Sys.iswindows()
@@ -25,7 +27,7 @@ do_mpi = true
 
     @info "Starting parallel tests"
 
-    run(`$(mpiexec()) -n 4 $(Base.julia_cmd()) --threads=1 --check-bounds=yes --project=$(dirname(@__DIR__)) $(abspath("dmda.jl"))`)
+    run(`$(mpiexec()) -n 2 $(Base.julia_cmd()) --threads=1 --check-bounds=yes --project=$(dirname(@__DIR__)) $(abspath("dmda.jl"))`)
    # cmd = `$(mpiexec())  -n 4 $(Base.julia_cmd()) --project dmda.jl`
 
     @info "Finished parallel tests"

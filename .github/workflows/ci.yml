@@ -25,7 +25,7 @@ jobs:
           - 'lts'
           #- '1.11'
         os:
-          - os: macOS-latest
+          - macOS-latest
           #- ubuntu-latest
           #- windows-latest
         arch:

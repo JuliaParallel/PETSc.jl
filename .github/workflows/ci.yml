@@ -16,8 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '1'
           - 'lts'
+          - '1.11'
         os:
           - ubuntu-latest
           - windows-latest
@@ -26,8 +26,7 @@ jobs:
         include:
           - os: macOS-latest
             arch: aarch64
-            version: '1'
-          
+            version: 'lts'
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2

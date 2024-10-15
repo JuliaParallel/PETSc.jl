@@ -1,5 +1,5 @@
 # 1D staggered FD example
-using PETSc, MPI, LinearAlgebra, SparseArrays, Plots, ForwardDiff
+using PETSc, MPI, LinearAlgebra, SparseArrays, ForwardDiff
 
 if ~MPI.Initialized()
     MPI.Init()

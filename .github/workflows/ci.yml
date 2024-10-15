@@ -46,7 +46,7 @@ jobs:
             ${{ runner.os }}-test-${{ env.cache-name }}-
             ${{ runner.os }}-test-
             ${{ runner.os }}-
-      #- uses: julia-actions/julia-buildpkg@latest
+      - uses: julia-actions/julia-buildpkg@latest
       - name: use MPICH_jll
         shell: julia --color=yes --project=test {0}
         run: |

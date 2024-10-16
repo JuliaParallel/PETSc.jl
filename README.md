@@ -33,10 +33,8 @@ To see the currently set library use
 using PETSc
 PETSc.libs
 ```
-
-
 ## Windows users 
 The package currently does not work on windows, mainly because `MicrosoftMPI_jll` does not function when used along with the precompiled version used in `PETSc_jll`. Windows users are therefore advised to install the Windos Subshell for Linux (WSL) and run PETSc through there. 
 
 ## Getting started
-The documentation is currently rather minimalistic; yet, if you want to see what is possible have a look at the [examples](./examples/) directory or at the tests in the [test](./test) directory. We do 
+The documentation is currently rather minimalistic; yet, if you want to see what is possible have a look at the [examples](./examples/) directory or at the tests in the [test](./test) directory. We do keep the tests up to date, so that is a good starting point.

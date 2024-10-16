@@ -414,8 +414,9 @@ end
             @test vec_test_2D_local[2] ≈ PetscScalar(111)       # verify that this is changed in the PETSc Vec
 
 
-            PETSc.finalize(petsclib)
+           
         end
+        PETSc.finalize(petsclib)
     end
 end
 
@@ -588,9 +589,8 @@ end
             @test x_g[4] ≈ 29.5
             @test x_g[11] ≈ 0.63797 rtol=1e-4
 
-            PETSc.finalize(petsclib)
-
         end
+        PETSc.finalize(petsclib)
     end
 end
 
@@ -770,9 +770,8 @@ end
             #
             # -----------------
 
-            PETSc.finalize(petsclib)
-        
         end
+        PETSc.finalize(petsclib)
 
     end
 end

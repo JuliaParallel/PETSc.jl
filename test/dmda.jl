@@ -1,9 +1,14 @@
 using Test
 using PETSc, MPI
+#include("MPI_testing.jl")   # nicer printing on MPI
+
 MPI.Initialized() || MPI.Init()
 
-@testset "DMDACreate1D" begin
-    comm = MPI.COMM_WORLD
+Test.TESTSET_PRINT_ENABLE[] = false
+
+
+comm = MPI.COMM_WORLD
+ts_out=@testset "DMDACreate1D" begin
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
@@ -12,7 +17,7 @@ MPI.Initialized() || MPI.Init()
         PetscInt = PETSc.inttype(petsclib)
         # Loop over all boundary types and try to use them
         for boundary_type in instances(PETSc.DMBoundaryType)
-            @testset "$boundary_type" begin
+           @testset "$boundary_type"  begin
                 dof_per_node = 4
                 stencil_width = 5
 
@@ -110,13 +115,21 @@ MPI.Initialized() || MPI.Init()
                 @test PETSc.gettype(ksp) == "gmres"
 
             end
+            #if MPI.Comm_rank(comm)==0
+            #    Test.print_test_results(ts)
+            #end
+
         end
+        
         PETSc.finalize(petsclib)
     end
 end
+if MPI.Comm_rank(comm)==0
+    Test.print_test_results(ts_out)
+end
 
-@testset "DMDACreate2D" begin
-    comm = MPI.COMM_WORLD
+comm = MPI.COMM_WORLD
+ts_out= @testset "DMDACreate2D" begin
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     global_size_x = 100
@@ -138,7 +151,7 @@ end
                 ) &&
                 continue
 
-            @testset "$boundary_type_x, $boundary_type_y, $stencil_type" begin
+            ts = @testset "$boundary_type_x, $boundary_type_y, $stencil_type" begin
                 dof_per_node = 4
                 stencil_width = 5
 
@@ -218,13 +231,19 @@ end
                 ksp = PETSc.KSP(da)
                 @test PETSc.gettype(ksp) == "gmres"
             end
+            
+
         end
         PETSc.finalize(petsclib)
     end
 end
+if MPI.Comm_rank(comm)==0
+    Test.print_test_results(ts_out)
+end
 
-@testset "DMDACreate3D" begin
-    comm = MPI.COMM_WORLD
+
+comm = MPI.COMM_WORLD
+ts_out = @testset "DMDACreate3D" begin
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     global_size_x = 12
@@ -345,9 +364,13 @@ end
         PETSc.finalize(petsclib)
     end
 end
+if MPI.Comm_rank(comm)==0
+    Test.print_test_results(ts_out)
+end
 
-@testset "creatematrix" begin
-    comm = MPI.COMM_WORLD
+
+comm = MPI.COMM_WORLD
+ts_out = @testset "creatematrix" begin
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
@@ -403,9 +426,12 @@ end
         PETSc.finalize(petsclib)
     end
 end
+if MPI.Comm_rank(comm)==0
+    Test.print_test_results(ts_out)
+end
 
-@testset "DM Vectors and Coordinates" begin
-    comm = MPI.COMM_WORLD
+comm = MPI.COMM_WORLD
+ts_out = @testset "DM Vectors and Coordinates" begin
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
@@ -525,5 +551,10 @@ end
         PETSc.finalize(petsclib)
     end
 end
+if MPI.Comm_rank(comm)==0
+    Test.print_test_results(ts_out)
+end
+
+
 
 nothing

@@ -1,24 +1,32 @@
 using Test
-using MPI
+using MPI: MPI, mpiexec
+using PETSc, PETSc_jll
+
+
+import MPIPreferences
+@info "Testing PETSc.jl with" MPIPreferences.binary MPIPreferences.abi PETSc_jll.host_platform
+
+do_mpi = true
+if Sys.iswindows()
+    do_mpi = false
+end
 
 # Do the MPI tests first so we do not have mpi running inside MPI
 # XXX: Currently not working on windows, not sure why
-if !Sys.iswindows()
-    @testset "mpi tests" begin
-        @test mpiexec() do mpi_cmd
-            cmd = `$mpi_cmd -n 4 $(Base.julia_cmd()) --project dmda.jl`
-            success(pipeline(cmd, stderr = stderr))
-        end
-    end
+if do_mpi
+    cmd = `$(mpiexec())  -n 4 $(Base.julia_cmd()) --project dmda.jl`
+    run(cmd)
+    success(pipeline(cmd, stderr = stderr))
 end
 
 # Examples with the comment
 #   # INCLUDE IN MPI TEST
 # will be run here
 # XXX: Currently not working on windows reliably, not sure why
-if !Sys.iswindows()
+if do_mpi
     include("mpi_examples.jl")
 end
+
 
 include("options.jl")
 include("dmda.jl")

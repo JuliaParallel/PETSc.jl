@@ -22,10 +22,9 @@ end
     $(Base.load_path_setup_code())
     include($(repr(example)))
     """
-    @test mpiexec() do mpi_cmd
-        cmd = `$mpi_cmd -n 4 $(Base.julia_cmd()) --startup-file=no -e $code`
-        @debug "Testing $example" Text(code) cmd
-        success(pipeline(cmd, stderr=stderr))
-    end
+    cmd = `$(mpiexec()) -n 4 $(Base.julia_cmd()) --startup-file=no -e $code`
+    run(cmd)
+    @debug "Testing $example" Text(code) cmd
+    success(pipeline(cmd, stderr=stderr))
   end
 end

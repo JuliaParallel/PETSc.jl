@@ -4,11 +4,17 @@ authors = ["Simon Byrne <simonbyrne@gmail.com>"]
 version = "0.2.0"
 
 [deps]
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
 Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 MPI = "da04e1cc-30fd-572f-bb4f-1f8673147195"
+MPIPreferences = "3da0fdf6-3ccc-4f1b-acd9-58baa6c99267"
 PETSc_jll = "8fa3689e-f0b9-5420-9873-adf6ccf46f2d"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+SparseDiffTools = "47a9eef4-7e08-11e9-0b38-333d64bd3804"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 
 [compat]
 MPI = "0.20"
@@ -16,12 +22,4 @@ PETSc_jll = "3.21"
 julia = "1.9"
 
 [extras]
-ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
-Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
-SparseDiffTools = "47a9eef4-7e08-11e9-0b38-333d64bd3804"
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
-
-[targets]
-test = ["ForwardDiff", "UnicodePlots", "Test", "Plots", "SparseDiffTools", "Printf"]

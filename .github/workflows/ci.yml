@@ -8,32 +8,35 @@ on:
     tags: '*'
   pull_request:
 
+concurrency:
+  # Skip intermediate builds: always.
+  # Cancel intermediate builds: always.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
 jobs:
   test:
-    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ github.event_name }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         version:
-          - '1'
           - 'lts'
+          - '1.11'
         os:
+          - macOS-latest
+          - macOS-13        # with intel processors 
           - ubuntu-latest
-          - windows-latest
         arch:
-          - x64
-        include:
-          - os: macOS-latest
-            arch: aarch64
-            version: '1'
-          
+          - x64 
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2
         with:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
+      - run: julia -e 'using InteractiveUtils; versioninfo(verbose=true)'     
       - uses: actions/cache@v4
         env:
           cache-name: cache-artifacts
@@ -46,3 +49,4 @@ jobs:
             ${{ runner.os }}-
       - uses: julia-actions/julia-buildpkg@latest
       - uses: julia-actions/julia-runtest@latest
+        

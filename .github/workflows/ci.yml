@@ -23,13 +23,13 @@ jobs:
       matrix:
         version:
           - 'lts'
-          #- '1.11'
+          - '1.11'
         os:
           - macOS-latest
-          #- ubuntu-latest
-          #- windows-latest
+          - ubuntu-latest
+          - windows-latest
         arch:
-          - aarch64 
+          - x64 
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2

@@ -23,13 +23,17 @@ jobs:
       matrix:
         version:
           - 'lts'
-          - '1.11'
+          - '1'
         os:
-          - macOS-latest
           - macOS-13        # with intel processors 
           - ubuntu-latest
         arch:
           - x64 
+        include:
+          - os: macOS-latest
+            arch: aarch64
+            version: 1
+          
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2

@@ -3,6 +3,7 @@ using MPI: MPI, mpiexec
 
 import MPIPreferences
 @info "Testing PETSc.jl with" MPIPreferences.binary MPIPreferences.abi
+@info "PETSc + MPI version:" PETSc_jll.host_platform
 
 do_mpi = true
 #if Sys.iswindows()

@@ -39,7 +39,7 @@ PETSc.initialize()
   PETSc.destroy(pc_extra)
 
   # set new pc, check ref counts are modified by ksp
-  pc_new = PETSc.PC{Float64}(MPI.COMM_SELF)
+  pc_new = PETSc.PC{Float64}(MPI.COMM_SELF);
   @test PETSc.nrefs(pc_new) == 1
   PETSc.setpc!(ksp, pc_new)
   @test PETSc.nrefs(pc_new) == 2
@@ -57,10 +57,8 @@ PETSc.initialize()
   w = M'*x
   @test w ≈ S'*x
 
-  # FIXME
-  #@show typeof(ksp) typeof(ksp') 
-  #y = ksp' \ w
-  #@test S'*y ≈ w rtol=1e-8
+  y = ksp' \ w
+  @test S'*y ≈ w rtol=1e-8
 
   f!(y,x) = y .= 2 .*x
 

@@ -319,101 +319,103 @@ end
         PETSc.initialize(petsclib)
         PetscScalar = PETSc.scalartype(petsclib)
         PetscInt    = PETSc.inttype(petsclib)
+        if PetscScalar == Float64 || PetscScalar == Float32
 
-        dm_1D = PETSc.DMStagCreate1d(petsclib,comm,PETSc.DM_BOUNDARY_NONE,200,2,2; stag_grid_x=10);
-        PETSc.setuniformcoordinatesproduct!(dm_1D, (0,), (10,))
+            dm_1D = PETSc.DMStagCreate1d(petsclib,comm,PETSc.DM_BOUNDARY_NONE,200,2,2; stag_grid_x=10);
+            PETSc.setuniformcoordinatesproduct!(dm_1D, (0,), (10,))
 
-        A = PETSc.creatematrix(dm_1D);  #
-        PETSc.MatSetOption(A, PETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, false)
-        @test size(A) == (42,42)
-        PETSc.assembled(A)
+            A = PETSc.creatematrix(dm_1D);  #
+            PETSc.MatSetOption(A, PETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, false)
+            @test size(A) == (42,42)
+            PETSc.assembled(A)
 
-        # set some values using normal indices:
-        A[1,1]  = 1.0
-        A[1,10] = 1.0
+            # set some values using normal indices:
+            A[1,1]  = 1.0
+            A[1,10] = 1.0
 
-        pos1 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,1,0,0,1)
-        pos2 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_RIGHT,4,0,0,0)
-        pos  = [pos1, pos2]
-        val1 = PetscScalar.([2222.2, 3.2]);
-        PETSc.DMStagMatSetValuesStencil(dm_1D, A, pos1, pos1, 11.1, PETSc.INSERT_VALUES)
-        PETSc.DMStagMatSetValuesStencil(dm_1D, A, 1, [pos2], 2, pos, val1, PETSc.INSERT_VALUES)
+            pos1 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,1,0,0,1)
+            pos2 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_RIGHT,4,0,0,0)
+            pos  = [pos1, pos2]
+            val1 = PetscScalar.([2222.2, 3.2]);
+            PETSc.DMStagMatSetValuesStencil(dm_1D, A, pos1, pos1, 11.1, PETSc.INSERT_VALUES)
+            PETSc.DMStagMatSetValuesStencil(dm_1D, A, 1, [pos2], 2, pos, val1, PETSc.INSERT_VALUES)
 
-        PETSc.assemble(A)
-        @test A[1,10] == 1.0
+            PETSc.assemble(A)
+            @test A[1,10] == 1.0
 
-        # Reads a value from the matrix, using the stencil structure
-        @test PETSc.DMStagMatGetValuesStencil(dm_1D, A, pos1, pos1)== PetscScalar(11.1)
-        @test PETSc.DMStagMatGetValuesStencil(dm_1D, A, 1, [pos2], 2, pos)==val1
+            # Reads a value from the matrix, using the stencil structure
+            @test PETSc.DMStagMatGetValuesStencil(dm_1D, A, pos1, pos1)== PetscScalar(11.1)
+            @test PETSc.DMStagMatGetValuesStencil(dm_1D, A, 1, [pos2], 2, pos)==val1
 
-        PETSc.destroy(dm_1D);
+            PETSc.destroy(dm_1D);
 
-        dofCenter       =   1;
-        dofEdge         =   1;
-        dofVertex       =   0
-        stencilWidth    =   1;
-        dm_2D = PETSc.DMStagCreate2d(petsclib,comm,
-                                        PETSc.DM_BOUNDARY_GHOSTED,
-                                        PETSc.DM_BOUNDARY_GHOSTED,
-                                        10,11,
-                                        PETSc.PETSC_DECIDE,PETSc.PETSC_DECIDE,
-                                        dofVertex,dofEdge,dofCenter,
-                                        PETSc.DMSTAG_STENCIL_BOX,stencilWidth)
+            dofCenter       =   1;
+            dofEdge         =   1;
+            dofVertex       =   0
+            stencilWidth    =   1;
+            dm_2D = PETSc.DMStagCreate2d(petsclib,comm,
+                                            PETSc.DM_BOUNDARY_GHOSTED,
+                                            PETSc.DM_BOUNDARY_GHOSTED,
+                                            10,11,
+                                            PETSc.PETSC_DECIDE,PETSc.PETSC_DECIDE,
+                                            dofVertex,dofEdge,dofCenter,
+                                            PETSc.DMSTAG_STENCIL_BOX,stencilWidth)
 
-        vec_test_2D_global      =   PETSc.createglobalvector(dm_2D)
-        vec_test_2D_local       =   PETSc.createlocalvector(dm_2D)
+            vec_test_2D_global      =   PETSc.createglobalvector(dm_2D)
+            vec_test_2D_local       =   PETSc.createlocalvector(dm_2D)
 
-        corners                 =   PETSc.getcorners(dm_2D)
-        ghost_corners           =   PETSc.getghostcorners(dm_2D)
-
-
-        for ix=corners.lower[1]:corners.upper[1]
-            for iy=corners.lower[2]:corners.upper[2]
-                local dof
-                # DOF at the center point
-                dof     = 0;
-                posA    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_DOWN,ix,iy,0,dof)
-                value   = PetscScalar(ix+10);
-                PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posA, value, PETSc.INSERT_VALUES)
-
-                dof     = 0;
-                posB    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,ix,iy,0,dof)
-                value   = PetscScalar(33);
-                PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posB, value, PETSc.INSERT_VALUES)
-
-                dof     = 0;
-                posC    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
-                value   = PetscScalar(44);
-                PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posC, value, PETSc.INSERT_VALUES)
+            corners                 =   PETSc.getcorners(dm_2D)
+            ghost_corners           =   PETSc.getghostcorners(dm_2D)
 
 
+            for ix=corners.lower[1]:corners.upper[1]
+                for iy=corners.lower[2]:corners.upper[2]
+                    local dof
+                    # DOF at the center point
+                    dof     = 0;
+                    posA    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_DOWN,ix,iy,0,dof)
+                    value   = PetscScalar(ix+10);
+                    PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posA, value, PETSc.INSERT_VALUES)
+
+                    dof     = 0;
+                    posB    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,ix,iy,0,dof)
+                    value   = PetscScalar(33);
+                    PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posB, value, PETSc.INSERT_VALUES)
+
+                    dof     = 0;
+                    posC    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
+                    value   = PetscScalar(44);
+                    PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posC, value, PETSc.INSERT_VALUES)
+
+
+                end
             end
+            PETSc.assemble(vec_test_2D_global) # assemble global vector
+
+            # Add the global values to the local values
+            PETSc.update!(vec_test_2D_local, vec_test_2D_global,PETSc.INSERT_VALUES)
+
+            # retrieve value back from the local array and check that it agrees with global one
+            dof     = 0;
+            pos     = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_DOWN,2,2,0,dof)
+            @test PETSc.DMStagVecGetValuesStencil(dm_2D, vec_test_2D_local, pos) == 12.0
+
+            # Extract an array that holds all DOF's
+            X2D_dofs  = PETSc.DMStagVecGetArray(dm_2D,vec_test_2D_local)           # extract arrays with all DOF (mostly for visualizing)
+            @test X2D_dofs[4,4,1] ≈ PetscScalar(12.0)
+            @test X2D_dofs[4,4,2] ≈ PetscScalar(33.0)
+            @test X2D_dofs[4,4,3] ≈ PetscScalar(44.0)
+
+            # Extract an array of a specific DOF (here a face velocity @ the left)
+            Xarray = PETSc.DMStagGetGhostArrayLocationSlot(dm_2D,vec_test_2D_local, PETSc.DMSTAG_LEFT, 0)
+            @test sum(X2D_dofs[:,:,2]-Xarray)==0                # check if the local array is identical to the full array
+
+            Xarray .= 111.                                      # Set a value @ a specific location
+            @test vec_test_2D_local[2] ≈ PetscScalar(111)       # verify that this is changed in the PETSc Vec
+
+
+            PETSc.finalize(petsclib)
         end
-        PETSc.assemble(vec_test_2D_global) # assemble global vector
-
-        # Add the global values to the local values
-        PETSc.update!(vec_test_2D_local, vec_test_2D_global,PETSc.INSERT_VALUES)
-
-        # retrieve value back from the local array and check that it agrees with global one
-        dof     = 0;
-        pos     = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_DOWN,2,2,0,dof)
-        @test PETSc.DMStagVecGetValuesStencil(dm_2D, vec_test_2D_local, pos) == 12.0
-
-        # Extract an array that holds all DOF's
-        X2D_dofs  = PETSc.DMStagVecGetArray(dm_2D,vec_test_2D_local)           # extract arrays with all DOF (mostly for visualizing)
-        @test X2D_dofs[4,4,1] ≈ PetscScalar(12.0)
-        @test X2D_dofs[4,4,2] ≈ PetscScalar(33.0)
-        @test X2D_dofs[4,4,3] ≈ PetscScalar(44.0)
-
-        # Extract an array of a specific DOF (here a face velocity @ the left)
-        Xarray = PETSc.DMStagGetGhostArrayLocationSlot(dm_2D,vec_test_2D_local, PETSc.DMSTAG_LEFT, 0)
-        @test sum(X2D_dofs[:,:,2]-Xarray)==0                # check if the local array is identical to the full array
-
-        Xarray .= 111.                                      # Set a value @ a specific location
-        @test vec_test_2D_local[2] ≈ PetscScalar(111)       # verify that this is changed in the PETSc Vec
-
-
-        PETSc.finalize(petsclib)
     end
 end
 

@@ -216,7 +216,7 @@ struct Fn_KSPComputeOperators{T} end
         return r_rnorm[]
     end
 
-    function solve!(x::AbstractVec{$PetscScalar}, ksp::KSP{$PetscScalar}, b::AbstractVec{$PetscScalar})
+    function solve!(x::AbstractVec{$PetscScalar}, ksp::KSP{$PetscScalar, LT}, b::AbstractVec{$PetscScalar}) where LT
         with(ksp.opts) do
             @chk ccall((:KSPSolve, $libpetsc), PetscErrorCode,
             (CKSP, CVec, CVec), ksp, b, x)
@@ -254,6 +254,7 @@ function LinearAlgebra.ldiv!(x::AbstractVector{T}, ksp::KSPAT{T, LT}, b::Abstrac
     parent(solve!(AbstractVec(x), ksp, AbstractVec(b)))
 end
 Base.:\(ksp::KSPAT{T, LT}, b::AbstractVector{T}) where {T, LT} = ldiv!(similar(b), ksp, b)
+#Base.:\(kspt::LinearAlgebra.AdjointFactorization{T,KSPT{T, LT}}, b::AbstractVector{T}) where {T, LT} = ldiv!(similar(b), kspt._A', b)
 
 
 """

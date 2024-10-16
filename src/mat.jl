@@ -239,6 +239,26 @@ function MatSetValuesStencil! end
         return nothing
     end
 
+    function MatSetOption(mat::AbstractMat{$PetscScalar},
+                    op::MatOption, 
+                    flg::Bool)
+
+        fl = PETSC_TRUE
+        if !flg
+            fl = PETSC_FALSE
+        end
+        @chk ccall((:MatSetOption, $libpetsc), PetscErrorCode, 
+                        (CMat,
+                            MatOption,
+                            PetscBool),
+                        mat,
+                        op,
+                        fl
+                        )
+        return nothing
+    end
+
+
 
 
 
@@ -283,6 +303,7 @@ function MatSetValuesStencil! end
         return val[]
     end
 
+
     function assemblybegin(M::AbstractMat{$PetscScalar}, t::MatAssemblyType=MAT_FINAL_ASSEMBLY)
         @chk ccall((:MatAssemblyBegin, $libpetsc), PetscErrorCode, (CMat, MatAssemblyType), M, t)
         return nothing
@@ -291,6 +312,7 @@ function MatSetValuesStencil! end
         @chk ccall((:MatAssemblyEnd, $libpetsc), PetscErrorCode, (CMat, MatAssemblyType), M, t)
         return nothing
     end
+
     #function view(mat::AbstractMat{$PetscScalar}, viewer::AbstractViewer{$PetscLib}=ViewerStdout($petsclib, mat.comm))
     #    if assembled(mat)
     #        @chk ccall((:MatView, $libpetsc), PetscErrorCode, 

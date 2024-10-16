@@ -58,9 +58,9 @@ PETSc.initialize()
   @test w ≈ S'*x
 
   # FIXME
-  #  y = ksp' \ w
-  #  @test S'*y ≈ w rtol=1e-8
-
+  #@show typeof(ksp) typeof(ksp') 
+  #y = ksp' \ w
+  #@test S'*y ≈ w rtol=1e-8
 
   f!(y,x) = y .= 2 .*x
 

@@ -312,7 +312,6 @@ end
 
 # FIXME
 @testset "DMStag create matrixes" begin
-    #=
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
@@ -320,99 +319,103 @@ end
         PETSc.initialize(petsclib)
         PetscScalar = PETSc.scalartype(petsclib)
         PetscInt    = PETSc.inttype(petsclib)
+        if PetscScalar == Float64 || PetscScalar == Float32
 
-        dm_1D = PETSc.DMStagCreate1d(petsclib,comm,PETSc.DM_BOUNDARY_NONE,200,2,2; stag_grid_x=10);
-        PETSc.setuniformcoordinatesproduct!(dm_1D, (0,), (10,))
+            dm_1D = PETSc.DMStagCreate1d(petsclib,comm,PETSc.DM_BOUNDARY_NONE,200,2,2; stag_grid_x=10);
+            PETSc.setuniformcoordinatesproduct!(dm_1D, (0,), (10,))
 
-        A = PETSc.creatematrix(dm_1D);  #
-        @test size(A) == (42,42)
-        PETSc.assembled(A)
+            A = PETSc.creatematrix(dm_1D);  #
+            PETSc.MatSetOption(A, PETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, false)
+            @test size(A) == (42,42)
+            PETSc.assembled(A)
 
-        # set some values using normal indices:
-        A[1,1]  = 1.0
-        A[1,10] = 1.0
+            # set some values using normal indices:
+            A[1,1]  = 1.0
+            A[1,10] = 1.0
 
-        pos1 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,1,0,0,1)
-        pos2 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_RIGHT,4,0,0,0)
-        pos  = [pos1, pos2]
-        val1 = PetscScalar.([2222.2, 3.2]);
-        PETSc.DMStagMatSetValuesStencil(dm_1D, A, pos1, pos1, 11.1, PETSc.INSERT_VALUES)
-        PETSc.DMStagMatSetValuesStencil(dm_1D, A, 1, [pos2], 2, pos, val1, PETSc.INSERT_VALUES)
+            pos1 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,1,0,0,1)
+            pos2 = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_RIGHT,4,0,0,0)
+            pos  = [pos1, pos2]
+            val1 = PetscScalar.([2222.2, 3.2]);
+            PETSc.DMStagMatSetValuesStencil(dm_1D, A, pos1, pos1, 11.1, PETSc.INSERT_VALUES)
+            PETSc.DMStagMatSetValuesStencil(dm_1D, A, 1, [pos2], 2, pos, val1, PETSc.INSERT_VALUES)
 
-        PETSc.assemble(A)
-        @test A[1,10] == 1.0
+            PETSc.assemble(A)
+            @test A[1,10] == 1.0
 
-        # Reads a value from the matrix, using the stencil structure
-        @test PETSc.DMStagMatGetValuesStencil(dm_1D, A, pos1, pos1)== PetscScalar(11.1)
-        @test PETSc.DMStagMatGetValuesStencil(dm_1D, A, 1, [pos2], 2, pos)==val1
+            # Reads a value from the matrix, using the stencil structure
+            @test PETSc.DMStagMatGetValuesStencil(dm_1D, A, pos1, pos1)== PetscScalar(11.1)
+            @test PETSc.DMStagMatGetValuesStencil(dm_1D, A, 1, [pos2], 2, pos)==val1
 
-        PETSc.destroy(dm_1D);
+            PETSc.destroy(dm_1D);
 
-        dofCenter       =   1;
-        dofEdge         =   1;
-        dofVertex       =   0
-        stencilWidth    =   1;
-        dm_2D = PETSc.DMStagCreate2d(petsclib,comm,
-                                        PETSc.DM_BOUNDARY_GHOSTED,
-                                        PETSc.DM_BOUNDARY_GHOSTED,
-                                        10,11,
-                                        PETSc.PETSC_DECIDE,PETSc.PETSC_DECIDE,
-                                        dofVertex,dofEdge,dofCenter,
-                                        PETSc.DMSTAG_STENCIL_BOX,stencilWidth)
+            dofCenter       =   1;
+            dofEdge         =   1;
+            dofVertex       =   0
+            stencilWidth    =   1;
+            dm_2D = PETSc.DMStagCreate2d(petsclib,comm,
+                                            PETSc.DM_BOUNDARY_GHOSTED,
+                                            PETSc.DM_BOUNDARY_GHOSTED,
+                                            10,11,
+                                            PETSc.PETSC_DECIDE,PETSc.PETSC_DECIDE,
+                                            dofVertex,dofEdge,dofCenter,
+                                            PETSc.DMSTAG_STENCIL_BOX,stencilWidth)
 
-        vec_test_2D_global      =   PETSc.createglobalvector(dm_2D)
-        vec_test_2D_local       =   PETSc.createlocalvector(dm_2D)
+            vec_test_2D_global      =   PETSc.createglobalvector(dm_2D)
+            vec_test_2D_local       =   PETSc.createlocalvector(dm_2D)
 
-        corners                 =   PETSc.getcorners(dm_2D)
-        ghost_corners           =   PETSc.getghostcorners(dm_2D)
-
-
-        for ix=corners.lower[1]:corners.upper[1]
-            for iy=corners.lower[2]:corners.upper[2]
-                local dof
-                # DOF at the center point
-                dof     = 0;
-                posA    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_DOWN,ix,iy,0,dof)
-                value   = PetscScalar(ix+10);
-                PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posA, value, PETSc.INSERT_VALUES)
-
-                dof     = 0;
-                posB    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,ix,iy,0,dof)
-                value   = PetscScalar(33);
-                PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posB, value, PETSc.INSERT_VALUES)
-
-                dof     = 0;
-                posC    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
-                value   = PetscScalar(44);
-                PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posC, value, PETSc.INSERT_VALUES)
+            corners                 =   PETSc.getcorners(dm_2D)
+            ghost_corners           =   PETSc.getghostcorners(dm_2D)
 
 
+            for ix=corners.lower[1]:corners.upper[1]
+                for iy=corners.lower[2]:corners.upper[2]
+                    local dof
+                    # DOF at the center point
+                    dof     = 0;
+                    posA    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_DOWN,ix,iy,0,dof)
+                    value   = PetscScalar(ix+10);
+                    PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posA, value, PETSc.INSERT_VALUES)
+
+                    dof     = 0;
+                    posB    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,ix,iy,0,dof)
+                    value   = PetscScalar(33);
+                    PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posB, value, PETSc.INSERT_VALUES)
+
+                    dof     = 0;
+                    posC    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_ELEMENT,ix,iy,0,dof)
+                    value   = PetscScalar(44);
+                    PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posC, value, PETSc.INSERT_VALUES)
+
+
+                end
             end
+            PETSc.assemble(vec_test_2D_global) # assemble global vector
+
+            # Add the global values to the local values
+            PETSc.update!(vec_test_2D_local, vec_test_2D_global,PETSc.INSERT_VALUES)
+
+            # retrieve value back from the local array and check that it agrees with global one
+            dof     = 0;
+            pos     = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_DOWN,2,2,0,dof)
+            @test PETSc.DMStagVecGetValuesStencil(dm_2D, vec_test_2D_local, pos) == 12.0
+
+            # Extract an array that holds all DOF's
+            X2D_dofs  = PETSc.DMStagVecGetArray(dm_2D,vec_test_2D_local)           # extract arrays with all DOF (mostly for visualizing)
+            @test X2D_dofs[4,4,1] ≈ PetscScalar(12.0)
+            @test X2D_dofs[4,4,2] ≈ PetscScalar(33.0)
+            @test X2D_dofs[4,4,3] ≈ PetscScalar(44.0)
+
+            # Extract an array of a specific DOF (here a face velocity @ the left)
+            Xarray = PETSc.DMStagGetGhostArrayLocationSlot(dm_2D,vec_test_2D_local, PETSc.DMSTAG_LEFT, 0)
+            @test sum(X2D_dofs[:,:,2]-Xarray)==0                # check if the local array is identical to the full array
+
+            Xarray .= 111.                                      # Set a value @ a specific location
+            @test vec_test_2D_local[2] ≈ PetscScalar(111)       # verify that this is changed in the PETSc Vec
+
+
+           
         end
-        PETSc.assemble(vec_test_2D_global) # assemble global vector
-
-        # Add the global values to the local values
-        PETSc.update!(vec_test_2D_local, vec_test_2D_global,PETSc.INSERT_VALUES)
-
-        # retrieve value back from the local array and check that it agrees with global one
-        dof     = 0;
-        pos     = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_DOWN,2,2,0,dof)
-        @test PETSc.DMStagVecGetValuesStencil(dm_2D, vec_test_2D_local, pos) == 12.0
-
-        # Extract an array that holds all DOF's
-        X2D_dofs  = PETSc.DMStagVecGetArray(dm_2D,vec_test_2D_local)           # extract arrays with all DOF (mostly for visualizing)
-        @test X2D_dofs[4,4,1] ≈ PetscScalar(12.0)
-        @test X2D_dofs[4,4,2] ≈ PetscScalar(33.0)
-        @test X2D_dofs[4,4,3] ≈ PetscScalar(44.0)
-
-        # Extract an array of a specific DOF (here a face velocity @ the left)
-        Xarray = PETSc.DMStagGetGhostArrayLocationSlot(dm_2D,vec_test_2D_local, PETSc.DMSTAG_LEFT, 0)
-        @test sum(X2D_dofs[:,:,2]-Xarray)==0                # check if the local array is identical to the full array
-
-        Xarray .= 111.                                      # Set a value @ a specific location
-        @test vec_test_2D_local[2] ≈ PetscScalar(111)       # verify that this is changed in the PETSc Vec
-
-
         PETSc.finalize(petsclib)
     end
 end
@@ -434,162 +437,163 @@ end
         PETSc.initialize(petsclib)
         PetscScalar = PETSc.scalartype(petsclib)
         PetscInt    = PETSc.inttype(petsclib)
-
-        # Define a struct that holds data we need in the local SNES routines below
-        mutable struct Data_1{PetscScalar,PetscInt}
-            dm
-            x_l
-            f_l
-        end
-
-        user_ctx = Data_1{PetscScalar,PetscInt}(nothing, nothing, nothing);  # holds data we need in the local
-
-        function FormRes!(ptr_fx_g, ptr_x_g, user_ctx)
-
-            # Note that in PETSc, ptr_x_g and ptr_fx_g are pointers to global vectors.
-            # Copy global to local vectors that are stored in user_ctx
-            PETSc.update!(user_ctx.x_l, ptr_x_g,   PETSc.INSERT_VALUES)
-            PETSc.update!(user_ctx.f_l, ptr_fx_g,  PETSc.INSERT_VALUES)
-
-            # Retrieve arrays from the local vectors
-            ArrayLocal_x     =   PETSc.DMStagVecGetArrayRead(user_ctx.dm, user_ctx.x_l);  # array with all local x-data
-            ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, user_ctx.f_l);      # array with all local residual
-
-            # Compute local residual
-            ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
-
-            # Finalize local arrays
-            Base.finalize(ArrayLocal_x)
-            Base.finalize(ArrayLocal_f)
-
-            # Copy local into global residual vector
-            PETSc.update!(ptr_fx_g, user_ctx.f_l,   PETSc.INSERT_VALUES)
-
-        end
-
-        function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
-            # Compute the local residual. The vectors include ghost points
-
-            T              =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x, PETSc.DMSTAG_LEFT,    0);
-            fT             =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f, PETSc.DMSTAG_LEFT,    0);
-
-            P              =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x, PETSc.DMSTAG_ELEMENT, 0);
-            fP             =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f, PETSc.DMSTAG_ELEMENT, 0);
-
-            # compute the FD stencil
-            indices         =     PETSc.DMStagGetIndices(dm);      # indices of (center/element) points, not including ghost values.
-            gc              =     PETSc.getghostcorners(user_ctx.dm);   # start and end of loop including ghost points
-            c               =     PETSc.getcorners(user_ctx.dm);        # start and end of loop including ghost points
-
-            nT             =     length(T);                             # array length
-            dx             =     1.0/(c.size[1]-1);
-            xp             =     (gc.lower[1]:gc.upper[1]).*dx;         # coordinates including ghost points (to define source term)
-            F              =     6.0.*xp .+ (xp .+1.e-12).^6.0;         # define source term function
-
-            # Nonlinear equation @ nodal points
-            ind            =     indices.vertex.x;                         #  There is one more "vertex" point
-            i              =     ind[2:end-1]
-            fT[ind[1]]     =     T[ind[1]  ]-0.5;                       # left BC
-            fT[ind[end]]   =     T[ind[end]]-2.0;                       # right BC
-            fT[i]          =     (T[i .+ 1] - 2*T[i] + T[i .- 1])/dx^2  + T[i].*T[i] - F[i] # NL diffusion with source term
-
-            # second, non-coupled, equation @ center points
-            ind            =     indices.center.x;                             #  There is one more "vertex" point
-            i              =     ind[2:end-1];
-            fP[ind[1]]     =     P[ind[1]]-30.;                             # left BC
-            fP[ind[end]]   =     P[ind[end]]-20.;                           # right BC
-            fP[i]          =     (P[i .+ 1] - 2*P[i] + P[i .- 1])/dx^2      # steady state diffusion
-
-        end
-
-        function  ForwardDiff_res(x, user_ctx)
-
-            f   = zero(x)               # vector of zeros, of same type as x (local vector)
-
-            ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all local x-data
-            ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, f);        # array with all local residual
-
-            ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx);
-            # As the residual vector f is linked with ArrayLocal_f, we don't need to pass ArrayLocal_f back
-
-            return f;
-        end
-
-        function FormJacobian!(ptr_x_g, J, P, user_ctx)
-
-            # This requires several steps:
-            #
-            #   1) Extract local vector from global solution (x) vector
-            #   2) Compute local jacobian from the residual routine (note that
-            #       this routine requires julia vectors as input)
-
-            # Extract the local vector
-            PETSc.update!(user_ctx.x_l, ptr_x_g,  PETSc.INSERT_VALUES)
-            x               =   PETSc.unsafe_localarray(PetscScalar, user_ctx.x_l.ptr;  write=false, read=true)
-            f_Residual      =   (x -> ForwardDiff_res(x, user_ctx));        # pass additional arguments into the routine
-            J_julia         =   ForwardDiff.jacobian(f_Residual,x);
-
-            # Note: since x is the LOCAL vector, J_julia also ends up having the same size.
-            ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);
-            if PETSc.assembled(J) == false
-                J           =   PETSc.MatSeqAIJ(sparse(J_julia[ind,ind]));
-            else
-                J           .=   sparse(J_julia[ind,ind]);
+        if PetscScalar == Float64 || PetscScalar == Float32
+            # Define a struct that holds data we need in the local SNES routines below
+            mutable struct Data_1{PetscScalar,PetscInt}
+                dm
+                x_l
+                f_l
             end
 
-           Base.finalize(x_g)
-           return sparse(J_julia[ind,ind]), ind
+            user_ctx = Data_1{PetscScalar,PetscInt}(nothing, nothing, nothing);  # holds data we need in the local
+
+            function FormRes!(ptr_fx_g, ptr_x_g, user_ctx)
+
+                # Note that in PETSc, ptr_x_g and ptr_fx_g are pointers to global vectors.
+                # Copy global to local vectors that are stored in user_ctx
+                PETSc.update!(user_ctx.x_l, ptr_x_g,   PETSc.INSERT_VALUES)
+                PETSc.update!(user_ctx.f_l, ptr_fx_g,  PETSc.INSERT_VALUES)
+
+                # Retrieve arrays from the local vectors
+                ArrayLocal_x     =   PETSc.DMStagVecGetArrayRead(user_ctx.dm, user_ctx.x_l);  # array with all local x-data
+                ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, user_ctx.f_l);      # array with all local residual
+
+                # Compute local residual
+                ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
+
+                # Finalize local arrays
+                Base.finalize(ArrayLocal_x)
+                Base.finalize(ArrayLocal_f)
+
+                # Copy local into global residual vector
+                PETSc.update!(ptr_fx_g, user_ctx.f_l,   PETSc.INSERT_VALUES)
+
+            end
+
+            function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
+                # Compute the local residual. The vectors include ghost points
+
+                T              =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x, PETSc.DMSTAG_LEFT,    0);
+                fT             =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f, PETSc.DMSTAG_LEFT,    0);
+
+                P              =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x, PETSc.DMSTAG_ELEMENT, 0);
+                fP             =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f, PETSc.DMSTAG_ELEMENT, 0);
+
+                # compute the FD stencil
+                indices         =     PETSc.DMStagGetIndices(dm);      # indices of (center/element) points, not including ghost values.
+                gc              =     PETSc.getghostcorners(user_ctx.dm);   # start and end of loop including ghost points
+                c               =     PETSc.getcorners(user_ctx.dm);        # start and end of loop including ghost points
+
+                nT             =     length(T);                             # array length
+                dx             =     1.0/(c.size[1]-1);
+                xp             =     (gc.lower[1]:gc.upper[1]).*dx;         # coordinates including ghost points (to define source term)
+                F              =     6.0.*xp .+ (xp .+1.e-12).^6.0;         # define source term function
+
+                # Nonlinear equation @ nodal points
+                ind            =     indices.vertex.x;                         #  There is one more "vertex" point
+                i              =     ind[2:end-1]
+                fT[ind[1]]     =     T[ind[1]  ]-0.5;                       # left BC
+                fT[ind[end]]   =     T[ind[end]]-2.0;                       # right BC
+                fT[i]          =     (T[i .+ 1] - 2*T[i] + T[i .- 1])/dx^2  + T[i].*T[i] - F[i] # NL diffusion with source term
+
+                # second, non-coupled, equation @ center points
+                ind            =     indices.center.x;                             #  There is one more "vertex" point
+                i              =     ind[2:end-1];
+                fP[ind[1]]     =     P[ind[1]]-30.;                             # left BC
+                fP[ind[end]]   =     P[ind[end]]-20.;                           # right BC
+                fP[i]          =     (P[i .+ 1] - 2*P[i] + P[i .- 1])/dx^2      # steady state diffusion
+
+            end
+
+            function  ForwardDiff_res(x, user_ctx)
+
+                f   = zero(x)               # vector of zeros, of same type as x (local vector)
+
+                ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all local x-data
+                ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, f);        # array with all local residual
+
+                ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx);
+                # As the residual vector f is linked with ArrayLocal_f, we don't need to pass ArrayLocal_f back
+
+                return f;
+            end
+
+            function FormJacobian!(ptr_x_g, J, P, user_ctx)
+
+                # This requires several steps:
+                #
+                #   1) Extract local vector from global solution (x) vector
+                #   2) Compute local jacobian from the residual routine (note that
+                #       this routine requires julia vectors as input)
+
+                # Extract the local vector
+                PETSc.update!(user_ctx.x_l, ptr_x_g,  PETSc.INSERT_VALUES)
+                x               =   PETSc.unsafe_localarray(PetscScalar, user_ctx.x_l.ptr;  write=false, read=true)
+                f_Residual      =   (x -> ForwardDiff_res(x, user_ctx));        # pass additional arguments into the routine
+                J_julia         =   ForwardDiff.jacobian(f_Residual,x);
+
+                # Note: since x is the LOCAL vector, J_julia also ends up having the same size.
+                ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);
+                if PETSc.assembled(J) == false
+                    J           =   PETSc.MatSeqAIJ(sparse(J_julia[ind,ind]));
+                else
+                    J           .=   sparse(J_julia[ind,ind]);
+                end
+
+            Base.finalize(x_g)
+            return sparse(J_julia[ind,ind]), ind
+            end
+
+            # Main part
+
+            # Construct a 1D test case for a coupled P-T diffusion solver, with 1 DOF @ the center & 1 DOF @ faces
+            nx              =   21;
+            user_ctx.dm     =   PETSc.DMStagCreate1d(petsclib,comm,
+                                    PETSc.DM_BOUNDARY_GHOSTED,
+                                    nx,
+                                    1,                              # DOF @ vertex
+                                    1,                              # DOF @ center
+                                    PETSc.DMSTAG_STENCIL_BOX,
+                                    1);                             # Stencil width
+
+
+            x_g             =   PETSc.createglobalvector(user_ctx.dm)
+            f_g             =   PETSc.createglobalvector(user_ctx.dm)
+            user_ctx.x_l    =   PETSc.createlocalvector(user_ctx.dm)
+            user_ctx.f_l    =   PETSc.createlocalvector(user_ctx.dm)
+
+            PJ           =      PETSc.creatematrix(user_ctx.dm);                  # extract (global) matrix from DMStag
+            PETSc.MatSetOption(PJ, PETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, false)
+
+            J_julia, ind =      FormJacobian!(x_g, PJ, PJ, user_ctx)
+            PJ           =      PETSc.MatSeqAIJ(J_julia)                # assemble non-zero structure
+            PETSc.MatSetOption(PJ, PETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, false)
+
+            S = PETSc.SNES{PetscScalar}(petsclib, comm;
+                    snes_rtol=1e-12,
+                    snes_view=false,
+                    snes_monitor=true,
+                    ksp_view=true,
+                    # pc_type="none",
+                    snes_monitor_true_residual=false,
+                    snes_converged_reason=false);
+            S.user_ctx  =       user_ctx;
+
+            PETSc.setfunction!(S, FormRes!, f_g)
+            PETSc.setjacobian!(S, FormJacobian!, PJ, PJ)
+
+            # Solve
+            PETSc.solve!(x_g, S);
+
+            # check
+            @test x_g[4] ≈ 29.5
+            @test x_g[11] ≈ 0.63797 rtol=1e-4
+
         end
-
-        # Main part
-
-        # Construct a 1D test case for a coupled P-T diffusion solver, with 1 DOF @ the center & 1 DOF @ faces
-        nx              =   21;
-        user_ctx.dm     =   PETSc.DMStagCreate1d(petsclib,comm,
-                                PETSc.DM_BOUNDARY_GHOSTED,
-                                nx,
-                                1,                              # DOF @ vertex
-                                1,                              # DOF @ center
-                                PETSc.DMSTAG_STENCIL_BOX,
-                                1);                             # Stencil width
-
-
-        x_g             =   PETSc.createglobalvector(user_ctx.dm)
-        f_g             =   PETSc.createglobalvector(user_ctx.dm)
-        user_ctx.x_l    =   PETSc.createlocalvector(user_ctx.dm)
-        user_ctx.f_l    =   PETSc.createlocalvector(user_ctx.dm)
-
-
-
-        PJ           =      PETSc.creatematrix(user_ctx.dm);                  # extract (global) matrix from DMStag
-        J_julia, ind =      FormJacobian!(x_g, PJ, PJ, user_ctx)
-        PJ           =      PETSc.MatSeqAIJ(J_julia)                # assemble non-zero structure
-
-        S = PETSc.SNES{PetscScalar}(petsclib, comm;
-                snes_rtol=1e-12,
-                snes_view=false,
-                snes_monitor=true,
-                ksp_view=true,
-                # pc_type="none",
-                snes_monitor_true_residual=false,
-                snes_converged_reason=false);
-        S.user_ctx  =       user_ctx;
-
-        PETSc.setfunction!(S, FormRes!, f_g)
-        PETSc.setjacobian!(S, FormJacobian!, PJ, PJ)
-
-        # Solve
-        PETSc.solve!(x_g, S);
-       # @show x_g
-
-        # check
-        @test x_g[4] ≈ 29.5
-        @test x_g[11] ≈ 0.63797 rtol=1e-4
-
         PETSc.finalize(petsclib)
-
     end
 end
+
 
 
 
@@ -607,164 +611,167 @@ end
         PETSc.initialize(petsclib)
         PetscScalar = PETSc.scalartype(petsclib)
         PetscInt    = PETSc.inttype(petsclib)
+        if PetscScalar == Float64 || PetscScalar == Float32
 
-        mutable struct Data_2D{PetscScalar,PetscInt}
-            dm
-            x_l
-            f_l
-        end
-        user_ctx = Data_2D{PetscScalar,PetscInt}(nothing, nothing, nothing);  # holds data we need in the local
+            mutable struct Data_2D{PetscScalar,PetscInt}
+                dm
+                x_l
+                f_l
+            end
+            user_ctx = Data_2D{PetscScalar,PetscInt}(nothing, nothing, nothing);  # holds data we need in the local
 
-        function FormRes!(ptr_fx_g, ptr_x_g, user_ctx)
-            # Note that in PETSc, ptr_x_g and ptr_fx_g are pointers to global vectors.
+            function FormRes!(ptr_fx_g, ptr_x_g, user_ctx)
+                # Note that in PETSc, ptr_x_g and ptr_fx_g are pointers to global vectors.
 
-            # Copy global to local vectors
-            PETSc.update!(user_ctx.x_l, ptr_x_g,  PETSc.INSERT_VALUES)
-            PETSc.update!(user_ctx.f_l, ptr_fx_g, PETSc.INSERT_VALUES)
+                # Copy global to local vectors
+                PETSc.update!(user_ctx.x_l, ptr_x_g,  PETSc.INSERT_VALUES)
+                PETSc.update!(user_ctx.f_l, ptr_fx_g, PETSc.INSERT_VALUES)
 
-            # Retrieve arrays from the local vectors
-            ArrayLocal_x     =   PETSc.DMStagVecGetArrayRead(user_ctx.dm, user_ctx.x_l);  # array with all local x-data
-            ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, user_ctx.f_l);      # array with all local residual
+                # Retrieve arrays from the local vectors
+                ArrayLocal_x     =   PETSc.DMStagVecGetArrayRead(user_ctx.dm, user_ctx.x_l);  # array with all local x-data
+                ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, user_ctx.f_l);      # array with all local residual
 
-            # Compute local residual
-            ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
+                # Compute local residual
+                ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
 
-            # Finalize local arrays
-            Base.finalize(ArrayLocal_x)
-            Base.finalize(ArrayLocal_f)
+                # Finalize local arrays
+                Base.finalize(ArrayLocal_x)
+                Base.finalize(ArrayLocal_f)
 
-            # Copy local into global residual vector
-            PETSc.update!(ptr_fx_g, user_ctx.f_l, PETSc.INSERT_VALUES)
+                # Copy local into global residual vector
+                PETSc.update!(ptr_fx_g, user_ctx.f_l, PETSc.INSERT_VALUES)
 
-        end
-
-        function  ForwardDiff_res(x, user_ctx)
-            f   = zero(x)               # vector of zeros, of same type as x (local vector)
-
-            ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all ocal x-data
-            ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, f);        # array with all ocal residual
-
-            ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx);
-
-            # As the residual vector f is linked with ArrayLocal_f, we don't need to pass ArrayLocal_f back
-
-            return f;
-        end
-
-        function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
-            # Compute the local residual. The vectors include ghost points
-
-            # Important! Make sure you retrieve the values from the correct locations. In this example we have a
-            T              =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x, PETSc.DMSTAG_ELEMENT, 0);
-            fT             =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f, PETSc.DMSTAG_ELEMENT, 0);
-
-            # compute the FD stencil
-            indices         =     PETSc.DMStagGetIndices(dm);      # indices of (center/element) points, not including ghost values.
-
-            sz             =     size(user_ctx.dm);                                 # array length
-            dx             =     1.0/(sz[1]-1);
-            dz             =     1.0/(sz[2]-1);
-
-            # set ghost points for BC'S
-            bnd            =    PETSc.DMStagGetBoundaryTypes(user_ctx.dm)
-            if bnd[1] == PETSc.DM_BOUNDARY_GHOSTED
-                T[1,:]     =    T[2,:];        # zero flux; dT/dx=0
-                T[end,:]   =    T[end-1,:];    # zero flux
             end
 
-            # Diffusion @ center points
-            indx        = indices.center.x;
-            indz        = indices.center.y;
+            function  ForwardDiff_res(x, user_ctx)
+                f   = zero(x)               # vector of zeros, of same type as x (local vector)
 
-            ix          =     indx[1:end]                             # use ghost points in x  (required GHOSTED x-boundary)
-            iz          =     indz[2:end-1]                           # center points
+                ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all ocal x-data
+                ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, f);        # array with all ocal residual
 
-            # upper and lower BC (including corners)
-            fT[indx,indz[1]]   =    T[indx,indz[1]] .- 0.5;                             # bottom BC
-            fT[indx,indz[end]] =    T[indx,indz[end]] .- 2.0;                             # top BC
+                ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx);
+
+                # As the residual vector f is linked with ArrayLocal_f, we don't need to pass ArrayLocal_f back
+
+                return f;
+            end
+
+            function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
+                # Compute the local residual. The vectors include ghost points
+
+                # Important! Make sure you retrieve the values from the correct locations. In this example we have a
+                T              =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_x, PETSc.DMSTAG_ELEMENT, 0);
+                fT             =   PETSc.DMStagGetGhostArrayLocationSlot(dm,ArrayLocal_f, PETSc.DMSTAG_ELEMENT, 0);
+
+                # compute the FD stencil
+                indices         =     PETSc.DMStagGetIndices(dm);      # indices of (center/element) points, not including ghost values.
+
+                sz             =     size(user_ctx.dm);                                 # array length
+                dx             =     1.0/(sz[1]-1);
+                dz             =     1.0/(sz[2]-1);
+
+                # set ghost points for BC'S
+                bnd            =    PETSc.DMStagGetBoundaryTypes(user_ctx.dm)
+                if bnd[1] == PETSc.DM_BOUNDARY_GHOSTED
+                    T[1,:]     =    T[2,:];        # zero flux; dT/dx=0
+                    T[end,:]   =    T[end-1,:];    # zero flux
+                end
+
+                # Diffusion @ center points
+                indx        = indices.center.x;
+                indz        = indices.center.y;
+
+                ix          =     indx[1:end]                             # use ghost points in x  (required GHOSTED x-boundary)
+                iz          =     indz[2:end-1]                           # center points
+
+                # upper and lower BC (including corners)
+                fT[indx,indz[1]]   =    T[indx,indz[1]] .- 0.5;                             # bottom BC
+                fT[indx,indz[end]] =    T[indx,indz[end]] .- 2.0;                             # top BC
 
 
-            fT[ix,iz]       =    (T[ix .+ 1,iz] - 2*T[ix,iz] + T[ix .- 1,iz])/dx^2   +
-                                 (T[ix,iz .+ 1] - 2*T[ix,iz] + T[ix,iz .- 1])/dz^2
+                fT[ix,iz]       =    (T[ix .+ 1,iz] - 2*T[ix,iz] + T[ix .- 1,iz])/dx^2   +
+                                    (T[ix,iz .+ 1] - 2*T[ix,iz] + T[ix,iz .- 1])/dz^2
 
-        end
+            end
 
-        function FormJacobian!(ptr_x_g, J, P, user_ctx)
-            # This requires several steps:
+            function FormJacobian!(ptr_x_g, J, P, user_ctx)
+                # This requires several steps:
+                #
+                #   1) Extract local vector from global solution (x) vector
+                #   2) Compute local jacobian from the residual routine (note that
+                #       this routine requires julia vectors as input)
+
+                # Extract the local vector
+                PETSc.update!(user_ctx.x_l, ptr_x_g,  PETSc.INSERT_VALUES)
+                x               =   PETSc.unsafe_localarray(PetscScalar, user_ctx.x_l.ptr;  write=false, read=true)
+
+                f_Residual      =   (x -> ForwardDiff_res(x, user_ctx));        # pass additional rguments into the routine
+                J_julia         =   ForwardDiff.jacobian(f_Residual,x);
+
+                # Note: since x is the LOCAL vector, J_julia also ends up having the same size.
+                ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);
+                if PETSc.assembled(J) == false
+                    J           =   PETSc.MatSeqAIJ(sparse(J_julia[ind,ind]));
+                else
+                    J           .=   sparse(J_julia[ind,ind]);
+                end
+
+                return sparse(J_julia[ind,ind]), ind, sparse(J_julia)
+            end
+
+            # Main routine starts here ----
+
+            dofVertex   =   0
+            dofEdge     =   0
+            dofCenter   =   1
+            nx,nz       =   6,25
+            user_ctx.dm =   PETSc.DMStagCreate2d(petsclib,comm,
+                        PETSc.DM_BOUNDARY_GHOSTED,
+                        PETSc.DM_BOUNDARY_NONE,
+                        nx,
+                        nz,
+                        1,
+                        1,
+                        dofVertex,
+                        dofEdge,
+                        dofCenter,
+                        PETSc.DMSTAG_STENCIL_BOX,
+                        1)
+            PJ           =      PETSc.creatematrix(user_ctx.dm);                  # extract global) matrix from DMStag
+            PETSc.MatSetOption(PJ, PETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, false)
+
+            x_g             =   PETSc.createglobalvector(user_ctx.dm)
+            f_g             =   PETSc.createglobalvector(user_ctx.dm)
+            user_ctx.x_l    =   PETSc.createlocalvector(user_ctx.dm)
+            user_ctx.f_l    =   PETSc.createlocalvector(user_ctx.dm)
+
+            S = PETSc.SNES{PetscScalar}(petsclib, comm;
+                    snes_rtol=1e-12,
+                    snes_monitor=true,
+                    pc_type="none",
+                    snes_monitor_true_residual=true,
+                    snes_converged_reason=false);
+            S.user_ctx  =       user_ctx;
+
+            J_julia, ind, J_full =      FormJacobian!(x_g, PJ, PJ, user_ctx)
+            PJ           =      PETSc.MatSeqAIJ(J_julia)                # assemble non-zero structure
+            PETSc.MatSetOption(PJ, PETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, false)
+
+            PETSc.setfunction!(S, FormRes!, f_g)
+            PETSc.setjacobian!(S, FormJacobian!, PJ, PJ)
+
+            # Solve 2D system
+            sol = PETSc.solve!(x_g, S);
+
+            PETSc.update!(user_ctx.x_l,sol, PETSc.INSERT_VALUES);   # copy global solution -> local vector
+            T2d =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l, PETSc.DMSTAG_ELEMENT,    0);
+
+            @test T2d[5,5] ≈ 0.75 rtol=1e-3
             #
-            #   1) Extract local vector from global solution (x) vector
-            #   2) Compute local jacobian from the residual routine (note that
-            #       this routine requires julia vectors as input)
+            # -----------------
 
-            # Extract the local vector
-            PETSc.update!(user_ctx.x_l, ptr_x_g,  PETSc.INSERT_VALUES)
-            x               =   PETSc.unsafe_localarray(PetscScalar, user_ctx.x_l.ptr;  write=false, read=true)
-
-            f_Residual      =   (x -> ForwardDiff_res(x, user_ctx));        # pass additional rguments into the routine
-            J_julia         =   ForwardDiff.jacobian(f_Residual,x);
-
-            # Note: since x is the LOCAL vector, J_julia also ends up having the same size.
-            ind             =   PETSc.LocalInGlobalIndices(user_ctx.dm);
-            if PETSc.assembled(J) == false
-                J           =   PETSc.MatSeqAIJ(sparse(J_julia[ind,ind]));
-            else
-                J           .=   sparse(J_julia[ind,ind]);
-            end
-
-            return sparse(J_julia[ind,ind]), ind, sparse(J_julia)
         end
-
-        # Main routine starts here ----
-
-        dofVertex   =   0
-        dofEdge     =   0
-        dofCenter   =   1
-        nx,nz       =   6,25
-        user_ctx.dm =   PETSc.DMStagCreate2d(petsclib,comm,
-                    PETSc.DM_BOUNDARY_GHOSTED,
-                    PETSc.DM_BOUNDARY_NONE,
-                    nx,
-                    nz,
-                    1,
-                    1,
-                    dofVertex,
-                    dofEdge,
-                    dofCenter,
-                    PETSc.DMSTAG_STENCIL_BOX,
-                    1)
-        PJ           =      PETSc.creatematrix(user_ctx.dm);                  # extract global) matrix from DMStag
-        x_g             =   PETSc.createglobalvector(user_ctx.dm)
-        f_g             =   PETSc.createglobalvector(user_ctx.dm)
-        user_ctx.x_l    =   PETSc.createlocalvector(user_ctx.dm)
-        user_ctx.f_l    =   PETSc.createlocalvector(user_ctx.dm)
-
-        S = PETSc.SNES{PetscScalar}(petsclib, comm;
-                snes_rtol=1e-12,
-                snes_monitor=true,
-                pc_type="none",
-                snes_monitor_true_residual=true,
-                snes_converged_reason=false);
-        S.user_ctx  =       user_ctx;
-
-        J_julia, ind, J_full =      FormJacobian!(x_g, PJ, PJ, user_ctx)
-        PJ           =      PETSc.MatSeqAIJ(J_julia)                # assemble non-zero structure
-
-        PETSc.setfunction!(S, FormRes!, f_g)
-        PETSc.setjacobian!(S, FormJacobian!, PJ, PJ)
-
-        # Solve 2D system
-        sol = PETSc.solve!(x_g, S);
-
-        PETSc.update!(user_ctx.x_l,sol, PETSc.INSERT_VALUES);   # copy global solution -> local vector
-        T2d =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,user_ctx.x_l, PETSc.DMSTAG_ELEMENT,    0);
-
-        @test T2d[5,5] ≈ 0.75 rtol=1e-3
-        #
-        # -----------------
-
         PETSc.finalize(petsclib)
 
-
     end
-    =#
 end

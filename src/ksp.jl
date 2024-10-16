@@ -216,7 +216,7 @@ struct Fn_KSPComputeOperators{T} end
         return r_rnorm[]
     end
 
-    function solve!(x::AbstractVec{$PetscScalar}, ksp::KSP{$PetscScalar}, b::AbstractVec{$PetscScalar})
+    function solve!(x::AbstractVec{$PetscScalar}, ksp::KSP{$PetscScalar, LT}, b::AbstractVec{$PetscScalar}) where LT
         with(ksp.opts) do
             @chk ccall((:KSPSolve, $libpetsc), PetscErrorCode,
             (CKSP, CVec, CVec), ksp, b, x)
@@ -241,19 +241,29 @@ struct Fn_KSPComputeOperators{T} end
         return x
     end
 
+    function solve!(x::AbstractVec{$PetscScalar}, tksp::LinearAlgebra.AdjointFactorization{T,K}, b::AbstractVec{$PetscScalar}) where {T,K <: KSP{$PetscScalar}}
+        ksp = parent(tksp)
+        with(ksp.opts) do
+            @chk ccall((:KSPSolveTranspose, $libpetsc), PetscErrorCode,
+            (CKSP, CVec, CVec), ksp, b, x)
+        end
+        return x
+    end
+    
 end
 
 # no generic Adjoint solve defined, but for Real we can use Adjoint
 solve!(x::AbstractVec{T}, aksp::Adjoint{T,K}, b::AbstractVec{T}) where {K <: KSP{T}} where {T<:Real} =
     solve!(x, transpose(parent(aksp)), b)
 
-const KSPAT{T, LT} = Union{KSP{T, LT}, Transpose{T, KSP{T, LT}}, Adjoint{T, KSP{T, LT}}}
+const KSPAT{T, LT} = Union{KSP{T, LT}, Transpose{T, KSP{T, LT}}, Adjoint{T, KSP{T, LT}}, LinearAlgebra.AdjointFactorization{T, KSP{T, LT}}}
 
 LinearAlgebra.ldiv!(x::AbstractVec{T}, ksp::KSPAT{T, LT}, b::AbstractVec{T}) where {T, LT} = solve!(x, ksp, b)
 function LinearAlgebra.ldiv!(x::AbstractVector{T}, ksp::KSPAT{T, LT}, b::AbstractVector{T}) where {T, LT}
     parent(solve!(AbstractVec(x), ksp, AbstractVec(b)))
 end
 Base.:\(ksp::KSPAT{T, LT}, b::AbstractVector{T}) where {T, LT} = ldiv!(similar(b), ksp, b)
+#Base.:\(kspt::LinearAlgebra.AdjointFactorization{T,KSPT{T, LT}}, b::AbstractVector{T}) where {T, LT} = ldiv!(similar(b), kspt._A', b)
 
 
 """

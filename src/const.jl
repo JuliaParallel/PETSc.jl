@@ -56,7 +56,38 @@ const PetscLogDouble      = Cdouble
 
 @enum InsertMode NOT_SET_VALUES INSERT_VALUES ADD_VALUES MAX_VALUES MIN_VALUES INSERT_ALL_VALUES ADD_ALL_VALUES INSERT_BC_VALUES ADD_BC_VALUES
 
-
+@enum MatOption begin
+    MAT_OPTION_MIN                  = -3
+    MAT_UNUSED_NONZERO_LOCATION_ERR = -2
+    MAT_ROW_ORIENTED                = -1
+    MAT_SYMMETRIC                   = 1
+    MAT_STRUCTURALLY_SYMMETRIC      = 2
+    MAT_FORCE_DIAGONAL_ENTRIES      = 3
+    MAT_IGNORE_OFF_PROC_ENTRIES     = 4
+    MAT_USE_HASH_TABLE              = 5
+    MAT_KEEP_NONZERO_PATTERN        = 6
+    MAT_IGNORE_ZERO_ENTRIES         = 7
+    MAT_USE_INODES                  = 8
+    MAT_HERMITIAN                   = 9
+    MAT_SYMMETRY_ETERNAL            = 10
+    MAT_NEW_NONZERO_LOCATION_ERR    = 11
+    MAT_IGNORE_LOWER_TRIANGULAR     = 12
+    MAT_ERROR_LOWER_TRIANGULAR      = 13
+    MAT_GETROW_UPPERTRIANGULAR      = 14
+    MAT_SPD                         = 15
+    MAT_NO_OFF_PROC_ZERO_ROWS       = 16
+    MAT_NO_OFF_PROC_ENTRIES         = 17
+    MAT_NEW_NONZERO_LOCATIONS       = 18
+    MAT_NEW_NONZERO_ALLOCATION_ERR  = 19
+    MAT_SUBSET_OFF_PROC_ENTRIES     = 20
+    MAT_SUBMAT_SINGLEIS             = 21
+    MAT_STRUCTURE_ONLY              = 22
+    MAT_SORTED_FULL                 = 23
+    MAT_FORM_EXPLICIT_TRANSPOSE     = 24
+    MAT_STRUCTURAL_SYMMETRY_ETERNAL = 25
+    MAT_SPD_ETERNAL                 = 26
+    MAT_OPTION_MAX                  = 27
+end
 
 @enum NormType begin
     NORM_1 = 0

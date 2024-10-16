@@ -1,5 +1,6 @@
 using Test
 using MPI: MPI, mpiexec
+using PETSc, PETSc_jll
 
 import MPIPreferences
 @info "Testing PETSc.jl with" MPIPreferences.binary MPIPreferences.abi

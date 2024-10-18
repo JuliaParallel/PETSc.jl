@@ -15,7 +15,7 @@ SparseDiffTools = "47a9eef4-7e08-11e9-0b38-333d64bd3804"
 [compat]
 MPI = "0.20"
 MPIPreferences = "0.1"
-PETSc_jll = "~3.21"
+PETSc_jll = "3.22"
 SparseArrays = "1.10"
 julia = "1.10"
 

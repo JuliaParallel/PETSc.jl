@@ -129,8 +129,8 @@ function main(petsclib; comm = MPI.COMM_WORLD, options...)
 
     opts = if MPI.Comm_size(comm) == 1
         (
-            ksp_monitor = true,
-            ksp_view = true,
+            ksp_monitor = false,    # set to true for output
+            ksp_view = false,
             da_grid_x = 100,
             da_grid_y = 100,
             pc_type = "mg",
@@ -144,8 +144,8 @@ function main(petsclib; comm = MPI.COMM_WORLD, options...)
             da_grid_y = 3,
             pc_type = "mg",
             da_refine = 10,
-            ksp_monitor = nothing,
-            ksp_view = nothing,
+            ksp_monitor = false,   # set to true for output
+            ksp_view = false,
             log_view = nothing,
         )
     end

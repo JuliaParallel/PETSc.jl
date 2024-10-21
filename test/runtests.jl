@@ -11,7 +11,6 @@ if Sys.iswindows()
     do_mpi = false
 end
 
-#=
 # Do the MPI tests first so we do not have mpi running inside MPI
 # XXX: Currently not working on windows, not sure why
 if do_mpi
@@ -37,7 +36,3 @@ include("test_snes.jl")
 
 # Run the examples to make sure they all work
 include("examples.jl")
-
-=#
-
-include("test_dmstag.jl")

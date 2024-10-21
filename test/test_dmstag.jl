@@ -325,7 +325,7 @@ end
         A = PETSc.creatematrix(dm_1D);  #
         PETSc.MatSetOption(A, PETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, false)
         @test size(A) == (42,42)
-        PETSc.assembled(A)
+      
 
         # set some values using normal indices:
         A[1,1]  = 1.0
@@ -338,14 +338,16 @@ end
         PETSc.DMStagMatSetValuesStencil(dm_1D, A, pos1, pos1, 11.1, PETSc.INSERT_VALUES)
         PETSc.DMStagMatSetValuesStencil(dm_1D, A, 1, [pos2], 2, pos, val1, PETSc.INSERT_VALUES)
 
+        @test PETSc.assembled(A) == false
         PETSc.assemble(A)
+        @test PETSc.assembled(A) == true
         @test A[1,10] == 1.0
 
         # Reads a value from the matrix, using the stencil structure
         @test PETSc.DMStagMatGetValuesStencil(dm_1D, A, pos1, pos1)== PetscScalar(11.1)
         @test PETSc.DMStagMatGetValuesStencil(dm_1D, A, 1, [pos2], 2, pos)==val1
             
-        PETSc.destroy(A);
+        #PETSc.destroy(A);
         PETSc.destroy(dm_1D);
             
         dofCenter       =   1;

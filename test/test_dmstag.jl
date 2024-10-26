@@ -440,18 +440,19 @@ end
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
 
+    mutable struct Data_1{PetscScalar,PetscInt}
+        dm
+        x_l
+        f_l
+    end
+
     for petsclib in PETSc.petsclibs
         PETSc.initialize(petsclib)
         PetscScalar = PETSc.scalartype(petsclib)
         PetscInt    = PETSc.inttype(petsclib)
         if PetscScalar == Float64 || PetscScalar == Float32
             # Define a struct that holds data we need in the local SNES routines below
-            mutable struct Data_1{PetscScalar,PetscInt}
-                dm
-                x_l
-                f_l
-            end
-
+         
             user_ctx = Data_1{PetscScalar,PetscInt}(nothing, nothing, nothing);  # holds data we need in the local
 
             function FormRes!(ptr_fx_g, ptr_x_g, user_ctx)
@@ -611,8 +612,13 @@ end
     mpisize = MPI.Comm_size(comm)
 
     # Tell AD that it can handle Complex as scalars
-    ForwardDiff.can_dual(::Type{ComplexF64}) = true
-    ForwardDiff.can_dual(::Type{ComplexF32}) = true
+#    ForwardDiff.can_dual(::Type{ComplexF64}) = true
+#    ForwardDiff.can_dual(::Type{ComplexF32}) = true
+    mutable struct Data_2D{PetscScalar,PetscInt}
+        dm
+        x_l
+        f_l
+    end
 
     for petsclib in PETSc.petsclibs
         PETSc.initialize(petsclib)
@@ -620,11 +626,7 @@ end
         PetscInt    = PETSc.inttype(petsclib)
         if PetscScalar == Float64 || PetscScalar == Float32
 
-            mutable struct Data_2D{PetscScalar,PetscInt}
-                dm
-                x_l
-                f_l
-            end
+          
             user_ctx = Data_2D{PetscScalar,PetscInt}(nothing, nothing, nothing);  # holds data we need in the local
 
             function FormRes!(ptr_fx_g, ptr_x_g, user_ctx)

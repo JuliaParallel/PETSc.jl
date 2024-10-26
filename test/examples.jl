@@ -1,3 +1,5 @@
+#=
+# already defined in mpi_examples, which is called earlier
 function find_sources(path::String, sources=String[])
   if isdir(path)
     for entry in readdir(path)
@@ -8,6 +10,7 @@ function find_sources(path::String, sources=String[])
   end
   sources
 end
+=#
 
 @testset "examples" begin
   examples_dir = joinpath(@__DIR__, "..", "examples")

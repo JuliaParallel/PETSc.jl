@@ -35,12 +35,12 @@ function FormResidual!(cf,cx, args...)
     if typeof(cx) <: Ptr{Nothing}
         # When this routine is called from PETSc, cx is a pointer to a global vector
         # That's why we have to transfer it first to 
-        x   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cx)
+        x   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cx, write=false)
     else
         x   = cx;
     end
     if typeof(cf) <: Ptr{Nothing}
-        f   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cf)
+        f   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cf, write=true)
     else
         f   = cf;
     end
@@ -76,7 +76,7 @@ end
 function FormJacobian!(cx, args...)
 
     if typeof(cx) <: Ptr{Nothing}
-        x   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cx)
+        x   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cx, write=false)
     else
         x   =   cx;
     end

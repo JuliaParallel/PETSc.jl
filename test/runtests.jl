@@ -27,7 +27,6 @@ if do_mpi
     include("mpi_examples.jl")
 end
 
-
 include("options.jl")
 include("dmda.jl")
 include("old_test.jl")

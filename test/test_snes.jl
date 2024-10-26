@@ -25,7 +25,7 @@ MPI.Initialized() || MPI.Init()
         # We could do Global->Local here on cfx/cx, provided a pointer to the local
         #  vector is available in user_ctx
         x_in  = PETSc.unsafe_localarray(PetscScalar, cx;  write=false)   # read array
-        fx_in = PETSc.unsafe_localarray(PetscScalar, cfx; read=false)    # write array
+        fx_in = PETSc.unsafe_localarray(PetscScalar, cfx; write=true)    # write array
       
         fx_in[1] = x_in[1]^2       +  x_in[1]*x_in[2] - 3
         fx_in[2] = x_in[1]*x_in[2] +  x_in[2]^2 - 6
@@ -75,7 +75,7 @@ MPI.Initialized() || MPI.Init()
       b  = PETSc.VecSeq(PetscScalar.([0.0, 0.0]));
       PETSc.solve!(x, S, b)
 
-      sol = PETSc.unsafe_localarray(PetscScalar, x.ptr; read=false)
+      sol = PETSc.unsafe_localarray(PetscScalar, x.ptr)
       @test sol ≈ [1.0,2.0] rtol=1e-4
 
       # cleanup

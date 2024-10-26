@@ -84,7 +84,7 @@ function FormJacobian!(ptr_x_g, J, P, user_ctx)
 
     # Extract the local vector from pointer to global vector
     PETSc.update!(user_ctx.x_l, ptr_x_g, PETSc.INSERT_VALUES)
-    x               =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false, read=true)
+    x               =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false)
 
     if isnothing(user_ctx.jac)
         # Compute sparsity pattern of jacobian. This is relatvely slow, but only has to be done once.

@@ -254,7 +254,7 @@ julia> map_unsafe_localarray(x; write=true) do x
 end
 
 !!! note
-    `Base.finalize` should is automatically called on the array.
+    `Base.finalize` is automatically called on the array.
 """
 function map_unsafe_localarray!(f!, v::AbstractVec{T}; kwargs...) where {T}
     array = unsafe_localarray(T, v.ptr; kwargs...)

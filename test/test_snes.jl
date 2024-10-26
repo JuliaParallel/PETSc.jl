@@ -9,6 +9,11 @@ MPI.Initialized() || MPI.Init()
   mpirank = MPI.Comm_rank(comm)
   mpisize = MPI.Comm_size(comm)
 
+   # structure with which we can pass data to the user-routines above
+   mutable struct Data
+    vec
+    julia
+  end
 
   for petsclib in PETSc.petsclibs
       PETSc.initialize(petsclib)
@@ -46,11 +51,7 @@ MPI.Initialized() || MPI.Init()
           PETSc.assemble(J1)          
       end
 
-      # structure with which we can pass data to the user-routines above
-      mutable struct Data
-          vec
-          julia
-      end
+     
 
       julia_vec = 0;  # we want pointers to local vectors 
 
@@ -59,8 +60,8 @@ MPI.Initialized() || MPI.Init()
       S = PETSc.SNES{PetscScalar}(petsclib,comm;  
                       ksp_rtol=1e-4, 
                       pc_type="none", 
-                      ksp_monitor=true, 
-                      snes_monitor=true, 
+                      ksp_monitor=false, 
+                      snes_monitor=false, 
                       snes_converged_reason=false, 
                       ksp_converged_reason=false)
 

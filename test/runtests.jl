@@ -12,7 +12,7 @@ if Sys.iswindows()
 end
 
 # Do the MPI tests first so we do not have mpi running inside MPI
-# XXX: Currently not working on windows, not sure why
+# XXX: Currently not working on windows (since we have no PETSc + MPI)
 if do_mpi
     cmd = `$(mpiexec())  -n 4 $(Base.julia_cmd()) --project dmda.jl`
     run(cmd)
@@ -22,7 +22,7 @@ end
 # Examples with the comment
 #   # INCLUDE IN MPI TEST
 # will be run here
-# XXX: Currently not working on windows reliably, not sure why
+# XXX: Currently not working on windows (since we have no PETSc + MPI)
 if do_mpi
     include("mpi_examples.jl")
 end

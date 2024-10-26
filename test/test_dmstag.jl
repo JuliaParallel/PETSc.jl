@@ -369,8 +369,10 @@ end
         corners                 =   PETSc.getcorners(dm_2D)
         ghost_corners           =   PETSc.getghostcorners(dm_2D)
 
-        # FIXME:
-        # the commented lines below result in a segfaulyt on linux
+        # ----
+        # FIXME: 
+        # the commented lines below result in a segfault on linux
+        # To be checked whether this is still the case for the auto-wrapped library
         for ix=corners.lower[1]:corners.upper[1]
             for iy=corners.lower[2]:corners.upper[2]
                 local dof
@@ -378,7 +380,7 @@ end
                 dof     = 0;
                 posA    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_DOWN,ix,iy,0,dof)
                 value   = PetscScalar(ix+10);
-                #PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, posA, value, PETSc.INSERT_VALUES)
+                #PETSc.DMStagVecSetValuesStencil(dm_2D, vec_test_2D_global, 1, [posA], [value], PETSc.INSERT_VALUES)
                 dof     = 0;
                 posB    = PETSc.DMStagStencil{PetscInt}(PETSc.DMSTAG_LEFT,ix,iy,0,dof)
                 value   = PetscScalar(33);
@@ -391,7 +393,6 @@ end
         end
         
         PETSc.assemble(vec_test_2D_global) # assemble global vector
-        
 
         # Add the global values to the local values
         PETSc.update!(vec_test_2D_local, vec_test_2D_global,PETSc.INSERT_VALUES)
@@ -407,6 +408,8 @@ end
 #        @test X2D_dofs[4,4,1] ≈ PetscScalar(12.0)
 #        @test X2D_dofs[4,4,2] ≈ PetscScalar(33.0)
 #        @test X2D_dofs[4,4,3] ≈ PetscScalar(44.0)
+
+        # ----
 
         # Extract an array of a specific DOF (here a face velocity @ the left)
         Xarray = PETSc.DMStagGetGhostArrayLocationSlot(dm_2D,vec_test_2D_local, PETSc.DMSTAG_LEFT, 0)

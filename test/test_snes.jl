@@ -59,8 +59,8 @@ MPI.Initialized() || MPI.Init()
       S = PETSc.SNES{PetscScalar}(petsclib,comm;  
                       ksp_rtol=1e-4, 
                       pc_type="none", 
-                      ksp_monitor=true, 
-                      snes_monitor=true, 
+                      ksp_monitor=false, 
+                      snes_monitor=false, 
                       snes_converged_reason=false, 
                       ksp_converged_reason=false)
 

@@ -93,7 +93,7 @@ function FormJacobian!(ptr_x_g, J, P, user_ctx)
     # Extract the local vector
     #PETSc.DMGlobalToLocal(user_ctx.dm, cx_g,  PETSc.INSERT_VALUES,  user_ctx.x_l) 
     PETSc.update!(user_ctx.x_l, ptr_x_g, PETSc.INSERT_VALUES)
-    x               =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false, read=true);
+    x               =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false);
 
     # Check the sparsity pattern
     if isnothing(user_ctx.jac)

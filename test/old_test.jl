@@ -1,6 +1,7 @@
 using Test
 using PETSc, MPI, LinearAlgebra, SparseArrays
-PETSc.initialize()
+#PETSc.initialize()
+PETSc.initialize(PETSc.petsclibs[1])
 
 @testset "Tests" begin
   m,n = 20,20
@@ -28,7 +29,7 @@ PETSc.initialize()
   @test PETSc.gettype(pc) == "jacobi"
 
   # create an extra handle, check ref count is incremented
-  pc_extra = PETSc.PC(ksp)
+  pc_extra = PETSc.PC(ksp);
   @test PETSc.nrefs(pc) == 3
   # destroy extra handle, check ptr is set to null, ref count is decremented
   PETSc.destroy(pc_extra)
@@ -71,8 +72,8 @@ PETSc.initialize()
 
 
   function F!(cfx, cx, a)
-    x = PETSc.unsafe_localarray(Float64,cx)
-    fx = PETSc.unsafe_localarray(Float64,cfx)
+    x = PETSc.unsafe_localarray(Float64,cx,  write=false)
+    fx = PETSc.unsafe_localarray(Float64,cfx,write=true)
     fx[1] = x[1]^2 + x[1]*x[2] - 3
     fx[2] = x[1]*x[2] + x[2]^2 - 6
     Base.finalize(x)
@@ -82,7 +83,7 @@ PETSc.initialize()
   J = zeros(2,2)
   PJ = PETSc.MatSeqDense(J)
   function updateJ!(cx, args...)
-    x = PETSc.unsafe_localarray(Float64,cx)
+    x = PETSc.unsafe_localarray(Float64,cx, write=false)
     J[1,1] = 2x[1] + x[2]
     J[1,2] = x[1]
     J[2,1] = x[2]
@@ -93,5 +94,6 @@ PETSc.initialize()
   S = PETSc.SNES{Float64}(PETSc.petsclibs[1],MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
   PETSc.setfunction!(S, F!, PETSc.VecSeq(zeros(2)))
   PETSc.setjacobian!(S, updateJ!, PJ, PJ)
-  @test PETSc.solve!([2.0,3.0], S) ≈ [1.0,2.0] rtol=1e-4
+  a = PETSc.VecSeq([2.0,3.0])
+  @test PETSc.solve!(a, S) ≈ [1.0,2.0] rtol=1e-4
 end

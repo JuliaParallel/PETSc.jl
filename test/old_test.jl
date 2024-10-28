@@ -72,8 +72,8 @@ PETSc.initialize(PETSc.petsclibs[1])
 
 
   function F!(cfx, cx, a)
-    x = PETSc.unsafe_localarray(Float64,cx,  write=false)
-    fx = PETSc.unsafe_localarray(Float64,cfx,write=true)
+    x = PETSc.unsafe_localarray(Float64,cx,  write=false, read=true)
+    fx = PETSc.unsafe_localarray(Float64,cfx,write=true, read=true)
     fx[1] = x[1]^2 + x[1]*x[2] - 3
     fx[2] = x[1]*x[2] + x[2]^2 - 6
     Base.finalize(x)
@@ -83,7 +83,7 @@ PETSc.initialize(PETSc.petsclibs[1])
   J = zeros(2,2)
   PJ = PETSc.MatSeqDense(J)
   function updateJ!(cx, args...)
-    x = PETSc.unsafe_localarray(Float64,cx, write=false)
+    x = PETSc.unsafe_localarray(Float64,cx, write=false, read=true)
     J[1,1] = 2x[1] + x[2]
     J[1,2] = x[1]
     J[2,1] = x[2]

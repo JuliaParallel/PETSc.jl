@@ -1,0 +1,423 @@
+[general]
+library_name = "$petsc_library"
+
+use_julia_native_enum_type = true
+use_deterministic_symbol = true
+auto_mutability = true
+prologue_file_path = "./prologue.jl"
+# epilogue_file_path = "./epilogue.jl"
+
+#auto_mutability_blacklist = ["MatStencil"]
+
+printer_blacklist = [
+#
+# Defined in the prologue
+#
+  "PetscOptions", "_n_PetscOptions",
+  "PetscViewer", "_p_PetscViewer",
+  "PetscObject", "_p_PetscObject",
+  "Mat", "_p_Mat", "MatType",
+  "Vec", "_p_Vec", "VecType",
+  "KSP", "_p_KSP", "KSPType",
+  "SNES", "_p_SNES", "SNESType",
+  "DM", "_p_DM", "DMType",
+#
+# Remove types defined in const.jl
+#
+  "PetscErrorCode",
+  "PetscBool",
+  "PetscDataType",
+#
+# Remove types defined by $define
+#
+  "PetscInt",
+  "PetscScalar",
+  "PetscReal",
+  "PetscComplex",
+#
+# Remove the stuff we get from MPI.jl
+#
+  "MPI_Datatype",
+  "MPI_Comm",
+  "MPI_Win",
+  "MPI_File",
+  "MPI_Op",
+  "MPI_Info",
+  "MPI_Aint",
+  "MPI_Offset",
+  "MPI_Status",
+  "MPI_Request",
+  "MPI_Group",
+#
+# MPI_Status... Not handled currently in MPI.jl
+#
+  "MPIU_File_write_all",
+  "MPIU_File_read_all",
+  "MPIU_File_write_at",
+  "MPIU_File_read_at",
+  "MPIU_File_write_at_all",
+  "MPIU_File_read_at_all",
+#
+# MPI_Request... Not handled currently in MPI.jl
+#
+  "PetscPostIrecvInt",
+  "PetscPostIrecvScalar",
+  "PetscCommBuildTwoSidedFReq",
+#
+# MPI_Group... Not handled currently in MPI.jl
+#
+  "PetscSFSetUpRanks",
+  "PetscSFGetGroups",
+#
+# Remove functions marked _Private
+#
+  "PetscAbortFindSourceFile_Private",
+  "PetscObjectComposeFunction_Private",
+  "PetscOptionsBegin_Private",
+  "PetscObjectOptionsBegin_Private",
+  "PetscOptionsEnd_Private",
+  "PetscOptionsEnum_Private",
+  "PetscOptionsInt_Private",
+  "PetscOptionsReal_Private",
+  "PetscOptionsScalar_Private",
+  "PetscOptionsName_Private",
+  "PetscOptionsString_Private",
+  "PetscOptionsBool_Private",
+  "PetscOptionsBoolGroupBegin_Private",
+  "PetscOptionsBoolGroup_Private",
+  "PetscOptionsBoolGroupEnd_Private",
+  "PetscOptionsFList_Private",
+  "PetscOptionsEList_Private",
+  "PetscOptionsRealArray_Private",
+  "PetscOptionsScalarArray_Private",
+  "PetscOptionsIntArray_Private",
+  "PetscOptionsStringArray_Private",
+  "PetscOptionsBoolArray_Private",
+  "PetscOptionsEnumArray_Private",
+  "PetscOptionsDeprecated_Private",
+  "PetscObjectQueryFunction_Private",
+  "PetscFunctionListAdd_Private",
+  "PetscFunctionListFind_Private",
+  "PetscOptionsViewer_Private",
+#
+# Need PetscOptionItems to work with interpotated values
+#
+  "_n_PetscOptionItem",
+  "_p_PetscOptionItems",
+  "PetscOptionItems",
+  "PetscOptionsHead",
+  "PetscObjectProcessOptionsHandlers",
+  "TSAdjointSetFromOptions",
+  "TSAdaptSetFromOptions",
+  "TSGLLEAdaptSetFromOptions",
+#
+# Need PetscTable to work with interpotated values
+#
+  "_n_PetscTable",
+  "PetscTable",
+  "PetscTablePosition",
+  "PetscHash",
+  "PetscHashStep",
+  "PetscTableCreate",
+  "PetscTableCreateCopy",
+  "PetscTableDestroy",
+  "PetscTableGetCount",
+  "PetscTableIsEmpty",
+  "PetscTableAddExpand",
+  "PetscTableAddCountExpand",
+  "PetscTableGetHeadPosition",
+  "PetscTableGetNext",
+  "PetscTableRemoveAll",
+  "PetscTableAdd",
+  "PetscTableAddCount",
+  "PetscTableFind",
+#
+# Need PetscDrawViewPorts to work with interpotated values
+#
+  "PetscDrawViewPorts",
+  "PetscDrawViewPortsCreate",
+  "PetscDrawViewPortsCreateRect",
+  "PetscDrawViewPortsDestroy",
+  "PetscDrawViewPortsSet",
+#
+# Need PetscSFNode to work with interpotated values
+#
+  "PetscSFNode",
+  "PetscSFSetGraph",
+  "PetscSFGetGraph",
+#
+# Need PetscLayout to work with interpotated values
+#
+  "_n_PetscLayout",
+  "PetscLayout",
+  "PetscLayoutFindOwner",
+  "PetscLayoutFindOwnerIndex",
+  "PetscLayoutCreate",
+  "PetscLayoutCreateFromSizes",
+  "PetscLayoutCreateFromRanges",
+  "PetscLayoutSetUp",
+  "PetscLayoutDestroy",
+  "PetscLayoutDuplicate",
+  "PetscLayoutReference",
+  "PetscLayoutSetLocalSize",
+  "PetscLayoutGetLocalSize",
+  "PetscLayoutSetSize",
+  "PetscLayoutGetSize",
+  "PetscLayoutSetBlockSize",
+  "PetscLayoutGetBlockSize",
+  "PetscLayoutGetRange",
+  "PetscLayoutGetRanges",
+  "PetscLayoutCompare",
+  "PetscLayoutSetISLocalToGlobalMapping",
+  "PetscLayoutMapLocal",
+  "PetscParallelSortInt",
+  "ISGetLayout",
+  "MatGetLayouts",
+  "MatSetLayouts",
+  "VecGetLayout",
+  "VecSetLayout",
+  "PetscSFSetGraphWithPattern",
+  "PetscSFSetGraphLayout",
+  "PetscSFCreateFromLayouts",
+  "PetscLayoutsCreateSF",
+  "PetscSFCreateByMatchingIndices",
+  "PetscSectionGetPointLayout",
+  "PetscSectionGetValueLayout",
+#
+# Need Vecs to work with interpotated values
+#
+  "_n_Vecs",
+  "Vecs",
+  "VecsDestroy",
+  "VecsCreateSeq",
+  "VecsCreateSeqWithArray",
+  "VecsDuplicate",
+  "MatSolves",
+#
+# Need VecTaggerBox to work with interpotated values
+#
+  "VecTaggerBox",
+  "VecTaggerComputeBoxes",
+  "VecTaggerAbsoluteSetBox",
+  "VecTaggerAbsoluteGetBox",
+  "VecTaggerRelativeSetBox",
+  "VecTaggerRelativeGetBox",
+  "VecTaggerCDFSetBox",
+  "VecTaggerCDFGetBox",
+#
+# Need MatFactorInfo to work with interpotated values
+#
+  "MatFactorInfo",
+  "MatFactorInfoInitialize",
+  "MatCholeskyFactor",
+  "MatCholeskyFactorSymbolic",
+  "MatCholeskyFactorNumeric",
+  "MatLUFactor",
+  "MatILUFactor",
+  "MatLUFactorSymbolic",
+  "MatILUFactorSymbolic",
+  "MatICCFactorSymbolic",
+  "MatICCFactor",
+  "MatLUFactorNumeric",
+  "MatQRFactor",
+  "MatQRFactorSymbolic",
+  "MatQRFactorNumeric",
+#
+# Need PetscHashFormKey to work with interpotated values
+#
+  "_PetscHashFormKey",
+  "PetscHashFormKey",
+  "PetscHashFormKeySort",
+  "PetscFEIntegrateResidual",
+  "PetscFEIntegrateHybridResidual",
+  "PetscFEIntegrateJacobian",
+#
+# Need DMInterpolationInfo to work with interpotated values
+#
+  "_DMInterpolationInfo",
+  "DMInterpolationInfo",
+  "DMInterpolationCreate",
+  "DMInterpolationSetDim",
+  "DMInterpolationGetDim",
+  "DMInterpolationSetDof",
+  "DMInterpolationGetDof",
+  "DMInterpolationAddPoints",
+  "DMInterpolationSetUp",
+  "DMInterpolationGetCoordinates",
+  "DMInterpolationGetVector",
+  "DMInterpolationRestoreVector",
+  "DMInterpolationEvaluate",
+  "DMInterpolationDestroy",
+#
+# Need DMDALocalInfo to work with interpotated values
+#
+  "DMDALocalInfo",
+  "DMDAGetLocalInfo",
+#
+# Need PetscTabulation to work with interpotated values
+#
+  "_p_PetscTabulation",
+  "PetscTabulation",
+  "PetscFVGetCellTabulation",
+  "PetscFVCreateTabulation",
+  "PetscDSGetTabulation",
+  "PetscDSGetFaceTabulation",
+  "PetscFEGetCellTabulation",
+  "PetscFEGetFaceTabulation",
+  "PetscFEGetFaceCentroidTabulation",
+  "PetscFECreateTabulation",
+  "PetscFEComputeTabulation",
+  "PetscTabulationDestroy",
+#
+# Need PetscFEGeom to work with interpotated values
+#
+  "_n_PetscFEGeom",
+  "PetscFEGeom",
+  "PetscDualSpaceTransform",
+  "PetscFECreateCellGeometry",
+  "DMFieldCreateFEGeom",
+  "PetscFEDestroyCellGeometry",
+  "PetscFEPushforward",
+  "PetscFEPushforwardGradient",
+  "PetscFEPushforwardHessian",
+  "PetscFEIntegrate",
+  "PetscFEIntegrateBd",
+  "PetscFEIntegrateBdResidual",
+  "PetscFEIntegrateBdJacobian",
+  "PetscFEIntegrateHybridJacobian",
+  "PetscDualSpaceTransformGradient",
+  "PetscDualSpaceTransformHessian",
+  "PetscDualSpacePullback",
+  "PetscDualSpacePushforward",
+  "PetscDualSpacePushforwardGradient",
+  "PetscDualSpacePushforwardHessian",
+  "PetscFEGeomCreate",
+  "PetscFEGeomGetChunk",
+  "PetscFEGeomRestoreChunk",
+  "PetscFEGeomComplete",
+  "PetscFEGeomDestroy",
+  "PetscDualSpaceApply",
+  "PetscDualSpaceApplyDefault",
+#
+# Need DMDACoor2d and DMDACoor3d to work with interpotated values
+#
+  "DMDACoor2d",
+  "DMDACoor3d",
+#
+# Need PetscFVFaceGeom and PetscFVCellGeom to work with interpotated values
+#
+  "PetscFVFaceGeom",
+  "PetscFVCellGeom",
+  "PetscDualSpaceApplyFVM",
+  "PetscFVIntegrateRHSFunction",
+  "DMPlexGetFaceGeometry",
+  "DMPlexRestoreFaceGeometry",
+  "PetscFVFaceGeom",
+  "PetscFVIntegrateRHSFunction",
+  "DMPlexGetFaceGeometry",
+  "DMPlexRestoreFaceGeometry",
+#
+# Need DMStagStencil to work with interpotated values
+#
+#  "DMStagStencil",
+#  "DMStagMatGetValuesStencil",
+  "DMStagVecGetValuesStencil",
+  "DMStagVecSetValuesStencil",
+  "DMStagMatSetValuesStencil",
+#
+# Need TSMonitorLGCtxNetwork to work with interpotated values
+#
+  "_n_TSMonitorLGCtxNetwork",
+  "TSMonitorLGCtxNetwork",
+  "TSMonitorLGCtxNetworkDestroy",
+  "TSMonitorLGCtxNetworkCreate",
+#
+# Other stuff we have to remove.... for now
+#
+  "PETSC_MAX_INT", "PETSC_MIN_INT", # Windows failure
+  "petsc_mpiu_2scalar",
+  "petsc_mpiu_2int",
+  "MatScalar",
+  "MatReal",
+  "PetscFloat",
+  "PetscComplex",
+  "PETSC_RESTRICT",
+  "PETSC_C_RESTRICT",
+  "PETSC_CXX_RESTRICT",
+  "PETSC_FORTRAN_CHARLEN_T",
+  "IS_COLORING_MAX",
+  "PETSC_IS_COLORING_MAX",
+  "PETSC_IS_COLORING_VALUE_TYPE_F",
+  "PETSC_PREFETCH_HINT_NTA",
+  "PETSC_PREFETCH_HINT_T0",
+  "PETSC_PREFETCH_HINT_T1",
+  "PETSC_PREFETCH_HINT_T2",
+  "PETSC_UINTPTR_T",
+  "PETSC_UNUSED",
+  "PETSC_FUNCTION",
+  "CHKMEMA",
+  "PetscStackPop",
+  "PETSC_INLINE",
+  "PETSC_VISIBILITY_PUBLIC",
+  "PETSC_VERSION_",
+  "PC_MG_CASCADE",
+  "PetscDefined_arg_1",
+  "PetscDefined_arg_",
+  "TSEIMEXType",
+  "PETSC_FUNCTION_NAME",
+  "PetscInt64_FMT",
+  "PetscInt_FMT",
+  "MPIU_C_COMPLEX",
+  "MPIU_C_DOUBLE_COMPLEX",
+  "MPIU_COMPLEX",
+  "MPIU_SCALAR",
+  "MPIU_MATSCALAR",
+  "PETSC_PI",
+  "PETSC_PHI",
+  "PETSC_SQRT2",
+  "PETSC_IGNORE",
+  "PETSC_NULL",
+  "MPIU_2PETSCLOGDOUBLE",
+  "PETSC_BITS_PER_BYTE",
+  "PETSC_VIEWER_ASCII_VTK_ATTR",
+  "PETSC_VIEWER_ASCII_VTK_CELL_ATTR",
+  "PETSC_VIEWER_ASCII_VTK_COORDS_ATTR",
+  "PETSC_VIEWER_STDERR_SELF",
+  "PETSC_VIEWER_STDERR_WORLD",
+  "PETSC_VIEWER_STDOUT_WORLD",
+  "PETSC_VIEWER_STDOUT_SELF",
+  "PETSC_VIEWER_DRAW_WORLD",
+  "PETSC_VIEWER_DRAW_SELF",
+  "PETSC_VIEWER_SOCKET_WORLD",
+  "PETSC_VIEWER_SOCKET_SELF",
+  "PETSC_VIEWER_BINARY_WORLD",
+  "PETSC_VIEWER_BINARY_SELF",
+  "PETSC_VIEWER_MATLAB_WORLD",
+  "PETSC_VIEWER_MATLAB_SELF",
+  "PETSC_VIEWER_MATHEMATICA_WORLD",
+  "PETSC_MATLAB_ENGINE_WORLD",
+  "PETSC_MATLAB_ENGINE_SELF",
+  "MPIU_REPLACE",
+  "KSPCGNASH",
+  "KSPCGSTCG",
+  "KSPCGGLTR",
+  "PC_SIDE_MAX",
+  "KSP_NORM_MAX",
+  "KSP_DIVERGED_PCSETUP_FAILED_DEPRECATED",
+  "SNES_CONVERGED_TR_DELTA_DEPRECATED",
+  "KSPDefaultConverged",
+  "KSPDefaultConvergedDestroy",
+  "KSPDefaultConvergedCreate",
+  "KSPDefaultConvergedSetUIRNorm",
+  "KSPDefaultConvergedSetUMIRNorm",
+  "KSPSkipConverged",
+  "SNESSkipConverged",
+  ]
+
+[codegen]
+use_ccall_macro = false
+function_argument_conflict_symbols = ["__PETSC__"]
+
+[codegen.macro]
+macro_mode = "basic"
+

@@ -90,6 +90,8 @@ end
         julia = joinpath(Sys.BINDIR, Base.julia_exename())
         run(`$(julia) --startup-file=no --project -e "using PETSc
                                  using Test
+                                 using MPI, Pkg
+                                 Pkg.instantiate()
                                  opts = PETSc.parse_options(ARGS)
                                  @test length(opts) == 4
                                  @test opts.ksp_monitor === nothing

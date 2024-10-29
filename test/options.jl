@@ -89,12 +89,11 @@ end
     @test begin
 
         julia = joinpath(Sys.BINDIR, Base.julia_exename())
+        # Force packages to be installed 
         run(`$(julia) --startup-file=no --project -e "using Pkg; Pkg.instantiate()" `)
 
         run(`$(julia) --startup-file=no --project -e "using PETSc
                                  using Test
-                                 using Pkg
-                                 Pkg.instantiate()
                                  opts = PETSc.parse_options(ARGS)
                                  @test length(opts) == 4
                                  @test opts.ksp_monitor === nothing

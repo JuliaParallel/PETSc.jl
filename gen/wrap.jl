@@ -184,11 +184,10 @@ function mangle_functions(output_file)
 end
 
 function wrap(output_file, petsc_include_dir, mpi_include_dir, petsc_h_files=nothing)
-    petsc_h = joinpath(petsc_include_dir, "petsc.h")
+    #petsc_h = joinpath(petsc_include_dir, "petsc.h")
     #petsc_h = joinpath(petsc_include_dir, "petscdmstag.h")
    
-    @assert all(isfile.(petsc_h))
-
+   
     mpi_h = joinpath(mpi_include_dir, "mpi.h")
     @assert isfile(mpi_h)
 
@@ -201,8 +200,12 @@ function wrap(output_file, petsc_include_dir, mpi_include_dir, petsc_h_files=not
     push!(args, "-isystem$mpi_include_dir")
 
     if !isnothing(petsc_h_files)
+        @assert all(isfile.(petsc_h_files))
         header_files = petsc_h_files
     else
+        petsc_h = joinpath(petsc_include_dir, "petsc.h")
+
+        @assert isfile(petsc_h)
         header_files = [petsc_h]
     end
 

@@ -21,7 +21,7 @@ MPICH_toml = joinpath(dirname(pathof(MPICH_jll)), "..", "Artifacts.toml")
 MPICH_dir = Pkg.Artifacts.ensure_artifact_installed("MPICH", MPICH_toml)
 
 # Copy all petsc headers to a local directory
-# NOTE: Doing this now so I can later add docstrings to the headers
+# NOTE: Doing this by hand rather than leaving them at the original location, so I can later add docstrings to the headers
 petsc_jll_include_dir = joinpath(PETSc_dir, "lib", "petsc", "double_real_Int64", "include") |> normpath
 if !isdir("headers");  mkdir("headers") end
 for file in readdir(petsc_jll_include_dir)
@@ -34,7 +34,11 @@ petsc_include_dir = joinpath(pwd(),"headers") |> normpath
 # for debugging, only wrap a few files, so we don't generate that many files
 petscdmstag_h   = joinpath(petsc_include_dir, "petscdmstag.h")
 petscsystypes_h = joinpath(petsc_include_dir, "petscsystypes.h")
-petsc_h_files   = [petscdmstag_h, petscsystypes_h]
+#petsc_h_files   = [petscdmstag_h, petscsystypes_h]
+petsc_h_files   = [petscdmstag_h]
+
+
+petsc_h = [joinpath(petsc_include_dir, "petsc.h")]
 @assert all(isfile.(petsc_h))
 
 mpich_include_dir = joinpath(MPICH_dir, "include") |> normpath

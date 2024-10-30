@@ -1,7 +1,9 @@
 using Test
 using MPI: MPI, mpiexec
-using PETSc, PETSc_jll
+using PETSc, PETSc_jll, Pkg
 
+# Make sure that all dependencies are installed also on a clean system
+Pkg.instantiate()
 
 import MPIPreferences
 @info "Testing PETSc.jl with" MPIPreferences.binary MPIPreferences.abi PETSc_jll.host_platform

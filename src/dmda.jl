@@ -50,7 +50,7 @@ If keyword argument `dmsetup == true` then `setup!` is called.
 # External Links
 $(_doc_external("DMDA/DMDACreate1d"))
 """
-#function DMDACreate1d end
+function DMDACreate1d end
 
 @for_petsc function DMDACreate1d(
     ::$UnionPetscLib,

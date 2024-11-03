@@ -9,6 +9,8 @@ prologue_file_path = "./prologue.jl"
 
 #auto_mutability_blacklist = ["MatStencil"]
 
+show_c_function_prototype = false
+
 printer_blacklist = [
 #
 # Defined in the prologue
@@ -321,9 +323,9 @@ printer_blacklist = [
 #
 #  "DMStagStencil",
 #  "DMStagMatGetValuesStencil",
-  "DMStagVecGetValuesStencil",
-  "DMStagVecSetValuesStencil",
-  "DMStagMatSetValuesStencil",
+#  "DMStagVecGetValuesStencil",
+#  "DMStagVecSetValuesStencil",
+#  "DMStagMatSetValuesStencil",
 #
 # Need TSMonitorLGCtxNetwork to work with interpotated values
 #
@@ -358,7 +360,7 @@ printer_blacklist = [
   "CHKMEMA",
   "PetscStackPop",
   "PETSC_INLINE",
-  "PETSC_VISIBILITY_PUBLIC",
+# "PETSC_VISIBILITY_PUBLIC",
   "PETSC_VERSION_",
   "PC_MG_CASCADE",
   "PetscDefined_arg_1",

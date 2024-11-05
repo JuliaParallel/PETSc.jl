@@ -154,7 +154,18 @@ function mangle_functions(output_file)
             add_UnionPetscLib,
             add_chk,
             add_for_petsc,
-            (x, s) -> add_struct_type(x, s, ("MatStencil",), ("PetscInt",)),
+
+            # Deal with structures that require type declarations:
+            (x, s) -> add_struct_type(x, s, 
+                    ("MatStencil","_n_PetscLayout","PetscViewerAndFormat","_PetscCDIntNd","_PetscCoarsenData","_PetscFormKey","_p_DMPlexPointQueue"), 
+                    ("PetscInt",)),
+            (x, s) -> add_struct_type(x, s, 
+                    ("petsc_mpiu_scalar_int",), 
+                    ("PetscScalar, PetscInt",)),
+            (x, s) -> add_struct_type(x, s, 
+                    ("petsc_mpiu_real_int",), 
+                    ("PetscReal, PetscInt",)),
+
             (x, s) -> add_interpolations(
                 x,
                 s,

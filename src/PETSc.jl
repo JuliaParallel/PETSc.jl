@@ -20,7 +20,8 @@ function _doc_external(fname)
 end
 
 include("init.jl")
-include("viewer.jl")
+#include("viewer.jl")
+#=
 include("options.jl")
 # include("ref.jl")
 include("vec.jl")
@@ -33,5 +34,5 @@ include("ksp.jl")
 # include("pc.jl")
 include("snes.jl")
 include("sys.jl")
-
+=#
 end

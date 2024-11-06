@@ -16,14 +16,14 @@ using LinearAlgebra: norm
         _stdout = stdout
         (rd, wr) = redirect_stdout()
         @show petsc_x
-        @test readline(rd) == "petsc_x = Vec Object: 1 MPI processes"
+        @test readline(rd) == "petsc_x = Vec Object: 1 MPI process"
         @test readline(rd) == "  type: seq"
         redirect_stdout(_stdout)
 
         _stdout = stdout
         (rd, wr) = redirect_stdout()
         show(stdout, "text/plain", petsc_x)
-        @test readline(rd) == "Vec Object: 1 MPI processes"
+        @test readline(rd) == "Vec Object: 1 MPI process"
         @test readline(rd) == "  type: seq"
         redirect_stdout(_stdout)
 

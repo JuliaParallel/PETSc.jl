@@ -10,7 +10,7 @@ using MPI
         local_rows = 10
         local_cols = 5
         function f!(p_x, p_y)
-            PETSc.withlocalarray!((p_x, p_y)) do x, y
+            PETSc.withlocalarray!((p_x, p_y), write=(true,false)) do x, y
                 x .= [2y; 3y]
             end
         end

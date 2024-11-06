@@ -1,133 +1,671 @@
-# Attempt at include dmstag functions
-const CDMStag = Ptr{Cvoid}
-const CDMStagType = Cstring
+abstract type AbstractDMStag{PetscLib} <: AbstractDM{PetscLib} end
 
-mutable struct DMStag{PetscLib} <: AbstractDM{PetscLib}
-    ptr::CDMStag
+mutable struct DMStag{PetscLib} <: AbstractDMStag{PetscLib}
+    ptr::CDM
     opts::Options{PetscLib}
-    
-    DMStag{PetscLib}(ptr, opts = Options(PetscLib)) where {PetscLib} =
-    new{PetscLib}(ptr, opts)
+    age::Int
 end
 
-"""
-    empty(dm::DMStag)
-
-return an uninitialized `DMStag` struct.
-"""
-Base.empty(::DMStag{PetscLib}) where {PetscLib} = DMStag{PetscLib}(C_NULL)
-
-
-mutable struct DMSTAGSTENCIL{PetscInt}
-    loc::DMStagStencilLocation
-    i::PetscInt
-    j::PetscInt
-    k::PetscInt
-    c::PetscInt
+mutable struct DMStagPtr{PetscLib} <: AbstractDMStag{PetscLib}
+    ptr::CDM
+    age::Int
+    own::Bool
 end
 
-const DMStagStencil     = DMSTAGSTENCIL
-
-# allows us to pass XXMat objects directly into CMat ccall signatures
-Base.cconvert(::Type{CDMStag}, obj::DMStag) = obj.ptr
-
-# allows us to pass XXMat objects directly into Ptr{CMat} ccall signatures
-Base.unsafe_convert(::Type{Ptr{CDMStag}}, obj::DMStag) =
-    convert(Ptr{CDMStag}, pointer_from_objref(obj))
+#abstract type DMStagStencilLocation{PetscLib} end
 
 """
-    dm = DMStagCreate1d(::PetscLib,
-        comm::MPI.Comm, 
-        bndx::DMBoundaryType, 
-        M, 
-        dofVertex, 
-        dofCenter, 
-        stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX, 
-        stencilWidth=2, 
-        lx=C_NULL; 
-        dmsetfromoptions=true,
-        dmsetup=true,
+    DMStag(
+        petsclib::PetscLib
+        comm::MPI.Comm,
+        boundary_type::NTuple{D, DMBoundaryType},
+        global_dim::NTuple{D, Integer},
+        dof_per_node::NTuple{1 + D, Integer},
+        stencil_width::Integer,
+        stencil_type = DMSTAG_STENCIL_BOX;
+        points_per_proc::Tuple,
+        processors::Tuple,
+        setfromoptions = true,
+        dmsetup = true,
         options...
-        )
+    )
 
-Creates a 1D DMStag object.
-        ::PetscLib      -   PETSc library,
-        comm            -   MPI communicator
-        bndx            -   boundary type: DM_BOUNDARY_NONE, DM_BOUNDARY_PERIODIC, or DM_BOUNDARY_GHOSTED. 
-        M               -   global number of grid points
-        dofVertex       -   [=1] number of degrees of freedom per vertex/point/node/0-cell
-        dofCenter       -   [=1] number of degrees of freedom per element/edge/1-cell
-        stencilType     -   ghost/halo region type: DMSTAG_STENCIL_BOX or DMSTAG_STENCIL_NONE
-        stencilWidth    -   width, in elements, of halo/ghost region
-        lx              -   [Optional] Vector of local sizes, of length equal to the comm size, summing to M
-        options...      -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
+Creates a D-dimensional distributed staggered array with the options specified
+using keyword arguments.
 
-Creates a 1-D distributed staggered array with the options specified using keyword
-arguments.
+The Tuple `dof_per_node` specifies how many degrees of freedom are at all the
+staggerings in the order:
+ - 1D: `(vertex, element)`
+ - 2D: `(vertex, edge, element)`
+ - 3D: `(vertex, edge, face, element)`
 
-If keyword argument `dmsetfromoptions == true` then `setfromoptions!` called.
+If keyword argument `points_per_proc[k] isa Vector{petsclib.PetscInt}` then this
+specifies the points per processor in dimension `k`.
+
+If keyword argument `processors[k] isa Integer` then this specifies the number of
+processors used in dimension `k`; ignored when `D == 1`.
+
+If keyword argument `setfromoptions == true` then `setfromoptions!` called.
+
 If keyword argument `dmsetup == true` then `setup!` is called.
+
+When `D == 1` the `stencil_type` argument is not required and ignored if
+specified.
 
 # External Links
 $(_doc_external("DMSTAG/DMStagCreate1d"))
-
+$(_doc_external("DMSTAG/DMStagCreate2d"))
+$(_doc_external("DMSTAG/DMStagCreate3d"))
 """
-function DMStagCreate1d end
-
-@for_petsc function DMStagCreate1d(
-    ::$UnionPetscLib,
-    comm::MPI.Comm, 
-    bndx::DMBoundaryType, 
-    M, 
-    dofVertex=1,
-    dofCenter=1,
-    stencilType::DMStagStencilType=DMSTAG_STENCIL_BOX,
-    stencilWidth=2, 
-    lx=C_NULL;
+function DMStag(
+    petsclib::PetscLib,
+    comm::MPI.Comm,
+    boundary_type::NTuple{1, DMBoundaryType},
+    global_dim::NTuple{1, Integer},
+    dof_per_node::NTuple{2, Integer},
+    stencil_width::Integer,
+    stencil_type = DMSTAG_STENCIL_BOX;
+    points_per_proc::Tuple = (nothing,),
+    processors = nothing,
     dmsetfromoptions = true,
-    dmsetup = true, 
+    dmsetup = true,
     options...,
-)
+) where {PetscLib}
+    opts = Options(petsclib; options...)
+    dm = DMStag{PetscLib}(C_NULL, opts, petsclib.age)
 
-    if isempty(lx); lx = C_NULL; end
-    opts = Options($petsclib, options...)
-    dm   = DMStag{$PetscLib}(C_NULL, opts)   # retrieve options
+    ref_points_per_proc =
+        if isnothing(points_per_proc[1]) || points_per_proc[1] == PETSC_DECIDE
+            C_NULL
+        else
+            @assert points_per_proc[1] isa Array{PetscLib.PetscInt}
+            @assert length(points_per_proc[1]) == MPI.Comm_size(comm)
+            points_per_proc[1]
+        end
+
     with(dm.opts) do
-
-        @chk ccall(
-                (:DMStagCreate1d, $petsc_library), 
-                PetscErrorCode,
-                (
-                    MPI.MPI_Comm, 
-                    DMBoundaryType, 
-                    $PetscInt, 
-                    $PetscInt, 
-                    $PetscInt, 
-                    DMStagStencilType, 
-                    $PetscInt,  
-                    Ptr{$PetscInt}, 
-                    Ptr{CDMStag}
-                ),
-                comm, 
-                bndx, 
-                M,
-                dofVertex,
-                dofCenter,
-                stencilType,
-                stencilWidth,
-                lx, 
-                dm 
-                )
+        LibPETSc.DMStagCreate1d(
+            PetscLib,
+            comm,
+            boundary_type[1],
+            global_dim[1],
+            dof_per_node[1],
+            dof_per_node[2],
+            stencil_type,
+            stencil_width,
+            ref_points_per_proc,
+            dm,
+        )
     end
+
     dmsetfromoptions && setfromoptions!(dm)
     dmsetup && setup!(dm)
 
-    if comm == MPI.COMM_SELF
+    # We can only let the garbage collect finalize when we do not need to
+    # worry about MPI (since garbage collection is asyncronous)
+    if MPI.Comm_size(comm) == 1
         finalizer(destroy, dm)
     end
-        
+
     return dm
 end
+
+function DMStag(
+    petsclib::PetscLib,
+    comm::MPI.Comm,
+    boundary_type::NTuple{2, DMBoundaryType},
+    global_dim::NTuple{2, Integer},
+    dof_per_node::NTuple{3, Integer},
+    stencil_width::Integer,
+    stencil_type = DMSTAG_STENCIL_BOX;
+    points_per_proc::Tuple = (nothing, nothing),
+    processors::Tuple = (PETSC_DECIDE, PETSC_DECIDE),
+    dmsetfromoptions = true,
+    dmsetup = true,
+    options...,
+) where {PetscLib}
+    opts = Options(petsclib; options...)
+    dm = DMStag{PetscLib}(C_NULL, opts, petsclib.age)
+
+    ref_points_per_proc = ntuple(2) do d
+        if isnothing(points_per_proc[d]) || points_per_proc[d] == PETSC_DECIDE
+            C_NULL
+        else
+            @assert points_per_proc[d] isa Array{PetscLib.PetscInt}
+            @assert length(points_per_proc[d]) == MPI.Comm_size(comm)
+            points_per_proc[d]
+        end
+    end
+
+    with(dm.opts) do
+        LibPETSc.DMStagCreate2d(
+            PetscLib,
+            comm,
+            boundary_type[1],
+            boundary_type[2],
+            global_dim[1],
+            global_dim[2],
+            processors[1],
+            processors[2],
+            dof_per_node[1],
+            dof_per_node[2],
+            dof_per_node[3],
+            stencil_type,
+            stencil_width,
+            ref_points_per_proc[1],
+            ref_points_per_proc[2],
+            dm,
+        )
+    end
+
+    dmsetfromoptions && setfromoptions!(dm)
+    dmsetup && setup!(dm)
+
+    # We can only let the garbage collect finalize when we do not need to
+    # worry about MPI (since garbage collection is asyncronous)
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, dm)
+    end
+
+    return dm
+end
+
+function DMStag(
+    petsclib::PetscLib,
+    comm::MPI.Comm,
+    boundary_type::NTuple{3, DMBoundaryType},
+    global_dim::NTuple{3, Integer},
+    dof_per_node::NTuple{4, Integer},
+    stencil_width::Integer,
+    stencil_type = DMSTAG_STENCIL_BOX;
+    points_per_proc::Tuple = (nothing, nothing, nothing),
+    processors::Tuple = (PETSC_DECIDE, PETSC_DECIDE, PETSC_DECIDE),
+    dmsetfromoptions = true,
+    dmsetup = true,
+    options...,
+) where {PetscLib}
+    opts = Options(petsclib; options...)
+    dm = DMStag{PetscLib}(C_NULL, opts, petsclib.age)
+
+    ref_points_per_proc = ntuple(3) do d
+        if isnothing(points_per_proc[d]) || points_per_proc[d] == PETSC_DECIDE
+            C_NULL
+        else
+            @assert points_per_proc[d] isa Array{PetscLib.PetscInt}
+            @assert length(points_per_proc[d]) == MPI.Comm_size(comm)
+            points_per_proc[d]
+        end
+    end
+
+    with(dm.opts) do
+        LibPETSc.DMStagCreate3d(
+            PetscLib,
+            comm,
+            boundary_type[1],
+            boundary_type[2],
+            boundary_type[3],
+            global_dim[1],
+            global_dim[2],
+            global_dim[3],
+            processors[1],
+            processors[2],
+            processors[3],
+            dof_per_node[1],
+            dof_per_node[2],
+            dof_per_node[3],
+            dof_per_node[4],
+            stencil_type,
+            stencil_width,
+            ref_points_per_proc[1],
+            ref_points_per_proc[2],
+            ref_points_per_proc[3],
+            dm,
+        )
+    end
+
+    dmsetfromoptions && setfromoptions!(dm)
+    dmsetup && setup!(dm)
+
+    # We can only let the garbage collect finalize when we do not need to
+    # worry about MPI (since garbage collection is asyncronous)
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, dm)
+    end
+
+    return dm
+end
+
+function DMStag(
+    dm::AbstractDMStag{PetscLib},
+    dof_per_node::Union{NTuple{2,Int},NTuple{3,Int},NTuple{4,Int}},
+    dmsetfromoptions = true,
+    dmsetup = true,
+    options...,
+) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    opts = Options(petsclib; options...)
+    dmnew = DMStag{PetscLib}(C_NULL, opts, petsclib.age)
+
+    s = size(dof_per_node,1)
+
+    dof_per_node_C = [0,0,0,0]
+
+    for (i, value) in enumerate(dof_per_node)
+        dof_per_node_C[i] = value
+    end
+
+
+    with(dm.opts) do
+        LibPETSc.DMStagCreateCompatibleDMStag(
+            PetscLib,
+            dm,
+            dof_per_node_C[1],
+            dof_per_node_C[2],
+            dof_per_node_C[3],
+            dof_per_node_C[4],
+            dmnew,
+        )
+    end
+
+    dmsetfromoptions && setfromoptions!(dmnew)
+    dmsetup && setup!(dmnew)
+
+    comm  = getcomm(dm);
+
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, dmnew)
+    end    
+
+    return dmnew
+end
+"""
+    globalsize(dm::AbstractDMStag)
+
+return an `NTuple{3, PetscInt}` of the global size of the staggered `dm`.
+
+Only the first `getdimension(dm)` values are set; trailing values set to `1`.
+
+# External Links
+$(_doc_external("DMStag/DMStagGetGlobalSizes"))
+"""
+function globalsize(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    global_size = [PetscInt(1), PetscInt(1), PetscInt(1)]
+
+    LibPETSc.DMStagGetGlobalSizes(
+        PetscLib,
+        dm,
+        Ref(global_size, 1),
+        Ref(global_size, 2),
+        Ref(global_size, 3),
+    )
+
+    map!(global_size, global_size) do v
+        v == 0 ? 1 : v
+    end
+    return (global_size[1], global_size[2], global_size[3])
+end
+Base.size(dm::AbstractDMStag) = globalsize(dm)
+
+"""
+    localsize(dm::AbstractDMStag)
+
+return an `NTuple{3, PetscInt}` of the loval size of the staggered `dm` on this
+MPI rank.
+
+Only the first `getdimension(dm)` values are set; trailing values set to `1`.
+
+# External Links
+$(_doc_external("DMStag/DMStagGetLocalSizes"))
+"""
+function localsize(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    local_size = [PetscInt(1), PetscInt(1), PetscInt(1)]
+
+    LibPETSc.DMStagGetLocalSizes(
+        PetscLib,
+        dm,
+        Ref(local_size, 1),
+        Ref(local_size, 2),
+        Ref(local_size, 3),
+    )
+
+    map!(local_size, local_size) do v
+        v == 0 ? 1 : v
+    end
+    return (local_size[1], local_size[2], local_size[3])
+end
+
+"""
+    islastrank(dm::AbstractDMStag)
+
+Returns an `NTuple{3, Bool}` of whether this MPI rank is last rank in each
+dimension of the `dm`
+
+Only the first `getdimension(dm)` values are set; trailing values set to
+`DM_BOUNDARY_NONE`.
+
+# External Links
+$(_doc_external("DMDA/DMStagGetIsLastRank"))
+"""
+function islastrank(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    x = Ref{PetscBool}()
+    y = Ref{PetscBool}()
+    z = Ref{PetscBool}()
+
+    LibPETSc.DMStagGetIsLastRank(PetscLib, dm, x, y, z)
+
+    return (x[] == PETSC_TRUE, y[] == PETSC_TRUE, z[] == PETSC_TRUE)
+end
+
+"""
+    isfirstrank(dm::AbstractDMStag)
+
+Returns an `NTuple{3, Bool}` of whether this MPI rank is first rank in each
+dimension of the `dm`
+
+# External Links
+$(_doc_external("DMDA/DMStagGetIsFirstRank"))
+"""
+function isfirstrank(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    x = Ref{PetscBool}()
+    y = Ref{PetscBool}()
+    z = Ref{PetscBool}()
+
+    LibPETSc.DMStagGetIsFirstRank(PetscLib, dm, x, y, z)
+
+    return (x[] == PETSC_TRUE, y[] == PETSC_TRUE, z[] == PETSC_TRUE)
+end
+
+"""
+    getcorners(dm::AbstractDMStag)
+
+Returns a `NamedTuple` with the global indices (excluding ghost points) of the
+`lower` and `upper` corners as well as the `size`. Also included is `nextra` of
+the number of extra partial elements in each direction.
+
+# External Links
+$(_doc_external("DMDA/DMStagGetCorners"))
+"""
+function getcorners(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    corners = [PetscInt(0), PetscInt(0), PetscInt(0)]
+    local_size = [PetscInt(1), PetscInt(1), PetscInt(1)]
+    nextra = [PetscInt(0), PetscInt(0), PetscInt(0)]
+    LibPETSc.DMStagGetCorners(
+        PetscLib,
+        dm,
+        Ref(corners, 1),
+        Ref(corners, 2),
+        Ref(corners, 3),
+        Ref(local_size, 1),
+        Ref(local_size, 2),
+        Ref(local_size, 3),
+        Ref(nextra, 1),
+        Ref(nextra, 2),
+        Ref(nextra, 3),
+    )
+    map!(local_size, local_size) do v
+        v == 0 ? 1 : v
+    end
+
+    corners .+= 1
+    upper = corners .+ local_size .- PetscInt(1)
+    return (
+        lower = CartesianIndex(corners...),
+        upper = CartesianIndex(upper...),
+        size = (local_size...,),
+        nextra = (nextra...,),
+    )
+end
+
+"""
+    getghostcorners(dm::AbstractDMStag)
+
+Returns a `NamedTuple` with the global indices (including ghost points) of the
+`lower` and `upper` corners as well as the `size`.
+
+# External Links
+$(_doc_external("DMDA/DMDAGetGhostCorners"))
+"""
+function getghostcorners(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    corners = [PetscInt(1), PetscInt(1), PetscInt(1)]
+    local_size = [PetscInt(1), PetscInt(1), PetscInt(1)]
+    LibPETSc.DMStagGetGhostCorners(
+        PetscLib,
+        dm,
+        Ref(corners, 1),
+        Ref(corners, 2),
+        Ref(corners, 3),
+        Ref(local_size, 1),
+        Ref(local_size, 2),
+        Ref(local_size, 3),
+    )
+    map!(local_size, local_size) do v
+        v == 0 ? 1 : v
+    end
+    corners .+= 1
+    upper = corners .+ local_size .- PetscInt(1)
+    return (
+        lower = CartesianIndex(corners...),
+        upper = CartesianIndex(upper...),
+        size = (local_size...,),
+    )
+end
+
+"""
+    boundarytypes(dm::AbstractDMStag)
+
+Returns an `NTuple{3, DMBoundaryType}` with boundary types for the given
+staggered `dm`. on
+
+# External Links
+$(_doc_external("DMSTAG/DMStagGetBoundaryTypes"))
+"""
+function boundarytypes(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    Bx = Ref{DMBoundaryType}(DM_BOUNDARY_NONE)
+    By = Ref{DMBoundaryType}(DM_BOUNDARY_NONE)
+    Bz = Ref{DMBoundaryType}(DM_BOUNDARY_NONE)
+
+    LibPETSc.DMStagGetBoundaryTypes(PetscLib, dm, Bx, By, Bz)
+
+    return (Bx[], By[], Bz[])
+end
+
+function getdof(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    dofs = [PetscInt(1), PetscInt(1), PetscInt(1), PetscInt(1)]
+
+    LibPETSc.DMStagGetDOF(
+        PetscLib,
+        dm,
+        Ref(dofs, 1),
+        Ref(dofs, 2),
+        Ref(dofs, 3),
+        Ref(dofs, 4),
+    )
+
+    dim = getdimension(dm)
+    if dim == 1
+        return (dofs[1], dofs[2])
+    elseif dim == 2
+        return (dofs[1], dofs[2], dofs[3])
+    elseif dim == 3
+        return (dofs[1], dofs[2], dofs[3], dofs[4])
+    else
+        error("DimensionNonSupported")
+    end
+end
+
+function setuniformcoordinates!(
+    dm::AbstractDMStag{PetscLib},
+    xyzmin::Union{NTuple{1,Int},NTuple{2,Int},NTuple{3,Int}},
+    xyzmax::Union{NTuple{1,Int},NTuple{2,Int},NTuple{3,Int}},
+    ) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+
+    xmin = xyzmin[1]
+    xmax = xyzmax[1]
+
+    s = size(xyzmin,1)
+
+    ymin = (s > 1) ? xyzmin[2] : PetscInt(0)
+    ymax = (s > 1) ? xyzmax[2] : PetscInt(0)
+
+    zmin = (s > 2) ? xyzmin[3] : PetscInt(0)
+    zmax = (s > 2) ? xyzmax[3] : PetscInt(0)
+
+    LibPETSc.DMStagSetUniformCoordinatesProduct(
+        PetscLib,
+        dm,
+        xmin,
+        xmax,
+        ymin,
+        ymax,
+        zmin,
+        zmax,
+    )
+
+    return nothing
+end
+
+function getcoordinatearray(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscScalar = PetscLib.PetscScalar
+
+    xP = Ref{Ptr{Ptr{PetscScalar}}}(C_NULL)
+    yP = Ref{Ptr{Ptr{PetscScalar}}}(C_NULL)
+    zP = Ref{Ptr{Ptr{PetscScalar}}}(C_NULL)
+
+    LibPETSc.DMStagGetProductCoordinateArrays(
+        PetscLib,
+        dm,
+        xP,
+        yP,
+        zP
+    )
+
+    corners = getghostcorners(dm)
+    mstart  = corners.lower
+    s       = corners.size
+    
+    xP = Base.unsafe_load(xP[],mstart[1])
+    xArray = unsafe_wrap(Array, xP, (2,s[1]); own = false)
+    xArrayO = OffsetArray(xArray,CartesianIndex(1,mstart[1]):CartesianIndex(2,mstart[1]+s[1]-1))
+    if yP[] != (C_NULL)
+        yP = Base.unsafe_load(yP[],mstart[2])
+        yArray = unsafe_wrap(Array, yP, (2,s[2]); own = false)
+        yArrayO = OffsetArray(yArray,CartesianIndex(1,mstart[2]):CartesianIndex(2,mstart[2]+s[2]-1))
+    else 
+        yArrayO = nothing
+    end
+    if zP[] != (C_NULL)
+        zP = Base.unsafe_load(zP[],mstart[3])
+        zArray = unsafe_wrap(Array, zP, (2,s[3]); own = false)
+        zArrayO = OffsetArray(zArray,CartesianIndex(1,mstart[3]):CartesianIndex(2,mstart[3]+s[3]-1))
+    else
+        zArrayO = nothing
+    end
+
+    return xArrayO,yArrayO,zArrayO
+
+end
+
+function getentriesperelement(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    entriesPerElement = [PetscInt(1)]
+
+    LibPETSc.DMStagGetEntriesPerElement(
+        PetscLib,
+        dm,
+        Ref(entriesPerElement,1)
+    )
+
+    return entriesPerElement[1]
+end
+
+
+
+function vecgetarray(dm::AbstractDMStag{PetscLib}, v::AbstractVec{PetscLib}) where {PetscLib}
+    # Note: there is actually no need to call PETSc again, as Julia has the possibility 
+    # to wrap an existing array into another one. Our vec already has the array wrapper, 
+    # so we reshape that 
+
+    # Extract array from vector. Note: we need to release this by calling 
+    # Base.finalize on X1!
+    X1       =   unsafe_localarray(v;  write=true, read=true)
+
+    array          =   vecgetarray(dm, X1) 
+        
+    return array
+end
+
+function vecgetarray(dm::AbstractDMStag{PetscLib}, v::Vector) where {PetscLib}
+
+    entriesPerElement   =   getentriesperelement(dm)
+    ghost_corners       =   getghostcorners(dm)
+    dim                 =   getdimension(dm) 
+
+    # Dimensions of new array (see the PETSc DMStagVecGetArrayRead routine)
+    dim_vec             =   [entriesPerElement; collect(ghost_corners.size[1:dim])]
+
+    # Wrap julia vector to new vector.
+    X                   =    Base.view(v,:)
+
+    @show X
+        
+    # reshape to correct format
+    X                   =   reshape(v, Tuple(dim_vec))
+    array               =   PermutedDimsArray(X, Tuple([2:dim+1;1]))   # permute to take care of different array ordering in C/Julia
+       
+    return array
+end  
+
+function getlocationslot(
+    dm::AbstractDMStag{PetscLib},
+    loc::DMStagStencilLocation, 
+    dof::Integer
+    ) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    slot = [PetscInt(1)]
+
+    LibPETSc.DMStagGetEntriesPerElement(
+        PetscLib,
+        dm,
+        loc,
+        dof,
+        Ref(slot,1)
+    )
+
+    return slot[]
+end
+
+#=
+
+function DMStagGetGhostArrayLocationSlot(
+    dm::AbstractDMStag{PetscLib}, 
+    v::AbstractVec{PetscLib}, 
+    loc::DMStagStencilLocation, 
+    dof::Integer
+    )
+
+    entriesPerElement   =   getentriesperelement(dm)
+    dim                 =   getdimension(dm);  
+    slot                =   DMStagGetLocationSlot(dm, loc, dof); 
+    slot_start          =   mod(slot,entriesPerElement);          # figure out which component we are interested in
+
+    ArrayFull           =   DMStagVecGetArray(dm, v);             # obtain access to full array
+
+    # now extract only the dimension belonging to the current point
+    Array               =   selectdim(ArrayFull,dim+1, slot_start+1);
+
+    return Array
+end
+
+=#
+
+#
+#= Original DMSTAG
 
 """
     dm = DMStagCreate2d(
@@ -406,7 +944,6 @@ $(_doc_external("DMSTAG/DMStagGetDOF"))
 """
 function DMStagGetDOF end
 
-
 @for_petsc function DMStagGetDOF(dm::DMStag{$PetscLib})
 
     dof0 = Ref{$PetscInt}()
@@ -439,93 +976,6 @@ function DMStagGetDOF end
     end
 
 end
-
-
-"""
-    M,N,P = DMStagGetGlobalSizes(dm::DMStag)
-
-Gets the global size of the DMStag object
-
-    dm      - the DMStag object 
-    M,N,P   - size in x,y,z
-
-# External Links
-$(_doc_external("DMSTAG/DMStagGetGlobalSizes"))
-"""
-function DMStagGetGlobalSizes end
-
-@for_petsc function DMStagGetGlobalSizes(dm::DMStag{$PetscLib})
-
-    M = Ref{$PetscInt}()
-    N = Ref{$PetscInt}()
-    P = Ref{$PetscInt}()
-
-    @chk ccall((:DMStagGetGlobalSizes, $petsc_library), PetscErrorCode,
-        (
-            CDMStag, 
-            Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}
-        ), 
-        dm,
-        M, N, P 
-        )
-
-        dim   = getdimension(dm)
-        
-    if dim==1    
-        return M[]
-    elseif dim==2
-        return M[], N[] 
-    elseif dim==3
-        return M[], N[], P[]    
-    end
-end
-
-
-@for_petsc function Base.size(dm::DMStag{$PetscLib})
-    size = DMStagGetGlobalSizes(dm)
-    return size
-end
-
-
-"""
-    M,N,P = DMStagGetLocalSizes(dm::DMStag)
-
-Gets the local size of the DMStag object
-
-    dm      - the DMStag object 
-    M,N,P   - size in x,y,z
-
-# External Links
-$(_doc_external("DMSTAG/DMStagGetLocalSizes"))
-"""
-function DMStagGetLocalSizes end
-
-@for_petsc function DMStagGetLocalSizes(dm::DMStag{$PetscLib})
-
-    M = Ref{$PetscInt}()
-    N = Ref{$PetscInt}()
-    P = Ref{$PetscInt}()
-
-    @chk ccall((:DMStagGetLocalSizes, $petsc_library), PetscErrorCode,
-        (
-            CDMStag, 
-            Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{$PetscInt}
-        ), 
-        dm, 
-        M, N, P 
-        )
-
-        dim   = getdimension(dm)
-        
-    if dim==1    
-        return M[]
-    elseif dim==2
-        return M[], N[] 
-    elseif dim==3
-        return M[], N[], P[]    
-    end
-end
-
 
 """
     setuniformcoordinatesproduct!(
@@ -596,7 +1046,6 @@ end
     return Arrx[],Arry[],Arrz[]
 end
 
-
 # TO BE REMOVED, AS setuniformcoordinates! DOES THE SAME?
 """
     DMStagSetUniformCoordinatesExplicit(
@@ -638,7 +1087,6 @@ function DMStagSetUniformCoordinatesExplicit end
 
     return nothing
 end
-
 
 """
     Array =  DMStagVecGetArray(dm::DMStag, v::AbstractVec)
@@ -969,48 +1417,6 @@ function DMStagGetIndices end
             
 end
 
-
-"""
-    Bx = DMStagGetBoundaryTypes(dm::DMStag) in 1D
-    Bx,By,Bz = DMStagGetBoundaryTypes(dm::DMStag) in 3D
-
-Get boundary types.
-
-        dm 	     - the DMStag object 
-        Bx,By,Bz - boundary types
-
-# External Links
-$(_doc_external("DMSTAG/DMStagGetBoundaryTypes"))
-"""
-function DMStagGetBoundaryTypes end
-
-@for_petsc function DMStagGetBoundaryTypes(dm::DMStag)
-
-    Bx = Ref{$DMBoundaryType}()
-    By = Ref{$DMBoundaryType}()
-    Bz = Ref{$DMBoundaryType}()
-      
-    @chk ccall((:DMStagGetBoundaryTypes, $petsc_library), PetscErrorCode,
-        (
-            CDMStag,   
-            Ptr{$DMBoundaryType}, Ptr{$DMBoundaryType}, Ptr{$DMBoundaryType}
-        ), 
-        dm, 
-        Bx,By,Bz
-        )
-
-        dim = getdimension(dm); 
-
-        if dim==1
-            return Bx[]    
-        elseif dim==2
-            return Bx[], By[]
-        elseif dim==3
-            return Bx[], By[], Bz[]
-        end
-end
-
-
 """
     nRanks0 = DMStagGetNumRanks(dm::DMStag) in 1D
     nRanks0,nRanks1,nRanks2 = DMStagGetNumRanks(dm::DMStag) in 3D
@@ -1050,7 +1456,6 @@ function DMStagGetNumRanks end
         return nRanks0[], nRanks1[], nRanks2[]
     end
 end
-
 
 """
     DMStagVecSetValuesStencil(
@@ -1163,7 +1568,6 @@ function DMStagVecSetValuesStencil end
     return nothing
 end
 
-
 """
     val = DMStagVecGetValuesStencil(
         dm::DMStag, 
@@ -1209,7 +1613,6 @@ function DMStagVecGetValuesStencil end
     
     return val[]
 end
-
 
 """
     val = DMStagVecGetValuesStencil(
@@ -1336,7 +1739,6 @@ This reads a single value from a matrix DMStagStencil.
     posRow  - the location of the row of the set value, given by a DMStagStencil struct (as a vector)
     posCol  - the location of the row of the set value, given by a DMStagStencil struct (as a vector)
     val     - the value
-
 
 # External Links
 $(_doc_external("DMSTAG/DMStagMatGetValuesStencil"))
@@ -1513,7 +1915,6 @@ function DMStagMatSetValuesStencil end
     insertMode::InsertMode
     )
 
-
     i = 1;
     j = 1;
     while i <= nRow
@@ -1605,7 +2006,6 @@ end
     return nothing
 end
 
-
 @for_petsc function DMGlobalToLocal(
     g::CVec, 
     mode::InsertMode,
@@ -1615,7 +2015,6 @@ end
 
     return nothing
 end
-
 
 """
     stencilType = DMStagGetStencilType(dm::DMStag)
@@ -1674,8 +2073,6 @@ function DMStagGetIsFirstRank end
         
     return fr_X[]== PETSC_TRUE, fr_Y[]== PETSC_TRUE, fr_Z[]== PETSC_TRUE
 end
-
-
 
 """
     fr_X,fr_Y,fr_Z = DMStagGetIsLastRank(dm::DMStag)
@@ -1810,7 +2207,6 @@ function getcorners(dm::DMStag) end
     )
 end
 
-
 """
     getghostcorners(dm::DMStag)
 
@@ -1861,5 +2257,5 @@ function getghostcorners(dm::DMStag) end
     )
 end
 
-
 Base.show(io::IO, dm::DMStag) = _show(io, dm)
+=#

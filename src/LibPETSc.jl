@@ -44,6 +44,10 @@ export PetscLibType,
     DMDAStencilType,
     DMDA_STENCIL_STAR,
     DMDA_STENCIL_BOX,
+    DMStagStencilType,
+    DMSTAG_STENCIL_NONE,
+    DMSTAG_STENCIL_STAR,
+    DMSTAG_STENCIL_BOX,
     MatStencil
 
 include("LibPETSc_const.jl")

@@ -2,7 +2,7 @@ using Test
 using MPI: mpiexec
 
 # Do the MPI tests first so we do not have mpi running inside MPI
-mpi_tests = ("mpivec.jl", "mpimat.jl", "ksp.jl")
+mpi_tests = ("mpivec.jl", "mpimat.jl", "ksp.jl", "dmstag.jl")
 
 # XXX: We have problems with MPI and Windows with this test
 if !(Sys.iswindows())
@@ -35,6 +35,7 @@ include("lib.jl")
 include("ksp.jl")
 include("snes.jl")
 include("dmda.jl")
+include("dmstag.jl")
 
 # Run the examples
 # Exclude examples with first line comment

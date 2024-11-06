@@ -6,7 +6,7 @@
 
 using PETSc
 using SparseArrays: spdiagm
-using UnicodePlots: lineplot, lineplot!
+#using UnicodePlots: lineplot, lineplot!
 
 # Initialize PETSc
 PETSc.initialize()
@@ -48,5 +48,5 @@ v = ksp \ f.(x);
 println("L2-error is $ϵ")
 
 # Plot the solution and error
-display(lineplot(x, v, xlabel = "x", ylabel = "solution"))
-display(lineplot(x, v - u.(x), xlabel = "x", ylabel = "error"))
+#display(lineplot(x, v, xlabel = "x", ylabel = "solution"))
+#display(lineplot(x, v - u.(x), xlabel = "x", ylabel = "error"))

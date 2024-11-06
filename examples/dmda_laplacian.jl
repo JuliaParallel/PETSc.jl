@@ -1,3 +1,4 @@
+# EXCLUDE FROM TESTING
 # INCLUDE IN MPI TEST
 # # Finite Difference Laplacian
 #
@@ -21,7 +22,7 @@
 using MPI
 using PETSc
 using SparseArrays: spdiagm
-using UnicodePlots: heatmap
+#using UnicodePlots: heatmap
 using ForwardDiff: derivative
 
 opts = if !isinteractive()

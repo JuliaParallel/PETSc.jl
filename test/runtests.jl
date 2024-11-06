@@ -28,16 +28,16 @@ end
 # Run the serial tests
 include("init.jl")
 include("lib.jl")
-##include("options.jl")
+include("options.jl")
 include("vec.jl")
 include("mat.jl")
 include("matshell.jl")
 include("ksp.jl")
 include("snes.jl")
 include("dmda.jl")
-##include("dmstag.jl")
+include("dmstag.jl")
 
 # Run the examples
 # Exclude examples with first line comment
 # EXCLUDE FROM TESTING
-##include("examples.jl")
+include("examples.jl")

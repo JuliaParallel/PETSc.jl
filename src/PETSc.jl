@@ -3,6 +3,7 @@ using MPI
 
 include("LibPETSc.jl")
 using .LibPETSc
+export LibPETSc
 
 using MPI, LinearAlgebra, SparseArrays
 using OffsetArrays
@@ -28,7 +29,7 @@ include("mat.jl")
 include("matshell.jl")
 include("dm.jl")
 include("dmda.jl")
-##include("dmstag.jl")
+include("dmstag.jl")
 include("ksp.jl")
 # include("pc.jl")
 include("snes.jl")

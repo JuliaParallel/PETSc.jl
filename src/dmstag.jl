@@ -621,9 +621,10 @@ function vecgetarray(dm::AbstractDMStag{PetscLib}, v::Vector) where {PetscLib}
     return array
 end  
 
+#=
 function getlocationslot(
     dm::AbstractDMStag{PetscLib},
-    loc::DMStagStencilLocation, 
+    loc::PetscLib.DMStagStencilLocation, 
     dof::Integer
     ) where {PetscLib}
     PetscInt = PetscLib.PetscInt
@@ -639,6 +640,7 @@ function getlocationslot(
 
     return slot[]
 end
+=#
 
 #=
 

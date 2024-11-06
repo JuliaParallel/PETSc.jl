@@ -35,7 +35,7 @@ include("lib.jl")
 include("ksp.jl")
 include("snes.jl")
 include("dmda.jl")
-include("dmstag.jl")
+##include("dmstag.jl")
 
 # Run the examples
 # Exclude examples with first line comment

@@ -157,14 +157,21 @@ function mangle_functions(output_file)
 
             # Deal with structures that require type declarations:
             (x, s) -> add_struct_type(x, s, 
-                    ("MatStencil","_n_PetscLayout","PetscViewerAndFormat","_PetscCDIntNd","_PetscCoarsenData","_PetscFormKey","_p_DMPlexPointQueue"), 
+                    ("MatStencil",), 
                     ("PetscInt",)),
             (x, s) -> add_struct_type(x, s, 
-                    ("petsc_mpiu_scalar_int",), 
-                    ("PetscScalar, PetscInt",)),
-            (x, s) -> add_struct_type(x, s, 
-                    ("petsc_mpiu_real_int",), 
-                    ("PetscReal, PetscInt",)),
+                    ("DMDACoor2d","DMDACoor3d"), 
+                    ("PetscScalar",)),
+
+            #(x, s) -> add_struct_type(x, s, 
+            #        ("MatStencil","_n_PetscLayout","PetscViewerAndFormat","_PetscCDIntNd","_PetscCoarsenData","_PetscFormKey","_p_DMPlexPointQueue"), 
+            #        ("PetscInt",)),
+            #(x, s) -> add_struct_type(x, s, 
+            #        ("petsc_mpiu_scalar_int",), 
+            #        ("PetscScalar, PetscInt",)),
+            #(x, s) -> add_struct_type(x, s, 
+            #        ("petsc_mpiu_real_int",), 
+            #        ("PetscReal, PetscInt",)),
 
             (x, s) -> add_interpolations(
                 x,
@@ -214,7 +221,7 @@ function wrap(output_file, petsc_include_dir, mpi_include_dir)
     ctx = create_context(header_files, args, options)
 
     build!(ctx)
-
+    @info "Finished building the context"
     mangle_functions(output_file)
     format(output_file)
 

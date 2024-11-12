@@ -7,7 +7,7 @@ auto_mutability = true
 prologue_file_path = "./prologue.jl"
 # epilogue_file_path = "./epilogue.jl"
 
-auto_mutability_blacklist = ["MatStencil"]
+auto_mutability_blacklist = ["MatStencil","DMStagStencil"]
 
 printer_blacklist = [
 #
@@ -334,13 +334,13 @@ printer_blacklist = [
 #
 # Need DMStagStencil to work with interpotated values
 #
-  "DMStagStencil",
-  "DMStagMatGetValuesStencil",
-  "DMStagVecGetValuesStencil",
-  "DMStagVecSetValuesStencil",
-  "DMStagMatSetValuesStencil",
+  #"DMStagStencil",
+  #"DMStagMatGetValuesStencil",
+  #"DMStagVecGetValuesStencil",
+  #"DMStagVecSetValuesStencil",
+  #"DMStagMatSetValuesStencil",
+  #"DMStagStencilToIndexLocal",
   "DMStagCreateISFromStencils",
-  "DMStagStencilToIndexLocal",
 #
 # Need TSMonitorLGCtxNetwork to work with interpotated values
 #

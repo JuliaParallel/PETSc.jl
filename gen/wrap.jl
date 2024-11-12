@@ -157,7 +157,7 @@ function mangle_functions(output_file)
 
             # Deal with structures that require type declarations:
             (x, s) -> add_struct_type(x, s, 
-                    ("MatStencil",), 
+                    ("MatStencil","DMStagStencil"), 
                     ("PetscInt",)),
             (x, s) -> add_struct_type(x, s, 
                     ("DMDACoor2d","DMDACoor3d"), 

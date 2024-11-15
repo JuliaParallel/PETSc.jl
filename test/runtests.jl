@@ -34,7 +34,7 @@ include("mat.jl")
 include("matshell.jl")
 include("ksp.jl")
 include("snes.jl")
-#include("dmda.jl")
+include("dmda.jl")
 include("dmstag.jl")
 include("test_dmstag.jl")
 

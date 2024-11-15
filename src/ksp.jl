@@ -364,6 +364,32 @@ function getsolution(ksp::AbstractKSP{PetscLib}) where PetscLib
     return v
 end
 
+"""
+    KSPGetType(ksp)
+returns the type of the `ksp`
+"""
+function KSPGetType(ksp::AbstractKSP{PetscLib}) where PetscLib
+    t_r = Ref{PETSc.CKSPType}()
+    LibPETSc.KSPGetType(PetscLib, ksp, t_r)
+    return unsafe_string(t_r[])
+end
+
+"""
+    KSPGetIterationNumber(ksp)
+returns the iteration number of the `ksp`
+"""
+function KSPGetIterationNumber(ksp::AbstractKSP{PetscLib}) where PetscLib
+    r_its = Ref{inttype(PetscLib)}()
+    LibPETSc.KSPGetIterationNumber(PetscLib, ksp, r_its)
+  return r_its[]
+end
+
+function KSPGetResidualNorm(ksp::AbstractKSP{PetscLib}) where PetscLib
+    r_rnorm = Ref{scalartype(PetscLib)}()
+    LibPETSc.KSPGetResidualNorm(PetscLib, ksp, r_rnorm)
+    return r_rnorm[]
+end
+
 #=
 #
 # OLD WRAPPERS
@@ -499,11 +525,6 @@ struct Fn_KSPComputeOperators{T} end
         return nothing
     end
 
-    function gettype(ksp::KSP{$PetscScalar})
-        t_r = Ref{CKSPType}()
-        @chk ccall((:KSPGetType, $libpetsc), PetscErrorCode, (CKSP, Ptr{CKSPType}), ksp, t_r)
-        return unsafe_string(t_r[])
-    end
 
     function iters(ksp::KSP{$PetscScalar})
         r_its = Ref{$PetscInt}()

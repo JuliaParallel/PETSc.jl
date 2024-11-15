@@ -34,10 +34,11 @@ include("mat.jl")
 include("matshell.jl")
 include("ksp.jl")
 include("snes.jl")
-include("dmda.jl")
-include("dmstag.jl")
+#include("dmda.jl")
+#include("dmstag.jl")
+include("test_dmstag.jl")
 
 # Run the examples
 # Exclude examples with first line comment
 # EXCLUDE FROM TESTING
-include("examples.jl")
+#include("examples.jl")

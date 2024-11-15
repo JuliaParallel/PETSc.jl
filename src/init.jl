@@ -82,3 +82,26 @@ function finalized(petsclib)
     LibPETSc.PetscFinalized(petsclib, r_flag)
     return r_flag[] == LibPETSc.PETSC_TRUE
 end
+
+
+"""
+    scalartype(petsclib::PetscLibType)
+
+return the scalar type for the associated `petsclib`
+"""
+scalartype(::LibPETSc.PetscLibType{ST}) where {ST} = ST
+scalartype(
+    ::Type{PetscLib},
+) where {PetscLib <: PetscLibType{ST}} where {ST} = ST
+
+
+"""
+    inttype(petsclib::PetscLibType)
+
+return the int type for the associated `petsclib`
+"""
+inttype(::LibPETSc.PetscLibType{ST, IT}) where {ST, IT} = IT
+inttype(
+    ::Type{PetscLib},
+) where {PetscLib <: PetscLibType{ST, IT}} where {ST, IT} = IT
+

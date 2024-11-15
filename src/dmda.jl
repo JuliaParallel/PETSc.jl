@@ -345,7 +345,7 @@ function getghostcorners(da::AbstractDMDA{PetscLib}) where {PetscLib}
 end
 
 """
-    similar(da::DMDA)
+    empty(da::DMDA)
 
 return an uninitialized `DMDA` struct.
 """

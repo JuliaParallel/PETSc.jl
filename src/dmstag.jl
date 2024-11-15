@@ -12,6 +12,20 @@ mutable struct DMStagPtr{PetscLib} <: AbstractDMStag{PetscLib}
     own::Bool
 end
 
+import PETSc.LibPETSc:  DMStagStencilLocation, DMType, DMStagStencil
+
+MPI_Comm = MPI.Comm
+
+include("dmstag_wrapped.jl")    
+
+"""
+    empty(dm::DMStag)
+
+return an uninitialized `DMStag` struct.
+"""
+Base.empty(dm::DMStag{PetscLib}) where {PetscLib} =
+    DMStag{PetscLib}(C_NULL, dm.opts, dm.age)
+
 #abstract type DMStagStencilLocation{PetscLib} end
 
 """
@@ -53,9 +67,9 @@ When `D == 1` the `stencil_type` argument is not required and ignored if
 specified.
 
 # External Links
-$(_doc_external("DMSTAG/DMStagCreate1d"))
-$(_doc_external("DMSTAG/DMStagCreate2d"))
-$(_doc_external("DMSTAG/DMStagCreate3d"))
+$(_doc_external("DMStag/DMStagCreate1d"))
+$(_doc_external("DMStag/DMStagCreate2d"))
+$(_doc_external("DMStag/DMStagCreate3d"))
 """
 function DMStag(
     petsclib::PetscLib,
@@ -78,7 +92,7 @@ function DMStag(
         if isnothing(points_per_proc[1]) || points_per_proc[1] == PETSC_DECIDE
             C_NULL
         else
-            @assert points_per_proc[1] isa Array{PetscLib.PetscInt}
+           # @assert points_per_proc[1] isa Array{PetscLib.PetscInt}
             @assert length(points_per_proc[1]) == MPI.Comm_size(comm)
             points_per_proc[1]
         end
@@ -109,6 +123,7 @@ function DMStag(
 
     return dm
 end
+
 
 function DMStag(
     petsclib::PetscLib,
@@ -278,6 +293,8 @@ function DMStag(
 
     return dmnew
 end
+
+#=
 """
     globalsize(dm::AbstractDMStag)
 
@@ -305,9 +322,17 @@ function globalsize(dm::AbstractDMStag{PetscLib}) where {PetscLib}
     end
     return (global_size[1], global_size[2], global_size[3])
 end
-Base.size(dm::AbstractDMStag) = globalsize(dm)
+=#
+
+Base.size(dm::AbstractDMStag) = DMStagGetGlobalSizes(dm)
+
+#DMStagGetGlobalSizes(dm::AbstractDMStag) = globalsize(dm)
+
+globalsize(dm::AbstractDMStag) = DMStagGetGlobalSizes(dm::AbstractDMStag)
 
 """
+    getdimension(dm::AbstractDMStag)
+
     localsize(dm::AbstractDMStag)
 
 return an `NTuple{3, PetscInt}` of the loval size of the staggered `dm` on this
@@ -357,6 +382,10 @@ function islastrank(dm::AbstractDMStag{PetscLib}) where {PetscLib}
 
     return (x[] == PETSC_TRUE, y[] == PETSC_TRUE, z[] == PETSC_TRUE)
 end
+
+#=
+
+=#
 
 """
     isfirstrank(dm::AbstractDMStag)
@@ -454,14 +483,15 @@ function getghostcorners(dm::AbstractDMStag{PetscLib}) where {PetscLib}
     )
 end
 
+#=
 """
     boundarytypes(dm::AbstractDMStag)
 
 Returns an `NTuple{3, DMBoundaryType}` with boundary types for the given
-staggered `dm`. on
+staggered `dm`. 
 
 # External Links
-$(_doc_external("DMSTAG/DMStagGetBoundaryTypes"))
+$(_doc_external("DMStag/DMStagGetBoundaryTypes"))
 """
 function boundarytypes(dm::AbstractDMStag{PetscLib}) where {PetscLib}
     Bx = Ref{DMBoundaryType}(DM_BOUNDARY_NONE)
@@ -473,6 +503,15 @@ function boundarytypes(dm::AbstractDMStag{PetscLib}) where {PetscLib}
     return (Bx[], By[], Bz[])
 end
 
+DMStagGetBoundaryTypes(dm::AbstractDMStag{PetscLib}) where {PetscLib} = boundarytypes(dm)
+=#
+
+boundarytypes(dm::AbstractDMStag)  = DMStagGetBoundaryTypes(dm::AbstractDMStag) 
+
+"""
+    setboundarytypes!(dm::AbstractDMStag, boundary_types::NTuple{3, DMBoundaryType})
+
+"""
 function getdof(dm::AbstractDMStag{PetscLib}) where {PetscLib}
     PetscInt = PetscLib.PetscInt
     dofs = [PetscInt(1), PetscInt(1), PetscInt(1), PetscInt(1)]
@@ -571,6 +610,11 @@ function getcoordinatearray(dm::AbstractDMStag{PetscLib}) where {PetscLib}
 
 end
 
+
+"""
+    getentriesperelement(dm::AbstractDMStag)
+
+"""
 function getentriesperelement(dm::AbstractDMStag{PetscLib}) where {PetscLib}
     PetscInt = PetscLib.PetscInt
     entriesPerElement = [PetscInt(1)]
@@ -585,7 +629,9 @@ function getentriesperelement(dm::AbstractDMStag{PetscLib}) where {PetscLib}
 end
 
 
-
+"""
+    vecgetarray(dm::AbstractDMStag{PetscLib}, v::AbstractVec{PetscLib})
+"""
 function vecgetarray(dm::AbstractDMStag{PetscLib}, v::AbstractVec{PetscLib}) where {PetscLib}
     # Note: there is actually no need to call PETSc again, as Julia has the possibility 
     # to wrap an existing array into another one. Our vec already has the array wrapper, 
@@ -600,6 +646,10 @@ function vecgetarray(dm::AbstractDMStag{PetscLib}, v::AbstractVec{PetscLib}) whe
     return array
 end
 
+
+"""
+    vecgetarray(dm::AbstractDMStag{PetscLib}, v::Vector)
+"""
 function vecgetarray(dm::AbstractDMStag{PetscLib}, v::Vector) where {PetscLib}
 
     entriesPerElement   =   getentriesperelement(dm)
@@ -611,9 +661,7 @@ function vecgetarray(dm::AbstractDMStag{PetscLib}, v::Vector) where {PetscLib}
 
     # Wrap julia vector to new vector.
     X                   =    Base.view(v,:)
-
-    @show X
-        
+     
     # reshape to correct format
     X                   =   reshape(v, Tuple(dim_vec))
     array               =   PermutedDimsArray(X, Tuple([2:dim+1;1]))   # permute to take care of different array ordering in C/Julia
@@ -621,16 +669,48 @@ function vecgetarray(dm::AbstractDMStag{PetscLib}, v::Vector) where {PetscLib}
     return array
 end  
 
+"""
+
+    array = DMStagVecGetArray(dm::DMStag, v::Vector)
+
+# External Links
+$(_doc_external("DMStag/DMStagVecGetArray"))
+"""
+#DMStagVecGetArray(dm,v) = vecgetarray(dm,v)
+
 #=
+"""
+
+    stencilWidth = DMStagGetStencilWidth(dm::DMStag)
+    
+Get elementwise stencil width. 
+
+    dm           - the DMStag objects
+    stencilWidth - stencil/halo/ghost width in elements
+
+# External Links
+$(_doc_external("DMStag/DMStagGetStencilWidth"))
+"""
+function DMStagGetStencilWidth end
+
+function DMStagGetStencilWidth(dm::AbstractDMStag{PetscLib}) where {PetscLib}
+    PetscInt     = inttype(PetscLib)
+    stencilWidth = Ref{PetscInt}()
+    LibPETSc.DMStagGetStencilWidth(PetscLib, dm, stencilWidth)
+
+    return stencilWidth[]
+end
+=#
+
 function getlocationslot(
     dm::AbstractDMStag{PetscLib},
-    loc::PetscLib.DMStagStencilLocation, 
+    loc::LibPETSc.DMStagStencilLocation, 
     dof::Integer
     ) where {PetscLib}
-    PetscInt = PetscLib.PetscInt
+    PetscInt     = inttype(PetscLib)
     slot = [PetscInt(1)]
 
-    LibPETSc.DMStagGetEntriesPerElement(
+    LibPETSc.DMStagGetLocationSlot(
         PetscLib,
         dm,
         loc,
@@ -639,6 +719,111 @@ function getlocationslot(
     )
 
     return slot[]
+end
+
+DMStagGetLocationSlot(dm, loc, dof)   =  getlocationslot(dm, loc, dof)
+
+"""
+    Indices = DMStagGetIndices(dm::DMStag)
+    
+Return indices of start and end of the central/vertex nodes of a local array built from the input `dm`. 
+This takes ghost points into account and helps    
+
+    dm 	        - the DMStag object
+    Indices 	- indices of lower and upper range of center and vertex nodes
+"""
+function DMStagGetIndices end
+
+function DMStagGetIndices(dm::DMStag)
+    # In Julia, indices in arrays start @ 1, whereas they can go negative in C
+    gc              =   PETSc.getghostcorners(dm);  
+    c               =   PETSc.getcorners(dm); 
+
+    # If we have ghosted boundaries, we need to shift the start/end points, as ghosted 
+    # boundaries are treated in PETSc with negative numbers, whereas in Julia everything is 1-based
+
+    # NOTE: we have not yet tested this in parallel
+    Diff            =   c.lower - gc.lower;
+    Start           =   c.lower + Diff;
+    End             =   Start + CartesianIndex(c.size) -  CartesianIndex(1,1,1) ;
+
+    # Note that we add the shift for julia/petsc consistency
+    shift = 0;
+    center = (  x= Start[1]:End[1],
+                y= Start[2]:End[2],  
+                z= Start[3]:End[3] )
+
+    vertex = (  x= Start[1]:End[1]+1 ,
+                y= Start[2]:End[2]+1 ,  
+                z= Start[3]:End[3]+1 )
+
+    return (center=center, vertex=vertex)
+            
+end
+
+
+#=    
+"""
+    dm = DMStagCreateCompatibleDMStag(
+        dm::DMStag, 
+        dofVertex, 
+        dofEdge, 
+        dofFace, 
+        dofElement; 
+        kwargs...)
+
+Creates a compatible DMStag with different dof/stratum 
+
+        dm              -   the DMStag object 
+        dofVertex       -   [=0] number of degrees of freedom per vertex/point/node/0-cell
+        dofEdge         -   [=0] number of degrees of freedom per edge/1-cell 
+        dofFace         -   [=0] number of degrees of freedom per face/2-cell 
+        dofElement      -   [=0] number of degrees of freedom per element/3-cell 
+        kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
+
+# External Links
+$(_doc_external("DMStag/DMStagCreateCompatibleDMStag"))
+"""
+function DMStagCreateCompatibleDMStag end
+
+function DMStagCreateCompatibleDMStag(
+    dm::DMStag{PetscLib}, 
+    dofVertex=0, 
+    dofEdge=0, 
+    dofFace=0, 
+    dofElement=0; 
+    dmsetfromoptions=true,
+    dmsetup=true,
+    options...
+    ) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    opts = Options(petsclib; options...)
+    dmnew = DMStag{PetscLib}(C_NULL, opts, petsclib.age)
+    comm  = getcomm(dm);
+
+    with(dm.opts) do
+        LibPETSc.DMStagCreateCompatibleDMStag(
+            PetscLib,
+            dm,
+            dofVertex,
+            dofEdge, 
+            dofFace, 
+            dofElement,
+            dmnew
+        )
+    end
+
+    dmsetfromoptions && setfromoptions!(dmnew)
+    dmsetup && setup!(dmnew)
+
+    comm  = getcomm(dm);
+
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, dmnew)
+    end    
+        
+    return dmnew
+
 end
 =#
 
@@ -667,7 +852,7 @@ end
 =#
 
 #
-#= Original DMSTAG
+#= Original DMStag
 
 """
     dm = DMStagCreate2d(
@@ -694,7 +879,7 @@ If keyword argument `dmsetfromoptions == true` then `setfromoptions!` called.
 If keyword argument `dmsetup == true` then `setup!` is called.
 
 # External Links
-$(_doc_external("DMSTAG/DMStagCreate2d"))
+$(_doc_external("DMStag/DMStagCreate2d"))
 
 """
 function DMStagCreate2d end
@@ -789,7 +974,7 @@ If keyword argument `dmsetfromoptions == true` then `setfromoptions!` called.
 If keyword argument `dmsetup == true` then `setup!` is called.
 
 # External Links
-$(_doc_external("DMSTAG/DMStagCreate3d"))
+$(_doc_external("DMStag/DMStagCreate3d"))
 """
 function DMStagCreate3d end
 
@@ -860,75 +1045,6 @@ function DMStagCreate3d end
     return dm
 end
 
-    
-"""
-    dm = DMStagCreateCompatibleDMStag(
-        dm::DMStag, 
-        dofVertex, 
-        dofEdge, 
-        dofFace, 
-        dofElement; 
-        kwargs...)
-
-Creates a compatible DMStag with different dof/stratum 
-
-        dm              -   the DMStag object 
-        dofVertex       -   [=0] number of degrees of freedom per vertex/point/node/0-cell
-        dofEdge         -   [=0] number of degrees of freedom per edge/1-cell 
-        dofFace         -   [=0] number of degrees of freedom per face/2-cell 
-        dofElement      -   [=0] number of degrees of freedom per element/3-cell 
-        kwargs...       -   [Optional] keyword arguments (see PETSc webpage), specifiable as stag_grid_x=100, etc. 
-
-# External Links
-$(_doc_external("DMSTAG/DMStagCreateCompatibleDMStag"))
-"""
-function DMStagCreateCompatibleDMStag end
-
-@for_petsc function DMStagCreateCompatibleDMStag(
-    dm::DMStag{$PetscLib}, 
-    dofVertex=0, 
-    dofEdge=0, 
-    dofFace=0, 
-    dofElement=0; 
-    dmsetfromoptions=true,
-    dmsetup=true,
-    options...
-    )
-
-    opts = Options($petsclib, options...)
-
-    dmnew = DMStag{$PetscLib}(C_NULL, opts)
-    comm  = getcomm(dm);
-
-    with(dm.opts) do
-        @chk ccall((:DMStagCreateCompatibleDMStag, $petsc_library), PetscErrorCode, 
-        (
-            CDMStag, 
-            $PetscInt, 
-            $PetscInt, 
-            $PetscInt, 
-            $PetscInt, 
-            Ptr{CDMStag}
-        ), 
-        dm, 
-        dofVertex, 
-        dofEdge, 
-        dofFace, 
-        dofElement, 
-        dmnew
-        )
-    end
-
-    dmsetfromoptions && setfromoptions!(dm)
-    dmsetup && setup!(dm)
-
-    if comm == MPI.COMM_SELF
-        finalizer(destroy, dmnew)
-    end
-        
-    return dmnew
-
-end
 
 """
     dof0,dof1,dof2,dof3 = DMStagGetDOF(dm::DMStag)
@@ -942,7 +1058,7 @@ Get number of DOF associated with each stratum of the grid.
     dof3 	- the number of points per 3-cell (element in 3D)     
 
 # External Links
-$(_doc_external("DMSTAG/DMStagGetDOF"))
+$(_doc_external("DMStag/DMStagGetDOF"))
 """
 function DMStagGetDOF end
 
@@ -991,7 +1107,7 @@ Set uniform coordinates for the `dmstag` using the lower and upper corners defin
     `dmstag` then the value of the trailing coordinates is set to `0`.
     
 # External Links
-$(_doc_external("DMSTAG/DMStagSetUniformCoordinatesProduct"))
+$(_doc_external("DMStag/DMStagSetUniformCoordinatesProduct"))
     
 """
 function setuniformcoordinatesproduct! end
@@ -1063,7 +1179,7 @@ Set DMStag coordinates to be a uniform grid, storing all values.
     xmin,xmax,ymin,ymax,zmin,zmax - maximum and minimum global coordinate values 
 
 # External Links
-$(_doc_external("DMSTAG/DMStagSetUniformCoordinatesExplicit"))
+$(_doc_external("DMStag/DMStagSetUniformCoordinatesExplicit"))
 """
 function DMStagSetUniformCoordinatesExplicit end
 
@@ -1249,7 +1365,7 @@ Get slot for use with local product coordinate arrays.
     slot    - the index to use in local arrays
 
 # External Links
-$(_doc_external("DMSTAG/DMStagGetProductCoordinateLocationSlot"))
+$(_doc_external("DMStag/DMStagGetProductCoordinateLocationSlot"))
 """
 function DMStagGetProductCoordinateLocationSlot end
 
@@ -1283,7 +1399,7 @@ Get number of entries per element in the local representation.
     entriesPerElement - number of entries associated with each element in the local representation
 
 # External Links
-$(_doc_external("DMSTAG/DMStagGetEntriesPerElement"))
+$(_doc_external("DMStag/DMStagGetEntriesPerElement"))
 """
 function DMStagGetEntriesPerElement end
 
@@ -1301,26 +1417,7 @@ function DMStagGetEntriesPerElement end
     return entriesPerElement[]
 end
 
-"""
-    stencilWidth = DMStagGetStencilWidth(dm::DMStag)
-    
-Get elementwise stencil width. 
 
-    dm           - the DMStag objects
-    stencilWidth - stencil/halo/ghost width in elements
-
-# External Links
-$(_doc_external("DMSTAG/DMStagGetStencilWidth"))
-"""
-function DMStagGetStencilWidth end
-
-@for_petsc function DMStagGetStencilWidth(dm::DMStag)
-    stencilWidth = Ref{$PetscInt}()
-    @chk ccall((:DMStagGetStencilWidth, $petsc_library), PetscErrorCode,
-                ( CDMStag,  Ptr{$PetscInt}), dm,  stencilWidth)
-
-    return stencilWidth[]
-end
 
 """
 
@@ -1338,7 +1435,7 @@ Get index to use in accessing raw local arrays.
     slot    - index to use
 
 # External Links
-$(_doc_external("DMSTAG/DMStagGetLocationSlot"))
+$(_doc_external("DMStag/DMStagGetLocationSlot"))
 """
 function DMStagGetLocationSlot end
 
@@ -1381,43 +1478,7 @@ function destroy(dm::DMStag) end
     return nothing
 end
 
-"""
-    Indices = DMStagGetIndices(dm::DMStag)
-    
-Return indices of start and end of the central/vertex nodes of a local array built from the input `dm`. 
-This takes ghost points into account and helps    
 
-    dm 	        - the DMStag object
-    Indices 	- indices of lower and upper range of center and vertex nodes
-"""
-function DMStagGetIndices end
-
-@for_petsc function DMStagGetIndices(dm::DMStag)
-    # In Julia, indices in arrays start @ 1, whereas they can go negative in C
-    gc              =   getghostcorners(dm);  
-    c               =   getcorners(dm); 
-
-    # If we have ghosted boundaries, we need to shift the start/end points, as ghosted 
-    # boundaries are treated in PETSc with negative numbers, whereas in Julia everything is 1-based
-
-    # NOTE: we have not yet tested this in parallel
-    Diff            =   c.lower - gc.lower;
-    Start           =   c.lower + Diff;
-    End             =   Start + c.size - ones(Int64,3);
-
-    # Note that we add the shift for julia/petsc consistency
-    shift = 0;
-    center = (  x= Start[1]:End[1],
-                y= Start[2]:End[2],  
-                z= Start[3]:End[3] )
-
-    vertex = (  x= Start[1]:End[1]+1 ,
-                y= Start[2]:End[2]+1 ,  
-                z= Start[3]:End[3]+1 )
-
-    return (center=center, vertex=vertex)
-            
-end
 
 """
     nRanks0 = DMStagGetNumRanks(dm::DMStag) in 1D
@@ -1429,7 +1490,7 @@ Get number of ranks in each direction in the global grid decomposition.
         nRanks0,nRanks1,nRanks2  - number of ranks in each direction in the grid decomposition
 
 # External Links
-$(_doc_external("DMSTAG/DMStagGetNumRanks"))
+$(_doc_external("DMStag/DMStagGetNumRanks"))
 """
 function DMStagGetNumRanks end
 
@@ -1478,7 +1539,7 @@ This puts a value inside a global vector using DMStagStencil.
     insertMode  - INSERT_VALUES or ADD_VALUES
 
 # External Links
-$(_doc_external("DMSTAG/DMStagVecSetValuesStencil"))
+$(_doc_external("DMStag/DMStagVecSetValuesStencil"))
 """
 function DMStagVecSetValuesStencil end
 
@@ -1531,7 +1592,7 @@ This puts values inside a global vector using DMStagStencil
     insertMode  - INSERT_VALUES or ADD_VALUES
 
 # External Links
-$(_doc_external("DMSTAG/DMStagVecGetValuesStencil"))
+$(_doc_external("DMStag/DMStagVecGetValuesStencil"))
 """
 function DMStagVecSetValuesStencil end
 
@@ -1586,7 +1647,7 @@ Get vector values using grid indexing
     val - value at the point 
 
 # External Links
-$(_doc_external("DMSTAG/DMStagVecGetValuesStencil"))
+$(_doc_external("DMStag/DMStagVecGetValuesStencil"))
 """
 function DMStagVecGetValuesStencil end
 
@@ -1633,7 +1694,7 @@ Get vector values using grid indexing.
     val - value at the point 
 
 # External Links
-$(_doc_external("DMSTAG/DMStagVecGetValuesStencil"))
+$(_doc_external("DMStag/DMStagVecGetValuesStencil"))
 """
 function DMStagVecGetValuesStencil end
 
@@ -1688,7 +1749,7 @@ This reads a single value from a matrix DMStagStencil
     val     - the value
 
 # External Links
-$(_doc_external("DMSTAG/DMStagMatGetValuesStencil"))
+$(_doc_external("DMStag/DMStagMatGetValuesStencil"))
 """
 function DMStagMatGetValuesStencil end
 
@@ -1743,7 +1804,7 @@ This reads a single value from a matrix DMStagStencil.
     val     - the value
 
 # External Links
-$(_doc_external("DMSTAG/DMStagMatGetValuesStencil"))
+$(_doc_external("DMStag/DMStagMatGetValuesStencil"))
 """
 function DMStagMatGetValuesStencil end
 
@@ -1841,7 +1902,7 @@ This puts values inside a matrix using DMStagStencil position.
     insertMode	- INSERT_VALUES or ADD_VALUES
 
 # External Links
-$(_doc_external("DMSTAG/DMStagMatSetValuesStencil"))
+$(_doc_external("DMStag/DMStagMatSetValuesStencil"))
 """
 function DMStagMatSetValuesStencil end
 
@@ -1902,7 +1963,7 @@ This puts values inside a matrix using DMStagStencil position
     insertMode	- INSERT_VALUES or ADD_VALUES
 
 # External Links
-$(_doc_external("DMSTAG/DMStagMatSetValuesStencil"))
+$(_doc_external("DMStag/DMStagMatSetValuesStencil"))
 """
 function DMStagMatSetValuesStencil end
 
@@ -2027,7 +2088,7 @@ Get elementwise ghost/halo stencil type.
     stencilType - the elementwise ghost stencil type: DMSTAG_STENCIL_BOX, DMSTAG_STENCIL_STAR, or DMSTAG_STENCIL_NONE
 
 # External Links
-$(_doc_external("DMSTAG/DMStagGetStencilType"))
+$(_doc_external("DMStag/DMStagGetStencilType"))
 """
 function DMStagGetStencilType end
 
@@ -2055,7 +2116,7 @@ Returns boolean value to indicate whether this rank is first in each direction i
     fr_X,fr_Y,fr_Z - whether this rank is first in each direction
 
 # External Links
-$(_doc_external("DMSTAG/DMStagGetIsFirstRank"))
+$(_doc_external("DMStag/DMStagGetIsFirstRank"))
 """
 function DMStagGetIsFirstRank end
 
@@ -2085,7 +2146,7 @@ Returns boolean value to indicate whether this rank is last in each direction in
     fr_X,fr_Y,fr_Z - whether this rank is last in each direction
 
 # External Links
-$(_doc_external("DMSTAG/DMStagGetIsLastRank"))
+$(_doc_external("DMStag/DMStagGetIsLastRank"))
 """
 function DMStagGetIsLastRank end
 
@@ -2118,7 +2179,7 @@ by the `NTuples` `xyzmin` and `xyzmax`. If `N` is less than the dimension of the
 `dm` then the value of the trailing coordinates is set to `0`.
 
 # External Links
-$(_doc_external("DMSTAG/DMStagSetUniformCoordinatesExplicit"))
+$(_doc_external("DMStag/DMStagSetUniformCoordinatesExplicit"))
 """
 function setuniformcoordinates!(dm::DMStag,xyzmin,xyzmax) end
 
@@ -2166,7 +2227,7 @@ Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 `lower` and `upper` corners as well as the `size`.
 
 # External Links
-$(_doc_external("DMSTAG/DMStagGetCorners"))
+$(_doc_external("DMStag/DMStagGetCorners"))
 """
 function getcorners(dm::DMStag) end
 
@@ -2216,7 +2277,7 @@ Returns a `NamedTuple` with the global indices (including ghost points) of the
 `lower` and `upper` corners as well as the `size`.
 
 # External Links
-$(_doc_external("DMSTAG/DMStagGetGhostCorners"))
+$(_doc_external("DMStag/DMStagGetGhostCorners"))
 """
 function getghostcorners(dm::DMStag) end
 

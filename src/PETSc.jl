@@ -21,6 +21,7 @@ function _doc_external(fname)
 end
 
 include("init.jl")
+include("utils.jl")
 include("viewer.jl")
 include("options.jl")
 ##include("ref.jl")

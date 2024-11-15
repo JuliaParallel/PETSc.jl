@@ -7,7 +7,14 @@ auto_mutability = true
 prologue_file_path = "./prologue.jl"
 # epilogue_file_path = "./epilogue.jl"
 
-auto_mutability_blacklist = ["MatStencil","DMStagStencil"]
+auto_mutability_blacklist = [
+          "MatStencil",
+          "DMStagStencil",
+          "DMDALocalInfo",
+          "PetscFVFaceGeom",
+          "PetscFVCellGeom",
+          "_p_DMPlexPointQueue"
+        ]
 
 printer_blacklist = [
 #
@@ -20,7 +27,7 @@ printer_blacklist = [
   "Vec", "_p_Vec", "VecType",
   "KSP", "_p_KSP", "KSPType",
   "SNES", "_p_SNES", "SNESType",
-  "DM", "_p_DM", "DMType",
+  "DM", "_p_DM",
 #
 # Remove types defined in const.jl
 #
@@ -253,8 +260,8 @@ printer_blacklist = [
 #
 # Need DMDALocalInfo to work with interpotated values
 #
-  "DMDALocalInfo",
-  "DMDAGetLocalInfo",
+ ## "DMDALocalInfo",
+ ## "DMDAGetLocalInfo",
 #
 # Need PetscTabulation to work with interpotated values
 #
@@ -310,27 +317,27 @@ printer_blacklist = [
 #
 # Need PetscFVFaceGeom and PetscFVCellGeom to work with interpotated values
 #
-  "PetscFVFaceGeom",
-  "PetscFVCellGeom",
-  "PetscDualSpaceApplyFVM",
-  "PetscFVIntegrateRHSFunction",
-  "DMPlexGetFaceGeometry",
-  "DMPlexRestoreFaceGeometry",
-  "PetscFVFaceGeom",
-  "PetscFVIntegrateRHSFunction",
-  "DMPlexGetFaceGeometry",
-  "DMPlexRestoreFaceGeometry",
-  "_p_DMPlexPointQueue",
-  "DMPlexPointQueue",
-  "DMPlexPointQueueCreate",
-  "DMPlexPointQueueDestroy",
-  "DMPlexPointQueueEnsureSize",
-  "DMPlexPointQueueEnqueue",
-  "DMPlexPointQueueDequeue",
-  "DMPlexPointQueueFront",
-  "DMPlexPointQueueBack",
-  "DMPlexPointQueueEmpty",
-  "DMPlexPointQueueEmptyCollective",
+  ##"PetscFVFaceGeom",
+  ##"PetscFVCellGeom",
+  ##"PetscDualSpaceApplyFVM",
+  ##"PetscFVIntegrateRHSFunction",
+  ##"DMPlexGetFaceGeometry",
+  ##"DMPlexRestoreFaceGeometry",
+  ##"PetscFVFaceGeom",
+  ##"PetscFVIntegrateRHSFunction",
+  ##"DMPlexGetFaceGeometry",
+  ##"DMPlexRestoreFaceGeometry",
+  ##"_p_DMPlexPointQueue",
+  ##"DMPlexPointQueue",
+  ##"DMPlexPointQueueCreate",
+  ##"DMPlexPointQueueDestroy",
+  ##"DMPlexPointQueueEnsureSize",
+  ##"DMPlexPointQueueEnqueue",
+  ##"DMPlexPointQueueDequeue",
+  ##"DMPlexPointQueueFront",
+  ##"DMPlexPointQueueBack",
+  ##"DMPlexPointQueueEmpty",
+  ##"DMPlexPointQueueEmptyCollective",
 #
 # Need DMStagStencil to work with interpotated values
 #

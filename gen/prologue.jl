@@ -38,7 +38,6 @@ const KSPType = Cstring
 const SNES = Ptr{Cvoid}
 const SNESType = Cstring
 const DM = Ptr{Cvoid}
-const DMType = Cstring
 
 #
 # END OF PROLOGUE

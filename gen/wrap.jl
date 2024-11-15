@@ -156,12 +156,20 @@ function mangle_functions(output_file)
             add_for_petsc,
 
             # Deal with structures that require type declarations:
+
+            # Note some structs such as "_p_DMPlexPointQueue" needs some manual massaging 
             (x, s) -> add_struct_type(x, s, 
-                    ("MatStencil","DMStagStencil"), 
+                    ("MatStencil","DMStagStencil","DMDALocalInfo","_p_DMPlexPointQueue"), 
                     ("PetscInt",)),
             (x, s) -> add_struct_type(x, s, 
                     ("DMDACoor2d","DMDACoor3d"), 
                     ("PetscScalar",)),
+            (x, s) -> add_struct_type(x, s, 
+                    ("PetscFVCellGeom",), 
+                    ("PetscReal",)),
+            (x, s) -> add_struct_type(x, s, 
+                    ("PetscFVFaceGeom",), 
+                    ("PetscReal","PetscScalar")),
 
             #(x, s) -> add_struct_type(x, s, 
             #        ("MatStencil","_n_PetscLayout","PetscViewerAndFormat","_PetscCDIntNd","_PetscCoarsenData","_PetscFormKey","_p_DMPlexPointQueue"), 
@@ -201,6 +209,16 @@ function mangle_functions(output_file)
     end
 end
 
+function final_mangling(output_file)
+    # In a few cases, the procedure fails so deal with that manually  
+    text = read(file, String)
+    
+    text_new = replace(text,"_p_DMPlexPointQueue{\$PetscInt}"=>"_p_DMPlexPointQueue")
+
+    write(output_file, text_new)
+end
+
+
 function wrap(output_file, petsc_include_dir, mpi_include_dir)
     petsc_h = joinpath(petsc_include_dir, "petsc.h")
     @assert isfile(petsc_h)
@@ -223,7 +241,14 @@ function wrap(output_file, petsc_include_dir, mpi_include_dir)
     build!(ctx)
     @info "Finished building the context"
     mangle_functions(output_file)
+    @info "mangled the functions"
     format(output_file)
+    @info "formatted output file"
+
+    # Deal with a few failed cases (so we don't have to do that by hand)
+    final_mangling(output_file)
+    @info "and performed final mangling"
+
 
     return output_file
 end

@@ -37,7 +37,6 @@ const KSPType = Cstring
 const SNES = Ptr{Cvoid}
 const SNESType = Cstring
 const DM = Ptr{Cvoid}
-const DMType = Cstring
 
 #
 # END OF PROLOGUE
@@ -33411,6 +33410,8 @@ end
     @chk ccall((:DMInitializePackage, $petsc_library), PetscErrorCode, ())
 end
 
+const DMType = Ptr{Cchar}
+
 @for_petsc function DMCreate(::$UnionPetscLib, arg1, arg2)
     @chk ccall(
         (:DMCreate, $petsc_library),
@@ -37251,6 +37252,32 @@ end
     DMDA_ELEMENT_Q1 = 1
 end
 
+struct DMDALocalInfo{PetscInt}
+    dim::PetscInt
+    dof::PetscInt
+    sw::PetscInt
+    mx::PetscInt
+    my::PetscInt
+    mz::PetscInt
+    xs::PetscInt
+    ys::PetscInt
+    zs::PetscInt
+    xm::PetscInt
+    ym::PetscInt
+    zm::PetscInt
+    gxs::PetscInt
+    gys::PetscInt
+    gzs::PetscInt
+    gxm::PetscInt
+    gym::PetscInt
+    gzm::PetscInt
+    bx::DMBoundaryType
+    by::DMBoundaryType
+    bz::DMBoundaryType
+    st::DMDAStencilType
+    da::DM
+end
+
 const PFType = Ptr{Cchar}
 
 mutable struct _p_PF end
@@ -40946,6 +40973,16 @@ end
     )
 end
 
+@for_petsc function DMDAGetLocalInfo(::$UnionPetscLib, arg1, arg2)
+    @chk ccall(
+        (:DMDAGetLocalInfo, $petsc_library),
+        PetscErrorCode,
+        (DM, Ptr{DMDALocalInfo{$PetscInt}}),
+        arg1,
+        arg2,
+    )
+end
+
 @for_petsc function MatRegisterDAAD(::$UnionPetscLib)
     @chk ccall((:MatRegisterDAAD, $petsc_library), PetscErrorCode, ())
 end
@@ -41835,6 +41872,16 @@ end
     DM_PLEX_CSR_OVERLAP = 2
 end
 
+struct _p_DMPlexPointQueue{PetscInt}
+    size::PetscInt
+    points::Ptr{PetscInt}
+    front::PetscInt
+    back::PetscInt
+    num::PetscInt
+end
+
+const DMPlexPointQueue = Ptr{_p_DMPlexPointQueue}
+
 mutable struct _p_PetscLimiter end
 
 const PetscLimiter = Ptr{_p_PetscLimiter}
@@ -41842,6 +41889,17 @@ const PetscLimiter = Ptr{_p_PetscLimiter}
 mutable struct _p_PetscFV end
 
 const PetscFV = Ptr{_p_PetscFV}
+
+struct PetscFVFaceGeom{PetscReal, PetscScalar}
+    normal::NTuple{3, PetscReal}
+    centroid::NTuple{3, PetscReal}
+    grad::NTuple{2, NTuple{3, PetscScalar}}
+end
+
+struct PetscFVCellGeom{PetscReal}
+    centroid::NTuple{3, PetscReal}
+    volume::PetscReal
+end
 
 const PetscLimiterType = Ptr{Cchar}
 
@@ -42249,6 +42307,47 @@ end
     )
 end
 
+@for_petsc function PetscFVIntegrateRHSFunction(
+    ::$UnionPetscLib,
+    arg1,
+    arg2,
+    arg3,
+    arg4,
+    arg5,
+    arg6,
+    arg7,
+    arg8,
+    arg9,
+    arg10,
+)
+    @chk ccall(
+        (:PetscFVIntegrateRHSFunction, $petsc_library),
+        PetscErrorCode,
+        (
+            PetscFV,
+            PetscDS,
+            $PetscInt,
+            $PetscInt,
+            Ptr{PetscFVFaceGeom{$PetscReal, $PetscScalar}},
+            Ptr{$PetscReal},
+            Ptr{$PetscScalar},
+            Ptr{$PetscScalar},
+            Ptr{$PetscScalar},
+            Ptr{$PetscScalar},
+        ),
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+        arg5,
+        arg6,
+        arg7,
+        arg8,
+        arg9,
+        arg10,
+    )
+end
+
 @for_petsc function PetscFVLeastSquaresSetMaxFaces(::$UnionPetscLib, arg1, arg2)
     @chk ccall(
         (:PetscFVLeastSquaresSetMaxFaces, $petsc_library),
@@ -42256,6 +42355,41 @@ end
         (PetscFV, $PetscInt),
         arg1,
         arg2,
+    )
+end
+
+@for_petsc function PetscDualSpaceApplyFVM(
+    ::$UnionPetscLib,
+    arg1,
+    arg2,
+    arg3,
+    arg4,
+    arg5,
+    arg6,
+    arg7,
+    arg8,
+)
+    @chk ccall(
+        (:PetscDualSpaceApplyFVM, $petsc_library),
+        PetscErrorCode,
+        (
+            PetscDualSpace,
+            $PetscInt,
+            $PetscReal,
+            Ptr{PetscFVCellGeom{$PetscReal}},
+            $PetscInt,
+            Ptr{Cvoid},
+            Ptr{Cvoid},
+            Ptr{$PetscScalar},
+        ),
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+        arg5,
+        arg6,
+        arg7,
+        arg8,
     )
 end
 
@@ -47240,6 +47374,76 @@ end
     )
 end
 
+@for_petsc function DMPlexGetFaceGeometry(
+    ::$UnionPetscLib,
+    arg1,
+    arg2,
+    arg3,
+    arg4,
+    arg5,
+    arg6,
+    arg7,
+    arg8,
+)
+    @chk ccall(
+        (:DMPlexGetFaceGeometry, $petsc_library),
+        PetscErrorCode,
+        (
+            DM,
+            $PetscInt,
+            $PetscInt,
+            Vec,
+            Vec,
+            Ptr{$PetscInt},
+            Ptr{Ptr{PetscFVFaceGeom{$PetscReal, $PetscScalar}}},
+            Ptr{Ptr{$PetscReal}},
+        ),
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+        arg5,
+        arg6,
+        arg7,
+        arg8,
+    )
+end
+
+@for_petsc function DMPlexRestoreFaceGeometry(
+    ::$UnionPetscLib,
+    arg1,
+    arg2,
+    arg3,
+    arg4,
+    arg5,
+    arg6,
+    arg7,
+    arg8,
+)
+    @chk ccall(
+        (:DMPlexRestoreFaceGeometry, $petsc_library),
+        PetscErrorCode,
+        (
+            DM,
+            $PetscInt,
+            $PetscInt,
+            Vec,
+            Vec,
+            Ptr{$PetscInt},
+            Ptr{Ptr{PetscFVFaceGeom{$PetscReal, $PetscScalar}}},
+            Ptr{Ptr{$PetscReal}},
+        ),
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+        arg5,
+        arg6,
+        arg7,
+        arg8,
+    )
+end
+
 @for_petsc function DMPlexGetScale(::$UnionPetscLib, arg1, arg2, arg3)
     @chk ccall(
         (:DMPlexGetScale, $petsc_library),
@@ -49248,6 +49452,99 @@ end
         arg6,
         arg7,
         arg8,
+    )
+end
+
+@for_petsc function DMPlexPointQueueCreate(::$UnionPetscLib, arg1, arg2)
+    @chk ccall(
+        (:DMPlexPointQueueCreate, $petsc_library),
+        PetscErrorCode,
+        ($PetscInt, Ptr{DMPlexPointQueue}),
+        arg1,
+        arg2,
+    )
+end
+
+@for_petsc function DMPlexPointQueueDestroy(::$UnionPetscLib, arg1)
+    @chk ccall(
+        (:DMPlexPointQueueDestroy, $petsc_library),
+        PetscErrorCode,
+        (Ptr{DMPlexPointQueue},),
+        arg1,
+    )
+end
+
+@for_petsc function DMPlexPointQueueEnsureSize(::$UnionPetscLib, arg1)
+    @chk ccall(
+        (:DMPlexPointQueueEnsureSize, $petsc_library),
+        PetscErrorCode,
+        (DMPlexPointQueue,),
+        arg1,
+    )
+end
+
+@for_petsc function DMPlexPointQueueEnqueue(::$UnionPetscLib, arg1, arg2)
+    @chk ccall(
+        (:DMPlexPointQueueEnqueue, $petsc_library),
+        PetscErrorCode,
+        (DMPlexPointQueue, $PetscInt),
+        arg1,
+        arg2,
+    )
+end
+
+@for_petsc function DMPlexPointQueueDequeue(::$UnionPetscLib, arg1, arg2)
+    @chk ccall(
+        (:DMPlexPointQueueDequeue, $petsc_library),
+        PetscErrorCode,
+        (DMPlexPointQueue, Ptr{$PetscInt}),
+        arg1,
+        arg2,
+    )
+end
+
+@for_petsc function DMPlexPointQueueFront(::$UnionPetscLib, arg1, arg2)
+    @chk ccall(
+        (:DMPlexPointQueueFront, $petsc_library),
+        PetscErrorCode,
+        (DMPlexPointQueue, Ptr{$PetscInt}),
+        arg1,
+        arg2,
+    )
+end
+
+@for_petsc function DMPlexPointQueueBack(::$UnionPetscLib, arg1, arg2)
+    @chk ccall(
+        (:DMPlexPointQueueBack, $petsc_library),
+        PetscErrorCode,
+        (DMPlexPointQueue, Ptr{$PetscInt}),
+        arg1,
+        arg2,
+    )
+end
+
+@for_petsc function DMPlexPointQueueEmpty(::$UnionPetscLib, arg1)
+    ccall(
+        (:DMPlexPointQueueEmpty, $petsc_library),
+        PetscBool,
+        (DMPlexPointQueue,),
+        arg1,
+    )
+end
+
+@for_petsc function DMPlexPointQueueEmptyCollective(
+    ::$UnionPetscLib,
+    arg1,
+    arg2,
+    arg3,
+)
+    @chk ccall(
+        (:DMPlexPointQueueEmptyCollective, $petsc_library),
+        PetscErrorCode,
+        (PetscObject, DMPlexPointQueue, Ptr{PetscBool}),
+        arg1,
+        arg2,
+        arg3,
     )
 end
 

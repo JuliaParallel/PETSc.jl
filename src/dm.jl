@@ -51,7 +51,7 @@ Gets type name of the `dm`
 $(_doc_external("DM/DMGetType"))
 """
 function gettype(dm::AbstractDM{PetscLib}) where {PetscLib}
-    t_r = Ref{Cstring}()
+    t_r = Ref{PETSc.DMType}()
     LibPETSc.DMGetType(PetscLib, dm, t_r)
     return unsafe_string(t_r[])
 end

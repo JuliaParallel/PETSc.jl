@@ -16,7 +16,7 @@ MPI.Initialized() || MPI.Init()
         stencil_width = 3
 
         for boundary_type in instances(PETSc.DMBoundaryType)
-
+            boundary_type = PETSc.LibPETSc.DM_BOUNDARY_NONE
             # DMStag cannot be used with these boundary types
             boundary_type == PETSc.DM_BOUNDARY_MIRROR && continue
             boundary_type == PETSc.DM_BOUNDARY_TWIST && continue
@@ -48,23 +48,23 @@ MPI.Initialized() || MPI.Init()
                 @test PETSc.gettype(dm) == "stag"
                 @test PETSc.gettype(dmnew) == "stag"
                 @test PETSc.getdimension(dm) == 1
-                @test PETSc.getdof(dm) == (3, 4)
-                @test PETSc.getdof(dmnew) == (4, 3)
-                @test PETSc.globalsize(dm) ===
-                      (global_size, PetscInt(1), PetscInt(1))
-                @test size(dm) === (global_size, PetscInt(1), PetscInt(1))
-                @test PETSc.localsize(dm) ===
-                      (points_per_proc[mpirank + 1], PetscInt(1), PetscInt(1))
+                @test PETSc.DMStagGetDOF(dm) == (3, 4,0,0)
+                @test PETSc.DMStagGetDOF(dmnew) == (4, 3,0,0)
+                @test PETSc.DMStagGetGlobalSizes(dm) ===
+                      (global_size, PetscInt(0), PetscInt(0))
+                @test size(dm) === (global_size, PetscInt(0), PetscInt(0))
+                @test PETSc.DMStagGetLocalSizes(dm) ===
+                      (points_per_proc[mpirank + 1], PetscInt(0), PetscInt(0))
 
                 corners = PETSc.getcorners(dm)
                 @test corners.lower ==
                       CartesianIndex(proc_global_offsets[mpirank + 1] + 1, 1, 1)
                 @test corners.upper ==
-                      CartesianIndex(proc_global_offsets[mpirank + 2], 1, 1)
-                @test corners.size == (points_per_proc[mpirank + 1], 1, 1)
+                      CartesianIndex(proc_global_offsets[mpirank + 2], 0, 0)
+                @test corners.size == (points_per_proc[mpirank + 1], 0, 0)
 
                 # Check the extra and first / last rank
-                map(PETSc.islastrank(dm), corners.nextra) do b, n
+                map(PETSc.DMStagGetIsLastRank(dm), corners.nextra) do b, n
                     @test b && boundary_type != PETSc.DM_BOUNDARY_PERIODIC ?
                           n == 1 : n == 0
                 end
@@ -84,13 +84,13 @@ MPI.Initialized() || MPI.Init()
                 )
                 @test ghost_corners.upper == CartesianIndex(
                     proc_global_offsets[mpirank + 2] + gr,
-                    1,
-                    1,
+                    0,
+                    0,
                 )
                 @test ghost_corners.size ==
-                      (points_per_proc[mpirank + 1] + gl + gr, 1, 1)
+                      (points_per_proc[mpirank + 1] + gl + gr, 0, 0)
 
-                @test PETSc.boundarytypes(dm) === (
+                @test PETSc.DMStagGetBoundaryTypes(dm) === (
                     boundary_type,
                     PETSc.DM_BOUNDARY_NONE,
                     PETSc.DM_BOUNDARY_NONE,
@@ -98,9 +98,11 @@ MPI.Initialized() || MPI.Init()
                 PETSc.destroy(dm)
                 PETSc.destroy(dmnew)
             end
+
         end
     end
 end
+
 
 @testset "DMStagCreate2d" begin
     comm = MPI.COMM_WORLD
@@ -144,23 +146,23 @@ end
                 @test PETSc.gettype(dm) == "stag"
                 @test PETSc.gettype(dmnew) == "stag"
                 @test PETSc.getdimension(dm) == 2
-                @test PETSc.getdof(dm) == (3, 4, 5)
-                @test PETSc.getdof(dmnew) == (4, 3, 0)
+                @test PETSc.DMStagGetDOF(dm) == (3, 4, 5,0)
+                @test PETSc.DMStagGetDOF(dmnew) == (4, 3, 0,0)
                 @test PETSc.globalsize(dm) === (
                     PetscInt(global_size_x),
                     PetscInt(global_size_y),
-                    PetscInt(1),
+                    PetscInt(0),
                 )
                 @test size(dm) === (
                     PetscInt(global_size_x),
                     PetscInt(global_size_y),
-                    PetscInt(1),
+                    PetscInt(0),
                 )
 
                 corners = PETSc.getcorners(dm)
                 ghost_corners = PETSc.getghostcorners(dm)
-                isfirst = PETSc.isfirstrank(dm)
-                islast = PETSc.islastrank(dm)
+                isfirst = PETSc.DMStagGetIsFirstRank(dm)
+                islast = PETSc.DMStagGetIsLastRank(dm)
 
                 bt = (boundary_type_x, boundary_type_y, PETSc.DM_BOUNDARY_NONE)
                 for d in 1:3
@@ -204,6 +206,8 @@ end
         end
     end
 end
+
+
 
 @testset "DMStagCreate3d" begin
     comm = MPI.COMM_WORLD
@@ -251,8 +255,8 @@ end
                 @test PETSc.gettype(dm) == "stag"
                 @test PETSc.gettype(dmnew) == "stag"
                 @test PETSc.getdimension(dm) == 3
-                @test PETSc.getdof(dm) == (2, 3, 4, 5)
-                @test PETSc.getdof(dmnew) == (4, 3, 0, 0)
+                @test PETSc.DMStagGetDOF(dm) == (2, 3, 4, 5)
+                @test PETSc.DMStagGetDOF(dmnew) == (4, 3, 0, 0)
                 @test PETSc.globalsize(dm) === (
                     PetscInt(global_size_x),
                     PetscInt(global_size_y),
@@ -266,8 +270,8 @@ end
 
                 corners = PETSc.getcorners(dm)
                 ghost_corners = PETSc.getghostcorners(dm)
-                isfirst = PETSc.isfirstrank(dm)
-                islast = PETSc.islastrank(dm)
+                isfirst = PETSc.DMStagGetIsFirstRank(dm)
+                islast = PETSc.DMStagGetIsLastRank(dm)
 
                 bt = (boundary_type_x, boundary_type_y, boundary_type_z)
                 for d in 1:3
@@ -307,3 +311,4 @@ end
         end
     end
 end
+

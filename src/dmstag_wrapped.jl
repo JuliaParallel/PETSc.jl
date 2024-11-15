@@ -1631,7 +1631,7 @@ end
  
  
 """
-	 DMStagRestrictSimple(dmf::AbstractDMStag{PetscLib},xf::AbstractVector,dmc::AbstractDMStag{PetscLib},xc::AbstractVector)
+	 xc = DMStagRestrictSimple(dmf::AbstractDMStag{PetscLib},xf::AbstractVector,dmc::AbstractDMStag{PetscLib})
 
 restricts data from a fine to a coarse `DMSTAG`, in the simplest way
 
@@ -1659,17 +1659,19 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagRestrictSimple"))
 """
-function DMStagRestrictSimple(dmf::AbstractDMStag{PetscLib},xf::AbstractVector,dmc::AbstractDMStag{PetscLib},xc::AbstractVector) where {PetscLib}
+function DMStagRestrictSimple(dmf::AbstractDMStag{PetscLib},xf::AbstractVector,dmc::AbstractDMStag{PetscLib}) where {PetscLib}
+
+	xc = DMLocalVec(dmc)      
 
 	LibPETSc.DMStagRestrictSimple(
 		PetscLib,
 		dmf,
 		xf,
 		dmc,
-		xc,
+		xc
 	)
 
-	return nothing
+	return xc
 end
  
  

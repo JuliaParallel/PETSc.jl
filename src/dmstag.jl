@@ -8,13 +8,12 @@ end
 
 mutable struct DMStagPtr{PetscLib} <: AbstractDMStag{PetscLib}
     ptr::CDM
-    age::Int
+    age::Snt
     own::Bool
 end
 
 import PETSc.LibPETSc:  DMStagStencilLocation, DMType, DMStagStencil
 
-MPI_Comm = MPI.Comm
 
 include("dmstag_wrapped.jl")    
 

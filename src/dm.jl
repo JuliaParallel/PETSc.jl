@@ -1,6 +1,26 @@
 const CDM = Ptr{Cvoid}
 abstract type AbstractDM{PetscLib} end
 
+import PETSc.LibPETSc: DMType, PetscViewer, ISColoringType, DMBlockingType, MPI_Datatype
+import PETSc.LibPETSc: PetscObject, DMLabel, PetscMPIInt, PetscSection, DMField, PetscFE
+import PETSc.LibPETSc: DMPointLocationType, VecScatter, VecType, MatType, MatFDColoring, DMReorderDefaultFlag,
+        MatOrderingType,PetscSF,PetscDS,PetscCopyMode,DMCopyLabelsMode,DMPolytopeType, IS
+
+
+mutable struct DM{PetscLib} <: AbstractDM{PetscLib}
+    ptr::CDM
+    opts::Options{PetscLib}
+    age::Int
+end
+
+mutable struct DMPtr{PetscLib} <: AbstractDM{PetscLib}
+    ptr::CDM
+    age::Int
+    own::Bool
+end
+
+include("./dm_wrapped.jl")
+
 function destroy(dm::AbstractDM{PetscLib}) where {PetscLib}
     if !(finalized(PetscLib)) &&
        dm.age == getlib(PetscLib).age &&
@@ -11,6 +31,8 @@ function destroy(dm::AbstractDM{PetscLib}) where {PetscLib}
     dm.ptr = C_NULL
     return nothing
 end
+
+
 
 """
     setfromoptions!(dm::DM, opts=dm.opts)
@@ -50,11 +72,13 @@ Gets type name of the `dm`
 # External Links
 $(_doc_external("DM/DMGetType"))
 """
-function gettype(dm::AbstractDM{PetscLib}) where {PetscLib}
-    t_r = Ref{PETSc.DMType}()
-    LibPETSc.DMGetType(PetscLib, dm, t_r)
-    return unsafe_string(t_r[])
-end
+gettype(dm::AbstractDM{PetscLib}) where PetscLib = DMGetType(dm)
+
+#function gettype(dm::AbstractDM{PetscLib}) where {PetscLib}
+#    t_r = Ref{PETSc.DMType}()
+#    LibPETSc.DMGetType(PetscLib, dm, t_r)
+#    return unsafe_string(t_r[])
+#end
 
 """
     getdimension(dm::AbstractDM)
@@ -64,11 +88,14 @@ Return the topological dimension of the `dm`
 # External Links
 $(_doc_external("DM/DMGetDimension"))
 """
-function getdimension(dm::AbstractDM{PetscLib}) where {PetscLib}
-    r_dim = Ref{PetscLib.PetscInt}()
-    LibPETSc.DMGetDimension(PetscLib, dm, r_dim)
-    return r_dim[]
-end
+getdimension(dm::AbstractDM{PetscLib}) where PetscLib = DMGetDimension(dm)
+
+
+#function getdimension(dm::AbstractDM{PetscLib}) where {PetscLib}
+#    r_dim = Ref{PetscLib.PetscInt}()
+#    LibPETSc.DMGetDimension(PetscLib, dm, r_dim)
+#    return r_dim[]
+#end
 
 """
     MatAIJ(dm::AbstractDM)

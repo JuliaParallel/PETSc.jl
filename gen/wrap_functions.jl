@@ -86,7 +86,7 @@ function read_c_function_args(file, fct_name)
         # read till end of file
         while ! eof(f)  
             line = readline(f)
-            if contains(line, "PetscErrorCode $fct_name")
+            if contains(line, "PetscErrorCode $fct_name(")
                 line_string = line
             end
         end
@@ -148,13 +148,16 @@ function read_c_function_docs(file, fct_name)
     end
 
     comment_block = comment_block[2:end]
-    if !isempty(comment_block)
+    if length(comment_block)>0
         comment_block[1] = strip(comment_block[1])
         comment_block[1] = strip(split(comment_block[1],"-")[2])
-        comment_block = replace.(comment_block, "\$" => "")
-        comment_block = replace.(comment_block, "[](ch_stag)," => "")
-        comment_block = replace.(comment_block, "-seealso:  " => "See also: \n=== \n")
     end
+    comment_block = replace.(comment_block, "\$" => "")
+    comment_block = replace.(comment_block, "[](ch_stag)," => "")
+    comment_block = replace.(comment_block, "[](ch_dmbase)," => "")
+    comment_block = replace.(comment_block, "-seealso:  " => "See also: \n=== \n")
+    comment_block = replace.(comment_block, "seealso:  " => "See also: \n=== \n")
+    
 
     return comment_block
 end
@@ -419,7 +422,14 @@ function split_input_output(C_fct::AbstractString)
     for id in eachindex(input_split)
         inp = input_split[id]
         if inp[2] == "DM"
-            inp[2] = "AbstractDMStag{PetscLib}"
+            if dmtype=="DMStag"
+                inp[2] = "AbstractDMStag{PetscLib}"
+            elseif dmtype=="DM"
+                inp[2] = "AbstractDM{PetscLib}"
+            else
+                error("correct code")
+            end
+                
         elseif inp[2] == "Vec"
             inp[2] = "AbstractVector"
         elseif inp[2] == "Mat"
@@ -481,6 +491,7 @@ function print_petsc_function(input, output, fname, comment_block, type="DMStag"
         io = open(output_file, "w")
     end
     println(io, "\"\"\"");
+    println(io, "\t UNTESTED !!!");
     if !isempty(output)
         println(io, "\t$return_doc = $function_header_main");
     else
@@ -518,7 +529,7 @@ function print_petsc_function(input, output, fname, comment_block, type="DMStag"
     end # end of writing comment block
     println(io, "");
     println(io, "# External Links");
-    println(io, "\$(_doc_external(\"$(type)/$(fname)\"))");
+    println(io, "\$(_doc_external(\"$(dmtype)/$(fname)\"))");
     println(io, "\"\"\"");
     println(io, "$function_header");
 
@@ -540,7 +551,7 @@ function print_petsc_function(input, output, fname, comment_block, type="DMStag"
 
     @show output_split
     for (id,outp) in enumerate(output_split)
-        if outp[2]=="PetscInt" || outp[2]=="PetscScalar"
+        if outp[2]=="PetscInt" || outp[2]=="PetscScalar" || outp[2]=="PetscReal"
             println(io, "\t$(outp[1]) = [$(outp[2])(1)]")
         elseif outp[2]=="PetscBool"
             println(io, "\t$(outp[1]) = Ref{PetscBool}()")
@@ -548,7 +559,8 @@ function print_petsc_function(input, output, fname, comment_block, type="DMStag"
             println(io, "\t$(outp[1]) = Ref{DMBoundaryType}(DM_BOUNDARY_NONE)")
         elseif outp[2]=="DMStagStencilType"
             println(io, "\t$(outp[1]) = Ref{DMStagStencilType}()")
-
+        elseif outp[2]=="ISColoringType"
+            println(io, "\t$(outp[1]) = Ref{ISColoringType}()")
         elseif outp[2]=="DM"    
             # NOTE: I wrote this for DMStag; DMPlex and DMDA will probably use DM as well
 
@@ -563,9 +575,15 @@ function print_petsc_function(input, output, fname, comment_block, type="DMStag"
             else
                 println(io,"\topts = Options(petsclib)")
             end
-            
-            println(io, "\t$(outp[1]) = DMStag{PetscLib}(C_NULL, opts, petsclib.age)")
+            if dmtype=="DMStag"
+                println(io, "\t$(outp[1]) = DMStag{PetscLib}(C_NULL, opts, petsclib.age)")
+            elseif dmtype=="DM"
+                println(io, "\t$(outp[1]) = DM{PetscLib}(C_NULL, opts, petsclib.age)")    
+            else
+                error("correct code")
+            end
 
+            
         elseif outp[2]=="void"
             # array
             @warn "outputting a vector - you likely have to manually change the routine"
@@ -582,6 +600,70 @@ function print_petsc_function(input, output, fname, comment_block, type="DMStag"
 
         elseif outp[2]=="Vector{PetscInt}"
             println(io, "\tr_$(outp[1]) = Ref{Ptr{PetscInt}}(C_NULL)")
+        
+        elseif outp[2]=="DMType"
+            println(io, "\tr_$(outp[1]) = Ref{PETSc.DMType}()")
+
+        elseif outp[2]=="Vec"
+            println(io, "\t$(outp[1]) = CVec()")
+
+        elseif outp[2]=="IS"
+            # to be checked
+            println(io, "\t$(outp[1]) = LibPETSc.IS()")
+
+        elseif outp[2]=="PetscDS"
+            # to be checked
+            println(io, "\t$(outp[1]) = LibPETSc.PetscDS()")
+
+        elseif outp[2]=="DMLabel"
+            # to be checked
+            println(io, "\t$(outp[1]) = LibPETSc.DMLabel()")
+
+        elseif outp[2]=="PetscObject"
+            # to be checked
+            println(io, "\t$(outp[1]) = LibPETSc.PetscObject()")
+
+        elseif outp[2]=="PetscSection"
+            # to be checked
+            println(io, "\t$(outp[1]) = LibPETSc.PetscSection()")
+
+        elseif outp[2]=="MatOrderingType"
+            # to be checked
+            println(io, "\t$(outp[1]) = LibPETSc.MatOrderingType()")
+
+        elseif outp[2]=="PetscBT"
+            # to be checked
+            println(io, "\t$(outp[1]) = LibPETSc.PetscBT()")
+
+        elseif outp[2]=="ISLocalToGlobalMapping"
+            # to be checked
+            println(io, "\t$(outp[1]) = LibPETSc.ISLocalToGlobalMapping()")
+
+        elseif outp[2]=="ISColoring"
+            # to be checked
+            println(io, "\t$(outp[1]) = LibPETSc.ISColoring()")
+        
+        elseif outp[2]=="DMBlockingType"
+            # to be checked
+            println(io, "\t$(outp[1]) = LibPETSc.DMBlockingType()")
+
+        elseif outp[2]=="DMField"
+            # to be checked
+            println(io, "\t$(outp[1]) = LibPETSc.DMField()")
+        
+        elseif outp[2]=="PetscSF"
+            # to be checked
+            println(io, "\t$(outp[1]) = LibPETSc.PetscSF()")
+
+        elseif outp[2]=="PetscSF"
+            # to be checked
+            println(io, "\t$(outp[1]) = LibPETSc.PetscSF()")
+
+        elseif outp[2]=="VecType"
+            println(io, "\t$(outp[1]) = Ref{VecType}()")
+
+        elseif outp[2]=="MatType"
+            println(io, "\t$(outp[1]) = Ref{MatType}()")
 
         else
             @warn "Don't know how to declare the type of: $(outp)"
@@ -614,14 +696,30 @@ function print_petsc_function(input, output, fname, comment_block, type="DMStag"
             str = "Ref($(outp[1]),1)"
         elseif outp[2]=="PetscBool" || outp[2]=="DMBoundaryType"
             str = "$(outp[1])"
-        elseif outp[2]=="DMStagStencilType" ||  outp[2]=="DM"
+        elseif outp[2]=="DMStagStencilType" ||  outp[2]=="DM" || outp[2]=="Vec" || outp[2]=="Mat"
             str = "$(outp[1])"
-        elseif outp[2]=="Vector{PetscInt}" || outp[2]=="void"
+        elseif outp[2]=="ISColoringType" 
+            str = "$(outp[1])" 
+        elseif outp[2]=="Vector{PetscInt}" || outp[2]=="void" || outp[2]=="DMType" || outp[2]=="VecType" || outp[2]=="MatType"
             str = "r_$(outp[1])"
             require_ptr_to_vec = true
+        elseif outp[2]=="PetscDS"  || outp[2]=="DMLabel" || outp[2]=="IS" || outp[2]=="ISLocalToGlobalMapping" 
+            # to be checked
+            str = "$(outp[1])"
+
+        elseif outp[2]=="ISColoring"  || outp[2]=="DMBlockingType" || outp[2]=="PetscSection" || outp[2]=="PetscObject" 
+              # to be checked
+            str = "$(outp[1])"
+
+        elseif outp[2]=="DMField"   || outp[2]=="PetscBT" || outp[2]=="PetscSF"
+            # to be checked
+          str = "$(outp[1])"
+
         else
             str = "$(outp[1])"
             @warn "check how to write this to the output of docstring : $(outp)"
+
+            error("stop here")
         end
         println(io, "$(space)\t$str,")
     end
@@ -649,11 +747,11 @@ function print_petsc_function(input, output, fname, comment_block, type="DMStag"
     # 
     return_string = "\treturn "
     for outp in output_split
-        if outp[2]=="PetscInt" || outp[2]=="PetscScalar"
+        if outp[2]=="PetscInt" || outp[2]=="PetscScalar" || outp[2]=="PetscReal"
             return_string *= "$(outp[1])[1]"
         elseif outp[2]=="PetscBool"
             return_string *= "$(outp[1])[] == PETSC_TRUE"
-        elseif outp[2]=="DM"
+        elseif outp[2]=="DM" || outp[2]=="Vec"
             return_string *= "$(outp[1])"
         elseif outp[2]=="DMBoundaryType"
             return_string *= "$(outp[1])[]"
@@ -667,7 +765,22 @@ function print_petsc_function(input, output, fname, comment_block, type="DMStag"
             return_string *= "$(outp[1])"
         elseif outp[2]=="void"
             return_string *= "$(outp[1])"
+
+        elseif outp[2]=="DMType" ||  outp[2]=="VecType" 
+            #   return unsafe_string(t_r[])
+            println(io, "\t$(outp[1]) = unsafe_string(r_$(outp[1])[])" );
+            return_string *= "$(outp[1])"
+
+        elseif outp[2]=="IS" || outp[2]=="PetscDS" || outp[2]=="DMLabel" || outp[2]=="PetscObject"
+            # to be checked
+            return_string *= "$(outp[1])"
+
+        elseif outp[2]=="PetscSection"  || outp[2]=="MatOrderingType"
+            # to be checked
+            return_string *= "$(outp[1])"
+
         else
+            return_string *= "$(outp[1])"
             @warn "check how to write this to the return statement: $(outp); not writing it"
         end
         return_string *= ","
@@ -704,7 +817,7 @@ end
 
 
 """
-    wrap_petsc_function(headername, function_names; options_functionnames=[""], excluded=[""], output="wrapped_functions.jl")
+    wrap_petsc_function(headername, function_names; options_functionnames=[""], excluded=[""], output="wrapped_functions.jl", dmtype="DMStag")
 
 Routine to create julia-like wrappers for the PETSc header file `headername`.
 We automatically retrieve 
@@ -715,9 +828,13 @@ Input
 - `headername`  - full name of the PETSc header file including directory that you want to wrap (ends with `*.h`)
 - `function_names` - name of the function(s) you want to wrap. If you only want to wrap a single function, provide a string; for more, a vector of strings. If you want to process all, say `function_names=:all`.
 - `path_within_petsc` - directory within the petsc repository that contains the relevant source files (e.g. "petsc/src/dm/impls/stag/" for DMSTAG)
+- `excluded` - list with excliuded functions
+- `options_functionnames` - list of routines where we add options
+- `addpetsclib_functionnames` - list of routines that don't have `PETScLib` as type signature
+- `dmtype` type of DM structure 
 
 """
-function wrap_petsc_function(headername, function_names, path_within_petsc; options_functionnames=[""], addpetsclib_functionnames=[""], excluded=[""], output_file="wrapped_functions.jl")
+function wrap_petsc_function(headername, function_names, path_within_petsc; options_functionnames=[""], addpetsclib_functionnames=[""], excluded=[""], output_file="wrapped_functions.jl", dmtype="DMStag")
                     
     if !isdir("petsc/")
         error("I don't find petsc in the current directory. please download the correct version with `download_petsc()`")
@@ -734,32 +851,34 @@ function wrap_petsc_function(headername, function_names, path_within_petsc; opti
     io = nothing
     for (i,fname) in enumerate(function_names)
         @info i, fname 
-        C_fct, comment_block, file_str = find_c_file(path_within_petsc, fname)
-        if !isempty(C_fct)
-            input, output = split_input_output(C_fct)       
-            
-            options = false;
-            if any(contains.(options_functionnames, fname))
-                options = true
-            end
-            
-            add_petsclib = false
-            if any(contains.(addpetsclib_functionnames, fname))
-                add_petsclib = true
-            end
 
-            process_fct = true
-            if any(contains.(excluded, fname))
-                process_fct = false
-            end
-            @show options add_petsclib
-            if process_fct
+        process_fct = true
+        if any(contains.(excluded, fname))
+            process_fct = false
+        end
+        if process_fct
+            C_fct, comment_block, file_str = find_c_file(path_within_petsc, fname)
+            if !isempty(C_fct)
+                input, output = split_input_output(C_fct)       
+                
+                options = false;
+                if any(contains.(options_functionnames, fname))
+                    options = true
+                end
+                
+                add_petsclib = false
+                if any(contains.(addpetsclib_functionnames, fname))
+                    add_petsclib = true
+                end
+
+            
+                @show options add_petsclib
                 io = print_petsc_function(input, output, fname, comment_block, options=options, add_petsclib=add_petsclib, io=io, output_file=output_file)
-            end
-
-        else
-            @info "deprecated function or cannot find it"
             
+            else
+                @info "deprecated function or cannot find it"
+                
+            end
         end
 
     end
@@ -772,11 +891,13 @@ end
 
 
 
+#=
 # Wrap DMSTAG
 headername                  =   "headers/petscdmstag.h"
 #function_names              =   :all #["DMStagCreateISFromStencils"]
 
-function_names              =   ["DMStagSetUniformCoordinatesProduct"]
+#function_names              =   ["DMStagSetUniformCoordinatesProduct"]
+function_names              =   ["DMStagCreateISFromStencils"]
 path_within_petsc           =   "petsc/src/dm/impls/stag/"
 #output_file                 =   "../src/dmstag_wrapped1.jl"
 
@@ -784,9 +905,36 @@ output_file                 =   "wrapped_functions.jl"
 
 options_functionnames       =   ["DMStagCreate1d","DMStagCreate2d","DMStagCreate3d","DMStagCreateCompatibleDMStag"]
 addpetsclib_functionnames   =   ["DMStagCreate1d","DMStagCreate2d","DMStagCreate3d"]
-excluded                    =   ["DMStagCreateISFromStencils"]
+#excluded                    =   ["DMStagCreateISFromStencils"]
+excluded                    =   []
+=#
+
+
+# Wrap DM
+headername                  =   "headers/petscdm.h"
+function_names              =   ["DMGetType"]
+function_names = :all
+
+path_within_petsc           =   "petsc/src/dm/interface/"
+output_file                 =   "wrapped_functions.jl"
+
+options_functionnames       =   [""]
+addpetsclib_functionnames   =   ["DMCreate"]
+dmtype                      =   "DM"
+
+# lots of excluded files; most because they call another function
+excluded                    =   ["DMInitializePackage","DMRegister","DMCoarsenHookAdd","DMCoarsenHookRemove","DMRefineHookAdd","DMRefineHookRemove","DMGenerateRegister","DMGenerateRegisterAll","DMGenerateRegisterDestroy","DMGlobalToLocalHookAdd","DMLocalToGlobalHookAdd",
+"DMSubDomainHookAdd","DMSubDomainHookRemove","DMSetApplicationContextDestroy","DMSetVariableBounds","DMFinalizePackage","DMSetNullSpaceConstructor","DMGetNullSpaceConstructor","DMSetNearNullSpaceConstructor","DMGetNearNullSpaceConstructor","DMAddBoundary","DMProjectFunction",
+"DMProjectFunctionLocal","DMProjectFunctionLabel","DMProjectFunctionLabelLocal",
+"DMProjectFieldLocal","DMProjectFieldLabel","DMProjectFieldLabelLocal",
+"DMProjectBdFieldLabelLocal","DMComputeL2Diff","DMComputeL2GradientDiff",
+"DMComputeL2FieldDiff","DMMonitorSet","DMMonitorSetFromOptions","DMCreateFieldIS",
+"DMCreateMatrix","DMCreateSuperDM","DMCreateSectionSuperDM","DMCreateFieldDecomposition","DMCreateDomainDecomposition","DMCreateDomainDecompositionScatters",
+"DMReorderSectionGetDefault","DMReorderSectionGetType","DMGetOutputSequenceNumber","DMOutputSequenceLoad",
+"DMCreateFEDefault","DMCompareLabels"
+]
+
+
 wrap_petsc_function(headername, function_names, path_within_petsc; options_functionnames=options_functionnames, addpetsclib_functionnames=addpetsclib_functionnames, excluded=excluded, output_file=output_file)
-
-
 
 

@@ -347,7 +347,7 @@ printer_blacklist = [
   #"DMStagVecSetValuesStencil",
   #"DMStagMatSetValuesStencil",
   #"DMStagStencilToIndexLocal",
-  "DMStagCreateISFromStencils",
+  #"DMStagCreateISFromStencils",
 #
 # Need TSMonitorLGCtxNetwork to work with interpotated values
 #

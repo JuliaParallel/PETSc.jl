@@ -211,7 +211,7 @@ end
 
 function final_mangling(output_file)
     # In a few cases, the procedure fails so deal with that manually  
-    text = read(file, String)
+    text = read(output_file, String)
     
     text_new = replace(text,"_p_DMPlexPointQueue{\$PetscInt}"=>"_p_DMPlexPointQueue")
 
@@ -222,6 +222,9 @@ end
 function wrap(output_file, petsc_include_dir, mpi_include_dir)
     petsc_h = joinpath(petsc_include_dir, "petsc.h")
     @assert isfile(petsc_h)
+
+    #petscis_h = joinpath(petsc_include_dir, "petscis.h")
+    #@assert isfile(petscis_h)
 
     mpi_h = joinpath(mpi_include_dir, "mpi.h")
     @assert isfile(mpi_h)
@@ -234,6 +237,7 @@ function wrap(output_file, petsc_include_dir, mpi_include_dir)
     push!(args, "-I$petsc_include_dir")
     push!(args, "-isystem$mpi_include_dir")
 
+#    header_files = [petsc_h, petscis_h]
     header_files = [petsc_h]
 
     ctx = create_context(header_files, args, options)

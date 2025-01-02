@@ -52153,6 +52153,24 @@ end
     )
 end
 
+@for_petsc function DMStagCreateISFromStencils(
+    ::$UnionPetscLib,
+    arg1,
+    arg2,
+    arg3,
+    arg4,
+)
+    @chk ccall(
+        (:DMStagCreateISFromStencils, $petsc_library),
+        PetscErrorCode,
+        (DM, $PetscInt, Ptr{DMStagStencil{$PetscInt}}, Ptr{IS}),
+        arg1,
+        arg2,
+        arg3,
+        arg4,
+    )
+end
+
 @for_petsc function DMStagGetBoundaryTypes(
     ::$UnionPetscLib,
     arg1,
@@ -76133,9 +76151,9 @@ const PetscCount_FMT = "td"
 
 const PETSC_MAX_UINT16 = 65535
 
-#const MPIU_INT64 = MPI_INT64_T
+const MPIU_INT64 = MPI_INT64_T
 
-#const MPIU_INT32 = MPI_INT32_T
+const MPIU_INT32 = MPI_INT32_T
 
 const PetscBLASInt_FMT = "d"
 

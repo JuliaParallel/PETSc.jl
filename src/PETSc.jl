@@ -6,6 +6,10 @@ using MPI, LinearAlgebra, SparseArrays
 
 MPI.Initialized() || MPI.Init()
 
+include("LibPETSc.jl")
+using .LibPETSc
+export LibPETSc
+
 using Libdl
 
 function _petsc_link(fname)
@@ -20,13 +24,14 @@ function _doc_external(fname)
 """
 end
 
-include("const.jl")
-include("startup.jl")
-include("lib.jl")
 include("init.jl")
-include("ref.jl")
+include("const.jl")
 include("viewer.jl")
 include("options.jl")
+##include("startup.jl")
+##include("lib.jl")
+##include("ref.jl")
+#=
 include("vec.jl")
 include("mat.jl")
 include("matshell.jl")
@@ -37,5 +42,7 @@ include("ksp.jl")
 include("pc.jl")
 include("snes.jl")
 include("sys.jl")
+=#
+
 
 end

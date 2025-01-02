@@ -1,7 +1,7 @@
 using Test
 using PETSc
 
-@testset "options tests" begin
+@testset "options" begin
     kw_opts = (
         ksp_monitor = nothing,
         ksp_view = true,
@@ -36,12 +36,11 @@ using PETSc
         opts["nothing_opt"] = nothing
         @test "" == opts["nothing_opt"]
         @test "1" == opts["new_opt"]
-        
+
         # Check that viewer is working
         _stdout = stdout
         (rd, wr) = redirect_stdout()
         @show opts
-
         @test readline(rd) == "opts = #PETSc Option Table entries:"
         @test readline(rd) == "-da_grid_x 100 # (source: code)"
         @test readline(rd) == "-da_grid_y 100 # (source: code)"
@@ -75,17 +74,17 @@ using PETSc
         @test readline(rd) == "-pc_type mg # (source: code)"
         @test readline(rd) == "#End of PETSc Option Table entries"
 
+
         show(stdout, "text/plain", glo_opts)
         @test readline(rd) == "#No PETSc Option Table entries"
-
-        redirect_stdout(_stdout)
         
+        redirect_stdout(_stdout)
 
         PETSc.finalize(petsclib)
     end
 end
 
-@testset "parse_options tests" begin
+@testset "parse_options" begin
     @test begin
         julia = joinpath(Sys.BINDIR, Base.julia_exename())
         run(`$(julia) --startup-file=no --project -e "using PETSc
@@ -105,4 +104,34 @@ end
                                  -pc_type mg`)
         true
     end
+end
+
+
+@testset "typedget" begin
+    opt = (tup = (1, 2, 3), string_tup = "1,2,3", string_int = "4", int = 4)
+    @test PETSc.typedget(opt, :bad_key, (1, 1, 1)) === (1, 1, 1)
+    @test PETSc.typedget(opt, :string_tup, (1, 1, 1)) === opt.tup
+    @test PETSc.typedget(opt, :string_tup, "a") === opt.string_tup
+    @test PETSc.typedget(opt, :bad_key, "a") === "a"
+    @test PETSc.typedget(opt, :int, Float64(7)) === Float64(opt.int)
+    @test PETSc.typedget(opt, :bad_key, Float64(7)) === Float64(7)
+    @test PETSc.typedget(opt, :tup, Float64.((1, 1, 1))) === Float64.(opt.tup)
+    @test PETSc.typedget(opt, :bad_key, Float64.((1, 1, 1))) ===
+          Float64.((1, 1, 1))
+    @test PETSc.typedget(opt, :string_tup, Float64.((1, 1, 1))) ===
+          Float64.(opt.tup)
+    @test PETSc.typedget(opt, :tup, (1, 1, 1)) === opt.tup
+    @test PETSc.typedget(opt, :bad_key, (1, 1, 1)) === (1, 1, 1)
+    @test PETSc.typedget(opt, :string_tup, (1, 1, 1)) === opt.tup
+    @test PETSc.typedget(opt, :string_tup, "a") === opt.string_tup
+    @test PETSc.typedget(opt, :bad_key, "a") === "a"
+    @test PETSc.typedget(opt, :int, 7) === opt.int
+    @test PETSc.typedget(opt, :bad_key, 7) === 7
+    @test PETSc.typedget(opt, :int, Float64(7)) === Float64(opt.int)
+    @test PETSc.typedget(opt, :bad_key, Float64(7)) === Float64(7)
+    @test PETSc.typedget(opt, :tup, Float64.((1, 1, 1))) === Float64.(opt.tup)
+    @test PETSc.typedget(opt, :bad_key, Float64.((1, 1, 1))) ===
+          Float64.((1, 1, 1))
+    @test PETSc.typedget(opt, :string_tup, Float64.((1, 1, 1))) ===
+          Float64.(opt.tup)
 end

@@ -1,3 +1,27 @@
+# ideally we would capture the output directly, but this looks difficult
+# easiest option is to redirect stdout
+# based on suggestion from https://github.com/JuliaLang/julia/issues/32567
+function _show(io::IO, obj)
+    old_stdout = stdout
+    rd, = redirect_stdout()
+    # to prevent the pipe from filling up
+    # based on
+    # https://github.com/JuliaDocs/IOCapture.jl/blob/d8b27045cec8953e0e5a8d719ca1692b3a6d0d02/src/IOCapture.jl#L107-L108
+    task = @async write(io, rd)
+    try
+        view(obj)
+
+        Libc.flush_cstdio()
+        flush(stdout)
+    finally
+        close(rd)
+        redirect_stdout(old_stdout)
+        wait(task)
+    end
+    return nothing
+end
+
+#=
 const CPetscViewer = Ptr{Cvoid}
 
 """
@@ -101,4 +125,5 @@ function ViewerDraw(comm::MPI.Comm)
     ptr = ccall((:PETSC_VIEWER_DRAW_, libpetsc), CPetscViewer, (MPI.MPI_Comm,), comm)
     return ViewerDraw(ptr, comm)
 end
+=#
 =#

@@ -14,6 +14,7 @@ The PETSc global options database.
 """
 struct GlobalOptions{PetscLib} <: AbstractOptions{PetscLib} end
 Base.cconvert(::Type{CPetscOptions}, obj::GlobalOptions) = C_NULL
+GlobalOptions(::PetscLib) where {PetscLib} = GlobalOptions{PetscLib}()
 
 """
     Options{PetscLib <: PetscLibType}(kw -> arg, ...)
@@ -73,66 +74,62 @@ $(_doc_external("Sys/PetscOptionsCreate"))
 """
 mutable struct Options{T} <: AbstractOptions{T}
     ptr::CPetscOptions
+    age::Int
 end
 
-Options(petsclib; kwargs...) = Options(petsclib, kwargs...)
-function Options(petsclib, ps::Pair...)
-    opts = Options(petsclib)
+function Options_(petsclib::PetscLibType)
+    @assert initialized(petsclib)
+    PetscLib = typeof(petsclib)
+    opts = Options{PetscLib}(C_NULL, petsclib.age)
+    LibPETSc.PetscOptionsCreate(petsclib, opts)
+    finalizer(destroy, opts)
+    return opts
+end
+
+function destroy(opts::AbstractOptions{PetscLib}) where {PetscLib}
+    if !(finalized(PetscLib)) &&
+       opts.age == getlib(PetscLib).age &&
+       opts.ptr != C_NULL
+        LibPETSc.PetscOptionsDestroy(PetscLib, opts)
+    end
+    opts.ptr = C_NULL
+    return nothing
+end
+
+Options(petsclib::PetscLibType; kwargs...) = Options_(petsclib, kwargs...)
+Options(PetscLib::Type{<:PetscLibType}; kwargs...) =
+    Options_(getlib(PetscLib), kwargs...)
+function Options_(petsclib::PetscLibType, ps::Pair...)
+    opts = Options_(petsclib)
     for (k, v) in ps
         opts[k] = v
     end
     return opts
 end
 
-@for_petsc function Options(::$UnionPetscLib)
-    opts = Options{$PetscLib}(C_NULL)
-    @assert initialized($PetscLib)
-    @chk ccall(
-        (:PetscOptionsCreate, $petsc_library),
-        PetscErrorCode,
-        (Ptr{CPetscOptions},),
-        opts,
-    )
-    finalizer(finalize, opts)
-    return opts
-end
-
-@for_petsc function finalize(opts::Options{$PetscLib})
-    finalized($PetscLib) || @chk ccall(
-        (:PetscOptionsDestroy, $petsc_library),
-        PetscErrorCode,
-        (Ptr{CPetscOptions},),
-        opts,
-    )
+function Base.push!(
+    ::GlobalOptions{PetscLib},
+    opts::Options{PetscLib},
+) where {PetscLib}
+    LibPETSc.PetscOptionsPush(PetscLib, opts)
     return nothing
 end
 
-@for_petsc function Base.push!(
-    ::GlobalOptions{$PetscLib},
-    opts::Options{$PetscLib},
-)
-    @chk ccall(
-        (:PetscOptionsPush, $petsc_library),
-        PetscErrorCode,
-        (CPetscOptions,),
-        opts,
-    )
+function Base.pop!(::GlobalOptions{PetscLib}) where {PetscLib}
+    LibPETSc.PetscOptionsPop(PetscLib)
     return nothing
 end
 
-@for_petsc function Base.pop!(::GlobalOptions{$PetscLib})
-    @chk ccall((:PetscOptionsPop, $petsc_library), PetscErrorCode, ())
-    return nothing
-end
-
-@for_petsc function Base.setindex!(opts::AbstractOptions{$PetscLib}, val, key)
+function Base.setindex!(
+    opts::AbstractOptions{PetscLib},
+    val,
+    key,
+) where {PetscLib}
     val === true && (val = nothing)
     val === false && (return val)
 
-    @chk ccall(
-        (:PetscOptionsSetValue, $petsc_library),
-        PetscErrorCode,
-        (CPetscOptions, Cstring, Cstring),
+    LibPETSc.PetscOptionsSetValue(
+        PetscLib,
         opts,
         string('-', key),
         isnothing(val) ? C_NULL : string(val),
@@ -141,13 +138,11 @@ end
     return val
 end
 
-@for_petsc function Base.getindex(opts::AbstractOptions{$PetscLib}, key)
+function Base.getindex(opts::AbstractOptions{PetscLib}, key) where {PetscLib}
     val = Vector{UInt8}(undef, 256)
     set_ref = Ref{PetscBool}()
-    @chk ccall(
-        (:PetscOptionsGetString, $petsc_library),
-        PetscErrorCode,
-        (CPetscOptions, Cstring, Cstring, Ptr{UInt8}, Csize_t, Ptr{PetscBool}),
+    LibPETSc.PetscOptionsGetString(
+        PetscLib,
         opts,
         C_NULL,
         string('-', key),
@@ -160,21 +155,13 @@ end
     return val
 end
 
-@for_petsc function view(
-    opts::AbstractOptions{$PetscLib},
-    viewer::AbstractViewer{$PetscLib} = ViewerStdout($PetscLib, MPI.COMM_SELF),
-)
-    @chk ccall(
-        (:PetscOptionsView, $petsc_library),
-        PetscErrorCode,
-        (CPetscOptions, CPetscViewer),
-        opts,
-        viewer,
-    )
+function view(
+    opts::AbstractOptions{PetscLib},
+    viewer = LibPETSc.PETSC_VIEWER_STDOUT_(PetscLib, MPI.COMM_SELF),
+) where {PetscLib}
+    LibPETSc.PetscOptionsView(PetscLib, opts, viewer)
     return nothing
 end
-
-@for_petsc GlobalOptions(::$UnionPetscLib) = GlobalOptions{$PetscLib}()
 
 Base.show(io::IO, opts::AbstractOptions) = _show(io, opts)
 
@@ -184,8 +171,8 @@ Base.show(io::IO, opts::AbstractOptions) = _show(io, opts)
 Call `f()` with the [`Options`](@ref) `opts` set temporarily (in addition to any
 global options).
 """
-function with(f, opts::Options{T}) where {T}
-    global_opts = GlobalOptions{T}()
+function with(f, opts::Options{PetscLib}) where {PetscLib}
+    global_opts = GlobalOptions{PetscLib}()
     push!(global_opts, opts)
     try
         f()
@@ -201,7 +188,7 @@ Parse the `args` vector into a `NamedTuple` that can be used as the options for
 the PETSc solvers.
 
 ```sh
-julia --project file.jl -ksp_monitor -pc_type mg -ksp_view
+julia --project file.jl -ksp_monitor -pc_type mg -ksp_view -da_refine=1
 ```
 """
 function parse_options(args::Vector{String})
@@ -210,7 +197,14 @@ function parse_options(args::Vector{String})
     while i <= length(args)
         @assert args[i][1] == '-' && length(args[i]) > 1
         if i == length(args) || args[i + 1][1] == '-'
-            opts[Symbol(args[i][2:end])] = nothing
+            token = split(args[i][2:end], "=")
+            if length(token) == 1
+                opts[Symbol(token[1])] = nothing
+            elseif length(token) == 2
+                opts[Symbol(token[1])] = token[2]
+            else
+                error("invalid argument: $(args[i])")
+            end
             i = i + 1
         else
             opts[Symbol(args[i][2:end])] = args[i + 1]
@@ -218,4 +212,70 @@ function parse_options(args::Vector{String})
         end
     end
     return NamedTuple(opts)
+end
+
+"""
+    typedget(opt::NamedTuple, key::Symbol, default::T)
+
+Parse `opt` similar to [`get`](@ref) but ensures that the returned value is the
+same type as the default value. When `T <: NTuple` keys that result in a single
+value will be filled into an `NTuple` of the same length as `T`; in the case of
+strings it is parsed using [`split`](@ref) with comma delimiter
+
+# Examples
+```julia-repl
+julia> opt = (tup = (1, 2, 3), string_tup = "1,2,3", string_int = "4", int = 4)
+(tup = (1, 2, 3), string_tup = "1,2,3", string_int = "4", int = 4)
+
+julia> typedget(opt, :int, 7)
+4
+
+julia> typedget(opt, :bad_key, 7)
+7
+
+julia> typedget(opt, :tup, (1, 1, 1))
+(1, 2, 3)
+
+julia> typedget(opt, :string_tup, (1, 1, 1))
+tokens = SubString{String}["1", "2", "3"]
+(1, 2, 3)
+
+julia> typedget(opt, :string_int, (1, 1, 1))
+tokens = SubString{String}["4"]
+(4, 4, 4)
+
+julia> typedget(opt, :int, (1, 1, 1))
+(4, 4, 4)
+
+julia> typedget(opt, :int, (1., 1., 1.))
+(4.0, 4.0, 4.0)
+```
+"""
+function typedget(opt::NamedTuple, key::Symbol, default::T) where {T}
+    v = get(opt, key, default)
+    if !(v isa T)
+        if T <: String
+            return string(v)
+        elseif v isa String
+            if T <: NTuple
+                ET = T.types[1]
+                tokens = split(v, ",")
+                if length(tokens) == 1
+                    return ntuple(_ -> parse(ET, tokens[1]), length(T.types))
+                else
+                    return ntuple(j -> parse(ET, tokens[j]), length(T.types))
+                end
+            else
+                return parse(T, v)
+            end
+        else
+            if T <: NTuple && !(v isa Tuple)
+                ET = T.types[1]
+                return ntuple(j -> convert(ET, v), length(T.types))
+            else
+                return convert(T, v)
+            end
+        end
+    end
+    return v
 end

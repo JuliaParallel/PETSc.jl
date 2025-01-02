@@ -28,15 +28,30 @@ end
 # Run the serial tests
 include("init.jl")
 include("lib.jl")
-include("options.jl")
-include("vec.jl")
-include("mat.jl")
-include("matshell.jl")
-include("ksp.jl")
-include("snes.jl")
-include("dmda.jl")
-include("dmstag.jl")
-include("test_dmstag.jl")
+@testset "options" begin
+    include("options.jl")
+end
+@testset "Vec" begin
+    include("vec.jl")
+end
+@testset "Mat" begin
+    include("mat.jl")
+    include("matshell.jl")
+end
+@testset "KSP" begin
+    include("ksp.jl")
+end
+@testset "SNES" begin
+    include("snes.jl")
+end
+@testset "DMDA" begin
+    include("dmda.jl")
+end
+
+@testset "DMStag" begin
+    include("dmstag.jl")
+    include("test_dmstag.jl")
+end
 
 # Run the examples
 # Exclude examples with first line comment

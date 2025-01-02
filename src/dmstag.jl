@@ -8,7 +8,7 @@ end
 
 mutable struct DMStagPtr{PetscLib} <: AbstractDMStag{PetscLib}
     ptr::CDM
-    age::Snt
+    age::Int
     own::Bool
 end
 

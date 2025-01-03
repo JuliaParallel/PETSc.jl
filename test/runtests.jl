@@ -29,15 +29,16 @@ if do_mpi
 #    include("mpi_examples.jl")
 end
 
-#include("options.jl")
-#include("vec.jl")           # not yet autowrapped!
-#include("mat.jl")           # not yet autowrapped!
-#include("matshell.jl")      # not yet autowrapped!
-include("dmda.jl")
+include("options.jl")
+include("vec.jl")           # not yet autowrapped!
+include("mat.jl")           # not yet autowrapped!
+include("matshell.jl")      # not yet autowrapped!
+include("dmda.jl")          # not yet autowrapped!
+include("dmstag.jl")        # mostly autowrapped!
+#include("test_dmstag.jl")    # "old" dmstag tests - need to be finalized ; also needs KSP to run
 
 #=
 include("old_test.jl")
-include("test_dmstag.jl")
 include("test_snes.jl")
 
 # Run the examples to make sure they all work

@@ -25,6 +25,7 @@ function _doc_external(fname)
 end
 
 include("init.jl")
+include("utils.jl")
 include("viewer.jl")
 include("options.jl")
 include("vec.jl")           # not yet wrapped!
@@ -32,6 +33,7 @@ include("mat.jl")           # not yet wrapped!
 include("matshell.jl")      # not yet wrapped!
 include("dm.jl")            # partly wrapped, no tests yet
 include("dmda.jl")          # not yet wrapped!
+include("dmstag.jl")        # mostly wrapped and tested
 
 include("sys.jl")
 
@@ -40,7 +42,6 @@ include("sys.jl")
 ##include("ref.jl")      # can be removed (later)
 
 #=
-include("dmstag.jl")
 include("ksp.jl")
 include("pc.jl")
 include("snes.jl")

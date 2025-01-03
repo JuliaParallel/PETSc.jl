@@ -76151,10 +76151,6 @@ const PetscCount_FMT = "td"
 
 const PETSC_MAX_UINT16 = 65535
 
-const MPIU_INT64 = MPI_INT64_T
-
-const MPIU_INT32 = MPI_INT32_T
-
 const PetscBLASInt_FMT = "d"
 
 const PETSC_HAVE_COMPLEX = 1

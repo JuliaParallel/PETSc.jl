@@ -55,6 +55,8 @@ printer_blacklist = [
   "MPI_Status",
   "MPI_Request",
   "MPI_Group",
+  "MPIU_INT64",
+  "MPIU_INT32",
 #
 # MPI_Status... Not handled currently in MPI.jl
 #

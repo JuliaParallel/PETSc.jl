@@ -25,9 +25,11 @@ function _doc_external(fname)
 end
 
 include("init.jl")
-include("const.jl")
+#include("const.jl")
 include("viewer.jl")
 include("options.jl")
+include("sys.jl")
+
 ##include("startup.jl")
 ##include("lib.jl")
 ##include("ref.jl")
@@ -41,7 +43,6 @@ include("dmstag.jl")
 include("ksp.jl")
 include("pc.jl")
 include("snes.jl")
-include("sys.jl")
 =#
 
 

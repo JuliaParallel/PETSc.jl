@@ -113,7 +113,7 @@ set the elements of the PETSc vector `fx` based on the `x`.
 # External Links
 $(_doc_external("SNES/SNESSetFunction"))
 """
-setfunction!(snes::AbstractSNES, rhs!, vec) = setcomputerhs!(rhs!, snes, vec)
+setfunction!(snes::AbstractSNES, rhs!, vec) = setfunction!(rhs!, snes, vec)
 
 # Wrapper for calls to setfunction!
 mutable struct Fn_SNESSetFunction{PetscLib, PetscInt} end
@@ -124,7 +124,6 @@ function (w::Fn_SNESSetFunction{PetscLib, PetscInt})(
     snes_ptr::Ptr{Cvoid},
 )::PetscInt where {PetscLib, PetscInt}
     snes = unsafe_pointer_to_objref(snes_ptr)
-    PetscScalar = PetscLib.PetscScalar
     x = VecPtr(PetscLib, r_x, false)
     fx = VecPtr(PetscLib, r_fx, false)
     return snes.f!(fx, snes, x)
@@ -134,13 +133,17 @@ LibPETSc.@for_petsc function setfunction!(
     f!,
     snes::AbstractSNES{$PetscLib},
     vec::AbstractVec{$PetscLib},
-)
+) 
+  
     ctx = pointer_from_objref(snes)
+    PetscInt = $PetscLib.PetscInt
+    @show typeof(f!), ctx,  $PetscLib.PetscInt
     fptr = @cfunction(
         Fn_SNESSetFunction{$PetscLib, $PetscInt}(),
         $PetscInt,
         (CSNES, CVec, CVec, Ptr{Cvoid})
     )
+  
     with(snes.opts) do
         LibPETSc.SNESSetFunction($PetscLib, snes, vec, fptr, ctx)
     end
@@ -176,7 +179,7 @@ $(_doc_external("SNES/SNESSetJacobian"))
 setjacobian!(snes::AbstractSNES, updateJ!, J, PJ = J) =
     setjacobian!(updateJ!, snes, J, PJ)
 
-# Wrapper for calls to setfunction!
+# Wrapper for calls to setjacobian!
 mutable struct Fn_SNESSetJacobian{PetscLib, PetscInt} end
 function (w::Fn_SNESSetJacobian{PetscLib, PetscInt})(
     ::CSNES,

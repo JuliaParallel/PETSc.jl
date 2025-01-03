@@ -3,7 +3,7 @@ const CPetscObject = Ptr{Cvoid}
 const UnionPetscTypes = Union{
     AbstractVec,
     AbstractMat,
-    #AbstractKSP,
+    AbstractKSP,
     #AbstractViewer,
     #AbstractSNES,
     #AbstractPC,
@@ -25,7 +25,7 @@ function getcomm(
     obj::Union{
         AbstractVec{PetscLib},
         AbstractMat{PetscLib},
-        #AbstractKSP{PetscLib},
+        AbstractKSP{PetscLib},
         #AbstractSNES{PetscLib},
         AbstractDM{PetscLib},
     },

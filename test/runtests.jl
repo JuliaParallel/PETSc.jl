@@ -36,6 +36,7 @@ include("matshell.jl")      # not yet autowrapped!
 include("dmda.jl")          # not yet autowrapped!
 include("dmstag.jl")        # mostly autowrapped!
 #include("test_dmstag.jl")    # "old" dmstag tests - need to be finalized ; also needs KSP to run
+include("ksp.jl")           # not yet autowrapped!
 
 #=
 include("old_test.jl")

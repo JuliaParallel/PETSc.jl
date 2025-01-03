@@ -35,7 +35,8 @@ include("dm.jl")            # partly wrapped, no tests yet
 include("dmda.jl")          # not yet wrapped!
 include("dmstag.jl")        # mostly wrapped and tested
 include("ksp.jl")           # not yet wrapped!
-
+# include("pc.jl")            # to be fixed/wrapped
+include("snes.jl")          # not yet wrapped!
 include("sys.jl")
 
 ##include("startup.jl")  # can be removed (later)
@@ -43,8 +44,6 @@ include("sys.jl")
 ##include("ref.jl")      # can be removed (later)
 
 #=
-include("pc.jl")
-include("snes.jl")
 =#
 
 

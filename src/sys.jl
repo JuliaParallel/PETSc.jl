@@ -5,8 +5,8 @@ const UnionPetscTypes = Union{
     AbstractMat,
     AbstractKSP,
     #AbstractViewer,
-    #AbstractSNES,
     #AbstractPC,
+    AbstractSNES,
     AbstractDM,
     Options,
 }
@@ -26,7 +26,7 @@ function getcomm(
         AbstractVec{PetscLib},
         AbstractMat{PetscLib},
         AbstractKSP{PetscLib},
-        #AbstractSNES{PetscLib},
+        AbstractSNES{PetscLib},
         AbstractDM{PetscLib},
     },
 ) where {PetscLib}

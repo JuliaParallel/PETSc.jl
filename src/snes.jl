@@ -126,6 +126,7 @@ function (w::Fn_SNESSetFunction{PetscLib, PetscInt})(
     snes = unsafe_pointer_to_objref(snes_ptr)
     x = VecPtr(PetscLib, r_x, false)
     fx = VecPtr(PetscLib, r_fx, false)
+    
     return snes.f!(fx, snes, x)
 end
 
@@ -137,7 +138,6 @@ LibPETSc.@for_petsc function setfunction!(
   
     ctx = pointer_from_objref(snes)
     PetscInt = $PetscLib.PetscInt
-    @show typeof(f!), ctx,  $PetscLib.PetscInt
     fptr = @cfunction(
         Fn_SNESSetFunction{$PetscLib, $PetscInt}(),
         $PetscInt,
@@ -148,7 +148,7 @@ LibPETSc.@for_petsc function setfunction!(
         LibPETSc.SNESSetFunction($PetscLib, snes, vec, fptr, ctx)
     end
     snes.f! = f!
-    return nothing
+    return 0
 end
 
 """

@@ -38,9 +38,9 @@ include("dmstag.jl")        # mostly autowrapped!
 #include("test_dmstag.jl")    # "old" dmstag tests - need to be finalized ; also needs KSP to run
 include("ksp.jl")           # not yet autowrapped!
 include("snes.jl")          # not yet autowrapped!
+include("old_test.jl")
 
 #=
-include("old_test.jl")
 
 # Run the examples to make sure they all work
 include("examples.jl")

@@ -5,7 +5,7 @@ using PETSc, MPI, LinearAlgebra, SparseArrays
 petsclib = PETSc.petsclibs[1]
 PETSc.initialize(petsclib)
 
-@testset "Tests" begin
+@testset "Old Tests" begin
   m,n = 20,20
   x = randn(n)
   V = PETSc.VecSeqWithArray(petsclib,x)
@@ -24,8 +24,7 @@ PETSc.initialize(petsclib)
   ksp = PETSc.KSP(M; ksp_rtol=1e-8, pc_type="jacobi", ksp_monitor=false)
   #PETSc.settolerances!(ksp; rtol=1e-8)
 
-  # TO BE FIXED
-  ##@test PETSc.gettype(ksp) == "gmres" # default
+  @test PETSc.KSPGetType(ksp) == "gmres" # default
 
   # TO BE FIXED
   #=
@@ -87,6 +86,8 @@ PETSc.initialize(petsclib)
 
     finalize(fx)
     finalize(x)
+
+    return 0
   end
 
   J = zeros(2,2)
@@ -95,41 +96,52 @@ PETSc.initialize(petsclib)
   function updateJ!(J, snes, x)
     PETSc.unsafe_localarray(x; read = true, write = false)
 
-    #PETSc.withlocalarray!(cx; write = false) do x
-      J[1, 1] = 2x[1] + x[2]
-      J[1, 2] = x[1]
-      J[2, 1] = x[2]
-      J[2, 2] = x[1] + 2x[2]
-    #end
+    J[1, 1] = 2x[1] + x[2]
+    J[1, 2] = x[1]
+    J[2, 1] = x[2]
+    J[2, 2] = x[1] + 2x[2]
+
     PETSc.assemble!(J)
     Base.finalize(x)
     
-   
+    return 0  # needs to be zero!
   end
 
   S = PETSc.SNES(petsclib,MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
   r = PETSc.VecSeq(petsclib, 2)
-  #PETSc.setfunction!(S, F!, S,r)
   
+  # You can do this to set the callback functions.
+  # Please be aware that the functions above MUST return 0
+  PETSc.setfunction!(F!, S, r)
+  PETSc.setjacobian!(updateJ!, S, PJ, PJ)
+
+  # The alternative is to do this (tested below):
+  #PETSc.setfunction!(S, r) do cfx, snes, cx
+  #    F!(cfx, snes, cx)
+  #    return 0
+  #end
+
+  #PETSc.setjacobian!(S, PJ) do J, S, x
+  #  updateJ!(J, S, x)
+  #  return 0
+  #end
+
+  a = PETSc.VecSeqWithArray(petsclib,[2.0,3.0])
+  PETSc.solve!(a, S)
+  @test PETSc.solve!(a, S) ≈ [1.0,2.0] rtol=1e-4
+
+
+  # Test the alternative is to do this:
   PETSc.setfunction!(S, r) do cfx, snes, cx
       F!(cfx, snes, cx)
       return 0
   end
 
-
   PETSc.setjacobian!(S, PJ) do J, S, x
-    PETSc.withlocalarray!(x; write = false) do x
-        J[1, 1] = 2x[1] + x[2]
-        J[1, 2] = x[1]
-        J[2, 1] = x[2]
-        J[2, 2] = x[1] + 2x[2]
-    end
-    PETSc.assemble!(J)
+    updateJ!(J, S, x)
     return 0
   end
-
-  #PETSc.setjacobian!(S, updateJ!, PJ, PJ)
-
-  a = PETSc.VecSeqWithArray(petsclib,[2.0,3.0])
+  PETSc.solve!(a, S)
   @test PETSc.solve!(a, S) ≈ [1.0,2.0] rtol=1e-4
+
 end

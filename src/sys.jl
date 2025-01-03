@@ -7,7 +7,7 @@ const UnionPetscTypes = Union{
     #AbstractViewer,
     #AbstractSNES,
     #AbstractPC,
-    #AbstractDM,
+    AbstractDM,
     Options,
 }
 
@@ -27,7 +27,7 @@ function getcomm(
         AbstractMat{PetscLib},
         #AbstractKSP{PetscLib},
         #AbstractSNES{PetscLib},
-        #AbstractDM{PetscLib},
+        AbstractDM{PetscLib},
     },
 ) where {PetscLib}
     comm = MPI.Comm()

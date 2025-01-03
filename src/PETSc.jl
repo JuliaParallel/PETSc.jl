@@ -2,7 +2,7 @@
 
 module PETSc
 
-using MPI, LinearAlgebra, SparseArrays
+using MPI, LinearAlgebra, SparseArrays, OffsetArrays
 
 MPI.Initialized() || MPI.Init()
 
@@ -27,9 +27,11 @@ end
 include("init.jl")
 include("viewer.jl")
 include("options.jl")
-include("vec.jl")       # not yet autowrapped!
-include("mat.jl")
-include("matshell.jl")
+include("vec.jl")           # not yet wrapped!
+include("mat.jl")           # not yet wrapped!
+include("matshell.jl")      # not yet wrapped!
+include("dm.jl")            # partly wrapped, no tests yet
+include("dmda.jl")          # not yet wrapped!
 
 include("sys.jl")
 
@@ -38,8 +40,6 @@ include("sys.jl")
 ##include("ref.jl")      # can be removed (later)
 
 #=
-include("dm.jl")
-include("dmda.jl")
 include("dmstag.jl")
 include("ksp.jl")
 include("pc.jl")

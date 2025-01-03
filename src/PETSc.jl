@@ -27,15 +27,17 @@ end
 include("init.jl")
 include("viewer.jl")
 include("options.jl")
-include("vec.jl")
+include("vec.jl")       # not yet autowrapped!
+include("mat.jl")
+
 
 include("sys.jl")
 
 ##include("startup.jl")  # can be removed (later)
 ##include("lib.jl")      # can be removed (later)
 ##include("ref.jl")      # can be removed (later)
+
 #=
-include("mat.jl")
 include("matshell.jl")
 include("dm.jl")
 include("dmda.jl")

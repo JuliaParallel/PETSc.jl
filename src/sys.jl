@@ -1,7 +1,7 @@
 const CPetscObject = Ptr{Cvoid}
 
 const UnionPetscTypes = Union{
-    #AbstractVec,
+    AbstractVec,
     #AbstractMat,
     #AbstractKSP,
     #AbstractViewer,
@@ -20,14 +20,14 @@ function Base.unsafe_convert(::Type{Ptr{CPetscObject}}, obj::UnionPetscTypes)
     convert(Ptr{CPetscObject}, pointer_from_objref(obj))
 end
 
-#=
+
 function getcomm(
     obj::Union{
         AbstractVec{PetscLib},
-        AbstractMat{PetscLib},
-        AbstractKSP{PetscLib},
-        AbstractSNES{PetscLib},
-        AbstractDM{PetscLib},
+        #AbstractMat{PetscLib},
+        #AbstractKSP{PetscLib},
+        #AbstractSNES{PetscLib},
+        #AbstractDM{PetscLib},
     },
 ) where {PetscLib}
     comm = MPI.Comm()
@@ -53,7 +53,7 @@ function getcomm(
 
     return comm
 end
-=#
+
 
 #=
 #XXX Not sure why this doesn't work

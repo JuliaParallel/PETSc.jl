@@ -30,6 +30,8 @@ if do_mpi
 end
 
 include("options.jl")
+include("vec.jl")
+
 #=
 include("dmda.jl")
 include("old_test.jl")

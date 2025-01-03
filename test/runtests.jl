@@ -32,6 +32,7 @@ end
 include("options.jl")
 include("vec.jl")           # not yet autowrapped!
 include("mat.jl")           # not yet autowrapped!
+include("matshell.jl")      # not yet autowrapped!
 
 #=
 include("dmda.jl")

@@ -42,6 +42,9 @@ mutable struct KSP{PetscLib, PetscScalar} <: AbstractKSP{PetscLib, PetscScalar}
     end
 end
 
+include("ksp_wrapped.jl")   
+
+
 function setfromoptions!(ksp::AbstractKSP{PetscLib}) where {PetscLib}
     with(ksp.opts) do
         LibPETSc.KSPSetFromOptions(PetscLib, ksp)
@@ -72,20 +75,13 @@ function KSP(
 
     ksp = KSP{PetscLib}(getcomm(A), Options(PetscLib; options...))
 
-    setoperators!(ksp, A, P)
+    KSPSetOperators(ksp,A,P)
 
     setfromoptions!(ksp)
 
     return ksp
 end
-function setoperators!(
-    ksp::AbstractKSP{PetscLib},
-    A::AbstractMat{PetscLib},
-    P::AbstractMat{PetscLib} = A,
-) where {PetscLib}
-    LibPETSc.KSPSetOperators(PetscLib, ksp, A, P)
-    return ksp
-end
+
 
 """
     KSP([petsclib,] A::SparseMatrixCSC; options...)
@@ -362,32 +358,6 @@ function getsolution(ksp::AbstractKSP{PetscLib}) where PetscLib
     LibPETSc.KSPGetSolution(PetscLib, ksp, r_v)
     v = VecPtr(PetscLib, r_v[], false)
     return v
-end
-
-"""
-    KSPGetType(ksp)
-returns the type of the `ksp`
-"""
-function KSPGetType(ksp::AbstractKSP{PetscLib}) where PetscLib
-    t_r = Ref{PETSc.CKSPType}()
-    LibPETSc.KSPGetType(PetscLib, ksp, t_r)
-    return unsafe_string(t_r[])
-end
-
-"""
-    KSPGetIterationNumber(ksp)
-returns the iteration number of the `ksp`
-"""
-function KSPGetIterationNumber(ksp::AbstractKSP{PetscLib}) where PetscLib
-    r_its = Ref{inttype(PetscLib)}()
-    LibPETSc.KSPGetIterationNumber(PetscLib, ksp, r_its)
-  return r_its[]
-end
-
-function KSPGetResidualNorm(ksp::AbstractKSP{PetscLib}) where PetscLib
-    r_rnorm = Ref{scalartype(PetscLib)}()
-    LibPETSc.KSPGetResidualNorm(PetscLib, ksp, r_rnorm)
-    return r_rnorm[]
 end
 
 #=

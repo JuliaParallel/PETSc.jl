@@ -72,6 +72,46 @@ using SparseArrays: spdiagm
         PETSc.withlocalarray!(x, y) do x, y
             @test x ≈ y
         end
+        #x1 = PETSc.KSPGetSolution(ksp)
+        x1 = PETSc.getsolution(ksp)
+        PETSc.withlocalarray!(x, x1) do x, x1
+            @test x ≈ y
+        end
+
+        if petsclib== PETSc.petsclibs[1]
+            it = PETSc.KSPGetIterationNumber(ksp)
+            @test it == 34
+    
+            it1 = PETSc.KSPGetTotalIterations(ksp)
+            @test it1 == 68
+
+        end
+        
+        nrm = PETSc.KSPGetResidualNorm(ksp)
+        @test nrm < 1e-10
+
+        type = PETSc.KSPGetType(ksp)
+        @test type == "gmres" 
+        
+        if petsclib== PETSc.petsclibs[1]
+            rtol1, abstol1, dtol1, maxits1 = PETSc.KSPGetTolerances(ksp)
+            @test rtol1 == 1e-16
+            @test abstol1 ==  1.0e-50
+            @test dtol1 ==  10000.0f0
+            @test maxits1 == 10000
+
+            rtol,abstol,dtol,maxits = 1.0f-7, 1.0f-10, 1.0f-13, 1000;
+            PETSc.KSPSetTolerances(ksp,rtol,abstol,dtol,maxits)
+
+            rtol1, abstol1, dtol1, maxits1 = PETSc.KSPGetTolerances(ksp)
+            @test rtol1 == rtol
+            @test abstol1 == abstol
+            @test dtol1 == dtol
+            @test maxits1 == maxits
+        end
+
+
+
         PETSc.destroy(x)
 
         # PETSc.destroy(ksp)

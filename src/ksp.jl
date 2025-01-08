@@ -35,6 +35,7 @@ mutable struct KSP{PetscLib, PetscScalar} <: AbstractKSP{PetscLib, PetscScalar}
         )
         with(ksp.opts) do
             LibPETSc.KSPCreate(PetscLib, comm, ksp)
+            #ksp.ptr = KSPCreate(comm)
         end
 
         # If there is only one rank we can finalize the KSP with GC

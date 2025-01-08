@@ -5656,3 +5656,39 @@ function DMKSPGetComputeInitialGuess(dm::AbstractDM{PetscLib}) where {PetscLib}
 end
  
  
+"""
+	 UNTESTED !!!
+	 KSPSetPC(ksp::AbstractKSP{PetscLib},pc::AbstractPC{PetscLib})
+
+Sets the preconditioner to be used to calculate the
+application of the preconditioner on a vector.
+
+Collective
+
+Input Parameters:
+===
+- `ksp` - iterative context obtained from `KSPCreate()`
+- `pc`  - the preconditioner object (can be `NULL`)
+
+Level: developer
+
+Note:
+Use `KSPGetPC()` to retrieve the preconditioner context.
+
+-seealso: [](ch_ksp), `KSPGetPC()`, `KSP`
+
+# External Links
+$(_doc_external("DM/KSPSetPC"))
+"""
+function KSPSetPC(ksp::AbstractKSP{PetscLib},pc::AbstractPC{PetscLib}) where {PetscLib}
+
+	LibPETSc.KSPSetPC(
+		PetscLib,
+		ksp,
+		pc,
+	)
+
+	return nothing
+end
+ 
+ 

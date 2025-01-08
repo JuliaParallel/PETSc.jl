@@ -34,8 +34,8 @@ include("matshell.jl")      # not yet wrapped!
 include("dm.jl")            # partly wrapped, no tests yet
 include("dmda.jl")          # not yet wrapped!
 include("dmstag.jl")        # mostly wrapped and tested
-include("ksp.jl")           # small part is wrapped
-# include("pc.jl")          # to be fixed/wrapped
+include("pc.jl")            # to be fixed/wrapped
+include("ksp.jl")           # part is wrapped
 include("snes.jl")          # not yet wrapped!
 include("sys.jl")
 

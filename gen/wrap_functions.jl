@@ -438,6 +438,9 @@ function split_input_output(C_fct::AbstractString)
             inp[2] = "DMBoundaryType"
         elseif inp[2] == "KSP"
             inp[2] = "AbstractKSP{PetscLib}"
+        elseif inp[2] == "PC"
+            inp[2] = "AbstractPC{PetscLib}"
+
         elseif inp[2] == "Vector{char}"
             inp[2] = "Vector{Char}"
         elseif inp[2] == "int"
@@ -960,8 +963,8 @@ excluded                    =   ["DMInitializePackage","DMRegister","DMCoarsenHo
 
 # Wrap KSP routines
 headername                  =   "headers/petscksp.h"
-function_names              =   ["KSPGetDM"]
-function_names = :all
+function_names              =   ["KSPGetPC"]
+#function_names = :all
 
 path_within_petsc           =   "petsc/src/ksp/ksp/interface/"
 output_file                 =   "wrapped_functions.jl"
@@ -984,6 +987,7 @@ excluded                    =   ["KSPInitializePackage","KSPFinalizePackage","KS
                                 "KSPGuessView","KSPGuessDestroy","KSPGuessCreate","KSPGuessSetType","KSPGuessGetType",
                                 "KSPGuessSetTolerance","KSPGuessSetUp","KSPGuessUpdate","KSPGuessFormGuess"]
 
+excluded = []                                
 # functions to be checked check separately:
 #  KSPComputeOperatorsFn, 
 

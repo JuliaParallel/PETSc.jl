@@ -114,21 +114,15 @@ function KSP(dm::AbstractDM{PetscLib}; options...) where {PetscLib}
 
     ksp = KSP{PetscLib}(comm, Options(PetscLib; options...))
 
-    KSPSetDM!(ksp, dm)
+    with(options) do
+        KSPSetDM(ksp, dm)
+    end
 
     setfromoptions!(ksp)
 
     return ksp
 end
-function KSPSetDM!(
-    ksp::AbstractKSP{PetscLib},
-    dm::AbstractDM{PetscLib},
-) where {PetscLib}
-    with(ksp.opts) do
-        LibPETSc.KSPSetDM(PetscLib, ksp, dm)
-    end
-    return ksp
-end
+
 #
 # Wrapper for calls to setcomputerhs!
 mutable struct Fn_KSPComputeRHS{PetscLib, PetscInt} end
@@ -235,9 +229,10 @@ The returned `dmda` is owned by the `ksp`
 $(_doc_external("KSP/KSPGetDM"))
 """
 function getDMDA(ksp::AbstractKSP{PetscLib}) where PetscLib
-    t_dmda = Ref{CDM}()
-    LibPETSc.KSPGetDM(PetscLib, ksp, t_dmda)
-    dmda = DMDAPtr{PetscLib}(t_dmda[], getlib(PetscLib).age, false)
+    #t_dmda = Ref{CDM}()
+    #LibPETSc.KSPGetDM(PetscLib, ksp, t_dmda)
+    #dmda = DMDAPtr{PetscLib}(t_dmda[], getlib(PetscLib).age, false)
+    dmda = KSPGetDM(ksp)
     return dmda
 end
 
@@ -344,21 +339,6 @@ function Base.:\(
     return x
 end
 
-"""
-    getsolution(ksp)
-
-returns the solution vector stored in the `ksp`. This function does not make a
-new copy of the vector, it merely returns the vector stored in the `ksp`
-
-# External Links
-$(_doc_external("KSP/KSPGetSolution"))
-"""
-function getsolution(ksp::AbstractKSP{PetscLib}) where PetscLib
-    r_v = Ref{CVec}()
-    LibPETSc.KSPGetSolution(PetscLib, ksp, r_v)
-    v = VecPtr(PetscLib, r_v[], false)
-    return v
-end
 
 #=
 #

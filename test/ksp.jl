@@ -72,8 +72,8 @@ using SparseArrays: spdiagm
         PETSc.withlocalarray!(x, y) do x, y
             @test x ≈ y
         end
-        #x1 = PETSc.KSPGetSolution(ksp)
-        x1 = PETSc.getsolution(ksp)
+
+        x1 = PETSc.KSPGetSolution(ksp)
         PETSc.withlocalarray!(x, x1) do x, x1
             @test x ≈ y
         end

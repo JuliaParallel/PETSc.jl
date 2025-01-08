@@ -427,6 +427,7 @@ function split_input_output(C_fct::AbstractString)
             elseif dmtype=="DM"
                 inp[2] = "AbstractDM{PetscLib}"
             else
+                println("inp[2]=$(inp[2]), dmtype=$dmtype")
                 error("correct code")
             end
         elseif inp[2] == "Vec"
@@ -612,9 +613,7 @@ function print_petsc_function(input, output, fname, comment_block, type="DMStag"
             println(io, "\tr_$(outp[1]) = Ref{PETSc.CKSPType}()")
 
         elseif outp[2]=="Vec"
-            #println(io, "\t$(outp[1]) = CVec()")
-            println(io, "\tr_$(outp[1]) = Ref{CVec()}")
-            
+            println(io, "\tr_$(outp[1]) = Ref{CVec}()")
 
         elseif outp[2]=="IS"
             # to be checked
@@ -954,7 +953,7 @@ excluded                    =   ["DMInitializePackage","DMRegister","DMCoarsenHo
 
 # Wrap KSP
 headername                  =   "headers/petscksp.h"
-function_names              =   ["KSPGetSolution"]
+function_names              =   ["KSPGetDM"]
 #function_names = :all
 
 path_within_petsc           =   "petsc/src/ksp/ksp/interface/"
@@ -962,7 +961,7 @@ output_file                 =   "wrapped_functions.jl"
 
 options_functionnames       =   [""]
 addpetsclib_functionnames   =   ["DMCreate"]
-dmtype                      =   "KSP"
+dmtype                      =   "DM"
 
 # lots of excluded files; most because they call another function
 excluded                    =   []

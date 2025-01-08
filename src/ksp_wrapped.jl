@@ -352,4 +352,122 @@ function KSPSetOperators(ksp::AbstractKSP{PetscLib},Amat::AbstractMatrix,Pmat::A
 
 	return nothing
 end
+
+"""
+	v = KSPGetSolution(ksp::AbstractKSP{PetscLib})
+
+Gets the location of the solution for the
+linear system to be solved.
+
+Not Collective
+
+Input Parameter:
+===
+- `ksp` - iterative context obtained from `KSPCreate()`
+
+Output Parameter:
+===
+- `v` - solution vector
+
+Level: developer
+
+Note:
+If this is called during a `KSPSolve()` the vector's values may not represent the solution
+to the linear system.
+
+-seealso: [](ch_ksp), `KSPGetRhs()`, `KSPBuildSolution()`, `KSPSolve()`, `KSP`
+
+# External Links
+$(_doc_external("KSP/KSPGetSolution"))
+"""
+function KSPGetSolution(ksp::AbstractKSP{PetscLib}) where {PetscLib}
+	r_v = Ref{CVec}()
+
+	LibPETSc.KSPGetSolution(
+		PetscLib,
+		ksp,
+		r_v,
+	)
+
+
+	v = VecPtr(PetscLib, r_v[], false)
+	return v
+end
  
+
+"""
+	 KSPSetDM(ksp::AbstractKSP{PetscLib},dm::AbstractDM{PetscLib})
+
+Sets the `DM` that may be used by some preconditioners and that may be used to construct the linear system
+
+Logically Collective
+
+Input Parameters:
+===
+- `ksp` - the `KSP`
+- `dm`  - the `DM`, cannot be `NULL` to remove a previously set `DM`
+
+Level: intermediate
+
+Notes:
+If this is used then the `KSP` will attempt to use the `DM` to create the matrix and use the routine set with
+`DMKSPSetComputeOperators()`. Use `KSPSetDMActive`(ksp,`PETSC_FALSE`) to instead use the matrix you've provided with
+`KSPSetOperators()`.
+
+A `DM` can only be used for solving one problem at a time because information about the problem is stored on the `DM`,
+even when not using interfaces like `DMKSPSetComputeOperators()`.  Use `DMClone()` to get a distinct `DM` when solving
+different problems using the same function space.
+
+-seealso: [](ch_ksp), `KSP`, `DM`, `KSPGetDM()`, `KSPSetDMActive()`, `KSPSetComputeOperators()`, `KSPSetComputeRHS()`, `KSPSetComputeInitialGuess()`, `DMKSPSetComputeOperators()`, `DMKSPSetComputeRHS()`, `DMKSPSetComputeInitialGuess()`
+
+# External Links
+$(_doc_external("DM/KSPSetDM"))
+"""
+function KSPSetDM(ksp::AbstractKSP{PetscLib},dm::AbstractDM{PetscLib}) where {PetscLib}
+
+	LibPETSc.KSPSetDM(
+		PetscLib,
+		ksp,
+		dm,
+	)
+
+	return nothing
+end
+ 
+
+"""
+	 UNTESTED !!!
+	dm = KSPGetDM(ksp::AbstractKSP{PetscLib})
+
+Gets the `DM` that may be used by some preconditioners and that may be used to construct the linear system
+
+Not Collective
+
+Input Parameter:
+===
+- `ksp` - the `KSP`
+
+Output Parameter:
+===
+- `dm` - the `DM`
+
+Level: intermediate
+
+-seealso: [](ch_ksp), `KSP`, `DM`, `KSPSetDM()`, `KSPSetDMActive()`
+
+# External Links
+$(_doc_external("DM/KSPGetDM"))
+"""
+function KSPGetDM(ksp::AbstractKSP{PetscLib}) where {PetscLib}
+	petsclib = getlib(PetscLib)
+	opts = Options(petsclib)
+	dm = DM{PetscLib}(C_NULL, opts, petsclib.age)
+
+	LibPETSc.KSPGetDM(
+		PetscLib,
+		ksp,
+		dm,
+	)
+
+	return dm
+end

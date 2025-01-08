@@ -438,6 +438,10 @@ function split_input_output(C_fct::AbstractString)
             inp[2] = "DMBoundaryType"
         elseif inp[2] == "KSP"
             inp[2] = "AbstractKSP{PetscLib}"
+        elseif inp[2] == "Vector{char}"
+            inp[2] = "Vector{Char}"
+        elseif inp[2] == "int"
+            inp[2] = "Int"
         end
         input[id] = inp[1]*"::"*inp[2]
 
@@ -454,7 +458,7 @@ function split_input_output(C_fct::AbstractString)
 end
 
 
-function print_petsc_function(input, output, fname, comment_block, type="DMStag"; options=false, add_petsclib=false, io=nothing, output_file="wrapped_functions.jl")
+function print_petsc_function(input, output, fname, comment_block, type="DMStag"; options=false, add_petsclib=false, io=nothing, output_file="wrapped_functions.jl", have_tests=[""])
     # header of julia function
     if add_petsclib
         pushfirst!(input,"petsclib::PetscLib")
@@ -493,7 +497,10 @@ function print_petsc_function(input, output, fname, comment_block, type="DMStag"
         io = open(output_file, "w")
     end
     println(io, "\"\"\"");
-    println(io, "\t UNTESTED !!!");
+    if !any(contains.(have_tests, fname))
+        println(io, "\t UNTESTED !!!"); # we don't have a test yet
+    end
+
     if !isempty(output)
         println(io, "\t$return_doc = $function_header_main");
     else
@@ -833,7 +840,7 @@ end
 
 
 """
-    wrap_petsc_function(headername, function_names; options_functionnames=[""], excluded=[""], output="wrapped_functions.jl", dmtype="DMStag")
+    wrap_petsc_function(headername, function_names; options_functionnames=[""], excluded=[""], have_tests=[""], output="wrapped_functions.jl", dmtype="DMStag")
 
 Routine to create julia-like wrappers for the PETSc header file `headername`.
 We automatically retrieve 
@@ -850,7 +857,7 @@ Input
 - `dmtype` type of DM structure 
 
 """
-function wrap_petsc_function(headername, function_names, path_within_petsc; options_functionnames=[""], addpetsclib_functionnames=[""], excluded=[""], output_file="wrapped_functions.jl", dmtype="DMStag")
+function wrap_petsc_function(headername, function_names, path_within_petsc; options_functionnames=[""], addpetsclib_functionnames=[""], excluded=[""], have_tests=[""], output_file="wrapped_functions.jl", dmtype="DMStag")
                     
     if !isdir("petsc/")
         error("I don't find petsc in the current directory. please download the correct version with `download_petsc()`")
@@ -889,7 +896,7 @@ function wrap_petsc_function(headername, function_names, path_within_petsc; opti
 
             
                 @show options add_petsclib
-                io = print_petsc_function(input, output, fname, comment_block, options=options, add_petsclib=add_petsclib, io=io, output_file=output_file)
+                io = print_petsc_function(input, output, fname, comment_block, options=options, add_petsclib=add_petsclib, io=io, output_file=output_file, have_tests=have_tests)
             
             else
                 @info "deprecated function or cannot find it"
@@ -951,10 +958,10 @@ excluded                    =   ["DMInitializePackage","DMRegister","DMCoarsenHo
 ]
 =#
 
-# Wrap KSP
+# Wrap KSP routines
 headername                  =   "headers/petscksp.h"
 function_names              =   ["KSPGetDM"]
-#function_names = :all
+function_names = :all
 
 path_within_petsc           =   "petsc/src/ksp/ksp/interface/"
 output_file                 =   "wrapped_functions.jl"
@@ -963,10 +970,26 @@ options_functionnames       =   [""]
 addpetsclib_functionnames   =   ["DMCreate"]
 dmtype                      =   "DM"
 
-# lots of excluded files; most because they call another function
-excluded                    =   []
+# lots of excluded files; most because they call another function (which we fix manually), or because our wrapper cannot deal with it yet
+excluded                    =   ["KSPInitializePackage","KSPFinalizePackage","KSPSetMatSolveBatchSize","KSPGetMatSolveBatchSize","KSPRegister",
+                                "KSPMonitorRegister","KSPSetPreSolve","KSPSetPostSolve",
+                                "KSPMonitorSet","KSPSetOptionsPrefix","KSPConvergedReasonViewSet",
+                                "KSPSetConvergenceTest","KSPGetConvergenceTest","KSPGetAndClearConvergenceTest",
+                                "KSPGuessRegister",
+                                "KSPCheckSolve","KSPSetPCSide","KSPSetPC","KSPSetSupportedNorm","KSPComputeRitz",
+                                "KSPMonitorLGCreate","KSPMonitorResidualDrawLGCreate","KSPMonitorTrueResidualDrawLGCreate",
+                                "KSPMonitorErrorDrawLGCreate","KSPMonitorSolutionDrawLGCreate","KSPMonitorSingularValueCreate",
+                                "KSPMonitorDynamicToleranceDestroy","KSPMonitorDynamicToleranceCreate",
+                                "KSPMonitorDynamicToleranceSetCoefficient","KSPConvergedDefaultDestroy","KSPConvergedDefaultCreate",
+                                "KSPGuessView","KSPGuessDestroy","KSPGuessCreate","KSPGuessSetType","KSPGuessGetType",
+                                "KSPGuessSetTolerance","KSPGuessSetUp","KSPGuessUpdate","KSPGuessFormGuess"]
 
+# functions to be checked check separately:
+#  KSPComputeOperatorsFn, 
 
-wrap_petsc_function(headername, function_names, path_within_petsc; options_functionnames=options_functionnames, addpetsclib_functionnames=addpetsclib_functionnames, excluded=excluded, output_file=output_file)
+# functions that have tests already
+have_tests = ["KSPGetIterationNumber","KSPGetResidualNorm","KSPGetType","KSPSetTolerances","KSPGetTolerances","KSPGetTotalIterations","KSPSetOperators","KSPGetSolution","KSPSetDM"]
+
+wrap_petsc_function(headername, function_names, path_within_petsc; options_functionnames=options_functionnames, addpetsclib_functionnames=addpetsclib_functionnames, excluded=excluded, output_file=output_file, have_tests=have_tests)
 
 

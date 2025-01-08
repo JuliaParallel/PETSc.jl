@@ -49,8 +49,7 @@ function VecPtr(
     end
     return v
 end
-VecPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} =
-    VecPtr(getlib(PetscLib), x...)
+VecPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} = VecPtr(getlib(PetscLib), x...)
 
 """
     VecSeqWithArray(petsclib, v::Vector)

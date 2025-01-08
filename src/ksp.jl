@@ -1,5 +1,9 @@
 const CKSP = Ptr{Cvoid}
 const CKSPType = Cstring
+const KSPType = LibPETSc.KSPType
+
+PetscReal = LibPETSc.PETSC_REAL
+import PETSc.LibPETSc: PetscCount, PetscViewerFormat, KSPNormType, KSPGuess, KSPGuessType
 
 abstract type AbstractKSP{PetscLib, PetscScalar} <: Factorization{PetscScalar} end
 

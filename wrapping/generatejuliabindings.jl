@@ -175,14 +175,58 @@ function write_struct(struct_val::Py, io = stdout)
 
     println(io,"mutable struct $(struct_val.name)")
 
-    for (i,name) in enumerate(struct_val.records)
-        if  contains(name,"=")
-            println(io,"    $(name)")
+    for (i,s) in enumerate(struct_val.records)
+        str = extract_struct_entry(s)
+        if !isnothing(str)   
+            println(io,"    $str")
         else
-            println(io,"    $(name) = $(i-1)")
+            # stop when we find the firtst #ifdef
+            break
         end
     end
+    println(io,"    $(struct_val.name)() = new()")
     println(io,"end \n")
+    return nothing
+end
+
+function extract_struct_entry(s::Py)
+    str = String(s.type)
+    str = replace(str,"const "=>"")
+    type = split(str)[1]
+    name = split(str)[2]
+    if contains(type,"#if") || contains(type,"#else") || contains(type,"#endif")
+        return
+    end
+    if contains(name,"*")
+        type = "Ptr{$type}"
+        name = replace(name,"*"=>"")
+    end
+    type = replace_types(type)
+    name = replace(name,"function"=>"_function")
+
+    if contains(name,"[")
+        name = split(replace(name,"]"=>""),"[")
+        le   = name[2] # length of parameter
+        name = name[1] 
+        type = "NTuple{$le, $type}"
+    end
+    
+    str_out = "$name::$type"
+    return str_out
+end
+
+replace_types(type::AbstractString) = replace(type, "size_t"=>"Csize_t","ptrdiff_t"=>"Cptrdiff_t",
+                                            "short"=>"Cshort","int32_t"=>"Int32",
+                                            "float"=>"Cfloat",
+                                            "char"=>"Cchar", "void"=>"Cvoid","int"=>"Cint",
+                                            "double"=>"Cdouble");
+
+
+function write_typedefs(typedef_val::Py, io = stdout)
+    type = String(typedef_val.value)
+    type = replace_types(type)
+
+    println(io,"const $(typedef_val.name) = $type")
     return nothing
 end
 
@@ -210,7 +254,8 @@ function write_functions_to_file(filename::String, start_dir::String, classes::P
     open(joinpath(start_dir, filename), "w") do file
         # Call the write_enum function and pass the file as the io argument
         for f in classes[function_name].functions
-            @show String(f)
+            name = String(f)
+            @info name
             write_funcs(classes[function_name].functions[String(f)], file)
             #write_funcs(classes[function_name].functions[String(f)])
             
@@ -218,13 +263,37 @@ function write_functions_to_file(filename::String, start_dir::String, classes::P
     end
 end
 
+function write_structs_to_file(filename::String, start_dir::String, structs::Py)
+    open(joinpath(start_dir, filename), "w") do file
+        # Call the write_enum function and pass the file as the io argument
+        for struct_val in structs
+            write_struct(structs[String(struct_val)], file)
+        end
+    end
+end
+
+function write_typedefs_to_file(filename::String, start_dir::String, typedefs::Py)
+    open(joinpath(start_dir, filename), "w") do file
+        # Call the write_enum function and pass the file as the io argument
+        for typedef_val in typedefs
+            write_typedefs(typedefs[String(typedef_val)], file)
+        end
+    end
+end
 
 
 
 write_keys_to_file("enums_wrappers.jl",  start_dir,  enums, write_enum)  # Write enums to file
 write_skeys_to_file("senums_wrappers.jl",start_dir, senums)              # Write string enums to file
+write_structs_to_file("struct_wrappers.jl", start_dir, structs)          # Write all structs to file
+write_typedefs_to_file("typedefs_wrappers.jl", start_dir, typedefs)      # Write all typedefs to file
 write_functions_to_file("KSP_wrappers.jl",start_dir, classes, "KSP")     # Write KSP functions to file
+#write_functions_to_file("DM_wrappers.jl",start_dir, classes, "DM")      # Write KSP functions to file
+
+
+
 
 
 
 #funcs_val = classes["KSP"].functions["KSPBuildSolution"]
+

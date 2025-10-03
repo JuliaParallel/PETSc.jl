@@ -3,7 +3,7 @@
 # It uses the getAPI.py python code
 #
 # It replaces the Clang.jl infrastructure and re-uses the python binding tools.
-# Should be run from petsc/config/utils/
+# Should be run from petsc/config/utils/; please specify the petsc directory @ the beginning
 
 using PythonCall
 import Base: contains, String
@@ -196,25 +196,44 @@ function extract_struct_entry(s::Py)
     str = String(s.type)
     str = replace(str,"const "=>"")
     type = split(str)[1]
-    name = split(str)[2]
+    name = split(str)[2:end]
+    if contains(str,"[")
+        name = split(replace(str,"]"=>""),"[")
+        le   = name[2] # length of parameter
+        name = name[1] 
+        type = split(name)[1]
+        name = split(name)[2:end]
+        type = "NTuple{$le, $type}"
+    end
+    if length(name)==1
+        name = name[1]
+    end
+
     if contains(type,"#if") || contains(type,"#else") || contains(type,"#endif")
         return
     end
-    if contains(name,"*")
+    if any(contains.(name,"*"))
         type = "Ptr{$type}"
-        name = replace(name,"*"=>"")
+        name = replace.(name,"*"=>"","("=>"",")"=>"")
     end
     type = replace_types(type)
     name = replace(name,"function"=>"_function")
 
-    if contains(name,"[")
-        name = split(replace(name,"]"=>""),"[")
+    if any(contains.(name,"["))
+        name = split(replace.(name,"]"=>""),"[")
         le   = name[2] # length of parameter
         name = name[1] 
         type = "NTuple{$le, $type}"
     end
-    
-    str_out = "$name::$type"
+    str_out = ""
+    if isa(name, Vector)
+        name = replace.(name,","=>"")
+        for na in name
+            str_out *= "$na::$type \n    "
+        end
+    else
+        str_out *= "$name::$type"
+    end
     return str_out
 end
 
@@ -281,20 +300,22 @@ function write_typedefs_to_file(filename::String, start_dir::String, typedefs::P
         for typedef_val in typedefs
             write_typedefs(typedefs[String(typedef_val)], file)
         end
-    end
+    end 
 end
 
 
 
-write_keys_to_file("enums_wrappers.jl",  start_dir,  enums, write_enum)  # Write enums to file
+#write_keys_to_file("enums_wrappers.jl",  start_dir,  enums, write_enum)  # Write enums to file
 write_skeys_to_file("senums_wrappers.jl",start_dir, senums)              # Write string enums to file
 write_structs_to_file("struct_wrappers.jl", start_dir, structs)          # Write all structs to file
-write_typedefs_to_file("typedefs_wrappers.jl", start_dir, typedefs)      # Write all typedefs to file
-write_functions_to_file("KSP_wrappers.jl",start_dir, classes, "KSP")     # Write KSP functions to file
-#write_functions_to_file("DM_wrappers.jl",start_dir, classes, "DM")      # Write KSP functions to file
+#write_typedefs_to_file("typedefs_wrappers.jl", start_dir, typedefs)      # Write all typedefs to file
 
+# Write KSP functions to file (this should be expanded to all other classes)
+write_functions_to_file("KSP_wrappers.jl",start_dir, classes, "KSP")     
+    
 
+# open question:
+#   why are structs such as _p_PetscSF not included in the python structs above, even though 
+#   they are define in petscsftypes.h?  
 
-
-#funcs_val = classes["KSP"].functions["KSPBuildSolution"]
 

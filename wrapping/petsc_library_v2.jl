@@ -38,6 +38,23 @@ const MPIU_INT32 = MPI.UINT32_T
 #const SNESType = Cstring
 #const DM = Ptr{Cvoid}
 
+
+const PETSC_DECIDE = -1
+const PETSC_DETERMINE = PETSC_DECIDE
+
+PetscInt = Int64
+PetscInt64 = Int64
+PetscInt32 = Int32
+PetscScalar = Float64
+PetscReal = Float64
+#PetscBool = Bool
+
+
+# Stuff that I don't really wanty to define by hand, but seem to not be part of the petsc python interface?
+mutable struct _p_PetscSF end
+const PetscSF = Ptr{_p_PetscSF}
+
+
 #
 # END OF PROLOGUE
 #
@@ -48,3 +65,5 @@ include("senums_wrappers.jl")
 include("typedefs_wrappers.jl")
 include("struct_wrappers.jl")
 include("KSP_wrappers.jl")
+
+

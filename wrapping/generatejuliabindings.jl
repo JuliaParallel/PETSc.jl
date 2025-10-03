@@ -16,18 +16,22 @@ isopaque(a::Py) = pyconvert(Bool,a.opaque)
 petsc_dir = "/Users/kausb/Downloads/petsc"
 start_dir = pwd()
 
-# Set the Python path to include the directory of getAPI.py
-cd(petsc_dir*"/config/utils")
-PythonCall.pyimport("sys").path.append(".")
+if  !@isdefined classes
+    # for some reason, if we run this twice it returns empty classes
 
-# Import the getAPI module
-getAPI = pyimport("getAPI")
+    # Set the Python path to include the directory of getAPI.py
+    cd(petsc_dir*"/config/utils")
+    PythonCall.pyimport("sys").path.append(".")
 
-# Run the getAPI python function
-curdir = pwd()
-cd("../../")
-classes, enums, senums, typedefs, structs, funcs, files, mansecs, submansecs = getAPI.getAPI()
-cd(start_dir)
+    # Import the getAPI module
+    getAPI = pyimport("getAPI")
+
+    # Run the getAPI python function
+    curdir = pwd()
+    cd("../../")
+    classes, enums, senums, typedefs, structs, funcs, files, mansecs, submansecs = getAPI.getAPI()
+    cd(start_dir)
+end
 
 
 """
@@ -152,13 +156,16 @@ function write_funcs(funcs_val::Py, io = stdout)
     julia_fct_str = julia_function_header(funcs_val)
     ccall_type, ccall_name = julia_ccall_header(funcs_val)
     
-    println(io,"@for_petsc $(funcs_val.name)(::\$UnionPetscLib, $julia_fct_str)");
+    println(io,"\"\"\"");
+    println(io,"\t$(funcs_val.name)($julia_fct_str) ");
+    println(io,"\"\"\"");
+    println(io,"@for_petsc function $(funcs_val.name)(::\$UnionPetscLib, $julia_fct_str)");
     println(io,"    @chk ccall(");
-    println(io,"              (:$(name), \$petsc_library),");
-    println(io,"              PetscErrorCode,");
-    println(io,"              $ccall_type,");
-    println(io,"              $ccall_name,");
-    println(io,"    )");
+    println(io,"               (:$(name), \$petsc_library),");
+    println(io,"               PetscErrorCode,");
+    println(io,"               $ccall_type,");
+    println(io,"               $ccall_name,");
+    println(io,"              )");
     println(io,"end \n");
 
     return nothing
@@ -199,12 +206,24 @@ function write_skeys_to_file(filename::String, start_dir::String, object::Py)
     end
 end
 
+function write_functions_to_file(filename::String, start_dir::String, classes::Py, function_name::String)
+    open(joinpath(start_dir, filename), "w") do file
+        # Call the write_enum function and pass the file as the io argument
+        for f in classes[function_name].functions
+            @show String(f)
+            write_funcs(classes[function_name].functions[String(f)], file)
+            #write_funcs(classes[function_name].functions[String(f)])
+            
+        end
+    end
+end
 
 
 
 
 write_keys_to_file("enums_wrappers.jl",  start_dir,  enums, write_enum)  # Write enums to file
 write_skeys_to_file("senums_wrappers.jl",start_dir, senums)              # Write string enums to file
+write_functions_to_file("KSP_wrappers.jl",start_dir, classes, "KSP")     # Write KSP functions to file
 
 
 

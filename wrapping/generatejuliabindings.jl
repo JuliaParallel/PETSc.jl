@@ -27,7 +27,8 @@ getAPI = pyimport("getAPI")
 curdir = pwd()
 cd("../../")
 classes, enums, senums, typedefs, structs, funcs, files, mansecs, submansecs = getAPI.getAPI()
-cd(curdir)
+cd(start_dir)
+
 
 """
 Retrieves a record from a python struct and reshapes it in a julia way
@@ -180,7 +181,7 @@ end
 
 
 function write_keys_to_file(filename::String, start_dir::String, object::Py, fn::Function)
-    open(start_dir*filename, "w") do file
+    open(joinpath(start_dir, filename), "w") do file
         # Call the write_enum function and pass the file as the io argument
         for val in object.keys()
             fn(object[val], file)
@@ -189,7 +190,7 @@ function write_keys_to_file(filename::String, start_dir::String, object::Py, fn:
 end
 
 function write_skeys_to_file(filename::String, start_dir::String, object::Py)
-    open(start_dir*filename, "w") do io
+    open(joinpath(start_dir, filename), "w") do io
         # Call the write_enum function and pass the file as the io argument
         println(io, "# not quite sure yet how to deal with this")
         for val in object.keys()
@@ -202,9 +203,9 @@ end
 
 
 
-#write_keys_to_file("enums_wrappers.jl",  start_dir,  enums, write_enum)  # Write enums to file
-#write_skeys_to_file("senums_wrappers.jl",start_dir, senums)              # Write string enums to file
+write_keys_to_file("enums_wrappers.jl",  start_dir,  enums, write_enum)  # Write enums to file
+write_skeys_to_file("senums_wrappers.jl",start_dir, senums)              # Write string enums to file
 
 
 
-funcs_val = classes["KSP"].functions["KSPBuildSolution"]
+#funcs_val = classes["KSP"].functions["KSPBuildSolution"]

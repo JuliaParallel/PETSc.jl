@@ -133,6 +133,9 @@ function write_enum(enum_val::Py, io = stdout)
 
     println(io,"@enum $(enum_val.name) begin")
     for (i,name) in enumerate(enum_val.values)
+        if contains(String(name),"DEPRECATED")
+            break
+        end
         if  contains(name,"=")
             println(io,"    $(name)")
         else
@@ -289,8 +292,6 @@ write_structs_to_file("struct_wrappers.jl", start_dir, structs)          # Write
 write_typedefs_to_file("typedefs_wrappers.jl", start_dir, typedefs)      # Write all typedefs to file
 write_functions_to_file("KSP_wrappers.jl",start_dir, classes, "KSP")     # Write KSP functions to file
 #write_functions_to_file("DM_wrappers.jl",start_dir, classes, "DM")      # Write KSP functions to file
-
-
 
 
 

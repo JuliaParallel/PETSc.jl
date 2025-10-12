@@ -29,8 +29,11 @@ else
 end
 
 const petsc_library_file =
-    get(ENV, "JULIA_PETSC_LIBRARY_PATH", "../lib/petsc_library.jl")
+    #get(ENV, "JULIA_PETSC_LIBRARY_PATH", "../lib/petsc_library.jl")
+    get(ENV, "JULIA_PETSC_LIBRARY_PATH", "../wrapping/petsc_library_v2.jl")    # if all is well, we should be able to use this
 
+
+#=    
 function DataTypeFromString(libhdl::Ptr{Cvoid}, name::AbstractString)
     PetscDataTypeFromString_ptr = dlsym(libhdl, :PetscDataTypeFromString)
     dtype_ref = Ref{PetscDataType}()
@@ -59,3 +62,4 @@ function PetscDataTypeGetSize(libhdl::Ptr{Cvoid}, dtype::PetscDataType)
     )
     return datasize_ref[]
 end
+=#

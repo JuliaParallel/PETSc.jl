@@ -5,7 +5,7 @@ using MPI
 
 export PetscLibType,
     petsclibs,
-    PetscBool,
+    #PetscBool,
     PETSC_TRUE,
     PETSC_FALSE,
     UnionPetscLibType,

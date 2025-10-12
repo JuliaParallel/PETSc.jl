@@ -90,8 +90,20 @@ function ccall_arg_string(a::f_args)
         type_str = "Ptr{$(type_str)}"
     end
     name_str = a.name
+    type_str = replace_function_string(type_str)
+    name_str = replace_function_string(name_str)
+
+
     return type_str, name_str
 end
+
+function replace_function_string(type_str::String)
+    type_str = replace(type_str, "void"=>"Cvoid",
+                                 "char"=>"Cchar",
+                                 "function"=>"fnc")
+    return type_str
+end
+
 ccall_arg_string(a::Py) = ccall_arg_string(func_args(a))
 
 # returns a string with all variables of the function, to be used to create a julia header
@@ -108,19 +120,25 @@ end
 
 # returns 2 strings needed for the ccall routine
 function julia_ccall_header(a::Py)
+    n_arg = length(a.arguments)
     type_str, name_str = "(",""
     for (i,arg) in enumerate(a.arguments)
         if i>1
             type_str *= ", "
             name_str *= ", "
         end
+
         type, name = ccall_arg_string(arg)
 
         type_str *= type
         name_str *= name    
+        if n_arg==1
+            type_str *= ","
+        end
+
     end
     type_str *= ")"
-    return type_str, name_str
+    return type_str, name_str, n_arg
 end
 
 
@@ -157,17 +175,22 @@ function write_funcs(funcs_val::Py, io = stdout)
     # print function
     name          = String(funcs_val.name)
     julia_fct_str = julia_function_header(funcs_val)
-    ccall_type, ccall_name = julia_ccall_header(funcs_val)
+    julia_fct_str = replace_function_string(julia_fct_str)
+    ccall_type, ccall_name, n_arg = julia_ccall_header(funcs_val)
     
     println(io,"\"\"\"");
     println(io,"\t$(funcs_val.name)($julia_fct_str) ");
     println(io,"\"\"\"");
+    println(io,"function $(funcs_val.name)($julia_fct_str) end");
+    println(io,"");
     println(io,"@for_petsc function $(funcs_val.name)(::\$UnionPetscLib, $julia_fct_str)");
     println(io,"    @chk ccall(");
     println(io,"               (:$(name), \$petsc_library),");
     println(io,"               PetscErrorCode,");
     println(io,"               $ccall_type,");
+    if n_arg>0
     println(io,"               $ccall_name,");
+    end
     println(io,"              )");
     println(io,"end \n");
 
@@ -278,7 +301,7 @@ function write_functions_to_file(filename::String, start_dir::String, classes::P
         for f in classes[function_name].functions
             name = String(f)
             @info name
-            write_funcs(classes[function_name].functions[String(f)], file)
+            write_funcs(classes[function_name].functions[name], file)
             #write_funcs(classes[function_name].functions[String(f)])
             
         end
@@ -306,8 +329,8 @@ end
 
 
 #write_keys_to_file("enums_wrappers.jl",  start_dir,  enums, write_enum)  # Write enums to file
-write_skeys_to_file("senums_wrappers.jl",start_dir, senums)              # Write string enums to file
-write_structs_to_file("struct_wrappers.jl", start_dir, structs)          # Write all structs to file
+#write_skeys_to_file("senums_wrappers.jl",start_dir, senums)              # Write string enums to file
+#write_structs_to_file("struct_wrappers.jl", start_dir, structs)          # Write all structs to file
 #write_typedefs_to_file("typedefs_wrappers.jl", start_dir, typedefs)      # Write all typedefs to file
 
 # Write KSP functions to file (this should be expanded to all other classes)
@@ -319,3 +342,5 @@ write_functions_to_file("KSP_wrappers.jl",start_dir, classes, "KSP")
 #   they are define in petscsftypes.h?  
 
 
+# if all is well, we should be able to say:
+#

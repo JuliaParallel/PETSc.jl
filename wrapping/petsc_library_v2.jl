@@ -54,12 +54,46 @@ PetscReal = Float64
 mutable struct _p_PetscSF end
 const PetscSF = Ptr{_p_PetscSF}
 
+const PETSCSTACKSIZE = 64
+
+const void = Cvoid
+const char = Cchar
+
+mutable struct PetscDraw end
+mutable struct DMLabel end
+mutable struct DM end
+mutable struct Vec end
+mutable struct Mat end
+mutable struct KSP end
+mutable struct PetscViewer end
+mutable struct TSMonitorLGCtx end
+mutable struct PetscCtxDestroyFn end
+
+# stuff I need to define to get PETSc.jl to load with "using". We need to find a real solution
+mutable struct KSPConvergedReasonViewFn end
+mutable struct PC end
+mutable struct KSPMonitorFn end
+mutable struct KSPConvergenceTestFn end
+mutable struct KSPComputeOperatorsFn end
+mutable struct KSPComputeRHSFn end
+mutable struct KSPComputeInitialGuessFn end
+mutable struct PeCtx end
+mutable struct KSPPSolveFn end
+
+const PetscObject = Ptr{Cvoid}
+const external = Ptr{Cvoid}
+const KSPMonitorRegisterFn = Ptr{Cvoid}
+const KSPMonitorRegisterCreateFn = Ptr{Cvoid}
+const KSPMonitorRegisterDestroyFn = Ptr{Cvoid}
+const KSPGuess = Ptr{Cvoid}
+const KSPFlexibleModifyPCFn = Ptr{Cvoid}
 
 #
 # END OF PROLOGUE
 #
 
 # load all generated files
+#include("../src/LibPETSc_lib.jl")
 include("enums_wrappers.jl")
 include("senums_wrappers.jl")
 include("typedefs_wrappers.jl")

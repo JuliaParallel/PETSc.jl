@@ -100,6 +100,8 @@ end
 function replace_function_string(type_str::String)
     type_str = replace(type_str, "void"=>"Cvoid",
                                  "char"=>"Cchar",
+                                 "int"=>"Cint",
+                                 "size_t"=>"Csize_t",
                                  "function"=>"fnc")
     return type_str
 end
@@ -295,47 +297,113 @@ function write_skeys_to_file(filename::String, start_dir::String, object::Py)
     end
 end
 
-function write_functions_to_file(filename::String, start_dir::String, classes::Py, function_name::String)
+function write_functions_from_classes_to_file(filename::String, start_dir::String, classes::Py, function_name::String; exclude=String[])
     open(joinpath(start_dir, filename), "w") do file
         # Call the write_enum function and pass the file as the io argument
         for f in classes[function_name].functions
             name = String(f)
-            @info name
-            write_funcs(classes[function_name].functions[name], file)
-            #write_funcs(classes[function_name].functions[String(f)])
-            
+            if !any(exclude .== name)
+                @info name
+                write_funcs(classes[function_name].functions[name], file)
+                #write_funcs(classes[function_name].functions[String(f)])
+
+            end
         end
     end
 end
 
-function write_structs_to_file(filename::String, start_dir::String, structs::Py)
+function write_functions_to_file(filename::String, start_dir::String, funcs::Py; exclude=String[])
+    open(joinpath(start_dir, filename), "w") do file
+        # Call the write_enum function and pass the file as the io argument
+        for f in funcs
+            name = String(f)
+            if !any(exclude .== name)
+                @info name
+                write_funcs(funcs[name], file)
+                #write_funcs(classes[function_name].functions[String(f)])
+            end
+        end
+    end
+end
+
+function write_structs_to_file(filename::String, start_dir::String, structs::Py; exclude=String[])
     open(joinpath(start_dir, filename), "w") do file
         # Call the write_enum function and pass the file as the io argument
         for struct_val in structs
-            write_struct(structs[String(struct_val)], file)
+            if !any(exclude .== String(struct_val))
+                write_struct(structs[String(struct_val)], file)
+            end
         end
     end
 end
 
-function write_typedefs_to_file(filename::String, start_dir::String, typedefs::Py)
+function write_typedefs_to_file(filename::String, start_dir::String, typedefs::Py; exclude=String[])
     open(joinpath(start_dir, filename), "w") do file
         # Call the write_enum function and pass the file as the io argument
         for typedef_val in typedefs
-            write_typedefs(typedefs[String(typedef_val)], file)
+            if !any(exclude .== String(typedef_val))
+                write_typedefs(typedefs[String(typedef_val)], file)
+            end
         end
     end 
 end
 
 
+"""
+Helper function to simply finding a certrain PETSc function
+"""
+function find_functions(classes::Py, funcs::Py, function_name::String)
+
+    found = false
+    for class in classes.keys()
+        # retrieve all functions
+        funcs_list = String[]
+        for f in classes[class].functions
+            name = String(f)
+            push!(funcs_list, name)
+        end
+        if any(funcs_list .== function_name)
+            println("Found $function_name in class $(String(class))")
+            found = true
+        end
+    end
+    if !found
+        println("Did not find $function_name in any class")
+    end
+
+    if !found
+        funcs_list = String[]
+        for f in funcs
+            name = String(f)
+            push!(funcs_list, name)
+        end
+         if any(funcs_list .== function_name)
+            println("Found $function_name in funcs")
+            found = true
+        end
+    end
+
+
+    return nothing
+end
+
+
+
 
 #write_keys_to_file("enums_wrappers.jl",  start_dir,  enums, write_enum)  # Write enums to file
 #write_skeys_to_file("senums_wrappers.jl",start_dir, senums)              # Write string enums to file
-#write_structs_to_file("struct_wrappers.jl", start_dir, structs)          # Write all structs to file
+
+exclude = ["LandauCtx"]
+write_structs_to_file("struct_wrappers.jl", start_dir, structs,exclude=exclude)          # Write all structs to file
 #write_typedefs_to_file("typedefs_wrappers.jl", start_dir, typedefs)      # Write all typedefs to file
 
 # Write KSP functions to file (this should be expanded to all other classes)
-write_functions_to_file("KSP_wrappers.jl",start_dir, classes, "KSP")     
-    
+write_functions_from_classes_to_file("KSP_wrappers.jl",start_dir, classes, "KSP")     
+
+exclude=["PetscHTTPSRequest","LandauKokkosJacobian","LandauKokkosDestroyMatMaps","LandauKokkosStaticDataSet","LandauKokkosStaticDataClear"]
+write_functions_to_file("Sys_wrappers.jl", start_dir, funcs, exclude=exclude)
+
+
 
 # open question:
 #   why are structs such as _p_PetscSF not included in the python structs above, even though 

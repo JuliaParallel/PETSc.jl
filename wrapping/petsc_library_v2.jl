@@ -25,18 +25,19 @@ const MPIU_INT64 = MPI.UINT64_T
 const MPIU_INT32 = MPI.UINT32_T
 
 # We know these will be Cvoid, so just set them to be that
-#const PetscOptions = Ptr{Cvoid}
-#const PetscViewer = Ptr{Cvoid}
-#const PetscObject = Ptr{Cvoid}
-#const Vec = Ptr{Cvoid}
+const PetscOptions = Ptr{Cvoid}
+const PetscViewer = Ptr{Cvoid}
+const PetscObject = Ptr{Cvoid}
+const Vec = Ptr{Cvoid}
 #const VecType = Cstring
-#const Mat = Ptr{Cvoid}
+const Mat = Ptr{Cvoid}
 #const MatType = Cstring
-#const KSP = Ptr{Cvoid}
+const KSP = Ptr{Cvoid}
 #const KSPType = Cstring
-#const SNES = Ptr{Cvoid}
+const SNES = Ptr{Cvoid}
 #const SNESType = Cstring
-#const DM = Ptr{Cvoid}
+const DM = Ptr{Cvoid}
+const PetscDLHandle = Ptr{Cvoid}
 
 
 const PETSC_DECIDE = -1
@@ -61,11 +62,6 @@ const char = Cchar
 
 mutable struct PetscDraw end
 mutable struct DMLabel end
-mutable struct DM end
-mutable struct Vec end
-mutable struct Mat end
-mutable struct KSP end
-mutable struct PetscViewer end
 mutable struct TSMonitorLGCtx end
 mutable struct PetscCtxDestroyFn end
 
@@ -87,6 +83,41 @@ const KSPMonitorRegisterCreateFn = Ptr{Cvoid}
 const KSPMonitorRegisterDestroyFn = Ptr{Cvoid}
 const KSPGuess = Ptr{Cvoid}
 const KSPFlexibleModifyPCFn = Ptr{Cvoid}
+const PetscVoidFn = Cvoid
+const PetscProbFn = Ptr{Cvoid}
+
+const PetscBT = Ptr{Cchar}
+
+# required in Sys_wrappers
+mutable struct _n_PetscLogRegistry end
+const PetscLogRegistry = Ptr{_n_PetscLogRegistry}
+
+mutable struct _n_PetscIntStack end
+const PetscIntStack = Ptr{_n_PetscIntStack}
+const PetscLogClass = Cint
+
+mutable struct _p_PetscLogHandler end
+const PetscLogHandler = Ptr{_p_PetscLogHandler}
+const PetscLogHandlerType = Ptr{Cchar}
+mutable struct _n_PetscLogState
+    registry::PetscLogRegistry
+    active::PetscBT
+    stage_stack::PetscIntStack
+    current_stage::Cint
+    bt_num_stages::Cint
+    bt_num_events::Cint
+    refct::Cint
+    _n_PetscLogState() = new()
+end
+
+const PetscLogState = Ptr{_n_PetscLogState}
+
+mutable struct _n_PetscLayout end
+const PetscLayout = Ptr{_n_PetscLayout}
+
+mutable struct _p_PetscQuadrature end
+const PetscQuadrature = Ptr{_p_PetscQuadrature}
+
 
 #
 # END OF PROLOGUE
@@ -99,5 +130,6 @@ include("senums_wrappers.jl")
 include("typedefs_wrappers.jl")
 include("struct_wrappers.jl")
 include("KSP_wrappers.jl")
+include("Sys_wrappers.jl")
 
 

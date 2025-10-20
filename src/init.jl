@@ -6,15 +6,11 @@ Check if `petsclib` is initialized
 # External Links
 $(_doc_external("Sys/PetscInitialized"))
 """
-function initialized(petsclib)
-    r_flag = Ref{LibPETSc.PetscBool}()
-    LibPETSc.PetscInitialized(petsclib, r_flag)
-    return r_flag[] == LibPETSc.PETSC_TRUE
-end
+initialized(petsclib) = LibPETSc.PetscInitialized(petsclib)
 
 """
    initialize([petsclib])
-
+?
 Initialized the `petsclib`, if no `petsclib` is given then all `PETSc.petsclibs`
 will be initialized.
 
@@ -77,11 +73,7 @@ Check if `petsclib` is finalized
 # External Links
 $(_doc_external("Sys/PetscFinalized"))
 """
-function finalized(petsclib)
-    r_flag = Ref{LibPETSc.PetscBool}()
-    LibPETSc.PetscFinalized(petsclib, r_flag)
-    return r_flag[] == LibPETSc.PETSC_TRUE
-end
+finalized(petsclib) = LibPETSc.PetscFinalized(petsclib)
 
 
 """

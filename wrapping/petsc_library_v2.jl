@@ -3,7 +3,7 @@
 #
 
 using MPI
-const MPI_Comm = MPI.MPI_Comm
+const MPI_Comm = MPI.Comm
 const MPI_Datatype = MPI.MPI_Datatype
 const MPI_File = MPI.MPI_File
 const MPI_Aint = MPI.MPI_Aint
@@ -118,6 +118,64 @@ const PetscLayout = Ptr{_n_PetscLayout}
 mutable struct _p_PetscQuadrature end
 const PetscQuadrature = Ptr{_p_PetscQuadrature}
 
+mutable struct _p_PetscRandom end
+const PetscRandom = Ptr{_p_PetscRandom}
+
+@enum KSPConvergedReason::Int32 begin
+    KSP_CONVERGED_RTOL_NORMAL = 1
+    KSP_CONVERGED_ATOL_NORMAL = 9
+    KSP_CONVERGED_RTOL = 2
+    KSP_CONVERGED_ATOL = 3
+    KSP_CONVERGED_ITS = 4
+    KSP_CONVERGED_NEG_CURVE = 5
+    # KSP_CONVERGED_CG_NEG_CURVE = 5
+    KSP_CONVERGED_CG_CONSTRAINED = 6
+    # KSP_CONVERGED_STEP_LENGTH = 6
+    KSP_CONVERGED_HAPPY_BREAKDOWN = 7
+    KSP_DIVERGED_NULL = -2
+    KSP_DIVERGED_ITS = -3
+    KSP_DIVERGED_DTOL = -4
+    KSP_DIVERGED_BREAKDOWN = -5
+    KSP_DIVERGED_BREAKDOWN_BICG = -6
+    KSP_DIVERGED_NONSYMMETRIC = -7
+    KSP_DIVERGED_INDEFINITE_PC = -8
+    KSP_DIVERGED_NANORINF = -9
+    KSP_DIVERGED_INDEFINITE_MAT = -10
+    KSP_DIVERGED_PC_FAILED = -11
+    # KSP_DIVERGED_PCSETUP_FAILED = -11
+    KSP_CONVERGED_ITERATING = 0
+end
+
+@enum PetscMemType::UInt32 begin
+    PETSC_MEMTYPE_HOST = 0
+    PETSC_MEMTYPE_DEVICE = 1
+    # PETSC_MEMTYPE_CUDA = 1
+    PETSC_MEMTYPE_NVSHMEM = 17
+    PETSC_MEMTYPE_HIP = 3
+    PETSC_MEMTYPE_SYCL = 5
+end
+
+
+# needed for Vec ---
+mutable struct _p_IS end
+const IS = Ptr{_p_IS}
+
+mutable struct _n_ISColoring end
+const ISColoring = Ptr{_n_ISColoring}
+
+mutable struct _p_ISLocalToGlobalMapping end
+const ISLocalToGlobalMapping = Ptr{_p_ISLocalToGlobalMapping}
+
+const ISLocalToGlobalMappingType = Ptr{Cchar}
+
+mutable struct _p_PetscSection end
+const PetscSection = Ptr{_p_PetscSection}
+
+mutable struct _p_PetscSectionSym end
+const PetscSectionSym = Ptr{_p_PetscSectionSym}
+const PetscSectionSymType = Ptr{Cchar}
+
+
 
 #
 # END OF PROLOGUE
@@ -129,7 +187,9 @@ include("enums_wrappers.jl")
 include("senums_wrappers.jl")
 include("typedefs_wrappers.jl")
 include("struct_wrappers.jl")
-include("KSP_wrappers.jl")
-include("Sys_wrappers.jl")
 
+include("Sys_wrappers.jl")
+include("KSP_wrappers.jl")
+include("Vec_wrappers.jl")
+include("Vecs_wrappers.jl")
 

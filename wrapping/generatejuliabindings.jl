@@ -63,86 +63,148 @@ function struct_record(b::Py)
     return args.*"::$type"      # add type to each argument
 end
 
-# contains a function argument
-struct f_args
-    name::String
-    typename::String
-    array::Bool
-    cons::Bool
-    optional::Bool
-    stars::Int64
+"""
+    mutable struct f_args
+Contains PETSc function arguments, which are used 
+"""
+mutable struct f_args
+    name::String            # variable name
+    name_ccall::String      # name in ccall array (sometimes different from output name)
+    typename::String        # type
+    array::Bool             # is it an array?
+    _const::Bool            # is it a const?
+    optional::Bool          # optional?
+    stars::Int64            # how many stars?
     stringlen::Bool
+    output::Bool             # is this an output argument?
+    init_arg::String
+    extract_arg::String
+    ccall_str :: String
 end
 
-# returns 
-func_args(a::Py) = f_args(String(a.name), String(a.typename), Bool(a.array), Bool(a.const),Bool(a.optional), pyconvert(Int64, a.stars), Bool(a.stringlen))
+replace_types(type::AbstractString) = replace(type, 
+                                            "size_t"=>"Csize_t",
+                                            "ptrdiff_t"=>"Cptrdiff_t",
+                                            "short"=>"Cshort",
+                                            "int32_t"=>"Int32",
+                                            "float"=>"Cfloat",
+                                            "bool"=>"Bool",
+                                            "char"=>"Cchar", 
+                                            "void"=>"Cvoid",
+                                            "int"=>"Cint",
+                                            "FILE"=>"Libc.FILE",
+                                            "double"=>"Cdouble");
 
-"""
-    func_arg_string(a::f_args)
-returns a string representation of the function argument, to be used in the julia type signature
-"""
-func_arg_string(a::f_args) = "$(a.name)::$(a.typename)"
-func_arg_string(a::Py) = func_arg_string(func_args(a))
+replace_names(type_str::String)     =  replace(type_str, 
+                                            "function"=>"fnc");
 
-function ccall_arg_string(a::f_args) 
-    type_str = a.typename
-    if a.stars==1
-        type_str = "Ptr{$(type_str)}"
-    end
-    name_str = a.name
-    type_str = replace_function_string(type_str)
-    name_str = replace_function_string(name_str)
-
-
-    return type_str, name_str
-end
-
-function replace_function_string(type_str::String)
-    type_str = replace(type_str, "void"=>"Cvoid",
-                                 "char"=>"Cchar",
-                                 "int"=>"Cint",
-                                 "size_t"=>"Csize_t",
-                                 "function"=>"fnc")
-    return type_str
-end
-
-ccall_arg_string(a::Py) = ccall_arg_string(func_args(a))
-
-# returns a string with all variables of the function, to be used to create a julia header
-function julia_function_header(a::Py)
-    str = ""
-    for (i,arg) in enumerate(a.arguments)
-        if i>1
-            str *= ", "
+function init_extract_parameters(typename::String, name::String, name_ccall::String, isarray::Bool) 
+    if typename in ["PetscInt","PetscScalar","PetscReal","PETScBool"]
+        if !isarray
+            name_ccall  = "$(name)_"
+            init_arg    = "$name_ccall = Ref{$typename}()"  
+            extract_arg = "$name = $(name_ccall)[]"  
+        else
+            name_ccall  = "$(name)_"
+            init_arg    = "$name_ccall = Ref{Ptr{$typename}}()"  
+            # Note: we make the implicit assumption here that the Vec is always called 'x'
+            extract_arg = "$name = unsafe_wrap(Array, $name_ccall[], VecGetLocalSize(petsclib, x); own = false)"  
         end
-        str *= func_arg_string(arg)
+    else
+        init_arg    = "$name = Ref{$typename}()"  
+        extract_arg = "$name = $(name)[]"  
+    end    
+
+    return init_arg, extract_arg, name_ccall
+end
+
+
+# returns a julia struct 
+function func_args(a::Py) 
+    stars      = pyconvert(Int64, a.stars)
+    typename   = String(a.typename)
+    typename   = replace_types(typename)    # some scrambling necessary
+    name       = String(a.name)
+    name       = replace_names(name)        # some scrambling necessary
+    name_ccall = name;
+    isconst    = Bool(a.const)
+    isarray    = Bool(a.array)
+    isoptional = Bool(a.optional)
+    
+    if stars==1
+        # a single value, so can always be output
+        # depending on what type of output, we need different strategies here
+        output      = true
+        init_arg, extract_arg, name_ccall = init_extract_parameters(typename, name, name_ccall, isarray) 
+        ccall_str   = "Ptr{$typename}"
+    else
+        output      = false
+        init_arg    = ""
+        extract_arg = ""
+        ccall_str   = "$typename"
     end
-    return str
+    if isarray
+        # in case parameters are arrays
+        typename     = "Vector{$typename}" 
+        ccall_str    = "Ptr{$ccall_str}"
+    end
+
+    return f_args(name, name_ccall, typename, isarray, isconst, isoptional, stars, Bool(a.stringlen), output, init_arg, extract_arg, ccall_str)
+end
+
+# creates a 
+function julia_function_doc_header(args::Vector{f_args}, function_name::String)
+    str_in   = ""; num_in=0
+    str_out  = "";  str_out_doc  = ""; num_out=0
+    for arg in args
+        if arg.output # output argument
+            str_out     *= num_out > 0 ? "," : ""
+            str_out_doc *= num_out > 0 ? "," : ""
+            str_out_doc *= "$(arg.name)::$(arg.typename)"
+            str_out     *= "$(arg.name)"
+            num_out += 1 
+        else
+            str_in *= num_in > 0 ? ", " : ""
+            str_in *= "$(arg.name)::$(arg.typename)"
+            num_in += 1
+        end
+    end
+
+    if num_out>0
+        if num_in>0
+            str = "$str_out_doc = $function_name(petsclib::PetscLibType,$str_in)"
+        else
+            str = "$str_out_doc = $function_name(petsclib::PetscLibType)"
+        end
+    else
+        if num_in>0
+            str = "$function_name(petsclib::PetscLibType,$str_in)"
+        else
+            str = "$function_name(petsclib::PetscLibType)"
+        end
+    end
+
+    return str, str_in, str_out, num_in, num_out
 end
 
 # returns 2 strings needed for the ccall routine
-function julia_ccall_header(a::Py)
-    n_arg = length(a.arguments)
+function julia_ccall_header(args::Vector{f_args})
     type_str, name_str = "(",""
-    for (i,arg) in enumerate(a.arguments)
+    for (i,arg) in enumerate(args)
         if i>1
             type_str *= ", "
             name_str *= ", "
         end
-
-        type, name = ccall_arg_string(arg)
-
-        type_str *= type
-        name_str *= name    
-        if n_arg==1
-            type_str *= ","
-        end
-
+        type_str *= arg.ccall_str
+        name_str *= arg.name_ccall
     end
-    type_str *= ")"
-    return type_str, name_str, n_arg
+    if length(args)==1
+        type_str *= ",)"
+    else
+        type_str *= ")"
+    end
+    return type_str, name_str, length(args)
 end
-
 
 
 """
@@ -166,26 +228,70 @@ function write_enum(enum_val::Py, io = stdout)
     return nothing
 end
 
+# Retrieves input and output arguments of a petsc function
+function process_function_arguments(arguments::Py)
+    function_arguments  = f_args[]
+    for arg in arguments
+        push!(function_arguments,  func_args(arg))
+    end
+    return function_arguments
+end
+
+function write_initialize(arguments::Vector{f_args}, io = stdout)
+    for arg in arguments
+        if arg.output
+            println(io,"\t$(arg.init_arg)")
+        end
+    end
+    println(io,"")
+end
+
+function write_extract(arguments::Vector{f_args}, io = stdout)
+    println(io,"")
+    for arg in arguments
+        if arg.output
+            println(io,"\t$(arg.extract_arg)")
+        end
+    end
+end
+
 """
 Writes a function to the specified IO stream
 """
 function write_funcs(funcs_val::Py, io = stdout)
-    if contains(funcs_val.name,"_") || isopaque(funcs_val)
+    if contains(funcs_val.name,"_") #|| isopaque(funcs_val)
+        @info "Skipping function $(funcs_val.name)"
         return nothing
     end
 
+    # process all function arguments
+    arguments     = process_function_arguments(funcs_val.arguments)
+    
     # print function
     name          = String(funcs_val.name)
-    julia_fct_str = julia_function_header(funcs_val)
-    julia_fct_str = replace_function_string(julia_fct_str)
-    ccall_type, ccall_name, n_arg = julia_ccall_header(funcs_val)
+    #julia_fct_str = julia_function_header(funcs_val)
+    #julia_fct_str = replace_function_string(julia_fct_str)
+    julia_doc_fct_str, str_in, str_out, num_in, num_out = julia_function_doc_header(arguments, name)
+    ccall_type, ccall_name, n_arg = julia_ccall_header(arguments)
     
+    # write help 
     println(io,"\"\"\"");
-    println(io,"\t$(funcs_val.name)($julia_fct_str) ");
-    println(io,"\"\"\"");
-    println(io,"function $(funcs_val.name)($julia_fct_str) end");
+    println(io,"\t$julia_doc_fct_str ");
     println(io,"");
-    println(io,"@for_petsc function $(funcs_val.name)(::\$UnionPetscLib, $julia_fct_str)");
+    println(io,"# External Links");
+    println(io,"\$(_doc_external(\"$(titlecase(String(funcs_val.mansec)))/$(funcs_val.name)\"))");
+    println(io,"\"\"\"");
+    println(io,"function $(funcs_val.name)($str_in) end");
+    println(io,"");
+    # write function itself (we will generate various dispatches using @for_petsc)
+    if num_in>0
+        println(io,"@for_petsc function $(funcs_val.name)(petsclib::\$UnionPetscLib, $str_in)");
+    else
+        println(io,"@for_petsc function $(funcs_val.name)(petsclib::\$UnionPetscLib)");
+    end
+    if num_out>0
+        write_initialize(arguments, io)
+    end
     println(io,"    @chk ccall(");
     println(io,"               (:$(name), \$petsc_library),");
     println(io,"               PetscErrorCode,");
@@ -194,6 +300,13 @@ function write_funcs(funcs_val::Py, io = stdout)
     println(io,"               $ccall_name,");
     end
     println(io,"              )");
+    if num_out>0
+        # convert output args into correct values
+        write_extract(arguments, io)
+        println(io,"\n\treturn $str_out");  # return them
+    else
+        println(io,"\n\treturn nothing");
+    end
     println(io,"end \n");
 
     return nothing
@@ -262,11 +375,6 @@ function extract_struct_entry(s::Py)
     return str_out
 end
 
-replace_types(type::AbstractString) = replace(type, "size_t"=>"Csize_t","ptrdiff_t"=>"Cptrdiff_t",
-                                            "short"=>"Cshort","int32_t"=>"Int32",
-                                            "float"=>"Cfloat",
-                                            "char"=>"Cchar", "void"=>"Cvoid","int"=>"Cint",
-                                            "double"=>"Cdouble");
 
 
 function write_typedefs(typedef_val::Py, io = stdout)
@@ -278,21 +386,25 @@ function write_typedefs(typedef_val::Py, io = stdout)
 end
 
 
-function write_keys_to_file(filename::String, start_dir::String, object::Py, fn::Function)
+function write_keys_to_file(filename::String, start_dir::String, object::Py, fn::Function; exclude=String[])
     open(joinpath(start_dir, filename), "w") do file
         # Call the write_enum function and pass the file as the io argument
         for val in object.keys()
-            fn(object[val], file)
+            if !any(exclude .== String(val))
+                fn(object[val], file)
+            end
         end
     end
 end
 
-function write_skeys_to_file(filename::String, start_dir::String, object::Py)
+function write_skeys_to_file(filename::String, start_dir::String, object::Py; exclude=String[])
     open(joinpath(start_dir, filename), "w") do io
         # Call the write_enum function and pass the file as the io argument
         println(io, "# not quite sure yet how to deal with this")
         for val in object.keys()
-            println(io, "$(String(object[val].name))=Ptr{Cchar}")
+            if !any(exclude .== String(val))
+                println(io, "$(String(object[val].name))=Ptr{Cchar}")
+            end
         end
     end
 end
@@ -318,7 +430,7 @@ function write_functions_to_file(filename::String, start_dir::String, funcs::Py;
         for f in funcs
             name = String(f)
             if !any(exclude .== name)
-                @info name
+                #@info name
                 write_funcs(funcs[name], file)
                 #write_funcs(classes[function_name].functions[String(f)])
             end
@@ -389,19 +501,30 @@ end
 
 
 
-
-#write_keys_to_file("enums_wrappers.jl",  start_dir,  enums, write_enum)  # Write enums to file
-#write_skeys_to_file("senums_wrappers.jl",start_dir, senums)              # Write string enums to file
+exclude=["KSPConvergedReason","PetscMemType"]
+write_keys_to_file("enums_wrappers.jl",  start_dir,  enums, write_enum, exclude=exclude)  # Write enums to file
+write_skeys_to_file("senums_wrappers.jl",start_dir, senums)              # Write string enums to file
 
 exclude = ["LandauCtx"]
 write_structs_to_file("struct_wrappers.jl", start_dir, structs,exclude=exclude)          # Write all structs to file
-#write_typedefs_to_file("typedefs_wrappers.jl", start_dir, typedefs)      # Write all typedefs to file
+exclude=["PetscGeom","PetscInt32"]
+write_typedefs_to_file("typedefs_wrappers.jl", start_dir, typedefs,exclude=exclude)      # Write all typedefs to file
 
 # Write KSP functions to file (this should be expanded to all other classes)
 write_functions_from_classes_to_file("KSP_wrappers.jl",start_dir, classes, "KSP")     
 
-exclude=["PetscHTTPSRequest","LandauKokkosJacobian","LandauKokkosDestroyMatMaps","LandauKokkosStaticDataSet","LandauKokkosStaticDataClear"]
+# write general functions to file
+exclude=["PetscHTTPSRequest","LandauKokkosJacobian","LandauKokkosDestroyMatMaps","LandauKokkosStaticDataSet","LandauKokkosStaticDataClear",
+         "PetscSSLInitializeContext","PetscSSLDestroyContext","PetscHTTPSConnect",
+         "PetscDataTypeToHDF5DataType","PetscHDF5DataTypeToPetscDataType","PetscHDF5IntCast",
+         "PetscPostIrecvInt","PetscPostIrecvScalar",
+         "PetscDTAltVInteriorPattern","LandauKokkosCreateMatMaps",
+         "PetscCIntCast","PetscIntCast", "PetscBLASIntCast","PetscCuBLASIntCast","PetscHipBLASIntCast","PetscMPIIntCast"]
 write_functions_to_file("Sys_wrappers.jl", start_dir, funcs, exclude=exclude)
+
+# Write Vec functions to file (this should be expanded to all other classes)
+exclude=["VecCreateMPIViennaCLWithArray","VecCreateMPIViennaCLWithArrays","VecCreateSeqViennaCLWithArrays"]
+write_functions_from_classes_to_file("Vec_wrappers.jl",start_dir, classes, "Vec", exclude=exclude)     
 
 
 

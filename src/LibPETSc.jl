@@ -1,5 +1,7 @@
 module LibPETSc
 
+import PETSc: _doc_external
+
 using Libdl
 using MPI
 

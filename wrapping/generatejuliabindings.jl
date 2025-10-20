@@ -1,12 +1,15 @@
 # This generates Julia bindings for the PETSc library
 #
-# It uses the getAPI.py python code
+# It uses the getAPI.py python code.
+# We also read the documentation of each of the functions.
 #
 # It replaces the Clang.jl infrastructure and re-uses the python binding tools.
 # Should be run from petsc/config/utils/; please specify the petsc directory @ the beginning
 
 using PythonCall
 import Base: contains, String
+
+include("find_doc_strings.jl")
 
 String(x::Py) =  pyconvert(String, x)
 contains(a::Py, b::String) = occursin(b, String(a))
@@ -130,7 +133,7 @@ function func_args(a::Py)
     isconst    = Bool(a.const)
     isarray    = Bool(a.array)
     isoptional = Bool(a.optional)
-    
+
     if stars==1
         # a single value, so can always be output
         # depending on what type of output, we need different strategies here
@@ -267,8 +270,18 @@ function write_funcs(funcs_val::Py, io = stdout)
     # process all function arguments
     arguments     = process_function_arguments(funcs_val.arguments)
     
+    #@info arguments
     # print function
     name          = String(funcs_val.name)
+
+    # Extract input/output arguments of function
+    #@info name
+    input_vars, output_vars = extract_input_output_function(petsc_dir, name)
+    if isempty(input_vars) && isempty(output_vars)
+        @info "Skipping function $name since no input/output vars found"
+        return nothing
+    end
+
     #julia_fct_str = julia_function_header(funcs_val)
     #julia_fct_str = replace_function_string(julia_fct_str)
     julia_doc_fct_str, str_in, str_out, num_in, num_out = julia_function_doc_header(arguments, name)
@@ -458,6 +471,12 @@ function write_typedefs_to_file(filename::String, start_dir::String, typedefs::P
             end
         end
     end 
+end
+
+
+function read_docstring_function(func::Py, petsc_dir::String)
+    name = String(func.name)
+    mansec = String(func.mansec)
 end
 
 

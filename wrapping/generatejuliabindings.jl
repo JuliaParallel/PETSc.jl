@@ -78,6 +78,7 @@ mutable struct f_args
     _const::Bool            # is it a const?
     optional::Bool          # optional?
     stars::Int64            # how many stars?
+    isfunction::Bool        # is this a function?
     stringlen::Bool
     output::Bool             # is this an output argument?
     init_arg::String
@@ -188,6 +189,7 @@ function func_args(a::Py, input_vars=String[], output_vars=String[])
     isconst    = Bool(a.const)
     isarray    = Bool(a.array)
     isoptional = Bool(a.optional)
+    isfunction = Bool(a.isfunction)
     
     # default setting for output arguments
     if stars==1
@@ -233,7 +235,7 @@ function func_args(a::Py, input_vars=String[], output_vars=String[])
         ccall_str    = "Ptr{$ccall_str}"
     end
 
-    return f_args(name, name_ccall, typename, isarray, isconst, isoptional, stars, Bool(a.stringlen), output, init_arg, extract_arg, ccall_str)
+    return f_args(name, name_ccall, typename, isarray, isconst, isoptional, stars, isfunction, Bool(a.stringlen), output, init_arg, extract_arg, ccall_str)
 end
 
 # creates a 
@@ -661,6 +663,30 @@ function move_prologue(prologue_file="prologue.jl")
     return nothing
 end
 
+function extract_function_args_from_function(func::Py)
+    arguments     = process_function_arguments(funcs_val.arguments, String[], String[])
+    fn_args = String[]
+    for arg in arguments
+        if arg.isfunction
+            push!(fn_args, arg.typename)
+        end
+    end
+    return fn_args
+end
+
+function extract_function_args_from_class(classes::Py, class_name::String)
+    fn_args = String[]
+    for f in classes[class_name].functions
+        name = String(f)
+        @info name
+        fn_args_local = extract_function_args_from_function(classes[class_name].functions[name])
+        @show fn_args_local
+        append!(fn_args, fn_args_local)
+    end
+    return fn_args
+end
+
+
 exclude=["KSPConvergedReason","PetscMemType"]
 write_keys_to_file("../src/autowrapped/enums_wrappers.jl",  start_dir,  enums, write_enum, exclude=exclude)  # Write enums to file
 write_skeys_to_file("../src/autowrapped/senums_wrappers.jl",start_dir, senums)              # Write string enums to file
@@ -697,6 +723,6 @@ write_functions_to_file("../src/autowrapped/Sys_wrappers.jl", start_dir, funcs, 
 
 move_prologue("prologue.jl")
 
-# open question:
-#   why are structs such as _p_PetscSF not included in the python structs above, even though 
-#   they are define in petscsftypes.h?  
+# Todo: 
+# - determine function parameters that have functions and handle those automatically
+# 

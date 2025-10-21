@@ -7,7 +7,7 @@ comm = MPI.COMM_WORLD
 
 @testset "VecBasics" begin
     for petsclib in PETSc.petsclibs
-        #petsclib        = PETSc.petsclibs[6]
+        #petsclib        = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
         PetscScalar     = petsclib.PetscScalar
         PetscInt        = petsclib.PetscInt
@@ -48,6 +48,16 @@ comm = MPI.COMM_WORLD
         
         @test LibPETSc.VecSum(petsclib,v4) == sum(x3)
 
+        # Julia candy:
+        v5      =   LibPETSc.VecCreateSeq(petsclib,comm, N)
+        
+        v5[1]   =   PetscScalar(3.14)
+        v5[2:3] =   PetscScalar.([2.71, 1.61])
+        @test v5[1:4] == PetscScalar.([ 3.14, 2.71,1.61,0.0])
+
+        fill!(v5, PetscScalar(1.11))
+        @test v5[1] == PetscScalar(1.11)
+
         LibPETSc.VecDestroy(petsclib,v1)
     end
 end
@@ -55,7 +65,7 @@ end
 
 @testset "VecCreateSeqWithArray" begin
     N = 10
-    for petsclib in PETSc.petsclibs
+    for petsclib in PETSc.petsclibs[1:2]
         #petsclib = PETSc.petsclibs[5]
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar

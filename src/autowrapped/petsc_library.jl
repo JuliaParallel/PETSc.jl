@@ -73,16 +73,7 @@ PetscVec(ptr::CVec, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscVec{Pet
 Base.convert(::Type{CVec}, v::AbstractPetscVec) = v.ptr
 Base.unsafe_convert(::Type{CVec}, v::AbstractPetscVec) = v.ptr
 
-# Custom display for REPL
-function Base.show(io::IO, v::AbstractPetscVec{PetscLib}) where {PetscLib}
-    if v.ptr == C_NULL
-        print(io, "PETSc Vec (null pointer)")
-        return
-    else
-        print(io, "PETSc Vec size: $si")
-    end
-    return nothing
-end
+
 # ------------------------------------------------------
 
 # Stuff that I don't really want to define by hand, but seem to not be part of the petsc python interface?

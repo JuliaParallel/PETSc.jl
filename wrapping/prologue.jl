@@ -28,7 +28,8 @@ const MPIU_INT32 = MPI.UINT32_T
 const PetscOptions = Ptr{Cvoid}
 const PetscViewer = Ptr{Cvoid}
 const PetscObject = Ptr{Cvoid}
-const Vec = Ptr{Cvoid}
+
+
 #const VecType = Cstring
 const Mat = Ptr{Cvoid}
 #const MatType = Cstring
@@ -42,6 +43,7 @@ const PetscDLHandle = Ptr{Cvoid}
 
 const PETSC_DECIDE = -1
 const PETSC_DETERMINE = PETSC_DECIDE
+const PETSC_COMM_SELF = MPI.COMM_SELF
 
 PetscInt = Int64
 PetscInt64 = Int64
@@ -51,7 +53,39 @@ PetscReal = Float64
 #PetscBool = Bool
 
 
-# Stuff that I don't really wanty to define by hand, but seem to not be part of the petsc python interface?
+# ----- Custom Julia struct for PETSc Vec -----
+const CVec = Ptr{Cvoid}
+abstract type AbstractPetscVec{T} end
+mutable struct PetscVec{PetscLib} <: AbstractPetscVec{PetscLib}
+    ptr::CVec
+    age::Int
+    
+    # Constructor from pointer and age
+    PetscVec{PetscLib}(ptr::CVec, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
+    
+    # Constructor for empty Vec (null pointer)
+    PetscVec{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
+end
+
+# Convenience constructor from petsclib instance
+PetscVec(lib::PetscLib) where {PetscLib} = PetscVec{PetscLib}()
+PetscVec(ptr::CVec, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscVec{PetscLib}(ptr, age)
+Base.convert(::Type{CVec}, v::AbstractPetscVec) = v.ptr
+Base.unsafe_convert(::Type{CVec}, v::AbstractPetscVec) = v.ptr
+
+# Custom display for REPL
+function Base.show(io::IO, v::AbstractPetscVec{PetscLib}) where {PetscLib}
+    if v.ptr == C_NULL
+        print(io, "PETSc Vec (null pointer)")
+        return
+    else
+        print(io, "PETSc Vec size: $si")
+    end
+    return nothing
+end
+# ------------------------------------------------------
+
+# Stuff that I don't really want to define by hand, but seem to not be part of the petsc python interface?
 mutable struct _p_PetscSF end
 const PetscSF = Ptr{_p_PetscSF}
 
@@ -189,7 +223,7 @@ include("typedefs_wrappers.jl")
 include("struct_wrappers.jl")
 
 include("Sys_wrappers.jl")
-include("KSP_wrappers.jl")
+#include("KSP_wrappers.jl")
 include("Vec_wrappers.jl")
 include("Vecs_wrappers.jl")
 

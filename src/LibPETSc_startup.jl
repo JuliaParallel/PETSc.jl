@@ -30,7 +30,7 @@ end
 
 const petsc_library_file =
     #get(ENV, "JULIA_PETSC_LIBRARY_PATH", "../lib/petsc_library.jl")
-    get(ENV, "JULIA_PETSC_LIBRARY_PATH", "../wrapping/petsc_library_v2.jl")    # if all is well, we should be able to use this
+    get(ENV, "JULIA_PETSC_LIBRARY_PATH", "autowrapped/petsc_library.jl")    # if all is well, we should be able to use this
 
 
 #=    

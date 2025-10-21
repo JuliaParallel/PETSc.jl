@@ -111,7 +111,7 @@ function read_c_function_docs(file::String, fct_name)
                 end
               
                 while ! contains(line, "@*/") & read_block
-                    line = strip(line)  # remove white space at beginningf
+                    line = strip(line)  # remove white space at beginning
                     if !isempty(line)
                         if startswith(line,".") || startswith(line,"+")
                             line = "-"*line[2:end]
@@ -123,7 +123,7 @@ function read_c_function_docs(file::String, fct_name)
                     if startswith(line,'-')
                         if length(findall('-',line))>1
                             #  there are 2 dashes in lists with parameters
-                           # line = add_backticks(line)
+                            line = add_backticks(line)
                         end
                     end
 
@@ -151,13 +151,18 @@ function read_c_function_docs(file::String, fct_name)
 end
 
 function add_backticks(line::AbstractString)
-    line_split = split(line,"- ")
-    var_name = line_split[2]
-    n = length(var_name)
-    
-    line_split[2] = rpad("`"*strip(var_name)*"`",n+2)
-    
-    line_new = join(line_split.*"- ")[1:end-2]
+    line_split = split(strip(line), "- ")
+    if length(line_split)>1
+        var_name = line_split[2]
+        
+        n = length(var_name)
+        
+        line_split[2] = rpad("`"*strip(var_name)*"`",n+2)
+        
+        line_new = join(line_split.*"- ")[1:end-2]
+    else
+        line_new = line
+    end
     return  line_new
 end
 
@@ -169,12 +174,19 @@ function get_docs_from_function(petscdir, fct_name)
 end
 
 
-function get_last_line(input_line_start, comment)
+function get_last_line(input_line_start, comment; last_str="")
     for l in input_line_start:length(comment)
         if isempty(strip(comment[l]))
             input_line_end = l-1
             return input_line_end
         end
+    end
+end
+
+function get_last_line_keyword(comment, keyword="")
+    l = findfirst(contains.(comment, keyword))
+    if !isnothing(l)
+        return l-1
     end
 end
 
@@ -194,6 +206,7 @@ function extract_variable_from_string(str::String)
             return ""
         end
         var_part = strip(parts[2])
+        var_part = replace(var_part, "`" => "")
         var_name = split(var_part, ' ')[1]
         return var_name
     else
@@ -247,5 +260,32 @@ function extract_input_output_function(petsc_dir, fct_name)
     else
         input_vars, output_vars = extract_input_output_vars(comment_block)
     end
-    return input_vars, output_vars
+    comment_block = remove_notes_from_comment(comment_block)
+    return input_vars, output_vars, comment_block
 end
+
+# sometimes, PETSc docstrings contains math or other stuff in notes.
+# this messes up the julia docstrings, so we remove them here
+function remove_notes_from_comment(comment::Vector{String})
+    comment = remove_notes_from_comment(comment, "Note:")
+    comment = remove_notes_from_comment(comment, "Notes:")
+    comment = remove_notes_from_comment(comment, "Developer Note:")
+    comment = remove_notes_from_comment(comment, "Fortran Notes:")
+    comment = remove_notes_from_comment(comment, "Example Usage:")
+    comment = remove_notes_from_comment(comment, "-vb")
+    return comment
+end
+
+function remove_notes_from_comment(comment::Vector{String}, keyword::String)
+    note_start = findfirst(contains.(comment, keyword))
+    if !isnothing(note_start)
+        #note_end   = get_last_line(note_start, comment)
+        note_end   = get_last_line_keyword(comment,"-seealso:")
+        if !isnothing(note_end)
+            deleteat!(comment, note_start:note_end)
+        end
+    end
+    return comment
+end
+remove_notes_from_comment(comment::Nothing) = comment
+

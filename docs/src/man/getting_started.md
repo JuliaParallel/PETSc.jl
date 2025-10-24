@@ -53,8 +53,8 @@ julia> for i=2:n-1
             A[i,i-1] =  1/Δx^2
             A[i,i  ] = -2/Δx^2
             A[i,i+1] =  1/Δx^2
-       end
-       A[1,1]=1; A[n,n]=1;
+       end;
+julia> A[1,1]=1; A[n,n]=1;
 julia> PETSc.assemble(A)
 julia> A
 Mat Object: 1 MPI processes

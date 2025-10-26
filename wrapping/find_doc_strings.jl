@@ -273,8 +273,18 @@ function remove_notes_from_comment(comment::Vector{String})
     comment = remove_notes_from_comment(comment, "Fortran Notes:")
     comment = remove_notes_from_comment(comment, "Example Usage:")
     comment = remove_notes_from_comment(comment, "-vb")
+    comment = remove_notes_from_comment(comment, "Example Usage\\:")
+    comment = remove_weird_signs_from_comment(comment)  # remove some weirdities in the PETSc docstrings that julia dislikes
     return comment
 end
+
+function remove_weird_signs_from_comment(comment::Vector{String})
+    for i in eachindex(comment)
+        comment[i] = replace(comment[i], "\\:" => ":","``"=>"`") 
+    end
+    return comment
+end
+remove_weird_signs_from_comment(comment::Nothing) = comment
 
 function remove_notes_from_comment(comment::Vector{String}, keyword::String)
     note_start = findfirst(contains.(comment, keyword))

@@ -28,16 +28,6 @@ const MPIU_INT32 = MPI.UINT32_T
 const PetscOptions = Ptr{Cvoid}
 const PetscViewer = Ptr{Cvoid}
 const PetscObject = Ptr{Cvoid}
-
-
-#const VecType = Cstring
-const Mat = Ptr{Cvoid}
-#const MatType = Cstring
-const KSP = Ptr{Cvoid}
-#const KSPType = Cstring
-const SNES = Ptr{Cvoid}
-#const SNESType = Cstring
-const DM = Ptr{Cvoid}
 const PetscDLHandle = Ptr{Cvoid}
 
 
@@ -72,8 +62,123 @@ PetscVec(lib::PetscLib) where {PetscLib} = PetscVec{PetscLib}()
 PetscVec(ptr::CVec, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscVec{PetscLib}(ptr, age)
 Base.convert(::Type{CVec}, v::AbstractPetscVec) = v.ptr
 Base.unsafe_convert(::Type{CVec}, v::AbstractPetscVec) = v.ptr
+# ------------------------------------------------------
 
+# ----- Custom Julia struct for PETSc Mat -----
+const CMat = Ptr{Cvoid}
+abstract type AbstractPetscMat{T} end
+mutable struct PetscMat{PetscLib} <: AbstractPetscMat{PetscLib}
+    ptr::CMat
+    age::Int
+    
+    # Constructor from pointer and age
+    PetscMat{PetscLib}(ptr::CMat, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
+    
+    # Constructor for empty Mat (null pointer)
+    PetscMat{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
+end
 
+# Convenience constructor from petsclib instance
+PetscMat(lib::PetscLib) where {PetscLib} = PetscMat{PetscLib}()
+PetscMat(ptr::CMat, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscMat{PetscLib}(ptr, age)
+Base.convert(::Type{CMat}, v::AbstractPetscMat) = v.ptr
+Base.unsafe_convert(::Type{CMat}, v::AbstractPetscMat) = v.ptr
+# ------------------------------------------------------
+
+# ----- Custom Julia struct for PETSc KSP -----
+const CKSP = Ptr{Cvoid}
+abstract type AbstractPetscKSP{T} end
+mutable struct PetscKSP{PetscLib} <: AbstractPetscKSP{PetscLib}
+    ptr::CKSP
+    age::Int
+    
+    # Constructor from pointer and age
+    PetscKSP{PetscLib}(ptr::CKSP, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
+    
+    # Constructor for empty KSP (null pointer)
+    PetscKSP{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
+end
+
+# Convenience constructor from petsclib instance
+PetscKSP(lib::PetscLib) where {PetscLib} = PetscKSP{PetscLib}()
+PetscKSP(ptr::CKSP, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscKSP{PetscLib}(ptr, age)
+Base.convert(::Type{CKSP}, v::AbstractPetscKSP) = v.ptr
+Base.unsafe_convert(::Type{CKSP}, v::AbstractPetscKSP) = v.ptr
+
+# Custom display for REPL
+function Base.show(io::IO, v::AbstractPetscKSP{PetscLib}) where {PetscLib}
+    if v.ptr == C_NULL
+        print(io, "PETSc KSP (null pointer)")
+        return
+    else
+        print(io, "PETSc KSP object")
+    end
+    return nothing
+end
+# ------------------------------------------------------
+
+# ----- Custom Julia struct for PETSc SNES -----
+const CSNES = Ptr{Cvoid}
+abstract type AbstractPetscSNES{T} end
+mutable struct PetscSNES{PetscLib} <: AbstractPetscSNES{PetscLib}
+    ptr::CSNES
+    age::Int
+    
+    # Constructor from pointer and age
+    PetscSNES{PetscLib}(ptr::CSNES, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
+    
+    # Constructor for empty SNES (null pointer)
+    PetscSNES{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
+end
+
+# Convenience constructor from petsclib instance
+PetscSNES(lib::PetscLib) where {PetscLib} = PetscSNES{PetscLib}()
+PetscSNES(ptr::CSNES, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscSNES{PetscLib}(ptr, age)
+Base.convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
+Base.unsafe_convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
+
+# Custom display for REPL
+function Base.show(io::IO, v::AbstractPetscSNES{PetscLib}) where {PetscLib}
+    if v.ptr == C_NULL
+        print(io, "PETSc SNES (null pointer)")
+        return
+    else
+        print(io, "PETSc SNES object")
+    end
+    return nothing
+end
+# ------------------------------------------------------
+
+# ----- Custom Julia struct for PETSc DM -----
+const CDM = Ptr{Cvoid}
+abstract type AbstractPetscDM{T} end
+mutable struct PetscDM{PetscLib} <: AbstractPetscDM{PetscLib}
+    ptr::CDM
+    age::Int
+    
+    # Constructor from pointer and age
+    PetscDM{PetscLib}(ptr::CDM, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
+    
+    # Constructor for empty DM (null pointer)
+    PetscDM{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
+end
+
+# Convenience constructor from petsclib instance
+PetscDM(lib::PetscLib) where {PetscLib} = PetscDM{PetscLib}()
+PetscDM(ptr::CDM, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscDM{PetscLib}(ptr, age)
+Base.convert(::Type{CDM}, v::AbstractPetscDM) = v.ptr
+Base.unsafe_convert(::Type{CDM}, v::AbstractPetscDM) = v.ptr
+
+# Custom display for REPL
+function Base.show(io::IO, v::AbstractPetscDM{PetscLib}) where {PetscLib}
+    if v.ptr == C_NULL
+        print(io, "PETSc DM (null pointer)")
+        return
+    else
+        print(io, "PETSc DM object")
+    end
+    return nothing
+end
 # ------------------------------------------------------
 
 # Stuff that I don't really want to define by hand, but seem to not be part of the petsc python interface?
@@ -100,6 +205,8 @@ mutable struct KSPComputeRHSFn end
 mutable struct KSPComputeInitialGuessFn end
 mutable struct PeCtx end
 mutable struct KSPPSolveFn end
+mutable struct MatHtoolKernelFn end
+
 
 const PetscObject = Ptr{Cvoid}
 const external = Ptr{Cvoid}
@@ -119,11 +226,7 @@ const PetscLogRegistry = Ptr{_n_PetscLogRegistry}
 
 mutable struct _n_PetscIntStack end
 const PetscIntStack = Ptr{_n_PetscIntStack}
-const PetscLogClass = Cint
 
-mutable struct _p_PetscLogHandler end
-const PetscLogHandler = Ptr{_p_PetscLogHandler}
-const PetscLogHandlerType = Ptr{Cchar}
 mutable struct _n_PetscLogState
     registry::PetscLogRegistry
     active::PetscBT
@@ -134,17 +237,7 @@ mutable struct _n_PetscLogState
     refct::Cint
     _n_PetscLogState() = new()
 end
-
 const PetscLogState = Ptr{_n_PetscLogState}
-
-mutable struct _n_PetscLayout end
-const PetscLayout = Ptr{_n_PetscLayout}
-
-mutable struct _p_PetscQuadrature end
-const PetscQuadrature = Ptr{_p_PetscQuadrature}
-
-mutable struct _p_PetscRandom end
-const PetscRandom = Ptr{_p_PetscRandom}
 
 @enum KSPConvergedReason::Int32 begin
     KSP_CONVERGED_RTOL_NORMAL = 1
@@ -200,8 +293,20 @@ mutable struct _p_PetscSectionSym end
 const PetscSectionSym = Ptr{_p_PetscSectionSym}
 const PetscSectionSymType = Ptr{Cchar}
 
+# needed for Mat ---
+#=
+mutable struct _p_MatNullSpace end
+const MatNullSpace = Ptr{_p_MatNullSpace}
 
+mutable struct _p_MatTransposeColoring end
+const MatTransposeColoring = Ptr{_p_MatTransposeColoring}
 
+mutable struct _p_hypre_ParCSRMatrix end
+const hypre_ParCSRMatrix = Ptr{_p_hypre_ParCSRMatrix}
+
+mutable struct _p_PetscFunctionList end
+const PetscFunctionList = Ptr{_p_PetscFunctionList}
+=#
 #
 # END OF PROLOGUE
 #
@@ -214,7 +319,9 @@ include("typedefs_wrappers.jl")
 include("struct_wrappers.jl")
 
 include("Sys_wrappers.jl")
-#include("KSP_wrappers.jl")
 include("Vec_wrappers.jl")
 include("Vecs_wrappers.jl")
+include("Mat_wrappers.jl")
+#include("KSP_wrappers.jl")
+
 

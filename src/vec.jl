@@ -24,6 +24,7 @@ end
 # Array interface - size and length
 Base.size(v::PetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecGetSize(PetscLib,v)
 Base.length(v::PetscVec{PetscLib}) where {PetscLib} = prod(size(v))
+type(m::PetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecGetType(PetscLib,m)
 
 function Base.getindex(v::PetscVec{PetscLib}, i::Integer) where {PetscLib} 
     PetscInt = inttype(PetscLib)
@@ -60,3 +61,17 @@ function Base.iterate(v::PetscVec{PetscLib}, state)  where {PetscLib}
     end
     return (v[state], state + 1)
 end
+
+"""
+    assemble!(A::PetscVec) 
+
+Assembles a PETSc vector after setting values.
+"""
+function assemble!(A::PetscVec{PetscLib}) where {PetscLib}
+    LibPETSc.VecAssemblyBegin(PetscLib, A)
+    LibPETSc.VecAssemblyEnd(PetscLib, A)
+end
+
+
+
+destroy(m::PetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecDestroy(PetscLib,m)

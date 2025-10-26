@@ -19,6 +19,11 @@ isopaque(a::Py) = pyconvert(Bool,a.opaque)
 petsc_dir = "/Users/kausb/Downloads/petsc"
 start_dir = pwd()
 
+const CustomTypes = ["PetscVec","PetscMat","PetscDM", "PetscKSP", "PetscSNES"]
+
+# Remove entry from vector of strings
+remove_entry(x::Vector{String}, entry::String) = filter!(y -> y != entry, x)
+
 if  !@isdefined classes
     # for some reason, if we run this twice it returns empty classes
 
@@ -96,16 +101,21 @@ replace_types(type::AbstractString) = replace(type,
                                             "char"=>"Cchar", 
                                             "void"=>"Cvoid",
                                             "double"=>"Cdouble",
-                                            "int"=>"Cint",
+                                            r"int"=>"Cint",
                                             "FILE"=>"Libc.FILE",
 
                                             # handle custom-defined types:
                                             r"\bVec\b"=>"PetscVec",
+                                            r"\bMat\b"=>"PetscMat",
+                                            r"\bDM\b"=>"PetscDM",
+                                            r"\bKSP\b"=>"PetscKSP",
+                                            r"\bSNES\b"=>"PetscSNES",
                                             );
 
 
 replace_names(type_str::String)     =  replace(type_str, 
-                                            "function"=>"fnc");
+                                            "function"=>"fnc",
+                                            "local"=>"loc");
 
 # Since we use the @for_petsc macro to generate multiple dispatch versions of our functions,
 # we have to add dollar signs to these types, before writing them     
@@ -116,18 +126,18 @@ replace_dispatch_types(type::AbstractString) = replace(type,
                                             "PetscComplex"=>"\$PetscComplex",
                                             ); 
 
-function init_extract_parameters(typename::String, name::String, name_ccall::String, isarray::Bool, isoutput::Bool, stars::Int64) 
+function init_extract_parameters(typename::String, name::String, function_name::String, name_ccall::String, isarray::Bool, isoutput::Bool, stars::Int64) 
     init_arg    = ""  
     extract_arg = ""  
-    @show typename, name, isarray, isoutput, stars
-    if !isarray && isoutput && typename in ["PetscVec"]
+    @show function_name, typename, name, isarray, isoutput, stars
+    if !isarray && isoutput && typename in CustomTypes
         # a custom type is being initialized
         typename_c  = replace(typename,"Petsc"=>"C")
         name_ccall  = "$(name)_"
         init_arg    = "$name_ccall = Ref{$typename_c}()"  
-        extract_arg = "$name = PetscVec($(name_ccall)[], petsclib)"  
+        extract_arg = "$name = $typename($(name_ccall)[], petsclib)"  
 
-    elseif !isarray && !isoutput && stars==1 && typename in ["PetscVec"] 
+    elseif !isarray && !isoutput && stars==1 && typename in CustomTypes
         # a custom type is being deleted most likely
         typename_c  = replace(typename,"Petsc"=>"C")
         name_ccall  = "$(name)_"
@@ -155,10 +165,6 @@ function init_extract_parameters(typename::String, name::String, name_ccall::Str
         # array that'll is an input
         name_ccall  = "$(name)_"
         init_arg    = "$name_ccall = Ref(pointer($name))"  
-        #name_ccall  = "$(name)"
-        #init_arg    = ""  
-        
-        # Note: we make the implicit assumption here that the Vec is always called 'x'
         extract_arg = ""  
     elseif !isarray && isoutput && contains(typename,"Type")
         #scalar
@@ -177,9 +183,42 @@ function init_extract_parameters(typename::String, name::String, name_ccall::Str
     return init_arg, extract_arg, name_ccall
 end
 
+function is_this_an_output_argument(function_name::String, variablename::String, typename::String, stars::Int64, isarray::Bool, output_vars::Vector{String}, input_vars::Vector{String})
+    output = false
+    if stars==1
+        output = true
+    end
+    if !isempty(output_vars)
+        if variablename in output_vars
+            output = true
+        end
+    end
+    if !isempty(input_vars)
+        if variablename in input_vars
+            output = false
+        end
+    end
+
+    # so the function type is NOT a simple thing such as PetscScalar, PetscBool, PetscReal 
+    # and the function name does NOT contain "Create"
+    if output
+        if  (!contains(function_name, "Create") && 
+             !contains(function_name, "Duplicate") && 
+             !contains(function_name, "Type") && 
+             !(typename in ["PetscScalar", "PetscBool", "PetscReal","PetscComplex","PetscInt"]))  ||
+            contains(function_name, "RestoreArray") ||
+            contains(function_name, "Copy") 
+            
+            output = false
+        end
+    end
+
+    return output
+end
+
 
 # returns a julia struct 
-function func_args(a::Py, input_vars=String[], output_vars=String[]) 
+function func_args(a::Py, function_name::String, input_vars=String[], output_vars=String[]) 
     stars      = pyconvert(Int64, a.stars)
     typename   = String(a.typename)
     typename   = replace_types(typename)    # some scrambling necessary
@@ -192,25 +231,12 @@ function func_args(a::Py, input_vars=String[], output_vars=String[])
     isfunction = Bool(a.isfunction)
     
     # default setting for output arguments
-    if stars==1
-        output = true
-    else
-        output = false
-    end
-    if !isempty(output_vars)
-        if name in output_vars
-            output = true
-        end
-    end
-    if !isempty(input_vars)
-        if name in input_vars
-            output = false
-        end
-    end
+    @show input_vars, output_vars
+    output = is_this_an_output_argument(function_name, name, typename, stars, isarray, output_vars, input_vars)
 
     # this is related to creating custom julia structs
     typename_ccall = typename
-    if typename in ["PetscVec"]
+    if typename in CustomTypes
         typename_ccall = replace(typename_ccall,"Petsc"=>"C")
     end
     
@@ -218,10 +244,10 @@ function func_args(a::Py, input_vars=String[], output_vars=String[])
         # a single value, so can always be output
         # depending on what type of output, we need different strategies here
         #output      = true
-        init_arg, extract_arg, name_ccall = init_extract_parameters(typename, name, name_ccall, isarray, output, stars) 
+        init_arg, extract_arg, name_ccall = init_extract_parameters(typename, name, function_name, name_ccall, isarray, output, stars) 
         ccall_str   = "Ptr{$typename_ccall}"
     else
-        init_arg, extract_arg, name_ccall = init_extract_parameters(typename, name, name_ccall, isarray, output, stars) 
+        init_arg, extract_arg, name_ccall = init_extract_parameters(typename, name, function_name, name_ccall, isarray, output, stars) 
 
         #output      = false
         #init_arg    = ""
@@ -315,10 +341,10 @@ function write_enum(enum_val::Py, io = stdout)
 end
 
 # Retrieves input and output arguments of a petsc function
-function process_function_arguments(arguments::Py, input_vars=String[], output_vars=String[])
+function process_function_arguments(arguments::Py, function_name::String, input_vars=String[], output_vars=String[])
     function_arguments  = f_args[]
     for arg in arguments
-        push!(function_arguments,  func_args(arg, input_vars, output_vars))
+        push!(function_arguments,  func_args(arg, function_name, input_vars, output_vars))
     end
     return function_arguments
 end
@@ -356,7 +382,7 @@ function write_funcs(funcs_val::Py, io = stdout)
     input_vars, output_vars, doc_str = extract_input_output_function(petsc_dir, name)
     
     # process all function arguments
-    arguments     = process_function_arguments(funcs_val.arguments, input_vars, output_vars)
+    arguments     = process_function_arguments(funcs_val.arguments, name, input_vars, output_vars)
     
     #@info arguments
     # print function
@@ -514,14 +540,17 @@ function write_skeys_to_file(filename::String, start_dir::String, object::Py; ex
     end
 end
 
-function write_functions_from_classes_to_file(filename::String, start_dir::String, classes::Py, function_name::String; exclude=String[])
+function write_functions_from_classes_to_file(filename::String, start_dir::String, classes::Py, class_name::String; exclude=String[])
     open(joinpath(start_dir, filename), "w") do file
+        # write definitions to file (if needed)
+        write_undefined_typearguments_from_classes_to_file(classes[class_name].functions, file=file)
+
         # Call the write_enum function and pass the file as the io argument
-        for f in classes[function_name].functions
+        for f in classes[class_name].functions
             name = String(f)
             if !any(exclude .== name)
                 @info name
-                write_funcs(classes[function_name].functions[name], file)
+                write_funcs(classes[class_name].functions[name], file)
                 #write_funcs(classes[function_name].functions[String(f)])
 
             end
@@ -532,6 +561,8 @@ end
 function write_functions_to_file(filename::String, start_dir::String, funcs::Py; exclude=String[])
     open(joinpath(start_dir, filename), "w") do file
         # Call the write_enum function and pass the file as the io argument
+        write_undefined_typearguments_from_classes_to_file(funcs, file=file)
+
         for f in funcs
             name = String(f)
             if !any(exclude .== name)
@@ -605,7 +636,7 @@ function Base.show(io::IO, v::$(abstract_type_name){PetscLib}) where {PetscLib}
         print(io, "PETSc $(type_name) (null pointer)")
         return
     else
-        print(io, "PETSc $(type_name) size: \$si")
+        print(io, "PETSc $(type_name) ")
     end
     return nothing
 end
@@ -663,8 +694,8 @@ function move_prologue(prologue_file="prologue.jl")
     return nothing
 end
 
-function extract_function_args_from_function(func::Py)
-    arguments     = process_function_arguments(funcs_val.arguments, String[], String[])
+function extract_function_args_from_function(func::Py, function_name::String)
+    arguments     = process_function_arguments(funcs_val.arguments, function_name, String[], String[])
     fn_args = String[]
     for arg in arguments
         if arg.isfunction
@@ -674,17 +705,51 @@ function extract_function_args_from_function(func::Py)
     return fn_args
 end
 
-function extract_function_args_from_class(classes::Py, class_name::String)
-    fn_args = String[]
-    for f in classes[class_name].functions
+# Extracts all type argiments from a class
+function extract_function_typeargs_from_class(functions::Py)
+    fn_args = Vector{String}()
+    for f in functions
         name = String(f)
-        @info name
-        fn_args_local = extract_function_args_from_function(classes[class_name].functions[name])
-        @show fn_args_local
-        append!(fn_args, fn_args_local)
+        arguments     = process_function_arguments(functions[name].arguments, name, String[], String[])
+        for arg in arguments
+            typename = arg.typename
+            typename = replace(typename, "Vector{"=>"","}"=>"")
+
+            push!(fn_args, typename)
+        end
     end
+    fn_args = unique(fn_args)
+    for entry in CustomTypes
+        fn_args = remove_entry(fn_args, entry)
+    end
+
     return fn_args
 end
+
+function write_undefined_typearguments_from_classes_to_file(functions; file=stdout)
+    fn_args = extract_function_typeargs_from_class(functions)
+
+    println(file,"# autodefined type arguments for class ------")
+    # Call the write_enum function and pass the file as the io argument
+    for typearg in fn_args
+       var_sym = Symbol(typearg)
+        if !isdefined(Main, var_sym)
+            # variable doesn't exist yet, so define it
+            if contains(typearg,"Fn")
+                println(file,"mutable struct $typearg end\n")
+            else
+                println(file,"mutable struct _n_$typearg end")
+                println(file,"const $typearg = Ptr{_n_$typearg}\n")
+            end
+        end
+    end
+    println(file,"# -------------------------------------------------------")
+
+
+end
+
+
+
 
 
 exclude=["KSPConvergedReason","PetscMemType"]
@@ -696,13 +761,22 @@ write_structs_to_file("../src/autowrapped/struct_wrappers.jl", start_dir, struct
 exclude=["PetscGeom","PetscInt32"]
 write_typedefs_to_file("../src/autowrapped/typedefs_wrappers.jl", start_dir, typedefs,exclude=exclude)      # Write all typedefs to file
 
+move_prologue("prologue.jl")
+
+
+# Need to call this before writing any function files
+# - it will error, but at that stage all necessary variables will be loaded, so you can comment this
+#include("../src/autowrapped/petsc_library.jl")
+
+
 #=
 # Write KSP functions to file (this should be expanded to all other classes)
 exclude=["KSPLSQRGetNorms"]
 write_functions_from_classes_to_file("../src/autowrapped/KSP_wrappers.jl",start_dir, classes, "KSP", exclude=exclude)     
 
 # write general functions to file
-exclude=["PetscHTTPSRequest","LandauKokkosJacobian","LandauKokkosDestroyMatMaps","LandauKokkosStaticDataSet","LandauKokkosStaticDataClear",
+exclude=["PetscHTTPSRequest",
+"LandauKokkosJacobian","LandauKokkosDestroyMatMaps","LandauKokkosStaticDataSet","LandauKokkosStaticDataClear",
          "PetscSSLInitializeContext","PetscSSLDestroyContext","PetscHTTPSConnect",
          "PetscDataTypeToHDF5DataType","PetscHDF5DataTypeToPetscDataType","PetscHDF5IntCast",
          "PetscPostIrecvInt","PetscPostIrecvScalar",
@@ -711,17 +785,21 @@ exclude=["PetscHTTPSRequest","LandauKokkosJacobian","LandauKokkosDestroyMatMaps"
          "PetscFixFilename",
          "PetscDTAltVApply","PetscDTAltVWedge","PetscDTSimplexQuadrature","PetscDTJacobiNorm",  # these have some comments that mess up julia docs        
          ]
-write_functions_to_file("../src/autowrapped/Sys_wrappers.jl", start_dir, funcs, exclude=exclude)
+
 =#
+exclude=["LandauKokkosJacobian","LandauKokkosDestroyMatMaps","LandauKokkosStaticDataSet","LandauKokkosStaticDataClear"]
+write_functions_to_file("Sys_wrappers.jl", start_dir, funcs, exclude=exclude)
 
 # Write Vec functions to file (this should be expanded to all other classes)
-#exclude=["VecCreateMPIViennaCLWithArray","VecCreateMPIViennaCLWithArrays","VecCreateSeqViennaCLWithArrays"]
-#write_functions_from_classes_to_file("../src/autowrapped/Vec_wrappers.jl",start_dir, classes, "Vec", exclude=exclude)     
+exclude=[""]
+#write_functions_from_classes_to_file("Vec_wrappers.jl",start_dir, classes, "Vec", exclude=exclude)     
+#write_functions_from_classes_to_file("Vecs_wrappers.jl",start_dir, classes, "Vecs", exclude=exclude)     
 
-#exclude=["VecsDestroy","VecsCreateSeq","VecsCreateSeqWithArray","VecsDuplicate"]
-#write_functions_from_classes_to_file("../src/autowrapped/Vecs_wrappers.jl",start_dir, classes, "Vecs", exclude=exclude)     
+#exclude=["MatSolves","MatCreateVecs","MatCreateVecsFFTW"]
+#exclude=[""]
+#write_functions_from_classes_to_file("Mat_wrappers.jl",start_dir, classes, "Mat", exclude=exclude)     
 
-move_prologue("prologue.jl")
+
 
 # Todo: 
 # - determine function parameters that have functions and handle those automatically

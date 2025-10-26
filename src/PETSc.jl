@@ -26,12 +26,12 @@ using Libdl
 
 include("init.jl")
 include("vec.jl")       
+include("mat.jl")          
 
 #=
 include("utils.jl")
 include("viewer.jl")
 include("options.jl")
-include("mat.jl")           # not yet wrapped!
 include("matshell.jl")      # not yet wrapped!
 include("dm.jl")            # partly wrapped, no tests yet
 include("dmda.jl")          # not yet wrapped!

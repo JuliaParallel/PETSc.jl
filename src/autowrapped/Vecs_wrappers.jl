@@ -1,5 +1,12 @@
+# autodefined type arguments for class ------
+mutable struct _n_Vecs end
+const Vecs = Ptr{_n_Vecs}
+
+mutable struct n_PetscRandom end
+const PetscRandom = Ptr{n_PetscRandom}
+# -------------------------------------------------------
 """
-	y::PetscVec = VecScatterPetscToFFTW(petsclib::PetscLibType,A::Mat, x::PetscVec) 
+	VecScatterPetscToFFTW(petsclib::PetscLibType,A::PetscMat, x::PetscVec, y::PetscVec) 
 Copies a PETSc vector to the vector that goes into `MATFFTW` calls.
 
 Collective
@@ -18,25 +25,23 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/VecScatterPetscToFFTW"))
 """
-function VecScatterPetscToFFTW(petsclib::PetscLibType, A::Mat, x::PetscVec) end
+function VecScatterPetscToFFTW(petsclib::PetscLibType, A::PetscMat, x::PetscVec, y::PetscVec) end
 
-@for_petsc function VecScatterPetscToFFTW(petsclib::$UnionPetscLib, A::Mat, x::PetscVec )
-	y_ = Ref{CVec}()
+@for_petsc function VecScatterPetscToFFTW(petsclib::$UnionPetscLib, A::PetscMat, x::PetscVec, y::PetscVec )
 
     @chk ccall(
                (:VecScatterPetscToFFTW, $petsc_library),
                PetscErrorCode,
-               (Mat, CVec, CVec),
-               A, x, y_,
+               (CMat, CVec, CVec),
+               A, x, y,
               )
 
-	y = PetscVec(y_[], petsclib)
 
-	return y
+	return nothing
 end 
 
 """
-	y::PetscVec = VecScatterFFTWToPetsc(petsclib::PetscLibType,A::Mat, x::PetscVec) 
+	VecScatterFFTWToPetsc(petsclib::PetscLibType,A::PetscMat, x::PetscVec, y::PetscVec) 
 Converts `MATFFTW` output vector to a PETSc vector.
 
 Collective
@@ -55,21 +60,19 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/VecScatterFFTWToPetsc"))
 """
-function VecScatterFFTWToPetsc(petsclib::PetscLibType, A::Mat, x::PetscVec) end
+function VecScatterFFTWToPetsc(petsclib::PetscLibType, A::PetscMat, x::PetscVec, y::PetscVec) end
 
-@for_petsc function VecScatterFFTWToPetsc(petsclib::$UnionPetscLib, A::Mat, x::PetscVec )
-	y_ = Ref{CVec}()
+@for_petsc function VecScatterFFTWToPetsc(petsclib::$UnionPetscLib, A::PetscMat, x::PetscVec, y::PetscVec )
 
     @chk ccall(
                (:VecScatterFFTWToPetsc, $petsc_library),
                PetscErrorCode,
-               (Mat, CVec, CVec),
-               A, x, y_,
+               (CMat, CVec, CVec),
+               A, x, y,
               )
 
-	y = PetscVec(y_[], petsclib)
 
-	return y
+	return nothing
 end 
 
 """
@@ -474,14 +477,14 @@ Input Parameters:
 - `flag` - turn the option on or off
 
 Supported Options:
-- ``VEC_IGNORE_OFF_PROC_ENTRIES`` - which causes `VecSetValues()` to ignore
+- `VEC_IGNORE_OFF_PROC_ENTRIES` - which causes `VecSetValues()` to ignore
 entries destined to be stored on a separate processor. This can be used
 to eliminate the global reduction in the `VecAssemblyBegin()` if you know
 that you have only used `VecSetValues()` to set local elements
-- ``VEC_IGNORE_NEGATIVE_INDICES`` - which means you can pass negative indices
+- `VEC_IGNORE_NEGATIVE_INDICES` - which means you can pass negative indices
 in ix in calls to `VecSetValues()` or `VecGetValues()`. These rows are simply
 ignored.
-- ``VEC_SUBSET_OFF_PROC_ENTRIES`` - which causes `VecAssemblyBegin()` to assume that the off-process
+- `VEC_SUBSET_OFF_PROC_ENTRIES` - which causes `VecAssemblyBegin()` to assume that the off-process
 entries will always be a subset (possibly equal) of the off-process entries set on the
 first assembly which had a true `VEC_SUBSET_OFF_PROC_ENTRIES` and the vector has not
 changed this flag afterwards. If this assembly is not such first assembly, then this
@@ -1387,7 +1390,7 @@ function VecStrideSumAll(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	s::Vector{PetscVec} = VecStrideGatherAll(petsclib::PetscLibType,v::PetscVec, addv::InsertMode) 
+	VecStrideGatherAll(petsclib::PetscLibType,v::PetscVec, s::Vector{PetscVec}, addv::InsertMode) 
 Gathers all the single components from a multi
 separate vectors.
 
@@ -1408,10 +1411,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideGatherAll"))
 """
-function VecStrideGatherAll(petsclib::PetscLibType, v::PetscVec, addv::InsertMode) end
+function VecStrideGatherAll(petsclib::PetscLibType, v::PetscVec, s::Vector{PetscVec}, addv::InsertMode) end
 
-@for_petsc function VecStrideGatherAll(petsclib::$UnionPetscLib, v::PetscVec, addv::InsertMode )
-	s = Vector{PetscVec}(undef, ni);  # CHECK SIZE!!
+@for_petsc function VecStrideGatherAll(petsclib::$UnionPetscLib, v::PetscVec, s::Vector{PetscVec}, addv::InsertMode )
 
     @chk ccall(
                (:VecStrideGatherAll, $petsc_library),
@@ -1421,11 +1423,11 @@ function VecStrideGatherAll(petsclib::PetscLibType, v::PetscVec, addv::InsertMod
               )
 
 
-	return s
+	return nothing
 end 
 
 """
-	v::PetscVec = VecStrideScatterAll(petsclib::PetscLibType,s::Vector{PetscVec}, addv::InsertMode) 
+	VecStrideScatterAll(petsclib::PetscLibType,s::Vector{PetscVec}, v::PetscVec, addv::InsertMode) 
 Scatters all the single components from separate vectors into
 a multi-component vector.
 
@@ -1446,25 +1448,23 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideScatterAll"))
 """
-function VecStrideScatterAll(petsclib::PetscLibType, s::Vector{PetscVec}, addv::InsertMode) end
+function VecStrideScatterAll(petsclib::PetscLibType, s::Vector{PetscVec}, v::PetscVec, addv::InsertMode) end
 
-@for_petsc function VecStrideScatterAll(petsclib::$UnionPetscLib, s::Vector{PetscVec}, addv::InsertMode )
-	v_ = Ref{CVec}()
+@for_petsc function VecStrideScatterAll(petsclib::$UnionPetscLib, s::Vector{PetscVec}, v::PetscVec, addv::InsertMode )
 
     @chk ccall(
                (:VecStrideScatterAll, $petsc_library),
                PetscErrorCode,
                (Ptr{CVec}, CVec, InsertMode),
-               s, v_, addv,
+               s, v, addv,
               )
 
-	v = PetscVec(v_[], petsclib)
 
-	return v
+	return nothing
 end 
 
 """
-	s::PetscVec = VecStrideGather(petsclib::PetscLibType,v::PetscVec, start::PetscInt, addv::InsertMode) 
+	VecStrideGather(petsclib::PetscLibType,v::PetscVec, start::PetscInt, s::PetscVec, addv::InsertMode) 
 Gathers a single component from a multi
 another vector.
 
@@ -1486,25 +1486,23 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideGather"))
 """
-function VecStrideGather(petsclib::PetscLibType, v::PetscVec, start::PetscInt, addv::InsertMode) end
+function VecStrideGather(petsclib::PetscLibType, v::PetscVec, start::PetscInt, s::PetscVec, addv::InsertMode) end
 
-@for_petsc function VecStrideGather(petsclib::$UnionPetscLib, v::PetscVec, start::$PetscInt, addv::InsertMode )
-	s_ = Ref{CVec}()
+@for_petsc function VecStrideGather(petsclib::$UnionPetscLib, v::PetscVec, start::$PetscInt, s::PetscVec, addv::InsertMode )
 
     @chk ccall(
                (:VecStrideGather, $petsc_library),
                PetscErrorCode,
                (CVec, $PetscInt, CVec, InsertMode),
-               v, start, s_, addv,
+               v, start, s, addv,
               )
 
-	s = PetscVec(s_[], petsclib)
 
-	return s
+	return nothing
 end 
 
 """
-	v::PetscVec = VecStrideScatter(petsclib::PetscLibType,s::PetscVec, start::PetscInt, addv::InsertMode) 
+	VecStrideScatter(petsclib::PetscLibType,s::PetscVec, start::PetscInt, v::PetscVec, addv::InsertMode) 
 Scatters a single component from a vector into a multi
 
 Collective
@@ -1525,25 +1523,23 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideScatter"))
 """
-function VecStrideScatter(petsclib::PetscLibType, s::PetscVec, start::PetscInt, addv::InsertMode) end
+function VecStrideScatter(petsclib::PetscLibType, s::PetscVec, start::PetscInt, v::PetscVec, addv::InsertMode) end
 
-@for_petsc function VecStrideScatter(petsclib::$UnionPetscLib, s::PetscVec, start::$PetscInt, addv::InsertMode )
-	v_ = Ref{CVec}()
+@for_petsc function VecStrideScatter(petsclib::$UnionPetscLib, s::PetscVec, start::$PetscInt, v::PetscVec, addv::InsertMode )
 
     @chk ccall(
                (:VecStrideScatter, $petsc_library),
                PetscErrorCode,
                (CVec, $PetscInt, CVec, InsertMode),
-               s, start, v_, addv,
+               s, start, v, addv,
               )
 
-	v = PetscVec(v_[], petsclib)
 
-	return v
+	return nothing
 end 
 
 """
-	s::PetscVec = VecStrideSubSetGather(petsclib::PetscLibType,v::PetscVec, nidx::PetscInt, idxv::Vector{PetscInt}, idxs::Vector{PetscInt}, addv::InsertMode) 
+	VecStrideSubSetGather(petsclib::PetscLibType,v::PetscVec, nidx::PetscInt, idxv::Vector{PetscInt}, idxs::Vector{PetscInt}, s::PetscVec, addv::InsertMode) 
 Gathers a subset of components from a multi
 another vector.
 
@@ -1567,25 +1563,23 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideSubSetGather"))
 """
-function VecStrideSubSetGather(petsclib::PetscLibType, v::PetscVec, nidx::PetscInt, idxv::Vector{PetscInt}, idxs::Vector{PetscInt}, addv::InsertMode) end
+function VecStrideSubSetGather(petsclib::PetscLibType, v::PetscVec, nidx::PetscInt, idxv::Vector{PetscInt}, idxs::Vector{PetscInt}, s::PetscVec, addv::InsertMode) end
 
-@for_petsc function VecStrideSubSetGather(petsclib::$UnionPetscLib, v::PetscVec, nidx::$PetscInt, idxv::Vector{$PetscInt}, idxs::Vector{$PetscInt}, addv::InsertMode )
-	s_ = Ref{CVec}()
+@for_petsc function VecStrideSubSetGather(petsclib::$UnionPetscLib, v::PetscVec, nidx::$PetscInt, idxv::Vector{$PetscInt}, idxs::Vector{$PetscInt}, s::PetscVec, addv::InsertMode )
 
     @chk ccall(
                (:VecStrideSubSetGather, $petsc_library),
                PetscErrorCode,
                (CVec, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, CVec, InsertMode),
-               v, nidx, idxv, idxs, s_, addv,
+               v, nidx, idxv, idxs, s, addv,
               )
 
-	s = PetscVec(s_[], petsclib)
 
-	return s
+	return nothing
 end 
 
 """
-	v::PetscVec = VecStrideSubSetScatter(petsclib::PetscLibType,s::PetscVec, nidx::PetscInt, idxs::Vector{PetscInt}, idxv::Vector{PetscInt}, addv::InsertMode) 
+	VecStrideSubSetScatter(petsclib::PetscLibType,s::PetscVec, nidx::PetscInt, idxs::Vector{PetscInt}, idxv::Vector{PetscInt}, v::PetscVec, addv::InsertMode) 
 Scatters components from a vector into a subset of components of a multi
 
 Collective
@@ -1608,21 +1602,19 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecStrideSubSetScatter"))
 """
-function VecStrideSubSetScatter(petsclib::PetscLibType, s::PetscVec, nidx::PetscInt, idxs::Vector{PetscInt}, idxv::Vector{PetscInt}, addv::InsertMode) end
+function VecStrideSubSetScatter(petsclib::PetscLibType, s::PetscVec, nidx::PetscInt, idxs::Vector{PetscInt}, idxv::Vector{PetscInt}, v::PetscVec, addv::InsertMode) end
 
-@for_petsc function VecStrideSubSetScatter(petsclib::$UnionPetscLib, s::PetscVec, nidx::$PetscInt, idxs::Vector{$PetscInt}, idxv::Vector{$PetscInt}, addv::InsertMode )
-	v_ = Ref{CVec}()
+@for_petsc function VecStrideSubSetScatter(petsclib::$UnionPetscLib, s::PetscVec, nidx::$PetscInt, idxs::Vector{$PetscInt}, idxv::Vector{$PetscInt}, v::PetscVec, addv::InsertMode )
 
     @chk ccall(
                (:VecStrideSubSetScatter, $petsc_library),
                PetscErrorCode,
                (CVec, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, CVec, InsertMode),
-               s, nidx, idxs, idxv, v_, addv,
+               s, nidx, idxs, idxv, v, addv,
               )
 
-	v = PetscVec(v_[], petsclib)
 
-	return v
+	return nothing
 end 
 
 """
@@ -1929,7 +1921,7 @@ function VecScatterDestroy(petsclib::PetscLibType, sf::VecScatter) end
 end 
 
 """
-	newsf::VecScatter = VecScatterCopy(petsclib::PetscLibType,sf::VecScatter) 
+	VecScatterCopy(petsclib::PetscLibType,sf::VecScatter, newsf::VecScatter) 
 Makes a copy of a scatter context.
 
 Collective
@@ -1947,21 +1939,19 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecScatterCopy"))
 """
-function VecScatterCopy(petsclib::PetscLibType, sf::VecScatter) end
+function VecScatterCopy(petsclib::PetscLibType, sf::VecScatter, newsf::VecScatter) end
 
-@for_petsc function VecScatterCopy(petsclib::$UnionPetscLib, sf::VecScatter )
-	newsf_ = Ref{VecScatter}()
+@for_petsc function VecScatterCopy(petsclib::$UnionPetscLib, sf::VecScatter, newsf::VecScatter )
 
     @chk ccall(
                (:VecScatterCopy, $petsc_library),
                PetscErrorCode,
                (VecScatter, Ptr{VecScatter}),
-               sf, newsf_,
+               sf, newsf,
               )
 
-	newsf = newsf_[]
 
-	return newsf
+	return nothing
 end 
 
 """
@@ -2414,6 +2404,98 @@ function VecStepMax(petsclib::PetscLibType, X::PetscVec, DX::PetscVec) end
 end 
 
 """
+	VecsDestroy(petsclib::PetscLibType,x::Vecs) 
+
+# External Links
+$(_doc_external("Vec/VecsDestroy"))
+"""
+function VecsDestroy(petsclib::PetscLibType, x::Vecs) end
+
+@for_petsc function VecsDestroy(petsclib::$UnionPetscLib, x::Vecs )
+
+    @chk ccall(
+               (:VecsDestroy, $petsc_library),
+               PetscErrorCode,
+               (Vecs,),
+               x,
+              )
+
+
+	return nothing
+end 
+
+"""
+	x::Vecs = VecsCreateSeq(petsclib::PetscLibType,comm::MPI_Comm, p::PetscInt, m::PetscInt) 
+
+# External Links
+$(_doc_external("Vec/VecsCreateSeq"))
+"""
+function VecsCreateSeq(petsclib::PetscLibType, comm::MPI_Comm, p::PetscInt, m::PetscInt) end
+
+@for_petsc function VecsCreateSeq(petsclib::$UnionPetscLib, comm::MPI_Comm, p::$PetscInt, m::$PetscInt )
+	x_ = Ref{Vecs}()
+
+    @chk ccall(
+               (:VecsCreateSeq, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, Ptr{Vecs}),
+               comm, p, m, x_,
+              )
+
+	x = x_[]
+
+	return x
+end 
+
+"""
+	a::PetscScalar,x::Vecs = VecsCreateSeqWithArray(petsclib::PetscLibType,comm::MPI_Comm, p::PetscInt, m::PetscInt) 
+
+# External Links
+$(_doc_external("Vec/VecsCreateSeqWithArray"))
+"""
+function VecsCreateSeqWithArray(petsclib::PetscLibType, comm::MPI_Comm, p::PetscInt, m::PetscInt) end
+
+@for_petsc function VecsCreateSeqWithArray(petsclib::$UnionPetscLib, comm::MPI_Comm, p::$PetscInt, m::$PetscInt )
+	a_ = Ref{$PetscScalar}()
+	x_ = Ref{Vecs}()
+
+    @chk ccall(
+               (:VecsCreateSeqWithArray, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, $PetscInt, $PetscInt, Ptr{$PetscScalar}, Ptr{Vecs}),
+               comm, p, m, a_, x_,
+              )
+
+	a = a_[]
+	x = x_[]
+
+	return a,x
+end 
+
+"""
+	y::Vecs = VecsDuplicate(petsclib::PetscLibType,x::Vecs) 
+
+# External Links
+$(_doc_external("Vec/VecsDuplicate"))
+"""
+function VecsDuplicate(petsclib::PetscLibType, x::Vecs) end
+
+@for_petsc function VecsDuplicate(petsclib::$UnionPetscLib, x::Vecs )
+	y_ = Ref{Vecs}()
+
+    @chk ccall(
+               (:VecsDuplicate, $petsc_library),
+               PetscErrorCode,
+               (Vecs, Ptr{Vecs}),
+               x, y_,
+              )
+
+	y = y_[]
+
+	return y
+end 
+
+"""
 	VecSetValuesSection(petsclib::PetscLibType,v::PetscVec, s::PetscSection, point::PetscInt, values::Vector{PetscScalar}, mode::InsertMode) 
 Sets all the values associated with a given point, according to the section, in the given `Vec`
 
@@ -2449,7 +2531,7 @@ function VecSetValuesSection(petsclib::PetscLibType, v::PetscVec, s::PetscSectio
 end 
 
 """
-	VecSetDM(petsclib::PetscLibType,v::PetscVec, dm::DM) 
+	VecSetDM(petsclib::PetscLibType,v::PetscVec, dm::PetscDM) 
 Sets the `DM` defining the data layout of the vector.
 
 Not Collective
@@ -2472,14 +2554,14 @@ See also:
 # External Links
 $(_doc_external("Dm/VecSetDM"))
 """
-function VecSetDM(petsclib::PetscLibType, v::PetscVec, dm::DM) end
+function VecSetDM(petsclib::PetscLibType, v::PetscVec, dm::PetscDM) end
 
-@for_petsc function VecSetDM(petsclib::$UnionPetscLib, v::PetscVec, dm::DM )
+@for_petsc function VecSetDM(petsclib::$UnionPetscLib, v::PetscVec, dm::PetscDM )
 
     @chk ccall(
                (:VecSetDM, $petsc_library),
                PetscErrorCode,
-               (CVec, DM),
+               (CVec, CDM),
                v, dm,
               )
 
@@ -2488,7 +2570,7 @@ function VecSetDM(petsclib::PetscLibType, v::PetscVec, dm::DM) end
 end 
 
 """
-	FB::PetscVec = VecSFischer(petsclib::PetscLibType,X::PetscVec, F::PetscVec, L::PetscVec, U::PetscVec, mu::PetscReal) 
+	VecSFischer(petsclib::PetscLibType,X::PetscVec, F::PetscVec, L::PetscVec, U::PetscVec, mu::PetscReal, FB::PetscVec) 
 Evaluates the Smoothed Fischer
 complementarity problems.
 
@@ -2509,21 +2591,19 @@ Output Parameter:
 # External Links
 $(_doc_external("Tao/VecSFischer"))
 """
-function VecSFischer(petsclib::PetscLibType, X::PetscVec, F::PetscVec, L::PetscVec, U::PetscVec, mu::PetscReal) end
+function VecSFischer(petsclib::PetscLibType, X::PetscVec, F::PetscVec, L::PetscVec, U::PetscVec, mu::PetscReal, FB::PetscVec) end
 
-@for_petsc function VecSFischer(petsclib::$UnionPetscLib, X::PetscVec, F::PetscVec, L::PetscVec, U::PetscVec, mu::$PetscReal )
-	FB_ = Ref{CVec}()
+@for_petsc function VecSFischer(petsclib::$UnionPetscLib, X::PetscVec, F::PetscVec, L::PetscVec, U::PetscVec, mu::$PetscReal, FB::PetscVec )
 
     @chk ccall(
                (:VecSFischer, $petsc_library),
                PetscErrorCode,
                (CVec, CVec, CVec, CVec, $PetscReal, CVec),
-               X, F, L, U, mu, FB_,
+               X, F, L, U, mu, FB,
               )
 
-	FB = PetscVec(FB_[], petsclib)
 
-	return FB
+	return nothing
 end 
 
 """

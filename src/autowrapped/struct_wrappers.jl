@@ -158,9 +158,9 @@ mutable struct PetscStack
 end 
 
 mutable struct JacActionCtx
-    dm::DM
+    dm::PetscDM
     u::PetscVec
-    J::Mat
+    J::PetscMat
     user::Ptr{Cvoid}
     JacActionCtx() = new()
 end 
@@ -208,7 +208,7 @@ mutable struct PetscSFNode
 end 
 
 mutable struct DMDALocalInfo
-    da::DM
+    da::PetscDM
     dim::PetscInt 
     dof::PetscInt 
     sw::PetscInt 

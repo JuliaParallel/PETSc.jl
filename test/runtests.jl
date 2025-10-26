@@ -29,10 +29,10 @@ if do_mpi
 #    include("mpi_examples.jl")
 end
 
-#include("options.jl")
 include("vec.jl")           # autowrapped
+include("mat.jl")           # autowrapped
 
-#include("mat.jl")           # not yet autowrapped!
+#include("options.jl")
 #include("matshell.jl")      # not yet autowrapped!
 #include("dmda.jl")          # not yet autowrapped!
 #include("dmstag.jl")        # mostly autowrapped

@@ -7223,13 +7223,13 @@ $(_doc_external("Mat/MatIsHermitian"))
 """
 function MatIsHermitian(petsclib::PetscLibType, A::PetscMat, tol::PetscReal) end
 
-@for_petsc function MatIsHermitian(petsclib::$UnionPetscLib, A::PetscMat, tol::$PetscReal )
+@for_petsc function MatIsHermitian(petsclib::$UnionPetscLib, A::PetscMat, tol::$PetscScalar )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
                (:MatIsHermitian, $petsc_library),
                PetscErrorCode,
-               (CMat, $PetscReal, Ptr{PetscBool}),
+               (CMat, $PetscScalar, Ptr{PetscBool}),
                A, tol, flg_,
               )
 

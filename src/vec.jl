@@ -24,6 +24,7 @@ end
 # Array interface - size and length
 Base.size(v::PetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecGetSize(PetscLib,v)
 Base.length(v::PetscVec{PetscLib}) where {PetscLib} = prod(size(v))
+Base.lastindex(v::PetscVec{PetscLib}) where {PetscLib} = length(v)
 type(m::PetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecGetType(PetscLib,m)
 
 function Base.getindex(v::PetscVec{PetscLib}, i::Integer) where {PetscLib} 

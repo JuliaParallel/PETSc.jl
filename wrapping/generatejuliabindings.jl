@@ -19,7 +19,7 @@ isopaque(a::Py) = pyconvert(Bool,a.opaque)
 petsc_dir = "/Users/kausb/Downloads/petsc"
 start_dir = pwd()
 
-const CustomTypes = ["PetscVec","PetscMat","PetscDM", "PetscKSP", "PetscSNES"]
+const CustomTypes = ["PetscVec","PetscMat","PetscDM", "PetscKSP", "PetscSNES","PetscOptions"]
 
 # Remove entry from vector of strings
 remove_entry(x::Vector{String}, entry::String) = filter!(y -> y != entry, x)
@@ -132,14 +132,14 @@ function init_extract_parameters(typename::String, name::String, function_name::
     @show function_name, typename, name, isarray, isoutput, stars
     if !isarray && isoutput && typename in CustomTypes
         # a custom type is being initialized
-        typename_c  = replace(typename,"Petsc"=>"C")
+        typename_c  = replace(typename,"Petsc"=>"C", count=1)
         name_ccall  = "$(name)_"
         init_arg    = "$name_ccall = Ref{$typename_c}()"  
         extract_arg = "$name = $typename($(name_ccall)[], petsclib)"  
 
     elseif !isarray && !isoutput && stars==1 && typename in CustomTypes
         # a custom type is being deleted most likely
-        typename_c  = replace(typename,"Petsc"=>"C")
+        typename_c  = replace(typename,"Petsc"=>"C", count=1)
         name_ccall  = "$(name)_"
         init_arg    = "$name_ccall = Ref($(name).ptr)"  
         extract_arg = "$(name).ptr = C_NULL"  
@@ -237,7 +237,7 @@ function func_args(a::Py, function_name::String, input_vars=String[], output_var
     # this is related to creating custom julia structs
     typename_ccall = typename
     if typename in CustomTypes
-        typename_ccall = replace(typename_ccall,"Petsc"=>"C")
+        typename_ccall = replace(typename_ccall,"Petsc"=>"C", count=1)
     end
     
     if stars==1
@@ -257,7 +257,12 @@ function func_args(a::Py, function_name::String, input_vars=String[], output_var
     if isarray
         # in case parameters are arrays
        # init_arg, extract_arg, name_ccall = init_extract_parameters(typename, name, name_ccall, isarray, output) 
-        typename     = "Vector{$typename}" 
+       if typename=="Cchar"  
+           typename     = "String" 
+       else
+           typename     = "Vector{$typename}" 
+       end
+
         ccall_str    = "Ptr{$ccall_str}"
     end
 
@@ -787,13 +792,14 @@ exclude=["PetscHTTPSRequest",
          ]
 
 =#
-exclude=["LandauKokkosJacobian","LandauKokkosDestroyMatMaps","LandauKokkosStaticDataSet","LandauKokkosStaticDataClear"]
-write_functions_to_file("Sys_wrappers.jl", start_dir, funcs, exclude=exclude)
+#exclude=["LandauKokkosJacobian","LandauKokkosDestroyMatMaps","LandauKokkosStaticDataSet","LandauKokkosStaticDataClear"]
+#write_functions_to_file("Sys_wrappers.jl", start_dir, funcs, exclude=exclude)
 
 # Write Vec functions to file (this should be expanded to all other classes)
 exclude=[""]
 #write_functions_from_classes_to_file("Vec_wrappers.jl",start_dir, classes, "Vec", exclude=exclude)     
 #write_functions_from_classes_to_file("Vecs_wrappers.jl",start_dir, classes, "Vecs", exclude=exclude)     
+write_functions_from_classes_to_file("PetscOptions_wrappers.jl",start_dir, classes, "PetscOptions", exclude=exclude)     
 
 #exclude=["MatSolves","MatCreateVecs","MatCreateVecsFFTW"]
 #exclude=[""]

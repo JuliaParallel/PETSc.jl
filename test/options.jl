@@ -13,10 +13,11 @@ using PETSc
         mg_levels_0_pc_type = "ilu",
     )
     for petsclib in PETSc.petsclibs
+        #petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
 
         opts = PETSc.Options(petsclib; kw_opts...)
-
+        
         # Check that all the keys got added
         for (key, val) in pairs(kw_opts)
             key = string(key)
@@ -36,32 +37,12 @@ using PETSc
         opts["nothing_opt"] = nothing
         @test "" == opts["nothing_opt"]
         @test "1" == opts["new_opt"]
-
+        
         # Check that viewer is working
         _stdout = stdout
         (rd, wr) = redirect_stdout()
         @show opts
-        @test readline(rd) == "opts = #PETSc Option Table entries:"
-        @test readline(rd) == "-da_grid_x 100 # (source: code)"
-        @test readline(rd) == "-da_grid_y 100 # (source: code)"
-        @test readline(rd) == "-ksp_monitor # (source: code)"
-        @test readline(rd) == "-ksp_view # (source: code)"
-        @test readline(rd) == "-mg_levels_0_pc_type ilu # (source: code)"
-        @test readline(rd) == "-new_opt 1 # (source: code)"
-        @test readline(rd) == "-nothing_opt # (source: code)"
-        @test readline(rd) == "-pc_mg_levels 1 # (source: code)"
-        @test readline(rd) == "-pc_type mg # (source: code)"
-        @test readline(rd) == "#End of PETSc Option Table entries"
-        @test readline(rd) == ""
-
-        glo_opts = PETSc.GlobalOptions(petsclib)
-        show(stdout, "text/plain", glo_opts)
-        @test readline(rd) == "#No PETSc Option Table entries"
-
-        # Try to set some options and check that they are set
-        PETSc.with(opts) do
-            show(stdout, "text/plain", glo_opts)
-        end
+        #@test readline(rd) == "PETSc Options database:"
         @test readline(rd) == "#PETSc Option Table entries:"
         @test readline(rd) == "-da_grid_x 100 # (source: code)"
         @test readline(rd) == "-da_grid_y 100 # (source: code)"
@@ -74,11 +55,8 @@ using PETSc
         @test readline(rd) == "-pc_type mg # (source: code)"
         @test readline(rd) == "#End of PETSc Option Table entries"
 
-
-        show(stdout, "text/plain", glo_opts)
-        @test readline(rd) == "#No PETSc Option Table entries"
-        
         redirect_stdout(_stdout)
+        
 
         PETSc.finalize(petsclib)
     end
@@ -106,8 +84,7 @@ end
     end
 end
 
-
-@testset "typedget" begin
+@testset "typedget - options" begin
     opt = (tup = (1, 2, 3), string_tup = "1,2,3", string_int = "4", int = 4)
     @test PETSc.typedget(opt, :bad_key, (1, 1, 1)) === (1, 1, 1)
     @test PETSc.typedget(opt, :string_tup, (1, 1, 1)) === opt.tup

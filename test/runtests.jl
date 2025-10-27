@@ -31,8 +31,8 @@ end
 
 include("vec.jl")           # autowrapped
 include("mat.jl")           # autowrapped
+include("options.jl")       # autowrapped
 
-#include("options.jl")
 #include("matshell.jl")      # not yet autowrapped!
 #include("dmda.jl")          # not yet autowrapped!
 #include("dmstag.jl")        # mostly autowrapped

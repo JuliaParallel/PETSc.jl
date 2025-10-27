@@ -25,9 +25,23 @@ const MPIU_INT64 = MPI.UINT64_T
 const MPIU_INT32 = MPI.UINT32_T
 
 # We know these will be Cvoid, so just set them to be that
-const PetscOptions = Ptr{Cvoid}
+#const PetscOptions = Ptr{Cvoid}
+#mutable struct _n_PetscOptions end
+#const PetscOptions = Ptr{_n_PetscOptions}
+
+
 const PetscViewer = Ptr{Cvoid}
 const PetscObject = Ptr{Cvoid}
+
+
+#const VecType = Cstring
+#const Mat = Ptr{Cvoid}
+#const MatType = Cstring
+#const KSP = Ptr{Cvoid}
+#const KSPType = Cstring
+#const SNES = Ptr{Cvoid}
+#const SNESType = Cstring
+#const DM = Ptr{Cvoid}
 const PetscDLHandle = Ptr{Cvoid}
 
 
@@ -181,6 +195,28 @@ function Base.show(io::IO, v::AbstractPetscDM{PetscLib}) where {PetscLib}
 end
 # ------------------------------------------------------
 
+# ------------------------------------------------------
+# PetscOptions
+const COptions = Ptr{Cvoid} 
+abstract type AbstractPetscOptions{T} end
+
+mutable struct PetscOptions{PetscLib} <: AbstractPetscOptions{PetscLib}
+    ptr::Ptr{Cvoid}
+    
+    PetscOptions{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
+end
+
+# Convenience constructors
+PetscOptions(lib::PetscLib) where {PetscLib} = PetscOptions{PetscLib}()
+PetscOptions(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = PetscOptions{PetscLib}(ptr)
+
+# Conversion methods
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = v.ptr
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = v.ptr
+# ------------------------------------------------------
+
+
+
 # Stuff that I don't really want to define by hand, but seem to not be part of the petsc python interface?
 mutable struct _p_PetscSF end
 const PetscSF = Ptr{_p_PetscSF}
@@ -226,7 +262,11 @@ const PetscLogRegistry = Ptr{_n_PetscLogRegistry}
 
 mutable struct _n_PetscIntStack end
 const PetscIntStack = Ptr{_n_PetscIntStack}
+#const PetscLogClass = Cint
 
+#mutable struct _p_PetscLogHandler end
+#const PetscLogHandler = Ptr{_p_PetscLogHandler}
+#const PetscLogHandlerType = Ptr{Cchar}
 mutable struct _n_PetscLogState
     registry::PetscLogRegistry
     active::PetscBT
@@ -238,6 +278,15 @@ mutable struct _n_PetscLogState
     _n_PetscLogState() = new()
 end
 const PetscLogState = Ptr{_n_PetscLogState}
+
+#mutable struct _n_PetscLayout end
+#const PetscLayout = Ptr{_n_PetscLayout}
+#
+#mutable struct _p_PetscQuadrature end
+#const PetscQuadrature = Ptr{_p_PetscQuadrature}
+#
+#mutable struct _p_PetscRandom end
+#const PetscRandom = Ptr{_p_PetscRandom}
 
 @enum KSPConvergedReason::Int32 begin
     KSP_CONVERGED_RTOL_NORMAL = 1
@@ -322,6 +371,7 @@ include("Sys_wrappers.jl")
 include("Vec_wrappers.jl")
 include("Vecs_wrappers.jl")
 include("Mat_wrappers.jl")
+include("PetscOptions_wrappers.jl")
 #include("KSP_wrappers.jl")
 
 

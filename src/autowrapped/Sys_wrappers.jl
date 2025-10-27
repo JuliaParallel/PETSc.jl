@@ -7951,10 +7951,9 @@ function PetscInfoSetFromOptions(petsclib::PetscLibType, options::PetscOptions) 
     @chk ccall(
                (:PetscInfoSetFromOptions, $petsc_library),
                PetscErrorCode,
-               (PetscOptions,),
+               (COptions,),
                options,
               )
-
 
 	return nothing
 end 

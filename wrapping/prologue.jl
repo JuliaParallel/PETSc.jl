@@ -25,7 +25,11 @@ const MPIU_INT64 = MPI.UINT64_T
 const MPIU_INT32 = MPI.UINT32_T
 
 # We know these will be Cvoid, so just set them to be that
-const PetscOptions = Ptr{Cvoid}
+#const PetscOptions = Ptr{Cvoid}
+#mutable struct _n_PetscOptions end
+#const PetscOptions = Ptr{_n_PetscOptions}
+
+
 const PetscViewer = Ptr{Cvoid}
 const PetscObject = Ptr{Cvoid}
 
@@ -191,6 +195,28 @@ function Base.show(io::IO, v::AbstractPetscDM{PetscLib}) where {PetscLib}
 end
 # ------------------------------------------------------
 
+# ------------------------------------------------------
+# PetscOptions
+const COptions = Ptr{Cvoid} 
+abstract type AbstractPetscOptions{T} end
+
+mutable struct PetscOptions{PetscLib} <: AbstractPetscOptions{PetscLib}
+    ptr::Ptr{Cvoid}
+    
+    PetscOptions{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
+end
+
+# Convenience constructors
+PetscOptions(lib::PetscLib) where {PetscLib} = PetscOptions{PetscLib}()
+PetscOptions(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = PetscOptions{PetscLib}(ptr)
+
+# Conversion methods
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = v.ptr
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = v.ptr
+# ------------------------------------------------------
+
+
+
 # Stuff that I don't really want to define by hand, but seem to not be part of the petsc python interface?
 mutable struct _p_PetscSF end
 const PetscSF = Ptr{_p_PetscSF}
@@ -231,11 +257,11 @@ const PetscProbFn = Ptr{Cvoid}
 const PetscBT = Ptr{Cchar}
 
 # required in Sys_wrappers
-#mutable struct _n_PetscLogRegistry end
-#const PetscLogRegistry = Ptr{_n_PetscLogRegistry}
+mutable struct _n_PetscLogRegistry end
+const PetscLogRegistry = Ptr{_n_PetscLogRegistry}
 
-#mutable struct _n_PetscIntStack end
-#const PetscIntStack = Ptr{_n_PetscIntStack}
+mutable struct _n_PetscIntStack end
+const PetscIntStack = Ptr{_n_PetscIntStack}
 #const PetscLogClass = Cint
 
 #mutable struct _p_PetscLogHandler end
@@ -345,6 +371,7 @@ include("Sys_wrappers.jl")
 include("Vec_wrappers.jl")
 include("Vecs_wrappers.jl")
 include("Mat_wrappers.jl")
+include("PetscOptions_wrappers.jl")
 #include("KSP_wrappers.jl")
 
 

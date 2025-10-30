@@ -63,7 +63,11 @@ mutable struct MatStencil
     i::PetscInt 
     c::PetscInt 
     
+    # Default constructor
     MatStencil() = new()
+    
+    # Constructor with all 4 values
+    MatStencil(k::Integer, j::Integer, i::Integer, c::Integer) = new(PetscInt(k), PetscInt(j), PetscInt(i), PetscInt(c))
 end 
 
 mutable struct MatInfo

@@ -38,7 +38,7 @@ comm = MPI.COMM_WORLD
         # get values from PETSc vector (note 0-based indexing)
         indices = PetscInt.([8,9]) # in 0-based indexing! 
         vals = zeros(PetscScalar, length(indices))
-        vals = LibPETSc.VecGetValues(petsclib,v3,PetscInt(length(indices)), indices)
+        vals =LibPETSc.VecGetValues(petsclib,v3,PetscInt(length(indices)), indices)
         @test vals == x3[9:10]
 
         # create a duplicate vector 

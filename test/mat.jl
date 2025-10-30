@@ -1,7 +1,7 @@
 using Test
 using PETSc, MPI
 using LinearAlgebra: norm, mul!, Adjoint, Transpose, issymmetric, ishermitian
-using SparseArrays: sprand
+using SparseArrays: sprand, spdiagm
 using Random
 
 MPI.Initialized() || MPI.Init()
@@ -166,6 +166,27 @@ end
 
         @test sum(A[:,:] - Ajl) == 0.0
         #@test all(A * x .≈ Ajl * x)
+
+        PETSc.finalize(petsclib)
+    end
+end
+
+@testset "MatSeqAIJ_Sparse" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt = petsclib.PetscInt
+        n = 10
+
+        A_sp = spdiagm(
+            -1 => ones(PetscScalar, n - 1),
+            0 => -2ones(PetscScalar, n),
+            1 => ones(PetscScalar, n - 1),
+        )
+
+        A = PETSc.MatCreateSeqAIJ(petsclib, comm, A_sp)
+       
+        @test sum(A[1:10,1:10] - Matrix(A_sp)) == 0.0 == 0.0
 
         PETSc.finalize(petsclib)
     end

@@ -28,6 +28,8 @@ include("init.jl")
 include("vec.jl")       
 include("mat.jl")          
 include("options.jl")
+include("ksp.jl")
+include("sys.jl")
 
 #=
 include("utils.jl")

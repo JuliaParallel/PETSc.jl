@@ -119,16 +119,7 @@ PetscKSP(ptr::CKSP, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscKSP{Pet
 Base.convert(::Type{CKSP}, v::AbstractPetscKSP) = v.ptr
 Base.unsafe_convert(::Type{CKSP}, v::AbstractPetscKSP) = v.ptr
 
-# Custom display for REPL
-function Base.show(io::IO, v::AbstractPetscKSP{PetscLib}) where {PetscLib}
-    if v.ptr == C_NULL
-        print(io, "PETSc KSP (null pointer)")
-        return
-    else
-        print(io, "PETSc KSP object")
-    end
-    return nothing
-end
+
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc SNES -----
@@ -230,27 +221,31 @@ mutable struct PetscDraw end
 mutable struct DMLabel end
 mutable struct TSMonitorLGCtx end
 mutable struct PetscCtxDestroyFn end
+mutable struct PetscErrorCodeFn end
 
 # stuff I need to define to get PETSc.jl to load with "using". We need to find a real solution
-mutable struct KSPConvergedReasonViewFn end
-mutable struct PC end
-mutable struct KSPMonitorFn end
-mutable struct KSPConvergenceTestFn end
-mutable struct KSPComputeOperatorsFn end
-mutable struct KSPComputeRHSFn end
-mutable struct KSPComputeInitialGuessFn end
-mutable struct PeCtx end
-mutable struct KSPPSolveFn end
+#mutable struct KSPConvergedReasonViewFn end
+#mutable struct PC end
+mutable struct _n_PC end
+const PC = Ptr{_n_PC}
+
+#mutable struct KSPMonitorFn end
+#mutable struct KSPConvergenceTestFn end
+#mutable struct KSPComputeOperatorsFn end
+#mutable struct KSPComputeRHSFn end
+#mutable struct KSPComputeInitialGuessFn end
+#mutable struct PeCtx end
+#mutable struct KSPPSolveFn end
 mutable struct MatHtoolKernelFn end
 
 
 const PetscObject = Ptr{Cvoid}
 const external = Ptr{Cvoid}
-const KSPMonitorRegisterFn = Ptr{Cvoid}
-const KSPMonitorRegisterCreateFn = Ptr{Cvoid}
-const KSPMonitorRegisterDestroyFn = Ptr{Cvoid}
-const KSPGuess = Ptr{Cvoid}
-const KSPFlexibleModifyPCFn = Ptr{Cvoid}
+#const KSPMonitorRegisterFn = Ptr{Cvoid}
+#const KSPMonitorRegisterCreateFn = Ptr{Cvoid}
+#const KSPMonitorRegisterDestroyFn = Ptr{Cvoid}
+#const KSPGuess = Ptr{Cvoid}
+#const KSPFlexibleModifyPCFn = Ptr{Cvoid}
 const PetscVoidFn = Cvoid
 const PetscProbFn = Ptr{Cvoid}
 
@@ -372,6 +367,7 @@ include("Vec_wrappers.jl")
 include("Vecs_wrappers.jl")
 include("Mat_wrappers.jl")
 include("PetscOptions_wrappers.jl")
-#include("KSP_wrappers.jl")
+include("KSP_wrappers.jl")
+include("PetscObject_wrappers.jl")
 
 

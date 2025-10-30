@@ -19,6 +19,43 @@ Base.ndims(m::AbstractPetscMat{PetscLib}) where {PetscLib} = length(LibPETSc.Mat
 type(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetType(PetscLib,m)
 Base.axes(m::PetscMat{PetscLib}, i::Integer) where {PetscLib} = Base.OneTo(Base.size(m)[i])
 
+
+"""
+    M::PetscMat = MatCreateSeqAIJ(petsclib, comm, S)
+
+Creates a PetscMat object from a Julia SparseMatrixCSC `S` in sequential AIJ format.
+
+"""
+function MatCreateSeqAIJ(petsclib, comm, S::SparseMatrixCSC{PetscScalar})   where {PetscScalar}
+
+    PetscInt = petsclib.PetscInt
+
+    # Set values from sparse matrix into PETSc Mat
+    m, n = size(S)
+    
+    # Calculate non-zeros per row
+    nnz = zeros(PetscInt, m)
+
+    for r in S.rowval
+        nnz[r] += 1
+    end
+    M = LibPETSc.MatCreateSeqAIJ(petsclib, comm, 
+                PetscInt(m), 
+                PetscInt(n), 
+                PetscInt(0), nnz)
+
+    for j in 1:n
+        for ii in S.colptr[j]:(S.colptr[j + 1] - 1)
+            i = S.rowval[ii]
+            M[i, j] = S.nzval[ii]
+        end
+    end
+    assemble!(M)
+    return M
+end
+
+
+
 # Matrix indexing - set single value
 function Base.setindex!(m::AbstractPetscMat{PetscLib}, val, i::Integer, j::Integer) where {PetscLib}
     PetscInt = inttype(PetscLib)
@@ -201,7 +238,7 @@ end
 
 
 LinearAlgebra.norm(M::PetscMat{PetscLib}, normtype::NormType = NORM_FROBENIUS) where {PetscLib} = LibPETSc.MatNorm(PetscLib, M, normtype)
-function LinearAlgebra.mul!(y::PetscVec{PetscLib},M::PetscMat{PetscLib},x::PetscVec{PetscLib}) where {PetscLib} 
+function LinearAlgebra.mul!(y::PetscVec{PetscLib},M::AbstractPetscMat{PetscLib},x::PetscVec{PetscLib}) where {PetscLib} 
     LibPETSc.MatMult(PetscLib, M, x, y)
     return nothing
 end
@@ -322,7 +359,7 @@ function LinearAlgebra.mul!(
     y::PetscVec{PetscLib},
     M::Transpose{PetscScalar, AM},
     x::PetscVec{PetscLib},
-) where {PetscLib, PetscScalar, AM <: PetscMat{PetscLib}}
+) where {PetscLib, PetscScalar, AM <: AbstractPetscMat{PetscLib}}
     LibPETSc.MatMultTranspose(PetscLib, parent(M), x, y)
     return y
 end
@@ -341,3 +378,163 @@ function Base.copyto!(
         end
     end
 end
+
+
+# ====
+
+
+"""
+    MatShell(
+        petsclib::PetscLib,
+        obj::OType,
+        comm::MPI.Comm,
+        local_rows,
+        local_cols,
+        global_rows = LibPETSc.PETSC_DECIDE,
+        global_cols = LibPETSc.PETSC_DECIDE,
+    )
+
+Create a `global_rows X global_cols` PETSc shell matrix object wrapping `obj`
+with local size `local_rows X local_cols`.
+
+The `obj` will be registered as an `MATOP_MULT` function and if if `obj` is a
+`Function`, then the multiply action `obj(y,x)`; otherwise it calls `mul!(y,
+obj, x)`.
+
+if `comm == MPI.COMM_SELF` then the garbage connector can finalize the object,
+otherwise the user is responsible for calling [`destroy`](@ref).
+
+# External Links
+$(_doc_external("Mat/MatCreateShell"))
+$(_doc_external("Mat/MatShellSetOperation"))
+$(_doc_external("Mat/MATOP_MULT"))
+"""
+mutable struct MatShell{PetscLib, OType} <:
+               AbstractPetscMat{PetscLib}
+    ptr::CMat
+    obj::OType
+end
+
+struct MatOp{PetscLib, Op} end
+
+function (::MatOp{PetscLib, LibPETSc.MATOP_MULT})(
+            M::CMat,
+            cx::CVec,
+            cy::CVec,
+        ) where {PetscLib}
+    r_ctx = Ref{Ptr{Cvoid}}()
+    LibPETSc.MatShellGetContext(PetscLib, M, r_ctx)
+    ptr = r_ctx[]
+    mat = unsafe_pointer_to_objref(ptr)
+
+    PetscScalar = PetscLib.PetscScalar
+    x = VecPtr(PetscLib, cx, false)
+    y = VecPtr(PetscLib, cy, false)
+
+    _mul!(y, mat, x)
+
+    return PetscInt(0)
+end
+
+function _mul!(
+    y,
+    mat::MatShell{PetscLib, F},
+    x,
+) where {PetscLib, F <: Function}
+    mat.obj(y, x)
+end
+
+function _mul!(y, mat::MatShell, x)
+    LinearAlgebra.mul!(y, mat.obj, x)
+end
+
+
+# NOTE: MatShell remains work in progress - doesn't function yet
+# We have to use the macro here because of the @cfunction
+LibPETSc.@for_petsc function MatShell(
+    petsclib::$PetscLib,
+    obj::OType,
+    comm::MPI.Comm,
+    local_rows,
+    local_cols,
+    global_rows = LibPETSc.PETSC_DECIDE,
+    global_cols = LibPETSc.PETSC_DECIDE,
+) where {OType}
+    mat = MatShell{$PetscLib, OType}(C_NULL, obj)
+
+    # we use the MatShell object itself
+    ctx = pointer_from_objref(mat)
+
+#=
+    ccall(
+        (:MatCreateShell, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (
+            LibPETSc.MPI_Comm,
+            $PetscInt,
+            $PetscInt,
+            $PetscInt,
+            $PetscInt,
+            Ptr{Cvoid},
+            Ptr{CMat},
+        ),
+        comm,
+        local_rows,
+        local_cols,
+        global_rows,
+        global_cols,
+        pointer_from_objref(mat),
+        A_,
+    )
+=#
+    A_ = Ref{CMat}()
+    ccall(
+               (:MatCreateShell, $petsc_library),
+               LibPETSc.PetscErrorCode,
+               (LibPETSc.MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}, Ptr{CMat}),
+               comm, local_rows, local_cols, global_rows, global_cols, ctx, A_,
+              )
+
+    mat.ptr = A_[]  
+
+    #=
+     LibPETSc.MatCreateShell(
+        petsclib,
+        comm,
+        local_rows,
+        local_cols,
+        global_rows,
+        global_cols,
+        pointer_from_objref(mat),
+        mat,
+    )
+
+
+    mat = LibPETSc.MatCreateShell(
+        petsclib,
+        comm,
+        local_rows,
+        local_cols,
+        global_rows,
+        global_cols,
+        pointer_from_objref(mat),
+    )
+    =#
+  
+    mulptr = @cfunction(
+        MatOp{$PetscLib, LibPETSc.MATOP_MULT}(),
+        $PetscInt,
+        (CMat, CVec, CVec)
+    )
+
+    LibPETSc.MatShellSetOperation(petsclib, mat, LibPETSc.MATOP_MULT, mulptr)
+
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, mat)
+    end
+    
+    return mat
+end
+
+
+# ====

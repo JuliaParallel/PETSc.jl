@@ -82,10 +82,8 @@ function Options(petsclib::PetscLibType; kwargs...)
 end
 
 function destroy(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
-    if !(finalized(PetscLib)) &&
-        if opts.ptr != C_NULL
-            LibPETSc.PetscOptionsDestroy(PetscLib, opts)
-        end
+    if !(finalized(PetscLib)) && opts.ptr != C_NULL
+        LibPETSc.PetscOptionsDestroy(PetscLib, opts)
     end
     opts.ptr = C_NULL
     return nothing
@@ -150,7 +148,12 @@ function parse_options(args::Vector{String})
     return NamedTuple(opts)
 end
 
-function Base.pop!(::PetscOptions{PetscLib}) where {PetscLib}
+function Base.push!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
+    LibPETSc.PetscOptionsPush(PetscLib, opts)
+    return nothing
+end
+
+function Base.pop!(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
     LibPETSc.PetscOptionsPop(PetscLib)
     return nothing
 end

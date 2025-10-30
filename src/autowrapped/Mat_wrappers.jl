@@ -66,9 +66,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetType"))
 """
-function MatGetType(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetType(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetType(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	type_ = Ref{MatType}()
 
     @chk ccall(
@@ -5185,9 +5185,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatGetSize"))
 """
-function MatGetSize(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetSize(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetSize(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	m_ = Ref{$PetscInt}()
 	n_ = Ref{$PetscInt}()
 
@@ -9006,27 +9006,14 @@ Collective
 
 Input Parameters:
 - `comm`      - MPI communicator
-- `m`         - number of local rows (or `PETSC_DECIDE` to have calculated if M is given)
-This value should be the same as the local size used in creating the
-y vector for the matrix-vector product y = Ax.
-- `n`         - This value should be the same as the local size used in creating the
-x vector for the matrix-vector product y = Ax. (or `PETSC_DECIDE` to have
-calculated if `N` is given) For square matrices n is almost always `m`.
+- `m`         - number of local rows (or `PETSC_DECIDE` to have calculated if M is given). This value should be the same as the local size used in creating the y vector for the matrix-vector product y = Ax.
+- `n`         - This value should be the same as the local size used in creating the x vector for the matrix-vector product y = Ax. (or `PETSC_DECIDE` to have calculated if `N` is given) For square matrices n is almost always `m`.
 - `M`         - number of global rows (or `PETSC_DETERMINE` to have calculated if `m` is given)
 - `N`         - number of global columns (or `PETSC_DETERMINE` to have calculated if `n` is given)
-- `d_rlenmax` - max number of nonzeros per row in DIAGONAL portion of local submatrix
-(same value is used for all local rows)
-- `d_rlen`    - array containing the number of nonzeros in the various rows of the
-DIAGONAL portion of the local submatrix (possibly different for each row)
-or `NULL`, if d_rlenmax is used to specify the nonzero structure.
-The size of this array is equal to the number of local rows, i.e `m`.
-- `o_rlenmax` - max number of nonzeros per row in the OFF-DIAGONAL portion of local
-submatrix (same value is used for all local rows).
-- `o_rlen`    - array containing the number of nonzeros in the various rows of the
-OFF-DIAGONAL portion of the local submatrix (possibly different for
-each row) or `NULL`, if `o_rlenmax` is used to specify the nonzero
-structure. The size of this array is equal to the number
-of local rows, i.e `m`.
+- `d_rlenmax` - max number of nonzeros per row in DIAGONAL portion of local submatrix (same value is used for all local rows)
+- `d_rlen`    - array containing the number of nonzeros in the various rows of the DIAGONAL portion of the local submatrix (possibly different for each row) or `NULL`, if d_rlenmax is used to specify the nonzero structure. The size of this array is equal to the number of local rows, i.e `m`.
+- `o_rlenmax` - max number of nonzeros per row in the OFF-DIAGONAL portion of local submatrix (same value is used for all local rows).
+- `o_rlen`    - array containing the number of nonzeros in the various rows of the OFF-DIAGONAL portion of the local submatrix (possibly different for each row) or `NULL`, if `o_rlenmax` is used to specify the nonzero structure. The size of this array is equal to the number of local rows, i.e `m`.
 
 Output Parameter:
 - `A` - the matrix
@@ -9356,7 +9343,7 @@ function MatSeqSELLGetVarSliceSize(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	A::PetscMat = MatCreateSeqSELL(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, rlenmax::PetscInt, rlen::Vector{PetscInt}) 
+	A::PetscMat = MatCreateSeqSELL(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, rlenmax::PetscInt, rlen::Union{Ptr,Vector{PetscInt}}) 
 Creates a sparse matrix in `MATSEQSELL` format.
 
 Collective
@@ -9378,9 +9365,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateSeqSELL"))
 """
-function MatCreateSeqSELL(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::PetscInt, rlenmax::PetscInt, rlen::Vector{PetscInt}) end
+function MatCreateSeqSELL(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::PetscInt, rlenmax::PetscInt, rlen::Union{Ptr, Vector{PetscInt}}) end
 
-@for_petsc function MatCreateSeqSELL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, rlenmax::$PetscInt, rlen::Vector{$PetscInt} )
+@for_petsc function MatCreateSeqSELL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, rlenmax::$PetscInt, rlen::Union{Ptr, Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
@@ -9432,12 +9419,8 @@ Collective
 
 Input Parameters:
 - `comm` - MPI communicator
-- `m`    - number of local rows (or `PETSC_DECIDE` to have calculated if `M` is given)
-This value should be the same as the local size used in creating the
-y vector for the matrix-vector product y = Ax.
-- `n`    - This value should be the same as the local size used in creating the
-x vector for the matrix-vector product y = Ax. (or `PETSC_DECIDE` to have
-calculated if `N` is given) For square matrices n is almost always `m`.
+- `m`    - number of local rows (or `PETSC_DECIDE` to have calculated if `M` is given). This value should be the same as the local size used in creating the y vector for the matrix-vector product y = Ax.
+- `n`    - This value should be the same as the local size used in creating the x vector for the matrix-vector product y = Ax. (or `PETSC_DECIDE` to have calculated if `N` is given) For square matrices n is almost always `m`.
 - `M`    - number of global rows (or `PETSC_DETERMINE` to have calculated if m is given)
 - `N`    - number of global columns (or `PETSC_DETERMINE` to have calculated if n is given)
 - `diag` - the diagonal value
@@ -9592,7 +9575,7 @@ function MatMPIBAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, bs::Pet
 end 
 
 """
-	A::PetscMat = MatCreateBAIJ(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+	A::PetscMat = MatCreateBAIJ(petsclib::PetscLibType,comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr,Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr,Vector{PetscInt}}) 
 Creates a sparse parallel matrix in `MATBAIJ` format
 (block compressed row).
 
@@ -9600,27 +9583,15 @@ Collective
 
 Input Parameters:
 - `comm`  - MPI communicator
-- `bs`    - size of block, the blocks are ALWAYS square. One can use `MatSetBlockSizes()` to set a different row and column blocksize but the row
-blocksize always defines the size of the blocks. The column blocksize sets the blocksize of the vectors obtained with `MatCreateVecs()`
-- `m`     - number of local rows (or `PETSC_DECIDE` to have calculated if M is given)
-This value should be the same as the local size used in creating the
-y vector for the matrix-vector product y = Ax.
-- `n`     - number of local columns (or `PETSC_DECIDE` to have calculated if N is given)
-This value should be the same as the local size used in creating the
-x vector for the matrix-vector product y = Ax.
+- `bs`    - size of block, the blocks are ALWAYS square. One can use `MatSetBlockSizes()` to set a different row and column blocksize but the row blocksize always defines the size of the blocks. The column blocksize sets the blocksize of the vectors obtained with `MatCreateVecs()`
+- `m`     - number of local rows (or `PETSC_DECIDE` to have calculated if M is given). This value should be the same as the local size used in creating the y vector for the matrix-vector product y = Ax.
+- `n`     - number of local columns (or `PETSC_DECIDE` to have calculated if N is given). This value should be the same as the local size used in creating the x vector for the matrix-vector product y = Ax.
 - `M`     - number of global rows (or `PETSC_DETERMINE` to have calculated if m is given)
 - `N`     - number of global columns (or `PETSC_DETERMINE` to have calculated if n is given)
-- `d_nz`  - number of nonzero blocks per block row in diagonal portion of local
-submatrix  (same for all local rows)
-- `d_nnz` - array containing the number of nonzero blocks in the various block rows
-of the in diagonal portion of the local (possibly different for each block
-row) or NULL.  If you plan to factor the matrix you must leave room for the diagonal entry
-and set it even if it is zero.
-- `o_nz`  - number of nonzero blocks per block row in the off-diagonal portion of local
-submatrix (same for all local rows).
-- `o_nnz` - array containing the number of nonzero blocks in the various block rows of the
-off-diagonal portion of the local submatrix (possibly different for
-each block row) or NULL.
+- `d_nz`  - number of nonzero blocks per block row in diagonal portion of local submatrix  (same for all local rows)
+- `d_nnz` - array containing the number of nonzero blocks in the various block rows of the in diagonal portion of the local (possibly different for each block row) or NULL.  If you plan to factor the matrix you must leave room for the diagonal entry and set it even if it is zero.
+- `o_nz`  - number of nonzero blocks per block row in the off-diagonal portion of local submatrix (same for all local rows).
+- `o_nnz` - array containing the number of nonzero blocks in the various block rows of the off-diagonal portion of the local submatrix (possibly different for each block row) or NULL.
 
 Output Parameter:
 - `A` - the matrix
@@ -9637,9 +9608,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateBAIJ"))
 """
-function MatCreateBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) end
+function MatCreateBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr,Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatCreateBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+@for_petsc function MatCreateBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr,Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr,Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
@@ -9724,9 +9695,7 @@ Input Parameters:
 - `comm` - MPI communicator
 - `bs`   - the block size, only a block size of 1 is supported
 - `m`    - number of local rows (Cannot be `PETSC_DECIDE`)
-- `n`    - This value should be the same as the local size used in creating the
-x vector for the matrix-vector product  y = Ax . (or `PETSC_DECIDE` to have
-calculated if `N` is given) For square matrices `n` is almost always `m`.
+- `n`    - This value should be the same as the local size used in creating the x vector for the matrix-vector product  y = Ax . (or `PETSC_DECIDE` to have calculated if `N` is given) For square matrices `n` is almost always `m`.
 - `M`    - number of global rows (or `PETSC_DETERMINE` to have calculated if `m` is given)
 - `N`    - number of global columns (or `PETSC_DETERMINE` to have calculated if `n` is given)
 - `i`    - row indices; that is i[0] = 0, i[row] = i[row-1] + number of block elements in that rowth block row of the matrix
@@ -9769,27 +9738,15 @@ Collective
 
 Input Parameters:
 - `comm`  - MPI communicator
-- `bs`    - size of block, the blocks are ALWAYS square. One can use `MatSetBlockSizes()` to set a different row and column blocksize but the row
-blocksize always defines the size of the blocks. The column blocksize sets the blocksize of the vectors obtained with `MatCreateVecs()`
-- `m`     - number of local rows (or `PETSC_DECIDE` to have calculated if `M` is given)
-This value should be the same as the local size used in creating the
-y vector for the matrix-vector product y = Ax.
-- `n`     - number of local columns (or `PETSC_DECIDE` to have calculated if `N` is given)
-This value should be the same as the local size used in creating the
-x vector for the matrix-vector product y = Ax.
+- `bs`    - size of block, the blocks are ALWAYS square. One can use `MatSetBlockSizes()` to set a different row and column blocksize but the row blocksize always defines the size of the blocks. The column blocksize sets the blocksize of the vectors obtained with `MatCreateVecs()`
+- `m`     - number of local rows (or `PETSC_DECIDE` to have calculated if `M` is given) This value should be the same as the local size used in creating the y vector for the matrix-vector product y = Ax.
+- `n`     - number of local columns (or `PETSC_DECIDE` to have calculated if `N` is given) This value should be the same as the local size used in creating the x vector for the matrix-vector product y = Ax.
 - `M`     - number of global rows (or `PETSC_DETERMINE` to have calculated if `m` is given)
 - `N`     - number of global columns (or `PETSC_DETERMINE` to have calculated if `n` is given)
-- `d_nz`  - number of nonzero blocks per block row in diagonal portion of local
-submatrix  (same for all local rows)
-- `d_nnz` - array containing the number of nonzero blocks in the various block rows
-of the in diagonal portion of the local (possibly different for each block
-row) or `NULL`.  If you plan to factor the matrix you must leave room for the diagonal entry
-and set it even if it is zero.
-- `o_nz`  - number of nonzero blocks per block row in the off-diagonal portion of local
-submatrix (same for all local rows).
-- `o_nnz` - array containing the number of nonzero blocks in the various block rows of the
-off-diagonal portion of the local submatrix (possibly different for
-each block row) or `NULL`.
+- `d_nz`  - number of nonzero blocks per block row in diagonal portion of local submatrix  (same for all local rows)
+- `d_nnz` - array containing the number of nonzero blocks in the various block rows of the in diagonal portion of the local (possibly different for each block row) or `NULL`.  If you plan to factor the matrix you must leave room for the diagonal entry and set it even if it is zero.
+- `o_nz`  - number of nonzero blocks per block row in the off-diagonal portion of local submatrix (same for all local rows).
+- `o_nnz` - array containing the number of nonzero blocks in the various block rows of the off-diagonal portion of the local submatrix (possibly different for each block row) or `NULL`.
 
 Output Parameter:
 - `A` - the matrix
@@ -10102,13 +10059,11 @@ routines from Intel MKL whenever possible.
 
 Input Parameters:
 - `comm` - MPI communicator, set to `PETSC_COMM_SELF`
-- `bs`   - size of block, the blocks are ALWAYS square. One can use `MatSetBlockSizes()` to set a different row and column blocksize but the row
-blocksize always defines the size of the blocks. The column blocksize sets the blocksize of the vectors obtained with `MatCreateVecs()`
+- `bs`   - size of block, the blocks are ALWAYS square. One can use `MatSetBlockSizes()` to set a different row and column blocksize but the row blocksize always defines the size of the blocks. The column blocksize sets the blocksize of the vectors obtained with `MatCreateVecs()`
 - `m`    - number of rows
 - `n`    - number of columns
 - `nz`   - number of nonzero blocks  per block row (same for all rows)
-- `nnz`  - array containing the number of nonzero blocks in the various block rows
-(possibly different for each block row) or `NULL`
+- `nnz`  - array containing the number of nonzero blocks in the various block rows (possibly different for each block row) or `NULL`
 
 Output Parameter:
 - `A` - the matrix
@@ -10314,9 +10269,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatShellGetContext"))
 """
-function MatShellGetContext(petsclib::PetscLibType, mat::PetscMat, ctx::Cvoid) end
+function MatShellGetContext(petsclib::PetscLibType, mat::AbstractPetscMat, ctx::Cvoid) end
 
-@for_petsc function MatShellGetContext(petsclib::$UnionPetscLib, mat::PetscMat, ctx::Cvoid )
+@for_petsc function MatShellGetContext(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ctx::Cvoid)
 
     @chk ccall(
                (:MatShellGetContext, $petsc_library),
@@ -10324,7 +10279,6 @@ function MatShellGetContext(petsclib::PetscLibType, mat::PetscMat, ctx::Cvoid) e
                (CMat, Ptr{Cvoid}),
                mat, ctx,
               )
-
 
 	return nothing
 end 
@@ -10367,7 +10321,7 @@ function MatShellSetMatProductOperation(petsclib::PetscLibType, A::PetscMat, pty
 end 
 
 """
-	ctx::Cvoid,A::PetscMat = MatCreateShell(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt) 
+	A::PetscMat = MatCreateShell(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, ctx::Ptr) 
 Creates a new matrix of `MatType` `MATSHELL` for use with a user
 private matrix data storage format.
 
@@ -10393,21 +10347,21 @@ $(_doc_external("Mat/MatCreateShell"))
 """
 function MatCreateShell(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt) end
 
-@for_petsc function MatCreateShell(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt )
-	ctx_ = Ref{Cvoid}()
+@for_petsc function MatCreateShell(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, ctx::Ptr )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateShell, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{Cvoid}, Ptr{CMat}),
-               comm, m, n, M, N, ctx_, A_,
+               comm, m, n, M, N, ctx, A_,
               )
 
-	ctx = ctx_[]
-	A = PetscMat(A_[], petsclib)
+	#A = PetscMat(A_[], petsclib)
+    #A = MatShell{$PetscLib, OType}(A_, ctx)
+    
 
-	return ctx,A
+	return A
 end 
 
 """
@@ -11480,7 +11434,7 @@ function MatDenseReplaceArray(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	A::PetscMat = MatCreateDense(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, data::Vector{PetscScalar}) 
+	A::PetscMat = MatCreateDense(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, data::Union{Ptr,Vector{PetscScalar}}) 
 Creates a matrix in `MATDENSE` format.
 
 Collective
@@ -11491,8 +11445,7 @@ Input Parameters:
 - `n`    - number of local columns (or `PETSC_DECIDE` to have calculated if `N` is given)
 - `M`    - number of global rows (or `PETSC_DECIDE` to have calculated if `m` is given)
 - `N`    - number of global columns (or `PETSC_DECIDE` to have calculated if `n` is given)
-- `data` - optional location of matrix data.  Set data to `NULL` (`PETSC_NULL_SCALAR_ARRAY` for Fortran users) for PETSc
-to control all matrix memory allocation.
+- `data` - optional location of matrix data.  Set data to `NULL` (`PETSC_NULL_SCALAR_ARRAY` for Fortran users) for PETSc to control all matrix memory allocation.
 
 Output Parameter:
 - `A` - the matrix
@@ -11504,9 +11457,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateDense"))
 """
-function MatCreateDense(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, data::Vector{PetscScalar}) end
+function MatCreateDense(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, data::Union{Ptr,Vector{PetscScalar}}) end
 
-@for_petsc function MatCreateDense(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, data::Vector{$PetscScalar} )
+@for_petsc function MatCreateDense(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, data::Union{Ptr,Vector{$PetscScalar}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
@@ -12032,8 +11985,7 @@ Input Parameters:
 - `comm` - MPI communicator, set to `PETSC_COMM_SELF`
 - `m`    - number of rows
 - `n`    - number of columns
-- `data` - optional location of matrix data in column major order.  Use `NULL` for PETSc
-to control all matrix memory allocation.
+- `data` - optional location of matrix data in column major order.  Use `NULL` for PETSc to control all matrix memory allocation.
 
 Output Parameter:
 - `A` - the matrix
@@ -12045,9 +11997,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateSeqDense"))
 """
-function MatCreateSeqDense(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::PetscInt, data::Vector{PetscScalar}) end
+function MatCreateSeqDense(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::PetscInt, data::Union{Ptr,Vector{PetscScalar}}) end
 
-@for_petsc function MatCreateSeqDense(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, data::Vector{$PetscScalar} )
+@for_petsc function MatCreateSeqDense(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, data::Union{Ptr,Vector{$PetscScalar}})
 	A_ = Ref{CMat}()
 
     @chk ccall(
@@ -12967,9 +12919,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateLRC"))
 """
-function MatCreateLRC(petsclib::PetscLibType, A::PetscMat, U::PetscMat, c::PetscVec, V::PetscMat) end
+function MatCreateLRC(petsclib::PetscLibType, A::PetscMat, U::PetscMat, c::Union{Ptr,PetscVec}, V::PetscMat) end
 
-@for_petsc function MatCreateLRC(petsclib::$UnionPetscLib, A::PetscMat, U::PetscMat, c::PetscVec, V::PetscMat )
+@for_petsc function MatCreateLRC(petsclib::$UnionPetscLib, A::PetscMat, U::PetscMat, c::Union{Ptr,PetscVec}, V::PetscMat )
 	N_ = Ref{CMat}()
 
     @chk ccall(
@@ -12993,12 +12945,8 @@ Collective
 
 Input Parameters:
 - `comm` - MPI communicator
-- `m`    - number of local rows (or `PETSC_DECIDE` to have calculated if `M` is given)
-This value should be the same as the local size used in creating the
-y vector for the matrix-vector product y = Ax.
-- `n`    - This value should be the same as the local size used in creating the
-x vector for the matrix-vector product y = Ax. (or `PETSC_DECIDE` to have
-calculated if `N` is given) For square matrices `n` is almost always `m`.
+- `m`    - number of local rows (or `PETSC_DECIDE` to have calculated if `M` is given). This value should be the same as the local size used in creating the y vector for the matrix-vector product y = Ax.
+- `n`    - This value should be the same as the local size used in creating the x vector for the matrix-vector product y = Ax. (or `PETSC_DECIDE` to have calculated if `N` is given) For square matrices `n` is almost always `m`.
 - `M`    - number of global rows (or `PETSC_DETERMINE` to have calculated if `m` is given)
 - `N`    - number of global columns (or `PETSC_DETERMINE` to have calculated if `n` is given)
 
@@ -13011,8 +12959,7 @@ Options Database Keys:
 - `-mat_mffd_period`           - how often h is recomputed, defaults to 1, every time
 - `-mat_mffd_check_positivity` - possibly decrease `h` until U + h*a has only positive values
 - `-mat_mffd_umin <umin>`      - Sets umin (for default PETSc routine that computes h only)
-- `-mat_mffd_complex`          - use the Lyness trick with complex numbers to compute the matrix-vector product instead of differencing
-(requires real valued functions but that PETSc be configured for complex numbers)
+- `-mat_mffd_complex`          - use the Lyness trick with complex numbers to compute the matrix-vector product instead of differencing (requires real valued functions but that PETSc be configured for complex numbers)
 - `-snes_mf`                   - use the finite difference based matrix-free matrix with `SNESSolve()` and no preconditioner
 - `-snes_mf_operator`          - use the finite difference based matrix-free matrix with `SNESSolve()` but construct a preconditioner
 using the matrix passed as `pmat` to `SNESSetJacobian()`.
@@ -13106,38 +13053,23 @@ Collective
 
 Input Parameters:
 - `comm`  - MPI communicator
-- `bs`    - size of block, the blocks are ALWAYS square. One can use `MatSetBlockSizes()` to set a different row and column blocksize but the row
-blocksize always defines the size of the blocks. The column blocksize sets the blocksize of the vectors obtained with `MatCreateVecs()`
-- `m`     - number of local rows (or `PETSC_DECIDE` to have calculated if `M` is given)
-This value should be the same as the local size used in creating the
-y vector for the matrix-vector product y = Ax.
-- `n`     - number of local columns (or `PETSC_DECIDE` to have calculated if `N` is given)
-This value should be the same as the local size used in creating the
-x vector for the matrix-vector product y = Ax.
+- `bs`    - size of block, the blocks are ALWAYS square. One can use `MatSetBlockSizes()` to set a different row and column blocksize but the row blocksize always defines the size of the blocks. The column blocksize sets the blocksize of the vectors obtained with `MatCreateVecs()`
+- `m`     - number of local rows (or `PETSC_DECIDE` to have calculated if `M` is given) This value should be the same as the local size used in creating the y vector for the matrix-vector product y = Ax.
+- `n`     - number of local columns (or `PETSC_DECIDE` to have calculated if `N` is given) This value should be the same as the local size used in creating the x vector for the matrix-vector product y = Ax.
 - `M`     - number of global rows (or `PETSC_DETERMINE` to have calculated if `m` is given)
 - `N`     - number of global columns (or `PETSC_DETERMINE` to have calculated if `n` is given)
-- `d_nz`  - number of block nonzeros per block row in diagonal portion of local
-submatrix (same for all local rows)
-- `d_nnz` - array containing the number of block nonzeros in the various block rows
-in the upper triangular portion of the in diagonal portion of the local
-(possibly different for each block block row) or `NULL`.
-If you plan to factor the matrix you must leave room for the diagonal entry and
-set its value even if it is zero.
-- `o_nz`  - number of block nonzeros per block row in the off-diagonal portion of local
-submatrix (same for all local rows).
-- `o_nnz` - array containing the number of nonzeros in the various block rows of the
-off-diagonal portion of the local submatrix (possibly different for
-each block row) or `NULL`.
+- `d_nz`  - number of block nonzeros per block row in diagonal portion of local submatrix (same for all local rows)
+- `d_nnz` - array containing the number of block nonzeros in the various block rows in the upper triangular portion of the in diagonal portion of the local (possibly different for each block block row) or `NULL`. If you plan to factor the matrix you must leave room for the diagonal entry and set its value even if it is zero.
+- `o_nz`  - number of block nonzeros per block row in the off-diagonal portion of local submatrix (same for all local rows).
+- `o_nnz` - array containing the number of nonzeros in the various block rows of the off-diagonal portion of the local submatrix (possibly different for each block row) or `NULL`.
 
 Output Parameter:
 - `A` - the matrix
 
 Options Database Keys:
-- `-mat_no_unroll`  - uses code that does not unroll the loops in the
-block calculations (much slower)
+- `-mat_no_unroll`  - uses code that does not unroll the loops in the block calculations (much slower)
 - `-mat_block_size` - size of the blocks to use
-- `-mat_mpi`        - use the parallel matrix data structures even on one processor
-(defaults to using SeqBAIJ format on one processor)
+- `-mat_mpi`        - use the parallel matrix data structures even on one processor (defaults to using SeqBAIJ format on one processor)
 
 Level: intermediate
 
@@ -13147,9 +13079,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateSBAIJ"))
 """
-function MatCreateSBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) end
+function MatCreateSBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr,Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatCreateSBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+@for_petsc function MatCreateSBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr,Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr,Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
@@ -13174,9 +13106,7 @@ Input Parameters:
 - `comm` - MPI communicator
 - `bs`   - the block size, only a block size of 1 is supported
 - `m`    - number of local rows (Cannot be `PETSC_DECIDE`)
-- `n`    - This value should be the same as the local size used in creating the
-x vector for the matrix-vector product  y = Ax . (or `PETSC_DECIDE` to have
-calculated if `N` is given) For square matrices `n` is almost always `m`.
+- `n`    - This value should be the same as the local size used in creating the x vector for the matrix-vector product  y = Ax . (or `PETSC_DECIDE` to have calculated if `N` is given) For square matrices `n` is almost always `m`.
 - `M`    - number of global rows (or `PETSC_DETERMINE` to have calculated if `m` is given)
 - `N`    - number of global columns (or `PETSC_DETERMINE` to have calculated if `n` is given)
 - `i`    - row indices; that is i[0] = 0, i[row] = i[row-1] + number of block elements in that row block row of the matrix
@@ -13437,13 +13367,11 @@ Collective
 
 Input Parameters:
 - `comm` - MPI communicator, set to `PETSC_COMM_SELF`
-- `bs`   - size of block, the blocks are ALWAYS square. One can use `MatSetBlockSizes()` to set a different row and column blocksize but the row
-blocksize always defines the size of the blocks. The column blocksize sets the blocksize of the vectors obtained with MatCreateVecs()
+- `bs`   - size of block, the blocks are ALWAYS square. One can use `MatSetBlockSizes()` to set a different row and column blocksize but the row blocksize always defines the size of the blocks. The column blocksize sets the blocksize of the vectors obtained with MatCreateVecs()
 - `m`    - number of rows
 - `n`    - number of columns
 - `nz`   - number of block nonzeros per block row (same for all rows)
-- `nnz`  - array containing the number of block nonzeros in the upper triangular plus
-diagonal portion of each block (possibly different for each block row) or `NULL`
+- `nnz`  - array containing the number of block nonzeros in the upper triangular plus diagonal portion of each block (possibly different for each block row) or `NULL`
 
 Output Parameter:
 - `A` - the symmetric matrix
@@ -13459,9 +13387,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateSeqSBAIJ"))
 """
-function MatCreateSeqSBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) end
+function MatCreateSeqSBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, m::PetscInt, n::PetscInt, nz::PetscInt, nnz::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatCreateSeqSBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
+@for_petsc function MatCreateSeqSBAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, bs::$PetscInt, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Union{Ptr,Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
@@ -14039,9 +13967,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateKAIJ"))
 """
-function MatCreateKAIJ(petsclib::PetscLibType, A::PetscMat, p::PetscInt, q::PetscInt, S::Vector{PetscScalar}, T::Vector{PetscScalar}) end
+function MatCreateKAIJ(petsclib::PetscLibType, A::PetscMat, p::PetscInt, q::PetscInt, S::Union{Ptr,Vector{PetscScalar}}, T::Union{Ptr,Vector{PetscScalar}}) end
 
-@for_petsc function MatCreateKAIJ(petsclib::$UnionPetscLib, A::PetscMat, p::$PetscInt, q::$PetscInt, S::Vector{$PetscScalar}, T::Vector{$PetscScalar} )
+@for_petsc function MatCreateKAIJ(petsclib::$UnionPetscLib, A::PetscMat, p::$PetscInt, q::$PetscInt, S::Union{Ptr,Vector{$PetscScalar}}, T::Union{Ptr,Vector{$PetscScalar}} )
 	kaij_ = Ref{CMat}()
 
     @chk ccall(
@@ -14231,9 +14159,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateMPIAdj"))
 """
-function MatCreateMPIAdj(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, N::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, values::Vector{PetscInt}) end
+function MatCreateMPIAdj(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, N::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, values::Union{Ptr, Vector{PetscInt}}) end
 
-@for_petsc function MatCreateMPIAdj(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, values::Vector{$PetscInt} )
+@for_petsc function MatCreateMPIAdj(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, N::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, values::Union{Ptr, Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
@@ -14359,9 +14287,7 @@ Collective
 
 Input Parameters:
 - `comm` - MPI communicator
-- `n`    - number of local rows (or `PETSC_DECIDE` to have calculated if `N` is given)
-This value should be the same as the local size used in creating the
-`y` vector for the matrix-vector product y = Ax.
+- `n`    - number of local rows (or `PETSC_DECIDE` to have calculated if `N` is given) This value should be the same as the local size used in creating the `y` vector for the matrix-vector product y = Ax.
 - `N`    - number of global rows (or `PETSC_DETERMINE` to have calculated if `n` is given)
 
 Output Parameter:
@@ -14741,7 +14667,7 @@ function MatBlockMatSetPreallocation(petsclib::PetscLibType, B::PetscMat, bs::Pe
 end 
 
 """
-	nnz::PetscInt,A::PetscMat = MatCreateBlockMat(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, bs::PetscInt, nz::PetscInt) 
+	A::PetscMat = MatCreateBlockMat(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, bs::PetscInt, nz::PetscInt, nnz::Union{Ptr,Vector{PetscInt}}) 
 Creates a new matrix in which each block contains a uniform
 
 Collective
@@ -14764,23 +14690,21 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateBlockMat"))
 """
-function MatCreateBlockMat(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::PetscInt, bs::PetscInt, nz::PetscInt) end
+function MatCreateBlockMat(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::PetscInt, bs::PetscInt, nz::PetscInt, nnz::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatCreateBlockMat(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, bs::$PetscInt, nz::$PetscInt )
-	nnz_ = Ref{$PetscInt}()
+@for_petsc function MatCreateBlockMat(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, bs::$PetscInt, nz::$PetscInt, nnz::Union{Ptr,Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
                (:MatCreateBlockMat, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{CMat}),
-               comm, m, n, bs, nz, nnz_, A_,
+               comm, m, n, bs, nz, nnz, A_,
               )
 
-	nnz = nnz_[]
 	A = PetscMat(A_[], petsclib)
 
-	return nnz,A
+	return A
 end 
 
 """
@@ -15823,27 +15747,14 @@ Collective
 
 Input Parameters:
 - `comm`  - MPI communicator
-- `m`     - number of local rows (or `PETSC_DECIDE` to have calculated if M is given)
-This value should be the same as the local size used in creating the
-y vector for the matrix-vector product y = Ax.
-- `n`     - This value should be the same as the local size used in creating the
-x vector for the matrix-vector product y = Ax. (or `PETSC_DECIDE` to have
-calculated if N is given) For square matrices n is almost always m.
+- `m`     - number of local rows (or `PETSC_DECIDE` to have calculated if M is given). This value should be the same as the local size used in creating the y vector for the matrix-vector product y = Ax.
+- `n`     - This value should be the same as the local size used in creating the x vector for the matrix-vector product y = Ax. (or `PETSC_DECIDE` to have calculated if N is given) For square matrices n is almost always m.
 - `M`     - number of global rows (or `PETSC_DETERMINE` to have calculated if m is given)
 - `N`     - number of global columns (or `PETSC_DETERMINE` to have calculated if n is given)
-- `d_nz`  - number of nonzeros per row in DIAGONAL portion of local submatrix
-(same value is used for all local rows)
-- `d_nnz` - array containing the number of nonzeros in the various rows of the
-DIAGONAL portion of the local submatrix (possibly different for each row)
-or `NULL`, if `d_nz` is used to specify the nonzero structure.
-The size of this array is equal to the number of local rows, i.e 'm'.
-- `o_nz`  - number of nonzeros per row in the OFF-DIAGONAL portion of local
-submatrix (same value is used for all local rows).
-- `o_nnz` - array containing the number of nonzeros in the various rows of the
-OFF-DIAGONAL portion of the local submatrix (possibly different for
-each row) or `NULL`, if `o_nz` is used to specify the nonzero
-structure. The size of this array is equal to the number
-of local rows, i.e 'm'.
+- `d_nz`  - number of nonzeros per row in DIAGONAL portion of local submatrix (same value is used for all local rows)
+- `d_nnz` - array containing the number of nonzeros in the various rows of the DIAGONAL portion of the local submatrix (possibly different for each row) or `NULL`, if `d_nz` is used to specify the nonzero structure. The size of this array is equal to the number of local rows, i.e 'm'.
+- `o_nz`  - number of nonzeros per row in the OFF-DIAGONAL portion of local submatrix (same value is used for all local rows).
+- `o_nnz` - array containing the number of nonzeros in the various rows of the OFF-DIAGONAL portion of the local submatrix (possibly different for each row) or `NULL`, if `o_nz` is used to specify the nonzero structure. The size of this array is equal to the number of local rows, i.e 'm'.
 
 Output Parameter:
 - `A` - the matrix
@@ -15864,9 +15775,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateAIJ"))
 """
-function MatCreateAIJ(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) end
+function MatCreateAIJ(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr,Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatCreateAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+@for_petsc function MatCreateAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr,Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr,Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
@@ -23253,3 +23164,41 @@ function MatSetValueLocal(petsclib::PetscLibType, mat::PetscMat, i::PetscInt, j:
 	return nothing
 end 
 
+# NOTE:
+# there are a few functions that are not listed by the python routine, but that are relevant
+# Below, they are wrapped manually
+
+
+
+"""
+    MatShellSetOperation(petsclib::PetscLibType, mat::PetscMat, op::MatOperation, g::Ptr)
+
+Allows user to set a matrix operation for a `MATSHELL` shell matrix.
+
+Logically Collective
+
+Input Parameters:
+`mat` - the `MATSHELL` shell matrix
+`op`  - the name of the operation
+`g`   - a pointer to the function that provides the operation created with `@cfunction`
+
+Level: advanced
+
+-seealso: `Mat`, `MATSHELL`, `MatCreateShell()`, `MatShellGetContext()`, `MatShellGetOperation()`, `MatShellSetContext()`, `MatSetOperation()`, `MatShellSetManageScalingShifts()`, `MatShellSetMatProductOperation()`
+
+# External Links
+$(_doc_external("Mat/MatShellSetOperation"))
+"""
+function MatShellSetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOperation, g::Ptr) end
+
+@for_petsc function MatShellSetOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation, g::Ptr)
+
+    @chk ccall(
+               (:MatShellSetOperation, $petsc_library),
+               PetscErrorCode,
+               (CMat, MatOperation, Ptr{Cvoid}),
+               mat, op, g,
+              )
+
+	return nothing
+end

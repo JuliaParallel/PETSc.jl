@@ -757,14 +757,15 @@ end
 
 
 
-exclude=["KSPConvergedReason","PetscMemType"]
-write_keys_to_file("../src/autowrapped/enums_wrappers.jl",  start_dir,  enums, write_enum, exclude=exclude)  # Write enums to file
-write_skeys_to_file("../src/autowrapped/senums_wrappers.jl",start_dir, senums)              # Write string enums to file
-
-exclude = ["LandauCtx"]
-write_structs_to_file("../src/autowrapped/struct_wrappers.jl", start_dir, structs,exclude=exclude)          # Write all structs to file
-exclude=["PetscGeom","PetscInt32"]
-write_typedefs_to_file("../src/autowrapped/typedefs_wrappers.jl", start_dir, typedefs,exclude=exclude)      # Write all typedefs to file
+#exclude=["KSPConvergedReason","PetscMemType"]
+#write_keys_to_file("../src/autowrapped/enums_wrappers.jl",  start_dir,  enums, write_enum, exclude=exclude)  # Write enums to file
+#write_skeys_to_file("../src/autowrapped/senums_wrappers.jl",start_dir, senums)              # Write string enums to file
+#
+#exclude = ["LandauCtx"]
+# Adapt as needed
+#write_structs_to_file("../src/autowrapped/struct_wrappers.jl", start_dir, structs,exclude=exclude)          # Write all structs to file
+#exclude=["PetscGeom","PetscInt32"]
+#write_typedefs_to_file("../src/autowrapped/typedefs_wrappers.jl", start_dir, typedefs,exclude=exclude)      # Write all typedefs to file
 
 move_prologue("prologue.jl")
 
@@ -777,7 +778,7 @@ move_prologue("prologue.jl")
 #=
 # Write KSP functions to file (this should be expanded to all other classes)
 exclude=["KSPLSQRGetNorms"]
-write_functions_from_classes_to_file("../src/autowrapped/KSP_wrappers.jl",start_dir, classes, "KSP", exclude=exclude)     
+write_functions_from_classes_to_file("KSP_wrappers.jl",start_dir, classes, "KSP", exclude=exclude)     
 
 # write general functions to file
 exclude=["PetscHTTPSRequest",
@@ -799,7 +800,8 @@ exclude=["PetscHTTPSRequest",
 exclude=[""]
 #write_functions_from_classes_to_file("Vec_wrappers.jl",start_dir, classes, "Vec", exclude=exclude)     
 #write_functions_from_classes_to_file("Vecs_wrappers.jl",start_dir, classes, "Vecs", exclude=exclude)     
-write_functions_from_classes_to_file("PetscOptions_wrappers.jl",start_dir, classes, "PetscOptions", exclude=exclude)     
+#write_functions_from_classes_to_file("PetscOptions_wrappers.jl",start_dir, classes, "PetscOptions", exclude=exclude)     
+write_functions_from_classes_to_file("PetscObject_wrappers.jl",start_dir, classes, "PetscObject", exclude=exclude)     
 
 #exclude=["MatSolves","MatCreateVecs","MatCreateVecsFFTW"]
 #exclude=[""]

@@ -142,16 +142,7 @@ PetscSNES(ptr::CSNES, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscSNES{
 Base.convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
 Base.unsafe_convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
 
-# Custom display for REPL
-function Base.show(io::IO, v::AbstractPetscSNES{PetscLib}) where {PetscLib}
-    if v.ptr == C_NULL
-        print(io, "PETSc SNES (null pointer)")
-        return
-    else
-        print(io, "PETSc SNES object")
-    end
-    return nothing
-end
+
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc DM -----
@@ -368,6 +359,7 @@ include("Vecs_wrappers.jl")
 include("Mat_wrappers.jl")
 include("PetscOptions_wrappers.jl")
 include("KSP_wrappers.jl")
-include("PetscObject_wrappers.jl")
-
+include("SNES_wrappers.jl")
+include("PC_wrappers.jl")
+include("DM_wrappers.jl")
 

@@ -30,6 +30,8 @@ include("mat.jl")
 include("options.jl")
 include("ksp.jl")
 include("sys.jl")
+include("snes.jl")          
+
 
 #=
 include("utils.jl")
@@ -41,7 +43,6 @@ include("dmda.jl")          # not yet wrapped!
 include("dmstag.jl")        # mostly wrapped and tested
 include("pc.jl")            # to be fixed/wrapped
 include("ksp.jl")           # part is wrapped
-include("snes.jl")          # not yet wrapped!
 include("sys.jl")
 
 ##include("startup.jl")  # can be removed (later)

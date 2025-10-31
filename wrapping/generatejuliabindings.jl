@@ -19,7 +19,8 @@ isopaque(a::Py) = pyconvert(Bool,a.opaque)
 petsc_dir = "/Users/kausb/Downloads/petsc"
 start_dir = pwd()
 
-const CustomTypes = ["PetscVec","PetscMat","PetscDM", "PetscKSP", "PetscSNES","PetscOptions"]
+const CustomTypes = ["PetscVec","PetscMat","PetscDM", "PetscKSP", 
+                    "PetscSNES","PetscOptions","IS","PF","TS","AO","Tao"]
 
 # Remove entry from vector of strings
 remove_entry(x::Vector{String}, entry::String) = filter!(y -> y != entry, x)
@@ -129,17 +130,27 @@ replace_dispatch_types(type::AbstractString) = replace(type,
 function init_extract_parameters(typename::String, name::String, function_name::String, name_ccall::String, isarray::Bool, isoutput::Bool, stars::Int64) 
     init_arg    = ""  
     extract_arg = ""  
-    @show function_name, typename, name, isarray, isoutput, stars
+    typename_c  = typename
     if !isarray && isoutput && typename in CustomTypes
         # a custom type is being initialized
-        typename_c  = replace(typename,"Petsc"=>"C", r"IS"=>"CIS", count=1)
+        typename_c  = replace(typename, "Petsc"=>"C", 
+                                        "IS"=>"CIS", 
+                                        "PF"=>"CPF", 
+                                        r"TS"=>"CTS", 
+                                        "AO"=>"CAO", 
+                                        "Tao"=>"CTao", 
+                                        count=1)
         name_ccall  = "$(name)_"
         init_arg    = "$name_ccall = Ref{$typename_c}()"  
         extract_arg = "$name = $typename($(name_ccall)[], petsclib)"  
 
     elseif !isarray && !isoutput && stars==1 && typename in CustomTypes
         # a custom type is being deleted most likely
-        typename_c  = replace(typename,"Petsc"=>"C", count=1)
+        #typename_c  = replace(typename,"Petsc"=>"C", count=1)
+        typename_c  = replace(typename, "Petsc"=>"C", 
+                                        r"IS"=>"CIS", 
+                                        "PF"=>"CPF", 
+                                        count=1)
         name_ccall  = "$(name)_"
         init_arg    = "$name_ccall = Ref($(name).ptr)"  
         extract_arg = "$(name).ptr = C_NULL"  
@@ -179,6 +190,7 @@ function init_extract_parameters(typename::String, name::String, function_name::
         extract_arg = "$name = $(name_ccall)[]" 
 
     end
+    @show function_name, typename, typename_c, name, isarray, isoutput, stars
 
     return init_arg, extract_arg, name_ccall
 end
@@ -237,7 +249,13 @@ function func_args(a::Py, function_name::String, input_vars=String[], output_var
     # this is related to creating custom julia structs
     typename_ccall = typename
     if typename in CustomTypes
-        typename_ccall = replace(typename_ccall,"Petsc"=>"C", count=1)
+        typename_ccall = replace(typename_ccall,"Petsc"=>"C", 
+                                                r"IS"=>"CIS",
+                                                r"PF"=>"CPF",
+                                                "TS"=>"CTS",
+                                                r"AO"=>"CAO",
+                                                r"Tao"=>"CTao",
+                                                count=1)
     end
     
     if stars==1
@@ -823,7 +841,14 @@ exclude=[""]
 #write_functions_from_classes_to_file("Vec_wrappers.jl",start_dir, classes, "Vec", exclude=exclude)     
 #write_functions_from_classes_to_file("Vecs_wrappers.jl",start_dir, classes, "Vecs", exclude=exclude)     
 #write_functions_from_classes_to_file("PetscOptions_wrappers.jl",start_dir, classes, "PetscOptions", exclude=exclude)     
-write_functions_from_classes_to_file("PetscObject_wrappers.jl",start_dir, classes, "PetscObject", exclude=exclude)     
+#write_functions_from_classes_to_file("PetscObject_wrappers.jl",start_dir, classes, "PetscObject", exclude=exclude)     
+#write_functions_from_classes_to_file("PetscDraw_wrappers.jl",start_dir, classes, ["PetscDraw","PetscDrawAxis","PetscDrawLG","PetscDrawSP","PetscDrawHG","PetscDrawBar"], exclude=exclude)     
+#write_functions_from_classes_to_file("PetscRegressor_wrappers.jl",start_dir, classes, "PetscRegressor", exclude=exclude)     
+#write_functions_from_classes_to_file("PF_wrappers.jl",start_dir, classes, "PF", exclude=exclude)     
+#write_functions_from_classes_to_file("IS_wrappers.jl",start_dir, classes, "IS", exclude=exclude)     
+#write_functions_from_classes_to_file("TS_wrappers.jl",start_dir, classes, "TS", exclude=exclude)     
+#write_functions_from_classes_to_file("AO_wrappers.jl",start_dir, classes, "AO", exclude=exclude)     
+write_functions_from_classes_to_file("Tao_wrappers.jl",start_dir, classes, "Tao", exclude=exclude)  
 
 #exclude=["MatSolves","MatCreateVecs","MatCreateVecsFFTW"]
 #exclude=[""]

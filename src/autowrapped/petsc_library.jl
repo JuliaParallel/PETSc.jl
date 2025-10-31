@@ -471,5 +471,9 @@ include("PetscOptions_wrappers.jl")
 include("KSP_wrappers.jl")
 include("PetscObject_wrappers.jl")
 include("PetscDraw_wrappers.jl")
-
-
+include("PetscRegressor_wrappers.jl")
+include("PF_wrappers.jl")
+include("IS_wrappers.jl")
+include("TS_wrappers.jl")
+include("AO_wrappers.jl")
+include("Tao_wrappers.jl")

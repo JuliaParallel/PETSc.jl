@@ -13,16 +13,15 @@
 - PetscDrawSP
 - PetscDrawHG
 - PetscDrawBar
-- 
-
-# to be done
+- PetscRegressor
 - PF
 - IS
+
+# to be done
 - TS
 - AO
 - Tao
 
-- PetscRegressor
 - DMAdaptor
 - PetscViennaCLIndices
 - VecTagger

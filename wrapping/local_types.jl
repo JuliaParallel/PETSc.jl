@@ -700,3 +700,49 @@ mutable struct _n_PetscDrawBar end
 const PetscDrawBar = Ptr{_n_PetscDrawBar}
 
 # -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscRegressor end
+const PetscRegressor = Ptr{_n_PetscRegressor}
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_ISColoringValue end
+const ISColoringValue = Ptr{_n_ISColoringValue}
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_TSTrajectory end
+const TSTrajectory = Ptr{_n_TSTrajectory}
+
+mutable struct _n_TSAdapt end
+const TSAdapt = Ptr{_n_TSAdapt}
+
+mutable struct _n_TSMonitorVTKCtx end
+const TSMonitorVTKCtx = Ptr{_n_TSMonitorVTKCtx}
+
+mutable struct TSRHSJacobianPFn end
+
+mutable struct _n_TSGLLEAdapt end
+const TSGLLEAdapt = Ptr{_n_TSGLLEAdapt}
+
+mutable struct TSGLLEAcceptFn end
+
+mutable struct TSAlpha2PredictorFn end
+
+mutable struct TSRHSFunctionFn end
+mutable struct TSSolutionFn end
+mutable struct TSForcingFn end
+mutable struct TSRHSJacobianFn end
+mutable struct TSIFunctionFn end
+mutable struct TSIJacobianFn end
+mutable struct TSI2FunctionFn end
+mutable struct TSI2JacobianFn end
+mutable struct TSTransientVariableFn end
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_TaoLineSearch end
+const TaoLineSearch = Ptr{_n_TaoLineSearch}
+
+# -------------------------------------------------------

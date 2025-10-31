@@ -954,7 +954,7 @@ function MatFindNonzeroRows(petsclib::PetscLibType, mat::PetscMat, keptrows::IS)
     @chk ccall(
                (:MatFindNonzeroRows, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{IS}),
+               (CMat, Ptr{CIS}),
                mat, keptrows,
               )
 
@@ -986,7 +986,7 @@ function MatFindZeroRows(petsclib::PetscLibType, mat::PetscMat, zerorows::IS) en
     @chk ccall(
                (:MatFindZeroRows, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{IS}),
+               (CMat, Ptr{CIS}),
                mat, zerorows,
               )
 
@@ -1910,7 +1910,7 @@ function MatSetValuesIS(petsclib::PetscLibType, mat::PetscMat, ism::IS, isn::IS,
     @chk ccall(
                (:MatSetValuesIS, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, IS, Ptr{$PetscScalar}, InsertMode),
+               (CMat, CIS, CIS, Ptr{$PetscScalar}, InsertMode),
                mat, ism, isn, v, addv,
               )
 
@@ -2858,7 +2858,7 @@ function MatLUFactor(petsclib::PetscLibType, mat::PetscMat, row::IS, col::IS, in
     @chk ccall(
                (:MatLUFactor, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, IS, Ptr{MatFactorInfo}),
+               (CMat, CIS, CIS, Ptr{MatFactorInfo}),
                mat, row, col, info,
               )
 
@@ -2889,7 +2889,7 @@ function MatILUFactor(petsclib::PetscLibType, mat::PetscMat, row::IS, col::IS, i
     @chk ccall(
                (:MatILUFactor, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, IS, Ptr{MatFactorInfo}),
+               (CMat, CIS, CIS, Ptr{MatFactorInfo}),
                mat, row, col, info,
               )
 
@@ -2922,7 +2922,7 @@ function MatLUFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::PetscM
     @chk ccall(
                (:MatLUFactorSymbolic, $petsc_library),
                PetscErrorCode,
-               (CMat, CMat, IS, IS, Ptr{MatFactorInfo}),
+               (CMat, CMat, CIS, CIS, Ptr{MatFactorInfo}),
                fact, mat, row, col, info,
               )
 
@@ -2991,7 +2991,7 @@ function MatCholeskyFactor(petsclib::PetscLibType, mat::PetscMat, perm::IS, info
     @chk ccall(
                (:MatCholeskyFactor, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, Ptr{MatFactorInfo}),
+               (CMat, CIS, Ptr{MatFactorInfo}),
                mat, perm, info,
               )
 
@@ -3024,7 +3024,7 @@ function MatCholeskyFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::
     @chk ccall(
                (:MatCholeskyFactorSymbolic, $petsc_library),
                PetscErrorCode,
-               (CMat, CMat, IS, Ptr{MatFactorInfo}),
+               (CMat, CMat, CIS, Ptr{MatFactorInfo}),
                fact, mat, perm, info,
               )
 
@@ -3090,7 +3090,7 @@ function MatQRFactor(petsclib::PetscLibType, mat::PetscMat, col::IS, info::MatFa
     @chk ccall(
                (:MatQRFactor, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, Ptr{MatFactorInfo}),
+               (CMat, CIS, Ptr{MatFactorInfo}),
                mat, col, info,
               )
 
@@ -3122,7 +3122,7 @@ function MatQRFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::PetscM
     @chk ccall(
                (:MatQRFactorSymbolic, $petsc_library),
                PetscErrorCode,
-               (CMat, CMat, IS, Ptr{MatFactorInfo}),
+               (CMat, CMat, CIS, Ptr{MatFactorInfo}),
                fact, mat, col, info,
               )
 
@@ -4382,7 +4382,7 @@ function MatPermute(petsclib::PetscLibType, mat::PetscMat, row::IS, col::IS, B::
     @chk ccall(
                (:MatPermute, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, IS, Ptr{CMat}),
+               (CMat, CIS, CIS, Ptr{CMat}),
                mat, row, col, B_,
               )
 
@@ -4856,7 +4856,7 @@ function MatZeroRowsColumnsIS(petsclib::PetscLibType, mat::PetscMat, is::IS, dia
     @chk ccall(
                (:MatZeroRowsColumnsIS, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, $PetscScalar, CVec, CVec),
+               (CMat, CIS, $PetscScalar, CVec, CVec),
                mat, is, diag, x, b,
               )
 
@@ -4931,7 +4931,7 @@ function MatZeroRowsIS(petsclib::PetscLibType, mat::PetscMat, is::Union{Ptr,IS},
     @chk ccall(
                (:MatZeroRowsIS, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, $PetscScalar, CVec, CVec),
+               (CMat, CIS, $PetscScalar, CVec, CVec),
                mat, is, diag, x, b,
               )
 
@@ -5082,7 +5082,7 @@ function MatZeroRowsLocalIS(petsclib::PetscLibType, mat::PetscMat, is::IS, diag:
     @chk ccall(
                (:MatZeroRowsLocalIS, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, $PetscScalar, CVec, CVec),
+               (CMat, CIS, $PetscScalar, CVec, CVec),
                mat, is, diag, x, b,
               )
 
@@ -5157,7 +5157,7 @@ function MatZeroRowsColumnsLocalIS(petsclib::PetscLibType, mat::PetscMat, is::IS
     @chk ccall(
                (:MatZeroRowsColumnsLocalIS, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, $PetscScalar, CVec, CVec),
+               (CMat, CIS, $PetscScalar, CVec, CVec),
                mat, is, diag, x, b,
               )
 
@@ -5432,7 +5432,7 @@ function MatGetOwnershipIS(petsclib::PetscLibType, A::PetscMat, rows::IS, cols::
     @chk ccall(
                (:MatGetOwnershipIS, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{IS}, Ptr{IS}),
+               (CMat, Ptr{CIS}, Ptr{CIS}),
                A, rows, cols,
               )
 
@@ -5467,7 +5467,7 @@ function MatILUFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::Petsc
     @chk ccall(
                (:MatILUFactorSymbolic, $petsc_library),
                PetscErrorCode,
-               (CMat, CMat, IS, IS, Ptr{MatFactorInfo}),
+               (CMat, CMat, CIS, CIS, Ptr{MatFactorInfo}),
                fact, mat, row, col, info,
               )
 
@@ -5500,7 +5500,7 @@ function MatICCFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::Petsc
     @chk ccall(
                (:MatICCFactorSymbolic, $petsc_library),
                PetscErrorCode,
-               (CMat, CMat, IS, Ptr{MatFactorInfo}),
+               (CMat, CMat, CIS, Ptr{MatFactorInfo}),
                fact, mat, perm, info,
               )
 
@@ -5541,7 +5541,7 @@ function MatCreateSubMatrices(petsclib::PetscLibType, mat::PetscMat, n::PetscInt
     @chk ccall(
                (:MatCreateSubMatrices, $petsc_library),
                PetscErrorCode,
-               (CMat, $PetscInt, Ptr{IS}, Ptr{IS}, MatReuse, Ptr{Ptr{CMat}}),
+               (CMat, $PetscInt, Ptr{CIS}, Ptr{CIS}, MatReuse, Ptr{Ptr{CMat}}),
                mat, n, irow, icol, scall, submat_,
               )
 
@@ -5581,7 +5581,7 @@ function MatCreateSubMatricesMPI(petsclib::PetscLibType, mat::PetscMat, n::Petsc
     @chk ccall(
                (:MatCreateSubMatricesMPI, $petsc_library),
                PetscErrorCode,
-               (CMat, $PetscInt, Ptr{IS}, Ptr{IS}, MatReuse, Ptr{Ptr{CMat}}),
+               (CMat, $PetscInt, Ptr{CIS}, Ptr{CIS}, MatReuse, Ptr{Ptr{CMat}}),
                mat, n, irow, icol, scall, submat_,
               )
 
@@ -5756,7 +5756,7 @@ function MatIncreaseOverlap(petsclib::PetscLibType, mat::PetscMat, n::PetscInt, 
     @chk ccall(
                (:MatIncreaseOverlap, $petsc_library),
                PetscErrorCode,
-               (CMat, $PetscInt, Ptr{IS}, $PetscInt),
+               (CMat, $PetscInt, Ptr{CIS}, $PetscInt),
                mat, n, is, ov,
               )
 
@@ -5795,7 +5795,7 @@ function MatIncreaseOverlapSplit(petsclib::PetscLibType, mat::PetscMat, n::Petsc
     @chk ccall(
                (:MatIncreaseOverlapSplit, $petsc_library),
                PetscErrorCode,
-               (CMat, $PetscInt, Ptr{IS}, $PetscInt),
+               (CMat, $PetscInt, Ptr{CIS}, $PetscInt),
                mat, n, is, ov,
               )
 
@@ -6077,7 +6077,7 @@ function MatSelectVariableBlockSizes(petsclib::PetscLibType, subA::PetscMat, A::
     @chk ccall(
                (:MatSelectVariableBlockSizes, $petsc_library),
                PetscErrorCode,
-               (CMat, CMat, IS),
+               (CMat, CMat, CIS),
                subA, A, isrow,
               )
 
@@ -6451,7 +6451,7 @@ function MatCreateSubMatrix(petsclib::PetscLibType, mat::PetscMat, isrow::IS, is
     @chk ccall(
                (:MatCreateSubMatrix, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, IS, MatReuse, Ptr{CMat}),
+               (CMat, CIS, CIS, MatReuse, Ptr{CMat}),
                mat, isrow, iscol, cll, newmat_,
               )
 
@@ -7044,7 +7044,7 @@ function MatICCFactor(petsclib::PetscLibType, mat::PetscMat, row::IS, info::MatF
     @chk ccall(
                (:MatICCFactor, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, Ptr{MatFactorInfo}),
+               (CMat, CIS, Ptr{MatFactorInfo}),
                mat, row, info,
               )
 
@@ -7573,7 +7573,7 @@ function MatFactorSetSchurIS(petsclib::PetscLibType, mat::PetscMat, is::IS) end
     @chk ccall(
                (:MatFactorSetSchurIS, $petsc_library),
                PetscErrorCode,
-               (CMat, IS),
+               (CMat, CIS),
                mat, is,
               )
 
@@ -8165,7 +8165,7 @@ function MatGetLocalSubMatrix(petsclib::PetscLibType, mat::PetscMat, isrow::IS, 
     @chk ccall(
                (:MatGetLocalSubMatrix, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, IS, Ptr{CMat}),
+               (CMat, CIS, CIS, Ptr{CMat}),
                mat, isrow, iscol, submat_,
               )
 
@@ -8201,7 +8201,7 @@ function MatRestoreLocalSubMatrix(petsclib::PetscLibType, mat::PetscMat, isrow::
     @chk ccall(
                (:MatRestoreLocalSubMatrix, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, IS, Ptr{CMat}),
+               (CMat, CIS, CIS, Ptr{CMat}),
                mat, isrow, iscol, submat_,
               )
 
@@ -8236,7 +8236,7 @@ function MatFindZeroDiagonals(petsclib::PetscLibType, mat::PetscMat, is::IS) end
     @chk ccall(
                (:MatFindZeroDiagonals, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{IS}),
+               (CMat, Ptr{CIS}),
                mat, is,
               )
 
@@ -8270,7 +8270,7 @@ function MatFindOffBlockDiagonalEntries(petsclib::PetscLibType, mat::PetscMat, i
     @chk ccall(
                (:MatFindOffBlockDiagonalEntries, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{IS}),
+               (CMat, Ptr{CIS}),
                mat, is,
               )
 
@@ -8557,12 +8557,12 @@ function MatSubdomainsCreateCoalesce(petsclib::PetscLibType, A::PetscMat, N::Pet
 
 @for_petsc function MatSubdomainsCreateCoalesce(petsclib::$UnionPetscLib, A::PetscMat, N::$PetscInt )
 	n_ = Ref{$PetscInt}()
-	iss_ = Ref{Ptr{IS}}()
+	iss_ = Ref{Ptr{CIS}}()
 
     @chk ccall(
                (:MatSubdomainsCreateCoalesce, $petsc_library),
                PetscErrorCode,
-               (CMat, $PetscInt, Ptr{$PetscInt}, Ptr{Ptr{IS}}),
+               (CMat, $PetscInt, Ptr{$PetscInt}, Ptr{Ptr{CIS}}),
                A, N, n_, iss_,
               )
 
@@ -9124,7 +9124,7 @@ function MatMPISELLGetLocalMatCondensed(petsclib::PetscLibType, A::PetscMat, sca
     @chk ccall(
                (:MatMPISELLGetLocalMatCondensed, $petsc_library),
                PetscErrorCode,
-               (CMat, MatReuse, Ptr{IS}, Ptr{IS}, Ptr{CMat}),
+               (CMat, MatReuse, Ptr{CIS}, Ptr{CIS}, Ptr{CMat}),
                A, scall, row, col, A_loc_,
               )
 
@@ -10241,7 +10241,7 @@ function MatCreateLocalRef(petsclib::PetscLibType, A::PetscMat, isrow::IS, iscol
     @chk ccall(
                (:MatCreateLocalRef, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, IS, Ptr{CMat}),
+               (CMat, CIS, CIS, Ptr{CMat}),
                A, isrow, iscol, newmat_,
               )
 
@@ -13460,7 +13460,7 @@ function MatReorderingSeqSBAIJ(petsclib::PetscLibType, A::PetscMat, perm::IS) en
     @chk ccall(
                (:MatReorderingSeqSBAIJ, $petsc_library),
                PetscErrorCode,
-               (CMat, IS),
+               (CMat, CIS),
                A, perm,
               )
 
@@ -14829,7 +14829,7 @@ function MatHtoolGetPermutationSource(petsclib::PetscLibType, A::PetscMat, is::I
     @chk ccall(
                (:MatHtoolGetPermutationSource, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{IS}),
+               (CMat, Ptr{CIS}),
                A, is,
               )
 
@@ -14850,7 +14850,7 @@ function MatHtoolGetPermutationTarget(petsclib::PetscLibType, A::PetscMat, is::I
     @chk ccall(
                (:MatHtoolGetPermutationTarget, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{IS}),
+               (CMat, Ptr{CIS}),
                A, is,
               )
 
@@ -15036,7 +15036,7 @@ function MatCreateSubMatrixVirtual(petsclib::PetscLibType, A::PetscMat, isrow::I
     @chk ccall(
                (:MatCreateSubMatrixVirtual, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, IS, Ptr{CMat}),
+               (CMat, CIS, CIS, Ptr{CMat}),
                A, isrow, iscol, newmat_,
               )
 
@@ -15071,7 +15071,7 @@ function MatSubMatrixVirtualUpdate(petsclib::PetscLibType, N::PetscMat, A::Petsc
     @chk ccall(
                (:MatSubMatrixVirtualUpdate, $petsc_library),
                PetscErrorCode,
-               (CMat, CMat, IS, IS),
+               (CMat, CMat, CIS, CIS),
                N, A, isrow, iscol,
               )
 
@@ -15262,7 +15262,7 @@ function MatNestGetISs(petsclib::PetscLibType, A::PetscMat, rows::Vector{IS}, co
     @chk ccall(
                (:MatNestGetISs, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{IS}, Ptr{IS}),
+               (CMat, Ptr{CIS}, Ptr{CIS}),
                A, rows, cols,
               )
 
@@ -15298,7 +15298,7 @@ function MatNestGetLocalISs(petsclib::PetscLibType, A::PetscMat, rows::Vector{IS
     @chk ccall(
                (:MatNestGetLocalISs, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{IS}, Ptr{IS}),
+               (CMat, Ptr{CIS}, Ptr{CIS}),
                A, rows, cols,
               )
 
@@ -15366,7 +15366,7 @@ function MatNestSetSubMats(petsclib::PetscLibType, A::PetscMat, nr::PetscInt, is
     @chk ccall(
                (:MatNestSetSubMats, $petsc_library),
                PetscErrorCode,
-               (CMat, $PetscInt, Ptr{IS}, $PetscInt, Ptr{IS}, Ptr{CMat}),
+               (CMat, $PetscInt, Ptr{CIS}, $PetscInt, Ptr{CIS}, Ptr{CMat}),
                A, nr, is_row, nc, is_col, a,
               )
 
@@ -15408,7 +15408,7 @@ function MatCreateNest(petsclib::PetscLibType, comm::MPI_Comm, nr::PetscInt, is_
     @chk ccall(
                (:MatCreateNest, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, $PetscInt, Ptr{IS}, $PetscInt, Ptr{IS}, Ptr{CMat}, Ptr{CMat}),
+               (MPI_Comm, $PetscInt, Ptr{CIS}, $PetscInt, Ptr{CIS}, Ptr{CMat}, Ptr{CMat}),
                comm, nr, is_row, nc, is_col, a, B_,
               )
 
@@ -16022,7 +16022,7 @@ function MatMPIAIJGetLocalMatMerge(petsclib::PetscLibType, A::PetscMat, scall::M
     @chk ccall(
                (:MatMPIAIJGetLocalMatMerge, $petsc_library),
                PetscErrorCode,
-               (CMat, MatReuse, Ptr{IS}, Ptr{CMat}),
+               (CMat, MatReuse, Ptr{CIS}, Ptr{CMat}),
                A, scall, glob, A_loc_,
               )
 
@@ -16061,7 +16061,7 @@ function MatMPIAIJGetLocalMatCondensed(petsclib::PetscLibType, A::PetscMat, scal
     @chk ccall(
                (:MatMPIAIJGetLocalMatCondensed, $petsc_library),
                PetscErrorCode,
-               (CMat, MatReuse, Ptr{IS}, Ptr{IS}, Ptr{CMat}),
+               (CMat, MatReuse, Ptr{CIS}, Ptr{CIS}, Ptr{CMat}),
                A, scall, row, col, A_loc_,
               )
 
@@ -16101,7 +16101,7 @@ function MatGetBrowsOfAcols(petsclib::PetscLibType, A::PetscMat, B::PetscMat, sc
     @chk ccall(
                (:MatGetBrowsOfAcols, $petsc_library),
                PetscErrorCode,
-               (CMat, CMat, MatReuse, Ptr{IS}, Ptr{IS}, Ptr{CMat}),
+               (CMat, CMat, MatReuse, Ptr{CIS}, Ptr{CIS}, Ptr{CMat}),
                A, B, scall, rowb, colb, B_seq_,
               )
 
@@ -18484,7 +18484,7 @@ function MatInodeAdjustForInodes(petsclib::PetscLibType, A::PetscMat, rperm::IS,
     @chk ccall(
                (:MatInodeAdjustForInodes, $petsc_library),
                PetscErrorCode,
-               (CMat, Ptr{IS}, Ptr{IS}),
+               (CMat, Ptr{CIS}, Ptr{CIS}),
                A, rperm, cperm,
               )
 
@@ -19157,7 +19157,7 @@ function MatReorderForNonzeroDiagonal(petsclib::PetscLibType, mat::PetscMat, abs
     @chk ccall(
                (:MatReorderForNonzeroDiagonal, $petsc_library),
                PetscErrorCode,
-               (CMat, $PetscReal, IS, IS),
+               (CMat, $PetscReal, CIS, CIS),
                mat, abstol, ris, cis,
               )
 
@@ -20582,7 +20582,7 @@ function MatGetOrdering(petsclib::PetscLibType, mat::PetscMat, type::MatOrdering
     @chk ccall(
                (:MatGetOrdering, $petsc_library),
                PetscErrorCode,
-               (CMat, MatOrderingType, Ptr{IS}, Ptr{IS}),
+               (CMat, MatOrderingType, Ptr{CIS}, Ptr{CIS}),
                mat, type, rperm, cperm,
               )
 
@@ -22494,7 +22494,7 @@ function MatGetSchurComplement(petsclib::PetscLibType, A::PetscMat, isrow0::IS, 
     @chk ccall(
                (:MatGetSchurComplement, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, IS, IS, IS, MatReuse, Ptr{CMat}, MatSchurComplementAinvType, MatReuse, Ptr{CMat}),
+               (CMat, CIS, CIS, CIS, CIS, MatReuse, Ptr{CMat}, MatSchurComplementAinvType, MatReuse, Ptr{CMat}),
                A, isrow0, iscol0, isrow1, iscol1, mreuse, S_, ainvtype, preuse, Sp_,
               )
 
@@ -23090,7 +23090,7 @@ function MatCreateSubMatrixFree(petsclib::PetscLibType, mat::PetscMat, Rows::IS,
     @chk ccall(
                (:MatCreateSubMatrixFree, $petsc_library),
                PetscErrorCode,
-               (CMat, IS, IS, Ptr{CMat}),
+               (CMat, CIS, CIS, Ptr{CMat}),
                mat, Rows, Cols, J_,
               )
 

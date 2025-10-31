@@ -132,7 +132,7 @@ function init_extract_parameters(typename::String, name::String, function_name::
     @show function_name, typename, name, isarray, isoutput, stars
     if !isarray && isoutput && typename in CustomTypes
         # a custom type is being initialized
-        typename_c  = replace(typename,"Petsc"=>"C", count=1)
+        typename_c  = replace(typename,"Petsc"=>"C", r"IS"=>"CIS", count=1)
         name_ccall  = "$(name)_"
         init_arg    = "$name_ccall = Ref{$typename_c}()"  
         extract_arg = "$name = $typename($(name_ccall)[], petsclib)"  
@@ -558,6 +558,28 @@ function write_functions_from_classes_to_file(filename::String, start_dir::Strin
                 write_funcs(classes[class_name].functions[name], file)
                 #write_funcs(classes[function_name].functions[String(f)])
 
+            end
+        end
+    end
+end
+
+function write_functions_from_classes_to_file(filename::String, start_dir::String, classes::Py, class_names::Vector{String}; exclude=String[])
+    open(joinpath(start_dir, filename), "w") do file
+        for class_name in class_names
+            # write definitions to file (if needed)
+            write_undefined_typearguments_from_classes_to_file(classes[class_name].functions, file=file)
+        end
+
+        # Call the write_enum function and pass the file as the io argument
+        for class_name in class_names
+            for f in classes[class_name].functions
+                name = String(f)
+                if !any(exclude .== name)
+                    @info name
+                    write_funcs(classes[class_name].functions[name], file)
+                    #write_funcs(classes[function_name].functions[String(f)])
+
+                end
             end
         end
     end

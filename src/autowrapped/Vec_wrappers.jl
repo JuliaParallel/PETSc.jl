@@ -798,7 +798,7 @@ function VecGetSubVector(petsclib::PetscLibType, X::PetscVec, is::IS, Y::PetscVe
     @chk ccall(
                (:VecGetSubVector, $petsc_library),
                PetscErrorCode,
-               (CVec, IS, Ptr{CVec}),
+               (CVec, CIS, Ptr{CVec}),
                X, is, Y_,
               )
 
@@ -833,7 +833,7 @@ function VecRestoreSubVector(petsclib::PetscLibType, X::PetscVec, is::IS, Y::Pet
     @chk ccall(
                (:VecRestoreSubVector, $petsc_library),
                PetscErrorCode,
-               (CVec, IS, Ptr{CVec}),
+               (CVec, CIS, Ptr{CVec}),
                X, is, Y_,
               )
 
@@ -5916,7 +5916,7 @@ function VecPermute(petsclib::PetscLibType, x::PetscVec, row::IS, inv::PetscBool
     @chk ccall(
                (:VecPermute, $petsc_library),
                PetscErrorCode,
-               (CVec, IS, PetscBool),
+               (CVec, CIS, PetscBool),
                x, row, inv,
               )
 
@@ -6285,7 +6285,7 @@ function VecISAXPY(petsclib::PetscLibType, vfull::PetscVec, is::IS, alpha::Petsc
     @chk ccall(
                (:VecISAXPY, $petsc_library),
                PetscErrorCode,
-               (CVec, IS, $PetscScalar, CVec),
+               (CVec, CIS, $PetscScalar, CVec),
                vfull, is, alpha, vreduced,
               )
 
@@ -6322,7 +6322,7 @@ function VecISCopy(petsclib::PetscLibType, vfull::PetscVec, is::IS, mode::Scatte
     @chk ccall(
                (:VecISCopy, $petsc_library),
                PetscErrorCode,
-               (CVec, IS, ScatterMode, CVec),
+               (CVec, CIS, ScatterMode, CVec),
                vfull, is, mode, vreduced,
               )
 
@@ -6355,7 +6355,7 @@ function VecISSet(petsclib::PetscLibType, V::PetscVec, S::IS, c::PetscScalar) en
     @chk ccall(
                (:VecISSet, $petsc_library),
                PetscErrorCode,
-               (CVec, IS, $PetscScalar),
+               (CVec, CIS, $PetscScalar),
                V, S, c,
               )
 
@@ -6388,7 +6388,7 @@ function VecISShift(petsclib::PetscLibType, V::PetscVec, S::IS, c::PetscScalar) 
     @chk ccall(
                (:VecISShift, $petsc_library),
                PetscErrorCode,
-               (CVec, IS, $PetscScalar),
+               (CVec, CIS, $PetscScalar),
                V, S, c,
               )
 

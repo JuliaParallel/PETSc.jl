@@ -2119,7 +2119,7 @@ function VecScatterCreate(petsclib::PetscLibType, x::PetscVec, ix::IS, y::PetscV
     @chk ccall(
                (:VecScatterCreate, $petsc_library),
                PetscErrorCode,
-               (CVec, IS, CVec, IS, Ptr{VecScatter}),
+               (CVec, CIS, CVec, CIS, Ptr{VecScatter}),
                x, ix, y, iy, newsf_,
               )
 

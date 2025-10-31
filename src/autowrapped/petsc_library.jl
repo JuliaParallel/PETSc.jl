@@ -142,7 +142,18 @@ PetscSNES(ptr::CSNES, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscSNES{
 Base.convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
 Base.unsafe_convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
 
-
+# Custom display for REPL
+#=
+function Base.show(io::IO, v::AbstractPetscSNES{PetscLib}) where {PetscLib}
+    if v.ptr == C_NULL
+        print(io, "PETSc SNES (null pointer)")
+        return
+    else
+        print(io, "PETSc SNES object")
+    end
+    return nothing
+end
+=#
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc DM -----
@@ -197,6 +208,105 @@ Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = v.ptr
 Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = v.ptr
 # ------------------------------------------------------
 
+# ------------------------------------------------------
+# IS
+const CIS = Ptr{Cvoid} 
+abstract type AbstractIS{T} end
+
+mutable struct IS{PetscLib} <: AbstractIS{PetscLib}
+    ptr::Ptr{Cvoid}
+    
+    IS{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
+end
+
+# Convenience constructors
+IS(lib::PetscLib) where {PetscLib} = IS{PetscLib}()
+IS(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = IS{PetscLib}(ptr)
+
+# Conversion methods
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
+# ------------------------------------------------------
+
+# ------------------------------------------------------
+# PF
+const CPF = Ptr{Cvoid} 
+abstract type AbstractPF{T} end
+
+mutable struct PF{PetscLib} <: AbstractPF{PetscLib}
+    ptr::Ptr{Cvoid}
+    
+    PF{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
+end
+
+# Convenience constructors
+PF(lib::PetscLib) where {PetscLib} = PF{PetscLib}()
+PF(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = PF{PetscLib}(ptr)
+
+# Conversion methods
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPF) = v.ptr
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractPF) = v.ptr
+# ------------------------------------------------------
+
+# ------------------------------------------------------
+# TS
+const CTS = Ptr{Cvoid} 
+abstract type AbstractTS{T} end
+
+mutable struct TS{PetscLib} <: AbstractTS{PetscLib}
+    ptr::Ptr{Cvoid}
+    
+    TS{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
+end
+
+# Convenience constructors
+TS(lib::PetscLib) where {PetscLib} = TS{PetscLib}()
+TS(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = TS{PetscLib}(ptr)
+
+# Conversion methods
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractTS) = v.ptr
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractTS) = v.ptr
+# ------------------------------------------------------
+
+# ------------------------------------------------------
+# Tao
+const CTao = Ptr{Cvoid} 
+abstract type AbstractTao{T} end
+
+mutable struct Tao{PetscLib} <: AbstractTao{PetscLib}
+    ptr::Ptr{Cvoid}
+    
+    Tao{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
+end
+
+# Convenience constructors
+Tao(lib::PetscLib) where {PetscLib} = Tao{PetscLib}()
+Tao(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = Tao{PetscLib}(ptr)
+
+# Conversion methods
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractTao) = v.ptr
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractTao) = v.ptr
+# ------------------------------------------------------
+
+# ------------------------------------------------------
+# AO
+const CAO = Ptr{Cvoid} 
+abstract type AbstractAO{T} end
+
+mutable struct AO{PetscLib} <: AbstractAO{PetscLib}
+    ptr::Ptr{Cvoid}
+    
+    AO{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
+end
+
+# Convenience constructors
+AO(lib::PetscLib) where {PetscLib} = AO{PetscLib}()
+AO(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = AO{PetscLib}(ptr)
+
+# Conversion methods
+Base.convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = v.ptr
+Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = v.ptr
+# ------------------------------------------------------
 
 
 # Stuff that I don't really want to define by hand, but seem to not be part of the petsc python interface?
@@ -310,8 +420,8 @@ end
 
 
 # needed for Vec ---
-mutable struct _p_IS end
-const IS = Ptr{_p_IS}
+#mutable struct _p_IS end
+#const IS = Ptr{_p_IS}
 
 mutable struct _n_ISColoring end
 const ISColoring = Ptr{_n_ISColoring}
@@ -359,7 +469,7 @@ include("Vecs_wrappers.jl")
 include("Mat_wrappers.jl")
 include("PetscOptions_wrappers.jl")
 include("KSP_wrappers.jl")
-include("SNES_wrappers.jl")
-include("PC_wrappers.jl")
-include("DM_wrappers.jl")
+include("PetscObject_wrappers.jl")
+include("PetscDraw_wrappers.jl")
+
 

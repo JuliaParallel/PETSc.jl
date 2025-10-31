@@ -1,3 +1,7 @@
+# this summarizes local types generated in all packages
+# Its for wrapping new packages; simplifies my life..
+
+
 #
 # START OF PROLOGUE
 #
@@ -142,18 +146,7 @@ PetscSNES(ptr::CSNES, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscSNES{
 Base.convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
 Base.unsafe_convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
 
-# Custom display for REPL
-#=
-function Base.show(io::IO, v::AbstractPetscSNES{PetscLib}) where {PetscLib}
-    if v.ptr == C_NULL
-        print(io, "PETSc SNES (null pointer)")
-        return
-    else
-        print(io, "PETSc SNES object")
-    end
-    return nothing
-end
-=#
+
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc DM -----
@@ -208,105 +201,6 @@ Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = v.ptr
 Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractPetscOptions) = v.ptr
 # ------------------------------------------------------
 
-# ------------------------------------------------------
-# IS
-const CIS = Ptr{Cvoid} 
-abstract type AbstractIS{T} end
-
-mutable struct IS{PetscLib} <: AbstractIS{PetscLib}
-    ptr::Ptr{Cvoid}
-    
-    IS{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
-end
-
-# Convenience constructors
-IS(lib::PetscLib) where {PetscLib} = IS{PetscLib}()
-IS(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = IS{PetscLib}(ptr)
-
-# Conversion methods
-Base.convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
-Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
-# ------------------------------------------------------
-
-# ------------------------------------------------------
-# PF
-const CPF = Ptr{Cvoid} 
-abstract type AbstractPF{T} end
-
-mutable struct PF{PetscLib} <: AbstractPF{PetscLib}
-    ptr::Ptr{Cvoid}
-    
-    PF{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
-end
-
-# Convenience constructors
-PF(lib::PetscLib) where {PetscLib} = PF{PetscLib}()
-PF(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = PF{PetscLib}(ptr)
-
-# Conversion methods
-Base.convert(::Type{Ptr{Cvoid}}, v::AbstractPF) = v.ptr
-Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractPF) = v.ptr
-# ------------------------------------------------------
-
-# ------------------------------------------------------
-# TS
-const CTS = Ptr{Cvoid} 
-abstract type AbstractTS{T} end
-
-mutable struct TS{PetscLib} <: AbstractTS{PetscLib}
-    ptr::Ptr{Cvoid}
-    
-    TS{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
-end
-
-# Convenience constructors
-TS(lib::PetscLib) where {PetscLib} = TS{PetscLib}()
-TS(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = TS{PetscLib}(ptr)
-
-# Conversion methods
-Base.convert(::Type{Ptr{Cvoid}}, v::AbstractTS) = v.ptr
-Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractTS) = v.ptr
-# ------------------------------------------------------
-
-# ------------------------------------------------------
-# Tao
-const CTao = Ptr{Cvoid} 
-abstract type AbstractTao{T} end
-
-mutable struct Tao{PetscLib} <: AbstractTao{PetscLib}
-    ptr::Ptr{Cvoid}
-    
-    Tao{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
-end
-
-# Convenience constructors
-Tao(lib::PetscLib) where {PetscLib} = Tao{PetscLib}()
-Tao(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = Tao{PetscLib}(ptr)
-
-# Conversion methods
-Base.convert(::Type{Ptr{Cvoid}}, v::AbstractTao) = v.ptr
-Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractTao) = v.ptr
-# ------------------------------------------------------
-
-# ------------------------------------------------------
-# AO
-const CAO = Ptr{Cvoid} 
-abstract type AbstractAO{T} end
-
-mutable struct AO{PetscLib} <: AbstractAO{PetscLib}
-    ptr::Ptr{Cvoid}
-    
-    AO{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
-end
-
-# Convenience constructors
-AO(lib::PetscLib) where {PetscLib} = AO{PetscLib}()
-AO(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = AO{PetscLib}(ptr)
-
-# Conversion methods
-Base.convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = v.ptr
-Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = v.ptr
-# ------------------------------------------------------
 
 
 # Stuff that I don't really want to define by hand, but seem to not be part of the petsc python interface?
@@ -420,8 +314,8 @@ end
 
 
 # needed for Vec ---
-#mutable struct _p_IS end
-#const IS = Ptr{_p_IS}
+mutable struct _p_IS end
+const IS = Ptr{_p_IS}
 
 mutable struct _n_ISColoring end
 const ISColoring = Ptr{_n_ISColoring}
@@ -438,38 +332,371 @@ mutable struct _p_PetscSectionSym end
 const PetscSectionSym = Ptr{_p_PetscSectionSym}
 const PetscSectionSymType = Ptr{Cchar}
 
-# needed for Mat ---
-#=
-mutable struct _p_MatNullSpace end
-const MatNullSpace = Ptr{_p_MatNullSpace}
 
-mutable struct _p_MatTransposeColoring end
-const MatTransposeColoring = Ptr{_p_MatTransposeColoring}
-
-mutable struct _p_hypre_ParCSRMatrix end
-const hypre_ParCSRMatrix = Ptr{_p_hypre_ParCSRMatrix}
-
-mutable struct _p_PetscFunctionList end
-const PetscFunctionList = Ptr{_p_PetscFunctionList}
-=#
-#
-# END OF PROLOGUE
-#
-
-# load all generated files
-#include("../src/LibPETSc_lib.jl")
-include("enums_wrappers.jl")
-include("senums_wrappers.jl")
-include("typedefs_wrappers.jl")
-include("struct_wrappers.jl")
-
-include("Sys_wrappers.jl")
-include("Vec_wrappers.jl")
-include("Vecs_wrappers.jl")
-include("Mat_wrappers.jl")
-include("PetscOptions_wrappers.jl")
-include("KSP_wrappers.jl")
-include("PetscObject_wrappers.jl")
-include("PetscDraw_wrappers.jl")
+include("../src/autowrapped/enums_wrappers.jl")
+include("../src/autowrapped/senums_wrappers.jl")
+include("../src/autowrapped/typedefs_wrappers.jl")
+include("../src/autowrapped/struct_wrappers.jl")
 
 
+# autodefined type arguments for class ------
+mutable struct SNESFunctionFn end
+
+mutable struct SNESNGSFn end
+
+mutable struct SNESJacobianFn end
+
+mutable struct SNESInitialGuessFn end
+
+mutable struct SNESUpdateFn end
+
+mutable struct _n_SNESLineSearch end
+const SNESLineSearch = Ptr{_n_SNESLineSearch}
+
+mutable struct SNESObjectiveFn end
+
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct KSPConvergedReasonViewFn end
+
+mutable struct KSPMonitorFn end
+
+mutable struct KSPConvergenceTestFn end
+
+mutable struct KSPComputeOperatorsFn end
+
+mutable struct KSPComputeRHSFn end
+
+mutable struct KSPComputeInitialGuessFn end
+
+mutable struct _n_PeCtx end
+const PeCtx = Ptr{_n_PeCtx}
+
+mutable struct KSPPSolveFn end
+
+mutable struct KSPMonitorRegisterFn end
+
+mutable struct KSPMonitorRegisterCreateFn end
+
+mutable struct KSPMonitorRegisterDestroyFn end
+
+mutable struct _n_KSPGuess end
+const KSPGuess = Ptr{_n_KSPGuess}
+
+mutable struct KSPFlexibleModifyPCFn end
+
+# -------------------------------------------------------
+
+# autodefined type arguments for class Mat ------
+mutable struct _n_MatNullSpace end
+const MatNullSpace = Ptr{_n_MatNullSpace}
+
+mutable struct _n_MatTransposeColoring end
+const MatTransposeColoring = Ptr{_n_MatTransposeColoring}
+
+mutable struct _n_hypre_ParCSRMatrix end
+const hypre_ParCSRMatrix = Ptr{_n_hypre_ParCSRMatrix}
+
+mutable struct _n_PetscFunctionList end
+const PetscFunctionList = Ptr{_n_PetscFunctionList}
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscOptionItems end
+const PetscOptionItems = Ptr{_n_PetscOptionItems}
+
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_SSL_CTX end
+const SSL_CTX = Ptr{_n_SSL_CTX}
+
+mutable struct _n_SSL end
+const SSL = Ptr{_n_SSL}
+
+mutable struct _n_hid_t end
+const hid_t = Ptr{_n_hid_t}
+
+mutable struct _n_MPI_Request end
+const MPI_Request = Ptr{_n_MPI_Request}
+
+mutable struct _n_PetscLogHandler end
+const PetscLogHandler = Ptr{_n_PetscLogHandler}
+
+mutable struct _n_PetscLayout end
+const PetscLayout = Ptr{_n_PetscLayout}
+
+mutable struct _n_PetscQuadrature end
+const PetscQuadrature = Ptr{_n_PetscQuadrature}
+
+mutable struct _n_P4estVertexMaps end
+const P4estVertexMaps = Ptr{_n_P4estVertexMaps}
+
+mutable struct _n_pointInterpolationP4est end
+const pointInterpolationP4est = Ptr{_n_pointInterpolationP4est}
+
+mutable struct _n_hCsize_t end
+const hCsize_t = Ptr{_n_hCsize_t}
+
+mutable struct _n_MPIU_Count end
+const MPIU_Count = Ptr{_n_MPIU_Count}
+
+mutable struct _n_PetscBLASInt end
+const PetscBLASInt = Ptr{_n_PetscBLASInt}
+# -------------------------------------------------------
+
+# autodefined type arguments for class Vec ------
+mutable struct _n_ViennaCLVector end
+const ViennaCLVector = Ptr{_n_ViennaCLVector}
+
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_Vecs end
+const Vecs = Ptr{_n_Vecs}
+
+mutable struct n_PetscRandom end
+const PetscRandom = Ptr{n_PetscRandom}
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_PCRiCchardsonConvergedReason end
+const PCRiCchardsonConvergedReason = Ptr{_n_PCRiCchardsonConvergedReason}
+
+mutable struct PCModifySubMatricesFn end
+
+mutable struct PCMGCoarseSpaceConstructorFn end
+
+mutable struct PCShellPSolveFn end
+
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct PetscPoCintFn end
+
+mutable struct _n_DMInterpolationInfo end
+const DMInterpolationInfo = Ptr{_n_DMInterpolationInfo}
+
+mutable struct _n_PetscDS end
+const PetscDS = Ptr{_n_PetscDS}
+
+mutable struct _n_PetscFE end
+const PetscFE = Ptr{_n_PetscFE}
+
+mutable struct _n_DMField end
+const DMField = Ptr{_n_DMField}
+
+mutable struct _n_DMPoCintLocationType end
+const DMPoCintLocationType = Ptr{_n_DMPoCintLocationType}
+
+mutable struct PetscSimplePoCintFn end
+
+mutable struct _n_DMSwarmCellDM end
+const DMSwarmCellDM = Ptr{_n_DMSwarmCellDM}
+
+mutable struct _n_AO end
+const AO = Ptr{_n_AO}
+
+mutable struct _n_PF end
+const PF = Ptr{_n_PF}
+
+mutable struct _n_moab_Tag end
+const moab_Tag = Ptr{_n_moab_Tag}
+
+mutable struct _n_moab_Range end
+const moab_Range = Ptr{_n_moab_Range}
+
+mutable struct _n_moab_EntityHandle end
+const moab_EntityHandle = Ptr{_n_moab_EntityHandle}
+
+mutable struct _n_moab_Interface end
+const moab_Interface = Ptr{_n_moab_Interface}
+
+mutable struct _n_moab_ParallelComm end
+const moab_ParallelComm = Ptr{_n_moab_ParallelComm}
+
+mutable struct _n_moab_EntityType end
+const moab_EntityType = Ptr{_n_moab_EntityType}
+
+mutable struct _n_DMPlexTransform end
+const DMPlexTransform = Ptr{_n_DMPlexTransform}
+
+mutable struct _n_PetscPartitioner end
+const PetscPartitioner = Ptr{_n_PetscPartitioner}
+
+mutable struct _n_PetscFV end
+const PetscFV = Ptr{_n_PetscFV}
+
+mutable struct _n_PetscWeakForm end
+const PetscWeakForm = Ptr{_n_PetscWeakForm}
+
+mutable struct _n_PetscGeom end
+const PetscGeom = Ptr{_n_PetscGeom}
+
+mutable struct _n_PetscHMapI end
+const PetscHMapI = Ptr{_n_PetscHMapI}
+
+mutable struct TSIFunctionFn end
+
+mutable struct TSI2FunctionFn end
+
+mutable struct TSI2JacobianFn end
+
+mutable struct TSRHSFunctionFn end
+
+mutable struct TSTransientVariableFn end
+
+mutable struct TSSolutionFn end
+
+mutable struct TSForcingFn end
+
+mutable struct TSIJacobianFn end
+
+mutable struct TSRHSJacobianFn end
+
+mutable struct _n_TS end
+const TS = Ptr{_n_TS}
+
+mutable struct DMDATSRHSFunctionLocalFn end
+
+mutable struct DMDATSRHSJacobianLocalFn end
+
+mutable struct DMDATSIFunctionLocalFn end
+
+mutable struct DMDATSIJacobianLocalFn end
+
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct PetscPoCintFn end
+
+mutable struct _n_DMInterpolationInfo end
+const DMInterpolationInfo = Ptr{_n_DMInterpolationInfo}
+
+mutable struct _n_PetscDS end
+const PetscDS = Ptr{_n_PetscDS}
+
+mutable struct _n_PetscFE end
+const PetscFE = Ptr{_n_PetscFE}
+
+mutable struct _n_DMField end
+const DMField = Ptr{_n_DMField}
+
+mutable struct _n_DMPoCintLocationType end
+const DMPoCintLocationType = Ptr{_n_DMPoCintLocationType}
+
+mutable struct PetscSimplePoCintFn end
+
+mutable struct _n_DMSwarmCellDM end
+const DMSwarmCellDM = Ptr{_n_DMSwarmCellDM}
+
+mutable struct _n_AO end
+const AO = Ptr{_n_AO}
+
+mutable struct _n_PF end
+const PF = Ptr{_n_PF}
+
+mutable struct _n_moab_Tag end
+const moab_Tag = Ptr{_n_moab_Tag}
+
+mutable struct _n_moab_Range end
+const moab_Range = Ptr{_n_moab_Range}
+
+mutable struct _n_moab_EntityHandle end
+const moab_EntityHandle = Ptr{_n_moab_EntityHandle}
+
+mutable struct _n_moab_Interface end
+const moab_Interface = Ptr{_n_moab_Interface}
+
+mutable struct _n_moab_ParallelComm end
+const moab_ParallelComm = Ptr{_n_moab_ParallelComm}
+
+mutable struct _n_moab_EntityType end
+const moab_EntityType = Ptr{_n_moab_EntityType}
+
+mutable struct _n_DMPlexTransform end
+const DMPlexTransform = Ptr{_n_DMPlexTransform}
+
+mutable struct _n_PetscPartitioner end
+const PetscPartitioner = Ptr{_n_PetscPartitioner}
+
+mutable struct _n_PetscFV end
+const PetscFV = Ptr{_n_PetscFV}
+
+mutable struct _n_PetscWeakForm end
+const PetscWeakForm = Ptr{_n_PetscWeakForm}
+
+mutable struct _n_PetscGeom end
+const PetscGeom = Ptr{_n_PetscGeom}
+
+mutable struct _n_PetscHMapI end
+const PetscHMapI = Ptr{_n_PetscHMapI}
+
+mutable struct TSIFunctionFn end
+
+mutable struct TSI2FunctionFn end
+
+mutable struct TSI2JacobianFn end
+
+mutable struct TSRHSFunctionFn end
+
+mutable struct TSTransientVariableFn end
+
+mutable struct TSSolutionFn end
+
+mutable struct TSForcingFn end
+
+mutable struct TSIJacobianFn end
+
+mutable struct TSRHSJacobianFn end
+
+mutable struct _n_TS end
+const TS = Ptr{_n_TS}
+
+mutable struct DMDATSRHSFunctionLocalFn end
+
+mutable struct DMDATSRHSJacobianLocalFn end
+
+mutable struct DMDATSIFunctionLocalFn end
+
+mutable struct DMDATSIJacobianLocalFn end
+
+# -------------------------------------------------------
+
+# -------------------------------------------------------
+# autodefined type arguments for class ------
+mutable struct _n_PetscDrawAxis end
+const PetscDrawAxis = Ptr{_n_PetscDrawAxis}
+
+mutable struct _n_PetscDrawLG end
+const PetscDrawLG = Ptr{_n_PetscDrawLG}
+
+mutable struct _n_PetscDrawSP end
+const PetscDrawSP = Ptr{_n_PetscDrawSP}
+
+mutable struct _n_PetscDrawHG end
+const PetscDrawHG = Ptr{_n_PetscDrawHG}
+
+mutable struct _n_PetscDrawBar end
+const PetscDrawBar = Ptr{_n_PetscDrawBar}
+
+# -------------------------------------------------------
+
+# -------------------------------------------------------
+# autodefined type arguments for class ------
+mutable struct _n_PetscDrawAxis end
+const PetscDrawAxis = Ptr{_n_PetscDrawAxis}
+
+mutable struct _n_PetscDrawLG end
+const PetscDrawLG = Ptr{_n_PetscDrawLG}
+
+mutable struct _n_PetscDrawSP end
+const PetscDrawSP = Ptr{_n_PetscDrawSP}
+
+mutable struct _n_PetscDrawHG end
+const PetscDrawHG = Ptr{_n_PetscDrawHG}
+
+mutable struct _n_PetscDrawBar end
+const PetscDrawBar = Ptr{_n_PetscDrawBar}
+
+# -------------------------------------------------------

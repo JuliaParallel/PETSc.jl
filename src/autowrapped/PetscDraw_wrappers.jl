@@ -1,5 +1,6 @@
 # -------------------------------------------------------
 # autodefined type arguments for class ------
+
 mutable struct _n_PetscDrawAxis end
 const PetscDrawAxis = Ptr{_n_PetscDrawAxis}
 

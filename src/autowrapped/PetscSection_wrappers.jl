@@ -1,3 +1,7 @@
+mutable struct _p_PetscSectionSym end
+const PetscSectionSym = Ptr{_p_PetscSectionSym}
+
+
 """
 	PetscSectionCreate(petsclib::PetscLibType,comm::MPI_Comm, s::PetscSection) 
 Allocates a `PetscSection` and sets the map contents to the default.

@@ -41,41 +41,25 @@
 - PetscBench
 - PetscToken
 - PetscObject, PetscObjectList
-
-# to be done
-
-
 - PetscFunctionList
 - PetscDLLibrary
 - PetscContainer
 - PetscRandom
-- PetscSubcomm
-- PetscShmComm
+- PetscSubcomm, PetscShmComm
 - PetscOmpCtrl
 - PetscHeap
 - PetscSegBuffer
 - PetscLimiter
 - PetscFV
-  
-- TaoMonitorDrawCtx
-- TaoLineSearch
-
-- PetscViewer
-- PetscViewers
-
+- TaoMonitorDrawCtx, TaoLineSearch
+- PetscViewer, PetscViewers
 - Characteristic
-
-- PetscSF
-- PetscSFLink
-
+- PetscSF, PetscSFLink
 - PetscDualSpace
-
-- PetscOptionsHelpPrinted
-- PetscOptionItem
-- PetscOptionItems
- 
+- PetscOptionsHelpPrinted, PetscOptionItem, PetscOptionItems
 - PetscIntStack
+- PetscLogHandler,PetscLogRegistry,PetscLogState
 
-- PetscLogHandler
-- PetscLogRegistry
-- PetscLogState
+# to be done
+ 
+

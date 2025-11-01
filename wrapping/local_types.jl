@@ -933,3 +933,58 @@ const PetscFE = Ptr{_n_PetscFE}
 # autodefined type arguments for class ------
 mutable struct _n_PetscObjectList end
 const PetscObjectList = Ptr{_n_PetscObjectList}
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscDLLibrary end
+const PetscDLLibrary = Ptr{_n_PetscDLLibrary}
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscContainer end
+const PetscContainer = Ptr{_n_PetscContainer}
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscSubcomm end
+const PetscSubcomm = Ptr{_n_PetscSubcomm}
+
+# -------------------------------------------------------
+# autodefined type arguments for class ------
+mutable struct _n_PetscShmComm end
+const PetscShmComm = Ptr{_n_PetscShmComm}
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscOmpCtrl end
+const PetscOmpCtrl = Ptr{_n_PetscOmpCtrl}
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscSegBuffer end
+const PetscSegBuffer = Ptr{_n_PetscSegBuffer}
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscHeap end
+const PetscHeap = Ptr{_n_PetscHeap}
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscLimiter end
+const PetscLimiter = Ptr{_n_PetscLimiter}
+
+# autodefined type arguments for class ------
+mutable struct _n_TaoMonitorDrawCtx end
+const TaoMonitorDrawCtx = Ptr{_n_TaoMonitorDrawCtx}
+
+# autodefined type arguments for class ------
+mutable struct _n_DMPlexStorageVersion end
+const DMPlexStorageVersion = Ptr{_n_DMPlexStorageVersion}
+
+mutable struct _n_PetscViewers end
+const PetscViewers = Ptr{_n_PetscViewers}
+
+mutable struct _n_MPI_Group end
+const MPI_Group = Ptr{_n_MPI_Group}
+
+mutable struct _n_PetscOptionsHelpPrCinted end
+const PetscOptionsHelpPrCinted = Ptr{_n_PetscOptionsHelpPrCinted}

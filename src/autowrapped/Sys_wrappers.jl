@@ -11,6 +11,8 @@ const hid_t = Ptr{_n_hid_t}
 mutable struct _n_MPI_Request end
 const MPI_Request = Ptr{_n_MPI_Request}
 
+const PetscDLHandle = Ptr{Cvoid}
+
 #mutable struct _n_PetscClassId end
 #const PetscClassId = Ptr{_n_PetscClassId}
 

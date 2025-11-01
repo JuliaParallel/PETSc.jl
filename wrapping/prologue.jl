@@ -25,24 +25,8 @@ const MPIU_INT64 = MPI.UINT64_T
 const MPIU_INT32 = MPI.UINT32_T
 
 # We know these will be Cvoid, so just set them to be that
-#const PetscOptions = Ptr{Cvoid}
-#mutable struct _n_PetscOptions end
-#const PetscOptions = Ptr{_n_PetscOptions}
-
-
 const PetscViewer = Ptr{Cvoid}
 const PetscObject = Ptr{Cvoid}
-
-
-#const VecType = Cstring
-#const Mat = Ptr{Cvoid}
-#const MatType = Cstring
-#const KSP = Ptr{Cvoid}
-#const KSPType = Cstring
-#const SNES = Ptr{Cvoid}
-#const SNESType = Cstring
-#const DM = Ptr{Cvoid}
-const PetscDLHandle = Ptr{Cvoid}
 
 
 const PETSC_DECIDE = -1
@@ -325,31 +309,13 @@ mutable struct PetscCtxDestroyFn end
 mutable struct PetscErrorCodeFn end
 
 # stuff I need to define to get PETSc.jl to load with "using". We need to find a real solution
-#mutable struct KSPConvergedReasonViewFn end
-#mutable struct PC end
 mutable struct _n_PC end
 const PC = Ptr{_n_PC}
 
-#mutable struct KSPMonitorFn end
-#mutable struct KSPConvergenceTestFn end
-#mutable struct KSPComputeOperatorsFn end
-#mutable struct KSPComputeRHSFn end
-#mutable struct KSPComputeInitialGuessFn end
-#mutable struct PeCtx end
-#mutable struct KSPPSolveFn end
-mutable struct MatHtoolKernelFn end
-
-
 const PetscObject = Ptr{Cvoid}
 const external = Ptr{Cvoid}
-#const KSPMonitorRegisterFn = Ptr{Cvoid}
-#const KSPMonitorRegisterCreateFn = Ptr{Cvoid}
-#const KSPMonitorRegisterDestroyFn = Ptr{Cvoid}
-#const KSPGuess = Ptr{Cvoid}
-#const KSPFlexibleModifyPCFn = Ptr{Cvoid}
 const PetscVoidFn = Cvoid
 const PetscProbFn = Ptr{Cvoid}
-
 const PetscBT = Ptr{Cchar}
 
 # required in Sys_wrappers
@@ -358,11 +324,6 @@ const PetscLogRegistry = Ptr{_n_PetscLogRegistry}
 
 mutable struct _n_PetscIntStack end
 const PetscIntStack = Ptr{_n_PetscIntStack}
-#const PetscLogClass = Cint
-
-#mutable struct _p_PetscLogHandler end
-#const PetscLogHandler = Ptr{_p_PetscLogHandler}
-#const PetscLogHandlerType = Ptr{Cchar}
 mutable struct _n_PetscLogState
     registry::PetscLogRegistry
     active::PetscBT
@@ -374,15 +335,6 @@ mutable struct _n_PetscLogState
     _n_PetscLogState() = new()
 end
 const PetscLogState = Ptr{_n_PetscLogState}
-
-#mutable struct _n_PetscLayout end
-#const PetscLayout = Ptr{_n_PetscLayout}
-#
-#mutable struct _p_PetscQuadrature end
-#const PetscQuadrature = Ptr{_p_PetscQuadrature}
-#
-#mutable struct _p_PetscRandom end
-#const PetscRandom = Ptr{_p_PetscRandom}
 
 @enum KSPConvergedReason::Int32 begin
     KSP_CONVERGED_RTOL_NORMAL = 1
@@ -418,40 +370,7 @@ end
     PETSC_MEMTYPE_SYCL = 5
 end
 
-
-# needed for Vec ---
-#mutable struct _p_IS end
-#const IS = Ptr{_p_IS}
-
-mutable struct _n_ISColoring end
-const ISColoring = Ptr{_n_ISColoring}
-
-mutable struct _p_ISLocalToGlobalMapping end
-const ISLocalToGlobalMapping = Ptr{_p_ISLocalToGlobalMapping}
-
-const ISLocalToGlobalMappingType = Ptr{Cchar}
-
-mutable struct _p_PetscSection end
-const PetscSection = Ptr{_p_PetscSection}
-
-mutable struct _p_PetscSectionSym end
-const PetscSectionSym = Ptr{_p_PetscSectionSym}
-const PetscSectionSymType = Ptr{Cchar}
-
 # needed for Mat ---
-#=
-mutable struct _p_MatNullSpace end
-const MatNullSpace = Ptr{_p_MatNullSpace}
-
-mutable struct _p_MatTransposeColoring end
-const MatTransposeColoring = Ptr{_p_MatTransposeColoring}
-
-mutable struct _p_hypre_ParCSRMatrix end
-const hypre_ParCSRMatrix = Ptr{_p_hypre_ParCSRMatrix}
-
-mutable struct _p_PetscFunctionList end
-const PetscFunctionList = Ptr{_p_PetscFunctionList}
-=#
 #
 # END OF PROLOGUE
 #
@@ -462,7 +381,6 @@ include("enums_wrappers.jl")
 include("senums_wrappers.jl")
 include("typedefs_wrappers.jl")
 include("struct_wrappers.jl")
-
 include("Sys_wrappers.jl")
 include("Vec_wrappers.jl")
 include("Vecs_wrappers.jl")
@@ -489,7 +407,6 @@ include("PetscKDTree_wrappers.jl")
 include("PetscGridHash_wrappers.jl")
 include("PetscSection_wrappers.jl")
 include("TSaddons_wrappers.jl")
-
 include("PetscSpace_wrappers.jl")
 include("PetscDevice_wrappers.jl")
 include("PetscLayout_wrappers.jl")
@@ -499,5 +416,21 @@ include("PetscConvEst_wrappers.jl")
 include("PetscFE_wrappers.jl")
 include("PetscBench_wrappers.jl")
 include("PetscToken_wrappers.jl")
-
-
+include("PetscFunctionList_wrappers.jl")
+include("PetscDLLibrary_wrappers.jl")
+include("PetscContainer_wrappers.jl")
+include("PetscRandom_wrappers.jl")
+include("Petsccomm_wrappers.jl")
+include("PetscOmpCtrl_wrappers.jl")
+include("PetscHeap_wrappers.jl")
+include("PetscSegBuffer_wrappers.jl")
+include("PetscLimiter_wrappers.jl")
+include("PetscFV_wrappers.jl")
+include("Tao_addons_wrappers.jl")
+include("PetscViewer_wrappers.jl")
+include("Characteristic_wrappers.jl")
+include("PetscSF_wrappers.jl")
+include("PetscDualSpace_wrappers.jl")
+include("PetscOptions_addons_wrappers.jl")
+include("PetscIntStack_wrappers.jl")
+include("PetscLog_wrappers.jl")

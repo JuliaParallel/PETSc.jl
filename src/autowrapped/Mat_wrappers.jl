@@ -11,6 +11,8 @@ const hypre_ParCSRMatrix = Ptr{_n_hypre_ParCSRMatrix}
 mutable struct _n_PetscFunctionList end
 const PetscFunctionList = Ptr{_n_PetscFunctionList}
 
+mutable struct MatHtoolKernelFn end
+
 # -------------------------------------------------------
 """
 	MatSetType(petsclib::PetscLibType,mat::PetscMat, matype::MatType) 

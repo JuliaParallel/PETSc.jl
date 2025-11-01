@@ -2,6 +2,12 @@
 mutable struct _n_ViennaCLVector end
 const ViennaCLVector = Ptr{_n_ViennaCLVector}
 
+mutable struct _p_PetscSection end
+const PetscSection = Ptr{_p_PetscSection}
+
+mutable struct _p_ISLocalToGlobalMapping end
+const ISLocalToGlobalMapping = Ptr{_p_ISLocalToGlobalMapping}
+
 # -------------------------------------------------------
 """
 	max::PetscReal = VecMaxPointwiseDivide(petsclib::PetscLibType,x::PetscVec, y::PetscVec) 

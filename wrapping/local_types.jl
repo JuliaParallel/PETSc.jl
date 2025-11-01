@@ -746,3 +746,154 @@ mutable struct _n_TaoLineSearch end
 const TaoLineSearch = Ptr{_n_TaoLineSearch}
 
 # -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_DMAdaptor end
+const DMAdaptor = Ptr{_n_DMAdaptor}
+
+# -------------------------------------------------------
+# autodefined type arguments for class ------
+mutable struct _n_DMSwarmDataField end
+const DMSwarmDataField = Ptr{_n_DMSwarmDataField}
+
+# -------------------------------------------------------
+# autodefined type arguments for class ------
+mutable struct _n_DMSwarmDataBucket end
+const DMSwarmDataBucket = Ptr{_n_DMSwarmDataBucket}
+
+mutable struct _n_DMSwarmCellDM end
+const DMSwarmCellDM = Ptr{_n_DMSwarmCellDM}
+
+# -------------------------------------------------------
+# autodefined type arguments for class ------
+mutable struct _n_DMSwarmSort end
+const DMSwarmSort = Ptr{_n_DMSwarmSort}
+
+mutable struct _n_DMPlexPoCintQueue end
+const DMPlexPoCintQueue = Ptr{_n_DMPlexPoCintQueue}
+
+mutable struct _n_DMNetworkMonitor end
+const DMNetworkMonitor = Ptr{_n_DMNetworkMonitor}
+
+mutable struct _n_DMField end
+const DMField = Ptr{_n_DMField}
+
+mutable struct _n_DMPlexTransform end
+const DMPlexTransform = Ptr{_n_DMPlexTransform}
+
+mutable struct _n_PetscSimplePoCintFn end
+const PetscSimplePoCintFn = Ptr{_n_PetscSimplePoCintFn}
+
+# autodefined type arguments for class ------
+mutable struct _n_VecTagger end
+const VecTagger = Ptr{_n_VecTagger}
+
+# autodefined type arguments for class ------
+mutable struct PetscPoCintJacFn end
+
+mutable struct PetscRiemannFn end
+
+mutable struct PetscBdPoCintFn end
+
+mutable struct PetscBdPoCintJacFn end
+
+mutable struct PetscPoCintExactSolutionFn end
+
+mutable struct PetscPoCintBoundFn end
+
+mutable struct _n_PetscTabulation end
+const PetscTabulation = Ptr{_n_PetscTabulation}
+
+mutable struct _n_PetscDS end
+const PetscDS = Ptr{_n_PetscDS}
+
+mutable struct _n_PetscWeakForm end
+const PetscWeakForm = Ptr{_n_PetscWeakForm}
+
+mutable struct PetscPoCintFn end
+# -------------------------------------------------------
+
+mutable struct _n_MatColoring end
+const MatColoring = Ptr{_n_MatColoring}
+
+mutable struct _n_MatFDColoring end
+const MatFDColoring = Ptr{_n_MatFDColoring}
+
+mutable struct MatFDColoringFn end
+
+mutable struct _n_MatPartitioning end
+const MatPartitioning = Ptr{_n_MatPartitioning}
+
+mutable struct MatNullSpaceRemoveFn end
+
+mutable struct MatMFFDFn end
+
+mutable struct MatMFFDiFn end
+
+mutable struct MatMFFDiBaseFn end
+
+mutable struct MatMFFDCheckhFn end
+
+mutable struct _n_MatCoarsen end
+const MatCoarsen = Ptr{_n_MatCoarsen}
+
+mutable struct _n_PetscCoarsenData end
+const PetscCoarsenData = Ptr{_n_PetscCoarsenData}
+# -------------------------------------------------------
+
+
+# autodefined type arguments for class ------
+mutable struct SNESLineSearchVIProjectFn end
+
+mutable struct SNESLineSearchVINormFn end
+
+mutable struct SNESLineSearchVIDirDerivFn end
+
+mutable struct SNESLineSearchShellApplyFn end
+
+mutable struct _n_SNESLineSearch end
+const SNESLineSearch = Ptr{_n_SNESLineSearch}
+
+# -------------------------------------------------------
+
+mutable struct _n_PetscBag end
+const PetscBag = Ptr{_n_PetscBag}
+
+mutable struct _n_PetscKDTree end
+const PetscKDTree = Ptr{_n_PetscKDTree}
+
+# autodefined type arguments for class ------
+mutable struct _n_TSMonitorDrawCtx end
+const TSMonitorDrawCtx = Ptr{_n_TSMonitorDrawCtx}
+
+mutable struct _n_TSMonitorLGCtxNetwork end
+const TSMonitorLGCtxNetwork = Ptr{_n_TSMonitorLGCtxNetwork}
+
+mutable struct _n_TSMonitorEnvelopeCtx end
+const TSMonitorEnvelopeCtx = Ptr{_n_TSMonitorEnvelopeCtx}
+
+mutable struct _n_TSMonitorSPEigCtx end
+const TSMonitorSPEigCtx = Ptr{_n_TSMonitorSPEigCtx}
+
+mutable struct _n_TSMonitorSPCtx end
+const TSMonitorSPCtx = Ptr{_n_TSMonitorSPCtx}
+
+# -------------------------------------------------------
+# autodefined type arguments for class ------
+mutable struct _n_TSMonitorHGCtx end
+const TSMonitorHGCtx = Ptr{_n_TSMonitorHGCtx}
+
+# -------------------------------------------------------
+# autodefined type arguments for class ------
+mutable struct _n_TSAdapt end
+const TSAdapt = Ptr{_n_TSAdapt}
+
+mutable struct _n_TSTrajectory end
+const TSTrajectory = Ptr{_n_TSTrajectory}
+
+# -------------------------------------------------------
+# autodefined type arguments for class ------
+mutable struct _n_TSGLLEAdapt end
+const TSGLLEAdapt = Ptr{_n_TSGLLEAdapt}
+
+# -------------------------------------------------------

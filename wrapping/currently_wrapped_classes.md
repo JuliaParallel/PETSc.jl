@@ -16,38 +16,26 @@
 - PetscRegressor
 - PF
 - IS
-
-# to be done
 - TS
 - AO
 - Tao
-
-- DMAdaptor
-- PetscViennaCLIndices
+- DMAdaptor,DMSwarmDataField,DMSwarmDataBucket,DMSwarmSort,DMSwarmCellDM,DMInterpolationInfo,DMPlexStorageVersion,DMPlexPointQueue,DMField,DMUniversalLabel,DMGeneratorFunctionList,DMPlexTransform,DMNetworkMonitorList,DMNetworkMonitor,DMLabel
 - VecTagger
 - PetscDS
-- PetscWeakForm
-- DMSwarmDataField
-- DMSwarmDataBucket
-- DMSwarmSort
-- DMSwarmCellDM
-- MatColoring
-- MatFDColoring
-- MatTransposeColoring
-- MatPartitioning
-- MatNullSpace
-- MatMFFD
+- MatColoring,MatFDColoring,MatTransposeColoring,MatPartitioning,MatNullSpace,MatMFFD,MatCoarsen
+- ISLocalToGlobalMapping,ISColoring
 - SNESLineSearch
-- PetscBag
-- PetscBagItem
-- PetscViewer
-- DMInterpolationInfo
+- PetscBag, PetscBagItem
 - KSPGuess
 - PetscKDTree
 - PetscGridHash
-- DMPlexStorageVersion
-- PetscSection
-- PetscSectionSym
+- PetscSection, PetscSectionSym
+
+# to be done
+
+
+
+
 - TSTrajectory
 - TSMonitorDrawCtx
 - TSMonitorSolutionCtx
@@ -60,53 +48,57 @@
 - TSMonitorHGCtx
 - TSAdapt
 - TSGLLEAdapt
+
 - PetscSpace
-- DMField
-- DMUniversalLabel
-- DMGeneratorFunctionList
+
 - PetscDevice
 - PetscDeviceContext
-- MatCoarsen
 - PetscMatlabEngine
-- DMLabel
+
 - PetscPartitioner
 - PetscConvEst
+- 
 - PetscFE
+- PetscQuadrature
+- PetscTabulation
+- PetscWeakForm
+
 - PetscBench
-- DMPlexTransform
-- DMNetworkMonitorList
-- DMNetworkMonitor
 - PetscToken
+  
 - PetscObject
-- PetscFunctionList
 - PetscObjectList
+  
+- PetscFunctionList
 - PetscDLLibrary
 - PetscContainer
 - PetscRandom
 - PetscSubcomm
-- PetscHeap
 - PetscShmComm
 - PetscOmpCtrl
+- PetscHeap
 - PetscSegBuffer
-- PetscOptionsHelpPrinted
-- PetscQuadrature
-- PetscTabulation
 - PetscLimiter
 - PetscFV
+  
 - TaoMonitorDrawCtx
+- TaoLineSearch
+
+- PetscViewer
 - PetscViewers
+
 - Characteristic
 - PetscSF
 - PetscSFLink
-- TaoLineSearch
 - PetscDualSpace
+
+- PetscOptionsHelpPrinted
 - PetscOptionItem
 - PetscOptionItems
+ 
 - PetscIntStack
+
 - PetscLogHandler
 - PetscLogRegistry
 - PetscLogState
-- ISLocalToGlobalMapping
-- ISColoring
 - PetscLayout
-- DMPlexPointQueue

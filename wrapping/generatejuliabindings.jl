@@ -116,6 +116,8 @@ replace_types(type::AbstractString) = replace(type,
 
 replace_names(type_str::String)     =  replace(type_str, 
                                             "function"=>"fnc",
+                                            "end"=>"end_",
+                                            "global"=> "glob",
                                             "local"=>"loc");
 
 # Since we use the @for_petsc macro to generate multiple dispatch versions of our functions,
@@ -848,7 +850,21 @@ exclude=[""]
 #write_functions_from_classes_to_file("IS_wrappers.jl",start_dir, classes, "IS", exclude=exclude)     
 #write_functions_from_classes_to_file("TS_wrappers.jl",start_dir, classes, "TS", exclude=exclude)     
 #write_functions_from_classes_to_file("AO_wrappers.jl",start_dir, classes, "AO", exclude=exclude)     
-write_functions_from_classes_to_file("Tao_wrappers.jl",start_dir, classes, "Tao", exclude=exclude)  
+#write_functions_from_classes_to_file("Tao_wrappers.jl",start_dir, classes, "Tao", exclude=exclude)  
+#write_functions_from_classes_to_file("DMaddons_wrappers.jl",start_dir, classes, ["DMAdaptor","DMSwarmDataField","DMSwarmDataBucket","DMSwarmSort","DMSwarmCellDM","DMInterpolationInfo","DMPlexStorageVersion","DMPlexPointQueue","DMField","DMUniversalLabel","DMGeneratorFunctionList","DMPlexTransform","DMNetworkMonitorList","DMNetworkMonitor","DMLabel"], exclude=exclude)  
+#write_functions_from_classes_to_file("VecTagger_wrappers.jl",start_dir, classes, "VecTagger", exclude=exclude)  
+#write_functions_from_classes_to_file("PetscDS_wrappers.jl",start_dir, classes, "PetscDS", exclude=exclude)  
+#write_functions_from_classes_to_file("Mataddons_wrappers.jl",start_dir, classes, ["MatColoring","MatFDColoring","MatTransposeColoring","MatPartitioning","MatNullSpace","MatMFFD","MatCoarsen"], exclude=exclude)  
+#write_functions_from_classes_to_file("ISaddons_wrappers.jl",start_dir, classes, ["ISLocalToGlobalMapping","ISColoring"], exclude=exclude)  
+#write_functions_from_classes_to_file("SNESLineSearch_wrappers.jl",start_dir, classes, "SNESLineSearch", exclude=exclude)  
+#write_functions_from_classes_to_file("PetscBag_wrappers.jl",start_dir, classes, ["PetscBag","PetscBagItem"], exclude=exclude)  
+#write_functions_from_classes_to_file("KSPGuess_wrappers.jl",start_dir, classes, ["KSPGuess"], exclude=exclude)  
+#write_functions_from_classes_to_file("PetscKDTree_wrappers.jl",start_dir, classes, ["PetscKDTree"], exclude=exclude)  
+#write_functions_from_classes_to_file("PetscGridHash_wrappers.jl",start_dir, classes, ["PetscGridHash"], exclude=exclude)  
+#write_functions_from_classes_to_file("PetscSection_wrappers.jl",start_dir, classes, ["PetscSection","PetscSectionSym"], exclude=exclude)  
+write_functions_from_classes_to_file("TSaddons_wrappers.jl",start_dir, classes, ["TSTrajectory","TSMonitorDrawCtx","TSMonitorSolutionCtx","TSMonitorVTKCtx","TSMonitorLGCtx","TSMonitorLGCtxNetwork","TSMonitorEnvelopeCtx","TSMonitorSPEigCtx","TSMonitorSPCtx","TSMonitorHGCtx","TSAdapt","TSGLLEAdapt"], exclude=exclude)  
+
+
 
 #exclude=["MatSolves","MatCreateVecs","MatCreateVecsFFTW"]
 #exclude=[""]

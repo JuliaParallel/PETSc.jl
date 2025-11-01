@@ -472,16 +472,31 @@ function write_struct(struct_val::Py, io = stdout)
 
     println(io,"mutable struct $(struct_val.name)")
 
+    string_in_julia = ""
+    string_petsc = ""
     for (i,s) in enumerate(struct_val.records)
         str = extract_struct_entry(s)
         if !isnothing(str)   
+            sym = split(str,"::")[1]
+            typ = split(str,"::")[2]
+            str_petsc = replace(str, "\n"=>",")
             println(io,"    $str")
+            if i>1
+                string_in_julia *= ","
+                string_petsc *= ","
+            end 
+            string_in_julia *= "$sym"
+            string_petsc *= "$str_petsc"
         else
             # stop when we find the firtst #ifdef
             break
         end
     end
+    println(io,"")
     println(io,"    $(struct_val.name)() = new()")
+    println(io,"")
+    println(io,"    $(struct_val.name)($string_in_julia) = new($string_petsc)")
+    println(io,"")
     println(io,"end \n")
     return nothing
 end
@@ -805,7 +820,7 @@ end
 #
 #exclude = ["LandauCtx"]
 # Adapt as needed
-#write_structs_to_file("../src/autowrapped/struct_wrappers.jl", start_dir, structs,exclude=exclude)          # Write all structs to file
+write_structs_to_file("../src/autowrapped/struct_wrappers.jl", start_dir, structs,exclude=exclude)          # Write all structs to file
 #exclude=["PetscGeom","PetscInt32"]
 #write_typedefs_to_file("../src/autowrapped/typedefs_wrappers.jl", start_dir, typedefs,exclude=exclude)      # Write all typedefs to file
 

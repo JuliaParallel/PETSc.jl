@@ -40,6 +40,8 @@ PetscScalar = Float64
 PetscReal = Float64
 #PetscBool = Bool
 
+mutable struct _n_ISColoring end
+const ISColoring = Ptr{_n_ISColoring}
 
 # ----- Custom Julia struct for PETSc Vec -----
 const CVec = Ptr{Cvoid}
@@ -385,8 +387,10 @@ include("Sys_wrappers.jl")
 include("Vec_wrappers.jl")
 include("Vecs_wrappers.jl")
 include("Mat_wrappers.jl")
-include("PetscOptions_wrappers.jl")
 include("KSP_wrappers.jl")
+include("SNES_wrappers.jl")
+include("DM_wrappers.jl")
+include("PetscOptions_wrappers.jl")
 include("PetscObject_wrappers.jl")
 include("PetscDraw_wrappers.jl")
 include("PetscRegressor_wrappers.jl")

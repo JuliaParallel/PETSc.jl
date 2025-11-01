@@ -1,7 +1,3 @@
-# autodefined type arguments for class ------
-mutable struct _n_PetscFV end
-const PetscFV = Ptr{_n_PetscFV}
-
 # -------------------------------------------------------
 """
 	PetscFVFinalizePackage(petsclib::PetscLibType) 

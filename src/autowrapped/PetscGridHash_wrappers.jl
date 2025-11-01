@@ -7,7 +7,7 @@ const PetscGridHash = Ptr{_n_PetscGridHash}
 	box::PetscGridHash = PetscGridHashCreate(petsclib::PetscLibType,comm::MPI_Comm, dim::PetscInt, point::Vector{PetscScalar}) 
 
 # External Links
-$(_doc_external("Dm/PetscGridHashCreate"))
+$(_doc_external("DM/PetscGridHashCreate"))
 """
 function PetscGridHashCreate(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, point::Vector{PetscScalar}) end
 
@@ -30,7 +30,7 @@ end
 	PetscGridHashEnlarge(petsclib::PetscLibType,box::PetscGridHash, point::Vector{PetscScalar}) 
 
 # External Links
-$(_doc_external("Dm/PetscGridHashEnlarge"))
+$(_doc_external("DM/PetscGridHashEnlarge"))
 """
 function PetscGridHashEnlarge(petsclib::PetscLibType, box::PetscGridHash, point::Vector{PetscScalar}) end
 
@@ -63,7 +63,7 @@ Level: developer
 -seealso: `DMPLEX`, `PetscGridHashCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscGridHashSetGrid"))
+$(_doc_external("DM/PetscGridHashSetGrid"))
 """
 function PetscGridHashSetGrid(petsclib::PetscLibType, box::PetscGridHash, n::Vector{PetscInt}, h::Vector{PetscReal}) end
 
@@ -100,7 +100,7 @@ Level: developer
 -seealso: `DMPLEX`, `PetscGridHashCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscGridHashGetEnclosingBox"))
+$(_doc_external("DM/PetscGridHashGetEnclosingBox"))
 """
 function PetscGridHashGetEnclosingBox(petsclib::PetscLibType, box::PetscGridHash, numPoints::PetscInt, points::Vector{PetscScalar}) end
 
@@ -123,7 +123,7 @@ end
 	PetscGridHashDestroy(petsclib::PetscLibType,box::PetscGridHash) 
 
 # External Links
-$(_doc_external("Dm/PetscGridHashDestroy"))
+$(_doc_external("DM/PetscGridHashDestroy"))
 """
 function PetscGridHashDestroy(petsclib::PetscLibType, box::PetscGridHash) end
 

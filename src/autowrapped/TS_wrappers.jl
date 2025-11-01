@@ -17,15 +17,15 @@ mutable struct TSGLLEAcceptFn end
 
 mutable struct TSAlpha2PredictorFn end
 
-mutable struct TSRHSFunctionFn end
-mutable struct TSSolutionFn end
-mutable struct TSForcingFn end
-mutable struct TSRHSJacobianFn end
-mutable struct TSIFunctionFn end
-mutable struct TSIJacobianFn end
-mutable struct TSI2FunctionFn end
-mutable struct TSI2JacobianFn end
-mutable struct TSTransientVariableFn end
+#mutable struct TSRHSFunctionFn end
+#mutable struct TSSolutionFn end
+#mutable struct TSForcingFn end
+#mutable struct TSRHSJacobianFn end
+#mutable struct TSIFunctionFn end
+#mutable struct TSIJacobianFn end
+#mutable struct TSI2FunctionFn end
+#mutable struct TSI2JacobianFn end
+#mutable struct TSTransientVariableFn end
 # -------------------------------------------------------
 """
 	TSSetFromOptions(petsclib::PetscLibType,ts::TS) 

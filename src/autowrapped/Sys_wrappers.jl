@@ -10847,7 +10847,7 @@ Level: intermediate
 -seealso: `PetscDTAltV`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
-$(_doc_external("Dm/PetscDTAltVApply"))
+$(_doc_external("DM/PetscDTAltVApply"))
 """
 function PetscDTAltVApply(petsclib::PetscLibType, N::PetscInt, k::PetscInt, w::PetscReal, v::PetscReal) end
 
@@ -10884,7 +10884,7 @@ Level: intermediate
 -seealso: `PetscDTAltV`, `PetscDTAltVWedgeMatrix()`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
-$(_doc_external("Dm/PetscDTAltVWedge"))
+$(_doc_external("DM/PetscDTAltVWedge"))
 """
 function PetscDTAltVWedge(petsclib::PetscLibType, N::PetscInt, j::PetscInt, k::PetscInt, a::PetscReal, b::PetscReal) end
 
@@ -10921,7 +10921,7 @@ Level: intermediate
 -seealso: `PetscDTAltV`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
-$(_doc_external("Dm/PetscDTAltVWedgeMatrix"))
+$(_doc_external("DM/PetscDTAltVWedgeMatrix"))
 """
 function PetscDTAltVWedgeMatrix(petsclib::PetscLibType, N::PetscInt, j::PetscInt, k::PetscInt, a::PetscReal) end
 
@@ -10960,7 +10960,7 @@ Level: intermediate
 -seealso: `PetscDTAltV`, `PetscDTAltVPullbackMatrix()`, `PetscDTAltVStar()`
 
 # External Links
-$(_doc_external("Dm/PetscDTAltVPullback"))
+$(_doc_external("DM/PetscDTAltVPullback"))
 """
 function PetscDTAltVPullback(petsclib::PetscLibType, N::PetscInt, M::PetscInt, L::PetscReal, k::PetscInt, w::PetscReal) end
 
@@ -10998,7 +10998,7 @@ Level: intermediate
 -seealso: `PetscDTAltV`, `PetscDTAltVPullback()`, `PetscDTAltVStar()`
 
 # External Links
-$(_doc_external("Dm/PetscDTAltVPullbackMatrix"))
+$(_doc_external("DM/PetscDTAltVPullbackMatrix"))
 """
 function PetscDTAltVPullbackMatrix(petsclib::PetscLibType, N::PetscInt, M::PetscInt, L::PetscReal, k::PetscInt) end
 
@@ -11035,7 +11035,7 @@ Level: intermediate
 -seealso: `PetscDTAltV`, `PetscDTAltVInteriorMatrix()`, `PetscDTAltVInteriorPattern()`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
-$(_doc_external("Dm/PetscDTAltVInterior"))
+$(_doc_external("DM/PetscDTAltVInterior"))
 """
 function PetscDTAltVInterior(petsclib::PetscLibType, N::PetscInt, k::PetscInt, w::PetscReal, v::PetscReal) end
 
@@ -11071,7 +11071,7 @@ Level: intermediate
 -seealso: `PetscDTAltV`, `PetscDTAltVInterior()`, `PetscDTAltVInteriorPattern()`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
-$(_doc_external("Dm/PetscDTAltVInteriorMatrix"))
+$(_doc_external("DM/PetscDTAltVInteriorMatrix"))
 """
 function PetscDTAltVInteriorMatrix(petsclib::PetscLibType, N::PetscInt, k::PetscInt, v::PetscReal) end
 
@@ -11108,7 +11108,7 @@ Level: intermediate
 -seealso: `PetscDTAltV`, `PetscDTAltVInterior()`, `PetscDTAltVInteriorMatrix()`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
-$(_doc_external("Dm/PetscDTAltVInteriorPattern"))
+$(_doc_external("DM/PetscDTAltVInteriorPattern"))
 """
 function PetscDTAltVInteriorPattern(petsclib::PetscLibType, N::PetscInt, k::PetscInt, indices::Vector{PetscInt}) end
 
@@ -11143,7 +11143,7 @@ Level: intermediate
 -seealso: `PetscDTAltV`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
-$(_doc_external("Dm/PetscDTAltVStar"))
+$(_doc_external("DM/PetscDTAltVStar"))
 """
 function PetscDTAltVStar(petsclib::PetscLibType, N::PetscInt, k::PetscInt, pow::PetscInt, w::PetscReal) end
 
@@ -11183,7 +11183,7 @@ Level: intermediate
 -seealso: `PetscProbFn`, `PetscPDFMaxwellBoltzmann1D()`, `PetscPDFGaussian1D()`, `PetscPDFConstant1D()`
 
 # External Links
-$(_doc_external("Dm/PetscProbCreateFromOptions"))
+$(_doc_external("DM/PetscProbCreateFromOptions"))
 """
 function PetscProbCreateFromOptions(petsclib::PetscLibType, dim::PetscInt, prefix::Vector{Cchar}, name::Vector{Cchar}) end
 
@@ -11224,7 +11224,7 @@ Level: advanced
 -seealso: `PetscProbComputeKSStatisticWeighted()`, `PetscProbComputeKSStatisticMagnitude()`, `PetscProbFn`
 
 # External Links
-$(_doc_external("Dm/PetscProbComputeKSStatistic"))
+$(_doc_external("DM/PetscProbComputeKSStatistic"))
 """
 function PetscProbComputeKSStatistic(petsclib::PetscLibType, v::PetscVec, cdf::PetscProbFn) end
 
@@ -11262,7 +11262,7 @@ Level: advanced
 -seealso: `PetscProbComputeKSStatistic()`, `PetscProbComputeKSStatisticMagnitude()`, `PetscProbFn`
 
 # External Links
-$(_doc_external("Dm/PetscProbComputeKSStatisticWeighted"))
+$(_doc_external("DM/PetscProbComputeKSStatisticWeighted"))
 """
 function PetscProbComputeKSStatisticWeighted(petsclib::PetscLibType, v::PetscVec, w::PetscVec, cdf::PetscProbFn) end
 
@@ -11299,7 +11299,7 @@ Level: advanced
 -seealso: `PetscProbComputeKSStatistic()`, `PetscProbComputeKSStatisticWeighted()`, `PetscProbFn`
 
 # External Links
-$(_doc_external("Dm/PetscProbComputeKSStatisticMagnitude"))
+$(_doc_external("DM/PetscProbComputeKSStatisticMagnitude"))
 """
 function PetscProbComputeKSStatisticMagnitude(petsclib::PetscLibType, v::PetscVec, cdf::PetscProbFn) end
 
@@ -11333,7 +11333,7 @@ Level: intermediate
 -seealso: `PetscFormKey`, `PetscIntSortSemiOrdered()`, `PetscSortInt()`
 
 # External Links
-$(_doc_external("Dm/PetscFormKeySort"))
+$(_doc_external("DM/PetscFormKeySort"))
 """
 function PetscFormKeySort(petsclib::PetscLibType, n::PetscInt, arr::Vector{PetscFormKey}) end
 
@@ -11367,7 +11367,7 @@ Level: beginner
 -seealso: `PetscQuadrature`, `PetscDTJacobiEval()`
 
 # External Links
-$(_doc_external("Dm/PetscDTJacobiNorm"))
+$(_doc_external("DM/PetscDTJacobiNorm"))
 """
 function PetscDTJacobiNorm(petsclib::PetscLibType, alpha::PetscReal, beta::PetscReal, n::PetscInt) end
 
@@ -11409,7 +11409,7 @@ Level: advanced
 -seealso: `PetscDTJacobiEval()`, `PetscDTPKDEvalJet()`
 
 # External Links
-$(_doc_external("Dm/PetscDTJacobiEvalJet"))
+$(_doc_external("DM/PetscDTJacobiEvalJet"))
 """
 function PetscDTJacobiEvalJet(petsclib::PetscLibType, alpha::PetscReal, beta::PetscReal, npoints::PetscInt, points::Vector{PetscReal}, degree::PetscInt, k::PetscInt) end
 
@@ -11452,7 +11452,7 @@ Level: intermediate
 -seealso: `PetscDTGaussQuadrature()`, `PetscDTLegendreEval()`
 
 # External Links
-$(_doc_external("Dm/PetscDTJacobiEval"))
+$(_doc_external("DM/PetscDTJacobiEval"))
 """
 function PetscDTJacobiEval(petsclib::PetscLibType, npoints::PetscInt, alpha::PetscReal, beta::PetscReal, points::PetscReal, ndegree::PetscInt, degrees::PetscInt) end
 
@@ -11494,7 +11494,7 @@ Level: intermediate
 -seealso: `PetscDTGaussQuadrature()`
 
 # External Links
-$(_doc_external("Dm/PetscDTLegendreEval"))
+$(_doc_external("DM/PetscDTLegendreEval"))
 """
 function PetscDTLegendreEval(petsclib::PetscLibType, npoints::PetscInt, points::PetscReal, ndegree::PetscInt, degrees::PetscInt) end
 
@@ -11531,7 +11531,7 @@ Level: beginner
 -seealso: `PetscDTGradedOrderToIndex()`
 
 # External Links
-$(_doc_external("Dm/PetscDTIndexToGradedOrder"))
+$(_doc_external("DM/PetscDTIndexToGradedOrder"))
 """
 function PetscDTIndexToGradedOrder(petsclib::PetscLibType, len::PetscInt, index::PetscInt) end
 
@@ -11565,7 +11565,7 @@ Level: beginner
 -seealso: `PetscDTIndexToGradedOrder()`
 
 # External Links
-$(_doc_external("Dm/PetscDTGradedOrderToIndex"))
+$(_doc_external("DM/PetscDTGradedOrderToIndex"))
 """
 function PetscDTGradedOrderToIndex(petsclib::PetscLibType, len::PetscInt, degtup::Vector{PetscInt}) end
 
@@ -11608,7 +11608,7 @@ Level: advanced
 -seealso: `PetscDTGradedOrderToIndex()`, `PetscDTIndexToGradedOrder()`, `PetscDTJacobiEvalJet()`
 
 # External Links
-$(_doc_external("Dm/PetscDTPKDEvalJet"))
+$(_doc_external("DM/PetscDTPKDEvalJet"))
 """
 function PetscDTPKDEvalJet(petsclib::PetscLibType, dim::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, degree::PetscInt, k::PetscInt) end
 
@@ -11644,7 +11644,7 @@ Level: advanced
 -seealso: `PetscDTPTrimmedEvalJet()`
 
 # External Links
-$(_doc_external("Dm/PetscDTPTrimmedSize"))
+$(_doc_external("DM/PetscDTPTrimmedSize"))
 """
 function PetscDTPTrimmedSize(petsclib::PetscLibType, dim::PetscInt, degree::PetscInt, formDegree::PetscInt) end
 
@@ -11687,7 +11687,7 @@ Level: advanced
 -seealso: `PetscDTPKDEvalJet()`, `PetscDTPTrimmedSize()`
 
 # External Links
-$(_doc_external("Dm/PetscDTPTrimmedEvalJet"))
+$(_doc_external("DM/PetscDTPTrimmedEvalJet"))
 """
 function PetscDTPTrimmedEvalJet(petsclib::PetscLibType, dim::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, degree::PetscInt, formDegree::PetscInt, jetDegree::PetscInt) end
 
@@ -11728,7 +11728,7 @@ Level: intermediate
 -seealso: `PetscDTGaussQuadrature()`
 
 # External Links
-$(_doc_external("Dm/PetscDTGaussJacobiQuadrature"))
+$(_doc_external("DM/PetscDTGaussJacobiQuadrature"))
 """
 function PetscDTGaussJacobiQuadrature(petsclib::PetscLibType, npoints::PetscInt, a::PetscReal, b::PetscReal, alpha::PetscReal, beta::PetscReal) end
 
@@ -11770,7 +11770,7 @@ Level: intermediate
 -seealso: `PetscDTGaussJacobiQuadrature()`
 
 # External Links
-$(_doc_external("Dm/PetscDTGaussLobattoJacobiQuadrature"))
+$(_doc_external("DM/PetscDTGaussLobattoJacobiQuadrature"))
 """
 function PetscDTGaussLobattoJacobiQuadrature(petsclib::PetscLibType, npoints::PetscInt, a::PetscReal, b::PetscReal, alpha::PetscReal, beta::PetscReal) end
 
@@ -11809,7 +11809,7 @@ Level: intermediate
 -seealso: `PetscDTLegendreEval()`, `PetscDTGaussJacobiQuadrature()`
 
 # External Links
-$(_doc_external("Dm/PetscDTGaussQuadrature"))
+$(_doc_external("DM/PetscDTGaussQuadrature"))
 """
 function PetscDTGaussQuadrature(petsclib::PetscLibType, npoints::PetscInt, a::PetscReal, b::PetscReal) end
 
@@ -11849,7 +11849,7 @@ Level: intermediate
 
 
 # External Links
-$(_doc_external("Dm/PetscDTGaussLobattoLegendreQuadrature"))
+$(_doc_external("DM/PetscDTGaussLobattoLegendreQuadrature"))
 """
 function PetscDTGaussLobattoLegendreQuadrature(petsclib::PetscLibType, npoints::PetscInt, type::PetscGaussLobattoLegendreCreateType) end
 
@@ -11889,7 +11889,7 @@ Level: intermediate
 -seealso: `PetscDTGaussQuadrature()`, `PetscDTLegendreEval()`
 
 # External Links
-$(_doc_external("Dm/PetscDTGaussTensorQuadrature"))
+$(_doc_external("DM/PetscDTGaussTensorQuadrature"))
 """
 function PetscDTGaussTensorQuadrature(petsclib::PetscLibType, dim::PetscInt, Nc::PetscInt, npoints::PetscInt, a::PetscReal, b::PetscReal, q::PetscQuadrature) end
 
@@ -11927,7 +11927,7 @@ Level: intermediate
 -seealso: `PetscDTGaussTensorQuadrature()`, `PetscDTGaussQuadrature()`
 
 # External Links
-$(_doc_external("Dm/PetscDTStroudConicalQuadrature"))
+$(_doc_external("DM/PetscDTStroudConicalQuadrature"))
 """
 function PetscDTStroudConicalQuadrature(petsclib::PetscLibType, dim::PetscInt, Nc::PetscInt, npoints::PetscInt, a::PetscReal, b::PetscReal, q::PetscQuadrature) end
 
@@ -11963,7 +11963,7 @@ Level: intermediate
 -seealso: `PetscDTSimplexQuadratureType`, `PetscDTGaussQuadrature()`, `PetscDTStroudCononicalQuadrature()`, `PetscQuadrature`
 
 # External Links
-$(_doc_external("Dm/PetscDTSimplexQuadrature"))
+$(_doc_external("DM/PetscDTSimplexQuadrature"))
 """
 function PetscDTSimplexQuadrature(petsclib::PetscLibType, dim::PetscInt, degree::PetscInt, type::PetscDTSimplexQuadratureType, quad::PetscQuadrature) end
 
@@ -12000,7 +12000,7 @@ Level: intermediate
 -seealso: `PetscDTGaussTensorQuadrature()`, `PetscQuadrature`
 
 # External Links
-$(_doc_external("Dm/PetscDTTanhSinhTensorQuadrature"))
+$(_doc_external("DM/PetscDTTanhSinhTensorQuadrature"))
 """
 function PetscDTTanhSinhTensorQuadrature(petsclib::PetscLibType, dim::PetscInt, level::PetscInt, a::PetscReal, b::PetscReal, q::PetscQuadrature) end
 
@@ -12021,7 +12021,7 @@ end
 	sol::PetscReal = PetscDTTanhSinhIntegrate(petsclib::PetscLibType,func::external, a::PetscReal, b::PetscReal, digits::PetscInt, ctx::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscDTTanhSinhIntegrate"))
+$(_doc_external("DM/PetscDTTanhSinhIntegrate"))
 """
 function PetscDTTanhSinhIntegrate(petsclib::PetscLibType, func::external, a::PetscReal, b::PetscReal, digits::PetscInt, ctx::Cvoid) end
 
@@ -12044,7 +12044,7 @@ end
 	sol::PetscReal = PetscDTTanhSinhIntegrateMPFR(petsclib::PetscLibType,func::external, a::PetscReal, b::PetscReal, digits::PetscInt, ctx::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscDTTanhSinhIntegrateMPFR"))
+$(_doc_external("DM/PetscDTTanhSinhIntegrateMPFR"))
 """
 function PetscDTTanhSinhIntegrateMPFR(petsclib::PetscLibType, func::external, a::PetscReal, b::PetscReal, digits::PetscInt, ctx::Cvoid) end
 
@@ -12081,7 +12081,7 @@ Level: intermediate
 -seealso: `PetscQuadrature`, `PetscDTGaussTensorQuadrature()`
 
 # External Links
-$(_doc_external("Dm/PetscDTTensorQuadratureCreate"))
+$(_doc_external("DM/PetscDTTensorQuadratureCreate"))
 """
 function PetscDTTensorQuadratureCreate(petsclib::PetscLibType, q1::PetscQuadrature, q2::PetscQuadrature) end
 
@@ -12121,7 +12121,7 @@ Level: advanced
 -seealso: `PetscDTLegendreEval()`
 
 # External Links
-$(_doc_external("Dm/PetscDTReconstructPoly"))
+$(_doc_external("DM/PetscDTReconstructPoly"))
 """
 function PetscDTReconstructPoly(petsclib::PetscLibType, degree::PetscInt, nsource::PetscInt, sourcex::Vector{PetscReal}, ntarget::PetscInt, targetx::Vector{PetscReal}) end
 
@@ -12159,7 +12159,7 @@ Level: beginner
 -seealso: `PetscDTGaussLobattoLegendreQuadrature()`
 
 # External Links
-$(_doc_external("Dm/PetscGaussLobattoLegendreIntegrate"))
+$(_doc_external("DM/PetscGaussLobattoLegendreIntegrate"))
 """
 function PetscGaussLobattoLegendreIntegrate(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, f::Vector{PetscReal}) end
 
@@ -12197,7 +12197,7 @@ Level: beginner
 -seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscGaussLobattoLegendreElementLaplacianCreate"))
+$(_doc_external("DM/PetscGaussLobattoLegendreElementLaplacianCreate"))
 """
 function PetscGaussLobattoLegendreElementLaplacianCreate(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}) end
 
@@ -12233,7 +12233,7 @@ Level: beginner
 -seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscGaussLobattoLegendreElementLaplacianDestroy"))
+$(_doc_external("DM/PetscGaussLobattoLegendreElementLaplacianDestroy"))
 """
 function PetscGaussLobattoLegendreElementLaplacianDestroy(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, AA::PetscReal) end
 
@@ -12270,7 +12270,7 @@ Level: beginner
 -seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianDestroy()`, `PetscGaussLobattoLegendreElementGradientDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscGaussLobattoLegendreElementGradientCreate"))
+$(_doc_external("DM/PetscGaussLobattoLegendreElementGradientCreate"))
 """
 function PetscGaussLobattoLegendreElementGradientCreate(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}) end
 
@@ -12309,7 +12309,7 @@ Level: beginner
 -seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianCreate()`, `PetscGaussLobattoLegendreElementAdvectionCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscGaussLobattoLegendreElementGradientDestroy"))
+$(_doc_external("DM/PetscGaussLobattoLegendreElementGradientDestroy"))
 """
 function PetscGaussLobattoLegendreElementGradientDestroy(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, AA::PetscReal, AAT::PetscReal) end
 
@@ -12345,7 +12345,7 @@ Level: beginner
 -seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementLaplacianCreate()`, `PetscGaussLobattoLegendreElementAdvectionDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscGaussLobattoLegendreElementAdvectionCreate"))
+$(_doc_external("DM/PetscGaussLobattoLegendreElementAdvectionCreate"))
 """
 function PetscGaussLobattoLegendreElementAdvectionCreate(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}) end
 
@@ -12381,7 +12381,7 @@ Level: beginner
 -seealso: `PetscDTGaussLobattoLegendreQuadrature()`, `PetscGaussLobattoLegendreElementAdvectionCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscGaussLobattoLegendreElementAdvectionDestroy"))
+$(_doc_external("DM/PetscGaussLobattoLegendreElementAdvectionDestroy"))
 """
 function PetscGaussLobattoLegendreElementAdvectionDestroy(petsclib::PetscLibType, n::PetscInt, nodes::Vector{PetscReal}, weights::Vector{PetscReal}, AA::PetscReal) end
 
@@ -12402,7 +12402,7 @@ end
 	nodes::PetscReal,weights::PetscReal = PetscGaussLobattoLegendreElementMassCreate(petsclib::PetscLibType,n::PetscInt, AA::PetscReal) 
 
 # External Links
-$(_doc_external("Dm/PetscGaussLobattoLegendreElementMassCreate"))
+$(_doc_external("DM/PetscGaussLobattoLegendreElementMassCreate"))
 """
 function PetscGaussLobattoLegendreElementMassCreate(petsclib::PetscLibType, n::PetscInt, AA::PetscReal) end
 
@@ -12427,7 +12427,7 @@ end
 	nodes::PetscReal,weights::PetscReal = PetscGaussLobattoLegendreElementMassDestroy(petsclib::PetscLibType,n::PetscInt, AA::PetscReal) 
 
 # External Links
-$(_doc_external("Dm/PetscGaussLobattoLegendreElementMassDestroy"))
+$(_doc_external("DM/PetscGaussLobattoLegendreElementMassDestroy"))
 """
 function PetscGaussLobattoLegendreElementMassDestroy(petsclib::PetscLibType, n::PetscInt, AA::PetscReal) end
 
@@ -12465,7 +12465,7 @@ Level: beginner
 -seealso: `PetscDTBaryToIndex()`
 
 # External Links
-$(_doc_external("Dm/PetscDTIndexToBary"))
+$(_doc_external("DM/PetscDTIndexToBary"))
 """
 function PetscDTIndexToBary(petsclib::PetscLibType, len::PetscInt, sum::PetscInt, index::PetscInt) end
 
@@ -12500,7 +12500,7 @@ Level: beginner
 -seealso: `PetscDTIndexToBary`
 
 # External Links
-$(_doc_external("Dm/PetscDTBaryToIndex"))
+$(_doc_external("DM/PetscDTBaryToIndex"))
 """
 function PetscDTBaryToIndex(petsclib::PetscLibType, len::PetscInt, sum::PetscInt, coord::Vector{PetscInt}) end
 
@@ -12539,7 +12539,7 @@ Level: developer
 -seealso: `PetscDTCreateDefaultQuadrature()`, `PetscFECreateDefault()`, `PetscDTGaussTensorQuadrature()`, `PetscDTSimplexQuadrature()`, `PetscDTTensorQuadratureCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDTCreateQuadratureByCell"))
+$(_doc_external("DM/PetscDTCreateQuadratureByCell"))
 """
 function PetscDTCreateQuadratureByCell(petsclib::PetscLibType, ct::DMPolytopeType, qorder::PetscInt, qtype::PetscDTSimplexQuadratureType) end
 
@@ -12579,7 +12579,7 @@ Level: developer
 -seealso: `PetscDTCreateQuadratureByCell()`, `PetscFECreateDefault()`, `PetscDTGaussTensorQuadrature()`, `PetscDTSimplexQuadrature()`, `PetscDTTensorQuadratureCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDTCreateDefaultQuadrature"))
+$(_doc_external("DM/PetscDTCreateDefaultQuadrature"))
 """
 function PetscDTCreateDefaultQuadrature(petsclib::PetscLibType, ct::DMPolytopeType, qorder::PetscInt) end
 
@@ -13490,7 +13490,7 @@ end
 	factorial::PetscReal = PetscDTFactorial(petsclib::PetscLibType,n::PetscInt) 
 
 # External Links
-$(_doc_external("Dm/PetscDTFactorial"))
+$(_doc_external("DM/PetscDTFactorial"))
 """
 function PetscDTFactorial(petsclib::PetscLibType, n::PetscInt) end
 
@@ -13513,7 +13513,7 @@ end
 	factorial::PetscInt = PetscDTFactorialInt(petsclib::PetscLibType,n::PetscInt) 
 
 # External Links
-$(_doc_external("Dm/PetscDTFactorialInt"))
+$(_doc_external("DM/PetscDTFactorialInt"))
 """
 function PetscDTFactorialInt(petsclib::PetscLibType, n::PetscInt) end
 
@@ -13536,7 +13536,7 @@ end
 	binomial::PetscReal = PetscDTBinomial(petsclib::PetscLibType,n::PetscInt, k::PetscInt) 
 
 # External Links
-$(_doc_external("Dm/PetscDTBinomial"))
+$(_doc_external("DM/PetscDTBinomial"))
 """
 function PetscDTBinomial(petsclib::PetscLibType, n::PetscInt, k::PetscInt) end
 
@@ -13559,7 +13559,7 @@ end
 	binomial::PetscInt = PetscDTBinomialInt(petsclib::PetscLibType,n::PetscInt, k::PetscInt) 
 
 # External Links
-$(_doc_external("Dm/PetscDTBinomialInt"))
+$(_doc_external("DM/PetscDTBinomialInt"))
 """
 function PetscDTBinomialInt(petsclib::PetscLibType, n::PetscInt, k::PetscInt) end
 
@@ -13582,7 +13582,7 @@ end
 	perm::PetscInt,isOdd::PetscBool = PetscDTEnumPerm(petsclib::PetscLibType,n::PetscInt, k::PetscInt) 
 
 # External Links
-$(_doc_external("Dm/PetscDTEnumPerm"))
+$(_doc_external("DM/PetscDTEnumPerm"))
 """
 function PetscDTEnumPerm(petsclib::PetscLibType, n::PetscInt, k::PetscInt) end
 
@@ -13607,7 +13607,7 @@ end
 	perm::PetscInt,k::PetscInt,isOdd::PetscBool = PetscDTPermIndex(petsclib::PetscLibType,n::PetscInt) 
 
 # External Links
-$(_doc_external("Dm/PetscDTPermIndex"))
+$(_doc_external("DM/PetscDTPermIndex"))
 """
 function PetscDTPermIndex(petsclib::PetscLibType, n::PetscInt) end
 
@@ -13634,7 +13634,7 @@ end
 	subset::PetscInt = PetscDTEnumSubset(petsclib::PetscLibType,n::PetscInt, k::PetscInt, j::PetscInt) 
 
 # External Links
-$(_doc_external("Dm/PetscDTEnumSubset"))
+$(_doc_external("DM/PetscDTEnumSubset"))
 """
 function PetscDTEnumSubset(petsclib::PetscLibType, n::PetscInt, k::PetscInt, j::PetscInt) end
 
@@ -13657,7 +13657,7 @@ end
 	subset::PetscInt,index::PetscInt = PetscDTSubsetIndex(petsclib::PetscLibType,n::PetscInt, k::PetscInt) 
 
 # External Links
-$(_doc_external("Dm/PetscDTSubsetIndex"))
+$(_doc_external("DM/PetscDTSubsetIndex"))
 """
 function PetscDTSubsetIndex(petsclib::PetscLibType, n::PetscInt, k::PetscInt) end
 
@@ -13682,7 +13682,7 @@ end
 	perm::PetscInt,isOdd::PetscBool = PetscDTEnumSplit(petsclib::PetscLibType,n::PetscInt, k::PetscInt, j::PetscInt) 
 
 # External Links
-$(_doc_external("Dm/PetscDTEnumSplit"))
+$(_doc_external("DM/PetscDTEnumSplit"))
 """
 function PetscDTEnumSplit(petsclib::PetscLibType, n::PetscInt, k::PetscInt, j::PetscInt) end
 

@@ -1,6 +1,3 @@
-mutable struct _n_PetscPartitioner end
-const PetscPartitioner = Ptr{_n_PetscPartitioner}
-
 """
 	PetscPartitionerRegister(petsclib::PetscLibType,sname::String, fnc::external) 
 Adds a new PetscPartitioner implementation
@@ -589,7 +586,7 @@ Level: developer
 `PetscSectionSetChart()`, `PetscPartitionerPartition()`
 
 # External Links
-$(_doc_external("Dm/PetscPartitionerDMPlexPartition"))
+$(_doc_external("DM/PetscPartitionerDMPlexPartition"))
 """
 function PetscPartitionerDMPlexPartition(petsclib::PetscLibType, part::PetscPartitioner, dm::PetscDM, targetSection::PetscSection, partSection::PetscSection, partition::IS) end
 

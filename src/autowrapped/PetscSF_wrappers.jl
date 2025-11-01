@@ -1817,7 +1817,7 @@ Level: intermediate
 -seealso: `PetscSF`
 
 # External Links
-$(_doc_external("Dm/PetscSFGetSubSF"))
+$(_doc_external("DM/PetscSFGetSubSF"))
 """
 function PetscSFGetSubSF(petsclib::PetscLibType, mainsf::PetscSF, map::ISLocalToGlobalMapping, subSF::PetscSF) end
 

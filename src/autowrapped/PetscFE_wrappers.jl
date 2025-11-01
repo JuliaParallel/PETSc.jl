@@ -1,6 +1,3 @@
-mutable struct _n_PetscFE end
-const PetscFE = Ptr{_n_PetscFE}
-
 """
 	PetscFEFinalizePackage(petsclib::PetscLibType) 
 This function finalizes everything in the `PetscFE` package. It is called
@@ -11,7 +8,7 @@ Level: developer
 -seealso: `PetscInitialize()`
 
 # External Links
-$(_doc_external("Dm/PetscFEFinalizePackage"))
+$(_doc_external("DM/PetscFEFinalizePackage"))
 """
 function PetscFEFinalizePackage(petsclib::PetscLibType) end
 
@@ -38,7 +35,7 @@ Level: developer
 -seealso: `PetscInitialize()`
 
 # External Links
-$(_doc_external("Dm/PetscFEInitializePackage"))
+$(_doc_external("DM/PetscFEInitializePackage"))
 """
 function PetscFEInitializePackage(petsclib::PetscLibType) end
 
@@ -67,7 +64,7 @@ Input Parameters:
 -seealso: `PetscFE`, `PetscFEType`, `PetscFERegisterAll()`, `PetscFERegisterDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscFERegister"))
+$(_doc_external("DM/PetscFERegister"))
 """
 function PetscFERegister(petsclib::PetscLibType, sname::String, fnc::external) end
 
@@ -102,7 +99,7 @@ Level: intermediate
 -seealso: `PetscFEType`, `PetscFE`, `PetscFEGetType()`, `PetscFECreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFESetType"))
+$(_doc_external("DM/PetscFESetType"))
 """
 function PetscFESetType(petsclib::PetscLibType, fem::PetscFE, name::PetscFEType) end
 
@@ -136,7 +133,7 @@ Level: intermediate
 -seealso: `PetscFEType`, `PetscFE`, `PetscFESetType()`, `PetscFECreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetType"))
+$(_doc_external("DM/PetscFEGetType"))
 """
 function PetscFEGetType(petsclib::PetscLibType, fem::PetscFE) end
 
@@ -171,7 +168,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscFEView()`, `PetscObjectViewFromOptions()`, `PetscFECreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEViewFromOptions"))
+$(_doc_external("DM/PetscFEViewFromOptions"))
 """
 function PetscFEViewFromOptions(petsclib::PetscLibType, A::PetscFE, obj::PetscObject, name::String) end
 
@@ -203,7 +200,7 @@ Level: beginner
 -seealso: `PetscFE`, `PetscViewer`, `PetscFEDestroy()`, `PetscFEViewFromOptions()`
 
 # External Links
-$(_doc_external("Dm/PetscFEView"))
+$(_doc_external("DM/PetscFEView"))
 """
 function PetscFEView(petsclib::PetscLibType, fem::PetscFE, viewer::PetscViewer) end
 
@@ -238,7 +235,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscFEView()`
 
 # External Links
-$(_doc_external("Dm/PetscFESetFromOptions"))
+$(_doc_external("DM/PetscFESetFromOptions"))
 """
 function PetscFESetFromOptions(petsclib::PetscLibType, fem::PetscFE) end
 
@@ -269,7 +266,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscFEView()`, `PetscFEDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscFESetUp"))
+$(_doc_external("DM/PetscFESetUp"))
 """
 function PetscFESetUp(petsclib::PetscLibType, fem::PetscFE) end
 
@@ -300,7 +297,7 @@ Level: beginner
 -seealso: `PetscFE`, `PetscFEView()`
 
 # External Links
-$(_doc_external("Dm/PetscFEDestroy"))
+$(_doc_external("DM/PetscFEDestroy"))
 """
 function PetscFEDestroy(petsclib::PetscLibType, fem::PetscFE) end
 
@@ -334,7 +331,7 @@ Level: beginner
 -seealso: `PetscFE`, `PetscFEType`, `PetscFESetType()`, `PetscFECreateDefault()`, `PETSCFEGALERKIN`
 
 # External Links
-$(_doc_external("Dm/PetscFECreate"))
+$(_doc_external("DM/PetscFECreate"))
 """
 function PetscFECreate(petsclib::PetscLibType, comm::MPI_Comm) end
 
@@ -370,7 +367,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscFECreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetSpatialDimension"))
+$(_doc_external("DM/PetscFEGetSpatialDimension"))
 """
 function PetscFEGetSpatialDimension(petsclib::PetscLibType, fem::PetscFE) end
 
@@ -404,7 +401,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscFECreate()`, `PetscFEGetSpatialDimension()`, `PetscFEGetNumComponents()`
 
 # External Links
-$(_doc_external("Dm/PetscFESetNumComponents"))
+$(_doc_external("DM/PetscFESetNumComponents"))
 """
 function PetscFESetNumComponents(petsclib::PetscLibType, fem::PetscFE, comp::PetscInt) end
 
@@ -438,7 +435,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscFECreate()`, `PetscFEGetSpatialDimension()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetNumComponents"))
+$(_doc_external("DM/PetscFEGetNumComponents"))
 """
 function PetscFEGetNumComponents(petsclib::PetscLibType, fem::PetscFE) end
 
@@ -475,7 +472,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscFECreate()`, `PetscFEGetTileSizes()`
 
 # External Links
-$(_doc_external("Dm/PetscFESetTileSizes"))
+$(_doc_external("DM/PetscFESetTileSizes"))
 """
 function PetscFESetTileSizes(petsclib::PetscLibType, fem::PetscFE, blockSize::PetscInt, numBlocks::PetscInt, batchSize::PetscInt, numBatches::PetscInt) end
 
@@ -512,7 +509,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscFECreate()`, `PetscFESetTileSizes()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetTileSizes"))
+$(_doc_external("DM/PetscFEGetTileSizes"))
 """
 function PetscFEGetTileSizes(petsclib::PetscLibType, fem::PetscFE) end
 
@@ -554,7 +551,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscSpace`, `PetscFECreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetBasisSpace"))
+$(_doc_external("DM/PetscFEGetBasisSpace"))
 """
 function PetscFEGetBasisSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscSpace) end
 
@@ -586,7 +583,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`, `PetscFESetDualSpace()`
 
 # External Links
-$(_doc_external("Dm/PetscFESetBasisSpace"))
+$(_doc_external("DM/PetscFESetBasisSpace"))
 """
 function PetscFESetBasisSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscSpace) end
 
@@ -620,7 +617,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetDualSpace"))
+$(_doc_external("DM/PetscFEGetDualSpace"))
 """
 function PetscFEGetDualSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscDualSpace) end
 
@@ -652,7 +649,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`, `PetscFESetBasisSpace()`
 
 # External Links
-$(_doc_external("Dm/PetscFESetDualSpace"))
+$(_doc_external("DM/PetscFESetDualSpace"))
 """
 function PetscFESetDualSpace(petsclib::PetscLibType, fem::PetscFE, sp::PetscDualSpace) end
 
@@ -686,7 +683,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetQuadrature"))
+$(_doc_external("DM/PetscFEGetQuadrature"))
 """
 function PetscFEGetQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature) end
 
@@ -718,7 +715,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`, `PetscFEGetFaceQuadrature()`
 
 # External Links
-$(_doc_external("Dm/PetscFESetQuadrature"))
+$(_doc_external("DM/PetscFESetQuadrature"))
 """
 function PetscFESetQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature) end
 
@@ -752,7 +749,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`, `PetscFESetQuadrature()`, `PetscFESetFaceQuadrature()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetFaceQuadrature"))
+$(_doc_external("DM/PetscFEGetFaceQuadrature"))
 """
 function PetscFEGetFaceQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature) end
 
@@ -784,7 +781,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`, `PetscFESetQuadrature()`
 
 # External Links
-$(_doc_external("Dm/PetscFESetFaceQuadrature"))
+$(_doc_external("DM/PetscFESetFaceQuadrature"))
 """
 function PetscFESetFaceQuadrature(petsclib::PetscLibType, fem::PetscFE, q::PetscQuadrature) end
 
@@ -816,7 +813,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscQuadrature`, `PetscFECreate()`, `PetscFESetQuadrature()`, `PetscFESetFaceQuadrature()`
 
 # External Links
-$(_doc_external("Dm/PetscFECopyQuadrature"))
+$(_doc_external("DM/PetscFECopyQuadrature"))
 """
 function PetscFECopyQuadrature(petsclib::PetscLibType, sfe::PetscFE, tfe::PetscFE) end
 
@@ -850,7 +847,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscFECreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetNumDof"))
+$(_doc_external("DM/PetscFEGetNumDof"))
 """
 function PetscFEGetNumDof(petsclib::PetscLibType, fem::PetscFE) end
 
@@ -887,7 +884,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscTabulation`, `PetscFECreateTabulation()`, `PetscTabulationDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetCellTabulation"))
+$(_doc_external("DM/PetscFEGetCellTabulation"))
 """
 function PetscFEGetCellTabulation(petsclib::PetscLibType, fem::PetscFE, k::PetscInt, T::PetscTabulation) end
 
@@ -908,7 +905,7 @@ end
 	PetscFEExpandFaceQuadrature(petsclib::PetscLibType,fe::PetscFE, fq::PetscQuadrature, efq::PetscQuadrature) 
 
 # External Links
-$(_doc_external("Dm/PetscFEExpandFaceQuadrature"))
+$(_doc_external("DM/PetscFEExpandFaceQuadrature"))
 """
 function PetscFEExpandFaceQuadrature(petsclib::PetscLibType, fe::PetscFE, fq::PetscQuadrature, efq::PetscQuadrature) end
 
@@ -943,7 +940,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscFECreateTabulation()`, `PetscTabulationDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetFaceTabulation"))
+$(_doc_external("DM/PetscFEGetFaceTabulation"))
 """
 function PetscFEGetFaceTabulation(petsclib::PetscLibType, fem::PetscFE, k::PetscInt, Tf::PetscTabulation) end
 
@@ -977,7 +974,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscSpace`, `PetscDualSpace`, `PetscTabulation`, `PetscFEGetFaceTabulation()`, `PetscFEGetCellTabulation()`, `PetscFECreateTabulation()`, `PetscTabulationDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetFaceCentroidTabulation"))
+$(_doc_external("DM/PetscFEGetFaceCentroidTabulation"))
 """
 function PetscFEGetFaceCentroidTabulation(petsclib::PetscLibType, fem::PetscFE, Tc::PetscTabulation) end
 
@@ -1015,7 +1012,7 @@ Level: intermediate
 -seealso: `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscTabulationDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscFECreateTabulation"))
+$(_doc_external("DM/PetscFECreateTabulation"))
 """
 function PetscFECreateTabulation(petsclib::PetscLibType, fem::PetscFE, nrepl::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt) end
 
@@ -1055,7 +1052,7 @@ Level: intermediate
 -seealso: `PetscTabulation`, `PetscFEGetCellTabulation()`, `PetscTabulationDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscFEComputeTabulation"))
+$(_doc_external("DM/PetscFEComputeTabulation"))
 """
 function PetscFEComputeTabulation(petsclib::PetscLibType, fem::PetscFE, npoints::PetscInt, points::Vector{PetscReal}, K::PetscInt, T::PetscTabulation) end
 
@@ -1076,7 +1073,7 @@ end
 	trFE::PetscFE = PetscFECreateHeightTrace(petsclib::PetscLibType,fe::PetscFE, height::PetscInt) 
 
 # External Links
-$(_doc_external("Dm/PetscFECreateHeightTrace"))
+$(_doc_external("DM/PetscFECreateHeightTrace"))
 """
 function PetscFECreateHeightTrace(petsclib::PetscLibType, fe::PetscFE, height::PetscInt) end
 
@@ -1112,7 +1109,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscFECreate()`, `PetscSpaceGetDimension()`, `PetscDualSpaceGetDimension()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetDimension"))
+$(_doc_external("DM/PetscFEGetDimension"))
 """
 function PetscFEGetDimension(petsclib::PetscLibType, fem::PetscFE) end
 
@@ -1149,7 +1146,7 @@ Level: advanced
 -seealso: `PetscFE`, `PetscFEGeom`, `PetscDualSpace`, `PetscDualSpacePushforward()`
 
 # External Links
-$(_doc_external("Dm/PetscFEPushforward"))
+$(_doc_external("DM/PetscFEPushforward"))
 """
 function PetscFEPushforward(petsclib::PetscLibType, fe::PetscFE, fegeom::PetscFEGeom, Nv::PetscInt, vals::Vector{PetscScalar}) end
 
@@ -1184,7 +1181,7 @@ Level: advanced
 -seealso: `PetscFE`, `PetscFEGeom`, `PetscDualSpace`, `PetscFEPushforward()`, `PetscDualSpacePushforwardGradient()`, `PetscDualSpacePushforward()`
 
 # External Links
-$(_doc_external("Dm/PetscFEPushforwardGradient"))
+$(_doc_external("DM/PetscFEPushforwardGradient"))
 """
 function PetscFEPushforwardGradient(petsclib::PetscLibType, fe::PetscFE, fegeom::PetscFEGeom, Nv::PetscInt, vals::Vector{PetscScalar}) end
 
@@ -1219,7 +1216,7 @@ Level: advanced
 -seealso: `PetscFE`, `PetscFEGeom`, `PetscDualSpace`, `PetscFEPushforward()`, `PetscDualSpacePushforwardHessian()`, `PetscDualSpacePushforward()`
 
 # External Links
-$(_doc_external("Dm/PetscFEPushforwardHessian"))
+$(_doc_external("DM/PetscFEPushforwardHessian"))
 """
 function PetscFEPushforwardHessian(petsclib::PetscLibType, fe::PetscFE, fegeom::PetscFEGeom, Nv::PetscInt, vals::Vector{PetscScalar}) end
 
@@ -1259,7 +1256,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscDS`, `PetscFEIntegrateResidual()`, `PetscFEIntegrateBd()`
 
 # External Links
-$(_doc_external("Dm/PetscFEIntegrate"))
+$(_doc_external("DM/PetscFEIntegrate"))
 """
 function PetscFEIntegrate(petsclib::PetscLibType, prob::PetscDS, field::PetscInt, Ne::PetscInt, cgeom::PetscFEGeom, coefficients::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}) end
 
@@ -1302,7 +1299,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscDS`, `PetscFEIntegrateResidual()`, `PetscFEIntegrate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEIntegrateBd"))
+$(_doc_external("DM/PetscFEIntegrateBd"))
 """
 function PetscFEIntegrateBd(petsclib::PetscLibType, prob::PetscDS, field::PetscInt, ::Cvoid(obj_func) end
 
@@ -1345,7 +1342,7 @@ Level: intermediate
 -seealso: `PetscFEIntegrateBdResidual()`
 
 # External Links
-$(_doc_external("Dm/PetscFEIntegrateResidual"))
+$(_doc_external("DM/PetscFEIntegrateResidual"))
 """
 function PetscFEIntegrateResidual(petsclib::PetscLibType, ds::PetscDS, key::PetscFormKey, Ne::PetscInt, cgeom::PetscFEGeom, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal) end
 
@@ -1389,7 +1386,7 @@ Level: intermediate
 -seealso: `PetscFEIntegrateResidual()`
 
 # External Links
-$(_doc_external("Dm/PetscFEIntegrateBdResidual"))
+$(_doc_external("DM/PetscFEIntegrateBdResidual"))
 """
 function PetscFEIntegrateBdResidual(petsclib::PetscLibType, ds::PetscDS, wf::PetscWeakForm, key::PetscFormKey, Ne::PetscInt, fgeom::PetscFEGeom, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal) end
 
@@ -1435,7 +1432,7 @@ Level: developer
 -seealso: `PetscFEIntegrateResidual()`
 
 # External Links
-$(_doc_external("Dm/PetscFEIntegrateHybridResidual"))
+$(_doc_external("DM/PetscFEIntegrateHybridResidual"))
 """
 function PetscFEIntegrateHybridResidual(petsclib::PetscLibType, ds::PetscDS, dsIn::PetscDS, key::PetscFormKey, s::PetscInt, Ne::PetscInt, fgeom::PetscFEGeom, cgeom::PetscFEGeom, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal) end
 
@@ -1481,7 +1478,7 @@ Level: intermediate
 -seealso: `PetscFEIntegrateResidual()`
 
 # External Links
-$(_doc_external("Dm/PetscFEIntegrateJacobian"))
+$(_doc_external("DM/PetscFEIntegrateJacobian"))
 """
 function PetscFEIntegrateJacobian(petsclib::PetscLibType, rds::PetscDS, cds::PetscDS, jtype::PetscFEJacobianType, key::PetscFormKey, Ne::PetscInt, cgeom::PetscFEGeom, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, dsAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, u_tshift::PetscReal) end
 
@@ -1527,7 +1524,7 @@ Level: intermediate
 -seealso: `PetscFEIntegrateJacobian()`, `PetscFEIntegrateResidual()`
 
 # External Links
-$(_doc_external("Dm/PetscFEIntegrateBdJacobian"))
+$(_doc_external("DM/PetscFEIntegrateBdJacobian"))
 """
 function PetscFEIntegrateBdJacobian(petsclib::PetscLibType, ds::PetscDS, wf::PetscWeakForm, jtype::PetscFEJacobianType, key::PetscFormKey, Ne::PetscInt, fgeom::PetscFEGeom, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, u_tshift::PetscReal) end
 
@@ -1575,7 +1572,7 @@ Level: developer
 -seealso: `PetscFEIntegrateJacobian()`, `PetscFEIntegrateResidual()`
 
 # External Links
-$(_doc_external("Dm/PetscFEIntegrateHybridJacobian"))
+$(_doc_external("DM/PetscFEIntegrateHybridJacobian"))
 """
 function PetscFEIntegrateHybridJacobian(petsclib::PetscLibType, ds::PetscDS, dsIn::PetscDS, jtype::PetscFEJacobianType, key::PetscFormKey, s::PetscInt, Ne::PetscInt, fgeom::PetscFEGeom, cgeom::PetscFEGeom, coefficients::Vector{PetscScalar}, coefficients_t::Vector{PetscScalar}, probAux::PetscDS, coefficientsAux::Vector{PetscScalar}, t::PetscReal, u_tshift::PetscReal) end
 
@@ -1609,7 +1606,7 @@ Level: advanced
 -seealso: `PetscFECreateDefault()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGetHeightSubspace"))
+$(_doc_external("DM/PetscFEGetHeightSubspace"))
 """
 function PetscFEGetHeightSubspace(petsclib::PetscLibType, fe::PetscFE, height::PetscInt, subfe::PetscFE) end
 
@@ -1644,7 +1641,7 @@ Level: advanced
 -seealso: `PetscFEType`, `PetscFECreate()`, `PetscFESetType()`
 
 # External Links
-$(_doc_external("Dm/PetscFERefine"))
+$(_doc_external("DM/PetscFERefine"))
 """
 function PetscFERefine(petsclib::PetscLibType, fe::PetscFE, feRef::PetscFE) end
 
@@ -1682,7 +1679,7 @@ Level: beginner
 `PetscFECreateLagrangeByCell()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFECreateFromSpaces"))
+$(_doc_external("DM/PetscFECreateFromSpaces"))
 """
 function PetscFECreateFromSpaces(petsclib::PetscLibType, P::PetscSpace, Q::PetscDualSpace, q::PetscQuadrature, fq::PetscQuadrature) end
 
@@ -1723,7 +1720,7 @@ Level: beginner
 -seealso: `PetscFECreateLagrange()`, `PetscFECreateByCell()`, `PetscSpaceSetFromOptions()`, `PetscDualSpaceSetFromOptions()`, `PetscFESetFromOptions()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFECreateDefault"))
+$(_doc_external("DM/PetscFECreateDefault"))
 """
 function PetscFECreateDefault(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, isSimplex::PetscBool, prefix::String, qorder::PetscInt) end
 
@@ -1764,7 +1761,7 @@ Level: beginner
 -seealso: `PetscFECreateDefault()`, `PetscFECreateLagrange()`, `PetscSpaceSetFromOptions()`, `PetscDualSpaceSetFromOptions()`, `PetscFESetFromOptions()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFECreateByCell"))
+$(_doc_external("DM/PetscFECreateByCell"))
 """
 function PetscFECreateByCell(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, ct::DMPolytopeType, prefix::String, qorder::PetscInt) end
 
@@ -1805,7 +1802,7 @@ Level: beginner
 -seealso: `PetscFECreateLagrangeByCell()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFECreateLagrange"))
+$(_doc_external("DM/PetscFECreateLagrange"))
 """
 function PetscFECreateLagrange(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, isSimplex::PetscBool, k::PetscInt, qorder::PetscInt) end
 
@@ -1846,7 +1843,7 @@ Level: beginner
 -seealso: `PetscFECreateLagrange()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFECreateLagrangeByCell"))
+$(_doc_external("DM/PetscFECreateLagrangeByCell"))
 """
 function PetscFECreateLagrangeByCell(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscInt, Nc::PetscInt, ct::DMPolytopeType, k::PetscInt, qorder::PetscInt) end
 
@@ -1884,7 +1881,7 @@ Level: advanced
 -seealso: `PetscFECreateLagrange()`, `PetscFECreateDefault()`, `PetscFECreateByCell()`, `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFELimitDegree"))
+$(_doc_external("DM/PetscFELimitDegree"))
 """
 function PetscFELimitDegree(petsclib::PetscLibType, fe::PetscFE, minDegree::PetscInt, maxDegree::PetscInt, newfe::PetscFE) end
 
@@ -1918,7 +1915,7 @@ Level: advanced
 -seealso: `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`, `PetscFECreateLagrange()`, `PetscFECreateLagrangeByCell()`, `PetscDualSpaceLagrangeSetContinuity()`
 
 # External Links
-$(_doc_external("Dm/PetscFECreateBrokenElement"))
+$(_doc_external("DM/PetscFECreateBrokenElement"))
 """
 function PetscFECreateBrokenElement(petsclib::PetscLibType, cgfe::PetscFE) end
 
@@ -1952,7 +1949,7 @@ Level: intermediate
 -seealso: `PetscFECreate()`, `PetscSpaceCreate()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFESetName"))
+$(_doc_external("DM/PetscFESetName"))
 """
 function PetscFESetName(petsclib::PetscLibType, fe::PetscFE, name::String) end
 
@@ -1973,7 +1970,7 @@ end
 	cgeom::PetscFEGeom = PetscFECreateCellGeometry(petsclib::PetscLibType,fe::PetscFE, quad::PetscQuadrature) 
 
 # External Links
-$(_doc_external("Dm/PetscFECreateCellGeometry"))
+$(_doc_external("DM/PetscFECreateCellGeometry"))
 """
 function PetscFECreateCellGeometry(petsclib::PetscLibType, fe::PetscFE, quad::PetscQuadrature) end
 
@@ -1996,7 +1993,7 @@ end
 	PetscFEDestroyCellGeometry(petsclib::PetscLibType,fe::PetscFE, cgeom::PetscFEGeom) 
 
 # External Links
-$(_doc_external("Dm/PetscFEDestroyCellGeometry"))
+$(_doc_external("DM/PetscFEDestroyCellGeometry"))
 """
 function PetscFEDestroyCellGeometry(petsclib::PetscLibType, fe::PetscFE, cgeom::PetscFEGeom) end
 
@@ -2031,7 +2028,7 @@ Level: beginner
 -seealso: `PetscFEGeom`, `PetscQuadrature`, `PetscFEGeomDestroy()`, `PetscFEGeomComplete()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGeomCreate"))
+$(_doc_external("DM/PetscFEGeomCreate"))
 """
 function PetscFEGeomCreate(petsclib::PetscLibType, quad::PetscQuadrature, numCells::PetscInt, dimEmbed::PetscInt, mode::PetscFEGeomMode) end
 
@@ -2062,7 +2059,7 @@ Level: beginner
 -seealso: `PetscFEGeom`, `PetscFEGeomCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGeomDestroy"))
+$(_doc_external("DM/PetscFEGeomDestroy"))
 """
 function PetscFEGeomDestroy(petsclib::PetscLibType, geom::PetscFEGeom) end
 
@@ -2096,7 +2093,7 @@ Level: intermediate
 -seealso: `PetscFEGeom`, `PetscFEGeomRestoreChunk()`, `PetscFEGeomCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGeomGetChunk"))
+$(_doc_external("DM/PetscFEGeomGetChunk"))
 """
 function PetscFEGeomGetChunk(petsclib::PetscLibType, geom::PetscFEGeom, cStart::PetscInt, cEnd::PetscInt, chunkGeom::Vector{PetscFEGeom}) end
 
@@ -2129,7 +2126,7 @@ Level: intermediate
 -seealso: `PetscFEGeom`, `PetscFEGeomGetChunk()`, `PetscFEGeomCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGeomRestoreChunk"))
+$(_doc_external("DM/PetscFEGeomRestoreChunk"))
 """
 function PetscFEGeomRestoreChunk(petsclib::PetscLibType, geom::PetscFEGeom, cStart::PetscInt, cEnd::PetscInt, chunkGeom::PetscFEGeom) end
 
@@ -2164,7 +2161,7 @@ Level: intermediate
 -seealso: `PetscFEGeom`, `PetscFEGeomRestoreChunk()`, `PetscFEGeomCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGeomGetPoint"))
+$(_doc_external("DM/PetscFEGeomGetPoint"))
 """
 function PetscFEGeomGetPoint(petsclib::PetscLibType, geom::PetscFEGeom, c::PetscInt, p::PetscInt, pcoords::Vector{PetscReal}, pgeom::PetscFEGeom) end
 
@@ -2198,7 +2195,7 @@ Level: intermediate
 -seealso: `PetscFEGeom`, `PetscFEGeomMode`, `PetscFEGeomRestoreChunk()`, `PetscFEGeomCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGeomGetCellPoint"))
+$(_doc_external("DM/PetscFEGeomGetCellPoint"))
 """
 function PetscFEGeomGetCellPoint(petsclib::PetscLibType, geom::PetscFEGeom, c::PetscInt, p::PetscInt, pgeom::PetscFEGeom) end
 
@@ -2227,7 +2224,7 @@ Level: intermediate
 -seealso: `PetscFEGeom`, `PetscFEGeomCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFEGeomComplete"))
+$(_doc_external("DM/PetscFEGeomComplete"))
 """
 function PetscFEGeomComplete(petsclib::PetscLibType, geom::PetscFEGeom) end
 
@@ -2264,7 +2261,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscFECreate()`
 
 # External Links
-$(_doc_external("Dm/PetscFECompositeGetMapping"))
+$(_doc_external("DM/PetscFECompositeGetMapping"))
 """
 function PetscFECompositeGetMapping(petsclib::PetscLibType, fem::PetscFE) end
 
@@ -2302,7 +2299,7 @@ Level: developer
 -seealso: `PetscFE`, `PetscFEOpenCLGetRealType()`
 
 # External Links
-$(_doc_external("Dm/PetscFEOpenCLSetRealType"))
+$(_doc_external("DM/PetscFEOpenCLSetRealType"))
 """
 function PetscFEOpenCLSetRealType(petsclib::PetscLibType, fem::PetscFE, realType::PetscDataType) end
 
@@ -2334,7 +2331,7 @@ Level: developer
 -seealso: `PetscFE`, `PetscFEOpenCLSetRealType()`
 
 # External Links
-$(_doc_external("Dm/PetscFEOpenCLGetRealType"))
+$(_doc_external("DM/PetscFEOpenCLGetRealType"))
 """
 function PetscFEOpenCLGetRealType(petsclib::PetscLibType, fem::PetscFE) end
 
@@ -2384,7 +2381,7 @@ Level: intermediate
 -seealso: `PetscFE`, `PetscFEType`, `PetscFECreate()`, `PetscFESetType()`, `PETSCFEBASIC`, `PETSCFEVECTOR`
 
 # External Links
-$(_doc_external("Dm/PetscFECreateVector"))
+$(_doc_external("DM/PetscFECreateVector"))
 """
 function PetscFECreateVector(petsclib::PetscLibType, scalar_fe::PetscFE, num_copies::PetscInt, interleave_basis::PetscBool, interleave_components::PetscBool) end
 
@@ -2420,7 +2417,7 @@ Level: beginner
 -seealso: `PetscQuadrature`, `Petscquadraturedestroy()`, `PetscQuadratureGetData()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureCreate"))
+$(_doc_external("DM/PetscQuadratureCreate"))
 """
 function PetscQuadratureCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 
@@ -2456,7 +2453,7 @@ Level: beginner
 -seealso: `PetscQuadrature`, `PetscQuadratureCreate()`, `PetscQuadratureDestroy()`, `PetscQuadratureGetData()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureDuplicate"))
+$(_doc_external("DM/PetscQuadratureDuplicate"))
 """
 function PetscQuadratureDuplicate(petsclib::PetscLibType, q::PetscQuadrature) end
 
@@ -2489,7 +2486,7 @@ Level: beginner
 -seealso: `PetscQuadrature`, `PetscQuadratureCreate()`, `PetscQuadratureGetData()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureDestroy"))
+$(_doc_external("DM/PetscQuadratureDestroy"))
 """
 function PetscQuadratureDestroy(petsclib::PetscLibType, q::PetscQuadrature) end
 
@@ -2523,7 +2520,7 @@ Level: intermediate
 -seealso: `PetscQuadrature`, `PetscQuadratureSetCellType()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureGetCellType"))
+$(_doc_external("DM/PetscQuadratureGetCellType"))
 """
 function PetscQuadratureGetCellType(petsclib::PetscLibType, q::PetscQuadrature) end
 
@@ -2557,7 +2554,7 @@ Level: intermediate
 -seealso: `PetscQuadrature`, `PetscQuadratureGetCellType()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureSetCellType"))
+$(_doc_external("DM/PetscQuadratureSetCellType"))
 """
 function PetscQuadratureSetCellType(petsclib::PetscLibType, q::PetscQuadrature, ct::DMPolytopeType) end
 
@@ -2591,7 +2588,7 @@ Level: intermediate
 -seealso: `PetscQuadrature`, `PetscQuadratureSetOrder()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureGetOrder"))
+$(_doc_external("DM/PetscQuadratureGetOrder"))
 """
 function PetscQuadratureGetOrder(petsclib::PetscLibType, q::PetscQuadrature) end
 
@@ -2625,7 +2622,7 @@ Level: intermediate
 -seealso: `PetscQuadrature`, `PetscQuadratureGetOrder()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureSetOrder"))
+$(_doc_external("DM/PetscQuadratureSetOrder"))
 """
 function PetscQuadratureSetOrder(petsclib::PetscLibType, q::PetscQuadrature, order::PetscInt) end
 
@@ -2659,7 +2656,7 @@ Level: intermediate
 -seealso: `PetscQuadrature`, `PetscQuadratureSetNumComponents()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureGetNumComponents"))
+$(_doc_external("DM/PetscQuadratureGetNumComponents"))
 """
 function PetscQuadratureGetNumComponents(petsclib::PetscLibType, q::PetscQuadrature) end
 
@@ -2693,7 +2690,7 @@ Level: intermediate
 -seealso: `PetscQuadrature`, `PetscQuadratureGetNumComponents()`, `PetscQuadratureGetData()`, `PetscQuadratureSetData()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureSetNumComponents"))
+$(_doc_external("DM/PetscQuadratureSetNumComponents"))
 """
 function PetscQuadratureSetNumComponents(petsclib::PetscLibType, q::PetscQuadrature, Nc::PetscInt) end
 
@@ -2731,7 +2728,7 @@ Level: intermediate
 -seealso: `PetscQuadrature`, `PetscQuadratureCreate()`, `PetscQuadratureSetData()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureGetData"))
+$(_doc_external("DM/PetscQuadratureGetData"))
 """
 function PetscQuadratureGetData(petsclib::PetscLibType, q::PetscQuadrature) end
 
@@ -2774,7 +2771,7 @@ Level: intermediate
 -seealso: `PetscQuadrature`, `PetscQuadratureCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureEqual"))
+$(_doc_external("DM/PetscQuadratureEqual"))
 """
 function PetscQuadratureEqual(petsclib::PetscLibType, A::PetscQuadrature, B::PetscQuadrature) end
 
@@ -2817,7 +2814,7 @@ Level: intermediate
 -seealso: `PetscQuadrature`, `PetscDTAltVPullback()`, `PetscDTAltVPullbackMatrix()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadraturePushForward"))
+$(_doc_external("DM/PetscQuadraturePushForward"))
 """
 function PetscQuadraturePushForward(petsclib::PetscLibType, q::PetscQuadrature, imageDim::PetscInt, origin::Vector{PetscReal}, originImage::Vector{PetscReal}, J::Vector{PetscReal}, formDegree::PetscInt, Jinvstarq::PetscQuadrature) end
 
@@ -2853,7 +2850,7 @@ Level: intermediate
 -seealso: `PetscQuadrature`, `PetscQuadratureCreate()`, `PetscQuadratureGetData()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureSetData"))
+$(_doc_external("DM/PetscQuadratureSetData"))
 """
 function PetscQuadratureSetData(petsclib::PetscLibType, q::PetscQuadrature, dim::PetscInt, Nc::PetscInt, npoints::PetscInt, points::Vector{PetscReal}, weights::Vector{PetscReal}) end
 
@@ -2885,7 +2882,7 @@ Level: beginner
 -seealso: `PetscQuadrature`, `PetscViewer`, `PetscQuadratureCreate()`, `PetscQuadratureGetData()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureView"))
+$(_doc_external("DM/PetscQuadratureView"))
 """
 function PetscQuadratureView(petsclib::PetscLibType, quad::PetscQuadrature, viewer::PetscViewer) end
 
@@ -2922,7 +2919,7 @@ Level: intermediate
 -seealso: `PetscQuadrature`, `PetscFECreate()`, `PetscSpaceGetDimension()`, `PetscDualSpaceGetDimension()`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureExpandComposite"))
+$(_doc_external("DM/PetscQuadratureExpandComposite"))
 """
 function PetscQuadratureExpandComposite(petsclib::PetscLibType, q::PetscQuadrature, numSubelements::PetscInt, v0::Vector{PetscReal}, jac::Vector{PetscReal}, qref::PetscQuadrature) end
 
@@ -2955,7 +2952,7 @@ Level: developer
 -seealso: `PetscQuadratureSetCellType()`, `PetscQuadrature`
 
 # External Links
-$(_doc_external("Dm/PetscQuadratureComputePermutations"))
+$(_doc_external("DM/PetscQuadratureComputePermutations"))
 """
 function PetscQuadratureComputePermutations(petsclib::PetscLibType, quad::PetscQuadrature, perm::Vector{IS}) end
 
@@ -2989,7 +2986,7 @@ Level: intermediate
 -seealso: `PetscTabulation`, `PetscFECreateTabulation()`, `PetscFEGetCellTabulation()`
 
 # External Links
-$(_doc_external("Dm/PetscTabulationDestroy"))
+$(_doc_external("DM/PetscTabulationDestroy"))
 """
 function PetscTabulationDestroy(petsclib::PetscLibType, T::PetscTabulation) end
 
@@ -3023,7 +3020,7 @@ Level: intermediate
 -seealso: `PetscWeakForm`, `PetscWeakFormCreate()`, `PetscWeakFormDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormCopy"))
+$(_doc_external("DM/PetscWeakFormCopy"))
 """
 function PetscWeakFormCopy(petsclib::PetscLibType, wf::PetscWeakForm, wfNew::PetscWeakForm) end
 
@@ -3054,7 +3051,7 @@ Level: intermediate
 -seealso: `PetscWeakForm`, `PetscWeakFormCopy()`, `PetscWeakFormCreate()`, `PetscWeakFormDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormClear"))
+$(_doc_external("DM/PetscWeakFormClear"))
 """
 function PetscWeakFormClear(petsclib::PetscLibType, wf::PetscWeakForm) end
 
@@ -3088,7 +3085,7 @@ Level: intermediate
 -seealso: `PetscWeakForm`, `DMLabel`, `PetscWeakFormReplaceLabel()`, `PetscWeakFormCreate()`, `PetscWeakFormDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormRewriteKeys"))
+$(_doc_external("DM/PetscWeakFormRewriteKeys"))
 """
 function PetscWeakFormRewriteKeys(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}) end
 
@@ -3120,7 +3117,7 @@ Level: intermediate
 -seealso: `PetscWeakForm`, `DMLabel`, `PetscWeakFormRewriteKeys()`, `PetscWeakFormCreate()`, `PetscWeakFormDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormReplaceLabel"))
+$(_doc_external("DM/PetscWeakFormReplaceLabel"))
 """
 function PetscWeakFormReplaceLabel(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel) end
 
@@ -3141,7 +3138,7 @@ end
 	PetscWeakFormClearIndex(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, kind::PetscWeakFormKind, ind::PetscInt) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormClearIndex"))
+$(_doc_external("DM/PetscWeakFormClearIndex"))
 """
 function PetscWeakFormClearIndex(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, kind::PetscWeakFormKind, ind::PetscInt) end
 
@@ -3163,7 +3160,7 @@ end
 	n::PetscInt = PetscWeakFormGetObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ::Cvoid(obj) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormGetObjective"))
+$(_doc_external("DM/PetscWeakFormGetObjective"))
 """
 function PetscWeakFormGetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ::Cvoid(obj) end
 
@@ -3187,7 +3184,7 @@ end
 	PetscWeakFormSetObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, ::Cvoid(obj) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetObjective"))
+$(_doc_external("DM/PetscWeakFormSetObjective"))
 """
 function PetscWeakFormSetObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, ::Cvoid(obj) end
 
@@ -3209,7 +3206,7 @@ end
 	PetscWeakFormAddObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, obj::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormAddObjective"))
+$(_doc_external("DM/PetscWeakFormAddObjective"))
 """
 function PetscWeakFormAddObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, obj::external) end
 
@@ -3231,7 +3228,7 @@ end
 	PetscWeakFormGetIndexObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, ::Cvoid(obj) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormGetIndexObjective"))
+$(_doc_external("DM/PetscWeakFormGetIndexObjective"))
 """
 function PetscWeakFormGetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, ::Cvoid(obj) end
 
@@ -3252,7 +3249,7 @@ end
 	PetscWeakFormSetIndexObjective(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, obj::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetIndexObjective"))
+$(_doc_external("DM/PetscWeakFormSetIndexObjective"))
 """
 function PetscWeakFormSetIndexObjective(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ind::PetscInt, obj::external) end
 
@@ -3274,7 +3271,7 @@ end
 	n0::PetscInt = PetscWeakFormGetResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ::Cvoid(f0) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormGetResidual"))
+$(_doc_external("DM/PetscWeakFormGetResidual"))
 """
 function PetscWeakFormGetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ::Cvoid(f0) end
 
@@ -3297,7 +3294,7 @@ end
 	PetscWeakFormAddResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormAddResidual"))
+$(_doc_external("DM/PetscWeakFormAddResidual"))
 """
 function PetscWeakFormAddResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) end
 
@@ -3319,7 +3316,7 @@ end
 	PetscWeakFormSetResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, ::Cvoid(f0) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetResidual"))
+$(_doc_external("DM/PetscWeakFormSetResidual"))
 """
 function PetscWeakFormSetResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, ::Cvoid(f0) end
 
@@ -3340,7 +3337,7 @@ end
 	PetscWeakFormSetIndexResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetIndexResidual"))
+$(_doc_external("DM/PetscWeakFormSetIndexResidual"))
 """
 function PetscWeakFormSetIndexResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) end
 
@@ -3362,7 +3359,7 @@ end
 	n0::PetscInt = PetscWeakFormGetBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ::Cvoid(f0) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormGetBdResidual"))
+$(_doc_external("DM/PetscWeakFormGetBdResidual"))
 """
 function PetscWeakFormGetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, ::Cvoid(f0) end
 
@@ -3385,7 +3382,7 @@ end
 	PetscWeakFormAddBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormAddBdResidual"))
+$(_doc_external("DM/PetscWeakFormAddBdResidual"))
 """
 function PetscWeakFormAddBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, f0::external, f1::external) end
 
@@ -3407,7 +3404,7 @@ end
 	PetscWeakFormSetBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, ::Cvoid(f0) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetBdResidual"))
+$(_doc_external("DM/PetscWeakFormSetBdResidual"))
 """
 function PetscWeakFormSetBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n0::PetscInt, ::Cvoid(f0) end
 
@@ -3429,7 +3426,7 @@ end
 	PetscWeakFormSetIndexBdResidual(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetIndexBdResidual"))
+$(_doc_external("DM/PetscWeakFormSetIndexBdResidual"))
 """
 function PetscWeakFormSetIndexBdResidual(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i0::PetscInt, f0::external, i1::PetscInt, f1::external) end
 
@@ -3450,7 +3447,7 @@ end
 	hasJac::PetscBool = PetscWeakFormHasJacobian(petsclib::PetscLibType,wf::PetscWeakForm) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormHasJacobian"))
+$(_doc_external("DM/PetscWeakFormHasJacobian"))
 """
 function PetscWeakFormHasJacobian(petsclib::PetscLibType, wf::PetscWeakForm) end
 
@@ -3474,7 +3471,7 @@ end
 	n0::PetscInt = PetscWeakFormGetJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormGetJacobian"))
+$(_doc_external("DM/PetscWeakFormGetJacobian"))
 """
 function PetscWeakFormGetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Cvoid) end
 
@@ -3498,7 +3495,7 @@ end
 	PetscWeakFormAddJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormAddJacobian"))
+$(_doc_external("DM/PetscWeakFormAddJacobian"))
 """
 function PetscWeakFormAddJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) end
 
@@ -3520,7 +3517,7 @@ end
 	PetscWeakFormSetJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetJacobian"))
+$(_doc_external("DM/PetscWeakFormSetJacobian"))
 """
 function PetscWeakFormSetJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Cvoid) end
 
@@ -3542,7 +3539,7 @@ end
 	PetscWeakFormSetIndexJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetIndexJacobian"))
+$(_doc_external("DM/PetscWeakFormSetIndexJacobian"))
 """
 function PetscWeakFormSetIndexJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) end
 
@@ -3563,7 +3560,7 @@ end
 	hasJacPre::PetscBool = PetscWeakFormHasJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormHasJacobianPreconditioner"))
+$(_doc_external("DM/PetscWeakFormHasJacobianPreconditioner"))
 """
 function PetscWeakFormHasJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm) end
 
@@ -3587,7 +3584,7 @@ end
 	n0::PetscInt = PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormGetJacobianPreconditioner"))
+$(_doc_external("DM/PetscWeakFormGetJacobianPreconditioner"))
 """
 function PetscWeakFormGetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Cvoid) end
 
@@ -3611,7 +3608,7 @@ end
 	PetscWeakFormAddJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormAddJacobianPreconditioner"))
+$(_doc_external("DM/PetscWeakFormAddJacobianPreconditioner"))
 """
 function PetscWeakFormAddJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) end
 
@@ -3633,7 +3630,7 @@ end
 	PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetJacobianPreconditioner"))
+$(_doc_external("DM/PetscWeakFormSetJacobianPreconditioner"))
 """
 function PetscWeakFormSetJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Cvoid) end
 
@@ -3655,7 +3652,7 @@ end
 	PetscWeakFormSetIndexJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetIndexJacobianPreconditioner"))
+$(_doc_external("DM/PetscWeakFormSetIndexJacobianPreconditioner"))
 """
 function PetscWeakFormSetIndexJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) end
 
@@ -3676,7 +3673,7 @@ end
 	hasJac::PetscBool = PetscWeakFormHasBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormHasBdJacobian"))
+$(_doc_external("DM/PetscWeakFormHasBdJacobian"))
 """
 function PetscWeakFormHasBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm) end
 
@@ -3699,7 +3696,7 @@ end
 	n0::PetscInt = PetscWeakFormGetBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormGetBdJacobian"))
+$(_doc_external("DM/PetscWeakFormGetBdJacobian"))
 """
 function PetscWeakFormGetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Cvoid) end
 
@@ -3722,7 +3719,7 @@ end
 	PetscWeakFormAddBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormAddBdJacobian"))
+$(_doc_external("DM/PetscWeakFormAddBdJacobian"))
 """
 function PetscWeakFormAddBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) end
 
@@ -3743,7 +3740,7 @@ end
 	PetscWeakFormSetBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetBdJacobian"))
+$(_doc_external("DM/PetscWeakFormSetBdJacobian"))
 """
 function PetscWeakFormSetBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Cvoid) end
 
@@ -3764,7 +3761,7 @@ end
 	PetscWeakFormSetIndexBdJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetIndexBdJacobian"))
+$(_doc_external("DM/PetscWeakFormSetIndexBdJacobian"))
 """
 function PetscWeakFormSetIndexBdJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) end
 
@@ -3785,7 +3782,7 @@ end
 	hasJacPre::PetscBool = PetscWeakFormHasBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormHasBdJacobianPreconditioner"))
+$(_doc_external("DM/PetscWeakFormHasBdJacobianPreconditioner"))
 """
 function PetscWeakFormHasBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm) end
 
@@ -3808,7 +3805,7 @@ end
 	n0::PetscInt = PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormGetBdJacobianPreconditioner"))
+$(_doc_external("DM/PetscWeakFormGetBdJacobianPreconditioner"))
 """
 function PetscWeakFormGetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Cvoid) end
 
@@ -3831,7 +3828,7 @@ end
 	PetscWeakFormAddBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormAddBdJacobianPreconditioner"))
+$(_doc_external("DM/PetscWeakFormAddBdJacobianPreconditioner"))
 """
 function PetscWeakFormAddBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) end
 
@@ -3852,7 +3849,7 @@ end
 	PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetBdJacobianPreconditioner"))
+$(_doc_external("DM/PetscWeakFormSetBdJacobianPreconditioner"))
 """
 function PetscWeakFormSetBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Cvoid) end
 
@@ -3873,7 +3870,7 @@ end
 	PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetIndexBdJacobianPreconditioner"))
+$(_doc_external("DM/PetscWeakFormSetIndexBdJacobianPreconditioner"))
 """
 function PetscWeakFormSetIndexBdJacobianPreconditioner(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) end
 
@@ -3894,7 +3891,7 @@ end
 	hasDynJac::PetscBool = PetscWeakFormHasDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormHasDynamicJacobian"))
+$(_doc_external("DM/PetscWeakFormHasDynamicJacobian"))
 """
 function PetscWeakFormHasDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm) end
 
@@ -3917,7 +3914,7 @@ end
 	n0::PetscInt = PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormGetDynamicJacobian"))
+$(_doc_external("DM/PetscWeakFormGetDynamicJacobian"))
 """
 function PetscWeakFormGetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::Cvoid) end
 
@@ -3940,7 +3937,7 @@ end
 	PetscWeakFormAddDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormAddDynamicJacobian"))
+$(_doc_external("DM/PetscWeakFormAddDynamicJacobian"))
 """
 function PetscWeakFormAddDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, g0::external, g1::external, g2::external, g3::external) end
 
@@ -3961,7 +3958,7 @@ end
 	PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetDynamicJacobian"))
+$(_doc_external("DM/PetscWeakFormSetDynamicJacobian"))
 """
 function PetscWeakFormSetDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, n0::PetscInt, g0::Cvoid) end
 
@@ -3982,7 +3979,7 @@ end
 	PetscWeakFormSetIndexDynamicJacobian(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetIndexDynamicJacobian"))
+$(_doc_external("DM/PetscWeakFormSetIndexDynamicJacobian"))
 """
 function PetscWeakFormSetIndexDynamicJacobian(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, g::PetscInt, part::PetscInt, i0::PetscInt, g0::external, i1::PetscInt, g1::external, i2::PetscInt, g2::external, i3::PetscInt, g3::external) end
 
@@ -4003,7 +4000,7 @@ end
 	n::PetscInt = PetscWeakFormGetRiemannSolver(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, r::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormGetRiemannSolver"))
+$(_doc_external("DM/PetscWeakFormGetRiemannSolver"))
 """
 function PetscWeakFormGetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, r::Cvoid) end
 
@@ -4026,7 +4023,7 @@ end
 	PetscWeakFormSetRiemannSolver(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, r::Cvoid) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetRiemannSolver"))
+$(_doc_external("DM/PetscWeakFormSetRiemannSolver"))
 """
 function PetscWeakFormSetRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, n::PetscInt, r::Cvoid) end
 
@@ -4047,7 +4044,7 @@ end
 	PetscWeakFormSetIndexRiemannSolver(petsclib::PetscLibType,wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i::PetscInt, r::external) 
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetIndexRiemannSolver"))
+$(_doc_external("DM/PetscWeakFormSetIndexRiemannSolver"))
 """
 function PetscWeakFormSetIndexRiemannSolver(petsclib::PetscLibType, wf::PetscWeakForm, label::DMLabel, val::PetscInt, f::PetscInt, part::PetscInt, i::PetscInt, r::external) end
 
@@ -4081,7 +4078,7 @@ Level: beginner
 -seealso: `PetscWeakForm`, `PetscWeakFormSetNumFields()`, `PetscWeakFormCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormGetNumFields"))
+$(_doc_external("DM/PetscWeakFormGetNumFields"))
 """
 function PetscWeakFormGetNumFields(petsclib::PetscLibType, wf::PetscWeakForm) end
 
@@ -4115,7 +4112,7 @@ Level: beginner
 -seealso: `PetscWeakForm`, `PetscWeakFormGetNumFields()`, `PetscWeakFormCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormSetNumFields"))
+$(_doc_external("DM/PetscWeakFormSetNumFields"))
 """
 function PetscWeakFormSetNumFields(petsclib::PetscLibType, wf::PetscWeakForm, Nf::PetscInt) end
 
@@ -4146,7 +4143,7 @@ Level: developer
 -seealso: `PetscWeakForm`, `PetscWeakFormCreate()`, `PetscWeakFormView()`
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormDestroy"))
+$(_doc_external("DM/PetscWeakFormDestroy"))
 """
 function PetscWeakFormDestroy(petsclib::PetscLibType, wf::PetscWeakForm) end
 
@@ -4178,7 +4175,7 @@ Level: developer
 -seealso: `PetscViewer`, `PetscWeakForm`, `PetscWeakFormDestroy()`, `PetscWeakFormCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormView"))
+$(_doc_external("DM/PetscWeakFormView"))
 """
 function PetscWeakFormView(petsclib::PetscLibType, wf::PetscWeakForm, v::PetscViewer) end
 
@@ -4212,7 +4209,7 @@ Level: beginner
 -seealso: `PetscWeakForm`, `PetscDS`, `PetscWeakFormDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscWeakFormCreate"))
+$(_doc_external("DM/PetscWeakFormCreate"))
 """
 function PetscWeakFormCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 

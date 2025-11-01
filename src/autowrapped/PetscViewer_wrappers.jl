@@ -5435,7 +5435,7 @@ Level: intermediate
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerFileSetMode()`, `PetscViewerCreate()`, `PetscViewerSetType()`, `PetscViewerBinaryOpen()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIIGetId"))
+$(_doc_external("DM/PetscViewerExodusIIGetId"))
 """
 function PetscViewerExodusIIGetId(petsclib::PetscLibType, viewer::PetscViewer, exoid::Cint) end
 
@@ -5469,7 +5469,7 @@ Level: beginner
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerExodusIIGetId()`, `PetscViewerExodusIIGetOrder()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIISetOrder"))
+$(_doc_external("DM/PetscViewerExodusIISetOrder"))
 """
 function PetscViewerExodusIISetOrder(petsclib::PetscLibType, viewer::PetscViewer, order::PetscInt) end
 
@@ -5503,7 +5503,7 @@ Level: beginner
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerExodusIIGetId()`, `PetscViewerExodusIISetOrder()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIIGetOrder"))
+$(_doc_external("DM/PetscViewerExodusIIGetOrder"))
 """
 function PetscViewerExodusIIGetOrder(petsclib::PetscLibType, viewer::PetscViewer, order::PetscInt) end
 
@@ -5534,7 +5534,7 @@ Input Parameters:
 `DMLoad()`, `PetscFileMode`, `PetscViewerSetType()`, `PetscViewerFileSetMode()`, `PetscViewerFileSetName()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIIOpen"))
+$(_doc_external("DM/PetscViewerExodusIIOpen"))
 """
 function PetscViewerExodusIIOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode, exo::PetscViewer) end
 
@@ -5571,7 +5571,7 @@ See also:
 `DM`, `PetscViewerHDF5GetDMPlexStorageVersionWriting()`, `PetscViewerHDF5GetDMPlexStorageVersionReading()`, `PetscViewerHDF5SetDMPlexStorageVersionReading()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerHDF5SetDMPlexStorageVersionWriting"))
+$(_doc_external("DM/PetscViewerHDF5SetDMPlexStorageVersionWriting"))
 """
 function PetscViewerHDF5SetDMPlexStorageVersionWriting(petsclib::PetscLibType, viewer::PetscViewer, version::DMPlexStorageVersion) end
 
@@ -5613,7 +5613,7 @@ See also:
 `DM`, `PetscViewerHDF5SetDMPlexStorageVersionWriting()`, `PetscViewerHDF5GetDMPlexStorageVersionReading()`, `PetscViewerHDF5SetDMPlexStorageVersionReading()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerHDF5GetDMPlexStorageVersionWriting"))
+$(_doc_external("DM/PetscViewerHDF5GetDMPlexStorageVersionWriting"))
 """
 function PetscViewerHDF5GetDMPlexStorageVersionWriting(petsclib::PetscLibType, viewer::PetscViewer, version::DMPlexStorageVersion) end
 
@@ -5650,7 +5650,7 @@ See also:
 `DM`, `PetscViewerHDF5GetDMPlexStorageVersionReading()`, `PetscViewerHDF5GetDMPlexStorageVersionWriting()`, `PetscViewerHDF5SetDMPlexStorageVersionWriting()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerHDF5SetDMPlexStorageVersionReading"))
+$(_doc_external("DM/PetscViewerHDF5SetDMPlexStorageVersionReading"))
 """
 function PetscViewerHDF5SetDMPlexStorageVersionReading(petsclib::PetscLibType, viewer::PetscViewer, version::DMPlexStorageVersion) end
 
@@ -5692,7 +5692,7 @@ See also:
 `DM`, `PetscViewerHDF5SetDMPlexStorageVersionReading()`, `PetscViewerHDF5GetDMPlexStorageVersionWriting()`, `PetscViewerHDF5SetDMPlexStorageVersionWriting()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerHDF5GetDMPlexStorageVersionReading"))
+$(_doc_external("DM/PetscViewerHDF5GetDMPlexStorageVersionReading"))
 """
 function PetscViewerHDF5GetDMPlexStorageVersionReading(petsclib::PetscLibType, viewer::PetscViewer, version::DMPlexStorageVersion) end
 
@@ -5724,7 +5724,7 @@ Level: intermediate
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetZonalVariable()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIISetZonalVariable"))
+$(_doc_external("DM/PetscViewerExodusIISetZonalVariable"))
 """
 function PetscViewerExodusIISetZonalVariable(petsclib::PetscLibType, viewer::PetscViewer, num::PetscExodusIIInt) end
 
@@ -5756,7 +5756,7 @@ Level: intermediate
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetNodalVariable()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIISetNodalVariable"))
+$(_doc_external("DM/PetscViewerExodusIISetNodalVariable"))
 """
 function PetscViewerExodusIISetNodalVariable(petsclib::PetscLibType, viewer::PetscViewer, num::PetscExodusIIInt) end
 
@@ -5790,7 +5790,7 @@ Level: intermediate
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIsetZonalVariable()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIIGetZonalVariable"))
+$(_doc_external("DM/PetscViewerExodusIIGetZonalVariable"))
 """
 function PetscViewerExodusIIGetZonalVariable(petsclib::PetscLibType, viewer::PetscViewer, num::PetscExodusIIInt) end
 
@@ -5824,7 +5824,7 @@ Level: intermediate
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetNodalVariable()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIIGetNodalVariable"))
+$(_doc_external("DM/PetscViewerExodusIIGetNodalVariable"))
 """
 function PetscViewerExodusIIGetNodalVariable(petsclib::PetscLibType, viewer::PetscViewer, num::PetscExodusIIInt) end
 
@@ -5857,7 +5857,7 @@ Level: intermediate
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetZonalVariableName()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIISetZonalVariableName"))
+$(_doc_external("DM/PetscViewerExodusIISetZonalVariableName"))
 """
 function PetscViewerExodusIISetZonalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt, name::String) end
 
@@ -5890,7 +5890,7 @@ Level: intermediate
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetNodalVariableName()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIISetNodalVariableName"))
+$(_doc_external("DM/PetscViewerExodusIISetNodalVariableName"))
 """
 function PetscViewerExodusIISetNodalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt, name::String) end
 
@@ -5925,7 +5925,7 @@ Level: intermediate
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetZonalVariableName()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIIGetZonalVariableName"))
+$(_doc_external("DM/PetscViewerExodusIIGetZonalVariableName"))
 """
 function PetscViewerExodusIIGetZonalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt, name::String) end
 
@@ -5961,7 +5961,7 @@ Level: intermediate
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetNodalVariableName()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIIGetNodalVariableName"))
+$(_doc_external("DM/PetscViewerExodusIIGetNodalVariableName"))
 """
 function PetscViewerExodusIIGetNodalVariableName(petsclib::PetscLibType, viewer::PetscViewer, idx::PetscExodusIIInt, name::String) end
 
@@ -5994,7 +5994,7 @@ Level: intermediate
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetZonalVariableNames()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIISetZonalVariableNames"))
+$(_doc_external("DM/PetscViewerExodusIISetZonalVariableNames"))
 """
 function PetscViewerExodusIISetZonalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, names::String) end
 
@@ -6027,7 +6027,7 @@ Level: intermediate
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIIGetNodalVariableNames()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIISetNodalVariableNames"))
+$(_doc_external("DM/PetscViewerExodusIISetNodalVariableNames"))
 """
 function PetscViewerExodusIISetNodalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, names::String) end
 
@@ -6063,7 +6063,7 @@ Level: intermediate
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetZonalVariableNames()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIIGetZonalVariableNames"))
+$(_doc_external("DM/PetscViewerExodusIIGetZonalVariableNames"))
 """
 function PetscViewerExodusIIGetZonalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, numVars::PetscExodusIIInt, varNames::String) end
 
@@ -6098,7 +6098,7 @@ Level: intermediate
 -seealso: `PETSCVIEWEREXODUSII`, `PetscViewer`, `PetscViewerCreate()`, `PetscViewerDestroy()`, `PetscViewerExodusIIOpen()`, `PetscViewerSetType()`, `PetscViewerType`, `PetscViewerExodusIISetNodalVariableNames()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIIGetNodalVariableNames"))
+$(_doc_external("DM/PetscViewerExodusIIGetNodalVariableNames"))
 """
 function PetscViewerExodusIIGetNodalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, numVars::PetscExodusIIInt, varNames::String) end
 
@@ -6133,7 +6133,7 @@ Level: beginner
 -seealso: `PetscViewerExodusIISetNodalVariable()`, `PetscViewerExodusIIGetNodalVariable()`, `PetscViewerExodusIISetNodalVariableName()`, `PetscViewerExodusIISetNodalVariableNames()`, `PetscViewerExodusIIGetNodalVariableName()`, `PetscViewerExodusIIGetNodalVariableNames()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIIGetNodalVariableIndex"))
+$(_doc_external("DM/PetscViewerExodusIIGetNodalVariableIndex"))
 """
 function PetscViewerExodusIIGetNodalVariableIndex(petsclib::PetscLibType, viewer::PetscViewer, name::String, varIndex::PetscExodusIIInt) end
 
@@ -6168,7 +6168,7 @@ Level: beginner
 -seealso: `PetscViewerExodusIISetNodalVariable()`, `PetscViewerExodusIIGetNodalVariable()`, `PetscViewerExodusIISetNodalVariableName()`, `PetscViewerExodusIISetNodalVariableNames()`, `PetscViewerExodusIIGetNodalVariableName()`, `PetscViewerExodusIIGetNodalVariableNames()`
 
 # External Links
-$(_doc_external("Dm/PetscViewerExodusIIGetZonalVariableIndex"))
+$(_doc_external("DM/PetscViewerExodusIIGetZonalVariableIndex"))
 """
 function PetscViewerExodusIIGetZonalVariableIndex(petsclib::PetscLibType, viewer::PetscViewer, name::String, varIndex::Cint) end
 

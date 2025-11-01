@@ -7,8 +7,8 @@ mutable struct SNESLineSearchVIDirDerivFn end
 
 mutable struct SNESLineSearchShellApplyFn end
 
-mutable struct _n_SNESLineSearch end
-const SNESLineSearch = Ptr{_n_SNESLineSearch}
+#mutable struct _n_SNESLineSearch end
+#const SNESLineSearch = Ptr{_n_SNESLineSearch}
 
 # -------------------------------------------------------
 """
@@ -30,7 +30,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchMonitorDefault()`, `SNESLineSearchMonitorSet()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchMonitorCancel"))
+$(_doc_external("SNES/SNESLineSearchMonitorCancel"))
 """
 function SNESLineSearchMonitorCancel(petsclib::PetscLibType, ls::SNESLineSearch) end
 
@@ -61,7 +61,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchMonitorSet()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchMonitor"))
+$(_doc_external("SNES/SNESLineSearchMonitor"))
 """
 function SNESLineSearchMonitor(petsclib::PetscLibType, ls::SNESLineSearch) end
 
@@ -101,7 +101,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchMonitorDefault()`, `SNESLineSearchMonitorCancel()`, `PetscCtxDestroyFn`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchMonitorSet"))
+$(_doc_external("SNES/SNESLineSearchMonitorSet"))
 """
 function SNESLineSearchMonitorSet(petsclib::PetscLibType, ls::SNESLineSearch, f::external, mctx::Cvoid, monitordestroy::PetscCtxDestroyFn) end
 
@@ -138,7 +138,7 @@ This is not normally called directly but is passed to `SNESLineSearchMonitorSet(
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchMonitorSet()`, `SNESMonitorSolution()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchMonitorSolutionUpdate"))
+$(_doc_external("SNES/SNESLineSearchMonitorSolutionUpdate"))
 """
 function SNESLineSearchMonitorSolutionUpdate(petsclib::PetscLibType, ls::SNESLineSearch, vf::PetscViewerAndFormat) end
 
@@ -172,7 +172,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `LineSearchDestroy()`, `SNESGetLineSearch()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchCreate"))
+$(_doc_external("SNES/SNESLineSearchCreate"))
 """
 function SNESLineSearchCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 
@@ -206,7 +206,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchReset()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetUp"))
+$(_doc_external("SNES/SNESLineSearchSetUp"))
 """
 function SNESLineSearchSetUp(petsclib::PetscLibType, linesearch::SNESLineSearch) end
 
@@ -237,7 +237,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchSetUp()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchReset"))
+$(_doc_external("SNES/SNESLineSearchReset"))
 """
 function SNESLineSearchReset(petsclib::PetscLibType, linesearch::SNESLineSearch) end
 
@@ -273,7 +273,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESSetFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetFunction"))
+$(_doc_external("SNES/SNESLineSearchSetFunction"))
 """
 function SNESLineSearchSetFunction(petsclib::PetscLibType, linesearch::SNESLineSearch, func::external) end
 
@@ -317,7 +317,7 @@ Level: intermediate
 
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetPreCheck"))
+$(_doc_external("SNES/SNESLineSearchSetPreCheck"))
 """
 function SNESLineSearchSetPreCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, func::external, ctx::Cvoid) end
 
@@ -361,7 +361,7 @@ Level: intermediate
 `SNESVISetVariableBounds()`, `SNESVISetComputeVariableBounds()`, `SNESSetFunctionDomainError()`, `SNESSetJacobianDomainError()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetPostCheck"))
+$(_doc_external("SNES/SNESLineSearchSetPostCheck"))
 """
 function SNESLineSearchSetPostCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, func::external, ctx::Cvoid) end
 
@@ -398,7 +398,7 @@ Level: advanced
 `SNESLineSearchGetPostCheck()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchPreCheck"))
+$(_doc_external("SNES/SNESLineSearchPreCheck"))
 """
 function SNESLineSearchPreCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec) end
 
@@ -438,7 +438,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESGetLineSearch()`, `SNESLineSearchPreCheck()`, `SNESLineSearchSetPostCheck()`, `SNESLineSearchGetPostCheck()`, `SNESLineSearchSetPrecheck()`, `SNESLineSearchGetPrecheck()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchPostCheck"))
+$(_doc_external("SNES/SNESLineSearchPostCheck"))
 """
 function SNESLineSearchPostCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec, W::PetscVec) end
 
@@ -485,7 +485,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESSetPicard()`, `SNESGetLineSearch()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchSetPostCheck()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchPreCheckPicard"))
+$(_doc_external("SNES/SNESLineSearchPreCheckPicard"))
 """
 function SNESLineSearchPreCheckPicard(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec, ctx::Cvoid) end
 
@@ -533,7 +533,7 @@ Level: intermediate
 `SNESLineSearchType`, `SNESLineSearchSetType()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchApply"))
+$(_doc_external("SNES/SNESLineSearchApply"))
 """
 function SNESLineSearchApply(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, F::PetscVec, Y::PetscVec) end
 
@@ -566,7 +566,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchCreate()`, `SNESLineSearchReset()`, `SNESDestroy()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchDestroy"))
+$(_doc_external("SNES/SNESLineSearchDestroy"))
 """
 function SNESLineSearchDestroy(petsclib::PetscLibType, linesearch::SNESLineSearch) end
 
@@ -602,7 +602,7 @@ Level: intermediate
 `SNESLineSearchMonitorSetFromOptions()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetDefaultMonitor"))
+$(_doc_external("SNES/SNESLineSearchSetDefaultMonitor"))
 """
 function SNESLineSearchSetDefaultMonitor(petsclib::PetscLibType, linesearch::SNESLineSearch, viewer::PetscViewer) end
 
@@ -636,7 +636,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`, `SNESLineSearchSetDefaultMonitor()`, `PetscViewer`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchGetDefaultMonitor"))
+$(_doc_external("SNES/SNESLineSearchGetDefaultMonitor"))
 """
 function SNESLineSearchGetDefaultMonitor(petsclib::PetscLibType, linesearch::SNESLineSearch, monitor::PetscViewer) end
 
@@ -686,7 +686,7 @@ Level: advanced
 `PetscOptionsFList()`, `PetscOptionsEList()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchMonitorSetFromOptions"))
+$(_doc_external("SNES/SNESLineSearchMonitorSetFromOptions"))
 """
 function SNESLineSearchMonitorSetFromOptions(petsclib::PetscLibType, ls::SNESLineSearch, name::String, help::String, manual::String, monitor::external, monitorsetup::external) end
 
@@ -735,7 +735,7 @@ Level: intermediate
 `SNESLineSearchType`, `SNESLineSearchSetComputeNorms()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetFromOptions"))
+$(_doc_external("SNES/SNESLineSearchSetFromOptions"))
 """
 function SNESLineSearchSetFromOptions(petsclib::PetscLibType, linesearch::SNESLineSearch) end
 
@@ -767,7 +767,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `PetscViewer`, `SNESLineSearchCreate()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchView"))
+$(_doc_external("SNES/SNESLineSearchView"))
 """
 function SNESLineSearchView(petsclib::PetscLibType, linesearch::SNESLineSearch, viewer::PetscViewer) end
 
@@ -801,7 +801,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchType`, `SNESLineSearchCreate()`, `SNESLineSearchSetFromOptions()`, `SNESLineSearchSetType()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchGetType"))
+$(_doc_external("SNES/SNESLineSearchGetType"))
 """
 function SNESLineSearchGetType(petsclib::PetscLibType, linesearch::SNESLineSearch) end
 
@@ -839,7 +839,7 @@ Level: intermediate
 `SNESGetLineSearch()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetType"))
+$(_doc_external("SNES/SNESLineSearchSetType"))
 """
 function SNESLineSearchSetType(petsclib::PetscLibType, linesearch::SNESLineSearch, type::SNESLineSearchType) end
 
@@ -869,7 +869,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetSNES()`, `SNESLineSearchSetVecs()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetSNES"))
+$(_doc_external("SNES/SNESLineSearchSetSNES"))
 """
 function SNESLineSearchSetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch, snes::PetscSNES) end
 
@@ -903,7 +903,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESType`, `SNESLineSearchSetVecs()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchGetSNES"))
+$(_doc_external("SNES/SNESLineSearchGetSNES"))
 """
 function SNESLineSearchGetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch, snes::PetscSNES) end
 
@@ -939,7 +939,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetLambda()`, `SNESLineSearchGetDamping()`, `SNESLineSearchApply()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchGetLambda"))
+$(_doc_external("SNES/SNESLineSearchGetLambda"))
 """
 function SNESLineSearchGetLambda(petsclib::PetscLibType, linesearch::SNESLineSearch) end
 
@@ -971,7 +971,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetLambda()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetLambda"))
+$(_doc_external("SNES/SNESLineSearchSetLambda"))
 """
 function SNESLineSearchSetLambda(petsclib::PetscLibType, linesearch::SNESLineSearch, lambda::PetscReal) end
 
@@ -1010,7 +1010,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetTolerances()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchGetTolerances"))
+$(_doc_external("SNES/SNESLineSearchGetTolerances"))
 """
 function SNESLineSearchGetTolerances(petsclib::PetscLibType, linesearch::SNESLineSearch) end
 
@@ -1067,7 +1067,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetTolerances()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetTolerances"))
+$(_doc_external("SNES/SNESLineSearchSetTolerances"))
 """
 function SNESLineSearchSetTolerances(petsclib::PetscLibType, linesearch::SNESLineSearch, minlambda::PetscReal, maxlambda::PetscReal, rtol::PetscReal, atol::PetscReal, ltol::PetscReal, max_it::PetscInt) end
 
@@ -1099,7 +1099,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESLineSearchGetStepTolerance()`, `SNESQN`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchGetDamping"))
+$(_doc_external("SNES/SNESLineSearchGetDamping"))
 """
 function SNESLineSearchGetDamping(petsclib::PetscLibType, linesearch::SNESLineSearch) end
 
@@ -1134,7 +1134,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetDamping()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetDamping"))
+$(_doc_external("SNES/SNESLineSearchSetDamping"))
 """
 function SNESLineSearchSetDamping(petsclib::PetscLibType, linesearch::SNESLineSearch, damping::PetscReal) end
 
@@ -1166,7 +1166,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetOrder()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchGetOrder"))
+$(_doc_external("SNES/SNESLineSearchGetOrder"))
 """
 function SNESLineSearchGetOrder(petsclib::PetscLibType, linesearch::SNESLineSearch) end
 
@@ -1206,7 +1206,7 @@ Options Database Key:
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetOrder()`, `SNESLineSearchSetDamping()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetOrder"))
+$(_doc_external("SNES/SNESLineSearchSetOrder"))
 """
 function SNESLineSearchSetOrder(petsclib::PetscLibType, linesearch::SNESLineSearch, order::PetscInt) end
 
@@ -1242,7 +1242,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetNorms()`, `SNESLineSearchGetVecs()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchGetNorms"))
+$(_doc_external("SNES/SNESLineSearchGetNorms"))
 """
 function SNESLineSearchGetNorms(petsclib::PetscLibType, linesearch::SNESLineSearch) end
 
@@ -1282,7 +1282,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetNorms()`, `SNESLineSearchSetVecs()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetNorms"))
+$(_doc_external("SNES/SNESLineSearchSetNorms"))
 """
 function SNESLineSearchSetNorms(petsclib::PetscLibType, linesearch::SNESLineSearch, xnorm::PetscReal, fnorm::PetscReal, ynorm::PetscReal) end
 
@@ -1314,7 +1314,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetNorms`, `SNESLineSearchSetNorms()`, `SNESLineSearchSetComputeNorms()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchComputeNorms"))
+$(_doc_external("SNES/SNESLineSearchComputeNorms"))
 """
 function SNESLineSearchComputeNorms(petsclib::PetscLibType, linesearch::SNESLineSearch) end
 
@@ -1347,7 +1347,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetNorms()`, `SNESLineSearchSetNorms()`, `SNESLineSearchComputeNorms()`, `SNESLINESEARCHBASIC`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetComputeNorms"))
+$(_doc_external("SNES/SNESLineSearchSetComputeNorms"))
 """
 function SNESLineSearchSetComputeNorms(petsclib::PetscLibType, linesearch::SNESLineSearch, flg::PetscBool) end
 
@@ -1385,7 +1385,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchGetNorms()`, `SNESLineSearchSetVecs()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchGetVecs"))
+$(_doc_external("SNES/SNESLineSearchGetVecs"))
 """
 function SNESLineSearchGetVecs(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, F::PetscVec, Y::PetscVec, W::PetscVec, G::PetscVec) end
 
@@ -1431,7 +1431,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetNorms()`, `SNESLineSearchGetVecs()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetVecs"))
+$(_doc_external("SNES/SNESLineSearchSetVecs"))
 """
 function SNESLineSearchSetVecs(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, F::PetscVec, Y::PetscVec, W::PetscVec, G::PetscVec) end
 
@@ -1464,7 +1464,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch()`, `SNESLineSearchSetFromOptions()`, `SNESGetOptionsPrefix()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchAppendOptionsPrefix"))
+$(_doc_external("SNES/SNESLineSearchAppendOptionsPrefix"))
 """
 function SNESLineSearchAppendOptionsPrefix(petsclib::PetscLibType, linesearch::SNESLineSearch, prefix::String) end
 
@@ -1499,7 +1499,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESAppendOptionsPrefix()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchGetOptionsPrefix"))
+$(_doc_external("SNES/SNESLineSearchGetOptionsPrefix"))
 """
 function SNESLineSearchGetOptionsPrefix(petsclib::PetscLibType, linesearch::SNESLineSearch, prefix::String) end
 
@@ -1530,7 +1530,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESSetWorkVecs()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetWorkVecs"))
+$(_doc_external("SNES/SNESLineSearchSetWorkVecs"))
 """
 function SNESLineSearchSetWorkVecs(petsclib::PetscLibType, linesearch::SNESLineSearch, nwork::PetscInt) end
 
@@ -1562,7 +1562,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchSetReason()`, `SNESLineSearchReason`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchGetReason"))
+$(_doc_external("SNES/SNESLineSearchGetReason"))
 """
 function SNESLineSearchGetReason(petsclib::PetscLibType, linesearch::SNESLineSearch, result::SNESLineSearchReason) end
 
@@ -1594,7 +1594,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchReason`, `SNESLineSearchGetSResult()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetReason"))
+$(_doc_external("SNES/SNESLineSearchSetReason"))
 """
 function SNESLineSearchSetReason(petsclib::PetscLibType, linesearch::SNESLineSearch, result::SNESLineSearchReason) end
 
@@ -1629,7 +1629,7 @@ Level: advanced
 `SNESLineSearchVIProjectFn`, `SNESLineSearchVINormFn`, `SNESLineSearchVIDirDerivFn`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchSetVIFunctions"))
+$(_doc_external("SNES/SNESLineSearchSetVIFunctions"))
 """
 function SNESLineSearchSetVIFunctions(petsclib::PetscLibType, linesearch::SNESLineSearch, projectfunc::SNESLineSearchVIProjectFn, normfunc::SNESLineSearchVINormFn, dirderivfunc::SNESLineSearchVIDirDerivFn) end
 
@@ -1666,7 +1666,7 @@ Level: advanced
 `SNESLineSearchVIProjectFn`, `SNESLineSearchVINormFn`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchGetVIFunctions"))
+$(_doc_external("SNES/SNESLineSearchGetVIFunctions"))
 """
 function SNESLineSearchGetVIFunctions(petsclib::PetscLibType, linesearch::SNESLineSearch, projectfunc::SNESLineSearchVIProjectFn, normfunc::SNESLineSearchVINormFn, dirderivfunc::SNESLineSearchVIDirDerivFn) end
 
@@ -1701,7 +1701,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESLineSearchType`, `SNESLineSearchSetType()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchRegister"))
+$(_doc_external("SNES/SNESLineSearchRegister"))
 """
 function SNESLineSearchRegister(petsclib::PetscLibType, sname::String, fnc::external) end
 
@@ -1734,7 +1734,7 @@ Usage:
 `SNESLineSearchShellApplyFn`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchShellSetApply"))
+$(_doc_external("SNES/SNESLineSearchShellSetApply"))
 """
 function SNESLineSearchShellSetApply(petsclib::PetscLibType, linesearch::SNESLineSearch, func::SNESLineSearchShellApplyFn, ctx::Cvoid) end
 
@@ -1770,7 +1770,7 @@ Level: advanced
 `SNESLineSearchShellApplyFn`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchShellGetApply"))
+$(_doc_external("SNES/SNESLineSearchShellGetApply"))
 """
 function SNESLineSearchShellGetApply(petsclib::PetscLibType, linesearch::SNESLineSearch, func::SNESLineSearchShellApplyFn, ctx::Cvoid) end
 
@@ -1800,7 +1800,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESLineSearch`, `SNESLineSearchSetLambda()`, `SNESLineSearchGetTolerances()`, `SNESLINESEARCHBT`, `SNESLineSearchBTGetAlpha()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchBTSetAlpha"))
+$(_doc_external("SNES/SNESLineSearchBTSetAlpha"))
 """
 function SNESLineSearchBTSetAlpha(petsclib::PetscLibType, linesearch::SNESLineSearch, alpha::PetscReal) end
 
@@ -1832,7 +1832,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESLineSearch`, `SNESLineSearchGetLambda()`, `SNESLineSearchGetTolerances()`, `SNESLINESEARCHBT`, `SNESLineSearchBTSetAlpha()`
 
 # External Links
-$(_doc_external("Snes/SNESLineSearchBTGetAlpha"))
+$(_doc_external("SNES/SNESLineSearchBTGetAlpha"))
 """
 function SNESLineSearchBTGetAlpha(petsclib::PetscLibType, linesearch::SNESLineSearch) end
 

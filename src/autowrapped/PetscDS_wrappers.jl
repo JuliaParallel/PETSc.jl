@@ -14,13 +14,13 @@ mutable struct PetscPoCintBoundFn end
 mutable struct _n_PetscTabulation end
 const PetscTabulation = Ptr{_n_PetscTabulation}
 
-mutable struct _n_PetscDS end
-const PetscDS = Ptr{_n_PetscDS}
-
-mutable struct _n_PetscWeakForm end
-const PetscWeakForm = Ptr{_n_PetscWeakForm}
-
-mutable struct PetscPoCintFn end
+#mutable struct _n_PetscDS end
+#const PetscDS = Ptr{_n_PetscDS}
+#
+#mutable struct _n_PetscWeakForm end
+#const PetscWeakForm = Ptr{_n_PetscWeakForm}
+#
+#mutable struct PetscPoCintFn end
 # -------------------------------------------------------
 """
 	PetscDSFinalizePackage(petsclib::PetscLibType) 

@@ -7,12 +7,7 @@
 - SNES
 - DM
 - PetscOptions
-- PetscDraw
-- PetscDrawAxis
-- PetscDrawLG
-- PetscDrawSP
-- PetscDrawHG
-- PetscDrawBar
+- PetscDraw,PetscDrawAxis,PetscDrawLG,PetscDrawSP,PetscDrawHG,PetscDrawBar
 - PetscRegressor
 - PF
 - IS

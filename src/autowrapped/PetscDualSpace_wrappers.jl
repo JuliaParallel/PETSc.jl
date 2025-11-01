@@ -11,7 +11,7 @@ Input Parameters:
 -seealso: `PetscDualSpace`, `PetscDualSpaceType`, `PetscDualSpaceRegisterAll()`, `PetscDualSpaceRegisterDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceRegister"))
+$(_doc_external("DM/PetscDualSpaceRegister"))
 """
 function PetscDualSpaceRegister(petsclib::PetscLibType, sname::String, fnc::external) end
 
@@ -46,7 +46,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `PetscDualSpaceType`, `PetscDualSpaceGetType()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSetType"))
+$(_doc_external("DM/PetscDualSpaceSetType"))
 """
 function PetscDualSpaceSetType(petsclib::PetscLibType, sp::PetscDualSpace, name::PetscDualSpaceType) end
 
@@ -80,7 +80,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `PetscDualSpaceType`, `PetscDualSpaceSetType()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetType"))
+$(_doc_external("DM/PetscDualSpaceGetType"))
 """
 function PetscDualSpaceGetType(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -115,7 +115,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `PetscDualSpaceView()`, `PetscObjectViewFromOptions()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceViewFromOptions"))
+$(_doc_external("DM/PetscDualSpaceViewFromOptions"))
 """
 function PetscDualSpaceViewFromOptions(petsclib::PetscLibType, A::PetscDualSpace, obj::PetscObject, name::String) end
 
@@ -147,7 +147,7 @@ Level: beginner
 -seealso: `PetscViewer`, `PetscDualSpaceDestroy()`, `PetscDualSpace`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceView"))
+$(_doc_external("DM/PetscDualSpaceView"))
 """
 function PetscDualSpaceView(petsclib::PetscLibType, sp::PetscDualSpace, v::PetscViewer) end
 
@@ -192,7 +192,7 @@ Level: intermediate
 -seealso: `PetscDualSpaceView()`, `PetscDualSpace`, `PetscObjectSetFromOptions()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSetFromOptions"))
+$(_doc_external("DM/PetscDualSpaceSetFromOptions"))
 """
 function PetscDualSpaceSetFromOptions(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -223,7 +223,7 @@ Level: intermediate
 -seealso: `PetscDualSpaceView()`, `PetscDualSpaceDestroy()`, `PetscDualSpace`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSetUp"))
+$(_doc_external("DM/PetscDualSpaceSetUp"))
 """
 function PetscDualSpaceSetUp(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -254,7 +254,7 @@ Level: beginner
 -seealso: `PetscDualSpace`, `PetscDualSpaceView()`, `PetscDualSpace()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceDestroy"))
+$(_doc_external("DM/PetscDualSpaceDestroy"))
 """
 function PetscDualSpaceDestroy(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -288,7 +288,7 @@ Level: beginner
 -seealso: `PetscDualSpace`, `PetscDualSpaceSetType()`, `PETSCDUALSPACELAGRANGE`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceCreate"))
+$(_doc_external("DM/PetscDualSpaceCreate"))
 """
 function PetscDualSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 
@@ -324,7 +324,7 @@ Level: beginner
 -seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`, `PetscDualSpaceSetType()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceDuplicate"))
+$(_doc_external("DM/PetscDualSpaceDuplicate"))
 """
 function PetscDualSpaceDuplicate(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -360,7 +360,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `PetscDualSpaceSetDM()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetDM"))
+$(_doc_external("DM/PetscDualSpaceGetDM"))
 """
 function PetscDualSpaceGetDM(petsclib::PetscLibType, sp::PetscDualSpace, dm::PetscDM) end
 
@@ -394,7 +394,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `DM`, `PetscDualSpaceGetDM()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSetDM"))
+$(_doc_external("DM/PetscDualSpaceSetDM"))
 """
 function PetscDualSpaceSetDM(petsclib::PetscLibType, sp::PetscDualSpace, dm::PetscDM) end
 
@@ -428,7 +428,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `PetscDualSpaceSetOrder()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetOrder"))
+$(_doc_external("DM/PetscDualSpaceGetOrder"))
 """
 function PetscDualSpaceGetOrder(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -462,7 +462,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `PetscDualSpaceGetOrder()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSetOrder"))
+$(_doc_external("DM/PetscDualSpaceSetOrder"))
 """
 function PetscDualSpaceSetOrder(petsclib::PetscLibType, sp::PetscDualSpace, order::PetscInt) end
 
@@ -494,7 +494,7 @@ Level: intermediate
 -seealso: `PetscDualSpaceSetNumComponents()`, `PetscDualSpaceGetDimension()`, `PetscDualSpaceCreate()`, `PetscDualSpace`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetNumComponents"))
+$(_doc_external("DM/PetscDualSpaceGetNumComponents"))
 """
 function PetscDualSpaceGetNumComponents(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -526,7 +526,7 @@ Level: intermediate
 -seealso: `PetscDualSpaceGetNumComponents()`, `PetscDualSpaceCreate()`, `PetscDualSpace`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSetNumComponents"))
+$(_doc_external("DM/PetscDualSpaceSetNumComponents"))
 """
 function PetscDualSpaceSetNumComponents(petsclib::PetscLibType, sp::PetscDualSpace, Nc::PetscInt) end
 
@@ -561,7 +561,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `PetscQuadrature`, `PetscDualSpaceGetDimension()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetFunctional"))
+$(_doc_external("DM/PetscDualSpaceGetFunctional"))
 """
 function PetscDualSpaceGetFunctional(petsclib::PetscLibType, sp::PetscDualSpace, i::PetscInt, fncal::PetscQuadrature) end
 
@@ -595,7 +595,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `PetscDualSpaceGetFunctional()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetDimension"))
+$(_doc_external("DM/PetscDualSpaceGetDimension"))
 """
 function PetscDualSpaceGetDimension(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -631,7 +631,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `PetscDualSpaceGetFunctional()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetInteriorDimension"))
+$(_doc_external("DM/PetscDualSpaceGetInteriorDimension"))
 """
 function PetscDualSpaceGetInteriorDimension(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -668,7 +668,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscDualSpaceGetPointSubspace()`, `PetscDualSpaceGetSymmetries()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetUniform"))
+$(_doc_external("DM/PetscDualSpaceGetUniform"))
 """
 function PetscDualSpaceGetUniform(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -704,7 +704,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `PetscDualSpaceGetFunctional()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetNumDof"))
+$(_doc_external("DM/PetscDualSpaceGetNumDof"))
 """
 function PetscDualSpaceGetNumDof(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -740,7 +740,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscSection`, `PetscDualSpaceCreate()`, `DMPLEX`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetSection"))
+$(_doc_external("DM/PetscDualSpaceGetSection"))
 """
 function PetscDualSpaceGetSection(petsclib::PetscLibType, sp::PetscDualSpace, section::PetscSection) end
 
@@ -775,7 +775,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscSection`, `PetscDualSpaceCreate()`, `DMPLEX`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetInteriorSection"))
+$(_doc_external("DM/PetscDualSpaceGetInteriorSection"))
 """
 function PetscDualSpaceGetInteriorSection(petsclib::PetscLibType, sp::PetscDualSpace, section::PetscSection) end
 
@@ -812,7 +812,7 @@ Calling sequence:
 -seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceApply"))
+$(_doc_external("DM/PetscDualSpaceApply"))
 """
 function PetscDualSpaceApply(petsclib::PetscLibType, sp::PetscDualSpace, f::PetscInt, time::PetscReal, cgeom::PetscFEGeom, numComp::PetscInt, func::external, ctx::Cvoid) end
 
@@ -847,7 +847,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceApplyAll"))
+$(_doc_external("DM/PetscDualSpaceApplyAll"))
 """
 function PetscDualSpaceApplyAll(petsclib::PetscLibType, sp::PetscDualSpace, pointEval::PetscScalar) end
 
@@ -882,7 +882,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceApplyInterior"))
+$(_doc_external("DM/PetscDualSpaceApplyInterior"))
 """
 function PetscDualSpaceApplyInterior(petsclib::PetscLibType, sp::PetscDualSpace, pointEval::PetscScalar) end
 
@@ -921,7 +921,7 @@ Calling sequence:
 -seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceApplyDefault"))
+$(_doc_external("DM/PetscDualSpaceApplyDefault"))
 """
 function PetscDualSpaceApplyDefault(petsclib::PetscLibType, sp::PetscDualSpace, f::PetscInt, time::PetscReal, cgeom::PetscFEGeom, Nc::PetscInt, func::external, ctx::Cvoid) end
 
@@ -956,7 +956,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceApplyAllDefault"))
+$(_doc_external("DM/PetscDualSpaceApplyAllDefault"))
 """
 function PetscDualSpaceApplyAllDefault(petsclib::PetscLibType, sp::PetscDualSpace, pointEval::PetscScalar) end
 
@@ -991,7 +991,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceApplyInteriorDefault"))
+$(_doc_external("DM/PetscDualSpaceApplyInteriorDefault"))
 """
 function PetscDualSpaceApplyInteriorDefault(petsclib::PetscLibType, sp::PetscDualSpace, pointEval::PetscScalar) end
 
@@ -1026,7 +1026,7 @@ Level: advanced
 -seealso: `PetscQuadrature`, `PetscDualSpace`, `PetscDualSpaceCreate()`, `Mat`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetAllData"))
+$(_doc_external("DM/PetscDualSpaceGetAllData"))
 """
 function PetscDualSpaceGetAllData(petsclib::PetscLibType, sp::PetscDualSpace, allNodes::PetscQuadrature, allMat::PetscMat) end
 
@@ -1061,7 +1061,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`, `Mat`, `PetscQuadrature`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceCreateAllDataDefault"))
+$(_doc_external("DM/PetscDualSpaceCreateAllDataDefault"))
 """
 function PetscDualSpaceCreateAllDataDefault(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -1104,7 +1104,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscQuadrature`, `Mat`, `PetscDualSpaceCreate()`, `PetscDualSpaceGetDimension()`, `PetscDualSpaceGetNumComponents()`, `PetscQuadratureGetData()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetInteriorData"))
+$(_doc_external("DM/PetscDualSpaceGetInteriorData"))
 """
 function PetscDualSpaceGetInteriorData(petsclib::PetscLibType, sp::PetscDualSpace, intNodes::PetscQuadrature, intMat::PetscMat) end
 
@@ -1141,7 +1141,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscQuadrature`, `Mat`, `PetscDualSpaceCreate()`, `PetscDualSpaceGetInteriorData()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceCreateInteriorDataDefault"))
+$(_doc_external("DM/PetscDualSpaceCreateInteriorDataDefault"))
 """
 function PetscDualSpaceCreateInteriorDataDefault(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -1178,7 +1178,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceEqual"))
+$(_doc_external("DM/PetscDualSpaceEqual"))
 """
 function PetscDualSpaceEqual(petsclib::PetscLibType, A::PetscDualSpace, B::PetscDualSpace) end
 
@@ -1217,7 +1217,7 @@ Calling sequence:
 -seealso: `PetscDualSpace`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceApplyFVM"))
+$(_doc_external("DM/PetscDualSpaceApplyFVM"))
 """
 function PetscDualSpaceApplyFVM(petsclib::PetscLibType, sp::PetscDualSpace, f::PetscInt, time::PetscReal, cgeom::PetscFVCellGeom, Nc::PetscInt, func::external, ctx::Cvoid) end
 
@@ -1256,7 +1256,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscSpaceGetHeightSubspace()`, `PetscDualSpaceGetPointSubspace()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetHeightSubspace"))
+$(_doc_external("DM/PetscDualSpaceGetHeightSubspace"))
 """
 function PetscDualSpaceGetHeightSubspace(petsclib::PetscLibType, sp::PetscDualSpace, height::PetscInt, subsp::PetscDualSpace) end
 
@@ -1291,7 +1291,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscDualSpaceGetHeightSubspace()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetPointSubspace"))
+$(_doc_external("DM/PetscDualSpaceGetPointSubspace"))
 """
 function PetscDualSpaceGetPointSubspace(petsclib::PetscLibType, sp::PetscDualSpace, point::PetscInt, bdsp::PetscDualSpace) end
 
@@ -1326,7 +1326,7 @@ Level: developer
 -seealso: `PetscDualSpace`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetSymmetries"))
+$(_doc_external("DM/PetscDualSpaceGetSymmetries"))
 """
 function PetscDualSpaceGetSymmetries(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -1368,7 +1368,7 @@ Level: developer
 -seealso: `PetscDualSpace`, `PetscDTAltV`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransform()`, `PetscDualSpaceTransformType`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetFormDegree"))
+$(_doc_external("DM/PetscDualSpaceGetFormDegree"))
 """
 function PetscDualSpaceGetFormDegree(petsclib::PetscLibType, dsp::PetscDualSpace) end
 
@@ -1406,7 +1406,7 @@ Level: developer
 -seealso: `PetscDualSpace`, `PetscDTAltV`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransform()`, `PetscDualSpaceTransformType`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSetFormDegree"))
+$(_doc_external("DM/PetscDualSpaceSetFormDegree"))
 """
 function PetscDualSpaceSetFormDegree(petsclib::PetscLibType, dsp::PetscDualSpace, k::PetscInt) end
 
@@ -1438,7 +1438,7 @@ Level: developer
 -seealso: `PetscDualSpace`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransform()`, `PetscDualSpaceTransformType`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceGetDeRahm"))
+$(_doc_external("DM/PetscDualSpaceGetDeRahm"))
 """
 function PetscDualSpaceGetDeRahm(petsclib::PetscLibType, dsp::PetscDualSpace) end
 
@@ -1478,7 +1478,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `PetscDualSpaceTransformGradient()`, `PetscDualSpaceTransformHessian()`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransformType`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceTransform"))
+$(_doc_external("DM/PetscDualSpaceTransform"))
 """
 function PetscDualSpaceTransform(petsclib::PetscLibType, dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::PetscFEGeom, Nv::PetscInt, Nc::PetscInt, vals::Vector{PetscScalar}) end
 
@@ -1516,7 +1516,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `PetscDualSpaceTransform()`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransformType`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceTransformGradient"))
+$(_doc_external("DM/PetscDualSpaceTransformGradient"))
 """
 function PetscDualSpaceTransformGradient(petsclib::PetscLibType, dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::PetscFEGeom, Nv::PetscInt, Nc::PetscInt, vals::Vector{PetscScalar}) end
 
@@ -1554,7 +1554,7 @@ Level: intermediate
 -seealso: `PetscDualSpace`, `PetscDualSpaceTransform()`, `PetscDualSpacePullback()`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransformType`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceTransformHessian"))
+$(_doc_external("DM/PetscDualSpaceTransformHessian"))
 """
 function PetscDualSpaceTransformHessian(petsclib::PetscLibType, dsp::PetscDualSpace, trans::PetscDualSpaceTransformType, isInverse::PetscBool, fegeom::PetscFEGeom, Nv::PetscInt, Nc::PetscInt, vals::Vector{PetscScalar}) end
 
@@ -1590,7 +1590,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscDualSpacePushforward()`, `PetscDualSpaceTransform()`, `PetscDualSpaceGetDeRahm()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpacePullback"))
+$(_doc_external("DM/PetscDualSpacePullback"))
 """
 function PetscDualSpacePullback(petsclib::PetscLibType, dsp::PetscDualSpace, fegeom::PetscFEGeom, Nq::PetscInt, Nc::PetscInt, pointEval::Vector{PetscScalar}) end
 
@@ -1626,7 +1626,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscDualSpacePullback()`, `PetscDualSpaceTransform()`, `PetscDualSpaceGetDeRahm()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpacePushforward"))
+$(_doc_external("DM/PetscDualSpacePushforward"))
 """
 function PetscDualSpacePushforward(petsclib::PetscLibType, dsp::PetscDualSpace, fegeom::PetscFEGeom, Nq::PetscInt, Nc::PetscInt, pointEval::Vector{PetscScalar}) end
 
@@ -1662,7 +1662,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscDualSpacePushforward()`, `PetscDualSpacePullback()`, `PetscDualSpaceTransform()`, `PetscDualSpaceGetDeRahm()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpacePushforwardGradient"))
+$(_doc_external("DM/PetscDualSpacePushforwardGradient"))
 """
 function PetscDualSpacePushforwardGradient(petsclib::PetscLibType, dsp::PetscDualSpace, fegeom::PetscFEGeom, Nq::PetscInt, Nc::PetscInt, pointEval::Vector{PetscScalar}) end
 
@@ -1698,7 +1698,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PetscDualSpacePushforward()`, `PetscDualSpacePullback()`, `PetscDualSpaceTransform()`, `PetscDualSpaceGetDeRahm()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpacePushforwardHessian"))
+$(_doc_external("DM/PetscDualSpacePushforwardHessian"))
 """
 function PetscDualSpacePushforwardHessian(petsclib::PetscLibType, dsp::PetscDualSpace, fegeom::PetscFEGeom, Nq::PetscInt, Nc::PetscInt, pointEval::Vector{PetscScalar}) end
 
@@ -1730,7 +1730,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACESIMPLE`, `PetscDualSpace`, `PetscDualSpaceSimpleSetFunctional()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSimpleSetDimension"))
+$(_doc_external("DM/PetscDualSpaceSimpleSetDimension"))
 """
 function PetscDualSpaceSimpleSetDimension(petsclib::PetscLibType, sp::PetscDualSpace, dim::PetscInt) end
 
@@ -1763,7 +1763,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACESIMPLE`, `PetscDualSpace`, `PetscDualSpaceSimpleSetDimension()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSimpleSetFunctional"))
+$(_doc_external("DM/PetscDualSpaceSimpleSetFunctional"))
 """
 function PetscDualSpaceSimpleSetFunctional(petsclib::PetscLibType, sp::PetscDualSpace, func::PetscInt, q::PetscQuadrature) end
 
@@ -1797,7 +1797,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetContinuity()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceLagrangeGetContinuity"))
+$(_doc_external("DM/PetscDualSpaceLagrangeGetContinuity"))
 """
 function PetscDualSpaceLagrangeGetContinuity(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -1834,7 +1834,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetContinuity()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceLagrangeSetContinuity"))
+$(_doc_external("DM/PetscDualSpaceLagrangeSetContinuity"))
 """
 function PetscDualSpaceLagrangeSetContinuity(petsclib::PetscLibType, sp::PetscDualSpace, continuous::PetscBool) end
 
@@ -1868,7 +1868,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetTensor()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceLagrangeGetTensor"))
+$(_doc_external("DM/PetscDualSpaceLagrangeGetTensor"))
 """
 function PetscDualSpaceLagrangeGetTensor(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -1902,7 +1902,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetTensor()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceLagrangeSetTensor"))
+$(_doc_external("DM/PetscDualSpaceLagrangeSetTensor"))
 """
 function PetscDualSpaceLagrangeSetTensor(petsclib::PetscLibType, sp::PetscDualSpace, tensor::PetscBool) end
 
@@ -1936,7 +1936,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetTrimmed()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceLagrangeGetTrimmed"))
+$(_doc_external("DM/PetscDualSpaceLagrangeGetTrimmed"))
 """
 function PetscDualSpaceLagrangeGetTrimmed(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -1970,7 +1970,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetTrimmed()`, `PetscDualSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceLagrangeSetTrimmed"))
+$(_doc_external("DM/PetscDualSpaceLagrangeSetTrimmed"))
 """
 function PetscDualSpaceLagrangeSetTrimmed(petsclib::PetscLibType, sp::PetscDualSpace, trimmed::PetscBool) end
 
@@ -2009,7 +2009,7 @@ Level: advanced
 -seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDTNodeType`, `PetscDualSpaceLagrangeSetNodeType()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceLagrangeGetNodeType"))
+$(_doc_external("DM/PetscDualSpaceLagrangeGetNodeType"))
 """
 function PetscDualSpaceLagrangeGetNodeType(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -2052,7 +2052,7 @@ Level: advanced
 -seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDTNodeType`, `PetscDualSpaceLagrangeGetNodeType()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceLagrangeSetNodeType"))
+$(_doc_external("DM/PetscDualSpaceLagrangeSetNodeType"))
 """
 function PetscDualSpaceLagrangeSetNodeType(petsclib::PetscLibType, sp::PetscDualSpace, nodeType::PetscDTNodeType, boundary::PetscBool, exponent::PetscReal) end
 
@@ -2086,7 +2086,7 @@ Level: advanced
 -seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetUseMoments()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceLagrangeGetUseMoments"))
+$(_doc_external("DM/PetscDualSpaceLagrangeGetUseMoments"))
 """
 function PetscDualSpaceLagrangeGetUseMoments(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -2120,7 +2120,7 @@ Level: advanced
 -seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetUseMoments()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceLagrangeSetUseMoments"))
+$(_doc_external("DM/PetscDualSpaceLagrangeSetUseMoments"))
 """
 function PetscDualSpaceLagrangeSetUseMoments(petsclib::PetscLibType, sp::PetscDualSpace, useMoments::PetscBool) end
 
@@ -2154,7 +2154,7 @@ Level: advanced
 -seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeSetMomentOrder()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceLagrangeGetMomentOrder"))
+$(_doc_external("DM/PetscDualSpaceLagrangeGetMomentOrder"))
 """
 function PetscDualSpaceLagrangeGetMomentOrder(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -2188,7 +2188,7 @@ Level: advanced
 -seealso: `PETSCDUALSPACELAGRANGE`, `PetscDualSpace`, `PetscDualSpaceLagrangeGetMomentOrder()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceLagrangeSetMomentOrder"))
+$(_doc_external("DM/PetscDualSpaceLagrangeSetMomentOrder"))
 """
 function PetscDualSpaceLagrangeSetMomentOrder(petsclib::PetscLibType, sp::PetscDualSpace, order::PetscInt) end
 
@@ -2220,7 +2220,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumSetNumSubspaces()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSumGetNumSubspaces"))
+$(_doc_external("DM/PetscDualSpaceSumGetNumSubspaces"))
 """
 function PetscDualSpaceSumGetNumSubspaces(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -2252,7 +2252,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumGetNumSubspaces()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSumSetNumSubspaces"))
+$(_doc_external("DM/PetscDualSpaceSumSetNumSubspaces"))
 """
 function PetscDualSpaceSumSetNumSubspaces(petsclib::PetscLibType, sp::PetscDualSpace, numSumSpaces::PetscInt) end
 
@@ -2284,7 +2284,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumSetConcatenate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSumGetConcatenate"))
+$(_doc_external("DM/PetscDualSpaceSumGetConcatenate"))
 """
 function PetscDualSpaceSumGetConcatenate(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -2316,7 +2316,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumGetConcatenate()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSumSetConcatenate"))
+$(_doc_external("DM/PetscDualSpaceSumSetConcatenate"))
 """
 function PetscDualSpaceSumSetConcatenate(petsclib::PetscLibType, sp::PetscDualSpace, concatenate::PetscBool) end
 
@@ -2349,7 +2349,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumSetSubspace()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSumGetSubspace"))
+$(_doc_external("DM/PetscDualSpaceSumGetSubspace"))
 """
 function PetscDualSpaceSumGetSubspace(petsclib::PetscLibType, sp::PetscDualSpace, s::PetscInt, subsp::PetscDualSpace) end
 
@@ -2380,7 +2380,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACESUM`, `PetscDualSpace`, `PetscDualSpaceSumGetSubspace()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSumSetSubspace"))
+$(_doc_external("DM/PetscDualSpaceSumSetSubspace"))
 """
 function PetscDualSpaceSumSetSubspace(petsclib::PetscLibType, sp::PetscDualSpace, s::PetscInt, subsp::PetscDualSpace) end
 
@@ -2414,7 +2414,7 @@ Level: developer
 -seealso: `PetscDualSpace`, `PETSCDUALSPACESUM`, `PETSCFEVECTOR`, `PetscDualSpaceSumGetInterleave()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSumSetInterleave"))
+$(_doc_external("DM/PetscDualSpaceSumSetInterleave"))
 """
 function PetscDualSpaceSumSetInterleave(petsclib::PetscLibType, sp::PetscDualSpace, interleave_basis::PetscBool, interleave_components::PetscBool) end
 
@@ -2450,7 +2450,7 @@ Level: developer
 -seealso: `PetscDualSpace`, `PETSCDUALSPACESUM`, `PETSCFEVECTOR`, `PetscDualSpaceSumSetInterleave()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceSumGetInterleave"))
+$(_doc_external("DM/PetscDualSpaceSumGetInterleave"))
 """
 function PetscDualSpaceSumGetInterleave(petsclib::PetscLibType, sp::PetscDualSpace) end
 
@@ -2490,7 +2490,7 @@ Level: advanced
 -seealso: `PetscDualSpace`, `PETSCDUALSPACESUM`, `PETSCSPACESUM`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceCreateSum"))
+$(_doc_external("DM/PetscDualSpaceCreateSum"))
 """
 function PetscDualSpaceCreateSum(petsclib::PetscLibType, numSubspaces::PetscInt, subspaces::Vector{PetscDualSpace}, concatenate::PetscBool) end
 
@@ -2526,7 +2526,7 @@ Level: intermediate
 -seealso: `PETSCDUALSPACEREFINED`, `PetscDualSpace`, `PetscFERefine()`
 
 # External Links
-$(_doc_external("Dm/PetscDualSpaceRefinedSetCellSpaces"))
+$(_doc_external("DM/PetscDualSpaceRefinedSetCellSpaces"))
 """
 function PetscDualSpaceRefinedSetCellSpaces(petsclib::PetscLibType, sp::PetscDualSpace, cellSpaces::Vector{PetscDualSpace}) end
 

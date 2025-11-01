@@ -6570,7 +6570,7 @@ See also:
 `DM`, `VecSetDM()`, `DMGetLocalVector()`, `DMGetGlobalVector()`, `DMSetVecType()`
 
 # External Links
-$(_doc_external("Dm/VecGetDM"))
+$(_doc_external("DM/VecGetDM"))
 """
 function VecGetDM(petsclib::PetscLibType, v::PetscVec, dm::PetscDM) end
 

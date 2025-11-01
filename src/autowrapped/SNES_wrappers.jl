@@ -36,7 +36,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESMonitorSet()`, `SNESMonitorDefault()`, `VecView()`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorSolution"))
+$(_doc_external("SNES/SNESMonitorSolution"))
 """
 function SNESMonitorSolution(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
@@ -74,7 +74,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESMonitorSet()`, `SNESMonitorDefault()`, `VecView()`, `SNESMonitor()`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorResidual"))
+$(_doc_external("SNES/SNESMonitorResidual"))
 """
 function SNESMonitorResidual(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
@@ -112,7 +112,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESMonitorSet()`, `SNESMonitorDefault()`, `VecView()`, `SNESMonitor()`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorSolutionUpdate"))
+$(_doc_external("SNES/SNESMonitorSolutionUpdate"))
 """
 function SNESMonitorSolutionUpdate(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
@@ -133,7 +133,7 @@ end
 	SNESMonitorDefaultSetUp(petsclib::PetscLibType,snes::PetscSNES, vf::PetscViewerAndFormat) 
 
 # External Links
-$(_doc_external("Snes/SNESMonitorDefaultSetUp"))
+$(_doc_external("SNES/SNESMonitorDefaultSetUp"))
 """
 function SNESMonitorDefaultSetUp(petsclib::PetscLibType, snes::PetscSNES, vf::PetscViewerAndFormat) end
 
@@ -172,7 +172,7 @@ Level: intermediate
 `SNESMonitorDefaultField()`, `PetscViewerFormat`, `PetscViewerAndFormat`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorDefault"))
+$(_doc_external("SNES/SNESMonitorDefault"))
 """
 function SNESMonitorDefault(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
@@ -207,7 +207,7 @@ Level: intermediate
 `PetscViewerFormat`, `PetscViewerAndFormat`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorScaling"))
+$(_doc_external("SNES/SNESMonitorScaling"))
 """
 function SNESMonitorScaling(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
@@ -244,7 +244,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESMonitorSet()`, `SNESMonitorSolution()`, `SNESMonitorRange()`, `PetscViewerFormat`, `PetscViewerAndFormat`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorJacUpdateSpectrum"))
+$(_doc_external("SNES/SNESMonitorJacUpdateSpectrum"))
 """
 function SNESMonitorJacUpdateSpectrum(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt, fnorm::PetscReal, vf::PetscViewerAndFormat) end
 
@@ -281,7 +281,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESMonitorSet()`, `SNESMonitorDefault()`, `SNESMonitorLGCreate()`, `SNESMonitorScaling()`, `PetscViewerFormat`, `PetscViewerAndFormat`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorRange"))
+$(_doc_external("SNES/SNESMonitorRange"))
 """
 function SNESMonitorRange(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
@@ -318,7 +318,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESMonitorRationSetUp()`, `SNESMonitorSet()`, `SNESMonitorSolution()`, `SNESMonitorDefault()`, `PetscViewerFormat`, `PetscViewerAndFormat`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorRatio"))
+$(_doc_external("SNES/SNESMonitorRatio"))
 """
 function SNESMonitorRatio(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
@@ -350,7 +350,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESMonitorSet()`, `SNESMonitorSolution()`, `SNESMonitorDefault()`, `SNESMonitorRatio()`, `PetscViewerFormat`, `PetscViewerAndFormat`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorRatioSetUp"))
+$(_doc_external("SNES/SNESMonitorRatioSetUp"))
 """
 function SNESMonitorRatioSetUp(petsclib::PetscLibType, snes::PetscSNES, vf::PetscViewerAndFormat) end
 
@@ -371,7 +371,7 @@ end
 	SNESMonitorDefaultShort(petsclib::PetscLibType,snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
 
 # External Links
-$(_doc_external("Snes/SNESMonitorDefaultShort"))
+$(_doc_external("SNES/SNESMonitorDefaultShort"))
 """
 function SNESMonitorDefaultShort(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
@@ -408,7 +408,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESMonitorSet()`, `SNESMonitorSolution()`, `SNESMonitorDefault()`, `PetscViewerFormat`, `PetscViewerAndFormat`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorDefaultField"))
+$(_doc_external("SNES/SNESMonitorDefaultField"))
 """
 function SNESMonitorDefaultField(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
@@ -458,7 +458,7 @@ Level: developer
 `SNESConvergedReason`
 
 # External Links
-$(_doc_external("Snes/SNESConvergedDefault"))
+$(_doc_external("SNES/SNESConvergedDefault"))
 """
 function SNESConvergedDefault(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, reason::SNESConvergedReason, dummy::Cvoid) end
 
@@ -501,7 +501,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESSolve()`, `SNESConvergedDefault()`, `SNESSetConvergenceTest()`, `SNESConvergedReason`
 
 # External Links
-$(_doc_external("Snes/SNESConvergedSkip"))
+$(_doc_external("SNES/SNESConvergedSkip"))
 """
 function SNESConvergedSkip(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, reason::SNESConvergedReason, dummy::Cvoid) end
 
@@ -531,7 +531,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`
 
 # External Links
-$(_doc_external("Snes/SNESSetWorkVecs"))
+$(_doc_external("SNES/SNESSetWorkVecs"))
 """
 function SNESSetWorkVecs(petsclib::PetscLibType, snes::PetscSNES, nw::PetscInt) end
 
@@ -558,7 +558,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `PetscFinalize()`
 
 # External Links
-$(_doc_external("Snes/SNESFinalizePackage"))
+$(_doc_external("SNES/SNESFinalizePackage"))
 """
 function SNESFinalizePackage(petsclib::PetscLibType) end
 
@@ -585,7 +585,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `PetscInitialize()`
 
 # External Links
-$(_doc_external("Snes/SNESInitializePackage"))
+$(_doc_external("SNES/SNESInitializePackage"))
 """
 function SNESInitializePackage(petsclib::PetscLibType) end
 
@@ -619,7 +619,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESGetErrorIfNotConverged()`, `KSPGetErrorIfNotConverged()`, `KSPSetErrorIfNotConverged()`
 
 # External Links
-$(_doc_external("Snes/SNESSetErrorIfNotConverged"))
+$(_doc_external("SNES/SNESSetErrorIfNotConverged"))
 """
 function SNESSetErrorIfNotConverged(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
 
@@ -653,7 +653,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSolve()`, `SNESSetErrorIfNotConverged()`, `KSPGetErrorIfNotConverged()`, `KSPSetErrorIfNotConverged()`
 
 # External Links
-$(_doc_external("Snes/SNESGetErrorIfNotConverged"))
+$(_doc_external("SNES/SNESGetErrorIfNotConverged"))
 """
 function SNESGetErrorIfNotConverged(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -687,7 +687,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESSolve()`, `SNESGetAlwaysComputesFinalResidual()`
 
 # External Links
-$(_doc_external("Snes/SNESSetAlwaysComputesFinalResidual"))
+$(_doc_external("SNES/SNESSetAlwaysComputesFinalResidual"))
 """
 function SNESSetAlwaysComputesFinalResidual(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
 
@@ -721,7 +721,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESSolve()`, `SNESSetAlwaysComputesFinalResidual()`
 
 # External Links
-$(_doc_external("Snes/SNESGetAlwaysComputesFinalResidual"))
+$(_doc_external("SNES/SNESGetAlwaysComputesFinalResidual"))
 """
 function SNESGetAlwaysComputesFinalResidual(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -757,7 +757,7 @@ Level: advanced
 `SNES_DIVERGED_FUNCTION_DOMAIN`
 
 # External Links
-$(_doc_external("Snes/SNESSetFunctionDomainError"))
+$(_doc_external("SNES/SNESSetFunctionDomainError"))
 """
 function SNESSetFunctionDomainError(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -789,7 +789,7 @@ Level: advanced
 `SNESVISetComputeVariableBounds()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchSetPostCheck()`, `SNESConvergedReason`, `SNESGetConvergedReason()`
 
 # External Links
-$(_doc_external("Snes/SNESSetJacobianDomainError"))
+$(_doc_external("SNES/SNESSetJacobianDomainError"))
 """
 function SNESSetJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -822,7 +822,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESConvergedReason`, `SNESCreate()`, `SNESSetFunction()`, `SNESFunctionFn`, `SNESSetFunctionDomainError()`, `SNESGetCheckJacobianDomainError()`
 
 # External Links
-$(_doc_external("Snes/SNESSetCheckJacobianDomainError"))
+$(_doc_external("SNES/SNESSetCheckJacobianDomainError"))
 """
 function SNESSetCheckJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
 
@@ -856,7 +856,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESCreate()`, `SNESSetFunction()`, `SNESFunctionFn`, `SNESSetFunctionDomainError()`, `SNESSetCheckJacobianDomainError()`
 
 # External Links
-$(_doc_external("Snes/SNESGetCheckJacobianDomainError"))
+$(_doc_external("SNES/SNESGetCheckJacobianDomainError"))
 """
 function SNESGetCheckJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -892,7 +892,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESSetFunctionDomainError()`, `SNESComputeFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESGetFunctionDomainError"))
+$(_doc_external("SNES/SNESGetFunctionDomainError"))
 """
 function SNESGetFunctionDomainError(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -928,7 +928,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESSetFunctionDomainError()`, `SNESComputeFunction()`, `SNESGetFunctionDomainError()`
 
 # External Links
-$(_doc_external("Snes/SNESGetJacobianDomainError"))
+$(_doc_external("SNES/SNESGetJacobianDomainError"))
 """
 function SNESGetJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -963,7 +963,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `PetscViewer`, `SNESCreate()`, `SNESType`, `PetscViewerBinaryOpen()`, `SNESView()`, `MatLoad()`, `VecLoad()`
 
 # External Links
-$(_doc_external("Snes/SNESLoad"))
+$(_doc_external("SNES/SNESLoad"))
 """
 function SNESLoad(petsclib::PetscLibType, snes::PetscSNES, viewer::PetscViewer) end
 
@@ -996,7 +996,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESView`, `PetscObjectViewFromOptions()`, `SNESCreate()`
 
 # External Links
-$(_doc_external("Snes/SNESViewFromOptions"))
+$(_doc_external("SNES/SNESViewFromOptions"))
 """
 function SNESViewFromOptions(petsclib::PetscLibType, A::PetscSNES, obj::PetscObject, name::String) end
 
@@ -1031,7 +1031,7 @@ Level: beginner
 -seealso: [](ch_snes), `SNES`, `SNESLoad()`, `SNESCreate()`, `PetscViewerASCIIOpen()`
 
 # External Links
-$(_doc_external("Snes/SNESView"))
+$(_doc_external("SNES/SNESView"))
 """
 function SNESView(petsclib::PetscLibType, snes::PetscSNES, viewer::PetscViewer) end
 
@@ -1065,7 +1065,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESSetFromOptions()`
 
 # External Links
-$(_doc_external("Snes/SNESAddOptionsChecker"))
+$(_doc_external("SNES/SNESAddOptionsChecker"))
 """
 function SNESAddOptionsChecker(petsclib::PetscLibType, snescheck::external) end
 
@@ -1096,7 +1096,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESSetUp()`
 
 # External Links
-$(_doc_external("Snes/SNESSetUpMatrices"))
+$(_doc_external("SNES/SNESSetUpMatrices"))
 """
 function SNESSetUpMatrices(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -1151,7 +1151,7 @@ Level: advanced
 `PetscOptionsFList()`, `PetscOptionsEList()`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorSetFromOptions"))
+$(_doc_external("SNES/SNESMonitorSetFromOptions"))
 """
 function SNESMonitorSetFromOptions(petsclib::PetscLibType, snes::PetscSNES, name::String, help::String, manual::String, monitor::external, monitorsetup::external) end
 
@@ -1223,7 +1223,7 @@ Level: beginner
 -seealso: [](ch_snes), `SNESType`, `SNESSetOptionsPrefix()`, `SNESResetFromOptions()`, `SNES`, `SNESCreate()`, `MatCreateSNESMF()`, `MatFDColoring`
 
 # External Links
-$(_doc_external("Snes/SNESSetFromOptions"))
+$(_doc_external("SNES/SNESSetFromOptions"))
 """
 function SNESSetFromOptions(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -1254,7 +1254,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESSetFromOptions()`, `SNESSetOptionsPrefix()`
 
 # External Links
-$(_doc_external("Snes/SNESResetFromOptions"))
+$(_doc_external("SNES/SNESResetFromOptions"))
 """
 function SNESResetFromOptions(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -1292,7 +1292,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESGetApplicationContext()`, `SNESSetApplicationContext()`, `PetscCtxDestroyFn`
 
 # External Links
-$(_doc_external("Snes/SNESSetComputeApplicationContext"))
+$(_doc_external("SNES/SNESSetComputeApplicationContext"))
 """
 function SNESSetComputeApplicationContext(petsclib::PetscLibType, snes::PetscSNES, compute::external, destroy::PetscCtxDestroyFn) end
 
@@ -1324,7 +1324,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSetComputeApplicationContext()`, `SNESGetApplicationContext()`
 
 # External Links
-$(_doc_external("Snes/SNESSetApplicationContext"))
+$(_doc_external("SNES/SNESSetApplicationContext"))
 """
 function SNESSetApplicationContext(petsclib::PetscLibType, snes::PetscSNES, ctx::Cvoid) end
 
@@ -1359,7 +1359,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESSetApplicationContext()`, `SNESSetComputeApplicationContext()`
 
 # External Links
-$(_doc_external("Snes/SNESGetApplicationContext"))
+$(_doc_external("SNES/SNESGetApplicationContext"))
 """
 function SNESGetApplicationContext(petsclib::PetscLibType, snes::PetscSNES, ctx::PeCtx) end
 
@@ -1399,7 +1399,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESGetUseMatrixFree()`, `MatCreateSNESMF()`, `SNESComputeJacobianDefaultColor()`, `MatFDColoring`
 
 # External Links
-$(_doc_external("Snes/SNESSetUseMatrixFree"))
+$(_doc_external("SNES/SNESSetUseMatrixFree"))
 """
 function SNESSetUseMatrixFree(petsclib::PetscLibType, snes::PetscSNES, mf_operator::PetscBool, mf::PetscBool) end
 
@@ -1434,7 +1434,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSetUseMatrixFree()`, `MatCreateSNESMF()`
 
 # External Links
-$(_doc_external("Snes/SNESGetUseMatrixFree"))
+$(_doc_external("SNES/SNESGetUseMatrixFree"))
 """
 function SNESGetUseMatrixFree(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -1472,7 +1472,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSolve()`, `SNESSetLagJacobian()`, `SNESGetLinearSolveIterations()`, `SNESSetMonitor()`
 
 # External Links
-$(_doc_external("Snes/SNESGetIterationNumber"))
+$(_doc_external("SNES/SNESGetIterationNumber"))
 """
 function SNESGetIterationNumber(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -1506,7 +1506,7 @@ Level: developer
 -seealso: [](ch_snes), `SNESGetLinearSolveIterations()`
 
 # External Links
-$(_doc_external("Snes/SNESSetIterationNumber"))
+$(_doc_external("SNES/SNESSetIterationNumber"))
 """
 function SNESSetIterationNumber(petsclib::PetscLibType, snes::PetscSNES, iter::PetscInt) end
 
@@ -1542,7 +1542,7 @@ Level: intermediate
 `SNESSetMaxNonlinearStepFailures()`, `SNESGetMaxNonlinearStepFailures()`
 
 # External Links
-$(_doc_external("Snes/SNESGetNonlinearStepFailures"))
+$(_doc_external("SNES/SNESGetNonlinearStepFailures"))
 """
 function SNESGetNonlinearStepFailures(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -1581,7 +1581,7 @@ Level: intermediate
 `SNESGetMaxNonlinearStepFailures()`, `SNESGetNonlinearStepFailures()`
 
 # External Links
-$(_doc_external("Snes/SNESSetMaxNonlinearStepFailures"))
+$(_doc_external("SNES/SNESSetMaxNonlinearStepFailures"))
 """
 function SNESSetMaxNonlinearStepFailures(petsclib::PetscLibType, snes::PetscSNES, maxFails::PetscInt) end
 
@@ -1617,7 +1617,7 @@ Level: intermediate
 `SNESSetMaxNonlinearStepFailures()`, `SNESGetNonlinearStepFailures()`
 
 # External Links
-$(_doc_external("Snes/SNESGetMaxNonlinearStepFailures"))
+$(_doc_external("SNES/SNESGetMaxNonlinearStepFailures"))
 """
 function SNESGetMaxNonlinearStepFailures(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -1654,7 +1654,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESGetMaxLinearSolveFailures()`, `SNESGetLinearSolveIterations()`, `SNESSetMaxLinearSolveFailures()`, `SNESGetLinearSolveFailures()`, `SNESSetCountersReset()`
 
 # External Links
-$(_doc_external("Snes/SNESGetNumberFunctionEvals"))
+$(_doc_external("SNES/SNESGetNumberFunctionEvals"))
 """
 function SNESGetNumberFunctionEvals(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -1694,7 +1694,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESGetMaxLinearSolveFailures()`, `SNESGetLinearSolveIterations()`, `SNESSetMaxLinearSolveFailures()`
 
 # External Links
-$(_doc_external("Snes/SNESGetLinearSolveFailures"))
+$(_doc_external("SNES/SNESGetLinearSolveFailures"))
 """
 function SNESGetLinearSolveFailures(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -1732,7 +1732,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESSetErrorIfNotConverged()`, `SNESGetLinearSolveFailures()`, `SNESGetMaxLinearSolveFailures()`, `SNESGetLinearSolveIterations()`
 
 # External Links
-$(_doc_external("Snes/SNESSetMaxLinearSolveFailures"))
+$(_doc_external("SNES/SNESSetMaxLinearSolveFailures"))
 """
 function SNESSetMaxLinearSolveFailures(petsclib::PetscLibType, snes::PetscSNES, maxFails::PetscInt) end
 
@@ -1767,7 +1767,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESSetErrorIfNotConverged()`, `SNESGetLinearSolveFailures()`, `SNESGetLinearSolveIterations()`, `SNESSetMaxLinearSolveFailures()`,
 
 # External Links
-$(_doc_external("Snes/SNESGetMaxLinearSolveFailures"))
+$(_doc_external("SNES/SNESGetMaxLinearSolveFailures"))
 """
 function SNESGetMaxLinearSolveFailures(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -1804,7 +1804,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESGetIterationNumber()`, `SNESGetLinearSolveFailures()`, `SNESGetMaxLinearSolveFailures()`, `SNESSetCountersReset()`
 
 # External Links
-$(_doc_external("Snes/SNESGetLinearSolveIterations"))
+$(_doc_external("SNES/SNESGetLinearSolveIterations"))
 """
 function SNESGetLinearSolveIterations(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -1839,7 +1839,7 @@ Level: developer
 -seealso: [](ch_snes), `SNESGetNumberFunctionEvals()`, `SNESGetLinearSolveIterations()`, `SNESGetNPC()`
 
 # External Links
-$(_doc_external("Snes/SNESSetCountersReset"))
+$(_doc_external("SNES/SNESSetCountersReset"))
 """
 function SNESSetCountersReset(petsclib::PetscLibType, snes::PetscSNES, reset::PetscBool) end
 
@@ -1870,7 +1870,7 @@ Level: developer
 -seealso: [](ch_snes), `SNESGetNumberFunctionEvals()`, `SNESGetLinearSolveIterations()`, `SNESGetNPC()`
 
 # External Links
-$(_doc_external("Snes/SNESResetCounters"))
+$(_doc_external("SNES/SNESResetCounters"))
 """
 function SNESResetCounters(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -1902,7 +1902,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `KSP`, `KSPGetPC()`, `SNESCreate()`, `KSPCreate()`
 
 # External Links
-$(_doc_external("Snes/SNESSetKSP"))
+$(_doc_external("SNES/SNESSetKSP"))
 """
 function SNESSetKSP(petsclib::PetscLibType, snes::PetscSNES, ksp::PetscKSP) end
 
@@ -1935,7 +1935,7 @@ Level: developer
 `PetscObjectParameterSetDefault()`
 
 # External Links
-$(_doc_external("Snes/SNESParametersInitialize"))
+$(_doc_external("SNES/SNESParametersInitialize"))
 """
 function SNESParametersInitialize(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -1975,7 +1975,7 @@ Level: beginner
 -seealso: [](ch_snes), `SNES`, `SNESSolve()`, `SNESDestroy()`, `SNESSetLagPreconditioner()`, `SNESSetLagJacobian()`
 
 # External Links
-$(_doc_external("Snes/SNESCreate"))
+$(_doc_external("SNES/SNESCreate"))
 """
 function SNESCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 
@@ -2014,7 +2014,7 @@ Level: beginner
 -seealso: [](ch_snes), `SNES`, `SNESGetFunction()`, `SNESComputeFunction()`, `SNESSetJacobian()`, `SNESSetPicard()`, `SNESFunctionFn`
 
 # External Links
-$(_doc_external("Snes/SNESSetFunction"))
+$(_doc_external("SNES/SNESSetFunction"))
 """
 function SNESSetFunction(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, ctx::Cvoid) end
 
@@ -2046,7 +2046,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESSetFunction()`, `SNESComputeFunction()`, `SNESSetInitialFunctionNorm()`
 
 # External Links
-$(_doc_external("Snes/SNESSetInitialFunction"))
+$(_doc_external("SNES/SNESSetInitialFunction"))
 """
 function SNESSetInitialFunction(petsclib::PetscLibType, snes::PetscSNES, f::PetscVec) end
 
@@ -2082,7 +2082,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNESNormSchedule`, `SNESGetNormSchedule()`, `SNESComputeFunction()`, `VecNorm()`, `SNESSetFunction()`, `SNESSetInitialFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESSetNormSchedule"))
+$(_doc_external("SNES/SNESSetNormSchedule"))
 """
 function SNESSetNormSchedule(petsclib::PetscLibType, snes::PetscSNES, normschedule::SNESNormSchedule) end
 
@@ -2115,7 +2115,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESSetNormSchedule()`, `SNESComputeFunction()`, `VecNorm()`, `SNESSetFunction()`, `SNESSetInitialFunction()`, `SNESNormSchedule`
 
 # External Links
-$(_doc_external("Snes/SNESGetNormSchedule"))
+$(_doc_external("SNES/SNESGetNormSchedule"))
 """
 function SNESGetNormSchedule(petsclib::PetscLibType, snes::PetscSNES, normschedule::SNESNormSchedule) end
 
@@ -2147,7 +2147,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESGetNormSchedule()`, `SNESComputeFunction()`, `VecNorm()`, `SNESSetFunction()`, `SNESSetInitialFunction()`, `SNESNormSchedule`
 
 # External Links
-$(_doc_external("Snes/SNESSetFunctionNorm"))
+$(_doc_external("SNES/SNESSetFunctionNorm"))
 """
 function SNESSetFunctionNorm(petsclib::PetscLibType, snes::PetscSNES, norm::PetscReal) end
 
@@ -2181,7 +2181,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESSetNormSchedule()`, `SNESComputeFunction()`, `VecNorm()`, `SNESSetFunction()`, `SNESSetInitialFunction()`, `SNESNormSchedule`
 
 # External Links
-$(_doc_external("Snes/SNESGetFunctionNorm"))
+$(_doc_external("SNES/SNESGetFunctionNorm"))
 """
 function SNESGetFunctionNorm(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -2217,7 +2217,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESSetNormSchedule()`, `SNESComputeFunction()`, `SNESGetFunctionNorm()`
 
 # External Links
-$(_doc_external("Snes/SNESGetUpdateNorm"))
+$(_doc_external("SNES/SNESGetUpdateNorm"))
 """
 function SNESGetUpdateNorm(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -2253,7 +2253,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESSetNormSchedule()`, `SNESComputeFunction()`, `SNESGetFunctionNorm()`, `SNESGetUpdateNorm()`
 
 # External Links
-$(_doc_external("Snes/SNESGetSolutionNorm"))
+$(_doc_external("SNES/SNESGetSolutionNorm"))
 """
 function SNESGetSolutionNorm(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -2293,7 +2293,7 @@ Values of the function type:
 -seealso: [](ch_snes), `SNES`, `SNESFunctionType`, `SNESGetNormSchedule()`, `SNESComputeFunction()`, `VecNorm()`, `SNESSetFunction()`, `SNESSetInitialFunction()`, `SNESNormSchedule`
 
 # External Links
-$(_doc_external("Snes/SNESSetFunctionType"))
+$(_doc_external("SNES/SNESSetFunctionType"))
 """
 function SNESSetFunctionType(petsclib::PetscLibType, snes::PetscSNES, type::SNESFunctionType) end
 
@@ -2326,7 +2326,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNESSetFunctionType()`, `SNESFunctionType`, `SNESSetNormSchedule()`, `SNESComputeFunction()`, `VecNorm()`, `SNESSetFunction()`, `SNESSetInitialFunction()`, `SNESNormSchedule`
 
 # External Links
-$(_doc_external("Snes/SNESGetFunctionType"))
+$(_doc_external("SNES/SNESGetFunctionType"))
 """
 function SNESGetFunctionType(petsclib::PetscLibType, snes::PetscSNES, type::SNESFunctionType) end
 
@@ -2358,7 +2358,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESNGS`, `SNESGetNGS()`, `SNESNCG`, `SNESGetFunction()`, `SNESComputeNGS()`, `SNESNGSFn`
 
 # External Links
-$(_doc_external("Snes/SNESSetNGS"))
+$(_doc_external("SNES/SNESSetNGS"))
 """
 function SNESSetNGS(petsclib::PetscLibType, snes::PetscSNES, f::SNESNGSFn, ctx::Cvoid) end
 
@@ -2379,7 +2379,7 @@ end
 	SNESPicardComputeMFFunction(petsclib::PetscLibType,snes::PetscSNES, x::PetscVec, f::PetscVec, ctx::Cvoid) 
 
 # External Links
-$(_doc_external("Snes/SNESPicardComputeMFFunction"))
+$(_doc_external("SNES/SNESPicardComputeMFFunction"))
 """
 function SNESPicardComputeMFFunction(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec, f::PetscVec, ctx::Cvoid) end
 
@@ -2400,7 +2400,7 @@ end
 	SNESPicardComputeFunction(petsclib::PetscLibType,snes::PetscSNES, x::PetscVec, f::PetscVec, ctx::Cvoid) 
 
 # External Links
-$(_doc_external("Snes/SNESPicardComputeFunction"))
+$(_doc_external("SNES/SNESPicardComputeFunction"))
 """
 function SNESPicardComputeFunction(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec, f::PetscVec, ctx::Cvoid) end
 
@@ -2421,7 +2421,7 @@ end
 	SNESPicardComputeJacobian(petsclib::PetscLibType,snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Cvoid) 
 
 # External Links
-$(_doc_external("Snes/SNESPicardComputeJacobian"))
+$(_doc_external("SNES/SNESPicardComputeJacobian"))
 """
 function SNESPicardComputeJacobian(petsclib::PetscLibType, snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Cvoid) end
 
@@ -2459,7 +2459,7 @@ Level: intermediate
 `SNESFunctionFn`, `SNESJacobianFn`
 
 # External Links
-$(_doc_external("Snes/SNESSetPicard"))
+$(_doc_external("SNES/SNESSetPicard"))
 """
 function SNESSetPicard(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, bp::SNESFunctionFn, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid) end
 
@@ -2498,7 +2498,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNESSetFunction()`, `SNESSetPicard()`, `SNESGetFunction()`, `SNESGetJacobian()`, `SNESGetDM()`, `SNESFunctionFn`, `SNESJacobianFn`
 
 # External Links
-$(_doc_external("Snes/SNESGetPicard"))
+$(_doc_external("SNES/SNESGetPicard"))
 """
 function SNESGetPicard(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid) end
 
@@ -2538,7 +2538,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSolve()`, `SNESSetFunction()`, `SNESGetFunction()`, `SNESComputeFunction()`, `SNESSetJacobian()`, `SNESInitialGuessFn`
 
 # External Links
-$(_doc_external("Snes/SNESSetComputeInitialGuess"))
+$(_doc_external("SNES/SNESSetComputeInitialGuess"))
 """
 function SNESSetComputeInitialGuess(petsclib::PetscLibType, snes::PetscSNES, func::SNESInitialGuessFn, ctx::Cvoid) end
 
@@ -2573,7 +2573,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESGetSolution()`, `SNESGetFunction()`, `SNESComputeFunction()`, `SNESSetJacobian()`, `SNESSetFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESGetRhs"))
+$(_doc_external("SNES/SNESGetRhs"))
 """
 function SNESGetRhs(petsclib::PetscLibType, snes::PetscSNES, rhs::PetscVec) end
 
@@ -2610,7 +2610,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESSetFunction()`, `SNESGetFunction()`, `SNESComputeMFFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESComputeFunction"))
+$(_doc_external("SNES/SNESComputeFunction"))
 """
 function SNESComputeFunction(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec, y::PetscVec) end
 
@@ -2645,7 +2645,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESSetFunction()`, `SNESGetFunction()`, `SNESComputeFunction()`, `MatCreateSNESMF()`, `DMSNESSetMFFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESComputeMFFunction"))
+$(_doc_external("SNES/SNESComputeMFFunction"))
 """
 function SNESComputeMFFunction(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec, y::PetscVec) end
 
@@ -2681,7 +2681,7 @@ Level: developer
 -seealso: [](ch_snes), `SNESNGSFn`, `SNESSetNGS()`, `SNESComputeFunction()`, `SNESNGS`
 
 # External Links
-$(_doc_external("Snes/SNESComputeNGS"))
+$(_doc_external("SNES/SNESComputeNGS"))
 """
 function SNESComputeNGS(petsclib::PetscLibType, snes::PetscSNES, b::PetscVec, x::PetscVec) end
 
@@ -2716,7 +2716,7 @@ Level: developer
 -seealso: [](ch_snes), `SNESTestJacobian()`, `SNESSetFunction()`, `SNESComputeFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESTestFunction"))
+$(_doc_external("SNES/SNESTestFunction"))
 """
 function SNESTestFunction(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -2755,7 +2755,7 @@ Level: developer
 -seealso: [](ch_snes), `SNESTestFunction()`, `SNESSetJacobian()`, `SNESComputeJacobian()`
 
 # External Links
-$(_doc_external("Snes/SNESTestJacobian"))
+$(_doc_external("SNES/SNESTestJacobian"))
 """
 function SNESTestJacobian(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -2812,7 +2812,7 @@ Level: developer
 -seealso: [](ch_snes), `SNESSetJacobian()`, `KSPSetOperators()`, `MatStructure`, `SNESSetLagPreconditioner()`, `SNESSetLagJacobian()`
 
 # External Links
-$(_doc_external("Snes/SNESComputeJacobian"))
+$(_doc_external("SNES/SNESComputeJacobian"))
 """
 function SNESComputeJacobian(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, A::PetscMat, B::PetscMat) end
 
@@ -2850,7 +2850,7 @@ Level: beginner
 `SNESSetPicard()`, `SNESJacobianFn`, `SNESFunctionFn`
 
 # External Links
-$(_doc_external("Snes/SNESSetJacobian"))
+$(_doc_external("SNES/SNESSetJacobian"))
 """
 function SNESSetJacobian(petsclib::PetscLibType, snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid) end
 
@@ -2888,7 +2888,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `Mat`, `SNESSetJacobian()`, `SNESComputeJacobian()`, `SNESJacobianFn`, `SNESGetFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESGetJacobian"))
+$(_doc_external("SNES/SNESGetJacobian"))
 """
 function SNESGetJacobian(petsclib::PetscLibType, snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid) end
 
@@ -2924,7 +2924,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESCreate()`, `SNESSolve()`, `SNESDestroy()`, `SNESSetFromOptions()`
 
 # External Links
-$(_doc_external("Snes/SNESSetUp"))
+$(_doc_external("SNES/SNESSetUp"))
 """
 function SNESSetUp(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -2955,7 +2955,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESDestroy()`, `SNESCreate()`, `SNESSetUp()`, `SNESSolve()`
 
 # External Links
-$(_doc_external("Snes/SNESReset"))
+$(_doc_external("SNES/SNESReset"))
 """
 function SNESReset(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -2987,7 +2987,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESCreate()`, `SNESDestroy()`, `SNESReset()`, `SNESConvergedReasonViewSet()`
 
 # External Links
-$(_doc_external("Snes/SNESConvergedReasonViewCancel"))
+$(_doc_external("SNES/SNESConvergedReasonViewCancel"))
 """
 function SNESConvergedReasonViewCancel(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -3019,7 +3019,7 @@ Level: beginner
 -seealso: [](ch_snes), `SNES`, `SNESCreate()`, `SNESSolve()`
 
 # External Links
-$(_doc_external("Snes/SNESDestroy"))
+$(_doc_external("SNES/SNESDestroy"))
 """
 function SNESDestroy(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -3061,7 +3061,7 @@ Level: intermediate
 `SNESSetLagJacobianPersists()`, `SNES`, `SNESSolve()`
 
 # External Links
-$(_doc_external("Snes/SNESSetLagPreconditioner"))
+$(_doc_external("SNES/SNESSetLagPreconditioner"))
 """
 function SNESSetLagPreconditioner(petsclib::PetscLibType, snes::PetscSNES, lag::PetscInt) end
 
@@ -3097,7 +3097,7 @@ Level: intermediate
 `SNESSetDM()`, `SNESSolve()`
 
 # External Links
-$(_doc_external("Snes/SNESSetGridSequence"))
+$(_doc_external("SNES/SNESSetGridSequence"))
 """
 function SNESSetGridSequence(petsclib::PetscLibType, snes::PetscSNES, steps::PetscInt) end
 
@@ -3131,7 +3131,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESGetLagPreconditioner()`, `SNESSetLagJacobian()`, `SNESGetLagJacobian()`, `SNESSetGridSequence()`
 
 # External Links
-$(_doc_external("Snes/SNESGetGridSequence"))
+$(_doc_external("SNES/SNESGetGridSequence"))
 """
 function SNESGetGridSequence(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -3168,7 +3168,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSetLagPreconditioner()`, `SNESSetLagJacobianPersists()`, `SNESSetLagPreconditionerPersists()`
 
 # External Links
-$(_doc_external("Snes/SNESGetLagPreconditioner"))
+$(_doc_external("SNES/SNESGetLagPreconditioner"))
 """
 function SNESGetLagPreconditioner(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -3210,7 +3210,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESGetLagPreconditioner()`, `SNESSetLagPreconditioner()`, `SNESGetLagJacobianPersists()`, `SNESSetLagPreconditionerPersists()`
 
 # External Links
-$(_doc_external("Snes/SNESSetLagJacobian"))
+$(_doc_external("SNES/SNESSetLagJacobian"))
 """
 function SNESSetLagJacobian(petsclib::PetscLibType, snes::PetscSNES, lag::PetscInt) end
 
@@ -3246,7 +3246,7 @@ Level: intermediate
 
 
 # External Links
-$(_doc_external("Snes/SNESGetLagJacobian"))
+$(_doc_external("SNES/SNESGetLagJacobian"))
 """
 function SNESGetLagJacobian(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -3286,7 +3286,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESSetLagPreconditionerPersists()`, `SNESSetLagJacobian()`, `SNESGetLagJacobian()`, `SNESGetNPC()`
 
 # External Links
-$(_doc_external("Snes/SNESSetLagJacobianPersists"))
+$(_doc_external("SNES/SNESSetLagJacobianPersists"))
 """
 function SNESSetLagJacobianPersists(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
 
@@ -3324,7 +3324,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESSetLagJacobianPersists()`, `SNESSetLagJacobian()`, `SNESGetLagJacobian()`, `SNESGetNPC()`, `SNESSetLagPreconditioner()`
 
 # External Links
-$(_doc_external("Snes/SNESSetLagPreconditionerPersists"))
+$(_doc_external("SNES/SNESSetLagPreconditionerPersists"))
 """
 function SNESSetLagPreconditionerPersists(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
 
@@ -3359,7 +3359,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `TS`, `SNESSetDivergenceTolerance()`
 
 # External Links
-$(_doc_external("Snes/SNESSetForceIteration"))
+$(_doc_external("SNES/SNESSetForceIteration"))
 """
 function SNESSetForceIteration(petsclib::PetscLibType, snes::PetscSNES, force::PetscBool) end
 
@@ -3393,7 +3393,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSetForceIteration()`, `SNESSetDivergenceTolerance()`
 
 # External Links
-$(_doc_external("Snes/SNESGetForceIteration"))
+$(_doc_external("SNES/SNESGetForceIteration"))
 """
 function SNESGetForceIteration(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -3438,7 +3438,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESSolve()`, `SNES`, `SNESSetDivergenceTolerance()`, `SNESSetForceIteration()`
 
 # External Links
-$(_doc_external("Snes/SNESSetTolerances"))
+$(_doc_external("SNES/SNESSetTolerances"))
 """
 function SNESSetTolerances(petsclib::PetscLibType, snes::PetscSNES, abstol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt, maxf::PetscInt) end
 
@@ -3474,7 +3474,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSolve()`, `SNESSetTolerances()`, `SNESGetDivergenceTolerance()`
 
 # External Links
-$(_doc_external("Snes/SNESSetDivergenceTolerance"))
+$(_doc_external("SNES/SNESSetDivergenceTolerance"))
 """
 function SNESSetDivergenceTolerance(petsclib::PetscLibType, snes::PetscSNES, divtol::PetscReal) end
 
@@ -3512,7 +3512,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSetTolerances()`
 
 # External Links
-$(_doc_external("Snes/SNESGetTolerances"))
+$(_doc_external("SNES/SNESGetTolerances"))
 """
 function SNESGetTolerances(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -3554,7 +3554,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSetDivergenceTolerance()`
 
 # External Links
-$(_doc_external("Snes/SNESGetDivergenceTolerance"))
+$(_doc_external("SNES/SNESGetDivergenceTolerance"))
 """
 function SNESGetDivergenceTolerance(petsclib::PetscLibType, snes::PetscSNES, divtol::PetscReal) end
 
@@ -3575,7 +3575,7 @@ end
 	SNESMonitorLGRange(petsclib::PetscLibType,snes::PetscSNES, n::PetscInt, rnorm::PetscReal, monctx::Cvoid) 
 
 # External Links
-$(_doc_external("Snes/SNESMonitorLGRange"))
+$(_doc_external("SNES/SNESMonitorLGRange"))
 """
 function SNESMonitorLGRange(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt, rnorm::PetscReal, monctx::Cvoid) end
 
@@ -3610,7 +3610,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESSolve`, `SNESSetConvergenceTest()`
 
 # External Links
-$(_doc_external("Snes/SNESConverged"))
+$(_doc_external("SNES/SNESConverged"))
 """
 function SNESConverged(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal) end
 
@@ -3643,7 +3643,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESMonitorSet()`
 
 # External Links
-$(_doc_external("Snes/SNESMonitor"))
+$(_doc_external("SNES/SNESMonitor"))
 """
 function SNESMonitor(petsclib::PetscLibType, snes::PetscSNES, iter::PetscInt, rnorm::PetscReal) end
 
@@ -3685,7 +3685,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSolve()`, `SNESMonitorDefault()`, `SNESMonitorCancel()`, `SNESMonitorFunction`, `PetscCtxDestroyFn`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorSet"))
+$(_doc_external("SNES/SNESMonitorSet"))
 """
 function SNESMonitorSet(petsclib::PetscLibType, snes::PetscSNES, f::external, mctx::Cvoid, monitordestroy::PetscCtxDestroyFn) end
 
@@ -3721,7 +3721,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESMonitorDefault()`, `SNESMonitorSet()`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorCancel"))
+$(_doc_external("SNES/SNESMonitorCancel"))
 """
 function SNESMonitorCancel(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -3756,7 +3756,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESConvergedDefault()`, `SNESConvergedSkip()`, `SNESConvergenceTestFunction`
 
 # External Links
-$(_doc_external("Snes/SNESSetConvergenceTest"))
+$(_doc_external("SNES/SNESSetConvergenceTest"))
 """
 function SNESSetConvergenceTest(petsclib::PetscLibType, snes::PetscSNES, SNESConvergenceTestFunction::external, cctx::Cvoid, destroy::external) end
 
@@ -3793,7 +3793,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESSolve()`, `SNESSetConvergenceTest()`, `SNESSetConvergedReason()`, `SNESConvergedReason`, `SNESGetConvergedReasonString()`
 
 # External Links
-$(_doc_external("Snes/SNESGetConvergedReason"))
+$(_doc_external("SNES/SNESGetConvergedReason"))
 """
 function SNESGetConvergedReason(petsclib::PetscLibType, snes::PetscSNES, reason::SNESConvergedReason) end
 
@@ -3827,7 +3827,7 @@ Level: beginner
 -seealso: [](ch_snes), `SNES`, `SNESGetConvergedReason()`
 
 # External Links
-$(_doc_external("Snes/SNESGetConvergedReasonString"))
+$(_doc_external("SNES/SNESGetConvergedReasonString"))
 """
 function SNESGetConvergedReasonString(petsclib::PetscLibType, snes::PetscSNES, strreason::Cchar) end
 
@@ -3860,7 +3860,7 @@ Level: developer
 -seealso: [](ch_snes), `SNESGetConvergedReason()`, `SNESSetConvergenceTest()`, `SNESConvergedReason`
 
 # External Links
-$(_doc_external("Snes/SNESSetConvergedReason"))
+$(_doc_external("SNES/SNESSetConvergedReason"))
 """
 function SNESSetConvergedReason(petsclib::PetscLibType, snes::PetscSNES, reason::SNESConvergedReason) end
 
@@ -3896,7 +3896,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSolve()`, `SNESGetConvergenceHistory()`
 
 # External Links
-$(_doc_external("Snes/SNESSetConvergenceHistory"))
+$(_doc_external("SNES/SNESSetConvergenceHistory"))
 """
 function SNESSetConvergenceHistory(petsclib::PetscLibType, snes::PetscSNES, a::Vector{PetscReal}, its::Vector{PetscInt}, na::PetscInt, reset::PetscBool) end
 
@@ -3933,7 +3933,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSolve()`, `SNESSetConvergenceHistory()`
 
 # External Links
-$(_doc_external("Snes/SNESGetConvergenceHistory"))
+$(_doc_external("SNES/SNESGetConvergenceHistory"))
 """
 function SNESGetConvergenceHistory(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -3975,7 +3975,7 @@ Level: advanced
 `SNESMonitorSet()`
 
 # External Links
-$(_doc_external("Snes/SNESSetUpdate"))
+$(_doc_external("SNES/SNESSetUpdate"))
 """
 function SNESSetUpdate(petsclib::PetscLibType, snes::PetscSNES, func::SNESUpdateFn) end
 
@@ -4014,7 +4014,7 @@ Level: beginner
 `PetscViewerPushFormat()`, `PetscViewerPopFormat()`
 
 # External Links
-$(_doc_external("Snes/SNESConvergedReasonView"))
+$(_doc_external("SNES/SNESConvergedReasonView"))
 """
 function SNESConvergedReasonView(petsclib::PetscLibType, snes::PetscSNES, viewer::PetscViewer) end
 
@@ -4059,7 +4059,7 @@ Level: intermediate
 `PetscCtxDestroyFn`
 
 # External Links
-$(_doc_external("Snes/SNESConvergedReasonViewSet"))
+$(_doc_external("SNES/SNESConvergedReasonViewSet"))
 """
 function SNESConvergedReasonViewSet(petsclib::PetscLibType, snes::PetscSNES, f::external, vctx::Cvoid, reasonviewdestroy::PetscCtxDestroyFn) end
 
@@ -4092,7 +4092,7 @@ Level: advanced
 `SNESSetTolerances()`, `SNESConvergedDefault()`, `SNESGetConvergedReason()`, `SNESConvergedReasonView()`
 
 # External Links
-$(_doc_external("Snes/SNESConvergedReasonViewFromOptions"))
+$(_doc_external("SNES/SNESConvergedReasonViewFromOptions"))
 """
 function SNESConvergedReasonViewFromOptions(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -4127,7 +4127,7 @@ Level: beginner
 `SNESLineSearchSetPostCheck()`, `SNESLineSearchGetPostCheck()`, `SNESLineSearchSetPreCheck()`, `SNESLineSearchGetPreCheck()`
 
 # External Links
-$(_doc_external("Snes/SNESSolve"))
+$(_doc_external("SNES/SNESSolve"))
 """
 function SNESSolve(petsclib::PetscLibType, snes::PetscSNES, b::PetscVec, x::PetscVec) end
 
@@ -4163,7 +4163,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSolve()`, `SNESType`, `SNESCreate()`, `SNESDestroy()`, `SNESGetType()`, `SNESSetFromOptions()`
 
 # External Links
-$(_doc_external("Snes/SNESSetType"))
+$(_doc_external("SNES/SNESSetType"))
 """
 function SNESSetType(petsclib::PetscLibType, snes::PetscSNES, type::SNESType) end
 
@@ -4197,7 +4197,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESSetType()`, `SNESType`, `SNESSetFromOptions()`, `SNES`
 
 # External Links
-$(_doc_external("Snes/SNESGetType"))
+$(_doc_external("SNES/SNESGetType"))
 """
 function SNESGetType(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -4231,7 +4231,7 @@ Level: beginner
 -seealso: [](ch_snes), `SNES`, `SNESSolve()`, `SNESGetSolution()`, `Vec`
 
 # External Links
-$(_doc_external("Snes/SNESSetSolution"))
+$(_doc_external("SNES/SNESSetSolution"))
 """
 function SNESSetSolution(petsclib::PetscLibType, snes::PetscSNES, u::PetscVec) end
 
@@ -4266,7 +4266,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESSetSolution()`, `SNESSolve()`, `SNES`, `SNESGetSolutionUpdate()`, `SNESGetFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESGetSolution"))
+$(_doc_external("SNES/SNESGetSolution"))
 """
 function SNESGetSolution(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec) end
 
@@ -4303,7 +4303,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESGetSolution()`, `SNESGetFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESGetSolutionUpdate"))
+$(_doc_external("SNES/SNESGetSolutionUpdate"))
 """
 function SNESGetSolutionUpdate(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec) end
 
@@ -4341,7 +4341,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESSolve()`, `SNESSetFunction()`, `SNESGetSolution()`, `SNESFunctionFn`
 
 # External Links
-$(_doc_external("Snes/SNESGetFunction"))
+$(_doc_external("SNES/SNESGetFunction"))
 """
 function SNESGetFunction(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, ctx::Cvoid) end
 
@@ -4376,7 +4376,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNESSetNGS()`, `SNESGetFunction()`, `SNESNGSFn`
 
 # External Links
-$(_doc_external("Snes/SNESGetNGS"))
+$(_doc_external("SNES/SNESGetNGS"))
 """
 function SNESGetNGS(petsclib::PetscLibType, snes::PetscSNES, f::SNESNGSFn, ctx::Cvoid) end
 
@@ -4409,7 +4409,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESSetFromOptions()`, `SNESAppendOptionsPrefix()`
 
 # External Links
-$(_doc_external("Snes/SNESSetOptionsPrefix"))
+$(_doc_external("SNES/SNESSetOptionsPrefix"))
 """
 function SNESSetOptionsPrefix(petsclib::PetscLibType, snes::PetscSNES, prefix::String) end
 
@@ -4442,7 +4442,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNESGetOptionsPrefix()`, `SNESSetOptionsPrefix()`
 
 # External Links
-$(_doc_external("Snes/SNESAppendOptionsPrefix"))
+$(_doc_external("SNES/SNESAppendOptionsPrefix"))
 """
 function SNESAppendOptionsPrefix(petsclib::PetscLibType, snes::PetscSNES, prefix::String) end
 
@@ -4477,7 +4477,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESSetOptionsPrefix()`, `SNESAppendOptionsPrefix()`
 
 # External Links
-$(_doc_external("Snes/SNESGetOptionsPrefix"))
+$(_doc_external("SNES/SNESGetOptionsPrefix"))
 """
 function SNESGetOptionsPrefix(petsclib::PetscLibType, snes::PetscSNES, prefix::String) end
 
@@ -4510,7 +4510,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNESRegisterAll()`, `SNESRegisterDestroy()`
 
 # External Links
-$(_doc_external("Snes/SNESRegister"))
+$(_doc_external("SNES/SNESRegister"))
 """
 function SNESRegister(petsclib::PetscLibType, sname::String, fnc::external) end
 
@@ -4531,7 +4531,7 @@ end
 	SNESTestLocalMin(petsclib::PetscLibType,snes::PetscSNES) 
 
 # External Links
-$(_doc_external("Snes/SNESTestLocalMin"))
+$(_doc_external("SNES/SNESTestLocalMin"))
 """
 function SNESTestLocalMin(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -4575,7 +4575,7 @@ Level: advanced
 -seealso: [](ch_snes), `KSP`, `SNES`, `SNESKSPGetUseEW()`, `SNESKSPGetParametersEW()`, `SNESKSPSetParametersEW()`
 
 # External Links
-$(_doc_external("Snes/SNESKSPSetUseEW"))
+$(_doc_external("SNES/SNESKSPSetUseEW"))
 """
 function SNESKSPSetUseEW(petsclib::PetscLibType, snes::PetscSNES, flag::PetscBool) end
 
@@ -4611,7 +4611,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNESKSPSetUseEW()`, `SNESKSPGetParametersEW()`, `SNESKSPSetParametersEW()`
 
 # External Links
-$(_doc_external("Snes/SNESKSPGetUseEW"))
+$(_doc_external("SNES/SNESKSPGetUseEW"))
 """
 function SNESKSPGetUseEW(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -4654,7 +4654,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESKSPSetUseEW()`, `SNESKSPGetUseEW()`, `SNESKSPGetParametersEW()`
 
 # External Links
-$(_doc_external("Snes/SNESKSPSetParametersEW"))
+$(_doc_external("SNES/SNESKSPSetParametersEW"))
 """
 function SNESKSPSetParametersEW(petsclib::PetscLibType, snes::PetscSNES, version::PetscInt, rtol_0::PetscReal, rtol_max::PetscReal, gamma::PetscReal, alpha::PetscReal, alpha2::PetscReal, threshold::PetscReal) end
 
@@ -4696,7 +4696,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESKSPSetUseEW()`, `SNESKSPGetUseEW()`, `SNESKSPSetParametersEW()`
 
 # External Links
-$(_doc_external("Snes/SNESKSPGetParametersEW"))
+$(_doc_external("SNES/SNESKSPGetParametersEW"))
 """
 function SNESKSPGetParametersEW(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -4744,7 +4744,7 @@ Level: beginner
 -seealso: [](ch_snes), `SNES`, `KSP`, `PC`, `KSPGetPC()`, `SNESCreate()`, `KSPCreate()`, `SNESSetKSP()`
 
 # External Links
-$(_doc_external("Snes/SNESGetKSP"))
+$(_doc_external("SNES/SNESGetKSP"))
 """
 function SNESGetKSP(petsclib::PetscLibType, snes::PetscSNES, ksp::PetscKSP) end
 
@@ -4778,7 +4778,7 @@ Level: intermediate
 -seealso: [](ch_snes), `DM`, `SNES`, `SNESGetDM()`, `KSPSetDM()`, `KSPGetDM()`
 
 # External Links
-$(_doc_external("Snes/SNESSetDM"))
+$(_doc_external("SNES/SNESSetDM"))
 """
 function SNESSetDM(petsclib::PetscLibType, snes::PetscSNES, dm::PetscDM) end
 
@@ -4812,7 +4812,7 @@ Level: intermediate
 -seealso: [](ch_snes), `DM`, `SNES`, `SNESSetDM()`, `KSPSetDM()`, `KSPGetDM()`
 
 # External Links
-$(_doc_external("Snes/SNESGetDM"))
+$(_doc_external("SNES/SNESGetDM"))
 """
 function SNESGetDM(petsclib::PetscLibType, snes::PetscSNES, dm::PetscDM) end
 
@@ -4849,7 +4849,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESNGS`, `SNESFAS`, `SNESGetNPC()`, `SNESHasNPC()`
 
 # External Links
-$(_doc_external("Snes/SNESSetNPC"))
+$(_doc_external("SNES/SNESSetNPC"))
 """
 function SNESSetNPC(petsclib::PetscLibType, snes::PetscSNES, npc::PetscSNES) end
 
@@ -4886,7 +4886,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNESSetNPC()`, `SNESHasNPC()`, `SNES`, `SNESCreate()`
 
 # External Links
-$(_doc_external("Snes/SNESGetNPC"))
+$(_doc_external("SNES/SNESGetNPC"))
 """
 function SNESGetNPC(petsclib::PetscLibType, snes::PetscSNES, pc::PetscSNES) end
 
@@ -4922,7 +4922,7 @@ Level: developer
 -seealso: [](ch_snes), `SNESSetNPC()`, `SNESGetNPC()`
 
 # External Links
-$(_doc_external("Snes/SNESHasNPC"))
+$(_doc_external("SNES/SNESHasNPC"))
 """
 function SNESHasNPC(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -4955,7 +4955,7 @@ Output Parameter:
 -seealso: [](ch_snes), `SNES`, `SNESGetNPC()`, `SNESNRICHARDSON`, `SNESNCG`, `SNESType`, `SNESGetNPCSide()`, `KSPSetPCSide()`, `PC_LEFT`, `PC_RIGHT`, `PCSide`
 
 # External Links
-$(_doc_external("Snes/SNESSetNPCSide"))
+$(_doc_external("SNES/SNESSetNPCSide"))
 """
 function SNESSetNPCSide(petsclib::PetscLibType, snes::PetscSNES, side::PCSide) end
 
@@ -4986,7 +4986,7 @@ Output Parameter:
 -seealso: [](ch_snes), `SNES`, `SNESGetNPC()`, `SNESSetNPCSide()`, `KSPGetPCSide()`, `PC_LEFT`, `PC_RIGHT`, `PCSide`
 
 # External Links
-$(_doc_external("Snes/SNESGetNPCSide"))
+$(_doc_external("SNES/SNESGetNPCSide"))
 """
 function SNESGetNPCSide(petsclib::PetscLibType, snes::PetscSNES, side::PCSide) end
 
@@ -5018,7 +5018,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESLineSearch`, `SNESGetLineSearch()`
 
 # External Links
-$(_doc_external("Snes/SNESSetLineSearch"))
+$(_doc_external("SNES/SNESSetLineSearch"))
 """
 function SNESSetLineSearch(petsclib::PetscLibType, snes::PetscSNES, linesearch::SNESLineSearch) end
 
@@ -5052,7 +5052,7 @@ Level: beginner
 -seealso: [](ch_snes), `SNESLineSearch`, `SNESSetLineSearch()`, `SNESLineSearchCreate()`, `SNESLineSearchSetFromOptions()`
 
 # External Links
-$(_doc_external("Snes/SNESGetLineSearch"))
+$(_doc_external("SNES/SNESGetLineSearch"))
 """
 function SNESGetLineSearch(petsclib::PetscLibType, snes::PetscSNES, linesearch::SNESLineSearch) end
 
@@ -5096,7 +5096,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESSetJacobian()`, `SNESComputeJacobianDefaultColor()`, `MatCreateSNESMF()`
 
 # External Links
-$(_doc_external("Snes/SNESComputeJacobianDefault"))
+$(_doc_external("SNES/SNESComputeJacobianDefault"))
 """
 function SNESComputeJacobianDefault(petsclib::PetscLibType, snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Cvoid) end
 
@@ -5132,7 +5132,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESGetNPC()`, `SNESSetNPC()`, `SNESComputeFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESApplyNPC"))
+$(_doc_external("SNES/SNESApplyNPC"))
 """
 function SNESApplyNPC(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec, f::PetscVec, y::PetscVec) end
 
@@ -5153,7 +5153,7 @@ end
 	SNESComputeFunctionDefaultNPC(petsclib::PetscLibType,snes::PetscSNES, X::PetscVec, F::PetscVec) 
 
 # External Links
-$(_doc_external("Snes/SNESComputeFunctionDefaultNPC"))
+$(_doc_external("SNES/SNESComputeFunctionDefaultNPC"))
 """
 function SNESComputeFunctionDefaultNPC(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, F::PetscVec) end
 
@@ -5188,7 +5188,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESGetNPC()`, `SNESSetNPC()`, `SNESComputeFunction()`, `SNESApplyNPC()`, `SNESSolve()`
 
 # External Links
-$(_doc_external("Snes/SNESGetNPCFunction"))
+$(_doc_external("SNES/SNESGetNPCFunction"))
 """
 function SNESGetNPCFunction(petsclib::PetscLibType, snes::PetscSNES, F::PetscVec) end
 
@@ -5224,7 +5224,7 @@ Level: intermediate
 `SNESObjectiveFn`
 
 # External Links
-$(_doc_external("Snes/SNESSetObjective"))
+$(_doc_external("SNES/SNESSetObjective"))
 """
 function SNESSetObjective(petsclib::PetscLibType, snes::PetscSNES, obj::SNESObjectiveFn, ctx::Cvoid) end
 
@@ -5259,7 +5259,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESSetObjective()`, `SNESGetSolution()`, `SNESObjectiveFn`
 
 # External Links
-$(_doc_external("Snes/SNESGetObjective"))
+$(_doc_external("SNES/SNESGetObjective"))
 """
 function SNESGetObjective(petsclib::PetscLibType, snes::PetscSNES, obj::SNESObjectiveFn, ctx::Cvoid) end
 
@@ -5294,7 +5294,7 @@ Level: developer
 -seealso: [](ch_snes), `SNESLineSearch`, `SNES`, `SNESSetObjective()`, `SNESGetSolution()`
 
 # External Links
-$(_doc_external("Snes/SNESComputeObjective"))
+$(_doc_external("SNES/SNESComputeObjective"))
 """
 function SNESComputeObjective(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec) end
 
@@ -5336,7 +5336,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNESSetObjective()`, `SNESSetFunction()`, `SNESComputeObjective()`, `SNESComputeJacobianDefault()`, `SNESObjectiveFn`
 
 # External Links
-$(_doc_external("Snes/SNESObjectiveComputeFunctionDefaultFD"))
+$(_doc_external("SNES/SNESObjectiveComputeFunctionDefaultFD"))
 """
 function SNESObjectiveComputeFunctionDefaultFD(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, F::PetscVec, ctx::Cvoid) end
 
@@ -5382,7 +5382,7 @@ Options Database Keys:
 `MatFDColoringCreate()`, `MatFDColoringSetFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESComputeJacobianDefaultColor"))
+$(_doc_external("SNES/SNESComputeJacobianDefaultColor"))
 """
 function SNESComputeJacobianDefaultColor(petsclib::PetscLibType, snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Cvoid) end
 
@@ -5415,7 +5415,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESComputeJacobianDefaultColor()`, `MatEliminateZeros()`, `MatFDColoringCreate()`, `MatFDColoringSetFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESPruneJacobianColor"))
+$(_doc_external("SNES/SNESPruneJacobianColor"))
 """
 function SNESPruneJacobianColor(petsclib::PetscLibType, snes::PetscSNES, J::PetscMat, B::PetscMat) end
 
@@ -5449,7 +5449,7 @@ Level: developer
 -seealso: [](ch_snes), `SNESMonitorSet()`, `SNES`, `SNESMonitorSAWs()`, `SNESMonitorSAWsDestroy()`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorSAWsCreate"))
+$(_doc_external("SNES/SNESMonitorSAWsCreate"))
 """
 function SNESMonitorSAWsCreate(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -5482,7 +5482,7 @@ Level: developer
 -seealso: [](ch_snes), `SNESMonitorSAWsCreate()`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorSAWsDestroy"))
+$(_doc_external("SNES/SNESMonitorSAWsDestroy"))
 """
 function SNESMonitorSAWsDestroy(petsclib::PetscLibType, ctx::Cvoid) end
 
@@ -5516,7 +5516,7 @@ Level: advanced
 -seealso: [](ch_snes), `PetscViewerSAWsOpen()`, `SNESMonitorSAWsDestroy()`, `SNESMonitorSAWsCreate()`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorSAWs"))
+$(_doc_external("SNES/SNESMonitorSAWs"))
 """
 function SNESMonitorSAWs(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt, rnorm::PetscReal, ctx::Cvoid) end
 
@@ -5549,7 +5549,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNES_NGMRES_RESTART_DIFFERENCE`, `SNESNGMRES`, `SNESNGMRESRestartType`, `SNESNGMRESSetRestartType()`
 
 # External Links
-$(_doc_external("Snes/SNESNGMRESSetRestartFmRise"))
+$(_doc_external("SNES/SNESNGMRESSetRestartFmRise"))
 """
 function SNESNGMRESSetRestartFmRise(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
 
@@ -5570,7 +5570,7 @@ end
 	flg::PetscBool = SNESNGMRESGetRestartFmRise(petsclib::PetscLibType,snes::PetscSNES) 
 
 # External Links
-$(_doc_external("Snes/SNESNGMRESGetRestartFmRise"))
+$(_doc_external("SNES/SNESNGMRESGetRestartFmRise"))
 """
 function SNESNGMRESGetRestartFmRise(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -5609,7 +5609,7 @@ Level: intermediate
 `SNESNGMRESSetSelectType()`
 
 # External Links
-$(_doc_external("Snes/SNESNGMRESSetRestartType"))
+$(_doc_external("SNES/SNESNGMRESSetRestartType"))
 """
 function SNESNGMRESSetRestartType(petsclib::PetscLibType, snes::PetscSNES, rtype::SNESNGMRESRestartType) end
 
@@ -5646,7 +5646,7 @@ Level: intermediate
 `SNESNGMRESSetRestartType()`
 
 # External Links
-$(_doc_external("Snes/SNESNGMRESSetSelectType"))
+$(_doc_external("SNES/SNESNGMRESSetSelectType"))
 """
 function SNESNGMRESSetSelectType(petsclib::PetscLibType, snes::PetscSNES, stype::SNESNGMRESSelectType) end
 
@@ -5683,7 +5683,7 @@ Level: advanced
 `SNESSetType()`, `PETSC_NINFINITY`, `PETSC_INFINITY`
 
 # External Links
-$(_doc_external("Snes/SNESVISetComputeVariableBounds"))
+$(_doc_external("SNES/SNESVISetComputeVariableBounds"))
 """
 function SNESVISetComputeVariableBounds(petsclib::PetscLibType, snes::PetscSNES, compute::external) end
 
@@ -5717,7 +5717,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`
 
 # External Links
-$(_doc_external("Snes/SNESVIGetActiveSetIS"))
+$(_doc_external("SNES/SNESVIGetActiveSetIS"))
 """
 function SNESVIGetActiveSetIS(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, F::PetscVec, ISact::IS) end
 
@@ -5726,7 +5726,7 @@ function SNESVIGetActiveSetIS(petsclib::PetscLibType, snes::PetscSNES, X::PetscV
     @chk ccall(
                (:SNESVIGetActiveSetIS, $petsc_library),
                PetscErrorCode,
-               (CSNES, CVec, CVec, Ptr{IS}),
+               (CSNES, CVec, CVec, Ptr{CIS}),
                snes, X, F, ISact,
               )
 
@@ -5751,7 +5751,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`, `SNESLineSearchSetVIFunctions()`
 
 # External Links
-$(_doc_external("Snes/SNESVIComputeInactiveSetFnorm"))
+$(_doc_external("SNES/SNESVIComputeInactiveSetFnorm"))
 """
 function SNESVIComputeInactiveSetFnorm(petsclib::PetscLibType, snes::PetscSNES, F::PetscVec, X::PetscVec) end
 
@@ -5789,7 +5789,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`
 
 # External Links
-$(_doc_external("Snes/SNESVIComputeInactiveSetFtY"))
+$(_doc_external("SNES/SNESVIComputeInactiveSetFtY"))
 """
 function SNESVIComputeInactiveSetFtY(petsclib::PetscLibType, snes::PetscSNES, F::PetscVec, X::PetscVec, Y::PetscVec) end
 
@@ -5823,7 +5823,7 @@ Level: advanced
 -seealso: [](sec_vi), `SNES`, `SNESVIGetVariableBounds()`, `SNESVISetComputeVariableBounds()`, `SNESSetFunctionDomainError()`, `SNESSetJacobianDomainError()`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`, `SNESSetType()`, `PETSC_NINFINITY`, `PETSC_INFINITY`
 
 # External Links
-$(_doc_external("Snes/SNESVISetVariableBounds"))
+$(_doc_external("SNES/SNESVISetVariableBounds"))
 """
 function SNESVISetVariableBounds(petsclib::PetscLibType, snes::PetscSNES, xl::PetscVec, xu::PetscVec) end
 
@@ -5855,7 +5855,7 @@ Level: advanced
 -seealso: [](sec_vi), `SNES`, `SNESVISetVariableBounds()`, `SNESVISetComputeVariableBounds()`, `SNESSetFunctionDomainError()`, `SNESSetJacobianDomainError()`, `SNESVINEWTONRSLS`, `SNESVINEWTONSSLS`, `SNESSetType()`, `PETSC_NINFINITY`, `PETSC_INFINITY`
 
 # External Links
-$(_doc_external("Snes/SNESVIGetVariableBounds"))
+$(_doc_external("SNES/SNESVIGetVariableBounds"))
 """
 function SNESVIGetVariableBounds(petsclib::PetscLibType, snes::PetscSNES, xl::PetscVec, xu::PetscVec) end
 
@@ -5892,7 +5892,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESVINEWTONRSLS`
 
 # External Links
-$(_doc_external("Snes/SNESVIGetInactiveSet"))
+$(_doc_external("SNES/SNESVIGetInactiveSet"))
 """
 function SNESVIGetInactiveSet(petsclib::PetscLibType, snes::PetscSNES, inact::IS) end
 
@@ -5901,7 +5901,7 @@ function SNESVIGetInactiveSet(petsclib::PetscLibType, snes::PetscSNES, inact::IS
     @chk ccall(
                (:SNESVIGetInactiveSet, $petsc_library),
                PetscErrorCode,
-               (CSNES, Ptr{IS}),
+               (CSNES, Ptr{CIS}),
                snes, inact,
               )
 
@@ -5925,7 +5925,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESVINEWTONRSLS`, `SNESVIGetInactiveSet()`, `DMSetVI()`
 
 # External Links
-$(_doc_external("Snes/SNESVISetRedundancyCheck"))
+$(_doc_external("SNES/SNESVISetRedundancyCheck"))
 """
 function SNESVISetRedundancyCheck(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
 
@@ -5958,7 +5958,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESVINEWTONSSLS`, `SNESVIComputeFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESVIComputeMeritFunction"))
+$(_doc_external("SNES/SNESVIComputeMeritFunction"))
 """
 function SNESVIComputeMeritFunction(petsclib::PetscLibType, phi::PetscVec) end
 
@@ -5997,7 +5997,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESVINEWTONSSLS`, `SNESVIComputeMeritFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESVIComputeFunction"))
+$(_doc_external("SNES/SNESVIComputeFunction"))
 """
 function SNESVIComputeFunction(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, phi::PetscVec, functx::Cvoid) end
 
@@ -6025,7 +6025,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESMS`, `SNESMSRegisterDestroy()`
 
 # External Links
-$(_doc_external("Snes/SNESMSRegisterAll"))
+$(_doc_external("SNES/SNESMSRegisterAll"))
 """
 function SNESMSRegisterAll(petsclib::PetscLibType) end
 
@@ -6052,7 +6052,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESMS`, `SNESMSRegister()`, `SNESMSRegisterAll()`
 
 # External Links
-$(_doc_external("Snes/SNESMSRegisterDestroy"))
+$(_doc_external("SNES/SNESMSRegisterDestroy"))
 """
 function SNESMSRegisterDestroy(petsclib::PetscLibType) end
 
@@ -6078,7 +6078,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESMS`, `SNESMSRegister()`, `SNESMSRegisterAll()`, `PetscInitialize()`
 
 # External Links
-$(_doc_external("Snes/SNESMSInitializePackage"))
+$(_doc_external("SNES/SNESMSInitializePackage"))
 """
 function SNESMSInitializePackage(petsclib::PetscLibType) end
 
@@ -6104,7 +6104,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESMS`, `SNESMSRegister()`, `SNESMSRegisterAll()`, `SNESMSInitializePackage()`, `PetscFinalize()`
 
 # External Links
-$(_doc_external("Snes/SNESMSFinalizePackage"))
+$(_doc_external("SNES/SNESMSFinalizePackage"))
 """
 function SNESMSFinalizePackage(petsclib::PetscLibType) end
 
@@ -6140,7 +6140,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESMS`
 
 # External Links
-$(_doc_external("Snes/SNESMSRegister"))
+$(_doc_external("SNES/SNESMSRegister"))
 """
 function SNESMSRegister(petsclib::PetscLibType, name::SNESMSType, nstages::PetscInt, nregisters::PetscInt, stability::PetscReal, gamma::Vector{PetscReal}, delta::Vector{PetscReal}, betasub::Vector{PetscReal}) end
 
@@ -6174,7 +6174,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNESMS`, `SNESMSSetType()`, `SNESMSType`
 
 # External Links
-$(_doc_external("Snes/SNESMSGetType"))
+$(_doc_external("SNES/SNESMSGetType"))
 """
 function SNESMSGetType(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -6208,7 +6208,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNESMS`, `SNESMSGetType()`, `SNESMSType`
 
 # External Links
-$(_doc_external("Snes/SNESMSSetType"))
+$(_doc_external("SNES/SNESMSSetType"))
 """
 function SNESMSSetType(petsclib::PetscLibType, snes::PetscSNES, mstype::SNESMSType) end
 
@@ -6242,7 +6242,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNESMSSetDamping()`, `SNESMS`
 
 # External Links
-$(_doc_external("Snes/SNESMSGetDamping"))
+$(_doc_external("SNES/SNESMSGetDamping"))
 """
 function SNESMSGetDamping(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -6276,7 +6276,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNESMSGetDamping()`, `SNESMS`
 
 # External Links
-$(_doc_external("Snes/SNESMSSetDamping"))
+$(_doc_external("SNES/SNESMSSetDamping"))
 """
 function SNESMSSetDamping(petsclib::PetscLibType, snes::PetscSNES, damping::PetscReal) end
 
@@ -6317,7 +6317,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNCG`
 
 # External Links
-$(_doc_external("Snes/SNESNGSSetTolerances"))
+$(_doc_external("SNES/SNESNGSSetTolerances"))
 """
 function SNESNGSSetTolerances(petsclib::PetscLibType, snes::PetscSNES, abstol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt) end
 
@@ -6353,7 +6353,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNCG`, `SNESSetTolerances()`
 
 # External Links
-$(_doc_external("Snes/SNESNGSGetTolerances"))
+$(_doc_external("SNES/SNESNGSGetTolerances"))
 """
 function SNESNGSGetTolerances(petsclib::PetscLibType, snes::PetscSNES, atol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt) end
 
@@ -6388,7 +6388,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNCG`, `SNESSetNGS()`, `SNESGetNGS()`, `SNESSetNPC()`, `SNESNGSGetSweeps()`
 
 # External Links
-$(_doc_external("Snes/SNESNGSSetSweeps"))
+$(_doc_external("SNES/SNESNGSSetSweeps"))
 """
 function SNESNGSSetSweeps(petsclib::PetscLibType, snes::PetscSNES, sweeps::PetscInt) end
 
@@ -6420,7 +6420,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNCG`, `SNESSetNGS()`, `SNESGetNGS()`, `SNESSetNPC()`, `SNESNGSSetSweeps()`
 
 # External Links
-$(_doc_external("Snes/SNESNGSGetSweeps"))
+$(_doc_external("SNES/SNESNGSGetSweeps"))
 """
 function SNESNGSGetSweeps(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -6457,7 +6457,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNEWTONAL`, `SNESNewtonALCorrectionType`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonALSetCorrectionType"))
+$(_doc_external("SNES/SNESNewtonALSetCorrectionType"))
 """
 function SNESNewtonALSetCorrectionType(petsclib::PetscLibType, snes::PetscSNES, ctype::SNESNewtonALCorrectionType) end
 
@@ -6491,7 +6491,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNEWTONAL`, `SNESNewtonALGetFunction()`, `SNESNewtonALGetLoadParameter()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonALSetFunction"))
+$(_doc_external("SNES/SNESNewtonALSetFunction"))
 """
 function SNESNewtonALSetFunction(petsclib::PetscLibType, snes::PetscSNES, func::SNESFunctionFn, ctx::Cvoid) end
 
@@ -6524,7 +6524,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNEWTONAL`, `SNESNewtonALSetFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonALGetFunction"))
+$(_doc_external("SNES/SNESNewtonALGetFunction"))
 """
 function SNESNewtonALGetFunction(petsclib::PetscLibType, snes::PetscSNES, func::SNESFunctionFn, ctx::Cvoid) end
 
@@ -6558,7 +6558,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNEWTONAL`, `SNESNewtonALSetFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonALGetLoadParameter"))
+$(_doc_external("SNES/SNESNewtonALGetLoadParameter"))
 """
 function SNESNewtonALGetLoadParameter(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -6595,7 +6595,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESNewtonALSetFunction()`, `SNESNewtonALGetFunction()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonALComputeFunction"))
+$(_doc_external("SNES/SNESNewtonALComputeFunction"))
 """
 function SNESNewtonALComputeFunction(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, Q::PetscVec) end
 
@@ -6630,7 +6630,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESCreate()`, `SNESSetType()`, `SNESPYTHON`, `PetscPythonInitialize()`, `SNESPythonGetType()`
 
 # External Links
-$(_doc_external("Snes/SNESPythonSetType"))
+$(_doc_external("SNES/SNESPythonSetType"))
 """
 function SNESPythonSetType(petsclib::PetscLibType, snes::PetscSNES, pyname::String) end
 
@@ -6664,7 +6664,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESCreate()`, `SNESSetType()`, `SNESPYTHON`, `PetscPythonInitialize()`, `SNESPythonSetType()`
 
 # External Links
-$(_doc_external("Snes/SNESPythonGetType"))
+$(_doc_external("SNES/SNESPythonGetType"))
 """
 function SNESPythonGetType(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -6702,7 +6702,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESSHELL`, `SNESShellSetContext()`, `SNESShellGetContext()`
 
 # External Links
-$(_doc_external("Snes/SNESShellSetSolve"))
+$(_doc_external("SNES/SNESShellSetSolve"))
 """
 function SNESShellSetSolve(petsclib::PetscLibType, snes::PetscSNES, solve::external) end
 
@@ -6736,7 +6736,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESSHELL`, `SNESCreateShell()`, `SNESShellSetContext()`
 
 # External Links
-$(_doc_external("Snes/SNESShellGetContext"))
+$(_doc_external("SNES/SNESShellGetContext"))
 """
 function SNESShellGetContext(petsclib::PetscLibType, snes::PetscSNES, ctx::Cvoid) end
 
@@ -6768,7 +6768,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESSHELL`, `SNESCreateShell()`, `SNESShellGetContext()`
 
 # External Links
-$(_doc_external("Snes/SNESShellSetContext"))
+$(_doc_external("SNES/SNESShellSetContext"))
 """
 function SNESShellSetContext(petsclib::PetscLibType, snes::PetscSNES, ctx::Cvoid) end
 
@@ -6803,7 +6803,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNASM`, `SNESNASMGetType()`, `PCASMSetType()`, `PC_ASM_BASIC`, `PC_ASM_RESTRICT`, `PCASMType`
 
 # External Links
-$(_doc_external("Snes/SNESNASMSetType"))
+$(_doc_external("SNES/SNESNASMSetType"))
 """
 function SNESNASMSetType(petsclib::PetscLibType, snes::PetscSNES, type::PCASMType) end
 
@@ -6837,7 +6837,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNASM`, `SNESNASMSetType()`, `PCASMGetType()`, `PC_ASM_BASIC`, `PC_ASM_RESTRICT`, `PCASMType`
 
 # External Links
-$(_doc_external("Snes/SNESNASMGetType"))
+$(_doc_external("SNES/SNESNASMGetType"))
 """
 function SNESNASMGetType(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -6875,7 +6875,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNASM`, `SNESNASMGetSubdomains()`
 
 # External Links
-$(_doc_external("Snes/SNESNASMSetSubdomains"))
+$(_doc_external("SNES/SNESNASMSetSubdomains"))
 """
 function SNESNASMSetSubdomains(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt, subsnes::Vector{PetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter}) end
 
@@ -6913,7 +6913,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNASM`, `SNESNASMSetSubdomains()`
 
 # External Links
-$(_doc_external("Snes/SNESNASMGetSubdomains"))
+$(_doc_external("SNES/SNESNASMGetSubdomains"))
 """
 function SNESNASMGetSubdomains(petsclib::PetscLibType, snes::PetscSNES, subsnes::Vector{PetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter}) end
 
@@ -6957,7 +6957,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESNASM`, `SNESNASMGetSubdomains()`
 
 # External Links
-$(_doc_external("Snes/SNESNASMGetSubdomainVecs"))
+$(_doc_external("SNES/SNESNASMGetSubdomainVecs"))
 """
 function SNESNASMGetSubdomainVecs(petsclib::PetscLibType, snes::PetscSNES, x::Vector{PetscVec}, y::Vector{PetscVec}, b::Vector{PetscVec}, xl::Vector{PetscVec}) end
 
@@ -6996,7 +6996,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESNASM`, `SNESNASMGetSubdomains()`
 
 # External Links
-$(_doc_external("Snes/SNESNASMSetComputeFinalJacobian"))
+$(_doc_external("SNES/SNESNASMSetComputeFinalJacobian"))
 """
 function SNESNASMSetComputeFinalJacobian(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
 
@@ -7031,7 +7031,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNASM`, `SNESNASMGetDamping()`
 
 # External Links
-$(_doc_external("Snes/SNESNASMSetDamping"))
+$(_doc_external("SNES/SNESNASMSetDamping"))
 """
 function SNESNASMSetDamping(petsclib::PetscLibType, snes::PetscSNES, dmp::PetscReal) end
 
@@ -7065,7 +7065,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNASM`, `SNESNASMSetDamping()`
 
 # External Links
-$(_doc_external("Snes/SNESNASMGetDamping"))
+$(_doc_external("SNES/SNESNASMGetDamping"))
 """
 function SNESNASMGetDamping(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -7102,7 +7102,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESNASM`, `SNESNASMGetNumber()`
 
 # External Links
-$(_doc_external("Snes/SNESNASMGetSNES"))
+$(_doc_external("SNES/SNESNASMGetSNES"))
 """
 function SNESNASMGetSNES(petsclib::PetscLibType, snes::PetscSNES, i::PetscInt, subsnes::PetscSNES) end
 
@@ -7138,7 +7138,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESNASM`, `SNESNASMGetSNES()`
 
 # External Links
-$(_doc_external("Snes/SNESNASMGetNumber"))
+$(_doc_external("SNES/SNESNASMGetNumber"))
 """
 function SNESNASMGetNumber(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -7172,7 +7172,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESNASM`
 
 # External Links
-$(_doc_external("Snes/SNESNASMSetWeight"))
+$(_doc_external("SNES/SNESNASMSetWeight"))
 """
 function SNESNASMSetWeight(petsclib::PetscLibType, snes::PetscSNES, weight::PetscVec) end
 
@@ -7209,7 +7209,7 @@ Level: intermediate
 `SNESQNType`, `SNESQNScaleType`
 
 # External Links
-$(_doc_external("Snes/SNESQNSetRestartType"))
+$(_doc_external("SNES/SNESQNSetRestartType"))
 """
 function SNESQNSetRestartType(petsclib::PetscLibType, snes::PetscSNES, rtype::SNESQNRestartType) end
 
@@ -7244,7 +7244,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESQN`, `SNESLineSearch`, `SNESQNScaleType`, `SNESSetJacobian()`, `SNESQNType`, `SNESQNRestartType`
 
 # External Links
-$(_doc_external("Snes/SNESQNSetScaleType"))
+$(_doc_external("SNES/SNESQNSetScaleType"))
 """
 function SNESQNSetScaleType(petsclib::PetscLibType, snes::PetscSNES, stype::SNESQNScaleType) end
 
@@ -7279,7 +7279,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESQN`, `SNES_QN_LBFGS`, `SNES_QN_BROYDEN`, `SNES_QN_BADBROYDEN`, `SNESQNType`,  `SNESQNScaleType`, `TAOLMVM`, `TAOBLMVM`
 
 # External Links
-$(_doc_external("Snes/SNESQNSetType"))
+$(_doc_external("SNES/SNESQNSetType"))
 """
 function SNESQNSetType(petsclib::PetscLibType, snes::PetscSNES, qtype::SNESQNType) end
 
@@ -7315,7 +7315,7 @@ Level: developer
 `PCCompositeType`
 
 # External Links
-$(_doc_external("Snes/SNESCompositeSetType"))
+$(_doc_external("SNES/SNESCompositeSetType"))
 """
 function SNESCompositeSetType(petsclib::PetscLibType, snes::PetscSNES, type::SNESCompositeType) end
 
@@ -7347,7 +7347,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESCOMPOSITE`, `SNESCompositeGetSNES()`
 
 # External Links
-$(_doc_external("Snes/SNESCompositeAddSNES"))
+$(_doc_external("SNES/SNESCompositeAddSNES"))
 """
 function SNESCompositeAddSNES(petsclib::PetscLibType, snes::PetscSNES, type::SNESType) end
 
@@ -7382,7 +7382,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESCOMPOSITE`, `SNESCompositeAddSNES()`, `SNESCompositeGetNumber()`
 
 # External Links
-$(_doc_external("Snes/SNESCompositeGetSNES"))
+$(_doc_external("SNES/SNESCompositeGetSNES"))
 """
 function SNESCompositeGetSNES(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt, subsnes::PetscSNES) end
 
@@ -7418,7 +7418,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESCOMPOSITE`, `SNESCompositeAddSNES()`, `SNESCompositeGetSNES()`
 
 # External Links
-$(_doc_external("Snes/SNESCompositeGetNumber"))
+$(_doc_external("SNES/SNESCompositeGetNumber"))
 """
 function SNESCompositeGetNumber(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -7454,7 +7454,7 @@ Level: intermediate
 `SNES_COMPOSITE_ADDITIVE`, `SNES_COMPOSITE_MULTIPLICATIVE`, `SNESCompositeType`, `SNESCompositeSetType()`
 
 # External Links
-$(_doc_external("Snes/SNESCompositeSetDamping"))
+$(_doc_external("SNES/SNESCompositeSetDamping"))
 """
 function SNESCompositeSetDamping(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt, dmp::PetscReal) end
 
@@ -7489,7 +7489,7 @@ Level: developer
 `SNESNewtonTRDCSetPostCheck()`, `SNESNewtonTRDCGetPostCheck()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRDCGetRhoFlag"))
+$(_doc_external("SNES/SNESNewtonTRDCGetRhoFlag"))
 """
 function SNESNewtonTRDCGetRhoFlag(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -7526,7 +7526,7 @@ Level: intermediate
 `SNESNewtonTRDCGetRhoFlag()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRDCSetPreCheck"))
+$(_doc_external("SNES/SNESNewtonTRDCSetPreCheck"))
 """
 function SNESNewtonTRDCSetPreCheck(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
 
@@ -7560,7 +7560,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNEWTONTRDC`, `SNESNewtonTRDCPostCheck()`, `SNESNewtonTRDCGetPostCheck()`, `SNESNewtonTRDCSetPreCheck()`, `SNESNewtonTRDCGetPreCheck()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRDCSetPostCheck"))
+$(_doc_external("SNES/SNESNewtonTRDCSetPostCheck"))
 """
 function SNESNewtonTRDCSetPostCheck(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
 
@@ -7581,7 +7581,7 @@ end
 	bs::PetscInt,nodesPerCell::PetscInt,subspaceOffsets::PetscInt,ghostBcNodes::PetscInt,globalBcNodes::PetscInt = SNESPatchSetDiscretisationInfo(petsclib::PetscLibType,snes::PetscSNES, nsubspaces::PetscInt, dms::PetscDM, cellNodeMap::PetscInt, numGhostBcs::PetscInt, numGlobalBcs::PetscInt) 
 
 # External Links
-$(_doc_external("Snes/SNESPatchSetDiscretisationInfo"))
+$(_doc_external("SNES/SNESPatchSetDiscretisationInfo"))
 """
 function SNESPatchSetDiscretisationInfo(petsclib::PetscLibType, snes::PetscSNES, nsubspaces::PetscInt, dms::PetscDM, cellNodeMap::PetscInt, numGhostBcs::PetscInt, numGlobalBcs::PetscInt) end
 
@@ -7614,7 +7614,7 @@ end
 	SNESPatchSetComputeOperator(petsclib::PetscLibType,snes::PetscSNES, func::external, ctx::Cvoid) 
 
 # External Links
-$(_doc_external("Snes/SNESPatchSetComputeOperator"))
+$(_doc_external("SNES/SNESPatchSetComputeOperator"))
 """
 function SNESPatchSetComputeOperator(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
 
@@ -7635,7 +7635,7 @@ end
 	SNESPatchSetComputeFunction(petsclib::PetscLibType,snes::PetscSNES, func::external, ctx::Cvoid) 
 
 # External Links
-$(_doc_external("Snes/SNESPatchSetComputeFunction"))
+$(_doc_external("SNES/SNESPatchSetComputeFunction"))
 """
 function SNESPatchSetComputeFunction(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
 
@@ -7656,7 +7656,7 @@ end
 	ctx::Cvoid = SNESPatchSetConstructType(petsclib::PetscLibType,snes::PetscSNES, ctype::PCPatchConstructType, func::external) 
 
 # External Links
-$(_doc_external("Snes/SNESPatchSetConstructType"))
+$(_doc_external("SNES/SNESPatchSetConstructType"))
 """
 function SNESPatchSetConstructType(petsclib::PetscLibType, snes::PetscSNES, ctype::PCPatchConstructType, func::external) end
 
@@ -7679,7 +7679,7 @@ end
 	SNESPatchSetCellNumbering(petsclib::PetscLibType,snes::PetscSNES, cellNumbering::PetscSection) 
 
 # External Links
-$(_doc_external("Snes/SNESPatchSetCellNumbering"))
+$(_doc_external("SNES/SNESPatchSetCellNumbering"))
 """
 function SNESPatchSetCellNumbering(petsclib::PetscLibType, snes::PetscSNES, cellNumbering::PetscSection) end
 
@@ -7713,7 +7713,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESMULTIBLOCK`, `SNESMultiblockGetSubSNES()`, `SNESMultiblockSetBlockSize()`, `SNESMultiblockSetIS()`
 
 # External Links
-$(_doc_external("Snes/SNESMultiblockSetFields"))
+$(_doc_external("SNES/SNESMultiblockSetFields"))
 """
 function SNESMultiblockSetFields(petsclib::PetscLibType, snes::PetscSNES, name::String, n::PetscInt, fields::PetscInt) end
 
@@ -7746,7 +7746,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESMULTIBLOCK`, `SNESMultiblockGetSubSNES()`, `SNESMultiblockSetBlockSize()`, `SNESMultiblockSetFields()`
 
 # External Links
-$(_doc_external("Snes/SNESMultiblockSetIS"))
+$(_doc_external("SNES/SNESMultiblockSetIS"))
 """
 function SNESMultiblockSetIS(petsclib::PetscLibType, snes::PetscSNES, name::String, is::IS) end
 
@@ -7755,7 +7755,7 @@ function SNESMultiblockSetIS(petsclib::PetscLibType, snes::PetscSNES, name::Stri
     @chk ccall(
                (:SNESMultiblockSetIS, $petsc_library),
                PetscErrorCode,
-               (CSNES, Ptr{Cchar}, IS),
+               (CSNES, Ptr{Cchar}, CIS),
                snes, name, is,
               )
 
@@ -7782,7 +7782,7 @@ Level: advanced
 `PCCompositeType`, `SNESCOMPOSITE`, `SNESCompositeSetType()`
 
 # External Links
-$(_doc_external("Snes/SNESMultiblockSetType"))
+$(_doc_external("SNES/SNESMultiblockSetType"))
 """
 function SNESMultiblockSetType(petsclib::PetscLibType, snes::PetscSNES, type::PCCompositeType) end
 
@@ -7814,7 +7814,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESMULTIBLOCK`, `SNESMultiblockGetSubSNES()`, `SNESMultiblockSetFields()`
 
 # External Links
-$(_doc_external("Snes/SNESMultiblockSetBlockSize"))
+$(_doc_external("SNES/SNESMultiblockSetBlockSize"))
 """
 function SNESMultiblockSetBlockSize(petsclib::PetscLibType, snes::PetscSNES, bs::PetscInt) end
 
@@ -7849,7 +7849,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESMULTIBLOCK`, `SNESMultiblockSetIS()`, `SNESMultiblockSetFields()`
 
 # External Links
-$(_doc_external("Snes/SNESMultiblockGetSubSNES"))
+$(_doc_external("SNES/SNESMultiblockGetSubSNES"))
 """
 function SNESMultiblockGetSubSNES(petsclib::PetscLibType, snes::PetscSNES, subsnes::Vector{PetscSNES}) end
 
@@ -7887,7 +7887,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNCG`, `SNESNCGType`, `SNES_NCG_FR`, `SNES_NCG_PRP`, `SNES_NCG_HS`, `SNES_NCG_DY`, `SNES_NCG_CD`
 
 # External Links
-$(_doc_external("Snes/SNESNCGSetType"))
+$(_doc_external("SNES/SNESNCGSetType"))
 """
 function SNESNCGSetType(petsclib::PetscLibType, snes::PetscSNES, btype::SNESNCGType) end
 
@@ -7921,7 +7921,7 @@ Level: developer
 -seealso: [](ch_snes), `SNESFASSetRestriction()`, `SNESFASRestrict()`, `SNESFAS`
 
 # External Links
-$(_doc_external("Snes/SNESFASCreateCoarseVec"))
+$(_doc_external("SNES/SNESFASCreateCoarseVec"))
 """
 function SNESFASCreateCoarseVec(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -7958,7 +7958,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetRestriction()`, `SNESFASSetInjection()`, `SNESFASCreateCoarseVec()`
 
 # External Links
-$(_doc_external("Snes/SNESFASRestrict"))
+$(_doc_external("SNES/SNESFASRestrict"))
 """
 function SNESFASRestrict(petsclib::PetscLibType, fine::PetscSNES, Xfine::PetscVec, Xcoarse::PetscVec) end
 
@@ -7992,7 +7992,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetLevels()`, `SNESFASSetGalerkin()`
 
 # External Links
-$(_doc_external("Snes/SNESFASGetGalerkin"))
+$(_doc_external("SNES/SNESFASGetGalerkin"))
 """
 function SNESFASGetGalerkin(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -8026,7 +8026,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetLevels()`, `SNESFASGetGalerkin()`
 
 # External Links
-$(_doc_external("Snes/SNESFASSetGalerkin"))
+$(_doc_external("SNES/SNESFASSetGalerkin"))
 """
 function SNESFASSetGalerkin(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
 
@@ -8062,7 +8062,7 @@ Level: developer
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASGetGalerkin()`, `SNESFASSetGalerkin()`
 
 # External Links
-$(_doc_external("Snes/SNESFASGalerkinFunctionDefault"))
+$(_doc_external("SNES/SNESFASGalerkinFunctionDefault"))
 """
 function SNESFASGalerkinFunctionDefault(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, F::PetscVec, ctx::Cvoid) end
 
@@ -8094,7 +8094,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `PCMGSetType()`, `SNESFASGetType()`, `SNES_FAS_ADDITIVE`, `SNES_FAS_MULTIPLICATIVE`, `SNES_FAS_FULL`, `SNES_FAS_KASKADE`
 
 # External Links
-$(_doc_external("Snes/SNESFASSetType"))
+$(_doc_external("SNES/SNESFASSetType"))
 """
 function SNESFASSetType(petsclib::PetscLibType, snes::PetscSNES, fastype::SNESFASType) end
 
@@ -8128,7 +8128,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `PCMGSetType()`, `SNESFASSetType()`, `SNES_FAS_ADDITIVE`, `SNES_FAS_MULTIPLICATIVE`, `SNES_FAS_FULL`, `SNES_FAS_KASKADE`
 
 # External Links
-$(_doc_external("Snes/SNESFASGetType"))
+$(_doc_external("SNES/SNESFASGetType"))
 """
 function SNESFASGetType(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -8163,7 +8163,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASGetLevels()`
 
 # External Links
-$(_doc_external("Snes/SNESFASSetLevels"))
+$(_doc_external("SNES/SNESFASSetLevels"))
 """
 function SNESFASSetLevels(petsclib::PetscLibType, snes::PetscSNES, levels::PetscInt, comms::MPI_Comm) end
 
@@ -8195,7 +8195,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetLevels()`, `PCMGGetLevels()`
 
 # External Links
-$(_doc_external("Snes/SNESFASGetLevels"))
+$(_doc_external("SNES/SNESFASGetLevels"))
 """
 function SNESFASGetLevels(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -8230,7 +8230,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetLevels()`, `SNESFASGetLevels()`
 
 # External Links
-$(_doc_external("Snes/SNESFASGetCycleSNES"))
+$(_doc_external("SNES/SNESFASGetCycleSNES"))
 """
 function SNESFASGetCycleSNES(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, lsnes::PetscSNES) end
 
@@ -8268,7 +8268,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetNumberSmoothDown()`
 
 # External Links
-$(_doc_external("Snes/SNESFASSetNumberSmoothUp"))
+$(_doc_external("SNES/SNESFASSetNumberSmoothUp"))
 """
 function SNESFASSetNumberSmoothUp(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt) end
 
@@ -8304,7 +8304,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetNumberSmoothUp()`
 
 # External Links
-$(_doc_external("Snes/SNESFASSetNumberSmoothDown"))
+$(_doc_external("SNES/SNESFASSetNumberSmoothDown"))
 """
 function SNESFASSetNumberSmoothDown(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt) end
 
@@ -8339,7 +8339,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetNumberSmoothUp()`
 
 # External Links
-$(_doc_external("Snes/SNESFASSetContinuation"))
+$(_doc_external("SNES/SNESFASSetContinuation"))
 """
 function SNESFASSetContinuation(petsclib::PetscLibType, snes::PetscSNES, continuation::PetscBool) end
 
@@ -8375,7 +8375,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetCyclesOnLevel()`
 
 # External Links
-$(_doc_external("Snes/SNESFASSetCycles"))
+$(_doc_external("SNES/SNESFASSetCycles"))
 """
 function SNESFASSetCycles(petsclib::PetscLibType, snes::PetscSNES, cycles::PetscInt) end
 
@@ -8408,7 +8408,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESMonitorSet()`, `SNESFASSetCyclesOnLevel()`
 
 # External Links
-$(_doc_external("Snes/SNESFASSetMonitor"))
+$(_doc_external("SNES/SNESFASSetMonitor"))
 """
 function SNESFASSetMonitor(petsclib::PetscLibType, snes::PetscSNES, vf::PetscViewerAndFormat, flg::PetscBool) end
 
@@ -8440,7 +8440,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetMonitor()`
 
 # External Links
-$(_doc_external("Snes/SNESFASSetLog"))
+$(_doc_external("SNES/SNESFASSetLog"))
 """
 function SNESFASSetLog(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
 
@@ -8472,7 +8472,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetCycles()`
 
 # External Links
-$(_doc_external("Snes/SNESFASCycleSetCycles"))
+$(_doc_external("SNES/SNESFASCycleSetCycles"))
 """
 function SNESFASCycleSetCycles(petsclib::PetscLibType, snes::PetscSNES, cycles::PetscInt) end
 
@@ -8506,7 +8506,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASCycleGetSmootherUp()`, `SNESFASCycleGetSmootherDown()`, `SNESFASGetCycleSNES()`
 
 # External Links
-$(_doc_external("Snes/SNESFASCycleGetSmoother"))
+$(_doc_external("SNES/SNESFASCycleGetSmoother"))
 """
 function SNESFASCycleGetSmoother(petsclib::PetscLibType, snes::PetscSNES, smooth::PetscSNES) end
 
@@ -8542,7 +8542,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASCycleGetSmoother()`, `SNESFASCycleGetSmootherDown()`, `SNESFASGetCycleSNES()`
 
 # External Links
-$(_doc_external("Snes/SNESFASCycleGetSmootherUp"))
+$(_doc_external("SNES/SNESFASCycleGetSmootherUp"))
 """
 function SNESFASCycleGetSmootherUp(petsclib::PetscLibType, snes::PetscSNES, smoothu::PetscSNES) end
 
@@ -8578,7 +8578,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASCycleGetSmootherUp()`, `SNESFASCycleGetSmoother()`, `SNESFASGetCycleSNES()`
 
 # External Links
-$(_doc_external("Snes/SNESFASCycleGetSmootherDown"))
+$(_doc_external("SNES/SNESFASCycleGetSmootherDown"))
 """
 function SNESFASCycleGetSmootherDown(petsclib::PetscLibType, snes::PetscSNES, smoothd::PetscSNES) end
 
@@ -8614,7 +8614,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS` `SNESFASCycleGetSmootherUp()`, `SNESFASCycleGetSmoother()`
 
 # External Links
-$(_doc_external("Snes/SNESFASCycleGetCorrection"))
+$(_doc_external("SNES/SNESFASCycleGetCorrection"))
 """
 function SNESFASCycleGetCorrection(petsclib::PetscLibType, snes::PetscSNES, correction::PetscSNES) end
 
@@ -8650,7 +8650,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASCycleGetSmootherUp()`, `SNESFASCycleGetSmoother()`
 
 # External Links
-$(_doc_external("Snes/SNESFASCycleGetInterpolation"))
+$(_doc_external("SNES/SNESFASCycleGetInterpolation"))
 """
 function SNESFASCycleGetInterpolation(petsclib::PetscLibType, snes::PetscSNES, mat::PetscMat) end
 
@@ -8686,7 +8686,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASGetRestriction()`, `SNESFASCycleGetInterpolation()`
 
 # External Links
-$(_doc_external("Snes/SNESFASCycleGetRestriction"))
+$(_doc_external("SNES/SNESFASCycleGetRestriction"))
 """
 function SNESFASCycleGetRestriction(petsclib::PetscLibType, snes::PetscSNES, mat::PetscMat) end
 
@@ -8722,7 +8722,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASGetInjection()`, `SNESFASCycleGetRestriction()`
 
 # External Links
-$(_doc_external("Snes/SNESFASCycleGetInjection"))
+$(_doc_external("SNES/SNESFASCycleGetInjection"))
 """
 function SNESFASCycleGetInjection(petsclib::PetscLibType, snes::PetscSNES, mat::PetscMat) end
 
@@ -8758,7 +8758,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASCycleGetRestriction()`, `SNESFASGetRScale()`
 
 # External Links
-$(_doc_external("Snes/SNESFASCycleGetRScale"))
+$(_doc_external("SNES/SNESFASCycleGetRScale"))
 """
 function SNESFASCycleGetRScale(petsclib::PetscLibType, snes::PetscSNES, vec::PetscVec) end
 
@@ -8794,7 +8794,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetLevels()`
 
 # External Links
-$(_doc_external("Snes/SNESFASCycleIsFine"))
+$(_doc_external("SNES/SNESFASCycleIsFine"))
 """
 function SNESFASCycleIsFine(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -8828,7 +8828,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASSetRestriction()`, `SNESFASSetRScale()`
 
 # External Links
-$(_doc_external("Snes/SNESFASSetInterpolation"))
+$(_doc_external("SNES/SNESFASSetInterpolation"))
 """
 function SNESFASSetInterpolation(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, mat::PetscMat) end
 
@@ -8862,7 +8862,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetInterpolation()`, `SNESFASGetInjection()`, `SNESFASGetRestriction()`, `SNESFASGetRScale()`
 
 # External Links
-$(_doc_external("Snes/SNESFASGetInterpolation"))
+$(_doc_external("SNES/SNESFASGetInterpolation"))
 """
 function SNESFASGetInterpolation(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, mat::PetscMat) end
 
@@ -8896,7 +8896,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetInterpolation()`, `SNESFASSetInjection()`
 
 # External Links
-$(_doc_external("Snes/SNESFASSetRestriction"))
+$(_doc_external("SNES/SNESFASSetRestriction"))
 """
 function SNESFASSetRestriction(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, mat::PetscMat) end
 
@@ -8930,7 +8930,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetRestriction()`, `SNESFASGetInjection()`, `SNESFASGetInterpolation()`, `SNESFASGetRScale()`
 
 # External Links
-$(_doc_external("Snes/SNESFASGetRestriction"))
+$(_doc_external("SNES/SNESFASGetRestriction"))
 """
 function SNESFASGetRestriction(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, mat::PetscMat) end
 
@@ -8964,7 +8964,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetInterpolation()`, `SNESFASSetRestriction()`
 
 # External Links
-$(_doc_external("Snes/SNESFASSetInjection"))
+$(_doc_external("SNES/SNESFASSetInjection"))
 """
 function SNESFASSetInjection(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, mat::PetscMat) end
 
@@ -8998,7 +8998,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASGetRestriction()`, `SNESFASGetInterpolation()`, `SNESFASGetRScale()`
 
 # External Links
-$(_doc_external("Snes/SNESFASGetInjection"))
+$(_doc_external("SNES/SNESFASGetInjection"))
 """
 function SNESFASGetInjection(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, mat::PetscMat) end
 
@@ -9032,7 +9032,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASSetRestriction()`
 
 # External Links
-$(_doc_external("Snes/SNESFASSetRScale"))
+$(_doc_external("SNES/SNESFASSetRScale"))
 """
 function SNESFASSetRScale(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, rscale::PetscVec) end
 
@@ -9065,7 +9065,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASSetRestriction()`
 
 # External Links
-$(_doc_external("Snes/SNESFASGetSmoother"))
+$(_doc_external("SNES/SNESFASGetSmoother"))
 """
 function SNESFASGetSmoother(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, smooth::PetscSNES) end
 
@@ -9100,7 +9100,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASSetRestriction()`
 
 # External Links
-$(_doc_external("Snes/SNESFASGetSmootherDown"))
+$(_doc_external("SNES/SNESFASGetSmootherDown"))
 """
 function SNESFASGetSmootherDown(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, smooth::PetscSNES) end
 
@@ -9135,7 +9135,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASSetRestriction()`
 
 # External Links
-$(_doc_external("Snes/SNESFASGetSmootherUp"))
+$(_doc_external("SNES/SNESFASGetSmootherUp"))
 """
 function SNESFASGetSmootherUp(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, smooth::PetscSNES) end
 
@@ -9169,7 +9169,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetInjection()`, `SNESFASSetRestriction()`
 
 # External Links
-$(_doc_external("Snes/SNESFASGetCoarseSolve"))
+$(_doc_external("SNES/SNESFASGetCoarseSolve"))
 """
 function SNESFASGetCoarseSolve(petsclib::PetscLibType, snes::PetscSNES, coarse::PetscSNES) end
 
@@ -9206,7 +9206,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetNumberSmoothUp()`
 
 # External Links
-$(_doc_external("Snes/SNESFASFullSetDownSweep"))
+$(_doc_external("SNES/SNESFASFullSetDownSweep"))
 """
 function SNESFASFullSetDownSweep(petsclib::PetscLibType, snes::PetscSNES, swp::PetscBool) end
 
@@ -9241,7 +9241,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetNumberSmoothUp()`, `DMInterpolateSolution()`
 
 # External Links
-$(_doc_external("Snes/SNESFASFullSetTotal"))
+$(_doc_external("SNES/SNESFASFullSetTotal"))
 """
 function SNESFASFullSetTotal(petsclib::PetscLibType, snes::PetscSNES, total::PetscBool) end
 
@@ -9275,7 +9275,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `SNESFAS`, `SNESFASSetNumberSmoothUp()`, `DMInterpolateSolution()`, `SNESFullSetTotal()`
 
 # External Links
-$(_doc_external("Snes/SNESFASFullGetTotal"))
+$(_doc_external("SNES/SNESFASFullGetTotal"))
 """
 function SNESFASFullGetTotal(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -9307,7 +9307,7 @@ Level: intermediate
 -seealso: `SNESNEWTONTR`, `NormType`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRSetNormType"))
+$(_doc_external("SNES/SNESNewtonTRSetNormType"))
 """
 function SNESNewtonTRSetNormType(petsclib::PetscLibType, snes::PetscSNES, norm::NormType) end
 
@@ -9337,7 +9337,7 @@ Level: intermediate
 -seealso: `SNESNEWTONTR`, `SNESNewtonTRQNType`, `MATLMVM`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRSetQNType"))
+$(_doc_external("SNES/SNESNewtonTRSetQNType"))
 """
 function SNESNewtonTRSetQNType(petsclib::PetscLibType, snes::PetscSNES, use::SNESNewtonTRQNType) end
 
@@ -9368,7 +9368,7 @@ Level: intermediate
 `SNESNewtonTRSetPostCheck()`, `SNESNewtonTRGetPostCheck()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRSetFallbackType"))
+$(_doc_external("SNES/SNESNewtonTRSetFallbackType"))
 """
 function SNESNewtonTRSetFallbackType(petsclib::PetscLibType, snes::PetscSNES, ftype::SNESNewtonTRFallbackType) end
 
@@ -9402,7 +9402,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESNEWTONTR`, `SNESNewtonTRPreCheck()`, `SNESNewtonTRGetPreCheck()`, `SNESNewtonTRSetPostCheck()`, `SNESNewtonTRGetPostCheck()`,
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRSetPreCheck"))
+$(_doc_external("SNES/SNESNewtonTRSetPreCheck"))
 """
 function SNESNewtonTRSetPreCheck(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
 
@@ -9436,7 +9436,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESNEWTONTR`, `SNESNewtonTRPostCheck()`, `SNESNewtonTRGetPostCheck()`, `SNESNewtonTRSetPreCheck()`, `SNESNewtonTRGetPreCheck()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRSetPostCheck"))
+$(_doc_external("SNES/SNESNewtonTRSetPostCheck"))
 """
 function SNESNewtonTRSetPostCheck(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
 
@@ -9472,7 +9472,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNESNEWTONTR`, `SNESNewtonTRSetPreCheck()`, `SNESNewtonTRGetPreCheck()`, `SNESNewtonTRPostCheck()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRPreCheck"))
+$(_doc_external("SNES/SNESNewtonTRPreCheck"))
 """
 function SNESNewtonTRPreCheck(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, Y::PetscVec) end
 
@@ -9510,7 +9510,7 @@ Output Parameters:
 -seealso: [](ch_snes), `SNESNEWTONTR`, `SNESNewtonTRSetPostCheck()`, `SNESNewtonTRGetPostCheck()`, `SNESNewtonTRPreCheck()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRPostCheck"))
+$(_doc_external("SNES/SNESNewtonTRPostCheck"))
 """
 function SNESNewtonTRPostCheck(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, Y::PetscVec, W::PetscVec) end
 
@@ -9551,7 +9551,7 @@ Options Database Key:
 -seealso: [](ch_snes), `SNES`, `SNESNEWTONTR`, `SNESNewtonTRGetTolerances()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRSetTolerances"))
+$(_doc_external("SNES/SNESNewtonTRSetTolerances"))
 """
 function SNESNewtonTRSetTolerances(petsclib::PetscLibType, snes::PetscSNES, delta_min::PetscReal, delta_max::PetscReal, delta_0::PetscReal) end
 
@@ -9587,7 +9587,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNEWTONTR`, `SNESNewtonTRSetTolerances()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRGetTolerances"))
+$(_doc_external("SNES/SNESNewtonTRGetTolerances"))
 """
 function SNESNewtonTRGetTolerances(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -9634,7 +9634,7 @@ Options Database Key:
 -seealso: [](ch_snes), `SNES`, `SNESNEWTONTR`, `SNESSetObjective()`, `SNESNewtonTRGetUpdateParameters()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRSetUpdateParameters"))
+$(_doc_external("SNES/SNESNewtonTRSetUpdateParameters"))
 """
 function SNESNewtonTRSetUpdateParameters(petsclib::PetscLibType, snes::PetscSNES, eta1::PetscReal, eta2::PetscReal, eta3::PetscReal, t1::PetscReal, t2::PetscReal) end
 
@@ -9672,7 +9672,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESNEWTONTR`, `SNESNewtonTRSetUpdateParameters()`
 
 # External Links
-$(_doc_external("Snes/SNESNewtonTRGetUpdateParameters"))
+$(_doc_external("SNES/SNESNewtonTRGetUpdateParameters"))
 """
 function SNESNewtonTRGetUpdateParameters(petsclib::PetscLibType, snes::PetscSNES) end
 
@@ -9725,7 +9725,7 @@ Level: advanced
 -seealso: [](ch_snes), `SNES`, `DM`, `SNESConvergedDefault()`, `SNESSetConvergenceTest()`, `DMSetNullSpaceConstructor()`
 
 # External Links
-$(_doc_external("Snes/SNESConvergedCorrectPressure"))
+$(_doc_external("SNES/SNESConvergedCorrectPressure"))
 """
 function SNESConvergedCorrectPressure(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt, xnorm::PetscReal, gnorm::PetscReal, f::PetscReal, reason::SNESConvergedReason, ctx::Cvoid) end
 
@@ -9759,7 +9759,7 @@ Level: intermediate
 -seealso: [](ch_snes), `SNES`, `SNESMonitorSet()`, `SNESMonitorDefault()`
 
 # External Links
-$(_doc_external("Snes/SNESMonitorFields"))
+$(_doc_external("SNES/SNESMonitorFields"))
 """
 function SNESMonitorFields(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 

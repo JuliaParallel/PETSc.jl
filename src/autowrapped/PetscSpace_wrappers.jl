@@ -19,7 +19,7 @@ Input Parameters:
 -seealso: `PetscSpace`, `PetscSpaceRegisterAll()`, `PetscSpaceRegisterDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceRegister"))
+$(_doc_external("DM/PetscSpaceRegister"))
 """
 function PetscSpaceRegister(petsclib::PetscLibType, sname::String, fnc::external) end
 
@@ -54,7 +54,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscSpaceType`, `PetscSpaceGetType()`, `PetscSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSetType"))
+$(_doc_external("DM/PetscSpaceSetType"))
 """
 function PetscSpaceSetType(petsclib::PetscLibType, sp::PetscSpace, name::PetscSpaceType) end
 
@@ -88,7 +88,7 @@ Level: intermediate
 -seealso: `PetscSpaceType`, `PetscSpace`, `PetscSpaceSetType()`, `PetscSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceGetType"))
+$(_doc_external("DM/PetscSpaceGetType"))
 """
 function PetscSpaceGetType(petsclib::PetscLibType, sp::PetscSpace) end
 
@@ -123,7 +123,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscSpaceView()`, `PetscObjectViewFromOptions()`, `PetscSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceViewFromOptions"))
+$(_doc_external("DM/PetscSpaceViewFromOptions"))
 """
 function PetscSpaceViewFromOptions(petsclib::PetscLibType, A::PetscSpace, obj::PetscObject, name::String) end
 
@@ -155,7 +155,7 @@ Level: beginner
 -seealso: `PetscSpace`, `PetscViewer`, `PetscSpaceViewFromOptions()`, `PetscSpaceDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceView"))
+$(_doc_external("DM/PetscSpaceView"))
 """
 function PetscSpaceView(petsclib::PetscLibType, sp::PetscSpace, v::PetscViewer) end
 
@@ -191,7 +191,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscSpaceView()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSetFromOptions"))
+$(_doc_external("DM/PetscSpaceSetFromOptions"))
 """
 function PetscSpaceSetFromOptions(petsclib::PetscLibType, sp::PetscSpace) end
 
@@ -222,7 +222,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscSpaceView()`, `PetscSpaceDestroy()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSetUp"))
+$(_doc_external("DM/PetscSpaceSetUp"))
 """
 function PetscSpaceSetUp(petsclib::PetscLibType, sp::PetscSpace) end
 
@@ -253,7 +253,7 @@ Level: beginner
 -seealso: `PetscSpace`, `PetscSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceDestroy"))
+$(_doc_external("DM/PetscSpaceDestroy"))
 """
 function PetscSpaceDestroy(petsclib::PetscLibType, sp::PetscSpace) end
 
@@ -287,7 +287,7 @@ Level: beginner
 -seealso: `PetscSpace`, `PetscSpaceSetType()`, `PETSCSPACEPOLYNOMIAL`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceCreate"))
+$(_doc_external("DM/PetscSpaceCreate"))
 """
 function PetscSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 
@@ -321,7 +321,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscSpaceGetDegree()`, `PetscSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceGetDimension"))
+$(_doc_external("DM/PetscSpaceGetDimension"))
 """
 function PetscSpaceGetDimension(petsclib::PetscLibType, sp::PetscSpace) end
 
@@ -356,7 +356,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscSpaceSetDegree()`, `PetscSpaceGetDimension()`, `PetscSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceGetDegree"))
+$(_doc_external("DM/PetscSpaceGetDegree"))
 """
 function PetscSpaceGetDegree(petsclib::PetscLibType, sp::PetscSpace) end
 
@@ -391,7 +391,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscSpaceGetDegree()`, `PetscSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSetDegree"))
+$(_doc_external("DM/PetscSpaceSetDegree"))
 """
 function PetscSpaceSetDegree(petsclib::PetscLibType, sp::PetscSpace, degree::PetscInt, maxDegree::PetscInt) end
 
@@ -423,7 +423,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscSpaceSetNumComponents()`, `PetscSpaceGetNumVariables()`, `PetscSpaceGetDimension()`, `PetscSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceGetNumComponents"))
+$(_doc_external("DM/PetscSpaceGetNumComponents"))
 """
 function PetscSpaceGetNumComponents(petsclib::PetscLibType, sp::PetscSpace) end
 
@@ -455,7 +455,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscSpaceGetNumComponents()`, `PetscSpaceSetNumVariables()`, `PetscSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSetNumComponents"))
+$(_doc_external("DM/PetscSpaceSetNumComponents"))
 """
 function PetscSpaceSetNumComponents(petsclib::PetscLibType, sp::PetscSpace, Nc::PetscInt) end
 
@@ -485,7 +485,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscSpaceGetNumVariables()`, `PetscSpaceSetNumComponents()`, `PetscSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSetNumVariables"))
+$(_doc_external("DM/PetscSpaceSetNumVariables"))
 """
 function PetscSpaceSetNumVariables(petsclib::PetscLibType, sp::PetscSpace, n::PetscInt) end
 
@@ -517,7 +517,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscSpaceSetNumVariables()`, `PetscSpaceGetNumComponents()`, `PetscSpaceGetDimension()`, `PetscSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceGetNumVariables"))
+$(_doc_external("DM/PetscSpaceGetNumVariables"))
 """
 function PetscSpaceGetNumVariables(petsclib::PetscLibType, sp::PetscSpace) end
 
@@ -555,7 +555,7 @@ Level: beginner
 -seealso: `PetscSpace`, `PetscFECreateTabulation()`, `PetscFEGetCellTabulation()`, `PetscSpaceCreate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceEvaluate"))
+$(_doc_external("DM/PetscSpaceEvaluate"))
 """
 function PetscSpaceEvaluate(petsclib::PetscLibType, sp::PetscSpace, npoints::PetscInt, points::Vector{PetscReal}) end
 
@@ -593,7 +593,7 @@ Level: advanced
 -seealso: `PetscDualSpaceGetHeightSubspace()`, `PetscSpace`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceGetHeightSubspace"))
+$(_doc_external("DM/PetscSpaceGetHeightSubspace"))
 """
 function PetscSpaceGetHeightSubspace(petsclib::PetscLibType, sp::PetscSpace, height::PetscInt, subsp::PetscSpace) end
 
@@ -631,7 +631,7 @@ Level: advanced
 -seealso: `PetscSpace`, `PetscDualSpace`, `PetscCopyMode`, `PetscSpaceType`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceCreateSubspace"))
+$(_doc_external("DM/PetscSpaceCreateSubspace"))
 """
 function PetscSpaceCreateSubspace(petsclib::PetscLibType, origSpace::PetscSpace, dualSubspace::PetscDualSpace, x::PetscReal, Jx::PetscReal, u::PetscReal, Ju::PetscReal, copymode::PetscCopyMode) end
 
@@ -665,7 +665,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscQuadrature`, `PetscSpaceCreate()`, `PetscSpaceSetType()`
 
 # External Links
-$(_doc_external("Dm/PetscSpacePointSetPoints"))
+$(_doc_external("DM/PetscSpacePointSetPoints"))
 """
 function PetscSpacePointSetPoints(petsclib::PetscLibType, sp::PetscSpace, q::PetscQuadrature) end
 
@@ -699,7 +699,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscQuadrature`, `PetscSpaceCreate()`, `PetscSpaceSetType()`
 
 # External Links
-$(_doc_external("Dm/PetscSpacePointGetPoints"))
+$(_doc_external("DM/PetscSpacePointGetPoints"))
 """
 function PetscSpacePointGetPoints(petsclib::PetscLibType, sp::PetscSpace, q::PetscQuadrature) end
 
@@ -731,7 +731,7 @@ Level: intermediate
 -seealso: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumSetNumSubspaces()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSumGetNumSubspaces"))
+$(_doc_external("DM/PetscSpaceSumGetNumSubspaces"))
 """
 function PetscSpaceSumGetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace) end
 
@@ -763,7 +763,7 @@ Level: intermediate
 -seealso: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumGetNumSubspaces()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSumSetNumSubspaces"))
+$(_doc_external("DM/PetscSpaceSumSetNumSubspaces"))
 """
 function PetscSpaceSumSetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace, numSumSpaces::PetscInt) end
 
@@ -795,7 +795,7 @@ Level: intermediate
 -seealso: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumSetConcatenate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSumGetConcatenate"))
+$(_doc_external("DM/PetscSpaceSumGetConcatenate"))
 """
 function PetscSpaceSumGetConcatenate(petsclib::PetscLibType, sp::PetscSpace) end
 
@@ -827,7 +827,7 @@ Level: intermediate
 -seealso: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumGetConcatenate()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSumSetConcatenate"))
+$(_doc_external("DM/PetscSpaceSumSetConcatenate"))
 """
 function PetscSpaceSumSetConcatenate(petsclib::PetscLibType, sp::PetscSpace, concatenate::PetscBool) end
 
@@ -860,7 +860,7 @@ Level: intermediate
 -seealso: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumSetSubspace()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSumGetSubspace"))
+$(_doc_external("DM/PetscSpaceSumGetSubspace"))
 """
 function PetscSpaceSumGetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::PetscInt, subsp::PetscSpace) end
 
@@ -891,7 +891,7 @@ Level: intermediate
 -seealso: `PETSCSPACESUM`, `PetscSpace`, `PetscSpaceSumGetSubspace()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSumSetSubspace"))
+$(_doc_external("DM/PetscSpaceSumSetSubspace"))
 """
 function PetscSpaceSumSetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::PetscInt, subsp::PetscSpace) end
 
@@ -925,7 +925,7 @@ Level: developer
 -seealso: `PetscSpace`, `PETSCSPACESUM`, `PETSCFEVECTOR`, `PetscSpaceSumGetInterleave()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSumSetInterleave"))
+$(_doc_external("DM/PetscSpaceSumSetInterleave"))
 """
 function PetscSpaceSumSetInterleave(petsclib::PetscLibType, sp::PetscSpace, interleave_basis::PetscBool, interleave_components::PetscBool) end
 
@@ -961,7 +961,7 @@ Level: developer
 -seealso: `PetscSpace`, `PETSCSPACESUM`, `PETSCFEVECTOR`, `PetscSpaceSumSetInterleave()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceSumGetInterleave"))
+$(_doc_external("DM/PetscSpaceSumGetInterleave"))
 """
 function PetscSpaceSumGetInterleave(petsclib::PetscLibType, sp::PetscSpace) end
 
@@ -995,7 +995,7 @@ Level: intermediate
 -seealso: `PETSCSPACETENSOR`, `PetscSpace`, `PetscSpaceTensorGetNumSubspaces()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceTensorSetNumSubspaces"))
+$(_doc_external("DM/PetscSpaceTensorSetNumSubspaces"))
 """
 function PetscSpaceTensorSetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace, numTensSpaces::PetscInt) end
 
@@ -1027,7 +1027,7 @@ Level: intermediate
 -seealso: `PETSCSPACETENSOR`, `PetscSpace`, `PetscSpaceTensorSetNumSubspaces()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceTensorGetNumSubspaces"))
+$(_doc_external("DM/PetscSpaceTensorGetNumSubspaces"))
 """
 function PetscSpaceTensorGetNumSubspaces(petsclib::PetscLibType, sp::PetscSpace) end
 
@@ -1060,7 +1060,7 @@ Level: intermediate
 -seealso: `PETSCSPACETENSOR`, `PetscSpace`, `PetscSpaceTensorGetSubspace()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceTensorSetSubspace"))
+$(_doc_external("DM/PetscSpaceTensorSetSubspace"))
 """
 function PetscSpaceTensorSetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::PetscInt, subsp::PetscSpace) end
 
@@ -1093,7 +1093,7 @@ Level: intermediate
 -seealso: `PETSCSPACETENSOR`, `PetscSpace`, `PetscSpaceTensorSetSubspace()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
-$(_doc_external("Dm/PetscSpaceTensorGetSubspace"))
+$(_doc_external("DM/PetscSpaceTensorGetSubspace"))
 """
 function PetscSpaceTensorGetSubspace(petsclib::PetscLibType, sp::PetscSpace, s::PetscInt, subsp::PetscSpace) end
 
@@ -1126,7 +1126,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscDTAltV`, `PetscDTPTrimmedEvalJet()`, `PetscSpacePTrimmedGetFormDegree()`
 
 # External Links
-$(_doc_external("Dm/PetscSpacePTrimmedSetFormDegree"))
+$(_doc_external("DM/PetscSpacePTrimmedSetFormDegree"))
 """
 function PetscSpacePTrimmedSetFormDegree(petsclib::PetscLibType, sp::PetscSpace, formDegree::PetscInt) end
 
@@ -1158,7 +1158,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscDTAltV`, `PetscDTPTrimmedEvalJet()`, `PetscSpacePTrimmedSetFormDegree()`
 
 # External Links
-$(_doc_external("Dm/PetscSpacePTrimmedGetFormDegree"))
+$(_doc_external("DM/PetscSpacePTrimmedGetFormDegree"))
 """
 function PetscSpacePTrimmedGetFormDegree(petsclib::PetscLibType, sp::PetscSpace) end
 
@@ -1193,7 +1193,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscSpacePolynomialGetTensor()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
-$(_doc_external("Dm/PetscSpacePolynomialSetTensor"))
+$(_doc_external("DM/PetscSpacePolynomialSetTensor"))
 """
 function PetscSpacePolynomialSetTensor(petsclib::PetscLibType, sp::PetscSpace, tensor::PetscBool) end
 
@@ -1226,7 +1226,7 @@ Level: intermediate
 -seealso: `PetscSpace`, `PetscSpacePolynomialSetTensor()`, `PetscSpaceSetDegree()`, `PetscSpaceSetNumVariables()`
 
 # External Links
-$(_doc_external("Dm/PetscSpacePolynomialGetTensor"))
+$(_doc_external("DM/PetscSpacePolynomialGetTensor"))
 """
 function PetscSpacePolynomialGetTensor(petsclib::PetscLibType, sp::PetscSpace) end
 

@@ -1,9 +1,6 @@
 # autodefined type arguments for class ------
 mutable struct _n_ISColoringValue end
 const ISColoringValue = Ptr{_n_ISColoringValue}
-
-mutable struct _n_ISColoring end
-const ISColoring = Ptr{_n_ISColoring}
 # -------------------------------------------------------
 
 """

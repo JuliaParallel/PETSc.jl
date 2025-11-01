@@ -22916,7 +22916,7 @@ See also:
 `DM`, `MatSetDM()`, `DMCreateMatrix()`, `DMSetMatType()`
 
 # External Links
-$(_doc_external("Dm/MatGetDM"))
+$(_doc_external("DM/MatGetDM"))
 """
 function MatGetDM(petsclib::PetscLibType, A::PetscMat, dm::PetscDM) end
 
@@ -22959,7 +22959,7 @@ See also:
 `DM`, `MatGetDM()`, `DMCreateMatrix()`, `DMSetMatType()`
 
 # External Links
-$(_doc_external("Dm/MatSetDM"))
+$(_doc_external("DM/MatSetDM"))
 """
 function MatSetDM(petsclib::PetscLibType, A::PetscMat, dm::PetscDM) end
 

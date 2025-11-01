@@ -30,45 +30,21 @@
 - PetscKDTree
 - PetscGridHash
 - PetscSection, PetscSectionSym
+- TSTrajectory,TSMonitorDrawCtx,TSMonitorSolutionCtx,TSMonitorVTKCtx,TSMonitorLGCtx,TSMonitorLGCtxNetwork,TSMonitorEnvelopeCtx,TSMonitorSPEigCtx,TSMonitorSPCtx,TSMonitorHGCtx,TSAdapt,TSGLLEAdapt
+- PetscSpace
+- PetscDevice,PetscDeviceContext
+- PetscLayout
+- PetscMatlabEngine
+- PetscPartitioner
+- PetscConvEst
+- PetscFE,PetscQuadrature,PetscTabulation,PetscWeakForm
+- PetscBench
+- PetscToken
+- PetscObject, PetscObjectList
 
 # to be done
 
 
-
-
-- TSTrajectory
-- TSMonitorDrawCtx
-- TSMonitorSolutionCtx
-- TSMonitorVTKCtx
-- TSMonitorLGCtx
-- TSMonitorLGCtxNetwork
-- TSMonitorEnvelopeCtx
-- TSMonitorSPEigCtx
-- TSMonitorSPCtx
-- TSMonitorHGCtx
-- TSAdapt
-- TSGLLEAdapt
-
-- PetscSpace
-
-- PetscDevice
-- PetscDeviceContext
-- PetscMatlabEngine
-
-- PetscPartitioner
-- PetscConvEst
-- 
-- PetscFE
-- PetscQuadrature
-- PetscTabulation
-- PetscWeakForm
-
-- PetscBench
-- PetscToken
-  
-- PetscObject
-- PetscObjectList
-  
 - PetscFunctionList
 - PetscDLLibrary
 - PetscContainer
@@ -88,8 +64,10 @@
 - PetscViewers
 
 - Characteristic
+
 - PetscSF
 - PetscSFLink
+
 - PetscDualSpace
 
 - PetscOptionsHelpPrinted
@@ -101,4 +79,3 @@
 - PetscLogHandler
 - PetscLogRegistry
 - PetscLogState
-- PetscLayout

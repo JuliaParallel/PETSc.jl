@@ -862,11 +862,19 @@ exclude=[""]
 #write_functions_from_classes_to_file("PetscKDTree_wrappers.jl",start_dir, classes, ["PetscKDTree"], exclude=exclude)  
 #write_functions_from_classes_to_file("PetscGridHash_wrappers.jl",start_dir, classes, ["PetscGridHash"], exclude=exclude)  
 #write_functions_from_classes_to_file("PetscSection_wrappers.jl",start_dir, classes, ["PetscSection","PetscSectionSym"], exclude=exclude)  
-write_functions_from_classes_to_file("TSaddons_wrappers.jl",start_dir, classes, ["TSTrajectory","TSMonitorDrawCtx","TSMonitorSolutionCtx","TSMonitorVTKCtx","TSMonitorLGCtx","TSMonitorLGCtxNetwork","TSMonitorEnvelopeCtx","TSMonitorSPEigCtx","TSMonitorSPCtx","TSMonitorHGCtx","TSAdapt","TSGLLEAdapt"], exclude=exclude)  
+#write_functions_from_classes_to_file("TSaddons_wrappers.jl",start_dir, classes, ["TSTrajectory","TSMonitorDrawCtx","TSMonitorSolutionCtx","TSMonitorVTKCtx","TSMonitorLGCtx","TSMonitorLGCtxNetwork","TSMonitorEnvelopeCtx","TSMonitorSPEigCtx","TSMonitorSPCtx","TSMonitorHGCtx","TSAdapt","TSGLLEAdapt"], exclude=exclude)  
+#write_functions_from_classes_to_file("PetscSpace_wrappers.jl",start_dir, classes, "PetscSpace", exclude=exclude)  
+#write_functions_from_classes_to_file("PetscDevice_wrappers.jl",start_dir, classes, ["PetscDevice","PetscDeviceContext"], exclude=exclude)  
+#write_functions_from_classes_to_file("PetscLayout_wrappers.jl",start_dir, classes, ["PetscLayout"], exclude=exclude)  
+#write_functions_from_classes_to_file("PetscMatlabEngine_wrappers.jl",start_dir, classes, ["PetscMatlabEngine"], exclude=exclude)  
+#write_functions_from_classes_to_file("PetscPartitioner_wrappers.jl",start_dir, classes, ["PetscPartitioner"], exclude=exclude)  
+#write_functions_from_classes_to_file("PetscConvEst_wrappers.jl",start_dir, classes, ["PetscConvEst"], exclude=exclude)  
+#write_functions_from_classes_to_file("PetscFE_wrappers.jl",start_dir, classes, ["PetscFE","PetscQuadrature","PetscTabulation","PetscWeakForm"], exclude=exclude)  
+#write_functions_from_classes_to_file("PetscBench_wrappers.jl",start_dir, classes, ["PetscBench"], exclude=exclude)  
+#write_functions_from_classes_to_file("PetscToken_wrappers.jl",start_dir, classes, ["PetscToken"], exclude=exclude)  
+write_functions_from_classes_to_file("PetscObject_wrappers.jl",start_dir, classes, ["PetscObject","PetscObjectList"], exclude=exclude)  
 
 
-
-#exclude=["MatSolves","MatCreateVecs","MatCreateVecsFFTW"]
 #exclude=[""]
 #write_functions_from_classes_to_file("Mat_wrappers.jl",start_dir, classes, "Mat", exclude=exclude)     
 

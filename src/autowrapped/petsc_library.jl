@@ -490,5 +490,14 @@ include("PetscGridHash_wrappers.jl")
 include("PetscSection_wrappers.jl")
 include("TSaddons_wrappers.jl")
 
-#include("../../wrapping/TSaddons_wrappers.jl")
+include("PetscSpace_wrappers.jl")
+include("PetscDevice_wrappers.jl")
+include("PetscLayout_wrappers.jl")
+include("PetscMatlabEngine_wrappers.jl")
+include("PetscPartitioner_wrappers.jl")
+include("PetscConvEst_wrappers.jl")
+include("PetscFE_wrappers.jl")
+include("PetscBench_wrappers.jl")
+include("PetscToken_wrappers.jl")
+
 

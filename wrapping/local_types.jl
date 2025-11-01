@@ -897,3 +897,39 @@ mutable struct _n_TSGLLEAdapt end
 const TSGLLEAdapt = Ptr{_n_TSGLLEAdapt}
 
 # -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscDevice end
+const PetscDevice = Ptr{_n_PetscDevice}
+
+mutable struct _n_PetscDeviceContext end
+const PetscDeviceContext = Ptr{_n_PetscDeviceContext}
+# -------------------------------------------------------
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscMatlabEngine end
+const PetscMatlabEngine = Ptr{_n_PetscMatlabEngine}
+# -------------------------------------------------------
+
+mutable struct _n_PetscPartitioner end
+const PetscPartitioner = Ptr{_n_PetscPartitioner}
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscConvEst end
+const PetscConvEst = Ptr{_n_PetscConvEst}
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscToken end
+const PetscToken = Ptr{_n_PetscToken}
+
+# autodefined type arguments for class ------
+mutable struct _n_PetscBench end
+const PetscBench = Ptr{_n_PetscBench}
+
+mutable struct _n_PetscFE end
+const PetscFE = Ptr{_n_PetscFE}
+
+# -------------------------------------------------------
+# autodefined type arguments for class ------
+mutable struct _n_PetscObjectList end
+const PetscObjectList = Ptr{_n_PetscObjectList}

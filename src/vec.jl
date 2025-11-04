@@ -17,6 +17,39 @@ function Base.show(io::IO, v::AbstractPetscVec{PetscLib}) where {PetscLib}
     return nothing
 end
 
+"""
+    VecPtr(petsclib, v::CVec, own)
+
+Container type for a PETSc Vec that is just a raw pointer.
+
+If the `own` then the finalizer is set on the vector; calling `destroy` when
+`!own` is a no-op.
+"""
+mutable struct VecPtr{PetscLib} <:
+               AbstractPetscVec{PetscLib}
+    ptr::CVec
+    own::Bool
+end
+function VecPtr(
+    petsclib::PetscLib,
+    ptr::CVec,
+    own,
+) where {PetscLib <: PetscLibType}
+    v = VecPtr{PetscLib}(ptr, own)
+    #comm = getcomm(v)
+
+    #comm = MPI.Comm()
+    comm = LibPETSc.PetscObjectGetComm(getlib(PetscLib), v)
+
+    if own && MPI.Comm_size(comm) == 1
+        finalizer(destroy, v)
+    end
+    return v
+end
+VecPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} = VecPtr(getlib(PetscLib), x...)
+
+
+
 # =============================================================================
 # Multiple dispatch to make PetscVec behave like Julia Vector
 # =============================================================================
@@ -49,23 +82,23 @@ end
 
 Base.isapprox(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{PetscLib}; kwargs...) where {PetscLib} = all(v[:] .≈ w[:]; kwargs...)
 
-function Base.setindex!(v::PetscVec{PetscLib}, val, i::Integer) where {PetscLib} 
+function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {PetscLib} 
      PetscInt = inttype(PetscLib)
      LibPETSc.VecSetValues(PetscLib,v, PetscInt(1), PetscInt.([i-1]), [val], PETSc.INSERT_VALUES)
      return nothing
 end
 
-function Base.setindex!(v::PetscVec{PetscLib}, vals, r::AbstractRange) where {PetscLib} 
+function Base.setindex!(v::AbstractPetscVec{PetscLib}, vals, r::AbstractRange) where {PetscLib} 
     PetscInt = inttype(PetscLib)
     LibPETSc.VecSetValues(PetscLib,v, PetscInt(length(r)), PetscInt.(Vector(r) .- 1), vals, PETSc.INSERT_VALUES)
     return nothing
 end
 
-Base.fill!(v::PetscVec{PetscLib}, val) where {PetscLib} = LibPETSc.VecSet(PetscLib,v, val)
+Base.fill!(v::AbstractPetscVec{PetscLib}, val) where {PetscLib} = LibPETSc.VecSet(PetscLib,v, val)
 
 # Iterator interface
-Base.iterate(v::PetscVec{PetscLib})  where {PetscLib} = iterate(v, 1)
-function Base.iterate(v::PetscVec{PetscLib}, state)  where {PetscLib}
+Base.iterate(v::AbstractPetscVec{PetscLib})  where {PetscLib} = iterate(v, 1)
+function Base.iterate(v::AbstractPetscVec{PetscLib}, state)  where {PetscLib}
     if state > length(v)
         return nothing
     end
@@ -77,7 +110,7 @@ end
 
 Assembles a PETSc vector after setting values.
 """
-function assemble!(A::PetscVec{PetscLib}) where {PetscLib}
+function assemble!(A::AbstractPetscVec{PetscLib}) where {PetscLib}
     LibPETSc.VecAssemblyBegin(PetscLib, A)
     LibPETSc.VecAssemblyEnd(PetscLib, A)
 end
@@ -106,7 +139,7 @@ $(_doc_external("Vec/VecRestoreArrayWrite"))
 $(_doc_external("Vec/VecRestoreArrayRead"))
 """
 function unsafe_localarray(
-    vec::PetscVec{PetscLib};
+    vec::AbstractPetscVec{PetscLib};
     read::Bool = true,
     write::Bool = true,
 ) where {PetscLib}
@@ -173,7 +206,7 @@ end
 """
 function withlocalarray!(
     f!,
-    vecs::NTuple{N, PetscVec};
+    vecs::NTuple{N, AbstractPetscVec};
     read::Union{Bool, NTuple{N, Bool}} = true,
     write::Union{Bool, NTuple{N, Bool}} = true,
 ) where {N}

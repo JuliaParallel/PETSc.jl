@@ -2018,7 +2018,7 @@ $(_doc_external("SNES/SNESSetFunction"))
 """
 function SNESSetFunction(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, ctx::Cvoid) end
 
-@for_petsc function SNESSetFunction(petsclib::$UnionPetscLib, snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, ctx::Cvoid )
+@for_petsc function SNESSetFunction(petsclib::$UnionPetscLib, snes::PetscSNES, r::PetscVec, f::Union{SNESFunctionFn, Ptr}, ctx::Union{Cvoid, Ptr}    )
 
     @chk ccall(
                (:SNESSetFunction, $petsc_library),
@@ -2830,7 +2830,7 @@ function SNESComputeJacobian(petsclib::PetscLibType, snes::PetscSNES, X::PetscVe
 end 
 
 """
-	SNESSetJacobian(petsclib::PetscLibType,snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid) 
+	SNESSetJacobian(petsclib::PetscLibType,snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::Union{SNESJacobianFn,Ptr}, ctx::Union{Cvoid,Ptr}) 
 Sets the function to compute Jacobian as well as the
 location to store the matrix.
 
@@ -2852,9 +2852,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/SNESSetJacobian"))
 """
-function SNESSetJacobian(petsclib::PetscLibType, snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid) end
+function SNESSetJacobian(petsclib::PetscLibType, snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::Union{SNESJacobianFn,Ptr}, ctx::Union{Cvoid,Ptr}) end
 
-@for_petsc function SNESSetJacobian(petsclib::$UnionPetscLib, snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid )
+@for_petsc function SNESSetJacobian(petsclib::$UnionPetscLib, snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::Union{Ptr,SNESJacobianFn}, ctx::Union{Cvoid,Ptr} )
 
     @chk ccall(
                (:SNESSetJacobian, $petsc_library),

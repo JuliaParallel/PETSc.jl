@@ -162,7 +162,7 @@ $(_doc_external("Vec/VecSetValues"))
 """
 function VecSetValues(petsclib::PetscLibType, x::PetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) end
 
-@for_petsc function VecSetValues(petsclib::$UnionPetscLib, x::PetscVec, ni::$PetscInt, ix::Vector{$PetscInt}, y::Vector{$PetscScalar}, iora::InsertMode )
+@for_petsc function VecSetValues(petsclib::$UnionPetscLib, x::AbstractPetscVec, ni::$PetscInt, ix::Vector{$PetscInt}, y::Vector{$PetscScalar}, iora::InsertMode )
 
     @chk ccall(
                (:VecSetValues, $petsc_library),

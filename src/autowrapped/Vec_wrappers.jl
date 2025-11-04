@@ -571,9 +571,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGetValues"))
 """
-function VecGetValues(petsclib::PetscLibType, x::PetscVec, ni::PetscInt, ix::Vector{PetscInt}) end
+function VecGetValues(petsclib::PetscLibType, x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}) end
 
-@for_petsc function VecGetValues(petsclib::$UnionPetscLib, x::PetscVec, ni::$PetscInt, ix::Vector{$PetscInt} )
+@for_petsc function VecGetValues(petsclib::$UnionPetscLib, x::AbstractPetscVec, ni::$PetscInt, ix::Vector{$PetscInt} )
 	y = Vector{$PetscScalar}(undef, ni);  # CHECK SIZE!!
 
     @chk ccall(
@@ -1113,9 +1113,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGetArrayRead"))
 """
-function VecGetArrayRead(petsclib::PetscLibType, x::PetscVec) end
+function VecGetArrayRead(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecGetArrayRead(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecGetArrayRead(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	a_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -1147,9 +1147,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreArrayRead"))
 """
-function VecRestoreArrayRead(petsclib::PetscLibType, x::PetscVec, a::Vector{PetscScalar}) end
+function VecRestoreArrayRead(petsclib::PetscLibType, x::AbstractPetscVec, a::Vector{PetscScalar}) end
 
-@for_petsc function VecRestoreArrayRead(petsclib::$UnionPetscLib, x::PetscVec, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArrayRead(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::Vector{$PetscScalar} )
 	a_ = Ref(pointer(a))
 
     @chk ccall(
@@ -1184,9 +1184,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecGetArrayWrite"))
 """
-function VecGetArrayWrite(petsclib::PetscLibType, x::PetscVec) end
+function VecGetArrayWrite(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecGetArrayWrite(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecGetArrayWrite(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	a_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -1219,9 +1219,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreArrayWrite"))
 """
-function VecRestoreArrayWrite(petsclib::PetscLibType, x::PetscVec, a::Vector{PetscScalar}) end
+function VecRestoreArrayWrite(petsclib::PetscLibType, x::AbstractPetscVec, a::Vector{PetscScalar}) end
 
-@for_petsc function VecRestoreArrayWrite(petsclib::$UnionPetscLib, x::PetscVec, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArrayWrite(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::Vector{$PetscScalar} )
 	a_ = Ref(pointer(a))
 
     @chk ccall(
@@ -3281,9 +3281,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGetSize"))
 """
-function VecGetSize(petsclib::PetscLibType, x::PetscVec) end
+function VecGetSize(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecGetSize(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecGetSize(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	size_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3318,9 +3318,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGetLocalSize"))
 """
-function VecGetLocalSize(petsclib::PetscLibType, x::PetscVec) end
+function VecGetLocalSize(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecGetLocalSize(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecGetLocalSize(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	size_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -4067,9 +4067,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecGetType"))
 """
-function VecGetType(petsclib::PetscLibType, vec::PetscVec) end
+function VecGetType(petsclib::PetscLibType, vec::AbstractPetscVec) end
 
-@for_petsc function VecGetType(petsclib::$UnionPetscLib, vec::PetscVec )
+@for_petsc function VecGetType(petsclib::$UnionPetscLib, vec::AbstractPetscVec )
 	type_ = Ref{VecType}()
 
     @chk ccall(

@@ -114,17 +114,25 @@ abstract type AbstractPetscSNES{T} end
 mutable struct PetscSNES{PetscLib} <: AbstractPetscSNES{PetscLib}
     ptr::CSNES
     age::Int
-    
+    f!::Function
+    updateJ!::Function
+
     # Constructor from pointer and age
-    PetscSNES{PetscLib}(ptr::CSNES, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
+    #PetscSNES{PetscLib}(ptr::CSNES, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
     
     # Constructor for empty SNES (null pointer)
-    PetscSNES{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
+    PetscSNES{PetscLib}(ptr, age) where {PetscLib} = new{PetscLib}(
+                        ptr, 
+                        age,
+                        x -> error("function not defined"),
+                        x -> error("function not defined"),
+                        )                  
 end
 
 # Convenience constructor from petsclib instance
 PetscSNES(lib::PetscLib) where {PetscLib} = PetscSNES{PetscLib}()
-PetscSNES(ptr::CSNES, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscSNES{PetscLib}(ptr, age)
+PetscSNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, age::Int = 0) where {PetscLib} = PetscSNES{PetscLib}(ptr, age, f!, updateJ!)
+PetscSNES(ptr::Ptr, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscSNES{PetscLib}(ptr, age)
 Base.convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
 Base.unsafe_convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
 

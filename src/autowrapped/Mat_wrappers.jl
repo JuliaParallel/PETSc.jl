@@ -1639,9 +1639,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatResetHash"))
 """
-function MatResetHash(petsclib::PetscLibType, A::PetscMat) end
+function MatResetHash(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatResetHash(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatResetHash(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 
     @chk ccall(
                (:MatResetHash, $petsc_library),
@@ -1841,7 +1841,7 @@ function MatDestroy(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatSetValues(petsclib::PetscLibType,mat::PetscMat, m::PetscInt, idxm::Vector{PetscInt}, n::PetscInt, idxn::Vector{PetscInt}, v::Vector{PetscScalar}, addv::InsertMode) 
+	MatSetValues(petsclib::PetscLibType,mat::AbstractPetscMat, m::PetscInt, idxm::Vector{PetscInt}, n::PetscInt, idxn::Vector{PetscInt}, v::Vector{PetscScalar}, addv::InsertMode) 
 Inserts or adds a block of values into a matrix.
 These values may be cached, so `MatAssemblyBegin()` and `MatAssemblyEnd()`
 MUST be called after all calls to `MatSetValues()` have been completed.
@@ -1866,9 +1866,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatSetValues"))
 """
-function MatSetValues(petsclib::PetscLibType, mat::PetscMat, m::PetscInt, idxm::Vector{PetscInt}, n::PetscInt, idxn::Vector{PetscInt}, v::Vector{PetscScalar}, addv::InsertMode) end
+function MatSetValues(petsclib::PetscLibType, mat::AbstractPetscMat, m::PetscInt, idxm::Vector{PetscInt}, n::PetscInt, idxn::Vector{PetscInt}, v::Vector{PetscScalar}, addv::InsertMode) end
 
-@for_petsc function MatSetValues(petsclib::$UnionPetscLib, mat::PetscMat, m::$PetscInt, idxm::Vector{$PetscInt}, n::$PetscInt, idxn::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
+@for_petsc function MatSetValues(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{$PetscInt}, n::$PetscInt, idxn::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
 
     @chk ccall(
                (:MatSetValues, $petsc_library),
@@ -4552,9 +4552,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatAssemblyBegin"))
 """
-function MatAssemblyBegin(petsclib::PetscLibType, mat::PetscMat, type::MatAssemblyType) end
+function MatAssemblyBegin(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatAssemblyType) end
 
-@for_petsc function MatAssemblyBegin(petsclib::$UnionPetscLib, mat::PetscMat, type::MatAssemblyType )
+@for_petsc function MatAssemblyBegin(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatAssemblyType )
 
     @chk ccall(
                (:MatAssemblyBegin, $petsc_library),
@@ -4635,9 +4635,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatAssemblyEnd"))
 """
-function MatAssemblyEnd(petsclib::PetscLibType, mat::PetscMat, type::MatAssemblyType) end
+function MatAssemblyEnd(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatAssemblyType) end
 
-@for_petsc function MatAssemblyEnd(petsclib::$UnionPetscLib, mat::PetscMat, type::MatAssemblyType )
+@for_petsc function MatAssemblyEnd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatAssemblyType )
 
     @chk ccall(
                (:MatAssemblyEnd, $petsc_library),

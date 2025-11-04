@@ -12,6 +12,15 @@ function Base.show(io::IO, v::AbstractPetscMat{PetscLib}) where {PetscLib}
     return nothing
 end
 
+"""
+    MatPtr(petsclib, mat::CMat)
+
+Container type for a PETSc Mat that is just a raw pointer.
+"""
+mutable struct MatPtr{PetscLib} <:
+               AbstractPetscMat{PetscLib}
+    ptr::CMat
+end
 
 Base.size(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetSize(PetscLib,m)
 Base.length(m::AbstractPetscMat{PetscLib}) where {PetscLib} = prod(size(m))
@@ -231,7 +240,7 @@ end
 
 Assembles a PETSc matrix after setting values.
 """
-function assemble!(A::PetscMat{PetscLib}) where {PetscLib}
+function assemble!(A::AbstractPetscMat{PetscLib}) where {PetscLib}
     LibPETSc.MatAssemblyBegin(PetscLib, A, PETSc.MAT_FINAL_ASSEMBLY)
     LibPETSc.MatAssemblyEnd(PetscLib, A, PETSc.MAT_FINAL_ASSEMBLY)
 end

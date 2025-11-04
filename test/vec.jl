@@ -130,3 +130,70 @@ end
         PETSc.finalize(petsclib)
     end
 end
+
+
+
+@testset "withlocalarray!" begin
+    for petsclib in PETSc.petsclibs
+        #petsclib = PETSc.petsclibs[1]
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt    = petsclib.PetscInt
+        N           = PetscInt(10)
+        petsc_x     = LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, N)
+        petsc_y     = LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, N)
+
+        # extract one array, write
+        PETSc.withlocalarray!(
+            petsc_x;
+            read = false, write = true,
+        ) do x
+            @test all(x .== 0)
+            for i in eachindex(x)
+                x[i] = PetscScalar(i)
+            end
+        end
+        @test petsc_x[1:N] == PetscScalar.(1:N)
+        
+        # with tuple as input
+        PETSc.withlocalarray!(
+            (petsc_x, );
+            read = (false,), write = (true,),
+        ) do x
+            for i in eachindex(x)
+                x[i] = PetscScalar(i)
+            end
+        end
+        @test petsc_x[1:N] == PetscScalar.(1:N)
+
+        # with 2-variable tuple as input
+        PETSc.withlocalarray!(
+            (petsc_x, petsc_y);
+            read = (false,false), write = (true,true),
+        ) do x, y
+            for i in eachindex(x)
+                x[i] = PetscScalar(i)
+                y[i] = PetscScalar(2i)
+            end
+        end
+        @test petsc_x[1:N] == PetscScalar.(1:N)
+        @test petsc_y[1:N] == PetscScalar.(2:2:2N)
+
+        # with 2-variable tuple as input
+        PETSc.withlocalarray!(
+            petsc_x, petsc_y;
+            read = (false,false), write = (true,true),
+        ) do x, y
+            for i in eachindex(x)
+                x[i] = PetscScalar(i)
+                y[i] = PetscScalar(2i)
+            end
+        end
+        @test petsc_x[1:N] == PetscScalar.(1:N)
+        @test petsc_y[1:N] == PetscScalar.(2:2:2N)
+
+
+        LibPETSc.VecDestroy(petsclib,petsc_x)
+        PETSc.finalize(petsclib)
+    end
+end

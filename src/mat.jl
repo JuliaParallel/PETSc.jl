@@ -1,5 +1,5 @@
 
-import .LibPETSc: AbstractPetscMat, PetscMat, CMat
+import .LibPETSc: AbstractPetscMat, PetscMat, CMat, MatStencil, InsertMode
 
 # Custom display for REPL
 function Base.show(io::IO, v::AbstractPetscMat{PetscLib}) where {PetscLib}
@@ -388,6 +388,99 @@ function Base.copyto!(
     end
 end
 
+"""
+    setvalues!(
+        M::AbstractPetscMat{PetscLib},
+        row0idxs::Vector{MatStencil},
+        col0idxs::Vector{MatStencil},
+        rowvals::Array{PetscScalar},
+        insertmode::InsertMode = INSERT_VALUES;
+        num_rows = length(row0idxs),
+        num_cols = length(col0idxs)
+    )
+
+Set values of the matrix `M` with base-0  row and column indices `row0idxs` and
+`col0idxs` inserting the values `rowvals`.
+
+If the keyword arguments `num_rows` or `num_cols` is specified then only the
+first `num_rows * num_cols` values of `rowvals` will be used.
+
+# External Links
+$(_doc_external("Mat/MatSetValuesStencil"))
+"""
+function setvalues!(
+    M::AbstractPetscMat{PetscLib},
+    row0idxs::Vector{MatStencil},
+    col0idxs::Vector{MatStencil},
+    rowvals::Array{PetscScalar},
+    insertmode::InsertMode = INSERT_VALUES;
+    num_rows = length(row0idxs),
+    num_cols = length(col0idxs),
+) where {PetscLib, PetscScalar}
+    @assert PetscScalar == PetscLib.PetscScalar
+    @assert num_rows * num_cols <= length(rowvals)
+    LibPETSc.MatSetValuesStencil(
+        PetscLib,
+        M,
+        num_rows,
+        row0idxs,
+        num_cols,
+        col0idxs,
+        rowvals,
+        insertmode,
+    )
+    return nothing
+end
+
+
+function Base.setindex!(
+    M::AbstractPetscMat{PetscLib},
+    val,
+    i::CartesianIndex{N},
+    j::CartesianIndex{N},
+) where {PetscLib, N}
+    PetscInt = PetscLib.PetscInt
+    PetscScalar = PetscLib.PetscScalar
+     ms_i = MatStencil(
+        N < 3 ? PetscInt(0) : PetscInt(i[3] - 1),
+        N < 2 ? PetscInt(0) : PetscInt(i[2] - 1),
+        PetscInt(i[1] - 1),
+        N < 4 ? PetscInt(0) : PetscInt(i[4] - 1),
+    )
+    ms_j = MatStencil(
+        N < 3 ? PetscInt(0) : PetscInt(j[3] - 1),
+        N < 2 ? PetscInt(0) : PetscInt(j[2] - 1),
+        PetscInt(j[1] - 1),
+        N < 4 ? PetscInt(0) : PetscInt(j[4] - 1),
+    )
+    setvalues!(M, [ms_i], [ms_j], [PetscScalar(val)], INSERT_VALUES)
+    return val
+end
+
+function addindex!(
+    M::AbstractPetscMat{PetscLib},
+    val,
+    i::CartesianIndex{N},
+    j::CartesianIndex{N},
+) where {PetscLib, N}
+    PetscInt = PetscLib.PetscInt
+    PetscScalar = PetscLib.PetscScalar
+    ms_i = MatStencil(
+        N < 3 ? PetscInt(0) : PetscInt(i[3] - 1),
+        N < 2 ? PetscInt(0) : PetscInt(i[2] - 1),
+        PetscInt(i[1] - 1),
+        N < 4 ? PetscInt(0) : PetscInt(i[4] - 1),
+    )
+    ms_j = MatStencil(
+        N < 3 ? PetscInt(0) : PetscInt(j[3] - 1),
+        N < 2 ? PetscInt(0) : PetscInt(j[2] - 1),
+        PetscInt(j[1] - 1),
+        N < 4 ? PetscInt(0) : PetscInt(j[4] - 1),
+    )
+    setvalues!(M, [ms_i], [ms_j], [PetscScalar(val)], ADD_VALUES)
+    return val
+end
+
 
 # ====
 
@@ -431,9 +524,10 @@ function (::MatOp{PetscLib, LibPETSc.MATOP_MULT})(
             cx::CVec,
             cy::CVec,
         ) where {PetscLib}
-    r_ctx = Ref{Ptr{Cvoid}}()
-    LibPETSc.MatShellGetContext(PetscLib, M, r_ctx)
-    ptr = r_ctx[]
+    #r_ctx = Ref{Ptr{Cvoid}}()
+    #LibPETSc.MatShellGetContext(PetscLib, M, r_ctx)
+    #ptr = r_ctx[]
+
     mat = unsafe_pointer_to_objref(ptr)
 
     PetscScalar = PetscLib.PetscScalar

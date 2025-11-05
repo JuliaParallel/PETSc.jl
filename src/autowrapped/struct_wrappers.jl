@@ -47,7 +47,7 @@ mutable struct PetscDrawViewPorts
 
     PetscDrawViewPorts() = new()
 
-    PetscDrawViewPorts(nports,xl,xr,yl,yr,draw,port_xl) = new(nports::PetscInt,xl::Ptr{PetscReal},xr::Ptr{PetscReal},yl::Ptr{PetscReal},yr::Ptr{PetscReal},draw::PetscDraw,port_xl::PetscReal ,    port_yl::PetscReal ,    port_xr::PetscReal ,    port_yr::PetscReal ,    )
+    PetscDrawViewPorts(nports,xl,xr,yl,yr,draw,port_xl) = new(nports::PetscInt,xl::Ptr{PetscReal},xr::Ptr{PetscReal},yl::Ptr{PetscReal},yr::Ptr{PetscReal},draw::PetscDraw,port_xl::PetscReal ,    port_yl::PetscReal ,    port_xr::PetscReal ,    port_yr::PetscReal)
 
 end 
 
@@ -73,7 +73,7 @@ mutable struct DMStagStencil
 
     DMStagStencil() = new()
 
-    DMStagStencil(loc,i) = new(loc::DMStagStencilLocation,i::PetscInt ,    j::PetscInt ,    k::PetscInt ,    c::PetscInt ,    )
+    DMStagStencil(loc,i) = new(loc::DMStagStencilLocation,i::PetscInt ,    j::PetscInt ,    k::PetscInt ,    c::PetscInt)
 
 end 
 
@@ -84,9 +84,9 @@ mutable struct MatStencil
     c::PetscInt 
     
 
-    MatStencil() = new()
+  #  MatStencil() = new()
 
-    MatStencil(k) = new(k::PetscInt ,    j::PetscInt ,    i::PetscInt ,    c::PetscInt ,    )
+    MatStencil(k,j,i,c) = new(k::PetscInt ,    j::PetscInt ,    i::PetscInt ,    c::PetscInt)
 
 end 
 
@@ -374,7 +374,7 @@ mutable struct DMDACoor
 
     DMDACoor() = new()
 
-    DMDACoor(x) = new(x::PetscScalar ,    y::PetscScalar ,    z::PetscScalar ,    )
+    DMDACoor(x) = new(x::PetscScalar ,    y::PetscScalar ,    z::PetscScalar)
 
 end 
 

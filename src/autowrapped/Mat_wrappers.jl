@@ -2534,9 +2534,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMult"))
 """
-function MatMult(petsclib::PetscLibType, mat::PetscMat, x::PetscVec, y::PetscVec) end
+function MatMult(petsclib::PetscLibType, mat::AbstractPetscMat, x::PetscVec, y::PetscVec) end
 
-@for_petsc function MatMult(petsclib::$UnionPetscLib, mat::PetscMat, x::PetscVec, y::PetscVec )
+@for_petsc function MatMult(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::PetscVec, y::PetscVec )
 
     @chk ccall(
                (:MatMult, $petsc_library),
@@ -10271,9 +10271,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatShellGetContext"))
 """
-function MatShellGetContext(petsclib::PetscLibType, mat::AbstractPetscMat, ctx::Cvoid) end
+function MatShellGetContext(petsclib::PetscLibType, mat::AbstractPetscMat, ctx::Union{Cvoid,Ptr}) end
 
-@for_petsc function MatShellGetContext(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ctx::Cvoid)
+@for_petsc function MatShellGetContext(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ctx::Union{Cvoid,Ptr})
 
     @chk ccall(
                (:MatShellGetContext, $petsc_library),

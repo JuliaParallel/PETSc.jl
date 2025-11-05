@@ -31,6 +31,9 @@ include("options.jl")
 include("ksp.jl")
 include("sys.jl")
 include("snes.jl")          
+include("dm.jl")          
+include("dmda.jl")          
+
 
 
 #=

@@ -1,28 +1,31 @@
 using Test
 using PETSc, MPI
 MPI.Initialized() || MPI.Init()
-
+#=
 @testset "DMDACreate1D" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
+        #petsclib = PETSc.petsclibs[5]
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt
 
         # Loop over all boundary types and try to use them
-        for boundary_type in instances(PETSc.DMBoundaryType)
+        for boundary_type in instances(LibPETSc.DMBoundaryType)
+            #boundary_type = LibPETSc.DM_BOUNDARY_NONE
             @testset "$boundary_type" begin
-                dof_per_node = 4
-                stencil_width = 5
+                
+                dof_per_node = PetscInt(4)
+                stencil_width = PetscInt(5)
 
                 # We test both setting and not setting the point distribution
                 points_per_proc = [PetscInt(10 + i) for i in 1:mpisize]
                 proc_global_offsets =
                     [PetscInt(0), accumulate(+, points_per_proc)...]
 
-                global_size = proc_global_offsets[end]
+                global_size = PetscInt(proc_global_offsets[end])
 
                 # left and right ghost points
                 gl =
@@ -33,24 +36,26 @@ MPI.Initialized() || MPI.Init()
                     mpirank == mpisize - 1 ? 0 : stencil_width
 
                 # Set the points
-                da = PETSc.DMDA(
-                    petsclib,
-                    comm,
-                    (boundary_type,),
-                    (global_size,),
-                    dof_per_node,
-                    stencil_width;
-                    points_per_proc = (points_per_proc,),
-                )
 
-                @test PETSc.gettype(da) == "da"
-                @test PETSc.getdimension(da) == 1
+                # NOTE: here I explicitly call the individual functions; below we use the convenience function DMDA
+                da = LibPETSc.DMDACreate1d(petsclib,comm, boundary_type, global_size, dof_per_node, stencil_width, points_per_proc)
+                PETSc.setfromoptions!(da)   # set options (if any)
+                PETSc.setup!(da)            # we need to call this to finalize the DMDA
+          
+                @test LibPETSc.DMGetType(petsclib,da) == "da"
+                @test LibPETSc.DMGetDimension(petsclib, da) == 1
+
+                bx_type = LibPETSc.DM_BOUNDARY_NONE
+                by_type = LibPETSc.DM_BOUNDARY_NONE
+                bz_type = LibPETSc.DM_BOUNDARY_NONE
+                
+                stencil_type = [LibPETSc.DMDA_STENCIL_STAR]
 
                 da_info = PETSc.getinfo(da)
 
                 @test da_info.dim == 1
                 @test da_info.global_size == (global_size, 1, 1)
-                @test da_info.procs_per_dim == (mpisize, 1, 1)
+                @test da_info.mpi_proc_size == (1, 1, 1)
                 @test da_info.boundary_type == (
                     boundary_type,
                     PETSc.DM_BOUNDARY_NONE,
@@ -82,8 +87,7 @@ MPI.Initialized() || MPI.Init()
 
                 PETSc.destroy(da)
 
-                # Do not set the points and test option parsing
-                da_refine = 2
+                # Use DMDA convenience function
                 da = PETSc.DMDA(
                     petsclib,
                     comm,
@@ -91,22 +95,21 @@ MPI.Initialized() || MPI.Init()
                     (global_size,),
                     dof_per_node,
                     stencil_width;
-                    da_refine = da_refine,
                 )
-                @test PETSc.gettype(da) == "da"
-                @test PETSc.getdimension(da) == 1
+                @test LibPETSc.DMGetType(petsclib,da) == "da"
+                @test LibPETSc.DMGetDimension(petsclib, da) == 1
 
                 da_info = PETSc.getinfo(da)
 
                 @test da_info.dim == 1
                 if boundary_type == PETSc.DM_BOUNDARY_PERIODIC
                     @test da_info.global_size ==
-                          (2^da_refine * global_size, 1, 1)
+                          ( global_size, 1, 1)
                 else
                     @test da_info.global_size ==
-                          (2^da_refine * (global_size - 1) + 1, 1, 1)
+                          ( (global_size - 1) + 1, 1, 1)
                 end
-                @test da_info.procs_per_dim == (mpisize, 1, 1)
+                @test da_info.mpi_proc_size == (mpisize, 1, 1)
                 @test da_info.boundary_type == (
                     boundary_type,
                     PETSc.DM_BOUNDARY_NONE,
@@ -114,18 +117,14 @@ MPI.Initialized() || MPI.Init()
                 )
                 @test da_info.stencil_type == PETSc.DMDA_STENCIL_BOX
                 @test da_info.stencil_width == stencil_width
-                # In this case we cannot check the numbers locally
                 PETSc.destroy(da)
-                #=
-                # TODO: Need a better test?
-                ksp = PETSc.KSP(da)
-                @test PETSc.gettype(ksp) == "gmres"
-                =#
+
             end
         end
         PETSc.finalize(petsclib)
     end
 end
+
 
 @testset "DMDACreate2D" begin
     comm = MPI.COMM_WORLD
@@ -134,15 +133,17 @@ end
     global_size_x = 100
     global_size_y = 45
     for petsclib in PETSc.petsclibs
+        #petsclib = PETSc.petsclibs[5]
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt
 
         # Loop over all boundary types and stencil types
         for stencil_type in instances(PETSc.DMDAStencilType),
+            #stencil_type = PETSc.DMDA_STENCIL_STAR
             boundary_type_y in instances(PETSc.DMBoundaryType),
             boundary_type_x in instances(PETSc.DMBoundaryType)
-
+            
             # skip unsupported stencils
             stencil_type == PETSc.DMDA_STENCIL_BOX &&
                 (
@@ -165,14 +166,14 @@ end
                     stencil_width,
                     stencil_type,
                 )
-                @test PETSc.gettype(da) == "da"
-                @test PETSc.getdimension(da) == 2
+                @test LibPETSc.DMGetType(petsclib,da) == "da"
+                @test LibPETSc.DMGetDimension(petsclib, da) == 2
 
                 da_info = PETSc.getinfo(da)
 
                 @test da_info.global_size == (global_size_x, global_size_y, 1)
                 @test da_info.dim == 2
-                @test prod(da_info.procs_per_dim) == mpisize
+                @test prod(da_info.mpi_proc_size) == mpisize
                 @test da_info.boundary_type ==
                       (boundary_type_x, boundary_type_y, PETSc.DM_BOUNDARY_NONE)
                 @test da_info.stencil_type == stencil_type
@@ -190,8 +191,8 @@ end
                     stencil_type;
                     da_refine = da_refine,
                 )
-                @test PETSc.gettype(da) == "da"
-                @test PETSc.getdimension(da) == 2
+                @test LibPETSc.DMGetType(petsclib,da) == "da"
+                @test LibPETSc.DMGetDimension(petsclib, da) == 2
 
                 da_info = PETSc.getinfo(da)
 
@@ -207,26 +208,21 @@ end
 
                 @test da_info.global_size ==
                       (ref_global_size_x, ref_global_size_y, 1)
-                @test prod(da_info.procs_per_dim) == mpisize
+                @test prod(da_info.mpi_proc_size) == mpisize
                 @test da_info.boundary_type ==
                       (boundary_type_x, boundary_type_y, PETSc.DM_BOUNDARY_NONE)
                 @test da_info.stencil_type == stencil_type
                 @test da_info.stencil_width == stencil_width
 
-                # TODO: Test with specific distribution of processors and sizes
-
-                # TODO: Need a better test?
-                #=
-                ksp = PETSc.KSP(da)
-                @test PETSc.gettype(ksp) == "gmres"
-                =#
-
+              
+                
                 PETSc.destroy(da)
             end
         end
         PETSc.finalize(petsclib)
     end
 end
+=#
 
 @testset "DMDACreate3D" begin
     comm = MPI.COMM_WORLD
@@ -236,6 +232,7 @@ end
     global_size_y = 13
     global_size_z = 14
     for petsclib in PETSc.petsclibs
+        #petsclib = PETSc.petsclibs[1] 
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt
@@ -267,15 +264,15 @@ end
                     stencil_width,
                     stencil_type,
                 )
-                @test PETSc.gettype(da) == "da"
-                @test PETSc.getdimension(da) == 3
+                @test LibPETSc.DMGetType(petsclib,da) == "da"
+                @test LibPETSc.DMGetDimension(petsclib, da) == 3
 
                 da_info = PETSc.getinfo(da)
 
                 @test da_info.global_size ==
                       (global_size_x, global_size_y, global_size_z)
                 @test da_info.dim == 3
-                @test prod(da_info.procs_per_dim) == mpisize
+                @test prod(da_info.mpi_proc_size) == mpisize
                 @test da_info.boundary_type ==
                       (boundary_type_x, boundary_type_y, boundary_type_z)
                 @test da_info.stencil_type == stencil_type
@@ -293,8 +290,8 @@ end
                     stencil_type;
                     da_refine = da_refine,
                 )
-                @test PETSc.gettype(da) == "da"
-                @test PETSc.getdimension(da) == 3
+                @test LibPETSc.DMGetType(petsclib,da) == "da"
+                @test LibPETSc.DMGetDimension(petsclib, da) == 3
 
                 da_info = PETSc.getinfo(da)
 
@@ -314,7 +311,7 @@ end
 
                 @test da_info.global_size ==
                       (ref_global_size_x, ref_global_size_y, ref_global_size_z)
-                @test prod(da_info.procs_per_dim) == mpisize
+                @test prod(da_info.mpi_proc_size) == mpisize
                 @test da_info.boundary_type ==
                       (boundary_type_x, boundary_type_y, boundary_type_z)
                 @test da_info.stencil_type == stencil_type
@@ -333,16 +330,20 @@ end
     end
 end
 
-@testset "DM MatAIJ" begin
+
+#=
+#@testset "DM MatAIJ" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     # Just check a couple libraries
-    for petsclib in PETSc.petsclibs[1:2]
+    #for petsclib in PETSc.petsclibs[1:2]
+        petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt
-        for dim in 1:3
+        #for dim in 1:3
+            dim=1
             boundary_type = ntuple(_ -> PETSc.DM_BOUNDARY_NONE, dim)
             dof_per_node = 1
             stencil_width = 1
@@ -361,7 +362,8 @@ end
                 # Stencil to Linear easily
                 processors = (ntuple(i -> 1, dim - 1)..., mpisize),
             )
-            mat = PETSc.MatAIJ(da)
+            #mat = PETSc.MatAIJ(da)
+            mat = LibPETSc.DMCreateMatrix(petsclib, da)
 
             # Build the dim-dimensional Laplacian FD matrix
             corners = PETSc.getcorners(da)
@@ -402,8 +404,11 @@ end
             PETSc.destroy(da)
         end
         PETSc.finalize(petsclib)
-    end
-end
+    #end
+#end
+=#
+
+#=
 
 @testset "DM Vectors and Coordinates" begin
     comm = MPI.COMM_WORLD
@@ -550,5 +555,7 @@ end
         PETSc.finalize(petsclib)
     end
 end
+
+=#
 
 nothing

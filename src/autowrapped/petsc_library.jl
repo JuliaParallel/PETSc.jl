@@ -159,6 +159,7 @@ Base.convert(::Type{CDM}, v::AbstractPetscDM) = v.ptr
 Base.unsafe_convert(::Type{CDM}, v::AbstractPetscDM) = v.ptr
 
 # Custom display for REPL
+#=
 function Base.show(io::IO, v::AbstractPetscDM{PetscLib}) where {PetscLib}
     if v.ptr == C_NULL
         print(io, "PETSc DM (null pointer)")
@@ -168,6 +169,7 @@ function Base.show(io::IO, v::AbstractPetscDM{PetscLib}) where {PetscLib}
     end
     return nothing
 end
+=#
 # ------------------------------------------------------
 
 # ------------------------------------------------------

@@ -28,6 +28,7 @@ function getcomm(
         AbstractKSP{PetscLib},
         AbstractSNES{PetscLib},
         AbstractDM{PetscLib},
+        Any
     },
 ) where {PetscLib}
     comm = MPI.Comm()

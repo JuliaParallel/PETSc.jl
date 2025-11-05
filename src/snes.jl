@@ -49,9 +49,9 @@ function SNES(
 
     # We can only let the garbage collect finalize when we do not need to
     # worry about MPI (since garbage collection is asyncronous)
-    #if MPI.Comm_size(comm) == 1
-    #    finalizer(destroy, snes)
-    #end
+    if MPI.Comm_size(comm) == 1
+        finalizer(destroy, snes)
+    end
 
     return snes
 end
@@ -82,12 +82,9 @@ function (w::Fn_SNESSetFunction{PetscLib})(
     snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
     snes = unsafe_pointer_to_objref(snes_ptr)
-    x = VecPtr(PetscLib, r_x, false)
-    fx = VecPtr(PetscLib, r_fx, false)
-    #x  = PetscVec(r_x,  $PetscLib)
-    #fx = PetscVec(r_fx, $PetscLib)
+    x  = PetscVec{PetscLib}(r_x)
+    fx = PetscVec{PetscLib}(r_fx)
 
-    
     return snes.f!(fx, snes, x)
 end
 
@@ -95,8 +92,8 @@ LibPETSc.@for_petsc function setfunction!(
     f!,
     snes::AbstractPetscSNES{$PetscLib},
     vec::AbstractPetscVec{$PetscLib},
-) 
-  
+    ) 
+
     ctx = pointer_from_objref(snes)
     PetscInt = $PetscLib.PetscInt
     fptr = @cfunction(
@@ -150,21 +147,13 @@ function (w::Fn_SNESSetJacobian{PetscLib})(
     snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
     snes = unsafe_pointer_to_objref(snes_ptr)
-    PetscScalar = PetscLib.PetscScalar
-    petsclib = getlib(PetscLib)
-    x = VecPtr(PetscLib, r_x, false)
-    A = MatPtr{PetscLib}(r_A)
-    P = MatPtr{PetscLib}(r_P)
-    #x = PetscVec(r_x, $PetscLib)
-    #A = PetscMat(r_A, $PetscLib)
-    #P = PetscMat(r_P, $PetscLib)
+    x = PetscVec{PetscLib}(r_x)
+    A = PetscMat{PetscLib}(r_A)
+    P = PetscMat{PetscLib}(r_P)
     
     P == A
-   # @show x,A,snes
 
-    #return P == A ? snes.updateJ!(A, snes, x) : snes.updateJ!(A, P, snes, x)
-    return snes.updateJ!(A, snes, x) 
-    
+    return P == A ? snes.updateJ!(A, snes, x) : snes.updateJ!(A, P, snes, x)
 end
 
 LibPETSc.@for_petsc function setjacobian!(
@@ -195,4 +184,13 @@ function solve!(
     LibPETSc.SNESSolve(PetscLib, snes, isnothing(b) ? C_NULL : b, x)
     #end
     return x
+end
+
+
+function destroy(snes::AbstractPetscSNES{PetscLib}) where {PetscLib}
+    if !(finalized(PetscLib)) && snes.ptr != C_NULL
+        LibPETSc.SNESDestroy(PetscLib, snes)
+    end
+    snes.ptr = C_NULL
+    return nothing
 end

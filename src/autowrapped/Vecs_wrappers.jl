@@ -160,7 +160,7 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecSetValues"))
 """
-function VecSetValues(petsclib::PetscLibType, x::PetscVec, ni::PetscInt, ix::Vector{PetscInt}, y::Vector{PetscScalar}, iora::InsertMode) end
+VecSetValues(petsclib::PetscLibType, x::PetscVec, ni::PetscInt, ix::Vector, y::Vector, iora::InsertMode)
 
 @for_petsc function VecSetValues(petsclib::$UnionPetscLib, x::AbstractPetscVec, ni::$PetscInt, ix::Vector{$PetscInt}, y::Vector{$PetscScalar}, iora::InsertMode )
 

@@ -8,13 +8,11 @@ Base.eltype(
     V <: AbstractMat{PetscLib, PetscScalar},
 } where {PetscLib, PetscScalar} = PetscScalar
 Base.eltype(
-    v::AbstractMat{PetscLib, PetscScalar},
-) where {PetscLib, PetscScalar} = PetscScalar
+    v::AbstractPetscMat{PetscLib, PetscScalar},
+) where {PetscLib} = PetscScalar
 
-function destroy(M::AbstractMat{PetscLib}) where {PetscLib}
-    if !(finalized(PetscLib)) &&
-       M.age == getlib(PetscLib).age &&
-       M.ptr != C_NULL
+function destroy(M::AbstractPetscMat{PetscLib}) where {PetscLib}
+    if !(finalized(PetscLib)) && M.ptr != C_NULL
         LibPETSc.MatDestroy(PetscLib, M)
     end
     M.ptr = C_NULL

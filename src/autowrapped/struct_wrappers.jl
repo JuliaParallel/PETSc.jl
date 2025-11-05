@@ -1,4 +1,4 @@
-mutable struct PetscFEGeom
+struct PetscFEGeom
     mode::PetscFEGeomMode
     isAffine::PetscBool
     dim::PetscInt
@@ -22,7 +22,7 @@ mutable struct PetscFEGeom
 
 end 
 
-mutable struct VecTaggerBox
+struct VecTaggerBox
     min::PetscScalar
     max::PetscScalar
 
@@ -32,7 +32,7 @@ mutable struct VecTaggerBox
 
 end 
 
-mutable struct PetscDrawViewPorts
+struct PetscDrawViewPorts
     nports::PetscInt
     xl::Ptr{PetscReal}
     xr::Ptr{PetscReal}
@@ -51,7 +51,7 @@ mutable struct PetscDrawViewPorts
 
 end 
 
-mutable struct PetscFormKey
+struct PetscFormKey
     label::DMLabel
     value::PetscInt
     field::PetscInt
@@ -63,7 +63,7 @@ mutable struct PetscFormKey
 
 end 
 
-mutable struct DMStagStencil
+struct DMStagStencil
     loc::DMStagStencilLocation
     i::PetscInt 
     j::PetscInt 
@@ -77,20 +77,20 @@ mutable struct DMStagStencil
 
 end 
 
-mutable struct MatStencil
-    k::PetscInt 
-    j::PetscInt 
-    i::PetscInt 
-    c::PetscInt 
-    
+struct MatStencil
+    # Must match PETSc C struct order: struct MatStencil { PetscInt i,j,k,c; };
+    i::PetscInt
+    j::PetscInt
+    k::PetscInt
+    c::PetscInt
 
-  #  MatStencil() = new()
-
-    MatStencil(k,j,i,c) = new(k::PetscInt ,    j::PetscInt ,    i::PetscInt ,    c::PetscInt)
-
+    MatStencil() = new()
+        
+    # Convenience constructor accepting integers in i,j,k,c order
+    MatStencil(i,j,k,c) = new(i::PetscInt, j::PetscInt, k::PetscInt, c::PetscInt)
 end 
 
-mutable struct MatInfo
+struct MatInfo
     block_size::PetscLogDouble
     nz_allocated::PetscLogDouble 
     nz_used::PetscLogDouble 
@@ -110,7 +110,7 @@ mutable struct MatInfo
 
 end 
 
-mutable struct MatFactorInfo
+struct MatFactorInfo
     diagonal_fill::PetscReal
     usedt::PetscReal
     dt::PetscReal
@@ -131,7 +131,7 @@ mutable struct MatFactorInfo
 
 end 
 
-mutable struct LandauStaticData
+struct LandauStaticData
     invJ::Ptr{Cvoid}
     D::Ptr{Cvoid}
     B::Ptr{Cvoid}
@@ -176,7 +176,7 @@ mutable struct LandauStaticData
 
 end 
 
-mutable struct PetscStack
+struct PetscStack
     _function::Ptr{NTuple{PETSCSTACKSIZE, Cchar}}
     file::Ptr{NTuple{PETSCSTACKSIZE, Cchar}}
     line::NTuple{PETSCSTACKSIZE, Cint}
@@ -191,7 +191,7 @@ mutable struct PetscStack
 
 end 
 
-mutable struct JacActionCtx
+struct JacActionCtx
     dm::PetscDM
     u::PetscVec
     J::PetscMat
@@ -203,7 +203,7 @@ mutable struct JacActionCtx
 
 end 
 
-mutable struct TSMonitorDMDARayCtx
+struct TSMonitorDMDARayCtx
     ray::PetscVec
     scatter::VecScatter
     viewer::PetscViewer
@@ -215,7 +215,7 @@ mutable struct TSMonitorDMDARayCtx
 
 end 
 
-mutable struct PCMPIServerAddresses
+struct PCMPIServerAddresses
     n::PetscInt
     addr::Ptr{NTuple{3, Cvoid}}
 
@@ -225,7 +225,7 @@ mutable struct PCMPIServerAddresses
 
 end 
 
-mutable struct PetscFVFaceGeom
+struct PetscFVFaceGeom
     normal::NTuple{3, PetscReal}
     centroid::NTuple{3, PetscReal}
     grad::NTuple{2, PetscScalar}
@@ -236,7 +236,7 @@ mutable struct PetscFVFaceGeom
 
 end 
 
-mutable struct PetscFVCellGeom
+struct PetscFVCellGeom
     centroid::NTuple{3, PetscReal}
     volume::PetscReal
 
@@ -246,7 +246,7 @@ mutable struct PetscFVCellGeom
 
 end 
 
-mutable struct PetscViewerAndFormat
+struct PetscViewerAndFormat
     viewer::PetscViewer
     format::PetscViewerFormat
     view_interval::PetscInt
@@ -259,7 +259,7 @@ mutable struct PetscViewerAndFormat
 
 end 
 
-mutable struct PetscSFNode
+struct PetscSFNode
     rank::PetscInt
     index::PetscInt
 
@@ -269,7 +269,7 @@ mutable struct PetscSFNode
 
 end 
 
-mutable struct DMDALocalInfo
+struct DMDALocalInfo
     da::PetscDM
     dim::PetscInt 
     dof::PetscInt 
@@ -307,7 +307,7 @@ mutable struct DMDALocalInfo
 
 end 
 
-mutable struct PetscEventPerfInfo
+struct PetscEventPerfInfo
     id::Cint
     active::PetscBool
     visible::PetscBool
@@ -336,7 +336,7 @@ mutable struct PetscEventPerfInfo
 
 end 
 
-mutable struct PetscLogEventInfo
+struct PetscLogEventInfo
     name::Ptr{Cchar}
     classid::PetscClassId
     collective::PetscBool
@@ -347,7 +347,7 @@ mutable struct PetscLogEventInfo
 
 end 
 
-mutable struct PetscLogClassInfo
+struct PetscLogClassInfo
     name::Ptr{Cchar}
     classid::PetscClassId
 
@@ -357,7 +357,7 @@ mutable struct PetscLogClassInfo
 
 end 
 
-mutable struct PetscLogStageInfo
+struct PetscLogStageInfo
     name::Ptr{Cchar}
 
     PetscLogStageInfo() = new()
@@ -366,7 +366,7 @@ mutable struct PetscLogStageInfo
 
 end 
 
-mutable struct DMDACoor
+struct DMDACoor
     x::PetscScalar 
     y::PetscScalar 
     z::PetscScalar 

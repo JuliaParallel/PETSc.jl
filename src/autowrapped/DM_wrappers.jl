@@ -445,7 +445,7 @@ function DMAdaptInterpolator(petsclib::PetscLibType, dmc::PetscDM, dmf::PetscDM,
                dmc, dmf, In, smoother, MF, MC, InAdapt_, user,
               )
 
-	InAdapt.ptr = C_NULL
+	InAdapt.ptr = InAdapt_[]
 
 	return nothing
 end 
@@ -2264,7 +2264,7 @@ function DMInterpolationGetCoordinates(petsclib::PetscLibType, ctx::DMInterpolat
                ctx, coordinates_,
               )
 
-	coordinates.ptr = C_NULL
+	coordinates.ptr = coordinates_[]
 
 	return nothing
 end 
@@ -2305,7 +2305,7 @@ function DMInterpolationGetVector(petsclib::PetscLibType, ctx::DMInterpolationIn
                ctx, v_,
               )
 
-	v.ptr = C_NULL
+	v.ptr = v_[]
 
 	return nothing
 end 
@@ -2341,7 +2341,7 @@ function DMInterpolationRestoreVector(petsclib::PetscLibType, ctx::DMInterpolati
                ctx, v_,
               )
 
-	v.ptr = C_NULL
+	v.ptr = v_[]
 
 	return nothing
 end 
@@ -2587,7 +2587,7 @@ function DMClone(petsclib::PetscLibType, dm::PetscDM, newdm::PetscDM) end
                dm, newdm_,
               )
 
-	newdm.ptr = C_NULL
+	newdm.ptr = newdm_[]
 
 	return nothing
 end 
@@ -4404,7 +4404,7 @@ function DMCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::PetscDM
                dm, n, subdms_, iscat_, oscat_, gscat_,
               )
 
-	subdms.ptr = C_NULL
+	subdms.ptr = subdms_[]
 	iscat = unsafe_wrap(Array, iscat_[], VecGetLocalSize(petsclib, x); own = false)
 	oscat = unsafe_wrap(Array, oscat_[], VecGetLocalSize(petsclib, x); own = false)
 	gscat = unsafe_wrap(Array, gscat_[], VecGetLocalSize(petsclib, x); own = false)
@@ -4453,7 +4453,7 @@ function DMRefine(petsclib::PetscLibType, dm::PetscDM, comm::MPI_Comm, dmf::Pets
                dm, comm, dmf_,
               )
 
-	dmf.ptr = C_NULL
+	dmf.ptr = dmf_[]
 
 	return nothing
 end 
@@ -4759,7 +4759,7 @@ function DMExtrude(petsclib::PetscLibType, dm::PetscDM, layers::PetscInt, dme::P
                dm, layers, dme_,
               )
 
-	dme.ptr = C_NULL
+	dme.ptr = dme_[]
 
 	return nothing
 end 
@@ -5301,7 +5301,7 @@ function DMCoarsen(petsclib::PetscLibType, dm::PetscDM, comm::MPI_Comm, dmc::Pet
                dm, comm, dmc_,
               )
 
-	dmc.ptr = C_NULL
+	dmc.ptr = dmc_[]
 
 	return nothing
 end 
@@ -6215,7 +6215,7 @@ function DMConvert(petsclib::PetscLibType, dm::PetscDM, newtype::DMType, M::Pets
                dm, newtype, M_,
               )
 
-	M.ptr = C_NULL
+	M.ptr = M_[]
 
 	return nothing
 end 
@@ -6573,8 +6573,8 @@ function DMGetDefaultConstraints(petsclib::PetscLibType, dm::PetscDM, section::P
                dm, section, mat_, bias_,
               )
 
-	mat.ptr = C_NULL
-	bias.ptr = C_NULL
+	mat.ptr = mat_[]
+	bias.ptr = bias_[]
 
 	return nothing
 end 
@@ -8206,7 +8206,7 @@ function DMGetOutputDM(petsclib::PetscLibType, dm::PetscDM, odm::PetscDM) end
                dm, odm_,
               )
 
-	odm.ptr = C_NULL
+	odm.ptr = odm_[]
 
 	return nothing
 end 
@@ -9437,7 +9437,7 @@ function DMGetCoarseDM(petsclib::PetscLibType, dm::PetscDM, cdm::PetscDM) end
                dm, cdm_,
               )
 
-	cdm.ptr = C_NULL
+	cdm.ptr = cdm_[]
 
 	return nothing
 end 
@@ -9508,7 +9508,7 @@ function DMGetFineDM(petsclib::PetscLibType, dm::PetscDM, fdm::PetscDM) end
                dm, fdm_,
               )
 
-	fdm.ptr = C_NULL
+	fdm.ptr = fdm_[]
 
 	return nothing
 end 
@@ -10366,7 +10366,7 @@ function DMComputeError(petsclib::PetscLibType, dm::PetscDM, sol::PetscVec, erro
                dm, sol, errors, errorVec_,
               )
 
-	errorVec.ptr = C_NULL
+	errorVec.ptr = errorVec_[]
 
 	return nothing
 end 
@@ -10448,7 +10448,7 @@ function DMGetAuxiliaryVec(petsclib::PetscLibType, dm::PetscDM, label::DMLabel, 
                dm, label, value, part, aux_,
               )
 
-	aux.ptr = C_NULL
+	aux.ptr = aux_[]
 
 	return nothing
 end 
@@ -11006,7 +11006,7 @@ function DMGetLocalVector(petsclib::PetscLibType, dm::PetscDM, g::PetscVec) end
                dm, g_,
               )
 
-	g.ptr = C_NULL
+	g.ptr = g_[]
 
 	return nothing
 end 
@@ -11044,7 +11044,7 @@ function DMRestoreLocalVector(petsclib::PetscLibType, dm::PetscDM, g::PetscVec) 
                dm, g_,
               )
 
-	g.ptr = C_NULL
+	g.ptr = g_[]
 
 	return nothing
 end 
@@ -11083,7 +11083,7 @@ function DMGetGlobalVector(petsclib::PetscLibType, dm::PetscDM, g::PetscVec) end
                dm, g_,
               )
 
-	g.ptr = C_NULL
+	g.ptr = g_[]
 
 	return nothing
 end 
@@ -11189,7 +11189,7 @@ function DMRestoreGlobalVector(petsclib::PetscLibType, dm::PetscDM, g::PetscVec)
                dm, g_,
               )
 
-	g.ptr = C_NULL
+	g.ptr = g_[]
 
 	return nothing
 end 
@@ -11325,7 +11325,7 @@ function DMGetNamedGlobalVector(petsclib::PetscLibType, dm::PetscDM, name::Strin
                dm, name, X_,
               )
 
-	X.ptr = C_NULL
+	X.ptr = X_[]
 
 	return nothing
 end 
@@ -11360,7 +11360,7 @@ function DMRestoreNamedGlobalVector(petsclib::PetscLibType, dm::PetscDM, name::S
                dm, name, X_,
               )
 
-	X.ptr = C_NULL
+	X.ptr = X_[]
 
 	return nothing
 end 
@@ -11434,7 +11434,7 @@ function DMGetNamedLocalVector(petsclib::PetscLibType, dm::PetscDM, name::String
                dm, name, X_,
               )
 
-	X.ptr = C_NULL
+	X.ptr = X_[]
 
 	return nothing
 end 
@@ -11469,7 +11469,7 @@ function DMRestoreNamedLocalVector(petsclib::PetscLibType, dm::PetscDM, name::St
                dm, name, X_,
               )
 
-	X.ptr = C_NULL
+	X.ptr = X_[]
 
 	return nothing
 end 
@@ -11528,7 +11528,7 @@ function DMInitializePackage(petsclib::PetscLibType) end
 end 
 
 """
-	DMGetCoordinateDM(petsclib::PetscLibType,dm::PetscDM, cdm::PetscDM) 
+	cdm::PetscDM = DMGetCoordinateDM(petsclib::PetscLibType,dm::PetscDM) 
 Gets the `DM` that prescribes coordinate layout and scatters between global and local coordinates
 
 Collective
@@ -11549,9 +11549,10 @@ $(_doc_external("DM/DMGetCoordinateDM"))
 """
 function DMGetCoordinateDM(petsclib::PetscLibType, dm::PetscDM, cdm::PetscDM) end
 
-@for_petsc function DMGetCoordinateDM(petsclib::$UnionPetscLib, dm::PetscDM, cdm::PetscDM )
-	cdm_ = Ref(cdm.ptr)
-
+@for_petsc function DMGetCoordinateDM(petsclib::$UnionPetscLib, dm::PetscDM{PetscLib} ) where PetscLib
+	cdm  = PetscDM{PetscLib}(C_NULL, dm.age)
+    cdm_ = Ref(cdm.ptr)
+    
     @chk ccall(
                (:DMGetCoordinateDM, $petsc_library),
                PetscErrorCode,
@@ -11559,9 +11560,9 @@ function DMGetCoordinateDM(petsclib::PetscLibType, dm::PetscDM, cdm::PetscDM) en
                dm, cdm_,
               )
 
-	cdm.ptr = C_NULL
+	cdm.ptr = cdm_[]
 
-	return nothing
+	return cdm
 end 
 
 """
@@ -11629,7 +11630,7 @@ function DMGetCellCoordinateDM(petsclib::PetscLibType, dm::PetscDM, cdm::PetscDM
                dm, cdm_,
               )
 
-	cdm.ptr = C_NULL
+	cdm.ptr = cdm_[]
 
 	return nothing
 end 
@@ -11900,7 +11901,7 @@ function DMGetCoordinates(petsclib::PetscLibType, dm::PetscDM, c::PetscVec) end
                dm, c_,
               )
 
-	c.ptr = C_NULL
+	c.ptr = c_[]
 
 	return nothing
 end 
@@ -11968,7 +11969,7 @@ function DMGetCellCoordinates(petsclib::PetscLibType, dm::PetscDM, c::PetscVec) 
                dm, c_,
               )
 
-	c.ptr = C_NULL
+	c.ptr = c_[]
 
 	return nothing
 end 
@@ -12067,7 +12068,7 @@ function DMGetCoordinatesLocal(petsclib::PetscLibType, dm::PetscDM, c::PetscVec)
                dm, c_,
               )
 
-	c.ptr = C_NULL
+	c.ptr = c_[]
 
 	return nothing
 end 
@@ -12103,7 +12104,7 @@ function DMGetCoordinatesLocalNoncollective(petsclib::PetscLibType, dm::PetscDM,
                dm, c_,
               )
 
-	c.ptr = C_NULL
+	c.ptr = c_[]
 
 	return nothing
 end 
@@ -12141,7 +12142,7 @@ function DMGetCoordinatesLocalTuple(petsclib::PetscLibType, dm::PetscDM, p::IS, 
                dm, p, pCoordSection, pCoord_,
               )
 
-	pCoord.ptr = C_NULL
+	pCoord.ptr = pCoord_[]
 
 	return nothing
 end 
@@ -12240,7 +12241,7 @@ function DMGetCellCoordinatesLocal(petsclib::PetscLibType, dm::PetscDM, c::Petsc
                dm, c_,
               )
 
-	c.ptr = C_NULL
+	c.ptr = c_[]
 
 	return nothing
 end 
@@ -12276,7 +12277,7 @@ function DMGetCellCoordinatesLocalNoncollective(petsclib::PetscLibType, dm::Pets
                dm, c_,
               )
 
-	c.ptr = C_NULL
+	c.ptr = c_[]
 
 	return nothing
 end 
@@ -12780,7 +12781,7 @@ function DMAdaptLabel(petsclib::PetscLibType, dm::PetscDM, label::DMLabel, dmAda
                dm, label, dmAdapt_,
               )
 
-	dmAdapt.ptr = C_NULL
+	dmAdapt.ptr = dmAdapt_[]
 
 	return nothing
 end 
@@ -12815,7 +12816,7 @@ function DMAdaptMetric(petsclib::PetscLibType, dm::PetscDM, metric::PetscVec, bd
                dm, metric, bdLabel, rgLabel, dmAdapt_,
               )
 
-	dmAdapt.ptr = C_NULL
+	dmAdapt.ptr = dmAdapt_[]
 
 	return nothing
 end 
@@ -13201,7 +13202,7 @@ function DMForestTemplate(petsclib::PetscLibType, dm::PetscDM, comm::MPI_Comm, t
                dm, comm, tdm_,
               )
 
-	tdm.ptr = C_NULL
+	tdm.ptr = tdm_[]
 
 	return nothing
 end 
@@ -13338,7 +13339,7 @@ function DMForestGetBaseDM(petsclib::PetscLibType, dm::PetscDM, base::PetscDM) e
                dm, base_,
               )
 
-	base.ptr = C_NULL
+	base.ptr = base_[]
 
 	return nothing
 end 
@@ -13429,7 +13430,7 @@ function DMForestGetAdaptivityForest(petsclib::PetscLibType, dm::PetscDM, adapt:
                dm, adapt_,
               )
 
-	adapt.ptr = C_NULL
+	adapt.ptr = adapt_[]
 
 	return nothing
 end 
@@ -15487,7 +15488,7 @@ function DMSwarmDestroyGlobalVectorFromField(petsclib::PetscLibType, dm::PetscDM
                dm, fieldname, vec_,
               )
 
-	vec.ptr = C_NULL
+	vec.ptr = vec_[]
 
 	return nothing
 end 
@@ -15561,7 +15562,7 @@ function DMSwarmDestroyLocalVectorFromField(petsclib::PetscLibType, dm::PetscDM,
                dm, fieldname, vec_,
               )
 
-	vec.ptr = C_NULL
+	vec.ptr = vec_[]
 
 	return nothing
 end 
@@ -15639,7 +15640,7 @@ function DMSwarmDestroyGlobalVectorFromFields(petsclib::PetscLibType, dm::PetscD
                dm, Nf, fieldnames_, vec_,
               )
 
-	vec.ptr = C_NULL
+	vec.ptr = vec_[]
 
 	return nothing
 end 
@@ -15717,7 +15718,7 @@ function DMSwarmDestroyLocalVectorFromFields(petsclib::PetscLibType, dm::PetscDM
                dm, Nf, fieldnames_, vec_,
               )
 
-	vec.ptr = C_NULL
+	vec.ptr = vec_[]
 
 	return nothing
 end 
@@ -15882,7 +15883,7 @@ function DMSwarmGetCellDM(petsclib::PetscLibType, sw::PetscDM, dm::PetscDM) end
                sw, dm_,
               )
 
-	dm.ptr = C_NULL
+	dm.ptr = dm_[]
 
 	return nothing
 end 
@@ -16805,7 +16806,7 @@ function DMSwarmReplace(petsclib::PetscLibType, dm::PetscDM, ndm::PetscDM) end
                dm, ndm_,
               )
 
-	ndm.ptr = C_NULL
+	ndm.ptr = ndm_[]
 
 	return nothing
 end 
@@ -20353,7 +20354,7 @@ function DMDAGetRay(petsclib::PetscLibType, da::PetscDM, dir::DMDirection, gp::P
                da, dir, gp, newvec_, scatter,
               )
 
-	newvec.ptr = C_NULL
+	newvec.ptr = newvec_[]
 
 	return nothing
 end 
@@ -21013,7 +21014,7 @@ function DMShellGetGlobalVector(petsclib::PetscLibType, dm::PetscDM, X::PetscVec
                dm, X_,
               )
 
-	X.ptr = C_NULL
+	X.ptr = X_[]
 
 	return nothing
 end 
@@ -21676,7 +21677,7 @@ function DMNetworkGetPlex(petsclib::PetscLibType, dm::PetscDM, plexdm::PetscDM) 
                dm, plexdm_,
               )
 
-	plexdm.ptr = C_NULL
+	plexdm.ptr = plexdm_[]
 
 	return nothing
 end 
@@ -22590,7 +22591,7 @@ function DMNetworkDistribute(petsclib::PetscLibType, dm::PetscDM, overlap::Petsc
                dm_, overlap,
               )
 
-	dm.ptr = C_NULL
+	dm.ptr = dm_[]
 
 	return nothing
 end 
@@ -23281,7 +23282,7 @@ function DMProductGetDM(petsclib::PetscLibType, dm::PetscDM, slot::PetscInt, sub
                dm, slot, subdm_,
               )
 
-	subdm.ptr = C_NULL
+	subdm.ptr = subdm_[]
 
 	return nothing
 end 
@@ -23605,7 +23606,7 @@ function DMCompositeRestoreLocalAccessArray(petsclib::PetscLibType, dm::PetscDM,
                dm, pvec, nwanted, wanted, vecs_,
               )
 
-	vecs.ptr = C_NULL
+	vecs.ptr = vecs_[]
 
 	return nothing
 end 
@@ -23642,7 +23643,7 @@ function DMCompositeScatterArray(petsclib::PetscLibType, dm::PetscDM, gvec::Pets
                dm, gvec, lvecs_,
               )
 
-	lvecs.ptr = C_NULL
+	lvecs.ptr = lvecs_[]
 
 	return nothing
 end 
@@ -23680,7 +23681,7 @@ function DMCompositeGatherArray(petsclib::PetscLibType, dm::PetscDM, imode::Inse
                dm, imode, gvec, lvecs_,
               )
 
-	lvecs.ptr = C_NULL
+	lvecs.ptr = lvecs_[]
 
 	return nothing
 end 
@@ -24006,8 +24007,8 @@ function DMStagVecSplitToDMDA(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec
                dm, vec, loc, c, pda_, pdavec_,
               )
 
-	pda.ptr = C_NULL
-	pdavec.ptr = C_NULL
+	pda.ptr = pda_[]
+	pdavec.ptr = pdavec_[]
 
 	return nothing
 end 
@@ -26325,7 +26326,7 @@ function DMPatchZoom(petsclib::PetscLibType, dm::PetscDM, lower::MatStencil, upp
                dm, lower, upper, commz, dmz_, sfz, sfzr,
               )
 
-	dmz.ptr = C_NULL
+	dmz.ptr = dmz_[]
 
 	return nothing
 end 
@@ -26369,7 +26370,7 @@ function DMPatchGetCoarse(petsclib::PetscLibType, dm::PetscDM, dmCoarse::PetscDM
                dm, dmCoarse_,
               )
 
-	dmCoarse.ptr = C_NULL
+	dmCoarse.ptr = dmCoarse_[]
 
 	return nothing
 end 
@@ -26943,7 +26944,7 @@ function DMMoabLoadFromFile(petsclib::PetscLibType, comm::MPI_Comm, dim::PetscIn
                comm, dim, nghost, filename, usrreadopts, dm_,
               )
 
-	dm.ptr = C_NULL
+	dm.ptr = dm_[]
 
 	return nothing
 end 
@@ -29221,7 +29222,7 @@ function DMPlexInterpolate(petsclib::PetscLibType, dm::PetscDM, dmInt::PetscDM) 
                dm, dmInt_,
               )
 
-	dmInt.ptr = C_NULL
+	dmInt.ptr = dmInt_[]
 
 	return nothing
 end 
@@ -29291,7 +29292,7 @@ function DMPlexUninterpolate(petsclib::PetscLibType, dm::PetscDM, dmUnint::Petsc
                dm, dmUnint_,
               )
 
-	dmUnint.ptr = C_NULL
+	dmUnint.ptr = dmUnint_[]
 
 	return nothing
 end 
@@ -34653,7 +34654,7 @@ function DMPlexComputeOrthogonalQuality(petsclib::PetscLibType, dm::PetscDM, fv:
                dm, fv, atol, OrthQual_, OrthQualLabel,
               )
 
-	OrthQual.ptr = C_NULL
+	OrthQual.ptr = OrthQual_[]
 
 	return nothing
 end 
@@ -35477,7 +35478,7 @@ function DMPlexDistribute(petsclib::PetscLibType, dm::PetscDM, overlap::PetscInt
                dm, overlap, sf, dmParallel_,
               )
 
-	dmParallel.ptr = C_NULL
+	dmParallel.ptr = dmParallel_[]
 
 	return nothing
 end 
@@ -35521,7 +35522,7 @@ function DMPlexDistributeOverlap(petsclib::PetscLibType, dm::PetscDM, overlap::P
                dm, overlap, sf, dmOverlap_,
               )
 
-	dmOverlap.ptr = C_NULL
+	dmOverlap.ptr = dmOverlap_[]
 
 	return nothing
 end 
@@ -35696,7 +35697,7 @@ function DMPlexGetGatherDM(petsclib::PetscLibType, dm::PetscDM, sf::PetscSF, gat
                dm, sf, gatherMesh_,
               )
 
-	gatherMesh.ptr = C_NULL
+	gatherMesh.ptr = gatherMesh_[]
 
 	return nothing
 end 
@@ -35733,7 +35734,7 @@ function DMPlexGetRedundantDM(petsclib::PetscLibType, dm::PetscDM, sf::PetscSF, 
                dm, sf, redundantMesh_,
               )
 
-	redundantMesh.ptr = C_NULL
+	redundantMesh.ptr = redundantMesh_[]
 
 	return nothing
 end 
@@ -37224,7 +37225,7 @@ function DMPlexInsertBoundaryValuesFVM(petsclib::PetscLibType, dm::PetscDM, fv::
                dm, fv, locX, time, locGradient_,
               )
 
-	locGradient.ptr = C_NULL
+	locGradient.ptr = locGradient_[]
 
 	return nothing
 end 
@@ -37944,8 +37945,8 @@ function DMPlexGetGeometryFVM(petsclib::PetscLibType, dm::PetscDM, facegeom::Pet
                dm, facegeom_, cellgeom_, minRadius_,
               )
 
-	facegeom.ptr = C_NULL
-	cellgeom.ptr = C_NULL
+	facegeom.ptr = facegeom_[]
+	cellgeom.ptr = cellgeom_[]
 	minRadius = minRadius_[]
 
 	return minRadius
@@ -37983,7 +37984,7 @@ function DMPlexGetGradientDM(petsclib::PetscLibType, dm::PetscDM, fv::PetscFV, d
                dm, fv, dmGrad_,
               )
 
-	dmGrad.ptr = C_NULL
+	dmGrad.ptr = dmGrad_[]
 
 	return nothing
 end 
@@ -38639,7 +38640,7 @@ function DMPlexGetReferenceTree(petsclib::PetscLibType, dm::PetscDM, ref::PetscD
                dm, ref_,
               )
 
-	ref.ptr = C_NULL
+	ref.ptr = ref_[]
 
 	return nothing
 end 
@@ -38902,7 +38903,7 @@ function DMPlexTreeRefineCell(petsclib::PetscLibType, dm::PetscDM, cell::PetscIn
                dm, cell, ncdm_,
               )
 
-	ncdm.ptr = C_NULL
+	ncdm.ptr = ncdm_[]
 
 	return nothing
 end 
@@ -38925,7 +38926,7 @@ function DMPlexComputeInjectorReferenceTree(petsclib::PetscLibType, refTree::Pet
                refTree, inj_,
               )
 
-	inj.ptr = C_NULL
+	inj.ptr = inj_[]
 
 	return nothing
 end 
@@ -39385,8 +39386,8 @@ function DMPlexComputeGeometryFVM(petsclib::PetscLibType, dm::PetscDM, cellgeom:
                dm, cellgeom_, facegeom_,
               )
 
-	cellgeom.ptr = C_NULL
-	facegeom.ptr = C_NULL
+	cellgeom.ptr = cellgeom_[]
+	facegeom.ptr = facegeom_[]
 
 	return nothing
 end 
@@ -39562,7 +39563,7 @@ function DMPlexComputeGradientFVM(petsclib::PetscLibType, dm::PetscDM, fvm::Pets
                dm, fvm, faceGeometry, cellGeometry, dmGrad_,
               )
 
-	dmGrad.ptr = C_NULL
+	dmGrad.ptr = dmGrad_[]
 
 	return nothing
 end 
@@ -39603,9 +39604,9 @@ function DMPlexGetDataFVM(petsclib::PetscLibType, dm::PetscDM, fv::PetscFV, cell
                dm, fv, cellgeom_, facegeom_, gradDM_,
               )
 
-	cellgeom.ptr = C_NULL
-	facegeom.ptr = C_NULL
-	gradDM.ptr = C_NULL
+	cellgeom.ptr = cellgeom_[]
+	facegeom.ptr = facegeom_[]
+	gradDM.ptr = gradDM_[]
 
 	return nothing
 end 
@@ -39981,7 +39982,7 @@ function DMPlexPermute(petsclib::PetscLibType, dm::PetscDM, perm::IS, pdm::Petsc
                dm, perm, pdm_,
               )
 
-	pdm.ptr = C_NULL
+	pdm.ptr = pdm_[]
 
 	return nothing
 end 
@@ -40097,7 +40098,7 @@ function DMPlexExtrude(petsclib::PetscLibType, dm::PetscDM, layers::PetscInt, th
                dm, layers, thickness, tensor, symmetric, periodic, normal, thicknesses, activeLabel, edm_,
               )
 
-	edm.ptr = C_NULL
+	edm.ptr = edm_[]
 
 	return nothing
 end 
@@ -41003,7 +41004,7 @@ function DMPlexGetGeomCntrlPntAndWeightData(petsclib::PetscLibType, dm::PetscDM,
 	cpCoordDataLength = cpCoordDataLength_[]
 	cpCoordData = cpCoordData_[]
 	maxNumEquiv = maxNumEquiv_[]
-	cpEquiv.ptr = C_NULL
+	cpEquiv.ptr = cpEquiv_[]
 	wDataLength = wDataLength_[]
 	wData = wData_[]
 
@@ -41033,7 +41034,7 @@ function DMPlexRestoreGeomCntrlPntAndWeightData(petsclib::PetscLibType, dm::Pets
 
 	cpCoordDataLength = cpCoordDataLength_[]
 	maxNumEquiv = maxNumEquiv_[]
-	cpEquiv.ptr = C_NULL
+	cpEquiv.ptr = cpEquiv_[]
 	wDataLength = wDataLength_[]
 
 	return cpCoordDataLength,maxNumEquiv,wDataLength
@@ -41081,7 +41082,7 @@ function DMPlexGetGeomGradData(petsclib::PetscLibType, dm::PetscDM, cpSurfGradHa
                dm, cpSurfGradHashTable, cpSurfGrad_, cpArraySize_, gradSACP_, gradVolCP_, wArraySize_, gradSAW_, gradVolW_,
               )
 
-	cpSurfGrad.ptr = C_NULL
+	cpSurfGrad.ptr = cpSurfGrad_[]
 	cpArraySize = cpArraySize_[]
 	gradSACP = gradSACP_[]
 	gradVolCP = gradVolCP_[]
@@ -41112,7 +41113,7 @@ function DMPlexRestoreGeomGradData(petsclib::PetscLibType, dm::PetscDM, cpSurfGr
                dm, cpSurfGradHashTable, cpSurfGrad_, cpArraySize_, gradSACP, gradVolCP, wArraySize_, gradSAW, gradVolW,
               )
 
-	cpSurfGrad.ptr = C_NULL
+	cpSurfGrad.ptr = cpSurfGrad_[]
 	cpArraySize = cpArraySize_[]
 	wArraySize = wArraySize_[]
 
@@ -41339,7 +41340,7 @@ function DMPlexGenerate(petsclib::PetscLibType, boundary::PetscDM, name::String,
                boundary, name, interpolate, mesh_,
               )
 
-	mesh.ptr = C_NULL
+	mesh.ptr = mesh_[]
 
 	return nothing
 end 
@@ -42577,7 +42578,7 @@ function DMPlexConstructGhostCells(petsclib::PetscLibType, dm::PetscDM, labelNam
               )
 
 	numGhostCells = numGhostCells_[]
-	dmGhosted.ptr = C_NULL
+	dmGhosted.ptr = dmGhosted_[]
 
 	return numGhostCells
 end 
@@ -42615,7 +42616,7 @@ function DMPlexConstructCohesiveCells(petsclib::PetscLibType, dm::PetscDM, label
                dm, label, splitLabel, dmSplit_,
               )
 
-	dmSplit.ptr = C_NULL
+	dmSplit.ptr = dmSplit_[]
 
 	return nothing
 end 
@@ -42891,7 +42892,7 @@ function DMPlexFilter(petsclib::PetscLibType, dm::PetscDM, cellLabel::DMLabel, v
                dm, cellLabel, value, ignoreLabelHalo, sanitizeSubmesh, ownershipTransferSF, subdm_,
               )
 
-	subdm.ptr = C_NULL
+	subdm.ptr = subdm_[]
 
 	return nothing
 end 
@@ -45065,7 +45066,7 @@ function DMPlexLandauDestroyVelocitySpace(petsclib::PetscLibType, dm::PetscDM) e
                dm_,
               )
 
-	dm.ptr = C_NULL
+	dm.ptr = dm_[]
 
 	return nothing
 end 

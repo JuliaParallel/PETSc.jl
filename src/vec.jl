@@ -94,7 +94,7 @@ function Base.setindex!(v::AbstractPetscVec{PetscLib}, vals, r::AbstractRange) w
     return nothing
 end
 
-Base.fill!(v::AbstractPetscVec{PetscLib}, val) where {PetscLib} = LibPETSc.VecSet(PetscLib,v, val)
+Base.fill!(v::AbstractPetscVec{PetscLib}, val) where {PetscLib} = LibPETSc.VecSet(PetscLib,v, PetscLib.PetscScalar(val))
 
 # Iterator interface
 Base.iterate(v::AbstractPetscVec{PetscLib})  where {PetscLib} = iterate(v, 1)

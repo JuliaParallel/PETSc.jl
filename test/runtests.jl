@@ -34,7 +34,7 @@ include("mat.jl")           # autowrapped
 include("options.jl")       # autowrapped
 include("ksp.jl")           # autowrapped
 include("snes.jl")          # autowrapped
-include("dmda.jl")          # not yet autowrapped!
+include("dmda.jl")          # autowrapped
 
 #include("matshell.jl")      # not yet autowrapped!
 #include("dmda.jl")          # not yet autowrapped!

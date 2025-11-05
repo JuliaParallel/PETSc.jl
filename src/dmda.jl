@@ -77,9 +77,9 @@ function DMDA(
         da = LibPETSc.DMDACreate1d(petsclib,
                                    comm, 
                                    boundary_type[1], 
-                                   global_dim[1], 
-                                   dof_per_node, 
-                                   stencil_width, 
+                                   PetscInt(global_dim[1]), 
+                                   PetscInt(dof_per_node), 
+                                   PetscInt(stencil_width), 
                                    ref_points_per_proc[1]
                                    )
     elseif N==2
@@ -132,4 +132,53 @@ function DMDA(
         finalizer(destroy, da)
     end
     return da
+end
+
+"""
+    ndofs(da::AbstractPetscDM)
+
+Return the number of dofs in for `da`
+
+# External Links
+$(_doc_external("DMDA/DMDAGetDof"))
+"""
+function ndofs(da::AbstractPetscDM{PetscLib}) where PetscLib
+    PetscInt = PetscLib.PetscInt
+    ndof = [PetscInt(0)]
+
+    # number of DOF that the DMDA has
+    ndof = LibPETSc.DMDAGetDof(PetscLib, da)
+    return @inbounds ndof[1]
+end
+
+
+"""
+    reshapelocalarray(Arr, da::AbstractPetscDM{PetscLib}, ndof = ndofs(da))
+
+Returns an array with the same data as `Arr` but reshaped as an array that can
+be addressed with global indexing.
+"""
+function reshapelocalarray(
+    Arr,
+    da::AbstractPetscDM{PetscLib},
+    ndof::Integer = ndofs(da),
+) where {PetscLib}
+
+    # First we try to use a ghosted size
+    corners = getghostcorners(da)
+    # If this is two big for the array use non-ghosted
+    if length(Arr) < prod(corners.size) * ndof
+        corners = getcorners(da)
+    end
+    @assert length(Arr) == prod(corners.size) * ndof
+
+    oArr = OffsetArray(
+        reshape(Arr, Int64(ndof), Int64.(corners.size)...),
+        1:ndof,
+        (corners.lower[1]):(corners.upper[1]),
+        (corners.lower[2]):(corners.upper[2]),
+        (corners.lower[3]):(corners.upper[3]),
+    )
+
+    return oArr
 end

@@ -131,3 +131,152 @@ setfromoptions!(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMSet
 return an uninitialized `DMDA` struct.
 """
 Base.empty(da::AbstractPetscDM{PetscLib}) where {PetscLib} = PetscDM{PetscLib}(C_NULL, da.age)
+
+
+"""
+    v::PetscVec = DMLocalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+
+Returns a local vector `v` from the `dm` object.
+"""
+DMLocalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateLocalVector(getlib(PetscLib), dm)
+
+"""
+    v::PetscVec = DMGlobalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+
+Returns a global vector `v` from the `dm` object.
+"""
+DMGlobalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateGlobalVector(getlib(PetscLib), dm)
+
+"""
+    dm_local_to_global!(
+        global_vec::AbstractPetscVec{PetscLib},
+        local_vec::AbstractPetscVec{PetscLib},
+        dm::AbstractPetscDM{PetscLib},
+        mode::InsertMode = INSERT_VALUES) 
+
+Send values of the `local_vec` to the `global_vec` which are connected to the `dm` object.
+
+Input Parameters:
+- `global_vec::AbstractPetscVec{PetscLib}` - Global vector
+- `local_vec::AbstractPetscVec{PetscLib}` - Local vector
+- `dm::AbstractPetscDM{PetscLib}` - DM object
+- `mode::InsertMode` - Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
+
+"""
+function dm_local_to_global!(global_vec::AbstractPetscVec{PetscLib},
+                              local_vec::AbstractPetscVec{PetscLib},
+                                     dm::AbstractPetscDM{PetscLib},
+                                   mode::InsertMode = INSERT_VALUES) where {PetscLib}
+
+    LibPETSc.DMLocalToGlobalBegin(PetscLib, dm, local_vec, mode, global_vec)
+    LibPETSc.DMLocalToGlobalEnd(PetscLib, dm, local_vec,  mode, global_vec)
+    return nothing
+end
+
+
+"""
+    dm_global_to_local!(
+        global_vec::AbstractPetscVec{PetscLib},
+        local_vec::AbstractPetscVec{PetscLib},
+        dm::AbstractPetscDM{PetscLib},
+        mode::InsertMode = INSERT_VALUES) 
+
+Send values of the `local_vec` to the `global_vec` which are connected to the `dm` object.
+
+Input Parameters:
+- `global_vec::AbstractPetscVec{PetscLib}` - Global vector
+- `local_vec::AbstractPetscVec{PetscLib}` - Local vector
+- `dm::AbstractPetscDM{PetscLib}` - DM object
+- `mode::InsertMode` - Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
+
+"""
+function dm_global_to_local!(global_vec::AbstractPetscVec{PetscLib},
+                              local_vec::AbstractPetscVec{PetscLib},
+                                     dm::AbstractPetscDM{PetscLib},
+                                   mode::InsertMode = INSERT_VALUES) where {PetscLib}
+
+    LibPETSc.DMGlobalToLocalBegin(PetscLib, dm, local_vec, mode, global_vec)
+    LibPETSc.DMGlobalToLocalEnd(PetscLib, dm, local_vec,  mode, global_vec)
+    return nothing
+end
+
+
+"""
+    setuniformcoordinates!(
+        da::DMDA
+        xyzmin::NTuple{N, Real},
+        xyzmax::NTuple{N, Real},
+    ) where {N}
+
+Set uniform coordinates for the `da` using the lower and upper corners defined
+by the `NTuple`s `xyzmin` and `xyzmax`. If `N` is less than the dimension of the
+`da` then the value of the trailing coordinates is set to `0`.
+
+# External Links
+$(_doc_external("DMDA/DMDASetUniformCoordinates"))
+"""
+function setuniformcoordinates!(
+    da::PetscDM{PetscLib},
+    xyzmin::NTuple{N, Real},
+    xyzmax::NTuple{N, Real},
+) where {N, PetscLib}
+    PetscReal = PetscLib.PetscReal
+    xmin = PetscReal(xyzmin[1])
+    xmax = PetscReal(xyzmax[1])
+
+    ymin = (N > 1) ? PetscReal(xyzmin[2]) : PetscReal(0)
+    ymax = (N > 1) ? PetscReal(xyzmax[2]) : PetscReal(0)
+
+    zmin = (N > 2) ? PetscReal(xyzmin[3]) : PetscReal(0)
+    zmax = (N > 2) ? PetscReal(xyzmax[3]) : PetscReal(0)
+
+    LibPETSc.DMDASetUniformCoordinates(
+        PetscLib,
+        da,
+        xmin,
+        xmax,
+        ymin,
+        ymax,
+        zmin,
+        zmax,
+    )
+    return da
+end
+
+"""
+    coordinatesDMLocalVec(dm::AbstractDM)
+
+Gets a local vector with the coordinates associated with `dm`.
+
+Note that the returned vector is borrowed from the `dm` and is not a new vector.
+
+# External Links
+$(_doc_external("DM/DMGetCoordinatesLocal"))
+"""
+function coordinatesDMLocalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    coord_vec = DMLocalVec(dm)
+    LibPETSc.DMGetCoordinatesLocal(PetscLib, dm, coord_vec)
+
+    return coord_vec
+end
+
+"""
+    getlocalcoordinatearray(da::AbstractDMDA)
+
+Returns a `NamedTuple` with OffsetArrays that contain the local coordinates and
+that can be addressed uisng global indices
+
+"""
+function getlocalcoordinatearray(da::AbstractPetscDM{PetscLib}) where {PetscLib}
+    # retrieve local coordinates
+    coord_vec = coordinatesDMLocalVec(da)
+    # array
+    array1D = unsafe_localarray(coord_vec; read = true, write = false)
+    dim = [PetscLib.PetscInt(0)]
+    dim = LibPETSc.DMGetCoordinateDim(PetscLib, da)
+    dim = dim[1]
+    corners = getghostcorners(da)
+
+    return reshapelocalarray(array1D, da, dim)
+end

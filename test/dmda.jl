@@ -1,7 +1,7 @@
 using Test
 using PETSc, MPI
 MPI.Initialized() || MPI.Init()
-#=
+
 @testset "DMDACreate1D" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
@@ -222,7 +222,7 @@ end
         PETSc.finalize(petsclib)
     end
 end
-=#
+
 
 @testset "DMDACreate3D" begin
     comm = MPI.COMM_WORLD
@@ -331,19 +331,17 @@ end
 end
 
 
-#=
-#@testset "DM MatAIJ" begin
+@testset "DM MatAIJ" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     # Just check a couple libraries
-    #for petsclib in PETSc.petsclibs[1:2]
-        petsclib = PETSc.petsclibs[1]
+    for petsclib in PETSc.petsclibs[1:2]
+        #petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt
-        #for dim in 1:3
-            dim=1
+        for dim in 1:3
             boundary_type = ntuple(_ -> PETSc.DM_BOUNDARY_NONE, dim)
             dof_per_node = 1
             stencil_width = 1
@@ -368,6 +366,15 @@ end
             # Build the dim-dimensional Laplacian FD matrix
             corners = PETSc.getcorners(da)
 
+            # test setting mat values with a MatStencil
+            #i = corners.lower
+            #mat[i, i] = -2dim
+
+            #d = 1
+            #j = i + CartesianIndex(d == 1, d == 2, d == 3)
+            #mat[i, j] = 1
+
+            
             for i in (corners.lower):(corners.upper)
                 for d in 1:dim
                     if i[d] - 1 > 1
@@ -384,6 +391,7 @@ end
 
             PETSc.assemble!(mat)
 
+            # check
             ind = LinearIndices(ntuple(i -> 1:global_size[i], 3))
             for ci in (corners.lower):(corners.upper)
                 i = ind[ci]
@@ -404,17 +412,15 @@ end
             PETSc.destroy(da)
         end
         PETSc.finalize(petsclib)
-    #end
-#end
-=#
-
-#=
+    end
+end
 
 @testset "DM Vectors and Coordinates" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
+        #petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt
@@ -440,8 +446,11 @@ end
         corners = PETSc.getcorners(da)
 
         # Create the local and global vectors
+        #vec = LibPETSc.DMCreateLocalVector(petsclib,da)
+
         local_vec = PETSc.DMLocalVec(da)
         global_vec = PETSc.DMGlobalVec(da)
+
         bot_val = 0
         top_val = 0
 
@@ -450,7 +459,8 @@ end
         fill!(global_vec, mpisize)
 
         # add the local values to the global values
-        PETSc.update!(global_vec, local_vec, PETSc.ADD_VALUES)
+        #PETSc.update!(global_vec, local_vec, PETSc.ADD_VALUES)
+        PETSc.dm_local_to_global!(global_vec, local_vec, da, PETSc.ADD_VALUES)
 
         # end points added with neighbor due to ghost of size 1
         bot_val = mpisize + mpirank + (mpirank == 0 ? 0 : mpirank - 1)
@@ -464,7 +474,8 @@ end
         end
 
         # reset the local values with the global values
-        PETSc.update!(local_vec, global_vec, PETSc.INSERT_VALUES)
+        #PETSc.update!(local_vec, global_vec, PETSc.INSERT_VALUES)
+        PETSc.dm_global_to_local!(local_vec, global_vec, da, PETSc.INSERT_VALUES)
 
         # My first value and my ghost should be the bot/top values
         @test local_vec[1] == bot_val
@@ -480,8 +491,10 @@ end
         PETSc.destroy(global_vec)
         PETSc.destroy(local_vec)
 
+
         # Test DM Coordinates
-        coord_da = PETSc.getcoordinateDM(da)
+        coord_da = LibPETSc.DMGetCoordinateDM(petsclib, da)
+
         # Crank it up to 11!
         xmin, xmax = 0, 11
         PETSc.setuniformcoordinates!(coord_da, (xmin,), (xmax,))
@@ -542,20 +555,17 @@ end
             Array_2 = @view x[2, :, :, :]
             Array_2 .= 22.2
         end
-        PETSc.update!(x_g, x_l, PETSc.INSERT_VALUES)    # add local values tp global vector
+        PETSc.dm_local_to_global!(x_g, x_l, da_2D, PETSc.INSERT_VALUES)
 
-        sum_val = [PetscScalar(0)]                      # compute sum of parallel
-        PETSc.LibPETSc.VecSum(petsclib, x_g, sum_val)
-        @test sum_val[1] ≈ PetscScalar(3996)            # check sum of global vector
+        sum_val = PETSc.LibPETSc.VecSum(petsclib, x_g)
+        @test sum_val ≈ PetscScalar(3996)            # check sum of global vector
 
         PETSc.destroy(coord_vec)
+        #PETSc.destroy(coord_da)
         PETSc.destroy(da)
-        PETSc.destroy(coord_da)
 
         PETSc.finalize(petsclib)
     end
 end
-
-=#
 
 nothing

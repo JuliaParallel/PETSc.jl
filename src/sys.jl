@@ -19,8 +19,8 @@ function getcomm(
         PetscVec{PetscLib},
         PetscMat{PetscLib},
         PetscKSP{PetscLib},
-        #PetscSNES{PetscLib},
-        #PetscDM{PetscLib},
+        PetscSNES{PetscLib},
+        PetscDM{PetscLib},
     },
 ) where {PetscLib}
     comm = LibPETSc.PetscObjectGetComm(PetscLib, obj)

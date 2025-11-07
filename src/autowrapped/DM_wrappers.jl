@@ -3974,7 +3974,9 @@ function DMGetBlockingType(petsclib::PetscLibType, dm::PetscDM) end
                dm, btype_,
               )
 
-	btype = unsafe_string(btype_[])
+	#btype = unsafe_string(btype_[])
+    btype = btype_[]
+    
 
 	return btype
 end 
@@ -15172,7 +15174,7 @@ function DMSwarmGetMigrateType(petsclib::PetscLibType, dm::PetscDM) end
                dm, mtype_,
               )
 
-	mtype = unsafe_string(mtype_[])
+	mtype = mtype_[]
 
 	return mtype
 end 
@@ -16647,7 +16649,7 @@ function DMSwarmGetType(petsclib::PetscLibType, sw::PetscDM) end
                sw, stype_,
               )
 
-	stype = unsafe_string(stype_[])
+	stype = stype_[]
 
 	return stype
 end 
@@ -16965,7 +16967,7 @@ function DMDASetElementType(petsclib::PetscLibType, da::PetscDM) end
                da, etype_,
               )
 
-	etype = unsafe_string(etype_[])
+	etype = etype_[]
 
 	return etype
 end 
@@ -17002,7 +17004,7 @@ function DMDAGetElementType(petsclib::PetscLibType, da::PetscDM) end
                da, etype_,
               )
 
-	etype = unsafe_string(etype_[])
+	etype = etype_[]
 
 	return etype
 end 
@@ -18652,9 +18654,9 @@ function DMDAGetBoundaryType(petsclib::PetscLibType, da::PetscDM) end
                da, bx_, by_, bz_,
               )
 
-	bx = unsafe_string(bx_[])
-	by = unsafe_string(by_[])
-	bz = unsafe_string(bz_[])
+	bx = bx_[]
+	by = by_[]
+	bz = bz_[]
 
 	return bx,by,bz
 end 
@@ -19144,7 +19146,7 @@ function DMDAGetStencilType(petsclib::PetscLibType, da::PetscDM) end
                da, stype_,
               )
 
-	stype = unsafe_string(stype_[])
+	stype = stype_[]
 
 	return stype
 end 
@@ -19318,7 +19320,7 @@ function DMDAGetInterpolationType(petsclib::PetscLibType, da::PetscDM) end
                da, ctype_,
               )
 
-	ctype = unsafe_string(ctype_[])
+	ctype = ctype_[]
 
 	return ctype
 end 
@@ -23945,9 +23947,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagCreate1d"))
 """
-function DMStagCreate1d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, M::PetscInt, dof0::PetscInt, dof1::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Vector{PetscInt}) end
+function DMStagCreate1d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, M::PetscInt, dof0::PetscInt, dof1::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function DMStagCreate1d(petsclib::$UnionPetscLib, comm::MPI_Comm, bndx::DMBoundaryType, M::$PetscInt, dof0::$PetscInt, dof1::$PetscInt, stencilType::DMStagStencilType, stencilWidth::$PetscInt, lx::Vector{$PetscInt} )
+@for_petsc function DMStagCreate1d(petsclib::$UnionPetscLib, comm::MPI_Comm, bndx::DMBoundaryType, M::$PetscInt, dof0::$PetscInt, dof1::$PetscInt, stencilType::DMStagStencilType, stencilWidth::$PetscInt, lx::Union{Ptr,Vector{$PetscInt}} )
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -24420,9 +24422,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagCreate3d"))
 """
-function DMStagCreate3d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::PetscInt, N::PetscInt, P::PetscInt, m::PetscInt, n::PetscInt, p::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Vector{PetscInt}, ly::Vector{PetscInt}, lz::Vector{PetscInt}) end
+function DMStagCreate3d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::PetscInt, N::PetscInt, P::PetscInt, m::PetscInt, n::PetscInt, p::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr,Vector{PetscInt}}, ly::Union{Ptr,Vector{PetscInt}}, lz::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function DMStagCreate3d(petsclib::$UnionPetscLib, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::$PetscInt, N::$PetscInt, P::$PetscInt, m::$PetscInt, n::$PetscInt, p::$PetscInt, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, dof3::$PetscInt, stencilType::DMStagStencilType, stencilWidth::$PetscInt, lx::Vector{$PetscInt}, ly::Vector{$PetscInt}, lz::Vector{$PetscInt} )
+@for_petsc function DMStagCreate3d(petsclib::$UnionPetscLib, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, bndz::DMBoundaryType, M::$PetscInt, N::$PetscInt, P::$PetscInt, m::$PetscInt, n::$PetscInt, p::$PetscInt, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, dof3::$PetscInt, stencilType::DMStagStencilType, stencilWidth::$PetscInt, lx::Union{Ptr,Vector{$PetscInt}}, ly::Union{Ptr,Vector{$PetscInt}}, lz::Union{Ptr,Vector{$PetscInt}} )
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -24474,9 +24476,9 @@ function DMStagGetBoundaryTypes(petsclib::PetscLibType, dm::PetscDM) end
                dm, boundaryTypeX_, boundaryTypeY_, boundaryTypeZ_,
               )
 
-	boundaryTypeX = unsafe_string(boundaryTypeX_[])
-	boundaryTypeY = unsafe_string(boundaryTypeY_[])
-	boundaryTypeZ = unsafe_string(boundaryTypeZ_[])
+    boundaryTypeX = boundaryTypeX_[]
+	boundaryTypeY = boundaryTypeY_[]
+	boundaryTypeZ = boundaryTypeZ_[]
 
 	return boundaryTypeX,boundaryTypeY,boundaryTypeZ
 end 
@@ -25140,7 +25142,7 @@ function DMStagGetStencilType(petsclib::PetscLibType, dm::PetscDM) end
                dm, stencilType_,
               )
 
-	stencilType = unsafe_string(stencilType_[])
+	stencilType = stencilType_[]
 
 	return stencilType
 end 
@@ -25269,7 +25271,7 @@ $(_doc_external("DMStag/DMStagCreateCompatibleDMStag"))
 """
 function DMStagCreateCompatibleDMStag(petsclib::PetscLibType, dm::PetscDM, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, dof3::PetscInt) end
 
-@for_petsc function DMStagCreateCompatibleDMStag(petsclib::$UnionPetscLib, dm::PetscDM, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, dof3::$PetscInt )
+@for_petsc function DMStagCreateCompatibleDMStag(petsclib::$UnionPetscLib, dm::PetscDM{PetscLib}, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, dof3::$PetscInt ) where {PetscLib}
 	newdm_ = Ref{CDM}()
 
     @chk ccall(
@@ -25279,7 +25281,7 @@ function DMStagCreateCompatibleDMStag(petsclib::PetscLibType, dm::PetscDM, dof0:
                dm, dof0, dof1, dof2, dof3, newdm_,
               )
 
-	newdm = PetscDM(newdm_[], petsclib)
+	newdm = PetscDM{PetscLib}(newdm_[], 0)
 
 	return newdm
 end 
@@ -26231,8 +26233,7 @@ Collective
 
 Input Parameters:
 - `comm`         - MPI communicator
-- `bndx`         - x boundary type, `DM_BOUNDARY_NONE`, `DM_BOUNDARY_PERIODIC`, or
-`DM_BOUNDARY_GHOSTED`
+- `bndx`         - x boundary type, `DM_BOUNDARY_NONE`, `DM_BOUNDARY_PERIODIC`, or `DM_BOUNDARY_GHOSTED`
 - `bndy`         - y boundary type, `DM_BOUNDARY_NONE`, `DM_BOUNDARY_PERIODIC`, or `DM_BOUNDARY_GHOSTED`
 - `M`            - global number of elements in x direction
 - `N`            - global number of elements in y direction
@@ -26273,9 +26274,9 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagCreate2d"))
 """
-function DMStagCreate2d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::PetscInt, N::PetscInt, m::PetscInt, n::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Vector{PetscInt}, ly::Vector{PetscInt}) end
+function DMStagCreate2d(petsclib::PetscLibType, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::PetscInt, N::PetscInt, m::PetscInt, n::PetscInt, dof0::PetscInt, dof1::PetscInt, dof2::PetscInt, stencilType::DMStagStencilType, stencilWidth::PetscInt, lx::Union{Ptr,Vector{PetscInt}}, ly::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function DMStagCreate2d(petsclib::$UnionPetscLib, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::$PetscInt, N::$PetscInt, m::$PetscInt, n::$PetscInt, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, stencilType::DMStagStencilType, stencilWidth::$PetscInt, lx::Vector{$PetscInt}, ly::Vector{$PetscInt} )
+@for_petsc function DMStagCreate2d(petsclib::$UnionPetscLib, comm::MPI_Comm, bndx::DMBoundaryType, bndy::DMBoundaryType, M::$PetscInt, N::$PetscInt, m::$PetscInt, n::$PetscInt, dof0::$PetscInt, dof1::$PetscInt, dof2::$PetscInt, stencilType::DMStagStencilType, stencilWidth::$PetscInt, lx::Union{Ptr,Vector{$PetscInt}}, ly::Union{Ptr,Vector{$PetscInt}} )
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -33349,7 +33350,7 @@ function DMPlexGetCellType(petsclib::PetscLibType, dm::PetscDM, cell::PetscInt) 
                dm, cell, celltype_,
               )
 
-	celltype = unsafe_string(celltype_[])
+	celltype = celltype_[]
 
 	return celltype
 end 

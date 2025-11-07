@@ -415,7 +415,7 @@ end
     end
 end
 
-@testset "DM Vectors and Coordinates" begin
+@testset "DM Vec & Coord" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)

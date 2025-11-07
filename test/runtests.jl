@@ -35,10 +35,9 @@ include("options.jl")       # autowrapped
 include("ksp.jl")           # autowrapped
 include("snes.jl")          # autowrapped
 include("dmda.jl")          # autowrapped
+include("dmstag.jl")        # autowrapped
 
 #include("matshell.jl")      # not yet autowrapped!
-#include("dmda.jl")          # not yet autowrapped!
-#include("dmstag.jl")        # mostly autowrapped
 ###include("test_dmstag.jl")    # "old" dmstag tests - need to be finalized ; also needs KSP to run
 #include("old_test.jl")
 

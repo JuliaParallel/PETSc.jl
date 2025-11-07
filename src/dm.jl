@@ -56,7 +56,7 @@ function getinfo(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
 end
 
 """
-    lower, upper, size = getcorners(da::AbstractDMDA)
+    lower, upper, size = getcorners_dmda(da::AbstractDMDA)
 
 Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 `lower` and `upper` corners as well as the `size`.
@@ -64,7 +64,7 @@ Returns a `NamedTuple` with the global indices (excluding ghost points) of the
 
 Calls `LibPETSc.DMDAGetCorners`.
 """
-function getcorners(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+function getcorners_dmda(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     PetscInt = inttype(PetscLib)
     xs, ys, zs, xm, ym, zm = LibPETSc.DMDAGetCorners(PetscLib, dm)
     corners = [PetscInt(xs), PetscInt(ys), PetscInt(zs)]
@@ -80,15 +80,52 @@ function getcorners(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     )
 end
 
+
+"""
+    lower, upper, size = getcorners(da::AbstractDMDA)
+
+Returns a `NamedTuple` with the global indices (excluding ghost points) of the
+`lower` and `upper` corners as well as the `size`. 
+Works for both a DMDA and DMStag object
+"""
+function getcorners(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    type = gettype(dm)
+    if type == "da"
+        return getcorners_dmda(dm)
+    elseif type == "stag"
+        return getcorners_dmstag(dm)
+    else
+        error("getcorners only works for DMDA and DMStag objects")
+    end
+end
+
 """
     lower, upper, size = getghostcorners(da::AbstractDMDA)
+
+Returns a `NamedTuple` with the global indices (including ghost points) of the
+`lower` and `upper` corners as well as the `size`. 
+Works for both a `DMDA` and `DMStag` object
+"""
+function getghostcorners(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    type = gettype(dm)
+    if type == "da"
+        return getghostcorners_dmda(dm)
+    elseif type == "stag"
+        return getghostcorners_dmstag(dm)
+    else
+        error("getghostcorners only works for DMDA and DMStag objects")
+    end
+end
+
+"""
+    lower, upper, size = getghostcorners_dmda(da::AbstractDMDA)
 
 Returns a `NamedTuple` with the global indices (including ghost points) of the
 `lower` and `upper` corners as well as the `size` of the local part of the domain.
 
 Calls `LibPETSc.DMDAGetCorners`.
 """
-function getghostcorners(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+function getghostcorners_dmda(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     PetscInt = inttype(PetscLib)
     xs, ys, zs, xm, ym, zm = LibPETSc.DMDAGetGhostCorners(PetscLib, dm)
     corners = [PetscInt(xs), PetscInt(ys), PetscInt(zs)]
@@ -279,4 +316,34 @@ function getlocalcoordinatearray(da::AbstractPetscDM{PetscLib}) where {PetscLib}
     corners = getghostcorners(da)
 
     return reshapelocalarray(array1D, da, dim)
+end
+
+
+gettype(dm::PetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMGetType(PetscLib,dm)
+
+"""
+    getdimension(dm::AbstractPetscDM)
+
+Return the topological dimension of the `dm`
+
+# External Links
+$(_doc_external("DM/DMGetDimension"))
+"""
+getdimension(dm::AbstractPetscDM{PetscLib}) where PetscLib = LibPETSc.DMGetDimension(PetscLib,dm)
+
+
+"""
+    siz = size(dm::AbstractPetscDM{PetscLib})
+Size of a DM object 
+"""
+function Base.size(dm::AbstractPetscDM{PetscLib}) where PetscLib
+    if gettype(dm) == "stag"
+        size = LibPETSc.DMStagGetGlobalSizes(PetscLib,dm)
+    elseif gettype(dm) == "da"
+        dim, M,N,P,_ = LibPETSc.DMDAGetInfo(PetscLib, dm)
+        size = (M,N,P)
+    else
+        error("Size not defined for DMStag objects. Use getinfo(dm).global_size instead.")
+    end
+    return size
 end

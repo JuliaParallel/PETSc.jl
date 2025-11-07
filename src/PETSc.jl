@@ -29,10 +29,11 @@ include("vec.jl")
 include("mat.jl")          
 include("options.jl")
 include("ksp.jl")
-include("sys.jl")
 include("snes.jl")          
 include("dm.jl")          
+include("sys.jl")
 include("dmda.jl")          
+include("dmstag.jl")       
 
 
 
@@ -43,7 +44,6 @@ include("viewer.jl")
 include("matshell.jl")      # not yet wrapped!
 include("dm.jl")            # partly wrapped, no tests yet
 include("dmda.jl")          # not yet wrapped!
-include("dmstag.jl")        # mostly wrapped and tested
 include("pc.jl")            # to be fixed/wrapped
 include("ksp.jl")           # part is wrapped
 include("sys.jl")

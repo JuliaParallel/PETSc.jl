@@ -10986,6 +10986,16 @@ Input Parameter:
 Output Parameter:
 - `g` - the local vector
 
+Note:
+The vector values are NOT initialized and may have garbage in them, so you may need to zero them.
+
+The output parameter, `g`, is a regular PETSc vector that should be returned with DMRestoreLocalVector() DO NOT call VecDestroy() on it.
+
+This is intended to be used for vectors you need for a short time, like within a single function call. For vectors that you intend to keep around (for example in a C struct) or pass around large parts of your code you should use DMCreateLocalVector().
+
+VecStride*() operations can be useful when using DM with dof > 1
+
+
 Level: beginner
 
 -seealso: `DM`, `DMCreateGlobalVector()`, `VecDuplicate()`, `VecDuplicateVecs()`,
@@ -24217,17 +24227,18 @@ $(_doc_external("DMStag/DMStagStencilToIndexLocal"))
 """
 function DMStagStencilToIndexLocal(petsclib::PetscLibType, dm::PetscDM, dim::PetscInt, n::PetscInt, pos::DMStagStencil) end
 
-@for_petsc function DMStagStencilToIndexLocal(petsclib::$UnionPetscLib, dm::PetscDM, dim::$PetscInt, n::$PetscInt, pos::DMStagStencil )
-	ix_ = Ref{$PetscInt}()
+@for_petsc function DMStagStencilToIndexLocal(petsclib::$UnionPetscLib, dm::PetscDM, dim::$PetscInt, n::$PetscInt, pos::Vector{DMStagStencil} )
+	#ix_ = Ref{$PetscInt}()
 
+    ix = Vector{$PetscInt}(undef, n)
     @chk ccall(
                (:DMStagStencilToIndexLocal, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, $PetscInt, Ptr{DMStagStencil}, Ptr{$PetscInt}),
-               dm, dim, n, pos, ix_,
+               dm, dim, n, pos, ix,
               )
 
-	ix = ix_[]
+	#ix = ix_[]
 
 	return ix
 end 
@@ -24263,21 +24274,22 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagVecGetValuesStencil"))
 """
-function DMStagVecGetValuesStencil(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec, n::PetscInt, pos::DMStagStencil) end
+function DMStagVecGetValuesStencil(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec, n::PetscInt, pos::Vector{DMStagStencil}) end
 
-@for_petsc function DMStagVecGetValuesStencil(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec, n::$PetscInt, pos::DMStagStencil )
-	val_ = Ref{$PetscScalar}()
+@for_petsc function DMStagVecGetValuesStencil(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec, n::$PetscInt, pos::Vector{DMStagStencil})
+    # Allocate the output array (PETSc writes into this buffer)
+    @assert n>0
+
+    vals = Vector{$PetscScalar}(undef, n)
 
     @chk ccall(
-               (:DMStagVecGetValuesStencil, $petsc_library),
-               PetscErrorCode,
-               (CDM, CVec, $PetscInt, Ptr{DMStagStencil}, Ptr{$PetscScalar}),
-               dm, vec, n, pos, val_,
-              )
+        (:DMStagVecGetValuesStencil, $petsc_library),
+        PetscErrorCode,
+        (CDM, CVec, $PetscInt, Ptr{DMStagStencil}, Ptr{$PetscScalar}),
+        dm, vec, n, pos, vals,
+    )
 
-	val = val_[]
-
-	return val
+    return vals
 end 
 
 """
@@ -24311,7 +24323,7 @@ $(_doc_external("DMStag/DMStagVecSetValuesStencil"))
 """
 function DMStagVecSetValuesStencil(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec, n::PetscInt, pos::DMStagStencil, val::PetscScalar, insertMode::InsertMode) end
 
-@for_petsc function DMStagVecSetValuesStencil(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec, n::$PetscInt, pos::DMStagStencil, val::$PetscScalar, insertMode::InsertMode )
+@for_petsc function DMStagVecSetValuesStencil(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec, n::$PetscInt, pos::Vector{DMStagStencil}, val::Vector{$PetscScalar}, insertMode::InsertMode )
 
     @chk ccall(
                (:DMStagVecSetValuesStencil, $petsc_library),
@@ -25229,11 +25241,13 @@ function DMStagGetOwnershipRanges(petsclib::PetscLibType, dm::PetscDM) end
                (CDM, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{$PetscInt}}),
                dm, lx_, ly_, lz_,
               )
-
-	lx = unsafe_wrap(Array, lx_[], VecGetLocalSize(petsclib, x); own = false)
-	ly = unsafe_wrap(Array, ly_[], VecGetLocalSize(petsclib, x); own = false)
-	lz = unsafe_wrap(Array, lz_[], VecGetLocalSize(petsclib, x); own = false)
-
+    # todo: determine the sizes of these arrays to wrap them properly
+	#lx = unsafe_wrap(Array, lx_[], VecGetLocalSize(petsclib, x); own = false)
+	#ly = unsafe_wrap(Array, ly_[], VecGetLocalSize(petsclib, x); own = false)
+	#lz = unsafe_wrap(Array, lz_[], VecGetLocalSize(petsclib, x); own = false)
+    lx = lx_[]
+    ly = ly_[]
+    lz = lz_[]
 	return lx,ly,lz
 end 
 
@@ -26067,8 +26081,7 @@ Output Parameter:
 Level: beginner
 
 Note:
-This function returns a (dim+1)-dimensional array for a dim-dimensional
-`DMSTAG`.
+This function returns a (dim+1)-dimensional array for a dim-dimensional `DMSTAG`.
 
 The first 1-3 dimensions indicate an element in the global
 numbering, using the standard C ordering.
@@ -26096,17 +26109,24 @@ $(_doc_external("DMStag/DMStagVecGetArray"))
 """
 function DMStagVecGetArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec, array::Cvoid) end
 
-@for_petsc function DMStagVecGetArray(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec, array::Cvoid )
+@for_petsc function DMStagVecGetArray(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec)
+    # PETSc returns a pointer into the Vec's internal storage; we wrap it without taking ownership
+    a_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
-               (:DMStagVecGetArray, $petsc_library),
-               PetscErrorCode,
-               (CDM, CVec, Ptr{Cvoid}),
-               dm, vec, array,
-              )
+        (:DMStagVecGetArray, $petsc_library),
+        PetscErrorCode,
+        (CDM, CVec, Ptr{Ptr{$PetscScalar}}),
+        dm, vec, a_,
+    )
 
 
-	return nothing
+    ptr = a_[]
+    len = VecGetLocalSize(petsclib, vec)
+    @show len
+    arr = unsafe_wrap(Array, ptr, len; own = false)
+
+    return arr
 end 
 
 """
@@ -26136,9 +26156,11 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagVecGetArrayRead"))
 """
-function DMStagVecGetArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec, array::Cvoid) end
+function DMStagVecGetArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec) end
 
-@for_petsc function DMStagVecGetArrayRead(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec, array::Cvoid )
+@for_petsc function DMStagVecGetArrayRead(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec)
+    # PETSc returns a pointer into the Vec's internal storage; we wrap it without taking ownership
+    a_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
                (:DMStagVecGetArrayRead, $petsc_library),
@@ -26147,8 +26169,12 @@ function DMStagVecGetArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVe
                dm, vec, array,
               )
 
+    ptr = a_[]
+    len = VecGetLocalSize(petsclib, vec)
+    arr = unsafe_wrap(Array, ptr, len; own = false)
 
-	return nothing
+
+	return arr
 end 
 
 """
@@ -26173,17 +26199,29 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagVecRestoreArray"))
 """
-function DMStagVecRestoreArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec, array::Cvoid) end
+function DMStagVecRestoreArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec, array::Vector{PetscScalar}) end
 
-@for_petsc function DMStagVecRestoreArray(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec, array::Cvoid )
-
+@for_petsc function DMStagVecRestoreArray(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec, array::Vector{$PetscScalar} )
+    a_ = Ref(pointer(array))
     @chk ccall(
                (:DMStagVecRestoreArray, $petsc_library),
                PetscErrorCode,
-               (CDM, CVec, Ptr{Cvoid}),
-               dm, vec, array,
+               (CDM, CVec, Ptr{Ptr{$PetscScalar}}),
+               dm, vec, a_,
               )
 
+#=
+a_ = Ref(pointer(a))
+
+    @chk ccall(
+               (:VecRestoreArray, $petsc_library),
+               PetscErrorCode,
+               (CVec, Ptr{Ptr{$PetscScalar}}),
+               x, a_,
+              )
+
+
+=#
 
 	return nothing
 end 
@@ -26213,12 +26251,13 @@ $(_doc_external("DMStag/DMStagVecRestoreArrayRead"))
 function DMStagVecRestoreArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec, array::Cvoid) end
 
 @for_petsc function DMStagVecRestoreArrayRead(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec, array::Cvoid )
+    a_ = Ref(pointer(array))
 
     @chk ccall(
                (:DMStagVecRestoreArrayRead, $petsc_library),
                PetscErrorCode,
-               (CDM, CVec, Ptr{Cvoid}),
-               dm, vec, array,
+               (CDM, CVec, Ptr{Ptr{$PetscScalar}}),
+               dm, vec, a_,
               )
 
 

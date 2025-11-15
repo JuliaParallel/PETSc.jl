@@ -1624,15 +1624,20 @@ function VecGetArray2d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::Pets
 
 @for_petsc function VecGetArray2d(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt )
 
+    arr_ptr = Ref{Ptr{Ptr{$PetscScalar}}}()
+
     @chk ccall(
                (:VecGetArray2d, $petsc_library),
                PetscErrorCode,
-               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}),
-               x, m, n, mstart, nstart, a,
+               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ref{Ptr{Ptr{$PetscScalar}}}),
+               x, m, n, mstart, nstart, arr_ptr,
               )
 
+    # Assume contiguous storage, use first row pointer
+    data_ptr = unsafe_load(arr_ptr[])
+    mat = unsafe_wrap(Array, data_ptr, (m, n))
 
-	return a
+	return PetscArray(mat,[data_ptr])
 end 
 
 """
@@ -1666,19 +1671,24 @@ function VecGetArray2dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n:
 
 @for_petsc function VecGetArray2dWrite(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt )
 
+    arr_ptr = Ref{Ptr{Ptr{$PetscScalar}}}()
+
     @chk ccall(
                (:VecGetArray2dWrite, $petsc_library),
                PetscErrorCode,
-               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}),
-               x, m, n, mstart, nstart, a,
-              )
+               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ref{Ptr{Ptr{$PetscScalar}}}),
+               x, m, n, mstart, nstart, arr_ptr,
+            )
 
+    # Assume contiguous storage, use first row pointer
+    data_ptr = unsafe_load(arr_ptr[])
+    mat = unsafe_wrap(Array, data_ptr, (m, n))
 
-	return a
+	return PetscArray(mat,[data_ptr])            
 end 
 
 """
-	VecRestoreArray2d(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::Vector{PetscScalar}) 
+	VecRestoreArray2d(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{$PetscScalar,2}) 
 Restores a vector after `VecGetArray2d()` has been called.
 
 Logically Collective
@@ -1700,23 +1710,29 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray2d"))
 """
-function VecRestoreArray2d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::Vector{PetscScalar}) end
+function VecRestoreArray2d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar,2}) end
 
-@for_petsc function VecRestoreArray2d(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArray2d(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, a::PetscArray{$PetscScalar,2} )
 
-    @chk ccall(
-               (:VecRestoreArray2d, $petsc_library),
-               PetscErrorCode,
-               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}),
-               x, m, n, mstart, nstart, a,
-              )
+    if a.ptr[]  != C_NULL
+        @chk ccall(
+                (:VecRestoreArray2d, $petsc_library),
+                PetscErrorCode,
+                (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ref{Ptr{Ptr{PetscScalar}}}),
+                x, m, n, mstart, nstart, a.ptr,
+                )
+
+        a.ptr[] = C_NULL
+    else
+        error("The input array is already restored")
+    end
 
 
 	return nothing
 end 
 
 """
-	VecRestoreArray2dWrite(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::Vector{PetscScalar}) 
+	VecRestoreArray2dWrite(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{$PetscScalar,2}) 
 Restores a vector after `VecGetArray2dWrite()` has been called.
 
 Logically Collective
@@ -1738,16 +1754,21 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray2dWrite"))
 """
-function VecRestoreArray2dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::Vector{PetscScalar}) end
+function VecRestoreArray2dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar,2}) end
 
-@for_petsc function VecRestoreArray2dWrite(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArray2dWrite(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, a::PetscArray{$PetscScalar,2} )
 
-    @chk ccall(
-               (:VecRestoreArray2dWrite, $petsc_library),
-               PetscErrorCode,
-               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}),
-               x, m, n, mstart, nstart, a,
-              )
+
+    if a.ptr[]  != C_NULL
+        @chk ccall(
+                   (:VecRestoreArray2dWrite, $petsc_library),
+                   PetscErrorCode,
+                   (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ref{Ptr{Ptr{PetscScalar}}}),
+                   x, m, n, mstart, nstart, a,
+                  )
+   else
+        error("The input array is already restored")
+    end
 
 
 	return nothing
@@ -1912,7 +1933,7 @@ function VecRestoreArray1dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt
 end 
 
 """
-	a::Vector{PetscScalar} = VecGetArray3d(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
+	a::PetscArray = VecGetArray3d(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
 Returns a pointer to a 3d contiguous array that contains this
 processor's portion of the vector data.  You MUST call `VecRestoreArray3d()`
 when you no longer need access to the array.
@@ -1943,16 +1964,20 @@ $(_doc_external("Vec/VecGetArray3d"))
 function VecGetArray3d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) end
 
 @for_petsc function VecGetArray3d(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt )
+    arr_ptr = Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}()
 
     @chk ccall(
                (:VecGetArray3d, $petsc_library),
                PetscErrorCode,
-               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}),
+               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}),
                x, m, n, p, mstart, nstart, pstart, a,
               )
 
+    # Assume contiguous storage, use first row pointer
+    data_ptr = unsafe_load(arr_ptr[])
+    mat = unsafe_wrap(Array, data_ptr, (m, n, p))
 
-	return a
+	return PetscArray(mat,[data_ptr])         
 end 
 
 """
@@ -1988,15 +2013,21 @@ function VecGetArray3dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n:
 
 @for_petsc function VecGetArray3dWrite(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt )
 
+    arr_ptr = Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}()
+
     @chk ccall(
                (:VecGetArray3dWrite, $petsc_library),
                PetscErrorCode,
-               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}),
+               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}),
                x, m, n, p, mstart, nstart, pstart, a,
               )
 
+    # Assume contiguous storage, use first row pointer
+    data_ptr = unsafe_load(arr_ptr[])
+    mat = unsafe_wrap(Array, data_ptr, (m, n, p))
 
-	return a
+	return PetscArray(mat,[data_ptr])         
+
 end 
 
 """
@@ -2114,15 +2145,20 @@ function VecGetArray4d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::Pets
 
 @for_petsc function VecGetArray4d(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt )
 
+    arr_ptr = Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}()
+
     @chk ccall(
                (:VecGetArray4d, $petsc_library),
                PetscErrorCode,
-               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}),
-               x, m, n, p, q, mstart, nstart, pstart, qstart, a,
+               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}),
+               x, m, n, p, q, mstart, nstart, pstart, qstart, arr_ptr,
               )
 
+    # Assume contiguous storage, use first row pointer
+    data_ptr = unsafe_load(arr_ptr[])
+    mat = unsafe_wrap(Array, data_ptr, (m, n, p, q))
 
-	return a
+	return PetscArray(mat,[data_ptr])         
 end 
 
 """
@@ -2160,15 +2196,20 @@ function VecGetArray4dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n:
 
 @for_petsc function VecGetArray4dWrite(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt )
 
+    arr_ptr = Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}()
+
     @chk ccall(
                (:VecGetArray4dWrite, $petsc_library),
                PetscErrorCode,
-               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}),
-               x, m, n, p, q, mstart, nstart, pstart, qstart, a,
+               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}),
+               x, m, n, p, q, mstart, nstart, pstart, qstart, arr_ptr,
               )
 
+    # Assume contiguous storage, use first row pointer
+    data_ptr = unsafe_load(arr_ptr[])
+    mat = unsafe_wrap(Array, data_ptr, (m, n, p, q))
 
-	return a
+	return PetscArray(mat,[data_ptr])         
 end 
 
 """
@@ -2286,15 +2327,20 @@ function VecGetArray2dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::
 
 @for_petsc function VecGetArray2dRead(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt )
 
+    arr_ptr = Ref{Ptr{Ptr{$PetscScalar}}}()
+
     @chk ccall(
                (:VecGetArray2dRead, $petsc_library),
                PetscErrorCode,
-               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ptr{$PetscScalar}),
-               x, m, n, mstart, nstart, a,
+               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ref{Ptr{Ptr{$PetscScalar}}}),
+               x, m, n, mstart, nstart, arr_ptr,
               )
 
+    # Assume contiguous storage, use first row pointer
+    data_ptr = unsafe_load(arr_ptr[])
+    mat = unsafe_wrap(Array, data_ptr, (m, n))
 
-	return a
+	return PetscArray(mat,[data_ptr])
 end 
 
 """
@@ -2363,18 +2409,20 @@ $(_doc_external("Vec/VecGetArray1dRead"))
 function VecGetArray1dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt, mstart::PetscInt) end
 
 @for_petsc function VecGetArray1dRead(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, mstart::$PetscInt )
-	a_ = Ref{Ptr{$PetscScalar}}()
+    arr_ptr = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
                (:VecGetArray1dRead, $petsc_library),
                PetscErrorCode,
-               (CVec, $PetscInt, $PetscInt, Ptr{Ptr{$PetscScalar}}),
-               x, m, mstart, a_,
+               (CVec, $PetscInt, $PetscInt, Ref{Ptr{$PetscScalar}}),
+               x, m, mstart, arr_ptr,
               )
 
-	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
+    # Assume contiguous storage, use first row pointer
+    data_ptr = unsafe_load(arr_ptr[])
+    mat = unsafe_wrap(Array, data_ptr, m)
 
-	return a
+	return PetscArray(mat,[data_ptr])
 end 
 
 """

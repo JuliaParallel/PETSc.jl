@@ -50,7 +50,8 @@ export PetscLibType,
     DMSTAG_STENCIL_NONE,
     DMSTAG_STENCIL_STAR,
     DMSTAG_STENCIL_BOX,
-    MatStencil
+    MatStencil,
+    PetscArray
 
 include("LibPETSc_const.jl")
 include("LibPETSc_startup.jl")

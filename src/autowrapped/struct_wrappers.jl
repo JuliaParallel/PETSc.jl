@@ -73,7 +73,7 @@ struct DMStagStencil
 
     DMStagStencil() = new()
 
-    DMStagStencil(loc,i) = new(loc::DMStagStencilLocation,i::PetscInt ,    j::PetscInt ,    k::PetscInt ,    c::PetscInt)
+    DMStagStencil(loc,i,j,k,c) = new(loc::DMStagStencilLocation,i::PetscInt ,    j::PetscInt ,    k::PetscInt ,    c::PetscInt)
 
 end 
 

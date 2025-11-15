@@ -363,6 +363,7 @@ end
 
 # load all generated files
 #include("../src/LibPETSc_lib.jl")
+include("petscarray.jl")
 include("enums_wrappers.jl")
 include("senums_wrappers.jl")
 include("typedefs_wrappers.jl")

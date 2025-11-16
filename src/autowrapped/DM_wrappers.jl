@@ -24531,23 +24531,36 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetProductCoordinateArrays"))
 """
-function DMStagGetProductCoordinateArrays(petsclib::PetscLibType, dm::PetscDM, arrX::Cvoid, arrY::Cvoid, arrZ::Cvoid) end
+function DMStagGetProductCoordinateArrays(petsclib::PetscLibType, dm::PetscDM) end
 
-@for_petsc function DMStagGetProductCoordinateArrays(petsclib::$UnionPetscLib, dm::PetscDM, arrX::Cvoid, arrY::Cvoid, arrZ::Cvoid )
+@for_petsc function DMStagGetProductCoordinateArrays(petsclib::$UnionPetscLib, dm::PetscDM)
+    arrX_ = Ref{Ptr{Ptr{$PetscScalar}}}()
+    arrY_ = Ref{Ptr{Ptr{$PetscScalar}}}()
+    arrZ_ = Ref{Ptr{Ptr{$PetscScalar}}}()
+
+    _,_,_,nx,ny,nz = DMStagGetGhostCorners(petsclib, dm)
 
     @chk ccall(
                (:DMStagGetProductCoordinateArrays, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
-               dm, arrX, arrY, arrZ,
+               (CDM, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}),
+               dm, arrX_, arrY_, arrZ_,
               )
 
+    mat = unsafe_wrap(Array, unsafe_load(arrX_[]), (nx,2))
+    arrX = PetscArray(mat,arrX_[]) 
 
-	return nothing
+    mat = unsafe_wrap(Array, unsafe_load(arrY_[]), (ny,2))
+    arrY = PetscArray(mat,arrY_[]) 
+
+    mat = unsafe_wrap(Array, unsafe_load(arrZ_[]), (nz,2))
+    arrZ = PetscArray(mat,arrZ_[]) 
+
+	return arrX,arrY,arrZ
 end 
 
 """
-	DMStagGetProductCoordinateArraysRead(petsclib::PetscLibType,dm::PetscDM, arrX::Cvoid, arrY::Cvoid, arrZ::Cvoid) 
+	arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray = DMStagGetProductCoordinateArraysRead(petsclib::PetscLibType,dm::PetscDM) 
 extract product coordinate arrays, read
 
 Logically Collective
@@ -24572,19 +24585,32 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagGetProductCoordinateArraysRead"))
 """
-function DMStagGetProductCoordinateArraysRead(petsclib::PetscLibType, dm::PetscDM, arrX::Cvoid, arrY::Cvoid, arrZ::Cvoid) end
+function DMStagGetProductCoordinateArraysRead(petsclib::PetscLibType, dm::PetscDM) end
 
-@for_petsc function DMStagGetProductCoordinateArraysRead(petsclib::$UnionPetscLib, dm::PetscDM, arrX::Cvoid, arrY::Cvoid, arrZ::Cvoid )
+@for_petsc function DMStagGetProductCoordinateArraysRead(petsclib::$UnionPetscLib, dm::PetscDM)
+    arrX_ = Ref{Ptr{Ptr{$PetscScalar}}}()
+    arrY_ = Ref{Ptr{Ptr{$PetscScalar}}}()
+    arrZ_ = Ref{Ptr{Ptr{$PetscScalar}}}()
+
+    _,_,_,nx,ny,nz = DMStagGetGhostCorners(petsclib, dm)
 
     @chk ccall(
                (:DMStagGetProductCoordinateArraysRead, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
-               dm, arrX, arrY, arrZ,
+               (CDM, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}),
+               dm, arrX_, arrY_, arrZ_,
               )
 
+    mat = unsafe_wrap(Array, unsafe_load(arrX_[]), (nx,2))
+    arrX = PetscArray(mat,arrX_[]) 
 
-	return nothing
+    mat = unsafe_wrap(Array, unsafe_load(arrY_[]), (ny,2))
+    arrY = PetscArray(mat,arrY_[]) 
+
+    mat = unsafe_wrap(Array, unsafe_load(arrZ_[]), (nz,2))
+    arrZ = PetscArray(mat,arrZ_[]) 
+
+	return arrX,arrY,arrZ
 end 
 
 """
@@ -25484,15 +25510,13 @@ function DMStagPopulateLocalToGlobalInjective(petsclib::PetscLibType, dm::PetscD
 end 
 
 """
-	DMStagRestoreProductCoordinateArrays(petsclib::PetscLibType,dm::PetscDM, arrX::Cvoid, arrY::Cvoid, arrZ::Cvoid) 
+	DMStagRestoreProductCoordinateArrays(petsclib::PetscLibType,dm::PetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray) 
 restore local array access
 
 Logically Collective
 
 Input Parameter:
 - `dm` - the `DMSTAG` object
-
-Output Parameters:
 - `arrX` - local 1D coordinate arrays for x direction
 - `arrY` - local 1D coordinate arrays for y direction
 - `arrZ` - local 1D coordinate arrays for z direction
@@ -25524,15 +25548,15 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagRestoreProductCoordinateArrays"))
 """
-function DMStagRestoreProductCoordinateArrays(petsclib::PetscLibType, dm::PetscDM, arrX::Cvoid, arrY::Cvoid, arrZ::Cvoid) end
+function DMStagRestoreProductCoordinateArrays(petsclib::PetscLibType, dm::PetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray) end
 
-@for_petsc function DMStagRestoreProductCoordinateArrays(petsclib::$UnionPetscLib, dm::PetscDM, arrX::Cvoid, arrY::Cvoid, arrZ::Cvoid )
+@for_petsc function DMStagRestoreProductCoordinateArrays(petsclib::$UnionPetscLib, dm::PetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray )
 
     @chk ccall(
                (:DMStagRestoreProductCoordinateArrays, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
-               dm, arrX, arrY, arrZ,
+               (CDM, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}),
+               dm, arrX.ptr, arrY.ptr, arrZ.ptr
               )
 
 
@@ -25540,7 +25564,7 @@ function DMStagRestoreProductCoordinateArrays(petsclib::PetscLibType, dm::PetscD
 end 
 
 """
-	DMStagRestoreProductCoordinateArraysRead(petsclib::PetscLibType,dm::PetscDM, arrX::Cvoid, arrY::Cvoid, arrZ::Cvoid) 
+	DMStagRestoreProductCoordinateArraysRead(petsclib::PetscLibType,dm::PetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray) 
 restore local product array access, read
 
 Logically Collective
@@ -25560,17 +25584,17 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagRestoreProductCoordinateArraysRead"))
 """
-function DMStagRestoreProductCoordinateArraysRead(petsclib::PetscLibType, dm::PetscDM, arrX::Cvoid, arrY::Cvoid, arrZ::Cvoid) end
+function DMStagRestoreProductCoordinateArraysRead(petsclib::PetscLibType, dm::PetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray) end
 
-@for_petsc function DMStagRestoreProductCoordinateArraysRead(petsclib::$UnionPetscLib, dm::PetscDM, arrX::Cvoid, arrY::Cvoid, arrZ::Cvoid )
+@for_petsc function DMStagRestoreProductCoordinateArraysRead(petsclib::$UnionPetscLib, dm::PetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray )
 
+   
     @chk ccall(
-               (:DMStagRestoreProductCoordinateArraysRead, $petsc_library),
+               (:DMStagRestoreProductCoordinateArrays, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
-               dm, arrX, arrY, arrZ,
+               (CDM, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}),
+               dm, arrX.ptr, arrY.ptr, arrZ.ptr,
               )
-
 
 	return nothing
 end 

@@ -54,6 +54,12 @@ VecPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} = VecPtr(getlib(
 # Multiple dispatch to make PetscVec behave like Julia Vector
 # =============================================================================
 
+# Treat PETSc vectors as 1-D array-like objects for broadcasting/indexing
+Base.ndims(::Type{<:AbstractPetscVec}) = 1
+Base.IndexStyle(::Type{<:AbstractPetscVec}) = IndexLinear()
+Base.axes(v::AbstractPetscVec) = (Base.OneTo(length(v)),)
+Base.BroadcastStyle(::Type{<:AbstractPetscVec}) = Broadcast.DefaultArrayStyle{1}()
+
 # Array interface - size and length
 Base.size(v::AbstractPetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecGetSize(PetscLib,v)
 Base.length(v::AbstractPetscVec{PetscLib}) where {PetscLib} = prod(size(v))
@@ -84,7 +90,8 @@ Base.isapprox(v::AbstractPetscVec{PetscLib}, w::AbstractPetscVec{PetscLib}; kwar
 
 function Base.setindex!(v::AbstractPetscVec{PetscLib}, val, i::Integer) where {PetscLib} 
      PetscInt = inttype(PetscLib)
-     LibPETSc.VecSetValues(PetscLib,v, PetscInt(1), PetscInt.([i-1]), [val], PETSc.INSERT_VALUES)
+     PetscScalar = PETSc.scalartype(PetscLib)
+     LibPETSc.VecSetValues(PetscLib,v, PetscInt(1), PetscInt.([i-1]), [PetscScalar(val)], PETSc.INSERT_VALUES)
      return nothing
 end
 
@@ -95,6 +102,25 @@ function Base.setindex!(v::AbstractPetscVec{PetscLib}, vals, r::AbstractRange) w
 end
 
 Base.fill!(v::AbstractPetscVec{PetscLib}, val) where {PetscLib} = LibPETSc.VecSet(PetscLib,v, PetscLib.PetscScalar(val))
+
+# Broadcasting assignment support (dest is not an AbstractArray)
+function Base.copyto!(dest::AbstractPetscVec{PetscLib}, bc::Base.Broadcast.Broadcasted) where {PetscLib}
+    # Evaluate the broadcasted RHS
+    rhs = Base.materialize(bc)
+    if rhs isa Number
+        # Fast path for scalar RHS
+        Base.fill!(dest, rhs)
+        return dest
+    end
+    # Array-like RHS: shape must match
+    axes(dest) == axes(rhs) || throw(DimensionMismatch("broadcast axes $(axes(rhs)) do not match destination axes $(axes(dest))"))
+    @inbounds for i in eachindex(rhs)
+        dest[i] = rhs[i]
+    end
+    return dest
+end
+
+Base.materialize!(dest::AbstractPetscVec, bc::Base.Broadcast.Broadcasted) = (Base.copyto!(dest, bc); dest)
 
 # Iterator interface
 Base.iterate(v::AbstractPetscVec{PetscLib})  where {PetscLib} = iterate(v, 1)

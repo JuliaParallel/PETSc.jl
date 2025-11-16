@@ -299,8 +299,9 @@ function func_args(a::Py, function_name::String, input_vars=String[], output_var
         for i=1:stars+1
             ccall_str   *= "}"
         end
-        @show stars, ccall_str
-        
+        if !isoutput
+            name_ccall *= ".ptr"
+        end
     else
         init_arg, extract_arg, name_ccall = init_extract_parameters(typename, name, function_name, name_ccall, isarray, isoutput, stars) 
 
@@ -318,8 +319,7 @@ function func_args(a::Py, function_name::String, input_vars=String[], output_var
            typename     = "PetscArray{$typename, 2}" 
         
            init_arg = "if a.ptr[]  != C_NULL  # CHECK ARRAY NAME AND SIZE!!"
-           extract_arg  = "\ta.ptr[] = C_NULL\n"
-           extract_arg *= "\telse\n"
+           extract_arg = "else\n"
            extract_arg *= "\t\terror(\"The input array is already restored\")\n"
            extract_arg *= "\tend\n"
            

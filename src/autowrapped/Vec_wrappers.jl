@@ -1637,7 +1637,7 @@ function VecGetArray2d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::Pets
     data_ptr = unsafe_load(arr_ptr[])
     mat = unsafe_wrap(Array, data_ptr, (m, n))
 
-	return PetscArray(mat, [arr_ptr])
+	return PetscArray(mat, arr_ptr)
 end 
 
 """
@@ -1684,7 +1684,7 @@ function VecGetArray2dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n:
     data_ptr = unsafe_load(arr_ptr[])
     mat = unsafe_wrap(Array, data_ptr, (m, n))
 
-	return PetscArray(mat,[data_ptr])            
+	return PetscArray(mat,arr_ptr)            
 end 
 
 """
@@ -1719,10 +1719,9 @@ function VecRestoreArray2d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::
                 (:VecRestoreArray2d, $petsc_library),
                 PetscErrorCode,
                 (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ref{Ptr{Ptr{$PetscScalar}}}),
-                x, m, n, mstart, nstart, a.ptr[],
+                x, m, n, mstart, nstart, a.ptr,
                 )
 
-		#a.ptr[] = [C_NULL]
 	else
 		error("The input array is already restored")
 	end
@@ -1818,7 +1817,7 @@ function VecGetArray1d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, mstart:
 
 	data_ptr = unsafe_load(a_[])
 	mat = unsafe_wrap(Array, data_ptr, m) 
-	a = PetscArray(mat,data_ptr) 
+	a = PetscArray(mat,a_[]) 
 
 	return a
 end 
@@ -2389,7 +2388,7 @@ function VecGetArray2dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::
     data_ptr = unsafe_load(arr_ptr[])
     mat = unsafe_wrap(Array, data_ptr, (m, n))
 
-	return PetscArray(mat,[data_ptr])
+	return PetscArray(mat,arr_ptr)
 end 
 
 """
@@ -2420,12 +2419,12 @@ function VecRestoreArray2dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt,
 @for_petsc function VecRestoreArray2dRead(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, a::PetscArray{$PetscScalar, 2} )
 	if a.ptr[]  != C_NULL  
 
-    @chk ccall(
-               (:VecRestoreArray2dRead, $petsc_library),
-               PetscErrorCode,
-               (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ref{Ptr{Ptr{$PetscScalar}}}),
-               x, m, n, mstart, nstart, a.ptr,
-              )
+        @chk ccall(
+                (:VecRestoreArray2dRead, $petsc_library),
+                PetscErrorCode,
+                (CVec, $PetscInt, $PetscInt, $PetscInt, $PetscInt, Ref{Ptr{Ptr{$PetscScalar}}}),
+                x, m, n, mstart, nstart, a.ptr,
+                )
 
 		
 	else
@@ -2462,14 +2461,12 @@ function VecRestoreArray1dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt,
 
 @for_petsc function VecRestoreArray1dRead(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, mstart::$PetscInt, a::PetscArray{$PetscScalar, 1} )
 	if a.ptr[]  != C_NULL 
-    @chk ccall(
-               (:VecRestoreArray1dRead, $petsc_library),
-               PetscErrorCode,
-               (CVec, $PetscInt, $PetscInt, Ptr{Ptr{$PetscScalar}}),
-               x, m, mstart, a.ptr,
-              )
-
-		
+        @chk ccall(
+                (:VecRestoreArray1dRead, $petsc_library),
+                PetscErrorCode,
+                (CVec, $PetscInt, $PetscInt, Ptr{Ptr{$PetscScalar}}),
+                x, m, mstart, a.ptr,
+                )
 	else
 		error("The input array is already restored")
 	end

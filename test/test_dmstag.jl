@@ -187,32 +187,27 @@ MPI.Initialized() || MPI.Init()
         @test isnothing(out)
 
         v1D = PETSc.DMLocalVec(dm_1D);
-      #  fill!(v1D,1.0)
-      #  v1D[10] = 10.1
-        #array1D = LibPETSc.DMStagVecGetArray(petsclib, dm_1D, v1D)
-        #array1D .= 1.1
-        #array1D[2] = 2.1
-        #LibPETSc.DMStagVecRestoreArray(petsclib, dm_1D, v1D, array1D)
 
+        # Set values using the 2D array interface
+        # DMStagVecGetArray does this internally
         x,_,_,m,_,_ = LibPETSc.DMStagGetGhostCorners(petsclib, dm_1D)
         entriesEl = LibPETSc.DMStagGetEntriesPerElement(petsclib,dm_1D)
-#
+
         array2D = LibPETSc.VecGetArray2d(petsclib, v1D, m, entriesEl, 0, 0 )
         array2D .= 1.0
         array2D[2,2] = 2.2
         LibPETSc.VecRestoreArray2d(petsclib, v1D, m, entriesEl, 0, 0, array2D)
+        @test extrema(v1D) == (1.0, 2.2)
 
-#        array1D = PETSc.unsafe_localarray(v1D; read = true, write = false)
+        # Now lets use DMStagVecGetArray. Note that we had to do manual modifcations to that routine
+        array2D_1 = LibPETSc.DMStagVecGetArray(petsclib, dm_1D, v1D) 
+        array2D_1 .= 2.0
+        array2D_1[2,2] = 4.2
+        LibPETSc.DMStagVecRestoreArray(petsclib, dm_1D, v1D, array2D_1) 
+        @test extrema(v1D) == (2.0, 4.2)
 
 
 #=
-        @test array1D[1]  == PetscScalar(1.0)
-        @test array1D[10] == PetscScalar(10.1)
-        array1D[1,1] = -1.1
-        @test array1D[1]  == PetscScalar(-1.1)
-        
-        # Restore access to array
-        LibPETSc.DMStagVecRestoreArray(petsclib, dm_1D, v1D, p_array)
 
         # Test product coordinates and friends 
         # Converted from old DMStagCreate3d interface to new unified DMStag constructor

@@ -9,7 +9,7 @@ Behaves like a normal Julia array but holds a pointer to PETSc data, which can b
 """
 struct PetscArray{T,N} <: AbstractArray{T,N}
     data::Array{T,N}  # julia array that holds the data
-    ptr::Vector  # ptr to the underlying PETSc data (as a vector so we can put it to zero)
+    ptr  # ptr to the underlying PETSc data (as a vector so we can put it to zero)
 end
 
 # ============================================================================

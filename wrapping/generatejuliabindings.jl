@@ -5,6 +5,15 @@
 #
 # It replaces the Clang.jl infrastructure and re-uses the python binding tools.
 # Should be run from petsc/config/utils/; please specify the petsc directory @ the beginning
+#
+# Note:
+#  This file was used to generate an initial version of the julia bindings for PETSc. 
+#  It is not perfect and does not work fully automatically. As a result, quite a few
+#  manual changes were necessary to get the tests to work 
+#  Therefore, it is not advised to rerun this again with futire versions of PETSc,
+#  because you would have to redo these manual changes again. 
+#  Since typically only very few functions change between PETSc releases, you 
+#  can instead generate new wrappers for these functions using the `wrap_function` function
 
 using PythonCall
 import Base: contains, String
@@ -157,12 +166,30 @@ function init_extract_parameters(typename::String, name::String, function_name::
         init_arg    = "$name_ccall = Ref($(name).ptr)"  
         extract_arg = "$(name).ptr = C_NULL"  
  
-    elseif isarray && isoutput && stars==1
+    elseif isarray && isoutput && stars>0
         # array that'll be an output
         name_ccall  = "$(name)_"
-        init_arg    = "$name_ccall = Ref{Ptr{$typename}}()"  
+        init_arg    = "$name_ccall = Ref{"
+        for i=1:stars
+            init_arg *= "Ptr{"
+        end
+        init_arg *= "$typename"
+        for i=1:stars
+            init_arg *= "}"
+        end
+        init_arg *= "}()"  
+
         # Note: we make the implicit assumption here that the Vec is always called 'x'
-        extract_arg = "$name = unsafe_wrap(Array, $name_ccall[], VecGetLocalSize(petsclib, x); own = false)"  
+        if stars==1
+            sz = "m"
+        elseif stars==2
+            sz = "(m,n)"
+        elseif stars==3
+            sz = "(m,n,p)"
+        end
+        extract_arg = "data_ptr = unsafe_load($name_ccall[])\n"
+        extract_arg *= "\tmat = unsafe_wrap(Array, data_ptr, $sz) # CHECK SIZE!! \n"  
+        extract_arg *= "\t$name = PetscArray(mat,[data_ptr]) "
 
     elseif isarray && isoutput && stars==0
         # array that'll be an output
@@ -246,7 +273,7 @@ function func_args(a::Py, function_name::String, input_vars=String[], output_var
     
     # default setting for output arguments
     @show input_vars, output_vars
-    output = is_this_an_output_argument(function_name, name, typename, stars, isarray, output_vars, input_vars)
+    isoutput = is_this_an_output_argument(function_name, name, typename, stars, isarray, output_vars, input_vars)
 
     # this is related to creating custom julia structs
     typename_ccall = typename
@@ -260,33 +287,53 @@ function func_args(a::Py, function_name::String, input_vars=String[], output_var
                                                 count=1)
     end
     
-    if stars==1
+    if stars>0
         # a single value, so can always be output
         # depending on what type of output, we need different strategies here
-        #output      = true
-        init_arg, extract_arg, name_ccall = init_extract_parameters(typename, name, function_name, name_ccall, isarray, output, stars) 
-        ccall_str   = "Ptr{$typename_ccall}"
+        init_arg, extract_arg, name_ccall = init_extract_parameters(typename, name, function_name, name_ccall, isarray, isoutput, stars) 
+        ccall_str   = "Ref{";
+        for i=1:stars
+            ccall_str   *= "Ptr{"
+        end
+        ccall_str   *= "$typename_ccall"
+        for i=1:stars+1
+            ccall_str   *= "}"
+        end
+        @show stars, ccall_str
+        
     else
-        init_arg, extract_arg, name_ccall = init_extract_parameters(typename, name, function_name, name_ccall, isarray, output, stars) 
+        init_arg, extract_arg, name_ccall = init_extract_parameters(typename, name, function_name, name_ccall, isarray, isoutput, stars) 
 
         #output      = false
         #init_arg    = ""
         #extract_arg = ""
         ccall_str   = "$typename_ccall"
     end
-    if isarray
+    if isarray && !isoutput 
         # in case parameters are arrays
-       # init_arg, extract_arg, name_ccall = init_extract_parameters(typename, name, name_ccall, isarray, output) 
+       # init_arg, extract_arg, name_ccall = init_extract_parametiners(typename, name, name_ccall, isarray, isoutput) 
        if typename=="Cchar"  
            typename     = "String" 
        else
-           typename     = "Vector{$typename}" 
+           typename     = "PetscArray{$typename, 2}" 
+        
+           init_arg = "if a.ptr[]  != C_NULL  # CHECK ARRAY NAME AND SIZE!!"
+           extract_arg  = "\ta.ptr[] = C_NULL\n"
+           extract_arg *= "\telse\n"
+           extract_arg *= "\t\terror(\"The input array is already restored\")\n"
+           extract_arg *= "\tend\n"
+           
+           @show init_arg
+
+
        end
 
-        ccall_str    = "Ptr{$ccall_str}"
+        #ccall_str    = "Ptr{$ccall_str}"
+        ccall_str    = "$ccall_str"
+        
     end
 
-    return f_args(name, name_ccall, typename, isarray, isconst, isoptional, stars, isfunction, Bool(a.stringlen), output, init_arg, extract_arg, ccall_str)
+    return f_args(name, name_ccall, typename, isarray, isconst, isoptional, stars, isfunction, Bool(a.stringlen), isoutput, init_arg, extract_arg, ccall_str)
 end
 
 # creates a 
@@ -711,11 +758,13 @@ end
 
 
 """
-Helper function to simply finding a certrain PETSc function
+    class_found = find_functions(classes::Py, funcs::Py, function_name::String)
+Helper function to simply finding a certain PETSc function
 """
 function find_functions(classes::Py, funcs::Py, function_name::String)
 
     found = false
+    class_found = ""
     for class in classes.keys()
         # retrieve all functions
         funcs_list = String[]
@@ -725,6 +774,7 @@ function find_functions(classes::Py, funcs::Py, function_name::String)
         end
         if any(funcs_list .== function_name)
             println("Found $function_name in class $(String(class))")
+            class_found = String(class)
             found = true
         end
     end
@@ -744,9 +794,43 @@ function find_functions(classes::Py, funcs::Py, function_name::String)
         end
     end
 
+    return class_found
+end
+
+"""
+    wrap_function(function_name::Vector{String}, classes::Py, funcs::Py; file::Union{IO, String}=stdout)
+Helper function to wrap a certain PETSc functions; it finds it in the code base and 
+writes it to either stdout (default) or to `file`
+"""
+function wrap_function(function_names::Vector{String}, classes::Py, funcs::Py; file::Union{IO, String}=stdout)
+    if file isa String
+        io = open(file, "w")
+    else
+        io = file
+    end
+    
+    for function_name in function_names
+        class_found = find_functions(classes, funcs, function_name)
+        if !isempty(class_found)
+            write_funcs(classes[class_found].functions[function_name], io)
+        end
+    end
+
+    if file isa String
+        close(io)
+    end
 
     return nothing
 end
+
+"""
+    wrap_function(function_name::Vector{String}, classes::Py, funcs::Py; file::Union{IO, String}=stdout)
+Helper function to wrap a certain PETSc function `function_name`; it finds it in the code base and 
+writes it to either stdout (default) or to `file`
+"""
+wrap_function(function_names::String, classes::Py, funcs::Py; file::Union{IO, String}=stdout) = 
+wrap_function([function_names], classes, funcs; file=file)
+
 
 function move_prologue(prologue_file="prologue.jl")
     # move prologue file to autowrapped directory
@@ -820,7 +904,7 @@ end
 #
 #exclude = ["LandauCtx"]
 # Adapt as needed
-write_structs_to_file("../src/autowrapped/struct_wrappers.jl", start_dir, structs,exclude=exclude)          # Write all structs to file
+#write_structs_to_file("struct_wrappers.jl", start_dir, structs,exclude=exclude)          # Write all structs to file
 #exclude=["PetscGeom","PetscInt32"]
 #write_typedefs_to_file("../src/autowrapped/typedefs_wrappers.jl", start_dir, typedefs,exclude=exclude)      # Write all typedefs to file
 
@@ -854,7 +938,7 @@ exclude=["PetscHTTPSRequest",
 #write_functions_to_file("Sys_wrappers.jl", start_dir, funcs, exclude=exclude)
 
 # Write Vec functions to file (this should be expanded to all other classes)
-exclude=[""]
+#exclude=[""]
 #write_functions_from_classes_to_file("Vec_wrappers.jl",start_dir, classes, "Vec", exclude=exclude)     
 #write_functions_from_classes_to_file("Vecs_wrappers.jl",start_dir, classes, "Vecs", exclude=exclude)     
 #write_functions_from_classes_to_file("PetscOptions_wrappers.jl",start_dir, classes, "PetscOptions", exclude=exclude)     
@@ -915,4 +999,3 @@ exclude=[""]
 
 # Todo: 
 # - determine function parameters that have functions and handle those automatically
-# 

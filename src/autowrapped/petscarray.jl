@@ -3,6 +3,10 @@
 # and a Julia array that references the data, so we 
 # can use Julia array operations on it
 
+"""
+    PetscArray{T,N} <: AbstractArray{T,N}
+Behaves like a normal Julia array but holds a pointer to PETSc data, which can be destroyed
+"""
 struct PetscArray{T,N} <: AbstractArray{T,N}
     data::Array{T,N}  # julia array that holds the data
     ptr::Vector  # ptr to the underlying PETSc data (as a vector so we can put it to zero)

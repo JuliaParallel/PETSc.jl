@@ -135,7 +135,6 @@ PetscSNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, age::Int = 
 PetscSNES(ptr::Ptr, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscSNES{PetscLib}(ptr, age)
 Base.convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
 Base.unsafe_convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
-
 # ------------------------------------------------------
 
 # ----- Custom Julia struct for PETSc DM -----
@@ -157,19 +156,6 @@ PetscDM(lib::PetscLib) where {PetscLib} = PetscDM{PetscLib}()
 PetscDM(ptr::CDM, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscDM{PetscLib}(ptr, age)
 Base.convert(::Type{CDM}, v::AbstractPetscDM) = v.ptr
 Base.unsafe_convert(::Type{CDM}, v::AbstractPetscDM) = v.ptr
-
-# Custom display for REPL
-#=
-function Base.show(io::IO, v::AbstractPetscDM{PetscLib}) where {PetscLib}
-    if v.ptr == C_NULL
-        print(io, "PETSc DM (null pointer)")
-        return
-    else
-        print(io, "PETSc DM object")
-    end
-    return nothing
-end
-=#
 # ------------------------------------------------------
 
 # ------------------------------------------------------

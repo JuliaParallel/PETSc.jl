@@ -1,4 +1,8 @@
 
+
+# Helper to convert points_per_proc tuples to PetscInt
+to_petscint_tuple(t::Tuple, PetscInt) = map(arr -> PetscInt.(arr), t)
+
 """
     DMStag(
         petsclib::PetscLib
@@ -73,12 +77,13 @@ function DMStag(
         if isnothing(points_per_proc[d]) || points_per_proc[d] == PETSC_DECIDE
             C_NULL
         else
-            @assert points_per_proc[d] isa Array{PetscLib.PetscInt}
+            @assert points_per_proc[d] isa Array
             @assert length(points_per_proc[d]) == MPI.Comm_size(comm)
             points_per_proc[d]
         end
     end
-    
+   # ref_points_per_proc = to_petscint_tuple(ref_points_per_proc, PetscInt)  
+
     if N==1  
         da = LibPETSc.DMStagCreate1d(petsclib,
                                    comm, 
@@ -199,6 +204,52 @@ end
 #globalsize(dm::AbstractDMStag) = DMStagGetGlobalSizes(dm::AbstractDMStag)
 #boundarytypes(dm::AbstractDMStag)  = DMStagGetBoundaryTypes(dm::AbstractDMStag) 
 
+"""
+    setuniformcoordinates!(
+        dm::AbstractDMStag,
+        xyzmin::Union{NTuple{1,Int},NTuple{2,Int},NTuple{3,Int}},
+        xyzmax::Union{NTuple{1,Int},NTuple{2,Int},NTuple{3,Int}},
+    )
+
+Sets uniform coordinates for the DMStag `dm` in the range specified by `xyzmin` and `xyzmax`.
+"""
+function setuniformcoordinates!(
+    dm::AbstractPetscDM{PetscLib},
+    xyzmin::NTuple,
+    xyzmax::NTuple,
+    ) where {PetscLib}
+    @assert PETSc.gettype(dm) == "stag" "DM must be of type DMStag"
+    PetscInt = PetscLib.PetscInt
+    PetscScalar = PetscLib.PetscScalar
+
+    xmin = PetscScalar(xyzmin[1])
+    xmax = PetscScalar(xyzmax[1])
+
+    s = size(xyzmin,1)
+
+    ymin = (s > 1) ? PetscScalar(xyzmin[2]) : PetscScalar(0)
+    ymax = (s > 1) ? PetscScalar(xyzmax[2]) : PetscScalar(0)
+
+    zmin = (s > 2) ? PetscScalar(xyzmin[3]) : PetscScalar(0)
+    zmax = (s > 2) ? PetscScalar(xyzmax[3]) : PetscScalar(0)
+    
+    #=
+    LibPETSc.DMStagSetUniformCoordinatesProduct(
+        getlib(PetscLib),
+        dm,
+        xmin,
+        xmax,
+        ymin,
+        ymax,
+        zmin,
+        zmax,
+    )
+    =#
+    
+    LibPETSc.DMStagSetUniformCoordinatesProduct(PetscLib, dm, xmin, xmax, ymin, ymax, zmin, zmax)
+
+    return nothing
+end
 
 """
     corners = getcorners_dmstag(dm::AbstractPetscDM)
@@ -255,4 +306,44 @@ function getghostcorners_dmstag(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
         upper = CartesianIndex(upper...),
         size = (local_size...,),
     )
+end
+
+
+"""
+    Indices = DMStagGetIndices(dm::DMStag)
+    
+Return indices of start and end of the central/vertex nodes of a local array built from the input `dm`. 
+This takes ghost points into account and helps    
+
+    dm 	        - the DMStag object
+    Indices 	- indices of lower and upper range of center and vertex nodes
+"""
+function DMStagGetIndices end
+
+function DMStagGetIndices(dm::PetscDM{PetscLib}) where {PetscLib}
+    @assert PETSc.gettype(dm) == "stag" "DM must be of type DMStag" 
+    # In Julia, indices in arrays start @ 1, whereas they can go negative in C
+    gc              =   PETSc.getghostcorners_dmstag(dm);  
+    c               =   PETSc.getcorners_dmstag(dm); 
+
+    # If we have ghosted boundaries, we need to shift the start/end points, as ghosted 
+    # boundaries are treated in PETSc with negative numbers, whereas in Julia everything is 1-based
+
+    # NOTE: we have not yet tested this in parallel
+    Diff            =   c.lower - gc.lower;
+    Start           =   c.lower + Diff;
+    End             =   Start + CartesianIndex(c.size) -  CartesianIndex(1,1,1) ;
+
+    # Note that we add the shift for julia/petsc consistency
+    shift = 0;
+    center = (  x= Start[1]:End[1],
+                y= Start[2]:End[2],  
+                z= Start[3]:End[3] )
+
+    vertex = (  x= Start[1]:End[1]+1 ,
+                y= Start[2]:End[2]+1 ,  
+                z= Start[3]:End[3]+1 )
+
+    return (center=center, vertex=vertex)
+            
 end

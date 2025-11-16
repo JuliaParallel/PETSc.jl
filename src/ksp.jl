@@ -1,4 +1,4 @@
-import .LibPETSc: AbstractPetscKSP, CKSP, PetscKSP
+import .LibPETSc: AbstractPetscKSP, CKSP, PetscKSP, AbstractPetscDM
 
 # Custom display for REPL
 function Base.show(io::IO, v::AbstractPetscKSP{PetscLib}) where {PetscLib}
@@ -30,8 +30,8 @@ $(_doc_external("KSP/KSPSetFromOptions"))
 function KSP(
     A::AbstractPetscMat{PetscLib},
     P::AbstractPetscMat{PetscLib} = A;
-    prefix="",
-    options...,
+    prefix::String="",
+    options...
 ) where {PetscLib}
     @assert initialized(getlib(PetscLib))
 
@@ -55,6 +55,49 @@ function KSP(
 
     return ksp
 end
+
+"""
+    KSP(comm::MPI.Comm, A::AbstractPetscMat, P::AbstractPetscMat{PetscLib} = A; prefix="", options...)
+
+Create a `KSP` using the matrix `A` and preconditioner construction matrix `P`
+with optional `prefix` and `options`.
+
+The communicator is obtained from `A` and if it has size `1` then the garbage
+collector is set, otherwise the user is responsible for calling
+[`destroy`](@ref).
+
+# External Links
+$(_doc_external("KSP/KSPCreate"))
+$(_doc_external("KSP/KSPSetOperators"))
+$(_doc_external("KSP/KSPSetFromOptions"))
+"""
+function KSP(dm::AbstractPetscDM{PetscLib};
+    prefix::String="",
+    options...
+) where {PetscLib}
+    @assert initialized(getlib(PetscLib))
+    petsclib = getlib(PetscLib)
+    comm = getcomm(dm)
+    ksp = LibPETSc.KSPCreate(petsclib,comm)
+    
+    if !isempty(prefix)
+        LibPETSc.KSPSetOptionsPrefix(petsclib, ksp, prefix)
+    end
+    
+    LibPETSc.KSPSetDM(petsclib, ksp, dm)
+
+    # Push options to PETSc options database
+    if !isempty(options)
+        opts = PETSc.Options(petsclib; options...);
+        push!(opts)
+        LibPETSc.KSPSetFromOptions(petsclib, ksp)
+        pop!(opts)
+    end
+
+    return ksp
+end
+
+
 
 """
     KSP(petsclib, comm::MPI.Comm, A::SparseMatrixCSC; options...)

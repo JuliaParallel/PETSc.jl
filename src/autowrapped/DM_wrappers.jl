@@ -24550,11 +24550,18 @@ function DMStagGetProductCoordinateArrays(petsclib::PetscLibType, dm::PetscDM) e
     mat = unsafe_wrap(Array, unsafe_load(arrX_[]), (nx,2))
     arrX = PetscArray(mat,arrX_[]) 
 
-    mat = unsafe_wrap(Array, unsafe_load(arrY_[]), (ny,2))
-    arrY = PetscArray(mat,arrY_[]) 
-
-    mat = unsafe_wrap(Array, unsafe_load(arrZ_[]), (nz,2))
-    arrZ = PetscArray(mat,arrZ_[]) 
+    if ny>0
+        mat = unsafe_wrap(Array, unsafe_load(arrY_[]), (ny,2))
+        arrY = PetscArray(mat,arrY_[]) 
+    else
+        arrY = nothing
+    end
+    if nz>0
+        mat = unsafe_wrap(Array, unsafe_load(arrZ_[]), (nz,2))
+        arrZ = PetscArray(mat,arrZ_[]) 
+    else
+        arrZ = nothing
+    end
 
 	return arrX,arrY,arrZ
 end 
@@ -26170,9 +26177,16 @@ function DMStagVecGetArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec) e
 
     end
 
-    data_ptr = unsafe_load(a_[])
-	mat = unsafe_wrap(Array, data_ptr, sz) 
-	arr = PetscArray(mat,a_) 
+    # Dereference the pointer-of-pointers down to a raw scalar pointer
+    # For 1D: Ptr{Ptr{T}} -> load once -> Ptr{T}
+    # For 2D: Ptr{Ptr{Ptr{T}}} -> load twice -> Ptr{T}
+    # For 3D: Ptr{Ptr{Ptr{Ptr{T}}}} -> load thrice -> Ptr{T}
+    raw_ptr = a_[]
+    for _ = 1:dim
+        raw_ptr = unsafe_load(raw_ptr)
+    end
+    mat = unsafe_wrap(Array, raw_ptr, sz)
+    arr = PetscArray(mat, a_)
 
     return arr
 end 
@@ -26243,9 +26257,13 @@ function DMStagVecGetArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVe
 
     end
 
-    data_ptr = unsafe_load(a_[])
-	mat = unsafe_wrap(Array, data_ptr, sz) 
-	arr = PetscArray(mat,a_) 
+    # Dereference the pointer-of-pointers down to a raw scalar pointer
+    raw_ptr = a_[]
+    for _ = 1:dim
+        raw_ptr = unsafe_load(raw_ptr)
+    end
+    mat = unsafe_wrap(Array, raw_ptr, sz)
+    arr = PetscArray(mat, a_)
 
     return arr
 end 
@@ -26283,6 +26301,8 @@ function DMStagVecRestoreArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVe
                     (CDM, CVec, Ref{Ptr{Ptr{$PetscScalar}}}),
                     dm, vec, array.ptr[],
                     )
+            # prevent double-restore: null the handle
+            array.ptr[] = Ptr{Ptr{$PetscScalar}}(C_NULL)
         elseif N==3
             @chk ccall(
                (:DMStagVecRestoreArray, $petsc_library),
@@ -26290,6 +26310,7 @@ function DMStagVecRestoreArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVe
                (CDM, CVec, Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}),
                dm, vec, array.ptr[],
                )
+            array.ptr[] = Ptr{Ptr{Ptr{$PetscScalar}}}(C_NULL)
         elseif N==4
             @chk ccall(
                (:DMStagVecRestoreArray, $petsc_library),
@@ -26297,10 +26318,11 @@ function DMStagVecRestoreArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVe
                (CDM, CVec, Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}),
                dm, vec, array.ptr[],
                )
+            array.ptr[] = Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}(C_NULL)
         end
     end
 
-	return nothing
+    return nothing
 end 
 
 """
@@ -26328,7 +26350,7 @@ $(_doc_external("DMStag/DMStagVecRestoreArrayRead"))
 function DMStagVecRestoreArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec, array::PetscArray) end
 
 @for_petsc function DMStagVecRestoreArrayRead(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec, array::PetscArray{$PetscScalar, N} ) where N
-      if array.ptr[]  != C_NULL  
+    if array.ptr[]  != C_NULL  
         if N==2
             @chk ccall(
                     (:DMStagVecRestoreArrayRead, $petsc_library),
@@ -26336,6 +26358,7 @@ function DMStagVecRestoreArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::Pet
                     (CDM, CVec, Ref{Ptr{Ptr{$PetscScalar}}}),
                     dm, vec, array.ptr[],
                     )
+            array.ptr[] = Ptr{Ptr{$PetscScalar}}(C_NULL)
         elseif N==3
             @chk ccall(
                (:DMStagVecRestoreArrayRead, $petsc_library),
@@ -26343,6 +26366,7 @@ function DMStagVecRestoreArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::Pet
                (CDM, CVec, Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}),
                dm, vec, array.ptr[],
                )
+            array.ptr[] = Ptr{Ptr{Ptr{$PetscScalar}}}(C_NULL)
         elseif N==4
             @chk ccall(
                (:DMStagVecRestoreArrayRead, $petsc_library),
@@ -26350,10 +26374,11 @@ function DMStagVecRestoreArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::Pet
                (CDM, CVec, Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}),
                dm, vec, array.ptr[],
                )
+            array.ptr[] = Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}(C_NULL)
         end
     end
 
-	return nothing
+    return nothing
 end 
 
 """

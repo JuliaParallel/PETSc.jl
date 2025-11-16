@@ -249,3 +249,68 @@ function withlocalarray!(
     return val
 end
 withlocalarray!(f!, vecs...; kwargs...) = withlocalarray!(f!, vecs; kwargs...)
+
+
+"""
+    ghostupdatebegin!(
+        vec::AbstractPetscVec,
+        insertmode = INSERT_VALUES,
+        scattermode = SCATTER_FORWARD,
+    )
+
+Begins scattering `vec` to the local or global representations
+
+# External Links
+$(_doc_external("Vec/VecGhostUpdateBegin"))
+"""
+function ghostupdatebegin!(
+    vec::AbstractPetscVec{PetscLib},
+    insertmode = INSERT_VALUES,
+    scattermode = SCATTER_FORWARD,
+) where {PetscLib}
+    LibPETSc.VecGhostUpdateBegin(PetscLib, vec, insertmode, scattermode)
+    return nothing
+end
+
+"""
+    ghostupdateend!(
+        vec::AbstractPetscVec,
+        insertmode = INSERT_VALUES,
+        scattermode = SCATTER_FORWARD,
+    )
+
+Finishes scattering `vec` to the local or global representations
+
+# External Links
+$(_doc_external("Vec/VecGhostUpdateEnd"))
+"""
+function ghostupdateend!(
+    vec::AbstractPetscVec{PetscLib},
+    insertmode = INSERT_VALUES,
+    scattermode = SCATTER_FORWARD,
+) where {PetscLib}
+    LibPETSc.VecGhostUpdateEnd(PetscLib, vec, insertmode, scattermode)
+    return nothing
+end
+
+"""
+    ghostupdate!(
+        vec::AbstractPetscVec,
+        insertmode = INSERT_VALUES,
+        scattermode = SCATTER_FORWARD,
+    )
+
+Finishes scattering `vec` to the local or global representations
+
+# External Links
+$(_doc_external("Vec/VecGhostUpdateEnd"))
+"""
+function ghostupdate!(
+    vec::AbstractPetscVec{PetscLib},
+    insertmode = INSERT_VALUES,
+    scattermode = SCATTER_FORWARD,
+) where {PetscLib}
+    ghostupdatebegin!(vec,insertmode,scattermode)
+    ghostupdateend!(vec,insertmode,scattermode)
+    return nothing
+end

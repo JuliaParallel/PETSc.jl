@@ -5008,8 +5008,12 @@ function KSPGetType(petsclib::PetscLibType, ksp::PetscKSP) end
                (CKSP, Ptr{KSPType}),
                ksp, type_,
               )
-
-	type = unsafe_string(type_[])
+              
+    if type_[] == C_NULL
+        type = ""
+    else
+        type = unsafe_string(type_[])
+    end
 
 	return type
 end 

@@ -24133,21 +24133,21 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagMatGetValuesStencil"))
 """
-function DMStagMatGetValuesStencil(petsclib::PetscLibType, dm::PetscDM, mat::PetscMat, nRow::PetscInt, posRow::DMStagStencil, nCol::PetscInt, posCol::DMStagStencil) end
+function DMStagMatGetValuesStencil(petsclib::PetscLibType, dm::PetscDM, mat::PetscMat, nRow::PetscInt, posRow::Vector{DMStagStencil}, nCol::PetscInt, posCol::Vector{DMStagStencil}) end
 
-@for_petsc function DMStagMatGetValuesStencil(petsclib::$UnionPetscLib, dm::PetscDM, mat::PetscMat, nRow::$PetscInt, posRow::DMStagStencil, nCol::$PetscInt, posCol::DMStagStencil )
-	val_ = Ref{$PetscScalar}()
+@for_petsc function DMStagMatGetValuesStencil(petsclib::$UnionPetscLib, dm::PetscDM, mat::PetscMat, nRow::$PetscInt, posRow::Vector{DMStagStencil}, nCol::$PetscInt, posCol::Vector{DMStagStencil} )
+    # Prepare output buffer (flat) and pass pointer to PETSc
+    vals = Vector{$PetscScalar}(undef, nRow * nCol)
 
     @chk ccall(
-               (:DMStagMatGetValuesStencil, $petsc_library),
-               PetscErrorCode,
-               (CDM, CMat, $PetscInt, Ptr{DMStagStencil}, $PetscInt, Ptr{DMStagStencil}, Ptr{$PetscScalar}),
-               dm, mat, nRow, posRow, nCol, posCol, val_,
-              )
+            (:DMStagMatGetValuesStencil, $petsc_library),
+            PetscErrorCode,
+            (CDM, CMat, $PetscInt, Ptr{DMStagStencil}, $PetscInt, Ptr{DMStagStencil}, Ptr{$PetscScalar}),
+            dm, mat, nRow, posRow, nCol, posCol, vals,
+            )
 
-	val = val_[]
-
-	return val
+    # reshape into 2D Julia array (rows x cols)
+    return reshape(vals, nRow, nCol)
 end 
 
 """
@@ -24180,7 +24180,7 @@ $(_doc_external("DMStag/DMStagMatSetValuesStencil"))
 """
 function DMStagMatSetValuesStencil(petsclib::PetscLibType, dm::PetscDM, mat::PetscMat, nRow::PetscInt, posRow::DMStagStencil, nCol::PetscInt, posCol::DMStagStencil, val::PetscScalar, insertMode::InsertMode) end
 
-@for_petsc function DMStagMatSetValuesStencil(petsclib::$UnionPetscLib, dm::PetscDM, mat::PetscMat, nRow::$PetscInt, posRow::DMStagStencil, nCol::$PetscInt, posCol::DMStagStencil, val::$PetscScalar, insertMode::InsertMode )
+@for_petsc function DMStagMatSetValuesStencil(petsclib::$UnionPetscLib, dm::PetscDM, mat::PetscMat, nRow::$PetscInt, posRow::Vector{DMStagStencil}, nCol::$PetscInt, posCol::Vector{DMStagStencil}, val::Vector{$PetscScalar}, insertMode::InsertMode )
 
     @chk ccall(
                (:DMStagMatSetValuesStencil, $petsc_library),
@@ -24188,7 +24188,6 @@ function DMStagMatSetValuesStencil(petsclib::PetscLibType, dm::PetscDM, mat::Pet
                (CDM, CMat, $PetscInt, Ptr{DMStagStencil}, $PetscInt, Ptr{DMStagStencil}, Ptr{$PetscScalar}, InsertMode),
                dm, mat, nRow, posRow, nCol, posCol, val, insertMode,
               )
-
 
 	return nothing
 end 
@@ -26142,7 +26141,7 @@ function DMStagVecGetArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec) e
 
 @for_petsc function DMStagVecGetArray(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec)
     # PETSc returns a pointer into the Vec's internal storage; we wrap it without taking ownership
-    _,_,_,m,n,p = DMStagGetGhostCorners(petsclib, dm)
+    xs,ys,zs,m,n,p = DMStagGetGhostCorners(petsclib, dm)
     dim         = DMGetDimension(petsclib, dm)
     q           = DMStagGetEntriesPerElement(petsclib, dm)
 
@@ -26155,6 +26154,7 @@ function DMStagVecGetArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec) e
             dm, vec, a_,
         )
         sz = (m,q)
+        perm = (2,1)
     elseif dim==2
         a_ = Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}()
         @chk ccall(
@@ -26163,8 +26163,8 @@ function DMStagVecGetArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec) e
             (CDM, CVec, Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}),
             dm, vec, a_,
         )
-        sz = (m,n,q)
-
+        sz = (q,m,n)
+        perm = (2,3,1)
     elseif dim==3
         a_ = Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}()
         @chk ccall(
@@ -26173,7 +26173,8 @@ function DMStagVecGetArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec) e
             (CDM, CVec, Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}),
             dm, vec, a_,
         )
-        sz = (m,n,p,q)
+        sz = (q,m,n,p)
+        perm = (2,3,4,1)
 
     end
 
@@ -26186,6 +26187,9 @@ function DMStagVecGetArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec) e
         raw_ptr = unsafe_load(raw_ptr)
     end
     mat = unsafe_wrap(Array, raw_ptr, sz)
+    # permute, as julia uses Fortran type storage order, but 
+    # PETSc/C use C type storage order:
+    mat = PermutedDimsArray(mat, perm)
     arr = PetscArray(mat, a_)
 
     return arr
@@ -26235,6 +26239,7 @@ function DMStagVecGetArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVe
             dm, vec, a_,
         )
         sz = (m,q)
+        perm = (2,1)
     elseif dim==2
         a_ = Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}()
         @chk ccall(
@@ -26244,6 +26249,7 @@ function DMStagVecGetArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVe
             dm, vec, a_,
         )
         sz = (m,n,q)
+        perm = (2,3,1)
 
     elseif dim==3
         a_ = Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}()
@@ -26254,7 +26260,7 @@ function DMStagVecGetArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVe
             dm, vec, a_,
         )
         sz = (m,n,p,q)
-
+        perm = (2,3,41)
     end
 
     # Dereference the pointer-of-pointers down to a raw scalar pointer
@@ -26263,6 +26269,9 @@ function DMStagVecGetArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVe
         raw_ptr = unsafe_load(raw_ptr)
     end
     mat = unsafe_wrap(Array, raw_ptr, sz)
+    # permute, as julia uses Fortran type storage order, but 
+    # PETSc/C use C type storage order:
+    mat = PermutedDimsArray(mat, perm)
     arr = PetscArray(mat, a_)
 
     return arr

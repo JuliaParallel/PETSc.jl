@@ -8,7 +8,7 @@
 Behaves like a normal Julia array but holds a pointer to PETSc data, which can be destroyed
 """
 struct PetscArray{T,N} <: AbstractArray{T,N}
-    data::Array{T,N}  # julia array that holds the data
+    data::AbstractArray{T,N}  # julia array that holds the data
     ptr  # ptr to the underlying PETSc data (as a vector so we can put it to zero)
 end
 

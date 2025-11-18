@@ -205,7 +205,7 @@ end
 #boundarytypes(dm::AbstractDMStag)  = DMStagGetBoundaryTypes(dm::AbstractDMStag) 
 
 """
-    setuniformcoordinates!(
+    setuniformcoordinates_stag!(
         dm::AbstractDMStag,
         xyzmin::Union{NTuple{1,Int},NTuple{2,Int},NTuple{3,Int}},
         xyzmax::Union{NTuple{1,Int},NTuple{2,Int},NTuple{3,Int}},
@@ -213,7 +213,7 @@ end
 
 Sets uniform coordinates for the DMStag `dm` in the range specified by `xyzmin` and `xyzmax`.
 """
-function setuniformcoordinates!(
+function setuniformcoordinates_stag!(
     dm::AbstractPetscDM{PetscLib},
     xyzmin::NTuple,
     xyzmax::NTuple,
@@ -245,8 +245,8 @@ function setuniformcoordinates!(
         zmax,
     )
     =#
-    
-    LibPETSc.DMStagSetUniformCoordinatesProduct(PetscLib, dm, xmin, xmax, ymin, ymax, zmin, zmax)
+    petsclib=getlib(PetscLib)
+    LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm, xmin, xmax, ymin, ymax, zmin, zmax)
 
     return nothing
 end

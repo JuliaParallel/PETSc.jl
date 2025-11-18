@@ -267,7 +267,8 @@ function setuniformcoordinates!(
     zmin = (N > 2) ? PetscReal(xyzmin[3]) : PetscReal(0)
     zmax = (N > 2) ? PetscReal(xyzmax[3]) : PetscReal(0)
 
-    LibPETSc.DMDASetUniformCoordinates(
+
+    LibPETSc.DMStagSetUniformCoordinates(
         PetscLib,
         da,
         xmin,

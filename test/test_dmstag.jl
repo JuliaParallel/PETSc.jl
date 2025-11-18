@@ -738,7 +738,6 @@ end
 
 
 
-
 #=
 # -----------------
 # Example of DMStag & SNES with AD jacobian
@@ -772,43 +771,57 @@ end
 
                 # Note that in PETSc, ptr_x_g and ptr_fx_g are pointers to global vectors.
                 # Copy global to local vectors that are stored in user_ctx
-                PETSc.update!(user_ctx.x_l, ptr_x_g,   PETSc.INSERT_VALUES)
-                PETSc.update!(user_ctx.f_l, ptr_fx_g,  PETSc.INSERT_VALUES)
-
+                #PETSc.update!(user_ctx.x_l, ptr_x_g,   PETSc.INSERT_VALUES)
+                #PETSc.update!(user_ctx.f_l, ptr_fx_g,  PETSc.INSERT_VALUES)
+                
+                LibPETSc.DMGlobalToLocalBegin(petsclib, user_ctx.dm, ptr_x_g,  LibPETSc.INSERT_VALUES, user_ctx.x_l)
+                LibPETSc.DMGlobalToLocalEnd(petsclib,   user_ctx.dm, ptr_x_g,  LibPETSc.INSERT_VALUES, user_ctx.x_l)
+        
+                LibPETSc.DMGlobalToLocalBegin(petsclib, user_ctx.dm, ptr_fx_g, LibPETSc.INSERT_VALUES, user_ctx.f_l)
+                LibPETSc.DMGlobalToLocalEnd(petsclib,   user_ctx.dm, ptr_fx_g, LibPETSc.INSERT_VALUES, user_ctx.f_l)
+                
                 # Retrieve arrays from the local vectors
-                ArrayLocal_x     =   LibPETSc.DMStagVecGetArrayRead(petsclib, user_ctx.dm, user_ctx.x_l);  # array with all local x-data
-                ArrayLocal_f     =   LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dm, user_ctx.f_l);      # array with all local residual
+                ArrayLocal_x     =   LibPETSc.DMStagVecGetArrayRead(petsclib,   user_ctx.dm, user_ctx.x_l);     # array with all local x-data
+                ArrayLocal_f     =   LibPETSc.DMStagVecGetArray(petsclib,       user_ctx.dm, user_ctx.f_l);     # array with all local residual
 
                 # Compute local residual
                 ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
 
                 # Finalize local arrays
-                Base.finalize(ArrayLocal_x)
-                Base.finalize(ArrayLocal_f)
+                LibPETSc.DMStagVecRestoreArrayRead(petsclib, user_ctx.dm, user_ctx.x_l, ArrayLocal_x);
+                LibPETSc.DMStagVecRestoreArray(petsclib,     user_ctx.dm, user_ctx.f_l, ArrayLocal_f);
+
+                #Base.finalize(ArrayLocal_x)
+                #Base.finalize(ArrayLocal_f)
 
                 # Copy local into global residual vector
-                PETSc.update!(ptr_fx_g, user_ctx.f_l,   PETSc.INSERT_VALUES)
-
+                #PETSc.update!(ptr_fx_g, user_ctx.f_l,   PETSc.INSERT_VALUES)
+                LibPETSc.DMLocalToGlobalBegin(petsclib, user_ctx.dm, user_ctx.f_l,  LibPETSc.INSERT_VALUES, ptr_fx_g)
+                LibPETSc.DMLocalToGlobalEnd(petsclib,   user_ctx.dm, user_ctx.f_l,  LibPETSc.INSERT_VALUES, ptr_fx_g)
             end
 
             function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
                 # Compute the local residual. The vectors include ghost points
 
-                T              =   LibPETSc.DMStagGetGhostArrayLocationSlot(petsclib, dm,ArrayLocal_x, PETSc.DMSTAG_LEFT,    0);
-                fT             =   LibPETSc.DMStagGetGhostArrayLocationSlot(petsclib, dm,ArrayLocal_f, PETSc.DMSTAG_LEFT,    0);
+                locT    =   LibPETSc.DMStagGetLocationSlot(petsclib, dm, LibPETSc.DMSTAG_LEFT, 0)
+                T       =   ArrayLocal_x[:,locT]
+                fT      =   ArrayLocal_f[:,locT]
+                #T      =   LibPETSc.DMStagGetGhostArrayLocationSlot(petsclib, dm,ArrayLocal_x, PETSc.DMSTAG_LEFT,    0);
+                #fT     =   LibPETSc.DMStagGetGhostArrayLocationSlot(petsclib, dm,ArrayLocal_f, PETSc.DMSTAG_LEFT,    0);
 
-                P              =   LibPETSc.DMStagGetGhostArrayLocationSlot(petsclib, dm,ArrayLocal_x, PETSc.DMSTAG_ELEMENT, 0);
-                fP             =   LibPETSc.DMStagGetGhostArrayLocationSlot(petsclib, dm,ArrayLocal_f, PETSc.DMSTAG_ELEMENT, 0);
+                locP    =   LibPETSc.DMStagGetLocationSlot(petsclib, dm, LibPETSc.DMSTAG_ELEMENT, 0)
+                P       =   ArrayLocal_x[:,locP]
+                fP      =   ArrayLocal_f[:,locP]  
 
                 # compute the FD stencil
-                indices         =     LibPETSc.DMStagGetIndices(petsclib, dm);      # indices of (center/element) points, not including ghost values.
-                gc              =     PETSc.getghostcorners(user_ctx.dm);   # start and end of loop including ghost points
-                c               =     PETSc.getcorners(user_ctx.dm);        # start and end of loop including ghost points
+                indices     =     PETSc.DMStagGetIndices(dm);                   # indices of (center/element) points, not including ghost values.
+                gc          =     PETSc.getghostcorners(user_ctx.dm);           # start and end of loop including ghost points
+                c           =     PETSc.getcorners(user_ctx.dm);                # start and end of loop including ghost points
 
-                nT             =     length(T);                             # array length
-                dx             =     1.0/(c.size[1]-1);
-                xp             =     (gc.lower[1]:gc.upper[1]).*dx;         # coordinates including ghost points (to define source term)
-                F              =     6.0.*xp .+ (xp .+1.e-12).^6.0;         # define source term function
+                nT          =     length(T);                             # array length
+                dx          =     1.0/(c.size[1]-1);
+                xp          =     (gc.lower[1]:gc.upper[1]).*dx;         # coordinates including ghost points (to define source term)
+                F           =     6.0.*xp .+ (xp .+1.e-12).^6.0;         # define source term function
 
                 # Nonlinear equation @ nodal points
                 ind            =     indices.vertex.x;                         #  There is one more "vertex" point
@@ -830,8 +843,8 @@ end
 
                 f   = zero(x)               # vector of zeros, of same type as x (local vector)
 
-                ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all local x-data
-                ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, f);        # array with all local residual
+                ArrayLocal_x     =   LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dm, x);        # array with all local x-data
+                ArrayLocal_f     =   LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dm, f);        # array with all local residual
 
                 ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx);
                 # As the residual vector f is linked with ArrayLocal_f, we don't need to pass ArrayLocal_f back
@@ -916,6 +929,9 @@ end
         #PETSc.finalize(petsclib)
     #end
 #end
+=#
+
+#=
 
 @testset "DMStag: 2D SNES AD"  begin
 

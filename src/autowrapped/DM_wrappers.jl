@@ -24546,17 +24546,24 @@ function DMStagGetProductCoordinateArrays(petsclib::PetscLibType, dm::PetscDM) e
                dm, arrX_, arrY_, arrZ_,
               )
 
-    mat = unsafe_wrap(Array, unsafe_load(arrX_[]), (nx,2))
+    #mat = unsafe_wrap(Array, unsafe_load(arrX_[]), (nx,2))
+    mat = unsafe_wrap(Array, unsafe_load(arrX_[]), (2,nx))
+    mat = PermutedDimsArray(mat, (2,1))
     arrX = PetscArray(mat,arrX_[]) 
 
     if ny>0
-        mat = unsafe_wrap(Array, unsafe_load(arrY_[]), (ny,2))
+        #mat = unsafe_wrap(Array, unsafe_load(arrY_[]), (ny,2))
+        mat = unsafe_wrap(Array, unsafe_load(arrY_[]), (2,ny))
+        mat = PermutedDimsArray(mat, (2,1))
+
         arrY = PetscArray(mat,arrY_[]) 
     else
         arrY = nothing
     end
     if nz>0
-        mat = unsafe_wrap(Array, unsafe_load(arrZ_[]), (nz,2))
+        #mat = unsafe_wrap(Array, unsafe_load(arrZ_[]), (nz,2))
+        mat = unsafe_wrap(Array, unsafe_load(arrY_[]), (2,nz))
+        mat = PermutedDimsArray(mat, (2,1))
         arrZ = PetscArray(mat,arrZ_[]) 
     else
         arrZ = nothing
@@ -26153,7 +26160,7 @@ function DMStagVecGetArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec) e
             (CDM, CVec, Ref{Ptr{Ptr{$PetscScalar}}}),
             dm, vec, a_,
         )
-        sz = (m,q)
+        sz = (q,m)
         perm = (2,1)
     elseif dim==2
         a_ = Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}()

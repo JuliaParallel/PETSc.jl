@@ -1634,8 +1634,17 @@ function VecGetArray2d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::Pets
               )
 
     # Assume contiguous storage, use first row pointer
+    #mat = unsafe_wrap(Array, data_ptr, (m, n))
+    
+    # there is a difference in C vs julia storage of arrays
     data_ptr = unsafe_load(arr_ptr[])
-    mat = unsafe_wrap(Array, data_ptr, (m, n))
+    sz = (m,n)
+    perm = (2,1)
+    mat = unsafe_wrap(Array, data_ptr, sz)
+    mat = PermutedDimsArray(mat, perm)
+    #arr = PetscArray(mat, a_)
+
+
 
 	return PetscArray(mat, arr_ptr)
 end 

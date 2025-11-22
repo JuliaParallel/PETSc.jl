@@ -8,8 +8,8 @@ end
 petsclib = PETSc.petsclibs[1];
 PETSc.initialize(petsclib)
 PetscScalar = PETSc.scalartype(petsclib)
-PetscInt = PETSc.inttype(petsclib)
-PetscReal = real(PetscScalar)
+PetscInt    = PETSc.inttype(petsclib)
+PetscReal   = real(PetscScalar)
 
 # ==========================================
 # Main code 

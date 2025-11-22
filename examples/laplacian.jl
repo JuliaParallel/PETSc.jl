@@ -2,7 +2,8 @@ using Test
 using PETSc, MPI, LinearAlgebra, SparseArrays
 
 MPI.Initialized() || MPI.Init()
-PETSc.initialize()
+
+comm = MPI.COMM_WORLD
 
 # Constructs the central finite-difference approximation of -∇² for an lx×ly box of nx×ny points
 # with Dirichlet boundary conditions. Based on the code from
@@ -19,11 +20,19 @@ function laplace(T, nx::Integer, ny::Integer=nx, lx::Integer=1, ly::Integer=lx)
 end
 
 nx = 20
-for T in PETSc.scalar_types
+for T in [Float64, Float32]
+  if T==Float64
+    petsclib = PETSc.petsclibs[1];
+  elseif T==Float32
+    petsclib = PETSc.petsclibs[2];
+  end
+  PETSc.initialize(petsclib)
+
   S = laplace(T, nx)
 
   m, n = size(S)
-  M = PETSc.MatSeqAIJ(S)
+  #M = PETSc.MatSeqAIJ(S)
+  M = PETSc.MatCreateSeqAIJ(petsclib, comm, S)
 
   ksp = PETSc.KSP(
                   M;
@@ -41,16 +50,17 @@ for T in PETSc.scalar_types
                  )
 
   # initial guess
-  x = PETSc.VecSeq(zeros(T, m))
-  b = PETSc.VecSeq(randn(T, n))
+  x = LibPETSc.VecCreateSeqWithArray(petsclib,comm, 1, m, zeros(T, m))
+
+  b = LibPETSc.VecCreateSeqWithArray(petsclib,comm, 1, n, randn(T, n))
   PETSc.solve!(x, ksp, b)
 
-  #=
+  
   PETSc.destroy(ksp)
   PETSc.destroy(M)
   PETSc.destroy(b)
   PETSc.destroy(x)
 
-  PETSc.finalize()
-  =#
+  PETSc.finalize(petsclib)
+  
 end

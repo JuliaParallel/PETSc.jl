@@ -348,3 +348,38 @@ function Base.size(dm::AbstractPetscDM{PetscLib}) where PetscLib
     end
     return size
 end
+
+
+"""
+    dm_local_to_global(dm::PetscDM, x_L::PetscVec, x_G::PetscVec,mode=LibPETSc.INSERT_VALUES)
+Send values of the local `x_L` to the global `x_G` vector which are connected to the `dm` object.
+`mode` is either `LibPETSc.INSERT_VALUES` (default) or `LibPETSc.ADD_VALUES`
+"""
+function dm_local_to_global(dm::PetscDM{PetscLib},
+                             x_L::AbstractPetscVec{PetscLib},
+                             x_G::AbstractPetscVec{PetscLib}, 
+                             mode=LibPETSc.INSERT_VALUES) where {PetscLib}
+    
+    petsclib = getlib(PetscLib)
+    LibPETSc.DMLocalToGlobalBegin(petsclib, dm, x_L, mode, x_G)
+    LibPETSc.DMLocalToGlobalEnd(petsclib, dm, x_L, mode, x_G)
+    
+    return nothing
+end
+
+"""
+    dm_global_to_local(dm::PetscDM, x_G::PetscVec, x_L::PetscVec,mode=LibPETSc.INSERT_VALUES)
+Send values of the global `x_G` to the local `x_L` vector which are connected to the `dm` object.
+`mode` is either `LibPETSc.INSERT_VALUES` (default) or `LibPETSc.ADD_VALUES`
+"""
+function dm_global_to_local(dm::PetscDM{PetscLib},
+                             x_G::AbstractPetscVec{PetscLib},
+                             x_L::AbstractPetscVec{PetscLib}, 
+                             mode=LibPETSc.INSERT_VALUES) where {PetscLib}
+    
+    petsclib = getlib(PetscLib)
+    LibPETSc.DMGlobalToLocalBegin(petsclib, dm, x_G, mode, x_L)
+    LibPETSc.DMGlobalToLocalEnd(petsclib, dm, x_G, mode, x_L)
+
+    return nothing
+end

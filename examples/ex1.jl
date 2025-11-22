@@ -31,6 +31,7 @@ dm  = PETSc.DMStag(petsclib, comm,
 
 # create uniform coordinates
 LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm, PetscReal(x0), PetscReal(xend), PetscReal(0.0), PetscReal(1.0), PetscReal(0.0), PetscReal(1.0))
+
 #determine boundary type
 bnd =   LibPETSc.DMStagGetBoundaryTypes(petsclib, dm); 
 
@@ -66,8 +67,9 @@ xa_array[1:end  ,iu+1] .= a  .+ (b .- a .- (c./2.0)) .* X_coord[1:end,ixu+1] .+ 
 xa_array[1:end-1,ip+1] .= b .- a .- (c./2.0) .+ c .* X_coord[1:end-1,ixp+1];
 
 LibPETSc.DMStagVecRestoreArray(petsclib, dm, xa_Local, xa_array)
-LibPETSc.DMLocalToGlobalBegin(petsclib, dm, xa_Local, LibPETSc.INSERT_VALUES, xa)
-LibPETSc.DMLocalToGlobalEnd(petsclib, dm, xa_Local, LibPETSc.INSERT_VALUES, xa)
+#LibPETSc.DMLocalToGlobalBegin(petsclib, dm, xa_Local, LibPETSc.INSERT_VALUES, xa)
+#LibPETSc.DMLocalToGlobalEnd(petsclib, dm, xa_Local, LibPETSc.INSERT_VALUES, xa)
+PETSc.dm_local_to_global(dm, xa_Local, xa)
 
 dmForcing = LibPETSc.DMStagCreateCompatibleDMStag(petsclib, dm, PetscInt(1), PetscInt(0), PetscInt(0), PetscInt(0));
 f         = PETSc.DMGlobalVec(dmForcing);
@@ -159,11 +161,8 @@ x   = PETSc.DMGlobalVec(dm);
 ksp = PETSc.KSP(A);
 PETSc.solve!(x,ksp,rhs);
 
-
-
 xLocal    = PETSc.DMLocalVec(dm);
-LibPETSc.DMGlobalToLocalBegin(petsclib, dm, x, LibPETSc.INSERT_VALUES, xLocal)
-LibPETSc.DMGlobalToLocalEnd(petsclib, dm, x, LibPETSc.INSERT_VALUES, xLocal)
+PETSc.dm_global_to_local(dm,x,xLocal)
 
 # get the local solution array:
 xsolution_array  = LibPETSc.DMStagVecGetArray(petsclib, dm, xLocal);

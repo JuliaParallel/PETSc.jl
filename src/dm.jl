@@ -252,11 +252,12 @@ by the `NTuple`s `xyzmin` and `xyzmax`. If `N` is less than the dimension of the
 # External Links
 $(_doc_external("DMDA/DMDASetUniformCoordinates"))
 """
-function setuniformcoordinates!(
+function setuniformcoordinates_dmda!(
     da::PetscDM{PetscLib},
     xyzmin::NTuple{N, Real},
     xyzmax::NTuple{N, Real},
 ) where {N, PetscLib}
+    @assert gettype(da) == "da" "setuniformcoordinates_dmda! only works for DMDA objects"
     PetscReal = PetscLib.PetscReal
     xmin = PetscReal(xyzmin[1])
     xmax = PetscReal(xyzmax[1])
@@ -268,7 +269,7 @@ function setuniformcoordinates!(
     zmax = (N > 2) ? PetscReal(xyzmax[3]) : PetscReal(0)
 
 
-    LibPETSc.DMStagSetUniformCoordinates(
+    LibPETSc.DMDASetUniformCoordinates(
         PetscLib,
         da,
         xmin,

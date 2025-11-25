@@ -3384,7 +3384,7 @@ function TSSetDM(petsclib::PetscLibType, ts::TS, dm::PetscDM) end
 end 
 
 """
-	TSGetDM(petsclib::PetscLibType,ts::TS, dm::PetscDM) 
+	dm::PetscDM = TSGetDM(petsclib::PetscLibType,ts::TS, dm::PetscDM) 
 Gets the `DM` that may be used by some preconditioners
 
 Not Collective
@@ -3402,10 +3402,10 @@ Level: intermediate
 # External Links
 $(_doc_external("Ts/TSGetDM"))
 """
-function TSGetDM(petsclib::PetscLibType, ts::TS, dm::PetscDM) end
+function TSGetDM(petsclib::PetscLibType, ts::TS) end
 
-@for_petsc function TSGetDM(petsclib::$UnionPetscLib, ts::TS, dm::PetscDM )
-	dm_ = Ref(dm.ptr)
+@for_petsc function TSGetDM(petsclib::$UnionPetscLib, ts::TS )
+	dm_ = Ref(CDM)()
 
     @chk ccall(
                (:TSGetDM, $petsc_library),
@@ -3414,9 +3414,8 @@ function TSGetDM(petsclib::PetscLibType, ts::TS, dm::PetscDM) end
                ts, dm_,
               )
 
-	dm.ptr = C_NULL
-
-	return nothing
+    dm = PetscDM(dm_[], petsclib)
+	return dm
 end 
 
 """

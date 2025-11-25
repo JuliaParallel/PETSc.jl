@@ -4796,7 +4796,7 @@ function SNESSetDM(petsclib::PetscLibType, snes::PetscSNES, dm::PetscDM) end
 end 
 
 """
-	SNESGetDM(petsclib::PetscLibType,snes::PetscSNES, dm::PetscDM) 
+	dm::PetscDM = SNESGetDM(petsclib::PetscLibType,snes::PetscSNES) 
 Gets the `DM` that may be used by some `SNES` nonlinear solvers/preconditioners
 
 Not Collective but `dm` obtained is parallel on `snes`
@@ -4814,10 +4814,10 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetDM"))
 """
-function SNESGetDM(petsclib::PetscLibType, snes::PetscSNES, dm::PetscDM) end
+function SNESGetDM(petsclib::PetscLibType, snes::PetscSNES) end
 
-@for_petsc function SNESGetDM(petsclib::$UnionPetscLib, snes::PetscSNES, dm::PetscDM )
-	dm_ = Ref(dm.ptr)
+@for_petsc function SNESGetDM(petsclib::$UnionPetscLib, snes::PetscSNES)
+	dm_ = Ref{CDM}()
 
     @chk ccall(
                (:SNESGetDM, $petsc_library),
@@ -4826,9 +4826,9 @@ function SNESGetDM(petsclib::PetscLibType, snes::PetscSNES, dm::PetscDM) end
                snes, dm_,
               )
 
-	dm.ptr = C_NULL
+	dm = PetscDM(dm_[], petsclib)
 
-	return nothing
+	return dm
 end 
 
 """

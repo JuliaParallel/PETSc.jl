@@ -91,12 +91,19 @@ abstract type AbstractPetscKSP{T} end
 mutable struct PetscKSP{PetscLib} <: AbstractPetscKSP{PetscLib}
     ptr::CKSP
     age::Int
-    
+    computeops!::Function
+    computerhs!::Function
+
     # Constructor from pointer and age
     PetscKSP{PetscLib}(ptr::CKSP, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
     
     # Constructor for empty KSP (null pointer)
-    PetscKSP{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
+    PetscKSP{PetscLib}() where {PetscLib} = new{PetscLib}(
+                                        Ptr{Cvoid}(C_NULL), 
+                                        0,
+                                        x -> x,
+                                        x -> x,
+                                        )
 end
 
 # Convenience constructor from petsclib instance

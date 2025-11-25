@@ -6686,7 +6686,7 @@ function VecGetValuesSection(petsclib::PetscLibType, v::PetscVec, s::PetscSectio
 end 
 
 """
-	VecGetDM(petsclib::PetscLibType,v::PetscVec, dm::PetscDM) 
+	dm::PetscDM = VecGetDM(petsclib::PetscLibType,v::PetscVec) 
 Gets the `DM` defining the data layout of the vector
 
 Not Collective
@@ -6709,10 +6709,10 @@ See also:
 # External Links
 $(_doc_external("DM/VecGetDM"))
 """
-function VecGetDM(petsclib::PetscLibType, v::PetscVec, dm::PetscDM) end
+function VecGetDM(petsclib::PetscLibType, v::PetscVec) end
 
-@for_petsc function VecGetDM(petsclib::$UnionPetscLib, v::PetscVec, dm::PetscDM )
-	dm_ = Ref(dm.ptr)
+@for_petsc function VecGetDM(petsclib::$UnionPetscLib, v::PetscVec)
+	dm_ = Ref(CDM)()
 
     @chk ccall(
                (:VecGetDM, $petsc_library),
@@ -6721,9 +6721,8 @@ function VecGetDM(petsclib::PetscLibType, v::PetscVec, dm::PetscDM) end
                v, dm_,
               )
 
-	dm.ptr = C_NULL
-
-	return nothing
+    dm = PetscDM(dm_[], petsclib)
+	return dm
 end 
 
 """

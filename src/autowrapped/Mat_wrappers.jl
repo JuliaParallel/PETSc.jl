@@ -22892,7 +22892,7 @@ function MatCreateSNESMF(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	MatGetDM(petsclib::PetscLibType,A::PetscMat, dm::PetscDM) 
+	dm::PetscDM = MatGetDM(petsclib::PetscLibType,A::PetscMat) 
 Gets the `DM` defining the data layout of the matrix
 
 Not Collective
@@ -22918,10 +22918,10 @@ See also:
 # External Links
 $(_doc_external("DM/MatGetDM"))
 """
-function MatGetDM(petsclib::PetscLibType, A::PetscMat, dm::PetscDM) end
+function MatGetDM(petsclib::PetscLibType, A::PetscMat) end
 
-@for_petsc function MatGetDM(petsclib::$UnionPetscLib, A::PetscMat, dm::PetscDM )
-	dm_ = Ref(dm.ptr)
+@for_petsc function MatGetDM(petsclib::$UnionPetscLib, A::PetscMat )
+	dm_ = Ref(CDM)()
 
     @chk ccall(
                (:MatGetDM, $petsc_library),
@@ -22930,9 +22930,9 @@ function MatGetDM(petsclib::PetscLibType, A::PetscMat, dm::PetscDM) end
                A, dm_,
               )
 
-	dm.ptr = C_NULL
+	dm = PetscDM(dm_[], petsclib)
 
-	return nothing
+    return dm
 end 
 
 """

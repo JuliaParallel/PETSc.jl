@@ -2,6 +2,7 @@ using Test
 using PETSc, MPI
 MPI.Initialized() || MPI.Init()
 
+
 @testset "DMDACreate1D" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
@@ -493,12 +494,11 @@ end
 
 
         # Test DM Coordinates
-        coord_da = LibPETSc.DMGetCoordinateDM(petsclib, da)
 
         # Crank it up to 11!
         xmin, xmax = 0, 11
-        PETSc.setuniformcoordinates!(coord_da, (xmin,), (xmax,))
-        coord_vec = PETSc.coordinatesDMLocalVec(coord_da)
+        PETSc.setuniformcoordinates_dmda!(da, (xmin,), (xmax,))
+        coord_vec = PETSc.coordinatesDMLocalVec(da)
         Δx = (xmax - xmin) / (global_size - 1)
 
         # Figure out the values we should have in the coordinate vector
@@ -529,9 +529,9 @@ end
         Δx = (xmax - xmin) / (global_size_x - 1)     # only needed for testing
         Δy = (ymax - ymin) / (global_size_y - 1)     # only needed for testing
 
-        PETSc.setuniformcoordinates!(da_2D, (xmin, ymin), (xmax, ymax))
+        PETSc.setuniformcoordinates_dmda!(da_2D, (xmin, ymin), (xmax, ymax))
 
-        # Retrieve local coordinate array (shaped accordingly)
+         # Retrieve local coordinate array (shaped accordingly)
         coord = PETSc.getlocalcoordinatearray(da_2D)
 
         # Check
@@ -565,6 +565,7 @@ end
         PETSc.destroy(da)
 
         PETSc.finalize(petsclib)
+
     end
 end
 

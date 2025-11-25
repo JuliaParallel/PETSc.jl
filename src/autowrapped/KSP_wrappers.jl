@@ -4175,7 +4175,7 @@ function KSPSetDMActive(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) e
 end 
 
 """
-	KSPGetDM(petsclib::PetscLibType,ksp::PetscKSP, dm::PetscDM) 
+    dm::PetscDM = KSPGetDM(petsclib::PetscLibType,ksp::PetscKSP) 
 Gets the `DM` that may be used by some preconditioners and that may be used to construct the linear system
 
 Not Collective
@@ -4193,10 +4193,10 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetDM"))
 """
-function KSPGetDM(petsclib::PetscLibType, ksp::PetscKSP, dm::PetscDM) end
+function KSPGetDM(petsclib::PetscLibType, ksp::PetscKSP) end
 
-@for_petsc function KSPGetDM(petsclib::$UnionPetscLib, ksp::PetscKSP, dm::PetscDM )
-	dm_ = Ref(dm.ptr)
+@for_petsc function KSPGetDM(petsclib::$UnionPetscLib, ksp::PetscKSP)
+	dm_ = Ref{CDM}()
 
     @chk ccall(
                (:KSPGetDM, $petsc_library),
@@ -4205,9 +4205,9 @@ function KSPGetDM(petsclib::PetscLibType, ksp::PetscKSP, dm::PetscDM) end
                ksp, dm_,
               )
 
-	dm.ptr = C_NULL
+    dm = PetscDM(dm_[], petsclib)
 
-	return nothing
+	return dm
 end 
 
 """

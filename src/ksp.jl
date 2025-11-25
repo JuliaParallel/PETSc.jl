@@ -156,3 +156,67 @@ function destroy(ksp::PetscKSP{PetscLib}) where {PetscLib}
     ksp.ptr = C_NULL
     return nothing
 end
+
+
+
+"""
+    getDMDA(ksp::AbstractKSP)
+
+Get `dmda` for `ksp`
+
+The returned `dmda` is owned by the `ksp`
+
+# External Links
+$(_doc_external("KSP/KSPGetDM"))
+"""
+function getDMDA(ksp::AbstractPetscKSP{PetscLib}) where PetscLib
+    dmda = KSPGetDM(ksp)
+    return dmda
+end
+
+#
+# Wrapper for calls to setcomputerhs!
+mutable struct Fn_KSPComputeRHS{PetscLib, PetscInt} end
+function (w::Fn_KSPComputeRHS{PetscLib, PetscInt})(
+    new_ksp_ptr::CKSP,
+    cb::CVec,
+    ksp_ptr::Ptr{Cvoid},
+)::PetscInt where {PetscLib, PetscInt}
+    PetscScalar = PetscLib.PetscScalar
+    new_ksp = KSPPtr{PetscLib, PetscScalar}(new_ksp_ptr, getlib(PetscLib).age)
+    b = VecPtr(PetscLib, cb, false)
+    ksp = unsafe_pointer_to_objref(ksp_ptr)
+    ierr = ksp.computerhs!(b, new_ksp)
+    return PetscLib.PetscInt(ierr)
+end
+
+"""
+    setcomputerhs!(ksp::AbstractKSP, rhs!::Function)
+    setcomputerhs!(rhs!::Function, ksp::AbstractKSP)
+
+Define `rhs!` to be the right-hand side function of the `ksp`. A call to
+`rhs!(b, new_ksp)` should set the elements of the PETSc vector `b` based on the
+`new_ksp`.
+
+!!! note
+
+    The `new_ksp` passed to `rhs!` may not be the same as the `ksp` passed to
+    `setcomputerhs!`.
+
+# External Links
+$(_doc_external("KSP/KSPSetComputeRHS"))
+"""
+setcomputerhs!(ksp::AbstractPetscKSP, rhs!) = setcomputerhs!(rhs!, ksp)
+# We have to use the macro here because of the @cfunction
+LibPETSc.@for_petsc function setcomputerhs!(rhs!, ksp::AbstractPetscKSP{$PetscLib})
+    # We must wrap the user function in our own object
+    fptr = @cfunction(
+        Fn_KSPComputeRHS{$PetscLib, $PetscInt}(),
+        $PetscInt,
+        (CKSP, CVec, Ptr{Cvoid})
+    )
+    # set the computerhs! in the ksp
+    #ksp.computerhs! = rhs!
+    LibPETSc.KSPSetComputeRHS($PetscLib, ksp, fptr, pointer_from_objref(ksp))
+    return ksp
+end

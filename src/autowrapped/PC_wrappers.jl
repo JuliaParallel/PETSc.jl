@@ -146,7 +146,7 @@ function PCSetDM(petsclib::PetscLibType, pc::PC, dm::PetscDM) end
 end 
 
 """
-	PCGetDM(petsclib::PetscLibType,pc::PC, dm::PetscDM) 
+	dm::PetscDM = PCGetDM(petsclib::PetscLibType,pc::PC) 
 Gets the `DM` that may be used by some preconditioners
 
 Not Collective
@@ -164,10 +164,10 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCGetDM"))
 """
-function PCGetDM(petsclib::PetscLibType, pc::PC, dm::PetscDM) end
+function PCGetDM(petsclib::PetscLibType, pc::PC) end
 
-@for_petsc function PCGetDM(petsclib::$UnionPetscLib, pc::PC, dm::PetscDM )
-	dm_ = Ref(dm.ptr)
+@for_petsc function PCGetDM(petsclib::$UnionPetscLib, pc::PC)
+	dm_ = Ref(CDM)()
 
     @chk ccall(
                (:PCGetDM, $petsc_library),
@@ -176,9 +176,8 @@ function PCGetDM(petsclib::PetscLibType, pc::PC, dm::PetscDM) end
                pc, dm_,
               )
 
-	dm.ptr = C_NULL
-
-	return nothing
+    dm = PetscDM(dm_[], petsclib)
+	return dm
 end 
 
 """
@@ -4974,7 +4973,7 @@ function PCTelescopeSetIgnoreKSPComputeOperators(petsclib::PetscLibType, pc::PC)
 end 
 
 """
-	PCTelescopeGetDM(petsclib::PetscLibType,pc::PC, subdm::PetscDM) 
+	subdm::PetscDM = PCTelescopeGetDM(petsclib::PetscLibType,pc::PC) 
 Get the re
 
 Not Collective
@@ -4995,7 +4994,7 @@ $(_doc_external("Ksp/PCTelescopeGetDM"))
 function PCTelescopeGetDM(petsclib::PetscLibType, pc::PC, subdm::PetscDM) end
 
 @for_petsc function PCTelescopeGetDM(petsclib::$UnionPetscLib, pc::PC, subdm::PetscDM )
-	subdm_ = Ref(subdm.ptr)
+	subdm_ = Ref(CDM)()
 
     @chk ccall(
                (:PCTelescopeGetDM, $petsc_library),
@@ -5004,9 +5003,9 @@ function PCTelescopeGetDM(petsclib::PetscLibType, pc::PC, subdm::PetscDM) end
                pc, subdm_,
               )
 
-	subdm.ptr = C_NULL
+	subdm = PetscDM(subdm_[], petsclib)
 
-	return nothing
+	return subdm
 end 
 
 """

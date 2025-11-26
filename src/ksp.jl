@@ -283,7 +283,7 @@ end
 
 """
     sol = get_solution(ksp::AbstractPetscKSP)
-Returns the solution vector associated with the KSP object.
+Returns the soluteion vector associated with the KSP object.
 """
 function get_solution(ksp::AbstractPetscKSP{PetscLib}) where PetscLib
     sol = LibPETSc.KSPGetSolution(getlib(PetscLib),ksp)

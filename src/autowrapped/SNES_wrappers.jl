@@ -4110,7 +4110,7 @@ function SNESConvergedReasonViewFromOptions(petsclib::PetscLibType, snes::PetscS
 end 
 
 """
-	SNESSolve(petsclib::PetscLibType,snes::PetscSNES, b::PetscVec, x::PetscVec) 
+	SNESSolve(petsclib::PetscLibType,snes::PetscSNES, b::Union{PetscVec,Ptr}, x::PetscVec) 
 Solves a nonlinear system F(x) = b  associated with a `SNES` object
 
 Collective
@@ -4129,9 +4129,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/SNESSolve"))
 """
-function SNESSolve(petsclib::PetscLibType, snes::PetscSNES, b::PetscVec, x::PetscVec) end
+function SNESSolve(petsclib::PetscLibType, snes::PetscSNES, b::Union{PetscVec,Ptr}, x::PetscVec) end
 
-@for_petsc function SNESSolve(petsclib::$UnionPetscLib, snes::PetscSNES, b::PetscVec, x::PetscVec )
+@for_petsc function SNESSolve(petsclib::$UnionPetscLib, snes::PetscSNES, b::Union{PetscVec,Ptr}, x::PetscVec )
 
     @chk ccall(
                (:SNESSolve, $petsc_library),

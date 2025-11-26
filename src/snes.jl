@@ -194,3 +194,38 @@ function destroy(snes::AbstractPetscSNES{PetscLib}) where {PetscLib}
     snes.ptr = C_NULL
     return nothing
 end
+
+
+"""
+    dm = getDMDA(snes::AbstractPetscSNES)
+
+Get `dmda` for `snes`
+
+The returned `dmda` is owned by the `snes`
+
+# External Links
+$(_doc_external("SNES/SNESGetDM"))
+"""
+function getDMDA(
+    snes::AbstractPetscSNES{PetscLib},
+) where {PetscLib}
+    dmda = LibPETSc.SNESGetDM(getlib(PetscLib), snes)
+    return dmda
+end
+
+
+"""
+    setDM!(snes::AbstractPetscSNES, dm::AbstractDM)
+
+Set `dm` for `snes`
+
+# External Links
+$(_doc_external("SNES/SNESSetDM"))
+"""
+function setDM!(
+    snes::AbstractPetscSNES{PetscLib},
+    dm::AbstractPetscDM{PetscLib},
+) where {PetscLib}
+    LibPETSc.SNESSetDM(getlib(PetscLib), snes, dm)
+    return nothing
+end

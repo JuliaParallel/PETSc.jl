@@ -226,6 +226,7 @@ julia> withlocalarray!(
        ) do x, y
    @. x .= 2 .+ y
 end
+```
 
 !!! note
     `Base.finalize` is automatically called on the array.

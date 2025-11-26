@@ -182,3 +182,26 @@ function reshapelocalarray(
 
     return oArr
 end
+
+"""
+    ind = localinteriorlinearindex(dmda::AbstractPetscDM)
+
+Returns the linear indices associated with the degrees of freedom own by this MPI rank embedded in the ghost index space for the `dmda`
+"""
+function localinteriorlinearindex(da::AbstractPetscDM{PetscLib}) where PetscLib
+    # Determine the indices of the linear indices of the local part of the
+    # matrix we own
+    @assert gettype(da) == "da" 
+    ghost_corners = PETSc.getghostcorners(da)
+    corners = PETSc.getcorners(da)
+
+    # First compute the Cartesian indices for the local portion we own
+    offset = ghost_corners.lower - CartesianIndex(1, 1, 1)
+    l_inds = ((corners.lower):(corners.upper)) .- offset
+
+    # Create a grid of indices with ghost then extract only the local part
+    lower = CartesianIndex(1, ghost_corners.lower)
+    upper = CartesianIndex(ndofs(da), ghost_corners.upper)
+    ind_local = LinearIndices(lower:upper)[:, l_inds][:]
+    return ind_local
+end

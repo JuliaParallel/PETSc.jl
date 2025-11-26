@@ -384,3 +384,12 @@ function dm_global_to_local(dm::PetscDM{PetscLib},
 
     return nothing
 end
+
+"""
+    J::PetscMat = MatAIJ(da::AbstractPetscDM) 
+Returns a matrix `J` that is compatible with the `da` object.
+"""
+function MatAIJ(da::AbstractPetscDM{PetscLib}) where {PetscLib}
+    J = LibPETSc.DMCreateMatrix(getlib(PetscLib), da)
+    return J
+end

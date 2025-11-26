@@ -640,7 +640,7 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSolve"))
 """
-function KSPSolve(petsclib::PetscLibType, ksp::PetscKSP, b::PetscVec, x::PetscVec) end
+function KSPSolve(petsclib::PetscLibType, ksp::PetscKSP, b::Union{PetscVec,Ptr}, x::Union{PetscVec,Ptr}) end
 
 @for_petsc function KSPSolve(petsclib::$UnionPetscLib, ksp::PetscKSP, b::Union{PetscVec,Ptr}, x::Union{PetscVec,Ptr} )
 

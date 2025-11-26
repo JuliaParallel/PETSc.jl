@@ -1808,7 +1808,7 @@ function MatLoad(petsclib::PetscLibType, mat::PetscMat, viewer::PetscViewer) end
 end 
 
 """
-	MatDestroy(petsclib::PetscLibType,A::PetscMat) 
+	MatDestroy(petsclib::PetscLibType,A::AbstractPetscMat) 
 Frees space taken by a matrix.
 
 Collective
@@ -1823,9 +1823,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatDestroy"))
 """
-function MatDestroy(petsclib::PetscLibType, A::PetscMat) end
+function MatDestroy(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDestroy(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDestroy(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	A_ = Ref(A.ptr)
 
     @chk ccall(
@@ -10273,7 +10273,7 @@ $(_doc_external("Mat/MatShellGetContext"))
 """
 function MatShellGetContext(petsclib::PetscLibType, mat::AbstractPetscMat, ctx::Union{Cvoid,Ptr}) end
 
-@for_petsc function MatShellGetContext(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ctx::Union{Cvoid,Ptr})
+@for_petsc function MatShellGetContext(petsclib::$UnionPetscLib, mat::Union{AbstractPetscMat,Ptr}, ctx::Union{Cvoid,Ptr,Ref})
 
     @chk ccall(
                (:MatShellGetContext, $petsc_library),

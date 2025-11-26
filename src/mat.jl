@@ -263,7 +263,6 @@ function LinearAlgebra.mul!(
 end
 
 
-
 function LinearAlgebra.issymmetric(A::PetscMat{PetscLib}; tol = 0.0) where {PetscLib} 
     PetscReal = real(scalartype(PetscLib))        
     return LibPETSc.MatIsSymmetric(PetscLib, A, PetscReal(tol))
@@ -484,6 +483,34 @@ end
 
 # ====
 
+struct MatOp{PetscLib, Op} end
+
+function (::MatOp{PetscLib, LibPETSc.MATOP_MULT})(
+            M::CMat,
+            cx::CVec,
+            cy::CVec,
+        ) where {PetscLib}
+    r_ctx = Ref{Ptr{Cvoid}}()
+    LibPETSc.MatShellGetContext(PetscLib, M, r_ctx)
+    ptr = r_ctx[]
+
+    mat = unsafe_pointer_to_objref(ptr)
+
+    PetscScalar = PetscLib.PetscScalar
+    x = PetscVec(cx, getlib(PetscLib))
+    y = PetscVec(cy, getlib(PetscLib))
+
+    _mul!(y, mat, x)
+
+    return 0
+end
+
+
+
+
+# NOTE: MatShell remains work in progress - doesn't function yet
+# We have to use the macro here because of the @cfunction
+
 
 """
     MatShell(
@@ -511,49 +538,12 @@ $(_doc_external("Mat/MatCreateShell"))
 $(_doc_external("Mat/MatShellSetOperation"))
 $(_doc_external("Mat/MATOP_MULT"))
 """
-mutable struct MatShell{PetscLib, OType} <:
-               AbstractPetscMat{PetscLib}
+mutable struct MatShell{PetscLib, OType} <: AbstractPetscMat{PetscLib}
     ptr::CMat
     obj::OType
+    age
 end
 
-struct MatOp{PetscLib, Op} end
-
-function (::MatOp{PetscLib, LibPETSc.MATOP_MULT})(
-            M::CMat,
-            cx::CVec,
-            cy::CVec,
-        ) where {PetscLib}
-    #r_ctx = Ref{Ptr{Cvoid}}()
-    #LibPETSc.MatShellGetContext(PetscLib, M, r_ctx)
-    #ptr = r_ctx[]
-
-    mat = unsafe_pointer_to_objref(ptr)
-
-    PetscScalar = PetscLib.PetscScalar
-    x = VecPtr(PetscLib, cx, false)
-    y = VecPtr(PetscLib, cy, false)
-
-    _mul!(y, mat, x)
-
-    return PetscInt(0)
-end
-
-function _mul!(
-    y,
-    mat::MatShell{PetscLib, F},
-    x,
-) where {PetscLib, F <: Function}
-    mat.obj(y, x)
-end
-
-function _mul!(y, mat::MatShell, x)
-    LinearAlgebra.mul!(y, mat.obj, x)
-end
-
-
-# NOTE: MatShell remains work in progress - doesn't function yet
-# We have to use the macro here because of the @cfunction
 LibPETSc.@for_petsc function MatShell(
     petsclib::$PetscLib,
     obj::OType,
@@ -563,7 +553,7 @@ LibPETSc.@for_petsc function MatShell(
     global_rows = LibPETSc.PETSC_DECIDE,
     global_cols = LibPETSc.PETSC_DECIDE,
 ) where {OType}
-    mat = MatShell{$PetscLib, OType}(C_NULL, obj)
+    mat = MatShell{$PetscLib, OType}(C_NULL, obj, 0)
 
     # we use the MatShell object itself
     ctx = pointer_from_objref(mat)
@@ -632,11 +622,50 @@ LibPETSc.@for_petsc function MatShell(
 
     LibPETSc.MatShellSetOperation(petsclib, mat, LibPETSc.MATOP_MULT, mulptr)
 
-    if MPI.Comm_size(comm) == 1
-        finalizer(destroy, mat)
-    end
+    #if MPI.Comm_size(comm) == 1
+    #    finalizer(destroy, mat)
+    #end
     
     return mat
+end
+
+function _mul!(
+    y,
+    mat::MatShell{PetscLib, F},
+    x,
+) where {PetscLib, F <: Function}
+    mat.obj(y, x)
+end
+
+function _mul!(y, mat::MatShell, x)
+    LinearAlgebra.mul!(y, mat.obj, x)
+end
+
+
+# Matrix-vector multiplication for MatShell with Julia arrays
+function Base.:*(M::MatShell{PetscLib}, x::AbstractVector) where {PetscLib}
+    PetscScalar = scalartype(PetscLib)
+    PetscInt = inttype(PetscLib)
+    
+    # Get matrix dimensions
+    m, n = size(M)
+    
+    # Create PETSc vectors wrapping the Julia arrays
+    petsclib = getlib(PetscLib)
+    petsc_x = LibPETSc.VecCreateSeqWithArray(petsclib, MPI.COMM_SELF, PetscInt(1), PetscInt(n), PetscScalar.(x))
+    petsc_y = LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, PetscInt(m))
+    
+    # Perform matrix-vector multiplication
+    LibPETSc.MatMult(petsclib, M, petsc_x, petsc_y)
+    
+    # Extract result to Julia array
+    result = PetscScalar.(petsc_y[:])
+    
+    # Clean up
+    PETSc.destroy(petsc_x)
+    PETSc.destroy(petsc_y)
+    
+    return result
 end
 
 

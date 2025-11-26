@@ -315,3 +315,16 @@ function ghostupdate!(
     ghostupdateend!(vec,insertmode,scattermode)
     return nothing
 end
+
+"""
+    v = VecSeq(petsclib, comm, array)
+Creates a sequential PETSc vector of length `n` given a julia array `array`` 
+"""
+function VecSeq(petsclib::PetscLib, comm, x::Vector) where {PetscLib <: PetscLibType}
+    @assert initialized(petsclib)
+    
+    v = LibPETSc.VecCreateSeqWithArray(petsclib,comm, 1, length(x), x)    # solution vector
+    finalizer(destroy, v)
+
+    return v
+end

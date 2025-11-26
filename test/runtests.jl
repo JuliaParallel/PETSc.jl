@@ -6,6 +6,10 @@ using PETSc, PETSc_jll
 import MPIPreferences
 @info "Testing PETSc.jl with" MPIPreferences.binary MPIPreferences.abi PETSc_jll.host_platform
 
+# Do the MPI tests first so we do not have mpi running inside MPI
+# NOTE: first 2 are not ported yet
+mpi_tests = ("mpivec.jl", "mpimat.jl", "ksp.jl", "dmstag.jl")
+
 do_mpi = true
 if Sys.iswindows()
     do_mpi = false

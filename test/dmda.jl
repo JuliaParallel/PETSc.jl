@@ -224,7 +224,6 @@ end
     end
 end
 
-
 @testset "DMDACreate3D" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
@@ -421,7 +420,7 @@ end
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
-        #petsclib = PETSc.petsclibs[1]
+        petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt
@@ -461,7 +460,7 @@ end
 
         # add the local values to the global values
         #PETSc.update!(global_vec, local_vec, PETSc.ADD_VALUES)
-        PETSc.dm_local_to_global!(global_vec, local_vec, da, PETSc.ADD_VALUES)
+        PETSc.dm_local_to_global!(local_vec, global_vec, da, PETSc.ADD_VALUES)
 
         # end points added with neighbor due to ghost of size 1
         bot_val = mpisize + mpirank + (mpirank == 0 ? 0 : mpirank - 1)
@@ -476,7 +475,8 @@ end
 
         # reset the local values with the global values
         #PETSc.update!(local_vec, global_vec, PETSc.INSERT_VALUES)
-        PETSc.dm_global_to_local!(local_vec, global_vec, da, PETSc.INSERT_VALUES)
+        #PETSc.dm_global_to_local!(local_vec, global_vec, da, PETSc.INSERT_VALUES)
+        PETSc.dm_global_to_local!(global_vec, local_vec, da, PETSc.INSERT_VALUES)
 
         # My first value and my ghost should be the bot/top values
         @test local_vec[1] == bot_val
@@ -555,7 +555,8 @@ end
             Array_2 = @view x[2, :, :, :]
             Array_2 .= 22.2
         end
-        PETSc.dm_local_to_global!(x_g, x_l, da_2D, PETSc.INSERT_VALUES)
+        #PETSc.dm_local_to_global!(x_g, x_l, da_2D, PETSc.INSERT_VALUES)
+        PETSc.dm_local_to_global!(x_l,x_g, da_2D, PETSc.INSERT_VALUES)
 
         sum_val = PETSc.LibPETSc.VecSum(petsclib, x_g)
         @test sum_val ≈ PetscScalar(3996)            # check sum of global vector
@@ -568,5 +569,6 @@ end
 
     end
 end
+
 
 nothing

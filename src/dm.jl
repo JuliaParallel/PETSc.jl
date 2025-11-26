@@ -200,9 +200,9 @@ Input Parameters:
 - `mode::InsertMode` - Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
 
 """
-function dm_local_to_global!(global_vec::AbstractPetscVec{PetscLib},
-                              local_vec::AbstractPetscVec{PetscLib},
-                                     dm::AbstractPetscDM{PetscLib},
+function dm_local_to_global!(   local_vec::AbstractPetscVec{PetscLib},
+                                global_vec::AbstractPetscVec{PetscLib},
+                                   dm::AbstractPetscDM{PetscLib},
                                    mode::InsertMode = INSERT_VALUES) where {PetscLib}
 
     LibPETSc.DMLocalToGlobalBegin(PetscLib, dm, local_vec, mode, global_vec)

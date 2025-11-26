@@ -163,8 +163,8 @@ end
 # Initialize x_old on every processor
 g_xold = deepcopy(g_x); # initialize Pe and Phi of last timestep
 l_xold = PETSc.DMLocalVec(da)
-#PETSc.update!(l_xold, g_xold, PETSc.INSERT_VALUES)
-PETSc.dm_local_to_global!(l_xold, g_xold, da, PETSc.INSERT_VALUES)
+PETSc.dm_global_to_local!(g_xold, l_xold, da, PETSc.INSERT_VALUES)
+
 x_old = PETSc.unsafe_localarray(l_xold, read = true, write = false)
 
 # Routine wuth julia-only input/output vectors that computes the local residual
@@ -393,9 +393,8 @@ while (it < max_it && time < max_time)
 
     # Update the x_old values (Phi_old, Pe_old) on every processor
     finalize(x_old) # Free the previous x_old vector
-    #PETSc.update!(l_xold, g_x, PETSc.INSERT_VALUES) # Update
-    PETSc.dm_local_to_global!(l_xold, g_x, da, PETSc.INSERT_VALUES)
-    
+    PETSc.dm_global_to_local!(g_x, l_xold, da, PETSc.INSERT_VALUES)
+
     x_old = PETSc.unsafe_localarray(l_xold, read = true, write = false)
 
     # Visualisation

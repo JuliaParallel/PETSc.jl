@@ -10,14 +10,14 @@
 using PETSc, MPI, LinearAlgebra, SparseArrays, UnicodePlots, ForwardDiff
 using Test
 
-
 if ~MPI.Initialized()
     MPI.Init()
 end
 
-
 petsclib = PETSc.petsclibs[1]
 PETSc.initialize(petsclib)
+comm = MPI.COMM_SELF
+
 
 """
     Computes initial guess 
@@ -104,13 +104,13 @@ FormInitialGuess!(x);
 Jstruct  = zeros(n,n);
 FormJacobian!(x, Jstruct);                              # jacobian in julia form
 Jsp      =   sparse(Float64.(abs.(Jstruct) .> 0))       # sparse julia, with 1.0 in nonzero spots
-PJ       =   PETSc.MatSeqAIJ(Jsp);                      # transfer to PETSc (initialize matrix with correct nonzero pattern)
+PJ       =   PETSc.MatSeqAIJWithArrays(petsclib, comm, Jsp);  # transfer to PETSc format
 
 # Setup SNES
-x_s = PETSc.VecSeq(x);                  # solution vector
-res = PETSc.VecSeq(zeros(size(x)));     # residual vector
+x_s = PETSc.VecSeq(petsclib, comm, x);                  # solution vector
+res = PETSc.VecSeq(petsclib, comm, zeros(size(x)));     # residual vector
 
-S = PETSc.SNES{Float64}(PETSc.petsclibs[1],MPI.COMM_SELF; 
+S = PETSc.SNES(petsclib,MPI.COMM_SELF; 
         snes_rtol=1e-12, 
         snes_monitor=nothing,
         snes_converged_reason=nothing);
@@ -121,10 +121,10 @@ PETSc.setjacobian!(S, FormJacobian!, PJ, PJ)
 PETSc.solve!(x_s, S);
 
 # Extract & plot solution
-x_sol = x_s.array;                  # convert solution to julia format
-FormResidual!(res.array,x_sol)      # just for checking, compute residual
+x_sol = x_s[:];                  # convert solution to julia format
+FormResidual!(res[:],x_sol)      # just for checking, compute residual
 
-@show norm(res.array)
+@show norm(res[:])
 
 PETSc.finalize(petsclib)
 

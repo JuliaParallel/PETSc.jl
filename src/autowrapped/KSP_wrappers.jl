@@ -642,7 +642,7 @@ $(_doc_external("KSP/KSPSolve"))
 """
 function KSPSolve(petsclib::PetscLibType, ksp::PetscKSP, b::PetscVec, x::PetscVec) end
 
-@for_petsc function KSPSolve(petsclib::$UnionPetscLib, ksp::PetscKSP, b::PetscVec, x::PetscVec )
+@for_petsc function KSPSolve(petsclib::$UnionPetscLib, ksp::PetscKSP, b::Union{PetscVec,Ptr}, x::Union{PetscVec,Ptr} )
 
     @chk ccall(
                (:KSPSolve, $petsc_library),
@@ -2375,7 +2375,7 @@ function KSPGetDiagonalScaleFix(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetComputeOperators(petsclib::PetscLibType,ksp::PetscKSP, func::KSPComputeOperatorsFn, ctx::Cvoid) 
+	KSPSetComputeOperators(petsclib::PetscLibType,ksp::PetscKSP, func::Union{KSPComputeOperatorsFn, Ptr}, ctx::Union{Cvoid, Ptr}) 
 set routine to compute the linear operators
 
 Logically Collective
@@ -2392,9 +2392,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetComputeOperators"))
 """
-function KSPSetComputeOperators(petsclib::PetscLibType, ksp::PetscKSP, func::KSPComputeOperatorsFn, ctx::Cvoid) end
+function KSPSetComputeOperators(petsclib::PetscLibType, ksp::PetscKSP, func::Union{KSPComputeOperatorsFn, Ptr}, ctx::Union{Cvoid, Ptr}) end
 
-@for_petsc function KSPSetComputeOperators(petsclib::$UnionPetscLib, ksp::PetscKSP, func::KSPComputeOperatorsFn, ctx::Cvoid )
+@for_petsc function KSPSetComputeOperators(petsclib::$UnionPetscLib, ksp::PetscKSP, func::Union{KSPComputeOperatorsFn, Ptr}, ctx::Union{Cvoid, Ptr})
 
     @chk ccall(
                (:KSPSetComputeOperators, $petsc_library),
@@ -2408,7 +2408,7 @@ function KSPSetComputeOperators(petsclib::PetscLibType, ksp::PetscKSP, func::KSP
 end 
 
 """
-	KSPSetComputeRHS(petsclib::PetscLibType,ksp::PetscKSP, func::KSPComputeRHSFn, ctx::Cvoid) 
+	KSPSetComputeRHS(petsclib::PetscLibType,ksp::PetscKSP, func::Union{KSPComputeRHSFn,Ptr}, ctx::Union{Cvoid, Ptr}) 
 set routine to compute the right
 
 Logically Collective
@@ -2425,9 +2425,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetComputeRHS"))
 """
-function KSPSetComputeRHS(petsclib::PetscLibType, ksp::PetscKSP, func::KSPComputeRHSFn, ctx::Cvoid) end
+function KSPSetComputeRHS(petsclib::PetscLibType, ksp::PetscKSP, func::Union{KSPComputeRHSFn,Ptr}, ctx::Union{Cvoid, Ptr}) end
 
-@for_petsc function KSPSetComputeRHS(petsclib::$UnionPetscLib, ksp::PetscKSP, func::KSPComputeRHSFn, ctx::Cvoid )
+@for_petsc function KSPSetComputeRHS(petsclib::$UnionPetscLib, ksp::PetscKSP, func::Union{KSPComputeRHSFn,Ptr}, ctx::Union{Cvoid, Ptr} )
 
     @chk ccall(
                (:KSPSetComputeRHS, $petsc_library),
@@ -2441,7 +2441,7 @@ function KSPSetComputeRHS(petsclib::PetscLibType, ksp::PetscKSP, func::KSPComput
 end 
 
 """
-	KSPSetComputeInitialGuess(petsclib::PetscLibType,ksp::PetscKSP, func::KSPComputeInitialGuessFn, ctx::Cvoid) 
+	KSPSetComputeInitialGuess(petsclib::PetscLibType,ksp::PetscKSP, func::Union{KSPComputeInitialGuessFn, Ptr}, ctx::Union{Cvoid, Ptr}) 
 set routine to compute the initial guess of the linear system
 
 Logically Collective
@@ -2459,9 +2459,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetComputeInitialGuess"))
 """
-function KSPSetComputeInitialGuess(petsclib::PetscLibType, ksp::PetscKSP, func::KSPComputeInitialGuessFn, ctx::Cvoid) end
+function KSPSetComputeInitialGuess(petsclib::PetscLibType, ksp::PetscKSP, func::Union{KSPComputeInitialGuessFn, Ptr}, ctx::Union{Cvoid, Ptr}) end
 
-@for_petsc function KSPSetComputeInitialGuess(petsclib::$UnionPetscLib, ksp::PetscKSP, func::KSPComputeInitialGuessFn, ctx::Cvoid )
+@for_petsc function KSPSetComputeInitialGuess(petsclib::$UnionPetscLib, ksp::PetscKSP, func::Union{KSPComputeInitialGuessFn, Ptr}, ctx::Union{Cvoid, Ptr})
 
     @chk ccall(
                (:KSPSetComputeInitialGuess, $petsc_library),

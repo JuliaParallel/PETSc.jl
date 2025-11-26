@@ -6712,7 +6712,7 @@ $(_doc_external("DM/VecGetDM"))
 function VecGetDM(petsclib::PetscLibType, v::PetscVec) end
 
 @for_petsc function VecGetDM(petsclib::$UnionPetscLib, v::PetscVec)
-	dm_ = Ref(CDM)()
+	dm_ = Ref{CDM}()
 
     @chk ccall(
                (:VecGetDM, $petsc_library),

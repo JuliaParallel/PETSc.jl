@@ -3405,7 +3405,7 @@ $(_doc_external("Ts/TSGetDM"))
 function TSGetDM(petsclib::PetscLibType, ts::TS) end
 
 @for_petsc function TSGetDM(petsclib::$UnionPetscLib, ts::TS )
-	dm_ = Ref(CDM)()
+	dm_ = Ref{CDM}()
 
     @chk ccall(
                (:TSGetDM, $petsc_library),

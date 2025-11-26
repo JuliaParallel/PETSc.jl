@@ -22921,7 +22921,7 @@ $(_doc_external("DM/MatGetDM"))
 function MatGetDM(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatGetDM(petsclib::$UnionPetscLib, A::PetscMat )
-	dm_ = Ref(CDM)()
+	dm_ = Ref{CDM}()
 
     @chk ccall(
                (:MatGetDM, $petsc_library),

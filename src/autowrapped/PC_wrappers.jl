@@ -167,7 +167,7 @@ $(_doc_external("Ksp/PCGetDM"))
 function PCGetDM(petsclib::PetscLibType, pc::PC) end
 
 @for_petsc function PCGetDM(petsclib::$UnionPetscLib, pc::PC)
-	dm_ = Ref(CDM)()
+	dm_ = Ref{CDM}()
 
     @chk ccall(
                (:PCGetDM, $petsc_library),
@@ -4994,7 +4994,7 @@ $(_doc_external("Ksp/PCTelescopeGetDM"))
 function PCTelescopeGetDM(petsclib::PetscLibType, pc::PC, subdm::PetscDM) end
 
 @for_petsc function PCTelescopeGetDM(petsclib::$UnionPetscLib, pc::PC, subdm::PetscDM )
-	subdm_ = Ref(CDM)()
+	subdm_ = Ref{CDM}()
 
     @chk ccall(
                (:PCTelescopeGetDM, $petsc_library),

@@ -10975,7 +10975,7 @@ function DMReorderSectionGetType(petsclib::PetscLibType, dm::PetscDM) end
 end 
 
 """
-	DMGetLocalVector(petsclib::PetscLibType,dm::PetscDM, g::PetscVec) 
+	 g::PetscVec = DMGetLocalVector(petsclib::PetscLibType,dm::PetscDM) 
 Gets a PETSc vector that may be used with the `DM` local routines. This vector has spaces for the ghost values.
 
 Not Collective
@@ -11006,10 +11006,10 @@ Level: beginner
 # External Links
 $(_doc_external("DM/DMGetLocalVector"))
 """
-function DMGetLocalVector(petsclib::PetscLibType, dm::PetscDM, g::PetscVec) end
+function DMGetLocalVector(petsclib::PetscLibType, dm::PetscDM) end
 
-@for_petsc function DMGetLocalVector(petsclib::$UnionPetscLib, dm::PetscDM, g::PetscVec )
-	g_ = Ref(g.ptr)
+@for_petsc function DMGetLocalVector(petsclib::$UnionPetscLib, dm::PetscDM)
+	g_ = Ref{CVec}()
 
     @chk ccall(
                (:DMGetLocalVector, $petsc_library),
@@ -11018,9 +11018,9 @@ function DMGetLocalVector(petsclib::PetscLibType, dm::PetscDM, g::PetscVec) end
                dm, g_,
               )
 
-	g.ptr = g_[]
+	g = PetscVec(g_[],petsclib)
 
-	return nothing
+	return g
 end 
 
 """
@@ -11083,10 +11083,10 @@ Level: beginner
 # External Links
 $(_doc_external("DM/DMGetGlobalVector"))
 """
-function DMGetGlobalVector(petsclib::PetscLibType, dm::PetscDM, g::PetscVec) end
+function DMGetGlobalVector(petsclib::PetscLibType, dm::PetscDM) end
 
-@for_petsc function DMGetGlobalVector(petsclib::$UnionPetscLib, dm::PetscDM, g::PetscVec )
-	g_ = Ref(g.ptr)
+@for_petsc function DMGetGlobalVector(petsclib::$UnionPetscLib, dm::PetscDM)
+	g_ = Ref{CVec}()
 
     @chk ccall(
                (:DMGetGlobalVector, $petsc_library),
@@ -11095,9 +11095,8 @@ function DMGetGlobalVector(petsclib::PetscLibType, dm::PetscDM, g::PetscVec) end
                dm, g_,
               )
 
-	g.ptr = g_[]
-
-	return nothing
+	g = PetscVec(g_[],petsclib)
+	return g
 end 
 
 """

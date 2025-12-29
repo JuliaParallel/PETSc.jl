@@ -668,5 +668,85 @@ function Base.:*(M::MatShell{PetscLib}, x::AbstractVector) where {PetscLib}
     return result
 end
 
+"""
+    ownershiprange(mat::AbstractMat, [base_one = true])
 
+The range of row indices owned by this processor, assuming that the `mat` is
+laid out with the first `n1` rows on the first processor, next `n2` rows on the
+second, etc. For certain parallel layouts this range may not be well defined.
+
+If the optional argument `base_one == true` then base-1 indexing is used,
+otherwise base-0 index is used.
+
+!!! note
+
+    unlike the C function, the range returned is inclusive (`idx_first:idx_last`)
+
+# External Links
+$(_doc_external("Mat/MatGetOwnershipRange"))
+"""
+function ownershiprange(
+    mat::AbstractPetscMat{PetscLib},
+    base_one::Bool = true,
+) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    r_lo, r_hi = LibPETSc.MatGetOwnershipRange(PetscLib, mat)
+    return base_one ? ((r_lo[] + PetscInt(1)):(r_hi[])) :
+           ((r_lo[]):(r_hi[] - PetscInt(1)))
+end
+
+"""
+    setvalues!(
+        M::AbstractMat{PetscLib},
+        row0idxs::Vector{PetscInt},
+        col0idxs::Vector{PetscInt},
+        rowvals::Array{PetscScalar},
+        insertmode::InsertMode = INSERT_VALUES;
+        num_rows = length(row0idxs),
+        num_cols = length(col0idxs)
+    )
+
+Set values of the matrix `M` with base-0  row and column indices `row0idxs` and
+`col0idxs` inserting the values `rowvals`.
+
+If the keyword arguments `num_rows` or `num_cols` is specified then only the
+first `num_rows * num_cols` values of `rowvals` will be used.
+
+# External Links
+$(_doc_external("Mat/MatSetValues"))
+"""
+function setvalues!(
+    M::AbstractPetscMat{PetscLib},
+    row0idxs::Vector{PetscInt},
+    col0idxs::Vector{PetscInt},
+    rowvals::Array{PetscScalar},
+    insertmode::InsertMode = INSERT_VALUES;
+    num_rows = length(row0idxs),
+    num_cols = length(col0idxs),
+) where {PetscLib, PetscScalar, PetscInt}
+    @assert PetscScalar == PetscLib.PetscScalar
+    @assert PetscInt == PetscLib.PetscInt
+    @assert num_rows * num_cols <= length(rowvals)
+    LibPETSc.MatSetValues(
+        PetscLib,
+        M,
+        PetscInt(num_rows),
+        PetscInt.(row0idxs),
+        PetscInt(num_cols),
+        PetscInt.(col0idxs),
+        rowvals,
+        insertmode,
+    )
+    return nothing
+end
+
+function LinearAlgebra.norm(
+    M::AbstractPetscMat{PetscLib},
+    normtype::NormType = NORM_FROBENIUS,
+) where {PetscLib}
+    PetscReal = PetscLib.PetscReal
+    #r_val = Ref{PetscReal}()
+    r_val = LibPETSc.MatNorm(PetscLib, M, normtype)
+    return r_val
+end
 # ====

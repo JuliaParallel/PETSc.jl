@@ -4678,9 +4678,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetOperators"))
 """
-function KSPSetOperators(petsclib::PetscLibType, ksp::PetscKSP, Amat::PetscMat, Pmat::PetscMat) end
+function KSPSetOperators(petsclib::PetscLibType, ksp::AbstractPetscKSP, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) end
 
-@for_petsc function KSPSetOperators(petsclib::$UnionPetscLib, ksp::PetscKSP, Amat::PetscMat, Pmat::PetscMat )
+@for_petsc function KSPSetOperators(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
 
     @chk ccall(
                (:KSPSetOperators, $petsc_library),

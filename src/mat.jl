@@ -252,6 +252,14 @@ function LinearAlgebra.mul!(y::PetscVec{PetscLib},M::AbstractPetscMat{PetscLib},
     return nothing
 end
 
+function Base.:*(
+    M::AbstractPetscMat{PetscLib},
+    x::AbstractPetscVec{PetscLib},
+) where {PetscLib}
+    y = LibPETSc.VecDuplicate(getlib(PetscLib), x)
+    mul!(y, M, x)
+    return y
+end
 
 function LinearAlgebra.mul!(
     y::PetscVec{PetscLib},

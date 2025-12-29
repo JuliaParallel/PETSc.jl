@@ -16,11 +16,11 @@ Gets the MPI communicator for any of the objects above
 """
 function getcomm(
     obj::Union{
-        PetscVec{PetscLib},
-        PetscMat{PetscLib},
-        PetscKSP{PetscLib},
-        PetscSNES{PetscLib},
-        PetscDM{PetscLib},
+        AbstractPetscVec{PetscLib},
+        AbstractPetscMat{PetscLib},
+        AbstractPetscKSP{PetscLib},
+        AbstractPetscSNES{PetscLib},
+        AbstractPetscDM{PetscLib},
     },
 ) where {PetscLib}
     comm = LibPETSc.PetscObjectGetComm(PetscLib, obj)

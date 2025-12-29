@@ -289,3 +289,6 @@ function get_solution(ksp::AbstractPetscKSP{PetscLib}) where PetscLib
     sol = LibPETSc.KSPGetSolution(getlib(PetscLib),ksp)
     return sol
 end
+
+
+type(ksp::AbstractPetscKSP{PetscLib}) where PetscLib = LibPETSc.KSPGetType(getlib(PetscLib),ksp)

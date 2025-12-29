@@ -20,7 +20,7 @@ using LinearAlgebra: norm
     exact_norm = norm(0:ne)
 
     for petsclib in PETSc.petsclibs
-        #petsclib = PETSc.petsclibs[5]
+        #petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt
@@ -43,20 +43,26 @@ using LinearAlgebra: norm
                 )
 
                 # get the data ownership
-                #rng = PETSc.ownershiprange(petsc_x, false)
+                rng = PETSc.ownershiprange(petsc_x, false)
             end
 
             # insert some values
             julia_x = PetscScalar.(rng)
             inds = PetscInt.(rng)
+
             # NOTE: PETSc is 0-based
             LibPETSc.VecSetValues(petsclib,petsc_x, PetscInt(length(inds)), inds, julia_x, PETSc.INSERT_VALUES)
             PETSc.assemble!(petsc_x)
 
-            
             @test length(petsc_x) == exact_length
-            vec_norm = norm(petsc_x)
+            
+            # use this instead of norm(petsc_x), as it can deal with parallel vectors
+            vec_norm1 = LibPETSc.VecNorm(petsclib,petsc_x, LibPETSc.NORM_2)
+            @test exact_norm ≈ vec_norm1
+            
+            vec_norm = norm(petsc_x)    # multiple dispatch version of the line above
             @test exact_norm ≈ vec_norm
+            
             # 1-based
             @test petsc_x[rng .+ 1] == julia_x
 
@@ -65,13 +71,13 @@ using LinearAlgebra: norm
             end
 
             @test "mpi" == PETSc.type(petsc_x)
-
             PETSc.destroy(petsc_x)
 
         end
         PETSc.finalize(petsclib)
     end
 end
+
 
 @testset "VecGhost" begin
     comm = MPI.COMM_WORLD
@@ -99,12 +105,12 @@ end
         # two ghost to left and right
         ghost = PetscInt.([])
         if mpirank != 0
-            ghost = PetscInt.([ghost..., n0 - 2, n0 - 1])
+            ghost = PetscInt.([ghost..., n0 - 2, n0 - 1]  )
         end
         if mpirank != mpisize - 1
-            ghost = PetscInt.([ghost..., n1 + 1, n1 + 2])
+            ghost = PetscInt.([ghost..., n1 + 1, n1 + 2]  )
         end
-
+        
         for version in 1:2
             if version == 1
                 # Create using local size
@@ -127,15 +133,20 @@ end
             vec_norm = norm(petsc_x)
             @test exact_norm ≈ vec_norm
 
-            PETSc.withlocalarray!(petsc_x) do l_x
+            petsc_x_local = LibPETSc.VecGhostGetLocalForm(petsclib,petsc_x) 
+            
+          #  LibPETSc.VecGetLocalVector(petsclib,petsc_x, petsc_x_local)
+
+            PETSc.withlocalarray!(petsc_x_local) do l_x
                 @test length(l_x) == local_length + length(ghost)
 
                 # Check the ghost has propagated
                 if length(ghost) > 0
                     vals = zeros(PetscScalar, length(ghost))
                     inds = PetscInt.(local_length - 1 .+ (1:length(ghost)))
+                   
                     # Initially we have pushed the numbers so shouldn't match
-                    PETSc.getvalues!(vals, l_x, inds)
+                    vals = l_x[inds .+ 1]  # +1 for 1-based indexing
                     @test !(vals == ghost)
 
                     # propagate the ghost
@@ -143,10 +154,11 @@ end
                     PETSc.ghostupdateend!(petsc_x)
 
                     # Recheck the numbers
-                    PETSc.getvalues!(vals, l_x, inds)
-                    @test vals == ghost
+                    vals = l_x[inds .+ 1]  
+                    @test vals == (ghost .+1)
                 end
             end
+            
 
             PETSc.destroy(petsc_x)
         end

@@ -330,6 +330,7 @@ function VecSeq(petsclib::PetscLib, comm, x::Vector) where {PetscLib <: PetscLib
 end
 
 
+
 """
     ownershiprange(vec::AbstractVec, [base_one = true])
 
@@ -358,4 +359,14 @@ function ownershiprange(
     r_lo, r_hi = LibPETSc.VecGetOwnershipRange(PetscLib, vec)
     return base_one ? ((r_lo[] + PetscInt(1)):(r_hi[])) :
            ((r_lo[]):(r_hi[] - PetscInt(1)))
+end
+
+# Overload norm function
+function LinearAlgebra.norm(
+    v::AbstractPetscVec{PetscLib},
+    normtype::LibPETSc.NormType = LibPETSc.NORM_2,
+) where {PetscLib}
+    PetscReal = PetscLib.PetscReal
+    r_val = LibPETSc.VecNorm(PetscLib, v, normtype)
+    return r_val
 end

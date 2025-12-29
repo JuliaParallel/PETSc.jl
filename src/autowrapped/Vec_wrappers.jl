@@ -4427,7 +4427,7 @@ function VecCreateMPI(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, N::Pe
 end 
 
 """
-	VecGhostGetLocalForm(petsclib::PetscLibType,g::PetscVec, l::PetscVec) 
+	l::PetscVec = VecGhostGetLocalForm(petsclib::PetscLibType,g::PetscVec) 
 Obtains the local ghosted representation of
 a parallel vector (obtained with `VecCreateGhost()`, `VecCreateGhostWithArray()` or `VecCreateSeq()`).
 
@@ -4446,10 +4446,10 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecGhostGetLocalForm"))
 """
-function VecGhostGetLocalForm(petsclib::PetscLibType, g::PetscVec, l::PetscVec) end
+function VecGhostGetLocalForm(petsclib::PetscLibType, g::PetscVec) end
 
-@for_petsc function VecGhostGetLocalForm(petsclib::$UnionPetscLib, g::PetscVec, l::PetscVec )
-	l_ = Ref(l.ptr)
+@for_petsc function VecGhostGetLocalForm(petsclib::$UnionPetscLib, g::PetscVec)
+	l_ = Ref{CVec}()
 
     @chk ccall(
                (:VecGhostGetLocalForm, $petsc_library),
@@ -4458,9 +4458,10 @@ function VecGhostGetLocalForm(petsclib::PetscLibType, g::PetscVec, l::PetscVec) 
                g, l_,
               )
 
-	l.ptr = C_NULL
+	l = PetscVec(l_[], petsclib)
 
-	return nothing
+
+	return l
 end 
 
 """

@@ -328,3 +328,34 @@ function VecSeq(petsclib::PetscLib, comm, x::Vector) where {PetscLib <: PetscLib
 
     return v
 end
+
+
+"""
+    ownershiprange(vec::AbstractVec, [base_one = true])
+
+The range of indices owned by this processor, assuming that the `vec` is laid
+out with the first `n1` elements on the first processor, next `n2` elements on
+the second, etc. For certain parallel layouts this range may not be well
+defined.
+
+If the optional argument `base_one == true` then base-1 indexing is used,
+otherwise base-0 index is used.
+
+!!! note
+
+    unlike the C function, the range returned is inclusive (`idx_first:idx_last`)
+
+# External Links
+$(_doc_external("Vec/VecGetOwnershipRange"))
+"""
+function ownershiprange(
+    vec::AbstractPetscVec{PetscLib},
+    base_one::Bool = true,
+) where {PetscLib}
+    PetscInt = PetscLib.PetscInt
+    r_lo = Ref{PetscInt}()
+    r_hi = Ref{PetscInt}()
+    r_lo, r_hi = LibPETSc.VecGetOwnershipRange(PetscLib, vec)
+    return base_one ? ((r_lo[] + PetscInt(1)):(r_hi[])) :
+           ((r_lo[]):(r_hi[] - PetscInt(1)))
+end

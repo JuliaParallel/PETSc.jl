@@ -137,9 +137,13 @@ comm = MPI.COMM_WORLD
         Random.seed!(777)
         A = sprand(PetscScalar, 10, 11, 0.2)
         B = PETSc.MatSeqAIJWithArrays(petsclib, comm, A)
-
-
         @test sum(B[:,:] - Matrix(A)) == 0.0
+
+        PETSc.destroy(B)
+        PETSc.destroy(C)
+        PETSc.destroy(D)
+        PETSc.destroy(E)    
+        
 
         PETSc.finalize(petsclib)
     end
@@ -167,6 +171,7 @@ end
         @test sum(A[:,:] - Ajl) == 0.0
         #@test all(A * x .≈ Ajl * x)
 
+        PETSc.destroy(A)
         PETSc.finalize(petsclib)
     end
 end
@@ -187,7 +192,7 @@ end
         A = PETSc.MatCreateSeqAIJ(petsclib, comm, A_sp)
        
         @test sum(A[1:10,1:10] - Matrix(A_sp)) == 0.0 == 0.0
-
+        PETSc.destroy(A)
         PETSc.finalize(petsclib)
     end
 end

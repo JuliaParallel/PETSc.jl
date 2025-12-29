@@ -134,16 +134,12 @@ using SparseArrays: spdiagm
             @test maxits1 == maxits
         end
 
-
-
         PETSc.destroy(y)
         PETSc.destroy(b)
         PETSc.destroy(b1)
-
-        #PETSc.destroy(ksp)
-        #PETSc.destroy(ksp1)
-        #PETSc.destroy(A)
-        #PETSc.destroy(A1)
+        PETSc.destroy(A)
+        PETSc.destroy(A1)
+        PETSc.destroy(ksp)
         PETSc.finalize(petsclib)
         
 

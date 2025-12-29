@@ -180,6 +180,8 @@ end
                 @test da_info.stencil_type == stencil_type
                 @test da_info.stencil_width == stencil_width
 
+                PETSc.destroy(da)
+
                 # test refinement
                 da_refine = 2
                 da = PETSc.DMDA(
@@ -196,6 +198,7 @@ end
                 @test LibPETSc.DMGetDimension(petsclib, da) == 2
 
                 da_info = PETSc.getinfo(da)
+                PETSc.destroy(da)
 
                 # Compute refined global size
                 ref_global_size_x =
@@ -278,6 +281,7 @@ end
                 @test da_info.stencil_type == stencil_type
                 @test da_info.stencil_width == stencil_width
 
+                PETSc.destroy(da)
                 # test refinement
                 da_refine = 2
                 da = PETSc.DMDA(
@@ -317,6 +321,7 @@ end
                 @test da_info.stencil_type == stencil_type
                 @test da_info.stencil_width == stencil_width
 
+                PETSc.destroy(da)
                 # TODO: Test with specific distribution of processors and sizes
 
                 # TODO: Need a better test?
@@ -326,6 +331,8 @@ end
                 =#
             end
         end
+
+
         PETSc.finalize(petsclib)
     end
 end

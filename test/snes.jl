@@ -9,6 +9,7 @@ MPI.Initialized() || MPI.Init()
     mpisize = MPI.Comm_size(comm)
 
     for petsclib in PETSc.petsclibs
+        #@show petsclib
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt
@@ -61,6 +62,7 @@ MPI.Initialized() || MPI.Init()
         PETSc.solve!(x, snes, b)
         
         @test x[:] ≈ [1, 2] rtol = 1e-4
+
         # ----------------------------------------------------------------
         
         # Method 2 - use index notation in residual and jacobian functions
@@ -161,18 +163,19 @@ MPI.Initialized() || MPI.Init()
         PETSc.destroy(b)
         PETSc.destroy(r)
         PETSc.destroy(J)
-        PETSc.destroy(snes) 
         
         PETSc.destroy(x2)
         PETSc.destroy(b2)
         PETSc.destroy(r2)
         PETSc.destroy(J2)
-        PETSc.destroy(snes2) 
      
         PETSc.destroy(x3)
         PETSc.destroy(b3)
         PETSc.destroy(r3)
         PETSc.destroy(J3)
+     
+        PETSc.destroy(snes) 
+        PETSc.destroy(snes2) 
         PETSc.destroy(snes3) 
 
         PETSc.finalize(petsclib)

@@ -59,7 +59,12 @@ comm = MPI.COMM_WORLD
         fill!(v5, PetscScalar(1.11))
         @test v5[1] == PetscScalar(1.11)
 
-        LibPETSc.VecDestroy(petsclib,v1)
+        PETSc.destroy(v1)
+        PETSc.destroy(v2)
+        PETSc.destroy(v3)
+        PETSc.destroy(v4)
+        PETSc.destroy(v5)
+        PETSc.finalize(petsclib)
     end
 end
 
@@ -101,7 +106,7 @@ end
         @test x2 == x
         
 
-        LibPETSc.VecDestroy(petsclib,petsc_x)
+        PETSc.destroy(petsc_x)
         PETSc.finalize(petsclib)
     end
 end
@@ -126,7 +131,7 @@ end
     
         @test LibPETSc.VecGetType(petsclib, petsc_x) == "seq"
 
-        LibPETSc.VecDestroy(petsclib,petsc_x)
+        PETSc.destroy(petsc_x)
         PETSc.finalize(petsclib)
     end
 end

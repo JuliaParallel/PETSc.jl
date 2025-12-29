@@ -749,4 +749,5 @@ function LinearAlgebra.norm(
     r_val = LibPETSc.MatNorm(PetscLib, M, normtype)
     return r_val
 end
+
 # ====

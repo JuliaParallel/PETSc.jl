@@ -1,4 +1,7 @@
-#=
+using PETSc
+using Test
+using MPI
+
 # already defined in mpi_examples, which is called earlier
 function find_sources(path::String, sources=String[])
   if isdir(path)
@@ -10,7 +13,6 @@ function find_sources(path::String, sources=String[])
   end
   sources
 end
-=#
 
 @testset "examples" begin
   examples_dir = joinpath(@__DIR__, "..", "examples")
@@ -18,6 +20,7 @@ end
   filter!(file -> readline(file) != "# EXCLUDE FROM TESTING", examples)
 
   @testset "$(basename(example))" for example in examples
+    @show example
     code = """
     $(Base.load_path_setup_code())
     include($(repr(example)))

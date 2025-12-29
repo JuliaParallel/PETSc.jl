@@ -25,15 +25,11 @@ include("snes.jl")          # autowrapped
 include("dmda.jl")          # autowrapped
 include("dmstag.jl")        # autowrapped
 include("matshell.jl")      # autowrapped!
-include("test_dmstag.jl")   # "old" dmstag tests - need to be finalized ; also needs KSP to run
+include("test_dmstag.jl")   
 include("old_test.jl")
-
-#=
 
 # Run the examples to make sure they all work
 include("examples.jl")
-=#
-
 
 # Do the MPI tests
 # XXX: Currently not working on windows (since we have no PETSc + MPI)

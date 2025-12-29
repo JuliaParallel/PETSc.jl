@@ -1,3 +1,4 @@
+# EXCLUDE FROM TESTING
 # This shows how to solve the 2D incompressible Stokes equations using SNES solvers,
 # using a staggered grid discretization and a Velocity-Pressure formulation
 #   

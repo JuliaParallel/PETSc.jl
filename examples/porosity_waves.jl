@@ -1,3 +1,4 @@
+# EXCLUDE FROM TESTING
 # INCLUDE IN MPI TEST
 #=
 In this example we solve the 1D viscoelastic porosity wave equations which
@@ -34,7 +35,7 @@ opts = if !isinteractive()
     PETSc.parse_options(ARGS)
 else
     (
-        ksp_monitor = false,
+        ksp_monitor = true,
         ksp_rtol = 1e-10,
         ksp_converged_reason = false,
         snes_monitor = true,
@@ -44,8 +45,8 @@ else
         snes_max_funcs = 10000,
         snes_max_linear_solve_fail = 1000,
         snes_mf_operator = false,
-        Nq1 = 501,
-        max_it = 4000,
+        Nq1 = 101,
+        max_it = 4000,        # 4000 for a real simulation, 40 for testing
         max_time = 25,
         dim = 1
     )
@@ -58,7 +59,8 @@ CreatePlots = isinteractive() && try
 catch
     false
 end
-
+CreatePlots=false
+@show CreatePlots
 
 # Set our MPI communicator
 comm = MPI.COMM_WORLD
@@ -117,7 +119,6 @@ da = PETSc.DMDA(
     PETSc.DMDA_STENCIL_STAR; # Stencil type
     opts...,
 )
-
 # Set coordinates of the DMDA (2D and 3D ignored for 1D DMDA)
 PETSc.setuniformcoordinates_dmda!(da, (-20, -10, -10), (150, 10, 10))
 
@@ -319,6 +320,7 @@ end
 # https://github.com/JuliaDiff/SparseDiffTools.jl/issues/154) Therefore, we use
 # a less efficient approach here.
 l_x = PETSc.DMLocalVec(da)
+
 input = rand(length(l_x))
 sparsity_pattern =
     sparse(abs.(ForwardDiff.jacobian(ForwardDiff_res, input)) .> 0);
@@ -367,13 +369,15 @@ PETSc.setjacobian!(snes, J, J) do J, snes, g_x
 
     # Clean up the local vectors
     PETSc.destroy(l_x)
-
+    PETSc.destroy(da)
     return 0
 end
 
 # Timestep loop
+@show max_it
 time, it = PetscScalar(0), 1;
-while (it < max_it && time < max_time)
+#while (it < max_it && time < max_time)
+    @show it
     global time, it, x_old, g_xold, g_x, ax1, fig
 
     # Solve nonlinear system of equations
@@ -428,7 +432,7 @@ while (it < max_it && time < max_time)
     if MPI.Comm_rank(comm) == 0
         println("Timestep $it, time=$time")
     end
-end
+#end
 
 if CreatePlots
     save("porositywave.png",fig)

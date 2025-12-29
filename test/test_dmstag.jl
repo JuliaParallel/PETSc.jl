@@ -284,50 +284,23 @@ MPI.Initialized() || MPI.Init()
         LibPETSc.DMStagRestrictSimple(petsclib, dmf,xf,dmc, xc)
         @test xc[5] == PetscScalar(1.0)
 
-        # To be added as test: get matrix first
-        #out = LibPETSc.DMStagMatGetValuesStencil(petsclib, dm,mat,nRow,posRow,nCol,posCol)
-        #@test out == 
-
-        # To be added as test: get matrix first
-        #out = LibPETSc.DMStagMatSetValuesStencil(petsclib, dm,mat,nRow,posRow,nCol,posCol,val,insertMode)
-        #@test out == 
-
-        #out = LibPETSc.DMStagSetCoordinateDMType(petsclib, dm)
-        #@test out == 
-
-        
-        #out = LibPETSc.DMStagSetDOF(petsclib, dm,1,2,1,1) # needs to be called before DMSetup
-        #@test out == 
-
-        #out = LibPETSc.DMStagSetGlobalSizes(petsclib, dm,10,11,12) # needs to be called before DMSetup
-        #@test out == 
-
-        #out = LibPETSc.DMStagSetNumRanks(petsclib, dm,1,1,1) # needs to be called before DMSetup
-        #@test out == 
-
-        #out = LibPETSc.DMStagSetOwnershipRanges(petsclib, dm,lx,Int64,Int64)
-        #@test out == 
-
-        #out = LibPETSc.DMStagSetStencilType(petsclib, dm,stencilType)
-        #@test out == 
-#
-        #out = LibPETSc.DMStagSetStencilWidth(petsclib, dm,stencilWidth)
-        #@test out == 
-#
-        #out = LibPETSc.DMStagSetRefinementFactor(petsclib, dm,refine_x,refine_y,refine_z)
-        #@test out == 
-#
-        #out = LibPETSc.DMStagSetUniformCoordinates(petsclib, dm,0.0,1.0,1.1,2.1,3.1,4.1)
-        #@test out == 
-
         out = LibPETSc.DMStagSetUniformCoordinatesExplicit(petsclib, dm,0.1,1.1,1.3,3.1,2.1,2.8)
         @test isnothing(out)
 
-    
         xmin,xmax,ymin,ymax,zmin,zmax = 0.1,1.1,1.3,3.1,2.1,2.8
         out = LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dmc,xmin,xmax,ymin,ymax,zmin,zmax)
         @test isnothing(out)
 
+        PETSc.destroy(dm_1D)
+        PETSc.destroy(dm_2D)
+        PETSc.destroy(dm_3D)
+        PETSc.destroy(dmTo)
+        PETSc.destroy(dmnew)
+        PETSc.destroy(dm_3D_pd)
+        PETSc.destroy(dmf)
+        PETSc.destroy(dmc)
+        PETSc.destroy(xc)
+        PETSc.destroy(xf)
         PETSc.finalize(petsclib)
     end
 end
@@ -440,6 +413,9 @@ end
         @test LibPETSc.KSPGetType(petsclib, ksp)=="gmres"
 
         PETSc.destroy(dm_ghosted)
+        PETSc.destroy(dm_1D)
+        PETSc.destroy(dm)
+        PETSc.destroy(ksp)
 
         PETSc.finalize(petsclib)
     end
@@ -474,6 +450,8 @@ end
         @test corners.nextra == (1, 1, 0)
         @test corners.lower  == CartesianIndex(1, 1, 1)
         @test corners.upper  == CartesianIndex(20,21,0)
+
+        PETSc.destroy(dm_2D)
 
         PETSc.finalize(petsclib)
     end
@@ -726,6 +704,9 @@ end
           
         # cleanup
         PETSc.destroy(dm_2D);
+        PETSc.destroy(dm_1D);
+        PETSc.destroy(vec_test_2D_global);
+        PETSc.destroy(vec_test_2D_local);
         
            
         PETSc.finalize(petsclib)

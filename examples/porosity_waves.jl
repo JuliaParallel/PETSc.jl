@@ -44,7 +44,7 @@ else
         snes_max_funcs = 10000,
         snes_max_linear_solve_fail = 1000,
         snes_mf_operator = false,
-        Nq1 = 101,
+        Nq1 = 1001,
         max_it = 4000,       
         max_time = 25,
         dim = 1
@@ -59,7 +59,6 @@ CreatePlots = isinteractive() && try
 catch
     false
 end
-@show CreatePlots
 
 # Set our MPI communicator
 comm = MPI.COMM_WORLD
@@ -166,6 +165,8 @@ end
 
 # Initialize x_old on every processor
 #g_xold = deepcopy(g_x); # initialize Pe and Phi of last timestep
+LibPETSc.VecCopy(petsclib,g_x,g_xold)       # initialize Pe and Phi of last timestep
+
 l_xold = PETSc.DMLocalVec(da)
 PETSc.dm_global_to_local!(g_xold, l_xold, da, PETSc.INSERT_VALUES)
 
@@ -409,7 +410,7 @@ while (it < max_it && time < max_time)
     snes.f!(g, snes, g_x)
     nm = norm(g)
     if MPI.Comm_rank(comm) == 0
-        @info "Norm of solution" nm
+    #    @info "Norm of solution" nm
     end
 
     # Update time
@@ -463,6 +464,8 @@ end
 # Do some clean up
 PETSc.destroy(PJ)
 PETSc.destroy(g_x)
+PETSc.destroy(g_xold)
+PETSc.destroy(l_xold)
 PETSc.destroy(r)
 PETSc.destroy(snes)
 PETSc.destroy(da)

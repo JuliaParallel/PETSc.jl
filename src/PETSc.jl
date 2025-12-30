@@ -21,6 +21,7 @@ end
 include("LibPETSc.jl")
 using .LibPETSc
 export LibPETSc
+export audit_petsc_file
 
 using Libdl
 
@@ -34,6 +35,9 @@ include("dm.jl")
 include("sys.jl")
 include("dmda.jl")          
 include("dmstag.jl")       
+
+
+include("audit.jl")
 
 
 

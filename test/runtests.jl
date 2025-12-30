@@ -14,6 +14,8 @@ if Sys.iswindows()
     do_mpi = false
 end
 
+# Run the examples to make sure they all work
+include("examples.jl")
 
 
 
@@ -28,8 +30,6 @@ include("matshell.jl")      # autowrapped!
 include("test_dmstag.jl")   
 include("old_test.jl")
 
-# Run the examples to make sure they all work
-include("examples.jl")
 
 # Do the MPI tests
 # XXX: Currently not working on windows (since we have no PETSc + MPI)

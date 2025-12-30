@@ -135,6 +135,12 @@ FormResidual1!(res,snes, x_s)
 
 @show norm(res[:])
 
+# cleanup
+PETSc.destroy(x_s)
+PETSc.destroy(res)
+PETSc.destroy(b)
+PETSc.destroy(PJ)
+PETSc.destroy(snes)
 PETSc.finalize(petsclib)
 
 # plot solution in REPL

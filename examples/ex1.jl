@@ -184,4 +184,16 @@ errRel     = error_norm/xa_norm;
 
 print("Error (abs): ",error_norm,"\nError (rel): ",errRel,"\n");
 
-#PETSc.finalize(petsclib)
+PETSc.destroy(dmForcing);
+PETSc.destroy(dm_coord);
+PETSc.destroy(fLocal);
+PETSc.destroy(f);
+PETSc.destroy(dm);
+PETSc.destroy(xa_Local);
+PETSc.destroy(xa);
+PETSc.destroy(xLocal);
+PETSc.destroy(x);
+PETSc.destroy(rhs);
+PETSc.destroy(A);
+PETSc.destroy(ksp);
+PETSc.finalize(petsclib)

@@ -137,6 +137,7 @@ comm = MPI.COMM_WORLD
         Random.seed!(777)
         A = sprand(PetscScalar, 10, 11, 0.2)
         B = PETSc.MatSeqAIJWithArrays(petsclib, comm, A)
+        sleep(0.1) # seems to help the tests
         @test sum(B[:,:] - Matrix(A)) == 0.0
 
         PETSc.destroy(B)

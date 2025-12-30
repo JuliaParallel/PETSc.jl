@@ -357,9 +357,9 @@ function MatSeqAIJWithArrays(petsclib::PetscLibType, comm, A::SparseMatrixCSC{T}
         comm,
         PetscInt(m),
         PetscInt(n), 
-        row_ptr,
-        col_idx,
-        values
+        PetscInt.(row_ptr),
+        PetscInt.(col_idx),
+        PetscScalar.(values)
     )
     
     return mat

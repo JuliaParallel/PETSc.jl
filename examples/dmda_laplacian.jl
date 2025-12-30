@@ -223,5 +223,9 @@ PETSc.withlocalarray!(sol; read = false) do x
     end
 end
 
+PETSc.destroy(da)
+PETSc.destroy(ksp)
+PETSc.finalize(petsclib)
+
 nothing
 

@@ -309,7 +309,7 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     end
 
     # Clean up the local vectors
-    PETSc.destroy(l_x)
+    #PETSc.destroy(l_x)
 
     return 0
 end
@@ -329,7 +329,7 @@ colors = matrix_colors(jac)
 
 # Compute the Jacobian, using automatic differentiation
 J = PETSc.MatAIJ(da)        # initialize space for the matrix from the dmda
-PETSc.setjacobian!(snes, J, J) do J, snes, g_x
+PETSc.setjacobian!(snes, J) do J, snes, g_x
     # Get the DMDA associated with the snes
     da = PETSc.getDMDA(snes)
 
@@ -368,8 +368,8 @@ PETSc.setjacobian!(snes, J, J) do J, snes, g_x
     PETSc.assemble!(J)
 
     # Clean up the local vectors
-    PETSc.destroy(l_x)
-    PETSc.destroy(da)
+    #PETSc.destroy(l_x)
+    #PETSc.destroy(da)
     return 0
 end
 
@@ -396,7 +396,7 @@ time, it = PetscScalar(0), 1;
     it += 1
 
     # Update the x_old values (Phi_old, Pe_old) on every processor
-    finalize(x_old) # Free the previous x_old vector
+    #finalize(x_old) # Free the previous x_old vector
     PETSc.dm_global_to_local!(g_x, l_xold, da, PETSc.INSERT_VALUES)
 
     x_old = PETSc.unsafe_localarray(l_xold, read = true, write = false)

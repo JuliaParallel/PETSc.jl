@@ -53,3 +53,6 @@ println("L2-error is $ϵ")
 # Plot the solution and error
 display(lineplot(x, v, xlabel = "x", ylabel = "solution"))
 display(lineplot(x, v - u.(x), xlabel = "x", ylabel = "error"))
+
+PETSc.destroy(ksp)
+PETSc.finalize(petsclib)

@@ -381,18 +381,21 @@ function LinearAlgebra.mul!(
 end
 
 function Base.copyto!(
-    M::PetscMat{PetscLib},
+    M::AbstractPetscMat{PetscLib},
     S::SparseMatrixCSC,
 ) where {PetscLib}
     row_rng = LibPETSc.MatGetOwnershipRange(PetscLib,M)
+    PetscInt = PetscLib.PetscInt
+    PetscScalar = PetscLib.PetscScalar
     row_start = row_rng[1]
     _, n = size(S)
     for j in 1:n
         for ii in S.colptr[j]:(S.colptr[j + 1] - 1)
             i = S.rowval[ii]
-            M[i + row_start, j + row_start] = S.nzval[ii]
+            M[PetscInt(i + row_start), PetscInt(j + row_start)] = PetscScalar(S.nzval[ii])
         end
     end
+    return nothing
 end
 
 """

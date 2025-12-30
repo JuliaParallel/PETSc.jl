@@ -232,8 +232,8 @@ function dm_global_to_local!(global_vec::AbstractPetscVec{PetscLib},
                                      dm::AbstractPetscDM{PetscLib},
                                    mode::InsertMode = INSERT_VALUES) where {PetscLib}
 
-    LibPETSc.DMGlobalToLocalBegin(PetscLib, dm, global_vec, mode, local_vec)
-    LibPETSc.DMGlobalToLocalEnd(PetscLib, dm, global_vec,  mode, local_vec)
+    LibPETSc.DMGlobalToLocalBegin(getlib(PetscLib), dm, global_vec, mode, local_vec)
+    LibPETSc.DMGlobalToLocalEnd(getlib(PetscLib), dm, global_vec,  mode, local_vec)
     return nothing
 end
 

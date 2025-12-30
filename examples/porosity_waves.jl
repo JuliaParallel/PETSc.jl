@@ -1,4 +1,3 @@
-# EXCLUDE FROM TESTING
 # INCLUDE IN MPI TEST
 #=
 In this example we solve the 1D viscoelastic porosity wave equations which
@@ -46,40 +45,20 @@ else
         snes_max_linear_solve_fail = 1000,
         snes_mf_operator = false,
         Nq1 = 101,
-
-        max_it = 4000,        # 4000 for a real simulation, 40 for testing
+        max_it = 4000,       
         max_time = 25,
         dim = 1
     )
 end
 
-opts =     (
-        ksp_monitor = true,
-        ksp_rtol = 1e-10,
-        ksp_converged_reason = false,
-        snes_monitor = true,
-        snes_converged_reason = true,
-        snes_view = false,
-        snes_max_it = 100,
-        snes_max_funcs = 10000,
-        snes_max_linear_solve_fail = 1000,
-        snes_mf_operator = false,
-        #Nq1 = 101,
-        Nq1 = 11,
-        
-        max_it = 4000,        # 4000 for a real simulation, 40 for testing
-        max_time = 25,
-        dim = 1
-    )
 
-# To use plotting either `]add Plots`
+# To use plotting
 CreatePlots = isinteractive() && try
     using GLMakie
     true
 catch
     false
 end
-CreatePlots=false
 @show CreatePlots
 
 # Set our MPI communicator
@@ -99,14 +78,13 @@ PETSc.initialize(petsclib)
 dim = PETSc.typedget(opts, :dim, 1)
 
 # Set the total number of grid points in each direction
-Nq1 = PETSc.typedget(opts, :Nq1, 11)
+Nq1 = PETSc.typedget(opts, :Nq1, 101)
 
 Nq = (Nq1, 5, 5)
 Nq = Nq[1:dim]
 
 max_it = PETSc.typedget(opts, :max_it, 10)
 max_time = PETSc.typedget(opts, :max_time, 25)
-
 if CreatePlots
     fig = Figure(size = (1200, 600))
     if dim==1
@@ -142,6 +120,10 @@ da = PETSc.DMDA(
 # Set coordinates of the DMDA (2D and 3D ignored for 1D DMDA)
 PETSc.setuniformcoordinates_dmda!(da, (-20, -10, -10), (150, 10, 10))
 
+# Cache local coordinates as a plain Julia array. This avoids repeatedly
+# mapping/restoring PETSc coordinate vectors during AD/Jacobian evaluations.
+coord_cache = copy(PETSc.getlocalcoordinatearray(da))
+
 # Create the PETSC snes object
 snes = PETSc.SNES(petsclib, comm; opts...)
 
@@ -158,8 +140,8 @@ PETSc.withlocalarray!(g_x; read = false) do l_x
     Phi = @view x[1, :, :, :]
     Pe = @view x[2, :, :, :]
 
-    # retrieve arrays with local coordinates
-    coord = PETSc.getlocalcoordinatearray(da)
+    # local coordinates (cached as a plain Julia array)
+    coord = coord_cache
 
     Phi0 = 1
     dPhi1 = 8
@@ -187,7 +169,12 @@ end
 l_xold = PETSc.DMLocalVec(da)
 PETSc.dm_global_to_local!(g_xold, l_xold, da, PETSc.INSERT_VALUES)
 
-x_old = PETSc.unsafe_localarray(l_xold, read = true, write = false)
+# Keep `x_old` as a plain Julia vector (avoid `unsafe_localarray` finalizers
+# interacting with PETSc object lifetimes).
+x_old = zeros(PetscScalar, length(l_xold))
+PETSc.withlocalarray!(l_xold; read = true, write = false) do x_arr
+    copyto!(x_old, x_arr)
+end
 
 # Routine wuth julia-only input/output vectors that computes the local residual
 function ComputeLocalResidual!(l_fx, l_x, snes)
@@ -207,9 +194,6 @@ function ComputeLocalResidual!(l_fx, l_x, snes)
     res_Phi = @view fx[1, :, :, :]
     res_Pe = @view fx[2, :, :, :]
 
-    
-    
-    #@show Phi Pe
     # Global grid size
     Nq = PETSc.getinfo(da).global_size
 
@@ -247,7 +231,7 @@ function ComputeLocalResidual!(l_fx, l_x, snes)
     iz_m1 = CartesianIndex(0, 0, -1)  # iz - 1
 
     # Coordinates and spacing (assumed constant)
-    coord = PETSc.getlocalcoordinatearray(da)
+    coord = coord_cache
     Δx = coord[1, corners.lower + ix_p1] - coord[1, corners.lower]
     if dim > 1
         Δy = coord[2, corners.lower + iy_p1] - coord[2, corners.lower]
@@ -301,9 +285,9 @@ function ComputeLocalResidual!(l_fx, l_x, snes)
             end
         end
     end
-   # @show extrema(res_Pe),  extrema(res_Phi), extrema(fx)
-    #l_fx[:] .= fx[:]
-    for i=1:length(fx)
+
+    # Copy local residual back to PETSc local vector
+    for i=1:length(fx)  
         l_fx[i] = fx[i]
     end
 
@@ -320,42 +304,14 @@ function ForwardDiff_res(x, snes)
 end
 
 # Set up the nonlinear function
-#r = similar(g_x)
-r = PETSc.DMGlobalVec(da)
-#=
-PETSc.setfunction!(snes, r) do g_fx, snes, g_x
-    # Get the DMDA associated with the snes
-    da = PETSc.getDMDA(snes)
 
-    # Get a local vector and transfer the data from the global->local vector
-    l_x = PETSc.DMLocalVec(da)
-    PETSc.dm_global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
-
-    # Get local arrays
-    PETSc.withlocalarray!(
-        (g_fx, l_x);
-        read = (false, true),
-        write = (true, false),
-    ) do fx, x
-
-        # Compute the local residual (using local julia vectors)
-        ComputeLocalResidual!(fx, x)
-    end
-
-    # Clean up the local vectors
-    #PETSc.destroy(l_x)
-
-    return 0
-end
-=#
 
 """
     FormResidual!(cf,cx, args...)
 Computes the residual `f`, given solution vector `x`
 """
 function FormResidual!(f,snes, g_x)
-    #@show "FormResidual called"
-    #@show f snes g_x
+    
     # Get the DMDA associated with the snes
     da = PETSc.getDMDA(snes)
 
@@ -372,13 +328,10 @@ function FormResidual!(f,snes, g_x)
 
         # Compute the local residual (using local julia vectors)
         ComputeLocalResidual!(fx, x, snes)
-        #@show extrema(fx[:]), extrema(x[:])
     end
-    #@show extrema(f[:])
 
     # Clean up the local vectors
     PETSc.destroy(l_x)
-
     return 0
 end
 
@@ -388,6 +341,8 @@ end
 # yet this is currently not working in combination with OffsetArrays (see
 # https://github.com/JuliaDiff/SparseDiffTools.jl/issues/154) Therefore, we use
 # a less efficient approach here.
+
+r = PETSc.DMGlobalVec(da)
 l_x = PETSc.DMLocalVec(da)
 
 input = rand(length(l_x))
@@ -400,7 +355,6 @@ colors = matrix_colors(jac)
 
 # Compute the Jacobian, using automatic differentiation
 PJ = PETSc.MatAIJ(da)        # initialize space for the matrix from the dmda
-@show PJ
 function FormJacobian!(J, snes, g_x)
 
     # Get the DMDA associated with the snes
@@ -408,49 +362,17 @@ function FormJacobian!(J, snes, g_x)
 
     # Get a local vector and transfer the data from the global->local vector
     l_x = PETSc.DMLocalVec(da)
-    @show typeof(g_x), typeof(l_x), typeof(da), da
-    @show g_x[:]
-    @show "setjacobian here"
-   # @show g_x #snes J l_x da
     PETSc.dm_global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
-    @show "setjacobian here1"
 
-  
+    # Get a local array of the solution vector and form a Jacobian for the
+    # interior (non-ghost) unknowns.
+    PETSc.withlocalarray!(l_x; read = true, write = false) do x_julia
+        ForwardDiff_res1 = x -> ForwardDiff_res(x, snes)
 
-
-    #x_julia = l_x[:]
-    x_julia = PETSc.unsafe_localarray(l_x, read = true, write = false)  
-    @show x_julia
-    sleep(1)
-
-    #create an anonymous function to call ForwardDiff with snes as extra argument
-    ForwardDiff_res1 = x -> ForwardDiff_res(x, snes)
-
-    S =   sparse(ForwardDiff.jacobian(ForwardDiff_res1, x_julia));
-    #@show typeof(S) S
-    #@show typeof(J) J[:,:]
-    
-    ind = PETSc.localinteriorlinearindex(da)
-    copyto!(J, S)           # copy julia sparse matrix
-    PETSc.assemble!(J)
-    #@show S
-    
-
-    #=
-
-    # Get a local array of the solution vector
-    PETSc.withlocalarray!((l_x); read = (true), write = (false)) do x_julia
-        # Note that we need to extract x_old as well, as it is used inside the
-        # residual routine
-
-        # use ForwardDiff to compute (local part of) jacobian. This is slow, as
-        # it forms a dense matrix (and therefor commented)
-        # S =   sparse(ForwardDiff.jacobian(ForwardDiff_res, x_julia));
-
-        # Using SparseDiffTools this is more efficient, but requires
-        # initializing the sparsity pattern & coloring:
+        # Using SparseDiffTools is more efficient than forming a dense matrix,
+        # but requires initializing the sparsity pattern & coloring.
         S = forwarddiff_color_jacobian(
-            ForwardDiff_res,
+            ForwardDiff_res1,
             x_julia,
             colorvec = colors,
             sparsity = sparsity_pattern,
@@ -458,81 +380,25 @@ function FormJacobian!(J, snes, g_x)
         )
 
         ind_local = PETSc.localinteriorlinearindex(da)
-
         S = S[ind_local, ind_local]
 
         # Copy local sparse matrix to parallel PETSc matrix
         copyto!(J, sparse(S))
     end
 
-    # Assemble the Jacobian matrix
     PETSc.assemble!(J)
+    
     # Clean up the local vectors
-    #PETSc.destroy(da)
-    =#
     PETSc.destroy(l_x)
     return 0
 end
 
-#=
-PETSc.setjacobian!(snes, J) do Jl, snes, g_x
-    @show "setjacobian called"
-    # Get the DMDA associated with the snes
-    da = PETSc.getDMDA(snes)
-
-    # Get a local vector and transfer the data from the global->local vector
-    l_x = PETSc.DMLocalVec(da)
-    @show "setjacobian here"
-    @show Jl
-    PETSc.dm_global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
-    
-    # Get a local array of the solution vector
-    PETSc.withlocalarray!((l_x); read = (true), write = (false)) do x_julia
-        # Note that we need to extract x_old as well, as it is used inside the
-        # residual routine
-
-        # use ForwardDiff to compute (local part of) jacobian. This is slow, as
-        # it forms a dense matrix (and therefor commented)
-        # S =   sparse(ForwardDiff.jacobian(ForwardDiff_res, x_julia));
-
-        # Using SparseDiffTools this is more efficient, but requires
-        # initializing the sparsity pattern & coloring:
-        S = forwarddiff_color_jacobian(
-            ForwardDiff_res,
-            x_julia,
-            colorvec = colors,
-            sparsity = sparsity_pattern,
-            jac_prototype = jac,
-        )
-
-        ind_local = PETSc.localinteriorlinearindex(da)
-
-        S = S[ind_local, ind_local]
-
-        # Copy local sparse matrix to parallel PETSc matrix
-        copyto!(Jl, S)
-    end
-
-    # Assemble the Jacobian matrix
-    PETSc.assemble!(Jl)
-
-    # Clean up the local vectors
-    #PETSc.destroy(l_x)
-    #PETSc.destroy(da)
-    return 0
-end
-=#
-
 PETSc.setfunction!(snes, FormResidual!, r)
 PETSc.setjacobian!(snes, FormJacobian!, PJ)
 
-
-
 # Timestep loop
-@show max_it
 time, it = PetscScalar(0), 1;
-#while (it < max_it && time < max_time)
-    @show it
+while (it < max_it && time < max_time)
     global time, it, x_old, g_xold, g_x, ax1, fig
 
     # Solve nonlinear system of equations
@@ -543,7 +409,7 @@ time, it = PetscScalar(0), 1;
     snes.f!(g, snes, g_x)
     nm = norm(g)
     if MPI.Comm_rank(comm) == 0
-        @show nm
+        @info "Norm of solution" nm
     end
 
     # Update time
@@ -551,10 +417,10 @@ time, it = PetscScalar(0), 1;
     it += 1
 
     # Update the x_old values (Phi_old, Pe_old) on every processor
-    #finalize(x_old) # Free the previous x_old vector
     PETSc.dm_global_to_local!(g_x, l_xold, da, PETSc.INSERT_VALUES)
-
-    x_old = PETSc.unsafe_localarray(l_xold, read = true, write = false)
+    PETSc.withlocalarray!(l_xold; read = true, write = false) do x_arr
+        copyto!(x_old, x_arr)
+    end
 
     # Visualisation
     if (mod(it, 40) == 0 && CreatePlots == true)
@@ -587,22 +453,18 @@ time, it = PetscScalar(0), 1;
     if MPI.Comm_rank(comm) == 0
         println("Timestep $it, time=$time")
     end
-#end
+end
 
 
-@show "here"
-#if CreatePlots
-#    save("porositywave.png",fig)
-#end
+if CreatePlots
+    save("porositywave.png",fig)
+end
 
 # Do some clean up
 PETSc.destroy(PJ)
 PETSc.destroy(g_x)
-finalize(x_old);
 PETSc.destroy(r)
 PETSc.destroy(snes)
 PETSc.destroy(da)
 
 PETSc.finalize(petsclib)
-#=
-=#

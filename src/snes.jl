@@ -150,10 +150,9 @@ function (w::Fn_SNESSetJacobian{PetscLib})(
     x = PetscVec{PetscLib}(r_x)
     A = PetscMat{PetscLib}(r_A)
     P = PetscMat{PetscLib}(r_P)
-    
-    P == A
 
-    return P == A ? snes.updateJ!(A, snes, x) : snes.updateJ!(A, P, snes, x)
+    same_mat = (P.ptr == A.ptr)
+    return same_mat ? snes.updateJ!(A, snes, x) : snes.updateJ!(A, P, snes, x)
 end
 
 LibPETSc.@for_petsc function setjacobian!(

@@ -295,7 +295,9 @@ function setup!(mat::PetscMat{PetscLib}) where {PetscLib}
     return mat
 end
 
-destroy(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatDestroy(PetscLib,m)
+# MatCreateSeqAIJWithArrays requires the caller to keep the backing CSR arrays
+# alive for as long as the Mat exists. We store them here and release on destroy.
+const _MATSEQAIJ_WITHARRAYS_STORAGE = IdDict{Ptr{Cvoid}, Any}()
 
 """
     B = MatSeqAIJWithArrays(petsclib, comm, A::SparseMatrixCSC)
@@ -351,18 +353,24 @@ function MatSeqAIJWithArrays(petsclib::PetscLibType, comm, A::SparseMatrixCSC{T}
         end
     end
     
-    # Create the PETSc matrix
+    # Create the PETSc matrix (PETSc borrows the arrays; keep them alive).
     mat = LibPETSc.MatCreateSeqAIJWithArrays(
         petsclib,
         comm,
         PetscInt(m),
-        PetscInt(n), 
-        PetscInt.(row_ptr),
-        PetscInt.(col_idx),
-        PetscScalar.(values)
+        PetscInt(n),
+        row_ptr,
+        col_idx,
+        values,
     )
-    
+
+    _MATSEQAIJ_WITHARRAYS_STORAGE[mat.ptr] = (row_ptr, col_idx, values)
     return mat
+end
+
+function destroy(m::AbstractPetscMat{PetscLib}) where {PetscLib}
+    pop!(_MATSEQAIJ_WITHARRAYS_STORAGE, m.ptr, nothing)
+    return LibPETSc.MatDestroy(PetscLib, m)
 end
 
 const MatAT{PetscLib, PetscScalar} = Union{

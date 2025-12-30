@@ -85,7 +85,11 @@ function (w::Fn_SNESSetFunction{PetscLib})(
     x  = PetscVec{PetscLib}(r_x)
     fx = PetscVec{PetscLib}(r_fx)
 
-    return snes.f!(fx, snes, x)
+    if Base.applicable(snes.f!, fx, snes, x, snes.user_ctx)
+        return snes.f!(fx, snes, x, snes.user_ctx)
+    else
+        return snes.f!(fx, snes, x)
+    end
 end
 
 LibPETSc.@for_petsc function setfunction!(
@@ -131,6 +135,12 @@ PETSc Jacobian (approximation).
 If `J ≠ P` then a call to `updateJ!(J, P, snes, x)` should set the elements of
 the PETSc Jacobian (approximation) and preconditioning matrix `P`.
 
+If you set `snes.user_ctx`, then `updateJ!` may optionally accept that as an
+additional last argument:
+
+- `updateJ!(J, snes, x, user_ctx)` when `J == P`
+- `updateJ!(J, P, snes, x, user_ctx)` when `J ≠ P`
+
 # External Links
 $(_doc_external("SNES/SNESSetJacobian"))
 """
@@ -152,7 +162,20 @@ function (w::Fn_SNESSetJacobian{PetscLib})(
     P = PetscMat{PetscLib}(r_P)
 
     same_mat = (P.ptr == A.ptr)
-    return same_mat ? snes.updateJ!(A, snes, x) : snes.updateJ!(A, P, snes, x)
+
+    if same_mat
+        if Base.applicable(snes.updateJ!, A, snes, x, snes.user_ctx)
+            return snes.updateJ!(A, snes, x, snes.user_ctx)
+        else
+            return snes.updateJ!(A, snes, x)
+        end
+    else
+        if Base.applicable(snes.updateJ!, A, P, snes, x, snes.user_ctx)
+            return snes.updateJ!(A, P, snes, x, snes.user_ctx)
+        else
+            return snes.updateJ!(A, P, snes, x)
+        end
+    end
 end
 
 LibPETSc.@for_petsc function setjacobian!(

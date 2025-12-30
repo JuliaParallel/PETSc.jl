@@ -14,6 +14,8 @@ if Sys.iswindows()
     do_mpi = false
 end
 
+include("init.jl")
+include("lib.jl")
 include("vec.jl")           # autowrapped
 include("mat.jl")           # autowrapped
 include("options.jl")       # autowrapped
@@ -22,7 +24,8 @@ include("snes.jl")          # autowrapped
 include("dmda.jl")          # autowrapped
 include("dmstag.jl")        # autowrapped
 include("matshell.jl")      # autowrapped!
-include("test_dmstag.jl")   
+include("test_dmstag.jl") 
+include("test_snes.jl")  
 include("old_test.jl")
 
 include("testutils.jl")
@@ -43,9 +46,9 @@ end
 if do_mpi
     @testset "MPI Tests" begin
         for testfile in mpi_tests
-            cmd = `$(mpiexec())  -n 4 $(Base.julia_cmd()) --project $testfile`
-            run(cmd)
-            success(pipeline(cmd, stderr = stderr))
+            testpath = joinpath(@__DIR__, testfile)
+            cmd = `$(mpiexec()) -n 4 $(Base.julia_cmd()) --project=. $testpath`
+            @test success(pipeline(cmd, stderr = stderr))
         end
     end
 end

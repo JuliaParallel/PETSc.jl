@@ -25,6 +25,8 @@ include("matshell.jl")      # autowrapped!
 include("test_dmstag.jl")   
 include("old_test.jl")
 
+include("testutils.jl")
+
 # Run the examples to make sure they all work
 include("examples.jl")
 

@@ -291,11 +291,17 @@ MPI.Initialized() || MPI.Init()
         out = LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dmc,xmin,xmax,ymin,ymax,zmin,zmax)
         @test isnothing(out)
 
+        
         PETSc.destroy(dm_1D)
         PETSc.destroy(dm_2D)
         PETSc.destroy(dm_3D)
         PETSc.destroy(dmTo)
         PETSc.destroy(dmnew)
+        PETSc.destroy(v)
+        PETSc.destroy(v1D)
+        PETSc.destroy(vg)
+        PETSc.destroy(dm_new)
+        PETSc.destroy(vecTo)
         PETSc.destroy(dm_3D_pd)
         PETSc.destroy(dmf)
         PETSc.destroy(dmc)
@@ -572,6 +578,13 @@ end
         @test val[2] == 6.0
         PETSc.destroy(dm_1D);
 
+        PETSc.destroy(DMcoord);
+        PETSc.destroy(vec_test);
+        PETSc.destroy(vec_test_global);
+        PETSc.destroy(vec_test_2D);
+        PETSc.destroy(global_vec);
+        PETSc.destroy(local_vec);
+
         PETSc.finalize(petsclib)
     end
 end
@@ -712,4 +725,3 @@ end
         PETSc.finalize(petsclib)
     end
 end
-

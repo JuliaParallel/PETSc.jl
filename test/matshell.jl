@@ -26,6 +26,8 @@ using MPI
         @test petsc_y[:] == [2x; 3x]
         @test matshell * x == [2x; 3x]
 
+        PETSc.destroy(petsc_x)
+        PETSc.destroy(petsc_y)
         PETSc.destroy(matshell)
         PETSc.finalize(petsclib)
     end

@@ -18,6 +18,7 @@ end
   filter!(file -> readline(file) == "# INCLUDE IN MPI TEST", examples)
 
   @testset "$(basename(example))" for example in examples
+    @info "MPI example $example"
     code = """
     $(Base.load_path_setup_code())
     include($(repr(example)))

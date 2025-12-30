@@ -571,6 +571,9 @@ end
         PETSc.destroy(coord_vec)
         #PETSc.destroy(coord_da)
         PETSc.destroy(da)
+        PETSc.destroy(da_2D)
+        PETSc.destroy(x_g)
+        PETSc.destroy(x_l)
 
         PETSc.finalize(petsclib)
 

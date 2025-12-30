@@ -36,12 +36,18 @@ function audit_petsc_file(path::AbstractString)
 
     # Patterns for creation calls
     type_creators = r"^(?:\s*)(?:([A-Za-z_]\w*)\s*=\s*)?(?:(?:PETSc|LibPETSc)\.)?(KSP|SNES|DMDA|DMStag)\s*\("
-    vec_create = r"^(?:\s*)(?:([A-Za-z_]\w*)\s*=\s*)?(?:(?:PETSc|LibPETSc)\.)?Vec(?:Create|Duplicate|Load|.*WithArray)\s*\("
-    mat_create = r"^(?:\s*)(?:([A-Za-z_]\w*)\s*=\s*)?(?:(?:PETSc|LibPETSc)\.)?Mat(?:Create|Duplicate|Load|.*With.*Arrays)\s*\("
+    # Match common PETSc Vec/Mat creators, including suffixed forms like
+    # VecCreateSeq, VecCreateMPI, VecDuplicateVecs, MatCreateSeqAIJ, etc.
+    vec_create = r"^(?:\s*)(?:([A-Za-z_]\w*)\s*=\s*)?(?:(?:PETSc|LibPETSc)\.)?Vec(?:Create\w*|Duplicate\w*|Load\w*|\w*WithArray)\s*\("
+    mat_create = r"^(?:\s*)(?:([A-Za-z_]\w*)\s*=\s*)?(?:(?:PETSc|LibPETSc)\.)?Mat(?:Create\w*|Duplicate\w*|Load\w*|\w*With\w*Arrays)\s*\("
     # Additional allocators that should be destroyed
     dm_vec_alloc = r"^(?:\s*)(?:([A-Za-z_]\w*)\s*=\s*)?(?:(?:PETSc|LibPETSc)\.)?(DMGlobalVec|DMLocalVec)\s*\("
     dm_alloc_dm = r"^(?:\s*)(?:([A-Za-z_]\w*)\s*=\s*)?(?:(?:PETSc|LibPETSc)\.)?(DMGetCoordinateDM|DMStagCreateCompatibleDMStag)\s*\("
     dm_alloc_mat = r"^(?:\s*)(?:([A-Za-z_]\w*)\s*=\s*)?(?:(?:PETSc|LibPETSc)\.)?(DMCreateMatrix)\s*\("
+
+    # Some PETSc calls create multiple objects via tuple assignment
+    # e.g. `x,b = LibPETSc.MatCreateVecs(petsclib, A)`
+    mat_create_vecs = r"^(?:\s*)(.+?)\s*=\s*(?:(?:PETSc|LibPETSc)\.)?MatCreateVecs\s*\("
 
     # Pattern for destroy calls
     destroy_pat = r"^(?:\s*)(?:(?:PETSc)\.)?destroy\s*\(\s*([A-Za-z_]\w*)"
@@ -95,6 +101,24 @@ function audit_petsc_file(path::AbstractString)
             m = match(dm_alloc_mat, ln_proc)
             var = m.captures[1]
             push!(created, (i, var, "Mat"))
+            continue
+        end
+
+        if occursin(mat_create_vecs, ln_proc)
+            m = match(mat_create_vecs, ln_proc)
+            lhs = m.captures[1]
+            # Strip parentheses and split on commas: "(x, b)" or "x,b" etc.
+            lhs = replace(lhs, "(" => "", ")" => "")
+            vars = [strip(v) for v in split(lhs, ',') if !isempty(strip(v))]
+            if isempty(vars)
+                push!(created, (i, nothing, "Vec"))
+            else
+                for v in vars
+                    if occursin(r"^[A-Za-z_]\w*$", v)
+                        push!(created, (i, v, "Vec"))
+                    end
+                end
+            end
             continue
         end
 

@@ -452,7 +452,7 @@ while (it < max_it && time < max_time)
     end
     
     if MPI.Comm_rank(comm) == 0
-        println("Timestep $it, time=$time")
+    #    println("Timestep $it, time=$time")
     end
 end
 

@@ -198,7 +198,9 @@ end
         @test petsc_y[1:N] == PetscScalar.(2:2:2N)
 
 
-        LibPETSc.VecDestroy(petsclib,petsc_x)
+        PETSc.destroy(petsc_x)
+        PETSc.destroy(petsc_y)
+
         PETSc.finalize(petsclib)
     end
 end

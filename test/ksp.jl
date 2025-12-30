@@ -84,6 +84,7 @@ using SparseArrays: spdiagm
         ksp1 = PETSc.KSP(A; ksp_rtol = 1e-16, pc_type = "jacobi", ksp_monitor=false)
         x2 = ksp1 \ b
         @test y ≈ x2
+        #PETSc.destroy(ksp1)
         # ------------------------------
 
         # test some of the get functions:
@@ -177,7 +178,7 @@ if MPI.Comm_rank(MPI.COMM_WORLD) == 0
 
             PETSc.destroy(ksp)
             PETSc.destroy(petsc_x)
-
+            PETSc.destroy(petsc_b)
             PETSc.finalize(petsclib)
         end
     end

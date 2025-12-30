@@ -135,17 +135,20 @@ comm = MPI.COMM_WORLD
         end
 
         Random.seed!(777)
-        A = sprand(PetscScalar, 10, 11, 0.2)
-        B = PETSc.MatSeqAIJWithArrays(petsclib, comm, A)
+        A1 = sprand(PetscScalar, 10, 11, 0.2)
+        B1 = PETSc.MatSeqAIJWithArrays(petsclib, comm, A1)
         sleep(0.1) # seems to help the tests
-        @test sum(B[:,:] - Matrix(A)) == 0.0
+        @test sum(B1[:,:] - Matrix(A1)) == 0.0
 
+        PETSc.destroy(A)
         PETSc.destroy(B)
+        PETSc.destroy(B1)
         PETSc.destroy(C)
         PETSc.destroy(D)
-        PETSc.destroy(E)    
+        PETSc.destroy(E) 
+        PETSc.destroy(vec_x)
+        PETSc.destroy(vec_y)   
         
-
         PETSc.finalize(petsclib)
     end
 end
@@ -173,6 +176,7 @@ end
         #@test all(A * x .≈ Ajl * x)
 
         PETSc.destroy(A)
+        PETSc.destroy(vec_x)
         PETSc.finalize(petsclib)
     end
 end

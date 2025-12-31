@@ -1,8 +1,0 @@
-[deps]
-CSTParser = "00ebfdb7-1f24-5e51-bd34-a7502290713f"
-Clang = "40e3b903-d033-50b4-a0cc-940c62c95e31"
-Glob = "c27321d9-0574-5035-807b-f59d2c89b15c"
-JuliaFormatter = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
-MPICH_jll = "7cb0a576-ebde-5e09-9194-50597f1243b4"
-PETSc_jll = "8fa3689e-f0b9-5420-9873-adf6ccf46f2d"
-Tokenize = "0796e94c-ce3b-5d07-9a54-7f471281c624"

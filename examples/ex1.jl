@@ -194,6 +194,8 @@ PETSc.destroy(xa);
 PETSc.destroy(xLocal);
 PETSc.destroy(x);
 PETSc.destroy(rhs);
-PETSc.destroy(A);
 PETSc.destroy(ksp);
+PETSc.destroy(A);
 PETSc.finalize(petsclib)
+
+return nothing

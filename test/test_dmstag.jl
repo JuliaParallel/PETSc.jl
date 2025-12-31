@@ -717,7 +717,6 @@ end
           
         # cleanup
         PETSc.destroy(dm_2D);
-        PETSc.destroy(dm_1D);
         PETSc.destroy(vec_test_2D_global);
         PETSc.destroy(vec_test_2D_local);
         

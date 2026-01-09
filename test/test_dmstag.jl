@@ -355,8 +355,8 @@ end
         @test PETSc.getdimension(dm) == 1
 
         # Info about ranks  
-        @test LibPETSc.DMStagGetIsFirstRank(petsclib, dm) == (false,false,false)
-        @test LibPETSc.DMStagGetIsFirstRank(petsclib, dm) == (false,false,false)
+        @test LibPETSc.DMStagGetIsFirstRank(petsclib, dm) == (true,false,false)
+        @test LibPETSc.DMStagGetIsFirstRank(petsclib, dm) == (true,false,false)
 
         # Boundary
         @test LibPETSc.DMStagGetBoundaryTypes(petsclib, dm)[1]==PETSc.LibPETSc.DM_BOUNDARY_NONE
@@ -611,7 +611,7 @@ end
         A = LibPETSc.DMCreateMatrix(petsclib,dm_1D)
 
         #PETSc.MatSetOption(A, PETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, false)
-        LibPETSc.MatSetOption(petsclib,A, LibPETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, false)
+        LibPETSc.MatSetOption(petsclib,A, LibPETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, LibPETSc.PETSC_FALSE)
         @test size(A) == (42,42)
       
 

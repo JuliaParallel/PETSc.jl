@@ -2,12 +2,14 @@ using Test
 using PETSc, MPI
 MPI.Initialized() || MPI.Init()
 
+
 @testset "DMStagCreate1d" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
-        petsclib = PETSc.petsclibs[1]
+        #petsclib = PETSc.petsclibs[1]
+        
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt
@@ -101,8 +103,10 @@ MPI.Initialized() || MPI.Init()
             end
 
         end
+          PETSc.finalize(petsclib)
     end
 end
+
 
 @testset "DMStagCreate2d" begin
     comm = MPI.COMM_WORLD
@@ -111,7 +115,8 @@ end
     global_size_x = 100
     global_size_y = 45
     for petsclib in PETSc.petsclibs
-        petsclib = PETSc.petsclibs[1]
+       # petsclib = PETSc.petsclibs[1]
+        #@show petsclib
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt
@@ -155,12 +160,12 @@ end
                     PetscInt(0),
                 )
                 
-
                 corners = PETSc.getcorners(dm)
                 ghost_corners = PETSc.getghostcorners(dm)
+                
                 isfirst = LibPETSc.DMStagGetIsFirstRank(petsclib,dm)
                 islast = LibPETSc.DMStagGetIsLastRank(petsclib,dm)
-
+                
                 bt = (boundary_type_x, boundary_type_y, PETSc.DM_BOUNDARY_NONE)
                 for d in 1:3
                     # Check left side ghost_corners and corner
@@ -193,6 +198,7 @@ end
                     #    @test corners.nextra[d] == 0
                     #end
                 end
+                
 
                 #@test LibPETSc.DMStagGetBoundaryTypes(petsclib, dm) ===
                 #      (boundary_type_x, boundary_type_y, PETSc.DM_BOUNDARY_NONE)
@@ -201,8 +207,10 @@ end
                 PETSc.destroy(dmnew)
             end
         end
+        PETSc.finalize(petsclib)
     end
 end
+
 
 
 

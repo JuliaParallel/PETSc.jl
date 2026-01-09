@@ -14,8 +14,15 @@ PetscScalar = Float64
 # Get the PETSc lib with our chosen `PetscScalar` type
 petsclib = PETSc.getlib(; PetscScalar = PetscScalar)
 
-# Initialize PETSc
+# Initialize PETSc 
 PETSc.initialize(petsclib)
+
+# Initialize PETSc with logging active and printed to REPL. This is useful to detect memory leaks
+#PETSc.initialize(petsclib; log_view = true)    
+
+# Initialize PETSc with logging active and written to "logfile.txt"
+#PETSc.initialize(petsclib; log_view = true,  options=[":logfile.txt"])    # write log to a file
+
 
 # Set the total number of grid points
 Nq = 200

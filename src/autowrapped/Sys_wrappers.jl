@@ -3507,19 +3507,14 @@ end
 """
 	PetscInitialize(petsclib::PetscLibType,argc::Cint, args::Cchar, file::Vector{Cchar}, help::Vector{Cchar}) 
 Initializes the PETSc database and MPI.
-`PetscInitialize()` calls MPI_Init() if that has yet to be called,
-so this routine should always be called near the beginning of
-your program -- usually the very first line!
+`PetscInitialize()` calls MPI_Init() if that has yet to be called, so this routine should always be called near the beginning of your program -- usually the very first line!
 
 Collective on `MPI_COMM_WORLD` or `PETSC_COMM_WORLD` if it has been set
 
 Input Parameters:
 - `argc` - count of number of command line arguments
 - `args` - the command line arguments
-- `file` - [optional] PETSc database file, append ":yaml" to filename to specify YAML options format.
-Use `NULL` or empty string to not check for code specific file.
-Also checks `~/.petscrc`, `.petscrc` and `petscrc`.
-Use `-skip_petscrc` in the code specific file (or command line) to skip `~/.petscrc`, `.petscrc` and `petscrc` files.
+- `file` - [optional] PETSc database file, append ":yaml" to filename to specify YAML options format. Use `NULL` or empty string to not check for code specific file. Also checks `~/.petscrc`, `.petscrc` and `petscrc`. Use `-skip_petscrc` in the code specific file (or command line) to skip `~/.petscrc`, `.petscrc` and `petscrc` files.
 - `help` - [optional] Help message to print, use `NULL` for no message
 
 If you wish PETSc code to run ONLY on a subcommunicator of `MPI_COMM_WORLD`, create that
@@ -3538,8 +3533,7 @@ Options Database Keys:
 - `-error_output_none`                                  - does not print the error messages (but handles errors in the same way as if this was not called)
 - `-debugger_ranks [rank1,rank2,...]`                   - Indicates MPI ranks to start in debugger
 - `-debugger_pause [sleeptime] (in seconds)`            - Pauses debugger, use if it takes a long time for the debugger to start up on your system
-- `-stop_for_debugger`                                  - Print message on how to attach debugger manually to
-process and wait (`-debugger_pause`) seconds for attachment
+- `-stop_for_debugger`                                  - Print message on how to attach debugger manually to process and wait (`-debugger_pause`) seconds for attachment
 - `-malloc_dump`                                        - prints a list of all unfreed memory at the end of the run
 - `-malloc_test`                                        - like `-malloc_dump` `-malloc_debug`, only active for debugging build, ignored in optimized build. Often set in `PETSC_OPTIONS` environmental variable
 - `-malloc_view`                                        - show a list of all allocated memory during `PetscFinalize()`
@@ -3567,10 +3561,8 @@ See `PetscOptionsMonitorSet()` to do monitoring programmatically.
 Options Database Keys for Profiling:
 See Users-Manual: ch_profiling for details.
 - `-info [filename][:[~]<list,of,classnames>[:[~]self]]` - Prints verbose information. See `PetscInfo()`.
-- `-log_sync`                                            - Enable barrier synchronization for all events. This option is useful to debug imbalance within each event,
-however it slows things down and gives a distorted view of the overall runtime.
-- `-log_trace [filename]`                                - Print traces of all PETSc calls to the screen (useful to determine where a program
-hangs without running in the debugger).  See `PetscLogTraceBegin()`.
+- `-log_sync`                                            - Enable barrier synchronization for all events. This option is useful to debug imbalance within each event, however it slows things down and gives a distorted view of the overall runtime.
+- `-log_trace [filename]`                                - Print traces of all PETSc calls to the screen (useful to determine where a program hangs without running in the debugger).  See `PetscLogTraceBegin()`.
 - `-log_view [:filename:format][,[:filename:format]...]` - Prints summary of flop and timing information to screen or file, see `PetscLogView()` (up to 4 viewers)
 - `-log_view_memory`                                     - Includes in the summary from -log_view the memory used in each event, see `PetscLogView()`.
 - `-log_view_gpu_time`                                   - Includes in the summary from -log_view the time used in each GPU kernel, see `PetscLogView().
@@ -3588,8 +3580,7 @@ hangs without running in the debugger).  See `PetscLogTraceBegin()`.
 
 Options Database Keys for SAWs:
 - `-saws_port <portnumber>`        - port number to publish SAWs data, default is 8080
-- `-saws_port_auto_select`         - have SAWs select a new unique port number where it publishes the data, the URL is printed to the screen
-this is useful when you are running many jobs that utilize SAWs at the same time
+- `-saws_port_auto_select`         - have SAWs select a new unique port number where it publishes the data, the URL is printed to the screen this is useful when you are running many jobs that utilize SAWs at the same time
 - `-saws_log <filename>`           - save a log of all SAWs communication
 - `-saws_https <certificate file>` - have SAWs use HTTPS instead of HTTP
 - `-saws_root <directory>`         - allow SAWs to have access to the given directory to search for requested resources and files
@@ -3610,14 +3601,14 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscInitialize"))
 """
-function PetscInitialize(petsclib::PetscLibType, argc::Cint, args::Cchar, file::Vector{Cchar}, help::Vector{Cchar}) end
+function PetscInitialize(petsclib::PetscLibType, argc::Ptr{Cint}, args::Ptr{Ptr{Cchar}}, file::Ptr{Cchar}, help::Ptr{Cchar}) end
 
-@for_petsc function PetscInitialize(petsclib::$UnionPetscLib, argc::Cint, args::Cchar, file::Vector{Cchar}, help::Vector{Cchar} )
+@for_petsc function PetscInitialize(petsclib::$UnionPetscLib, argc::Ptr{Cint}, args::Ptr{Ptr{Cchar}}, file::Ptr{Cchar}, help::Ptr{Cchar} )
 
     @chk ccall(
                (:PetscInitialize, $petsc_library),
                PetscErrorCode,
-               (Ptr{Cint}, Cchar, Ptr{Cchar}, Ptr{Cchar}),
+               (Ptr{Cint}, Ptr{Ptr{Cchar}}, Ptr{Cchar}, Ptr{Cchar}),
                argc, args, file, help,
               )
 

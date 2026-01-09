@@ -27,7 +27,7 @@ using ForwardDiff: derivative
 opts = if !isinteractive()
     PETSc.parse_options(ARGS)
 else
-    (ksp_monitor = true, ksp_view = true, pc_type = "mg", pc_mg_levels = 2)
+    (ksp_monitor = true, ksp_view = true, pc_type = "mg", pc_mg_levels = 2, pc_mg_galerkin = true)
 end
 
 # Set our MPI communicator
@@ -43,7 +43,7 @@ petsclib = PETSc.getlib(; PetscScalar = PetscScalar)
 PETSc.initialize(petsclib)
 
 # Set the total number of grid points in each direction
-Nq = (11, 13)
+Nq = (129, 129)
 
 # Set up the problem by using an exact solution and then using this to set the
 # boundary data and forcing
@@ -66,6 +66,57 @@ da = PETSc.DMDA(
 
 # Setup the Krylov solver for the distributed array
 ksp = PETSc.KSP(da; opts...)
+
+# Define the operator assembly function (used on all MG levels)
+function assemble_operator!(A, _, ksp)
+    # Get the distributed array from the ksp.
+    da = PETSc.getDMDA(ksp)
+
+    # Get the corners of the box that this processor is responsible for
+    corners = PETSc.getcorners(da)
+
+    # get the global grid dimension
+    Nq = PETSc.getinfo(da).global_size[1:2]
+
+    # Get the grid spacing
+    Δx = PetscScalar(range(PetscScalar(0), length = Nq[1] + 2, stop = 1).step)
+    Δy = PetscScalar(range(PetscScalar(0), length = Nq[2] + 2, stop = 1).step)
+
+    # Interior Points
+    interior =
+        (CartesianIndex(2, 2, 1)):(CartesianIndex(Nq[1] - 1, Nq[2] - 1, 1))
+
+    # Computational stencil for the interior points
+    sten = (
+        CartesianIndex(-1, 0, 0),
+        CartesianIndex(1, 0, 0),
+        CartesianIndex(0, -1, 0),
+        CartesianIndex(0, 1, 0),
+        CartesianIndex(0, 0, 0),
+    )
+    vals = (1 / Δx^2, 1 / Δx^2, 1 / Δy^2, 1 / Δy^2, -2 / Δx^2 - 2 / Δy^2)
+
+    # Loop over all the points on the processor
+    for i in ((corners.lower):(corners.upper))
+        # for the interior points set the stencil otherwise just set to identity
+        if i ∈ interior
+            for (s, v) in zip(sten, vals)
+                A[i, i + s] = v
+            end
+        else
+            A[i, i] = 1
+        end
+    end
+
+    # Assemble the matrix after inserting values
+    PETSc.assemble!(A)
+
+    # 0 is the PETSc success value
+    return 0
+end
+
+# Set up the operator callback for the fine grid
+PETSc.setcomputeoperators!(ksp, assemble_operator!)
 
 #
 # Set the right-hand side of the ksp

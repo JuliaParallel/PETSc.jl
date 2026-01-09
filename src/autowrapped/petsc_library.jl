@@ -172,7 +172,7 @@ mutable struct PetscDM{PetscLib} <: AbstractPetscDM{PetscLib}
     PetscDM{PetscLib}(ptr::CDM, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
     
     # Constructor for empty DM (null pointer)
-    PetscDM{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
+    PetscDM{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0, nothing)
 end
 
 # Convenience constructor from petsclib instance

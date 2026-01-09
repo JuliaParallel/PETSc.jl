@@ -25,7 +25,7 @@ jobs:
         version:
           - '1'
         os:
-          - macOS-13        # with intel processors 
+          - macOS-15-intel        # with intel processors 
           - ubuntu-latest
         arch:
           - x64 
@@ -38,7 +38,7 @@ jobs:
             version: 'lts'
             
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: julia-actions/setup-julia@v2
         with:
           version: ${{ matrix.version }}

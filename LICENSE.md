@@ -1,6 +1,6 @@
 The PETSc.jl package is licensed under the MIT "Expat" License:
 
-> Copyright (c) 2015: Jared Crean.
+> Copyright (c) 2015-24: Jared Crean, PETSC.jl developers.
 >
 > Permission is hereby granted, free of charge, to any person obtaining
 > a copy of this software and associated documentation files (the

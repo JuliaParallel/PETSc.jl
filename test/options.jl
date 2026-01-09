@@ -64,7 +64,11 @@ end
 
 @testset "parse_options" begin
     @test begin
+
         julia = joinpath(Sys.BINDIR, Base.julia_exename())
+        # Force packages to be installed 
+        run(`$(julia) --startup-file=no --project -e "using Pkg; Pkg.instantiate()" `)
+
         run(`$(julia) --startup-file=no --project -e "using PETSc
                                  using Test
                                  opts = PETSc.parse_options(ARGS)

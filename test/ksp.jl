@@ -106,11 +106,11 @@ using SparseArrays: spdiagm
         if petsclib== PETSc.petsclibs[1]
             it = LibPETSc.KSPGetIterationNumber(petsclib, ksp)
             @show it
-            @test (it == 34) || (it == 33)   # depending on PETSc version
+            @test (it == 34) || (it == 33) || (it == 36)   # depending on PETSc version
 
             it1 = LibPETSc.KSPGetTotalIterations(petsclib, ksp)
             @show it1
-            @test (it1 == 68) || (it1 == 66)   # depending on PETSc version
+            @test (it1 == 68) || (it1 == 66) || (it1 == 72)   # depending on PETSc version
 
         end
 

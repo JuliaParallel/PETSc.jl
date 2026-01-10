@@ -33,8 +33,10 @@ comm = MPI.COMM_WORLD
         # Check get/restore array
         x3 = LibPETSc.VecGetArray(petsclib,v3)
         x3[10] = PetscScalar(42.0)
-        expected_sum = sum(x3)  # Compute sum before restoring array
         LibPETSc.VecRestoreArray(petsclib,v3, x3)
+        
+        # After restore, x1 contains the modified data (v3 wraps x1)
+        expected_sum = sum(x1)
 
         # get values from PETSc vector (note 0-based indexing)
         indices = PetscInt.([8,9]) # in 0-based indexing! 

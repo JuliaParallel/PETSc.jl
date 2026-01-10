@@ -31,7 +31,7 @@ Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 SparseDiffTools = "47a9eef4-7e08-11e9-0b38-333d64bd3804"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
-GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 
 [targets]
-test = ["ForwardDiff", "UnicodePlots", "Test", "Plots", "SparseDiffTools", "Printf", "Random", "GLMakie"]
+test = ["ForwardDiff", "UnicodePlots", "Test", "Plots", "SparseDiffTools", "Printf", "Random", "CairoMakie"]

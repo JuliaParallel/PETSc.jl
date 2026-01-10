@@ -54,7 +54,7 @@ end
 
 # To use plotting
 CreatePlots = isinteractive() && try
-    using GLMakie
+    using CairoMakie
     true
 catch
     false

@@ -108,8 +108,8 @@ using PETSc
     for petsclib in PETSc.petsclibs
         @test !(PETSc.initialized(petsclib))
         
-        # Set a custom PETSC_OPTIONS
-        ENV["PETSC_OPTIONS"] = "-some_existing_option"
+        # Set a custom PETSC_OPTIONS with a valid but harmless option
+        ENV["PETSC_OPTIONS"] = "-malloc_debug 0"
         
         test_log_file = tempname() * ".txt"
         PETSc.initialize(petsclib; log_view = true, options = [":$test_log_file"])
@@ -117,7 +117,7 @@ using PETSc
         @test PETSc.initialized(petsclib)
         
         # After initialization, original option should be restored
-        @test get(ENV, "PETSC_OPTIONS", "") == "-some_existing_option"
+        @test get(ENV, "PETSC_OPTIONS", "") == "-malloc_debug 0"
         
         PETSc.finalize(petsclib)
         

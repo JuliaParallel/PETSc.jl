@@ -646,6 +646,7 @@ end
             
         PETSc.destroy(A);
         PETSc.destroy(dm_1D);
+        GC.gc()  # Force finalizers to run while PETSc is still initialized
             
         dofCenter       =   1;
         dofEdge         =   1;

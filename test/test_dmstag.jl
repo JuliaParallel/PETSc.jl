@@ -599,7 +599,7 @@ end
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
-    for petsclib in PETSc.petsclibs[1:4]
+    for petsclib in PETSc.petsclibs[1:3]
         #petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib, log_view=false)
         PetscScalar = PETSc.scalartype(petsclib)

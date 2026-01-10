@@ -33,13 +33,15 @@ comm = MPI.COMM_WORLD
         # Check get/restore array
         x3 = LibPETSc.VecGetArray(petsclib,v3)
         x3[10] = PetscScalar(42.0)
+        expected_sum = sum(x3)  # Compute sum before restoring array
         LibPETSc.VecRestoreArray(petsclib,v3, x3)
 
         # get values from PETSc vector (note 0-based indexing)
         indices = PetscInt.([8,9]) # in 0-based indexing! 
         vals = zeros(PetscScalar, length(indices))
         vals =LibPETSc.VecGetValues(petsclib,v3,PetscInt(length(indices)), indices)
-        @test vals == x3[9:10]
+        expected_vals = [x1[9], PetscScalar(42.0)]  # Use original array x1, with modified last value
+        @test vals == expected_vals
 
         # create a duplicate vector 
         v4 = LibPETSc.VecDuplicate(petsclib,v3)
@@ -47,7 +49,7 @@ comm = MPI.COMM_WORLD
         # copy content (note that this function is not correctly parsed automatically)
         LibPETSc.VecCopy(petsclib,v3, v4)
         
-        @test LibPETSc.VecSum(petsclib,v4) == sum(x3)
+        @test LibPETSc.VecSum(petsclib,v4) == expected_sum
 
         # Julia candy:
         v5      =   LibPETSc.VecCreateSeq(petsclib,comm, N)

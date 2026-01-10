@@ -643,10 +643,8 @@ end
         # result is a 1x2 matrix
         @test LibPETSc.DMStagMatGetValuesStencil(petsclib, dm_1D, A, PetscInt(1), [pos2], PetscInt(2), pos)==val1
 
-            
-        PETSc.destroy(A);
-        PETSc.destroy(dm_1D);
-        GC.gc()  # Force finalizers to run while PETSc is still initialized
+        # Note: Don't explicitly destroy or GC here - let finalizers run naturally after PETSc shutdown
+        # to avoid MPI communicator errors with nested PETSc objects (ISLocalToGlobalMapping, etc.)
             
         dofCenter       =   1;
         dofEdge         =   1;

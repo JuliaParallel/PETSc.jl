@@ -76,12 +76,14 @@ MPI.Initialized() || MPI.Init()
       sol = x[:]
       @test sol ≈ [1.0,2.0] rtol=1e-4
 
-      # cleanup
+      # cleanup - destroy SNES first, then the vectors/matrices it references
+      PETSc.destroy(S);
       PETSc.destroy(x);
       PETSc.destroy(b);
+      PETSc.destroy(r);
       PETSc.destroy(PJ);
-      #PETSc.destroy(S);
 
       PETSc.finalize(petsclib)
+      GC.gc()  # Force garbage collection to clean up any remaining objects
     end
 end

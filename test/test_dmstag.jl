@@ -465,12 +465,14 @@ end
 end
 
 
+
 @testset "DMStag Vectors and Coordinates" begin
     comm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs[1:4]
-        #petsclib = PETSc.petsclibs[5]
+        #@show petsclib
+        #petsclib = PETSc.petsclibs[1]
     
         PETSc.initialize(petsclib)
         PetscScalar = PETSc.scalartype(petsclib)
@@ -579,21 +581,19 @@ end
         pos3 = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_LEFT,1,0,0,1)
         val = LibPETSc.DMStagVecGetValuesStencil(petsclib, dm_1D, vec_test, PetscInt(2), [pos3; pos3])
         @test val[2] == 6.0
-        PETSc.destroy(dm_1D);
-
-        PETSc.destroy(DMcoord);
+        
         PETSc.destroy(vec_test);
         PETSc.destroy(vec_test_global);
         PETSc.destroy(vec_test_2D);
         PETSc.destroy(global_vec);
         PETSc.destroy(local_vec);
-
+        
+        PETSc.destroy(dm_1D);
+        # Note: DMcoord is owned by dm_1D and should not be destroyed separately
+       
         PETSc.finalize(petsclib)
     end
 end
-
-
-
 
 @testset "DMStag create matrixes" begin
     comm = MPI.COMM_WORLD
@@ -717,7 +717,6 @@ end
         @test X2D_dofs[4,4,3] ≈ PetscScalar(33.0)
         @test X2D_dofs[4,4,4] ≈ PetscScalar(3.0)
         LibPETSc.DMStagVecRestoreArray(petsclib, dm_2D,vec_test_2D_local, X2D_dofs)
-        Base.finalize(X2D_dofs)                 # release from memory
         
 
           

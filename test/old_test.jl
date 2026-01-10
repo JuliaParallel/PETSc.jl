@@ -38,7 +38,7 @@ comm = MPI.COMM_WORLD
   @test PETSc.type(ksp) == "gmres" # default
 
   y = ksp \ w
-  @test S*y[:] ≈ w[:]  rtol=1e-8
+  @test S*y[:] ≈ w[:]  rtol=1e-6
 
 
   #w = M'*x

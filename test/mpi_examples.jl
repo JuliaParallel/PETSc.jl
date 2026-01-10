@@ -17,6 +17,7 @@ using .PETScTestUtils: find_sources
     cmd = `$(mpiexec()) -n 4 $(Base.julia_cmd()) --startup-file=no -e $code`
     run(cmd)
     @debug "Testing $example" Text(code) cmd
-    success(pipeline(cmd, stderr=stderr))
+    @test success(pipeline(cmd, stderr=stderr))
   end
+ 
 end

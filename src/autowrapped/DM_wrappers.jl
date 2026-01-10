@@ -26284,7 +26284,7 @@ function DMStagVecGetArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVe
 end 
 
 """
-	DMStagVecRestoreArray(petsclib::PetscLibType,dm::PetscDM, vec::PetscVec, array::Cvoid) 
+	DMStagVecRestoreArray(petsclib::PetscLibType,dm::PetscDM, vec::PetscVec, array::PetscArray) 
 restore access to a raw array
 
 Logically Collective
@@ -26305,7 +26305,7 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagVecRestoreArray"))
 """
-function DMStagVecRestoreArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec, array::Vector{PetscScalar}) end
+function DMStagVecRestoreArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec, array::PetscArray) end
 
 @for_petsc function DMStagVecRestoreArray(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec, array::PetscArray{$PetscScalar, N} ) where N
     if array.ptr[]  != C_NULL  
@@ -26313,8 +26313,8 @@ function DMStagVecRestoreArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVe
             @chk ccall(
                     (:DMStagVecRestoreArray, $petsc_library),
                     PetscErrorCode,
-                    (CDM, CVec, Ref{Ptr{Ptr{$PetscScalar}}}),
-                    dm, vec, array.ptr[],
+                    (CDM, CVec, Ptr{Ptr{Ptr{$PetscScalar}}}),
+                    dm, vec, array.ptr,
                     )
             # prevent double-restore: null the handle
             array.ptr[] = Ptr{Ptr{$PetscScalar}}(C_NULL)
@@ -26322,16 +26322,16 @@ function DMStagVecRestoreArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVe
             @chk ccall(
                (:DMStagVecRestoreArray, $petsc_library),
                PetscErrorCode,
-               (CDM, CVec, Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}),
-               dm, vec, array.ptr[],
+               (CDM, CVec, Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}),
+               dm, vec, array.ptr,
                )
             array.ptr[] = Ptr{Ptr{Ptr{$PetscScalar}}}(C_NULL)
         elseif N==4
             @chk ccall(
                (:DMStagVecRestoreArray, $petsc_library),
                PetscErrorCode,
-               (CDM, CVec, Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}),
-               dm, vec, array.ptr[],
+               (CDM, CVec, Ptr{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}),
+               dm, vec, array.ptr,
                )
             array.ptr[] = Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}(C_NULL)
         end
@@ -26370,24 +26370,24 @@ function DMStagVecRestoreArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::Pet
             @chk ccall(
                     (:DMStagVecRestoreArrayRead, $petsc_library),
                     PetscErrorCode,
-                    (CDM, CVec, Ref{Ptr{Ptr{$PetscScalar}}}),
-                    dm, vec, array.ptr[],
+                    (CDM, CVec, Ptr{Ptr{Ptr{$PetscScalar}}}),
+                    dm, vec, array.ptr,
                     )
             array.ptr[] = Ptr{Ptr{$PetscScalar}}(C_NULL)
         elseif N==3
             @chk ccall(
                (:DMStagVecRestoreArrayRead, $petsc_library),
                PetscErrorCode,
-               (CDM, CVec, Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}),
-               dm, vec, array.ptr[],
+               (CDM, CVec, Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}),
+               dm, vec, array.ptr,
                )
             array.ptr[] = Ptr{Ptr{Ptr{$PetscScalar}}}(C_NULL)
         elseif N==4
             @chk ccall(
                (:DMStagVecRestoreArrayRead, $petsc_library),
                PetscErrorCode,
-               (CDM, CVec, Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}),
-               dm, vec, array.ptr[],
+               (CDM, CVec, Ptr{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}),
+               dm, vec, array.ptr,
                )
             array.ptr[] = Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}(C_NULL)
         end

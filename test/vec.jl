@@ -51,7 +51,9 @@ comm = MPI.COMM_WORLD
         # copy content (note that this function is not correctly parsed automatically)
         LibPETSc.VecCopy(petsclib,v3, v4)
         
-        @test LibPETSc.VecSum(petsclib,v4) == expected_sum
+        # Verify the sum using the underlying array x1 which should have the data
+        @test LibPETSc.VecSum(petsclib,v3) ≈ expected_sum rtol=1e-10
+        @test LibPETSc.VecSum(petsclib,v4) ≈ expected_sum rtol=1e-10
 
         # Julia candy:
         v5      =   LibPETSc.VecCreateSeq(petsclib,comm, N)

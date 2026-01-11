@@ -189,3 +189,51 @@ inttype(::LibPETSc.PetscLibType{ST, IT}) where {ST, IT} = IT
 inttype(
     ::Type{PetscLib},
 ) where {PetscLib <: PetscLibType{ST, IT}} where {ST, IT} = IT
+
+"""
+    SetPetscLib(library_path::String; PetscScalar=Float64, PetscInt=Int64)
+
+Create a custom PETSc library instance from a user-specified shared library path.
+
+This function allows you to use a custom-compiled PETSc library instead of the 
+pre-built libraries provided by PETSc_jll. The custom library must be:
+- Compiled as a shared/dynamic library (not static)
+- Built with the correct scalar type (real vs complex) and integer size
+- Compatible with the same MPI installation that MPI.jl is using
+
+# Arguments
+- `library_path::String`: Path to the custom PETSc shared library (e.g., "/path/to/libpetsc.so")
+- `PetscScalar::Type`: Scalar type used by the library. Options: `Float64`, `Float32`, 
+  `Complex{Float64}`, or `Complex{Float32}`. Default: `Float64`
+- `PetscInt::Type`: Integer type used by the library. Options: `Int32` or `Int64`. 
+  Default: `Int64`
+
+# Returns
+- A `PetscLibType` instance that can be used with `initialize()`, `finalize()`, and 
+  all other PETSc.jl functions
+
+# Examples
+```julia
+using PETSc
+
+# For a custom double-precision real PETSc library with 64-bit indices
+petsclib = PETSc.SetPetscLib("/path/to/custom/libpetsc.so"; 
+                             PetscScalar=Float64, PetscInt=Int64)
+
+# For a single-precision complex library with 32-bit indices  
+petsclib = PETSc.SetPetscLib("/opt/petsc/lib/libpetsc.so"; 
+                             PetscScalar=Complex{Float32}, PetscInt=Int32)
+
+# Initialize and use the custom library
+PETSc.initialize(petsclib)
+# ... your code ...
+PETSc.finalize(petsclib)
+```
+
+# See Also
+- [`initialize`](@ref): Initialize a PETSc library
+- [`finalize`](@ref): Finalize a PETSc library
+"""
+function SetPetscLib(library_path::String; PetscScalar::Type=Float64, PetscInt::Type=Int64)
+    return LibPETSc.PetscLibType{PetscScalar, PetscInt}(library_path)
+end

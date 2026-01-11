@@ -126,5 +126,41 @@ using PETSc
         @test isfile(test_log_file)
         rm(test_log_file; force = true)
     end
+
+    # Test SetPetscLib with a precompiled library
+    @testset "SetPetscLib" begin
+        # Get path from one of the precompiled libraries
+        precompiled_lib = PETSc.petsclibs[1]
+        lib_path = precompiled_lib.petsc_library
+        
+        # Create a custom library instance using SetPetscLib
+        custom_lib = PETSc.SetPetscLib(lib_path; PetscScalar=Float64, PetscInt=Int64)
+        
+        # Verify type parameters
+        @test custom_lib isa PETSc.LibPETSc.PetscLibType{Float64, Int64, String}
+        @test custom_lib.petsc_library == lib_path
+        @test PETSc.scalartype(custom_lib) == Float64
+        @test PETSc.inttype(custom_lib) == Int64
+        
+        # Test that it can be initialized and works
+        @test !PETSc.initialized(custom_lib)
+        PETSc.initialize(custom_lib)
+        @test PETSc.initialized(custom_lib)
+        
+        # Test basic functionality
+        version = PETSc.LibPETSc.PetscGetVersionNumber(custom_lib)
+        @test version[1] == 3  # PETSc version 3.x
+        @test version[2] >= 0  # Minor version
+        
+        PETSc.finalize(custom_lib)
+        @test !PETSc.initialized(custom_lib)
+        
+        # Test with different scalar/int types
+        lib_path_f32 = PETSc.petsclibs[2].petsc_library  # Float32 library
+        custom_lib_f32 = PETSc.SetPetscLib(lib_path_f32; PetscScalar=Float32, PetscInt=Int64)
+        @test custom_lib_f32 isa PETSc.LibPETSc.PetscLibType{Float32, Int64, String}
+        @test PETSc.scalartype(custom_lib_f32) == Float32
+        @test PETSc.inttype(custom_lib_f32) == Int64
+    end
 end
 

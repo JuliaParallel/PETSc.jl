@@ -39,7 +39,7 @@ PETSc.initialize(petsclib, log_view=true)
 # ... your code ...
 PETSc.finalize(petsclib)
 ```
-To see the precompiled libraries:
+To get an overview of available precompiled libraries:
 ```julia
 julia>using PETSc
 julia>[PETSc.petsclibs...]

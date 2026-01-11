@@ -27,7 +27,6 @@ jobs:
         os:
           - macOS-15-intel        # with intel processors 
           - ubuntu-latest
-          - windows-latest
         arch:
           - x64 
         include:

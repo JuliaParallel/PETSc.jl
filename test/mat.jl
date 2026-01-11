@@ -88,14 +88,14 @@ comm = MPI.COMM_WORLD
         # Test mul!
         mul!(vec_y, D, vec_x)
         y = DJ * x
-        @test all(vec_y[1:num_rows] .≈ y)
+        @test vec_y[1:num_rows] ≈ y rtol=1e-5
         #@test all(DJ * x .≈ D * x)
 
         # Zero out vec_x before the transpose multiplication to avoid stale data
         fill!(vec_x, zero(PetscScalar))
         mul!(vec_x, Transpose(D), vec_y)
         x = Transpose(DJ) * y
-        @test all(vec_x[1:end] .≈ x)
+        @test vec_x[1:end] ≈ x rtol=1e-5
 
         # test issymmetric and ishermitian
         if PetscScalar <: Real

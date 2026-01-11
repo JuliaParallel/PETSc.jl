@@ -11,22 +11,23 @@
 The easiest way to install the package is: 
 ```julia
 julia> ]
-(@v1.6) pkg> add PETSc
+(@v1.12) pkg> add PETSc
 ```
 which will install a pre-built PETSc library (`PETSc_jll`) as well as `MPI.jl` on your system. This will work both in serial and in parallel on your machine.
 
 ### 1b. Installation using pre-built libraries 
-On many high-performance clusters, you will have to use the provided `MPI` installation for that cluster and the default download above will not be sufficient. Alternatively, you may be interested in a PETSc installation that comes with additional external packages. Ensure that this PETSc installation is compiled as a dynamic (and not a static) library, after which you need to set the environmental variable `JULIA_PETSC_LIBRARY` to link to your PETSc installation: 
+On many high-performance clusters, you will have to use the provided `MPI` installation for that cluster and the default download above will not be sufficient. Alternatively, you may be interested in a PETSc installation that comes with additional external packages. Ensure that this PETSc installation is compiled as a dynamic (and not a static) library, after which you need to specify the correct library with:
 
-```
-$export JULIA_PETSC_LIBRARY = /path/to/your/petsc/installation:
-```
-
-Now rebuild the package:
 ```julia
-julia> ]
-pkg> build PETSc
+# Create custom library instance
+petsclib = SetPetscLib("/path/to/custom/libpetsc.so"; 
+                       PetscScalar=Float64, PetscInt=Int64)
+# Use it like any precompiled library
+PETSc.initialize(petsclib, log_view=true)
+# ... your code ...
+PETSc.finalize(petsclib)
 ```
+
 
 ### 2. Solving a linear system of equations
 
@@ -48,28 +49,16 @@ julia> Δx  =  1. / (n - 1)
 Let's first define the matrix with coefficients:
 ```julia
 julia> nnz =  ones(Int64,n); nnz[2:n-1] .= 3;
-julia> A   =  PETSc.MatSeqAIJ{Float64}(n,n,nnz);
+julia> A   =  PETSc.MatSeqAIJ(petsclib,n,n,nnz);
 julia> for i=2:n-1
             A[i,i-1] =  1/Δx^2
             A[i,i  ] = -2/Δx^2
             A[i,i+1] =  1/Δx^2
        end;
 julia> A[1,1]=1; A[n,n]=1;
-julia> PETSc.assemble(A)
+julia> PETSc.assemble!(A)
 julia> A
-Mat Object: 1 MPI processes
-  type: seqaij
-row 0: (0, 1.) 
-row 1: (0, 100.)  (1, -200.)  (2, 100.) 
-row 2: (1, 100.)  (2, -200.)  (3, 100.) 
-row 3: (2, 100.)  (3, -200.)  (4, 100.) 
-row 4: (3, 100.)  (4, -200.)  (5, 100.) 
-row 5: (4, 100.)  (5, -200.)  (6, 100.) 
-row 6: (5, 100.)  (6, -200.)  (7, 100.) 
-row 7: (6, 100.)  (7, -200.)  (8, 100.) 
-row 8: (7, 100.)  (8, -200.)  (9, 100.) 
-row 9: (8, 100.)  (9, -200.)  (10, 100.) 
-row 10: (10, 1.) 
+PETSc seqaij Mat of size (11, 11)
 ```
 Now, lets define the right-hand-size vector `rhs` as a julia vector:
 ```julia
@@ -134,16 +123,11 @@ f = \binom{ x^2 + x y  - 3} {x y + y^2  - 6}
 
 In order to solve this, we need to provide a residual function that computes ``f``:
 ```julia
-julia> function F!(cfx, cx, args...)
-         x     = PETSc.unsafe_localarray(Float64, cx;  write=false)   # read array
-         fx    = PETSc.unsafe_localarray(Float64, cfx; read=false)    # write array
-         
-         fx[1] = x[1]^2 + x[1]*x[2] - 3
-         fx[2] = x[1]*x[2] + x[2]^2 - 6
-         
-          Base.finalize(fx)
-          Base.finalize(x)
-       end
+julia> function F!(fx, snes, x)
+            fx[1] = x[1]^2 + x[1] * x[2] - 3
+            fx[2] = x[1] * x[2] + x[2]^2 - 6
+            return PetscInt(0)  # petsc success
+        end
 ```
 
 In addition, we need to provide the Jacobian:
@@ -161,31 +145,35 @@ y & x + 2y  \\
 ```
 In Julia, this is:
 ```julia
-julia> function updateJ!(cx, J, args...)
-            x      = PETSc.unsafe_localarray(Float64, cx;  write=false)
-            J[1,1] = 2x[1] + x[2]
-            J[1,2] = x[1]
-            J[2,1] = x[2]
-            J[2,2] = x[1] + 2x[2]
-            Base.finalize(x)
-            PETSc.assemble(J)          
+julia> function updateJ!(J, snes, x)
+            J[1, 1] = 2x[1] + x[2]
+            J[1, 2] = x[1]
+            J[2, 1] = x[2]
+            J[2, 2] = x[1] + 2x[2]
+
+            PETSc.assemble!(J)
+            return PetscInt(0)
         end
 ```
 In order to solve this using the PETSc nonlinear equation solvers, you first define the `SNES` solver together with the jacobian and residual functions as 
 ```julia
 julia> using PETSc, MPI
-julia> S = PETSc.SNES{Float64}(petsclib,MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
-julia> PETSc.setfunction!(S, F!, PETSc.VecSeq(zeros(2)))
+julia> snes = PETSc.SNES(petsclib,MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
+julia> r = LibPETSc.VecSeq(petsclib, zeros(PetscScalar, 2))
+julia> PETSc.setfunction!(snes, F!, r)
 julia> J = zeros(2,2)
-julia> PJ = PETSc.MatSeqDense(J)
-julia> PETSc.setjacobian!(S, updateJ!, PJ, PJ)
+julia> PJ = PETSc.MatSeqDense(petsclib,J)
+julia> PETSc.setjacobian!(updateJ!, snes, PJ)
 ```
 
 You can solve this as:
 ```julia
-julia> PETSc.solve!([2.0,3.0], S)
+julia> x = PETSc.VecSeq(petsclib, [2.0, 3.0])
+julia> b = PETSc.VecSeq(petsclib, [0.0, 0.0])
+julia> PETSc.solve!(x, snes, b)
+julia> x[:]
 2-element Vector{Float64}:
- 1.000000003259629
- 1.999999998137355
+ 2.0
+ 3.0
 ```
 which indeed recovers the analytical solution ``(x=1, y=2)``.

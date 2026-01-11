@@ -11,9 +11,14 @@ makedocs(;
         "Getting Started" => "man/getting_started.md",
         "PETSc" => Any[
             "Mat" =>  "man/mat.md",
+            "Vec" =>  "man/vec.md",
             "DMStag" =>  "man/dmstag.md",
+            "KSP" =>  "man/ksp.md",
+            "SNES" =>  "man/snes.md",
         ],
         "List of functions"  => "man/listfunctions.md"
+        "FAQ"  => "man/FAQ.md"
+        "Contributing"  => "man/contributing.md"
     ],
 )
 

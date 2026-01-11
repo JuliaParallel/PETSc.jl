@@ -64,7 +64,7 @@ function MatCreateSeqAIJ(petsclib, comm, S::SparseMatrixCSC{PetscScalar})   wher
 end
 
 """
-    MatSeqAIJ(petsclib, num_rows, num_cols, nonzeros)
+    mat = MatSeqAIJ(petsclib, num_rows, num_cols, nonzeros)
 
 Create a PETSc serial sparse array using AIJ format (also known as a compressed
 sparse row or CSR format) of size `num_rows X num_cols` with `nonzeros` per row

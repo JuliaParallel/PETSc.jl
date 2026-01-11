@@ -249,3 +249,68 @@ end
         PETSc.finalize(petsclib)
     end
 end
+
+@testset "MatSeqDense constructor" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt = petsclib.PetscInt
+
+        # Create a Julia matrix
+        if PetscScalar <: Real
+            Ajl = PetscScalar.([
+                1 2 3 4
+                5 6 7 8
+                9 10 11 12
+            ])
+        else
+            Ajl = PetscScalar.([
+                1 2+im 3 4-im
+                5 6+2im 7 8
+                9-im 10 11+im 12
+            ])
+        end
+
+        # Create PETSc dense matrix from Julia matrix
+        A = PETSc.MatSeqDense(petsclib, Ajl)
+        
+        # Test that the matrix was created successfully
+        @test A !== nothing
+        @test A.ptr != C_NULL
+        
+        # Test size
+        @test size(A) == size(Ajl)
+        @test size(A) == (3, 4)
+        
+        # Test individual value retrieval
+        @test A[1, 1] == Ajl[1, 1]
+        @test A[2, 3] == Ajl[2, 3]
+        @test A[3, 4] == Ajl[3, 4]
+        
+        # Test retrieving all values
+        A_retrieved = A[:, :]
+        @test A_retrieved == Ajl
+        
+        # Test matrix-vector multiplication
+        x = PetscScalar.(collect(1:4))
+        y_expected = Ajl * x
+        
+        vec_x = LibPETSc.VecCreateSeqWithArray(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(1), PetscInt(length(x)), copy(x))
+        vec_y = LibPETSc.VecCreateSeq(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(3))
+        
+        mul!(vec_y, A, vec_x)
+        @test vec_y[:] ≈ y_expected rtol=1e-5
+        
+        # Test matrix modification
+        A[1, 1] = PetscScalar(100.0)
+        PETSc.assemble!(A)
+        @test A[1, 1] == PetscScalar(100.0)
+        
+        # Explicitly destroy objects
+        PETSc.destroy(vec_x)
+        PETSc.destroy(vec_y)
+        PETSc.destroy(A)
+        
+        PETSc.finalize(petsclib)
+    end
+end

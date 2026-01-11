@@ -140,6 +140,56 @@ end
     end
 end
 
+@testset "VecSeq constructor with array" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt = petsclib.PetscInt
+        
+        # Test with simple array
+        x = ones(PetscScalar, 3)
+        v = PETSc.VecSeq(petsclib, x)
+        
+        # Verify the vector was created successfully
+        @test v !== nothing
+        @test v.ptr != C_NULL
+        @test LibPETSc.VecGetSize(petsclib, v) == 3
+        
+        # Verify values
+        @test v[1:3] == ones(PetscScalar, 3)
+        @test LibPETSc.VecSum(petsclib, v) == PetscScalar(3.0)
+        
+        # Test with different array values
+        if PetscScalar <: Real
+            x2 = PetscScalar.([1.0, 2.0, 3.0, 4.0, 5.0])
+        else
+            x2 = PetscScalar.([1.0, 2.0+im, 3.0, 4.0-im, 5.0])
+        end
+        v2 = PETSc.VecSeq(petsclib, x2)
+        
+        @test LibPETSc.VecGetSize(petsclib, v2) == 5
+        @test v2[1:5] == x2
+        @test LibPETSc.VecNorm(petsclib, v2, PETSc.NORM_2) ≈ norm(x2)
+        
+        # Test that modifications to the vector affect the underlying array
+        # (since VecSeq uses VecCreateSeqWithArray)
+        v[1] = PetscScalar(42.0)
+        @test x[1] == PetscScalar(42.0)
+        
+        # Test with blocksize parameter
+        x3 = PetscScalar.([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
+        v3 = PETSc.VecSeq(petsclib, x3; blocksize=2)
+        @test LibPETSc.VecGetSize(petsclib, v3) == 6
+        @test LibPETSc.VecGetBlockSize(petsclib, v3) == 2
+        
+        # Cleanup
+        PETSc.destroy(v)
+        PETSc.destroy(v2)
+        PETSc.destroy(v3)
+        
+        PETSc.finalize(petsclib)
+    end
+end
 
 
 @testset "withlocalarray!" begin

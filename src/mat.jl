@@ -100,8 +100,32 @@ function MatSeqAIJ(
                 PetscInt(num_cols), 
                 PetscInt(0), PetscInt.(nonzeros))    
     end
+
     finalizer(destroy, mat)
 
+    return mat
+end
+
+"""
+    mat = MatSeqDense(petsclib, A::Matrix{PetscScalar})
+
+PETSc dense array. This wraps a Julia `Matrix{PetscScalar}` object.
+
+# External Links
+$(_doc_external("Mat/MatCreateSeqDense"))
+"""
+function MatSeqDense(
+    petsclib::PetscLib,
+    A::Matrix{PetscScalar},
+) where {PetscLib <: PetscLibType, PetscScalar}
+    comm = MPI.COMM_SELF
+    @assert initialized(petsclib)
+    @assert PetscScalar == petsclib.PetscScalar
+    
+    PetscInt = petsclib.PetscInt
+    mat = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(size(A, 1)), PetscInt(size(A, 2)), A[:])
+
+    finalizer(destroy, mat)
     return mat
 end
 

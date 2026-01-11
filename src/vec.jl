@@ -49,6 +49,60 @@ end
 VecPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} = VecPtr(getlib(PetscLib), x...)
 
 
+"""
+    VecSeq(petsclib, n::Int)
+
+A standard, sequentially-stored serial PETSc vector for `petsclib.PetscScalar`
+of length `n`.
+
+# External Links
+$(_doc_external("Vec/VecCreateSeq"))
+"""
+function VecSeq(petsclib::PetscLib, n::Int) where {PetscLib <: PetscLibType}
+    comm = MPI.COMM_SELF
+    @assert initialized(petsclib)
+    v = LibPETSc.VecCreateSeq(petsclib, comm, n)
+    finalizer(destroy, v)
+    return v
+end
+
+
+"""
+    VecSeq(petsclib, v::Vector)
+
+A standard, sequentially-stored serial PETSc vector, wrapping the Julia vector
+`v`.
+
+This reuses the array `v` as storage, and so `v` should not be `resize!`-ed or
+otherwise have its length modified while the PETSc object exists.
+
+This should only be need to be called for more advanced uses, for most simple
+usecases, users should be able to pass `Vector`s directly and have the wrapping
+performed automatically
+
+# External Links
+$(_doc_external("Vec/VecCreateSeqWithArray"))
+"""
+function VecSeq(
+    petsclib::PetscLib,
+    array::Vector{PetscScalar};
+    blocksize = 1,
+) where {PetscLib <: PetscLibType, PetscScalar}
+    comm = MPI.COMM_SELF
+    @assert initialized(petsclib)
+    @assert PetscScalar == petsclib.PetscScalar
+    PetscInt = petsclib.PetscInt
+    v = LibPETSc.VecCreateSeqWithArray(
+        petsclib,
+        comm,
+        PetscInt(blocksize),
+        PetscInt(length(array)),
+        array,
+    )
+    finalizer(destroy, v)
+    return v
+end
+
 
 # =============================================================================
 # Multiple dispatch to make PetscVec behave like Julia Vector

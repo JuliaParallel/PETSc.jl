@@ -63,6 +63,47 @@ function MatCreateSeqAIJ(petsclib, comm, S::SparseMatrixCSC{PetscScalar})   wher
     return M
 end
 
+"""
+    MatSeqAIJ(petsclib, num_rows, num_cols, nonzeros)
+
+Create a PETSc serial sparse array using AIJ format (also known as a compressed
+sparse row or CSR format) of size `num_rows X num_cols` with `nonzeros` per row
+
+If `nonzeros` is an `Integer` the same number of non-zeros will be used for each
+row, if `nonzeros` is a `Vector{PetscInt}` then one value must be specified for
+each row.
+
+Memory allocation is handled by PETSc and garbage collection can be used.
+
+# External Links
+$(_doc_external("Mat/MatCreateSeqAIJ"))
+"""
+function MatSeqAIJ(
+    petsclib::PetscLib,
+    num_rows::Integer,
+    num_cols::Integer,
+    nonzeros::Union{Integer, Vector},
+) where {PetscLib <: PetscLibType}
+    comm = MPI.COMM_SELF
+    @assert initialized(petsclib)
+    PetscInt = petsclib.PetscInt
+    if nonzeros isa Integer
+        mat = LibPETSc.MatCreateSeqAIJ(petsclib, comm, 
+                PetscInt(num_rows), 
+                PetscInt(num_cols), 
+                PetscInt(nonzeros), C_NULL)
+    else
+        @assert eltype(nonzeros) == petsclib.PetscInt
+        @assert length(nonzeros) >= num_rows
+        mat = LibPETSc.MatCreateSeqAIJ(petsclib, comm, 
+                PetscInt(num_rows), 
+                PetscInt(num_cols), 
+                PetscInt(0), PetscInt.(nonzeros))    
+    end
+    finalizer(destroy, mat)
+
+    return mat
+end
 
 
 # Matrix indexing - set single value

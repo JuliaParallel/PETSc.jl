@@ -202,3 +202,50 @@ end
         PETSc.finalize(petsclib)
     end
 end
+
+@testset "MatSeqAIJ constructor" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt = petsclib.PetscInt
+
+        # Test with integer nonzeros (same for all rows)
+        num_rows, num_cols = 5, 7
+        nonzeros = 3
+        A = PETSc.MatSeqAIJ(petsclib, num_rows, num_cols, nonzeros)
+        @test size(A) == (num_rows, num_cols)
+        
+        # Set some values
+        A[1, 1] = PetscScalar(1.0)
+        A[2, 3] = PetscScalar(2.0)
+        A[3, 5] = PetscScalar(3.0)
+        PETSc.assemble!(A)
+        
+        @test A[1, 1] == PetscScalar(1.0)
+        @test A[2, 3] == PetscScalar(2.0)
+        @test A[3, 5] == PetscScalar(3.0)
+        
+        PETSc.destroy(A)
+        
+        # Test with vector of nonzeros (one per row)
+        nz_vec = PetscInt.([2, 3, 1, 4, 2])
+        B = PETSc.MatSeqAIJ(petsclib, num_rows, num_cols, nz_vec)
+        @test size(B) == (num_rows, num_cols)
+        
+        # Set values matching the nonzero pattern
+        B[1, 1] = PetscScalar(10.0)
+        B[1, 2] = PetscScalar(11.0)
+        B[2, 1] = PetscScalar(20.0)
+        B[2, 2] = PetscScalar(21.0)
+        B[2, 3] = PetscScalar(22.0)
+        PETSc.assemble!(B)
+        
+        @test B[1, 1] == PetscScalar(10.0)
+        @test B[1, 2] == PetscScalar(11.0)
+        @test B[2, 1] == PetscScalar(20.0)
+        
+        PETSc.destroy(B)
+        
+        PETSc.finalize(petsclib)
+    end
+end

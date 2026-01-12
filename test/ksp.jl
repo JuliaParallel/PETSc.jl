@@ -71,6 +71,12 @@ using SparseArrays: spdiagm
         # Solve system of equations
         LibPETSc.KSPSolve(petsclib,ksp, b, y)
 
+        # Test KSPGetConvergedReason
+        reason = LibPETSc.KSPGetConvergedReason(petsclib, ksp)
+        @test reason isa LibPETSc.KSPConvergedReason
+        # Reason can be positive (converged), negative (diverged), or 0 (still iterating)
+        # Just verify it's a valid KSPConvergedReason value
+        
         # Verify solution
         @test y[1:10] ≈ x[1:10]
         PETSc.destroy(x)

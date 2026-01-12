@@ -4038,7 +4038,7 @@ function KSPDestroyDefault(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPGetConvergedReason(petsclib::PetscLibType,ksp::PetscKSP, reason::KSPConvergedReason) 
+	KSPGetConvergedReason(petsclib::PetscLibType,ksp::PetscKSP) 
 Gets the reason the `KSP` iteration was stopped.
 
 Not Collective
@@ -4060,10 +4060,10 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetConvergedReason"))
 """
-function KSPGetConvergedReason(petsclib::PetscLibType, ksp::PetscKSP, reason::KSPConvergedReason) end
+function KSPGetConvergedReason(petsclib::PetscLibType, ksp::PetscKSP) end
 
-@for_petsc function KSPGetConvergedReason(petsclib::$UnionPetscLib, ksp::PetscKSP, reason::KSPConvergedReason )
-
+@for_petsc function KSPGetConvergedReason(petsclib::$UnionPetscLib, ksp::PetscKSP)
+    reason = Ref{KSPConvergedReason}()
     @chk ccall(
                (:KSPGetConvergedReason, $petsc_library),
                PetscErrorCode,
@@ -4072,7 +4072,7 @@ function KSPGetConvergedReason(petsclib::PetscLibType, ksp::PetscKSP, reason::KS
               )
 
 
-	return nothing
+	return reason[]
 end 
 
 """

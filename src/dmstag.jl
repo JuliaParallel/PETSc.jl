@@ -4,7 +4,7 @@
 to_petscint_tuple(t::Tuple, PetscInt) = map(arr -> PetscInt.(arr), t)
 
 """
-    DMStag(
+    da = DMStag(
         petsclib::PetscLib
         comm::MPI.Comm,
         boundary_type::NTuple{D, DMBoundaryType},

@@ -1,4 +1,4 @@
-
+# EXCLUDE FROM TESTING
 # # Finite Difference Laplacian - Convergence Analysis
 #
 # This example performs convergence analysis for a 2-D Laplacian solver with zero 

@@ -96,29 +96,34 @@ using MPI
         indices = PetscInt[0, 2, 4, 6, 8]
         is = PETSc.LibPETSc.ISCreateGeneral(petsclib, MPI.COMM_SELF, 5, indices, PETSc.LibPETSc.PETSC_COPY_VALUES)
         
-        # Test PETSC_VIEWER_STDOUT_SELF
-        viewer_stdout_self = PETSc.LibPETSc.PETSC_VIEWER_STDOUT_SELF(petsclib)
-        @test viewer_stdout_self isa PETSc.LibPETSc.PetscViewer
-        @test viewer_stdout_self != C_NULL
-        @test PETSc.LibPETSc.ISView(petsclib, is, viewer_stdout_self) === nothing
-        
-        # Test PETSC_VIEWER_STDOUT_WORLD
-        viewer_stdout_world = PETSc.LibPETSc.PETSC_VIEWER_STDOUT_WORLD(petsclib)
-        @test viewer_stdout_world isa PETSc.LibPETSc.PetscViewer
-        @test viewer_stdout_world != C_NULL
-        @test PETSc.LibPETSc.ISView(petsclib, is, viewer_stdout_world) === nothing
-        
-        # Test PETSC_VIEWER_STDERR_SELF
-        viewer_stderr_self = PETSc.LibPETSc.PETSC_VIEWER_STDERR_SELF(petsclib)
-        @test viewer_stderr_self isa PETSc.LibPETSc.PetscViewer
-        @test viewer_stderr_self != C_NULL
-        @test PETSc.LibPETSc.ISView(petsclib, is, viewer_stderr_self) === nothing
-        
-        # Test PETSC_VIEWER_STDERR_WORLD
-        viewer_stderr_world = PETSc.LibPETSc.PETSC_VIEWER_STDERR_WORLD(petsclib)
-        @test viewer_stderr_world isa PETSc.LibPETSc.PetscViewer
-        @test viewer_stderr_world != C_NULL
-        @test PETSc.LibPETSc.ISView(petsclib, is, viewer_stderr_world) === nothing
+        # Redirect output to suppress IS viewer output during testing
+        redirect_stdout(devnull) do
+            redirect_stderr(devnull) do
+                # Test PETSC_VIEWER_STDOUT_SELF
+                viewer_stdout_self = PETSc.LibPETSc.PETSC_VIEWER_STDOUT_SELF(petsclib)
+                @test viewer_stdout_self isa PETSc.LibPETSc.PetscViewer
+                @test viewer_stdout_self != C_NULL
+                @test PETSc.LibPETSc.ISView(petsclib, is, viewer_stdout_self) === nothing
+                
+                # Test PETSC_VIEWER_STDOUT_WORLD
+                viewer_stdout_world = PETSc.LibPETSc.PETSC_VIEWER_STDOUT_WORLD(petsclib)
+                @test viewer_stdout_world isa PETSc.LibPETSc.PetscViewer
+                @test viewer_stdout_world != C_NULL
+                @test PETSc.LibPETSc.ISView(petsclib, is, viewer_stdout_world) === nothing
+                
+                # Test PETSC_VIEWER_STDERR_SELF
+                viewer_stderr_self = PETSc.LibPETSc.PETSC_VIEWER_STDERR_SELF(petsclib)
+                @test viewer_stderr_self isa PETSc.LibPETSc.PetscViewer
+                @test viewer_stderr_self != C_NULL
+                @test PETSc.LibPETSc.ISView(petsclib, is, viewer_stderr_self) === nothing
+                
+                # Test PETSC_VIEWER_STDERR_WORLD
+                viewer_stderr_world = PETSc.LibPETSc.PETSC_VIEWER_STDERR_WORLD(petsclib)
+                @test viewer_stderr_world isa PETSc.LibPETSc.PetscViewer
+                @test viewer_stderr_world != C_NULL
+                @test PETSc.LibPETSc.ISView(petsclib, is, viewer_stderr_world) === nothing
+            end
+        end
         
         PETSc.LibPETSc.ISDestroy(petsclib, is)
     end

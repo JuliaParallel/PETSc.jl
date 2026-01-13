@@ -18,19 +18,19 @@ using MPI
     @testset "Tao solver type" begin
         tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
         
-        # Set Tao type (using BQNLS - Bounded Quasi-Newton Line Search)
-        @test_nowarn PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "bqnls"))
+        # Set Tao type (using NLS - Newton Line Search, always available)
+        @test_nowarn PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "nls"))
         
         # Get Tao type back
         taotype = PETSc.LibPETSc.TaoGetType(petsclib, tao)
-        @test taotype == "bqnls"
+        @test taotype == "nls"
         
         PETSc.LibPETSc.TaoDestroy(petsclib, tao)
     end
     
     @testset "Tao with different solver types" begin
-        # Test various Tao solver types
-        for taotype in ["nls", "lmvm", "cg", "nm"]
+        # Test various Tao solver types (using types that don't require special builds)
+        for taotype in ["nls", "ntr", "cg", "nm"]
             tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
             @test_nowarn PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, taotype))
             retrieved_type = PETSc.LibPETSc.TaoGetType(petsclib, tao)
@@ -41,7 +41,7 @@ using MPI
     
     @testset "Tao tolerances" begin
         tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
-        PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "lmvm"))
+        PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "nls"))
         
         # Set tolerances (gatol, grtol, gttol)
         @test_nowarn PETSc.LibPETSc.TaoSetTolerances(petsclib, tao, 1e-8, 1e-8, 1e-8)
@@ -77,7 +77,7 @@ using MPI
     
     @testset "Tao iteration count" begin
         tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
-        PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "lmvm"))
+        PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "nls"))
         
         # Get iteration count (should be 0 before solving)
         iter = PETSc.LibPETSc.TaoGetIterationNumber(petsclib, tao)

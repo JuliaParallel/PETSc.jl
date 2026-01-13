@@ -32,6 +32,7 @@ include("old_test.jl")
 include("low_level_viewer.jl")  # Low-level viewer convenience functions
 include("low_level_ts.jl")      # Low-level TS functions
 include("low_level_is.jl")      # Low-level IS functions
+include("low_level_petscsection.jl")  # Low-level PetscSection functions
 include("low_level_tao.jl")     # Low-level Tao functions
 
 include("testutils.jl")

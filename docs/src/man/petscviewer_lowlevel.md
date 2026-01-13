@@ -29,19 +29,46 @@ using PETSc
 petsclib = PETSc.getlib()
 
 # Create a viewer for ASCII output to stdout
-viewer = Ref{LibPETSc.PetscViewer}()
-LibPETSc.PetscViewerCreate(petsclib, MPI.COMM_SELF, viewer)
-LibPETSc.PetscViewerSetType(petsclib, viewer[], LibPETSc.PETSCVIEWERASCII)
-LibPETSc.PetscViewerFileSetMode(petsclib, viewer[], LibPETSc.FILE_MODE_WRITE)
+viewer = LibPETSc.PetscViewerCreate(petsclib, MPI.COMM_SELF)
+LibPETSc.PetscViewerSetType(petsclib, viewer, Base.unsafe_convert(Ptr{Int8}, "ascii"))
+LibPETSc.PetscViewerFileSetMode(petsclib, viewer, LibPETSc.FILE_MODE_WRITE)
 
 # View a vector
-# LibPETSc.VecView(petsclib, vec, viewer[])
+# LibPETSc.VecView(petsclib, vec, viewer)
 
 # View a matrix  
-# LibPETSc.MatView(petsclib, mat, viewer[])
+# LibPETSc.MatView(petsclib, mat, viewer)
 
-# Cleanup
-LibPETSc.PetscViewerDestroy(petsclib, viewer)
+# Cleanup - wrap in Ref since PetscViewerDestroy expects Ptr{PetscViewer}
+viewer_ref = Ref(viewer)
+LibPETSc.PetscViewerDestroy(petsclib, viewer_ref)
+```
+
+## Convenience Functions
+
+For commonly used viewers, PETSc.jl provides convenience functions:
+
+```julia
+using PETSc
+
+# Initialize PETSc
+petsclib = PETSc.getlib()
+
+# Get stdout viewer (single process)
+viewer_stdout_self = LibPETSc.PETSC_VIEWER_STDOUT_SELF(petsclib)
+
+# Get stdout viewer (all processes)
+viewer_stdout_world = LibPETSc.PETSC_VIEWER_STDOUT_WORLD(petsclib)
+
+# Get stderr viewer (single process)
+viewer_stderr_self = LibPETSc.PETSC_VIEWER_STDERR_SELF(petsclib)
+
+# Get stderr viewer (all processes)
+viewer_stderr_world = LibPETSc.PETSC_VIEWER_STDERR_WORLD(petsclib)
+
+# Use them to view objects
+# LibPETSc.VecView(petsclib, vec, viewer_stdout_self)
+# LibPETSc.MatView(petsclib, mat, viewer_stderr_world)
 ```
 
 ## Output to Files
@@ -88,9 +115,8 @@ LibPETSc.PetscViewerBinaryOpen(petsclib, MPI.COMM_WORLD, "checkpoint.dat",
                                LibPETSc.FILE_MODE_READ, viewer)
 
 # Load vector
-vec = Ref{LibPETSc.Vec}()
-LibPETSc.VecCreate(petsclib, MPI.COMM_WORLD, vec)
-LibPETSc.VecLoad(petsclib, vec[], viewer[])
+vec = LibPETSc.VecCreate(petsclib, MPI.COMM_WORLD)
+LibPETSc.VecLoad(petsclib, vec, viewer[])
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
 ```

@@ -22,38 +22,36 @@ using PETSc
 petsclib = PETSc.getlib()
 
 # Create a TS object
-ts = Ref{LibPETSc.TS}()
-LibPETSc.TSCreate(petsclib, MPI.COMM_SELF, ts)
+ts = LibPETSc.TSCreate(petsclib, MPI.COMM_SELF)
 
 # Set the problem type (ODE or DAE)
-LibPETSc.TSSetProblemType(petsclib, ts[], LibPETSc.TS_NONLINEAR)
+LibPETSc.TSSetProblemType(petsclib, ts, LibPETSc.TS_NONLINEAR)
 
 # Set the time stepping method (e.g., BDF, RK, Theta)
-LibPETSc.TSSetType(petsclib, ts[], LibPETSc.TSBDF)
+LibPETSc.TSSetType(petsclib, ts, Base.unsafe_convert(Ptr{Int8}, "bdf"))
 
 # Set time span
-LibPETSc.TSSetTime(petsclib, ts[], 0.0)  # Initial time
-LibPETSc.TSSetMaxTime(petsclib, ts[], 1.0)  # Final time
-LibPETSc.TSSetExactFinalTime(petsclib, ts[], LibPETSc.TS_EXACTFINALTIME_STEPOVER)
+LibPETSc.TSSetTime(petsclib, ts, 0.0)  # Initial time
+LibPETSc.TSSetMaxTime(petsclib, ts, 1.0)  # Final time
+LibPETSc.TSSetExactFinalTime(petsclib, ts, LibPETSc.TS_EXACTFINALTIME_STEPOVER)
 
 # Set initial time step
-LibPETSc.TSSetTimeStep(petsclib, ts[], 0.01)
+LibPETSc.TSSetTimeStep(petsclib, ts, 0.01)
 
 # Set the right-hand side function (for ODE: du/dt = f(t,u))
-# LibPETSc.TSSetRHSFunction(petsclib, ts[], C_NULL, rhs_function_ptr, C_NULL)
+# LibPETSc.TSSetRHSFunction(petsclib, ts, C_NULL, rhs_function_ptr, C_NULL)
 
 # Set options from command line/options database
-LibPETSc.TSSetFromOptions(petsclib, ts[])
+LibPETSc.TSSetFromOptions(petsclib, ts)
 
 # Set initial condition
-# LibPETSc.TSSetSolution(petsclib, ts[], initial_vec)
+# LibPETSc.TSSetSolution(petsclib, ts, initial_vec)
 
 # Solve
-# LibPETSc.TSSolve(petsclib, ts[], solution_vec)
+# LibPETSc.TSSolve(petsclib, ts, solution_vec)
 
-# Get solution time and step number
-final_time = Ref{Cdouble}()
-LibPETSc.TSGetSolveTime(petsclib, ts[], final_time)
+# Get solution time (returns value directly)
+final_time = LibPETSc.TSGetSolveTime(petsclib, ts)
 
 # Cleanup
 LibPETSc.TSDestroy(petsclib, ts)

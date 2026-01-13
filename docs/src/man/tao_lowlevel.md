@@ -23,40 +23,38 @@ using PETSc
 petsclib = PETSc.getlib()
 
 # Create a Tao object
-tao = Ref{LibPETSc.Tao}()
-LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF, tao)
+tao = LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
 
 # Set the optimization algorithm (e.g., LMVM, BLMVM, NLS)
-LibPETSc.TaoSetType(petsclib, tao[], LibPETSc.TAOLMVM)
+LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "lmvm"))
 
 # Set the objective function and gradient
-# LibPETSc.TaoSetObjective(petsclib, tao[], objective_function_ptr, C_NULL)
-# LibPETSc.TaoSetGradient(petsclib, tao[], C_NULL, gradient_function_ptr, C_NULL)
+# LibPETSc.TaoSetObjective(petsclib, tao, objective_function_ptr, C_NULL)
+# LibPETSc.TaoSetGradient(petsclib, tao, C_NULL, gradient_function_ptr, C_NULL)
 
 # For bound-constrained problems, set variable bounds
-# LibPETSc.TaoSetVariableBounds(petsclib, tao[], lower_bound_vec, upper_bound_vec)
+# LibPETSc.TaoSetVariableBounds(petsclib, tao, lower_bound_vec, upper_bound_vec)
 
 # Set convergence tolerances
-LibPETSc.TaoSetTolerances(petsclib, tao[], 1e-8, 1e-8, 1e-8)
+LibPETSc.TaoSetTolerances(petsclib, tao, 1e-8, 1e-8, 1e-8)
 
 # Set maximum iterations
-LibPETSc.TaoSetMaximumIterations(petsclib, tao[], 1000)
+LibPETSc.TaoSetMaximumIterations(petsclib, tao, 1000)
 
 # Set options from command line/options database
-LibPETSc.TaoSetFromOptions(petsclib, tao[])
+LibPETSc.TaoSetFromOptions(petsclib, tao)
 
 # Set initial guess
-# LibPETSc.TaoSetSolution(petsclib, tao[], initial_vec)
+# LibPETSc.TaoSetSolution(petsclib, tao, initial_vec)
 
 # Solve the optimization problem
-# LibPETSc.TaoSolve(petsclib, tao[])
+# LibPETSc.TaoSolve(petsclib, tao)
 
-# Get solution information
+# Get solution information (values returned directly)
 reason = Ref{LibPETSc.TaoConvergedReason}()
-LibPETSc.TaoGetConvergedReason(petsclib, tao[], reason)
+LibPETSc.TaoGetConvergedReason(petsclib, tao, reason)
 
-iter = Ref{PetscInt}()
-LibPETSc.TaoGetIterationNumber(petsclib, tao[], iter)
+iter = LibPETSc.TaoGetIterationNumber(petsclib, tao)
 
 # Cleanup
 LibPETSc.TaoDestroy(petsclib, tao)

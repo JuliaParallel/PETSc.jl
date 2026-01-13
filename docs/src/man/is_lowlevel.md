@@ -26,27 +26,24 @@ using PETSc
 petsclib = PETSc.getlib()
 
 # Create an index set from an array of indices (0-based)
-indices = Int32[0, 2, 4, 6, 8]
-is = Ref{LibPETSc.IS}()
-LibPETSc.ISCreateGeneral(petsclib, MPI.COMM_SELF, length(indices), indices, LibPETSc.PETSC_COPY_VALUES, is)
+# Note: indices should be PetscInt type (typically Int64, not Int32)
+indices = PetscInt[0, 2, 4, 6, 8]
+is = LibPETSc.ISCreateGeneral(petsclib, MPI.COMM_SELF, length(indices), indices, LibPETSc.PETSC_COPY_VALUES)
 
 # Create a stride index set: indices = first:step:(first + step*(n-1))
-is_stride = Ref{LibPETSc.IS}()
-LibPETSc.ISCreateStride(petsclib, MPI.COMM_SELF, 10, 0, 2, is_stride)  # 0, 2, 4, ..., 18
+is_stride = LibPETSc.ISCreateStride(petsclib, MPI.COMM_SELF, 10, 0, 2)  # 0, 2, 4, ..., 18
 
-# Get the size of an index set
-n = Ref{PetscInt}()
-LibPETSc.ISGetSize(petsclib, is[], n)
+# Get the size of an index set (returns value directly)
+n = LibPETSc.ISGetSize(petsclib, is)
 
-# Get local size
-local_n = Ref{PetscInt}()
-LibPETSc.ISGetLocalSize(petsclib, is[], local_n)
+# Get local size (returns value directly)
+local_n = LibPETSc.ISGetLocalSize(petsclib, is)
 
 # Get indices as an array
 indices_ptr = Ref{Ptr{PetscInt}}()
-LibPETSc.ISGetIndices(petsclib, is[], indices_ptr)
+LibPETSc.ISGetIndices(petsclib, is, indices_ptr)
 # ... use indices ...
-LibPETSc.ISRestoreIndices(petsclib, is[], indices_ptr)
+LibPETSc.ISRestoreIndices(petsclib, is, indices_ptr)
 
 # Cleanup
 LibPETSc.ISDestroy(petsclib, is)

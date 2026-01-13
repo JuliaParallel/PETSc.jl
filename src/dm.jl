@@ -14,6 +14,17 @@ function Base.show(io::IO, v::AbstractPetscDM{PetscLib}) where {PetscLib}
 end
 
 
+"""
+    destroy(dm::AbstractPetscDM)
+
+Destroy a DM object and release associated resources.
+
+This function is typically called automatically via finalizers when the object
+is garbage collected, but can be called explicitly to free resources immediately.
+
+# External Links
+$(_doc_external("DM/DMDestroy"))
+"""
 function destroy(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     if !(finalized(PetscLib)) && dm.ptr != C_NULL 
         LibPETSc.DMDestroy(PetscLib, dm)
@@ -25,22 +36,23 @@ end
 
 
 """
-   dagetinfo =  getinfo(dm::AbstractPetscDM{PetscLib})
-Gets info about a given DM
+    getinfo(dm::AbstractPetscDM)
 
-Output:
-===
-- `dagetinfo` - named tuple with the following fields:
+Get information about a DMDA.
 
-- `dim` - dimension of the `DMDA` (1, 2, or 3)
-- `global_size` - tuple with global dimensions in each direction of the array
-- `mpi_proc_size` - tuple with number of MPI processes in each direction
-- `dof` - degrees of freedom per node
-- `stencil_width` - width of the stencil
-- `boundary_type` - tuple with boundary types in each direction
-- `stencil_type` - stencil type, either `DMDA_STENCIL_STAR` or `DMDA_STENCIL_BOX`
+# Returns
 
+A `NamedTuple` with the following fields:
+- `dim`: Dimension of the `DMDA` (1, 2, or 3)
+- `global_size`: Tuple with global dimensions in each direction of the array
+- `mpi_proc_size`: Tuple with number of MPI processes in each direction
+- `dof`: Degrees of freedom per node
+- `stencil_width`: Width of the stencil
+- `boundary_type`: Tuple with boundary types in each direction
+- `stencil_type`: Stencil type, either `DMDA_STENCIL_STAR` or `DMDA_STENCIL_BOX`
 
+# External Links
+$(_doc_external("DMDA/DMDAGetInfo"))
 """
 function getinfo(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
 
@@ -185,19 +197,18 @@ Returns a global vector `v` from the `dm` object.
 DMGlobalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateGlobalVector(getlib(PetscLib), dm)
 
 """
-    dm_local_to_global!(
-        global_vec::AbstractPetscVec{PetscLib},
-        local_vec::AbstractPetscVec{PetscLib},
-        dm::AbstractPetscDM{PetscLib},
-        mode::InsertMode = INSERT_VALUES) 
+    dm_local_to_global!(local_vec, global_vec, dm, mode = INSERT_VALUES)
 
-Send values of the `local_vec` to the `global_vec` which are connected to the `dm` object.
+Transfer values from the `local_vec` to the `global_vec` associated with the `dm` object.
 
-Input Parameters:
-- `global_vec::AbstractPetscVec{PetscLib}` - Global vector
-- `local_vec::AbstractPetscVec{PetscLib}` - Local vector
-- `dm::AbstractPetscDM{PetscLib}` - DM object
-- `mode::InsertMode` - Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
+# Arguments
+- `local_vec::AbstractPetscVec`: Local vector (source)
+- `global_vec::AbstractPetscVec`: Global vector (destination)
+- `dm::AbstractPetscDM`: DM object
+- `mode::InsertMode`: Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
+
+# External Links
+$(_doc_external("DM/DMLocalToGlobal"))
 
 """
 function dm_local_to_global!(   local_vec::AbstractPetscVec{PetscLib},
@@ -212,20 +223,19 @@ end
 
 
 """
-    dm_global_to_local!(
-        global_vec::AbstractPetscVec{PetscLib},
-        local_vec::AbstractPetscVec{PetscLib},
-        dm::AbstractPetscDM{PetscLib},
-        mode::InsertMode = INSERT_VALUES) 
+    dm_global_to_local!(global_vec, local_vec, dm, mode = INSERT_VALUES)
 
-Send values of the `local_vec` to the `global_vec` which are connected to the `dm` object.
+Transfer values from the `global_vec` to the `local_vec` associated with the `dm` object,
+including ghost point values from neighboring processes.
 
-Input Parameters:
-- `global_vec::AbstractPetscVec{PetscLib}` - Global vector
-- `local_vec::AbstractPetscVec{PetscLib}` - Local vector
-- `dm::AbstractPetscDM{PetscLib}` - DM object
-- `mode::InsertMode` - Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
+# Arguments
+- `global_vec::AbstractPetscVec`: Global vector (source)
+- `local_vec::AbstractPetscVec`: Local vector (destination)
+- `dm::AbstractPetscDM`: DM object
+- `mode::InsertMode`: Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
 
+# External Links
+$(_doc_external("DM/DMLocalToGlobal"))
 """
 function dm_global_to_local!(global_vec::AbstractPetscVec{PetscLib},
                               local_vec::AbstractPetscVec{PetscLib},
@@ -301,11 +311,15 @@ function coordinatesDMLocalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
 end
 
 """
-    getlocalcoordinatearray(da::AbstractDMDA)
+    getlocalcoordinatearray(da::AbstractPetscDM)
 
-Returns a `NamedTuple` with OffsetArrays that contain the local coordinates and
-that can be addressed uisng global indices
+Return coordinate arrays for the local portion of the domain.
 
+The returned arrays are `OffsetArray`s that can be addressed using global indices,
+accounting for ghost points.
+
+# External Links
+$(_doc_external("DM/DMGetCoordinatesLocal"))
 """
 function getlocalcoordinatearray(da::AbstractPetscDM{PetscLib}) where {PetscLib}
     # retrieve local coordinates
@@ -335,8 +349,11 @@ getdimension(dm::AbstractPetscDM{PetscLib}) where PetscLib = LibPETSc.DMGetDimen
 
 
 """
-    siz = size(dm::AbstractPetscDM{PetscLib})
-Size of a DM object 
+    size(dm::AbstractPetscDM)
+
+Return the global size of a DM object as a tuple.
+
+For DMDA and DMStag, returns `(M, N, P)` where unused dimensions are 1.
 """
 function Base.size(dm::AbstractPetscDM{PetscLib}) where PetscLib
     if gettype(dm) == "stag"
@@ -352,9 +369,18 @@ end
 
 
 """
-    dm_local_to_global(dm::PetscDM, x_L::PetscVec, x_G::PetscVec,mode=LibPETSc.INSERT_VALUES)
-Send values of the local `x_L` to the global `x_G` vector which are connected to the `dm` object.
-`mode` is either `LibPETSc.INSERT_VALUES` (default) or `LibPETSc.ADD_VALUES`
+    dm_local_to_global(dm, x_L, x_G, mode = INSERT_VALUES)
+
+Transfer values from the local vector `x_L` to the global vector `x_G`.
+
+# Arguments
+- `dm`: The DM object
+- `x_L`: Local vector (source)
+- `x_G`: Global vector (destination)
+- `mode`: `INSERT_VALUES` (default) or `ADD_VALUES`
+
+# External Links
+$(_doc_external("DM/DMLocalToGlobal"))
 """
 function dm_local_to_global(dm::PetscDM{PetscLib},
                              x_L::AbstractPetscVec{PetscLib},
@@ -369,9 +395,19 @@ function dm_local_to_global(dm::PetscDM{PetscLib},
 end
 
 """
-    dm_global_to_local(dm::PetscDM, x_G::PetscVec, x_L::PetscVec,mode=LibPETSc.INSERT_VALUES)
-Send values of the global `x_G` to the local `x_L` vector which are connected to the `dm` object.
-`mode` is either `LibPETSc.INSERT_VALUES` (default) or `LibPETSc.ADD_VALUES`
+    dm_global_to_local(dm, x_G, x_L, mode = INSERT_VALUES)
+
+Transfer values from the global vector `x_G` to the local vector `x_L`,
+including ghost point values from neighboring processes.
+
+# Arguments
+- `dm`: The DM object
+- `x_G`: Global vector (source)
+- `x_L`: Local vector (destination)
+- `mode`: `INSERT_VALUES` (default) or `ADD_VALUES`
+
+# External Links
+$(_doc_external("DM/DMGlobalToLocal"))
 """
 function dm_global_to_local(dm::PetscDM{PetscLib},
                              x_G::AbstractPetscVec{PetscLib},
@@ -386,8 +422,16 @@ function dm_global_to_local(dm::PetscDM{PetscLib},
 end
 
 """
-    J::PetscMat = MatAIJ(da::AbstractPetscDM) 
-Returns a matrix `J` that is compatible with the `da` object.
+    MatAIJ(da::AbstractPetscDM)
+
+Create a sparse matrix (AIJ format) with sparsity pattern determined by the DM.
+
+# Returns
+
+A `PetscMat` object compatible with vectors from the DM.
+
+# External Links
+$(_doc_external("DM/DMCreateMatrix"))
 """
 function MatAIJ(da::AbstractPetscDM{PetscLib}) where {PetscLib}
     J = LibPETSc.DMCreateMatrix(getlib(PetscLib), da)

@@ -26,7 +26,7 @@
 #                            If neither specified: auto-scales with grid (N=17→3, N=33→4, ...)
 #
 # Other options:
-#   --single_solve           Run single solve instead of convergence test
+#   -single_solve           Run single solve instead of convergence test
 #
 # PETSc options (use single dash):
 #   -ksp_type <type>         KSP solver type (preonly, gmres, richardson, etc.)
@@ -102,8 +102,13 @@ function solve_laplacian(petsclib, comm, N::Int, opts; mg_levels=nothing)
     Nq = (N, N)
     
     # Add mg_levels to opts if using multigrid and mg_levels is specified
-    if mg_levels !== nothing && get(opts, Symbol("-pc_type"), nothing) == "mg"
+    if mg_levels !== nothing && get(opts, :pc_type, nothing) == "mg"
         opts = merge(opts, (var"-pc_mg_levels" = mg_levels,))
+    end
+    
+    # Add direct coarse grid solver for multigrid if not already specified
+    if get(opts, :pc_type, nothing) == "mg" && !haskey(opts, :mg_coarse_pc_type)
+        opts = merge(opts, (var"-mg_coarse_pc_type" = "lu",))
     end
     
     # Create the DMDA
@@ -269,7 +274,7 @@ function run_convergence_analysis(petsclib, comm, grid_sizes, opts; mg_levels_li
     mg_levels_used = Union{Int,Nothing}[]
     
     # Check if using multigrid
-    using_mg = get(opts, Symbol("-pc_type"), nothing) == "mg"
+    using_mg = get(opts, :pc_type, nothing) == "mg"
     
     for (i, N) in enumerate(grid_sizes)
         # Determine MG levels for this grid
@@ -392,32 +397,32 @@ else
 end
 
 # Check if single solve is requested (default is convergence test)
-run_single_solve = haskey(opts, Symbol("-single_solve")) || (!isinteractive() && "--single_solve" in ARGS)
+run_single_solve = haskey(opts, :single_solve) || (!isinteractive() && "single_solve" in ARGS)
 
 # Parse grid sizes
-# Option 1: --grids 17,33,65,129 (comma-separated list)
-# Option 2: --N_min 17 --N_max 129 (auto-generate sequence)
+# Option 1: -grids 17,33,65,129 (comma-separated list)
+# Option 2: -N_min 17 -N_max 129 (auto-generate sequence)
 grid_sizes = nothing
-if haskey(opts, Symbol("-grids"))
-    grids_str = opts[Symbol("-grids")]
+if haskey(opts, :grids)
+    grids_str = opts[:grids]
     grid_sizes = parse.(Int, split(grids_str, ','))
 else
     # Default: N=17 to N=129
-    N_min = parse(Int, get(opts, Symbol("-N_min"), "17"))
-    N_max = parse(Int, get(opts, Symbol("-N_max"), "129"))
+    N_min = parse(Int, get(opts, :N_min, "17"))
+    N_max = parse(Int, get(opts, :N_max, "129"))
 end
 
 # Parse MG levels
-# Option 1: --mg_levels_list 3,4,5,6 (one per grid, comma-separated)
-# Option 2: --mg_levels 5 (fixed for all grids)
+# Option 1: -mg_levels_list 3,4,5,6 (one per grid, comma-separated)
+# Option 2: -mg_levels 5 (fixed for all grids)
 # Option 3: auto-scale (default if using MG)
 mg_levels_list = nothing
 mg_levels_override = nothing
-if haskey(opts, Symbol("-mg_levels_list"))
-    levels_str = opts[Symbol("-mg_levels_list")]
+if haskey(opts, :mg_levels_list)
+    levels_str = opts[:mg_levels_list]
     mg_levels_list = parse.(Int, split(levels_str, ','))
-elseif haskey(opts, Symbol("-mg_levels"))
-    mg_levels_override = parse(Int, opts[Symbol("-mg_levels")])
+elseif haskey(opts, :mg_levels)
+    mg_levels_override = parse(Int, opts[:mg_levels])
 end
 
 # Set our MPI communicator
@@ -437,7 +442,7 @@ if !run_single_solve
     # Run convergence analysis
     if MPI.Comm_rank(comm) == 0
         println("\nRunning convergence analysis...")
-        solver_type = get(opts, Symbol("-pc_type"), "lu")
+        solver_type = get(opts, :pc_type, "lu")
         println("Using solver: $solver_type")
         if solver_type == "mg"
             if mg_levels_list !== nothing
@@ -448,8 +453,8 @@ if !run_single_solve
                 println("  MG levels will scale with grid refinement")
             end
         end
-        if haskey(opts, Symbol("-pc_factor_mat_solver_type"))
-            println("  Matrix solver: $(opts[Symbol("-pc_factor_mat_solver_type")])")
+        if haskey(opts, :pc_factor_mat_solver_type)
+            println("  Matrix solver: $(opts[:pc_factor_mat_solver_type])")
         end
     end
     

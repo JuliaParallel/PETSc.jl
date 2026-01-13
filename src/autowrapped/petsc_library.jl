@@ -397,6 +397,7 @@ include("Vec_wrappers.jl")
 include("Vecs_wrappers.jl")
 include("Mat_wrappers.jl")
 include("KSP_wrappers.jl")
+# include("PC_wrappers.jl")  # TODO: Fix ccall issues in auto-generated wrappers
 include("SNES_wrappers.jl")
 include("DM_wrappers.jl")
 include("PetscOptions_wrappers.jl")

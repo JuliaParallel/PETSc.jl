@@ -57,18 +57,21 @@ function KSP(
 end
 
 """
-    KSP(comm::MPI.Comm, A::AbstractPetscMat, P::AbstractPetscMat{PetscLib} = A; prefix="", options...)
+    KSP(dm::AbstractPetscDM; prefix="", options...)
 
-Create a `KSP` using the matrix `A` and preconditioner construction matrix `P`
-with optional `prefix` and `options`.
+Create a `KSP` associated with the `dm` with optional `prefix` and `options`.
 
-The communicator is obtained from `A` and if it has size `1` then the garbage
-collector is set, otherwise the user is responsible for calling
-[`destroy`](@ref).
+The communicator is obtained from `dm`. The KSP can be used with geometric
+multigrid when the DM provides grid hierarchy information.
+
+# Arguments
+- `dm::AbstractPetscDM`: The DM object to associate with the KSP
+- `prefix::String`: Optional prefix for command-line options
+- `options...`: Additional PETSc options as keyword arguments
 
 # External Links
 $(_doc_external("KSP/KSPCreate"))
-$(_doc_external("KSP/KSPSetOperators"))
+$(_doc_external("KSP/KSPSetDM"))
 $(_doc_external("KSP/KSPSetFromOptions"))
 """
 function KSP(dm::AbstractPetscDM{PetscLib};

@@ -12,13 +12,18 @@ function Base.show(io::IO, v::AbstractPetscSNES{PetscLib}) where {PetscLib}
 end
 
 """
-    SNES(comm::MPI.Comm; prefix="", options...)
+    SNES(petsclib, comm::MPI.Comm; prefix="", options...)
 
-Creates a PETSc nonlinear solve context on the communicator `comm` with optional `prefix` and `options`.
+Create a PETSc nonlinear solver (SNES) context on the communicator `comm`.
 
-The communicator is obtained from `A` and if it has size `1` then the garbage
-collector is set, otherwise the user is responsible for calling
-[`destroy`](@ref).
+# Arguments
+- `petsclib`: The PETSc library instance
+- `comm::MPI.Comm`: MPI communicator
+- `prefix::String`: Optional prefix for command-line options
+- `options...`: Additional PETSc options as keyword arguments
+
+If `comm` has size 1, the garbage collector will handle cleanup automatically.
+Otherwise, the user is responsible for calling `destroy`.
 
 # External Links
 $(_doc_external("SNES/SNESCreate"))
@@ -62,11 +67,17 @@ function gettype(snes::AbstractPetscSNES{PetscLib}) where {PetscLib}
 end
 
 """
-    setfunction!(snes::AbstractPetscSNES, f!::Function, x::AbstractVec)
-    setfunction!(f!::Function, snes::AbstractPetscSNES, x::AbstractVec)
+    setfunction!(snes, f!, vec)
+    setfunction!(f!, snes, vec)
 
-Define `f!` to be the function of the `snes`. A call to `f!(fx, snes, x)` should
-set the elements of the PETSc vector `fx` based on the `x`.
+Set the residual function `f!` for the nonlinear solver `snes`.
+
+The function `f!` will be called as `f!(fx, snes, x)` where:
+- `fx`: Output vector to store the residual F(x)
+- `snes`: The SNES context
+- `x`: Input vector with current solution
+
+The `vec` argument is a template vector used for the residual.
 
 # External Links
 $(_doc_external("SNES/SNESSetFunction"))
@@ -209,6 +220,17 @@ function solve!(
 end
 
 
+"""
+    destroy(snes::AbstractPetscSNES)
+
+Destroy a SNES (nonlinear solver) object and release associated resources.
+
+This function is typically called automatically via finalizers when the object
+is garbage collected, but can be called explicitly to free resources immediately.
+
+# External Links
+$(_doc_external("SNES/SNESDestroy"))
+"""
 function destroy(snes::AbstractPetscSNES{PetscLib}) where {PetscLib}
     if !(finalized(PetscLib)) && snes.ptr != C_NULL
         LibPETSc.SNESDestroy(PetscLib, snes)

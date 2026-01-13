@@ -310,13 +310,21 @@ end
 
 
 """
-    Indices = DMStagGetIndices(dm::DMStag)
-    
-Return indices of start and end of the central/vertex nodes of a local array built from the input `dm`. 
-This takes ghost points into account and helps    
+    DMStagGetIndices(dm::DMStag)
 
-    dm 	        - the DMStag object
-    Indices 	- indices of lower and upper range of center and vertex nodes
+Return indices for the central/vertex nodes of a local array built from the input `dm`.
+This takes ghost points into account and provides index ranges for accessing staggered data.
+
+# Returns
+
+A `NamedTuple` with:
+- `center`: Tuple of ranges `(x, y, z)` for cell-centered indices
+- `vertex`: Tuple of ranges `(x, y, z)` for vertex indices
+
+# Note
+
+In Julia, array indices start at 1, whereas PETSc uses 0-based indexing with
+possibly negative ghost indices. This function handles the conversion automatically.
 """
 function DMStagGetIndices end
 

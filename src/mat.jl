@@ -433,6 +433,17 @@ function MatSeqAIJWithArrays(petsclib::PetscLibType, comm, A::SparseMatrixCSC{T}
     return mat
 end
 
+"""
+    destroy(m::AbstractPetscMat)
+
+Destroy a Mat (matrix) object and release associated resources.
+
+This function is typically called automatically via finalizers when the object
+is garbage collected, but can be called explicitly to free resources immediately.
+
+# External Links
+$(_doc_external("Mat/MatDestroy"))
+"""
 function destroy(m::AbstractPetscMat{PetscLib}) where {PetscLib}
     pop!(_MATSEQAIJ_WITHARRAYS_STORAGE, m.ptr, nothing)
     return LibPETSc.MatDestroy(PetscLib, m)

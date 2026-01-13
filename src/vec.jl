@@ -18,12 +18,12 @@ function Base.show(io::IO, v::AbstractPetscVec{PetscLib}) where {PetscLib}
 end
 
 """
-    VecPtr(petsclib, v::CVec, own)
+    VecPtr(petsclib, ptr::CVec, own::Bool)
 
 Container type for a PETSc Vec that is just a raw pointer.
 
-If the `own` then the finalizer is set on the vector; calling `destroy` when
-`!own` is a no-op.
+If `own` is `true`, the finalizer is set on the vector; calling `destroy` when
+`own` is `false` is a no-op.
 """
 mutable struct VecPtr{PetscLib} <:
                AbstractPetscVec{PetscLib}

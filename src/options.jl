@@ -16,14 +16,14 @@ end
 
 
 """
-    Options{PetscLib <: PetscLibType}(kw -> arg, ...)
-    Options(petsclib, kw -> arg, ...)
+    Options(petsclib; kwargs...)
 
-Create a PETSc options data structure for the `petsclib`.
+Create a PETSc options database for the given `petsclib`.
 
-For construction a set of keyword argment pairs should be given. If the option
-has no value it should be set to `nothing` or `true`. Setting an option to
-`false` will cause the option not to be set on the PETSc options table.
+Keyword arguments are converted to PETSc options:
+- Options with value `nothing` or `true` are set without a value (flags)
+- Options with value `false` are not set
+- Other values are converted to strings
 
 # Examples
 ```julia-repl
@@ -161,10 +161,10 @@ end
 """
     typedget(opt::NamedTuple, key::Symbol, default::T)
 
-Parse `opt` similar to [`get`](@ref) but ensures that the returned value is the
+Parse `opt` similar to `Base.get` but ensures that the returned value is the
 same type as the default value. When `T <: NTuple` keys that result in a single
 value will be filled into an `NTuple` of the same length as `T`; in the case of
-strings it is parsed using [`split`](@ref) with comma delimiter
+strings it is parsed using `Base.split` with comma delimiter
 
 # Examples
 ```julia-repl

@@ -22,13 +22,13 @@ using PETSc
 petsclib = PETSc.getlib()
 
 # Create a TS object
-ts = LibPETSc.TSCreate(petsclib, MPI.COMM_SELF)
+ts = LibPETSc.TSCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
 
 # Set the problem type (ODE or DAE)
 LibPETSc.TSSetProblemType(petsclib, ts, LibPETSc.TS_NONLINEAR)
 
 # Set the time stepping method (e.g., BDF, RK, Theta)
-LibPETSc.TSSetType(petsclib, ts, Base.unsafe_convert(Ptr{Int8}, "bdf"))
+LibPETSc.TSSetType(petsclib, ts, "bdf")  # String convenience wrapper
 
 # Set time span
 LibPETSc.TSSetTime(petsclib, ts, 0.0)  # Initial time

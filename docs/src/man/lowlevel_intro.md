@@ -33,11 +33,14 @@ petsclib = PETSc.petsclibs[1]
 PETSc.initialize(petsclib)
 
 # Create and use PETSc objects
-vec = LibPETSc.VecCreate(petsclib, MPI.COMM_SELF)
+vec = LibPETSc.VecCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
 LibPETSc.VecSetSizes(petsclib, vec, 10, 10)
+LibPETSc.VecSetType(petsclib, vec, "seq")  # Set vector type
 LibPETSc.VecSetFromOptions(petsclib, vec)
 
-# ... work with vec ...
+# Work with the vector
+LibPETSc.VecSet(petsclib, vec, 1.0)
+println("Vector size: ", LibPETSc.VecGetSize(petsclib, vec))
 
 # Clean up
 LibPETSc.VecDestroy(petsclib, vec)
@@ -116,6 +119,29 @@ err = LibPETSc.VecCreate(petsclib, MPI.COMM_SELF)
 @chk err  # Throws an error if PETSc returned non-zero
 ```
 
+### 4. String Convenience Wrappers
+
+Many PETSc `SetType` functions accept C string pointers. For convenience, PETSc.jl provides Julia `String` overloads:
+
+```julia
+# String convenience wrapper (recommended)
+LibPETSc.MatSetType(petsclib, mat, "seqaij")
+LibPETSc.VecSetType(petsclib, vec, "seq")
+LibPETSc.KSPSetType(petsclib, ksp, "gmres")
+LibPETSc.SNESSetType(petsclib, snes, "newtonls")
+LibPETSc.PCSetType(petsclib, pc[], "ilu")
+LibPETSc.TSSetType(petsclib, ts, "bdf")
+LibPETSc.TaoSetType(petsclib, tao, "lmvm")
+LibPETSc.DMSetType(petsclib, dm, "da")
+LibPETSc.PetscViewerSetType(petsclib, viewer, "ascii")
+
+# Equivalent low-level C pointer syntax (not recommended unless necessary)
+ptr = Base.unsafe_convert(Ptr{Int8}, pointer(Vector{UInt8}("seqaij\0")))
+LibPETSc.MatSetType(petsclib, mat, ptr)
+```
+
+The string wrappers handle the C string conversion internally, making the code cleaner and more Julia-friendly.
+
 Most wrapper functions already include error checking, but when calling C functions directly, use `@chk`.
 
 ### 4. Memory Management
@@ -160,6 +186,7 @@ PetscScalar = petsclib.PetscScalar
 # Create vector
 vec = LibPETSc.VecCreate(petsclib, MPI.COMM_SELF)
 LibPETSc.VecSetSizes(petsclib, vec, 10, 10)
+LibPETSc.VecSetType(petsclib, vec, "seq")  # Set vector type
 LibPETSc.VecSetFromOptions(petsclib, vec)
 
 # Set values (0-based indices!)
@@ -184,7 +211,7 @@ LibPETSc.VecDestroy(petsclib, vec)
 # Create matrix
 mat = LibPETSc.MatCreate(petsclib, MPI.COMM_SELF)
 LibPETSc.MatSetSizes(petsclib, mat, 5, 5, 5, 5)
-LibPETSc.MatSetType(petsclib, mat, LibPETSc.MATSEQAIJ)
+LibPETSc.MatSetType(petsclib, mat, "seqaij")  # String convenience wrapper
 LibPETSc.MatSetUp(petsclib, mat)
 
 # Set values (0-based indexing!)

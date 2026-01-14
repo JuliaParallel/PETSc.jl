@@ -33,7 +33,7 @@ err = ccall(
     (:PetscSectionCreate, petsclib.petsc_library),
     PETSc.LibPETSc.PetscErrorCode,
     (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
-    MPI.COMM_SELF, section
+    LibPETSc.PETSC_COMM_SELF, section
 )
 @assert err == 0
 
@@ -84,7 +84,7 @@ err = ccall(
     (:PetscSectionCreate, petsclib.petsc_library),
     PETSc.LibPETSc.PetscErrorCode,
     (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
-    MPI.COMM_SELF, section
+    LibPETSc.PETSC_COMM_SELF, section
 )
 @assert err == 0
 

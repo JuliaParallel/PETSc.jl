@@ -21,10 +21,13 @@ using PETSc
 petsclib = PETSc.petsclibs[1]
 PETSc.initialize(petsclib)
 
+# Get PETSc types
+PetscInt = petsclib.PetscInt
+
 # Assume mat, b, x are already created
 
 # Create KSP solver
-ksp = LibPETSc.KSPCreate(petsclib, MPI.COMM_SELF)
+ksp = LibPETSc.KSPCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
 LibPETSc.KSPSetOperators(petsclib, ksp, mat, mat)
 LibPETSc.KSPSetFromOptions(petsclib, ksp)
 

@@ -80,6 +80,10 @@ function MatGetType(petsclib::PetscLibType, mat::AbstractPetscMat) end
                mat, type_,
               )
 
+	# Handle NULL type (matrix not yet set up)
+	if type_[] == C_NULL
+		return "(not set)"
+	end
 	type = unsafe_string(type_[])
 
 	return type

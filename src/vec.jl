@@ -8,11 +8,16 @@ function Base.show(io::IO, v::AbstractPetscVec{PetscLib}) where {PetscLib}
     if v.ptr == C_NULL
         print(io, "PETSc Vec (null pointer)")
         return
-    else
-        # Get size using PETSc function (commented out until VecGetSize is available)
-        si = LibPETSc.VecGetSize(PetscLib,v)
-        ty = LibPETSc.VecGetType(PetscLib,v)
+    end
+    
+    # Try to get vector info, but handle uninitialized vectors gracefully
+    try
+        ty = LibPETSc.VecGetType(PetscLib, v)
+        si = LibPETSc.VecGetSize(PetscLib, v)
         print(io, "PETSc $ty Vec; length=$si")
+    catch
+        # Vector not fully initialized yet (type not set)
+        print(io, "PETSc Vec (not yet initialized)")
     end
     return nothing
 end

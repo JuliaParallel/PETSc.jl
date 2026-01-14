@@ -26,10 +26,10 @@ petsclib = PETSc.getlib()
 
 # Create a PC object
 pc = Ref{LibPETSc.PC}()
-LibPETSc.PCCreate(petsclib, MPI.COMM_SELF, pc)
+LibPETSc.PCCreate(petsclib, LibPETSc.PETSC_COMM_SELF, pc)
 
 # Set the preconditioner type
-LibPETSc.PCSetType(petsclib, pc[], LibPETSc.PCILU)
+LibPETSc.PCSetType(petsclib, pc[], "ilu")  # String convenience wrapper
 
 # Set the operator matrix
 # LibPETSc.PCSetOperators(petsclib, pc[], A, A)
@@ -58,13 +58,13 @@ Preconditioners are typically used with KSP solvers:
 ```julia
 # Create KSP and get its PC
 ksp = Ref{LibPETSc.KSP}()
-LibPETSc.KSPCreate(petsclib, MPI.COMM_SELF, ksp)
+LibPETSc.KSPCreate(petsclib, LibPETSc.PETSC_COMM_SELF, ksp)
 
 pc = Ref{LibPETSc.PC}()
 LibPETSc.KSPGetPC(petsclib, ksp[], pc)
 
 # Configure the preconditioner
-LibPETSc.PCSetType(petsclib, pc[], LibPETSc.PCGAMG)
+LibPETSc.PCSetType(petsclib, pc[], "gamg")  # String convenience wrapper
 
 # For GAMG, set additional options
 LibPETSc.PCGAMGSetType(petsclib, pc[], LibPETSc.PCGAMGAGG)

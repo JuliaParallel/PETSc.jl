@@ -22,13 +22,28 @@ using PETSc
 petsclib = PETSc.petsclibs[1]
 PETSc.initialize(petsclib)
 
-# Use low-level functions
-vec = LibPETSc.VecCreate(petsclib, MPI.COMM_SELF)
-LibPETSc.VecSetSizes(petsclib, vec, 10, 10)
+# Get PETSc types
+PetscInt = petsclib.PetscInt
+
+# Create a vector
+vec = LibPETSc.VecCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
+LibPETSc.VecSetSizes(petsclib, vec, PetscInt(10), PetscInt(10))
+LibPETSc.VecSetType(petsclib, vec, "seq")  # Set vector type
 LibPETSc.VecSetFromOptions(petsclib, vec)
 
-# ... work with vec ...
+# Set values
+LibPETSc.VecSet(petsclib, vec, 1.0)
 
+# Query the vector
+size = LibPETSc.VecGetSize(petsclib, vec)
+println("Vector size: $size")
+
+# Get values (0-based indexing!)
+idx = PetscInt(0)
+val = LibPETSc.VecGetValues(petsclib, vec, PetscInt(1), [idx])
+println("Value at index 0: $(val[1])")
+
+# Clean up
 LibPETSc.VecDestroy(petsclib, vec)
 PETSc.finalize(petsclib)
 ```

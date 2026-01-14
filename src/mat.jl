@@ -6,8 +6,13 @@ function Base.show(io::IO, v::AbstractPetscMat{PetscLib}) where {PetscLib}
     if v.ptr == C_NULL
         print(io, "PETSc Mat (null pointer)")
         return
+    end
+    
+    mat_type = type(v)
+    if mat_type == "(not set)"
+        print(io, "PETSc Mat (type not set)")
     else
-        print(io, "PETSc $(type(v)) Mat of size $(size(v))")
+        print(io, "PETSc $(mat_type) Mat of size $(size(v))")
     end
     return nothing
 end
@@ -27,7 +32,6 @@ Base.length(m::AbstractPetscMat{PetscLib}) where {PetscLib} = prod(size(m))
 Base.ndims(m::AbstractPetscMat{PetscLib}) where {PetscLib} = length(LibPETSc.MatGetSize(PetscLib,m))
 type(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetType(PetscLib,m)
 Base.axes(m::PetscMat{PetscLib}, i::Integer) where {PetscLib} = Base.OneTo(Base.size(m)[i])
-
 
 """
     M::PetscMat = MatCreateSeqAIJ(petsclib, comm, S)

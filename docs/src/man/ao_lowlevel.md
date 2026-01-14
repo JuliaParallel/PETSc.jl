@@ -30,7 +30,7 @@ petsc = Int32[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]        # Natural PETSc ordering
 
 # Create AO object
 ao = Ref{LibPETSc.AO}()
-LibPETSc.AOCreateBasic(petsclib, MPI.COMM_SELF, n, application, petsc, ao)
+LibPETSc.AOCreateBasic(petsclib, LibPETSc.PETSC_COMM_SELF, n, application, petsc, ao)
 
 # Convert application indices to PETSc indices
 app_indices = Int32[0, 5, 9]

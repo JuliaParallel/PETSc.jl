@@ -35,7 +35,10 @@ include("snes.jl")
 include("dm.jl")          
 include("sys.jl")
 include("dmda.jl")          
-include("dmstag.jl")       
+include("dmstag.jl")
+
+# String convenience wrappers for SetType functions
+include("string_wrappers.jl")       
 
 
 include("audit.jl")

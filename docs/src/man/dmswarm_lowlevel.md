@@ -22,7 +22,7 @@ petsclib = PETSc.getlib()
 # Create a DMSwarm in PIC mode
 swarm = Ref{LibPETSc.CDM}()
 LibPETSc.DMCreate(petsclib, MPI.COMM_WORLD, swarm)
-LibPETSc.DMSetType(petsclib, swarm[], LibPETSc.DMSWARM)
+LibPETSc.DMSetType(petsclib, swarm[], "swarm")  # String convenience wrapper
 
 # Set swarm type to PIC
 LibPETSc.DMSwarmSetType(petsclib, swarm[], LibPETSc.DMSWARM_PIC)

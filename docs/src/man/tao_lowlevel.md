@@ -23,10 +23,10 @@ using PETSc
 petsclib = PETSc.getlib()
 
 # Create a Tao object
-tao = LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
+tao = LibPETSc.TaoCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
 
 # Set the optimization algorithm (e.g., LMVM, BLMVM, NLS)
-LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "lmvm"))
+LibPETSc.TaoSetType(petsclib, tao, "lmvm")  # String convenience wrapper
 
 # Set the objective function and gradient
 # LibPETSc.TaoSetObjective(petsclib, tao, objective_function_ptr, C_NULL)

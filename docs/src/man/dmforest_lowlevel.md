@@ -22,7 +22,7 @@ petsclib = PETSc.getlib()
 # Create a DMForest
 forest = Ref{LibPETSc.CDM}()
 LibPETSc.DMCreate(petsclib, MPI.COMM_WORLD, forest)
-LibPETSc.DMSetType(petsclib, forest[], LibPETSc.DMFOREST)
+LibPETSc.DMSetType(petsclib, forest[], "forest")  # String convenience wrapper
 
 # Set forest topology (e.g., unit square/cube)
 LibPETSc.DMForestSetTopology(

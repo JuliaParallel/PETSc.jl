@@ -29,8 +29,8 @@ using PETSc
 petsclib = PETSc.getlib()
 
 # Create a viewer for ASCII output to stdout
-viewer = LibPETSc.PetscViewerCreate(petsclib, MPI.COMM_SELF)
-LibPETSc.PetscViewerSetType(petsclib, viewer, Base.unsafe_convert(Ptr{Int8}, "ascii"))
+viewer = LibPETSc.PetscViewerCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
+LibPETSc.PetscViewerSetType(petsclib, viewer, "ascii")  # String convenience wrapper
 LibPETSc.PetscViewerFileSetMode(petsclib, viewer, LibPETSc.FILE_MODE_WRITE)
 
 # View a vector
@@ -78,7 +78,7 @@ viewer_stderr_world = LibPETSc.PETSC_VIEWER_STDERR_WORLD(petsclib)
 ```julia
 # Create ASCII file viewer
 viewer = Ref{LibPETSc.PetscViewer}()
-LibPETSc.PetscViewerASCIIOpen(petsclib, MPI.COMM_SELF, "output.txt", viewer)
+LibPETSc.PetscViewerASCIIOpen(petsclib, LibPETSc.PETSC_COMM_SELF, "output.txt", viewer)
 
 # Set format (optional)
 LibPETSc.PetscViewerPushFormat(petsclib, viewer[], LibPETSc.PETSC_VIEWER_ASCII_MATLAB)
@@ -188,7 +188,7 @@ For interactive 2D visualization:
 ```julia
 # Create draw viewer (X-window)
 viewer = Ref{LibPETSc.PetscViewer}()
-LibPETSc.PetscViewerDrawOpen(petsclib, MPI.COMM_SELF, C_NULL, "Plot", 
+LibPETSc.PetscViewerDrawOpen(petsclib, LibPETSc.PETSC_COMM_SELF, C_NULL, "Plot", 
                               0, 0, 600, 600, viewer)
 
 # View vector as bar chart

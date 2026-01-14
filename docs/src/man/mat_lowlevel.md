@@ -21,17 +21,21 @@ using PETSc
 petsclib = PETSc.petsclibs[1]
 PETSc.initialize(petsclib)
 
+# Get PETSc types
+PetscInt = petsclib.PetscInt
+PetscScalar = petsclib.PetscScalar
+
 # Create a sparse matrix
-mat = LibPETSc.MatCreate(petsclib, MPI.COMM_SELF)
-LibPETSc.MatSetSizes(petsclib, mat, 10, 10, 10, 10)
-LibPETSc.MatSetType(petsclib, mat, LibPETSc.MATSEQAIJ)
+mat = LibPETSc.MatCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
+LibPETSc.MatSetSizes(petsclib, mat, PetscInt(10), PetscInt(10), PetscInt(10), PetscInt(10))
+LibPETSc.MatSetType(petsclib, mat, "seqaij")
 LibPETSc.MatSetUp(petsclib, mat)
 
 # Set values (0-based indexing!)
 row = PetscInt[0]
 cols = PetscInt[0, 1]
 vals = PetscScalar[2.0, -1.0]
-LibPETSc.MatSetValues(petsclib, mat, 1, row, 2, cols, vals, INSERT_VALUES)
+LibPETSc.MatSetValues(petsclib, mat, PetscInt(1), row, PetscInt(2), cols, vals, LibPETSc.INSERT_VALUES)
 
 # Assemble
 LibPETSc.MatAssemblyBegin(petsclib, mat, LibPETSc.MAT_FINAL_ASSEMBLY)

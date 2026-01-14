@@ -7,9 +7,14 @@ function Base.show(io::IO, v::AbstractPetscOptions{PetscLib}) where {PetscLib}
     if v.ptr == C_NULL
         println(io, "PETSc Options (null pointer)")
         return
-    else
+    end
+    
+    # Try to display options, but handle errors gracefully
+    try
         println(io, "PETSc Options database:")
-        LibPETSc.PetscOptionsView(PetscLib, v,  LibPETSc.PETSC_VIEWER_DEFAULT)
+        LibPETSc.PetscOptionsView(PetscLib, v, LibPETSc.PETSC_VIEWER_DEFAULT)
+    catch
+        println(io, "PETSc Options (not yet initialized)")
     end
     return nothing
 end

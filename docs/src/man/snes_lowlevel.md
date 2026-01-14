@@ -21,8 +21,11 @@ using PETSc
 petsclib = PETSc.petsclibs[1]
 PETSc.initialize(petsclib)
 
+# Get PETSc types
+PetscInt = petsclib.PetscInt
+
 # Create SNES solver
-snes = LibPETSc.SNESCreate(petsclib, MPI.COMM_SELF)
+snes = LibPETSc.SNESCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
 
 # Set function and Jacobian (callbacks would need to be defined)
 # LibPETSc.SNESSetFunction(petsclib, snes, r, compute_function, ctx)

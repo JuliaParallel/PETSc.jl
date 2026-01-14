@@ -16,35 +16,36 @@ DMStag provides:
 ```julia
 using PETSc, MPI
 
-petsclib = PETSc.getlib()
+petsclib = PETSc.petsclibs[1]
+PETSc.initialize(petsclib)
+
+# Get PETSc types
+PetscInt = petsclib.PetscInt
 
 # Create a 2D staggered grid
 # Velocity components on edges, pressure at cell centers
-dm = Ref{LibPETSc.CDM}()
-LibPETSc.DMStagCreate2d(
+dm = LibPETSc.DMStagCreate2d(
     petsclib,
     MPI.COMM_WORLD,
     LibPETSc.DM_BOUNDARY_NONE,
     LibPETSc.DM_BOUNDARY_NONE,
-    10, 10,                      # global dimensions
-    LibPETSc.PETSC_DECIDE,
-    LibPETSc.PETSC_DECIDE,
-    0,                           # dof per vertex
-    1,                           # dof per edge (velocity)
-    1,                           # dof per element (pressure)
+    PetscInt(10), PetscInt(10),  # global dimensions
+    PetscInt(LibPETSc.PETSC_DECIDE),
+    PetscInt(LibPETSc.PETSC_DECIDE),
+    PetscInt(0),                 # dof per vertex
+    PetscInt(1),                 # dof per edge (velocity)
+    PetscInt(1),                 # dof per element (pressure)
     LibPETSc.DMSTAG_STENCIL_BOX,
-    1,                           # stencil width
-    C_NULL, C_NULL,
-    dm
+    PetscInt(1),                 # stencil width
+    C_NULL, C_NULL
 )
 
 # Set up
-LibPETSc.DMSetFromOptions(petsclib, dm[])
-LibPETSc.DMSetUp(petsclib, dm[])
+LibPETSc.DMSetFromOptions(petsclib, dm)
+LibPETSc.DMSetUp(petsclib, dm)
 
 # Create vectors
-x = Ref{LibPETSc.CVec}()
-LibPETSc.DMCreateGlobalVector(petsclib, dm[], x)
+x = LibPETSc.DMCreateGlobalVector(petsclib, dm)
 
 # Access staggered components
 # Use DMStagGetLocationSlot to get indices for each component
@@ -52,6 +53,7 @@ LibPETSc.DMCreateGlobalVector(petsclib, dm[], x)
 # Cleanup
 LibPETSc.VecDestroy(petsclib, x)
 LibPETSc.DMDestroy(petsclib, dm)
+PETSc.finalize(petsclib)
 ```
 
 ## DMStag Functions

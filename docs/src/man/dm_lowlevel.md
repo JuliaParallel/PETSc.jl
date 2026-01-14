@@ -17,7 +17,8 @@ The DM abstraction in PETSc manages:
 using PETSc, MPI
 
 # Initialize
-petsclib = PETSc.getlib()
+petsclib = PETSc.petsclibs[1]
+PETSc.initialize(petsclib)
 
 # Create a DM (specific type created via DMDACreate, DMPlexCreate, etc.)
 # See subtype-specific pages for creation functions
@@ -27,12 +28,10 @@ LibPETSc.DMSetFromOptions(petsclib, dm)
 LibPETSc.DMSetUp(petsclib, dm)
 
 # Create global vectors
-x = Ref{LibPETSc.CVec}()
-LibPETSc.DMCreateGlobalVector(petsclib, dm, x)
+x = LibPETSc.DMCreateGlobalVector(petsclib, dm)
 
 # Create matrices
-A = Ref{LibPETSc.CMat}()
-LibPETSc.DMCreateMatrix(petsclib, dm, A)
+A = LibPETSc.DMCreateMatrix(petsclib, dm)
 
 # Use the DM...
 
@@ -40,6 +39,7 @@ LibPETSc.DMCreateMatrix(petsclib, dm, A)
 LibPETSc.VecDestroy(petsclib, x)
 LibPETSc.MatDestroy(petsclib, A)
 LibPETSc.DMDestroy(petsclib, dm)
+PETSc.finalize(petsclib)
 ```
 
 ## DM Subtypes

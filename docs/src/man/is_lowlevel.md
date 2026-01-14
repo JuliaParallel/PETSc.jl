@@ -25,13 +25,16 @@ using PETSc
 # Initialize PETSc
 petsclib = PETSc.getlib()
 
+# Get PETSc types
+PetscInt = petsclib.PetscInt
+
 # Create an index set from an array of indices (0-based)
-# Note: indices should be PetscInt type (typically Int64, not Int32)
+# Note: indices should be PetscInt type (typically Int64 or Int32 depending on PETSc configuration)
 indices = PetscInt[0, 2, 4, 6, 8]
-is = LibPETSc.ISCreateGeneral(petsclib, MPI.COMM_SELF, length(indices), indices, LibPETSc.PETSC_COPY_VALUES)
+is = LibPETSc.ISCreateGeneral(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(length(indices)), indices, LibPETSc.PETSC_COPY_VALUES)
 
 # Create a stride index set: indices = first:step:(first + step*(n-1))
-is_stride = LibPETSc.ISCreateStride(petsclib, MPI.COMM_SELF, 10, 0, 2)  # 0, 2, 4, ..., 18
+is_stride = LibPETSc.ISCreateStride(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(10), PetscInt(0), PetscInt(2))  # 0, 2, 4, ..., 18
 
 # Get the size of an index set (returns value directly)
 n = LibPETSc.ISGetSize(petsclib, is)

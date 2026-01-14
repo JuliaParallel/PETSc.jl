@@ -5,10 +5,16 @@ function Base.show(io::IO, v::AbstractPetscDM{PetscLib}) where {PetscLib}
     if v.ptr == C_NULL
         print(io, "PETSc DM (null pointer)")
         return
-    else
-        ty = LibPETSc.DMGetType(PetscLib,v)
-        di = LibPETSc.DMGetDimension(PetscLib,v)
+    end
+    
+    # Try to get DM info, but handle uninitialized DMs gracefully
+    try
+        ty = LibPETSc.DMGetType(PetscLib, v)
+        di = LibPETSc.DMGetDimension(PetscLib, v)
         print(io, "PETSc DM $ty object in $di dimensions")
+    catch
+        # DM not fully initialized yet (type not set)
+        print(io, "PETSc DM (not yet initialized)")
     end
     return nothing
 end

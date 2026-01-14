@@ -97,42 +97,52 @@ comm = MPI.COMM_WORLD
         x = Transpose(DJ) * y
         @test vec_x[1:end] ≈ x rtol=1e-5
 
+        # Destroy vec_x and vec_y before they go out of scope
+        PETSc.destroy(vec_x)
+        PETSc.destroy(vec_y)
+
         # test issymmetric and ishermitian
         if PetscScalar <: Real
-            A = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(5), PetscInt(5), PetscInt(2), C_NULL)
-            A[1, 1] = 1;
-            A[2, 1] = -2;
-            A[1, 2] = -2;
-            PETSc.assemble!(A);
+            Asym = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(5), PetscInt(5), PetscInt(2), C_NULL)
+            Asym[1, 1] = 1;
+            Asym[2, 1] = -2;
+            Asym[1, 2] = -2;
+            PETSc.assemble!(Asym);
 
-            B = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(5), PetscInt(5), PetscInt(2), C_NULL)
-            B[1, 1] = 1;
-            B[2, 1] = 2;
-            B[1, 2] = -2;
-            PETSc.assemble!(B);
+            Bsym = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(5), PetscInt(5), PetscInt(2), C_NULL)
+            Bsym[1, 1] = 1;
+            Bsym[2, 1] = 2;
+            Bsym[1, 2] = -2;
+            PETSc.assemble!(Bsym);
 
-            @test issymmetric(A)
-            @test ishermitian(A)
-            @test !issymmetric(B)
-            @test !ishermitian(B)
+            @test issymmetric(Asym)
+            @test ishermitian(Asym)
+            @test !issymmetric(Bsym)
+            @test !ishermitian(Bsym)
+            
+            PETSc.destroy(Asym)
+            PETSc.destroy(Bsym)
         else
-            A = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(5), PetscInt(5), PetscInt(2), C_NULL)
-            A[1, 1] = PetscScalar(1)
-            A[2, 1] = PetscScalar(-2 + im)
-            A[1, 2] = PetscScalar(-2 - im)
-            PETSc.assemble!(A)
+            Asym = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(5), PetscInt(5), PetscInt(2), C_NULL)
+            Asym[1, 1] = PetscScalar(1)
+            Asym[2, 1] = PetscScalar(-2 + im)
+            Asym[1, 2] = PetscScalar(-2 - im)
+            PETSc.assemble!(Asym)
 
-            B = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(5), PetscInt(5), PetscInt(2), C_NULL)
-            B[1, 1] = PetscScalar(1)
-            B[2, 1] = PetscScalar(-2 + im)
-            B[1, 2] = PetscScalar(-2 - im)
-            PETSc.assemble!(B)
-            @test !issymmetric(A)
+            Bsym = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(5), PetscInt(5), PetscInt(2), C_NULL)
+            Bsym[1, 1] = PetscScalar(1)
+            Bsym[2, 1] = PetscScalar(-2 + im)
+            Bsym[1, 2] = PetscScalar(-2 - im)
+            PETSc.assemble!(Bsym)
+            @test !issymmetric(Asym)
 
             # TODO: fix hermitian for complex matrix
-          #  @test ishermitian(A)
-            @test !issymmetric(B)
-          #  @test !ishermitian(B)
+          #  @test ishermitian(Asym)
+            @test !issymmetric(Bsym)
+          #  @test !ishermitian(Bsym)
+            
+            PETSc.destroy(Asym)
+            PETSc.destroy(Bsym)
         end
 
         Random.seed!(777)
@@ -146,9 +156,7 @@ comm = MPI.COMM_WORLD
         PETSc.destroy(B1)
         PETSc.destroy(C)
         PETSc.destroy(D)
-        PETSc.destroy(E) 
-        PETSc.destroy(vec_x)
-        PETSc.destroy(vec_y)   
+        PETSc.destroy(E)
         
         PETSc.finalize(petsclib)
     end

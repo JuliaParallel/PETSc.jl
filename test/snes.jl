@@ -4,7 +4,7 @@ using MPI
 MPI.Initialized() || MPI.Init()
 
 @testset "SNES" begin
-    comm = MPI.COMM_WORLD
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
 

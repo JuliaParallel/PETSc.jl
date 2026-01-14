@@ -8,6 +8,8 @@ using MPI
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
         PetscInt = petsclib.PetscInt
+        # Windows PETSc binaries are built without MPI support
+        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
 
         local_rows = 10
         local_cols = 5
@@ -17,10 +19,10 @@ using MPI
             end
         end
 
-        matshell =  PETSc.MatShell(petsclib, f!, MPI.COMM_SELF, local_rows, local_cols)
+        matshell =  PETSc.MatShell(petsclib, f!, test_comm, local_rows, local_cols)
         x = PetscScalar.(collect(1:5))
-        petsc_x = LibPETSc.VecCreateSeqWithArray(petsclib,MPI.COMM_SELF, PetscInt(1), PetscInt(local_cols), x)
-        petsc_y = LibPETSc.VecCreateSeqWithArray(petsclib,MPI.COMM_SELF, PetscInt(1), PetscInt(local_rows), zeros(PetscScalar, local_rows))
+        petsc_x = LibPETSc.VecCreateSeqWithArray(petsclib, test_comm, PetscInt(1), PetscInt(local_cols), x)
+        petsc_y = LibPETSc.VecCreateSeqWithArray(petsclib, test_comm, PetscInt(1), PetscInt(local_rows), zeros(PetscScalar, local_rows))
         
         LibPETSc.MatMult(petsclib, matshell, petsc_x, petsc_y)
         @test petsc_y[:] == [2x; 3x]

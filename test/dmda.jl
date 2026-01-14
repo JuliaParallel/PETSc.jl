@@ -4,7 +4,7 @@ MPI.Initialized() || MPI.Init()
 
 
 @testset "DMDACreate1D" begin
-    comm = MPI.COMM_WORLD
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
@@ -128,7 +128,7 @@ end
 
 
 @testset "DMDACreate2D" begin
-    comm = MPI.COMM_WORLD
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     global_size_x = 100
@@ -228,7 +228,7 @@ end
 end
 
 @testset "DMDACreate3D" begin
-    comm = MPI.COMM_WORLD
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     global_size_x = 12
@@ -339,7 +339,7 @@ end
 
 
 @testset "DM MatAIJ" begin
-    comm = MPI.COMM_WORLD
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     # Just check a couple libraries
@@ -423,7 +423,7 @@ end
 end
 
 @testset "DM Vec & Coord" begin
-    comm = MPI.COMM_WORLD
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs

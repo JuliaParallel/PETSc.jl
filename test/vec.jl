@@ -3,7 +3,8 @@ using PETSc, MPI
 using LinearAlgebra: norm
 
 MPI.Initialized() || MPI.Init()
-comm = MPI.COMM_WORLD
+# Windows PETSc binaries are built without MPI support, use PETSC_COMM_SELF instead
+comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
 
 @testset "VecBasics" begin
     for petsclib in PETSc.petsclibs
@@ -134,7 +135,9 @@ end
         PetscScalar = petsclib.PetscScalar
         PetscInt    = petsclib.PetscInt
         N           = PetscInt(10)
-        petsc_x = LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, N)
+        # Windows PETSc binaries are built without MPI support
+        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+        petsc_x = LibPETSc.VecCreateSeq(petsclib, test_comm, N)
         @test LibPETSc.VecGetSize(petsclib, petsc_x) == N
 
         @test LibPETSc.VecGetOwnershipRange(petsclib,petsc_x) == (0, N)
@@ -219,8 +222,10 @@ end
         PetscScalar = petsclib.PetscScalar
         PetscInt    = petsclib.PetscInt
         N           = PetscInt(10)
-        petsc_x     = LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, N)
-        petsc_y     = LibPETSc.VecCreateSeq(petsclib, MPI.COMM_SELF, N)
+        # Windows PETSc binaries are built without MPI support
+        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+        petsc_x     = LibPETSc.VecCreateSeq(petsclib, test_comm, N)
+        petsc_y     = LibPETSc.VecCreateSeq(petsclib, test_comm, N)
 
         # extract one array, write
         PETSc.withlocalarray!(

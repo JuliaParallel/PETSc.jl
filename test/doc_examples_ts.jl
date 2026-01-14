@@ -5,10 +5,11 @@ using MPI
 @testset "Documentation examples for TS" begin
     petsclib = PETSc.getlib(PetscScalar=Float64)
     PETSc.initialize(petsclib)
+        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
     
     @testset "Basic Usage" begin
         # Create a TS object
-        ts = PETSc.LibPETSc.TSCreate(petsclib, MPI.COMM_SELF)
+        ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)
         @test ts isa PETSc.LibPETSc.TS
         @test ts.ptr != C_NULL
         
@@ -43,7 +44,7 @@ using MPI
         ts_types = ["euler", "rk", "bdf", "theta", "arkimex", "ssp"]
         
         for ts_type in ts_types
-            ts = PETSc.LibPETSc.TSCreate(petsclib, MPI.COMM_SELF)
+            ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)
             
             # Set type using string
             PETSc.LibPETSc.TSSetType(petsclib, ts, Base.unsafe_convert(Ptr{Int8}, ts_type))
@@ -57,7 +58,7 @@ using MPI
     end
     
     @testset "Time Parameter Setters/Getters" begin
-        ts = PETSc.LibPETSc.TSCreate(petsclib, MPI.COMM_SELF)
+        ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)
         
         # Set and get time
         PETSc.LibPETSc.TSSetTime(petsclib, ts, 0.5)

@@ -5,9 +5,10 @@ using MPI
 @testset "Low-level Tao (optimization) functions" begin
     petsclib = PETSc.getlib(PetscScalar=Float64)
     PETSc.initialize(petsclib)
+        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
     
     @testset "Tao object creation and destruction" begin
-        tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
+        tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
         @test tao isa PETSc.LibPETSc.Tao
         @test tao.ptr != C_NULL
         
@@ -16,7 +17,7 @@ using MPI
     end
     
     @testset "Tao solver type" begin
-        tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
+        tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
         
         # Set Tao type (using NLS - Newton Line Search, always available)
         @test_nowarn PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "nls"))
@@ -31,7 +32,7 @@ using MPI
     @testset "Tao with different solver types" begin
         # Test various Tao solver types (using types that don't require special builds)
         for taotype in ["nls", "ntr", "cg", "nm"]
-            tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
+            tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
             @test_nowarn PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, taotype))
             retrieved_type = PETSc.LibPETSc.TaoGetType(petsclib, tao)
             @test retrieved_type == taotype
@@ -40,7 +41,7 @@ using MPI
     end
     
     @testset "Tao tolerances" begin
-        tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
+        tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
         PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "nls"))
         
         # Set tolerances (gatol, grtol, gttol)
@@ -56,7 +57,7 @@ using MPI
     end
     
     @testset "Tao max iterations and function evaluations" begin
-        tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
+        tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
         
         # Set max iterations
         @test_nowarn PETSc.LibPETSc.TaoSetMaximumIterations(petsclib, tao, 100)
@@ -76,7 +77,7 @@ using MPI
     end
     
     @testset "Tao iteration count" begin
-        tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
+        tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
         PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "nls"))
         
         # Get iteration count (should be 0 before solving)

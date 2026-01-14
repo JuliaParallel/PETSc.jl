@@ -5,6 +5,7 @@ using MPI
 # Initialize PETSc
 petsclib = PETSc.getlib()
 PETSc.initialize(petsclib)
+        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
 
 @testset "PetscSection Low-Level API" begin
     
@@ -15,7 +16,7 @@ PETSc.initialize(petsclib)
             (:PetscSectionCreate, petsclib.petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
-            MPI.COMM_SELF, section
+            test_comm, section
         )
         @test err == 0
         @test section[] != C_NULL
@@ -70,7 +71,7 @@ PETSc.initialize(petsclib)
             (:PetscSectionCreate, petsclib.petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
-            MPI.COMM_SELF, section
+            test_comm, section
         )
         @test err == 0
         
@@ -139,7 +140,7 @@ PETSc.initialize(petsclib)
             (:PetscSectionCreate, petsclib.petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
-            MPI.COMM_SELF, section
+            test_comm, section
         )
         @test err == 0
         
@@ -187,7 +188,7 @@ PETSc.initialize(petsclib)
             (:PetscSectionCreate, petsclib.petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
-            MPI.COMM_SELF, section
+            test_comm, section
         )
         @test err == 0
         
@@ -203,7 +204,7 @@ PETSc.initialize(petsclib)
             (:PetscSectionCreate, petsclib.petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
-            MPI.COMM_SELF, section_copy
+            test_comm, section_copy
         )
         @test err == 0
         

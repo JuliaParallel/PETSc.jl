@@ -7,7 +7,8 @@ using SparseArrays: spdiagm
 
 
 @testset "KSP" begin
-    comm = MPI.COMM_SELF
+    # Windows PETSc binaries are built without MPI support, use PETSC_COMM_SELF instead
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
     mpisize = MPI.Comm_size(comm)
     mpirank = MPI.Comm_rank(comm)
 
@@ -156,7 +157,8 @@ end
 
 if MPI.Comm_rank(MPI.COMM_WORLD) == 0
     @testset "KSP with SparseMatrixCSC" begin
-        comm = MPI.COMM_SELF
+        # Windows PETSc binaries are built without MPI support, use PETSC_COMM_SELF instead
+        comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
         n = 10
 
         for petsclib in PETSc.petsclibs 

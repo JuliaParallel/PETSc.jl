@@ -5,18 +5,19 @@ using MPI
 @testset "Documentation examples for IS" begin
     petsclib = PETSc.getlib(PetscScalar=Float64)
     PETSc.initialize(petsclib)
+        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
     PetscInt = PETSc.LibPETSc.PetscInt
     
     @testset "Basic Usage" begin
         # Create an index set from an array of indices (0-based)
         # Note: IS expects indices to be PetscInt (usually Int64), not Int32
         indices = PetscInt[0, 2, 4, 6, 8]
-        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, MPI.COMM_SELF, length(indices), indices, PETSc.LibPETSc.PETSC_COPY_VALUES)
+        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, test_comm, length(indices), indices, PETSc.LibPETSc.PETSC_COPY_VALUES)
         @test is isa PETSc.LibPETSc.IS
         @test is.ptr != C_NULL
         
         # Create a stride index set: indices = first:step:(first + step*(n-1))
-        is_stride = PETSc.LibPETSc.ISCreateStride(petsclib, MPI.COMM_SELF, 10, 0, 2)  # 0, 2, 4, ..., 18
+        is_stride = PETSc.LibPETSc.ISCreateStride(petsclib, test_comm, 10, 0, 2)  # 0, 2, 4, ..., 18
         @test is_stride isa PETSc.LibPETSc.IS
         @test is_stride.ptr != C_NULL
         
@@ -39,19 +40,19 @@ using MPI
     @testset "Creating Index Sets" begin
         # General index set from array
         indices = PetscInt[1, 3, 5, 7, 9]
-        is_general = PETSc.LibPETSc.ISCreateGeneral(petsclib, MPI.COMM_SELF, 5, indices, 
+        is_general = PETSc.LibPETSc.ISCreateGeneral(petsclib, test_comm, 5, indices, 
                                                     PETSc.LibPETSc.PETSC_COPY_VALUES)
         @test is_general.ptr != C_NULL
         
         # Stride index set: first, first+step, first+2*step, ...
-        is_stride = PETSc.LibPETSc.ISCreateStride(petsclib, MPI.COMM_SELF, 5, 10, 3)
+        is_stride = PETSc.LibPETSc.ISCreateStride(petsclib, test_comm, 5, 10, 3)
         @test is_stride.ptr != C_NULL
         size = PETSc.LibPETSc.ISGetSize(petsclib, is_stride)
         @test size == 5
         
         # Block index set: block-structured indices
         block_indices = PetscInt[0, 2, 4]  # Blocks starting at these indices
-        is_block = PETSc.LibPETSc.ISCreateBlock(petsclib, MPI.COMM_SELF, 2, 3, block_indices, 
+        is_block = PETSc.LibPETSc.ISCreateBlock(petsclib, test_comm, 2, 3, block_indices, 
                                                 PETSc.LibPETSc.PETSC_COPY_VALUES)
         @test is_block.ptr != C_NULL
         
@@ -69,7 +70,7 @@ using MPI
     @testset "Querying Properties" begin
         # Create sorted index set
         indices = PetscInt[0, 2, 4, 6, 8]
-        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, MPI.COMM_SELF, 5, indices, 
+        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, test_comm, 5, indices, 
                                             PETSc.LibPETSc.PETSC_COPY_VALUES)
         
         # Check if index set is sorted (returns Bool directly)
@@ -94,7 +95,7 @@ using MPI
     
     @testset "Duplicate and Copy" begin
         indices = PetscInt[1, 3, 5, 7]
-        is_original = PETSc.LibPETSc.ISCreateGeneral(petsclib, MPI.COMM_SELF, 4, indices, 
+        is_original = PETSc.LibPETSc.ISCreateGeneral(petsclib, test_comm, 4, indices, 
                                                       PETSc.LibPETSc.PETSC_COPY_VALUES)
         
         # Duplicate creates a new IS

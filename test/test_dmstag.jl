@@ -6,7 +6,7 @@ MPI.Initialized() || MPI.Init()
 
 @testset "DMStag All" begin
 
-    comm = MPI.COMM_WORLD
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs[1:4]
@@ -314,7 +314,7 @@ end
 
 @testset "DMStagCreate1d" begin
 
-    comm = MPI.COMM_WORLD
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
@@ -430,7 +430,7 @@ end
 
 @testset "DMStagCreate2d" begin
 
-    comm = MPI.COMM_WORLD
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs
@@ -467,7 +467,7 @@ end
 
 
 @testset "DMStag Vectors and Coordinates" begin
-    comm = MPI.COMM_WORLD
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs[1:4]
@@ -596,7 +596,7 @@ end
 end
 
 @testset "DMStag create matrixes" begin
-    comm = MPI.COMM_WORLD
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     for petsclib in PETSc.petsclibs[1:3]

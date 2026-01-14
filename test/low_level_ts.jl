@@ -5,9 +5,11 @@ using MPI
 @testset "Low-level TS (Time Stepping) functions" begin
     petsclib = PETSc.getlib(PetscScalar=Float64)
     PETSc.initialize(petsclib)
+    # Windows PETSc binaries are built without MPI support
+    test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
     
     @testset "TS object creation and destruction" begin
-        ts = PETSc.LibPETSc.TSCreate(petsclib, MPI.COMM_SELF)
+        ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)
         @test ts isa PETSc.LibPETSc.TS
         @test ts.ptr != C_NULL
         
@@ -16,7 +18,7 @@ using MPI
     end
     
     @testset "TS problem type and solver type" begin
-        ts = PETSc.LibPETSc.TSCreate(petsclib, MPI.COMM_SELF)
+        ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)
         
         # Set problem type
         @test_nowarn PETSc.LibPETSc.TSSetProblemType(petsclib, ts, PETSc.LibPETSc.TS_LINEAR)
@@ -32,7 +34,7 @@ using MPI
     end
     
     @testset "TS time parameters" begin
-        ts = PETSc.LibPETSc.TSCreate(petsclib, MPI.COMM_SELF)
+        ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)
         PETSc.LibPETSc.TSSetType(petsclib, ts, Base.unsafe_convert(Ptr{Int8}, "bdf"))
         
         # Set time parameters
@@ -52,7 +54,7 @@ using MPI
     
     @testset "TS with different solver types" begin
         for tstype in ["euler", "bdf", "rk"]
-            ts = PETSc.LibPETSc.TSCreate(petsclib, MPI.COMM_SELF)
+            ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)
             @test_nowarn PETSc.LibPETSc.TSSetType(petsclib, ts, Base.unsafe_convert(Ptr{Int8}, tstype))
             retrieved_type = PETSc.LibPETSc.TSGetType(petsclib, ts)
             @test retrieved_type == tstype

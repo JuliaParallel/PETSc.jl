@@ -5,11 +5,12 @@ using MPI
 @testset "Documentation examples for Tao" begin
     petsclib = PETSc.getlib(PetscScalar=Float64)
     PETSc.initialize(petsclib)
+        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
     PetscInt = PETSc.LibPETSc.PetscInt
     
     @testset "Basic Usage" begin
         # Create a Tao object
-        tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
+        tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
         @test tao isa PETSc.LibPETSc.Tao
         @test tao.ptr != C_NULL
         
@@ -39,7 +40,7 @@ using MPI
         unconstrained_types = ["lmvm", "cg", "nm", "nls", "ntr"]
         
         for tao_type in unconstrained_types
-            tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
+            tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
             
             # Set type using string
             PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, tao_type))
@@ -55,7 +56,7 @@ using MPI
         bound_types = ["blmvm", "bncg", "bqnls", "bntl", "tron"]
         
         for tao_type in bound_types
-            tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
+            tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
             
             # Set type using string
             PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, tao_type))
@@ -69,7 +70,7 @@ using MPI
     end
     
     @testset "Tolerance and Iteration Settings" begin
-        tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
+        tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
         PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "lmvm"))
         
         # Set convergence tolerances (gatol, grtol, gttol)
@@ -99,11 +100,11 @@ using MPI
     end
     
     @testset "Solution Vector Setup" begin
-        tao = PETSc.LibPETSc.TaoCreate(petsclib, MPI.COMM_SELF)
+        tao = PETSc.LibPETSc.TaoCreate(petsclib, test_comm)
         PETSc.LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Int8}, "lmvm"))
         
         # Create a solution vector
-        x = PETSc.LibPETSc.VecCreate(petsclib, MPI.COMM_SELF)
+        x = PETSc.LibPETSc.VecCreate(petsclib, test_comm)
         PETSc.LibPETSc.VecSetSizes(petsclib, x, 10, 10)
         PETSc.LibPETSc.VecSetFromOptions(petsclib, x)
         PETSc.LibPETSc.VecSet(petsclib, x, 0.0)

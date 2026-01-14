@@ -5,7 +5,8 @@ using SparseArrays: sprand, spdiagm
 using Random
 
 MPI.Initialized() || MPI.Init()
-comm = MPI.COMM_WORLD
+# Windows PETSc binaries are built without MPI support, use PETSC_COMM_SELF instead
+comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
 
 
 @testset "MatSeqAIJ" begin

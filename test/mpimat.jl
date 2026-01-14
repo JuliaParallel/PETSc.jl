@@ -5,7 +5,7 @@ using PETSc
 using LinearAlgebra: mul!, norm
 
 @testset "MatAIJ" begin
-    comm = MPI.COMM_WORLD
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpisize = MPI.Comm_size(comm)
     mpirank = MPI.Comm_rank(comm)
 

@@ -6,7 +6,8 @@ petsclib = PETSc.petsclibs[1]
 PETSc.initialize(petsclib)
 
 MPI.Initialized() || MPI.Init()
-comm = MPI.COMM_WORLD
+# Windows PETSc binaries are built without MPI support, use PETSC_COMM_SELF instead
+comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
 
 @testset "Old Tests" begin
   m,n = 20,20
@@ -50,7 +51,7 @@ comm = MPI.COMM_WORLD
 
   f!(y,x) = y .= 2 .*x
 
-  M = PETSc.MatShell(petsclib,f!,MPI.COMM_SELF, 10,10)
+  M = PETSc.MatShell(petsclib,f!, Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF, 10,10)
 
   x = rand(10)
 
@@ -90,7 +91,7 @@ comm = MPI.COMM_WORLD
     return 0  # needs to be zero!
   end
 
-  S = PETSc.SNES(petsclib,MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
+  S = PETSc.SNES(petsclib, Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
   r = LibPETSc.VecCreateSeqWithArray(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(1), PetscInt(2), zeros(PetscScalar, 2))
 
   

@@ -5,6 +5,7 @@ using MPI
 @testset "Low-level PetscViewer convenience functions" begin
     petsclib = PETSc.getlib(PetscScalar=Float64)
     PETSc.initialize(petsclib)
+        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
     
     @testset "PETSC_VIEWER_STDOUT_SELF" begin
         viewer = PETSc.LibPETSc.PETSC_VIEWER_STDOUT_SELF(petsclib)
@@ -32,7 +33,7 @@ using MPI
     
     @testset "Using viewers with ISView" begin
         PetscInt = PETSc.LibPETSc.PetscInt
-        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, MPI.COMM_SELF, 5, PetscInt[0,2,4,6,8], PETSc.LibPETSc.PETSC_COPY_VALUES)
+        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, test_comm, 5, PetscInt[0,2,4,6,8], PETSc.LibPETSc.PETSC_COPY_VALUES)
         
         # Redirect output to suppress IS viewer output during testing
         redirect_stdout(devnull) do

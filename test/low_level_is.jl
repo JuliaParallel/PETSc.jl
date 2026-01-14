@@ -6,10 +6,12 @@ using MPI
     petsclib = PETSc.getlib(PetscScalar=Float64)
     PETSc.initialize(petsclib)
     PetscInt = PETSc.LibPETSc.PetscInt
+    # Windows PETSc binaries are built without MPI support
+    test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
     
     @testset "ISCreateGeneral" begin
         indices = PetscInt[0, 2, 4, 6, 8]
-        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, MPI.COMM_SELF, 5, indices, PETSc.LibPETSc.PETSC_COPY_VALUES)
+        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, test_comm, 5, indices, PETSc.LibPETSc.PETSC_COPY_VALUES)
         @test is isa PETSc.LibPETSc.IS
         @test is.ptr != C_NULL
         
@@ -26,7 +28,7 @@ using MPI
     
     @testset "ISCreateStride" begin
         # Create stride: 0, 2, 4, 6, 8 (first=0, step=2, n=5)
-        is = PETSc.LibPETSc.ISCreateStride(petsclib, MPI.COMM_SELF, 5, 0, 2)
+        is = PETSc.LibPETSc.ISCreateStride(petsclib, test_comm, 5, 0, 2)
         @test is isa PETSc.LibPETSc.IS
         
         size = PETSc.LibPETSc.ISGetSize(petsclib, is)
@@ -38,7 +40,7 @@ using MPI
     @testset "ISCreateBlock" begin
         # Create block IS
         indices = PetscInt[0, 2, 4]
-        is = PETSc.LibPETSc.ISCreateBlock(petsclib, MPI.COMM_SELF, 2, 3, indices, PETSc.LibPETSc.PETSC_COPY_VALUES)
+        is = PETSc.LibPETSc.ISCreateBlock(petsclib, test_comm, 2, 3, indices, PETSc.LibPETSc.PETSC_COPY_VALUES)
         @test is isa PETSc.LibPETSc.IS
         
         # Get block size
@@ -50,7 +52,7 @@ using MPI
     
     @testset "IS properties" begin
         indices = PetscInt[0, 1, 2, 3, 4]
-        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, MPI.COMM_SELF, 5, indices, PETSc.LibPETSc.PETSC_COPY_VALUES)
+        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, test_comm, 5, indices, PETSc.LibPETSc.PETSC_COPY_VALUES)
         
         # Check if sorted
         sorted = PETSc.LibPETSc.ISSorted(petsclib, is)
@@ -69,7 +71,7 @@ using MPI
     
     @testset "IS operations" begin
         indices = PetscInt[4, 2, 8, 1, 5]
-        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, MPI.COMM_SELF, 5, indices, PETSc.LibPETSc.PETSC_COPY_VALUES)
+        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, test_comm, 5, indices, PETSc.LibPETSc.PETSC_COPY_VALUES)
         
         # Sort the IS
         @test_nowarn PETSc.LibPETSc.ISSort(petsclib, is)
@@ -94,7 +96,7 @@ using MPI
     
     @testset "IS with viewer convenience functions" begin
         indices = PetscInt[0, 2, 4, 6, 8]
-        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, MPI.COMM_SELF, 5, indices, PETSc.LibPETSc.PETSC_COPY_VALUES)
+        is = PETSc.LibPETSc.ISCreateGeneral(petsclib, test_comm, 5, indices, PETSc.LibPETSc.PETSC_COPY_VALUES)
         
         # Redirect output to suppress IS viewer output during testing
         redirect_stdout(devnull) do

@@ -95,7 +95,7 @@ end
         PetscScalar = petsclib.PetscScalar
         PetscInt    = petsclib.PetscInt
         
-        # Skip on Intel Mac with complex numbers due to sporadic failures
+        # Skip on Intel Mac due to sporadic failures
         if isintelmac && PetscScalar <: Complex
             @test_skip true
             continue

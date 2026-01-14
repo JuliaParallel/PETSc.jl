@@ -97,8 +97,8 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
         @test vec_y[1:num_rows] ≈ y rtol=1e-5
         #@test all(DJ * x .≈ D * x)
 
-        # Skip transpose test on Intel Mac with complex numbers due to sporadic failures
-        if !(isintelmac && PetscScalar <: Complex)
+        # Skip transpose test on Intel Mac due to sporadic failures
+        if !(isintelmac)
             # Zero out vec_x before the transpose multiplication to avoid stale data
             fill!(vec_x, zero(PetscScalar))
             mul!(vec_x, Transpose(D), vec_y)

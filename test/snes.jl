@@ -1,7 +1,9 @@
 using Test
 using PETSc
 using MPI
-MPI.Initialized() || MPI.Init()
+if !Sys.iswindows()
+    MPI.Initialized() || MPI.Init()
+end
 
 @testset "SNES" begin
     comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD

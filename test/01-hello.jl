@@ -1,6 +1,8 @@
 using MPI
 using PETSc
-MPI.Init()
+if !Sys.iswindows()
+    MPI.Init()
+end
 
 # Windows PETSc binaries are built without MPI support, use PETSC_COMM_SELF instead
 comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD

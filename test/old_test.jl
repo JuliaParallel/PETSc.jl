@@ -5,7 +5,9 @@ using PETSc, MPI, LinearAlgebra, SparseArrays
 petsclib = PETSc.petsclibs[1]
 PETSc.initialize(petsclib)
 
-MPI.Initialized() || MPI.Init()
+if !Sys.iswindows()
+    MPI.Initialized() || MPI.Init()
+end
 # Windows PETSc binaries are built without MPI support, use PETSC_COMM_SELF instead
 comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
 

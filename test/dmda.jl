@@ -1,6 +1,8 @@
 using Test
 using PETSc, MPI
-MPI.Initialized() || MPI.Init()
+if !Sys.iswindows()
+    MPI.Initialized() || MPI.Init()
+end
 
 
 @testset "DMDACreate1D" begin

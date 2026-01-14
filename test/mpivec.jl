@@ -1,6 +1,8 @@
 using Test
 using MPI
-MPI.Initialized() || MPI.Init()
+if !Sys.iswindows()
+    MPI.Initialized() || MPI.Init()
+end
 using PETSc
 using LinearAlgebra: norm
 

@@ -31,7 +31,8 @@ const PetscObject = Ptr{Cvoid}
 
 const PETSC_DECIDE = -1
 const PETSC_DETERMINE = PETSC_DECIDE
-const PETSC_COMM_SELF = MPI.COMM_SELF
+# On Windows, PETSc is built without MPI, so use a dummy communicator
+const PETSC_COMM_SELF = Sys.iswindows() ? MPI_Comm(0) : MPI.COMM_SELF
 
 PetscInt = Int64
 PetscInt64 = Int64

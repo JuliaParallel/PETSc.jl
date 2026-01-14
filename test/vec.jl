@@ -2,9 +2,12 @@ using Test
 using PETSc, MPI
 using LinearAlgebra: norm
 
-MPI.Initialized() || MPI.Init()
-# Windows PETSc binaries are built without MPI support, use PETSC_COMM_SELF instead
-comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
+# Windows PETSc binaries are built without MPI support, skip MPI initialization
+if !Sys.iswindows()
+    MPI.Initialized() || MPI.Init()
+end
+# Windows PETSc binaries are built without MPI support, use PETSC_COMM_SELF
+comm = LibPETSc.PETSC_COMM_SELF
 # Intel Mac has sporadic issues with complex numbers
 isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
 

@@ -1,7 +1,9 @@
 using Test
 using PETSc, MPI, LinearAlgebra, SparseArrays
 
-MPI.Initialized() || MPI.Init()
+if !Sys.iswindows()
+    MPI.Initialized() || MPI.Init()
+end
 
 @testset "test_snes" begin
 

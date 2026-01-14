@@ -16,7 +16,7 @@ julia> ]
 which will install a pre-built PETSc library (`PETSc_jll`) as well as `MPI.jl` on your system. This will work both in serial and in parallel on your machine.
 
 !!! warning "Windows Users"
-    The package currently does not work reliably on Windows due to compatibility issues with `MicrosoftMPI_jll`. 
+    The prebuild binaries currently do not work reliably on Windows due to compatibility issues with `MicrosoftMPI_jll`. 
     
     **Windows users are advised to install the [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (WSL) and run PETSc.jl from within WSL.** This will provide full functionality with both serial and parallel (MPI) support.
 

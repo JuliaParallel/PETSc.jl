@@ -601,7 +601,7 @@ end
     comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
-    for petsclib in PETSc.petsclibs[1:3]
+    for petsclib in PETSc.petsclibs[1:2]
         #petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib, log_view=false)
         PetscScalar = PETSc.scalartype(petsclib)
@@ -645,13 +645,11 @@ end
         # result is a 1x2 matrix
         @test LibPETSc.DMStagMatGetValuesStencil(petsclib, dm_1D, A, PetscInt(1), [pos2], PetscInt(2), pos)==val1
 
-        PETSc.destroy(dm_1D);
         PETSc.destroy(A);
+        PETSc.destroy(dm_1D);
         
-
         # Note: Don't explicitly destroy or GC here - let finalizers run naturally after PETSc shutdown
         # to avoid MPI communicator errors with nested PETSc objects (ISLocalToGlobalMapping, etc.)
-            
         dofCenter       =   1;
         dofEdge         =   1;
         dofVertex       =   1

@@ -22,7 +22,7 @@ include("LibPETSc.jl")
 using .LibPETSc
 export LibPETSc
 export audit_petsc_file
-export SetPetscLib
+export set_petsclib
 
 using Libdl
 

@@ -77,7 +77,7 @@ To use a custom PETSc installation:
 using PETSc
 
 # Create a custom library instance pointing to your PETSc installation
-petsclib = PETSc.SetPetscLib("/path/to/your/libpetsc.so"; 
+petsclib = PETSc.set_petsclib("/path/to/your/libpetsc.so"; 
                              PetscScalar=Float64, 
                              PetscInt=Int64)
 

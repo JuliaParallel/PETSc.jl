@@ -26,13 +26,13 @@ julia>]test PETSc
 
 By default, the package uses a pre-built binary of PETSc (see [PETSc_jll](https://github.com/JuliaBinaryWrappers/PETSc_jll.jl)) along with a default installation of `MPI.jl`, so you don't have to install it on your machine.
 
-If you want to use the package with custom builds of the PETSc library, this can be done by using the function `SetPetscLib` which requires you to point to the correct dynamic library (which should be compatible with the MPI version used by `MPI.jl`)
+If you want to use the package with custom builds of the PETSc library, this can be done by using the function `set_petsclib` which requires you to point to the correct dynamic library (which should be compatible with the MPI version used by `MPI.jl`)
 
 ```julia
 using PETSc
 
 # Create custom library instance
-petsclib = SetPetscLib("/path/to/custom/libpetsc.so"; 
+petsclib = set_petsclib("/path/to/custom/libpetsc.so"; 
                        PetscScalar=Float64, PetscInt=Int64)
 # Use it like any precompiled library
 PETSc.initialize(petsclib, log_view=true)

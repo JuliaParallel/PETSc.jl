@@ -191,7 +191,7 @@ inttype(
 ) where {PetscLib <: PetscLibType{ST, IT}} where {ST, IT} = IT
 
 """
-    SetPetscLib(library_path::String; PetscScalar=Float64, PetscInt=Int64)
+    set_petsclib(library_path::String; PetscScalar=Float64, PetscInt=Int64)
 
 Create a custom PETSc library instance from a user-specified shared library path.
 
@@ -217,11 +217,11 @@ pre-built libraries provided by PETSc_jll. The custom library must be:
 using PETSc
 
 # For a custom double-precision real PETSc library with 64-bit indices
-petsclib = PETSc.SetPetscLib("/path/to/custom/libpetsc.so"; 
+petsclib = PETSc.set_petsclib("/path/to/custom/libpetsc.so"; 
                              PetscScalar=Float64, PetscInt=Int64)
 
 # For a single-precision complex library with 32-bit indices  
-petsclib = PETSc.SetPetscLib("/opt/petsc/lib/libpetsc.so"; 
+petsclib = PETSc.set_petsclib("/opt/petsc/lib/libpetsc.so"; 
                              PetscScalar=Complex{Float32}, PetscInt=Int32)
 
 # Initialize and use the custom library
@@ -234,8 +234,14 @@ PETSc.finalize(petsclib)
 - [`initialize`](@ref): Initialize a PETSc library
 - [`finalize`](@ref): Finalize a PETSc library
 """
-function SetPetscLib(library_path::String; PetscScalar::Type=Float64, PetscInt::Type=Int64)
-    return LibPETSc.PetscLibType{PetscScalar, PetscInt}(library_path)
+function set_petsclib(library_path::String; PetscScalar::Type=Float64, PetscInt::Type=Int64)
+    petsclib = LibPETSc.PetscLibType{PetscScalar, PetscInt}(library_path)
+    try
+        check_petsc_wrappers_version(petsclib)
+    catch err
+        @warn "Failed to perform PETSc wrappers version check" exception=(err,)
+    end
+    return petsclib
 end
 
 
@@ -276,7 +282,7 @@ function check_petsc_wrappers_version(petsclib=nothing)
     end
 
     if isa(petsclib, String)
-        petsclib = SetPetscLib(petsclib)
+        petsclib = set_petsclib(petsclib)
     end
 
     installed_version = nothing

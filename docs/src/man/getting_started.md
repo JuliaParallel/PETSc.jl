@@ -25,8 +25,8 @@ On many high-performance clusters, you will have to use the provided `MPI` insta
 
 ```julia
 # Create custom library instance
-petsclib = SetPetscLib("/path/to/custom/libpetsc.so"; 
-                       PetscScalar=Float64, PetscInt=Int64)
+petsclib = set_petsclib("/path/to/custom/libpetsc.so"; 
+                             PetscScalar=Float64, PetscInt=Int64)
 # Use it like any precompiled library
 PETSc.initialize(petsclib, log_view=true)
 # ... your code ...

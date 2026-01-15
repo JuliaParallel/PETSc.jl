@@ -157,14 +157,14 @@ using PETSc
         end
     end
 
-    # Test SetPetscLib with a precompiled library
-    @testset "SetPetscLib" begin
+    # Test set_petsclib with a precompiled library
+    @testset "set_petsclib" begin
         # Get path from one of the precompiled libraries
         precompiled_lib = PETSc.petsclibs[1]
         lib_path = precompiled_lib.petsc_library
         
-        # Create a custom library instance using SetPetscLib
-        custom_lib = PETSc.SetPetscLib(lib_path; PetscScalar=Float64, PetscInt=Int64)
+        # Create a custom library instance using set_petsclib
+        custom_lib = PETSc.set_petsclib(lib_path; PetscScalar=Float64, PetscInt=Int64)
         
         # Verify type parameters
         @test custom_lib isa PETSc.LibPETSc.PetscLibType{Float64, Int64, String}
@@ -187,7 +187,7 @@ using PETSc
         
         # Test with different scalar/int types
         lib_path_f32 = PETSc.petsclibs[2].petsc_library  # Float32 library
-        custom_lib_f32 = PETSc.SetPetscLib(lib_path_f32; PetscScalar=Float32, PetscInt=Int64)
+        custom_lib_f32 = PETSc.set_petsclib(lib_path_f32; PetscScalar=Float32, PetscInt=Int64)
         @test custom_lib_f32 isa PETSc.LibPETSc.PetscLibType{Float32, Int64, String}
         @test PETSc.scalartype(custom_lib_f32) == Float32
         @test PETSc.inttype(custom_lib_f32) == Int64

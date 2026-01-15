@@ -26,6 +26,7 @@ include("snes.jl")          # autowrapped
 include("dmda.jl")          # autowrapped
 include("dmstag.jl")        # autowrapped
 include("dmnetwork.jl")     # new test for DMNetwork example
+include("dmshell.jl")       # new test for DMShell example
 include("matshell.jl")      # autowrapped!
 include("test_dmstag.jl") 
 include("test_snes.jl")  

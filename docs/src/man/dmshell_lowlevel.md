@@ -11,22 +11,27 @@ DMShell allows users to define custom DM implementations by providing callback f
 ```julia
 using PETSc, MPI
 
+# Initialize MPI and PETSc
+MPI.Init()
 petsclib = PETSc.getlib()
+PETSc.initialize(petsclib)
 
-# Create a DMShell
-shell = Ref{LibPETSc.CDM}()
-LibPETSc.DMShellCreate(petsclib, MPI.COMM_WORLD, shell)
-
-# Set callbacks
-# LibPETSc.DMShellSetCreateGlobalVector(...)
-# LibPETSc.DMShellSetCreateLocalVector(...)
-# LibPETSc.DMShellSetCreateMatrix(...)
+# Create a DMShell (returns a PetscDM) and set callbacks
+shell = LibPETSc.DMShellCreate(petsclib, MPI.COMM_WORLD)
+# Set callbacks on the returned DM, for example:
+# LibPETSc.DMShellSetCreateGlobalVector(petsclib, shell, ...)
+# LibPETSc.DMShellSetCreateLocalVector(petsclib, shell, ...)
+# LibPETSc.DMShellSetCreateMatrix(petsclib, shell, ...)
 
 # Set up
-LibPETSc.DMSetUp(petsclib, shell[])
+LibPETSc.DMSetUp(petsclib, shell)
 
 # Cleanup
 LibPETSc.DMDestroy(petsclib, shell)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## DMProduct

@@ -19,23 +19,17 @@ A section maps from points (mesh entities like vertices, cells) to DOF ranges, a
 ## Basic Usage
 
 ```julia
-using PETSc
-using MPI
+using PETSc, MPI
 
-# Initialize PETSc
+# Initialize MPI and PETSc
+MPI.Init()
 petsclib = PETSc.getlib()
 PETSc.initialize(petsclib)
+PetscInt = petsclib.PetscInt
 
 # Create a section
-# Note: PetscSectionCreate wrapper has incorrect signature, use ccall directly
 section = Ref{LibPETSc.PetscSection}()
-err = ccall(
-    (:PetscSectionCreate, petsclib.petsc_library),
-    PETSc.LibPETSc.PetscErrorCode,
-    (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
-    LibPETSc.PETSC_COMM_SELF, section
-)
-@assert err == 0
+LibPETSc.PetscSectionCreate(petsclib, LibPETSc.PETSC_COMM_SELF, section)
 
 # Set chart: range of valid point indices [pStart, pEnd)
 LibPETSc.PetscSectionSetChart(petsclib, section[], 0, 10)
@@ -61,16 +55,10 @@ storage_size = LibPETSc.PetscSectionGetStorageSize(petsclib, section[])
 println("Total storage size: ", storage_size)
 
 # Cleanup
-# Note: PetscSectionDestroy wrapper has incorrect signature, use ccall directly
-err = ccall(
-    (:PetscSectionDestroy, petsclib.petsc_library),
-    PETSc.LibPETSc.PetscErrorCode,
-    (Ptr{LibPETSc.PetscSection},),
-    section
-)
-@assert err == 0
+LibPETSc.PetscSectionDestroy(petsclib, section)  # pass the Ref directly
 
 PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## Multi-Field Sections
@@ -78,15 +66,10 @@ PETSc.finalize(petsclib)
 For problems with multiple fields (e.g., velocity + pressure):
 
 ```julia
-# Create section with 2 fields (use ccall for creation)
+# Create section with 2 fields
 section = Ref{LibPETSc.PetscSection}()
-err = ccall(
-    (:PetscSectionCreate, petsclib.petsc_library),
-    PETSc.LibPETSc.PetscErrorCode,
-    (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
-    LibPETSc.PETSC_COMM_SELF, section
-)
-@assert err == 0
+LibPETSc.PetscSectionCreate(petsclib, LibPETSc.PETSC_COMM_SELF, section)
+@assert section[] != C_NULL
 
 LibPETSc.PetscSectionSetNumFields(petsclib, section[], 2)
 
@@ -157,13 +140,8 @@ dm_section = Ref{LibPETSc.PetscSection}()
 # - Cells: 0 DOFs
 
 section = Ref{LibPETSc.PetscSection}()
-err = ccall(
-    (:PetscSectionCreate, petsclib.petsc_library),
-    PETSc.LibPETSc.PetscErrorCode,
-    (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
-    comm, section
-)
-@assert err == 0
+LibPETSc.PetscSectionCreate(petsclib, comm, section)
+@assert section[] != C_NULL
 
 LibPETSc.PetscSectionSetChart(petsclib, section[], vStart, cEnd)
 

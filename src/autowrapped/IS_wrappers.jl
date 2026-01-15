@@ -759,7 +759,7 @@ function ISGetIndices(petsclib::PetscLibType, is::IS) end
                is, ptr_,
               )
 
-	ptr = unsafe_wrap(Array, ptr_[], VecGetLocalSize(petsclib, x); own = false)
+	ptr = unsafe_wrap(Array, ptr_[], ISGetLocalSize(petsclib, is); own = false)
 
 	return ptr
 end 

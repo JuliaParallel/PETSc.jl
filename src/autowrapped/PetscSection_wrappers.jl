@@ -21,6 +21,20 @@ $(_doc_external("Vec/PetscSectionCreate"))
 """
 function PetscSectionCreate(petsclib::PetscLibType, comm::MPI_Comm, s::PetscSection) end
 
+# Convenience method: accept a Ref so callers can pass `Ref{PetscSection}()` directly
+@for_petsc function PetscSectionCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, s::Ref{PetscSection} )
+
+    @chk ccall(
+               (:PetscSectionCreate, $petsc_library),
+               PetscErrorCode,
+               (MPI_Comm, Ptr{PetscSection}),
+               comm, s,
+              )
+
+
+	return nothing
+end
+
 @for_petsc function PetscSectionCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, s::PetscSection )
 
     @chk ccall(
@@ -2147,6 +2161,20 @@ Level: beginner
 $(_doc_external("Vec/PetscSectionDestroy"))
 """
 function PetscSectionDestroy(petsclib::PetscLibType, s::PetscSection) end
+
+# Accept a Ref{PetscSection} (pointer-to-pointer) so callers can pass a Ref directly
+@for_petsc function PetscSectionDestroy(petsclib::$UnionPetscLib, s::Ref{PetscSection} )
+
+    @chk ccall(
+               (:PetscSectionDestroy, $petsc_library),
+               PetscErrorCode,
+               (Ptr{PetscSection},),
+               s,
+              )
+
+
+	return nothing
+end
 
 @for_petsc function PetscSectionDestroy(petsclib::$UnionPetscLib, s::PetscSection )
 

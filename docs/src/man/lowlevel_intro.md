@@ -243,13 +243,11 @@ LibPETSc.KSPSetFromOptions(petsclib, ksp)
 LibPETSc.KSPSolve(petsclib, ksp, b, x)
 
 # Get convergence info
-reason = Ref{PetscInt}()
-LibPETSc.KSPGetConvergedReason(petsclib, ksp, reason)
+reason = LibPETSc.KSPGetConvergedReason(petsclib, ksp)
 
-iterations = Ref{PetscInt}()
-LibPETSc.KSPGetIterationNumber(petsclib, ksp, iterations)
+iterations = LibPETSc.KSPGetIterationNumber(petsclib, ksp)
 
-println("Converged in $(iterations[]) iterations, reason: $(reason[])")
+println("Converged in $(iterations) iterations, reason: $(reason)")
 
 # Clean up
 LibPETSc.KSPDestroy(petsclib, ksp)

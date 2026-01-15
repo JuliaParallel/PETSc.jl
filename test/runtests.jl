@@ -23,10 +23,12 @@ include("mat.jl")           # autowrapped
 include("options.jl")       # autowrapped
 include("ksp.jl")           # autowrapped
 include("snes.jl")          # autowrapped
+include("snes_helpers.jl")  # small helper tests for SNES return-style wrappers
 include("dmda.jl")          # autowrapped
 include("dmstag.jl")        # autowrapped
 include("dmnetwork.jl")     # new test for DMNetwork example
 include("dmshell.jl")       # new test for DMShell example
+include("dmproduct.jl")     # test for DMProduct example
 include("matshell.jl")      # autowrapped!
 include("test_dmstag.jl") 
 include("test_snes.jl")  
@@ -38,6 +40,10 @@ include("low_level_petscsection.jl")  # Low-level PetscSection functions
 include("low_level_tao.jl")     # Low-level Tao functions
 
 include("testutils.jl")
+
+# Run helper tests for SNES and TAO
+include("snes_helpers.jl")
+include("tao_helpers.jl")
 
 # Run the examples to make sure they all work
 include("examples.jl")

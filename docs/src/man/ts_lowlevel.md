@@ -1,5 +1,7 @@
 # TS (Time Stepping) - Low-level Interface
 
+<a id="ch_ts"></a>
+
 The TS (Time Stepping) component provides methods for solving time-dependent differential equations, including ordinary differential equations (ODEs), differential-algebraic equations (DAEs), and time-dependent partial differential equations (PDEs).
 
 ## Overview
@@ -16,10 +18,12 @@ The TS object manages the time integration loop, adaptive time stepping, event d
 ## Basic Usage
 
 ```julia
-using PETSc
+using PETSc, MPI
 
-# Initialize PETSc
+# Initialize MPI and PETSc
+MPI.Init()
 petsclib = PETSc.getlib()
+PETSc.initialize(petsclib)
 
 # Create a TS object
 ts = LibPETSc.TSCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
@@ -55,6 +59,10 @@ final_time = LibPETSc.TSGetSolveTime(petsclib, ts)
 
 # Cleanup
 LibPETSc.TSDestroy(petsclib, ts)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## Common Workflow

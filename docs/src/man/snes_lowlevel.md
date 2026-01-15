@@ -38,11 +38,11 @@ LibPETSc.SNESSetFromOptions(petsclib, snes)
 # LibPETSc.SNESSolve(petsclib, snes, C_NULL, x)
 
 # Get convergence info
-reason = Ref{PetscInt}()
-LibPETSc.SNESGetConvergedReason(petsclib, snes, reason)
+reason = LibPETSc.SNESGetConvergedReason(petsclib, snes)
 
-iterations = Ref{PetscInt}()
-LibPETSc.SNESGetIterationNumber(petsclib, snes, iterations)
+iterations = LibPETSc.SNESGetIterationNumber(petsclib, snes)
+
+println("SNES reason: $(reason), iterations: $(iterations)")
 
 # Clean up
 LibPETSc.SNESDestroy(petsclib, snes)

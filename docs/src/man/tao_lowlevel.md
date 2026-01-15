@@ -17,10 +17,12 @@ The Tao object manages the optimization process, line searches, convergence moni
 ## Basic Usage
 
 ```julia
-using PETSc
+using PETSc, MPI
 
-# Initialize PETSc
+# Initialize MPI and PETSc
+MPI.Init()
 petsclib = PETSc.getlib()
+PETSc.initialize(petsclib)
 
 # Create a Tao object
 tao = LibPETSc.TaoCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
@@ -50,14 +52,18 @@ LibPETSc.TaoSetFromOptions(petsclib, tao)
 # Solve the optimization problem
 # LibPETSc.TaoSolve(petsclib, tao)
 
-# Get solution information (values returned directly)
-reason = Ref{LibPETSc.TaoConvergedReason}()
-LibPETSc.TaoGetConvergedReason(petsclib, tao, reason)
-
+# Get solution information
+reason = LibPETSc.TaoGetConvergedReason(petsclib, tao)
 iter = LibPETSc.TaoGetIterationNumber(petsclib, tao)
+
+println("Tao reason: $(reason), iterations: $(iter)")
 
 # Cleanup
 LibPETSc.TaoDestroy(petsclib, tao)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## Common Workflow

@@ -21,14 +21,16 @@ PetscSF is the underlying communication layer for DM ghost point updates and oth
 ## Basic Usage
 
 ```julia
-using PETSc
+using PETSc, MPI
 
-# Initialize PETSc
+# Initialize MPI and PETSc
+MPI.Init()
 petsclib = PETSc.getlib()
+PETSc.initialize(petsclib)
+PetscInt = petsclib.PetscInt
 
 # Create a star forest
-sf = Ref{LibPETSc.PetscSF}()
-LibPETSc.PetscSFCreate(petsclib, MPI.COMM_WORLD, sf)
+sf = LibPETSc.PetscSFCreate(petsclib, MPI.COMM_WORLD)
 
 # Define communication pattern
 # nleaves: number of leaves (data items we need)
@@ -36,23 +38,29 @@ LibPETSc.PetscSFCreate(petsclib, MPI.COMM_WORLD, sf)
 # iremote: (rank, index) pairs specifying which process/index to get from
 
 nleaves = 5
-ilocal = Int32[10, 11, 12, 13, 14]  # Local indices where data will be stored
+# number of roots owned locally (for this simple example set equal to nleaves)
+nroots = 5
+ilocal = [0, 1, 2, 3, 4]  # Local indices where data will be stored
 iremote = [
-    LibPETSc.PetscSFNode(0, 0),  # Get index 0 from rank 0
-    LibPETSc.PetscSFNode(0, 1),  # Get index 1 from rank 0
-    LibPETSc.PetscSFNode(1, 0),  # Get index 0 from rank 1
-    LibPETSc.PetscSFNode(1, 1),  # Get index 1 from rank 1
-    LibPETSc.PetscSFNode(2, 0),  # Get index 0 from rank 2
+    LibPETSc.PetscSFNode(0, 0),
+    LibPETSc.PetscSFNode(0, 1),
+    LibPETSc.PetscSFNode(0, 2),
+    LibPETSc.PetscSFNode(0, 3),
+    LibPETSc.PetscSFNode(0, 4),
 ]
 
-LibPETSc.PetscSFSetGraph(petsclib, sf[], nleaves, ilocal, LibPETSc.PETSC_COPY_VALUES,
+LibPETSc.PetscSFSetGraph(petsclib, sf, nroots, nleaves, ilocal, LibPETSc.PETSC_COPY_VALUES,
                          iremote, LibPETSc.PETSC_COPY_VALUES)
 
 # Setup
-LibPETSc.PetscSFSetUp(petsclib, sf[])
+LibPETSc.PetscSFSetUp(petsclib, sf)
 
 # Cleanup
 LibPETSc.PetscSFDestroy(petsclib, sf)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## Communication Operations
@@ -69,9 +77,9 @@ root_data = Float64[1.0, 2.0, 3.0, 4.0, 5.0]
 leaf_data = zeros(Float64, nleaves)
 
 # Broadcast: send root data to leaves
-LibPETSc.PetscSFBcastBegin(petsclib, sf[], LibPETSc.MPI_DOUBLE, root_data, leaf_data,
+LibPETSc.PetscSFBcastBegin(petsclib, sf, LibPETSc.MPI_DOUBLE, root_data, leaf_data,
                            LibPETSc.MPI_REPLACE)
-LibPETSc.PetscSFBcastEnd(petsclib, sf[], LibPETSc.MPI_DOUBLE, root_data, leaf_data,
+LibPETSc.PetscSFBcastEnd(petsclib, sf, LibPETSc.MPI_DOUBLE, root_data, leaf_data,
                          LibPETSc.MPI_REPLACE)
 ```
 
@@ -87,9 +95,9 @@ leaf_data = Float64[0.1, 0.2, 0.3, 0.4, 0.5]
 root_data = zeros(Float64, nroots)
 
 # Reduce: accumulate leaf data to roots
-LibPETSc.PetscSFReduceBegin(petsclib, sf[], LibPETSc.MPI_DOUBLE, leaf_data, root_data,
+LibPETSc.PetscSFReduceBegin(petsclib, sf, LibPETSc.MPI_DOUBLE, leaf_data, root_data,
                             LibPETSc.MPI_SUM)
-LibPETSc.PetscSFReduceEnd(petsclib, sf[], LibPETSc.MPI_DOUBLE, leaf_data, root_data,
+LibPETSc.PetscSFReduceEnd(petsclib, sf, LibPETSc.MPI_DOUBLE, leaf_data, root_data,
                           LibPETSc.MPI_SUM)
 ```
 
@@ -99,9 +107,9 @@ Atomic operations for concurrent updates:
 
 ```julia
 # Fetch data and apply operation
-LibPETSc.PetscSFFetchAndOpBegin(petsclib, sf[], LibPETSc.MPI_DOUBLE, root_data,
+LibPETSc.PetscSFFetchAndOpBegin(petsclib, sf, LibPETSc.MPI_DOUBLE, root_data,
                                 leaf_data, leaf_updates, LibPETSc.MPI_SUM)
-LibPETSc.PetscSFFetchAndOpEnd(petsclib, sf[], LibPETSc.MPI_DOUBLE, root_data,
+LibPETSc.PetscSFFetchAndOpEnd(petsclib, sf, LibPETSc.MPI_DOUBLE, root_data,
                               leaf_data, leaf_updates, LibPETSc.MPI_SUM)
 ```
 
@@ -130,16 +138,16 @@ Available through `PetscSFSetType`:
 ```julia
 # Get number of roots (locally owned data)
 nroots = Ref{PetscInt}()
-LibPETSc.PetscSFGetGraph(petsclib, sf[], nroots, C_NULL, C_NULL, C_NULL)
+LibPETSc.PetscSFGetGraph(petsclib, sf, nroots, C_NULL, C_NULL, C_NULL)
 
 # Get number of leaves
 nleaves = Ref{PetscInt}()
-LibPETSc.PetscSFGetGraph(petsclib, sf[], C_NULL, nleaves, C_NULL, C_NULL)
+LibPETSc.PetscSFGetGraph(petsclib, sf, C_NULL, nleaves, C_NULL, C_NULL)
 
 # Get full graph
 ilocal_ptr = Ref{Ptr{PetscInt}}()
 iremote_ptr = Ref{Ptr{LibPETSc.PetscSFNode}}()
-LibPETSc.PetscSFGetGraph(petsclib, sf[], nroots, nleaves, ilocal_ptr, iremote_ptr)
+LibPETSc.PetscSFGetGraph(petsclib, sf, nroots, nleaves, ilocal_ptr, iremote_ptr)
 ```
 
 ## Multi-Root Support
@@ -148,9 +156,8 @@ Handle communication with multiple root data per point:
 
 ```julia
 # Create multi-SF for multiple DOFs per point
-multi_sf = Ref{LibPETSc.PetscSF}()
 nroots_mult = nroots * num_components
-LibPETSc.PetscSFCreateEmbeddedRootSF(petsclib, sf[], nroots_mult, iroot_indices, multi_sf)
+multi_sf = LibPETSc.PetscSFCreateEmbeddedRootSF(petsclib, sf, nroots_mult, iroot_indices)
 ```
 
 ## Common Use Cases
@@ -161,8 +168,8 @@ LibPETSc.PetscSFCreateEmbeddedRootSF(petsclib, sf[], nroots_mult, iroot_indices,
 # After modifying owned data, update ghost points
 # 1. Pack local data
 # 2. Broadcast to leaves (ghost points)
-LibPETSc.PetscSFBcastBegin(petsclib, sf[], datatype, local_data, ghost_data, op)
-LibPETSc.PetscSFBcastEnd(petsclib, sf[], datatype, local_data, ghost_data, op)
+LibPETSc.PetscSFBcastBegin(petsclib, sf, datatype, local_data, ghost_data, op)
+LibPETSc.PetscSFBcastEnd(petsclib, sf, datatype, local_data, ghost_data, op)
 ```
 
 ### 2. Parallel Assembly
@@ -171,8 +178,8 @@ LibPETSc.PetscSFBcastEnd(petsclib, sf[], datatype, local_data, ghost_data, op)
 # After local assembly, accumulate contributions from other processes
 # 1. Each process computes local contributions
 # 2. Reduce to accumulate at owners
-LibPETSc.PetscSFReduceBegin(petsclib, sf[], datatype, local_contrib, global_data, MPI_SUM)
-LibPETSc.PetscSFReduceEnd(petsclib, sf[], datatype, local_contrib, global_data, MPI_SUM)
+LibPETSc.PetscSFReduceBegin(petsclib, sf, datatype, local_contrib, global_data, MPI_SUM)
+LibPETSc.PetscSFReduceEnd(petsclib, sf, datatype, local_contrib, global_data, MPI_SUM)
 ```
 
 ### 3. DM Point Communication

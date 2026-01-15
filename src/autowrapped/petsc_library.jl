@@ -31,8 +31,7 @@ const PetscObject = Ptr{Cvoid}
 
 const PETSC_DECIDE = -1
 const PETSC_DETERMINE = PETSC_DECIDE
-# On Windows, PETSc is built without MPI, so use a dummy communicator
-const PETSC_COMM_SELF = Sys.iswindows() ? MPI_Comm(0) : MPI.COMM_SELF
+const PETSC_COMM_SELF = MPI.COMM_SELF
 
 PetscInt = Int64
 PetscInt64 = Int64
@@ -92,19 +91,12 @@ abstract type AbstractPetscKSP{T} end
 mutable struct PetscKSP{PetscLib} <: AbstractPetscKSP{PetscLib}
     ptr::CKSP
     age::Int
-    computeops!::Function
-    computerhs!::Function
-
+    
     # Constructor from pointer and age
     PetscKSP{PetscLib}(ptr::CKSP, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
     
     # Constructor for empty KSP (null pointer)
-    PetscKSP{PetscLib}() where {PetscLib} = new{PetscLib}(
-                                        Ptr{Cvoid}(C_NULL), 
-                                        0,
-                                        x -> x,
-                                        x -> x,
-                                        )
+    PetscKSP{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
 end
 
 # Convenience constructor from petsclib instance
@@ -126,37 +118,22 @@ mutable struct PetscSNES{PetscLib} <: AbstractPetscSNES{PetscLib}
     updateJ!::Function
     user_ctx::Any
 
-    # Constructor for empty SNES (null pointer)
-    PetscSNES{PetscLib}() where {PetscLib} = new{PetscLib}(
-                        Ptr{Cvoid}(C_NULL),
-                        0,
-                        x -> error("function not defined"),
-                        x -> error("function not defined"),
-                        nothing,
-                        )
-
     # Constructor from pointer and age
-    PetscSNES{PetscLib}(ptr, age::Int = 0) where {PetscLib} = new{PetscLib}(
+    #PetscSNES{PetscLib}(ptr::CSNES, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
+    
+    # Constructor for empty SNES (null pointer)
+    PetscSNES{PetscLib}(ptr, age) where {PetscLib} = new{PetscLib}(
                         ptr,
                         age,
                         x -> error("function not defined"),
                         x -> error("function not defined"),
                         nothing,
-                        )
-
-    # Constructor that also sets callbacks (kept for compatibility with existing call sites)
-    PetscSNES{PetscLib}(ptr, age::Int, f!::Function, updateJ!::Function, user_ctx::Any = nothing) where {PetscLib} = new{PetscLib}(
-                        ptr,
-                        age,
-                        f!,
-                        updateJ!,
-                        user_ctx,
-                        )
+                        )                  
 end
 
 # Convenience constructor from petsclib instance
 PetscSNES(lib::PetscLib) where {PetscLib} = PetscSNES{PetscLib}()
-PetscSNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, age::Int = 0) where {PetscLib} = PetscSNES{PetscLib}(ptr, age, f!, updateJ!)
+PetscSNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, age::Int = 0) where {PetscLib} = PetscSNES{PetscLib}(ptr, age, f!, updateJ!, nothing)
 PetscSNES(ptr::Ptr, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscSNES{PetscLib}(ptr, age)
 Base.convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
 Base.unsafe_convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
@@ -173,7 +150,7 @@ mutable struct PetscDM{PetscLib} <: AbstractPetscDM{PetscLib}
     PetscDM{PetscLib}(ptr::CDM, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
     
     # Constructor for empty DM (null pointer)
-    PetscDM{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0, nothing)
+    PetscDM{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
 end
 
 # Convenience constructor from petsclib instance
@@ -398,7 +375,6 @@ include("Vec_wrappers.jl")
 include("Vecs_wrappers.jl")
 include("Mat_wrappers.jl")
 include("KSP_wrappers.jl")
-# include("PC_wrappers.jl")  # TODO: Fix ccall issues in auto-generated wrappers
 include("SNES_wrappers.jl")
 include("DM_wrappers.jl")
 include("PetscOptions_wrappers.jl")

@@ -2583,6 +2583,7 @@ function KSPGetIterationNumber(petsclib::PetscLibType, ksp::PetscKSP) end
 	return its
 end 
 
+
 """
 	its::PetscInt = KSPGetTotalIterations(petsclib::PetscLibType,ksp::PetscKSP) 
 Gets the total number of iterations this `KSP` object has performed since was created, counted over all linear solves
@@ -4038,7 +4039,7 @@ function KSPDestroyDefault(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPGetConvergedReason(petsclib::PetscLibType,ksp::PetscKSP) 
+	reason::KSPConvergedReason = KSPGetConvergedReason(petsclib::PetscLibType,ksp::PetscKSP) 
 Gets the reason the `KSP` iteration was stopped.
 
 Not Collective

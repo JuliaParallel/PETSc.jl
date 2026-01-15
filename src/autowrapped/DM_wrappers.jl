@@ -2531,6 +2531,8 @@ $(_doc_external("DM/DMCreate"))
 function DMCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 
 @for_petsc function DMCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
+	# Ensure PETSc (and MPI) are initialized before creating a DM to avoid crashes
+	@assert PetscInitialized(petsclib) "PETSc is not initialized — call PETSc.initialize(petsclib) (and MPI.Init()) before creating DMs"
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -6447,15 +6449,18 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetLocalSection"))
 """
-function DMGetLocalSection(petsclib::PetscLibType, dm::PetscDM, section::PetscSection) end
+function DMGetLocalSection(petsclib::PetscLibType, dm::PetscDM, section::Union{PetscSection, Ref{PetscSection}}) end
 
-@for_petsc function DMGetLocalSection(petsclib::$UnionPetscLib, dm::PetscDM, section::PetscSection )
+@for_petsc function DMGetLocalSection(petsclib::$UnionPetscLib, dm::PetscDM, section::Union{PetscSection, Ref{PetscSection}} )
+
+	# Accept either a Ptr (PetscSection) or a Ref{PetscSection} and pass a Ptr to ccall
+	section_ = section isa Ref ? section : Ref{PetscSection}(section)
 
     @chk ccall(
                (:DMGetLocalSection, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{PetscSection}),
-               dm, section,
+               dm, section_,
               )
 
 
@@ -13237,15 +13242,17 @@ Level: intermediate
 # External Links
 $(_doc_external("DMForest/DMForestSetTopology"))
 """
-function DMForestSetTopology(petsclib::PetscLibType, dm::PetscDM, topology::DMForestTopology) end
+function DMForestSetTopology(petsclib::PetscLibType, dm::PetscDM, topology::Union{DMForestTopology, String}) end
 
-@for_petsc function DMForestSetTopology(petsclib::$UnionPetscLib, dm::PetscDM, topology::DMForestTopology )
+@for_petsc function DMForestSetTopology(petsclib::$UnionPetscLib, dm::PetscDM, topology::Union{DMForestTopology, String} )
+
+    topo_arg = topology
 
     @chk ccall(
                (:DMForestSetTopology, $petsc_library),
                PetscErrorCode,
                (CDM, DMForestTopology),
-               dm, topology,
+               dm, topo_arg,
               )
 
 
@@ -16264,15 +16271,15 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmGetField"))
 """
-function DMSwarmGetField(petsclib::PetscLibType, dm::PetscDM, fieldname::String, type::PetscDataType, data::Cvoid) end
+function DMSwarmGetField(petsclib::PetscLibType, dm::PetscDM, fieldname::String, type::Ref{PetscDataType}, data::Ptr{Ptr{Cvoid}}) end
 
-@for_petsc function DMSwarmGetField(petsclib::$UnionPetscLib, dm::PetscDM, fieldname::String, type::PetscDataType, data::Cvoid )
+@for_petsc function DMSwarmGetField(petsclib::$UnionPetscLib, dm::PetscDM, fieldname::String, type::Ref{PetscDataType}, data::Ptr{Ptr{Cvoid}} )
 	blocksize_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMSwarmGetField, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Cchar}, Ptr{$PetscInt}, Ptr{PetscDataType}, Cvoid),
+               (CDM, Ptr{Cchar}, Ptr{$PetscInt}, Ptr{PetscDataType}, Ptr{Ptr{Cvoid}}),
                dm, fieldname, blocksize_, type, data,
               )
 
@@ -16303,15 +16310,15 @@ Level: beginner
 # External Links
 $(_doc_external("DMSwarm/DMSwarmRestoreField"))
 """
-function DMSwarmRestoreField(petsclib::PetscLibType, dm::PetscDM, fieldname::String, type::PetscDataType, data::Cvoid) end
+function DMSwarmRestoreField(petsclib::PetscLibType, dm::PetscDM, fieldname::String, type::Ref{PetscDataType}, data::Ptr{Ptr{Cvoid}}) end
 
-@for_petsc function DMSwarmRestoreField(petsclib::$UnionPetscLib, dm::PetscDM, fieldname::String, type::PetscDataType, data::Cvoid )
+@for_petsc function DMSwarmRestoreField(petsclib::$UnionPetscLib, dm::PetscDM, fieldname::String, type::Ref{PetscDataType}, data::Ptr{Ptr{Cvoid}} )
 	blocksize_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMSwarmRestoreField, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{Cchar}, Ptr{$PetscInt}, Ptr{PetscDataType}, Cvoid),
+               (CDM, Ptr{Cchar}, Ptr{$PetscInt}, Ptr{PetscDataType}, Ptr{Ptr{Cvoid}}),
                dm, fieldname, blocksize_, type, data,
               )
 
@@ -35638,16 +35645,17 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexDistribute"))
 """
-function DMPlexDistribute(petsclib::PetscLibType, dm::PetscDM, overlap::PetscInt, sf::PetscSF, dmParallel::PetscDM) end
+function DMPlexDistribute(petsclib::PetscLibType, dm::PetscDM, overlap::PetscInt, sf::Union{Ptr{PetscSF}, Ptr{Nothing}}, dmParallel::PetscDM) end
 
-@for_petsc function DMPlexDistribute(petsclib::$UnionPetscLib, dm::PetscDM, overlap::$PetscInt, sf::PetscSF, dmParallel::PetscDM )
+@for_petsc function DMPlexDistribute(petsclib::$UnionPetscLib, dm::PetscDM, overlap::$PetscInt, sf::Union{Ptr{PetscSF}, Ptr{Nothing}}, dmParallel::PetscDM )
 	dmParallel_ = Ref(dmParallel.ptr)
+	sf_ = sf isa Ptr{Nothing} ? Ptr{PetscSF}(0) : sf
 
     @chk ccall(
                (:DMPlexDistribute, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{PetscSF}, Ptr{CDM}),
-               dm, overlap, sf, dmParallel_,
+               dm, overlap, sf_, dmParallel_,
               )
 
 	dmParallel.ptr = dmParallel_[]

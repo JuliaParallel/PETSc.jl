@@ -43,7 +43,10 @@ DMProduct represents a Cartesian product of multiple DMs, useful for coupled mul
 ```julia
 using PETSc, MPI
 
+# Initialize MPI and PETSc
+MPI.Init()
 petsclib = PETSc.getlib()
+PETSc.initialize(petsclib)
 
 # Create component DMs
 dm1 = Ref{LibPETSc.CDM}()
@@ -51,18 +54,38 @@ dm2 = Ref{LibPETSc.CDM}()
 # ... create dm1 and dm2 ...
 
 # Create DMProduct
-product = Ref{LibPETSc.CDM}()
-LibPETSc.DMProductCreate(petsclib, MPI.COMM_WORLD, 2, product)
-LibPETSc.DMProductSetDM(petsclib, product[], 0, dm1[])
-LibPETSc.DMProductSetDM(petsclib, product[], 1, dm2[])
+# Create two simple component DMs (here using small box DMPlex meshes)
+dm1 = LibPETSc.DMPlexCreateBoxMesh(
+    petsclib, MPI.COMM_WORLD, 2, LibPETSc.PETSC_FALSE,
+    [1,1], [0.0,0.0], [1.0,1.0], [LibPETSc.DM_BOUNDARY_NONE, LibPETSc.DM_BOUNDARY_NONE], LibPETSc.PETSC_TRUE, 0, LibPETSc.PETSC_FALSE
+)
+dm2 = LibPETSc.DMPlexCreateBoxMesh(
+    petsclib, MPI.COMM_WORLD, 2, LibPETSc.PETSC_FALSE,
+    [1,1], [0.0,0.0], [1.0,1.0], [LibPETSc.DM_BOUNDARY_NONE, LibPETSc.DM_BOUNDARY_NONE], LibPETSc.PETSC_TRUE, 0, LibPETSc.PETSC_FALSE
+)
+
+# Create a DMProduct and attach component DMs
+product = LibPETSc.DMCreate(petsclib, MPI.COMM_WORLD)
+LibPETSc.DMSetType(petsclib, product, "product")
+# Set the product 'topological' dimension to the number of component DMs
+LibPETSc.DMSetDimension(petsclib, product, 2)
+# Map product slots to sub-DM dimensions (index mapping); then attach sub-DMs
+LibPETSc.DMProductSetDimensionIndex(petsclib, product, 0, 0)
+LibPETSc.DMProductSetDimensionIndex(petsclib, product, 1, 0)
+LibPETSc.DMProductSetDM(petsclib, product, 0, dm1)
+LibPETSc.DMProductSetDM(petsclib, product, 1, dm2)
 
 # Set up
-LibPETSc.DMSetUp(petsclib, product[])
+LibPETSc.DMSetUp(petsclib, product)
 
 # Cleanup
 LibPETSc.DMDestroy(petsclib, product)
 LibPETSc.DMDestroy(petsclib, dm1)
 LibPETSc.DMDestroy(petsclib, dm2)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## DMRedundant

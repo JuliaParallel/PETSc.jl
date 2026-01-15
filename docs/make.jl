@@ -47,7 +47,6 @@ makedocs(;
             "AO (Application Ordering)" =>  "man/ao_lowlevel.md",
         ],
         "Utilities" => "man/utilities.md",
-        "List of functions"  => "man/listfunctions.md",
         "FAQ"  => "man/FAQ.md",
         "Contributing"  => "man/contributing.md",
     ],

@@ -3797,6 +3797,18 @@ $(_doc_external("SNES/SNESGetConvergedReason"))
 """
 function SNESGetConvergedReason(petsclib::PetscLibType, snes::PetscSNES, reason::SNESConvergedReason) end
 
+
+@for_petsc function SNESGetConvergedReason(petsclib::$UnionPetscLib, snes::PetscSNES)
+    reason = Ref{SNESConvergedReason}()
+    @chk ccall(
+               (:SNESGetConvergedReason, $petsc_library),
+               PetscErrorCode,
+               (CSNES, Ptr{SNESConvergedReason}),
+               snes, reason,
+              )
+    return reason[]
+end
+
 @for_petsc function SNESGetConvergedReason(petsclib::$UnionPetscLib, snes::PetscSNES, reason::SNESConvergedReason )
 
     @chk ccall(

@@ -23,10 +23,12 @@ Available viewer types:
 ## Basic Usage
 
 ```julia
-using PETSc
+using PETSc, MPI
 
-# Initialize PETSc
+# Initialize MPI and PETSc
+MPI.Init()
 petsclib = PETSc.getlib()
+PETSc.initialize(petsclib)
 
 # Create a viewer for ASCII output to stdout
 viewer = LibPETSc.PetscViewerCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
@@ -42,6 +44,10 @@ LibPETSc.PetscViewerFileSetMode(petsclib, viewer, LibPETSc.FILE_MODE_WRITE)
 # Cleanup - wrap in Ref since PetscViewerDestroy expects Ptr{PetscViewer}
 viewer_ref = Ref(viewer)
 LibPETSc.PetscViewerDestroy(petsclib, viewer_ref)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## Convenience Functions
@@ -49,10 +55,12 @@ LibPETSc.PetscViewerDestroy(petsclib, viewer_ref)
 For commonly used viewers, PETSc.jl provides convenience functions:
 
 ```julia
-using PETSc
+using PETSc, MPI
 
-# Initialize PETSc
+# Initialize MPI and PETSc
+MPI.Init()
 petsclib = PETSc.getlib()
+PETSc.initialize(petsclib)
 
 # Get stdout viewer (single process)
 viewer_stdout_self = LibPETSc.PETSC_VIEWER_STDOUT_SELF(petsclib)
@@ -65,6 +73,10 @@ viewer_stderr_self = LibPETSc.PETSC_VIEWER_STDERR_SELF(petsclib)
 
 # Get stderr viewer (all processes)
 viewer_stderr_world = LibPETSc.PETSC_VIEWER_STDERR_WORLD(petsclib)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 
 # Use them to view objects
 # LibPETSc.VecView(petsclib, vec, viewer_stdout_self)
@@ -87,6 +99,10 @@ LibPETSc.PetscViewerPushFormat(petsclib, viewer[], LibPETSc.PETSC_VIEWER_ASCII_M
 # LibPETSc.MatView(petsclib, mat, viewer[])
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ### Binary File Output
@@ -104,6 +120,10 @@ LibPETSc.PetscViewerBinaryOpen(petsclib, MPI.COMM_WORLD, "checkpoint.dat",
 # LibPETSc.MatView(petsclib, mat, viewer[])
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ### Loading from Binary Files
@@ -119,6 +139,10 @@ vec = LibPETSc.VecCreate(petsclib, MPI.COMM_WORLD)
 LibPETSc.VecLoad(petsclib, vec, viewer[])
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## Visualization Formats
@@ -136,6 +160,10 @@ LibPETSc.PetscViewerVTKOpen(petsclib, MPI.COMM_WORLD, "solution.vtu",
 # LibPETSc.VecView(petsclib, solution, viewer[])
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ### HDF5 Output
@@ -152,6 +180,10 @@ LibPETSc.PetscViewerHDF5PushGroup(petsclib, viewer[], "/timestep_001")
 LibPETSc.PetscViewerHDF5PopGroup(petsclib, viewer[])
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## Standard Viewers
@@ -198,6 +230,10 @@ LibPETSc.PetscViewerDrawOpen(petsclib, LibPETSc.PETSC_COMM_SELF, C_NULL, "Plot",
 # LibPETSc.MatView(petsclib, mat, viewer[])
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## Socket Viewer (MATLAB/Python)
@@ -213,6 +249,10 @@ LibPETSc.PetscViewerSocketOpen(petsclib, MPI.COMM_WORLD, "localhost", 5000, view
 # LibPETSc.VecView(petsclib, vec, viewer[])
 
 LibPETSc.PetscViewerDestroy(petsclib, viewer)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## Monitoring Convergence

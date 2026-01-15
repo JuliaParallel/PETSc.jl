@@ -162,6 +162,21 @@ function PetscSFDestroy(petsclib::PetscLibType, sf::PetscSF) end
 
 @for_petsc function PetscSFDestroy(petsclib::$UnionPetscLib, sf::PetscSF )
 
+    sf_ = Ref{PetscSF}(sf)
+
+    @chk ccall(
+               (:PetscSFDestroy, $petsc_library),
+               PetscErrorCode,
+               (Ptr{PetscSF},),
+               sf_,
+              )
+
+
+    return nothing
+end 
+
+@for_petsc function PetscSFDestroy(petsclib::$UnionPetscLib, sf::Ref{PetscSF} )
+
     @chk ccall(
                (:PetscSFDestroy, $petsc_library),
                PetscErrorCode,
@@ -170,7 +185,7 @@ function PetscSFDestroy(petsclib::PetscLibType, sf::PetscSF) end
               )
 
 
-	return nothing
+    return nothing
 end 
 
 """

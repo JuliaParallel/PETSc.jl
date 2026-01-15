@@ -19,10 +19,12 @@ The PC object can be used standalone or automatically by KSP during the solution
 ## Basic Usage
 
 ```julia
-using PETSc
+using PETSc, MPI
 
-# Initialize PETSc
+# Initialize MPI and PETSc
+MPI.Init()
 petsclib = PETSc.getlib()
+PETSc.initialize(petsclib)
 
 # Create a PC object
 pc = Ref{LibPETSc.PC}()
@@ -49,6 +51,10 @@ LibPETSc.PCSetUp(petsclib, pc[])
 
 # Cleanup
 LibPETSc.PCDestroy(petsclib, pc)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## Integration with KSP

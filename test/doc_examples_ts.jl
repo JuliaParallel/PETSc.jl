@@ -17,7 +17,7 @@ using MPI
         PETSc.LibPETSc.TSSetProblemType(petsclib, ts, PETSc.LibPETSc.TS_NONLINEAR)
         
         # Set the time stepping method (e.g., BDF, RK, Theta)
-        PETSc.LibPETSc.TSSetType(petsclib, ts, Base.unsafe_convert(Ptr{Int8}, "bdf"))
+        PETSc.LibPETSc.TSSetType(petsclib, ts, "bdf")  # String convenience wrapper
         
         # Set time span
         PETSc.LibPETSc.TSSetTime(petsclib, ts, 0.0)  # Initial time
@@ -47,7 +47,7 @@ using MPI
             ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)
             
             # Set type using string
-            PETSc.LibPETSc.TSSetType(petsclib, ts, Base.unsafe_convert(Ptr{Int8}, ts_type))
+            PETSc.LibPETSc.TSSetType(petsclib, ts, ts_type)
             
             # Verify type was set (TSGetType already returns a String)
             type_str = PETSc.LibPETSc.TSGetType(petsclib, ts)

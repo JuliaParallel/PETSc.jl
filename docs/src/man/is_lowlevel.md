@@ -20,10 +20,12 @@ PETSc provides several IS types:
 ## Basic Usage
 
 ```julia
-using PETSc
+using PETSc, MPI
 
-# Initialize PETSc
+# Initialize MPI and PETSc
+MPI.Init()
 petsclib = PETSc.getlib()
+PETSc.initialize(petsclib)
 
 # Get PETSc types
 PetscInt = petsclib.PetscInt
@@ -43,14 +45,17 @@ n = LibPETSc.ISGetSize(petsclib, is)
 local_n = LibPETSc.ISGetLocalSize(petsclib, is)
 
 # Get indices as an array
-indices_ptr = Ref{Ptr{PetscInt}}()
-LibPETSc.ISGetIndices(petsclib, is, indices_ptr)
+indices = LibPETSc.ISGetIndices(petsclib, is)
 # ... use indices ...
-LibPETSc.ISRestoreIndices(petsclib, is, indices_ptr)
+LibPETSc.ISRestoreIndices(petsclib, is, indices)
 
 # Cleanup
 LibPETSc.ISDestroy(petsclib, is)
 LibPETSc.ISDestroy(petsclib, is_stride)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## Common Operations

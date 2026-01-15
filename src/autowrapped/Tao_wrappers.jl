@@ -3995,6 +3995,18 @@ function TaoGetConvergedReason(petsclib::PetscLibType, tao::Tao, reason::TaoConv
 
 
 	return nothing
+end
+
+
+@for_petsc function TaoGetConvergedReason(petsclib::$UnionPetscLib, tao::Tao)
+    reason = Ref{TaoConvergedReason}()
+    @chk ccall(
+               (:TaoGetConvergedReason, $petsc_library),
+               PetscErrorCode,
+               (CTao, Ptr{TaoConvergedReason}),
+               tao, reason,
+              )
+    return reason[]
 end 
 
 """

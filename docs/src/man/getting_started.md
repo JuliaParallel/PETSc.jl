@@ -16,9 +16,9 @@ julia> ]
 which will install a pre-built PETSc library (`PETSc_jll`) as well as `MPI.jl` on your system. This will work both in serial and in parallel on your machine.
 
 !!! warning "Windows Users"
-    The prebuild binaries currently do not work reliably on Windows due to compatibility issues with `MicrosoftMPI_jll`. 
+    The prebuild binaries currently do not work on Windows as we had to build `PETSc_jll` without MPI due to compatibility issues with `MicrosoftMPI_jll`.
     
-    **Windows users are advised to install the [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (WSL) and run PETSc.jl from within WSL.** This will provide full functionality with both serial and parallel (MPI) support.
+    **Windows users are therefore advised to install the [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (WSL) and run PETSc.jl from within WSL.** This will provide full functionality with both serial and parallel (MPI) support.
 
 ### 1b. Installation using pre-built libraries 
 On many high-performance clusters, you will have to use the provided `MPI` installation for that cluster and the default download above will not be sufficient. Alternatively, you may be interested in a PETSc installation that comes with additional external packages. Ensure that this PETSc installation is compiled as a dynamic (and not a static) library, after which you need to specify the correct library with:

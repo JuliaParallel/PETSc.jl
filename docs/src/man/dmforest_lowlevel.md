@@ -17,41 +17,54 @@ DMForest provides:
 ```julia
 using PETSc, MPI
 
+# Initialize MPI and PETSc
+MPI.Init()
 petsclib = PETSc.getlib()
+PETSc.initialize(petsclib)
 
 # Create a DMForest
-forest = Ref{LibPETSc.CDM}()
-LibPETSc.DMCreate(petsclib, MPI.COMM_WORLD, forest)
-LibPETSc.DMSetType(petsclib, forest[], "forest")  # String convenience wrapper
+forest = LibPETSc.DMCreate(petsclib, MPI.COMM_WORLD)
+LibPETSc.DMSetType(petsclib, forest, "forest")  # String convenience wrapper
+# Set^ the geometric/topological dimension (e.g., 2 for a surface)
+LibPETSc.DMSetDimension(petsclib, forest, 2)
 
 # Set forest topology (e.g., unit square/cube)
-LibPETSc.DMForestSetTopology(
-    petsclib, forest[],
-    LibPETSc.DM_FOREST_TOPOLOGY_BRICK
-)
+# Set topology by name (e.g., "brick")
+LibPETSc.DMForestSetTopology(petsclib, forest, "brick")
 
-# Set base DM (initial coarse mesh)
-base_dm = Ref{LibPETSc.CDM}()
-# ... create base DMPlex ...
-LibPETSc.DMForestSetBaseDM(petsclib, forest[], base_dm[])
+# Set base DM (initial coarse mesh) using a simple DMPlex box mesh
+base_dm = LibPETSc.DMPlexCreateBoxMesh(
+    petsclib, MPI.COMM_WORLD, 2, LibPETSc.PETSC_FALSE,
+    [2, 2], [0.0, 0.0], [1.0, 1.0], [LibPETSc.DM_BOUNDARY_NONE, LibPETSc.DM_BOUNDARY_NONE], LibPETSc.PETSC_TRUE, 0, LibPETSc.PETSC_FALSE
+)
+LibPETSc.DMForestSetBaseDM(petsclib, forest, base_dm)
 
 # Set initial refinement level
-LibPETSc.DMForestSetInitialRefinement(petsclib, forest[], 2)
+LibPETSc.DMForestSetInitialRefinement(petsclib, forest, 2)
+
+# Ensure adjacency dimension and partition overlap are non-negative (some builds may leave them unset)
+LibPETSc.DMForestSetAdjacencyDimension(petsclib, forest, 0)
+LibPETSc.DMForestSetPartitionOverlap(petsclib, forest, 0)
 
 # Set up
-LibPETSc.DMSetFromOptions(petsclib, forest[])
-LibPETSc.DMSetUp(petsclib, forest[])
+# (Skip DMSetFromOptions in this simple example to avoid parsing unexpected runtime options)
+LibPETSc.DMSetUp(petsclib, forest)
 
 # Adapt based on some criterion
-# Create adapted forest
-adapted = Ref{LibPETSc.CDM}()
-# ... set adaptation criterion ...
-LibPETSc.DMForestTemplate(petsclib, forest[], MPI.COMM_WORLD, adapted)
+# Create adapted forest (returns via out-parameter)
+tdm = LibPETSc.PetscDM(C_NULL, petsclib)
+LibPETSc.DMForestTemplate(petsclib, forest, MPI.COMM_WORLD, tdm)
+adapted = tdm
+# `adapted` now points to the adapted DM (if any) and should be checked before use.
 
 # Cleanup
 LibPETSc.DMDestroy(petsclib, adapted)
 LibPETSc.DMDestroy(petsclib, forest)
 LibPETSc.DMDestroy(petsclib, base_dm)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## DMForest Functions

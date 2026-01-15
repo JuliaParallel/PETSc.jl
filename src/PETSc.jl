@@ -2,11 +2,9 @@
 
 module PETSc
 
-using MPI, LinearAlgebra, SparseArrays
+using MPI, LinearAlgebra, SparseArrays, OffsetArrays
 
 MPI.Initialized() || MPI.Init()
-
-using Libdl
 
 function _petsc_link(fname)
 """
@@ -20,22 +18,49 @@ function _doc_external(fname)
 """
 end
 
-include("const.jl")
-include("startup.jl")
-include("lib.jl")
+include("LibPETSc.jl")
+using .LibPETSc
+export LibPETSc
+export audit_petsc_file
+export set_petsclib
+
+using Libdl
+
 include("init.jl")
-include("ref.jl")
-include("viewer.jl")
+include("vec.jl")       
+include("mat.jl")          
 include("options.jl")
-include("vec.jl")
-include("mat.jl")
-include("matshell.jl")
-include("dm.jl")
-include("dmda.jl")
-include("dmstag.jl")
 include("ksp.jl")
-include("pc.jl")
-include("snes.jl")
+include("snes.jl")          
+include("dm.jl")          
 include("sys.jl")
+include("dmda.jl")          
+include("dmstag.jl")
+
+# String convenience wrappers for SetType functions
+include("string_wrappers.jl")       
+include("string_wrappers_extra.jl")
+
+
+include("audit.jl")
+
+
+
+#=
+include("utils.jl")
+include("viewer.jl")
+
+include("matshell.jl")      # not yet wrapped!
+include("dm.jl")            # partly wrapped, no tests yet
+include("dmda.jl")          # not yet wrapped!
+include("pc.jl")            # to be fixed/wrapped
+include("ksp.jl")           # part is wrapped
+include("sys.jl")
+
+##include("startup.jl")  # can be removed (later)
+##include("lib.jl")      # can be removed (later)
+##include("ref.jl")      # can be removed (later)
+
+=#
 
 end

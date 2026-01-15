@@ -1,0 +1,60 @@
+# already wrapped:
+- Vec
+- Vecs
+- Mat
+- KSP
+- PC
+- SNES
+- DM
+- PetscOptions
+- PetscDraw,PetscDrawAxis,PetscDrawLG,PetscDrawSP,PetscDrawHG,PetscDrawBar
+- PetscRegressor
+- PF
+- IS
+- TS
+- AO
+- Tao
+- DMAdaptor,DMSwarmDataField,DMSwarmDataBucket,DMSwarmSort,DMSwarmCellDM,DMInterpolationInfo,DMPlexStorageVersion,DMPlexPointQueue,DMField,DMUniversalLabel,DMGeneratorFunctionList,DMPlexTransform,DMNetworkMonitorList,DMNetworkMonitor,DMLabel
+- VecTagger
+- PetscDS
+- MatColoring,MatFDColoring,MatTransposeColoring,MatPartitioning,MatNullSpace,MatMFFD,MatCoarsen
+- ISLocalToGlobalMapping,ISColoring
+- SNESLineSearch
+- PetscBag, PetscBagItem
+- KSPGuess
+- PetscKDTree
+- PetscGridHash
+- PetscSection, PetscSectionSym
+- TSTrajectory,TSMonitorDrawCtx,TSMonitorSolutionCtx,TSMonitorVTKCtx,TSMonitorLGCtx,TSMonitorLGCtxNetwork,TSMonitorEnvelopeCtx,TSMonitorSPEigCtx,TSMonitorSPCtx,TSMonitorHGCtx,TSAdapt,TSGLLEAdapt
+- PetscSpace
+- PetscDevice,PetscDeviceContext
+- PetscLayout
+- PetscMatlabEngine
+- PetscPartitioner
+- PetscConvEst
+- PetscFE,PetscQuadrature,PetscTabulation,PetscWeakForm
+- PetscBench
+- PetscToken
+- PetscObject, PetscObjectList
+- PetscFunctionList
+- PetscDLLibrary
+- PetscContainer
+- PetscRandom
+- PetscSubcomm, PetscShmComm
+- PetscOmpCtrl
+- PetscHeap
+- PetscSegBuffer
+- PetscLimiter
+- PetscFV
+- TaoMonitorDrawCtx, TaoLineSearch
+- PetscViewer, PetscViewers
+- Characteristic
+- PetscSF, PetscSFLink
+- PetscDualSpace
+- PetscOptionsHelpPrinted, PetscOptionItem, PetscOptionItems
+- PetscIntStack
+- PetscLogHandler,PetscLogRegistry,PetscLogState
+
+# to be done
+ 
+

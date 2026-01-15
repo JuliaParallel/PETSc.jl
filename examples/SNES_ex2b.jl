@@ -10,14 +10,14 @@
 using PETSc, MPI, LinearAlgebra, SparseArrays, UnicodePlots, ForwardDiff
 using Test
 
-
 if ~MPI.Initialized()
     MPI.Init()
 end
 
-
 petsclib = PETSc.petsclibs[1]
 PETSc.initialize(petsclib)
+comm = MPI.COMM_WORLD
+
 
 """
     Computes initial guess 
@@ -28,22 +28,27 @@ function FormInitialGuess!(x)
     end
 end
 
+""" 
+    F = SetInitialArrays(n)
+Computes rhs forcing function 
+""" 
+function SetInitialArrays(n)
+    h =  1.0/(n-1.0)
+    F = zeros(n);
+    xp = 0.0;
+    for i=1:n 
+        v    = 6.0*xp + (xp+1.e-12)^6.0; 
+        F[i] = v;
+        xp   = xp+h;
+    end
+
+    return F
+end
+
 """
     Computes the residual f, given solution vector x
 """
-function FormResidual!(cf,cx, args...)
-    if typeof(cx) <: Ptr{Nothing}
-        # When this routine is called from PETSc, cx is a pointer to a global vector
-        # That's why we have to transfer it first to 
-        x   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cx, write=false)
-    else
-        x   = cx;
-    end
-    if typeof(cf) <: Ptr{Nothing}
-        f   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cf, write=true)
-    else
-        f   = cf;
-    end
+function FormResidual1!(f,snes, x)
     n       =   length(x);
     xp      =   LinRange(0.0,1.0, n);
     F       =   6.0.*xp .+ (xp .+1.e-12).^6.0;      # define source term function
@@ -54,10 +59,10 @@ function FormResidual!(cf,cx, args...)
         f[i] = (x[i-1] - 2.0*x[i] + x[i+1])/dx^2 + x[i]*x[i] - F[i]
     end
     f[n]    =   x[n] - 1.0;
-    Base.finalize(x)
-    Base.finalize(f)
-
+    
+    return 0
 end
+
 
 """
     Wrapper which makes it easier to compute the jacobian using automatic differntiation
@@ -65,36 +70,34 @@ end
 function  ForwardDiff_res(x)
 
     f   = zero(x)               # vector of zeros, of same type as x
-    FormResidual!(f,x);
+    FormResidual1!(f,nothing, x);
 
     return f;
 end
 
+
 """
     Computes the jacobian, given solution vector x
 """
-function FormJacobian!(cx, args...)
-
-    if typeof(cx) <: Ptr{Nothing}
-        x   =   PETSc.unsafe_localarray(PETSc.scalartype(petsclib),cx, write=false)
-    else
-        x   =   cx;
-    end
-    J        =  args[1];        # preconditioner = args[2], in case we want it to be different from J
-
+function FormJacobian1!(J, snes, x)
+   
     # Use AD to compute jacobian; by transferring x into sparse, the output will be sparse
-    J_julia  =  ForwardDiff.jacobian(ForwardDiff_res,sparse(x));
+    J_julia  =  ForwardDiff.jacobian(ForwardDiff_res,x[:]);
+    copyto!(J, sparse(J_julia))
 
-    J       .=  J_julia;   # copy to petsc format
+    if !isnothing(snes)
+        PETSc.assemble!(J)
+    end
+    return 0
 end
-
 
 # ==========================================
 # Main code 
 
 
 # Compute initial solution
-n   =   101;
+n   =   21;
+F   =   SetInitialArrays(n);
 x   =   zeros(n);
 
 FormInitialGuess!(x);
@@ -102,31 +105,44 @@ FormInitialGuess!(x);
 # Compute initial jacobian using a julia structure to obtain the nonzero structure
 # Note that we can also obtain this structure in a different manner
 Jstruct  = zeros(n,n);
-FormJacobian!(x, Jstruct);                              # jacobian in julia form
+FormJacobian1!(Jstruct, nothing, x);                              # jacobian in julia form
 Jsp      =   sparse(Float64.(abs.(Jstruct) .> 0))       # sparse julia, with 1.0 in nonzero spots
-PJ       =   PETSc.MatSeqAIJ(Jsp);                      # transfer to PETSc (initialize matrix with correct nonzero pattern)
+PJ       =   PETSc.MatSeqAIJWithArrays(petsclib, comm, Jsp);  # transfer to PETSc format
 
 # Setup SNES
-x_s = PETSc.VecSeq(x);                  # solution vector
-res = PETSc.VecSeq(zeros(size(x)));     # residual vector
+#x_s = PETSc.VecSeq(petsclib, comm, x);                  # solution vector
+#b   = PETSc.VecSeq(petsclib, comm, x);                  # solution vector
+#res = PETSc.VecSeq(petsclib, comm, zeros(size(x)));     # residual vector
 
-S = PETSc.SNES{Float64}(PETSc.petsclibs[1],MPI.COMM_SELF; 
+# Setup snes
+x_s = LibPETSc.VecCreateSeqWithArray(petsclib,comm, 1, length(x), x)    # solution vector
+res = LibPETSc.VecCreateSeqWithArray(petsclib,comm, 1, length(F), F)    # residual vector
+b   = LibPETSc.VecCreateSeqWithArray(petsclib,comm, 1, length(F), F)    # residual vector
+
+snes = PETSc.SNES(petsclib,comm; 
         snes_rtol=1e-12, 
         snes_monitor=nothing,
         snes_converged_reason=nothing);
-PETSc.setfunction!(S, FormResidual!, res)
-PETSc.setjacobian!(S, FormJacobian!, PJ, PJ)
+PETSc.setfunction!(snes, FormResidual1!, res)
+PETSc.setjacobian!(snes, FormJacobian1!, PJ)
 
 # solve
-PETSc.solve!(x_s, S);
+PETSc.solve!(x_s, snes);
 
 # Extract & plot solution
-x_sol = x_s.array;                  # convert solution to julia format
-FormResidual!(res.array,x_sol)      # just for checking, compute residual
+x_sol = x_s[:];                  # convert solution to julia format
+FormResidual1!(res,snes, x_s)
 
-@show norm(res.array)
+@show norm(res[:])
 
+# cleanup
+PETSc.destroy(x_s)
+PETSc.destroy(res)
+PETSc.destroy(b)
+PETSc.destroy(PJ)
+PETSc.destroy(snes)
 PETSc.finalize(petsclib)
 
 # plot solution in REPL
 lineplot(LinRange(0,1,n),x_sol,xlabel="width",ylabel="solution")
+

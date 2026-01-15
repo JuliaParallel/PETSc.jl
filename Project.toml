@@ -1,16 +1,21 @@
 name = "PETSc"
 uuid = "ace2c81b-2b5f-4b1e-a30d-d662738edfe0"
-authors = ["Simon Byrne <simonbyrne@gmail.com>"]
-version = "0.3.1"
+authors = ["Boris Kaus <kaus@uni-mainz.de>", "Viral B. Shah <virals@gmail.com>", "Erik Schnetter <eschnetter@perimeterinstitute.ca>", "Jeremy E. Kozdon <jeremy@kozdon.net>", "Simon Byrne <simonbyrne@gmail.com>"]
+version = "0.4.0"
 
 [deps]
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
 Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 MPI = "da04e1cc-30fd-572f-bb4f-1f8673147195"
 MPIPreferences = "3da0fdf6-3ccc-4f1b-acd9-58baa6c99267"
+OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
 PETSc_jll = "8fa3689e-f0b9-5420-9873-adf6ccf46f2d"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+SparseDiffTools = "47a9eef4-7e08-11e9-0b38-333d64bd3804"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 
 [compat]
 MPI = "0.20"
@@ -20,12 +25,14 @@ SparseArrays = "1.10"
 julia = "1.10"
 
 [extras]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 SparseDiffTools = "47a9eef4-7e08-11e9-0b38-333d64bd3804"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 
 [targets]
-test = ["ForwardDiff", "UnicodePlots", "Test", "Plots", "SparseDiffTools", "Printf"]
+test = ["ForwardDiff", "UnicodePlots", "Test", "Plots", "SparseDiffTools", "Printf", "Random", "CairoMakie"]

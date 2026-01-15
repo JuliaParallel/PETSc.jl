@@ -1,522 +1,445 @@
-const CDM = Ptr{Cvoid}
-abstract type AbstractDM{PetscLib} end
+import .LibPETSc: AbstractPetscDM, PetscDM, CDM
+
+# Custom display for REPL
+function Base.show(io::IO, v::AbstractPetscDM{PetscLib}) where {PetscLib}
+    if v.ptr == C_NULL
+        print(io, "PETSc DM (null pointer)")
+        return
+    end
+    
+    # Try to get DM info, but handle uninitialized DMs gracefully
+    try
+        ty = LibPETSc.DMGetType(PetscLib, v)
+        di = LibPETSc.DMGetDimension(PetscLib, v)
+        print(io, "PETSc DM $ty object in $di dimensions")
+    catch
+        # DM not fully initialized yet (type not set)
+        print(io, "PETSc DM (not yet initialized)")
+    end
+    return nothing
+end
+
 
 """
-    DMLocalVec(v::CVec, dm::AbstractDM)
+    destroy(dm::AbstractPetscDM)
 
-Container for an PETSc vector we know is "local"
+Destroy a DM object and release associated resources.
+
+This function is typically called automatically via finalizers when the object
+is garbage collected, but can be called explicitly to free resources immediately.
 
 # External Links
-$(_doc_external("Vec/Vec"))
+$(_doc_external("DM/DMDestroy"))
 """
-mutable struct DMLocalVec{PetscLib, T, T_DM} <: AbstractVec{T}
-    ptr::CVec
-    dm::T_DM
-    function DMLocalVec(ptr, dm::AbstractDM{PetscLib}) where {PetscLib}
-        new{PetscLib, scalartype(PetscLib), typeof(dm)}(ptr, dm)
+function destroy(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    if !(finalized(PetscLib)) && dm.ptr != C_NULL 
+        LibPETSc.DMDestroy(PetscLib, dm)
+    end
+    dm.ptr = C_NULL
+    return nothing
+end
+
+
+
+"""
+    getinfo(dm::AbstractPetscDM)
+
+Get information about a DMDA.
+
+# Returns
+
+A `NamedTuple` with the following fields:
+- `dim`: Dimension of the `DMDA` (1, 2, or 3)
+- `global_size`: Tuple with global dimensions in each direction of the array
+- `mpi_proc_size`: Tuple with number of MPI processes in each direction
+- `dof`: Degrees of freedom per node
+- `stencil_width`: Width of the stencil
+- `boundary_type`: Tuple with boundary types in each direction
+- `stencil_type`: Stencil type, either `DMDA_STENCIL_STAR` or `DMDA_STENCIL_BOX`
+
+# External Links
+$(_doc_external("DMDA/DMDAGetInfo"))
+"""
+function getinfo(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+
+    dim, M, N, P, m, n, p, dof, s, bx, by, bz, st = LibPETSc.DMDAGetInfo(PetscLib, dm)
+    global_size   = (M,N,P)
+    mpi_proc_size = (m,n,p)
+    boundary_type = (bx,by,bz)
+    stencil_width = s
+    stencil_type  = st
+               
+
+	return (;dim,global_size,mpi_proc_size,dof,s,boundary_type,stencil_width,stencil_type)
+end
+
+"""
+    lower, upper, size = getcorners_dmda(da::AbstractDMDA)
+
+Returns a `NamedTuple` with the global indices (excluding ghost points) of the
+`lower` and `upper` corners as well as the `size`.
+
+
+Calls `LibPETSc.DMDAGetCorners`.
+"""
+function getcorners_dmda(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    PetscInt = inttype(PetscLib)
+    xs, ys, zs, xm, ym, zm = LibPETSc.DMDAGetCorners(PetscLib, dm)
+    corners = [PetscInt(xs), PetscInt(ys), PetscInt(zs)]
+    local_size = [PetscInt(xm), PetscInt(ym), PetscInt(zm)]
+    
+    corners .+= 1
+    upper = corners .+ local_size .- PetscInt(1)
+
+    return (
+        lower = CartesianIndex(corners...),
+        upper = CartesianIndex(upper...),
+        size = (local_size...,),
+    )
+end
+
+
+"""
+    lower, upper, size = getcorners(da::AbstractDMDA)
+
+Returns a `NamedTuple` with the global indices (excluding ghost points) of the
+`lower` and `upper` corners as well as the `size`. 
+Works for both a DMDA and DMStag object
+"""
+function getcorners(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    type = gettype(dm)
+    if type == "da"
+        return getcorners_dmda(dm)
+    elseif type == "stag"
+        return getcorners_dmstag(dm)
+    else
+        error("getcorners only works for DMDA and DMStag objects")
     end
 end
 
 """
-    DMGlobalVec(v::CVec, dm::AbstractDM)
+    lower, upper, size = getghostcorners(da::AbstractDMDA)
 
-Container for an PETSc vector we know is "global"
-
-# External Links
-$(_doc_external("Vec/Vec"))
+Returns a `NamedTuple` with the global indices (including ghost points) of the
+`lower` and `upper` corners as well as the `size`. 
+Works for both a `DMDA` and `DMStag` object
 """
-mutable struct DMGlobalVec{PetscLib, T, T_DM} <: AbstractVec{T}
-    ptr::CVec
-    dm::T_DM
-    function DMGlobalVec(ptr, dm::AbstractDM{PetscLib}) where {PetscLib}
-        new{PetscLib, scalartype(PetscLib), typeof(dm)}(ptr, dm)
+function getghostcorners(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    type = gettype(dm)
+    if type == "da"
+        return getghostcorners_dmda(dm)
+    elseif type == "stag"
+        return getghostcorners_dmstag(dm)
+    else
+        error("getghostcorners only works for DMDA and DMStag objects")
     end
 end
 
-# Mainly for DM we do not know the type of, namely ones returned by PETSc
-# functions such as `KSPGetDM`
-mutable struct PetscDM{PetscLib} <: AbstractDM{PetscLib}
-    ptr::CDM
+"""
+    lower, upper, size = getghostcorners_dmda(da::AbstractDMDA)
+
+Returns a `NamedTuple` with the global indices (including ghost points) of the
+`lower` and `upper` corners as well as the `size` of the local part of the domain.
+
+Calls `LibPETSc.DMDAGetCorners`.
+"""
+function getghostcorners_dmda(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    PetscInt = inttype(PetscLib)
+    xs, ys, zs, xm, ym, zm = LibPETSc.DMDAGetGhostCorners(PetscLib, dm)
+    corners = [PetscInt(xs), PetscInt(ys), PetscInt(zs)]
+    local_size = [PetscInt(xm), PetscInt(ym), PetscInt(zm)]
+    
+    corners .+= 1
+    upper = corners .+ local_size .- PetscInt(1)
+
+    return (
+        lower = CartesianIndex(corners...),
+        upper = CartesianIndex(upper...),
+        size = (local_size...,),
+    )
 end
 
+
 """
-    setup!(da::DM, opts=da.opts)
+    setup!(dm::DM)
 
 # External Links
 $(_doc_external("DM/DMSetUp"))
 """
-function setup! end
+setup!(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMSetUp(PetscLib, dm)
 
-@for_petsc function setup!(da::AbstractDM{$PetscLib}, opts::Options = da.opts)
-    with(opts) do
-        @chk ccall((:DMSetUp, $petsc_library), PetscErrorCode, (CDM,), da)
-    end
-end
 
 """
-    setfromoptions!(da::DM, opts=da.opts)
+    setfromoptions!(dm::AbstractPetscDM)
 
+Sets the global options to the `dm`    
 # External Links
 $(_doc_external("DM/DMSetFromOptions"))
 """
-#function setfromoptions! end
+setfromoptions!(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMSetFromOptions(PetscLib, dm)
 
-@for_petsc function setfromoptions!(
-    da::AbstractDM{$PetscLib},
-    opts::Options = da.opts,
-)
-    with(opts) do
-        @chk ccall(
-            (:DMSetFromOptions, $petsc_library),
-            PetscErrorCode,
-            (CDM,),
-            da,
-        )
-    end
+
+
+"""
+    empty(da::AbstractPetscDM)
+
+return an uninitialized `DMDA` struct.
+"""
+Base.empty(da::AbstractPetscDM{PetscLib}) where {PetscLib} = PetscDM{PetscLib}(C_NULL, da.age)
+
+
+"""
+    v::PetscVec = DMLocalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+
+Returns a local vector `v` from the `dm` object.
+"""
+DMLocalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateLocalVector(getlib(PetscLib), dm)
+
+"""
+    v::PetscVec = DMGlobalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+
+Returns a global vector `v` from the `dm` object.
+"""
+DMGlobalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMCreateGlobalVector(getlib(PetscLib), dm)
+
+"""
+    dm_local_to_global!(local_vec, global_vec, dm, mode = INSERT_VALUES)
+
+Transfer values from the `local_vec` to the `global_vec` associated with the `dm` object.
+
+# Arguments
+- `local_vec::AbstractPetscVec`: Local vector (source)
+- `global_vec::AbstractPetscVec`: Global vector (destination)
+- `dm::AbstractPetscDM`: DM object
+- `mode::InsertMode`: Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
+
+# External Links
+$(_doc_external("DM/DMLocalToGlobal"))
+
+"""
+function dm_local_to_global!(   local_vec::AbstractPetscVec{PetscLib},
+                                global_vec::AbstractPetscVec{PetscLib},
+                                   dm::AbstractPetscDM{PetscLib},
+                                   mode::InsertMode = INSERT_VALUES) where {PetscLib}
+
+    LibPETSc.DMLocalToGlobalBegin(PetscLib, dm, local_vec, mode, global_vec)
+    LibPETSc.DMLocalToGlobalEnd(PetscLib, dm, local_vec,  mode, global_vec)
+    return nothing
 end
 
-@for_petsc begin
-    function destroy(da::AbstractDM{$PetscLib})
-        finalized($PetscLib) || @chk ccall(
-            (:DMDestroy, $petsc_library),
-            PetscErrorCode,
-            (Ptr{CDM},),
-            da,
-        )
-        da.ptr = C_NULL
-        return nothing
-    end
+
+"""
+    dm_global_to_local!(global_vec, local_vec, dm, mode = INSERT_VALUES)
+
+Transfer values from the `global_vec` to the `local_vec` associated with the `dm` object,
+including ghost point values from neighboring processes.
+
+# Arguments
+- `global_vec::AbstractPetscVec`: Global vector (source)
+- `local_vec::AbstractPetscVec`: Local vector (destination)
+- `dm::AbstractPetscDM`: DM object
+- `mode::InsertMode`: Insert mode, either `INSERT_VALUES` or `ADD_VALUES`
+
+# External Links
+$(_doc_external("DM/DMLocalToGlobal"))
+"""
+function dm_global_to_local!(global_vec::AbstractPetscVec{PetscLib},
+                              local_vec::AbstractPetscVec{PetscLib},
+                                     dm::AbstractPetscDM{PetscLib},
+                                   mode::InsertMode = INSERT_VALUES) where {PetscLib}
+
+    LibPETSc.DMGlobalToLocalBegin(getlib(PetscLib), dm, global_vec, mode, local_vec)
+    LibPETSc.DMGlobalToLocalEnd(getlib(PetscLib), dm, global_vec,  mode, local_vec)
+    return nothing
+end
+
+
+"""
+    setuniformcoordinates!(
+        da::DMDA
+        xyzmin::NTuple{N, Real},
+        xyzmax::NTuple{N, Real},
+    ) where {N}
+
+Set uniform coordinates for the `da` using the lower and upper corners defined
+by the `NTuple`s `xyzmin` and `xyzmax`. If `N` is less than the dimension of the
+`da` then the value of the trailing coordinates is set to `0`.
+
+# External Links
+$(_doc_external("DMDA/DMDASetUniformCoordinates"))
+"""
+function setuniformcoordinates_dmda!(
+    da::PetscDM{PetscLib},
+    xyzmin::NTuple{N, Real},
+    xyzmax::NTuple{N, Real},
+) where {N, PetscLib}
+    @assert gettype(da) == "da" "setuniformcoordinates_dmda! only works for DMDA objects"
+    PetscReal = PetscLib.PetscReal
+    xmin = PetscReal(xyzmin[1])
+    xmax = PetscReal(xyzmax[1])
+
+    ymin = (N > 1) ? PetscReal(xyzmin[2]) : PetscReal(0)
+    ymax = (N > 1) ? PetscReal(xyzmax[2]) : PetscReal(0)
+
+    zmin = (N > 2) ? PetscReal(xyzmin[3]) : PetscReal(0)
+    zmax = (N > 2) ? PetscReal(xyzmax[3]) : PetscReal(0)
+
+
+    LibPETSc.DMDASetUniformCoordinates(
+        PetscLib,
+        da,
+        xmin,
+        xmax,
+        ymin,
+        ymax,
+        zmin,
+        zmax,
+    )
+    return da
 end
 
 """
-    getdimension(dm::AbstractDM)
+    coordinatesDMLocalVec(dm::AbstractDM)
+
+Gets a local vector with the coordinates associated with `dm`.
+
+Note that the returned vector is borrowed from the `dm` and is not a new vector.
+
+# External Links
+$(_doc_external("DM/DMGetCoordinatesLocal"))
+"""
+function coordinatesDMLocalVec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    coord_vec = DMLocalVec(dm)
+    LibPETSc.DMGetCoordinatesLocal(PetscLib, dm, coord_vec)
+
+    return coord_vec
+end
+
+"""
+    getlocalcoordinatearray(da::AbstractPetscDM)
+
+Return coordinate arrays for the local portion of the domain.
+
+The returned arrays are `OffsetArray`s that can be addressed using global indices,
+accounting for ghost points.
+
+# External Links
+$(_doc_external("DM/DMGetCoordinatesLocal"))
+"""
+function getlocalcoordinatearray(da::AbstractPetscDM{PetscLib}) where {PetscLib}
+    # retrieve local coordinates
+    coord_vec = coordinatesDMLocalVec(da)
+    # array
+    array1D = unsafe_localarray(coord_vec; read = true, write = false)
+    dim = [PetscLib.PetscInt(0)]
+    dim = LibPETSc.DMGetCoordinateDim(PetscLib, da)
+    dim = dim[1]
+    corners = getghostcorners(da)
+
+    return reshapelocalarray(array1D, da, dim)
+end
+
+
+gettype(dm::PetscDM{PetscLib}) where {PetscLib} = LibPETSc.DMGetType(PetscLib,dm)
+
+"""
+    getdimension(dm::AbstractPetscDM)
 
 Return the topological dimension of the `dm`
 
 # External Links
 $(_doc_external("DM/DMGetDimension"))
 """
-#function getdimension(::AbstractDM) end
+getdimension(dm::AbstractPetscDM{PetscLib}) where PetscLib = LibPETSc.DMGetDimension(PetscLib,dm)
 
-@for_petsc function getdimension(dm::AbstractDM{$PetscLib})
-    dim = Ref{$PetscInt}()
 
-    @chk ccall(
-        (:DMGetDimension, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{$PetscInt}),
-        dm,
-        dim,
-    )
+"""
+    size(dm::AbstractPetscDM)
 
-    return dim[]
+Return the global size of a DM object as a tuple.
+
+For DMDA and DMStag, returns `(M, N, P)` where unused dimensions are 1.
+"""
+function Base.size(dm::AbstractPetscDM{PetscLib}) where PetscLib
+    if gettype(dm) == "stag"
+        size = LibPETSc.DMStagGetGlobalSizes(PetscLib,dm)
+    elseif gettype(dm) == "da"
+        dim, M,N,P,_ = LibPETSc.DMDAGetInfo(PetscLib, dm)
+        size = (M,N,P)
+    else
+        error("Size not defined for DMStag objects. Use getinfo(dm).global_size instead.")
+    end
+    return size
 end
 
-"""
-    gettype(dm::AbstractDM)
 
-Gets type name of the `dm`
+"""
+    dm_local_to_global(dm, x_L, x_G, mode = INSERT_VALUES)
+
+Transfer values from the local vector `x_L` to the global vector `x_G`.
+
+# Arguments
+- `dm`: The DM object
+- `x_L`: Local vector (source)
+- `x_G`: Global vector (destination)
+- `mode`: `INSERT_VALUES` (default) or `ADD_VALUES`
 
 # External Links
-$(_doc_external("DM/DMGetType"))
+$(_doc_external("DM/DMLocalToGlobal"))
 """
-#function gettype(::AbstractDM) end
-
-@for_petsc function gettype(dm::AbstractDM{$PetscLib})
-    t_r = Ref{Cstring}()
-    @chk ccall(
-        (:DMGetType, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{Cstring}),
-        dm,
-        t_r,
-    )
-    return unsafe_string(t_r[])
-end
-
-"""
-    view(dm::AbstractDM, viewer::Viewer=ViewerStdout(petsclib, getcomm(dm)))
-
-view a `dm` with `viewer`
-
-# External Links
-$(_doc_external("DM/DMView"))
-"""
-#function view(::AbstractDM) end
-
-@for_petsc function view(
-    dm::AbstractDM{$PetscLib},
-    viewer::AbstractViewer{$PetscLib} = ViewerStdout($petsclib, getcomm(dm)),
-)
-    @chk ccall(
-        (:DMView, $petsc_library),
-        PetscErrorCode,
-        (CDM, CPetscViewer),
-        dm,
-        viewer,
-    )
+function dm_local_to_global(dm::PetscDM{PetscLib},
+                             x_L::AbstractPetscVec{PetscLib},
+                             x_G::AbstractPetscVec{PetscLib}, 
+                             mode=LibPETSc.INSERT_VALUES) where {PetscLib}
+    
+    petsclib = getlib(PetscLib)
+    LibPETSc.DMLocalToGlobalBegin(petsclib, dm, x_L, mode, x_G)
+    LibPETSc.DMLocalToGlobalEnd(petsclib, dm, x_L, mode, x_G)
+    
     return nothing
 end
 
 """
-    creatematrix(dm::AbstractDM)
+    dm_global_to_local(dm, x_G, x_L, mode = INSERT_VALUES)
 
-Generates a matrix from the `dm` object.
+Transfer values from the global vector `x_G` to the local vector `x_L`,
+including ghost point values from neighboring processes.
+
+# Arguments
+- `dm`: The DM object
+- `x_G`: Global vector (source)
+- `x_L`: Local vector (destination)
+- `mode`: `INSERT_VALUES` (default) or `ADD_VALUES`
+
+# External Links
+$(_doc_external("DM/DMGlobalToLocal"))
+"""
+function dm_global_to_local(dm::PetscDM{PetscLib},
+                             x_G::AbstractPetscVec{PetscLib},
+                             x_L::AbstractPetscVec{PetscLib}, 
+                             mode=LibPETSc.INSERT_VALUES) where {PetscLib}
+    
+    petsclib = getlib(PetscLib)
+    LibPETSc.DMGlobalToLocalBegin(petsclib, dm, x_G, mode, x_L)
+    LibPETSc.DMGlobalToLocalEnd(petsclib, dm, x_G, mode, x_L)
+
+    return nothing
+end
+
+"""
+    MatAIJ(da::AbstractPetscDM)
+
+Create a sparse matrix (AIJ format) with sparsity pattern determined by the DM.
+
+# Returns
+
+A `PetscMat` object compatible with vectors from the DM.
 
 # External Links
 $(_doc_external("DM/DMCreateMatrix"))
 """
-#function creatematrix end
-
-@for_petsc function creatematrix(dm::AbstractDM{$PetscLib})
-    mat = Mat{$PetscScalar}(C_NULL)
-
-    @chk ccall(
-        (:DMCreateMatrix, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{CMat}),
-        dm,
-        mat,
-    )
-
-    return mat
-end
-
-"""
-    createlocalvector(dm::AbstractDM)
-
-returns a local vector from the `dm` object.
-
-# External Links
-$(_doc_external("DM/DMCreateLocalVector"))
-"""
-#function createlocalvector end
-
-@for_petsc function createlocalvector(dm::AbstractDM{$PetscLib})
-    vec = DMLocalVec(C_NULL, dm)
-
-    @chk ccall(
-        (:DMCreateLocalVector, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{CVec}),
-        dm,
-        vec,
-    )
-
-    return vec
-end
-
-"""
-    createglobalvector(dm::DM; write::Bool = true, read::Bool = true)
-
-returns a global vector from the `dm` object.
-
-# External Links
-$(_doc_external("DM/DMCreateGlobalVector"))
-"""
-#function createglobalvector end
-
-@for_petsc function createglobalvector(dm::AbstractDM{$PetscLib})
-    vec = DMGlobalVec(C_NULL, dm)
-
-    @chk ccall(
-        (:DMCreateGlobalVector, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{CVec}),
-        dm,
-        vec,
-    )
-
-    return vec
-end
-
-"""
-    update!(
-        global_vec::DMGlobalVec,
-        local_vec::DMLocalVec,
-        mode::InsertMode,
-    )
-
-Updates `global_vec` from `local_vec` with insert `mode`
-
-# External Links
-$(_doc_external("DM/DMLocalToGlobal"))
-"""
-function update!( global_vec::DMGlobalVec, local_vec::DMLocalVec, mode::InsertMode) end
-
-@for_petsc function update!(
-    global_vec::DMGlobalVec{$PetscLib},
-    local_vec::DMLocalVec{$PetscLib},
-    mode::InsertMode
-)
-    @assert local_vec.dm === global_vec.dm
-
-    update_local2global!( global_vec.ptr, local_vec.ptr, mode, local_vec.dm);
-
-    return nothing
-end
-
-"""
-    update!(
-        global_vec::DMGlobalVec,
-        local_ptr::CVec,
-        mode::InsertMode,
-    )
-
-Updates `global_vec` from a pointer to a local vector `local_ptr` with insert `mode`
-
-# External Links
-$(_doc_external("DM/DMLocalToGlobal"))
-"""
-#function update!( global_vec::DMGlobalVec, local_ptr::CVec, mode::InsertMode) end
-
-@for_petsc function update!(
-    global_vec::DMGlobalVec{$PetscLib},
-    local_ptr::CVec,
-    mode::InsertMode
-)
-    update_local2global!( global_vec.ptr, local_ptr, mode, global_vec.dm);
-
-    return nothing
-end
-
-"""
-    update!(
-        global_ptr::CVec,
-        local_vec::DMLocalVec,
-        mode::InsertMode,
-    )
-
-Updates pointer to global vec `global_ptr` from `local_vec` with insert `mode`
-
-# External Links
-$(_doc_external("DM/DMLocalToGlobal"))
-"""
-#function update!( global_vec::DMGlobalVec, local_ptr::CVec, mode::InsertMode) end
-
-@for_petsc function update!(
-    global_ptr::CVec,
-    local_vec::DMLocalVec{$PetscLib},
-    mode::InsertMode
-)
-    update_local2global!( global_ptr, local_vec.ptr, mode, local_vec.dm);
-
-    return nothing
-end
-
-"""
-    update!(
-        local_vec::DMLocalVec,
-        global_ptr::CVec,
-        mode::InsertMode,
-    )
-
-Updates `local_vec` from pointer to global vec `global_ptr` with insert `mode`
-
-# External Links
-$(_doc_external("DM/DMGlobalToLocal"))
-"""
-#function update!(local_vec::DMLocalVec,global_ptr::CVec, mode::InsertMode) end
-
-@for_petsc function update!(
-    local_vec::DMLocalVec{$PetscLib},
-    global_ptr::CVec,
-    mode::InsertMode,
-)
-
-    update_global2local!( local_vec.ptr, global_ptr, mode, local_vec.dm);
-    return nothing
-end
-
-"""
-    update!(
-        local_ptr::CVec,
-        global_vec::DMGlobalVec
-        mode::InsertMode,
-    )
-
-Updates pointer to local vec `local_ptr` from `global_vec` with insert `mode`
-
-# External Links
-$(_doc_external("DM/DMGlobalToLocal"))
-"""
-#function update!(local_ptr::CVec, global_vec::DMGlobalVec, mode::InsertMode) end
-
-@for_petsc function update!(
-    local_ptr::CVec,
-    global_vec::DMGlobalVec{$PetscLib},
-    mode::InsertMode,
-)
-
-    update_global2local!( local_ptr, global_vec.ptr, mode, global_vec.dm);
-    return nothing
-end
-
-
-"""
-    update!(
-        local_vec::DMLocalVec,
-        global_vec::DMGlobalVec,
-        mode::InsertMode
-    )
-
-Updates `local_vec` from a pointer to a global vec `global_ptr` with insert `mode`
-
-# External Links
-$(_doc_external("DM/DMGlobalToLocal"))
-"""
-function update!(local_vec::DMLocalVec, global_vec::DMGlobalVec, mode::InsertMode) end
-
-@for_petsc function update!(
-    local_vec::DMLocalVec{$PetscLib},
-    global_vec::DMGlobalVec{$PetscLib},
-    mode::InsertMode
-)
-    @assert local_vec.dm === global_vec.dm
-
-    update_global2local!( local_vec.ptr, global_vec.ptr, mode, local_vec.dm);
-
-    return nothing
-end
-
-
-#=
-@for_petsc function update!(
-    local_ptr::CVec,
-    global_vec::DMGlobalVec{$PetscLib},
-    mode::InsertMode,
-)
-    @chk ccall(
-        (:DMGlobalToLocal, $petsc_library),
-        PetscErrorCode,
-        (CDM, CVec, InsertMode, CVec),
-        global_vec.dm,
-        global_vec,
-        mode,
-        local_ptr,
-    )
-
-    return nothing
-end
-=#
-
-"""
-    update_local2global!(
-        global_ptr::CVec,
-        local_ptr::CVec,
-        mode::InsertMode,
-        dm::AbstractDM
-    )
-
-Updates pointer of `global_vec` from pointer of `local_vec` with insert `mode`.
-Both vectors should belong to the same `dm`
-
-This is a low-level routine that is typically called by `update!`
-"""
-#function update_local2global! end
-
-@for_petsc function update_local2global!(
-    global_ptr::CVec,
-    local_ptr::CVec,
-    mode::InsertMode,
-    dm::AbstractDM{$PetscLib}
-)
-    @chk ccall(
-        (:DMLocalToGlobal, $petsc_library),
-        PetscErrorCode,
-        (CDM, CVec, InsertMode, CVec),
-        dm,
-        local_ptr,
-        mode,
-        global_ptr,
-    )
-
-    return nothing
-end
-
-"""
-    update_global2local!(
-        local_ptr::CVec,
-        global_ptr::CVec,
-        mode::InsertMode,
-        dm::AbstractDM
-    )
-
-Updates pointer to `local` vector from pointer to `global` vector with insert `mode`, assuming that both belong to the same `dm`
-
-This is a low-level routine that is typically called by `update!`
-
-"""
-function update_global2local! end
-
-@for_petsc function update_global2local!(
-    local_ptr::CVec,
-    global_ptr::CVec,
-    mode::InsertMode,
-    dm::AbstractDM{$PetscLib}
-)
-    @chk ccall(
-        (:DMGlobalToLocal, $petsc_library),
-        PetscErrorCode,
-        (CDM, CVec, InsertMode, CVec),
-        dm,
-        global_ptr,
-        mode,
-        local_ptr,
-    )
-
-    return nothing
-end
-
-"""
-    getcoordinateDM(dm::AbstractDM)
-
-Create a `coord_dm` for the coordinates of `dm`.
-
-# External Links
-$(_doc_external("DM/DMGetCoordinateDM"))
-"""
-#function getcoordinateDM end
-
-@for_petsc function getcoordinateDM(dm::AbstractDM{$PetscLib})
-    coord_dm = empty(dm)
-    @chk ccall(
-        (:DMGetCoordinateDM, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{CDM}),
-        dm,
-        coord_dm,
-    )
-
-    # If this fails then the `empty` call above is probably a bad idea!
-    if gettype(coord_dm) != "product"
-        @assert gettype(dm) == gettype(coord_dm)
-    else
-        @assert gettype(dm) == "stag"   # product can only be used with stag
-    end
-
-    return coord_dm
-end
-
-"""
-    getcoordinateslocal(dm::AbstractDM)
-
-Gets a local vector with the coordinates associated with `dm`.
-
-# External Links
-$(_doc_external("DM/DMGetCoordinatesLocal"))
-"""
-#function getcoordinateslocal end
-
-@for_petsc function getcoordinateslocal(dm::AbstractDM{$PetscLib})
-    coord_vec = DMLocalVec(C_NULL, dm)
-    @chk ccall(
-        (:DMGetCoordinatesLocal, $petsc_library),
-        PetscErrorCode,
-        (CDM, Ptr{CVec}),
-        dm,
-        coord_vec,
-    )
-
-    return coord_vec
+function MatAIJ(da::AbstractPetscDM{PetscLib}) where {PetscLib}
+    J = LibPETSc.DMCreateMatrix(getlib(PetscLib), da)
+    return J
 end

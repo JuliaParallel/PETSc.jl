@@ -237,3 +237,60 @@ PETSc.finalize(petsclib)
 function SetPetscLib(library_path::String; PetscScalar::Type=Float64, PetscInt::Type=Int64)
     return LibPETSc.PetscLibType{PetscScalar, PetscInt}(library_path)
 end
+
+
+"""
+    check_petsc_wrappers_version(petsclib=nothing)
+
+Load the generated `petsc_wrappers_version.jl` (if present) and compare the
+declared wrapper version `PETSC_WRAPPERS_VERSION` with the installed PETSc
+version obtained from `LibPETSc.PetscGetVersionNumber` for `petsclib`.
+
+Arguments
+- `petsclib`: optional `PetscLibType` or path string. If `nothing`, the
+  first available `PETSc.petsclibs[1]` is used.
+
+Returns a named tuple: `(:wrappers_version, :installed_version, :match)`.
+`match` is `true` when versions are equal, `false` when they differ, and
+`nothing` if either side could not be determined.
+"""
+function check_petsc_wrappers_version(petsclib=nothing)
+    verfile = joinpath(@__DIR__, "autowrapped", "petsc_wrappers_version.jl")
+
+    if !isdefined(@__MODULE__, :PETSC_WRAPPERS_VERSION) && isfile(verfile)
+        try
+            include(verfile)
+        catch err
+            @warn "Failed to include petsc_wrappers_version.jl" exception=(err,)
+        end
+    end
+
+    wrappers_version = isdefined(@__MODULE__, :PETSC_WRAPPERS_VERSION) ? PETSC_WRAPPERS_VERSION : nothing
+
+    if petsclib === nothing
+        if isdefined(@__MODULE__, :petsclibs) && !isempty(petsclibs)
+            petsclib = petsclibs[1]
+        else
+            error("No PETSc library available to check installed version")
+        end
+    end
+
+    if isa(petsclib, String)
+        petsclib = SetPetscLib(petsclib)
+    end
+
+    installed_version = nothing
+    try
+        major, minor, subminor, _release = LibPETSc.PetscGetVersionNumber(petsclib)
+        installed_version = VersionNumber(Int(major), Int(minor), Int(subminor))
+    catch err
+        @warn "Failed to query installed PETSc version" exception=(err,)
+    end
+
+    match = isnothing(wrappers_version) || isnothing(installed_version) ? nothing : (installed_version == wrappers_version)
+    if !isnothing(match) && match === false
+        @warn "PETSc wrappers version does not match PETSc version of library; this can cause undesired behavior" wrappers_version=wrappers_version installed_version=installed_version
+    end
+
+    return (wrappers_version = wrappers_version, installed_version = installed_version, match = match)
+end

@@ -89,6 +89,15 @@ using PETSc
         @test current_opts == original_opts
         
         PETSc.finalize(petsclib)
+                @testset "wrappers_version" begin
+                    # Ensure the wrappers version check runs and returns the expected fields
+                    result = PETSc.check_petsc_wrappers_version()
+                    @test isa(result, NamedTuple)
+                    @test :wrappers_version in keys(result)
+                    @test :installed_version in keys(result)
+                    @test :match in keys(result)
+                    @test result.match === nothing || isa(result.match, Bool)
+                end
     end
     
     # Test initialize with multiple options and log_view

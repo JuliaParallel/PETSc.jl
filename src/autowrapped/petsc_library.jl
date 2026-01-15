@@ -91,12 +91,14 @@ abstract type AbstractPetscKSP{T} end
 mutable struct PetscKSP{PetscLib} <: AbstractPetscKSP{PetscLib}
     ptr::CKSP
     age::Int
+    computerhs!::Function
+    computeops!::Function
     
-    # Constructor from pointer and age
-    PetscKSP{PetscLib}(ptr::CKSP, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
-    
+    # Constructor from pointer and age (with default callback placeholders)
+    PetscKSP{PetscLib}(ptr::CKSP, age::Int = 0, computerhs!::Function = x -> error("computerhs! not defined"), computeops!::Function = x -> error("computeops! not defined")) where {PetscLib} = new{PetscLib}(ptr, age, computerhs!, computeops!)
+
     # Constructor for empty KSP (null pointer)
-    PetscKSP{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0)
+    PetscKSP{PetscLib}() where {PetscLib} = new{PetscLib}(Ptr{Cvoid}(C_NULL), 0, x -> error("computerhs! not defined"), x -> error("computeops! not defined"))
 end
 
 # Convenience constructor from petsclib instance
@@ -116,22 +118,24 @@ mutable struct PetscSNES{PetscLib} <: AbstractPetscSNES{PetscLib}
     age::Int
     f!::Function
     updateJ!::Function
+    user_ctx::Any
 
-    # Constructor from pointer and age
-    #PetscSNES{PetscLib}(ptr::CSNES, age::Int = 0) where {PetscLib} = new{PetscLib}(ptr, age)
+    # Constructor from pointer and age (with defaults for callbacks and context)
+    PetscSNES{PetscLib}(ptr::CSNES, age::Int = 0, f!::Function = x -> error("function not defined"), updateJ!::Function = x -> error("function not defined"), user_ctx::Any = nothing) where {PetscLib} = new{PetscLib}(ptr, age, f!, updateJ!, user_ctx)
     
     # Constructor for empty SNES (null pointer)
     PetscSNES{PetscLib}(ptr, age) where {PetscLib} = new{PetscLib}(
-                        ptr, 
+                        ptr,
                         age,
                         x -> error("function not defined"),
                         x -> error("function not defined"),
+                        nothing,
                         )                  
 end
 
 # Convenience constructor from petsclib instance
 PetscSNES(lib::PetscLib) where {PetscLib} = PetscSNES{PetscLib}()
-PetscSNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, age::Int = 0) where {PetscLib} = PetscSNES{PetscLib}(ptr, age, f!, updateJ!)
+PetscSNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, user_ctx::Any=nothing, age::Int = 0) where {PetscLib} = PetscSNES{PetscLib}(ptr, age, f!, updateJ!, user_ctx)
 PetscSNES(ptr::Ptr, lib::PetscLib, age::Int = 0) where {PetscLib} = PetscSNES{PetscLib}(ptr, age)
 Base.convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
 Base.unsafe_convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr

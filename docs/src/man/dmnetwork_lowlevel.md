@@ -16,45 +16,42 @@ DMNetwork provides:
 ```julia
 using PETSc, MPI
 
+# Initialize MPI and PETSc
+MPI.Init()
 petsclib = PETSc.getlib()
+PETSc.initialize(petsclib)
 
-# Create a DMNetwork
-network = Ref{LibPETSc.CDM}()
-LibPETSc.DMNetworkCreate(petsclib, MPI.COMM_WORLD, network)
+# Create a DMNetwork (returns a PetscDM)
+network = LibPETSc.DMNetworkCreate(petsclib, MPI.COMM_WORLD)
 
 # Set network sizes
-nedges = 10
-nvertices = 8
-LibPETSc.DMNetworkSetNumSubNetworks(petsclib, network[], 1, 1)
-LibPETSc.DMNetworkAddSubnetwork(
-    petsclib, network[],
-    C_NULL, nedges, C_NULL, nvertices
-)
+# For simple examples, provide a name and an explicit edge list vector
+nedges = 2
+nvertices = 3
+LibPETSc.DMNetworkSetNumSubNetworks(petsclib, network, 1, 1)
+edgelist = [1, 2, 2, 3]  # pairs of vertex global indices
+LibPETSc.DMNetworkAddSubnetwork(petsclib, network, "main", nedges, edgelist)
 
-# Register components
-# e.g., for power grid: buses, generators, transmission lines
-compkey = Ref{LibPETSc.PetscInt}()
-LibPETSc.DMNetworkRegisterComponent(
-    petsclib, network[],
-    "bus", sizeof(BusData), compkey
-)
+# Register components (size in bytes; use appropriate struct size in real examples)
+# Register a component; the function returns a component key (PetscInt)
+compkey = LibPETSc.DMNetworkRegisterComponent(petsclib, network, "bus", Csize_t(0))
 
-# Add components to vertices/edges
-# Use DMNetworkAddComponent
+# Add components to vertices/edges using DMNetworkAddComponent (omitted here)
 
-# Finalize network
-LibPETSc.DMNetworkLayoutSetUp(petsclib, network[])
-
-# Set up
-LibPETSc.DMSetUp(petsclib, network[])
+# Finalize network and set up
+LibPETSc.DMNetworkLayoutSetUp(petsclib, network)
+LibPETSc.DMSetUp(petsclib, network)
 
 # Create vectors
-x = Ref{LibPETSc.CVec}()
-LibPETSc.DMCreateGlobalVector(petsclib, network[], x)
+x = LibPETSc.DMCreateGlobalVector(petsclib, network)
 
 # Cleanup
 LibPETSc.VecDestroy(petsclib, x)
 LibPETSc.DMDestroy(petsclib, network)
+
+# Finalize PETSc and MPI
+PETSc.finalize(petsclib)
+MPI.Finalize()
 ```
 
 ## DMNetwork Functions

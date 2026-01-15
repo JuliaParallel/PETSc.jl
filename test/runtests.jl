@@ -25,6 +25,7 @@ include("ksp.jl")           # autowrapped
 include("snes.jl")          # autowrapped
 include("dmda.jl")          # autowrapped
 include("dmstag.jl")        # autowrapped
+include("dmnetwork.jl")     # new test for DMNetwork example
 include("matshell.jl")      # autowrapped!
 include("test_dmstag.jl") 
 include("test_snes.jl")  

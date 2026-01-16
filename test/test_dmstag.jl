@@ -611,11 +611,10 @@ end
         dm_1D = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (200,), (2, 2), 2;
                   stag_grid_x = 10)
         #PETSc.setuniformcoordinates!(dm_1D, (0,), (10,))
-        LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm_1D,PetscReal(0.),PetscReal(10.),PetscReal(0.),PetscReal(1.),PetscReal(0.),PetscReal(1.) )
+        LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm_1D,PetscScalar(0.),PetscScalar(10.),PetscScalar(0.),PetscScalar(1.),PetscScalar(0.),PetscScalar(1.) )
 
         A = LibPETSc.DMCreateMatrix(petsclib,dm_1D)
 
-        #PETSc.MatSetOption(A, PETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, false)
         LibPETSc.MatSetOption(petsclib,A, LibPETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, LibPETSc.PETSC_FALSE)
         @test size(A) == (42,42)
       
@@ -644,8 +643,6 @@ end
         # result is a 1x2 matrix
         @test LibPETSc.DMStagMatGetValuesStencil(petsclib, dm_1D, A, PetscInt(1), [pos2], PetscInt(2), pos)==val1
 
-        PETSc.destroy(A);
-        PETSc.destroy(dm_1D);
         
         dofCenter       =   1;
         dofEdge         =   1;
@@ -724,7 +721,9 @@ end
         PETSc.destroy(vec_test_2D_global);
         PETSc.destroy(vec_test_2D_local);
         PETSc.destroy(dm_2D);
-        
+        PETSc.destroy(A);
+        PETSc.destroy(dm_1D);
+
            
         PETSc.finalize(petsclib)
     end

@@ -49,6 +49,7 @@ makedocs(;
         "Utilities" => "man/utilities.md",
         "FAQ"  => "man/FAQ.md",
         "Contributing"  => "man/contributing.md",
+        "Funding" => "man/funding.md",
     ],
 )
 

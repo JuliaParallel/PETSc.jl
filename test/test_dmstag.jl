@@ -550,7 +550,8 @@ end
 
         LibPETSc.DMStagVecRestoreArray(petsclib, dm_2D,vec_test_2D,X);
         @test vec_test_2D[end]==111.0           # verify that this modified the vector as well
-        Base.finalize(X)                        # release from memory
+
+        #Base.finalize(X)                        # release from memory
 
 
 
@@ -593,9 +594,9 @@ end
         PETSc.destroy(vec_test_2D);
         PETSc.destroy(global_vec);
         PETSc.destroy(local_vec);
-        
         PETSc.destroy(dm_1D);
-        # Note: DMcoord is owned by dm_1D and should not be destroyed separately
+        PETSc.destroy(dm_2D);
+        
        
         PETSc.finalize(petsclib)
     end

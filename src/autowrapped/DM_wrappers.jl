@@ -24501,7 +24501,7 @@ function DMStagGetBoundaryTypes(petsclib::PetscLibType, dm::PetscDM) end
 end 
 
 """
-	DMStagGetProductCoordinateArrays(petsclib::PetscLibType,dm::PetscDM, arrX::Cvoid, arrY::Cvoid, arrZ::Cvoid) 
+	arrX,arrY,arrZ = DMStagGetProductCoordinateArrays(petsclib::PetscLibType,dm::PetscDM) 
 extract local product coordinate arrays, one per dimension
 
 Logically Collective
@@ -25567,15 +25567,19 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagRestoreProductCoordinateArrays"))
 """
-function DMStagRestoreProductCoordinateArrays(petsclib::PetscLibType, dm::PetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray) end
+function DMStagRestoreProductCoordinateArrays(petsclib::PetscLibType, dm::PetscDM, arrX::Union{PetscArray, Nothing}, arrY::Union{PetscArray, Nothing}, arrZ::Union{PetscArray, Nothing}) end
 
-@for_petsc function DMStagRestoreProductCoordinateArrays(petsclib::$UnionPetscLib, dm::PetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray )
+@for_petsc function DMStagRestoreProductCoordinateArrays(petsclib::$UnionPetscLib, dm::PetscDM, arrX::Union{PetscArray, Nothing}, arrY::Union{PetscArray, Nothing}, arrZ::Union{PetscArray, Nothing})
+
+    ptrX = arrX === nothing ? Ptr{Ptr{$PetscScalar}}(0) : arrX.ptr
+    ptrY = arrY === nothing ? Ptr{Ptr{$PetscScalar}}(0) : arrY.ptr
+    ptrZ = arrZ === nothing ? Ptr{Ptr{$PetscScalar}}(0) : arrZ.ptr
 
     @chk ccall(
                (:DMStagRestoreProductCoordinateArrays, $petsc_library),
                PetscErrorCode,
                (CDM, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}),
-               dm, arrX.ptr, arrY.ptr, arrZ.ptr
+               dm, ptrX, ptrY, ptrZ
               )
 
 

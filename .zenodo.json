@@ -1,0 +1,46 @@
+{
+  "title": "PETSc.jl: Julia bindings for PETSc",
+  "description": "PETSc.jl provides an interface to the Portable, Extensible Toolkit for Scientific Computation (PETSc) library, allowing the combination of Julia features (such as automatic differentiation) with PETSc's infrastructure, including linear, nonlinear, and optimization solvers, timesteppers, domain management (DM), and more, in a distributed-memory (MPI) environment.",
+  "creators": [
+    {
+      "name": "Kaus, Boris",
+      "affiliation": "Johannes Gutenberg University Mainz"
+    },
+    {
+      "name": "Shah, Viral B.",
+      "affiliation": "Julia Computing"
+    },
+    {
+      "name": "Schnetter, Erik",
+      "affiliation": "Perimeter Institute"
+    },
+    {
+      "name": "Kozdon, Jeremy E.",
+      "affiliation": "NextSilicon"
+    },
+    {
+      "name": "Byrne, Simon",
+      "affiliation": "NVIDIA"
+    }
+  ],
+  "keywords": [
+    "Julia",
+    "PETSc",
+    "scientific computing",
+    "linear algebra",
+    "nonlinear solvers",
+    "optimization",
+    "MPI",
+    "parallel computing"
+  ],
+  "license": {
+    "id": "MIT"
+  },
+  "upload_type": "software",
+  "access_right": "open",
+  "communities": [
+    {
+      "identifier": "juliapackage"
+    }
+  ]
+}

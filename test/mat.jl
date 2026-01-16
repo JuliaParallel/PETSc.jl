@@ -16,63 +16,56 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
 
 @testset "MatSeqAIJ" begin
     for petsclib in PETSc.petsclibs
-        #petsclib = PETSc.petsclibs[7]
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar
-        PetscInt = petsclib.PetscInt    
+        PetscInt = petsclib.PetscInt
 
         nz_int = PetscInt(2)
         num_rows, num_cols = PetscInt(5), PetscInt(7)
         nz_vec = petsclib.PetscInt.([0, 3, 2, 1, 0])
 
         A = LibPETSc.MatCreateSeqAIJ(petsclib, comm, num_rows, num_cols, nz_int, C_NULL)
-
         @test LibPETSc.MatGetSize(petsclib, A) == (num_rows, num_cols)
         @test size(A) == (num_rows, num_cols)
-        
-        B = LibPETSc.MatCreateSeqAIJ(petsclib, comm, num_rows, num_cols, nz_int, C_NULL)
 
-        #PETSc.assemble!(A)
+        B = LibPETSc.MatCreateSeqAIJ(petsclib, comm, num_rows, num_cols, nz_int, C_NULL)
         LibPETSc.MatAssemblyBegin(petsclib, A, PETSc.MAT_FINAL_ASSEMBLY)
         LibPETSc.MatAssemblyEnd(petsclib, A, PETSc.MAT_FINAL_ASSEMBLY)
-
         PETSc.assemble!(B)
-        
 
         C = LibPETSc.MatCreateSeqAIJ(petsclib, comm, num_rows, num_cols, PetscInt(0), nz_vec)
-        #@test size(A) == (num_rows, num_cols)
         @test size(C) == (num_rows, num_cols)
-
         PETSc.assemble!(C)
-        
-        # both empty
         @test A == C
 
         if PetscScalar <: Real
             D = LibPETSc.MatCreateSeqAIJ(petsclib, comm, num_rows, num_cols, nz_int, C_NULL)
-
-            # NOTE: there appears to be an issue in displaying this in the REPL
             D[1, [1, 2]] = PetscScalar.([1, 2]);
-            D[2, [3, 4]] = PetscScalar.([3, 4]);
-            D[5, [3, 4]] = PetscScalar.([3, 4]);
+            D[2, [2, 3]] = PetscScalar.([3, 4]);
+            D[3, [3, 4]] = PetscScalar.([0, 0]);
+            D[4, [4, 5]] = PetscScalar.([0, 0]);
+            D[5, [4, 5]] = PetscScalar.([3, 4]);
             PETSc.assemble!(D);
-
             DJ = zeros(PetscScalar, num_rows, num_cols);
             DJ[1, [1, 2]] .= PetscScalar.([1, 2]);
-            DJ[2, [3, 4]] .= PetscScalar.([3, 4]);
-            DJ[5, [3, 4]] .= PetscScalar.([3, 4]);
+            DJ[2, [2, 3]] .= PetscScalar.([3, 4]);
+            DJ[3, [3, 4]] .= PetscScalar.([0, 0]);
+            DJ[4, [4, 5]] .= PetscScalar.([0, 0]);
+            DJ[5, [4, 5]] .= PetscScalar.([3, 4]);
         else
             D = LibPETSc.MatCreateSeqAIJ(petsclib, comm, num_rows, num_cols, nz_int, C_NULL)
-
-            D[1, [1, 2]] = PetscScalar.([1, 2im]);
-            D[2, [3, 4]] = PetscScalar.([3, 4im]);
-            D[5, [3, 4]] = PetscScalar.([3, 4im]);
+            D[1, [1, 2]] = PetscScalar.([1 + 0im, 0 + 2im]);
+            D[2, [2, 3]] = PetscScalar.([3 + 0im, 0 + 4im]);
+            D[3, [3, 4]] = PetscScalar.([0 + 0im, 0 + 0im]);
+            D[4, [4, 5]] = PetscScalar.([0 + 0im, 0 + 0im]);
+            D[5, [4, 5]] = PetscScalar.([3 + 0im, 0 + 4im]);
             PETSc.assemble!(D);
-
             DJ = zeros(PetscScalar, num_rows, num_cols);
-            DJ[1, [1, 2]] .= PetscScalar.([1, 2im]);
-            DJ[2, [3, 4]] .= PetscScalar.([3, 4im]);
-            DJ[5, [3, 4]] .= PetscScalar.([3, 4im]);
+            DJ[1, [1, 2]] .= PetscScalar.([1 + 0im, 0 + 2im]);
+            DJ[2, [2, 3]] .= PetscScalar.([3 + 0im, 0 + 4im]);
+            DJ[3, [3, 4]] .= PetscScalar.([0 + 0im, 0 + 0im]);
+            DJ[4, [4, 5]] .= PetscScalar.([0 + 0im, 0 + 0im]);
+            DJ[5, [4, 5]] .= PetscScalar.([3 + 0im, 0 + 4im]);
         end
 
         E = LibPETSc.MatCreateSeqAIJ(petsclib, comm, num_rows, num_cols, PetscInt(0), nz_vec)
@@ -81,54 +74,39 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
         E[4, [5]] = PetscScalar.([6]);
         PETSc.assemble!(E);
 
-     
-        # Test norm
         @test norm(A) == 0
         @test norm(D) ≈ norm(DJ)
 
         x = PetscScalar.(Array(1:num_cols))
         y = zeros(PetscScalar, num_rows)
         vec_x = LibPETSc.VecCreateSeqWithArray(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(1), PetscInt(length(x)), copy(x))
-        vec_y = LibPETSc.VecCreateSeqWithArray(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(1), PetscInt(length(y)), copy(y))
-
+        
         # Test mul!
-        mul!(vec_y, D, vec_x)
+        @test vec_x[:] ≈ x rtol=1e-5
+        
+        vec_y = D*vec_x
         y = DJ * x
-        @test vec_y[1:num_rows] ≈ y rtol=1e-5
-        #@test all(DJ * x .≈ D * x)
-
-        # Skip transpose test on Intel Mac due to sporadic failures
-        if !(isintelmac)
-            # Zero out vec_x before the transpose multiplication to avoid stale data
-            fill!(vec_x, zero(PetscScalar))
-            mul!(vec_x, Transpose(D), vec_y)
-            x = Transpose(DJ) * y
-            @test vec_x[1:end] ≈ x rtol=1e-5
-        end
-
-        # Destroy vec_x and vec_y before they go out of scope
+        @test vec_y[:] ≈ y rtol=1e-5
+        
+        PETSc.destroy(D)
         PETSc.destroy(vec_x)
         PETSc.destroy(vec_y)
 
-        # test issymmetric and ishermitian
         if PetscScalar <: Real
             Asym = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(5), PetscInt(5), PetscInt(2), C_NULL)
             Asym[1, 1] = 1;
             Asym[2, 1] = -2;
             Asym[1, 2] = -2;
             PETSc.assemble!(Asym);
-
             Bsym = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(5), PetscInt(5), PetscInt(2), C_NULL)
             Bsym[1, 1] = 1;
             Bsym[2, 1] = 2;
             Bsym[1, 2] = -2;
             PETSc.assemble!(Bsym);
-
             @test issymmetric(Asym)
             @test ishermitian(Asym)
             @test !issymmetric(Bsym)
             @test !ishermitian(Bsym)
-            
             PETSc.destroy(Asym)
             PETSc.destroy(Bsym)
         else
@@ -137,19 +115,13 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
             Asym[2, 1] = PetscScalar(-2 + im)
             Asym[1, 2] = PetscScalar(-2 - im)
             PETSc.assemble!(Asym)
-
             Bsym = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(5), PetscInt(5), PetscInt(2), C_NULL)
             Bsym[1, 1] = PetscScalar(1)
             Bsym[2, 1] = PetscScalar(-2 + im)
             Bsym[1, 2] = PetscScalar(-2 - im)
             PETSc.assemble!(Bsym)
             @test !issymmetric(Asym)
-
-            # TODO: fix hermitian for complex matrix
-          #  @test ishermitian(Asym)
             @test !issymmetric(Bsym)
-          #  @test !ishermitian(Bsym)
-            
             PETSc.destroy(Asym)
             PETSc.destroy(Bsym)
         end
@@ -157,16 +129,14 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
         Random.seed!(777)
         A1 = sprand(PetscScalar, 10, 11, 0.2)
         B1 = PETSc.MatSeqAIJWithArrays(petsclib, comm, A1)
-        sleep(0.1) # seems to help the tests
+        sleep(0.1)
         @test sum(B1[:,:] - Matrix(A1)) == 0.0
 
         PETSc.destroy(A)
         PETSc.destroy(B)
         PETSc.destroy(B1)
         PETSc.destroy(C)
-        PETSc.destroy(D)
         PETSc.destroy(E)
-        
         PETSc.finalize(petsclib)
     end
 end
@@ -189,6 +159,7 @@ end
 
         A = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(size(Ajl,1)), PetscInt(size(Ajl,2)), Ajl[:])
         vec_x = LibPETSc.VecCreateSeqWithArray(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(1), PetscInt(length(x)), copy(x))
+        fill!(vec_x, zero(PetscScalar))
 
         @test sum(A[:,:] - Ajl) == 0.0
         #@test all(A * x .≈ Ajl * x)

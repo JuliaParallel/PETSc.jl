@@ -265,13 +265,13 @@ function check_petsc_wrappers_version(petsclib=nothing)
 
     if !isdefined(@__MODULE__, :PETSC_WRAPPERS_VERSION) && isfile(verfile)
         try
-            include(verfile)
+            Base.invokelatest(() -> include(verfile))
         catch err
             @warn "Failed to include petsc_wrappers_version.jl" exception=(err,)
         end
     end
 
-    wrappers_version = isdefined(@__MODULE__, :PETSC_WRAPPERS_VERSION) ? PETSC_WRAPPERS_VERSION : nothing
+    wrappers_version = Base.invokelatest(() -> isdefined(@__MODULE__, :PETSC_WRAPPERS_VERSION) ? getproperty(@__MODULE__, :PETSC_WRAPPERS_VERSION) : nothing)
 
     if petsclib === nothing
         if isdefined(@__MODULE__, :petsclibs) && !isempty(petsclibs)
@@ -293,9 +293,9 @@ function check_petsc_wrappers_version(petsclib=nothing)
         @warn "Failed to query installed PETSc version" exception=(err,)
     end
 
-    match = isnothing(wrappers_version) || isnothing(installed_version) ? nothing : (installed_version == wrappers_version)
+    match = isnothing(wrappers_version) || isnothing(installed_version) ? nothing : (installed_version.major == wrappers_version.major && installed_version.minor == wrappers_version.minor)
     if !isnothing(match) && match === false
-        @warn "PETSc wrappers version does not match PETSc version of library; this can cause undesired behavior" wrappers_version=wrappers_version installed_version=installed_version
+        @warn "PETSc wrappers version does not match PETSc version of library (major.minor); this can cause undesired behavior" wrappers_version=wrappers_version installed_version=installed_version
     end
 
     return (wrappers_version = wrappers_version, installed_version = installed_version, match = match)

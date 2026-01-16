@@ -240,7 +240,7 @@ end
 #        @test z[10] == PetscScalar(0.6136363636363635)
 
         x[10] = 0.230
-     
+        
         LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, dm_3D_pd, x,y,z)
         
    
@@ -422,7 +422,6 @@ end
         @test LibPETSc.KSPGetType(petsclib, ksp)=="gmres"
 
         PETSc.destroy(dm_ghosted)
-        PETSc.destroy(dm_1D)
         PETSc.destroy(dm)
         PETSc.destroy(ksp)
 
@@ -505,6 +504,8 @@ end
         # Retrieve array with staggered coordinates
         X_coord,_,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, dm_1D)
         @test  X_coord[1,2] == 0.5
+        LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, dm_1D, X_coord,nothing,nothing)
+
 
         LibPETSc.DMStagGetLocationSlot(petsclib, dm_1D, LibPETSc.DMSTAG_RIGHT, 0) ==4
      
@@ -535,12 +536,13 @@ end
 
         LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm_2D,PetscReal(1.),PetscReal(3.),PetscReal(10.),PetscReal(11.),PetscReal(0.),PetscReal(0.))
 
-        #PETSc.setuniformcoordinates!(dm_2D, (1,3), (10,11))
+        #PETSc.setuniformcoordinates_dmstag!(dm_2D, (1.0,3.0), (10.0,11.0))
        
         
         # Retrieve array with staggered coordinates
         X_coord,Y_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, dm_2D)
 
+        LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, dm_2D, X_coord,Y_coord,nothing)
 
         vec_test_2D     = PETSc.DMLocalVec(dm_2D)
         X               = LibPETSc.DMStagVecGetArray(petsclib, dm_2D,vec_test_2D);
@@ -548,7 +550,10 @@ end
 
         LibPETSc.DMStagVecRestoreArray(petsclib, dm_2D,vec_test_2D,X);
         @test vec_test_2D[end]==111.0           # verify that this modified the vector as well
-        Base.finalize(X)                        # release from memory
+
+        #Base.finalize(X)                        # release from memory
+
+
 
         #test stencil locations
         pos1 = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_LEFT,1,0,0,1)
@@ -567,7 +572,7 @@ end
         @test vals[1] == 6
 
         X_1D            = LibPETSc.DMStagVecGetArray(petsclib, dm_1D,vec_test);
-#        @test X_1D[2,3] == 14.0
+        @test X_1D[2,3] == PetscScalar(7.0)          # verify that the 2D array interface works
         LibPETSc.DMStagVecRestoreArray(petsclib, dm_1D, vec_test, X_1D)
         Base.finalize(X_1D)                     # release from memory
 
@@ -589,9 +594,9 @@ end
         PETSc.destroy(vec_test_2D);
         PETSc.destroy(global_vec);
         PETSc.destroy(local_vec);
-        
         PETSc.destroy(dm_1D);
-        # Note: DMcoord is owned by dm_1D and should not be destroyed separately
+        PETSc.destroy(dm_2D);
+        
        
         PETSc.finalize(petsclib)
     end
@@ -612,11 +617,10 @@ end
         dm_1D = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (200,), (2, 2), 2;
                   stag_grid_x = 10)
         #PETSc.setuniformcoordinates!(dm_1D, (0,), (10,))
-        LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm_1D,PetscReal(0.),PetscReal(10.),PetscReal(0.),PetscReal(1.),PetscReal(0.),PetscReal(1.) )
+        LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm_1D,PetscScalar(0.),PetscScalar(10.),PetscScalar(0.),PetscScalar(1.),PetscScalar(0.),PetscScalar(1.) )
 
         A = LibPETSc.DMCreateMatrix(petsclib,dm_1D)
 
-        #PETSc.MatSetOption(A, PETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, false)
         LibPETSc.MatSetOption(petsclib,A, LibPETSc.MAT_NEW_NONZERO_ALLOCATION_ERR, LibPETSc.PETSC_FALSE)
         @test size(A) == (42,42)
       
@@ -645,11 +649,7 @@ end
         # result is a 1x2 matrix
         @test LibPETSc.DMStagMatGetValuesStencil(petsclib, dm_1D, A, PetscInt(1), [pos2], PetscInt(2), pos)==val1
 
-        PETSc.destroy(A);
-        PETSc.destroy(dm_1D);
         
-        # Note: Don't explicitly destroy or GC here - let finalizers run naturally after PETSc shutdown
-        # to avoid MPI communicator errors with nested PETSc objects (ISLocalToGlobalMapping, etc.)
         dofCenter       =   1;
         dofEdge         =   1;
         dofVertex       =   1
@@ -727,7 +727,9 @@ end
         PETSc.destroy(vec_test_2D_global);
         PETSc.destroy(vec_test_2D_local);
         PETSc.destroy(dm_2D);
-        
+        PETSc.destroy(A);
+        #PETSc.destroy(dm_1D);
+
            
         PETSc.finalize(petsclib)
     end

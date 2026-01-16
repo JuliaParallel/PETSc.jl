@@ -44,7 +44,7 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
             D[2, [2, 3]] = PetscScalar.([3, 4]);
             D[3, [3, 4]] = PetscScalar.([0, 0]);
             D[4, [4, 5]] = PetscScalar.([0, 0]);
-            D[5, [3, 4]] = PetscScalar.([3, 4]);
+            D[5, [4, 5]] = PetscScalar.([3, 4]);
             PETSc.assemble!(D);
             DJ = zeros(PetscScalar, num_rows, num_cols);
             DJ[1, [1, 2]] .= PetscScalar.([1, 2]);

@@ -240,7 +240,7 @@ end
 #        @test z[10] == PetscScalar(0.6136363636363635)
 
         x[10] = 0.230
-     
+        
         LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, dm_3D_pd, x,y,z)
         
    
@@ -504,6 +504,8 @@ end
         # Retrieve array with staggered coordinates
         X_coord,_,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, dm_1D)
         @test  X_coord[1,2] == 0.5
+        LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, dm_1D, X_coord,nothing,nothing)
+
 
         LibPETSc.DMStagGetLocationSlot(petsclib, dm_1D, LibPETSc.DMSTAG_RIGHT, 0) ==4
      
@@ -534,12 +536,13 @@ end
 
         LibPETSc.DMStagSetUniformCoordinatesProduct(petsclib, dm_2D,PetscReal(1.),PetscReal(3.),PetscReal(10.),PetscReal(11.),PetscReal(0.),PetscReal(0.))
 
-        #PETSc.setuniformcoordinates!(dm_2D, (1,3), (10,11))
+        #PETSc.setuniformcoordinates_dmstag!(dm_2D, (1.0,3.0), (10.0,11.0))
        
         
         # Retrieve array with staggered coordinates
         X_coord,Y_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, dm_2D)
 
+        LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, dm_2D, X_coord,Y_coord,nothing)
 
         vec_test_2D     = PETSc.DMLocalVec(dm_2D)
         X               = LibPETSc.DMStagVecGetArray(petsclib, dm_2D,vec_test_2D);
@@ -548,6 +551,8 @@ end
         LibPETSc.DMStagVecRestoreArray(petsclib, dm_2D,vec_test_2D,X);
         @test vec_test_2D[end]==111.0           # verify that this modified the vector as well
         Base.finalize(X)                        # release from memory
+
+
 
         #test stencil locations
         pos1 = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_LEFT,1,0,0,1)

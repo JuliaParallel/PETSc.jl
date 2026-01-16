@@ -293,9 +293,9 @@ function check_petsc_wrappers_version(petsclib=nothing)
         @warn "Failed to query installed PETSc version" exception=(err,)
     end
 
-    match = isnothing(wrappers_version) || isnothing(installed_version) ? nothing : (installed_version == wrappers_version)
+    match = isnothing(wrappers_version) || isnothing(installed_version) ? nothing : (installed_version.major == wrappers_version.major && installed_version.minor == wrappers_version.minor)
     if !isnothing(match) && match === false
-        @warn "PETSc wrappers version does not match PETSc version of library; this can cause undesired behavior" wrappers_version=wrappers_version installed_version=installed_version
+        @warn "PETSc wrappers version does not match PETSc version of library (major.minor); this can cause undesired behavior" wrappers_version=wrappers_version installed_version=installed_version
     end
 
     return (wrappers_version = wrappers_version, installed_version = installed_version, match = match)

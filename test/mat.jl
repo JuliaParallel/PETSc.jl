@@ -41,23 +41,31 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
         if PetscScalar <: Real
             D = LibPETSc.MatCreateSeqAIJ(petsclib, comm, num_rows, num_cols, nz_int, C_NULL)
             D[1, [1, 2]] = PetscScalar.([1, 2]);
-            D[2, [3, 4]] = PetscScalar.([3, 4]);
+            D[2, [2, 3]] = PetscScalar.([3, 4]);
+            D[3, [3, 4]] = PetscScalar.([0, 0]);
+            D[4, [4, 5]] = PetscScalar.([0, 0]);
             D[5, [3, 4]] = PetscScalar.([3, 4]);
             PETSc.assemble!(D);
             DJ = zeros(PetscScalar, num_rows, num_cols);
             DJ[1, [1, 2]] .= PetscScalar.([1, 2]);
-            DJ[2, [3, 4]] .= PetscScalar.([3, 4]);
-            DJ[5, [3, 4]] .= PetscScalar.([3, 4]);
+            DJ[2, [2, 3]] .= PetscScalar.([3, 4]);
+            DJ[3, [3, 4]] .= PetscScalar.([0, 0]);
+            DJ[4, [4, 5]] .= PetscScalar.([0, 0]);
+            DJ[5, [4, 5]] .= PetscScalar.([3, 4]);
         else
             D = LibPETSc.MatCreateSeqAIJ(petsclib, comm, num_rows, num_cols, nz_int, C_NULL)
-            D[1, [1, 2]] = PetscScalar.([1, 2im]);
-            D[2, [3, 4]] = PetscScalar.([3, 4im]);
-            D[5, [3, 4]] = PetscScalar.([3, 4im]);
+            D[1, [1, 2]] = PetscScalar.([1 + 0im, 0 + 2im]);
+            D[2, [2, 3]] = PetscScalar.([3 + 0im, 0 + 4im]);
+            D[3, [3, 4]] = PetscScalar.([0 + 0im, 0 + 0im]);
+            D[4, [4, 5]] = PetscScalar.([0 + 0im, 0 + 0im]);
+            D[5, [4, 5]] = PetscScalar.([3 + 0im, 0 + 4im]);
             PETSc.assemble!(D);
             DJ = zeros(PetscScalar, num_rows, num_cols);
-            DJ[1, [1, 2]] .= PetscScalar.([1, 2im]);
-            DJ[2, [3, 4]] .= PetscScalar.([3, 4im]);
-            DJ[5, [3, 4]] .= PetscScalar.([3, 4im]);
+            DJ[1, [1, 2]] .= PetscScalar.([1 + 0im, 0 + 2im]);
+            DJ[2, [2, 3]] .= PetscScalar.([3 + 0im, 0 + 4im]);
+            DJ[3, [3, 4]] .= PetscScalar.([0 + 0im, 0 + 0im]);
+            DJ[4, [4, 5]] .= PetscScalar.([0 + 0im, 0 + 0im]);
+            DJ[5, [4, 5]] .= PetscScalar.([3 + 0im, 0 + 4im]);
         end
 
         E = LibPETSc.MatCreateSeqAIJ(petsclib, comm, num_rows, num_cols, PetscInt(0), nz_vec)
@@ -84,8 +92,9 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
         y = DJ * x
         @test vec_y[1:num_rows] ≈ y rtol=1e-5
 
-        if !(isintelmac)
+        if !(isintelmac) 
             fill!(vec_x, zero(PetscScalar))
+            
             mul!(vec_x, Transpose(D), vec_y)
             x = Transpose(DJ) * y
             @test vec_x[1:end] ≈ x rtol=1e-5

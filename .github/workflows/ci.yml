@@ -49,3 +49,22 @@ jobs:
       - uses: julia-actions/julia-buildpkg@latest
       - uses: julia-actions/julia-runtest@latest
         
+
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1'
+      - name: Install dependencies for docs
+        run: |
+          julia --project=docs -e 'using Pkg; Pkg.instantiate()'
+      - name: Build and deploy docs
+        env:
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+        run: |
+          julia --project=docs docs/make.jl
+

@@ -16,3 +16,9 @@ Using the GC in combination with MPI code is a tricky business. The users are th
 
 ## 4. Is it compatible with GPUs?
 The precompiled `PETSc_jll` binaries are currently not compatible with GPUs. You can, however, use your own PETSc compilation and things should be fine. 
+
+## 5. I really like this package!
+Thanks a lot, we appreciate if you give us a star on github!
+
+## 6. How do I cite this in publications?
+We are working on a JOSS paper once the current release is sufficiently stable.  

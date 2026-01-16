@@ -265,13 +265,13 @@ function check_petsc_wrappers_version(petsclib=nothing)
 
     if !isdefined(@__MODULE__, :PETSC_WRAPPERS_VERSION) && isfile(verfile)
         try
-            include(verfile)
+            Base.invokelatest(() -> include(verfile))
         catch err
             @warn "Failed to include petsc_wrappers_version.jl" exception=(err,)
         end
     end
 
-    wrappers_version = isdefined(@__MODULE__, :PETSC_WRAPPERS_VERSION) ? PETSC_WRAPPERS_VERSION : nothing
+    wrappers_version = Base.invokelatest(() -> isdefined(@__MODULE__, :PETSC_WRAPPERS_VERSION) ? getproperty(@__MODULE__, :PETSC_WRAPPERS_VERSION) : nothing)
 
     if petsclib === nothing
         if isdefined(@__MODULE__, :petsclibs) && !isempty(petsclibs)

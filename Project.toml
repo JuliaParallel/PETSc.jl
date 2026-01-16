@@ -18,11 +18,19 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 
 [compat]
+ForwardDiff = "0.10"
+Libdl = "^1.10"
+LinearAlgebra = "^1.10"
 MPI = "0.20"
 MPIPreferences = "0.1"
+OffsetArrays = "1.0"
 PETSc_jll = "3.22"
+Pkg = "^1.10"
 SparseArrays = "1.10"
-julia = "1.10"
+SparseDiffTools = "2.0"
+Statistics = "^1.10"
+UnicodePlots = "3.0"
+julia = "^1.10"
 
 [extras]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"

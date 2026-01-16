@@ -422,7 +422,6 @@ end
         @test LibPETSc.KSPGetType(petsclib, ksp)=="gmres"
 
         PETSc.destroy(dm_ghosted)
-        PETSc.destroy(dm_1D)
         PETSc.destroy(dm)
         PETSc.destroy(ksp)
 
@@ -648,8 +647,6 @@ end
         PETSc.destroy(A);
         PETSc.destroy(dm_1D);
         
-        # Note: Don't explicitly destroy or GC here - let finalizers run naturally after PETSc shutdown
-        # to avoid MPI communicator errors with nested PETSc objects (ISLocalToGlobalMapping, etc.)
         dofCenter       =   1;
         dofEdge         =   1;
         dofVertex       =   1

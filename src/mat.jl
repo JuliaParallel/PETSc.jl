@@ -325,7 +325,7 @@ function Base.:*(
     M::AbstractPetscMat{PetscLib},
     x::AbstractPetscVec{PetscLib},
 ) where {PetscLib}
-    _, y = LibPETSc.MatCreateVecs(getlib(PetscLib), M)
+    xx, y = LibPETSc.MatCreateVecs(getlib(PetscLib), M)
     mul!(y, M, x)
     return y
 end

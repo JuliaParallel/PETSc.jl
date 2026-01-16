@@ -80,17 +80,13 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
         x = PetscScalar.(Array(1:num_cols))
         y = zeros(PetscScalar, num_rows)
         vec_x = LibPETSc.VecCreateSeqWithArray(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(1), PetscInt(length(x)), copy(x))
-        vec_y = LibPETSc.VecCreateSeqWithArray(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(1), PetscInt(length(y)), copy(y))
-
-        # Zero vectors before multiplication to avoid stale data
-        fill!(vec_x, zero(PetscScalar))
-        fill!(vec_y, zero(PetscScalar))
-
+        
         # Test mul!
-        vec_x .= x
-        mul!(vec_y, D, vec_x)
+        @test vec_x[:] ≈ x rtol=1e-5
+        
+        vec_y = D*vec_x
         y = DJ * x
-        @test vec_y[1:num_rows] ≈ y rtol=1e-5
+        @test vec_y[:] ≈ y rtol=1e-5
         
         PETSc.destroy(D)
         PETSc.destroy(vec_x)

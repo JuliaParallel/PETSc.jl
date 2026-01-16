@@ -566,7 +566,7 @@ end
         @test vals[1] == 6
 
         X_1D            = LibPETSc.DMStagVecGetArray(petsclib, dm_1D,vec_test);
-#        @test X_1D[2,3] == 14.0
+        @test X_1D[2,3] == PetscScalar(7.0)          # verify that the 2D array interface works
         LibPETSc.DMStagVecRestoreArray(petsclib, dm_1D, vec_test, X_1D)
         Base.finalize(X_1D)                     # release from memory
 

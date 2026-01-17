@@ -21,4 +21,4 @@ The precompiled `PETSc_jll` binaries are currently not compatible with GPUs. You
 Thanks a lot, we appreciate if you give us a star on github!
 
 ## 6. How do I cite this in publications?
-We are working on a JOSS paper once the current release is sufficiently stable.  
+We are planning to submit a JOSS paper once the current release is sufficiently stable. Meanwhile, you can cite the [zenodo release](https://doi.org/10.5281/zenodo.18274809).

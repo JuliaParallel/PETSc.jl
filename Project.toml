@@ -1,7 +1,7 @@
 name = "PETSc"
 uuid = "ace2c81b-2b5f-4b1e-a30d-d662738edfe0"
-authors = ["Boris Kaus <kaus@uni-mainz.de>", "Viral B. Shah <virals@gmail.com>", "Erik Schnetter <eschnetter@perimeterinstitute.ca>", "Jeremy E. Kozdon <jeremy@kozdon.net>", "Simon Byrne <simonbyrne@gmail.com>"]
 version = "0.4.0"
+authors = ["Boris Kaus <kaus@uni-mainz.de>", "Viral B. Shah <virals@gmail.com>", "Erik Schnetter <eschnetter@perimeterinstitute.ca>", "Jeremy E. Kozdon <jeremy@kozdon.net>", "Simon Byrne <simonbyrne@gmail.com>"]
 
 [deps]
 ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
@@ -18,7 +18,7 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 
 [compat]
-ForwardDiff = "0.10"
+ForwardDiff = "0.10, 1"
 Libdl = "^1.10"
 LinearAlgebra = "^1.10"
 MPI = "0.20"

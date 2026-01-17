@@ -4,23 +4,28 @@
   "creators": [
     {
       "name": "Kaus, Boris J.P.",
-      "affiliation": "Johannes Gutenberg University Mainz, Germany"
+      "affiliation": "Johannes Gutenberg University Mainz, Germany",
+      "orcid": "https://orcid.org/0000-0002-0247-8660"
     },
     {
       "name": "Shah, Viral B.",
-      "affiliation": "Julia Computing, USA"
+      "affiliation": "Julia Computing, USA",
+      "orcid": "https://orcid.org/0000-0001-9602-4012"
     },
     {
       "name": "Schnetter, Erik",
-      "affiliation": "Perimeter Institute, Canada"
+      "affiliation": "Perimeter Institute, Canada",
+      "orcid": "https://orcid.org/0000-0002-4518-9017"
     },
     {
       "name": "Kozdon, Jeremy E.",
-      "affiliation": "NextSilicon, USA"
+      "affiliation": "NextSilicon, USA",
+      "orcid": "https://orcid.org/0000-0002-2493-4292"
     },
     {
       "name": "Byrne, Simon",
-      "affiliation": "NVIDIA, USA"
+      "affiliation": "NVIDIA, USA",
+      "orcid": "https://orcid.org/0000-0001-8048-6810"
     }
   ],
   "keywords": [

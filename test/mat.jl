@@ -79,18 +79,25 @@ isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
 
         x = PetscScalar.(Array(1:num_cols))
         y = zeros(PetscScalar, num_rows)
-        vec_x = LibPETSc.VecCreateSeqWithArray(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(1), PetscInt(length(x)), copy(x))
+
+        xc = copy(x)
+        yc = copy(y)
+        vec_x = LibPETSc.VecCreateSeqWithArray(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(1), PetscInt(length(x)), xc)
+        vec_y = LibPETSc.VecCreateSeqWithArray(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(1), PetscInt(length(y)), yc)
         
         # Test mul!
         @test vec_x[:] ≈ x rtol=1e-5
         
-        vec_y = D*vec_x
+        mul!(vec_y, D, vec_x)
+        
         y = DJ * x
         @test vec_y[:] ≈ y rtol=1e-5
         
         PETSc.destroy(D)
         PETSc.destroy(vec_x)
         PETSc.destroy(vec_y)
+        finalize(xc)
+        finalize(yc)
 
         if PetscScalar <: Real
             Asym = LibPETSc.MatCreateSeqAIJ(petsclib, comm, PetscInt(5), PetscInt(5), PetscInt(2), C_NULL)

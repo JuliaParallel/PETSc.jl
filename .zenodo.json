@@ -13,14 +13,22 @@
       "orcid": "https://orcid.org/0000-0001-9602-4012"
     },
     {
-      "name": "Schnetter, Erik",
-      "affiliation": "Perimeter Institute, Canada",
-      "orcid": "https://orcid.org/0000-0002-4518-9017"
-    },
-    {
       "name": "Kozdon, Jeremy E.",
       "affiliation": "NextSilicon, USA",
       "orcid": "https://orcid.org/0000-0002-2493-4292"
+    },
+    {
+      "name": "Churavy, Valentin",
+      "affiliation": [
+        "Johannes Gutenberg University Mainz, Germany",
+        "Augsburg University, Germany"
+      ],
+      "orcid": "https://orcid.org/0000-0002-9033-165X"
+    },
+    {
+      "name": "Schnetter, Erik",
+      "affiliation": "Perimeter Institute, Canada",
+      "orcid": "https://orcid.org/0000-0002-4518-9017"
     },
     {
       "name": "Byrne, Simon",

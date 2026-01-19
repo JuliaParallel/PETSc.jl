@@ -1,6 +1,6 @@
 # DM
 
-The `DM` (Data Management) module provides the base functionality for managing distributed data structures in PETSc. It serves as a foundation for various grid managers.
+The `DM` module provides the base functionality for managing distributed data structures in PETSc. It serves as a foundation for various grid managers.
 
 ## Overview
 

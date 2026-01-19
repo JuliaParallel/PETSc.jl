@@ -52,6 +52,6 @@ julia>[PETSc.petsclibs...]
 The package currently does not work on windows, mainly because `MicrosoftMPI_jll` does not function when used along with the precompiled version used in `PETSc_jll`. Windows users are therefore advised to install the [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (WSL) and run PETSc through there. 
 
 ## Getting started
-The documentation is currently rather minimalistic; yet, if you want to see what is possible have a look at the [examples](./examples/) directory or at the tests in the [test](./test) directory. We do keep the tests up to date, so that is a good starting point. 
+Have a look at the [documentation](https://juliaparallel.org/PETSc.jl/stable/), at the [examples](./examples/) directory or at the tests in the [test](./test) directory. We do keep the tests up to date, so that is a good starting point. 
 
 Note, that we do not have tests in place for the whole library at this stage. The best supported parts are `DMDA`,`DMStag`, `KSP`,`SNES`,`Vec` and `Mat` interfaces, while other parts such as `DMPlex` do not have a high-level interface or tests yet. Users will thus have to rely on the low-level interface.

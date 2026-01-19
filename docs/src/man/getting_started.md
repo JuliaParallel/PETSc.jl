@@ -6,6 +6,7 @@
     - [1b. Installation using pre-built libraries](#1b-installation-using-pre-built-libraries)
     - [2. Solving a linear system of equations](#2-solving-a-linear-system-of-equations)
     - [3. Nonlinear example](#3-nonlinear-example)
+    - [4. Next steps](#4-next-steps)
 
 ### 1a. Installation using pre-built libraries 
 The easiest way to install the package is: 
@@ -46,7 +47,11 @@ Lets consider the following elliptic equation:
 ```julia
 julia> using PETSc
 julia> petsclib = PETSc.petsclibs[1]
-julia> PETSc.initialize(petsclib)
+julia> PETSc.initialize(petsclib, log_view=false)
+```
+Note that if you initialize the PETSc library with the option `log_view=true` you will get a detailed overview of your simulation once you close the library with `PETSc.finalize(petsclib)` (note that it's set to `false` by default). 
+Next, lets define the number of gridpoints and the spacing between them with:
+```julia
 julia> n   =  11
 julia> Δx  =  1. / (n - 1)
 ```
@@ -60,8 +65,11 @@ julia> for i=2:n-1
             A[i,i  ] = -2/Δx^2
             A[i,i+1] =  1/Δx^2
        end;
-julia> A[1,1]=1; A[n,n]=1;
-julia> PETSc.assemble!(A)
+julia> A[1,1]=1; A[n,n]=1;  # boundary conditions (Dirichlet)
+julia> PETSc.assemble!(A)   # Assemble the matrix
+```
+This creates a sequential matrix (on one processor):
+```julia
 julia> A
 PETSc seqaij Mat of size (11, 11)
 ```
@@ -103,6 +111,69 @@ julia> sol = ksp\rhs
  10.000000000000002
  11.0
 ```
+This solves the system of equations with the default (iterative) solver of PETSc. You can find out what is being used by adding the `ksp_view=true` option to the `ksp` object:
+
+```julia
+julia> ksp = PETSc.KSP(A; ksp_rtol=1e-8, pc_type="jacobi", ksp_monitor=true, ksp_view=true)
+```
+which will tell you:
+```julia
+KSP Object: 1 MPI process
+  type: gmres
+    restart=30, using Classical (unmodified) Gram-Schmidt Orthogonalization with no iterative refinement
+    happy breakdown tolerance 1e-30
+  maximum iterations=10000, initial guess is zero
+  tolerances: relative=1e-08, absolute=1e-50, divergence=10000.
+  left preconditioning
+  using PRECONDITIONED norm type for convergence test
+PC Object: 1 MPI process
+  type: jacobi
+    type DIAGONAL
+  linear system matrix = precond matrix:
+  Mat Object: 1 MPI process
+    type: seqaij
+    rows=11, cols=11
+    total: nonzeros=29, allocated nonzeros=29
+    total number of mallocs used during MatSetValues calls=0
+      not using I-node routines
+```      
+So we are using a `gmres` solver with a `jacobi` preconditioner.
+The power of PETSc is that you can change the solver on the fly.
+We can solve the same system with a direct solver, using:
+```julia
+julia> ksp = PETSc.KSP(A; ksp_rtol=1e-8, pc_type="lu", ksp_monitor=true, ksp_view=true, ksp_type="preonly");
+julia> sol = ksp\rhs;
+  0 KSP Residual norm 1.104536101719e+01
+  1 KSP Residual norm 2.846442092393e-13
+KSP Object: 1 MPI process
+  type: preonly
+  maximum iterations=10000, initial guess is zero
+  tolerances: relative=1e-05, absolute=1e-50, divergence=10000.
+  left preconditioning
+  using NONE norm type for convergence test
+PC Object: 1 MPI process
+  type: lu
+    out-of-place factorization
+    tolerance for zero pivot 2.22045e-14
+    matrix ordering: nd
+    factor fill ratio given 5., needed 1.31034
+      Factored matrix follows:
+        Mat Object: 1 MPI process
+          type: seqaij
+          rows=11, cols=11
+          package used to perform factorization: petsc
+          total: nonzeros=38, allocated nonzeros=38
+            not using I-node routines
+  linear system matrix = precond matrix:
+  Mat Object: 1 MPI process
+    type: seqaij
+    rows=11, cols=11
+    total: nonzeros=29, allocated nonzeros=29
+    total number of mallocs used during MatSetValues calls=0
+      not using I-node routines
+```
+which converges, as expected, in 1 iteration.
+
 And since we are using julia, plotting the solution can be done with
 ```julia
 julia> using Plots
@@ -112,6 +183,10 @@ julia> plot(0:Δx:1,sol, ylabel="solution",xlabel="x")
 ![linear_solution](../assets/img/linear_KSP_solution.png)
 
 
+Note that in general, one knows more about the equations than just the matrix entries. In this case, for example, we use a finite difference discretization to solve the equation. We could also have used a finite element code to do the same. 
+This is important information that helps PETSc to distribute the problem over several processors, or to setup multigrid preconditioners etc.
+PETSc uses the `DM` infrastructure for such cases. `DMDA` is for (collocated) finite differences, `DMStag` for staggered finite differences, `DMPlex` for finite element/finite volume discretisations and `DMForest` for adaptive mesh refinement problems.
+If possible, use this infrastructure as it simplifies your life. Have a look at the [examples](https://github.com/JuliaParallel/PETSc.jl/tree/main/examples) or [tests](https://github.com/JuliaParallel/PETSc.jl/tree/main/test) of `PETSc.jl`.
 
 ### 3. Nonlinear example
 Let's solve the coupled system of nonlinear equations: 
@@ -121,16 +196,24 @@ x^2 + x y  &= 3 \\
 x y + y^2  &= 6
 \end{aligned}
 ```
-for ``x`` and ``y``, which can be written in terms of a residual vector ``f``:
+for ``x`` and ``y``, which can be written in terms of a residual vector ``r``:
 ```math
-f = \binom{ x^2 + x y  - 3} {x y + y^2  - 6}
+r = \binom{ x^2 + x y  - 3} {x y + y^2  - 6}
 ```
 
-In order to solve this, we need to provide a residual function that computes ``f``:
+We start by initializing PETSc:
 ```julia
-julia> function F!(fx, snes, x)
-            fx[1] = x[1]^2 + x[1] * x[2] - 3
-            fx[2] = x[1] * x[2] + x[2]^2 - 6
+julia> using PETSc, MPI
+julia> petsclib = PETSc.petsclibs[1]
+julia> PETSc.initialize(petsclib, log_view=false)
+julia> PetscScalar = petsclib.PetscScalar
+julia> PetscInt = petsclib.PetscInt
+```
+In order to solve this, we need to provide a residual function that computes ``r``:
+```julia
+julia> function Residual!(rx, snes, x)
+            rx[1] = x[1]^2 + x[1] * x[2] - 3
+            rx[2] = x[1] * x[2] + x[2]^2 - 6
             return PetscInt(0)  # petsc success
         end
 ```
@@ -139,8 +222,8 @@ In addition, we need to provide the Jacobian:
 ```math
 J = 
 \begin{pmatrix}
-\frac{\partial f_1}{ \partial x} & \frac{\partial f_1}{ \partial y}  \\
-\frac{\partial f_2}{ \partial x} & \frac{\partial f_2}{ \partial y}  \\
+\frac{\partial r_1}{ \partial x} & \frac{\partial r_1}{ \partial y}  \\
+\frac{\partial r_2}{ \partial x} & \frac{\partial r_2}{ \partial y}  \\
 \end{pmatrix}
 = 
 \begin{pmatrix}
@@ -162,10 +245,9 @@ julia> function updateJ!(J, snes, x)
 ```
 In order to solve this using the PETSc nonlinear equation solvers, you first define the `SNES` solver together with the jacobian and residual functions as 
 ```julia
-julia> using PETSc, MPI
 julia> snes = PETSc.SNES(petsclib,MPI.COMM_SELF; ksp_rtol=1e-4, pc_type="none")
-julia> r = LibPETSc.VecSeq(petsclib, zeros(PetscScalar, 2))
-julia> PETSc.setfunction!(snes, F!, r)
+julia> r = PETSc.VecSeq(petsclib, zeros(PetscScalar, 2))
+julia> PETSc.setfunction!(snes, Residual!, r)
 julia> J = zeros(2,2)
 julia> PJ = PETSc.MatSeqDense(petsclib,J)
 julia> PETSc.setjacobian!(updateJ!, snes, PJ)
@@ -178,7 +260,30 @@ julia> b = PETSc.VecSeq(petsclib, [0.0, 0.0])
 julia> PETSc.solve!(x, snes, b)
 julia> x[:]
 2-element Vector{Float64}:
- 2.0
- 3.0
+ 1.000000003259629
+ 1.999999998137355
 ```
 which indeed recovers the analytical solution ``(x=1, y=2)``.
+
+If we are done, finalize it with:
+```julia
+julia> PETSc.finalize(petsclib)
+```
+
+
+### 4. Next steps 
+Now that you have the basics, ypu can start playing with some more complete examples.
+Here some suggestions:
+1. [laplacian.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/laplacian.jl) - simple (non-parallel) laplacian example using Julia sparse matrixes
+2. [dmda_laplacian.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmda_laplacian.jl) - 2D laplacian example with Dirichlet boundary conditions using the `DMDA` framework. Examples are given on how to run it with various (multigrid) solvers.
+3. [ex50.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/ex50.jl) - 2D parallel `DMDA` laplacian example with Neumann boundary conditions, which requires the nullspace to be removed.  
+4. [SNES_ex2.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/SNES_ex2.jl) - 1D laplacian with nonlinear terms where the hand-derived jacobian is hardcoded
+5. [SNES_ex2b.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/SNES_ex2b.jl) - as `SNES_ex2.jl` but using automatic differentiation to derive the jacobian.
+6. [Liouville_Bratu_Gelfand.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/Liouville_Bratu_Gelfand.jl) - 1D/2D/3D poisson equation with nonlinear terms. Shows how to combine `DMDA` with `SNES` solvers and solve them in parallel, if you have a jacobian.
+7. [porosity_waves.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/porosity_waves.jl) nD MPI-parallel example of 2 coupled nonlinear PDE's using the `DMDA` framework along with automatic differentiation to derive the jacobian.
+
+Working through those examples should give you a fair idea of how to use PETSc. 
+
+If you have further questions, please have a look at the [test](https://github.com/JuliaParallel/PETSc.jl/tree/main/test) directory; this is run automatically every time we make a new commit, and we do our best to keep it working.
+
+Furthermore, the left menu gives additional instructions on how to use the low-level functions.

@@ -290,11 +290,14 @@ end
         x = PetscScalar.(collect(1:4))
         y_expected = Ajl * x
         
-        vec_x = LibPETSc.VecCreateSeqWithArray(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(1), PetscInt(length(x)), copy(x))
+        xc = copy(x)
+        vec_x = LibPETSc.VecCreateSeqWithArray(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(1), PetscInt(length(x)), xc)
         vec_y = LibPETSc.VecCreateSeq(petsclib, LibPETSc.PETSC_COMM_SELF, PetscInt(3))
         
         mul!(vec_y, A, vec_x)
         @test vec_y[:] ≈ y_expected rtol=1e-5
+        
+        finalize(xc)
         
         # Test matrix modification
         A[1, 1] = PetscScalar(100.0)

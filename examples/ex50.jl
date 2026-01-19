@@ -12,7 +12,7 @@
 #
 # ## Usage Examples:
 #
-# 1. Run with default settings (100×100 grid, multigrid):
+# 1. Run with default settings (100×100 grid, LU direct solver):
 #    julia --project=. examples/ex50.jl
 #
 # 2. Set grid size with -N option (creates N×N grid):
@@ -100,9 +100,9 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     da_grid_x = parse(Int, get(opts, Symbol("da_grid_x"), string(N)))
     da_grid_y = parse(Int, get(opts, Symbol("da_grid_y"), string(N)))
 
-    # Use CG solver with AMG preconditioner as defaults
+    # Use CG solver with LU preconditioner as defaults (robust for MPI tests)
     ksp_type = get(opts, Symbol("ksp_type"), "cg")
-    pc_type = get(opts, Symbol("pc_type"), "gamg")
+    pc_type = get(opts, Symbol("pc_type"), "lu")
     ksp_rtol = parse(Float64, get(opts, Symbol("ksp_rtol"), "1e-12"))
 
     # Set the grid options
@@ -110,6 +110,9 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
 
     # Set solver options
     opts = merge(opts, (ksp_type = ksp_type, pc_type = pc_type, ksp_rtol = ksp_rtol))
+
+    # Merge in any additional solver options passed as keyword arguments
+    opts = merge(opts, Dict(solver_opts))
 
     boundary_type = (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE)
     stencil_type = PETSc.DMDA_STENCIL_STAR
@@ -260,8 +263,13 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     h = PetscScalar(1) ./ global_size
 
     sol = PETSc.get_solution(ksp)
-    sol2D = copy(sol[:])
-    sol2D = reshape(sol2D, Int64(corners.size[1]), Int64(corners.size[2]))
+    
+    # Get local solution array for analysis
+    sol2D = nothing
+    PETSc.withlocalarray!(sol; read=true) do s
+        sol2D = copy(s)
+        sol2D = reshape(sol2D, Int64(corners.size[1]), Int64(corners.size[2]))
+    end
     
     l2_error = 0.0
     PETSc.withlocalarray!(sol; read=true) do s

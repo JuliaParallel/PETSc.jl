@@ -1,5 +1,3 @@
-# INCLUDE IN MPI TEST
-#
 # This example demonstrates solving a 2D Poisson equation with Neumann boundary
 # conditions using a DMDA and KSP solver, and performs convergence analysis.
 # 
@@ -288,8 +286,13 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     h = PetscScalar(1) ./ global_size
 
     sol = PETSc.get_solution(ksp)
-    sol2D = copy(sol[:])
-    sol2D = reshape(sol2D, Int64(corners.size[1]), Int64(corners.size[2]))
+    
+    # Get local solution array for analysis
+    sol2D = nothing
+    PETSc.withlocalarray!(sol; read=true) do s
+        sol2D = copy(s)
+        sol2D = reshape(sol2D, Int64(corners.size[1]), Int64(corners.size[2]))
+    end
     
     l2_error = 0.0
     PETSc.withlocalarray!(sol; read=true) do s

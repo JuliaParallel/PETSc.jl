@@ -279,7 +279,7 @@ Here some suggestions:
 3. [ex50.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/ex50.jl) - 2D parallel `DMDA` laplacian example with Neumann boundary conditions, which requires the nullspace to be removed.  
 4. [SNES_ex2.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/SNES_ex2.jl) - 1D laplacian with nonlinear terms where the hand-derived jacobian is hardcoded
 5. [SNES_ex2b.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/SNES_ex2b.jl) - as `SNES_ex2.jl` but using automatic differentiation to derive the jacobian.
-6. [Liouville_Bratu_Gelfand.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/Liouville_Bratu_Gelfand.jl) - 1D/2D/3D poisson equation with nonlinear terms. Shows how to combine `DMDA` with `SNES` solvers and solve them in parallel, if you have a jacobian.
+6. [Liouville_Bratu_Gelfand.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/Liouville\_Bratu\_Gelfand.jl) - 1D/2D/3D poisson equation with nonlinear terms. Shows how to combine `DMDA` with `SNES` solvers and solve them in parallel, if you have a jacobian.
 7. [porosity_waves.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/porosity_waves.jl) nD MPI-parallel example of 2 coupled nonlinear PDE's using the `DMDA` framework along with automatic differentiation to derive the jacobian.
 
 Working through those examples should give you a fair idea of how to use PETSc. 

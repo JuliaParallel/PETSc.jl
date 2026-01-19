@@ -316,6 +316,14 @@ end
 
 
 LinearAlgebra.norm(M::PetscMat{PetscLib}, normtype::NormType = NORM_FROBENIUS) where {PetscLib} = LibPETSc.MatNorm(PetscLib, M, normtype)
+
+"""
+    mul!(y::PetscVec{PetscLib}, M::AbstractPetscMat{PetscLib}, x::PetscVec{PetscLib})
+
+Computes
+    `y` = `M`*`x`
+
+"""
 function LinearAlgebra.mul!(y::PetscVec{PetscLib},M::AbstractPetscMat{PetscLib},x::PetscVec{PetscLib}) where {PetscLib} 
     LibPETSc.MatMult(PetscLib, M, x, y)
     return nothing
@@ -325,7 +333,7 @@ function Base.:*(
     M::AbstractPetscMat{PetscLib},
     x::AbstractPetscVec{PetscLib},
 ) where {PetscLib}
-    xx, y = LibPETSc.MatCreateVecs(getlib(PetscLib), M)
+    _, y = LibPETSc.MatCreateVecs(getlib(PetscLib), M)
     mul!(y, M, x)
     return y
 end
@@ -339,6 +347,14 @@ function LinearAlgebra.mul!(
     return nothing
 end
 
+function LinearAlgebra.mul!(
+    y::PetscVec{PetscLib},
+    M::Transpose{AM},
+    x::PetscVec{PetscLib},
+) where {PetscLib, AM <: PetscMat{PetscLib}}
+    LibPETSc.MatMultTranspose(PetscLib, parent(M), x, y)
+    return nothing
+end
 
 function LinearAlgebra.issymmetric(A::PetscMat{PetscLib}; tol = 0.0) where {PetscLib} 
     PetscReal = real(scalartype(PetscLib))        

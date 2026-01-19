@@ -3,24 +3,37 @@
   "description": "PETSc.jl provides an interface to the Portable, Extensible Toolkit for Scientific Computation (PETSc) library, allowing the combination of Julia features (such as automatic differentiation) with PETSc's infrastructure, including linear, nonlinear, and optimization solvers, timesteppers, domain management (DM), and more, in a distributed-memory (MPI) environment.",
   "creators": [
     {
-      "name": "Kaus, Boris",
-      "affiliation": "Johannes Gutenberg University Mainz"
+      "name": "Kaus, Boris J.P.",
+      "affiliation": "Johannes Gutenberg University Mainz, Germany",
+      "orcid": "https://orcid.org/0000-0002-0247-8660"
     },
     {
       "name": "Shah, Viral B.",
-      "affiliation": "Julia Computing"
-    },
-    {
-      "name": "Schnetter, Erik",
-      "affiliation": "Perimeter Institute"
+      "affiliation": "Julia Computing, USA",
+      "orcid": "https://orcid.org/0000-0001-9602-4012"
     },
     {
       "name": "Kozdon, Jeremy E.",
-      "affiliation": "NextSilicon"
+      "affiliation": "NextSilicon, USA",
+      "orcid": "https://orcid.org/0000-0002-2493-4292"
+    },
+    {
+      "name": "Churavy, Valentin",
+      "affiliation": [
+        "Johannes Gutenberg University Mainz, Germany",
+        "Augsburg University, Germany"
+      ],
+      "orcid": "https://orcid.org/0000-0002-9033-165X"
+    },
+    {
+      "name": "Schnetter, Erik",
+      "affiliation": "Perimeter Institute, Canada",
+      "orcid": "https://orcid.org/0000-0002-4518-9017"
     },
     {
       "name": "Byrne, Simon",
-      "affiliation": "NVIDIA"
+      "affiliation": "NVIDIA, USA",
+      "orcid": "https://orcid.org/0000-0001-8048-6810"
     }
   ],
   "keywords": [

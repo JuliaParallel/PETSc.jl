@@ -13,19 +13,22 @@
 # ## Usage Examples:
 #
 # 1. Run with default settings (100×100 grid, multigrid):
-#    julia --project=. examples/ksp/ex50.jl
+#    julia --project=. examples/ex50.jl
 #
 # 2. Set grid size with -N option (creates N×N grid):
-#    julia --project=. examples/ksp/ex50.jl -N 50 -ksp_monitor
+#    julia --project=. examples/ex50.jl -N 50 -ksp_monitor
 #
 # 3. Monitor convergence with custom grid:
-#    julia --project=. examples/ksp/ex50.jl -da_grid_x 50 -da_grid_y 50 -ksp_monitor
+#    julia --project=. examples/ex50.jl -da_grid_x 50 -da_grid_y 50 -ksp_monitor
 #
 # 4. Use direct LU solver:
-#    julia --project=. examples/ksp/ex50.jl -pc_type lu -ksp_monitor -ksp_converged_reason
+#    julia --project=. examples/ex50.jl -pc_type lu -ksp_monitor -ksp_converged_reason
 #
 # 5. Multigrid with refinement:
-#    julia --project=. examples/ksp/ex50.jl -da_grid_x 3 -da_grid_y 3 -da_refine 5 -pc_type mg -ksp_monitor
+#    julia --project=. examples/ex50.jl -da_grid_x 3 -da_grid_y 3 -da_refine 5 -pc_type mg -ksp_monitor
+#
+# 6. Programmatic usage with custom solver options:
+#    julia -e "include(\"examples/ex50.jl\"); solve_poisson(50, 0; pc_mg_levels=3, ksp_monitor=true)"
 #
 # KNOWN LIMITATION: The C code uses MatNullSpaceCreate/MatSetNullSpace/MatNullSpaceRemove
 # to handle the constant nullspace from all-Neumann BCs. However, this causes
@@ -34,206 +37,271 @@
 # making it read-only. As a workaround, nullspace handling is commented out.
 # The solver may still work due to PETSc's automatic handling, but results may
 # not be as accurate as with explicit nullspace removal.
-#
-using PETSc, MPI, Printf
-MPI.Initialized() || MPI.Init()
 
-# Set our PETSc Scalar Type
-PetscScalar = Float64
+using PETSc, MPI, Printf
 
 # Get the PETSc lib with our chosen `PetscScalar` type
-petsclib = PETSc.getlib(; PetscScalar = PetscScalar)
+petsclib = PETSc.getlib(; PetscScalar = Float64)
 
-# Initialize PETSc
+# Initialize PETSc 
 PETSc.initialize(petsclib)
 
-# Set our MPI communicator
-comm = MPI.COMM_WORLD
 
-# Parse command-line options
-opts = if !isinteractive()
-    PETSc.parse_options(ARGS)
-else
-    # Default options when running interactively
-    if MPI.Comm_size(comm) == 1
-        (
-            ksp_monitor = false,
-            ksp_view = false,
-            da_grid_x = 100,
-            da_grid_y = 100,
-            pc_type = "mg",
-            pc_mg_levels = 1,
-            mg_levels_0_pc_type = "ilu",
-            mg_levels_0_pc_factor_levels = 1,
-        )
-    else
-        (
-            da_grid_x = 3,
-            da_grid_y = 3,
-            pc_type = "mg",
-            da_refine = 10,
-            ksp_monitor = false,
-            ksp_view = false,
-            log_view = nothing,
-        )
-    end
+"""
+    analytical_solution(x, y, h1, h2)
+
+Compute the analytical solution for the Poisson equation with forcing function
+f = -cos(π*x)*cos(π*y).
+
+The solution is p(x,y) = (1)/(2*π²) * cos(π*x)*cos(π*y) + C,
+where C is an arbitrary constant due to Neumann boundary conditions.
+Here, C=0.
+"""
+function analytical_solution(x, y)
+    K = 1.0 / (2 * π^2)
+    return -K * cos(π * (x-0.5)) * cos(π * (y-0.5))
 end
 
-# Parse -N option for grid size (sets both da_grid_x and da_grid_y)
-N = parse(Int, get(opts, Symbol("-N"), "0"))
-if N > 0
-    # Override da_grid_x and da_grid_y with N if specified
-    opts = merge(opts, (da_grid_x = N, da_grid_y = N))
-end
+"""
+    solve_poisson(N=100, da_refine=0; solver_opts...)
 
-boundary_type = (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE)
-stencil_type = PETSc.DMDA_STENCIL_STAR
-global_size = (11, 11)
-procs = (PETSc.PETSC_DECIDE, PETSc.PETSC_DECIDE)
-dof_per_node = 1
-stencil_width = 1
+Solve the 2D Poisson equation in serial or parallel with Neumann boundary conditions using PETSc.
 
-da = PETSc.DMDA(
-    petsclib,
-    comm,
-    boundary_type,
-    global_size,
-    dof_per_node,
-    stencil_width,
-    stencil_type;
-    opts...,
-)
+# Arguments
+- `N::Int`: Grid size (N×N grid). Default is 100.
+- `da_refine::Int`: Refinement level for the DMDA. Default is 0.
+- `solver_opts`: Additional keyword options passed to the PETSc solver (e.g., `pc_mg_levels=3`, `ksp_monitor=true`).
 
-ksp = PETSc.KSP(da; opts...)
+# Returns
+- `solve_time::Float64`: Time taken to solve the system.
+- `niter::Int`: Number of iterations taken by the solver.
+- `final_grid_size::Tuple{Int, Int}`: The final grid size after refinement.
 
-# Print the final grid size after any refinement (only on rank 0)
-if MPI.Comm_rank(comm) == 0
+# Examples
+```julia
+# Solve with default settings
+time, iters, grid = solve_poisson()
+
+# Solve with custom grid size and multigrid levels
+time, iters, grid = solve_poisson(50, 0; pc_mg_levels=3, ksp_monitor=true)
+
+# Command-line usage
+# julia examples/ex50.jl -N 50 -pc_mg_levels 3
+```
+"""
+function solve_poisson(N=100, da_refine=0; solver_opts...)
+
+    # Set our PETSc Scalar Type
+    PetscScalar = Float64
+
+    # Get MPI communicator
+    comm = MPI.COMM_WORLD
+
+    # Parse command-line options
+    opts = PETSc.parse_options(ARGS)
+
+    # Merge with solver options passed to the function
+    opts = merge(opts, solver_opts)
+
+    # Use parameter values as defaults, but allow options to override
+    N = parse(Int, get(opts, Symbol("-N"), string(N)))
+    da_refine = parse(Int, get(opts, Symbol("da_refine"), string(da_refine)))
+
+    # Set the grid options
+    opts = merge(opts, (da_grid_x = N, da_grid_y = N, da_refine = da_refine))
+
+    # Use CG solver with AMG preconditioner for better convergence on singular systems
+    opts = merge(opts, (ksp_type = "cg", pc_type = "gamg", ksp_rtol = 1e-12))
+
+    boundary_type = (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE)
+    stencil_type = PETSc.DMDA_STENCIL_STAR
+    global_size = (11, 11)
+    procs = (PETSc.PETSC_DECIDE, PETSc.PETSC_DECIDE)
+    dof_per_node = 1
+    stencil_width = 1
+
+    da = PETSc.DMDA(
+        petsclib,
+        comm,
+        boundary_type,
+        global_size,
+        dof_per_node,
+        stencil_width,
+        stencil_type;
+        opts...,
+    )
+
+    ksp = PETSc.KSP(da; opts...)
+
+    # Print the final grid size after any refinement (only on rank 0)
     final_grid_size = PETSc.getinfo(da).global_size[1:2]
-    @printf("Solving on %d × %d grid\n", final_grid_size[1], final_grid_size[2])
-end
-
-# Set the Jacobian/operator
-PETSc.setcomputeoperators!(ksp) do J, jac, ksp
-    dm = PETSc.getDMDA(ksp)
-    corners = PETSc.getcorners(dm)
-    global_size = PETSc.getinfo(dm).global_size[1:2]
-
-    # Grid spacing in each direction
-    h = PetscScalar(1) ./ global_size
-    HxdHy = h[1] / h[2]
-    HydHx = h[2] / h[1]
-    
-    # Assemble the matrix - Neumann BCs with variable stencil at boundaries
-    for j in corners.lower[2]:corners.upper[2]
-        for i in corners.lower[1]:corners.upper[1]
-            idx = CartesianIndex(i, j, 1)
-            
-            # Check if we're on boundary
-            is_boundary = (i == 1 || j == 1 || i == global_size[1] || j == global_size[2])
-            
-            if is_boundary
-                # Boundary point - variable stencil (only interior neighbors)
-                diag_val = PetscScalar(0)
-                numi = 0  # count of i-direction neighbors
-                numj = 0  # count of j-direction neighbors
-                
-                if j > 1  # not on bottom boundary
-                    jac[idx, idx + CartesianIndex(0, -1, 0)] = -HxdHy
-                    numj += 1
-                end
-                if i > 1  # not on left boundary
-                    jac[idx, idx + CartesianIndex(-1, 0, 0)] = -HydHx
-                    numi += 1
-                end
-                if i < global_size[1]  # not on right boundary
-                    jac[idx, idx + CartesianIndex(1, 0, 0)] = -HydHx
-                    numi += 1
-                end
-                if j < global_size[2]  # not on top boundary
-                    jac[idx, idx + CartesianIndex(0, 1, 0)] = -HxdHy
-                    numj += 1
-                end
-                
-                # Diagonal: sum of neighbor coefficients
-                diag_val = numj * HxdHy + numi * HydHx
-                jac[idx, idx] = diag_val
-            else
-                # Interior point - full 5-point stencil
-                jac[idx, idx + CartesianIndex(0, -1, 0)] = -HxdHy
-                jac[idx, idx + CartesianIndex(-1, 0, 0)] = -HydHx
-                jac[idx, idx] = 2.0 * (HxdHy + HydHx)
-                jac[idx, idx + CartesianIndex(1, 0, 0)] = -HydHx
-                jac[idx, idx + CartesianIndex(0, 1, 0)] = -HxdHy
-            end
-        end
+    if MPI.Comm_rank(comm) == 0
+        @printf("Solving on %d × %d grid\n", final_grid_size[1], final_grid_size[2])
     end
 
-    PETSc.assemble!(jac)
-    
-    # NOTE: The C code sets a constant nullspace on the matrix for Neumann BCs.
-    # However, this causes ReadOnlyMemoryError in PETSc.jl due to a wrapper bug.
-    # TODO: Fix this wrapper issue and re-enable nullspace handling
-    # comm = PETSc.getcomm(ksp)
-    # nullspace = LibPETSc.MatNullSpaceCreate(petsclib, comm, LibPETSc.PETSC_TRUE, 0, LibPETSc.PetscVec[])
-    # LibPETSc.MatSetNullSpace(petsclib, J, nullspace)
-    # LibPETSc.MatNullSpaceDestroy(petsclib, nullspace)
-    
-    return 0
-end
+    # Set the Jacobian/operator
+    PETSc.setcomputeoperators!(ksp) do J, jac, ksp
+        dm = PETSc.getDMDA(ksp)
+        corners = PETSc.getcorners(dm)
+        global_size = PETSc.getinfo(dm).global_size[1:2]
 
-# Set the right-hand side
-PETSc.setcomputerhs!(ksp) do b_vec, ksp
-    dm = PETSc.getDMDA(ksp)
-    comm = PETSc.getcomm(ksp)
-    corners = PETSc.getcorners(dm)
-    global_size = PETSc.getinfo(dm).global_size[1:2]
-
-    # Grid spacing in each direction
-    h = PetscScalar(1) ./ global_size
-
-    # Build the RHS vector with forcing function
-    PETSc.withlocalarray!(b_vec; read = false) do b
-        b = reshape(b, Int64(corners.size[1]), Int64(corners.size[2]))
+        # Grid spacing in each direction
+        h = PetscScalar(1) ./ global_size
+        HxdHy = h[1] / h[2]
+        HydHx = h[2] / h[1]
         
-        for (iy, y) in enumerate(corners.lower[2]:corners.upper[2])
-            # Cell-centered y-coordinate
-            y_coord = (y - 0.5) * h[2]
-            for (ix, x) in enumerate(corners.lower[1]:corners.upper[1])
-                # Cell-centered x-coordinate
-                x_coord = (x - 0.5) * h[1]
-                # Forcing function: -cos(π*x)*cos(π*y) * Hx * Hy
-                b[ix, iy] = -cos(π * x_coord) * cos(π * y_coord) * h[1] * h[2]
+        # Assemble the matrix - Neumann BCs with variable stencil at boundaries
+        for j in corners.lower[2]:corners.upper[2]
+            for i in corners.lower[1]:corners.upper[1]
+                idx = CartesianIndex(i, j, 1)
+                
+                # Check if we're on boundary
+                is_boundary = (i == 1 || j == 1 || i == global_size[1] || j == global_size[2])
+                
+                if is_boundary
+                    # Boundary point - variable stencil (only interior neighbors)
+                    diag_val = PetscScalar(0)
+                    numi = 0  # count of i-direction neighbors
+                    numj = 0  # count of j-direction neighbors
+                    
+                    if j > 1  # not on bottom boundary
+                        jac[idx, idx + CartesianIndex(0, -1, 0)] = -HxdHy
+                        numj += 1
+                    end
+                    if i > 1  # not on left boundary
+                        jac[idx, idx + CartesianIndex(-1, 0, 0)] = -HydHx
+                        numi += 1
+                    end
+                    if i < global_size[1]  # not on right boundary
+                        jac[idx, idx + CartesianIndex(1, 0, 0)] = -HydHx
+                        numi += 1
+                    end
+                    if j < global_size[2]  # not on top boundary
+                        jac[idx, idx + CartesianIndex(0, 1, 0)] = -HxdHy
+                        numj += 1
+                    end
+                    
+                    # Diagonal: sum of neighbor coefficients
+                    diag_val = numj * HxdHy + numi * HydHx
+                    jac[idx, idx] = diag_val
+                else
+                    # Interior point - full 5-point stencil
+                    jac[idx, idx + CartesianIndex(0, -1, 0)] = -HxdHy
+                    jac[idx, idx + CartesianIndex(-1, 0, 0)] = -HydHx
+                    jac[idx, idx] = 2.0 * (HxdHy + HydHx)
+                    jac[idx, idx + CartesianIndex(1, 0, 0)] = -HydHx
+                    jac[idx, idx + CartesianIndex(0, 1, 0)] = -HxdHy
+                end
             end
         end
+
+        PETSc.assemble!(jac)
+        
+        # Set a constant nullspace on the matrix for Neumann BCs
+        nullspace = LibPETSc.MatNullSpaceCreate(petsclib, MPI.COMM_WORLD, LibPETSc.PETSC_TRUE, 0, LibPETSc.PetscVec[])
+        LibPETSc.MatSetNullSpace(petsclib, jac, nullspace)
+        LibPETSc.MatNullSpaceDestroy(petsclib, nullspace)
+        # Don't destroy nullspace here - let the matrix manage it
+        
+        return 0
     end
-    
-    # NOTE: The C code calls MatNullSpaceRemove here to force the RHS to be
-    # consistent for the singular matrix. However, this causes ReadOnlyMemoryError
-    # in PETSc.jl due to a wrapper bug (src/ksp.jl line 201: b_vec created with age=0).
-    # The nullspace is set on the matrix in setcomputeoperators!, which should
-    # be sufficient for KSP to handle it correctly.
-    #
-    # TODO: Fix wrapper to create b_vec with getlib(PetscLib).age instead of 0
-    # LibPETSc.VecAssemblyBegin(petsclib, b_vec)
-    # LibPETSc.VecAssemblyEnd(petsclib, b_vec)
-    # nullspace = LibPETSc.MatNullSpaceCreate(petsclib, comm, LibPETSc.PETSC_TRUE, 0, LibPETSc.PetscVec[])
-    # LibPETSc.MatNullSpaceRemove(petsclib, nullspace, b_vec)
-    # LibPETSc.MatNullSpaceDestroy(petsclib, nullspace)
 
-    return 0
-end
+    # Set the right-hand side
+    PETSc.setcomputerhs!(ksp) do b_vec, ksp
+        dm = PETSc.getDMDA(ksp)
+        comm = PETSc.getcomm(ksp)
+        corners = PETSc.getcorners(dm)
+        global_size = PETSc.getinfo(dm).global_size[1:2]
 
-# Solve the problem
-solve_time = @elapsed PETSc.solve!(ksp)
+        # Grid spacing in each direction
+        h = PetscScalar(1) ./ global_size
 
-# Get iteration count and print results (only on rank 0)
-if MPI.Comm_rank(comm) == 0
+        # Build the RHS vector with forcing function
+        PETSc.withlocalarray!(b_vec; read = false) do b
+            b = reshape(b, Int64(corners.size[1]), Int64(corners.size[2]))
+            
+            for (iy, y) in enumerate(corners.lower[2]:corners.upper[2])
+                # Cell-centered y-coordinate
+                y_coord = (y - 0.5) * h[2]
+                for (ix, x) in enumerate(corners.lower[1]:corners.upper[1])
+                    # Cell-centered x-coordinate
+                    x_coord = (x - 0.5) * h[1]
+                    # Forcing function: -cos(π*x)*cos(π*y) * Hx * Hy
+                    b[ix, iy] = -cos(π * x_coord) * cos(π * y_coord) * h[1] * h[2]
+                end
+            end
+        end
+        
+        # Assemble the vector before modifying it
+        PETSc.assemble!(b_vec)
+        
+        # Remove the nullspace from the RHS to make it consistent for the singular matrix
+        LibPETSc.VecAssemblyBegin(petsclib, b_vec)
+        LibPETSc.VecAssemblyEnd(petsclib, b_vec)
+        nullspace = LibPETSc.MatNullSpaceCreate(petsclib, MPI.COMM_WORLD, LibPETSc.PETSC_TRUE, 0, LibPETSc.PetscVec[])
+        LibPETSc.MatNullSpaceRemove(petsclib, nullspace, b_vec)
+        LibPETSc.MatNullSpaceDestroy(petsclib, nullspace)
+
+        return 0
+    end
+
+    # Solve the problem
+    solve_time = @elapsed PETSc.solve!(ksp)
+
+    # Get iteration count and print results (only on rank 0)
     niter = LibPETSc.KSPGetIterationNumber(petsclib, ksp)
-    @printf("KSP converged in %d iterations in %.4f seconds\n", niter, solve_time)
+    if MPI.Comm_rank(comm) == 0
+        @printf("KSP converged in %d iterations in %.4f seconds\n", niter, solve_time)
+    end
+
+    # Compute L2 norm of the error and extrema
+    dm = PETSc.getDMDA(ksp)
+    corners = PETSc.getcorners(dm)
+    global_size = PETSc.getinfo(dm).global_size[1:2]
+    h = PetscScalar(1) ./ global_size
+
+    sol = PETSc.get_solution(ksp)
+    sol2D = copy(sol[:])
+    sol2D = reshape(sol2D, Int64(corners.size[1]), Int64(corners.size[2]))
+    
+    PETSc.withlocalarray!(sol; read=true) do s
+        nx, ny = corners.size[1:2]
+        s2D = reshape(s, Int64(corners.size[1]), Int64(corners.size[2]))
+        
+        l2_local = 0.0
+        sum_diff_local = 0.0
+        count_local = 0
+        x_coord=range(-0.5,0.5,length=nx);
+        y_coord=range(-0.5,0.5,length=ny);
+        for iy=1:ny, ix=1:nx
+            p_ana = analytical_solution(x_coord[ix], y_coord[iy]) #, h[1], h[2])
+            p_num = s2D[ix, iy]
+            diff = p_num - p_ana
+            l2_local += diff^2 * h[1] * h[2]
+            sum_diff_local += diff
+            count_local += 1
+        end
+        l2_global = MPI.Allreduce(l2_local, MPI.SUM, comm)
+        
+        if MPI.Comm_rank(comm) == 0
+            @printf("L2 norm of error: %.6e\n", sqrt(l2_global))
+        end
+    end
+
+    # Clean up
+    # Note: When using KSP(da), the KSP takes ownership of the DM reference
+    # so we only need to destroy the KSP, not the DA
+    PETSc.destroy(ksp)
+
+    #PETSc.finalize(petsclib)
+
+    return solve_time, niter, final_grid_size, sol2D
 end
 
-# Clean up
-# Note: When using KSP(da), the KSP takes ownership of the DM reference
-# so we only need to destroy the KSP, not the DA
-PETSc.destroy(ksp)
-PETSc.finalize(petsclib)
+# If run as script, call the function with defaults
+if !isinteractive() && abspath(PROGRAM_FILE) == @__FILE__
+    solve_poisson()
+else
+    solve_time, niter, final_grid_size, sol2D = solve_poisson();
+end
+

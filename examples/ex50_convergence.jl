@@ -417,13 +417,22 @@ function convergence_analysis(resolutions=[10, 20, 40, 80, 160], base_mg_levels=
     results = []
     
     for (i, N) in enumerate(resolutions)
-        # Compute MG levels: base + floor(log2(N / min_N))
-        levels = base_mg_levels + floor(Int, log2(N / min_N))
-        levels = min(levels, 3)  # Limit to 3 to avoid ratio issues for large N
+        # Compute MG levels: use enough levels to reach a small coarse grid
+        # For N x N grid, we can have floor(log2(N/8)) levels to reach ~8x8 coarse grid
+        max_levels = floor(Int, log2(N / 8))
+        levels = min(max_levels, 5)  # Cap at 5 levels
+        levels = max(levels, 2)      # Minimum 2 levels
         levels_str = if pc_type in ["mg", "gamg"] string(levels) else "--" end
         opts_dict = Dict(solver_opts)
-        if pc_type in ["mg"]
+        if pc_type == "mg"
+            # Use proper MG configuration for optimal multigrid behavior
             opts_dict[:pc_mg_levels] = string(levels)
+            opts_dict[:mg_coarse_ksp_type] = "preonly"
+            opts_dict[:mg_coarse_pc_type] = "lu"
+            opts_dict[:mg_levels_ksp_type] = "chebyshev"
+            opts_dict[:mg_levels_pc_type] = "jacobi"
+            opts_dict[:pc_mg_smoothup] = "2"
+            opts_dict[:pc_mg_smoothdown] = "2"
         end
         
         if rank == 0

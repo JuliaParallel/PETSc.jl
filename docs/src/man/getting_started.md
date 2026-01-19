@@ -286,4 +286,4 @@ Working through those examples should give you a fair idea of how to use PETSc.
 
 If you have further questions, please have a look at the [test](https://github.com/JuliaParallel/PETSc.jl/tree/main/test) directory; this is run automatically every time we make a new commit, and we do our best to keep it working.
 
-Furthermore, the left menu gives additional instructions on how to use the low-level functions.
+Furthermore, the left menu gives additional instructions on how to use the low-level interface.

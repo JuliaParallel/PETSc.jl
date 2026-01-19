@@ -116,7 +116,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
 
     boundary_type = (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE)
     stencil_type = PETSc.DMDA_STENCIL_STAR
-    global_size = (11, 11)
+    global_size = (da_grid_x, da_grid_y)
     procs = (PETSc.PETSC_DECIDE, PETSc.PETSC_DECIDE)
     dof_per_node = 1
     stencil_width = 1
@@ -276,20 +276,23 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         nx, ny = corners.size[1:2]
         s2D = reshape(s, Int64(corners.size[1]), Int64(corners.size[2]))
         
-        x_coords = range(-0.5, 0.5, length=global_size[1])
-        y_coords = range(-0.5, 0.5, length=global_size[2])
-        x_coord = x_coords[corners.lower[1]:corners.upper[1]]
-        y_coord = y_coords[corners.lower[2]:corners.upper[2]]
-        
         l2_local = 0.0
         sum_diff_local = 0.0
         count_local = 0
-        for iy=1:ny, ix=1:nx
-            p_ana = analytical_solution(x_coord[ix], y_coord[iy])
-            p_num = s2D[ix, iy]
-            diff = p_num - p_ana
-            sum_diff_local += diff
-            count_local += 1
+        for (iy, y) in enumerate(corners.lower[2]:corners.upper[2])
+            # Cell-centered y-coordinate (consistent with RHS computation)
+            y_coord = (y - 0.5) * h[2]
+            
+            for (ix, x) in enumerate(corners.lower[1]:corners.upper[1])
+                # Cell-centered x-coordinate (consistent with RHS computation)
+                x_coord = (x - 0.5) * h[1]
+                
+                p_ana = analytical_solution(x_coord, y_coord)
+                p_num = s2D[ix, iy]
+                diff = p_num - p_ana
+                sum_diff_local += diff
+                count_local += 1
+            end
         end
         # Compute global average difference to remove constant shift
         sum_diff_global = MPI.Allreduce(sum_diff_local, MPI.SUM, comm)
@@ -297,11 +300,17 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         avg_diff = sum_diff_global / count_global
         # Now compute L2 error with constant removed
         l2_local = 0.0
-        for iy=1:ny, ix=1:nx
-            p_ana = analytical_solution(x_coord[ix], y_coord[iy])
-            p_num = s2D[ix, iy]
-            diff = (p_num - p_ana) - avg_diff
-            l2_local += diff^2 * h[1] * h[2]
+        for (iy, y) in enumerate(corners.lower[2]:corners.upper[2])
+            y_coord = (y - 0.5) * h[2]
+            
+            for (ix, x) in enumerate(corners.lower[1]:corners.upper[1])
+                x_coord = (x - 0.5) * h[1]
+                
+                p_ana = analytical_solution(x_coord, y_coord)
+                p_num = s2D[ix, iy]
+                diff = (p_num - p_ana) - avg_diff
+                l2_local += diff^2 * h[1] * h[2]
+            end
         end
         l2_global = MPI.Allreduce(l2_local, MPI.SUM, comm)
         l2_error = sqrt(l2_global)

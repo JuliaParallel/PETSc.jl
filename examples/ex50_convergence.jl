@@ -427,11 +427,8 @@ function convergence_analysis(resolutions=[10, 20, 40, 80, 160], base_mg_levels=
     results = []
     
     for (i, N) in enumerate(resolutions)
-        # Compute MG levels: use enough levels to reach a small coarse grid
-        # For N x N grid, we can have floor(log2(N/8)) levels to reach ~8x8 coarse grid
-        max_levels = floor(Int, log2(N / 8))
-        levels = min(max_levels, mg_levels_cap)  # Cap at mg_levels_cap levels
-        levels = max(levels, 2)      # Minimum 2 levels
+        # Compute MG levels: start with base_mg_levels for first resolution, increase by 1 for each subsequent
+        levels = base_mg_levels + (i - 1)
         levels_str = if pc_type in ["mg", "gamg"] string(levels) else "--" end
         opts_dict = Dict(solver_opts)
         if pc_type == "mg"

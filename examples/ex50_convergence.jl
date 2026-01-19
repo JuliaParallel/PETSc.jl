@@ -49,6 +49,9 @@
 #
 # 7. Run convergence analysis for different resolutions:
 #    julia --project=. examples/ex50.jl -convergence_analysis
+#
+# 8. Run convergence analysis with custom MG levels cap:
+#    julia --project=. examples/ex50_convergence.jl -convergence_analysis -resolutions 33,65,129,257,513,1025,2049 -pc_type mg -ksp_type cg -mg_levels_cap 9
 
 using PETSc, MPI, Printf
 
@@ -130,6 +133,9 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
 
     # Set solver options
     opts = merge(opts, (ksp_type = ksp_type, pc_type = pc_type, ksp_rtol = ksp_rtol))
+
+    # Merge in any additional solver options passed as keyword arguments
+    opts = merge(opts, Dict(solver_opts))
 
     boundary_type = (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE)
     stencil_type = PETSc.DMDA_STENCIL_STAR
@@ -394,7 +400,7 @@ function convergence_test(; solver_opts...)
 end
 
 """
-    convergence_analysis(resolutions=[10, 20, 40, 80, 160], base_mg_levels=1; solver_opts...)
+    convergence_analysis(resolutions=[10, 20, 40, 80, 160], base_mg_levels=1, mg_levels_cap=7; solver_opts...)
 
 Run a convergence analysis by solving the Poisson equation on different grid resolutions
 and computing the order of convergence.
@@ -402,12 +408,13 @@ and computing the order of convergence.
 # Arguments
 - `resolutions::Vector{Int}`: List of grid sizes (N×N) to test. Default is [10, 20, 40, 80, 160].
 - `base_mg_levels::Int`: Number of MG levels at the coarsest grid. Default is 1.
+- `mg_levels_cap::Int`: Maximum number of MG levels to use. Default is 7.
 - `solver_opts`: Additional keyword options passed to the PETSc solver.
 
 # Returns
 - `results::Vector{Tuple{Int, Float64, Float64, Float64, Float64, String, Float64, Int}}`: Vector of (N, h, l2_error, order, solve_time, levels_str, time_order, niter) for each resolution.
 """
-function convergence_analysis(resolutions=[10, 20, 40, 80, 160], base_mg_levels=1; solver_opts...)
+function convergence_analysis(resolutions=[10, 20, 40, 80, 160], base_mg_levels=1, mg_levels_cap=7; solver_opts...)
     comm = MPI.COMM_WORLD
     rank = MPI.Comm_rank(comm)
     
@@ -420,7 +427,7 @@ function convergence_analysis(resolutions=[10, 20, 40, 80, 160], base_mg_levels=
         # Compute MG levels: use enough levels to reach a small coarse grid
         # For N x N grid, we can have floor(log2(N/8)) levels to reach ~8x8 coarse grid
         max_levels = floor(Int, log2(N / 8))
-        levels = min(max_levels, 5)  # Cap at 5 levels
+        levels = min(max_levels, mg_levels_cap)  # Cap at mg_levels_cap levels
         levels = max(levels, 2)      # Minimum 2 levels
         levels_str = if pc_type in ["mg", "gamg"] string(levels) else "--" end
         opts_dict = Dict(solver_opts)
@@ -505,7 +512,11 @@ if !isinteractive() && abspath(PROGRAM_FILE) == @__FILE__
         base_mg_levels_str = get(opts, Symbol("base_mg_levels"), "1")
         base_mg_levels = parse(Int, base_mg_levels_str)
         
-        convergence_analysis(resolutions, base_mg_levels; opts...)
+        # Parse mg_levels_cap from -mg_levels_cap option
+        mg_levels_cap_str = get(opts, Symbol("mg_levels_cap"), "7")
+        mg_levels_cap = parse(Int, mg_levels_cap_str)
+        
+        convergence_analysis(resolutions, base_mg_levels, mg_levels_cap; opts...)
     elseif "-convergence_test" in ARGS
         # Remove the flag from ARGS
         args = filter(x -> x != "-convergence_test", ARGS)

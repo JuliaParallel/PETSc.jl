@@ -201,7 +201,6 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         # Set a constant nullspace on the matrix for Neumann BCs
         nullspace = LibPETSc.MatNullSpaceCreate(petsclib, MPI.COMM_WORLD, LibPETSc.PETSC_TRUE, 0, LibPETSc.PetscVec[])
         LibPETSc.MatSetNullSpace(petsclib, jac, nullspace)
-        LibPETSc.MatNullSpaceDestroy(petsclib, nullspace)
         # Don't destroy nullspace here - let the matrix manage it
         
         return 0
@@ -238,8 +237,6 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         PETSc.assemble!(b_vec)
         
         # Remove the nullspace from the RHS to make it consistent for the singular matrix
-        LibPETSc.VecAssemblyBegin(petsclib, b_vec)
-        LibPETSc.VecAssemblyEnd(petsclib, b_vec)
         nullspace = LibPETSc.MatNullSpaceCreate(petsclib, MPI.COMM_WORLD, LibPETSc.PETSC_TRUE, 0, LibPETSc.PetscVec[])
         LibPETSc.MatNullSpaceRemove(petsclib, nullspace, b_vec)
         LibPETSc.MatNullSpaceDestroy(petsclib, nullspace)
@@ -264,18 +261,18 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
 
     sol = PETSc.get_solution(ksp)
     
-    # Get local solution array for analysis
+    # Get local solution array for analysis and error computation
     sol2D = nothing
-    PETSc.withlocalarray!(sol; read=true) do s
-        sol2D = copy(s)
-        sol2D = reshape(sol2D, Int64(corners.size[1]), Int64(corners.size[2]))
-    end
-    
     l2_error = 0.0
     PETSc.withlocalarray!(sol; read=true) do s
         nx, ny = corners.size[1:2]
         s2D = reshape(s, Int64(corners.size[1]), Int64(corners.size[2]))
         
+        # Copy solution for return value
+        sol2D = copy(s)
+        sol2D = reshape(sol2D, Int64(corners.size[1]), Int64(corners.size[2]))
+        
+        # Compute L2 error
         l2_local = 0.0
         sum_diff_local = 0.0
         count_local = 0
@@ -314,13 +311,11 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         end
         l2_global = MPI.Allreduce(l2_local, MPI.SUM, comm)
         l2_error = sqrt(l2_global)
-        
-        if MPI.Comm_rank(comm) == 0
-            @printf("L2 norm of error: %.6e\n", l2_error)
-        end
     end
 
-    # Clean up
+    if MPI.Comm_rank(comm) == 0
+        @printf("L2 norm of error: %.6e\n", l2_error)
+    end
     # Note: When using KSP(da), the KSP takes ownership of the DM reference
     # so we only need to destroy the KSP, not the DA
     PETSc.destroy(ksp)

@@ -1,7 +1,7 @@
 # INCLUDE IN MPI TEST
 #
 # This example demonstrates solving a 2D Poisson equation with Neumann boundary
-# conditions using a DMDA and KSP solver.
+# conditions using a DMDA and KSP solver, and performs convergence analysis.
 # 
 # Based on PETSc's ex50.c:
 # https://petsc.org/main/src/ksp/ksp/tutorials/ex50.c.html
@@ -12,11 +12,28 @@
 #
 # ## Usage Examples:
 #
-# 1. Run with default settings (100×100 grid, multigrid):
-#    julia --project=. examples/ex50.jl
+# 1. Run single solve with default settings (100×100 grid, multigrid):
+#    julia --project=. examples/ex50_convergence.jl
 #
 # 2. Set grid size with -N option (creates N×N grid):
-#    julia --project=. examples/ex50.jl -N 50 -ksp_monitor
+#    julia --project=. examples/ex50_convergence.jl -N 50 -ksp_monitor
+#
+# 3. Run convergence analysis with custom resolutions:
+#    julia --project=. examples/ex50_convergence.jl -convergence_analysis -resolutions 9,17,33
+#
+# ## Convergence Test Examples:
+#
+# 1. Direct solver (LU factorization):
+#    julia --project=. examples/ex50_convergence.jl -convergence_analysis -pc_type lu -ksp_type preonly
+#
+# 2. AMG solver (algebraic multigrid):
+#    julia --project=. examples/ex50_convergence.jl -convergence_analysis -pc_type gamg -ksp_type cg
+#
+# 3. Geometric multigrid:
+#    julia --project=. examples/ex50_convergence.jl -convergence_analysis -pc_type mg -ksp_type cg
+#
+# 4. Geometric Galerkin multigrid:
+#    julia --project=. examples/ex50_convergence.jl -convergence_analysis -pc_type mg -pc_mg_galerkin -ksp_type cg
 #
 # 3. Monitor convergence with custom grid:
 #    julia --project=. examples/ex50.jl -da_grid_x 50 -da_grid_y 50 -ksp_monitor
@@ -29,6 +46,9 @@
 #
 # 6. Programmatic usage with custom solver options:
 #    julia -e "include(\"examples/ex50.jl\"); solve_poisson(50, 0; pc_mg_levels=3, ksp_monitor=true)"
+#
+# 7. Run convergence analysis for different resolutions:
+#    julia --project=. examples/ex50.jl -convergence_analysis
 
 using PETSc, MPI, Printf
 
@@ -157,6 +177,9 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
                 is_boundary = (i == 1 || j == 1 || i == global_size[1] || j == global_size[2])
                 
                 if is_boundary
+                    # NOTE: we use a 1th order accurate stencil at boundaries for Neumann BCs
+                    # This mimics the C-example but limits the overall accuracy of the scheme to first order.
+
                     # Boundary point - variable stencil (only interior neighbors)
                     diag_val = PetscScalar(0)
                     numi = 0  # count of i-direction neighbors
@@ -207,7 +230,6 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     # Set the right-hand side
     PETSc.setcomputerhs!(ksp) do b_vec, ksp
         dm = PETSc.getDMDA(ksp)
-        comm = PETSc.getcomm(ksp)
         corners = PETSc.getcorners(dm)
         global_size = PETSc.getinfo(dm).global_size[1:2]
         
@@ -313,9 +335,176 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     return solve_time, niter, final_grid_size, sol2D, l2_error
 end
 
+"""
+    convergence_test(; solver_opts...)
+
+Run convergence test for different grid resolutions and compute order of convergence.
+
+# Arguments
+- `solver_opts`: Additional keyword options passed to the PETSc solver.
+
+# Returns
+- `results::Vector{Tuple{Int, Float64, Float64, Float64}}`: Vector of (N, h, l2_error, order) for each resolution.
+"""
+function convergence_test(; solver_opts...)
+    comm = MPI.COMM_WORLD
+    rank = MPI.Comm_rank(comm)
+    
+    # Grid sizes for convergence test
+    Ns = [10, 20, 40, 80, 160]
+    results = []
+    
+    for (i, N) in enumerate(Ns)
+        if rank == 0
+            @printf("Running convergence test for N = %d\n", N)
+        end
+        
+        solve_time, niter, grid_size, sol2D, l2_error = solve_poisson(N, 0; solver_opts...)
+        
+        h = 1.0 / N
+        push!(results, (N, h, l2_error, 0.0))  # order will be computed later
+    end
+    
+    # Compute orders
+    for i in 1:length(results)-1
+        N1, h1, e1, _ = results[i]
+        N2, h2, e2, _ = results[i+1]
+        if e1 > 0 && e2 > 0
+            order = log(e1 / e2) / log(h1 / h2)
+            results[i] = (N1, h1, e1, order)
+        end
+    end
+    results[end] = (results[end][1], results[end][2], results[end][3], NaN)  # last one has no order
+    
+    # Print table
+    if rank == 0
+        @printf("\nConvergence Test Results:\n")
+        @printf("%-5s %-10s %-12s %-8s\n", "N", "h", "L2 Error", "Order")
+        @printf("%-5s %-10s %-12s %-8s\n", "-"^5, "-"^10, "-"^12, "-"^8)
+        for (N, h, err, order) in results
+            if isnan(order)
+                @printf("%-5d %-10.6f %-12.6e %-8s\n", N, h, err, "N/A")
+            else
+                @printf("%-5d %-10.6f %-12.6e %-8.2f\n", N, h, err, order)
+            end
+        end
+    end
+    
+    return results
+end
+
+"""
+    convergence_analysis(resolutions=[10, 20, 40, 80, 160], base_mg_levels=1; solver_opts...)
+
+Run a convergence analysis by solving the Poisson equation on different grid resolutions
+and computing the order of convergence.
+
+# Arguments
+- `resolutions::Vector{Int}`: List of grid sizes (N×N) to test. Default is [10, 20, 40, 80, 160].
+- `base_mg_levels::Int`: Number of MG levels at the coarsest grid. Default is 1.
+- `solver_opts`: Additional keyword options passed to the PETSc solver.
+
+# Returns
+- `results::Vector{Tuple{Int, Float64, Float64, Float64, Float64, String, Float64, Int}}`: Vector of (N, h, l2_error, order, solve_time, levels_str, time_order, niter) for each resolution.
+"""
+function convergence_analysis(resolutions=[10, 20, 40, 80, 160], base_mg_levels=1; solver_opts...)
+    comm = MPI.COMM_WORLD
+    rank = MPI.Comm_rank(comm)
+    
+    min_N = minimum(resolutions)
+    pc_type = get(solver_opts, :pc_type, "gamg")
+    ksp_type = get(solver_opts, :ksp_type, "cg")
+    results = []
+    
+    for (i, N) in enumerate(resolutions)
+        # Compute MG levels: base + floor(log2(N / min_N))
+        levels = base_mg_levels + floor(Int, log2(N / min_N))
+        levels = min(levels, 3)  # Limit to 3 to avoid ratio issues for large N
+        levels_str = if pc_type in ["mg", "gamg"] string(levels) else "--" end
+        opts_dict = Dict(solver_opts)
+        if pc_type in ["mg"]
+            opts_dict[:pc_mg_levels] = string(levels)
+        end
+        
+        if rank == 0
+            @printf("Running convergence analysis for N = %d (MG levels = %s)\n", N, levels_str)
+        end
+        
+        # Run twice for the first grid to exclude compilation time
+        if i == 1
+            solve_poisson(N, 0; opts_dict...)  # discard first run
+        end
+        solve_time, niter, grid_size, sol2D, l2_error = solve_poisson(N, 0; opts_dict...)
+        
+        h = 1.0 / N
+        push!(results, (N, levels_str, h, niter, l2_error, 0.0, solve_time, 0.0))  # order and time_order will be computed later
+    end
+    
+    # Compute orders
+    for i in 1:length(results)-1
+        N1, levels_str1, h1, niter1, e1, _, t1, _ = results[i]
+        N2, levels_str2, h2, niter2, e2, _, t2, _ = results[i+1]
+        if e1 > 0 && e2 > 0 && h1 > 0 && h2 > 0
+            order = log(e1 / e2) / log(h1 / h2)
+        else
+            order = NaN
+        end
+        if t1 > 0 && t2 > 0 && N1 > 0 && N2 > 0
+            time_order = log(t2 / t1) / (2 * log(N2 / N1))  # Divide by 2 for 2D scaling
+        else
+            time_order = NaN
+        end
+        results[i] = (N1, levels_str1, h1, niter1, e1, order, t1, time_order)
+    end
+    if length(results) > 0
+        results[end] = (results[end][1], results[end][2], results[end][3], results[end][4], results[end][5], NaN, results[end][7], NaN)  # last ones have no order
+    end
+    
+    # Print table
+    if rank == 0
+        @printf("\nConvergence Analysis Results (KSP: %s, PC: %s):\n", ksp_type, pc_type)
+        @printf("%-5s %-8s %-10s %-10s %-12s %-8s %-10s %-8s\n", "N", "MG Lvl", "h", "KSP Iters", "L2 Error", "𝒪(N)", "Time (s)", "𝒪(Time)")
+        @printf("%-5s %-8s %-10s %-10s %-12s %-8s %-10s %-8s\n", "-"^5, "-"^8, "-"^10, "-"^10, "-"^12, "-"^8, "-"^10, "-"^8)
+        for (N, levels_str, h, niter, err, order, time, time_order) in results
+            if isnan(order) && isnan(time_order)
+                @printf("%-5d %-8s %-10.6f %-10d %-12.6e %-8s %-10.4f %-8s\n", N, levels_str, h, niter, err, "N/A", time, "N/A")
+            elseif isnan(order)
+                @printf("%-5d %-8s %-10.6f %-10d %-12.6e %-8s %-10.4f %-8.2f\n", N, levels_str, h, niter, err, "N/A", time, time_order)
+            elseif isnan(time_order)
+                @printf("%-5d %-8s %-10.6f %-10d %-12.6e %-8.2f %-10.4f %-8s\n", N, levels_str, h, niter, err, order, time, "N/A")
+            else
+                @printf("%-5d %-8s %-10.6f %-10d %-12.6e %-8.2f %-10.4f %-8.2f\n", N, levels_str, h, niter, err, order, time, time_order)
+            end
+        end
+    end
+    
+    return results
+end
+
 # If run as script, call the function with defaults
 if !isinteractive() && abspath(PROGRAM_FILE) == @__FILE__
-    solve_poisson()
+    if "-convergence_analysis" in ARGS
+        # Remove the flag from ARGS
+        args = filter(x -> x != "-convergence_analysis", ARGS)
+        opts = PETSc.parse_options(args)
+        
+        # Parse resolutions from -resolutions option
+        resolutions_str = get(opts, Symbol("resolutions"), "10,20,40,80,160")
+        resolutions = parse.(Int, split(resolutions_str, ","))
+        
+        # Parse base_mg_levels from -base_mg_levels option
+        base_mg_levels_str = get(opts, Symbol("base_mg_levels"), "1")
+        base_mg_levels = parse(Int, base_mg_levels_str)
+        
+        convergence_analysis(resolutions, base_mg_levels; opts...)
+    elseif "-convergence_test" in ARGS
+        # Remove the flag from ARGS
+        args = filter(x -> x != "-convergence_test", ARGS)
+        opts = PETSc.parse_options(args)
+        convergence_test(; opts...)
+    else
+        solve_poisson()
+    end
 else
     solve_time, niter, final_grid_size, sol2D, l2_error = solve_poisson();
 end

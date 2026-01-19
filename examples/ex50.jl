@@ -100,9 +100,12 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     da_grid_x = parse(Int, get(opts, Symbol("da_grid_x"), string(N)))
     da_grid_y = parse(Int, get(opts, Symbol("da_grid_y"), string(N)))
 
-    # Use CG solver with LU preconditioner as defaults (robust for MPI tests)
+    # Use CG solver with appropriate preconditioner based on MPI status
     ksp_type = get(opts, Symbol("ksp_type"), "cg")
-    pc_type = get(opts, Symbol("pc_type"), "lu")
+    # Use LU for serial runs, GAMG for parallel MPI runs (more scalable)
+    nprocs = MPI.Comm_size(comm)
+    default_pc = nprocs > 1 ? "gamg" : "lu"
+    pc_type = get(opts, Symbol("pc_type"), default_pc)
     ksp_rtol = parse(Float64, get(opts, Symbol("ksp_rtol"), "1e-12"))
 
     # Set the grid options

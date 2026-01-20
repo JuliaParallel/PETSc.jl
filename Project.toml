@@ -1,6 +1,6 @@
 name = "PETSc"
 uuid = "ace2c81b-2b5f-4b1e-a30d-d662738edfe0"
-version = "0.4.0"
+version = "0.4.1"
 authors = ["Boris Kaus <kaus@uni-mainz.de>", "Viral B. Shah <virals@gmail.com>", "Erik Schnetter <eschnetter@perimeterinstitute.ca>", "Jeremy E. Kozdon <jeremy@kozdon.net>", "Simon Byrne <simonbyrne@gmail.com>"]
 
 [deps]

@@ -2897,7 +2897,7 @@ function MatNullSpaceDestroy(petsclib::PetscLibType, sp::MatNullSpace) end
                (:MatNullSpaceDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{MatNullSpace},),
-               sp,
+               Ref(sp),
               )
 
 

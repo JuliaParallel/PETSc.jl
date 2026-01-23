@@ -1,4 +1,4 @@
-#!/usr/bin/env julia
+# INCLUDE IN MPI TEST
 # Translation of PETSc's ex45.c to PETSc.jl
 using PETSc, MPI, Printf
 

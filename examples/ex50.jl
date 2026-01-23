@@ -100,13 +100,13 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     da_grid_x = parse(Int, get(opts, Symbol("da_grid_x"), string(N)))
     da_grid_y = parse(Int, get(opts, Symbol("da_grid_y"), string(N)))
 
-    # Use CG solver with appropriate preconditioner based on MPI status
+    # Use CG solver with AMG preconditioner
     ksp_type = get(opts, Symbol("ksp_type"), "cg")
-    # Use LU for serial runs, GAMG for parallel MPI runs (more scalable)
-    nprocs = MPI.Comm_size(comm)
-    default_pc = nprocs > 1 ? "gamg" : "lu"
-    pc_type = get(opts, Symbol("pc_type"), default_pc)
+    pc_type = get(opts, Symbol("pc_type"), "gamg")
     ksp_rtol = parse(Float64, get(opts, Symbol("ksp_rtol"), "1e-12"))
+
+    # Boundary condition type: "neumann" (default) or "dirichlet"
+    bc_type = get(opts, Symbol("bc_type"), "neumann")
 
     # Set the grid options
     opts = merge(opts, (da_grid_x = da_grid_x, da_grid_y = da_grid_y, da_refine = da_refine))
@@ -154,7 +154,6 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         HxdHy = h[1] / h[2]
         HydHx = h[2] / h[1]
         
-        # Assemble the matrix - Neumann BCs with variable stencil at boundaries
         for j in corners.lower[2]:corners.upper[2]
             for i in corners.lower[1]:corners.upper[1]
                 idx = CartesianIndex(i, j, 1)
@@ -162,48 +161,55 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
                 # Check if we're on boundary
                 is_boundary = (i == 1 || j == 1 || i == global_size[1] || j == global_size[2])
                 
-                if is_boundary
-                    # Boundary point - variable stencil (only interior neighbors)
-                    diag_val = PetscScalar(0)
-                    numi = 0  # count of i-direction neighbors
-                    numj = 0  # count of j-direction neighbors
-                    
-                    if j > 1  # not on bottom boundary
+                if bc_type == "dirichlet" && is_boundary
+                    # Dirichlet boundary point: enforce u = analytic value -> set row to identity
+                    jac[idx, idx] = 1.0
+                elseif is_boundary
+                    # NOTE: we use a 1th order accurate stencil at boundaries for Neumann BCs
+                        # This mimics the C-example but limits the overall accuracy of the scheme to first order.
+
+                        # Boundary point - variable stencil (only interior neighbors)
+                        diag_val = PetscScalar(0)
+                        numi = 0  # count of i-direction neighbors
+                        numj = 0  # count of j-direction neighbors
+                        
+                        if j > 1  # not on bottom boundary
+                            jac[idx, idx + CartesianIndex(0, -1, 0)] = -HxdHy
+                            numj += 1
+                        end
+                        if i > 1  # not on left boundary
+                            jac[idx, idx + CartesianIndex(-1, 0, 0)] = -HydHx
+                            numi += 1
+                        end
+                        if i < global_size[1]  # not on right boundary
+                            jac[idx, idx + CartesianIndex(1, 0, 0)] = -HydHx
+                            numi += 1
+                        end
+                        if j < global_size[2]  # not on top boundary
+                            jac[idx, idx + CartesianIndex(0, 1, 0)] = -HxdHy
+                            numj += 1
+                        end
+                        
+                        # Diagonal: sum of neighbor coefficients
+                        diag_val = numj * HxdHy + numi * HydHx
+                        jac[idx, idx] = diag_val
+                    else
+                        # Interior point - full 5-point stencil
                         jac[idx, idx + CartesianIndex(0, -1, 0)] = -HxdHy
-                        numj += 1
-                    end
-                    if i > 1  # not on left boundary
                         jac[idx, idx + CartesianIndex(-1, 0, 0)] = -HydHx
-                        numi += 1
-                    end
-                    if i < global_size[1]  # not on right boundary
+                        jac[idx, idx] = 2.0 * (HxdHy + HydHx)
                         jac[idx, idx + CartesianIndex(1, 0, 0)] = -HydHx
-                        numi += 1
-                    end
-                    if j < global_size[2]  # not on top boundary
                         jac[idx, idx + CartesianIndex(0, 1, 0)] = -HxdHy
-                        numj += 1
                     end
-                    
-                    # Diagonal: sum of neighbor coefficients
-                    diag_val = numj * HxdHy + numi * HydHx
-                    jac[idx, idx] = diag_val
-                else
-                    # Interior point - full 5-point stencil
-                    jac[idx, idx + CartesianIndex(0, -1, 0)] = -HxdHy
-                    jac[idx, idx + CartesianIndex(-1, 0, 0)] = -HydHx
-                    jac[idx, idx] = 2.0 * (HxdHy + HydHx)
-                    jac[idx, idx + CartesianIndex(1, 0, 0)] = -HydHx
-                    jac[idx, idx + CartesianIndex(0, 1, 0)] = -HxdHy
                 end
             end
-        end
 
         PETSc.assemble!(jac)
         
         # Set a constant nullspace on the matrix for Neumann BCs
         nullspace = LibPETSc.MatNullSpaceCreate(petsclib, MPI.COMM_WORLD, LibPETSc.PETSC_TRUE, 0, LibPETSc.PetscVec[])
         LibPETSc.MatSetNullSpace(petsclib, jac, nullspace)
+        LibPETSc.MatNullSpaceDestroy(petsclib, nullspace)
         # Don't destroy nullspace here - let the matrix manage it
         
         return 0
@@ -230,8 +236,17 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
                 for (ix, x) in enumerate(corners.lower[1]:corners.upper[1])
                     # Cell-centered x-coordinate
                     x_coord = (x - 0.5) * h[1]
-                    # Forcing function: -cos(π*x)*cos(π*y) * Hx * Hy
-                    b[ix, iy] = -cos(π * x_coord) * cos(π * y_coord) * h[1] * h[2]
+                    is_boundary = (x == 1 || y == 1 || x == global_size[1] || y == global_size[2])
+
+                    if bc_type == "dirichlet" && is_boundary
+                        # Dirichlet boundary value evaluated at boundary coordinate
+                        xb = x == 1 ? 0.0 : (x == global_size[1] ? 1.0 : x_coord)
+                        yb = y == 1 ? 0.0 : (y == global_size[2] ? 1.0 : y_coord)
+                        b[ix, iy] = analytical_solution(xb, yb)
+                    else
+                        # Forcing function: -cos(π*x)*cos(π*y) * Hx * Hy
+                        b[ix, iy] = -cos(π * x_coord) * cos(π * y_coord) * h[1] * h[2]
+                    end
                 end
             end
         end
@@ -239,10 +254,14 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         # Assemble the vector before modifying it
         PETSc.assemble!(b_vec)
         
-        # Remove the nullspace from the RHS to make it consistent for the singular matrix
-        nullspace = LibPETSc.MatNullSpaceCreate(petsclib, MPI.COMM_WORLD, LibPETSc.PETSC_TRUE, 0, LibPETSc.PetscVec[])
-        LibPETSc.MatNullSpaceRemove(petsclib, nullspace, b_vec)
-        LibPETSc.MatNullSpaceDestroy(petsclib, nullspace)
+        # Remove the nullspace from the RHS only for Neumann BCs (singular matrix)
+        if bc_type == "neumann"
+            LibPETSc.VecAssemblyBegin(petsclib, b_vec)
+            LibPETSc.VecAssemblyEnd(petsclib, b_vec)
+            nullspace = LibPETSc.MatNullSpaceCreate(petsclib, MPI.COMM_WORLD, LibPETSc.PETSC_TRUE, 0, LibPETSc.PetscVec[])
+            LibPETSc.MatNullSpaceRemove(petsclib, nullspace, b_vec)
+            LibPETSc.MatNullSpaceDestroy(petsclib, nullspace)
+        end
 
         return 0
     end
@@ -264,74 +283,45 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
 
     sol = PETSc.get_solution(ksp)
     
-    # Get local solution array for analysis and error computation
+    # Get local solution array for analysis
     sol2D = nothing
+    PETSc.withlocalarray!(sol; read=true) do s
+        sol2D = copy(s)
+        sol2D = reshape(sol2D, Int64(corners.size[1]), Int64(corners.size[2]))
+    end
+    
     l2_error = 0.0
     PETSc.withlocalarray!(sol; read=true) do s
         nx, ny = corners.size[1:2]
         s2D = reshape(s, Int64(corners.size[1]), Int64(corners.size[2]))
         
-        # Copy solution for return value
-        sol2D = copy(s)
-        sol2D = reshape(sol2D, Int64(corners.size[1]), Int64(corners.size[2]))
+        x_coords = range(-0.5, 0.5, length=global_size[1])
+        y_coords = range(-0.5, 0.5, length=global_size[2])
+        x_coord = x_coords[corners.lower[1]:corners.upper[1]]
+        y_coord = y_coords[corners.lower[2]:corners.upper[2]]
         
-        # Compute L2 error
         l2_local = 0.0
         sum_diff_local = 0.0
         count_local = 0
-        for (iy, y) in enumerate(corners.lower[2]:corners.upper[2])
-            # Cell-centered y-coordinate (consistent with RHS computation)
-            y_coord = (y - 0.5) * h[2]
-            
-            for (ix, x) in enumerate(corners.lower[1]:corners.upper[1])
-                # Cell-centered x-coordinate (consistent with RHS computation)
-                x_coord = (x - 0.5) * h[1]
-                
-                p_ana = analytical_solution(x_coord, y_coord)
-                p_num = s2D[ix, iy]
-                diff = p_num - p_ana
-                sum_diff_local += diff
-                count_local += 1
-            end
+        for iy=1:ny, ix=1:nx
+            p_ana = analytical_solution(x_coord[ix], y_coord[iy])
+            p_num = s2D[ix, iy]
+            diff = p_num - p_ana
+            sum_diff_local += diff
+            count_local += 1
         end
-        # Compute global average difference to remove constant shift
-        sum_diff_global = MPI.Allreduce(sum_diff_local, MPI.SUM, comm)
-        count_global = MPI.Allreduce(count_local, MPI.SUM, comm)
-        avg_diff = sum_diff_global / count_global
-        # Now compute L2 error with constant removed
-        l2_local = 0.0
-        for (iy, y) in enumerate(corners.lower[2]:corners.upper[2])
-            y_coord = (y - 0.5) * h[2]
-            
-            for (ix, x) in enumerate(corners.lower[1]:corners.upper[1])
-                x_coord = (x - 0.5) * h[1]
-                
-                p_ana = analytical_solution(x_coord, y_coord)
-                p_num = s2D[ix, iy]
-                diff = (p_num - p_ana) - avg_diff
-                l2_local += diff^2 * h[1] * h[2]
-            end
+
+        if bc_type == "neumann"
+            # Compute global average difference to remove constant shift
+            sum_diff_global = MPI.Allreduce(sum_diff_local, MPI.SUM, comm)
+            count_global = MPI.Allreduce(count_local, MPI.SUM, comm)
+            avg_diff = sum_diff_global / count_global
+        else
+            avg_diff = 0.0
         end
-        l2_global = MPI.Allreduce(l2_local, MPI.SUM, comm)
-        l2_error = sqrt(l2_global)
-    end
 
-    if MPI.Comm_rank(comm) == 0
-        @printf("L2 norm of error: %.6e\n", l2_error)
-    end
-    # Note: When using KSP(da), the KSP takes ownership of the DM reference
-    # so we only need to destroy the KSP, not the DA
-    PETSc.destroy(ksp)
+        # Now compute L2 error (remove avg only for Neumann)
 
-    #PETSc.finalize(petsclib)
-
-    return solve_time, niter, final_grid_size, sol2D, l2_error
-end
-
-# If run as script, call the function with defaults
-if !isinteractive() && abspath(PROGRAM_FILE) == @__FILE__
-    solve_poisson()
-else
-    solve_time, niter, final_grid_size, sol2D, l2_error = solve_poisson();
+    solve_poisson(N, da_refine; pc_type=pc_type, ksp_type=ksp_type, ksp_rtol=ksp_rtol)
 end
 

@@ -321,7 +321,41 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         end
 
         # Now compute L2 error (remove avg only for Neumann)
+        l2_local = 0.0
+        for iy=1:ny, ix=1:nx
+            p_ana = analytical_solution(x_coord[ix], y_coord[iy])
+            p_num = s2D[ix, iy]
+            diff = (p_num - p_ana) - avg_diff
+            l2_local += diff^2 * h[1] * h[2]
+        end
+        l2_global = MPI.Allreduce(l2_local, MPI.SUM, comm)
+        l2_error = sqrt(l2_global)
 
-    solve_poisson(N, da_refine; pc_type=pc_type, ksp_type=ksp_type, ksp_rtol=ksp_rtol)
+        if MPI.Comm_rank(comm) == 0
+            @printf("L2 norm of error: %.6e\n", l2_error)
+        end
+    end
+
+    # Clean up
+    PETSc.destroy(ksp)
+
+    return solve_time, niter, final_grid_size, sol2D, l2_error
+end
+
+# If run as script, parse options and call the function with those options
+if !isinteractive() && abspath(PROGRAM_FILE) == @__FILE__
+    opts = PETSc.parse_options(ARGS)
+
+    N = parse(Int, get(opts, Symbol("N"), "100"))
+    da_refine = parse(Int, get(opts, Symbol("da_refine"), "0"))
+
+    # Extract commonly used solver/grid options if provided
+    pc_type = get(opts, Symbol("pc_type"), "gamg")
+    ksp_type = get(opts, Symbol("ksp_type"), "cg")
+    ksp_rtol = parse(Float64, get(opts, Symbol("ksp_rtol"), "1e-12"))
+
+    bc_type = get(opts, Symbol("bc_type"), "neumann")
+
+    solve_poisson(N, da_refine; pc_type=pc_type, ksp_type=ksp_type, ksp_rtol=ksp_rtol, bc_type=bc_type)
 end
 

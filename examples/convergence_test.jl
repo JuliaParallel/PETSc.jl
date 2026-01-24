@@ -1,19 +1,41 @@
+# INCLUDE IN MPI TEST
+#
 #!/usr/bin/env julia
 using PETSc, MPI, Printf
 
-# This script runs `solve_ex45` for a sequence of grid resolutions and prints
-# a convergence table similar to `ex50_run_convergence.jl` but with
-# resolutions shown as `NxNxN` (or `NxN` for 2D).
+# Convergence test usage (examples)
+#
+# Run convergence tests for `ex45` (3D) or `ex50` (2D) from the repository root.
+# - Direct (LU) baseline for ex45 (3D):
+#     julia --project=. examples/convergence_test.jl -Ns="65,129,257" -levels="1,1,1" -ksp_type preonly -pc_type lu -example ex45
+# - Geometric multigrid for ex45:
+#     julia --project=. examples/convergence_test.jl -Ns="65,129,257,513" -levels="3,4,5,6" -ksp_type cg -pc_type mg -example ex45
+#
+# - Direct (LU) baseline for ex50 (2D):
+#     julia --project=. examples/convergence_test.jl -Ns="65,129,257" -levels="1,1,1" -ksp_type preonly -pc_type lu -example ex50
+# - Geometric multigrid for ex50:
+#     julia --project=. examples/convergence_test.jl -Ns="65,129,257,513" -levels="3,4,5,6" -ksp_type cg -pc_type mg -example ex50
+#
+# Notes:
+# - `-levels` maps one MG level per entry in `-Ns` (comma-separated).
+# - Use `-ksp_type preonly -pc_type lu` for a direct factor baseline.
+# - Use `-ksp_type cg -pc_type mg` (and tune MG-specific flags) for geometric multigrid.
+# - PETSc CLI flags (e.g. `-ksp_monitor`, `-pc_mg_type`, `-mg_levels_ksp_type`) are forwarded
+#   to the solver; pass them on the command line to tune behavior at runtime.
+
+# This script runs the selected example (`ex50` by default) for a sequence
+# of grid resolutions and prints a convergence table similar to
+# `ex50_run_convergence.jl`. Resolutions are shown as `NxNxN` (or `NxN` for 2D).
 
 include(joinpath(@__DIR__, "ex45.jl"))
-include(joinpath(@__DIR__, "ex50_convergence.jl"))
+include(joinpath(@__DIR__, "ex50.jl"))
 
 # Parse PETSc/CLI options and build a kwargs dict to forward to `solve_ex45`.
 opts = PETSc.parse_options(ARGS)
 ns_opt = get(opts, Symbol("Ns"), nothing)
 N_start = parse(Int, get(opts, Symbol("N_start"), "9"))
 reverse_order = get(opts, Symbol("reverse"), false)
-example = get(opts, Symbol("example"), "ex45")
+example = get(opts, Symbol("example"), "ex50")
 dim = parse(Int, get(opts, Symbol("dim"), example == "ex50" ? "2" : "3"))
 levels_opt = get(opts, Symbol("levels"), nothing)
 

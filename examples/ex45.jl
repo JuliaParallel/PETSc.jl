@@ -53,7 +53,6 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
 
     # Create a 3D DMDA (defaults 7x7x7 like the C example)
     boundary = Tuple(fill(PETSc.DM_BOUNDARY_NONE,dim))
-    #boundary = (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE)
     stencil = PETSc.DMDA_STENCIL_STAR
     global_size = Tuple(fill(N,dim))
     # Pass parsed opts into DMDA so other DM options are applied
@@ -241,7 +240,7 @@ if !isinteractive() && abspath(PROGRAM_FILE) == @__FILE__
         @printf("Outer KSP iterations: %d\n", res.niter)
         @printf("Solve time: %.6f seconds\n", res.solve_time)
         @printf("L2 error: %.6e\n", res.L2)
-        @printf("Max error: %.6e\n", res.max)
+        @printf("Max error: %.6e\n", res.global_max)
     end
     PETSc.finalize(petsclib)
 end

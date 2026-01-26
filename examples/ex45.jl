@@ -224,6 +224,7 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
         @printf("L2 error: %.6e\n", L2)
         @printf("Max error: %.6e\n", global_max)
         @printf("Residual norm %g\n", norm)
+        @printf("Solve time: %.6f seconds\n", solve_time)
     end
 
     # Clean up

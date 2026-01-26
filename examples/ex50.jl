@@ -43,6 +43,7 @@ PETSc.initialize(petsclib)
     analytical_solution(x, y)
 
 Compute the analytical solution for the Poisson equation with forcing function
+ 
 f = -cos(π*x)*cos(π*y).
 
 The solution is p(x,y) = (1)/(2*π²) * cos(π*x)*cos(π*y) + C,
@@ -90,6 +91,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
 
     # Get MPI communicator
     comm = MPI.COMM_WORLD
+
 
     # Parse command-line options
     opts = PETSc.parse_options(ARGS)
@@ -249,6 +251,9 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
                     end
                 end
             end
+
+
+            
         end
         
         # Assemble the vector before modifying it
@@ -290,7 +295,9 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         sol2D = reshape(sol2D, Int64(corners.size[1]), Int64(corners.size[2]))
     end
     
+    # Prepare container for L2 and max error results
     l2_error = 0.0
+    global_max = 0.0
     PETSc.withlocalarray!(sol; read=true) do s
         nx, ny = corners.size[1:2]
         s2D = reshape(s, Int64(corners.size[1]), Int64(corners.size[2]))
@@ -331,15 +338,40 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         l2_global = MPI.Allreduce(l2_local, MPI.SUM, comm)
         l2_error = sqrt(l2_global)
 
+        # Prepare container for global max error (assigned inside local-array block)
+        global_max = 0.0
+        local_max = 0.0
+        for iy=1:ny, ix=1:nx
+            p_ana = analytical_solution(x_coord[ix], y_coord[iy])
+            p_num = s2D[ix, iy]
+            # remove average for Neumann as above
+            err = abs((p_num - p_ana) - avg_diff)
+            local_max = max(local_max, err)
+        end
+        global_max = MPI.Allreduce(local_max, MPI.MAX, comm)
+
         if MPI.Comm_rank(comm) == 0
             @printf("L2 norm of error: %.6e\n", l2_error)
         end
     end
 
+    # Get residual norm before destroying KSP
+    norm = LibPETSc.KSPGetResidualNorm(petsclib, ksp)
     # Clean up
     PETSc.destroy(ksp)
 
-    return solve_time, niter, final_grid_size, sol2D, l2_error
+    # Return a NamedTuple matching `solve_ex45` fields: (norm, final_grid, niter, solve_time, L2, max)
+    return (; norm = norm, final_grid = final_grid_size, niter = niter, solve_time = solve_time, L2 = l2_error, max = global_max)
+end
+
+"""
+    solve_ex50(N=100; solver_opts...)
+
+Compatibility wrapper exposing `solve_ex50` with same signature/return shape as `solve_ex45`.
+"""
+function solve_ex50(N=100; solver_opts...)
+    # call solve_poisson which now returns the named tuple
+    return solve_poisson(N, da_refine=0; solver_opts...)
 end
 
 # If run as script, parse options and call the function with those options

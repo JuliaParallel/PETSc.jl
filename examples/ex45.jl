@@ -21,10 +21,18 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
     # Parse command-line options and merge with keyword arguments passed
     # programmatically. Keyword args take precedence over CLI.
     cli_opts = PETSc.parse_options(ARGS)           # NamedTuple
-    cli = Dict(pairs(cli_opts))                     # Dict{Symbol,Any}
+    # Build a flexible Dict{Symbol,Any} to allow merging CLI and kwargs
+    cli = Dict{Symbol,Any}()
+    for (k, v) in pairs(cli_opts)
+        cli[k] = v
+    end
     for (k, v) in pairs(kwargs)
         cli[k] = v
     end
+
+    # Default RHS: continuous analytic forcing (scaled by cell volume)
+    # We keep CLI/kwargs simple — any specific forcing-mode option was
+    # removed: continuous mode is now the only behavior.
 
     # Determine N (keyword/arg default overridden by CLI/kwargs)
     function _as_int(x, default)
@@ -45,7 +53,6 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
 
     # Create a 3D DMDA (defaults 7x7x7 like the C example)
     boundary = Tuple(fill(PETSc.DM_BOUNDARY_NONE,dim))
-    #boundary = (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE)
     stencil = PETSc.DMDA_STENCIL_STAR
     global_size = Tuple(fill(N,dim))
     # Pass parsed opts into DMDA so other DM options are applied
@@ -153,20 +160,11 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
                         # Dirichlet BC: RHS is analytic boundary value
                         b3[ii, jj, kk] = exact(x, y, z)
                     else
-                        # Build RHS by applying the same discrete stencil used
-                        # in the matrix assembly to the analytic solution `exact`.
-                        # This makes the discrete forcing consistent with the
-                        # assembled operator so the discrete solution matches
-                        # the analytic one up to solver tolerance.
-                        center = 2.0 * (HxHydHz + HxHzdHy + HyHzdHx)
-                        val = -HxHzdHy * exact(x, y - Hy, z) +
-                              -HyHzdHx * exact(x - Hx, y, z) +
-                              center * exact(x, y, z) +
-                              -HyHzdHx * exact(x + Hx, y, z) +
-                              -HxHzdHy * exact(x, y + Hy, z) +
-                              -HxHydHz * exact(x, y, z - Hz) +
-                              -HxHydHz * exact(x, y, z + Hz)
-                        b3[ii, jj, kk] = val
+                        # Continuous forcing (default): analytic -∇² evaluated
+                        # at the point and scaled by the cell volume so the
+                        # RHS uses the same quadrature scaling as the matrix.
+                        vol_cell = Hx * Hy * Hz
+                        b3[ii, jj, kk] = forcing(x, y, z) * vol_cell
                     end
                 end
             else
@@ -226,22 +224,24 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
         @printf("L2 error: %.6e\n", L2)
         @printf("Max error: %.6e\n", global_max)
         @printf("Residual norm %g\n", norm)
+        @printf("Solve time: %.6f seconds\n", solve_time)
     end
 
     # Clean up
     PETSc.destroy(ksp)
-    return norm, final_grid, niter, solve_time
+    return (;norm,final_grid,niter,solve_time,L2,global_max)
 end
 
 if !isinteractive() && abspath(PROGRAM_FILE) == @__FILE__
     res = solve_ex45()
-    # res = (norm, final_grid, niter)
-    norm, final_grid, niter, solve_time = res
+    # res is a NamedTuple: (norm, final_grid, niter, solve_time, L2, max)
     if MPI.Comm_rank(MPI.COMM_WORLD) == 0
-        @printf("Final residual norm %g\n", norm)
-        @printf("Fine grid resolution: %d × %d × %d\n", final_grid[1], final_grid[2], final_grid[3])
-        @printf("Outer KSP iterations: %d\n", niter)
-        @printf("Solve time: %.6f seconds\n", solve_time)
+        @printf("Final residual norm %g\n", res.norm)
+        @printf("Fine grid resolution: %d × %d × %d\n", res.final_grid[1], res.final_grid[2], res.final_grid[3])
+        @printf("Outer KSP iterations: %d\n", res.niter)
+        @printf("Solve time: %.6f seconds\n", res.solve_time)
+        @printf("L2 error: %.6e\n", res.L2)
+        @printf("Max error: %.6e\n", res.global_max)
     end
     PETSc.finalize(petsclib)
 end

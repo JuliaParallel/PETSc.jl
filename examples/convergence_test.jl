@@ -133,45 +133,69 @@ for i in 1:length(results)-1
 end
 
 if MPI.Comm_rank(MPI.COMM_WORLD) == 0
-    # Header matching ex50_convergence.jl
-    @printf("\nConvergence Analysis Results (KSP: %s, PC: %s):\n", get(solver_kwargs, :ksp_type, "cg"), get(solver_kwargs, :pc_type, "gamg"))
-    @printf("%-11s %-8s %-10s %-10s %-12s %-8s %-10s %-8s\n", "N", "MG Lvl", "h", "KSP Iters", "L2 Error", "𝒪(N)", "Time (s)", "𝒪(Time)")
-    @printf("%-11s %-8s %-10s %-10s %-12s %-8s %-10s %-8s\n", repeat("-",11), repeat("-",8), repeat("-",10), repeat("-",10), repeat("-",12), repeat("-",8), repeat("-",10), repeat("-",8))
+    # Header matching ex50_convergence.jl but hide MG Lvl unless PC is multigrid
+    pc_type_val = get(solver_kwargs, :pc_type, "gamg")
+    show_mg = pc_type_val == "mg"
+    @printf("\nConvergence Analysis Results (KSP: %s, PC: %s):\n", get(solver_kwargs, :ksp_type, "cg"), pc_type_val)
+    if show_mg
+        @printf("%-11s %-8s %-10s %-10s %-12s %-8s %-10s %-8s\n", "N", "MG Lvl", "h", "KSP Iters", "L2 Error", "𝒪(N)", "Time (s)", "𝒪(Time)")
+        @printf("%-11s %-8s %-10s %-10s %-12s %-8s %-10s %-8s\n", repeat("-",11), repeat("-",8), repeat("-",10), repeat("-",10), repeat("-",12), repeat("-",8), repeat("-",10), repeat("-",8))
+    else
+        @printf("%-11s %-10s %-10s %-12s %-8s %-10s %-8s\n", "N", "h", "KSP Iters", "L2 Error", "𝒪(N)", "Time (s)", "𝒪(Time)")
+        @printf("%-11s %-10s %-10s %-12s %-8s %-10s %-8s\n", repeat("-",11), repeat("-",10), repeat("-",10), repeat("-",12), repeat("-",8), repeat("-",10), repeat("-",8))
+    end
 
     for i in 1:length(results)
         Nval, h, e, time, iters = results[i]
         ord = orders[i]
         tord = time_orders[i]
-        # display MG level for this row
-        mglvl = get(solver_kwargs, :pc_mg_levels, "--")
-        if Levels !== nothing
-            mglvl = string(Levels[i])
-        else
-            # if opts had a pc_mg_levels set globally, use that
-            if haskey(solver_kwargs, :pc_mg_levels)
-                mglvl = string(solver_kwargs[:pc_mg_levels])
-            else
-                # otherwise, use the per-row opts_dict logic: 1+(i-1) when pc_type==mg
-                if get(solver_kwargs, :pc_type, "") == "mg"
-                    mglvl = string(1 + (i - 1))
-                end
-            end
-        end
         # Format N as NxN or NxNxN depending on spatial dimension
         Nstr = dim == 3 ? string(Nval, "x", Nval, "x", Nval) : string(Nval, "x", Nval)
-        if i == 1
-            @printf("%-11s %-8s %-10.6f %-10d %-12.6e %-8s %-10.4f %-8s\n", Nstr, mglvl, h, iters, e, "-", time, "-")
-        else
-            s_ord = isnan(ord) ? "N/A" : @sprintf("%8.2f", ord)
-            s_tord = isnan(tord) ? "N/A" : @sprintf("%8.2f", tord)
-            if s_ord == "N/A" && s_tord == "N/A"
-                @printf("%-11s %-8s %-10.6f %-10d %-12.6e %-8s %-10.4f %-8s\n", Nstr, mglvl, h, iters, e, "N/A", time, "N/A")
-            elseif s_ord == "N/A"
-                @printf("%-11s %-8s %-10.6f %-10d %-12.6e %-8s %-10.4f %-8.2f\n", Nstr, mglvl, h, iters, e, "N/A", time, tord)
-            elseif s_tord == "N/A"
-                @printf("%-11s %-8s %-10.6f %-10d %-12.6e %-8.2f %-10.4f %-8s\n", Nstr, mglvl, h, iters, e, ord, time, "N/A")
+        if show_mg
+            # display MG level for this row
+            mglvl = get(solver_kwargs, :pc_mg_levels, "--")
+            if Levels !== nothing
+                mglvl = string(Levels[i])
             else
-                @printf("%-11s %-8s %-10.6f %-10d %-12.6e %-8.2f %-10.4f %-8.2f\n", Nstr, mglvl, h, iters, e, ord, time, tord)
+                if haskey(solver_kwargs, :pc_mg_levels)
+                    mglvl = string(solver_kwargs[:pc_mg_levels])
+                else
+                    if pc_type_val == "mg"
+                        mglvl = string(1 + (i - 1))
+                    end
+                end
+            end
+
+            if i == 1
+                @printf("%-11s %-8s %-10.6f %-10d %-12.6e %-8s %-10.4f %-8s\n", Nstr, mglvl, h, iters, e, "-", time, "-")
+            else
+                s_ord = isnan(ord) ? "N/A" : @sprintf("%8.2f", ord)
+                s_tord = isnan(tord) ? "N/A" : @sprintf("%8.2f", tord)
+                if s_ord == "N/A" && s_tord == "N/A"
+                    @printf("%-11s %-8s %-10.6f %-10d %-12.6e %-8s %-10.4f %-8s\n", Nstr, mglvl, h, iters, e, "N/A", time, "N/A")
+                elseif s_ord == "N/A"
+                    @printf("%-11s %-8s %-10.6f %-10d %-12.6e %-8s %-10.4f %-8.2f\n", Nstr, mglvl, h, iters, e, "N/A", time, tord)
+                elseif s_tord == "N/A"
+                    @printf("%-11s %-8s %-10.6f %-10d %-12.6e %-8.2f %-10.4f %-8s\n", Nstr, mglvl, h, iters, e, ord, time, "N/A")
+                else
+                    @printf("%-11s %-8s %-10.6f %-10d %-12.6e %-8.2f %-10.4f %-8.2f\n", Nstr, mglvl, h, iters, e, ord, time, tord)
+                end
+            end
+        else
+            if i == 1
+                @printf("%-11s %-10.6f %-10d %-12.6e %-8s %-10.4f %-8s\n", Nstr, h, iters, e, "-", time, "-")
+            else
+                s_ord = isnan(ord) ? "N/A" : @sprintf("%8.2f", ord)
+                s_tord = isnan(tord) ? "N/A" : @sprintf("%8.2f", tord)
+                if s_ord == "N/A" && s_tord == "N/A"
+                    @printf("%-11s %-10.6f %-10d %-12.6e %-8s %-10.4f %-8s\n", Nstr, h, iters, e, "N/A", time, "N/A")
+                elseif s_ord == "N/A"
+                    @printf("%-11s %-10.6f %-10d %-12.6e %-8s %-10.4f %-8.2f\n", Nstr, h, iters, e, "N/A", time, tord)
+                elseif s_tord == "N/A"
+                    @printf("%-11s %-10.6f %-10d %-12.6e %-8.2f %-10.4f %-8s\n", Nstr, h, iters, e, ord, time, "N/A")
+                else
+                    @printf("%-11s %-10.6f %-10d %-12.6e %-8.2f %-10.4f %-8.2f\n", Nstr, h, iters, e, ord, time, tord)
+                end
             end
         end
     end

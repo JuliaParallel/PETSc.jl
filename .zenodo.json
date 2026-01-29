@@ -43,10 +43,8 @@
     "MPI",
     "parallel computing"
   ],
-    "grants": [
-    {
-      "id": "771143",
-    }, 
+  "grants": [
+    {"id": "10.13039/501100000780::771143"} 
   ],
   "license": {
     "id": "MIT"

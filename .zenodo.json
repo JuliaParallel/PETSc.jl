@@ -45,23 +45,7 @@
   ],
     "grants": [
     {
-      "title": "GPU4GEO",
-      "funder": {
-        "name": "Platform for Advanced Scientific Computing (PASC)"
-      }
-    },
-    {
-      "title": "∂GPU4GEO",
-      "funder": {
-        "name": "Platform for Advanced Scientific Computing (PASC)"
-      }
-    },
-    {
       "id": "771143",
-      "title": "MAGMA - Melting And Geodynamic Models of Ascent",
-      "funder": {
-        "name": "European Commission"
-      }
     }, 
   ],
   "license": {

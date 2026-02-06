@@ -355,3 +355,17 @@ function DMStagGetIndices(dm::PetscDM{PetscLib}) where {PetscLib}
     return (center=center, vertex=vertex)
             
 end
+
+
+"""
+    slot::Int = DMStagDOF_Slot(dm::PetscDM{PetscLib}, loc::LibPETSc.DMStagStencilLocation, dof::Int) 
+
+Returns the location `slot` for a degree of freedom `dof` at a given stencil location `loc` in the DMStag `dm`.
+Note that the returned `slot` is 1-based for Julia compatibility.    
+"""
+function DMStagDOF_Slot(dm::PetscDM{PetscLib}, loc::LibPETSc.DMStagStencilLocation, dof::Int) where {PetscLib} 
+    @assert PETSc.gettype(dm) == "stag" "DM must be of type DMStag" 
+
+    slot = LibPETSc.DMStagGetLocationSlot(getlib(PetscLib), dm, loc, PetscLib.PetscInt(dof))
+    return slot+1
+end

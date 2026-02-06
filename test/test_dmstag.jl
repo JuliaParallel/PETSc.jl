@@ -572,7 +572,7 @@ end
         @test vals[1] == 6
 
         X_1D            = LibPETSc.DMStagVecGetArray(petsclib, dm_1D,vec_test);
-        @test X_1D[2,3] == PetscScalar(7.0)          # verify that the 2D array interface works
+        @test X_1D[2,3] == PetscScalar(24.0)         # verify that the 2D array interface works (element 24 in (m,q)=(11,4) layout)
         LibPETSc.DMStagVecRestoreArray(petsclib, dm_1D, vec_test, X_1D)
         Base.finalize(X_1D)                     # release from memory
 
@@ -710,7 +710,7 @@ end
         # retrieve value back from the local array 
         dof     = 0;
         pos     = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_ELEMENT,3,2,0,dof)
-        @test LibPETSc.DMStagVecGetValuesStencil(petsclib, dm_2D, vec_test_2D_local, PetscInt(1), [pos])[1] == 3.0
+        @test LibPETSc.DMStagVecGetValuesStencil(petsclib, dm_2D, vec_test_2D_local, PetscInt(1), [pos])[1] == 4.0  # Updated: stencil returns correct value based on new layout
 
         # Extract an array that holds all DOF's
         X2D_dofs  = LibPETSc.DMStagVecGetArray(petsclib, dm_2D,vec_test_2D_local)           # extract arrays with all DOF (mostly for visualizing)
@@ -731,6 +731,94 @@ end
         #PETSc.destroy(dm_1D);
 
            
+        PETSc.finalize(petsclib)
+    end
+end
+
+@testset "DMStagVecGetArray/RestoreArray" begin
+    comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
+    for petsclib in PETSc.petsclibs[1:4]
+        PETSc.initialize(petsclib)
+        PetscScalar = PETSc.scalartype(petsclib)
+        PetscInt    = PETSc.inttype(petsclib)
+        
+        # Test 1D with no ghost boundaries
+        dm_1D = PETSc.DMStag(petsclib, comm, (PETSc.DM_BOUNDARY_NONE,), (10,), (2,2), 1, PETSc.DMSTAG_STENCIL_BOX)
+        x_l_1D = PETSc.DMLocalVec(dm_1D)
+        x_l_1D .= 1:length(x_l_1D)
+        
+        # Get array and verify dimensions
+        X_1D = LibPETSc.DMStagVecGetArray(petsclib, dm_1D, x_l_1D)
+        m, q = LibPETSc.DMStagGetGhostCorners(petsclib, dm_1D)[4], LibPETSc.DMStagGetEntriesPerElement(petsclib, dm_1D)
+        @test size(X_1D) == (m, q)
+        
+        # Verify data matches direct reshape
+        expected_1D = reshape(x_l_1D[:], (m, q))
+        @test X_1D == expected_1D
+        
+        # Test modification through the array view
+        X_1D[2,3] = PetscScalar(999.0)
+        @test x_l_1D[2 + (3-1)*m] == PetscScalar(999.0)  # Verify view works
+        
+        LibPETSc.DMStagVecRestoreArray(petsclib, dm_1D, x_l_1D, X_1D)
+        PETSc.destroy(x_l_1D)
+        PETSc.destroy(dm_1D)
+        
+        # Test 2D with ghost boundaries
+        dm_2D_ghost = PETSc.DMStag(petsclib, comm, 
+                                   (PETSc.DM_BOUNDARY_GHOSTED, PETSc.DM_BOUNDARY_GHOSTED),
+                                   (4, 4), (1, 1, 1), 1, PETSc.DMSTAG_STENCIL_BOX)
+        x_g = PETSc.DMGlobalVec(dm_2D_ghost)
+        x_g[1] = PetscScalar(42.0)
+        x_g[5] = PetscScalar(99.0)
+        
+        x_l = PETSc.DMLocalVec(dm_2D_ghost)
+        PETSc.dm_global_to_local!(x_g, x_l, dm_2D_ghost)
+        
+        # Get array with correct (m,n,q) layout
+        local_array = LibPETSc.DMStagVecGetArray(petsclib, dm_2D_ghost, x_l)
+        q = LibPETSc.DMStagGetEntriesPerElement(petsclib, dm_2D_ghost)
+        xs, ys, zs, m, n, p = LibPETSc.DMStagGetGhostCorners(petsclib, dm_2D_ghost)
+        
+        @test size(local_array) == (m, n, q)
+        
+        # Verify layout matches permuted reshape
+        expected_2D = PermutedDimsArray(reshape(x_l[:], (q, m, n)), (2, 3, 1))
+        @test local_array == expected_2D
+        @test !any(isnan, local_array)  # No NaN in ghost regions
+        
+        # Test modification through view
+        local_array[2, 2, 1] = PetscScalar(777.0)
+        @test x_l[1 + (2-1)*q + (2-1)*q*m] == PetscScalar(777.0)
+        
+        LibPETSc.DMStagVecRestoreArray(petsclib, dm_2D_ghost, x_l, local_array)
+        PETSc.destroy(x_l)
+        PETSc.destroy(x_g)
+        PETSc.destroy(dm_2D_ghost)
+        
+        # Test 2D with no ghost boundaries
+        dm_2D_noghost = PETSc.DMStag(petsclib, comm,
+                                     (PETSc.DM_BOUNDARY_NONE, PETSc.DM_BOUNDARY_NONE),
+                                     (5, 6), (1, 1, 1), 1, PETSc.DMSTAG_STENCIL_BOX)
+        x_l_2D = PETSc.DMLocalVec(dm_2D_noghost)
+        x_l_2D .= 1:length(x_l_2D)
+        
+        X_2D = LibPETSc.DMStagVecGetArray(petsclib, dm_2D_noghost, x_l_2D)
+        q2 = LibPETSc.DMStagGetEntriesPerElement(petsclib, dm_2D_noghost)
+        xs2, ys2, zs2, m2, n2, p2 = LibPETSc.DMStagGetGhostCorners(petsclib, dm_2D_noghost)
+        
+        @test size(X_2D) == (m2, n2, q2)
+        expected_2D_noghost = PermutedDimsArray(reshape(x_l_2D[:], (q2, m2, n2)), (2, 3, 1))
+        @test X_2D == expected_2D_noghost
+        
+        # Test that modifications work
+        X_2D[end, end, end] = PetscScalar(888.0)
+        @test x_l_2D[end] == PetscScalar(888.0)
+        
+        LibPETSc.DMStagVecRestoreArray(petsclib, dm_2D_noghost, x_l_2D, X_2D)
+        PETSc.destroy(x_l_2D)
+        PETSc.destroy(dm_2D_noghost)
+        
         PETSc.finalize(petsclib)
     end
 end

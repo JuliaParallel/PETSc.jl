@@ -26219,57 +26219,33 @@ $(_doc_external("DMStag/DMStagVecGetArrayRead"))
 function DMStagVecGetArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec) end
 
 @for_petsc function DMStagVecGetArrayRead(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec)
-    # PETSc returns a pointer into the Vec's internal storage; we wrap it without taking ownership
-    _,_,_,m,n,p = DMStagGetGhostCorners(petsclib, dm)
+    # DMStagVecGetArrayRead in PETSc's C API returns a multi-dimensional pointer structure
+    # that does not map directly to the Vec's contiguous storage. Instead, we use
+    # the Vec's data directly (read-only) and reshape it according to DMStag's layout.
+    
+    xs,ys,zs,m,n,p = DMStagGetGhostCorners(petsclib, dm)
     dim         = DMGetDimension(petsclib, dm)
     q           = DMStagGetEntriesPerElement(petsclib, dm)
 
+    # Get the underlying Vec data (read-only) - this needs to be restored later
+    vec_array = VecGetArrayRead(petsclib, vec)
+    
+    # Reshape to (m, n[, p], q) layout where spatial dimensions come first,
+    # then DOF index last for convenient slicing.
+    # Use PermutedDimsArray to create a VIEW (not a copy) for read-only access.
     if dim==1
-        a_ = Ref{Ptr{Ptr{$PetscScalar}}}()
-        @chk ccall(
-            (:DMStagVecGetArrayRead, $petsc_library),
-            PetscErrorCode,
-            (CDM, CVec, Ref{Ptr{Ptr{$PetscScalar}}}),
-            dm, vec, a_,
-        )
-        sz = (m,q)
-        perm = (2,1)
+        mat = reshape(vec_array, (m, q))
     elseif dim==2
-        a_ = Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}()
-        @chk ccall(
-            (:DMStagVecGetArrayRead, $petsc_library),
-            PetscErrorCode,
-            (CDM, CVec, Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}),
-            dm, vec, a_,
-        )
-        #sz = (m,n,q)
-        #perm = (2,3,1)
-        sz = (q,m,n)
-        perm = (2,3,1)
-
+        mat = PermutedDimsArray(reshape(vec_array, (q, m, n)), (2, 3, 1))
     elseif dim==3
-        a_ = Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}()
-        @chk ccall(
-            (:DMStagVecGetArrayRead, $petsc_library),
-            PetscErrorCode,
-            (CDM, CVec, Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}),
-            dm, vec, a_,
-        )
-        sz = (m,n,p,q)
-        perm = (2,3,4,1)
+        mat = PermutedDimsArray(reshape(vec_array, (q, m, n, p)), (2, 3, 4, 1))
+    else
+        error("Unsupported dimension: $dim")
     end
 
-    # Dereference the pointer-of-pointers down to a raw scalar pointer
-    raw_ptr = a_[]
-    for _ = 1:dim
-        raw_ptr = unsafe_load(raw_ptr)
-    end
-    mat = unsafe_wrap(Array, raw_ptr, sz)
-    # permute, as julia uses Fortran type storage order, but 
-    # PETSc/C use C type storage order:
-    #mat = PermutedDimsArray(mat, perm)
-    #arr = PetscArray(mat, a_)
-    arr = mat
+    # Create a PetscArray wrapper
+    # Store the original vec_array in ptr field (as Ref{Any}) so we can restore it later
+    arr = PetscArray(mat, Ref{Any}(vec_array))
 
     return arr
 end 
@@ -26336,32 +26312,11 @@ $(_doc_external("DMStag/DMStagVecRestoreArrayRead"))
 function DMStagVecRestoreArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec, array::PetscArray) end
 
 @for_petsc function DMStagVecRestoreArrayRead(petsclib::$UnionPetscLib, dm::PetscDM, vec::PetscVec, array::PetscArray{$PetscScalar, N} ) where N
-    if array.ptr[]  != C_NULL  
-        if N==2
-            @chk ccall(
-                    (:DMStagVecRestoreArrayRead, $petsc_library),
-                    PetscErrorCode,
-                    (CDM, CVec, Ptr{Ptr{Ptr{$PetscScalar}}}),
-                    dm, vec, array.ptr,
-                    )
-            array.ptr[] = Ptr{Ptr{$PetscScalar}}(C_NULL)
-        elseif N==3
-            @chk ccall(
-               (:DMStagVecRestoreArrayRead, $petsc_library),
-               PetscErrorCode,
-               (CDM, CVec, Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}),
-               dm, vec, array.ptr,
-               )
-            array.ptr[] = Ptr{Ptr{Ptr{$PetscScalar}}}(C_NULL)
-        elseif N==4
-            @chk ccall(
-               (:DMStagVecRestoreArrayRead, $petsc_library),
-               PetscErrorCode,
-               (CDM, CVec, Ptr{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}),
-               dm, vec, array.ptr,
-               )
-            array.ptr[] = Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}(C_NULL)
-        end
+    # Restore the read-only Vec array that was obtained from VecGetArrayRead
+    if array.ptr[] !== nothing
+        vec_array = array.ptr[]::Vector{$PetscScalar}
+        VecRestoreArrayRead(petsclib, vec, vec_array)
+        array.ptr[] = nothing
     end
 
     return nothing

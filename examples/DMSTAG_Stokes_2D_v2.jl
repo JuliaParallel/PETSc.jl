@@ -351,8 +351,6 @@ function FormJacobian!(J, snes, x_g, user_ctx)
             # deal with boundary conditions
 
 
-
-
             # local parameters needed in the local residual routine
             # (if parameters )
             x,z = X_coord[ix,1], Z_coord[iy,2];         # coordinate of Vz points
@@ -361,7 +359,9 @@ function FormJacobian!(J, snes, x_g, user_ctx)
             else
                 ρ = user_ctx.rho2;  
             end
+            
             params = (Δx=Δx, Δz=Δz, κ=user_ctx.kappa, ηl=user_ctx.eta1, ρ=ρ); 
+
 
             # use AD to compute the coefficients of the local coefficients (note that in this case they are trivial)
             r_local = (x) -> local_residual_vec(x, params, ix, iy, corners.upper[1], corners.upper[2])
@@ -395,12 +395,12 @@ function FormJacobian!(J, snes, x_g, user_ctx)
                 #end
             end
 
-            if ix-shift[1] == 1 
+            if ix == 1 
                 # Dirichlet BC on left boundary for Vx
                 iVx_coeff = [iVx]
                 iVx_val = Float64[1.0]
             end
-            if iy-shift[2] == 1 
+            if iy == 1 
                 # Dirichlet BC on left boundary for Vz
                 iVz_coeff = [iVz]
                 iVz_val = Float64[1.0]
@@ -410,7 +410,7 @@ function FormJacobian!(J, snes, x_g, user_ctx)
             LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iP], length(iP_coeff), iP_coeff, iP_val, PETSc.INSERT_VALUES)
             
             # x-momentum
-            if ix <=corners.upper[1]   
+            if ix <=corners.upper[1]  
                 LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iVx], length(iVx_coeff), iVx_coeff, iVx_val, PETSc.INSERT_VALUES)
             end
             if iy <=corners.upper[2]  
@@ -436,12 +436,12 @@ function FormJacobian!(J, snes, x_g, user_ctx)
 
     for ix=corners.lower[1] : corners.upper[1] 
         iy = corners.upper[2] + 1
-        iix = ix - shift[1] - 1
-        iiy = iy - shift[2] - 1
+        iix = ix - 1
+        iiy = iy - 1
         iVz = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_DOWN,   iix,iiy,0,0)
         LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iVz], 1, [iVz], [1.0], PETSc.INSERT_VALUES)
 
-        iy = corners.lower[2] + shift[2] 
+        iy = corners.lower[2] 
         iVz = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_DOWN,   iix,iiy,0,0)
         LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iVz], 1, [iVz], [1.0], PETSc.INSERT_VALUES)
     end
@@ -452,7 +452,7 @@ function FormJacobian!(J, snes, x_g, user_ctx)
     LibPETSc.DMStagVecRestoreArray(petsclib, dm, user_ctx.x_l, Xlocal)
 
     # Store Julia matrix and coloring
-    #user_ctx.jac    =   J;
+    user_ctx.jac    =   J;
     #user_ctx.colors =   colors;
 
     return 0

@@ -76,6 +76,8 @@ function local_residuals(Vx_l::Matrix, Vz_l::Matrix, P_l::Matrix, params::NamedT
             
     # mass conservation
     rP = Exx_l[2,2] + Ezz_l[2,2] + (1/params.κ) .* P_l[2,2];
+    #rP = Exx_l[2,2] + Ezz_l[2,2] ;
+    
 
     return rVx, rVz, rP
 end
@@ -84,13 +86,27 @@ end
     res = local_residual_vec(x_in::Vector, params::NamedTuple) 
 Residual function that calls `local_residuals` and can be used with ForwardDiff
 """
-function local_residual_vec(x_in::Vector, params)
+function local_residual_vec(x_in::Vector, params, ix, iy, nx, ny)
     nVx  = (3,3)
     nVz  = (3,3)
     nP   = (2,2)
     Vx_l = reshape(x_in[1:9],   nVx)
     Vz_l = reshape(x_in[10:18], nVz)
     P_l  = reshape(x_in[19:22], nP )
+
+    # we need to deal with BC's here; there may be better ways to do that (e.g, adjusting )
+    if iy==1 
+        Vx_l[:,1] = Vx_l[:,2]   # free slip
+    end
+    if iy==ny 
+        Vx_l[:,3] = Vx_l[:,2]   # free slip
+    end
+    if ix==1 
+        Vz_l[1,:] = Vz_l[:,2]   # free slip
+    end
+    if ix==nx 
+        Vz_l[3,:] = Vz_l[2,:]   # free slip
+    end
                 
     rVx,rVz,rP = local_residuals(Vx_l, Vz_l, P_l, params)
 
@@ -119,7 +135,6 @@ function FormRes!(r_g, snes, x_g, user_ctx)
     corners       = PETSc.getcorners_dmstag(dm)
     ghost_corners = PETSc.getghostcorners_dmstag(dm)
     shift         = corners.lower - ghost_corners.lower;
-    #@show corners
 
     LibPETSc.VecSet(petsclib,user_ctx.r_l, 0.0) # set residual to zero before accumulating contributions
     Xlocal = LibPETSc.DMStagVecGetArray(petsclib, dm, user_ctx.x_l)
@@ -128,18 +143,11 @@ function FormRes!(r_g, snes, x_g, user_ctx)
     P  = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_ELEMENT,0)]);
     Vx = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_LEFT,   0)]);
     Vz = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_DOWN,   0)]);
-    
-    @show P Vx Vz
-    
-    #Rlocal[:,:, :] .= 0.0
+
     rP  = @view(Rlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_ELEMENT,0)]);
     rVx = @view(Rlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_LEFT,   0)]);
     rVz = @view(Rlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_DOWN,   0)]);
 
-   # rVx.= 0.0
-   # rVz.= 0.0
-   # rP.= 0.0
-    
     Δx, Δz = user_ctx.dx, user_ctx.dz;
     
 #=
@@ -166,11 +174,24 @@ function FormRes!(r_g, snes, x_g, user_ctx)
     dP_dz   = diff(P[2:end-1,2:end-1],dims=2) ./ Δz;
     dTzz_dz = diff(Tzz[2:end-1,2:end],dims=2) ./ Δz;
     dTxz_dx = diff(Txz[1:end,2:end-1],dims=1) ./ Δx;
-    rM2 = -dP_dz + dTzz_dz + dTxz_dx     # to be added:  gravity term
+    
+    ρg = zeros(size(dP_dz))
+    for i=1:size(ρg,1), j=1:size(ρg,2)
+        x,z = X_coord[i+1,1], Z_coord[j,2];         # coordinate of Vz points
+        if GetPhase(user_ctx,x,1)
+            ρg[i,j] = user_ctx.rho1;
+        else
+            ρg[i,j] = user_ctx.rho2;  
+        end
+    end
+
+
+    rM2 = -dP_dz + dTzz_dz + dTxz_dx + ρg    # to be added:  gravity term
 
     # conservation of mass
     rMass = Exx[2:end,2:end-1] + Ezz[2:end-1,2:end] + (1/user_ctx.kappa) .* P[2:end-1,2:end-1];
-=#
+    =#
+
     # ----
 
     #=
@@ -202,13 +223,9 @@ function FormRes!(r_g, snes, x_g, user_ctx)
               would make the P grid be 4x4 "real" points, but "6x6" including additional points (at left and bottom).
     =#
 
-    # create an anonymous function for residuals
-    #r_local = (x) -> local_residual_vec(x, params)
-
     # collect the residuals
-    for ix=corners.lower[1]+shift[1] : corners.upper[1] + shift[1]
-        for iy=corners.lower[2]+shift[2] : corners.upper[2] + shift[2]
-            #@show ix,iy
+    for ix=corners.lower[1] : corners.upper[1]
+        for iy=corners.lower[2] : corners.upper[2]
             Vx_l = [Vx[ix-1, iy-1] Vx[ix-1, iy] Vx[ix-1, iy+1];
                     Vx[ix  , iy-1] Vx[ix  , iy] Vx[ix  , iy+1];
                     Vx[ix+1, iy-1] Vx[ix+1, iy] Vx[ix+1, iy+1]];
@@ -219,49 +236,32 @@ function FormRes!(r_g, snes, x_g, user_ctx)
                     P[ix  , iy-1]  P[ix,   iy] ];
 
             # local parameters needed in the local residual routine
-            # (if parameters )
-
-            x,z = X_coord[ix-shift[1],1], Z_coord[iy-shift[2],2];         # coordinate of Vz points
+            x,z = X_coord[ix,1], Z_coord[iy,2];         # coordinate of Vz points
             if GetPhase(user_ctx,x,1)
                 ρ = user_ctx.rho1;
             else
                 ρ = user_ctx.rho2;  
             end
-            #@show x z ρ
-            
             params = (Δx=Δx, Δz=Δz, κ=user_ctx.kappa, ηl=user_ctx.eta1, ρ=ρ); 
 
             rVx_l,rVz_l,rP_l = local_residuals(Vx_l, Vz_l, P_l, params)
-            
-            #=
-            # use AD to compute the coefficients of the local coefficients (note that in this case they are trivial)
-            x_in = vcat(Vx_l[:], Vz_l[:], P_l[:])
-            Jder = ForwardDiff.jacobian(r_local, x_in)
 
-            #@show Jder
-
-            =#
             # momentum residuals
-            if iy>corners.lower[2]+shift[2] && iy<corners.upper[2]+shift[2] 
+            if iy>corners.lower[2] && iy<corners.upper[2]
                 rVz[ix, iy] = rVz_l;
             else 
                 rVz[ix, iy] = 0.0; # set BC
             end
-            if ix>corners.lower[1]+shift[1] && ix<corners.upper[1]+shift[1] 
+            if ix>corners.lower[1] && ix<corners.upper[1]
                 rVx[ix, iy] = rVx_l;
             else 
                 rVx[ix, iy] = 0.0; # set BC
             end
             # mass conservation
             rP[ix, iy]=rP_l
-            #@show rP_l, rVx_l, rVz_l
         end
     end
-    #=
-    =#
 
-   # @show norm(Rlocal[:])
-   # @show rP rVx rVz
     # restore arrays
     LibPETSc.DMStagVecRestoreArray(petsclib, dm, user_ctx.r_l, Rlocal)
     LibPETSc.DMStagVecRestoreArray(petsclib, dm, user_ctx.x_l, Xlocal)
@@ -276,45 +276,6 @@ function FormRes!(r_g, snes, x_g, user_ctx)
     
     return 0
 end
-
-function  ForwardDiff_res(x, user_ctx)
-    f   = zero(x)               # vector of zeros, of same type as x (local vector)
-
-    ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);        # array with all local x-data
-    ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, f);        # array with all local residual
-    
-    ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx);
-
-    # As the residual vector f is linked with ArrayLocal_f, we don't need to
-    # pass ArrayLocal_f back to f
-
-    return f;
-end
-
-function ComputeSparsityPatternJacobian_automatic(x_l, user_ctx)
-    # This computes the sparsity pattern and coloring of the jacobian automatically
-    # This will works for any equation but is slow @ high resolutions 
-    
-    f_Residual  =   (x -> ForwardDiff_res(x, user_ctx));        # pass additional arguments into the routine
-    J_julia     =   ForwardDiff.jacobian(f_Residual,x_l*0 .+ 1);# Compute a "blank" jacobian  
-
-    # employ sparse structure to compute jacobian - to be moved inside routines
-    jac         =   sparse(J_julia);
-    colors      =   matrix_colors(jac)          # the number of nonzeros per row
-
-    return jac, colors
-end
-
-function  func(out, x, user_ctx)
-
-    ArrayLocal_x     =   PETSc.DMStagVecGetArray(user_ctx.dm, x);          # array with all local x-data (solition array)
-    ArrayLocal_f     =   PETSc.DMStagVecGetArray(user_ctx.dm, out);        # array with all local residual
-    
-    ComputeLocalResidual(user_ctx.dm, ArrayLocal_x, ArrayLocal_f, user_ctx);
-
-    return nothing
-end
-
 
 
 function FormJacobian!(J, snes, x_g, user_ctx)
@@ -344,8 +305,8 @@ function FormJacobian!(J, snes, x_g, user_ctx)
     Δx, Δz = user_ctx.dx, user_ctx.dz;
 
     # collect the residuals 
-    for ix=corners.lower[1]+shift[1] : corners.upper[1] + shift[1]
-        for iy=corners.lower[2]+shift[2] : corners.upper[2] + shift[2]
+    for ix=corners.lower[1] : corners.upper[1] 
+        for iy=corners.lower[2] : corners.upper[2]
             Vx_l = [Vx[ix-1, iy-1] Vx[ix-1, iy] Vx[ix-1, iy+1];
                     Vx[ix  , iy-1] Vx[ix  , iy] Vx[ix  , iy+1];
                     Vx[ix+1, iy-1] Vx[ix+1, iy] Vx[ix+1, iy+1]];
@@ -356,8 +317,8 @@ function FormJacobian!(J, snes, x_g, user_ctx)
                     P[ix  , iy-1]  P[ix,   iy] ];
 
             # location of all points in stencil format (following the ordering above)
-            iix = ix - shift[1] - 1       
-            iiy = iy - shift[2] - 1
+            iix = ix - 1       
+            iiy = iy - 1
             i_vec = [# Vx
                     LibPETSc.DMStagStencil(LibPETSc.DMSTAG_LEFT, iix-1,iiy-1,0,0),
                     LibPETSc.DMStagStencil(LibPETSc.DMSTAG_LEFT, iix  ,iiy-1,0,0),
@@ -387,22 +348,26 @@ function FormJacobian!(J, snes, x_g, user_ctx)
                     LibPETSc.DMStagStencil(LibPETSc.DMSTAG_ELEMENT, iix  , iiy  ,0,0)
                 ]  
 
+            # deal with boundary conditions
+
+
+
+
             # local parameters needed in the local residual routine
             # (if parameters )
-            x,z = X_coord[ix-shift[1],1], Z_coord[iy-shift[2],2];         # coordinate of Vz points
+            x,z = X_coord[ix,1], Z_coord[iy,2];         # coordinate of Vz points
             if GetPhase(user_ctx,x,1)
                 ρ = user_ctx.rho1;
             else
                 ρ = user_ctx.rho2;  
             end
-            
             params = (Δx=Δx, Δz=Δz, κ=user_ctx.kappa, ηl=user_ctx.eta1, ρ=ρ); 
 
-
             # use AD to compute the coefficients of the local coefficients (note that in this case they are trivial)
-            r_local = (x) -> local_residual_vec(x, params)
+            r_local = (x) -> local_residual_vec(x, params, ix, iy, corners.upper[1], corners.upper[2])
 
             x_in = vcat(Vx_l[:], Vz_l[:], P_l[:])
+            x_in = rand(Float64,size(x_in))
             Jder = ForwardDiff.jacobian(r_local, x_in)
             
             iP  = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_ELEMENT,iix,iiy,0,0)
@@ -445,10 +410,10 @@ function FormJacobian!(J, snes, x_g, user_ctx)
             LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iP], length(iP_coeff), iP_coeff, iP_val, PETSc.INSERT_VALUES)
             
             # x-momentum
-            if ix <=corners.upper[1]   + shift[1]
+            if ix <=corners.upper[1]   
                 LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iVx], length(iVx_coeff), iVx_coeff, iVx_val, PETSc.INSERT_VALUES)
             end
-            if iy <=corners.upper[2]   + shift[2]
+            if iy <=corners.upper[2]  
                 # z-momentum
                 LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iVz], length(iVz_coeff), iVz_coeff, iVz_val, PETSc.INSERT_VALUES)
             end
@@ -457,20 +422,20 @@ function FormJacobian!(J, snes, x_g, user_ctx)
     end
 
     # dirichlet BC's on right & top boundaries for Vx,Vz 
-    for iy=corners.lower[2]+shift[2] : corners.upper[2] + shift[2]
-        ix = corners.upper[1] + shift[1] + 1
-        iix = ix - shift[1] -1
-        iiy = iy - shift[2] -1
+    for iy=corners.lower[2] : corners.upper[2] 
+        ix = corners.upper[1] + 1
+        iix = ix - 1
+        iiy = iy - 1
         iVx = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_LEFT,   iix,iiy,0,0)
         LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iVx], 1, [iVx], [1.0], PETSc.INSERT_VALUES)
 
-        ix = corners.lower[1] + shift[1] 
+        ix = corners.lower[1] 
         iVx = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_LEFT,   iix,iiy,0,0)
         LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iVx], 1, [iVx], [1.0], PETSc.INSERT_VALUES)
     end
 
-    for ix=corners.lower[1]+shift[1] : corners.upper[1] + shift[1]
-        iy = corners.upper[2] + shift[2] + 1
+    for ix=corners.lower[1] : corners.upper[1] 
+        iy = corners.upper[2] + 1
         iix = ix - shift[1] - 1
         iiy = iy - shift[2] - 1
         iVz = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_DOWN,   iix,iiy,0,0)
@@ -519,132 +484,6 @@ mutable struct Data_Stokes2D
     colors
 end
 user_ctx = Data_Stokes2D(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
-
-# TO BE REMOVED
-function ComputeLocalResidual(dm, ArrayLocal_x, ArrayLocal_f, user_ctx)
-    # Compute the local residual. The vectors include ghost points 
-
-    # Compute shear stresses
-    Txx,Tzz,Txz = ComputeStresses!(user_ctx, ArrayLocal_x);
-
-    # Extracting arrays from the residual and solution vectors
-    P       = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_ELEMENT, 0);
-    Vx      = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_LEFT, 0);
-    Vz      = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_DOWN, 0);
-
-    f_p     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_f,     PETSc.DMSTAG_ELEMENT, 0);
-    f_x     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_f,     PETSc.DMSTAG_LEFT, 0);
-    f_z     = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_f,     PETSc.DMSTAG_DOWN, 0);
-
-    # Extracting physical parameters
-    RhoC    = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff,user_ctx.coeff_l,     PETSc.DMSTAG_DOWN_LEFT, 1);
-
-    # Gettins sizes
-    dx = user_ctx.dx;
-    dz = user_ctx.dz;
-
-    # Getting global indices for the local vectors
-    ind                 =   PETSc.DMStagGetIndices(dm);          # indices of (center/element) points, not including ghost values.
-    #sx, sn  = PETSc.DMStagGetCentralNodes(user_ctx.dm); #indices of central points
-
-    ix      =   ind.center[1];           
-    iz      =   ind.center[2];
-
-    # Horizontal force balance f(x)
-
-    # Boundary conditions (Dirichlet with no normal velocity at boundary)
-    f_x[ix[1]    ,:] .= Vx[ix[1]    ,:] .- 0.0;
-    f_x[ix[end]+1,:] .= Vx[ix[end]+1,:] .+ 0.0;
-
-    # -dP/dx + dTxx/dx + dTxz/dz = 0
-    f_x[ix[2]:ix[end],iz] .= .-(P[ix[2]:ix[end],iz] .- P[ix[1]:ix[end-1],iz])./dx .+
-                               (Txx[2:end,:]        .- Txx[1:end-1,:])       ./dx .+
-                               (Txz[2:end-1,2:end]  .- Txz[2:end-1,1:end-1]) ./dz;
-
-    # Vertical force balance f(z)
-
-    # Boundary conditions (Dirichlet with no normal velocity at boundary)
-    f_z[:,iz[1]    ] .= Vz[:,iz[1]    ] .- 0.0;
-    f_z[:,iz[end]+1] .= Vz[:,iz[end]+1] .+ 0.0;
-
-    # -dP/dz + dTxz/dx + dTzz/dz = rho*g
-    f_z[ix,iz[2]:iz[end]] .= .-(P[ix,iz[2]:iz[end]] .- P[ix,iz[1]:iz[end-1]])./dz .+
-                               (Tzz[:,2:end]        .- Tzz[:,1:end-1])       ./dz .+
-                               (Txz[ 2:end,2:end-1] .- Txz[1:end-1,2:end-1]) ./dx .+
-                               (RhoC[ix.+1,iz[2]:iz[end]] .+ RhoC[ix,iz[2]:iz[end]  ]) .* 0.5 .* user_ctx.gz;
-
-    # Mass balance f(p)
-    # dVx/dx + dVz/dz = 0
-    kappa = user_ctx.kappa; # penalty term to help solver
-    f_p[ix,iz] .= (Vx[ix.+1,iz].-Vx[ix,iz])./dx .+ (Vz[ix,iz.+1].-Vz[ix,iz])./dz .+ 1/kappa*P[ix,iz];
-
-    # Cleanup
-    # Note: Do not call Base.finalize on arrays obtained from PETSc DMStagVecGetArrayLocationSlot
-    # as they are managed by PETSc. Only restore them with DMStagVecRestoreArray.                                    
-end
-
-# TO BE REMOVED
-function ComputeStresses!(user_ctx, ArrayLocal_x)
-    
-    # Compute strain rates
-    Exx,Ezz,Exz = ComputeStrainRates!(user_ctx, ArrayLocal_x);
-
-    # Getting Eta at the center and corner of the cells
-    EtaE    = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff,user_ctx.coeff_l,     PETSc.DMSTAG_ELEMENT, 0);
-    EtaC    = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff,user_ctx.coeff_l,     PETSc.DMSTAG_DOWN_LEFT, 0);
-    
-    # Getting indices for center nodes (not ghost)
-    ind     = PETSc.DMStagGetIndices(user_ctx.dm); #indices of central points
-    #ix      =   sx[1]:sn[1];           
-    #iz      =   sx[2]:sn[2];
-    ix  = ind.center[1];
-    iz  = ind.center[2];
-    
-    # Compute shear stresses
-    Txx    = 2 .* EtaE[ix,iz] .* Exx;
-    Tzz    = 2 .* EtaE[ix,iz] .* Ezz;
-    Txz    = 2 .* EtaC[ix[1]:ix[end]+1,iz[1]:iz[end]+1] .* Exz;
-
-    return Txx,Tzz,Txz
-
-    # Note: Do not finalize arrays obtained from PETSc  
-    
-end
-
-# TO BE REMOVED
-function ComputeStrainRates!(user_ctx, ArrayLocal_x)
-
-    # Getting velocity vectors
-    Vx      = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_LEFT, 0);
-    Vz      = PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm,ArrayLocal_x,     PETSc.DMSTAG_DOWN, 0);
-    
-    # dimensions
-    dx,dz   = user_ctx.dx, user_ctx.dz;
-
-    # Getting indices for center nodes (not ghost)
-    ind     = PETSc.DMStagGetIndices(user_ctx.dm); #indices of central points
-    #ix      =   sx[1]:sn[1];           
-    #iz      =   sx[2]:sn[2];
-    ix      =   ind.center[1];
-    iz      =   ind.center[2];
-    
-
-    # Set ghost points (free slip)
-    Vx[:,iz[1]-1]   .=  Vx[:,iz[1]];                # ghost points on left and right size (here: free slip)
-    Vx[:,iz[end]+1] .=  Vx[:,iz[end]];
-    Vz[ix[1]-1,:]   .=  Vz[ix[1],:];
-    Vz[ix[end]+1,:] .=  Vz[ix[end],:];
-
-    # Compute deviatoric Strain rates
-    DivV  = (Vx[ix.+1,iz].-Vx[ix,iz])./dx .+ (Vz[ix,iz.+1].-Vz[ix,iz])./dz;
-    Exx   = (Vx[ix.+1,iz].-Vx[ix,iz])./dx .- 1/3 .* DivV;
-    Ezz   = (Vz[ix,iz.+1].-Vz[ix,iz])./dz .- 1/3 .* DivV;
-    Exz   = 0.5.*((Vx[ix[1]:ix[end].+1,iz[1]:iz[end].+1].-Vx[ix[1]:ix[end].+1,iz[1].-1:iz[end]])./dz .+
-                  (Vz[ix[1]:ix[end].+1,iz[1]:iz[end].+1].-Vz[ix[1].-1:ix[end],iz[1]:iz[end].+1])./dx);
-    
-    return Exx,Ezz,Exz
-
-end
 
 function PopulateCoefficientData!(user_ctx)
     # NOTE: I don't think that ghost nodes are propely set this way; to be checked (also why the arrays are larger than needed)
@@ -719,17 +558,6 @@ function GetPhase(ctx,x,n)
     end
 end
 
-#=
-# TO BE REMOVED
-function SetVecX!(user_ctx,x_g)
-    # Set first guess for vector x to 0
-    user_ctx.x_l .= 0; 
-    PETSc.dm_local_to_global!(user_ctx.x_l,x_g, user_ctx.dm, PETSc.INSERT_VALUES)
-    return nothing
-end
-=#
-
-
 function set_initial_solution!(x_g, user_ctx, petsclib)
     # Sets 
     LibPETSc.VecSet(petsclib, x_g, 0.0) # set global solution vector to zero (including ghost points)
@@ -746,11 +574,6 @@ function set_initial_solution!(x_g, user_ctx, petsclib)
     P  = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_ELEMENT,0)]);
     Vx = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_LEFT,   0)]);
     Vz = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_DOWN,   0)]);
-
-    Vx .= 0.0
-    P .= 0.0
-    Vz .= 0.0
-    @show "before setting initial" Vx Vz P
 
     # Loop over P points (center)
     for ix=corners.lower[1]+shift[1] : corners.upper[1] + shift[1]
@@ -769,14 +592,7 @@ function set_initial_solution!(x_g, user_ctx, petsclib)
         end
     end
 
-    ## set ghost points for Vx on bottom & top boundary (free slip)
-    ## NOTE: this may require modfications in parallel as we only want to set ghostpoints on the physical boundary
-    #for ix=corners.lower[1]+ shift[1] : corners.upper[1] + shift[1]
-    #    # (τxz=0, implies that dVx/dz=0 at boundary)
-    #    Vx[ix, ghost_corners.lower[2]+shift[2]] = Vx[ix, corners.lower[2]+shift[2]]
-    #    Vx[ix, ghost_corners.upper[2]+shift[2]] = Vx[ix, corners.upper[2]+shift[2]]
-    #end
-
+    # set ghost points for Vx on bottom & top boundary (free slip)
     # Vz points (not including ghost points)
     for ix=corners.lower[1]+shift[1] : corners.upper[1] + shift[1]
         for iy=corners.lower[2]+ shift[2] : corners.upper[2] + shift[2]
@@ -786,15 +602,6 @@ function set_initial_solution!(x_g, user_ctx, petsclib)
             Vz[ix, iy] = -π*cos(π*x)*sin(π*z);
         end
     end
-
-    ## set ghost points for Vz on left & right boundary (free slip)
-    #for iy=corners.lower[2]+ shift[2] : corners.upper[2] + shift[2]
-    #    # (τxz=0, implies that dVz/dx=0 at boundary)
-    #    Vz[ghost_corners.lower[1]+shift[1], iy] = Vz[corners.lower[1]+shift[1], iy]
-    #    Vz[ghost_corners.upper[1]+shift[1], iy] = Vz[corners.upper[1]+shift[1], iy]
-    #end
-
-    @show "after setting initial" Vx Vz P
 
     LibPETSc.DMStagVecRestoreArray(petsclib, user_ctx.dm, user_ctx.x_l, X_write)
 
@@ -826,17 +633,17 @@ function set_ghostpoint_values!(x_l, dm, petsclib )
 
     # set ghost points for Vx on bottom & top boundary (free slip)
     # NOTE: this may require modfications in parallel as we only want to set ghostpoints on the physical boundary
-    for ix=corners.lower[1]+ shift[1] : corners.upper[1] + shift[1]
+    for ix=corners.lower[1]: corners.upper[1] 
         # (τxz=0, implies that dVx/dz=0 at boundary)
-        Vx[ix, ghost_corners.lower[2]+shift[2]] = Vx[ix, corners.lower[2]+shift[2]]
-        Vx[ix, ghost_corners.upper[2]+shift[2]] = Vx[ix, corners.upper[2]+shift[2]]
+        Vx[ix, ghost_corners.lower[2]] = Vx[ix, corners.lower[2]]
+        Vx[ix, ghost_corners.upper[2]] = Vx[ix, corners.upper[2]]
     end
 
     # set ghost points for Vz on left & right boundary (free slip)
-    for iy=corners.lower[2]+ shift[2] : corners.upper[2] + shift[2]
+    for iy=corners.lower[2] : corners.upper[2] 
         # (τxz=0, implies that dVz/dx=0 at boundary)
-        Vz[ghost_corners.lower[1]+shift[1], iy] = Vz[corners.lower[1]+shift[1], iy]
-        Vz[ghost_corners.upper[1]+shift[1], iy] = Vz[corners.upper[1]+shift[1], iy]
+        Vz[ghost_corners.lower[1], iy] = Vz[corners.lower[1], iy]
+        Vz[ghost_corners.upper[1], iy] = Vz[corners.upper[1], iy]
     end
     
     LibPETSc.DMStagVecRestoreArray(petsclib, dm, x_l, X_write)
@@ -850,7 +657,7 @@ end
 #nx, nz           =   32, 32;                  # number of nodes is x and z direction
 nx, nz           =   10, 10;                  # number of nodes is x and z direction
 
-user_ctx.xlim    =   [0.0,2.0];                   # x and z dimensions
+user_ctx.xlim    =   [0.0,1.0];                   # x and z dimensions
 user_ctx.zlim    =   [0.0,1.0];
 xlim             =   user_ctx.xlim;
 zlim             =   user_ctx.zlim;
@@ -861,7 +668,7 @@ user_ctx.eta2    =   2;                      # viscosity phase 2
 user_ctx.rho1    =   0;                      # density phase 1
 user_ctx.rho2    =   1;                      # density phase 2
 user_ctx.gz      =   -1;                     # gravity magnitude
-user_ctx.kappa   =   1e5;                    # incompressible penalty term
+user_ctx.kappa   =   1e8;                    # incompressible penalty term
 
 # Create Solution and coefficient DMs
 comm        = MPI.COMM_SELF
@@ -912,12 +719,12 @@ snes = PETSc.SNES(petsclib,MPI.COMM_SELF;
         snes_rtol=1e-12, 
         snes_monitor=true, 
         snes_max_it = 500,
-        snes_type = "ksponly",
+        #snes_type = "ksponly",
         snes_monitor_true_residual=true, 
         snes_view=true,
         snes_linesearch_monitor=true,
-        snes_linesearch_view=true,
-        snes_linesearch_type="basic",
+        #snes_linesearch_view=true,
+        #snes_linesearch_type="basic",
         ksp_type = "preonly",
         pc_type = "lu",
         snes_maxit=10,
@@ -928,7 +735,8 @@ snes.user_ctx  =       user_ctx;       # crashes
 PETSc.setDM!(snes, user_ctx.dm)
 
 # Set first guess values for solution vector
-set_initial_solution!(x_g, user_ctx, petsclib)
+#set_initial_solution!(x_g, user_ctx, petsclib)
+x_g .= 0.0
 
 PETSc.setfunction!(snes, FormRes!, r_g)
 PETSc.setjacobian!(snes, FormJacobian!, J, J)
@@ -941,8 +749,10 @@ FormJacobian!(J, snes, x_g, user_ctx)
 # (PETSc.solve!(x_g, snes) is not working, hence this workaround for now)
 Jl = J[:,:]
 rl = r_g[:]
-sol = Jl\rl
-x_g[:] .= sol
+dsol = Jl\-rl
+for i=1:length(x_g)
+    x_g[i] = x_g[i] + dsol[i]
+end
 
 # copy global -> local solution
 PETSc.dm_global_to_local!(x_g, user_ctx.x_l, user_ctx.dm)
@@ -963,54 +773,82 @@ Vz_sol = copy(Vz)
 P_sol  = copy(P)
 
 LibPETSc.DMStagVecRestoreArray(petsclib, user_ctx.dm, user_ctx.x_l, X_write)
- 
-x_g1 = PETSc.DMGlobalVec(user_ctx.dm);
-x_l1 = PETSc.DMLocalVec(user_ctx.dm);
-LibPETSc.VecSet(petsclib,x_g1, 0.0)
-LibPETSc.VecSet(petsclib,x_l1, 0.0)
-#x_g1[1] = 1.0;
-#x_g1[2] = 2.0;
-#x_g1[3] = 3.0;
-#x_g1[5] = 5.0;
-#x_g1[32] = 32;
-
-x_g1[19] = 1.0;
-x_g1[20] = 2.0;
-x_g1[21] = 3.0;
-x_g1[23] = 5.0;
-x_g1[50] = 32;
-
-PETSc.dm_global_to_local!(x_g1, x_l1, user_ctx.dm)
-
-Xlocal = LibPETSc.DMStagVecGetArrayRead(petsclib, user_ctx.dm, x_l1)
-    
-
-P1  = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_ELEMENT,0)]);
-Vx1 = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_LEFT,   0)]);
-Vz1 = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_DOWN,   0)]);
-    
-
-
 
 # check residual
 FormRes!(r_g, snes, x_g, user_ctx)
 
 
-# checkimg the residual
+# Plot residual in 2D
+PETSc.dm_global_to_local!(r_g, user_ctx.r_l, user_ctx.dm)
+
+X_write = LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dm, user_ctx.r_l)
+   
+rP  = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_ELEMENT,0)]);
+rVx = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_LEFT,   0)]);
+rVz = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_DOWN,   0)]);
+
+rVx_sol = copy(Vx)
+rVz_sol = copy(Vz)
+rP_sol  = copy(P)
+
+LibPETSc.DMStagVecRestoreArray(petsclib, user_ctx.dm, user_ctx.r_l, X_write)
+
+@show extrema(rVx) extrema(rVz)
+
+#=
+# ----------------------------------
+# checkimg the residual by hand 
 Δx, Δz = user_ctx.dx, user_ctx.dz;
     
+# ----
 # just checking: do this by hand
 Exx = diff(Vx_sol[1:end,1:end],dims=1) ./ Δx;             # dVx/dx
 Ezz = diff(Vz_sol[1:end,1:end],dims=2) ./ Δz;             # dVz/dz
-#Exz = 0.5 .* (diff(Vx_sol[2:end,:],dims=2) ./ Δz .+         # 0.5*(dVx/dz + dVz/dx)
-#             diff(Vz_sol[:,2:end],dims=1) ./ Δx);
+Exz = 0.5 .* (diff(Vx_sol[2:end,:],dims=2) ./ Δz .+         # 0.5*(dVx/dz + dVz/dx)
+              diff(Vz_sol[:,2:end],dims=1) ./ Δx);
+
+Txx = 2 .* user_ctx.eta1 .* Exx;    # Txx = 2*eta*Exx
+Tzz = 2 .* user_ctx.eta1 .* Ezz;    # Tzz = 2*eta*Ezz
+
+# We actually have to do some padding around this to take BC's properly into account
+Txz = 2 .* user_ctx.eta1 .* Exz;    # Txz = 2*eta*Exz
+
+# first momentum balance
+dP_dx = diff(P[2:end-1,2:end-1],dims=1) ./ Δx;
+dTxx_dx = diff(Txx[2:end,2:end-1],dims=1) ./ Δx;
+dTxz_dz = diff(Txz[2:end-1,1:end],dims=2) ./ Δz;
+rM1 = -dP_dx + dTxx_dx + dTxz_dz        
+
+# 2nd momentum balance
+dP_dz   = diff(P[2:end-1,2:end-1],dims=2) ./ Δz;
+dTzz_dz = diff(Tzz[2:end-1,2:end],dims=2) ./ Δz;
+dTxz_dx = diff(Txz[1:end,2:end-1],dims=1) ./ Δx;
+    
+ρg = zeros(size(dP_dz))
+for i=1:size(ρg,1), j=1:size(ρg,2)
+    x,z = X_coord[i+1,1], Z_coord[j,2];         # coordinate of Vz points
+    if GetPhase(user_ctx,x,1)
+        ρg[i,j] = user_ctx.rho1;
+    else
+        ρg[i,j] = user_ctx.rho2;  
+    end
+end
+
+rM2 = -dP_dz + dTzz_dz + dTxz_dx + ρg    # to be added:  gravity term
+
+# conservation of mass
+rMass = Exx[2:end,2:end-1] + Ezz[2:end-1,2:end] + (1/user_ctx.kappa) .* P[2:end-1,2:end-1];
+
+=#
 
 
+# ----
 
-#b             =   PETSc.DMGlobalVec(user_ctx.dm);
-#LibPETSc.VecSet(petsclib,b, 0.0)
-#PETSc.solve!(x_g, snes, b)
-
+#=
+b             =   PETSc.DMGlobalVec(user_ctx.dm);
+LibPETSc.VecSet(petsclib,b, 0.0)
+PETSc.solve!(x_g, snes, b)
+=#
 #Solve
 #PETSc.solve!(x_g, snes);
 

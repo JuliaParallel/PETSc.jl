@@ -1,5 +1,5 @@
 using Test
-using PETSc, MPI
+using PETSc, MPI, OffsetArrays
 #using SparseArrays
 if !Sys.iswindows()
     MPI.Initialized() || MPI.Init()
@@ -677,8 +677,9 @@ end
         
         for ix=corners.lower[1]:corners.upper[1]
             for iy=corners.lower[2]:corners.upper[2]
-                ix_local = ix - ghost_corners.lower[1] + 1
-                iy_local = iy - ghost_corners.lower[2] + 1
+                ix_local = ix #- ghost_corners.lower[1] + 1
+                iy_local = iy #- ghost_corners.lower[2] + 1
+
                 
                 # Set DOF at element center
                 slot_element = LibPETSc.DMStagGetLocationSlot(petsclib, dm_2D, LibPETSc.DMSTAG_ELEMENT, 0)
@@ -715,14 +716,12 @@ end
         # Extract an array that holds all DOF's
         X2D_dofs  = LibPETSc.DMStagVecGetArray(petsclib, dm_2D,vec_test_2D_local)           # extract arrays with all DOF (mostly for visualizing)
         
-        @test X2D_dofs[4,4,1] ≈ PetscScalar(55.0)
-        @test X2D_dofs[4,4,2] ≈ PetscScalar(44.0)
-        @test X2D_dofs[4,4,3] ≈ PetscScalar(33.0)
-        @test X2D_dofs[4,4,4] ≈ PetscScalar(3.0)
+        @test X2D_dofs[3,3,1] ≈ PetscScalar(55.0)
+        @test X2D_dofs[3,3,2] ≈ PetscScalar(44.0)
+        @test X2D_dofs[3,3,3] ≈ PetscScalar(33.0)
+        @test X2D_dofs[3,3,4] ≈ PetscScalar(3.0)
         LibPETSc.DMStagVecRestoreArray(petsclib, dm_2D,vec_test_2D_local, X2D_dofs)
         
-
-          
         # cleanup
         PETSc.destroy(vec_test_2D_global);
         PETSc.destroy(vec_test_2D_local);
@@ -784,11 +783,11 @@ end
         
         # Verify layout matches permuted reshape
         expected_2D = PermutedDimsArray(reshape(x_l[:], (q, m, n)), (2, 3, 1))
-        @test local_array == expected_2D
+        @test OffsetArrays.no_offset_view(local_array) == expected_2D
         @test !any(isnan, local_array)  # No NaN in ghost regions
         
         # Test modification through view
-        local_array[2, 2, 1] = PetscScalar(777.0)
+        local_array[1, 1, 1] = PetscScalar(777.0)
         @test x_l[1 + (2-1)*q + (2-1)*q*m] == PetscScalar(777.0)
         
         LibPETSc.DMStagVecRestoreArray(petsclib, dm_2D_ghost, x_l, local_array)

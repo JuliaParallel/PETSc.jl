@@ -1,3 +1,4 @@
+using OffsetArrays
 # autodefined type arguments for class ------
 mutable struct PetscPoCintFn end
 
@@ -26130,6 +26131,9 @@ Level: beginner
 Note:
 This function returns a (dim+1)-dimensional array for a dim-dimensional `DMSTAG`.
 
+Also: in Julia we use OffsetArrays, such that index 1 (e.g. `array[1]` always refers to the true first point in the domain, 
+and `array[0]` would be the ghost point (if available) . 
+
 The first 1-3 dimensions indicate an element in the global
 numbering, using the standard C ordering.
 
@@ -26174,17 +26178,20 @@ function DMStagVecGetArray(petsclib::PetscLibType, dm::PetscDM, vec::PetscVec) e
     # to the array directly affect the underlying Vec data.
     if dim==1
         mat = reshape(vec_array, (m, q))
+        mat_oa = OffsetArray(mat, xs+1:xs+m, 1:q)
     elseif dim==2
         mat = PermutedDimsArray(reshape(vec_array, (q, m, n)), (2, 3, 1))
+        mat_oa = OffsetArray(mat, xs+1:xs+m, ys+1:ys+n, 1:q)
     elseif dim==3
         mat = PermutedDimsArray(reshape(vec_array, (q, m, n, p)), (2, 3, 4, 1))
+        mat_oa = OffsetArray(mat, xs+1:xs+m, ys+1:ys+n, zs+1:zs+p, 1:q)
     else
         error("Unsupported dimension: $dim")
     end
 
     # Create a PetscArray wrapper
     # Store the original vec_array in ptr field (as Ref{Any}) so we can restore it later
-    arr = PetscArray(mat, Ref{Any}(vec_array))
+    arr = PetscArray(mat_oa, Ref{Any}(vec_array))
 
     return arr
 end 
@@ -26235,17 +26242,20 @@ function DMStagVecGetArrayRead(petsclib::PetscLibType, dm::PetscDM, vec::PetscVe
     # Use PermutedDimsArray to create a VIEW (not a copy) for read-only access.
     if dim==1
         mat = reshape(vec_array, (m, q))
+        mat_oa = OffsetArray(mat, xs+1:xs+m, 1:q)
     elseif dim==2
         mat = PermutedDimsArray(reshape(vec_array, (q, m, n)), (2, 3, 1))
+        mat_oa = OffsetArray(mat, xs+1:xs+m, ys+1:ys+n, 1:q)
     elseif dim==3
         mat = PermutedDimsArray(reshape(vec_array, (q, m, n, p)), (2, 3, 4, 1))
+        mat_oa = OffsetArray(mat, xs+1:xs+m, ys+1:ys+n, zs+1:zs+p, 1:q)
     else
         error("Unsupported dimension: $dim")
     end
 
     # Create a PetscArray wrapper
     # Store the original vec_array in ptr field (as Ref{Any}) so we can restore it later
-    arr = PetscArray(mat, Ref{Any}(vec_array))
+    arr = PetscArray(mat_oa, Ref{Any}(vec_array))
 
     return arr
 end 

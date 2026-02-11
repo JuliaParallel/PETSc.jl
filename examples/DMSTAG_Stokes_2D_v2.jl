@@ -78,7 +78,6 @@ function local_residuals(Vx_l::Matrix, Vz_l::Matrix, P_l::Matrix, params::NamedT
     rP = Exx_l[2,2] + Ezz_l[2,2] + (1/params.κ) .* P_l[2,2];
     #rP = Exx_l[2,2] + Ezz_l[2,2] ;
     
-
     return rVx, rVz, rP
 end
 
@@ -134,7 +133,6 @@ function FormRes!(r_g, snes, x_g, user_ctx)
     # get the corners 
     corners       = PETSc.getcorners_dmstag(dm)
     ghost_corners = PETSc.getghostcorners_dmstag(dm)
-    shift         = corners.lower - ghost_corners.lower;
 
     LibPETSc.VecSet(petsclib,user_ctx.r_l, 0.0) # set residual to zero before accumulating contributions
     Xlocal = LibPETSc.DMStagVecGetArray(petsclib, dm, user_ctx.x_l)
@@ -195,27 +193,27 @@ function FormRes!(r_g, snes, x_g, user_ctx)
     # ----
 
     #=
-    # Staggered grid layout (4x4 cells):
+    # Staggered grid layout (3×4 cells): 
 
-    Vx   P   Vx   P   Vx   P   Vx   P   Vx  P
+    Vx   P   Vx   P   Vx   P   Vx   P  
          
-    o - Vz - o - Vz - o - Vz - o - Vz - o   Vz
-    |        |        |        |        |
-    Vx   P   Vx   P   Vx   P   Vx   P   Vx  P
-    |        |        |        |        |
-    o - Vz - o - Vz - o - Vz - o - Vz - o   Vz
-    |        |        |        |        |
-    Vx   P   Vx   P   Vx   P   Vx   P   Vx  P
-    |        |        |        |        |
-    o - Vz - o - Vz - o - Vz - o - Vz - o   Vz
-    |        |        |        |        |
-    Vx   P   Vx   P   Vx   P   Vx   P   Vx  P
-    |        |        |        |        |
-    o - Vz - o - Vz - o - Vz - o - Vz - o   Vz
-    |        |        |        |        |
-    Vx   P   Vx   P   Vx   P   Vx   P   Vx  P  
-    |        |        |        |        |
-    o - Vz - o - Vz - o - Vz - o - Vz - o   Vz
+    o - Vz - o - Vz - o - Vz - o   Vz 
+    |        |        |        |       
+    Vx   P   Vx   P   Vx   P   Vx   P  
+    |        |        |        |       
+    o - Vz - o - Vz - o - Vz - o   Vz 
+    |        |        |        |       
+    Vx   P   Vx   P   Vx   P   Vx   P 
+    |        |        |        |      
+    o - Vz - o - Vz - o - Vz - o   Vz 
+    |        |        |        |       
+    Vx   P   Vx   P   Vx   P   Vx   P  
+    |        |        |        |       
+    o - Vz - o - Vz - o - Vz - o   Vz 
+    |        |        |        |       
+    Vx   P   Vx   P   Vx   P   Vx   P 
+    |        |        |        |       
+    o - Vz - o - Vz - o - Vz - o   Vz 
     
     Note: (1) the grid points outside the mesh are added by default to make the arrays
               regular in size and can be used to set ghost point boundary conditions.
@@ -258,16 +256,13 @@ function FormRes!(r_g, snes, x_g, user_ctx)
                 rVx[ix, iy] = 0.0; # set BC
             end
             # mass conservation
-            rP[ix, iy]=rP_l
+            rP[ix, iy] = rP_l
         end
     end
 
     # restore arrays
     LibPETSc.DMStagVecRestoreArray(petsclib, dm, user_ctx.r_l, Rlocal)
     LibPETSc.DMStagVecRestoreArray(petsclib, dm, user_ctx.x_l, Xlocal)
-    
-   # Base.finalize(Xlocal)
-   # Base.finalize(Rlocal)
 
     LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, user_ctx.dm, X_coord,Z_coord,nothing)
 
@@ -347,8 +342,6 @@ function FormJacobian!(J, snes, x_g, user_ctx)
                     LibPETSc.DMStagStencil(LibPETSc.DMSTAG_ELEMENT, iix-1, iiy  ,0,0),
                     LibPETSc.DMStagStencil(LibPETSc.DMSTAG_ELEMENT, iix  , iiy  ,0,0)
                 ]  
-
-            # deal with boundary conditions
 
 
             # local parameters needed in the local residual routine
@@ -545,7 +538,7 @@ function PopulateCoefficientData!(user_ctx)
     LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, user_ctx.dmCoeff, X_coord,Z_coord,nothing)
     LibPETSc.DMStagVecRestoreArray(petsclib, user_ctx.dmCoeff,user_ctx.coeff_l, coeff_array)
     # Note: Do not call Base.finalize on arrays obtained from PETSc; they are managed automatically
-        
+
     return nothing
 end
 
@@ -563,8 +556,6 @@ function set_initial_solution!(x_g, user_ctx, petsclib)
     LibPETSc.VecSet(petsclib, x_g, 0.0) # set global solution vector to zero (including ghost points)
     
     corners       = PETSc.getcorners_dmstag(user_ctx.dm)
-    ghost_corners = PETSc.getghostcorners_dmstag(user_ctx.dm)
-    shift         = corners.lower - ghost_corners.lower;
     X_coord,Z_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, user_ctx.dm)
 
     LibPETSc.VecSet(petsclib,user_ctx.x_l, 0.0)
@@ -576,27 +567,25 @@ function set_initial_solution!(x_g, user_ctx, petsclib)
     Vz = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_DOWN,   0)]);
 
     # Loop over P points (center)
-    for ix=corners.lower[1]+shift[1] : corners.upper[1] + shift[1]
-        for iy=corners.lower[2]+ shift[2] : corners.upper[2] + shift[2]
-            x,z = X_coord[ix-shift[1],2], Z_coord[iy-shift[2],2];         # coordinate of center points
+    for ix=corners.lower[1] : corners.upper[1] 
+        for iy=corners.lower[2] : corners.upper[2] 
+            x,z = X_coord[ix,2], Z_coord[iy,2];         # coordinate of center points
             P[ix, iy] = π^2 * cos(π*x)*cos(π*z);  # Set DOF at element center
         end
     end
-    # No need to set ghost points for P
 
     # Vx points
-    for ix=corners.lower[1]+shift[1] : corners.upper[1] + shift[1]
-        for iy=corners.lower[2]+ shift[2] : corners.upper[2] + shift[2] 
-            x,z = X_coord[ix-shift[1],1], Z_coord[iy-shift[2],2];         # coordinate of center points
+    for ix=corners.lower[1] : corners.upper[1] 
+        for iy=corners.lower[2] : corners.upper[2] 
+            x,z = X_coord[ix,1], Z_coord[iy,2];         # coordinate of center points
             Vx[ix, iy] = π*sin(π*x)*cos(π*z);     # Set DOF at Vx points
         end
     end
 
-    # set ghost points for Vx on bottom & top boundary (free slip)
     # Vz points (not including ghost points)
-    for ix=corners.lower[1]+shift[1] : corners.upper[1] + shift[1]
-        for iy=corners.lower[2]+ shift[2] : corners.upper[2] + shift[2]
-            x,z = X_coord[ix-shift[1],2], Z_coord[iy-shift[2],1];         # coordinate of center points
+    for ix=corners.lower[1] : corners.upper[1] 
+        for iy=corners.lower[2] : corners.upper[2] 
+            x,z = X_coord[ix,2], Z_coord[iy,1];         # coordinate of center points
             
             # Set DOF at Vz points
             Vz[ix, iy] = -π*cos(π*x)*sin(π*z);
@@ -604,7 +593,6 @@ function set_initial_solution!(x_g, user_ctx, petsclib)
     end
 
     LibPETSc.DMStagVecRestoreArray(petsclib, user_ctx.dm, user_ctx.x_l, X_write)
-
 
     #Base.finalize(X_write)  # Not needed; PETSc manages the array
     LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, user_ctx.dm, X_coord,Z_coord,nothing)
@@ -622,7 +610,6 @@ end
 function set_ghostpoint_values!(x_l, dm, petsclib )
     corners       = PETSc.getcorners_dmstag(dm)
     ghost_corners = PETSc.getghostcorners_dmstag(dm)
-    shift         = corners.lower - ghost_corners.lower;
     
     X_write = LibPETSc.DMStagVecGetArray(petsclib, dm, x_l)
     
@@ -650,6 +637,40 @@ function set_ghostpoint_values!(x_l, dm, petsclib )
     
     return nothing
 end
+
+"""
+    Vx,Vy,P,X,Xc = extract_solution_julia(x_g, user_ctx)
+Extracts the solution and returns them as julia arrays (without ghost points). 
+"""
+function extract_solution_julia(x_g::LibPETSc.PetscVec{PetscsLib}, user_ctx) where PetscsLib
+    petsclib = PETSc.getlib(PetscsLib)
+    PETSc.dm_global_to_local!(x_g, user_ctx.x_l, user_ctx.dm)
+    
+    corners       = PETSc.getcorners_dmstag(user_ctx.dm)
+    X_write = LibPETSc.DMStagVecGetArray(petsclib   , user_ctx.dm, user_ctx.x_l)
+        
+    # add views (makes the code below more readable)
+    P  = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_ELEMENT,0)]);
+    Vx = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_LEFT,   0)]);
+    Vz = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_DOWN,   0)]);
+
+    nx,ny = corners.size[1:2]
+
+    # extract solution not including ghost points
+    Vx_sol = copy(Vx[1:nx+1, 1:ny  ])
+    Vz_sol = copy(Vz[1:nx  , 1:ny+1])
+    P_sol  = copy( P[1:nx  , 1:ny  ])
+
+    LibPETSc.DMStagVecRestoreArray(petsclib, user_ctx.dm, user_ctx.x_l, X_write)
+
+
+    X_coord,Y_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, user_ctx.dm)
+
+    x, xc = X_coord[1:nx+1,1], X_coord[1:nx,2];
+    y, yc = Y_coord[1:nx+1,1], Y_coord[1:nx,2];
+    
+    return Vx_sol, Vz_sol, P_sol, (x,y), (xc,yc)
+end 
 
 
 
@@ -706,14 +727,6 @@ LibPETSc.VecSet(petsclib,user_ctx.r_l, 0.0)
 # Create PETSc matrix for Jacobian
 J               =   LibPETSc.DMCreateMatrix(petsclib,user_ctx.dm);
 
-
-# Compute jacobian sparsity pattern
-#x_l     =   PETSc.unsafe_localarray(Float64, user_ctx.x_l.ptr;  write=false, read=true)
-
-#user_ctx.jac, user_ctx.colors = ComputeSparsityPatternJacobian_automatic(user_ctx.x_l, user_ctx);
-#ind     =   PETSc.LocalInGlobalIndices(user_ctx.dm);    # extract indices
-#J       =   PETSc.MatSeqAIJ(sparse(user_ctx.jac[ind,ind]));
-
 # Setting up SNES
 snes = PETSc.SNES(petsclib,MPI.COMM_SELF; 
         snes_rtol=1e-12, 
@@ -722,7 +735,7 @@ snes = PETSc.SNES(petsclib,MPI.COMM_SELF;
         #snes_type = "ksponly",
         snes_monitor_true_residual=true, 
         snes_view=true,
-        snes_linesearch_monitor=true,
+        snes_linesearch_monitor=false,
         #snes_linesearch_view=true,
         #snes_linesearch_type="basic",
         ksp_type = "preonly",
@@ -735,185 +748,30 @@ snes.user_ctx  =       user_ctx;       # crashes
 PETSc.setDM!(snes, user_ctx.dm)
 
 # Set first guess values for solution vector
-#set_initial_solution!(x_g, user_ctx, petsclib)
-x_g .= 0.0
+set_initial_solution!(x_g, user_ctx, petsclib)
 
 PETSc.setfunction!(snes, FormRes!, r_g)
 PETSc.setjacobian!(snes, FormJacobian!, J, J)
 
-FormRes!(r_g, snes, x_g, user_ctx)
-FormJacobian!(J, snes, x_g, user_ctx)
+PETSc.solve!(x_g, snes);
 
 
-# Fake solution (using julia), just to test that everything else is working
-# (PETSc.solve!(x_g, snes) is not working, hence this workaround for now)
-Jl = J[:,:]
-rl = r_g[:]
-dsol = Jl\-rl
-for i=1:length(x_g)
-    x_g[i] = x_g[i] + dsol[i]
-end
+# Extract solution as well as coordinate vectors
+Vx, Vz, P, X, Xc = extract_solution_julia(x_g, user_ctx)
 
-# copy global -> local solution
-PETSc.dm_global_to_local!(x_g, user_ctx.x_l, user_ctx.dm)
-
-X_write = LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dm, user_ctx.x_l)
-    
-# add views (makes the code below more readable)
-P  = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_ELEMENT,0)]);
-Vx = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_LEFT,   0)]);
-Vz = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_DOWN,   0)]);
-
-# extract solution not including ghost points
-#Vx_sol = copy(Vx[2:end  ,2:end-2])
-#Vz_sol = copy(Vz[2:end-2,2:end])
-#P_sol  = copy(P[2:end-2,2:end-2])
-Vx_sol = copy(Vx)
-Vz_sol = copy(Vz)
-P_sol  = copy(P)
-
-LibPETSc.DMStagVecRestoreArray(petsclib, user_ctx.dm, user_ctx.x_l, X_write)
-
-# check residual
-FormRes!(r_g, snes, x_g, user_ctx)
+# Copy velocity to center points for plotting
+Vx_c = (Vx[2:end,:] + Vx[1:end-1,:])/2;
+Vz_c = (Vz[:,2:end] + Vz[:,1:end-1])/2;
 
 
-# Plot residual in 2D
-PETSc.dm_global_to_local!(r_g, user_ctx.r_l, user_ctx.dm)
+# plot
+fig = Figure()
+ax = Axis(fig[1,1], title="Vz field", xlabel="x", ylabel="z")
+hm = heatmap!(ax, X[1], Xc[2], Vz)
+Colorbar(fig[1,2], hm)
 
-X_write = LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dm, user_ctx.r_l)
-   
-rP  = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_ELEMENT,0)]);
-rVx = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_LEFT,   0)]);
-rVz = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_DOWN,   0)]);
-
-rVx_sol = copy(Vx)
-rVz_sol = copy(Vz)
-rP_sol  = copy(P)
-
-LibPETSc.DMStagVecRestoreArray(petsclib, user_ctx.dm, user_ctx.r_l, X_write)
-
-@show extrema(rVx) extrema(rVz)
-
-#=
-# ----------------------------------
-# checkimg the residual by hand 
-Δx, Δz = user_ctx.dx, user_ctx.dz;
-    
-# ----
-# just checking: do this by hand
-Exx = diff(Vx_sol[1:end,1:end],dims=1) ./ Δx;             # dVx/dx
-Ezz = diff(Vz_sol[1:end,1:end],dims=2) ./ Δz;             # dVz/dz
-Exz = 0.5 .* (diff(Vx_sol[2:end,:],dims=2) ./ Δz .+         # 0.5*(dVx/dz + dVz/dx)
-              diff(Vz_sol[:,2:end],dims=1) ./ Δx);
-
-Txx = 2 .* user_ctx.eta1 .* Exx;    # Txx = 2*eta*Exx
-Tzz = 2 .* user_ctx.eta1 .* Ezz;    # Tzz = 2*eta*Ezz
-
-# We actually have to do some padding around this to take BC's properly into account
-Txz = 2 .* user_ctx.eta1 .* Exz;    # Txz = 2*eta*Exz
-
-# first momentum balance
-dP_dx = diff(P[2:end-1,2:end-1],dims=1) ./ Δx;
-dTxx_dx = diff(Txx[2:end,2:end-1],dims=1) ./ Δx;
-dTxz_dz = diff(Txz[2:end-1,1:end],dims=2) ./ Δz;
-rM1 = -dP_dx + dTxx_dx + dTxz_dz        
-
-# 2nd momentum balance
-dP_dz   = diff(P[2:end-1,2:end-1],dims=2) ./ Δz;
-dTzz_dz = diff(Tzz[2:end-1,2:end],dims=2) ./ Δz;
-dTxz_dx = diff(Txz[1:end,2:end-1],dims=1) ./ Δx;
-    
-ρg = zeros(size(dP_dz))
-for i=1:size(ρg,1), j=1:size(ρg,2)
-    x,z = X_coord[i+1,1], Z_coord[j,2];         # coordinate of Vz points
-    if GetPhase(user_ctx,x,1)
-        ρg[i,j] = user_ctx.rho1;
-    else
-        ρg[i,j] = user_ctx.rho2;  
-    end
-end
-
-rM2 = -dP_dz + dTzz_dz + dTxz_dx + ρg    # to be added:  gravity term
-
-# conservation of mass
-rMass = Exx[2:end,2:end-1] + Ezz[2:end-1,2:end] + (1/user_ctx.kappa) .* P[2:end-1,2:end-1];
-
-=#
-
-
-# ----
-
-#=
-b             =   PETSc.DMGlobalVec(user_ctx.dm);
-LibPETSc.VecSet(petsclib,b, 0.0)
-PETSc.solve!(x_g, snes, b)
-=#
-#Solve
-#PETSc.solve!(x_g, snes);
-
-
-#=
-# Copy solution to local vector
-PETSc.update!(user_ctx.x_l, x_g,  PETSc.INSERT_VALUES);
-
-# Extract solution
-Vx  =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm, user_ctx.x_l,   PETSc.DMSTAG_LEFT,      0); 
-Vz  =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm, user_ctx.x_l,   PETSc.DMSTAG_DOWN,      0); 
-P   =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dm, user_ctx.x_l,   PETSc.DMSTAG_ELEMENT,   0); 
-Eta =   PETSc.DMStagGetGhostArrayLocationSlot(user_ctx.dmCoeff, user_ctx.coeff_l,   PETSc.DMSTAG_ELEMENT,   0); 
-
-# Getting indices for center nodes (not ghost)
-ind     = PETSc.DMStagGetIndices(user_ctx.dm);
-ix      =   ind.center[1];           
-iz      =   ind.center[2];       
-
-# Getting rid of ghost points
-Vx  =   Vx[ix[1]:ix[end]+1,iz];
-Vz  =   Vz[ix,iz[1]:iz[end]+1];
-P   =    P[ix,iz];
-Eta =  Eta[ix,iz];
-
-# Compute central average velocities
-Vx_cen = (Vx[2:end,:]  + Vx[1:end-1,:])/2;
-Vz_cen = (Vz[:,2:end]  + Vz[:,1:end-1])/2;
-
-#get coordinates
-dm_coord  = PETSc.getcoordinateDM(user_ctx.dmCoeff);
-vec_coord = PETSc.getcoordinateslocal(user_ctx.dmCoeff);
-
-XCoord_e = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_ELEMENT  ,      0); # location coord corner
-ZCoord_e = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_ELEMENT  ,      1); # location coord corner
-XCoord_c = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_DOWN_LEFT,      0);   # location coord element
-ZCoord_c = PETSc.DMStagGetGhostArrayLocationSlot(dm_coord, vec_coord,   PETSc.DMSTAG_DOWN_LEFT,      1);   # location coord element
-
-XCoord_e = XCoord_e[ix,iz];
-ZCoord_e = ZCoord_e[ix,iz];
-XCoord_c = XCoord_c[ix[1]:ix[end]+1,iz[1]:iz[end]+1];
-ZCoord_c = ZCoord_c[ix[1]:ix[end]+1,iz[1]:iz[end]+1];
-
-xe_1D    = XCoord_e[:,1];
-ze_1D    = ZCoord_e[1,:];
-xc_1D    = XCoord_c[:,1];
-zc_1D    = ZCoord_c[1,:];
-
-# Plot
-CreatePlots = false;        # set to false by default such that testing does not require Plots
-if CreatePlots==true
-    using Plots
-
-    p1 = heatmap(xe_1D,ze_1D, P', xlabel="Width", ylabel="Depth", title="Pressure",aspect_ratio = 1)
-    p2 = heatmap(xe_1D,zc_1D, Vz', xlabel="Width", ylabel="Depth", title="Vz",aspect_ratio = 1)
-    p3 = heatmap(xc_1D,ze_1D, Vx', xlabel="Width", ylabel="Depth", title="Vx",aspect_ratio = 1)
-    quiver!(XCoord_e[:],ZCoord_e[:],quiver=(Vx_cen[:]*0.02,Vz_cen[:]*0.02), color=:white,aspect_ratio = 1)
-    p4 = heatmap(xe_1D,ze_1D, Eta', xlabel="Width", ylabel="Depth", title="Eta",aspect_ratio = 1)
-    plot(p1, p2, p3, p4, layout = (2, 2), legend = false)
-
-end
-
-# check if the solution makes sense
-using LinearAlgebra, Test
-check =  norm(user_ctx.x_l)
-@test check ≈ 31.54688642064483 
-
-=#
+# Subsample for clearer visualization
+step = 2  # plot every 2nd point
+arrows2d!(ax, Xc[1][1:step:end], Xc[2][1:step:end], 
+        Vx_c[1:step:end, 1:step:end], Vz_c[1:step:end, 1:step:end],
+        tipwidth=10, tiplength=10, color=:black)

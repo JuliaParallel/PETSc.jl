@@ -37,16 +37,16 @@ function local_residuals(Vx_l::Matrix, Vz_l::Matrix, P_l::Matrix, params::NamedT
     # 2nd invariant of strainrate @ center (interpolate xz ->xx)
     # NOTE: I think this is using the correct Exx/Ezz points, but 
     # better to double check
-    Eii = sqrt(Exx_l[2,2]^2 + Ezz_l[2,2]^2 + 2*sum(Exz_l.^2)/4);
+    #Eii = sqrt(Exx_l[2,2]^2 + Ezz_l[2,2]^2 + 2*sum(Exz_l.^2)/4);
             
     # once we have that we can compute Tii
-    Tii = 2*params.ηl * Eii
-    η   = Tii / (2*Eii + 1e-16)   # avoid division by zero
+    #Tii = 2*params.ηl * Eii
+    #η   = Tii / (2*Eii + 1e-16)   # avoid division by zero
 
     # stresses, assuming linear viscosity
-    Txx_l = 2η .* Exx_l;        # Txx = 2*eta*Exx
-    Tzz_l = 2η .* Ezz_l;        # Tzz = 2*eta*Ezz
-    Txz_l = 2η .* Exz_l;        # Txz = 2*eta*Exz
+    Txx_l = 2*params.η_center[1:2,:] .* Exx_l;        # Txx = 2*eta*Exx
+    Tzz_l = 2*params.η_center[:,1:2] .* Ezz_l;        # Tzz = 2*eta*Ezz
+    Txz_l = 2*params.η_vertex .* Exz_l;        # Txz = 2*eta*Exz
 
     # compute derivatives
     dPdx_l   = diff(  P_l[:,2:end  ],dims=1) ./ params.Δx;
@@ -62,7 +62,7 @@ function local_residuals(Vx_l::Matrix, Vz_l::Matrix, P_l::Matrix, params::NamedT
     dTxzdx_l = diff(Txz_l[:,1:end-1],dims=1) ./ params.Δx;
             
     # z-momentum
-    rVz = -dPdz_l[1] + dTzzdz_l[1] + dTxzdx_l[1] + params.ρ;
+    rVz = -dPdz_l[1] + dTzzdz_l[1] + dTxzdx_l[1] - params.ρ;
             
     # mass conservation
     rP = Exx_l[2,2] + Ezz_l[2,2] + (1/params.κ) .* P_l[2,2];
@@ -147,11 +147,9 @@ function FormRes!(r_g, snes, x_g, user_ctx)
 
     # Get coefficient array for density and eta (stored in user_ctx.coeff_l)
     coeff_array = LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dmCoeff, user_ctx.coeff_l)
-    rho_vz    = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT, 0)])
-    iee = PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0)
-    iec = PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)
-    eta_center = @view(coeff_array[:,:,iee])
-    eta_vertex = @view(coeff_array[:,:,iec])
+    rho_vz     = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT, 0)])
+    eta_center = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0)])
+    eta_vertex = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)])
 
 #=
     # ----
@@ -238,10 +236,10 @@ function FormRes!(r_g, snes, x_g, user_ctx)
             P_l  = [P[ix-1, iy-1]  P[ix-1, iy];
                     P[ix  , iy-1]  P[ix,   iy] ];
             
-            η_center = eta_center[ix-1:ix,  iy-1:iy  ]
-            η_vertex = eta_vertex[ix-1:ix+1,iy-1:iy+1]
-
-            params = (Δx=Δx, Δz=Δz, κ=user_ctx.kappa, ηl=user_ctx.eta1, ρ=rho_vz[ix, iy], η_center=η_center, η_vertex=η_vertex); 
+            η_center = eta_center[ix-1 : ix+1,  iy-1 : iy+1 ]
+            η_vertex = eta_vertex[ix   : ix+1,  iy   : iy+1 ]
+            #η_vertex = eta_vertex[ix-1 : ix  ,  iy-1 : iy   ]
+            params = (Δx=Δx, Δz=Δz, κ=user_ctx.kappa, ρ=rho_vz[ix, iy], η_center=η_center, η_vertex=η_vertex); 
 
             rVx_l,rVz_l,rP_l = local_residuals(Vx_l, Vz_l, P_l, params)
 
@@ -316,6 +314,7 @@ function FormJacobian!(J, snes, x_g, user_ctx)
             P_l  = [P[ix-1, iy-1]  P[ix-1, iy];
                     P[ix  , iy-1]  P[ix,   iy] ];
 
+
             # location of all points in stencil format (following the ordering above)
             iix = ix - 1       
             iiy = iy - 1
@@ -348,12 +347,11 @@ function FormJacobian!(J, snes, x_g, user_ctx)
                     LibPETSc.DMStagStencil(LibPETSc.DMSTAG_ELEMENT, iix  , iiy  ,0,0)
                 ]  
 
-
             # local parameters needed in the local residual routine
-            η_center = eta_center[ix-1:ix,  iy-1:iy  ]
-            η_vertex = eta_vertex[ix-1:ix+1,iy-1:iy+1]
-
-            params = (Δx=Δx, Δz=Δz, κ=user_ctx.kappa, ηl=user_ctx.eta1, ρ=rho_vz[ix, iy], η_center=η_center, η_vertex=η_vertex, BC=user_ctx.BC); 
+            η_center = eta_center[ix-1 : ix+1,  iy-1 : iy+1 ]
+            η_vertex = eta_vertex[ix   : ix+1,  iy   : iy+1 ]
+            #η_vertex = eta_vertex[ix-1 : ix  ,  iy-1 : iy   ]
+            params = (Δx=Δx, Δz=Δz, κ=user_ctx.kappa, ρ=rho_vz[ix, iy], η_center=η_center, η_vertex=η_vertex, BC=user_ctx.BC); 
 
             # use AD to compute the coefficients of the local coefficients (note that in this case they are trivial)
             r_local = (x) -> local_residual_vec(x, params, (ix, iy), (corners.upper[1], corners.upper[2]))
@@ -514,6 +512,10 @@ function PopulateCoefficientData!(user_ctx)
             η_center[i,j] = user_ctx.eta2;
         end
     end
+    η_center[:,0] = η_center[:,1]
+    η_center[0,:] = η_center[1,:]
+    η_center[:,nz+1] = η_center[:,nz]
+    η_center[nx+1,:] = η_center[nx,:]
     
     # Vertexes
     for i=1:nx+1, j=1:nz+1
@@ -524,7 +526,9 @@ function PopulateCoefficientData!(user_ctx)
             η_vertex[i,j] = user_ctx.eta2;
         end
     end
-
+    η_vertex[:,0] = η_vertex[:,1]
+    η_vertex[0,:] = η_vertex[1,:]
+    
     # Vz points
     for i=1:nx, j=1:nz+1
         x,z = X_coord[i,2], Z_coord[j,1];  # coordinate of vertex points
@@ -546,13 +550,18 @@ end
 
 function GetPhase(ctx,x,z)
 
-    # Divide domain in phases according to x-coordinate (similar to SolCx benchmark)
     # Returns phase 1 on left side, phase 2 on right side
+    phase = 1
     if x < (ctx.xlim[2]-ctx.xlim[1])/2
-        return 1  # left side
-    else
-        return 2  # right side
+    #    phase = 2
     end
+
+    if (x-0.5)^2 + (z-0.5)^2 < 0.1^2
+        phase = 2
+    end
+
+
+    return phase
 end
 
 function set_initial_solution!(x_g, user_ctx, petsclib)
@@ -703,7 +712,7 @@ opts = (; [(k => cli[k]) for k in keys(cli)]...)
 
 
 # Main Solver
-nx, nz           =   32, 32;                  # number of nodes is x and z direction
+nx, nz           =   64, 64;                  # number of nodes is x and z direction
 #nx, nz           =   10, 10;                  # number of nodes is x and z direction
 
 user_ctx.xlim    =   [0.0,1.0];                   # x and z dimensions
@@ -713,9 +722,9 @@ zlim             =   user_ctx.zlim;
 user_ctx.dx      =   (xlim[2]-xlim[1])/nx;   # x-resolution
 user_ctx.dz      =   (zlim[2]-zlim[1])/nz;   # z-resolution
 user_ctx.eta1    =   1;                      # viscosity phase 1
-user_ctx.eta2    =   2;                      # viscosity phase 2
-user_ctx.rho1    =   0;                      # density phase 1
-user_ctx.rho2    =   1;                      # density phase 2
+user_ctx.eta2    =   1e3;                      # viscosity phase 2
+user_ctx.rho1    =   1;                      # density phase 1
+user_ctx.rho2    =   2;                      # density phase 2
 user_ctx.gz      =   -1;                     # gravity magnitude
 user_ctx.kappa   =   1e8;                    # incompressible penalty term
 BC               =   (left=:free_slip, right=:free_slip, top = :free_slip, bottom = :free_slip);  # boundary conditions
@@ -804,9 +813,9 @@ Colorbar(fig[1,2], hm)
 # Subsample for clearer visualization
 step = 2  # plot every 2nd point
 arrows2d!(ax, Xc[1][1:step:end], Xc[2][1:step:end], 
-        Vx_c[1:step:end, 1:step:end], Vz_c[1:step:end, 1:step:end],
-        tipwidth=10, tiplength=10, color=:black)
+        Vx_c[1:step:end, 1:step:end], Vz_c[1:step:end, 1:step:end])
+        #tipwidth=20, tiplength=150, color=:black)
 
 # overlay a single isocontour at value 0.5 (between rho1=0 and rho2=1)
-contour!(ax, Xc[1], X[2], material.ρ_vz; levels=[0.5], color=:white, linewidth=2)
+contour!(ax, Xc[1], X[2], material.ρ_vz; levels=[1.5], color=:white, linewidth=2)
 display(fig)

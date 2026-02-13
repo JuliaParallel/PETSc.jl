@@ -33,8 +33,6 @@ function local_residuals(Vx_l::Matrix, Vz_l::Matrix, P_l::Matrix, params::NamedT
     Exx_l = diff(Vx_l,dims=1) ./ params.Δx;            # dVx/dx
     Ezz_l = diff(Vz_l,dims=2) ./ params.Δz;            # dVz/dz
     Exz_l = 0.5*(diff(Vz_l[:,2:end],dims=1) ./ params.Δx + diff(Vx_l[2:end,:],dims=2) ./ params.Δz);             # dVz/dz
-        
-    @show Exx_l Exz_l Ezz_l
 
     # 2nd invariant of strainrate @ center (interpolate xz ->xx)
     # NOTE: I think this is using the correct Exx/Ezz points, but 

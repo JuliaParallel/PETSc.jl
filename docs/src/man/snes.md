@@ -66,7 +66,7 @@ For PDE problems, associate the SNES with a DM:
 setDM!(snes, dm)
 
 # Get the DM from SNES
-dm = getDMDA(snes)
+dm = getDM(snes)
 ```
 
 ## Solving

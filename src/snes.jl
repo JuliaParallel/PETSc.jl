@@ -241,7 +241,7 @@ end
 
 
 """
-    dm = getDMDA(snes::AbstractPetscSNES)
+    dm = getDM(snes::AbstractPetscSNES)
 
 Get `dmda` for `snes`
 
@@ -250,7 +250,7 @@ The returned `dmda` is owned by the `snes`
 # External Links
 $(_doc_external("SNES/SNESGetDM"))
 """
-function getDMDA(
+function getDM(
     snes::AbstractPetscSNES{PetscLib},
 ) where {PetscLib}
     dmda = LibPETSc.SNESGetDM(getlib(PetscLib), snes)

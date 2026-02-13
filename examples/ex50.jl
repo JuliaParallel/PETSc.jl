@@ -147,7 +147,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
 
     # Set the Jacobian/operator
     PETSc.setcomputeoperators!(ksp) do J, jac, ksp
-        dm = PETSc.getDMDA(ksp)
+        dm = PETSc.getDM(ksp)
         corners = PETSc.getcorners(dm)
         global_size = PETSc.getinfo(dm).global_size[1:2]
 
@@ -219,7 +219,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
 
     # Set the right-hand side
     PETSc.setcomputerhs!(ksp) do b_vec, ksp
-        dm = PETSc.getDMDA(ksp)
+        dm = PETSc.getDM(ksp)
         comm = PETSc.getcomm(ksp)
         corners = PETSc.getcorners(dm)
         global_size = PETSc.getinfo(dm).global_size[1:2]
@@ -281,7 +281,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
     end
 
     # Compute L2 norm of the error and extrema
-    dm = PETSc.getDMDA(ksp)
+    dm = PETSc.getDM(ksp)
     corners = PETSc.getcorners(dm)
     global_size = PETSc.getinfo(dm).global_size[1:2]
     h = PetscScalar(1) ./ global_size

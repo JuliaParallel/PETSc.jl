@@ -172,7 +172,7 @@ end
 
 
 """
-    getDMDA(ksp::AbstractKSP)
+    getDM(ksp::AbstractKSP)
 
 Get `dmda` for `ksp`
 
@@ -181,7 +181,7 @@ The returned `dmda` is owned by the `ksp`
 # External Links
 $(_doc_external("KSP/KSPGetDM"))
 """
-function getDMDA(ksp::AbstractPetscKSP{PetscLib}) where PetscLib
+function getDM(ksp::AbstractPetscKSP{PetscLib}) where PetscLib
     dmda = LibPETSc.KSPGetDM(getlib(PetscLib),ksp)
     return dmda
 end

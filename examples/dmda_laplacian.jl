@@ -106,7 +106,7 @@ ksp = PETSc.KSP(da; opts...)
 
 # Define the operator assembly function
 function assemble_operator!(A, _, ksp)
-    da = PETSc.getDMDA(ksp)
+    da = PETSc.getDM(ksp)
     corners = PETSc.getcorners(da)
     Nq = PETSc.getinfo(da).global_size[1:2]
     
@@ -142,7 +142,7 @@ PETSc.setcomputeoperators!(ksp, assemble_operator!)
 
 # Set the right-hand side
 PETSc.setcomputerhs!(ksp) do petsc_b, ksp
-    da = PETSc.getDMDA(ksp)
+    da = PETSc.getDM(ksp)
     corners = PETSc.getcorners(da)
     Nq = PETSc.getinfo(da).global_size[1:2]
     

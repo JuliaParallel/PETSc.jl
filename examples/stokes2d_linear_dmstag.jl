@@ -481,8 +481,6 @@ end
 user_ctx = Data_Stokes2D(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
 
 function PopulateCoefficientData!(user_ctx)
-    # NOTE: I don't think that ghost nodes are propely set this way; to be checked (also why the arrays are larger than needed)
-
     ghost_corners = PETSc.getcorners_dmstag(user_ctx.dmCoeff)
     corners = PETSc.getcorners_dmstag(user_ctx.dmCoeff)
   
@@ -491,21 +489,11 @@ function PopulateCoefficientData!(user_ctx)
 
     # Get 1D coordinate arrays of the DM that contain the coordinates of the vertex and center points
     X_coord,Z_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, user_ctx.dmCoeff)
-    @show X_coord
-    @show Z_coord, typeof(Z_coord)
-    @show X_coord[corners.lower[1], 1]
     
     # Get the correct entries for each of our variables in local element-wise storage
-    iec = PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0);  # location eta corner
-    iee = PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0);  # location eta element
-    irc = PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT,      0);  # location rho @ vz points
-    
-    # Helper views
-    η_center = view(coeff_array,:,:,iee);
-    η_vertex = view(coeff_array,:,:,iec);
-    rho_vz   = view(coeff_array,:,:,irc);
-
-    #nx,nz = size(user_ctx.dmCoeff)[1:2]
+    η_center = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0)]);
+    η_vertex = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)]);
+    rho_vz   = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT,      0)]);
 
     # set properties at centers
     for i=corners.lower[1]:corners.upper[1], j=corners.lower[2]:corners.upper[2]
@@ -516,10 +504,10 @@ function PopulateCoefficientData!(user_ctx)
             η_center[i,j] = user_ctx.eta2;
         end
     end
-    #η_center[:,0] = η_center[:,1]
-    #η_center[0,:] = η_center[1,:]
-    #η_center[:,nz+1] = η_center[:,nz]
-    #η_center[nx+1,:] = η_center[nx,:]
+    η_center[:,ghost_corners.lower[2]] = η_center[:,corners.lower[2]]
+    η_center[ghost_corners.lower[2],:] = η_center[corners.lower[2],:]
+    η_center[:,ghost_corners.upper[2]+1] = η_center[:,corners.upper[2]]
+    η_center[ghost_corners.upper[1]+1,:] = η_center[corners.upper[1],:]
 
     # Vertexes
     for i=corners.lower[1]:corners.upper[1]+1, j=corners.lower[2]:corners.upper[2]+1
@@ -530,9 +518,11 @@ function PopulateCoefficientData!(user_ctx)
             η_vertex[i,j] = user_ctx.eta2;
         end
     end
-    #η_vertex[:,0] = η_vertex[:,1]
-    #η_vertex[0,:] = η_vertex[1,:]
-    
+    η_vertex[:,ghost_corners.lower[2]]      = η_vertex[:,corners.lower[2]]
+    η_vertex[ghost_corners.lower[1],:]      = η_vertex[corners.lower[1],:]
+    η_vertex[:,ghost_corners.upper[2]+1]    = η_vertex[:,corners.upper[2]]
+    η_vertex[ghost_corners.upper[1]+1,:]    = η_vertex[corners.upper[1],:]
+
     # Vz points
     for i=corners.lower[1]:corners.upper[1], j=corners.lower[2]:corners.upper[2]+1
         x,z = X_coord[i,2], Z_coord[j,1];  # coordinate of vertex points
@@ -542,11 +532,13 @@ function PopulateCoefficientData!(user_ctx)
             rho_vz[i,j] = user_ctx.rho2;  
         end
     end
-
+    rho_vz[:,ghost_corners.lower[2]]      = rho_vz[:,corners.lower[2]]
+    rho_vz[ghost_corners.lower[1],:]      = rho_vz[corners.lower[1],:]
+    rho_vz[ghost_corners.upper[1],:]      = rho_vz[corners.upper[1],:]
+    
     # restore arrays
     LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, user_ctx.dmCoeff, X_coord,Z_coord,nothing)
     LibPETSc.DMStagVecRestoreArray(petsclib, user_ctx.dmCoeff,user_ctx.coeff_l, coeff_array)
-    # Note: Do not call Base.finalize on arrays obtained from PETSc; they are managed automatically
 
     return nothing
 end
@@ -757,7 +749,6 @@ PETSc.setuniformcoordinates_stag!(user_ctx.dmCoeff, (xlim[1],zlim[1]), (xlim[2],
 # Populate phases
 PopulateCoefficientData!(user_ctx);
 
-#=
 # Create solution and residual vectors
 x_g             =   PETSc.DMGlobalVec(user_ctx.dm);
 r_g             =   PETSc.DMGlobalVec(user_ctx.dm);
@@ -799,6 +790,8 @@ PETSc.setfunction!(snes, FormRes!, r_g)
 PETSc.setjacobian!(snes, FormJacobian!, J, J)
 
 PETSc.solve!(x_g, snes);
+
+#=
 
 # Extract solution as well as coordinate vectors
 Vx, Vz, P, X, Xc, material = extract_solution_julia(x_g, user_ctx)

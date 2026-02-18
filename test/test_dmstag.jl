@@ -727,7 +727,7 @@ end
         PETSc.destroy(vec_test_2D_local);
         PETSc.destroy(dm_2D);
         PETSc.destroy(A);
-        #PETSc.destroy(dm_1D);
+        PETSc.destroy(dm_1D);
 
            
         PETSc.finalize(petsclib)

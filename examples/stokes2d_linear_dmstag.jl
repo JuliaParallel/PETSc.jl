@@ -1,4 +1,4 @@
-# EXCLUDE FROM TESTING
+# INCLUDE IN MPI TEST
 # This shows how to solve the 2D incompressible Stokes equations using SNES solvers,
 # using a staggered grid discretization and a Velocity-Pressure formulation
 #   

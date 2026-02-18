@@ -1,4 +1,5 @@
-# Translation of PETSc DMStag tutorial ex8.c
+# INCLUDE IN MPI TEST
+# PETSc DMStag tutorial ex8.c
 # Solves the 1D Poisson equation on a vertex-centered DMStag grid,
 # demonstrating the simplest use of geometric multigrid.
 #

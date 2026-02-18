@@ -73,6 +73,17 @@ end
 
 """
     res = local_residual_vec(x_in::Vector, params::NamedTuple) 
+    # create a DMStag replica compatible with the original coeff DM on rank 0
+    dv, de, dc = LibPETSc.DMStagGetDOF(petsclib, user_ctx.dmCoeff)
+    dm_coeff_rank0 = PETSc.DMStag(petsclib, MPI.COMM_SELF,
+                                 (PETSc.DM_BOUNDARY_GHOSTED, PETSc.DM_BOUNDARY_GHOSTED),
+                                 (Nx, Nz),
+                                 (dv, de, dc),
+                                 1,
+                                 PETSc.DMSTAG_STENCIL_BOX)
+    PETSc.setuniformcoordinates_stag!(dm_coeff_rank0, (user_ctx.xlim[1],user_ctx.zlim[1]), (user_ctx.xlim[2],user_ctx.zlim[2]))
+
+    vrep_coeff = PETSc.DMGlobalVec(dm_coeff_rank0)
 
 Residual function that calls `local_residuals` and can be used with ForwardDiff.
 It also sets ghost point values if needed. 
@@ -501,13 +512,11 @@ function PopulateCoefficientData!(user_ctx)
     rho_vz   = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT,      0)]);
 
     # Fill coefficients over the FULL ghost range so inter-rank ghosts also have valid data.
-    # Since we know the exact material properties from coordinates, no scatter is needed.
+    # The coordinate arrays from DMStagGetProductCoordinateArrays span the ghost range,
+    # so we index them directly (no clamping!) to get the correct coordinate for each ghost cell.
     # Center properties (element DOF)
     for i=ghost_corners.lower[1]:ghost_corners.upper[1], j=ghost_corners.lower[2]:ghost_corners.upper[2]
-        # clamp coordinate indices to valid range for X_coord/Z_coord
-        ic = clamp(i, corners.lower[1], corners.upper[1])
-        jc = clamp(j, corners.lower[2], corners.upper[2])
-        x,z = X_coord[ic,2], Z_coord[jc,2];
+        x,z = X_coord[i,2], Z_coord[j,2];
         if GetPhase(user_ctx,x,z) == 1
             η_center[i,j] = user_ctx.eta1;
         else
@@ -517,9 +526,7 @@ function PopulateCoefficientData!(user_ctx)
 
     # Vertex properties (corner DOF)
     for i=ghost_corners.lower[1]:ghost_corners.upper[1], j=ghost_corners.lower[2]:ghost_corners.upper[2]
-        ic = clamp(i, corners.lower[1], corners.upper[1]+1)
-        jc = clamp(j, corners.lower[2], corners.upper[2]+1)
-        x,z = X_coord[ic,1], Z_coord[jc,1];
+        x,z = X_coord[i,1], Z_coord[j,1];
         if GetPhase(user_ctx,x,z) == 1
             η_vertex[i,j] = user_ctx.eta1;
         else
@@ -529,9 +536,7 @@ function PopulateCoefficientData!(user_ctx)
 
     # Density at Vz points (left/edge DOF)
     for i=ghost_corners.lower[1]:ghost_corners.upper[1], j=ghost_corners.lower[2]:ghost_corners.upper[2]
-        ic = clamp(i, corners.lower[1], corners.upper[1])
-        jc = clamp(j, corners.lower[2], corners.upper[2]+1)
-        x,z = X_coord[ic,2], Z_coord[jc,1];
+        x,z = X_coord[i,2], Z_coord[j,1];
         if GetPhase(user_ctx,x,z) == 1
             rho_vz[i,j] = user_ctx.rho1;
         else
@@ -661,42 +666,105 @@ end
 
 """
     Vx,Vy,P,X,Xc, ρ_vz = extract_solution_julia(x_g, user_ctx)
+
 Extracts the solution and returns them as julia arrays (without ghost points). 
+Each rank extracts its owned DOF values, then MPI.Reduce collects them on rank 0.
 """
 function extract_solution_julia(x_g::LibPETSc.PetscVec{PetscsLib}, user_ctx) where PetscsLib
     petsclib = PETSc.getlib(PetscsLib)
-    PETSc.dm_global_to_local!(x_g, user_ctx.x_l, user_ctx.dm)
-    
-    corners     = PETSc.getcorners_dmstag(user_ctx.dm)
-    X_write     = LibPETSc.DMStagVecGetArray(petsclib   , user_ctx.dm, user_ctx.x_l)
+
+    comm = MPI.COMM_WORLD
+    rank = MPI.Comm_rank(comm)
+
+    dm = user_ctx.dm
+    Nx, Nz = size(dm)[1:2]
+    corners = PETSc.getcorners_dmstag(dm)
+
+    # ----- Solution extraction via global-to-local + owned-cell copy -----
+    PETSc.dm_global_to_local!(x_g, user_ctx.x_l, dm)
+    Xlocal = LibPETSc.DMStagVecGetArray(petsclib, dm, user_ctx.x_l)
+
+    P_view  = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_ELEMENT, 0)])
+    Vx_view = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_LEFT,    0)])
+    Vz_view = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_DOWN,    0)])
+
+    ix_lo, ix_hi = corners.lower[1], corners.upper[1]
+    iy_lo, iy_hi = corners.lower[2], corners.upper[2]
+
+    # Allocate full-grid buffers (zeros); each rank fills its owned block
+    P_buf  = zeros(Nx,   Nz  )
+    Vx_buf = zeros(Nx+1, Nz  )
+    Vz_buf = zeros(Nx,   Nz+1)
+
+    P_buf[ix_lo:ix_hi, iy_lo:iy_hi]  .= P_view[ix_lo:ix_hi, iy_lo:iy_hi]
+    Vx_buf[ix_lo:ix_hi, iy_lo:iy_hi] .= Vx_view[ix_lo:ix_hi, iy_lo:iy_hi]
+    Vz_buf[ix_lo:ix_hi, iy_lo:iy_hi] .= Vz_view[ix_lo:ix_hi, iy_lo:iy_hi]
+
+    # Right boundary Vx: extra column at ix = Nx+1 (only rightmost ranks)
+    if corners.upper[1] == Nx
+        Vx_buf[Nx+1, iy_lo:iy_hi] .= Vx_view[Nx+1, iy_lo:iy_hi]
+    end
+    # Top boundary Vz: extra row at iy = Nz+1 (only topmost ranks)
+    if corners.upper[2] == Nz
+        Vz_buf[ix_lo:ix_hi, Nz+1] .= Vz_view[ix_lo:ix_hi, Nz+1]
+    end
+
+    LibPETSc.DMStagVecRestoreArray(petsclib, dm, user_ctx.x_l, Xlocal)
+
+    # Reduce (sum) all ranks' buffers onto rank 0
+    P_sol   = MPI.Reduce(P_buf,  MPI.SUM, 0, comm)
+    Vx_sol  = MPI.Reduce(Vx_buf, MPI.SUM, 0, comm)
+    Vz_sol  = MPI.Reduce(Vz_buf, MPI.SUM, 0, comm)
+
+    # ----- Coefficient extraction (same approach as solution) -----
     coeff_array = LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dmCoeff, user_ctx.coeff_l)
+    ρ_vz_view = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT,      0)])
+    η_c_view  = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0)])
+    η_v_view  = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)])
 
-    # add views (makes the code below more readable)
-    P    = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_ELEMENT,0)]);
-    Vx   = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_LEFT,   0)]);
-    Vz   = @view(X_write[:,:,PETSc.DMStagDOF_Slot(user_ctx.dm, LibPETSc.DMSTAG_DOWN,   0)]);
-    ρ    = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT, 0)])
-    ηc   = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT, 0)])
-    ηv   = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)])
-    
-    nx,ny = corners.size[1:2]
+    ρ_buf = zeros(Nx,   Nz+1)
+    ηc_buf = zeros(Nx,  Nz  )
+    ηv_buf = zeros(Nx+1, Nz+1)
 
-    # extract solution not including ghost points
-    Vx_sol = copy(Vx[1:nx+1, 1:ny  ])
-    Vz_sol = copy(Vz[1:nx  , 1:ny+1])
-    P_sol  = copy( P[1:nx  , 1:ny  ])
-    ρ_vz   = copy( ρ[1:nx  , 1:ny+1])
-    η_c    = copy( ηc[1:nx  , 1:ny  ])
-    η_v    = copy( ηv[1:nx+1, 1:ny+1])
+    ρ_buf[ix_lo:ix_hi, iy_lo:iy_hi]  .= ρ_vz_view[ix_lo:ix_hi, iy_lo:iy_hi]
+    ηc_buf[ix_lo:ix_hi, iy_lo:iy_hi] .= η_c_view[ix_lo:ix_hi, iy_lo:iy_hi]
+    ηv_buf[ix_lo:ix_hi, iy_lo:iy_hi] .= η_v_view[ix_lo:ix_hi, iy_lo:iy_hi]
 
-    LibPETSc.DMStagVecRestoreArray(petsclib, user_ctx.dm, user_ctx.x_l, X_write)
+    # Extra boundary coefficients
+    if corners.upper[2] == Nz
+        ρ_buf[ix_lo:ix_hi, Nz+1] .= ρ_vz_view[ix_lo:ix_hi, Nz+1]
+    end
+    if corners.upper[1] == Nx
+        ηv_buf[Nx+1, iy_lo:iy_hi] .= η_v_view[Nx+1, iy_lo:iy_hi]
+    end
+    if corners.upper[2] == Nz
+        ηv_buf[ix_lo:ix_hi, Nz+1] .= η_v_view[ix_lo:ix_hi, Nz+1]
+    end
+    if corners.upper[1] == Nx && corners.upper[2] == Nz
+        ηv_buf[Nx+1, Nz+1] = η_v_view[Nx+1, Nz+1]
+    end
 
-    X_coord,Y_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, user_ctx.dm)
+    LibPETSc.DMStagVecRestoreArray(petsclib, user_ctx.dmCoeff, user_ctx.coeff_l, coeff_array)
 
-    x, xc = X_coord[1:nx+1,1], X_coord[1:nx,2];
-    y, yc = Y_coord[1:nx+1,1], Y_coord[1:nx,2];
-    
-    return Vx_sol, Vz_sol, P_sol, (x,y), (xc,yc), (; η_c, η_v, ρ_vz)
+    ρ_vz_sol = MPI.Reduce(ρ_buf,  MPI.SUM, 0, comm)
+    η_c_sol  = MPI.Reduce(ηc_buf, MPI.SUM, 0, comm)
+    η_v_sol  = MPI.Reduce(ηv_buf, MPI.SUM, 0, comm)
+
+    # ----- Coordinates (rank 0 computes from global grid params) -----
+    if rank != 0
+        return nothing, nothing, nothing, nothing, nothing, nothing
+    end
+
+    dx = (user_ctx.xlim[2] - user_ctx.xlim[1]) / Nx
+    dz = (user_ctx.zlim[2] - user_ctx.zlim[1]) / Nz
+    x  = range(user_ctx.xlim[1], user_ctx.xlim[2], length=Nx+1) |> collect
+    z  = range(user_ctx.zlim[1], user_ctx.zlim[2], length=Nz+1) |> collect
+    xc = [(i - 0.5) * dx + user_ctx.xlim[1] for i in 1:Nx]
+    zc = [(j - 0.5) * dz + user_ctx.zlim[1] for j in 1:Nz]
+
+    material = (; ρ_vz = ρ_vz_sol, η_c = η_c_sol, η_v = η_v_sol)
+
+    return Vx_sol, Vz_sol, P_sol, (x,z), (xc,zc), material
 end 
 
 
@@ -796,29 +864,33 @@ PETSc.setjacobian!(snes, FormJacobian!, J, J)
 
 PETSc.solve!(x_g, snes);
 
-#=
-
-# Extract solution as well as coordinate vectors
+# Extract solution as well as coordinate vectors and copy that to rank 0 for plotting
 Vx, Vz, P, X, Xc, material = extract_solution_julia(x_g, user_ctx)
 
-# Copy velocity to center points for plotting
-Vx_c = (Vx[2:end,:] + Vx[1:end-1,:])/2;
-Vz_c = (Vz[:,2:end] + Vz[:,1:end-1])/2;
+rank = MPI.Comm_rank(MPI.COMM_WORLD)
+if rank == 0
+    @show extrema(Vz)
+end
+if rank == 0 && 1==1
+    # only plot on rank 0
 
+    # Copy velocity to center points for plotting
+    Vx_c = (Vx[2:end,:] + Vx[1:end-1,:])/2;
+    Vz_c = (Vz[:,2:end] + Vz[:,1:end-1])/2;
 
-# plot
-fig = Figure()
-ax = Axis(fig[1,1], title="Vz field", xlabel="x", ylabel="z")
-hm = heatmap!(ax, X[1], Xc[2], Vz)
-Colorbar(fig[1,2], hm)
+    # plot
+    fig = Figure()
+    ax = Axis(fig[1,1], title="Vz field", xlabel="x", ylabel="z")
+    hm = heatmap!(ax, X[1], Xc[2], Vz)
+    Colorbar(fig[1,2], hm)
 
-# Subsample for clearer visualization
-step = 2  # plot every 2nd point
-arrows2d!(ax, Xc[1][1:step:end], Xc[2][1:step:end], 
-        Vx_c[1:step:end, 1:step:end], Vz_c[1:step:end, 1:step:end])
-        #tipwidth=20, tiplength=150, color=:black)
+    # Subsample for clearer visualization
+    step = 2  # plot every 2nd point
+    arrows2d!(ax, Xc[1][1:step:end], Xc[2][1:step:end], 
+            Vx_c[1:step:end, 1:step:end], Vz_c[1:step:end, 1:step:end])
 
-# overlay a single isocontour at value 0.5 (between rho1=0 and rho2=1)
-contour!(ax, Xc[1], X[2], material.ρ_vz; levels=[1.5], color=:white, linewidth=2)
-display(fig)
-=#
+    # overlay a single isocontour at value 0.5 (between rho1=0 and rho2=1)
+    contour!(ax, Xc[1], X[2], material.ρ_vz; levels=[1.5], color=:white, linewidth=2)
+    display(fig)
+
+end

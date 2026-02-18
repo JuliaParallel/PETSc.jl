@@ -128,8 +128,9 @@ function FormRes!(r_g, snes, x_g, user_ctx)
     # get coordinates
     X_coord,Z_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, user_ctx.dm)
 
-    # get the corners 
+    # get the corners and global sizes
     corners       = PETSc.getcorners_dmstag(dm)
+    Nx, Nz        = size(dm)[1:2]
 
     LibPETSc.VecSet(petsclib,user_ctx.r_l, 0.0) # set residual to zero before accumulating contributions
     Xlocal = LibPETSc.DMStagVecGetArray(petsclib, dm, user_ctx.x_l)
@@ -243,16 +244,16 @@ function FormRes!(r_g, snes, x_g, user_ctx)
 
             rVx_l,rVz_l,rP_l = local_residuals(Vx_l, Vz_l, P_l, params)
 
-            # momentum residuals
-            if iy>corners.lower[2] && iy<corners.upper[2]
+            # momentum residuals — only apply BCs at PHYSICAL boundaries
+            if iy > 1 && iy < Nz
                 rVz[ix, iy] = rVz_l;
             else 
-                rVz[ix, iy] = 0.0; # set BC
+                rVz[ix, iy] = 0.0; # Dirichlet BC at physical top/bottom
             end
-            if ix>corners.lower[1] && ix<corners.upper[1]
+            if ix > 1 && ix < Nx
                 rVx[ix, iy] = rVx_l;
             else 
-                rVx[ix, iy] = 0.0; # set BC
+                rVx[ix, iy] = 0.0; # Dirichlet BC at physical left/right
             end
             # mass conservation
             rP[ix, iy] = rP_l
@@ -284,8 +285,9 @@ function FormJacobian!(J, snes, x_g, user_ctx)
     # get coordinates
     X_coord,Z_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, user_ctx.dm)
 
-    # get the corners 
+    # get the corners and global sizes
     corners = PETSc.getcorners_dmstag(dm)
+    Nx, Nz  = size(dm)[1:2]
     Xlocal  = LibPETSc.DMStagVecGetArray(petsclib, dm, user_ctx.x_l)
     
     P  = @view(Xlocal[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_ELEMENT,0)]);
@@ -354,7 +356,7 @@ function FormJacobian!(J, snes, x_g, user_ctx)
             params = (Δx=Δx, Δz=Δz, κ=user_ctx.kappa, ρ=rho_vz[ix, iy], η_center=η_center, η_vertex=η_vertex, BC=user_ctx.BC); 
 
             # use AD to compute the coefficients of the local coefficients (note that in this case they are trivial)
-            r_local = (x) -> local_residual_vec(x, params, (ix, iy), (corners.upper[1], corners.upper[2]))
+            r_local = (x) -> local_residual_vec(x, params, (ix, iy), (Nx, Nz))
 
             x_in = vcat(Vx_l[:], Vz_l[:], P_l[:])
             x_in = rand(Float64,size(x_in))
@@ -385,13 +387,13 @@ function FormJacobian!(J, snes, x_g, user_ctx)
                 #end
             end
 
-            if ix == 1 
-                # Dirichlet BC on left boundary for Vx
+            if ix == 1 && corners.lower[1] == 1
+                # Dirichlet BC on left physical boundary for Vx
                 iVx_coeff = [iVx]
                 iVx_val = Float64[1.0]
             end
-            if iy == 1 
-                # Dirichlet BC on left boundary for Vz
+            if iy == 1 && corners.lower[2] == 1
+                # Dirichlet BC on bottom physical boundary for Vz
                 iVz_coeff = [iVz]
                 iVz_val = Float64[1.0]
             end
@@ -411,30 +413,33 @@ function FormJacobian!(J, snes, x_g, user_ctx)
         end
     end
 
-    # dirichlet BC's on right & top boundaries for Vx,Vz 
-    for iy=corners.lower[2] : corners.upper[2] 
-        ix = corners.upper[1] + 1
-        iix = ix - 1
-        iiy = iy - 1
-        iVx = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_LEFT,   iix,iiy,0,0)
-        LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iVx], 1, [iVx], [1.0], PETSc.INSERT_VALUES)
-
-        ix = corners.lower[1] 
-        iVx = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_LEFT,   iix,iiy,0,0)
-        LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iVx], 1, [iVx], [1.0], PETSc.INSERT_VALUES)
+    # dirichlet BC's on right & top PHYSICAL boundaries for Vx,Vz 
+    # Right boundary for Vx: extra Vx point at ix = Nx+1 (only on rank owning right edge)
+    if corners.upper[1] == Nx
+        for iy=corners.lower[2] : corners.upper[2] 
+            ix = corners.upper[1] + 1
+            iix = ix - 1
+            iiy = iy - 1
+            iVx = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_LEFT, iix, iiy, 0, 0)
+            LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iVx], 1, [iVx], [1.0], PETSc.INSERT_VALUES)
+        end
     end
 
-    for ix=corners.lower[1] : corners.upper[1] 
-        iy = corners.upper[2] + 1
-        iix = ix - 1
-        iiy = iy - 1
-        iVz = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_DOWN,   iix,iiy,0,0)
-        LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iVz], 1, [iVz], [1.0], PETSc.INSERT_VALUES)
+    # Left boundary for Vx: handled inside main loop (ix==1 check), but also need the extra row at ix=1
+    # (already handled in main loop with ix==1 && corners.lower[1]==1)
 
-        iy = corners.lower[2] 
-        iVz = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_DOWN,   iix,iiy,0,0)
-        LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iVz], 1, [iVz], [1.0], PETSc.INSERT_VALUES)
+    # Top boundary for Vz: extra Vz point at iy = Nz+1 (only on rank owning top edge)
+    if corners.upper[2] == Nz
+        for ix=corners.lower[1] : corners.upper[1] 
+            iy = corners.upper[2] + 1
+            iix = ix - 1
+            iiy = iy - 1
+            iVz = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_DOWN, iix, iiy, 0, 0)
+            LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, J, 1, [iVz], 1, [iVz], [1.0], PETSc.INSERT_VALUES)
+        end
     end
+
+    # Bottom boundary for Vz: handled inside main loop (iy==1 check)
 
     PETSc.assemble!(J);
 
@@ -481,10 +486,10 @@ end
 user_ctx = Data_Stokes2D(nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing);  # holds data we need in the local 
 
 function PopulateCoefficientData!(user_ctx)
-    ghost_corners = PETSc.getcorners_dmstag(user_ctx.dmCoeff)
+    ghost_corners = PETSc.getghostcorners_dmstag(user_ctx.dmCoeff)
     corners = PETSc.getcorners_dmstag(user_ctx.dmCoeff)
   
-    user_ctx.coeff_l    =   PETSc.DMLocalVec(user_ctx.dmCoeff); # DO WE NEED TO DO Global2Local before this in parallel?
+    user_ctx.coeff_l    =   PETSc.DMLocalVec(user_ctx.dmCoeff);
     coeff_array         =   LibPETSc.DMStagVecGetArray(petsclib,user_ctx.dmCoeff,user_ctx.coeff_l);
 
     # Get 1D coordinate arrays of the DM that contain the coordinates of the vertex and center points
@@ -495,46 +500,44 @@ function PopulateCoefficientData!(user_ctx)
     η_vertex = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0)]);
     rho_vz   = @view(coeff_array[:,:,PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_LEFT,      0)]);
 
-    # set properties at centers
-    for i=corners.lower[1]:corners.upper[1], j=corners.lower[2]:corners.upper[2]
-        x,z = X_coord[i,2], Z_coord[j,2];  # coordinate of center points
+    # Fill coefficients over the FULL ghost range so inter-rank ghosts also have valid data.
+    # Since we know the exact material properties from coordinates, no scatter is needed.
+    # Center properties (element DOF)
+    for i=ghost_corners.lower[1]:ghost_corners.upper[1], j=ghost_corners.lower[2]:ghost_corners.upper[2]
+        # clamp coordinate indices to valid range for X_coord/Z_coord
+        ic = clamp(i, corners.lower[1], corners.upper[1])
+        jc = clamp(j, corners.lower[2], corners.upper[2])
+        x,z = X_coord[ic,2], Z_coord[jc,2];
         if GetPhase(user_ctx,x,z) == 1
             η_center[i,j] = user_ctx.eta1;
         else
             η_center[i,j] = user_ctx.eta2;
         end
     end
-    η_center[:,ghost_corners.lower[2]] = η_center[:,corners.lower[2]]
-    η_center[ghost_corners.lower[2],:] = η_center[corners.lower[2],:]
-    η_center[:,ghost_corners.upper[2]+1] = η_center[:,corners.upper[2]]
-    η_center[ghost_corners.upper[1]+1,:] = η_center[corners.upper[1],:]
 
-    # Vertexes
-    for i=corners.lower[1]:corners.upper[1]+1, j=corners.lower[2]:corners.upper[2]+1
-        x,z = X_coord[i,1], Z_coord[j,1];  # coordinate of vertex points
+    # Vertex properties (corner DOF)
+    for i=ghost_corners.lower[1]:ghost_corners.upper[1], j=ghost_corners.lower[2]:ghost_corners.upper[2]
+        ic = clamp(i, corners.lower[1], corners.upper[1]+1)
+        jc = clamp(j, corners.lower[2], corners.upper[2]+1)
+        x,z = X_coord[ic,1], Z_coord[jc,1];
         if GetPhase(user_ctx,x,z) == 1
             η_vertex[i,j] = user_ctx.eta1;
         else
             η_vertex[i,j] = user_ctx.eta2;
         end
     end
-    η_vertex[:,ghost_corners.lower[2]]      = η_vertex[:,corners.lower[2]]
-    η_vertex[ghost_corners.lower[1],:]      = η_vertex[corners.lower[1],:]
-    η_vertex[:,ghost_corners.upper[2]+1]    = η_vertex[:,corners.upper[2]]
-    η_vertex[ghost_corners.upper[1]+1,:]    = η_vertex[corners.upper[1],:]
 
-    # Vz points
-    for i=corners.lower[1]:corners.upper[1], j=corners.lower[2]:corners.upper[2]+1
-        x,z = X_coord[i,2], Z_coord[j,1];  # coordinate of vertex points
+    # Density at Vz points (left/edge DOF)
+    for i=ghost_corners.lower[1]:ghost_corners.upper[1], j=ghost_corners.lower[2]:ghost_corners.upper[2]
+        ic = clamp(i, corners.lower[1], corners.upper[1])
+        jc = clamp(j, corners.lower[2], corners.upper[2]+1)
+        x,z = X_coord[ic,2], Z_coord[jc,1];
         if GetPhase(user_ctx,x,z) == 1
             rho_vz[i,j] = user_ctx.rho1;
         else
             rho_vz[i,j] = user_ctx.rho2;  
         end
     end
-    rho_vz[:,ghost_corners.lower[2]]      = rho_vz[:,corners.lower[2]]
-    rho_vz[ghost_corners.lower[1],:]      = rho_vz[corners.lower[1],:]
-    rho_vz[ghost_corners.upper[1],:]      = rho_vz[corners.upper[1],:]
     
     # restore arrays
     LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, user_ctx.dmCoeff, X_coord,Z_coord,nothing)
@@ -614,37 +617,39 @@ function set_initial_solution!(x_g, user_ctx, petsclib)
     return nothing
 end
 
-# sets ghostpoint values for a DMStag vector for free slip BCs left
+# sets ghostpoint values for a DMStag vector for free slip BCs
+# Only sets ghost points at PHYSICAL boundaries (not inter-rank boundaries)
 function set_ghostpoint_values!(x_l, dm, petsclib, BC )
     corners       = PETSc.getcorners_dmstag(dm)
     ghost_corners = PETSc.getghostcorners_dmstag(dm)
+    Nx, Nz        = size(dm)[1:2]   # global sizes
     
     X_write = LibPETSc.DMStagVecGetArray(petsclib, dm, x_l)
     
     # add views (makes the code below more readable)
-    #P  = @view(X_write[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_ELEMENT,0)]);
     Vx = @view(X_write[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_LEFT,   0)]);
     Vz = @view(X_write[:,:,PETSc.DMStagDOF_Slot(dm, LibPETSc.DMSTAG_DOWN,   0)]);
 
-    # set ghost points for Vx on bottom & top boundary (free slip)
-    # NOTE: this may require modifications in parallel as we only want to set ghostpoints on the physical boundary
+    # set ghost points for Vx on bottom & top PHYSICAL boundary (free slip)
     for ix=corners.lower[1] : corners.upper[1] 
-        if BC.bottom == :free_slip
-        # (τxz=0, implies that dVx/dz=0 at boundary)
+        if BC.bottom == :free_slip && corners.lower[2] == 1
+            # physical bottom boundary (τxz=0, implies dVx/dz=0)
             Vx[ix, ghost_corners.lower[2]] = Vx[ix, corners.lower[2]]
         end
-        if BC.top == :free_slip
+        if BC.top == :free_slip && corners.upper[2] == Nz
+            # physical top boundary
             Vx[ix, ghost_corners.upper[2]] = Vx[ix, corners.upper[2]]
         end
     end
 
-    # set ghost points for Vz on left & right boundary (free slip)
+    # set ghost points for Vz on left & right PHYSICAL boundary (free slip)
     for iy=corners.lower[2] : corners.upper[2] 
-        # (τxz=0, implies that dVz/dx=0 at boundary)
-        if BC.left == :free_slip
+        if BC.left == :free_slip && corners.lower[1] == 1
+            # physical left boundary (τxz=0, implies dVz/dx=0)
             Vz[ghost_corners.lower[1], iy] = Vz[corners.lower[1], iy]
         end
-        if BC.right == :free_slip
+        if BC.right == :free_slip && corners.upper[1] == Nx
+            # physical right boundary
             Vz[ghost_corners.upper[1], iy] = Vz[corners.upper[1], iy]
         end
     end

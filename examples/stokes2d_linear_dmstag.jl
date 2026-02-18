@@ -17,11 +17,13 @@
 # This example also uses the Automatic differentiation package ForwardDiff
 #
 #=
- The solver options below are inspired by PETSc DMStag tutorial ex4.c
- (src/dm/impls/stag/tutorials/ex4.c). Since the Stokes system is a saddle-point
- problem, FieldSplit with Schur complement is the recommended iterative approach.
+ Solver options for the 2D variable-viscosity Stokes problem.
+ Since the Stokes system is a saddle-point problem, FieldSplit with Schur
+ complement is the recommended iterative approach.
  NOTE: do NOT use -pc_fieldsplit_detect_saddle_point; let the DMStag provide
        the natural field splits (face = velocity, element = pressure).
+ NOTE: This is a linear problem. Add -snes_type ksponly for a single linear
+       solve without Newton line search.
 
  Usage examples:
 
@@ -32,82 +34,131 @@
  2) Direct solver with MUMPS (parallel):
    mpiexec -n 4 julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
        -stag_grid_x 64 -stag_grid_y 64 \
+       -snes_type ksponly \
        -ksp_type preonly -pc_type lu -pc_factor_mat_solver_type mumps
 
- 3) FieldSplit Schur + LU on velocity block (serial):
-       Converges in ~6 outer FGMRES iterations.
+ 3) FieldSplit Schur + default sub-solvers (serial, ~7 FGMRES iterations):
+       PETSc defaults (GMRES+ILU) on velocity and pressure sub-blocks.
    julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
        -stag_grid_x 64 -stag_grid_y 64 \
+       -snes_type ksponly \
        -ksp_type fgmres -pc_type fieldsplit \
        -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type upper \
-       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type jacobi \
-       -fieldsplit_face_ksp_type preonly -fieldsplit_face_pc_type lu \
        -ksp_converged_reason -ksp_rtol 1e-10
 
- 4) FieldSplit Schur + Galerkin MG on velocity block (serial, multigrid):
-       Converges in ~7 outer FGMRES iterations. Uses geometric multigrid
-       with Chebyshev/Jacobi smoothers on the velocity (face) sub-block.
+ 4) FieldSplit Schur + LU on velocity block (serial, ~11 FGMRES iterations):
    julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
        -stag_grid_x 64 -stag_grid_y 64 \
+       -snes_type ksponly \
        -ksp_type fgmres -pc_type fieldsplit \
        -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type upper \
+       -fieldsplit_face_ksp_type preonly -fieldsplit_face_pc_type lu \
        -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type jacobi \
-       -fieldsplit_face_ksp_type gcr -fieldsplit_face_pc_type mg \
-       -fieldsplit_face_pc_mg_levels 3 -fieldsplit_face_pc_mg_galerkin \
-       -fieldsplit_face_mg_levels_ksp_type chebyshev \
-       -fieldsplit_face_mg_levels_pc_type jacobi \
-       -fieldsplit_face_mg_levels_ksp_max_it 6 \
-       -ksp_converged_reason -ksp_monitor -ksp_rtol 1e-10
+       -ksp_converged_reason -ksp_rtol 1e-10
 
- 5) FieldSplit Schur full + Galerkin MG 4 levels (serial, best convergence):
-       Converges in ~4 outer FGMRES iterations. Full Schur factorization
-       with 4-level geometric multigrid on velocity block.
+ 5) FieldSplit Schur + default sub-solvers (parallel, 4 cores, ~7 FGMRES iterations):
+   mpiexec -n 4 julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
+       -stag_grid_x 64 -stag_grid_y 64 \
+       -snes_type ksponly \
+       -ksp_type fgmres -pc_type fieldsplit \
+       -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type upper \
+       -ksp_converged_reason -ksp_rtol 1e-10
+
+ 6) FieldSplit Schur + MUMPS on velocity block (parallel, 4 cores, ~11 FGMRES iterations):
+   mpiexec -n 4 julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
+       -stag_grid_x 64 -stag_grid_y 64 \
+       -snes_type ksponly \
+       -ksp_type fgmres -pc_type fieldsplit \
+       -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type upper \
+       -fieldsplit_face_ksp_type preonly -fieldsplit_face_pc_type lu \
+       -fieldsplit_face_pc_factor_mat_solver_type mumps \
+       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type jacobi \
+       -ksp_converged_reason -ksp_rtol 1e-10
+
+ 7) FieldSplit Schur + Galerkin MG on velocity (serial, ~16 FGMRES iterations):
+       Same approach as PETSc ex4.c. 3-level Galerkin MG with Chebyshev+SOR
+       smoothers on the velocity sub-block. Uses FGMRES because the MG V-cycle
+       makes the preconditioner variable.
    julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
        -stag_grid_x 64 -stag_grid_y 64 \
-       -ksp_type fgmres -pc_type fieldsplit \
-       -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type full \
-       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type jacobi \
-       -fieldsplit_face_ksp_type gcr -fieldsplit_face_pc_type mg \
-       -fieldsplit_face_pc_mg_levels 4 -fieldsplit_face_pc_mg_galerkin \
-       -fieldsplit_face_mg_levels_ksp_type gmres \
-       -fieldsplit_face_mg_levels_pc_type jacobi \
-       -fieldsplit_face_mg_levels_ksp_max_it 6 \
-       -ksp_converged_reason -ksp_monitor -ksp_rtol 1e-10
-
- 6) FieldSplit Schur + MG on velocity block (parallel, 4 cores, multigrid):
-       Converges in ~7 outer FGMRES iterations. Uses redundant LU on the
-       coarsest MG level for parallel correctness.
-   mpiexec -n 4 julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
-       -stag_grid_x 64 -stag_grid_y 64 \
+       -snes_type ksponly \
        -ksp_type fgmres -pc_type fieldsplit \
        -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type upper \
-       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type jacobi \
-       -fieldsplit_face_ksp_type gcr -fieldsplit_face_pc_type mg \
-       -fieldsplit_face_pc_mg_levels 3 -fieldsplit_face_pc_mg_galerkin \
-       -fieldsplit_face_mg_levels_ksp_type chebyshev \
-       -fieldsplit_face_mg_levels_pc_type jacobi \
+       -fieldsplit_face_pc_type mg -fieldsplit_face_pc_mg_levels 3 \
+       -fieldsplit_face_pc_mg_galerkin \
        -fieldsplit_face_mg_levels_ksp_max_it 6 \
-       -fieldsplit_face_mg_coarse_pc_type redundant \
-       -fieldsplit_face_mg_coarse_redundant_pc_type lu \
+       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type none \
        -ksp_converged_reason -ksp_monitor -ksp_rtol 1e-10
 
- 7) FieldSplit Schur full + 4-level MG (parallel, 4 cores, best iterative):
-       Converges in ~6 outer FGMRES iterations on 4 cores.
+ 8) FieldSplit Schur + Galerkin MG on velocity (parallel, 4 cores):
    mpiexec -n 4 julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
        -stag_grid_x 64 -stag_grid_y 64 \
+       -snes_type ksponly \
        -ksp_type fgmres -pc_type fieldsplit \
-       -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type full \
-       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type jacobi \
-       -fieldsplit_face_ksp_type gcr -fieldsplit_face_pc_type mg \
-       -fieldsplit_face_pc_mg_levels 4 -fieldsplit_face_pc_mg_galerkin \
-       -fieldsplit_face_mg_levels_ksp_type chebyshev \
-       -fieldsplit_face_mg_levels_pc_type jacobi \
+       -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type upper \
+       -fieldsplit_face_pc_type mg -fieldsplit_face_pc_mg_levels 3 \
+       -fieldsplit_face_pc_mg_galerkin \
        -fieldsplit_face_mg_levels_ksp_max_it 6 \
-       -fieldsplit_face_mg_coarse_pc_type redundant \
-       -fieldsplit_face_mg_coarse_redundant_pc_type lu \
-       -ksp_converged_reason -ksp_monitor -ksp_rtol 1e-10
+       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type none \
+       -ksp_converged_reason -ksp_rtol 1e-10
 
-# Add -snes_type ksponly for a purely linear solve (skips Newton line search).
+ 9) Isoviscous MG benchmark (matches C ex4.c isovisc_nondim_abf_mg test, 3 FGMRES iterations):
+   julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
+       -stag_grid_x 24 -stag_grid_y 24 -eta2 1 \
+       -snes_type ksponly \
+       -ksp_type fgmres -pc_type fieldsplit \
+       -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type upper \
+       -fieldsplit_face_pc_type mg -fieldsplit_face_pc_mg_levels 3 \
+       -fieldsplit_face_pc_mg_galerkin \
+       -fieldsplit_face_mg_levels_ksp_max_it 6 \
+       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type none \
+       -fieldsplit_face_ksp_converged_reason \
+       -ksp_converged_reason -ksp_monitor
+
+ 9b) Isoviscous MG + selfp Schur + Jacobi smoothers (matches C ex4.c isovisc_nondim_abf_mg_2, ~5 FGMRES iters):
+       The C version uses -build_auxiliary_operator (explicit 1/η mass matrix for Schur)
+       and Chebyshev+Jacobi smoothers. We approximate with -pc_fieldsplit_schur_precondition selfp.
+   julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
+       -stag_grid_x 32 -stag_grid_y 32 -eta2 1 \
+       -snes_type ksponly \
+       -ksp_type fgmres -pc_type fieldsplit \
+       -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type upper \
+       -pc_fieldsplit_schur_precondition selfp \
+       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type jacobi \
+       -fieldsplit_face_pc_type mg -fieldsplit_face_pc_mg_levels 3 \
+       -fieldsplit_face_pc_mg_galerkin \
+       -fieldsplit_face_mg_levels_ksp_max_it 6 \
+       -ksp_converged_reason -ksp_monitor
+
+ 10) Monolithic MG with FieldSplit Schur smoother (serial, ~2 GMRES iterations):
+       Uses FieldSplit Schur as the MG smoother to handle the saddle-point
+       structure directly, without needing a custom preconditioner matrix.
+   julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
+       -stag_grid_x 16 -stag_grid_y 16 \
+       -snes_type ksponly \
+       -ksp_type gmres \
+       -pc_type mg -pc_mg_galerkin -pc_mg_levels 2 \
+       -mg_levels_ksp_type richardson -mg_levels_ksp_richardson_scale 0.5 \
+       -mg_levels_ksp_max_it 20 \
+       -mg_levels_pc_type fieldsplit \
+       -mg_levels_pc_fieldsplit_type schur -mg_levels_pc_fieldsplit_schur_fact_type upper \
+       -mg_coarse_pc_type lu \
+       -ksp_converged_reason -ksp_monitor
+
+ 11) Monolithic MG with custom Pmat + Jacobi smoother (serial, ~16 GMRES iterations):
+       Matches C ex4.c 3d_nondim_mono_mg_lamemstyle test. Uses -custom_pc_mat to
+       build a separate preconditioner matrix with 1/η on the pressure diagonal,
+       enabling simple Jacobi smoothing on the full saddle-point system.
+   julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
+       -stag_grid_x 16 -stag_grid_y 16 \
+       -snes_type ksponly \
+       -custom_pc_mat \
+       -ksp_type gmres \
+       -pc_type mg -pc_mg_galerkin -pc_mg_levels 2 \
+       -mg_levels_ksp_type richardson -mg_levels_pc_type jacobi \
+       -mg_levels_ksp_richardson_scale 0.5 -mg_levels_ksp_max_it 20 \
+       -mg_coarse_pc_type lu \
+       -ksp_converged_reason -ksp_monitor
 =#
 
 
@@ -562,6 +613,46 @@ function FormJacobian!(J, snes, x_g, user_ctx)
     return 0
 end
 
+"""
+    FormJacobian!(J, P, snes, x_g, user_ctx)
+
+5-argument form called when Pmat != Amat (i.e., custom_pc_mat is used).
+Fills J as usual, then copies J → P and adds 1/η on the pressure diagonal
+of P.
+This mimics PETSc C ex4's -custom_pc_mat option.
+"""
+function FormJacobian!(J, P, snes, x_g, user_ctx)
+    # Fill J exactly as in the 4-arg method
+    FormJacobian!(J, snes, x_g, user_ctx)
+
+    dm = PETSc.getDM(snes)
+
+    # Copy J → P (same sparsity, both from DMCreateMatrix)
+    LibPETSc.MatCopy(petsclib, J, P, LibPETSc.SAME_NONZERO_PATTERN)
+
+    # Add 1/η_center to the pressure diagonal of P
+    corners = PETSc.getcorners_dmstag(dm)
+    coeff_array = LibPETSc.DMStagVecGetArray(petsclib, user_ctx.dmCoeff, user_ctx.coeff_l)
+    iee = PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT, 0)
+    eta_center = @view(coeff_array[:,:,iee])
+
+    for ix = corners.lower[1] : corners.upper[1]
+        for iy = corners.lower[2] : corners.upper[2]
+            iix = ix - 1
+            iiy = iy - 1
+            iP = LibPETSc.DMStagStencil(LibPETSc.DMSTAG_ELEMENT, iix, iiy, 0, 0)
+            val = 1.0 / eta_center[ix, iy]
+            LibPETSc.DMStagMatSetValuesStencil(petsclib, dm, P, 1, [iP], 1, [iP], [val], PETSc.ADD_VALUES)
+        end
+    end
+
+    PETSc.assemble!(P)
+
+    LibPETSc.DMStagVecRestoreArray(petsclib, user_ctx.dmCoeff, user_ctx.coeff_l, coeff_array)
+
+    return 0
+end
+
 # Define a struct that holds data we need in the local SNES routines below   
 mutable struct Data_Stokes2D
     # DMs and vectors
@@ -883,7 +974,7 @@ zlim             =   user_ctx.zlim;
 user_ctx.dx      =   (xlim[2]-xlim[1])/nx;   # x-resolution
 user_ctx.dz      =   (zlim[2]-zlim[1])/nz;   # z-resolution
 user_ctx.eta1    =   1;                      # viscosity phase 1
-user_ctx.eta2    =   1e3;                      # viscosity phase 2
+user_ctx.eta2    =   get(cli, :eta2, "1e3") |> s -> parse(Float64, s);  # viscosity phase 2 (default 1e3; use -eta2 1 for isoviscous)
 user_ctx.rho1    =   1;                      # density phase 1
 user_ctx.rho2    =   2;                      # density phase 2
 user_ctx.gz      =   -1;                     # gravity magnitude
@@ -928,6 +1019,11 @@ LibPETSc.VecSet(petsclib,user_ctx.r_l, 0.0)
 # Create PETSc matrix for Jacobian
 J               =   LibPETSc.DMCreateMatrix(petsclib,user_ctx.dm);
 
+# Create separate preconditioner matrix if -custom_pc_mat is requested
+# (adds 1/η on the pressure diagonal, enabling Jacobi smoothing in monolithic MG)
+use_custom_pc_mat = haskey(cli, :custom_pc_mat)
+Pmat = use_custom_pc_mat ? LibPETSc.DMCreateMatrix(petsclib, user_ctx.dm) : J
+
 # Setting up SNES
 snes = PETSc.SNES(petsclib,comm; 
         snes_rtol=1e-12, 
@@ -935,7 +1031,6 @@ snes = PETSc.SNES(petsclib,comm;
         snes_max_it = 500,
         #snes_type = "ksponly",
         snes_monitor_true_residual=true, 
-        snes_view=true,
         snes_linesearch_monitor=false,
         #snes_linesearch_view=true,
         #snes_linesearch_type="basic",
@@ -953,7 +1048,7 @@ PETSc.setDM!(snes, user_ctx.dm)
 set_initial_solution!(x_g, user_ctx, petsclib)
 
 PETSc.setfunction!(snes, FormRes!, r_g)
-PETSc.setjacobian!(snes, FormJacobian!, J, J)
+PETSc.setjacobian!(snes, FormJacobian!, J, Pmat)
 
 PETSc.solve!(x_g, snes);
 
@@ -964,7 +1059,7 @@ rank = MPI.Comm_rank(MPI.COMM_WORLD)
 if rank == 0
     @show extrema(Vz)
 end
-if rank == 0 && 1==1
+if rank == 0 && 1==0
     # only plot on rank 0
 
     # Copy velocity to center points for plotting

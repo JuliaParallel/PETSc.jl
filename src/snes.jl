@@ -44,12 +44,12 @@ function SNES(
         LibPETSc.SNESSetOptionsPrefix(petsclib, snes, prefix)
     end
     
-    # Push options to PETSc options database
+    # Store options for deferred SNESSetFromOptions in solve!.
+    # We do NOT call SetFromOptions here because the DM is typically
+    # set after construction (via setDM!), and PCs like MG need the
+    # DM hierarchy to be available during SetFromOptions/SetUp.
     if !isempty(options)
-        opts = PETSc.Options(petsclib; options...);
-        push!(opts)
-        LibPETSc.SNESSetFromOptions(petsclib, snes)
-        pop!(opts)
+        snes.opts = PETSc.Options(petsclib; options...)
     end
 
     # We can only let the garbage collect finalize when we do not need to
@@ -213,9 +213,20 @@ function solve!(
     snes::AbstractPetscSNES{PetscLib},
     b::Union{Nothing, AbstractPetscVec{PetscLib}} = nothing,
 ) where {PetscLib}
-    #with(snes.opts) do
-    LibPETSc.SNESSolve(PetscLib, snes, isnothing(b) ? C_NULL : b, x)
-    #end
+    has_opts = !isnothing(snes.opts)
+    if has_opts
+        push!(snes.opts)
+        # Call SetFromOptions here (rather than in the constructor) so that
+        # the DM and callbacks are already attached. This is critical for
+        # PCs like MG that need a DM hierarchy, and for FieldSplit sub-KSPs
+        # that are created lazily during KSPSetUp/KSPSolve.
+        LibPETSc.SNESSetFromOptions(PetscLib, snes)
+    end
+    try
+        LibPETSc.SNESSolve(PetscLib, snes, isnothing(b) ? C_NULL : b, x)
+    finally
+        has_opts && pop!(snes.opts)
+    end
     return x
 end
 

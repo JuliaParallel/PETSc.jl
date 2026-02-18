@@ -163,7 +163,8 @@
 
 
 using PETSc, MPI
-using ForwardDiff, LinearAlgebra, CairoMakie
+using ForwardDiff, LinearAlgebra
+const HAS_CAIROMAKIE = try using CairoMakie; true catch; false end
 
 petsclib = first(PETSc.petsclibs);
 PETSc.initialized(petsclib) || PETSc.initialize(petsclib)
@@ -1025,19 +1026,40 @@ use_custom_pc_mat = haskey(cli, :custom_pc_mat)
 Pmat = use_custom_pc_mat ? LibPETSc.DMCreateMatrix(petsclib, user_ctx.dm) : J
 
 # Setting up SNES
-snes = PETSc.SNES(petsclib,comm; 
-        snes_rtol=1e-12, 
-        snes_monitor=true, 
+# When running in parallel without explicit solver options, default to
+# FieldSplit Schur (recipe 3/5) which works on any number of processes.
+# Serial LU is fine for 1 process but crashes in parallel without MUMPS.
+nprocs = MPI.Comm_size(comm)
+if nprocs > 1 && !haskey(cli, :pc_type)
+    defaults = (;
+        snes_rtol=1e-12,
+        snes_monitor=true,
         snes_max_it = 500,
-        #snes_type = "ksponly",
-        snes_monitor_true_residual=true, 
+        snes_monitor_true_residual=true,
         snes_linesearch_monitor=false,
-        #snes_linesearch_view=true,
-        #snes_linesearch_type="basic",
+        snes_type = "ksponly",
+        ksp_type = "fgmres",
+        pc_type = "fieldsplit",
+        pc_fieldsplit_type = "schur",
+        pc_fieldsplit_schur_fact_type = "upper",
+        ksp_rtol = 1e-10,
+        snes_converged_reason=true, help=false,
+    )
+else
+    defaults = (;
+        snes_rtol=1e-12,
+        snes_monitor=true,
+        snes_max_it = 500,
+        snes_monitor_true_residual=true,
+        snes_linesearch_monitor=false,
         ksp_type = "preonly",
         pc_type = "lu",
         snes_maxit=10,
         snes_converged_reason=true, help=false,
+    )
+end
+snes = PETSc.SNES(petsclib,comm;
+        defaults...,
         opts...);
 
 snes.user_ctx  =       user_ctx;       # crashes

@@ -24544,7 +24544,7 @@ function DMStagGetProductCoordinateArrays(petsclib::PetscLibType, dm::PetscDM) e
     arrY_ = Ref{Ptr{Ptr{$PetscScalar}}}()
     arrZ_ = Ref{Ptr{Ptr{$PetscScalar}}}()
 
-    _,_,_,nx,ny,nz = DMStagGetGhostCorners(petsclib, dm)
+    xs,ys,zs,nx,ny,nz = DMStagGetGhostCorners(petsclib, dm)
 
     @chk ccall(
                (:DMStagGetProductCoordinateArrays, $petsc_library),
@@ -24553,24 +24553,20 @@ function DMStagGetProductCoordinateArrays(petsclib::PetscLibType, dm::PetscDM) e
                dm, arrX_, arrY_, arrZ_,
               )
 
-    #mat = unsafe_wrap(Array, unsafe_load(arrX_[]), (nx,2))
-    mat = unsafe_wrap(Array, unsafe_load(arrX_[]), (2,nx))
-    mat = PermutedDimsArray(mat, (2,1))
+    mat = unsafe_wrap(Array, unsafe_load(arrX_[], xs+1), (2,nx))
+    mat = OffsetArray(PermutedDimsArray(mat, (2,1)), xs, 0)
     arrX = PetscArray(mat,arrX_[]) 
 
     if ny>0
-        #mat = unsafe_wrap(Array, unsafe_load(arrY_[]), (ny,2))
-        mat = unsafe_wrap(Array, unsafe_load(arrY_[]), (2,ny))
-        mat = PermutedDimsArray(mat, (2,1))
-
+        mat = unsafe_wrap(Array, unsafe_load(arrY_[], ys+1), (2,ny))
+        mat = OffsetArray(PermutedDimsArray(mat, (2,1)), ys, 0)
         arrY = PetscArray(mat,arrY_[]) 
     else
         arrY = nothing
     end
     if nz>0
-        #mat = unsafe_wrap(Array, unsafe_load(arrZ_[]), (nz,2))
-        mat = unsafe_wrap(Array, unsafe_load(arrY_[]), (2,nz))
-        mat = PermutedDimsArray(mat, (2,1))
+        mat = unsafe_wrap(Array, unsafe_load(arrZ_[], zs+1), (2,nz))
+        mat = OffsetArray(PermutedDimsArray(mat, (2,1)), zs, 0)
         arrZ = PetscArray(mat,arrZ_[]) 
     else
         arrZ = nothing
@@ -24612,7 +24608,7 @@ function DMStagGetProductCoordinateArraysRead(petsclib::PetscLibType, dm::PetscD
     arrY_ = Ref{Ptr{Ptr{$PetscScalar}}}()
     arrZ_ = Ref{Ptr{Ptr{$PetscScalar}}}()
 
-    _,_,_,nx,ny,nz = DMStagGetGhostCorners(petsclib, dm)
+    xs,ys,zs,nx,ny,nz = DMStagGetGhostCorners(petsclib, dm)
 
     @chk ccall(
                (:DMStagGetProductCoordinateArraysRead, $petsc_library),
@@ -24621,14 +24617,24 @@ function DMStagGetProductCoordinateArraysRead(petsclib::PetscLibType, dm::PetscD
                dm, arrX_, arrY_, arrZ_,
               )
 
-    mat = unsafe_wrap(Array, unsafe_load(arrX_[]), (nx,2))
+    mat = unsafe_wrap(Array, unsafe_load(arrX_[], xs+1), (2,nx))
+    mat = OffsetArray(PermutedDimsArray(mat, (2,1)), xs, 0)
     arrX = PetscArray(mat,arrX_[]) 
 
-    mat = unsafe_wrap(Array, unsafe_load(arrY_[]), (ny,2))
-    arrY = PetscArray(mat,arrY_[]) 
-
-    mat = unsafe_wrap(Array, unsafe_load(arrZ_[]), (nz,2))
-    arrZ = PetscArray(mat,arrZ_[]) 
+    if ny>0
+        mat = unsafe_wrap(Array, unsafe_load(arrY_[], ys+1), (2,ny))
+        mat = OffsetArray(PermutedDimsArray(mat, (2,1)), ys, 0)
+        arrY = PetscArray(mat,arrY_[]) 
+    else
+        arrY = nothing
+    end
+    if nz>0
+        mat = unsafe_wrap(Array, unsafe_load(arrZ_[], zs+1), (2,nz))
+        mat = OffsetArray(PermutedDimsArray(mat, (2,1)), zs, 0)
+        arrZ = PetscArray(mat,arrZ_[]) 
+    else
+        arrZ = nothing
+    end
 
 	return arrX,arrY,arrZ
 end 
@@ -25572,15 +25578,15 @@ function DMStagRestoreProductCoordinateArrays(petsclib::PetscLibType, dm::PetscD
 
 @for_petsc function DMStagRestoreProductCoordinateArrays(petsclib::$UnionPetscLib, dm::PetscDM, arrX::Union{PetscArray, Nothing}, arrY::Union{PetscArray, Nothing}, arrZ::Union{PetscArray, Nothing})
 
-    ptrX = arrX === nothing ? Ptr{Ptr{$PetscScalar}}(0) : arrX.ptr
-    ptrY = arrY === nothing ? Ptr{Ptr{$PetscScalar}}(0) : arrY.ptr
-    ptrZ = arrZ === nothing ? Ptr{Ptr{$PetscScalar}}(0) : arrZ.ptr
+    refX = arrX === nothing ? C_NULL : Ref(arrX.ptr)
+    refY = arrY === nothing ? C_NULL : Ref(arrY.ptr)
+    refZ = arrZ === nothing ? C_NULL : Ref(arrZ.ptr)
 
     @chk ccall(
                (:DMStagRestoreProductCoordinateArrays, $petsc_library),
                PetscErrorCode,
-               (CDM, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}),
-               dm, ptrX, ptrY, ptrZ
+               (CDM, Ptr{Ptr{Ptr{$PetscScalar}}}, Ptr{Ptr{Ptr{$PetscScalar}}}, Ptr{Ptr{Ptr{$PetscScalar}}}),
+               dm, refX, refY, refZ
               )
 
 
@@ -25608,16 +25614,19 @@ See also:
 # External Links
 $(_doc_external("DMStag/DMStagRestoreProductCoordinateArraysRead"))
 """
-function DMStagRestoreProductCoordinateArraysRead(petsclib::PetscLibType, dm::PetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray) end
+function DMStagRestoreProductCoordinateArraysRead(petsclib::PetscLibType, dm::PetscDM, arrX::Union{PetscArray, Nothing}, arrY::Union{PetscArray, Nothing}, arrZ::Union{PetscArray, Nothing}) end
 
-@for_petsc function DMStagRestoreProductCoordinateArraysRead(petsclib::$UnionPetscLib, dm::PetscDM, arrX::PetscArray, arrY::PetscArray, arrZ::PetscArray )
+@for_petsc function DMStagRestoreProductCoordinateArraysRead(petsclib::$UnionPetscLib, dm::PetscDM, arrX::Union{PetscArray, Nothing}, arrY::Union{PetscArray, Nothing}, arrZ::Union{PetscArray, Nothing} )
 
-   
+    refX = arrX === nothing ? C_NULL : Ref(arrX.ptr)
+    refY = arrY === nothing ? C_NULL : Ref(arrY.ptr)
+    refZ = arrZ === nothing ? C_NULL : Ref(arrZ.ptr)
+
     @chk ccall(
                (:DMStagRestoreProductCoordinateArrays, $petsc_library),
                PetscErrorCode,
-               (CDM, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}, Ref{Ptr{Ptr{$PetscScalar}}}),
-               dm, arrX.ptr, arrY.ptr, arrZ.ptr,
+               (CDM, Ptr{Ptr{Ptr{$PetscScalar}}}, Ptr{Ptr{Ptr{$PetscScalar}}}, Ptr{Ptr{Ptr{$PetscScalar}}}),
+               dm, refX, refY, refZ,
               )
 
 	return nothing

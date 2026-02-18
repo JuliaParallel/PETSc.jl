@@ -483,14 +483,18 @@ user_ctx = Data_Stokes2D(nothing, nothing, nothing, nothing, nothing, nothing, n
 function PopulateCoefficientData!(user_ctx)
     # NOTE: I don't think that ghost nodes are propely set this way; to be checked (also why the arrays are larger than needed)
 
-    # Create coefficient local vector and array (to store eta and rho)
-
+    ghost_corners = PETSc.getcorners_dmstag(user_ctx.dmCoeff)
+    corners = PETSc.getcorners_dmstag(user_ctx.dmCoeff)
+  
     user_ctx.coeff_l    =   PETSc.DMLocalVec(user_ctx.dmCoeff); # DO WE NEED TO DO Global2Local before this in parallel?
     coeff_array         =   LibPETSc.DMStagVecGetArray(petsclib,user_ctx.dmCoeff,user_ctx.coeff_l);
 
     # Get 1D coordinate arrays of the DM that contain the coordinates of the vertex and center points
     X_coord,Z_coord,_ = LibPETSc.DMStagGetProductCoordinateArrays(petsclib, user_ctx.dmCoeff)
-
+    @show X_coord
+    @show Z_coord, typeof(Z_coord)
+    @show X_coord[corners.lower[1], 1]
+    
     # Get the correct entries for each of our variables in local element-wise storage
     iec = PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_DOWN_LEFT, 0);  # location eta corner
     iee = PETSc.DMStagDOF_Slot(user_ctx.dmCoeff, LibPETSc.DMSTAG_ELEMENT,   0);  # location eta element
@@ -499,12 +503,12 @@ function PopulateCoefficientData!(user_ctx)
     # Helper views
     η_center = view(coeff_array,:,:,iee);
     η_vertex = view(coeff_array,:,:,iec);
-    rho_vz     = view(coeff_array,:,:,irc);
+    rho_vz   = view(coeff_array,:,:,irc);
 
-    nx,nz = size(user_ctx.dmCoeff)[1:2]
+    #nx,nz = size(user_ctx.dmCoeff)[1:2]
 
     # set properties at centers
-    for i=1:nx, j=1:nz
+    for i=corners.lower[1]:corners.upper[1], j=corners.lower[2]:corners.upper[2]
         x,z = X_coord[i,2], Z_coord[j,2];  # coordinate of center points
         if GetPhase(user_ctx,x,z) == 1
             η_center[i,j] = user_ctx.eta1;
@@ -512,13 +516,13 @@ function PopulateCoefficientData!(user_ctx)
             η_center[i,j] = user_ctx.eta2;
         end
     end
-    η_center[:,0] = η_center[:,1]
-    η_center[0,:] = η_center[1,:]
-    η_center[:,nz+1] = η_center[:,nz]
-    η_center[nx+1,:] = η_center[nx,:]
-    
+    #η_center[:,0] = η_center[:,1]
+    #η_center[0,:] = η_center[1,:]
+    #η_center[:,nz+1] = η_center[:,nz]
+    #η_center[nx+1,:] = η_center[nx,:]
+
     # Vertexes
-    for i=1:nx+1, j=1:nz+1
+    for i=corners.lower[1]:corners.upper[1]+1, j=corners.lower[2]:corners.upper[2]+1
         x,z = X_coord[i,1], Z_coord[j,1];  # coordinate of vertex points
         if GetPhase(user_ctx,x,z) == 1
             η_vertex[i,j] = user_ctx.eta1;
@@ -526,11 +530,11 @@ function PopulateCoefficientData!(user_ctx)
             η_vertex[i,j] = user_ctx.eta2;
         end
     end
-    η_vertex[:,0] = η_vertex[:,1]
-    η_vertex[0,:] = η_vertex[1,:]
+    #η_vertex[:,0] = η_vertex[:,1]
+    #η_vertex[0,:] = η_vertex[1,:]
     
     # Vz points
-    for i=1:nx, j=1:nz+1
+    for i=corners.lower[1]:corners.upper[1], j=corners.lower[2]:corners.upper[2]+1
         x,z = X_coord[i,2], Z_coord[j,1];  # coordinate of vertex points
         if GetPhase(user_ctx,x,z) == 1
             rho_vz[i,j] = user_ctx.rho1;
@@ -538,7 +542,6 @@ function PopulateCoefficientData!(user_ctx)
             rho_vz[i,j] = user_ctx.rho2;  
         end
     end
-
 
     # restore arrays
     LibPETSc.DMStagRestoreProductCoordinateArrays(petsclib, user_ctx.dmCoeff, X_coord,Z_coord,nothing)
@@ -731,7 +734,7 @@ BC               =   (left=:free_slip, right=:free_slip, top = :free_slip, botto
 user_ctx.BC      =   BC;                     # boundary conditions
 
 # Create Solution and coefficient DMs
-comm        = MPI.COMM_SELF
+comm        = MPI.COMM_WORLD
 dofVertex   = 0
 dofEdge     = 1
 dofCenter   = 1
@@ -754,6 +757,7 @@ PETSc.setuniformcoordinates_stag!(user_ctx.dmCoeff, (xlim[1],zlim[1]), (xlim[2],
 # Populate phases
 PopulateCoefficientData!(user_ctx);
 
+#=
 # Create solution and residual vectors
 x_g             =   PETSc.DMGlobalVec(user_ctx.dm);
 r_g             =   PETSc.DMGlobalVec(user_ctx.dm);
@@ -768,7 +772,7 @@ LibPETSc.VecSet(petsclib,user_ctx.r_l, 0.0)
 J               =   LibPETSc.DMCreateMatrix(petsclib,user_ctx.dm);
 
 # Setting up SNES
-snes = PETSc.SNES(petsclib,MPI.COMM_SELF; 
+snes = PETSc.SNES(petsclib,comm; 
         snes_rtol=1e-12, 
         snes_monitor=true, 
         snes_max_it = 500,
@@ -819,3 +823,4 @@ arrows2d!(ax, Xc[1][1:step:end], Xc[2][1:step:end],
 # overlay a single isocontour at value 0.5 (between rho1=0 and rho2=1)
 contour!(ax, Xc[1], X[2], material.ρ_vz; levels=[1.5], color=:white, linewidth=2)
 display(fig)
+=#

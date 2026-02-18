@@ -15,9 +15,104 @@
 #      | Txz |   |   0     0   2*eta |  | Exz |
 #
 # This example also uses the Automatic differentiation package ForwardDiff
+#
+#=
+ The solver options below are inspired by PETSc DMStag tutorial ex4.c
+ (src/dm/impls/stag/tutorials/ex4.c). Since the Stokes system is a saddle-point
+ problem, FieldSplit with Schur complement is the recommended iterative approach.
+ NOTE: do NOT use -pc_fieldsplit_detect_saddle_point; let the DMStag provide
+       the natural field splits (face = velocity, element = pressure).
+
+ Usage examples:
+
+ 1) Direct solver (serial, default):
+   julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
+       -stag_grid_x 64 -stag_grid_y 64
+
+ 2) Direct solver with MUMPS (parallel):
+   mpiexec -n 4 julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
+       -stag_grid_x 64 -stag_grid_y 64 \
+       -ksp_type preonly -pc_type lu -pc_factor_mat_solver_type mumps
+
+ 3) FieldSplit Schur + LU on velocity block (serial):
+       Converges in ~6 outer FGMRES iterations.
+   julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
+       -stag_grid_x 64 -stag_grid_y 64 \
+       -ksp_type fgmres -pc_type fieldsplit \
+       -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type upper \
+       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type jacobi \
+       -fieldsplit_face_ksp_type preonly -fieldsplit_face_pc_type lu \
+       -ksp_converged_reason -ksp_rtol 1e-10
+
+ 4) FieldSplit Schur + Galerkin MG on velocity block (serial, multigrid):
+       Converges in ~7 outer FGMRES iterations. Uses geometric multigrid
+       with Chebyshev/Jacobi smoothers on the velocity (face) sub-block.
+   julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
+       -stag_grid_x 64 -stag_grid_y 64 \
+       -ksp_type fgmres -pc_type fieldsplit \
+       -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type upper \
+       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type jacobi \
+       -fieldsplit_face_ksp_type gcr -fieldsplit_face_pc_type mg \
+       -fieldsplit_face_pc_mg_levels 3 -fieldsplit_face_pc_mg_galerkin \
+       -fieldsplit_face_mg_levels_ksp_type chebyshev \
+       -fieldsplit_face_mg_levels_pc_type jacobi \
+       -fieldsplit_face_mg_levels_ksp_max_it 6 \
+       -ksp_converged_reason -ksp_monitor -ksp_rtol 1e-10
+
+ 5) FieldSplit Schur full + Galerkin MG 4 levels (serial, best convergence):
+       Converges in ~4 outer FGMRES iterations. Full Schur factorization
+       with 4-level geometric multigrid on velocity block.
+   julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
+       -stag_grid_x 64 -stag_grid_y 64 \
+       -ksp_type fgmres -pc_type fieldsplit \
+       -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type full \
+       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type jacobi \
+       -fieldsplit_face_ksp_type gcr -fieldsplit_face_pc_type mg \
+       -fieldsplit_face_pc_mg_levels 4 -fieldsplit_face_pc_mg_galerkin \
+       -fieldsplit_face_mg_levels_ksp_type gmres \
+       -fieldsplit_face_mg_levels_pc_type jacobi \
+       -fieldsplit_face_mg_levels_ksp_max_it 6 \
+       -ksp_converged_reason -ksp_monitor -ksp_rtol 1e-10
+
+ 6) FieldSplit Schur + MG on velocity block (parallel, 4 cores, multigrid):
+       Converges in ~7 outer FGMRES iterations. Uses redundant LU on the
+       coarsest MG level for parallel correctness.
+   mpiexec -n 4 julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
+       -stag_grid_x 64 -stag_grid_y 64 \
+       -ksp_type fgmres -pc_type fieldsplit \
+       -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type upper \
+       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type jacobi \
+       -fieldsplit_face_ksp_type gcr -fieldsplit_face_pc_type mg \
+       -fieldsplit_face_pc_mg_levels 3 -fieldsplit_face_pc_mg_galerkin \
+       -fieldsplit_face_mg_levels_ksp_type chebyshev \
+       -fieldsplit_face_mg_levels_pc_type jacobi \
+       -fieldsplit_face_mg_levels_ksp_max_it 6 \
+       -fieldsplit_face_mg_coarse_pc_type redundant \
+       -fieldsplit_face_mg_coarse_redundant_pc_type lu \
+       -ksp_converged_reason -ksp_monitor -ksp_rtol 1e-10
+
+ 7) FieldSplit Schur full + 4-level MG (parallel, 4 cores, best iterative):
+       Converges in ~6 outer FGMRES iterations on 4 cores.
+   mpiexec -n 4 julia +1.12 --project=. examples/stokes2d_linear_dmstag.jl \
+       -stag_grid_x 64 -stag_grid_y 64 \
+       -ksp_type fgmres -pc_type fieldsplit \
+       -pc_fieldsplit_type schur -pc_fieldsplit_schur_fact_type full \
+       -fieldsplit_element_ksp_type preonly -fieldsplit_element_pc_type jacobi \
+       -fieldsplit_face_ksp_type gcr -fieldsplit_face_pc_type mg \
+       -fieldsplit_face_pc_mg_levels 4 -fieldsplit_face_pc_mg_galerkin \
+       -fieldsplit_face_mg_levels_ksp_type chebyshev \
+       -fieldsplit_face_mg_levels_pc_type jacobi \
+       -fieldsplit_face_mg_levels_ksp_max_it 6 \
+       -fieldsplit_face_mg_coarse_pc_type redundant \
+       -fieldsplit_face_mg_coarse_redundant_pc_type lu \
+       -ksp_converged_reason -ksp_monitor -ksp_rtol 1e-10
+
+# Add -snes_type ksponly for a purely linear solve (skips Newton line search).
+=#
+
 
 using PETSc, MPI
-using ForwardDiff, SparseArrays, LinearAlgebra, CairoMakie
+using ForwardDiff, LinearAlgebra, CairoMakie
 
 petsclib = first(PETSc.petsclibs);
 PETSc.initialized(petsclib) || PETSc.initialize(petsclib)
@@ -781,8 +876,6 @@ opts = (; [(k => cli[k]) for k in keys(cli)]...)
 
 # Main Solver
 nx, nz           =   64, 64;                  # number of nodes is x and z direction
-#nx, nz           =   10, 10;                  # number of nodes is x and z direction
-
 user_ctx.xlim    =   [0.0,1.0];                   # x and z dimensions
 user_ctx.zlim    =   [0.0,1.0];
 xlim             =   user_ctx.xlim;
@@ -885,9 +978,9 @@ if rank == 0 && 1==1
     Colorbar(fig[1,2], hm)
 
     # Subsample for clearer visualization
-    step = 2  # plot every 2nd point
-    arrows2d!(ax, Xc[1][1:step:end], Xc[2][1:step:end], 
-            Vx_c[1:step:end, 1:step:end], Vz_c[1:step:end, 1:step:end])
+    #step = 2  # plot every 2nd point
+    #arrows2d!(ax, Xc[1][1:step:end], Xc[2][1:step:end], 
+    #        Vx_c[1:step:end, 1:step:end], Vz_c[1:step:end, 1:step:end])
 
     # overlay a single isocontour at value 0.5 (between rho1=0 and rho2=1)
     contour!(ax, Xc[1], X[2], material.ρ_vz; levels=[1.5], color=:white, linewidth=2)

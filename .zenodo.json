@@ -19,7 +19,7 @@
     },
     {
       "name": "Churavy, Valentin",
-      "affiliation": "Johannes Gutenberg University Mainz, Germany; Augsburg University, Germany",
+      "affiliation": "Johannes Gutenberg University Mainz, Germany",
       "orcid": "https://orcid.org/0000-0002-9033-165X"
     },
     {
@@ -44,15 +44,7 @@
     "parallel computing"
   ],
   "grants": [
-    {
-      "id": "10.13039/501100000780::771143"
-    },
-    {
-      "id": "10.13039/501100000780::258830"
-    },
-    {
-      "id": "10.13039/501100003756::185969"
-    }
+    {"id": "10.13039/501100000780::771143"} 
   ],
   "license": {
     "id": "MIT"

@@ -967,7 +967,14 @@ opts = (; [(k => cli[k]) for k in keys(cli)]...)
 
 
 # Main Solver
-nx, nz           =   64, 64;                  # number of nodes is x and z direction
+# When running in parallel (MPI) without explicit grid size, use a small grid
+# so the CI test is fast and robust.  Users can always override with -stag_grid_x/-stag_grid_y.
+nprocs = MPI.Comm_size(MPI.COMM_WORLD)
+if nprocs > 1 && !haskey(cli, :stag_grid_x)
+    nx, nz       =   16, 16
+else
+    nx, nz       =   64, 64;                  # number of nodes in x and z direction
+end
 user_ctx.xlim    =   [0.0,1.0];                   # x and z dimensions
 user_ctx.zlim    =   [0.0,1.0];
 xlim             =   user_ctx.xlim;
@@ -1028,8 +1035,9 @@ Pmat = use_custom_pc_mat ? LibPETSc.DMCreateMatrix(petsclib, user_ctx.dm) : J
 # Setting up SNES
 # When running in parallel without explicit solver options, default to
 # FieldSplit Schur (recipe 3/5) which works on any number of processes.
+# Combined with the smaller default grid (16×16) this is fast and robust. 
+# For larger grids / harder problems see recipes 3-9 in the header.
 # Serial LU is fine for 1 process but crashes in parallel without MUMPS.
-nprocs = MPI.Comm_size(comm)
 if nprocs > 1 && !haskey(cli, :pc_type)
     defaults = (;
         snes_rtol=1e-12,

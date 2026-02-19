@@ -1909,11 +1909,13 @@ function VecScatterDestroy(petsclib::PetscLibType, sf::VecScatter) end
 
 @for_petsc function VecScatterDestroy(petsclib::$UnionPetscLib, sf::VecScatter )
 
+    sf_ = Ref{VecScatter}(sf)
+
     @chk ccall(
                (:VecScatterDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{VecScatter},),
-               sf,
+               sf_,
               )
 
 

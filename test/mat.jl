@@ -312,3 +312,198 @@ end
         PETSc.finalize(petsclib)
     end
 end
+
+@testset "MatDenseGetArray and RestoreArray" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+
+        n, m = 5, 3
+        # 1. Create a Dense Matrix
+        Ajl = zeros(PetscScalar, n, m)
+        A = PETSc.MatSeqDense(petsclib, Ajl)
+
+        # 2. Test GetArray
+        # This should return a Julia Matrix view pointing to PETSc's memory
+        jl_view = LibPETSc.MatDenseGetArray(petsclib, A)
+
+        @test size(jl_view) == (n, m)
+        @test jl_view isa Matrix{PetscScalar}
+
+        # 3. Test Mutability: Writing to the Julia view should update PETSc
+        test_val = PetscScalar(42.0)
+        jl_view[2, 2] = test_val
+
+        # 4. Test RestoreArray
+        # Passing the array back to PETSc to unlock it
+        LibPETSc.MatDenseRestoreArray(petsclib, A, jl_view)
+
+        # 5. Verify the value is actually in PETSc now
+        # assembly! is good practice after direct memory modification
+        PETSc.assemble!(A)
+        @test A[2, 2] == test_val
+
+        # 6. Test copyto!
+        A2_jl = PetscScalar.(rand(n, m))
+        jl_view2 = LibPETSc.MatDenseGetArray(petsclib, A)
+        try
+            copyto!(jl_view2, A2_jl)
+        finally
+            LibPETSc.MatDenseRestoreArray(petsclib, A, jl_view2)
+        end
+        PETSc.assemble!(A)
+
+        @test A[:, :] ≈ A2_jl
+
+        PETSc.destroy(A)
+        PETSc.finalize(petsclib)
+    end
+end
+
+@testset "MatDenseGetArray/RestoreArray variants" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        n, m = 4, 3
+        Ajl = reshape(PetscScalar.(1:(n*m)), n, m)
+        A = PETSc.MatSeqDense(petsclib, Ajl)
+
+        # MatDenseGetArray
+        arr = LibPETSc.MatDenseGetArray(petsclib, A)
+        @test size(arr) == (n, m)
+        @test arr isa Matrix{PetscScalar}
+        arr[1,1] = PetscScalar(123)
+        LibPETSc.MatDenseRestoreArray(petsclib, A, arr)
+        PETSc.assemble!(A)
+        @test A[1,1] == PetscScalar(123)
+
+        # MatDenseGetArrayRead
+        arr_read = LibPETSc.MatDenseGetArrayRead(petsclib, A)
+        @test size(arr_read) == (n, m)
+        @test arr_read[2,2] == A[2,2]
+        LibPETSc.MatDenseRestoreArrayRead(petsclib, A)
+
+        # MatDenseGetArrayWrite
+        arr_write = LibPETSc.MatDenseGetArrayWrite(petsclib, A)
+        @test size(arr_write) == (n, m)
+        arr_write[3,1] = PetscScalar(456)
+        LibPETSc.MatDenseRestoreArrayWrite(petsclib, A)
+        PETSc.assemble!(A)
+        @test A[3,1] == PetscScalar(456)
+
+        # MatDenseGetArrayAndMemType
+        arr_and_mem, mtype = LibPETSc.MatDenseGetArrayAndMemType(petsclib, A)
+        @test size(arr_and_mem) == (n, m)
+        arr_and_mem[4,2] = PetscScalar(789)
+        LibPETSc.MatDenseRestoreArrayAndMemType(petsclib, A)
+        PETSc.assemble!(A)
+        @test A[4,2] == PetscScalar(789)
+
+        # MatDenseGetArrayReadAndMemType
+        arr_read_mem, mtype2 = LibPETSc.MatDenseGetArrayReadAndMemType(petsclib, A)
+        @test size(arr_read_mem) == (n, m)
+        @test arr_read_mem[1,2] == A[1,2]
+        # No explicit restore needed for read test here
+
+        # MatDenseGetArrayWriteAndMemType
+        arr_write_mem, mtype3 = LibPETSc.MatDenseGetArrayWriteAndMemType(petsclib, A)
+        @test size(arr_write_mem) == (n, m)
+        arr_write_mem[2,3] = PetscScalar(321)
+        LibPETSc.MatDenseRestoreArrayWrite(petsclib, A)
+        PETSc.assemble!(A)
+        @test A[2,3] == PetscScalar(321)
+
+        PETSc.destroy(A)
+        PETSc.finalize(petsclib)
+    end
+end
+
+@testset "MatGetGhosts, MatGetRow, MatRestoreRow, MatGetOwnershipRanges" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt = petsclib.PetscInt
+        # Use a small matrix for ghost/row tests
+        n, m = 4, 4
+        Ajl = PetscScalar.([1 2 0 0; 0 3 4 0; 0 0 5 6; 7 0 0 8])
+        A = PETSc.MatSeqAIJ(petsclib, n, m, 2)
+        for i in 1:n, j in 1:m
+            if Ajl[i,j] != 0
+                A[i,j] = Ajl[i,j]
+            end
+        end
+        PETSc.assemble!(A)
+
+        # # MatGetRow and MatRestoreRow
+        for row in 1:n
+            ncols, cols, vals = LibPETSc.MatGetRow(petsclib, A, PetscInt(row - 1))
+            @test ncols == count(!iszero, Ajl[row,:])
+            @test length(cols) == ncols
+            @test length(vals) == ncols
+            # PETSc uses 0-based indices, Julia uses 1-based
+            @test all(Ajl[row, cols .+ 1] .== vals)
+            # MatRestoreRow only releases resources; it does not return row data
+            LibPETSc.MatRestoreRow(petsclib, A, PetscInt(row - 1))
+        end
+
+        # MatGetOwnershipRanges and MatGetOwnershipRangesColumn
+        # These are meaningful for parallel, but should return [0, n] for sequential
+        ranges = LibPETSc.MatGetOwnershipRanges(petsclib, A)
+        @test length(ranges) == 2
+        @test ranges[1] == 0
+        @test ranges[2] == n
+        ranges_col = LibPETSc.MatGetOwnershipRangesColumn(petsclib, A)
+        @test length(ranges_col) == 2
+        @test ranges_col[1] == 0
+        @test ranges_col[2] == m
+
+        # MatGetGhosts (should work, but for non-parallel, expect empty or zero ghosts)
+        nghosts, ghosts = LibPETSc.MatGetGhosts(petsclib, A)
+        @test Int(nghosts) == length(ghosts)
+        # For sequential, usually zero ghosts
+        @test Int(nghosts) == 0 || all(isa.(ghosts, Int))
+
+        PETSc.destroy(A)
+        PETSc.finalize(petsclib)
+    end
+end
+
+@testset "MatSeqAIJGetArray and RestoreArray" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt = petsclib.PetscInt
+
+        # 1. Create a simple Sparse AIJ matrix (Diagonal)
+        n = 5
+        A = PETSc.MatSeqAIJ(petsclib, n, n, 1)
+        for i in 1:n
+            A[i, i] = PetscScalar(i)
+        end
+        PETSc.assemble!(A)
+
+        # 2. Test GetArray (Fixed implementation)
+        # For AIJ, this returns a 1D view of the non-zero values
+        val_view = LibPETSc.MatSeqAIJGetArray(petsclib, A)
+
+        # In a diagonal 5x5 matrix, there are 5 non-zeros.
+        # Note: Depending on PETSc internals, the returned length might be
+        # the full local buffer size.
+        @test length(val_view) >= n
+        @test val_view[1] == PetscScalar(1.0)
+
+        # 3. Test Mutability: Update values through the pointer
+        new_val = PetscScalar(99.0)
+        val_view[1] = new_val
+
+        # 4. Test RestoreArray
+        LibPETSc.MatSeqAIJRestoreArray(petsclib, A, val_view)
+        PETSc.assemble!(A)
+
+        # 5. Verify PETSc sees the change
+        @test A[1, 1] == new_val
+
+        PETSc.destroy(A)
+        PETSc.finalize(petsclib)
+    end
+end

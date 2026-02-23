@@ -312,3 +312,108 @@ end
         PETSc.finalize(petsclib)
     end
 end
+
+@testset "MatDenseGetArray and RestoreArray" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+
+        n, m = 5, 3
+        # 1. Create a Dense Matrix
+        Ajl = zeros(PetscScalar, n, m)
+        A = PETSc.MatSeqDense(petsclib, Ajl)
+
+        # 2. Test GetArray
+        # This should return a Julia Matrix view pointing to PETSc's memory
+        jl_view = LibPETSc.MatDenseGetArray(petsclib, A)
+
+        @test size(jl_view) == (n, m)
+        @test jl_view isa Matrix{PetscScalar}
+
+        # 3. Test Mutability: Writing to the Julia view should update PETSc
+        test_val = PetscScalar(42.0)
+        jl_view[2, 2] = test_val
+
+        # 4. Test RestoreArray
+        # Passing the array back to PETSc to unlock it
+        LibPETSc.MatDenseRestoreArray(petsclib, A, jl_view)
+
+        # 5. Verify the value is actually in PETSc now
+        # assembly! is good practice after direct memory modification
+        PETSc.assemble!(A)
+        @test A[2, 2] == test_val
+
+        # 6. Test copyto!
+        A2_jl = PetscScalar.(rand(n, m))
+        jl_view2 = LibPETSc.MatDenseGetArray(petsclib, A)
+        try
+            copyto!(jl_view2, A2_jl)
+        finally
+            LibPETSc.MatDenseRestoreArray(petsclib, A, jl_view2)
+        end
+        PETSc.assemble!(A)
+
+        @test A[:, :] ≈ A2_jl
+
+        PETSc.destroy(A)
+        PETSc.finalize(petsclib)
+    end
+end
+
+@testset "MatDenseGetArray/RestoreArray variants" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        n, m = 4, 3
+        Ajl = reshape(PetscScalar.(1:(n*m)), n, m)
+        A = PETSc.MatSeqDense(petsclib, Ajl)
+
+        # MatDenseGetArray
+        arr = LibPETSc.MatDenseGetArray(petsclib, A)
+        @test size(arr) == (n, m)
+        @test arr isa Matrix{PetscScalar}
+        arr[1,1] = PetscScalar(123)
+        LibPETSc.MatDenseRestoreArray(petsclib, A, arr)
+        PETSc.assemble!(A)
+        @test A[1,1] == PetscScalar(123)
+
+        # MatDenseGetArrayRead
+        arr_read = LibPETSc.MatDenseGetArrayRead(petsclib, A)
+        @test size(arr_read) == (n, m)
+        @test arr_read[2,2] == A[2,2]
+        LibPETSc.MatDenseRestoreArrayRead(petsclib, A)
+
+        # MatDenseGetArrayWrite
+        arr_write = LibPETSc.MatDenseGetArrayWrite(petsclib, A)
+        @test size(arr_write) == (n, m)
+        arr_write[3,1] = PetscScalar(456)
+        LibPETSc.MatDenseRestoreArrayWrite(petsclib, A)
+        PETSc.assemble!(A)
+        @test A[3,1] == PetscScalar(456)
+
+        # MatDenseGetArrayAndMemType
+        arr_and_mem, mtype = LibPETSc.MatDenseGetArrayAndMemType(petsclib, A)
+        @test size(arr_and_mem) == (n, m)
+        arr_and_mem[4,2] = PetscScalar(789)
+        LibPETSc.MatDenseRestoreArrayAndMemType(petsclib, A)
+        PETSc.assemble!(A)
+        @test A[4,2] == PetscScalar(789)
+
+        # MatDenseGetArrayReadAndMemType
+        arr_read_mem, mtype2 = LibPETSc.MatDenseGetArrayReadAndMemType(petsclib, A)
+        @test size(arr_read_mem) == (n, m)
+        @test arr_read_mem[1,2] == A[1,2]
+        # No explicit restore needed for read test here
+
+        # MatDenseGetArrayWriteAndMemType
+        arr_write_mem, mtype3 = LibPETSc.MatDenseGetArrayWriteAndMemType(petsclib, A)
+        @test size(arr_write_mem) == (n, m)
+        arr_write_mem[2,3] = PetscScalar(321)
+        LibPETSc.MatDenseRestoreArrayWrite(petsclib, A)
+        PETSc.assemble!(A)
+        @test A[2,3] == PetscScalar(321)
+
+        PETSc.destroy(A)
+        PETSc.finalize(petsclib)
+    end
+end

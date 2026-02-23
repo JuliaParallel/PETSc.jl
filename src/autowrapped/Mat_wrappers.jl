@@ -11570,8 +11570,9 @@ $(_doc_external("Mat/MatDenseGetArray"))
 function MatDenseGetArray(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatDenseGetArray(petsclib::$UnionPetscLib, A::PetscMat )
-	array_ = Ref{Ptr{$PetscScalar}}()
+    array_ = Ref{Ptr{$PetscScalar}}()
 
+    # 1. Get the raw pointer from PETSc
     @chk ccall(
                (:MatDenseGetArray, $petsc_library),
                PetscErrorCode,
@@ -11579,9 +11580,15 @@ function MatDenseGetArray(petsclib::PetscLibType, A::PetscMat) end
                A, array_,
               )
 
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
+    # 2. Use the existing helper to get dimensions (no Refs needed here!)
+    m, n = MatGetLocalSize(petsclib, A)
 
-	return array
+    # 3. Wrap the pointer in a Julia Array. 
+    # PETSc dense matrices are column-major, matching Julia's layout perfectly.
+    array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
+
+
+    return array
 end 
 
 """
@@ -11610,13 +11617,23 @@ function MatDenseRestoreArray(petsclib::PetscLibType, A::PetscMat) end
                (:MatDenseRestoreArray, $petsc_library),
                PetscErrorCode,
                (CMat, Ptr{Ptr{$PetscScalar}}),
-               A, array_,
+               A, ptr_ref,
               )
+    return nothing
+end
 
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
-
-	return array
-end 
+@for_petsc function MatDenseRestoreArray(petsclib::$UnionPetscLib, A::PetscMat, array::Array{$PetscScalar})
+    # Create a temporary Ref to the array's internal pointer to satisfy the ** signature
+    ptr_ref = Ref(pointer(array))
+    
+    @chk ccall(
+               (:MatDenseRestoreArray, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{Ptr{$PetscScalar}}),
+               A, ptr_ref,
+              )
+    return nothing
+end
 
 """
 	array::Vector{PetscScalar} = MatDenseGetArrayRead(petsclib::PetscLibType,A::PetscMat) 
@@ -11640,7 +11657,7 @@ $(_doc_external("Mat/MatDenseGetArrayRead"))
 function MatDenseGetArrayRead(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatDenseGetArrayRead(petsclib::$UnionPetscLib, A::PetscMat )
-	array_ = Ref{Ptr{$PetscScalar}}()
+    array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
                (:MatDenseGetArrayRead, $petsc_library),
@@ -11649,9 +11666,10 @@ function MatDenseGetArrayRead(petsclib::PetscLibType, A::PetscMat) end
                A, array_,
               )
 
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
+    m, n = MatGetLocalSize(petsclib, A)
+    array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 
-	return array
+    return array
 end 
 
 """
@@ -11674,7 +11692,7 @@ $(_doc_external("Mat/MatDenseRestoreArrayRead"))
 function MatDenseRestoreArrayRead(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatDenseRestoreArrayRead(petsclib::$UnionPetscLib, A::PetscMat )
-	array_ = Ref{Ptr{$PetscScalar}}()
+    array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
                (:MatDenseRestoreArrayRead, $petsc_library),
@@ -11683,9 +11701,10 @@ function MatDenseRestoreArrayRead(petsclib::PetscLibType, A::PetscMat) end
                A, array_,
               )
 
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
+    m, n = MatGetLocalSize(petsclib, A)
+    array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 
-	return array
+    return array
 end 
 
 """
@@ -11710,7 +11729,7 @@ $(_doc_external("Mat/MatDenseGetArrayWrite"))
 function MatDenseGetArrayWrite(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatDenseGetArrayWrite(petsclib::$UnionPetscLib, A::PetscMat )
-	array_ = Ref{Ptr{$PetscScalar}}()
+    array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
                (:MatDenseGetArrayWrite, $petsc_library),
@@ -11719,9 +11738,10 @@ function MatDenseGetArrayWrite(petsclib::PetscLibType, A::PetscMat) end
                A, array_,
               )
 
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
+    m, n = MatGetLocalSize(petsclib, A)
+    array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 
-	return array
+    return array
 end 
 
 """
@@ -11744,7 +11764,7 @@ $(_doc_external("Mat/MatDenseRestoreArrayWrite"))
 function MatDenseRestoreArrayWrite(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatDenseRestoreArrayWrite(petsclib::$UnionPetscLib, A::PetscMat )
-	array_ = Ref{Ptr{$PetscScalar}}()
+    array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
                (:MatDenseRestoreArrayWrite, $petsc_library),
@@ -11753,9 +11773,10 @@ function MatDenseRestoreArrayWrite(petsclib::PetscLibType, A::PetscMat) end
                A, array_,
               )
 
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
+    m, n = MatGetLocalSize(petsclib, A)
+    array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 
-	return array
+    return array
 end 
 
 """
@@ -11782,8 +11803,8 @@ $(_doc_external("Mat/MatDenseGetArrayAndMemType"))
 function MatDenseGetArrayAndMemType(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatDenseGetArrayAndMemType(petsclib::$UnionPetscLib, A::PetscMat )
-	array_ = Ref{Ptr{$PetscScalar}}()
-	mtype_ = Ref{PetscMemType}()
+    array_ = Ref{Ptr{$PetscScalar}}()
+    mtype_ = Ref{PetscMemType}()
 
     @chk ccall(
                (:MatDenseGetArrayAndMemType, $petsc_library),
@@ -11792,10 +11813,9 @@ function MatDenseGetArrayAndMemType(petsclib::PetscLibType, A::PetscMat) end
                A, array_, mtype_,
               )
 
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
-	mtype = unsafe_string(mtype_[])
-
-	return array,mtype
+    m, n = MatGetLocalSize(petsclib, A)
+    array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
+    return array, mtype_[]
 end 
 
 """
@@ -11818,7 +11838,7 @@ $(_doc_external("Mat/MatDenseRestoreArrayAndMemType"))
 function MatDenseRestoreArrayAndMemType(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatDenseRestoreArrayAndMemType(petsclib::$UnionPetscLib, A::PetscMat )
-	array_ = Ref{Ptr{$PetscScalar}}()
+    array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
                (:MatDenseRestoreArrayAndMemType, $petsc_library),
@@ -11827,9 +11847,10 @@ function MatDenseRestoreArrayAndMemType(petsclib::PetscLibType, A::PetscMat) end
                A, array_,
               )
 
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
+    m, n = MatGetLocalSize(petsclib, A)
+    array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
 
-	return array
+    return array
 end 
 
 """
@@ -11856,8 +11877,8 @@ $(_doc_external("Mat/MatDenseGetArrayReadAndMemType"))
 function MatDenseGetArrayReadAndMemType(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatDenseGetArrayReadAndMemType(petsclib::$UnionPetscLib, A::PetscMat )
-	array_ = Ref{Ptr{$PetscScalar}}()
-	mtype_ = Ref{PetscMemType}()
+    array_ = Ref{Ptr{$PetscScalar}}()
+    mtype_ = Ref{PetscMemType}()
 
     @chk ccall(
                (:MatDenseGetArrayReadAndMemType, $petsc_library),
@@ -11866,10 +11887,9 @@ function MatDenseGetArrayReadAndMemType(petsclib::PetscLibType, A::PetscMat) end
                A, array_, mtype_,
               )
 
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
-	mtype = unsafe_string(mtype_[])
-
-	return array,mtype
+    m, n = MatGetLocalSize(petsclib, A)
+    array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
+    return array, mtype_[]
 end 
 
 """
@@ -11930,8 +11950,8 @@ $(_doc_external("Mat/MatDenseGetArrayWriteAndMemType"))
 function MatDenseGetArrayWriteAndMemType(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatDenseGetArrayWriteAndMemType(petsclib::$UnionPetscLib, A::PetscMat )
-	array_ = Ref{Ptr{$PetscScalar}}()
-	mtype_ = Ref{PetscMemType}()
+    array_ = Ref{Ptr{$PetscScalar}}()
+    mtype_ = Ref{PetscMemType}()
 
     @chk ccall(
                (:MatDenseGetArrayWriteAndMemType, $petsc_library),
@@ -11940,10 +11960,9 @@ function MatDenseGetArrayWriteAndMemType(petsclib::PetscLibType, A::PetscMat) en
                A, array_, mtype_,
               )
 
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
-	mtype = unsafe_string(mtype_[])
-
-	return array,mtype
+    m, n = MatGetLocalSize(petsclib, A)
+    array = unsafe_wrap(Array, array_[], (Int(m), Int(n)); own = false)
+    return array, mtype_[]
 end 
 
 """

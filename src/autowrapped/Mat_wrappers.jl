@@ -2802,7 +2802,7 @@ function MatSetFactorType(petsclib::PetscLibType, mat::PetscMat, t::MatFactorTyp
 end 
 
 """
-	MatGetInfo(petsclib::PetscLibType,mat::PetscMat, flag::MatInfoType, info::MatInfo) 
+    MatGetInfo(petsclib::PetscLibType,mat::PetscMat, flag::MatInfoType, info::Ref{MatInfo}) 
 Returns information about matrix storage (number of
 nonzeros, memory, etc.).
 
@@ -2825,20 +2825,17 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetInfo"))
 """
-function MatGetInfo(petsclib::PetscLibType, mat::PetscMat, flag::MatInfoType, info::MatInfo) end
+function MatGetInfo(petsclib::PetscLibType, mat::PetscMat, flag::MatInfoType, info::Ref{MatInfo}) end
 
-@for_petsc function MatGetInfo(petsclib::$UnionPetscLib, mat::PetscMat, flag::MatInfoType, info::MatInfo )
-
+@for_petsc function MatGetInfo(petsclib::$UnionPetscLib, mat::PetscMat, flag::MatInfoType, info::Ref{MatInfo})
     @chk ccall(
                (:MatGetInfo, $petsc_library),
                PetscErrorCode,
                (CMat, MatInfoType, Ptr{MatInfo}),
                mat, flag, info,
               )
-
-
-	return nothing
-end 
+    return nothing
+end
 
 """
 	MatLUFactor(petsclib::PetscLibType,mat::PetscMat, row::IS, col::IS, info::MatFactorInfo) 
@@ -18090,10 +18087,10 @@ $(_doc_external("Mat/MatSeqAIJGetArray"))
 """
 function MatSeqAIJGetArray(petsclib::PetscLibType, A::PetscMat) end
 
-@for_petsc function MatSeqAIJGetArray(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqAIJGetArray(petsclib::$UnionPetscLib, A::PetscMat)
     array_ = Ref{Ptr{$PetscScalar}}()
 
-    # 1. Call the C function to get the pointer to the sparse value array
+    # 1. Get the pointer to the numerical values
     @chk ccall(
                (:MatSeqAIJGetArray, $petsc_library),
                PetscErrorCode,
@@ -18101,18 +18098,14 @@ function MatSeqAIJGetArray(petsclib::PetscLibType, A::PetscMat) end
                A, array_,
               )
 
-    # 2. Fix: Get the matrix dimensions to determine how many elements to wrap
-    # For Sparse AIJ, GetArray usually provides access to the 'nz' values.
-    m, n = MatGetLocalSize(petsclib, A)
+    # 2. Get the matrix info to determine the number of nonzeros
+    info_ref = Ref{LibPETSc.MatInfo}()
+    LibPETSc.MatGetInfo(petsclib, A, LibPETSc.MAT_LOCAL, info_ref)
 
-    # 3. Wrap as a 1D Array (Vector)
-    # Note: AIJ GetArray provides the raw values buffer.
-    # We wrap it with length m*n if it's treated as a full buffer,
-    # but usually, AIJ GetArray is used for internal access to the non-zero values.
-    # If PETSc intended this to be a flat view of all local entries:
-    array = unsafe_wrap(Array, array_[], Int(m * n); own = false)
+    # 3. Extract the nnz count using the [] syntax to unwrap the Ref
+    nnz = Int(info_ref[].nz_used)
 
-    return array
+    return unsafe_wrap(Array, array_[], nnz; own = false)
 end
 
 """

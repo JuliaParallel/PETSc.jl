@@ -18065,8 +18065,13 @@ function MatSeqAIJKron(petsclib::PetscLibType, A::PetscMat, B::PetscMat, reuse::
 end 
 
 """
-	array::Vector{PetscScalar} = MatSeqAIJGetArray(petsclib::PetscLibType,A::PetscMat) 
-gives read/write access to the array where the data for a `MATSEQAIJ` matrix is stored
+    array::Vector{PetscScalar} = MatSeqAIJGetArray(petsclib::PetscLibType, A::PetscMat)
+
+Returns a 1D Julia Array (Vector) providing direct read/write access to the internal
+numerical values of a `MATSEQAIJ` (Sparse) matrix.
+
+Note: This only provides access to the values array. It does not allow changing
+the sparsity pattern (row pointers or column indices).
 
 Not Collective
 
@@ -18074,11 +18079,11 @@ Input Parameter:
 - `A` - a `MATSEQAIJ` matrix
 
 Output Parameter:
-- `array` - pointer to the data
+- `array` - A `Vector` view of the non-zero values.
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatSeqAIJRestoreArray()`
+See also: `MatSeqAIJRestoreArray()`, `MatDenseGetArray()`
 
 # External Links
 $(_doc_external("Mat/MatSeqAIJGetArray"))
@@ -18099,10 +18104,10 @@ function MatSeqAIJGetArray(petsclib::PetscLibType, A::PetscMat) end
     # 2. Fix: Get the matrix dimensions to determine how many elements to wrap
     # For Sparse AIJ, GetArray usually provides access to the 'nz' values.
     m, n = MatGetLocalSize(petsclib, A)
-    
-    # 3. Wrap as a 1D Array (Vector) 
+
+    # 3. Wrap as a 1D Array (Vector)
     # Note: AIJ GetArray provides the raw values buffer.
-    # We wrap it with length m*n if it's treated as a full buffer, 
+    # We wrap it with length m*n if it's treated as a full buffer,
     # but usually, AIJ GetArray is used for internal access to the non-zero values.
     # If PETSc intended this to be a flat view of all local entries:
     array = unsafe_wrap(Array, array_[], Int(m * n); own = false)
@@ -18111,18 +18116,24 @@ function MatSeqAIJGetArray(petsclib::PetscLibType, A::PetscMat) end
 end
 
 """
-	array::Vector{PetscScalar} = MatSeqAIJRestoreArray(petsclib::PetscLibType,A::PetscMat) 
-returns access to the array where the data for a `MATSEQAIJ` matrix is stored obtained by `MatSeqAIJGetArray()`
+    MatSeqAIJRestoreArray(petsclib::PetscLibType, A::PetscMat, array::Array)
+
+Restores a `MATSEQAIJ` matrix after direct access to its internal data was obtained
+via `MatSeqAIJGetArray()`.
+
+Calling this function is required to "unlock" the matrix and allow PETSc to perform
+subsequent operations (like assembly or multiplication).
 
 Not Collective
 
 Input Parameters:
-- `A`     - a `MATSEQAIJ` matrix
-- `array` - pointer to the data
+- `petsclib` - the PETSc library configuration
+- `A`        - a `MATSEQAIJ` matrix
+- `array`    - the array obtained from `MatSeqAIJGetArray()`
 
 Level: intermediate
 
--seealso: [](ch_matrices), `Mat`, `MatSeqAIJGetArray()`
+See also: `MatSeqAIJGetArray()`, `MatDenseRestoreArray()`
 
 # External Links
 $(_doc_external("Mat/MatSeqAIJRestoreArray"))
@@ -18132,7 +18143,7 @@ function MatSeqAIJRestoreArray(petsclib::PetscLibType, A::PetscMat, array::Array
 @for_petsc function MatSeqAIJRestoreArray(petsclib::$UnionPetscLib, A::PetscMat, array::Array{$PetscScalar})
     # Create a Ref to the pointer of the Julia array to satisfy the ** signature
     ptr_ref = Ref(pointer(array))
-    
+
     @chk ccall(
                (:MatSeqAIJRestoreArray, $petsc_library),
                PetscErrorCode,

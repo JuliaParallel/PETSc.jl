@@ -373,7 +373,7 @@ function Base.size(dm::AbstractPetscDM{PetscLib}) where PetscLib
     return size
 end
 
-
+#=
 """
     dm_local_to_global(dm, x_L, x_G, mode = INSERT_VALUES)
 
@@ -399,7 +399,8 @@ function dm_local_to_global(dm::PetscDM{PetscLib},
     
     return nothing
 end
-
+=#
+#=
 """
     dm_global_to_local(dm, x_G, x_L, mode = INSERT_VALUES)
 
@@ -426,6 +427,7 @@ function dm_global_to_local(dm::PetscDM{PetscLib},
 
     return nothing
 end
+=#
 
 """
     MatAIJ(da::AbstractPetscDM)

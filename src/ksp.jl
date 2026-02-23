@@ -51,6 +51,7 @@ function KSP(
         push!(opts)
         LibPETSc.KSPSetFromOptions(petsclib, ksp)
         pop!(opts)
+        ksp.opts = opts
     end
 
     return ksp
@@ -95,6 +96,7 @@ function KSP(dm::AbstractPetscDM{PetscLib};
         push!(opts)
         LibPETSc.KSPSetFromOptions(petsclib, ksp)
         pop!(opts)
+        ksp.opts = opts
     end
 
     return ksp
@@ -121,16 +123,26 @@ function solve!(
     ksp::PetscKSP{PetscLib},
     b::PetscVec{PetscLib},
 ) where {PetscLib}
-    LibPETSc.KSPSolve(PetscLib, ksp, b, x)
+    has_opts = !isnothing(ksp.opts)
+    has_opts && push!(ksp.opts)
+    try
+        LibPETSc.KSPSolve(PetscLib, ksp, b, x)
+    finally
+        has_opts && pop!(ksp.opts)
+    end
     return nothing
 end
 
 function solve!(
     ksp::AbstractPetscKSP{PetscLib},
 ) where {PetscLib}
-    #with(ksp.opts) do
-    LibPETSc.KSPSolve(PetscLib, ksp, C_NULL, C_NULL)
-    #end
+    has_opts = hasproperty(ksp, :opts) && !isnothing(ksp.opts)
+    has_opts && push!(ksp.opts)
+    try
+        LibPETSc.KSPSolve(PetscLib, ksp, C_NULL, C_NULL)
+    finally
+        has_opts && pop!(ksp.opts)
+    end
     return ksp
 end
 
@@ -172,7 +184,7 @@ end
 
 
 """
-    getDMDA(ksp::AbstractKSP)
+    getDM(ksp::AbstractKSP)
 
 Get `dmda` for `ksp`
 
@@ -181,7 +193,7 @@ The returned `dmda` is owned by the `ksp`
 # External Links
 $(_doc_external("KSP/KSPGetDM"))
 """
-function getDMDA(ksp::AbstractPetscKSP{PetscLib}) where PetscLib
+function getDM(ksp::AbstractPetscKSP{PetscLib}) where PetscLib
     dmda = LibPETSc.KSPGetDM(getlib(PetscLib),ksp)
     return dmda
 end

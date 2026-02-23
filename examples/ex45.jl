@@ -70,7 +70,7 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
 
     # Set compute operators (matrix assembly) and RHS
     PETSc.setcomputeoperators!(ksp) do J, jac, ksp
-        dm = PETSc.getDMDA(ksp)
+        dm = PETSc.getDM(ksp)
         corners = PETSc.getcorners(dm)
         info = PETSc.getinfo(dm)
         N = info.global_size
@@ -123,7 +123,7 @@ function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
     end
 
     PETSc.setcomputerhs!(ksp) do b_vec, ksp
-        dm = PETSc.getDMDA(ksp)
+        dm = PETSc.getDM(ksp)
         corners = PETSc.getcorners(dm)
         info = PETSc.getinfo(dm)
         N = info.global_size

@@ -128,7 +128,7 @@ function solve_laplacian(petsclib, comm, N::Int, opts; mg_levels=nothing)
     
     # Define the operator assembly function
     function assemble_operator!(A, _, ksp)
-        da = PETSc.getDMDA(ksp)
+        da = PETSc.getDM(ksp)
         corners = PETSc.getcorners(da)
         Nq = PETSc.getinfo(da).global_size[1:2]
         
@@ -164,7 +164,7 @@ function solve_laplacian(petsclib, comm, N::Int, opts; mg_levels=nothing)
     
     # Set the right-hand side
     PETSc.setcomputerhs!(ksp) do petsc_b, ksp
-        da = PETSc.getDMDA(ksp)
+        da = PETSc.getDM(ksp)
         corners = PETSc.getcorners(da)
         Nq = PETSc.getinfo(da).global_size[1:2]
         

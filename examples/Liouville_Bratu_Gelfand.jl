@@ -115,7 +115,7 @@ PETSc.dm_local_to_global!(xl, x, da, PETSc.INSERT_VALUES)
 r = similar(x)
 PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     # Get the DMDA associated with the snes
-    da = PETSc.getDMDA(snes)
+    da = PETSc.getDM(snes)
 
     # Get a local vector and transfer the data from the global vector into it
     l_x = PETSc.DMLocalVec(da)
@@ -190,7 +190,7 @@ end
 J = LibPETSc.DMCreateMatrix(petsclib, da)
 PETSc.setjacobian!(snes, J) do J, snes, g_x
     # Get the DMDA associated with the snes
-    da = PETSc.getDMDA(snes)
+    da = PETSc.getDM(snes)
 
     # Get the corners of the points we own
     corners = PETSc.getcorners(da)

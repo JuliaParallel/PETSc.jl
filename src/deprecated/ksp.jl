@@ -233,7 +233,7 @@ The returned `dmda` is owned by the `ksp`
 # External Links
 $(_doc_external("KSP/KSPGetDM"))
 """
-function getDMDA(ksp::AbstractKSP{PetscLib}) where PetscLib
+function getDM(ksp::AbstractKSP{PetscLib}) where PetscLib
     #t_dmda = Ref{CDM}()
     #LibPETSc.KSPGetDM(PetscLib, ksp, t_dmda)
     #dmda = DMDAPtr{PetscLib}(t_dmda[], getlib(PetscLib).age, false)

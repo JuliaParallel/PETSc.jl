@@ -181,7 +181,7 @@ end
 function ComputeLocalResidual!(l_fx, l_x, snes)
 
     # Compute the local residual.
-    da = PETSc.getDMDA(snes)
+    da = PETSc.getDM(snes)
     # The local vectors of l_x/x_old include ghost points
     x = PETSc.reshapelocalarray(l_x[:], da)
     Phi = @view x[1, :, :, :]
@@ -314,7 +314,7 @@ Computes the residual `f`, given solution vector `x`
 function FormResidual!(f,snes, g_x)
     
     # Get the DMDA associated with the snes
-    da = PETSc.getDMDA(snes)
+    da = PETSc.getDM(snes)
 
     # Get a local vector and transfer the data from the global->local vector
     l_x = PETSc.DMLocalVec(da)
@@ -359,7 +359,7 @@ PJ = PETSc.MatAIJ(da)        # initialize space for the matrix from the dmda
 function FormJacobian!(J, snes, g_x)
 
     # Get the DMDA associated with the snes
-    da = PETSc.getDMDA(snes)
+    da = PETSc.getDM(snes)
 
     # Get a local vector and transfer the data from the global->local vector
     l_x = PETSc.DMLocalVec(da)

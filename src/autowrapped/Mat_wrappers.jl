@@ -1136,10 +1136,10 @@ function MatGetGhosts(petsclib::PetscLibType, mat::PetscMat) end
                mat, nghosts_, ghosts_,
               )
 
-	nghosts = nghosts_[]
-	ghosts = unsafe_wrap(Array, ghosts_[], VecGetLocalSize(petsclib, x); own = false)
+    nghosts = nghosts_[]
+    ghosts = unsafe_wrap(Array, ghosts_[], Int(nghosts); own = false)
 
-	return nghosts,ghosts
+    return nghosts,ghosts
 end 
 
 """
@@ -1250,11 +1250,11 @@ function MatGetRow(petsclib::PetscLibType, mat::PetscMat, row::PetscInt) end
                mat, row, ncols_, cols_, vals_,
               )
 
-	ncols = ncols_[]
-	cols = unsafe_wrap(Array, cols_[], VecGetLocalSize(petsclib, x); own = false)
-	vals = unsafe_wrap(Array, vals_[], VecGetLocalSize(petsclib, x); own = false)
+    ncols = ncols_[]
+    cols = unsafe_wrap(Array, cols_[], Int(ncols); own = false)
+    vals = unsafe_wrap(Array, vals_[], Int(ncols); own = false)
 
-	return ncols,cols,vals
+    return ncols,cols,vals
 end 
 
 """
@@ -1322,11 +1322,11 @@ function MatRestoreRow(petsclib::PetscLibType, mat::PetscMat, row::PetscInt) end
                mat, row, ncols_, cols_, vals_,
               )
 
-	ncols = ncols_[]
-	cols = unsafe_wrap(Array, cols_[], VecGetLocalSize(petsclib, x); own = false)
-	vals = unsafe_wrap(Array, vals_[], VecGetLocalSize(petsclib, x); own = false)
+    ncols = ncols_[]
+    cols = unsafe_wrap(Array, cols_[], Int(ncols); own = false)
+    vals = unsafe_wrap(Array, vals_[], Int(ncols); own = false)
 
-	return ncols,cols,vals
+    return ncols,cols,vals
 end 
 
 """
@@ -5357,20 +5357,27 @@ $(_doc_external("Mat/MatGetOwnershipRanges"))
 """
 function MatGetOwnershipRanges(petsclib::PetscLibType, mat::PetscMat) end
 
-@for_petsc function MatGetOwnershipRanges(petsclib::$UnionPetscLib, mat::PetscMat )
-	ranges_ = Ref{Ptr{$PetscInt}}()
-
+@for_petsc function MatGetOwnershipRanges(petsclib::$UnionPetscLib, mat::PetscMat)
+    ranges_ = Ref{Ptr{$PetscInt}}()
     @chk ccall(
-               (:MatGetOwnershipRanges, $petsc_library),
-               PetscErrorCode,
-               (CMat, Ptr{Ptr{$PetscInt}}),
-               mat, ranges_,
-              )
-
-	ranges = unsafe_wrap(Array, ranges_[], VecGetLocalSize(petsclib, x); own = false)
-
-	return ranges
-end 
+        (:MatGetOwnershipRanges, $petsc_library),
+        PetscErrorCode,
+        (CMat, Ptr{Ptr{$PetscInt}}),
+        mat, ranges_,
+    )
+    # Get the MPI communicator directly from the PETSc object via ccall
+    comm_ref = Ref{MPI.MPI_Comm}()
+    @chk ccall(
+        (:PetscObjectGetComm, $petsc_library),
+        PetscErrorCode,
+        (CMat, Ptr{MPI.MPI_Comm}),
+        mat, comm_ref,
+    )
+    comm = MPI.Comm(comm_ref[])
+    nproc = MPI.Comm_size(comm)
+    ranges = unsafe_wrap(Array, ranges_[], nproc + 1; own = false)
+    return ranges
+end
 
 """
 	ranges::Vector{PetscInt} = MatGetOwnershipRangesColumn(petsclib::PetscLibType,mat::PetscMat) 
@@ -5406,9 +5413,20 @@ function MatGetOwnershipRangesColumn(petsclib::PetscLibType, mat::PetscMat) end
                mat, ranges_,
               )
 
-	ranges = unsafe_wrap(Array, ranges_[], VecGetLocalSize(petsclib, x); own = false)
+    # Get the MPI communicator directly from the PETSc object via ccall
+    comm_ref = Ref{MPI.MPI_Comm}()
+    @chk ccall(
+        (:PetscObjectGetComm, $petsc_library),
+        PetscErrorCode,
+        (CMat, Ptr{MPI.MPI_Comm}),
+        mat, comm_ref,
+    )
+    comm = MPI.Comm(comm_ref[])
+    
+    nproc = MPI.Comm_size(comm)
+    ranges = unsafe_wrap(Array, ranges_[], nproc + 1; own = false)
 
-	return ranges
+    return ranges
 end 
 
 """

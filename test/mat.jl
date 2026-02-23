@@ -417,3 +417,53 @@ end
         PETSc.finalize(petsclib)
     end
 end
+
+@testset "MatGetGhosts, MatGetRow, MatRestoreRow, MatGetOwnershipRanges" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt = petsclib.PetscInt
+        # Use a small matrix for ghost/row tests
+        n, m = 4, 4
+        Ajl = PetscScalar.([1 2 0 0; 0 3 4 0; 0 0 5 6; 7 0 0 8])
+        A = PETSc.MatSeqAIJ(petsclib, n, m, 2)
+        for i in 1:n, j in 1:m
+            if Ajl[i,j] != 0
+                A[i,j] = Ajl[i,j]
+            end
+        end
+        PETSc.assemble!(A)
+
+        # # MatGetRow and MatRestoreRow
+        for row in 1:n
+            ncols, cols, vals = LibPETSc.MatGetRow(petsclib, A, PetscInt(row - 1))
+            @test ncols == count(!iszero, Ajl[row,:])
+            @test length(cols) == ncols
+            @test length(vals) == ncols
+            # PETSc uses 0-based indices, Julia uses 1-based
+            @test all(Ajl[row, cols .+ 1] .== vals)
+            # MatRestoreRow only releases resources; it does not return row data
+            LibPETSc.MatRestoreRow(petsclib, A, PetscInt(row - 1))
+        end
+
+        # MatGetOwnershipRanges and MatGetOwnershipRangesColumn
+        # These are meaningful for parallel, but should return [0, n] for sequential
+        ranges = LibPETSc.MatGetOwnershipRanges(petsclib, A)
+        @test length(ranges) == 2
+        @test ranges[1] == 0
+        @test ranges[2] == n
+        ranges_col = LibPETSc.MatGetOwnershipRangesColumn(petsclib, A)
+        @test length(ranges_col) == 2
+        @test ranges_col[1] == 0
+        @test ranges_col[2] == m
+
+        # MatGetGhosts (should work, but for non-parallel, expect empty or zero ghosts)
+        nghosts, ghosts = LibPETSc.MatGetGhosts(petsclib, A)
+        @test Int(nghosts) == length(ghosts)
+        # For sequential, usually zero ghosts
+        @test Int(nghosts) == 0 || all(isa.(ghosts, Int))
+
+        PETSc.destroy(A)
+        PETSc.finalize(petsclib)
+    end
+end

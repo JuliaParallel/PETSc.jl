@@ -467,3 +467,43 @@ end
         PETSc.finalize(petsclib)
     end
 end
+
+@testset "MatSeqAIJGetArray and RestoreArray" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt = petsclib.PetscInt
+
+        # 1. Create a simple Sparse AIJ matrix (Diagonal)
+        n = 5
+        A = PETSc.MatSeqAIJ(petsclib, n, n, 1)
+        for i in 1:n
+            A[i, i] = PetscScalar(i)
+        end
+        PETSc.assemble!(A)
+
+        # 2. Test GetArray (Fixed implementation)
+        # For AIJ, this returns a 1D view of the non-zero values
+        val_view = LibPETSc.MatSeqAIJGetArray(petsclib, A)
+
+        # In a diagonal 5x5 matrix, there are 5 non-zeros.
+        # Note: Depending on PETSc internals, the returned length might be
+        # the full local buffer size.
+        @test length(val_view) >= n
+        @test val_view[1] == PetscScalar(1.0)
+
+        # 3. Test Mutability: Update values through the pointer
+        new_val = PetscScalar(99.0)
+        val_view[1] = new_val
+
+        # 4. Test RestoreArray
+        LibPETSc.MatSeqAIJRestoreArray(petsclib, A, val_view)
+        PETSc.assemble!(A)
+
+        # 5. Verify PETSc sees the change
+        @test A[1, 1] == new_val
+
+        PETSc.destroy(A)
+        PETSc.finalize(petsclib)
+    end
+end

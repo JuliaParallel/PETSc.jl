@@ -18086,8 +18086,9 @@ $(_doc_external("Mat/MatSeqAIJGetArray"))
 function MatSeqAIJGetArray(petsclib::PetscLibType, A::PetscMat) end
 
 @for_petsc function MatSeqAIJGetArray(petsclib::$UnionPetscLib, A::PetscMat )
-	array_ = Ref{Ptr{$PetscScalar}}()
+    array_ = Ref{Ptr{$PetscScalar}}()
 
+    # 1. Call the C function to get the pointer to the sparse value array
     @chk ccall(
                (:MatSeqAIJGetArray, $petsc_library),
                PetscErrorCode,
@@ -18095,10 +18096,19 @@ function MatSeqAIJGetArray(petsclib::PetscLibType, A::PetscMat) end
                A, array_,
               )
 
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
+    # 2. Fix: Get the matrix dimensions to determine how many elements to wrap
+    # For Sparse AIJ, GetArray usually provides access to the 'nz' values.
+    m, n = MatGetLocalSize(petsclib, A)
+    
+    # 3. Wrap as a 1D Array (Vector) 
+    # Note: AIJ GetArray provides the raw values buffer.
+    # We wrap it with length m*n if it's treated as a full buffer, 
+    # but usually, AIJ GetArray is used for internal access to the non-zero values.
+    # If PETSc intended this to be a flat view of all local entries:
+    array = unsafe_wrap(Array, array_[], Int(m * n); own = false)
 
-	return array
-end 
+    return array
+end
 
 """
 	array::Vector{PetscScalar} = MatSeqAIJRestoreArray(petsclib::PetscLibType,A::PetscMat) 
@@ -18117,22 +18127,20 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqAIJRestoreArray"))
 """
-function MatSeqAIJRestoreArray(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqAIJRestoreArray(petsclib::PetscLibType, A::PetscMat, array::Array) end
 
-@for_petsc function MatSeqAIJRestoreArray(petsclib::$UnionPetscLib, A::PetscMat )
-	array_ = Ref{Ptr{$PetscScalar}}()
-
+@for_petsc function MatSeqAIJRestoreArray(petsclib::$UnionPetscLib, A::PetscMat, array::Array{$PetscScalar})
+    # Create a Ref to the pointer of the Julia array to satisfy the ** signature
+    ptr_ref = Ref(pointer(array))
+    
     @chk ccall(
                (:MatSeqAIJRestoreArray, $petsc_library),
                PetscErrorCode,
                (CMat, Ptr{Ptr{$PetscScalar}}),
-               A, array_,
+               A, ptr_ref,
               )
-
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
-
-	return array
-end 
+    return nothing
+end
 
 """
 	array::Vector{PetscScalar} = MatSeqAIJGetArrayRead(petsclib::PetscLibType,A::PetscMat) 

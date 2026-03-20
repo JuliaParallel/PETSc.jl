@@ -58,6 +58,10 @@ end
 
 function initialize(petsclib; log_view::Bool = false, options = String[])
     if !initialized(petsclib)
+
+        # deactivate the signal handler to avoid conflicts with Julia's own handlers when using multithreading
+        push!(options, " -no_signal_handler ")
+
         if log_view || !isempty(options)
             cli_opts = _build_petsc_options(log_view, options)
             prev_opts = get(ENV, "PETSC_OPTIONS", "")

@@ -12,7 +12,8 @@ using PETSc, MPI, Printf
 
 # PETSc callbacks take a raw `void*` context pointer. We keep the active
 # `petsclib` inside a mutable Julia object so we can pass a stable reference
-# through `pointer_from_objref()` and recover it inside the RHS routine.
+# through `pointer_from_objref()` and recover it inside the RHS routine
+# to access the library-specific types, functions, and constants.
 mutable struct Ex51Context{PetscLib <: PETSc.LibPETSc.PetscLibType}
     petsclib::PetscLib
 end
@@ -24,7 +25,7 @@ Right-hand side routine passed to `TSSetRHSFunction`, corresponding to
 `RHSFunction` in PETSc's `ex51.c`.
 """
 function ex51_rhs!(
-    ::PETSc.LibPETSc.CTS,
+    ::PETSc.LibPETSc.CTS, # optional argument `TS ts` not needed here
     t::Float64,
     u_ptr::PETSc.LibPETSc.CVec,
     f_ptr::PETSc.LibPETSc.CVec,

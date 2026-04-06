@@ -5,18 +5,39 @@ include(joinpath(dirname(@__DIR__), "examples", "ex51.jl"))
 
 @testset "TS ex51 example" begin
     petsclib = PETSc.getlib(PetscScalar = Float64)
+    PETSc.initialize(petsclib)
     try
-        result_default_1 = solve_ex51(; petsclib, options = String[], verbose = false)
+        PETSc.finalize(petsclib)
+        PETSc.initialize(petsclib)
+
+        # `examples.jl` covers the default `save_trajectory = true` path in a
+        # fresh Julia subprocess. Here we disable trajectory saving because
+        # PETSc 3.22 does not reliably re-register the built-in `basic`
+        # trajectory type after earlier TS usage and reinitialization in the
+        # same process.
+        result_default_1 = solve_ex51(;
+            petsclib,
+            options = String[],
+            save_trajectory = false,
+            verbose = false,
+        )
         result_3bs = solve_ex51(;
             petsclib,
             options = ["-ts_type", "rk", "-ts_rk_type", "3bs"],
+            save_trajectory = false,
             verbose = false,
         )
 
-        result_default_2 = solve_ex51(; petsclib, options = String[], verbose = false)
+        result_default_2 = solve_ex51(;
+            petsclib,
+            options = String[],
+            save_trajectory = false,
+            verbose = false,
+        )
         result_5dp = solve_ex51(;
             petsclib,
             options = ["-ts_type", "rk", "-ts_rk_type", "5dp"],
+            save_trajectory = false,
             verbose = false,
         )
 

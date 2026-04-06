@@ -30,8 +30,8 @@ include("dmnetwork.jl")     # new test for DMNetwork example
 include("dmshell.jl")       # new test for DMShell example
 include("dmproduct.jl")     # test for DMProduct example
 include("matshell.jl")      # autowrapped!
-include("test_dmstag.jl") 
-include("test_snes.jl")  
+include("test_dmstag.jl")
+include("test_snes.jl")
 include("old_test.jl")
 include("low_level_viewer.jl")  # Low-level viewer convenience functions
 include("low_level_ts.jl")      # Low-level TS functions
@@ -67,5 +67,4 @@ if do_mpi
         end
     end
 end
-
 

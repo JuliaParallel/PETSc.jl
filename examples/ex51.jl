@@ -1,10 +1,29 @@
 using PETSc, MPI, Printf
 
+# Small ODE to test TS accuracy.
+#
+# The ODE
+#                 u1_t = cos(t),
+#                 u2_t = sin(u2)
+# with analytical solution
+#                 u1(t) = sin(t),
+#                 u2(t) = 2 * atan(exp(t) * tan(0.5))
+# is used to test the accuracy of TS schemes.
+
+# PETSc callbacks take a raw `void*` context pointer. We keep the active
+# `petsclib` inside a mutable Julia object so we can pass a stable reference
+# through `pointer_from_objref()` and recover it inside the RHS routine.
 mutable struct Ex51Context{PetscLib <: PETSc.LibPETSc.PetscLibType}
     petsclib::PetscLib
 end
 
-function ex51_rhs_callback(
+"""
+    ex51_rhs!
+
+Right-hand side routine passed to `TSSetRHSFunction`, corresponding to
+`RHSFunction` in PETSc's `ex51.c`.
+"""
+function ex51_rhs!(
     ::PETSc.LibPETSc.CTS,
     t::Float64,
     u_ptr::PETSc.LibPETSc.CVec,
@@ -30,7 +49,7 @@ function ex51_rhs_callback(
 end
 
 const EX51_RHS_FUNCTION_PTR = @cfunction(
-    ex51_rhs_callback,
+    ex51_rhs!,
     PETSc.LibPETSc.PetscErrorCode,
     (
         PETSc.LibPETSc.CTS,
@@ -106,10 +125,12 @@ function solve_ex51(;
     ctx = Ex51Context(petsclib)
 
     try
+        # Create timestepping solver context.
         ts = PETSc.LibPETSc.TSCreate(petsclib, comm)
         PETSc.LibPETSc.TSSetType(petsclib, ts, "rosw")
         PETSc.LibPETSc.TSSetProblemType(petsclib, ts, PETSc.LibPETSc.TS_NONLINEAR)
 
+        # Set initial conditions.
         u = PETSc.LibPETSc.VecCreate(petsclib, comm)
         PETSc.LibPETSc.VecSetSizes(petsclib, u, PetscInt(2), PetscInt(2))
         PETSc.LibPETSc.VecSetUp(petsclib, u)
@@ -126,6 +147,8 @@ function solve_ex51(;
                 callback_ctx_ptr,
             )
 
+            # Configure solver options. As in the C example, adaptivity is
+            # forced to take constant time steps.
             save_trajectory && PETSc.LibPETSc.TSSetSaveTrajectory(petsclib, ts)
             PETSc.LibPETSc.TSSetMaxTime(petsclib, ts, petsclib.PetscReal(final_time))
             PETSc.LibPETSc.TSSetExactFinalTime(
@@ -142,6 +165,8 @@ function solve_ex51(;
             PETSc.LibPETSc.TSSolve(petsclib, ts, u)
         end
 
+        # Compute the error against the analytical solution at the achieved
+        # final time, matching the PETSc example's `VecAYPX` + `VecNorm` path.
         current_time = PETSc.LibPETSc.TSGetTime(petsclib, ts)
         u_exact = PETSc.LibPETSc.VecDuplicate(petsclib, u)
         exact_solution!(u_exact, current_time)

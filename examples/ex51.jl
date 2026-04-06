@@ -117,6 +117,10 @@ function solve_ex51(;
 
     MPI.Comm_size(comm) == 1 || error("This example only supports sequential runs.")
 
+    # Keep these variables concretely typed across the whole function, even
+    # though the actual PETSc objects are created later inside the `try` block.
+    # The null-pointer placeholders are overwritten by `TSCreate`/`VecCreate`,
+    # and the `finally` block checks `ptr != C_NULL` before destroying them.
     ts = PETSc.LibPETSc.TS(petsclib)
     u = PETSc.LibPETSc.PetscVec(petsclib)
     u_exact = PETSc.LibPETSc.PetscVec(petsclib)

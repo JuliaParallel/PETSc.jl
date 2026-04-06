@@ -7,9 +7,6 @@ include(joinpath(dirname(@__DIR__), "examples", "ex51.jl"))
     petsclib = PETSc.getlib(PetscScalar = Float64)
     PETSc.initialize(petsclib)
     try
-        PETSc.finalize(petsclib)
-        PETSc.initialize(petsclib)
-
         # `examples.jl` covers the default `save_trajectory = true` path in a
         # fresh Julia subprocess. Here we disable trajectory saving because
         # PETSc 3.22 does not reliably re-register the built-in `basic`

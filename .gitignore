@@ -9,3 +9,6 @@ docs/build/
 docs/site/
 Manifest.toml
 wrapping/.CondaPkg
+**/.vscode
+**/run/
+

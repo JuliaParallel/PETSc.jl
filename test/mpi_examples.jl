@@ -4,7 +4,7 @@ using MPI
 using .PETScTestUtils: find_sources
 
 @testset "mpi examples" begin
-  examples_dir = joinpath(@__DIR__, "..", "examples")
+  examples_dir = joinpath(dirname(@__DIR__), "examples")
   examples = find_sources(examples_dir)
   filter!(file -> readline(file) == "# INCLUDE IN MPI TEST", examples)
 

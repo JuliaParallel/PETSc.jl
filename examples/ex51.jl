@@ -113,7 +113,6 @@ function solve_ex51(;
     options === nothing && (options = copy(String.(ARGS)))
 
     comm = MPI.COMM_WORLD
-    PetscInt = petsclib.PetscInt
     PetscScalar = petsclib.PetscScalar
     did_initialize = !PETSc.initialized(petsclib)
 
@@ -125,7 +124,7 @@ function solve_ex51(;
 
     # Keep these variables concretely typed across the whole function, even
     # though the actual PETSc objects are created later inside the `try` block.
-    # The null-pointer placeholders are overwritten by `TSCreate`/`VecCreate`,
+    # The null-pointer placeholders are overwritten by `TSCreate`/`VecSeq`,
     # and the `finally` block checks `ptr != C_NULL` before destroying them.
     ts = PETSc.LibPETSc.TS(petsclib)
     u = PETSc.LibPETSc.PetscVec(petsclib)
@@ -142,9 +141,7 @@ function solve_ex51(;
         PETSc.LibPETSc.TSSetProblemType(petsclib, ts, PETSc.LibPETSc.TS_NONLINEAR)
 
         # Set initial conditions.
-        u = PETSc.LibPETSc.VecCreate(petsclib, comm)
-        PETSc.LibPETSc.VecSetSizes(petsclib, u, PetscInt(2), PetscInt(2))
-        PETSc.LibPETSc.VecSetUp(petsclib, u)
+        u = PETSc.VecSeq(petsclib, 2)
         set_initial_condition!(u)
         PETSc.LibPETSc.TSSetSolution(petsclib, ts, u)
 
@@ -179,7 +176,7 @@ function solve_ex51(;
         # Compute the error against the analytical solution at the achieved
         # final time, matching the PETSc example's `VecAYPX` + `VecNorm` path.
         current_time = PETSc.LibPETSc.TSGetTime(petsclib, ts)
-        u_exact = PETSc.LibPETSc.VecDuplicate(petsclib, u)
+        u_exact = similar(u)
         exact_solution!(u_exact, current_time)
 
         PETSc.LibPETSc.VecAYPX(petsclib, u_exact, PetscScalar(-1), u)

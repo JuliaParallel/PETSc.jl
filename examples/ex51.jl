@@ -98,9 +98,11 @@ Keyword arguments:
 - `finalize_petsc`: whether to finalize PETSc at the end when this function had
   to initialize it. Default `false` so repeated calls in one Julia session work
   reliably.
-- `options`: additional PETSc command-line options. By default the script uses
-  `ARGS`, so invocations like `julia --project=. examples/ex51.jl -ts_type rk
-  -ts_rk_type 5dp` work.
+- `options`: additional PETSc command-line options for this solve. By default
+  the script uses `ARGS`, so invocations like
+  `julia --project=. examples/ex51.jl -ts_type rk -ts_rk_type 5dp` work, and
+  programmatic calls can use values such as
+  `options = ["-ts_type", "rk", "-ts_rk_type", "3bs"]`.
 - `verbose`: print a short run summary.
 
 Returns a named tuple with the final time, error norm, and numerical solution.
@@ -115,6 +117,7 @@ function solve_ex51(;
     verbose::Bool = true,
 )
     options === nothing && (options = copy(String.(ARGS)))
+    parsed_options = PETSc.parse_options(options)
 
     comm = MPI.COMM_WORLD
     PetscScalar = petsclib.PetscScalar
@@ -122,7 +125,7 @@ function solve_ex51(;
     # `did_initialize`: whether we initialized the library in this call
     did_initialize = !PETSc.initialized(petsclib)
     if did_initialize
-        PETSc.initialize(petsclib; options = copy(options))
+        PETSc.initialize(petsclib)
     end
 
     MPI.Comm_size(comm) == 1 || error("This example only supports sequential runs.")
@@ -138,6 +141,8 @@ function solve_ex51(;
     error_norm = petsclib.PetscReal(NaN)
     solution = PetscScalar[]
     ctx = Ex51Context(petsclib)
+    petsc_options = PETSc.Options(petsclib; parsed_options...)
+    pushed_options = false
 
     try
         # Create timestepping solver context.
@@ -174,7 +179,11 @@ function solve_ex51(;
             adapt = PETSc.LibPETSc.TSGetAdapt(petsclib, ts)
             PETSc.LibPETSc.TSAdaptSetType(petsclib, adapt, "none")
 
+            push!(petsc_options)
+            pushed_options = true
             PETSc.LibPETSc.TSSetFromOptions(petsclib, ts)
+            pop!(petsc_options)
+            pushed_options = false
             PETSc.LibPETSc.TSSolve(petsclib, ts, u)
         end
 
@@ -204,6 +213,12 @@ function solve_ex51(;
 
         return (final_time = current_time, error = error_norm, solution = solution)
     finally
+        if pushed_options
+            pop!(petsc_options)
+        end
+        if petsc_options.ptr != C_NULL
+            PETSc.destroy(petsc_options)
+        end
         if u_exact.ptr != C_NULL
             PETSc.destroy(u_exact)
         end

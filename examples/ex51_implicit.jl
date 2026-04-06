@@ -397,8 +397,12 @@ function solve_ex51_implicit(;
                 )
             end
 
-            @printf("TS type: %s\n", PETSc.LibPETSc.TSGetType(petsclib, ts))
-            @printf("IRK type: %s\n", PETSc.LibPETSc.TSIRKGetType(petsclib, ts))
+            ts_type = PETSc.LibPETSc.TSGetType(petsclib, ts)
+            @printf("TS type: %s\n", ts_type)
+            if ts_type == "irk"
+                @printf("IRK type: %s\n", PETSc.LibPETSc.TSIRKGetType(petsclib, ts))
+                @printf("IRK stages: %d\n", PETSc.LibPETSc.TSIRKGetNumStages(petsclib, ts))
+            end
             @printf("Jacobian mode: %s\n", String(Symbol(jacobian_mode)))
             @printf("Final time: %.16g\n", current_time)
             @printf("Error at final time: %.2E\n", error_norm)

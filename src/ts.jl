@@ -188,6 +188,31 @@ LibPETSc.@for_petsc function LibPETSc.TSGetAdapt(
 end
 
 """
+    TSIRKGetNumStages(petsclib, ts)
+
+Return the number of stages currently configured for a `TSIRK` method.
+"""
+function LibPETSc.TSIRKGetNumStages(
+    petsclib::LibPETSc.PetscLibType,
+    ts::LibPETSc.TS,
+) end
+
+LibPETSc.@for_petsc function LibPETSc.TSIRKGetNumStages(
+    petsclib::$UnionPetscLib,
+    ts::LibPETSc.TS,
+)
+    nstages_ref = Ref{$PetscInt}()
+    LibPETSc.@chk ccall(
+        (:TSIRKGetNumStages, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.CTS, Ptr{$PetscInt}),
+        ts,
+        nstages_ref,
+    )
+    return nstages_ref[]
+end
+
+"""
     TSAdaptSetType(petsclib, adapt, type::String)
 
 Convenience wrapper for setting the TS adaptivity controller using a Julia

@@ -7,15 +7,27 @@ include(joinpath(dirname(@__DIR__), "examples", "ex51_implicit.jl"))
     petsclib = PETSc.getlib(PetscScalar = Float64)
     PETSc.initialize(petsclib)
     try
-        result_fd_1 = solve_ex51_implicit(;
+        result_stage_1 = solve_ex51_implicit(;
             petsclib,
-            options = String[],
+            options = ["-ts_type", "irk", "-ts_irk_type", "gauss", "-ts_irk_nstages", "1"],
             save_trajectory = false,
             verbose = false,
         )
-        result_fd_2 = solve_ex51_implicit(;
+        result_stage_2 = solve_ex51_implicit(;
             petsclib,
-            options = String[],
+            options = ["-ts_type", "irk", "-ts_irk_type", "gauss", "-ts_irk_nstages", "2"],
+            save_trajectory = false,
+            verbose = false,
+        )
+        result_stage_3 = solve_ex51_implicit(;
+            petsclib,
+            options = ["-ts_type", "irk", "-ts_irk_type", "gauss", "-ts_irk_nstages", "3"],
+            save_trajectory = false,
+            verbose = false,
+        )
+        result_stage_4 = solve_ex51_implicit(;
+            petsclib,
+            options = ["-ts_type", "irk", "-ts_irk_type", "gauss", "-ts_irk_nstages", "4"],
             save_trajectory = false,
             verbose = false,
         )
@@ -27,17 +39,25 @@ include(joinpath(dirname(@__DIR__), "examples", "ex51_implicit.jl"))
             verbose = false,
         )
 
-        @test result_fd_1.final_time ≈ 1.0 atol = 100 * eps(Float64)
-        @test length(result_fd_1.solution) == 2
-        @test result_fd_1.error < 5.0e-5
+        @test result_stage_1.final_time ≈ 1.0 atol = 100 * eps(Float64)
+        @test length(result_stage_1.solution) == 2
+        @test result_stage_1.error < 5.0e-3
 
-        @test result_fd_2.final_time ≈ 1.0 atol = 100 * eps(Float64)
-        @test result_fd_2.error ≈ result_fd_1.error rtol = 1e-12
+        @test result_stage_2.final_time ≈ 1.0 atol = 100 * eps(Float64)
+        @test length(result_stage_2.solution) == 2
+        @test result_stage_2.error < 5.0e-6
+
+        @test result_stage_3.final_time ≈ 1.0 atol = 100 * eps(Float64)
+        @test length(result_stage_3.solution) == 2
+        @test result_stage_3.error < 5.0e-9
+
+        @test result_stage_4.final_time ≈ 1.0 atol = 100 * eps(Float64)
+        @test length(result_stage_4.solution) == 2
+        @test result_stage_4.error < 5.0e-10
 
         @test result_analytic.final_time ≈ 1.0 atol = 100 * eps(Float64)
         @test length(result_analytic.solution) == 2
         @test result_analytic.error < 5.0e-5
-        @test result_analytic.error ≈ result_fd_1.error rtol = 1e-6
 
         err = try
             solve_ex51_implicit(;

@@ -31,11 +31,17 @@ function ex51_rhs!(
     f_ptr::PETSc.LibPETSc.CVec,
     ctx_ptr::Ptr{Cvoid},
 )::PETSc.LibPETSc.PetscErrorCode
+    # This function is called through PETSc's C callback interface, so its argument
+    # types must match the low-level PETSc ABI. In particular, the state and RHS
+    # vectors arrive as raw `CVec` pointers. We immediately wrap them using
+    # PETSc.jl's higher-level `VecPtr(..., own = false)` helper so we can use
+    # Julia-friendly helpers such as `withlocalarray!` without taking ownership
+    # away from PETSc.
     ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex51Context
     petsclib = ctx.petsclib
-    age = petsclib.age
-    u = PETSc.LibPETSc.PetscVec(u_ptr, petsclib, age)
-    f = PETSc.LibPETSc.PetscVec(f_ptr, petsclib, age)
+    # `own = false` since memory is managed by PETSc internally
+    u = PETSc.VecPtr(petsclib, u_ptr, false)
+    f = PETSc.VecPtr(petsclib, f_ptr, false)
 
     PETSc.withlocalarray!(
         (u, f);

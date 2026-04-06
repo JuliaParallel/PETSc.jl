@@ -95,6 +95,9 @@ Keyword arguments:
 - `final_time`: final integration time. Default `1.0`.
 - `dt`: initial time step. Default `0.25`.
 - `save_trajectory`: whether to call `TSSetSaveTrajectory`. Default `true`.
+- `finalize_petsc`: whether to finalize PETSc at the end when this function had
+  to initialize it. Default `false` so repeated calls in one Julia session work
+  reliably.
 - `options`: additional PETSc command-line options. By default the script uses
   `ARGS`, so invocations like `julia --project=. examples/ex51.jl -ts_type rk
   -ts_rk_type 5dp` work.
@@ -107,6 +110,7 @@ function solve_ex51(;
     final_time::Real = 1.0,
     dt::Real = 0.25,
     save_trajectory::Bool = true,
+    finalize_petsc::Bool = false,
     options = nothing,
     verbose::Bool = true,
 )
@@ -114,8 +118,9 @@ function solve_ex51(;
 
     comm = MPI.COMM_WORLD
     PetscScalar = petsclib.PetscScalar
-    did_initialize = !PETSc.initialized(petsclib)
 
+    # `did_initialize`: whether we initialized the library in this call
+    did_initialize = !PETSc.initialized(petsclib)
     if did_initialize
         PETSc.initialize(petsclib; options = copy(options))
     end
@@ -208,12 +213,12 @@ function solve_ex51(;
         if ts.ptr != C_NULL
             PETSc.LibPETSc.TSDestroy(petsclib, ts)
         end
-        if did_initialize
+        if did_initialize && finalize_petsc
             PETSc.finalize(petsclib)
         end
     end
 end
 
-if abspath(PROGRAM_FILE) == @__FILE__
-    solve_ex51()
+if !isinteractive() && abspath(PROGRAM_FILE) == @__FILE__
+    solve_ex51(finalize_petsc = true)
 end

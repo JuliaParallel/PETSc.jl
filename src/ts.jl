@@ -64,6 +64,105 @@ LibPETSc.@for_petsc function LibPETSc.TSSetRHSFunction(
 end
 
 """
+    TSSetIFunction(petsclib, ts, r, fptr::Ptr{Cvoid}, ctx = C_NULL)
+
+Convenience overload for low-level TS implicit-function callbacks created with
+`@cfunction`.
+"""
+function LibPETSc.TSSetIFunction(
+    petsclib::LibPETSc.PetscLibType,
+    ts::LibPETSc.TS,
+    r::AbstractPetscVec,
+    fptr::Ptr{Cvoid},
+    ctx::Ptr{Cvoid} = C_NULL,
+) end
+
+LibPETSc.@for_petsc function LibPETSc.TSSetIFunction(
+    petsclib::$UnionPetscLib,
+    ts::LibPETSc.TS,
+    r::AbstractPetscVec{$PetscLib},
+    fptr::Ptr{Cvoid},
+    ctx::Ptr{Cvoid} = C_NULL,
+)
+    typed_fptr = Base.unsafe_convert(Ptr{LibPETSc.TSIFunctionFn}, fptr)
+    LibPETSc.@chk ccall(
+        (:TSSetIFunction, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.CTS, LibPETSc.CVec, Ptr{LibPETSc.TSIFunctionFn}, Ptr{Cvoid}),
+        ts,
+        r,
+        typed_fptr,
+        ctx,
+    )
+    return nothing
+end
+
+function LibPETSc.TSSetIFunction(
+    petsclib::LibPETSc.PetscLibType,
+    ts::LibPETSc.TS,
+    ::Nothing,
+    fptr::Ptr{Cvoid},
+    ctx::Ptr{Cvoid} = C_NULL,
+) end
+
+LibPETSc.@for_petsc function LibPETSc.TSSetIFunction(
+    petsclib::$UnionPetscLib,
+    ts::LibPETSc.TS,
+    ::Nothing,
+    fptr::Ptr{Cvoid},
+    ctx::Ptr{Cvoid} = C_NULL,
+)
+    typed_fptr = Base.unsafe_convert(Ptr{LibPETSc.TSIFunctionFn}, fptr)
+    LibPETSc.@chk ccall(
+        (:TSSetIFunction, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.CTS, LibPETSc.CVec, Ptr{LibPETSc.TSIFunctionFn}, Ptr{Cvoid}),
+        ts,
+        C_NULL,
+        typed_fptr,
+        ctx,
+    )
+    return nothing
+end
+
+"""
+    TSSetIJacobian(petsclib, ts, A, P, fptr::Ptr{Cvoid}, ctx = C_NULL)
+
+Convenience overload for low-level TS implicit-Jacobian callbacks created with
+`@cfunction`.
+"""
+function LibPETSc.TSSetIJacobian(
+    petsclib::LibPETSc.PetscLibType,
+    ts::LibPETSc.TS,
+    A::AbstractPetscMat,
+    P::AbstractPetscMat,
+    fptr::Ptr{Cvoid},
+    ctx::Ptr{Cvoid} = C_NULL,
+) end
+
+LibPETSc.@for_petsc function LibPETSc.TSSetIJacobian(
+    petsclib::$UnionPetscLib,
+    ts::LibPETSc.TS,
+    A::AbstractPetscMat{$PetscLib},
+    P::AbstractPetscMat{$PetscLib},
+    fptr::Ptr{Cvoid},
+    ctx::Ptr{Cvoid} = C_NULL,
+)
+    typed_fptr = Base.unsafe_convert(Ptr{LibPETSc.TSIJacobianFn}, fptr)
+    LibPETSc.@chk ccall(
+        (:TSSetIJacobian, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.CTS, LibPETSc.CMat, LibPETSc.CMat, Ptr{LibPETSc.TSIJacobianFn}, Ptr{Cvoid}),
+        ts,
+        A,
+        P,
+        typed_fptr,
+        ctx,
+    )
+    return nothing
+end
+
+"""
     adapt = TSGetAdapt(petsclib, ts)
 
 Return the adaptive time-step controller attached to `ts`.
@@ -86,6 +185,31 @@ LibPETSc.@for_petsc function LibPETSc.TSGetAdapt(
         adapt_ref,
     )
     return adapt_ref[]
+end
+
+"""
+    TSIRKGetNumStages(petsclib, ts)
+
+Return the number of stages currently configured for a `TSIRK` method.
+"""
+function LibPETSc.TSIRKGetNumStages(
+    petsclib::LibPETSc.PetscLibType,
+    ts::LibPETSc.TS,
+) end
+
+LibPETSc.@for_petsc function LibPETSc.TSIRKGetNumStages(
+    petsclib::$UnionPetscLib,
+    ts::LibPETSc.TS,
+)
+    nstages_ref = Ref{$PetscInt}()
+    LibPETSc.@chk ccall(
+        (:TSIRKGetNumStages, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.CTS, Ptr{$PetscInt}),
+        ts,
+        nstages_ref,
+    )
+    return nstages_ref[]
 end
 
 """

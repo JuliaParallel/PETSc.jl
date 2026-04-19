@@ -88,28 +88,18 @@ end
 function ex16_register_myark2!(petsclib)
     get(EX16_REGISTERED_AGES, petsclib, -1) == petsclib.age && return nothing
 
+    # For the stage tables `At` and `A`, PETSc expects flat vectors in row-major
+    # order, matching the layout used by C arrays.
     PetscReal = petsclib.PetscReal
     A = PetscReal[
-        0.0,
-        0.0,
-        0.0,
-        0.41421356237309504880,
-        0.0,
-        0.0,
-        0.75,
-        0.25,
-        0.0,
+        0.0, 0.0, 0.0,
+        0.41421356237309504880, 0.0, 0.0,
+        0.75, 0.25, 0.0,
     ]
     At = PetscReal[
-        0.0,
-        0.0,
-        0.0,
-        0.12132034355964257320,
-        0.29289321881345247560,
-        0.0,
-        0.20710678118654752440,
-        0.50000000000000000000,
-        0.29289321881345247560,
+        0.0, 0.0, 0.0,
+        0.12132034355964257320, 0.29289321881345247560, 0.0,
+        0.20710678118654752440, 0.5, 0.29289321881345247560,
     ]
 
     PETSc.LibPETSc.TSARKIMEXRegister(
@@ -322,7 +312,7 @@ function ex16_monitor!(
     tfinal = PETSc.LibPETSc.TSGetMaxTime(petsclib, ts)
 
     while ctx.next_output <= t && ctx.next_output <= tfinal
-        interpolated_x = PETSc.VecSeq(petsclib, length(x))
+        interpolated_x = similar(x)
         try
             PETSc.LibPETSc.TSInterpolate(
                 petsclib,

@@ -284,6 +284,11 @@ end
 
 Julia-friendly overload for registering a custom `TSARKIMEX` tableau. Optional
 PETSc arrays may be passed as `nothing`, which is translated to `NULL`.
+
+For the stage tables `At` and `A`, PETSc expects flat vectors in row-major
+order, matching the layout used by C arrays. If you start from a Julia matrix,
+do not pass `vec(A)` directly since Julia stores matrices column-major; flatten
+row-by-row instead, for example with `vec(permutedims(A))`.
 """
 function LibPETSc.TSARKIMEXRegister(
     petsclib::LibPETSc.PetscLibType,

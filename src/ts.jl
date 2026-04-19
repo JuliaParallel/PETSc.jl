@@ -228,3 +228,151 @@ function LibPETSc.TSAdaptSetType(
     LibPETSc.TSAdaptSetType(petsclib, adapt, ptr)
     return nothing
 end
+
+"""
+    TSMonitorSet(petsclib, ts, monitor::Ptr{Cvoid}, ctx = C_NULL, mdestroy = C_NULL)
+
+Convenience overload for low-level TS monitor callbacks created with
+`@cfunction`.
+"""
+function LibPETSc.TSMonitorSet(
+    petsclib::LibPETSc.PetscLibType,
+    ts::LibPETSc.TS,
+    monitor::Ptr{Cvoid},
+    ctx::Ptr{Cvoid} = C_NULL,
+    mdestroy::Ptr{Cvoid} = C_NULL,
+) end
+
+LibPETSc.@for_petsc function LibPETSc.TSMonitorSet(
+    petsclib::$UnionPetscLib,
+    ts::LibPETSc.TS,
+    monitor::Ptr{Cvoid},
+    ctx::Ptr{Cvoid} = C_NULL,
+    mdestroy::Ptr{Cvoid} = C_NULL,
+)
+    typed_destroy = Ptr{LibPETSc.PetscCtxDestroyFn}(mdestroy)
+    LibPETSc.@chk ccall(
+        (:TSMonitorSet, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.CTS, LibPETSc.external, Ptr{Cvoid}, Ptr{LibPETSc.PetscCtxDestroyFn}),
+        ts,
+        monitor,
+        ctx,
+        typed_destroy,
+    )
+    return nothing
+end
+
+"""
+    TSARKIMEXRegister(
+        petsclib,
+        name::String,
+        order,
+        s,
+        At,
+        bt,
+        ct,
+        A,
+        b,
+        c,
+        bembedt,
+        bembed,
+        pinterp,
+        binterpt,
+        binterp,
+    )
+
+Julia-friendly overload for registering a custom `TSARKIMEX` tableau. Optional
+PETSc arrays may be passed as `nothing`, which is translated to `NULL`.
+
+For the stage tables `At` and `A`, PETSc expects flat vectors in row-major
+order, matching the layout used by C arrays. If you start from a Julia matrix,
+do not pass `vec(A)` directly since Julia stores matrices column-major; flatten
+row-by-row instead, for example with `vec(permutedims(A))`.
+"""
+function LibPETSc.TSARKIMEXRegister(
+    petsclib::LibPETSc.PetscLibType,
+    name::String,
+    order::Integer,
+    s::Integer,
+    At::AbstractVector,
+    bt::Union{Nothing, AbstractVector},
+    ct::Union{Nothing, AbstractVector},
+    A::AbstractVector,
+    b::Union{Nothing, AbstractVector},
+    c::Union{Nothing, AbstractVector},
+    bembedt::Union{Nothing, AbstractVector},
+    bembed::Union{Nothing, AbstractVector},
+    pinterp::Integer,
+    binterpt::Union{Nothing, AbstractVector},
+    binterp::Union{Nothing, AbstractVector},
+) end
+
+LibPETSc.@for_petsc function LibPETSc.TSARKIMEXRegister(
+    petsclib::$UnionPetscLib,
+    name::String,
+    order::Integer,
+    s::Integer,
+    At::AbstractVector,
+    bt::Union{Nothing, AbstractVector},
+    ct::Union{Nothing, AbstractVector},
+    A::AbstractVector,
+    b::Union{Nothing, AbstractVector},
+    c::Union{Nothing, AbstractVector},
+    bembedt::Union{Nothing, AbstractVector},
+    bembed::Union{Nothing, AbstractVector},
+    pinterp::Integer,
+    binterpt::Union{Nothing, AbstractVector},
+    binterp::Union{Nothing, AbstractVector},
+)
+    At_vals = $PetscReal.(At)
+    A_vals = $PetscReal.(A)
+    bt_vals = bt === nothing ? Ptr{$PetscReal}(C_NULL) : $PetscReal.(bt)
+    ct_vals = ct === nothing ? Ptr{$PetscReal}(C_NULL) : $PetscReal.(ct)
+    b_vals = b === nothing ? Ptr{$PetscReal}(C_NULL) : $PetscReal.(b)
+    c_vals = c === nothing ? Ptr{$PetscReal}(C_NULL) : $PetscReal.(c)
+    bembedt_vals =
+        bembedt === nothing ? Ptr{$PetscReal}(C_NULL) : $PetscReal.(bembedt)
+    bembed_vals =
+        bembed === nothing ? Ptr{$PetscReal}(C_NULL) : $PetscReal.(bembed)
+    binterpt_vals =
+        binterpt === nothing ? Ptr{$PetscReal}(C_NULL) : $PetscReal.(binterpt)
+    binterp_vals =
+        binterp === nothing ? Ptr{$PetscReal}(C_NULL) : $PetscReal.(binterp)
+
+    LibPETSc.@chk ccall(
+        (:TSARKIMEXRegister, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (
+            LibPETSc.TSARKIMEXType,
+            $PetscInt,
+            $PetscInt,
+            Ptr{$PetscReal},
+            Ptr{$PetscReal},
+            Ptr{$PetscReal},
+            Ptr{$PetscReal},
+            Ptr{$PetscReal},
+            Ptr{$PetscReal},
+            Ptr{$PetscReal},
+            Ptr{$PetscReal},
+            $PetscInt,
+            Ptr{$PetscReal},
+            Ptr{$PetscReal},
+        ),
+        name,
+        $PetscInt(order),
+        $PetscInt(s),
+        At_vals,
+        bt_vals,
+        ct_vals,
+        A_vals,
+        b_vals,
+        c_vals,
+        bembedt_vals,
+        bembed_vals,
+        $PetscInt(pinterp),
+        binterpt_vals,
+        binterp_vals,
+    )
+    return nothing
+end

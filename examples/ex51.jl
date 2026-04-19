@@ -1,6 +1,7 @@
 using PETSc, MPI, Printf
 
-# Small ODE to test TS accuracy.
+# Small ODE to test TS accuracy, see
+# https://petsc.org/main/src/ts/tutorials/ex51.c.html.
 #
 # The ODE
 #                 u1_t = cos(t),

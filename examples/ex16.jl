@@ -312,7 +312,9 @@ function ex16_monitor!(
     tfinal = PETSc.LibPETSc.TSGetMaxTime(petsclib, ts)
 
     while ctx.next_output <= t && ctx.next_output <= tfinal
-        interpolated_x = similar(x)
+        # `x` is a borrowed `VecPtr` from PETSc's callback interface, so create
+        # an owning work vector explicitly instead of calling `similar(x)`.
+        interpolated_x = PETSc.VecSeq(petsclib, length(x))
         try
             PETSc.LibPETSc.TSInterpolate(
                 petsclib,

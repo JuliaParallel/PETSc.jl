@@ -22,6 +22,21 @@ end
     petsclib = PETSc.getlib(PetscScalar = Float64)
     PETSc.initialize(petsclib)
     try
+        function solve_arkimex(method::String)
+            solve_ex16(;
+                petsclib,
+                options = [
+                    "-ts_type",
+                    "arkimex",
+                    "-ts_arkimex_type",
+                    method,
+                    "-ts_adapt_type",
+                    "none",
+                ],
+                verbose = false,
+            )
+        end
+
         result_default_1 = solve_ex16(;
             petsclib,
             options = String[],
@@ -44,17 +59,13 @@ end
             options = String[],
             verbose = false,
         )
-        result_myark2 = solve_ex16(;
-            petsclib,
-            options = [
-                "-ts_type",
-                "arkimex",
-                "-ts_arkimex_type",
-                "myark2",
-                "-ts_adapt_type",
-                "none",
-            ],
-            verbose = false,
+        result_myark2 = solve_arkimex("myark2")
+        extra_arkimex_results = Dict(
+            "ars122" => solve_arkimex("ars122"),
+            "ars443" => solve_arkimex("ars443"),
+            "3" => solve_arkimex("3"),
+            "4" => solve_arkimex("4"),
+            "5" => solve_arkimex("5"),
         )
         monitor_output = capture_stdout_to_string() do
             solve_ex16(;
@@ -89,6 +100,15 @@ end
         @test result_myark2.steps > 0
         @test length(result_myark2.solution) == 2
         @test all(isfinite, result_myark2.solution)
+
+        for (method, result) in extra_arkimex_results
+            @testset "ARKIMEX $method" begin
+                @test result.final_time ≈ 0.5 atol = 100 * eps(Float64)
+                @test result.steps > 0
+                @test length(result.solution) == 2
+                @test all(isfinite, result.solution)
+            end
+        end
 
         @test occursin("[0.0]", monitor_output)
         @test occursin("[0.5]", monitor_output)

@@ -341,6 +341,7 @@ function DMStagGetIndices(dm::PetscDM{PetscLib}) where {PetscLib}
     Diff            =   c.lower - gc.lower;
     Start           =   c.lower + Diff;
     End             =   Start + CartesianIndex(c.size) -  CartesianIndex(1,1,1) ;
+    Nextra          =   c.nextra
 
     # Note that we add the shift for julia/petsc consistency
     shift = 0;
@@ -348,9 +349,9 @@ function DMStagGetIndices(dm::PetscDM{PetscLib}) where {PetscLib}
                 y= Start[2]:End[2],  
                 z= Start[3]:End[3] )
 
-    vertex = (  x= Start[1]:End[1]+1 ,
-                y= Start[2]:End[2]+1 ,  
-                z= Start[3]:End[3]+1 )
+    vertex = (  x= Start[1]:End[1]+Nextra[1] ,
+                y= Start[2]:End[2]+Nextra[2] ,  
+                z= Start[3]:End[3]+Nextra[3] )
 
     return (center=center, vertex=vertex)
             

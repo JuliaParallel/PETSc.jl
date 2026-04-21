@@ -47,6 +47,7 @@ makedocs(;
             "AO (Application Ordering)" =>  "man/ao_lowlevel.md",
         ],
         "Utilities" => "man/utilities.md",
+        "Running on HPC Systems" => "man/hpc.md",
         "FAQ"  => "man/FAQ.md",
         "Contributing"  => "man/contributing.md",
         "Funding" => "man/funding.md",

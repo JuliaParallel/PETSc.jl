@@ -2,7 +2,7 @@
 
 module PETSc
 
-using MPI, LinearAlgebra, SparseArrays, OffsetArrays
+using MPI, LinearAlgebra, SparseArrays, OffsetArrays, Preferences
 
 MPI.Initialized() || MPI.Init()
 

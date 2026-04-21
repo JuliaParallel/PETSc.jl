@@ -25,9 +25,15 @@ const libs = @static if !haskey(ENV, "JULIA_PETSC_LIBRARY") && !haskey(ENV, "JUL
         ((PETSc_jll.libpetsc_Float32_Complex_Int32,), Complex{Float32}, Int32),
     )
 else
-    (
-        ((get(ENV, "JULIA_PETSC_LIBRARY", ""),), Float64, Int64),
-    )
+    let _scalar = get(ENV, "JULIA_PETSC_SCALAR", "Float64"),
+        _int    = get(ENV, "JULIA_PETSC_INT",    "Int64")
+        _st = _scalar == "Float32"         ? Float32          :
+              _scalar == "ComplexFloat64"  ? Complex{Float64} :
+              _scalar == "ComplexFloat32"  ? Complex{Float32} :
+              Float64
+        _it = _int == "Int32" ? Int32 : Int64
+        (((get(ENV, "JULIA_PETSC_LIBRARY", ""),), _st, _it),)
+    end
 end
 
 const petsc_library_file =

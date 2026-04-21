@@ -78,8 +78,8 @@ using PETSc
 
 # Create a custom library instance pointing to your PETSc installation
 petsclib = PETSc.set_petsclib("/path/to/your/libpetsc.so"; 
-                             PetscScalar=Float64, 
-                             PetscInt=Int64)
+                              PetscScalar=Float64, 
+                              PetscInt=Int64)
 
 # Initialize and use as normal
 PETSc.initialize(petsclib)
@@ -92,6 +92,7 @@ PETSc.finalize(petsclib)
 **Important notes for custom builds:**
 - The dynamic library path should point to `libpetsc.so` (Linux), `libpetsc.dylib` (macOS), or `libpetsc.dll` (Windows)
 - The `PetscScalar` and `PetscInt` types must match how your PETSc was configured
+- On HPC systems, set `JULIA_PETSC_SKIP_JLL=1` to prevent `PETSc_jll` from being precompiled (it is incompatible with cluster MPI stacks). Alternatively, set `JULIA_PETSC_LIBRARY` to your library path to skip the JLL and configure the scalar/int types via `JULIA_PETSC_SCALAR` and `JULIA_PETSC_INT`
 - Your custom PETSc must be compatible with the MPI version used by `MPI.jl`
 - You can check available precompiled libraries with `[PETSc.petsclibs...]`
 

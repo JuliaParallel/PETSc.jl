@@ -35,13 +35,15 @@ If you want to use the package with custom builds of the PETSc library, this can
 using PETSc
 
 # Create custom library instance
-petsclib = set_petsclib("/path/to/custom/libpetsc.so"; 
-                       PetscScalar=Float64, PetscInt=Int64)
+petsclib = PETSc.set_petsclib("/path/to/custom/libpetsc.so"; 
+                              PetscScalar=Float64, PetscInt=Int64)
 # Use it like any precompiled library
 PETSc.initialize(petsclib, log_view=true)
 # ... your code ...
 PETSc.finalize(petsclib)
 ```
+
+On HPC systems, set `JULIA_PETSC_LIBRARY` to your library path in the environmental variables along with scalar and integer types (if they differ from `Float64` and `Int64`).
 To get an overview of available precompiled libraries:
 ```julia
 julia>using PETSc

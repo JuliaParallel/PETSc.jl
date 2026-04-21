@@ -21,18 +21,29 @@ which will install a pre-built PETSc library (`PETSc_jll`) as well as `MPI.jl` o
     
     **Windows users are therefore advised to install the [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (WSL) and run PETSc.jl from within WSL.** This will provide full functionality with both serial and parallel (MPI) support.
 
-### 1b. Installation using pre-built libraries 
-On many high-performance clusters, you will have to use the provided `MPI` installation for that cluster and the default download above will not be sufficient. Alternatively, you may be interested in a PETSc installation that comes with additional external packages. Ensure that this PETSc installation is compiled as a dynamic (and not a static) library, after which you need to specify the correct library with:
+### 1b. Installation using a custom PETSc build (HPC)
+On many high-performance clusters, you will have to use the provided `MPI` installation for that cluster and the default download above will not be sufficient. Alternatively, you may be interested in a PETSc installation that comes with additional external packages. Ensure that this PETSc installation is compiled as a dynamic (and not a static) library.
+
+On HPC systems, `PETSc_jll` is precompiled by default even when unused, which can cause incompatibility errors. Set `JULIA_PETSC_SKIP_JLL=1` to suppress this, then point to your library at runtime:
 
 ```julia
-# Create custom library instance
-petsclib = set_petsclib("/path/to/custom/libpetsc.so"; 
-                             PetscScalar=Float64, PetscInt=Int64)
-# Use it like any precompiled library
+# In your script — no env var for the path needed
+petsclib = PETSc.set_petsclib("/path/to/custom/libpetsc.so"; 
+                              PetscScalar=Float64, PetscInt=Int64)
 PETSc.initialize(petsclib, log_view=true)
 # ... your code ...
 PETSc.finalize(petsclib)
 ```
+
+Alternatively, configure everything via environment variables (useful for batch scripts):
+
+```bash
+export JULIA_PETSC_LIBRARY=/path/to/libpetsc.so
+export JULIA_PETSC_SCALAR=Float64    # Float32 | ComplexFloat64 | ComplexFloat32
+export JULIA_PETSC_INT=Int64         # Int32
+```
+
+With `JULIA_PETSC_LIBRARY` set, the JLL is skipped automatically and `PETSc.getlib()` returns a library of the specified type.
 
 
 ### 2. Solving a linear system of equations

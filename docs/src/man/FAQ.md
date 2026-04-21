@@ -2,9 +2,23 @@
 
 
 ## 1. Can I use my own PETSc library?
-Yes, see the function `set_petsclib`. You do need to compile this library as a dynamic library, and `MPI.jl` must be configured to be compatible with the MPI library used to compile PETSc. If you run this on a HPC system, and you don't know exactly which options were used, you can compile one of the PETSc examples and run it with the `-log_view` command line option. At the end of the simulation, it will give you the configuration options used on that machine.  
+Yes, see the function `set_petsclib`. You do need to compile this library as a dynamic library, and `MPI.jl` must be configured to be compatible with the MPI library used to compile PETSc. If you run this on a HPC system, and you don't know exactly which options were used, you can compile one of the PETSc examples and run it with the `-log_view` command line option. At the end of the simulation, it will give you the configuration options used on that machine.
 
 Please note that the version of PETSc should be compatible with the version used for the wrapper.
+
+On HPC systems, `PETSc_jll` is precompiled by default even when you intend to use a custom library, which can cause incompatibility errors. There are two ways to avoid this:
+
+**Option A — runtime (recommended for scripts):** set `JULIA_PETSC_SKIP_JLL=1` before starting Julia to suppress JLL precompilation, then call `set_petsclib` in your script:
+```julia
+petsclib = PETSc.set_petsclib("/path/to/libpetsc.so"; PetscScalar=Float64, PetscInt=Int64)
+```
+
+**Option B — environment variables:** point `JULIA_PETSC_LIBRARY` to your library. This skips the JLL *and* registers the library for `getlib()`. Use `JULIA_PETSC_SCALAR` and `JULIA_PETSC_INT` to specify the types:
+```bash
+export JULIA_PETSC_LIBRARY=/path/to/libpetsc.so
+export JULIA_PETSC_SCALAR=Float64    # Float32 | ComplexFloat64 | ComplexFloat32
+export JULIA_PETSC_INT=Int64         # Int32
+```
 
 ## 2. Help, my code crashes?
 That is very possible. If you provide a *short* minimum working example (MWE), feel free to open an issue on the github repo, so we can check it out.

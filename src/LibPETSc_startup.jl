@@ -12,7 +12,7 @@ function getlibs()
     return libs
 end
 =#
-const libs = @static if !haskey(ENV, "JULIA_PETSC_LIBRARY")
+const libs = @static if !haskey(ENV, "JULIA_PETSC_LIBRARY") && !haskey(ENV, "JULIA_PETSC_SKIP_JLL")
     using PETSc_jll
     (
         ((PETSc_jll.libpetsc_Float64_Real_Int64,), Float64, Int64),
@@ -25,7 +25,9 @@ const libs = @static if !haskey(ENV, "JULIA_PETSC_LIBRARY")
         ((PETSc_jll.libpetsc_Float32_Complex_Int32,), Complex{Float32}, Int32),
     )
 else
-    error("JULIA_PETSC_LIBRARY not currently working")
+    (
+        ((get(ENV, "JULIA_PETSC_LIBRARY", ""),), Float64, Int64),
+    )
 end
 
 const petsc_library_file =

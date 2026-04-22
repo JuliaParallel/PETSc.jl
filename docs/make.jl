@@ -12,6 +12,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "Installation" => "man/installation.md",
         "Getting Started" => "man/getting_started.md",
         "High-level interface" => Any[
             "Vec" =>  "man/vec.md",

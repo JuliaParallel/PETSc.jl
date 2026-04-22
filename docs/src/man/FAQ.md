@@ -2,9 +2,27 @@
 
 
 ## 1. Can I use my own PETSc library?
-Yes, see the function `set_petsclib`. You do need to compile this library as a dynamic library, and `MPI.jl` must be configured to be compatible with the MPI library used to compile PETSc. If you run this on a HPC system, and you don't know exactly which options were used, you can compile one of the PETSc examples and run it with the `-log_view` command line option. At the end of the simulation, it will give you the configuration options used on that machine.  
+Yes. You do need to compile PETSc as a dynamic (shared) library, and `MPI.jl` must be configured to be compatible with the MPI used to compile PETSc. If you run this on an HPC system and don't know the configuration options, compile one of the PETSc examples and run it with `-log_view`; the output lists all configuration options used on that machine.
 
-Please note that the version of PETSc should be compatible with the version used for the wrapper.
+Please note that the version of PETSc should be compatible with the version used for the wrappers.
+
+The recommended approach is `set_library!`, which stores the path persistently in `LocalPreferences.toml` — no environment variables needed:
+
+```julia
+using PETSc
+PETSc.set_library!("/path/to/libpetsc.so"; PetscScalar=Float64, PetscInt=Int64)
+# Restart Julia — the custom library is used automatically from here on.
+```
+
+To revert to the bundled `PETSc_jll` binaries:
+```julia
+PETSc.unset_library!()
+```
+
+For a one-off session without changing the persistent preference, use `set_petsclib` directly:
+```julia
+petsclib = PETSc.set_petsclib("/path/to/libpetsc.so"; PetscScalar=Float64, PetscInt=Int64)
+```
 
 ## 2. Help, my code crashes?
 That is very possible. If you provide a *short* minimum working example (MWE), feel free to open an issue on the github repo, so we can check it out.

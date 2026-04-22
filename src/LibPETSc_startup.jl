@@ -12,7 +12,11 @@ function getlibs()
     return libs
 end
 =#
-const libs = @static if !haskey(ENV, "JULIA_PETSC_LIBRARY")
+using Preferences
+
+# @load_preference is evaluated at compile time; changing a preference via
+# set_library!() triggers automatic recompilation (standard Preferences.jl behaviour).
+const libs = @static if @load_preference("library_path", nothing) === nothing
     using PETSc_jll
     (
         ((PETSc_jll.libpetsc_Float64_Real_Int64,), Float64, Int64),
@@ -25,7 +29,15 @@ const libs = @static if !haskey(ENV, "JULIA_PETSC_LIBRARY")
         ((PETSc_jll.libpetsc_Float32_Complex_Int32,), Complex{Float32}, Int32),
     )
 else
-    error("JULIA_PETSC_LIBRARY not currently working")
+    let _path   = @load_preference("library_path"),
+        _scalar = @load_preference("PetscScalar", "Float64"),
+        _int    = @load_preference("PetscInt",    "Int64")
+        _st = _scalar == "Float32"        ? Float32          :
+              _scalar == "ComplexFloat64" ? Complex{Float64} :
+              _scalar == "ComplexFloat32" ? Complex{Float32} : Float64
+        _it = _int == "Int32" ? Int32 : Int64
+        (((_path,), _st, _it),)
+    end
 end
 
 const petsc_library_file =

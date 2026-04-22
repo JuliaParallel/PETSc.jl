@@ -71,28 +71,30 @@ You can link to your own custom build of PETSc instead of using the prebuilt bin
 - Debug builds for troubleshooting
 - Integration with specific external packages
 
-To use a custom PETSc installation:
+To persistently configure a custom PETSc installation (recommended):
 
 ```julia
 using PETSc
+PETSc.set_library!("/path/to/your/libpetsc.so"; PetscScalar=Float64, PetscInt=Int64)
+# Restart Julia — PETSc_jll is not loaded and your library is used automatically.
+```
 
-# Create a custom library instance pointing to your PETSc installation
-petsclib = PETSc.set_petsclib("/path/to/your/libpetsc.so"; 
-                             PetscScalar=Float64, 
-                             PetscInt=Int64)
+To revert: `PETSc.unset_library!()`. To inspect the current config: `PETSc.library_info()`.
 
-# Initialize and use as normal
+For a one-off session without changing persistent settings:
+
+```julia
+petsclib = PETSc.set_petsclib("/path/to/your/libpetsc.so";
+                              PetscScalar=Float64, PetscInt=Int64)
 PETSc.initialize(petsclib)
-
 # ... your code using petsclib ...
-
 PETSc.finalize(petsclib)
 ```
 
 **Important notes for custom builds:**
-- The dynamic library path should point to `libpetsc.so` (Linux), `libpetsc.dylib` (macOS), or `libpetsc.dll` (Windows)
-- The `PetscScalar` and `PetscInt` types must match how your PETSc was configured
-- Your custom PETSc must be compatible with the MPI version used by `MPI.jl`
+- The library must be compiled as a dynamic/shared library (`libpetsc.so` / `.dylib`)
+- `PetscScalar` and `PetscInt` must match how your PETSc was configured
+- Your PETSc must be linked against the same MPI that `MPI.jl` uses
 - You can check available precompiled libraries with `[PETSc.petsclibs...]`
 
 ### 2. Zero-Based Indexing

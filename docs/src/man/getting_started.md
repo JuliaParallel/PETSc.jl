@@ -3,7 +3,7 @@
 
 - [Getting started](#getting-started)
     - [1a. Installation using pre-built libraries](#1a-installation-using-pre-built-libraries)
-    - [1b. Installation using pre-built libraries](#1b-installation-using-pre-built-libraries)
+    - [1b. Installation using a custom PETSc build](#1b-installation-using-a-custom-petsc-build)
     - [2. Solving a linear system of equations](#2-solving-a-linear-system-of-equations)
     - [3. Nonlinear example](#3-nonlinear-example)
     - [4. Next steps](#4-next-steps)
@@ -21,14 +21,28 @@ which will install a pre-built PETSc library (`PETSc_jll`) as well as `MPI.jl` o
     
     **Windows users are therefore advised to install the [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (WSL) and run PETSc.jl from within WSL.** This will provide full functionality with both serial and parallel (MPI) support.
 
-### 1b. Installation using pre-built libraries 
-On many high-performance clusters, you will have to use the provided `MPI` installation for that cluster and the default download above will not be sufficient. Alternatively, you may be interested in a PETSc installation that comes with additional external packages. Ensure that this PETSc installation is compiled as a dynamic (and not a static) library, after which you need to specify the correct library with:
+### 1b. Installation using a custom PETSc build
+Sometimes, you may be interested in a PETSc installation that comes with additional external packages, or that you compiled yourself. Ensure the library is compiled as a **dynamic** (not static) library.
+
+Use `set_library!` to configure the path once — it is stored in `LocalPreferences.toml` and no environment variables are needed afterwards:
 
 ```julia
-# Create custom library instance
-petsclib = set_petsclib("/path/to/custom/libpetsc.so"; 
-                             PetscScalar=Float64, PetscInt=Int64)
-# Use it like any precompiled library
+using PETSc
+PETSc.set_library!(
+    "/path/to/custom/libpetsc.so";
+    PetscScalar = Float64,
+    PetscInt    = Int64,
+)
+# Restart Julia — PETSc_jll is not loaded and your library is used automatically.
+```
+
+To revert to the bundled binaries: `PETSc.unset_library!()`.
+
+For a one-off session without changing persistent settings, use `set_petsclib` directly:
+
+```julia
+petsclib = PETSc.set_petsclib("/path/to/custom/libpetsc.so";
+                              PetscScalar=Float64, PetscInt=Int64)
 PETSc.initialize(petsclib, log_view=true)
 # ... your code ...
 PETSc.finalize(petsclib)

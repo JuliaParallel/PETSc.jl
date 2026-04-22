@@ -199,39 +199,47 @@ inttype(
 
 Create a custom PETSc library instance from a user-specified shared library path.
 
-This function allows you to use a custom-compiled PETSc library instead of the 
-pre-built libraries provided by PETSc_jll. The custom library must be:
-- Compiled as a shared/dynamic library (not static)
-- Built with the correct scalar type (real vs complex) and integer size
-- Compatible with the same MPI installation that MPI.jl is using
+This function allows you to use a custom-compiled PETSc library instead of the
+pre-built libraries provided by `PETSc_jll`. The custom library must be compiled as a
+shared/dynamic library (not static), built with the matching scalar type and integer
+size, and linked against the same MPI installation that `MPI.jl` uses.
+
+On HPC systems, set `JULIA_PETSC_SKIP_JLL=1` before starting Julia to prevent
+`PETSc_jll` from being precompiled (its MPI stack is typically incompatible with
+cluster MPI). Then call this function in your script to load the cluster library.
 
 # Arguments
-- `library_path::String`: Path to the custom PETSc shared library (e.g., "/path/to/libpetsc.so")
-- `PetscScalar::Type`: Scalar type used by the library. Options: `Float64`, `Float32`, 
-  `Complex{Float64}`, or `Complex{Float32}`. Default: `Float64`
-- `PetscInt::Type`: Integer type used by the library. Options: `Int32` or `Int64`. 
+- `library_path::String`: Path to the PETSc shared library (e.g. `"/path/to/libpetsc.so"`)
+- `PetscScalar::Type`: Scalar type the library was built with. One of `Float64`,
+  `Float32`, `Complex{Float64}`, `Complex{Float32}`. Default: `Float64`
+- `PetscInt::Type`: Integer type the library was built with. `Int32` or `Int64`.
   Default: `Int64`
 
 # Returns
-- A `PetscLibType` instance that can be used with `initialize()`, `finalize()`, and 
-  all other PETSc.jl functions
+A `PetscLibType` instance for use with `initialize`, `finalize`, and all PETSc.jl functions.
+
+# Environment-variable alternative
+Instead of calling `set_petsclib`, you can configure everything before Julia starts:
+```
+JULIA_PETSC_LIBRARY=/path/to/libpetsc.so   # also suppresses PETSc_jll
+JULIA_PETSC_SCALAR=Float64                  # Float32 | ComplexFloat64 | ComplexFloat32
+JULIA_PETSC_INT=Int64                       # Int32
+```
+With these set, `PETSc.getlib(; PetscScalar=Float64, PetscInt=Int64)` returns the
+custom library directly.
 
 # Examples
 ```julia
-using PETSc
-
-# For a custom double-precision real PETSc library with 64-bit indices
-petsclib = PETSc.set_petsclib("/path/to/custom/libpetsc.so"; 
-                             PetscScalar=Float64, PetscInt=Int64)
-
-# For a single-precision complex library with 32-bit indices  
-petsclib = PETSc.set_petsclib("/opt/petsc/lib/libpetsc.so"; 
-                             PetscScalar=Complex{Float32}, PetscInt=Int32)
-
-# Initialize and use the custom library
+# Double-precision real, 64-bit indices (typical HPC build)
+petsclib = PETSc.set_petsclib("/path/to/libpetsc.so";
+                              PetscScalar=Float64, PetscInt=Int64)
 PETSc.initialize(petsclib)
 # ... your code ...
 PETSc.finalize(petsclib)
+
+# Single-precision complex, 32-bit indices
+petsclib = PETSc.set_petsclib("/opt/petsc/lib/libpetsc.so";
+                              PetscScalar=Complex{Float32}, PetscInt=Int32)
 ```
 
 # See Also
@@ -246,6 +254,87 @@ function set_petsclib(library_path::String; PetscScalar::Type=Float64, PetscInt:
         @warn "Failed to perform PETSc wrappers version check" exception=(err,)
     end
     return petsclib
+end
+
+"""
+    library_info()
+
+Print the current PETSc library configuration: which library is in use, how it
+was configured (preference or default JLL), and the scalar/integer types.
+"""
+function library_info()
+    pref_path   = @load_preference("library_path", nothing)
+    pref_scalar = @load_preference("PetscScalar", nothing)
+    pref_int    = @load_preference("PetscInt", nothing)
+
+    if pref_path !== nothing
+        println("Source  : LocalPreferences.toml")
+        println("Path    : ", pref_path)
+        println("Scalar  : ", something(pref_scalar, "Float64"))
+        println("Int     : ", something(pref_int,    "Int64"))
+    else
+        println("Source  : PETSc_jll (default precompiled binaries)")
+    end
+
+    println("\nLoaded libraries (this session):")
+    for lib in petsclibs
+        path = lib.petsc_library isa AbstractString ? lib.petsc_library :
+               try Libdl.dlpath(Libdl.dlopen(lib.petsc_library)) catch; string(lib.petsc_library) end
+        println("  [$(lib.PetscScalar), $(lib.PetscInt)]: ", path)
+    end
+end
+
+"""
+    set_library!(path; PetscScalar=Float64, PetscInt=Int64)
+
+Persistently configure PETSc.jl to use a custom PETSc shared library.
+
+The path and type configuration are stored in `LocalPreferences.toml` (per-project,
+git-ignorable) and take effect on the next Julia session. Recompilation is triggered
+automatically — no environment variables are needed.
+
+To revert to the default `PETSc_jll` libraries, call [`unset_library!`](@ref).
+
+# Arguments
+- `path`: path to the PETSc shared library (e.g. `"/path/to/libpetsc.so"`)
+- `PetscScalar`: scalar type the library was built with (`Float64`, `Float32`,
+  `Complex{Float64}`, `Complex{Float32}`). Default: `Float64`
+- `PetscInt`: integer type the library was built with (`Int64` or `Int32`).
+  Default: `Int64`
+
+# Examples
+```julia
+PETSc.set_library!(
+    "/project/petsc/lib/libpetsc.so";
+    PetscScalar = Float64,
+    PetscInt    = Int64,
+)
+# Restart Julia — the new library is used automatically from here on.
+```
+
+# See Also
+- [`unset_library!`](@ref): remove the preference and revert to `PETSc_jll`
+- [`set_petsclib`](@ref): load a custom library for the current session only
+"""
+function set_library!(path; PetscScalar::Type=Float64, PetscInt::Type=Int64)
+    ispath(path) || error("PETSc library not found: $path")
+    @set_preferences!(
+        "library_path" => realpath(path),
+        "PetscScalar"  => string(PetscScalar),
+        "PetscInt"     => string(PetscInt),
+    )
+    @info "PETSc library configured — restart Julia to use the new library." path PetscScalar PetscInt
+end
+
+"""
+    unset_library!()
+
+Remove the persistent custom-library preference set by [`set_library!`](@ref),
+reverting to the default `PETSc_jll` binaries on the next Julia session.
+"""
+function unset_library!()
+    @delete_preferences!("library_path", "PetscScalar", "PetscInt")
+    @info "PETSc library preference removed — restart Julia to revert to PETSc_jll."
 end
 
 

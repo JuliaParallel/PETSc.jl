@@ -2,7 +2,7 @@
 
 module PETSc
 
-using MPI, LinearAlgebra, SparseArrays, OffsetArrays
+using MPI, LinearAlgebra, SparseArrays, OffsetArrays, Preferences
 
 MPI.Initialized() || MPI.Init()
 
@@ -23,6 +23,7 @@ using .LibPETSc
 export LibPETSc
 export audit_petsc_file
 export set_petsclib
+export set_library!, unset_library!, library_info
 
 using Libdl
 

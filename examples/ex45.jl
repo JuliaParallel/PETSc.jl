@@ -12,6 +12,20 @@ forcing(x, y, z) = 12 * π^2 * sin(2π * x) * sin(2π * y) * sin(2π * z)
 # Get the PETSc lib with our chosen `PetscScalar` type
 petsclib = PETSc.getlib(; PetscScalar = Float64)
 
+# If we want to use a custom PETSc library, we can set it with `PETSc.set_library!` before calling `PETSc.getlib`. For example:
+#=
+using PETSc
+PETSc.set_library!(
+    "/path/to/custom/libpetsc.so";
+    PetscScalar = Float64,
+    PetscInt    = Int64,
+)
+# Restart Julia — PETSc_jll is not loaded and your library is used automatically.
+=#
+# This creates a LocalPreferences.toml file. 
+#petsclib = PETSc.getlib(; PetscScalar = Float64, PetscInt = Int64)
+
+
 # Initialize PETSc
 PETSc.initialize(petsclib, log_view=true)
 

@@ -201,25 +201,23 @@ We consider 3 cases:
 - Using a C-compiled version of `ex45_julia.c`  ("native")
 
 #### Results
-Here the collected results: 
+Here the collected results (all simulations, except the largest ones, where done 3 times; I only show the fastest ones here). 
 
-| JobID | Cores | MG levels | NC | Grid | Backend | SolveTime (s) | KSPSolve (s) | TotGFlops | GFlops/s | KSP | L2 error | Max error | Residual | Converged |
+| JobID | Ntasks | MG | NC | Grid | Backend | SolveTime (s) | KSPSolve (s) | TotGFlops | GFlops/s | KSP | L2 error | Max error | Residual | Converged |
 |-------|--------|----|----|------|---------|--------------|-------------|-----------|----------|-----|----------|-----------|----------|-----------|
-| 17655324 | 64 | 5 | 16 | 513³ | PETSc.jl | 55.843 | 27.916 | 335.60 | 5.13 | 9 | 4.4372e-06 | 1.2557e-05 | 3.5610e-05 | ✅ |
 | 17684772 | 64 | 5 | 16 | 513³ | PETSc.jl | 50.800 | 27.108 | 335.60 | 6.00 | 9 | 4.4372e-06 | 1.2557e-05 | 3.5610e-05 | ✅ |
-| 17724069 | 64 | 5 | 16 | 513³ | PETSc.jl | 56.352 | 28.121 | 335.60 | 4.99 | 9 | 4.4372e-06 | 1.2557e-05 | 3.5610e-05 | ✅ |
-| 17701600 | 64 | 5 | 16 | 513³ | local lib | 69.544 | 37.073 | 335.60 | 4.08 | 9 | 4.4372e-06 | 1.2557e-05 | 3.5610e-05 | ✅ |
-| 17705963 | 64 | 5 | 16 | 513³ | local lib | 70.112 | 32.767 | 335.60 | 4.07 | 9 | 4.4372e-06 | 1.2557e-05 | 3.5610e-05 | ✅ |
-| 17678227 | 64 | 5 | 16 | 513³ | native | 42.550 | 27.434 | 337.90 | 7.40 | 9 | 4.4372e-06 | 1.2557e-05 | 3.5610e-05 | ✅ |
-| 17657242 | 512 | 6 | 16 | 1025³ | PETSc.jl | 66.789 | 33.670 | 2878.00 | 34.89 | 10 | 1.1093e-06 | 3.1236e-06 | 9.6257e-05 | ✅ |
+| 17769825 | 64 | 5 | 16 | 513³ | local lib | 51.032 | 27.006 | 335.60 | 6.00 | 9 | 4.4372e-06 | 1.2557e-05 | 3.5610e-05 | ✅ |
+| 17767475 | 64 | 5 | 16 | 513³ | native | 38.770 | 26.917 | 337.90 | 8.50 | 9 | 4.4372e-06 | 1.2557e-05 | 3.5610e-05 | ✅ |
 | 17724458 | 512 | 6 | 16 | 1025³ | PETSc.jl | 61.715 | 32.482 | 2878.00 | 37.52 | 10 | 1.1093e-06 | 3.1236e-06 | 9.6257e-05 | ✅ |
-| 17725367 | 512 | 6 | 16 | 1025³ | PETSc.jl | 65.473 | 34.236 | 2878.00 | 35.53 | 10 | 1.1093e-06 | 3.1236e-06 | 9.6257e-05 | ✅ |
-| 17701691 | 512 | 6 | 16 | 1025³ | local lib | 70.233 | 34.772 | 2878.00 | 34.21 | 10 | 1.1093e-06 | 3.1236e-06 | 9.6257e-05 | ✅ |
-| 17678240 | 512 | 6 | 16 | 1025³ | native | 47.616 | 31.498 | 2896.00 | 57.49 | 10 | 1.1093e-06 | 3.1236e-06 | 9.6257e-05 | ✅ |
+| 17769827 | 512 | 6 | 16 | 1025³ | local lib | 58.254 | 32.033 | 2878.00 | 40.54 | 10 | 1.1093e-06 | 3.1236e-06 | 9.6257e-05 | ✅ |
+| 17767644 | 512 | 6 | 16 | 1025³ | native | 42.700 | 30.122 | 2896.00 | 65.64 | 10 | 1.1093e-06 | 3.1236e-06 | 9.6257e-05 | ✅ |
+| 17768041 | 512 | 6 | 16 | 1025³ | native | 42.924 | 30.307 | 2896.00 | 65.34 | 10 | 1.1093e-06 | 3.1236e-06 | 9.6257e-05 | ✅ |
 | 17658195 | 4096 | 7 | 16 | 2049³ | PETSc.jl | 72.949 | 34.332 | 21390.00 | 258.00 | 9 | 2.7738e-07 | 7.8741e-07 | 1.9254e-04 | ✅ |
-| 17701696 | 4096 | 7 | 16 | 2049³ | local lib | 94.214 | 50.987 | 21390.00 | 203.10 | 9 | 2.7738e-07 | 7.8741e-07 | 1.9254e-04 | ✅ |
-| 17678253 | 4096 | 7 | 16 | 2049³ | native | 60.047 | 33.801 | 21540.00 | 310.20 | 9 | 2.7738e-07 | 7.8741e-07 | 1.9254e-04 | ✅ |
-| 17703689 | 32768 | 8 | 16 | 4097³ | PETSc.jl | — | — | — | — | — | — | — | — | ❌ FAILED |
+| 17769830 | 4096 | 7 | 16 | 2049³ | local lib | 68.095 | 34.220 | 21390.00 | 270.00 | 9 | 2.7738e-07 | 7.8741e-07 | 1.9254e-04 | ✅ |
+| 17767610 | 4096 | 7 | 16 | 2049³ | native | 41.345 | 28.214 | 21540.00 | 506.10 | 9 | 2.7738e-07 | 7.8741e-07 | 1.9254e-04 | ✅ |
+| 17726872 | 32768 | 8 | 16 | 4097³ | PETSc.jl | 142.540 | 63.300 | 171000.00 | 746.60 | 9 | 6.9301e-08 | 1.9765e-07 | 6.6391e-04 | ✅ |
+| 17767541 | 32768 | 8 | 16 | 4097³ | native | 69.282 | 50.858 | 172200.00 | 2386.00 | 9 | 6.9301e-08 | 1.9765e-07 | 6.6391e-04 | ✅ |
+
 ---
 In this table `KSPSolve` indicates the time spend in the solver (taken from the log) and `SolveTime` the time for the full solution.
 
@@ -229,7 +227,7 @@ Below, we break this for each of the cases:
 
 the results of using PETSc.jl with precompiled `jll` libraries are:
 
-| Cores | Grid | DOFs/core | KSPSolve (s) | SolveTime (s) | Efficiency | Converged |
+| Ntasks | Grid | DOFs/core | KSPSolve (s) | SolveTime (s) | Efficiency | Converged |
 |--------|------|-----------|-------------|--------------|------------|-----------|
 | 64 | 513³ | 2,109,464 | 27.916 | 55.843 | 100.0% | ✅ |
 | 64 | 513³ | 2,109,464 | 27.108 | 50.800 | 103.0% | ✅ |
@@ -238,6 +236,8 @@ the results of using PETSc.jl with precompiled `jll` libraries are:
 | 512 | 1025³ | 2,103,302 | 32.482 | 61.715 | 85.9% | ✅ |
 | 512 | 1025³ | 2,103,302 | 34.236 | 65.473 | 81.5% | ✅ |
 | 4096 | 2049³ | 2,100,226 | 34.332 | 72.949 | 81.3% | ✅ |
+| 4096 | 2049³ | 2,100,226 | 44.244 | 79.557 | 63.1% | ✅ |
+| 32768 | 4097³ | 2,098,688 | 63.300 | 142.540 | 44.1% | ✅ |
 
 Please note that in the way we run this on LUMI-C, the 64 core case is on a single node and does not have inter-node communication. Despite this, weak scalability is pretty good (one could also argue to use the 512 core case as reference as this includes communication, in which case it would even be better).
 There is some variability in the timing when repeating the same run (a few %).
@@ -246,37 +246,50 @@ There is some variability in the timing when repeating the same run (a few %).
 
 | Ntasks | Grid | DOFs/core | KSPSolve (s) | SolveTime (s) | Efficiency | Converged |
 |--------|------|-----------|-------------|--------------|------------|-----------|
-| 64 | 513³ | 2,109,464 | 37.073 | 69.544 | 100.0% | ✅ |
-| 64 | 513³ | 2,109,464 | 32.767 | 70.112 | 113.1% | ✅ |
-| 512 | 1025³ | 2,103,302 | 34.772 | 70.233 | 106.6% | ✅ |
-| 4096 | 2049³ | 2,100,226 | 50.987 | 94.214 | 72.7% | ✅ |
-
+| 64 | 513³ | 2,109,464 | 27.065 | 51.123 | 100.0% | ✅ |
+| 64 | 513³ | 2,109,464 | 27.006 | 51.032 | 100.2% | ✅ |
+| 64 | 513³ | 2,109,464 | 27.551 | 56.452 | 98.2% | ✅ |
+| 512 | 1025³ | 2,103,302 | 34.456 | 61.041 | 78.5% | ✅ |
+| 512 | 1025³ | 2,103,302 | 32.033 | 58.254 | 84.5% | ✅ |
+| 512 | 1025³ | 2,103,302 | 30.708 | 61.971 | 88.1% | ✅ |
+| 4096 | 2049³ | 2,100,226 | 38.414 | 69.384 | 70.5% | ✅ |
+| 4096 | 2049³ | 2,100,226 | 35.292 | 68.905 | 76.7% | ✅ |
+| 4096 | 2049³ | 2,100,226 | 34.220 | 68.095 | 79.1% | ✅ |
 
 #### c) Native C build (`ex45_julia.c`)
 
 The equivalent PETSc C example compiled natively, serving as the baseline.
 
+
 | Ntasks | Grid | DOFs/core | KSPSolve (s) | SolveTime (s) | Efficiency | Converged |
 |--------|------|-----------|-------------|--------------|------------|-----------|
-| 64 | 513³ | 2,109,464 | 27.434 | 42.550 | 100.0% | ✅ |
-| 512 | 1025³ | 2,103,302 | 31.498 | 47.616 | 87.1% | ✅ |
-| 4096 | 2049³ | 2,100,226 | 33.801 | 60.047 | 81.2% | ✅ |
+| 64 | 513³ | 2,109,464 | 26.917 | 38.770 | 100.0% | ✅ |
+| 64 | 513³ | 2,109,464 | 27.155 | 39.011 | 99.1% | ✅ |
+| 64 | 513³ | 2,109,464 | 26.854 | 39.065 | 100.2% | ✅ |
+| 512 | 1025³ | 2,103,302 | 31.492 | 44.062 | 85.5% | ✅ |
+| 512 | 1025³ | 2,103,302 | 30.122 | 42.700 | 89.4% | ✅ |
+| 512 | 1025³ | 2,103,302 | 30.607 | 43.331 | 87.9% | ✅ |
+| 512 | 1025³ | 2,103,302 | 30.307 | 42.924 | 88.8% | ✅ |
+| 4096 | 2049³ | 2,100,226 | 30.694 | 46.659 | 87.7% | ✅ |
+| 4096 | 2049³ | 2,100,226 | 28.214 | 41.345 | 95.4% | ✅ |
+| 4096 | 2049³ | 2,100,226 | 28.498 | 42.759 | 94.5% | ✅ |
+| 32768 | 4097³ | 2,098,688 | 50.858 | 69.282 | 52.9% | ✅ |
+
 
 #### d) Backend Comparison 
 
 If we compare the case on 4096 cores with a 2049³ grid, for 3D Poisson, 64 nodes × 64 tasks/node, MG levels = 7, coarse ranks = 16 we get:
 
-| Metric | native C | PETSc.jl (`_jll`) | PETSc.jl (`_jll`) | local lib |
-|--------|----------|-------------------|-------------------|-----------|
-| **JobID** | 17678253 | 17658195 | 17724464 | 17701696 |
-| **SolveTime (s)** | 60.047 | 72.949 | 79.557 | 94.214 |
-| **KSPSolve (s)** | 33.801 | 34.332 | 44.244 | 50.987 |
-| **KSP iterations** | 9 | 9 | 9 | 9 |
-| **Total GFlops** | 21,540 | 21,390 | 21,390 | 21,390 |
-| **GFlops/s** | 310.2 | 258.0 | 208.5 | 203.1 |
-| **L2 error** | 2.7738e-07 | 2.7738e-07 | 2.7738e-07 | 2.7738e-07 |
-| **Max error** | 7.8741e-07 | 7.8741e-07 | 7.8741e-07 | 7.8741e-07 |
-| **Converged** | ✅ | ✅ | ✅ | ✅ |
+| Metric | native C | PETSc.jl (`_jll`) | local lib |
+|--------|----------|-------------------|-----------|
+| **Runs** | 3 | 2 | 3 |
+| **SolveTime mean (s)** | 43.6 | 76.3 | 68.8 |
+| **SolveTime range (s)** | 41.3–46.7 | 72.9–79.6 | 68.1–69.4 |
+| **KSPSolve mean (s)** | 29.1 | 39.3 | 35.9 |
+| **KSPSolve range (s)** | 28.2–30.7 | 34.3–44.2 | 34.2–38.4 |
+| **KSP iterations** | 9 | 9 | 9 |
+| **L2 error** | 2.7738e-07 | 2.7738e-07 | 2.7738e-07 |
+| **Converged** | ✅ | ✅ | ✅ |
 
 The relative performance is thus:
 
@@ -289,10 +302,15 @@ The relative performance is thus:
 
 From this we can conclude:
 - **Numerical results are identical** across all backends — same iterations, same L2/Max error.
-- **KSPSolve time** (pure solver kernel) is nearly identical between native and `PETSc.jl` best run (+1.6%), suggesting the Julia wrapper overhead is minimal in the solver itself.
-- **SolveTime overhead** for `PETSc.jl` vs native (+21–33%) comes mostly from setup (mesh construction, matrix assembly, MG hierarchy setup) rather than the solve.
-- **local lib** is slower than `_jll` despite using the same PETSc version. The likely cause for this is a different SuperLU_dist build, different BLAS (system libsci vs OpenBLAS in `_jll`), and going through GNU Cray MPI instead of MPItrampoline.
-- The variability between the two `PETSc.jl` runs (34s vs 44s KSPSolve) suggests some node-to-node performance variability on LUMI-C
+- **KSPSolve gap vs native** is ~6s for local lib and ~10s for `_jll` — much of this is MG setup overhead inside the solver
+- **SolveTime gap vs native** (~25s for local lib, ~32s for `_jll`) includes Julia setup: mesh construction, matrix assembly, MG hierarchy setup
+- **local lib** is faster than `_jll` at 4096 tasks (35.9s vs 39.3s mean KSPSolve) — likely because it uses the system Cray libsci BLAS directly without MPItrampoline overhead.
+- There is a (significant) drop in performance for high core counts. this is likely related to the multigrid setup and coarse grid solvers and not to PETSc.jl as we see a similar behavior for the native compilation as well.
+
+Overall it shows that there is overhead in using the Julia interface to `PETSc.jl` compared to native C-code. 
+On the other hand, this is done in a higher level language and can thus seemlessly integrate with the full Julia ecosystem. It should also be kept in mind that the residual routines etc. are all written in julia. 
+
+As a start one can configure `PETSc.jl` to use MPITrampoline, which doesn't require any PETSc installation and should thus work on any machine. For the last bit of performance one can configure a native PETSc installation and use that instead.
 
 #### Weak scalability plot
 Results can be summarized in the plot below:

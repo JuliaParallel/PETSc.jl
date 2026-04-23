@@ -1,3 +1,4 @@
+# EXCLUDE FROM TESTING
 using GLMakie
 using Statistics
 

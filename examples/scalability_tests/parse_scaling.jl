@@ -1,3 +1,4 @@
+# EXCLUDE FROM TESTING
 #!/usr/bin/env julia
 # parse_scaling.jl
 # Usage: julia parse_scaling.jl scaling_*.out

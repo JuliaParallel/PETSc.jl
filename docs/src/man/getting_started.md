@@ -1,55 +1,10 @@
 # Getting started
 
+- [1. Solving a linear system of equations](#1-solving-a-linear-system-of-equations)
+- [2. Nonlinear example](#2-nonlinear-example)
+- [3. Next steps](#3-next-steps)
 
-- [Getting started](#getting-started)
-    - [1a. Installation using pre-built libraries](#1a-installation-using-pre-built-libraries)
-    - [1b. Installation using a custom PETSc build](#1b-installation-using-a-custom-petsc-build)
-    - [2. Solving a linear system of equations](#2-solving-a-linear-system-of-equations)
-    - [3. Nonlinear example](#3-nonlinear-example)
-    - [4. Next steps](#4-next-steps)
-
-### 1a. Installation using pre-built libraries 
-The easiest way to install the package is: 
-```julia
-julia> ]
-(@v1.12) pkg> add PETSc
-```
-which will install a pre-built PETSc library (`PETSc_jll`) as well as `MPI.jl` on your system. This will work both in serial and in parallel on your machine.
-
-!!! warning "Windows Users"
-    The prebuild binaries currently do not work on Windows as we had to build `PETSc_jll` without MPI due to compatibility issues with `MicrosoftMPI_jll`.
-    
-    **Windows users are therefore advised to install the [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (WSL) and run PETSc.jl from within WSL.** This will provide full functionality with both serial and parallel (MPI) support.
-
-### 1b. Installation using a custom PETSc build
-Sometimes, you may be interested in a PETSc installation that comes with additional external packages, or that you compiled yourself. Ensure the library is compiled as a **dynamic** (not static) library.
-
-Use `set_library!` to configure the path once — it is stored in `LocalPreferences.toml` and no environment variables are needed afterwards:
-
-```julia
-using PETSc
-PETSc.set_library!(
-    "/path/to/custom/libpetsc.so";
-    PetscScalar = Float64,
-    PetscInt    = Int64,
-)
-# Restart Julia — PETSc_jll is not loaded and your library is used automatically.
-```
-
-To revert to the bundled binaries: `PETSc.unset_library!()`.
-
-For a one-off session without changing persistent settings, use `set_petsclib` directly:
-
-```julia
-petsclib = PETSc.set_petsclib("/path/to/custom/libpetsc.so";
-                              PetscScalar=Float64, PetscInt=Int64)
-PETSc.initialize(petsclib, log_view=true)
-# ... your code ...
-PETSc.finalize(petsclib)
-```
-
-
-### 2. Solving a linear system of equations
+### 1. Solving a linear system of equations
 
 Lets consider the following elliptic equation:
 ```math
@@ -202,7 +157,7 @@ This is important information that helps PETSc to distribute the problem over se
 PETSc uses the `DM` infrastructure for such cases. `DMDA` is for (collocated) finite differences, `DMStag` for staggered finite differences, `DMPlex` for finite element/finite volume discretisations and `DMForest` for adaptive mesh refinement problems.
 If possible, use this infrastructure as it simplifies your life. Have a look at the [examples](https://github.com/JuliaParallel/PETSc.jl/tree/main/examples) or [tests](https://github.com/JuliaParallel/PETSc.jl/tree/main/test) of `PETSc.jl`.
 
-### 3. Nonlinear example
+### 2. Nonlinear example
 Let's solve the coupled system of nonlinear equations: 
 ```math
 \begin{aligned}
@@ -285,8 +240,8 @@ julia> PETSc.finalize(petsclib)
 ```
 
 
-### 4. Next steps 
-Now that you have the basics, ypu can start playing with some more complete examples.
+### 3. Next steps 
+Now that you have the basics, you can start playing with some more complete examples.
 Here some suggestions:
 1. [laplacian.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/laplacian.jl) - simple (non-parallel) laplacian example using Julia sparse matrixes
 2. [dmda_laplacian.jl](https://github.com/JuliaParallel/PETSc.jl/blob/main/examples/dmda_laplacian.jl) - 2D laplacian example with Dirichlet boundary conditions using the `DMDA` framework. Examples are given on how to run it with various (multigrid) solvers.

@@ -12,6 +12,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "Installation" => "man/installation.md",
         "Getting Started" => "man/getting_started.md",
         "High-level interface" => Any[
             "Vec" =>  "man/vec.md",
@@ -47,6 +48,7 @@ makedocs(;
             "AO (Application Ordering)" =>  "man/ao_lowlevel.md",
         ],
         "Utilities" => "man/utilities.md",
+        "Running on HPC Systems" => "man/hpc.md",
         "FAQ"  => "man/FAQ.md",
         "Contributing"  => "man/contributing.md",
         "Funding" => "man/funding.md",

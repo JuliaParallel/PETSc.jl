@@ -217,7 +217,7 @@ Here the collected results (all simulations, except the largest ones, where done
 | 17767610 | 4096 | 7 | 16 | 2049³ | native | 41.345 | 28.214 | 21540.00 | 506.10 | 9 | 2.7738e-07 | 7.8741e-07 | 1.9254e-04 | ✅ |
 | 17726872 | 32768 | 8 | 16 | 4097³ | PETSc.jl | 142.540 | 63.300 | 171000.00 | 746.60 | 9 | 6.9301e-08 | 1.9765e-07 | 6.6391e-04 | ✅ |
 | 17767541 | 32768 | 8 | 16 | 4097³ | native | 69.282 | 50.858 | 172200.00 | 2386.00 | 9 | 6.9301e-08 | 1.9765e-07 | 6.6391e-04 | ✅ |
-
+17769918  |  32768  |   8 |   16 |  4097³ | local lib |    135.402  |     73.108 |  171000.00   |   263.20 |    9 |   6.9301e-08  |  1.9765e-07 |   6.6391e-04 | ✅ |
 ---
 In this table `KSPSolve` indicates the time spend in the solver (taken from the log) and `SolveTime` the time for the full solution.
 
@@ -255,6 +255,8 @@ There is some variability in the timing when repeating the same run (a few %).
 | 4096 | 2049³ | 2,100,226 | 38.414 | 69.384 | 70.5% | ✅ |
 | 4096 | 2049³ | 2,100,226 | 35.292 | 68.905 | 76.7% | ✅ |
 | 4096 | 2049³ | 2,100,226 | 34.220 | 68.095 | 79.1% | ✅ |
+| 32768 | 4097³ | 2,098,688 | 73.108  | 135.402  | 37.0% | ✅ |
+
 
 #### c) Native C build (`ex45_julia.c`)
 

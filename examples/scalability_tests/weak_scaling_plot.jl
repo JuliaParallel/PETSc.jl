@@ -21,7 +21,7 @@ data = Dict(
         64   => [27.065, 27.006, 27.551],
         512  => [34.456, 32.033, 30.708],
         4096 => [38.414, 35.292, 34.220],
-        32768 => Float64[],   # pending
+        32768 =>[73.108],   
     ),
 )
 
@@ -60,13 +60,13 @@ col_locallib = :tomato
 band!(ax, ntasks, min_native,   max_native,   color = (col_native,   0.10))
 # petscjl: all 4 points
 band!(ax, ntasks, min_petscjl,  max_petscjl,  color = (col_petscjl,  0.15))
-# locallib: only first 3 points (32768 pending)
-band!(ax, ntasks[1:3], min_locallib[1:3], max_locallib[1:3], color = (col_locallib, 0.15))
+# locallib: all 4 points
+band!(ax, ntasks[1:4], min_locallib[1:4], max_locallib[1:4], color = (col_locallib, 0.15))
 
 # Mean lines
 lines!(ax, ntasks,       mean_native,              color = col_native,   linewidth = 2.5, label = "Native C")
 lines!(ax, ntasks,       mean_petscjl,             color = col_petscjl,  linewidth = 2.5, label = "PETSc.jl (_jll)")
-lines!(ax, ntasks[1:3],  mean_locallib[1:3],       color = col_locallib, linewidth = 2.5, label = "Local lib")
+lines!(ax, ntasks,  mean_locallib[1:4],       color = col_locallib, linewidth = 2.5, label = "Local lib")
 # Dashed extension hint for local lib pending
 scatter!(ax, [32768], [NaN], color = col_locallib, markersize = 14, marker = :diamond,
          strokewidth = 1.5, strokecolor = :white)  # placeholder, won't render NaN
@@ -83,7 +83,7 @@ end
 # Mean markers (larger, white outline)
 scatter!(ax, ntasks,      mean_native,        color = col_native,   markersize = 14, marker = :circle,  strokewidth = 1.5, strokecolor = :white)
 scatter!(ax, ntasks,      mean_petscjl,       color = col_petscjl,  markersize = 14, marker = :rect,    strokewidth = 1.5, strokecolor = :white)
-scatter!(ax, ntasks[1:3], mean_locallib[1:3], color = col_locallib, markersize = 14, marker = :diamond, strokewidth = 1.5, strokecolor = :white)
+scatter!(ax, ntasks,  mean_locallib,       color = col_locallib, markersize = 14, marker = :diamond, strokewidth = 1.5, strokecolor = :white)
 
 # Ideal flat line based on native baseline
 hlines!(ax, [mean_native[1]], color = :gray, linewidth = 1.5, linestyle = :dash, label = "Ideal (flat)")

@@ -5118,7 +5118,7 @@ function SNESComputeJacobianDefault(petsclib::PetscLibType, snes::PetscSNES, x1:
                (:SNESComputeJacobianDefault, $petsc_library),
                PetscErrorCode,
                (CSNES, CVec, CMat, CMat, Ptr{Cvoid}),
-               snes, x1, J, B, ctx,
+               snes, x1, J, B, C_NULL,
               )
 
 

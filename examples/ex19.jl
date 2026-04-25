@@ -23,16 +23,26 @@
     julia --project ex19.jl -snes_monitor -ksp_monitor -da_grid_x 32 -da_grid_y 32
     mpiexec -n 4 julia --project ex19.jl -snes_monitor -pc_type mg -da_grid_x 64 -da_grid_y 64
 
-  To switch to GPU (once withlocalarray! supports device arrays):
-    Replace  `KernelAbstractions.CPU()`  with  `CUDABackend()`  and adapt the
-    array-wrapping inside the residual callback accordingly.
+  GPU usage: set  useCUDA = true  then run as above.
+    Requires PETSc built with --with-cuda, and CUDA.jl in the environment.
+
+  Set  useCUDA = true  (below) to run the residual kernel on GPU via CUDA.
+  Requires PETSc built with CUDA support and CUDA.jl installed.
 =#
+
+# ── GPU switch ────────────────────────────────────────────────────────────────
+const useCUDA = false
 
 using MPI
 using PETSc
 using KernelAbstractions
 
-backend = KernelAbstractions.CPU()
+if useCUDA
+    using CUDA
+    const backend = CUDABackend()
+else
+    const backend = KernelAbstractions.CPU()
+end
 
 
 # ── Physical parameters ──────────────────────────────────────────────────────
@@ -153,7 +163,7 @@ end
 opts = isinteractive() ? NamedTuple() : PETSc.parse_options(ARGS)
 
 petsclib = PETSc.getlib(; PetscScalar = Float64)
-PETSc.initialize(petsclib)
+PETSc.initialize(petsclib; log_view = true)
 
 T       = Float64
 PetscInt = petsclib.PetscInt
@@ -169,6 +179,11 @@ da = PETSc.DMDA(
     PETSc.DMDA_STENCIL_STAR;
     opts...,
 )
+
+if useCUDA
+    LibPETSc.DMSetVecType(petsclib, da, "cuda")
+    LibPETSc.DMSetMatType(petsclib, da, "aijcusparse")
+end
 
 snes = PETSc.SNES(petsclib, comm; opts...)
 PETSc.setDM!(snes, da)
@@ -221,7 +236,7 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     l_x = PETSc.DMLocalVec(da)
     PETSc.dm_global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
 
-    PETSc.withlocalarray!(
+    PETSc.withlocalarray_device!(
         (g_fx, l_x);
         read  = (false, true),
         write = (true,  false),
@@ -273,6 +288,7 @@ LibPETSc.SNESSetJacobian(petsclib, snes, J, J,
     cglobal((:SNESComputeJacobianDefault, petsclib.petsc_library)), C_NULL)
 
 # ── Solve ─────────────────────────────────────────────────────────────────────
+@show Threads.nthreads()
 PETSc.solve!(x, snes)
 
 if MPI.Comm_rank(comm) == 0

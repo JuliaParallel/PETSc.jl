@@ -18,6 +18,7 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 
 [compat]
+CUDA = "5"
 ForwardDiff = "0.10, 1"
 Libdl = "^1.10"
 LinearAlgebra = "^1.10"
@@ -31,6 +32,12 @@ SparseArrays = "1.10"
 Statistics = "^1.10"
 UnicodePlots = "3.0"
 julia = "^1.10"
+
+[weakdeps]
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+
+[extensions]
+PETScCUDAExt = "CUDA"
 
 [extras]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"

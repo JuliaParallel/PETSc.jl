@@ -310,6 +310,21 @@ function withlocalarray!(
 end
 withlocalarray!(f!, vecs...; kwargs...) = withlocalarray!(f!, vecs; kwargs...)
 
+"""
+    withlocalarray_device!(f!, vecs...; read, write)
+
+Like [`withlocalarray!`](@ref) but returns a device array (e.g. `CuArray`) when
+the underlying PETSc vector lives on GPU (i.e. `PetscMemType` is not HOST).
+
+When CUDA.jl is loaded the `PETScCUDAExt` extension overrides this function to
+wrap the device pointer returned by `VecGetArrayAndMemType` into a `CuArray`
+without any host↔device copy.  When CUDA.jl is not loaded, or when the vector
+lives on the host, this falls back to [`withlocalarray!`](@ref).
+"""
+withlocalarray_device!(f!, vecs::NTuple{N, AbstractPetscVec}; kwargs...) where {N} =
+    withlocalarray!(f!, vecs; kwargs...)
+withlocalarray_device!(f!, vecs...; kwargs...) = withlocalarray_device!(f!, vecs; kwargs...)
+
 
 """
     ghostupdatebegin!(

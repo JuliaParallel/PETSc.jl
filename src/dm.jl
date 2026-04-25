@@ -445,3 +445,23 @@ function MatAIJ(da::AbstractPetscDM{PetscLib}) where {PetscLib}
     J = LibPETSc.DMCreateMatrix(getlib(PetscLib), da)
     return J
 end
+
+function LibPETSc.DMSetVecType(
+    petsclib,
+    dm::AbstractPetscDM,
+    ctype::AbstractString,
+)
+    GC.@preserve ctype begin
+        LibPETSc.DMSetVecType(petsclib, dm, Base.unsafe_convert(Ptr{Cchar}, ctype))
+    end
+end
+
+function LibPETSc.DMSetMatType(
+    petsclib,
+    dm::AbstractPetscDM,
+    ctype::AbstractString,
+)
+    GC.@preserve ctype begin
+        LibPETSc.DMSetMatType(petsclib, dm, Base.unsafe_convert(Ptr{Cchar}, ctype))
+    end
+end

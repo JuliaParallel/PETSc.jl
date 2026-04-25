@@ -31,7 +31,7 @@
 =#
 
 # ── GPU switch ────────────────────────────────────────────────────────────────
-const useCUDA = false
+const useCUDA = true
 
 using MPI
 using PETSc
@@ -39,6 +39,7 @@ using KernelAbstractions
 
 if useCUDA
     using CUDA
+    import CUDA: CuArray, CuPtr, unsafe_wrap
     const backend = CUDABackend()
 else
     const backend = KernelAbstractions.CPU()
@@ -165,9 +166,12 @@ opts = isinteractive() ? NamedTuple() : PETSc.parse_options(ARGS)
 petsclib = PETSc.getlib(; PetscScalar = Float64)
 PETSc.initialize(petsclib; log_view = true)
 
-T       = Float64
+petsclib = PETSc.getlib(; PetscScalar = Float64)
+PETSc.initialize(petsclib; log_view = true)
+
+T        = Float64
 PetscInt = petsclib.PetscInt
-comm    = MPI.COMM_WORLD
+comm     = MPI.COMM_WORLD
 
 # DMDA: 4×4 default (matches ex19.c); override via -da_grid_x / -da_grid_y
 da = PETSc.DMDA(
@@ -223,12 +227,45 @@ PETSc.withlocalarray!(x; read = false) do x_arr
     end
 end
 
+# ── Helpers for zero-copy access to PETSc device/host arrays ─────────────────
+#
+# On CPU: plain Julia Arrays via unsafe_localarray (VecGetArray internally).
+# On GPU: CuArrays wrapping the device pointer via VecCUDAGetArrayRead/Write —
+#         no host↔device copies, data stays on the GPU throughout.
+#
+# Returns (fx, lx, fx_ptr, lx_ptr) where fx_ptr/lx_ptr are the Ref handles
+# needed by the corresponding Restore calls.
+#
+function get_petsc_arrays(petsclib, g_fx, l_x)
+    if useCUDA
+        fx_arr, fx_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, g_fx)
+        lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, l_x)
+
+        # fx_arr and lx_arr are Julia Vectors whose underlying pointer is a
+        # CUDA device pointer when mtype == PETSC_MEMTYPE_CUDA.
+        # unsafe_wrap creates a CuArray view — zero copy, no host transfer.
+        fx = unsafe_wrap(CuArray, CuPtr{T}(UInt(pointer(fx_arr))), length(fx_arr))
+        lx = unsafe_wrap(CuArray, CuPtr{T}(UInt(pointer(lx_arr))), length(lx_arr))
+        return fx, lx, fx_arr, lx_arr
+    else
+        fx = PETSc.unsafe_localarray(g_fx; read = true,  write = true)
+        lx = PETSc.unsafe_localarray(l_x;  read = true,  write = false)
+        return fx, lx, nothing, nothing
+    end
+end
+
+function restore_petsc_arrays(petsclib, g_fx, l_x, fx_arr, lx_arr, fx, lx)
+    if useCUDA
+        LibPETSc.VecRestoreArrayAndMemType(petsclib, g_fx, fx_arr)
+        LibPETSc.VecRestoreArrayReadAndMemType(petsclib, l_x, lx_arr)
+    else
+        Base.finalize(fx)
+        Base.finalize(lx)
+    end
+end
+
 # ── Residual callback ─────────────────────────────────────────────────────────
-#
-# To run on GPU, replace CPU() with CUDABackend() (or ROCBackend()) and adapt
-# the array wrapping once withlocalarray! supports device arrays (see vec.jl).
-#
-r       = similar(x)
+r = similar(x)
 
 PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     da = PETSc.getDM(snes)
@@ -236,40 +273,37 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     l_x = PETSc.DMLocalVec(da)
     PETSc.dm_global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
 
-    PETSc.withlocalarray_device!(
-        (g_fx, l_x);
-        read  = (false, true),
-        write = (true,  false),
-    ) do fx, lx
-        corners       = PETSc.getcorners(da)
-        ghost_corners = PETSc.getghostcorners(da)
+    fx, lx, fx_ptr, lx_ptr = get_petsc_arrays(petsclib, g_fx, l_x)
 
-        xs  = corners.lower[1];        ys  = corners.lower[2]
-        xe  = corners.upper[1];        ye  = corners.upper[2]
-        xsg = ghost_corners.lower[1];  ysg = ghost_corners.lower[2]
-        xeg = ghost_corners.upper[1];  yeg = ghost_corners.upper[2]
+    corners       = PETSc.getcorners(da)
+    ghost_corners = PETSc.getghostcorners(da)
 
-        nx_own = xe  - xs  + 1;  ny_own = ye  - ys  + 1
-        nx_g   = xeg - xsg + 1;  ny_g   = yeg - ysg + 1
+    xs  = corners.lower[1];        ys  = corners.lower[2]
+    xe  = corners.upper[1];        ye  = corners.upper[2]
+    xsg = ghost_corners.lower[1];  ysg = ghost_corners.lower[2]
+    xeg = ghost_corners.upper[1];  yeg = ghost_corners.upper[2]
 
-        # Plain [dof, x, y] arrays — no OffsetArray, safe for KA on GPU
-        x_par = reshape(lx, 4, nx_g,   ny_g)
-        f_par = reshape(fx, 4, nx_own, ny_own)
+    nx_own = xe  - xs  + 1;  ny_own = ye  - ys  + 1
+    nx_g   = xeg - xsg + 1;  ny_g   = yeg - ysg + 1
 
-        # Ghost offset: ghost-array index for owned start = 1 + ox (0 at domain wall)
-        ox = xs - xsg
-        oy = ys - ysg
+    # Plain [dof, x, y] arrays — no OffsetArray, safe for KA on GPU
+    x_par = reshape(lx, 4, nx_g,   ny_g)
+    f_par = reshape(fx, 4, nx_own, ny_own)
 
-        cavity_residual_kernel!(backend, 64)(
-            f_par, x_par,
-            dhx, dhy, hx, hy, hydhx, hxdhy,
-            user.grashof, user.prandtl, user.lidvelocity,
-            mx, my, xs, ys, ox, oy;
-            ndrange = (nx_own, ny_own),
-        )
-        KernelAbstractions.synchronize(backend)
-    end
+    # Ghost offset: ghost-array index for owned start = 1 + ox (0 at domain wall)
+    ox = xs - xsg
+    oy = ys - ysg
 
+    cavity_residual_kernel!(backend, 64)(
+        f_par, x_par,
+        dhx, dhy, hx, hy, hydhx, hxdhy,
+        user.grashof, user.prandtl, user.lidvelocity,
+        mx, my, xs, ys, ox, oy;
+        ndrange = (nx_own, ny_own),
+    )
+    KernelAbstractions.synchronize(backend)
+
+    restore_petsc_arrays(petsclib, g_fx, l_x, fx_ptr, lx_ptr, fx, lx)
     PETSc.destroy(l_x)
     return PetscInt(0)
 end

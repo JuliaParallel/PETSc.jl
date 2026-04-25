@@ -87,19 +87,22 @@ setfunction!(snes::AbstractPetscSNES, rhs!, vec) = setfunction!(rhs!, snes, vec)
 # Wrapper for calls to setfunction!
 mutable struct Fn_SNESSetFunction{PetscLib} end
 function (w::Fn_SNESSetFunction{PetscLib})(
-    ::CSNES,
+    actual_snes_ptr::CSNES,
     r_x::CVec,
     r_fx::CVec,
     snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
     snes = unsafe_pointer_to_objref(snes_ptr)
+    # Wrap the actual C SNES for the current MG level so that getDM() inside
+    # the callback returns the correct DM (matches the pattern in Fn_KSPComputeRHS).
+    actual_snes = PetscSNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age)
     x  = PetscVec{PetscLib}(r_x)
     fx = PetscVec{PetscLib}(r_fx)
 
-    if Base.applicable(snes.f!, fx, snes, x, snes.user_ctx)
-        return snes.f!(fx, snes, x, snes.user_ctx)
+    if Base.applicable(snes.f!, fx, actual_snes, x, snes.user_ctx)
+        return snes.f!(fx, actual_snes, x, snes.user_ctx)
     else
-        return snes.f!(fx, snes, x)
+        return snes.f!(fx, actual_snes, x)
     end
 end
 
@@ -161,13 +164,14 @@ setjacobian!(snes::AbstractPetscSNES, updateJ!, J, PJ = J) =
 # Wrapper for calls to setjacobian!
 mutable struct Fn_SNESSetJacobian{PetscLib} end
 function (w::Fn_SNESSetJacobian{PetscLib})(
-    ::CSNES,
+    actual_snes_ptr::CSNES,
     r_x::CVec,
     r_A::CMat,
     r_P::CMat,
     snes_ptr::Ptr{Cvoid},
 ) where {PetscLib}
     snes = unsafe_pointer_to_objref(snes_ptr)
+    actual_snes = PetscSNES{PetscLib}(actual_snes_ptr, getlib(PetscLib).age)
     x = PetscVec{PetscLib}(r_x)
     A = PetscMat{PetscLib}(r_A)
     P = PetscMat{PetscLib}(r_P)
@@ -175,16 +179,16 @@ function (w::Fn_SNESSetJacobian{PetscLib})(
     same_mat = (P.ptr == A.ptr)
 
     if same_mat
-        if Base.applicable(snes.updateJ!, A, snes, x, snes.user_ctx)
-            return snes.updateJ!(A, snes, x, snes.user_ctx)
+        if Base.applicable(snes.updateJ!, A, actual_snes, x, snes.user_ctx)
+            return snes.updateJ!(A, actual_snes, x, snes.user_ctx)
         else
-            return snes.updateJ!(A, snes, x)
+            return snes.updateJ!(A, actual_snes, x)
         end
     else
-        if Base.applicable(snes.updateJ!, A, P, snes, x, snes.user_ctx)
-            return snes.updateJ!(A, P, snes, x, snes.user_ctx)
+        if Base.applicable(snes.updateJ!, A, P, actual_snes, x, snes.user_ctx)
+            return snes.updateJ!(A, P, actual_snes, x, snes.user_ctx)
         else
-            return snes.updateJ!(A, P, snes, x)
+            return snes.updateJ!(A, P, actual_snes, x)
         end
     end
 end

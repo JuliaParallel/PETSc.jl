@@ -1487,10 +1487,10 @@ function VecGetArrayWriteAndMemType(petsclib::PetscLibType, x::PetscVec) end
               )
 
 	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
-	mtype = unsafe_string(mtype_[])
+	mtype = mtype_[]
 
 	return a,mtype
-end 
+end
 
 """
 	VecRestoreArrayWriteAndMemType(petsclib::PetscLibType,x::PetscVec, a::Vector{PetscScalar}) 

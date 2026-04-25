@@ -35,6 +35,7 @@ include("test_snes.jl")
 include("old_test.jl")
 include("low_level_viewer.jl")  # Low-level viewer convenience functions
 include("low_level_ts.jl")      # Low-level TS functions
+include("test_string_wrappers_extra.jl")  # String overloads for TS subtype setters
 include("ts_ex51.jl")           # Regression test for repeated ex51 solves
 include("ts_ex51_implicit.jl")  # Regression test for repeated implicit Gauss solves
 include("ts_ex16.jl")           # Regression test for the van der Pol IMEX example

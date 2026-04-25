@@ -17,11 +17,6 @@ function LibPETSc.KSPSetType(petsclib, ksp, type::AbstractString)
     GC.@preserve s LibPETSc.KSPSetType(petsclib, ksp, Base.unsafe_convert(Ptr{Cchar}, s))
 end
 
-function LibPETSc.PCSetType(petsclib, pc, type::AbstractString)
-    s = String(type)
-    GC.@preserve s LibPETSc.PCSetType(petsclib, pc, Base.unsafe_convert(Ptr{Cchar}, s))
-end
-
 function LibPETSc.SNESSetType(petsclib, snes, type::AbstractString)
     s = String(type)
     GC.@preserve s LibPETSc.SNESSetType(petsclib, snes, Base.unsafe_convert(Ptr{Cchar}, s))

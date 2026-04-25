@@ -221,12 +221,10 @@ string such as `"none"` or `"basic"`.
 function LibPETSc.TSAdaptSetType(
     petsclib::LibPETSc.PetscLibType,
     adapt::LibPETSc.TSAdapt,
-    type::String,
+    type::AbstractString,
 )
-    c_str = Vector{UInt8}(type * "\0")
-    ptr = Base.unsafe_convert(Ptr{Cchar}, pointer(c_str))
-    LibPETSc.TSAdaptSetType(petsclib, adapt, ptr)
-    return nothing
+    s = String(type)
+    GC.@preserve s LibPETSc.TSAdaptSetType(petsclib, adapt, Base.unsafe_convert(Ptr{Cchar}, s))
 end
 
 """

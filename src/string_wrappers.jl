@@ -1,95 +1,43 @@
-# Convenience wrappers for PETSc SetType functions that accept Julia strings
-# instead of C string pointers
-#
-# These wrappers are defined in the parent PETSc module and delegate to
-# LibPETSc functions with automatic string-to-pointer conversion.
+# Convenience overloads for PETSc Set*Type functions.
+# Each accepts AbstractString and converts to the Ptr{Cchar} the C API expects.
+# GC.@preserve keeps the String alive across the ccall inside the LibPETSc wrapper.
 
-"""
-    MatSetType(petsclib, mat, type::String)
-
-Convenience wrapper for setting matrix type using a Julia string.
-
-# Example
-```julia
-mat = LibPETSc.MatCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
-LibPETSc.MatSetType(petsclib, mat, "seqaij")
-```
-"""
-function LibPETSc.MatSetType(petsclib::LibPETSc.PetscLibType, mat, type::String)
-    c_str = Vector{UInt8}(type * "\0")
-    ptr = Base.unsafe_convert(Ptr{Int8}, pointer(c_str))
-    LibPETSc.MatSetType(petsclib, mat, ptr)
-    return nothing
+function LibPETSc.MatSetType(petsclib, mat, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.MatSetType(petsclib, mat, Base.unsafe_convert(Ptr{Cchar}, s))
 end
 
-"""
-    VecSetType(petsclib, vec, type::String)
-
-Convenience wrapper for setting vector type using a Julia string.
-
-# Example
-```julia
-vec = LibPETSc.VecCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
-LibPETSc.VecSetType(petsclib, vec, "seq")
-```
-"""
-function LibPETSc.VecSetType(petsclib::LibPETSc.PetscLibType, vec, type::String)
-    c_str = Vector{UInt8}(type * "\0")
-    ptr = Base.unsafe_convert(Ptr{Int8}, pointer(c_str))
-    LibPETSc.VecSetType(petsclib, vec, ptr)
-    return nothing
+function LibPETSc.VecSetType(petsclib, vec, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.VecSetType(petsclib, vec, Base.unsafe_convert(Ptr{Cchar}, s))
 end
 
-"""
-    KSPSetType(petsclib, ksp, type::String)
-
-Convenience wrapper for setting KSP solver type using a Julia string.
-
-# Example
-```julia
-ksp = LibPETSc.KSPCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
-LibPETSc.KSPSetType(petsclib, ksp, "gmres")
-```
-"""
-function LibPETSc.KSPSetType(petsclib::LibPETSc.PetscLibType, ksp, type::String)
-    c_str = Vector{UInt8}(type * "\0")
-    ptr = Base.unsafe_convert(Ptr{Int8}, pointer(c_str))
-    LibPETSc.KSPSetType(petsclib, ksp, ptr)
-    return nothing
+function LibPETSc.KSPSetType(petsclib, ksp, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.KSPSetType(petsclib, ksp, Base.unsafe_convert(Ptr{Cchar}, s))
 end
 
-"""
-    SNESSetType(petsclib, snes, type::String)
-
-Convenience wrapper for setting SNES solver type using a Julia string.
-
-# Example
-```julia
-snes = LibPETSc.SNESCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
-LibPETSc.SNESSetType(petsclib, snes, "newtonls")
-```
-"""
-function LibPETSc.SNESSetType(petsclib::LibPETSc.PetscLibType, snes, type::String)
-    c_str = Vector{UInt8}(type * "\0")
-    ptr = Base.unsafe_convert(Ptr{Int8}, pointer(c_str))
-    LibPETSc.SNESSetType(petsclib, snes, ptr)
-    return nothing
+function LibPETSc.PCSetType(petsclib, pc, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.PCSetType(petsclib, pc, Base.unsafe_convert(Ptr{Cchar}, s))
 end
 
-"""
-    DMSetType(petsclib, dm, type::String)
+function LibPETSc.SNESSetType(petsclib, snes, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.SNESSetType(petsclib, snes, Base.unsafe_convert(Ptr{Cchar}, s))
+end
 
-Convenience wrapper for setting DM type using a Julia string.
+function LibPETSc.DMSetType(petsclib, dm, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.DMSetType(petsclib, dm, Base.unsafe_convert(Ptr{Cchar}, s))
+end
 
-# Example
-```julia
-dm = LibPETSc.DMCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
-LibPETSc.DMSetType(petsclib, dm, "da")
-```
-"""
-function LibPETSc.DMSetType(petsclib::LibPETSc.PetscLibType, dm, type::String)
-    c_str = Vector{UInt8}(type * "\0")
-    ptr = Base.unsafe_convert(Ptr{Int8}, pointer(c_str))
-    LibPETSc.DMSetType(petsclib, dm, ptr)
-    return nothing
+function LibPETSc.DMSetVecType(petsclib, dm, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.DMSetVecType(petsclib, dm, Base.unsafe_convert(Ptr{Cchar}, s))
+end
+
+function LibPETSc.DMSetMatType(petsclib, dm, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.DMSetMatType(petsclib, dm, Base.unsafe_convert(Ptr{Cchar}, s))
 end

@@ -1340,10 +1340,10 @@ function VecGetArrayAndMemType(petsclib::PetscLibType, x::PetscVec) end
               )
 
 	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
-	mtype = unsafe_string(mtype_[])
+	mtype = mtype_[]
 
 	return a,mtype
-end 
+end
 
 """
 	VecRestoreArrayAndMemType(petsclib::PetscLibType,x::PetscVec, a::Vector{PetscScalar}) 
@@ -1414,10 +1414,10 @@ function VecGetArrayReadAndMemType(petsclib::PetscLibType, x::PetscVec) end
               )
 
 	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
-	mtype = unsafe_string(mtype_[])
+	mtype = mtype_[]
 
 	return a,mtype
-end 
+end
 
 """
 	VecRestoreArrayReadAndMemType(petsclib::PetscLibType,x::PetscVec, a::Vector{PetscScalar}) 

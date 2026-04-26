@@ -52,3 +52,25 @@ The package currently does not work on windows, mainly because `MicrosoftMPI_jll
 Have a look at the [documentation](https://juliaparallel.org/PETSc.jl/stable/), at the [examples](./examples/) directory or at the tests in the [test](./test) directory. We do keep the tests up to date, so that is a good starting point. 
 
 Note, that we do not have tests in place for the whole library at this stage. The best supported parts are `DMDA`,`DMStag`, `KSP`,`SNES`,`Vec` and `Mat` interfaces, while other parts such as `DMPlex` do not have a high-level interface or tests yet. Users will thus have to rely on the low-level interface.
+
+## SciML / OrdinaryDiffEq integration
+
+`PETSc.jl` ships a package extension (`PETScSciMLExt`) that lets you solve in-place `ODEProblem`s with PETSc's TS time integrators through the standard SciMLBase / OrdinaryDiffEq interface. The extension activates automatically when both `SciMLBase` and `DiffEqBase` are loaded — typically as a side effect of `using OrdinaryDiffEq`.
+
+```julia
+using PETSc, OrdinaryDiffEq
+
+f!(du, u, p, t) = (du[1] = -u[1]; nothing)
+prob = ODEProblem(f!, [1.0], (0.0, 1.0))
+
+sol = solve(prob, PETSc.TSRK("3bs"); dt = 0.1)                                # explicit RK
+sol = solve(prob, PETSc.TSRosW("ra34pw2", ["-snes_fd"]); dt = 1e-3)           # Rosenbrock-W
+sol = solve(prob, PETSc.TSImplicit("bdf", ["-snes_fd"]); dt = 1e-3)           # BDF / theta / CN / BEuler
+sol = solve(SplitODEProblem(f1!, f2!, u0, tspan),
+            PETSc.TSARKIMEX("2e", ["-snes_fd"]); dt = 0.05)                   # IMEX
+
+integrator = init(prob, PETSc.TSRK("5dp"); dt = 0.05)                         # step!/solve! interface
+step!(integrator); sol = solve!(integrator)
+```
+
+Per-solver PETSc command-line options are passed on the algorithm itself (a `Vector{String}` of raw tokens, e.g. `["-snes_fd", "-ts_max_steps", "100"]`). Discrete callbacks and `terminate!` are supported; continuous callbacks and `tstops` are warned about and ignored. The extension currently requires `PetscReal = Float64` and in-place ODE problems. See the docstrings of `PETSc.TSRK`, `PETSc.TSRosW`, `PETSc.TSImplicit`, `PETSc.TSARKIMEX`, and `PETSc.TSGeneric` for details.

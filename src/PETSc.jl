@@ -40,8 +40,12 @@ include("dmda.jl")
 include("dmstag.jl")
 
 # String convenience wrappers for SetType functions
-include("string_wrappers.jl")       
+include("string_wrappers.jl")
 include("string_wrappers_extra.jl")
+
+# SciML extension algorithm types (methods live in ext/PETScSciMLExt.jl).
+include("sciml_algorithms.jl")
+export PETScTSAlgorithm, TSRK, TSRosW, TSImplicit, TSARKIMEX, TSGeneric
 
 
 include("audit.jl")

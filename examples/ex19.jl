@@ -31,7 +31,7 @@
 =#
 
 # ── GPU switch ────────────────────────────────────────────────────────────────
-const useCUDA = true
+const useCUDA = false
 
 using MPI
 using PETSc
@@ -166,9 +166,6 @@ opts = isinteractive() ? NamedTuple() : PETSc.parse_options(ARGS)
 petsclib = PETSc.getlib(; PetscScalar = Float64)
 PETSc.initialize(petsclib; log_view = true)
 
-petsclib = PETSc.getlib(; PetscScalar = Float64)
-PETSc.initialize(petsclib; log_view = true)
-
 T        = Float64
 PetscInt = petsclib.PetscInt
 comm     = MPI.COMM_WORLD
@@ -184,10 +181,10 @@ da = PETSc.DMDA(
     opts...,
 )
 
-if useCUDA
-    LibPETSc.DMSetVecType(petsclib, da, "cuda")
-    LibPETSc.DMSetMatType(petsclib, da, "aijcusparse")
-end
+# NOTE (Stage 1): PETSc vecs stay on CPU so FD coloring arithmetic uses BLAS
+# (not cuBLAS), avoiding the VecPlaceArray+VecAXPY CUDA bug in PETSc's
+# MatFDColoringApply_AIJ.  The residual kernel still runs on the GPU via
+# explicit H2D/kernel/D2H copies in get_petsc_arrays / restore_petsc_arrays.
 
 snes = PETSc.SNES(petsclib, comm; opts...)
 PETSc.setDM!(snes, da)
@@ -227,35 +224,58 @@ PETSc.withlocalarray!(x; read = false) do x_arr
     end
 end
 
-# ── Helpers for zero-copy access to PETSc device/host arrays ─────────────────
+# ── Helpers for PETSc array access with optional GPU residual kernel ──────────
 #
-# On CPU: plain Julia Arrays via unsafe_localarray (VecGetArray internally).
-# On GPU: CuArrays wrapping the device pointer via VecCUDAGetArrayRead/Write —
-#         no host↔device copies, data stays on the GPU throughout.
+# Three cases:
 #
-# Returns (fx, lx, fx_ptr, lx_ptr) where fx_ptr/lx_ptr are the Ref handles
-# needed by the corresponding Restore calls.
+#   useCUDA=false  →  plain CPU arrays via unsafe_localarray.
+#
+#   useCUDA=true, vecs on GPU (PETSC_MEMTYPE_CUDA)
+#              →  zero-copy CuArray wraps; no host↔device transfer.
+#
+#   useCUDA=true, vecs on CPU (PETSC_MEMTYPE_HOST, Stage-1 coloring path)
+#              →  allocate GPU scratch buffers, copy lx H2D before kernel,
+#                 copy fx D2H after kernel, then let PETSc see the result in
+#                 the HOST fx_arr.  FD coloring arithmetic stays on CPU (BLAS)
+#                 which avoids the VecPlaceArray+cuBLAS bug.
+#
+# Returns (fx, lx, fx_arr, lx_arr, fx_bounce)
+#   fx / lx       — arrays passed to the kernel (CuArray or plain Array)
+#   fx_arr/lx_arr — raw PETSc handles for Restore calls (nothing on CPU path)
+#   fx_bounce     — CuArray whose contents must be copied back to fx_arr after
+#                   the kernel; nothing when no copy is needed.
 #
 function get_petsc_arrays(petsclib, g_fx, l_x)
     if useCUDA
         fx_arr, fx_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, g_fx)
         lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, l_x)
 
-        # fx_arr and lx_arr are Julia Vectors whose underlying pointer is a
-        # CUDA device pointer when mtype == PETSC_MEMTYPE_CUDA.
-        # unsafe_wrap creates a CuArray view — zero copy, no host transfer.
-        fx = unsafe_wrap(CuArray, CuPtr{T}(UInt(pointer(fx_arr))), length(fx_arr))
-        lx = unsafe_wrap(CuArray, CuPtr{T}(UInt(pointer(lx_arr))), length(lx_arr))
-        return fx, lx, fx_arr, lx_arr
+        if lx_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE
+            # Native GPU vecs: zero-copy wrap, no bounce needed.
+            fx = unsafe_wrap(CuArray, CuPtr{T}(UInt(pointer(fx_arr))), length(fx_arr))
+            lx = unsafe_wrap(CuArray, CuPtr{T}(UInt(pointer(lx_arr))), length(lx_arr))
+            return fx, lx, fx_arr, lx_arr, nothing
+        else
+            # CPU vecs (FD coloring path): bounce residual through GPU.
+            lx_gpu = CuArray{T}(undef, length(lx_arr))
+            fx_gpu = CuArray{T}(undef, length(fx_arr))
+            copyto!(lx_gpu, lx_arr)          # H2D: send ghost input to GPU
+            return fx_gpu, lx_gpu, fx_arr, lx_arr, fx_gpu
+        end
     else
         fx = PETSc.unsafe_localarray(g_fx; read = true,  write = true)
         lx = PETSc.unsafe_localarray(l_x;  read = true,  write = false)
-        return fx, lx, nothing, nothing
+        return fx, lx, nothing, nothing, nothing
     end
 end
 
-function restore_petsc_arrays(petsclib, g_fx, l_x, fx_arr, lx_arr, fx, lx)
+function restore_petsc_arrays(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
     if useCUDA
+        if fx_bounce !== nothing
+            # D2H: copy GPU residual result back to the HOST PETSc array.
+            CUDA.synchronize()
+            copyto!(fx_arr, fx_bounce)
+        end
         LibPETSc.VecRestoreArrayAndMemType(petsclib, g_fx, fx_arr)
         LibPETSc.VecRestoreArrayReadAndMemType(petsclib, l_x, lx_arr)
     else
@@ -273,7 +293,7 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     l_x = PETSc.DMLocalVec(da)
     PETSc.dm_global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
 
-    fx, lx, fx_ptr, lx_ptr = get_petsc_arrays(petsclib, g_fx, l_x)
+    fx, lx, fx_arr, lx_arr, fx_bounce = get_petsc_arrays(petsclib, g_fx, l_x)
 
     corners       = PETSc.getcorners(da)
     ghost_corners = PETSc.getghostcorners(da)
@@ -303,23 +323,25 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     )
     KernelAbstractions.synchronize(backend)
 
-    restore_petsc_arrays(petsclib, g_fx, l_x, fx_ptr, lx_ptr, fx, lx)
+    restore_petsc_arrays(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
     PETSc.destroy(l_x)
     return PetscInt(0)
 end
 
-# ── Jacobian (finite differences via PETSc's built-in column-by-column FD) ───
+# ── Jacobian: FD coloring via PETSc's SNESComputeJacobianDefaultColor ────────
 #
-# Pass SNESComputeJacobianDefault directly as the C function pointer, exactly
-# like the C code does:
-#   SNESSetJacobian(snes, J, J, SNESComputeJacobianDefault, NULL)
-# This avoids a nested Julia→C→Julia callback chain and is more robust
-# in parallel.  For production, replace with coloring-based FD by swapping
-# SNESComputeJacobianDefault → SNESComputeJacobianDefaultColor.
+# With ctx = C_NULL, PETSc auto-builds the ISColoring from the DM sparsity
+# pattern and registers SNESComputeFunction (our Julia callback) as the
+# function to perturb.  Because PETSc vecs are CPU (Stage 1 — no DMSetVecType),
+# the VecAXPY inside MatFDColoringApply_AIJ uses BLAS rather than cuBLAS, so
+# the placed HOST dy[] buffer is updated correctly.
+#
+# The residual callback bounces through GPU via H2D/kernel/D2H in
+# get_petsc_arrays / restore_petsc_arrays, so GPU acceleration is preserved.
 #
 J = LibPETSc.DMCreateMatrix(petsclib, da)
 LibPETSc.SNESSetJacobian(petsclib, snes, J, J,
-    cglobal((:SNESComputeJacobianDefault, petsclib.petsc_library)), C_NULL)
+    cglobal((:SNESComputeJacobianDefaultColor, petsclib.petsc_library)), C_NULL)
 
 # ── Solve ─────────────────────────────────────────────────────────────────────
 @show Threads.nthreads()

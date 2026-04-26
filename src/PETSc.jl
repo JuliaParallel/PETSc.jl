@@ -3,6 +3,7 @@
 module PETSc
 
 using MPI, LinearAlgebra, SparseArrays, OffsetArrays, Preferences
+using DataStructures: BinaryMinHeap
 
 MPI.Initialized() || MPI.Init()
 

@@ -2,24 +2,27 @@ DiffEqBase.u_modified!(i::PETScTSIntegrator, val::Bool) = (i.u_modified = val)
 
 @static if isdefined(SciMLBase, :derivative_discontinuity!)
     SciMLBase.derivative_discontinuity!(i::PETScTSIntegrator, val::Bool) =
-        (i.u_modified = val)
+        (i.derivative_discontinuity = val)
 end
 
 function DiffEqBase.savevalues!(integ::PETScTSIntegrator, force::Bool = false)
     integ.opts.save_on || return (false, false)
     saved = false
+    saved_exactly = false
 
-    if integ.opts.save_everystep || force
-        push!(integ.sol.t, integ.t)
-        push!(integ.sol.u, copy(integ.u))
-        saved = true
-    end
-
-    # `saveat` stores tdir * t in a forward BinaryMinHeap, so first(...) is
-    # always the next requested time in the integration direction.
+    # Drain due `saveat` times first so the trajectory stays sorted in the
+    # integration direction even when `save_everystep` is also enabled.
+    # `saveat` stores tdir*t in a forward BinaryMinHeap, so first(...) is the
+    # next requested time in tdir order.
     while !isempty(integ.opts.saveat) &&
           first(integ.opts.saveat) <= integ.tdir * integ.t
         t_save = pop!(integ.opts.saveat) / integ.tdir
+        if t_save == integ.t
+            # Saveat coincides with the step endpoint: just save the current
+            # state below; do not interpolate or duplicate.
+            saved_exactly = true
+            continue
+        end
         u_interp = similar(integ.u)
         v_interp = PETSc.VecSeq(integ.petsclib, length(integ.u))
         try
@@ -35,6 +38,13 @@ function DiffEqBase.savevalues!(integ::PETScTSIntegrator, force::Bool = false)
         end
         push!(integ.sol.t, t_save)
         push!(integ.sol.u, u_interp)
+        saved = true
+    end
+
+    if (integ.opts.save_everystep || force || saved_exactly) &&
+       (isempty(integ.sol.t) || last(integ.sol.t) != integ.t)
+        push!(integ.sol.t, integ.t)
+        push!(integ.sol.u, copy(integ.u))
         saved = true
     end
 

@@ -2,7 +2,6 @@ using Test
 using PETSc
 using SciMLBase
 using DiffEqBase
-using DataStructures
 
 ext = Base.get_extension(PETSc, :PETScSciMLExt)
 @assert ext !== nothing

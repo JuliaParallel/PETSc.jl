@@ -16,6 +16,22 @@ _as_time_iter(::Nothing, ::Type) = ()
 _as_time_iter(x::Number, ::Type{T}) where {T} = (T(x),)
 _as_time_iter(x, ::Type{T}) where {T} = (T(t) for t in x)
 
+# SciML semantics for scalar `saveat`: it is a *spacing*, not a single time.
+# `saveat = 0.5` on tspan = (0.0, 2.0) saves at 0.5, 1.0, 1.5, 2.0 (subject to
+# save_start / save_end handling). Expand a scalar value into the appropriate
+# vector of timestamps in the integration direction.
+function _expand_saveat(saveat::Number, tdir, tspan, ::Type{T}) where {T}
+    spacing = abs(T(saveat))
+    spacing > zero(T) || return T[]
+    t0 = T(tspan[1])
+    tf = T(tspan[2])
+    return T[t0 + tdir * spacing * k
+             for k in 1:floor(Int, abs(tf - t0) / spacing)]
+end
+_expand_saveat(saveat, _tdir, _tspan, ::Type{T}) where {T} =
+    T[T(t) for t in saveat]
+_expand_saveat(::Nothing, _tdir, _tspan, ::Type{T}) where {T} = T[]
+
 function _build_opts(
     ::Type{tType},
     saveat,
@@ -35,9 +51,8 @@ function _build_opts(
     t0 = tdir * tType(tspan[1])
     tf = tdir * tType(tspan[2])
 
-    saveat_data = tType[
-        tdir * t for t in _as_time_iter(saveat, tType) if t0 < tdir * t <= tf
-    ]
+    saveat_expanded = _expand_saveat(saveat, tdir, tspan, tType)
+    saveat_data = tType[tdir * t for t in saveat_expanded if t0 < tdir * t <= tf]
     tstops_data = tType[
         tdir * t for t in _as_time_iter(tstops, tType) if t0 < tdir * t <= tf
     ]

@@ -47,6 +47,8 @@ struct TSRK <: PETScTSAlgorithm
     petsc_options::Vector{String}
 end
 TSRK(subtype::String) = TSRK(subtype, String[])
+TSRK(subtype::String, petsc_options) =
+    TSRK(subtype, String[String(s) for s in petsc_options])
 
 """
     TSRosW(subtype::String[, petsc_options])
@@ -72,6 +74,8 @@ struct TSRosW <: PETScTSAlgorithm
     petsc_options::Vector{String}
 end
 TSRosW(subtype::String) = TSRosW(subtype, String[])
+TSRosW(subtype::String, petsc_options) =
+    TSRosW(subtype, String[String(s) for s in petsc_options])
 
 """
     TSImplicit(subtype::String[, theta::Real][, petsc_options])
@@ -105,10 +109,10 @@ struct TSImplicit <: PETScTSAlgorithm
 end
 TSImplicit(subtype::String) = TSImplicit(subtype, 0.5, String[])
 TSImplicit(subtype::String, theta::Real) = TSImplicit(subtype, Float64(theta), String[])
-TSImplicit(subtype::String, petsc_options::AbstractVector) =
-    TSImplicit(subtype, 0.5, String.(petsc_options))
-TSImplicit(subtype::String, theta::Real, petsc_options::AbstractVector) =
-    TSImplicit(subtype, Float64(theta), String.(petsc_options))
+TSImplicit(subtype::String, petsc_options) =
+    TSImplicit(subtype, 0.5, String[String(s) for s in petsc_options])
+TSImplicit(subtype::String, theta::Real, petsc_options) =
+    TSImplicit(subtype, Float64(theta), String[String(s) for s in petsc_options])
 
 """
     TSARKIMEX(subtype::String[, petsc_options])
@@ -137,6 +141,8 @@ struct TSARKIMEX <: PETScTSAlgorithm
     petsc_options::Vector{String}
 end
 TSARKIMEX(subtype::String) = TSARKIMEX(subtype, String[])
+TSARKIMEX(subtype::String, petsc_options) =
+    TSARKIMEX(subtype, String[String(s) for s in petsc_options])
 
 """
     TSGeneric(ts_type::String[, petsc_options])
@@ -160,3 +166,5 @@ struct TSGeneric <: PETScTSAlgorithm
     petsc_options::Vector{String}
 end
 TSGeneric(ts_type::String) = TSGeneric(ts_type, String[])
+TSGeneric(ts_type::String, petsc_options) =
+    TSGeneric(ts_type, String[String(s) for s in petsc_options])

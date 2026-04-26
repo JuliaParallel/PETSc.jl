@@ -26,9 +26,12 @@ function _setfromoptions!(petsclib, ts, petsc_options::AbstractVector{<:Abstract
     isempty(petsc_options) && return nothing
     opts = PETSc.Options(petsclib; PETSc.parse_options(String.(petsc_options))...)
     push!(opts)
-    PETSc.LibPETSc.TSSetFromOptions(petsclib, ts)
-    pop!(opts)
-    PETSc.destroy(opts)
+    try
+        PETSc.LibPETSc.TSSetFromOptions(petsclib, ts)
+    finally
+        pop!(opts)
+        PETSc.destroy(opts)
+    end
     return nothing
 end
 _setfromoptions!(petsclib, ts, ::Nothing) = nothing

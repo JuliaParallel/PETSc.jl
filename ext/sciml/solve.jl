@@ -11,36 +11,71 @@ end
 # Explicit, deterministic cleanup. Idempotent — repeated calls are no-ops.
 PETSc.destroy(integ::PETScTSIntegrator) = _destroy_petsc!(integ)
 
+# Pick the integrator's internal time type. We always promote integer `tspan`s
+# to a floating-point type so PETSc-side `Float64` times do not get truncated
+# back into `Int` on assignment.
+_pick_tType(tspan) = float(eltype(tspan))
+
+function _check_tspan(t0, tf)
+    isfinite(t0) && isfinite(tf) || throw(ArgumentError(
+        "PETSc.jl SciML extension: tspan endpoints must be finite, got ($t0, $tf).",
+    ))
+    tf == t0 && throw(ArgumentError(
+        "PETSc.jl SciML extension: zero-length tspan ($t0, $tf) is not supported. " *
+        "Build the trivial solution (the initial state) directly in user code.",
+    ))
+    tf > t0 || throw(ArgumentError(
+        "PETSc.jl SciML extension: backward integration (tspan = ($t0, $tf)) is " *
+        "not yet supported. PETSc TS adaptivity does not handle negative dt " *
+        "reliably; reverse the problem yourself or open an issue if you need this.",
+    ))
+    return nothing
+end
+
 # Builds the bare PETSc TS skeleton shared by every algorithm: pick the
 # library, allocate the solution vector, set time bounds and a maybe-supplied
 # initial step. Algorithm-specific TS type, subtype, and callback registration
-# happen in `_register_algorithm_callbacks!` afterwards.
-function _common_ts_setup(prob, alg, dt, maxiters, petsclib)
+# happen in `_setup_petsc_algorithm!` afterwards.
+function _common_ts_setup(prob, alg, dt, maxiters, petsclib, reltol, abstol)
     _check_isinplace(prob)
     lib = _pick_petsclib(prob, petsclib)
     _check_petscreal(lib)
     PETSc.initialized(lib) || PETSc.initialize(lib)
 
     u0 = copy(prob.u0)
-    tType = typeof(one(eltype(prob.tspan)))
+    tType = _pick_tType(prob.tspan)
     t0 = tType(prob.tspan[1])
     tf = tType(prob.tspan[2])
+    _check_tspan(t0, tf)
     tdir = tType(sign(tf - t0))
 
     ts = PETSc.LibPETSc.TSCreate(lib, PETSc.LibPETSc.PETSC_COMM_SELF)
     u_v = PETSc.VecSeq(lib, length(u0))
-    PETSc.withlocalarray!(u_v; read = false, write = true) do arr
-        copyto!(arr, vec(u0))
-    end
-    PETSc.LibPETSc.TSSetSolution(lib, ts, u_v)
-    PETSc.LibPETSc.TSSetTime(lib, ts, lib.PetscReal(t0))
-    PETSc.LibPETSc.TSSetMaxTime(lib, ts, lib.PetscReal(tf))
-    PETSc.LibPETSc.TSSetMaxSteps(lib, ts, lib.PetscInt(maxiters))
-    PETSc.LibPETSc.TSSetExactFinalTime(
-        lib, ts, PETSc.LibPETSc.TS_EXACTFINALTIME_MATCHSTEP,
-    )
-    if dt !== nothing
-        PETSc.LibPETSc.TSSetTimeStep(lib, ts, lib.PetscReal(dt))
+    try
+        PETSc.withlocalarray!(u_v; read = false, write = true) do arr
+            copyto!(arr, vec(u0))
+        end
+        PETSc.LibPETSc.TSSetSolution(lib, ts, u_v)
+        PETSc.LibPETSc.TSSetTime(lib, ts, lib.PetscReal(t0))
+        PETSc.LibPETSc.TSSetMaxTime(lib, ts, lib.PetscReal(tf))
+        PETSc.LibPETSc.TSSetMaxSteps(lib, ts, lib.PetscInt(maxiters))
+        PETSc.LibPETSc.TSSetExactFinalTime(
+            lib, ts, PETSc.LibPETSc.TS_EXACTFINALTIME_MATCHSTEP,
+        )
+        if dt !== nothing
+            PETSc.LibPETSc.TSSetTimeStep(lib, ts, lib.PetscReal(dt))
+        end
+        if reltol !== nothing && abstol !== nothing
+            (reltol isa Real && abstol isa Real) || throw(ArgumentError(
+                "PETSc.jl SciML extension: only scalar `reltol` / `abstol` are " *
+                "supported. Got types $(typeof(reltol)) / $(typeof(abstol)).",
+            ))
+            _ts_set_scalar_tolerances!(lib, ts, abstol, reltol)
+        end
+    catch
+        PETSc.LibPETSc.TSDestroy(lib, ts)
+        PETSc.destroy(u_v)
+        rethrow()
     end
 
     return (lib, ts, u_v, u0, tType, t0, tdir)
@@ -59,7 +94,8 @@ function _make_integrator(
         tType(something(dt, zero(tType))),
         prob.p,
         opts,
-        false,
+        false,           # u_modified
+        false,           # derivative_discontinuity
         tdir,
         size(u0),
         sol,
@@ -162,10 +198,36 @@ function _setup_petsc_algorithm!(lib, ts, prob, u0, alg::TSARKIMEX)
         ifunc_ctx = _register_ifunction_with_f!(lib, ts, f1, prob, u0)
         return (rhs = rhs_ctx, ifunc = ifunc_ctx)
     else
-        # Fallback: no explicit part, treat full RHS as implicit. PETSc still
-        # advances correctly for ARKIMEX in this degenerate case.
         return _register_ifunction!(lib, ts, prob, u0)
     end
+end
+
+# Run callback initialization, sync any state changes back to PETSc, and honor
+# initialization-time `save_positions[2]` if the callback set asks for it.
+function initialize_callbacks!(integ::PETScTSIntegrator, cb_set; initialize_save = true)
+    DiffEqBase.initialize!(cb_set, integ.u, integ.t, integ)
+    if integ.u_modified
+        _sync_julia_to_petsc!(integ)
+        PETSc.LibPETSc.TSSetSolution(integ.petsclib, integ.ts, integ.u_petsc)
+        if initialize_save && _wants_initialize_save(cb_set)
+            push!(integ.sol.t, integ.t)
+            push!(integ.sol.u, copy(integ.u))
+        end
+        integ.u_modified = false
+    end
+    return nothing
+end
+
+# A CallbackSet wants an initialize-time save when any of its discrete or
+# continuous callbacks has `save_positions[2] = true`.
+function _wants_initialize_save(cb_set)
+    for cb in cb_set.discrete_callbacks
+        isdefined(cb, :save_positions) && cb.save_positions[2] && return true
+    end
+    for cb in cb_set.continuous_callbacks
+        isdefined(cb, :save_positions) && cb.save_positions[2] && return true
+    end
+    return false
 end
 
 function SciMLBase.__init(
@@ -178,8 +240,8 @@ function SciMLBase.__init(
     saveat = (),
     tstops = (),
     callback = nothing,
-    reltol = 1e-3,
-    abstol = 1e-6,
+    reltol = nothing,
+    abstol = nothing,
     dt = nothing,
     maxiters::Integer = Int(1e5),
     petsclib = nothing,
@@ -187,7 +249,7 @@ function SciMLBase.__init(
     kwargs...,
 )
     (lib, ts, u_v, u0, tType, t0, tdir) =
-        _common_ts_setup(prob, alg, dt, maxiters, petsclib)
+        _common_ts_setup(prob, alg, dt, maxiters, petsclib, reltol, abstol)
 
     cb_set = DiffEqBase.CallbackSet(callback)
     if !isempty(cb_set.continuous_callbacks)
@@ -214,17 +276,29 @@ function SciMLBase.__init(
         stats = SciMLBase.DEStats(0),
     )
 
-    cb_ctx = _setup_petsc_algorithm!(lib, ts, prob, u0, alg)
-    _setfromoptions!(lib, ts, alg.petsc_options)
+    try
+        cb_ctx = _setup_petsc_algorithm!(lib, ts, prob, u0, alg)
+        _setfromoptions!(lib, ts, alg.petsc_options)
 
-    integ = _make_integrator(
-        alg, u0, tType, t0, tdir, dt, prob,
-        opts, sol, lib, ts, u_v, cb_ctx,
-    )
+        integ = _make_integrator(
+            alg, u0, tType, t0, tdir, dt, prob,
+            opts, sol, lib, ts, u_v, cb_ctx,
+        )
 
-    DiffEqBase.initialize!(cb_set, u0, t0, integ)
+        initialize_callbacks!(integ, cb_set)
 
-    return integ
+        return integ
+    catch
+        # Setup failed before _make_integrator wired up the finalizer; clean up
+        # the half-constructed PETSc objects so they do not leak.
+        if ts.ptr != C_NULL
+            PETSc.LibPETSc.TSDestroy(lib, ts)
+        end
+        if u_v.ptr != C_NULL
+            PETSc.destroy(u_v)
+        end
+        rethrow()
+    end
 end
 
 function SciMLBase.__solve(
@@ -267,6 +341,7 @@ function SciMLBase.step!(integ::PETScTSIntegrator)
         _sync_julia_to_petsc!(integ)
         PETSc.LibPETSc.TSSetSolution(integ.petsclib, integ.ts, integ.u_petsc)
     end
+    integ.derivative_discontinuity = false
 
     if integ.done
         # `terminate!` was triggered by a callback. Tell PETSc not to keep
@@ -293,6 +368,7 @@ function SciMLBase.solve!(integ::PETScTSIntegrator)
     while !integ.done
         SciMLBase.step!(integ)
     end
+    DiffEqBase.finalize!(integ.opts.callback, integ.u, integ.t, integ)
     if integ.opts.save_end &&
        (isempty(integ.sol.t) || last(integ.sol.t) != integ.t)
         push!(integ.sol.t, integ.t)

@@ -20,6 +20,7 @@ mutable struct PETScTSIntegrator{
     p::pType
     opts::optType
     u_modified::Bool
+    derivative_discontinuity::Bool
     tdir::tType
     sizeu::Tuple
     sol::solType

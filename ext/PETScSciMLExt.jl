@@ -1,9 +1,9 @@
 module PETScSciMLExt
 
 using PETSc
+using PETSc: BinaryMinHeap
 using SciMLBase
 using DiffEqBase
-using DataStructures: BinaryMinHeap
 
 include("sciml/algorithms.jl")
 include("sciml/options.jl")

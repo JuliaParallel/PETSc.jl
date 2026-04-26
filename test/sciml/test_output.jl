@@ -2,7 +2,6 @@ using Test
 using PETSc
 using SciMLBase
 using DiffEqBase
-using DataStructures
 
 ext = Base.get_extension(PETSc, :PETScSciMLExt)
 @assert ext !== nothing
@@ -85,9 +84,39 @@ end
         @test ordered == [0.75, 0.5, 0.25]
     end
 
-    @testset "scalar saveat" begin
-        sol = solve(prob, TSRK("3bs"); dt = 0.1, saveat = 0.5)
+    @testset "scalar saveat is a spacing, not a single time (SciML semantics)" begin
+        # tspan = (0, 1), saveat = 0.25 should save at 0.25, 0.5, 0.75, 1.0
+        sol = solve(prob, TSRK("3bs"); dt = 0.1, saveat = 0.25)
         @test sol.retcode == ReturnCode.Success
-        @test any(t -> isapprox(t, 0.5; atol = 1e-12), sol.t)
+        for ts in (0.25, 0.5, 0.75, 1.0)
+            @test any(t -> isapprox(t, ts; atol = 1e-12), sol.t)
+        end
+    end
+
+    @testset "save_everystep + saveat keeps trajectory sorted" begin
+        # Forces a saveat time inside a step (saveat = 0.25 with dt = 0.4
+        # means PETSc's first step ends at 0.4; without the drain-first fix
+        # the trajectory would record 0.4 before 0.25).
+        sol = solve(
+            prob, TSRK("3bs");
+            dt = 0.4, save_everystep = true, saveat = [0.25],
+        )
+        @test sol.retcode == ReturnCode.Success
+        @test issorted(sol.t)
+        # 0.25 (interpolated) appears between save_start (0.0) and the next
+        # step endpoint.
+        @test any(t -> isapprox(t, 0.25; atol = 1e-12), sol.t)
+        # and the trajectory has no duplicate timestamps.
+        @test length(unique(sol.t)) == length(sol.t)
+    end
+
+    @testset "integer tspan is promoted to a float type internally" begin
+        # The integrator must not truncate PETSc's Float64 step times back
+        # into Int when prob.tspan has an integer eltype.
+        prob_i = ODEProblem(decay!, [1.0], (0, 1))
+        sol = solve(prob_i, TSRK("3bs"); dt = 0.1)
+        @test sol.retcode == ReturnCode.Success
+        @test sol.t[end] ≈ 1.0
+        @test sol.u[end][1] ≈ exp(-1) atol = 1e-3
     end
 end

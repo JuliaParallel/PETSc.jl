@@ -31,7 +31,7 @@
 =#
 
 # ── GPU switch ────────────────────────────────────────────────────────────────
-const useCUDA = false
+const useCUDA = true
 
 using MPI
 using PETSc
@@ -314,11 +314,22 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     ox = xs - xsg
     oy = ys - ysg
 
+    # Recompute grid metrics from the DM so this callback is correct on every
+    # MG level (coarsen/refine changes mx/my; capturing outer-scope values
+    # would give wrong stencil weights and lid velocity on coarse grids).
+    info_  = PETSc.getinfo(da)
+    mx_    = info_.global_size[1]
+    my_    = info_.global_size[2]
+    dhx_   = T(mx_ - 1);    dhy_   = T(my_ - 1)
+    hx_    = one(T) / dhx_; hy_    = one(T) / dhy_
+    hydhx_ = hy_ * dhx_;    hxdhy_ = hx_ * dhy_
+    lid_   = T(1) / dhx_    # lidvelocity = 1/(mx-1)
+
     cavity_residual_kernel!(backend, 64)(
         f_par, x_par,
-        dhx, dhy, hx, hy, hydhx, hxdhy,
-        user.grashof, user.prandtl, user.lidvelocity,
-        mx, my, xs, ys, ox, oy;
+        dhx_, dhy_, hx_, hy_, hydhx_, hxdhy_,
+        user.grashof, user.prandtl, lid_,
+        mx_, my_, xs, ys, ox, oy;
         ndrange = (nx_own, ny_own),
     )
     KernelAbstractions.synchronize(backend)

@@ -202,32 +202,22 @@ function _setup_petsc_algorithm!(lib, ts, prob, u0, alg::TSARKIMEX)
     end
 end
 
-# Run callback initialization, sync any state changes back to PETSc, and honor
-# initialization-time `save_positions[2]` if the callback set asks for it.
-function initialize_callbacks!(integ::PETScTSIntegrator, cb_set; initialize_save = true)
+# Run callback initialization and, if a callback initializer mutated `u`, push
+# the modified state into the PETSc Vec so the first `TSStep` starts from the
+# right initial condition.
+#
+# We deliberately do not push into `sol.t` / `sol.u` here. The first call to
+# `step!` saves `t0` exactly once (when `save_start = true`) using the
+# possibly-modified `integ.u`, which keeps the trajectory free of duplicate
+# timestamps and routes start-time saving through a single code path.
+function initialize_callbacks!(integ::PETScTSIntegrator, cb_set)
     DiffEqBase.initialize!(cb_set, integ.u, integ.t, integ)
     if integ.u_modified
         _sync_julia_to_petsc!(integ)
         PETSc.LibPETSc.TSSetSolution(integ.petsclib, integ.ts, integ.u_petsc)
-        if initialize_save && _wants_initialize_save(cb_set)
-            push!(integ.sol.t, integ.t)
-            push!(integ.sol.u, copy(integ.u))
-        end
         integ.u_modified = false
     end
     return nothing
-end
-
-# A CallbackSet wants an initialize-time save when any of its discrete or
-# continuous callbacks has `save_positions[2] = true`.
-function _wants_initialize_save(cb_set)
-    for cb in cb_set.discrete_callbacks
-        isdefined(cb, :save_positions) && cb.save_positions[2] && return true
-    end
-    for cb in cb_set.continuous_callbacks
-        isdefined(cb, :save_positions) && cb.save_positions[2] && return true
-    end
-    return false
 end
 
 function SciMLBase.__init(

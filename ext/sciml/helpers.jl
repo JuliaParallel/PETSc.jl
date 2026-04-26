@@ -20,7 +20,16 @@ function _check_petscreal(lib)
 end
 
 _pick_petsclib(prob, petsclib) = petsclib
-_pick_petsclib(prob, ::Nothing) = PETSc.getlib(PetscScalar = real(eltype(prob.u0)))
+function _pick_petsclib(prob, ::Nothing)
+    T = eltype(prob.u0)
+    T <: Complex && throw(ArgumentError(
+        "PETSc.jl SciML extension currently only supports real-valued ODE " *
+        "problems (got eltype(u0) = $T). Pass a real `u0`, or — if you have " *
+        "a PETSc build with a complex `PetscScalar` and the matching support " *
+        "in this extension lands — supply `petsclib` explicitly.",
+    ))
+    return PETSc.getlib(PetscScalar = T)
+end
 
 function _setfromoptions!(petsclib, ts, petsc_options::AbstractVector{<:AbstractString})
     isempty(petsc_options) && return nothing

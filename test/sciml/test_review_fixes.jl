@@ -122,6 +122,65 @@ end
         @test sol.retcode == ReturnCode.Success
     end
 
+    # ── Review-3 #2 ─────────────────────────────────────────────────────────
+    @testset "Complex-valued ODEProblem is rejected with a clear error" begin
+        prob_c = ODEProblem(decay!, ComplexF64[1 + 0im], tspan)
+        err = try
+            solve(prob_c, TSRK("3bs"); dt = 0.1)
+            nothing
+        catch e
+            e
+        end
+        @test err isa ArgumentError
+        @test occursin("real-valued", err.msg)
+        @test occursin("ComplexF64", err.msg) || occursin("Complex", err.msg)
+    end
+
+    # ── Review-3 #3 ─────────────────────────────────────────────────────────
+    @testset "Initialize callback that mutates u does not duplicate t0" begin
+        function init_cb!(cb, u, t, integ)
+            u[1] = 5.0
+            DiffEqBase.u_modified!(integ, true)
+            return nothing
+        end
+        cb = DiscreteCallback(
+            (u, t, integ) -> false,
+            integ -> nothing;
+            initialize = init_cb!,
+        )
+        sol = solve(
+            prob, TSRK("3bs");
+            dt = 0.1, callback = cb,
+            save_everystep = true,           # forces a full trajectory record
+        )
+        @test sol.retcode == ReturnCode.Success
+        # The trajectory has no duplicate timestamps and starts from the
+        # mutated initial state.
+        @test length(unique(sol.t)) == length(sol.t)
+        @test sol.t[1] ≈ 0.0
+        @test sol.u[1][1] ≈ 5.0
+    end
+
+    @testset "save_on = false suppresses all trajectory output even with init mutation" begin
+        function init_cb!(cb, u, t, integ)
+            u[1] = 5.0
+            DiffEqBase.u_modified!(integ, true)
+            return nothing
+        end
+        cb = DiscreteCallback(
+            (u, t, integ) -> false,
+            integ -> nothing;
+            initialize = init_cb!,
+        )
+        sol = solve(
+            prob, TSRK("3bs");
+            dt = 0.1, callback = cb,
+            save_on = false, save_start = false, save_end = false,
+        )
+        @test sol.retcode == ReturnCode.Success
+        @test isempty(sol.t) && isempty(sol.u)
+    end
+
     # ── Review-2 #12 ────────────────────────────────────────────────────────
     @testset "AbstractVector petsc_options constructors work for every alg" begin
         # Tuples, SubStrings, generic AbstractVectors should all coerce.

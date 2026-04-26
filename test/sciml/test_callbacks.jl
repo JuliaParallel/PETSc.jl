@@ -67,16 +67,44 @@ end
         @test seen_b[]
     end
 
-    @testset "ContinuousCallback emits a warning and does not error" begin
+    @testset "ContinuousCallback is rejected with ArgumentError" begin
         cc = ContinuousCallback(
             (u, t, integ) -> u[1] - 0.5,
             integ -> nothing,
         )
-        sol = @test_logs (:warn, r"ContinuousCallback") solve(
-            prob, TSRK("3bs"); dt = 0.1, callback = cc,
+        err = try
+            solve(prob, TSRK("3bs"); dt = 0.1, callback = cc)
+            nothing
+        catch e
+            e
+        end
+        @test err isa ArgumentError
+        @test occursin("ContinuousCallback", err.msg)
+
+        # `initialize` / `finalize` hooks must not run when the callback is
+        # rejected — otherwise users get hidden side effects from an API the
+        # extension claims is unsupported.
+        init_ran = Ref(false)
+        finalize_ran = Ref(false)
+        cc_hooks = ContinuousCallback(
+            (u, t, integ) -> u[1] - 0.5,
+            integ -> nothing;
+            initialize = (cb, u, t, integ) -> (init_ran[] = true; nothing),
+            finalize = (cb, u, t, integ) -> (finalize_ran[] = true; nothing),
         )
-        @test sol.retcode == ReturnCode.Success
-        @test sol.t[end] ≈ tspan[2]
+        @test_throws ArgumentError solve(
+            prob, TSRK("3bs"); dt = 0.1, callback = cc_hooks,
+        )
+        @test !init_ran[]
+        @test !finalize_ran[]
+
+        # A CallbackSet that mixes discrete and continuous callbacks should
+        # also be rejected, since the continuous half cannot be honoured.
+        cb_d = DiscreteCallback((u, t, integ) -> false, integ -> nothing)
+        cbs = CallbackSet(cb_d, cc)
+        @test_throws ArgumentError solve(
+            prob, TSRK("3bs"); dt = 0.1, callback = cbs,
+        )
     end
 
     @testset "tstops kwarg emits a warning and is ignored" begin

@@ -202,23 +202,35 @@ function _setup_petsc_algorithm!(lib, ts, prob, u0, alg::TSARKIMEX)
     end
 end
 
-# Run callback initialization and, if a callback initializer mutated `u`, push
-# the modified state into the PETSc Vec so the first `TSStep` starts from the
-# right initial condition.
+# Mirror the OrdinaryDiffEq initialization contract:
 #
-# We deliberately do not push into `sol.t` / `sol.u` here. The first call to
-# `step!` saves `t0` exactly once (when `save_start = true`) using the
-# possibly-modified `integ.u`, which keeps the trajectory free of duplicate
-# timestamps and routes start-time saving through a single code path.
+# 1. Pessimistically mark `u` as modified before calling `initialize!`. A
+#    callback initializer that does not mutate `u` is expected to call
+#    `DiffEqBase.u_modified!(integ, false)`; otherwise we conservatively assume
+#    it did and resync the PETSc Vec.
+# 2. Force an initialize-time save when any discrete callback requests
+#    `save_positions[2]` (the post-event side, which corresponds to "after the
+#    callback ran"). Duplicate suppression in `step!` keeps `t0` from being
+#    recorded twice when `save_start = true`.
 function initialize_callbacks!(integ::PETScTSIntegrator, cb_set)
+    integ.u_modified = true
     DiffEqBase.initialize!(cb_set, integ.u, integ.t, integ)
     if integ.u_modified
         _sync_julia_to_petsc!(integ)
         PETSc.LibPETSc.TSSetSolution(integ.petsclib, integ.ts, integ.u_petsc)
         integ.u_modified = false
     end
+
+    if integ.opts.save_on && _any_initialize_save(cb_set) &&
+       (isempty(integ.sol.t) || last(integ.sol.t) != integ.t)
+        push!(integ.sol.t, integ.t)
+        push!(integ.sol.u, copy(integ.u))
+    end
     return nothing
 end
+
+_any_initialize_save(cb_set) =
+    any(cb -> cb.save_positions[2], cb_set.discrete_callbacks)
 
 function SciMLBase.__init(
     prob::SciMLBase.AbstractODEProblem,
@@ -238,15 +250,20 @@ function SciMLBase.__init(
     verbose::Bool = false,
     kwargs...,
 )
+    cb_set = DiffEqBase.CallbackSet(callback)
+    if !isempty(cb_set.continuous_callbacks)
+        throw(ArgumentError(
+            "PETSc.jl SciML extension: ContinuousCallbacks are not yet " *
+            "supported. Their `initialize` and `finalize` hooks would still " *
+            "run while event detection is silently dropped, so we reject " *
+            "them up front. Use DiscreteCallback or wrap the event detection " *
+            "in PETSc's TSSetEventHandler manually.",
+        ))
+    end
+
     (lib, ts, u_v, u0, tType, t0, tdir) =
         _common_ts_setup(prob, alg, dt, maxiters, petsclib, reltol, abstol)
 
-    cb_set = DiffEqBase.CallbackSet(callback)
-    if !isempty(cb_set.continuous_callbacks)
-        @warn "PETSc.jl SciML extension: ContinuousCallbacks are not yet " *
-              "supported and will be ignored. Use DiscreteCallback or wrap " *
-              "the event detection in PETSc's TSSetEventHandler manually."
-    end
     if !isempty(_as_time_iter(tstops, Float64))
         @warn "PETSc.jl SciML extension: `tstops` is not yet honoured. " *
               "PETSc adapts step sizes internally; pass `dt` and " *
@@ -307,7 +324,8 @@ function SciMLBase.step!(integ::PETScTSIntegrator)
     if !integ.initialized
         PETSc.LibPETSc.TSSetUp(integ.petsclib, integ.ts)
         integ.initialized = true
-        if integ.opts.save_start
+        if integ.opts.save_start &&
+           (isempty(integ.sol.t) || last(integ.sol.t) != integ.t)
             push!(integ.sol.t, integ.t)
             push!(integ.sol.u, copy(integ.u))
         end

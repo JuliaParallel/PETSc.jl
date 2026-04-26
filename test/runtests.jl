@@ -1,6 +1,17 @@
 using Test
+using Pkg
+
+# Make the test suite runnable both via `Pkg.test("PETSc")` (which sets up a
+# merged sandbox project) and via direct script execution like
+# `julia --project=. test/runtests.jl`. In the latter case the active project
+# is the package itself and lacks test-only deps such as SciMLBase, so we
+# switch to `test/Project.toml` before loading anything that needs them.
+if !haskey(Pkg.project().dependencies, "SciMLBase")
+    Pkg.activate(@__DIR__)
+end
+
 using MPI: MPI, mpiexec
-using PETSc, PETSc_jll, Pkg
+using PETSc, PETSc_jll
 
 # Make sure that all dependencies are installed also on a clean system
 Pkg.instantiate()

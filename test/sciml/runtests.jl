@@ -1,4 +1,14 @@
 using Test
+using Pkg
+
+# When this file is invoked directly (`julia --project=. test/sciml/runtests.jl`)
+# the active project is the package and SciMLBase is not on the load path. The
+# top-level `test/runtests.jl` performs the same activation; doing it here too
+# keeps the standalone script entrypoint working.
+if !haskey(Pkg.project().dependencies, "SciMLBase")
+    Pkg.activate(joinpath(@__DIR__, ".."))
+end
+
 using PETSc
 using SciMLBase
 using DiffEqBase

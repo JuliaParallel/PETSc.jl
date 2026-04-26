@@ -161,6 +161,74 @@ end
         @test sol.u[1][1] ≈ 5.0
     end
 
+    # ── Review-4 #1 ─────────────────────────────────────────────────────────
+    @testset "Initialize that mutates u without u_modified! still propagates" begin
+        # The pessimistic-modified contract: a callback that mutates `u` but
+        # forgets to call `DiffEqBase.u_modified!(integ, true)` must still
+        # affect the first PETSc step. This is what OrdinaryDiffEq does.
+        function init_cb!(cb, u, t, integ)
+            u[1] = 5.0
+            return nothing
+        end
+        cb = DiscreteCallback(
+            (u, t, integ) -> false,
+            integ -> nothing;
+            initialize = init_cb!,
+        )
+        sol = solve(prob, TSRK("3bs"); dt = 0.1, callback = cb)
+        @test sol.retcode == ReturnCode.Success
+        # u(t) = 5 * exp(-t) at t = 1 is 5/e ≈ 1.84.
+        @test sol.u[end][1] ≈ 5 * exp(-1.0) atol = 1e-2
+    end
+
+    @testset "Initialize-time save records t0 when save_start=false but cb wants it" begin
+        # A DiscreteCallback with default save_positions = (true, true) and
+        # save_start = false, save_end = false should still record exactly one
+        # t0 entry, matching upstream OrdinaryDiffEq behavior.
+        cb = DiscreteCallback(
+            (u, t, integ) -> false,
+            integ -> nothing,
+        )
+        sol = solve(
+            prob, TSRK("3bs");
+            dt = 0.1, callback = cb,
+            save_start = false, save_end = false,
+        )
+        @test sol.retcode == ReturnCode.Success
+        @test length(sol.t) == 1
+        @test sol.t[1] ≈ 0.0
+        @test sol.u[1][1] ≈ 1.0
+
+        # And with save_positions = (false, false) the initialize-time save
+        # must NOT happen — the user explicitly opted out.
+        cb_nosave = DiscreteCallback(
+            (u, t, integ) -> false,
+            integ -> nothing;
+            save_positions = (false, false),
+        )
+        sol2 = solve(
+            prob, TSRK("3bs");
+            dt = 0.1, callback = cb_nosave,
+            save_start = false, save_end = false,
+        )
+        @test sol2.retcode == ReturnCode.Success
+        @test isempty(sol2.t)
+    end
+
+    @testset "save_start=true with initialize-saving cb still records t0 only once" begin
+        cb = DiscreteCallback(
+            (u, t, integ) -> false,
+            integ -> nothing,
+        )
+        sol = solve(
+            prob, TSRK("3bs");
+            dt = 0.1, callback = cb,
+            save_start = true, save_end = false, save_everystep = true,
+        )
+        @test sol.retcode == ReturnCode.Success
+        @test count(==(0.0), sol.t) == 1
+    end
+
     @testset "save_on = false suppresses all trajectory output even with init mutation" begin
         function init_cb!(cb, u, t, integ)
             u[1] = 5.0

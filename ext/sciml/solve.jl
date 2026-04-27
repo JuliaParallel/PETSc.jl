@@ -72,6 +72,12 @@ function _common_ts_setup(
         PETSc.LibPETSc.TSSetExactFinalTime(
             lib, ts, PETSc.LibPETSc.TS_EXACTFINALTIME_MATCHSTEP,
         )
+        # Validate `dt` against the SciML `dtmin` / `dtmax` bounds *before*
+        # installing it: PETSc applies the initial step verbatim and only
+        # consults `TSAdaptSetStepLimits` for subsequent step proposals, so
+        # silently allowing `dt = 0.5, dtmax = 0.2` would let the very first
+        # step violate the user-supplied bound.
+        _check_dt_bounds(dt, dtmin, dtmax)
         if dt !== nothing
             PETSc.LibPETSc.TSSetTimeStep(lib, ts, lib.PetscReal(dt))
         end
@@ -99,6 +105,27 @@ function _apply_tolerances!(lib, ts, reltol, abstol)
         "supported. Got types $(typeof(reltol)) / $(typeof(abstol)).",
     ))
     _ts_set_scalar_tolerances!(lib, ts, at, rt)
+    return nothing
+end
+
+# Reject contradictory inputs where the user-supplied initial `dt` would
+# violate the user-supplied `dtmin` / `dtmax` bounds. PETSc installs the
+# initial step verbatim, so a clean `ArgumentError` is the only way to
+# uphold the SciML "all steps respect the bound" contract from step one.
+function _check_dt_bounds(dt, dtmin, dtmax)
+    dt === nothing && return nothing
+    if dtmax !== nothing && dt > dtmax
+        throw(ArgumentError(
+            "PETSc.jl SciML extension: initial `dt = $dt` exceeds `dtmax = $dtmax`. " *
+            "Pass `dt <= dtmax`, or omit `dt` to let PETSc choose the initial step.",
+        ))
+    end
+    if dtmin !== nothing && dt < dtmin
+        throw(ArgumentError(
+            "PETSc.jl SciML extension: initial `dt = $dt` is below `dtmin = $dtmin`. " *
+            "Pass `dt >= dtmin`, or omit `dt` to let PETSc choose the initial step.",
+        ))
+    end
     return nothing
 end
 
@@ -219,6 +246,7 @@ function _register_ifunction_with_f!(lib, ts, f, prob, u0)
 end
 
 function _setup_petsc_algorithm!(lib, ts, prob, u0, alg::TSGeneric)
+    _check_tsgeneric_type(alg)
     PETSc.LibPETSc.TSSetType(lib, ts, alg.ts_type)
     if alg.explicit
         # Explicit PETSc TS types (e.g. `"euler"`, `"ssp"`) reject an
@@ -227,6 +255,26 @@ function _setup_petsc_algorithm!(lib, ts, prob, u0, alg::TSGeneric)
     end
     PETSc.LibPETSc.TSSetProblemType(lib, ts, PETSc.LibPETSc.TS_NONLINEAR)
     return _register_ifunction!(lib, ts, prob, u0)
+end
+
+# PETSc TS types known to require the explicit (RHS) calling convention.
+# Using one of these without `explicit = true` would otherwise dump a full
+# PETSc error banner at `TSSetUp` time before the wrapper rethrows; catching
+# it on the Julia side gives the user a clear, actionable message instead.
+const _EXPLICIT_ONLY_TS_TYPES = ("euler", "ssp")
+
+function _check_tsgeneric_type(alg::TSGeneric)
+    if !alg.explicit && alg.ts_type in _EXPLICIT_ONLY_TS_TYPES
+        throw(ArgumentError(
+            "PETSc.jl SciML extension: TSGeneric ts_type $(repr(alg.ts_type)) " *
+            "is an explicit-only PETSc TS family and must be constructed " *
+            "with `explicit = true`, e.g. " *
+            "`PETSc.TSGeneric($(repr(alg.ts_type)); explicit = true)`. " *
+            "The default `explicit = false` registers an IFunction, which " *
+            "PETSc rejects for explicit-only types at `TSSetUp` time.",
+        ))
+    end
+    return nothing
 end
 
 function _setup_petsc_algorithm!(lib, ts, prob, u0, alg::TSARKIMEX)
@@ -293,7 +341,6 @@ function SciMLBase.__init(
     adaptive::Bool = true,
     maxiters::Integer = Int(1e5),
     petsclib = nothing,
-    verbose::Bool = false,
     kwargs...,
 )
     _reject_unsupported_kwargs(kwargs)
@@ -323,7 +370,7 @@ function SciMLBase.__init(
         tType, saveat, tstops, tdir, prob.tspan;
         save_everystep, save_on, save_start, save_end,
         callback = cb_set,
-        reltol, abstol, maxiters, verbose,
+        reltol, abstol, maxiters,
     )
 
     sol = SciMLBase.build_solution(

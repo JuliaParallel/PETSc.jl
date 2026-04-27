@@ -68,7 +68,7 @@ const _SUPPORTED_SCIML_KWARGS = (
     :saveat, :tstops, :callback,
     :reltol, :abstol,
     :dt, :dtmin, :dtmax, :adaptive,
-    :maxiters, :petsclib, :verbose,
+    :maxiters, :petsclib,
 )
 
 function _reject_unsupported_kwargs(kwargs)

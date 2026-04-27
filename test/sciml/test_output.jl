@@ -75,7 +75,7 @@ end
             Float64, [0.25, 0.5, 0.75], (), -1.0, (1.0, 0.0);
             save_everystep = false, save_on = true,
             save_start = true, save_end = true, callback = nothing,
-            reltol = 1e-3, abstol = 1e-6, maxiters = 1000, verbose = false,
+            reltol = 1e-3, abstol = 1e-6, maxiters = 1000,
         )
         ordered = Float64[]
         while !isempty(opts.saveat)

@@ -9,7 +9,6 @@ mutable struct DEOptions{SavT, TstopsT, CType, reltolType, abstolType}
     reltol::reltolType
     abstol::abstolType
     maxiters::Int
-    verbose::Bool
 end
 
 _as_time_iter(::Nothing, ::Type) = ()
@@ -46,7 +45,6 @@ function _build_opts(
     reltol,
     abstol,
     maxiters::Integer,
-    verbose::Bool,
 ) where {tType}
     t0 = tdir * tType(tspan[1])
     tf = tdir * tType(tspan[2])
@@ -72,6 +70,5 @@ function _build_opts(
         reltol,
         abstol,
         Int(maxiters),
-        verbose,
     )
 end

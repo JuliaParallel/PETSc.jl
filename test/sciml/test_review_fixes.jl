@@ -367,12 +367,20 @@ end
         @test sol_ssp.t[end] ≈ 1.0
         @test sol_ssp.u[end][1] ≈ exp(-1.0) atol = 1e-1
 
-        # Default `explicit = false` for an explicit-only TS type still
-        # fails — but with a PETSc-side error, not silently. Catch any
-        # exception (PETSc emits a plain `ErrorException` from `@chk`).
-        @test_throws Exception solve(
-            prob_short, PETSc.TSGeneric("euler"); dt = 0.1,
-        )
+        # Default `explicit = false` for an explicit-only TS type fails up
+        # front with a clear Julia-side `ArgumentError` instead of a noisy
+        # PETSc banner from `TSSetUp`.
+        for ts_type in ("euler", "ssp")
+            err = try
+                solve(prob_short, PETSc.TSGeneric(ts_type); dt = 0.1)
+                nothing
+            catch e
+                e
+            end
+            @test err isa ArgumentError
+            @test occursin("explicit = true", err.msg)
+            @test occursin(ts_type, err.msg)
+        end
     end
 
     @testset "TSGeneric positional petsc_options work with explicit kwarg" begin
@@ -380,5 +388,69 @@ end
         @test alg.ts_type == "euler"
         @test alg.explicit == true
         @test alg.petsc_options == ["-ts_max_steps", "100"]
+    end
+
+    # ── Review-6 #1 ─────────────────────────────────────────────────────────
+    @testset "Initial dt outside [dtmin, dtmax] is rejected" begin
+        # PETSc installs the initial `dt` verbatim and only consults
+        # `TSAdaptSetStepLimits` for subsequent step proposals, so the wrapper
+        # has to validate `dt` against the user's bounds itself.
+        err = try
+            solve(prob, TSRK("5dp"); dt = 0.5, dtmax = 0.2)
+            nothing
+        catch e
+            e
+        end
+        @test err isa ArgumentError
+        @test occursin("dtmax", err.msg)
+
+        err = try
+            solve(prob, TSRK("5dp"); dt = 0.1, dtmin = 0.2)
+            nothing
+        catch e
+            e
+        end
+        @test err isa ArgumentError
+        @test occursin("dtmin", err.msg)
+
+        # The valid case — `dt` inside the allowed range — still succeeds.
+        sol = solve(
+            prob, TSRK("5dp");
+            dt = 0.1, dtmin = 0.05, dtmax = 0.2, save_everystep = true,
+        )
+        @test sol.retcode == ReturnCode.Success
+        for d in diff(sol.t)
+            @test d <= 0.2 + 1e-12
+        end
+    end
+
+    # ── Review-6 #2 ─────────────────────────────────────────────────────────
+    @testset "verbose is no longer in the supported-keyword set" begin
+        # Previously `verbose = true` was silently accepted but unused; the
+        # extension now treats it like any other unsupported keyword.
+        err = try
+            solve(prob, TSRK("3bs"); dt = 0.1, verbose = true)
+            nothing
+        catch e
+            e
+        end
+        @test err isa ArgumentError
+        @test occursin("verbose", err.msg)
+    end
+
+    # ── Review-6 #3 ─────────────────────────────────────────────────────────
+    @testset "TSGeneric without explicit = true rejects euler / ssp upfront" begin
+        # The Julia-side validator must fire before any PETSc setup runs, so
+        # the regular test output stays free of raw PETSc error banners.
+        for ts_type in ("euler", "ssp")
+            err = try
+                solve(prob, PETSc.TSGeneric(ts_type); dt = 0.1)
+                nothing
+            catch e
+                e
+            end
+            @test err isa ArgumentError
+            @test occursin("explicit = true", err.msg)
+        end
     end
 end

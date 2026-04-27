@@ -19,15 +19,43 @@
     ω:           derived from the no-slip condition at each wall
 
   Usage (from the examples/ directory):
+    # Basic run (4×4 default grid)
     julia --project ex19.jl
-    julia --project ex19.jl -snes_monitor -da_grid_x 129 -da_grid_y 129
-    julia --project ex19.jl -snes_monitor -da_grid_x 129 -da_grid_y 129 -log_view
-    mpiexec -n 4 julia --project ex19.jl -snes_monitor -pc_type mg -da_grid_x 64 -da_grid_y 64
 
-  Requires: LocalPreferences.toml in examples/ with PetscInt = "Int32" matching the
-  PETSc build (check with: grep sizeof_PetscInt petscconf.h).
+    # Larger grid with SNES convergence output
+    julia --project ex19.jl -snes_monitor -snes_converged_reason -da_grid_x 129 -da_grid_y 129
 
-  GPU usage: set  useCUDA = true  then run as above.
+    # With PETSc performance log
+    julia --project ex19.jl -da_grid_x 129 -da_grid_y 129 -log_view
+
+    # Multigrid preconditioner (3 levels, Chebyshev+Jacobi smoothers)
+    julia --project ex19.jl -da_grid_x 125 -da_grid_y 125 \\
+        -pc_type mg -pc_mg_levels 3 \\
+        -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi \\
+        -snes_monitor -ksp_monitor
+
+    # MPI parallel (4 ranks)
+    mpiexec -n 4 julia --project ex19.jl \\
+        -da_grid_x 256 -da_grid_y 256 \\
+        -pc_type mg -pc_mg_levels 4 \\
+        -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi
+
+    # GPU (CUDA) — set  useCUDA = true  at the top of the file, then:
+    julia --project ex19.jl -da_grid_x 256 -da_grid_y 256 \\
+        -pc_type mg -pc_mg_levels 4 \\
+        -mg_levels_ksp_type chebyshev -mg_levels_pc_type jacobi
+
+  Jacobian strategy:
+    Fine-grid level: manual FD coloring via PETSc.dmda_star_fd_coloring +
+      MatSetPreallocationCOOLocal + MatSetValuesCOO.  On GPU the entire
+      perturb → F(x+h) → accumulate loop runs on-device with no host copies.
+    Coarser MG levels: fall back to SNESComputeJacobianDefaultColor
+      (correct for each level's DM, CPU-only).
+
+  Requires: LocalPreferences.toml in examples/ with PetscInt = "Int32" matching
+    the PETSc build (check with: grep sizeof_PetscInt petscconf.h).
+
+  GPU usage: set  useCUDA = true  at the top of this file.
     Requires PETSc built with --with-cuda, and CUDA.jl in the environment.
 =#
 
@@ -179,6 +207,70 @@ end
     @inbounds val[coo_idxs[k]] = (f1[row_idxs[k]] - f0[row_idxs[k]]) * inv_h
 end
 
+# ── FD-coloring Jacobian fill ─────────────────────────────────────────────────
+#
+# Fills val_dev[k] with the forward-difference Jacobian value for COO slot k.
+# Loops over colors: scatter +h onto the owned columns of that color, evaluate
+# F(x + h·eₖ), then accumulate (F1 − F0)/h into val_dev at the matching slots.
+# Does NOT call MatSetValuesCOO or MatAssembly; those remain with the caller.
+#
+# Captures from module scope: useCUDA, backend, CuArray, CuPtr,
+#   scatter_perturb_kernel!, fd_accumulate_kernel!, KernelAbstractions.
+#
+function maybe_wrap_device(arr, mtype, n, ::Type{T}, useCUDA) where T
+    if useCUDA && mtype == LibPETSc.PETSC_MEMTYPE_DEVICE
+        return unsafe_wrap(CuArray, CuPtr{T}(UInt64(pointer(arr))), n)
+    else
+        return arr
+    end
+end
+
+function fd_coloring_jac!(
+    petsclib,
+    snes,
+    g_x,
+    f0_vec, f1_vec, x_pert_vec,
+    val_dev  :: AbstractVector{T},
+    n_colors    :: Int,
+    n_local_dofs :: Int,
+    perturb_cols_dev,
+    coo_idxs_dev,
+    local_rows_dev,
+    h_eps :: T,
+    inv_h :: T,
+) where T
+    LibPETSc.SNESComputeFunction(petsclib, snes, g_x, f0_vec)
+    f0_arr, f0_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, f0_vec)
+    f0_dev = maybe_wrap_device(f0_arr, f0_mtype, n_local_dofs, T, useCUDA)
+
+    for c in 1:n_colors
+        isempty(perturb_cols_dev[c]) && continue
+
+        LibPETSc.VecCopy(petsclib, g_x, x_pert_vec)
+        xp_arr, xp_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, x_pert_vec)
+        xp_dev = maybe_wrap_device(xp_arr, xp_mtype, n_local_dofs, T, useCUDA)
+        scatter_perturb_kernel!(backend, 64)(
+            xp_dev, perturb_cols_dev[c], h_eps;
+            ndrange = length(perturb_cols_dev[c]))
+        KernelAbstractions.synchronize(backend)
+        LibPETSc.VecRestoreArrayAndMemType(petsclib, x_pert_vec, xp_arr)
+
+        LibPETSc.SNESComputeFunction(petsclib, snes, x_pert_vec, f1_vec)
+
+        f1_arr, f1_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, f1_vec)
+        f1_dev = maybe_wrap_device(f1_arr, f1_mtype, n_local_dofs, T, useCUDA)
+        fd_accumulate_kernel!(backend, 64)(
+            val_dev, f0_dev, f1_dev,
+            coo_idxs_dev[c], local_rows_dev[c], inv_h;
+            ndrange = length(coo_idxs_dev[c]))
+        KernelAbstractions.synchronize(backend)
+        LibPETSc.VecRestoreArrayReadAndMemType(petsclib, f1_vec, f1_arr)
+    end
+
+    LibPETSc.VecRestoreArrayReadAndMemType(petsclib, f0_vec, f0_arr)
+    return nothing
+end
+
 # ── Setup ─────────────────────────────────────────────────────────────────────
 opts     = isinteractive() ? NamedTuple() : PETSc.parse_options(filter(a -> a != "-log_view", ARGS))
 log_view = "-log_view" in ARGS
@@ -186,7 +278,7 @@ log_view = "-log_view" in ARGS
 petsclib = PETSc.getlib(; PetscScalar = Float64, PetscInt = Int32)
 PETSc.initialize(petsclib; log_view)
 
-T        = Float64
+_T        = Float64
 PetscInt = petsclib.PetscInt
 comm     = MPI.COMM_WORLD
 
@@ -201,8 +293,8 @@ da = PETSc.DMDA(
     opts...,
 )
 
-# Stage 2: GPU vecs and GPU matrix enable a fully GPU-resident FD coloring
-# path via COO preallocation.  No host↔device bouncing in residual or Jacobian.
+# GPU vecs and GPU matrix enable a fully GPU-resident FD coloring path via
+# COO preallocation.  No host↔device bouncing in residual or Jacobian.
 if useCUDA
     LibPETSc.DMSetVecType(petsclib, da, "cuda")
     LibPETSc.DMSetMatType(petsclib, da, "aijcusparse")
@@ -216,15 +308,15 @@ info = PETSc.getinfo(da)
 mx   = Int(info.global_size[1])
 my   = Int(info.global_size[2])
 
-user = AppCtx{T}(
-    lidvelocity = T(1) / (mx - 1),
-    prandtl     = T(1),
-    grashof     = T(1),
+user = AppCtx{_T}(
+    lidvelocity = _T(1) / (mx - 1),
+    prandtl     = _T(1),
+    grashof     = _T(1),
 )
 
 # Precomputed grid metrics
-dhx   = T(mx - 1);   dhy   = T(my - 1)
-hx    = one(T) / dhx; hy    = one(T) / dhy
+dhx   = _T(mx - 1);   dhy   = _T(my - 1)
+hx    = one(_T) / dhx; hy    = one(_T) / dhy
 hydhx = hy * dhx;    hxdhy = hx * dhy
 
 # ── Initial condition: u = v = ω = 0, T linear in x ─────────────────────────
@@ -235,14 +327,14 @@ PETSc.withlocalarray!(x; read = false) do x_arr
     xs = corners.lower[1];  ys = corners.lower[2]
     xe = corners.upper[1];  ye = corners.upper[2]
     nx_own = xe - xs + 1;   ny_own = ye - ys + 1
-    dx = one(T) / (mx - 1)
+    dx = one(_T) / (mx - 1)
     x_par = reshape(x_arr, 4, nx_own, ny_own)
     for lj in 1:ny_own, li in 1:nx_own
         ig = xs + li - 1
-        x_par[1, li, lj] = zero(T)
-        x_par[2, li, lj] = zero(T)
-        x_par[3, li, lj] = zero(T)
-        x_par[4, li, lj] = user.grashof > 0 ? T(ig - 1) * dx : zero(T)
+        x_par[1, li, lj] = zero(_T)
+        x_par[2, li, lj] = zero(_T)
+        x_par[3, li, lj] = zero(_T)
+        x_par[4, li, lj] = user.grashof > 0 ? _T(ig - 1) * dx : zero(_T)
     end
 end
 
@@ -288,10 +380,10 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     info_  = PETSc.getinfo(da)
     mx_    = Int(info_.global_size[1])
     my_    = Int(info_.global_size[2])
-    dhx_   = T(mx_ - 1);    dhy_   = T(my_ - 1)
-    hx_    = one(T) / dhx_; hy_    = one(T) / dhy_
+    dhx_   = _T(mx_ - 1);   dhy_   = _T(my_ - 1)
+    hx_    = one(_T) / dhx_; hy_   = one(_T) / dhy_
     hydhx_ = hy_ * dhx_;    hxdhy_ = hx_ * dhy_
-    lid_   = T(1) / dhx_    # lidvelocity = 1/(mx-1)
+    lid_   = _T(1) / dhx_    # lidvelocity = 1/(mx-1)
 
     cavity_residual_kernel!(backend, 64)(
         f_par, x_par,
@@ -309,15 +401,17 @@ end
 
 # ── Jacobian: manual FD coloring with GPU-efficient COO matrix assembly ───────
 #
-# 1) Obtain the DM's IS_COLORING_LOCAL ISColoring.  Colors cover owned + ghost
-#    DOFs in DMDA local ordering; ghost colors are consistent with owning ranks.
-# 2) Build the sparse (row, col) COO triplets analytically from the DMDA STAR
-#    stencil; record per-COO the 0-based color of its column, looked up via
-#    ghost-local coordinates (works for owned AND off-rank ghost columns).
-# 3) Pre-allocate J via MatSetPreallocationCOO (one-time GPU setup).
-# 4) Each Newton step: loop over colors, scatter +h to owned cols of that
-#    color (GPU kernel), evaluate F(x_pert), accumulate (F1−F0)/h into
-#    val[] (GPU kernel), assemble via MatSetValuesCOO(J, val_dev).
+# Setup (one-time):
+#   dmda_star_fd_coloring  — builds IS_COLORING_LOCAL coloring and analytically
+#     derives the STAR-stencil COO (row, col) triplets; returns per-color index
+#     arrays for the owned columns and COO slots to fill.
+#   MatSetPreallocationCOOLocal  — registers the COO pattern (enables on-device
+#     scatter on GPU; avoids per-entry hash-table lookups on CPU).
+#
+# Each Newton step (fd_coloring_jac!):
+#   For each color: copy x → x_pert, scatter +h to owned cols of that color
+#   (GPU kernel), evaluate F(x_pert), accumulate (F1−F0)/h into val[] (GPU
+#   kernel).  Then MatSetValuesCOO assembles J from val[] in one call.
 #
 # NOTE: For MG, coarser levels fall back to SNESComputeJacobianDefaultColor
 #       (correct, but CPU-only FD coloring for those levels).
@@ -326,14 +420,14 @@ end
 # Builds the IS_COLORING_LOCAL coloring for da's STAR stencil, ghost-local COO
 # (row, col) pairs, and per-color owned-column / COO-entry index arrays.
 # 2-D DMDA STAR stencil only; see PETSc.dmda_star_fd_coloring for 3-D notes.
-coloring     = PETSc.dmda_star_fd_coloring(petsclib, da)
-n_colors     = coloring.n_colors
-n_local_dofs = coloring.n_local_dofs
-nnz_coo      = coloring.nnz_coo
+coloring      = PETSc.dmda_star_fd_coloring(petsclib, da)
+n_colors      = coloring.n_colors
+n_local_dofs  = coloring.n_local_dofs
+nnz_coo       = coloring.nnz_coo
 row_coo_local = coloring.row_coo_local
 col_coo_local = coloring.col_coo_local
 
-# ── 5. Create J ───────────────────────────────────────────────────────────────
+# ── Create J ─────────────────────────────────────────────────────────────────
 J = LibPETSc.DMCreateMatrix(petsclib, da)
 # Register the COO pattern on both CPU and GPU.  This allows MatSetValuesCOO
 # to be used for assembly in both cases, avoiding per-entry hash-table lookups
@@ -349,22 +443,22 @@ if useCUDA
     perturb_cols_dev = [CuArray(v) for v in perturb_cols_1b]
     coo_idxs_dev     = [CuArray(v) for v in coo_idxs_1b]
     local_rows_dev   = [CuArray(v) for v in local_rows_1b]
-    val_dev          = CUDA.zeros(T, nnz_coo)
+    val_dev          = CUDA.zeros(_T, nnz_coo)
 else
     perturb_cols_dev = perturb_cols_1b
     coo_idxs_dev     = coo_idxs_1b
     local_rows_dev   = local_rows_1b
-    val_dev          = zeros(T, nnz_coo)
+    val_dev          = zeros(_T, nnz_coo)
 end
 
-# ── 7. Scratch vectors for the FD loop ────────────────────────────────────────
+# ── Scratch vectors for the FD loop ────────────────────────────────────────
 x_pert_vec = LibPETSc.VecDuplicate(petsclib, x)
 f0_vec     = LibPETSc.VecDuplicate(petsclib, x)
 f1_vec     = LibPETSc.VecDuplicate(petsclib, x)
-h_eps      = T(sqrt(eps(T)))
-inv_h      = T(1) / h_eps
+h_eps      = _T(sqrt(eps(_T)))
+inv_h      = _T(1) / h_eps
 
-# ── 8. Custom Jacobian callback ───────────────────────────────────────────────
+# ── Jacobian callback ────────────────────────────────────────────────────────
 PETSc.setjacobian!(snes, J) do Jmat, actual_snes, g_x
     # For MG: if this is a coarser level (different DM than the fine-grid da),
     # fall back to PETSc's built-in FD coloring (correct for that level's DM).
@@ -374,53 +468,21 @@ PETSc.setjacobian!(snes, J) do Jmat, actual_snes, g_x
         return PetscInt(0)
     end
 
-    # ── Evaluate F(x) → f0 ────────────────────────────────────────────────────
-    LibPETSc.SNESComputeFunction(petsclib, actual_snes, g_x, f0_vec)
-    f0_arr, f0_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, f0_vec)
-    f0_dev = (useCUDA && f0_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE) ?
-        unsafe_wrap(CuArray, CuPtr{T}(UInt64(pointer(f0_arr))), n_local_dofs) :
-        f0_arr
-
-    # ── FD loop over colors ────────────────────────────────────────────────────
-    for c in 1:n_colors
-        isempty(perturb_cols_dev[c]) && continue
-
-        # Copy x → x_pert, then scatter +h to owned cols of color c.
-        LibPETSc.VecCopy(petsclib, g_x, x_pert_vec)
-        xp_arr, xp_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, x_pert_vec)
-        xp_dev = (useCUDA && xp_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE) ?
-            unsafe_wrap(CuArray, CuPtr{T}(UInt64(pointer(xp_arr))), n_local_dofs) :
-            xp_arr
-        scatter_perturb_kernel!(backend, 64)(
-            xp_dev, perturb_cols_dev[c], h_eps;
-            ndrange = length(perturb_cols_dev[c]))
-        KernelAbstractions.synchronize(backend)
-        LibPETSc.VecRestoreArrayAndMemType(petsclib, x_pert_vec, xp_arr)
-
-        # Evaluate F(x_pert) → f1.
-        LibPETSc.SNESComputeFunction(petsclib, actual_snes, x_pert_vec, f1_vec)
-
-        # Accumulate (f1 − f0)/h into val[] at the COO indices of color c.
-        f1_arr, f1_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, f1_vec)
-        f1_dev = (useCUDA && f1_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE) ?
-            unsafe_wrap(CuArray, CuPtr{T}(UInt64(pointer(f1_arr))), n_local_dofs) :
-            f1_arr
-        fd_accumulate_kernel!(backend, 64)(
-            val_dev, f0_dev, f1_dev,
-            coo_idxs_dev[c], local_rows_dev[c], inv_h;
-            ndrange = length(coo_idxs_dev[c]))
-        KernelAbstractions.synchronize(backend)
-        LibPETSc.VecRestoreArrayReadAndMemType(petsclib, f1_vec, f1_arr)
-    end
-
-    LibPETSc.VecRestoreArrayReadAndMemType(petsclib, f0_vec, f0_arr)
+    # ── FD coloring: fill val_dev with Jacobian entries ────────────────────────
+    fd_coloring_jac!(
+        petsclib, actual_snes, g_x,
+        f0_vec, f1_vec, x_pert_vec, val_dev,
+        n_colors, n_local_dofs,
+        perturb_cols_dev, coo_idxs_dev, local_rows_dev,
+        h_eps, inv_h,
+    )
 
     # ── Assemble J via COO ─────────────────────────────────────────────────────
     # On GPU: pass a raw device pointer so cuSPARSE scatters directly on device.
     # On CPU: pass the Vector{T} directly (uses the vector overload).
     # Both paths use the COO pattern registered by MatSetPreallocationCOOLocal.
     if useCUDA
-        LibPETSc.MatSetValuesCOO(petsclib, Jmat, Ptr{T}(UInt64(pointer(val_dev))), LibPETSc.INSERT_VALUES)
+        LibPETSc.MatSetValuesCOO(petsclib, Jmat, Ptr{_T}(UInt64(pointer(val_dev))), LibPETSc.INSERT_VALUES)
     else
         LibPETSc.MatSetValuesCOO(petsclib, Jmat, val_dev, LibPETSc.INSERT_VALUES)
     end
@@ -450,17 +512,6 @@ if MPI.Comm_rank(comm) == 0
 end
 
 # ── Cleanup ───────────────────────────────────────────────────────────────────
-# Explicitly destroy the PetscOptions stored on the SNES before finalization.
-# Its GC finalizer calls PetscOptionsDestroy, which can use MPI internally.
-# If GC runs it after MPI is alive but in a different collective-sync state
-# across ranks, it triggers intermittent crashes.  Destroying it explicitly
-# here (while all ranks are synchronized and PETSc/MPI are still fully active)
-# is safe and prevents any later GC-driven call.
-if !isnothing(snes.opts)
-    PETSc.destroy(snes.opts)
-    snes.opts = nothing
-end
-
 # Run a full GC now so any lingering VecRestoreArray finalizers from
 # withlocalarray! run while PETSc is still valid, then barrier all ranks.
 GC.gc(true)
@@ -470,9 +521,9 @@ MPI.Barrier(comm)
 # those reference counts are decremented before we explicitly free the objects.
 PETSc.destroy(snes)
 PETSc.destroy(J)
-LibPETSc.VecDestroy(petsclib, x_pert_vec)
-LibPETSc.VecDestroy(petsclib, f0_vec)
-LibPETSc.VecDestroy(petsclib, f1_vec)
+PETSc.destroy(x_pert_vec)
+PETSc.destroy(f0_vec)
+PETSc.destroy(f1_vec)
 PETSc.destroy(x)
 PETSc.destroy(r)
 PETSc.destroy(da)

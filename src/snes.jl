@@ -247,6 +247,10 @@ is garbage collected, but can be called explicitly to free resources immediately
 $(_doc_external("SNES/SNESDestroy"))
 """
 function destroy(snes::AbstractPetscSNES{PetscLib}) where {PetscLib}
+    if !isnothing(snes.opts)
+        destroy(snes.opts)
+        snes.opts = nothing
+    end
     if !(finalized(PetscLib)) && snes.ptr != C_NULL
         LibPETSc.SNESDestroy(PetscLib, snes)
     end

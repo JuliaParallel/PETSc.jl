@@ -518,8 +518,48 @@ function SciMLBase.step!(integ::PETScTSIntegrator)
     elseif integ.tdir * (integ.t - integ.sol.prob.tspan[2]) >= 0
         integ.retcode = SciMLBase.ReturnCode.Success
         integ.done = true
+    elseif _ts_step_count(integ) >= _effective_maxiters(integ)
+        # PETSc's own `TSSetMaxSteps` (and the equivalent `-ts_max_steps`
+        # option) is honoured inside `TSSolve`, but the extension drives
+        # `TSStep` directly so the cap has to be enforced in this loop.
+        # `_effective_maxiters` takes the min of the SciML-side `maxiters`
+        # and PETSc's `TSGetMaxSteps`, so an algorithm-side
+        # `-ts_max_steps` flag is honoured too.
+        integ.retcode = SciMLBase.ReturnCode.MaxIters
+        integ.done = true
     end
 
+    return nothing
+end
+
+# Read PETSc's accepted-step count via the autowrapped getter. Wrapped in a
+# helper so the `step!` and `solve!` paths both see the same value.
+_ts_step_count(integ::PETScTSIntegrator) =
+    Int(PETSc.LibPETSc.TSGetStepNumber(integ.petsclib, integ.ts))
+
+# Combine the SciML-side `maxiters` and whatever PETSc currently has stored
+# as its `TSSetMaxSteps` into a single effective cap. This is what makes
+# algorithm-side `-ts_max_steps` reach the manual `TSStep` loop too.
+function _effective_maxiters(integ::PETScTSIntegrator)
+    petsc_max = Int(PETSc.LibPETSc.TSGetMaxSteps(integ.petsclib, integ.ts))
+    return min(integ.opts.maxiters, petsc_max)
+end
+
+# Pull whatever PETSc bookkeeping is meaningful for the current TS family
+# back into the SciML `DEStats` object. Counters that do not apply to the
+# active family (e.g. SNES iterations on an explicit RK solve) come back as
+# zero, which matches their semantic value.
+function _populate_stats!(integ::PETScTSIntegrator)
+    stats = integ.sol.stats
+    stats === nothing && return nothing
+    naccept = _ts_step_count(integ)
+    nreject = Int(PETSc.LibPETSc.TSGetStepRejections(integ.petsclib, integ.ts))
+    nnonliniter = Int(PETSc.LibPETSc.TSGetSNESIterations(integ.petsclib, integ.ts))
+    nlinearsolve = Int(PETSc.LibPETSc.TSGetKSPIterations(integ.petsclib, integ.ts))
+    stats.naccept = naccept
+    stats.nreject = nreject
+    stats.nnonliniter = nnonliniter
+    stats.nsolve = nlinearsolve
     return nothing
 end
 
@@ -533,6 +573,7 @@ function SciMLBase.solve!(integ::PETScTSIntegrator)
         push!(integ.sol.t, integ.t)
         push!(integ.sol.u, copy(integ.u))
     end
+    _populate_stats!(integ)
     integ.sol = SciMLBase.solution_new_retcode(integ.sol, integ.retcode)
     _destroy_petsc!(integ)
     return integ.sol

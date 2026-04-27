@@ -546,6 +546,57 @@ end
         )
     end
 
+    # ── Review-9 #1 ─────────────────────────────────────────────────────────
+    @testset "maxiters caps the manual TSStep loop and reports MaxIters" begin
+        # Fixed-step integration over [0, 1] with `dt = 0.1` would otherwise
+        # run for 10 steps; `maxiters = 1` must stop it after one accepted
+        # step and surface a `ReturnCode.MaxIters`.
+        sol = solve(
+            prob, TSRK("3bs");
+            dt = 0.1, adaptive = false, maxiters = 1, save_everystep = true,
+        )
+        @test sol.retcode == ReturnCode.MaxIters
+        @test sol.t[end] < 1.0
+        @test sol.stats.naccept >= 1
+    end
+
+    @testset "PETSc-side -ts_max_steps is honoured by the step-count cap" begin
+        # The cap is enforced as `min(opts.maxiters, TSGetMaxSteps(ts))`,
+        # so passing `-ts_max_steps 1` through `petsc_options` produces the
+        # same stop-early behaviour as the SciML `maxiters` knob.
+        alg = PETSc.TSRK("3bs", ["-ts_max_steps", "1"])
+        sol = solve(prob, alg; dt = 0.1, adaptive = false, save_everystep = true)
+        @test sol.retcode == ReturnCode.MaxIters
+        @test sol.t[end] ≈ 0.1
+        @test sol.stats.naccept == 1
+    end
+
+    # ── Review-9 #2 ─────────────────────────────────────────────────────────
+    @testset "sol.stats reflects the actual number of steps taken" begin
+        sol = solve(
+            prob, TSRK("3bs");
+            dt = 0.1, adaptive = false, save_everystep = true,
+        )
+        @test sol.retcode == ReturnCode.Success
+        # Fixed-step at dt = 0.1 over [0, 1] takes 10 accepted steps.
+        @test sol.stats.naccept == 10
+        @test sol.stats.nreject == 0
+        # Explicit RK has no SNES / KSP work.
+        @test sol.stats.nnonliniter == 0
+        @test sol.stats.nsolve == 0
+    end
+
+    @testset "Implicit solve populates SNES iteration count in stats" begin
+        sol = solve(
+            prob, TSImplicit("beuler", ["-snes_fd"]);
+            dt = 0.1, adaptive = false,
+        )
+        @test sol.retcode == ReturnCode.Success
+        @test sol.stats.naccept == 10
+        # An implicit method must do at least one nonlinear solve per step.
+        @test sol.stats.nnonliniter > 0
+    end
+
     # ── Review-8 #2 ─────────────────────────────────────────────────────────
     @testset "dtmax = Inf is accepted and behaves like an omitted dtmax" begin
         # `Inf` is the natural SciML spelling of "no upper cap", and the

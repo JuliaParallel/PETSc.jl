@@ -3,7 +3,9 @@ mutable struct RHSCtx{F, P, SZ, Lib}
     p::P
     sizeu::SZ
     petsclib::Lib
+    nf::Int   # cumulative count of user-RHS evaluations for `sol.stats.nf`
 end
+RHSCtx(f, p, sizeu, petsclib) = RHSCtx(f, p, sizeu, petsclib, 0)
 
 function _petsc_rhs!(
     ::PETSc.LibPETSc.CTS,
@@ -23,6 +25,7 @@ function _petsc_rhs!(
     ) do u_array, f_array
         ctx.f(reshape(f_array, ctx.sizeu), reshape(u_array, ctx.sizeu), ctx.p, t)
     end
+    ctx.nf += 1
     return PETSc.LibPETSc.PetscErrorCode(0)
 end
 

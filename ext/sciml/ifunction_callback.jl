@@ -3,7 +3,9 @@ mutable struct IFunctionCtx{F, P, SZ, Lib}
     p::P
     sizeu::SZ
     petsclib::Lib
+    nf::Int   # cumulative count of user-RHS evaluations for `sol.stats.nf`
 end
+IFunctionCtx(f, p, sizeu, petsclib) = IFunctionCtx(f, p, sizeu, petsclib, 0)
 
 function _petsc_ifunction!(
     ::PETSc.LibPETSc.CTS,
@@ -29,6 +31,7 @@ function _petsc_ifunction!(
         ctx.f(F_reshaped, u_reshaped, ctx.p, t)
         @. F_reshaped = udot_reshaped - F_reshaped
     end
+    ctx.nf += 1
     return PETSc.LibPETSc.PetscErrorCode(0)
 end
 

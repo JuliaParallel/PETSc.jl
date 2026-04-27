@@ -581,9 +581,15 @@ end
         # Fixed-step at dt = 0.1 over [0, 1] takes 10 accepted steps.
         @test sol.stats.naccept == 10
         @test sol.stats.nreject == 0
-        # Explicit RK has no SNES / KSP work.
+        # Explicit RK has no SNES work.
         @test sol.stats.nnonliniter == 0
-        @test sol.stats.nsolve == 0
+        # `nf` is incremented in the C-callback; an explicit RK must call
+        # the user RHS multiple times per step (3bs has 3 stages plus FSAL),
+        # so the counter must be strictly positive.
+        @test sol.stats.nf > sol.stats.naccept
+        # `nsolve` is left at the SciML "unknown" sentinel because
+        # `TSGetKSPIterations` reports linear iterations, not solves.
+        @test sol.stats.nsolve == -1
     end
 
     @testset "Implicit solve populates SNES iteration count in stats" begin
@@ -595,6 +601,54 @@ end
         @test sol.stats.naccept == 10
         # An implicit method must do at least one nonlinear solve per step.
         @test sol.stats.nnonliniter > 0
+        @test sol.stats.nf > 0
+    end
+
+    # ── Review-10 #1 ────────────────────────────────────────────────────────
+    @testset "maxiters = 0 yields a zero-step solve, not one step" begin
+        # The cap is now checked *before* `TSStep`, so `maxiters = 0` must
+        # not advance time, regardless of what `dt` would otherwise produce.
+        sol = solve(
+            prob, TSRK("3bs");
+            dt = 0.1, adaptive = false, maxiters = 0, save_everystep = true,
+        )
+        @test sol.retcode == ReturnCode.MaxIters
+        @test sol.t[end] == 0.0
+        @test sol.stats.naccept == 0
+
+        # Even when `dt` is large enough that one step would land on `tf`,
+        # the cap must still pre-empt the step and report MaxIters.
+        sol_one_shot = solve(
+            prob, TSRK("3bs");
+            dt = 1.0, adaptive = false, maxiters = 0, save_everystep = true,
+        )
+        @test sol_one_shot.retcode == ReturnCode.MaxIters
+        @test sol_one_shot.t[end] == 0.0
+        @test sol_one_shot.stats.naccept == 0
+    end
+
+    @testset "petsc_options -ts_max_steps 0 yields a zero-step solve" begin
+        alg = PETSc.TSRK("3bs", ["-ts_max_steps", "0"])
+        sol = solve(prob, alg; dt = 0.1, adaptive = false, save_everystep = true)
+        @test sol.retcode == ReturnCode.MaxIters
+        @test sol.t[end] == 0.0
+        @test sol.stats.naccept == 0
+    end
+
+    # ── Review-10 #2 ────────────────────────────────────────────────────────
+    @testset "Unsupported DEStats fields stay at the SciML \"unknown\" sentinel" begin
+        sol = solve(prob, TSRK("3bs"); dt = 0.1, adaptive = false)
+        # We populate `naccept`, `nreject`, `nnonliniter`, and `nf`. Every
+        # other counter should remain at `-1` so users can distinguish
+        # "we don't track this" from "no work happened".
+        @test sol.stats.naccept == 10
+        @test sol.stats.nreject == 0
+        @test sol.stats.nnonliniter == 0
+        @test sol.stats.nf > 0
+        @test sol.stats.nsolve == -1
+        @test sol.stats.nf2 == -1
+        @test sol.stats.nw == -1
+        @test sol.stats.njacs == -1
     end
 
     # ── Review-8 #2 ─────────────────────────────────────────────────────────

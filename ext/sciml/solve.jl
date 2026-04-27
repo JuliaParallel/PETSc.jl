@@ -428,10 +428,15 @@ function SciMLBase.__init(
         reltol, abstol, maxiters,
     )
 
+    # `DEStats()` defaults every counter to `-1`, which SciML reads as
+    # "unknown / not reported". `_populate_stats!` overwrites the fields
+    # we can map accurately (`naccept`, `nreject`, `nnonliniter`, `nf`)
+    # before `solve!` returns; everything else stays at the sentinel so
+    # users can distinguish "no work happened" from "we don't track this".
     sol = SciMLBase.build_solution(
         prob, alg, tType[], typeof(u0)[];
         retcode = SciMLBase.ReturnCode.Default,
-        stats = SciMLBase.DEStats(0),
+        stats = SciMLBase.DEStats(),
     )
 
     try
@@ -480,6 +485,15 @@ function SciMLBase.step!(integ::PETScTSIntegrator)
             push!(integ.sol.t, integ.t)
             push!(integ.sol.u, copy(integ.u))
         end
+    end
+
+    # Enforce the step cap *before* `TSStep` so `maxiters = 0` (or
+    # `-ts_max_steps 0`) yields a true zero-step solve instead of
+    # advancing once and reporting the cap afterwards.
+    if _ts_step_count(integ) >= _effective_maxiters(integ)
+        integ.retcode = SciMLBase.ReturnCode.MaxIters
+        integ.done = true
+        return nothing
     end
 
     integ.uprev .= integ.u
@@ -546,22 +560,38 @@ function _effective_maxiters(integ::PETScTSIntegrator)
 end
 
 # Pull whatever PETSc bookkeeping is meaningful for the current TS family
-# back into the SciML `DEStats` object. Counters that do not apply to the
-# active family (e.g. SNES iterations on an explicit RK solve) come back as
-# zero, which matches their semantic value.
+# back into the SciML `DEStats` object. Only counters we can map accurately
+# are written; everything else stays at its `DEStats` initialiser value
+# (`-1`, the SciML "unknown" sentinel — see
+# `SciMLBase.DEStats(x = -1) = DEStats(x, x, ..., 0.0)`).
+#
+# - `naccept` ← `TSGetStepNumber`
+# - `nreject` ← `TSGetStepRejections`
+# - `nnonliniter` ← `TSGetSNESIterations` (zero on explicit families)
+# - `nf` ← user-callback hit count maintained on the RHS / IFunction
+#         contexts. PETSc itself does not expose a uniform "RHS calls"
+#         counter, so we tally evaluations in the C-callback.
+#
+# `nsolve` is intentionally left at the `DEStats` sentinel: PETSc's
+# `TSGetKSPIterations` returns linear *iteration* counts, while SciML's
+# `nsolve` is the number of linear *solves*, so they are not equivalent.
 function _populate_stats!(integ::PETScTSIntegrator)
     stats = integ.sol.stats
     stats === nothing && return nothing
-    naccept = _ts_step_count(integ)
-    nreject = Int(PETSc.LibPETSc.TSGetStepRejections(integ.petsclib, integ.ts))
-    nnonliniter = Int(PETSc.LibPETSc.TSGetSNESIterations(integ.petsclib, integ.ts))
-    nlinearsolve = Int(PETSc.LibPETSc.TSGetKSPIterations(integ.petsclib, integ.ts))
-    stats.naccept = naccept
-    stats.nreject = nreject
-    stats.nnonliniter = nnonliniter
-    stats.nsolve = nlinearsolve
+    stats.naccept = _ts_step_count(integ)
+    stats.nreject = Int(PETSc.LibPETSc.TSGetStepRejections(integ.petsclib, integ.ts))
+    stats.nnonliniter = Int(PETSc.LibPETSc.TSGetSNESIterations(integ.petsclib, integ.ts))
+    nf_total = _accumulate_nf(integ.cb_ctx)
+    nf_total === nothing || (stats.nf = nf_total)
     return nothing
 end
+
+# Sum the `nf` counters across whatever shape the callback context has.
+# `TSARKIMEX` with a `SplitODEProblem` exposes a `(rhs, ifunc)` named tuple
+# of contexts; everything else holds a single context object.
+_accumulate_nf(ctx::Union{RHSCtx, IFunctionCtx}) = ctx.nf
+_accumulate_nf(ctx::NamedTuple) = sum(_accumulate_nf, values(ctx); init = 0)
+_accumulate_nf(_::Any) = nothing
 
 function SciMLBase.solve!(integ::PETScTSIntegrator)
     while !integ.done

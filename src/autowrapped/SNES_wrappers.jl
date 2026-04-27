@@ -5396,9 +5396,9 @@ Options Database Keys:
 # External Links
 $(_doc_external("SNES/SNESComputeJacobianDefaultColor"))
 """
-function SNESComputeJacobianDefaultColor(petsclib::PetscLibType, snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Cvoid) end
+function SNESComputeJacobianDefaultColor(petsclib::PetscLibType, snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Ptr{Cvoid}) end
 
-@for_petsc function SNESComputeJacobianDefaultColor(petsclib::$UnionPetscLib, snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Cvoid )
+@for_petsc function SNESComputeJacobianDefaultColor(petsclib::$UnionPetscLib, snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Ptr{Cvoid})
 
     @chk ccall(
                (:SNESComputeJacobianDefaultColor, $petsc_library),

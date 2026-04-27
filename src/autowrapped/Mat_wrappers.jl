@@ -19698,8 +19698,22 @@ Level: beginner
 $(_doc_external("Mat/MatSetValuesCOO"))
 """
 function MatSetValuesCOO(petsclib::PetscLibType, A::PetscMat, coo_v::Vector{PetscScalar}, imode::InsertMode) end
+function MatSetValuesCOO(petsclib::PetscLibType, A::PetscMat, coo_v::Ptr{PetscScalar}, imode::InsertMode) end
 
 @for_petsc function MatSetValuesCOO(petsclib::$UnionPetscLib, A::PetscMat, coo_v::Vector{$PetscScalar}, imode::InsertMode )
+
+    @chk ccall(
+               (:MatSetValuesCOO, $petsc_library),
+               PetscErrorCode,
+               (CMat, Ptr{$PetscScalar}, InsertMode),
+               A, coo_v, imode,
+              )
+
+
+	return nothing
+end 
+
+@for_petsc function MatSetValuesCOO(petsclib::$UnionPetscLib, A::PetscMat, coo_v::Ptr{$PetscScalar}, imode::InsertMode )
 
     @chk ccall(
                (:MatSetValuesCOO, $petsc_library),

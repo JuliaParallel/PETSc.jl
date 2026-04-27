@@ -255,6 +255,12 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     l_x = PETSc.DMLocalVec(da)
     PETSc.dm_global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
 
+    # Get arrays for the output (g_fx) and ghost-padded input (l_x) Vecs.
+    # On GPU, returns CuArray wrappers (zero-copy when both Vecs are device-
+    # resident) together with the raw PETSc handles needed for the restore call.
+    # On CPU, returns plain Array views backed by VecGetArray.
+    # fx_bounce is a GPU scratch buffer used when g_fx is host-resident; it is
+    # copied back D2H by restore_petsc_arrays after the kernel completes.
     fx, lx, fx_arr, lx_arr, fx_bounce = PETSc.get_petsc_arrays(petsclib, g_fx, l_x)
 
     corners       = PETSc.getcorners(da)
@@ -316,136 +322,28 @@ end
 # NOTE: For MG, coarser levels fall back to SNESComputeJacobianDefaultColor
 #       (correct, but CPU-only FD coloring for those levels).
 
-# ── 1. ISColoring ─────────────────────────────────────────────────────────────
-# IS_COLORING_LOCAL returns colors for all local DOFs (owned + ghost) in DMDA
-# local Vec ordering.  Ghost DOF colors are consistent with the owning rank's
-# assignment, so no extra MPI communication is needed here.
-iscoloring = LibPETSc.DMCreateColoring(petsclib, da, LibPETSc.IS_COLORING_LOCAL)
-
-# ── 2. Per-column color via raw ISColoringGetColors call ──────────────────────
-#   C API:  ISColoringGetColors(iscoloring, PetscInt *n, PetscInt *nc,
-#                               const ISColoringValue **colors)
-#   ISColoringValue = unsigned short (UInt16) per petscconf.h PETSC_IS_COLORING_VALUE_TYPE=short
-n_cols_ref     = Ref{PetscInt}(0)
-nc_ref         = Ref{PetscInt}(0)
-colors_ptr_ref = Ref{Ptr{UInt16}}(C_NULL)
-LibPETSc.@chk ccall(
-    (:ISColoringGetColors, petsclib.petsc_library), PetscInt,
-    (LibPETSc.ISColoring, Ptr{PetscInt}, Ptr{PetscInt}, Ptr{Ptr{UInt16}}),
-    iscoloring, n_cols_ref, nc_ref, colors_ptr_ref)
-n_cols_local = Int(n_cols_ref[])   # IS_COLORING_LOCAL: owned + ghost DOFs
-n_colors     = Int(nc_ref[])
-# Copy colors to an owned Julia array before we destroy the ISColoring.
-col_colors_local = copy(unsafe_wrap(Vector{UInt16}, colors_ptr_ref[], n_cols_local; own = false))
-
-# ── 3. Ownership range (0-based PETSc indices) ────────────────────────────────
-row_start, row_end = LibPETSc.VecGetOwnershipRange(petsclib, x)
-n_local_dofs = Int(row_end - row_start)
-
-# ── 4. Build COO from DMDA STAR stencil ───────────────────────────────────────
-#  For each owned node (ii, jj) and each stencil neighbor, emit dof×dof
-#  (row, col) pairs using GHOST-LOCAL 0-based indices.  Using local indices
-#  (rather than global natural-ordering) makes the code correct for any MPI
-#  decomposition (1D or 2D), because MatSetValuesLocal /
-#  MatSetPreallocationCOOLocal handle the local→global mapping internally.
-dof_per_node = 4
-coo_corners       = PETSc.getcorners(da)
-ghost_coo_corners = PETSc.getghostcorners(da)
-xs_da  = coo_corners.lower[1];       ys_da  = coo_corners.lower[2]
-xe_da  = coo_corners.upper[1];       ye_da  = coo_corners.upper[2]
-xsg_da = ghost_coo_corners.lower[1]; ysg_da = ghost_coo_corners.lower[2]
-xeg_da = ghost_coo_corners.upper[1]; yeg_da = ghost_coo_corners.upper[2]
-nx_g_da = xeg_da - xsg_da + 1;  ny_g_da = yeg_da - ysg_da + 1
-# Reshape into [dof, ghost_x, ghost_y] — matches DMDA local Vec layout.
-col_colors_mat = reshape(col_colors_local, dof_per_node, nx_g_da, ny_g_da)
-
-CPetscInt = petsclib.PetscInt           # matches the actual C sizeof(PetscInt)
-# Ghost-local 0-based row / col indices (for MatSetValuesLocal /
-# MatSetPreallocationCOOLocal).  Both rows and cols use the DMDA ghost-local
-# numbering: index = d + ix_ghost * dof + iy_ghost * dof * nx_g
-row_coo_local     = CPetscInt[]
-col_coo_local     = CPetscInt[]
-local_row_per_coo = CPetscInt[]   # 0-based OWNED-local row (= p in VecGetArray)
-color_per_coo     = CPetscInt[]   # 0-based color of each COO entry's column
-
-for jj in ys_da:ye_da, ii in xs_da:xe_da
-    # Ghost-local (0-based) coordinates of this owned node
-    ix_gh = ii - xsg_da   # 0-based ghost-x
-    iy_gh = jj - ysg_da   # 0-based ghost-y
-    # Owned-local (0-based) position (for f-array indexing)
-    ix_ow = ii - xs_da    # 0-based owned-x
-    iy_ow = jj - ys_da    # 0-based owned-y
-    nx_own_loc = xe_da - xs_da + 1
-
-    neighbors = Tuple{Int,Int}[(ii, jj)]
-    ii > 1  && push!(neighbors, (ii-1, jj))
-    ii < mx && push!(neighbors, (ii+1, jj))
-    jj > 1  && push!(neighbors, (ii, jj-1))
-    jj < my && push!(neighbors, (ii, jj+1))
-
-    for (ni, nj) in neighbors
-        nix_gh = ni - xsg_da   # 0-based ghost-x of neighbor
-        njy_gh = nj - ysg_da   # 0-based ghost-y of neighbor
-        for d_row in 0:dof_per_node-1, d_col in 0:dof_per_node-1
-            # Ghost-local 0-based indices (used with MatSetValuesLocal)
-            r_local = d_row + ix_gh  * dof_per_node + iy_gh  * dof_per_node * nx_g_da
-            c_local = d_col + nix_gh * dof_per_node + njy_gh * dof_per_node * nx_g_da
-            # Owned-local 0-based row (= position in VecGetArray output)
-            p_owned = d_row + ix_ow * dof_per_node + iy_ow * nx_own_loc * dof_per_node
-            push!(row_coo_local,    CPetscInt(r_local))
-            push!(col_coo_local,    CPetscInt(c_local))
-            push!(color_per_coo,    CPetscInt(col_colors_mat[d_col+1, nix_gh+1, njy_gh+1]))
-            push!(local_row_per_coo, CPetscInt(p_owned))
-        end
-    end
-end
-nnz_coo = length(row_coo_local)
+# ── Coloring + COO index setup ────────────────────────────────────────────────
+# Builds the IS_COLORING_LOCAL coloring for da's STAR stencil, ghost-local COO
+# (row, col) pairs, and per-color owned-column / COO-entry index arrays.
+# 2-D DMDA STAR stencil only; see PETSc.dmda_star_fd_coloring for 3-D notes.
+coloring     = PETSc.dmda_star_fd_coloring(petsclib, da)
+n_colors     = coloring.n_colors
+n_local_dofs = coloring.n_local_dofs
+nnz_coo      = coloring.nnz_coo
+row_coo_local = coloring.row_coo_local
+col_coo_local = coloring.col_coo_local
 
 # ── 5. Create J ───────────────────────────────────────────────────────────────
 J = LibPETSc.DMCreateMatrix(petsclib, da)
-# For GPU: use COO-local preallocation so MatSetValuesCOO can scatter on device.
-# For CPU: DMCreateMatrix already preallocated the correct structure; use
-# MatSetValuesLocal (handles any 1-D or 2-D MPI decomposition correctly).
-if useCUDA
-    LibPETSc.@chk ccall(
-        (:MatSetPreallocationCOOLocal, petsclib.petsc_library), Cint,
-        (LibPETSc.CMat, Int64, Ptr{CPetscInt}, Ptr{CPetscInt}),
-        J, Int64(nnz_coo), row_coo_local, col_coo_local)
-end
+# Register the COO pattern on both CPU and GPU.  This allows MatSetValuesCOO
+# to be used for assembly in both cases, avoiding per-entry hash-table lookups
+# that MatSetValuesLocal incurs.  On GPU it also enables device-side scatter.
+LibPETSc.MatSetPreallocationCOOLocal(petsclib, J, LibPETSc.PetscCount(nnz_coo), row_coo_local, col_coo_local)
 
-# ── 6. Per-color index arrays for the FD loop ─────────────────────────────────
-# perturb_cols_1b[c]: 1-based OWNED-LOCAL indices of owned columns with color c-1.
-# coo_idxs_1b[c]:    1-based COO entry indices whose column color == c-1.
-# local_rows_1b[c]:  1-based local residual-row indices for those COO entries.
-#
-# IMPORTANT: col_colors_local uses the GHOST-LOCAL layout [dof, ghost_x, ghost_y],
-# but VecGetArray returns the OWNED-LOCAL portion (owned DOFs only, re-indexed 1..n_local_dofs).
-# For ranks where ghost DOFs come BEFORE owned DOFs in the ghost-local vec (e.g. rank 1
-# with ghost row below), the ghost-local index of owned DOF p ≠ p.  We must convert
-# owned-local index p → ghost-local index k before looking up the color.
-ox_coo   = xs_da - xsg_da                      # ghost offset in x (grid nodes)
-oy_coo   = ys_da - ysg_da                      # ghost offset in y (grid nodes)
-nx_own   = xe_da - xs_da + 1                   # owned x width
-perturb_cols_1b = [Int32[] for _ in 1:n_colors]
-for p_local in 1:n_local_dofs   # 1-based owned-local index
-    p0      = p_local - 1       # 0-based
-    d       =  p0 % dof_per_node
-    x_owned = (p0 ÷ dof_per_node) % nx_own          # 0-based owned-x
-    y_owned = (p0 ÷ dof_per_node) ÷ nx_own          # 0-based owned-y
-    # convert to ghost-local 1-based index
-    k_ghost = d + (x_owned + ox_coo) * dof_per_node +
-              (y_owned + oy_coo) * dof_per_node * nx_g_da + 1
-    c = Int(col_colors_local[k_ghost]) + 1   # 1-based color
-    push!(perturb_cols_1b[c], Int32(p_local))
-end
-
-coo_idxs_1b   = [Int32[] for _ in 1:n_colors]
-local_rows_1b = [Int32[] for _ in 1:n_colors]
-for k in 1:nnz_coo
-    c = Int(color_per_coo[k]) + 1            # 1-based color
-    push!(coo_idxs_1b[c],   Int32(k))
-    push!(local_rows_1b[c], Int32(local_row_per_coo[k] + 1))  # 0→1-based
-end
+# ── Per-color index arrays for the FD loop ───────────────────────────────────
+perturb_cols_1b = coloring.perturb_cols
+coo_idxs_1b     = coloring.coo_idxs
+local_rows_1b   = coloring.local_rows
 
 if useCUDA
     perturb_cols_dev = [CuArray(v) for v in perturb_cols_1b]
@@ -459,8 +357,6 @@ else
     val_dev          = zeros(T, nnz_coo)
 end
 
-LibPETSc.ISColoringDestroy(petsclib, iscoloring)
-
 # ── 7. Scratch vectors for the FD loop ────────────────────────────────────────
 x_pert_vec = LibPETSc.VecDuplicate(petsclib, x)
 f0_vec     = LibPETSc.VecDuplicate(petsclib, x)
@@ -470,15 +366,11 @@ inv_h      = T(1) / h_eps
 
 # ── 8. Custom Jacobian callback ───────────────────────────────────────────────
 PETSc.setjacobian!(snes, J) do Jmat, actual_snes, g_x
-    # For MG: if this is a coarser level (grid size differs from fine grid),
+    # For MG: if this is a coarser level (different DM than the fine-grid da),
     # fall back to PETSc's built-in FD coloring (correct for that level's DM).
-    da_level   = PETSc.getDM(actual_snes)
-    info_level = PETSc.getinfo(da_level)
-    if info_level.global_size[1] != mx || info_level.global_size[2] != my
-        LibPETSc.@chk ccall(
-            (:SNESComputeJacobianDefaultColor, petsclib.petsc_library), PetscInt,
-            (LibPETSc.CSNES, LibPETSc.CVec, LibPETSc.CMat, LibPETSc.CMat, Ptr{Cvoid}),
-            actual_snes.ptr, g_x.ptr, Jmat.ptr, Jmat.ptr, C_NULL)
+    da_level = PETSc.getDM(actual_snes)
+    if da_level.ptr != da.ptr
+        LibPETSc.SNESComputeJacobianDefaultColor(petsclib, actual_snes, g_x, Jmat, Jmat, C_NULL)
         return PetscInt(0)
     end
 
@@ -523,15 +415,18 @@ PETSc.setjacobian!(snes, J) do Jmat, actual_snes, g_x
 
     LibPETSc.VecRestoreArrayReadAndMemType(petsclib, f0_vec, f0_arr)
 
-    # ── Assemble J via COO (GPU) or MatSetValues (CPU) ────────────────────────
+    # ── Assemble J via COO ─────────────────────────────────────────────────────
+    # On GPU: pass a raw device pointer so cuSPARSE scatters directly on device.
+    # On CPU: pass the Vector{T} directly (uses the vector overload).
+    # Both paths use the COO pattern registered by MatSetPreallocationCOOLocal.
     if useCUDA
-        # Assemble via GPU pointer so the GPU (cuSPARSE) copy is up to date.
-        LibPETSc.@chk ccall(
-            (:MatSetValuesCOO, petsclib.petsc_library), PetscInt,
-            (LibPETSc.CMat, Ptr{T}, LibPETSc.InsertMode),
-            Jmat.ptr, Ptr{T}(UInt64(pointer(val_dev))), LibPETSc.INSERT_VALUES)
-        LibPETSc.MatAssemblyBegin(petsclib, Jmat, LibPETSc.MAT_FINAL_ASSEMBLY)
-        LibPETSc.MatAssemblyEnd(petsclib, Jmat, LibPETSc.MAT_FINAL_ASSEMBLY)
+        LibPETSc.MatSetValuesCOO(petsclib, Jmat, Ptr{T}(UInt64(pointer(val_dev))), LibPETSc.INSERT_VALUES)
+    else
+        LibPETSc.MatSetValuesCOO(petsclib, Jmat, val_dev, LibPETSc.INSERT_VALUES)
+    end
+    LibPETSc.MatAssemblyBegin(petsclib, Jmat, LibPETSc.MAT_FINAL_ASSEMBLY)
+    LibPETSc.MatAssemblyEnd(petsclib, Jmat, LibPETSc.MAT_FINAL_ASSEMBLY)
+    if useCUDA
         # Force GPU→CPU sync so both copies are valid.
         # MatBindToCPU(PETSC_TRUE) triggers MatSeqAIJCUSPARSECopyFromGPU when
         # offloadmask==PETSC_OFFLOAD_GPU, making the CPU CSR correct.
@@ -539,22 +434,8 @@ PETSc.setjacobian!(snes, J) do Jmat, actual_snes, g_x
         # leaving offloadmask==PETSC_OFFLOAD_BOTH so that:
         #   MatGetDiagonal (Jacobi smoother in MG)  → reads CPU copy ✓
         #   MatPtAP (Galerkin coarse-op formation)  → uses GPU copy  ✓
-        LibPETSc.@chk ccall(
-            (:MatBindToCPU, petsclib.petsc_library), PetscInt,
-            (LibPETSc.CMat, LibPETSc.PetscBool), Jmat.ptr, LibPETSc.PETSC_TRUE)
-        LibPETSc.@chk ccall(
-            (:MatBindToCPU, petsclib.petsc_library), PetscInt,
-            (LibPETSc.CMat, LibPETSc.PetscBool), Jmat.ptr, LibPETSc.PETSC_FALSE)
-    else
-        LibPETSc.MatZeroEntries(petsclib, Jmat)
-        for k in 1:nnz_coo
-            LibPETSc.MatSetValuesLocal(petsclib, Jmat,
-                PetscInt(1), CPetscInt[row_coo_local[k]],
-                PetscInt(1), CPetscInt[col_coo_local[k]],
-                T[val_dev[k]], LibPETSc.INSERT_VALUES)
-        end
-        LibPETSc.MatAssemblyBegin(petsclib, Jmat, LibPETSc.MAT_FINAL_ASSEMBLY)
-        LibPETSc.MatAssemblyEnd(petsclib, Jmat, LibPETSc.MAT_FINAL_ASSEMBLY)
+        LibPETSc.MatBindToCPU(petsclib, Jmat, LibPETSc.PETSC_TRUE)
+        LibPETSc.MatBindToCPU(petsclib, Jmat, LibPETSc.PETSC_FALSE)
     end
     return PetscInt(0)
 end

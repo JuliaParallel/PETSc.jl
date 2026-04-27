@@ -26,6 +26,7 @@ export set_petsclib
 export set_library!, unset_library!, library_info
 export withlocalarray_device!
 export get_petsc_arrays, restore_petsc_arrays
+export dmda_star_fd_coloring
 
 using Libdl
 

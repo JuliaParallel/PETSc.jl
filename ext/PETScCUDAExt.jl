@@ -64,15 +64,15 @@ function _unsafe_localarray_device(
     end
 end
 
-# ── Public override of withlocalarray_device! ─────────────────────────────────
+# ── Public hook: register CUDA implementation for withlocalarray_device! ──────
 #
-# Drop-in replacement for withlocalarray! that hands the kernel a CuArray when
-# the Vec lives on GPU, and falls back to a plain Array when it lives on CPU.
-# No host↔device copies are performed in either case.
+# We cannot override PETSc.withlocalarray_device! with the same signature
+# during precompilation (Julia restriction).  Instead we register a closure
+# in __init__ that the base method dispatches to when the hook is non-nothing.
 #
-function PETSc.withlocalarray_device!(
+function _cuda_withlocalarray_device_impl!(
     f!,
-    vecs::NTuple{N, AbstractPetscVec};
+    vecs::NTuple{N};
     read::Union{Bool, NTuple{N, Bool}}  = true,
     write::Union{Bool, NTuple{N, Bool}} = true,
 ) where {N}
@@ -90,7 +90,8 @@ function PETSc.withlocalarray_device!(
     return val
 end
 
-PETSc.withlocalarray_device!(f!, vecs...; kwargs...) =
-    PETSc.withlocalarray_device!(f!, vecs; kwargs...)
+function __init__()
+    PETSc._withlocalarray_device_hook[] = _cuda_withlocalarray_device_impl!
+end
 
 end # module

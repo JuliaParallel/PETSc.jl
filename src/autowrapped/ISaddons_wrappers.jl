@@ -1309,12 +1309,12 @@ $(_doc_external("Vec/ISColoringDestroy"))
 function ISColoringDestroy(petsclib::PetscLibType, iscoloring::ISColoring) end
 
 @for_petsc function ISColoringDestroy(petsclib::$UnionPetscLib, iscoloring::ISColoring )
-
+    iscoloring_ref = Ref(iscoloring)
     @chk ccall(
                (:ISColoringDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{ISColoring},),
-               iscoloring,
+               iscoloring_ref,
               )
 
 

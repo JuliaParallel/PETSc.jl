@@ -73,9 +73,9 @@ integrator = init(prob, PETSc.TSRK("5dp"); dt = 0.05)                         # 
 step!(integrator); sol = solve!(integrator)
 ```
 
-Per-solver PETSc command-line options are passed on the algorithm itself (a `Vector{String}` of raw tokens, e.g. `["-snes_fd", "-ts_max_steps", "100"]`). Discrete callbacks and `terminate!` are supported; continuous callbacks and `tstops` are warned about and ignored. The extension currently requires `PetscReal = Float64`, real-valued in-place ODE problems, and forward integration (`tspan[1] < tspan[2]`). See the docstrings of `PETSc.TSRK`, `PETSc.TSRosW`, `PETSc.TSImplicit`, `PETSc.TSARKIMEX`, and `PETSc.TSGeneric` for details.
+Per-solver PETSc command-line options are passed on the algorithm itself (a `Vector{String}` of raw tokens, e.g. `["-snes_fd", "-ts_max_steps", "100"]`). Discrete callbacks and `terminate!` are supported; `ContinuousCallback`s are rejected with `ArgumentError`, and `tstops` is warned about and ignored. Standard SciML control knobs `adaptive`, `dtmin`, and `dtmax` are mapped onto PETSc's `TSAdapt` controller; unrecognized solve keywords are rejected with a clear `ArgumentError` rather than silently dropped. The extension currently requires `PetscReal = Float64`, real-valued in-place ODE problems, and forward integration (`tspan[1] < tspan[2]`). See the docstrings of `PETSc.TSRK`, `PETSc.TSRosW`, `PETSc.TSImplicit`, `PETSc.TSARKIMEX`, and `PETSc.TSGeneric` for details.
 
 Known callback-lifecycle gaps (compared to OrdinaryDiffEq):
 
 - The SciML *discrete-save* hooks (`SciMLBase.save_discretes_if_enabled!`, `SciMLBase.save_final_discretes!`) are **not** invoked. Callback machinery that relies on saving observable state alongside the trajectory will not interoperate; only `affect!`-style callbacks that mutate `u` or call `terminate!` are exercised.
-- `ContinuousCallback`s emit a warning and are ignored. Wrap event detection through PETSc's `TSSetEventHandler` directly if you need it.
+- `ContinuousCallback`s are rejected with `ArgumentError`. Wrap event detection through PETSc's `TSSetEventHandler` directly if you need it.

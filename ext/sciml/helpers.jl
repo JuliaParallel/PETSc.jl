@@ -58,3 +58,29 @@ function _sync_julia_to_petsc!(integ::PETScTSIntegrator)
     end
     return nothing
 end
+
+# Reject SciML keywords that this extension does not actually honour. Letting
+# the open-ended `kwargs...` sink swallow standard knobs like `adaptive` /
+# `dtmin` / `progress` would silently break the usual SciML solver contract,
+# so any unsupported key fails loudly with a clear, named error.
+const _SUPPORTED_SCIML_KWARGS = (
+    :save_everystep, :save_on, :save_start, :save_end,
+    :saveat, :tstops, :callback,
+    :reltol, :abstol,
+    :dt, :dtmin, :dtmax, :adaptive,
+    :maxiters, :petsclib, :verbose,
+)
+
+function _reject_unsupported_kwargs(kwargs)
+    for key in keys(kwargs)
+        key in _SUPPORTED_SCIML_KWARGS && continue
+        throw(ArgumentError(
+            "PETSc.jl SciML extension: keyword argument `$(key)` is not " *
+            "supported. Supported keywords are: " *
+            join(_SUPPORTED_SCIML_KWARGS, ", ") * ". " *
+            "Pass equivalent PETSc CLI flags via the algorithm's " *
+            "`petsc_options` argument if a matching SciML knob is missing.",
+        ))
+    end
+    return nothing
+end

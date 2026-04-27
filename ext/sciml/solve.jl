@@ -32,11 +32,21 @@ function _check_tspan(t0, tf)
     return nothing
 end
 
+# SciML default tolerances applied when the user passes only one of
+# `reltol` / `abstol`. This matches OrdinaryDiffEq's defaults so a partial
+# specification (e.g. `reltol = 1e-10`) actually reaches PETSc instead of
+# being silently dropped.
+const _SCIML_DEFAULT_RELTOL = 1e-3
+const _SCIML_DEFAULT_ABSTOL = 1e-6
+
 # Builds the bare PETSc TS skeleton shared by every algorithm: pick the
 # library, allocate the solution vector, set time bounds and a maybe-supplied
 # initial step. Algorithm-specific TS type, subtype, and callback registration
 # happen in `_setup_petsc_algorithm!` afterwards.
-function _common_ts_setup(prob, alg, dt, maxiters, petsclib, reltol, abstol)
+function _common_ts_setup(
+    prob, dt, maxiters, petsclib, reltol, abstol,
+    adaptive, dtmin, dtmax,
+)
     _check_isinplace(prob)
     lib = _pick_petsclib(prob, petsclib)
     _check_petscreal(lib)
@@ -65,13 +75,8 @@ function _common_ts_setup(prob, alg, dt, maxiters, petsclib, reltol, abstol)
         if dt !== nothing
             PETSc.LibPETSc.TSSetTimeStep(lib, ts, lib.PetscReal(dt))
         end
-        if reltol !== nothing && abstol !== nothing
-            (reltol isa Real && abstol isa Real) || throw(ArgumentError(
-                "PETSc.jl SciML extension: only scalar `reltol` / `abstol` are " *
-                "supported. Got types $(typeof(reltol)) / $(typeof(abstol)).",
-            ))
-            _ts_set_scalar_tolerances!(lib, ts, abstol, reltol)
-        end
+        _apply_tolerances!(lib, ts, reltol, abstol)
+        _apply_adaptivity!(lib, ts, adaptive, dtmin, dtmax)
     catch
         PETSc.LibPETSc.TSDestroy(lib, ts)
         PETSc.destroy(u_v)
@@ -79,6 +84,39 @@ function _common_ts_setup(prob, alg, dt, maxiters, petsclib, reltol, abstol)
     end
 
     return (lib, ts, u_v, u0, tType, t0, tdir)
+end
+
+# Forward `reltol` / `abstol` to PETSc when at least one is set. Filling the
+# missing side from SciML's defaults is the convention upstream wrappers use:
+# `solve(prob, alg; reltol = 1e-10)` should reach the adaptive controller
+# rather than be silently ignored.
+function _apply_tolerances!(lib, ts, reltol, abstol)
+    (reltol === nothing && abstol === nothing) && return nothing
+    rt = reltol === nothing ? _SCIML_DEFAULT_RELTOL : reltol
+    at = abstol === nothing ? _SCIML_DEFAULT_ABSTOL : abstol
+    (rt isa Real && at isa Real) || throw(ArgumentError(
+        "PETSc.jl SciML extension: only scalar `reltol` / `abstol` are " *
+        "supported. Got types $(typeof(reltol)) / $(typeof(abstol)).",
+    ))
+    _ts_set_scalar_tolerances!(lib, ts, at, rt)
+    return nothing
+end
+
+# Map SciML's `adaptive` / `dtmin` / `dtmax` knobs onto the PETSc TSAdapt
+# controller. `adaptive = false` selects PETSc's "none" adapter (fixed
+# `dt`); `dtmin` / `dtmax` set step limits via `TSAdaptSetStepLimits`.
+function _apply_adaptivity!(lib, ts, adaptive, dtmin, dtmax)
+    (adaptive === true && dtmin === nothing && dtmax === nothing) && return nothing
+    adapt = PETSc.LibPETSc.TSGetAdapt(lib, ts)
+    if adaptive === false
+        PETSc.LibPETSc.TSAdaptSetType(lib, adapt, "none")
+    end
+    if dtmin !== nothing || dtmax !== nothing
+        hmin = dtmin === nothing ? zero(lib.PetscReal) : lib.PetscReal(dtmin)
+        hmax = dtmax === nothing ? lib.PetscReal(Inf) : lib.PetscReal(dtmax)
+        PETSc.LibPETSc.TSAdaptSetStepLimits(lib, adapt, hmin, hmax)
+    end
+    return nothing
 end
 
 function _make_integrator(
@@ -182,6 +220,11 @@ end
 
 function _setup_petsc_algorithm!(lib, ts, prob, u0, alg::TSGeneric)
     PETSc.LibPETSc.TSSetType(lib, ts, alg.ts_type)
+    if alg.explicit
+        # Explicit PETSc TS types (e.g. `"euler"`, `"ssp"`) reject an
+        # IFunction at TSStep time — register the RHS instead.
+        return _register_rhs!(lib, ts, prob, u0)
+    end
     PETSc.LibPETSc.TSSetProblemType(lib, ts, PETSc.LibPETSc.TS_NONLINEAR)
     return _register_ifunction!(lib, ts, prob, u0)
 end
@@ -245,11 +288,15 @@ function SciMLBase.__init(
     reltol = nothing,
     abstol = nothing,
     dt = nothing,
+    dtmin = nothing,
+    dtmax = nothing,
+    adaptive::Bool = true,
     maxiters::Integer = Int(1e5),
     petsclib = nothing,
     verbose::Bool = false,
     kwargs...,
 )
+    _reject_unsupported_kwargs(kwargs)
     cb_set = DiffEqBase.CallbackSet(callback)
     if !isempty(cb_set.continuous_callbacks)
         throw(ArgumentError(
@@ -261,8 +308,10 @@ function SciMLBase.__init(
         ))
     end
 
-    (lib, ts, u_v, u0, tType, t0, tdir) =
-        _common_ts_setup(prob, alg, dt, maxiters, petsclib, reltol, abstol)
+    (lib, ts, u_v, u0, tType, t0, tdir) = _common_ts_setup(
+        prob, dt, maxiters, petsclib, reltol, abstol,
+        adaptive, dtmin, dtmax,
+    )
 
     if !isempty(_as_time_iter(tstops, Float64))
         @warn "PETSc.jl SciML extension: `tstops` is not yet honoured. " *

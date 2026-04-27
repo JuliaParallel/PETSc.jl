@@ -145,26 +145,43 @@ TSARKIMEX(subtype::String, petsc_options) =
     TSARKIMEX(subtype, String[String(s) for s in petsc_options])
 
 """
-    TSGeneric(ts_type::String[, petsc_options])
+    TSGeneric(ts_type::String[, petsc_options]; explicit::Bool = false)
 
 Pass-through algorithm that calls `TSSetType(ts, ts_type)` directly without
 any subtype-specific configuration. Useful for PETSc TS types that do not
-have a dedicated wrapper here yet (e.g. `"euler"`, `"ssp"`, `"alpha"`,
-`"glle"`, `"glee"`).
+have a dedicated wrapper here yet (e.g. `"alpha"`, `"glle"`, `"glee"` for
+implicit families; `"euler"`, `"ssp"` for explicit families).
 
-`TSGeneric` registers an IFunction (residual `udot - f(u,p,t)`), so it
-expects the resulting PETSc TS to be a fully-implicit method. Use
-`TSRK`/`TSRosW`/`TSImplicit`/`TSARKIMEX` for the standard families.
+By default `TSGeneric` registers an IFunction (residual `udot - f(u,p,t)`)
+and sets `TS_NONLINEAR`, which is what implicit / Rosenbrock-style PETSc
+TS types expect. Pass `explicit = true` to instead register the RHS via
+`TSSetRHSFunction`, which is what explicit-only PETSc TS types like
+`"euler"` and `"ssp"` require.
 
-# Example
+If you supply an `explicit = false` `TSGeneric` for a TS type that PETSc
+classifies as explicit-only, `TSSetUp` / `TSStep` will fail with a clear
+PETSc error indicating the residual is not consumed. In that case, retry
+with `explicit = true`.
+
+For the standard families prefer the dedicated wrappers
+`TSRK` / `TSRosW` / `TSImplicit` / `TSARKIMEX`.
+
+# Examples
 ```julia
+# Implicit / Rosenbrock-style: default `explicit = false`.
 solve(prob, PETSc.TSGeneric("alpha", ["-snes_fd"]); dt = 0.01)
+
+# Explicit-only PETSc TS types: opt in via `explicit = true`.
+solve(prob, PETSc.TSGeneric("euler"; explicit = true); dt = 0.01)
+solve(prob, PETSc.TSGeneric("ssp"; explicit = true); dt = 0.01)
 ```
 """
 struct TSGeneric <: PETScTSAlgorithm
     ts_type::String
+    explicit::Bool
     petsc_options::Vector{String}
 end
-TSGeneric(ts_type::String) = TSGeneric(ts_type, String[])
-TSGeneric(ts_type::String, petsc_options) =
-    TSGeneric(ts_type, String[String(s) for s in petsc_options])
+TSGeneric(ts_type::String; explicit::Bool = false) =
+    TSGeneric(ts_type, explicit, String[])
+TSGeneric(ts_type::String, petsc_options; explicit::Bool = false) =
+    TSGeneric(ts_type, explicit, String[String(s) for s in petsc_options])

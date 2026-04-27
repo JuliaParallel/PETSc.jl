@@ -263,4 +263,122 @@ end
         @test PETSc.TSRK("3bs", opts_split).petsc_options ==
               ["-snes_fd", "-ts_max_steps", "100"]
     end
+
+    # ── Review-5 #1 ─────────────────────────────────────────────────────────
+    @testset "Single-sided reltol still reaches PETSc" begin
+        # `solve(...; reltol = 1e-10)` (no `abstol`) used to be silently
+        # ignored — the wrapper required *both* sides to be set. Now the
+        # missing side is filled with SciML's default and PETSc's adaptive
+        # controller actually responds.
+        prob_long = ODEProblem(decay!, u0, (0.0, 5.0))
+        sol_default = solve(prob_long, TSRK("5dp"); dt = 0.1, save_everystep = true)
+        sol_rel = solve(
+            prob_long, TSRK("5dp");
+            dt = 0.1, reltol = 1e-10, save_everystep = true,
+        )
+        @test length(sol_rel.t) > length(sol_default.t)
+    end
+
+    @testset "Single-sided abstol still reaches PETSc" begin
+        # The decay problem decays exponentially toward zero, so the
+        # `atol + rtol * |u|` threshold becomes dominated by `atol` once `u`
+        # is small. Tightening `abstol` alone (with `reltol` defaulted)
+        # therefore changes the adaptive step count — provided abstol is
+        # actually forwarded to PETSc, which used to require both sides set.
+        prob_decay = ODEProblem(decay!, u0, (0.0, 30.0))
+        sol_default = solve(
+            prob_decay, TSRK("5dp"); dt = 0.1, save_everystep = true,
+        )
+        sol_abs = solve(
+            prob_decay, TSRK("5dp");
+            dt = 0.1, abstol = 1e-14, save_everystep = true,
+        )
+        @test length(sol_abs.t) > length(sol_default.t)
+    end
+
+    # ── Review-5 #2 ─────────────────────────────────────────────────────────
+    @testset "Unsupported solve keywords are rejected with ArgumentError" begin
+        # Anything not on the explicit allowlist should fail loudly. Pick a
+        # set of common SciML knobs that this extension does NOT honour.
+        for bad in (:progress, :progress_steps, :alias_u0, :internalnorm,
+                    :force_dtmin, :unstable_check)
+            err = try
+                solve(prob, TSRK("3bs"); dt = 0.1, (; bad => true)...)
+                nothing
+            catch e
+                e
+            end
+            @test err isa ArgumentError
+            @test occursin(string(bad), err.msg)
+        end
+    end
+
+    @testset "adaptive = false disables PETSc's adaptive controller" begin
+        # Fixed-step PETSc takes evenly-spaced dt steps; the default adaptive
+        # solver completes in many fewer steps for this trivial problem.
+        prob_long = ODEProblem(decay!, u0, (0.0, 1.0))
+        sol_adapt = solve(
+            prob_long, TSRK("5dp");
+            dt = 0.1, save_everystep = true,
+        )
+        sol_fixed = solve(
+            prob_long, TSRK("5dp");
+            dt = 0.1, adaptive = false, save_everystep = true,
+        )
+        @test sol_adapt.retcode == ReturnCode.Success
+        @test sol_fixed.retcode == ReturnCode.Success
+        # Fixed-step at dt = 0.1 over [0, 1] is 10 internal steps + start/end.
+        @test length(sol_fixed.t) >= 10
+        # And the adjacent intervals should be (almost) the same fixed dt.
+        diffs = diff(sol_fixed.t)
+        @test all(d -> isapprox(d, 0.1; atol = 1e-12), diffs[1:(end - 1)])
+    end
+
+    @testset "dtmax caps the step size of the adaptive controller" begin
+        prob_long = ODEProblem(decay!, u0, (0.0, 5.0))
+        sol_capped = solve(
+            prob_long, TSRK("5dp");
+            dt = 0.1, dtmax = 0.2, save_everystep = true,
+        )
+        @test sol_capped.retcode == ReturnCode.Success
+        # Every internal interval must respect the cap (modulo the final
+        # match-step trim, which can be smaller).
+        for d in diff(sol_capped.t)
+            @test d <= 0.2 + 1e-12
+        end
+    end
+
+    @testset "TSGeneric explicit = true accepts euler / ssp" begin
+        # Previously TSGeneric always registered an IFunction, so explicit
+        # PETSc TS types failed at TSStep with a raw PETSc error. With
+        # `explicit = true` the RHS path is selected and the solve succeeds.
+        prob_short = ODEProblem(decay!, u0, (0.0, 1.0))
+        sol_euler = solve(
+            prob_short, PETSc.TSGeneric("euler"; explicit = true); dt = 0.1,
+        )
+        @test sol_euler.retcode == ReturnCode.Success
+        @test sol_euler.t[end] ≈ 1.0
+        @test sol_euler.u[end][1] ≈ exp(-1.0) atol = 1e-1
+
+        sol_ssp = solve(
+            prob_short, PETSc.TSGeneric("ssp"; explicit = true); dt = 0.1,
+        )
+        @test sol_ssp.retcode == ReturnCode.Success
+        @test sol_ssp.t[end] ≈ 1.0
+        @test sol_ssp.u[end][1] ≈ exp(-1.0) atol = 1e-1
+
+        # Default `explicit = false` for an explicit-only TS type still
+        # fails — but with a PETSc-side error, not silently. Catch any
+        # exception (PETSc emits a plain `ErrorException` from `@chk`).
+        @test_throws Exception solve(
+            prob_short, PETSc.TSGeneric("euler"); dt = 0.1,
+        )
+    end
+
+    @testset "TSGeneric positional petsc_options work with explicit kwarg" begin
+        alg = PETSc.TSGeneric("euler", ["-ts_max_steps", "100"]; explicit = true)
+        @test alg.ts_type == "euler"
+        @test alg.explicit == true
+        @test alg.petsc_options == ["-ts_max_steps", "100"]
+    end
 end

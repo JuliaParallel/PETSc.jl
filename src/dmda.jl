@@ -275,45 +275,75 @@ function dmda_star_fd_coloring(petsclib::PetscLib, da::AbstractPetscDM{PetscLib}
     # ── COO triplets from 2-D STAR stencil ────────────────────────────────────
     # Ghost-local 0-based row/col indices (for MatSetPreallocationCOOLocal).
     # Both use DMDA ghost-local numbering: idx = d + ix_g*dof + iy_g*dof*nx_g.
-    row_coo_local     = CPetscInt[]
-    col_coo_local     = CPetscInt[]
-    local_row_per_coo = CPetscInt[]  # 0-based owned-local row (VecGetArray index)
-    color_per_coo     = CPetscInt[]  # 0-based color of each COO entry's column
+    #
+    # Pre-compute exact nnz_coo analytically so we can allocate once and fill
+    # by index rather than growing via push! (avoids O(nnz) realloc+copy work).
+    # Each owned node contributes dof² entries per STAR neighbor it has.
+    # Interior nodes have 5 neighbors (self + 4); boundary nodes have fewer.
+    nbr_left   = xs_da == 1  ? nx_own - 1 : nx_own   # columns with a left neighbor
+    nbr_right  = xe_da == mx ? nx_own - 1 : nx_own   # columns with a right neighbor
+    nbr_bottom = ys_da == 1  ? ny_own - 1 : ny_own   # rows with a bottom neighbor
+    nbr_top    = ye_da == my ? ny_own - 1 : ny_own   # rows with a top neighbor
+    total_nbr_pairs = nx_own * ny_own +               # self
+                      nbr_left   * ny_own +
+                      nbr_right  * ny_own +
+                      nbr_bottom * nx_own +
+                      nbr_top    * nx_own
+    nnz_coo = total_nbr_pairs * dof_per_node^2
 
+    row_coo_local     = Vector{CPetscInt}(undef, nnz_coo)
+    col_coo_local     = Vector{CPetscInt}(undef, nnz_coo)
+    local_row_per_coo = Vector{CPetscInt}(undef, nnz_coo)  # 0-based owned-local row
+    color_per_coo     = Vector{CPetscInt}(undef, nnz_coo)  # 0-based color of column
+
+    # Inner helper: write dof² entries for a (row-node, col-node) pair.
+    # Captures ix_gh, iy_gh, ix_ow, iy_ow from the outer scope.
+    @inline function fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, nix_gh, njy_gh)
+        r_base = ix_gh  * dof_per_node + iy_gh  * dof_per_node * nx_g_da
+        c_base = nix_gh * dof_per_node + njy_gh * dof_per_node * nx_g_da
+        p_base = ix_ow  * dof_per_node + iy_ow  * nx_own       * dof_per_node
+        for d_row in 0:dof_per_node-1
+            r_local = CPetscInt(d_row + r_base)
+            p_owned = CPetscInt(d_row + p_base)
+            for d_col in 0:dof_per_node-1
+                @inbounds begin
+                    row_coo_local[k]     = r_local
+                    col_coo_local[k]     = CPetscInt(d_col + c_base)
+                    color_per_coo[k]     = CPetscInt(col_colors_mat[d_col+1, nix_gh+1, njy_gh+1])
+                    local_row_per_coo[k] = p_owned
+                end
+                k += 1
+            end
+        end
+        return k
+    end
+
+    k = 1
     for jj in ys_da:ye_da, ii in xs_da:xe_da
         ix_gh = ii - xsg_da   # 0-based ghost-x of this owned node
         iy_gh = jj - ysg_da   # 0-based ghost-y of this owned node
         ix_ow = ii - xs_da    # 0-based owned-x
         iy_ow = jj - ys_da    # 0-based owned-y
 
-        neighbors = Tuple{Int,Int}[(ii, jj)]
-        ii > 1  && push!(neighbors, (ii-1, jj))
-        ii < mx && push!(neighbors, (ii+1, jj))
-        jj > 1  && push!(neighbors, (ii, jj-1))
-        jj < my && push!(neighbors, (ii, jj+1))
-
-        for (ni, nj) in neighbors
-            nix_gh = ni - xsg_da
-            njy_gh = nj - ysg_da
-            for d_row in 0:dof_per_node-1, d_col in 0:dof_per_node-1
-                r_local = d_row + ix_gh  * dof_per_node + iy_gh  * dof_per_node * nx_g_da
-                c_local = d_col + nix_gh * dof_per_node + njy_gh * dof_per_node * nx_g_da
-                p_owned = d_row + ix_ow  * dof_per_node + iy_ow  * nx_own       * dof_per_node
-                push!(row_coo_local,     CPetscInt(r_local))
-                push!(col_coo_local,     CPetscInt(c_local))
-                push!(color_per_coo,     CPetscInt(col_colors_mat[d_col+1, nix_gh+1, njy_gh+1]))
-                push!(local_row_per_coo, CPetscInt(p_owned))
-            end
-        end
+        # self
+        k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh, iy_gh)
+        # left
+        ii > 1  && (k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh - 1, iy_gh))
+        # right
+        ii < mx && (k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh + 1, iy_gh))
+        # bottom
+        jj > 1  && (k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh, iy_gh - 1))
+        # top
+        jj < my && (k = fill_nbr!(k, ix_gh, iy_gh, ix_ow, iy_ow, ix_gh, iy_gh + 1))
     end
-    nnz_coo = length(row_coo_local)
 
     # ── Per-color index arrays ────────────────────────────────────────────────
     # perturb_cols[c]: 1-based owned-local column indices with color c-1.
     # col_colors_local uses the ghost-local layout, but VecGetArray returns only
     # owned DOFs re-indexed 1..n_local_dofs.  We convert owned-local → ghost-local
     # before looking up the color.
-    perturb_cols = [Int32[] for _ in 1:n_colors]
+    hint_cols = max(1, n_local_dofs ÷ n_colors)
+    perturb_cols = [sizehint!(Int32[], hint_cols) for _ in 1:n_colors]
     for p_local in 1:n_local_dofs
         p0      = p_local - 1
         d       = p0 % dof_per_node
@@ -325,8 +355,9 @@ function dmda_star_fd_coloring(petsclib::PetscLib, da::AbstractPetscDM{PetscLib}
         push!(perturb_cols[c], Int32(p_local))
     end
 
-    coo_idxs   = [Int32[] for _ in 1:n_colors]
-    local_rows = [Int32[] for _ in 1:n_colors]
+    hint_coo = max(1, nnz_coo ÷ n_colors)
+    coo_idxs   = [sizehint!(Int32[], hint_coo) for _ in 1:n_colors]
+    local_rows = [sizehint!(Int32[], hint_coo) for _ in 1:n_colors]
     for k in 1:nnz_coo
         c = Int(color_per_coo[k]) + 1
         push!(coo_idxs[c],   Int32(k))

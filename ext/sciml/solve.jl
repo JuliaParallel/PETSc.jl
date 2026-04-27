@@ -72,12 +72,11 @@ function _common_ts_setup(
         PETSc.LibPETSc.TSSetExactFinalTime(
             lib, ts, PETSc.LibPETSc.TS_EXACTFINALTIME_MATCHSTEP,
         )
-        # Validate `dt` against the SciML `dtmin` / `dtmax` bounds *before*
-        # installing it: PETSc applies the initial step verbatim and only
-        # consults `TSAdaptSetStepLimits` for subsequent step proposals, so
-        # silently allowing `dt = 0.5, dtmax = 0.2` would let the very first
-        # step violate the user-supplied bound.
-        _check_dt_bounds(dt, dtmin, dtmax)
+        # Screen all step-control input on the Julia side before touching
+        # PETSc: bad `dt` / `dtmin` / `dtmax` would otherwise either be
+        # silently accepted (for some pathological values) or fall through
+        # to a raw PETSc error banner.
+        _validate_step_control(dt, dtmin, dtmax)
         if dt !== nothing
             PETSc.LibPETSc.TSSetTimeStep(lib, ts, lib.PetscReal(dt))
         end
@@ -104,26 +103,75 @@ function _apply_tolerances!(lib, ts, reltol, abstol)
         "PETSc.jl SciML extension: only scalar `reltol` / `abstol` are " *
         "supported. Got types $(typeof(reltol)) / $(typeof(abstol)).",
     ))
+    _validate_tolerance(:reltol, reltol, rt)
+    _validate_tolerance(:abstol, abstol, at)
     _ts_set_scalar_tolerances!(lib, ts, at, rt)
     return nothing
 end
 
-# Reject contradictory inputs where the user-supplied initial `dt` would
-# violate the user-supplied `dtmin` / `dtmax` bounds. PETSc installs the
-# initial step verbatim, so a clean `ArgumentError` is the only way to
-# uphold the SciML "all steps respect the bound" contract from step one.
-function _check_dt_bounds(dt, dtmin, dtmax)
-    dt === nothing && return nothing
-    if dtmax !== nothing && dt > dtmax
+# Reject scalar tolerances that PETSc's `TSSetTolerances` would refuse:
+# non-finite or strictly negative values. `0` is allowed (it disables that
+# side of the `atol + rtol * |u|` test) so the policy is "non-negative,
+# finite, real". The `user_value` argument is `nothing` when the SciML
+# default kicked in, in which case there is nothing to validate.
+function _validate_tolerance(name::Symbol, user_value, applied_value)
+    user_value === nothing && return nothing
+    (isfinite(applied_value) && applied_value >= 0) || throw(ArgumentError(
+        "PETSc.jl SciML extension: `$(name) = $(user_value)` is not a valid " *
+        "tolerance. Tolerances must be finite and non-negative.",
+    ))
+    return nothing
+end
+
+# Screen `dt`, `dtmin`, and `dtmax` against PETSc's expectations before any
+# of them reach the underlying TS / TSAdapt API. Catches the common
+# misuse cases (negative / non-finite / contradictory bounds) at the Julia
+# boundary instead of letting them fall through to raw PETSc error banners.
+function _validate_step_control(dt, dtmin, dtmax)
+    _validate_step_size(:dt, dt; allow_zero = false)
+    _validate_step_size(:dtmin, dtmin; allow_zero = true)
+    _validate_step_size(:dtmax, dtmax; allow_zero = false)
+    if dtmin !== nothing && dtmax !== nothing && dtmin > dtmax
         throw(ArgumentError(
-            "PETSc.jl SciML extension: initial `dt = $dt` exceeds `dtmax = $dtmax`. " *
-            "Pass `dt <= dtmax`, or omit `dt` to let PETSc choose the initial step.",
+            "PETSc.jl SciML extension: `dtmin = $dtmin` exceeds `dtmax = $dtmax`. " *
+            "Adaptive step limits must satisfy `dtmin <= dtmax`.",
         ))
     end
-    if dtmin !== nothing && dt < dtmin
-        throw(ArgumentError(
-            "PETSc.jl SciML extension: initial `dt = $dt` is below `dtmin = $dtmin`. " *
-            "Pass `dt >= dtmin`, or omit `dt` to let PETSc choose the initial step.",
+    if dt !== nothing
+        if dtmax !== nothing && dt > dtmax
+            throw(ArgumentError(
+                "PETSc.jl SciML extension: initial `dt = $dt` exceeds `dtmax = $dtmax`. " *
+                "Pass `dt <= dtmax`, or omit `dt` to let PETSc choose the initial step.",
+            ))
+        end
+        if dtmin !== nothing && dt < dtmin
+            throw(ArgumentError(
+                "PETSc.jl SciML extension: initial `dt = $dt` is below `dtmin = $dtmin`. " *
+                "Pass `dt >= dtmin`, or omit `dt` to let PETSc choose the initial step.",
+            ))
+        end
+    end
+    return nothing
+end
+
+function _validate_step_size(name::Symbol, value; allow_zero::Bool)
+    value === nothing && return nothing
+    value isa Real || throw(ArgumentError(
+        "PETSc.jl SciML extension: `$(name) = $(value)` must be a real scalar, " *
+        "got type $(typeof(value)).",
+    ))
+    isfinite(value) || throw(ArgumentError(
+        "PETSc.jl SciML extension: `$(name) = $(value)` must be finite.",
+    ))
+    if allow_zero
+        value < 0 && throw(ArgumentError(
+            "PETSc.jl SciML extension: `$(name) = $(value)` must be non-negative.",
+        ))
+    else
+        value > 0 || throw(ArgumentError(
+            "PETSc.jl SciML extension: `$(name) = $(value)` must be strictly positive. " *
+            "Backward integration is rejected upstream by `_check_tspan`; pass a " *
+            "positive step size.",
         ))
     end
     return nothing

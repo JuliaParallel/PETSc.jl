@@ -453,4 +453,69 @@ end
             @test occursin("explicit = true", err.msg)
         end
     end
+
+    # ── Review-7 #1 ─────────────────────────────────────────────────────────
+    @testset "Invalid dt values are rejected with ArgumentError" begin
+        # Negative `dt` would otherwise let a forward solve effectively step
+        # backward and still report Success.
+        @test_throws ArgumentError solve(prob, TSRK("3bs"); dt = -0.1)
+        # Zero `dt` produces a degenerate trajectory under PETSc's adaptive
+        # controller — also reject up front.
+        @test_throws ArgumentError solve(prob, TSRK("3bs"); dt = 0.0)
+        # Non-finite `dt` previously fell through to a raw PETSc banner.
+        @test_throws ArgumentError solve(prob, TSRK("3bs"); dt = Inf)
+        @test_throws ArgumentError solve(prob, TSRK("3bs"); dt = NaN)
+    end
+
+    # ── Review-7 #2 ─────────────────────────────────────────────────────────
+    @testset "Invalid dtmin / dtmax values are rejected with ArgumentError" begin
+        # Inverted bounds.
+        err = try
+            solve(prob, TSRK("5dp"); dtmin = 0.2, dtmax = 0.1)
+            nothing
+        catch e
+            e
+        end
+        @test err isa ArgumentError
+        @test occursin("dtmin", err.msg)
+        @test occursin("dtmax", err.msg)
+
+        # Negative bounds.
+        @test_throws ArgumentError solve(prob, TSRK("5dp"); dtmin = -0.1)
+        @test_throws ArgumentError solve(prob, TSRK("5dp"); dtmax = -0.1)
+
+        # Non-finite bounds.
+        @test_throws ArgumentError solve(prob, TSRK("5dp"); dtmin = NaN)
+        @test_throws ArgumentError solve(prob, TSRK("5dp"); dtmax = NaN)
+        @test_throws ArgumentError solve(prob, TSRK("5dp"); dtmax = Inf)
+
+        # Zero `dtmax` must also be rejected (no positive step would satisfy
+        # it). Zero `dtmin` is allowed because it is the default lower bound.
+        @test_throws ArgumentError solve(prob, TSRK("5dp"); dtmax = 0.0)
+        sol = solve(prob, TSRK("5dp"); dt = 0.1, dtmin = 0.0)
+        @test sol.retcode == ReturnCode.Success
+    end
+
+    # ── Review-7 #3 ─────────────────────────────────────────────────────────
+    @testset "Invalid reltol / abstol values are rejected with ArgumentError" begin
+        @test_throws ArgumentError solve(
+            prob, TSRK("5dp"); dt = 0.1, reltol = -1e-3, abstol = 1e-6,
+        )
+        @test_throws ArgumentError solve(
+            prob, TSRK("5dp"); dt = 0.1, reltol = 1e-3, abstol = -1e-6,
+        )
+        @test_throws ArgumentError solve(
+            prob, TSRK("5dp"); dt = 0.1, reltol = -1e-3, abstol = -1e-6,
+        )
+        @test_throws ArgumentError solve(
+            prob, TSRK("5dp"); dt = 0.1, reltol = NaN,
+        )
+        @test_throws ArgumentError solve(
+            prob, TSRK("5dp"); dt = 0.1, abstol = Inf,
+        )
+        # Zero tolerances are allowed (matching PETSc's policy: zero on one
+        # side simply disables that part of the `atol + rtol * |u|` test).
+        sol = solve(prob, TSRK("5dp"); dt = 0.1, reltol = 0.0, abstol = 1e-6)
+        @test sol.retcode == ReturnCode.Success
+    end
 end

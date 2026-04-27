@@ -433,10 +433,23 @@ function SciMLBase.__init(
         adaptive, dtmin, dtmax,
     )
 
-    if !isempty(_as_time_iter(tstops, Float64))
-        @warn "PETSc.jl SciML extension: `tstops` is not yet honoured. " *
-              "PETSc adapts step sizes internally; pass `dt` and " *
-              "`-ts_adapt_type none` via `petsc_options` to force fixed steps."
+    # `tstops` is documented as a SciML contract for "the integrator must
+    # land exactly on these times so step-end callback logic can see them",
+    # which means silently ignoring it can skip exact-time discrete
+    # callbacks. Reject it up front until the manual `TSStep` loop honours
+    # it, so users get a loud error rather than a silently wrong solve.
+    # Materialize the iterable first so a one-shot iterator is never
+    # consumed by the non-empty check.
+    tstops_materialized = _materialize_times(tstops)
+    if !_is_empty_times(tstops_materialized)
+        throw(ArgumentError(
+            "PETSc.jl SciML extension: `tstops` is not yet honoured. " *
+            "Accepting it silently would risk skipping exact-time discrete " *
+            "callbacks. Either remove the `tstops` keyword, or use " *
+            "PETSc's `TSSetEventHandler` directly. To force fixed-step " *
+            "integration, pass `adaptive = false` (or " *
+            "`-ts_adapt_type none` via the algorithm's `petsc_options`).",
+        ))
     end
 
     opts = _build_opts(

@@ -107,10 +107,17 @@ end
         )
     end
 
-    @testset "tstops kwarg emits a warning and is ignored" begin
-        sol = @test_logs (:warn, r"tstops") solve(
-            prob, TSRK("3bs"); dt = 0.1, tstops = [0.4, 0.6],
-        )
-        @test sol.retcode == ReturnCode.Success
+    @testset "tstops kwarg is rejected with ArgumentError" begin
+        # Silently ignoring `tstops` could skip exact-time discrete
+        # callbacks, so the wrapper now refuses it until the manual
+        # `TSStep` loop can honour it.
+        err = try
+            solve(prob, TSRK("3bs"); dt = 0.1, tstops = [0.4, 0.6])
+            nothing
+        catch e
+            e
+        end
+        @test err isa ArgumentError
+        @test occursin("tstops", err.msg)
     end
 end

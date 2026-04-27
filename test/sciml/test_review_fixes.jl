@@ -636,20 +636,65 @@ end
         @test sol.stats.naccept == 0
     end
 
+    # ── Review-13 #1 ────────────────────────────────────────────────────────
+    @testset "tstops kwarg is rejected with ArgumentError" begin
+        # `tstops` carries a strict SciML contract — the integrator must
+        # land on those times so step-end callback logic can see them.
+        # Silently ignoring it would skip exact-time discrete callbacks,
+        # so the wrapper rejects it up front until the manual `TSStep`
+        # loop honours it natively.
+        err = try
+            solve(prob, TSRK("3bs"); dt = 0.1, tstops = [0.4, 0.6])
+            nothing
+        catch e
+            e
+        end
+        @test err isa ArgumentError
+        @test occursin("tstops", err.msg)
+    end
+
+    # ── Review-13 #2 ────────────────────────────────────────────────────────
+    @testset "Stateful saveat iterators survive validation" begin
+        # `Iterators.Stateful` is a one-shot iterator: a previous version
+        # of the wrapper validated `saveat` by iterating it once, which
+        # consumed the iterator before `_expand_saveat` could read it
+        # again. We now materialize iterables to a `Vector` exactly once
+        # so this case round-trips correctly.
+        saveit = Iterators.Stateful([0.25, 0.5, 0.75])
+        sol = solve(
+            prob, TSRK("3bs");
+            dt = 0.1, saveat = saveit,
+            save_start = false, save_end = false,
+        )
+        @test sol.retcode == ReturnCode.Success
+        @test all(t -> any(s -> isapprox(s, t; atol = 1e-12), sol.t),
+                  (0.25, 0.5, 0.75))
+    end
+
     # ── Review-12 #1 ────────────────────────────────────────────────────────
     @testset "TSARKIMEX with SplitODEProblem populates both nf and nf2" begin
         # The implicit (`f1`) stream should land in `stats.nf`; the
-        # explicit (`f2`) stream should land in `stats.nf2`. Previously
-        # `_populate_stats!` summed both into `nf` and left `nf2` at the
-        # SciML "unknown" sentinel.
-        f1!(du, u, p, t) = (du[1] = -u[1]; nothing)        # implicit / stiff
-        f2!(du, u, p, t) = (du[1] = cos(t); nothing)       # explicit
+        # explicit (`f2`) stream should land in `stats.nf2`. We pin the
+        # mapping by counting `f1` and `f2` calls in user closures and
+        # asserting `stats.nf == f1_calls[]` and `stats.nf2 == f2_calls[]`,
+        # so a future regression that swaps the two streams is caught.
+        f1_calls = Ref(0)
+        f2_calls = Ref(0)
+        f1!(du, u, p, t) = (f1_calls[] += 1; du[1] = -u[1]; nothing)
+        f2!(du, u, p, t) = (f2_calls[] += 1; du[1] = cos(t); nothing)
         prob_split = SplitODEProblem(f1!, f2!, [1.0], (0.0, 1.0))
         sol = solve(prob_split, TSARKIMEX("2e", ["-snes_fd"]); dt = 0.1, adaptive = false)
         @test sol.retcode == ReturnCode.Success
-        @test sol.stats.nf > 0
-        @test sol.stats.nf2 > 0
         @test sol.stats.naccept == 10
+        @test f1_calls[] > 0
+        @test f2_calls[] > 0
+        # The promised mapping: `nf` <- f1 (implicit), `nf2` <- f2 (explicit).
+        @test sol.stats.nf == f1_calls[]
+        @test sol.stats.nf2 == f2_calls[]
+        # And the two streams must produce different totals here, so a
+        # broken implementation that wrote the same value into both fields
+        # would be caught.
+        @test f1_calls[] != f2_calls[]
     end
 
     # ── Review-11 #1 ────────────────────────────────────────────────────────

@@ -15,6 +15,24 @@ _as_time_iter(::Nothing, ::Type) = ()
 _as_time_iter(x::Number, ::Type{T}) where {T} = (T(x),)
 _as_time_iter(x, ::Type{T}) where {T} = (T(t) for t in x)
 
+# Materialize iterable `saveat` / `tstops` input into a concrete `Vector`
+# *exactly once* up front. The wrapper then validates and filters that
+# materialized data, so one-shot iterators (e.g. `Iterators.Stateful`)
+# survive validation instead of being consumed before
+# `_expand_saveat` / `_as_time_iter` can read them again.
+_materialize_times(::Nothing) = nothing
+_materialize_times(x::Number) = x
+_materialize_times(x::AbstractVector) = x
+_materialize_times(x::Tuple) = x
+_materialize_times(x) = collect(x)
+
+# Empty-check that works on both `Nothing` and any materialized iterable
+# without consuming a stateful iterator. Use `_materialize_times` upstream
+# so callers always pass a concrete container here.
+_is_empty_times(::Nothing) = true
+_is_empty_times(x::Number) = false
+_is_empty_times(x) = isempty(x)
+
 # Reject saveat input that PETSc would otherwise either silently turn into
 # "save nothing" (scalar `0` / `Inf` / `NaN`) or convert to a non-finite
 # timestamp (iterable element `Inf` / `NaN`). Validating here keeps the
@@ -76,11 +94,13 @@ function _build_opts(
     t0 = tdir * tType(tspan[1])
     tf = tdir * tType(tspan[2])
 
-    _validate_saveat(saveat)
-    saveat_expanded = _expand_saveat(saveat, tdir, tspan, tType)
+    saveat_materialized = _materialize_times(saveat)
+    tstops_materialized = _materialize_times(tstops)
+    _validate_saveat(saveat_materialized)
+    saveat_expanded = _expand_saveat(saveat_materialized, tdir, tspan, tType)
     saveat_data = tType[tdir * t for t in saveat_expanded if t0 < tdir * t <= tf]
     tstops_data = tType[
-        tdir * t for t in _as_time_iter(tstops, tType) if t0 < tdir * t <= tf
+        tdir * t for t in _as_time_iter(tstops_materialized, tType) if t0 < tdir * t <= tf
     ]
     push!(tstops_data, tf)
 

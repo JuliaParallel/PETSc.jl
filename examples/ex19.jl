@@ -32,7 +32,7 @@
 =#
 
 # ── GPU switch ────────────────────────────────────────────────────────────────
-const useCUDA = false
+const useCUDA = true
 
 using MPI
 using PETSc
@@ -203,15 +203,9 @@ da = PETSc.DMDA(
 
 # Stage 2: GPU vecs and GPU matrix enable a fully GPU-resident FD coloring
 # path via COO preallocation.  No host↔device bouncing in residual or Jacobian.
-# NOTE: MG with GPU vecs needs per-level COO rebuild (not yet implemented);
-#       for MG tests use -pc_type lu or default ILU.
 if useCUDA
-    GC.@preserve begin
-        vt = "cuda"
-        mt = "aijcusparse"
-        LibPETSc.DMSetVecType(petsclib, da, pointer(vt))
-        LibPETSc.DMSetMatType(petsclib, da, pointer(mt))
-    end
+    LibPETSc.DMSetVecType(petsclib, da, "cuda")
+    LibPETSc.DMSetMatType(petsclib, da, "aijcusparse")
 end
 
 snes = PETSc.SNES(petsclib, comm; opts...)
@@ -252,74 +246,6 @@ PETSc.withlocalarray!(x; read = false) do x_arr
     end
 end
 
-# ── Helpers for PETSc array access with optional GPU residual kernel ──────────
-#
-# Three cases:
-#
-#   useCUDA=false  →  plain CPU arrays via unsafe_localarray.
-#
-#   useCUDA=true, vecs on GPU (PETSC_MEMTYPE_CUDA)
-#              →  zero-copy CuArray wraps; no host↔device transfer.
-#
-#   useCUDA=true, vecs on CPU (PETSC_MEMTYPE_HOST, Stage-1 coloring path)
-#              →  allocate GPU scratch buffers, copy lx H2D before kernel,
-#                 copy fx D2H after kernel, then let PETSc see the result in
-#                 the HOST fx_arr.  FD coloring arithmetic stays on CPU (BLAS)
-#                 which avoids the VecPlaceArray+cuBLAS bug.
-#
-# Returns (fx, lx, fx_arr, lx_arr, fx_bounce)
-#   fx / lx       — arrays passed to the kernel (CuArray or plain Array)
-#   fx_arr/lx_arr — raw PETSc handles for Restore calls (nothing on CPU path)
-#   fx_bounce     — CuArray whose contents must be copied back to fx_arr after
-#                   the kernel; nothing when no copy is needed.
-#
-function get_petsc_arrays(petsclib, g_fx, l_x)
-    if useCUDA
-        fx_arr, fx_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, g_fx)
-        lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, l_x)
-
-        if lx_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE && fx_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE
-            # Both on GPU: zero-copy wrap, no bounce needed.
-            fx = unsafe_wrap(CuArray, CuPtr{T}(UInt64(pointer(fx_arr))), length(fx_arr))
-            lx = unsafe_wrap(CuArray, CuPtr{T}(UInt64(pointer(lx_arr))), length(lx_arr))
-            return fx, lx, fx_arr, lx_arr, nothing
-        else
-            # At least one Vec is host-resident (e.g. freshly created coarser MG
-            # output Vec not yet allocated on device, or FD coloring CPU path).
-            # If lx is already on device (common for MG coarser levels after
-            # global→local scatter), wrap it directly; otherwise copy H2D.
-            lx_gpu = if lx_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE
-                unsafe_wrap(CuArray, CuPtr{T}(UInt64(pointer(lx_arr))), length(lx_arr))
-            else
-                tmp = CuArray{T}(undef, length(lx_arr))
-                copyto!(tmp, lx_arr)          # H2D: send ghost input to GPU
-                tmp
-            end
-            fx_gpu = CuArray{T}(undef, length(fx_arr))
-            return fx_gpu, lx_gpu, fx_arr, lx_arr, fx_gpu
-        end
-    else
-        fx = PETSc.unsafe_localarray(g_fx; read = true,  write = true)
-        lx = PETSc.unsafe_localarray(l_x;  read = true,  write = false)
-        return fx, lx, nothing, nothing, nothing
-    end
-end
-
-function restore_petsc_arrays(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
-    if useCUDA
-        if fx_bounce !== nothing
-            # D2H: copy GPU residual result back to the HOST PETSc array.
-            CUDA.synchronize()
-            copyto!(fx_arr, fx_bounce)
-        end
-        LibPETSc.VecRestoreArrayAndMemType(petsclib, g_fx, fx_arr)
-        LibPETSc.VecRestoreArrayReadAndMemType(petsclib, l_x, lx_arr)
-    else
-        Base.finalize(fx)
-        Base.finalize(lx)
-    end
-end
-
 # ── Residual callback ─────────────────────────────────────────────────────────
 r = similar(x)
 
@@ -329,7 +255,7 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     l_x = PETSc.DMLocalVec(da)
     PETSc.dm_global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
 
-    fx, lx, fx_arr, lx_arr, fx_bounce = get_petsc_arrays(petsclib, g_fx, l_x)
+    fx, lx, fx_arr, lx_arr, fx_bounce = PETSc.get_petsc_arrays(petsclib, g_fx, l_x)
 
     corners       = PETSc.getcorners(da)
     ghost_corners = PETSc.getghostcorners(da)
@@ -370,7 +296,7 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     )
     KernelAbstractions.synchronize(backend)
 
-    restore_petsc_arrays(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
+    PETSc.restore_petsc_arrays(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
     PETSc.destroy(l_x)
     return PetscInt(0)
 end

@@ -27,12 +27,4 @@ function LibPETSc.DMSetType(petsclib, dm, type::AbstractString)
     GC.@preserve s LibPETSc.DMSetType(petsclib, dm, Base.unsafe_convert(Ptr{Cchar}, s))
 end
 
-function LibPETSc.DMSetVecType(petsclib, dm, type::AbstractString)
-    s = String(type)
-    GC.@preserve s LibPETSc.DMSetVecType(petsclib, dm, Base.unsafe_convert(Ptr{Cchar}, s))
-end
-
-function LibPETSc.DMSetMatType(petsclib, dm, type::AbstractString)
-    s = String(type)
-    GC.@preserve s LibPETSc.DMSetMatType(petsclib, dm, Base.unsafe_convert(Ptr{Cchar}, s))
-end
+# DMSetVecType and DMSetMatType accept AbstractString directly (VecType/MatType = Cstring).

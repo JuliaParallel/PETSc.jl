@@ -452,3 +452,72 @@ function LinearAlgebra.norm(
     r_val = LibPETSc.VecNorm(PetscLib, v, normtype)
     return r_val
 end
+
+# ── GPU-aware array access helpers ────────────────────────────────────────────
+#
+# `get_petsc_arrays` returns a pair of arrays (read-write and read-only) that
+# are ready to be passed to a compute kernel, together with raw PETSc handles
+# and an optional "bounce" buffer needed for the restore step.
+#
+# When PETScCUDAExt is loaded (i.e. CUDA.jl is in the environment and has been
+# imported) the hooks below are replaced with CUDA-aware implementations that
+# wrap device pointers as CuArrays — zero-copy when both Vecs are already on
+# the device, or with a H2D copy of `l_x` when it is host-resident.  A GPU
+# scratch buffer ("bounce") is allocated for `g_fx` when it is host-resident so
+# the kernel can write into GPU memory; `restore_petsc_arrays` then copies it
+# back D2H before calling VecRestoreArray.
+#
+# On the plain CPU path the hooks are `nothing` and the functions fall back to
+# `unsafe_localarray` with finalizer-based cleanup.
+
+const _get_petsc_arrays_hook     = Ref{Any}(nothing)
+const _restore_petsc_arrays_hook = Ref{Any}(nothing)
+
+"""
+    get_petsc_arrays(petsclib, g_fx, l_x) -> (fx, lx, fx_arr, lx_arr, fx_bounce)
+
+Return arrays for `g_fx` (read-write) and `l_x` (read-only) that are suitable
+for passing to a compute kernel.
+
+When PETScCUDAExt is active and either Vec lives on the GPU the returned
+`fx`/`lx` are `CuArray`s (zero-copy if both Vecs are device-resident, or with
+a host-to-device copy of `l_x` when only `l_x` is on the device).  If `g_fx`
+is host-resident a GPU scratch buffer is returned as `fx_bounce`; its contents
+must be written back by `restore_petsc_arrays` after the kernel completes.
+
+On the CPU path (no CUDA or all Vecs on host) `fx`/`lx` are plain `Array`s and
+`fx_arr = lx_arr = fx_bounce = nothing`.
+
+See also: [`restore_petsc_arrays`](@ref)
+"""
+function get_petsc_arrays(petsclib, g_fx, l_x)
+    hook = _get_petsc_arrays_hook[]
+    if hook !== nothing
+        return hook(petsclib, g_fx, l_x)
+    end
+    # CPU fallback: plain arrays, cleanup via finalizers
+    fx = unsafe_localarray(g_fx; read = true, write = true)
+    lx = unsafe_localarray(l_x;  read = true, write = false)
+    return fx, lx, nothing, nothing, nothing
+end
+
+"""
+    restore_petsc_arrays(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
+
+Restore PETSc Vecs after a kernel launched via [`get_petsc_arrays`](@ref).
+
+On the CUDA path this optionally synchronises the device and copies the bounce
+buffer back to the host PETSc array before calling the matching
+`VecRestoreArray*AndMemType` pair.  On the CPU path it simply finalizes the
+plain arrays returned by `unsafe_localarray`.
+"""
+function restore_petsc_arrays(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
+    hook = _restore_petsc_arrays_hook[]
+    if hook !== nothing
+        hook(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
+        return
+    end
+    # CPU fallback: finalizers registered by unsafe_localarray do the restore
+    Base.finalize(fx)
+    Base.finalize(lx)
+end

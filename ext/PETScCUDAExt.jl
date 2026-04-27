@@ -90,8 +90,67 @@ function _cuda_withlocalarray_device_impl!(
     return val
 end
 
+# ── GPU-aware PETSc array helpers ─────────────────────────────────────────────
+#
+# CUDA implementations of PETSc.get_petsc_arrays / PETSc.restore_petsc_arrays.
+# Registered as hooks in __init__ so the base-module functions dispatch here
+# whenever CUDA.jl is loaded.
+#
+# Three sub-cases handled by get:
+#   Both Vecs on GPU  → zero-copy CuArray wraps, fx_bounce = nothing
+#   lx on GPU only    → wrap lx zero-copy; allocate GPU scratch for fx (bounce)
+#   Both Vecs on CPU  → copy lx H2D; allocate GPU scratch for fx (bounce)
+#
+# restore then D2H-copies the bounce buffer (if any) before calling
+# VecRestoreArray*AndMemType on both Vecs.
+
+function _cuda_get_petsc_arrays_impl(petsclib, g_fx, l_x)
+    T      = petsclib.PetscScalar
+    fx_arr, fx_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, g_fx)
+    lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, l_x)
+
+    if fx_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE &&
+       lx_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE
+        # Both on GPU: zero-copy wrap, no bounce needed.
+        fx = CUDA.unsafe_wrap(CuArray,
+            reinterpret(CuPtr{T}, UInt(pointer(fx_arr))), length(fx_arr))
+        lx = CUDA.unsafe_wrap(CuArray,
+            reinterpret(CuPtr{T}, UInt(pointer(lx_arr))), length(lx_arr))
+        return fx, lx, fx_arr, lx_arr, nothing
+    else
+        # At least one Vec is host-resident (e.g. freshly created coarser MG
+        # level, or FD-coloring CPU path).  Wrap or copy lx to GPU as needed,
+        # and allocate a GPU scratch buffer for fx so the kernel can write there;
+        # restore_petsc_arrays copies it back D2H after the kernel.
+        lx_gpu = if lx_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE
+            CUDA.unsafe_wrap(CuArray,
+                reinterpret(CuPtr{T}, UInt(pointer(lx_arr))), length(lx_arr))
+        else
+            tmp = CuArray{T}(undef, length(lx_arr))
+            copyto!(tmp, lx_arr)        # H2D: send ghost input to GPU
+            tmp
+        end
+        fx_gpu = CuArray{T}(undef, length(fx_arr))
+        return fx_gpu, lx_gpu, fx_arr, lx_arr, fx_gpu
+    end
+end
+
+function _cuda_restore_petsc_arrays_impl(
+    petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce,
+)
+    if fx_bounce !== nothing
+        # D2H: copy GPU residual result back to the host PETSc array.
+        CUDA.synchronize()
+        copyto!(fx_arr, fx_bounce)
+    end
+    LibPETSc.VecRestoreArrayAndMemType(petsclib, g_fx, fx_arr)
+    LibPETSc.VecRestoreArrayReadAndMemType(petsclib, l_x, lx_arr)
+end
+
 function __init__()
     PETSc._withlocalarray_device_hook[] = _cuda_withlocalarray_device_impl!
+    PETSc._get_petsc_arrays_hook[]      = _cuda_get_petsc_arrays_impl
+    PETSc._restore_petsc_arrays_hook[]  = _cuda_restore_petsc_arrays_impl
 end
 
 end # module

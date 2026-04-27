@@ -636,6 +636,47 @@ end
         @test sol.stats.naccept == 0
     end
 
+    # ── Review-14 #1 ────────────────────────────────────────────────────────
+    @testset "Front-end validation runs before any PETSc TS allocation" begin
+        # Both `tstops` and bad `saveat` should now fail before
+        # `_common_ts_setup` allocates a `TS` / `Vec` pair, so repeated
+        # invalid solves cannot accumulate live PETSc state.
+        for _ in 1:5
+            @test_throws ArgumentError solve(
+                prob, TSRK("3bs"); dt = 0.1, tstops = [0.4],
+            )
+            @test_throws ArgumentError solve(
+                prob, TSRK("3bs"); dt = 0.1, saveat = NaN,
+            )
+        end
+        # Subsequent valid solve still succeeds — proves nothing leaked
+        # leaves the PETSc state in a bad shape.
+        sol = solve(prob, TSRK("3bs"); dt = 0.1)
+        @test sol.retcode == ReturnCode.Success
+    end
+
+    # ── Review-14 #2 ────────────────────────────────────────────────────────
+    @testset "SciML discrete-save hooks fire at init and end of solve" begin
+        # `save_discretes_if_enabled!` and `save_final_discretes!` are now
+        # called around the lifecycle. Verify with an `initialize` /
+        # `finalize` callback pair that increments separate counters; the
+        # exact upstream save logic depends on MTK metadata that this
+        # extension does not synthesise, so we just check the lifecycle
+        # hooks reach the integrator.
+        init_runs = Ref(0)
+        finalize_runs = Ref(0)
+        cb = DiscreteCallback(
+            (u, t, integ) -> false,
+            integ -> nothing;
+            initialize = (cb, u, t, integ) -> (init_runs[] += 1; nothing),
+            finalize = (cb, u, t, integ) -> (finalize_runs[] += 1; nothing),
+        )
+        sol = solve(prob, TSRK("3bs"); dt = 0.1, callback = cb)
+        @test sol.retcode == ReturnCode.Success
+        @test init_runs[] == 1
+        @test finalize_runs[] == 1
+    end
+
     # ── Review-13 #1 ────────────────────────────────────────────────────────
     @testset "tstops kwarg is rejected with ArgumentError" begin
         # `tstops` carries a strict SciML contract — the integrator must

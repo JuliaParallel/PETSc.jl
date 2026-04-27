@@ -389,6 +389,14 @@ function initialize_callbacks!(integ::PETScTSIntegrator, cb_set)
         push!(integ.sol.t, integ.t)
         push!(integ.sol.u, copy(integ.u))
     end
+    # Forward the SciML discrete-save lifecycle hook so callbacks that
+    # populate observable timeseries (MTK-style `saved_clock_partitions`,
+    # `initialize_save_discretes`) get their `t0` snapshot. `skip_duplicates`
+    # mirrors what OrdinaryDiffEq passes here. The hook is only available
+    # in newer SciMLBase releases, so guard with `isdefined`.
+    if isdefined(SciMLBase, :save_discretes_if_enabled!)
+        SciMLBase.save_discretes_if_enabled!(integ, cb_set; skip_duplicates = true)
+    end
     return nothing
 end
 
@@ -415,6 +423,11 @@ function SciMLBase.__init(
     petsclib = nothing,
     kwargs...,
 )
+    # Pure Julia validation that does not need PETSc state runs first, so
+    # bad input fails before the wrapper allocates any PETSc TS / Vec
+    # handles. Otherwise the cleanup `try` further down would never see
+    # those exceptions and PETSc objects would leak (the autowrapped `TS`
+    # has no finalizer of its own).
     _reject_unsupported_kwargs(kwargs)
     _validate_maxiters(maxiters)
     cb_set = DiffEqBase.CallbackSet(callback)
@@ -427,11 +440,6 @@ function SciMLBase.__init(
             "in PETSc's TSSetEventHandler manually.",
         ))
     end
-
-    (lib, ts, u_v, u0, tType, t0, tdir) = _common_ts_setup(
-        prob, dt, maxiters, petsclib, reltol, abstol,
-        adaptive, dtmin, dtmax,
-    )
 
     # `tstops` is documented as a SciML contract for "the integrator must
     # land exactly on these times so step-end callback logic can see them",
@@ -452,25 +460,39 @@ function SciMLBase.__init(
         ))
     end
 
-    opts = _build_opts(
-        tType, saveat, tstops, tdir, prob.tspan;
-        save_everystep, save_on, save_start, save_end,
-        callback = cb_set,
-        reltol, abstol, maxiters,
-    )
+    # Pre-validate `saveat` here too. `_build_opts` would otherwise throw
+    # on bad `saveat` only after `_common_ts_setup` had already allocated
+    # PETSc objects that have no finalizer of their own. Materialize the
+    # iterable exactly once so a stateful iterator survives both this
+    # validation pass *and* `_build_opts`'s own consumption.
+    saveat_materialized = _materialize_times(saveat)
+    _validate_saveat(saveat_materialized)
 
-    # `DEStats()` defaults every counter to `-1`, which SciML reads as
-    # "unknown / not reported". `_populate_stats!` overwrites the fields
-    # we can map accurately (`naccept`, `nreject`, `nnonliniter`, `nf`)
-    # before `solve!` returns; everything else stays at the sentinel so
-    # users can distinguish "no work happened" from "we don't track this".
-    sol = SciMLBase.build_solution(
-        prob, alg, tType[], typeof(u0)[];
-        retcode = SciMLBase.ReturnCode.Default,
-        stats = SciMLBase.DEStats(),
+    (lib, ts, u_v, u0, tType, t0, tdir) = _common_ts_setup(
+        prob, dt, maxiters, petsclib, reltol, abstol,
+        adaptive, dtmin, dtmax,
     )
 
     try
+        opts = _build_opts(
+            tType, saveat_materialized, tstops_materialized, tdir, prob.tspan;
+            save_everystep, save_on, save_start, save_end,
+            callback = cb_set,
+            reltol, abstol, maxiters,
+        )
+
+        # `DEStats()` defaults every counter to `-1`, which SciML reads as
+        # "unknown / not reported". `_populate_stats!` overwrites the
+        # fields we can map accurately (`naccept`, `nreject`,
+        # `nnonliniter`, `nf`) before `solve!` returns; everything else
+        # stays at the sentinel so users can distinguish "no work
+        # happened" from "we don't track this".
+        sol = SciMLBase.build_solution(
+            prob, alg, tType[], typeof(u0)[];
+            retcode = SciMLBase.ReturnCode.Default,
+            stats = SciMLBase.DEStats(),
+        )
+
         cb_ctx = _setup_petsc_algorithm!(lib, ts, prob, u0, alg)
         _setfromoptions!(lib, ts, alg.petsc_options)
 
@@ -644,6 +666,14 @@ function SciMLBase.solve!(integ::PETScTSIntegrator)
        (isempty(integ.sol.t) || last(integ.sol.t) != integ.t)
         push!(integ.sol.t, integ.t)
         push!(integ.sol.u, copy(integ.u))
+    end
+    # Forward the SciML discrete-save lifecycle hook so callbacks that
+    # populate observable timeseries get their final snapshot. Mirrors
+    # OrdinaryDiffEq's end-of-solve sequence: `finalize!` first, then the
+    # final discrete save. The hook is only available in newer SciMLBase
+    # releases, so guard with `isdefined`.
+    if isdefined(SciMLBase, :save_final_discretes!)
+        SciMLBase.save_final_discretes!(integ, integ.opts.callback)
     end
     _populate_stats!(integ)
     integ.sol = SciMLBase.solution_new_retcode(integ.sol, integ.retcode)

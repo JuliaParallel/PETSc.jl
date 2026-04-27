@@ -77,5 +77,5 @@ Per-solver PETSc command-line options are passed on the algorithm itself (a `Vec
 
 Known callback-lifecycle gaps (compared to OrdinaryDiffEq):
 
-- The SciML *discrete-save* hooks (`SciMLBase.save_discretes_if_enabled!`, `SciMLBase.save_final_discretes!`) are **not** invoked. Callback machinery that relies on saving observable state alongside the trajectory will not interoperate; only `affect!`-style callbacks that mutate `u` or call `terminate!` are exercised.
+- The SciML *discrete-save* lifecycle hooks `SciMLBase.save_discretes_if_enabled!` (after `initialize!`) and `SciMLBase.save_final_discretes!` (after `finalize!`) are now invoked when the loaded SciMLBase version provides them, so `DiscreteCallback` machinery that records observable state at `t0` and at the end of the solve interoperates with the standard SciML lifecycle. Callbacks that depend on per-step `save_discretes_if_enabled!` calls *during* the solve are still not driven by the manual `TSStep` loop.
 - `ContinuousCallback`s are rejected with `ArgumentError`. Wrap event detection through PETSc's `TSSetEventHandler` directly if you need it.

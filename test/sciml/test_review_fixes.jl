@@ -7,6 +7,7 @@ ext = Base.get_extension(PETSc, :PETScSciMLExt)
 @assert ext !== nothing
 const TSRK = ext.TSRK
 const TSImplicit = ext.TSImplicit
+const TSARKIMEX = ext.TSARKIMEX
 
 function decay!(du, u, p, t)
     du[1] = -u[1]
@@ -633,6 +634,22 @@ end
         @test sol.retcode == ReturnCode.MaxIters
         @test sol.t[end] == 0.0
         @test sol.stats.naccept == 0
+    end
+
+    # ── Review-12 #1 ────────────────────────────────────────────────────────
+    @testset "TSARKIMEX with SplitODEProblem populates both nf and nf2" begin
+        # The implicit (`f1`) stream should land in `stats.nf`; the
+        # explicit (`f2`) stream should land in `stats.nf2`. Previously
+        # `_populate_stats!` summed both into `nf` and left `nf2` at the
+        # SciML "unknown" sentinel.
+        f1!(du, u, p, t) = (du[1] = -u[1]; nothing)        # implicit / stiff
+        f2!(du, u, p, t) = (du[1] = cos(t); nothing)       # explicit
+        prob_split = SplitODEProblem(f1!, f2!, [1.0], (0.0, 1.0))
+        sol = solve(prob_split, TSARKIMEX("2e", ["-snes_fd"]); dt = 0.1, adaptive = false)
+        @test sol.retcode == ReturnCode.Success
+        @test sol.stats.nf > 0
+        @test sol.stats.nf2 > 0
+        @test sol.stats.naccept == 10
     end
 
     # ── Review-11 #1 ────────────────────────────────────────────────────────

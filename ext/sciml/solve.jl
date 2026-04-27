@@ -586,9 +586,12 @@ end
 # - `naccept` ← `TSGetStepNumber`
 # - `nreject` ← `TSGetStepRejections`
 # - `nnonliniter` ← `TSGetSNESIterations` (zero on explicit families)
-# - `nf` ← user-callback hit count maintained on the RHS / IFunction
-#         contexts. PETSc itself does not expose a uniform "RHS calls"
-#         counter, so we tally evaluations in the C-callback.
+# - `nf` / `nf2` ← user-callback hit counts maintained on the
+#         RHS / IFunction contexts. PETSc itself does not expose a uniform
+#         "RHS calls" counter, so we tally evaluations in the C-callback.
+#         For split IMEX problems the implicit (`ifunc`) stream lands in
+#         `nf` and the explicit (`rhs`) stream in `nf2`, matching SciML
+#         convention.
 #
 # `nsolve` is intentionally left at the `DEStats` sentinel: PETSc's
 # `TSGetKSPIterations` returns linear *iteration* counts, while SciML's
@@ -599,17 +602,25 @@ function _populate_stats!(integ::PETScTSIntegrator)
     stats.naccept = _ts_step_count(integ)
     stats.nreject = Int(PETSc.LibPETSc.TSGetStepRejections(integ.petsclib, integ.ts))
     stats.nnonliniter = Int(PETSc.LibPETSc.TSGetSNESIterations(integ.petsclib, integ.ts))
-    nf_total = _accumulate_nf(integ.cb_ctx)
-    nf_total === nothing || (stats.nf = nf_total)
+    _populate_nf!(stats, integ.cb_ctx)
     return nothing
 end
 
-# Sum the `nf` counters across whatever shape the callback context has.
-# `TSARKIMEX` with a `SplitODEProblem` exposes a `(rhs, ifunc)` named tuple
-# of contexts; everything else holds a single context object.
-_accumulate_nf(ctx::Union{RHSCtx, IFunctionCtx}) = ctx.nf
-_accumulate_nf(ctx::NamedTuple) = sum(_accumulate_nf, values(ctx); init = 0)
-_accumulate_nf(_::Any) = nothing
+# Single-stream callback contexts: the user RHS is the only function being
+# called, so all evaluations roll up into `nf`.
+_populate_nf!(stats, ctx::Union{RHSCtx, IFunctionCtx}) = (stats.nf = ctx.nf; nothing)
+
+# Split IMEX context: keep the implicit / explicit streams separate so
+# users can distinguish stiff vs. non-stiff function work. This matches
+# upstream OrdinaryDiffEq, which uses `nf` for `f1` and `nf2` for `f2` on
+# `SplitODEProblem`s.
+function _populate_nf!(stats, ctx::NamedTuple)
+    haskey(ctx, :ifunc) && (stats.nf = ctx.ifunc.nf)
+    haskey(ctx, :rhs) && (stats.nf2 = ctx.rhs.nf)
+    return nothing
+end
+
+_populate_nf!(_, _) = nothing
 
 function SciMLBase.solve!(integ::PETScTSIntegrator)
     while !integ.done

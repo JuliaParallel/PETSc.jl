@@ -1,11 +1,11 @@
 # GPU Support (CUDA + KernelAbstractions)
 
-Julia has outstanding support for GPU's as it compiles machine code for the particular devices. Importantly, all modern GPUs are suppported, which implies that it is quite straightforward to write GPU kernels in Julia, for example by packages such as [KernelAbstractions](https://github.com/JuliaGPU/KernelAbstractions.jl)
+Julia has outstanding support for GPUs as it compiles machine code for the particular devices. Importantly, all modern GPUs are supported, which implies that it is quite straightforward to write GPU kernels in Julia, for example using packages such as [KernelAbstractions](https://github.com/JuliaGPU/KernelAbstractions.jl).
 
-PETSc also has added GPU support in recent years, and PETSc vector and matrix objects, along with manu of the solvfers, can be moved to the GPU.
+PETSc has also added GPU support in recent years, and PETSc vector and matrix objects, along with many of the solvers, can be moved to the GPU.
 
 GPU support in PETSc.jl requires a **locally built PETSc** with CUDA or HIP enabled — the precompiled `PETSc_jll` binaries do not include GPU support. See [Installation](@ref) for instructions on pointing PETSc.jl at a local library.
-The examples below are given for CUDA. Doing this on AMD machines (HIP) will likely work the same biut will require a spevific extension to bve added.
+The examples below are given for CUDA. Doing this on AMD machines (HIP) will likely work the same but will require a specific extension to be added.
 
 ## Prerequisites
 

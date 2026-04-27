@@ -635,6 +635,28 @@ end
         @test sol.stats.naccept == 0
     end
 
+    # ── Review-11 #1 ────────────────────────────────────────────────────────
+    @testset "Negative maxiters is rejected with ArgumentError" begin
+        # Without explicit validation, a negative SciML `maxiters` would
+        # turn the manual `TSStep` loop into a zero-step `MaxIters` solve —
+        # but PETSc's `-ts_max_steps -1` means "unlimited", so the two
+        # spellings would disagree. Reject the negative SciML form so the
+        # asymmetry can never bite.
+        err = try
+            solve(prob, TSRK("3bs"); dt = 0.1, maxiters = -1)
+            nothing
+        catch e
+            e
+        end
+        @test err isa ArgumentError
+        @test occursin("maxiters", err.msg)
+
+        # `maxiters = 0` remains a valid zero-step solve (Review-10).
+        sol = solve(prob, TSRK("3bs"); dt = 0.1, adaptive = false, maxiters = 0)
+        @test sol.retcode == ReturnCode.MaxIters
+        @test sol.stats.naccept == 0
+    end
+
     # ── Review-10 #2 ────────────────────────────────────────────────────────
     @testset "Unsupported DEStats fields stay at the SciML \"unknown\" sentinel" begin
         sol = solve(prob, TSRK("3bs"); dt = 0.1, adaptive = false)

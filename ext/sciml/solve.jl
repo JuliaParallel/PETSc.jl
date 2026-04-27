@@ -154,6 +154,23 @@ function _validate_step_control(dt, dtmin, dtmax)
     return nothing
 end
 
+# Reject negative SciML `maxiters`. With the manual `TSStep` loop, a
+# negative cap would otherwise immediately exhaust and turn into a
+# zero-step `MaxIters` solve, which mismatches PETSc's own
+# `-ts_max_steps -1 = unlimited` interpretation. Keep `maxiters = 0`
+# valid (it is the documented "zero-step solve" case from Review-10).
+function _validate_maxiters(maxiters)
+    maxiters < 0 && throw(ArgumentError(
+        "PETSc.jl SciML extension: `maxiters = $(maxiters)` must be " *
+        "non-negative. PETSc's `-ts_max_steps -1` means \"unlimited\", but " *
+        "the SciML wrapper enforces the cap in its own loop, so a negative " *
+        "value would be a zero-step solve. Use `maxiters = 0` if that is " *
+        "what you want, or a large positive integer for an effective " *
+        "no-cap solve.",
+    ))
+    return nothing
+end
+
 function _validate_step_size(name::Symbol, value; allow_zero::Bool)
     value === nothing && return nothing
     value isa Real || throw(ArgumentError(
@@ -399,6 +416,7 @@ function SciMLBase.__init(
     kwargs...,
 )
     _reject_unsupported_kwargs(kwargs)
+    _validate_maxiters(maxiters)
     cb_set = DiffEqBase.CallbackSet(callback)
     if !isempty(cb_set.continuous_callbacks)
         throw(ArgumentError(

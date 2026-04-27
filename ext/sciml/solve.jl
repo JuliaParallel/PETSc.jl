@@ -160,6 +160,13 @@ function _validate_step_size(name::Symbol, value; allow_zero::Bool)
         "PETSc.jl SciML extension: `$(name) = $(value)` must be a real scalar, " *
         "got type $(typeof(value)).",
     ))
+    # `dtmax = Inf` is the natural SciML spelling of "do not cap the step";
+    # the wrapper already maps an omitted `dtmax` to `Inf` internally, so
+    # accepting the explicit form keeps the public API consistent with the
+    # internal semantics. `dt = Inf` and `dtmin = Inf` remain rejected.
+    if name === :dtmax && value == Inf
+        return nothing
+    end
     isfinite(value) || throw(ArgumentError(
         "PETSc.jl SciML extension: `$(name) = $(value)` must be finite.",
     ))

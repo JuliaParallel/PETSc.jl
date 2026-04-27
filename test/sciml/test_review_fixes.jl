@@ -487,7 +487,7 @@ end
         # Non-finite bounds.
         @test_throws ArgumentError solve(prob, TSRK("5dp"); dtmin = NaN)
         @test_throws ArgumentError solve(prob, TSRK("5dp"); dtmax = NaN)
-        @test_throws ArgumentError solve(prob, TSRK("5dp"); dtmax = Inf)
+        @test_throws ArgumentError solve(prob, TSRK("5dp"); dtmin = Inf)
 
         # Zero `dtmax` must also be rejected (no positive step would satisfy
         # it). Zero `dtmin` is allowed because it is the default lower bound.
@@ -517,5 +517,53 @@ end
         # side simply disables that part of the `atol + rtol * |u|` test).
         sol = solve(prob, TSRK("5dp"); dt = 0.1, reltol = 0.0, abstol = 1e-6)
         @test sol.retcode == ReturnCode.Success
+    end
+
+    # ── Review-8 #1 ─────────────────────────────────────────────────────────
+    @testset "Invalid scalar saveat values are rejected" begin
+        # Previously these silently produced an empty save schedule with a
+        # `Success` retcode. Now they fail loudly at the Julia boundary.
+        @test_throws ArgumentError solve(
+            prob, TSRK("3bs"); dt = 0.1, saveat = 0.0,
+        )
+        @test_throws ArgumentError solve(
+            prob, TSRK("3bs"); dt = 0.1, saveat = -0.1,
+        )
+        @test_throws ArgumentError solve(
+            prob, TSRK("3bs"); dt = 0.1, saveat = Inf,
+        )
+        @test_throws ArgumentError solve(
+            prob, TSRK("3bs"); dt = 0.1, saveat = NaN,
+        )
+    end
+
+    @testset "Iterable saveat with non-finite entries is rejected" begin
+        @test_throws ArgumentError solve(
+            prob, TSRK("3bs"); dt = 0.1, saveat = [0.25, NaN, 0.75],
+        )
+        @test_throws ArgumentError solve(
+            prob, TSRK("3bs"); dt = 0.1, saveat = (0.25, Inf),
+        )
+    end
+
+    # ── Review-8 #2 ─────────────────────────────────────────────────────────
+    @testset "dtmax = Inf is accepted and behaves like an omitted dtmax" begin
+        # `Inf` is the natural SciML spelling of "no upper cap", and the
+        # wrapper already uses `Inf` as the default internally. Reject the
+        # spelling-asymmetry the previous validator introduced.
+        sol_inf = solve(
+            prob, TSRK("5dp"); dt = 0.1, dtmax = Inf, save_everystep = true,
+        )
+        sol_nothing = solve(
+            prob, TSRK("5dp"); dt = 0.1, save_everystep = true,
+        )
+        @test sol_inf.retcode == ReturnCode.Success
+        @test sol_nothing.retcode == ReturnCode.Success
+        @test length(sol_inf.t) == length(sol_nothing.t)
+
+        # `dt = Inf` and `dtmin = Inf` remain rejected — only `dtmax = Inf`
+        # has the "no cap" meaning, so only it is special-cased.
+        @test_throws ArgumentError solve(prob, TSRK("5dp"); dt = Inf)
+        @test_throws ArgumentError solve(prob, TSRK("5dp"); dtmin = Inf)
     end
 end

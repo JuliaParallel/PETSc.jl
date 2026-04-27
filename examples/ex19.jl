@@ -32,7 +32,7 @@
 =#
 
 # ── GPU switch ────────────────────────────────────────────────────────────────
-const useCUDA = true
+const useCUDA = false
 
 using MPI
 using PETSc
@@ -278,16 +278,24 @@ function get_petsc_arrays(petsclib, g_fx, l_x)
         fx_arr, fx_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, g_fx)
         lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, l_x)
 
-        if lx_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE
-            # Native GPU vecs: zero-copy wrap, no bounce needed.
+        if lx_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE && fx_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE
+            # Both on GPU: zero-copy wrap, no bounce needed.
             fx = unsafe_wrap(CuArray, CuPtr{T}(UInt64(pointer(fx_arr))), length(fx_arr))
             lx = unsafe_wrap(CuArray, CuPtr{T}(UInt64(pointer(lx_arr))), length(lx_arr))
             return fx, lx, fx_arr, lx_arr, nothing
         else
-            # CPU vecs (FD coloring path): bounce residual through GPU.
-            lx_gpu = CuArray{T}(undef, length(lx_arr))
+            # At least one Vec is host-resident (e.g. freshly created coarser MG
+            # output Vec not yet allocated on device, or FD coloring CPU path).
+            # If lx is already on device (common for MG coarser levels after
+            # global→local scatter), wrap it directly; otherwise copy H2D.
+            lx_gpu = if lx_mtype == LibPETSc.PETSC_MEMTYPE_DEVICE
+                unsafe_wrap(CuArray, CuPtr{T}(UInt64(pointer(lx_arr))), length(lx_arr))
+            else
+                tmp = CuArray{T}(undef, length(lx_arr))
+                copyto!(tmp, lx_arr)          # H2D: send ghost input to GPU
+                tmp
+            end
             fx_gpu = CuArray{T}(undef, length(fx_arr))
-            copyto!(lx_gpu, lx_arr)          # H2D: send ghost input to GPU
             return fx_gpu, lx_gpu, fx_arr, lx_arr, fx_gpu
         end
     else
@@ -591,10 +599,26 @@ PETSc.setjacobian!(snes, J) do Jmat, actual_snes, g_x
 
     # ── Assemble J via COO (GPU) or MatSetValues (CPU) ────────────────────────
     if useCUDA
+        # Assemble via GPU pointer so the GPU (cuSPARSE) copy is up to date.
         LibPETSc.@chk ccall(
             (:MatSetValuesCOO, petsclib.petsc_library), PetscInt,
             (LibPETSc.CMat, Ptr{T}, LibPETSc.InsertMode),
             Jmat.ptr, Ptr{T}(UInt64(pointer(val_dev))), LibPETSc.INSERT_VALUES)
+        LibPETSc.MatAssemblyBegin(petsclib, Jmat, LibPETSc.MAT_FINAL_ASSEMBLY)
+        LibPETSc.MatAssemblyEnd(petsclib, Jmat, LibPETSc.MAT_FINAL_ASSEMBLY)
+        # Force GPU→CPU sync so both copies are valid.
+        # MatBindToCPU(PETSC_TRUE) triggers MatSeqAIJCUSPARSECopyFromGPU when
+        # offloadmask==PETSC_OFFLOAD_GPU, making the CPU CSR correct.
+        # MatBindToCPU(PETSC_FALSE) then releases the CPU-only restriction,
+        # leaving offloadmask==PETSC_OFFLOAD_BOTH so that:
+        #   MatGetDiagonal (Jacobi smoother in MG)  → reads CPU copy ✓
+        #   MatPtAP (Galerkin coarse-op formation)  → uses GPU copy  ✓
+        LibPETSc.@chk ccall(
+            (:MatBindToCPU, petsclib.petsc_library), PetscInt,
+            (LibPETSc.CMat, LibPETSc.PetscBool), Jmat.ptr, LibPETSc.PETSC_TRUE)
+        LibPETSc.@chk ccall(
+            (:MatBindToCPU, petsclib.petsc_library), PetscInt,
+            (LibPETSc.CMat, LibPETSc.PetscBool), Jmat.ptr, LibPETSc.PETSC_FALSE)
     else
         LibPETSc.MatZeroEntries(petsclib, Jmat)
         for k in 1:nnz_coo

@@ -295,3 +295,70 @@ end
         PETSc.finalize(petsclib)
     end
 end
+
+@testset "withlocalarray! typed (Array)" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt    = petsclib.PetscInt
+        N           = PetscInt(10)
+        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+        petsc_x = LibPETSc.VecCreateSeq(petsclib, test_comm, N)
+        petsc_y = LibPETSc.VecCreateSeq(petsclib, test_comm, N)
+
+        # determine_memtype returns Vector for CPU vecs
+        @test PETSc.determine_memtype(petsc_x) === Vector
+        @test PETSc.determine_memtype(petsc_x, petsc_y) === Vector
+
+        # typed single vec — write
+        PETSc.withlocalarray!(Vector, petsc_x; read = false, write = true) do x
+            @test x isa Vector
+            for i in eachindex(x)
+                x[i] = PetscScalar(i)
+            end
+        end
+        @test petsc_x[1:N] == PetscScalar.(1:N)
+
+        # typed two vecs as NTuple
+        PETSc.withlocalarray!(
+            Vector,
+            (petsc_x, petsc_y);
+            read = (false, false), write = (true, true),
+        ) do x, y
+            @test x isa Vector
+            @test y isa Vector
+            for i in eachindex(x)
+                x[i] = PetscScalar(i)
+                y[i] = PetscScalar(2i)
+            end
+        end
+        @test petsc_x[1:N] == PetscScalar.(1:N)
+        @test petsc_y[1:N] == PetscScalar.(2:2:2N)
+
+        # typed two vecs as splat
+        PETSc.withlocalarray!(
+            Vector, petsc_x, petsc_y;
+            read = (false, false), write = (true, true),
+        ) do x, y
+            @test x isa Vector
+            @test y isa Vector
+            for i in eachindex(x)
+                x[i] = PetscScalar(2i)
+                y[i] = PetscScalar(3i)
+            end
+        end
+        @test petsc_x[1:N] == PetscScalar.(2:2:2N)
+        @test petsc_y[1:N] == PetscScalar.(3:3:3N)
+
+        # wrong type raises ArgumentError (Matrix is not Vector)
+        @test_throws ArgumentError PETSc.withlocalarray!(
+            Matrix, petsc_x; read = true, write = false,
+        ) do x
+            nothing
+        end
+
+        PETSc.destroy(petsc_x)
+        PETSc.destroy(petsc_y)
+        PETSc.finalize(petsclib)
+    end
+end

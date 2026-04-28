@@ -9,15 +9,19 @@ function Base.show(io::IO, v::AbstractPetscVec{PetscLib}) where {PetscLib}
         print(io, "PETSc Vec (null pointer)")
         return
     end
-    
-    # Try to get vector info, but handle uninitialized vectors gracefully
+    # VecGetType internally calls VecInitializePackage which queries the PETSc
+    # options database.  Calling it before PETSc is initialised causes a C-level
+    # SIGSEGV that cannot be caught with try/catch.
+    if !initialized(PetscLib)
+        print(io, "PETSc Vec (PETSc not initialized)")
+        return
+    end
     try
         ty = LibPETSc.VecGetType(PetscLib, v)
         si = LibPETSc.VecGetSize(PetscLib, v)
         print(io, "PETSc $ty Vec; length=$si")
     catch
-        # Vector not fully initialized yet (type not set)
-        print(io, "PETSc Vec (not yet initialized)")
+        print(io, "PETSc Vec (type not set)")
     end
     return nothing
 end
@@ -363,25 +367,28 @@ Errors if the Vecs are on heterogeneous devices (different `PetscMemType`
 values), since a single `withlocalarray!` call cannot handle mixed backends.
 Returns `Vector` when all Vecs are host-resident.
 
-Extensions overload `_array_type(::AbstractPETScMemBackend)` to map backend
-singletons to concrete array types (e.g. `CUDABackend` → `CuArray`).
+Extensions overload `_array_type(::Val{MT})` for a `PetscMemType` enum value
+`MT` to register the corresponding array type (e.g. `PETSC_MEMTYPE_DEVICE` →
+`CuArray`).
 """
 function determine_memtype(vecs::AbstractPetscVec...)
-    backends = map(vecs) do v
+    mtypes = map(vecs) do v
         PetscLib = typeof(v).parameters[1]
         arr, mtype = LibPETSc.VecGetArrayReadAndMemType(PetscLib, v)
         LibPETSc.VecRestoreArrayReadAndMemType(PetscLib, v, arr)
-        _memtype_backend(mtype)
+        mtype
     end
-    allequal(typeof.(backends)) || throw(ArgumentError(
-        "Vecs are on heterogeneous devices: $(unique(typeof.(backends))). " *
+    allequal(mtypes) || throw(ArgumentError(
+        "Vecs are on heterogeneous devices: $(unique(mtypes)). " *
         "Use withlocalarray!(::Type{A}, ...) to handle each backend explicitly."
     ))
-    return _array_type(first(backends))
+    return _array_type(Val(first(mtypes)))
 end
 
-_array_type(::HostBackend) = Vector
-# GPU extensions add: _array_type(::CUDABackend) = CuArray
+_array_type(::Val{LibPETSc.PETSC_MEMTYPE_HOST}) = Vector
+_array_type(::Val{MT}) where {MT} =
+    error("No array type registered for PetscMemType $MT — load the corresponding GPU package (e.g. CUDA.jl)")
+# GPU extensions add: _array_type(::Val{LibPETSc.PETSC_MEMTYPE_DEVICE}) = CuArray
 
 """
     withlocalarray!(

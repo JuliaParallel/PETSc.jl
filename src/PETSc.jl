@@ -42,11 +42,6 @@ include("sys.jl")
 include("dmda.jl")          
 include("dmstag.jl")
 
-# String convenience wrappers for SetType functions
-include("string_wrappers.jl")       
-include("string_wrappers_extra.jl")
-
-
 include("audit.jl")
 
 

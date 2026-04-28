@@ -225,6 +225,7 @@ function LibPETSc.TSAdaptSetType(
 )
     s = String(type)
     GC.@preserve s LibPETSc.TSAdaptSetType(petsclib, adapt, Base.unsafe_convert(Ptr{Cchar}, s))
+    return nothing
 end
 
 """

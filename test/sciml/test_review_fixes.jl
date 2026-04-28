@@ -656,13 +656,10 @@ end
     end
 
     # ── Review-14 #2 ────────────────────────────────────────────────────────
-    @testset "SciML discrete-save hooks fire at init and end of solve" begin
-        # `save_discretes_if_enabled!` and `save_final_discretes!` are now
-        # called around the lifecycle. Verify with an `initialize` /
-        # `finalize` callback pair that increments separate counters; the
-        # exact upstream save logic depends on MTK metadata that this
-        # extension does not synthesise, so we just check the lifecycle
-        # hooks reach the integrator.
+    @testset "Callback initialize / finalize hooks fire around the solve" begin
+        # The lifecycle calls (`DiffEqBase.initialize!` /
+        # `DiffEqBase.finalize!`) are part of the basic discrete-callback
+        # contract and must run regardless of SciMLBase version.
         init_runs = Ref(0)
         finalize_runs = Ref(0)
         cb = DiscreteCallback(
@@ -675,6 +672,73 @@ end
         @test sol.retcode == ReturnCode.Success
         @test init_runs[] == 1
         @test finalize_runs[] == 1
+    end
+
+    # The new discrete-save lifecycle hooks
+    # (`SciMLBase.save_discretes_if_enabled!` / `save_final_discretes!`)
+    # only exist in newer SciMLBase releases. The wrapper guards them with
+    # `isdefined`; mirror that gate here so the test file describes what
+    # is actually being verified on the loaded compat set.
+    if isdefined(SciMLBase, :save_discretes_if_enabled!) &&
+       isdefined(SciMLBase, :save_final_discretes!)
+        @testset "SciMLBase discrete-save lifecycle hooks are forwarded" begin
+            init_runs = Ref(0)
+            finalize_runs = Ref(0)
+            cb = DiscreteCallback(
+                (u, t, integ) -> false,
+                integ -> nothing;
+                initialize = (cb, u, t, integ) -> (init_runs[] += 1; nothing),
+                finalize = (cb, u, t, integ) -> (finalize_runs[] += 1; nothing),
+            )
+            sol = solve(prob, TSRK("3bs"); dt = 0.1, callback = cb)
+            @test sol.retcode == ReturnCode.Success
+            @test init_runs[] == 1
+            @test finalize_runs[] == 1
+        end
+    else
+        @info "Skipping `SciMLBase discrete-save lifecycle hooks are forwarded`: " *
+              "loaded SciMLBase does not expose `save_discretes_if_enabled!` / " *
+              "`save_final_discretes!`."
+    end
+
+    # ── Review-15 #1 ────────────────────────────────────────────────────────
+    @testset "initialize_save = false suppresses the post-init save record" begin
+        # `initialize_save` is the upstream SciML knob that controls
+        # whether the integrator appends a save record immediately after
+        # callback `initialize!` runs. With it `false`, the `initialize`
+        # hook still fires but no `t0` row is added on top of the regular
+        # `save_start` row. With it `true` (the default), the row is added
+        # exactly once even on top of `save_start = true`.
+        init_ran = Ref(false)
+        # A discrete callback with default `save_positions = (true, true)`
+        # asks for a post-init save row. Silence everything else so we can
+        # observe whether the post-init save fired.
+        cb = DiscreteCallback(
+            (u, t, integ) -> false,
+            integ -> nothing;
+            initialize = (cb, u, t, integ) -> (init_ran[] = true; nothing),
+        )
+        sol_off = solve(
+            prob, TSRK("3bs");
+            dt = 0.1, callback = cb,
+            save_start = false, save_end = false,
+            initialize_save = false,
+        )
+        @test sol_off.retcode == ReturnCode.Success
+        @test init_ran[]              # the `initialize` hook still fires
+        @test isempty(sol_off.t)      # but the post-init save was suppressed
+
+        # Default `initialize_save = true` keeps the post-init save row.
+        init_ran[] = false
+        sol_on = solve(
+            prob, TSRK("3bs");
+            dt = 0.1, callback = cb,
+            save_start = false, save_end = false,
+        )
+        @test sol_on.retcode == ReturnCode.Success
+        @test init_ran[]
+        @test length(sol_on.t) == 1
+        @test sol_on.t[1] ≈ 0.0
     end
 
     # ── Review-13 #1 ────────────────────────────────────────────────────────

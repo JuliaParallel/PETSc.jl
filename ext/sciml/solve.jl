@@ -375,7 +375,9 @@ end
 #    `save_positions[2]` (the post-event side, which corresponds to "after the
 #    callback ran"). Duplicate suppression in `step!` keeps `t0` from being
 #    recorded twice when `save_start = true`.
-function initialize_callbacks!(integ::PETScTSIntegrator, cb_set)
+function initialize_callbacks!(
+    integ::PETScTSIntegrator, cb_set, initialize_save::Bool = true,
+)
     integ.u_modified = true
     DiffEqBase.initialize!(cb_set, integ.u, integ.t, integ)
     if integ.u_modified
@@ -384,7 +386,11 @@ function initialize_callbacks!(integ::PETScTSIntegrator, cb_set)
         integ.u_modified = false
     end
 
-    if integ.opts.save_on && _any_initialize_save(cb_set) &&
+    # `initialize_save = false` is the upstream SciML knob for "run callback
+    # `initialize` hooks but do not append a post-init save record". Honour
+    # both that gate and `save_on` here, mirroring OrdinaryDiffEq's
+    # `initialize_callbacks!(integrator, initialize_save)` flow.
+    if initialize_save && integ.opts.save_on && _any_initialize_save(cb_set) &&
        (isempty(integ.sol.t) || last(integ.sol.t) != integ.t)
         push!(integ.sol.t, integ.t)
         push!(integ.sol.u, copy(integ.u))
@@ -393,8 +399,9 @@ function initialize_callbacks!(integ::PETScTSIntegrator, cb_set)
     # populate observable timeseries (MTK-style `saved_clock_partitions`,
     # `initialize_save_discretes`) get their `t0` snapshot. `skip_duplicates`
     # mirrors what OrdinaryDiffEq passes here. The hook is only available
-    # in newer SciMLBase releases, so guard with `isdefined`.
-    if isdefined(SciMLBase, :save_discretes_if_enabled!)
+    # in newer SciMLBase releases, so guard with `isdefined`. Skip it
+    # entirely when the user opted out via `initialize_save = false`.
+    if initialize_save && isdefined(SciMLBase, :save_discretes_if_enabled!)
         SciMLBase.save_discretes_if_enabled!(integ, cb_set; skip_duplicates = true)
     end
     return nothing
@@ -413,6 +420,7 @@ function SciMLBase.__init(
     saveat = (),
     tstops = (),
     callback = nothing,
+    initialize_save::Bool = true,
     reltol = nothing,
     abstol = nothing,
     dt = nothing,
@@ -501,7 +509,7 @@ function SciMLBase.__init(
             opts, sol, lib, ts, u_v, cb_ctx,
         )
 
-        initialize_callbacks!(integ, cb_set)
+        initialize_callbacks!(integ, cb_set, initialize_save)
 
         return integ
     catch

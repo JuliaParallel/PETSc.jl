@@ -34,7 +34,7 @@ using PETSc, MPI, Printf
 #
 #     solve_ex51_implicit(options = ["-ts_irk_nstages", "3"])
 
-mutable struct Ex51Context{PetscLib <: PETSc.LibPETSc.PetscLibType}
+mutable struct Ex51ImplicitContext{PetscLib <: PETSc.LibPETSc.PetscLibType}
     petsclib::PetscLib
 end
 
@@ -57,7 +57,7 @@ function ex51_rhs_ifunction!(
     # time derivative, and residual vectors arrive as raw `CVec` pointers. We
     # wrap them with `VecPtr(..., own = false)` so we can use PETSc.jl's array
     # helpers without taking ownership away from PETSc.
-    ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex51Context
+    ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex51ImplicitContext
     petsclib = ctx.petsclib
     # `own = false` since memory is managed by PETSc internally
     u = PETSc.VecPtr(petsclib, u_ptr, false)
@@ -146,7 +146,7 @@ function ex51_ijacobian!(
     B_ptr::PETSc.LibPETSc.CMat,
     ctx_ptr::Ptr{Cvoid},
 )::PETSc.LibPETSc.PetscErrorCode
-    ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex51Context
+    ctx = unsafe_pointer_to_objref(ctx_ptr)::Ex51ImplicitContext
     petsclib = ctx.petsclib
     # `u` is borrowed from PETSc; do not take ownership.
     u = PETSc.VecPtr(petsclib, u_ptr, false)
@@ -308,7 +308,7 @@ function solve_ex51_implicit(;
     current_time = petsclib.PetscReal(NaN)
     error_norm = petsclib.PetscReal(NaN)
     solution = PetscScalar[]
-    ctx = Ex51Context(petsclib)
+    ctx = Ex51ImplicitContext(petsclib)
     petsc_options = PETSc.Options(petsclib; parsed_options...)
     pushed_options = false
 

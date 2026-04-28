@@ -440,7 +440,7 @@ function determine_memtype(vecs::AbstractPetscVec...)
     end
     allequal(mtypes) || throw(ArgumentError(
         "Vecs are on heterogeneous devices: $(unique(mtypes)). " *
-        "Use withlocalarray!(::Type{A}, ...) to handle each backend explicitly."
+        "Use withlocalarray!(f!, ::Type{A}, ...) to handle each backend explicitly."
     ))
     return _array_type(Val(first(mtypes)))
 end
@@ -461,37 +461,13 @@ _array_type(::Val{MT}) where {MT} =
 
 Apply `f!` to local array views of `vecs`.
 
-Uses `VecGetArray*AndMemType` internally.  When a GPU backend extension (e.g.
-`PETScCUDAExt`) is loaded and a Vec lives on the device, `f!` receives a device
-array (e.g. `CuArray`) — zero-copy, no host↔device transfer.  When all Vecs
-are host-resident, `f!` receives plain `Array`s.
+The optional `::Type{A}` second argument (after the do-block function) asserts
+that every array returned from `VecGetArray*AndMemType` is of type `A`.  Use
+it with do-block syntax:
 
-The optional `::Type{A}` first argument asserts that every array returned from
-`VecGetArray*AndMemType` is of type `A`.  This is useful when Vecs are known to
-be heterogeneous (e.g. some on host, some on device) and you need a type-stable
-code path: passing `CuArray` will error immediately if any Vec is host-resident,
-rather than silently returning a `Vector`.
-
-Use `read=false` if the array is write-only; `write=false` if read-only.
-
-!!! note
-    Operations inside `f!` must be compatible with the actual array type.
-    Scalar indexing is not supported on GPU arrays; use broadcasting or GPU
-    kernels instead.
-
-# Examples
-```julia-repl
-julia> withlocalarray!(x; write=true) do x
-   @. x .*= 2
-end
-
-julia> withlocalarray!(
-           x,
-           y;
-           read = (false, true),
-           write = (true, false)
-       ) do x, y
-   @. x .= 2 .+ y
+```julia
+withlocalarray!(Vector, petsc_x; write=true) do x
+    x .= 1
 end
 ```
 
@@ -502,13 +478,13 @@ function withlocalarray!(
     kwargs...,
 ) where {N}
     A = determine_memtype(vecs...)
-    return withlocalarray!(A, f!, vecs; kwargs...)
+    return withlocalarray!(f!, A, vecs; kwargs...)
 end
 withlocalarray!(f!, vecs...; kwargs...) = withlocalarray!(f!, vecs; kwargs...)
 
 function withlocalarray!(
-    ::Type{A},
     f!,
+    ::Type{A},
     vecs::NTuple{N, AbstractPetscVec};
     read::Union{Bool, NTuple{N, Bool}} = true,
     write::Union{Bool, NTuple{N, Bool}} = true,
@@ -537,8 +513,8 @@ function withlocalarray!(
         end
     end
 end
-withlocalarray!(::Type{A}, f!, vecs...; kwargs...) where {A <: AbstractArray} =
-    withlocalarray!(A, f!, vecs; kwargs...)
+withlocalarray!(f!, ::Type{A}, vecs...; kwargs...) where {A <: AbstractArray} =
+    withlocalarray!(f!, A, vecs; kwargs...)
 
 
 """

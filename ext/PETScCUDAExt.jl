@@ -12,13 +12,32 @@ struct CUDABackend <: PETSc.AbstractPETScMemBackend end
 PETSc._memtype_backend(::Val{PETSC_MEMTYPE_DEVICE}) = CUDABackend()
 PETSc._array_type(::Val{LibPETSc.PETSC_MEMTYPE_DEVICE}) = CuArray
 
-# ── _wrap_localarray: device branch ──────────────────────────────────────────
+# ── No-finalizer acquire/release for withlocalarray! ─────────────────────────
+
+function PETSc._make_local_array(cpu_arr, ::CUDABackend)
+    T   = eltype(cpu_arr)
+    n   = length(cpu_arr)
+    ptr = reinterpret(CuPtr{T}, UInt(pointer(cpu_arr)))
+    return CUDA.unsafe_wrap(CuArray, ptr, n; own = false)
+end
+
+function PETSc._release_petsc_local_array(
+    cpu_arr, ::CUDABackend, vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
+) where {PLib}
+    if write && read
+        LibPETSc.VecRestoreArrayAndMemType(PLib, vec, cpu_arr)
+    elseif write
+        LibPETSc.VecRestoreArrayWriteAndMemType(PLib, vec, cpu_arr)
+    else
+        LibPETSc.VecRestoreArrayReadAndMemType(PLib, vec, cpu_arr)
+    end
+    return nothing
+end
+
+# ── _wrap_localarray: device branch (legacy, kept for backward compat) ────────
 #
-# Called by `_unsafe_localarray_device` (defined in base vec.jl) when the Vec
-# is device-resident.  Wraps the device pointer as a CuArray (zero-copy) and
-# attaches a finalizer that calls the matching VecRestoreArray*AndMemType.
-# `cpu_arr` (the raw Julia Vector wrapping the device pointer) is captured in
-# the finalizer closure to keep it alive until the restore is done.
+# No longer called by withlocalarray! (which uses _acquire/_release instead).
+# Retained in case external code calls _unsafe_localarray directly.
 
 function PETSc._wrap_localarray(
     cpu_arr, ::CUDABackend, vec::AbstractPetscVec{PetscLib};

@@ -359,6 +359,66 @@ function _wrap_localarray(cpu_arr, b::AbstractPETScMemBackend, vec; kw...)
           "load the corresponding GPU package (e.g. CUDA.jl)")
 end
 
+# ── No-finalizer acquire/release ─────────────────────────────────────────────
+#
+# `withlocalarray!` uses these instead of the finalizer-based `_wrap_localarray`
+# to avoid a documented Julia pitfall: after `Base.finalize(x)` is called, if
+# `x` later becomes unreachable GC may invoke the finalizer *again*, leading to
+# a double VecRestore call on an already-freed Vec (→ SIGSEGV).
+# `try/finally` provides deterministic, single-execution cleanup.
+
+"""
+    _acquire_petsc_local_array(vec; read, write) -> (arr, cpu_arr, backend)
+
+Get the local array from `vec` via `VecGetArray*AndMemType` without
+registering a Julia finalizer.  Returns the user-visible array, the raw PETSc
+cpu_arr needed for restore, and the backend singleton.
+Extensions overload `_make_local_array(cpu_arr, backend)` to wrap the raw
+array for their device (e.g. `CUDABackend` → `CuArray`).
+"""
+function _acquire_petsc_local_array(
+    vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
+) where {PLib}
+    cpu_arr, mtype = if write && read
+        LibPETSc.VecGetArrayAndMemType(PLib, vec)
+    elseif write
+        LibPETSc.VecGetArrayWriteAndMemType(PLib, vec)
+    else
+        LibPETSc.VecGetArrayReadAndMemType(PLib, vec)
+    end
+    backend = _memtype_backend(mtype)
+    arr = _make_local_array(cpu_arr, backend)
+    return arr, cpu_arr, backend
+end
+
+# CPU: the raw PETSc array is already a Vector — return it directly.
+_make_local_array(cpu_arr, ::HostBackend) = cpu_arr
+_make_local_array(cpu_arr, b::AbstractPETScMemBackend) =
+    error("_make_local_array not implemented for backend $(typeof(b)) — " *
+          "load the corresponding GPU package (e.g. CUDA.jl)")
+
+"""
+    _release_petsc_local_array(cpu_arr, backend, vec; read, write)
+
+Restore a previously acquired local array.  Called in `finally` blocks by
+`withlocalarray!`.  Extensions overload this for GPU backends.
+"""
+function _release_petsc_local_array(
+    cpu_arr, ::HostBackend, vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
+) where {PLib}
+    if write && read
+        LibPETSc.VecRestoreArrayAndMemType(PLib, vec, cpu_arr)
+    elseif write
+        LibPETSc.VecRestoreArrayWriteAndMemType(PLib, vec, cpu_arr)
+    else
+        LibPETSc.VecRestoreArrayReadAndMemType(PLib, vec, cpu_arr)
+    end
+    return nothing
+end
+_release_petsc_local_array(cpu_arr, b::AbstractPETScMemBackend, vec; kw...) =
+    error("_release_petsc_local_array not implemented for backend $(typeof(b)) — " *
+          "load the corresponding GPU package (e.g. CUDA.jl)")
+
 """
     determine_memtype(vecs...) → Type{<:AbstractArray}
 
@@ -435,8 +495,6 @@ julia> withlocalarray!(
 end
 ```
 
-!!! note
-    `Base.finalize` is automatically called on the array.
 """
 function withlocalarray!(
     f!,
@@ -457,13 +515,27 @@ function withlocalarray!(
 ) where {A <: AbstractArray, N}
     read isa NTuple{N, Bool} || (read = ntuple(_ -> read, N))
     write isa NTuple{N, Bool} || (write = ntuple(_ -> write, N))
-
-    arrays = map(vecs, read, write) do v, r, w
-        _unsafe_localarray(A, v; read = r, write = w)
+    # Acquire all arrays first (no finalizers), then use try/finally for release.
+    # This avoids the Julia pitfall where Base.finalize + GC can both run the
+    # finalizer if the object becomes unreachable again (double-restore → crash).
+    acquired = map(vecs, read, write) do v, r, w
+        _acquire_petsc_local_array(v; read=r, write=w)
     end
-    val = f!(arrays...)
-    map(Base.finalize, arrays)
-    return val
+    try
+        # Type check inside try so finally still releases on mismatch.
+        arrays = map(acquired) do (arr, cpu_arr, backend)
+            arr isa A || throw(ArgumentError(
+                "expected array of type $A but Vec returned $(typeof(arr)). " *
+                "Check that the Vec lives on the expected device."
+            ))
+            arr
+        end
+        return f!(arrays...)
+    finally
+        foreach(vecs, acquired, read, write) do v, (_, cpu_arr, backend), r, w
+            _release_petsc_local_array(cpu_arr, backend, v; read=r, write=w)
+        end
+    end
 end
 withlocalarray!(::Type{A}, f!, vecs...; kwargs...) where {A <: AbstractArray} =
     withlocalarray!(A, f!, vecs; kwargs...)
@@ -629,16 +701,11 @@ function get_petsc_arrays(petsclib, g_fx, l_x)
     )
 end
 
-# CPU base case: attach VecRestore finalizers and return the arrays directly.
+# CPU base case: return arrays directly. restore_petsc_arrays calls VecRestore
+# explicitly — no finalizers to avoid the double-finalization crash.
 function _get_petsc_arrays_impl(
     petsclib, g_fx, l_x, ::Type, fx_arr, lx_arr, ::HostBackend, ::HostBackend,
 )
-    finalizer(fx_arr) do a
-        LibPETSc.VecRestoreArrayAndMemType(petsclib, g_fx, a)
-    end
-    finalizer(lx_arr) do a
-        LibPETSc.VecRestoreArrayReadAndMemType(petsclib, l_x, a)
-    end
     return fx_arr, lx_arr, nothing, nothing, nothing
 end
 
@@ -656,10 +723,10 @@ function restore_petsc_arrays(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bo
     _restore_petsc_arrays_impl(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
 end
 
-# CPU base case: VecRestore finalizers on fx/lx do the work.
+# CPU base case: call VecRestore directly (no finalizers).
 function _restore_petsc_arrays_impl(
     petsclib, g_fx, l_x, fx, lx, ::Nothing, ::Nothing, ::Nothing,
 )
-    Base.finalize(fx)
-    Base.finalize(lx)
+    LibPETSc.VecRestoreArrayAndMemType(petsclib, g_fx, fx)
+    LibPETSc.VecRestoreArrayReadAndMemType(petsclib, l_x, lx)
 end

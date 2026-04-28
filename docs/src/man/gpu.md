@@ -162,9 +162,10 @@ Below we report results for the inner solve itself (KSPSolve) on a GPU (with 1 M
 From this it is clear that the `KSPSolve` itself is very efficient on the GPU (and clearly beats the CPU), but that there is quite some overhead when we compare it with `SNESSolve` where this difference is not so large anymore.
 
 
-Lets have a look in detail on whethervthe example actually runs on the GPU:
 
 ***GPU Utilisation Evidence — ex19.jl on GH200 (SM90)***
+
+Lets have a look in detail on whether the example actually runs on the GPU:
 
 All GPU runs use a CUDA-enabled PETSc build (cuSPARSE, cuBLAS) with KernelAbstractions.jl providing the residual kernel. The PETSc `GPU %F` column (fraction of flops executed on GPU) and the host↔device transfer logs provide direct evidence of efficient GPU utilisation.
 

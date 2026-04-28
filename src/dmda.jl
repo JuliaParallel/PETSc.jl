@@ -205,6 +205,7 @@ function localinteriorlinearindex(da::AbstractPetscDM{PetscLib}) where PetscLib
     ind_local = LinearIndices(lower:upper)[:, l_inds][:]
     return ind_local
 end
+
 """
     dmda_star_fd_coloring(petsclib, da)
 

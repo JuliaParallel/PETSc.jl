@@ -24,12 +24,13 @@ end
 function PETSc._release_petsc_local_array(
     cpu_arr, ::CUDABackend, vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
 ) where {PLib}
+    pv = PETSc._as_petsc_vec(vec)
     if write && read
-        LibPETSc.VecRestoreArrayAndMemType(PLib, vec, cpu_arr)
+        LibPETSc.VecRestoreArrayAndMemType(PLib, pv, cpu_arr)
     elseif write
-        LibPETSc.VecRestoreArrayWriteAndMemType(PLib, vec, cpu_arr)
+        LibPETSc.VecRestoreArrayWriteAndMemType(PLib, pv, cpu_arr)
     else
-        LibPETSc.VecRestoreArrayReadAndMemType(PLib, vec, cpu_arr)
+        LibPETSc.VecRestoreArrayReadAndMemType(PLib, pv, cpu_arr)
     end
     return nothing
 end
@@ -47,13 +48,14 @@ function PETSc._wrap_localarray(
     n   = length(cpu_arr)
     ptr = reinterpret(CuPtr{T}, UInt(pointer(cpu_arr)))
     dev_arr = CUDA.unsafe_wrap(CuArray, ptr, n; own = false)
+    pv = PETSc._as_petsc_vec(vec)
     finalizer(dev_arr) do _
         if write && read
-            LibPETSc.VecRestoreArrayAndMemType(PetscLib, vec, cpu_arr)
+            LibPETSc.VecRestoreArrayAndMemType(PetscLib, pv, cpu_arr)
         elseif write
-            LibPETSc.VecRestoreArrayWriteAndMemType(PetscLib, vec, cpu_arr)
+            LibPETSc.VecRestoreArrayWriteAndMemType(PetscLib, pv, cpu_arr)
         else
-            LibPETSc.VecRestoreArrayReadAndMemType(PetscLib, vec, cpu_arr)
+            LibPETSc.VecRestoreArrayReadAndMemType(PetscLib, pv, cpu_arr)
         end
         return nothing
     end
@@ -118,8 +120,8 @@ function PETSc._restore_petsc_arrays_impl(
         CUDA.synchronize()
         copyto!(fx_arr, fx_bounce)  # D2H: copy residual back to host PETSc array
     end
-    LibPETSc.VecRestoreArrayAndMemType(petsclib, g_fx, fx_arr)
-    LibPETSc.VecRestoreArrayReadAndMemType(petsclib, l_x, lx_arr)
+    LibPETSc.VecRestoreArrayAndMemType(petsclib, PETSc._as_petsc_vec(g_fx), fx_arr)
+    LibPETSc.VecRestoreArrayReadAndMemType(petsclib, PETSc._as_petsc_vec(l_x), lx_arr)
 end
 
 end # module PETScCUDAExt

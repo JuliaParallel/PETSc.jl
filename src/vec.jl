@@ -311,12 +311,13 @@ function _unsafe_localarray(
     read::Bool = true,
     write::Bool = true,
 ) where {PetscLib}
+    pv = _as_petsc_vec(vec)
     if write && read
-        cpu_arr, mtype = LibPETSc.VecGetArrayAndMemType(PetscLib, vec)
+        cpu_arr, mtype = LibPETSc.VecGetArrayAndMemType(PetscLib, pv)
     elseif write
-        cpu_arr, mtype = LibPETSc.VecGetArrayWriteAndMemType(PetscLib, vec)
+        cpu_arr, mtype = LibPETSc.VecGetArrayWriteAndMemType(PetscLib, pv)
     else
-        cpu_arr, mtype = LibPETSc.VecGetArrayReadAndMemType(PetscLib, vec)
+        cpu_arr, mtype = LibPETSc.VecGetArrayReadAndMemType(PetscLib, pv)
     end
     return _wrap_localarray(cpu_arr, _memtype_backend(mtype), vec; read, write)
 end
@@ -379,12 +380,13 @@ array for their device (e.g. `CUDABackend` → `CuArray`).
 function _acquire_petsc_local_array(
     vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
 ) where {PLib}
+    pv = _as_petsc_vec(vec)
     cpu_arr, mtype = if write && read
-        LibPETSc.VecGetArrayAndMemType(PLib, vec)
+        LibPETSc.VecGetArrayAndMemType(PLib, pv)
     elseif write
-        LibPETSc.VecGetArrayWriteAndMemType(PLib, vec)
+        LibPETSc.VecGetArrayWriteAndMemType(PLib, pv)
     else
-        LibPETSc.VecGetArrayReadAndMemType(PLib, vec)
+        LibPETSc.VecGetArrayReadAndMemType(PLib, pv)
     end
     backend = _memtype_backend(mtype)
     arr = _make_local_array(cpu_arr, backend)
@@ -406,12 +408,13 @@ Restore a previously acquired local array.  Called in `finally` blocks by
 function _release_petsc_local_array(
     cpu_arr, ::HostBackend, vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
 ) where {PLib}
+    pv = _as_petsc_vec(vec)
     if write && read
-        LibPETSc.VecRestoreArrayAndMemType(PLib, vec, cpu_arr)
+        LibPETSc.VecRestoreArrayAndMemType(PLib, pv, cpu_arr)
     elseif write
-        LibPETSc.VecRestoreArrayWriteAndMemType(PLib, vec, cpu_arr)
+        LibPETSc.VecRestoreArrayWriteAndMemType(PLib, pv, cpu_arr)
     else
-        LibPETSc.VecRestoreArrayReadAndMemType(PLib, vec, cpu_arr)
+        LibPETSc.VecRestoreArrayReadAndMemType(PLib, pv, cpu_arr)
     end
     return nothing
 end
@@ -419,8 +422,13 @@ _release_petsc_local_array(cpu_arr, b::AbstractPETScMemBackend, vec; kw...) =
     error("_release_petsc_local_array not implemented for backend $(typeof(b)) — " *
           "load the corresponding GPU package (e.g. CUDA.jl)")
 
+# The auto-generated *AndMemType wrappers are typed `x::PetscVec`, but
+# `AbstractPetscVec` also includes `VecPtr`.  Convert transparently.
+_as_petsc_vec(v::LibPETSc.PetscVec) = v
+_as_petsc_vec(v::AbstractPetscVec{PetscLib}) where {PetscLib} =
+    LibPETSc.PetscVec{PetscLib}(v.ptr)
+
 """
-    determine_memtype(vecs...) → Type{<:AbstractArray}
 
 Query the `PetscMemType` of each Vec and return the corresponding array type.
 Errors if the Vecs are on heterogeneous devices (different `PetscMemType`
@@ -434,8 +442,9 @@ Extensions overload `_array_type(::Val{MT})` for a `PetscMemType` enum value
 function determine_memtype(vecs::AbstractPetscVec...)
     mtypes = map(vecs) do v
         PetscLib = typeof(v).parameters[1]
-        arr, mtype = LibPETSc.VecGetArrayReadAndMemType(PetscLib, v)
-        LibPETSc.VecRestoreArrayReadAndMemType(PetscLib, v, arr)
+        pv = _as_petsc_vec(v)
+        arr, mtype = LibPETSc.VecGetArrayReadAndMemType(PetscLib, pv)
+        LibPETSc.VecRestoreArrayReadAndMemType(PetscLib, pv, arr)
         mtype
     end
     allequal(mtypes) || throw(ArgumentError(
@@ -669,8 +678,8 @@ See also: [`restore_petsc_arrays`](@ref)
 """
 function get_petsc_arrays(petsclib, g_fx, l_x)
     T = petsclib.PetscScalar
-    fx_arr, fx_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, g_fx)
-    lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, l_x)
+    fx_arr, fx_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, _as_petsc_vec(g_fx))
+    lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, _as_petsc_vec(l_x))
     return _get_petsc_arrays_impl(
         petsclib, g_fx, l_x, T, fx_arr, lx_arr,
         _memtype_backend(fx_mtype), _memtype_backend(lx_mtype),
@@ -703,6 +712,6 @@ end
 function _restore_petsc_arrays_impl(
     petsclib, g_fx, l_x, fx, lx, ::Nothing, ::Nothing, ::Nothing,
 )
-    LibPETSc.VecRestoreArrayAndMemType(petsclib, g_fx, fx)
-    LibPETSc.VecRestoreArrayReadAndMemType(petsclib, l_x, lx)
+    LibPETSc.VecRestoreArrayAndMemType(petsclib, _as_petsc_vec(g_fx), fx)
+    LibPETSc.VecRestoreArrayReadAndMemType(petsclib, _as_petsc_vec(l_x), lx)
 end

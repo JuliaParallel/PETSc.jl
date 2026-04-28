@@ -5,6 +5,7 @@ mutable struct DEOptions{SavT, TstopsT, CType, reltolType, abstolType}
     save_on::Bool
     save_start::Bool
     save_end::Bool
+    save_discretes::Bool
     callback::CType
     reltol::reltolType
     abstol::abstolType
@@ -86,6 +87,7 @@ function _build_opts(
     save_on::Bool,
     save_start::Bool,
     save_end::Bool,
+    save_discretes::Bool,
     callback,
     reltol,
     abstol,
@@ -114,6 +116,7 @@ function _build_opts(
         save_on,
         save_start,
         save_end,
+        save_discretes,
         callback,
         reltol,
         abstol,

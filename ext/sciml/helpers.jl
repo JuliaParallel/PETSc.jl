@@ -64,7 +64,7 @@ end
 # `dtmin` / `progress` would silently break the usual SciML solver contract,
 # so any unsupported key fails loudly with a clear, named error.
 const _SUPPORTED_SCIML_KWARGS = (
-    :save_everystep, :save_on, :save_start, :save_end,
+    :save_everystep, :save_on, :save_start, :save_end, :save_discretes,
     :saveat, :tstops, :callback, :initialize_save,
     :reltol, :abstol,
     :dt, :dtmin, :dtmax, :adaptive,

@@ -9,6 +9,28 @@ const TSRK = ext.TSRK
 const TSImplicit = ext.TSImplicit
 const TSARKIMEX = ext.TSARKIMEX
 
+# Counters for hook-forwarding tests. The shim methods below are more specific
+# than the SciMLBase generics and shadow them for `PETScTSIntegrator`, so the
+# tests can count actual invocations of the SciML hook API rather than relying
+# on callback lifecycle counters that would pass even if the hooks were removed.
+const _save_discretes_hook_count = Ref(0)
+const _save_final_discretes_hook_count = Ref(0)
+if isdefined(SciMLBase, :save_discretes_if_enabled!) &&
+   isdefined(SciMLBase, :save_final_discretes!)
+    function SciMLBase.save_discretes_if_enabled!(
+        ::ext.PETScTSIntegrator, ::SciMLBase.CallbackSet; kw...
+    )
+        _save_discretes_hook_count[] += 1
+        return nothing
+    end
+    function SciMLBase.save_final_discretes!(
+        ::ext.PETScTSIntegrator, ::SciMLBase.CallbackSet; kw...
+    )
+        _save_final_discretes_hook_count[] += 1
+        return nothing
+    end
+end
+
 function decay!(du, u, p, t)
     du[1] = -u[1]
     return nothing
@@ -682,18 +704,17 @@ end
     if isdefined(SciMLBase, :save_discretes_if_enabled!) &&
        isdefined(SciMLBase, :save_final_discretes!)
         @testset "SciMLBase discrete-save lifecycle hooks are forwarded" begin
-            init_runs = Ref(0)
-            finalize_runs = Ref(0)
-            cb = DiscreteCallback(
-                (u, t, integ) -> false,
-                integ -> nothing;
-                initialize = (cb, u, t, integ) -> (init_runs[] += 1; nothing),
-                finalize = (cb, u, t, integ) -> (finalize_runs[] += 1; nothing),
-            )
-            sol = solve(prob, TSRK("3bs"); dt = 0.1, callback = cb)
+            # Reset the shim counters defined at file scope. The shims are more
+            # specific than the SciMLBase generics, so they intercept the exact
+            # call sites in solve.jl and let us pin the forwarding path directly.
+            _save_discretes_hook_count[] = 0
+            _save_final_discretes_hook_count[] = 0
+            sol = solve(prob, TSRK("3bs"); dt = 0.1)
             @test sol.retcode == ReturnCode.Success
-            @test init_runs[] == 1
-            @test finalize_runs[] == 1
+            # `save_discretes_if_enabled!` is called once during initialization;
+            # `save_final_discretes!` is called once at the end of `solve!`.
+            @test _save_discretes_hook_count[] == 1
+            @test _save_final_discretes_hook_count[] == 1
         end
     else
         @info "Skipping `SciMLBase discrete-save lifecycle hooks are forwarded`: " *
@@ -739,6 +760,21 @@ end
         @test init_ran[]
         @test length(sol_on.t) == 1
         @test sol_on.t[1] ≈ 0.0
+    end
+
+    # ── Review-16 #1 ────────────────────────────────────────────────────────
+    @testset "save_discretes is accepted and stored in integrator opts" begin
+        # `save_discretes` controls whether `DiffEqBase.apply_discrete_callback!`
+        # records discrete observable state after a callback fires. The wrapper
+        # must store it in `DEOptions` so DiffEqBase can observe it through the
+        # standard `integrator.opts.save_discretes` path.
+        integ_on = init(prob, TSRK("3bs"); dt = 0.1, save_discretes = true)
+        @test integ_on.opts.save_discretes == true
+        PETSc.destroy(integ_on)
+
+        integ_off = init(prob, TSRK("3bs"); dt = 0.1, save_discretes = false)
+        @test integ_off.opts.save_discretes == false
+        PETSc.destroy(integ_off)
     end
 
     # ── Review-13 #1 ────────────────────────────────────────────────────────

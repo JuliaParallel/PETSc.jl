@@ -417,6 +417,7 @@ function SciMLBase.__init(
     save_on::Bool = true,
     save_start::Bool = true,
     save_end::Bool = true,
+    save_discretes::Bool = true,
     saveat = (),
     tstops = (),
     callback = nothing,
@@ -484,7 +485,7 @@ function SciMLBase.__init(
     try
         opts = _build_opts(
             tType, saveat_materialized, tstops_materialized, tdir, prob.tspan;
-            save_everystep, save_on, save_start, save_end,
+            save_everystep, save_on, save_start, save_end, save_discretes,
             callback = cb_set,
             reltol, abstol, maxiters,
         )

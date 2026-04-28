@@ -10,24 +10,30 @@ const TSImplicit = ext.TSImplicit
 const TSARKIMEX = ext.TSARKIMEX
 
 # Counters for hook-forwarding tests. The shim methods below are more specific
-# than the SciMLBase generics and shadow them for `PETScTSIntegrator`, so the
+# than the SciMLBase generics and intercept calls for `PETScTSIntegrator`, so
 # tests can count actual invocations of the SciML hook API rather than relying
 # on callback lifecycle counters that would pass even if the hooks were removed.
+# Each shim increments its counter and then `invoke`s the real SciMLBase generic
+# so actual hook behavior (e.g. observable timeseries writes) still runs.
 const _save_discretes_hook_count = Ref(0)
 const _save_final_discretes_hook_count = Ref(0)
 if isdefined(SciMLBase, :save_discretes_if_enabled!) &&
    isdefined(SciMLBase, :save_final_discretes!)
     function SciMLBase.save_discretes_if_enabled!(
-        ::ext.PETScTSIntegrator, ::SciMLBase.CallbackSet; kw...
+        integ::ext.PETScTSIntegrator, cb::SciMLBase.CallbackSet; kw...
     )
         _save_discretes_hook_count[] += 1
-        return nothing
+        invoke(SciMLBase.save_discretes_if_enabled!,
+               Tuple{SciMLBase.DEIntegrator, SciMLBase.CallbackSet},
+               integ, cb; kw...)
     end
     function SciMLBase.save_final_discretes!(
-        ::ext.PETScTSIntegrator, ::SciMLBase.CallbackSet; kw...
+        integ::ext.PETScTSIntegrator, cb::SciMLBase.CallbackSet; kw...
     )
         _save_final_discretes_hook_count[] += 1
-        return nothing
+        invoke(SciMLBase.save_final_discretes!,
+               Tuple{SciMLBase.DEIntegrator, SciMLBase.CallbackSet},
+               integ, cb; kw...)
     end
 end
 
@@ -763,18 +769,27 @@ end
     end
 
     # ── Review-16 #1 ────────────────────────────────────────────────────────
-    @testset "save_discretes is accepted and stored in integrator opts" begin
-        # `save_discretes` controls whether `DiffEqBase.apply_discrete_callback!`
-        # records discrete observable state after a callback fires. The wrapper
-        # must store it in `DEOptions` so DiffEqBase can observe it through the
-        # standard `integrator.opts.save_discretes` path.
-        integ_on = init(prob, TSRK("3bs"); dt = 0.1, save_discretes = true)
-        @test integ_on.opts.save_discretes == true
-        PETSc.destroy(integ_on)
+    # `save_discretes` was added to SciMLBase's `allowedkeywords` whitelist in
+    # 2.120.0. On older stacks the kwarg is rejected by SciMLBase before it
+    # reaches the PETSc extension, so we gate the test on that floor.
+    if pkgversion(SciMLBase) >= v"2.120.0"
+        @testset "save_discretes is accepted and stored in integrator opts" begin
+            # `save_discretes` controls whether `DiffEqBase.apply_discrete_callback!`
+            # records discrete observable state after a callback fires. The wrapper
+            # must store it in `DEOptions` so DiffEqBase can observe it through the
+            # standard `integrator.opts.save_discretes` path.
+            integ_on = init(prob, TSRK("3bs"); dt = 0.1, save_discretes = true)
+            @test integ_on.opts.save_discretes == true
+            PETSc.destroy(integ_on)
 
-        integ_off = init(prob, TSRK("3bs"); dt = 0.1, save_discretes = false)
-        @test integ_off.opts.save_discretes == false
-        PETSc.destroy(integ_off)
+            integ_off = init(prob, TSRK("3bs"); dt = 0.1, save_discretes = false)
+            @test integ_off.opts.save_discretes == false
+            PETSc.destroy(integ_off)
+        end
+    else
+        @info "Skipping `save_discretes` test: loaded SciMLBase $(pkgversion(SciMLBase)) " *
+              "is older than 2.120.0 (the first release to include :save_discretes in " *
+              "allowedkeywords)."
     end
 
     # ── Review-13 #1 ────────────────────────────────────────────────────────

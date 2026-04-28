@@ -293,12 +293,16 @@ _memtype_backend(mt::LibPETSc.PetscMemType) = _memtype_backend(Val(mt))
 
 # ── Device-aware local array access ───────────────────────────────────────────
 #
-# `_unsafe_localarray_device` is the unified entry point: it calls
+# `_unsafe_localarray` is the unified entry point: it calls
 # `VecGetArray*AndMemType`, converts the returned `PetscMemType` to a backend
 # singleton via `_memtype_backend`, and dispatches to `_wrap_localarray`.
 # GPU extensions add `_wrap_localarray` methods for their own backend types.
+#
+# The typed overload `_unsafe_localarray(::Type{A}, vec; ...)` additionally
+# asserts that the returned array is of type `A`, giving a clear error when a
+# Vec is on an unexpected device.
 
-function _unsafe_localarray_device(
+function _unsafe_localarray(
     vec::AbstractPetscVec{PetscLib};
     read::Bool = true,
     write::Bool = true,
@@ -311,6 +315,21 @@ function _unsafe_localarray_device(
         cpu_arr, mtype = LibPETSc.VecGetArrayReadAndMemType(PetscLib, vec)
     end
     return _wrap_localarray(cpu_arr, _memtype_backend(mtype), vec; read, write)
+end
+
+function _unsafe_localarray(
+    ::Type{A},
+    vec::AbstractPetscVec;
+    read::Bool = true,
+    write::Bool = true,
+) where {A <: AbstractArray}
+    arr = _unsafe_localarray(vec; read, write)
+    arr isa A && return arr
+    Base.finalize(arr)   # release the PETSc handle before throwing
+    throw(ArgumentError(
+        "expected array of type $A but Vec returned $(typeof(arr)). " *
+        "Check that the Vec lives on the expected device."
+    ))
 end
 
 function _wrap_localarray(
@@ -337,20 +356,61 @@ function _wrap_localarray(cpu_arr, b::AbstractPETScMemBackend, vec; kw...)
 end
 
 """
+    determine_memtype(vecs...) → Type{<:AbstractArray}
+
+Query the `PetscMemType` of each Vec and return the corresponding array type.
+Errors if the Vecs are on heterogeneous devices (different `PetscMemType`
+values), since a single `withlocalarray!` call cannot handle mixed backends.
+Returns `Vector` when all Vecs are host-resident.
+
+Extensions overload `_array_type(::AbstractPETScMemBackend)` to map backend
+singletons to concrete array types (e.g. `CUDABackend` → `CuArray`).
+"""
+function determine_memtype(vecs::AbstractPetscVec...)
+    backends = map(vecs) do v
+        PetscLib = typeof(v).parameters[1]
+        arr, mtype = LibPETSc.VecGetArrayReadAndMemType(PetscLib, v)
+        LibPETSc.VecRestoreArrayReadAndMemType(PetscLib, v, arr)
+        _memtype_backend(mtype)
+    end
+    allequal(typeof.(backends)) || throw(ArgumentError(
+        "Vecs are on heterogeneous devices: $(unique(typeof.(backends))). " *
+        "Use withlocalarray!(::Type{A}, ...) to handle each backend explicitly."
+    ))
+    return _array_type(first(backends))
+end
+
+_array_type(::HostBackend) = Vector
+# GPU extensions add: _array_type(::CUDABackend) = CuArray
+
+"""
     withlocalarray!(
         f!,
         vecs::NTuple{N, AbstractVec};
         read::Union{Bool, NTuple{N, Bool}} = true,
         write::Union{Bool, NTuple{N, Bool}} = true,
     )
+    withlocalarray!(::Type{A}, f!, vecs...; read, write) where {A <: AbstractArray}
 
-Apply `f!` to host-side local array views of `vecs` via `VecGetArray`.  The
-arrays are always plain `Array`s regardless of where the Vec lives; PETSc will
-stage the data to the host if necessary.  Use `read=false` if write-only,
-`write=false` if read-only.
+Apply `f!` to local array views of `vecs`.
 
-For GPU-aware access (returns a `CuArray` when the Vec lives on the device) use
-[`withlocalarray_device!`](@ref) instead.
+Uses `VecGetArray*AndMemType` internally.  When a GPU backend extension (e.g.
+`PETScCUDAExt`) is loaded and a Vec lives on the device, `f!` receives a device
+array (e.g. `CuArray`) — zero-copy, no host↔device transfer.  When all Vecs
+are host-resident, `f!` receives plain `Array`s.
+
+The optional `::Type{A}` first argument asserts that every array returned from
+`VecGetArray*AndMemType` is of type `A`.  This is useful when Vecs are known to
+be heterogeneous (e.g. some on host, some on device) and you need a type-stable
+code path: passing `CuArray` will error immediately if any Vec is host-resident,
+rather than silently returning a `Vector`.
+
+Use `read=false` if the array is write-only; `write=false` if read-only.
+
+!!! note
+    Operations inside `f!` must be compatible with the actual array type.
+    Scalar indexing is not supported on GPU arrays; use broadcasting or GPU
+    kernels instead.
 
 # Examples
 ```julia-repl
@@ -374,47 +434,32 @@ end
 function withlocalarray!(
     f!,
     vecs::NTuple{N, AbstractPetscVec};
-    read::Union{Bool, NTuple{N, Bool}} = true,
-    write::Union{Bool, NTuple{N, Bool}} = true,
+    kwargs...,
 ) where {N}
-    read isa NTuple{N, Bool} || (read = ntuple(_ -> read, N))
-    write isa NTuple{N, Bool} || (write = ntuple(_ -> write, N))
-
-    arrays = map(vecs, read, write) do v, r, w
-        unsafe_localarray(v; read = r, write = w)
-    end
-    val = f!(arrays...)
-    map(Base.finalize, arrays)
-    return val
+    A = determine_memtype(vecs...)
+    return withlocalarray!(A, f!, vecs; kwargs...)
 end
 withlocalarray!(f!, vecs...; kwargs...) = withlocalarray!(f!, vecs; kwargs...)
 
-"""
-    withlocalarray_device!(f!, vecs...; read, write)
-
-Like [`withlocalarray!`](@ref) but uses `VecGetArray*AndMemType` and dispatches
-on the memory location of each Vec via [`_memtype_backend`](@ref).  When a GPU
-backend extension is loaded and a Vec lives on the device, `f!` receives a
-device array (e.g. `CuArray`) — zero-copy with no host↔device transfer.  When
-all Vecs are host-resident, this behaves identically to `withlocalarray!`.
-"""
-function withlocalarray_device!(
+function withlocalarray!(
+    ::Type{A},
     f!,
     vecs::NTuple{N, AbstractPetscVec};
     read::Union{Bool, NTuple{N, Bool}} = true,
     write::Union{Bool, NTuple{N, Bool}} = true,
-) where {N}
+) where {A <: AbstractArray, N}
     read isa NTuple{N, Bool} || (read = ntuple(_ -> read, N))
     write isa NTuple{N, Bool} || (write = ntuple(_ -> write, N))
 
     arrays = map(vecs, read, write) do v, r, w
-        _unsafe_localarray_device(v; read = r, write = w)
+        _unsafe_localarray(A, v; read = r, write = w)
     end
     val = f!(arrays...)
     map(Base.finalize, arrays)
     return val
 end
-withlocalarray_device!(f!, vecs...; kwargs...) = withlocalarray_device!(f!, vecs; kwargs...)
+withlocalarray!(::Type{A}, f!, vecs...; kwargs...) where {A <: AbstractArray} =
+    withlocalarray!(A, f!, vecs; kwargs...)
 
 
 """

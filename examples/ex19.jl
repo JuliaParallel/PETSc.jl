@@ -60,7 +60,7 @@
 =#
 
 # ── GPU switch ────────────────────────────────────────────────────────────────
-const useCUDA = true
+const useCUDA = false
 
 using MPI
 using PETSc
@@ -329,12 +329,16 @@ PETSc.withlocalarray!(x; read = false) do x_arr
     nx_own = xe - xs + 1;   ny_own = ye - ys + 1
     dx = one(_T) / (mx - 1)
     x_par = reshape(x_arr, 4, nx_own, ny_own)
-    for lj in 1:ny_own, li in 1:nx_own
-        ig = xs + li - 1
-        x_par[1, li, lj] = zero(_T)
-        x_par[2, li, lj] = zero(_T)
-        x_par[3, li, lj] = zero(_T)
-        x_par[4, li, lj] = user.grashof > 0 ? _T(ig - 1) * dx : zero(_T)
+    # Components u, v, ω start at zero; T is linear in x (or zero if grashof=0).
+    # Use broadcast-friendly assignment so this works for both Array and CuArray.
+    fill!(x_par, zero(_T))
+    if user.grashof > 0
+        # T = (ig - 1) * dx  where ig (1-based global x-index) = xs + li - 1
+        # Build on host then copy to the same device as x_arr.
+        t_cpu = _T.((xs - 1 : xs + nx_own - 2) .* dx)   # 1-D CPU, length nx_own
+        t_dev = similar(x_arr, nx_own)
+        copyto!(t_dev, t_cpu)
+        x_par[4, :, :] .= reshape(t_dev, nx_own, 1)
     end
 end
 

@@ -10,6 +10,7 @@ using CUDA
 struct CUDABackend <: PETSc.AbstractPETScMemBackend end
 
 PETSc._memtype_backend(::Val{PETSC_MEMTYPE_DEVICE}) = CUDABackend()
+PETSc._array_type(::CUDABackend) = CuArray
 
 # ── _wrap_localarray: device branch ──────────────────────────────────────────
 #

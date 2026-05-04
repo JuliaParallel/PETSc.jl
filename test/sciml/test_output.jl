@@ -17,8 +17,22 @@ end
     tspan = (0.0, 1.0)
     prob = ODEProblem(decay!, u0, tspan)
 
-    @testset "default: only start/end states saved" begin
+    @testset "default (no saveat): save_everystep = true, all steps saved" begin
         sol = solve(prob, TSRK("3bs"); dt = 0.1)
+        @test sol.retcode == ReturnCode.Success
+        @test length(sol.t) > 2   # every step is recorded by default
+        @test issorted(sol.t)
+        @test sol.t[1] ≈ 0.0
+        @test sol.t[end] ≈ 1.0
+        @test sol.u[end][1] ≈ exp(-1) atol = 1e-3
+        # spot-check intermediate values against the analytical solution
+        for k in 1:length(sol.t)
+            @test sol.u[k][1] ≈ exp(-sol.t[k]) atol = 5e-3
+        end
+    end
+
+    @testset "save_everystep = false saves only start and end" begin
+        sol = solve(prob, TSRK("3bs"); dt = 0.1, save_everystep = false)
         @test sol.retcode == ReturnCode.Success
         @test length(sol.t) == 2
         @test sol.t[1] ≈ 0.0
@@ -26,14 +40,17 @@ end
         @test sol.u[end][1] ≈ exp(-1) atol = 1e-3
     end
 
-    @testset "save_everystep = true populates the trajectory" begin
-        sol = solve(prob, TSRK("3bs"); dt = 0.1, save_everystep = true)
+    @testset "default with saveat: save_everystep = false (only requested times)" begin
+        saveat_times = [0.25, 0.5, 0.75]
+        sol = solve(prob, TSRK("3bs"); dt = 0.1, saveat = saveat_times)
         @test sol.retcode == ReturnCode.Success
-        @test length(sol.t) > 2
-        @test issorted(sol.t)
-        # spot-check a couple of intermediate values against the analytical solution
-        for k in 1:length(sol.t)
-            @test sol.u[k][1] ≈ exp(-sol.t[k]) atol = 5e-3
+        # With saveat provided, save_everystep defaults to false:
+        # only start (0.0) + saveat times + end (1.0) are saved, no intermediates.
+        @test length(sol.t) == 1 + length(saveat_times) + 1
+        @test sol.t[1] ≈ 0.0
+        @test sol.t[end] ≈ 1.0
+        for ts in saveat_times
+            @test any(t -> isapprox(t, ts; atol = 1e-12), sol.t)
         end
     end
 

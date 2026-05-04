@@ -220,7 +220,7 @@ end
         sol = solve(
             prob, TSRK("3bs");
             dt = 0.1, callback = cb,
-            save_start = false, save_end = false,
+            save_start = false, save_end = false, save_everystep = false,
         )
         @test sol.retcode == ReturnCode.Success
         @test length(sol.t) == 1
@@ -237,7 +237,7 @@ end
         sol2 = solve(
             prob, TSRK("3bs");
             dt = 0.1, callback = cb_nosave,
-            save_start = false, save_end = false,
+            save_start = false, save_end = false, save_everystep = false,
         )
         @test sol2.retcode == ReturnCode.Success
         @test isempty(sol2.t)
@@ -747,7 +747,7 @@ end
         sol_off = solve(
             prob, TSRK("3bs");
             dt = 0.1, callback = cb,
-            save_start = false, save_end = false,
+            save_start = false, save_end = false, save_everystep = false,
             initialize_save = false,
         )
         @test sol_off.retcode == ReturnCode.Success
@@ -759,7 +759,7 @@ end
         sol_on = solve(
             prob, TSRK("3bs");
             dt = 0.1, callback = cb,
-            save_start = false, save_end = false,
+            save_start = false, save_end = false, save_everystep = false,
         )
         @test sol_on.retcode == ReturnCode.Success
         @test init_ran[]

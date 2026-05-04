@@ -413,7 +413,7 @@ _any_initialize_save(cb_set) =
 function SciMLBase.__init(
     prob::SciMLBase.AbstractODEProblem,
     alg::PETScTSAlgorithm;
-    save_everystep::Bool = false,
+    save_everystep = nothing,   # default: true when saveat is empty, false otherwise
     save_on::Bool = true,
     save_start::Bool = true,
     save_end::Bool = true,
@@ -476,6 +476,11 @@ function SciMLBase.__init(
     # validation pass *and* `_build_opts`'s own consumption.
     saveat_materialized = _materialize_times(saveat)
     _validate_saveat(saveat_materialized)
+    # Follow the SciML convention: save_everystep defaults to true when saveat
+    # is empty (record every step), and false when saveat times are given (only
+    # the requested times matter, not every intermediate step).
+    _save_everystep::Bool = save_everystep === nothing ?
+        _is_empty_times(saveat_materialized) : Bool(save_everystep)
 
     (lib, ts, u_v, u0, tType, t0, tdir) = _common_ts_setup(
         prob, dt, maxiters, petsclib, reltol, abstol,
@@ -485,7 +490,7 @@ function SciMLBase.__init(
     try
         opts = _build_opts(
             tType, saveat_materialized, tstops_materialized, tdir, prob.tspan;
-            save_everystep, save_on, save_start, save_end, save_discretes,
+            save_everystep = _save_everystep, save_on, save_start, save_end, save_discretes,
             callback = cb_set,
             reltol, abstol, maxiters,
         )

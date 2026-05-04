@@ -33,6 +33,7 @@ function solve_ex51(;
     final_time::Real = 1.0,
     dt::Real = 0.25,
     alg = PETSc.TSRK("5dp"),
+    adaptive::Bool = false,
     verbose::Bool = true,
     kwargs... # further keyword arguements passed to the integrator/`solve`
 )
@@ -43,8 +44,10 @@ function solve_ex51(;
     exact_solution!(u0, first(tspan))
     ode = ODEProblem(ex51_rhs!, u0, tspan)
 
-    # Solve the ODE using an interface matching (mostly) the typical SciML interface
-    sol = solve(ode, alg; dt, kwargs...)
+    # Solve the ODE using an interface matching (mostly) the typical SciML interface.
+    # Adaptivity is off by default to match the behaviour of examples/ex51.jl, which
+    # forces constant time steps via `TSAdaptSetType(..., "none")`.
+    sol = solve(ode, alg; dt, adaptive, kwargs...)
 
     # Compute the error against the analytical solution at the achieved
     # final time.

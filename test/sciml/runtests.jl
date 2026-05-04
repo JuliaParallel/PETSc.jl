@@ -24,6 +24,7 @@ using SciMLBase
 
     include("test_rk.jl")
     include("test_ex51_sciml.jl")
+    include("test_ex16_sciml.jl")
     include("test_rosenbrock.jl")
     include("test_implicit.jl")
     include("test_imex.jl")

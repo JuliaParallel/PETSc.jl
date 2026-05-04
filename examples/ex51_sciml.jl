@@ -65,3 +65,7 @@ function solve_ex51(;
 
     return (final_time = current_time, error = error_norm, solution = sol.u[end])
 end
+
+if !isinteractive() && abspath(PROGRAM_FILE) == @__FILE__
+    solve_ex51()
+end

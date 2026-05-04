@@ -1,7 +1,6 @@
 using Test
 using PETSc
 using SciMLBase
-using DiffEqBase
 
 ext = Base.get_extension(PETSc, :PETScSciMLExt)
 @assert ext !== nothing
@@ -39,7 +38,7 @@ end
         function affect!(integ)
             integ.u[1] = 0.0
             fired[] = true
-            DiffEqBase.u_modified!(integ, true)
+            SciMLBase.u_modified!(integ, true)
         end
         cb = DiscreteCallback(condition, affect!)
         sol = solve(prob, TSRK("3bs"); dt = 0.1, callback = cb)

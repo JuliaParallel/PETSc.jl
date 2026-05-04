@@ -2,7 +2,6 @@ module PETScSciMLExt
 
 using PETSc
 using SciMLBase
-using DiffEqBase
 
 include("sciml/algorithms.jl")
 include("sciml/options.jl")

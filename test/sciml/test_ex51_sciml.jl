@@ -1,7 +1,6 @@
 using Test
 using PETSc
 using SciMLBase
-using DiffEqBase
 using LinearAlgebra
 
 ext = Base.get_extension(PETSc, :PETScSciMLExt)

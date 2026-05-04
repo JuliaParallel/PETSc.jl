@@ -369,7 +369,7 @@ end
 #
 # 1. Pessimistically mark `u` as modified before calling `initialize!`. A
 #    callback initializer that does not mutate `u` is expected to call
-#    `DiffEqBase.u_modified!(integ, false)`; otherwise we conservatively assume
+#    `SciMLBase.u_modified!(integ, false)`; otherwise we conservatively assume
 #    it did and resync the PETSc Vec.
 # 2. Force an initialize-time save when any discrete callback requests
 #    `save_positions[2]` (the post-event side, which corresponds to "after the
@@ -379,7 +379,7 @@ function initialize_callbacks!(
     integ::PETScTSIntegrator, cb_set, initialize_save::Bool = true,
 )
     integ.u_modified = true
-    DiffEqBase.initialize!(cb_set, integ.u, integ.t, integ)
+    _initialize_callbacks!(cb_set, integ.u, integ.t, integ)
     if integ.u_modified
         _sync_julia_to_petsc!(integ)
         PETSc.LibPETSc.TSSetSolution(integ.petsclib, integ.ts, integ.u_petsc)
@@ -439,7 +439,7 @@ function SciMLBase.__init(
     # has no finalizer of its own).
     _reject_unsupported_kwargs(kwargs)
     _validate_maxiters(maxiters)
-    cb_set = DiffEqBase.CallbackSet(callback)
+    cb_set = SciMLBase.CallbackSet(callback)
     if !isempty(cb_set.continuous_callbacks)
         throw(ArgumentError(
             "PETSc.jl SciML extension: ContinuousCallbacks are not yet " *
@@ -524,6 +524,31 @@ function SciMLBase.__init(
         end
         rethrow()
     end
+end
+
+# `PETScTSAlgorithm` does not inherit from `SciMLBase.AbstractODEAlgorithm` so
+# that the algorithm structs can be defined in `src/` without a hard SciMLBase
+# dependency. That means SciMLBase's generic CommonSolve.solve / init dispatch
+# (which requires AbstractSciMLAlgorithm) does not match. Provide thin glue
+# methods here (inside the extension, where SciMLBase is already available) so
+# that the standard `solve(prob, alg; kwargs...)` / `init(prob, alg; kwargs...)`
+# entry points reach our `__solve` / `__init` implementations.
+function SciMLBase.solve(
+    prob::SciMLBase.AbstractODEProblem,
+    alg::PETScTSAlgorithm,
+    args...;
+    kwargs...,
+)
+    SciMLBase.__solve(prob, alg, args...; kwargs...)
+end
+
+function SciMLBase.init(
+    prob::SciMLBase.AbstractODEProblem,
+    alg::PETScTSAlgorithm,
+    args...;
+    kwargs...,
+)
+    SciMLBase.__init(prob, alg, args...; kwargs...)
 end
 
 function SciMLBase.__solve(
@@ -670,7 +695,7 @@ function SciMLBase.solve!(integ::PETScTSIntegrator)
     while !integ.done
         SciMLBase.step!(integ)
     end
-    DiffEqBase.finalize!(integ.opts.callback, integ.u, integ.t, integ)
+    _finalize_callbacks!(integ.opts.callback, integ.u, integ.t, integ)
     if integ.opts.save_end &&
        (isempty(integ.sol.t) || last(integ.sol.t) != integ.t)
         push!(integ.sol.t, integ.t)

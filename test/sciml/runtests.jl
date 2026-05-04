@@ -14,10 +14,9 @@ end
 
 using PETSc
 using SciMLBase
-using DiffEqBase
 
 @testset "PETSc SciML extension" begin
-    # Smoke test: extension activates with just SciMLBase + DiffEqBase loaded.
+    # Smoke test: extension activates with just SciMLBase loaded.
     @testset "Extension activation" begin
         ext = Base.get_extension(PETSc, :PETScSciMLExt)
         @test ext !== nothing

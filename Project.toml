@@ -18,14 +18,12 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 
 [weakdeps]
-DiffEqBase = "2b5f629d-d688-5b77-993f-72d75c75574e"
 SciMLBase = "0bca4576-84f4-4d90-8ffe-ffa030f20462"
 
 [extensions]
-PETScSciMLExt = ["SciMLBase", "DiffEqBase"]
+PETScSciMLExt = "SciMLBase"
 
 [compat]
-DiffEqBase = "6"
 ForwardDiff = "0.10, 1"
 Libdl = "^1.10"
 LinearAlgebra = "^1.10"
@@ -43,7 +41,6 @@ julia = "^1.10"
 
 [extras]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
-DiffEqBase = "2b5f629d-d688-5b77-993f-72d75c75574e"
 ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
@@ -54,4 +51,4 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 
 [targets]
-test = ["CairoMakie", "DiffEqBase", "ForwardDiff", "Plots", "Printf", "Random", "SciMLBase", "SparseDiffTools", "Test", "UnicodePlots"]
+test = ["CairoMakie", "ForwardDiff", "Plots", "Printf", "Random", "SciMLBase", "SparseDiffTools", "Test", "UnicodePlots"]

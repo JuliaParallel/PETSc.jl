@@ -8,8 +8,7 @@ Concrete subtypes carry just enough information to configure a PETSc `TS`
 object: a top-level `TSSetType` argument, an optional subtype string, and an
 algorithm-local `petsc_options::Vector{String}` of raw PETSc CLI tokens (e.g.
 `["-snes_fd", "-ts_max_steps", "100"]`). The actual `solve` / `init` / `step!`
-methods live in the extension and become available once `SciMLBase` and
-`DiffEqBase` are loaded (typically via `using OrdinaryDiffEq`).
+methods live in the extension and become available once `SciMLBase` is loaded.
 
 Subtypes do **not** inherit from `SciMLBase.AbstractODEAlgorithm`, so they can
 be defined here without a hard `SciMLBase` dependency. Dispatch into

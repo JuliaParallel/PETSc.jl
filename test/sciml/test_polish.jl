@@ -1,7 +1,6 @@
 using Test
 using PETSc
 using SciMLBase
-using DiffEqBase
 
 function decay!(du, u, p, t)
     du[1] = -u[1]

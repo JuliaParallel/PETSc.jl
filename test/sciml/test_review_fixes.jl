@@ -1,7 +1,6 @@
 using Test
 using PETSc
 using SciMLBase
-using DiffEqBase
 
 ext = Base.get_extension(PETSc, :PETScSciMLExt)
 @assert ext !== nothing
@@ -61,7 +60,7 @@ end
         @test hasfield(typeof(integ), :derivative_discontinuity)
         @test integ.derivative_discontinuity == false
         # u_modified! and the discontinuity field are independent.
-        DiffEqBase.u_modified!(integ, true)
+        SciMLBase.u_modified!(integ, true)
         @test integ.u_modified == true
         @test integ.derivative_discontinuity == false
         # Direct write should also work for any SciMLBase code path that
@@ -72,7 +71,7 @@ end
     end
 
     @testset "DiscreteCallback that never fires still completes the solve" begin
-        # Review-2 #3 explicitly asks for this regression: DiffEqBase reads
+        # Review-2 #3 explicitly asks for this regression: SciMLBase reads
         # derivative_discontinuity in both the fires-and-doesn't-fire paths.
         cb = DiscreteCallback(
             (u, t, integ) -> false,        # never fires
@@ -89,7 +88,7 @@ end
         # start from the rewritten value — not from the original u0.
         function init_cb!(cb, u, t, integ)
             u[1] = 5.0
-            DiffEqBase.u_modified!(integ, true)
+            SciMLBase.u_modified!(integ, true)
             return nothing
         end
         cb = DiscreteCallback(
@@ -104,7 +103,7 @@ end
     end
 
     # ── Review-1 #5 / Review-2 #6 ───────────────────────────────────────────
-    @testset "DiffEqBase.finalize! is called at end of solve" begin
+    @testset "SciMLBase-equivalent finalize! is called at end of solve" begin
         finalized = Ref(false)
         function finalize_cb!(cb, u, t, integ)
             finalized[] = true
@@ -169,7 +168,7 @@ end
     @testset "Initialize callback that mutates u does not duplicate t0" begin
         function init_cb!(cb, u, t, integ)
             u[1] = 5.0
-            DiffEqBase.u_modified!(integ, true)
+            SciMLBase.u_modified!(integ, true)
             return nothing
         end
         cb = DiscreteCallback(
@@ -193,7 +192,7 @@ end
     # ── Review-4 #1 ─────────────────────────────────────────────────────────
     @testset "Initialize that mutates u without u_modified! still propagates" begin
         # The pessimistic-modified contract: a callback that mutates `u` but
-        # forgets to call `DiffEqBase.u_modified!(integ, true)` must still
+        # forgets to call `SciMLBase.u_modified!(integ, true)` must still
         # affect the first PETSc step. This is what OrdinaryDiffEq does.
         function init_cb!(cb, u, t, integ)
             u[1] = 5.0
@@ -261,7 +260,7 @@ end
     @testset "save_on = false suppresses all trajectory output even with init mutation" begin
         function init_cb!(cb, u, t, integ)
             u[1] = 5.0
-            DiffEqBase.u_modified!(integ, true)
+            SciMLBase.u_modified!(integ, true)
             return nothing
         end
         cb = DiscreteCallback(
@@ -685,8 +684,8 @@ end
 
     # ── Review-14 #2 ────────────────────────────────────────────────────────
     @testset "Callback initialize / finalize hooks fire around the solve" begin
-        # The lifecycle calls (`DiffEqBase.initialize!` /
-        # `DiffEqBase.finalize!`) are part of the basic discrete-callback
+        # The lifecycle calls (`SciMLBase-equivalent initialize!` /
+        # `SciMLBase-equivalent finalize!`) are part of the basic discrete-callback
         # contract and must run regardless of SciMLBase version.
         init_runs = Ref(0)
         finalize_runs = Ref(0)
@@ -774,9 +773,9 @@ end
     # reaches the PETSc extension, so we gate the test on that floor.
     if pkgversion(SciMLBase) >= v"2.120.0"
         @testset "save_discretes is accepted and stored in integrator opts" begin
-            # `save_discretes` controls whether `DiffEqBase.apply_discrete_callback!`
+            # `save_discretes` controls whether `_apply_discrete_callback!`
             # records discrete observable state after a callback fires. The wrapper
-            # must store it in `DEOptions` so DiffEqBase can observe it through the
+            # must store it in `DEOptions` so the integrator can observe it through the
             # standard `integrator.opts.save_discretes` path.
             integ_on = init(prob, TSRK("3bs"); dt = 0.1, save_discretes = true)
             @test integ_on.opts.save_discretes == true

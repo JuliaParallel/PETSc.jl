@@ -1,5 +1,4 @@
 using PETSc, SciMLBase
-using DiffEqBase # TODO: do we need this dependency?
 using LinearAlgebra
 
 # Small ODE to test TS accuracy, see

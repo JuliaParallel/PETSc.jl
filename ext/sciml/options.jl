@@ -106,8 +106,10 @@ function _build_opts(
     ]
     push!(tstops_data, tf)
 
-    saveat_heap = BinaryMinHeap(saveat_data)
-    tstops_heap = BinaryMinHeap(tstops_data)
+    sort!(saveat_data; rev = true)
+    sort!(tstops_data; rev = true)
+    saveat_heap = saveat_data
+    tstops_heap = tstops_data
 
     return DEOptions(
         saveat_heap,

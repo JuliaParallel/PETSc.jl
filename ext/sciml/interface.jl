@@ -15,7 +15,7 @@ function DiffEqBase.savevalues!(integ::PETScTSIntegrator, force::Bool = false)
     # `saveat` stores tdir*t in a forward BinaryMinHeap, so first(...) is the
     # next requested time in tdir order.
     while !isempty(integ.opts.saveat) &&
-          first(integ.opts.saveat) <= integ.tdir * integ.t
+          last(integ.opts.saveat) <= integ.tdir * integ.t
         t_save = pop!(integ.opts.saveat) / integ.tdir
         if t_save == integ.t
             # Saveat coincides with the step endpoint: just save the current

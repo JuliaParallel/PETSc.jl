@@ -4,7 +4,6 @@ version = "0.4.9"
 authors = ["Boris Kaus <kaus@uni-mainz.de>", "Viral B. Shah <virals@gmail.com>", "Valentin Churavy <v.churavy@gmail.com>", "Erik Schnetter <eschnetter@perimeterinstitute.ca>", "Jeremy E. Kozdon <jeremy@kozdon.net>", "Simon Byrne <simonbyrne@gmail.com>"]
 
 [deps]
-DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
 ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
 Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
@@ -26,7 +25,6 @@ SciMLBase = "0bca4576-84f4-4d90-8ffe-ffa030f20462"
 PETScSciMLExt = ["SciMLBase", "DiffEqBase"]
 
 [compat]
-DataStructures = "0.18"
 DiffEqBase = "6"
 ForwardDiff = "0.10, 1"
 Libdl = "^1.10"

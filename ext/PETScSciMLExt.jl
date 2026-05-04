@@ -1,7 +1,6 @@
 module PETScSciMLExt
 
 using PETSc
-using PETSc: BinaryMinHeap
 using SciMLBase
 using DiffEqBase
 

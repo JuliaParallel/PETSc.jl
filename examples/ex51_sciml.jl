@@ -49,7 +49,7 @@ function solve_ex51(;
     # Compute the error against the analytical solution at the achieved
     # final time.
     current_time = sol.t[end]
-    u_exact = similar(u)
+    u_exact = similar(sol.u[end])
     exact_solution!(u_exact, current_time)
 
     error_norm = norm(sol.u[end] - u_exact)

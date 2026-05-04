@@ -63,7 +63,7 @@ Users will thus have to rely on the low-level interface.
 
 ## SciML integration
 
-`PETSc.jl` ships a package extension (`PETScSciMLExt`) that lets you solve in-place `ODEProblem`s with PETSc's TS time integrators through the standard SciML interface. The extension activates automatically when `SciMLBase` is loaded — `DiffEqBase` and `OrdinaryDiffEq` are not required.
+`PETSc.jl` ships a package extension (`PETScSciMLExt`) that lets you solve in-place `ODEProblem`s with PETSc's TS time integrators through the standard SciML interface. The extension activates automatically when `SciMLBase` is loaded.
 
 ```julia
 using PETSc, SciMLBase
@@ -71,21 +71,8 @@ using PETSc, SciMLBase
 f!(du, u, p, t) = (du[1] = -u[1]; nothing)
 prob = ODEProblem(f!, [1.0], (0.0, 1.0))
 
-sol = solve(prob, PETSc.TSRK("3bs"); dt = 0.1)                                # explicit RK
-sol = solve(prob, PETSc.TSRosW("ra34pw2", ["-snes_fd"]); dt = 1e-3)           # Rosenbrock-W
-sol = solve(prob, PETSc.TSImplicit("bdf", ["-snes_fd"]); dt = 1e-3)           # BDF / theta / CN / BEuler
-sol = solve(SplitODEProblem(f1!, f2!, u0, tspan),
-            PETSc.TSARKIMEX("2e", ["-snes_fd"]); dt = 0.05)                   # IMEX
-
-integrator = init(prob, PETSc.TSRK("5dp"); dt = 0.05)                         # step!/solve! interface
-step!(integrator); sol = solve!(integrator)
+sol = solve(prob, PETSc.TSRK("3bs"); dt = 0.1)
+sol = solve(prob, PETSc.TSImplicit("bdf", ["-snes_fd"]); dt = 1e-3)
 ```
 
-`OrdinaryDiffEq` also works as the trigger since it re-exports `SciMLBase`, but the extension only depends on `SciMLBase` — no `DiffEqBase` is needed.
-
-Per-solver PETSc command-line options are passed on the algorithm itself (a `Vector{String}` of raw tokens, e.g. `["-snes_fd", "-ts_max_steps", "100"]`). Discrete callbacks and `terminate!` are supported; `ContinuousCallback`s and `tstops` are rejected with `ArgumentError` so silently-skipped exact-time callbacks cannot bite users. Standard SciML control knobs `adaptive`, `dtmin`, and `dtmax` are mapped onto PETSc's `TSAdapt` controller; unrecognized solve keywords are rejected with a clear `ArgumentError` rather than silently dropped. The extension currently requires `PetscReal = Float64`, real-valued in-place ODE problems, and forward integration (`tspan[1] < tspan[2]`). See the docstrings of `PETSc.TSRK`, `PETSc.TSRosW`, `PETSc.TSImplicit`, `PETSc.TSARKIMEX`, and `PETSc.TSGeneric` for details.
-
-Known callback-lifecycle gaps (compared to OrdinaryDiffEq):
-
-- The SciML *discrete-save* lifecycle hooks `SciMLBase.save_discretes_if_enabled!` (after `initialize!`) and `SciMLBase.save_final_discretes!` (after `finalize!`) are invoked when the loaded SciMLBase version provides them, so `DiscreteCallback` machinery that records observable state at `t0` and at the end of the solve interoperates with the standard SciML lifecycle. Callbacks that depend on per-step `save_discretes_if_enabled!` calls *during* the solve are still not driven by the manual `TSStep` loop.
-- `ContinuousCallback`s are rejected with `ArgumentError`. Wrap event detection through PETSc's `TSSetEventHandler` directly if you need it.
+See the [SciML Integration](https://juliaparallel.github.io/PETSc.jl/dev/man/sciml/) documentation page for the full API, all supported algorithm types, keyword arguments, and current limitations.

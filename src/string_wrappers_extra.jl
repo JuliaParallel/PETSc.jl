@@ -1,35 +1,27 @@
 """
-    TSSetType(petsclib, ts, type::String)
+    TSSetType(petsclib, ts, type::AbstractString)
 
-Convenience wrapper for setting TS (time-stepping) type using a Julia string.
+Set the TS time-stepping type. Accepts any `AbstractString`.
 
-# Example
-```julia
-ts = LibPETSc.TSCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
-LibPETSc.TSSetType(petsclib, ts, "bdf")
-```
+# External Links
+$(_doc_external("TS/TSSetType"))
 """
-function LibPETSc.TSSetType(petsclib::LibPETSc.PetscLibType, ts, type::String)
-    c_str = Vector{UInt8}(type * "\0")
-    ptr = Base.unsafe_convert(Ptr{Int8}, pointer(c_str))
-    LibPETSc.TSSetType(petsclib, ts, ptr)
+function LibPETSc.TSSetType(petsclib, ts, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.TSSetType(petsclib, ts, Base.unsafe_convert(Ptr{Cchar}, s))
     return nothing
 end
 
 """
-    TaoSetType(petsclib, tao, type::String)
+    TaoSetType(petsclib, tao, type::AbstractString)
 
-Convenience wrapper for setting Tao solver type using a Julia string.
+Set the Tao optimization solver type. Accepts any `AbstractString`.
 
-# Example
-```julia
-tao = LibPETSc.TaoCreate(petsclib)
-LibPETSc.TaoSetType(petsclib, tao, "lmvm")
-```
+# External Links
+$(_doc_external("Tao/TaoSetType"))
 """
-function LibPETSc.TaoSetType(petsclib::LibPETSc.PetscLibType, tao, type::String)
-    c_str = Vector{UInt8}(type * "\0")
-    ptr = Base.unsafe_convert(Ptr{Int8}, pointer(c_str))
-    LibPETSc.TaoSetType(petsclib, tao, ptr)
+function LibPETSc.TaoSetType(petsclib, tao, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.TaoSetType(petsclib, tao, Base.unsafe_convert(Ptr{Cchar}, s))
     return nothing
 end

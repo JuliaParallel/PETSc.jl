@@ -27,7 +27,7 @@ PETSc.set_library!(
 
 
 # Initialize PETSc
-PETSc.initialize(petsclib, log_view=true)
+PETSc.initialize(petsclib, log_view=false)
 
 function solve_ex45(N=7; da_grid_x=7, da_grid_y=7, da_grid_z=7, kwargs...)
     comm = MPI.COMM_WORLD

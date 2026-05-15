@@ -1,95 +1,75 @@
-# Convenience wrappers for PETSc SetType functions that accept Julia strings
-# instead of C string pointers
-#
-# These wrappers are defined in the parent PETSc module and delegate to
-# LibPETSc functions with automatic string-to-pointer conversion.
+# Convenience overloads for PETSc Set*Type functions.
+# Each accepts AbstractString and converts to the Ptr{Cchar} the C API expects.
+# GC.@preserve keeps the String alive across the ccall inside the LibPETSc wrapper.
 
 """
-    MatSetType(petsclib, mat, type::String)
+    MatSetType(petsclib, mat, type::AbstractString)
 
-Convenience wrapper for setting matrix type using a Julia string.
+Set the matrix type. Accepts any `AbstractString`.
 
-# Example
-```julia
-mat = LibPETSc.MatCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
-LibPETSc.MatSetType(petsclib, mat, "seqaij")
-```
+# External Links
+$(_doc_external("Mat/MatSetType"))
 """
-function LibPETSc.MatSetType(petsclib::LibPETSc.PetscLibType, mat, type::String)
-    c_str = Vector{UInt8}(type * "\0")
-    ptr = Base.unsafe_convert(Ptr{Int8}, pointer(c_str))
-    LibPETSc.MatSetType(petsclib, mat, ptr)
+function LibPETSc.MatSetType(petsclib, mat, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.MatSetType(petsclib, mat, Base.unsafe_convert(Ptr{Cchar}, s))
     return nothing
 end
 
 """
-    VecSetType(petsclib, vec, type::String)
+    VecSetType(petsclib, vec, type::AbstractString)
 
-Convenience wrapper for setting vector type using a Julia string.
+Set the vector type. Accepts any `AbstractString`.
 
-# Example
-```julia
-vec = LibPETSc.VecCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
-LibPETSc.VecSetType(petsclib, vec, "seq")
-```
+# External Links
+$(_doc_external("Vec/VecSetType"))
 """
-function LibPETSc.VecSetType(petsclib::LibPETSc.PetscLibType, vec, type::String)
-    c_str = Vector{UInt8}(type * "\0")
-    ptr = Base.unsafe_convert(Ptr{Int8}, pointer(c_str))
-    LibPETSc.VecSetType(petsclib, vec, ptr)
+function LibPETSc.VecSetType(petsclib, vec, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.VecSetType(petsclib, vec, Base.unsafe_convert(Ptr{Cchar}, s))
     return nothing
 end
 
 """
-    KSPSetType(petsclib, ksp, type::String)
+    KSPSetType(petsclib, ksp, type::AbstractString)
 
-Convenience wrapper for setting KSP solver type using a Julia string.
+Set the KSP solver type. Accepts any `AbstractString`.
 
-# Example
-```julia
-ksp = LibPETSc.KSPCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
-LibPETSc.KSPSetType(petsclib, ksp, "gmres")
-```
+# External Links
+$(_doc_external("KSP/KSPSetType"))
 """
-function LibPETSc.KSPSetType(petsclib::LibPETSc.PetscLibType, ksp, type::String)
-    c_str = Vector{UInt8}(type * "\0")
-    ptr = Base.unsafe_convert(Ptr{Int8}, pointer(c_str))
-    LibPETSc.KSPSetType(petsclib, ksp, ptr)
+function LibPETSc.KSPSetType(petsclib, ksp, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.KSPSetType(petsclib, ksp, Base.unsafe_convert(Ptr{Cchar}, s))
     return nothing
 end
 
 """
-    SNESSetType(petsclib, snes, type::String)
+    SNESSetType(petsclib, snes, type::AbstractString)
 
-Convenience wrapper for setting SNES solver type using a Julia string.
+Set the SNES nonlinear solver type. Accepts any `AbstractString`.
 
-# Example
-```julia
-snes = LibPETSc.SNESCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
-LibPETSc.SNESSetType(petsclib, snes, "newtonls")
-```
+# External Links
+$(_doc_external("SNES/SNESSetType"))
 """
-function LibPETSc.SNESSetType(petsclib::LibPETSc.PetscLibType, snes, type::String)
-    c_str = Vector{UInt8}(type * "\0")
-    ptr = Base.unsafe_convert(Ptr{Int8}, pointer(c_str))
-    LibPETSc.SNESSetType(petsclib, snes, ptr)
+function LibPETSc.SNESSetType(petsclib, snes, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.SNESSetType(petsclib, snes, Base.unsafe_convert(Ptr{Cchar}, s))
     return nothing
 end
 
 """
-    DMSetType(petsclib, dm, type::String)
+    DMSetType(petsclib, dm, type::AbstractString)
 
-Convenience wrapper for setting DM type using a Julia string.
+Set the DM type. Accepts any `AbstractString`.
 
-# Example
-```julia
-dm = LibPETSc.DMCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
-LibPETSc.DMSetType(petsclib, dm, "da")
-```
+# External Links
+$(_doc_external("DM/DMSetType"))
 """
-function LibPETSc.DMSetType(petsclib::LibPETSc.PetscLibType, dm, type::String)
-    c_str = Vector{UInt8}(type * "\0")
-    ptr = Base.unsafe_convert(Ptr{Int8}, pointer(c_str))
-    LibPETSc.DMSetType(petsclib, dm, ptr)
+function LibPETSc.DMSetType(petsclib, dm, type::AbstractString)
+    s = String(type)
+    GC.@preserve s LibPETSc.DMSetType(petsclib, dm, Base.unsafe_convert(Ptr{Cchar}, s))
     return nothing
 end
+
+# DMSetVecType and DMSetMatType accept AbstractString directly (VecType/MatType = Cstring).

@@ -1,12 +1,22 @@
 using Test
 using MPI: MPI, mpiexec
-using PETSc, PETSc_jll, Pkg
+using PETSc, Pkg
 
 # Make sure that all dependencies are installed also on a clean system
 Pkg.instantiate()
 
-import MPIPreferences
-@info "Testing PETSc.jl with" MPIPreferences.binary MPIPreferences.abi PETSc_jll.host_platform
+# When set_library! has been used, petsc_library is a path string and PETSc_jll
+# is not loaded.  Only import JLL-specific symbols when using the default binaries.
+const USING_CUSTOM_LIB = PETSc.petsclibs[1].petsc_library isa AbstractString
+
+import MPIPreferences  # always import to ensure local MPI API is configured
+
+if USING_CUSTOM_LIB
+    @info "Testing PETSc.jl with custom library" path=PETSc.petsclibs[1].petsc_library MPIPreferences.binary MPIPreferences.abi
+else
+    using PETSc_jll
+    @info "Testing PETSc.jl with" MPIPreferences.binary MPIPreferences.abi PETSc_jll.host_platform
+end
 
 # Do the MPI tests first so we do not have mpi running inside MPI
 mpi_tests = ("mpivec.jl", "mpimat.jl", "ksp.jl", "dmstag.jl")

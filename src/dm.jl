@@ -6,15 +6,19 @@ function Base.show(io::IO, v::AbstractPetscDM{PetscLib}) where {PetscLib}
         print(io, "PETSc DM (null pointer)")
         return
     end
-    
-    # Try to get DM info, but handle uninitialized DMs gracefully
+    # DMGetType internally calls DMInitializePackage which queries the PETSc
+    # options database.  Calling it before PETSc is initialised causes a C-level
+    # SIGSEGV that cannot be caught with try/catch.
+    if !initialized(PetscLib)
+        print(io, "PETSc DM (PETSc not initialized)")
+        return
+    end
     try
         ty = LibPETSc.DMGetType(PetscLib, v)
         di = LibPETSc.DMGetDimension(PetscLib, v)
         print(io, "PETSc DM $ty object in $di dimensions")
     catch
-        # DM not fully initialized yet (type not set)
-        print(io, "PETSc DM (not yet initialized)")
+        print(io, "PETSc DM (type not set)")
     end
     return nothing
 end
@@ -445,3 +449,4 @@ function MatAIJ(da::AbstractPetscDM{PetscLib}) where {PetscLib}
     J = LibPETSc.DMCreateMatrix(getlib(PetscLib), da)
     return J
 end
+

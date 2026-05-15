@@ -35,10 +35,10 @@ function PETSc.release_petsc_local_array(
     return nothing
 end
 
-# ── _wrap_localarray: device branch (legacy, kept for backward compat) ────────
+# ── wrap_localarray: device branch (legacy, kept for backward compat) ─────────
 #
-# No longer called by withlocalarray! (which uses _acquire/_release instead).
-# Retained in case external code calls _unsafe_localarray directly.
+# No longer called by withlocalarray! (which uses acquire/release instead).
+# Retained in case external code calls unsafe_localarray directly.
 
 function PETSc.wrap_localarray(
     cpu_arr, ::CUDAMemBackend, vec::AbstractPetscVec{PetscLib};
@@ -62,7 +62,7 @@ function PETSc.wrap_localarray(
     return dev_arr
 end
 
-# ── _get_petsc_arrays_impl: CUDA cases ───────────────────────────────────────
+# ── get_petsc_arrays_impl: CUDA cases ────────────────────────────────────────
 #
 # Two methods cover all GPU sub-cases:
 #
@@ -107,9 +107,9 @@ function PETSc.get_petsc_arrays_impl(
     return fx_gpu, lx_gpu, fx_arr, lx_arr, fx_gpu
 end
 
-# ── _restore_petsc_arrays_impl: CUDA ─────────────────────────────────────────
+# ── restore_petsc_arrays_impl: CUDA ──────────────────────────────────────────
 #
-# When fx is a CuArray (returned by the GPU _get_petsc_arrays_impl above):
+# When fx is a CuArray (returned by the GPU get_petsc_arrays_impl above):
 #   - if fx_bounce !== nothing, sync the device and copy the scratch D2H
 #   - call VecRestoreArray*AndMemType on both raw PETSc arrays
 

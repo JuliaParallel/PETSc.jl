@@ -1,11 +1,11 @@
 # GPU Support (CUDA + KernelAbstractions)
 
-Julia has outstanding support for GPUs as it compiles machine code for the particular devices. Importantly, all modern GPUs are supported, which implies that it is quite straightforward to write GPU kernels in Julia, for example using packages such as [KernelAbstractions](https://github.com/JuliaGPU/KernelAbstractions.jl).
+Julia has outstanding support for GPUs as it compiles machine code for the particular devices. Importantly, all modern GPUs are supported, which implies that it is quite straightforward to write GPU kernels in Julia, for example using packages such as [KernelAbstractions](https://github.com/JuliaGPU/KernelAbstractions.jl) with no need to write new code when you use AMD instead of NVIDIA GPU's
 
 PETSc has also added GPU support in recent years, and PETSc vector and matrix objects, along with many of the solvers, can be moved to the GPU.
 
-GPU support in PETSc.jl requires a **locally built PETSc** with CUDA or HIP enabled — the precompiled `PETSc_jll` binaries do not include GPU support. See [Installation](@ref) for instructions on pointing PETSc.jl at a local library.
-The examples below are given for CUDA. Doing this on AMD machines (HIP) will likely work the same but will require a specific extension to be added.
+GPU support in PETSc.jl requires a **locally built PETSc** with CUDA or HIP enabled — the precompiled `PETSc_jll` binaries do not include GPU support. See [Installation](@ref) for instructions on pointing PETSc.jl to a local library.
+The example below are given for CUDA. Doing this on AMD machines (HIP) will likely work the same, but will require a specific extension to be added.
 
 ## Prerequisites
 
@@ -33,74 +33,54 @@ PETSc manages where vector data lives (host or device). The extension inspects t
 
 ## Public API
 
-### `withlocalarray_device!`
+### `withlocalarray!`
 
-Callback-based access to the underlying array of one or more Vecs, returning a `CuArray` when the data is on the device:
-
-```julia
-withlocalarray_device!(f!, vecs...; read=true, write=true)
-```
+`withlocalarray!` gives callback-based access to the underlying array of one or more Vecs.
+When CUDA.jl is loaded, it automatically returns a `CuArray` for device-resident Vecs and a plain `Vector` for host-resident Vecs:
 
 ```julia
 using PETSc, CUDA, KernelAbstractions
 
-withlocalarray_device!(my_vec; read=false, write=true) do arr
-    # arr is a CuArray if the Vec lives on the GPU, plain Array otherwise
+# single Vec
+withlocalarray!(my_vec; write=true) do arr
+    # arr is CuArray on GPU, Vector on CPU
     fill!(arr, 42)
 end
-```
 
-For multiple Vecs, pass keyword tuples to control read/write access per Vec:
-
-```julia
-withlocalarray_device!(
-    (x_vec, f_vec);
-    read  = (true,  false),
-    write = (false, true),
-) do x_arr, f_arr
-    my_kernel!(backend)(f_arr, x_arr; ndrange = length(f_arr))
-    KernelAbstractions.synchronize(backend)
+# two Vecs — backend selected from the array type at runtime
+withlocalarray!(g_fx, l_x; read=(true, true), write=(true, false)) do fx, lx
+    kern = KernelAbstractions.get_backend(fx)
+    my_kernel!(kern, 256)(fx, lx; ndrange = length(fx))
+    KernelAbstractions.synchronize(kern)
 end
 ```
 
-### `get_petsc_arrays` / `restore_petsc_arrays`
-
-Lower-level paired get/restore for the residual function pattern, where you need both a global output Vec and a local (ghost-padded) input Vec:
-
-```julia
-fx, lx, fx_arr, lx_arr, fx_bounce = get_petsc_arrays(petsclib, g_fx, l_x)
-# launch kernel writing into fx, reading from lx
-restore_petsc_arrays(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
-```
-
-- When both Vecs are on the GPU, `fx` and `lx` are zero-copy `CuArray` wrappers.
-- When `l_x` is host-resident (e.g. on a coarser MG level), the data is copied host→device before the kernel and the result is copied device→host by `restore_petsc_arrays`.
-- On a CPU-only path (CUDA.jl not loaded, or all Vecs on host), `fx`/`lx` are plain `Array`s with no copies.
+The array type (`CuArray` or `Vector`) is determined automatically from the `PetscMemType`
+of each Vec, so the same code works on both CPU and GPU.  On coarser multigrid levels where
+Vecs may be host-resident even in a CUDA run, the CPU path is taken transparently.
 
 ## Writing portable kernels with KernelAbstractions
 
-Select the backend at the top of your script based on the `useCUDA` flag:
+`using CUDA` is sufficient — loading it activates `PETScCUDAExt` automatically and no
+extra imports are needed.  Write kernels with `@kernel` and select the backend at
+runtime via `KernelAbstractions.get_backend`:
 
 ```julia
-using KernelAbstractions
-using CUDA
-import CUDA: CuArray, CuPtr, unsafe_wrap
+using PETSc, CUDA, KernelAbstractions
 
-const backend = CUDABackend()   # or CPU() for a CPU run
-```
-
-Write kernels with `@kernel` so the same code runs on both backends:
-
-```julia
 @kernel function my_kernel!(out, inp)
     i = @index(Global)
     out[i] = inp[i] * 2
 end
 
-# launch:
-my_kernel!(backend, 256)(out_arr, inp_arr; ndrange = length(out_arr))
-KernelAbstractions.synchronize(backend)
+withlocalarray!(out_vec, inp_vec; read=(true, true), write=(true, false)) do out, inp
+    kern = KernelAbstractions.get_backend(out)
+    my_kernel!(kern, 256)(out, inp; ndrange = length(out))
+    KernelAbstractions.synchronize(kern)
+end
 ```
+
+The same kernel runs on CPU (when Vecs are host-resident) and GPU (when Vecs are device-resident) without any code changes.
 
 ## Example
 
@@ -108,7 +88,10 @@ KernelAbstractions.synchronize(backend)
 
 - Switching between CPU and GPU with a single `useCUDA` flag.
 - FD coloring-based Jacobian assembly running entirely on-device.
-- `get_petsc_arrays` / `restore_petsc_arrays` in the residual callback.
+- `withlocalarray!` in the residual callback for transparent CPU/GPU dispatch.
+  
+- Using [KernelAbstractions](https://github.com/JuliaGPU/KernelAbstractions.jl) to run kernels on various flavors of GPUs or CPUs.
+  
 - Multigrid preconditioning with coarser levels falling back to a CPU Jacobian.
 
 To run it on a GPU:
@@ -127,6 +110,17 @@ To run it on a GPU:
 > The `PetscInt` type in your `LocalPreferences.toml` must match the PETSc build.
 > Check with `grep sizeof_PetscInt $PETSC_DIR/$PETSC_ARCH/include/petscconf.h`.
 
+
+## Profiling
+
+To profile GPU activity, wrap the solve call with `CUDA.@profile`:
+
+```julia
+using CUDA
+CUDA.@profile PETSc.solve!(x, snes)
+```
+
+This records a trace compatible with NSight Systems (`nsys profile`) and NVTX. For a quick check of kernel timing, `CUDA.@profile external=true` launches the process under `nsys` automatically.
 
 ## Performance 
 
@@ -206,4 +200,4 @@ Vectors stay GPU-resident. The number of host↔device copies is small relative 
 
 *4. Residual evaluation (KernelAbstractions)*
 
-`MatFDColorApply` — which drives all residual evaluations for the finite-difference Jacobian — reports 0% GPU %F in PETSc's profiler. This is expected: the residual kernel is launched by Julia's CUDA.jl runtime (via KernelAbstractions) and its flops are invisible to PETSc's event system. GPU execution is confirmed indirectly by the GpuToCpu transfer pattern in `MatFDColorApply`: PETSc hands off perturbed vectors, the KA kernel evaluates the residual on the GPU, and the result is returned. On the GH200's unified memory architecture these transfers are intra-device and incur minimal latency.
+`MatFDColorApply` performs residual evaluations for the finite-difference Jacobian — reports 0% GPU %F in PETSc's profiler. This is expected: the residual kernel is launched by Julia's CUDA.jl runtime (via KernelAbstractions) and its flops are invisible to PETSc's event system. GPU execution is confirmed indirectly by the GpuToCpu transfer pattern in `MatFDColorApply`: PETSc hands off perturbed vectors, the KA kernel evaluates the residual on the GPU, and the result is returned.

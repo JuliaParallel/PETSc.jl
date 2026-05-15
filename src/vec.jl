@@ -362,7 +362,7 @@ end
 
 # ── No-finalizer acquire/release ─────────────────────────────────────────────
 #
-# `withlocalarray!` uses these instead of the finalizer-based `wrap_localarray`
+# `withlocalarray!` uses these instead of the finalizer-based `unsafe_localarray`
 # to avoid a documented Julia pitfall: after `Base.finalize(x)` is called, if
 # `x` later becomes unreachable GC may invoke the finalizer *again*, leading to
 # a double VecRestore call on an already-freed Vec (→ SIGSEGV).

@@ -264,15 +264,15 @@ end
 
 # ── Memory backend type hierarchy ─────────────────────────────────────────────
 #
-# Extensions add their own backend singletons (e.g. `CUDABackend`) and overload
-# `_memtype_backend(::Val{PETSC_MEMTYPE_DEVICE})` to return them.  The base
+# Extensions add their own backend singletons (e.g. `CUDAMemBackend`) and overload
+# `memtype_backend(::Val{PETSC_MEMTYPE_DEVICE})` to return them.  The base
 # package handles only `PETSC_MEMTYPE_HOST` → `HostBackend`.
 
 """
     AbstractPETScMemBackend
 
 Abstract supertype for PETSc memory backends.  The base package defines only
-[`HostBackend`](@ref).  GPU extensions add their own (e.g. `CUDABackend`).
+[`HostBackend`](@ref).  GPU extensions add their own (e.g. `CUDAMemBackend`).
 """
 abstract type AbstractPETScMemBackend end
 
@@ -284,23 +284,23 @@ Singleton dispatch type representing host (CPU) memory.
 struct HostBackend <: AbstractPETScMemBackend end
 
 """
-    _memtype_backend(mtype::PetscMemType) → AbstractPETScMemBackend
+    memtype_backend(mtype::PetscMemType) → AbstractPETScMemBackend
 
 Convert a `PetscMemType` runtime enum value to a singleton dispatch type.
-GPU extensions overload `_memtype_backend(::Val{MT})` for their specific
+GPU extensions overload `memtype_backend(::Val{MT})` for their specific
 `PetscMemType` values (e.g. `PETSC_MEMTYPE_DEVICE` for CUDA).
 """
-_memtype_backend(::Val{LibPETSc.PETSC_MEMTYPE_HOST}) = HostBackend()
-_memtype_backend(::Val{MT}) where {MT} =
+memtype_backend(::Val{LibPETSc.PETSC_MEMTYPE_HOST}) = HostBackend()
+memtype_backend(::Val{MT}) where {MT} =
     error("No GPU backend loaded for PetscMemType $MT — load CUDA.jl, AMDGPU.jl, …")
-_memtype_backend(mt::LibPETSc.PetscMemType) = _memtype_backend(Val(mt))
+memtype_backend(mt::LibPETSc.PetscMemType) = memtype_backend(Val(mt))
 
 # ── Device-aware local array access ───────────────────────────────────────────
 #
 # `_unsafe_localarray` is the unified entry point: it calls
 # `VecGetArray*AndMemType`, converts the returned `PetscMemType` to a backend
-# singleton via `_memtype_backend`, and dispatches to `_wrap_localarray`.
-# GPU extensions add `_wrap_localarray` methods for their own backend types.
+# singleton via `memtype_backend`, and dispatches to `wrap_localarray`.
+# GPU extensions add `wrap_localarray` methods for their own backend types.
 #
 # The typed overload `_unsafe_localarray(::Type{A}, vec; ...)` additionally
 # asserts that the returned array is of type `A`, giving a clear error when a
@@ -311,7 +311,7 @@ function _unsafe_localarray(
     read::Bool = true,
     write::Bool = true,
 ) where {PetscLib}
-    pv = _as_petsc_vec(vec)
+    pv = as_petsc_vec(vec)
     if write && read
         cpu_arr, mtype = LibPETSc.VecGetArrayAndMemType(PetscLib, pv)
     elseif write
@@ -319,7 +319,7 @@ function _unsafe_localarray(
     else
         cpu_arr, mtype = LibPETSc.VecGetArrayReadAndMemType(PetscLib, pv)
     end
-    return _wrap_localarray(cpu_arr, _memtype_backend(mtype), vec; read, write)
+    return wrap_localarray(cpu_arr, memtype_backend(mtype), vec; read, write)
 end
 
 function _unsafe_localarray(
@@ -337,7 +337,7 @@ function _unsafe_localarray(
     ))
 end
 
-function _wrap_localarray(
+function wrap_localarray(
     cpu_arr, ::HostBackend, vec::AbstractPetscVec{PetscLib};
     read::Bool, write::Bool,
 ) where {PetscLib}
@@ -355,32 +355,32 @@ function _wrap_localarray(
 end
 
 # Fallback: no backend loaded for this PetscMemType.
-function _wrap_localarray(cpu_arr, b::AbstractPETScMemBackend, vec; kw...)
-    error("_wrap_localarray not implemented for backend $(typeof(b)) — " *
+function wrap_localarray(cpu_arr, b::AbstractPETScMemBackend, vec; kw...)
+    error("wrap_localarray not implemented for backend $(typeof(b)) — " *
           "load the corresponding GPU package (e.g. CUDA.jl)")
 end
 
 # ── No-finalizer acquire/release ─────────────────────────────────────────────
 #
-# `withlocalarray!` uses these instead of the finalizer-based `_wrap_localarray`
+# `withlocalarray!` uses these instead of the finalizer-based `wrap_localarray`
 # to avoid a documented Julia pitfall: after `Base.finalize(x)` is called, if
 # `x` later becomes unreachable GC may invoke the finalizer *again*, leading to
 # a double VecRestore call on an already-freed Vec (→ SIGSEGV).
 # `try/finally` provides deterministic, single-execution cleanup.
 
 """
-    _acquire_petsc_local_array(vec; read, write) -> (arr, cpu_arr, backend)
+    acquire_petsc_local_array(vec; read, write) -> (arr, cpu_arr, backend)
 
 Get the local array from `vec` via `VecGetArray*AndMemType` without
 registering a Julia finalizer.  Returns the user-visible array, the raw PETSc
 cpu_arr needed for restore, and the backend singleton.
-Extensions overload `_make_local_array(cpu_arr, backend)` to wrap the raw
-array for their device (e.g. `CUDABackend` → `CuArray`).
+Extensions overload `make_local_array(cpu_arr, backend)` to wrap the raw
+array for their device (e.g. `CUDAMemBackend` → `CuArray`).
 """
-function _acquire_petsc_local_array(
+function acquire_petsc_local_array(
     vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
 ) where {PLib}
-    pv = _as_petsc_vec(vec)
+    pv = as_petsc_vec(vec)
     cpu_arr, mtype = if write && read
         LibPETSc.VecGetArrayAndMemType(PLib, pv)
     elseif write
@@ -388,27 +388,27 @@ function _acquire_petsc_local_array(
     else
         LibPETSc.VecGetArrayReadAndMemType(PLib, pv)
     end
-    backend = _memtype_backend(mtype)
-    arr = _make_local_array(cpu_arr, backend)
+    backend = memtype_backend(mtype)
+    arr = make_local_array(cpu_arr, backend)
     return arr, cpu_arr, backend
 end
 
 # CPU: the raw PETSc array is already a Vector — return it directly.
-_make_local_array(cpu_arr, ::HostBackend) = cpu_arr
-_make_local_array(cpu_arr, b::AbstractPETScMemBackend) =
-    error("_make_local_array not implemented for backend $(typeof(b)) — " *
+make_local_array(cpu_arr, ::HostBackend) = cpu_arr
+make_local_array(_, b::AbstractPETScMemBackend) =
+    error("make_local_array not implemented for backend $(typeof(b)) — " *
           "load the corresponding GPU package (e.g. CUDA.jl)")
 
 """
-    _release_petsc_local_array(cpu_arr, backend, vec; read, write)
+    release_petsc_local_array(cpu_arr, backend, vec; read, write)
 
 Restore a previously acquired local array.  Called in `finally` blocks by
 `withlocalarray!`.  Extensions overload this for GPU backends.
 """
-function _release_petsc_local_array(
+function release_petsc_local_array(
     cpu_arr, ::HostBackend, vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
 ) where {PLib}
-    pv = _as_petsc_vec(vec)
+    pv = as_petsc_vec(vec)
     if write && read
         LibPETSc.VecRestoreArrayAndMemType(PLib, pv, cpu_arr)
     elseif write
@@ -418,14 +418,14 @@ function _release_petsc_local_array(
     end
     return nothing
 end
-_release_petsc_local_array(cpu_arr, b::AbstractPETScMemBackend, vec; kw...) =
-    error("_release_petsc_local_array not implemented for backend $(typeof(b)) — " *
+release_petsc_local_array(cpu_arr, b::AbstractPETScMemBackend, vec; kw...) =
+    error("release_petsc_local_array not implemented for backend $(typeof(b)) — " *
           "load the corresponding GPU package (e.g. CUDA.jl)")
 
 # The auto-generated *AndMemType wrappers are typed `x::PetscVec`, but
 # `AbstractPetscVec` also includes `VecPtr`.  Convert transparently.
-_as_petsc_vec(v::LibPETSc.PetscVec) = v
-_as_petsc_vec(v::AbstractPetscVec{PetscLib}) where {PetscLib} =
+as_petsc_vec(v::LibPETSc.PetscVec) = v
+as_petsc_vec(v::AbstractPetscVec{PetscLib}) where {PetscLib} =
     LibPETSc.PetscVec{PetscLib}(v.ptr)
 
 """
@@ -435,14 +435,14 @@ Errors if the Vecs are on heterogeneous devices (different `PetscMemType`
 values), since a single `withlocalarray!` call cannot handle mixed backends.
 Returns `Vector` when all Vecs are host-resident.
 
-Extensions overload `_array_type(::Val{MT})` for a `PetscMemType` enum value
+Extensions overload `array_type(::Val{MT})` for a `PetscMemType` enum value
 `MT` to register the corresponding array type (e.g. `PETSC_MEMTYPE_DEVICE` →
 `CuArray`).
 """
 function determine_memtype(vecs::AbstractPetscVec...)
     mtypes = map(vecs) do v
         PetscLib = typeof(v).parameters[1]
-        pv = _as_petsc_vec(v)
+        pv = as_petsc_vec(v)
         arr, mtype = LibPETSc.VecGetArrayReadAndMemType(PetscLib, pv)
         LibPETSc.VecRestoreArrayReadAndMemType(PetscLib, pv, arr)
         mtype
@@ -451,13 +451,13 @@ function determine_memtype(vecs::AbstractPetscVec...)
         "Vecs are on heterogeneous devices: $(unique(mtypes)). " *
         "Use withlocalarray!(f!, ::Type{A}, ...) to handle each backend explicitly."
     ))
-    return _array_type(Val(first(mtypes)))
+    return array_type(Val(first(mtypes)))
 end
 
-_array_type(::Val{LibPETSc.PETSC_MEMTYPE_HOST}) = Vector
-_array_type(::Val{MT}) where {MT} =
+array_type(::Val{LibPETSc.PETSC_MEMTYPE_HOST}) = Vector
+array_type(::Val{MT}) where {MT} =
     error("No array type registered for PetscMemType $MT — load the corresponding GPU package (e.g. CUDA.jl)")
-# GPU extensions add: _array_type(::Val{LibPETSc.PETSC_MEMTYPE_DEVICE}) = CuArray
+# GPU extensions add: array_type(::Val{LibPETSc.PETSC_MEMTYPE_DEVICE}) = CuArray
 
 """
     withlocalarray!(
@@ -504,7 +504,7 @@ function withlocalarray!(
     # This avoids the Julia pitfall where Base.finalize + GC can both run the
     # finalizer if the object becomes unreachable again (double-restore → crash).
     acquired = map(vecs, read, write) do v, r, w
-        _acquire_petsc_local_array(v; read=r, write=w)
+        acquire_petsc_local_array(v; read=r, write=w)
     end
     try
         # Type check inside try so finally still releases on mismatch.
@@ -518,7 +518,7 @@ function withlocalarray!(
         return f!(arrays...)
     finally
         foreach(vecs, acquired, read, write) do v, (_, cpu_arr, backend), r, w
-            _release_petsc_local_array(cpu_arr, backend, v; read=r, write=w)
+            release_petsc_local_array(cpu_arr, backend, v; read=r, write=w)
         end
     end
 end
@@ -649,10 +649,10 @@ end
 #
 # `get_petsc_arrays` calls `VecGetArrayAndMemType` on both Vecs, converts the
 # returned `PetscMemType` values to backend singletons, and dispatches to
-# `_get_petsc_arrays_impl`.  The base package handles the pure-CPU case
-# (HostBackend × HostBackend).  GPU extensions add `_get_petsc_arrays_impl`
+# `get_petsc_arrays_impl`.  The base package handles the pure-CPU case
+# (HostBackend × HostBackend).  GPU extensions add `get_petsc_arrays_impl`
 # methods for their backend combinations and a matching
-# `_restore_petsc_arrays_impl` method dispatched by `restore_petsc_arrays`.
+# `restore_petsc_arrays_impl` method dispatched by `restore_petsc_arrays`.
 #
 # Return tuple:  (fx, lx, fx_arr, lx_arr, fx_bounce)
 #   CPU:  fx, lx are plain Arrays with VecRestore finalizers;
@@ -665,7 +665,7 @@ end
 
 Return arrays for `g_fx` (read-write) and `l_x` (read-only) suitable for
 passing to a compute kernel.  Dispatches on the memory location of each Vec
-via `_memtype_backend`.
+via `memtype_backend`.
 
 On the pure-CPU path (`HostBackend × HostBackend`) `fx`/`lx` are plain
 `Array`s and `fx_arr = lx_arr = fx_bounce = nothing`.  When a GPU backend
@@ -678,17 +678,17 @@ See also: [`restore_petsc_arrays`](@ref)
 """
 function get_petsc_arrays(petsclib, g_fx, l_x)
     T = petsclib.PetscScalar
-    fx_arr, fx_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, _as_petsc_vec(g_fx))
-    lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, _as_petsc_vec(l_x))
-    return _get_petsc_arrays_impl(
+    fx_arr, fx_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, as_petsc_vec(g_fx))
+    lx_arr, lx_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, as_petsc_vec(l_x))
+    return get_petsc_arrays_impl(
         petsclib, g_fx, l_x, T, fx_arr, lx_arr,
-        _memtype_backend(fx_mtype), _memtype_backend(lx_mtype),
+        memtype_backend(fx_mtype), memtype_backend(lx_mtype),
     )
 end
 
 # CPU base case: return arrays directly. restore_petsc_arrays calls VecRestore
 # explicitly — no finalizers to avoid the double-finalization crash.
-function _get_petsc_arrays_impl(
+function get_petsc_arrays_impl(
     petsclib, g_fx, l_x, ::Type, fx_arr, lx_arr, ::HostBackend, ::HostBackend,
 )
     return fx_arr, lx_arr, nothing, nothing, nothing
@@ -699,19 +699,19 @@ end
 
 Restore PETSc Vecs after a kernel launched via [`get_petsc_arrays`](@ref).
 
-Dispatches to `_restore_petsc_arrays_impl`.  On the CPU path (`fx_arr`,
+Dispatches to `restore_petsc_arrays_impl`.  On the CPU path (`fx_arr`,
 `lx_arr`, `fx_bounce` all `nothing`) this simply finalizes `fx` and `lx`,
 triggering the registered `VecRestoreArray*AndMemType` finalizers.  GPU backend
-extensions add a `_restore_petsc_arrays_impl` method for their array types.
+extensions add a `restore_petsc_arrays_impl` method for their array types.
 """
 function restore_petsc_arrays(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
-    _restore_petsc_arrays_impl(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
+    restore_petsc_arrays_impl(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
 end
 
 # CPU base case: call VecRestore directly (no finalizers).
-function _restore_petsc_arrays_impl(
+function restore_petsc_arrays_impl(
     petsclib, g_fx, l_x, fx, lx, ::Nothing, ::Nothing, ::Nothing,
 )
-    LibPETSc.VecRestoreArrayAndMemType(petsclib, _as_petsc_vec(g_fx), fx)
-    LibPETSc.VecRestoreArrayReadAndMemType(petsclib, _as_petsc_vec(l_x), lx)
+    LibPETSc.VecRestoreArrayAndMemType(petsclib, as_petsc_vec(g_fx), fx)
+    LibPETSc.VecRestoreArrayReadAndMemType(petsclib, as_petsc_vec(l_x), lx)
 end

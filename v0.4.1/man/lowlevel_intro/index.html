@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Introduction · PETSc.jl</title><meta name="title" content="Introduction · PETSc.jl"/><meta property="og:title" content="Introduction · PETSc.jl"/><meta property="twitter:title" content="Introduction · PETSc.jl"/><meta name="description" content="Documentation for PETSc.jl."/><meta property="og:description" content="Documentation for PETSc.jl."/><meta property="twitter:description" content="Documentation for PETSc.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">PETSc.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../getting_started/">Getting Started</a></li><li><span class="tocitem">High-level interface</span><ul><li><a class="tocitem" href="../vec/">Vec</a></li><li><a class="tocitem" href="../mat/">Mat</a></li><li><a class="tocitem" href="../dm/">DM</a></li><li><a class="tocitem" href="../dmda/">DMDA</a></li><li><a class="tocitem" href="../dmstag/">DMStag</a></li><li><a class="tocitem" href="../ksp/">KSP</a></li><li><a class="tocitem" href="../snes/">SNES</a></li></ul></li><li><span class="tocitem">Low-level interface (LibPETSc)</span><ul><li class="is-active"><a class="tocitem" href>Introduction</a><ul class="internal"><li><a class="tocitem" href="#When-to-Use-the-Low-Level-Interface"><span>When to Use the Low-Level Interface</span></a></li><li><a class="tocitem" href="#Basic-Usage-Pattern"><span>Basic Usage Pattern</span></a></li><li><a class="tocitem" href="#Key-Concepts"><span>Key Concepts</span></a></li><li><a class="tocitem" href="#Common-Patterns"><span>Common Patterns</span></a></li><li><a class="tocitem" href="#Mixing-High-Level-and-Low-Level-Interfaces"><span>Mixing High-Level and Low-Level Interfaces</span></a></li><li><a class="tocitem" href="#Finding-Functions"><span>Finding Functions</span></a></li><li><a class="tocitem" href="#Type-Conventions"><span>Type Conventions</span></a></li><li><a class="tocitem" href="#Reference-Pages"><span>Reference Pages</span></a></li><li><a class="tocitem" href="#Getting-Help"><span>Getting Help</span></a></li></ul></li><li><a class="tocitem" href="../vec_lowlevel/">Vec</a></li><li><a class="tocitem" href="../mat_lowlevel/">Mat</a></li><li><input class="collapse-toggle" id="menuitem-4-4" type="checkbox"/><label class="tocitem" for="menuitem-4-4"><span class="docs-label">DM</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../dm_lowlevel/">DM</a></li><li><a class="tocitem" href="../dmda_lowlevel/">DMDA</a></li><li><a class="tocitem" href="../dmplex_lowlevel/">DMPlex</a></li><li><a class="tocitem" href="../dmstag_lowlevel/">DMStag</a></li><li><a class="tocitem" href="../dmswarm_lowlevel/">DMSwarm</a></li><li><a class="tocitem" href="../dmforest_lowlevel/">DMForest</a></li><li><a class="tocitem" href="../dmnetwork_lowlevel/">DMNetwork</a></li><li><a class="tocitem" href="../dmshell_lowlevel/">DMShell and others</a></li></ul></li><li><a class="tocitem" href="../ksp_lowlevel/">KSP</a></li><li><a class="tocitem" href="../snes_lowlevel/">SNES</a></li><li><a class="tocitem" href="../ts_lowlevel/">TS (Time Stepping)</a></li><li><a class="tocitem" href="../tao_lowlevel/">Tao (Optimization)</a></li><li><a class="tocitem" href="../is_lowlevel/">IS (Index Sets)</a></li><li><a class="tocitem" href="../petscviewer_lowlevel/">PetscViewer (I/O)</a></li><li><a class="tocitem" href="../petscsection_lowlevel/">PetscSection (DOF Layout)</a></li><li><a class="tocitem" href="../petscsf_lowlevel/">PetscSF (Communication)</a></li><li><a class="tocitem" href="../ao_lowlevel/">AO (Application Ordering)</a></li></ul></li><li><a class="tocitem" href="../utilities/">Utilities</a></li><li><a class="tocitem" href="../FAQ/">FAQ</a></li><li><a class="tocitem" href="../contributing/">Contributing</a></li><li><a class="tocitem" href="../funding/">Funding</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Low-level interface (LibPETSc)</a></li><li class="is-active"><a href>Introduction</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Introduction</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaParallel/PETSc.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/JuliaParallel/PETSc.jl/blob/main/docs/src/man/lowlevel_intro.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Low-Level-Interface-(LibPETSc)"><a class="docs-heading-anchor" href="#Low-Level-Interface-(LibPETSc)">Low-Level Interface (LibPETSc)</a><a id="Low-Level-Interface-(LibPETSc)-1"></a><a class="docs-heading-anchor-permalink" href="#Low-Level-Interface-(LibPETSc)" title="Permalink"></a></h1><p>PETSc.jl provides two ways to interact with the PETSc library:</p><ol><li><strong>High-level interface</strong>: Julia-friendly wrappers that handle memory management, use 1-based indexing, and provide convenient syntax (e.g., <code>A[1,2] = 3.0</code>)</li><li><strong>Low-level interface</strong> (<code>LibPETSc</code>): Direct access to nearly the entire PETSc C API (~13,000+ functions)</li></ol><p>This guide focuses on the low-level interface.</p><h2 id="When-to-Use-the-Low-Level-Interface"><a class="docs-heading-anchor" href="#When-to-Use-the-Low-Level-Interface">When to Use the Low-Level Interface</a><a id="When-to-Use-the-Low-Level-Interface-1"></a><a class="docs-heading-anchor-permalink" href="#When-to-Use-the-Low-Level-Interface" title="Permalink"></a></h2><p>Use the low-level <code>LibPETSc</code> interface when:</p><ul><li>You need PETSc functionality not yet wrapped in the high-level interface</li><li>You&#39;re porting existing PETSc C/Fortran code to Julia</li><li>You need fine-grained control over PETSc objects</li><li>You want to access advanced or experimental PETSc features</li><li>Performance-critical code requires eliminating Julia wrapper overhead</li></ul><p>For most common tasks (creating vectors/matrices, solving linear systems), the high-level interface is recommended.</p><h2 id="Basic-Usage-Pattern"><a class="docs-heading-anchor" href="#Basic-Usage-Pattern">Basic Usage Pattern</a><a id="Basic-Usage-Pattern-1"></a><a class="docs-heading-anchor-permalink" href="#Basic-Usage-Pattern" title="Permalink"></a></h2><p>The low-level interface follows the PETSc C API closely. All functions require a <code>petsclib</code> parameter as the first argument:</p><pre><code class="language-julia hljs">using PETSc
+
+# Get a library instance (usually you&#39;ll use the first one)
+petsclib = PETSc.petsclibs[1]
+
+# Initialize PETSc
+PETSc.initialize(petsclib)
+
+# Create and use PETSc objects
+vec = LibPETSc.VecCreate(petsclib, LibPETSc.PETSC_COMM_SELF)
+LibPETSc.VecSetSizes(petsclib, vec, 10, 10)
+LibPETSc.VecSetType(petsclib, vec, &quot;seq&quot;)  # Set vector type
+LibPETSc.VecSetFromOptions(petsclib, vec)
+
+# Work with the vector
+LibPETSc.VecSet(petsclib, vec, 1.0)
+println(&quot;Vector size: &quot;, LibPETSc.VecGetSize(petsclib, vec))
+
+# Clean up
+LibPETSc.VecDestroy(petsclib, vec)
+PETSc.finalize(petsclib)</code></pre><h2 id="Key-Concepts"><a class="docs-heading-anchor" href="#Key-Concepts">Key Concepts</a><a id="Key-Concepts-1"></a><a class="docs-heading-anchor-permalink" href="#Key-Concepts" title="Permalink"></a></h2><h3 id="1.-The-petsclib-Parameter"><a class="docs-heading-anchor" href="#1.-The-petsclib-Parameter">1. The <code>petsclib</code> Parameter</a><a id="1.-The-petsclib-Parameter-1"></a><a class="docs-heading-anchor-permalink" href="#1.-The-petsclib-Parameter" title="Permalink"></a></h3><p>Every low-level function requires a <code>petsclib</code> instance. This specifies which PETSc library variant to use (e.g., Float64 vs Float32, Int32 vs Int64):</p><pre><code class="language-julia hljs"># Default libraries available (uses prebuilt PETSc binaries)
+petsclib = PETSc.petsclibs[1]  # Usually Float64, Int64
+
+# Access the scalar and integer types
+PetscScalar = petsclib.PetscScalar  # The floating-point type (e.g., Float64)
+PetscInt = petsclib.PetscInt        # The integer type (e.g., Int64)
+PetscReal = petsclib.PetscReal      # The real type (real part of PetscScalar)</code></pre><h4 id="Using-a-Custom-PETSc-Build"><a class="docs-heading-anchor" href="#Using-a-Custom-PETSc-Build">Using a Custom PETSc Build</a><a id="Using-a-Custom-PETSc-Build-1"></a><a class="docs-heading-anchor-permalink" href="#Using-a-Custom-PETSc-Build" title="Permalink"></a></h4><p>You can link to your own custom build of PETSc instead of using the prebuilt binaries. This is useful when you need:</p><ul><li>Specific configure options not available in the default build</li><li>Custom optimizations for your hardware</li><li>Debug builds for troubleshooting</li><li>Integration with specific external packages</li></ul><p>To use a custom PETSc installation:</p><pre><code class="language-julia hljs">using PETSc
+
+# Create a custom library instance pointing to your PETSc installation
+petsclib = PETSc.set_petsclib(&quot;/path/to/your/libpetsc.so&quot;; 
+                             PetscScalar=Float64, 
+                             PetscInt=Int64)
+
+# Initialize and use as normal
+PETSc.initialize(petsclib)
+
+# ... your code using petsclib ...
+
+PETSc.finalize(petsclib)</code></pre><p><strong>Important notes for custom builds:</strong></p><ul><li>The dynamic library path should point to <code>libpetsc.so</code> (Linux), <code>libpetsc.dylib</code> (macOS), or <code>libpetsc.dll</code> (Windows)</li><li>The <code>PetscScalar</code> and <code>PetscInt</code> types must match how your PETSc was configured</li><li>Your custom PETSc must be compatible with the MPI version used by <code>MPI.jl</code></li><li>You can check available precompiled libraries with <code>[PETSc.petsclibs...]</code></li></ul><h3 id="2.-Zero-Based-Indexing"><a class="docs-heading-anchor" href="#2.-Zero-Based-Indexing">2. Zero-Based Indexing</a><a id="2.-Zero-Based-Indexing-1"></a><a class="docs-heading-anchor-permalink" href="#2.-Zero-Based-Indexing" title="Permalink"></a></h3><p><strong>Important</strong>: The low-level interface uses 0-based indexing (C convention), while Julia uses 1-based indexing:</p><pre><code class="language-julia hljs"># Low-level (0-based)
+indices = PetscInt[0, 1, 2]  # First three elements
+LibPETSc.VecSetValues(petsclib, vec, 3, indices, values, INSERT_VALUES)
+
+# High-level (1-based)
+vec[1] = value  # First element</code></pre><h3 id="3.-Error-Handling"><a class="docs-heading-anchor" href="#3.-Error-Handling">3. Error Handling</a><a id="3.-Error-Handling-1"></a><a class="docs-heading-anchor-permalink" href="#3.-Error-Handling" title="Permalink"></a></h3><p>Low-level functions return <code>PetscErrorCode</code>. Use the <code>@chk</code> macro to check for errors:</p><pre><code class="language-julia hljs">using PETSc.LibPETSc: @chk
+
+err = LibPETSc.VecCreate(petsclib, MPI.COMM_SELF)
+@chk err  # Throws an error if PETSc returned non-zero</code></pre><h3 id="4.-String-Convenience-Wrappers"><a class="docs-heading-anchor" href="#4.-String-Convenience-Wrappers">4. String Convenience Wrappers</a><a id="4.-String-Convenience-Wrappers-1"></a><a class="docs-heading-anchor-permalink" href="#4.-String-Convenience-Wrappers" title="Permalink"></a></h3><p>Many PETSc <code>SetType</code> functions accept C string pointers. For convenience, PETSc.jl provides Julia <code>String</code> overloads:</p><pre><code class="language-julia hljs"># String convenience wrapper (recommended)
+LibPETSc.MatSetType(petsclib, mat, &quot;seqaij&quot;)
+LibPETSc.VecSetType(petsclib, vec, &quot;seq&quot;)
+LibPETSc.KSPSetType(petsclib, ksp, &quot;gmres&quot;)
+LibPETSc.SNESSetType(petsclib, snes, &quot;newtonls&quot;)
+LibPETSc.PCSetType(petsclib, pc[], &quot;ilu&quot;)
+LibPETSc.TSSetType(petsclib, ts, &quot;bdf&quot;)
+LibPETSc.TaoSetType(petsclib, tao, &quot;lmvm&quot;)
+LibPETSc.DMSetType(petsclib, dm, &quot;da&quot;)
+LibPETSc.PetscViewerSetType(petsclib, viewer, &quot;ascii&quot;)
+
+# Equivalent low-level C pointer syntax (not recommended unless necessary)
+ptr = Base.unsafe_convert(Ptr{Int8}, pointer(Vector{UInt8}(&quot;seqaij\0&quot;)))
+LibPETSc.MatSetType(petsclib, mat, ptr)</code></pre><p>The string wrappers handle the C string conversion internally, making the code cleaner and more Julia-friendly.</p><p>Most wrapper functions already include error checking, but when calling C functions directly, use <code>@chk</code>.</p><h3 id="4.-Memory-Management"><a class="docs-heading-anchor" href="#4.-Memory-Management">4. Memory Management</a><a id="4.-Memory-Management-1"></a><a class="docs-heading-anchor-permalink" href="#4.-Memory-Management" title="Permalink"></a></h3><p>PETSc objects created with <code>Create</code> functions must be destroyed with corresponding <code>Destroy</code> functions:</p><pre><code class="language-julia hljs"># Create
+mat = LibPETSc.MatCreate(petsclib, MPI.COMM_WORLD)
+LibPETSc.MatSetSizes(petsclib, mat, m_local, n_local, m_global, n_global)
+
+# ... use mat ...
+
+# Destroy when done
+LibPETSc.MatDestroy(petsclib, mat)</code></pre><p>For serial (single-process) objects, the high-level interface handles this automatically via finalizers.</p><h3 id="5.-Assembly"><a class="docs-heading-anchor" href="#5.-Assembly">5. Assembly</a><a id="5.-Assembly-1"></a><a class="docs-heading-anchor-permalink" href="#5.-Assembly" title="Permalink"></a></h3><p>After setting values in vectors or matrices, you must call assembly functions:</p><pre><code class="language-julia hljs"># Set values
+LibPETSc.VecSetValues(petsclib, vec, n, indices, values, INSERT_VALUES)
+
+# Assemble
+LibPETSc.VecAssemblyBegin(petsclib, vec)
+LibPETSc.VecAssemblyEnd(petsclib, vec)</code></pre><h2 id="Common-Patterns"><a class="docs-heading-anchor" href="#Common-Patterns">Common Patterns</a><a id="Common-Patterns-1"></a><a class="docs-heading-anchor-permalink" href="#Common-Patterns" title="Permalink"></a></h2><h3 id="Creating-and-Filling-a-Vector"><a class="docs-heading-anchor" href="#Creating-and-Filling-a-Vector">Creating and Filling a Vector</a><a id="Creating-and-Filling-a-Vector-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-and-Filling-a-Vector" title="Permalink"></a></h3><pre><code class="language-julia hljs">petsclib = PETSc.petsclibs[1]
+PetscInt = petsclib.PetscInt
+PetscScalar = petsclib.PetscScalar
+
+# Create vector
+vec = LibPETSc.VecCreate(petsclib, MPI.COMM_SELF)
+LibPETSc.VecSetSizes(petsclib, vec, 10, 10)
+LibPETSc.VecSetType(petsclib, vec, &quot;seq&quot;)  # Set vector type
+LibPETSc.VecSetFromOptions(petsclib, vec)
+
+# Set values (0-based indices!)
+indices = PetscInt[0, 1, 2, 3, 4]
+values = PetscScalar[1.0, 2.0, 3.0, 4.0, 5.0]
+LibPETSc.VecSetValues(petsclib, vec, 5, indices, values, INSERT_VALUES)
+
+# Assemble
+LibPETSc.VecAssemblyBegin(petsclib, vec)
+LibPETSc.VecAssemblyEnd(petsclib, vec)
+
+# View (print to stdout)
+LibPETSc.VecView(petsclib, vec, C_NULL)
+
+# Clean up
+LibPETSc.VecDestroy(petsclib, vec)</code></pre><h3 id="Creating-a-Sparse-Matrix"><a class="docs-heading-anchor" href="#Creating-a-Sparse-Matrix">Creating a Sparse Matrix</a><a id="Creating-a-Sparse-Matrix-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-a-Sparse-Matrix" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Create matrix
+mat = LibPETSc.MatCreate(petsclib, MPI.COMM_SELF)
+LibPETSc.MatSetSizes(petsclib, mat, 5, 5, 5, 5)
+LibPETSc.MatSetType(petsclib, mat, &quot;seqaij&quot;)  # String convenience wrapper
+LibPETSc.MatSetUp(petsclib, mat)
+
+# Set values (0-based indexing!)
+row = PetscInt[0]
+cols = PetscInt[0, 1]
+vals = PetscScalar[2.0, -1.0]
+LibPETSc.MatSetValues(petsclib, mat, 1, row, 2, cols, vals, INSERT_VALUES)
+
+# Assemble
+LibPETSc.MatAssemblyBegin(petsclib, mat, LibPETSc.MAT_FINAL_ASSEMBLY)
+LibPETSc.MatAssemblyEnd(petsclib, mat, LibPETSc.MAT_FINAL_ASSEMBLY)
+
+# View
+LibPETSc.MatView(petsclib, mat, C_NULL)
+
+# Clean up
+LibPETSc.MatDestroy(petsclib, mat)</code></pre><h3 id="Solving-a-Linear-System"><a class="docs-heading-anchor" href="#Solving-a-Linear-System">Solving a Linear System</a><a id="Solving-a-Linear-System-1"></a><a class="docs-heading-anchor-permalink" href="#Solving-a-Linear-System" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Create KSP solver
+ksp = LibPETSc.KSPCreate(petsclib, MPI.COMM_SELF)
+LibPETSc.KSPSetOperators(petsclib, ksp, mat, mat)
+LibPETSc.KSPSetFromOptions(petsclib, ksp)
+
+# Solve Ax = b
+LibPETSc.KSPSolve(petsclib, ksp, b, x)
+
+# Get convergence info
+reason = LibPETSc.KSPGetConvergedReason(petsclib, ksp)
+
+iterations = LibPETSc.KSPGetIterationNumber(petsclib, ksp)
+
+println(&quot;Converged in $(iterations) iterations, reason: $(reason)&quot;)
+
+# Clean up
+LibPETSc.KSPDestroy(petsclib, ksp)</code></pre><h2 id="Mixing-High-Level-and-Low-Level-Interfaces"><a class="docs-heading-anchor" href="#Mixing-High-Level-and-Low-Level-Interfaces">Mixing High-Level and Low-Level Interfaces</a><a id="Mixing-High-Level-and-Low-Level-Interfaces-1"></a><a class="docs-heading-anchor-permalink" href="#Mixing-High-Level-and-Low-Level-Interfaces" title="Permalink"></a></h2><p>You can mix both interfaces. High-level objects provide <code>.ptr</code> field to access the underlying C pointer:</p><pre><code class="language-julia hljs"># Create with high-level interface
+vec_high = VecSeq(petsclib, 10)
+
+# Use with low-level interface
+LibPETSc.VecSet(petsclib, vec_high.ptr, 5.0)
+
+# Or use the object directly (if it&#39;s a compatible type)
+LibPETSc.VecView(petsclib, vec_high, C_NULL)</code></pre><h2 id="Finding-Functions"><a class="docs-heading-anchor" href="#Finding-Functions">Finding Functions</a><a id="Finding-Functions-1"></a><a class="docs-heading-anchor-permalink" href="#Finding-Functions" title="Permalink"></a></h2><p>The low-level interface provides wrappers for most PETSc functions. To find a function:</p><ol><li><strong>Check the PETSc manual</strong>: https://petsc.org/release/docs/</li><li><strong>Use Julia&#39;s help system</strong>: Type <code>?LibPETSc.FunctionName</code></li><li><strong>Browse the documentation</strong>: See the reference pages for each PETSc class (Vec, Mat, KSP, etc.)</li><li><strong>Autocomplete</strong>: In the REPL, type <code>LibPETSc.Vec</code> and press Tab to see all Vec functions</li></ol><h2 id="Type-Conventions"><a class="docs-heading-anchor" href="#Type-Conventions">Type Conventions</a><a id="Type-Conventions-1"></a><a class="docs-heading-anchor-permalink" href="#Type-Conventions" title="Permalink"></a></h2><p>Low-level functions use these type patterns:</p><pre><code class="language-julia hljs"># PETSc objects (opaque pointers)
+CVec = Ptr{Cvoid}        # Vector
+CMat = Ptr{Cvoid}        # Matrix
+CDM = Ptr{Cvoid}         # DM (domain management)
+CKSP = Ptr{Cvoid}        # KSP (linear solver)
+CSNES = Ptr{Cvoid}       # SNES (nonlinear solver)
+
+# PETSc data types (depend on petsclib)
+PetscInt                 # Integer type (Int32 or Int64)
+PetscScalar              # Scalar type (Float64, Float32, ComplexF64, etc.)
+PetscReal                # Real type (real part of PetscScalar)</code></pre><h2 id="Reference-Pages"><a class="docs-heading-anchor" href="#Reference-Pages">Reference Pages</a><a id="Reference-Pages-1"></a><a class="docs-heading-anchor-permalink" href="#Reference-Pages" title="Permalink"></a></h2><p>Detailed documentation for low-level functions by category:</p><ul><li><a href="@ref vec_lowlevel.md">Vec (Vectors)</a> - ~293 functions for vector operations</li><li><a href="@ref mat_lowlevel.md">Mat (Matrices)</a> - ~756 functions for matrix operations</li><li><a href="@ref ksp_lowlevel.md">KSP (Linear Solvers)</a> - ~256 functions for iterative linear solvers</li><li><a href="@ref snes_lowlevel.md">SNES (Nonlinear Solvers)</a> - ~333 functions for nonlinear solvers</li></ul><h2 id="Getting-Help"><a class="docs-heading-anchor" href="#Getting-Help">Getting Help</a><a id="Getting-Help-1"></a><a class="docs-heading-anchor-permalink" href="#Getting-Help" title="Permalink"></a></h2><p>If you encounter issues:</p><ol><li>Check the <a href="https://petsc.org/release/docs/">PETSc documentation</a></li><li>Review the <a href="https://github.com/JuliaParallel/PETSc.jl/tree/main/examples">examples</a></li><li>Ask questions on <a href="https://discourse.julialang.org/">Julia Discourse</a> with the <code>petsc</code> tag</li><li>Open an issue on <a href="https://github.com/JuliaParallel/PETSc.jl/issues">GitHub</a></li></ol></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../snes/">« SNES</a><a class="docs-footer-nextpage" href="../vec_lowlevel/">Vec »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Tuesday 20 January 2026 06:07">Tuesday 20 January 2026</span>. Using Julia version 1.12.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

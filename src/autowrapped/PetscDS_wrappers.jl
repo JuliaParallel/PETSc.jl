@@ -1,5 +1,5 @@
 # autodefined type arguments for class ------
-mutable struct PetscPoCintJacFn end
+const PetscPoCintJacFn = Cvoid  # placeholder for C Jacobian function pointer types
 
 mutable struct PetscRiemannFn end
 
@@ -7,7 +7,7 @@ mutable struct PetscBdPoCintFn end
 
 mutable struct PetscBdPoCintJacFn end
 
-mutable struct PetscPoCintExactSolutionFn end
+const PetscPoCintExactSolutionFn = Cvoid  # placeholder for C exact-solution function pointer types
 
 mutable struct PetscPoCintBoundFn end
 
@@ -1262,9 +1262,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Dm/PetscDSSetResidual"))
 """
-function PetscDSSetResidual(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, f0::PetscPoCintFn, f1::PetscPoCintFn) end
+function PetscDSSetResidual(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, f0::Ptr{Cvoid}, f1::Ptr{Cvoid}) end
 
-@for_petsc function PetscDSSetResidual(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, f0::PetscPoCintFn, f1::PetscPoCintFn )
+@for_petsc function PetscDSSetResidual(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, f0::Ptr{Cvoid}, f1::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscDSSetResidual, $petsc_library),
@@ -1444,9 +1444,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Dm/PetscDSSetJacobian"))
 """
-function PetscDSSetJacobian(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::PetscPoCintJacFn, g1::PetscPoCintJacFn, g2::PetscPoCintJacFn, g3::PetscPoCintJacFn) end
+function PetscDSSetJacobian(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) end
 
-@for_petsc function PetscDSSetJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::PetscPoCintJacFn, g1::PetscPoCintJacFn, g2::PetscPoCintJacFn, g3::PetscPoCintJacFn )
+@for_petsc function PetscDSSetJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscDSSetJacobian, $petsc_library),
@@ -2270,9 +2270,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Dm/PetscDSSetExactSolution"))
 """
-function PetscDSSetExactSolution(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, sol::PetscPoCintExactSolutionFn, ctx::Cvoid) end
+function PetscDSSetExactSolution(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
 
-@for_petsc function PetscDSSetExactSolution(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::PetscPoCintExactSolutionFn, ctx::Cvoid )
+@for_petsc function PetscDSSetExactSolution(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscDSSetExactSolution, $petsc_library),

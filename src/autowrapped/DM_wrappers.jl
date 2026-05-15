@@ -1,6 +1,6 @@
 using OffsetArrays
 # autodefined type arguments for class ------
-mutable struct PetscPoCintFn end
+const PetscPoCintFn = Cvoid  # placeholder for C function pointer types (Ptr{PetscPoCintFn} == Ptr{Cvoid})
 
 mutable struct _n_DMInterpolationInfo end
 const DMInterpolationInfo = Ptr{_n_DMInterpolationInfo}
@@ -1757,9 +1757,9 @@ Level: developer
 # External Links
 $(_doc_external("Snes/DMPlexSetSNESLocalFEM"))
 """
-function DMPlexSetSNESLocalFEM(petsclib::PetscLibType, dm::PetscDM, use_obj::PetscBool, ctx::Cvoid) end
+function DMPlexSetSNESLocalFEM(petsclib::PetscLibType, dm::PetscDM, use_obj::PetscBool, ctx::Ptr{Cvoid}) end
 
-@for_petsc function DMPlexSetSNESLocalFEM(petsclib::$UnionPetscLib, dm::PetscDM, use_obj::PetscBool, ctx::Cvoid )
+@for_petsc function DMPlexSetSNESLocalFEM(petsclib::$UnionPetscLib, dm::PetscDM, use_obj::PetscBool, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:DMPlexSetSNESLocalFEM, $petsc_library),
@@ -7571,19 +7571,19 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetDS"))
 """
-function DMGetDS(petsclib::PetscLibType, dm::PetscDM, ds::PetscDS) end
+function DMGetDS(petsclib::PetscLibType, dm::PetscDM) end
 
-@for_petsc function DMGetDS(petsclib::$UnionPetscLib, dm::PetscDM, ds::PetscDS )
+@for_petsc function DMGetDS(petsclib::$UnionPetscLib, dm::PetscDM )
+	ds_ = Ref{PetscDS}()
 
     @chk ccall(
                (:DMGetDS, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{PetscDS}),
-               dm, ds,
+               dm, ds_,
               )
 
-
-	return nothing
+	return ds_[]
 end 
 
 """
@@ -9030,19 +9030,19 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetLabel"))
 """
-function DMGetLabel(petsclib::PetscLibType, dm::PetscDM, name::String, label::DMLabel) end
+function DMGetLabel(petsclib::PetscLibType, dm::PetscDM, name::String) end
 
-@for_petsc function DMGetLabel(petsclib::$UnionPetscLib, dm::PetscDM, name::String, label::DMLabel )
+@for_petsc function DMGetLabel(petsclib::$UnionPetscLib, dm::PetscDM, name::String )
+	label_ = Ref{DMLabel}(C_NULL)
 
     @chk ccall(
                (:DMGetLabel, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{Cchar}, Ptr{DMLabel}),
-               dm, name, label,
+               dm, name, label_,
               )
 
-
-	return nothing
+	return label_[]
 end 
 
 """
@@ -9626,15 +9626,15 @@ See also:
 # External Links
 $(_doc_external("DM/DMAddBoundary"))
 """
-function DMAddBoundary(petsclib::PetscLibType, dm::PetscDM, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::PetscVoidFn, bcFunc_t::PetscVoidFn, ctx::Cvoid) end
+function DMAddBoundary(petsclib::PetscLibType, dm::PetscDM, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::PetscInt, values::Vector{PetscInt}, field::PetscInt, Nc::PetscInt, comps::Vector{PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
 
-@for_petsc function DMAddBoundary(petsclib::$UnionPetscLib, dm::PetscDM, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::$PetscInt, values::Vector{$PetscInt}, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, bcFunc::PetscVoidFn, bcFunc_t::PetscVoidFn, ctx::Cvoid )
+@for_petsc function DMAddBoundary(petsclib::$UnionPetscLib, dm::PetscDM, type::DMBoundaryConditionType, name::String, label::DMLabel, Nv::$PetscInt, values::Vector{$PetscInt}, field::$PetscInt, Nc::$PetscInt, comps::Vector{$PetscInt}, bcFunc::Ptr{Cvoid}, bcFunc_t::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 	bd_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:DMAddBoundary, $petsc_library),
                PetscErrorCode,
-               (CDM, DMBoundaryConditionType, Ptr{Cchar}, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{PetscVoidFn}, Ptr{PetscVoidFn}, Ptr{Cvoid}, Ptr{$PetscInt}),
+               (CDM, DMBoundaryConditionType, Ptr{Cchar}, DMLabel, $PetscInt, Ptr{$PetscInt}, $PetscInt, $PetscInt, Ptr{$PetscInt}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{$PetscInt}),
                dm, type, name, label, Nv, values, field, Nc, comps, bcFunc, bcFunc_t, ctx, bd_,
               )
 

@@ -296,7 +296,7 @@ const void = Cvoid
 const char = Cchar
 
 mutable struct PetscDraw end
-mutable struct DMLabel end
+const DMLabel = Ptr{Cvoid}  # C typedef struct _n_DMLabel *DMLabel (pointer type)
 mutable struct TSMonitorLGCtx end
 mutable struct PetscCtxDestroyFn end
 mutable struct PetscErrorCodeFn end

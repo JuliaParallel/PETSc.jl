@@ -881,6 +881,29 @@ function dm_set_auxiliary_vec!(dm::AbstractPetscDM{PetscLib}, aux_local) where {
 end
 
 """
+    dm_coarsen_hook_add!(dm, coarsenhook, restricthook = C_NULL)
+
+Register a C callback invoked each time `dm` is coarsened (e.g. during FAS
+hierarchy setup).  The coarsenhook signature is:
+```
+hook(fine::Ptr{Cvoid}, coarse::Ptr{Cvoid}, ctx::Ptr{Cvoid}) → Cint
+```
+Use `@cfunction(f, Cint, (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}))` to create
+the pointer.  `restricthook` (optional) is called on each nonlinear solve
+restriction step.
+"""
+function dm_coarsen_hook_add! end
+
+# Convenience: infer petsclib from the DM type parameter
+function dm_coarsen_hook_add!(
+    dm::AbstractPetscDM{PL},
+    coarsenhook::Ptr{Cvoid},
+    restricthook::Ptr{Cvoid} = C_NULL,
+) where {PL}
+    LibPETSc.DMCoarsenHookAdd(getlib(PL), dm, coarsenhook, restricthook)
+end
+
+"""
     mat_null_space_create(petsclib, comm; has_const = true) -> MatNullSpace
 
 Create a null space containing the constant vector (Neumann problems).

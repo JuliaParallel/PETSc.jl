@@ -61,6 +61,15 @@
   Matrix-free preconditioner (matrix used only for PC, not for matvec):
     julia --project examples/ex12.jl -dim 2 -coeff nonlinear -snes_mf_operator
 
+  FAS nonlinear multigrid, 2 levels:
+    julia --project examples/ex12.jl -dim 2 -coeff nonlinear \
+          -dm_plex_box_faces 4,4 -dm_refine_hierarchy 1 \
+          -snes_type fas -snes_fas_levels 2 \
+          -fas_coarse_snes_type newtonls -fas_coarse_pc_type lu \
+          -fas_coarse_snes_linesearch_type basic \
+          -fas_levels_1_snes_type newtonls -fas_levels_1_pc_type ilu \
+          -fas_levels_1_ksp_rtol 1e-8
+
   Periodic mesh (no Dirichlet, singular — add null space or use neumann mode):
     julia --project examples/ex12.jl -dim 2 -dm_plex_box_bd periodic,periodic \
           -bc neumann
@@ -82,10 +91,6 @@
               BDDC/FAS on forest meshes.
               All tests with -dm_plex_convert_type p4est or -dm_plex_adapt*.
 
-    FAS nonlinear multigrid (-snes_type fas -snes_fas_levels N) requires that
-    the FE field and DS be propagated to each coarsened DM via a DM coarsen
-    callback (DMCoarsenHookAdd).  This is not implemented in this example;
-    see PETSc ex12.c SetupProblem for the full C implementation.
 
     ctetgen/triangle — 3-D simplex (tetrahedral) mesh generation.
               ctetgen/TetGen is present in the jll but crashes; use
@@ -284,6 +289,43 @@ else  # neumann
     PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_NATURAL, "flux", label,
                         PetscInt[1], 0, PetscInt[], bd_ptr)
 end
+
+# ── FAS coarsen hook ─────────────────────────────────────────────────────────
+# When -snes_type fas -dm_refine_hierarchy N is used, PETSc calls DMCoarsen to
+# build the multigrid hierarchy.  Each coarsened DM must have the same FE field,
+# DS (residual/Jacobian/exact-solution), and BCs as the fine DM.
+# This hook is called once per coarsening level and replicates that setup.
+function fas_coarsen_hook(fine_ptr::Ptr{Cvoid}, coarse_ptr::Ptr{Cvoid}, ::Ptr{Cvoid})::Cint
+    PL  = typeof(petsclib)
+    cdm = LibPETSc.PetscDM{PL}(coarse_ptr)
+    fe_c = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex; prefix = "")
+    PETSc.setfield!(cdm, 0, fe_c)
+    PETSc.createds!(cdm)
+    cds = PETSc.getds(cdm)
+    if coeff == "field"
+        PETSc.set_residual!(cds, 0, f0_field_ptr, f1_field_ptr)
+        PETSc.set_jacobian!(cds, 0, 0, C_NULL, C_NULL, C_NULL, g3_field_ptr)
+    else
+        PETSc.set_residual!(cds, 0, f0_nl_ptr, f1_nl_ptr)
+        PETSc.set_jacobian!(cds, 0, 0, g0_nl_ptr, C_NULL, g2_nl_ptr, g3_nl_ptr)
+    end
+    PETSc.set_exact_solution!(cds, 0, quadratic_u_ptr)
+    c_label = PETSc.getlabel(cdm, "marker")
+    if c_label != Ptr{Cvoid}(C_NULL)
+        if bc == "dirichlet"
+            PETSc.add_boundary!(petsclib, cdm, LibPETSc.DM_BC_ESSENTIAL, "wall",
+                                c_label, PetscInt[1], 0, PetscInt[], quadratic_u_ptr)
+        else
+            bd_ptr = coeff == "field" ? f0_bd_field_ptr : f0_bd_nl_ptr
+            PETSc.add_boundary!(petsclib, cdm, LibPETSc.DM_BC_NATURAL, "flux",
+                                c_label, PetscInt[1], 0, PetscInt[], bd_ptr)
+        end
+    end
+    return Cint(0)
+end
+const fas_coarsen_hook_ptr = Base.@cfunction(fas_coarsen_hook, Cint,
+    (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}))
+PETSc.dm_coarsen_hook_add!(dm, fas_coarsen_hook_ptr)
 
 # ── SNES + matrix + vectors ───────────────────────────────────────────────────
 snes = PETSc.SNES(petsclib, comm; opts...)

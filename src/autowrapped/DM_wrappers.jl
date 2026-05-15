@@ -5355,9 +5355,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMCoarsenHookAdd"))
 """
-function DMCoarsenHookAdd(petsclib::PetscLibType, fine::PetscDM, coarsenhook::external, restricthook::external, ctx::Cvoid) end
+function DMCoarsenHookAdd(petsclib::PetscLibType, fine::PetscDM, coarsenhook::external, restricthook::external, ctx::Ptr{Cvoid}=C_NULL) end
 
-@for_petsc function DMCoarsenHookAdd(petsclib::$UnionPetscLib, fine::PetscDM, coarsenhook::external, restricthook::external, ctx::Cvoid )
+@for_petsc function DMCoarsenHookAdd(petsclib::$UnionPetscLib, fine::PetscDM, coarsenhook::external, restricthook::external, ctx::Ptr{Cvoid}=C_NULL)
 
     @chk ccall(
                (:DMCoarsenHookAdd, $petsc_library),

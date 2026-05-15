@@ -68,10 +68,6 @@ using KernelAbstractions
 
 if useCUDA
     using CUDA
-    import CUDA: CuArray, CuPtr, unsafe_wrap
-    const backend = CUDABackend()
-else
-    const backend = KernelAbstractions.CPU()
 end
 
 
@@ -217,14 +213,6 @@ end
 # Captures from module scope: useCUDA, backend, CuArray, CuPtr,
 #   scatter_perturb_kernel!, fd_accumulate_kernel!, KernelAbstractions.
 #
-function maybe_wrap_device(arr, mtype, n, ::Type{T}, useCUDA) where T
-    if useCUDA && mtype == LibPETSc.PETSC_MEMTYPE_DEVICE
-        return unsafe_wrap(CuArray, CuPtr{T}(UInt64(pointer(arr))), n)
-    else
-        return arr
-    end
-end
-
 function fd_coloring_jac!(
     petsclib,
     snes,
@@ -232,7 +220,6 @@ function fd_coloring_jac!(
     f0_vec, f1_vec, x_pert_vec,
     val_dev  :: AbstractVector{T},
     n_colors    :: Int,
-    n_local_dofs :: Int,
     perturb_cols_dev,
     coo_idxs_dev,
     local_rows_dev,
@@ -240,34 +227,31 @@ function fd_coloring_jac!(
     inv_h :: T,
 ) where T
     LibPETSc.SNESComputeFunction(petsclib, snes, g_x, f0_vec)
-    f0_arr, f0_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, f0_vec)
-    f0_dev = maybe_wrap_device(f0_arr, f0_mtype, n_local_dofs, T, useCUDA)
+    PETSc.withlocalarray!(f0_vec; read=true, write=false) do f0
+        for c in 1:n_colors
+            isempty(perturb_cols_dev[c]) && continue
 
-    for c in 1:n_colors
-        isempty(perturb_cols_dev[c]) && continue
+            LibPETSc.VecCopy(petsclib, g_x, x_pert_vec)
+            PETSc.withlocalarray!(x_pert_vec; read=true, write=true) do xp
+                kb = KernelAbstractions.get_backend(xp)
+                scatter_perturb_kernel!(kb, 64)(
+                    xp, perturb_cols_dev[c], h_eps;
+                    ndrange = length(perturb_cols_dev[c]))
+                KernelAbstractions.synchronize(kb)
+            end
 
-        LibPETSc.VecCopy(petsclib, g_x, x_pert_vec)
-        xp_arr, xp_mtype = LibPETSc.VecGetArrayAndMemType(petsclib, x_pert_vec)
-        xp_dev = maybe_wrap_device(xp_arr, xp_mtype, n_local_dofs, T, useCUDA)
-        scatter_perturb_kernel!(backend, 64)(
-            xp_dev, perturb_cols_dev[c], h_eps;
-            ndrange = length(perturb_cols_dev[c]))
-        KernelAbstractions.synchronize(backend)
-        LibPETSc.VecRestoreArrayAndMemType(petsclib, x_pert_vec, xp_arr)
+            LibPETSc.SNESComputeFunction(petsclib, snes, x_pert_vec, f1_vec)
 
-        LibPETSc.SNESComputeFunction(petsclib, snes, x_pert_vec, f1_vec)
-
-        f1_arr, f1_mtype = LibPETSc.VecGetArrayReadAndMemType(petsclib, f1_vec)
-        f1_dev = maybe_wrap_device(f1_arr, f1_mtype, n_local_dofs, T, useCUDA)
-        fd_accumulate_kernel!(backend, 64)(
-            val_dev, f0_dev, f1_dev,
-            coo_idxs_dev[c], local_rows_dev[c], inv_h;
-            ndrange = length(coo_idxs_dev[c]))
-        KernelAbstractions.synchronize(backend)
-        LibPETSc.VecRestoreArrayReadAndMemType(petsclib, f1_vec, f1_arr)
+            PETSc.withlocalarray!(f1_vec; read=true, write=false) do f1
+                kb = KernelAbstractions.get_backend(f1)
+                fd_accumulate_kernel!(kb, 64)(
+                    val_dev, f0, f1,
+                    coo_idxs_dev[c], local_rows_dev[c], inv_h;
+                    ndrange = length(coo_idxs_dev[c]))
+                KernelAbstractions.synchronize(kb)
+            end
+        end
     end
-
-    LibPETSc.VecRestoreArrayReadAndMemType(petsclib, f0_vec, f0_arr)
     return nothing
 end
 
@@ -351,14 +335,6 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     l_x = PETSc.DMLocalVec(da)
     PETSc.dm_global_to_local!(g_x, l_x, da, PETSc.INSERT_VALUES)
 
-    # Get arrays for the output (g_fx) and ghost-padded input (l_x) Vecs.
-    # On GPU, returns CuArray wrappers (zero-copy when both Vecs are device-
-    # resident) together with the raw PETSc handles needed for the restore call.
-    # On CPU, returns plain Array views backed by VecGetArray.
-    # fx_bounce is a GPU scratch buffer used when g_fx is host-resident; it is
-    # copied back D2H by restore_petsc_arrays after the kernel completes.
-    fx, lx, fx_arr, lx_arr, fx_bounce = PETSc.get_petsc_arrays(petsclib, g_fx, l_x)
-
     corners       = PETSc.getcorners(da)
     ghost_corners = PETSc.getghostcorners(da)
 
@@ -369,14 +345,7 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
 
     nx_own = xe  - xs  + 1;  ny_own = ye  - ys  + 1
     nx_g   = xeg - xsg + 1;  ny_g   = yeg - ysg + 1
-
-    # Plain [dof, x, y] arrays — no OffsetArray, safe for KA on GPU
-    x_par = reshape(lx, 4, nx_g,   ny_g)
-    f_par = reshape(fx, 4, nx_own, ny_own)
-
-    # Ghost offset: ghost-array index for owned start = 1 + ox (0 at domain wall)
-    ox = xs - xsg
-    oy = ys - ysg
+    ox = xs - xsg;  oy = ys - ysg
 
     # Recompute grid metrics from the DM so this callback is correct on every
     # MG level (coarsen/refine changes mx/my; capturing outer-scope values
@@ -385,20 +354,26 @@ PETSc.setfunction!(snes, r) do g_fx, snes, g_x
     mx_    = Int(info_.global_size[1])
     my_    = Int(info_.global_size[2])
     dhx_   = _T(mx_ - 1);   dhy_   = _T(my_ - 1)
-    hx_    = one(_T) / dhx_; hy_   = one(_T) / dhy_
+    hx_    = one(_T) / dhx_; hy_    = one(_T) / dhy_
     hydhx_ = hy_ * dhx_;    hxdhy_ = hx_ * dhy_
     lid_   = _T(1) / dhx_    # lidvelocity = 1/(mx-1)
 
-    cavity_residual_kernel!(backend, 64)(
-        f_par, x_par,
-        dhx_, dhy_, hx_, hy_, hydhx_, hxdhy_,
-        user.grashof, user.prandtl, lid_,
-        mx_, my_, xs, ys, ox, oy;
-        ndrange = (nx_own, ny_own),
-    )
-    KernelAbstractions.synchronize(backend)
+    # withlocalarray! handles CPU/GPU dispatch: returns Vector on host, CuArray
+    # on device.  Both vecs must be on the same device (guaranteed per MG level).
+    PETSc.withlocalarray!(g_fx, l_x; read=(true, true), write=(true, false)) do fx, lx
+        kern  = KernelAbstractions.get_backend(fx)
+        x_par = reshape(lx, 4, nx_g,   ny_g)
+        f_par = reshape(fx, 4, nx_own, ny_own)
+        cavity_residual_kernel!(kern, 64)(
+            f_par, x_par,
+            dhx_, dhy_, hx_, hy_, hydhx_, hxdhy_,
+            user.grashof, user.prandtl, lid_,
+            mx_, my_, xs, ys, ox, oy;
+            ndrange = (nx_own, ny_own),
+        )
+        KernelAbstractions.synchronize(kern)
+    end
 
-    PETSc.restore_petsc_arrays(petsclib, g_fx, l_x, fx, lx, fx_arr, lx_arr, fx_bounce)
     PETSc.destroy(l_x)
     return PetscInt(0)
 end
@@ -476,7 +451,7 @@ PETSc.setjacobian!(snes, J) do Jmat, actual_snes, g_x
     fd_coloring_jac!(
         petsclib, actual_snes, g_x,
         f0_vec, f1_vec, x_pert_vec, val_dev,
-        n_colors, n_local_dofs,
+        n_colors,
         perturb_cols_dev, coo_idxs_dev, local_rows_dev,
         h_eps, inv_h,
     )
@@ -516,8 +491,17 @@ if MPI.Comm_rank(comm) == 0
 end
 
 # ── Cleanup ───────────────────────────────────────────────────────────────────
-# Run a full GC now so any lingering VecRestoreArray finalizers from
-# withlocalarray! run while PETSc is still valid, then barrier all ranks.
+# Destroy the PETSc options database stored on the SNES explicitly.  Its GC
+# finalizer calls PetscOptionsDestroy (which touches MPI internally); if GC
+# runs it after PETSc/MPI are finalized the process crashes.  Destroying here
+# while PETSc is still active is always safe.
+if !isnothing(snes.opts)
+    PETSc.destroy(snes.opts)
+    snes.opts = nothing
+end
+
+# Run a full GC so any remaining PETSc-object finalizers fire while PETSc is
+# still active.
 GC.gc(true)
 MPI.Barrier(comm)
 
@@ -533,11 +517,13 @@ PETSc.destroy(r)
 PETSc.destroy(da)
 PETSc.finalize(petsclib)
 
-# On macOS ARM64 with MPICH ch4:ofi, MPICH's C atexit handler crashes during
-# process teardown (SIGSEGV in libfabric/OFI cleanup).  Using quick_exit(0)
-# after explicitly finalizing PETSc and MPI bypasses all C atexit() handlers
-# (while still running at_quick_exit() handlers) and avoids the crash.
-# All MPI communication is already complete at this point.
 MPI.Barrier(comm)
 MPI.Finalize()
-ccall(:quick_exit, Cvoid, (Cint,), 0)
+
+# On macOS ARM64 with MPICH ch4:ofi, MPICH's C atexit handler crashes during
+# process teardown (SIGSEGV in libfabric/OFI cleanup).  quick_exit(0) bypasses
+# all C atexit() handlers and avoids the crash.  Skip when running interactively
+# (e.g. include("ex19.jl") in the REPL) so the Julia session isn't killed.
+if !isinteractive()
+    ccall(:quick_exit, Cvoid, (Cint,), 0)
+end

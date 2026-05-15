@@ -190,6 +190,67 @@ macro petsc_jacobian_fn(f, outsz)
     end
 end
 
+"""
+    @petsc_bd_fn(f, outsz)
+
+Generate a C-callable wrapper for the pure-Julia boundary pointwise function `f`
+and return its C pointer, matching the `PetscBdPointFn` signature.  Identical to
+`@petsc_residual_fn` but with an extra outward-normal vector `n` between `x` and
+`numConstants`.
+
+User function signature:
+```
+f(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
+  aOff, aOff_x, a, a_t, a_x, t, x, n, numConstants, constants, out)
+```
+`PetscInt`, `PetscReal`, `PetscScalar` must be in scope.
+"""
+macro petsc_bd_fn(f, outsz)
+    cfn = Symbol(f, :__cfn__)
+    gdim = gensym("dim"); gNf = gensym("Nf"); gNfAux = gensym("NfAux"); gnC = gensym("nC")
+    m = Dict{Symbol,Any}(:dim_ => gdim, :Nf => gNf, :NfAux => gNfAux, :numConstants => gnC)
+    outsz_s = _petsc_subst(outsz, m)
+    PI = Core.eval(__module__, :PetscInt)
+    PS = Core.eval(__module__, :PetscScalar)
+    PR = Core.eval(__module__, :PetscReal)
+    cfn_ptr_expr = :(Base.@cfunction($cfn, Cvoid,
+        ($PI, $PI, $PI, Ptr{$PI}, Ptr{$PI},
+         Ptr{$PS}, Ptr{$PS}, Ptr{$PS}, Ptr{$PI}, Ptr{$PI},
+         Ptr{$PS}, Ptr{$PS}, Ptr{$PS},
+         $PR, Ptr{$PR}, Ptr{$PR}, $PI, Ptr{$PS}, Ptr{$PS})))
+    quote
+        function $(esc(cfn))(
+            $gdim::$PI, $gNf::$PI, $gNfAux::$PI,
+            uOff_p::Ptr{$PI}, uOff_xp::Ptr{$PI},
+            u_p::Ptr{$PS}, u_tp::Ptr{$PS}, u_xp::Ptr{$PS},
+            aOff_p::Ptr{$PI}, aOff_xp::Ptr{$PI},
+            a_p::Ptr{$PS}, a_tp::Ptr{$PS}, a_xp::Ptr{$PS},
+            t::$PR, x_p::Ptr{$PR}, n_p::Ptr{$PR},
+            $gnC::$PI, cst_p::Ptr{$PS},
+            out_p::Ptr{$PS},
+        )::Cvoid
+            uOff   = unsafe_wrap(Vector{$PI}, uOff_p,  $gNf + 1)
+            uOff_x = unsafe_wrap(Vector{$PI}, uOff_xp, $gNf + 1)
+            u      = unsafe_wrap(Vector{$PS}, u_p,     uOff[end])
+            u_t    = unsafe_wrap(Vector{$PS}, u_tp,    uOff[end])
+            u_x    = unsafe_wrap(Vector{$PS}, u_xp,    uOff_x[end])
+            aOff   = $gNfAux > 0 ? unsafe_wrap(Vector{$PI}, aOff_p,  $gNfAux + 1) : $PI[]
+            aOff_x = $gNfAux > 0 ? unsafe_wrap(Vector{$PI}, aOff_xp, $gNfAux + 1) : $PI[]
+            a      = $gNfAux > 0 ? unsafe_wrap(Vector{$PS}, a_p,  aOff[end])   : $PS[]
+            a_t    = $gNfAux > 0 ? unsafe_wrap(Vector{$PS}, a_tp, aOff[end])   : $PS[]
+            a_x    = $gNfAux > 0 ? unsafe_wrap(Vector{$PS}, a_xp, aOff_x[end]) : $PS[]
+            x      = unsafe_wrap(Vector{$PR}, x_p, $gdim)
+            n      = unsafe_wrap(Vector{$PR}, n_p, $gdim)
+            constants = $gnC > 0 ? unsafe_wrap(Vector{$PS}, cst_p, $gnC) : $PS[]
+            out    = unsafe_wrap(Vector{$PS}, out_p, $outsz_s)
+            $(esc(f))($gdim, $gNf, $gNfAux, uOff, uOff_x, u, u_t, u_x,
+                      aOff, aOff_x, a, a_t, a_x, t, x, n, $gnC, constants, out)
+            return
+        end
+        @eval $cfn_ptr_expr
+    end
+end
+
 # ── DMPlex constructors ──────────────────────────────────────────────────────
 
 """
@@ -756,4 +817,87 @@ function dm_compute_l2diff(
         fill(C_NULL, length(fptrs)) :
         Ptr{Cvoid}[Ptr{Cvoid}(c) for c in ctxs]
     dm_compute_l2diff(petsclib, dm, time, fptrs, cptrs, X)
+end
+
+# ── Auxiliary-field helpers ───────────────────────────────────────────────────
+
+"""
+    dmclone(dm::AbstractPetscDM) -> AbstractPetscDM
+
+Return a new DM that is a clone of `dm` (same topology, no fields or DS).
+"""
+function dmclone(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    newdm = LibPETSc.PetscDM(getlib(PetscLib))
+    LibPETSc.DMClone(getlib(PetscLib), dm, newdm)
+    return newdm
+end
+
+"""
+    dm_create_global_vec(dm::AbstractPetscDM) -> AbstractPetscVec
+
+Allocate a global vector matching the layout of `dm`.
+"""
+function dm_create_global_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    return LibPETSc.DMCreateGlobalVector(getlib(PetscLib), dm)
+end
+
+"""
+    dm_create_local_vec(dm::AbstractPetscDM) -> AbstractPetscVec
+
+Allocate a local (ghosted) vector matching the layout of `dm`.
+"""
+function dm_create_local_vec(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
+    return LibPETSc.DMCreateLocalVector(getlib(PetscLib), dm)
+end
+
+"""
+    dm_global_to_local!(dm, global_vec, local_vec; mode = INSERT_VALUES)
+
+Scatter `global_vec` into `local_vec` (including ghost values).
+"""
+function dm_global_to_local!(
+    dm::AbstractPetscDM{PetscLib},
+    gvec,
+    lvec;
+    mode::LibPETSc.InsertMode = LibPETSc.INSERT_VALUES,
+) where {PetscLib}
+    LibPETSc.DMGlobalToLocal(getlib(PetscLib), dm, gvec, mode, lvec)
+    return nothing
+end
+
+"""
+    dm_set_auxiliary_vec!(dm, aux_local)
+
+Attach a local auxiliary vector `aux_local` to `dm` (global label / value 0 / part 0).
+The auxiliary field values are forwarded to all pointwise functions as the `a` argument.
+"""
+function dm_set_auxiliary_vec!(dm::AbstractPetscDM{PetscLib}, aux_local) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    LibPETSc.DMSetAuxiliaryVec(petsclib, dm,
+        Ptr{Cvoid}(C_NULL),
+        PetscLib.PetscInt(0), PetscLib.PetscInt(0),
+        aux_local)
+    return nothing
+end
+
+"""
+    mat_null_space_create(petsclib, comm; has_const = true) -> MatNullSpace
+
+Create a null space containing the constant vector (Neumann problems).
+"""
+function mat_null_space_create(petsclib, comm; has_const::Bool = true)
+    return LibPETSc.MatNullSpaceCreate(petsclib, comm,
+        LibPETSc.PetscBool(has_const),
+        petsclib.PetscInt(0),
+        LibPETSc.PetscVec[])
+end
+
+"""
+    mat_set_null_space!(mat, nullsp)
+
+Attach `nullsp` to `mat` so the linear solver removes it each iteration.
+"""
+function mat_set_null_space!(mat, nullsp)
+    LibPETSc.MatSetNullSpace(LibPETSc.getlib(typeof(mat).parameters[1]), mat, nullsp)
+    return nothing
 end

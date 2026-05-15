@@ -73,7 +73,7 @@ end
 #                               fx always gets a fresh scratch CuArray (bounce)
 #                               so the kernel writes there and restore copies D2H.
 #
-# HostBackend × HostBackend is handled entirely in base (vec.jl) and never
+# nothing × nothing (host) is handled entirely in base (vec.jl) and never
 # reaches these methods.
 
 # Both Vecs on the device: zero-copy wrap, no scratch needed.

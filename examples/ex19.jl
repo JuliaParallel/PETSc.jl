@@ -1,4 +1,3 @@
-# EXCLUDE FROM TESTING
 #=
   ex19.jl — 2D Driven Cavity: velocity–vorticity–temperature formulation
   Port of PETSc snes/tutorials/ex19.c

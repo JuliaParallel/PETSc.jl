@@ -264,33 +264,27 @@ end
 
 # ── Memory backend type hierarchy ─────────────────────────────────────────────
 #
-# Extensions add their own backend singletons (e.g. `CUDAMemBackend`) and overload
-# `memtype_backend(::Val{PETSC_MEMTYPE_DEVICE})` to return them.  The base
-# package handles only `PETSC_MEMTYPE_HOST` → `HostBackend`.
+# `memtype_backend` maps a `PetscMemType` to a dispatch tag.
+# Host memory returns `nothing` (no KA backend — avoids confusion with
+# KernelAbstractions.CPU()).  GPU extensions return their own singleton
+# (e.g. `CUDAMemBackend`) by overloading `memtype_backend(::Val{MT})`.
 
 """
     AbstractPETScMemBackend
 
-Abstract supertype for PETSc memory backends.  The base package defines only
-[`HostBackend`](@ref).  GPU extensions add their own (e.g. `CUDAMemBackend`).
+Abstract supertype for GPU memory backends used by PETSc extensions.
+Host memory is represented by `nothing`, not a subtype of this.
+GPU extensions define their own concrete subtype (e.g. `CUDAMemBackend`).
 """
 abstract type AbstractPETScMemBackend end
 
 """
-    HostBackend <: AbstractPETScMemBackend
+    memtype_backend(mtype::PetscMemType) → Nothing | AbstractPETScMemBackend
 
-Singleton dispatch type representing host (CPU) memory.
+Convert a `PetscMemType` to a dispatch tag.  Returns `nothing` for host memory;
+GPU extensions return their own singleton for device memory.
 """
-struct HostBackend <: AbstractPETScMemBackend end
-
-"""
-    memtype_backend(mtype::PetscMemType) → AbstractPETScMemBackend
-
-Convert a `PetscMemType` runtime enum value to a singleton dispatch type.
-GPU extensions overload `memtype_backend(::Val{MT})` for their specific
-`PetscMemType` values (e.g. `PETSC_MEMTYPE_DEVICE` for CUDA).
-"""
-memtype_backend(::Val{LibPETSc.PETSC_MEMTYPE_HOST}) = HostBackend()
+memtype_backend(::Val{LibPETSc.PETSC_MEMTYPE_HOST}) = nothing
 memtype_backend(::Val{MT}) where {MT} =
     error("No GPU backend loaded for PetscMemType $MT — load CUDA.jl, AMDGPU.jl, …")
 memtype_backend(mt::LibPETSc.PetscMemType) = memtype_backend(Val(mt))
@@ -338,7 +332,7 @@ function _unsafe_localarray(
 end
 
 function wrap_localarray(
-    cpu_arr, ::HostBackend, vec::AbstractPetscVec{PetscLib};
+    cpu_arr, ::Nothing, vec::AbstractPetscVec{PetscLib};
     read::Bool, write::Bool,
 ) where {PetscLib}
     finalizer(cpu_arr) do a
@@ -394,7 +388,7 @@ function acquire_petsc_local_array(
 end
 
 # CPU: the raw PETSc array is already a Vector — return it directly.
-make_local_array(cpu_arr, ::HostBackend) = cpu_arr
+make_local_array(cpu_arr, ::Nothing) = cpu_arr
 make_local_array(_, b::AbstractPETScMemBackend) =
     error("make_local_array not implemented for backend $(typeof(b)) — " *
           "load the corresponding GPU package (e.g. CUDA.jl)")
@@ -406,7 +400,7 @@ Restore a previously acquired local array.  Called in `finally` blocks by
 `withlocalarray!`.  Extensions overload this for GPU backends.
 """
 function release_petsc_local_array(
-    cpu_arr, ::HostBackend, vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
+    cpu_arr, ::Nothing, vec::AbstractPetscVec{PLib}; read::Bool, write::Bool,
 ) where {PLib}
     pv = as_petsc_vec(vec)
     if write && read
@@ -650,7 +644,7 @@ end
 # `get_petsc_arrays` calls `VecGetArrayAndMemType` on both Vecs, converts the
 # returned `PetscMemType` values to backend singletons, and dispatches to
 # `get_petsc_arrays_impl`.  The base package handles the pure-CPU case
-# (HostBackend × HostBackend).  GPU extensions add `get_petsc_arrays_impl`
+# (host × host (both backends nothing)).  GPU extensions add `get_petsc_arrays_impl`
 # methods for their backend combinations and a matching
 # `restore_petsc_arrays_impl` method dispatched by `restore_petsc_arrays`.
 #
@@ -667,7 +661,7 @@ Return arrays for `g_fx` (read-write) and `l_x` (read-only) suitable for
 passing to a compute kernel.  Dispatches on the memory location of each Vec
 via `memtype_backend`.
 
-On the pure-CPU path (`HostBackend × HostBackend`) `fx`/`lx` are plain
+On the pure-CPU path (`host × host (both backends nothing)`) `fx`/`lx` are plain
 `Array`s and `fx_arr = lx_arr = fx_bounce = nothing`.  When a GPU backend
 extension is loaded and a Vec lives on the device the returned `fx`/`lx` are
 device arrays.  An optional bounce buffer `fx_bounce` is allocated when `g_fx`
@@ -689,7 +683,7 @@ end
 # CPU base case: return arrays directly. restore_petsc_arrays calls VecRestore
 # explicitly — no finalizers to avoid the double-finalization crash.
 function get_petsc_arrays_impl(
-    petsclib, g_fx, l_x, ::Type, fx_arr, lx_arr, ::HostBackend, ::HostBackend,
+    petsclib, g_fx, l_x, ::Type, fx_arr, lx_arr, ::Nothing, ::Nothing,
 )
     return fx_arr, lx_arr, nothing, nothing, nothing
 end

@@ -488,7 +488,7 @@ dm = PETSc.DMPlex(petsclib, comm; opts...)
 # the polynomial degree (default 1 = Q1/P1).
 fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, dim, simplex;
                               prefix = "displacement")
-LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe), "displacement")
+PETSc.petsc_setname!(petsclib, fe, "displacement")
 PETSc.setfield!(dm, 0, fe)
 PETSc.createds!(dm)
 
@@ -650,12 +650,11 @@ let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
 
         fe_disp = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
                       dim, dim, simplex; prefix = "displacement")
-        LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_disp),
-                                    "displacement")
+        PETSc.petsc_setname!(petsclib, fe_disp, "displacement")
 
         fe_stress = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
                         dim, 9, simplex; prefix = "stress")
-        LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_stress), "stress")
+        PETSc.petsc_setname!(petsclib, fe_stress, "stress")
 
         PETSc.setfield!(dm_out, 0, fe_disp)
         PETSc.setfield!(dm_out, 1, fe_stress)
@@ -663,7 +662,7 @@ let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
 
         out_vec = PETSc.dm_create_global_vec(dm_out)
         # Empty vector name: VTK array names come purely from the FE names above.
-        LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, out_vec), "")
+        PETSc.petsc_setname!(petsclib, out_vec, "")
 
         # DMProjectField projects functions of the displacement solution (u, 1 field)
         # into both output fields simultaneously.

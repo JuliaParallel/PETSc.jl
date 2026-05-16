@@ -26,6 +26,7 @@ include("snes.jl")          # autowrapped
 include("snes_helpers.jl")  # small helper tests for SNES return-style wrappers
 include("dmda.jl")          # autowrapped
 include("dmstag.jl")        # autowrapped
+include("dmplex.jl")        # DMPlex high-level + low-level tests
 include("dmnetwork.jl")     # new test for DMNetwork example
 include("dmshell.jl")       # new test for DMShell example
 include("dmproduct.jl")     # test for DMProduct example

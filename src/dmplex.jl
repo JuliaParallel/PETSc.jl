@@ -431,14 +431,33 @@ function plexdistribute!(
     dm::AbstractPetscDM{PetscLib};
     overlap::Integer = 0,
 ) where {PetscLib}
+    petsclib = getlib(PetscLib)
     PetscInt = inttype(PetscLib)
-    # DMPlexDistribute returns (sf, dmParallel); here we only need dmParallel.
-    _, dm_par = LibPETSc.DMPlexDistribute(getlib(PetscLib), dm, PetscInt(overlap))
+    dm_par = LibPETSc.PetscDM(petsclib)
+    LibPETSc.DMPlexDistribute(petsclib, dm, PetscInt(overlap),
+                              Ptr{LibPETSc.PetscSF}(C_NULL), dm_par)
     return dm_par
 end
 
 
 # ── PetscDS / PetscFE convenience ────────────────────────────────────────────
+
+"""
+    petsc_setname!(petsclib, obj, name)
+
+Set the name of any PETSc object (DM, Vec, FE, …) to `name`.
+`obj` can be any pointer type that is convertible to `Ptr{Cvoid}`.
+
+Thin wrapper around `PetscObjectSetName` that avoids needing an explicit
+`convert(Ptr{Cvoid}, obj)` at the call site.
+
+# External Links
+$(_doc_external("Sys/PetscObjectSetName"))
+"""
+function petsc_setname!(petsclib::LibPETSc.PetscLibType, obj, name::AbstractString)
+    LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, obj), String(name))
+    return nothing
+end
 
 """
     getds(dm::AbstractPetscDM) -> PetscDS

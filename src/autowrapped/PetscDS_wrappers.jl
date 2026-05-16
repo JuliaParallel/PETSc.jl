@@ -1409,7 +1409,7 @@ $(_doc_external("Dm/PetscDSGetJacobian"))
 """
 function PetscDSGetJacobian(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::PetscPoCintJacFn, g1::PetscPoCintJacFn, g2::PetscPoCintJacFn, g3::PetscPoCintJacFn) end
 
-@for_petsc function PetscDSGetJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::PetscPoCintJacFn, g1::PetscPoCintJacFn, g2::PetscPoCintJacFn, g3::PetscPoCintJacFn )
+@for_petsc function PetscDSGetJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscDSGetJacobian, $petsc_library),
@@ -1451,7 +1451,7 @@ function PetscDSSetJacobian(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g:
     @chk ccall(
                (:PetscDSSetJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscDS, $PetscInt, $PetscInt, Ptr{PetscPoCintJacFn}, Ptr{PetscPoCintJacFn}, Ptr{PetscPoCintJacFn}, Ptr{PetscPoCintJacFn}),
+               (PetscDS, $PetscInt, $PetscInt, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
                ds, f, g, g0, g1, g2, g3,
               )
 
@@ -1590,14 +1590,14 @@ Level: intermediate
 # External Links
 $(_doc_external("Dm/PetscDSSetJacobianPreconditioner"))
 """
-function PetscDSSetJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::PetscPoCintJacFn, g1::PetscPoCintJacFn, g2::PetscPoCintJacFn, g3::PetscPoCintJacFn) end
+function PetscDSSetJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) end
 
-@for_petsc function PetscDSSetJacobianPreconditioner(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::PetscPoCintJacFn, g1::PetscPoCintJacFn, g2::PetscPoCintJacFn, g3::PetscPoCintJacFn )
+@for_petsc function PetscDSSetJacobianPreconditioner(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscDSSetJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
-               (PetscDS, $PetscInt, $PetscInt, Ptr{PetscPoCintJacFn}, Ptr{PetscPoCintJacFn}, Ptr{PetscPoCintJacFn}, Ptr{PetscPoCintJacFn}),
+               (PetscDS, $PetscInt, $PetscInt, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
                ds, f, g, g0, g1, g2, g3,
               )
 
@@ -2238,7 +2238,7 @@ $(_doc_external("Dm/PetscDSGetExactSolution"))
 """
 function PetscDSGetExactSolution(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, sol::PetscPoCintExactSolutionFn, ctx::Cvoid) end
 
-@for_petsc function PetscDSGetExactSolution(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::PetscPoCintExactSolutionFn, ctx::Cvoid )
+@for_petsc function PetscDSGetExactSolution(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid}=C_NULL )
 
     @chk ccall(
                (:PetscDSGetExactSolution, $petsc_library),
@@ -2277,7 +2277,7 @@ function PetscDSSetExactSolution(petsclib::PetscLibType, prob::PetscDS, f::Petsc
     @chk ccall(
                (:PetscDSSetExactSolution, $petsc_library),
                PetscErrorCode,
-               (PetscDS, $PetscInt, Ptr{PetscPoCintExactSolutionFn}, Ptr{Cvoid}),
+               (PetscDS, $PetscInt, Ptr{Cvoid}, Ptr{Cvoid}),
                prob, f, sol, ctx,
               )
 
@@ -2340,14 +2340,14 @@ Level: intermediate
 # External Links
 $(_doc_external("Dm/PetscDSSetExactSolutionTimeDerivative"))
 """
-function PetscDSSetExactSolutionTimeDerivative(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, sol::PetscPoCintExactSolutionFn, ctx::Cvoid) end
+function PetscDSSetExactSolutionTimeDerivative(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid}=C_NULL) end
 
-@for_petsc function PetscDSSetExactSolutionTimeDerivative(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::PetscPoCintExactSolutionFn, ctx::Cvoid )
+@for_petsc function PetscDSSetExactSolutionTimeDerivative(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid}=C_NULL )
 
     @chk ccall(
                (:PetscDSSetExactSolutionTimeDerivative, $petsc_library),
                PetscErrorCode,
-               (PetscDS, $PetscInt, Ptr{PetscPoCintExactSolutionFn}, Ptr{Cvoid}),
+               (PetscDS, $PetscInt, Ptr{Cvoid}, Ptr{Cvoid}),
                prob, f, sol, ctx,
               )
 

@@ -413,14 +413,14 @@ See also:
 # External Links
 $(_doc_external("DM/DMProjectField"))
 """
-function DMProjectField(petsclib::PetscLibType, dm::PetscDM, time::PetscReal, U::PetscVec, funcs::PetscPoCintFn, mode::InsertMode, X::PetscVec) end
+function DMProjectField(petsclib::PetscLibType, dm::PetscDM, time::PetscReal, U::PetscVec, funcs::Ptr{Ptr{Cvoid}}, mode::InsertMode, X::PetscVec) end
 
-@for_petsc function DMProjectField(petsclib::$UnionPetscLib, dm::PetscDM, time::$PetscReal, U::PetscVec, funcs::PetscPoCintFn, mode::InsertMode, X::PetscVec )
+@for_petsc function DMProjectField(petsclib::$UnionPetscLib, dm::PetscDM, time::$PetscReal, U::PetscVec, funcs::Ptr{Ptr{Cvoid}}, mode::InsertMode, X::PetscVec )
 
     @chk ccall(
                (:DMProjectField, $petsc_library),
                PetscErrorCode,
-               (CDM, $PetscReal, CVec, PetscPoCintFn, InsertMode, CVec),
+               (CDM, $PetscReal, CVec, Ptr{Ptr{Cvoid}}, InsertMode, CVec),
                dm, time, U, funcs, mode, X,
               )
 

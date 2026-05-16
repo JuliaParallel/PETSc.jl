@@ -608,23 +608,13 @@ LibPETSc.@for_petsc function add_boundary!(
 )
     values_v = collect($PetscInt.(values))
     comps_v  = collect($PetscInt.(comps))
-    bd_ref   = Ref{$PetscInt}(0)
-    # The autowrapped DMAddBoundary passes function pointers as PetscVoidFn=Cvoid,
-    # which silently nullifies the pointer. Use a direct ccall with Ptr{Cvoid} to
-    # ensure the function pointer is correctly forwarded to the C API.
-    LibPETSc.@chk ccall(
-        (:DMAddBoundary, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CDM, LibPETSc.DMBoundaryConditionType, Cstring, Ptr{Cvoid},
-         $PetscInt, Ptr{$PetscInt}, $PetscInt, $PetscInt, Ptr{$PetscInt},
-         Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{$PetscInt}),
-        dm, bctype, String(name), label,
+    return LibPETSc.DMAddBoundary(
+        petsclib, dm, bctype, String(name), label,
         $PetscInt(length(values_v)), values_v,
         $PetscInt(field),
         $PetscInt(length(comps_v)), comps_v,
-        bcfunc_ptr, bcfunc_t_ptr, ctx, bd_ref,
+        bcfunc_ptr, bcfunc_t_ptr, ctx,
     )
-    return bd_ref[]
 end
 
 
@@ -695,6 +685,30 @@ function set_jacobian!(
     petsclib = getlib(PetscLib)
     LibPETSc.PetscDSSetJacobian(petsclib, ds.ptr, PetscLib.PetscInt(fieldI), PetscLib.PetscInt(fieldJ),
                                 g0_ptr, g1_ptr, g2_ptr, g3_ptr)
+    return nothing
+end
+
+"""
+    set_jacobian_preconditioner!(ds, field_i, field_j, g0, g1, g2, g3)
+
+Set the Jacobian preconditioner terms for the weak form between fields `field_i` and `field_j`.
+Each `gN` argument is either a `Ptr{Cvoid}` function pointer or `C_NULL`.
+
+This is the preconditioner equivalent of [`set_jacobian!`](@ref).
+
+# External Links
+$(_doc_external("Dm/PetscDSSetJacobianPreconditioner"))
+"""
+function set_jacobian_preconditioner!(
+    ds::PetscDS{PetscLib},
+    field_i::Integer, field_j::Integer,
+    g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid},
+) where {PetscLib}
+    LibPETSc.PetscDSSetJacobianPreconditioner(
+        getlib(PetscLib), ds.ptr,
+        PetscLib.PetscInt(field_i), PetscLib.PetscInt(field_j),
+        g0, g1, g2, g3,
+    )
     return nothing
 end
 
@@ -992,16 +1006,7 @@ LibPETSc.@for_petsc function dm_project_field!(
     X::AbstractPetscVec{$PetscLib},
 )
     funcs_v = collect(funcs)
-    # Bypass the autowrapped DMProjectField which uses PetscPoCintFn=Cvoid and
-    # silently nullifies the function pointers. Use a direct ccall with
-    # Ptr{Ptr{Cvoid}} so the array of function pointers is correctly forwarded.
-    GC.@preserve funcs_v LibPETSc.@chk ccall(
-        (:DMProjectField, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CDM, $PetscReal, LibPETSc.CVec,
-         Ptr{Ptr{Cvoid}}, LibPETSc.InsertMode, LibPETSc.CVec),
-        dm, $PetscReal(time), U, funcs_v, mode, X,
-    )
+    GC.@preserve funcs_v LibPETSc.DMProjectField(petsclib, dm, $PetscReal(time), U, funcs_v, mode, X)
     return nothing
 end
 

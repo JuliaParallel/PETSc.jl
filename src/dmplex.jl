@@ -924,3 +924,34 @@ function mat_set_null_space!(mat, nullsp)
     LibPETSc.MatSetNullSpace(LibPETSc.getlib(typeof(mat).parameters[1]), mat, nullsp)
     return nothing
 end
+
+"""
+    vtk_save!(petsclib, comm, filename, vec)
+
+Write the global vector `vec` to a VTK unstructured-grid file (`.vtu`),
+readable by ParaView and VisIt.  Works for both serial and MPI runs; PETSc
+gathers all ranks into a single file.  The filename must end in `.vtu`.
+The mesh geometry is taken from the `DM` attached to `vec` by PETSc.
+"""
+function vtk_save! end
+
+LibPETSc.@for_petsc function vtk_save!(
+    petsclib::$UnionPetscLib,
+    comm::MPI.Comm,
+    filename::AbstractString,
+    vec::AbstractPetscVec{$PetscLib},
+)
+    vtk_ref = Ref{LibPETSc.PetscViewer}(C_NULL)
+    LibPETSc.@chk ccall((:PetscViewerVTKOpen, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.MPI_Comm, Cstring, LibPETSc.PetscFileMode, Ptr{LibPETSc.PetscViewer}),
+        comm, filename, LibPETSc.FILE_MODE_WRITE, vtk_ref)
+    LibPETSc.@chk ccall((:VecView, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.CVec, LibPETSc.PetscViewer),
+        vec, vtk_ref[])
+    LibPETSc.@chk ccall((:PetscViewerDestroy, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (Ptr{LibPETSc.PetscViewer},), vtk_ref)
+    return nothing
+end

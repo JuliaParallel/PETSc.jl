@@ -21,6 +21,11 @@
     field:      f = (2·dim+2)·x₂ + 2·dim
     nonlinear:  f = (2·dim+4)·u + 2·dim
 
+  Additional option:
+    -vtk_output FILE.vtu  write solution to FILE.vtu (readable by ParaView / VisIt).
+                          Works for both serial and MPI runs; all ranks write into a
+                          single file.  The .vtu extension is required.
+
   ── Basic usage ──────────────────────────────────────────────────────────────
 
   Serial, 2-D, linear coefficient (triangles):
@@ -371,6 +376,18 @@ end
 l2err = PETSc.dm_compute_l2diff(petsclib, dm, 0.0, [quadratic_u_ptr], nothing, u)
 if MPI.Comm_rank(comm) == 0
     println("L2 error: $l2err")
+end
+
+# ── VTK output ────────────────────────────────────────────────────────────────
+# Write solution to VTK if -vtk_output <filename> is given.
+# Serial:  produces <filename>.vtu
+# MPI:     produces <filename>.pvtu + one .vtu per rank (open the .pvtu in ParaView)
+let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
+    if _vtk !== nothing
+        fname = string(_vtk)
+        PETSc.vtk_save!(petsclib, comm, fname, u)
+        MPI.Comm_rank(comm) == 0 && println("Solution written to $fname")
+    end
 end
 
 # ── Cleanup ───────────────────────────────────────────────────────────────────

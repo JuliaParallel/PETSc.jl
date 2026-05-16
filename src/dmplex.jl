@@ -608,14 +608,23 @@ LibPETSc.@for_petsc function add_boundary!(
 )
     values_v = collect($PetscInt.(values))
     comps_v  = collect($PetscInt.(comps))
-    return LibPETSc.DMAddBoundary(
-        petsclib, dm,
-        bctype, String(name), label,
+    bd_ref   = Ref{$PetscInt}(0)
+    # The autowrapped DMAddBoundary passes function pointers as PetscVoidFn=Cvoid,
+    # which silently nullifies the pointer. Use a direct ccall with Ptr{Cvoid} to
+    # ensure the function pointer is correctly forwarded to the C API.
+    LibPETSc.@chk ccall(
+        (:DMAddBoundary, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.CDM, LibPETSc.DMBoundaryConditionType, Cstring, Ptr{Cvoid},
+         $PetscInt, Ptr{$PetscInt}, $PetscInt, $PetscInt, Ptr{$PetscInt},
+         Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{$PetscInt}),
+        dm, bctype, String(name), label,
         $PetscInt(length(values_v)), values_v,
         $PetscInt(field),
         $PetscInt(length(comps_v)), comps_v,
-        bcfunc_ptr, bcfunc_t_ptr, ctx,
+        bcfunc_ptr, bcfunc_t_ptr, ctx, bd_ref,
     )
+    return bd_ref[]
 end
 
 
@@ -954,4 +963,210 @@ LibPETSc.@for_petsc function vtk_save!(
         LibPETSc.PetscErrorCode,
         (Ptr{LibPETSc.PetscViewer},), vtk_ref)
     return nothing
+end
+
+"""
+    dm_project_field!(petsclib, dm, time, U, funcs, mode, X)
+
+Project a function of the fields in the input vector `U` into the FE space of `dm`,
+writing the result into `X`.  `funcs` is a vector of `Ptr{Cvoid}` function pointers
+(one per field in `dm`), each with the `PetscPointFn` / `@petsc_residual_fn` signature.
+`U` must be associated with a DM that shares the same mesh as `dm` (e.g. obtained via
+[`dmclone`](@ref)).
+
+Use this to compute derived quantities (e.g. stress from displacement gradient) and
+project them onto a new FE field for visualisation.
+
+# External Links
+$(_doc_external("DM/DMProjectField"))
+"""
+function dm_project_field! end
+
+LibPETSc.@for_petsc function dm_project_field!(
+    petsclib::$UnionPetscLib,
+    dm::AbstractPetscDM{$PetscLib},
+    time::Real,
+    U::AbstractPetscVec{$PetscLib},
+    funcs::AbstractVector{Ptr{Cvoid}},
+    mode::LibPETSc.InsertMode,
+    X::AbstractPetscVec{$PetscLib},
+)
+    funcs_v = collect(funcs)
+    # Bypass the autowrapped DMProjectField which uses PetscPoCintFn=Cvoid and
+    # silently nullifies the function pointers. Use a direct ccall with
+    # Ptr{Ptr{Cvoid}} so the array of function pointers is correctly forwarded.
+    GC.@preserve funcs_v LibPETSc.@chk ccall(
+        (:DMProjectField, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.CDM, $PetscReal, LibPETSc.CVec,
+         Ptr{Ptr{Cvoid}}, LibPETSc.InsertMode, LibPETSc.CVec),
+        dm, $PetscReal(time), U, funcs_v, mode, X,
+    )
+    return nothing
+end
+
+function dm_project_field!(
+    petsclib, dm::AbstractPetscDM,
+    time::Real, U, funcs, mode, X,
+)
+    fptrs = Ptr{Cvoid}[Ptr{Cvoid}(f) for f in funcs]
+    dm_project_field!(petsclib, dm, time, U, fptrs, mode, X)
+end
+
+"""
+    vtk_save_fields!(petsclib, comm, filename, vecs)
+
+Write multiple global vectors to a single VTK file (`.vtu`).  `vecs` is any
+iterable of `AbstractPetscVec`; each is written as a separate point-data array.
+The field name shown in ParaView/VisIt comes from the name set on the vector via
+`PetscObjectSetName`.
+
+This is the multi-field equivalent of [`vtk_save!`](@ref).
+"""
+function vtk_save_fields! end
+
+LibPETSc.@for_petsc function vtk_save_fields!(
+    petsclib::$UnionPetscLib,
+    comm::MPI.Comm,
+    filename::AbstractString,
+    vecs,   # iterable of AbstractPetscVec
+)
+    vtk_ref = Ref{LibPETSc.PetscViewer}(C_NULL)
+    LibPETSc.@chk ccall((:PetscViewerVTKOpen, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.MPI_Comm, Cstring, LibPETSc.PetscFileMode, Ptr{LibPETSc.PetscViewer}),
+        comm, filename, LibPETSc.FILE_MODE_WRITE, vtk_ref)
+    for vec in vecs
+        LibPETSc.@chk ccall((:VecView, $petsc_library),
+            LibPETSc.PetscErrorCode,
+            (LibPETSc.CVec, LibPETSc.PetscViewer),
+            vec, vtk_ref[])
+    end
+    LibPETSc.@chk ccall((:PetscViewerDestroy, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (Ptr{LibPETSc.PetscViewer},), vtk_ref)
+    return nothing
+end
+
+"""
+    set_constants!(ds::PetscDS, constants)
+
+Set the named constants (accessible as `constants[i]` in pointwise functions) on the
+`PetscDS` `ds`.  `constants` must be an `AbstractVector` whose elements are convertible
+to `PetscScalar`.
+
+# External Links
+$(_doc_external("Dm/PetscDSSetConstants"))
+"""
+function set_constants!(ds::PetscDS{PetscLib}, constants::AbstractVector) where {PetscLib}
+    petsclib = getlib(PetscLib)
+    cst_v = collect(PetscLib.PetscScalar, constants)
+    LibPETSc.PetscDSSetConstants(petsclib, ds.ptr, PetscLib.PetscInt(length(cst_v)), cst_v)
+    return nothing
+end
+
+"""
+    add_natural_boundary!(petsclib, dm, ds, name, label, label_value, field, f0_ptr, f1_ptr = C_NULL) -> bd::PetscInt
+
+Register a natural (Neumann) boundary condition on `dm` following the PETSc 3.22+
+pattern used in the C tutorials.  Equivalent to:
+```c
+DMAddBoundary(dm, DM_BC_NATURAL, name, label, 1, &val, field, 0, NULL, NULL, NULL, NULL, &bd);
+PetscDSGetBoundary(ds, bd, &wf, NULL, ...);
+PetscWeakFormSetIndexBdResidual(wf, label, val, field, 0, 0, f0, 0, NULL);
+```
+
+`f0_ptr` is a `@petsc_bd_fn`-generated C-callable function pointer implementing
+the boundary integrand (`PetscBdPointFn` signature, with the outward normal `n[]`
+between `x[]` and `numConstants`).
+
+# External Links
+$(_doc_external("DM/DMAddBoundary"))
+$(_doc_external("Dm/PetscWeakFormSetIndexBdResidual"))
+"""
+function add_natural_boundary! end
+
+LibPETSc.@for_petsc function add_natural_boundary!(
+    petsclib::$UnionPetscLib,
+    dm::AbstractPetscDM{$PetscLib},
+    ds::PetscDS{$PetscLib},
+    name::AbstractString,
+    label::Ptr{Cvoid},
+    label_value::Integer,
+    field::Integer,
+    f0_ptr::Ptr{Cvoid},
+    f1_ptr::Ptr{Cvoid} = C_NULL,
+)
+    val_v  = $PetscInt[label_value]
+    bd_ref = Ref{$PetscInt}(0)
+    # Step 1: register the boundary (NULL function — function set via weak form below)
+    LibPETSc.@chk ccall(
+        (:DMAddBoundary, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.CDM, LibPETSc.DMBoundaryConditionType, Cstring, Ptr{Cvoid},
+         $PetscInt, Ptr{$PetscInt}, $PetscInt, $PetscInt, Ptr{$PetscInt},
+         Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{$PetscInt}),
+        dm, LibPETSc.DM_BC_NATURAL, String(name), label,
+        $PetscInt(1), val_v, $PetscInt(field), $PetscInt(0), Ptr{$PetscInt}(C_NULL),
+        C_NULL, C_NULL, C_NULL, bd_ref,
+    )
+    bd = bd_ref[]
+    # Step 2: get the per-boundary PetscWeakForm
+    wf_ref = Ref{LibPETSc.PetscWeakForm}()
+    LibPETSc.@chk ccall((:PetscDSGetBoundary, $petsc_library), LibPETSc.PetscErrorCode,
+        (LibPETSc.PetscDS, $PetscInt,
+         Ptr{LibPETSc.PetscWeakForm},  # wf (output)
+         Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid},
+         Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
+        ds.ptr, bd, wf_ref,
+        C_NULL, C_NULL, C_NULL, C_NULL, C_NULL, C_NULL,
+        C_NULL, C_NULL, C_NULL, C_NULL, C_NULL)
+    wf = wf_ref[]
+    # Step 3: install the boundary integrand on the per-boundary weak form
+    LibPETSc.@chk ccall((:PetscWeakFormSetIndexBdResidual, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.PetscWeakForm, Ptr{Cvoid}, $PetscInt, $PetscInt, $PetscInt,
+         $PetscInt, Ptr{Cvoid}, $PetscInt, Ptr{Cvoid}),
+        wf, label, $PetscInt(label_value), $PetscInt(field),
+        $PetscInt(0), $PetscInt(0), f0_ptr, $PetscInt(0), f1_ptr)
+    return bd
+end
+
+"""
+    dm_copy_disc!(src::AbstractPetscDM, dst::AbstractPetscDM)
+
+Copy the discretisation (fields, `PetscDS`, BCs) from `src` to `dst`.  Useful when
+propagating FEM setup to coarser levels of a multigrid hierarchy.
+
+# External Links
+$(_doc_external("DM/DMCopyDisc"))
+"""
+function dm_copy_disc! end
+
+LibPETSc.@for_petsc function dm_copy_disc!(
+    src::AbstractPetscDM{$PetscLib},
+    dst::AbstractPetscDM{$PetscLib},
+)
+    LibPETSc.DMCopyDisc(getlib($PetscLib), src, dst)
+    return nothing
+end
+
+"""
+    dm_get_coarse(dm::AbstractPetscDM) -> AbstractPetscDM
+
+Return the coarse `DM` from which `dm` was obtained by refinement (e.g. via
+`-dm_refine_hierarchy`).  The returned DM is a borrowed reference owned by PETSc;
+do **not** call `destroy` on it.  Check `convert(Ptr{Cvoid}, cdm) == C_NULL` to
+detect when there is no coarser level.
+
+# External Links
+$(_doc_external("DM/DMGetCoarseDM"))
+"""
+function dm_get_coarse end
+
+LibPETSc.@for_petsc function dm_get_coarse(dm::AbstractPetscDM{$PetscLib})
+    petsclib = getlib($PetscLib)
+    cdm = LibPETSc.PetscDM(petsclib)
+    LibPETSc.DMGetCoarseDM(petsclib, dm, cdm)
+    return cdm
 end

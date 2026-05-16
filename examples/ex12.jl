@@ -291,8 +291,7 @@ if bc == "dirichlet"
                         PetscInt[1], 0, PetscInt[], quadratic_u_ptr)
 else  # neumann
     bd_ptr = coeff == "field" ? f0_bd_field_ptr : f0_bd_nl_ptr
-    PETSc.add_boundary!(petsclib, dm, LibPETSc.DM_BC_NATURAL, "flux", label,
-                        PetscInt[1], 0, PetscInt[], bd_ptr)
+    PETSc.add_natural_boundary!(petsclib, dm, ds, "flux", label, 1, 0, bd_ptr)
 end
 
 # ── FAS coarsen hook ─────────────────────────────────────────────────────────
@@ -322,8 +321,7 @@ function fas_coarsen_hook(fine_ptr::Ptr{Cvoid}, coarse_ptr::Ptr{Cvoid}, ::Ptr{Cv
                                 c_label, PetscInt[1], 0, PetscInt[], quadratic_u_ptr)
         else
             bd_ptr = coeff == "field" ? f0_bd_field_ptr : f0_bd_nl_ptr
-            PETSc.add_boundary!(petsclib, cdm, LibPETSc.DM_BC_NATURAL, "flux",
-                                c_label, PetscInt[1], 0, PetscInt[], bd_ptr)
+            PETSc.add_natural_boundary!(petsclib, cdm, cds, "flux", c_label, 1, 0, bd_ptr)
         end
     end
     return Cint(0)

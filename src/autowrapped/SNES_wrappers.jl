@@ -2514,9 +2514,9 @@ function SNESGetPicard(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, f::
                snes, r_, f, Amat_, Pmat_, J, ctx,
               )
 
-	r.ptr = C_NULL
-	Amat.ptr = C_NULL
-	Pmat.ptr = C_NULL
+	r.ptr = r_[]
+	Amat.ptr = Amat_[]
+	Pmat.ptr = Pmat_[]
 
 	return nothing
 end 
@@ -2903,11 +2903,11 @@ function SNESGetJacobian(petsclib::PetscLibType, snes::PetscSNES, Amat::PetscMat
                snes, Amat_, Pmat_, J, ctx,
               )
 
-	Amat.ptr = C_NULL
-	Pmat.ptr = C_NULL
+	Amat.ptr = Amat_[]
+	Pmat.ptr = Pmat_[]
 
 	return nothing
-end 
+end
 
 """
 	SNESSetUp(petsclib::PetscLibType,snes::PetscSNES) 

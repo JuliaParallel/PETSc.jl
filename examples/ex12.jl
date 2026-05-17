@@ -343,8 +343,7 @@ LibPETSc.SNESSetJacobian(petsclib, snes, J, J, C_NULL, C_NULL)
 # MatSetTransposeNullSpace → projects null space from the RHS (b) each KSP solve.
 # Both are required for the residual to converge to zero.
 if bc == "neumann"
-    nsp = LibPETSc.MatNullSpaceCreate(petsclib, comm,
-              LibPETSc.PetscBool(true), PetscInt(0), LibPETSc.PetscVec[])
+    nsp = PETSc.mat_null_space_create(petsclib, comm; has_const = true)
     LibPETSc.MatSetNullSpace(petsclib, J, nsp)
     LibPETSc.MatSetTransposeNullSpace(petsclib, J, nsp)
 end

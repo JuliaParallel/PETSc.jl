@@ -3396,30 +3396,43 @@ Level: developer
 # External Links
 $(_doc_external("Dm/PetscDSGetBoundary"))
 """
-function PetscDSGetBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt, wf::PetscWeakForm, type::DMBoundaryConditionType, name::String, label::DMLabel, func::PetscVoidFn, func_t::PetscVoidFn, ctx::Cvoid) end
+function PetscDSGetBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt) end
 
-@for_petsc function PetscDSGetBoundary(petsclib::$UnionPetscLib, ds::PetscDS, bd::$PetscInt, wf::PetscWeakForm, type::DMBoundaryConditionType, name::String, label::DMLabel, func::PetscVoidFn, func_t::PetscVoidFn, ctx::Cvoid )
-	name_ = Ref(pointer(name))
-	Nv_ = Ref{$PetscInt}()
-	values_ = Ref{Ptr{$PetscInt}}()
-	field_ = Ref{$PetscInt}()
-	Nc_ = Ref{$PetscInt}()
-	comps_ = Ref{Ptr{$PetscInt}}()
+@for_petsc function PetscDSGetBoundary(petsclib::$UnionPetscLib, ds::PetscDS, bd::$PetscInt)
+	wf_ref    = Ref{PetscWeakForm}(C_NULL)
+	type_ref  = Ref{DMBoundaryConditionType}()
+	name_ref  = Ref{Ptr{Cchar}}(C_NULL)
+	label_ref = Ref{DMLabel}(C_NULL)
+	Nv_ref    = Ref{$PetscInt}(0)
+	values_ref = Ref{Ptr{$PetscInt}}(C_NULL)
+	field_ref = Ref{$PetscInt}(0)
+	Nc_ref    = Ref{$PetscInt}(0)
+	comps_ref = Ref{Ptr{$PetscInt}}(C_NULL)
+	func_ref  = Ref{Ptr{Cvoid}}(C_NULL)
+	func_t_ref = Ref{Ptr{Cvoid}}(C_NULL)
+	ctx_ref   = Ref{Ptr{Cvoid}}(C_NULL)
 
     @chk ccall(
                (:PetscDSGetBoundary, $petsc_library),
                PetscErrorCode,
-               (PetscDS, $PetscInt, Ptr{PetscWeakForm}, Ptr{DMBoundaryConditionType}, Ptr{Ptr{Cchar}}, Ptr{DMLabel}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, PetscVoidFn, PetscVoidFn, Cvoid),
-               ds, bd, wf, type, name_, label, Nv_, values_, field_, Nc_, comps_, func, func_t, ctx,
+               (PetscDS, $PetscInt,
+                Ptr{PetscWeakForm}, Ptr{DMBoundaryConditionType}, Ptr{Ptr{Cchar}}, Ptr{DMLabel},
+                Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}},
+                Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               ds, bd,
+               wf_ref, type_ref, name_ref, label_ref,
+               Nv_ref, values_ref, field_ref, Nc_ref, comps_ref,
+               func_ref, func_t_ref, ctx_ref,
               )
 
-	Nv = Nv_[]
-	values = unsafe_wrap(Array, values_[], VecGetLocalSize(petsclib, x); own = false)
-	field = field_[]
-	Nc = Nc_[]
-	comps = unsafe_wrap(Array, comps_[], VecGetLocalSize(petsclib, x); own = false)
+	Nv = Nv_ref[]
+	values = Nv > 0 ? unsafe_wrap(Array, values_ref[], Nv; own = false) : $PetscInt[]
+	Nc = Nc_ref[]
+	comps = Nc > 0 ? unsafe_wrap(Array, comps_ref[], Nc; own = false) : $PetscInt[]
 
-	return Nv,values,field,Nc,comps
+	return (wf = wf_ref[], type = type_ref[], name = name_ref[] == C_NULL ? "" : unsafe_string(name_ref[]),
+	        label = label_ref[], Nv = Nv, values = values, field = field_ref[],
+	        Nc = Nc, comps = comps, func = func_ref[], func_t = func_t_ref[], ctx = ctx_ref[])
 end 
 
 """

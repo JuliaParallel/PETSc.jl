@@ -203,6 +203,11 @@ IS(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = IS{PetscLib}(ptr)
 # Conversion methods
 Base.convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
 Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
+# Allows a mutable IS to be passed as Ptr{CIS} (= Ptr{Ptr{Cvoid}}) to C
+# functions that write the IS handle into the pointed-to slot, e.g.
+# DMGetStratumIS. Julia passes pointer_from_objref(v), which is the address of
+# v.ptr (the first and only field), so PETSc writes directly into v.ptr.
+Base.unsafe_convert(::Type{Ptr{CIS}}, v::AbstractIS) = Ptr{CIS}(Base.pointer_from_objref(v))
 # ------------------------------------------------------
 
 # ------------------------------------------------------

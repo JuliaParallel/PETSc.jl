@@ -972,15 +972,10 @@ LibPETSc.@for_petsc function create_split_boundary_labels!(
     names = ("markerBottom", "markerRight", "markerTop", "markerLeft")
     for (name, id) in zip(names, $PetscInt[1, 2, 3, 4])
         LibPETSc.DMCreateLabel(petsclib, dm, name)
-        # DMGetStratumIS returns the IS via a pointer output; use a Ref to capture it.
-        is_ref = Ref{LibPETSc.CIS}(C_NULL)
-        LibPETSc.@chk ccall((:DMGetStratumIS, $petsc_library),
-            LibPETSc.PetscErrorCode,
-            (LibPETSc.CDM, Ptr{Cchar}, $PetscInt, Ptr{LibPETSc.CIS}),
-            dm, "marker", id, is_ref)
-        is_ref[] == C_NULL && continue
+        is = LibPETSc.IS{$PetscLib}()
+        LibPETSc.DMGetStratumIS(petsclib, dm, "marker", id, is)
+        is.ptr == C_NULL && continue
         label = LibPETSc.DMGetLabel(petsclib, dm, name)
-        is = LibPETSc.IS{$PetscLib}(is_ref[])
         LibPETSc.DMLabelInsertIS(petsclib, label, is, $PetscInt(1))
         LibPETSc.ISDestroy(petsclib, is)
     end
@@ -996,7 +991,7 @@ function mat_null_space_create(petsclib, comm; has_const::Bool = true)
     return LibPETSc.MatNullSpaceCreate(petsclib, comm,
         LibPETSc.PetscBool(has_const),
         petsclib.PetscInt(0),
-        LibPETSc.PetscVec[])
+        LibPETSc.CVec[])
 end
 
 """
@@ -1014,15 +1009,8 @@ LibPETSc.@for_petsc function mat_null_space_create(
     vecs,
 )
     cvecs = LibPETSc.CVec[v.ptr for v in vecs]
-    nullsp_ref = Ref{LibPETSc.MatNullSpace}(C_NULL)
-    LibPETSc.@chk ccall(
-        (:MatNullSpaceCreate, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.MPI_Comm, LibPETSc.PetscBool, $PetscInt,
-         Ptr{LibPETSc.CVec}, Ptr{LibPETSc.MatNullSpace}),
-        comm, LibPETSc.PETSC_FALSE, $PetscInt(length(cvecs)), cvecs, nullsp_ref,
-    )
-    return nullsp_ref[]
+    return LibPETSc.MatNullSpaceCreate(petsclib, comm,
+        LibPETSc.PETSC_FALSE, $PetscInt(length(cvecs)), cvecs)
 end
 
 """
@@ -1059,25 +1047,10 @@ LibPETSc.@for_petsc function fe_compose_constant_null_space!(
     comm,
     fe,
 )
-    nsp_ref = Ref{LibPETSc.MatNullSpace}(C_NULL)
-    LibPETSc.@chk ccall(
-        (:MatNullSpaceCreate, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.MPI_Comm, LibPETSc.PetscBool, $PetscInt,
-         Ptr{LibPETSc.CVec}, Ptr{LibPETSc.MatNullSpace}),
-        comm, LibPETSc.PETSC_TRUE, $PetscInt(0), C_NULL, nsp_ref,
-    )
-    LibPETSc.@chk ccall(
-        (:PetscObjectCompose, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.PetscObject, Ptr{Cchar}, LibPETSc.PetscObject),
-        convert(Ptr{Cvoid}, fe), "nullspace", nsp_ref[],
-    )
-    LibPETSc.@chk ccall(
-        (:MatNullSpaceDestroy, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (Ptr{LibPETSc.MatNullSpace},), nsp_ref,
-    )
+    nsp = mat_null_space_create(petsclib, comm; has_const = true)
+    LibPETSc.PetscObjectCompose(petsclib,
+        convert(Ptr{Cvoid}, fe), "nullspace", convert(Ptr{Cvoid}, nsp))
+    mat_null_space_destroy!(petsclib, nsp)
     return nothing
 end
 
@@ -1093,20 +1066,17 @@ LibPETSc.@for_petsc function snes_set_jacobian_null_space!(
     snes::LibPETSc.PetscSNES{$PetscLib},
     nullsp::LibPETSc.MatNullSpace,
 )
+    petsclib = getlib($PetscLib)
+    # SNESGetJacobian takes a SNESJacobianFn sentinel type for J; passing NULL
+    # is not expressible through the wrapper, so we call ccall directly.
     J_ref = Ref{LibPETSc.CMat}(C_NULL)
     LibPETSc.@chk ccall(
-        (:SNESGetJacobian, $petsc_library),
-        LibPETSc.PetscErrorCode,
+        (:SNESGetJacobian, $petsc_library), LibPETSc.PetscErrorCode,
         (LibPETSc.CSNES, Ptr{LibPETSc.CMat}, Ptr{LibPETSc.CMat},
          Ptr{Cvoid}, Ptr{Ptr{Cvoid}}),
         snes, J_ref, C_NULL, C_NULL, C_NULL,
     )
-    LibPETSc.@chk ccall(
-        (:MatSetNullSpace, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CMat, LibPETSc.MatNullSpace),
-        J_ref[], nullsp,
-    )
+    LibPETSc.MatSetNullSpace(petsclib, LibPETSc.PetscMat{$PetscLib}(J_ref[]), nullsp)
     return nothing
 end
 
@@ -1126,18 +1096,10 @@ LibPETSc.@for_petsc function vtk_save!(
     filename::AbstractString,
     vec::AbstractPetscVec{$PetscLib},
 )
-    vtk_ref = Ref{LibPETSc.PetscViewer}(C_NULL)
-    LibPETSc.@chk ccall((:PetscViewerVTKOpen, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.MPI_Comm, Cstring, LibPETSc.PetscFileMode, Ptr{LibPETSc.PetscViewer}),
-        comm, filename, LibPETSc.FILE_MODE_WRITE, vtk_ref)
-    LibPETSc.@chk ccall((:VecView, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CVec, LibPETSc.PetscViewer),
-        vec, vtk_ref[])
-    LibPETSc.@chk ccall((:PetscViewerDestroy, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (Ptr{LibPETSc.PetscViewer},), vtk_ref)
+    vtk = LibPETSc.PetscViewerVTKOpen(petsclib, comm, String(filename), LibPETSc.FILE_MODE_WRITE)
+    LibPETSc.VecView(petsclib, vec, vtk)
+    vtk_ref = Ref{LibPETSc.PetscViewer}(vtk)
+    LibPETSc.PetscViewerDestroy(petsclib, vtk_ref)
     return nothing
 end
 
@@ -1198,20 +1160,12 @@ LibPETSc.@for_petsc function vtk_save_fields!(
     filename::AbstractString,
     vecs,   # iterable of AbstractPetscVec
 )
-    vtk_ref = Ref{LibPETSc.PetscViewer}(C_NULL)
-    LibPETSc.@chk ccall((:PetscViewerVTKOpen, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.MPI_Comm, Cstring, LibPETSc.PetscFileMode, Ptr{LibPETSc.PetscViewer}),
-        comm, filename, LibPETSc.FILE_MODE_WRITE, vtk_ref)
+    vtk = LibPETSc.PetscViewerVTKOpen(petsclib, comm, String(filename), LibPETSc.FILE_MODE_WRITE)
     for vec in vecs
-        LibPETSc.@chk ccall((:VecView, $petsc_library),
-            LibPETSc.PetscErrorCode,
-            (LibPETSc.CVec, LibPETSc.PetscViewer),
-            vec, vtk_ref[])
+        LibPETSc.VecView(petsclib, vec, vtk)
     end
-    LibPETSc.@chk ccall((:PetscViewerDestroy, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (Ptr{LibPETSc.PetscViewer},), vtk_ref)
+    vtk_ref = Ref{LibPETSc.PetscViewer}(vtk)
+    LibPETSc.PetscViewerDestroy(petsclib, vtk_ref)
     return nothing
 end
 
@@ -1264,37 +1218,16 @@ LibPETSc.@for_petsc function add_natural_boundary!(
     f0_ptr::Ptr{Cvoid},
     f1_ptr::Ptr{Cvoid} = C_NULL,
 )
-    val_v  = $PetscInt[label_value]
-    bd_ref = Ref{$PetscInt}(0)
     # Step 1: register the boundary (NULL function — function set via weak form below)
-    LibPETSc.@chk ccall(
-        (:DMAddBoundary, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CDM, LibPETSc.DMBoundaryConditionType, Cstring, Ptr{Cvoid},
-         $PetscInt, Ptr{$PetscInt}, $PetscInt, $PetscInt, Ptr{$PetscInt},
-         Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{$PetscInt}),
-        dm, LibPETSc.DM_BC_NATURAL, String(name), label,
-        $PetscInt(1), val_v, $PetscInt(field), $PetscInt(0), Ptr{$PetscInt}(C_NULL),
-        C_NULL, C_NULL, C_NULL, bd_ref,
-    )
-    bd = bd_ref[]
+    bd = LibPETSc.DMAddBoundary(petsclib, dm, LibPETSc.DM_BC_NATURAL, String(name),
+        label, $PetscInt(1), $PetscInt[label_value],
+        $PetscInt(field), $PetscInt(0), $PetscInt[],
+        C_NULL, C_NULL, C_NULL)
     # Step 2: get the per-boundary PetscWeakForm
-    wf_ref = Ref{LibPETSc.PetscWeakForm}()
-    LibPETSc.@chk ccall((:PetscDSGetBoundary, $petsc_library), LibPETSc.PetscErrorCode,
-        (LibPETSc.PetscDS, $PetscInt,
-         Ptr{LibPETSc.PetscWeakForm},  # wf (output)
-         Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid},
-         Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
-        ds.ptr, bd, wf_ref,
-        C_NULL, C_NULL, C_NULL, C_NULL, C_NULL, C_NULL,
-        C_NULL, C_NULL, C_NULL, C_NULL, C_NULL)
-    wf = wf_ref[]
+    wf = LibPETSc.PetscDSGetBoundary(petsclib, ds.ptr, bd).wf
     # Step 3: install the boundary integrand on the per-boundary weak form
-    LibPETSc.@chk ccall((:PetscWeakFormSetIndexBdResidual, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.PetscWeakForm, Ptr{Cvoid}, $PetscInt, $PetscInt, $PetscInt,
-         $PetscInt, Ptr{Cvoid}, $PetscInt, Ptr{Cvoid}),
-        wf, label, $PetscInt(label_value), $PetscInt(field),
+    LibPETSc.PetscWeakFormSetIndexBdResidual(petsclib, wf, label,
+        $PetscInt(label_value), $PetscInt(field),
         $PetscInt(0), $PetscInt(0), f0_ptr, $PetscInt(0), f1_ptr)
     return bd
 end

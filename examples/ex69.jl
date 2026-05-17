@@ -148,7 +148,6 @@ const PetscScalar = Float64
 const PetscReal   = Float64
 
 comm = MPI.COMM_WORLD
-libname = petsclib.petsc_library   # library path for direct ccall
 
 # ── Option parsing ────────────────────────────────────────────────────────────
 _o       = NamedTuple(pairs(opts))
@@ -331,15 +330,9 @@ function pressure_nsp_constructor(
         [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, nvec)
     LibPETSc.VecNormalize(petsclib, nvec)
     # Build MatNullSpace from the normalized vector
-    vec_ptrs = [nvec.ptr]
     GC.@preserve nvec begin
-        nsp_ref = Ref{LibPETSc.MatNullSpace}(C_NULL)
-        LibPETSc.@chk ccall((:MatNullSpaceCreate, libname),
-            LibPETSc.PetscErrorCode,
-            (LibPETSc.MPI_Comm, LibPETSc.PetscBool, PetscInt,
-             Ptr{LibPETSc.CVec}, Ptr{LibPETSc.MatNullSpace}),
-            MPI.COMM_WORLD, LibPETSc.PETSC_FALSE, PetscInt(1), vec_ptrs, nsp_ref)
-        unsafe_store!(nsp_pp, nsp_ref[])
+        nsp = PETSc.mat_null_space_create(petsclib, MPI.COMM_WORLD, (nvec,))
+        unsafe_store!(nsp_pp, nsp)
     end
     PETSc.destroy(nvec)
     return PetscInt(0)
@@ -347,47 +340,13 @@ end
 const pressure_nsp_ptr = Base.@cfunction(pressure_nsp_constructor, PetscInt,
     (Ptr{Cvoid}, PetscInt, PetscInt, Ptr{LibPETSc.MatNullSpace}))
 
-# ── create_split_labels! ──────────────────────────────────────────────────────
-# Splits the single "marker" label into one per wall so corners can belong to
-# multiple labels.  Face marker IDs: bottom=1, right=2, top=3, left=4.
-function create_split_labels!(dm_ptr::Ptr{Cvoid})
-    names = ["markerBottom", "markerRight", "markerTop", "markerLeft"]
-    ids   = PetscInt[1, 2, 3, 4]
-    for (name, id) in zip(names, ids)
-        LibPETSc.@chk ccall((:DMCreateLabel, libname),
-            LibPETSc.PetscErrorCode, (Ptr{Cvoid}, Cstring), dm_ptr, name)
-
-        is_ref = Ref{Ptr{Cvoid}}(C_NULL)
-        LibPETSc.@chk ccall((:DMGetStratumIS, libname),
-            LibPETSc.PetscErrorCode,
-            (Ptr{Cvoid}, Cstring, PetscInt, Ptr{Ptr{Cvoid}}),
-            dm_ptr, "marker", id, is_ref)
-        is_ptr = is_ref[]
-        is_ptr == C_NULL && continue
-
-        label_ref = Ref{Ptr{Cvoid}}(C_NULL)
-        LibPETSc.@chk ccall((:DMGetLabel, libname),
-            LibPETSc.PetscErrorCode,
-            (Ptr{Cvoid}, Cstring, Ptr{Ptr{Cvoid}}),
-            dm_ptr, name, label_ref)
-
-        LibPETSc.@chk ccall((:DMLabelInsertIS, libname),
-            LibPETSc.PetscErrorCode,
-            (Ptr{Cvoid}, Ptr{Cvoid}, PetscInt),
-            label_ref[], is_ptr, PetscInt(1))
-
-        LibPETSc.@chk ccall((:ISDestroy, libname),
-            LibPETSc.PetscErrorCode, (Ptr{Ptr{Cvoid}},), is_ref)
-    end
-end
-
 # ── Mesh ──────────────────────────────────────────────────────────────────────
 dm = PETSc.DMPlex(petsclib, comm; opts...)
 
-# Create split per-wall labels on the main DM and all coarser DMs
+# Split "marker" into per-wall labels on the main DM and all coarser DMs
 let cdm = dm
     while convert(Ptr{Cvoid}, cdm) != C_NULL
-        create_split_labels!(convert(Ptr{Cvoid}, cdm))
+        PETSc.create_split_boundary_labels!(cdm)
         cdm = PETSc.dm_get_coarse(cdm)
     end
 end
@@ -405,10 +364,7 @@ fe_pres = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex;
 LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_pres), "pressure")
 
 # Copy quadrature from velocity to pressure for consistent integration
-LibPETSc.@chk ccall((:PetscFECopyQuadrature, libname),
-    LibPETSc.PetscErrorCode,
-    (Ptr{Cvoid}, Ptr{Cvoid}),
-    convert(Ptr{Cvoid}, fe_vel), convert(Ptr{Cvoid}, fe_pres))
+PETSc.fe_copy_quadrature!(petsclib, fe_vel, fe_pres)
 
 PETSc.setfield!(dm, 0, fe_vel)
 PETSc.setfield!(dm, 1, fe_pres)
@@ -464,21 +420,7 @@ end
 # Attach a constant (trivial) null space to the pressure FE object.
 # This informs the fieldsplit preconditioner that the pressure block has a
 # constant null space, enabling proper Schur complement approximations.
-let fe_pres_ptr = convert(Ptr{Cvoid}, fe_pres)
-    nsp_ref = Ref{LibPETSc.MatNullSpace}(C_NULL)
-    LibPETSc.@chk ccall((:MatNullSpaceCreate, libname),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.MPI_Comm, LibPETSc.PetscBool, PetscInt,
-         Ptr{LibPETSc.CVec}, Ptr{LibPETSc.MatNullSpace}),
-        comm, LibPETSc.PETSC_TRUE, PetscInt(0), C_NULL, nsp_ref)
-    LibPETSc.@chk ccall((:PetscObjectCompose, libname),
-        LibPETSc.PetscErrorCode,
-        (Ptr{Cvoid}, Cstring, Ptr{Cvoid}),
-        fe_pres_ptr, "nullspace", nsp_ref[])
-    LibPETSc.@chk ccall((:MatNullSpaceDestroy, libname),
-        LibPETSc.PetscErrorCode,
-        (Ptr{LibPETSc.MatNullSpace},), nsp_ref)
-end
+PETSc.fe_compose_constant_null_space!(petsclib, comm, fe_pres)
 
 # ── Pressure null space (normalized constant-pressure mode) ──────────────────
 null_vec = PETSc.DMGlobalVec(dm)
@@ -486,17 +428,7 @@ PETSc.dm_project_function!(petsclib, dm, 0.0,
     [zero_vel_ptr, one_pres_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, null_vec)
 LibPETSc.VecNormalize(petsclib, null_vec)
 
-# Create null space from the normalized vector via direct ccall
-nullspace_ref = Ref{LibPETSc.MatNullSpace}(C_NULL)
-GC.@preserve null_vec begin
-    vec_ptrs = [null_vec.ptr]   # Vector{CVec} = Vector{Ptr{Cvoid}}
-    LibPETSc.@chk ccall((:MatNullSpaceCreate, libname),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.MPI_Comm, LibPETSc.PetscBool, PetscInt,
-         Ptr{LibPETSc.CVec}, Ptr{LibPETSc.MatNullSpace}),
-        comm, LibPETSc.PETSC_FALSE, PetscInt(1), vec_ptrs, nullspace_ref)
-end
-nullspace = nullspace_ref[]
+nullspace = GC.@preserve null_vec PETSc.mat_null_space_create(petsclib, comm, (null_vec,))
 
 # ── SNES + linear algebra ────────────────────────────────────────────────────
 # Do NOT call SNESSetJacobian with J,J — that forces a single matrix for both
@@ -521,18 +453,7 @@ push!(snes.opts)
 try
     LibPETSc.SNESSetFromOptions(petsclib, snes)
     LibPETSc.SNESSetUp(petsclib, snes)
-    # Get the actual Jacobian PETSc will use after setup and attach the null space.
-    # CMat = Ptr{Cvoid}; SNESGetJacobian takes Mat* (i.e. Ptr{CMat} = Ptr{Ptr{Cvoid}}).
-    J_ref = Ref{LibPETSc.CMat}(C_NULL)
-    LibPETSc.@chk ccall((:SNESGetJacobian, libname),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CSNES, Ptr{LibPETSc.CMat}, Ptr{LibPETSc.CMat},
-         Ptr{Cvoid}, Ptr{Ptr{Cvoid}}),
-        snes, J_ref, C_NULL, C_NULL, C_NULL)
-    LibPETSc.@chk ccall((:MatSetNullSpace, libname),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CMat, LibPETSc.MatNullSpace),
-        J_ref[], nullspace)
+    PETSc.snes_set_jacobian_null_space!(snes, nullspace)
     LibPETSc.SNESSolve(petsclib, snes, C_NULL, u)
 finally
     pop!(snes.opts)
@@ -555,8 +476,7 @@ end
 # ── Cleanup ───────────────────────────────────────────────────────────────────
 GC.gc(true)
 MPI.Barrier(comm)
-LibPETSc.@chk ccall((:MatNullSpaceDestroy, libname),
-    LibPETSc.PetscErrorCode, (Ptr{LibPETSc.MatNullSpace},), nullspace_ref)
+PETSc.mat_null_space_destroy!(petsclib, nullspace)
 PETSc.destroy(snes)
 PETSc.destroy(u)
 PETSc.destroy(null_vec)

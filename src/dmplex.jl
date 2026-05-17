@@ -946,9 +946,51 @@ function dm_coarsen_hook_add!(
 end
 
 """
+    fe_copy_quadrature!(petsclib, src_fe, dst_fe)
+
+Copy the quadrature rule from `src_fe` to `dst_fe` so both fields share
+the same integration points.
+"""
+function fe_copy_quadrature!(petsclib, src_fe, dst_fe)
+    LibPETSc.PetscFECopyQuadrature(petsclib, src_fe, dst_fe)
+    return nothing
+end
+
+"""
+    create_split_boundary_labels!(dm)
+
+Split the single `"marker"` label on a 2D box mesh into four per-wall labels
+(`"markerBottom"`, `"markerRight"`, `"markerTop"`, `"markerLeft"`, marker IDs 1–4)
+so that corner DOFs can belong to multiple wall labels simultaneously.
+"""
+function create_split_boundary_labels! end
+
+LibPETSc.@for_petsc function create_split_boundary_labels!(
+    dm::AbstractPetscDM{$PetscLib},
+)
+    petsclib = getlib($PetscLib)
+    names = ("markerBottom", "markerRight", "markerTop", "markerLeft")
+    for (name, id) in zip(names, $PetscInt[1, 2, 3, 4])
+        LibPETSc.DMCreateLabel(petsclib, dm, name)
+        # DMGetStratumIS returns the IS via a pointer output; use a Ref to capture it.
+        is_ref = Ref{LibPETSc.CIS}(C_NULL)
+        LibPETSc.@chk ccall((:DMGetStratumIS, $petsc_library),
+            LibPETSc.PetscErrorCode,
+            (LibPETSc.CDM, Ptr{Cchar}, $PetscInt, Ptr{LibPETSc.CIS}),
+            dm, "marker", id, is_ref)
+        is_ref[] == C_NULL && continue
+        label = LibPETSc.DMGetLabel(petsclib, dm, name)
+        is = LibPETSc.IS{$PetscLib}(is_ref[])
+        LibPETSc.DMLabelInsertIS(petsclib, label, is, $PetscInt(1))
+        LibPETSc.ISDestroy(petsclib, is)
+    end
+    return nothing
+end
+
+"""
     mat_null_space_create(petsclib, comm; has_const = true) -> MatNullSpace
 
-Create a null space containing the constant vector (Neumann problems).
+Create a null space containing the constant vector (Neumann / saddle-point problems).
 """
 function mat_null_space_create(petsclib, comm; has_const::Bool = true)
     return LibPETSc.MatNullSpaceCreate(petsclib, comm,
@@ -958,12 +1000,113 @@ function mat_null_space_create(petsclib, comm; has_const::Bool = true)
 end
 
 """
+    mat_null_space_create(petsclib, comm, vecs) -> MatNullSpace
+
+Create a null space spanned by the given vectors.  Each element of `vecs`
+must have a `.ptr` field holding the underlying PETSc Vec handle (`CVec`).
+The vectors should be orthonormal; call `VecNormalize` beforehand if needed.
+"""
+function mat_null_space_create end
+
+LibPETSc.@for_petsc function mat_null_space_create(
+    petsclib::$UnionPetscLib,
+    comm,
+    vecs,
+)
+    cvecs = LibPETSc.CVec[v.ptr for v in vecs]
+    nullsp_ref = Ref{LibPETSc.MatNullSpace}(C_NULL)
+    LibPETSc.@chk ccall(
+        (:MatNullSpaceCreate, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.MPI_Comm, LibPETSc.PetscBool, $PetscInt,
+         Ptr{LibPETSc.CVec}, Ptr{LibPETSc.MatNullSpace}),
+        comm, LibPETSc.PETSC_FALSE, $PetscInt(length(cvecs)), cvecs, nullsp_ref,
+    )
+    return nullsp_ref[]
+end
+
+"""
+    mat_null_space_destroy!(petsclib, nullsp)
+
+Destroy a `MatNullSpace` created by `mat_null_space_create`.
+"""
+function mat_null_space_destroy!(petsclib, nullsp::LibPETSc.MatNullSpace)
+    LibPETSc.MatNullSpaceDestroy(petsclib, nullsp)
+    return nothing
+end
+
+"""
     mat_set_null_space!(mat, nullsp)
 
 Attach `nullsp` to `mat` so the linear solver removes it each iteration.
 """
 function mat_set_null_space!(mat, nullsp)
     LibPETSc.MatSetNullSpace(LibPETSc.getlib(typeof(mat).parameters[1]), mat, nullsp)
+    return nothing
+end
+
+"""
+    fe_compose_constant_null_space!(petsclib, comm, fe)
+
+Create a trivial (constant) `MatNullSpace` and attach it to the FE object `fe`
+under the key `"nullspace"` via `PetscObjectCompose`.  This signals to the
+fieldsplit preconditioner that the field has a constant null space.
+"""
+function fe_compose_constant_null_space! end
+
+LibPETSc.@for_petsc function fe_compose_constant_null_space!(
+    petsclib::$UnionPetscLib,
+    comm,
+    fe,
+)
+    nsp_ref = Ref{LibPETSc.MatNullSpace}(C_NULL)
+    LibPETSc.@chk ccall(
+        (:MatNullSpaceCreate, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.MPI_Comm, LibPETSc.PetscBool, $PetscInt,
+         Ptr{LibPETSc.CVec}, Ptr{LibPETSc.MatNullSpace}),
+        comm, LibPETSc.PETSC_TRUE, $PetscInt(0), C_NULL, nsp_ref,
+    )
+    LibPETSc.@chk ccall(
+        (:PetscObjectCompose, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.PetscObject, Ptr{Cchar}, LibPETSc.PetscObject),
+        convert(Ptr{Cvoid}, fe), "nullspace", nsp_ref[],
+    )
+    LibPETSc.@chk ccall(
+        (:MatNullSpaceDestroy, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (Ptr{LibPETSc.MatNullSpace},), nsp_ref,
+    )
+    return nothing
+end
+
+"""
+    snes_set_jacobian_null_space!(snes, nullsp)
+
+Retrieve the assembled Jacobian matrix from `snes` (after `SNESSetUp`) and
+attach `nullsp` to it.  Must be called after `SNESSetUp` and before `SNESSolve`.
+"""
+function snes_set_jacobian_null_space! end
+
+LibPETSc.@for_petsc function snes_set_jacobian_null_space!(
+    snes::LibPETSc.PetscSNES{$PetscLib},
+    nullsp::LibPETSc.MatNullSpace,
+)
+    J_ref = Ref{LibPETSc.CMat}(C_NULL)
+    LibPETSc.@chk ccall(
+        (:SNESGetJacobian, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.CSNES, Ptr{LibPETSc.CMat}, Ptr{LibPETSc.CMat},
+         Ptr{Cvoid}, Ptr{Ptr{Cvoid}}),
+        snes, J_ref, C_NULL, C_NULL, C_NULL,
+    )
+    LibPETSc.@chk ccall(
+        (:MatSetNullSpace, $petsc_library),
+        LibPETSc.PetscErrorCode,
+        (LibPETSc.CMat, LibPETSc.MatNullSpace),
+        J_ref[], nullsp,
+    )
     return nothing
 end
 

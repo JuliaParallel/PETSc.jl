@@ -103,9 +103,8 @@
       3D: bottom=1, right=2, top=3, left=4, front=5, back=6
   - elas_ge has no analytical exact solution; the printed L² error is meaningless.
   - VTK output (-vtk_output file.vtu) writes displacement as a 3-component vector
-    and the Cauchy stress tensor as 9 separate scalar arrays (stress.0…stress.8,
-    row-major 3×3, zero-padded in 2D).  In ParaView, use Filters → Calculator to
-    combine stress.0…stress.8 into a tensor for principal-stress or glyph visualization.
+    and the Cauchy stress as a 9-component 3×3 tensor (row-major, zero-padded in 2D).
+    PETSc.vtk_merge_tensor! post-processes the file so ParaView sees a proper tensor.
 
   References:
     - PETSc 3.23  src/snes/tutorials/ex17.c
@@ -326,131 +325,6 @@ function compute_stress_3x3(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
 end
 const compute_stress_3x3_ptr = PETSc.@petsc_residual_fn(compute_stress_3x3, 9)
 
-# ── Post-process VTK: merge 9 scalar stress arrays into one 9-tuple ──────────
-# PETSc's VTK writer always splits fields with Nc > 3 into Nc separate scalar
-# DataArrays (stress.0 … stress.8).  This function reads the written .vtu file,
-# merges those 9 arrays into a single NumberOfComponents="9" DataArray named
-# "stress", and overwrites the file.  ParaView then shows it as a 3×3 tensor.
-#
-# Format: VTK AppendedData raw binary.  Each binary block is:
-#   [header: UInt32 or UInt64 byte-count][data: Float32 or Float64 per value]
-# The XML attribute header_type and type determine the sizes.
-function vtk_merge_stress!(fname::AbstractString)
-    isfile(fname) || return
-    raw = read(fname)
-
-    # Locate the AppendedData binary section.  Cannot use findfirst('_', raw)
-    # because the XML header contains underscores (e.g. header_type="UInt64").
-    # Instead, find '<AppendedData', skip to its closing '>', then find '_'.
-    needle = b"<AppendedData"
-    app_i  = let found = nothing
-        for i in 1:length(raw)-length(needle)
-            if @views raw[i:i+length(needle)-1] == needle
-                found = i; break
-            end
-        end
-        found
-    end
-    app_i  === nothing && return
-    gt  = findnext(isequal(UInt8('>')), raw, app_i + length(needle))
-    gt  === nothing && return
-    sep = findnext(isequal(UInt8('_')), raw, gt + 1)
-    sep === nothing && return
-
-    xml = String(raw[1:sep-1])
-    bin = raw[sep+1:end]
-
-    # Detect header size (UInt64 or UInt32)
-    hdr_size = contains(xml, "header_type=\"UInt64\"") ? 8 : 4
-    read_hdr(off) = hdr_size == 8 ?
-        Int(read(IOBuffer(bin[off+1:off+8]), UInt64)) :
-        Int(read(IOBuffer(bin[off+1:off+4]), UInt32))
-
-    # Find all stress.N DataArray entries (component index, xml span, bin offset)
-    pat = r"""<DataArray\b[^>]*\bName="stress\.(\d+)"[^>]*/?>"""
-    ms  = collect(eachmatch(pat, xml))
-    length(ms) == 9 || return   # nothing to merge
-
-    entries = [(comp    = parse(Int, m[1]),
-                xml_beg = m.offset,
-                xml_end = m.offset + length(m.match) - 1,
-                bin_off = parse(Int, match(r"offset=\"(\d+)\"", m.match)[1]))
-               for m in ms]
-
-    xml_first = minimum(e.xml_beg for e in entries)
-    xml_last  = maximum(e.xml_end for e in entries)
-
-    sorted = sort(entries; by = e -> e.comp)
-    offsets = [e.bin_off for e in sorted]
-
-    # Detect value size from XML type attribute of first entry
-    val_size = contains(ms[1].match, "Float64") ? 8 : 4
-    RT       = val_size == 8 ? Float64 : Float32
-
-    # Read each scalar block
-    function read_scalar(off)
-        nbytes = read_hdr(off)
-        nvals  = nbytes ÷ val_size
-        io     = IOBuffer(bin[off+hdr_size+1:off+hdr_size+nbytes])
-        [read(io, RT) for _ in 1:nvals]
-    end
-
-    scalars  = [read_scalar(off) for off in offsets]
-    npoints  = length(scalars[1])
-
-    # Interleave: merged[i*9+k] = scalars[k+1][i] for i∈0:N-1, k∈0:8
-    merged   = Vector{RT}(undef, npoints * 9)
-    for i in 0:npoints-1, k in 0:8
-        merged[i*9+k+1] = scalars[k+1][i+1]
-    end
-
-    # Build merged binary block
-    merged_nbytes  = UInt64(npoints * 9 * val_size)
-    merged_block   = let buf = IOBuffer()
-        hdr_size == 8 ? write(buf, merged_nbytes) : write(buf, UInt32(merged_nbytes))
-        for v in merged; write(buf, v); end
-        take!(buf)
-    end
-
-    # Compute old span and offset delta
-    last_off     = offsets[9]
-    old_bin_end  = last_off + hdr_size + npoints * val_size   # exclusive
-    Δ            = length(merged_block) - (old_bin_end - offsets[1])
-
-    new_bin = vcat(bin[1:offsets[1]], merged_block, bin[old_bin_end+1:end])
-
-    # Rebuild XML: replace 9 entries with one, fix subsequent offsets
-    type_str = RT == Float64 ? "Float64" : "Float32"
-    new_da   = "<DataArray Name=\"stress\" NumberOfComponents=\"9\"" *
-               " type=\"$type_str\" format=\"appended\" offset=\"$(offsets[1])\"/>"
-
-    post = xml[xml_last+1:end]
-    post_fixed = replace(post, r"offset=\"(\d+)\"" => function(s)
-        m2  = match(r"\"(\d+)\"", s)
-        off = parse(Int, m2[1])
-        off > last_off ? "offset=\"$(off + Δ)\"" : s
-    end)
-
-    pre = xml[1:xml_first-1]
-
-    # Add Tensors="stress" to the <PointData ...> tag so ParaView treats the
-    # 9-component array as a full 3×3 tensor rather than a generic tuple.
-    pre = replace(pre, r"<PointData\b([^>]*)>" =>
-        function(s)
-            contains(s, "Tensors=") && return s
-            replace(s, "<PointData" => "<PointData Tensors=\"stress\"")
-        end)
-
-    open(fname, "w") do io
-        write(io, pre)
-        write(io, new_da)
-        write(io, post_fixed)
-        write(io, UInt8('_'))
-        write(io, new_bin)
-    end
-    return nothing
-end
-
 # ── Neumann BC for elas_axial_disp: traction N on right wall ──────────────────
 # f0_bd output size = Nc = dim.
 function f0_elas_axial_disp_bd(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
@@ -637,15 +511,8 @@ let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
         # attach both fields, then write a single combined vector.
         #
         # VTK arrays produced (row-major 3×3, zero-padded in 2D):
-        #   "displacement"          NumberOfComponents=3    → proper Vector in ParaView
-        #   "stress.0" … "stress.8" NumberOfComponents=1×9 → σ_{rc}, r,c ∈ {1,2,3}
-        #                                                     (PETSc limitation: 9-comp
-        #                                                      fields are split into
-        #                                                      separate scalar arrays)
-        #
-        # In ParaView: use Filters → Calculator or Python Calculator to combine the
-        # 9 stress scalars into a tensor, or apply "Tensor Glyph" after merging.
-        # Principal stresses: apply Filters → Eigen Values on the combined tensor.
+        #   "displacement"  NumberOfComponents=3  → Vector in ParaView
+        #   "stress"        NumberOfComponents=9  → 3×3 Tensor in ParaView
         dm_out = PETSc.dmclone(dm)
 
         fe_disp = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
@@ -672,9 +539,7 @@ let _vtk = get(NamedTuple(pairs(opts)), :vtk_output, nothing)
 
         PETSc.vtk_save!(petsclib, comm, fname, out_vec)
 
-        # Merge the 9 separate stress scalar arrays into one 9-tuple so that
-        # ParaView treats stress as a proper 3×3 tensor field.
-        MPI.Comm_rank(comm) == 0 && vtk_merge_stress!(fname)
+        MPI.Comm_rank(comm) == 0 && PETSc.vtk_merge_tensor!(fname, "stress")
 
         MPI.Comm_rank(comm) == 0 &&
             println("Displacement (vector) and stress (tensor) written to $fname")

@@ -786,13 +786,7 @@ LibPETSc.@for_petsc function dm_project_function!(
     @assert length(ctxs) == n "funcs and ctxs must have the same length"
     funcs_v = collect(funcs)
     ctxs_v  = collect(ctxs)
-    GC.@preserve funcs_v ctxs_v LibPETSc.@chk ccall(
-        (:DMProjectFunction, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CDM, $PetscReal, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}},
-         LibPETSc.InsertMode, LibPETSc.CVec),
-        dm, $PetscReal(time), funcs_v, ctxs_v, mode, X,
-    )
+    LibPETSc.DMProjectFunction(petsclib, dm, time, funcs_v, ctxs_v, mode, X)
     return nothing
 end
 
@@ -834,17 +828,9 @@ LibPETSc.@for_petsc function dm_compute_l2diff(
 )
     n = length(funcs)
     @assert length(ctxs) == n "funcs and ctxs must have the same length"
-    funcs_v  = collect(funcs)
-    ctxs_v   = collect(ctxs)
-    diff_ref = Ref{$PetscReal}(0)
-    GC.@preserve funcs_v ctxs_v LibPETSc.@chk ccall(
-        (:DMComputeL2Diff, $petsc_library),
-        LibPETSc.PetscErrorCode,
-        (LibPETSc.CDM, $PetscReal, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}},
-         LibPETSc.CVec, Ptr{$PetscReal}),
-        dm, $PetscReal(time), funcs_v, ctxs_v, X, diff_ref,
-    )
-    return diff_ref[]
+    funcs_v = collect(funcs)
+    ctxs_v  = collect(ctxs)
+    return LibPETSc.DMComputeL2Diff(petsclib, dm, time, funcs_v, ctxs_v, X)
 end
 
 function dm_compute_l2diff(
@@ -1067,16 +1053,8 @@ LibPETSc.@for_petsc function snes_set_jacobian_null_space!(
     nullsp::LibPETSc.MatNullSpace,
 )
     petsclib = getlib($PetscLib)
-    # SNESGetJacobian takes a SNESJacobianFn sentinel type for J; passing NULL
-    # is not expressible through the wrapper, so we call ccall directly.
-    J_ref = Ref{LibPETSc.CMat}(C_NULL)
-    LibPETSc.@chk ccall(
-        (:SNESGetJacobian, $petsc_library), LibPETSc.PetscErrorCode,
-        (LibPETSc.CSNES, Ptr{LibPETSc.CMat}, Ptr{LibPETSc.CMat},
-         Ptr{Cvoid}, Ptr{Ptr{Cvoid}}),
-        snes, J_ref, C_NULL, C_NULL, C_NULL,
-    )
-    LibPETSc.MatSetNullSpace(petsclib, LibPETSc.PetscMat{$PetscLib}(J_ref[]), nullsp)
+    J = LibPETSc.SNESGetJacobianMat(petsclib, snes)
+    LibPETSc.MatSetNullSpace(petsclib, J, nullsp)
     return nothing
 end
 
@@ -1272,18 +1250,25 @@ LibPETSc.@for_petsc function dm_get_coarse(dm::AbstractPetscDM{$PetscLib})
 end
 
 """
-    vtk_merge_tensor!(fname, name)
+    vtk_merge_tensor!(fname, names...)
 
 Post-process a VTK `.vtu` file written by PETSc's VTK viewer to merge 9 separate
 scalar `DataArray`s named `name.0`…`name.8` (produced when a field has more than 3
-components) into a single `NumberOfComponents="9"` DataArray.  Also adds
-`Tensors="name"` to the `<PointData>` tag so ParaView treats the array as a 3×3
-tensor.  The file is rewritten in-place.
+components) into a single `NumberOfComponents="9"` DataArray, for each name given.
+Also sets `Tensors="name1 name2 …"` on the `<PointData>` tag so ParaView treats the
+arrays as 3×3 tensors.  The file is rewritten in-place.
 
 PETSc's VTK writer always splits fields with more than 3 components into separate
 scalar arrays; this function reassembles them for proper tensor visualisation.
 """
-function vtk_merge_tensor!(fname::AbstractString, name::AbstractString)
+function vtk_merge_tensor!(fname::AbstractString, names::AbstractString...)
+    for name in names
+        _vtk_merge_one_tensor!(fname, name)
+    end
+    return nothing
+end
+
+function _vtk_merge_one_tensor!(fname::AbstractString, name::AbstractString)
     isfile(fname) || return
     raw = read(fname)
 
@@ -1371,8 +1356,13 @@ function vtk_merge_tensor!(fname::AbstractString, name::AbstractString)
     pre = xml[1:xml_first-1]
     pre = replace(pre, r"<PointData\b([^>]*)>" =>
         function(s)
-            contains(s, "Tensors=") && return s
-            replace(s, "<PointData" => "<PointData Tensors=\"$name\"")
+            if contains(s, "Tensors=")
+                # Append this name to the existing Tensors attribute.
+                replace(s, r"Tensors=\"([^\"]*)\"" =>
+                    m2 -> "Tensors=\"$(m2[1]) $name\"")
+            else
+                replace(s, "<PointData" => "<PointData Tensors=\"$name\"")
+            end
         end)
 
     open(fname, "w") do io

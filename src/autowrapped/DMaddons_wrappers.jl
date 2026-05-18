@@ -6813,3 +6813,51 @@ function DMLabelEphemeralSetTransform(petsclib::PetscLibType, label::DMLabel, tr
 	return nothing
 end 
 
+
+"""
+    DMProjectFunction(petsclib, dm, time, funcs, ctxs, mode, X)
+
+Project the pointwise functions `funcs` (one `Ptr{Cvoid}` per field, matching
+`PetscSimplePointFn` signature) into the global vector `X`.  `ctxs` is a
+matching `Vector{Ptr{Cvoid}}` of context pointers (use `C_NULL` entries for
+no context).
+"""
+function DMProjectFunction(petsclib::PetscLibType, dm::PetscDM, time::Real,
+                           funcs::Vector{Ptr{Cvoid}}, ctxs::Vector{Ptr{Cvoid}},
+                           mode::InsertMode, X::PetscVec) end
+
+@for_petsc function DMProjectFunction(petsclib::$UnionPetscLib, dm::PetscDM,
+                                      time::Real,
+                                      funcs::Vector{Ptr{Cvoid}},
+                                      ctxs::Vector{Ptr{Cvoid}},
+                                      mode::InsertMode, X::PetscVec)
+    GC.@preserve funcs ctxs @chk ccall(
+        (:DMProjectFunction, $petsc_library), PetscErrorCode,
+        (CDM, $PetscReal, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}, InsertMode, CVec),
+        dm, $PetscReal(time), funcs, ctxs, mode, X)
+    return nothing
+end
+
+"""
+    DMComputeL2Diff(petsclib, dm, time, funcs, ctxs, X) -> PetscReal
+
+Compute the L² norm of the difference between the global vector `X` and the
+pointwise exact functions `funcs`.  `ctxs` is a `Vector{Ptr{Cvoid}}` of
+context pointers (use `C_NULL` entries for no context).
+"""
+function DMComputeL2Diff(petsclib::PetscLibType, dm::PetscDM, time::Real,
+                         funcs::Vector{Ptr{Cvoid}}, ctxs::Vector{Ptr{Cvoid}},
+                         X::PetscVec) end
+
+@for_petsc function DMComputeL2Diff(petsclib::$UnionPetscLib, dm::PetscDM,
+                                    time::Real,
+                                    funcs::Vector{Ptr{Cvoid}},
+                                    ctxs::Vector{Ptr{Cvoid}},
+                                    X::PetscVec)
+    diff_ref = Ref{$PetscReal}(0)
+    GC.@preserve funcs ctxs @chk ccall(
+        (:DMComputeL2Diff, $petsc_library), PetscErrorCode,
+        (CDM, $PetscReal, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}, CVec, Ptr{$PetscReal}),
+        dm, $PetscReal(time), funcs, ctxs, X, diff_ref)
+    return diff_ref[]
+end

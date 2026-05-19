@@ -325,12 +325,15 @@ const repl_opts = String[
     "-pc_fieldsplit_type",           "schur",
     "-pc_fieldsplit_schur_factorization_type", "full",
     "-pc_fieldsplit_schur_precondition",      "a11",
-    "-fieldsplit_velocity_pc_type",  "lu",
-    "-fieldsplit_pressure_ksp_rtol", "1e-9",
-    "-fieldsplit_pressure_pc_type",  "lu",
-    "-ksp_rtol",                     "1e-9",
-    "-snes_rtol",                    "1e-9",
+    "-fieldsplit_velocity_ksp_type", "cg",
+    "-fieldsplit_velocity_pc_type",  "gamg",
+    "-fieldsplit_pressure_ksp_type", "preonly",
+    "-fieldsplit_pressure_pc_type",  "jacobi",
+    "-ksp_type",                     "fgmres",
+    "-ksp_rtol",                     "1e-6",
+    "-snes_rtol",                    "1e-6",
     "-snes_monitor",
+    "-ksp_monitor",
     "-vtk_output",                   "ex62b_out.vtu",
 ]
 
@@ -1369,18 +1372,15 @@ pvd_entries = Tuple{Float64,String}[]   # (time, vtu_path) for PVD animation fil
 
 for step in 1:nsteps
     t = (step - 1) * dt_val
-    t_step_start = time()
+    t0 = time()
 
     # ── Solve ────────────────────────────────────────────────────────────────
     its = solve_step!(petsclib, snes, u)
-    if MPI.Comm_rank(comm) == 0
-        tstep   = round(t + dt_val; sigdigits = 4)
-        elapsed = round(time() - t_step_start; digits = 2)
-        println("Step $step/$nsteps  t = $tstep  SNES: $its iter  wall: $(elapsed)s")
-    end
+    t_solve = time()
 
     # ── Domain averages of second invariants (+ analytical check for bg mode) ──
     print_invariants!(petsclib, comm, u, t, dm_eII, v_eII, dm_tII, v_tII)
+    t_inv = time()
     # Analytical Maxwell comparison: valid when sol_type=="bg", n==1, homogeneous.
     # Continuous:  τ_II = 2η·ε_II·(1 − e^{−G·t/η})
     # Discrete BE: τ_II = 2η·ε_II·(1 − relax^step),  relax = η/(η+G·dt)
@@ -1407,6 +1407,7 @@ for step in 1:nsteps
     # advance_tau! scatters tau_vec into field 1 of aux_vec for the next solve.
     update_tau!(petsclib, dm_tau, u, tau_vec)
     advance_tau!(petsclib, dm_aux, aux_vec, tau_vec)
+    t_tau = time()
 
     # ── Advect mesh (Lagrangian step): x ← x + dt·v ──────────────────────────
     # Skipped for `bg` sol_type: the domain is spatially homogeneous so
@@ -1429,7 +1430,14 @@ for step in 1:nsteps
             end
         end
     end
-    
+    t_end = time()
+
+    if MPI.Comm_rank(comm) == 0
+        tstep = round(t + dt_val; sigdigits = 4)
+        @printf("Step %d/%d  t = %g  SNES: %d iter  solve=%.2fs  inv=%.2fs  tau=%.2fs  vtk=%.2fs  total=%.2fs\n",
+                step, nsteps, tstep, its,
+                t_solve - t0, t_inv - t_solve, t_tau - t_inv, t_end - t_tau, t_end - t0)
+    end
 end
 
 # ── Cleanup ───────────────────────────────────────────────────────────────────

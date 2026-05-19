@@ -42,14 +42,32 @@
         p = sin(2πx)+sin(2πy)+sin(2πz)
 
   Parameters:
-    -mu val             background (matrix) dynamic shear viscosity (default 1.0)
-    -mu_inclusion val   viscosity inside the circular inclusion (default = mu)
-    -rho_bg val         background (matrix) density (default 1.0)
-    -rho_inclusion val  density inside the inclusion (default = rho_bg)
-    -gravity val        gravitational acceleration magnitude, pointing in −y (default 1.0)
-    -exx_bg val         background x-extensional strain rate (default 0.0)
-    -eyy_bg val         background y-extensional strain rate (default 0.0)
-    -sol name           solution type: quadratic (default), trig, bg, or grav
+    -mu val                background (matrix) reference viscosity η₀ (default 1.0)
+    -mu_inclusion val      reference viscosity inside the inclusion (default = mu)
+    -n_bg val              power-law exponent n for background (default 1.0, linear)
+    -n_inclusion val       power-law exponent n for inclusion (default = n_bg)
+    -eps0_bg val           reference strain rate ε₀ for background (default 1.0)
+    -eps0_inclusion val    reference strain rate ε₀ for inclusion (default = eps0_bg)
+    -eta_min_bg val        minimum viscosity (parallel dashpot) for background (default 0.0)
+    -eta_min_inclusion val minimum viscosity for inclusion (default = eta_min_bg)
+    -eta_max_bg val        maximum viscosity (series dashpot) for background (default 1e30)
+    -eta_max_inclusion val maximum viscosity for inclusion (default = eta_max_bg)
+    -rho_bg val            background (matrix) density (default 1.0)
+    -rho_inclusion val     density inside the inclusion (default = rho_bg)
+    -gravity val           gravitational acceleration magnitude, pointing in −y (default 1.0)
+    -exx_bg val            background x-extensional strain rate (default 0.0)
+    -eyy_bg val            background y-extensional strain rate (default 0.0)
+    -G_bg val              elastic shear modulus for background (default 1e30 = purely viscous)
+    -G_inclusion val       elastic shear modulus for inclusion (default = G_bg)
+    -dt val                timestep size (default 1.0; only matters when G < ∞)
+    -sol name              solution type: quadratic (default), trig, bg, or grav
+
+  Power-law viscosity:
+    η_pl  = η₀ * (ε_II / ε₀)^(1/n − 1)        (Ostwald-de Waele)
+    upper cutoff (series dashpot):   1/η_s = 1/η_pl + 1/η_max  → η_eff ≤ η_max
+    lower cutoff (parallel dashpot): η_eff = η_s + η_min        → η_eff ≥ η_min
+    ε_II is the second invariant of the strain rate tensor.
+    Set n=1 (default) for linear Newtonian flow; ε₀ and η_min/η_max have no effect then.
 
   ── Solvers ───────────────────────────────────────────────────────────────────
 
@@ -147,6 +165,115 @@
           -fieldsplit_pressure_ksp_type preonly -fieldsplit_pressure_pc_type jacobi \
           -ksp_type fgmres -ksp_rtol 1e-6 -snes_rtol 1e-6 -vtk_output out3d_mg.vtu
 
+  ── Time-dependent simulations ───────────────────────────────────────────────
+
+  Use -dt and -nsteps for time-dependent runs.  Output is written as
+  base_0001.vtu, base_0002.vtu, … plus a base.pvd collection file that
+  ParaView can open directly for animation (-vtk_output base.vtu).
+
+  Key time-stepping parameters:
+    -dt VAL       timestep size (default 1.0)
+    -nsteps N     number of time steps (default 1 = single steady-state solve)
+    -G_bg VAL     elastic shear modulus of matrix  (1e30 = purely viscous)
+    -G_inclusion VAL  shear modulus of inclusion   (1e30 = purely viscous)
+    τ_relaxation = η / G   (Maxwell relaxation time)
+    Recommend dt ≤ 0.1 · τ_relaxation for accurate stress build-up.
+    For nonlinear rheology (n > 1) use -snes_rtol 1e-6 -snes_max_it 20.
+
+  2D gravity-driven sinking, viscous (baseline), direct solver:
+    julia --project=examples examples/ex62b.jl \
+          -sol grav \
+          -mesh_h 0.05 -mesh_h_inclusion 0.02 \
+          -rho_bg 1.0 -rho_inclusion 2.0 -gravity 1.0 \
+          -mu_inclusion 0.1 \
+          -dt 0.02 -nsteps 20 \
+          -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
+          -pc_fieldsplit_schur_factorization_type full \
+          -pc_fieldsplit_schur_precondition a11 \
+          -fieldsplit_velocity_pc_type lu \
+          -fieldsplit_pressure_ksp_rtol 1e-9 -fieldsplit_pressure_pc_type lu \
+          -ksp_rtol 1e-9 -snes_rtol 1e-9 \
+          -vtk_output grav_viscous.vtu
+
+  2D gravity-driven sinking, Maxwell viscoelastic (τ_rel = η/G = 0.2), direct solver:
+    julia --project=examples examples/ex62b.jl \
+          -sol grav \
+          -mesh_h 0.05 -mesh_h_inclusion 0.02 \
+          -rho_bg 1.0 -rho_inclusion 2.0 -gravity 1.0 \
+          -mu_inclusion 0.1 \
+          -G_bg 5.0 -G_inclusion 0.5 \
+          -dt 0.01 -nsteps 50 \
+          -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
+          -pc_fieldsplit_schur_factorization_type full \
+          -pc_fieldsplit_schur_precondition a11 \
+          -fieldsplit_velocity_pc_type lu \
+          -fieldsplit_pressure_ksp_rtol 1e-9 -fieldsplit_pressure_pc_type lu \
+          -ksp_rtol 1e-9 -snes_rtol 1e-9 \
+          -vtk_output grav_viscoelastic.vtu
+
+  2D pure shear, power-law inclusion (n=3), viscoelastic matrix, direct solver:
+    julia --project=examples examples/ex62b.jl \
+          -sol bg -exx_bg 1.0 -eyy_bg -1.0 \
+          -mesh_h 0.04 -mesh_h_inclusion 0.015 \
+          -mu_inclusion 0.1 \
+          -n_inclusion 3.0 -eps0_inclusion 0.5 \
+          -G_bg 10.0 -G_inclusion 1.0 \
+          -dt 0.005 -nsteps 100 \
+          -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
+          -pc_fieldsplit_schur_factorization_type full \
+          -pc_fieldsplit_schur_precondition a11 \
+          -fieldsplit_velocity_pc_type lu \
+          -fieldsplit_pressure_ksp_rtol 1e-9 -fieldsplit_pressure_pc_type lu \
+          -ksp_rtol 1e-9 -snes_rtol 1e-6 -snes_max_it 20 \
+          -vtk_output shear_powerlaw.vtu
+
+  2D large problem, iterative GAMG solver:
+    julia --project=examples examples/ex62b.jl \
+          -sol grav \
+          -mesh_h 0.02 -mesh_h_inclusion 0.008 \
+          -rho_bg 1.0 -rho_inclusion 2.0 -gravity 1.0 \
+          -mu_inclusion 0.01 \
+          -G_bg 10.0 -G_inclusion 1.0 \
+          -dt 0.01 -nsteps 50 \
+          -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
+          -pc_fieldsplit_schur_factorization_type full \
+          -pc_fieldsplit_schur_precondition a11 \
+          -fieldsplit_velocity_ksp_type cg -fieldsplit_velocity_pc_type gamg \
+          -fieldsplit_pressure_ksp_type preonly -fieldsplit_pressure_pc_type jacobi \
+          -ksp_type fgmres -ksp_rtol 1e-6 -snes_rtol 1e-6 \
+          -vtk_output grav_gamg.vtu
+
+  3D gravity-driven sinking (sphere), viscoelastic, GAMG solver:
+    julia --project=examples examples/ex62b.jl \
+          -dm_plex_dim 3 \
+          -sol grav \
+          -mesh_h 0.3 -mesh_h_inclusion 0.12 \
+          -rho_bg 1.0 -rho_inclusion 2.0 -gravity 1.0 \
+          -mu_inclusion 0.1 \
+          -G_bg 5.0 -G_inclusion 0.5 \
+          -dt 0.02 -nsteps 30 \
+          -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
+          -pc_fieldsplit_schur_factorization_type full \
+          -pc_fieldsplit_schur_precondition a11 \
+          -fieldsplit_velocity_ksp_type cg -fieldsplit_velocity_pc_type gamg \
+          -fieldsplit_pressure_ksp_type preonly -fieldsplit_pressure_pc_type jacobi \
+          -ksp_type fgmres -ksp_rtol 1e-6 -snes_rtol 1e-6 \
+          -vtk_output sphere_sinking.vtu
+
+  Analytical viscoelastic verification — Maxwell stress build-up under pure shear
+  (homogeneous linear rheology, τ_rel = η/G = 1):
+    julia --project=examples examples/ex62b.jl \
+          -sol bg -exx_bg 0.1 -eyy_bg -0.1 \
+          -mesh_h 0.5 -mu_inclusion 1.0 \
+          -G_bg 1.0 -G_inclusion 1.0 \
+          -dt 0.1 -nsteps 30 \
+          -pc_use_amat -pc_type fieldsplit -pc_fieldsplit_type schur \
+          -pc_fieldsplit_schur_factorization_type full \
+          -pc_fieldsplit_schur_precondition a11 \
+          -fieldsplit_velocity_pc_type lu \
+          -fieldsplit_pressure_ksp_rtol 1e-9 -fieldsplit_pressure_pc_type lu \
+          -ksp_rtol 1e-9 -snes_rtol 1e-9
+
   References:
     - PETSc 3.23  src/snes/tutorials/ex62.c
 =#
@@ -163,17 +290,34 @@ using PETSc
 using PETSc: LibPETSc
 import Gmsh: gmsh
 using ForwardDiff
+using Printf
 
 # ── REPL options (edit when running interactively) ───────────────────────────
 # Used in place of ARGS when the script is loaded from the REPL.
 const repl_opts = String[
-    "-sol",                          "grav",
-    "-mesh_h",                       "0.05",
-    "-mesh_h_inclusion",             "0.02",
-    "-rho_bg",                       "1.0",
-    "-rho_inclusion",                "2.0",
-    "-gravity",                      "1.0",
-    "-mu_inclusion",                 "0.1",   # 10× softer inclusion
+    # ── Viscoelastic pure-shear test: Maxwell stress buildup ───────────────────
+    # Homogeneous box (no viscosity/modulus contrast), linear viscosity.
+    # Analytical solution: τ_II(t) = 2η·ε_II·(1 − e^{−G·t/η})
+    #   η = 1, G = 1  →  τ_rel = 1,  ε_II = |exx| = 0.1
+    #   τ_II^∞ = 2·1·0.1 = 0.2  (viscous steady state)
+    # Discrete BE error for dt=0.1: ~3 % per relaxation time.
+    "-sol",                          "bg",
+    "-exx_bg",                       "0.1",
+    "-eyy_bg",                       "-0.1",
+    "-mesh_h",                       "0.5",     # low resolution
+    "-mu_inclusion",                 "1.0",     # same as background → homogeneous
+    "-n_bg",                         "1.0",     # linear Newtonian
+    "-n_inclusion",                  "1.0",
+    "-eps0_bg",                      "1.0",
+    "-eps0_inclusion",               "1.0",
+    "-eta_min_bg",                   "0.0",
+    "-eta_min_inclusion",            "0.0",
+    "-eta_max_bg",                   "1e30",
+    "-eta_max_inclusion",            "1e30",
+    "-G_bg",                         "1.0",     # shear modulus; τ_rel = η/G = 1
+    "-G_inclusion",                  "1.0",
+    "-dt",                           "0.1",     # dt / τ_rel = 0.1
+    "-nsteps",                       "30",      # total time = 3 relaxation times
     # "-vel_petscspace_degree",      "2",
     # "-pres_petscspace_degree",     "1",
     "-pc_use_amat",
@@ -213,6 +357,14 @@ o           = NamedTuple(pairs(opts))
 sol_type    = string(get(o, :sol, "quadratic"))
 mu_val      = parse(Float64, string(get(o, :mu, "1.0")))
 mu_inclusion = parse(Float64, string(something(get(o, :mu_inclusion, nothing), string(mu_val))))
+n_bg        = parse(Float64, string(get(o, :n_bg, "1.0")))
+n_inclusion = parse(Float64, string(something(get(o, :n_inclusion, nothing), string(n_bg))))
+eps0_bg     = parse(Float64, string(get(o, :eps0_bg, "1.0")))
+eps0_inclusion = parse(Float64, string(something(get(o, :eps0_inclusion, nothing), string(eps0_bg))))
+eta_min_bg  = parse(Float64, string(get(o, :eta_min_bg, "0.0")))
+eta_min_inclusion = parse(Float64, string(something(get(o, :eta_min_inclusion, nothing), string(eta_min_bg))))
+eta_max_bg  = parse(Float64, string(get(o, :eta_max_bg, "1e30")))
+eta_max_inclusion = parse(Float64, string(something(get(o, :eta_max_inclusion, nothing), string(eta_max_bg))))
 dim_opt     = parse(Int,     string(get(o, Symbol("dm_plex_dim"), "2")))
 default_h   = dim_opt == 3 ? "0.2" : "0.02"   # coarser default in 3D
 mesh_h      = parse(Float64, string(get(o, :mesh_h, default_h)))
@@ -226,6 +378,10 @@ ezz_bg      = -(exx_bg + eyy_bg)   # enforces ∇·u = exx + eyy + ezz = 0
 rho_bg      = parse(Float64, string(get(o, :rho_bg,        "1.0")))
 rho_inclusion = parse(Float64, string(something(get(o, :rho_inclusion, nothing), string(rho_bg))))
 gravity     = parse(Float64, string(get(o, :gravity, "1.0")))
+G_bg        = parse(Float64, string(get(o, :G_bg, "1e30")))    # shear modulus (∞ = viscous)
+G_inclusion = parse(Float64, string(something(get(o, :G_inclusion, nothing), string(G_bg))))
+dt_val      = parse(Float64, string(get(o, :dt, "1.0")))       # timestep
+nsteps      = parse(Int,     string(get(o, :nsteps, "1")))      # number of time steps
 global bg_exx = exx_bg
 global bg_eyy = eyy_bg
 global bg_ezz = ezz_bg
@@ -234,11 +390,32 @@ global bg_ezz = ezz_bg
 
 # ── Constitutive functions ────────────────────────────────────────────────────
 #
-# Auxiliary field layout (a): a[1] = phase (1=matrix, 2=inclusion) at this point.
-# Constants layout (cst):     [1]=μ[1], [2]=μ[2], [3]=ρ[1], [4]=ρ[2], [5]=g_mag, [6]=R
+# Auxiliary field layout (a):
+#   a[1]           = phase (1=matrix, 2=inclusion)
+#   a[2..dim²+1]   = τ_old      — deviatoric stress τ from previous timestep (zero at t=0)
 #
-# These are the only places the rheology appears — swap them to get a
-# different constitutive law (e.g. power-law, viscoplastic).
+# Constants layout (cst, 17 elements):
+#   [1,2]   = η₀[phase]   — reference viscosity
+#   [3,4]   = ε₀[phase]   — reference strain rate
+#   [5,6]   = n[phase]    — power-law exponent (1 = linear Newtonian)
+#   [7,8]   = η_min[phase] — minimum viscosity (parallel dashpot)
+#   [9,10]  = η_max[phase] — maximum viscosity (series dashpot)
+#   [11,12] = ρ[phase]    — density
+#   [13]    = g_mag       — gravity magnitude
+#   [14]    = R           — inclusion radius (for VTK phase detection)
+#   [15,16] = G[phase]    — elastic shear modulus (1e30 = purely viscous)
+#   [17]    = dt          — timestep (used by Maxwell viscoelastic update)
+#
+# Power-law viscosity (Ostwald-de Waele):
+#   η_pl  = η₀ * (ε_II / ε₀)^(1/n − 1)
+#   upper cutoff via series dashpot:   η_s   = η_pl * η_max / (η_pl + η_max)
+#   lower cutoff via parallel dashpot: η_eff = η_s + η_min
+#
+# Maxwell viscoelastic update over one timestep dt:
+#   η_eff   = η · G · dt / (η + G · dt)   (effective viscosity; → η as G → ∞)
+#   relax   = η / (η + G · dt)             (old-stress weight; → 0 as G → ∞)
+#   σ^{n+1} = 2η_eff · ε^{n+1} + relax · τ^n − p · I    (τ = deviatoric, σ = total)
+# Setting G = 1e30 recovers purely viscous behaviour (relax ≈ 0).
 #
 # ε_{cd} = ½(∂u_c/∂x_d + ∂u_d/∂x_c)   (symmetric part of ∇u)
 @inline function compute_strainrate!(eps, dim_, u_x)
@@ -247,14 +424,48 @@ global bg_ezz = ezz_bg
     end
 end
 
-# Compute total stress σ = τ - p_eff I and return the effective pressure.
-# For isoviscous incompressible flow: τ_{cd} = 2μ ε_{cd}, p_eff = p (unchanged).
-# Future coupled rheologies (bulk viscosity, Drucker-Prager, etc.) modify p_eff here.
-@inline function deviatoric_stress_pressure!(sigma, dim_, eps, mu, p)
+# Second invariant: ε_II = sqrt(½ ε:ε + δ²) where δ is a regularisation offset.
+# The δ² term inside the sqrt ensures the derivative is finite at ε = 0:
+# without it, sqrt'(0) = Inf would produce NaN Jacobian entries via ForwardDiff.
+@inline function second_invariant(eps, dim_, delta_sq = zero(eltype(eps)))
+    s = delta_sq
     for c in 0:dim_-1, d in 0:dim_-1
-        sigma[c*dim_+d+1] = 2 * mu * eps[c*dim_+d+1]
+        s += eps[c*dim_+d+1]^2
     end
-    p_eff = p   # future: e.g. p - zeta * tr(eps) for bulk viscosity
+    return sqrt(0.5 * s)
+end
+
+# Power-law effective viscosity with upper (series) and lower (parallel) cutoffs.
+# eps_II must already be regularised (> 0) so that the power is well-defined.
+@inline function effective_viscosity(eps_II, eta0, eps0, n_exp, eta_min, eta_max)
+    eta_pl = eta0 * (eps_II / eps0)^(1/n_exp - 1)
+    eta_s  = eta_pl * eta_max / (eta_pl + eta_max)   # series: upper cutoff
+    return eta_s + eta_min                             # parallel: lower cutoff
+end
+
+# Compute total stress σ = τ − p_eff I and return the effective pressure.
+# Implements the Maxwell viscoelastic update using the old deviatoric stress tau_old.
+# All viscosity and elastic parameters are read from cst; tau_old from the aux field.
+# ForwardDiff in deviatoric_stress_tangent! differentiates w.r.t. eps only:
+#   - the 2η_eff·ε term contributes dη_eff/dε via the chain rule (captured automatically)
+#   - the relax·σ_old term is constant w.r.t. eps so its Jacobian contribution is zero ✓
+@inline function deviatoric_stress_pressure!(sigma, dim_, eps, phase, cst, p, tau_old)
+    eta0    = cst[phase]
+    eps0    = cst[2 + phase]
+    n_exp   = cst[4 + phase]
+    eta_min = cst[6 + phase]
+    eta_max = cst[8 + phase]
+    G_mod   = cst[14 + phase]   # elastic shear modulus (cst[15] or cst[16])
+    dt      = cst[17]
+    delta_sq = (1e-30 * real(eps0))^2
+    eps_II  = second_invariant(eps, dim_, delta_sq)
+    eta     = effective_viscosity(eps_II, eta0, eps0, n_exp, eta_min, eta_max)
+    eta_eff   = eta * G_mod * dt / (eta + G_mod * dt)   # → η as G → ∞
+    relax_fac = eta / (eta + G_mod * dt)                 # → 0 as G → ∞
+    for c in 0:dim_-1, d in 0:dim_-1
+        sigma[c*dim_+d+1] = 2 * eta_eff * eps[c*dim_+d+1] + relax_fac * real(tau_old[c*dim_+d+1])
+    end
+    p_eff = p
     for c in 0:dim_-1
         sigma[c*dim_+c+1] -= p_eff
     end
@@ -262,25 +473,27 @@ end
 end
 
 # ∂σ/∂(∂u/∂x) tangent via AD of deviatoric_stress_pressure! w.r.t. ε only.
+# Because deviatoric_stress_pressure! computes η(ε_II) internally, the AD
+# automatically captures dη/dε via the chain rule — no manual linearisation needed.
 # The strain-rate factor ∂ε_{gh}/∂(∂u_e/∂x_f) = ½(δ_{ge}δ_{hf} + δ_{gf}δ_{he})
-# is known analytically, so we apply it as a column symmetrisation:
+# is applied analytically as column symmetrisation:
 #   ∂σ_{ab}/∂(∂u_e/∂x_f) = ½( ∂σ_{ab}/∂ε_{ef} + ∂σ_{ab}/∂ε_{fe} )
 # PETSc g3 layout: g3[((fc*dim+gc)*dim+df)*dim+dg + 1] = ∂σ_{fc,df}/∂(∂u_{gc}/∂x_{dg})
-@inline function deviatoric_stress_tangent!(K, dim_, u_x, mu, p)
+@inline function deviatoric_stress_tangent!(K, dim_, u_x, phase, cst, p, tau_old)
     n      = dim_ * dim_
-    eps_v  = [real(u_x[i]) for i in 1:n]   # reuse buffer; values don't matter for AD seed
-    compute_strainrate!(eps_v, dim_, [real(u_x[i]) for i in 1:n])
-    # AD: differentiate σ w.r.t. ε
+    u_xr   = [real(u_x[i]) for i in 1:n]
+    eps_v  = similar(u_xr)
+    compute_strainrate!(eps_v, dim_, u_xr)
+    # tau_old is constant w.r.t. eps — its relax·τ_old contribution drops out of J_eps
     J_eps = ForwardDiff.jacobian(eps_v) do e
         sigma_v = similar(e)
-        deviatoric_stress_pressure!(sigma_v, dim_, e, mu, p)
+        deviatoric_stress_pressure!(sigma_v, dim_, e, phase, cst, p, tau_old)
         sigma_v
     end
-    # Apply chain rule: symmetrise columns to account for ∂ε/∂(∇u)
     for i in 0:n-1, j in 0:n-1
         fc, df  = divrem(i, dim_)
         gc, dg  = divrem(j, dim_)
-        j_sym   = dg * dim_ + gc          # index of transposed entry (fe swapped)
+        j_sym   = dg * dim_ + gc
         dσ_dux  = 0.5 * (J_eps[i+1, j+1] + J_eps[i+1, j_sym+1])
         K[((fc*dim_+gc)*dim_+df)*dim_+dg + 1] += dσ_dux
     end
@@ -292,11 +505,11 @@ end
 #   step 2: f1 ← σ = τ − p_eff I   (via deviatoric_stress_pressure!)
 function f1_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
               aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, f1)
-    phase = Int(round(real(a[1])))
-    mu    = real(cst[phase])
-    p     = real(u[dim_+1])
+    phase     = Int(round(real(a[1])))
+    tau_old = view(a, 2:dim_*dim_+1)   # a[2..dim²+1], zero at t=0
+    p         = real(u[dim_+1])
     compute_strainrate!(f1, dim_, u_x)
-    deviatoric_stress_pressure!(f1, dim_, f1, mu, p)
+    deviatoric_stress_pressure!(f1, dim_, f1, phase, cst, p, tau_old)
 end
 const f1_u_ptr = PETSc.@petsc_residual_fn(f1_u, dim_*dim_)
 
@@ -356,8 +569,8 @@ const f0_zero_u_ptr = PETSc.@petsc_residual_fn(f0_zero_u, dim_)
 function f0_grav_u(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                    aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, f0)
     phase = Int(round(real(a[1])))
-    rho   = real(cst[2 + phase])   # cst[3]=ρ[1], cst[4]=ρ[2]
-    g     = real(cst[5])
+    rho   = real(cst[10 + phase])   # cst[11]=ρ[1], cst[12]=ρ[2]
+    g     = real(cst[13])
     for d in 1:dim_; f0[d] = 0.0; end
     f0[dim_] = rho * g
 end
@@ -368,10 +581,10 @@ const f0_grav_u_ptr = PETSc.@petsc_residual_fn(f0_grav_u, dim_)
 # J_uu (g3): tangent of deviatoric stress w.r.t. ∇u, computed by AD
 function g3_uu(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g3)
-    phase = Int(round(real(a[1])))
-    mu    = real(cst[phase])
-    p     = real(u[dim_+1])
-    deviatoric_stress_tangent!(g3, dim_, u_x, mu, p)
+    phase     = Int(round(real(a[1])))
+    tau_old = view(a, 2:dim_*dim_+1)
+    p         = real(u[dim_+1])
+    deviatoric_stress_tangent!(g3, dim_, u_x, phase, cst, p, tau_old)
 end
 const g3_uu_ptr = PETSc.@petsc_jacobian_fn(g3_uu, dim_*dim_*dim_*dim_)
 
@@ -381,16 +594,16 @@ const g3_uu_ptr = PETSc.@petsc_jacobian_fn(g3_uu, dim_*dim_*dim_*dim_)
 # p_eff depends on p) the AD picks up the extra terms automatically.
 function g2_up(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g2)
-    phase   = Int(round(real(a[1])))
-    mu      = real(cst[phase])
-    p       = real(u[dim_+1])
-    n       = dim_ * dim_
-    eps_cur = [0.0 for _ in 1:n]
-    compute_strainrate!(eps_cur, dim_, [real(u_x[i]) for i in 1:n])
-    # ForwardDiff.derivative: scalar input p → vector output σ
+    phase     = Int(round(real(a[1])))
+    tau_old = view(a, 2:dim_*dim_+1)
+    p         = real(u[dim_+1])
+    n         = dim_ * dim_
+    eps_cur   = [real(u_x[i]) for i in 1:n]
+    compute_strainrate!(eps_cur, dim_, eps_cur)
+    # tau_old is constant w.r.t. p, so its derivative drops out automatically
     dσ_dp = ForwardDiff.derivative(Float64(p)) do p_val
         sv = zeros(typeof(p_val), n)
-        deviatoric_stress_pressure!(sv, dim_, eps_cur, mu, p_val)
+        deviatoric_stress_pressure!(sv, dim_, eps_cur, phase, cst, p_val, tau_old)
         sv
     end
     for i in 1:n; g2[i] = dσ_dp[i]; end
@@ -404,12 +617,110 @@ function g1_pu(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
 end
 const g1_pu_ptr = PETSc.@petsc_jacobian_fn(g1_pu, dim_*dim_)
 
-# J_pp preconditioner (g0): (1/μ)⟨q, p⟩
+# J_pp preconditioner (g0): (1/η_eff)⟨q, p⟩ using the Maxwell effective viscosity
 function g0_pp(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                aOff, aOff_x, a, a_t, a_x, t, utShift, x, nC, cst, g0)
-    g0[1] = 1.0 / real(cst[Int(round(real(a[1])))])
+    phase   = Int(round(real(a[1])))
+    n       = dim_ * dim_
+    eps_buf = [real(u_x[i]) for i in 1:n]
+    compute_strainrate!(eps_buf, dim_, eps_buf)
+    delta_sq = (1e-30 * real(cst[2+phase]))^2
+    eps_II  = second_invariant(eps_buf, dim_, delta_sq)
+    eta     = effective_viscosity(eps_II, real(cst[phase]), real(cst[2+phase]),
+                                  real(cst[4+phase]), real(cst[6+phase]), real(cst[8+phase]))
+    G_mod   = real(cst[14+phase])
+    dt      = real(cst[17])
+    eta_eff = eta * G_mod * dt / (eta + G_mod * dt)
+    g0[1]   = 1.0 / eta_eff
 end
 const g0_pp_ptr = PETSc.@petsc_jacobian_fn(g0_pp, 1)
+
+# ── Deviatoric stress computation (for VTK and viscoelastic history) ─────────
+#
+# Computes σ_dev^{n+1} = 2η_eff·ε^{n+1} + relax·σ_dev^n  (no −pI term).
+# Reads phase and σ_dev^n from the aux field (a[1] and a[2..dim²+1]).
+# dm_tau must have aux_vec attached via DMSetAuxiliaryVec before calling
+# dm_project_field! so that `a` is populated correctly.
+function compute_tau(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
+                           aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, out)
+    phase     = Int(round(real(a[1])))
+    tau_old = view(a, 2:dim_*dim_+1)
+    n         = dim_ * dim_
+    eps_buf   = [real(u_x[i]) for i in 1:n]
+    compute_strainrate!(eps_buf, dim_, eps_buf)
+    delta_sq  = (1e-30 * real(cst[2+phase]))^2
+    eps_II    = second_invariant(eps_buf, dim_, delta_sq)
+    eta       = effective_viscosity(eps_II, real(cst[phase]), real(cst[2+phase]),
+                                    real(cst[4+phase]), real(cst[6+phase]), real(cst[8+phase]))
+    G_mod     = real(cst[14+phase])
+    dt        = real(cst[17])
+    eta_eff   = eta * G_mod * dt / (eta + G_mod * dt)
+    relax_fac = eta / (eta + G_mod * dt)
+    for c in 0:dim_-1, d in 0:dim_-1
+        i = c*dim_+d+1
+        out[i] = 2 * eta_eff * eps_buf[i] + relax_fac * real(tau_old[i])
+    end
+end
+const compute_tau_ptr = PETSc.@petsc_residual_fn(compute_tau, dim_*dim_)
+
+# Same as compute_tau but zero-padded to 3×3 row-major for VTK tensor output.
+function compute_tau_3x3(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
+                               aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, out)
+    for i in 1:9; out[i] = 0.0; end
+    phase     = Int(round(real(a[1])))
+    tau_old = view(a, 2:dim_*dim_+1)
+    n         = dim_ * dim_
+    eps_buf   = [real(u_x[i]) for i in 1:n]
+    compute_strainrate!(eps_buf, dim_, eps_buf)
+    delta_sq  = (1e-30 * real(cst[2+phase]))^2
+    eps_II    = second_invariant(eps_buf, dim_, delta_sq)
+    eta       = effective_viscosity(eps_II, real(cst[phase]), real(cst[2+phase]),
+                                    real(cst[4+phase]), real(cst[6+phase]), real(cst[8+phase]))
+    G_mod     = real(cst[14+phase])
+    dt        = real(cst[17])
+    eta_eff   = eta * G_mod * dt / (eta + G_mod * dt)
+    relax_fac = eta / (eta + G_mod * dt)
+    for c in 0:dim_-1, d in 0:dim_-1
+        out[c*3+d+1] = 2 * eta_eff * eps_buf[c*dim_+d+1] + relax_fac * real(tau_old[c*dim_+d+1])
+    end
+end
+const compute_tau_3x3_ptr = PETSc.@petsc_residual_fn(compute_tau_3x3, 9)
+
+# Second invariants (DG-P0, 1 DOF/cell) — used for domain averages and VTK output.
+# ε_II = sqrt(½ ε:ε),  τ_II = sqrt(½ τ:τ)
+
+function compute_eps_II(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
+                        aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, out)
+    n = dim_ * dim_
+    eps_buf = [real(u_x[i]) for i in 1:n]
+    compute_strainrate!(eps_buf, dim_, eps_buf)
+    out[1] = real(second_invariant(eps_buf, dim_))
+end
+const compute_eps_II_ptr = PETSc.@petsc_residual_fn(compute_eps_II, 1)
+
+function compute_tau_II(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
+                        aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, out)
+    phase     = Int(round(real(a[1])))
+    tau_old   = view(a, 2:dim_*dim_+1)
+    n         = dim_ * dim_
+    eps_buf   = [real(u_x[i]) for i in 1:n]
+    compute_strainrate!(eps_buf, dim_, eps_buf)
+    delta_sq  = (1e-30 * real(cst[2+phase]))^2
+    eps_II    = second_invariant(eps_buf, dim_, delta_sq)
+    eta       = effective_viscosity(eps_II, real(cst[phase]), real(cst[2+phase]),
+                                    real(cst[4+phase]), real(cst[6+phase]), real(cst[8+phase]))
+    G_mod     = real(cst[14+phase])
+    dt_c      = real(cst[17])
+    eta_eff   = eta * G_mod * dt_c / (eta + G_mod * dt_c)
+    relax_fac = eta / (eta + G_mod * dt_c)
+    s = 0.0
+    for i in 1:n
+        tau_i = 2 * eta_eff * eps_buf[i] + relax_fac * real(tau_old[i])
+        s += tau_i^2
+    end
+    out[1] = sqrt(0.5 * s)
+end
+const compute_tau_II_ptr = PETSc.@petsc_residual_fn(compute_tau_II, 1)
 
 # ── VTK post-processing: strain rate tensor ─────────────────────────────────
 #
@@ -439,19 +750,224 @@ function copy_pres(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
 end
 const copy_pres_ptr = PETSc.@petsc_residual_fn(copy_pres, 1)
 
-# VTK kernels use position + cst[6]=R (geometry-based, no auxiliary field needed).
-# cst layout: [mu[1], mu[2], rho[1], rho[2], g, R]
+# copy_mu reports the Maxwell effective viscosity η_eff = η·G·dt/(η+G·dt).
 function copy_mu(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                  aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, out_)
-    out_[1] = real(sum(x[i]^2 for i in 1:dim_) < cst[6]^2 ? cst[2] : cst[1])
+    phase   = Int(round(real(a[1])))
+    n       = dim_ * dim_
+    eps_buf = [real(u_x[i]) for i in 1:n]
+    compute_strainrate!(eps_buf, dim_, eps_buf)
+    delta_sq = (1e-30 * real(cst[2+phase]))^2
+    eps_II  = second_invariant(eps_buf, dim_, delta_sq)
+    eta     = effective_viscosity(eps_II, real(cst[phase]), real(cst[2+phase]),
+                                  real(cst[4+phase]), real(cst[6+phase]), real(cst[8+phase]))
+    G_mod   = real(cst[14+phase])
+    dt      = real(cst[17])
+    out_[1] = eta * G_mod * dt / (eta + G_mod * dt)
 end
 const copy_mu_ptr = PETSc.@petsc_residual_fn(copy_mu, 1)
 
 function copy_phase(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
                     aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, out_)
-    out_[1] = sum(x[i]^2 for i in 1:dim_) < cst[6]^2 ? 2.0 : 1.0
+    out_[1] = real(a[1])   # phase from aux field — correct after Lagrangian advection
 end
 const copy_phase_ptr = PETSc.@petsc_residual_fn(copy_phase, 1)
+
+# Pass-through kernel: copies dim×dim values from the source field to the output.
+# Used by advance_tau! to project tau_vec (on dm_tau) into field 1 of aux_vec.
+function identity_tau(dim_, Nf, NfAux, uOff, uOff_x, u, u_t, u_x,
+                      aOff, aOff_x, a, a_t, a_x, t, x, nC, cst, out)
+    for i in 1:dim_*dim_; out[i] = u[i]; end
+end
+const identity_tau_ptr = PETSc.@petsc_residual_fn(identity_tau, dim_*dim_)
+
+# ── Time-stepping helpers ─────────────────────────────────────────────────────
+
+"""
+    solve_step!(petsclib, snes, u) -> iteration_count
+
+Run one SNES Newton solve on the current mesh/aux state. `snes` must already be
+configured via SNESSetFromOptions / SNESSetUp. Returns the Newton iteration count.
+"""
+function solve_step!(petsclib, snes, u)
+    has_opts = !isnothing(snes.opts)
+    has_opts && push!(snes.opts)
+    try
+        LibPETSc.SNESSolve(petsclib, snes, C_NULL, u)
+    finally
+        has_opts && pop!(snes.opts)
+    end
+    return LibPETSc.SNESGetIterationNumber(petsclib, snes)
+end
+
+"""
+    advance_tau!(petsclib, dm_aux, aux_vec, tau_vec)
+
+Copy τ^{n+1} from `tau_vec` (field 0 of `dm_tau`, dim×dim DOFs/cell) into the
+τ_old field (field 1) of `aux_vec` (on `dm_aux`), leaving the phase field (field 0)
+unchanged. Call after `update_tau!` so the next solve sees the updated τ^n.
+"""
+function advance_tau!(petsclib, dm_aux, aux_vec, tau_vec)
+    PETSc.dm_project_field!(petsclib, dm_aux, 0.0, tau_vec,
+        [C_NULL, identity_tau_ptr], LibPETSc.INSERT_VALUES, aux_vec)
+end
+
+"""
+    print_invariants!(petsclib, comm, u, t, dm_eII, v_eII, dm_tII, v_tII) -> (avg_ε_II, avg_τ_II)
+
+Project ε_II and τ_II onto pre-created DG-P0 vectors, compute unweighted domain
+averages, print them, and return both values.  `dm_eII`, `v_eII`, `dm_tII`, `v_tII`
+must be created once before the time loop (see setup section) and reused each step.
+"""
+function print_invariants!(petsclib, comm, u, t, dm_eII, v_eII, dm_tII, v_tII)
+    PETSc.dm_project_field!(petsclib, dm_eII, t, u,
+        [compute_eps_II_ptr], LibPETSc.INSERT_ALL_VALUES, v_eII)
+    PETSc.dm_project_field!(petsclib, dm_tII, t, u,
+        [compute_tau_II_ptr], LibPETSc.INSERT_ALL_VALUES, v_tII)
+
+    # Unweighted average: NORM_1 (sum of |values|) / ncells
+    # ε_II and τ_II are non-negative, so NORM_1 = sum.
+    ncells    = LibPETSc.VecGetSize(petsclib, v_eII)
+    avg_eps   = LibPETSc.VecNorm(petsclib, v_eII, LibPETSc.NORM_1) / ncells
+    avg_tau   = LibPETSc.VecNorm(petsclib, v_tII, LibPETSc.NORM_1) / ncells
+
+    if MPI.Comm_rank(comm) == 0
+        println("  ε_II avg = $(round(avg_eps; sigdigits=4)),  τ_II avg = $(round(avg_tau; sigdigits=4))")
+    end
+    return avg_eps, avg_tau
+end
+
+"""
+    advect_mesh!(petsclib, dm, u, dt, dm_p1, vel_p1)
+
+Lagrangian advection: move every mesh node by `dt * v`, where `v` is the P2
+Stokes velocity `u` projected onto the pre-created P1 DM `dm_p1` / vector
+`vel_p1`.  Wall nodes stay fixed because their no-slip BCs enforce v = 0.
+"""
+function advect_mesh!(petsclib, dm, u, dt, dm_p1, vel_p1)
+    PL = typeof(petsclib)
+    PETSc.dm_project_field!(petsclib, dm_p1, 0.0, u,
+        [copy_vel_ptr], LibPETSc.INSERT_ALL_VALUES, vel_p1)
+
+    # DMGetCoordinates fills an existing PetscVec wrapper's ptr with the DM's
+    # internal coordinate vector — modifying it via VecAXPY updates the coords
+    # in-place without a DMSetCoordinates call.
+    coords = LibPETSc.PetscVec{PL}(C_NULL)
+    LibPETSc.DMGetCoordinates(petsclib, dm, coords)
+    LibPETSc.VecAXPY(petsclib, coords, PetscScalar(dt), vel_p1)
+end
+
+# ── VTK output ────────────────────────────────────────────────────────────────
+"""
+    write_pvd(pvd_fname, entries)
+
+Write (or overwrite) a ParaView Data (.pvd) collection file so that ParaView can
+animate a sequence of .vtu files.  `entries` is a vector of `(t, vtu_path)` pairs;
+`vtu_path` should be relative to the directory of `pvd_fname` or absolute.
+
+Call after every VTK step to keep the file up-to-date during long runs:
+    push!(pvd_entries, (t, fname))
+    write_pvd("sim.pvd", pvd_entries)
+"""
+function write_pvd(pvd_fname::AbstractString, entries)
+    open(pvd_fname, "w") do io
+        println(io, """<?xml version="1.0"?>""")
+        println(io, """<VTKFile type="Collection" version="0.1" byte_order="LittleEndian">""")
+        println(io, "  <Collection>")
+        for (t, vtu) in entries
+            # Store only the filename relative to the pvd directory
+            rel = relpath(vtu, dirname(abspath(pvd_fname)))
+            println(io, """    <DataSet timestep="$(round(t; sigdigits=10))" group="" part="0" file="$rel"/>""")
+        end
+        println(io, "  </Collection>")
+        println(io, "</VTKFile>")
+    end
+end
+
+"""
+    save_vtk!(petsclib, comm, fname, dm, u, aux_vec; vel_degree=2, pres_degree=1)
+
+Write the Stokes solution to `fname` (VTK unstructured grid).
+
+Fields written:
+  PointData: velocity (dim), pressure, strainrate (3×3 tensor), tau (3×3 tensor)
+  CellData:  viscosity (η_eff), phase
+
+`dm`      — primary DM (velocity + pressure)
+`u`       — global solution vector on `dm`
+`aux_vec` — auxiliary global vector on dm_aux (field 0: phase, field 1: τ_old)
+"""
+function save_vtk!(petsclib, comm, fname::AbstractString, dm, u, aux_vec;
+                   vel_degree::Int = 2, pres_degree::Int = 1)
+    dim     = LibPETSc.DMGetDimension(petsclib, dm)
+    simplex = PETSc.isplexsimplex(dm)
+
+    dm_out = PETSc.dmclone(dm)
+
+    fe_out_vel = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
+                     dim, dim, simplex; degree = vel_degree, prefix = "vel_")
+    LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_out_vel), "velocity")
+
+    fe_out_pres = let opts = PETSc.Options(petsclib; pres_petscdualspace_lagrange_continuity = 0)
+        push!(opts)
+        fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
+                  dim, 1, simplex; degree = pres_degree, prefix = "pres_")
+        pop!(opts)
+        fe
+    end
+    LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_out_pres), "pressure")
+
+    fe_out_sr  = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
+                     dim, 9, simplex; prefix = "sr_")
+    LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_out_sr),  "strainrate")
+
+    fe_out_tau = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
+                     dim, 9, simplex; prefix = "sig_")
+    LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_out_tau), "tau")
+
+    make_dg0 = (prefix, name) -> let opts = PETSc.Options(petsclib;
+                Symbol(prefix * "petscdualspace_lagrange_continuity") => 0)
+        push!(opts)
+        fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
+                  dim, 1, simplex; degree = 0, prefix = prefix)
+        pop!(opts)
+        LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe), name)
+        fe
+    end
+    fe_out_eps_II = make_dg0("epsii_",  "eps_II")
+    fe_out_tau_II = make_dg0("tauii_",  "tau_II")
+    fe_out_mu     = make_dg0("mu_",     "viscosity")
+    fe_out_phase  = make_dg0("phase_",  "phase")
+
+    PETSc.setfield!(dm_out, 0, fe_out_vel)
+    PETSc.setfield!(dm_out, 1, fe_out_pres)
+    PETSc.setfield!(dm_out, 2, fe_out_sr)
+    PETSc.setfield!(dm_out, 3, fe_out_tau)
+    PETSc.setfield!(dm_out, 4, fe_out_eps_II)
+    PETSc.setfield!(dm_out, 5, fe_out_tau_II)
+    PETSc.setfield!(dm_out, 6, fe_out_mu)
+    PETSc.setfield!(dm_out, 7, fe_out_phase)
+    PETSc.createds!(dm_out)
+    LibPETSc.DMSetAuxiliaryVec(petsclib, dm_out,
+        LibPETSc.DMLabel(C_NULL), PetscInt(0), PetscInt(0), aux_vec)
+
+    out_vec = PETSc.dm_create_global_vec(dm_out)
+    PETSc.petsc_setname!(petsclib, out_vec, "")
+
+    PETSc.dm_project_field!(petsclib, dm_out, 0.0, u,
+        [copy_vel_ptr, copy_pres_ptr, compute_strainrate_3x3_ptr,
+         compute_tau_3x3_ptr, compute_eps_II_ptr, compute_tau_II_ptr,
+         copy_mu_ptr, copy_phase_ptr],
+        LibPETSc.INSERT_ALL_VALUES, out_vec)
+
+    PETSc.vtk_save!(petsclib, comm, fname, out_vec)
+
+    if MPI.Comm_rank(comm) == 0
+        PETSc.vtk_merge_tensor!(fname, "strainrate", "tau")
+        println("VTK written to $fname (velocity, pressure, strainrate, tau, eps_II, tau_II, viscosity, phase)")
+    end
+    return nothing
+end
 
 # ── Exact solutions ───────────────────────────────────────────────────────────
 #
@@ -514,6 +1030,23 @@ function bg_vel(t, x, u, ctx)
     length(u) >= 3 && (u[3] = x[3] * bg_ezz)
 end
 const bg_vel_ptr = PETSc.@petsc_simple_fn(bg_vel)
+
+"""
+    update_tau!(petsclib, dm_tau, u, tau_vec, t=0.0)
+
+Compute τ^{n+1} = 2η_eff·ε^{n+1} + relax·τ^n (deviatoric stress, no −pI term) from
+the current velocity solution `u` (on the primary DM) and store in `tau_vec` (on
+`dm_tau`).  Call after every SNES solve to advance τ for the next timestep.
+
+At the next step the total-stress residual becomes:
+  f1_u: σ^{n+1} = 2η_eff·ε^{n+1} + relax·τ^n − p·I
+where  η_eff = η·G·dt/(η + G·dt)  and  relax = η/(η + G·dt).
+The τ^n term is constant w.r.t. u^{n+1} so it enters f1 but not g3.
+"""
+function update_tau!(petsclib, dm_tau_, u_vec, sv, t = 0.0)
+    PETSc.dm_project_field!(petsclib, dm_tau_, t, u_vec,
+        [compute_tau_ptr], LibPETSc.INSERT_ALL_VALUES, sv)
+end
 
 # ── Select exact solution functions based on sol_type ─────────────────────────
 # Phase field: 1 = matrix, 2 = inclusion.  Reads global inclusion_R.
@@ -659,9 +1192,20 @@ PETSc.createds!(dm)
 # ── PetscDS setup ─────────────────────────────────────────────────────────────
 ds = PETSc.getds(dm)
 
-# constants: [mu[1], mu[2], rho[1], rho[2], g, R]
-# Solve kernels index by phase from aux field; VTK kernels use R (cst[6]) geometrically.
-PETSc.set_constants!(ds, [mu_val, mu_inclusion, rho_bg, rho_inclusion, gravity, inclusion_R])
+# constants (14 elements): see constitutive functions header for layout.
+# Solve kernels index by phase from aux field; VTK kernels use R (cst[14]) geometrically.
+PETSc.set_constants!(ds, [
+    mu_val,          mu_inclusion,      # η₀[1], η₀[2]
+    eps0_bg,         eps0_inclusion,    # ε₀[1], ε₀[2]
+    n_bg,            n_inclusion,       # n[1],  n[2]
+    eta_min_bg,      eta_min_inclusion, # η_min[1], η_min[2]
+    eta_max_bg,      eta_max_inclusion, # η_max[1], η_max[2]
+    rho_bg,          rho_inclusion,     # ρ[1],  ρ[2]
+    gravity,                            # g
+    inclusion_R,                        # R  (geometry, VTK only)
+    G_bg,            G_inclusion,       # G[1], G[2]  (1e30 = purely viscous)
+    dt_val,                             # dt
+])
 
 if sol_type == "quadratic"
     PETSc.set_residual!(ds, 0, f0_quadratic_u_ptr, f1_u_ptr)
@@ -683,25 +1227,59 @@ PETSc.set_jacobian_preconditioner!(ds, 1, 1, g0_pp_ptr, C_NULL, C_NULL, C_NULL)
 PETSc.set_exact_solution!(ds, 0, exact_vel_ptr)
 PETSc.set_exact_solution!(ds, 1, exact_pres_ptr)
 
-# ── Auxiliary phase field (DG-P0, one value per cell) ────────────────────────
-# phase_fn projects 1 (matrix) or 2 (inclusion) into each cell.
-# The aux vec is attached to dm so residual/Jacobian kernels can read a[1].
+# ── Auxiliary DM: phase (field 0) + σ_dev_old (field 1) ─────────────────────
+# field 0: phase (DG-P0, 1 DOF) → a[1]
+# field 1: σ_dev_old (DG-P0, dim×dim DOFs) → a[2..dim²+1], zero-initialised
+# Kernels read phase from a[1] and the old deviatoric stress from a[2..dim²+1].
+# update_tau! advances field 1 each timestep via dm_project_field!.
 dm_aux = PETSc.dmclone(dm)
-fe_phase_aux = let opts = PETSc.Options(petsclib; phaseaux_petscdualspace_lagrange_continuity = 0)
+make_dg0_aux = (prefix, ncomp) -> let opts = PETSc.Options(petsclib;
+        Symbol(prefix * "petscdualspace_lagrange_continuity") => 0)
     push!(opts)
-    fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex;
-                                  degree = 0, prefix = "phaseaux_")
+    fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, ncomp, simplex;
+                                  degree = 0, prefix = prefix)
     pop!(opts)
     fe
 end
-LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_phase_aux), "phase")
-PETSc.fe_copy_quadrature!(petsclib, fe_vel, fe_phase_aux)  # match primary DM quadrature
+fe_phase_aux = make_dg0_aux("phaseaux_", 1)
+fe_tau_aux = make_dg0_aux("tauaux_", dim * dim)
+LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_phase_aux), "phase_aux")
+LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_tau_aux), "tau_old_aux")
+PETSc.fe_copy_quadrature!(petsclib, fe_vel, fe_phase_aux)
+PETSc.fe_copy_quadrature!(petsclib, fe_vel, fe_tau_aux)
 PETSc.setfield!(dm_aux, 0, fe_phase_aux)
+PETSc.setfield!(dm_aux, 1, fe_tau_aux)
 PETSc.createds!(dm_aux)
-aux_vec = PETSc.DMGlobalVec(dm_aux)
+aux_vec = PETSc.DMGlobalVec(dm_aux)   # tau_old field is zero-initialised
+# Project phase values into field 0; field 1 (tau_old) stays zero.
+# dm_project_function! needs one callback per field — use C_NULL for tau_old
+# since zero-init from DMGlobalVec is correct and we cannot write a simple-fn
+# that outputs dim×dim zeros easily via the scalar interface.
 PETSc.dm_project_function!(petsclib, dm_aux, 0.0,
-    [phase_fn_ptr], nothing, LibPETSc.INSERT_ALL_VALUES, aux_vec)
+    [phase_fn_ptr, C_NULL], nothing, LibPETSc.INSERT_VALUES, aux_vec)
 LibPETSc.DMSetAuxiliaryVec(petsclib, dm,
+    LibPETSc.DMLabel(C_NULL), PetscInt(0), PetscInt(0), aux_vec)
+
+# ── Deviatoric stress history (viscoelasticity) ───────────────────────────────
+# dm_tau: DG-P0 field with dim×dim components per cell storing σ_dev^n.
+# tau_vec is initialized to zero (purely viscous at t=0).
+# Call update_tau! after each SNES solve to advance to the next timestep.
+dm_tau = PETSc.dmclone(dm)
+fe_tau = let opts = PETSc.Options(petsclib; tau_petscdualspace_lagrange_continuity = 0)
+    push!(opts)
+    fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, dim*dim, simplex;
+                                  degree = 0, prefix = "tau_")
+    pop!(opts)
+    fe
+end
+LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_tau), "tau_old")
+PETSc.fe_copy_quadrature!(petsclib, fe_vel, fe_tau)
+PETSc.setfield!(dm_tau, 0, fe_tau)
+PETSc.createds!(dm_tau)
+tau_vec = PETSc.DMGlobalVec(dm_tau)   # PETSc zero-initialises global vecs
+# Attach aux_vec (phase + tau_old) to dm_tau so the compute_tau kernel
+# can read a[1] (phase) and a[2..dim²+1] (tau_old) during update_tau!.
+LibPETSc.DMSetAuxiliaryVec(petsclib, dm_tau,
     LibPETSc.DMLabel(C_NULL), PetscInt(0), PetscInt(0), aux_vec)
 
 # ── Boundary condition: Dirichlet on outer box walls ─────────────────────────
@@ -730,7 +1308,7 @@ PETSc.dm_project_function!(petsclib, dm, 0.0,
 LibPETSc.VecNormalize(petsclib, null_vec)
 nullspace = GC.@preserve null_vec PETSc.mat_null_space_create(petsclib, comm, (null_vec,))
 
-# ── SNES + solve ─────────────────────────────────────────────────────────────
+# ── SNES setup (one-time) ────────────────────────────────────────────────────
 snes = PETSc.SNES(petsclib, comm; opts...)
 PETSc.setDM!(snes, dm)
 u = PETSc.DMGlobalVec(dm)
@@ -742,94 +1320,109 @@ try
     LibPETSc.SNESSetFromOptions(petsclib, snes)
     LibPETSc.SNESSetUp(petsclib, snes)
     PETSc.snes_set_jacobian_null_space!(snes, nullspace)
-    LibPETSc.SNESSolve(petsclib, snes, C_NULL, u)
 finally
     has_opts && pop!(snes.opts)
 end
 
-if MPI.Comm_rank(comm) == 0
-    its = LibPETSc.SNESGetIterationNumber(petsclib, snes)
-    println("SNES converged in $its Newton iteration(s).")
-end
-
-# ── L² errors ────────────────────────────────────────────────────────────────
-if sol_type != "bg" && sol_type != "grav"
-    l2err = PETSc.dm_compute_l2diff(petsclib, dm, 0.0,
-        [exact_vel_ptr, exact_pres_ptr], nothing, u)
-    if MPI.Comm_rank(comm) == 0
-        println("L2 error: $l2err")
-    end
-end
-
-# ── VTK output ────────────────────────────────────────────────────────────────
-# Write solution to VTK if -vtk_output <filename.vtu> is given.
-# The output is always on the Gmsh mesh (controlled by mesh_h).  When using
-# -dm_refine N for geometric multigrid, the refinement hierarchy lives only
-# inside the MG preconditioner; the SNES assembles and solves on the original
-# mesh, so finer VTK output requires a smaller mesh_h, not dm_refine.
-# Produces three named fields:
-#   "velocity"       — dim-component vector
-#   "pressure"       — scalar
-#   "strainrate"     — 3×3 tensor (9-component, row-major, zero-padded in 2D)
-let vtk = get(o, :vtk_output, nothing)
-    if vtk !== nothing
-        fname = string(vtk)
-
-        dm_out = PETSc.dmclone(dm)
-
-        fe_out_vel = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
-                         dim, dim, simplex; degree = vel_degree, prefix = "vel_")
-        LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_out_vel), "velocity")
-
-        fe_out_pres = let opts_disc = PETSc.Options(petsclib; pres_petscdualspace_lagrange_continuity = 0)
-            push!(opts_disc)
-            fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
-                      dim, 1, simplex; degree = pres_degree, prefix = "pres_")
-            pop!(opts_disc)
-            fe
-        end
-        LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_out_pres), "pressure")
-
-        fe_out_sr = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
-                        dim, 9, simplex; prefix = "sr_")
-        LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe_out_sr), "strainrate")
-
-        # DG-P0 (degree 0, discontinuous) → one DOF per cell → VTK CellData
-        make_dg0 = (prefix, name) -> let opts = PETSc.Options(petsclib;
-                                              Symbol(prefix * "petscdualspace_lagrange_continuity") => 0)
+# ── Pre-create DMs for print_invariants! and advect_mesh! ────────────────────
+# DMClone + PetscFECreateDefault is expensive; doing it once here avoids the cost
+# on every timestep.  All three clones share the same aux_vec (phase + τ_old)
+# which is modified in-place each step, so DMSetAuxiliaryVec only needs to be
+# called once.
+let make_dg0 = (prefix) -> begin
+        dm_i = PETSc.dmclone(dm)
+        let opts = PETSc.Options(petsclib;
+                Symbol(prefix * "petscdualspace_lagrange_continuity") => 0)
             push!(opts)
-            fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF,
-                      dim, 1, simplex; degree = 0, prefix = prefix)
+            fe = PETSc.fe_create_default(petsclib, MPI.COMM_SELF, dim, 1, simplex;
+                      degree = 0, prefix = prefix)
             pop!(opts)
-            LibPETSc.PetscObjectSetName(petsclib, convert(Ptr{Cvoid}, fe), name)
-            fe
+            PETSc.setfield!(dm_i, 0, fe)
         end
-
-        fe_out_mu    = make_dg0("mu_",    "viscosity")
-        fe_out_phase = make_dg0("phase_", "phase")
-
-        PETSc.setfield!(dm_out, 0, fe_out_vel)
-        PETSc.setfield!(dm_out, 1, fe_out_pres)
-        PETSc.setfield!(dm_out, 2, fe_out_sr)
-        PETSc.setfield!(dm_out, 3, fe_out_mu)
-        PETSc.setfield!(dm_out, 4, fe_out_phase)
-        PETSc.createds!(dm_out)
-
-        out_vec = PETSc.dm_create_global_vec(dm_out)
-        PETSc.petsc_setname!(petsclib, out_vec, "")
-
-        PETSc.dm_project_field!(petsclib, dm_out, 0.0, u,
-            [copy_vel_ptr, copy_pres_ptr, compute_strainrate_3x3_ptr,
-             copy_mu_ptr, copy_phase_ptr],
-            LibPETSc.INSERT_ALL_VALUES, out_vec)
-
-        PETSc.vtk_save!(petsclib, comm, fname, out_vec)
-
-        MPI.Comm_rank(comm) == 0 && PETSc.vtk_merge_tensor!(fname, "strainrate")
-
-        MPI.Comm_rank(comm) == 0 &&
-            println("Velocity, pressure, strain rate, viscosity and phase written to $fname")
+        PETSc.createds!(dm_i)
+        LibPETSc.DMSetAuxiliaryVec(petsclib, dm_i,
+            LibPETSc.DMLabel(C_NULL), PetscInt(0), PetscInt(0), aux_vec)
+        dm_i
     end
+    global dm_eII = make_dg0("epsiiavg_")
+    global dm_tII = make_dg0("tauiiavg_")
+    global v_eII  = PETSc.DMGlobalVec(dm_eII)
+    global v_tII  = PETSc.DMGlobalVec(dm_tII)
+end
+
+let dm_p1_ = PETSc.dmclone(dm)
+    fe_p1 = PETSc.fe_create_lagrange(petsclib, MPI.COMM_SELF, dim, dim, simplex, 1)
+    PETSc.petsc_setname!(petsclib, fe_p1, "vel_p1")
+    PETSc.setfield!(dm_p1_, 0, fe_p1)
+    PETSc.createds!(dm_p1_)
+    LibPETSc.DMSetAuxiliaryVec(petsclib, dm_p1_,
+        LibPETSc.DMLabel(C_NULL), PetscInt(0), PetscInt(0), aux_vec)
+    global dm_p1  = dm_p1_
+    global vel_p1 = PETSc.DMGlobalVec(dm_p1_)
+end
+
+# ── Time loop ─────────────────────────────────────────────────────────────────
+pvd_entries = Tuple{Float64,String}[]   # (time, vtu_path) for PVD animation file
+
+for step in 1:nsteps
+    t = (step - 1) * dt_val
+
+    # ── Solve ────────────────────────────────────────────────────────────────
+    its = solve_step!(petsclib, snes, u)
+    if MPI.Comm_rank(comm) == 0
+        tstep = round(t + dt_val; sigdigits = 4)
+        println("Step $step/$nsteps  t = $tstep  SNES: $its Newton iteration(s).")
+    end
+
+    # ── Domain averages of second invariants (+ analytical check for bg mode) ──
+    print_invariants!(petsclib, comm, u, t, dm_eII, v_eII, dm_tII, v_tII)
+    # Analytical Maxwell comparison: valid when sol_type=="bg", n==1, homogeneous.
+    # Continuous:  τ_II = 2η·ε_II·(1 − e^{−G·t/η})
+    # Discrete BE: τ_II = 2η·ε_II·(1 − relax^step),  relax = η/(η+G·dt)
+    if sol_type == "bg" && n_bg == 1.0 && MPI.Comm_rank(comm) == 0
+        t_now    = t + dt_val
+        eps_II_v = abs(exx_bg)
+        tau_rel  = mu_val / G_bg
+        tau_cont = 2 * mu_val * eps_II_v * (1 - exp(-t_now / tau_rel))
+        relax_f  = mu_val / (mu_val + G_bg * dt_val)
+        tau_disc = 2 * mu_val * eps_II_v * (1 - relax_f^step)
+        @printf("  τ_II analytical: continuous = %.4g,  discrete (BE) = %.4g\n",
+                tau_cont, tau_disc)
+    end
+
+    # ── L² error (MMS solutions only — not meaningful for bg/grav) ───────────
+    if sol_type != "bg" && sol_type != "grav"
+        l2err = PETSc.dm_compute_l2diff(petsclib, dm, t,
+            [exact_vel_ptr, exact_pres_ptr], nothing, u)
+        MPI.Comm_rank(comm) == 0 && println("  L2 error: $l2err")
+    end
+
+    # ── Advance stress history: τ^n → τ^{n+1} ────────────────────────────────
+    # update_tau! computes τ^{n+1} = 2η_eff·ε + relax·τ^n and stores in tau_vec.
+    # advance_tau! scatters tau_vec into field 1 of aux_vec for the next solve.
+    update_tau!(petsclib, dm_tau, u, tau_vec)
+    advance_tau!(petsclib, dm_aux, aux_vec, tau_vec)
+
+    # ── Advect mesh (Lagrangian step): x ← x + dt·v ──────────────────────────
+    # Each mesh node moves with the local velocity; wall nodes stay fixed because
+    # the no-slip BC enforces v = 0 there.  The phase field in aux_vec is a
+    # material label that moves with the mesh — no re-projection needed.
+    advect_mesh!(petsclib, dm, u, dt_val, dm_p1, vel_p1)
+
+    # ── VTK + PVD output ──────────────────────────────────────────────────────
+    let vtk = get(o, :vtk_output, nothing)
+        if vtk !== nothing
+            base, ext = splitext(string(vtk))
+            fname = nsteps > 1 ? "$(base)_$(lpad(step, 4, '0'))$(ext)" : string(vtk)
+            save_vtk!(petsclib, comm, fname, dm, u, aux_vec; vel_degree, pres_degree)
+            # Accumulate entry and rewrite the PVD so it is always up-to-date
+            if MPI.Comm_rank(comm) == 0
+                push!(pvd_entries, (t + dt_val, abspath(fname)))
+                write_pvd("$(base).pvd", pvd_entries)
+            end
+        end
+    end
+    
 end
 
 # ── Cleanup ───────────────────────────────────────────────────────────────────
@@ -839,8 +1432,16 @@ PETSc.mat_null_space_destroy!(petsclib, nullspace)
 PETSc.destroy(snes)
 PETSc.destroy(u)
 PETSc.destroy(null_vec)
+PETSc.destroy(v_eII)
+PETSc.destroy(v_tII)
+PETSc.destroy(dm_eII)
+PETSc.destroy(dm_tII)
+PETSc.destroy(vel_p1)
+PETSc.destroy(dm_p1)
 PETSc.destroy(aux_vec)
 PETSc.destroy(dm_aux)
+PETSc.destroy(tau_vec)
+PETSc.destroy(dm_tau)
 PETSc.destroy(dm)
 
 if !isinteractive()

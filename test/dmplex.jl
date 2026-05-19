@@ -525,3 +525,76 @@ for petsclib in PETSc.petsclibs
 end # for petsclib
 
 end # @testset "DMPlex"
+
+# ── vtk_merge_tensor! ────────────────────────────────────────────────────────
+# These tests are pure Julia string/binary manipulation — no PETSc lib needed.
+@testset "vtk_merge_tensor!" begin
+
+    # Build a minimal appended-binary VTK file with two sets of 9 scalar arrays
+    # (simulating what PETSc writes before the tensor merge step).
+    function _make_vtu(path, names)
+        n     = 4          # 4 points
+        nsets = length(names)
+        # Each scalar array: 8-byte UInt64 header + n Float64 values
+        stride = 8 + n * 8
+        da_xml = ""
+        for (ni, name) in enumerate(names)
+            for k in 0:8
+                off = ((ni - 1) * 9 + k) * stride
+                da_xml *= """
+        <DataArray type="Float64" Name="$(name).$(k)" NumberOfComponents="1" format="appended" offset="$(off)" />"""
+            end
+        end
+        xml = """<?xml version="1.0"?>
+<VTKFile type="UnstructuredGrid" version="0.1" byte_order="LittleEndian" header_type="UInt64">
+  <UnstructuredGrid><Piece NumberOfPoints="$(n)" NumberOfCells="1">
+    <PointData>$(da_xml)
+    </PointData>
+  </Piece></UnstructuredGrid>
+  <AppendedData encoding="raw">
+_"""
+        open(path, "w") do io
+            write(io, xml)
+            for _ in 1:(nsets * 9)
+                write(io, UInt64(n * 8))
+                for v in 1.0:Float64(n); write(io, v); end
+            end
+            write(io, "\n  </AppendedData>\n</VTKFile>\n")
+        end
+    end
+
+    @testset "single tensor" begin
+        f = tempname() * ".vtu"
+        _make_vtu(f, ["strainrate"])
+        PETSc.vtk_merge_tensor!(f, "strainrate")
+        xml = read(f, String)
+        @test contains(xml, "Tensors=\"strainrate\"")
+        @test contains(xml, "Name=\"strainrate\" NumberOfComponents=\"9\"")
+        @test !contains(xml, "strainrate.0")   # individual scalars replaced
+    end
+
+    @testset "two tensors — Tensors attribute has both names" begin
+        f = tempname() * ".vtu"
+        _make_vtu(f, ["strainrate", "stress_dev"])
+        PETSc.vtk_merge_tensor!(f, "strainrate", "stress_dev")
+        xml = read(f, String)
+        @test contains(xml, "Tensors=\"strainrate stress_dev\"")
+        @test contains(xml, "Name=\"strainrate\" NumberOfComponents=\"9\"")
+        @test contains(xml, "Name=\"stress_dev\" NumberOfComponents=\"9\"")
+        @test !contains(xml, "strainrate.0")
+        @test !contains(xml, "stress_dev.0")
+    end
+
+    @testset "second name not 'T' (regression for SubString[1] bug)" begin
+        # Before the fix, the Tensors attribute read "T stress_dev" instead of
+        # "strainrate stress_dev" because replace() passes SubString, not RegexMatch,
+        # so m2[1] gave the first character 'T' of "Tensors=..." rather than the
+        # capture group.
+        f = tempname() * ".vtu"
+        _make_vtu(f, ["strainrate", "stress_dev"])
+        PETSc.vtk_merge_tensor!(f, "strainrate", "stress_dev")
+        xml = read(f, String)
+        @test !contains(xml, "\"T stress_dev\"")
+        @test !contains(xml, "\"T strainrate\"")
+    end
+end

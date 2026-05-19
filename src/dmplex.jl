@@ -1354,14 +1354,15 @@ function _vtk_merge_one_tensor!(fname::AbstractString, name::AbstractString)
     end)
 
     pre = xml[1:xml_first-1]
+    # Julia's replace passes SubString (not RegexMatch) to the function, so we
+    # must call match() explicitly to extract capture groups.
     pre = replace(pre, r"<PointData\b([^>]*)>" =>
         function(s)
             if contains(s, "Tensors=")
-                # Append this name to the existing Tensors attribute.
-                replace(s, r"Tensors=\"([^\"]*)\"" =>
-                    m2 -> "Tensors=\"$(m2[1]) $name\"")
+                m2 = match(r"Tensors=\"([^\"]*)\"", String(s))
+                replace(String(s), m2.match => "Tensors=\"$(m2[1]) $name\"")
             else
-                replace(s, "<PointData" => "<PointData Tensors=\"$name\"")
+                replace(String(s), "<PointData" => "<PointData Tensors=\"$name\"")
             end
         end)
 

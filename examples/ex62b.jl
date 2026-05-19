@@ -962,6 +962,9 @@ function save_vtk!(petsclib, comm, fname::AbstractString, dm, u, aux_vec;
 
     PETSc.vtk_save!(petsclib, comm, fname, out_vec)
 
+    PETSc.destroy(out_vec)
+    PETSc.destroy(dm_out)
+
     if MPI.Comm_rank(comm) == 0
         PETSc.vtk_merge_tensor!(fname, "strainrate", "tau")
         println("VTK written to $fname (velocity, pressure, strainrate, tau, eps_II, tau_II, viscosity, phase)")
@@ -1366,12 +1369,14 @@ pvd_entries = Tuple{Float64,String}[]   # (time, vtu_path) for PVD animation fil
 
 for step in 1:nsteps
     t = (step - 1) * dt_val
+    t_step_start = time()
 
     # ── Solve ────────────────────────────────────────────────────────────────
     its = solve_step!(petsclib, snes, u)
     if MPI.Comm_rank(comm) == 0
-        tstep = round(t + dt_val; sigdigits = 4)
-        println("Step $step/$nsteps  t = $tstep  SNES: $its Newton iteration(s).")
+        tstep   = round(t + dt_val; sigdigits = 4)
+        elapsed = round(time() - t_step_start; digits = 2)
+        println("Step $step/$nsteps  t = $tstep  SNES: $its iter  wall: $(elapsed)s")
     end
 
     # ── Domain averages of second invariants (+ analytical check for bg mode) ──
@@ -1404,10 +1409,12 @@ for step in 1:nsteps
     advance_tau!(petsclib, dm_aux, aux_vec, tau_vec)
 
     # ── Advect mesh (Lagrangian step): x ← x + dt·v ──────────────────────────
-    # Each mesh node moves with the local velocity; wall nodes stay fixed because
-    # the no-slip BC enforces v = 0 there.  The phase field in aux_vec is a
-    # material label that moves with the mesh — no re-projection needed.
-    advect_mesh!(petsclib, dm, u, dt_val, dm_p1, vel_p1)
+    # Skipped for `bg` sol_type: the domain is spatially homogeneous so
+    # Lagrangian tracking is unnecessary, and pure-shear advection would
+    # continuously distort the mesh (elements flatten → solver degrades).
+    # For `grav`, advection tracks the sinking/rising inclusion; long runs
+    # will still eventually require remeshing.
+    sol_type != "bg" && advect_mesh!(petsclib, dm, u, dt_val, dm_p1, vel_p1)
 
     # ── VTK + PVD output ──────────────────────────────────────────────────────
     let vtk = get(o, :vtk_output, nothing)

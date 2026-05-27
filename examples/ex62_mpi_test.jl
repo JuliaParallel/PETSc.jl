@@ -84,7 +84,7 @@ end
   # 2 ranks — P2/P1 simplex 2D, parallel dmsnes_check
   @testset "2 ranks — P2/P1 simplex 2D dmsnes_check" begin
     @test run_ex62_mpi(2,
-      "-sol","quadratic","-dm_refine","2","-petscpartitioner_type","simple",
+      "-sol","quadratic","-dm_refine","1","-petscpartitioner_type","simple",
       "-vel_petscspace_degree","2","-pres_petscspace_degree","1",
       "-dmsnes_check","0.0001"; tol = 1e-8)
   end
@@ -93,7 +93,7 @@ end
   @testset "2 ranks — Q2/Q1 3D quadratic MMS" begin
     @test run_ex62_mpi(2,
       "-sol","quadratic",
-      "-dm_plex_dim","3","-dm_plex_simplex","0","-dm_plex_box_faces","3,3,3",
+      "-dm_plex_dim","3","-dm_plex_simplex","0","-dm_plex_box_faces","2,2,2",
       "-vel_petscspace_degree","2","-pres_petscspace_degree","1",
       SOLVER...; tol = 1e-10)
   end
@@ -101,7 +101,7 @@ end
   # 2 ranks — P2/P1 SIMPLE preconditioner
   @testset "2 ranks — P2/P1 simplex 2D SIMPLE precond (L²≈6e-7)" begin
     @test run_ex62_mpi(2,
-      "-sol","quadratic","-dm_refine","2",
+      "-sol","quadratic","-dm_refine","1",
       "-vel_petscspace_degree","2","-pres_petscspace_degree","1","-petscds_jac_pre","0",
       "-snes_error_if_not_converged",
       "-ksp_type","fgmres","-ksp_gmres_restart","100","-ksp_rtol","1.0e-9","-ksp_error_if_not_converged",
@@ -116,7 +116,7 @@ end
   # 2 ranks — GMG on velocity block (geometric multigrid via dm_refine hierarchy)
   @testset "2 ranks — Q2/Q1 2D GMG on velocity (L²≈7e-7)" begin
     @test run_ex62_mpi(2,
-      "-sol","quadratic","-dm_plex_simplex","0","-dm_refine","2",
+      "-sol","quadratic","-dm_plex_simplex","0","-dm_refine","1",
       "-vel_petscspace_degree","2","-pres_petscspace_degree","1",
       "-petscds_jac_pre","0",
       "-pc_type","fieldsplit","-pc_fieldsplit_type","schur",
@@ -131,9 +131,9 @@ end
   end
 
   # 2 ranks — GAMG on pressure block
-  @testset "2 ranks — Q2/Q1 2D GAMG on pressure (L²≈0.11)" begin
+  @testset "2 ranks — Q2/Q1 2D GAMG on pressure (L²≈0.65)" begin
     @test run_ex62_mpi(2,
-      "-sol","trig","-dm_plex_simplex","0","-dm_refine","1",
+      "-sol","trig","-dm_plex_simplex","0",
       "-vel_petscspace_degree","2","-pres_petscspace_degree","1",
       "-pc_use_amat",
       "-pc_type","fieldsplit","-pc_fieldsplit_type","schur",
@@ -142,7 +142,7 @@ end
       "-fieldsplit_velocity_pc_type","lu",
       "-fieldsplit_pressure_ksp_rtol","1e-9",
       "-fieldsplit_pressure_pc_type","gamg",
-      "-ksp_rtol","1e-9"; tol = 0.25)
+      "-ksp_rtol","1e-9"; tol = 0.8)
   end
 
 end

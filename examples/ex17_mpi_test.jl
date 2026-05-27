@@ -38,12 +38,12 @@ end
       "-pc_type","gamg","-ksp_type","cg"; tol = 0.1)
   end
 
-  @testset "2 ranks — 2D elas_quad LU" begin
+  @testset "2 ranks — 2D elas_quad GAMG" begin
     @test run_ex17_mpi(2,
       "-dm_plex_simplex","0","-dm_plex_box_faces","4,4",
       "-sol_type","elas_quad",
       "-displacement_petscspace_degree","1",
-      "-pc_type","lu"; tol = 0.1)
+      "-pc_type","gamg","-ksp_type","cg"; tol = 0.1)
   end
 
 end

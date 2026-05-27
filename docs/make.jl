@@ -49,6 +49,7 @@ makedocs(;
         ],
         "Utilities" => "man/utilities.md",
         "Running on HPC Systems" => "man/hpc.md",
+        "GPU Support (CUDA)" => "man/gpu.md",
         "FAQ"  => "man/FAQ.md",
         "Contributing"  => "man/contributing.md",
         "Funding" => "man/funding.md",

@@ -2618,14 +2618,14 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetVecType"))
 """
-function DMSetVecType(petsclib::PetscLibType, dm::PetscDM, ctype::VecType) end
+function DMSetVecType(petsclib::PetscLibType, dm::PetscDM, ctype::Union{Cstring, AbstractString}) end
 
-@for_petsc function DMSetVecType(petsclib::$UnionPetscLib, dm::PetscDM, ctype::VecType )
+@for_petsc function DMSetVecType(petsclib::$UnionPetscLib, dm::PetscDM, ctype::Union{Cstring, AbstractString} )
 
     @chk ccall(
                (:DMSetVecType, $petsc_library),
                PetscErrorCode,
-               (CDM, VecType),
+               (CDM, Cstring),
                dm, ctype,
               )
 
@@ -2773,14 +2773,14 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetMatType"))
 """
-function DMSetMatType(petsclib::PetscLibType, dm::PetscDM, ctype::MatType) end
+function DMSetMatType(petsclib::PetscLibType, dm::PetscDM, ctype::Union{Cstring, AbstractString}) end
 
-@for_petsc function DMSetMatType(petsclib::$UnionPetscLib, dm::PetscDM, ctype::MatType )
+@for_petsc function DMSetMatType(petsclib::$UnionPetscLib, dm::PetscDM, ctype::Union{Cstring, AbstractString} )
 
     @chk ccall(
                (:DMSetMatType, $petsc_library),
                PetscErrorCode,
-               (CDM, MatType),
+               (CDM, Cstring),
                dm, ctype,
               )
 

@@ -1,5 +1,4 @@
-# EXCLUDE FROM TESTING
-# MPI tests for examples/ex69.jl.
+# MPI subprocess tests for examples/ex69.jl.
 # Each test launches ex69.jl under multiple MPI ranks and checks L² error.
 #
 # Run via:

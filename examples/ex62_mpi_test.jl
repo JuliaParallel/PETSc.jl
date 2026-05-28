@@ -1,5 +1,4 @@
-# EXCLUDE FROM TESTING
-# MPI tests for examples/ex62.jl — covers correctness across element types and 3D.
+# MPI subprocess tests for examples/ex62.jl — covers correctness across element types and 3D.
 # Excluded from CI (each test spawns a new Julia process; 10 tests ≈ 60 min on Linux).
 # Run manually: julia --project examples/ex62_mpi_test.jl
 #

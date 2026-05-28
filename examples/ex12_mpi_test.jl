@@ -1,5 +1,5 @@
-# INCLUDE IN MPI TEST
-# MPI tests for examples/ex12.jl (run with mpiexec -n 4 by the test framework).
+# MPI subprocess tests for examples/ex12.jl.
+# Picked up by test/examples.jl (plain Julia); each test internally spawns mpiexec.
 # Each test launches ex12.jl as an MPI subprocess and checks L² error.
 #
 # Run via:

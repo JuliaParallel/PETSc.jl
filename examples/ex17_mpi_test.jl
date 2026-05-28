@@ -1,5 +1,5 @@
-# INCLUDE IN MPI TEST
-# MPI tests for examples/ex17.jl (run with mpiexec -n 4 by the test framework).
+# MPI subprocess tests for examples/ex17.jl.
+# Picked up by test/examples.jl (plain Julia); each test internally spawns mpiexec.
 #
 # Run via:
 #   julia --project examples/ex17_mpi_test.jl

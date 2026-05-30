@@ -136,22 +136,38 @@ The results of the full solve include booting up Julia and computing the colorin
 Below we report results for the inner solve itself (KSPSolve) on a GPU (with 1 MPI rank, which is a requirement of PETSc), and compare that with the results on CPU on 1 core and on 32 cores
 
 
-**KSPSolve**:
-| Resolution | GPU time (s) | GPU (GFlop/s) | CPU-1 time (s) | CPU-1 (GFlop/s) | CPU-32 time (s) | CPU-32 (GFlop/s) |
-|---|---|---|---|---|---|---|
-| 513²   |  0.116 | 144.3 |   4.337 |  4.1 |  0.297 | 61.0 |
-| 1025²  |  0.299 | 249.5 |  19.10  |  3.9 |  1.196 | 61.7 |
-| 2049²  |  1.118 | 295.5 |  89.76  |  3.6 |  5.757 | 56.6 |
-| 4097²  |  4.540 | 312.4 | 422.2   |  3.3 | 28.30  | 49.4 |
+**KSPSolve** — time and throughput:
+
+| Resolution | GPU (s) | GPU GFlop/s | 1 core (s) | 1 core GFlop/s |
+|---|---|---|---|---|
+| 513²  |  0.116 | 144.3 |  4.337 |  4.1 |
+| 1025² |  0.299 | 249.5 | 19.10  |  3.9 |
+| 2049² |  1.118 | 295.5 | 89.76  |  3.6 |
+| 4097² |  4.540 | 312.4 | 422.2  |  3.3 |
+
+| Resolution | GPU (s) | GPU GFlop/s | 32 cores (s) | 32 cores GFlop/s |
+|---|---|---|---|---|
+| 513²  |  0.116 | 144.3 |  0.297 | 61.0 |
+| 1025² |  0.299 | 249.5 |  1.196 | 61.7 |
+| 2049² |  1.118 | 295.5 |  5.757 | 56.6 |
+| 4097² |  4.540 | 312.4 | 28.30  | 49.4 |
 
 
-**SNESSolve**:
-| Resolution | GPU time (s) | GPU (GFlop/s) | CPU-1 time (s) | CPU-1 (GFlop/s) | CPU-32 time (s) | CPU-32 (GFlop/s) |
-|---|---|---|---|---|---|---|
-| 513²   |  3.645 |  6.7 |   8.041 | 3.2 |  2.118 | 12.3 |
-| 1025²  |  5.127 | 20.5 |  32.75  | 3.2 |  3.698 | 28.2 |
-| 2049²  | 11.37  | 39.7 | 144.1   | 3.1 | 10.57  | 42.3 |
-| 4097²  | 36.88  | 47.7 | 658.3   | 2.9 | 43.58  | 43.2 |
+**SNESSolve** — time and throughput:
+
+| Resolution | GPU (s) | GPU GFlop/s | 1 core (s) | 1 core GFlop/s |
+|---|---|---|---|---|
+| 513²  |  3.645 |  6.7 |  8.041 | 3.2 |
+| 1025² |  5.127 | 20.5 | 32.75  | 3.2 |
+| 2049² | 11.37  | 39.7 | 144.1  | 3.1 |
+| 4097² | 36.88  | 47.7 | 658.3  | 2.9 |
+
+| Resolution | GPU (s) | GPU GFlop/s | 32 cores (s) | 32 cores GFlop/s |
+|---|---|---|---|---|
+| 513²  |  3.645 |  6.7 |  2.118 | 12.3 |
+| 1025² |  5.127 | 20.5 |  3.698 | 28.2 |
+| 2049² | 11.37  | 39.7 | 10.57  | 42.3 |
+| 4097² | 36.88  | 47.7 | 43.58  | 43.2 |
 
 From this it is clear that the `KSPSolve` itself is very efficient on the GPU (and clearly beats the CPU), but that there is quite some overhead when we compare it with `SNESSolve` where this difference is not so large anymore.
 
@@ -180,7 +196,7 @@ At the kernel level, all key GMRES and multigrid operations run fully on the GPU
 
 System matrices are assembled on the host and uploaded once per Newton iteration via `MatCUSPARSECopyTo`, then all SpMV operations run in cuSPARSE format. Only 3 GpuToCpu copies occur per solve (one per Newton iteration), confirming matrices remain GPU-resident throughout.
 
-| Resolution | Matrix upload size (MB) |
+| Resolution | Matrix upload (MB) |
 |---|---|
 | 513²  |    495 |
 | 1025² |  1,990 |

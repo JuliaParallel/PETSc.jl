@@ -1,4 +1,7 @@
+# EXCLUDE FROM TESTING
 # MPI subprocess tests for examples/ex69.jl.
+# Excluded from CI: each spawn compiles the full DMPlex/SNES stack; too slow on Linux runners.
+# Run manually: julia --project=examples examples/ex69_mpi_test.jl
 # Each test launches ex69.jl under multiple MPI ranks and checks L² error.
 #
 # Run via:

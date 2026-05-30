@@ -2514,9 +2514,9 @@ function SNESGetPicard(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, f::
                snes, r_, f, Amat_, Pmat_, J, ctx,
               )
 
-	r.ptr = C_NULL
-	Amat.ptr = C_NULL
-	Pmat.ptr = C_NULL
+	r.ptr = r_[]
+	Amat.ptr = Amat_[]
+	Pmat.ptr = Pmat_[]
 
 	return nothing
 end 
@@ -2903,11 +2903,29 @@ function SNESGetJacobian(petsclib::PetscLibType, snes::PetscSNES, Amat::PetscMat
                snes, Amat_, Pmat_, J, ctx,
               )
 
-	Amat.ptr = C_NULL
-	Pmat.ptr = C_NULL
+	Amat.ptr = Amat_[]
+	Pmat.ptr = Pmat_[]
 
 	return nothing
-end 
+end
+
+"""
+    SNESGetJacobianMat(petsclib, snes) -> PetscMat
+
+Return the assembled system (A) matrix from `snes`, passing `NULL` for the
+preconditioner matrix, Jacobian function, and context.  Use this when only
+the system matrix is needed (e.g. to attach a null space via `MatSetNullSpace`).
+"""
+function SNESGetJacobianMat(petsclib::PetscLibType, snes::PetscSNES) end
+
+@for_petsc function SNESGetJacobianMat(petsclib::$UnionPetscLib, snes::PetscSNES)
+    J_ref = Ref{CMat}(C_NULL)
+    @chk ccall(
+        (:SNESGetJacobian, $petsc_library), PetscErrorCode,
+        (CSNES, Ptr{CMat}, Ptr{CMat}, Ptr{Cvoid}, Ptr{Ptr{Cvoid}}),
+        snes, J_ref, C_NULL, C_NULL, C_NULL)
+    return PetscMat{$PetscLib}(J_ref[])
+end
 
 """
 	SNESSetUp(petsclib::PetscLibType,snes::PetscSNES) 

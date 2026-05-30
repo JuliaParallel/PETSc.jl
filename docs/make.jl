@@ -20,6 +20,7 @@ makedocs(;
             "DM" =>  "man/dm.md",
             "DMDA" =>  "man/dmda.md",
             "DMStag" =>  "man/dmstag.md",
+            "DMPlex" =>  "man/dmplex.md",
             "KSP" =>  "man/ksp.md",
             "SNES" =>  "man/snes.md",
         ],

@@ -2832,7 +2832,7 @@ function MatNullSpaceView(petsclib::PetscLibType, sp::MatNullSpace, viewer::Pets
 end 
 
 """
-	SP::MatNullSpace = MatNullSpaceCreate(petsclib::PetscLibType,comm::MPI_Comm, has_cnst::PetscBool, n::PetscInt, vecs::Vector{PetscVec}) 
+	SP::MatNullSpace = MatNullSpaceCreate(petsclib::PetscLibType,comm::MPI_Comm, has_cnst::PetscBool, n::PetscInt, vecs::Vector{CVec})
 Creates a `MatNullSpace` data structure used to project vectors out of null spaces.
 
 Collective
@@ -2856,9 +2856,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNullSpaceCreate"))
 """
-function MatNullSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm, has_cnst::PetscBool, n::PetscInt, vecs::Vector{PetscVec}) end
+function MatNullSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm, has_cnst::PetscBool, n::PetscInt, vecs::Vector{CVec}) end
 
-@for_petsc function MatNullSpaceCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, has_cnst::PetscBool, n::$PetscInt, vecs::Vector{PetscVec} )
+@for_petsc function MatNullSpaceCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, has_cnst::PetscBool, n::$PetscInt, vecs::Vector{CVec} )
 	SP_ = Ref{MatNullSpace}()
 
     @chk ccall(
@@ -2871,7 +2871,7 @@ function MatNullSpaceCreate(petsclib::PetscLibType, comm::MPI_Comm, has_cnst::Pe
 	SP = SP_[]
 
 	return SP
-end 
+end
 
 """
 	MatNullSpaceDestroy(petsclib::PetscLibType,sp::MatNullSpace) 

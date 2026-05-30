@@ -463,18 +463,15 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscViewerDestroy"))
 """
-function PetscViewerDestroy(petsclib::PetscLibType, viewer::PetscViewer) end
+function PetscViewerDestroy(petsclib::PetscLibType, viewer::Ref{PetscViewer}) end
 
-@for_petsc function PetscViewerDestroy(petsclib::$UnionPetscLib, viewer::PetscViewer )
-
+@for_petsc function PetscViewerDestroy(petsclib::$UnionPetscLib, viewer::Ref{PetscViewer})
     @chk ccall(
                (:PetscViewerDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscViewer},),
                viewer,
               )
-
-
 	return nothing
 end 
 
@@ -3627,19 +3624,17 @@ Input Parameters:
 # External Links
 $(_doc_external("Sys/PetscViewerVTKOpen"))
 """
-function PetscViewerVTKOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode, vtk::PetscViewer) end
+function PetscViewerVTKOpen(petsclib::PetscLibType, comm::MPI_Comm, name::String, type::PetscFileMode) end
 
-@for_petsc function PetscViewerVTKOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, type::PetscFileMode, vtk::PetscViewer )
-
+@for_petsc function PetscViewerVTKOpen(petsclib::$UnionPetscLib, comm::MPI_Comm, name::String, type::PetscFileMode)
+	vtk_ = Ref{PetscViewer}(C_NULL)
     @chk ccall(
                (:PetscViewerVTKOpen, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, Ptr{Cchar}, PetscFileMode, Ptr{PetscViewer}),
-               comm, name, type, vtk,
+               comm, name, type, vtk_,
               )
-
-
-	return nothing
+	return vtk_[]
 end 
 
 """

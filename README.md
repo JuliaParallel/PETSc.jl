@@ -51,4 +51,4 @@ The package currently does not work on windows, mainly because `MicrosoftMPI_jll
 ## Getting started
 Have a look at the [documentation](https://juliaparallel.org/PETSc.jl/stable/), at the [examples](./examples/) directory or at the tests in the [test](./test) directory. We do keep the tests up to date, so that is a good starting point. 
 
-Note, that we do not have tests in place for the whole library at this stage. The best supported parts are `DMDA`,`DMStag`, `KSP`,`SNES`,`Vec` and `Mat` interfaces, while other parts such as `DMPlex` do not have a high-level interface or tests yet. Users will thus have to rely on the low-level interface.
+cause Note that we do not have tests in place for the whole library at this stage. The best supported parts are `DMDA`, `DMStag`, `DMPlex`, `KSP`, `SNES`, `Vec`, and `Mat`. Other DM types (DMForest, DMNetwork, DMSwarm) do not yet have a high-level interface; users will have to rely on the low-level `LibPETSc` interface for those.

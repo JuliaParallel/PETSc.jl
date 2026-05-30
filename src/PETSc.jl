@@ -44,8 +44,9 @@ include("ksp.jl")
 include("snes.jl")          
 include("dm.jl")          
 include("sys.jl")
-include("dmda.jl")          
+include("dmda.jl")
 include("dmstag.jl")
+include("dmplex.jl")
 
 include("audit.jl")
 

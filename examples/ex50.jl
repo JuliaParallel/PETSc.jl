@@ -209,7 +209,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         PETSc.assemble!(jac)
         
         # Set a constant nullspace on the matrix for Neumann BCs
-        nullspace = LibPETSc.MatNullSpaceCreate(petsclib, MPI.COMM_WORLD, LibPETSc.PETSC_TRUE, 0, LibPETSc.PetscVec[])
+        nullspace = PETSc.mat_null_space_create(petsclib, MPI.COMM_WORLD; has_const = true)
         LibPETSc.MatSetNullSpace(petsclib, jac, nullspace)
         LibPETSc.MatNullSpaceDestroy(petsclib, nullspace)
         # Don't destroy nullspace here - let the matrix manage it
@@ -263,7 +263,7 @@ function solve_poisson(N=100, da_refine=0; solver_opts...)
         if bc_type == "neumann"
             LibPETSc.VecAssemblyBegin(petsclib, b_vec)
             LibPETSc.VecAssemblyEnd(petsclib, b_vec)
-            nullspace = LibPETSc.MatNullSpaceCreate(petsclib, MPI.COMM_WORLD, LibPETSc.PETSC_TRUE, 0, LibPETSc.PetscVec[])
+            nullspace = PETSc.mat_null_space_create(petsclib, MPI.COMM_WORLD; has_const = true)
             LibPETSc.MatNullSpaceRemove(petsclib, nullspace, b_vec)
             LibPETSc.MatNullSpaceDestroy(petsclib, nullspace)
         end

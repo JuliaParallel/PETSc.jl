@@ -1,0 +1,11 @@
+[deps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+Gmsh = "705231aa-382f-11e9-3f0c-b7cb4346fdeb"
+KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
+MPI = "da04e1cc-30fd-572f-bb4f-1f8673147195"
+PETSc = "ace2c81b-2b5f-4b1e-a30d-d662738edfe0"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+
+[compat]
+KernelAbstractions = "0.9"

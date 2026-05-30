@@ -127,9 +127,14 @@ function MatSeqDense(
     @assert PetscScalar == petsclib.PetscScalar
     
     PetscInt = petsclib.PetscInt
-    mat = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(size(A, 1)), PetscInt(size(A, 2)), A[:])
+    # PETSc stores the data pointer directly without copying, so we must keep the
+    # backing array alive for the entire lifetime of the PETSc Mat.  The finalizer
+    # closure captures `data`, making it reachable (and therefore uncollectable) for
+    # as long as `mat` is alive.
+    data = vec(A)
+    mat = LibPETSc.MatCreateSeqDense(petsclib, comm, PetscInt(size(A, 1)), PetscInt(size(A, 2)), data)
 
-    finalizer(destroy, mat)
+    finalizer(m -> (destroy(m); data), mat)
     return mat
 end
 

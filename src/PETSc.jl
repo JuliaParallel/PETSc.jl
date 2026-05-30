@@ -24,8 +24,16 @@ export LibPETSc
 export audit_petsc_file
 export set_petsclib
 export set_library!, unset_library!, library_info
+export AbstractPETScMemBackend, HostBackend
+export determine_memtype
+export get_petsc_arrays, restore_petsc_arrays
+export dmda_star_fd_coloring
 
 using Libdl
+
+# String convenience wrappers for SetType functions
+include("string_wrappers.jl")
+include("string_wrappers_extra.jl")
 
 include("init.jl")
 include("vec.jl")       
@@ -39,11 +47,6 @@ include("sys.jl")
 include("dmda.jl")
 include("dmstag.jl")
 include("dmplex.jl")
-
-# String convenience wrappers for SetType functions
-include("string_wrappers.jl")       
-include("string_wrappers_extra.jl")
-
 
 include("audit.jl")
 

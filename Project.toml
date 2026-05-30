@@ -17,8 +17,14 @@ SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 
+[weakdeps]
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+
+[extensions]
+PETScCUDAExt = "CUDA"
+
 [compat]
-CUDA = "5"
+CUDA = "5, 6"
 ForwardDiff = "0.10, 1"
 Libdl = "^1.10"
 LinearAlgebra = "^1.10"
@@ -33,16 +39,10 @@ Statistics = "^1.10"
 UnicodePlots = "3.0"
 julia = "^1.10"
 
-[weakdeps]
-CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
-
-[extensions]
-PETScCUDAExt = "CUDA"
-
 [extras]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
-KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
 ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"

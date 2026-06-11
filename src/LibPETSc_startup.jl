@@ -16,18 +16,29 @@ using Preferences
 
 # @load_preference is evaluated at compile time; changing a preference via
 # set_library!() triggers automatic recompilation (standard Preferences.jl behaviour).
+#
+# Only ONE PetscInt width is registered per process (default Int64,
+# switchable with the "PetscInt" preference / `set_petscint!`).  The Int64
+# and Int32 libpetsc variants link external packages that export identical
+# symbols with different integer ABIs (hypre, SuperLU_DIST), so loading
+# both widths into one flat ELF namespace cross-binds those symbols.
 const libs = @static if @load_preference("library_path", nothing) === nothing
     using PETSc_jll
-    (
-        ((PETSc_jll.libpetsc_Float64_Real_Int64,), Float64, Int64),
-        ((PETSc_jll.libpetsc_Float32_Real_Int64,), Float32, Int64),
-        ((PETSc_jll.libpetsc_Float64_Complex_Int64,), Complex{Float64}, Int64),
-        ((PETSc_jll.libpetsc_Float32_Complex_Int64,), Complex{Float32}, Int64),
-        ((PETSc_jll.libpetsc_Float64_Real_Int32,), Float64, Int32),
-        ((PETSc_jll.libpetsc_Float32_Real_Int32,), Float32, Int32),
-        ((PETSc_jll.libpetsc_Float64_Complex_Int32,), Complex{Float64}, Int32),
-        ((PETSc_jll.libpetsc_Float32_Complex_Int32,), Complex{Float32}, Int32),
-    )
+    @static if @load_preference("PetscInt", "Int64") == "Int32"
+        (
+            ((PETSc_jll.libpetsc_Float64_Real_Int32,), Float64, Int32),
+            ((PETSc_jll.libpetsc_Float32_Real_Int32,), Float32, Int32),
+            ((PETSc_jll.libpetsc_Float64_Complex_Int32,), Complex{Float64}, Int32),
+            ((PETSc_jll.libpetsc_Float32_Complex_Int32,), Complex{Float32}, Int32),
+        )
+    else
+        (
+            ((PETSc_jll.libpetsc_Float64_Real_Int64,), Float64, Int64),
+            ((PETSc_jll.libpetsc_Float32_Real_Int64,), Float32, Int64),
+            ((PETSc_jll.libpetsc_Float64_Complex_Int64,), Complex{Float64}, Int64),
+            ((PETSc_jll.libpetsc_Float32_Complex_Int64,), Complex{Float32}, Int64),
+        )
+    end
 else
     let _path   = @load_preference("library_path"),
         _scalar = @load_preference("PetscScalar", "Float64"),

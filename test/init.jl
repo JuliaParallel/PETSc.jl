@@ -185,12 +185,15 @@ using PETSc
         PETSc.finalize(custom_lib)
         @test !PETSc.initialized(custom_lib)
         
-        # Test with different scalar/int types
-        lib_path_f32 = PETSc.petsclibs[2].petsc_library  # Float32 library
-        custom_lib_f32 = PETSc.set_petsclib(lib_path_f32; PetscScalar=Float32, PetscInt=Int64)
-        @test custom_lib_f32 isa PETSc.LibPETSc.PetscLibType{Float32, Int64, String}
-        @test PETSc.scalartype(custom_lib_f32) == Float32
-        @test PETSc.inttype(custom_lib_f32) == Int64
+        # Test with different scalar/int types (only when more than one
+        # library is configured; with set_library! there is just one)
+        if length(PETSc.petsclibs) >= 2
+            lib_path_f32 = PETSc.petsclibs[2].petsc_library  # Float32 library
+            custom_lib_f32 = PETSc.set_petsclib(lib_path_f32; PetscScalar=Float32, PetscInt=Int64)
+            @test custom_lib_f32 isa PETSc.LibPETSc.PetscLibType{Float32, Int64, String}
+            @test PETSc.scalartype(custom_lib_f32) == Float32
+            @test PETSc.inttype(custom_lib_f32) == Int64
+        end
     end
 end
 

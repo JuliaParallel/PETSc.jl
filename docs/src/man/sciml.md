@@ -146,6 +146,15 @@ are configured, so they can override any default.
 Unrecognized keywords are rejected with a clear `ArgumentError` rather than
 silently dropped.
 
+!!! note "Default tolerances"
+    If you pass **neither** `reltol` nor `abstol`, the wrapper leaves PETSc's
+    own `TSAdapt` default tolerances in place rather than imposing SciML's
+    defaults — PETSc's defaults are tighter, so the bare adaptive solve is at
+    least as accurate. If you pass **only one** of the two, the missing side is
+    filled from SciML's defaults (`reltol = 1e-3`, `abstol = 1e-6`) so the
+    value you did pass actually reaches the controller. Pass both explicitly
+    for full control.
+
 ## Callbacks
 
 `DiscreteCallback`s and `terminate!` are supported. Their `initialize` and

@@ -35,7 +35,9 @@ end
 # SciML default tolerances applied when the user passes only one of
 # `reltol` / `abstol`. This matches OrdinaryDiffEq's defaults so a partial
 # specification (e.g. `reltol = 1e-10`) actually reaches PETSc instead of
-# being silently dropped.
+# being silently dropped. When the user passes *neither*, we deliberately
+# leave PETSc's own (tighter) TS default tolerances in place — see
+# `_apply_tolerances!`.
 const _SCIML_DEFAULT_RELTOL = 1e-3
 const _SCIML_DEFAULT_ABSTOL = 1e-6
 
@@ -94,7 +96,10 @@ end
 # Forward `reltol` / `abstol` to PETSc when at least one is set. Filling the
 # missing side from SciML's defaults is the convention upstream wrappers use:
 # `solve(prob, alg; reltol = 1e-10)` should reach the adaptive controller
-# rather than be silently ignored.
+# rather than be silently ignored. When the user sets *neither*, we leave
+# PETSc's own TS default tolerances untouched: they are tighter than SciML's
+# defaults, so a bare adaptive `solve` is at least as accurate, and forcing
+# the looser SciML values here would only degrade the default solve.
 function _apply_tolerances!(lib, ts, reltol, abstol)
     (reltol === nothing && abstol === nothing) && return nothing
     rt = reltol === nothing ? _SCIML_DEFAULT_RELTOL : reltol
@@ -566,6 +571,21 @@ function SciMLBase.__solve(
     return SciMLBase.solve!(integ)
 end
 
+# Pull (and clear) the first user-callback exception stashed on a context by
+# `_petsc_rhs!` / `_petsc_ifunction!`. The IMEX path keeps both contexts in a
+# NamedTuple, so recurse over its fields. Anything else yields `nothing`.
+# Clearing on read keeps a recovered retry from re-raising a stale error.
+_take_callback_error!(ctx::Union{RHSCtx, IFunctionCtx}) =
+    (e = ctx.err; ctx.err = nothing; e)
+function _take_callback_error!(ctx::NamedTuple)
+    for c in ctx
+        e = _take_callback_error!(c)
+        e === nothing || return e
+    end
+    return nothing
+end
+_take_callback_error!(::Any) = nothing
+
 function SciMLBase.step!(integ::PETScTSIntegrator)
     integ.done && return nothing
 
@@ -592,8 +612,23 @@ function SciMLBase.step!(integ::PETScTSIntegrator)
     integ.tprev = integ.t
 
     GC.@preserve integ begin
-        PETSc.LibPETSc.TSStep(integ.petsclib, integ.ts)
+        try
+            PETSc.LibPETSc.TSStep(integ.petsclib, integ.ts)
+        catch
+            # If `TSStep` failed because a user RHS / IFunction threw, surface
+            # that original exception rather than the opaque PETSc error the
+            # nonzero callback return triggered.
+            user_err = _take_callback_error!(integ.cb_ctx)
+            user_err === nothing ? rethrow() : throw(user_err)
+        end
     end
+
+    # An implicit solve (SNES) may swallow a nonzero IFunction return as a
+    # "function domain error" and reject the step instead of failing `TSStep`
+    # outright. Check for a stashed user exception even on the success path so
+    # those errors are not silently turned into a step rejection / divergence.
+    user_err = _take_callback_error!(integ.cb_ctx)
+    user_err === nothing || throw(user_err)
 
     _sync_petsc_to_julia!(integ)
     integ.t = typeof(integ.t)(PETSc.LibPETSc.TSGetTime(integ.petsclib, integ.ts))

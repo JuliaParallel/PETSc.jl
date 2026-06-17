@@ -101,6 +101,10 @@ function _build_opts(
     _validate_saveat(saveat_materialized)
     saveat_expanded = _expand_saveat(saveat_materialized, tdir, tspan, tType)
     saveat_data = tType[tdir * t for t in saveat_expanded if t0 < tdir * t <= tf]
+    # User `tstops` are rejected up front in `__init` (the PETSc-driven step
+    # loop does not yet land on them), so this collection is normally just the
+    # terminal `tf`. It is retained because `terminate!` drains `opts.tstops`
+    # and to leave the scaffolding in place for a future tstops-aware loop.
     tstops_data = tType[
         tdir * t for t in _as_time_iter(tstops_materialized, tType) if t0 < tdir * t <= tf
     ]

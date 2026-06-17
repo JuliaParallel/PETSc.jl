@@ -8,6 +8,10 @@ const TSRK = ext.TSRK
 const TSImplicit = ext.TSImplicit
 const TSARKIMEX = ext.TSARKIMEX
 
+# Sentinel exception for the "user RHS error surfaces" testset. Declared at top
+# level because Julia forbids `struct` definitions inside a `@testset`'s scope.
+struct _RHSBoom <: Exception end
+
 # Counters for hook-forwarding tests. The shim methods below are more specific
 # than the SciMLBase generics and intercept calls for `PETScTSIntegrator`, so
 # tests can count actual invocations of the SciML hook API rather than relying
@@ -909,5 +913,33 @@ end
         # has the "no cap" meaning, so only it is special-cased.
         @test_throws ArgumentError solve(prob, TSRK("5dp"); dt = Inf)
         @test_throws ArgumentError solve(prob, TSRK("5dp"); dtmin = Inf)
+    end
+
+    @testset "User RHS exception surfaces as the original error, not a crash" begin
+        # A Julia exception thrown inside the RHS / IFunction `@cfunction` must
+        # not unwind across the C boundary (that segfaults). Instead it is
+        # captured and rethrown by `step!`, so the user sees their own error.
+        # (`_RHSBoom` is defined at top level — structs cannot live in the
+        # local scope of a `@testset`.)
+        boom!(du, u, p, t) = throw(_RHSBoom())
+        u0 = [1.0, 0.0]
+        tspan = (0.0, 1.0)
+
+        # Explicit RHS path (TSRK).
+        prob_rk = ODEProblem(boom!, u0, tspan)
+        @test_throws _RHSBoom solve(
+            prob_rk, TSRK("3bs"); dt = 0.1, adaptive = false,
+        )
+
+        # Implicit IFunction path (TSImplicit, evaluated inside the SNES solve).
+        prob_be = ODEProblem(boom!, u0, tspan)
+        @test_throws _RHSBoom solve(
+            prob_be, TSImplicit("beuler", ["-snes_fd"]); dt = 0.1, adaptive = false,
+        )
+
+        # A clean solve still succeeds afterwards (no lingering captured error).
+        good!(du, u, p, t) = (du .= -u)
+        sol = solve(ODEProblem(good!, u0, tspan), TSRK("3bs"); dt = 0.1)
+        @test sol.retcode == ReturnCode.Success
     end
 end

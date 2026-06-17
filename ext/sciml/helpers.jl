@@ -1,3 +1,11 @@
+# Nonzero PETSc error code returned by the RHS / IFunction `@cfunction`s when
+# the user function throws. 83 is `PETSC_ERR_PLIB` ("generic library error");
+# the exact value is unimportant — any nonzero code makes `@chk` in `TSStep`
+# raise so `step!` can rethrow the captured Julia exception. The
+# `_take_callback_error!` helpers that consume `ctx.err` live in `solve.jl`,
+# after `RHSCtx` / `IFunctionCtx` are defined.
+const _PETSC_CALLBACK_ERRCODE = PETSc.LibPETSc.PetscErrorCode(83)
+
 function _check_isinplace(prob)
     SciMLBase.isinplace(prob) || throw(ArgumentError(
         "PETSc.jl time-stepping wrappers only support in-place ODEProblems " *

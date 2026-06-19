@@ -2,12 +2,6 @@ using Test
 using PETSc
 using SciMLBase
 
-ext = Base.get_extension(PETSc, :PETScSciMLExt)
-@assert ext !== nothing
-const TSRK = ext.TSRK
-const TSImplicit = ext.TSImplicit
-const TSARKIMEX = ext.TSARKIMEX
-
 # ── Reference problem (PETSc TS tutorial ex51), Float32 variant ──────────────
 #   u1' = cos(t),   u2' = sin(u2)
 function ex51_rhs_f32!(du, u, p, t)

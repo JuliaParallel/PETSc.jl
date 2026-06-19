@@ -9,10 +9,6 @@ MPI.Initialized() || MPI.Init()
 using PETSc
 using SciMLBase
 
-ext = Base.get_extension(PETSc, :PETScSciMLExt)
-@assert ext !== nothing
-const TSRK = ext.TSRK
-
 const comm = MPI.COMM_WORLD
 const mpisize = MPI.Comm_size(comm)
 const mpirank = MPI.Comm_rank(comm)

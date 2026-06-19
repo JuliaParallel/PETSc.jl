@@ -3,9 +3,6 @@ using PETSc
 using SciMLBase
 using LinearAlgebra
 
-ext = Base.get_extension(PETSc, :PETScSciMLExt)
-@assert ext !== nothing
-
 include(joinpath(dirname(dirname(@__DIR__)), "examples", "ex51_sciml.jl"))
 
 @testset "ex51_sciml example" begin

@@ -2,10 +2,6 @@ using Test
 using PETSc
 using SciMLBase
 
-ext = Base.get_extension(PETSc, :PETScSciMLExt)
-@assert ext !== nothing
-const TSRK = ext.TSRK
-
 # ── Reference problem (PETSc TS tutorial ex51) ───────────────────────────────
 #   u1' = cos(t),   u2' = sin(u2)
 # Analytical solution:

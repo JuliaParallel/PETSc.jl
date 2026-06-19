@@ -2,10 +2,6 @@ using Test
 using PETSc
 using SciMLBase
 
-ext = Base.get_extension(PETSc, :PETScSciMLExt)
-@assert ext !== nothing
-const TSImplicit = ext.TSImplicit
-
 # ── Reference problem (PETSc TS tutorial ex51) ───────────────────────────────
 function ex51_rhs!(du, u, p, t)
     du[1] = cos(t)

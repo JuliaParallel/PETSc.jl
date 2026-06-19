@@ -2,11 +2,6 @@ using Test
 using PETSc
 using SciMLBase
 
-ext = Base.get_extension(PETSc, :PETScSciMLExt)
-@assert ext !== nothing
-const TSARKIMEX = ext.TSARKIMEX
-const TSImplicit = ext.TSImplicit
-
 # ── Linear stiff IMEX problem ────────────────────────────────────────────────
 # u' = -u (implicit) + cos(t) (explicit)
 # analytical: u(t) = (1/2) * (cos(t) + sin(t)) + (u0 - 1/2) * exp(-t)

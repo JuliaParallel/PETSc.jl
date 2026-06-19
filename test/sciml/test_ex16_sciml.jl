@@ -2,9 +2,6 @@ using Test
 using PETSc
 using SciMLBase
 
-ext = Base.get_extension(PETSc, :PETScSciMLExt)
-@assert ext !== nothing
-
 include(joinpath(dirname(dirname(@__DIR__)), "examples", "ex16_sciml.jl"))
 
 # Van der Pol ODE (ex16) — notes on the test design

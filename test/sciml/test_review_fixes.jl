@@ -2,11 +2,10 @@ using Test
 using PETSc
 using SciMLBase
 
+# `ext` is needed below for the internal `ext.PETScTSIntegrator` type; the
+# algorithm types themselves come from `using PETSc` (they are exported).
 ext = Base.get_extension(PETSc, :PETScSciMLExt)
 @assert ext !== nothing
-const TSRK = ext.TSRK
-const TSImplicit = ext.TSImplicit
-const TSARKIMEX = ext.TSARKIMEX
 
 # Sentinel exception for the "user RHS error surfaces" testset. Declared at top
 # level because Julia forbids `struct` definitions inside a `@testset`'s scope.

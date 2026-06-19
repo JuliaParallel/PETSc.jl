@@ -2,9 +2,10 @@ using Test
 using PETSc
 using SciMLBase
 
+# `ext` is needed below for the internal `ext._build_opts` helper; the
+# algorithm types themselves come from `using PETSc` (they are exported).
 ext = Base.get_extension(PETSc, :PETScSciMLExt)
 @assert ext !== nothing
-const TSRK = ext.TSRK
 
 # u' = -u with analytical solution exp(-t) starting from u0 = 1.
 function decay!(du, u, p, t)

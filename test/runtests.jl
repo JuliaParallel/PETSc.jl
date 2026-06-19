@@ -15,13 +15,25 @@ if !haskey(Pkg.project().dependencies, "SciMLBase")
 end
 
 using MPI: MPI, mpiexec
-using PETSc, PETSc_jll
+# `Pkg` is already imported above; `PETSc_jll` is loaded conditionally below
+# (only when not using a custom PETSc library).
+using PETSc
 
 # Make sure that all dependencies are installed also on a clean system
 Pkg.instantiate()
 
-import MPIPreferences
-@info "Testing PETSc.jl with" MPIPreferences.binary MPIPreferences.abi PETSc_jll.host_platform
+# When set_library! has been used, petsc_library is a path string and PETSc_jll
+# is not loaded.  Only import JLL-specific symbols when using the default binaries.
+const USING_CUSTOM_LIB = PETSc.petsclibs[1].petsc_library isa AbstractString
+
+import MPIPreferences  # always import to ensure local MPI API is configured
+
+if USING_CUSTOM_LIB
+    @info "Testing PETSc.jl with custom library" path=PETSc.petsclibs[1].petsc_library MPIPreferences.binary MPIPreferences.abi
+else
+    using PETSc_jll
+    @info "Testing PETSc.jl with" MPIPreferences.binary MPIPreferences.abi PETSc_jll.host_platform
+end
 
 # Do the MPI tests first so we do not have mpi running inside MPI
 mpi_tests = ("mpivec.jl", "mpimat.jl", "ksp.jl", "dmstag.jl")
@@ -41,6 +53,7 @@ include("snes.jl")          # autowrapped
 include("snes_helpers.jl")  # small helper tests for SNES return-style wrappers
 include("dmda.jl")          # autowrapped
 include("dmstag.jl")        # autowrapped
+include("dmplex.jl")        # DMPlex tests
 include("dmnetwork.jl")     # new test for DMNetwork example
 include("dmshell.jl")       # new test for DMShell example
 include("dmproduct.jl")     # test for DMProduct example

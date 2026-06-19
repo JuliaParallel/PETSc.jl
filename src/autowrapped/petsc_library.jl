@@ -203,6 +203,11 @@ IS(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = IS{PetscLib}(ptr)
 # Conversion methods
 Base.convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
 Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractIS) = v.ptr
+# Allows a mutable IS to be passed as Ptr{CIS} (= Ptr{Ptr{Cvoid}}) to C
+# functions that write the IS handle into the pointed-to slot, e.g.
+# DMGetStratumIS. Julia passes pointer_from_objref(v), which is the address of
+# v.ptr (the first and only field), so PETSc writes directly into v.ptr.
+Base.unsafe_convert(::Type{Ptr{CIS}}, v::AbstractIS) = Ptr{CIS}(Base.pointer_from_objref(v))
 # ------------------------------------------------------
 
 # ------------------------------------------------------
@@ -296,7 +301,7 @@ const void = Cvoid
 const char = Cchar
 
 mutable struct PetscDraw end
-mutable struct DMLabel end
+const DMLabel = Ptr{Cvoid}  # C typedef struct _n_DMLabel *DMLabel (pointer type)
 mutable struct TSMonitorLGCtx end
 mutable struct PetscCtxDestroyFn end
 mutable struct PetscErrorCodeFn end
@@ -388,6 +393,7 @@ include("PetscDraw_wrappers.jl")
 include("PetscRegressor_wrappers.jl")
 include("PF_wrappers.jl")
 include("IS_wrappers.jl")
+# include("PC_wrappers.jl")  # excluded: PC type in ccall signatures needs fixing
 include("TS_wrappers.jl")
 include("AO_wrappers.jl")
 include("Tao_wrappers.jl")

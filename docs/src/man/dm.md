@@ -20,6 +20,7 @@ PETSc provides several DM implementations for different mesh types:
 |---------|-------------|--------|
 | **DMDA** | Distributed arrays for structured grids (1D/2D/3D) | ✅ Full support |
 | **DMStag** | Staggered grids for finite volume/difference methods | ✅ Full support |
+| **DMPlex** | Unstructured meshes + full FEM workflow (Gmsh, FE spaces, callbacks, VTK) | ✅ Full support |
 
 ### Low-Level Interface Only (via LibPETSc)
 
@@ -27,7 +28,6 @@ The following DM types are available through the low-level `LibPETSc` wrapper bu
 
 | DM Type | Description | Use Case |
 |---------|-------------|----------|
-| **DMPlex** | Unstructured meshes with arbitrary topology | Finite elements, complex geometries |
 | **DMForest** | Adaptive mesh refinement (AMR) via p4est/p8est | Octree-based adaptivity |
 | **DMNetwork** | Graph/network structures | Power grids, pipe networks |
 | **DMSwarm** | Particle data management | PIC methods, Lagrangian particles |

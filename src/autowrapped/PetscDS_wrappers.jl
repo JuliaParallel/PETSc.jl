@@ -1,5 +1,5 @@
 # autodefined type arguments for class ------
-mutable struct PetscPoCintJacFn end
+const PetscPoCintJacFn = Cvoid  # placeholder for C Jacobian function pointer types
 
 mutable struct PetscRiemannFn end
 
@@ -7,7 +7,7 @@ mutable struct PetscBdPoCintFn end
 
 mutable struct PetscBdPoCintJacFn end
 
-mutable struct PetscPoCintExactSolutionFn end
+const PetscPoCintExactSolutionFn = Cvoid  # placeholder for C exact-solution function pointer types
 
 mutable struct PetscPoCintBoundFn end
 
@@ -1262,9 +1262,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Dm/PetscDSSetResidual"))
 """
-function PetscDSSetResidual(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, f0::PetscPoCintFn, f1::PetscPoCintFn) end
+function PetscDSSetResidual(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, f0::Ptr{Cvoid}, f1::Ptr{Cvoid}) end
 
-@for_petsc function PetscDSSetResidual(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, f0::PetscPoCintFn, f1::PetscPoCintFn )
+@for_petsc function PetscDSSetResidual(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, f0::Ptr{Cvoid}, f1::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscDSSetResidual, $petsc_library),
@@ -1409,7 +1409,7 @@ $(_doc_external("Dm/PetscDSGetJacobian"))
 """
 function PetscDSGetJacobian(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::PetscPoCintJacFn, g1::PetscPoCintJacFn, g2::PetscPoCintJacFn, g3::PetscPoCintJacFn) end
 
-@for_petsc function PetscDSGetJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::PetscPoCintJacFn, g1::PetscPoCintJacFn, g2::PetscPoCintJacFn, g3::PetscPoCintJacFn )
+@for_petsc function PetscDSGetJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscDSGetJacobian, $petsc_library),
@@ -1444,14 +1444,14 @@ Level: intermediate
 # External Links
 $(_doc_external("Dm/PetscDSSetJacobian"))
 """
-function PetscDSSetJacobian(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::PetscPoCintJacFn, g1::PetscPoCintJacFn, g2::PetscPoCintJacFn, g3::PetscPoCintJacFn) end
+function PetscDSSetJacobian(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) end
 
-@for_petsc function PetscDSSetJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::PetscPoCintJacFn, g1::PetscPoCintJacFn, g2::PetscPoCintJacFn, g3::PetscPoCintJacFn )
+@for_petsc function PetscDSSetJacobian(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscDSSetJacobian, $petsc_library),
                PetscErrorCode,
-               (PetscDS, $PetscInt, $PetscInt, Ptr{PetscPoCintJacFn}, Ptr{PetscPoCintJacFn}, Ptr{PetscPoCintJacFn}, Ptr{PetscPoCintJacFn}),
+               (PetscDS, $PetscInt, $PetscInt, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
                ds, f, g, g0, g1, g2, g3,
               )
 
@@ -1590,14 +1590,14 @@ Level: intermediate
 # External Links
 $(_doc_external("Dm/PetscDSSetJacobianPreconditioner"))
 """
-function PetscDSSetJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::PetscPoCintJacFn, g1::PetscPoCintJacFn, g2::PetscPoCintJacFn, g3::PetscPoCintJacFn) end
+function PetscDSSetJacobianPreconditioner(petsclib::PetscLibType, ds::PetscDS, f::PetscInt, g::PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid}) end
 
-@for_petsc function PetscDSSetJacobianPreconditioner(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::PetscPoCintJacFn, g1::PetscPoCintJacFn, g2::PetscPoCintJacFn, g3::PetscPoCintJacFn )
+@for_petsc function PetscDSSetJacobianPreconditioner(petsclib::$UnionPetscLib, ds::PetscDS, f::$PetscInt, g::$PetscInt, g0::Ptr{Cvoid}, g1::Ptr{Cvoid}, g2::Ptr{Cvoid}, g3::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscDSSetJacobianPreconditioner, $petsc_library),
                PetscErrorCode,
-               (PetscDS, $PetscInt, $PetscInt, Ptr{PetscPoCintJacFn}, Ptr{PetscPoCintJacFn}, Ptr{PetscPoCintJacFn}, Ptr{PetscPoCintJacFn}),
+               (PetscDS, $PetscInt, $PetscInt, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
                ds, f, g, g0, g1, g2, g3,
               )
 
@@ -2238,7 +2238,7 @@ $(_doc_external("Dm/PetscDSGetExactSolution"))
 """
 function PetscDSGetExactSolution(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, sol::PetscPoCintExactSolutionFn, ctx::Cvoid) end
 
-@for_petsc function PetscDSGetExactSolution(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::PetscPoCintExactSolutionFn, ctx::Cvoid )
+@for_petsc function PetscDSGetExactSolution(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid}=C_NULL )
 
     @chk ccall(
                (:PetscDSGetExactSolution, $petsc_library),
@@ -2270,14 +2270,14 @@ Level: intermediate
 # External Links
 $(_doc_external("Dm/PetscDSSetExactSolution"))
 """
-function PetscDSSetExactSolution(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, sol::PetscPoCintExactSolutionFn, ctx::Cvoid) end
+function PetscDSSetExactSolution(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid}) end
 
-@for_petsc function PetscDSSetExactSolution(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::PetscPoCintExactSolutionFn, ctx::Cvoid )
+@for_petsc function PetscDSSetExactSolution(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscDSSetExactSolution, $petsc_library),
                PetscErrorCode,
-               (PetscDS, $PetscInt, Ptr{PetscPoCintExactSolutionFn}, Ptr{Cvoid}),
+               (PetscDS, $PetscInt, Ptr{Cvoid}, Ptr{Cvoid}),
                prob, f, sol, ctx,
               )
 
@@ -2340,14 +2340,14 @@ Level: intermediate
 # External Links
 $(_doc_external("Dm/PetscDSSetExactSolutionTimeDerivative"))
 """
-function PetscDSSetExactSolutionTimeDerivative(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, sol::PetscPoCintExactSolutionFn, ctx::Cvoid) end
+function PetscDSSetExactSolutionTimeDerivative(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid}=C_NULL) end
 
-@for_petsc function PetscDSSetExactSolutionTimeDerivative(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::PetscPoCintExactSolutionFn, ctx::Cvoid )
+@for_petsc function PetscDSSetExactSolutionTimeDerivative(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, sol::Ptr{Cvoid}, ctx::Ptr{Cvoid}=C_NULL )
 
     @chk ccall(
                (:PetscDSSetExactSolutionTimeDerivative, $petsc_library),
                PetscErrorCode,
-               (PetscDS, $PetscInt, Ptr{PetscPoCintExactSolutionFn}, Ptr{Cvoid}),
+               (PetscDS, $PetscInt, Ptr{Cvoid}, Ptr{Cvoid}),
                prob, f, sol, ctx,
               )
 
@@ -3396,30 +3396,43 @@ Level: developer
 # External Links
 $(_doc_external("Dm/PetscDSGetBoundary"))
 """
-function PetscDSGetBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt, wf::PetscWeakForm, type::DMBoundaryConditionType, name::String, label::DMLabel, func::PetscVoidFn, func_t::PetscVoidFn, ctx::Cvoid) end
+function PetscDSGetBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt) end
 
-@for_petsc function PetscDSGetBoundary(petsclib::$UnionPetscLib, ds::PetscDS, bd::$PetscInt, wf::PetscWeakForm, type::DMBoundaryConditionType, name::String, label::DMLabel, func::PetscVoidFn, func_t::PetscVoidFn, ctx::Cvoid )
-	name_ = Ref(pointer(name))
-	Nv_ = Ref{$PetscInt}()
-	values_ = Ref{Ptr{$PetscInt}}()
-	field_ = Ref{$PetscInt}()
-	Nc_ = Ref{$PetscInt}()
-	comps_ = Ref{Ptr{$PetscInt}}()
+@for_petsc function PetscDSGetBoundary(petsclib::$UnionPetscLib, ds::PetscDS, bd::$PetscInt)
+	wf_ref    = Ref{PetscWeakForm}(C_NULL)
+	type_ref  = Ref{DMBoundaryConditionType}()
+	name_ref  = Ref{Ptr{Cchar}}(C_NULL)
+	label_ref = Ref{DMLabel}(C_NULL)
+	Nv_ref    = Ref{$PetscInt}(0)
+	values_ref = Ref{Ptr{$PetscInt}}(C_NULL)
+	field_ref = Ref{$PetscInt}(0)
+	Nc_ref    = Ref{$PetscInt}(0)
+	comps_ref = Ref{Ptr{$PetscInt}}(C_NULL)
+	func_ref  = Ref{Ptr{Cvoid}}(C_NULL)
+	func_t_ref = Ref{Ptr{Cvoid}}(C_NULL)
+	ctx_ref   = Ref{Ptr{Cvoid}}(C_NULL)
 
     @chk ccall(
                (:PetscDSGetBoundary, $petsc_library),
                PetscErrorCode,
-               (PetscDS, $PetscInt, Ptr{PetscWeakForm}, Ptr{DMBoundaryConditionType}, Ptr{Ptr{Cchar}}, Ptr{DMLabel}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, PetscVoidFn, PetscVoidFn, Cvoid),
-               ds, bd, wf, type, name_, label, Nv_, values_, field_, Nc_, comps_, func, func_t, ctx,
+               (PetscDS, $PetscInt,
+                Ptr{PetscWeakForm}, Ptr{DMBoundaryConditionType}, Ptr{Ptr{Cchar}}, Ptr{DMLabel},
+                Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}},
+                Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}),
+               ds, bd,
+               wf_ref, type_ref, name_ref, label_ref,
+               Nv_ref, values_ref, field_ref, Nc_ref, comps_ref,
+               func_ref, func_t_ref, ctx_ref,
               )
 
-	Nv = Nv_[]
-	values = unsafe_wrap(Array, values_[], VecGetLocalSize(petsclib, x); own = false)
-	field = field_[]
-	Nc = Nc_[]
-	comps = unsafe_wrap(Array, comps_[], VecGetLocalSize(petsclib, x); own = false)
+	Nv = Nv_ref[]
+	values = Nv > 0 ? unsafe_wrap(Array, values_ref[], Nv; own = false) : $PetscInt[]
+	Nc = Nc_ref[]
+	comps = Nc > 0 ? unsafe_wrap(Array, comps_ref[], Nc; own = false) : $PetscInt[]
 
-	return Nv,values,field,Nc,comps
+	return (wf = wf_ref[], type = type_ref[], name = name_ref[] == C_NULL ? "" : unsafe_string(name_ref[]),
+	        label = label_ref[], Nv = Nv, values = values, field = field_ref[],
+	        Nc = Nc, comps = comps, func = func_ref[], func_t = func_t_ref[], ctx = ctx_ref[])
 end 
 
 """

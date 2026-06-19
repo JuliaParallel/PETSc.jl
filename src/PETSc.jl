@@ -24,8 +24,16 @@ export LibPETSc
 export audit_petsc_file
 export set_petsclib
 export set_library!, unset_library!, library_info
+export AbstractPETScMemBackend, HostBackend
+export determine_memtype
+export get_petsc_arrays, restore_petsc_arrays
+export dmda_star_fd_coloring
 
 using Libdl
+
+# String convenience wrappers for SetType functions
+include("string_wrappers.jl")
+include("string_wrappers_extra.jl")
 
 include("init.jl")
 include("vec.jl")       
@@ -36,17 +44,14 @@ include("ksp.jl")
 include("snes.jl")          
 include("dm.jl")          
 include("sys.jl")
-include("dmda.jl")          
+include("dmda.jl")
 include("dmstag.jl")
-
-# String convenience wrappers for SetType functions
-include("string_wrappers.jl")
-include("string_wrappers_extra.jl")
+include("dmplex.jl")
 
 # SciML extension algorithm types (methods live in ext/PETScSciMLExt.jl).
+# The string convenience wrappers these rely on are already included above.
 include("sciml_algorithms.jl")
 export PETScTSAlgorithm, TSRK, TSRosW, TSImplicit, TSARKIMEX, TSGeneric
-
 
 include("audit.jl")
 

@@ -10,6 +10,7 @@ using SciMLBase
     end
 
     include("test_rk.jl")
+    include("test_float32.jl")
     include("test_ex51_sciml.jl")
     include("test_ex16_sciml.jl")
     include("test_rosenbrock.jl")

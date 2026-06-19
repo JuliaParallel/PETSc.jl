@@ -3,7 +3,10 @@ module PETScSciMLExt
 using PETSc
 using SciMLBase
 
-include("sciml/algorithms.jl")
+# Algorithm types live in PETSc proper (`src/sciml_algorithms.jl`)
+# so users can write `PETSc.TSRK("3bs")`.
+using PETSc: PETScTSAlgorithm, TSRK, TSRosW, TSImplicit, TSARKIMEX, TSGeneric
+
 include("sciml/options.jl")
 include("sciml/integrator.jl")
 include("sciml/interface.jl")

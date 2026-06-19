@@ -14,16 +14,21 @@ function _check_isinplace(prob)
     ))
 end
 
-# The PETSc TS C callback signatures we register via `@cfunction` use
-# `Float64` for the time argument. PETSc libraries built with
-# `PetscReal = Float32` would pass a Float32 across the C ABI, which would
-# not match. Detect this up-front so users get a clear error rather than a
-# bus error when the callback fires.
+# The PETSc TS C callback signatures we register via `@cfunction` pass the
+# time argument as `PetscReal`. We build a matching `@cfunction` for each
+# supported real type (`Float64` and `Float32`; see `_petsc_rhs_ptr` /
+# `_petsc_ifunction_ptr`), but other reals (e.g. `__float128` extended
+# precision) have no registered callback and would pass a mismatched value
+# across the C ABI. Detect that up-front so users get a clear error rather
+# than a bus error when the callback fires.
+const _SUPPORTED_PETSCREAL = (Float64, Float32)
+
 function _check_petscreal(lib)
-    lib.PetscReal === Float64 || throw(ArgumentError(
-        "PETSc.jl SciML extension currently only supports PetscReal = Float64. " *
-        "Got PetscReal = $(lib.PetscReal). Pass `petsclib = PETSc.getlib(PetscScalar = Float64)` " *
-        "or use a PETSc build with PetscReal = Float64.",
+    lib.PetscReal in _SUPPORTED_PETSCREAL || throw(ArgumentError(
+        "PETSc.jl SciML extension currently only supports PetscReal = Float64 " *
+        "or Float32. Got PetscReal = $(lib.PetscReal). Pass " *
+        "`petsclib = PETSc.getlib(PetscScalar = Float64)` (or `Float32`), " *
+        "or use a PETSc build with a supported PetscReal.",
     ))
 end
 

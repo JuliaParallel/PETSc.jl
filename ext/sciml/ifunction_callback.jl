@@ -8,9 +8,12 @@ mutable struct IFunctionCtx{F, P, SZ, Lib}
 end
 IFunctionCtx(f, p, sizeu, petsclib) = IFunctionCtx(f, p, sizeu, petsclib, 0, nothing)
 
+# `t` is typed `Real` (not a concrete `Float64`) so a single body specializes
+# for whichever `PetscReal` the registered `@cfunction` is built for — see
+# `_petsc_ifunction_ptr`.
 function _petsc_ifunction!(
     ::PETSc.LibPETSc.CTS,
-    t::Float64,
+    t::Real,
     u_ptr::PETSc.LibPETSc.CVec,
     udot_ptr::PETSc.LibPETSc.CVec,
     F_ptr::PETSc.LibPETSc.CVec,
@@ -44,10 +47,13 @@ function _petsc_ifunction!(
     end
 end
 
-const _PETSC_IFUNCTION_PTR = Ref{Ptr{Cvoid}}(C_NULL)
+# See `_petsc_rhs_ptr`: one cached function pointer per `PetscReal` because
+# `@cfunction` needs literal argument types and the time argument's ABI type
+# must match the library's `PetscReal`.
+const _PETSC_IFUNCTION_PTR = IdDict{DataType, Ptr{Cvoid}}()
 
-function _petsc_ifunction_ptr()
-    _PETSC_IFUNCTION_PTR[] == C_NULL && (_PETSC_IFUNCTION_PTR[] = @cfunction(
+_petsc_ifunction_ptr(::Type{Float64}) = get!(_PETSC_IFUNCTION_PTR, Float64) do
+    @cfunction(
         _petsc_ifunction!,
         PETSc.LibPETSc.PetscErrorCode,
         (
@@ -58,6 +64,20 @@ function _petsc_ifunction_ptr()
             PETSc.LibPETSc.CVec,
             Ptr{Cvoid},
         ),
-    ))
-    return _PETSC_IFUNCTION_PTR[]
+    )
+end
+
+_petsc_ifunction_ptr(::Type{Float32}) = get!(_PETSC_IFUNCTION_PTR, Float32) do
+    @cfunction(
+        _petsc_ifunction!,
+        PETSc.LibPETSc.PetscErrorCode,
+        (
+            PETSc.LibPETSc.CTS,
+            Float32,
+            PETSc.LibPETSc.CVec,
+            PETSc.LibPETSc.CVec,
+            PETSc.LibPETSc.CVec,
+            Ptr{Cvoid},
+        ),
+    )
 end

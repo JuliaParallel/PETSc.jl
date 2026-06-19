@@ -8,9 +8,12 @@ mutable struct RHSCtx{F, P, SZ, Lib}
 end
 RHSCtx(f, p, sizeu, petsclib) = RHSCtx(f, p, sizeu, petsclib, 0, nothing)
 
+# `t` is typed `Real` (not a concrete `Float64`) so a single body specializes
+# for whichever `PetscReal` the registered `@cfunction` is built for — see
+# `_petsc_rhs_ptr`.
 function _petsc_rhs!(
     ::PETSc.LibPETSc.CTS,
-    t::Float64,
+    t::Real,
     u_ptr::PETSc.LibPETSc.CVec,
     f_ptr::PETSc.LibPETSc.CVec,
     ctx_ptr::Ptr{Cvoid},
@@ -41,10 +44,16 @@ function _petsc_rhs!(
     end
 end
 
-const _PETSC_RHS_PTR = Ref{Ptr{Cvoid}}(C_NULL)
+# PETSc passes the time argument across the C ABI as `PetscReal`, which is
+# `Float64` or `Float32` depending on how the library was built. `@cfunction`
+# requires literal argument types, so we register (and cache) a separate
+# function pointer per real type, keyed by `PetscReal`. A mismatch between the
+# ABI type and the registered signature would corrupt the call, so the type is
+# selected from `lib.PetscReal` at registration time.
+const _PETSC_RHS_PTR = IdDict{DataType, Ptr{Cvoid}}()
 
-function _petsc_rhs_ptr()
-    _PETSC_RHS_PTR[] == C_NULL && (_PETSC_RHS_PTR[] = @cfunction(
+_petsc_rhs_ptr(::Type{Float64}) = get!(_PETSC_RHS_PTR, Float64) do
+    @cfunction(
         _petsc_rhs!,
         PETSc.LibPETSc.PetscErrorCode,
         (
@@ -54,6 +63,19 @@ function _petsc_rhs_ptr()
             PETSc.LibPETSc.CVec,
             Ptr{Cvoid},
         ),
-    ))
-    return _PETSC_RHS_PTR[]
+    )
+end
+
+_petsc_rhs_ptr(::Type{Float32}) = get!(_PETSC_RHS_PTR, Float32) do
+    @cfunction(
+        _petsc_rhs!,
+        PETSc.LibPETSc.PetscErrorCode,
+        (
+            PETSc.LibPETSc.CTS,
+            Float32,
+            PETSc.LibPETSc.CVec,
+            PETSc.LibPETSc.CVec,
+            Ptr{Cvoid},
+        ),
+    )
 end

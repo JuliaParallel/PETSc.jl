@@ -169,13 +169,78 @@ PETSc.jl to add support).
 
 ## Current limitations
 
-- Only real-valued, in-place `ODEProblem`s (`f!(du, u, p, t)`) are supported.
-- Only forward integration (`tspan[1] < tspan[2]`) is supported.
-- The extension requires a PETSc library built with `PetscReal = Float64`.
+The extension is work in progress. The most important restrictions of the
+current implementation are listed below, grouped by topic.
+
+**Problem types**
+
+- Only `ODEProblem` and `SplitODEProblem` are supported. The split form is
+  only meaningful for [`PETSc.TSARKIMEX`](@ref) (`u' = f1 + f2`, with `f1`
+  the stiff/implicit and `f2` the non-stiff/explicit part).
+- No `DAEProblem`, no mass-matrix `ODEFunction` (`M u' = f`), no
+  `SecondOrderODEProblem`, no `DiscreteProblem`, and no `SDEProblem`.
+- Only in-place problems (`f!(du, u, p, t)`) are supported; out-of-place
+  `f(u, p, t)` is rejected.
+- The state `u` must be a real `AbstractArray` that flattens via
+  `vec` / `reshape`. Scalar-valued `u`, `ArrayPartition`, and nested or
+  otherwise structured states are not supported.
+
+**Numerics and scalar types**
+
+- Only real-valued problems are supported; a complex `u0` is rejected.
+- `PetscReal = Float64` and `PetscReal = Float32` builds are supported (the
+  library is selected from `eltype(u0)`, so a `Float32` `u0` picks the
+  `Float32` PETSc library automatically). Extended-precision builds (e.g.
+  `__float128`) are not supported — no matching C callback is registered.
+  The PETSc library's real type (`PetscReal`) determines the working
+  precision: with a `Float32` `u0` the integration time is carried at
+  `Float32` resolution internally, even if `tspan` is given as `Float64`.
+- Only forward integration (`tspan[1] < tspan[2]`) is supported; backward and
+  zero-length `tspan` are rejected.
+- Only scalar `reltol` / `abstol` are supported; per-component (vector)
+  tolerances are rejected.
+
+**Jacobians (stiff performance)**
+
+- No analytic Jacobian is used. `ODEFunction`'s `jac`, `jac_prototype`, and
+  `sparsity` fields are ignored; stiff solves rely on PETSc's
+  finite-difference `-snes_fd` (or a matrix-free SNES). This is the main
+  performance gap for stiff problems.
 - TSIRK/Gauss methods require an AIJ sparse Jacobian registered via
   `TSSetIJacobian`; the extension does not yet set one up, so those methods
   are not available through the SciML interface.
-- `ContinuousCallback`s and `tstops` are not yet honored (see above).
+
+**Parallelism and hardware**
+
+- Serial only: the solution vector is a `VecSeq` on `PETSC_COMM_SELF`. MPI
+  distributed states — PETSc's central strength — are not exposed through this
+  interface.
+- No GPU support, despite the separate `PETScCUDAExt`; the time stepper
+  allocates host vectors.
+
+**Callbacks and events**
+
+- `DiscreteCallback` and `terminate!` are supported, but `ContinuousCallback`
+  and `VectorContinuousCallback` are rejected (see [Callbacks](@ref)).
+- `tstops` is rejected, so exact landing on user-requested times is not
+  guaranteed.
+
+**Solution output**
+
+- No continuous/dense output: `sol(t)` interpolation is not built. Only the
+  saved `(t, u)` samples are available (`saveat` interpolates at save time via
+  `TSInterpolate`).
+- No `save_idxs`: the full state is always stored.
+- `sol.stats` is only partially populated. `naccept`, `nreject`,
+  `nnonliniter`, and `nf` are mapped from PETSc; the remaining `DEStats`
+  fields (e.g. `nsolve`) stay at the `-1` "unknown" sentinel.
+
+**Integrator interface and sensitivities**
+
+- No `reinit!`, so repeated solves and `EnsembleProblem` parameter sweeps
+  rebuild the PETSc `TS` each time rather than reusing it.
+- No adjoint or forward sensitivity analysis (`sensealg`), even though PETSc
+  provides `TSAdjoint`.
 
 ## Algorithm docstrings
 

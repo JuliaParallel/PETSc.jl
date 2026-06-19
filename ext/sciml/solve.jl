@@ -12,8 +12,8 @@ end
 PETSc.destroy(integ::PETScTSIntegrator) = _destroy_petsc!(integ)
 
 # Pick the integrator's internal time type. We always promote integer `tspan`s
-# to a floating-point type so PETSc-side `Float64` times do not get truncated
-# back into `Int` on assignment.
+# to a floating-point type so PETSc-side (`PetscReal`, i.e. `Float64` or
+# `Float32`) times do not get truncated back into `Int` on assignment.
 _pick_tType(tspan) = float(eltype(tspan))
 
 function _check_tspan(t0, tf)
@@ -257,7 +257,7 @@ end
 function _register_rhs!(lib, ts, prob, u0)
     cb_ctx = RHSCtx(prob.f.f, prob.p, size(u0), lib)
     PETSc.LibPETSc.TSSetRHSFunction(
-        lib, ts, nothing, _petsc_rhs_ptr(), pointer_from_objref(cb_ctx),
+        lib, ts, nothing, _petsc_rhs_ptr(lib.PetscReal), pointer_from_objref(cb_ctx),
     )
     return cb_ctx
 end
@@ -265,7 +265,7 @@ end
 function _register_ifunction!(lib, ts, prob, u0)
     cb_ctx = IFunctionCtx(prob.f.f, prob.p, size(u0), lib)
     PETSc.LibPETSc.TSSetIFunction(
-        lib, ts, nothing, _petsc_ifunction_ptr(), pointer_from_objref(cb_ctx),
+        lib, ts, nothing, _petsc_ifunction_ptr(lib.PetscReal), pointer_from_objref(cb_ctx),
     )
     return cb_ctx
 end
@@ -309,7 +309,7 @@ end
 function _register_rhs_with_f!(lib, ts, f, prob, u0)
     cb_ctx = RHSCtx(f, prob.p, size(u0), lib)
     PETSc.LibPETSc.TSSetRHSFunction(
-        lib, ts, nothing, _petsc_rhs_ptr(), pointer_from_objref(cb_ctx),
+        lib, ts, nothing, _petsc_rhs_ptr(lib.PetscReal), pointer_from_objref(cb_ctx),
     )
     return cb_ctx
 end
@@ -317,7 +317,7 @@ end
 function _register_ifunction_with_f!(lib, ts, f, prob, u0)
     cb_ctx = IFunctionCtx(f, prob.p, size(u0), lib)
     PETSc.LibPETSc.TSSetIFunction(
-        lib, ts, nothing, _petsc_ifunction_ptr(), pointer_from_objref(cb_ctx),
+        lib, ts, nothing, _petsc_ifunction_ptr(lib.PetscReal), pointer_from_objref(cb_ctx),
     )
     return cb_ctx
 end

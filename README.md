@@ -61,7 +61,8 @@ Note that we do not have tests in place for the whole library at this stage. The
 
 ## SciML integration
 
-`PETSc.jl` ships a package extension (`PETScSciMLExt`) that lets you solve in-place `ODEProblem`s with PETSc's TS time integrators through the standard SciML interface. The extension activates automatically when `SciMLBase` is loaded.
+PETSc.jl ships a package extension (`PETScSciMLExt`) that lets you solve in-place `ODEProblem`s with PETSc's TS time integrators through the standard SciML interface.
+The extension activates automatically when SciMLBase.jl is loaded, e.g., when other ODE solver packages from the SciML ecosystem are used.
 
 ```julia
 using PETSc, SciMLBase
@@ -69,7 +70,7 @@ using PETSc, SciMLBase
 f!(du, u, p, t) = (du[1] = -u[1]; nothing)
 prob = ODEProblem(f!, [1.0], (0.0, 1.0))
 
-sol = solve(prob, PETSc.TSRK("3bs"); dt = 0.1)
+sol = solve(prob, PETSc.TSRK("3bs"))
 sol = solve(prob, PETSc.TSImplicit("bdf", ["-snes_fd"]); dt = 1e-3)
 ```
 

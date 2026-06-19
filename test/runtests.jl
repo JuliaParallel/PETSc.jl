@@ -1,23 +1,6 @@
 using Test
-using Pkg
-
-# `Pkg.test("PETSc")` sets up a merged sandbox project that already contains
-# the test-only deps. When this file is `include`d from a session whose
-# active project is the package itself (and so lacks SciMLBase etc.), the
-# block below switches to `test/Project.toml` so those deps are reachable.
-# Note: invoking this file as a standalone script
-# (`julia --project=. test/runtests.jl`) is not a fully supported workflow —
-# the process may exit non-zero during PETSc/MPI teardown after all tests
-# pass. Prefer `Pkg.test("PETSc")` or `include("test/runtests.jl")` from a
-# REPL.
-if !haskey(Pkg.project().dependencies, "SciMLBase")
-    Pkg.activate(@__DIR__)
-end
-
 using MPI: MPI, mpiexec
-# `Pkg` is already imported above; `PETSc_jll` is loaded conditionally below
-# (only when not using a custom PETSc library).
-using PETSc
+using PETSc, Pkg
 
 # Make sure that all dependencies are installed also on a clean system
 Pkg.instantiate()

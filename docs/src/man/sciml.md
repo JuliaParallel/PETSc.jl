@@ -1,37 +1,36 @@
 # SciML Integration (ODE Time Stepping)
 
-`PETSc.jl` ships a package extension (`PETScSciMLExt`) that lets you solve
+PETSc.jl ships a package extension (`PETScSciMLExt`) that lets you solve
 in-place `ODEProblem`s with PETSc's TS time integrators through the standard
 [SciML](https://sciml.ai/) interface.
 
-The extension activates automatically when `SciMLBase` is loaded — no
-`DiffEqBase` is required:
+The extension activates automatically when SciMLBase.jl is loaded, e.g., when other ODE solver packages from the SciML ecosystem are used:
 
-```julia
+```@example sciml
 using PETSc, SciMLBase
 ```
 
-`OrdinaryDiffEq` also works as the trigger since it re-exports `SciMLBase`,
-but the extension itself only depends on `SciMLBase`.
+OrdinaryDiffEq.jl also works as the trigger since it re-exports SciMLBase.jl,
+but the extension itself only depends on SciMLBase.jl.
 
 ## Quick start
 
-```julia
+```@example sciml
 using PETSc, SciMLBase
 
 f!(du, u, p, t) = (du[1] = -u[1]; nothing)
 prob = ODEProblem(f!, [1.0], (0.0, 1.0))
 
-sol = solve(prob, PETSc.TSRK("3bs"); dt = 0.1)                               # explicit RK
-sol = solve(prob, PETSc.TSRosW("ra34pw2", ["-snes_fd"]); dt = 1e-3)          # Rosenbrock-W
-sol = solve(prob, PETSc.TSImplicit("bdf", ["-snes_fd"]); dt = 1e-3)          # BDF / theta / CN / BEuler
+sol = solve(prob, PETSc.TSRK("3bs"))                                     # explicit RK
+sol = solve(prob, PETSc.TSRosW("ra34pw2", ["-snes_fd"]); dt = 1e-3)      # Rosenbrock-W
+sol = solve(prob, PETSc.TSImplicit("bdf", ["-snes_fd"]); dt = 1e-3)      # BDF / theta / CN / BEuler
 
 f1!(du, u, p, t) = (du[1] = -u[1]; nothing)   # stiff / implicit part
 f2!(du, u, p, t) = (du[1] = cos(t); nothing)  # non-stiff / explicit part
 prob_split = SplitODEProblem(f1!, f2!, [1.0], (0.0, 1.0))
-sol = solve(prob_split, PETSc.TSARKIMEX("2e", ["-snes_fd"]); dt = 0.05)      # IMEX
+sol = solve(prob_split, PETSc.TSARKIMEX("2e", ["-snes_fd"]); dt = 0.05)  # IMEX
 
-integrator = init(prob, PETSc.TSRK("5dp"); dt = 0.05)                        # step!/solve! interface
+integrator = init(prob, PETSc.TSRK("5dp"); dt = 0.05)                    # step!/solve! interface
 step!(integrator)
 sol = solve!(integrator)
 ```
@@ -50,9 +49,13 @@ PETSc.TSRK(subtype::String[, petsc_options])
 Calls `TSSetType(ts, "rk")` and `TSRKSetType(ts, subtype)`. Suitable for
 non-stiff ODEs.
 
-Common subtypes: `"3bs"` (Bogacki-Shampine order 3), `"4"` (classical
-4th-order RK), `"5dp"` (Dormand-Prince order 5), `"5bs"`. The full list
-is available via `-ts_rk_type` in PETSc's option database.
+Common subtypes:
+- `"3bs"` (Bogacki-Shampine order 3, equivalent to `BS3()` from OrdinaryDiffEqLowOrderRK.jl)
+- `"4"` (classical 4th-order RK, equivalent to `RK4()` from OrdinaryDiffEqLowOrderRK.jl),
+- `"5dp"` (Dormand-Prince order 5, equivalent to `DP5()` from OrdinaryDiffEqLowOrderRK.jl)
+- `"5bs"` (Bogacki-Shampine order 5,  equivalent to `BS5()` from OrdinaryDiffEqLowOrderRK.jl)
+
+The full list is available via `-ts_rk_type` in PETSc's option database.
 
 ### `PETSc.TSRosW` — Rosenbrock-W (linearly implicit)
 
@@ -117,7 +120,7 @@ rather than an IFunction (e.g. `"euler"`, `"ssp"`).
 Per-solver PETSc command-line options are passed on the algorithm object as a
 `Vector{String}` of raw tokens:
 
-```julia
+```@example sciml
 alg = PETSc.TSRK("3bs", ["-ts_monitor", "-ts_max_steps", "100"])
 alg = PETSc.TSImplicit("bdf", ["-snes_fd", "-ts_bdf_order", "3"])
 ```
@@ -143,9 +146,6 @@ are configured, so they can override any default.
 | `initialize_save`  | Run post-`initialize!` save record (default: `true`)                  |
 | `petsclib`         | Override the PETSc library instance to use                            |
 
-Unrecognized keywords are rejected with a clear `ArgumentError` rather than
-silently dropped.
-
 !!! note "Default tolerances"
     If you pass **neither** `reltol` nor `abstol`, the wrapper leaves PETSc's
     own `TSAdapt` default tolerances in place rather than imposing SciML's
@@ -161,13 +161,11 @@ silently dropped.
 `finalize` hooks are called at the start and end of the solve, matching the
 standard SciML lifecycle.
 
-`ContinuousCallback`s are **not** supported and are rejected with
-`ArgumentError`. Wrap event detection through PETSc's `TSSetEventHandler`
-directly if needed.
+`ContinuousCallback`s are currently **not** supported. Wrap event detection
+through PETSc's `TSSetEventHandler` directly if needed (or prepare a PR to
+PETSc.jl to add support).
 
-`tstops` is also **not** yet supported (rejected with `ArgumentError`) because
-the extension drives `TSStep` directly and cannot currently guarantee exact
-landing on requested times.
+`tstops` is also **not** yet supported.
 
 ## Current limitations
 
@@ -177,7 +175,7 @@ landing on requested times.
 - TSIRK/Gauss methods require an AIJ sparse Jacobian registered via
   `TSSetIJacobian`; the extension does not yet set one up, so those methods
   are not available through the SciML interface.
-- `ContinuousCallback`s and `tstops` are not yet honoured (see above).
+- `ContinuousCallback`s and `tstops` are not yet honored (see above).
 
 ## Algorithm docstrings
 

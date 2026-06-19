@@ -19,8 +19,8 @@ using SciMLBase
     include("test_output.jl")
     include("test_callbacks.jl")
     include("test_integrator.jl")
-    include("test_polish.jl")
-    include("test_review_fixes.jl")
+    include("test_api.jl")
+    include("test_regressions.jl")
 
     # Regression guard: abandoned integrators must not crash at process exit
     # when their GC finalizers fire after `PetscFinalize` (PETSC_ERR_MPI / MPICH

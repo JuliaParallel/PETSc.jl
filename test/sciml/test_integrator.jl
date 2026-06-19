@@ -7,7 +7,7 @@ function decay!(du, u, p, t)
     return nothing
 end
 
-@testset "Step 8 — Integrator interface lifecycle" begin
+@testset "Integrator interface lifecycle" begin
     u0 = [1.0]
     tspan = (0.0, 1.0)
     prob = ODEProblem(decay!, u0, tspan)

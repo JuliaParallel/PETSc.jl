@@ -13,7 +13,7 @@ function decay!(du, u, p, t)
     return nothing
 end
 
-@testset "Step 6 — save_everystep / saveat / save_end" begin
+@testset "save_everystep / saveat / save_end" begin
     u0 = [1.0]
     tspan = (0.0, 1.0)
     prob = ODEProblem(decay!, u0, tspan)

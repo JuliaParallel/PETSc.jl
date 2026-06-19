@@ -33,7 +33,7 @@ function vdp_explicit!(du, u, p, t)
     return nothing
 end
 
-@testset "Step 5 — TSARKIMEX with SplitODEProblem" begin
+@testset "TSARKIMEX with SplitODEProblem" begin
     @testset "Linear IMEX with TSARKIMEX(\"2e\") matches analytical" begin
         u0 = [1.0]
         tspan = (0.0, 1.0)

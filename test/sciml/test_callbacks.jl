@@ -8,7 +8,7 @@ function decay!(du, u, p, t)
     return nothing
 end
 
-@testset "Step 7 — Discrete callbacks and terminate!" begin
+@testset "Discrete callbacks and terminate!" begin
     u0 = [1.0]
     tspan = (0.0, 1.0)
     prob = ODEProblem(decay!, u0, tspan)

@@ -7,7 +7,7 @@ function decay!(du, u, p, t)
     return nothing
 end
 
-@testset "Step 9 — Polish" begin
+@testset "Public API surface" begin
     @testset "Algorithm types are exported from PETSc itself" begin
         # Top-level access: users should be able to write `PETSc.TSRK(...)`
         # without going through `Base.get_extension`.
@@ -46,7 +46,7 @@ end
     @testset "Float32 problem solves on the Float32 library" begin
         # Float32 problems are supported: the Float32 PETSc library is selected
         # automatically from `eltype(u0)`. See `test_float32.jl` for the full
-        # coverage; this is a smoke test that the polish path stays green.
+        # coverage; this is a smoke test that the top-level path works.
         u0 = Float32[1.0]
         tspan = (0f0, 1f0)
         prob = ODEProblem(decay!, u0, tspan)

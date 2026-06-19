@@ -44,12 +44,11 @@ function decay!(du, u, p, t)
     return nothing
 end
 
-@testset "Review-driven fixes" begin
+@testset "SciML wrapper regression tests" begin
     u0 = [1.0]
     tspan = (0.0, 1.0)
     prob = ODEProblem(decay!, u0, tspan)
 
-    # ── Review-1 #6 / Review-2 #11 ───────────────────────────────────────────
     @testset "Backward / zero-length tspan are rejected with clear errors" begin
         prob_bw = ODEProblem(decay!, [exp(-1.0)], (1.0, 0.0))
         prob_zr = ODEProblem(decay!, u0, (0.0, 0.0))
@@ -57,7 +56,6 @@ end
         @test_throws ArgumentError solve(prob_zr, TSRK("3bs"); dt = 0.1)
     end
 
-    # ── Review-2 #3 ─────────────────────────────────────────────────────────
     @testset "Integrator exposes derivative_discontinuity field" begin
         integ = init(prob, TSRK("3bs"); dt = 0.1)
         @test hasfield(typeof(integ), :derivative_discontinuity)
@@ -74,8 +72,8 @@ end
     end
 
     @testset "DiscreteCallback that never fires still completes the solve" begin
-        # Review-2 #3 explicitly asks for this regression: SciMLBase reads
-        # derivative_discontinuity in both the fires-and-doesn't-fire paths.
+        # SciMLBase reads `derivative_discontinuity` in both the fires- and
+        # doesn't-fire paths, so a never-firing callback must still complete.
         cb = DiscreteCallback(
             (u, t, integ) -> false,        # never fires
             integ -> nothing,
@@ -85,7 +83,6 @@ end
         @test sol.t[end] ≈ 1.0
     end
 
-    # ── Review-1 #2 / Review-2 #4 ───────────────────────────────────────────
     @testset "Callback initialize that mutates u is propagated to PETSc" begin
         # If the callback initializer rewrites u0, the first PETSc step must
         # start from the rewritten value — not from the original u0.
@@ -105,7 +102,6 @@ end
         @test sol.u[end][1] ≈ 5 * exp(-1.0) atol = 1e-2
     end
 
-    # ── Review-1 #5 / Review-2 #6 ───────────────────────────────────────────
     @testset "SciMLBase-equivalent finalize! is called at end of solve" begin
         finalized = Ref(false)
         function finalize_cb!(cb, u, t, integ)
@@ -122,7 +118,6 @@ end
         @test finalized[]
     end
 
-    # ── Review-1 #3 / Review-2 #5 ───────────────────────────────────────────
     @testset "reltol / abstol reach PETSc adaptive controller" begin
         # Same problem, two different tolerance settings: at coarse tolerance
         # PETSc takes fewer adaptive steps than at fine tolerance.
@@ -143,7 +138,6 @@ end
         )
     end
 
-    # ── Review-2 #10 ────────────────────────────────────────────────────────
     @testset "Failed __init does not leak PETSc objects (subsequent solves work)" begin
         @test_throws ArgumentError solve(prob, TSImplicit("does-not-exist"); dt = 0.1)
         # The failed solve allocated a TS and a Vec via _common_ts_setup, which
@@ -153,7 +147,6 @@ end
         @test sol.retcode == ReturnCode.Success
     end
 
-    # ── Review-3 #2 ─────────────────────────────────────────────────────────
     @testset "Complex-valued ODEProblem is rejected with a clear error" begin
         prob_c = ODEProblem(decay!, ComplexF64[1 + 0im], tspan)
         err = try
@@ -167,7 +160,6 @@ end
         @test occursin("ComplexF64", err.msg) || occursin("Complex", err.msg)
     end
 
-    # ── Review-3 #3 ─────────────────────────────────────────────────────────
     @testset "Initialize callback that mutates u does not duplicate t0" begin
         function init_cb!(cb, u, t, integ)
             u[1] = 5.0
@@ -192,7 +184,6 @@ end
         @test sol.u[1][1] ≈ 5.0
     end
 
-    # ── Review-4 #1 ─────────────────────────────────────────────────────────
     @testset "Initialize that mutates u without u_modified! still propagates" begin
         # The pessimistic-modified contract: a callback that mutates `u` but
         # forgets to call `SciMLBase.u_modified!(integ, true)` must still
@@ -280,7 +271,6 @@ end
         @test isempty(sol.t) && isempty(sol.u)
     end
 
-    # ── Review-2 #12 ────────────────────────────────────────────────────────
     @testset "AbstractVector petsc_options constructors work for every alg" begin
         # Tuples, SubStrings, generic AbstractVectors should all coerce.
         @test PETSc.TSRK("3bs", ("-ts_max_steps", "100")).petsc_options == ["-ts_max_steps", "100"]
@@ -295,7 +285,6 @@ end
               ["-snes_fd", "-ts_max_steps", "100"]
     end
 
-    # ── Review-5 #1 ─────────────────────────────────────────────────────────
     @testset "Single-sided reltol still reaches PETSc" begin
         # `solve(...; reltol = 1e-10)` (no `abstol`) used to be silently
         # ignored — the wrapper required *both* sides to be set. Now the
@@ -327,7 +316,6 @@ end
         @test length(sol_abs.t) > length(sol_default.t)
     end
 
-    # ── Review-5 #2 ─────────────────────────────────────────────────────────
     @testset "Unsupported solve keywords are rejected with ArgumentError" begin
         # Anything not on the explicit allowlist should fail loudly. Pick a
         # set of common SciML knobs that this extension does NOT honour.
@@ -421,7 +409,6 @@ end
         @test alg.petsc_options == ["-ts_max_steps", "100"]
     end
 
-    # ── Review-6 #1 ─────────────────────────────────────────────────────────
     @testset "Initial dt outside [dtmin, dtmax] is rejected" begin
         # PETSc installs the initial `dt` verbatim and only consults
         # `TSAdaptSetStepLimits` for subsequent step proposals, so the wrapper
@@ -455,7 +442,6 @@ end
         end
     end
 
-    # ── Review-6 #2 ─────────────────────────────────────────────────────────
     @testset "verbose is no longer in the supported-keyword set" begin
         # Previously `verbose = true` was silently accepted but unused; the
         # extension now treats it like any other unsupported keyword.
@@ -469,7 +455,6 @@ end
         @test occursin("verbose", err.msg)
     end
 
-    # ── Review-6 #3 ─────────────────────────────────────────────────────────
     @testset "TSGeneric without explicit = true rejects euler / ssp upfront" begin
         # The Julia-side validator must fire before any PETSc setup runs, so
         # the regular test output stays free of raw PETSc error banners.
@@ -485,7 +470,6 @@ end
         end
     end
 
-    # ── Review-7 #1 ─────────────────────────────────────────────────────────
     @testset "Invalid dt values are rejected with ArgumentError" begin
         # Negative `dt` would otherwise let a forward solve effectively step
         # backward and still report Success.
@@ -498,7 +482,6 @@ end
         @test_throws ArgumentError solve(prob, TSRK("3bs"); dt = NaN)
     end
 
-    # ── Review-7 #2 ─────────────────────────────────────────────────────────
     @testset "Invalid dtmin / dtmax values are rejected with ArgumentError" begin
         # Inverted bounds.
         err = try
@@ -527,7 +510,6 @@ end
         @test sol.retcode == ReturnCode.Success
     end
 
-    # ── Review-7 #3 ─────────────────────────────────────────────────────────
     @testset "Invalid reltol / abstol values are rejected with ArgumentError" begin
         @test_throws ArgumentError solve(
             prob, TSRK("5dp"); dt = 0.1, reltol = -1e-3, abstol = 1e-6,
@@ -550,7 +532,6 @@ end
         @test sol.retcode == ReturnCode.Success
     end
 
-    # ── Review-8 #1 ─────────────────────────────────────────────────────────
     @testset "Invalid scalar saveat values are rejected" begin
         # Previously these silently produced an empty save schedule with a
         # `Success` retcode. Now they fail loudly at the Julia boundary.
@@ -577,7 +558,6 @@ end
         )
     end
 
-    # ── Review-9 #1 ─────────────────────────────────────────────────────────
     @testset "maxiters caps the manual TSStep loop and reports MaxIters" begin
         # Fixed-step integration over [0, 1] with `dt = 0.1` would otherwise
         # run for 10 steps; `maxiters = 1` must stop it after one accepted
@@ -602,7 +582,6 @@ end
         @test sol.stats.naccept == 1
     end
 
-    # ── Review-9 #2 ─────────────────────────────────────────────────────────
     @testset "sol.stats reflects the actual number of steps taken" begin
         sol = solve(
             prob, TSRK("3bs");
@@ -635,7 +614,6 @@ end
         @test sol.stats.nf > 0
     end
 
-    # ── Review-10 #1 ────────────────────────────────────────────────────────
     @testset "maxiters = 0 yields a zero-step solve, not one step" begin
         # The cap is now checked *before* `TSStep`, so `maxiters = 0` must
         # not advance time, regardless of what `dt` would otherwise produce.
@@ -666,7 +644,6 @@ end
         @test sol.stats.naccept == 0
     end
 
-    # ── Review-14 #1 ────────────────────────────────────────────────────────
     @testset "Front-end validation runs before any PETSc TS allocation" begin
         # Both `tstops` and bad `saveat` should now fail before
         # `_common_ts_setup` allocates a `TS` / `Vec` pair, so repeated
@@ -685,7 +662,6 @@ end
         @test sol.retcode == ReturnCode.Success
     end
 
-    # ── Review-14 #2 ────────────────────────────────────────────────────────
     @testset "Callback initialize / finalize hooks fire around the solve" begin
         # The lifecycle calls (`SciMLBase-equivalent initialize!` /
         # `SciMLBase-equivalent finalize!`) are part of the basic discrete-callback
@@ -730,7 +706,6 @@ end
               "`save_final_discretes!`."
     end
 
-    # ── Review-15 #1 ────────────────────────────────────────────────────────
     @testset "initialize_save = false suppresses the post-init save record" begin
         # `initialize_save` is the upstream SciML knob that controls
         # whether the integrator appends a save record immediately after
@@ -770,7 +745,6 @@ end
         @test sol_on.t[1] ≈ 0.0
     end
 
-    # ── Review-16 #1 ────────────────────────────────────────────────────────
     # `save_discretes` was added to SciMLBase's `allowedkeywords` whitelist in
     # 2.120.0. On older stacks the kwarg is rejected by SciMLBase before it
     # reaches the PETSc extension, so we gate the test on that floor.
@@ -794,7 +768,6 @@ end
               "allowedkeywords)."
     end
 
-    # ── Review-13 #1 ────────────────────────────────────────────────────────
     @testset "tstops kwarg is rejected with ArgumentError" begin
         # `tstops` carries a strict SciML contract — the integrator must
         # land on those times so step-end callback logic can see them.
@@ -811,7 +784,6 @@ end
         @test occursin("tstops", err.msg)
     end
 
-    # ── Review-13 #2 ────────────────────────────────────────────────────────
     @testset "Stateful saveat iterators survive validation" begin
         # `Iterators.Stateful` is a one-shot iterator: a previous version
         # of the wrapper validated `saveat` by iterating it once, which
@@ -829,7 +801,6 @@ end
                   (0.25, 0.5, 0.75))
     end
 
-    # ── Review-12 #1 ────────────────────────────────────────────────────────
     @testset "TSARKIMEX with SplitODEProblem populates both nf and nf2" begin
         # The implicit (`f1`) stream should land in `stats.nf`; the
         # explicit (`f2`) stream should land in `stats.nf2`. We pin the
@@ -855,7 +826,6 @@ end
         @test f1_calls[] != f2_calls[]
     end
 
-    # ── Review-11 #1 ────────────────────────────────────────────────────────
     @testset "Negative maxiters is rejected with ArgumentError" begin
         # Without explicit validation, a negative SciML `maxiters` would
         # turn the manual `TSStep` loop into a zero-step `MaxIters` solve —
@@ -871,13 +841,12 @@ end
         @test err isa ArgumentError
         @test occursin("maxiters", err.msg)
 
-        # `maxiters = 0` remains a valid zero-step solve (Review-10).
+        # `maxiters = 0` remains a valid zero-step solve.
         sol = solve(prob, TSRK("3bs"); dt = 0.1, adaptive = false, maxiters = 0)
         @test sol.retcode == ReturnCode.MaxIters
         @test sol.stats.naccept == 0
     end
 
-    # ── Review-10 #2 ────────────────────────────────────────────────────────
     @testset "Unsupported DEStats fields stay at the SciML \"unknown\" sentinel" begin
         sol = solve(prob, TSRK("3bs"); dt = 0.1, adaptive = false)
         # We populate `naccept`, `nreject`, `nnonliniter`, and `nf`. Every
@@ -893,7 +862,6 @@ end
         @test sol.stats.njacs == -1
     end
 
-    # ── Review-8 #2 ─────────────────────────────────────────────────────────
     @testset "dtmax = Inf is accepted and behaves like an omitted dtmax" begin
         # `Inf` is the natural SciML spelling of "no upper cap", and the
         # wrapper already uses `Inf` as the default internally. Reject the

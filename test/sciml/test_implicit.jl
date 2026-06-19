@@ -19,7 +19,7 @@ function vdp!(du, u, p, t)
     return nothing
 end
 
-@testset "Step 4 — TSImplicit fully implicit methods" begin
+@testset "TSImplicit fully implicit methods" begin
     @testset "TSImplicit(\"beuler\") on ex51" begin
         u0 = [0.0, 1.0]
         tspan = (0.0, 1.0)

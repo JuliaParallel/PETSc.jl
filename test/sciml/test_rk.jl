@@ -14,7 +14,7 @@ end
 
 ex51_exact(t) = [sin(t), 2 * atan(exp(t) * tan(0.5))]
 
-@testset "Step 2 — TSRK explicit Runge-Kutta" begin
+@testset "TSRK explicit Runge-Kutta" begin
     @testset "ex51 with TSRK(\"3bs\") matches analytical solution" begin
         u0 = [0.0, 1.0]
         tspan = (0.0, 1.0)

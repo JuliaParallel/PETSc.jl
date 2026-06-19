@@ -19,7 +19,7 @@ function vdp!(du, u, p, t)
     return nothing
 end
 
-@testset "Step 3 — TSRosW Rosenbrock-W" begin
+@testset "TSRosW Rosenbrock-W" begin
     @testset "ex51 with TSRosW(\"ra34pw2\") matches analytical solution" begin
         u0 = [0.0, 1.0]
         tspan = (0.0, 1.0)

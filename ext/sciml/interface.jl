@@ -63,8 +63,7 @@ function SciMLBase.terminate!(
     return nothing
 end
 
-# Local re-implementations of the DiffEqBase callback lifecycle helpers.
-# All dependencies are in SciMLBase, so no DiffEqBase dependency is needed.
+# Local re-implementations of the DiffEqBase.jl callback lifecycle helpers.
 _initialize_callbacks!(cb::SciMLBase.CallbackSet{Tuple{}, Tuple{}}, u, t, integ) = false
 function _initialize_callbacks!(cb::SciMLBase.CallbackSet, u, t, integ)
     _initialize_callbacks!(u, t, integ, false,
@@ -100,7 +99,7 @@ end
 # Local re-implementation of the callback dispatch chain that DiffEqBase
 # previously provided. All dependencies (condition, affect!, save_positions,
 # initializealg, reeval_internals_due_to_modification!, savevalues!) are part
-# of SciMLBase, so no DiffEqBase dependency is needed.
+# of SciMLBase.jl.
 @inline function _apply_discrete_callback!(
     integrator::PETScTSIntegrator, callback::SciMLBase.DiscreteCallback,
 )

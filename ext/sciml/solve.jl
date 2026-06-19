@@ -45,9 +45,15 @@ const _SCIML_DEFAULT_ABSTOL = 1e-6
 # library, allocate the solution vector, set time bounds and a maybe-supplied
 # initial step. Algorithm-specific TS type, subtype, and callback registration
 # happen in `_setup_petsc_algorithm!` afterwards.
+#
+# `comm === nothing` is the serial default: a `VecSeq` on `PETSC_COMM_SELF`,
+# where `prob.u0` is the full state. When an MPI communicator is supplied, the
+# solution vector is a distributed `VecCreateMPI` whose *local* size is
+# `length(prob.u0)` (so each rank passes its own block) and whose global size
+# is `PETSC_DECIDE`d by PETSc.
 function _common_ts_setup(
     prob, dt, maxiters, petsclib, reltol, abstol,
-    adaptive, dtmin, dtmax,
+    adaptive, dtmin, dtmax, comm,
 )
     _check_isinplace(prob)
     lib = _pick_petsclib(prob, petsclib)
@@ -61,8 +67,15 @@ function _common_ts_setup(
     _check_tspan(t0, tf)
     tdir = tType(sign(tf - t0))
 
-    ts = PETSc.LibPETSc.TSCreate(lib, PETSc.LibPETSc.PETSC_COMM_SELF)
-    u_v = PETSc.VecSeq(lib, length(u0))
+    ts = PETSc.LibPETSc.TSCreate(
+        lib, comm === nothing ? PETSc.LibPETSc.PETSC_COMM_SELF : comm,
+    )
+    u_v = comm === nothing ?
+        PETSc.VecSeq(lib, length(u0)) :
+        PETSc.LibPETSc.VecCreateMPI(
+            lib, comm, lib.PetscInt(length(u0)),
+            lib.PetscInt(PETSc.LibPETSc.PETSC_DECIDE),
+        )
     try
         PETSc.withlocalarray!(u_v; read = false, write = true) do arr
             copyto!(arr, vec(u0))
@@ -163,7 +176,7 @@ end
 # negative cap would otherwise immediately exhaust and turn into a
 # zero-step `MaxIters` solve, which mismatches PETSc's own
 # `-ts_max_steps -1 = unlimited` interpretation. Keep `maxiters = 0`
-# valid (it is the documented "zero-step solve" case from Review-10).
+# valid (it is the documented "zero-step solve" case).
 function _validate_maxiters(maxiters)
     maxiters < 0 && throw(ArgumentError(
         "PETSc.jl SciML extension: `maxiters = $(maxiters)` must be " *
@@ -269,6 +282,16 @@ function _register_ifunction!(lib, ts, prob, u0)
     )
     return cb_ctx
 end
+
+# Whether an algorithm drives PETSc through the *explicit* RHS calling
+# convention (`TSSetRHSFunction`) only — i.e. it needs no implicit SNES /
+# preconditioner. MPI support (the `comm` keyword) is currently gated to these
+# families: explicit TS machinery is collective-safe over any communicator
+# without an assembled parallel Jacobian, which the implicit / IMEX /
+# Rosenbrock paths would additionally require.
+_is_explicit_algorithm(::TSRK) = true
+_is_explicit_algorithm(alg::TSGeneric) = alg.explicit
+_is_explicit_algorithm(::PETScTSAlgorithm) = false
 
 # Per-algorithm hooks. Each returns the callback context object that needs to
 # stay live for the lifetime of the integrator.
@@ -435,6 +458,7 @@ function SciMLBase.__init(
     adaptive::Bool = true,
     maxiters::Integer = Int(1e5),
     petsclib = nothing,
+    comm = nothing,
     kwargs...,
 )
     # Pure Julia validation that does not need PETSc state runs first, so
@@ -444,6 +468,23 @@ function SciMLBase.__init(
     # has no finalizer of its own).
     _reject_unsupported_kwargs(kwargs)
     _validate_maxiters(maxiters)
+
+    # MPI is currently limited to explicit time integration (see
+    # `_is_explicit_algorithm`). Implicit / IMEX / Rosenbrock families would
+    # additionally need a parallel SNES / preconditioner over the distributed
+    # Jacobian, which this extension does not yet set up, so reject `comm` for
+    # them up front rather than silently running a broken parallel solve.
+    if comm !== nothing && !_is_explicit_algorithm(alg)
+        throw(ArgumentError(
+            "PETSc.jl SciML extension: MPI (the `comm` keyword) is currently " *
+            "only supported for explicit time integration methods — `TSRK` or " *
+            "`TSGeneric(...; explicit = true)`. Got $(typeof(alg)). Run " *
+            "implicit / IMEX / Rosenbrock algorithms on a single process " *
+            "(omit `comm`), or open an issue if you need distributed implicit " *
+            "solves.",
+        ))
+    end
+
     cb_set = SciMLBase.CallbackSet(callback)
     if !isempty(cb_set.continuous_callbacks)
         throw(ArgumentError(
@@ -489,7 +530,7 @@ function SciMLBase.__init(
 
     (lib, ts, u_v, u0, tType, t0, tdir) = _common_ts_setup(
         prob, dt, maxiters, petsclib, reltol, abstol,
-        adaptive, dtmin, dtmax,
+        adaptive, dtmin, dtmax, comm,
     )
 
     try

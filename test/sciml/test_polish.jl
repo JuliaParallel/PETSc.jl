@@ -43,20 +43,16 @@ end
         @test sol.u[end][1] ≈ exp(-1.0) atol = 5e-2
     end
 
-    @testset "Float32 problem raises a clear ArgumentError" begin
+    @testset "Float32 problem solves on the Float32 library" begin
+        # Float32 problems are supported: the Float32 PETSc library is selected
+        # automatically from `eltype(u0)`. See `test_float32.jl` for the full
+        # coverage; this is a smoke test that the polish path stays green.
         u0 = Float32[1.0]
         tspan = (0f0, 1f0)
         prob = ODEProblem(decay!, u0, tspan)
-        @test_throws ArgumentError solve(prob, PETSc.TSRK("3bs"); dt = 0.1f0)
-        # Exception text should call out the constraint so the user knows what
-        # to pass.
-        err = try
-            solve(prob, PETSc.TSRK("3bs"); dt = 0.1f0)
-            nothing
-        catch e
-            e
-        end
-        @test occursin("PetscReal", err.msg)
-        @test occursin("Float64", err.msg)
+        sol = solve(prob, PETSc.TSRK("3bs"); dt = 0.1f0)
+        @test sol.retcode == ReturnCode.Success
+        @test eltype(sol.u[end]) === Float32
+        @test sol.u[end][1] ≈ exp(-1f0) atol = 1f-3
     end
 end

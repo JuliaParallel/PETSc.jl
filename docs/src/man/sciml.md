@@ -145,6 +145,7 @@ are configured, so they can override any default.
 | `callback`         | `DiscreteCallback` or `CallbackSet` of discrete callbacks             |
 | `initialize_save`  | Run post-`initialize!` save record (default: `true`)                  |
 | `petsclib`         | Override the PETSc library instance to use                            |
+| `comm`             | MPI communicator for distributed explicit integration (see [Parallel (MPI) integration](@ref)) |
 
 !!! note "Default tolerances"
     If you pass **neither** `reltol` nor `abstol`, the wrapper leaves PETSc's
@@ -166,6 +167,52 @@ through PETSc's `TSSetEventHandler` directly if needed (or prepare a PR to
 PETSc.jl to add support).
 
 `tstops` is also **not** yet supported.
+
+## Parallel (MPI) integration
+
+Distributed integration is supported for **explicit** methods — `TSRK`, and
+`TSGeneric(...; explicit = true)` — by passing an MPI communicator via the
+`comm` keyword. The solution vector then becomes a distributed PETSc vector
+(`VecCreateMPI`) instead of a serial one.
+
+The programming model is SPMD ("single program, multiple data"): run your
+script under `mpiexec -n N julia ...`, and on **each rank** pass *that rank's
+local block* of the global state as `u0`. The local size is taken from
+`length(u0)`; PETSc decides the global layout. The right-hand-side callback
+receives the local block, and each rank's `sol` holds only its local part of
+the trajectory.
+
+```julia
+using PETSc, SciMLBase, MPI
+MPI.Initialized() || MPI.Init()
+comm = MPI.COMM_WORLD
+
+# Each rank owns `nloc` components of the global state.
+nloc = 100
+u0 = fill(1.0, nloc)                      # this rank's local block
+decay!(du, u, p, t) = (@. du = -u; nothing)
+prob = ODEProblem(decay!, u0, (0.0, 1.0))
+
+sol = solve(prob, PETSc.TSRK("5dp"); dt = 0.05, comm = comm)
+# sol.u[end] is this rank's local block of the final state.
+```
+
+!!! warning
+    The right-hand side must be expressible **rank-locally**: `du` on a rank
+    may depend only on that rank's `u` (e.g. decoupled ODEs, reaction terms,
+    or a problem where you perform any halo exchange yourself inside `f!`,
+    using data stashed in `p`). PDE semidiscretizations that need neighbour
+    (ghost) values are not handled automatically — a `DM`-aware layer
+    (`DMGlobalToLocal` ghosting via `TSSetDM`) is not implemented yet.
+
+    Error handling is **collective**: PETSc's `TSStep` is a collective call, so
+    a user `f!` that throws on only some ranks can desynchronize the run. Make
+    failure conditions uniform across ranks.
+
+Implicit, IMEX, and Rosenbrock algorithms reject `comm` with an error: they
+would additionally need a parallel `SNES`/preconditioner over a distributed
+Jacobian, which this extension does not yet set up. Run them on a single
+process (omit `comm`).
 
 ## Current limitations
 
@@ -212,9 +259,12 @@ current implementation are listed below, grouped by topic.
 
 **Parallelism and hardware**
 
-- Serial only: the solution vector is a `VecSeq` on `PETSC_COMM_SELF`. MPI
-  distributed states — PETSc's central strength — are not exposed through this
-  interface.
+- MPI is supported only for **explicit** methods (`TSRK`,
+  `TSGeneric(...; explicit = true)`) via the `comm` keyword, and only for
+  rank-local right-hand sides — see [Parallel (MPI) integration](@ref).
+  Without `comm` the solution vector is a serial `VecSeq` on
+  `PETSC_COMM_SELF`. Distributed implicit / IMEX / Rosenbrock solves, and
+  automatic ghost-exchange for PDE stencils, are not yet exposed.
 - No GPU support, despite the separate `PETScCUDAExt`; the time stepper
   allocates host vectors.
 

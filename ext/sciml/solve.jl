@@ -1,10 +1,23 @@
 function _destroy_petsc!(integ::PETScTSIntegrator)
-    if integ.ts.ptr != C_NULL
-        PETSc.LibPETSc.TSDestroy(integ.petsclib, integ.ts)
+    # This runs both as explicit cleanup (from `solve!` / `destroy`) and as a
+    # GC finalizer. A finalizer can fire on any thread and at any time —
+    # including at process exit *after* the `atexit` `PetscFinalize` /
+    # `MPI_Finalize` hooks have run. PETSc's `TSDestroy` / `VecDestroy` make
+    # MPI calls, so calling them post-finalize fails with `PETSC_ERR_MPI` (98)
+    # and, under MPICH, aborts the process with a nonzero exit. Guard on
+    # `finalized` exactly like the high-level `destroy(::AbstractPetscDM)` so
+    # cleanup becomes a no-op once PETSc is gone — `PetscFinalize` has already
+    # reclaimed the objects. We still drop our own handles for idempotency.
+    if !PETSc.finalized(integ.petsclib)
+        if integ.ts.ptr != C_NULL
+            PETSc.LibPETSc.TSDestroy(integ.petsclib, integ.ts)
+        end
+        if integ.u_petsc.ptr != C_NULL
+            PETSc.destroy(integ.u_petsc)
+        end
     end
-    if integ.u_petsc.ptr != C_NULL
-        PETSc.destroy(integ.u_petsc)
-    end
+    integ.ts.ptr = C_NULL
+    integ.u_petsc.ptr = C_NULL
     return nothing
 end
 
@@ -238,7 +251,7 @@ end
 
 function _make_integrator(
     alg, u0, tType, t0, tdir, dt, prob,
-    opts, sol, lib, ts, u_v, cb_ctx,
+    opts, sol, lib, ts, u_v, cb_ctx, comm,
 )
     integ = PETScTSIntegrator(
         alg,
@@ -263,7 +276,13 @@ function _make_integrator(
         false,
         SciMLBase.ReturnCode.Default,
     )
-    finalizer(_destroy_petsc!, integ)
+    # Only register a GC finalizer for serial integrators. For an MPI
+    # integrator (`comm` given) `TSDestroy` / `VecDestroy` are *collective*;
+    # running them from a GC finalizer — which fires asynchronously and on an
+    # arbitrary thread/rank ordering — risks an MPI deadlock or abort. Parallel
+    # cleanup must therefore be explicit (via `solve!` or `destroy`), matching
+    # the serial-only finalizer policy of `PETSc.VecPtr`.
+    comm === nothing && finalizer(_destroy_petsc!, integ)
     return integ
 end
 
@@ -558,7 +577,7 @@ function SciMLBase.__init(
 
         integ = _make_integrator(
             alg, u0, tType, t0, tdir, dt, prob,
-            opts, sol, lib, ts, u_v, cb_ctx,
+            opts, sol, lib, ts, u_v, cb_ctx, comm,
         )
 
         initialize_callbacks!(integ, cb_set, initialize_save)

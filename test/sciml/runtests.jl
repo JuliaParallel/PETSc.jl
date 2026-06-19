@@ -22,6 +22,22 @@ using SciMLBase
     include("test_polish.jl")
     include("test_review_fixes.jl")
 
+    # Regression guard: abandoned integrators must not crash at process exit
+    # when their GC finalizers fire after `PetscFinalize` (PETSC_ERR_MPI / MPICH
+    # abort). Run in a subprocess and assert a clean exit with no finalizer
+    # banners. Uses the active project so the child inherits SciMLBase.
+    @testset "finalizer safety at process exit" begin
+        script = joinpath(@__DIR__, "finalizer_safety.jl")
+        cmd = `$(Base.julia_cmd()) --project=$(Base.active_project()) $script`
+        out = IOBuffer()
+        ok = success(pipeline(cmd; stdout = out, stderr = out))
+        log = String(take!(out))
+        @test ok
+        @test occursin("finalizer_safety: reached clean exit", log)
+        @test !occursin("error in running finalizer", log)
+        @test !occursin("after finalizing", log)
+    end
+
     # Distributed (MPI) explicit integration runs in a separate `mpiexec`
     # subprocess. Launch it with the *currently active* project so the child
     # inherits SciMLBase (a test-only dependency not present in PETSc's main

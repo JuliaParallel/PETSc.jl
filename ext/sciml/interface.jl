@@ -24,7 +24,14 @@ function SciMLBase.savevalues!(integ::PETScTSIntegrator, force::Bool = false)
             continue
         end
         u_interp = similar(integ.u)
-        v_interp = PETSc.VecSeq(integ.petsclib, length(integ.u))
+        # `TSInterpolate` writes into a Vec that must match the TS solution's
+        # layout. Duplicate the solution vector rather than allocating a
+        # `VecSeq`: for a serial integrator both are equivalent, but for an MPI
+        # integrator the solution is distributed and a serial vector of the
+        # *local* length would mismatch the TS (size error). `VecDuplicate`
+        # preserves the serial-or-distributed layout; `withlocalarray!` below
+        # then yields this rank's local block to copy into `u_interp`.
+        v_interp = PETSc.LibPETSc.VecDuplicate(integ.petsclib, integ.u_petsc)
         try
             PETSc.LibPETSc.TSInterpolate(
                 integ.petsclib, integ.ts,
@@ -110,6 +117,12 @@ end
         @inbounds if callback.save_positions[1]
             savedexactly || SciMLBase.savevalues!(integrator, true)
         end
+        # Pessimistically assume the affect! will mutate `u`, mirroring the
+        # OrdinaryDiffEq contract: a callback that does *not* touch `u` is
+        # expected to call `u_modified!(integrator, false)` itself. If the flag
+        # is still set afterwards we conservatively resync the PETSc Vec (via
+        # `reeval_internals_due_to_modification!` below). Same convention as
+        # `initialize_callbacks!` in solve.jl.
         integrator.u_modified = true
         callback.affect!(integrator)
         if integrator.u_modified

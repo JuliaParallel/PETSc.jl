@@ -47,6 +47,24 @@ const mpirank = MPI.Comm_rank(comm)
     @test length(sol.u[end]) == nloc
     uref = u0 .* exp.(-k .* tspan[2])
     @test sol.u[end] ≈ uref atol = 1e-4
+
+    # `saveat` exercises the `TSInterpolate` path, which must duplicate the
+    # *distributed* solution vector (a serial `VecSeq` of the local length would
+    # mismatch the TS). Save times that fall strictly between steps so the
+    # interpolation branch — not just the step-endpoint save — is hit.
+    saveat = [0.1, 0.3, 0.7]
+    sol_sa = solve(prob, TSRK("5dp"); dt = 0.05, comm = comm, saveat = saveat)
+    @test sol_sa.retcode == ReturnCode.Success
+    for (i, ts) in enumerate(saveat)
+        idx = findfirst(t -> isapprox(t, ts; atol = 1e-10), sol_sa.t)
+        @test idx !== nothing
+        # Each saved sample is this rank's local block, interpolated correctly.
+        # `saveat` values come from `TSInterpolate` (dense output), which is a
+        # touch less accurate than the step-endpoint solution, so allow a looser
+        # tolerance than the `sol.u[end]` check above.
+        @test length(sol_sa.u[idx]) == nloc
+        @test sol_sa.u[idx] ≈ u0 .* exp.(-k .* ts) atol = 1e-3
+    end
 end
 
 # A failing top-level @testset throws at exit, so `success(cmd)` in the parent

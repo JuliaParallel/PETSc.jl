@@ -48,21 +48,39 @@ end
     end
 end
 
+# Translate PETSc's `TSConvergedReason` into the SciML `ReturnCode` the solution
+# is tagged with. The mapping is not one-to-one, so the non-obvious cases are
+# spelled out below.
 function _petsc_retcode(petsclib, ts)
     reason = _ts_converged_reason(petsclib, ts)
     if reason == PETSc.LibPETSc.TS_CONVERGED_TIME ||
        reason == PETSc.LibPETSc.TS_CONVERGED_USER ||
        reason == PETSc.LibPETSc.TS_CONVERGED_EVENT
+        # Reached the final time, or a user/event callback asked to stop on
+        # purpose — all of these are a successful, intended termination.
         return SciMLBase.ReturnCode.Success
     elseif reason == PETSc.LibPETSc.TS_CONVERGED_ITS
+        # Hit PETSc's own max-step limit before reaching `tf`. SciML's closest
+        # equivalent is `MaxIters` (the step budget, not the solution, ran out).
         return SciMLBase.ReturnCode.MaxIters
     elseif reason == PETSc.LibPETSc.TS_CONVERGED_ITERATING
+        # Still "iterating" means the integrator stopped while mid-integration
+        # without reaching `tf` and without any converged/diverged verdict —
+        # i.e. it never actually finished, so report a generic failure.
         return SciMLBase.ReturnCode.Failure
     elseif reason == PETSc.LibPETSc.TS_DIVERGED_NONLINEAR_SOLVE
+        # The implicit (SNES) solve diverged: this is a solver failure, not a
+        # statement about the ODE's dynamics, so map to the generic `Failure`.
         return SciMLBase.ReturnCode.Failure
     elseif reason == PETSc.LibPETSc.TS_DIVERGED_STEP_REJECTED
+        # The adaptive controller kept rejecting steps (it could not satisfy the
+        # error tolerance even at the minimum step). That is the classic
+        # signature of a stiff/blowing-up trajectory, which SciML spells
+        # `Unstable` rather than a bare `Failure`.
         return SciMLBase.ReturnCode.Unstable
     else
+        # Any other (or future) diverged reason: be conservative and report a
+        # generic failure rather than silently claiming success.
         return SciMLBase.ReturnCode.Failure
     end
 end

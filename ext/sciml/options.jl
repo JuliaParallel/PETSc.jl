@@ -1,3 +1,9 @@
+# Mirrors the subset of OrdinaryDiffEq's `DEOptions` fields that downstream
+# SciML packages commonly read off `integrator.opts` (e.g. `adaptive`,
+# `reltol`, `abstol`). PETSc itself owns these once they are applied at setup —
+# our own step loop only reads back `maxiters`, `tstops`, and the `save_*`
+# fields — but they are retained here so generic SciML code that introspects
+# `integrator.opts.adaptive` / `.reltol` / `.abstol` keeps working.
 mutable struct DEOptions{SavT, TstopsT, CType, reltolType, abstolType}
     saveat::SavT
     tstops::TstopsT
@@ -7,6 +13,7 @@ mutable struct DEOptions{SavT, TstopsT, CType, reltolType, abstolType}
     save_end::Bool
     save_discretes::Bool
     callback::CType
+    adaptive::Bool
     reltol::reltolType
     abstol::abstolType
     maxiters::Int
@@ -89,6 +96,7 @@ function _build_opts(
     save_end::Bool,
     save_discretes::Bool,
     callback,
+    adaptive::Bool,
     reltol,
     abstol,
     maxiters::Integer,
@@ -124,6 +132,7 @@ function _build_opts(
         save_end,
         save_discretes,
         callback,
+        adaptive,
         reltol,
         abstol,
         Int(maxiters),

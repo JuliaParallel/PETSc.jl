@@ -92,7 +92,7 @@ end
             save_everystep = false, save_on = true,
             save_start = true, save_end = true, save_discretes = true,
             callback = nothing,
-            reltol = 1e-3, abstol = 1e-6, maxiters = 1000,
+            adaptive = true, reltol = 1e-3, abstol = 1e-6, maxiters = 1000,
         )
         ordered = Float64[]
         while !isempty(opts.saveat)

@@ -538,7 +538,7 @@ function SciMLBase.__init(
             tType, saveat_materialized, tstops_materialized, tdir, prob.tspan;
             save_everystep = _save_everystep, save_on, save_start, save_end, save_discretes,
             callback = cb_set,
-            reltol, abstol, maxiters,
+            adaptive, reltol, abstol, maxiters,
         )
 
         # `DEStats()` defaults every counter to `-1`, which SciML reads as

@@ -27,6 +27,25 @@ end
         @test sol_steps.u == sol_oneshot.u
     end
 
+    @testset "opts mirrors SciML control knobs for downstream introspection" begin
+        # Generic SciML code reads `integrator.opts.adaptive` / `.reltol` /
+        # `.abstol`; make sure the wrapper populates them from the kwargs.
+        integ = init(prob, TSRK("3bs"); dt = 0.1,
+                     adaptive = false, reltol = 1e-8, abstol = 1e-10)
+        @test integ.opts.adaptive == false
+        @test integ.opts.reltol == 1e-8
+        @test integ.opts.abstol == 1e-10
+        PETSc.destroy(integ)
+
+        # Defaults: adaptive on, tolerances left as `nothing` (PETSc's own
+        # defaults are used — see `_apply_tolerances!`).
+        integ2 = init(prob, TSRK("3bs"); dt = 0.1)
+        @test integ2.opts.adaptive == true
+        @test integ2.opts.reltol === nothing
+        @test integ2.opts.abstol === nothing
+        PETSc.destroy(integ2)
+    end
+
     @testset "manual step! loop matches solve!" begin
         integ_a = init(prob, TSRK("3bs"); dt = 0.1)
         integ_b = init(prob, TSRK("3bs"); dt = 0.1)

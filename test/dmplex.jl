@@ -31,7 +31,7 @@ const _TC = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
 # Intel Mac (x86_64) crashes inside DMPlex + PetscFE operations with the
 # current PETSc_jll binary.  Guard the PETSc-dependent testset; the pure-Julia
 # vtk_merge_tensor! tests below are unaffected and still run.
-const isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
+isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
 
 # ── Minimal FEM callbacks for testing ────────────────────────────────────────
 # Scalar Poisson on the unit square: u = x₁ + x₂ (linear, harmonic).

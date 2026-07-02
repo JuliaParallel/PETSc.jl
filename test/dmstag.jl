@@ -311,5 +311,6 @@ end
                 PETSc.destroy(dmnew)
             end
         end
+        PETSc.finalize(petsclib)
     end
 end

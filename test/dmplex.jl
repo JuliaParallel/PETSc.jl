@@ -28,6 +28,11 @@ const PetscReal   = Float64
 # Serial-safe communicator (shared across all lib loops)
 const _TC = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
 
+# Intel Mac (x86_64) crashes inside DMPlex + PetscFE operations with the
+# current PETSc_jll binary.  Guard the PETSc-dependent testset; the pure-Julia
+# vtk_merge_tensor! tests below are unaffected and still run.
+const _skip_dmplex_on_intelmac = Sys.isapple() && Sys.ARCH == :x86_64
+
 # ── Minimal FEM callbacks for testing ────────────────────────────────────────
 # Scalar Poisson on the unit square: u = x₁ + x₂ (linear, harmonic).
 
@@ -74,6 +79,10 @@ const _dm_zero_ptr = PETSc.@petsc_simple_fn(_dm_zero)
 
 # ─────────────────────────────────────────────────────────────────────────────
 @testset "DMPlex" begin
+
+if _skip_dmplex_on_intelmac
+    @test_skip "DMPlex+PETSc tests skipped on macOS Intel (known SIGSEGV in PETSc_jll)"
+else
 
 for petsclib in PETSc.petsclibs
     PETSc.initialize(petsclib)
@@ -523,6 +532,8 @@ for petsclib in PETSc.petsclibs
 
     end # @testset "$(PetscScalar_t)/$(PetscInt_t)"
 end # for petsclib
+
+end # if !_skip_dmplex_on_intelmac
 
 end # @testset "DMPlex"
 

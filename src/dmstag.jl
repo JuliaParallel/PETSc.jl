@@ -263,20 +263,12 @@ $(_doc_external("DMDA/DMStagGetCorners"))
 """
 function getcorners_dmstag(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     @assert PETSc.gettype(dm) == "stag" "DM must be of type DMStag"
-    PetscInt = PetscLib.PetscInt
-    x,y,z,m,n,p,nExtrax,nExtray,nExtraz = LibPETSc.DMStagGetCorners(PetscLib, dm)
-
-    corners = [x,y,z]
-    local_size = [m,n,p]
-    nextra = [nExtrax,nExtray,nExtraz]
-
-    corners .+= 1
-    upper = corners .+ local_size .- PetscInt(1)
+    x, y, z, m, n, p, nExtrax, nExtray, nExtraz = LibPETSc.DMStagGetCorners(PetscLib, dm)
     return (
-        lower = CartesianIndex(corners...),
-        upper = CartesianIndex(upper...),
-        size = (local_size...,),
-        nextra = (nextra...,)
+        lower  = CartesianIndex(x + 1, y + 1, z + 1),
+        upper  = CartesianIndex(x + m, y + n, z + p),
+        size   = (m, n, p),
+        nextra = (nExtrax, nExtray, nExtraz),
     )
 end
 
@@ -293,18 +285,11 @@ $(_doc_external("DMDA/DMStagGetCorners"))
 """
 function getghostcorners_dmstag(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     @assert PETSc.gettype(dm) == "stag" "DM must be of type DMStag"
-    PetscInt = PetscLib.PetscInt
-    x,y,z,m,n,p = LibPETSc.DMStagGetGhostCorners(PetscLib, dm)
-
-    corners = [x,y,z]
-    local_size = [m,n,p]
-
-    corners .+= 1
-    upper = corners .+ local_size .- PetscInt(1)
+    x, y, z, m, n, p = LibPETSc.DMStagGetGhostCorners(PetscLib, dm)
     return (
-        lower = CartesianIndex(corners...),
-        upper = CartesianIndex(upper...),
-        size = (local_size...,),
+        lower = CartesianIndex(x + 1, y + 1, z + 1),
+        upper = CartesianIndex(x + m, y + n, z + p),
+        size  = (m, n, p),
     )
 end
 
@@ -331,29 +316,27 @@ function DMStagGetIndices end
 function DMStagGetIndices(dm::PetscDM{PetscLib}) where {PetscLib}
     @assert PETSc.gettype(dm) == "stag" "DM must be of type DMStag" 
     # In Julia, indices in arrays start @ 1, whereas they can go negative in C
-    gc              =   PETSc.getghostcorners_dmstag(dm);  
-    c               =   PETSc.getcorners_dmstag(dm); 
+    x, y, z, m, n, p, nx, ny, nz = LibPETSc.DMStagGetCorners(PetscLib, dm)
+    gx, gy, gz, _, _, _ = LibPETSc.DMStagGetGhostCorners(PetscLib, dm)
 
-    # If we have ghosted boundaries, we need to shift the start/end points, as ghosted 
-    # boundaries are treated in PETSc with negative numbers, whereas in Julia everything is 1-based
+    c  = CartesianIndex(x + 1, y + 1, z + 1)
+    gc = CartesianIndex(gx + 1, gy + 1, gz + 1)
 
-    # NOTE: we have not yet tested this in parallel
-    Diff            =   c.lower - gc.lower;
-    Start           =   c.lower + Diff;
-    End             =   Start + CartesianIndex(c.size) -  CartesianIndex(1,1,1) ;
-    Nextra          =   c.nextra
+    lo = c + (c - gc)
+    hi = lo + CartesianIndex(m - 1, n - 1, p - 1)
 
-    # Note that we add the shift for julia/petsc consistency
-    shift = 0;
-    center = (  x= Start[1]:End[1],
-                y= Start[2]:End[2],  
-                z= Start[3]:End[3] )
-
-    vertex = (  x= Start[1]:End[1]+Nextra[1] ,
-                y= Start[2]:End[2]+Nextra[2] ,  
-                z= Start[3]:End[3]+Nextra[3] )
-
-    return (center=center, vertex=vertex)
+    return (
+        center = (
+            x = lo[1]:hi[1],
+            y = lo[2]:hi[2],
+            z = lo[3]:hi[3],
+        ),
+        vertex = (
+            x = lo[1]:(hi[1] + nx),
+            y = lo[2]:(hi[2] + ny),
+            z = lo[3]:(hi[3] + nz),
+        ),
+    )
             
 end
 

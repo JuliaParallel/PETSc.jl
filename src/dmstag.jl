@@ -295,10 +295,12 @@ end
 
 
 """
-    DMStagGetIndices(dm::DMStag)
+    local_indices_dmstag(dm::DMStag)
 
-Return indices for the central/vertex nodes of a local array built from the input `dm`.
-This takes ghost points into account and provides index ranges for accessing staggered data.
+Return indices for the central/vertex nodes of a local (ghosted) array built from the
+input `dm`. This takes ghost points into account and provides index ranges for
+accessing staggered data, so that e.g. `array[local_indices_dmstag(dm).center.x]`
+correctly skips the ghost region on the low side.
 
 # Returns
 
@@ -310,10 +312,14 @@ A `NamedTuple` with:
 
 In Julia, array indices start at 1, whereas PETSc uses 0-based indexing with
 possibly negative ghost indices. This function handles the conversion automatically.
-"""
-function DMStagGetIndices end
 
-function DMStagGetIndices(dm::PetscDM{PetscLib}) where {PetscLib}
+# See also
+
+[`global_indices_dmstag`](@ref) for the equivalent indices into a non-ghosted, global array.
+"""
+function local_indices_dmstag end
+
+function local_indices_dmstag(dm::PetscDM{PetscLib}) where {PetscLib}
     @assert PETSc.gettype(dm) == "stag" "DM must be of type DMStag" 
     # In Julia, indices in arrays start @ 1, whereas they can go negative in C
     x, y, z, m, n, p, nx, ny, nz = LibPETSc.DMStagGetCorners(PetscLib, dm)
@@ -337,9 +343,53 @@ function DMStagGetIndices(dm::PetscDM{PetscLib}) where {PetscLib}
             z = lo[3]:(hi[3] + nz),
         ),
     )
-            
+
 end
 
+
+
+Base.@deprecate DMStagGetIndices(dm) local_indices_dmstag(dm)
+
+"""
+    global_indices_dmstag(dm::DMStag)
+
+Return indices for the central/vertex nodes of the global (non-ghosted) array built
+from the input `dm`, i.e. the process-local interior region only, excluding ghost
+points.
+
+# Returns
+
+A `NamedTuple` with:
+- `center`: Tuple of ranges `(x, y, z)` for cell-centered indices
+- `vertex`: Tuple of ranges `(x, y, z)` for vertex indices
+
+# Note
+
+In Julia, array indices start at 1, whereas PETSc uses 0-based indexing. This function
+handles the conversion automatically.
+
+# See also
+
+[`local_indices_dmstag`](@ref) for the equivalent indices into a ghosted, local array.
+"""
+function global_indices_dmstag(dm::PetscDM{PetscLib}) where {PetscLib}
+    @assert PETSc.gettype(dm) == "stag" "DM must be of type DMStag"
+    x, y, z, m, n, p, nx, ny, nz = LibPETSc.DMStagGetCorners(PetscLib, dm)
+
+    return (
+        center = (
+            x = (x + 1):(x + m),
+            y = (y + 1):(y + n),
+            z = (z + 1):(z + p),
+        ),
+        vertex = (
+            x = (x + 1):(x + m + nx),
+            y = (y + 1):(y + n + ny),
+            z = (z + 1):(z + p + nz),
+        ),
+    )
+
+end
 
 """
     slot::Int = DMStagDOF_Slot(dm::PetscDM{PetscLib}, loc::LibPETSc.DMStagStencilLocation, dof::Int) 

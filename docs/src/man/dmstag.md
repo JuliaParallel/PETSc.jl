@@ -82,9 +82,12 @@ dm_local_to_global!(dm, local_vec, ADD_VALUES, global_vec)
 ### Getting Location Indices
 
 ```julia
-# Get indices for accessing specific DOF locations
-indices = DMStagGetIndices(dm)
+# Get indices (ghost-aware) for accessing specific DOF locations in a local array
+indices = local_indices_dmstag(dm)
 # Use indices to access vertex, edge, face, or element DOFs
+
+# Get indices (no ghosts) for accessing specific DOF locations in a global array
+indices = global_indices_dmstag(dm)
 ```
 
 ## Setting Coordinates

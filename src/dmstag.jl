@@ -263,20 +263,12 @@ $(_doc_external("DMDA/DMStagGetCorners"))
 """
 function getcorners_dmstag(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     @assert PETSc.gettype(dm) == "stag" "DM must be of type DMStag"
-    PetscInt = PetscLib.PetscInt
-    x,y,z,m,n,p,nExtrax,nExtray,nExtraz = LibPETSc.DMStagGetCorners(PetscLib, dm)
-
-    corners = [x,y,z]
-    local_size = [m,n,p]
-    nextra = [nExtrax,nExtray,nExtraz]
-
-    corners .+= 1
-    upper = corners .+ local_size .- PetscInt(1)
+    x, y, z, m, n, p, nExtrax, nExtray, nExtraz = LibPETSc.DMStagGetCorners(PetscLib, dm)
     return (
-        lower = CartesianIndex(corners...),
-        upper = CartesianIndex(upper...),
-        size = (local_size...,),
-        nextra = (nextra...,)
+        lower  = CartesianIndex(x + 1, y + 1, z + 1),
+        upper  = CartesianIndex(x + m, y + n, z + p),
+        size   = (m, n, p),
+        nextra = (nExtrax, nExtray, nExtraz),
     )
 end
 
@@ -293,27 +285,22 @@ $(_doc_external("DMDA/DMStagGetCorners"))
 """
 function getghostcorners_dmstag(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
     @assert PETSc.gettype(dm) == "stag" "DM must be of type DMStag"
-    PetscInt = PetscLib.PetscInt
-    x,y,z,m,n,p = LibPETSc.DMStagGetGhostCorners(PetscLib, dm)
-
-    corners = [x,y,z]
-    local_size = [m,n,p]
-
-    corners .+= 1
-    upper = corners .+ local_size .- PetscInt(1)
+    x, y, z, m, n, p = LibPETSc.DMStagGetGhostCorners(PetscLib, dm)
     return (
-        lower = CartesianIndex(corners...),
-        upper = CartesianIndex(upper...),
-        size = (local_size...,),
+        lower = CartesianIndex(x + 1, y + 1, z + 1),
+        upper = CartesianIndex(x + m, y + n, z + p),
+        size  = (m, n, p),
     )
 end
 
 
 """
-    DMStagGetIndices(dm::DMStag)
+    local_indices_dmstag(dm::DMStag)
 
-Return indices for the central/vertex nodes of a local array built from the input `dm`.
-This takes ghost points into account and provides index ranges for accessing staggered data.
+Return indices for the central/vertex nodes of a local (ghosted) array built from the
+input `dm`. This takes ghost points into account and provides index ranges for
+accessing staggered data, so that e.g. `array[local_indices_dmstag(dm).center.x]`
+correctly skips the ghost region on the low side.
 
 # Returns
 
@@ -325,38 +312,84 @@ A `NamedTuple` with:
 
 In Julia, array indices start at 1, whereas PETSc uses 0-based indexing with
 possibly negative ghost indices. This function handles the conversion automatically.
-"""
-function DMStagGetIndices end
 
-function DMStagGetIndices(dm::PetscDM{PetscLib}) where {PetscLib}
+# See also
+
+[`global_indices_dmstag`](@ref) for the equivalent indices into a non-ghosted, global array.
+"""
+function local_indices_dmstag end
+
+function local_indices_dmstag(dm::PetscDM{PetscLib}) where {PetscLib}
     @assert PETSc.gettype(dm) == "stag" "DM must be of type DMStag" 
     # In Julia, indices in arrays start @ 1, whereas they can go negative in C
-    gc              =   PETSc.getghostcorners_dmstag(dm);  
-    c               =   PETSc.getcorners_dmstag(dm); 
+    x, y, z, m, n, p, nx, ny, nz = LibPETSc.DMStagGetCorners(PetscLib, dm)
+    gx, gy, gz, _, _, _ = LibPETSc.DMStagGetGhostCorners(PetscLib, dm)
 
-    # If we have ghosted boundaries, we need to shift the start/end points, as ghosted 
-    # boundaries are treated in PETSc with negative numbers, whereas in Julia everything is 1-based
+    c  = CartesianIndex(x + 1, y + 1, z + 1)
+    gc = CartesianIndex(gx + 1, gy + 1, gz + 1)
 
-    # NOTE: we have not yet tested this in parallel
-    Diff            =   c.lower - gc.lower;
-    Start           =   c.lower + Diff;
-    End             =   Start + CartesianIndex(c.size) -  CartesianIndex(1,1,1) ;
-    Nextra          =   c.nextra
+    lo = c + (c - gc)
+    hi = lo + CartesianIndex(m - 1, n - 1, p - 1)
 
-    # Note that we add the shift for julia/petsc consistency
-    shift = 0;
-    center = (  x= Start[1]:End[1],
-                y= Start[2]:End[2],  
-                z= Start[3]:End[3] )
+    return (
+        center = (
+            x = lo[1]:hi[1],
+            y = lo[2]:hi[2],
+            z = lo[3]:hi[3],
+        ),
+        vertex = (
+            x = lo[1]:(hi[1] + nx),
+            y = lo[2]:(hi[2] + ny),
+            z = lo[3]:(hi[3] + nz),
+        ),
+    )
 
-    vertex = (  x= Start[1]:End[1]+Nextra[1] ,
-                y= Start[2]:End[2]+Nextra[2] ,  
-                z= Start[3]:End[3]+Nextra[3] )
-
-    return (center=center, vertex=vertex)
-            
 end
 
+
+
+Base.@deprecate DMStagGetIndices(dm) local_indices_dmstag(dm)
+
+"""
+    global_indices_dmstag(dm::DMStag)
+
+Return indices for the central/vertex nodes of the global (non-ghosted) array built
+from the input `dm`, i.e. the process-local interior region only, excluding ghost
+points.
+
+# Returns
+
+A `NamedTuple` with:
+- `center`: Tuple of ranges `(x, y, z)` for cell-centered indices
+- `vertex`: Tuple of ranges `(x, y, z)` for vertex indices
+
+# Note
+
+In Julia, array indices start at 1, whereas PETSc uses 0-based indexing. This function
+handles the conversion automatically.
+
+# See also
+
+[`local_indices_dmstag`](@ref) for the equivalent indices into a ghosted, local array.
+"""
+function global_indices_dmstag(dm::PetscDM{PetscLib}) where {PetscLib}
+    @assert PETSc.gettype(dm) == "stag" "DM must be of type DMStag"
+    x, y, z, m, n, p, nx, ny, nz = LibPETSc.DMStagGetCorners(PetscLib, dm)
+
+    return (
+        center = (
+            x = (x + 1):(x + m),
+            y = (y + 1):(y + n),
+            z = (z + 1):(z + p),
+        ),
+        vertex = (
+            x = (x + 1):(x + m + nx),
+            y = (y + 1):(y + n + ny),
+            z = (z + 1):(z + p + nz),
+        ),
+    )
+
+end
 
 """
     slot::Int = DMStagDOF_Slot(dm::PetscDM{PetscLib}, loc::LibPETSc.DMStagStencilLocation, dof::Int) 

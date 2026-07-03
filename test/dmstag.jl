@@ -4,6 +4,8 @@ if !Sys.iswindows()
     MPI.Initialized() || MPI.Init()
 end
 
+isapplesilicon = Sys.isapple() && Sys.ARCH == :aarch64
+
 
 @testset "DMStagCreate1d" begin
     comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
@@ -217,6 +219,11 @@ end
 
 
 @testset "DMStagCreate3d" begin
+    if isapplesilicon
+        @test_skip "DMStagCreate3d skipped on Apple Silicon (known PETSc_jll SIGSEGV on macOS-latest)"
+        return
+    end
+
     comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)

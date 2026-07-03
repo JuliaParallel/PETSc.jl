@@ -53,17 +53,17 @@ macro petsc_simple_fn(f)
     PI = Core.eval(__module__, :PetscInt)
     PS = Core.eval(__module__, :PetscScalar)
     PR = Core.eval(__module__, :PetscReal)
-    cfn_ptr_expr = :(Base.@cfunction($cfn, $PI,
+    cfn_ptr_expr = :(Base.@cfunction($cfn, Cint,
         ($PI, $PR, Ptr{$PR}, $PI, Ptr{$PS}, Ptr{Cvoid})))
     quote
         function $(esc(cfn))(
             $gdim::$PI, t::$PR, xp::Ptr{$PR},
             $gNc::$PI, up::Ptr{$PS}, ctx::Ptr{Cvoid},
-        )::$PI
+        )::Cint
             x = unsafe_wrap(Vector{$PR}, xp, $gdim)
             u = unsafe_wrap(Vector{$PS}, up, $gNc)
             $(esc(f))(t, x, u, ctx)
-            return $PI(0)
+            return Cint(0)
         end
         @eval $cfn_ptr_expr
     end

@@ -28,10 +28,9 @@ const PetscReal   = Float64
 # Serial-safe communicator (shared across all lib loops)
 const _TC = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
 
-# Apple Silicon (aarch64) macOS crashes inside DMPlex + PetscFE operations with
-# the current PETSc_jll binary (SIGSEGV).  Intel macOS (x86_64) is unaffected.
-# Guard the PETSc-dependent testset on ARM only; the pure-Julia vtk_merge_tensor!
-# tests below are unaffected and still run on all platforms.
+# Apple Silicon (aarch64) macOS crashes inside PetscFE / PetscDS operations with
+# the current PETSc_jll binary (SIGSEGV).  Basic DMPlex mesh-creation operations
+# (DMCreate, DMPlexCreateBoxMesh, DMClone, …) are unaffected and still run.
 # No `const` here — vec.jl and mat.jl assign the same name without const in the
 # shared Main scope; redeclaring it as const would raise an error in Julia LTS.
 isapplesilicon = Sys.isapple() && Sys.ARCH == :aarch64
@@ -83,10 +82,6 @@ const _dm_zero_ptr = PETSc.@petsc_simple_fn(_dm_zero)
 # ─────────────────────────────────────────────────────────────────────────────
 @testset "DMPlex" begin
 
-if isapplesilicon
-    @test_skip "DMPlex+PETSc tests skipped on Apple Silicon (known SIGSEGV in PETSc_jll)"
-else
-
 for petsclib in PETSc.petsclibs
     PETSc.initialize(petsclib)
     PetscInt_t    = petsclib.PetscInt
@@ -95,6 +90,7 @@ for petsclib in PETSc.petsclibs
     @testset "$(PetscScalar_t)/$(PetscInt_t)" begin
 
     # ── Low-level: DMCreate / DMSetType / DMSetFromOptions ───────────────────
+    # Basic DMPlex creation: safe on all platforms including Apple Silicon.
     @testset "Low-level: DMCreate + DMSetType + DMSetFromOptions" begin
         dm = LibPETSc.DMCreate(petsclib, _TC)
         @test dm isa LibPETSc.PetscDM
@@ -192,46 +188,6 @@ for petsclib in PETSc.petsclibs
     end
     end # real(PetscScalar_t) != Float32
 
-    # ── Low-level: PetscFE creation ──────────────────────────────────────────
-    @testset "Low-level: PetscFECreateDefault" begin
-        opts = PETSc.Options(petsclib; petscspace_degree=1)
-        push!(opts)
-        fe = try
-            LibPETSc.PetscFECreateDefault(
-                petsclib, _TC,
-                PetscInt_t(2), PetscInt_t(1),
-                LibPETSc.PetscBool(false),    # not simplex
-                "",
-                PetscInt_t(-1),
-            )
-        finally
-            pop!(opts)
-        end
-        @test convert(Ptr{Cvoid}, fe) != C_NULL
-        # Note: PetscFEDestroy has a broken auto-wrapper; let PETSc manage FE lifetime.
-    end
-
-    @testset "Low-level: PetscFECreateLagrange" begin
-        fe1 = LibPETSc.PetscFECreateLagrange(
-            petsclib, _TC,
-            PetscInt_t(2), PetscInt_t(1),
-            LibPETSc.PetscBool(false),
-            PetscInt_t(1),
-            PetscInt_t(-1),
-        )
-        @test convert(Ptr{Cvoid}, fe1) != C_NULL
-        fe2 = LibPETSc.PetscFECreateLagrange(
-            petsclib, _TC,
-            PetscInt_t(2), PetscInt_t(1),
-            LibPETSc.PetscBool(false),
-            PetscInt_t(2),
-            PetscInt_t(-1),
-        )
-        @test convert(Ptr{Cvoid}, fe2) != C_NULL
-        # PetscFEDestroy auto-wrapper is broken (ReadOnlyMemoryError); FEs are
-        # reference-counted by PETSc and freed with the parent DM or at finalize.
-    end
-
     # ── High-level: options-based constructor ────────────────────────────────
     @testset "DMPlex options constructor" begin
         dm = PETSc.DMPlex(petsclib, _TC;
@@ -280,14 +236,6 @@ for petsclib in PETSc.petsclibs
         @test dm_par isa LibPETSc.PetscDM
     end
 
-    # ── petsc_setname! ───────────────────────────────────────────────────────
-    @testset "petsc_setname!" begin
-        dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
-        fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
-        @test_nowarn PETSc.petsc_setname!(petsclib, dm, "testmesh")
-        @test_nowarn PETSc.petsc_setname!(petsclib, fe, "temperature")
-    end
-
     # ── getlabel ─────────────────────────────────────────────────────────────
     @testset "getlabel" begin
         dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
@@ -298,6 +246,82 @@ for petsclib in PETSc.petsclibs
         # Non-existent label → C_NULL
         lbl_none = PETSc.getlabel(dm, "no_such_label_xyz")
         @test lbl_none == C_NULL
+    end
+
+    # ── dmclone ──────────────────────────────────────────────────────────────
+    @testset "dmclone" begin
+        dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
+        dm2 = PETSc.dmclone(dm)
+        @test dm2 isa LibPETSc.PetscDM
+        @test convert(Ptr{Cvoid}, dm2) != C_NULL
+        # Clone has distinct pointer but same topology
+        @test convert(Ptr{Cvoid}, dm2) != convert(Ptr{Cvoid}, dm)
+        @test LibPETSc.DMGetDimension(petsclib, dm2) == 2
+        @test PETSc.isplexsimplex(dm2) == false
+    end
+
+    # ── dm_get_coarse (non-hierarchical mesh → NULL coarse) ──────────────────
+    @testset "dm_get_coarse (no hierarchy)" begin
+        dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
+        cdm = PETSc.dm_get_coarse(dm)
+        @test cdm isa LibPETSc.PetscDM
+        @test convert(Ptr{Cvoid}, cdm) == C_NULL
+    end
+
+    # ── PetscFE / PetscDS tests ───────────────────────────────────────────────
+    # Apple Silicon (aarch64): PetscFE creation and DS operations SIGSEGV with
+    # the current PETSc_jll binary.  Basic mesh-creation tests above are fine.
+    # Skip only the FE/DS block on Apple Silicon; all other platforms run fully.
+    if isapplesilicon
+        @test_skip "PetscFE + DS tests skipped on Apple Silicon (known SIGSEGV in PETSc_jll)"
+    else
+
+    # ── Low-level: PetscFE creation ──────────────────────────────────────────
+    @testset "Low-level: PetscFECreateDefault" begin
+        opts = PETSc.Options(petsclib; petscspace_degree=1)
+        push!(opts)
+        fe = try
+            LibPETSc.PetscFECreateDefault(
+                petsclib, _TC,
+                PetscInt_t(2), PetscInt_t(1),
+                LibPETSc.PetscBool(false),    # not simplex
+                "",
+                PetscInt_t(-1),
+            )
+        finally
+            pop!(opts)
+        end
+        @test convert(Ptr{Cvoid}, fe) != C_NULL
+        # Note: PetscFEDestroy has a broken auto-wrapper; let PETSc manage FE lifetime.
+    end
+
+    @testset "Low-level: PetscFECreateLagrange" begin
+        fe1 = LibPETSc.PetscFECreateLagrange(
+            petsclib, _TC,
+            PetscInt_t(2), PetscInt_t(1),
+            LibPETSc.PetscBool(false),
+            PetscInt_t(1),
+            PetscInt_t(-1),
+        )
+        @test convert(Ptr{Cvoid}, fe1) != C_NULL
+        fe2 = LibPETSc.PetscFECreateLagrange(
+            petsclib, _TC,
+            PetscInt_t(2), PetscInt_t(1),
+            LibPETSc.PetscBool(false),
+            PetscInt_t(2),
+            PetscInt_t(-1),
+        )
+        @test convert(Ptr{Cvoid}, fe2) != C_NULL
+        # PetscFEDestroy auto-wrapper is broken (ReadOnlyMemoryError); FEs are
+        # reference-counted by PETSc and freed with the parent DM or at finalize.
+    end
+
+    # ── petsc_setname! ───────────────────────────────────────────────────────
+    @testset "petsc_setname!" begin
+        dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
+        fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
+        @test_nowarn PETSc.petsc_setname!(petsclib, dm, "testmesh")
+        @test_nowarn PETSc.petsc_setname!(petsclib, fe, "temperature")
     end
 
     # ── fe_create_default ────────────────────────────────────────────────────
@@ -395,26 +419,6 @@ for petsclib in PETSc.petsclibs
         gvec = PETSc.dm_create_global_vec(dm)
         lvec = PETSc.dm_create_local_vec(dm)
         @test_nowarn PETSc.dm_global_to_local!(dm, gvec, lvec)
-    end
-
-    # ── dmclone ──────────────────────────────────────────────────────────────
-    @testset "dmclone" begin
-        dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
-        dm2 = PETSc.dmclone(dm)
-        @test dm2 isa LibPETSc.PetscDM
-        @test convert(Ptr{Cvoid}, dm2) != C_NULL
-        # Clone has distinct pointer but same topology
-        @test convert(Ptr{Cvoid}, dm2) != convert(Ptr{Cvoid}, dm)
-        @test LibPETSc.DMGetDimension(petsclib, dm2) == 2
-        @test PETSc.isplexsimplex(dm2) == false
-    end
-
-    # ── dm_get_coarse (non-hierarchical mesh → NULL coarse) ──────────────────
-    @testset "dm_get_coarse (no hierarchy)" begin
-        dm = PETSc.DMPlex(petsclib, _TC, 2, false, [4, 4])
-        cdm = PETSc.dm_get_coarse(dm)
-        @test cdm isa LibPETSc.PetscDM
-        @test convert(Ptr{Cvoid}, cdm) == C_NULL
     end
 
     # ── dm_copy_disc! ────────────────────────────────────────────────────────
@@ -533,10 +537,10 @@ for petsclib in PETSc.petsclibs
     end
     end # PetscScalar_t == Float64
 
+    end # if !isapplesilicon
+
     end # @testset "$(PetscScalar_t)/$(PetscInt_t)"
 end # for petsclib
-
-end # if !isapplesilicon
 
 end # @testset "DMPlex"
 

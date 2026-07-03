@@ -28,12 +28,13 @@ const PetscReal   = Float64
 # Serial-safe communicator (shared across all lib loops)
 const _TC = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
 
-# Intel Mac (x86_64) crashes inside DMPlex + PetscFE operations with the
-# current PETSc_jll binary.  Guard the PETSc-dependent testset; the pure-Julia
-# vtk_merge_tensor! tests below are unaffected and still run.
+# macOS runners crash inside DMPlex + PetscFE operations with the current
+# PETSc_jll binary (observed on both Intel and Apple Silicon). Guard the
+# PETSc-dependent testset; the pure-Julia vtk_merge_tensor! tests below are
+# unaffected and still run.
 # No `const` here — vec.jl and mat.jl assign the same name without const in the
 # shared Main scope; redeclaring it as const would raise an error in Julia LTS.
-isintelmac = Sys.isapple() && Sys.ARCH == :x86_64
+ismacos = Sys.isapple()
 
 # ── Minimal FEM callbacks for testing ────────────────────────────────────────
 # Scalar Poisson on the unit square: u = x₁ + x₂ (linear, harmonic).
@@ -82,8 +83,8 @@ const _dm_zero_ptr = PETSc.@petsc_simple_fn(_dm_zero)
 # ─────────────────────────────────────────────────────────────────────────────
 @testset "DMPlex" begin
 
-if isintelmac
-    @test_skip "DMPlex+PETSc tests skipped on macOS Intel (known SIGSEGV in PETSc_jll)"
+if ismacos
+    @test_skip "DMPlex+PETSc tests skipped on macOS (known SIGSEGV in PETSc_jll)"
 else
 
 for petsclib in PETSc.petsclibs
@@ -535,7 +536,7 @@ for petsclib in PETSc.petsclibs
     end # @testset "$(PetscScalar_t)/$(PetscInt_t)"
 end # for petsclib
 
-end # if !isintelmac
+end # if !ismacos
 
 end # @testset "DMPlex"
 

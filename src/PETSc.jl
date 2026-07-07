@@ -48,6 +48,11 @@ include("dmda.jl")
 include("dmstag.jl")
 include("dmplex.jl")
 
+# SciML extension algorithm types (methods live in ext/PETScSciMLExt.jl).
+# The string convenience wrappers these rely on are already included above.
+include("sciml_algorithms.jl")
+export PETScTSAlgorithm, TSRK, TSRosW, TSImplicit, TSARKIMEX, TSGeneric
+
 include("audit.jl")
 
 

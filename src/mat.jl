@@ -89,7 +89,7 @@ function MatSeqAIJ(
     nonzeros::Union{Integer, Vector},
 ) where {PetscLib <: PetscLibType}
     comm = MPI.COMM_SELF
-    @assert initialized(petsclib)
+    check_initialized(petsclib)
     PetscInt = petsclib.PetscInt
     if nonzeros isa Integer
         mat = LibPETSc.MatCreateSeqAIJ(petsclib, comm, 
@@ -97,8 +97,18 @@ function MatSeqAIJ(
                 PetscInt(num_cols), 
                 PetscInt(nonzeros), C_NULL)
     else
-        @assert eltype(nonzeros) == petsclib.PetscInt
-        @assert length(nonzeros) >= num_rows
+        eltype(nonzeros) === petsclib.PetscInt || throw(
+            ArgumentError(
+                "nonzeros has element type $(eltype(nonzeros)), " *
+                "but the library uses $(petsclib.PetscInt)",
+            ),
+        )
+        length(nonzeros) >= num_rows || throw(
+            DimensionMismatch(
+                "nonzeros has $(length(nonzeros)) entries, " *
+                "but the matrix has $num_rows rows",
+            ),
+        )
         mat = LibPETSc.MatCreateSeqAIJ(petsclib, comm, 
                 PetscInt(num_rows), 
                 PetscInt(num_cols), 
@@ -123,8 +133,13 @@ function MatSeqDense(
     A::Matrix{PetscScalar},
 ) where {PetscLib <: PetscLibType, PetscScalar}
     comm = MPI.COMM_SELF
-    @assert initialized(petsclib)
-    @assert PetscScalar == petsclib.PetscScalar
+    check_initialized(petsclib)
+    PetscScalar === petsclib.PetscScalar || throw(
+        ArgumentError(
+            "matrix has element type $PetscScalar, " *
+            "but the library uses $(petsclib.PetscScalar)",
+        ),
+    )
     
     PetscInt = petsclib.PetscInt
     # PETSc stores the data pointer directly without copying, so we must keep the
@@ -380,7 +395,7 @@ Set up the interal data for `mat`
 $(_doc_external("Mat/MatSetUp"))
 """
 function setup!(mat::PetscMat{PetscLib}) where {PetscLib}
-    @assert initialized(PetscLib)
+    check_initialized(PetscLib)
     LibPETSc.MatSetUp(PetscLib, mat)
     return mat
 end
@@ -536,8 +551,18 @@ function setvalues!(
     num_rows = length(row0idxs),
     num_cols = length(col0idxs),
 ) where {PetscLib, PetscScalar}
-    @assert PetscScalar == PetscLib.PetscScalar
-    @assert num_rows * num_cols <= length(rowvals)
+    PetscScalar === PetscLib.PetscScalar || throw(
+        ArgumentError(
+            "values have element type $PetscScalar, but the library uses " *
+            "$(PetscLib.PetscScalar)",
+        ),
+    )
+    num_rows * num_cols <= length(rowvals) || throw(
+        DimensionMismatch(
+            "a $(num_rows)x$(num_cols) block needs $(num_rows * num_cols) values, " *
+            "got $(length(rowvals))",
+        ),
+    )
     LibPETSc.MatSetValuesStencil(
         PetscLib,
         M,
@@ -844,9 +869,24 @@ function setvalues!(
     num_rows = length(row0idxs),
     num_cols = length(col0idxs),
 ) where {PetscLib, PetscScalar, PetscInt}
-    @assert PetscScalar == PetscLib.PetscScalar
-    @assert PetscInt == PetscLib.PetscInt
-    @assert num_rows * num_cols <= length(rowvals)
+    PetscScalar === PetscLib.PetscScalar || throw(
+        ArgumentError(
+            "values have element type $PetscScalar, " *
+            "but the library uses $(PetscLib.PetscScalar)",
+        ),
+    )
+    PetscInt === PetscLib.PetscInt || throw(
+        ArgumentError(
+            "indices have element type $PetscInt, " *
+            "but the library uses $(PetscLib.PetscInt)",
+        ),
+    )
+    num_rows * num_cols <= length(rowvals) || throw(
+        DimensionMismatch(
+            "a $(num_rows)x$(num_cols) block needs $(num_rows * num_cols) values, " *
+            "got $(length(rowvals))",
+        ),
+    )
     LibPETSc.MatSetValues(
         PetscLib,
         M,

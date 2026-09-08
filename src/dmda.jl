@@ -67,8 +67,18 @@ function DMDA(
         if isnothing(points_per_proc[d]) || points_per_proc[d] == PETSC_DECIDE
             C_NULL
         else
-            @assert points_per_proc[d] isa Array{PetscLib.PetscInt}
-            @assert length(points_per_proc[d]) == MPI.Comm_size(comm)
+            points_per_proc[d] isa Array{PetscLib.PetscInt} || throw(
+                ArgumentError(
+                    "points_per_proc[$d] must be an Array{$(PetscLib.PetscInt)}, " *
+                    "got $(typeof(points_per_proc[d]))",
+                ),
+            )
+            length(points_per_proc[d]) == MPI.Comm_size(comm) || throw(
+                DimensionMismatch(
+                    "points_per_proc[$d] has $(length(points_per_proc[d])) entries, " *
+                    "but the communicator has $(MPI.Comm_size(comm)) ranks",
+                ),
+            )
             points_per_proc[d]
         end
     end
@@ -170,7 +180,12 @@ function reshapelocalarray(
     if length(Arr) < prod(corners.size) * ndof
         corners = getcorners(da)
     end
-    @assert length(Arr) == prod(corners.size) * ndof
+    length(Arr) == prod(corners.size) * ndof || throw(
+        DimensionMismatch(
+            "array has $(length(Arr)) entries, but the local domain needs " *
+            "$(prod(corners.size) * ndof) ($(corners.size) points x $ndof dofs)",
+        ),
+    )
 
     oArr = OffsetArray(
         reshape(Arr, Int64(ndof), Int64.(corners.size)...),

@@ -62,7 +62,12 @@ function DMStag(
     prefix = "",
     options...,
 ) where {PetscLib, N, N1}
-    @assert N1 == N + 1 "dof_per_node should have length N + 1"
+    N1 == N + 1 || throw(
+        DimensionMismatch(
+            "dof_per_node has length $N1, " *
+            "but a $N-dimensional DMStag needs $(N + 1)",
+        ),
+    )
     PetscInt = inttype(PetscLib)
     opts = Options(petsclib; options...)
 
@@ -77,8 +82,18 @@ function DMStag(
         if isnothing(points_per_proc[d]) || points_per_proc[d] == PETSC_DECIDE
             C_NULL
         else
-            @assert points_per_proc[d] isa Array
-            @assert length(points_per_proc[d]) == MPI.Comm_size(comm)
+            points_per_proc[d] isa Array || throw(
+                ArgumentError(
+                    "points_per_proc[$d] must be an Array, " *
+                    "got $(typeof(points_per_proc[d]))",
+                ),
+            )
+            length(points_per_proc[d]) == MPI.Comm_size(comm) || throw(
+                DimensionMismatch(
+                    "points_per_proc[$d] has $(length(points_per_proc[d])) entries, " *
+                    "but the communicator has $(MPI.Comm_size(comm)) ranks",
+                ),
+            )
             points_per_proc[d]
         end
     end

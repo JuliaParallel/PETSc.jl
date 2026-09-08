@@ -69,7 +69,7 @@ $(_doc_external("Vec/VecCreateSeq"))
 """
 function VecSeq(petsclib::PetscLib, n::Int) where {PetscLib <: PetscLibType}
     comm = MPI.COMM_SELF
-    @assert initialized(petsclib)
+    check_initialized(petsclib)
     v = LibPETSc.VecCreateSeq(petsclib, comm, n)
     finalizer(destroy, v)
     return v
@@ -98,8 +98,13 @@ function VecSeq(
     blocksize = 1,
 ) where {PetscLib <: PetscLibType, PetscScalar}
     comm = MPI.COMM_SELF
-    @assert initialized(petsclib)
-    @assert PetscScalar == petsclib.PetscScalar
+    check_initialized(petsclib)
+    PetscScalar === petsclib.PetscScalar || throw(
+        ArgumentError(
+            "array has element type $PetscScalar, " *
+            "but the library uses $(petsclib.PetscScalar)",
+        ),
+    )
     PetscInt = petsclib.PetscInt
     v = LibPETSc.VecCreateSeqWithArray(
         petsclib,
@@ -589,7 +594,7 @@ end
 Creates a sequential PETSc vector of length `n` given a julia array `array`` 
 """
 function VecSeq(petsclib::PetscLib, comm, x::Vector) where {PetscLib <: PetscLibType}
-    @assert initialized(petsclib)
+    check_initialized(petsclib)
     
     v = LibPETSc.VecCreateSeqWithArray(petsclib,comm, 1, length(x), x)    # solution vector
     finalizer(destroy, v)

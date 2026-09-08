@@ -134,7 +134,11 @@ function parse_options(args::Vector{String})
     i = 1
     opts = Dict{Symbol, Union{String, Nothing}}()
     while i <= length(args)
-        @assert args[i][1] == '-' && length(args[i]) > 1
+        (length(args[i]) > 1 && args[i][1] == '-') || throw(
+            ArgumentError(
+                "expected an option starting with '-', got $(repr(args[i]))",
+            ),
+        )
         if i == length(args) || args[i + 1][1] == '-'
             token = split(args[i][2:end], "=")
             if length(token) == 1

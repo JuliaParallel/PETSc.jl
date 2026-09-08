@@ -43,6 +43,7 @@ include("dmproduct.jl")     # test for DMProduct example
 include("matshell.jl")      # autowrapped!
 include("test_dmstag.jl")
 include("test_snes.jl")
+include("test_audit.jl")    # leak auditor
 include("old_test.jl")
 include("low_level_viewer.jl")  # Low-level viewer convenience functions
 include("low_level_ts.jl")      # Low-level TS functions

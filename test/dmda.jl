@@ -345,7 +345,7 @@ end
     mpirank = MPI.Comm_rank(comm)
     mpisize = MPI.Comm_size(comm)
     # Just check a couple libraries
-    for petsclib in PETSc.petsclibs[1:2]
+    for petsclib in PETSc.petsclibs[1:min(2, length(PETSc.petsclibs))]
         #petsclib = PETSc.petsclibs[1]
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar

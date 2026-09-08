@@ -8,6 +8,12 @@ on:
     tags: '*'
   pull_request:
 
+# julia-actions/cache prunes stale caches through the GitHub API. 
+# Without `actions: write` that prune fails with HTTP 403 on every run.
+permissions:
+  actions: write
+  contents: read
+
 concurrency:
   # Skip intermediate builds: always.
   # Cancel intermediate builds: always.

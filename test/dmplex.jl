@@ -227,8 +227,12 @@ for petsclib in PETSc.petsclibs
             PetscInt_t(-1),
         )
         @test convert(Ptr{Cvoid}, fe2) != C_NULL
-        # PetscFEDestroy auto-wrapper is broken (ReadOnlyMemoryError); FEs are
-        # reference-counted by PETSc and freed with the parent DM or at finalize.
+        # FEs are the one object this file does not destroy. The autowrapped
+        # PetscFEDestroy passes the handle where PETSc expects a pointer to it,
+        # so calling it raises ReadOnlyMemoryError. That leaks the FE, but
+        # PetscFE is a bare Ptr with no finalizer attached, so unlike a leaked
+        # DM or Vec it cannot fire after the library is torn down. Fixing the
+        # generated wrapper is the real fix.
     end
 
     # ── High-level: options-based constructor ────────────────────────────────
@@ -240,6 +244,8 @@ for petsclib in PETSc.petsclibs
         @test convert(Ptr{Cvoid}, dm) != C_NULL
         @test LibPETSc.DMGetType(petsclib, dm) == "plex"
         @test LibPETSc.DMGetDimension(petsclib, dm) == 2
+
+        PETSc.destroy(dm)
     end
 
     # ── High-level: explicit box constructor ─────────────────────────────────
@@ -253,11 +259,15 @@ for petsclib in PETSc.petsclibs
             dm_tri = PETSc.DMPlex(petsclib, _TC, 2, true, [4, 4])
             @test dm_tri isa LibPETSc.PetscDM
             @test LibPETSc.DMGetDimension(petsclib, dm_tri) == 2
+            PETSc.destroy(dm_tri)
         end
 
         dm_3d = PETSc.DMPlex(petsclib, _TC, 3, false, [2, 2, 2])
         @test dm_3d isa LibPETSc.PetscDM
         @test LibPETSc.DMGetDimension(petsclib, dm_3d) == 3
+
+        PETSc.destroy(dm_hex)
+        PETSc.destroy(dm_3d)
     end
 
     # ── isplexsimplex ────────────────────────────────────────────────────────
@@ -267,7 +277,10 @@ for petsclib in PETSc.petsclibs
         if real(PetscScalar_t) != Float32
             dm_tri = PETSc.DMPlex(petsclib, _TC, 2, true,  [4, 4])
             @test PETSc.isplexsimplex(dm_tri) == true
+            PETSc.destroy(dm_tri)
         end
+
+        PETSc.destroy(dm_hex)
     end
 
     # ── plexdistribute! (serial: mesh stays on one rank) ────────────────────
@@ -277,6 +290,11 @@ for petsclib in PETSc.petsclibs
         # (no redistribution needed).  We just check it does not throw.
         dm_par = @test_nowarn PETSc.plexdistribute!(dm; overlap = 0)
         @test dm_par isa LibPETSc.PetscDM
+
+        # destroy skips a NULL pointer, so this is a no-op on one rank and
+        # frees the redistributed mesh on several.
+        PETSc.destroy(dm_par)
+        PETSc.destroy(dm)
     end
 
     # ── petsc_setname! ───────────────────────────────────────────────────────
@@ -285,6 +303,8 @@ for petsclib in PETSc.petsclibs
         fe = PETSc.fe_create_lagrange(petsclib, _TC, 2, 1, false, 1)
         @test_nowarn PETSc.petsc_setname!(petsclib, dm, "testmesh")
         @test_nowarn PETSc.petsc_setname!(petsclib, fe, "temperature")
+
+        PETSc.destroy(dm)
     end
 
     # ── getlabel ─────────────────────────────────────────────────────────────
@@ -297,6 +317,8 @@ for petsclib in PETSc.petsclibs
         # Non-existent label → C_NULL
         lbl_none = PETSc.getlabel(dm, "no_such_label_xyz")
         @test lbl_none == C_NULL
+
+        PETSc.destroy(dm)
     end
 
     # ── fe_create_default ────────────────────────────────────────────────────
@@ -334,6 +356,9 @@ for petsclib in PETSc.petsclibs
 
         ds = PETSc.getds(dm)
         @test ds isa PETSc.PetscDS
+
+        # ds belongs to dm, so destroying dm is enough.
+        PETSc.destroy(dm)
     end
 
     # ── PetscDS: set_constants! ──────────────────────────────────────────────
@@ -344,6 +369,8 @@ for petsclib in PETSc.petsclibs
         PETSc.createds!(dm)
         ds = PETSc.getds(dm)
         @test_nowarn PETSc.set_constants!(ds, [1.0, 2.0, 3.0])
+
+        PETSc.destroy(dm)
     end
 
     # ── PetscDS: set_residual! / set_jacobian! / set_exact_solution! ─────────
@@ -357,6 +384,8 @@ for petsclib in PETSc.petsclibs
         @test_nowarn PETSc.set_residual!(ds, 0, _dm_f0_ptr, _dm_f1_ptr)
         @test_nowarn PETSc.set_jacobian!(ds, 0, 0, C_NULL, C_NULL, C_NULL, _dm_g3_ptr)
         @test_nowarn PETSc.set_exact_solution!(ds, 0, _dm_exact_ptr)
+
+        PETSc.destroy(dm)
     end
 
     # ── PetscDS: set_jacobian_preconditioner! ────────────────────────────────
@@ -368,6 +397,8 @@ for petsclib in PETSc.petsclibs
         ds = PETSc.getds(dm)
         @test_nowarn PETSc.set_jacobian_preconditioner!(
             ds, 0, 0, C_NULL, C_NULL, C_NULL, _dm_g3_ptr)
+
+        PETSc.destroy(dm)
     end
 
     # ── dm_create_global_vec / dm_create_local_vec ───────────────────────────
@@ -382,6 +413,10 @@ for petsclib in PETSc.petsclibs
 
         lvec = PETSc.dm_create_local_vec(dm)
         @test convert(Ptr{Cvoid}, lvec) != C_NULL
+
+        PETSc.destroy(gvec)
+        PETSc.destroy(lvec)
+        PETSc.destroy(dm)
     end
 
     # ── dm_global_to_local! ──────────────────────────────────────────────────
@@ -394,6 +429,10 @@ for petsclib in PETSc.petsclibs
         gvec = PETSc.dm_create_global_vec(dm)
         lvec = PETSc.dm_create_local_vec(dm)
         @test_nowarn PETSc.dm_global_to_local!(dm, gvec, lvec)
+
+        PETSc.destroy(gvec)
+        PETSc.destroy(lvec)
+        PETSc.destroy(dm)
     end
 
     # ── dmclone ──────────────────────────────────────────────────────────────
@@ -406,6 +445,9 @@ for petsclib in PETSc.petsclibs
         @test convert(Ptr{Cvoid}, dm2) != convert(Ptr{Cvoid}, dm)
         @test LibPETSc.DMGetDimension(petsclib, dm2) == 2
         @test PETSc.isplexsimplex(dm2) == false
+
+        PETSc.destroy(dm2)
+        PETSc.destroy(dm)
     end
 
     # ── dm_get_coarse (non-hierarchical mesh → NULL coarse) ──────────────────
@@ -414,6 +456,9 @@ for petsclib in PETSc.petsclibs
         cdm = PETSc.dm_get_coarse(dm)
         @test cdm isa LibPETSc.PetscDM
         @test convert(Ptr{Cvoid}, cdm) == C_NULL
+
+        # cdm is borrowed from dm (and NULL here), so only dm is destroyed.
+        PETSc.destroy(dm)
     end
 
     # ── dm_copy_disc! ────────────────────────────────────────────────────────
@@ -432,6 +477,9 @@ for petsclib in PETSc.petsclibs
         # After copy_disc, the destination should also have a DS
         ds_dst = PETSc.getds(dm_dst)
         @test ds_dst isa PETSc.PetscDS
+
+        PETSc.destroy(dm_dst)
+        PETSc.destroy(dm_src)
     end
 
     # ── Multi-field DS setup ──────────────────────────────────────────────────
@@ -451,6 +499,9 @@ for petsclib in PETSc.petsclibs
 
         gvec = PETSc.dm_create_global_vec(dm)
         @test convert(Ptr{Cvoid}, gvec) != C_NULL
+
+        PETSc.destroy(gvec)
+        PETSc.destroy(dm)
     end
 
     # ── add_boundary! ────────────────────────────────────────────────────────
@@ -471,6 +522,8 @@ for petsclib in PETSc.petsclibs
         )
         @test bd isa PetscInt_t
         @test bd >= 0
+
+        PETSc.destroy(dm)
     end
 
     # ── dm_project_function! + dm_compute_l2diff ─────────────────────────────
@@ -493,6 +546,9 @@ for petsclib in PETSc.petsclibs
         l2err = PETSc.dm_compute_l2diff(petsclib, dm, 0.0,
                                          [_dm_exact_ptr], nothing, u)
         @test l2err ≈ 0.0 atol = 1e-12
+
+        PETSc.destroy(u)
+        PETSc.destroy(dm)
     end
 
     # ── dm_project_function! (simplex mesh) ──────────────────────────────────
@@ -511,6 +567,9 @@ for petsclib in PETSc.petsclibs
         l2err = PETSc.dm_compute_l2diff(petsclib, dm, 0.0,
                                          [_dm_exact_ptr], nothing, u)
         @test l2err ≈ 0.0 atol = 1e-12
+
+        PETSc.destroy(u)
+        PETSc.destroy(dm)
     end
 
     # ── 3D hex mesh basic sanity ──────────────────────────────────────────────
@@ -529,6 +588,9 @@ for petsclib in PETSc.petsclibs
         l2err = PETSc.dm_compute_l2diff(petsclib, dm, 0.0,
                                          [_dm_exact_ptr], nothing, u)
         @test l2err ≈ 0.0 atol = 1e-12
+
+        PETSc.destroy(u)
+        PETSc.destroy(dm)
     end
     end # PetscScalar_t == Float64
 

@@ -33,7 +33,7 @@ function KSP(
     prefix::String="",
     options...
 ) where {PetscLib}
-    @assert initialized(getlib(PetscLib))
+    check_initialized(getlib(PetscLib))
 
     petsclib = getlib(PetscLib)
     comm = getcomm(A)
@@ -79,7 +79,7 @@ function KSP(dm::AbstractPetscDM{PetscLib};
     prefix::String="",
     options...
 ) where {PetscLib}
-    @assert initialized(getlib(PetscLib))
+    check_initialized(getlib(PetscLib))
     petsclib = getlib(PetscLib)
     comm = getcomm(dm)
     ksp = LibPETSc.KSPCreate(petsclib,comm)
@@ -158,9 +158,19 @@ function Base.:\(
     ksp::PetscKSP{PetscLib},
     b::Vector{PetscScalar},
 ) where {PetscLib, PetscScalar}
-    @assert PetscScalar == PetscLib.PetscScalar
+    PetscScalar === PetscLib.PetscScalar || throw(
+        ArgumentError(
+            "right-hand side has element type $PetscScalar, " *
+            "but the library uses $(PetscLib.PetscScalar)",
+        ),
+    )
     comm = getcomm(ksp)
-    @assert MPI.Comm_size(comm) == 1
+    MPI.Comm_size(comm) == 1 || throw(
+        ArgumentError(
+            "solving into a Julia Vector requires a sequential KSP, " *
+            "but its communicator spans $(MPI.Comm_size(comm)) ranks",
+        ),
+    )
     PetscInt = PetscLib.PetscInt
 
     petsc_b = LibPETSc.VecCreateSeqWithArray(getlib(PetscLib),comm, PetscInt(1), PetscInt(length(b)), PetscScalar.(b))

@@ -1,4 +1,40 @@
 """
+    PetscNotInitialized(petsclib)
+
+Thrown when a PETSc object is built or used before its library is initialized.
+
+Call [`initialize`](@ref) on the library first. Every PETSc call needs the
+library up, so this is reported as its own type rather than as an
+`ArgumentError`, which lets callers catch it specifically.
+"""
+struct PetscNotInitialized <: Exception
+    petsclib::Any
+end
+
+function Base.showerror(io::IO, e::PetscNotInitialized)
+    print(io, "PetscNotInitialized: the PETSc library ")
+    # Name the library by its scalar and integer types rather than by printing
+    # the whole handle, which carries an artifact path and drowns the message.
+    try
+        print(io, "(PetscScalar = ", scalartype(e.petsclib))
+        print(io, ", PetscInt = ", inttype(e.petsclib), ") ")
+    catch
+        print(io, e.petsclib, " ")
+    end
+    return print(io, "is not initialized. Call PETSc.initialize(petsclib) first.")
+end
+
+"""
+    check_initialized(petsclib)
+
+Throw [`PetscNotInitialized`](@ref) unless `petsclib` is initialized.
+"""
+function check_initialized(petsclib)
+    initialized(petsclib) || throw(PetscNotInitialized(petsclib))
+    return nothing
+end
+
+"""
    initialized(petsclib)
 
 Check if `petsclib` is initialized

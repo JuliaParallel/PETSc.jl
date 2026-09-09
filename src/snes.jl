@@ -35,7 +35,7 @@ function SNES(
     prefix="",
     options...,
 ) where {PetscLib}
-    @assert initialized(getlib(PetscLib))
+    check_initialized(getlib(PetscLib))
 
     petsclib = getlib(PetscLib)
     snes = LibPETSc.SNESCreate(petsclib, comm)

@@ -59,7 +59,7 @@ VecPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} = VecPtr(getlib(
 
 
 """
-    VecSeq(petsclib, n::Int)
+    VecSeq(petsclib, n::Integer)
 
 A standard, sequentially-stored serial PETSc vector for `petsclib.PetscScalar`
 of length `n`.
@@ -67,10 +67,11 @@ of length `n`.
 # External Links
 $(_doc_external("Vec/VecCreateSeq"))
 """
-function VecSeq(petsclib::PetscLib, n::Int) where {PetscLib <: PetscLibType}
+function VecSeq(petsclib::PetscLib, n::Integer) where {PetscLib <: PetscLibType}
     comm = MPI.COMM_SELF
     check_initialized(petsclib)
-    v = LibPETSc.VecCreateSeq(petsclib, comm, n)
+    PetscInt = petsclib.PetscInt
+    v = LibPETSc.VecCreateSeq(petsclib, comm, PetscInt(n))
     finalizer(destroy, v)
     return v
 end
@@ -612,8 +613,9 @@ Creates a sequential PETSc vector of length `n` given a julia array `array``
 """
 function VecSeq(petsclib::PetscLib, comm, x::Vector) where {PetscLib <: PetscLibType}
     check_initialized(petsclib)
-    
-    v = LibPETSc.VecCreateSeqWithArray(petsclib,comm, 1, length(x), x)    # solution vector
+    PetscInt = petsclib.PetscInt
+
+    v = LibPETSc.VecCreateSeqWithArray(petsclib, comm, PetscInt(1), PetscInt(length(x)), x)    # solution vector
     finalizer(destroy, v)
 
     return v

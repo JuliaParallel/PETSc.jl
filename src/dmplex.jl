@@ -285,7 +285,7 @@ function DMPlex(
     prefix         = "",
     options...,
 ) where {PetscLib}
-    @assert initialized(getlib(PetscLib))
+    check_initialized(getlib(PetscLib))
 
     dm = LibPETSc.DMCreate(petsclib, comm)
     LibPETSc.DMSetType(petsclib, dm, "plex")
@@ -355,11 +355,13 @@ function DMPlex(
     prefix           = "",
     options...,
 ) where {PetscLib}
-    @assert initialized(getlib(PetscLib))
-    @assert length(faces) == dim
-    @assert length(lower) == dim
-    @assert length(upper) == dim
-    @assert length(periodicity) == dim
+    check_initialized(getlib(PetscLib))
+    for (name, v) in
+        (("faces", faces), ("lower", lower), ("upper", upper), ("periodicity", periodicity))
+        length(v) == dim || throw(
+            DimensionMismatch("$name has length $(length(v)), expected dim = $dim"),
+        )
+    end
 
     PetscInt  = inttype(PetscLib)
     PetscReal = real(scalartype(PetscLib))
@@ -783,7 +785,9 @@ LibPETSc.@for_petsc function dm_project_function!(
     X::AbstractPetscVec{$PetscLib},
 )
     n = length(funcs)
-    @assert length(ctxs) == n "funcs and ctxs must have the same length"
+    length(ctxs) == n || throw(
+        DimensionMismatch("got $n funcs but $(length(ctxs)) ctxs"),
+    )
     funcs_v = collect(funcs)
     ctxs_v  = collect(ctxs)
     LibPETSc.DMProjectFunction(petsclib, dm, time, funcs_v, ctxs_v, mode, X)
@@ -827,7 +831,9 @@ LibPETSc.@for_petsc function dm_compute_l2diff(
     X::AbstractPetscVec{$PetscLib},
 )
     n = length(funcs)
-    @assert length(ctxs) == n "funcs and ctxs must have the same length"
+    length(ctxs) == n || throw(
+        DimensionMismatch("got $n funcs but $(length(ctxs)) ctxs"),
+    )
     funcs_v = collect(funcs)
     ctxs_v  = collect(ctxs)
     return LibPETSc.DMComputeL2Diff(petsclib, dm, time, funcs_v, ctxs_v, X)

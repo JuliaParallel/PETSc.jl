@@ -4,7 +4,13 @@ makedocs(;
     modules=[PETSc],
     sitename="PETSc.jl",
     checkdocs=:exports,  # Only check exported functions, skip LibPETSc internals
-    warnonly=true,  # Warn but don't error for any documentation issues
+    # Warn (don't error) for the documentation issues the large auto-wrapped
+    # LibPETSc API trips, but let `@example` / `@repl` block failures error the
+    # build so the executed code examples (e.g. man/sciml.md) stay functional.
+    warnonly=[
+        :autodocs_block, :cross_references, :docs_block, :eval_block,
+        :footnote, :linkcheck, :linkcheck_remotes, :meta_block, :missing_docs,
+    ],
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
         size_threshold_warn = nothing,  # Disable size warnings for large low-level API pages
@@ -14,6 +20,7 @@ makedocs(;
         "Home" => "index.md",
         "Installation" => "man/installation.md",
         "Getting Started" => "man/getting_started.md",
+        "SciML Integration" => "man/sciml.md",
         "High-level interface" => Any[
             "Vec" =>  "man/vec.md",
             "Mat" =>  "man/mat.md",

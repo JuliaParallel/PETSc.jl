@@ -1,0 +1,99 @@
+# Nonzero PETSc error code returned by the RHS / IFunction `@cfunction`s when
+# the user function throws. 83 is `PETSC_ERR_PLIB` ("generic library error");
+# the exact value is unimportant — any nonzero code makes `@chk` in `TSStep`
+# raise so `step!` can rethrow the captured Julia exception. The
+# `_take_callback_error!` helpers that consume `ctx.err` live in `solve.jl`,
+# after `RHSCtx` / `IFunctionCtx` are defined.
+const _PETSC_CALLBACK_ERRCODE = PETSc.LibPETSc.PetscErrorCode(83)
+
+function _check_isinplace(prob)
+    SciMLBase.isinplace(prob) || throw(ArgumentError(
+        "PETSc.jl time-stepping wrappers only support in-place ODEProblems " *
+        "(f!(du, u, p, t)). Wrap your function in an in-place form or use a " *
+        "different solver.",
+    ))
+end
+
+# The PETSc TS C callback signatures we register via `@cfunction` pass the
+# time argument as `PetscReal`. We build a matching `@cfunction` for each
+# supported real type (`Float64` and `Float32`; see `_petsc_rhs_ptr` /
+# `_petsc_ifunction_ptr`), but other reals (e.g. `__float128` extended
+# precision) have no registered callback and would pass a mismatched value
+# across the C ABI. Detect that up-front so users get a clear error rather
+# than a bus error when the callback fires.
+const _SUPPORTED_PETSCREAL = (Float64, Float32)
+
+function _check_petscreal(lib)
+    lib.PetscReal in _SUPPORTED_PETSCREAL || throw(ArgumentError(
+        "PETSc.jl SciML extension currently only supports PetscReal = Float64 " *
+        "or Float32. Got PetscReal = $(lib.PetscReal). Pass " *
+        "`petsclib = PETSc.getlib(PetscScalar = Float64)` (or `Float32`), " *
+        "or use a PETSc build with a supported PetscReal.",
+    ))
+end
+
+_pick_petsclib(prob, petsclib) = petsclib
+function _pick_petsclib(prob, ::Nothing)
+    T = eltype(prob.u0)
+    T <: Complex && throw(ArgumentError(
+        "PETSc.jl SciML extension currently only supports real-valued ODE " *
+        "problems (got eltype(u0) = $T). Pass a real `u0`, or — if you have " *
+        "a PETSc build with a complex `PetscScalar` and the matching support " *
+        "in this extension lands — supply `petsclib` explicitly.",
+    ))
+    return PETSc.getlib(PetscScalar = T)
+end
+
+function _setfromoptions!(petsclib, ts, petsc_options::AbstractVector{<:AbstractString})
+    isempty(petsc_options) && return nothing
+    opts = PETSc.Options(petsclib; PETSc.parse_options(String.(petsc_options))...)
+    push!(opts)
+    try
+        PETSc.LibPETSc.TSSetFromOptions(petsclib, ts)
+    finally
+        pop!(opts)
+        PETSc.destroy(opts)
+    end
+    return nothing
+end
+_setfromoptions!(petsclib, ts, ::Nothing) = nothing
+
+function _sync_petsc_to_julia!(integ::PETScTSIntegrator)
+    PETSc.withlocalarray!(integ.u_petsc; read = true, write = false) do arr
+        copyto!(integ.u, reshape(arr, integ.sizeu))
+    end
+    return nothing
+end
+
+function _sync_julia_to_petsc!(integ::PETScTSIntegrator)
+    PETSc.withlocalarray!(integ.u_petsc; read = false, write = true) do arr
+        copyto!(arr, vec(integ.u))
+    end
+    return nothing
+end
+
+# Reject SciML keywords that this extension does not actually honour. Letting
+# the open-ended `kwargs...` sink swallow standard knobs like `adaptive` /
+# `dtmin` / `progress` would silently break the usual SciML solver contract,
+# so any unsupported key fails loudly with a clear, named error.
+const _SUPPORTED_SCIML_KWARGS = (
+    :save_everystep, :save_on, :save_start, :save_end, :save_discretes,
+    :saveat, :tstops, :callback, :initialize_save,
+    :reltol, :abstol,
+    :dt, :dtmin, :dtmax, :adaptive,
+    :maxiters, :petsclib, :comm,
+)
+
+function _reject_unsupported_kwargs(kwargs)
+    for key in keys(kwargs)
+        key in _SUPPORTED_SCIML_KWARGS && continue
+        throw(ArgumentError(
+            "PETSc.jl SciML extension: keyword argument `$(key)` is not " *
+            "supported. Supported keywords are: " *
+            join(_SUPPORTED_SCIML_KWARGS, ", ") * ". " *
+            "Pass equivalent PETSc CLI flags via the algorithm's " *
+            "`petsc_options` argument if a matching SciML knob is missing.",
+        ))
+    end
+    return nothing
+end

@@ -72,6 +72,24 @@ for petsclib in PETSc.petsclibs
             PETSc.finalize(petsclib)
         end
 
+        # ── objects built empty and filled in through an out-parameter ───────
+        # DMClone and friends take a pre-allocated object and write the pointer
+        # into it, so the object is built by the empty constructor rather than
+        # from a pointer. That path has to stamp the age too, or destroy
+        # silently skips the object and it leaks.
+        @testset "empty constructor stamps age" begin
+            PETSc.initialize(petsclib)
+            libage = PETSc.LibPETSc.getlib(typeof(petsclib)).age
+
+            for obj in (PETSc.LibPETSc.PetscDM(petsclib),
+                        PETSc.LibPETSc.PetscVec(petsclib),
+                        PETSc.LibPETSc.PetscMat(petsclib))
+                @test obj.age == libage
+            end
+
+            PETSc.finalize(petsclib)
+        end
+
         # ── after the library is finalized ───────────────────────────────────
         @testset "after finalize" begin
             PETSc.initialize(petsclib)

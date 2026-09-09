@@ -58,7 +58,7 @@ mutable struct PetscVec{PetscLib} <: AbstractPetscVec{PetscLib}
 end
 
 # Convenience constructor from petsclib instance
-PetscVec(lib::PetscLib) where {PetscLib} = PetscVec{PetscLib}()
+PetscVec(lib::PetscLib) where {PetscLib} = PetscVec{PetscLib}(C_NULL, lib.age)
 PetscVec(ptr::CVec, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PetscVec{PetscLib}(ptr, age)
 Base.convert(::Type{CVec}, v::AbstractPetscVec) = v.ptr
 Base.unsafe_convert(::Type{CVec}, v::AbstractPetscVec) = v.ptr
@@ -79,7 +79,7 @@ mutable struct PetscMat{PetscLib} <: AbstractPetscMat{PetscLib}
 end
 
 # Convenience constructor from petsclib instance
-PetscMat(lib::PetscLib) where {PetscLib} = PetscMat{PetscLib}()
+PetscMat(lib::PetscLib) where {PetscLib} = PetscMat{PetscLib}(C_NULL, lib.age)
 PetscMat(ptr::CMat, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PetscMat{PetscLib}(ptr, age)
 Base.convert(::Type{CMat}, v::AbstractPetscMat) = v.ptr
 Base.unsafe_convert(::Type{CMat}, v::AbstractPetscMat) = v.ptr
@@ -100,7 +100,7 @@ mutable struct PetscKSP{PetscLib} <: AbstractPetscKSP{PetscLib}
 end
 
 # Convenience constructor from petsclib instance
-PetscKSP(lib::PetscLib) where {PetscLib} = PetscKSP{PetscLib}()
+PetscKSP(lib::PetscLib) where {PetscLib} = PetscKSP{PetscLib}(C_NULL, lib.age)
 PetscKSP(ptr::CKSP, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PetscKSP{PetscLib}(ptr, age)
 Base.convert(::Type{CKSP}, v::AbstractPetscKSP) = v.ptr
 Base.unsafe_convert(::Type{CKSP}, v::AbstractPetscKSP) = v.ptr
@@ -130,7 +130,7 @@ mutable struct PetscSNES{PetscLib} <: AbstractPetscSNES{PetscLib}
 end
 
 # Convenience constructor from petsclib instance
-PetscSNES(lib::PetscLib) where {PetscLib} = PetscSNES{PetscLib}()
+PetscSNES(lib::PetscLib) where {PetscLib} = PetscSNES{PetscLib}(C_NULL, lib.age)
 PetscSNES(ptr::Ptr, lib::PetscLib, f!::Function, updateJ!::Function, age::Int = lib.age) where {PetscLib} = PetscSNES{PetscLib}(ptr, age, f!, updateJ!)
 PetscSNES(ptr::Ptr, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PetscSNES{PetscLib}(ptr, age)
 Base.convert(::Type{CSNES}, v::AbstractPetscSNES) = v.ptr
@@ -152,7 +152,7 @@ mutable struct PetscDM{PetscLib} <: AbstractPetscDM{PetscLib}
 end
 
 # Convenience constructor from petsclib instance
-PetscDM(lib::PetscLib) where {PetscLib} = PetscDM{PetscLib}()
+PetscDM(lib::PetscLib) where {PetscLib} = PetscDM{PetscLib}(C_NULL, lib.age)
 PetscDM(ptr::CDM, lib::PetscLib, age::Int = lib.age) where {PetscLib} = PetscDM{PetscLib}(ptr, age)
 Base.convert(::Type{CDM}, v::AbstractPetscDM) = v.ptr
 Base.unsafe_convert(::Type{CDM}, v::AbstractPetscDM) = v.ptr

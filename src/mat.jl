@@ -485,8 +485,14 @@ is garbage collected, but can be called explicitly to free resources immediately
 $(_doc_external("Mat/MatDestroy"))
 """
 function destroy(m::AbstractPetscMat{PetscLib}) where {PetscLib}
+    # Drop the backing arrays: Julia-side bookkeeping
+    # that has to go when PETSc no longer owns the matrix.
     pop!(_MATSEQAIJ_WITHARRAYS_STORAGE, m.ptr, nothing)
-    return LibPETSc.MatDestroy(PetscLib, m)
+    if isdestroyable(m, PetscLib)
+        LibPETSc.MatDestroy(PetscLib, m)
+    end
+    m.ptr = C_NULL
+    return nothing
 end
 
 const MatAT{PetscLib, PetscScalar} = Union{

@@ -36,7 +36,7 @@ is garbage collected, but can be called explicitly to free resources immediately
 $(_doc_external("DM/DMDestroy"))
 """
 function destroy(dm::AbstractPetscDM{PetscLib}) where {PetscLib}
-    if !(finalized(PetscLib)) && dm.ptr != C_NULL 
+    if isdestroyable(dm, PetscLib)
         LibPETSc.DMDestroy(PetscLib, dm)
     end
     dm.ptr = C_NULL

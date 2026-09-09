@@ -251,7 +251,7 @@ function destroy(snes::AbstractPetscSNES{PetscLib}) where {PetscLib}
         destroy(snes.opts)
         snes.opts = nothing
     end
-    if !(finalized(PetscLib)) && snes.ptr != C_NULL
+    if isdestroyable(snes, PetscLib)
         LibPETSc.SNESDestroy(PetscLib, snes)
     end
     snes.ptr = C_NULL

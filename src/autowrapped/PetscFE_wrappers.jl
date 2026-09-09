@@ -302,12 +302,16 @@ $(_doc_external("DM/PetscFEDestroy"))
 function PetscFEDestroy(petsclib::PetscLibType, fem::PetscFE) end
 
 @for_petsc function PetscFEDestroy(petsclib::$UnionPetscLib, fem::PetscFE )
+	# PetscFE is a bare pointer, and PetscFEDestroy takes a pointer to it so it
+	# can null the caller's handle. Passing `fem` itself made PETSc dereference
+	# the FE as if it were the outer pointer, which raised ReadOnlyMemoryError.
+	fem_ = Ref(fem)
 
     @chk ccall(
                (:PetscFEDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscFE},),
-               fem,
+               fem_,
               )
 
 

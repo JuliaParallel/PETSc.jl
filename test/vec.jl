@@ -162,6 +162,12 @@ end
     
         @test LibPETSc.VecGetType(petsclib, petsc_x) == "seq"
 
+        # The length can be a plain Julia Int whatever width the library uses
+        v = PETSc.VecSeq(petsclib, 10)
+        @test v !== nothing
+        @test LibPETSc.VecGetSize(petsclib, v) == 10
+        PETSc.destroy(v)
+
         PETSc.destroy(petsc_x)
         PETSc.finalize(petsclib)
     end

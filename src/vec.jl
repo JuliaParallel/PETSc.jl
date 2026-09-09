@@ -206,7 +206,24 @@ end
 
 
 
-destroy(m::AbstractPetscVec{PetscLib}) where {PetscLib} = LibPETSc.VecDestroy(PetscLib,m)
+"""
+    destroy(v::AbstractPetscVec)
+
+Destroy a PETSc vector and release its resources.
+
+Safe to call more than once, and safe to reach as a GC finalizer after the
+library has been finalized or re-initialized: see [`isdestroyable`](@ref).
+
+# External Links
+$(_doc_external("Vec/VecDestroy"))
+"""
+function destroy(m::AbstractPetscVec{PetscLib}) where {PetscLib}
+    if isdestroyable(m, PetscLib)
+        LibPETSc.VecDestroy(PetscLib, m)
+    end
+    m.ptr = C_NULL
+    return nothing
+end
 
 
 """

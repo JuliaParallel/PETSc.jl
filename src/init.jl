@@ -120,6 +120,26 @@ $(_doc_external("Sys/PetscFinalized"))
 """
 finalized(petsclib) = LibPETSc.PetscFinalized(petsclib)
 
+"""
+    isdestroyable(obj, ::Type{PetscLib})
+
+Whether `obj` still refers to a PETSc object this process is allowed to destroy.
+
+It is not destroyable when the library is finalized, when the pointer is already
+null, or when the object predates the current initialize/finalize cycle.
+`initialize` and `finalize` both bump `petsclib.age`, and every object records
+the age it was created under. `PetscFinalize` frees everything it owns,
+including the inner communicator, so calling `xxxDestroy` on an object from an
+earlier cycle reaches a communicator that no longer exists and aborts inside
+MPI with "Invalid communicator". That happens from a GC finalizer, so it
+surfaces at an arbitrary later point rather than where the object was dropped.
+"""
+function isdestroyable(obj, ::Type{PetscLib}) where {PetscLib}
+    finalized(PetscLib) && return false
+    obj.ptr == C_NULL && return false
+    return obj.age == getlib(PetscLib).age
+end
+
 function _build_petsc_options(log_view::Bool, options)
     opts = String[]
     if log_view

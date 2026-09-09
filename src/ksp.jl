@@ -174,7 +174,7 @@ end
 
 
 function destroy(ksp::PetscKSP{PetscLib}) where {PetscLib}
-    if !(finalized(PetscLib)) && ksp.ptr != C_NULL
+    if isdestroyable(ksp, PetscLib)
         LibPETSc.KSPDestroy(PetscLib, ksp)
     end
     ksp.ptr = C_NULL

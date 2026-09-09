@@ -87,6 +87,8 @@ function Options(petsclib::PetscLibType; kwargs...)
 end
 
 function destroy(opts::AbstractPetscOptions{PetscLib}) where {PetscLib}
+    # PetscOptions carries no `age`, so this cannot use `isdestroyable`. 
+    # TODO: Adding the field would make it consistent with Vec, Mat, KSP, SNES and DM.
     if !(finalized(PetscLib)) && opts.ptr != C_NULL
         LibPETSc.PetscOptionsDestroy(PetscLib, opts)
     end

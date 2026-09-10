@@ -5,7 +5,11 @@ using MPI
 # Initialize PETSc
 petsclib = PETSc.getlib()
 PETSc.initialize(petsclib)
-        test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+test_comm = Sys.iswindows() ? LibPETSc.PETSC_COMM_SELF : MPI.COMM_SELF
+
+# Julia 1.13 parses a dot expression in the library slot of a ccall as a
+# module-qualified global, so the handle has to reach ccall as a plain local.
+petsc_library = petsclib.petsc_library
 
 @testset "PetscSection Low-Level API" begin
     
@@ -13,7 +17,7 @@ PETSc.initialize(petsclib)
         # Create a section (wrapper has wrong signature, use ccall)
         section = Ref{LibPETSc.PetscSection}()
         err = ccall(
-            (:PetscSectionCreate, petsclib.petsc_library),
+            (:PetscSectionCreate, petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
             test_comm, section
@@ -56,7 +60,7 @@ PETSc.initialize(petsclib)
         
         # Cleanup (wrapper has wrong signature, use ccall)
         err = ccall(
-            (:PetscSectionDestroy, petsclib.petsc_library),
+            (:PetscSectionDestroy, petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (Ptr{LibPETSc.PetscSection},),
             section
@@ -68,7 +72,7 @@ PETSc.initialize(petsclib)
         # Create section with 2 fields
         section = Ref{LibPETSc.PetscSection}()
         err = ccall(
-            (:PetscSectionCreate, petsclib.petsc_library),
+            (:PetscSectionCreate, petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
             test_comm, section
@@ -125,7 +129,7 @@ PETSc.initialize(petsclib)
         
         # Cleanup
         err = ccall(
-            (:PetscSectionDestroy, petsclib.petsc_library),
+            (:PetscSectionDestroy, petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (Ptr{LibPETSc.PetscSection},),
             section
@@ -137,7 +141,7 @@ PETSc.initialize(petsclib)
         # Create section
         section = Ref{LibPETSc.PetscSection}()
         err = ccall(
-            (:PetscSectionCreate, petsclib.petsc_library),
+            (:PetscSectionCreate, petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
             test_comm, section
@@ -173,7 +177,7 @@ PETSc.initialize(petsclib)
         
         # Cleanup
         err = ccall(
-            (:PetscSectionDestroy, petsclib.petsc_library),
+            (:PetscSectionDestroy, petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (Ptr{LibPETSc.PetscSection},),
             section
@@ -185,7 +189,7 @@ PETSc.initialize(petsclib)
         # Create original section
         section = Ref{LibPETSc.PetscSection}()
         err = ccall(
-            (:PetscSectionCreate, petsclib.petsc_library),
+            (:PetscSectionCreate, petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
             test_comm, section
@@ -201,7 +205,7 @@ PETSc.initialize(petsclib)
         # Create new section for copy
         section_copy = Ref{LibPETSc.PetscSection}()
         err = ccall(
-            (:PetscSectionCreate, petsclib.petsc_library),
+            (:PetscSectionCreate, petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (MPI.MPI_Comm, Ptr{LibPETSc.PetscSection}),
             test_comm, section_copy
@@ -223,7 +227,7 @@ PETSc.initialize(petsclib)
         
         # Cleanup
         err = ccall(
-            (:PetscSectionDestroy, petsclib.petsc_library),
+            (:PetscSectionDestroy, petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (Ptr{LibPETSc.PetscSection},),
             section
@@ -231,7 +235,7 @@ PETSc.initialize(petsclib)
         @test err == 0
         
         err = ccall(
-            (:PetscSectionDestroy, petsclib.petsc_library),
+            (:PetscSectionDestroy, petsc_library),
             PETSc.LibPETSc.PetscErrorCode,
             (Ptr{LibPETSc.PetscSection},),
             section_copy

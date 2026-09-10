@@ -4069,7 +4069,7 @@ function TSSetTolerances(petsclib::PetscLibType, ts::TS, atol::PetscReal, vatol:
 end 
 
 """
-	atol::PetscReal,rtol::PetscReal = TSGetTolerances(petsclib::PetscLibType,ts::TS, vatol::PetscVec, vrtol::PetscVec) 
+	atol::PetscReal,vatol::PetscVec,rtol::PetscReal,vrtol::PetscVec = TSGetTolerances(petsclib::PetscLibType,ts::TS) 
 Get tolerances for local truncation error when using adaptive controller
 
 Logically Collective
@@ -4090,13 +4090,13 @@ Level: beginner
 # External Links
 $(_doc_external("Ts/TSGetTolerances"))
 """
-function TSGetTolerances(petsclib::PetscLibType, ts::TS, vatol::PetscVec, vrtol::PetscVec) end
+function TSGetTolerances(petsclib::PetscLibType, ts::TS) end
 
-@for_petsc function TSGetTolerances(petsclib::$UnionPetscLib, ts::TS, vatol::PetscVec, vrtol::PetscVec )
+@for_petsc function TSGetTolerances(petsclib::$UnionPetscLib, ts::TS)
 	atol_ = Ref{$PetscReal}()
-	vatol_ = Ref(vatol.ptr)
+	vatol_ = Ref{CVec}(C_NULL)
 	rtol_ = Ref{$PetscReal}()
-	vrtol_ = Ref(vrtol.ptr)
+	vrtol_ = Ref{CVec}(C_NULL)
 
     @chk ccall(
                (:TSGetTolerances, $petsc_library),
@@ -4105,12 +4105,12 @@ function TSGetTolerances(petsclib::PetscLibType, ts::TS, vatol::PetscVec, vrtol:
                ts, atol_, vatol_, rtol_, vrtol_,
               )
 
-	atol = atol_[]
-	vatol.ptr = C_NULL
-	rtol = rtol_[]
-	vrtol.ptr = C_NULL
+	# The per-component vectors belong to the TS, so they get no finalizer.
+	# They come back NULL when only scalar tolerances are set.
+	vatol = PetscVec(vatol_[], petsclib)
+	vrtol = PetscVec(vrtol_[], petsclib)
 
-	return atol,rtol
+	return atol_[],vatol,rtol_[],vrtol
 end 
 
 """

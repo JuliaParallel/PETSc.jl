@@ -61,6 +61,17 @@ using MPI
             PETSc.LibPETSc.TSDestroy(petsclib, ts)
         end
     end
-    
+
+    # TSGetConvergedReason writes through an out-parameter. Wrapped as an input
+    # it was uncallable, since there was no way to read the value back.
+    @testset "TS converged reason" begin
+        ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)
+        reason = PETSc.LibPETSc.TSGetConvergedReason(petsclib, ts)
+        @test reason isa PETSc.LibPETSc.TSConvergedReason
+        # Nothing has been solved yet, so the TS is still iterating.
+        @test reason == PETSc.LibPETSc.TS_CONVERGED_ITERATING
+        PETSc.LibPETSc.TSDestroy(petsclib, ts)
+    end
+
     PETSc.finalize(petsclib)
 end

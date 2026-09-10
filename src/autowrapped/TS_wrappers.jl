@@ -3640,7 +3640,7 @@ function TSSetEquationType(petsclib::PetscLibType, ts::TS, equation_type::TSEqua
 end 
 
 """
-	TSGetConvergedReason(petsclib::PetscLibType,ts::TS, reason::TSConvergedReason) 
+	reason::TSConvergedReason = TSGetConvergedReason(petsclib::PetscLibType,ts::TS) 
 Gets the reason the `TS` iteration was stopped.
 
 Not Collective
@@ -3659,9 +3659,10 @@ Level: beginner
 # External Links
 $(_doc_external("Ts/TSGetConvergedReason"))
 """
-function TSGetConvergedReason(petsclib::PetscLibType, ts::TS, reason::TSConvergedReason) end
+function TSGetConvergedReason(petsclib::PetscLibType, ts::TS) end
 
-@for_petsc function TSGetConvergedReason(petsclib::$UnionPetscLib, ts::TS, reason::TSConvergedReason )
+@for_petsc function TSGetConvergedReason(petsclib::$UnionPetscLib, ts::TS)
+	reason = Ref{TSConvergedReason}()
 
     @chk ccall(
                (:TSGetConvergedReason, $petsc_library),
@@ -3671,7 +3672,7 @@ function TSGetConvergedReason(petsclib::PetscLibType, ts::TS, reason::TSConverge
               )
 
 
-	return nothing
+	return reason[]
 end 
 
 """

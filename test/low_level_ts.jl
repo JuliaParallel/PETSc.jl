@@ -61,6 +61,47 @@ using MPI
             PETSc.LibPETSc.TSDestroy(petsclib, ts)
         end
     end
-    
+
+    # TSGetConvergedReason writes through an out-parameter. Wrapped as an input
+    # it was uncallable, since there was no way to read the value back.
+    @testset "TS converged reason" begin
+        ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)
+        reason = PETSc.LibPETSc.TSGetConvergedReason(petsclib, ts)
+        @test reason isa PETSc.LibPETSc.TSConvergedReason
+        # Nothing has been solved yet, so the TS is still iterating.
+        @test reason == PETSc.LibPETSc.TS_CONVERGED_ITERATING
+        PETSc.LibPETSc.TSDestroy(petsclib, ts)
+    end
+
+    # TSGetTolerances has four outputs. Taking two of them as inputs meant the
+    # vectors could not be read back, and the wrapper nulled the caller's
+    # handles on the way out, losing the reference to a live PETSc object.
+    @testset "TS tolerances" begin
+        PetscScalar = PETSc.scalartype(petsclib)
+        ts = PETSc.LibPETSc.TSCreate(petsclib, test_comm)
+
+        # A NULL vector tells PETSc to use the scalar tolerance.
+        null_vec = PETSc.LibPETSc.PetscVec(petsclib)
+        PETSc.LibPETSc.TSSetTolerances(petsclib, ts, 1e-8, null_vec, 1e-6, null_vec)
+
+        atol, vatol, rtol, vrtol = PETSc.LibPETSc.TSGetTolerances(petsclib, ts)
+        @test atol == 1e-8
+        @test rtol == 1e-6
+        @test vatol isa PETSc.LibPETSc.PetscVec
+        @test vatol.ptr == C_NULL
+        @test vrtol.ptr == C_NULL
+
+        # With per-component tolerances the vectors come back, and the handle
+        # passed to the setter stays valid.
+        v = PETSc.VecSeq(petsclib, PetscScalar[1e-9, 1e-9, 1e-9])
+        PETSc.LibPETSc.TSSetTolerances(petsclib, ts, 1e-8, v, 1e-6, v)
+        _, vatol2, _, _ = PETSc.LibPETSc.TSGetTolerances(petsclib, ts)
+        @test v.ptr != C_NULL
+        @test vatol2.ptr == v.ptr
+
+        PETSc.destroy(v)
+        PETSc.LibPETSc.TSDestroy(petsclib, ts)
+    end
+
     PETSc.finalize(petsclib)
 end

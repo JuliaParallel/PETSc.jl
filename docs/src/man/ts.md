@@ -101,6 +101,18 @@ Each may return a PETSc error code; any other return value counts as success.
 
 A callback that raises a Julia exception is reported and turned into a PETSc failure rather than being allowed to escape into C, where it would take the process down with it. The error is logged with its backtrace and [`PETSc.solve!`](@ref) then raises a `PetscError`.
 
+### Precompilation
+
+Each setter builds its `@cfunction` trampoline when you call it, so nothing here is affected by precompilation, and there is nothing you need to do about it.
+
+It is worth knowing where the hazard is, though, because the low-level examples show the other pattern. A `@cfunction` yields a pointer valid only for the session that evaluated it, so this at the top level of a package:
+
+```julia
+const MY_RHS_PTR = @cfunction(my_rhs!, PetscErrorCode, (CTS, PetscReal, CVec, CVec, Ptr{Cvoid}))
+```
+
+captures a pointer during precompilation and hands PETSc a stale one in every later session. In a script such as `examples/ex16.jl` it is fine, since the file is evaluated afresh each run. Inside a package it is not: build the pointer inside the function that registers it, or assign it from `__init__`.
+
 ## Passing your own data
 
 Anything stored with [`PETSc.set_user_ctx!`](@ref) is handed back as a trailing argument, to whichever callbacks have a method that accepts one:

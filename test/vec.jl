@@ -89,7 +89,7 @@ end
 
 @testset "VecCreateSeqWithArray" begin
     N = 10
-    for petsclib in PETSc.petsclibs[1:2]
+    for petsclib in PETSc.petsclibs[1:min(2, length(PETSc.petsclibs))]
         #petsclib = PETSc.petsclibs[5]
         PETSc.initialize(petsclib)
         PetscScalar = petsclib.PetscScalar

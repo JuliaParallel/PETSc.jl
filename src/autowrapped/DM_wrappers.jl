@@ -3318,15 +3318,16 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetLocalToGlobalMapping"))
 """
-function DMGetLocalToGlobalMapping(petsclib::PetscLibType, dm::PetscDM, ltog::ISLocalToGlobalMapping) end
+function DMGetLocalToGlobalMapping(petsclib::PetscLibType, dm::PetscDM, ltog::Union{ISLocalToGlobalMapping, Ref{ISLocalToGlobalMapping}}) end
 
-@for_petsc function DMGetLocalToGlobalMapping(petsclib::$UnionPetscLib, dm::PetscDM, ltog::ISLocalToGlobalMapping )
+@for_petsc function DMGetLocalToGlobalMapping(petsclib::$UnionPetscLib, dm::PetscDM, ltog::Union{ISLocalToGlobalMapping, Ref{ISLocalToGlobalMapping}} )
+	ltog_ = ltog isa Ref ? ltog : Ref{ISLocalToGlobalMapping}(ltog)
 
     @chk ccall(
                (:DMGetLocalToGlobalMapping, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{ISLocalToGlobalMapping}),
-               dm, ltog,
+               dm, ltog_,
               )
 
 
@@ -4105,20 +4106,27 @@ function DMCreateFieldIS(petsclib::PetscLibType, dm::PetscDM) end
 
 @for_petsc function DMCreateFieldIS(petsclib::$UnionPetscLib, dm::PetscDM )
 	numFields_ = Ref{$PetscInt}()
-	fieldNames_ = Ref{Cchar}()
-	fields_ = Ref{Ptr{CIS}}()
-
+	fieldNames_ = Ref{Ptr{Ptr{Cchar}}}(C_NULL)
+	fields_ = Ref{Ptr{CIS}}(C_NULL)
     @chk ccall(
                (:DMCreateFieldIS, $petsc_library),
                PetscErrorCode,
-               (CDM, Ptr{$PetscInt}, Cchar, Ptr{Ptr{CIS}}),
+               (CDM, Ptr{$PetscInt}, Ptr{Ptr{Ptr{Cchar}}}, Ptr{Ptr{CIS}}),
                dm, numFields_, fieldNames_, fields_,
               )
-
 	numFields = numFields_[]
-	fieldNames = fieldNames_[]
-	fields = unsafe_wrap(Array, fields_[], VecGetLocalSize(petsclib, x); own = false)
-
+	fieldNames = String[]
+	if fieldNames_[] != C_NULL
+		for i in 1:numFields
+			push!(fieldNames, unsafe_string(unsafe_load(fieldNames_[], i)))
+		end
+	end
+	fields = IS{$PetscLib}[]
+	if fields_[] != C_NULL
+		for i in 1:numFields
+			push!(fields, IS(unsafe_load(fields_[], i), petsclib))
+		end
+	end
 	return numFields,fieldNames,fields
 end 
 
@@ -6454,7 +6462,6 @@ function DMGetLocalSection(petsclib::PetscLibType, dm::PetscDM, section::Union{P
 
 @for_petsc function DMGetLocalSection(petsclib::$UnionPetscLib, dm::PetscDM, section::Union{PetscSection, Ref{PetscSection}} )
 
-	# Accept either a Ptr (PetscSection) or a Ref{PetscSection} and pass a Ptr to ccall
 	section_ = section isa Ref ? section : Ref{PetscSection}(section)
 
     @chk ccall(
@@ -6654,15 +6661,16 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetGlobalSection"))
 """
-function DMGetGlobalSection(petsclib::PetscLibType, dm::PetscDM, section::PetscSection) end
+function DMGetGlobalSection(petsclib::PetscLibType, dm::PetscDM, section::Union{PetscSection, Ref{PetscSection}}) end
 
-@for_petsc function DMGetGlobalSection(petsclib::$UnionPetscLib, dm::PetscDM, section::PetscSection )
+@for_petsc function DMGetGlobalSection(petsclib::$UnionPetscLib, dm::PetscDM, section::Union{PetscSection, Ref{PetscSection}} )
+	section_ = section isa Ref ? section : Ref{PetscSection}(section)
 
     @chk ccall(
                (:DMGetGlobalSection, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{PetscSection}),
-               dm, section,
+               dm, section_,
               )
 
 
@@ -6727,15 +6735,16 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetSectionSF"))
 """
-function DMGetSectionSF(petsclib::PetscLibType, dm::PetscDM, sf::PetscSF) end
+function DMGetSectionSF(petsclib::PetscLibType, dm::PetscDM, sf::Union{PetscSF, Ref{PetscSF}}) end
 
-@for_petsc function DMGetSectionSF(petsclib::$UnionPetscLib, dm::PetscDM, sf::PetscSF )
+@for_petsc function DMGetSectionSF(petsclib::$UnionPetscLib, dm::PetscDM, sf::Union{PetscSF, Ref{PetscSF}} )
+	sf_ = sf isa Ref ? sf : Ref{PetscSF}(sf)
 
     @chk ccall(
                (:DMGetSectionSF, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{PetscSF}),
-               dm, sf,
+               dm, sf_,
               )
 
 
@@ -6844,15 +6853,16 @@ See also:
 # External Links
 $(_doc_external("DM/DMGetPointSF"))
 """
-function DMGetPointSF(petsclib::PetscLibType, dm::PetscDM, sf::PetscSF) end
+function DMGetPointSF(petsclib::PetscLibType, dm::PetscDM, sf::Union{PetscSF, Ref{PetscSF}}) end
 
-@for_petsc function DMGetPointSF(petsclib::$UnionPetscLib, dm::PetscDM, sf::PetscSF )
+@for_petsc function DMGetPointSF(petsclib::$UnionPetscLib, dm::PetscDM, sf::Union{PetscSF, Ref{PetscSF}} )
+	sf_ = sf isa Ref ? sf : Ref{PetscSF}(sf)
 
     @chk ccall(
                (:DMGetPointSF, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{PetscSF}),
-               dm, sf,
+               dm, sf_,
               )
 
 
@@ -11772,15 +11782,16 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMGetCoordinateSection"))
 """
-function DMGetCoordinateSection(petsclib::PetscLibType, dm::PetscDM, section::PetscSection) end
+function DMGetCoordinateSection(petsclib::PetscLibType, dm::PetscDM, section::Union{PetscSection, Ref{PetscSection}}) end
 
-@for_petsc function DMGetCoordinateSection(petsclib::$UnionPetscLib, dm::PetscDM, section::PetscSection )
+@for_petsc function DMGetCoordinateSection(petsclib::$UnionPetscLib, dm::PetscDM, section::Union{PetscSection, Ref{PetscSection}} )
+	section_ = section isa Ref ? section : Ref{PetscSection}(section)
 
     @chk ccall(
                (:DMGetCoordinateSection, $petsc_library),
                PetscErrorCode,
                (CDM, Ptr{PetscSection}),
-               dm, section,
+               dm, section_,
               )
 
 
@@ -32045,16 +32056,14 @@ function DMPlexGetCone(petsclib::PetscLibType, dm::PetscDM, p::PetscInt) end
 
 @for_petsc function DMPlexGetCone(petsclib::$UnionPetscLib, dm::PetscDM, p::$PetscInt )
 	cone_ = Ref{Ptr{$PetscInt}}()
-
     @chk ccall(
                (:DMPlexGetCone, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{Ptr{$PetscInt}}),
                dm, p, cone_,
               )
-
-	cone = unsafe_wrap(Array, cone_[], VecGetLocalSize(petsclib, x); own = false)
-
+	n = DMPlexGetConeSize(petsclib, dm, p)
+	cone = unsafe_wrap(Array, cone_[], n; own = false)
 	return cone
 end 
 
@@ -32274,16 +32283,14 @@ function DMPlexGetConeOrientation(petsclib::PetscLibType, dm::PetscDM, p::PetscI
 
 @for_petsc function DMPlexGetConeOrientation(petsclib::$UnionPetscLib, dm::PetscDM, p::$PetscInt )
 	coneOrientation_ = Ref{Ptr{$PetscInt}}()
-
     @chk ccall(
                (:DMPlexGetConeOrientation, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{Ptr{$PetscInt}}),
                dm, p, coneOrientation_,
               )
-
-	coneOrientation = unsafe_wrap(Array, coneOrientation_[], VecGetLocalSize(petsclib, x); own = false)
-
+	n = DMPlexGetConeSize(petsclib, dm, p)
+	coneOrientation = unsafe_wrap(Array, coneOrientation_[], n; own = false)
 	return coneOrientation
 end 
 
@@ -32415,17 +32422,15 @@ function DMPlexGetOrientedCone(petsclib::PetscLibType, dm::PetscDM, p::PetscInt)
 @for_petsc function DMPlexGetOrientedCone(petsclib::$UnionPetscLib, dm::PetscDM, p::$PetscInt )
 	cone_ = Ref{Ptr{$PetscInt}}()
 	ornt_ = Ref{Ptr{$PetscInt}}()
-
     @chk ccall(
                (:DMPlexGetOrientedCone, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{$PetscInt}}),
                dm, p, cone_, ornt_,
               )
-
-	cone = unsafe_wrap(Array, cone_[], VecGetLocalSize(petsclib, x); own = false)
-	ornt = unsafe_wrap(Array, ornt_[], VecGetLocalSize(petsclib, x); own = false)
-
+	n = DMPlexGetConeSize(petsclib, dm, p)
+	cone = unsafe_wrap(Array, cone_[], n; own = false)
+	ornt = unsafe_wrap(Array, ornt_[], n; own = false)
 	return cone,ornt
 end 
 
@@ -32560,16 +32565,14 @@ function DMPlexGetSupport(petsclib::PetscLibType, dm::PetscDM, p::PetscInt) end
 
 @for_petsc function DMPlexGetSupport(petsclib::$UnionPetscLib, dm::PetscDM, p::$PetscInt )
 	support_ = Ref{Ptr{$PetscInt}}()
-
     @chk ccall(
                (:DMPlexGetSupport, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{Ptr{$PetscInt}}),
                dm, p, support_,
               )
-
-	support = unsafe_wrap(Array, support_[], VecGetLocalSize(petsclib, x); own = false)
-
+	n = DMPlexGetSupportSize(petsclib, dm, p)
+	support = unsafe_wrap(Array, support_[], n; own = false)
 	return support
 end 
 
@@ -32670,18 +32673,16 @@ function DMPlexGetTransitiveClosure(petsclib::PetscLibType, dm::PetscDM, p::Pets
 
 @for_petsc function DMPlexGetTransitiveClosure(petsclib::$UnionPetscLib, dm::PetscDM, p::$PetscInt, useCone::PetscBool )
 	numPoints_ = Ref{$PetscInt}()
-	points_ = Ref{Ptr{$PetscInt}}()
-
+	points_ = Ref{Ptr{$PetscInt}}(C_NULL)
     @chk ccall(
                (:DMPlexGetTransitiveClosure, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, PetscBool, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
                dm, p, useCone, numPoints_, points_,
               )
-
 	numPoints = numPoints_[]
-	points = unsafe_wrap(Array, points_[], VecGetLocalSize(petsclib, x); own = false)
-
+	# points and orientations are interleaved: [p0, o0, p1, o1, ...]
+	points = unsafe_wrap(Array, points_[], 2*numPoints; own = false)
 	return numPoints,points
 end 
 
@@ -32708,16 +32709,14 @@ $(_doc_external("DMPlex/DMPlexRestoreTransitiveClosure"))
 function DMPlexRestoreTransitiveClosure(petsclib::PetscLibType, dm::PetscDM, p::PetscInt, useCone::PetscBool, numPoints::PetscInt, points::Vector{PetscInt}) end
 
 @for_petsc function DMPlexRestoreTransitiveClosure(petsclib::$UnionPetscLib, dm::PetscDM, p::$PetscInt, useCone::PetscBool, numPoints::$PetscInt, points::Vector{$PetscInt} )
+	numPoints_ = Ref{$PetscInt}(numPoints)
 	points_ = Ref(pointer(points))
-
     @chk ccall(
                (:DMPlexRestoreTransitiveClosure, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, PetscBool, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
-               dm, p, useCone, numPoints, points_,
+               dm, p, useCone, numPoints_, points_,
               )
-
-
 	return nothing
 end 
 
@@ -32879,18 +32878,15 @@ function DMPlexGetJoin(petsclib::PetscLibType, dm::PetscDM, numPoints::PetscInt,
 
 @for_petsc function DMPlexGetJoin(petsclib::$UnionPetscLib, dm::PetscDM, numPoints::$PetscInt, points::Vector{$PetscInt} )
 	numCoveredPoints_ = Ref{$PetscInt}()
-	coveredPoints_ = Ref{Ptr{$PetscInt}}()
-
+	coveredPoints_ = Ref{Ptr{$PetscInt}}(C_NULL)
     @chk ccall(
                (:DMPlexGetJoin, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
                dm, numPoints, points, numCoveredPoints_, coveredPoints_,
               )
-
 	numCoveredPoints = numCoveredPoints_[]
-	coveredPoints = unsafe_wrap(Array, coveredPoints_[], VecGetLocalSize(petsclib, x); own = false)
-
+	coveredPoints = unsafe_wrap(Array, coveredPoints_[], numCoveredPoints; own = false)
 	return numCoveredPoints,coveredPoints
 end 
 
@@ -32916,23 +32912,18 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreJoin"))
 """
-function DMPlexRestoreJoin(petsclib::PetscLibType, dm::PetscDM, numPoints::PetscInt, points::Vector{PetscInt}) end
+function DMPlexRestoreJoin(petsclib::PetscLibType, dm::PetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::Vector{PetscInt}) end
 
-@for_petsc function DMPlexRestoreJoin(petsclib::$UnionPetscLib, dm::PetscDM, numPoints::$PetscInt, points::Vector{$PetscInt} )
-	numCoveredPoints_ = Ref{$PetscInt}()
-	coveredPoints_ = Ref{Ptr{$PetscInt}}()
-
+@for_petsc function DMPlexRestoreJoin(petsclib::$UnionPetscLib, dm::PetscDM, numPoints::$PetscInt, points::Vector{$PetscInt}, numCoveredPoints::$PetscInt, coveredPoints::Vector{$PetscInt} )
+	numCoveredPoints_ = Ref{$PetscInt}(numCoveredPoints)
+	coveredPoints_ = Ref(pointer(coveredPoints))
     @chk ccall(
                (:DMPlexRestoreJoin, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
                dm, numPoints, points, numCoveredPoints_, coveredPoints_,
               )
-
-	numCoveredPoints = numCoveredPoints_[]
-	coveredPoints = unsafe_wrap(Array, coveredPoints_[], VecGetLocalSize(petsclib, x); own = false)
-
-	return numCoveredPoints,coveredPoints
+	return nothing
 end 
 
 """
@@ -32961,18 +32952,15 @@ function DMPlexGetFullJoin(petsclib::PetscLibType, dm::PetscDM, numPoints::Petsc
 
 @for_petsc function DMPlexGetFullJoin(petsclib::$UnionPetscLib, dm::PetscDM, numPoints::$PetscInt, points::Vector{$PetscInt} )
 	numCoveredPoints_ = Ref{$PetscInt}()
-	coveredPoints_ = Ref{Ptr{$PetscInt}}()
-
+	coveredPoints_ = Ref{Ptr{$PetscInt}}(C_NULL)
     @chk ccall(
                (:DMPlexGetFullJoin, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
                dm, numPoints, points, numCoveredPoints_, coveredPoints_,
               )
-
 	numCoveredPoints = numCoveredPoints_[]
-	coveredPoints = unsafe_wrap(Array, coveredPoints_[], VecGetLocalSize(petsclib, x); own = false)
-
+	coveredPoints = unsafe_wrap(Array, coveredPoints_[], numCoveredPoints; own = false)
 	return numCoveredPoints,coveredPoints
 end 
 
@@ -33002,18 +32990,15 @@ function DMPlexGetMeet(petsclib::PetscLibType, dm::PetscDM, numPoints::PetscInt,
 
 @for_petsc function DMPlexGetMeet(petsclib::$UnionPetscLib, dm::PetscDM, numPoints::$PetscInt, points::Vector{$PetscInt} )
 	numCoveringPoints_ = Ref{$PetscInt}()
-	coveringPoints_ = Ref{Ptr{$PetscInt}}()
-
+	coveringPoints_ = Ref{Ptr{$PetscInt}}(C_NULL)
     @chk ccall(
                (:DMPlexGetMeet, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
                dm, numPoints, points, numCoveringPoints_, coveringPoints_,
               )
-
 	numCoveringPoints = numCoveringPoints_[]
-	coveringPoints = unsafe_wrap(Array, coveringPoints_[], VecGetLocalSize(petsclib, x); own = false)
-
+	coveringPoints = unsafe_wrap(Array, coveringPoints_[], numCoveringPoints; own = false)
 	return numCoveringPoints,coveringPoints
 end 
 
@@ -33039,23 +33024,18 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreMeet"))
 """
-function DMPlexRestoreMeet(petsclib::PetscLibType, dm::PetscDM, numPoints::PetscInt, points::Vector{PetscInt}) end
+function DMPlexRestoreMeet(petsclib::PetscLibType, dm::PetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::Vector{PetscInt}) end
 
-@for_petsc function DMPlexRestoreMeet(petsclib::$UnionPetscLib, dm::PetscDM, numPoints::$PetscInt, points::Vector{$PetscInt} )
-	numCoveredPoints_ = Ref{$PetscInt}()
-	coveredPoints_ = Ref{Ptr{$PetscInt}}()
-
+@for_petsc function DMPlexRestoreMeet(petsclib::$UnionPetscLib, dm::PetscDM, numPoints::$PetscInt, points::Vector{$PetscInt}, numCoveredPoints::$PetscInt, coveredPoints::Vector{$PetscInt} )
+	numCoveredPoints_ = Ref{$PetscInt}(numCoveredPoints)
+	coveredPoints_ = Ref(pointer(coveredPoints))
     @chk ccall(
                (:DMPlexRestoreMeet, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
                dm, numPoints, points, numCoveredPoints_, coveredPoints_,
               )
-
-	numCoveredPoints = numCoveredPoints_[]
-	coveredPoints = unsafe_wrap(Array, coveredPoints_[], VecGetLocalSize(petsclib, x); own = false)
-
-	return numCoveredPoints,coveredPoints
+	return nothing
 end 
 
 """
@@ -33083,20 +33063,17 @@ $(_doc_external("DMPlex/DMPlexGetFullMeet"))
 function DMPlexGetFullMeet(petsclib::PetscLibType, dm::PetscDM, numPoints::PetscInt, points::Vector{PetscInt}) end
 
 @for_petsc function DMPlexGetFullMeet(petsclib::$UnionPetscLib, dm::PetscDM, numPoints::$PetscInt, points::Vector{$PetscInt} )
-	numCoveredPoints_ = Ref{$PetscInt}()
-	coveredPoints_ = Ref{Ptr{$PetscInt}}()
-
+	numCoveringPoints_ = Ref{$PetscInt}()
+	coveringPoints_ = Ref{Ptr{$PetscInt}}(C_NULL)
     @chk ccall(
                (:DMPlexGetFullMeet, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}),
-               dm, numPoints, points, numCoveredPoints_, coveredPoints_,
+               dm, numPoints, points, numCoveringPoints_, coveringPoints_,
               )
-
-	numCoveredPoints = numCoveredPoints_[]
-	coveredPoints = unsafe_wrap(Array, coveredPoints_[], VecGetLocalSize(petsclib, x); own = false)
-
-	return numCoveredPoints,coveredPoints
+	numCoveringPoints = numCoveringPoints_[]
+	coveringPoints = unsafe_wrap(Array, coveringPoints_[], numCoveringPoints; own = false)
+	return numCoveringPoints,coveringPoints
 end 
 
 """
@@ -33796,18 +33773,15 @@ function DMPlexVecGetClosure(petsclib::PetscLibType, dm::PetscDM, section::Petsc
 
 @for_petsc function DMPlexVecGetClosure(petsclib::$UnionPetscLib, dm::PetscDM, section::PetscSection, v::PetscVec, point::$PetscInt )
 	csize_ = Ref{$PetscInt}()
-	values_ = Ref{Ptr{$PetscScalar}}()
-
+	values_ = Ref{Ptr{$PetscScalar}}(C_NULL)
     @chk ccall(
                (:DMPlexVecGetClosure, $petsc_library),
                PetscErrorCode,
                (CDM, PetscSection, CVec, $PetscInt, Ptr{$PetscInt}, Ptr{Ptr{$PetscScalar}}),
                dm, section, v, point, csize_, values_,
               )
-
 	csize = csize_[]
-	values = unsafe_wrap(Array, values_[], VecGetLocalSize(petsclib, x); own = false)
-
+	values = unsafe_wrap(Array, values_[], csize; own = false)
 	return csize,values
 end 
 
@@ -33835,16 +33809,14 @@ $(_doc_external("DMPlex/DMPlexVecRestoreClosure"))
 function DMPlexVecRestoreClosure(petsclib::PetscLibType, dm::PetscDM, section::PetscSection, v::PetscVec, point::PetscInt, csize::PetscInt, values::Vector{PetscScalar}) end
 
 @for_petsc function DMPlexVecRestoreClosure(petsclib::$UnionPetscLib, dm::PetscDM, section::PetscSection, v::PetscVec, point::$PetscInt, csize::$PetscInt, values::Vector{$PetscScalar} )
+	csize_ = Ref{$PetscInt}(csize)
 	values_ = Ref(pointer(values))
-
     @chk ccall(
                (:DMPlexVecRestoreClosure, $petsc_library),
                PetscErrorCode,
                (CDM, PetscSection, CVec, $PetscInt, Ptr{$PetscInt}, Ptr{Ptr{$PetscScalar}}),
-               dm, section, v, point, csize, values_,
+               dm, section, v, point, csize_, values_,
               )
-
-
 	return nothing
 end 
 
@@ -33916,22 +33888,17 @@ function DMPlexGetClosureIndices(petsclib::PetscLibType, dm::PetscDM, section::P
 
 @for_petsc function DMPlexGetClosureIndices(petsclib::$UnionPetscLib, dm::PetscDM, section::PetscSection, idxSection::PetscSection, point::$PetscInt, useClPerm::PetscBool )
 	numIndices_ = Ref{$PetscInt}()
-	indices_ = Ref{Ptr{$PetscInt}}()
-	outOffsets = Vector{$PetscInt}(undef, ni);  # CHECK SIZE!!
-	values_ = Ref{Ptr{$PetscScalar}}()
-
+	indices_ = Ref{Ptr{$PetscInt}}(C_NULL)
+	outOffsets = zeros($PetscInt, 32)  # PETSc requires room for up to 32 field offsets
     @chk ccall(
                (:DMPlexGetClosureIndices, $petsc_library),
                PetscErrorCode,
                (CDM, PetscSection, PetscSection, $PetscInt, PetscBool, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{$PetscInt}, Ptr{Ptr{$PetscScalar}}),
-               dm, section, idxSection, point, useClPerm, numIndices_, indices_, outOffsets, values_,
+               dm, section, idxSection, point, useClPerm, numIndices_, indices_, outOffsets, C_NULL,
               )
-
 	numIndices = numIndices_[]
-	indices = unsafe_wrap(Array, indices_[], VecGetLocalSize(petsclib, x); own = false)
-	values = unsafe_wrap(Array, values_[], VecGetLocalSize(petsclib, x); own = false)
-
-	return numIndices,indices,outOffsets,values
+	indices = unsafe_wrap(Array, indices_[], numIndices; own = false)
+	return numIndices,indices,outOffsets
 end 
 
 """
@@ -33960,26 +33927,18 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreClosureIndices"))
 """
-function DMPlexRestoreClosureIndices(petsclib::PetscLibType, dm::PetscDM, section::PetscSection, idxSection::PetscSection, point::PetscInt, useClPerm::PetscBool) end
+function DMPlexRestoreClosureIndices(petsclib::PetscLibType, dm::PetscDM, section::PetscSection, idxSection::PetscSection, point::PetscInt, useClPerm::PetscBool, numIndices::PetscInt, indices::Vector{PetscInt}) end
 
-@for_petsc function DMPlexRestoreClosureIndices(petsclib::$UnionPetscLib, dm::PetscDM, section::PetscSection, idxSection::PetscSection, point::$PetscInt, useClPerm::PetscBool )
-	numIndices_ = Ref{$PetscInt}()
-	indices_ = Ref{Ptr{$PetscInt}}()
-	outOffsets = Vector{$PetscInt}(undef, ni);  # CHECK SIZE!!
-	values_ = Ref{Ptr{$PetscScalar}}()
-
+@for_petsc function DMPlexRestoreClosureIndices(petsclib::$UnionPetscLib, dm::PetscDM, section::PetscSection, idxSection::PetscSection, point::$PetscInt, useClPerm::PetscBool, numIndices::$PetscInt, indices::Vector{$PetscInt} )
+	numIndices_ = Ref{$PetscInt}(numIndices)
+	indices_ = Ref(pointer(indices))
     @chk ccall(
                (:DMPlexRestoreClosureIndices, $petsc_library),
                PetscErrorCode,
                (CDM, PetscSection, PetscSection, $PetscInt, PetscBool, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{$PetscInt}, Ptr{Ptr{$PetscScalar}}),
-               dm, section, idxSection, point, useClPerm, numIndices_, indices_, outOffsets, values_,
+               dm, section, idxSection, point, useClPerm, numIndices_, indices_, C_NULL, C_NULL,
               )
-
-	numIndices = numIndices_[]
-	indices = unsafe_wrap(Array, indices_[], VecGetLocalSize(petsclib, x); own = false)
-	values = unsafe_wrap(Array, values_[], VecGetLocalSize(petsclib, x); own = false)
-
-	return numIndices,indices,outOffsets,values
+	return nothing
 end 
 
 """
@@ -39278,21 +39237,18 @@ function DMPlexGetCellCoordinates(petsclib::PetscLibType, dm::PetscDM, cell::Pet
 @for_petsc function DMPlexGetCellCoordinates(petsclib::$UnionPetscLib, dm::PetscDM, cell::$PetscInt )
 	isDG_ = Ref{PetscBool}()
 	Nc_ = Ref{$PetscInt}()
-	array_ = Ref{Ptr{$PetscScalar}}()
-	coords_ = Ref{Ptr{$PetscScalar}}()
-
+	array_ = Ref{Ptr{$PetscScalar}}(C_NULL)
+	coords_ = Ref{Ptr{$PetscScalar}}(C_NULL)
     @chk ccall(
                (:DMPlexGetCellCoordinates, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{PetscBool}, Ptr{$PetscInt}, Ptr{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}),
                dm, cell, isDG_, Nc_, array_, coords_,
               )
-
 	isDG = isDG_[]
 	Nc = Nc_[]
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
-	coords = unsafe_wrap(Array, coords_[], VecGetLocalSize(petsclib, x); own = false)
-
+	array = array_[]   # opaque pointer, passed back to DMPlexRestoreCellCoordinates
+	coords = unsafe_wrap(Array, coords_[], Nc; own = false)
 	return isDG,Nc,array,coords
 end 
 
@@ -39319,27 +39275,20 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreCellCoordinates"))
 """
-function DMPlexRestoreCellCoordinates(petsclib::PetscLibType, dm::PetscDM, cell::PetscInt) end
+function DMPlexRestoreCellCoordinates(petsclib::PetscLibType, dm::PetscDM, cell::PetscInt, isDG::Union{PetscBool,Bool}, Nc::PetscInt, array::Ptr{PetscScalar}, coords::Vector{PetscScalar}) end
 
-@for_petsc function DMPlexRestoreCellCoordinates(petsclib::$UnionPetscLib, dm::PetscDM, cell::$PetscInt )
-	isDG_ = Ref{PetscBool}()
-	Nc_ = Ref{$PetscInt}()
-	array_ = Ref{Ptr{$PetscScalar}}()
-	coords_ = Ref{Ptr{$PetscScalar}}()
-
+@for_petsc function DMPlexRestoreCellCoordinates(petsclib::$UnionPetscLib, dm::PetscDM, cell::$PetscInt, isDG::Union{PetscBool,Bool}, Nc::$PetscInt, array::Ptr{$PetscScalar}, coords::Vector{$PetscScalar} )
+	isDG_ = Ref{PetscBool}(PetscBool(isDG))
+	Nc_ = Ref{$PetscInt}(Nc)
+	array_ = Ref{Ptr{$PetscScalar}}(array)
+	coords_ = Ref(pointer(coords))
     @chk ccall(
                (:DMPlexRestoreCellCoordinates, $petsc_library),
                PetscErrorCode,
                (CDM, $PetscInt, Ptr{PetscBool}, Ptr{$PetscInt}, Ptr{Ptr{$PetscScalar}}, Ptr{Ptr{$PetscScalar}}),
                dm, cell, isDG_, Nc_, array_, coords_,
               )
-
-	isDG = isDG_[]
-	Nc = Nc_[]
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
-	coords = unsafe_wrap(Array, coords_[], VecGetLocalSize(petsclib, x); own = false)
-
-	return isDG,Nc,array,coords
+	return nothing
 end 
 
 """

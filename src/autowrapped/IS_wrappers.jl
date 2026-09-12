@@ -896,17 +896,15 @@ $(_doc_external("Vec/ISGetTotalIndices"))
 function ISGetTotalIndices(petsclib::PetscLibType, is::IS) end
 
 @for_petsc function ISGetTotalIndices(petsclib::$UnionPetscLib, is::IS )
-	indices_ = Ref{Ptr{$PetscInt}}()
-
+	indices_ = Ref{Ptr{$PetscInt}}(C_NULL)
     @chk ccall(
                (:ISGetTotalIndices, $petsc_library),
                PetscErrorCode,
                (CIS, Ptr{Ptr{$PetscInt}}),
                is, indices_,
               )
-
-	indices = unsafe_wrap(Array, indices_[], VecGetLocalSize(petsclib, x); own = false)
-
+	n = ISGetSize(petsclib, is)
+	indices = unsafe_wrap(Array, indices_[], n; own = false)
 	return indices
 end 
 
@@ -969,17 +967,15 @@ $(_doc_external("Vec/ISGetNonlocalIndices"))
 function ISGetNonlocalIndices(petsclib::PetscLibType, is::IS) end
 
 @for_petsc function ISGetNonlocalIndices(petsclib::$UnionPetscLib, is::IS )
-	indices_ = Ref{Ptr{$PetscInt}}()
-
+	indices_ = Ref{Ptr{$PetscInt}}(C_NULL)
     @chk ccall(
                (:ISGetNonlocalIndices, $petsc_library),
                PetscErrorCode,
                (CIS, Ptr{Ptr{$PetscInt}}),
                is, indices_,
               )
-
-	indices = unsafe_wrap(Array, indices_[], VecGetLocalSize(petsclib, x); own = false)
-
+	n = ISGetSize(petsclib, is) - ISGetLocalSize(petsclib, is)
+	indices = unsafe_wrap(Array, indices_[], n; own = false)
 	return indices
 end 
 
@@ -1972,17 +1968,15 @@ $(_doc_external("Vec/ISBlockGetIndices"))
 function ISBlockGetIndices(petsclib::PetscLibType, is::IS) end
 
 @for_petsc function ISBlockGetIndices(petsclib::$UnionPetscLib, is::IS )
-	idx_ = Ref{Ptr{$PetscInt}}()
-
+	idx_ = Ref{Ptr{$PetscInt}}(C_NULL)
     @chk ccall(
                (:ISBlockGetIndices, $petsc_library),
                PetscErrorCode,
                (CIS, Ptr{Ptr{$PetscInt}}),
                is, idx_,
               )
-
-	idx = unsafe_wrap(Array, idx_[], VecGetLocalSize(petsclib, x); own = false)
-
+	n = div(ISGetLocalSize(petsclib, is), ISGetBlockSize(petsclib, is))
+	idx = unsafe_wrap(Array, idx_[], n; own = false)
 	return idx
 end 
 

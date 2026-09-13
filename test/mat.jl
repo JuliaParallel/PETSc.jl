@@ -507,3 +507,85 @@ end
         PETSc.finalize(petsclib)
     end
 end
+@testset "CSR access: MatGetRowIJ/MatRestoreRowIJ, MatSeqAIJGetCSRAndMemType, MatMPIAIJGetSeqAIJ, local-to-global mapping" begin
+    for petsclib in PETSc.petsclibs
+        PETSc.initialize(petsclib)
+        PetscScalar = petsclib.PetscScalar
+        PetscInt = petsclib.PetscInt
+        comm = MPI.COMM_SELF
+
+        # tridiagonal 5x5 seqaij
+        n = 5
+        A = PETSc.MatSeqAIJ(petsclib, n, n, 3)
+        for i in 1:n
+            A[i, i] = PetscScalar(2i)
+            i > 1 && (A[i, i - 1] = PetscScalar(-1))
+            i < n && (A[i, i + 1] = PetscScalar(-1))
+        end
+        PETSc.assemble!(A)
+        nnz_expected = 3n - 2
+
+        # MatGetRowIJ (0-based) / MatRestoreRowIJ
+        nr, ia, ja, done = LibPETSc.MatGetRowIJ(petsclib, A, PetscInt(0), LibPETSc.PETSC_FALSE, LibPETSc.PETSC_FALSE)
+        @test done == LibPETSc.PETSC_TRUE
+        @test nr == n
+        @test length(ia) == n + 1
+        @test ia[1] == 0 && ia[end] == nnz_expected
+        @test length(ja) == nnz_expected
+        @test ja[1:2] == PetscInt[0, 1]              # row 1: columns 0, 1
+        @test ja[ia[3]+1:ia[4]] == PetscInt[1, 2, 3] # row 3: columns 1, 2, 3
+        done2 = LibPETSc.MatRestoreRowIJ(petsclib, A, PetscInt(0), LibPETSc.PETSC_FALSE, LibPETSc.PETSC_FALSE, ia, ja)
+        @test done2 == LibPETSc.PETSC_TRUE
+
+        # 1-based variant
+        _, ia1, ja1, done = LibPETSc.MatGetRowIJ(petsclib, A, PetscInt(1), LibPETSc.PETSC_FALSE, LibPETSc.PETSC_FALSE)
+        @test done == LibPETSc.PETSC_TRUE
+        @test ia1[1] == 1 && ia1[end] == nnz_expected + 1 && ja1[1] == 1
+        LibPETSc.MatRestoreRowIJ(petsclib, A, PetscInt(1), LibPETSc.PETSC_FALSE, LibPETSc.PETSC_FALSE, ia1, ja1)
+
+        # MatSeqAIJGetCSRAndMemType: same structure plus the values
+        i, j, a, mtype = LibPETSc.MatSeqAIJGetCSRAndMemType(petsclib, A)
+        @test length(i) == n + 1 && i[end] == nnz_expected
+        @test length(j) == nnz_expected && length(a) == nnz_expected
+        @test a[1] == PetscScalar(2) && a[2] == PetscScalar(-1)
+        @test mtype == LibPETSc.PETSC_MEMTYPE_HOST
+
+        # local-to-global mapping: set a permutation on A and read it back / apply it
+        perm = PetscInt[4, 3, 2, 1, 0]
+        ltog = LibPETSc.ISLocalToGlobalMappingCreate(petsclib, comm, PetscInt(1), PetscInt(n), perm, LibPETSc.PETSC_COPY_VALUES)
+        LibPETSc.MatSetLocalToGlobalMapping(petsclib, A, ltog, ltog)
+        rmap, cmap = LibPETSc.MatGetLocalToGlobalMapping(petsclib, A)
+        @test rmap != C_NULL && cmap != C_NULL
+        out = LibPETSc.ISLocalToGlobalMappingApply(petsclib, rmap, PetscInt(3), PetscInt[0, 2, 4])
+        @test out == PetscInt[4, 2, 0]
+        outb = LibPETSc.ISLocalToGlobalMappingApplyBlock(petsclib, rmap, PetscInt(2), PetscInt[1, 3])
+        @test outb == PetscInt[3, 1]
+        LibPETSc.ISLocalToGlobalMappingDestroy(petsclib, ltog)
+        PETSc.destroy(A)
+
+        # MatMPIAIJGetSeqAIJ on a one-process mpiaij matrix: the diagonal block is the whole matrix
+        B = LibPETSc.MatCreate(petsclib, comm)
+        LibPETSc.MatSetSizes(petsclib, B, PetscInt(n), PetscInt(n), PetscInt(n), PetscInt(n))
+        LibPETSc.MatSetType(petsclib, B, "mpiaij")
+        LibPETSc.MatMPIAIJSetPreallocation(petsclib, B, PetscInt(3), C_NULL, PetscInt(0), C_NULL)
+        for i in 1:n
+            LibPETSc.MatSetValues(petsclib, B, PetscInt(1), PetscInt[i - 1], PetscInt(1), PetscInt[i - 1], PetscScalar[3i], LibPETSc.INSERT_VALUES)
+        end
+        LibPETSc.MatAssemblyBegin(petsclib, B, LibPETSc.MAT_FINAL_ASSEMBLY)
+        LibPETSc.MatAssemblyEnd(petsclib, B, LibPETSc.MAT_FINAL_ASSEMBLY)
+        @test LibPETSc.MatGetType(petsclib, B) == "mpiaij"
+        let
+            Ad, Ao, colmap = LibPETSc.MatMPIAIJGetSeqAIJ(petsclib, B)
+            @test LibPETSc.MatGetType(petsclib, Ad) == "seqaij"
+            md, nd = LibPETSc.MatGetLocalSize(petsclib, Ad)
+            @test (md, nd) == (n, n)
+            _, no = LibPETSc.MatGetLocalSize(petsclib, Ao)
+            @test no == 0 && length(colmap) == 0
+            ncols, cols, vals = LibPETSc.MatGetRow(petsclib, Ad, PetscInt(2))
+            @test ncols == 1 && vals[1] == PetscScalar(9)
+            LibPETSc.MatRestoreRow(petsclib, Ad, PetscInt(2))
+        end
+        LibPETSc.MatDestroy(petsclib, B)
+        PETSc.finalize(petsclib)
+    end
+end

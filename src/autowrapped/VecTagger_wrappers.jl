@@ -127,15 +127,16 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerDestroy"))
 """
-function VecTaggerDestroy(petsclib::PetscLibType, tagger::VecTagger) end
+function VecTaggerDestroy(petsclib::PetscLibType, tagger::Union{VecTagger, Ref{VecTagger}}) end
 
-@for_petsc function VecTaggerDestroy(petsclib::$UnionPetscLib, tagger::VecTagger )
+@for_petsc function VecTaggerDestroy(petsclib::$UnionPetscLib, tagger::Union{VecTagger, Ref{VecTagger}} )
+	tagger_ = tagger isa Base.RefValue ? tagger : Ref{VecTagger}(tagger)
 
     @chk ccall(
                (:VecTaggerDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{VecTagger},),
-               tagger,
+               tagger_,
               )
 
 

@@ -406,15 +406,16 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/ISLocalToGlobalMappingDestroy"))
 """
-function ISLocalToGlobalMappingDestroy(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping) end
+function ISLocalToGlobalMappingDestroy(petsclib::PetscLibType, mapping::Union{ISLocalToGlobalMapping, Ref{ISLocalToGlobalMapping}}) end
 
-@for_petsc function ISLocalToGlobalMappingDestroy(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping )
+@for_petsc function ISLocalToGlobalMappingDestroy(petsclib::$UnionPetscLib, mapping::Union{ISLocalToGlobalMapping, Ref{ISLocalToGlobalMapping}} )
+	mapping_ = mapping isa Base.RefValue ? mapping : Ref{ISLocalToGlobalMapping}(mapping)
 
     @chk ccall(
                (:ISLocalToGlobalMappingDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{ISLocalToGlobalMapping},),
-               mapping,
+               mapping_,
               )
 
 
@@ -488,7 +489,7 @@ $(_doc_external("Vec/ISLocalToGlobalMappingApply"))
 function ISLocalToGlobalMappingApply(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, N::PetscInt, in::Vector{PetscInt}) end
 
 @for_petsc function ISLocalToGlobalMappingApply(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, N::$PetscInt, in::Vector{$PetscInt} )
-	out = Vector{$PetscInt}(undef, ni);  # CHECK SIZE!!
+	out = Vector{$PetscInt}(undef, Int(N))
 
     @chk ccall(
                (:ISLocalToGlobalMappingApply, $petsc_library),
@@ -531,7 +532,7 @@ $(_doc_external("Vec/ISLocalToGlobalMappingApplyBlock"))
 function ISLocalToGlobalMappingApplyBlock(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, N::PetscInt, in::Vector{PetscInt}) end
 
 @for_petsc function ISLocalToGlobalMappingApplyBlock(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, N::$PetscInt, in::Vector{$PetscInt} )
-	out = Vector{$PetscInt}(undef, ni);  # CHECK SIZE!!
+	out = Vector{$PetscInt}(undef, Int(N))
 
     @chk ccall(
                (:ISLocalToGlobalMappingApplyBlock, $petsc_library),

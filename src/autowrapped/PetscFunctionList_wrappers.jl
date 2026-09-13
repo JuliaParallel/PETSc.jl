@@ -12,15 +12,16 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscFunctionListDestroy"))
 """
-function PetscFunctionListDestroy(petsclib::PetscLibType, fl::PetscFunctionList) end
+function PetscFunctionListDestroy(petsclib::PetscLibType, fl::Union{PetscFunctionList, Ref{PetscFunctionList}}) end
 
-@for_petsc function PetscFunctionListDestroy(petsclib::$UnionPetscLib, fl::PetscFunctionList )
+@for_petsc function PetscFunctionListDestroy(petsclib::$UnionPetscLib, fl::Union{PetscFunctionList, Ref{PetscFunctionList}} )
+	fl_ = fl isa Base.RefValue ? fl : Ref{PetscFunctionList}(fl)
 
     @chk ccall(
                (:PetscFunctionListDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscFunctionList},),
-               fl,
+               fl_,
               )
 
 

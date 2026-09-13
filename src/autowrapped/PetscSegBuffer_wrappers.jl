@@ -92,15 +92,16 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscSegBufferDestroy"))
 """
-function PetscSegBufferDestroy(petsclib::PetscLibType, seg::PetscSegBuffer) end
+function PetscSegBufferDestroy(petsclib::PetscLibType, seg::Union{PetscSegBuffer, Ref{PetscSegBuffer}}) end
 
-@for_petsc function PetscSegBufferDestroy(petsclib::$UnionPetscLib, seg::PetscSegBuffer )
+@for_petsc function PetscSegBufferDestroy(petsclib::$UnionPetscLib, seg::Union{PetscSegBuffer, Ref{PetscSegBuffer}} )
+	seg_ = seg isa Base.RefValue ? seg : Ref{PetscSegBuffer}(seg)
 
     @chk ccall(
                (:PetscSegBufferDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscSegBuffer},),
-               seg,
+               seg_,
               )
 
 

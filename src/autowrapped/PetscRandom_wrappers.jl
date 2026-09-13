@@ -14,15 +14,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomDestroy"))
 """
-function PetscRandomDestroy(petsclib::PetscLibType, r::PetscRandom) end
+function PetscRandomDestroy(petsclib::PetscLibType, r::Union{PetscRandom, Ref{PetscRandom}}) end
 
-@for_petsc function PetscRandomDestroy(petsclib::$UnionPetscLib, r::PetscRandom )
+@for_petsc function PetscRandomDestroy(petsclib::$UnionPetscLib, r::Union{PetscRandom, Ref{PetscRandom}} )
+	r_ = r isa Base.RefValue ? r : Ref{PetscRandom}(r)
 
     @chk ccall(
                (:PetscRandomDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscRandom},),
-               r,
+               r_,
               )
 
 

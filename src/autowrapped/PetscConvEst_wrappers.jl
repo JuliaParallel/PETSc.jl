@@ -19,15 +19,16 @@ Level: beginner
 # External Links
 $(_doc_external("Snes/PetscConvEstDestroy"))
 """
-function PetscConvEstDestroy(petsclib::PetscLibType, ce::PetscConvEst) end
+function PetscConvEstDestroy(petsclib::PetscLibType, ce::Union{PetscConvEst, Ref{PetscConvEst}}) end
 
-@for_petsc function PetscConvEstDestroy(petsclib::$UnionPetscLib, ce::PetscConvEst )
+@for_petsc function PetscConvEstDestroy(petsclib::$UnionPetscLib, ce::Union{PetscConvEst, Ref{PetscConvEst}} )
+	ce_ = ce isa Base.RefValue ? ce : Ref{PetscConvEst}(ce)
 
     @chk ccall(
                (:PetscConvEstDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscConvEst},),
-               ce,
+               ce_,
               )
 
 

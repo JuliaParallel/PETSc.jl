@@ -35,15 +35,16 @@ end
 # External Links
 $(_doc_external("Sys/PetscDeviceDestroy"))
 """
-function PetscDeviceDestroy(petsclib::PetscLibType, device::PetscDevice) end
+function PetscDeviceDestroy(petsclib::PetscLibType, device::Union{PetscDevice, Ref{PetscDevice}}) end
 
-@for_petsc function PetscDeviceDestroy(petsclib::$UnionPetscLib, device::PetscDevice )
+@for_petsc function PetscDeviceDestroy(petsclib::$UnionPetscLib, device::Union{PetscDevice, Ref{PetscDevice}} )
+	device_ = device isa Base.RefValue ? device : Ref{PetscDevice}(device)
 
     @chk ccall(
                (:PetscDeviceDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscDevice},),
-               device,
+               device_,
               )
 
 
@@ -345,15 +346,16 @@ end
 # External Links
 $(_doc_external("Sys/PetscDeviceContextDestroy"))
 """
-function PetscDeviceContextDestroy(petsclib::PetscLibType, dctx::PetscDeviceContext) end
+function PetscDeviceContextDestroy(petsclib::PetscLibType, dctx::Union{PetscDeviceContext, Ref{PetscDeviceContext}}) end
 
-@for_petsc function PetscDeviceContextDestroy(petsclib::$UnionPetscLib, dctx::PetscDeviceContext )
+@for_petsc function PetscDeviceContextDestroy(petsclib::$UnionPetscLib, dctx::Union{PetscDeviceContext, Ref{PetscDeviceContext}} )
+	dctx_ = dctx isa Base.RefValue ? dctx : Ref{PetscDeviceContext}(dctx)
 
     @chk ccall(
                (:PetscDeviceContextDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscDeviceContext},),
-               dctx,
+               dctx_,
               )
 
 

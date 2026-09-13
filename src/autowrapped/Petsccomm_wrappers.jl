@@ -217,15 +217,16 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscSubcommDestroy"))
 """
-function PetscSubcommDestroy(petsclib::PetscLibType, psubcomm::PetscSubcomm) end
+function PetscSubcommDestroy(petsclib::PetscLibType, psubcomm::Union{PetscSubcomm, Ref{PetscSubcomm}}) end
 
-@for_petsc function PetscSubcommDestroy(petsclib::$UnionPetscLib, psubcomm::PetscSubcomm )
+@for_petsc function PetscSubcommDestroy(petsclib::$UnionPetscLib, psubcomm::Union{PetscSubcomm, Ref{PetscSubcomm}} )
+	psubcomm_ = psubcomm isa Base.RefValue ? psubcomm : Ref{PetscSubcomm}(psubcomm)
 
     @chk ccall(
                (:PetscSubcommDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscSubcomm},),
-               psubcomm,
+               psubcomm_,
               )
 
 

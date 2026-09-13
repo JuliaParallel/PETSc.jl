@@ -2492,15 +2492,16 @@ Level: beginner
 # External Links
 $(_doc_external("DM/PetscQuadratureDestroy"))
 """
-function PetscQuadratureDestroy(petsclib::PetscLibType, q::PetscQuadrature) end
+function PetscQuadratureDestroy(petsclib::PetscLibType, q::Union{PetscQuadrature, Ref{PetscQuadrature}}) end
 
-@for_petsc function PetscQuadratureDestroy(petsclib::$UnionPetscLib, q::PetscQuadrature )
+@for_petsc function PetscQuadratureDestroy(petsclib::$UnionPetscLib, q::Union{PetscQuadrature, Ref{PetscQuadrature}} )
+	q_ = q isa Base.RefValue ? q : Ref{PetscQuadrature}(q)
 
     @chk ccall(
                (:PetscQuadratureDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscQuadrature},),
-               q,
+               q_,
               )
 
 
@@ -2992,15 +2993,16 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/PetscTabulationDestroy"))
 """
-function PetscTabulationDestroy(petsclib::PetscLibType, T::PetscTabulation) end
+function PetscTabulationDestroy(petsclib::PetscLibType, T::Union{PetscTabulation, Ref{PetscTabulation}}) end
 
-@for_petsc function PetscTabulationDestroy(petsclib::$UnionPetscLib, T::PetscTabulation )
+@for_petsc function PetscTabulationDestroy(petsclib::$UnionPetscLib, T::Union{PetscTabulation, Ref{PetscTabulation}} )
+	T_ = T isa Base.RefValue ? T : Ref{PetscTabulation}(T)
 
     @chk ccall(
                (:PetscTabulationDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscTabulation},),
-               T,
+               T_,
               )
 
 
@@ -4149,15 +4151,16 @@ Level: developer
 # External Links
 $(_doc_external("DM/PetscWeakFormDestroy"))
 """
-function PetscWeakFormDestroy(petsclib::PetscLibType, wf::PetscWeakForm) end
+function PetscWeakFormDestroy(petsclib::PetscLibType, wf::Union{PetscWeakForm, Ref{PetscWeakForm}}) end
 
-@for_petsc function PetscWeakFormDestroy(petsclib::$UnionPetscLib, wf::PetscWeakForm )
+@for_petsc function PetscWeakFormDestroy(petsclib::$UnionPetscLib, wf::Union{PetscWeakForm, Ref{PetscWeakForm}} )
+	wf_ = wf isa Base.RefValue ? wf : Ref{PetscWeakForm}(wf)
 
     @chk ccall(
                (:PetscWeakFormDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscWeakForm},),
-               wf,
+               wf_,
               )
 
 

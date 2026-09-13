@@ -19,15 +19,16 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/PetscKDTreeDestroy"))
 """
-function PetscKDTreeDestroy(petsclib::PetscLibType, tree::PetscKDTree) end
+function PetscKDTreeDestroy(petsclib::PetscLibType, tree::Union{PetscKDTree, Ref{PetscKDTree}}) end
 
-@for_petsc function PetscKDTreeDestroy(petsclib::$UnionPetscLib, tree::PetscKDTree )
+@for_petsc function PetscKDTreeDestroy(petsclib::$UnionPetscLib, tree::Union{PetscKDTree, Ref{PetscKDTree}} )
+	tree_ = tree isa Base.RefValue ? tree : Ref{PetscKDTree}(tree)
 
     @chk ccall(
                (:PetscKDTreeDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscKDTree},),
-               tree,
+               tree_,
               )
 
 

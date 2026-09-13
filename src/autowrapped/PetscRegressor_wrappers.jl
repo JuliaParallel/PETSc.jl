@@ -314,15 +314,16 @@ Level: beginner
 # External Links
 $(_doc_external("Ml/PetscRegressorDestroy"))
 """
-function PetscRegressorDestroy(petsclib::PetscLibType, regressor::PetscRegressor) end
+function PetscRegressorDestroy(petsclib::PetscLibType, regressor::Union{PetscRegressor, Ref{PetscRegressor}}) end
 
-@for_petsc function PetscRegressorDestroy(petsclib::$UnionPetscLib, regressor::PetscRegressor )
+@for_petsc function PetscRegressorDestroy(petsclib::$UnionPetscLib, regressor::Union{PetscRegressor, Ref{PetscRegressor}} )
+	regressor_ = regressor isa Base.RefValue ? regressor : Ref{PetscRegressor}(regressor)
 
     @chk ccall(
                (:PetscRegressorDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscRegressor},),
-               regressor,
+               regressor_,
               )
 
 

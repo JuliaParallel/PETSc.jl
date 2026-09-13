@@ -518,15 +518,16 @@ Level: developer
 # External Links
 $(_doc_external("Ts/TSTrajectoryDestroy"))
 """
-function TSTrajectoryDestroy(petsclib::PetscLibType, tj::TSTrajectory) end
+function TSTrajectoryDestroy(petsclib::PetscLibType, tj::Union{TSTrajectory, Ref{TSTrajectory}}) end
 
-@for_petsc function TSTrajectoryDestroy(petsclib::$UnionPetscLib, tj::TSTrajectory )
+@for_petsc function TSTrajectoryDestroy(petsclib::$UnionPetscLib, tj::Union{TSTrajectory, Ref{TSTrajectory}} )
+	tj_ = tj isa Base.RefValue ? tj : Ref{TSTrajectory}(tj)
 
     @chk ccall(
                (:TSTrajectoryDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{TSTrajectory},),
-               tj,
+               tj_,
               )
 
 
@@ -1119,15 +1120,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Ts/TSMonitorDrawCtxDestroy"))
 """
-function TSMonitorDrawCtxDestroy(petsclib::PetscLibType, ictx::TSMonitorDrawCtx) end
+function TSMonitorDrawCtxDestroy(petsclib::PetscLibType, ictx::Union{TSMonitorDrawCtx, Ref{TSMonitorDrawCtx}}) end
 
-@for_petsc function TSMonitorDrawCtxDestroy(petsclib::$UnionPetscLib, ictx::TSMonitorDrawCtx )
+@for_petsc function TSMonitorDrawCtxDestroy(petsclib::$UnionPetscLib, ictx::Union{TSMonitorDrawCtx, Ref{TSMonitorDrawCtx}} )
+	ictx_ = ictx isa Base.RefValue ? ictx : Ref{TSMonitorDrawCtx}(ictx)
 
     @chk ccall(
                (:TSMonitorDrawCtxDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{TSMonitorDrawCtx},),
-               ictx,
+               ictx_,
               )
 
 
@@ -1254,15 +1256,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Ts/TSMonitorLGCtxDestroy"))
 """
-function TSMonitorLGCtxDestroy(petsclib::PetscLibType, ctx::TSMonitorLGCtx) end
+function TSMonitorLGCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorLGCtx, Ref{TSMonitorLGCtx}}) end
 
-@for_petsc function TSMonitorLGCtxDestroy(petsclib::$UnionPetscLib, ctx::TSMonitorLGCtx )
+@for_petsc function TSMonitorLGCtxDestroy(petsclib::$UnionPetscLib, ctx::Union{TSMonitorLGCtx, Ref{TSMonitorLGCtx}} )
+	ctx_ = ctx isa Base.RefValue ? ctx : Ref{TSMonitorLGCtx}(ctx)
 
     @chk ccall(
                (:TSMonitorLGCtxDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{TSMonitorLGCtx},),
-               ctx,
+               ctx_,
               )
 
 
@@ -1383,15 +1386,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Ts/TSMonitorLGCtxNetworkDestroy"))
 """
-function TSMonitorLGCtxNetworkDestroy(petsclib::PetscLibType, ctx::TSMonitorLGCtxNetwork) end
+function TSMonitorLGCtxNetworkDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorLGCtxNetwork, Ref{TSMonitorLGCtxNetwork}}) end
 
-@for_petsc function TSMonitorLGCtxNetworkDestroy(petsclib::$UnionPetscLib, ctx::TSMonitorLGCtxNetwork )
+@for_petsc function TSMonitorLGCtxNetworkDestroy(petsclib::$UnionPetscLib, ctx::Union{TSMonitorLGCtxNetwork, Ref{TSMonitorLGCtxNetwork}} )
+	ctx_ = ctx isa Base.RefValue ? ctx : Ref{TSMonitorLGCtxNetwork}(ctx)
 
     @chk ccall(
                (:TSMonitorLGCtxNetworkDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{TSMonitorLGCtxNetwork},),
-               ctx,
+               ctx_,
               )
 
 
@@ -1511,15 +1515,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Ts/TSMonitorEnvelopeCtxDestroy"))
 """
-function TSMonitorEnvelopeCtxDestroy(petsclib::PetscLibType, ctx::TSMonitorEnvelopeCtx) end
+function TSMonitorEnvelopeCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorEnvelopeCtx, Ref{TSMonitorEnvelopeCtx}}) end
 
-@for_petsc function TSMonitorEnvelopeCtxDestroy(petsclib::$UnionPetscLib, ctx::TSMonitorEnvelopeCtx )
+@for_petsc function TSMonitorEnvelopeCtxDestroy(petsclib::$UnionPetscLib, ctx::Union{TSMonitorEnvelopeCtx, Ref{TSMonitorEnvelopeCtx}} )
+	ctx_ = ctx isa Base.RefValue ? ctx : Ref{TSMonitorEnvelopeCtx}(ctx)
 
     @chk ccall(
                (:TSMonitorEnvelopeCtxDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{TSMonitorEnvelopeCtx},),
-               ctx,
+               ctx_,
               )
 
 
@@ -1588,15 +1593,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Ts/TSMonitorSPEigCtxDestroy"))
 """
-function TSMonitorSPEigCtxDestroy(petsclib::PetscLibType, ctx::TSMonitorSPEigCtx) end
+function TSMonitorSPEigCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorSPEigCtx, Ref{TSMonitorSPEigCtx}}) end
 
-@for_petsc function TSMonitorSPEigCtxDestroy(petsclib::$UnionPetscLib, ctx::TSMonitorSPEigCtx )
+@for_petsc function TSMonitorSPEigCtxDestroy(petsclib::$UnionPetscLib, ctx::Union{TSMonitorSPEigCtx, Ref{TSMonitorSPEigCtx}} )
+	ctx_ = ctx isa Base.RefValue ? ctx : Ref{TSMonitorSPEigCtx}(ctx)
 
     @chk ccall(
                (:TSMonitorSPEigCtxDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{TSMonitorSPEigCtx},),
-               ctx,
+               ctx_,
               )
 
 
@@ -1632,15 +1638,16 @@ end
 # External Links
 $(_doc_external("Ts/TSMonitorSPCtxDestroy"))
 """
-function TSMonitorSPCtxDestroy(petsclib::PetscLibType, ctx::TSMonitorSPCtx) end
+function TSMonitorSPCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorSPCtx, Ref{TSMonitorSPCtx}}) end
 
-@for_petsc function TSMonitorSPCtxDestroy(petsclib::$UnionPetscLib, ctx::TSMonitorSPCtx )
+@for_petsc function TSMonitorSPCtxDestroy(petsclib::$UnionPetscLib, ctx::Union{TSMonitorSPCtx, Ref{TSMonitorSPCtx}} )
+	ctx_ = ctx isa Base.RefValue ? ctx : Ref{TSMonitorSPCtx}(ctx)
 
     @chk ccall(
                (:TSMonitorSPCtxDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{TSMonitorSPCtx},),
-               ctx,
+               ctx_,
               )
 
 
@@ -1676,15 +1683,16 @@ end
 # External Links
 $(_doc_external("Ts/TSMonitorHGCtxDestroy"))
 """
-function TSMonitorHGCtxDestroy(petsclib::PetscLibType, ctx::TSMonitorHGCtx) end
+function TSMonitorHGCtxDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorHGCtx, Ref{TSMonitorHGCtx}}) end
 
-@for_petsc function TSMonitorHGCtxDestroy(petsclib::$UnionPetscLib, ctx::TSMonitorHGCtx )
+@for_petsc function TSMonitorHGCtxDestroy(petsclib::$UnionPetscLib, ctx::Union{TSMonitorHGCtx, Ref{TSMonitorHGCtx}} )
+	ctx_ = ctx isa Base.RefValue ? ctx : Ref{TSMonitorHGCtx}(ctx)
 
     @chk ccall(
                (:TSMonitorHGCtxDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{TSMonitorHGCtx},),
-               ctx,
+               ctx_,
               )
 
 
@@ -1959,15 +1967,16 @@ end
 # External Links
 $(_doc_external("Ts/TSAdaptDestroy"))
 """
-function TSAdaptDestroy(petsclib::PetscLibType, adapt::TSAdapt) end
+function TSAdaptDestroy(petsclib::PetscLibType, adapt::Union{TSAdapt, Ref{TSAdapt}}) end
 
-@for_petsc function TSAdaptDestroy(petsclib::$UnionPetscLib, adapt::TSAdapt )
+@for_petsc function TSAdaptDestroy(petsclib::$UnionPetscLib, adapt::Union{TSAdapt, Ref{TSAdapt}} )
+	adapt_ = adapt isa Base.RefValue ? adapt : Ref{TSAdapt}(adapt)
 
     @chk ccall(
                (:TSAdaptDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{TSAdapt},),
-               adapt,
+               adapt_,
               )
 
 
@@ -3109,15 +3118,16 @@ end
 # External Links
 $(_doc_external("Ts/TSGLLEAdaptDestroy"))
 """
-function TSGLLEAdaptDestroy(petsclib::PetscLibType, adapt::TSGLLEAdapt) end
+function TSGLLEAdaptDestroy(petsclib::PetscLibType, adapt::Union{TSGLLEAdapt, Ref{TSGLLEAdapt}}) end
 
-@for_petsc function TSGLLEAdaptDestroy(petsclib::$UnionPetscLib, adapt::TSGLLEAdapt )
+@for_petsc function TSGLLEAdaptDestroy(petsclib::$UnionPetscLib, adapt::Union{TSGLLEAdapt, Ref{TSGLLEAdapt}} )
+	adapt_ = adapt isa Base.RefValue ? adapt : Ref{TSGLLEAdapt}(adapt)
 
     @chk ccall(
                (:TSGLLEAdaptDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{TSGLLEAdapt},),
-               adapt,
+               adapt_,
               )
 
 

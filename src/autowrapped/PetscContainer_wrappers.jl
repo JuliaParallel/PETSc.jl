@@ -87,15 +87,16 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscContainerDestroy"))
 """
-function PetscContainerDestroy(petsclib::PetscLibType, obj::PetscContainer) end
+function PetscContainerDestroy(petsclib::PetscLibType, obj::Union{PetscContainer, Ref{PetscContainer}}) end
 
-@for_petsc function PetscContainerDestroy(petsclib::$UnionPetscLib, obj::PetscContainer )
+@for_petsc function PetscContainerDestroy(petsclib::$UnionPetscLib, obj::Union{PetscContainer, Ref{PetscContainer}} )
+	obj_ = obj isa Base.RefValue ? obj : Ref{PetscContainer}(obj)
 
     @chk ccall(
                (:PetscContainerDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscContainer},),
-               obj,
+               obj_,
               )
 
 

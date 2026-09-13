@@ -906,15 +906,16 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscObjectDestroy"))
 """
-function PetscObjectDestroy(petsclib::PetscLibType, obj::PetscObject) end
+function PetscObjectDestroy(petsclib::PetscLibType, obj::Union{PetscObject, Ref{PetscObject}}) end
 
-@for_petsc function PetscObjectDestroy(petsclib::$UnionPetscLib, obj::PetscObject )
+@for_petsc function PetscObjectDestroy(petsclib::$UnionPetscLib, obj::Union{PetscObject, Ref{PetscObject}} )
+	obj_ = obj isa Base.RefValue ? obj : Ref{PetscObject}(obj)
 
     @chk ccall(
                (:PetscObjectDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscObject},),
-               obj,
+               obj_,
               )
 
 

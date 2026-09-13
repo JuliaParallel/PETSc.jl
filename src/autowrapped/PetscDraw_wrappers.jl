@@ -772,15 +772,16 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscDrawViewPortsDestroy"))
 """
-function PetscDrawViewPortsDestroy(petsclib::PetscLibType, ports::PetscDrawViewPorts) end
+function PetscDrawViewPortsDestroy(petsclib::PetscLibType, ports::Union{PetscDrawViewPorts, Ref{PetscDrawViewPorts}}) end
 
-@for_petsc function PetscDrawViewPortsDestroy(petsclib::$UnionPetscLib, ports::PetscDrawViewPorts )
+@for_petsc function PetscDrawViewPortsDestroy(petsclib::$UnionPetscLib, ports::Union{PetscDrawViewPorts, Ref{PetscDrawViewPorts}} )
+	ports_ = ports isa Base.RefValue ? ports : Ref{PetscDrawViewPorts}(ports)
 
     @chk ccall(
                (:PetscDrawViewPortsDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscDrawViewPorts},),
-               ports,
+               ports_,
               )
 
 
@@ -1309,15 +1310,16 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscDrawDestroy"))
 """
-function PetscDrawDestroy(petsclib::PetscLibType, draw::PetscDraw) end
+function PetscDrawDestroy(petsclib::PetscLibType, draw::Union{PetscDraw, Ref{PetscDraw}}) end
 
-@for_petsc function PetscDrawDestroy(petsclib::$UnionPetscLib, draw::PetscDraw )
+@for_petsc function PetscDrawDestroy(petsclib::$UnionPetscLib, draw::Union{PetscDraw, Ref{PetscDraw}} )
+	draw_ = draw isa Base.RefValue ? draw : Ref{PetscDraw}(draw)
 
     @chk ccall(
                (:PetscDrawDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscDraw},),
-               draw,
+               draw_,
               )
 
 
@@ -2928,15 +2930,16 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscDrawAxisDestroy"))
 """
-function PetscDrawAxisDestroy(petsclib::PetscLibType, axis::PetscDrawAxis) end
+function PetscDrawAxisDestroy(petsclib::PetscLibType, axis::Union{PetscDrawAxis, Ref{PetscDrawAxis}}) end
 
-@for_petsc function PetscDrawAxisDestroy(petsclib::$UnionPetscLib, axis::PetscDrawAxis )
+@for_petsc function PetscDrawAxisDestroy(petsclib::$UnionPetscLib, axis::Union{PetscDrawAxis, Ref{PetscDrawAxis}} )
+	axis_ = axis isa Base.RefValue ? axis : Ref{PetscDrawAxis}(axis)
 
     @chk ccall(
                (:PetscDrawAxisDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscDrawAxis},),
-               axis,
+               axis_,
               )
 
 
@@ -3553,15 +3556,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscDrawLGDestroy"))
 """
-function PetscDrawLGDestroy(petsclib::PetscLibType, lg::PetscDrawLG) end
+function PetscDrawLGDestroy(petsclib::PetscLibType, lg::Union{PetscDrawLG, Ref{PetscDrawLG}}) end
 
-@for_petsc function PetscDrawLGDestroy(petsclib::$UnionPetscLib, lg::PetscDrawLG )
+@for_petsc function PetscDrawLGDestroy(petsclib::$UnionPetscLib, lg::Union{PetscDrawLG, Ref{PetscDrawLG}} )
+	lg_ = lg isa Base.RefValue ? lg : Ref{PetscDrawLG}(lg)
 
     @chk ccall(
                (:PetscDrawLGDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscDrawLG},),
-               lg,
+               lg_,
               )
 
 
@@ -4052,15 +4056,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscDrawSPDestroy"))
 """
-function PetscDrawSPDestroy(petsclib::PetscLibType, sp::PetscDrawSP) end
+function PetscDrawSPDestroy(petsclib::PetscLibType, sp::Union{PetscDrawSP, Ref{PetscDrawSP}}) end
 
-@for_petsc function PetscDrawSPDestroy(petsclib::$UnionPetscLib, sp::PetscDrawSP )
+@for_petsc function PetscDrawSPDestroy(petsclib::$UnionPetscLib, sp::Union{PetscDrawSP, Ref{PetscDrawSP}} )
+	sp_ = sp isa Base.RefValue ? sp : Ref{PetscDrawSP}(sp)
 
     @chk ccall(
                (:PetscDrawSPDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscDrawSP},),
-               sp,
+               sp_,
               )
 
 
@@ -4454,15 +4459,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscDrawHGDestroy"))
 """
-function PetscDrawHGDestroy(petsclib::PetscLibType, hist::PetscDrawHG) end
+function PetscDrawHGDestroy(petsclib::PetscLibType, hist::Union{PetscDrawHG, Ref{PetscDrawHG}}) end
 
-@for_petsc function PetscDrawHGDestroy(petsclib::$UnionPetscLib, hist::PetscDrawHG )
+@for_petsc function PetscDrawHGDestroy(petsclib::$UnionPetscLib, hist::Union{PetscDrawHG, Ref{PetscDrawHG}} )
+	hist_ = hist isa Base.RefValue ? hist : Ref{PetscDrawHG}(hist)
 
     @chk ccall(
                (:PetscDrawHGDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscDrawHG},),
-               hist,
+               hist_,
               )
 
 
@@ -4919,15 +4925,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscDrawBarDestroy"))
 """
-function PetscDrawBarDestroy(petsclib::PetscLibType, bar::PetscDrawBar) end
+function PetscDrawBarDestroy(petsclib::PetscLibType, bar::Union{PetscDrawBar, Ref{PetscDrawBar}}) end
 
-@for_petsc function PetscDrawBarDestroy(petsclib::$UnionPetscLib, bar::PetscDrawBar )
+@for_petsc function PetscDrawBarDestroy(petsclib::$UnionPetscLib, bar::Union{PetscDrawBar, Ref{PetscDrawBar}} )
+	bar_ = bar isa Base.RefValue ? bar : Ref{PetscDrawBar}(bar)
 
     @chk ccall(
                (:PetscDrawBarDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscDrawBar},),
-               bar,
+               bar_,
               )
 
 

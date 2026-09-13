@@ -2160,7 +2160,7 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/PetscSectionDestroy"))
 """
-function PetscSectionDestroy(petsclib::PetscLibType, s::PetscSection) end
+function PetscSectionDestroy(petsclib::PetscLibType, s::Union{PetscSection, Ref{PetscSection}}) end
 
 # Accept a Ref{PetscSection} (pointer-to-pointer) so callers can pass a Ref directly
 @for_petsc function PetscSectionDestroy(petsclib::$UnionPetscLib, s::Ref{PetscSection} )
@@ -2176,13 +2176,14 @@ function PetscSectionDestroy(petsclib::PetscLibType, s::PetscSection) end
 	return nothing
 end
 
-@for_petsc function PetscSectionDestroy(petsclib::$UnionPetscLib, s::PetscSection )
+@for_petsc function PetscSectionDestroy(petsclib::$UnionPetscLib, s::Union{PetscSection, Ref{PetscSection}} )
+	s_ = s isa Base.RefValue ? s : Ref{PetscSection}(s)
 
     @chk ccall(
                (:PetscSectionDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscSection},),
-               s,
+               s_,
               )
 
 
@@ -3242,15 +3243,16 @@ Level: developer
 # External Links
 $(_doc_external("Vec/PetscSectionSymDestroy"))
 """
-function PetscSectionSymDestroy(petsclib::PetscLibType, sym::PetscSectionSym) end
+function PetscSectionSymDestroy(petsclib::PetscLibType, sym::Union{PetscSectionSym, Ref{PetscSectionSym}}) end
 
-@for_petsc function PetscSectionSymDestroy(petsclib::$UnionPetscLib, sym::PetscSectionSym )
+@for_petsc function PetscSectionSymDestroy(petsclib::$UnionPetscLib, sym::Union{PetscSectionSym, Ref{PetscSectionSym}} )
+	sym_ = sym isa Base.RefValue ? sym : Ref{PetscSectionSym}(sym)
 
     @chk ccall(
                (:PetscSectionSymDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscSectionSym},),
-               sym,
+               sym_,
               )
 
 

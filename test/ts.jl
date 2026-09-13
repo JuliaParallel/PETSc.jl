@@ -88,7 +88,17 @@ end
 
             vatol = PETSc.VecSeq(petsclib, 2)
             PETSc.set_tolerances!(ts; vatol = vatol)
-            @test PETSc.tolerances(ts).vatol.ptr != C_NULL
+            tol = PETSc.tolerances(ts)
+            @test tol.vatol.ptr != C_NULL
+            # The scalar tolerances were not given, so they are unchanged.
+            @test tol.atol ≈ 1e-9
+            @test tol.rtol ≈ 1e-7
+
+            PETSc.set_tolerances!(ts; rtol = 1e-5)
+            tol = PETSc.tolerances(ts)
+            @test tol.atol ≈ 1e-9
+            @test tol.rtol ≈ 1e-5
+            @test tol.vatol.ptr == vatol.ptr
 
             PETSc.destroy!(ts)
             PETSc.destroy(vatol)

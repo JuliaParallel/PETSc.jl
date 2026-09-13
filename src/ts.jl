@@ -788,30 +788,31 @@ end
 """
     set_tolerances!(ts::AbstractTS; atol, rtol, vatol, vrtol)
 
-Set the local truncation error tolerances.
+Set the local truncation error tolerances. A keyword left at `nothing` keeps
+the value `ts` currently has.
 
-Pass `vatol` or `vrtol` to give per-component tolerances; 
-leaving them at `nothing` selects the scalar tolerance.
+Pass `vatol` or `vrtol` to give per-component tolerances.
 
 # External Links
 $(_doc_external("TS/TSSetTolerances"))
 """
 function set_tolerances!(
     ts::AbstractTS{PetscLib};
-    atol = 1e-8,
-    rtol = 1e-6,
+    atol = nothing,
+    rtol = nothing,
     vatol::Union{Nothing, AbstractPetscVec{PetscLib}} = nothing,
     vrtol::Union{Nothing, AbstractPetscVec{PetscLib}} = nothing,
 ) where {PetscLib}
     petsclib = getlib(PetscLib)
     PetscReal = PetscLib.PetscReal
+    cur_atol, _, cur_rtol, _ = LibPETSc.TSGetTolerances(petsclib, ts)
     null_vec = LibPETSc.PetscVec(petsclib)
     LibPETSc.TSSetTolerances(
         petsclib,
         ts,
-        PetscReal(atol),
+        isnothing(atol) ? cur_atol : PetscReal(atol),
         isnothing(vatol) ? null_vec : vatol,
-        PetscReal(rtol),
+        isnothing(rtol) ? cur_rtol : PetscReal(rtol),
         isnothing(vrtol) ? null_vec : vrtol,
     )
     return nothing

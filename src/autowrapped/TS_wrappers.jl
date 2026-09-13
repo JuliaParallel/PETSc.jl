@@ -6278,8 +6278,8 @@ function TSMonitorEnvelopeGetBounds(petsclib::PetscLibType, ts::TS, max::PetscVe
                ts, max_, min_,
               )
 
-	max.ptr = C_NULL
-	min.ptr = C_NULL
+	max.ptr = max_[]
+	min.ptr = min_[]
 
 	return nothing
 end 

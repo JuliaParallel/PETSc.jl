@@ -1033,8 +1033,8 @@ function DMAdaptorAdapt(petsclib::PetscLibType, adaptor::DMAdaptor, x::PetscVec,
                adaptor, x, strategy, adm_, ax_,
               )
 
-	adm.ptr = C_NULL
-	ax.ptr = C_NULL
+	adm.ptr = adm_[]
+	ax.ptr = ax_[]
 
 	return nothing
 end 

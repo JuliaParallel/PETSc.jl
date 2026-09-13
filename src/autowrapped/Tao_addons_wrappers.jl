@@ -981,10 +981,10 @@ function TaoLineSearchGetStartingVector(petsclib::PetscLibType, ls::TaoLineSearc
                ls, x_,
               )
 
-	x.ptr = C_NULL
+	x.ptr = x_[]
 
 	return nothing
-end 
+end
 
 """
 	TaoLineSearchGetStepDirection(petsclib::PetscLibType,ls::TaoLineSearch, s::PetscVec) 

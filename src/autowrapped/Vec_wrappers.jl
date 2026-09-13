@@ -5253,10 +5253,10 @@ function VecNestGetSubVec(petsclib::PetscLibType, X::PetscVec, idxm::PetscInt, s
                X, idxm, sx_,
               )
 
-	sx.ptr = C_NULL
+	sx.ptr = sx_[]
 
 	return nothing
-end 
+end
 
 """
 	N::PetscInt = VecNestGetSubVecs(petsclib::PetscLibType,X::PetscVec, sx::Vector{PetscVec}) 

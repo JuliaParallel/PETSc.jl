@@ -3776,9 +3776,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESSetConvergenceTest"))
 """
-function SNESSetConvergenceTest(petsclib::PetscLibType, snes::PetscSNES, SNESConvergenceTestFunction::external, cctx::Cvoid, destroy::external) end
+function SNESSetConvergenceTest(petsclib::PetscLibType, snes::PetscSNES, SNESConvergenceTestFunction::external, cctx::Ptr{Cvoid}, destroy::external) end
 
-@for_petsc function SNESSetConvergenceTest(petsclib::$UnionPetscLib, snes::PetscSNES, SNESConvergenceTestFunction::external, cctx::Cvoid, destroy::external )
+@for_petsc function SNESSetConvergenceTest(petsclib::$UnionPetscLib, snes::PetscSNES, SNESConvergenceTestFunction::external, cctx::Ptr{Cvoid}, destroy::external )
 
     @chk ccall(
                (:SNESSetConvergenceTest, $petsc_library),
@@ -4310,10 +4310,10 @@ function SNESGetSolution(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec) e
                snes, x_,
               )
 
-	x.ptr = C_NULL
+	x.ptr = x_[]
 
 	return nothing
-end 
+end
 
 """
 	SNESGetSolutionUpdate(petsclib::PetscLibType,snes::PetscSNES, x::PetscVec) 
@@ -4347,10 +4347,10 @@ function SNESGetSolutionUpdate(petsclib::PetscLibType, snes::PetscSNES, x::Petsc
                snes, x_,
               )
 
-	x.ptr = C_NULL
+	x.ptr = x_[]
 
 	return nothing
-end 
+end
 
 """
 	SNESGetFunction(petsclib::PetscLibType,snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, ctx::Cvoid) 

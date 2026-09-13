@@ -462,26 +462,25 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PetscSFGetGraph"))
 """
-function PetscSFGetGraph(petsclib::PetscLibType, sf::PetscSF, iremote::Vector{PetscSFNode}) end
+function PetscSFGetGraph(petsclib::PetscLibType, sf::PetscSF) end
 
-@for_petsc function PetscSFGetGraph(petsclib::$UnionPetscLib, sf::PetscSF, iremote::Vector{PetscSFNode} )
+@for_petsc function PetscSFGetGraph(petsclib::$UnionPetscLib, sf::PetscSF )
 	nroots_ = Ref{$PetscInt}()
 	nleaves_ = Ref{$PetscInt}()
-	iloc_ = Ref{Ptr{$PetscInt}}()
-	iremote_ = Ref(pointer(iremote))
-
+	ilocal_ = Ref{Ptr{$PetscInt}}(C_NULL)
+	iremote_ = Ref{Ptr{PetscSFNode}}(C_NULL)
     @chk ccall(
                (:PetscSFGetGraph, $petsc_library),
                PetscErrorCode,
                (PetscSF, Ptr{$PetscInt}, Ptr{$PetscInt}, Ptr{Ptr{$PetscInt}}, Ptr{Ptr{PetscSFNode}}),
-               sf, nroots_, nleaves_, iloc_, iremote_,
+               sf, nroots_, nleaves_, ilocal_, iremote_,
               )
-
 	nroots = nroots_[]
 	nleaves = nleaves_[]
-	iloc = unsafe_wrap(Array, iloc_[], VecGetLocalSize(petsclib, x); own = false)
-
-	return nroots,nleaves,iloc
+	# ilocal == NULL means the leaves are contiguous [0, nleaves)
+	ilocal = ilocal_[] == C_NULL ? nothing : unsafe_wrap(Array, ilocal_[], max(nleaves, 0); own = false)
+	iremote = iremote_[] == C_NULL ? nothing : unsafe_wrap(Array, iremote_[], max(nleaves, 0); own = false)
+	return nroots,nleaves,ilocal,iremote
 end 
 
 """

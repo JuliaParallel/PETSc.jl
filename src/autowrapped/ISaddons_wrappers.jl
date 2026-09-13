@@ -919,17 +919,15 @@ $(_doc_external("Vec/ISLocalToGlobalMappingGetIndices"))
 function ISLocalToGlobalMappingGetIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping) end
 
 @for_petsc function ISLocalToGlobalMappingGetIndices(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping )
-	array_ = Ref{Ptr{$PetscInt}}()
-
+	array_ = Ref{Ptr{$PetscInt}}(C_NULL)
     @chk ccall(
                (:ISLocalToGlobalMappingGetIndices, $petsc_library),
                PetscErrorCode,
                (ISLocalToGlobalMapping, Ptr{Ptr{$PetscInt}}),
                ltog, array_,
               )
-
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
-
+	n = ISLocalToGlobalMappingGetSize(petsclib, ltog)
+	array = unsafe_wrap(Array, array_[], n; own = false)
 	return array
 end 
 
@@ -989,17 +987,15 @@ $(_doc_external("Vec/ISLocalToGlobalMappingGetBlockIndices"))
 function ISLocalToGlobalMappingGetBlockIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping) end
 
 @for_petsc function ISLocalToGlobalMappingGetBlockIndices(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping )
-	array_ = Ref{Ptr{$PetscInt}}()
-
+	array_ = Ref{Ptr{$PetscInt}}(C_NULL)
     @chk ccall(
                (:ISLocalToGlobalMappingGetBlockIndices, $petsc_library),
                PetscErrorCode,
                (ISLocalToGlobalMapping, Ptr{Ptr{$PetscInt}}),
                ltog, array_,
               )
-
-	array = unsafe_wrap(Array, array_[], VecGetLocalSize(petsclib, x); own = false)
-
+	n = div(ISLocalToGlobalMappingGetSize(petsclib, ltog), ISLocalToGlobalMappingGetBlockSize(petsclib, ltog))
+	array = unsafe_wrap(Array, array_[], n; own = false)
 	return array
 end 
 

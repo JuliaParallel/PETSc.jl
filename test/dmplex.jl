@@ -196,6 +196,114 @@ for petsclib in PETSc.petsclibs
     end
     end # real(PetscScalar_t) != Float32
 
+    # ── Low-level: topology / section queries returning PETSc-owned arrays ───
+    # These wrappers return non-owning views (unsafe_wrap) sized from the paired
+    # count output or the matching *Size query; Restore functions take the views.
+    if real(PetscScalar_t) != Float32
+    @testset "Low-level: DMPlex array-returning queries" begin
+        PetscReal_t = real(PetscScalar_t)
+        dm = LibPETSc.DMPlexCreateBoxMesh(
+            petsclib, _TC, PetscInt_t(2), LibPETSc.PetscBool(true),
+            PetscInt_t[2, 2], PetscReal_t[0, 0], PetscReal_t[1, 1],
+            [LibPETSc.DM_BOUNDARY_NONE, LibPETSc.DM_BOUNDARY_NONE],
+            LibPETSc.PetscBool(true), PetscInt_t(0), LibPETSc.PetscBool(false))
+        cStart, cEnd = LibPETSc.DMPlexGetHeightStratum(petsclib, dm, PetscInt_t(0))
+        vStart, vEnd = LibPETSc.DMPlexGetDepthStratum(petsclib, dm, PetscInt_t(0))
+        eStart, eEnd = LibPETSc.DMPlexGetDepthStratum(petsclib, dm, PetscInt_t(1))
+
+        # cone / orientation / support
+        cone = LibPETSc.DMPlexGetCone(petsclib, dm, cStart)
+        @test length(cone) == 3 && all(eStart .<= cone .< eEnd)
+        @test length(LibPETSc.DMPlexGetConeOrientation(petsclib, dm, cStart)) == 3
+        c2, o2 = LibPETSc.DMPlexGetOrientedCone(petsclib, dm, cStart)
+        @test c2 == cone && length(o2) == 3
+        LibPETSc.DMPlexRestoreOrientedCone(petsclib, dm, cStart, c2, o2)
+        sup = LibPETSc.DMPlexGetSupport(petsclib, dm, cone[1])
+        @test length(sup) == LibPETSc.DMPlexGetSupportSize(petsclib, dm, cone[1])
+        @test cStart in sup
+
+        # transitive closure: 1 cell + 3 edges + 3 vertices, interleaved with orientations
+        np, pts = LibPETSc.DMPlexGetTransitiveClosure(petsclib, dm, cStart, LibPETSc.PETSC_TRUE)
+        @test np == 7 && length(pts) == 14 && pts[1] == cStart
+        @test count(i -> vStart <= pts[2i-1] < vEnd, 1:np) == 3
+        LibPETSc.DMPlexRestoreTransitiveClosure(petsclib, dm, cStart, LibPETSc.PETSC_TRUE, np, pts)
+
+        # join of the two vertices of an edge is that edge; meet of two edges is a vertex
+        ec = collect(LibPETSc.DMPlexGetCone(petsclib, dm, cone[1]))
+        nj, jn = LibPETSc.DMPlexGetJoin(petsclib, dm, PetscInt_t(2), ec)
+        @test nj == 1 && jn[1] == cone[1]
+        LibPETSc.DMPlexRestoreJoin(petsclib, dm, PetscInt_t(2), ec, nj, jn)
+        e2 = collect(cone[1:2])
+        nm, mt = LibPETSc.DMPlexGetMeet(petsclib, dm, PetscInt_t(2), e2)
+        @test nm == 1 && vStart <= mt[1] < vEnd
+        LibPETSc.DMPlexRestoreMeet(petsclib, dm, PetscInt_t(2), e2, nm, mt)
+
+        # cell coordinates (3 vertices × 2 components)
+        isDG, Nc, arr, crd = LibPETSc.DMPlexGetCellCoordinates(petsclib, dm, cStart)
+        @test Nc == 6 && length(crd) == 6
+        LibPETSc.DMPlexRestoreCellCoordinates(petsclib, dm, cStart, isDG, Nc, arr, crd)
+
+        # two-field section: 2 dofs per vertex (field 0), 1 dof per cell (field 1)
+        pStart, pEnd = LibPETSc.DMPlexGetChart(petsclib, dm)
+        s = Ref{LibPETSc.PetscSection}()
+        LibPETSc.PetscSectionCreate(petsclib, _TC, s)
+        LibPETSc.PetscSectionSetNumFields(petsclib, s[], PetscInt_t(2))
+        LibPETSc.PetscSectionSetFieldComponents(petsclib, s[], PetscInt_t(0), PetscInt_t(2))
+        LibPETSc.PetscSectionSetFieldComponents(petsclib, s[], PetscInt_t(1), PetscInt_t(1))
+        LibPETSc.PetscSectionSetChart(petsclib, s[], pStart, pEnd)
+        for v in vStart:vEnd-one(PetscInt_t)
+            LibPETSc.PetscSectionSetFieldDof(petsclib, s[], v, PetscInt_t(0), PetscInt_t(2))
+            LibPETSc.PetscSectionSetDof(petsclib, s[], v, PetscInt_t(2))
+        end
+        for c in cStart:cEnd-one(PetscInt_t)
+            LibPETSc.PetscSectionSetFieldDof(petsclib, s[], c, PetscInt_t(1), PetscInt_t(1))
+            LibPETSc.PetscSectionSetDof(petsclib, s[], c, PetscInt_t(1))
+        end
+        LibPETSc.PetscSectionSetUp(petsclib, s[])
+        LibPETSc.DMSetLocalSection(petsclib, dm, s[])
+        nu = 2*(vEnd-vStart); npr = cEnd-cStart
+
+        # field index sets
+        nf, names, fields = LibPETSc.DMCreateFieldIS(petsclib, dm)
+        @test nf == 2 && length(fields) == 2
+        @test LibPETSc.ISGetLocalSize(petsclib, fields[1]) == nu
+        @test LibPETSc.ISGetLocalSize(petsclib, fields[2]) == npr
+        idx = LibPETSc.ISGetIndices(petsclib, fields[2])
+        @test length(idx) == npr
+        LibPETSc.ISRestoreIndices(petsclib, fields[2], idx)
+        foreach(f -> LibPETSc.ISDestroy(petsclib, f), fields)
+
+        # local-to-global mapping indices
+        ltog = Ref{LibPETSc.ISLocalToGlobalMapping}(C_NULL)
+        LibPETSc.DMGetLocalToGlobalMapping(petsclib, dm, ltog)
+        gidx = LibPETSc.ISLocalToGlobalMappingGetIndices(petsclib, ltog[])
+        @test length(gidx) == nu + npr && sort(gidx) == collect(0:nu+npr-1)
+        LibPETSc.ISLocalToGlobalMappingRestoreIndices(petsclib, ltog[], gidx)
+
+        # closure indices and closure values
+        gs = Ref{LibPETSc.PetscSection}()
+        LibPETSc.DMGetGlobalSection(petsclib, dm, gs)
+        ni, ind, offs = LibPETSc.DMPlexGetClosureIndices(petsclib, dm, s[], gs[], cStart, LibPETSc.PETSC_TRUE)
+        @test ni == 7 && length(ind) == 7 && offs[2] == 6
+        LibPETSc.DMPlexRestoreClosureIndices(petsclib, dm, s[], gs[], cStart, LibPETSc.PETSC_TRUE, ni, ind)
+        lv = LibPETSc.DMCreateLocalVector(petsclib, dm)
+        LibPETSc.VecSet(petsclib, lv, PetscScalar_t(3))
+        cs, vals = LibPETSc.DMPlexVecGetClosure(petsclib, dm, s[], lv, cStart)
+        @test cs == 7 && all(vals .== 3)
+        LibPETSc.DMPlexVecRestoreClosure(petsclib, dm, s[], lv, cStart, cs, vals)
+
+        # section SF graph and (empty) constraint indices
+        sf = Ref{LibPETSc.PetscSF}(C_NULL)
+        LibPETSc.DMGetSectionSF(petsclib, dm, sf)
+        nr, nl, il, ir = LibPETSc.PetscSFGetGraph(petsclib, sf[])
+        @test nr == nu + npr && nl == nu + npr
+        @test isempty(LibPETSc.PetscSectionGetConstraintIndices(petsclib, s[], vStart))
+
+        LibPETSc.VecDestroy(petsclib, lv)
+        LibPETSc.DMDestroy(petsclib, dm)
+    end
+    end # real(PetscScalar_t) != Float32
+
     # ── Low-level: PetscFE creation ──────────────────────────────────────────
     @testset "Low-level: PetscFECreateDefault" begin
         opts = PETSc.Options(petsclib; petscspace_degree=1)

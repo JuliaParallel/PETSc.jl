@@ -2248,17 +2248,15 @@ $(_doc_external("Vec/PetscSectionGetConstraintIndices"))
 function PetscSectionGetConstraintIndices(petsclib::PetscLibType, s::PetscSection, point::PetscInt) end
 
 @for_petsc function PetscSectionGetConstraintIndices(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt )
-	indices_ = Ref{Ptr{$PetscInt}}()
-
+	indices_ = Ref{Ptr{$PetscInt}}(C_NULL)
     @chk ccall(
                (:PetscSectionGetConstraintIndices, $petsc_library),
                PetscErrorCode,
                (PetscSection, $PetscInt, Ptr{Ptr{$PetscInt}}),
                s, point, indices_,
               )
-
-	indices = unsafe_wrap(Array, indices_[], VecGetLocalSize(petsclib, x); own = false)
-
+	n = PetscSectionGetConstraintDof(petsclib, s, point)
+	indices = unsafe_wrap(Array, indices_[], n; own = false)
 	return indices
 end 
 
@@ -2319,17 +2317,15 @@ $(_doc_external("Vec/PetscSectionGetFieldConstraintIndices"))
 function PetscSectionGetFieldConstraintIndices(petsclib::PetscLibType, s::PetscSection, point::PetscInt, field::PetscInt) end
 
 @for_petsc function PetscSectionGetFieldConstraintIndices(petsclib::$UnionPetscLib, s::PetscSection, point::$PetscInt, field::$PetscInt )
-	indices_ = Ref{Ptr{$PetscInt}}()
-
+	indices_ = Ref{Ptr{$PetscInt}}(C_NULL)
     @chk ccall(
                (:PetscSectionGetFieldConstraintIndices, $petsc_library),
                PetscErrorCode,
                (PetscSection, $PetscInt, $PetscInt, Ptr{Ptr{$PetscInt}}),
                s, point, field, indices_,
               )
-
-	indices = unsafe_wrap(Array, indices_[], VecGetLocalSize(petsclib, x); own = false)
-
+	n = PetscSectionGetFieldConstraintDof(petsclib, s, point, field)
+	indices = unsafe_wrap(Array, indices_[], n; own = false)
 	return indices
 end 
 

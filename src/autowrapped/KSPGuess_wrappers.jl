@@ -122,15 +122,16 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/KSPGuessDestroy"))
 """
-function KSPGuessDestroy(petsclib::PetscLibType, guess::KSPGuess) end
+function KSPGuessDestroy(petsclib::PetscLibType, guess::Union{KSPGuess, Ref{KSPGuess}}) end
 
-@for_petsc function KSPGuessDestroy(petsclib::$UnionPetscLib, guess::KSPGuess )
+@for_petsc function KSPGuessDestroy(petsclib::$UnionPetscLib, guess::Union{KSPGuess, Ref{KSPGuess}} )
+	guess_ = guess isa Base.RefValue ? guess : Ref{KSPGuess}(guess)
 
     @chk ccall(
                (:KSPGuessDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{KSPGuess},),
-               guess,
+               guess_,
               )
 
 

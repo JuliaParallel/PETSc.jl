@@ -299,15 +299,16 @@ Level: beginner
 # External Links
 $(_doc_external("DM/PetscFVDestroy"))
 """
-function PetscFVDestroy(petsclib::PetscLibType, fvm::PetscFV) end
+function PetscFVDestroy(petsclib::PetscLibType, fvm::Union{PetscFV, Ref{PetscFV}}) end
 
-@for_petsc function PetscFVDestroy(petsclib::$UnionPetscLib, fvm::PetscFV )
+@for_petsc function PetscFVDestroy(petsclib::$UnionPetscLib, fvm::Union{PetscFV, Ref{PetscFV}} )
+	fvm_ = fvm isa Base.RefValue ? fvm : Ref{PetscFV}(fvm)
 
     @chk ccall(
                (:PetscFVDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscFV},),
-               fvm,
+               fvm_,
               )
 
 

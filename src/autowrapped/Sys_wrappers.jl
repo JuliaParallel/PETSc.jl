@@ -3898,15 +3898,16 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscCommDestroy"))
 """
-function PetscCommDestroy(petsclib::PetscLibType, comm::MPI_Comm) end
+function PetscCommDestroy(petsclib::PetscLibType, comm::Union{MPI_Comm, Ref{MPI_Comm}}) end
 
-@for_petsc function PetscCommDestroy(petsclib::$UnionPetscLib, comm::MPI_Comm )
+@for_petsc function PetscCommDestroy(petsclib::$UnionPetscLib, comm::Union{MPI_Comm, Ref{MPI_Comm}} )
+	comm_ = comm isa Base.RefValue ? comm : Ref{MPI_Comm}(comm)
 
     @chk ccall(
                (:PetscCommDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{MPI_Comm},),
-               comm,
+               comm_,
               )
 
 
@@ -13032,15 +13033,16 @@ end
 # External Links
 $(_doc_external("Sys/PetscBTDestroy"))
 """
-function PetscBTDestroy(petsclib::PetscLibType, array::PetscBT) end
+function PetscBTDestroy(petsclib::PetscLibType, array::Union{PetscBT, Ref{PetscBT}}) end
 
-@for_petsc function PetscBTDestroy(petsclib::$UnionPetscLib, array::PetscBT )
+@for_petsc function PetscBTDestroy(petsclib::$UnionPetscLib, array::Union{PetscBT, Ref{PetscBT}} )
+	array_ = array isa Base.RefValue ? array : Ref{PetscBT}(array)
 
     @chk ccall(
                (:PetscBTDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscBT},),
-               array,
+               array_,
               )
 
 

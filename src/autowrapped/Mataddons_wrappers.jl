@@ -157,15 +157,16 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatColoringDestroy"))
 """
-function MatColoringDestroy(petsclib::PetscLibType, mc::MatColoring) end
+function MatColoringDestroy(petsclib::PetscLibType, mc::Union{MatColoring, Ref{MatColoring}}) end
 
-@for_petsc function MatColoringDestroy(petsclib::$UnionPetscLib, mc::MatColoring )
+@for_petsc function MatColoringDestroy(petsclib::$UnionPetscLib, mc::Union{MatColoring, Ref{MatColoring}} )
+	mc_ = mc isa Base.RefValue ? mc : Ref{MatColoring}(mc)
 
     @chk ccall(
                (:MatColoringDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{MatColoring},),
-               mc,
+               mc_,
               )
 
 
@@ -895,15 +896,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatFDColoringDestroy"))
 """
-function MatFDColoringDestroy(petsclib::PetscLibType, c::MatFDColoring) end
+function MatFDColoringDestroy(petsclib::PetscLibType, c::Union{MatFDColoring, Ref{MatFDColoring}}) end
 
-@for_petsc function MatFDColoringDestroy(petsclib::$UnionPetscLib, c::MatFDColoring )
+@for_petsc function MatFDColoringDestroy(petsclib::$UnionPetscLib, c::Union{MatFDColoring, Ref{MatFDColoring}} )
+	c_ = c isa Base.RefValue ? c : Ref{MatFDColoring}(c)
 
     @chk ccall(
                (:MatFDColoringDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{MatFDColoring},),
-               c,
+               c_,
               )
 
 
@@ -1077,15 +1079,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatTransposeColoringDestroy"))
 """
-function MatTransposeColoringDestroy(petsclib::PetscLibType, c::MatTransposeColoring) end
+function MatTransposeColoringDestroy(petsclib::PetscLibType, c::Union{MatTransposeColoring, Ref{MatTransposeColoring}}) end
 
-@for_petsc function MatTransposeColoringDestroy(petsclib::$UnionPetscLib, c::MatTransposeColoring )
+@for_petsc function MatTransposeColoringDestroy(petsclib::$UnionPetscLib, c::Union{MatTransposeColoring, Ref{MatTransposeColoring}} )
+	c_ = c isa Base.RefValue ? c : Ref{MatTransposeColoring}(c)
 
     @chk ccall(
                (:MatTransposeColoringDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{MatTransposeColoring},),
-               c,
+               c_,
               )
 
 
@@ -1440,15 +1443,16 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatPartitioningDestroy"))
 """
-function MatPartitioningDestroy(petsclib::PetscLibType, part::MatPartitioning) end
+function MatPartitioningDestroy(petsclib::PetscLibType, part::Union{MatPartitioning, Ref{MatPartitioning}}) end
 
-@for_petsc function MatPartitioningDestroy(petsclib::$UnionPetscLib, part::MatPartitioning )
+@for_petsc function MatPartitioningDestroy(petsclib::$UnionPetscLib, part::Union{MatPartitioning, Ref{MatPartitioning}} )
+	part_ = part isa Base.RefValue ? part : Ref{MatPartitioning}(part)
 
     @chk ccall(
                (:MatPartitioningDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{MatPartitioning},),
-               part,
+               part_,
               )
 
 
@@ -3802,15 +3806,16 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCoarsenDestroy"))
 """
-function MatCoarsenDestroy(petsclib::PetscLibType, agg::MatCoarsen) end
+function MatCoarsenDestroy(petsclib::PetscLibType, agg::Union{MatCoarsen, Ref{MatCoarsen}}) end
 
-@for_petsc function MatCoarsenDestroy(petsclib::$UnionPetscLib, agg::MatCoarsen )
+@for_petsc function MatCoarsenDestroy(petsclib::$UnionPetscLib, agg::Union{MatCoarsen, Ref{MatCoarsen}} )
+	agg_ = agg isa Base.RefValue ? agg : Ref{MatCoarsen}(agg)
 
     @chk ccall(
                (:MatCoarsenDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{MatCoarsen},),
-               agg,
+               agg_,
               )
 
 

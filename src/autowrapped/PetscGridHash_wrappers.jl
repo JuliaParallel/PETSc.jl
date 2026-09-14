@@ -125,15 +125,16 @@ end
 # External Links
 $(_doc_external("DM/PetscGridHashDestroy"))
 """
-function PetscGridHashDestroy(petsclib::PetscLibType, box::PetscGridHash) end
+function PetscGridHashDestroy(petsclib::PetscLibType, box::Union{PetscGridHash, Ref{PetscGridHash}}) end
 
-@for_petsc function PetscGridHashDestroy(petsclib::$UnionPetscLib, box::PetscGridHash )
+@for_petsc function PetscGridHashDestroy(petsclib::$UnionPetscLib, box::Union{PetscGridHash, Ref{PetscGridHash}} )
+	box_ = box isa Base.RefValue ? box : Ref{PetscGridHash}(box)
 
     @chk ccall(
                (:PetscGridHashDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscGridHash},),
-               box,
+               box_,
               )
 
 

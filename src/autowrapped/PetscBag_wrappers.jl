@@ -395,15 +395,16 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscBagDestroy"))
 """
-function PetscBagDestroy(petsclib::PetscLibType, bag::PetscBag) end
+function PetscBagDestroy(petsclib::PetscLibType, bag::Union{PetscBag, Ref{PetscBag}}) end
 
-@for_petsc function PetscBagDestroy(petsclib::$UnionPetscLib, bag::PetscBag )
+@for_petsc function PetscBagDestroy(petsclib::$UnionPetscLib, bag::Union{PetscBag, Ref{PetscBag}} )
+	bag_ = bag isa Base.RefValue ? bag : Ref{PetscBag}(bag)
 
     @chk ccall(
                (:PetscBagDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscBag},),
-               bag,
+               bag_,
               )
 
 

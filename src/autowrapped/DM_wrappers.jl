@@ -2401,15 +2401,16 @@ See also:
 # External Links
 $(_doc_external("DM/DMInterpolationDestroy"))
 """
-function DMInterpolationDestroy(petsclib::PetscLibType, ctx::DMInterpolationInfo) end
+function DMInterpolationDestroy(petsclib::PetscLibType, ctx::Union{DMInterpolationInfo, Ref{DMInterpolationInfo}}) end
 
-@for_petsc function DMInterpolationDestroy(petsclib::$UnionPetscLib, ctx::DMInterpolationInfo )
+@for_petsc function DMInterpolationDestroy(petsclib::$UnionPetscLib, ctx::Union{DMInterpolationInfo, Ref{DMInterpolationInfo}} )
+	ctx_ = ctx isa Base.RefValue ? ctx : Ref{DMInterpolationInfo}(ctx)
 
     @chk ccall(
                (:DMInterpolationDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{DMInterpolationInfo},),
-               ctx,
+               ctx_,
               )
 
 
@@ -3321,7 +3322,7 @@ $(_doc_external("DM/DMGetLocalToGlobalMapping"))
 function DMGetLocalToGlobalMapping(petsclib::PetscLibType, dm::PetscDM, ltog::Union{ISLocalToGlobalMapping, Ref{ISLocalToGlobalMapping}}) end
 
 @for_petsc function DMGetLocalToGlobalMapping(petsclib::$UnionPetscLib, dm::PetscDM, ltog::Union{ISLocalToGlobalMapping, Ref{ISLocalToGlobalMapping}} )
-	ltog_ = ltog isa Ref ? ltog : Ref{ISLocalToGlobalMapping}(ltog)
+	ltog_ = ltog isa Base.RefValue ? ltog : Ref{ISLocalToGlobalMapping}(ltog)
 
     @chk ccall(
                (:DMGetLocalToGlobalMapping, $petsc_library),
@@ -6462,7 +6463,7 @@ function DMGetLocalSection(petsclib::PetscLibType, dm::PetscDM, section::Union{P
 
 @for_petsc function DMGetLocalSection(petsclib::$UnionPetscLib, dm::PetscDM, section::Union{PetscSection, Ref{PetscSection}} )
 
-	section_ = section isa Ref ? section : Ref{PetscSection}(section)
+	section_ = section isa Base.RefValue ? section : Ref{PetscSection}(section)
 
     @chk ccall(
                (:DMGetLocalSection, $petsc_library),
@@ -6664,7 +6665,7 @@ $(_doc_external("DM/DMGetGlobalSection"))
 function DMGetGlobalSection(petsclib::PetscLibType, dm::PetscDM, section::Union{PetscSection, Ref{PetscSection}}) end
 
 @for_petsc function DMGetGlobalSection(petsclib::$UnionPetscLib, dm::PetscDM, section::Union{PetscSection, Ref{PetscSection}} )
-	section_ = section isa Ref ? section : Ref{PetscSection}(section)
+	section_ = section isa Base.RefValue ? section : Ref{PetscSection}(section)
 
     @chk ccall(
                (:DMGetGlobalSection, $petsc_library),
@@ -6738,7 +6739,7 @@ $(_doc_external("DM/DMGetSectionSF"))
 function DMGetSectionSF(petsclib::PetscLibType, dm::PetscDM, sf::Union{PetscSF, Ref{PetscSF}}) end
 
 @for_petsc function DMGetSectionSF(petsclib::$UnionPetscLib, dm::PetscDM, sf::Union{PetscSF, Ref{PetscSF}} )
-	sf_ = sf isa Ref ? sf : Ref{PetscSF}(sf)
+	sf_ = sf isa Base.RefValue ? sf : Ref{PetscSF}(sf)
 
     @chk ccall(
                (:DMGetSectionSF, $petsc_library),
@@ -6856,7 +6857,7 @@ $(_doc_external("DM/DMGetPointSF"))
 function DMGetPointSF(petsclib::PetscLibType, dm::PetscDM, sf::Union{PetscSF, Ref{PetscSF}}) end
 
 @for_petsc function DMGetPointSF(petsclib::$UnionPetscLib, dm::PetscDM, sf::Union{PetscSF, Ref{PetscSF}} )
-	sf_ = sf isa Ref ? sf : Ref{PetscSF}(sf)
+	sf_ = sf isa Base.RefValue ? sf : Ref{PetscSF}(sf)
 
     @chk ccall(
                (:DMGetPointSF, $petsc_library),
@@ -11785,7 +11786,7 @@ $(_doc_external("DM/DMGetCoordinateSection"))
 function DMGetCoordinateSection(petsclib::PetscLibType, dm::PetscDM, section::Union{PetscSection, Ref{PetscSection}}) end
 
 @for_petsc function DMGetCoordinateSection(petsclib::$UnionPetscLib, dm::PetscDM, section::Union{PetscSection, Ref{PetscSection}} )
-	section_ = section isa Ref ? section : Ref{PetscSection}(section)
+	section_ = section isa Base.RefValue ? section : Ref{PetscSection}(section)
 
     @chk ccall(
                (:DMGetCoordinateSection, $petsc_library),

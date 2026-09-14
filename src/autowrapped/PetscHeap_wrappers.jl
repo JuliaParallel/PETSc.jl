@@ -145,15 +145,16 @@ end
 # External Links
 $(_doc_external("Mat/PetscHeapDestroy"))
 """
-function PetscHeapDestroy(petsclib::PetscLibType, heap::PetscHeap) end
+function PetscHeapDestroy(petsclib::PetscLibType, heap::Union{PetscHeap, Ref{PetscHeap}}) end
 
-@for_petsc function PetscHeapDestroy(petsclib::$UnionPetscLib, heap::PetscHeap )
+@for_petsc function PetscHeapDestroy(petsclib::$UnionPetscLib, heap::Union{PetscHeap, Ref{PetscHeap}} )
+	heap_ = heap isa Base.RefValue ? heap : Ref{PetscHeap}(heap)
 
     @chk ccall(
                (:PetscHeapDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscHeap},),
-               heap,
+               heap_,
               )
 
 

@@ -65,15 +65,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoMonitorDrawCtxDestroy"))
 """
-function TaoMonitorDrawCtxDestroy(petsclib::PetscLibType, ictx::TaoMonitorDrawCtx) end
+function TaoMonitorDrawCtxDestroy(petsclib::PetscLibType, ictx::Union{TaoMonitorDrawCtx, Ref{TaoMonitorDrawCtx}}) end
 
-@for_petsc function TaoMonitorDrawCtxDestroy(petsclib::$UnionPetscLib, ictx::TaoMonitorDrawCtx )
+@for_petsc function TaoMonitorDrawCtxDestroy(petsclib::$UnionPetscLib, ictx::Union{TaoMonitorDrawCtx, Ref{TaoMonitorDrawCtx}} )
+	ictx_ = ictx isa Base.RefValue ? ictx : Ref{TaoMonitorDrawCtx}(ictx)
 
     @chk ccall(
                (:TaoMonitorDrawCtxDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{TaoMonitorDrawCtx},),
-               ictx,
+               ictx_,
               )
 
 
@@ -270,15 +271,16 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoLineSearchDestroy"))
 """
-function TaoLineSearchDestroy(petsclib::PetscLibType, ls::TaoLineSearch) end
+function TaoLineSearchDestroy(petsclib::PetscLibType, ls::Union{TaoLineSearch, Ref{TaoLineSearch}}) end
 
-@for_petsc function TaoLineSearchDestroy(petsclib::$UnionPetscLib, ls::TaoLineSearch )
+@for_petsc function TaoLineSearchDestroy(petsclib::$UnionPetscLib, ls::Union{TaoLineSearch, Ref{TaoLineSearch}} )
+	ls_ = ls isa Base.RefValue ? ls : Ref{TaoLineSearch}(ls)
 
     @chk ccall(
                (:TaoLineSearchDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{TaoLineSearch},),
-               ls,
+               ls_,
               )
 
 

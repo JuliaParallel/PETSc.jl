@@ -293,15 +293,16 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCDestroy"))
 """
-function PCDestroy(petsclib::PetscLibType, pc::PC) end
+function PCDestroy(petsclib::PetscLibType, pc::Union{PC, Ref{PC}}) end
 
-@for_petsc function PCDestroy(petsclib::$UnionPetscLib, pc::PC )
+@for_petsc function PCDestroy(petsclib::$UnionPetscLib, pc::Union{PC, Ref{PC}} )
+	pc_ = pc isa Base.RefValue ? pc : Ref{PC}(pc)
 
     @chk ccall(
                (:PCDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PC},),
-               pc,
+               pc_,
               )
 
 

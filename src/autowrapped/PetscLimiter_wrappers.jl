@@ -247,15 +247,16 @@ Level: beginner
 # External Links
 $(_doc_external("DM/PetscLimiterDestroy"))
 """
-function PetscLimiterDestroy(petsclib::PetscLibType, lim::PetscLimiter) end
+function PetscLimiterDestroy(petsclib::PetscLibType, lim::Union{PetscLimiter, Ref{PetscLimiter}}) end
 
-@for_petsc function PetscLimiterDestroy(petsclib::$UnionPetscLib, lim::PetscLimiter )
+@for_petsc function PetscLimiterDestroy(petsclib::$UnionPetscLib, lim::Union{PetscLimiter, Ref{PetscLimiter}} )
+	lim_ = lim isa Base.RefValue ? lim : Ref{PetscLimiter}(lim)
 
     @chk ccall(
                (:PetscLimiterDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscLimiter},),
-               lim,
+               lim_,
               )
 
 

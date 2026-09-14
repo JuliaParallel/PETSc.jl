@@ -326,15 +326,16 @@ Level: developer
 # External Links
 $(_doc_external("Dm/PetscDSDestroy"))
 """
-function PetscDSDestroy(petsclib::PetscLibType, ds::PetscDS) end
+function PetscDSDestroy(petsclib::PetscLibType, ds::Union{PetscDS, Ref{PetscDS}}) end
 
-@for_petsc function PetscDSDestroy(petsclib::$UnionPetscLib, ds::PetscDS )
+@for_petsc function PetscDSDestroy(petsclib::$UnionPetscLib, ds::Union{PetscDS, Ref{PetscDS}} )
+	ds_ = ds isa Base.RefValue ? ds : Ref{PetscDS}(ds)
 
     @chk ccall(
                (:PetscDSDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscDS},),
-               ds,
+               ds_,
               )
 
 

@@ -330,15 +330,16 @@ Level: developer
 # External Links
 $(_doc_external("Mat/PetscPartitionerDestroy"))
 """
-function PetscPartitionerDestroy(petsclib::PetscLibType, part::PetscPartitioner) end
+function PetscPartitionerDestroy(petsclib::PetscLibType, part::Union{PetscPartitioner, Ref{PetscPartitioner}}) end
 
-@for_petsc function PetscPartitionerDestroy(petsclib::$UnionPetscLib, part::PetscPartitioner )
+@for_petsc function PetscPartitionerDestroy(petsclib::$UnionPetscLib, part::Union{PetscPartitioner, Ref{PetscPartitioner}} )
+	part_ = part isa Base.RefValue ? part : Ref{PetscPartitioner}(part)
 
     @chk ccall(
                (:PetscPartitionerDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscPartitioner},),
-               part,
+               part_,
               )
 
 

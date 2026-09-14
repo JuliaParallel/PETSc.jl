@@ -5785,15 +5785,16 @@ Level: developer
 # External Links
 $(_doc_external("Ts/TSMonitorSolutionVTKDestroy"))
 """
-function TSMonitorSolutionVTKDestroy(petsclib::PetscLibType, ctx::TSMonitorVTKCtx) end
+function TSMonitorSolutionVTKDestroy(petsclib::PetscLibType, ctx::Union{TSMonitorVTKCtx, Ref{TSMonitorVTKCtx}}) end
 
-@for_petsc function TSMonitorSolutionVTKDestroy(petsclib::$UnionPetscLib, ctx::TSMonitorVTKCtx )
+@for_petsc function TSMonitorSolutionVTKDestroy(petsclib::$UnionPetscLib, ctx::Union{TSMonitorVTKCtx, Ref{TSMonitorVTKCtx}} )
+	ctx_ = ctx isa Base.RefValue ? ctx : Ref{TSMonitorVTKCtx}(ctx)
 
     @chk ccall(
                (:TSMonitorSolutionVTKDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{TSMonitorVTKCtx},),
-               ctx,
+               ctx_,
               )
 
 

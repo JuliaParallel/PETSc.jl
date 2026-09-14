@@ -72,15 +72,16 @@ Level: beginner
 # External Links
 $(_doc_external("Ts/CharacteristicDestroy"))
 """
-function CharacteristicDestroy(petsclib::PetscLibType, c::Characteristic) end
+function CharacteristicDestroy(petsclib::PetscLibType, c::Union{Characteristic, Ref{Characteristic}}) end
 
-@for_petsc function CharacteristicDestroy(petsclib::$UnionPetscLib, c::Characteristic )
+@for_petsc function CharacteristicDestroy(petsclib::$UnionPetscLib, c::Union{Characteristic, Ref{Characteristic}} )
+	c_ = c isa Base.RefValue ? c : Ref{Characteristic}(c)
 
     @chk ccall(
                (:CharacteristicDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{Characteristic},),
-               c,
+               c_,
               )
 
 

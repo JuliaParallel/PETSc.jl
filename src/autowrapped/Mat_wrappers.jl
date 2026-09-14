@@ -2301,7 +2301,7 @@ function MatSetLocalToGlobalMapping(petsclib::PetscLibType, x::PetscMat, rmappin
 end 
 
 """
-	MatGetLocalToGlobalMapping(petsclib::PetscLibType,A::PetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping) 
+	rmapping::ISLocalToGlobalMapping,cmapping::ISLocalToGlobalMapping = MatGetLocalToGlobalMapping(petsclib::PetscLibType,A::PetscMat) 
 Gets the local
 
 Not Collective
@@ -2320,19 +2320,21 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetLocalToGlobalMapping"))
 """
-function MatGetLocalToGlobalMapping(petsclib::PetscLibType, A::PetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping) end
+function MatGetLocalToGlobalMapping(petsclib::PetscLibType, A::PetscMat) end
 
-@for_petsc function MatGetLocalToGlobalMapping(petsclib::$UnionPetscLib, A::PetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping )
+# returns the row and column mappings (owned by `A`; `C_NULL` if none was set)
+@for_petsc function MatGetLocalToGlobalMapping(petsclib::$UnionPetscLib, A::PetscMat )
+	rmapping_ = Ref{ISLocalToGlobalMapping}(C_NULL)
+	cmapping_ = Ref{ISLocalToGlobalMapping}(C_NULL)
 
     @chk ccall(
                (:MatGetLocalToGlobalMapping, $petsc_library),
                PetscErrorCode,
                (CMat, Ptr{ISLocalToGlobalMapping}, Ptr{ISLocalToGlobalMapping}),
-               A, rmapping, cmapping,
+               A, rmapping_, cmapping_,
               )
 
-
-	return nothing
+	return rmapping_[],cmapping_[]
 end 
 
 """
@@ -6240,8 +6242,8 @@ function MatGetRowIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, sym
 
 @for_petsc function MatGetRowIJ(petsclib::$UnionPetscLib, mat::PetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool )
 	n_ = Ref{$PetscInt}()
-	ia_ = Ref{Ptr{$PetscInt}}()
-	ja_ = Ref{Ptr{$PetscInt}}()
+	ia_ = Ref{Ptr{$PetscInt}}(C_NULL)
+	ja_ = Ref{Ptr{$PetscInt}}(C_NULL)
 	done_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -6252,9 +6254,18 @@ function MatGetRowIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, sym
               )
 
 	n = n_[]
-	ia = unsafe_wrap(Array, ia_[], VecGetLocalSize(petsclib, x); own = false)
-	ja = unsafe_wrap(Array, ja_[], VecGetLocalSize(petsclib, x); own = false)
 	done = done_[]
+	# `ia` has n+1 entries (ia[1] == shift), `ja` has ia[n+1] - shift entries; both are
+	# PETSc-owned and must be given back with MatRestoreRowIJ. When PETSc cannot
+	# provide them (`done == PETSC_FALSE`) empty arrays are returned.
+	if done == PETSC_TRUE && ia_[] != C_NULL
+		ia = unsafe_wrap(Array, ia_[], Int(n) + 1; own = false)
+		nnz = Int(ia[end]) - Int(shift)
+		ja = ja_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, ja_[], nnz; own = false)
+	else
+		ia = $PetscInt[]
+		ja = $PetscInt[]
+	end
 
 	return n,ia,ja,done
 end 
@@ -6291,8 +6302,8 @@ function MatGetColumnIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, 
 
 @for_petsc function MatGetColumnIJ(petsclib::$UnionPetscLib, mat::PetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool )
 	n_ = Ref{$PetscInt}()
-	ia_ = Ref{Ptr{$PetscInt}}()
-	ja_ = Ref{Ptr{$PetscInt}}()
+	ia_ = Ref{Ptr{$PetscInt}}(C_NULL)
+	ja_ = Ref{Ptr{$PetscInt}}(C_NULL)
 	done_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -6303,15 +6314,24 @@ function MatGetColumnIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, 
               )
 
 	n = n_[]
-	ia = unsafe_wrap(Array, ia_[], VecGetLocalSize(petsclib, x); own = false)
-	ja = unsafe_wrap(Array, ja_[], VecGetLocalSize(petsclib, x); own = false)
 	done = done_[]
+	# `ia` has n+1 entries (ia[1] == shift), `ja` has ia[n+1] - shift entries; both are
+	# PETSc-owned and must be given back with MatRestoreColumnIJ. When PETSc cannot
+	# provide them (`done == PETSC_FALSE`) empty arrays are returned.
+	if done == PETSC_TRUE && ia_[] != C_NULL
+		ia = unsafe_wrap(Array, ia_[], Int(n) + 1; own = false)
+		nnz = Int(ia[end]) - Int(shift)
+		ja = ja_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, ja_[], nnz; own = false)
+	else
+		ia = $PetscInt[]
+		ja = $PetscInt[]
+	end
 
 	return n,ia,ja,done
 end 
 
 """
-	n::PetscInt,ia::Vector{PetscInt},ja::Vector{PetscInt},done::PetscBool = MatRestoreRowIJ(petsclib::PetscLibType,mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool) 
+	done::PetscBool = MatRestoreRowIJ(petsclib::PetscLibType,mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{PetscInt}, ja::Vector{PetscInt}) 
 Call after you are completed with the ia,ja indices obtained with `MatGetRowIJ()`.
 
 Collective
@@ -6337,12 +6357,13 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatRestoreRowIJ"))
 """
-function MatRestoreRowIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool) end
+function MatRestoreRowIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{PetscInt}, ja::Vector{PetscInt}) end
 
-@for_petsc function MatRestoreRowIJ(petsclib::$UnionPetscLib, mat::PetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool )
+# `ia`/`ja` are the arrays obtained from MatGetRowIJ (their pointers are handed back to PETSc)
+@for_petsc function MatRestoreRowIJ(petsclib::$UnionPetscLib, mat::PetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{$PetscInt}, ja::Vector{$PetscInt} )
 	n_ = Ref{$PetscInt}()
-	ia_ = Ref{Ptr{$PetscInt}}()
-	ja_ = Ref{Ptr{$PetscInt}}()
+	ia_ = Ref{Ptr{$PetscInt}}(isempty(ia) ? C_NULL : pointer(ia))
+	ja_ = Ref{Ptr{$PetscInt}}(isempty(ja) ? C_NULL : pointer(ja))
 	done_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -6352,16 +6373,11 @@ function MatRestoreRowIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt,
                mat, shift, symmetric, inodecompressed, n_, ia_, ja_, done_,
               )
 
-	n = n_[]
-	ia = unsafe_wrap(Array, ia_[], VecGetLocalSize(petsclib, x); own = false)
-	ja = unsafe_wrap(Array, ja_[], VecGetLocalSize(petsclib, x); own = false)
-	done = done_[]
-
-	return n,ia,ja,done
+	return done_[]
 end 
 
 """
-	n::PetscInt,ia::Vector{PetscInt},ja::Vector{PetscInt},done::PetscBool = MatRestoreColumnIJ(petsclib::PetscLibType,mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool) 
+	done::PetscBool = MatRestoreColumnIJ(petsclib::PetscLibType,mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{PetscInt}, ja::Vector{PetscInt}) 
 Call after you are completed with the ia,ja indices obtained with `MatGetColumnIJ()`.
 
 Collective
@@ -6387,12 +6403,13 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatRestoreColumnIJ"))
 """
-function MatRestoreColumnIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool) end
+function MatRestoreColumnIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{PetscInt}, ja::Vector{PetscInt}) end
 
-@for_petsc function MatRestoreColumnIJ(petsclib::$UnionPetscLib, mat::PetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool )
+# `ia`/`ja` are the arrays obtained from MatGetColumnIJ (their pointers are handed back to PETSc)
+@for_petsc function MatRestoreColumnIJ(petsclib::$UnionPetscLib, mat::PetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{$PetscInt}, ja::Vector{$PetscInt} )
 	n_ = Ref{$PetscInt}()
-	ia_ = Ref{Ptr{$PetscInt}}()
-	ja_ = Ref{Ptr{$PetscInt}}()
+	ia_ = Ref{Ptr{$PetscInt}}(isempty(ia) ? C_NULL : pointer(ia))
+	ja_ = Ref{Ptr{$PetscInt}}(isempty(ja) ? C_NULL : pointer(ja))
 	done_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -6402,12 +6419,7 @@ function MatRestoreColumnIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscI
                mat, shift, symmetric, inodecompressed, n_, ia_, ja_, done_,
               )
 
-	n = n_[]
-	ia = unsafe_wrap(Array, ia_[], VecGetLocalSize(petsclib, x); own = false)
-	ja = unsafe_wrap(Array, ja_[], VecGetLocalSize(petsclib, x); own = false)
-	done = done_[]
-
-	return n,ia,ja,done
+	return done_[]
 end 
 
 """
@@ -15636,9 +15648,9 @@ of local rows, i.e 'm'.
 # External Links
 $(_doc_external("Mat/MatMPIAIJSetPreallocation"))
 """
-function MatMPIAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) end
+function MatMPIAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, d_nz::PetscInt, d_nnz::Union{Ptr,Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatMPIAIJSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+@for_petsc function MatMPIAIJSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, d_nz::$PetscInt, d_nnz::Union{Ptr,Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr,Vector{$PetscInt}} )
 
     @chk ccall(
                (:MatMPIAIJSetPreallocation, $petsc_library),
@@ -15833,7 +15845,7 @@ function MatCreateAIJ(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::Pe
 end 
 
 """
-	colmap::Vector{PetscInt} = MatMPIAIJGetSeqAIJ(petsclib::PetscLibType,A::PetscMat, Ad::PetscMat, Ao::PetscMat) 
+	Ad::PetscMat,Ao::PetscMat,colmap::Vector{PetscInt} = MatMPIAIJGetSeqAIJ(petsclib::PetscLibType,A::PetscMat) 
 Returns the local pieces of this distributed matrix
 
 Not Collective
@@ -15853,12 +15865,14 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMPIAIJGetSeqAIJ"))
 """
-function MatMPIAIJGetSeqAIJ(petsclib::PetscLibType, A::PetscMat, Ad::PetscMat, Ao::PetscMat) end
+function MatMPIAIJGetSeqAIJ(petsclib::PetscLibType, A::PetscMat) end
 
-@for_petsc function MatMPIAIJGetSeqAIJ(petsclib::$UnionPetscLib, A::PetscMat, Ad::PetscMat, Ao::PetscMat )
-	Ad_ = Ref(Ad.ptr)
-	Ao_ = Ref(Ao.ptr)
-	colmap_ = Ref{Ptr{$PetscInt}}()
+# `Ad`, `Ao` and `colmap` are owned by `A` (do not destroy them); `colmap` has one entry per
+# column of `Ao`
+@for_petsc function MatMPIAIJGetSeqAIJ(petsclib::$UnionPetscLib, A::PetscMat )
+	Ad_ = Ref{CMat}()
+	Ao_ = Ref{CMat}()
+	colmap_ = Ref{Ptr{$PetscInt}}(C_NULL)
 
     @chk ccall(
                (:MatMPIAIJGetSeqAIJ, $petsc_library),
@@ -15867,11 +15881,12 @@ function MatMPIAIJGetSeqAIJ(petsclib::PetscLibType, A::PetscMat, Ad::PetscMat, A
                A, Ad_, Ao_, colmap_,
               )
 
-	Ad.ptr = C_NULL
-	Ao.ptr = C_NULL
-	colmap = unsafe_wrap(Array, colmap_[], VecGetLocalSize(petsclib, x); own = false)
+	Ad = PetscMat(Ad_[], petsclib)
+	Ao = PetscMat(Ao_[], petsclib)
+	_, ncols_o = MatGetLocalSize(petsclib, Ao)
+	colmap = colmap_[] == C_NULL ? $PetscInt[] : unsafe_wrap(Array, colmap_[], Int(ncols_o); own = false)
 
-	return colmap
+	return Ad,Ao,colmap
 end 
 
 """
@@ -17978,9 +17993,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqAIJSetPreallocation"))
 """
-function MatSeqAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, nz::PetscInt, nnz::Vector{PetscInt}) end
+function MatSeqAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, nz::PetscInt, nnz::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatSeqAIJSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, nz::$PetscInt, nnz::Vector{$PetscInt} )
+@for_petsc function MatSeqAIJSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, nz::$PetscInt, nnz::Union{Ptr,Vector{$PetscInt}} )
 
     @chk ccall(
                (:MatSeqAIJSetPreallocation, $petsc_library),
@@ -18327,10 +18342,14 @@ function MatSeqAIJGetCSRAndMemType(petsclib::PetscLibType, mat::PetscMat) end
                mat, i_, j_, a_, mtype_,
               )
 
-	i = unsafe_wrap(Array, i_[], VecGetLocalSize(petsclib, x); own = false)
-	j = unsafe_wrap(Array, j_[], VecGetLocalSize(petsclib, x); own = false)
-	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
-	mtype = unsafe_string(mtype_[])
+	# CSR arrays owned by the matrix: `i` has m+1 entries (m local rows), `j` and `a` have
+	# i[m+1] entries; `mtype` is the `PetscMemType` enum (host memory for MATSEQAIJ)
+	m, _ = MatGetLocalSize(petsclib, mat)
+	i = unsafe_wrap(Array, i_[], Int(m) + 1; own = false)
+	nnz = Int(i[end])
+	j = unsafe_wrap(Array, j_[], nnz; own = false)
+	a = unsafe_wrap(Array, a_[], nnz; own = false)
+	mtype = mtype_[]
 
 	return i,j,a,mtype
 end 
@@ -19460,9 +19479,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatXAIJSetPreallocation"))
 """
-function MatXAIJSetPreallocation(petsclib::PetscLibType, A::PetscMat, bs::PetscInt, dnnz::Vector{PetscInt}, onnz::Vector{PetscInt}, dnnzu::Vector{PetscInt}, onnzu::Vector{PetscInt}) end
+function MatXAIJSetPreallocation(petsclib::PetscLibType, A::PetscMat, bs::PetscInt, dnnz::Union{Ptr,Vector{PetscInt}}, onnz::Union{Ptr,Vector{PetscInt}}, dnnzu::Union{Ptr,Vector{PetscInt}}, onnzu::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatXAIJSetPreallocation(petsclib::$UnionPetscLib, A::PetscMat, bs::$PetscInt, dnnz::Vector{$PetscInt}, onnz::Vector{$PetscInt}, dnnzu::Vector{$PetscInt}, onnzu::Vector{$PetscInt} )
+@for_petsc function MatXAIJSetPreallocation(petsclib::$UnionPetscLib, A::PetscMat, bs::$PetscInt, dnnz::Union{Ptr,Vector{$PetscInt}}, onnz::Union{Ptr,Vector{$PetscInt}}, dnnzu::Union{Ptr,Vector{$PetscInt}}, onnzu::Union{Ptr,Vector{$PetscInt}} )
 
     @chk ccall(
                (:MatXAIJSetPreallocation, $petsc_library),

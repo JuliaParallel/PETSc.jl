@@ -13,15 +13,16 @@ const PetscOptionsHelpPrCinted = Ptr{_n_PetscOptionsHelpPrCinted}
 # External Links
 $(_doc_external("Sys/PetscOptionsHelpPrintedDestroy"))
 """
-function PetscOptionsHelpPrintedDestroy(petsclib::PetscLibType, hp::PetscOptionsHelpPrCinted) end
+function PetscOptionsHelpPrintedDestroy(petsclib::PetscLibType, hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}}) end
 
-@for_petsc function PetscOptionsHelpPrintedDestroy(petsclib::$UnionPetscLib, hp::PetscOptionsHelpPrCinted )
+@for_petsc function PetscOptionsHelpPrintedDestroy(petsclib::$UnionPetscLib, hp::Union{PetscOptionsHelpPrCinted, Ref{PetscOptionsHelpPrCinted}} )
+	hp_ = hp isa Base.RefValue ? hp : Ref{PetscOptionsHelpPrCinted}(hp)
 
     @chk ccall(
                (:PetscOptionsHelpPrintedDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscOptionsHelpPrCinted},),
-               hp,
+               hp_,
               )
 
 

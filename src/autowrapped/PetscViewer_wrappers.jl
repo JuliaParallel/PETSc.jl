@@ -6467,15 +6467,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscViewersDestroy"))
 """
-function PetscViewersDestroy(petsclib::PetscLibType, v::PetscViewers) end
+function PetscViewersDestroy(petsclib::PetscLibType, v::Union{PetscViewers, Ref{PetscViewers}}) end
 
-@for_petsc function PetscViewersDestroy(petsclib::$UnionPetscLib, v::PetscViewers )
+@for_petsc function PetscViewersDestroy(petsclib::$UnionPetscLib, v::Union{PetscViewers, Ref{PetscViewers}} )
+	v_ = v isa Base.RefValue ? v : Ref{PetscViewers}(v)
 
     @chk ccall(
                (:PetscViewersDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscViewers},),
-               v,
+               v_,
               )
 
 

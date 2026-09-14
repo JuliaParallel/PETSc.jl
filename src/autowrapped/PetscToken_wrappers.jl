@@ -91,15 +91,16 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscTokenDestroy"))
 """
-function PetscTokenDestroy(petsclib::PetscLibType, a::PetscToken) end
+function PetscTokenDestroy(petsclib::PetscLibType, a::Union{PetscToken, Ref{PetscToken}}) end
 
-@for_petsc function PetscTokenDestroy(petsclib::$UnionPetscLib, a::PetscToken )
+@for_petsc function PetscTokenDestroy(petsclib::$UnionPetscLib, a::Union{PetscToken, Ref{PetscToken}} )
+	a_ = a isa Base.RefValue ? a : Ref{PetscToken}(a)
 
     @chk ccall(
                (:PetscTokenDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscToken},),
-               a,
+               a_,
               )
 
 

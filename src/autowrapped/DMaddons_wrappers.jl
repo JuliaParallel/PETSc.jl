@@ -212,15 +212,16 @@ See also:
 # External Links
 $(_doc_external("DM/DMAdaptorDestroy"))
 """
-function DMAdaptorDestroy(petsclib::PetscLibType, adaptor::DMAdaptor) end
+function DMAdaptorDestroy(petsclib::PetscLibType, adaptor::Union{DMAdaptor, Ref{DMAdaptor}}) end
 
-@for_petsc function DMAdaptorDestroy(petsclib::$UnionPetscLib, adaptor::DMAdaptor )
+@for_petsc function DMAdaptorDestroy(petsclib::$UnionPetscLib, adaptor::Union{DMAdaptor, Ref{DMAdaptor}} )
+	adaptor_ = adaptor isa Base.RefValue ? adaptor : Ref{DMAdaptor}(adaptor)
 
     @chk ccall(
                (:DMAdaptorDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{DMAdaptor},),
-               adaptor,
+               adaptor_,
               )
 
 
@@ -1252,15 +1253,16 @@ end
 # External Links
 $(_doc_external("DM/DMSwarmSortDestroy"))
 """
-function DMSwarmSortDestroy(petsclib::PetscLibType, _ctx::DMSwarmSort) end
+function DMSwarmSortDestroy(petsclib::PetscLibType, _ctx::Union{DMSwarmSort, Ref{DMSwarmSort}}) end
 
-@for_petsc function DMSwarmSortDestroy(petsclib::$UnionPetscLib, _ctx::DMSwarmSort )
+@for_petsc function DMSwarmSortDestroy(petsclib::$UnionPetscLib, _ctx::Union{DMSwarmSort, Ref{DMSwarmSort}} )
+	_ctx_ = _ctx isa Base.RefValue ? _ctx : Ref{DMSwarmSort}(_ctx)
 
     @chk ccall(
                (:DMSwarmSortDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{DMSwarmSort},),
-               _ctx,
+               _ctx_,
               )
 
 
@@ -1525,15 +1527,16 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMSwarmCellDMDestroy"))
 """
-function DMSwarmCellDMDestroy(petsclib::PetscLibType, celldm::DMSwarmCellDM) end
+function DMSwarmCellDMDestroy(petsclib::PetscLibType, celldm::Union{DMSwarmCellDM, Ref{DMSwarmCellDM}}) end
 
-@for_petsc function DMSwarmCellDMDestroy(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM )
+@for_petsc function DMSwarmCellDMDestroy(petsclib::$UnionPetscLib, celldm::Union{DMSwarmCellDM, Ref{DMSwarmCellDM}} )
+	celldm_ = celldm isa Base.RefValue ? celldm : Ref{DMSwarmCellDM}(celldm)
 
     @chk ccall(
                (:DMSwarmCellDMDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{DMSwarmCellDM},),
-               celldm,
+               celldm_,
               )
 
 
@@ -1891,15 +1894,16 @@ end
 # External Links
 $(_doc_external("DM/DMPlexPointQueueDestroy"))
 """
-function DMPlexPointQueueDestroy(petsclib::PetscLibType, queue::DMPlexPoCintQueue) end
+function DMPlexPointQueueDestroy(petsclib::PetscLibType, queue::Union{DMPlexPoCintQueue, Ref{DMPlexPoCintQueue}}) end
 
-@for_petsc function DMPlexPointQueueDestroy(petsclib::$UnionPetscLib, queue::DMPlexPoCintQueue )
+@for_petsc function DMPlexPointQueueDestroy(petsclib::$UnionPetscLib, queue::Union{DMPlexPoCintQueue, Ref{DMPlexPoCintQueue}} )
+	queue_ = queue isa Base.RefValue ? queue : Ref{DMPlexPoCintQueue}(queue)
 
     @chk ccall(
                (:DMPlexPointQueueDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{DMPlexPoCintQueue},),
-               queue,
+               queue_,
               )
 
 
@@ -2056,15 +2060,16 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMFieldDestroy"))
 """
-function DMFieldDestroy(petsclib::PetscLibType, field::DMField) end
+function DMFieldDestroy(petsclib::PetscLibType, field::Union{DMField, Ref{DMField}}) end
 
-@for_petsc function DMFieldDestroy(petsclib::$UnionPetscLib, field::DMField )
+@for_petsc function DMFieldDestroy(petsclib::$UnionPetscLib, field::Union{DMField, Ref{DMField}} )
+	field_ = field isa Base.RefValue ? field : Ref{DMField}(field)
 
     @chk ccall(
                (:DMFieldDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{DMField},),
-               field,
+               field_,
               )
 
 
@@ -3157,15 +3162,16 @@ Level: beginner
 # External Links
 $(_doc_external("DM/DMPlexTransformDestroy"))
 """
-function DMPlexTransformDestroy(petsclib::PetscLibType, tr::DMPlexTransform) end
+function DMPlexTransformDestroy(petsclib::PetscLibType, tr::Union{DMPlexTransform, Ref{DMPlexTransform}}) end
 
-@for_petsc function DMPlexTransformDestroy(petsclib::$UnionPetscLib, tr::DMPlexTransform )
+@for_petsc function DMPlexTransformDestroy(petsclib::$UnionPetscLib, tr::Union{DMPlexTransform, Ref{DMPlexTransform}} )
+	tr_ = tr isa Base.RefValue ? tr : Ref{DMPlexTransform}(tr)
 
     @chk ccall(
                (:DMPlexTransformDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{DMPlexTransform},),
-               tr,
+               tr_,
               )
 
 
@@ -4832,15 +4838,16 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMNetworkMonitorDestroy"))
 """
-function DMNetworkMonitorDestroy(petsclib::PetscLibType, monitor::DMNetworkMonitor) end
+function DMNetworkMonitorDestroy(petsclib::PetscLibType, monitor::Union{DMNetworkMonitor, Ref{DMNetworkMonitor}}) end
 
-@for_petsc function DMNetworkMonitorDestroy(petsclib::$UnionPetscLib, monitor::DMNetworkMonitor )
+@for_petsc function DMNetworkMonitorDestroy(petsclib::$UnionPetscLib, monitor::Union{DMNetworkMonitor, Ref{DMNetworkMonitor}} )
+	monitor_ = monitor isa Base.RefValue ? monitor : Ref{DMNetworkMonitor}(monitor)
 
     @chk ccall(
                (:DMNetworkMonitorDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{DMNetworkMonitor},),
-               monitor,
+               monitor_,
               )
 
 
@@ -5193,15 +5200,16 @@ Level: beginner
 # External Links
 $(_doc_external("DM/DMLabelDestroy"))
 """
-function DMLabelDestroy(petsclib::PetscLibType, label::DMLabel) end
+function DMLabelDestroy(petsclib::PetscLibType, label::Union{DMLabel, Ref{DMLabel}}) end
 
-@for_petsc function DMLabelDestroy(petsclib::$UnionPetscLib, label::DMLabel )
+@for_petsc function DMLabelDestroy(petsclib::$UnionPetscLib, label::Union{DMLabel, Ref{DMLabel}} )
+	label_ = label isa Base.RefValue ? label : Ref{DMLabel}(label)
 
     @chk ccall(
                (:DMLabelDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{DMLabel},),
-               label,
+               label_,
               )
 
 

@@ -568,15 +568,16 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchDestroy"))
 """
-function SNESLineSearchDestroy(petsclib::PetscLibType, linesearch::SNESLineSearch) end
+function SNESLineSearchDestroy(petsclib::PetscLibType, linesearch::Union{SNESLineSearch, Ref{SNESLineSearch}}) end
 
-@for_petsc function SNESLineSearchDestroy(petsclib::$UnionPetscLib, linesearch::SNESLineSearch )
+@for_petsc function SNESLineSearchDestroy(petsclib::$UnionPetscLib, linesearch::Union{SNESLineSearch, Ref{SNESLineSearch}} )
+	linesearch_ = linesearch isa Base.RefValue ? linesearch : Ref{SNESLineSearch}(linesearch)
 
     @chk ccall(
                (:SNESLineSearchDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{SNESLineSearch},),
-               linesearch,
+               linesearch_,
               )
 
 

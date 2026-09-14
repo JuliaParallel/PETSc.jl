@@ -211,15 +211,16 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscLogHandlerDestroy"))
 """
-function PetscLogHandlerDestroy(petsclib::PetscLibType, handler::PetscLogHandler) end
+function PetscLogHandlerDestroy(petsclib::PetscLibType, handler::Union{PetscLogHandler, Ref{PetscLogHandler}}) end
 
-@for_petsc function PetscLogHandlerDestroy(petsclib::$UnionPetscLib, handler::PetscLogHandler )
+@for_petsc function PetscLogHandlerDestroy(petsclib::$UnionPetscLib, handler::Union{PetscLogHandler, Ref{PetscLogHandler}} )
+	handler_ = handler isa Base.RefValue ? handler : Ref{PetscLogHandler}(handler)
 
     @chk ccall(
                (:PetscLogHandlerDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscLogHandler},),
-               handler,
+               handler_,
               )
 
 
@@ -1111,15 +1112,16 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscLogStateDestroy"))
 """
-function PetscLogStateDestroy(petsclib::PetscLibType, state::PetscLogState) end
+function PetscLogStateDestroy(petsclib::PetscLibType, state::Union{PetscLogState, Ref{PetscLogState}}) end
 
-@for_petsc function PetscLogStateDestroy(petsclib::$UnionPetscLib, state::PetscLogState )
+@for_petsc function PetscLogStateDestroy(petsclib::$UnionPetscLib, state::Union{PetscLogState, Ref{PetscLogState}} )
+	state_ = state isa Base.RefValue ? state : Ref{PetscLogState}(state)
 
     @chk ccall(
                (:PetscLogStateDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscLogState},),
-               state,
+               state_,
               )
 
 

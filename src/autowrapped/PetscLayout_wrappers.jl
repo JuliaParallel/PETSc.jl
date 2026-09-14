@@ -97,15 +97,16 @@ Level: developer
 # External Links
 $(_doc_external("Vec/PetscLayoutDestroy"))
 """
-function PetscLayoutDestroy(petsclib::PetscLibType, map::PetscLayout) end
+function PetscLayoutDestroy(petsclib::PetscLibType, map::Union{PetscLayout, Ref{PetscLayout}}) end
 
-@for_petsc function PetscLayoutDestroy(petsclib::$UnionPetscLib, map::PetscLayout )
+@for_petsc function PetscLayoutDestroy(petsclib::$UnionPetscLib, map::Union{PetscLayout, Ref{PetscLayout}} )
+	map_ = map isa Base.RefValue ? map : Ref{PetscLayout}(map)
 
     @chk ccall(
                (:PetscLayoutDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscLayout},),
-               map,
+               map_,
               )
 
 

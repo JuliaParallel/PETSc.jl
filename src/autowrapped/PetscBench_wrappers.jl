@@ -107,15 +107,16 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscBenchDestroy"))
 """
-function PetscBenchDestroy(petsclib::PetscLibType, bm::PetscBench) end
+function PetscBenchDestroy(petsclib::PetscLibType, bm::Union{PetscBench, Ref{PetscBench}}) end
 
-@for_petsc function PetscBenchDestroy(petsclib::$UnionPetscLib, bm::PetscBench )
+@for_petsc function PetscBenchDestroy(petsclib::$UnionPetscLib, bm::Union{PetscBench, Ref{PetscBench}} )
+	bm_ = bm isa Base.RefValue ? bm : Ref{PetscBench}(bm)
 
     @chk ccall(
                (:PetscBenchDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscBench},),
-               bm,
+               bm_,
               )
 
 

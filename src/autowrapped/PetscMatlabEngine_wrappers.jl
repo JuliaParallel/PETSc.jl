@@ -65,15 +65,16 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscMatlabEngineDestroy"))
 """
-function PetscMatlabEngineDestroy(petsclib::PetscLibType, v::PetscMatlabEngine) end
+function PetscMatlabEngineDestroy(petsclib::PetscLibType, v::Union{PetscMatlabEngine, Ref{PetscMatlabEngine}}) end
 
-@for_petsc function PetscMatlabEngineDestroy(petsclib::$UnionPetscLib, v::PetscMatlabEngine )
+@for_petsc function PetscMatlabEngineDestroy(petsclib::$UnionPetscLib, v::Union{PetscMatlabEngine, Ref{PetscMatlabEngine}} )
+	v_ = v isa Base.RefValue ? v : Ref{PetscMatlabEngine}(v)
 
     @chk ccall(
                (:PetscMatlabEngineDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscMatlabEngine},),
-               v,
+               v_,
               )
 
 

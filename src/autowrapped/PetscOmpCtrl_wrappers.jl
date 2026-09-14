@@ -51,15 +51,16 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscOmpCtrlDestroy"))
 """
-function PetscOmpCtrlDestroy(petsclib::PetscLibType, pctrl::PetscOmpCtrl) end
+function PetscOmpCtrlDestroy(petsclib::PetscLibType, pctrl::Union{PetscOmpCtrl, Ref{PetscOmpCtrl}}) end
 
-@for_petsc function PetscOmpCtrlDestroy(petsclib::$UnionPetscLib, pctrl::PetscOmpCtrl )
+@for_petsc function PetscOmpCtrlDestroy(petsclib::$UnionPetscLib, pctrl::Union{PetscOmpCtrl, Ref{PetscOmpCtrl}} )
+	pctrl_ = pctrl isa Base.RefValue ? pctrl : Ref{PetscOmpCtrl}(pctrl)
 
     @chk ccall(
                (:PetscOmpCtrlDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscOmpCtrl},),
-               pctrl,
+               pctrl_,
               )
 
 

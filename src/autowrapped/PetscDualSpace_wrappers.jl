@@ -256,15 +256,16 @@ Level: beginner
 # External Links
 $(_doc_external("DM/PetscDualSpaceDestroy"))
 """
-function PetscDualSpaceDestroy(petsclib::PetscLibType, sp::PetscDualSpace) end
+function PetscDualSpaceDestroy(petsclib::PetscLibType, sp::Union{PetscDualSpace, Ref{PetscDualSpace}}) end
 
-@for_petsc function PetscDualSpaceDestroy(petsclib::$UnionPetscLib, sp::PetscDualSpace )
+@for_petsc function PetscDualSpaceDestroy(petsclib::$UnionPetscLib, sp::Union{PetscDualSpace, Ref{PetscDualSpace}} )
+	sp_ = sp isa Base.RefValue ? sp : Ref{PetscDualSpace}(sp)
 
     @chk ccall(
                (:PetscDualSpaceDestroy, $petsc_library),
                PetscErrorCode,
                (Ptr{PetscDualSpace},),
-               sp,
+               sp_,
               )
 
 

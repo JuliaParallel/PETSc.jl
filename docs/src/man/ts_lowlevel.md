@@ -118,3 +118,10 @@ Modules = [PETSc.LibPETSc]
 Pages   = ["autowrapped/TSaddons_wrappers.jl"]
 Order   = [:function]
 ```
+
+## Hand-written overloads
+
+Some `LibPETSc.TS*` methods are written by hand in `src/ts.jl` rather than generated. 
+They take a raw `@cfunction` pointer where the generated binding expects PETSc's own function-wrapper type,  or they return a value the generated binding takes as an argument and overwrites (e.g., `TSGetSolution`, `TSGetSNES` and `TSGetKSP`).
+
+Their docstrings are written inside the `PETSc` module, so they are listed with the rest of `src/ts.jl` on the [high-level TS page](ts.md).

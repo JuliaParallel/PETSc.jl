@@ -34,6 +34,7 @@ include("options.jl")       # autowrapped
 include("ksp.jl")           # autowrapped
 include("snes.jl")          # autowrapped
 include("snes_helpers.jl")  # small helper tests for SNES return-style wrappers
+include("ts.jl")            # high-level TS interface
 include("dmda.jl")          # autowrapped
 include("dmstag.jl")        # autowrapped
 include("dmplex.jl")        # DMPlex tests
@@ -51,6 +52,7 @@ include("low_level_ts.jl")      # Low-level TS functions
 include("ts_ex51.jl")           # Regression test for repeated ex51 solves
 include("ts_ex51_implicit.jl")  # Regression test for repeated implicit Gauss solves
 include("ts_ex16.jl")           # Regression test for the van der Pol IMEX example
+include("ts_scenarios.jl")      # High-level TS: ex16 equivalence + a damping sweep
 include("low_level_is.jl")      # Low-level IS functions
 include("low_level_petscsection.jl")  # Low-level PetscSection functions
 include("low_level_tao.jl")     # Low-level Tao functions

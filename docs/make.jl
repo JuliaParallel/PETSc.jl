@@ -23,6 +23,7 @@ makedocs(;
             "DMPlex" =>  "man/dmplex.md",
             "KSP" =>  "man/ksp.md",
             "SNES" =>  "man/snes.md",
+            "TS" =>  "man/ts.md",
         ],
         "Low-level interface (LibPETSc)" => Any[
             "Introduction" =>  "man/lowlevel_intro.md",

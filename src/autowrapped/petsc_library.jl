@@ -236,14 +236,43 @@ const CTS = Ptr{Cvoid}
 abstract type AbstractTS{T} end
 
 mutable struct TS{PetscLib} <: AbstractTS{PetscLib}
-    ptr::Ptr{Cvoid}
-    
-    TS{PetscLib}(ptr::Ptr{Cvoid} = C_NULL) where {PetscLib} = new{PetscLib}(ptr)
+    ptr::CTS
+    age::Int
+    rhs_function!::Function
+    rhs_jacobian!::Function
+    ifunction!::Function
+    ijacobian!::Function
+    monitor::Function
+    user_ctx::Any
+    opts::Any
+
+    TS{PetscLib}(
+        ptr::CTS = C_NULL,
+        age::Int = 0,
+        rhs_function!::Function = _ -> error("rhs_function! not defined"),
+        rhs_jacobian!::Function = _ -> error("rhs_jacobian! not defined"),
+        ifunction!::Function = _ -> error("ifunction! not defined"),
+        ijacobian!::Function = _ -> error("ijacobian! not defined"),
+        monitor::Function = _ -> error("monitor not defined"),
+        user_ctx::Any = nothing,
+        opts::Any = nothing,
+    ) where {PetscLib} = new{PetscLib}(
+        ptr,
+        age,
+        rhs_function!,
+        rhs_jacobian!,
+        ifunction!,
+        ijacobian!,
+        monitor,
+        user_ctx,
+        opts,
+    )
 end
 
 # Convenience constructors
-TS(lib::PetscLib) where {PetscLib} = TS{PetscLib}()
-TS(ptr::Ptr{Cvoid}, lib::PetscLib) where {PetscLib} = TS{PetscLib}(ptr)
+TS(lib::PetscLib) where {PetscLib} = TS{PetscLib}(C_NULL, lib.age)
+TS(ptr::CTS, lib::PetscLib, age::Int = lib.age) where {PetscLib} =
+    TS{PetscLib}(ptr, age)
 
 # Conversion methods
 Base.convert(::Type{Ptr{Cvoid}}, v::AbstractTS) = v.ptr

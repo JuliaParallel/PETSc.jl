@@ -176,6 +176,17 @@ function isdestroyable(obj, ::Type{PetscLib}) where {PetscLib}
     return obj.age == getlib(PetscLib).age
 end
 
+"""
+    owns(obj)
+
+Whether `obj` is responsible for destroying the handle it holds.
+
+Wrappers that borrow a handle from PETSc carry an `own` field and override this;
+every other wrapper owns what it holds. `destroy` returns without doing anything
+when this is `false`, so a borrowed wrapper stays usable after the call.
+"""
+owns(obj) = true
+
 function _build_petsc_options(log_view::Bool, options)
     opts = String[]
     if log_view

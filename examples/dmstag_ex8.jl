@@ -121,7 +121,7 @@ ksp = PETSc.KSP(dm;
     opts...)
 
 LibPETSc.KSPSetOperators(petsclib, ksp, A, A)
-LibPETSc.KSPSetDMActive(petsclib, ksp, LibPETSc.PETSC_FALSE)
+LibPETSc.KSPSetDMActive(petsclib, ksp, LibPETSc.KSP_DMACTIVE_ALL, LibPETSc.PETSC_FALSE)  # PETSc >= 3.25 signature
 
 # Re-apply options so that command-line overrides (e.g. -pc_type mg) take effect
 # after KSPSetOperators / KSPSetDMActive

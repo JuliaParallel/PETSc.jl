@@ -22,3 +22,5 @@ Make sure that the tests work!
 
 #### Adding new functionality
 Please open a pull request to add any of the above contributions.
+
+New high-level functions must follow the [naming conventions](naming.md). The low-level `LibPETSc` layer is exempt: it keeps the PETSc C names verbatim.

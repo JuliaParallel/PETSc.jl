@@ -47,6 +47,12 @@ include("test_snes.jl")
 include("test_audit.jl")    # leak auditor
 include("test_errors.jl")   # argument validation
 include("wrapper_signatures.jl")  # wrapper arguments take the abstract types
+include("wrapper_quality.jl")     # every generated method infers a concrete return type; no allocations
+@testset "method ambiguities do not grow" begin
+    # 130 with the regenerated wrappers (all in the high-level layer); regenerate or rename
+    # without adding new ones
+    @test length(detect_ambiguities(PETSc; recursive = true)) <= 130
+end
 include("old_test.jl")
 include("low_level_viewer.jl")  # Low-level viewer convenience functions
 include("low_level_ts.jl")      # Low-level TS functions

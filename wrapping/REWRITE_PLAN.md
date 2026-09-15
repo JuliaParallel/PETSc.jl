@@ -140,6 +140,31 @@ The wrappers to ship are for **PETSc 3.25.4**, matching the PETSc_jll binaries b
 - The GitLab tag `v3.25.4` exists, and PETSc_jll 3.25.4 artifacts (with `include/petscversion.h`) are
   already in the local depot, so the target library is available for testing today.
 
+### 1.9 `docs/src/man/naming.md` (PR #260)
+
+PR #260 proposes the v0.5 high-level naming conventions. It declares `LibPETSc` out of scope (verbatim C
+names), but four of its rules reach into the prologue and the generator:
+
+- **Type renames in the prologue** (§5.2, §5.5): `PetscKSP` -> `KSP`, `PetscSNES` -> `SNES`,
+  `AbstractPetscKSP` -> `AbstractKSP`, `AbstractPetscSNES` -> `AbstractSNES`; `PetscVec`, `PetscMat`,
+  `PetscDM`, `PetscOptions` and the bare `TS`, `IS`, `AO`, `PF`, `Tao` stay. Every KSP/SNES wrapper
+  signature changes with it, so the custom handle table (`types.toml`: C name -> Julia struct, C alias,
+  abstract type) is the single place holding these names. The rename is then one table edit plus a
+  regeneration, done in its own PR after fidelity, together with the prologue change and the high-level
+  shims. It must not be mixed into the fidelity step.
+- **Typed DM hierarchy** (§5.3, §5.4, closing paragraph): `DMDA{L,N}`, `DMStag{L,N}`, `DMPlex{L}` subtype
+  `AbstractPetscDM`, and `PetscDM{L}` stays as the low-level handle returned by creators. The generator
+  therefore emits `AbstractPetscDM` for inputs and `PetscDM` for returns, which PR #263 already does.
+- **Borrowed handles** (§3.3): readers return `own = false`. The low-level wrappers construct handles
+  without finalizers already; the generator can additionally emit a `_doc_borrowed` marker in the docstring
+  of Get-functions that hand back a PETSc-owned object (the "writeback" and non-Create "handle out" kinds),
+  so the high-level `_doc_borrowed` CI check has something to build on. Optional, decide in M4.
+- **Type names are Strings at the C boundary** (§3.1): the `AbstractString` overloads in
+  `src/string_wrappers*.jl` stay hand-written; `Symbol` handling is purely high-level.
+
+Also consistent with §17: `src/deprecated/` is an older unrelated API and can be deleted; the new
+`src/deprecations.jl` is a different file.
+
 ## 2. Design of the new generator
 
 Goal: `julia wrapping/generate.jl --petsc-dir <src>` reproduces `src/autowrapped/` exactly, and rerunning it

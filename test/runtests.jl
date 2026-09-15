@@ -48,6 +48,7 @@ include("test_audit.jl")    # leak auditor
 include("test_errors.jl")   # argument validation
 include("wrapper_signatures.jl")  # wrapper arguments take the abstract types
 include("wrapper_quality.jl")     # every generated method infers a concrete return type; no allocations
+include("wrapper_leaks.jl")       # repeated create/destroy and Get/Restore pairs do not grow memory
 @testset "method ambiguities do not grow" begin
     # 130 with the regenerated wrappers (all in the high-level layer); regenerate or rename
     # without adding new ones

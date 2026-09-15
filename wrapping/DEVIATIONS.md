@@ -32,12 +32,28 @@ formatting or still to be reviewed. Counts are from the run of 2026-09-15 (6086 
 
 Other differences from the baseline that are not per-function:
 
+- the docstring stub `function X(petsclib::PetscLibType, ...)` has loosened scalar types and throws
+  instead of silently returning `nothing` (this surfaced two test bugs in `test/test_dmstag.jl`);
+- `PetscObject` arguments are untyped, so any handle (including `VecPtr`, `MatPtr`) is accepted;
+- `MPI_Comm` outputs are read through the C handle and wrapped in `MPI.Comm`;
+- `*Restore*` functions accept the array a `Get` returned, or the raw pointer if the size was unknown;
+- arrays of handles (`const Vec vecs[]`) are `Vector{<:AbstractPetscVec}` and converted element-wise;
+- `XCreate(..., X *x)` returns `x` even when the manual page lists it as an input (`PetscSectionCreate`);
+- non-const `T *x` scalar pointers are outputs even when listed as inputs (`TSIRKGetNumStages`);
+- `void *ctx` documented as an output returns the pointer (`MatShellGetContext`);
+- deprecated enum aliases are skipped rather than truncating the enum (`SNESConvergedReason`);
+
 - type names are mapped with the old substring replacement by default (`fix_substring_replacements = false` in `types.toml`) so that `PetscPoCintFn`-style names are reproduced; flip the flag to get correct names (they are opaque placeholders, so nothing else changes);
 - the opaque type declarations that used to sit at the top of each file are collected in `opaque_types.jl`;
 - functions are sorted by name within each file;
 - the `XFn` placeholder structs are no longer declared (callbacks are `Ptr{Cvoid}`);
 - `petsc_wrappers_version.jl` no longer records a machine path;
 - `PC_wrappers.jl` is generated and included (the baseline excluded it).
+
+Tests adapted: `test/dmplex.jl`, `test/mat.jl`, `test/snes.jl`, `test/test_dmstag.jl`; example
+`examples/ex62b.jl`. Also `src/mat.jl` (`MatShellGetContext`), `src/ksp.jl`/`src/ts.jl`/`src/dm.jl`
+(solution and coordinate accessors return borrowed `VecPtr` handles, `destroy` is a no-op on them),
+`src/options.jl` (NULL viewer for `PetscOptionsView`).
 
 High-level code adapted for the return convention: `dm.jl` (`DMGetCoordinatesLocal`),
 `dmplex.jl` (`DMPlexDistribute`, `DMClone`, `DMCoarsenHookAdd`, `DMGetStratumIS`, `DMGetCoarseDM`),

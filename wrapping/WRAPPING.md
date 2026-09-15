@@ -113,6 +113,12 @@ releases can be diffed.
 | `void *ctx` | `ctx::Ptr{Cvoid}` | `Ptr{Cvoid}` | |
 | `void **ctx` output | return `ctx::Ptr{Cvoid}` | `Ptr{Ptr{Cvoid}}` | |
 
+Every wrapper is emitted as an untyped *stub* (which carries the docstring) plus one `@for_petsc`
+method per library. The stub's scalar types are loosened (`PetscScalar` -> `Number`, `PetscInt` ->
+`Integer`, ...) so it is never more specific than a generated method, and its body **throws**. A call
+whose arguments match no library method therefore fails loudly (the old stub returned `nothing`,
+which hid e.g. `Float64` literals passed to a `Float32` library in the tests).
+
 Input handle arguments always take the abstract type (`AbstractPetscVec`), so `VecPtr`, `MatShell`
 and the typed DM hierarchy pass; return positions use the concrete type (`PetscVec`).
 `test/wrapper_signatures.jl` enforces this.

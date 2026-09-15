@@ -5,7 +5,7 @@ function write_enums(io::IO, api::API, exclude::Set{String})
         name in exclude && continue
         println(io, "@enum $name begin")
         for (i, v) in enumerate(api.enums[name])
-            occursin("DEPRECATED", v) && break
+            occursin("DEPRECATED", v) && continue      # deprecated aliases duplicate a value
             if occursin("=", v)
                 println(io, "    $v")
             else

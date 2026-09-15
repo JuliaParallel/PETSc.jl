@@ -111,8 +111,8 @@ $(_doc_external("Sys/PetscOmpCtrlGetOmpComms"))
 function PetscOmpCtrlGetOmpComms(petsclib::PetscLibType, ctrl::PetscOmpCtrl) end
 
 @for_petsc function PetscOmpCtrlGetOmpComms(petsclib::$UnionPetscLib, ctrl::PetscOmpCtrl )
-	omp_comm_ = Ref{MPI_Comm}()
-	omp_master_comm_ = Ref{MPI_Comm}()
+	omp_comm_ = Ref{MPI.MPI_Comm}()
+	omp_master_comm_ = Ref{MPI.MPI_Comm}()
 	is_omp_master_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -122,8 +122,8 @@ function PetscOmpCtrlGetOmpComms(petsclib::PetscLibType, ctrl::PetscOmpCtrl) end
                ctrl, omp_comm_, omp_master_comm_, is_omp_master_,
               )
 
-	omp_comm = omp_comm_[]
-	omp_master_comm = omp_master_comm_[]
+	omp_comm = MPI.Comm(omp_comm_[])
+	omp_master_comm = MPI.Comm(omp_master_comm_[])
 	is_omp_master = is_omp_master_[]
 
 	return omp_comm,omp_master_comm,is_omp_master

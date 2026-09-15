@@ -219,7 +219,7 @@ function ISColoringReference(petsclib::PetscLibType, coloring::ISColoring) end
 end 
 
 """
-	ISColoringRestoreIS(petsclib::PetscLibType,iscoloring::ISColoring, mode::PetscCopyMode, is::AbstractArray{IS}) 
+	ISColoringRestoreIS(petsclib::PetscLibType,iscoloring::ISColoring, mode::PetscCopyMode, is::Union{Ptr, AbstractArray{IS}}) 
 Restores the index sets extracted from the coloring context with `ISColoringGetIS()` using `PETSC_USE_POINTER`
 
 Collective
@@ -236,10 +236,10 @@ Level: advanced
 # External Links
 $(_doc_external("IS/ISColoringRestoreIS"))
 """
-function ISColoringRestoreIS(petsclib::PetscLibType, iscoloring::ISColoring, mode::PetscCopyMode, is::AbstractArray{IS}) end
+function ISColoringRestoreIS(petsclib::PetscLibType, iscoloring::ISColoring, mode::PetscCopyMode, is::Union{Ptr, AbstractArray{IS}}) end
 
-@for_petsc function ISColoringRestoreIS(petsclib::$UnionPetscLib, iscoloring::ISColoring, mode::PetscCopyMode, is::AbstractArray{IS} )
-	is_ = Ref(pointer(is))
+@for_petsc function ISColoringRestoreIS(petsclib::$UnionPetscLib, iscoloring::ISColoring, mode::PetscCopyMode, is::Union{Ptr, AbstractArray{IS}} )
+	is_ = Ref{Ptr{CIS}}(is isa Ptr ? is : pointer(is))
 
     @chk ccall(
                (:ISColoringRestoreIS, $petsc_library),
@@ -1207,7 +1207,7 @@ function ISLocalToGlobalMappingRegisterAll(petsclib::PetscLibType) end
 end 
 
 """
-	ISLocalToGlobalMappingRestoreBlockIndices(petsclib::PetscLibType,ltog::ISLocalToGlobalMapping, array::AbstractArray{PetscInt}) 
+	ISLocalToGlobalMappingRestoreBlockIndices(petsclib::PetscLibType,ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore indices obtained with `ISLocalToGlobalMappingGetBlockIndices()`
 
 Not Collective
@@ -1223,10 +1223,10 @@ Level: advanced
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreBlockIndices"))
 """
-function ISLocalToGlobalMappingRestoreBlockIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, array::AbstractArray{PetscInt}) end
+function ISLocalToGlobalMappingRestoreBlockIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function ISLocalToGlobalMappingRestoreBlockIndices(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping, array::AbstractArray{$PetscInt} )
-	array_ = Ref(pointer(array))
+@for_petsc function ISLocalToGlobalMappingRestoreBlockIndices(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{$PetscInt}} )
+	array_ = Ref{Ptr{$PetscInt}}(array isa Ptr ? array : pointer(array))
 
     @chk ccall(
                (:ISLocalToGlobalMappingRestoreBlockIndices, $petsc_library),
@@ -1240,7 +1240,7 @@ function ISLocalToGlobalMappingRestoreBlockIndices(petsclib::PetscLibType, ltog:
 end 
 
 """
-	ISLocalToGlobalMappingRestoreBlockInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, nproc::PetscInt, procs::AbstractArray{PetscInt}, numprocs::AbstractArray{PetscInt}, indices::Vector{PetscInt}) 
+	ISLocalToGlobalMappingRestoreBlockInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, nproc::PetscInt, procs::Union{Ptr, AbstractArray{PetscInt}}, numprocs::Union{Ptr, AbstractArray{PetscInt}}, indices::Vector{PetscInt}) 
 Frees the memory allocated by `ISLocalToGlobalMappingGetBlockInfo()`
 
 Not Collective
@@ -1260,12 +1260,12 @@ Level: advanced
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreBlockInfo"))
 """
-function ISLocalToGlobalMappingRestoreBlockInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, nproc::PetscInt, procs::AbstractArray{PetscInt}, numprocs::AbstractArray{PetscInt}, indices::Vector{PetscInt}) end
+function ISLocalToGlobalMappingRestoreBlockInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, nproc::PetscInt, procs::Union{Ptr, AbstractArray{PetscInt}}, numprocs::Union{Ptr, AbstractArray{PetscInt}}, indices::Vector{PetscInt}) end
 
-@for_petsc function ISLocalToGlobalMappingRestoreBlockInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, nproc::$PetscInt, procs::AbstractArray{$PetscInt}, numprocs::AbstractArray{$PetscInt}, indices::Vector{$PetscInt} )
+@for_petsc function ISLocalToGlobalMappingRestoreBlockInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, nproc::$PetscInt, procs::Union{Ptr, AbstractArray{$PetscInt}}, numprocs::Union{Ptr, AbstractArray{$PetscInt}}, indices::Vector{$PetscInt} )
 	nproc_ = Ref{$PetscInt}(nproc)
-	procs_ = Ref(pointer(procs))
-	numprocs_ = Ref(pointer(numprocs))
+	procs_ = Ref{Ptr{$PetscInt}}(procs isa Ptr ? procs : pointer(procs))
+	numprocs_ = Ref{Ptr{$PetscInt}}(numprocs isa Ptr ? numprocs : pointer(numprocs))
 
     @chk ccall(
                (:ISLocalToGlobalMappingRestoreBlockInfo, $petsc_library),
@@ -1279,7 +1279,7 @@ function ISLocalToGlobalMappingRestoreBlockInfo(petsclib::PetscLibType, mapping:
 end 
 
 """
-	ISLocalToGlobalMappingRestoreBlockNodeInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, n::PetscInt, n_procs::AbstractArray{PetscInt}, procs::Vector{PetscInt}) 
+	ISLocalToGlobalMappingRestoreBlockNodeInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, n::PetscInt, n_procs::Union{Ptr, AbstractArray{PetscInt}}, procs::Vector{PetscInt}) 
 Frees the memory allocated by `ISLocalToGlobalMappingGetBlockNodeInfo()`
 
 Not Collective
@@ -1298,11 +1298,11 @@ Level: advanced
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreBlockNodeInfo"))
 """
-function ISLocalToGlobalMappingRestoreBlockNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, n::PetscInt, n_procs::AbstractArray{PetscInt}, procs::Vector{PetscInt}) end
+function ISLocalToGlobalMappingRestoreBlockNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, n::PetscInt, n_procs::Union{Ptr, AbstractArray{PetscInt}}, procs::Vector{PetscInt}) end
 
-@for_petsc function ISLocalToGlobalMappingRestoreBlockNodeInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, n::$PetscInt, n_procs::AbstractArray{$PetscInt}, procs::Vector{$PetscInt} )
+@for_petsc function ISLocalToGlobalMappingRestoreBlockNodeInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, n::$PetscInt, n_procs::Union{Ptr, AbstractArray{$PetscInt}}, procs::Vector{$PetscInt} )
 	n_ = Ref{$PetscInt}(n)
-	n_procs_ = Ref(pointer(n_procs))
+	n_procs_ = Ref{Ptr{$PetscInt}}(n_procs isa Ptr ? n_procs : pointer(n_procs))
 
     @chk ccall(
                (:ISLocalToGlobalMappingRestoreBlockNodeInfo, $petsc_library),
@@ -1316,7 +1316,7 @@ function ISLocalToGlobalMappingRestoreBlockNodeInfo(petsclib::PetscLibType, mapp
 end 
 
 """
-	ISLocalToGlobalMappingRestoreIndices(petsclib::PetscLibType,ltog::ISLocalToGlobalMapping, array::AbstractArray{PetscInt}) 
+	ISLocalToGlobalMappingRestoreIndices(petsclib::PetscLibType,ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore indices obtained with `ISLocalToGlobalMappingGetIndices()`
 
 Not Collective
@@ -1332,10 +1332,10 @@ Level: advanced
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreIndices"))
 """
-function ISLocalToGlobalMappingRestoreIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, array::AbstractArray{PetscInt}) end
+function ISLocalToGlobalMappingRestoreIndices(petsclib::PetscLibType, ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function ISLocalToGlobalMappingRestoreIndices(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping, array::AbstractArray{$PetscInt} )
-	array_ = Ref(pointer(array))
+@for_petsc function ISLocalToGlobalMappingRestoreIndices(petsclib::$UnionPetscLib, ltog::ISLocalToGlobalMapping, array::Union{Ptr, AbstractArray{$PetscInt}} )
+	array_ = Ref{Ptr{$PetscInt}}(array isa Ptr ? array : pointer(array))
 
     @chk ccall(
                (:ISLocalToGlobalMappingRestoreIndices, $petsc_library),
@@ -1349,7 +1349,7 @@ function ISLocalToGlobalMappingRestoreIndices(petsclib::PetscLibType, ltog::ISLo
 end 
 
 """
-	ISLocalToGlobalMappingRestoreInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, nproc::PetscInt, procs::AbstractArray{PetscInt}, numprocs::AbstractArray{PetscInt}, indices::Vector{PetscInt}) 
+	ISLocalToGlobalMappingRestoreInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, nproc::PetscInt, procs::Union{Ptr, AbstractArray{PetscInt}}, numprocs::Union{Ptr, AbstractArray{PetscInt}}, indices::Vector{PetscInt}) 
 Frees the memory allocated by `ISLocalToGlobalMappingGetInfo()`
 
 Not Collective
@@ -1369,12 +1369,12 @@ Level: advanced
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreInfo"))
 """
-function ISLocalToGlobalMappingRestoreInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, nproc::PetscInt, procs::AbstractArray{PetscInt}, numprocs::AbstractArray{PetscInt}, indices::Vector{PetscInt}) end
+function ISLocalToGlobalMappingRestoreInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, nproc::PetscInt, procs::Union{Ptr, AbstractArray{PetscInt}}, numprocs::Union{Ptr, AbstractArray{PetscInt}}, indices::Vector{PetscInt}) end
 
-@for_petsc function ISLocalToGlobalMappingRestoreInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, nproc::$PetscInt, procs::AbstractArray{$PetscInt}, numprocs::AbstractArray{$PetscInt}, indices::Vector{$PetscInt} )
+@for_petsc function ISLocalToGlobalMappingRestoreInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, nproc::$PetscInt, procs::Union{Ptr, AbstractArray{$PetscInt}}, numprocs::Union{Ptr, AbstractArray{$PetscInt}}, indices::Vector{$PetscInt} )
 	nproc_ = Ref{$PetscInt}(nproc)
-	procs_ = Ref(pointer(procs))
-	numprocs_ = Ref(pointer(numprocs))
+	procs_ = Ref{Ptr{$PetscInt}}(procs isa Ptr ? procs : pointer(procs))
+	numprocs_ = Ref{Ptr{$PetscInt}}(numprocs isa Ptr ? numprocs : pointer(numprocs))
 
     @chk ccall(
                (:ISLocalToGlobalMappingRestoreInfo, $petsc_library),
@@ -1388,7 +1388,7 @@ function ISLocalToGlobalMappingRestoreInfo(petsclib::PetscLibType, mapping::ISLo
 end 
 
 """
-	ISLocalToGlobalMappingRestoreNodeInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, n::PetscInt, n_procs::AbstractArray{PetscInt}, procs::Vector{PetscInt}) 
+	ISLocalToGlobalMappingRestoreNodeInfo(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, n::PetscInt, n_procs::Union{Ptr, AbstractArray{PetscInt}}, procs::Vector{PetscInt}) 
 Frees the memory allocated by `ISLocalToGlobalMappingGetNodeInfo()`
 
 Not Collective
@@ -1407,11 +1407,11 @@ Level: advanced
 # External Links
 $(_doc_external("IS/ISLocalToGlobalMappingRestoreNodeInfo"))
 """
-function ISLocalToGlobalMappingRestoreNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, n::PetscInt, n_procs::AbstractArray{PetscInt}, procs::Vector{PetscInt}) end
+function ISLocalToGlobalMappingRestoreNodeInfo(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, n::PetscInt, n_procs::Union{Ptr, AbstractArray{PetscInt}}, procs::Vector{PetscInt}) end
 
-@for_petsc function ISLocalToGlobalMappingRestoreNodeInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, n::$PetscInt, n_procs::AbstractArray{$PetscInt}, procs::Vector{$PetscInt} )
+@for_petsc function ISLocalToGlobalMappingRestoreNodeInfo(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, n::$PetscInt, n_procs::Union{Ptr, AbstractArray{$PetscInt}}, procs::Vector{$PetscInt} )
 	n_ = Ref{$PetscInt}(n)
-	n_procs_ = Ref(pointer(n_procs))
+	n_procs_ = Ref{Ptr{$PetscInt}}(n_procs isa Ptr ? n_procs : pointer(n_procs))
 
     @chk ccall(
                (:ISLocalToGlobalMappingRestoreNodeInfo, $petsc_library),

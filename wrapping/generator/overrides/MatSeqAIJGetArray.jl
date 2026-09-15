@@ -37,8 +37,7 @@ function MatSeqAIJGetArray(petsclib::PetscLibType, A::AbstractPetscMat) end
               )
 
     # 2. Get the matrix info to determine the number of nonzeros
-    info_ref = Ref{LibPETSc.MatInfo}()
-    LibPETSc.MatGetInfo(petsclib, A, LibPETSc.MAT_LOCAL, info_ref)
+    info_ref = Ref(LibPETSc.MatGetInfo(petsclib, A, LibPETSc.MAT_LOCAL))
 
     # 3. Extract the nnz count using the [] syntax to unwrap the Ref
     nnz = Int(info_ref[].nz_used)

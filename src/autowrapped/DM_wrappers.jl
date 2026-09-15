@@ -4880,7 +4880,7 @@ $(_doc_external("DMDA/DMDAGetProcessorSubset"))
 function DMDAGetProcessorSubset(petsclib::PetscLibType, da::AbstractPetscDM, dir::DMDirection, gp::PetscInt) end
 
 @for_petsc function DMDAGetProcessorSubset(petsclib::$UnionPetscLib, da::AbstractPetscDM, dir::DMDirection, gp::$PetscInt )
-	comm_ = Ref{MPI_Comm}()
+	comm_ = Ref{MPI.MPI_Comm}()
 
     @chk ccall(
                (:DMDAGetProcessorSubset, $petsc_library),
@@ -4889,7 +4889,7 @@ function DMDAGetProcessorSubset(petsclib::PetscLibType, da::AbstractPetscDM, dir
                da, dir, gp, comm_,
               )
 
-	comm = comm_[]
+	comm = MPI.Comm(comm_[])
 
 	return comm
 end 
@@ -4919,7 +4919,7 @@ $(_doc_external("DMDA/DMDAGetProcessorSubsets"))
 function DMDAGetProcessorSubsets(petsclib::PetscLibType, da::AbstractPetscDM, dir::DMDirection) end
 
 @for_petsc function DMDAGetProcessorSubsets(petsclib::$UnionPetscLib, da::AbstractPetscDM, dir::DMDirection )
-	subcomm_ = Ref{MPI_Comm}()
+	subcomm_ = Ref{MPI.MPI_Comm}()
 
     @chk ccall(
                (:DMDAGetProcessorSubsets, $petsc_library),
@@ -4928,7 +4928,7 @@ function DMDAGetProcessorSubsets(petsclib::PetscLibType, da::AbstractPetscDM, di
                da, dir, subcomm_,
               )
 
-	subcomm = subcomm_[]
+	subcomm = MPI.Comm(subcomm_[])
 
 	return subcomm
 end 
@@ -5521,7 +5521,7 @@ function DMDARestoreCoordinateArray(petsclib::PetscLibType, dm::AbstractPetscDM,
 end 
 
 """
-	DMDARestoreElements(petsclib::PetscLibType,dm::AbstractPetscDM, nel::PetscInt, nen::PetscInt, e::AbstractArray{PetscInt}) 
+	DMDARestoreElements(petsclib::PetscLibType,dm::AbstractPetscDM, nel::PetscInt, nen::PetscInt, e::Union{Ptr, AbstractArray{PetscInt}}) 
 Restores the array obtained with `DMDAGetElements()`
 
 Not Collective
@@ -5539,12 +5539,12 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDARestoreElements"))
 """
-function DMDARestoreElements(petsclib::PetscLibType, dm::AbstractPetscDM, nel::PetscInt, nen::PetscInt, e::AbstractArray{PetscInt}) end
+function DMDARestoreElements(petsclib::PetscLibType, dm::AbstractPetscDM, nel::PetscInt, nen::PetscInt, e::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function DMDARestoreElements(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nel::$PetscInt, nen::$PetscInt, e::AbstractArray{$PetscInt} )
+@for_petsc function DMDARestoreElements(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nel::$PetscInt, nen::$PetscInt, e::Union{Ptr, AbstractArray{$PetscInt}} )
 	nel_ = Ref{$PetscInt}(nel)
 	nen_ = Ref{$PetscInt}(nen)
-	e_ = Ref(pointer(e))
+	e_ = Ref{Ptr{$PetscInt}}(e isa Ptr ? e : pointer(e))
 
     @chk ccall(
                (:DMDARestoreElements, $petsc_library),
@@ -6169,7 +6169,7 @@ $(_doc_external("DMDA/DMDASetFieldNames"))
 function DMDASetFieldNames(petsclib::PetscLibType, da::AbstractPetscDM, names::String) end
 
 @for_petsc function DMDASetFieldNames(petsclib::$UnionPetscLib, da::AbstractPetscDM, names::String )
-	names_ = Ref(pointer(names))
+	names_ = Ref{Ptr{Cchar}}(names isa Ptr ? names : pointer(names))
 
     @chk ccall(
                (:DMDASetFieldNames, $petsc_library),
@@ -14860,7 +14860,7 @@ $(_doc_external("DM/DMMoabGetFieldName"))
 function DMMoabGetFieldName(petsclib::PetscLibType, dm::AbstractPetscDM, field::PetscInt, fieldName::String) end
 
 @for_petsc function DMMoabGetFieldName(petsclib::$UnionPetscLib, dm::AbstractPetscDM, field::$PetscInt, fieldName::String )
-	fieldName_ = Ref(pointer(fieldName))
+	fieldName_ = Ref{Ptr{Cchar}}(fieldName isa Ptr ? fieldName : pointer(fieldName))
 
     @chk ccall(
                (:DMMoabGetFieldName, $petsc_library),
@@ -15446,7 +15446,7 @@ $(_doc_external("DM/DMMoabSetFieldNames"))
 function DMMoabSetFieldNames(petsclib::PetscLibType, dm::AbstractPetscDM, numFields::PetscInt, fields::String) end
 
 @for_petsc function DMMoabSetFieldNames(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numFields::$PetscInt, fields::String )
-	fields_ = Ref(pointer(fields))
+	fields_ = Ref{Ptr{Cchar}}(fields isa Ptr ? fields : pointer(fields))
 
     @chk ccall(
                (:DMMoabSetFieldNames, $petsc_library),
@@ -16028,7 +16028,7 @@ function DMNetworkCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 end 
 
 """
-	is::IS = DMNetworkCreateIS(petsclib::PetscLibType,dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::AbstractArray{PetscInt}) 
+	is::IS = DMNetworkCreateIS(petsclib::PetscLibType,dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Union{Ptr, AbstractArray{PetscInt}}) 
 Create an index set object from the global vector of the network
 
 Collective
@@ -16051,10 +16051,10 @@ Level: advanced
 # External Links
 $(_doc_external("DMNetwork/DMNetworkCreateIS"))
 """
-function DMNetworkCreateIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::AbstractArray{PetscInt}) end
+function DMNetworkCreateIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function DMNetworkCreateIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numkeys::$PetscInt, keys::Vector{$PetscInt}, blocksize::Vector{$PetscInt}, nselectedvar::Vector{$PetscInt}, selectedvar::AbstractArray{$PetscInt} )
-	selectedvar_ = Ref(pointer(selectedvar))
+@for_petsc function DMNetworkCreateIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numkeys::$PetscInt, keys::Vector{$PetscInt}, blocksize::Vector{$PetscInt}, nselectedvar::Vector{$PetscInt}, selectedvar::Union{Ptr, AbstractArray{$PetscInt}} )
+	selectedvar_ = Ref{Ptr{$PetscInt}}(selectedvar isa Ptr ? selectedvar : pointer(selectedvar))
 	is_ = Ref{CIS}()
 
     @chk ccall(
@@ -16070,7 +16070,7 @@ function DMNetworkCreateIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys:
 end 
 
 """
-	is::IS = DMNetworkCreateLocalIS(petsclib::PetscLibType,dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::AbstractArray{PetscInt}) 
+	is::IS = DMNetworkCreateLocalIS(petsclib::PetscLibType,dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Union{Ptr, AbstractArray{PetscInt}}) 
 Create an index set object from the local vector of the network
 
 Not Collective
@@ -16093,10 +16093,10 @@ Level: advanced
 # External Links
 $(_doc_external("DMNetwork/DMNetworkCreateLocalIS"))
 """
-function DMNetworkCreateLocalIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::AbstractArray{PetscInt}) end
+function DMNetworkCreateLocalIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function DMNetworkCreateLocalIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numkeys::$PetscInt, keys::Vector{$PetscInt}, blocksize::Vector{$PetscInt}, nselectedvar::Vector{$PetscInt}, selectedvar::AbstractArray{$PetscInt} )
-	selectedvar_ = Ref(pointer(selectedvar))
+@for_petsc function DMNetworkCreateLocalIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numkeys::$PetscInt, keys::Vector{$PetscInt}, blocksize::Vector{$PetscInt}, nselectedvar::Vector{$PetscInt}, selectedvar::Union{Ptr, AbstractArray{$PetscInt}} )
+	selectedvar_ = Ref{Ptr{$PetscInt}}(selectedvar isa Ptr ? selectedvar : pointer(selectedvar))
 	is_ = Ref{CIS}()
 
     @chk ccall(
@@ -22566,7 +22566,7 @@ function DMPlexGetAnchors(petsclib::PetscLibType, dm::AbstractPetscDM) end
 end 
 
 """
-	isDG::PetscBool,Nc::PetscInt,array::Ptr{PetscScalar},coords::Vector{PetscScalar} = DMPlexGetCellCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt) 
+	isDG::PetscBool,Nc::PetscInt,array::Vector{PetscScalar},coords::Vector{PetscScalar} = DMPlexGetCellCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt) 
 Get coordinates for a cell, taking into account periodicity
 
 Not Collective
@@ -22605,7 +22605,7 @@ function DMPlexGetCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, c
 
 	isDG = isDG_[]
 	Nc = Nc_[]
-	array = array_[]
+	array = unsafe_wrap(Array, array_[], Nc; own = false)
 	isDG = isDG_[]
 	Nc = Nc_[]
 	array = array_[]   # opaque pointer, passed back to DMPlexRestoreCellCoordinates
@@ -22875,7 +22875,7 @@ function DMPlexGetClosureIndices(petsclib::PetscLibType, dm::AbstractPetscDM, se
 	numIndices_ = Ref{$PetscInt}()
 	indices_ = Ref{Ptr{$PetscInt}}(C_NULL)
 	outOffsets = Vector{$PetscInt}(undef, 32)
-	values_ = Ref(pointer(values))
+	values_ = Ref{Ptr{$PetscScalar}}(values isa Ptr ? values : pointer(values))
 
     @chk ccall(
                (:DMPlexGetClosureIndices, $petsc_library),
@@ -30905,7 +30905,7 @@ function DMPlexReorderSetDefault(petsclib::PetscLibType, dm::AbstractPetscDM, re
 end 
 
 """
-	DMPlexRestoreCellCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt, isDG::PetscBool, Nc::PetscInt, array::AbstractArray{PetscScalar}, coords::AbstractArray{PetscScalar}) 
+	DMPlexRestoreCellCoordinates(petsclib::PetscLibType,dm::AbstractPetscDM, cell::PetscInt, isDG::Union{PetscBool, Bool}, Nc::PetscInt, array::Union{Ptr, AbstractArray{PetscScalar}}, coords::Union{Ptr, AbstractArray{PetscScalar}}) 
 Get coordinates for a cell, taking into account periodicity
 
 Not Collective
@@ -30927,13 +30927,13 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreCellCoordinates"))
 """
-function DMPlexRestoreCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, isDG::PetscBool, Nc::PetscInt, array::AbstractArray{PetscScalar}, coords::AbstractArray{PetscScalar}) end
+function DMPlexRestoreCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscDM, cell::PetscInt, isDG::Union{PetscBool, Bool}, Nc::PetscInt, array::Union{Ptr, AbstractArray{PetscScalar}}, coords::Union{Ptr, AbstractArray{PetscScalar}}) end
 
-@for_petsc function DMPlexRestoreCellCoordinates(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt, isDG::PetscBool, Nc::$PetscInt, array::AbstractArray{$PetscScalar}, coords::AbstractArray{$PetscScalar} )
+@for_petsc function DMPlexRestoreCellCoordinates(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cell::$PetscInt, isDG::Union{PetscBool, Bool}, Nc::$PetscInt, array::Union{Ptr, AbstractArray{$PetscScalar}}, coords::Union{Ptr, AbstractArray{$PetscScalar}} )
 	isDG_ = Ref{PetscBool}(isDG)
 	Nc_ = Ref{$PetscInt}(Nc)
-	array_ = Ref(pointer(array))
-	coords_ = Ref(pointer(coords))
+	array_ = Ref{Ptr{$PetscScalar}}(array isa Ptr ? array : pointer(array))
+	coords_ = Ref{Ptr{$PetscScalar}}(coords isa Ptr ? coords : pointer(coords))
 
     @chk ccall(
                (:DMPlexRestoreCellCoordinates, $petsc_library),
@@ -30947,7 +30947,7 @@ function DMPlexRestoreCellCoordinates(petsclib::PetscLibType, dm::AbstractPetscD
 end 
 
 """
-	DMPlexRestoreCellFields(petsclib::PetscLibType,dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec, u::AbstractArray{PetscScalar}, u_t::AbstractArray{PetscScalar}, a::AbstractArray{PetscScalar}) 
+	DMPlexRestoreCellFields(petsclib::PetscLibType,dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec, u::Union{Ptr, AbstractArray{PetscScalar}}, u_t::Union{Ptr, AbstractArray{PetscScalar}}, a::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restore the field values values for a chunk of cells
 
 Input Parameters:
@@ -30969,12 +30969,12 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreCellFields"))
 """
-function DMPlexRestoreCellFields(petsclib::PetscLibType, dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec, u::AbstractArray{PetscScalar}, u_t::AbstractArray{PetscScalar}, a::AbstractArray{PetscScalar}) end
+function DMPlexRestoreCellFields(petsclib::PetscLibType, dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec, u::Union{Ptr, AbstractArray{PetscScalar}}, u_t::Union{Ptr, AbstractArray{PetscScalar}}, a::Union{Ptr, AbstractArray{PetscScalar}}) end
 
-@for_petsc function DMPlexRestoreCellFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec, u::AbstractArray{$PetscScalar}, u_t::AbstractArray{$PetscScalar}, a::AbstractArray{$PetscScalar} )
-	u_ = Ref(pointer(u))
-	u_t_ = Ref(pointer(u_t))
-	a_ = Ref(pointer(a))
+@for_petsc function DMPlexRestoreCellFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, cellIS::AbstractIS, locX::AbstractPetscVec, locX_t::AbstractPetscVec, locA::AbstractPetscVec, u::Union{Ptr, AbstractArray{$PetscScalar}}, u_t::Union{Ptr, AbstractArray{$PetscScalar}}, a::Union{Ptr, AbstractArray{$PetscScalar}} )
+	u_ = Ref{Ptr{$PetscScalar}}(u isa Ptr ? u : pointer(u))
+	u_t_ = Ref{Ptr{$PetscScalar}}(u_t isa Ptr ? u_t : pointer(u_t))
+	a_ = Ref{Ptr{$PetscScalar}}(a isa Ptr ? a : pointer(a))
 
     @chk ccall(
                (:DMPlexRestoreCellFields, $petsc_library),
@@ -30988,7 +30988,7 @@ function DMPlexRestoreCellFields(petsclib::PetscLibType, dm::AbstractPetscDM, ce
 end 
 
 """
-	DMPlexRestoreClosureIndices(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::PetscInt, useClPerm::PetscBool, numIndices::PetscInt, indices::AbstractArray{PetscInt}, outOffsets::Union{Ptr, Vector{PetscInt}}, values::Union{Ptr, AbstractArray{PetscScalar}}) 
+	DMPlexRestoreClosureIndices(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::PetscInt, useClPerm::PetscBool, numIndices::PetscInt, indices::Union{Ptr, AbstractArray{PetscInt}}, outOffsets::Union{Ptr, Vector{PetscInt}}, values::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restores the global dof indices associated with the closure of the given point within the provided sections.
 
 Not collective
@@ -31013,12 +31013,12 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreClosureIndices"))
 """
-function DMPlexRestoreClosureIndices(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::PetscInt, useClPerm::PetscBool, numIndices::PetscInt, indices::AbstractArray{PetscInt}, outOffsets::Union{Ptr, Vector{PetscInt}}, values::Union{Ptr, AbstractArray{PetscScalar}}) end
+function DMPlexRestoreClosureIndices(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::PetscInt, useClPerm::PetscBool, numIndices::PetscInt, indices::Union{Ptr, AbstractArray{PetscInt}}, outOffsets::Union{Ptr, Vector{PetscInt}}, values::Union{Ptr, AbstractArray{PetscScalar}}) end
 
-@for_petsc function DMPlexRestoreClosureIndices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::$PetscInt, useClPerm::PetscBool, numIndices::$PetscInt, indices::AbstractArray{$PetscInt}, outOffsets::Union{Ptr, Vector{$PetscInt}}, values::Union{Ptr, AbstractArray{$PetscScalar}} )
+@for_petsc function DMPlexRestoreClosureIndices(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, idxSection::PetscSection, point::$PetscInt, useClPerm::PetscBool, numIndices::$PetscInt, indices::Union{Ptr, AbstractArray{$PetscInt}}, outOffsets::Union{Ptr, Vector{$PetscInt}}, values::Union{Ptr, AbstractArray{$PetscScalar}} )
 	numIndices_ = Ref{$PetscInt}(numIndices)
-	indices_ = Ref(pointer(indices))
-	values_ = Ref(pointer(values))
+	indices_ = Ref{Ptr{$PetscInt}}(indices isa Ptr ? indices : pointer(indices))
+	values_ = Ref{Ptr{$PetscScalar}}(values isa Ptr ? values : pointer(values))
 
     @chk ccall(
                (:DMPlexRestoreClosureIndices, $petsc_library),
@@ -31056,7 +31056,7 @@ function DMPlexRestoreCompressedClosure(petsclib::PetscLibType, dm::AbstractPets
 end 
 
 """
-	DMPlexRestoreConeRecursive(petsclib::PetscLibType,dm::AbstractPetscDM, points::AbstractIS, depth::PetscInt, expandedPoints::AbstractArray{IS}, sections::AbstractArray{PetscSection}) 
+	DMPlexRestoreConeRecursive(petsclib::PetscLibType,dm::AbstractPetscDM, points::AbstractIS, depth::PetscInt, expandedPoints::Union{Ptr, AbstractArray{IS}}, sections::Union{Ptr, AbstractArray{PetscSection}}) 
 Deallocates arrays created by `DMPlexGetConeRecursive()`
 
 Not Collective
@@ -31078,12 +31078,12 @@ Level: advanced
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreConeRecursive"))
 """
-function DMPlexRestoreConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS, depth::PetscInt, expandedPoints::AbstractArray{IS}, sections::AbstractArray{PetscSection}) end
+function DMPlexRestoreConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM, points::AbstractIS, depth::PetscInt, expandedPoints::Union{Ptr, AbstractArray{IS}}, sections::Union{Ptr, AbstractArray{PetscSection}}) end
 
-@for_petsc function DMPlexRestoreConeRecursive(petsclib::$UnionPetscLib, dm::AbstractPetscDM, points::AbstractIS, depth::$PetscInt, expandedPoints::AbstractArray{IS}, sections::AbstractArray{PetscSection} )
+@for_petsc function DMPlexRestoreConeRecursive(petsclib::$UnionPetscLib, dm::AbstractPetscDM, points::AbstractIS, depth::$PetscInt, expandedPoints::Union{Ptr, AbstractArray{IS}}, sections::Union{Ptr, AbstractArray{PetscSection}} )
 	depth_ = Ref{$PetscInt}(depth)
-	expandedPoints_ = Ref(pointer(expandedPoints))
-	sections_ = Ref(pointer(sections))
+	expandedPoints_ = Ref{Ptr{CIS}}(expandedPoints isa Ptr ? expandedPoints : pointer(expandedPoints))
+	sections_ = Ref{Ptr{PetscSection}}(sections isa Ptr ? sections : pointer(sections))
 
     @chk ccall(
                (:DMPlexRestoreConeRecursive, $petsc_library),
@@ -31097,7 +31097,7 @@ function DMPlexRestoreConeRecursive(petsclib::PetscLibType, dm::AbstractPetscDM,
 end 
 
 """
-	DMPlexRestoreFaceFields(petsclib::PetscLibType,dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec, Nface::PetscInt, uL::AbstractArray{PetscScalar}, uR::AbstractArray{PetscScalar}) 
+	DMPlexRestoreFaceFields(petsclib::PetscLibType,dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec, Nface::PetscInt, uL::Union{Ptr, AbstractArray{PetscScalar}}, uR::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restore the field values values for a chunk of faces
 
 Input Parameters:
@@ -31122,12 +31122,12 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreFaceFields"))
 """
-function DMPlexRestoreFaceFields(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec, Nface::PetscInt, uL::AbstractArray{PetscScalar}, uR::AbstractArray{PetscScalar}) end
+function DMPlexRestoreFaceFields(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec, Nface::PetscInt, uL::Union{Ptr, AbstractArray{PetscScalar}}, uR::Union{Ptr, AbstractArray{PetscScalar}}) end
 
-@for_petsc function DMPlexRestoreFaceFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fStart::$PetscInt, fEnd::$PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec, Nface::$PetscInt, uL::AbstractArray{$PetscScalar}, uR::AbstractArray{$PetscScalar} )
+@for_petsc function DMPlexRestoreFaceFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fStart::$PetscInt, fEnd::$PetscInt, locX::AbstractPetscVec, locX_t::AbstractPetscVec, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, locGrad::AbstractPetscVec, Nface::$PetscInt, uL::Union{Ptr, AbstractArray{$PetscScalar}}, uR::Union{Ptr, AbstractArray{$PetscScalar}} )
 	Nface_ = Ref{$PetscInt}(Nface)
-	uL_ = Ref(pointer(uL))
-	uR_ = Ref(pointer(uR))
+	uL_ = Ref{Ptr{$PetscScalar}}(uL isa Ptr ? uL : pointer(uL))
+	uR_ = Ref{Ptr{$PetscScalar}}(uR isa Ptr ? uR : pointer(uR))
 
     @chk ccall(
                (:DMPlexRestoreFaceFields, $petsc_library),
@@ -31141,7 +31141,7 @@ function DMPlexRestoreFaceFields(petsclib::PetscLibType, dm::AbstractPetscDM, fS
 end 
 
 """
-	DMPlexRestoreFaceGeometry(petsclib::PetscLibType,dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Nface::PetscInt, fgeom::AbstractArray{PetscFVFaceGeom}, vol::AbstractArray{PetscReal}) 
+	DMPlexRestoreFaceGeometry(petsclib::PetscLibType,dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Nface::PetscInt, fgeom::Union{Ptr, AbstractArray{PetscFVFaceGeom}}, vol::Union{Ptr, AbstractArray{PetscReal}}) 
 Restore the field values values for a chunk of faces
 
 Input Parameters:
@@ -31163,12 +31163,12 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreFaceGeometry"))
 """
-function DMPlexRestoreFaceGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Nface::PetscInt, fgeom::AbstractArray{PetscFVFaceGeom}, vol::AbstractArray{PetscReal}) end
+function DMPlexRestoreFaceGeometry(petsclib::PetscLibType, dm::AbstractPetscDM, fStart::PetscInt, fEnd::PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Nface::PetscInt, fgeom::Union{Ptr, AbstractArray{PetscFVFaceGeom}}, vol::Union{Ptr, AbstractArray{PetscReal}}) end
 
-@for_petsc function DMPlexRestoreFaceGeometry(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fStart::$PetscInt, fEnd::$PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Nface::$PetscInt, fgeom::AbstractArray{PetscFVFaceGeom}, vol::AbstractArray{$PetscReal} )
+@for_petsc function DMPlexRestoreFaceGeometry(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fStart::$PetscInt, fEnd::$PetscInt, faceGeometry::AbstractPetscVec, cellGeometry::AbstractPetscVec, Nface::$PetscInt, fgeom::Union{Ptr, AbstractArray{PetscFVFaceGeom}}, vol::Union{Ptr, AbstractArray{$PetscReal}} )
 	Nface_ = Ref{$PetscInt}(Nface)
-	fgeom_ = Ref(pointer(fgeom))
-	vol_ = Ref(pointer(vol))
+	fgeom_ = Ref{Ptr{PetscFVFaceGeom}}(fgeom isa Ptr ? fgeom : pointer(fgeom))
+	vol_ = Ref{Ptr{$PetscReal}}(vol isa Ptr ? vol : pointer(vol))
 
     @chk ccall(
                (:DMPlexRestoreFaceGeometry, $petsc_library),
@@ -31258,7 +31258,7 @@ function DMPlexRestoreGeomGradData(petsclib::PetscLibType, dm::AbstractPetscDM, 
 end 
 
 """
-	DMPlexRestoreJoin(petsclib::PetscLibType,dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::AbstractArray{PetscInt}) 
+	DMPlexRestoreJoin(petsclib::PetscLibType,dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore an array for the join of the set of points obtained with `DMPlexGetJoin()`
 
 Not Collective
@@ -31279,11 +31279,11 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreJoin"))
 """
-function DMPlexRestoreJoin(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::AbstractArray{PetscInt}) end
+function DMPlexRestoreJoin(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function DMPlexRestoreJoin(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numPoints::$PetscInt, points::Vector{$PetscInt}, numCoveredPoints::$PetscInt, coveredPoints::AbstractArray{$PetscInt} )
+@for_petsc function DMPlexRestoreJoin(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numPoints::$PetscInt, points::Vector{$PetscInt}, numCoveredPoints::$PetscInt, coveredPoints::Union{Ptr, AbstractArray{$PetscInt}} )
 	numCoveredPoints_ = Ref{$PetscInt}(numCoveredPoints)
-	coveredPoints_ = Ref(pointer(coveredPoints))
+	coveredPoints_ = Ref{Ptr{$PetscInt}}(coveredPoints isa Ptr ? coveredPoints : pointer(coveredPoints))
 
     @chk ccall(
                (:DMPlexRestoreJoin, $petsc_library),
@@ -31297,7 +31297,7 @@ function DMPlexRestoreJoin(petsclib::PetscLibType, dm::AbstractPetscDM, numPoint
 end 
 
 """
-	DMPlexRestoreMeet(petsclib::PetscLibType,dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::AbstractArray{PetscInt}) 
+	DMPlexRestoreMeet(petsclib::PetscLibType,dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore an array for the meet of the set of points obtained with `DMPlexGetMeet()`
 
 Not Collective
@@ -31318,11 +31318,11 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreMeet"))
 """
-function DMPlexRestoreMeet(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::AbstractArray{PetscInt}) end
+function DMPlexRestoreMeet(petsclib::PetscLibType, dm::AbstractPetscDM, numPoints::PetscInt, points::Vector{PetscInt}, numCoveredPoints::PetscInt, coveredPoints::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function DMPlexRestoreMeet(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numPoints::$PetscInt, points::Vector{$PetscInt}, numCoveredPoints::$PetscInt, coveredPoints::AbstractArray{$PetscInt} )
+@for_petsc function DMPlexRestoreMeet(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numPoints::$PetscInt, points::Vector{$PetscInt}, numCoveredPoints::$PetscInt, coveredPoints::Union{Ptr, AbstractArray{$PetscInt}} )
 	numCoveredPoints_ = Ref{$PetscInt}(numCoveredPoints)
-	coveredPoints_ = Ref(pointer(coveredPoints))
+	coveredPoints_ = Ref{Ptr{$PetscInt}}(coveredPoints isa Ptr ? coveredPoints : pointer(coveredPoints))
 
     @chk ccall(
                (:DMPlexRestoreMeet, $petsc_library),
@@ -31336,7 +31336,7 @@ function DMPlexRestoreMeet(petsclib::PetscLibType, dm::AbstractPetscDM, numPoint
 end 
 
 """
-	DMPlexRestoreOrientedCone(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, cone::AbstractArray{PetscInt}, ornt::AbstractArray{PetscInt}) 
+	DMPlexRestoreOrientedCone(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, cone::Union{Ptr, AbstractArray{PetscInt}}, ornt::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore the points and orientations on the in
 
 Not Collective
@@ -31355,11 +31355,11 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreOrientedCone"))
 """
-function DMPlexRestoreOrientedCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, cone::AbstractArray{PetscInt}, ornt::AbstractArray{PetscInt}) end
+function DMPlexRestoreOrientedCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, cone::Union{Ptr, AbstractArray{PetscInt}}, ornt::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function DMPlexRestoreOrientedCone(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, cone::AbstractArray{$PetscInt}, ornt::AbstractArray{$PetscInt} )
-	cone_ = Ref(pointer(cone))
-	ornt_ = Ref(pointer(ornt))
+@for_petsc function DMPlexRestoreOrientedCone(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, cone::Union{Ptr, AbstractArray{$PetscInt}}, ornt::Union{Ptr, AbstractArray{$PetscInt}} )
+	cone_ = Ref{Ptr{$PetscInt}}(cone isa Ptr ? cone : pointer(cone))
+	ornt_ = Ref{Ptr{$PetscInt}}(ornt isa Ptr ? ornt : pointer(ornt))
 
     @chk ccall(
                (:DMPlexRestoreOrientedCone, $petsc_library),
@@ -31373,7 +31373,7 @@ function DMPlexRestoreOrientedCone(petsclib::PetscLibType, dm::AbstractPetscDM, 
 end 
 
 """
-	DMPlexRestoreTransitiveClosure(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool, numPoints::PetscInt, points::AbstractArray{PetscInt}) 
+	DMPlexRestoreTransitiveClosure(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool, numPoints::PetscInt, points::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore the array of points on the transitive closure of the in
 
 Not Collective
@@ -31392,11 +31392,11 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreTransitiveClosure"))
 """
-function DMPlexRestoreTransitiveClosure(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool, numPoints::PetscInt, points::AbstractArray{PetscInt}) end
+function DMPlexRestoreTransitiveClosure(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool, numPoints::PetscInt, points::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function DMPlexRestoreTransitiveClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, useCone::PetscBool, numPoints::$PetscInt, points::AbstractArray{$PetscInt} )
+@for_petsc function DMPlexRestoreTransitiveClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, useCone::PetscBool, numPoints::$PetscInt, points::Union{Ptr, AbstractArray{$PetscInt}} )
 	numPoints_ = Ref{$PetscInt}(numPoints)
-	points_ = Ref(pointer(points))
+	points_ = Ref{Ptr{$PetscInt}}(points isa Ptr ? points : pointer(points))
 
     @chk ccall(
                (:DMPlexRestoreTransitiveClosure, $petsc_library),
@@ -33599,7 +33599,7 @@ function DMPlexVecGetOrientedClosure(petsclib::PetscLibType, dm::AbstractPetscDM
 end 
 
 """
-	DMPlexVecRestoreClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, csize::PetscInt, values::AbstractArray{PetscScalar}) 
+	DMPlexVecRestoreClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, csize::PetscInt, values::Union{Ptr, AbstractArray{PetscScalar}}) 
 Restore the array of the values on the closure of 'point' obtained with `DMPlexVecGetClosure()`
 
 Not collective
@@ -33619,11 +33619,11 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexVecRestoreClosure"))
 """
-function DMPlexVecRestoreClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, csize::PetscInt, values::AbstractArray{PetscScalar}) end
+function DMPlexVecRestoreClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, csize::PetscInt, values::Union{Ptr, AbstractArray{PetscScalar}}) end
 
-@for_petsc function DMPlexVecRestoreClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::$PetscInt, csize::$PetscInt, values::AbstractArray{$PetscScalar} )
+@for_petsc function DMPlexVecRestoreClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::$PetscInt, csize::$PetscInt, values::Union{Ptr, AbstractArray{$PetscScalar}} )
 	csize_ = Ref{$PetscInt}(csize)
-	values_ = Ref(pointer(values))
+	values_ = Ref{Ptr{$PetscScalar}}(values isa Ptr ? values : pointer(values))
 
     @chk ccall(
                (:DMPlexVecRestoreClosure, $petsc_library),
@@ -42177,7 +42177,7 @@ $(_doc_external("DMSwarm/DMSwarmCreateGlobalVectorFromFields"))
 function DMSwarmCreateGlobalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) end
 
 @for_petsc function DMSwarmCreateGlobalVectorFromFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nf::$PetscInt, fieldnames::String )
-	fieldnames_ = Ref(pointer(fieldnames))
+	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
 	vec_ = Ref{CVec}()
 
     @chk ccall(
@@ -42253,7 +42253,7 @@ $(_doc_external("DMSwarm/DMSwarmCreateLocalVectorFromFields"))
 function DMSwarmCreateLocalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) end
 
 @for_petsc function DMSwarmCreateLocalVectorFromFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nf::$PetscInt, fieldnames::String )
-	fieldnames_ = Ref(pointer(fieldnames))
+	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
 	vec_ = Ref{CVec}()
 
     @chk ccall(
@@ -42405,7 +42405,7 @@ $(_doc_external("DMSwarm/DMSwarmDestroyGlobalVectorFromFields"))
 function DMSwarmDestroyGlobalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) end
 
 @for_petsc function DMSwarmDestroyGlobalVectorFromFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nf::$PetscInt, fieldnames::String )
-	fieldnames_ = Ref(pointer(fieldnames))
+	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
 	vec_ = Ref{CVec}()
 
     @chk ccall(
@@ -42481,7 +42481,7 @@ $(_doc_external("DMSwarm/DMSwarmDestroyLocalVectorFromFields"))
 function DMSwarmDestroyLocalVectorFromFields(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, fieldnames::String) end
 
 @for_petsc function DMSwarmDestroyLocalVectorFromFields(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nf::$PetscInt, fieldnames::String )
-	fieldnames_ = Ref(pointer(fieldnames))
+	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
 	vec_ = Ref{CVec}()
 
     @chk ccall(
@@ -43302,7 +43302,7 @@ $(_doc_external("DM/DMSwarmProjectFields"))
 function DMSwarmProjectFields(petsclib::PetscLibType, sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::PetscInt, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode) end
 
 @for_petsc function DMSwarmProjectFields(petsclib::$UnionPetscLib, sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::$PetscInt, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode )
-	fieldnames_ = Ref(pointer(fieldnames))
+	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
 
     @chk ccall(
                (:DMSwarmProjectFields, $petsc_library),
@@ -43324,7 +43324,7 @@ $(_doc_external("DM/DMSwarmProjectGradientFields"))
 function DMSwarmProjectGradientFields(petsclib::PetscLibType, sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::PetscInt, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode) end
 
 @for_petsc function DMSwarmProjectGradientFields(petsclib::$UnionPetscLib, sw::AbstractPetscDM, dm::AbstractPetscDM, nfields::$PetscInt, fieldnames::String, fields::Vector{<:AbstractPetscVec}, mode::ScatterMode )
-	fieldnames_ = Ref(pointer(fieldnames))
+	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
 
     @chk ccall(
                (:DMSwarmProjectGradientFields, $petsc_library),
@@ -44078,7 +44078,7 @@ $(_doc_external("DMSwarm/DMSwarmVectorDefineFields"))
 function DMSwarmVectorDefineFields(petsclib::PetscLibType, sw::AbstractPetscDM, Nf::PetscInt, fieldnames::String) end
 
 @for_petsc function DMSwarmVectorDefineFields(petsclib::$UnionPetscLib, sw::AbstractPetscDM, Nf::$PetscInt, fieldnames::String )
-	fieldnames_ = Ref(pointer(fieldnames))
+	fieldnames_ = Ref{Ptr{Cchar}}(fieldnames isa Ptr ? fieldnames : pointer(fieldnames))
 
     @chk ccall(
                (:DMSwarmVectorDefineFields, $petsc_library),
@@ -44153,7 +44153,7 @@ $(_doc_external("DMSwarm/DMSwarmViewFieldsXDMF"))
 function DMSwarmViewFieldsXDMF(petsclib::PetscLibType, dm::AbstractPetscDM, filename::String, nfields::PetscInt, field_name_list::String) end
 
 @for_petsc function DMSwarmViewFieldsXDMF(petsclib::$UnionPetscLib, dm::AbstractPetscDM, filename::String, nfields::$PetscInt, field_name_list::String )
-	field_name_list_ = Ref(pointer(field_name_list))
+	field_name_list_ = Ref{Ptr{Cchar}}(field_name_list isa Ptr ? field_name_list : pointer(field_name_list))
 
     @chk ccall(
                (:DMSwarmViewFieldsXDMF, $petsc_library),

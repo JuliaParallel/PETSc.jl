@@ -60,14 +60,19 @@ function init_extract(r::Rules, typename::String, name::String, isarray::Bool, i
         init = "$name_ccall = Ref{" * "Ptr{"^stars * typename * "}"^stars * "}()"
         extract = "$name = $name_ccall[]"
     elseif isarray && isoutput && stars == 0
-        init = "$name = Vector{$typename}(undef, ni);  # CHECK SIZE!!"
+        init = "$name = Vector{$typename}(undef, ni)"   # only reached when the function has an `ni` argument
     elseif isarray && !isoutput && stars == 1
         name_ccall = "$(name)_"
-        init = "$name_ccall = Ref(pointer($name))"   # signature widened to AbstractArray below
+        elt = is_handle(r, typename) ? r.handles[typename].c : typename
+        init = "$name_ccall = Ref{Ptr{$elt}}($name isa Ptr ? $name : pointer($name))"   # array or the raw pointer a Get returned
     elseif !isarray && isoutput && typename in r.string_types
         name_ccall = "$(name)_"
         init = "$name_ccall = Ref{$typename}()"
         extract = "$name = $(name_ccall)[] == C_NULL ? \"\" : unsafe_string($(name_ccall)[])"
+    elseif !isarray && isoutput && typename == "MPI_Comm"
+        name_ccall = "$(name)_"
+        init = "$name_ccall = Ref{MPI.MPI_Comm}()"       # MPI.Comm is a mutable struct: hold the C handle
+        extract = "$name = MPI.Comm($(name_ccall)[])"
     elseif !isarray && isoutput
         name_ccall = "$(name)_"
         init = "$name_ccall = Ref{$typename}()"
@@ -124,7 +129,8 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
     # `T *x` as an input: in Restore functions a scalar handed back by reference, elsewhere an array
     if stars == 1 && !isarray && !isoutput && !is_handle(r, typename) && typename != "Ptr{Cvoid}"
         if occursin("Restore", fn.name) && is_simple(r, typename)
-            return FArg(name, "$(name)_", typename, "Ptr{$typename}", false,
+            sigt = typename == "PetscBool" ? "Union{PetscBool, Bool}" : typename
+            return FArg(name, "$(name)_", sigt, "Ptr{$typename}", false,
                         "$(name)_ = Ref{$typename}($name)", "", false, stars, false)
         elseif is_simple(r, typename) || typename in r.struct_types
             return FArg(name, name, "Vector{$typename}", "Ptr{$typename}", false, "", "", true, stars, false)
@@ -139,12 +145,18 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
     if isarray
         ccall_str = "Ptr{$ccall_str}"
         if !isoutput
-            typename = typename == "Cchar" ? "String" : (stars == 1 ? "AbstractArray{$typename}" : "Vector{$typename}")
+            typename = typename == "Cchar" ? "String" : (stars == 1 ? "Union{Ptr, AbstractArray{$typename}}" : "Vector{$typename}")
         elseif stars > 0 && !haskey(ov, "size")
             typename = "Ptr{"^stars * typename * "}"^stars    # raw pointer to a PETSc-owned array
         else
             typename = "Vector{$typename}"
         end
+    end
+    if isarray && !isoutput && stars == 0 && is_handle(r, typename)
+        h = r.handles[typename]
+        name_ccall = "$(name)_"
+        init = "$name_ccall = $(h.c)[v.ptr for v in $name]"
+        typename = "Vector{$typename}"      # abstract_arg_type turns this into Vector{<:AbstractX}
     end
     # --- generic rules beyond the original heuristics ---------------------------------
     if !isarray && stars == 1 && is_handle(r, typename) && !isoutput && !is_destroy(fn)

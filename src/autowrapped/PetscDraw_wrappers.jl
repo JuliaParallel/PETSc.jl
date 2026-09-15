@@ -640,7 +640,7 @@ $(_doc_external("Draw/PetscDrawBarSetData"))
 function PetscDrawBarSetData(petsclib::PetscLibType, bar::PetscDrawBar, bins::PetscInt, data::Vector{PetscReal}, labels::String) end
 
 @for_petsc function PetscDrawBarSetData(petsclib::$UnionPetscLib, bar::PetscDrawBar, bins::$PetscInt, data::Vector{$PetscReal}, labels::String )
-	labels_ = Ref(pointer(labels))
+	labels_ = Ref{Ptr{Cchar}}(labels isa Ptr ? labels : pointer(labels))
 
     @chk ccall(
                (:PetscDrawBarSetData, $petsc_library),
@@ -2213,7 +2213,7 @@ function PetscDrawLGAddPoint(petsclib::PetscLibType, lg::PetscDrawLG, x::Vector{
 end 
 
 """
-	PetscDrawLGAddPoints(petsclib::PetscLibType,lg::PetscDrawLG, n::PetscInt, xx::AbstractArray{PetscReal}, yy::AbstractArray{PetscReal}) 
+	PetscDrawLGAddPoints(petsclib::PetscLibType,lg::PetscDrawLG, n::PetscInt, xx::Union{Ptr, AbstractArray{PetscReal}}, yy::Union{Ptr, AbstractArray{PetscReal}}) 
 Adds several points to each of the line graphs.
 The new points must have an X coordinate larger than the old points.
 
@@ -2232,11 +2232,11 @@ Level: intermediate
 # External Links
 $(_doc_external("Draw/PetscDrawLGAddPoints"))
 """
-function PetscDrawLGAddPoints(petsclib::PetscLibType, lg::PetscDrawLG, n::PetscInt, xx::AbstractArray{PetscReal}, yy::AbstractArray{PetscReal}) end
+function PetscDrawLGAddPoints(petsclib::PetscLibType, lg::PetscDrawLG, n::PetscInt, xx::Union{Ptr, AbstractArray{PetscReal}}, yy::Union{Ptr, AbstractArray{PetscReal}}) end
 
-@for_petsc function PetscDrawLGAddPoints(petsclib::$UnionPetscLib, lg::PetscDrawLG, n::$PetscInt, xx::AbstractArray{$PetscReal}, yy::AbstractArray{$PetscReal} )
-	xx_ = Ref(pointer(xx))
-	yy_ = Ref(pointer(yy))
+@for_petsc function PetscDrawLGAddPoints(petsclib::$UnionPetscLib, lg::PetscDrawLG, n::$PetscInt, xx::Union{Ptr, AbstractArray{$PetscReal}}, yy::Union{Ptr, AbstractArray{$PetscReal}} )
+	xx_ = Ref{Ptr{$PetscReal}}(xx isa Ptr ? xx : pointer(xx))
+	yy_ = Ref{Ptr{$PetscReal}}(yy isa Ptr ? yy : pointer(yy))
 
     @chk ccall(
                (:PetscDrawLGAddPoints, $petsc_library),
@@ -2719,7 +2719,7 @@ $(_doc_external("Draw/PetscDrawLGSetLegend"))
 function PetscDrawLGSetLegend(petsclib::PetscLibType, lg::PetscDrawLG, names::String) end
 
 @for_petsc function PetscDrawLGSetLegend(petsclib::$UnionPetscLib, lg::PetscDrawLG, names::String )
-	names_ = Ref(pointer(names))
+	names_ = Ref{Ptr{Cchar}}(names isa Ptr ? names : pointer(names))
 
     @chk ccall(
                (:PetscDrawLGSetLegend, $petsc_library),
@@ -3601,7 +3601,7 @@ function PetscDrawSPAddPointColorized(petsclib::PetscLibType, sp::PetscDrawSP) e
 end 
 
 """
-	PetscDrawSPAddPoints(petsclib::PetscLibType,sp::PetscDrawSP, n::Cint, xx::AbstractArray{PetscReal}, yy::AbstractArray{PetscReal}) 
+	PetscDrawSPAddPoints(petsclib::PetscLibType,sp::PetscDrawSP, n::Cint, xx::Union{Ptr, AbstractArray{PetscReal}}, yy::Union{Ptr, AbstractArray{PetscReal}}) 
 Adds several points to each of the scatter plot point curves.
 
 Not Collective
@@ -3619,11 +3619,11 @@ Level: intermediate
 # External Links
 $(_doc_external("Draw/PetscDrawSPAddPoints"))
 """
-function PetscDrawSPAddPoints(petsclib::PetscLibType, sp::PetscDrawSP, n::Cint, xx::AbstractArray{PetscReal}, yy::AbstractArray{PetscReal}) end
+function PetscDrawSPAddPoints(petsclib::PetscLibType, sp::PetscDrawSP, n::Cint, xx::Union{Ptr, AbstractArray{PetscReal}}, yy::Union{Ptr, AbstractArray{PetscReal}}) end
 
-@for_petsc function PetscDrawSPAddPoints(petsclib::$UnionPetscLib, sp::PetscDrawSP, n::Cint, xx::AbstractArray{$PetscReal}, yy::AbstractArray{$PetscReal} )
-	xx_ = Ref(pointer(xx))
-	yy_ = Ref(pointer(yy))
+@for_petsc function PetscDrawSPAddPoints(petsclib::$UnionPetscLib, sp::PetscDrawSP, n::Cint, xx::Union{Ptr, AbstractArray{$PetscReal}}, yy::Union{Ptr, AbstractArray{$PetscReal}} )
+	xx_ = Ref{Ptr{$PetscReal}}(xx isa Ptr ? xx : pointer(xx))
+	yy_ = Ref{Ptr{$PetscReal}}(yy isa Ptr ? yy : pointer(yy))
 
     @chk ccall(
                (:PetscDrawSPAddPoints, $petsc_library),

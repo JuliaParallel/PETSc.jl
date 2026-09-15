@@ -52,5 +52,4 @@ jobs:
       - name: Known-bad patterns
         run: |
           ! grep -rn "isa Ref ?" src/autowrapped/
-          ! grep -rn "VecGetLocalSize(petsclib, x)" src/autowrapped/ | grep -v "x::AbstractPetscVec\|x::PetscVec" | grep -q "CHECK SIZE"
           ! grep -rn "CHECK SIZE" src/autowrapped/

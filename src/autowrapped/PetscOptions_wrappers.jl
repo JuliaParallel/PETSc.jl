@@ -587,7 +587,7 @@ $(_doc_external("Sys/PetscOptionsGetEList"))
 function PetscOptionsGetEList(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::PetscInt) end
 
 @for_petsc function PetscOptionsGetEList(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::$PetscInt )
-	list_ = Ref(pointer(list))
+	list_ = Ref{Ptr{Cchar}}(list isa Ptr ? list : pointer(list))
 	value_ = Ref{$PetscInt}()
 	set_ = Ref{PetscBool}()
 
@@ -636,7 +636,7 @@ $(_doc_external("Sys/PetscOptionsGetEnum"))
 function PetscOptionsGetEnum(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, opt::String, list::String) end
 
 @for_petsc function PetscOptionsGetEnum(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, opt::String, list::String )
-	list_ = Ref(pointer(list))
+	list_ = Ref{Ptr{Cchar}}(list isa Ptr ? list : pointer(list))
 	value_ = Ref{PetscEnum}()
 	set_ = Ref{PetscBool}()
 
@@ -685,7 +685,7 @@ $(_doc_external("Sys/PetscOptionsGetEnumArray"))
 function PetscOptionsGetEnumArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}) end
 
 @for_petsc function PetscOptionsGetEnumArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum} )
-	list_ = Ref(pointer(list))
+	list_ = Ref{Ptr{Cchar}}(list isa Ptr ? list : pointer(list))
 	nmax_ = Ref{$PetscInt}()
 	set_ = Ref{PetscBool}()
 
@@ -1345,7 +1345,7 @@ $(_doc_external("Sys/PetscOptionsInsertArgs"))
 function PetscOptionsInsertArgs(petsclib::PetscLibType, options::AbstractPetscOptions, argc::Cint, args::String) end
 
 @for_petsc function PetscOptionsInsertArgs(petsclib::$UnionPetscLib, options::AbstractPetscOptions, argc::Cint, args::String )
-	args_ = Ref(pointer(args))
+	args_ = Ref{Ptr{Cchar}}(args isa Ptr ? args : pointer(args))
 
     @chk ccall(
                (:PetscOptionsInsertArgs, $petsc_library),

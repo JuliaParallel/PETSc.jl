@@ -471,7 +471,7 @@ $(_doc_external("Sys/PetscObjectGetComm"))
 function PetscObjectGetComm(petsclib::PetscLibType, obj) end
 
 @for_petsc function PetscObjectGetComm(petsclib::$UnionPetscLib, obj )
-	comm_ = Ref{MPI_Comm}()
+	comm_ = Ref{MPI.MPI_Comm}()
 
     @chk ccall(
                (:PetscObjectGetComm, $petsc_library),
@@ -480,7 +480,7 @@ function PetscObjectGetComm(petsclib::PetscLibType, obj) end
                obj, comm_,
               )
 
-	comm = comm_[]
+	comm = MPI.Comm(comm_[])
 
 	return comm
 end 
@@ -542,7 +542,7 @@ $(_doc_external("Sys/PetscObjectGetName"))
 function PetscObjectGetName(petsclib::PetscLibType, obj, name::String) end
 
 @for_petsc function PetscObjectGetName(petsclib::$UnionPetscLib, obj, name::String )
-	name_ = Ref(pointer(name))
+	name_ = Ref{Ptr{Cchar}}(name isa Ptr ? name : pointer(name))
 
     @chk ccall(
                (:PetscObjectGetName, $petsc_library),

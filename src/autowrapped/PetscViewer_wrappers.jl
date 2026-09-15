@@ -1532,7 +1532,7 @@ $(_doc_external("Viewer/PetscViewerBinaryWriteStringArray"))
 function PetscViewerBinaryWriteStringArray(petsclib::PetscLibType, viewer::PetscViewer, data::String) end
 
 @for_petsc function PetscViewerBinaryWriteStringArray(petsclib::$UnionPetscLib, viewer::PetscViewer, data::String )
-	data_ = Ref(pointer(data))
+	data_ = Ref{Ptr{Cchar}}(data isa Ptr ? data : pointer(data))
 
     @chk ccall(
                (:PetscViewerBinaryWriteStringArray, $petsc_library),
@@ -2245,7 +2245,7 @@ $(_doc_external("Viewer/PetscViewerDrawGetTitle"))
 function PetscViewerDrawGetTitle(petsclib::PetscLibType, v::PetscViewer, title::String) end
 
 @for_petsc function PetscViewerDrawGetTitle(petsclib::$UnionPetscLib, v::PetscViewer, title::String )
-	title_ = Ref(pointer(title))
+	title_ = Ref{Ptr{Cchar}}(title isa Ptr ? title : pointer(title))
 
     @chk ccall(
                (:PetscViewerDrawGetTitle, $petsc_library),
@@ -2979,7 +2979,7 @@ $(_doc_external("DMPlex/PetscViewerExodusIISetNodalVariableNames"))
 function PetscViewerExodusIISetNodalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, names::String) end
 
 @for_petsc function PetscViewerExodusIISetNodalVariableNames(petsclib::$UnionPetscLib, viewer::PetscViewer, names::String )
-	names_ = Ref(pointer(names))
+	names_ = Ref{Ptr{Cchar}}(names isa Ptr ? names : pointer(names))
 
     @chk ccall(
                (:PetscViewerExodusIISetNodalVariableNames, $petsc_library),
@@ -3111,7 +3111,7 @@ $(_doc_external("DMPlex/PetscViewerExodusIISetZonalVariableNames"))
 function PetscViewerExodusIISetZonalVariableNames(petsclib::PetscLibType, viewer::PetscViewer, names::String) end
 
 @for_petsc function PetscViewerExodusIISetZonalVariableNames(petsclib::$UnionPetscLib, viewer::PetscViewer, names::String )
-	names_ = Ref(pointer(names))
+	names_ = Ref{Ptr{Cchar}}(names isa Ptr ? names : pointer(names))
 
     @chk ccall(
                (:PetscViewerExodusIISetZonalVariableNames, $petsc_library),
@@ -3504,7 +3504,7 @@ $(_doc_external("Viewer/PetscViewerGLVisSetFields"))
 function PetscViewerGLVisSetFields(petsclib::PetscLibType, viewer::PetscViewer, nf::PetscInt, fec_type::String, dim::Vector{PetscInt}, g2l::external, Vfield::Vector{PetscObject}, ctx::Ptr{Cvoid}, destroyctx::external) end
 
 @for_petsc function PetscViewerGLVisSetFields(petsclib::$UnionPetscLib, viewer::PetscViewer, nf::$PetscInt, fec_type::String, dim::Vector{$PetscInt}, g2l::external, Vfield::Vector{PetscObject}, ctx::Ptr{Cvoid}, destroyctx::external )
-	fec_type_ = Ref(pointer(fec_type))
+	fec_type_ = Ref{Ptr{Cchar}}(fec_type isa Ptr ? fec_type : pointer(fec_type))
 
     @chk ccall(
                (:PetscViewerGLVisSetFields, $petsc_library),
@@ -5592,7 +5592,7 @@ $(_doc_external("Viewer/PetscViewerMonitorLGSetUp"))
 function PetscViewerMonitorLGSetUp(petsclib::PetscLibType, viewer::PetscViewer, host::String, title::String, metric::String, l::PetscInt, names::String, x::Cint, y::Cint, m::Cint, n::Cint) end
 
 @for_petsc function PetscViewerMonitorLGSetUp(petsclib::$UnionPetscLib, viewer::PetscViewer, host::String, title::String, metric::String, l::$PetscInt, names::String, x::Cint, y::Cint, m::Cint, n::Cint )
-	names_ = Ref(pointer(names))
+	names_ = Ref{Ptr{Cchar}}(names isa Ptr ? names : pointer(names))
 
     @chk ccall(
                (:PetscViewerMonitorLGSetUp, $petsc_library),

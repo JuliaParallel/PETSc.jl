@@ -86,7 +86,7 @@ function PCASMCreateSubdomains2D(petsclib::PetscLibType, m::PetscInt, n::PetscIn
 end 
 
 """
-	PCASMDestroySubdomains(petsclib::PetscLibType,n::PetscInt, is::AbstractArray{IS}, is_local::AbstractArray{IS}) 
+	PCASMDestroySubdomains(petsclib::PetscLibType,n::PetscInt, is::Union{Ptr, AbstractArray{IS}}, is_local::Union{Ptr, AbstractArray{IS}}) 
 Destroys the index sets created with
 `PCASMCreateSubdomains()`. Should be called after setting subdomains with `PCASMSetLocalSubdomains()`.
 
@@ -104,11 +104,11 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCASMDestroySubdomains"))
 """
-function PCASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, is::AbstractArray{IS}, is_local::AbstractArray{IS}) end
+function PCASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, is::Union{Ptr, AbstractArray{IS}}, is_local::Union{Ptr, AbstractArray{IS}}) end
 
-@for_petsc function PCASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, is::AbstractArray{IS}, is_local::AbstractArray{IS} )
-	is_ = Ref(pointer(is))
-	is_local_ = Ref(pointer(is_local))
+@for_petsc function PCASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, is::Union{Ptr, AbstractArray{IS}}, is_local::Union{Ptr, AbstractArray{IS}} )
+	is_ = Ref{Ptr{CIS}}(is isa Ptr ? is : pointer(is))
+	is_local_ = Ref{Ptr{CIS}}(is_local isa Ptr ? is_local : pointer(is_local))
 
     @chk ccall(
                (:PCASMDestroySubdomains, $petsc_library),
@@ -1933,7 +1933,7 @@ function PCBJKOKKOSSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
 end 
 
 """
-	blocks::PetscInt = PCBJacobiGetLocalBlocks(petsclib::PetscLibType,pc::PC, lens::AbstractArray{PetscInt}) 
+	blocks::PetscInt = PCBJacobiGetLocalBlocks(petsclib::PetscLibType,pc::PC, lens::Union{Ptr, AbstractArray{PetscInt}}) 
 Gets the local number of blocks for the block
 Jacobi, `PCBJACOBI`, preconditioner.
 
@@ -1951,11 +1951,11 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBJacobiGetLocalBlocks"))
 """
-function PCBJacobiGetLocalBlocks(petsclib::PetscLibType, pc::PC, lens::AbstractArray{PetscInt}) end
+function PCBJacobiGetLocalBlocks(petsclib::PetscLibType, pc::PC, lens::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function PCBJacobiGetLocalBlocks(petsclib::$UnionPetscLib, pc::PC, lens::AbstractArray{$PetscInt} )
+@for_petsc function PCBJacobiGetLocalBlocks(petsclib::$UnionPetscLib, pc::PC, lens::Union{Ptr, AbstractArray{$PetscInt}} )
 	blocks_ = Ref{$PetscInt}()
-	lens_ = Ref(pointer(lens))
+	lens_ = Ref{Ptr{$PetscInt}}(lens isa Ptr ? lens : pointer(lens))
 
     @chk ccall(
                (:PCBJacobiGetLocalBlocks, $petsc_library),
@@ -6234,7 +6234,7 @@ function PCGASMCreateSubdomains2D(petsclib::PetscLibType, pc::PC, M::PetscInt, N
 end 
 
 """
-	PCGASMDestroySubdomains(petsclib::PetscLibType,n::PetscInt, iis::AbstractArray{IS}, ois::AbstractArray{IS}) 
+	PCGASMDestroySubdomains(petsclib::PetscLibType,n::PetscInt, iis::Union{Ptr, AbstractArray{IS}}, ois::Union{Ptr, AbstractArray{IS}}) 
 Destroys the index sets created with
 `PCGASMCreateSubdomains()` or `PCGASMCreateSubdomains2D()`. Should be
 called after setting subdomains with `PCGASMSetSubdomains()`.
@@ -6253,11 +6253,11 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGASMDestroySubdomains"))
 """
-function PCGASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, iis::AbstractArray{IS}, ois::AbstractArray{IS}) end
+function PCGASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, iis::Union{Ptr, AbstractArray{IS}}, ois::Union{Ptr, AbstractArray{IS}}) end
 
-@for_petsc function PCGASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, iis::AbstractArray{IS}, ois::AbstractArray{IS} )
-	iis_ = Ref(pointer(iis))
-	ois_ = Ref(pointer(ois))
+@for_petsc function PCGASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, iis::Union{Ptr, AbstractArray{IS}}, ois::Union{Ptr, AbstractArray{IS}} )
+	iis_ = Ref{Ptr{CIS}}(iis isa Ptr ? iis : pointer(iis))
+	ois_ = Ref{Ptr{CIS}}(ois isa Ptr ? ois : pointer(ois))
 
     @chk ccall(
                (:PCGASMDestroySubdomains, $petsc_library),
@@ -10150,7 +10150,7 @@ $(_doc_external("PC/PCMGSetLevels"))
 function PCMGSetLevels(petsclib::PetscLibType, pc::PC, levels::PetscInt) end
 
 @for_petsc function PCMGSetLevels(petsclib::$UnionPetscLib, pc::PC, levels::$PetscInt )
-	comms_ = Ref{MPI_Comm}()
+	comms_ = Ref{MPI.MPI_Comm}()
 
     @chk ccall(
                (:PCMGSetLevels, $petsc_library),
@@ -10159,7 +10159,7 @@ function PCMGSetLevels(petsclib::PetscLibType, pc::PC, levels::PetscInt) end
                pc, levels, comms_,
               )
 
-	comms = comms_[]
+	comms = MPI.Comm(comms_[])
 
 	return comms
 end 

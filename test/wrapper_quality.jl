@@ -118,7 +118,7 @@ end
         # enum output and MPI_Comm output
         @test (@inferred LibPETSc.PetscObjectGetComm(petsclib, v)) isa MPI.Comm
         # opaque handle create/destroy by reference
-        ns = @inferred LibPETSc.MatNullSpaceCreate(petsclib, comm, LibPETSc.PETSC_TRUE, PetscInt(0), Ptr{LibPETSc.CVec}(C_NULL))
+        ns = @inferred LibPETSc.MatNullSpaceCreate(petsclib, comm, LibPETSc.PETSC_TRUE, PetscInt(0), LibPETSc.PetscVec{typeof(petsclib)}[])
         @test ns != C_NULL
         LibPETSc.MatNullSpaceDestroy(petsclib, ns)
 

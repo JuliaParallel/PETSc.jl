@@ -188,7 +188,7 @@ function ISBlockGetSize(petsclib::PetscLibType, is::AbstractIS) end
 end 
 
 """
-	ISBlockRestoreIndices(petsclib::PetscLibType,is::AbstractIS, idx::AbstractArray{PetscInt}) 
+	ISBlockRestoreIndices(petsclib::PetscLibType,is::AbstractIS, idx::Union{Ptr, AbstractArray{PetscInt}}) 
 Restores the indices associated with each block  in an `ISBLOCK` obtained with `ISBlockGetIndices()`
 
 Not Collective
@@ -206,10 +206,10 @@ Level: intermediate
 # External Links
 $(_doc_external("IS/ISBlockRestoreIndices"))
 """
-function ISBlockRestoreIndices(petsclib::PetscLibType, is::AbstractIS, idx::AbstractArray{PetscInt}) end
+function ISBlockRestoreIndices(petsclib::PetscLibType, is::AbstractIS, idx::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function ISBlockRestoreIndices(petsclib::$UnionPetscLib, is::AbstractIS, idx::AbstractArray{$PetscInt} )
-	idx_ = Ref(pointer(idx))
+@for_petsc function ISBlockRestoreIndices(petsclib::$UnionPetscLib, is::AbstractIS, idx::Union{Ptr, AbstractArray{$PetscInt}} )
+	idx_ = Ref{Ptr{$PetscInt}}(idx isa Ptr ? idx : pointer(idx))
 
     @chk ccall(
                (:ISBlockRestoreIndices, $petsc_library),
@@ -2384,7 +2384,7 @@ function ISRenumber(petsclib::PetscLibType, subset::AbstractIS, subset_mult::Abs
 end 
 
 """
-	ISRestoreIndices(petsclib::PetscLibType,is::AbstractIS, ptr::AbstractArray{PetscInt}) 
+	ISRestoreIndices(petsclib::PetscLibType,is::AbstractIS, ptr::Union{Ptr, AbstractArray{PetscInt}}) 
 Restores an index set to a usable state after a call to `ISGetIndices()`.
 
 Not Collective
@@ -2400,10 +2400,10 @@ Level: intermediate
 # External Links
 $(_doc_external("IS/ISRestoreIndices"))
 """
-function ISRestoreIndices(petsclib::PetscLibType, is::AbstractIS, ptr::AbstractArray{PetscInt}) end
+function ISRestoreIndices(petsclib::PetscLibType, is::AbstractIS, ptr::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function ISRestoreIndices(petsclib::$UnionPetscLib, is::AbstractIS, ptr::AbstractArray{$PetscInt} )
-	ptr_ = Ref(pointer(ptr))
+@for_petsc function ISRestoreIndices(petsclib::$UnionPetscLib, is::AbstractIS, ptr::Union{Ptr, AbstractArray{$PetscInt}} )
+	ptr_ = Ref{Ptr{$PetscInt}}(ptr isa Ptr ? ptr : pointer(ptr))
 
     @chk ccall(
                (:ISRestoreIndices, $petsc_library),
@@ -2451,7 +2451,7 @@ function ISRestoreNonlocalIS(petsclib::PetscLibType, is::AbstractIS, complement:
 end 
 
 """
-	ISRestoreNonlocalIndices(petsclib::PetscLibType,is::AbstractIS, indices::AbstractArray{PetscInt}) 
+	ISRestoreNonlocalIndices(petsclib::PetscLibType,is::AbstractIS, indices::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore the index array obtained with `ISGetNonlocalIndices()`.
 
 Not Collective.
@@ -2467,10 +2467,10 @@ Level: intermediate
 # External Links
 $(_doc_external("IS/ISRestoreNonlocalIndices"))
 """
-function ISRestoreNonlocalIndices(petsclib::PetscLibType, is::AbstractIS, indices::AbstractArray{PetscInt}) end
+function ISRestoreNonlocalIndices(petsclib::PetscLibType, is::AbstractIS, indices::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function ISRestoreNonlocalIndices(petsclib::$UnionPetscLib, is::AbstractIS, indices::AbstractArray{$PetscInt} )
-	indices_ = Ref(pointer(indices))
+@for_petsc function ISRestoreNonlocalIndices(petsclib::$UnionPetscLib, is::AbstractIS, indices::Union{Ptr, AbstractArray{$PetscInt}} )
+	indices_ = Ref{Ptr{$PetscInt}}(indices isa Ptr ? indices : pointer(indices))
 
     @chk ccall(
                (:ISRestoreNonlocalIndices, $petsc_library),
@@ -2484,7 +2484,7 @@ function ISRestoreNonlocalIndices(petsclib::PetscLibType, is::AbstractIS, indice
 end 
 
 """
-	ISRestorePointRange(petsclib::PetscLibType,pointIS::AbstractIS, pStart::PetscInt, pEnd::PetscInt, points::AbstractArray{PetscInt}) 
+	ISRestorePointRange(petsclib::PetscLibType,pointIS::AbstractIS, pStart::PetscInt, pEnd::PetscInt, points::Union{Ptr, AbstractArray{PetscInt}}) 
 Destroys the traversal description created with `ISGetPointRange()`
 
 Not Collective
@@ -2502,12 +2502,12 @@ Level: intermediate
 # External Links
 $(_doc_external("IS/ISRestorePointRange"))
 """
-function ISRestorePointRange(petsclib::PetscLibType, pointIS::AbstractIS, pStart::PetscInt, pEnd::PetscInt, points::AbstractArray{PetscInt}) end
+function ISRestorePointRange(petsclib::PetscLibType, pointIS::AbstractIS, pStart::PetscInt, pEnd::PetscInt, points::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function ISRestorePointRange(petsclib::$UnionPetscLib, pointIS::AbstractIS, pStart::$PetscInt, pEnd::$PetscInt, points::AbstractArray{$PetscInt} )
+@for_petsc function ISRestorePointRange(petsclib::$UnionPetscLib, pointIS::AbstractIS, pStart::$PetscInt, pEnd::$PetscInt, points::Union{Ptr, AbstractArray{$PetscInt}} )
 	pStart_ = Ref{$PetscInt}(pStart)
 	pEnd_ = Ref{$PetscInt}(pEnd)
-	points_ = Ref(pointer(points))
+	points_ = Ref{Ptr{$PetscInt}}(points isa Ptr ? points : pointer(points))
 
     @chk ccall(
                (:ISRestorePointRange, $petsc_library),
@@ -2521,7 +2521,7 @@ function ISRestorePointRange(petsclib::PetscLibType, pointIS::AbstractIS, pStart
 end 
 
 """
-	ISRestoreTotalIndices(petsclib::PetscLibType,is::AbstractIS, indices::AbstractArray{PetscInt}) 
+	ISRestoreTotalIndices(petsclib::PetscLibType,is::AbstractIS, indices::Union{Ptr, AbstractArray{PetscInt}}) 
 Restore the index array obtained with `ISGetTotalIndices()`.
 
 Not Collective.
@@ -2537,10 +2537,10 @@ Level: intermediate
 # External Links
 $(_doc_external("IS/ISRestoreTotalIndices"))
 """
-function ISRestoreTotalIndices(petsclib::PetscLibType, is::AbstractIS, indices::AbstractArray{PetscInt}) end
+function ISRestoreTotalIndices(petsclib::PetscLibType, is::AbstractIS, indices::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function ISRestoreTotalIndices(petsclib::$UnionPetscLib, is::AbstractIS, indices::AbstractArray{$PetscInt} )
-	indices_ = Ref(pointer(indices))
+@for_petsc function ISRestoreTotalIndices(petsclib::$UnionPetscLib, is::AbstractIS, indices::Union{Ptr, AbstractArray{$PetscInt}} )
+	indices_ = Ref{Ptr{$PetscInt}}(indices isa Ptr ? indices : pointer(indices))
 
     @chk ccall(
                (:ISRestoreTotalIndices, $petsc_library),

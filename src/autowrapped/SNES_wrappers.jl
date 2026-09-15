@@ -2130,7 +2130,7 @@ $(_doc_external("SNESFAS/SNESFASSetLevels"))
 function SNESFASSetLevels(petsclib::PetscLibType, snes::AbstractPetscSNES, levels::PetscInt) end
 
 @for_petsc function SNESFASSetLevels(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, levels::$PetscInt )
-	comms_ = Ref{MPI_Comm}()
+	comms_ = Ref{MPI.MPI_Comm}()
 
     @chk ccall(
                (:SNESFASSetLevels, $petsc_library),
@@ -2139,7 +2139,7 @@ function SNESFASSetLevels(petsclib::PetscLibType, snes::AbstractPetscSNES, level
                snes, levels, comms_,
               )
 
-	comms = comms_[]
+	comms = MPI.Comm(comms_[])
 
 	return comms
 end 

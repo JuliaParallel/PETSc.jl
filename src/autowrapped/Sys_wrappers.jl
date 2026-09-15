@@ -963,7 +963,7 @@ $(_doc_external("Sys/PetscCommDestroy"))
 function PetscCommDestroy(petsclib::PetscLibType) end
 
 @for_petsc function PetscCommDestroy(petsclib::$UnionPetscLib)
-	comm_ = Ref{MPI_Comm}()
+	comm_ = Ref{MPI.MPI_Comm}()
 
     @chk ccall(
                (:PetscCommDestroy, $petsc_library),
@@ -972,7 +972,7 @@ function PetscCommDestroy(petsclib::PetscLibType) end
                comm_,
               )
 
-	comm = comm_[]
+	comm = MPI.Comm(comm_[])
 
 	return comm
 end 
@@ -1000,7 +1000,7 @@ $(_doc_external("Sys/PetscCommDuplicate"))
 function PetscCommDuplicate(petsclib::PetscLibType, comm_in::MPI_Comm) end
 
 @for_petsc function PetscCommDuplicate(petsclib::$UnionPetscLib, comm_in::MPI_Comm )
-	comm_out_ = Ref{MPI_Comm}()
+	comm_out_ = Ref{MPI.MPI_Comm}()
 	first_tag_ = Ref{PetscMPIInt}()
 
     @chk ccall(
@@ -1010,7 +1010,7 @@ function PetscCommDuplicate(petsclib::PetscLibType, comm_in::MPI_Comm) end
                comm_in, comm_out_, first_tag_,
               )
 
-	comm_out = comm_out_[]
+	comm_out = MPI.Comm(comm_out_[])
 	first_tag = first_tag_[]
 
 	return comm_out,first_tag
@@ -1038,7 +1038,7 @@ $(_doc_external("Sys/PetscCommGetComm"))
 function PetscCommGetComm(petsclib::PetscLibType, comm_in::MPI_Comm) end
 
 @for_petsc function PetscCommGetComm(petsclib::$UnionPetscLib, comm_in::MPI_Comm )
-	comm_out_ = Ref{MPI_Comm}()
+	comm_out_ = Ref{MPI.MPI_Comm}()
 
     @chk ccall(
                (:PetscCommGetComm, $petsc_library),
@@ -1047,7 +1047,7 @@ function PetscCommGetComm(petsclib::PetscLibType, comm_in::MPI_Comm) end
                comm_in, comm_out_,
               )
 
-	comm_out = comm_out_[]
+	comm_out = MPI.Comm(comm_out_[])
 
 	return comm_out
 end 
@@ -11527,7 +11527,7 @@ function PetscShmgetAllocateArray(petsclib::PetscLibType, sz::Csize_t, asz::Csiz
 end 
 
 """
-	PetscShmgetDeallocateArray(petsclib::PetscLibType,addr::AbstractArray{Cvoid}) 
+	PetscShmgetDeallocateArray(petsclib::PetscLibType,addr::Union{Ptr, AbstractArray{Cvoid}}) 
 deallocates shared memory accessible by all MPI processes in the server
 
 Not Collective, only called on the first MPI process
@@ -11542,10 +11542,10 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscShmgetDeallocateArray"))
 """
-function PetscShmgetDeallocateArray(petsclib::PetscLibType, addr::AbstractArray{Cvoid}) end
+function PetscShmgetDeallocateArray(petsclib::PetscLibType, addr::Union{Ptr, AbstractArray{Cvoid}}) end
 
-@for_petsc function PetscShmgetDeallocateArray(petsclib::$UnionPetscLib, addr::AbstractArray{Cvoid} )
-	addr_ = Ref(pointer(addr))
+@for_petsc function PetscShmgetDeallocateArray(petsclib::$UnionPetscLib, addr::Union{Ptr, AbstractArray{Cvoid}} )
+	addr_ = Ref{Ptr{Cvoid}}(addr isa Ptr ? addr : pointer(addr))
 
     @chk ccall(
                (:PetscShmgetDeallocateArray, $petsc_library),
@@ -12491,7 +12491,7 @@ $(_doc_external("Sys/PetscSortStrWithPermutation"))
 function PetscSortStrWithPermutation(petsclib::PetscLibType, n::PetscInt, i::String, idx::Vector{PetscInt}) end
 
 @for_petsc function PetscSortStrWithPermutation(petsclib::$UnionPetscLib, n::$PetscInt, i::String, idx::Vector{$PetscInt} )
-	i_ = Ref(pointer(i))
+	i_ = Ref{Ptr{Cchar}}(i isa Ptr ? i : pointer(i))
 
     @chk ccall(
                (:PetscSortStrWithPermutation, $petsc_library),
@@ -13210,7 +13210,7 @@ $(_doc_external("Sys/PetscStrallocpy"))
 function PetscStrallocpy(petsclib::PetscLibType, s::String, t::String) end
 
 @for_petsc function PetscStrallocpy(petsclib::$UnionPetscLib, s::String, t::String )
-	t_ = Ref(pointer(t))
+	t_ = Ref{Ptr{Cchar}}(t isa Ptr ? t : pointer(t))
 
     @chk ccall(
                (:PetscStrallocpy, $petsc_library),
@@ -13325,7 +13325,7 @@ $(_doc_external("Sys/PetscStrchr"))
 function PetscStrchr(petsclib::PetscLibType, a::String, b::Cchar, c::String) end
 
 @for_petsc function PetscStrchr(petsclib::$UnionPetscLib, a::String, b::Cchar, c::String )
-	c_ = Ref(pointer(c))
+	c_ = Ref{Ptr{Cchar}}(c isa Ptr ? c : pointer(c))
 
     @chk ccall(
                (:PetscStrchr, $petsc_library),
@@ -13576,7 +13576,7 @@ $(_doc_external("Sys/PetscStrrchr"))
 function PetscStrrchr(petsclib::PetscLibType, a::String, b::Cchar, c::String) end
 
 @for_petsc function PetscStrrchr(petsclib::$UnionPetscLib, a::String, b::Cchar, c::String )
-	c_ = Ref(pointer(c))
+	c_ = Ref{Ptr{Cchar}}(c isa Ptr ? c : pointer(c))
 
     @chk ccall(
                (:PetscStrrchr, $petsc_library),
@@ -13632,7 +13632,7 @@ $(_doc_external("Sys/PetscStrrstr"))
 function PetscStrrstr(petsclib::PetscLibType, a::String, b::String, tmp::String) end
 
 @for_petsc function PetscStrrstr(petsclib::$UnionPetscLib, a::String, b::String, tmp::String )
-	tmp_ = Ref(pointer(tmp))
+	tmp_ = Ref{Ptr{Cchar}}(tmp isa Ptr ? tmp : pointer(tmp))
 
     @chk ccall(
                (:PetscStrrstr, $petsc_library),
@@ -13654,7 +13654,7 @@ $(_doc_external("Sys/PetscStrstr"))
 function PetscStrstr(petsclib::PetscLibType, haystack::String, needle::String, tmp::String) end
 
 @for_petsc function PetscStrstr(petsclib::$UnionPetscLib, haystack::String, needle::String, tmp::String )
-	tmp_ = Ref(pointer(tmp))
+	tmp_ = Ref{Ptr{Cchar}}(tmp isa Ptr ? tmp : pointer(tmp))
 
     @chk ccall(
                (:PetscStrstr, $petsc_library),

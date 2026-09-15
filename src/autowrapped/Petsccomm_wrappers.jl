@@ -54,7 +54,7 @@ $(_doc_external("Sys/PetscShmCommGetMpiShmComm"))
 function PetscShmCommGetMpiShmComm(petsclib::PetscLibType, pshmcomm::PetscShmComm) end
 
 @for_petsc function PetscShmCommGetMpiShmComm(petsclib::$UnionPetscLib, pshmcomm::PetscShmComm )
-	comm_ = Ref{MPI_Comm}()
+	comm_ = Ref{MPI.MPI_Comm}()
 
     @chk ccall(
                (:PetscShmCommGetMpiShmComm, $petsc_library),
@@ -63,7 +63,7 @@ function PetscShmCommGetMpiShmComm(petsclib::PetscLibType, pshmcomm::PetscShmCom
                pshmcomm, comm_,
               )
 
-	comm = comm_[]
+	comm = MPI.Comm(comm_[])
 
 	return comm
 end 
@@ -230,7 +230,7 @@ $(_doc_external("Sys/PetscSubcommGetChild"))
 function PetscSubcommGetChild(petsclib::PetscLibType, scomm::PetscSubcomm) end
 
 @for_petsc function PetscSubcommGetChild(petsclib::$UnionPetscLib, scomm::PetscSubcomm )
-	ccomm_ = Ref{MPI_Comm}()
+	ccomm_ = Ref{MPI.MPI_Comm}()
 
     @chk ccall(
                (:PetscSubcommGetChild, $petsc_library),
@@ -239,7 +239,7 @@ function PetscSubcommGetChild(petsclib::PetscLibType, scomm::PetscSubcomm) end
                scomm, ccomm_,
               )
 
-	ccomm = ccomm_[]
+	ccomm = MPI.Comm(ccomm_[])
 
 	return ccomm
 end 
@@ -268,7 +268,7 @@ $(_doc_external("Sys/PetscSubcommGetContiguousParent"))
 function PetscSubcommGetContiguousParent(petsclib::PetscLibType, scomm::PetscSubcomm) end
 
 @for_petsc function PetscSubcommGetContiguousParent(petsclib::$UnionPetscLib, scomm::PetscSubcomm )
-	pcomm_ = Ref{MPI_Comm}()
+	pcomm_ = Ref{MPI.MPI_Comm}()
 
     @chk ccall(
                (:PetscSubcommGetContiguousParent, $petsc_library),
@@ -277,7 +277,7 @@ function PetscSubcommGetContiguousParent(petsclib::PetscLibType, scomm::PetscSub
                scomm, pcomm_,
               )
 
-	pcomm = pcomm_[]
+	pcomm = MPI.Comm(pcomm_[])
 
 	return pcomm
 end 
@@ -305,7 +305,7 @@ $(_doc_external("Sys/PetscSubcommGetParent"))
 function PetscSubcommGetParent(petsclib::PetscLibType, scomm::PetscSubcomm) end
 
 @for_petsc function PetscSubcommGetParent(petsclib::$UnionPetscLib, scomm::PetscSubcomm )
-	pcomm_ = Ref{MPI_Comm}()
+	pcomm_ = Ref{MPI.MPI_Comm}()
 
     @chk ccall(
                (:PetscSubcommGetParent, $petsc_library),
@@ -314,7 +314,7 @@ function PetscSubcommGetParent(petsclib::PetscLibType, scomm::PetscSubcomm) end
                scomm, pcomm_,
               )
 
-	pcomm = pcomm_[]
+	pcomm = MPI.Comm(pcomm_[])
 
 	return pcomm
 end 

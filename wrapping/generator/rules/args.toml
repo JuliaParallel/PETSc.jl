@@ -18,3 +18,9 @@ nullable = true
 nullable = true
 [DMPlexRestoreClosureIndices.values]
 nullable = true
+
+# DMPlexGetCellCoordinates: both arrays hold Nc scalars
+[DMPlexGetCellCoordinates.array]
+size = "Nc"
+[DMPlexGetCellCoordinates.coords]
+size = "Nc"

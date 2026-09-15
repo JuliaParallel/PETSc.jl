@@ -5760,16 +5760,16 @@ function DMPlexTransformRegisterDestroy(petsclib::PetscLibType) end
 end 
 
 """
-	DMPlexTransformRestoreCone(petsclib::PetscLibType,tr::DMPlexTransform, q::PetscInt, cone::AbstractArray{PetscInt}, ornt::AbstractArray{PetscInt}) 
+	DMPlexTransformRestoreCone(petsclib::PetscLibType,tr::DMPlexTransform, q::PetscInt, cone::Union{Ptr, AbstractArray{PetscInt}}, ornt::Union{Ptr, AbstractArray{PetscInt}}) 
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformRestoreCone"))
 """
-function DMPlexTransformRestoreCone(petsclib::PetscLibType, tr::DMPlexTransform, q::PetscInt, cone::AbstractArray{PetscInt}, ornt::AbstractArray{PetscInt}) end
+function DMPlexTransformRestoreCone(petsclib::PetscLibType, tr::DMPlexTransform, q::PetscInt, cone::Union{Ptr, AbstractArray{PetscInt}}, ornt::Union{Ptr, AbstractArray{PetscInt}}) end
 
-@for_petsc function DMPlexTransformRestoreCone(petsclib::$UnionPetscLib, tr::DMPlexTransform, q::$PetscInt, cone::AbstractArray{$PetscInt}, ornt::AbstractArray{$PetscInt} )
-	cone_ = Ref(pointer(cone))
-	ornt_ = Ref(pointer(ornt))
+@for_petsc function DMPlexTransformRestoreCone(petsclib::$UnionPetscLib, tr::DMPlexTransform, q::$PetscInt, cone::Union{Ptr, AbstractArray{$PetscInt}}, ornt::Union{Ptr, AbstractArray{$PetscInt}} )
+	cone_ = Ref{Ptr{$PetscInt}}(cone isa Ptr ? cone : pointer(cone))
+	ornt_ = Ref{Ptr{$PetscInt}}(ornt isa Ptr ? ornt : pointer(ornt))
 
     @chk ccall(
                (:DMPlexTransformRestoreCone, $petsc_library),
@@ -6097,8 +6097,8 @@ $(_doc_external("DMSwarm/DMSwarmCellDMCreate"))
 function DMSwarmCellDMCreate(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, dmFields::String, Nfc::PetscInt, coordFields::String) end
 
 @for_petsc function DMSwarmCellDMCreate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nf::$PetscInt, dmFields::String, Nfc::$PetscInt, coordFields::String )
-	dmFields_ = Ref(pointer(dmFields))
-	coordFields_ = Ref(pointer(coordFields))
+	dmFields_ = Ref{Ptr{Cchar}}(dmFields isa Ptr ? dmFields : pointer(dmFields))
+	coordFields_ = Ref{Ptr{Cchar}}(coordFields isa Ptr ? coordFields : pointer(coordFields))
 	celldm_ = Ref{DMSwarmCellDM}()
 
     @chk ccall(

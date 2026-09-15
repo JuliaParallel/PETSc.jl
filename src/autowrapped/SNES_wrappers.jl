@@ -9864,7 +9864,7 @@ function SNESView(petsclib::PetscLibType, snes::AbstractPetscSNES, viewer::Petsc
 end 
 
 """
-	SNESViewFromOptions(petsclib::PetscLibType,A::AbstractPetscSNES, obj::PetscObject, name::String) 
+	SNESViewFromOptions(petsclib::PetscLibType,A::AbstractPetscSNES, obj, name::String) 
 View a `SNES` based on values in the options database
 
 Collective
@@ -9881,9 +9881,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESViewFromOptions"))
 """
-function SNESViewFromOptions(petsclib::PetscLibType, A::AbstractPetscSNES, obj::PetscObject, name::String) end
+function SNESViewFromOptions(petsclib::PetscLibType, A::AbstractPetscSNES, obj, name::String) end
 
-@for_petsc function SNESViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscSNES, obj::PetscObject, name::String )
+@for_petsc function SNESViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscSNES, obj, name::String )
 
     @chk ccall(
                (:SNESViewFromOptions, $petsc_library),

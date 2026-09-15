@@ -650,7 +650,7 @@ function PetscRandomView(petsclib::PetscLibType, rnd::PetscRandom, viewer::Petsc
 end 
 
 """
-	PetscRandomViewFromOptions(petsclib::PetscLibType,A::PetscRandom, obj::PetscObject, name::String) 
+	PetscRandomViewFromOptions(petsclib::PetscLibType,A::PetscRandom, obj, name::String) 
 View a `PetscRandom` object based on the options database
 
 Collective
@@ -667,9 +667,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscRandomViewFromOptions"))
 """
-function PetscRandomViewFromOptions(petsclib::PetscLibType, A::PetscRandom, obj::PetscObject, name::String) end
+function PetscRandomViewFromOptions(petsclib::PetscLibType, A::PetscRandom, obj, name::String) end
 
-@for_petsc function PetscRandomViewFromOptions(petsclib::$UnionPetscLib, A::PetscRandom, obj::PetscObject, name::String )
+@for_petsc function PetscRandomViewFromOptions(petsclib::$UnionPetscLib, A::PetscRandom, obj, name::String )
 
     @chk ccall(
                (:PetscRandomViewFromOptions, $petsc_library),

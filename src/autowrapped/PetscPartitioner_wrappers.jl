@@ -576,7 +576,7 @@ function PetscPartitionerView(petsclib::PetscLibType, part::PetscPartitioner, v:
 end 
 
 """
-	PetscPartitionerViewFromOptions(petsclib::PetscLibType,A::PetscPartitioner, obj::PetscObject, name::String) 
+	PetscPartitionerViewFromOptions(petsclib::PetscLibType,A::PetscPartitioner, obj, name::String) 
 View a `PetscPartitioner` object based on options in the options database
 
 Collective
@@ -593,9 +593,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatGraphOperations/PetscPartitionerViewFromOptions"))
 """
-function PetscPartitionerViewFromOptions(petsclib::PetscLibType, A::PetscPartitioner, obj::PetscObject, name::String) end
+function PetscPartitionerViewFromOptions(petsclib::PetscLibType, A::PetscPartitioner, obj, name::String) end
 
-@for_petsc function PetscPartitionerViewFromOptions(petsclib::$UnionPetscLib, A::PetscPartitioner, obj::PetscObject, name::String )
+@for_petsc function PetscPartitionerViewFromOptions(petsclib::$UnionPetscLib, A::PetscPartitioner, obj, name::String )
 
     @chk ccall(
                (:PetscPartitionerViewFromOptions, $petsc_library),

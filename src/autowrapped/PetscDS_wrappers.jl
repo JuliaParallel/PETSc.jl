@@ -101,7 +101,7 @@ function PetscDSAddBoundaryByName(petsclib::PetscLibType, ds::PetscDS, type::DMB
 end 
 
 """
-	PetscDSAddDiscretization(petsclib::PetscLibType,prob::PetscDS, disc::PetscObject) 
+	PetscDSAddDiscretization(petsclib::PetscLibType,prob::PetscDS, disc) 
 Adds a discretization object
 
 Not Collective
@@ -117,9 +117,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscDSAddDiscretization"))
 """
-function PetscDSAddDiscretization(petsclib::PetscLibType, prob::PetscDS, disc::PetscObject) end
+function PetscDSAddDiscretization(petsclib::PetscLibType, prob::PetscDS, disc) end
 
-@for_petsc function PetscDSAddDiscretization(petsclib::$UnionPetscLib, prob::PetscDS, disc::PetscObject )
+@for_petsc function PetscDSAddDiscretization(petsclib::$UnionPetscLib, prob::PetscDS, disc )
 
     @chk ccall(
                (:PetscDSAddDiscretization, $petsc_library),
@@ -1286,7 +1286,7 @@ function PetscDSGetFaceTabulation(petsclib::PetscLibType, prob::PetscDS) end
 end 
 
 """
-	f::PetscInt = PetscDSGetFieldIndex(petsclib::PetscLibType,prob::PetscDS, disc::PetscObject) 
+	f::PetscInt = PetscDSGetFieldIndex(petsclib::PetscLibType,prob::PetscDS, disc) 
 Returns the index of the given field
 
 Not Collective
@@ -1305,9 +1305,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscDSGetFieldIndex"))
 """
-function PetscDSGetFieldIndex(petsclib::PetscLibType, prob::PetscDS, disc::PetscObject) end
+function PetscDSGetFieldIndex(petsclib::PetscLibType, prob::PetscDS, disc) end
 
-@for_petsc function PetscDSGetFieldIndex(petsclib::$UnionPetscLib, prob::PetscDS, disc::PetscObject )
+@for_petsc function PetscDSGetFieldIndex(petsclib::$UnionPetscLib, prob::PetscDS, disc )
 	f_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -2985,7 +2985,7 @@ function PetscDSSetCoordinateDimension(petsclib::PetscLibType, prob::PetscDS, di
 end 
 
 """
-	PetscDSSetDiscretization(petsclib::PetscLibType,prob::PetscDS, f::PetscInt, disc::PetscObject) 
+	PetscDSSetDiscretization(petsclib::PetscLibType,prob::PetscDS, f::PetscInt, disc) 
 Sets the discretization object for the given field
 
 Not Collective
@@ -3002,9 +3002,9 @@ Level: beginner
 # External Links
 $(_doc_external("DT/PetscDSSetDiscretization"))
 """
-function PetscDSSetDiscretization(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, disc::PetscObject) end
+function PetscDSSetDiscretization(petsclib::PetscLibType, prob::PetscDS, f::PetscInt, disc) end
 
-@for_petsc function PetscDSSetDiscretization(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, disc::PetscObject )
+@for_petsc function PetscDSSetDiscretization(petsclib::$UnionPetscLib, prob::PetscDS, f::$PetscInt, disc )
 
     @chk ccall(
                (:PetscDSSetDiscretization, $petsc_library),
@@ -3837,7 +3837,7 @@ function PetscDSView(petsclib::PetscLibType, prob::PetscDS, v::PetscViewer) end
 end 
 
 """
-	PetscDSViewFromOptions(petsclib::PetscLibType,A::PetscDS, obj::PetscObject, name::String) 
+	PetscDSViewFromOptions(petsclib::PetscLibType,A::PetscDS, obj, name::String) 
 View a `PetscDS` based on values in the options database
 
 Collective
@@ -3854,9 +3854,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DT/PetscDSViewFromOptions"))
 """
-function PetscDSViewFromOptions(petsclib::PetscLibType, A::PetscDS, obj::PetscObject, name::String) end
+function PetscDSViewFromOptions(petsclib::PetscLibType, A::PetscDS, obj, name::String) end
 
-@for_petsc function PetscDSViewFromOptions(petsclib::$UnionPetscLib, A::PetscDS, obj::PetscObject, name::String )
+@for_petsc function PetscDSViewFromOptions(petsclib::$UnionPetscLib, A::PetscDS, obj, name::String )
 
     @chk ccall(
                (:PetscDSViewFromOptions, $petsc_library),

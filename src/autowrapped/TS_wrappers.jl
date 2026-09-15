@@ -12605,7 +12605,7 @@ function TSView(petsclib::PetscLibType, ts::AbstractTS, viewer::PetscViewer) end
 end 
 
 """
-	TSViewFromOptions(petsclib::PetscLibType,ts::AbstractTS, obj::PetscObject, name::String) 
+	TSViewFromOptions(petsclib::PetscLibType,ts::AbstractTS, obj, name::String) 
 View a `TS` based on values in the options database
 
 Collective
@@ -12622,9 +12622,9 @@ Level: intermediate
 # External Links
 $(_doc_external("TS/TSViewFromOptions"))
 """
-function TSViewFromOptions(petsclib::PetscLibType, ts::AbstractTS, obj::PetscObject, name::String) end
+function TSViewFromOptions(petsclib::PetscLibType, ts::AbstractTS, obj, name::String) end
 
-@for_petsc function TSViewFromOptions(petsclib::$UnionPetscLib, ts::AbstractTS, obj::PetscObject, name::String )
+@for_petsc function TSViewFromOptions(petsclib::$UnionPetscLib, ts::AbstractTS, obj, name::String )
 
     @chk ccall(
                (:TSViewFromOptions, $petsc_library),

@@ -4223,7 +4223,7 @@ function PetscViewerHDF5HasGroup(petsclib::PetscLibType, viewer::PetscViewer, pa
 end 
 
 """
-	has::PetscBool = PetscViewerHDF5HasObject(petsclib::PetscLibType,viewer::PetscViewer, obj::PetscObject) 
+	has::PetscBool = PetscViewerHDF5HasObject(petsclib::PetscLibType,viewer::PetscViewer, obj) 
 Check whether a dataset with the same name as given object exists in the HDF5 file under current group
 
 Collective
@@ -4242,9 +4242,9 @@ Level: advanced
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5HasObject"))
 """
-function PetscViewerHDF5HasObject(petsclib::PetscLibType, viewer::PetscViewer, obj::PetscObject) end
+function PetscViewerHDF5HasObject(petsclib::PetscLibType, viewer::PetscViewer, obj) end
 
-@for_petsc function PetscViewerHDF5HasObject(petsclib::$UnionPetscLib, viewer::PetscViewer, obj::PetscObject )
+@for_petsc function PetscViewerHDF5HasObject(petsclib::$UnionPetscLib, viewer::PetscViewer, obj )
 	has_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4260,7 +4260,7 @@ function PetscViewerHDF5HasObject(petsclib::PetscLibType, viewer::PetscViewer, o
 end 
 
 """
-	has::PetscBool = PetscViewerHDF5HasObjectAttribute(petsclib::PetscLibType,viewer::PetscViewer, obj::PetscObject, name::String) 
+	has::PetscBool = PetscViewerHDF5HasObjectAttribute(petsclib::PetscLibType,viewer::PetscViewer, obj, name::String) 
 Check whether an attribute is attached to the dataset matching the given `PetscObject` by name
 
 Collective
@@ -4280,9 +4280,9 @@ Level: advanced
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5HasObjectAttribute"))
 """
-function PetscViewerHDF5HasObjectAttribute(petsclib::PetscLibType, viewer::PetscViewer, obj::PetscObject, name::String) end
+function PetscViewerHDF5HasObjectAttribute(petsclib::PetscLibType, viewer::PetscViewer, obj, name::String) end
 
-@for_petsc function PetscViewerHDF5HasObjectAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, obj::PetscObject, name::String )
+@for_petsc function PetscViewerHDF5HasObjectAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, obj, name::String )
 	has_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4680,7 +4680,7 @@ function PetscViewerHDF5ReadAttribute(petsclib::PetscLibType, viewer::PetscViewe
 end 
 
 """
-	PetscViewerHDF5ReadObjectAttribute(petsclib::PetscLibType,viewer::PetscViewer, obj::PetscObject, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid}, value::Ptr{Cvoid}) 
+	PetscViewerHDF5ReadObjectAttribute(petsclib::PetscLibType,viewer::PetscViewer, obj, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid}, value::Ptr{Cvoid}) 
 Read an attribute from the dataset matching the given `PetscObject` by name
 
 Collective
@@ -4702,9 +4702,9 @@ Level: advanced
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5ReadObjectAttribute"))
 """
-function PetscViewerHDF5ReadObjectAttribute(petsclib::PetscLibType, viewer::PetscViewer, obj::PetscObject, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid}, value::Ptr{Cvoid}) end
+function PetscViewerHDF5ReadObjectAttribute(petsclib::PetscLibType, viewer::PetscViewer, obj, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid}, value::Ptr{Cvoid}) end
 
-@for_petsc function PetscViewerHDF5ReadObjectAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, obj::PetscObject, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid}, value::Ptr{Cvoid} )
+@for_petsc function PetscViewerHDF5ReadObjectAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, obj, name::String, datatype::PetscDataType, defaultValue::Ptr{Cvoid}, value::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscViewerHDF5ReadObjectAttribute, $petsc_library),
@@ -5108,7 +5108,7 @@ function PetscViewerHDF5WriteGroup(petsclib::PetscLibType, viewer::PetscViewer, 
 end 
 
 """
-	PetscViewerHDF5WriteObjectAttribute(petsclib::PetscLibType,viewer::PetscViewer, obj::PetscObject, name::String, datatype::PetscDataType, value::Ptr{Cvoid}) 
+	PetscViewerHDF5WriteObjectAttribute(petsclib::PetscLibType,viewer::PetscViewer, obj, name::String, datatype::PetscDataType, value::Ptr{Cvoid}) 
 Write an attribute to the dataset matching the given `PetscObject` by name
 
 Collective
@@ -5128,9 +5128,9 @@ Level: advanced
 # External Links
 $(_doc_external("Viewer/PetscViewerHDF5WriteObjectAttribute"))
 """
-function PetscViewerHDF5WriteObjectAttribute(petsclib::PetscLibType, viewer::PetscViewer, obj::PetscObject, name::String, datatype::PetscDataType, value::Ptr{Cvoid}) end
+function PetscViewerHDF5WriteObjectAttribute(petsclib::PetscLibType, viewer::PetscViewer, obj, name::String, datatype::PetscDataType, value::Ptr{Cvoid}) end
 
-@for_petsc function PetscViewerHDF5WriteObjectAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, obj::PetscObject, name::String, datatype::PetscDataType, value::Ptr{Cvoid} )
+@for_petsc function PetscViewerHDF5WriteObjectAttribute(petsclib::$UnionPetscLib, viewer::PetscViewer, obj, name::String, datatype::PetscDataType, value::Ptr{Cvoid} )
 
     @chk ccall(
                (:PetscViewerHDF5WriteObjectAttribute, $petsc_library),
@@ -5779,7 +5779,7 @@ function PetscViewerPythonSetType(petsclib::PetscLibType, viewer::PetscViewer, p
 end 
 
 """
-	PetscViewerPythonViewObject(petsclib::PetscLibType,viewer::PetscViewer, obj::PetscObject) 
+	PetscViewerPythonViewObject(petsclib::PetscLibType,viewer::PetscViewer, obj) 
 View a `PetscObject`.
 
 Collective
@@ -5795,9 +5795,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Viewer/PetscViewerPythonViewObject"))
 """
-function PetscViewerPythonViewObject(petsclib::PetscLibType, viewer::PetscViewer, obj::PetscObject) end
+function PetscViewerPythonViewObject(petsclib::PetscLibType, viewer::PetscViewer, obj) end
 
-@for_petsc function PetscViewerPythonViewObject(petsclib::$UnionPetscLib, viewer::PetscViewer, obj::PetscObject )
+@for_petsc function PetscViewerPythonViewObject(petsclib::$UnionPetscLib, viewer::PetscViewer, obj )
 
     @chk ccall(
                (:PetscViewerPythonViewObject, $petsc_library),
@@ -6359,7 +6359,7 @@ function PetscViewerStringSetString(petsclib::PetscLibType, viewer::PetscViewer,
 end 
 
 """
-	PetscViewerVTKAddField(petsclib::PetscLibType,viewer::PetscViewer, dm::PetscObject, PetscViewerVTKWriteFunction::external, fieldnum::PetscInt, fieldtype::PetscViewerVTKFieldType, checkdm::PetscBool, vec::PetscObject) 
+	PetscViewerVTKAddField(petsclib::PetscLibType,viewer::PetscViewer, dm, PetscViewerVTKWriteFunction::external, fieldnum::PetscInt, fieldtype::PetscViewerVTKFieldType, checkdm::PetscBool, vec) 
 Add a field to the viewer
 
 Collective
@@ -6380,9 +6380,9 @@ Level: developer
 # External Links
 $(_doc_external("Viewer/PetscViewerVTKAddField"))
 """
-function PetscViewerVTKAddField(petsclib::PetscLibType, viewer::PetscViewer, dm::PetscObject, PetscViewerVTKWriteFunction::external, fieldnum::PetscInt, fieldtype::PetscViewerVTKFieldType, checkdm::PetscBool, vec::PetscObject) end
+function PetscViewerVTKAddField(petsclib::PetscLibType, viewer::PetscViewer, dm, PetscViewerVTKWriteFunction::external, fieldnum::PetscInt, fieldtype::PetscViewerVTKFieldType, checkdm::PetscBool, vec) end
 
-@for_petsc function PetscViewerVTKAddField(petsclib::$UnionPetscLib, viewer::PetscViewer, dm::PetscObject, PetscViewerVTKWriteFunction::external, fieldnum::$PetscInt, fieldtype::PetscViewerVTKFieldType, checkdm::PetscBool, vec::PetscObject )
+@for_petsc function PetscViewerVTKAddField(petsclib::$UnionPetscLib, viewer::PetscViewer, dm, PetscViewerVTKWriteFunction::external, fieldnum::$PetscInt, fieldtype::PetscViewerVTKFieldType, checkdm::PetscBool, vec )
 
     @chk ccall(
                (:PetscViewerVTKAddField, $petsc_library),
@@ -6632,7 +6632,7 @@ function PetscViewerView(petsclib::PetscLibType, v::PetscViewer, viewer::PetscVi
 end 
 
 """
-	PetscViewerViewFromOptions(petsclib::PetscLibType,A::PetscViewer, obj::PetscObject, name::String) 
+	PetscViewerViewFromOptions(petsclib::PetscLibType,A::PetscViewer, obj, name::String) 
 View from the viewer based on options in the options database
 
 Collective
@@ -6649,9 +6649,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Viewer/PetscViewerViewFromOptions"))
 """
-function PetscViewerViewFromOptions(petsclib::PetscLibType, A::PetscViewer, obj::PetscObject, name::String) end
+function PetscViewerViewFromOptions(petsclib::PetscLibType, A::PetscViewer, obj, name::String) end
 
-@for_petsc function PetscViewerViewFromOptions(petsclib::$UnionPetscLib, A::PetscViewer, obj::PetscObject, name::String )
+@for_petsc function PetscViewerViewFromOptions(petsclib::$UnionPetscLib, A::PetscViewer, obj, name::String )
 
     @chk ccall(
                (:PetscViewerViewFromOptions, $petsc_library),

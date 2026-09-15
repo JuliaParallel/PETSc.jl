@@ -183,7 +183,7 @@ function DMAddBoundary(petsclib::PetscLibType, dm::AbstractPetscDM, type::DMBoun
 end 
 
 """
-	DMAddField(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel, disc::PetscObject) 
+	DMAddField(petsclib::PetscLibType,dm::AbstractPetscDM, label::DMLabel, disc) 
 Add a field to a `DM` object. A field is a function space defined by of a set of discretization points (geometric entities)
 and a discretization object that defines the function space associated with those points.
 
@@ -213,9 +213,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMAddField"))
 """
-function DMAddField(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, disc::PetscObject) end
+function DMAddField(petsclib::PetscLibType, dm::AbstractPetscDM, label::DMLabel, disc) end
 
-@for_petsc function DMAddField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, disc::PetscObject )
+@for_petsc function DMAddField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, label::DMLabel, disc )
 
     @chk ccall(
                (:DMAddField, $petsc_library),
@@ -3237,7 +3237,7 @@ function DMDACreate1d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType
 end 
 
 """
-	da::PetscDM = DMDACreate2d(petsclib::PetscLibType,comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, m::PetscInt, n::PetscInt, dof::PetscInt, s::PetscInt, lx::Vector{PetscInt}, ly::Vector{PetscInt}) 
+	da::PetscDM = DMDACreate2d(petsclib::PetscLibType,comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, m::PetscInt, n::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}) 
 Creates an object that will manage the communication of two
 regular array data that is distributed across one or more MPI processes.
 
@@ -3283,9 +3283,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMDA/DMDACreate2d"))
 """
-function DMDACreate2d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, m::PetscInt, n::PetscInt, dof::PetscInt, s::PetscInt, lx::Vector{PetscInt}, ly::Vector{PetscInt}) end
+function DMDACreate2d(petsclib::PetscLibType, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::PetscInt, N::PetscInt, m::PetscInt, n::PetscInt, dof::PetscInt, s::PetscInt, lx::Union{Ptr, Vector{PetscInt}}, ly::Union{Ptr, Vector{PetscInt}}) end
 
-@for_petsc function DMDACreate2d(petsclib::$UnionPetscLib, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::$PetscInt, N::$PetscInt, m::$PetscInt, n::$PetscInt, dof::$PetscInt, s::$PetscInt, lx::Vector{$PetscInt}, ly::Vector{$PetscInt} )
+@for_petsc function DMDACreate2d(petsclib::$UnionPetscLib, comm::MPI_Comm, bx::DMBoundaryType, by::DMBoundaryType, stencil_type::DMDAStencilType, M::$PetscInt, N::$PetscInt, m::$PetscInt, n::$PetscInt, dof::$PetscInt, s::$PetscInt, lx::Union{Ptr, Vector{$PetscInt}}, ly::Union{Ptr, Vector{$PetscInt}} )
 	da_ = Ref{CDM}()
 
     @chk ccall(
@@ -5521,7 +5521,7 @@ function DMDARestoreCoordinateArray(petsclib::PetscLibType, dm::AbstractPetscDM,
 end 
 
 """
-	DMDARestoreElements(petsclib::PetscLibType,dm::AbstractPetscDM, nel::PetscInt, nen::PetscInt, e::Vector{PetscInt}) 
+	DMDARestoreElements(petsclib::PetscLibType,dm::AbstractPetscDM, nel::PetscInt, nen::PetscInt, e::AbstractArray{PetscInt}) 
 Restores the array obtained with `DMDAGetElements()`
 
 Not Collective
@@ -5539,9 +5539,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMDA/DMDARestoreElements"))
 """
-function DMDARestoreElements(petsclib::PetscLibType, dm::AbstractPetscDM, nel::PetscInt, nen::PetscInt, e::Vector{PetscInt}) end
+function DMDARestoreElements(petsclib::PetscLibType, dm::AbstractPetscDM, nel::PetscInt, nen::PetscInt, e::AbstractArray{PetscInt}) end
 
-@for_petsc function DMDARestoreElements(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nel::$PetscInt, nen::$PetscInt, e::Vector{$PetscInt} )
+@for_petsc function DMDARestoreElements(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nel::$PetscInt, nen::$PetscInt, e::AbstractArray{$PetscInt} )
 	nel_ = Ref{$PetscInt}(nel)
 	nen_ = Ref{$PetscInt}(nen)
 	e_ = Ref(pointer(e))
@@ -6863,7 +6863,7 @@ function DMDATSSetRHSJacobianLocal(petsclib::PetscLibType, dm::AbstractPetscDM, 
 end 
 
 """
-	DMDAVTKWriteAll(petsclib::PetscLibType,odm::PetscObject, viewer::PetscViewer) 
+	DMDAVTKWriteAll(petsclib::PetscLibType,odm, viewer::PetscViewer) 
 Write a file containing all the fields that have been provided to the viewer
 
 Collective
@@ -6879,9 +6879,9 @@ Level: developer
 # External Links
 $(_doc_external("DMDA/DMDAVTKWriteAll"))
 """
-function DMDAVTKWriteAll(petsclib::PetscLibType, odm::PetscObject, viewer::PetscViewer) end
+function DMDAVTKWriteAll(petsclib::PetscLibType, odm, viewer::PetscViewer) end
 
-@for_petsc function DMDAVTKWriteAll(petsclib::$UnionPetscLib, odm::PetscObject, viewer::PetscViewer )
+@for_petsc function DMDAVTKWriteAll(petsclib::$UnionPetscLib, odm, viewer::PetscViewer )
 
     @chk ccall(
                (:DMDAVTKWriteAll, $petsc_library),
@@ -16028,7 +16028,7 @@ function DMNetworkCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 end 
 
 """
-	is::IS = DMNetworkCreateIS(petsclib::PetscLibType,dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Vector{PetscInt}) 
+	is::IS = DMNetworkCreateIS(petsclib::PetscLibType,dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::AbstractArray{PetscInt}) 
 Create an index set object from the global vector of the network
 
 Collective
@@ -16051,9 +16051,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMNetwork/DMNetworkCreateIS"))
 """
-function DMNetworkCreateIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Vector{PetscInt}) end
+function DMNetworkCreateIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::AbstractArray{PetscInt}) end
 
-@for_petsc function DMNetworkCreateIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numkeys::$PetscInt, keys::Vector{$PetscInt}, blocksize::Vector{$PetscInt}, nselectedvar::Vector{$PetscInt}, selectedvar::Vector{$PetscInt} )
+@for_petsc function DMNetworkCreateIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numkeys::$PetscInt, keys::Vector{$PetscInt}, blocksize::Vector{$PetscInt}, nselectedvar::Vector{$PetscInt}, selectedvar::AbstractArray{$PetscInt} )
 	selectedvar_ = Ref(pointer(selectedvar))
 	is_ = Ref{CIS}()
 
@@ -16070,7 +16070,7 @@ function DMNetworkCreateIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys:
 end 
 
 """
-	is::IS = DMNetworkCreateLocalIS(petsclib::PetscLibType,dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Vector{PetscInt}) 
+	is::IS = DMNetworkCreateLocalIS(petsclib::PetscLibType,dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::AbstractArray{PetscInt}) 
 Create an index set object from the local vector of the network
 
 Not Collective
@@ -16093,9 +16093,9 @@ Level: advanced
 # External Links
 $(_doc_external("DMNetwork/DMNetworkCreateLocalIS"))
 """
-function DMNetworkCreateLocalIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::Vector{PetscInt}) end
+function DMNetworkCreateLocalIS(petsclib::PetscLibType, dm::AbstractPetscDM, numkeys::PetscInt, keys::Vector{PetscInt}, blocksize::Vector{PetscInt}, nselectedvar::Vector{PetscInt}, selectedvar::AbstractArray{PetscInt}) end
 
-@for_petsc function DMNetworkCreateLocalIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numkeys::$PetscInt, keys::Vector{$PetscInt}, blocksize::Vector{$PetscInt}, nselectedvar::Vector{$PetscInt}, selectedvar::Vector{$PetscInt} )
+@for_petsc function DMNetworkCreateLocalIS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numkeys::$PetscInt, keys::Vector{$PetscInt}, blocksize::Vector{$PetscInt}, nselectedvar::Vector{$PetscInt}, selectedvar::AbstractArray{$PetscInt} )
 	selectedvar_ = Ref(pointer(selectedvar))
 	is_ = Ref{CIS}()
 
@@ -31359,7 +31359,7 @@ function DMPlexRestoreMeet(petsclib::PetscLibType, dm::AbstractPetscDM, numPoint
 end 
 
 """
-	DMPlexRestoreOrientedCone(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, cone::Vector{PetscInt}, ornt::Vector{PetscInt}) 
+	DMPlexRestoreOrientedCone(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, cone::AbstractArray{PetscInt}, ornt::AbstractArray{PetscInt}) 
 Restore the points and orientations on the in
 
 Not Collective
@@ -31378,9 +31378,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreOrientedCone"))
 """
-function DMPlexRestoreOrientedCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, cone::Vector{PetscInt}, ornt::Vector{PetscInt}) end
+function DMPlexRestoreOrientedCone(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, cone::AbstractArray{PetscInt}, ornt::AbstractArray{PetscInt}) end
 
-@for_petsc function DMPlexRestoreOrientedCone(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, cone::Vector{$PetscInt}, ornt::Vector{$PetscInt} )
+@for_petsc function DMPlexRestoreOrientedCone(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, cone::AbstractArray{$PetscInt}, ornt::AbstractArray{$PetscInt} )
 	cone_ = Ref(pointer(cone))
 	ornt_ = Ref(pointer(ornt))
 
@@ -31396,7 +31396,7 @@ function DMPlexRestoreOrientedCone(petsclib::PetscLibType, dm::AbstractPetscDM, 
 end 
 
 """
-	DMPlexRestoreTransitiveClosure(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool, numPoints::PetscInt, points::Vector{PetscInt}) 
+	DMPlexRestoreTransitiveClosure(petsclib::PetscLibType,dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool, numPoints::PetscInt, points::AbstractArray{PetscInt}) 
 Restore the array of points on the transitive closure of the in
 
 Not Collective
@@ -31415,9 +31415,9 @@ Level: beginner
 # External Links
 $(_doc_external("DMPlex/DMPlexRestoreTransitiveClosure"))
 """
-function DMPlexRestoreTransitiveClosure(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool, numPoints::PetscInt, points::Vector{PetscInt}) end
+function DMPlexRestoreTransitiveClosure(petsclib::PetscLibType, dm::AbstractPetscDM, p::PetscInt, useCone::PetscBool, numPoints::PetscInt, points::AbstractArray{PetscInt}) end
 
-@for_petsc function DMPlexRestoreTransitiveClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, useCone::PetscBool, numPoints::$PetscInt, points::Vector{$PetscInt} )
+@for_petsc function DMPlexRestoreTransitiveClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, p::$PetscInt, useCone::PetscBool, numPoints::$PetscInt, points::AbstractArray{$PetscInt} )
 	numPoints_ = Ref{$PetscInt}(numPoints)
 	points_ = Ref(pointer(points))
 
@@ -33501,7 +33501,7 @@ function DMPlexUninterpolate(petsclib::PetscLibType, dm::AbstractPetscDM) end
 end 
 
 """
-	DMPlexVTKWriteAll(petsclib::PetscLibType,odm::PetscObject, viewer::PetscViewer) 
+	DMPlexVTKWriteAll(petsclib::PetscLibType,odm, viewer::PetscViewer) 
 Write a file containing all the fields that have been provided to the viewer
 
 Collective
@@ -33517,9 +33517,9 @@ Level: developer
 # External Links
 $(_doc_external("DMPlex/DMPlexVTKWriteAll"))
 """
-function DMPlexVTKWriteAll(petsclib::PetscLibType, odm::PetscObject, viewer::PetscViewer) end
+function DMPlexVTKWriteAll(petsclib::PetscLibType, odm, viewer::PetscViewer) end
 
-@for_petsc function DMPlexVTKWriteAll(petsclib::$UnionPetscLib, odm::PetscObject, viewer::PetscViewer )
+@for_petsc function DMPlexVTKWriteAll(petsclib::$UnionPetscLib, odm, viewer::PetscViewer )
 
     @chk ccall(
                (:DMPlexVTKWriteAll, $petsc_library),
@@ -33622,7 +33622,7 @@ function DMPlexVecGetOrientedClosure(petsclib::PetscLibType, dm::AbstractPetscDM
 end 
 
 """
-	DMPlexVecRestoreClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, csize::PetscInt, values::Vector{PetscScalar}) 
+	DMPlexVecRestoreClosure(petsclib::PetscLibType,dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, csize::PetscInt, values::AbstractArray{PetscScalar}) 
 Restore the array of the values on the closure of 'point' obtained with `DMPlexVecGetClosure()`
 
 Not collective
@@ -33642,9 +33642,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DMPlex/DMPlexVecRestoreClosure"))
 """
-function DMPlexVecRestoreClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, csize::PetscInt, values::Vector{PetscScalar}) end
+function DMPlexVecRestoreClosure(petsclib::PetscLibType, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::PetscInt, csize::PetscInt, values::AbstractArray{PetscScalar}) end
 
-@for_petsc function DMPlexVecRestoreClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::$PetscInt, csize::$PetscInt, values::Vector{$PetscScalar} )
+@for_petsc function DMPlexVecRestoreClosure(petsclib::$UnionPetscLib, dm::AbstractPetscDM, section::PetscSection, v::AbstractPetscVec, point::$PetscInt, csize::$PetscInt, values::AbstractArray{$PetscScalar} )
 	csize_ = Ref{$PetscInt}(csize)
 	values_ = Ref(pointer(values))
 
@@ -36844,7 +36844,7 @@ function DMSetDimension(petsclib::PetscLibType, dm::AbstractPetscDM, dim::PetscI
 end 
 
 """
-	DMSetField(petsclib::PetscLibType,dm::AbstractPetscDM, f::PetscInt, label::DMLabel, disc::PetscObject) 
+	DMSetField(petsclib::PetscLibType,dm::AbstractPetscDM, f::PetscInt, label::DMLabel, disc) 
 Set the discretization object for a given `DM` field. Usually one would call `DMAddField()` which automatically handles
 the field numbering.
 
@@ -36865,9 +36865,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMSetField"))
 """
-function DMSetField(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, label::DMLabel, disc::PetscObject) end
+function DMSetField(petsclib::PetscLibType, dm::AbstractPetscDM, f::PetscInt, label::DMLabel, disc) end
 
-@for_petsc function DMSetField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt, label::DMLabel, disc::PetscObject )
+@for_petsc function DMSetField(petsclib::$UnionPetscLib, dm::AbstractPetscDM, f::$PetscInt, label::DMLabel, disc )
 
     @chk ccall(
                (:DMSetField, $petsc_library),
@@ -45559,7 +45559,7 @@ function DMView(petsclib::PetscLibType, dm::AbstractPetscDM, v::PetscViewer) end
 end 
 
 """
-	DMViewFromOptions(petsclib::PetscLibType,dm::AbstractPetscDM, obj::PetscObject, name::String) 
+	DMViewFromOptions(petsclib::PetscLibType,dm::AbstractPetscDM, obj, name::String) 
 View a `DM` in a particular way based on a request in the options database
 
 Collective
@@ -45581,9 +45581,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMViewFromOptions"))
 """
-function DMViewFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM, obj::PetscObject, name::String) end
+function DMViewFromOptions(petsclib::PetscLibType, dm::AbstractPetscDM, obj, name::String) end
 
-@for_petsc function DMViewFromOptions(petsclib::$UnionPetscLib, dm::AbstractPetscDM, obj::PetscObject, name::String )
+@for_petsc function DMViewFromOptions(petsclib::$UnionPetscLib, dm::AbstractPetscDM, obj, name::String )
 
     @chk ccall(
                (:DMViewFromOptions, $petsc_library),

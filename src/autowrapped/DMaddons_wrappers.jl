@@ -4107,14 +4107,14 @@ function DMPlexPointQueueDestroy(petsclib::PetscLibType, queue::Union{DMPlexPoCi
 end 
 
 """
-	empty::PetscBool = DMPlexPointQueueEmptyCollective(petsclib::PetscLibType,obj::PetscObject, queue::DMPlexPoCintQueue) 
+	empty::PetscBool = DMPlexPointQueueEmptyCollective(petsclib::PetscLibType,obj, queue::DMPlexPoCintQueue) 
 
 # External Links
 $(_doc_external("DMPlex/DMPlexPointQueueEmptyCollective"))
 """
-function DMPlexPointQueueEmptyCollective(petsclib::PetscLibType, obj::PetscObject, queue::DMPlexPoCintQueue) end
+function DMPlexPointQueueEmptyCollective(petsclib::PetscLibType, obj, queue::DMPlexPoCintQueue) end
 
-@for_petsc function DMPlexPointQueueEmptyCollective(petsclib::$UnionPetscLib, obj::PetscObject, queue::DMPlexPoCintQueue )
+@for_petsc function DMPlexPointQueueEmptyCollective(petsclib::$UnionPetscLib, obj, queue::DMPlexPoCintQueue )
 	empty_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -5760,14 +5760,14 @@ function DMPlexTransformRegisterDestroy(petsclib::PetscLibType) end
 end 
 
 """
-	DMPlexTransformRestoreCone(petsclib::PetscLibType,tr::DMPlexTransform, q::PetscInt, cone::Vector{PetscInt}, ornt::Vector{PetscInt}) 
+	DMPlexTransformRestoreCone(petsclib::PetscLibType,tr::DMPlexTransform, q::PetscInt, cone::AbstractArray{PetscInt}, ornt::AbstractArray{PetscInt}) 
 
 # External Links
 $(_doc_external("DMPlex/DMPlexTransformRestoreCone"))
 """
-function DMPlexTransformRestoreCone(petsclib::PetscLibType, tr::DMPlexTransform, q::PetscInt, cone::Vector{PetscInt}, ornt::Vector{PetscInt}) end
+function DMPlexTransformRestoreCone(petsclib::PetscLibType, tr::DMPlexTransform, q::PetscInt, cone::AbstractArray{PetscInt}, ornt::AbstractArray{PetscInt}) end
 
-@for_petsc function DMPlexTransformRestoreCone(petsclib::$UnionPetscLib, tr::DMPlexTransform, q::$PetscInt, cone::Vector{$PetscInt}, ornt::Vector{$PetscInt} )
+@for_petsc function DMPlexTransformRestoreCone(petsclib::$UnionPetscLib, tr::DMPlexTransform, q::$PetscInt, cone::AbstractArray{$PetscInt}, ornt::AbstractArray{$PetscInt} )
 	cone_ = Ref(pointer(cone))
 	ornt_ = Ref(pointer(ornt))
 

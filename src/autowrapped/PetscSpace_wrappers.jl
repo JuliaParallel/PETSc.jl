@@ -1219,7 +1219,7 @@ function PetscSpaceView(petsclib::PetscLibType, sp::PetscSpace, v::PetscViewer) 
 end 
 
 """
-	PetscSpaceViewFromOptions(petsclib::PetscLibType,A::PetscSpace, obj::PetscObject, name::String) 
+	PetscSpaceViewFromOptions(petsclib::PetscLibType,A::PetscSpace, obj, name::String) 
 View a `PetscSpace` based on values in the options database
 
 Collective
@@ -1236,9 +1236,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SPACE/PetscSpaceViewFromOptions"))
 """
-function PetscSpaceViewFromOptions(petsclib::PetscLibType, A::PetscSpace, obj::PetscObject, name::String) end
+function PetscSpaceViewFromOptions(petsclib::PetscLibType, A::PetscSpace, obj, name::String) end
 
-@for_petsc function PetscSpaceViewFromOptions(petsclib::$UnionPetscLib, A::PetscSpace, obj::PetscObject, name::String )
+@for_petsc function PetscSpaceViewFromOptions(petsclib::$UnionPetscLib, A::PetscSpace, obj, name::String )
 
     @chk ccall(
                (:PetscSpaceViewFromOptions, $petsc_library),

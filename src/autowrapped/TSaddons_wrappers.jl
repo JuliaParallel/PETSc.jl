@@ -3143,7 +3143,7 @@ function TSTrajectoryView(petsclib::PetscLibType, tj::TSTrajectory, viewer::Pets
 end 
 
 """
-	TSTrajectoryViewFromOptions(petsclib::PetscLibType,A::TSTrajectory, obj::PetscObject, name::String) 
+	TSTrajectoryViewFromOptions(petsclib::PetscLibType,A::TSTrajectory, obj, name::String) 
 View a `TSTrajectory` based on values in the options database
 
 Collective
@@ -3160,9 +3160,9 @@ Level: intermediate
 # External Links
 $(_doc_external("TS/TSTrajectoryViewFromOptions"))
 """
-function TSTrajectoryViewFromOptions(petsclib::PetscLibType, A::TSTrajectory, obj::PetscObject, name::String) end
+function TSTrajectoryViewFromOptions(petsclib::PetscLibType, A::TSTrajectory, obj, name::String) end
 
-@for_petsc function TSTrajectoryViewFromOptions(petsclib::$UnionPetscLib, A::TSTrajectory, obj::PetscObject, name::String )
+@for_petsc function TSTrajectoryViewFromOptions(petsclib::$UnionPetscLib, A::TSTrajectory, obj, name::String )
 
     @chk ccall(
                (:TSTrajectoryViewFromOptions, $petsc_library),

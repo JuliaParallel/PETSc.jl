@@ -200,7 +200,7 @@ function PetscLogHandlerDump(petsclib::PetscLibType, handler::PetscLogHandler, s
 end 
 
 """
-	PetscLogHandlerEventBegin(petsclib::PetscLibType,h::PetscLogHandler, e::PetscLogEvent, o1::PetscObject, o2::PetscObject, o3::PetscObject, o4::PetscObject) 
+	PetscLogHandlerEventBegin(petsclib::PetscLibType,h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4) 
 Record the beginning of an event in a log handler
 
 Not collective
@@ -220,9 +220,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogHandlerEventBegin"))
 """
-function PetscLogHandlerEventBegin(petsclib::PetscLibType, h::PetscLogHandler, e::PetscLogEvent, o1::PetscObject, o2::PetscObject, o3::PetscObject, o4::PetscObject) end
+function PetscLogHandlerEventBegin(petsclib::PetscLibType, h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4) end
 
-@for_petsc function PetscLogHandlerEventBegin(petsclib::$UnionPetscLib, h::PetscLogHandler, e::PetscLogEvent, o1::PetscObject, o2::PetscObject, o3::PetscObject, o4::PetscObject )
+@for_petsc function PetscLogHandlerEventBegin(petsclib::$UnionPetscLib, h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4 )
 
     @chk ccall(
                (:PetscLogHandlerEventBegin, $petsc_library),
@@ -302,7 +302,7 @@ function PetscLogHandlerEventDeactivatePush(petsclib::PetscLibType, handler::Pet
 end 
 
 """
-	PetscLogHandlerEventEnd(petsclib::PetscLibType,h::PetscLogHandler, e::PetscLogEvent, o1::PetscObject, o2::PetscObject, o3::PetscObject, o4::PetscObject) 
+	PetscLogHandlerEventEnd(petsclib::PetscLibType,h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4) 
 Record the end of an event in a log handler
 
 Not collective
@@ -322,9 +322,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogHandlerEventEnd"))
 """
-function PetscLogHandlerEventEnd(petsclib::PetscLibType, h::PetscLogHandler, e::PetscLogEvent, o1::PetscObject, o2::PetscObject, o3::PetscObject, o4::PetscObject) end
+function PetscLogHandlerEventEnd(petsclib::PetscLibType, h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4) end
 
-@for_petsc function PetscLogHandlerEventEnd(petsclib::$UnionPetscLib, h::PetscLogHandler, e::PetscLogEvent, o1::PetscObject, o2::PetscObject, o3::PetscObject, o4::PetscObject )
+@for_petsc function PetscLogHandlerEventEnd(petsclib::$UnionPetscLib, h::PetscLogHandler, e::PetscLogEvent, o1, o2, o3, o4 )
 
     @chk ccall(
                (:PetscLogHandlerEventEnd, $petsc_library),
@@ -621,7 +621,7 @@ function PetscLogHandlerGetType(petsclib::PetscLibType, handler::PetscLogHandler
 end 
 
 """
-	PetscLogHandlerObjectCreate(petsclib::PetscLibType,h::PetscLogHandler, obj::PetscObject) 
+	PetscLogHandlerObjectCreate(petsclib::PetscLibType,h::PetscLogHandler, obj) 
 Record the creation of an object in a log handler.
 
 Not collective
@@ -637,9 +637,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogHandlerObjectCreate"))
 """
-function PetscLogHandlerObjectCreate(petsclib::PetscLibType, h::PetscLogHandler, obj::PetscObject) end
+function PetscLogHandlerObjectCreate(petsclib::PetscLibType, h::PetscLogHandler, obj) end
 
-@for_petsc function PetscLogHandlerObjectCreate(petsclib::$UnionPetscLib, h::PetscLogHandler, obj::PetscObject )
+@for_petsc function PetscLogHandlerObjectCreate(petsclib::$UnionPetscLib, h::PetscLogHandler, obj )
 
     @chk ccall(
                (:PetscLogHandlerObjectCreate, $petsc_library),
@@ -653,7 +653,7 @@ function PetscLogHandlerObjectCreate(petsclib::PetscLibType, h::PetscLogHandler,
 end 
 
 """
-	PetscLogHandlerObjectDestroy(petsclib::PetscLibType,h::PetscLogHandler, obj::PetscObject) 
+	PetscLogHandlerObjectDestroy(petsclib::PetscLibType,h::PetscLogHandler, obj) 
 Record the destruction of an object in a log handler.
 
 Not collective
@@ -669,9 +669,9 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogHandlerObjectDestroy"))
 """
-function PetscLogHandlerObjectDestroy(petsclib::PetscLibType, h::PetscLogHandler, obj::PetscObject) end
+function PetscLogHandlerObjectDestroy(petsclib::PetscLibType, h::PetscLogHandler, obj) end
 
-@for_petsc function PetscLogHandlerObjectDestroy(petsclib::$UnionPetscLib, h::PetscLogHandler, obj::PetscObject )
+@for_petsc function PetscLogHandlerObjectDestroy(petsclib::$UnionPetscLib, h::PetscLogHandler, obj )
 
     @chk ccall(
                (:PetscLogHandlerObjectDestroy, $petsc_library),

@@ -343,7 +343,7 @@ function PetscBTView(petsclib::PetscLibType, m::PetscCount, bt::PetscBT, viewer:
 end 
 
 """
-	PetscBarrier(petsclib::PetscLibType,obj::PetscObject) 
+	PetscBarrier(petsclib::PetscLibType,obj) 
 Blocks until this routine is executed by all processors owning the object `obj`.
 
 Input Parameter:
@@ -356,9 +356,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscBarrier"))
 """
-function PetscBarrier(petsclib::PetscLibType, obj::PetscObject) end
+function PetscBarrier(petsclib::PetscLibType, obj) end
 
-@for_petsc function PetscBarrier(petsclib::$UnionPetscLib, obj::PetscObject )
+@for_petsc function PetscBarrier(petsclib::$UnionPetscLib, obj )
 
     @chk ccall(
                (:PetscBarrier, $petsc_library),
@@ -7640,14 +7640,14 @@ function PetscLogNestedBegin(petsclib::PetscLibType) end
 end 
 
 """
-	PetscLogObjectCreate(petsclib::PetscLibType,h::PetscObject) 
+	PetscLogObjectCreate(petsclib::PetscLibType,h) 
 
 # External Links
 $(_doc_external("Log/PetscLogObjectCreate"))
 """
-function PetscLogObjectCreate(petsclib::PetscLibType, h::PetscObject) end
+function PetscLogObjectCreate(petsclib::PetscLibType, h) end
 
-@for_petsc function PetscLogObjectCreate(petsclib::$UnionPetscLib, h::PetscObject )
+@for_petsc function PetscLogObjectCreate(petsclib::$UnionPetscLib, h )
 
     @chk ccall(
                (:PetscLogObjectCreate, $petsc_library),
@@ -7661,14 +7661,14 @@ function PetscLogObjectCreate(petsclib::PetscLibType, h::PetscObject) end
 end 
 
 """
-	PetscLogObjectDestroy(petsclib::PetscLibType,h::PetscObject) 
+	PetscLogObjectDestroy(petsclib::PetscLibType,h) 
 
 # External Links
 $(_doc_external("Log/PetscLogObjectDestroy"))
 """
-function PetscLogObjectDestroy(petsclib::PetscLibType, h::PetscObject) end
+function PetscLogObjectDestroy(petsclib::PetscLibType, h) end
 
-@for_petsc function PetscLogObjectDestroy(petsclib::$UnionPetscLib, h::PetscObject )
+@for_petsc function PetscLogObjectDestroy(petsclib::$UnionPetscLib, h )
 
     @chk ccall(
                (:PetscLogObjectDestroy, $petsc_library),
@@ -10640,7 +10640,7 @@ function PetscPythonInitialize(petsclib::PetscLibType, pyexe::String, pylib::Str
 end 
 
 """
-	PetscPythonMonitorSet(petsclib::PetscLibType,obj::PetscObject, url::String) 
+	PetscPythonMonitorSet(petsclib::PetscLibType,obj, url::String) 
 Set a Python monitor for a `PetscObject`
 
 Level: developer
@@ -10650,9 +10650,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscPythonMonitorSet"))
 """
-function PetscPythonMonitorSet(petsclib::PetscLibType, obj::PetscObject, url::String) end
+function PetscPythonMonitorSet(petsclib::PetscLibType, obj, url::String) end
 
-@for_petsc function PetscPythonMonitorSet(petsclib::$UnionPetscLib, obj::PetscObject, url::String )
+@for_petsc function PetscPythonMonitorSet(petsclib::$UnionPetscLib, obj, url::String )
 
     @chk ccall(
                (:PetscPythonMonitorSet, $petsc_library),
@@ -11527,7 +11527,7 @@ function PetscShmgetAllocateArray(petsclib::PetscLibType, sz::Csize_t, asz::Csiz
 end 
 
 """
-	PetscShmgetDeallocateArray(petsclib::PetscLibType,addr::Vector{Cvoid}) 
+	PetscShmgetDeallocateArray(petsclib::PetscLibType,addr::AbstractArray{Cvoid}) 
 deallocates shared memory accessible by all MPI processes in the server
 
 Not Collective, only called on the first MPI process
@@ -11542,9 +11542,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscShmgetDeallocateArray"))
 """
-function PetscShmgetDeallocateArray(petsclib::PetscLibType, addr::Vector{Cvoid}) end
+function PetscShmgetDeallocateArray(petsclib::PetscLibType, addr::AbstractArray{Cvoid}) end
 
-@for_petsc function PetscShmgetDeallocateArray(petsclib::$UnionPetscLib, addr::Vector{Cvoid} )
+@for_petsc function PetscShmgetDeallocateArray(petsclib::$UnionPetscLib, addr::AbstractArray{Cvoid} )
 	addr_ = Ref(pointer(addr))
 
     @chk ccall(

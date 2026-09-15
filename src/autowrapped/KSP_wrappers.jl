@@ -8620,7 +8620,7 @@ function KSPView(petsclib::PetscLibType, ksp::AbstractPetscKSP, viewer::PetscVie
 end 
 
 """
-	KSPViewFromOptions(petsclib::PetscLibType,A::AbstractPetscKSP, obj::PetscObject, name::String) 
+	KSPViewFromOptions(petsclib::PetscLibType,A::AbstractPetscKSP, obj, name::String) 
 View (print) a `KSP` object based on values in the options database. Also views the `PC` and `Mat` contained by the `KSP`
 with `PCView()` and `MatView()`.
 
@@ -8638,9 +8638,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPViewFromOptions"))
 """
-function KSPViewFromOptions(petsclib::PetscLibType, A::AbstractPetscKSP, obj::PetscObject, name::String) end
+function KSPViewFromOptions(petsclib::PetscLibType, A::AbstractPetscKSP, obj, name::String) end
 
-@for_petsc function KSPViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscKSP, obj::PetscObject, name::String )
+@for_petsc function KSPViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscKSP, obj, name::String )
 
     @chk ccall(
                (:KSPViewFromOptions, $petsc_library),

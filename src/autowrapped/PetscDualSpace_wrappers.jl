@@ -2528,7 +2528,7 @@ function PetscDualSpaceView(petsclib::PetscLibType, sp::PetscDualSpace, v::Petsc
 end 
 
 """
-	PetscDualSpaceViewFromOptions(petsclib::PetscLibType,A::PetscDualSpace, obj::PetscObject, name::String) 
+	PetscDualSpaceViewFromOptions(petsclib::PetscLibType,A::PetscDualSpace, obj, name::String) 
 View a `PetscDualSpace` based on values in the options database
 
 Collective
@@ -2545,9 +2545,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DUALSPACE/PetscDualSpaceViewFromOptions"))
 """
-function PetscDualSpaceViewFromOptions(petsclib::PetscLibType, A::PetscDualSpace, obj::PetscObject, name::String) end
+function PetscDualSpaceViewFromOptions(petsclib::PetscLibType, A::PetscDualSpace, obj, name::String) end
 
-@for_petsc function PetscDualSpaceViewFromOptions(petsclib::$UnionPetscLib, A::PetscDualSpace, obj::PetscObject, name::String )
+@for_petsc function PetscDualSpaceViewFromOptions(petsclib::$UnionPetscLib, A::PetscDualSpace, obj, name::String )
 
     @chk ccall(
                (:PetscDualSpaceViewFromOptions, $petsc_library),

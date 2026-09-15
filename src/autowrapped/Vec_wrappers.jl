@@ -1230,7 +1230,7 @@ function VecDestroy(petsclib::PetscLibType, v::AbstractPetscVec) end
 end 
 
 """
-	VecDestroyVecs(petsclib::PetscLibType,m::PetscInt, vv::Vector{<:AbstractPetscVec}) 
+	VecDestroyVecs(petsclib::PetscLibType,m::PetscInt, vv::AbstractArray{PetscVec}) 
 Frees a block of vectors obtained with `VecDuplicateVecs()`.
 
 Collective
@@ -1246,9 +1246,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecDestroyVecs"))
 """
-function VecDestroyVecs(petsclib::PetscLibType, m::PetscInt, vv::Vector{<:AbstractPetscVec}) end
+function VecDestroyVecs(petsclib::PetscLibType, m::PetscInt, vv::AbstractArray{PetscVec}) end
 
-@for_petsc function VecDestroyVecs(petsclib::$UnionPetscLib, m::$PetscInt, vv::Vector{<:AbstractPetscVec} )
+@for_petsc function VecDestroyVecs(petsclib::$UnionPetscLib, m::$PetscInt, vv::AbstractArray{PetscVec} )
 	vv_ = Ref(pointer(vv))
 
     @chk ccall(
@@ -1792,7 +1792,7 @@ function VecFlag(petsclib::PetscLibType, xin::AbstractPetscVec, flg::PetscInt) e
 end 
 
 """
-	a::Ptr{PetscScalar} = VecGetArray(petsclib::PetscLibType,x::AbstractPetscVec) 
+	a::Vector{PetscScalar} = VecGetArray(petsclib::PetscLibType,x::AbstractPetscVec) 
 Returns a pointer to a contiguous array that contains this
 MPI processes's portion of the vector data
 
@@ -1824,7 +1824,7 @@ function VecGetArray(petsclib::PetscLibType, x::AbstractPetscVec) end
                x, a_,
               )
 
-	a = a_[]
+	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 
 	return a
 end 
@@ -2371,7 +2371,7 @@ function VecGetArray4dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::Pets
 end
 
 """
-	a::Ptr{PetscScalar},mtype::PetscMemType = VecGetArrayAndMemType(petsclib::PetscLibType,x::AbstractPetscVec) 
+	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayAndMemType(petsclib::PetscLibType,x::AbstractPetscVec) 
 Like `VecGetArray()`, but if this is a standard device vector (e.g.,
 `VECCUDA`), the returned pointer will be a device pointer to the device memory that contains
 this MPI processes's portion of the vector data.
@@ -2406,14 +2406,14 @@ function VecGetArrayAndMemType(petsclib::PetscLibType, x::AbstractPetscVec) end
                x, a_, mtype_,
               )
 
-	a = a_[]
+	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 	mtype = mtype_[]
 
 	return a,mtype
 end 
 
 """
-	xv::Ptr{PetscScalar},yv::Ptr{PetscScalar} = VecGetArrayPair(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
+	xv::Vector{PetscScalar},yv::Vector{PetscScalar} = VecGetArrayPair(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("Vec/VecGetArrayPair"))
@@ -2431,14 +2431,14 @@ function VecGetArrayPair(petsclib::PetscLibType, x::AbstractPetscVec, y::Abstrac
                x, y, xv_, yv_,
               )
 
-	xv = xv_[]
-	yv = yv_[]
+	xv = unsafe_wrap(Array, xv_[], VecGetLocalSize(petsclib, x); own = false)
+	yv = unsafe_wrap(Array, yv_[], VecGetLocalSize(petsclib, x); own = false)
 
 	return xv,yv
 end 
 
 """
-	a::Ptr{PetscScalar} = VecGetArrayRead(petsclib::PetscLibType,x::AbstractPetscVec) 
+	a::Vector{PetscScalar} = VecGetArrayRead(petsclib::PetscLibType,x::AbstractPetscVec) 
 Get read
 
 Not Collective
@@ -2469,13 +2469,13 @@ function VecGetArrayRead(petsclib::PetscLibType, x::AbstractPetscVec) end
                x, a_,
               )
 
-	a = a_[]
+	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 
 	return a
 end 
 
 """
-	a::Ptr{PetscScalar},mtype::PetscMemType = VecGetArrayReadAndMemType(petsclib::PetscLibType,x::AbstractPetscVec) 
+	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayReadAndMemType(petsclib::PetscLibType,x::AbstractPetscVec) 
 Like `VecGetArrayRead()`, but if the input vector is a device vector, it will return a read
 The returned pointer is guaranteed to point to up-to-date data. For host vectors, it functions as `VecGetArrayRead()`.
 
@@ -2508,14 +2508,14 @@ function VecGetArrayReadAndMemType(petsclib::PetscLibType, x::AbstractPetscVec) 
                x, a_, mtype_,
               )
 
-	a = a_[]
+	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 	mtype = mtype_[]
 
 	return a,mtype
 end 
 
 """
-	a::Ptr{PetscScalar} = VecGetArrayWrite(petsclib::PetscLibType,x::AbstractPetscVec) 
+	a::Vector{PetscScalar} = VecGetArrayWrite(petsclib::PetscLibType,x::AbstractPetscVec) 
 Returns a pointer to a contiguous array that WILL contain this
 MPI processes's portion of the vector data.
 
@@ -2547,13 +2547,13 @@ function VecGetArrayWrite(petsclib::PetscLibType, x::AbstractPetscVec) end
                x, a_,
               )
 
-	a = a_[]
+	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 
 	return a
 end 
 
 """
-	a::Ptr{PetscScalar},mtype::PetscMemType = VecGetArrayWriteAndMemType(petsclib::PetscLibType,x::AbstractPetscVec) 
+	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayWriteAndMemType(petsclib::PetscLibType,x::AbstractPetscVec) 
 Like `VecGetArrayWrite()`, but if this is a device vector it will always return
 a device pointer to the device memory that contains this processor's portion of the vector data.
 
@@ -2586,7 +2586,7 @@ function VecGetArrayWriteAndMemType(petsclib::PetscLibType, x::AbstractPetscVec)
                x, a_, mtype_,
               )
 
-	a = a_[]
+	a = unsafe_wrap(Array, a_[], VecGetLocalSize(petsclib, x); own = false)
 	mtype = mtype_[]
 
 	return a,mtype
@@ -5349,7 +5349,7 @@ function VecResetArray(petsclib::PetscLibType, vec::AbstractPetscVec) end
 end 
 
 """
-	VecRestoreArray(petsclib::PetscLibType,x::AbstractPetscVec, a::Vector{PetscScalar}) 
+	VecRestoreArray(petsclib::PetscLibType,x::AbstractPetscVec, a::AbstractArray{PetscScalar}) 
 Restores a vector after `VecGetArray()` has been called and the array is no longer needed
 
 Logically Collective
@@ -5366,9 +5366,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreArray"))
 """
-function VecRestoreArray(petsclib::PetscLibType, x::AbstractPetscVec, a::Vector{PetscScalar}) end
+function VecRestoreArray(petsclib::PetscLibType, x::AbstractPetscVec, a::AbstractArray{PetscScalar}) end
 
-@for_petsc function VecRestoreArray(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArray(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::AbstractArray{$PetscScalar} )
 	a_ = Ref(pointer(a))
 
     @chk ccall(
@@ -5928,7 +5928,7 @@ function VecRestoreArray4dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::
 end
 
 """
-	VecRestoreArrayAndMemType(petsclib::PetscLibType,x::AbstractPetscVec, a::Vector{PetscScalar}) 
+	VecRestoreArrayAndMemType(petsclib::PetscLibType,x::AbstractPetscVec, a::AbstractArray{PetscScalar}) 
 Restores a vector after `VecGetArrayAndMemType()` has been called.
 
 Logically Collective; No Fortran Support
@@ -5945,9 +5945,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreArrayAndMemType"))
 """
-function VecRestoreArrayAndMemType(petsclib::PetscLibType, x::AbstractPetscVec, a::Vector{PetscScalar}) end
+function VecRestoreArrayAndMemType(petsclib::PetscLibType, x::AbstractPetscVec, a::AbstractArray{PetscScalar}) end
 
-@for_petsc function VecRestoreArrayAndMemType(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArrayAndMemType(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::AbstractArray{$PetscScalar} )
 	a_ = Ref(pointer(a))
 
     @chk ccall(
@@ -5962,14 +5962,14 @@ function VecRestoreArrayAndMemType(petsclib::PetscLibType, x::AbstractPetscVec, 
 end 
 
 """
-	VecRestoreArrayPair(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec, xv::Vector{PetscScalar}, yv::Vector{PetscScalar}) 
+	VecRestoreArrayPair(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec, xv::AbstractArray{PetscScalar}, yv::AbstractArray{PetscScalar}) 
 
 # External Links
 $(_doc_external("Vec/VecRestoreArrayPair"))
 """
-function VecRestoreArrayPair(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec, xv::Vector{PetscScalar}, yv::Vector{PetscScalar}) end
+function VecRestoreArrayPair(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec, xv::AbstractArray{PetscScalar}, yv::AbstractArray{PetscScalar}) end
 
-@for_petsc function VecRestoreArrayPair(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec, xv::Vector{$PetscScalar}, yv::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArrayPair(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec, xv::AbstractArray{$PetscScalar}, yv::AbstractArray{$PetscScalar} )
 	xv_ = Ref(pointer(xv))
 	yv_ = Ref(pointer(yv))
 
@@ -5985,7 +5985,7 @@ function VecRestoreArrayPair(petsclib::PetscLibType, x::AbstractPetscVec, y::Abs
 end 
 
 """
-	VecRestoreArrayRead(petsclib::PetscLibType,x::AbstractPetscVec, a::Vector{PetscScalar}) 
+	VecRestoreArrayRead(petsclib::PetscLibType,x::AbstractPetscVec, a::AbstractArray{PetscScalar}) 
 Restore array obtained with `VecGetArrayRead()`
 
 Not Collective
@@ -6001,9 +6001,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreArrayRead"))
 """
-function VecRestoreArrayRead(petsclib::PetscLibType, x::AbstractPetscVec, a::Vector{PetscScalar}) end
+function VecRestoreArrayRead(petsclib::PetscLibType, x::AbstractPetscVec, a::AbstractArray{PetscScalar}) end
 
-@for_petsc function VecRestoreArrayRead(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArrayRead(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::AbstractArray{$PetscScalar} )
 	a_ = Ref(pointer(a))
 
     @chk ccall(
@@ -6018,7 +6018,7 @@ function VecRestoreArrayRead(petsclib::PetscLibType, x::AbstractPetscVec, a::Vec
 end 
 
 """
-	VecRestoreArrayReadAndMemType(petsclib::PetscLibType,x::AbstractPetscVec, a::Vector{PetscScalar}) 
+	VecRestoreArrayReadAndMemType(petsclib::PetscLibType,x::AbstractPetscVec, a::AbstractArray{PetscScalar}) 
 Restore array obtained with `VecGetArrayReadAndMemType()`
 
 Not Collective; No Fortran Support
@@ -6034,9 +6034,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreArrayReadAndMemType"))
 """
-function VecRestoreArrayReadAndMemType(petsclib::PetscLibType, x::AbstractPetscVec, a::Vector{PetscScalar}) end
+function VecRestoreArrayReadAndMemType(petsclib::PetscLibType, x::AbstractPetscVec, a::AbstractArray{PetscScalar}) end
 
-@for_petsc function VecRestoreArrayReadAndMemType(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArrayReadAndMemType(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::AbstractArray{$PetscScalar} )
 	a_ = Ref(pointer(a))
 
     @chk ccall(
@@ -6051,7 +6051,7 @@ function VecRestoreArrayReadAndMemType(petsclib::PetscLibType, x::AbstractPetscV
 end 
 
 """
-	VecRestoreArrayWrite(petsclib::PetscLibType,x::AbstractPetscVec, a::Vector{PetscScalar}) 
+	VecRestoreArrayWrite(petsclib::PetscLibType,x::AbstractPetscVec, a::AbstractArray{PetscScalar}) 
 Restores a vector after `VecGetArrayWrite()` has been called.
 
 Logically Collective
@@ -6068,9 +6068,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreArrayWrite"))
 """
-function VecRestoreArrayWrite(petsclib::PetscLibType, x::AbstractPetscVec, a::Vector{PetscScalar}) end
+function VecRestoreArrayWrite(petsclib::PetscLibType, x::AbstractPetscVec, a::AbstractArray{PetscScalar}) end
 
-@for_petsc function VecRestoreArrayWrite(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArrayWrite(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::AbstractArray{$PetscScalar} )
 	a_ = Ref(pointer(a))
 
     @chk ccall(
@@ -6085,7 +6085,7 @@ function VecRestoreArrayWrite(petsclib::PetscLibType, x::AbstractPetscVec, a::Ve
 end 
 
 """
-	VecRestoreArrayWriteAndMemType(petsclib::PetscLibType,x::AbstractPetscVec, a::Vector{PetscScalar}) 
+	VecRestoreArrayWriteAndMemType(petsclib::PetscLibType,x::AbstractPetscVec, a::AbstractArray{PetscScalar}) 
 Restore array obtained with `VecGetArrayWriteAndMemType()`
 
 Logically Collective; No Fortran Support
@@ -6101,9 +6101,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreArrayWriteAndMemType"))
 """
-function VecRestoreArrayWriteAndMemType(petsclib::PetscLibType, x::AbstractPetscVec, a::Vector{PetscScalar}) end
+function VecRestoreArrayWriteAndMemType(petsclib::PetscLibType, x::AbstractPetscVec, a::AbstractArray{PetscScalar}) end
 
-@for_petsc function VecRestoreArrayWriteAndMemType(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArrayWriteAndMemType(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::AbstractArray{$PetscScalar} )
 	a_ = Ref(pointer(a))
 
     @chk ccall(
@@ -6432,7 +6432,7 @@ function VecView(petsclib::PetscLibType, vec::AbstractPetscVec, viewer::PetscVie
 end 
 
 """
-	VecViewFromOptions(petsclib::PetscLibType,A::AbstractPetscVec, obj::PetscObject, name::String) 
+	VecViewFromOptions(petsclib::PetscLibType,A::AbstractPetscVec, obj, name::String) 
 View a vector based on values in the options database
 
 Collective
@@ -6449,9 +6449,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecViewFromOptions"))
 """
-function VecViewFromOptions(petsclib::PetscLibType, A::AbstractPetscVec, obj::PetscObject, name::String) end
+function VecViewFromOptions(petsclib::PetscLibType, A::AbstractPetscVec, obj, name::String) end
 
-@for_petsc function VecViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscVec, obj::PetscObject, name::String )
+@for_petsc function VecViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscVec, obj, name::String )
 
     @chk ccall(
                (:VecViewFromOptions, $petsc_library),

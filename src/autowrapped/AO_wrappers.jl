@@ -960,7 +960,7 @@ function AOView(petsclib::PetscLibType, ao::AbstractAO, viewer::PetscViewer) end
 end 
 
 """
-	AOViewFromOptions(petsclib::PetscLibType,ao::AbstractAO, obj::PetscObject, name::String) 
+	AOViewFromOptions(petsclib::PetscLibType,ao::AbstractAO, obj, name::String) 
 View an `AO` based on values in the options database
 
 Collective
@@ -977,9 +977,9 @@ Level: intermediate
 # External Links
 $(_doc_external("AO/AOViewFromOptions"))
 """
-function AOViewFromOptions(petsclib::PetscLibType, ao::AbstractAO, obj::PetscObject, name::String) end
+function AOViewFromOptions(petsclib::PetscLibType, ao::AbstractAO, obj, name::String) end
 
-@for_petsc function AOViewFromOptions(petsclib::$UnionPetscLib, ao::AbstractAO, obj::PetscObject, name::String )
+@for_petsc function AOViewFromOptions(petsclib::$UnionPetscLib, ao::AbstractAO, obj, name::String )
 
     @chk ccall(
                (:AOViewFromOptions, $petsc_library),

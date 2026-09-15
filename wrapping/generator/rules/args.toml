@@ -5,6 +5,12 @@
 [DMDACreate1d.lx]
 nullable = true
 
+[DMDACreate2d.lx]
+nullable = true
+
+[DMDACreate2d.ly]
+nullable = true
+
 [DMDACreate3d.lx]
 nullable = true
 
@@ -232,6 +238,9 @@ nullable = true
 [MatCreateSeqAIJ.nnz]
 nullable = true
 
+[MatCreateSeqAIJCRL.nnz]
+nullable = true
+
 [MatCreateSeqAIJKokkos.nnz]
 nullable = true
 
@@ -420,6 +429,9 @@ nullable = true
 nullable = true
 
 [MatShellSetMatProductOperation.destroy]
+nullable = true
+
+[MatShellSetMatProductOperation.numeric]
 nullable = true
 
 [MatShellSetMatProductOperation.symbolic]

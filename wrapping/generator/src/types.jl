@@ -82,6 +82,8 @@ is_handle(r::Rules, jtype::AbstractString) = haskey(r.handles, jtype)
 
 """Type annotation of an input argument: abstract supertype for handles (PR #263)."""
 function abstract_arg_type(r::Rules, typename::AbstractString)
+    m = match(r"^AbstractArray\{(\w+)\}$", typename)
+    m !== nothing && return String(typename)
     m = match(r"^Union\{Ptr, (.*)\}$", typename)
     m !== nothing && return "Union{Ptr, $(abstract_arg_type(r, m.captures[1]))}"
     m = match(r"^Vector\{(\w+)\}$", typename)

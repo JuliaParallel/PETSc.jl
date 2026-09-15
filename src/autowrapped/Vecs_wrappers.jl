@@ -672,7 +672,7 @@ function VecScatterView(petsclib::PetscLibType, sf::VecScatter, viewer::PetscVie
 end 
 
 """
-	VecScatterViewFromOptions(petsclib::PetscLibType,sf::VecScatter, obj::PetscObject, name::String) 
+	VecScatterViewFromOptions(petsclib::PetscLibType,sf::VecScatter, obj, name::String) 
 View a `VecScatter` object based on values in the options database
 
 Collective
@@ -689,9 +689,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecScatterViewFromOptions"))
 """
-function VecScatterViewFromOptions(petsclib::PetscLibType, sf::VecScatter, obj::PetscObject, name::String) end
+function VecScatterViewFromOptions(petsclib::PetscLibType, sf::VecScatter, obj, name::String) end
 
-@for_petsc function VecScatterViewFromOptions(petsclib::$UnionPetscLib, sf::VecScatter, obj::PetscObject, name::String )
+@for_petsc function VecScatterViewFromOptions(petsclib::$UnionPetscLib, sf::VecScatter, obj, name::String )
 
     @chk ccall(
                (:VecScatterViewFromOptions, $petsc_library),
@@ -1714,7 +1714,7 @@ function VecStashView(petsclib::PetscLibType, v::AbstractPetscVec, viewer::Petsc
 end 
 
 """
-	VecStashViewFromOptions(petsclib::PetscLibType,obj::AbstractPetscVec, bobj::PetscObject, optionname::String) 
+	VecStashViewFromOptions(petsclib::PetscLibType,obj::AbstractPetscVec, bobj, optionname::String) 
 Processes command line options to determine if/how a `VecStash` object is to be viewed.
 
 Collective
@@ -1731,9 +1731,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecStashViewFromOptions"))
 """
-function VecStashViewFromOptions(petsclib::PetscLibType, obj::AbstractPetscVec, bobj::PetscObject, optionname::String) end
+function VecStashViewFromOptions(petsclib::PetscLibType, obj::AbstractPetscVec, bobj, optionname::String) end
 
-@for_petsc function VecStashViewFromOptions(petsclib::$UnionPetscLib, obj::AbstractPetscVec, bobj::PetscObject, optionname::String )
+@for_petsc function VecStashViewFromOptions(petsclib::$UnionPetscLib, obj::AbstractPetscVec, bobj, optionname::String )
 
     @chk ccall(
                (:VecStashViewFromOptions, $petsc_library),

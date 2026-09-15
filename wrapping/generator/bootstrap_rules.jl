@@ -82,7 +82,33 @@ function mine(golden::AbstractString)
             end
         end
     end
+    # fallback independent of block splitting: nullable inputs from the untyped stubs
+    for f in readdir(golden)
+        endswith(f, "_wrappers.jl") || continue
+        for m in eachmatch(r"(?m)^function (\w+)\(petsclib::PetscLibType,?(.*)\) end\s*$", read(joinpath(golden, f), String))
+            fn = m.captures[1]
+            isfile(joinpath(@__DIR__, "overrides", fn * ".jl")) && continue
+            for a in split_toplevel_args(m.captures[2])
+                am = match(r"^\s*(\w+)::(.+?)\s*$", a)
+                am === nothing && continue
+                name, typ = am.captures
+                if occursin(r"Union\{.*\bPtr\b.*\}", typ) && match(r"^Union\{(\w+), Ref\{\1\}\}$", typ) === nothing
+                    add!(fn, name, "nullable", true)
+                end
+            end
+        end
+    end
     return rules
+end
+
+function split_toplevel_args(str)
+    parts = String[]; depth = 0; buf = IOBuffer()
+    for c in str
+        (c == '{' || c == '(') && (depth += 1); (c == '}' || c == ')') && (depth -= 1)
+        if c == ',' && depth == 0; push!(parts, String(take!(buf))) else write(buf, c) end
+    end
+    push!(parts, String(take!(buf)))
+    return parts
 end
 
 function write_toml(rules, path)

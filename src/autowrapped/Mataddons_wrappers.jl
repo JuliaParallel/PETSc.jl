@@ -592,7 +592,7 @@ function MatCoarsenView(petsclib::PetscLibType, agg::MatCoarsen, viewer::PetscVi
 end 
 
 """
-	MatCoarsenViewFromOptions(petsclib::PetscLibType,A::MatCoarsen, obj::PetscObject, name::String) 
+	MatCoarsenViewFromOptions(petsclib::PetscLibType,A::MatCoarsen, obj, name::String) 
 View the coarsener from the options database
 
 Collective
@@ -610,9 +610,9 @@ Options Database Key:
 # External Links
 $(_doc_external("MatGraphOperations/MatCoarsenViewFromOptions"))
 """
-function MatCoarsenViewFromOptions(petsclib::PetscLibType, A::MatCoarsen, obj::PetscObject, name::String) end
+function MatCoarsenViewFromOptions(petsclib::PetscLibType, A::MatCoarsen, obj, name::String) end
 
-@for_petsc function MatCoarsenViewFromOptions(petsclib::$UnionPetscLib, A::MatCoarsen, obj::PetscObject, name::String )
+@for_petsc function MatCoarsenViewFromOptions(petsclib::$UnionPetscLib, A::MatCoarsen, obj, name::String )
 
     @chk ccall(
                (:MatCoarsenViewFromOptions, $petsc_library),
@@ -4097,7 +4097,7 @@ function MatPartitioningView(petsclib::PetscLibType, part::MatPartitioning, view
 end 
 
 """
-	MatPartitioningViewFromOptions(petsclib::PetscLibType,A::MatPartitioning, obj::PetscObject, name::String) 
+	MatPartitioningViewFromOptions(petsclib::PetscLibType,A::MatPartitioning, obj, name::String) 
 View a partitioning context from the options database
 
 Collective
@@ -4117,9 +4117,9 @@ Level: intermediate
 # External Links
 $(_doc_external("MatGraphOperations/MatPartitioningViewFromOptions"))
 """
-function MatPartitioningViewFromOptions(petsclib::PetscLibType, A::MatPartitioning, obj::PetscObject, name::String) end
+function MatPartitioningViewFromOptions(petsclib::PetscLibType, A::MatPartitioning, obj, name::String) end
 
-@for_petsc function MatPartitioningViewFromOptions(petsclib::$UnionPetscLib, A::MatPartitioning, obj::PetscObject, name::String )
+@for_petsc function MatPartitioningViewFromOptions(petsclib::$UnionPetscLib, A::MatPartitioning, obj, name::String )
 
     @chk ccall(
                (:MatPartitioningViewFromOptions, $petsc_library),

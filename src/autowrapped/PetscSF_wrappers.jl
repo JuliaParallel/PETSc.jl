@@ -1662,7 +1662,7 @@ function PetscSFView(petsclib::PetscLibType, sf::PetscSF, viewer::PetscViewer) e
 end 
 
 """
-	PetscSFViewFromOptions(petsclib::PetscLibType,A::PetscSF, obj::PetscObject, name::String) 
+	PetscSFViewFromOptions(petsclib::PetscLibType,A::PetscSF, obj, name::String) 
 View a `PetscSF` based on arguments in the options database
 
 Collective
@@ -1679,9 +1679,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PetscSF/PetscSFViewFromOptions"))
 """
-function PetscSFViewFromOptions(petsclib::PetscLibType, A::PetscSF, obj::PetscObject, name::String) end
+function PetscSFViewFromOptions(petsclib::PetscLibType, A::PetscSF, obj, name::String) end
 
-@for_petsc function PetscSFViewFromOptions(petsclib::$UnionPetscLib, A::PetscSF, obj::PetscObject, name::String )
+@for_petsc function PetscSFViewFromOptions(petsclib::$UnionPetscLib, A::PetscSF, obj, name::String )
 
     @chk ccall(
                (:PetscSFViewFromOptions, $petsc_library),

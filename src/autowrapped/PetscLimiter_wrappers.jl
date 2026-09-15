@@ -297,7 +297,7 @@ function PetscLimiterView(petsclib::PetscLibType, lim::PetscLimiter, v::PetscVie
 end 
 
 """
-	PetscLimiterViewFromOptions(petsclib::PetscLibType,A::PetscLimiter, obj::PetscObject, name::String) 
+	PetscLimiterViewFromOptions(petsclib::PetscLibType,A::PetscLimiter, obj, name::String) 
 View a `PetscLimiter` based on values in the options database
 
 Collective
@@ -314,9 +314,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FV/PetscLimiterViewFromOptions"))
 """
-function PetscLimiterViewFromOptions(petsclib::PetscLibType, A::PetscLimiter, obj::PetscObject, name::String) end
+function PetscLimiterViewFromOptions(petsclib::PetscLibType, A::PetscLimiter, obj, name::String) end
 
-@for_petsc function PetscLimiterViewFromOptions(petsclib::$UnionPetscLib, A::PetscLimiter, obj::PetscObject, name::String )
+@for_petsc function PetscLimiterViewFromOptions(petsclib::$UnionPetscLib, A::PetscLimiter, obj, name::String )
 
     @chk ccall(
                (:PetscLimiterViewFromOptions, $petsc_library),

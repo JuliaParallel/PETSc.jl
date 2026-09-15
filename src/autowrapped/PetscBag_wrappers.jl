@@ -728,7 +728,7 @@ function PetscBagView(petsclib::PetscLibType, bag::PetscBag, view::PetscViewer) 
 end 
 
 """
-	PetscBagViewFromOptions(petsclib::PetscLibType,bag::PetscBag, bobj::PetscObject, optionname::String) 
+	PetscBagViewFromOptions(petsclib::PetscLibType,bag::PetscBag, bobj, optionname::String) 
 Processes command line options to determine if/how a `PetscBag` is to be viewed.
 
 Collective
@@ -745,9 +745,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Bag/PetscBagViewFromOptions"))
 """
-function PetscBagViewFromOptions(petsclib::PetscLibType, bag::PetscBag, bobj::PetscObject, optionname::String) end
+function PetscBagViewFromOptions(petsclib::PetscLibType, bag::PetscBag, bobj, optionname::String) end
 
-@for_petsc function PetscBagViewFromOptions(petsclib::$UnionPetscLib, bag::PetscBag, bobj::PetscObject, optionname::String )
+@for_petsc function PetscBagViewFromOptions(petsclib::$UnionPetscLib, bag::PetscBag, bobj, optionname::String )
 
     @chk ccall(
                (:PetscBagViewFromOptions, $petsc_library),

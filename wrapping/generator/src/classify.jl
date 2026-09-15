@@ -62,7 +62,7 @@ function init_extract(r::Rules, typename::String, name::String, isarray::Bool, i
         init = "$name = Vector{$typename}(undef, ni);  # CHECK SIZE!!"
     elseif isarray && !isoutput && stars == 1
         name_ccall = "$(name)_"
-        init = "$name_ccall = Ref(pointer($name))"
+        init = "$name_ccall = Ref(pointer($name))"   # signature widened to AbstractArray below
     elseif !isarray && isoutput && typename in r.string_types
         name_ccall = "$(name)_"
         init = "$name_ccall = Ref{$typename}()"
@@ -129,13 +129,16 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
             return FArg(name, name, "Vector{$typename}", "Ptr{$typename}", false, "", "", true, stars, false)
         end
     end
+    if typename == "PetscObject" && stars == 0 && !isarray
+        return FArg(name, name, "", "PetscObject", false, "", "", false, 0, false)   # any handle converts to Ptr{Cvoid}
+    end
     typename_ccall = is_handle(r, typename) ? r.handles[typename].c : typename
     init, extract, name_ccall = init_extract(r, typename, name, isarray, isoutput, stars)
     ccall_str = "Ptr{"^stars * typename_ccall * "}"^stars
     if isarray
         ccall_str = "Ptr{$ccall_str}"
         if !isoutput
-            typename = typename == "Cchar" ? "String" : "Vector{$typename}"
+            typename = typename == "Cchar" ? "String" : (stars == 1 ? "AbstractArray{$typename}" : "Vector{$typename}")
         elseif stars > 0 && !haskey(ov, "size")
             typename = "Ptr{"^stars * typename * "}"^stars    # raw pointer to a PETSc-owned array
         else
@@ -156,6 +159,14 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
         name_ccall = "$(name)_"
         init = "$name_ccall = $name isa Base.RefValue ? $name : Ref{$(a.typename == typename ? typename : map_type(r, a.typename))}($name)"
         extract = ""
+    end
+    # a PETSc-owned PetscScalar array handed out by a Vec function has the vector's local size
+    if isarray && isoutput && stars > 0 && !haskey(ov, "size") && fn.class == "Vec" && occursin("GetArray", fn.name) &&
+       replace(typename, r"^(Vector|Ptr)\{" => "", "}" => "") == "PetscScalar"
+        vecarg = findfirst(x -> map_type(r, x.typename) == "PetscVec" && x.stars == 0, fn.args)
+        if vecarg !== nothing
+            ov = copy(ov); ov["size"] = "VecGetLocalSize(petsclib, $(rename_arg(r, fn.args[vecarg].name)))"
+        end
     end
     if isarray && isoutput && stars > 0 && (haskey(ov, "size") || get(ov, "nullinit", false))
         base = "Ptr{"^stars * (is_handle(r, typename) ? r.handles[typename].c : replace(typename, r"^(Vector|Ptr)\{" => "", "}" => "")) * "}"^stars

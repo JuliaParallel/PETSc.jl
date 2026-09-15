@@ -86,7 +86,7 @@ function PCASMCreateSubdomains2D(petsclib::PetscLibType, m::PetscInt, n::PetscIn
 end 
 
 """
-	PCASMDestroySubdomains(petsclib::PetscLibType,n::PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS}) 
+	PCASMDestroySubdomains(petsclib::PetscLibType,n::PetscInt, is::AbstractArray{IS}, is_local::AbstractArray{IS}) 
 Destroys the index sets created with
 `PCASMCreateSubdomains()`. Should be called after setting subdomains with `PCASMSetLocalSubdomains()`.
 
@@ -104,9 +104,9 @@ Level: advanced
 # External Links
 $(_doc_external("PC/PCASMDestroySubdomains"))
 """
-function PCASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS}) end
+function PCASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, is::AbstractArray{IS}, is_local::AbstractArray{IS}) end
 
-@for_petsc function PCASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, is::Vector{<:AbstractIS}, is_local::Vector{<:AbstractIS} )
+@for_petsc function PCASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, is::AbstractArray{IS}, is_local::AbstractArray{IS} )
 	is_ = Ref(pointer(is))
 	is_local_ = Ref(pointer(is_local))
 
@@ -1933,7 +1933,7 @@ function PCBJKOKKOSSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP)
 end 
 
 """
-	blocks::PetscInt = PCBJacobiGetLocalBlocks(petsclib::PetscLibType,pc::PC, lens::Vector{PetscInt}) 
+	blocks::PetscInt = PCBJacobiGetLocalBlocks(petsclib::PetscLibType,pc::PC, lens::AbstractArray{PetscInt}) 
 Gets the local number of blocks for the block
 Jacobi, `PCBJACOBI`, preconditioner.
 
@@ -1951,9 +1951,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCBJacobiGetLocalBlocks"))
 """
-function PCBJacobiGetLocalBlocks(petsclib::PetscLibType, pc::PC, lens::Vector{PetscInt}) end
+function PCBJacobiGetLocalBlocks(petsclib::PetscLibType, pc::PC, lens::AbstractArray{PetscInt}) end
 
-@for_petsc function PCBJacobiGetLocalBlocks(petsclib::$UnionPetscLib, pc::PC, lens::Vector{$PetscInt} )
+@for_petsc function PCBJacobiGetLocalBlocks(petsclib::$UnionPetscLib, pc::PC, lens::AbstractArray{$PetscInt} )
 	blocks_ = Ref{$PetscInt}()
 	lens_ = Ref(pointer(lens))
 
@@ -6234,7 +6234,7 @@ function PCGASMCreateSubdomains2D(petsclib::PetscLibType, pc::PC, M::PetscInt, N
 end 
 
 """
-	PCGASMDestroySubdomains(petsclib::PetscLibType,n::PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS}) 
+	PCGASMDestroySubdomains(petsclib::PetscLibType,n::PetscInt, iis::AbstractArray{IS}, ois::AbstractArray{IS}) 
 Destroys the index sets created with
 `PCGASMCreateSubdomains()` or `PCGASMCreateSubdomains2D()`. Should be
 called after setting subdomains with `PCGASMSetSubdomains()`.
@@ -6253,9 +6253,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PC/PCGASMDestroySubdomains"))
 """
-function PCGASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS}) end
+function PCGASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, iis::AbstractArray{IS}, ois::AbstractArray{IS}) end
 
-@for_petsc function PCGASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS} )
+@for_petsc function PCGASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, iis::AbstractArray{IS}, ois::AbstractArray{IS} )
 	iis_ = Ref(pointer(iis))
 	ois_ = Ref(pointer(ois))
 
@@ -14001,7 +14001,7 @@ function PCView(petsclib::PetscLibType, pc::PC, viewer::PetscViewer) end
 end 
 
 """
-	PCViewFromOptions(petsclib::PetscLibType,A::PC, obj::PetscObject, name::String) 
+	PCViewFromOptions(petsclib::PetscLibType,A::PC, obj, name::String) 
 View (print or provide information about) the `PC`, based on options in the options database
 
 Collective
@@ -14018,9 +14018,9 @@ Level: developer
 # External Links
 $(_doc_external("PC/PCViewFromOptions"))
 """
-function PCViewFromOptions(petsclib::PetscLibType, A::PC, obj::PetscObject, name::String) end
+function PCViewFromOptions(petsclib::PetscLibType, A::PC, obj, name::String) end
 
-@for_petsc function PCViewFromOptions(petsclib::$UnionPetscLib, A::PC, obj::PetscObject, name::String )
+@for_petsc function PCViewFromOptions(petsclib::$UnionPetscLib, A::PC, obj, name::String )
 
     @chk ccall(
                (:PCViewFromOptions, $petsc_library),

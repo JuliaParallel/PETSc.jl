@@ -4040,7 +4040,7 @@ function MatCreateSeqAIJ(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n:
 end 
 
 """
-	A::PetscMat = MatCreateSeqAIJCRL(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) 
+	A::PetscMat = MatCreateSeqAIJCRL(petsclib::PetscLibType,comm::MPI_Comm, m::PetscInt, n::PetscInt, nz::PetscInt, nnz::Union{Ptr, Vector{PetscInt}}) 
 Creates a sparse matrix of type `MATSEQAIJCRL`.
 
 Collective
@@ -4063,9 +4063,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateSeqAIJCRL"))
 """
-function MatCreateSeqAIJCRL(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) end
+function MatCreateSeqAIJCRL(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::PetscInt, nz::PetscInt, nnz::Union{Ptr, Vector{PetscInt}}) end
 
-@for_petsc function MatCreateSeqAIJCRL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
+@for_petsc function MatCreateSeqAIJCRL(petsclib::$UnionPetscLib, comm::MPI_Comm, m::$PetscInt, n::$PetscInt, nz::$PetscInt, nnz::Union{Ptr, Vector{$PetscInt}} )
 	A_ = Ref{CMat}()
 
     @chk ccall(
@@ -5706,7 +5706,7 @@ function MatDenseResetArray(petsclib::PetscLibType, mat::AbstractPetscMat) end
 end 
 
 """
-	MatDenseRestoreArray(petsclib::PetscLibType,A::AbstractPetscMat, array::Vector{PetscScalar}) 
+	MatDenseRestoreArray(petsclib::PetscLibType,A::AbstractPetscMat, array::AbstractArray{PetscScalar}) 
 returns access to the array where the data for a `MATDENSE` matrix is stored obtained by `MatDenseGetArray()`
 
 Logically Collective
@@ -5722,9 +5722,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreArray"))
 """
-function MatDenseRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::Vector{PetscScalar}) end
+function MatDenseRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatDenseRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Vector{$PetscScalar} )
+@for_petsc function MatDenseRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::AbstractArray{$PetscScalar} )
 	array_ = Ref(pointer(array))
 
     @chk ccall(
@@ -5739,7 +5739,7 @@ function MatDenseRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array
 end 
 
 """
-	MatDenseRestoreArrayAndMemType(petsclib::PetscLibType,A::AbstractPetscMat, array::Vector{PetscScalar}) 
+	MatDenseRestoreArrayAndMemType(petsclib::PetscLibType,A::AbstractPetscMat, array::AbstractArray{PetscScalar}) 
 returns access to the array that is obtained by `MatDenseGetArrayAndMemType()`
 
 Logically Collective
@@ -5755,9 +5755,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreArrayAndMemType"))
 """
-function MatDenseRestoreArrayAndMemType(petsclib::PetscLibType, A::AbstractPetscMat, array::Vector{PetscScalar}) end
+function MatDenseRestoreArrayAndMemType(petsclib::PetscLibType, A::AbstractPetscMat, array::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatDenseRestoreArrayAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Vector{$PetscScalar} )
+@for_petsc function MatDenseRestoreArrayAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::AbstractArray{$PetscScalar} )
 	array_ = Ref(pointer(array))
 
     @chk ccall(
@@ -5772,7 +5772,7 @@ function MatDenseRestoreArrayAndMemType(petsclib::PetscLibType, A::AbstractPetsc
 end 
 
 """
-	MatDenseRestoreArrayRead(petsclib::PetscLibType,A::AbstractPetscMat, array::Vector{PetscScalar}) 
+	MatDenseRestoreArrayRead(petsclib::PetscLibType,A::AbstractPetscMat, array::AbstractArray{PetscScalar}) 
 returns access to the array where the data for a `MATDENSE` matrix is stored obtained by `MatDenseGetArrayRead()`
 
 Not Collective
@@ -5788,9 +5788,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreArrayRead"))
 """
-function MatDenseRestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, array::Vector{PetscScalar}) end
+function MatDenseRestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, array::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatDenseRestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Vector{$PetscScalar} )
+@for_petsc function MatDenseRestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::AbstractArray{$PetscScalar} )
 	array_ = Ref(pointer(array))
 
     @chk ccall(
@@ -5805,7 +5805,7 @@ function MatDenseRestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat, a
 end 
 
 """
-	MatDenseRestoreArrayReadAndMemType(petsclib::PetscLibType,A::AbstractPetscMat, array::Vector{PetscScalar}) 
+	MatDenseRestoreArrayReadAndMemType(petsclib::PetscLibType,A::AbstractPetscMat, array::AbstractArray{PetscScalar}) 
 returns access to the array that is obtained by `MatDenseGetArrayReadAndMemType()`
 
 Logically Collective
@@ -5821,9 +5821,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreArrayReadAndMemType"))
 """
-function MatDenseRestoreArrayReadAndMemType(petsclib::PetscLibType, A::AbstractPetscMat, array::Vector{PetscScalar}) end
+function MatDenseRestoreArrayReadAndMemType(petsclib::PetscLibType, A::AbstractPetscMat, array::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatDenseRestoreArrayReadAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Vector{$PetscScalar} )
+@for_petsc function MatDenseRestoreArrayReadAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::AbstractArray{$PetscScalar} )
 	array_ = Ref(pointer(array))
 
     @chk ccall(
@@ -5838,7 +5838,7 @@ function MatDenseRestoreArrayReadAndMemType(petsclib::PetscLibType, A::AbstractP
 end 
 
 """
-	MatDenseRestoreArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat, array::Vector{PetscScalar}) 
+	MatDenseRestoreArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat, array::AbstractArray{PetscScalar}) 
 returns access to the array where the data for a `MATDENSE` matrix is stored obtained by `MatDenseGetArrayWrite()`
 
 Not Collective
@@ -5854,9 +5854,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreArrayWrite"))
 """
-function MatDenseRestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, array::Vector{PetscScalar}) end
+function MatDenseRestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, array::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatDenseRestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Vector{$PetscScalar} )
+@for_petsc function MatDenseRestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::AbstractArray{$PetscScalar} )
 	array_ = Ref(pointer(array))
 
     @chk ccall(
@@ -5871,7 +5871,7 @@ function MatDenseRestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat, 
 end 
 
 """
-	MatDenseRestoreArrayWriteAndMemType(petsclib::PetscLibType,A::AbstractPetscMat, array::Vector{PetscScalar}) 
+	MatDenseRestoreArrayWriteAndMemType(petsclib::PetscLibType,A::AbstractPetscMat, array::AbstractArray{PetscScalar}) 
 returns access to the array that is obtained by `MatDenseGetArrayReadAndMemType()`
 
 Logically Collective
@@ -5887,9 +5887,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreArrayWriteAndMemType"))
 """
-function MatDenseRestoreArrayWriteAndMemType(petsclib::PetscLibType, A::AbstractPetscMat, array::Vector{PetscScalar}) end
+function MatDenseRestoreArrayWriteAndMemType(petsclib::PetscLibType, A::AbstractPetscMat, array::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatDenseRestoreArrayWriteAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Vector{$PetscScalar} )
+@for_petsc function MatDenseRestoreArrayWriteAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::AbstractArray{$PetscScalar} )
 	array_ = Ref(pointer(array))
 
     @chk ccall(
@@ -5904,7 +5904,7 @@ function MatDenseRestoreArrayWriteAndMemType(petsclib::PetscLibType, A::Abstract
 end 
 
 """
-	MatDenseRestoreColumn(petsclib::PetscLibType,A::AbstractPetscMat, vals::Vector{PetscScalar}) 
+	MatDenseRestoreColumn(petsclib::PetscLibType,A::AbstractPetscMat, vals::AbstractArray{PetscScalar}) 
 returns access to a column of a `MATDENSE` matrix which is returned by `MatDenseGetColumn()`.
 
 Not Collective
@@ -5920,9 +5920,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreColumn"))
 """
-function MatDenseRestoreColumn(petsclib::PetscLibType, A::AbstractPetscMat, vals::Vector{PetscScalar}) end
+function MatDenseRestoreColumn(petsclib::PetscLibType, A::AbstractPetscMat, vals::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatDenseRestoreColumn(petsclib::$UnionPetscLib, A::AbstractPetscMat, vals::Vector{$PetscScalar} )
+@for_petsc function MatDenseRestoreColumn(petsclib::$UnionPetscLib, A::AbstractPetscMat, vals::AbstractArray{$PetscScalar} )
 	vals_ = Ref(pointer(vals))
 
     @chk ccall(
@@ -6141,7 +6141,7 @@ function MatDestroy(petsclib::PetscLibType, A::AbstractPetscMat) end
 end 
 
 """
-	MatDestroyMatrices(petsclib::PetscLibType,n::PetscInt, mat::Vector{<:AbstractPetscMat}) 
+	MatDestroyMatrices(petsclib::PetscLibType,n::PetscInt, mat::AbstractArray{PetscMat}) 
 Destroys an array of matrices
 
 Collective
@@ -6157,9 +6157,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatDestroyMatrices"))
 """
-function MatDestroyMatrices(petsclib::PetscLibType, n::PetscInt, mat::Vector{<:AbstractPetscMat}) end
+function MatDestroyMatrices(petsclib::PetscLibType, n::PetscInt, mat::AbstractArray{PetscMat}) end
 
-@for_petsc function MatDestroyMatrices(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{<:AbstractPetscMat} )
+@for_petsc function MatDestroyMatrices(petsclib::$UnionPetscLib, n::$PetscInt, mat::AbstractArray{PetscMat} )
 	mat_ = Ref(pointer(mat))
 
     @chk ccall(
@@ -6207,7 +6207,7 @@ function MatDestroySeqNonzeroStructure(petsclib::PetscLibType, mat::AbstractPets
 end 
 
 """
-	MatDestroySubMatrices(petsclib::PetscLibType,n::PetscInt, mat::Vector{<:AbstractPetscMat}) 
+	MatDestroySubMatrices(petsclib::PetscLibType,n::PetscInt, mat::AbstractArray{PetscMat}) 
 Destroys a set of matrices obtained with `MatCreateSubMatrices()`.
 
 Collective
@@ -6223,9 +6223,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatDestroySubMatrices"))
 """
-function MatDestroySubMatrices(petsclib::PetscLibType, n::PetscInt, mat::Vector{<:AbstractPetscMat}) end
+function MatDestroySubMatrices(petsclib::PetscLibType, n::PetscInt, mat::AbstractArray{PetscMat}) end
 
-@for_petsc function MatDestroySubMatrices(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{<:AbstractPetscMat} )
+@for_petsc function MatDestroySubMatrices(petsclib::$UnionPetscLib, n::$PetscInt, mat::AbstractArray{PetscMat} )
 	mat_ = Ref(pointer(mat))
 
     @chk ccall(
@@ -11720,7 +11720,7 @@ function MatKAIJGetTRead(petsclib::PetscLibType, A::AbstractPetscMat) end
 end 
 
 """
-	MatKAIJRestoreS(petsclib::PetscLibType,A::AbstractPetscMat, S::Vector{PetscScalar}) 
+	MatKAIJRestoreS(petsclib::PetscLibType,A::AbstractPetscMat, S::AbstractArray{PetscScalar}) 
 Restore array obtained with `MatKAIJGetS()`
 
 Not Collective
@@ -11736,9 +11736,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJRestoreS"))
 """
-function MatKAIJRestoreS(petsclib::PetscLibType, A::AbstractPetscMat, S::Vector{PetscScalar}) end
+function MatKAIJRestoreS(petsclib::PetscLibType, A::AbstractPetscMat, S::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatKAIJRestoreS(petsclib::$UnionPetscLib, A::AbstractPetscMat, S::Vector{$PetscScalar} )
+@for_petsc function MatKAIJRestoreS(petsclib::$UnionPetscLib, A::AbstractPetscMat, S::AbstractArray{$PetscScalar} )
 	S_ = Ref(pointer(S))
 
     @chk ccall(
@@ -11753,7 +11753,7 @@ function MatKAIJRestoreS(petsclib::PetscLibType, A::AbstractPetscMat, S::Vector{
 end 
 
 """
-	MatKAIJRestoreSRead(petsclib::PetscLibType,A::AbstractPetscMat, S::Vector{PetscScalar}) 
+	MatKAIJRestoreSRead(petsclib::PetscLibType,A::AbstractPetscMat, S::AbstractArray{PetscScalar}) 
 Restore array obtained with `MatKAIJGetSRead()`
 
 Not Collective
@@ -11769,9 +11769,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJRestoreSRead"))
 """
-function MatKAIJRestoreSRead(petsclib::PetscLibType, A::AbstractPetscMat, S::Vector{PetscScalar}) end
+function MatKAIJRestoreSRead(petsclib::PetscLibType, A::AbstractPetscMat, S::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatKAIJRestoreSRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, S::Vector{$PetscScalar} )
+@for_petsc function MatKAIJRestoreSRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, S::AbstractArray{$PetscScalar} )
 	S_ = Ref(pointer(S))
 
     @chk ccall(
@@ -11786,7 +11786,7 @@ function MatKAIJRestoreSRead(petsclib::PetscLibType, A::AbstractPetscMat, S::Vec
 end 
 
 """
-	MatKAIJRestoreT(petsclib::PetscLibType,A::AbstractPetscMat, T::Vector{PetscScalar}) 
+	MatKAIJRestoreT(petsclib::PetscLibType,A::AbstractPetscMat, T::AbstractArray{PetscScalar}) 
 Restore array obtained with `MatKAIJGetT()`
 
 Not Collective
@@ -11802,9 +11802,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJRestoreT"))
 """
-function MatKAIJRestoreT(petsclib::PetscLibType, A::AbstractPetscMat, T::Vector{PetscScalar}) end
+function MatKAIJRestoreT(petsclib::PetscLibType, A::AbstractPetscMat, T::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatKAIJRestoreT(petsclib::$UnionPetscLib, A::AbstractPetscMat, T::Vector{$PetscScalar} )
+@for_petsc function MatKAIJRestoreT(petsclib::$UnionPetscLib, A::AbstractPetscMat, T::AbstractArray{$PetscScalar} )
 	T_ = Ref(pointer(T))
 
     @chk ccall(
@@ -11819,7 +11819,7 @@ function MatKAIJRestoreT(petsclib::PetscLibType, A::AbstractPetscMat, T::Vector{
 end 
 
 """
-	MatKAIJRestoreTRead(petsclib::PetscLibType,A::AbstractPetscMat, T::Vector{PetscScalar}) 
+	MatKAIJRestoreTRead(petsclib::PetscLibType,A::AbstractPetscMat, T::AbstractArray{PetscScalar}) 
 Restore array obtained with `MatKAIJGetTRead()`
 
 Not Collective
@@ -11835,9 +11835,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJRestoreTRead"))
 """
-function MatKAIJRestoreTRead(petsclib::PetscLibType, A::AbstractPetscMat, T::Vector{PetscScalar}) end
+function MatKAIJRestoreTRead(petsclib::PetscLibType, A::AbstractPetscMat, T::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatKAIJRestoreTRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, T::Vector{$PetscScalar} )
+@for_petsc function MatKAIJRestoreTRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, T::AbstractArray{$PetscScalar} )
 	T_ = Ref(pointer(T))
 
     @chk ccall(
@@ -17261,7 +17261,7 @@ function MatRestoreLocalSubMatrix(petsclib::PetscLibType, mat::AbstractPetscMat,
 end 
 
 """
-	MatRestoreNullSpaces(petsclib::PetscLibType,n::PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Vector{MatNullSpace}) 
+	MatRestoreNullSpaces(petsclib::PetscLibType,n::PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::AbstractArray{MatNullSpace}) 
 sets the null spaces, transpose null spaces, and near null spaces obtained with `MatGetNullSpaces()` for an array of matrices
 
 Logically Collective
@@ -17279,9 +17279,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatRestoreNullSpaces"))
 """
-function MatRestoreNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Vector{MatNullSpace}) end
+function MatRestoreNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::AbstractArray{MatNullSpace}) end
 
-@for_petsc function MatRestoreNullSpaces(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Vector{MatNullSpace} )
+@for_petsc function MatRestoreNullSpaces(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::AbstractArray{MatNullSpace} )
 	nullsp_ = Ref(pointer(nullsp))
 
     @chk ccall(
@@ -17296,7 +17296,7 @@ function MatRestoreNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{<
 end 
 
 """
-	MatRestoreRow(petsclib::PetscLibType,mat::AbstractPetscMat, row::PetscInt, ncols::PetscInt, cols::Vector{PetscInt}, vals::Vector{PetscScalar}) 
+	MatRestoreRow(petsclib::PetscLibType,mat::AbstractPetscMat, row::PetscInt, ncols::PetscInt, cols::AbstractArray{PetscInt}, vals::AbstractArray{PetscScalar}) 
 Frees any temporary space allocated by `MatGetRow()`.
 
 Not Collective
@@ -17315,9 +17315,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatRestoreRow"))
 """
-function MatRestoreRow(petsclib::PetscLibType, mat::AbstractPetscMat, row::PetscInt, ncols::PetscInt, cols::Vector{PetscInt}, vals::Vector{PetscScalar}) end
+function MatRestoreRow(petsclib::PetscLibType, mat::AbstractPetscMat, row::PetscInt, ncols::PetscInt, cols::AbstractArray{PetscInt}, vals::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatRestoreRow(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, ncols::$PetscInt, cols::Vector{$PetscInt}, vals::Vector{$PetscScalar} )
+@for_petsc function MatRestoreRow(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, ncols::$PetscInt, cols::AbstractArray{$PetscInt}, vals::AbstractArray{$PetscScalar} )
 	ncols_ = Ref{$PetscInt}(ncols)
 	cols_ = Ref(pointer(cols))
 	vals_ = Ref(pointer(vals))
@@ -19315,7 +19315,7 @@ function MatSeqAIJRegister(petsclib::PetscLibType, sname::String, fnc::external)
 end 
 
 """
-	MatSeqAIJRestoreArray(petsclib::PetscLibType,A::AbstractPetscMat, array::Vector{PetscScalar}) 
+	MatSeqAIJRestoreArray(petsclib::PetscLibType,A::AbstractPetscMat, array::AbstractArray{PetscScalar}) 
 returns access to the array where the data for a `MATSEQAIJ` matrix is stored obtained by `MatSeqAIJGetArray()`
 
 Not Collective
@@ -19331,9 +19331,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqAIJRestoreArray"))
 """
-function MatSeqAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::Vector{PetscScalar}) end
+function MatSeqAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatSeqAIJRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Vector{$PetscScalar} )
+@for_petsc function MatSeqAIJRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::AbstractArray{$PetscScalar} )
 	array_ = Ref(pointer(array))
 
     @chk ccall(
@@ -19649,7 +19649,7 @@ function MatSeqBAIJGetArray(petsclib::PetscLibType, A::AbstractPetscMat) end
 end 
 
 """
-	MatSeqBAIJRestoreArray(petsclib::PetscLibType,A::AbstractPetscMat, array::Vector{PetscScalar}) 
+	MatSeqBAIJRestoreArray(petsclib::PetscLibType,A::AbstractPetscMat, array::AbstractArray{PetscScalar}) 
 returns access to the array where the data for a `MATSEQBAIJ` matrix is stored obtained by `MatSeqBAIJGetArray()`
 
 Not Collective
@@ -19665,9 +19665,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqBAIJRestoreArray"))
 """
-function MatSeqBAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::Vector{PetscScalar}) end
+function MatSeqBAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatSeqBAIJRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Vector{$PetscScalar} )
+@for_petsc function MatSeqBAIJRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::AbstractArray{$PetscScalar} )
 	array_ = Ref(pointer(array))
 
     @chk ccall(
@@ -19881,7 +19881,7 @@ function MatSeqSBAIJGetArray(petsclib::PetscLibType, A::AbstractPetscMat) end
 end 
 
 """
-	MatSeqSBAIJRestoreArray(petsclib::PetscLibType,A::AbstractPetscMat, array::Vector{PetscScalar}) 
+	MatSeqSBAIJRestoreArray(petsclib::PetscLibType,A::AbstractPetscMat, array::AbstractArray{PetscScalar}) 
 returns access to the array where the numerical data for a `MATSEQSBAIJ` matrix is stored obtained by `MatSeqSBAIJGetArray()`
 
 Not Collective
@@ -19897,9 +19897,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqSBAIJRestoreArray"))
 """
-function MatSeqSBAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::Vector{PetscScalar}) end
+function MatSeqSBAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::AbstractArray{PetscScalar}) end
 
-@for_petsc function MatSeqSBAIJRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Vector{$PetscScalar} )
+@for_petsc function MatSeqSBAIJRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::AbstractArray{$PetscScalar} )
 	array_ = Ref(pointer(array))
 
     @chk ccall(
@@ -21802,7 +21802,7 @@ function MatShellSetManageScalingShifts(petsclib::PetscLibType, A::AbstractPetsc
 end 
 
 """
-	MatShellSetMatProductOperation(petsclib::PetscLibType,A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::external, destroy::Union{Ptr, external}, Btype::MatType, Ctype::Union{Ptr, MatType}) 
+	MatShellSetMatProductOperation(petsclib::PetscLibType,A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Union{Ptr, external}, Btype::MatType, Ctype::Union{Ptr, MatType}) 
 Allows user to set a matrix matrix operation for a `MATSHELL` shell matrix.
 
 Logically Collective; No Fortran Support
@@ -21823,9 +21823,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatShellSetMatProductOperation"))
 """
-function MatShellSetMatProductOperation(petsclib::PetscLibType, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::external, destroy::Union{Ptr, external}, Btype::MatType, Ctype::Union{Ptr, MatType}) end
+function MatShellSetMatProductOperation(petsclib::PetscLibType, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Union{Ptr, external}, Btype::MatType, Ctype::Union{Ptr, MatType}) end
 
-@for_petsc function MatShellSetMatProductOperation(petsclib::$UnionPetscLib, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::external, destroy::Union{Ptr, external}, Btype::MatType, Ctype::Union{Ptr, MatType} )
+@for_petsc function MatShellSetMatProductOperation(petsclib::$UnionPetscLib, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr, external}, numeric::Union{Ptr, external}, destroy::Union{Ptr, external}, Btype::MatType, Ctype::Union{Ptr, MatType} )
 
     @chk ccall(
                (:MatShellSetMatProductOperation, $petsc_library),
@@ -22873,7 +22873,7 @@ function MatView(petsclib::PetscLibType, mat::AbstractPetscMat, viewer::PetscVie
 end 
 
 """
-	MatViewFromOptions(petsclib::PetscLibType,A::AbstractPetscMat, obj::PetscObject, name::String) 
+	MatViewFromOptions(petsclib::PetscLibType,A::AbstractPetscMat, obj, name::String) 
 View properties of the matrix based on options set in the options database
 
 Collective
@@ -22893,9 +22893,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatViewFromOptions"))
 """
-function MatViewFromOptions(petsclib::PetscLibType, A::AbstractPetscMat, obj::PetscObject, name::String) end
+function MatViewFromOptions(petsclib::PetscLibType, A::AbstractPetscMat, obj, name::String) end
 
-@for_petsc function MatViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscMat, obj::PetscObject, name::String )
+@for_petsc function MatViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscMat, obj, name::String )
 
     @chk ccall(
                (:MatViewFromOptions, $petsc_library),

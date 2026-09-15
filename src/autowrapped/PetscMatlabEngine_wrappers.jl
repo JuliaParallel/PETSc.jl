@@ -77,7 +77,7 @@ function PetscMatlabEngineDestroy(petsclib::PetscLibType, v::Union{PetscMatlabEn
 end 
 
 """
-	PetscMatlabEngineGet(petsclib::PetscLibType,mengine::PetscMatlabEngine, obj::PetscObject) 
+	PetscMatlabEngineGet(petsclib::PetscLibType,mengine::PetscMatlabEngine, obj) 
 Gets a variable from MATLAB into a PETSc object.
 
 Collective
@@ -95,9 +95,9 @@ Level: advanced
 # External Links
 $(_doc_external("Matlab/PetscMatlabEngineGet"))
 """
-function PetscMatlabEngineGet(petsclib::PetscLibType, mengine::PetscMatlabEngine, obj::PetscObject) end
+function PetscMatlabEngineGet(petsclib::PetscLibType, mengine::PetscMatlabEngine, obj) end
 
-@for_petsc function PetscMatlabEngineGet(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, obj::PetscObject )
+@for_petsc function PetscMatlabEngineGet(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, obj )
 
     @chk ccall(
                (:PetscMatlabEngineGet, $petsc_library),
@@ -221,7 +221,7 @@ function PetscMatlabEnginePrintOutput(petsclib::PetscLibType, mengine::PetscMatl
 end 
 
 """
-	PetscMatlabEnginePut(petsclib::PetscLibType,mengine::PetscMatlabEngine, obj::PetscObject) 
+	PetscMatlabEnginePut(petsclib::PetscLibType,mengine::PetscMatlabEngine, obj) 
 Puts a PETSc object, such as a `Mat` or `Vec` into the MATLAB space. For parallel objects,
 each processor's part is put in a separate  MATLAB process.
 
@@ -240,9 +240,9 @@ Level: advanced
 # External Links
 $(_doc_external("Matlab/PetscMatlabEnginePut"))
 """
-function PetscMatlabEnginePut(petsclib::PetscLibType, mengine::PetscMatlabEngine, obj::PetscObject) end
+function PetscMatlabEnginePut(petsclib::PetscLibType, mengine::PetscMatlabEngine, obj) end
 
-@for_petsc function PetscMatlabEnginePut(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, obj::PetscObject )
+@for_petsc function PetscMatlabEnginePut(petsclib::$UnionPetscLib, mengine::PetscMatlabEngine, obj )
 
     @chk ccall(
                (:PetscMatlabEnginePut, $petsc_library),

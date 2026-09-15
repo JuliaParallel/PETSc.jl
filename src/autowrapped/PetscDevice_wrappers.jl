@@ -432,14 +432,14 @@ function PetscDeviceContextView(petsclib::PetscLibType, dctx::PetscDeviceContext
 end 
 
 """
-	PetscDeviceContextViewFromOptions(petsclib::PetscLibType,dctx::PetscDeviceContext, obj::PetscObject, name::String) 
+	PetscDeviceContextViewFromOptions(petsclib::PetscLibType,dctx::PetscDeviceContext, obj, name::String) 
 
 # External Links
 $(_doc_external("Sys/PetscDeviceContextViewFromOptions"))
 """
-function PetscDeviceContextViewFromOptions(petsclib::PetscLibType, dctx::PetscDeviceContext, obj::PetscObject, name::String) end
+function PetscDeviceContextViewFromOptions(petsclib::PetscLibType, dctx::PetscDeviceContext, obj, name::String) end
 
-@for_petsc function PetscDeviceContextViewFromOptions(petsclib::$UnionPetscLib, dctx::PetscDeviceContext, obj::PetscObject, name::String )
+@for_petsc function PetscDeviceContextViewFromOptions(petsclib::$UnionPetscLib, dctx::PetscDeviceContext, obj, name::String )
 
     @chk ccall(
                (:PetscDeviceContextViewFromOptions, $petsc_library),

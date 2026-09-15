@@ -75,9 +75,9 @@ end
 
 Defaults for the context and destroy-callback arguments of the generated `TSMonitorSet`.
 """
-LibPETSc.TSMonitorSet(petsclib::LibPETSc.PetscLibType, ts::LibPETSc.AbstractTS, monitor::Ptr{Cvoid}) =
+LibPETSc.TSMonitorSet(petsclib::LibPETSc.UnionPetscLibType, ts::LibPETSc.AbstractTS, monitor::Ptr{Cvoid}) =
     LibPETSc.TSMonitorSet(petsclib, ts, monitor, C_NULL, C_NULL)
-LibPETSc.TSMonitorSet(petsclib::LibPETSc.PetscLibType, ts::LibPETSc.AbstractTS, monitor::Ptr{Cvoid}, ctx::Ptr{Cvoid}) =
+LibPETSc.TSMonitorSet(petsclib::LibPETSc.UnionPetscLibType, ts::LibPETSc.AbstractTS, monitor::Ptr{Cvoid}, ctx::Ptr{Cvoid}) =
     LibPETSc.TSMonitorSet(petsclib, ts, monitor, ctx, C_NULL)
 
 """

@@ -461,7 +461,7 @@ function PetscBenchView(petsclib::PetscLibType, bm::PetscBench, viewer::PetscVie
 end 
 
 """
-	PetscBenchViewFromOptions(petsclib::PetscLibType,bm::PetscBench, bobj::PetscObject, optionname::String) 
+	PetscBenchViewFromOptions(petsclib::PetscLibType,bm::PetscBench, bobj, optionname::String) 
 Processes command line options to determine if/how a `PetscBench` is to be viewed.
 
 Collective
@@ -479,9 +479,9 @@ Level: advanced
 # External Links
 $(_doc_external("BM/PetscBenchViewFromOptions"))
 """
-function PetscBenchViewFromOptions(petsclib::PetscLibType, bm::PetscBench, bobj::PetscObject, optionname::String) end
+function PetscBenchViewFromOptions(petsclib::PetscLibType, bm::PetscBench, bobj, optionname::String) end
 
-@for_petsc function PetscBenchViewFromOptions(petsclib::$UnionPetscLib, bm::PetscBench, bobj::PetscObject, optionname::String )
+@for_petsc function PetscBenchViewFromOptions(petsclib::$UnionPetscLib, bm::PetscBench, bobj, optionname::String )
 
     @chk ccall(
                (:PetscBenchViewFromOptions, $petsc_library),

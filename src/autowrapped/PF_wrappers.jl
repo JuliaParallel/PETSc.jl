@@ -432,7 +432,7 @@ function PFView(petsclib::PetscLibType, pf::AbstractPF, viewer::PetscViewer) end
 end 
 
 """
-	PFViewFromOptions(petsclib::PetscLibType,A::AbstractPF, obj::PetscObject, name::String) 
+	PFViewFromOptions(petsclib::PetscLibType,A::AbstractPF, obj, name::String) 
 View a `PF` based on options set in the options database
 
 Collective
@@ -449,9 +449,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PF/PFViewFromOptions"))
 """
-function PFViewFromOptions(petsclib::PetscLibType, A::AbstractPF, obj::PetscObject, name::String) end
+function PFViewFromOptions(petsclib::PetscLibType, A::AbstractPF, obj, name::String) end
 
-@for_petsc function PFViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPF, obj::PetscObject, name::String )
+@for_petsc function PFViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPF, obj, name::String )
 
     @chk ccall(
                (:PFViewFromOptions, $petsc_library),

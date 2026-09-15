@@ -6367,7 +6367,7 @@ function TaoView(petsclib::PetscLibType, tao::AbstractTao, viewer::PetscViewer) 
 end 
 
 """
-	TaoViewFromOptions(petsclib::PetscLibType,A::AbstractTao, obj::PetscObject, name::String) 
+	TaoViewFromOptions(petsclib::PetscLibType,A::AbstractTao, obj, name::String) 
 View a `Tao` object based on values in the options database
 
 Collective
@@ -6384,9 +6384,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoViewFromOptions"))
 """
-function TaoViewFromOptions(petsclib::PetscLibType, A::AbstractTao, obj::PetscObject, name::String) end
+function TaoViewFromOptions(petsclib::PetscLibType, A::AbstractTao, obj, name::String) end
 
-@for_petsc function TaoViewFromOptions(petsclib::$UnionPetscLib, A::AbstractTao, obj::PetscObject, name::String )
+@for_petsc function TaoViewFromOptions(petsclib::$UnionPetscLib, A::AbstractTao, obj, name::String )
 
     @chk ccall(
                (:TaoViewFromOptions, $petsc_library),

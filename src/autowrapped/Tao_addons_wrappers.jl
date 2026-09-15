@@ -1238,7 +1238,7 @@ function TaoLineSearchView(petsclib::PetscLibType, ls::TaoLineSearch, viewer::Pe
 end 
 
 """
-	TaoLineSearchViewFromOptions(petsclib::PetscLibType,A::TaoLineSearch, obj::PetscObject, name::String) 
+	TaoLineSearchViewFromOptions(petsclib::PetscLibType,A::TaoLineSearch, obj, name::String) 
 View a `TaoLineSearch` object based on values in the options database
 
 Collective
@@ -1255,9 +1255,9 @@ Level: intermediate
 # External Links
 $(_doc_external("TaoLineSearch/TaoLineSearchViewFromOptions"))
 """
-function TaoLineSearchViewFromOptions(petsclib::PetscLibType, A::TaoLineSearch, obj::PetscObject, name::String) end
+function TaoLineSearchViewFromOptions(petsclib::PetscLibType, A::TaoLineSearch, obj, name::String) end
 
-@for_petsc function TaoLineSearchViewFromOptions(petsclib::$UnionPetscLib, A::TaoLineSearch, obj::PetscObject, name::String )
+@for_petsc function TaoLineSearchViewFromOptions(petsclib::$UnionPetscLib, A::TaoLineSearch, obj, name::String )
 
     @chk ccall(
                (:TaoLineSearchViewFromOptions, $petsc_library),

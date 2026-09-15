@@ -2385,7 +2385,7 @@ function PetscFEView(petsclib::PetscLibType, fem::PetscFE, viewer::PetscViewer) 
 end 
 
 """
-	PetscFEViewFromOptions(petsclib::PetscLibType,A::PetscFE, obj::PetscObject, name::String) 
+	PetscFEViewFromOptions(petsclib::PetscLibType,A::PetscFE, obj, name::String) 
 View from a `PetscFE` based on values in the options database
 
 Collective
@@ -2402,9 +2402,9 @@ Level: intermediate
 # External Links
 $(_doc_external("FE/PetscFEViewFromOptions"))
 """
-function PetscFEViewFromOptions(petsclib::PetscLibType, A::PetscFE, obj::PetscObject, name::String) end
+function PetscFEViewFromOptions(petsclib::PetscLibType, A::PetscFE, obj, name::String) end
 
-@for_petsc function PetscFEViewFromOptions(petsclib::$UnionPetscLib, A::PetscFE, obj::PetscObject, name::String )
+@for_petsc function PetscFEViewFromOptions(petsclib::$UnionPetscLib, A::PetscFE, obj, name::String )
 
     @chk ccall(
                (:PetscFEViewFromOptions, $petsc_library),

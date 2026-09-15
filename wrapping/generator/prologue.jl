@@ -319,6 +319,16 @@ Base.convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = v.ptr
 Base.unsafe_convert(::Type{Ptr{Cvoid}}, v::AbstractAO) = v.ptr
 # ------------------------------------------------------
 
+# ------------------------------------------------------
+# Constructors taking the library *type* (wrappers are called with either the petsclib instance
+# or its type, see @for_petsc): look the instance up to get the current age.
+for T in (:PetscVec, :PetscMat, :PetscKSP, :PetscSNES, :PetscDM, :TS)
+    @eval $T(ptr::Ptr{Cvoid}, ::Type{PetscLib}) where {PetscLib} = $T(ptr, getlib(PetscLib))
+end
+for T in (:PetscOptions, :IS, :PF, :Tao, :AO)
+    @eval $T(ptr::Ptr{Cvoid}, ::Type{PetscLib}) where {PetscLib} = $T{PetscLib}(ptr)
+end
+# ------------------------------------------------------
 
 # Stuff that I don't really want to define by hand, but seem to not be part of the petsc python interface?
 mutable struct _p_PetscSF end

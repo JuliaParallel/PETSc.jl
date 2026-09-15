@@ -285,7 +285,7 @@ function PetscConvEstSetFromOptions(petsclib::PetscLibType, ce::PetscConvEst) en
 end 
 
 """
-	PetscConvEstSetSolver(petsclib::PetscLibType,ce::PetscConvEst, solver::PetscObject) 
+	PetscConvEstSetSolver(petsclib::PetscLibType,ce::PetscConvEst, solver) 
 Sets the solver used to produce discrete solutions
 
 Not Collective
@@ -301,9 +301,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/PetscConvEstSetSolver"))
 """
-function PetscConvEstSetSolver(petsclib::PetscLibType, ce::PetscConvEst, solver::PetscObject) end
+function PetscConvEstSetSolver(petsclib::PetscLibType, ce::PetscConvEst, solver) end
 
-@for_petsc function PetscConvEstSetSolver(petsclib::$UnionPetscLib, ce::PetscConvEst, solver::PetscObject )
+@for_petsc function PetscConvEstSetSolver(petsclib::$UnionPetscLib, ce::PetscConvEst, solver )
 
     @chk ccall(
                (:PetscConvEstSetSolver, $petsc_library),

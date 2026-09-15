@@ -769,7 +769,7 @@ function PetscRegressorView(petsclib::PetscLibType, regressor::PetscRegressor, v
 end 
 
 """
-	PetscRegressorViewFromOptions(petsclib::PetscLibType,A::PetscRegressor, obj::PetscObject, name::String) 
+	PetscRegressorViewFromOptions(petsclib::PetscLibType,A::PetscRegressor, obj, name::String) 
 View a `PetscRegressor` object based on values in the options database
 
 Collective
@@ -786,9 +786,9 @@ Level: intermediate
 # External Links
 $(_doc_external("PetscRegressor/PetscRegressorViewFromOptions"))
 """
-function PetscRegressorViewFromOptions(petsclib::PetscLibType, A::PetscRegressor, obj::PetscObject, name::String) end
+function PetscRegressorViewFromOptions(petsclib::PetscLibType, A::PetscRegressor, obj, name::String) end
 
-@for_petsc function PetscRegressorViewFromOptions(petsclib::$UnionPetscLib, A::PetscRegressor, obj::PetscObject, name::String )
+@for_petsc function PetscRegressorViewFromOptions(petsclib::$UnionPetscLib, A::PetscRegressor, obj, name::String )
 
     @chk ccall(
                (:PetscRegressorViewFromOptions, $petsc_library),

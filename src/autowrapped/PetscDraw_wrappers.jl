@@ -2213,7 +2213,7 @@ function PetscDrawLGAddPoint(petsclib::PetscLibType, lg::PetscDrawLG, x::Vector{
 end 
 
 """
-	PetscDrawLGAddPoints(petsclib::PetscLibType,lg::PetscDrawLG, n::PetscInt, xx::Vector{PetscReal}, yy::Vector{PetscReal}) 
+	PetscDrawLGAddPoints(petsclib::PetscLibType,lg::PetscDrawLG, n::PetscInt, xx::AbstractArray{PetscReal}, yy::AbstractArray{PetscReal}) 
 Adds several points to each of the line graphs.
 The new points must have an X coordinate larger than the old points.
 
@@ -2232,9 +2232,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Draw/PetscDrawLGAddPoints"))
 """
-function PetscDrawLGAddPoints(petsclib::PetscLibType, lg::PetscDrawLG, n::PetscInt, xx::Vector{PetscReal}, yy::Vector{PetscReal}) end
+function PetscDrawLGAddPoints(petsclib::PetscLibType, lg::PetscDrawLG, n::PetscInt, xx::AbstractArray{PetscReal}, yy::AbstractArray{PetscReal}) end
 
-@for_petsc function PetscDrawLGAddPoints(petsclib::$UnionPetscLib, lg::PetscDrawLG, n::$PetscInt, xx::Vector{$PetscReal}, yy::Vector{$PetscReal} )
+@for_petsc function PetscDrawLGAddPoints(petsclib::$UnionPetscLib, lg::PetscDrawLG, n::$PetscInt, xx::AbstractArray{$PetscReal}, yy::AbstractArray{$PetscReal} )
 	xx_ = Ref(pointer(xx))
 	yy_ = Ref(pointer(yy))
 
@@ -3601,7 +3601,7 @@ function PetscDrawSPAddPointColorized(petsclib::PetscLibType, sp::PetscDrawSP) e
 end 
 
 """
-	PetscDrawSPAddPoints(petsclib::PetscLibType,sp::PetscDrawSP, n::Cint, xx::Vector{PetscReal}, yy::Vector{PetscReal}) 
+	PetscDrawSPAddPoints(petsclib::PetscLibType,sp::PetscDrawSP, n::Cint, xx::AbstractArray{PetscReal}, yy::AbstractArray{PetscReal}) 
 Adds several points to each of the scatter plot point curves.
 
 Not Collective
@@ -3619,9 +3619,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Draw/PetscDrawSPAddPoints"))
 """
-function PetscDrawSPAddPoints(petsclib::PetscLibType, sp::PetscDrawSP, n::Cint, xx::Vector{PetscReal}, yy::Vector{PetscReal}) end
+function PetscDrawSPAddPoints(petsclib::PetscLibType, sp::PetscDrawSP, n::Cint, xx::AbstractArray{PetscReal}, yy::AbstractArray{PetscReal}) end
 
-@for_petsc function PetscDrawSPAddPoints(petsclib::$UnionPetscLib, sp::PetscDrawSP, n::Cint, xx::Vector{$PetscReal}, yy::Vector{$PetscReal} )
+@for_petsc function PetscDrawSPAddPoints(petsclib::$UnionPetscLib, sp::PetscDrawSP, n::Cint, xx::AbstractArray{$PetscReal}, yy::AbstractArray{$PetscReal} )
 	xx_ = Ref(pointer(xx))
 	yy_ = Ref(pointer(yy))
 
@@ -5050,7 +5050,7 @@ function PetscDrawView(petsclib::PetscLibType, indraw::PetscDraw, viewer::PetscV
 end 
 
 """
-	PetscDrawViewFromOptions(petsclib::PetscLibType,A::PetscDraw, obj::PetscObject, name::String) 
+	PetscDrawViewFromOptions(petsclib::PetscLibType,A::PetscDraw, obj, name::String) 
 View a `PetscDraw` from the option database
 
 Collective
@@ -5067,9 +5067,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Draw/PetscDrawViewFromOptions"))
 """
-function PetscDrawViewFromOptions(petsclib::PetscLibType, A::PetscDraw, obj::PetscObject, name::String) end
+function PetscDrawViewFromOptions(petsclib::PetscLibType, A::PetscDraw, obj, name::String) end
 
-@for_petsc function PetscDrawViewFromOptions(petsclib::$UnionPetscLib, A::PetscDraw, obj::PetscObject, name::String )
+@for_petsc function PetscDrawViewFromOptions(petsclib::$UnionPetscLib, A::PetscDraw, obj, name::String )
 
     @chk ccall(
                (:PetscDrawViewFromOptions, $petsc_library),

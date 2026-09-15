@@ -12,7 +12,7 @@ function Base.show(io::IO, v::AbstractPetscOptions{PetscLib}) where {PetscLib}
     # Try to display options, but handle errors gracefully
     try
         println(io, "PETSc Options database:")
-        LibPETSc.PetscOptionsView(PetscLib, v, LibPETSc.PETSC_VIEWER_DEFAULT)
+        LibPETSc.PetscOptionsView(PetscLib, v, C_NULL)  # NULL viewer: PETSc prints to stdout
     catch
         println(io, "PETSc Options (not yet initialized)")
     end

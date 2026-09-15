@@ -216,6 +216,25 @@ this keeps the rule set honest across releases.
 - Idempotency: running the generator twice yields a zero diff; a CI job (16 MB tarball of the pinned PETSc
   tag) regenerates and fails on any diff against the committed files.
 
+### 2.5 Quality checks: type stability, allocations, leaks
+
+Every argument kind has one renderer, so one representative wrapper per kind (times all `petsclibs`)
+covers the template; functions with rules or overrides get their own entry. These run against the scratch
+output in steps 2-3 and join the test suite as `test/wrapper_quality.jl` from step 4.
+
+- **Inference**: `Test.@inferred` on the representatives; return types must be concrete. JET `@report_opt`
+  on the same set to catch runtime dispatch in bodies (`Union{X, Ref{X}}` handling, `PetscArray` fields
+  `data::AbstractArray` and untyped `ptr`, which should become concrete type parameters).
+- **Ambiguities**: `detect_ambiguities(PETSc; recursive = true)` held at 161.
+- **Allocations**: `@allocated` after warm-up is 0 for scalar-returning wrappers, one array for
+  array-returning ones (PR #263 baseline: 0 per call).
+- **Leaks, PETSc side**: run the low-level tests with `-malloc_dump -objects_dump` (or `PetscMallocDump`,
+  `PetscObjectsDump` via the wrappers) in a separate CI job; fail if objects survive `PetscFinalize`.
+  For write-back and by-reference kinds, `PetscObjectGetReference` must return to its starting value after
+  the paired Restore/Destroy.
+- **Leaks, Julia side**: `test_destroy.jl` ownership/`age` checks for every emitted create/destroy pair,
+  and `audit.jl` over tests and examples.
+
 ## 3. Reproduction strategy (proving fidelity)
 
 1. Merge PR #263 into `v0.5`. Freeze the resulting `src/autowrapped/` as the **golden baseline**

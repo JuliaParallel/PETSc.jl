@@ -10155,7 +10155,7 @@ function PCMGSetLevels(petsclib::PetscLibType, pc::PC, levels::PetscInt) end
     @chk ccall(
                (:PCMGSetLevels, $petsc_library),
                PetscErrorCode,
-               (PC, $PetscInt, Ptr{MPI_Comm}),
+               (PC, $PetscInt, Ptr{MPI.MPI_Comm}),
                pc, levels, comms_,
               )
 

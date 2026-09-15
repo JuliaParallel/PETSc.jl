@@ -4885,7 +4885,7 @@ function DMDAGetProcessorSubset(petsclib::PetscLibType, da::AbstractPetscDM, dir
     @chk ccall(
                (:DMDAGetProcessorSubset, $petsc_library),
                PetscErrorCode,
-               (CDM, DMDirection, $PetscInt, Ptr{MPI_Comm}),
+               (CDM, DMDirection, $PetscInt, Ptr{MPI.MPI_Comm}),
                da, dir, gp, comm_,
               )
 
@@ -4924,7 +4924,7 @@ function DMDAGetProcessorSubsets(petsclib::PetscLibType, da::AbstractPetscDM, di
     @chk ccall(
                (:DMDAGetProcessorSubsets, $petsc_library),
                PetscErrorCode,
-               (CDM, DMDirection, Ptr{MPI_Comm}),
+               (CDM, DMDirection, Ptr{MPI.MPI_Comm}),
                da, dir, subcomm_,
               )
 

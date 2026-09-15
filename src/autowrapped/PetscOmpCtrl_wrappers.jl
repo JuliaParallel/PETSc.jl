@@ -118,7 +118,7 @@ function PetscOmpCtrlGetOmpComms(petsclib::PetscLibType, ctrl::PetscOmpCtrl) end
     @chk ccall(
                (:PetscOmpCtrlGetOmpComms, $petsc_library),
                PetscErrorCode,
-               (PetscOmpCtrl, Ptr{MPI_Comm}, Ptr{MPI_Comm}, Ptr{PetscBool}),
+               (PetscOmpCtrl, Ptr{MPI.MPI_Comm}, Ptr{MPI.MPI_Comm}, Ptr{PetscBool}),
                ctrl, omp_comm_, omp_master_comm_, is_omp_master_,
               )
 

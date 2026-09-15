@@ -244,8 +244,7 @@ for petsclib in PETSc.petsclibs
 
         # two-field section: 2 dofs per vertex (field 0), 1 dof per cell (field 1)
         pStart, pEnd = LibPETSc.DMPlexGetChart(petsclib, dm)
-        s = Ref{LibPETSc.PetscSection}()
-        LibPETSc.PetscSectionCreate(petsclib, _TC, s)
+        s = Ref(LibPETSc.PetscSectionCreate(petsclib, _TC))
         LibPETSc.PetscSectionSetNumFields(petsclib, s[], PetscInt_t(2))
         LibPETSc.PetscSectionSetFieldComponents(petsclib, s[], PetscInt_t(0), PetscInt_t(2))
         LibPETSc.PetscSectionSetFieldComponents(petsclib, s[], PetscInt_t(1), PetscInt_t(1))

@@ -2135,7 +2135,7 @@ function SNESFASSetLevels(petsclib::PetscLibType, snes::AbstractPetscSNES, level
     @chk ccall(
                (:SNESFASSetLevels, $petsc_library),
                PetscErrorCode,
-               (CSNES, $PetscInt, Ptr{MPI_Comm}),
+               (CSNES, $PetscInt, Ptr{MPI.MPI_Comm}),
                snes, levels, comms_,
               )
 

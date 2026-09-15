@@ -59,7 +59,7 @@ function PetscShmCommGetMpiShmComm(petsclib::PetscLibType, pshmcomm::PetscShmCom
     @chk ccall(
                (:PetscShmCommGetMpiShmComm, $petsc_library),
                PetscErrorCode,
-               (PetscShmComm, Ptr{MPI_Comm}),
+               (PetscShmComm, Ptr{MPI.MPI_Comm}),
                pshmcomm, comm_,
               )
 
@@ -235,7 +235,7 @@ function PetscSubcommGetChild(petsclib::PetscLibType, scomm::PetscSubcomm) end
     @chk ccall(
                (:PetscSubcommGetChild, $petsc_library),
                PetscErrorCode,
-               (PetscSubcomm, Ptr{MPI_Comm}),
+               (PetscSubcomm, Ptr{MPI.MPI_Comm}),
                scomm, ccomm_,
               )
 
@@ -273,7 +273,7 @@ function PetscSubcommGetContiguousParent(petsclib::PetscLibType, scomm::PetscSub
     @chk ccall(
                (:PetscSubcommGetContiguousParent, $petsc_library),
                PetscErrorCode,
-               (PetscSubcomm, Ptr{MPI_Comm}),
+               (PetscSubcomm, Ptr{MPI.MPI_Comm}),
                scomm, pcomm_,
               )
 
@@ -310,7 +310,7 @@ function PetscSubcommGetParent(petsclib::PetscLibType, scomm::PetscSubcomm) end
     @chk ccall(
                (:PetscSubcommGetParent, $petsc_library),
                PetscErrorCode,
-               (PetscSubcomm, Ptr{MPI_Comm}),
+               (PetscSubcomm, Ptr{MPI.MPI_Comm}),
                scomm, pcomm_,
               )
 

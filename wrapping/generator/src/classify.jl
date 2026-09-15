@@ -142,6 +142,7 @@ function classify(r::Rules, fn::Fn, a::Arg, input_vars, output_vars)
     typename_ccall = is_handle(r, typename) ? r.handles[typename].c : typename
     init, extract, name_ccall = init_extract(r, typename, name, isarray, isoutput, stars)
     ccall_str = "Ptr{"^stars * typename_ccall * "}"^stars
+    typename == "MPI_Comm" && isoutput && !isarray && (ccall_str = "Ptr{MPI.MPI_Comm}")
     if isarray
         ccall_str = "Ptr{$ccall_str}"
         if !isoutput

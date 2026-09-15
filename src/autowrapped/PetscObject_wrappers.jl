@@ -476,7 +476,7 @@ function PetscObjectGetComm(petsclib::PetscLibType, obj) end
     @chk ccall(
                (:PetscObjectGetComm, $petsc_library),
                PetscErrorCode,
-               (PetscObject, Ptr{MPI_Comm}),
+               (PetscObject, Ptr{MPI.MPI_Comm}),
                obj, comm_,
               )
 

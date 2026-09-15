@@ -968,7 +968,7 @@ function PetscCommDestroy(petsclib::PetscLibType) end
     @chk ccall(
                (:PetscCommDestroy, $petsc_library),
                PetscErrorCode,
-               (Ptr{MPI_Comm},),
+               (Ptr{MPI.MPI_Comm},),
                comm_,
               )
 
@@ -1006,7 +1006,7 @@ function PetscCommDuplicate(petsclib::PetscLibType, comm_in::MPI_Comm) end
     @chk ccall(
                (:PetscCommDuplicate, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, Ptr{MPI_Comm}, Ptr{PetscMPIInt}),
+               (MPI_Comm, Ptr{MPI.MPI_Comm}, Ptr{PetscMPIInt}),
                comm_in, comm_out_, first_tag_,
               )
 
@@ -1043,7 +1043,7 @@ function PetscCommGetComm(petsclib::PetscLibType, comm_in::MPI_Comm) end
     @chk ccall(
                (:PetscCommGetComm, $petsc_library),
                PetscErrorCode,
-               (MPI_Comm, Ptr{MPI_Comm}),
+               (MPI_Comm, Ptr{MPI.MPI_Comm}),
                comm_in, comm_out_,
               )
 

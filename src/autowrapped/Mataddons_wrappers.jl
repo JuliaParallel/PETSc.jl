@@ -28,7 +28,7 @@ const PetscCoarsenData = Ptr{_n_PetscCoarsenData}
 
 # -------------------------------------------------------
 """
-	MatColoringPatch(petsclib::PetscLibType,mat::PetscMat, ncolors::PetscInt, n::PetscInt, colorarray::Vector{ISColoringValue}, iscoloring::ISColoring) 
+	MatColoringPatch(petsclib::PetscLibType,mat::AbstractPetscMat, ncolors::PetscInt, n::PetscInt, colorarray::Vector{ISColoringValue}, iscoloring::ISColoring) 
 Used inside matrix coloring routines that use `MatGetRowIJ()` and/or
 `MatGetColumnIJ()`.
 
@@ -50,9 +50,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatColoringPatch"))
 """
-function MatColoringPatch(petsclib::PetscLibType, mat::PetscMat, ncolors::PetscInt, n::PetscInt, colorarray::Vector{ISColoringValue}, iscoloring::ISColoring) end
+function MatColoringPatch(petsclib::PetscLibType, mat::AbstractPetscMat, ncolors::PetscInt, n::PetscInt, colorarray::Vector{ISColoringValue}, iscoloring::ISColoring) end
 
-@for_petsc function MatColoringPatch(petsclib::$UnionPetscLib, mat::PetscMat, ncolors::$PetscInt, n::$PetscInt, colorarray::Vector{ISColoringValue}, iscoloring::ISColoring )
+@for_petsc function MatColoringPatch(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ncolors::$PetscInt, n::$PetscInt, colorarray::Vector{ISColoringValue}, iscoloring::ISColoring )
 
     @chk ccall(
                (:MatColoringPatch, $petsc_library),
@@ -98,7 +98,7 @@ function MatColoringRegister(petsclib::PetscLibType, sname::String, fnc::externa
 end 
 
 """
-	mcptr::MatColoring = MatColoringCreate(petsclib::PetscLibType,m::PetscMat) 
+	mcptr::MatColoring = MatColoringCreate(petsclib::PetscLibType,m::AbstractPetscMat) 
 Creates a matrix coloring context.
 
 Collective
@@ -124,9 +124,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatColoringCreate"))
 """
-function MatColoringCreate(petsclib::PetscLibType, m::PetscMat) end
+function MatColoringCreate(petsclib::PetscLibType, m::AbstractPetscMat) end
 
-@for_petsc function MatColoringCreate(petsclib::$UnionPetscLib, m::PetscMat )
+@for_petsc function MatColoringCreate(petsclib::$UnionPetscLib, m::AbstractPetscMat )
 	mcptr_ = Ref{MatColoring}()
 
     @chk ccall(
@@ -487,14 +487,14 @@ function MatColoringSetWeightType(petsclib::PetscLibType, mc::MatColoring, wt::M
 end 
 
 """
-	degrees::PetscInt = MatColoringGetDegrees(petsclib::PetscLibType,G::PetscMat, distance::PetscInt) 
+	degrees::PetscInt = MatColoringGetDegrees(petsclib::PetscLibType,G::AbstractPetscMat, distance::PetscInt) 
 
 # External Links
 $(_doc_external("Mat/MatColoringGetDegrees"))
 """
-function MatColoringGetDegrees(petsclib::PetscLibType, G::PetscMat, distance::PetscInt) end
+function MatColoringGetDegrees(petsclib::PetscLibType, G::AbstractPetscMat, distance::PetscInt) end
 
-@for_petsc function MatColoringGetDegrees(petsclib::$UnionPetscLib, G::PetscMat, distance::$PetscInt )
+@for_petsc function MatColoringGetDegrees(petsclib::$UnionPetscLib, G::AbstractPetscMat, distance::$PetscInt )
 	degrees_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -556,14 +556,14 @@ function MatColoringSetWeights(petsclib::PetscLibType, mc::MatColoring) end
 end 
 
 """
-	MatFDColoringSetF(petsclib::PetscLibType,fd::MatFDColoring, F::PetscVec) 
+	MatFDColoringSetF(petsclib::PetscLibType,fd::MatFDColoring, F::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("Mat/MatFDColoringSetF"))
 """
-function MatFDColoringSetF(petsclib::PetscLibType, fd::MatFDColoring, F::PetscVec) end
+function MatFDColoringSetF(petsclib::PetscLibType, fd::MatFDColoring, F::AbstractPetscVec) end
 
-@for_petsc function MatFDColoringSetF(petsclib::$UnionPetscLib, fd::MatFDColoring, F::PetscVec )
+@for_petsc function MatFDColoringSetF(petsclib::$UnionPetscLib, fd::MatFDColoring, F::AbstractPetscVec )
 
     @chk ccall(
                (:MatFDColoringSetF, $petsc_library),
@@ -676,7 +676,7 @@ function MatFDColoringSetBlockSize(petsclib::PetscLibType, matfd::MatFDColoring,
 end 
 
 """
-	MatFDColoringSetUp(petsclib::PetscLibType,mat::PetscMat, iscoloring::ISColoring, color::MatFDColoring) 
+	MatFDColoringSetUp(petsclib::PetscLibType,mat::AbstractPetscMat, iscoloring::ISColoring, color::MatFDColoring) 
 Sets up the internal data structures of matrix coloring context for the later use.
 
 Collective
@@ -693,9 +693,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatFDColoringSetUp"))
 """
-function MatFDColoringSetUp(petsclib::PetscLibType, mat::PetscMat, iscoloring::ISColoring, color::MatFDColoring) end
+function MatFDColoringSetUp(petsclib::PetscLibType, mat::AbstractPetscMat, iscoloring::ISColoring, color::MatFDColoring) end
 
-@for_petsc function MatFDColoringSetUp(petsclib::$UnionPetscLib, mat::PetscMat, iscoloring::ISColoring, color::MatFDColoring )
+@for_petsc function MatFDColoringSetUp(petsclib::$UnionPetscLib, mat::AbstractPetscMat, iscoloring::ISColoring, color::MatFDColoring )
 
     @chk ccall(
                (:MatFDColoringSetUp, $petsc_library),
@@ -840,7 +840,7 @@ function MatFDColoringSetType(petsclib::PetscLibType, matfd::MatFDColoring, type
 end 
 
 """
-	color::MatFDColoring = MatFDColoringCreate(petsclib::PetscLibType,mat::PetscMat, iscoloring::ISColoring) 
+	color::MatFDColoring = MatFDColoringCreate(petsclib::PetscLibType,mat::AbstractPetscMat, iscoloring::ISColoring) 
 Creates a matrix coloring context for finite difference
 computation of Jacobians.
 
@@ -862,9 +862,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatFDColoringCreate"))
 """
-function MatFDColoringCreate(petsclib::PetscLibType, mat::PetscMat, iscoloring::ISColoring) end
+function MatFDColoringCreate(petsclib::PetscLibType, mat::AbstractPetscMat, iscoloring::ISColoring) end
 
-@for_petsc function MatFDColoringCreate(petsclib::$UnionPetscLib, mat::PetscMat, iscoloring::ISColoring )
+@for_petsc function MatFDColoringCreate(petsclib::$UnionPetscLib, mat::AbstractPetscMat, iscoloring::ISColoring )
 	color_ = Ref{MatFDColoring}()
 
     @chk ccall(
@@ -953,7 +953,7 @@ function MatFDColoringGetPerturbedColumns(petsclib::PetscLibType, coloring::MatF
 end 
 
 """
-	MatFDColoringApply(petsclib::PetscLibType,J::PetscMat, coloring::MatFDColoring, x1::PetscVec, sctx::Cvoid) 
+	MatFDColoringApply(petsclib::PetscLibType,J::AbstractPetscMat, coloring::MatFDColoring, x1::AbstractPetscVec, sctx::Cvoid) 
 Given a matrix for which a `MatFDColoring` context
 has been created, computes the Jacobian for a function via finite differences.
 
@@ -978,9 +978,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatFDColoringApply"))
 """
-function MatFDColoringApply(petsclib::PetscLibType, J::PetscMat, coloring::MatFDColoring, x1::PetscVec, sctx::Cvoid) end
+function MatFDColoringApply(petsclib::PetscLibType, J::AbstractPetscMat, coloring::MatFDColoring, x1::AbstractPetscVec, sctx::Cvoid) end
 
-@for_petsc function MatFDColoringApply(petsclib::$UnionPetscLib, J::PetscMat, coloring::MatFDColoring, x1::PetscVec, sctx::Cvoid )
+@for_petsc function MatFDColoringApply(petsclib::$UnionPetscLib, J::AbstractPetscMat, coloring::MatFDColoring, x1::AbstractPetscVec, sctx::Cvoid )
 
     @chk ccall(
                (:MatFDColoringApply, $petsc_library),
@@ -994,7 +994,7 @@ function MatFDColoringApply(petsclib::PetscLibType, J::PetscMat, coloring::MatFD
 end 
 
 """
-	MatFDColoringSetValues(petsclib::PetscLibType,J::PetscMat, coloring::MatFDColoring, y::Vector{PetscScalar}) 
+	MatFDColoringSetValues(petsclib::PetscLibType,J::AbstractPetscMat, coloring::MatFDColoring, y::Vector{PetscScalar}) 
 takes a matrix in compressed color format and enters the matrix into a PETSc `Mat`
 
 Collective
@@ -1012,9 +1012,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatFDColoringSetValues"))
 """
-function MatFDColoringSetValues(petsclib::PetscLibType, J::PetscMat, coloring::MatFDColoring, y::Vector{PetscScalar}) end
+function MatFDColoringSetValues(petsclib::PetscLibType, J::AbstractPetscMat, coloring::MatFDColoring, y::Vector{PetscScalar}) end
 
-@for_petsc function MatFDColoringSetValues(petsclib::$UnionPetscLib, J::PetscMat, coloring::MatFDColoring, y::Vector{$PetscScalar} )
+@for_petsc function MatFDColoringSetValues(petsclib::$UnionPetscLib, J::AbstractPetscMat, coloring::MatFDColoring, y::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatFDColoringSetValues, $petsc_library),
@@ -1028,7 +1028,7 @@ function MatFDColoringSetValues(petsclib::PetscLibType, J::PetscMat, coloring::M
 end 
 
 """
-	MatFDColoringUseDM(petsclib::PetscLibType,coloring::PetscMat, fdcoloring::MatFDColoring) 
+	MatFDColoringUseDM(petsclib::PetscLibType,coloring::AbstractPetscMat, fdcoloring::MatFDColoring) 
 allows a `MatFDColoring` object to use the `DM` associated with the matrix to compute a `IS_COLORING_LOCAL` coloring
 
 Input Parameters:
@@ -1047,9 +1047,9 @@ See also:
 # External Links
 $(_doc_external("Dm/MatFDColoringUseDM"))
 """
-function MatFDColoringUseDM(petsclib::PetscLibType, coloring::PetscMat, fdcoloring::MatFDColoring) end
+function MatFDColoringUseDM(petsclib::PetscLibType, coloring::AbstractPetscMat, fdcoloring::MatFDColoring) end
 
-@for_petsc function MatFDColoringUseDM(petsclib::$UnionPetscLib, coloring::PetscMat, fdcoloring::MatFDColoring )
+@for_petsc function MatFDColoringUseDM(petsclib::$UnionPetscLib, coloring::AbstractPetscMat, fdcoloring::MatFDColoring )
 
     @chk ccall(
                (:MatFDColoringUseDM, $petsc_library),
@@ -1096,7 +1096,7 @@ function MatTransposeColoringDestroy(petsclib::PetscLibType, c::Union{MatTranspo
 end 
 
 """
-	color::MatTransposeColoring = MatTransposeColoringCreate(petsclib::PetscLibType,mat::PetscMat, iscoloring::ISColoring) 
+	color::MatTransposeColoring = MatTransposeColoringCreate(petsclib::PetscLibType,mat::AbstractPetscMat, iscoloring::ISColoring) 
 Creates a matrix coloring context for the matrix product C = A*B^T.
 
 Collective
@@ -1116,9 +1116,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatTransposeColoringCreate"))
 """
-function MatTransposeColoringCreate(petsclib::PetscLibType, mat::PetscMat, iscoloring::ISColoring) end
+function MatTransposeColoringCreate(petsclib::PetscLibType, mat::AbstractPetscMat, iscoloring::ISColoring) end
 
-@for_petsc function MatTransposeColoringCreate(petsclib::$UnionPetscLib, mat::PetscMat, iscoloring::ISColoring )
+@for_petsc function MatTransposeColoringCreate(petsclib::$UnionPetscLib, mat::AbstractPetscMat, iscoloring::ISColoring )
 	color_ = Ref{MatTransposeColoring}()
 
     @chk ccall(
@@ -1237,7 +1237,7 @@ function MatPartitioningSetNParts(petsclib::PetscLibType, part::MatPartitioning,
 end 
 
 """
-	MatPartitioningApplyND(petsclib::PetscLibType,matp::MatPartitioning, partitioning::IS) 
+	MatPartitioningApplyND(petsclib::PetscLibType,matp::MatPartitioning, partitioning::AbstractIS) 
 Gets a nested dissection partitioning for a matrix.
 
 Collective
@@ -1258,9 +1258,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatPartitioningApplyND"))
 """
-function MatPartitioningApplyND(petsclib::PetscLibType, matp::MatPartitioning, partitioning::IS) end
+function MatPartitioningApplyND(petsclib::PetscLibType, matp::MatPartitioning, partitioning::AbstractIS) end
 
-@for_petsc function MatPartitioningApplyND(petsclib::$UnionPetscLib, matp::MatPartitioning, partitioning::IS )
+@for_petsc function MatPartitioningApplyND(petsclib::$UnionPetscLib, matp::MatPartitioning, partitioning::AbstractIS )
 	partitioning_ = Ref(partitioning.ptr)
 
     @chk ccall(
@@ -1276,7 +1276,7 @@ function MatPartitioningApplyND(petsclib::PetscLibType, matp::MatPartitioning, p
 end 
 
 """
-	MatPartitioningApply(petsclib::PetscLibType,matp::MatPartitioning, partitioning::IS) 
+	MatPartitioningApply(petsclib::PetscLibType,matp::MatPartitioning, partitioning::AbstractIS) 
 Gets a partitioning for the graph represented by a sparse matrix.
 
 Collective
@@ -1302,9 +1302,9 @@ The user can define additional partitionings; see `MatPartitioningRegister()`.
 # External Links
 $(_doc_external("Mat/MatPartitioningApply"))
 """
-function MatPartitioningApply(petsclib::PetscLibType, matp::MatPartitioning, partitioning::IS) end
+function MatPartitioningApply(petsclib::PetscLibType, matp::MatPartitioning, partitioning::AbstractIS) end
 
-@for_petsc function MatPartitioningApply(petsclib::$UnionPetscLib, matp::MatPartitioning, partitioning::IS )
+@for_petsc function MatPartitioningApply(petsclib::$UnionPetscLib, matp::MatPartitioning, partitioning::AbstractIS )
 	partitioning_ = Ref(partitioning.ptr)
 
     @chk ccall(
@@ -1320,7 +1320,7 @@ function MatPartitioningApply(petsclib::PetscLibType, matp::MatPartitioning, par
 end 
 
 """
-	MatPartitioningImprove(petsclib::PetscLibType,matp::MatPartitioning, partitioning::IS) 
+	MatPartitioningImprove(petsclib::PetscLibType,matp::MatPartitioning, partitioning::AbstractIS) 
 Improves the quality of a given partition.
 
 Collective
@@ -1342,9 +1342,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatPartitioningImprove"))
 """
-function MatPartitioningImprove(petsclib::PetscLibType, matp::MatPartitioning, partitioning::IS) end
+function MatPartitioningImprove(petsclib::PetscLibType, matp::MatPartitioning, partitioning::AbstractIS) end
 
-@for_petsc function MatPartitioningImprove(petsclib::$UnionPetscLib, matp::MatPartitioning, partitioning::IS )
+@for_petsc function MatPartitioningImprove(petsclib::$UnionPetscLib, matp::MatPartitioning, partitioning::AbstractIS )
 	partitioning_ = Ref(partitioning.ptr)
 
     @chk ccall(
@@ -1360,7 +1360,7 @@ function MatPartitioningImprove(petsclib::PetscLibType, matp::MatPartitioning, p
 end 
 
 """
-	MatPartitioningViewImbalance(petsclib::PetscLibType,matp::MatPartitioning, partitioning::IS) 
+	MatPartitioningViewImbalance(petsclib::PetscLibType,matp::MatPartitioning, partitioning::AbstractIS) 
 Display partitioning imbalance information.
 
 Collective
@@ -1379,9 +1379,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatPartitioningViewImbalance"))
 """
-function MatPartitioningViewImbalance(petsclib::PetscLibType, matp::MatPartitioning, partitioning::IS) end
+function MatPartitioningViewImbalance(petsclib::PetscLibType, matp::MatPartitioning, partitioning::AbstractIS) end
 
-@for_petsc function MatPartitioningViewImbalance(petsclib::$UnionPetscLib, matp::MatPartitioning, partitioning::IS )
+@for_petsc function MatPartitioningViewImbalance(petsclib::$UnionPetscLib, matp::MatPartitioning, partitioning::AbstractIS )
 
     @chk ccall(
                (:MatPartitioningViewImbalance, $petsc_library),
@@ -1395,7 +1395,7 @@ function MatPartitioningViewImbalance(petsclib::PetscLibType, matp::MatPartition
 end 
 
 """
-	MatPartitioningSetAdjacency(petsclib::PetscLibType,part::MatPartitioning, adj::PetscMat) 
+	MatPartitioningSetAdjacency(petsclib::PetscLibType,part::MatPartitioning, adj::AbstractPetscMat) 
 Sets the adjacency graph (matrix) of the thing to be
 partitioned.
 
@@ -1412,9 +1412,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatPartitioningSetAdjacency"))
 """
-function MatPartitioningSetAdjacency(petsclib::PetscLibType, part::MatPartitioning, adj::PetscMat) end
+function MatPartitioningSetAdjacency(petsclib::PetscLibType, part::MatPartitioning, adj::AbstractPetscMat) end
 
-@for_petsc function MatPartitioningSetAdjacency(petsclib::$UnionPetscLib, part::MatPartitioning, adj::PetscMat )
+@for_petsc function MatPartitioningSetAdjacency(petsclib::$UnionPetscLib, part::MatPartitioning, adj::AbstractPetscMat )
 
     @chk ccall(
                (:MatPartitioningSetAdjacency, $petsc_library),
@@ -1812,14 +1812,14 @@ function MatPartitioningSetNumberVertexWeights(petsclib::PetscLibType, partition
 end 
 
 """
-	MatPartitioningHierarchicalGetFineparts(petsclib::PetscLibType,part::MatPartitioning, fineparts::IS) 
+	MatPartitioningHierarchicalGetFineparts(petsclib::PetscLibType,part::MatPartitioning, fineparts::AbstractIS) 
 
 # External Links
 $(_doc_external("Mat/MatPartitioningHierarchicalGetFineparts"))
 """
-function MatPartitioningHierarchicalGetFineparts(petsclib::PetscLibType, part::MatPartitioning, fineparts::IS) end
+function MatPartitioningHierarchicalGetFineparts(petsclib::PetscLibType, part::MatPartitioning, fineparts::AbstractIS) end
 
-@for_petsc function MatPartitioningHierarchicalGetFineparts(petsclib::$UnionPetscLib, part::MatPartitioning, fineparts::IS )
+@for_petsc function MatPartitioningHierarchicalGetFineparts(petsclib::$UnionPetscLib, part::MatPartitioning, fineparts::AbstractIS )
 	fineparts_ = Ref(fineparts.ptr)
 
     @chk ccall(
@@ -1835,14 +1835,14 @@ function MatPartitioningHierarchicalGetFineparts(petsclib::PetscLibType, part::M
 end 
 
 """
-	MatPartitioningHierarchicalGetCoarseparts(petsclib::PetscLibType,part::MatPartitioning, coarseparts::IS) 
+	MatPartitioningHierarchicalGetCoarseparts(petsclib::PetscLibType,part::MatPartitioning, coarseparts::AbstractIS) 
 
 # External Links
 $(_doc_external("Mat/MatPartitioningHierarchicalGetCoarseparts"))
 """
-function MatPartitioningHierarchicalGetCoarseparts(petsclib::PetscLibType, part::MatPartitioning, coarseparts::IS) end
+function MatPartitioningHierarchicalGetCoarseparts(petsclib::PetscLibType, part::MatPartitioning, coarseparts::AbstractIS) end
 
-@for_petsc function MatPartitioningHierarchicalGetCoarseparts(petsclib::$UnionPetscLib, part::MatPartitioning, coarseparts::IS )
+@for_petsc function MatPartitioningHierarchicalGetCoarseparts(petsclib::$UnionPetscLib, part::MatPartitioning, coarseparts::AbstractIS )
 	coarseparts_ = Ref(coarseparts.ptr)
 
     @chk ccall(
@@ -2727,7 +2727,7 @@ function MatNullSpaceSetFunction(petsclib::PetscLibType, sp::MatNullSpace, rem::
 end 
 
 """
-	has_const::PetscBool,n::PetscInt = MatNullSpaceGetVecs(petsclib::PetscLibType,sp::MatNullSpace, vecs::Vector{PetscVec}) 
+	has_const::PetscBool,n::PetscInt = MatNullSpaceGetVecs(petsclib::PetscLibType,sp::MatNullSpace, vecs::Vector{<:AbstractPetscVec}) 
 get the vectors defining the null space
 
 Not Collective
@@ -2747,9 +2747,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatNullSpaceGetVecs"))
 """
-function MatNullSpaceGetVecs(petsclib::PetscLibType, sp::MatNullSpace, vecs::Vector{PetscVec}) end
+function MatNullSpaceGetVecs(petsclib::PetscLibType, sp::MatNullSpace, vecs::Vector{<:AbstractPetscVec}) end
 
-@for_petsc function MatNullSpaceGetVecs(petsclib::$UnionPetscLib, sp::MatNullSpace, vecs::Vector{PetscVec} )
+@for_petsc function MatNullSpaceGetVecs(petsclib::$UnionPetscLib, sp::MatNullSpace, vecs::Vector{<:AbstractPetscVec} )
 	has_const_ = Ref{PetscBool}()
 	n_ = Ref{$PetscInt}()
 	vecs_ = Ref(pointer(vecs))
@@ -2768,7 +2768,7 @@ function MatNullSpaceGetVecs(petsclib::PetscLibType, sp::MatNullSpace, vecs::Vec
 end 
 
 """
-	sp::MatNullSpace = MatNullSpaceCreateRigidBody(petsclib::PetscLibType,coords::PetscVec) 
+	sp::MatNullSpace = MatNullSpaceCreateRigidBody(petsclib::PetscLibType,coords::AbstractPetscVec) 
 create rigid body modes from coordinates
 
 Collective
@@ -2786,9 +2786,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNullSpaceCreateRigidBody"))
 """
-function MatNullSpaceCreateRigidBody(petsclib::PetscLibType, coords::PetscVec) end
+function MatNullSpaceCreateRigidBody(petsclib::PetscLibType, coords::AbstractPetscVec) end
 
-@for_petsc function MatNullSpaceCreateRigidBody(petsclib::$UnionPetscLib, coords::PetscVec )
+@for_petsc function MatNullSpaceCreateRigidBody(petsclib::$UnionPetscLib, coords::AbstractPetscVec )
 	sp_ = Ref{MatNullSpace}()
 
     @chk ccall(
@@ -2909,7 +2909,7 @@ function MatNullSpaceDestroy(petsclib::PetscLibType, sp::MatNullSpace) end
 end 
 
 """
-	MatNullSpaceRemove(petsclib::PetscLibType,sp::MatNullSpace, vec::PetscVec) 
+	MatNullSpaceRemove(petsclib::PetscLibType,sp::MatNullSpace, vec::AbstractPetscVec) 
 Removes all the components of a null space from a vector.
 
 Collective
@@ -2925,9 +2925,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNullSpaceRemove"))
 """
-function MatNullSpaceRemove(petsclib::PetscLibType, sp::MatNullSpace, vec::PetscVec) end
+function MatNullSpaceRemove(petsclib::PetscLibType, sp::MatNullSpace, vec::AbstractPetscVec) end
 
-@for_petsc function MatNullSpaceRemove(petsclib::$UnionPetscLib, sp::MatNullSpace, vec::PetscVec )
+@for_petsc function MatNullSpaceRemove(petsclib::$UnionPetscLib, sp::MatNullSpace, vec::AbstractPetscVec )
 
     @chk ccall(
                (:MatNullSpaceRemove, $petsc_library),
@@ -2941,7 +2941,7 @@ function MatNullSpaceRemove(petsclib::PetscLibType, sp::MatNullSpace, vec::Petsc
 end 
 
 """
-	isNull::PetscBool = MatNullSpaceTest(petsclib::PetscLibType,sp::MatNullSpace, mat::PetscMat) 
+	isNull::PetscBool = MatNullSpaceTest(petsclib::PetscLibType,sp::MatNullSpace, mat::AbstractPetscMat) 
 Tests if the claimed null space is really a null space of a matrix
 
 Collective
@@ -2960,9 +2960,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNullSpaceTest"))
 """
-function MatNullSpaceTest(petsclib::PetscLibType, sp::MatNullSpace, mat::PetscMat) end
+function MatNullSpaceTest(petsclib::PetscLibType, sp::MatNullSpace, mat::AbstractPetscMat) end
 
-@for_petsc function MatNullSpaceTest(petsclib::$UnionPetscLib, sp::MatNullSpace, mat::PetscMat )
+@for_petsc function MatNullSpaceTest(petsclib::$UnionPetscLib, sp::MatNullSpace, mat::AbstractPetscMat )
 	isNull_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2978,7 +2978,7 @@ function MatNullSpaceTest(petsclib::PetscLibType, sp::MatNullSpace, mat::PetscMa
 end 
 
 """
-	MatMFFDWPSetComputeNormU(petsclib::PetscLibType,A::PetscMat, flag::PetscBool) 
+	MatMFFDWPSetComputeNormU(petsclib::PetscLibType,A::AbstractPetscMat, flag::PetscBool) 
 Sets whether it computes the ||U|| used by the Walker
 PETSc routine for computing h. With any Krylov solver this need only
 be computed during the first iteration and kept for later.
@@ -2998,9 +2998,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDWPSetComputeNormU"))
 """
-function MatMFFDWPSetComputeNormU(petsclib::PetscLibType, A::PetscMat, flag::PetscBool) end
+function MatMFFDWPSetComputeNormU(petsclib::PetscLibType, A::AbstractPetscMat, flag::PetscBool) end
 
-@for_petsc function MatMFFDWPSetComputeNormU(petsclib::$UnionPetscLib, A::PetscMat, flag::PetscBool )
+@for_petsc function MatMFFDWPSetComputeNormU(petsclib::$UnionPetscLib, A::AbstractPetscMat, flag::PetscBool )
 
     @chk ccall(
                (:MatMFFDWPSetComputeNormU, $petsc_library),
@@ -3066,7 +3066,7 @@ function MatMFFDInitializePackage(petsclib::PetscLibType) end
 end 
 
 """
-	MatMFFDSetType(petsclib::PetscLibType,mat::PetscMat, ftype::MatMFFDType) 
+	MatMFFDSetType(petsclib::PetscLibType,mat::AbstractPetscMat, ftype::MatMFFDType) 
 Sets the method that is used to compute the
 differencing parameter for finite difference matrix-free formulations.
 
@@ -3082,9 +3082,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetType"))
 """
-function MatMFFDSetType(petsclib::PetscLibType, mat::PetscMat, ftype::MatMFFDType) end
+function MatMFFDSetType(petsclib::PetscLibType, mat::AbstractPetscMat, ftype::MatMFFDType) end
 
-@for_petsc function MatMFFDSetType(petsclib::$UnionPetscLib, mat::PetscMat, ftype::MatMFFDType )
+@for_petsc function MatMFFDSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ftype::MatMFFDType )
 
     @chk ccall(
                (:MatMFFDSetType, $petsc_library),
@@ -3130,7 +3130,7 @@ function MatMFFDRegister(petsclib::PetscLibType, sname::String, fnc::external) e
 end 
 
 """
-	MatMFFDSetOptionsPrefix(petsclib::PetscLibType,mat::PetscMat, prefix::String) 
+	MatMFFDSetOptionsPrefix(petsclib::PetscLibType,mat::AbstractPetscMat, prefix::String) 
 Sets the prefix used for searching for all
 MATMFFD` options in the database.
 
@@ -3145,9 +3145,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Mat/MatMFFDSetOptionsPrefix"))
 """
-function MatMFFDSetOptionsPrefix(petsclib::PetscLibType, mat::PetscMat, prefix::String) end
+function MatMFFDSetOptionsPrefix(petsclib::PetscLibType, mat::AbstractPetscMat, prefix::String) end
 
-@for_petsc function MatMFFDSetOptionsPrefix(petsclib::$UnionPetscLib, mat::PetscMat, prefix::String )
+@for_petsc function MatMFFDSetOptionsPrefix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, prefix::String )
 
     @chk ccall(
                (:MatMFFDSetOptionsPrefix, $petsc_library),
@@ -3161,7 +3161,7 @@ function MatMFFDSetOptionsPrefix(petsclib::PetscLibType, mat::PetscMat, prefix::
 end 
 
 """
-	h::PetscScalar = MatMFFDGetH(petsclib::PetscLibType,mat::PetscMat) 
+	h::PetscScalar = MatMFFDGetH(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Gets the last value that was used as the differencing for a `MATMFFD` matrix
 parameter.
 
@@ -3180,9 +3180,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDGetH"))
 """
-function MatMFFDGetH(petsclib::PetscLibType, mat::PetscMat) end
+function MatMFFDGetH(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatMFFDGetH(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatMFFDGetH(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	h_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -3198,7 +3198,7 @@ function MatMFFDGetH(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatMFFDSetFunction(petsclib::PetscLibType,mat::PetscMat, func::MatMFFDFn, funcctx::Cvoid) 
+	MatMFFDSetFunction(petsclib::PetscLibType,mat::AbstractPetscMat, func::MatMFFDFn, funcctx::Cvoid) 
 Sets the function used in applying the matrix
 
 Logically Collective
@@ -3216,9 +3216,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetFunction"))
 """
-function MatMFFDSetFunction(petsclib::PetscLibType, mat::PetscMat, func::MatMFFDFn, funcctx::Cvoid) end
+function MatMFFDSetFunction(petsclib::PetscLibType, mat::AbstractPetscMat, func::MatMFFDFn, funcctx::Cvoid) end
 
-@for_petsc function MatMFFDSetFunction(petsclib::$UnionPetscLib, mat::PetscMat, func::MatMFFDFn, funcctx::Cvoid )
+@for_petsc function MatMFFDSetFunction(petsclib::$UnionPetscLib, mat::AbstractPetscMat, func::MatMFFDFn, funcctx::Cvoid )
 
     @chk ccall(
                (:MatMFFDSetFunction, $petsc_library),
@@ -3232,7 +3232,7 @@ function MatMFFDSetFunction(petsclib::PetscLibType, mat::PetscMat, func::MatMFFD
 end 
 
 """
-	MatMFFDSetFunctioni(petsclib::PetscLibType,mat::PetscMat, funci::MatMFFDiFn) 
+	MatMFFDSetFunctioni(petsclib::PetscLibType,mat::AbstractPetscMat, funci::MatMFFDiFn) 
 Sets the function for computing a single component for a `MATMFFD` matrix
 
 Logically Collective
@@ -3249,9 +3249,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetFunctioni"))
 """
-function MatMFFDSetFunctioni(petsclib::PetscLibType, mat::PetscMat, funci::MatMFFDiFn) end
+function MatMFFDSetFunctioni(petsclib::PetscLibType, mat::AbstractPetscMat, funci::MatMFFDiFn) end
 
-@for_petsc function MatMFFDSetFunctioni(petsclib::$UnionPetscLib, mat::PetscMat, funci::MatMFFDiFn )
+@for_petsc function MatMFFDSetFunctioni(petsclib::$UnionPetscLib, mat::AbstractPetscMat, funci::MatMFFDiFn )
 
     @chk ccall(
                (:MatMFFDSetFunctioni, $petsc_library),
@@ -3265,7 +3265,7 @@ function MatMFFDSetFunctioni(petsclib::PetscLibType, mat::PetscMat, funci::MatMF
 end 
 
 """
-	MatMFFDSetFunctioniBase(petsclib::PetscLibType,mat::PetscMat, func::MatMFFDiBaseFn) 
+	MatMFFDSetFunctioniBase(petsclib::PetscLibType,mat::AbstractPetscMat, func::MatMFFDiBaseFn) 
 Sets the function to compute the base vector for a single component function evaluation for a `MATMFFD` matrix
 
 Logically Collective
@@ -3282,9 +3282,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetFunctioniBase"))
 """
-function MatMFFDSetFunctioniBase(petsclib::PetscLibType, mat::PetscMat, func::MatMFFDiBaseFn) end
+function MatMFFDSetFunctioniBase(petsclib::PetscLibType, mat::AbstractPetscMat, func::MatMFFDiBaseFn) end
 
-@for_petsc function MatMFFDSetFunctioniBase(petsclib::$UnionPetscLib, mat::PetscMat, func::MatMFFDiBaseFn )
+@for_petsc function MatMFFDSetFunctioniBase(petsclib::$UnionPetscLib, mat::AbstractPetscMat, func::MatMFFDiBaseFn )
 
     @chk ccall(
                (:MatMFFDSetFunctioniBase, $petsc_library),
@@ -3298,7 +3298,7 @@ function MatMFFDSetFunctioniBase(petsclib::PetscLibType, mat::PetscMat, func::Ma
 end 
 
 """
-	MatMFFDSetPeriod(petsclib::PetscLibType,mat::PetscMat, period::PetscInt) 
+	MatMFFDSetPeriod(petsclib::PetscLibType,mat::AbstractPetscMat, period::PetscInt) 
 Sets how often the step
 
 Logically Collective
@@ -3318,9 +3318,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetPeriod"))
 """
-function MatMFFDSetPeriod(petsclib::PetscLibType, mat::PetscMat, period::PetscInt) end
+function MatMFFDSetPeriod(petsclib::PetscLibType, mat::AbstractPetscMat, period::PetscInt) end
 
-@for_petsc function MatMFFDSetPeriod(petsclib::$UnionPetscLib, mat::PetscMat, period::$PetscInt )
+@for_petsc function MatMFFDSetPeriod(petsclib::$UnionPetscLib, mat::AbstractPetscMat, period::$PetscInt )
 
     @chk ccall(
                (:MatMFFDSetPeriod, $petsc_library),
@@ -3334,7 +3334,7 @@ function MatMFFDSetPeriod(petsclib::PetscLibType, mat::PetscMat, period::PetscIn
 end 
 
 """
-	MatMFFDSetFunctionError(petsclib::PetscLibType,mat::PetscMat, error::PetscReal) 
+	MatMFFDSetFunctionError(petsclib::PetscLibType,mat::AbstractPetscMat, error::PetscReal) 
 Sets the error_rel for the approximation of matrix
 
 Logically Collective
@@ -3354,9 +3354,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetFunctionError"))
 """
-function MatMFFDSetFunctionError(petsclib::PetscLibType, mat::PetscMat, error::PetscReal) end
+function MatMFFDSetFunctionError(petsclib::PetscLibType, mat::AbstractPetscMat, error::PetscReal) end
 
-@for_petsc function MatMFFDSetFunctionError(petsclib::$UnionPetscLib, mat::PetscMat, error::$PetscReal )
+@for_petsc function MatMFFDSetFunctionError(petsclib::$UnionPetscLib, mat::AbstractPetscMat, error::$PetscReal )
 
     @chk ccall(
                (:MatMFFDSetFunctionError, $petsc_library),
@@ -3370,7 +3370,7 @@ function MatMFFDSetFunctionError(petsclib::PetscLibType, mat::PetscMat, error::P
 end 
 
 """
-	MatMFFDSetHHistory(petsclib::PetscLibType,J::PetscMat, history::Vector{PetscScalar}, nhistory::PetscInt) 
+	MatMFFDSetHHistory(petsclib::PetscLibType,J::AbstractPetscMat, history::Vector{PetscScalar}, nhistory::PetscInt) 
 Sets an array to collect a history of the
 differencing values (h) computed for the matrix-free product `MATMFFD` matrix
 
@@ -3390,9 +3390,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetHHistory"))
 """
-function MatMFFDSetHHistory(petsclib::PetscLibType, J::PetscMat, history::Vector{PetscScalar}, nhistory::PetscInt) end
+function MatMFFDSetHHistory(petsclib::PetscLibType, J::AbstractPetscMat, history::Vector{PetscScalar}, nhistory::PetscInt) end
 
-@for_petsc function MatMFFDSetHHistory(petsclib::$UnionPetscLib, J::PetscMat, history::Vector{$PetscScalar}, nhistory::$PetscInt )
+@for_petsc function MatMFFDSetHHistory(petsclib::$UnionPetscLib, J::AbstractPetscMat, history::Vector{$PetscScalar}, nhistory::$PetscInt )
 
     @chk ccall(
                (:MatMFFDSetHHistory, $petsc_library),
@@ -3406,7 +3406,7 @@ function MatMFFDSetHHistory(petsclib::PetscLibType, J::PetscMat, history::Vector
 end 
 
 """
-	MatMFFDResetHHistory(petsclib::PetscLibType,J::PetscMat) 
+	MatMFFDResetHHistory(petsclib::PetscLibType,J::AbstractPetscMat) 
 Resets the counter to zero to begin
 collecting a new set of differencing histories for the `MATMFFD` matrix
 
@@ -3423,9 +3423,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDResetHHistory"))
 """
-function MatMFFDResetHHistory(petsclib::PetscLibType, J::PetscMat) end
+function MatMFFDResetHHistory(petsclib::PetscLibType, J::AbstractPetscMat) end
 
-@for_petsc function MatMFFDResetHHistory(petsclib::$UnionPetscLib, J::PetscMat )
+@for_petsc function MatMFFDResetHHistory(petsclib::$UnionPetscLib, J::AbstractPetscMat )
 
     @chk ccall(
                (:MatMFFDResetHHistory, $petsc_library),
@@ -3439,7 +3439,7 @@ function MatMFFDResetHHistory(petsclib::PetscLibType, J::PetscMat) end
 end 
 
 """
-	MatMFFDSetBase(petsclib::PetscLibType,J::PetscMat, U::PetscVec, F::PetscVec) 
+	MatMFFDSetBase(petsclib::PetscLibType,J::AbstractPetscMat, U::AbstractPetscVec, F::AbstractPetscVec) 
 Sets the vector `U` at which matrix vector products of the
 Jacobian are computed for the `MATMFFD` matrix
 
@@ -3457,9 +3457,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetBase"))
 """
-function MatMFFDSetBase(petsclib::PetscLibType, J::PetscMat, U::PetscVec, F::PetscVec) end
+function MatMFFDSetBase(petsclib::PetscLibType, J::AbstractPetscMat, U::AbstractPetscVec, F::AbstractPetscVec) end
 
-@for_petsc function MatMFFDSetBase(petsclib::$UnionPetscLib, J::PetscMat, U::PetscVec, F::PetscVec )
+@for_petsc function MatMFFDSetBase(petsclib::$UnionPetscLib, J::AbstractPetscMat, U::AbstractPetscVec, F::AbstractPetscVec )
 
     @chk ccall(
                (:MatMFFDSetBase, $petsc_library),
@@ -3473,7 +3473,7 @@ function MatMFFDSetBase(petsclib::PetscLibType, J::PetscMat, U::PetscVec, F::Pet
 end 
 
 """
-	MatMFFDSetCheckh(petsclib::PetscLibType,J::PetscMat, fun::MatMFFDCheckhFn, ctx::Cvoid) 
+	MatMFFDSetCheckh(petsclib::PetscLibType,J::AbstractPetscMat, fun::MatMFFDCheckhFn, ctx::Cvoid) 
 Sets a function that checks the computed `h` and adjusts
 it to satisfy some criteria for the `MATMFFD` matrix
 
@@ -3494,9 +3494,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDSetCheckh"))
 """
-function MatMFFDSetCheckh(petsclib::PetscLibType, J::PetscMat, fun::MatMFFDCheckhFn, ctx::Cvoid) end
+function MatMFFDSetCheckh(petsclib::PetscLibType, J::AbstractPetscMat, fun::MatMFFDCheckhFn, ctx::Cvoid) end
 
-@for_petsc function MatMFFDSetCheckh(petsclib::$UnionPetscLib, J::PetscMat, fun::MatMFFDCheckhFn, ctx::Cvoid )
+@for_petsc function MatMFFDSetCheckh(petsclib::$UnionPetscLib, J::AbstractPetscMat, fun::MatMFFDCheckhFn, ctx::Cvoid )
 
     @chk ccall(
                (:MatMFFDSetCheckh, $petsc_library),
@@ -3510,7 +3510,7 @@ function MatMFFDSetCheckh(petsclib::PetscLibType, J::PetscMat, fun::MatMFFDCheck
 end 
 
 """
-	MatMFFDCheckPositivity(petsclib::PetscLibType,dummy::Cvoid, U::PetscVec, a::PetscVec, h::PetscScalar) 
+	MatMFFDCheckPositivity(petsclib::PetscLibType,dummy::Cvoid, U::AbstractPetscVec, a::AbstractPetscVec, h::PetscScalar) 
 Checks that all entries in U + h*a  are positive or
 zero, decreases `h` until this is satisfied for a `MATMFFD` matrix
 
@@ -3532,9 +3532,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDCheckPositivity"))
 """
-function MatMFFDCheckPositivity(petsclib::PetscLibType, dummy::Cvoid, U::PetscVec, a::PetscVec, h::PetscScalar) end
+function MatMFFDCheckPositivity(petsclib::PetscLibType, dummy::Cvoid, U::AbstractPetscVec, a::AbstractPetscVec, h::PetscScalar) end
 
-@for_petsc function MatMFFDCheckPositivity(petsclib::$UnionPetscLib, dummy::Cvoid, U::PetscVec, a::PetscVec, h::$PetscScalar )
+@for_petsc function MatMFFDCheckPositivity(petsclib::$UnionPetscLib, dummy::Cvoid, U::AbstractPetscVec, a::AbstractPetscVec, h::$PetscScalar )
 
     @chk ccall(
                (:MatMFFDCheckPositivity, $petsc_library),
@@ -3548,7 +3548,7 @@ function MatMFFDCheckPositivity(petsclib::PetscLibType, dummy::Cvoid, U::PetscVe
 end 
 
 """
-	MatMFFDDSSetUmin(petsclib::PetscLibType,A::PetscMat, umin::PetscReal) 
+	MatMFFDDSSetUmin(petsclib::PetscLibType,A::AbstractPetscMat, umin::PetscReal) 
 Sets the "umin" parameter used by the
 PETSc routine for computing the differencing parameter, h, which is used
 for matrix-free Jacobian-vector products for a `MATMFFD` matrix.
@@ -3564,9 +3564,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMFFDDSSetUmin"))
 """
-function MatMFFDDSSetUmin(petsclib::PetscLibType, A::PetscMat, umin::PetscReal) end
+function MatMFFDDSSetUmin(petsclib::PetscLibType, A::AbstractPetscMat, umin::PetscReal) end
 
-@for_petsc function MatMFFDDSSetUmin(petsclib::$UnionPetscLib, A::PetscMat, umin::$PetscReal )
+@for_petsc function MatMFFDDSSetUmin(petsclib::$UnionPetscLib, A::AbstractPetscMat, umin::$PetscReal )
 
     @chk ccall(
                (:MatMFFDDSSetUmin, $petsc_library),
@@ -3580,7 +3580,7 @@ function MatMFFDDSSetUmin(petsclib::PetscLibType, A::PetscMat, umin::PetscReal) 
 end 
 
 """
-	MatMFFDComputeJacobian(petsclib::PetscLibType,snes::PetscSNES, x::PetscVec, jac::PetscMat, B::PetscMat, dummy::Cvoid) 
+	MatMFFDComputeJacobian(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Cvoid) 
 Tells the matrix
 Jacobian matrix-vector products will be computed at, i.e. J(x) * a. The x is obtained
 from the `SNES` object (using `SNESGetSolution()`).
@@ -3605,9 +3605,9 @@ Level: developer
 # External Links
 $(_doc_external("Snes/MatMFFDComputeJacobian"))
 """
-function MatMFFDComputeJacobian(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec, jac::PetscMat, B::PetscMat, dummy::Cvoid) end
+function MatMFFDComputeJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Cvoid) end
 
-@for_petsc function MatMFFDComputeJacobian(petsclib::$UnionPetscLib, snes::PetscSNES, x::PetscVec, jac::PetscMat, B::PetscMat, dummy::Cvoid )
+@for_petsc function MatMFFDComputeJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec, jac::AbstractPetscMat, B::AbstractPetscMat, dummy::Cvoid )
 
     @chk ccall(
                (:MatMFFDComputeJacobian, $petsc_library),
@@ -3727,7 +3727,7 @@ function MatCoarsenApply(petsclib::PetscLibType, coarser::MatCoarsen) end
 end 
 
 """
-	MatCoarsenSetAdjacency(petsclib::PetscLibType,agg::MatCoarsen, adj::PetscMat) 
+	MatCoarsenSetAdjacency(petsclib::PetscLibType,agg::MatCoarsen, adj::AbstractPetscMat) 
 Sets the adjacency graph (matrix) of the thing to be coarsened.
 
 Collective
@@ -3743,9 +3743,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCoarsenSetAdjacency"))
 """
-function MatCoarsenSetAdjacency(petsclib::PetscLibType, agg::MatCoarsen, adj::PetscMat) end
+function MatCoarsenSetAdjacency(petsclib::PetscLibType, agg::MatCoarsen, adj::AbstractPetscMat) end
 
-@for_petsc function MatCoarsenSetAdjacency(petsclib::$UnionPetscLib, agg::MatCoarsen, adj::PetscMat )
+@for_petsc function MatCoarsenSetAdjacency(petsclib::$UnionPetscLib, agg::MatCoarsen, adj::AbstractPetscMat )
 
     @chk ccall(
                (:MatCoarsenSetAdjacency, $petsc_library),
@@ -3926,7 +3926,7 @@ function MatCoarsenSetType(petsclib::PetscLibType, coarser::MatCoarsen, type::Ma
 end 
 
 """
-	MatCoarsenSetGreedyOrdering(petsclib::PetscLibType,coarser::MatCoarsen, perm::IS) 
+	MatCoarsenSetGreedyOrdering(petsclib::PetscLibType,coarser::MatCoarsen, perm::AbstractIS) 
 Sets the ordering of the vertices to use with a greedy coarsening method
 
 Logically Collective
@@ -3942,9 +3942,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCoarsenSetGreedyOrdering"))
 """
-function MatCoarsenSetGreedyOrdering(petsclib::PetscLibType, coarser::MatCoarsen, perm::IS) end
+function MatCoarsenSetGreedyOrdering(petsclib::PetscLibType, coarser::MatCoarsen, perm::AbstractIS) end
 
-@for_petsc function MatCoarsenSetGreedyOrdering(petsclib::$UnionPetscLib, coarser::MatCoarsen, perm::IS )
+@for_petsc function MatCoarsenSetGreedyOrdering(petsclib::$UnionPetscLib, coarser::MatCoarsen, perm::AbstractIS )
 
     @chk ccall(
                (:MatCoarsenSetGreedyOrdering, $petsc_library),

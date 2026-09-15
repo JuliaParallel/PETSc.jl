@@ -3437,7 +3437,7 @@ function PetscDSGetBoundary(petsclib::PetscLibType, ds::PetscDS, bd::PetscInt) e
 end 
 
 """
-	PetscDSUpdateBoundaryLabels(petsclib::PetscLibType,ds::PetscDS, dm::PetscDM) 
+	PetscDSUpdateBoundaryLabels(petsclib::PetscLibType,ds::PetscDS, dm::AbstractPetscDM) 
 Update `DMLabel` in each boundary condition using the label name and the input `DM`
 
 Not Collective
@@ -3453,9 +3453,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Dm/PetscDSUpdateBoundaryLabels"))
 """
-function PetscDSUpdateBoundaryLabels(petsclib::PetscLibType, ds::PetscDS, dm::PetscDM) end
+function PetscDSUpdateBoundaryLabels(petsclib::PetscLibType, ds::PetscDS, dm::AbstractPetscDM) end
 
-@for_petsc function PetscDSUpdateBoundaryLabels(petsclib::$UnionPetscLib, ds::PetscDS, dm::PetscDM )
+@for_petsc function PetscDSUpdateBoundaryLabels(petsclib::$UnionPetscLib, ds::PetscDS, dm::AbstractPetscDM )
 
     @chk ccall(
                (:PetscDSUpdateBoundaryLabels, $petsc_library),
@@ -3746,14 +3746,14 @@ function PetscDSCopyBounds(petsclib::PetscLibType, ds::PetscDS, newds::PetscDS) 
 end 
 
 """
-	PetscDSCopy(petsclib::PetscLibType,ds::PetscDS, minDegree::PetscInt, maxDegree::PetscInt, dmNew::PetscDM, dsNew::PetscDS) 
+	PetscDSCopy(petsclib::PetscLibType,ds::PetscDS, minDegree::PetscInt, maxDegree::PetscInt, dmNew::AbstractPetscDM, dsNew::PetscDS) 
 
 # External Links
 $(_doc_external("Dm/PetscDSCopy"))
 """
-function PetscDSCopy(petsclib::PetscLibType, ds::PetscDS, minDegree::PetscInt, maxDegree::PetscInt, dmNew::PetscDM, dsNew::PetscDS) end
+function PetscDSCopy(petsclib::PetscLibType, ds::PetscDS, minDegree::PetscInt, maxDegree::PetscInt, dmNew::AbstractPetscDM, dsNew::PetscDS) end
 
-@for_petsc function PetscDSCopy(petsclib::$UnionPetscLib, ds::PetscDS, minDegree::$PetscInt, maxDegree::$PetscInt, dmNew::PetscDM, dsNew::PetscDS )
+@for_petsc function PetscDSCopy(petsclib::$UnionPetscLib, ds::PetscDS, minDegree::$PetscInt, maxDegree::$PetscInt, dmNew::AbstractPetscDM, dsNew::PetscDS )
 
     @chk ccall(
                (:PetscDSCopy, $petsc_library),

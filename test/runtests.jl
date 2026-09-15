@@ -46,6 +46,7 @@ include("test_dmstag.jl")
 include("test_snes.jl")
 include("test_audit.jl")    # leak auditor
 include("test_errors.jl")   # argument validation
+include("wrapper_signatures.jl")  # wrapper arguments take the abstract types
 include("old_test.jl")
 include("low_level_viewer.jl")  # Low-level viewer convenience functions
 include("low_level_ts.jl")      # Low-level TS functions

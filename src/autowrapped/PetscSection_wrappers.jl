@@ -542,7 +542,7 @@ function PetscSectionSetChart(petsclib::PetscLibType, s::PetscSection, pStart::P
 end 
 
 """
-	PetscSectionGetPermutation(petsclib::PetscLibType,s::PetscSection, perm::IS) 
+	PetscSectionGetPermutation(petsclib::PetscLibType,s::PetscSection, perm::AbstractIS) 
 Returns the permutation of [0, `pEnd`
 
 Not Collective
@@ -560,9 +560,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PetscSectionGetPermutation"))
 """
-function PetscSectionGetPermutation(petsclib::PetscLibType, s::PetscSection, perm::IS) end
+function PetscSectionGetPermutation(petsclib::PetscLibType, s::PetscSection, perm::AbstractIS) end
 
-@for_petsc function PetscSectionGetPermutation(petsclib::$UnionPetscLib, s::PetscSection, perm::IS )
+@for_petsc function PetscSectionGetPermutation(petsclib::$UnionPetscLib, s::PetscSection, perm::AbstractIS )
 	perm_ = Ref(perm.ptr)
 
     @chk ccall(
@@ -578,7 +578,7 @@ function PetscSectionGetPermutation(petsclib::PetscLibType, s::PetscSection, per
 end 
 
 """
-	PetscSectionSetPermutation(petsclib::PetscLibType,s::PetscSection, perm::IS) 
+	PetscSectionSetPermutation(petsclib::PetscLibType,s::PetscSection, perm::AbstractIS) 
 Sets a permutation of the chart for this section, [0, `pEnd`
 
 Not Collective
@@ -594,9 +594,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PetscSectionSetPermutation"))
 """
-function PetscSectionSetPermutation(petsclib::PetscLibType, s::PetscSection, perm::IS) end
+function PetscSectionSetPermutation(petsclib::PetscLibType, s::PetscSection, perm::AbstractIS) end
 
-@for_petsc function PetscSectionSetPermutation(petsclib::$UnionPetscLib, s::PetscSection, perm::IS )
+@for_petsc function PetscSectionSetPermutation(petsclib::$UnionPetscLib, s::PetscSection, perm::AbstractIS )
 
     @chk ccall(
                (:PetscSectionSetPermutation, $petsc_library),
@@ -1880,7 +1880,7 @@ function PetscSectionCreateSupersection(petsclib::PetscLibType, s::Vector{PetscS
 end 
 
 """
-	subs::PetscSection = PetscSectionCreateSubmeshSection(petsclib::PetscLibType,s::PetscSection, subpointIS::IS) 
+	subs::PetscSection = PetscSectionCreateSubmeshSection(petsclib::PetscLibType,s::PetscSection, subpointIS::AbstractIS) 
 Create a new, smaller section with support on the submesh
 
 Collective
@@ -1899,9 +1899,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/PetscSectionCreateSubmeshSection"))
 """
-function PetscSectionCreateSubmeshSection(petsclib::PetscLibType, s::PetscSection, subpointIS::IS) end
+function PetscSectionCreateSubmeshSection(petsclib::PetscLibType, s::PetscSection, subpointIS::AbstractIS) end
 
-@for_petsc function PetscSectionCreateSubmeshSection(petsclib::$UnionPetscLib, s::PetscSection, subpointIS::IS )
+@for_petsc function PetscSectionCreateSubmeshSection(petsclib::$UnionPetscLib, s::PetscSection, subpointIS::AbstractIS )
 	subs_ = Ref{PetscSection}()
 
     @chk ccall(
@@ -1917,7 +1917,7 @@ function PetscSectionCreateSubmeshSection(petsclib::PetscLibType, s::PetscSectio
 end 
 
 """
-	subs::PetscSection = PetscSectionCreateSubdomainSection(petsclib::PetscLibType,s::PetscSection, subpointMap::IS) 
+	subs::PetscSection = PetscSectionCreateSubdomainSection(petsclib::PetscLibType,s::PetscSection, subpointMap::AbstractIS) 
 Create a new, smaller section with support on a subdomain of the mesh
 
 Collective
@@ -1936,9 +1936,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/PetscSectionCreateSubdomainSection"))
 """
-function PetscSectionCreateSubdomainSection(petsclib::PetscLibType, s::PetscSection, subpointMap::IS) end
+function PetscSectionCreateSubdomainSection(petsclib::PetscLibType, s::PetscSection, subpointMap::AbstractIS) end
 
-@for_petsc function PetscSectionCreateSubdomainSection(petsclib::$UnionPetscLib, s::PetscSection, subpointMap::IS )
+@for_petsc function PetscSectionCreateSubdomainSection(petsclib::$UnionPetscLib, s::PetscSection, subpointMap::AbstractIS )
 	subs_ = Ref{PetscSection}()
 
     @chk ccall(
@@ -2365,7 +2365,7 @@ function PetscSectionSetFieldConstraintIndices(petsclib::PetscLibType, s::PetscS
 end 
 
 """
-	PetscSectionPermute(petsclib::PetscLibType,section::PetscSection, permutation::IS, sectionNew::PetscSection) 
+	PetscSectionPermute(petsclib::PetscLibType,section::PetscSection, permutation::AbstractIS, sectionNew::PetscSection) 
 Reorder the section according to the input point permutation
 
 Collective
@@ -2384,9 +2384,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PetscSectionPermute"))
 """
-function PetscSectionPermute(petsclib::PetscLibType, section::PetscSection, permutation::IS, sectionNew::PetscSection) end
+function PetscSectionPermute(petsclib::PetscLibType, section::PetscSection, permutation::AbstractIS, sectionNew::PetscSection) end
 
-@for_petsc function PetscSectionPermute(petsclib::$UnionPetscLib, section::PetscSection, permutation::IS, sectionNew::PetscSection )
+@for_petsc function PetscSectionPermute(petsclib::$UnionPetscLib, section::PetscSection, permutation::AbstractIS, sectionNew::PetscSection )
 
     @chk ccall(
                (:PetscSectionPermute, $petsc_library),
@@ -2400,7 +2400,7 @@ function PetscSectionPermute(petsclib::PetscLibType, section::PetscSection, perm
 end 
 
 """
-	PetscSectionSetClosureIndex(petsclib::PetscLibType,section::PetscSection, obj::PetscObject, clSection::PetscSection, clPoints::IS) 
+	PetscSectionSetClosureIndex(petsclib::PetscLibType,section::PetscSection, obj::PetscObject, clSection::PetscSection, clPoints::AbstractIS) 
 Create an internal data structure to speed up closure queries.
 
 Collective
@@ -2418,9 +2418,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/PetscSectionSetClosureIndex"))
 """
-function PetscSectionSetClosureIndex(petsclib::PetscLibType, section::PetscSection, obj::PetscObject, clSection::PetscSection, clPoints::IS) end
+function PetscSectionSetClosureIndex(petsclib::PetscLibType, section::PetscSection, obj::PetscObject, clSection::PetscSection, clPoints::AbstractIS) end
 
-@for_petsc function PetscSectionSetClosureIndex(petsclib::$UnionPetscLib, section::PetscSection, obj::PetscObject, clSection::PetscSection, clPoints::IS )
+@for_petsc function PetscSectionSetClosureIndex(petsclib::$UnionPetscLib, section::PetscSection, obj::PetscObject, clSection::PetscSection, clPoints::AbstractIS )
 
     @chk ccall(
                (:PetscSectionSetClosureIndex, $petsc_library),
@@ -2434,7 +2434,7 @@ function PetscSectionSetClosureIndex(petsclib::PetscLibType, section::PetscSecti
 end 
 
 """
-	PetscSectionGetClosureIndex(petsclib::PetscLibType,section::PetscSection, obj::PetscObject, clSection::PetscSection, clPoints::IS) 
+	PetscSectionGetClosureIndex(petsclib::PetscLibType,section::PetscSection, obj::PetscObject, clSection::PetscSection, clPoints::AbstractIS) 
 Get the cache of points in the closure of each point in the section set with `PetscSectionSetClosureIndex()`
 
 Collective
@@ -2454,9 +2454,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/PetscSectionGetClosureIndex"))
 """
-function PetscSectionGetClosureIndex(petsclib::PetscLibType, section::PetscSection, obj::PetscObject, clSection::PetscSection, clPoints::IS) end
+function PetscSectionGetClosureIndex(petsclib::PetscLibType, section::PetscSection, obj::PetscObject, clSection::PetscSection, clPoints::AbstractIS) end
 
-@for_petsc function PetscSectionGetClosureIndex(petsclib::$UnionPetscLib, section::PetscSection, obj::PetscObject, clSection::PetscSection, clPoints::IS )
+@for_petsc function PetscSectionGetClosureIndex(petsclib::$UnionPetscLib, section::PetscSection, obj::PetscObject, clSection::PetscSection, clPoints::AbstractIS )
 	clPoints_ = Ref(clPoints.ptr)
 
     @chk ccall(
@@ -2472,7 +2472,7 @@ function PetscSectionGetClosureIndex(petsclib::PetscLibType, section::PetscSecti
 end 
 
 """
-	PetscSectionSetClosurePermutation(petsclib::PetscLibType,section::PetscSection, obj::PetscObject, depth::PetscInt, perm::IS) 
+	PetscSectionSetClosurePermutation(petsclib::PetscLibType,section::PetscSection, obj::PetscObject, depth::PetscInt, perm::AbstractIS) 
 Set the dof permutation for the closure of each cell in the section, meaning clPerm[newIndex] = oldIndex.
 
 Not Collective
@@ -2490,9 +2490,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PetscSectionSetClosurePermutation"))
 """
-function PetscSectionSetClosurePermutation(petsclib::PetscLibType, section::PetscSection, obj::PetscObject, depth::PetscInt, perm::IS) end
+function PetscSectionSetClosurePermutation(petsclib::PetscLibType, section::PetscSection, obj::PetscObject, depth::PetscInt, perm::AbstractIS) end
 
-@for_petsc function PetscSectionSetClosurePermutation(petsclib::$UnionPetscLib, section::PetscSection, obj::PetscObject, depth::$PetscInt, perm::IS )
+@for_petsc function PetscSectionSetClosurePermutation(petsclib::$UnionPetscLib, section::PetscSection, obj::PetscObject, depth::$PetscInt, perm::AbstractIS )
 
     @chk ccall(
                (:PetscSectionSetClosurePermutation, $petsc_library),
@@ -2506,7 +2506,7 @@ function PetscSectionSetClosurePermutation(petsclib::PetscLibType, section::Pets
 end 
 
 """
-	PetscSectionGetClosurePermutation(petsclib::PetscLibType,section::PetscSection, obj::PetscObject, depth::PetscInt, clSize::PetscInt, perm::IS) 
+	PetscSectionGetClosurePermutation(petsclib::PetscLibType,section::PetscSection, obj::PetscObject, depth::PetscInt, clSize::PetscInt, perm::AbstractIS) 
 Get the dof permutation for the closure of each cell in the section, meaning clPerm[newIndex] = oldIndex.
 
 Not Collective
@@ -2527,9 +2527,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PetscSectionGetClosurePermutation"))
 """
-function PetscSectionGetClosurePermutation(petsclib::PetscLibType, section::PetscSection, obj::PetscObject, depth::PetscInt, clSize::PetscInt, perm::IS) end
+function PetscSectionGetClosurePermutation(petsclib::PetscLibType, section::PetscSection, obj::PetscObject, depth::PetscInt, clSize::PetscInt, perm::AbstractIS) end
 
-@for_petsc function PetscSectionGetClosurePermutation(petsclib::$UnionPetscLib, section::PetscSection, obj::PetscObject, depth::$PetscInt, clSize::$PetscInt, perm::IS )
+@for_petsc function PetscSectionGetClosurePermutation(petsclib::$UnionPetscLib, section::PetscSection, obj::PetscObject, depth::$PetscInt, clSize::$PetscInt, perm::AbstractIS )
 	perm_ = Ref(perm.ptr)
 
     @chk ccall(
@@ -2545,7 +2545,7 @@ function PetscSectionGetClosurePermutation(petsclib::PetscLibType, section::Pets
 end 
 
 """
-	PetscSectionGetClosureInversePermutation(petsclib::PetscLibType,section::PetscSection, obj::PetscObject, depth::PetscInt, clSize::PetscInt, perm::IS) 
+	PetscSectionGetClosureInversePermutation(petsclib::PetscLibType,section::PetscSection, obj::PetscObject, depth::PetscInt, clSize::PetscInt, perm::AbstractIS) 
 Get the inverse dof permutation for the closure of each cell in the section, meaning clPerm[oldIndex] = newIndex.
 
 Not Collective
@@ -2566,9 +2566,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PetscSectionGetClosureInversePermutation"))
 """
-function PetscSectionGetClosureInversePermutation(petsclib::PetscLibType, section::PetscSection, obj::PetscObject, depth::PetscInt, clSize::PetscInt, perm::IS) end
+function PetscSectionGetClosureInversePermutation(petsclib::PetscLibType, section::PetscSection, obj::PetscObject, depth::PetscInt, clSize::PetscInt, perm::AbstractIS) end
 
-@for_petsc function PetscSectionGetClosureInversePermutation(petsclib::$UnionPetscLib, section::PetscSection, obj::PetscObject, depth::$PetscInt, clSize::$PetscInt, perm::IS )
+@for_petsc function PetscSectionGetClosureInversePermutation(petsclib::$UnionPetscLib, section::PetscSection, obj::PetscObject, depth::$PetscInt, clSize::$PetscInt, perm::AbstractIS )
 	perm_ = Ref(perm.ptr)
 
     @chk ccall(
@@ -2982,7 +2982,7 @@ function PetscSectionSetUseFieldOffsets(petsclib::PetscLibType, s::PetscSection,
 end 
 
 """
-	PetscSectionVecView(petsclib::PetscLibType,s::PetscSection, v::PetscVec, viewer::PetscViewer) 
+	PetscSectionVecView(petsclib::PetscLibType,s::PetscSection, v::AbstractPetscVec, viewer::PetscViewer) 
 View a vector, using the section to structure the values
 
 Collective
@@ -2999,9 +2999,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/PetscSectionVecView"))
 """
-function PetscSectionVecView(petsclib::PetscLibType, s::PetscSection, v::PetscVec, viewer::PetscViewer) end
+function PetscSectionVecView(petsclib::PetscLibType, s::PetscSection, v::AbstractPetscVec, viewer::PetscViewer) end
 
-@for_petsc function PetscSectionVecView(petsclib::$UnionPetscLib, s::PetscSection, v::PetscVec, viewer::PetscViewer )
+@for_petsc function PetscSectionVecView(petsclib::$UnionPetscLib, s::PetscSection, v::AbstractPetscVec, viewer::PetscViewer )
 
     @chk ccall(
                (:PetscSectionVecView, $petsc_library),
@@ -3015,7 +3015,7 @@ function PetscSectionVecView(petsclib::PetscLibType, s::PetscSection, v::PetscVe
 end 
 
 """
-	val::Vector{PetscReal} = PetscSectionVecNorm(petsclib::PetscLibType,s::PetscSection, gs::PetscSection, x::PetscVec, type::NormType) 
+	val::Vector{PetscReal} = PetscSectionVecNorm(petsclib::PetscLibType,s::PetscSection, gs::PetscSection, x::AbstractPetscVec, type::NormType) 
 Computes the vector norm of each field
 
 Input Parameters:
@@ -3034,9 +3034,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PetscSectionVecNorm"))
 """
-function PetscSectionVecNorm(petsclib::PetscLibType, s::PetscSection, gs::PetscSection, x::PetscVec, type::NormType) end
+function PetscSectionVecNorm(petsclib::PetscLibType, s::PetscSection, gs::PetscSection, x::AbstractPetscVec, type::NormType) end
 
-@for_petsc function PetscSectionVecNorm(petsclib::$UnionPetscLib, s::PetscSection, gs::PetscSection, x::PetscVec, type::NormType )
+@for_petsc function PetscSectionVecNorm(petsclib::$UnionPetscLib, s::PetscSection, gs::PetscSection, x::AbstractPetscVec, type::NormType )
 	val = Vector{$PetscReal}(undef, ni);  # CHECK SIZE!!
 
     @chk ccall(

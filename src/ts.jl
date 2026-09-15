@@ -9,7 +9,7 @@ gap so callback-based TS examples can use the low-level interface naturally.
 """
 function LibPETSc.TSSetRHSFunction(
     petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     r::AbstractPetscVec,
     fptr::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
@@ -17,7 +17,7 @@ function LibPETSc.TSSetRHSFunction(
 
 LibPETSc.@for_petsc function LibPETSc.TSSetRHSFunction(
     petsclib::$UnionPetscLib,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     r::AbstractPetscVec{$PetscLib},
     fptr::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
@@ -37,7 +37,7 @@ end
 
 function LibPETSc.TSSetRHSFunction(
     petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     ::Nothing,
     fptr::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
@@ -45,7 +45,7 @@ function LibPETSc.TSSetRHSFunction(
 
 LibPETSc.@for_petsc function LibPETSc.TSSetRHSFunction(
     petsclib::$UnionPetscLib,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     ::Nothing,
     fptr::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
@@ -71,7 +71,7 @@ Convenience overload for low-level TS implicit-function callbacks created with
 """
 function LibPETSc.TSSetIFunction(
     petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     r::AbstractPetscVec,
     fptr::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
@@ -79,7 +79,7 @@ function LibPETSc.TSSetIFunction(
 
 LibPETSc.@for_petsc function LibPETSc.TSSetIFunction(
     petsclib::$UnionPetscLib,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     r::AbstractPetscVec{$PetscLib},
     fptr::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
@@ -99,7 +99,7 @@ end
 
 function LibPETSc.TSSetIFunction(
     petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     ::Nothing,
     fptr::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
@@ -107,7 +107,7 @@ function LibPETSc.TSSetIFunction(
 
 LibPETSc.@for_petsc function LibPETSc.TSSetIFunction(
     petsclib::$UnionPetscLib,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     ::Nothing,
     fptr::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
@@ -133,7 +133,7 @@ Convenience overload for low-level TS implicit-Jacobian callbacks created with
 """
 function LibPETSc.TSSetIJacobian(
     petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     A::AbstractPetscMat,
     P::AbstractPetscMat,
     fptr::Ptr{Cvoid},
@@ -142,7 +142,7 @@ function LibPETSc.TSSetIJacobian(
 
 LibPETSc.@for_petsc function LibPETSc.TSSetIJacobian(
     petsclib::$UnionPetscLib,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     A::AbstractPetscMat{$PetscLib},
     P::AbstractPetscMat{$PetscLib},
     fptr::Ptr{Cvoid},
@@ -169,12 +169,12 @@ Return the adaptive time-step controller attached to `ts`.
 """
 function LibPETSc.TSGetAdapt(
     petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
 ) end
 
 LibPETSc.@for_petsc function LibPETSc.TSGetAdapt(
     petsclib::$UnionPetscLib,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
 )
     adapt_ref = Ref{LibPETSc.TSAdapt}()
     LibPETSc.@chk ccall(
@@ -194,12 +194,12 @@ Return the number of stages currently configured for a `TSIRK` method.
 """
 function LibPETSc.TSIRKGetNumStages(
     petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
 ) end
 
 LibPETSc.@for_petsc function LibPETSc.TSIRKGetNumStages(
     petsclib::$UnionPetscLib,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
 )
     nstages_ref = Ref{$PetscInt}()
     LibPETSc.@chk ccall(
@@ -236,7 +236,7 @@ Convenience overload for low-level TS monitor callbacks created with
 """
 function LibPETSc.TSMonitorSet(
     petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     monitor::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
     mdestroy::Ptr{Cvoid} = C_NULL,
@@ -244,7 +244,7 @@ function LibPETSc.TSMonitorSet(
 
 LibPETSc.@for_petsc function LibPETSc.TSMonitorSet(
     petsclib::$UnionPetscLib,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     monitor::Ptr{Cvoid},
     ctx::Ptr{Cvoid} = C_NULL,
     mdestroy::Ptr{Cvoid} = C_NULL,
@@ -615,11 +615,11 @@ The vector is owned by `ts` and must not be destroyed.
 # External Links
 $(_doc_external("TS/TSGetSolution"))
 """
-function LibPETSc.TSGetSolution(petsclib::LibPETSc.PetscLibType, ts::TS) end
+function LibPETSc.TSGetSolution(petsclib::LibPETSc.PetscLibType, ts::AbstractTS) end
 
 LibPETSc.@for_petsc function LibPETSc.TSGetSolution(
     petsclib::$UnionPetscLib,
-    ts::TS,
+    ts::AbstractTS,
 )
     v_ = Ref{CVec}(C_NULL)
     LibPETSc.@chk ccall(
@@ -902,12 +902,12 @@ $(_doc_external("TS/TSGetSNES"))
 """
 function LibPETSc.TSGetSNES(
     petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
 ) end
 
 LibPETSc.@for_petsc function LibPETSc.TSGetSNES(
     petsclib::$UnionPetscLib,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
 )
     snes_ = Ref{LibPETSc.CSNES}(C_NULL)
     LibPETSc.@chk ccall(
@@ -932,11 +932,11 @@ The `KSP` is owned by `ts` and must not be destroyed.
 # External Links
 $(_doc_external("TS/TSGetKSP"))
 """
-function LibPETSc.TSGetKSP(petsclib::LibPETSc.PetscLibType, ts::LibPETSc.TS) end
+function LibPETSc.TSGetKSP(petsclib::LibPETSc.PetscLibType, ts::LibPETSc.AbstractTS) end
 
 LibPETSc.@for_petsc function LibPETSc.TSGetKSP(
     petsclib::$UnionPetscLib,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
 )
     ksp_ = Ref{LibPETSc.CKSP}(C_NULL)
     LibPETSc.@chk ccall(
@@ -1018,13 +1018,13 @@ $(_doc_external("TS/TSSolve"))
 """
 function LibPETSc.TSSolve(
     petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     ::Nothing,
 ) end
 
 LibPETSc.@for_petsc function LibPETSc.TSSolve(
     petsclib::$UnionPetscLib,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     ::Nothing,
 )
     LibPETSc.@chk ccall(
@@ -1176,7 +1176,7 @@ $(_doc_external("TS/TSSetRHSJacobian"))
 """
 function LibPETSc.TSSetRHSJacobian(
     petsclib::LibPETSc.PetscLibType,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     A::AbstractPetscMat,
     P::AbstractPetscMat,
     fptr::Ptr{Cvoid},
@@ -1185,7 +1185,7 @@ function LibPETSc.TSSetRHSJacobian(
 
 LibPETSc.@for_petsc function LibPETSc.TSSetRHSJacobian(
     petsclib::$UnionPetscLib,
-    ts::LibPETSc.TS,
+    ts::LibPETSc.AbstractTS,
     A::AbstractPetscMat{$PetscLib},
     P::AbstractPetscMat{$PetscLib},
     fptr::Ptr{Cvoid},

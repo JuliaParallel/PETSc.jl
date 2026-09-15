@@ -58,7 +58,7 @@ function TaoInitializePackage(petsclib::PetscLibType) end
 end 
 
 """
-	TaoSetSolution(petsclib::PetscLibType,tao::Tao, x0::PetscVec) 
+	TaoSetSolution(petsclib::PetscLibType,tao::AbstractTao, x0::AbstractPetscVec) 
 Sets the vector holding the initial guess for the solve
 
 Logically Collective
@@ -74,9 +74,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetSolution"))
 """
-function TaoSetSolution(petsclib::PetscLibType, tao::Tao, x0::PetscVec) end
+function TaoSetSolution(petsclib::PetscLibType, tao::AbstractTao, x0::AbstractPetscVec) end
 
-@for_petsc function TaoSetSolution(petsclib::$UnionPetscLib, tao::Tao, x0::PetscVec )
+@for_petsc function TaoSetSolution(petsclib::$UnionPetscLib, tao::AbstractTao, x0::AbstractPetscVec )
 
     @chk ccall(
                (:TaoSetSolution, $petsc_library),
@@ -90,14 +90,14 @@ function TaoSetSolution(petsclib::PetscLibType, tao::Tao, x0::PetscVec) end
 end 
 
 """
-	TaoTestGradient(petsclib::PetscLibType,tao::Tao, x::PetscVec, g1::PetscVec) 
+	TaoTestGradient(petsclib::PetscLibType,tao::AbstractTao, x::AbstractPetscVec, g1::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("Tao/TaoTestGradient"))
 """
-function TaoTestGradient(petsclib::PetscLibType, tao::Tao, x::PetscVec, g1::PetscVec) end
+function TaoTestGradient(petsclib::PetscLibType, tao::AbstractTao, x::AbstractPetscVec, g1::AbstractPetscVec) end
 
-@for_petsc function TaoTestGradient(petsclib::$UnionPetscLib, tao::Tao, x::PetscVec, g1::PetscVec )
+@for_petsc function TaoTestGradient(petsclib::$UnionPetscLib, tao::AbstractTao, x::AbstractPetscVec, g1::AbstractPetscVec )
 
     @chk ccall(
                (:TaoTestGradient, $petsc_library),
@@ -111,7 +111,7 @@ function TaoTestGradient(petsclib::PetscLibType, tao::Tao, x::PetscVec, g1::Pets
 end 
 
 """
-	TaoComputeGradient(petsclib::PetscLibType,tao::Tao, X::PetscVec, G::PetscVec) 
+	TaoComputeGradient(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec) 
 Computes the gradient of the objective function
 
 Collective
@@ -134,9 +134,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeGradient"))
 """
-function TaoComputeGradient(petsclib::PetscLibType, tao::Tao, X::PetscVec, G::PetscVec) end
+function TaoComputeGradient(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec) end
 
-@for_petsc function TaoComputeGradient(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, G::PetscVec )
+@for_petsc function TaoComputeGradient(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec )
 
     @chk ccall(
                (:TaoComputeGradient, $petsc_library),
@@ -150,7 +150,7 @@ function TaoComputeGradient(petsclib::PetscLibType, tao::Tao, X::PetscVec, G::Pe
 end 
 
 """
-	f::PetscReal = TaoComputeObjective(petsclib::PetscLibType,tao::Tao, X::PetscVec) 
+	f::PetscReal = TaoComputeObjective(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec) 
 Computes the objective function value at a given point
 
 Collective
@@ -169,9 +169,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeObjective"))
 """
-function TaoComputeObjective(petsclib::PetscLibType, tao::Tao, X::PetscVec) end
+function TaoComputeObjective(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec) end
 
-@for_petsc function TaoComputeObjective(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec )
+@for_petsc function TaoComputeObjective(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec )
 	f_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -187,7 +187,7 @@ function TaoComputeObjective(petsclib::PetscLibType, tao::Tao, X::PetscVec) end
 end 
 
 """
-	f::PetscReal = TaoComputeObjectiveAndGradient(petsclib::PetscLibType,tao::Tao, X::PetscVec, G::PetscVec) 
+	f::PetscReal = TaoComputeObjectiveAndGradient(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec) 
 Computes the objective function value at a given point
 
 Collective
@@ -207,9 +207,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeObjectiveAndGradient"))
 """
-function TaoComputeObjectiveAndGradient(petsclib::PetscLibType, tao::Tao, X::PetscVec, G::PetscVec) end
+function TaoComputeObjectiveAndGradient(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec) end
 
-@for_petsc function TaoComputeObjectiveAndGradient(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, G::PetscVec )
+@for_petsc function TaoComputeObjectiveAndGradient(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, G::AbstractPetscVec )
 	f_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -225,7 +225,7 @@ function TaoComputeObjectiveAndGradient(petsclib::PetscLibType, tao::Tao, X::Pet
 end 
 
 """
-	TaoSetObjective(petsclib::PetscLibType,tao::Tao, func::external, ctx::Cvoid) 
+	TaoSetObjective(petsclib::PetscLibType,tao::AbstractTao, func::external, ctx::Cvoid) 
 Sets the function evaluation routine for minimization
 
 Logically Collective
@@ -249,9 +249,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetObjective"))
 """
-function TaoSetObjective(petsclib::PetscLibType, tao::Tao, func::external, ctx::Cvoid) end
+function TaoSetObjective(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetObjective(petsclib::$UnionPetscLib, tao::Tao, func::external, ctx::Cvoid )
+@for_petsc function TaoSetObjective(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetObjective, $petsc_library),
@@ -265,7 +265,7 @@ function TaoSetObjective(petsclib::PetscLibType, tao::Tao, func::external, ctx::
 end 
 
 """
-	TaoSetResidualRoutine(petsclib::PetscLibType,tao::Tao, res::PetscVec, func::external, ctx::Cvoid) 
+	TaoSetResidualRoutine(petsclib::PetscLibType,tao::AbstractTao, res::AbstractPetscVec, func::external, ctx::Cvoid) 
 Sets the residual evaluation routine for least
 
 Logically Collective
@@ -290,9 +290,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetResidualRoutine"))
 """
-function TaoSetResidualRoutine(petsclib::PetscLibType, tao::Tao, res::PetscVec, func::external, ctx::Cvoid) end
+function TaoSetResidualRoutine(petsclib::PetscLibType, tao::AbstractTao, res::AbstractPetscVec, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetResidualRoutine(petsclib::$UnionPetscLib, tao::Tao, res::PetscVec, func::external, ctx::Cvoid )
+@for_petsc function TaoSetResidualRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, res::AbstractPetscVec, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetResidualRoutine, $petsc_library),
@@ -306,7 +306,7 @@ function TaoSetResidualRoutine(petsclib::PetscLibType, tao::Tao, res::PetscVec, 
 end 
 
 """
-	TaoSetResidualWeights(petsclib::PetscLibType,tao::Tao, sigma_v::PetscVec, n::PetscInt, rows::PetscInt, cols::PetscInt, vals::PetscReal) 
+	TaoSetResidualWeights(petsclib::PetscLibType,tao::AbstractTao, sigma_v::AbstractPetscVec, n::PetscInt, rows::PetscInt, cols::PetscInt, vals::PetscReal) 
 Give weights for the residual values. A vector can be used if only diagonal terms are used, otherwise a matrix can be give.
 
 Collective
@@ -326,9 +326,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetResidualWeights"))
 """
-function TaoSetResidualWeights(petsclib::PetscLibType, tao::Tao, sigma_v::PetscVec, n::PetscInt, rows::PetscInt, cols::PetscInt, vals::PetscReal) end
+function TaoSetResidualWeights(petsclib::PetscLibType, tao::AbstractTao, sigma_v::AbstractPetscVec, n::PetscInt, rows::PetscInt, cols::PetscInt, vals::PetscReal) end
 
-@for_petsc function TaoSetResidualWeights(petsclib::$UnionPetscLib, tao::Tao, sigma_v::PetscVec, n::$PetscInt, rows::$PetscInt, cols::$PetscInt, vals::$PetscReal )
+@for_petsc function TaoSetResidualWeights(petsclib::$UnionPetscLib, tao::AbstractTao, sigma_v::AbstractPetscVec, n::$PetscInt, rows::$PetscInt, cols::$PetscInt, vals::$PetscReal )
 
     @chk ccall(
                (:TaoSetResidualWeights, $petsc_library),
@@ -342,7 +342,7 @@ function TaoSetResidualWeights(petsclib::PetscLibType, tao::Tao, sigma_v::PetscV
 end 
 
 """
-	TaoComputeResidual(petsclib::PetscLibType,tao::Tao, X::PetscVec, F::PetscVec) 
+	TaoComputeResidual(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, F::AbstractPetscVec) 
 Computes a least
 
 Collective
@@ -361,9 +361,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoComputeResidual"))
 """
-function TaoComputeResidual(petsclib::PetscLibType, tao::Tao, X::PetscVec, F::PetscVec) end
+function TaoComputeResidual(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, F::AbstractPetscVec) end
 
-@for_petsc function TaoComputeResidual(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, F::PetscVec )
+@for_petsc function TaoComputeResidual(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, F::AbstractPetscVec )
 
     @chk ccall(
                (:TaoComputeResidual, $petsc_library),
@@ -377,7 +377,7 @@ function TaoComputeResidual(petsclib::PetscLibType, tao::Tao, X::PetscVec, F::Pe
 end 
 
 """
-	TaoSetGradient(petsclib::PetscLibType,tao::Tao, g::PetscVec, func::external, ctx::Cvoid) 
+	TaoSetGradient(petsclib::PetscLibType,tao::AbstractTao, g::AbstractPetscVec, func::external, ctx::Cvoid) 
 Sets the gradient evaluation routine for the function to be optimized
 
 Logically Collective
@@ -402,9 +402,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetGradient"))
 """
-function TaoSetGradient(petsclib::PetscLibType, tao::Tao, g::PetscVec, func::external, ctx::Cvoid) end
+function TaoSetGradient(petsclib::PetscLibType, tao::AbstractTao, g::AbstractPetscVec, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetGradient(petsclib::$UnionPetscLib, tao::Tao, g::PetscVec, func::external, ctx::Cvoid )
+@for_petsc function TaoSetGradient(petsclib::$UnionPetscLib, tao::AbstractTao, g::AbstractPetscVec, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetGradient, $petsc_library),
@@ -418,7 +418,7 @@ function TaoSetGradient(petsclib::PetscLibType, tao::Tao, g::PetscVec, func::ext
 end 
 
 """
-	TaoSetObjectiveAndGradient(petsclib::PetscLibType,tao::Tao, g::PetscVec, func::external, ctx::Cvoid) 
+	TaoSetObjectiveAndGradient(petsclib::PetscLibType,tao::AbstractTao, g::AbstractPetscVec, func::external, ctx::Cvoid) 
 Sets a combined objective function and gradient evaluation routine for the function to be optimized
 
 Logically Collective
@@ -444,9 +444,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetObjectiveAndGradient"))
 """
-function TaoSetObjectiveAndGradient(petsclib::PetscLibType, tao::Tao, g::PetscVec, func::external, ctx::Cvoid) end
+function TaoSetObjectiveAndGradient(petsclib::PetscLibType, tao::AbstractTao, g::AbstractPetscVec, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetObjectiveAndGradient(petsclib::$UnionPetscLib, tao::Tao, g::PetscVec, func::external, ctx::Cvoid )
+@for_petsc function TaoSetObjectiveAndGradient(petsclib::$UnionPetscLib, tao::AbstractTao, g::AbstractPetscVec, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetObjectiveAndGradient, $petsc_library),
@@ -460,7 +460,7 @@ function TaoSetObjectiveAndGradient(petsclib::PetscLibType, tao::Tao, g::PetscVe
 end 
 
 """
-	flg::PetscBool = TaoIsObjectiveDefined(petsclib::PetscLibType,tao::Tao) 
+	flg::PetscBool = TaoIsObjectiveDefined(petsclib::PetscLibType,tao::AbstractTao) 
 Checks to see if the user has
 declared an objective-only routine.  Useful for determining when
 it is appropriate to call `TaoComputeObjective()` or
@@ -481,9 +481,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoIsObjectiveDefined"))
 """
-function TaoIsObjectiveDefined(petsclib::PetscLibType, tao::Tao) end
+function TaoIsObjectiveDefined(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoIsObjectiveDefined(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoIsObjectiveDefined(petsclib::$UnionPetscLib, tao::AbstractTao )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -499,7 +499,7 @@ function TaoIsObjectiveDefined(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	flg::PetscBool = TaoIsGradientDefined(petsclib::PetscLibType,tao::Tao) 
+	flg::PetscBool = TaoIsGradientDefined(petsclib::PetscLibType,tao::AbstractTao) 
 Checks to see if the user has
 declared an objective-only routine.  Useful for determining when
 it is appropriate to call `TaoComputeGradient()` or
@@ -520,9 +520,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoIsGradientDefined"))
 """
-function TaoIsGradientDefined(petsclib::PetscLibType, tao::Tao) end
+function TaoIsGradientDefined(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoIsGradientDefined(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoIsGradientDefined(petsclib::$UnionPetscLib, tao::AbstractTao )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -538,7 +538,7 @@ function TaoIsGradientDefined(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	flg::PetscBool = TaoIsObjectiveAndGradientDefined(petsclib::PetscLibType,tao::Tao) 
+	flg::PetscBool = TaoIsObjectiveAndGradientDefined(petsclib::PetscLibType,tao::AbstractTao) 
 Checks to see if the user has
 declared a joint objective/gradient routine.  Useful for determining when
 it is appropriate to call `TaoComputeObjective()` or
@@ -559,9 +559,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoIsObjectiveAndGradientDefined"))
 """
-function TaoIsObjectiveAndGradientDefined(petsclib::PetscLibType, tao::Tao) end
+function TaoIsObjectiveAndGradientDefined(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoIsObjectiveAndGradientDefined(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoIsObjectiveAndGradientDefined(petsclib::$UnionPetscLib, tao::AbstractTao )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -577,7 +577,7 @@ function TaoIsObjectiveAndGradientDefined(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoSetHessian(petsclib::PetscLibType,tao::Tao, H::PetscMat, Hpre::PetscMat, func::external, ctx::Cvoid) 
+	TaoSetHessian(petsclib::PetscLibType,tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Cvoid) 
 Sets the function to compute the Hessian as well as the location to store the matrix.
 
 Logically Collective
@@ -604,9 +604,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetHessian"))
 """
-function TaoSetHessian(petsclib::PetscLibType, tao::Tao, H::PetscMat, Hpre::PetscMat, func::external, ctx::Cvoid) end
+function TaoSetHessian(petsclib::PetscLibType, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetHessian(petsclib::$UnionPetscLib, tao::Tao, H::PetscMat, Hpre::PetscMat, func::external, ctx::Cvoid )
+@for_petsc function TaoSetHessian(petsclib::$UnionPetscLib, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetHessian, $petsc_library),
@@ -620,14 +620,14 @@ function TaoSetHessian(petsclib::PetscLibType, tao::Tao, H::PetscMat, Hpre::Pets
 end 
 
 """
-	TaoTestHessian(petsclib::PetscLibType,tao::Tao) 
+	TaoTestHessian(petsclib::PetscLibType,tao::AbstractTao) 
 
 # External Links
 $(_doc_external("Tao/TaoTestHessian"))
 """
-function TaoTestHessian(petsclib::PetscLibType, tao::Tao) end
+function TaoTestHessian(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoTestHessian(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoTestHessian(petsclib::$UnionPetscLib, tao::AbstractTao )
 
     @chk ccall(
                (:TaoTestHessian, $petsc_library),
@@ -641,7 +641,7 @@ function TaoTestHessian(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoComputeHessian(petsclib::PetscLibType,tao::Tao, X::PetscVec, H::PetscMat, Hpre::PetscMat) 
+	TaoComputeHessian(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat) 
 Computes the Hessian matrix that has been
 set with `TaoSetHessian()`.
 
@@ -667,9 +667,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeHessian"))
 """
-function TaoComputeHessian(petsclib::PetscLibType, tao::Tao, X::PetscVec, H::PetscMat, Hpre::PetscMat) end
+function TaoComputeHessian(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat) end
 
-@for_petsc function TaoComputeHessian(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, H::PetscMat, Hpre::PetscMat )
+@for_petsc function TaoComputeHessian(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, Hpre::AbstractPetscMat )
 
     @chk ccall(
                (:TaoComputeHessian, $petsc_library),
@@ -683,7 +683,7 @@ function TaoComputeHessian(petsclib::PetscLibType, tao::Tao, X::PetscVec, H::Pet
 end 
 
 """
-	TaoComputeJacobian(petsclib::PetscLibType,tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat) 
+	TaoComputeJacobian(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) 
 Computes the Jacobian matrix that has been
 set with TaoSetJacobianRoutine().
 
@@ -704,9 +704,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeJacobian"))
 """
-function TaoComputeJacobian(petsclib::PetscLibType, tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat) end
+function TaoComputeJacobian(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) end
 
-@for_petsc function TaoComputeJacobian(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat )
+@for_petsc function TaoComputeJacobian(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat )
 
     @chk ccall(
                (:TaoComputeJacobian, $petsc_library),
@@ -720,7 +720,7 @@ function TaoComputeJacobian(petsclib::PetscLibType, tao::Tao, X::PetscVec, J::Pe
 end 
 
 """
-	TaoComputeResidualJacobian(petsclib::PetscLibType,tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat) 
+	TaoComputeResidualJacobian(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) 
 Computes the least
 set with `TaoSetJacobianResidual()`.
 
@@ -741,9 +741,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeResidualJacobian"))
 """
-function TaoComputeResidualJacobian(petsclib::PetscLibType, tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat) end
+function TaoComputeResidualJacobian(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) end
 
-@for_petsc function TaoComputeResidualJacobian(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat )
+@for_petsc function TaoComputeResidualJacobian(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat )
 
     @chk ccall(
                (:TaoComputeResidualJacobian, $petsc_library),
@@ -757,7 +757,7 @@ function TaoComputeResidualJacobian(petsclib::PetscLibType, tao::Tao, X::PetscVe
 end 
 
 """
-	TaoComputeJacobianState(petsclib::PetscLibType,tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat, Jinv::PetscMat) 
+	TaoComputeJacobianState(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat, Jinv::AbstractPetscMat) 
 Computes the Jacobian matrix that has been
 set with `TaoSetJacobianStateRoutine()`.
 
@@ -779,9 +779,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeJacobianState"))
 """
-function TaoComputeJacobianState(petsclib::PetscLibType, tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat, Jinv::PetscMat) end
+function TaoComputeJacobianState(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat, Jinv::AbstractPetscMat) end
 
-@for_petsc function TaoComputeJacobianState(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat, Jinv::PetscMat )
+@for_petsc function TaoComputeJacobianState(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat, Jinv::AbstractPetscMat )
 
     @chk ccall(
                (:TaoComputeJacobianState, $petsc_library),
@@ -795,7 +795,7 @@ function TaoComputeJacobianState(petsclib::PetscLibType, tao::Tao, X::PetscVec, 
 end 
 
 """
-	TaoComputeJacobianDesign(petsclib::PetscLibType,tao::Tao, X::PetscVec, J::PetscMat) 
+	TaoComputeJacobianDesign(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat) 
 Computes the Jacobian matrix that has been
 set with `TaoSetJacobianDesignRoutine()`.
 
@@ -815,9 +815,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeJacobianDesign"))
 """
-function TaoComputeJacobianDesign(petsclib::PetscLibType, tao::Tao, X::PetscVec, J::PetscMat) end
+function TaoComputeJacobianDesign(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat) end
 
-@for_petsc function TaoComputeJacobianDesign(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, J::PetscMat )
+@for_petsc function TaoComputeJacobianDesign(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat )
 
     @chk ccall(
                (:TaoComputeJacobianDesign, $petsc_library),
@@ -831,7 +831,7 @@ function TaoComputeJacobianDesign(petsclib::PetscLibType, tao::Tao, X::PetscVec,
 end 
 
 """
-	TaoSetJacobianRoutine(petsclib::PetscLibType,tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid) 
+	TaoSetJacobianRoutine(petsclib::PetscLibType,tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid) 
 Sets the function to compute the Jacobian as well as the location to store the matrix.
 
 Logically Collective
@@ -858,9 +858,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetJacobianRoutine"))
 """
-function TaoSetJacobianRoutine(petsclib::PetscLibType, tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid) end
+function TaoSetJacobianRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetJacobianRoutine(petsclib::$UnionPetscLib, tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid )
+@for_petsc function TaoSetJacobianRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetJacobianRoutine, $petsc_library),
@@ -874,7 +874,7 @@ function TaoSetJacobianRoutine(petsclib::PetscLibType, tao::Tao, J::PetscMat, Jp
 end 
 
 """
-	TaoSetJacobianResidualRoutine(petsclib::PetscLibType,tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid) 
+	TaoSetJacobianResidualRoutine(petsclib::PetscLibType,tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid) 
 Sets the function to compute the least
 location to store the matrix.
 
@@ -902,9 +902,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetJacobianResidualRoutine"))
 """
-function TaoSetJacobianResidualRoutine(petsclib::PetscLibType, tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid) end
+function TaoSetJacobianResidualRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetJacobianResidualRoutine(petsclib::$UnionPetscLib, tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid )
+@for_petsc function TaoSetJacobianResidualRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetJacobianResidualRoutine, $petsc_library),
@@ -918,7 +918,7 @@ function TaoSetJacobianResidualRoutine(petsclib::PetscLibType, tao::Tao, J::Pets
 end 
 
 """
-	TaoSetJacobianStateRoutine(petsclib::PetscLibType,tao::Tao, J::PetscMat, Jpre::PetscMat, Jinv::PetscMat, func::external, ctx::Cvoid) 
+	TaoSetJacobianStateRoutine(petsclib::PetscLibType,tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, Jinv::AbstractPetscMat, func::external, ctx::Cvoid) 
 Sets the function to compute the Jacobian
 (and its inverse) of the constraint function with respect to the state variables.
 Used only for PDE-constrained optimization.
@@ -949,9 +949,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetJacobianStateRoutine"))
 """
-function TaoSetJacobianStateRoutine(petsclib::PetscLibType, tao::Tao, J::PetscMat, Jpre::PetscMat, Jinv::PetscMat, func::external, ctx::Cvoid) end
+function TaoSetJacobianStateRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, Jinv::AbstractPetscMat, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetJacobianStateRoutine(petsclib::$UnionPetscLib, tao::Tao, J::PetscMat, Jpre::PetscMat, Jinv::PetscMat, func::external, ctx::Cvoid )
+@for_petsc function TaoSetJacobianStateRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, Jinv::AbstractPetscMat, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetJacobianStateRoutine, $petsc_library),
@@ -965,7 +965,7 @@ function TaoSetJacobianStateRoutine(petsclib::PetscLibType, tao::Tao, J::PetscMa
 end 
 
 """
-	TaoSetJacobianDesignRoutine(petsclib::PetscLibType,tao::Tao, J::PetscMat, func::external, ctx::Cvoid) 
+	TaoSetJacobianDesignRoutine(petsclib::PetscLibType,tao::AbstractTao, J::AbstractPetscMat, func::external, ctx::Cvoid) 
 Sets the function to compute the Jacobian of
 the constraint function with respect to the design variables.  Used only for
 PDE-constrained optimization.
@@ -992,9 +992,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetJacobianDesignRoutine"))
 """
-function TaoSetJacobianDesignRoutine(petsclib::PetscLibType, tao::Tao, J::PetscMat, func::external, ctx::Cvoid) end
+function TaoSetJacobianDesignRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetJacobianDesignRoutine(petsclib::$UnionPetscLib, tao::Tao, J::PetscMat, func::external, ctx::Cvoid )
+@for_petsc function TaoSetJacobianDesignRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetJacobianDesignRoutine, $petsc_library),
@@ -1008,7 +1008,7 @@ function TaoSetJacobianDesignRoutine(petsclib::PetscLibType, tao::Tao, J::PetscM
 end 
 
 """
-	TaoSetStateDesignIS(petsclib::PetscLibType,tao::Tao, s_is::IS, d_is::IS) 
+	TaoSetStateDesignIS(petsclib::PetscLibType,tao::AbstractTao, s_is::AbstractIS, d_is::AbstractIS) 
 Indicate to the `Tao` object which variables in the
 solution vector are state variables and which are design.  Only applies to
 PDE-constrained optimization.
@@ -1027,9 +1027,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetStateDesignIS"))
 """
-function TaoSetStateDesignIS(petsclib::PetscLibType, tao::Tao, s_is::IS, d_is::IS) end
+function TaoSetStateDesignIS(petsclib::PetscLibType, tao::AbstractTao, s_is::AbstractIS, d_is::AbstractIS) end
 
-@for_petsc function TaoSetStateDesignIS(petsclib::$UnionPetscLib, tao::Tao, s_is::IS, d_is::IS )
+@for_petsc function TaoSetStateDesignIS(petsclib::$UnionPetscLib, tao::AbstractTao, s_is::AbstractIS, d_is::AbstractIS )
 
     @chk ccall(
                (:TaoSetStateDesignIS, $petsc_library),
@@ -1043,7 +1043,7 @@ function TaoSetStateDesignIS(petsclib::PetscLibType, tao::Tao, s_is::IS, d_is::I
 end 
 
 """
-	TaoComputeJacobianEquality(petsclib::PetscLibType,tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat) 
+	TaoComputeJacobianEquality(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) 
 Computes the Jacobian matrix that has been
 set with `TaoSetJacobianEqualityRoutine()`.
 
@@ -1064,9 +1064,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeJacobianEquality"))
 """
-function TaoComputeJacobianEquality(petsclib::PetscLibType, tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat) end
+function TaoComputeJacobianEquality(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) end
 
-@for_petsc function TaoComputeJacobianEquality(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat )
+@for_petsc function TaoComputeJacobianEquality(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat )
 
     @chk ccall(
                (:TaoComputeJacobianEquality, $petsc_library),
@@ -1080,7 +1080,7 @@ function TaoComputeJacobianEquality(petsclib::PetscLibType, tao::Tao, X::PetscVe
 end 
 
 """
-	TaoComputeJacobianInequality(petsclib::PetscLibType,tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat) 
+	TaoComputeJacobianInequality(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) 
 Computes the Jacobian matrix that has been
 set with `TaoSetJacobianInequalityRoutine()`.
 
@@ -1101,9 +1101,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeJacobianInequality"))
 """
-function TaoComputeJacobianInequality(petsclib::PetscLibType, tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat) end
+function TaoComputeJacobianInequality(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat) end
 
-@for_petsc function TaoComputeJacobianInequality(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, J::PetscMat, Jpre::PetscMat )
+@for_petsc function TaoComputeJacobianInequality(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, J::AbstractPetscMat, Jpre::AbstractPetscMat )
 
     @chk ccall(
                (:TaoComputeJacobianInequality, $petsc_library),
@@ -1117,7 +1117,7 @@ function TaoComputeJacobianInequality(petsclib::PetscLibType, tao::Tao, X::Petsc
 end 
 
 """
-	TaoSetJacobianEqualityRoutine(petsclib::PetscLibType,tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid) 
+	TaoSetJacobianEqualityRoutine(petsclib::PetscLibType,tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid) 
 Sets the function to compute the Jacobian
 (and its inverse) of the constraint function with respect to the equality variables.
 Used only for PDE-constrained optimization.
@@ -1146,9 +1146,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetJacobianEqualityRoutine"))
 """
-function TaoSetJacobianEqualityRoutine(petsclib::PetscLibType, tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid) end
+function TaoSetJacobianEqualityRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetJacobianEqualityRoutine(petsclib::$UnionPetscLib, tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid )
+@for_petsc function TaoSetJacobianEqualityRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetJacobianEqualityRoutine, $petsc_library),
@@ -1162,7 +1162,7 @@ function TaoSetJacobianEqualityRoutine(petsclib::PetscLibType, tao::Tao, J::Pets
 end 
 
 """
-	TaoSetJacobianInequalityRoutine(petsclib::PetscLibType,tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid) 
+	TaoSetJacobianInequalityRoutine(petsclib::PetscLibType,tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid) 
 Sets the function to compute the Jacobian
 (and its inverse) of the constraint function with respect to the inequality variables.
 Used only for PDE-constrained optimization.
@@ -1191,9 +1191,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetJacobianInequalityRoutine"))
 """
-function TaoSetJacobianInequalityRoutine(petsclib::PetscLibType, tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid) end
+function TaoSetJacobianInequalityRoutine(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetJacobianInequalityRoutine(petsclib::$UnionPetscLib, tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid )
+@for_petsc function TaoSetJacobianInequalityRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetJacobianInequalityRoutine, $petsc_library),
@@ -1207,7 +1207,7 @@ function TaoSetJacobianInequalityRoutine(petsclib::PetscLibType, tao::Tao, J::Pe
 end 
 
 """
-	TaoSetVariableBounds(petsclib::PetscLibType,tao::Tao, XL::PetscVec, XU::PetscVec) 
+	TaoSetVariableBounds(petsclib::PetscLibType,tao::AbstractTao, XL::AbstractPetscVec, XU::AbstractPetscVec) 
 Sets the upper and lower bounds for the optimization problem
 
 Logically Collective
@@ -1224,9 +1224,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetVariableBounds"))
 """
-function TaoSetVariableBounds(petsclib::PetscLibType, tao::Tao, XL::PetscVec, XU::PetscVec) end
+function TaoSetVariableBounds(petsclib::PetscLibType, tao::AbstractTao, XL::AbstractPetscVec, XU::AbstractPetscVec) end
 
-@for_petsc function TaoSetVariableBounds(petsclib::$UnionPetscLib, tao::Tao, XL::PetscVec, XU::PetscVec )
+@for_petsc function TaoSetVariableBounds(petsclib::$UnionPetscLib, tao::AbstractTao, XL::AbstractPetscVec, XU::AbstractPetscVec )
 
     @chk ccall(
                (:TaoSetVariableBounds, $petsc_library),
@@ -1240,7 +1240,7 @@ function TaoSetVariableBounds(petsclib::PetscLibType, tao::Tao, XL::PetscVec, XU
 end 
 
 """
-	TaoSetVariableBoundsRoutine(petsclib::PetscLibType,tao::Tao, func::external, ctx::Cvoid) 
+	TaoSetVariableBoundsRoutine(petsclib::PetscLibType,tao::AbstractTao, func::external, ctx::Cvoid) 
 Sets a function to be used to compute lower and upper variable bounds for the optimization
 
 Logically Collective
@@ -1263,9 +1263,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetVariableBoundsRoutine"))
 """
-function TaoSetVariableBoundsRoutine(petsclib::PetscLibType, tao::Tao, func::external, ctx::Cvoid) end
+function TaoSetVariableBoundsRoutine(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetVariableBoundsRoutine(petsclib::$UnionPetscLib, tao::Tao, func::external, ctx::Cvoid )
+@for_petsc function TaoSetVariableBoundsRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetVariableBoundsRoutine, $petsc_library),
@@ -1279,7 +1279,7 @@ function TaoSetVariableBoundsRoutine(petsclib::PetscLibType, tao::Tao, func::ext
 end 
 
 """
-	TaoGetVariableBounds(petsclib::PetscLibType,tao::Tao, XL::PetscVec, XU::PetscVec) 
+	TaoGetVariableBounds(petsclib::PetscLibType,tao::AbstractTao, XL::AbstractPetscVec, XU::AbstractPetscVec) 
 Gets the upper and lower bounds vectors set with `TaoSetVariableBounds()`
 
 Not Collective
@@ -1298,9 +1298,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoGetVariableBounds"))
 """
-function TaoGetVariableBounds(petsclib::PetscLibType, tao::Tao, XL::PetscVec, XU::PetscVec) end
+function TaoGetVariableBounds(petsclib::PetscLibType, tao::AbstractTao, XL::AbstractPetscVec, XU::AbstractPetscVec) end
 
-@for_petsc function TaoGetVariableBounds(petsclib::$UnionPetscLib, tao::Tao, XL::PetscVec, XU::PetscVec )
+@for_petsc function TaoGetVariableBounds(petsclib::$UnionPetscLib, tao::AbstractTao, XL::AbstractPetscVec, XU::AbstractPetscVec )
 	XL_ = Ref(XL.ptr)
 	XU_ = Ref(XU.ptr)
 
@@ -1318,7 +1318,7 @@ function TaoGetVariableBounds(petsclib::PetscLibType, tao::Tao, XL::PetscVec, XU
 end 
 
 """
-	TaoComputeVariableBounds(petsclib::PetscLibType,tao::Tao) 
+	TaoComputeVariableBounds(petsclib::PetscLibType,tao::AbstractTao) 
 Compute the variable bounds using the
 routine set by `TaoSetVariableBoundsRoutine()`.
 
@@ -1334,9 +1334,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeVariableBounds"))
 """
-function TaoComputeVariableBounds(petsclib::PetscLibType, tao::Tao) end
+function TaoComputeVariableBounds(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoComputeVariableBounds(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoComputeVariableBounds(petsclib::$UnionPetscLib, tao::AbstractTao )
 
     @chk ccall(
                (:TaoComputeVariableBounds, $petsc_library),
@@ -1350,7 +1350,7 @@ function TaoComputeVariableBounds(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoSetInequalityBounds(petsclib::PetscLibType,tao::Tao, IL::PetscVec, IU::PetscVec) 
+	TaoSetInequalityBounds(petsclib::PetscLibType,tao::AbstractTao, IL::AbstractPetscVec, IU::AbstractPetscVec) 
 Sets the upper and lower bounds
 
 Logically Collective
@@ -1367,9 +1367,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetInequalityBounds"))
 """
-function TaoSetInequalityBounds(petsclib::PetscLibType, tao::Tao, IL::PetscVec, IU::PetscVec) end
+function TaoSetInequalityBounds(petsclib::PetscLibType, tao::AbstractTao, IL::AbstractPetscVec, IU::AbstractPetscVec) end
 
-@for_petsc function TaoSetInequalityBounds(petsclib::$UnionPetscLib, tao::Tao, IL::PetscVec, IU::PetscVec )
+@for_petsc function TaoSetInequalityBounds(petsclib::$UnionPetscLib, tao::AbstractTao, IL::AbstractPetscVec, IU::AbstractPetscVec )
 
     @chk ccall(
                (:TaoSetInequalityBounds, $petsc_library),
@@ -1383,7 +1383,7 @@ function TaoSetInequalityBounds(petsclib::PetscLibType, tao::Tao, IL::PetscVec, 
 end 
 
 """
-	TaoGetInequalityBounds(petsclib::PetscLibType,tao::Tao, IL::PetscVec, IU::PetscVec) 
+	TaoGetInequalityBounds(petsclib::PetscLibType,tao::AbstractTao, IL::AbstractPetscVec, IU::AbstractPetscVec) 
 Gets the upper and lower bounds set via `TaoSetInequalityBounds()`
 
 Logically Collective
@@ -1402,9 +1402,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoGetInequalityBounds"))
 """
-function TaoGetInequalityBounds(petsclib::PetscLibType, tao::Tao, IL::PetscVec, IU::PetscVec) end
+function TaoGetInequalityBounds(petsclib::PetscLibType, tao::AbstractTao, IL::AbstractPetscVec, IU::AbstractPetscVec) end
 
-@for_petsc function TaoGetInequalityBounds(petsclib::$UnionPetscLib, tao::Tao, IL::PetscVec, IU::PetscVec )
+@for_petsc function TaoGetInequalityBounds(petsclib::$UnionPetscLib, tao::AbstractTao, IL::AbstractPetscVec, IU::AbstractPetscVec )
 	IL_ = Ref(IL.ptr)
 	IU_ = Ref(IU.ptr)
 
@@ -1422,7 +1422,7 @@ function TaoGetInequalityBounds(petsclib::PetscLibType, tao::Tao, IL::PetscVec, 
 end 
 
 """
-	TaoComputeConstraints(petsclib::PetscLibType,tao::Tao, X::PetscVec, C::PetscVec) 
+	TaoComputeConstraints(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, C::AbstractPetscVec) 
 Compute the variable bounds using the
 routine set by `TaoSetConstraintsRoutine()`.
 
@@ -1442,9 +1442,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeConstraints"))
 """
-function TaoComputeConstraints(petsclib::PetscLibType, tao::Tao, X::PetscVec, C::PetscVec) end
+function TaoComputeConstraints(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, C::AbstractPetscVec) end
 
-@for_petsc function TaoComputeConstraints(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, C::PetscVec )
+@for_petsc function TaoComputeConstraints(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, C::AbstractPetscVec )
 
     @chk ccall(
                (:TaoComputeConstraints, $petsc_library),
@@ -1458,7 +1458,7 @@ function TaoComputeConstraints(petsclib::PetscLibType, tao::Tao, X::PetscVec, C:
 end 
 
 """
-	TaoSetConstraintsRoutine(petsclib::PetscLibType,tao::Tao, c::PetscVec, func::external, ctx::Cvoid) 
+	TaoSetConstraintsRoutine(petsclib::PetscLibType,tao::AbstractTao, c::AbstractPetscVec, func::external, ctx::Cvoid) 
 Sets a function to be used to compute constraints.  Tao only handles constraints under certain conditions, see [](ch_tao) for details
 
 Logically Collective
@@ -1482,9 +1482,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetConstraintsRoutine"))
 """
-function TaoSetConstraintsRoutine(petsclib::PetscLibType, tao::Tao, c::PetscVec, func::external, ctx::Cvoid) end
+function TaoSetConstraintsRoutine(petsclib::PetscLibType, tao::AbstractTao, c::AbstractPetscVec, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetConstraintsRoutine(petsclib::$UnionPetscLib, tao::Tao, c::PetscVec, func::external, ctx::Cvoid )
+@for_petsc function TaoSetConstraintsRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, c::AbstractPetscVec, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetConstraintsRoutine, $petsc_library),
@@ -1498,7 +1498,7 @@ function TaoSetConstraintsRoutine(petsclib::PetscLibType, tao::Tao, c::PetscVec,
 end 
 
 """
-	TaoComputeDualVariables(petsclib::PetscLibType,tao::Tao, DL::PetscVec, DU::PetscVec) 
+	TaoComputeDualVariables(petsclib::PetscLibType,tao::AbstractTao, DL::AbstractPetscVec, DU::AbstractPetscVec) 
 Computes the dual vectors corresponding to the bounds
 of the variables
 
@@ -1518,9 +1518,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoComputeDualVariables"))
 """
-function TaoComputeDualVariables(petsclib::PetscLibType, tao::Tao, DL::PetscVec, DU::PetscVec) end
+function TaoComputeDualVariables(petsclib::PetscLibType, tao::AbstractTao, DL::AbstractPetscVec, DU::AbstractPetscVec) end
 
-@for_petsc function TaoComputeDualVariables(petsclib::$UnionPetscLib, tao::Tao, DL::PetscVec, DU::PetscVec )
+@for_petsc function TaoComputeDualVariables(petsclib::$UnionPetscLib, tao::AbstractTao, DL::AbstractPetscVec, DU::AbstractPetscVec )
 
     @chk ccall(
                (:TaoComputeDualVariables, $petsc_library),
@@ -1534,7 +1534,7 @@ function TaoComputeDualVariables(petsclib::PetscLibType, tao::Tao, DL::PetscVec,
 end 
 
 """
-	TaoGetDualVariables(petsclib::PetscLibType,tao::Tao, DE::PetscVec, DI::PetscVec) 
+	TaoGetDualVariables(petsclib::PetscLibType,tao::AbstractTao, DE::AbstractPetscVec, DI::AbstractPetscVec) 
 Gets the dual vectors
 
 Collective
@@ -1553,9 +1553,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoGetDualVariables"))
 """
-function TaoGetDualVariables(petsclib::PetscLibType, tao::Tao, DE::PetscVec, DI::PetscVec) end
+function TaoGetDualVariables(petsclib::PetscLibType, tao::AbstractTao, DE::AbstractPetscVec, DI::AbstractPetscVec) end
 
-@for_petsc function TaoGetDualVariables(petsclib::$UnionPetscLib, tao::Tao, DE::PetscVec, DI::PetscVec )
+@for_petsc function TaoGetDualVariables(petsclib::$UnionPetscLib, tao::AbstractTao, DE::AbstractPetscVec, DI::AbstractPetscVec )
 	DE_ = Ref(DE.ptr)
 	DI_ = Ref(DI.ptr)
 
@@ -1573,7 +1573,7 @@ function TaoGetDualVariables(petsclib::PetscLibType, tao::Tao, DE::PetscVec, DI:
 end 
 
 """
-	TaoSetEqualityConstraintsRoutine(petsclib::PetscLibType,tao::Tao, ce::PetscVec, func::external, ctx::Cvoid) 
+	TaoSetEqualityConstraintsRoutine(petsclib::PetscLibType,tao::AbstractTao, ce::AbstractPetscVec, func::external, ctx::Cvoid) 
 Sets a function to be used to compute constraints.  Tao only handles constraints under certain conditions, see [](ch_tao) for details
 
 Logically Collective
@@ -1597,9 +1597,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetEqualityConstraintsRoutine"))
 """
-function TaoSetEqualityConstraintsRoutine(petsclib::PetscLibType, tao::Tao, ce::PetscVec, func::external, ctx::Cvoid) end
+function TaoSetEqualityConstraintsRoutine(petsclib::PetscLibType, tao::AbstractTao, ce::AbstractPetscVec, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetEqualityConstraintsRoutine(petsclib::$UnionPetscLib, tao::Tao, ce::PetscVec, func::external, ctx::Cvoid )
+@for_petsc function TaoSetEqualityConstraintsRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, ce::AbstractPetscVec, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetEqualityConstraintsRoutine, $petsc_library),
@@ -1613,7 +1613,7 @@ function TaoSetEqualityConstraintsRoutine(petsclib::PetscLibType, tao::Tao, ce::
 end 
 
 """
-	TaoSetInequalityConstraintsRoutine(petsclib::PetscLibType,tao::Tao, ci::PetscVec, func::external, ctx::Cvoid) 
+	TaoSetInequalityConstraintsRoutine(petsclib::PetscLibType,tao::AbstractTao, ci::AbstractPetscVec, func::external, ctx::Cvoid) 
 Sets a function to be used to compute constraints.  Tao only handles constraints under certain conditions, see [](ch_tao) for details
 
 Logically Collective
@@ -1637,9 +1637,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetInequalityConstraintsRoutine"))
 """
-function TaoSetInequalityConstraintsRoutine(petsclib::PetscLibType, tao::Tao, ci::PetscVec, func::external, ctx::Cvoid) end
+function TaoSetInequalityConstraintsRoutine(petsclib::PetscLibType, tao::AbstractTao, ci::AbstractPetscVec, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetInequalityConstraintsRoutine(petsclib::$UnionPetscLib, tao::Tao, ci::PetscVec, func::external, ctx::Cvoid )
+@for_petsc function TaoSetInequalityConstraintsRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, ci::AbstractPetscVec, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetInequalityConstraintsRoutine, $petsc_library),
@@ -1653,7 +1653,7 @@ function TaoSetInequalityConstraintsRoutine(petsclib::PetscLibType, tao::Tao, ci
 end 
 
 """
-	TaoComputeEqualityConstraints(petsclib::PetscLibType,tao::Tao, X::PetscVec, CE::PetscVec) 
+	TaoComputeEqualityConstraints(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, CE::AbstractPetscVec) 
 Compute the variable bounds using the
 routine set by `TaoSetEqualityConstraintsRoutine()`.
 
@@ -1673,9 +1673,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeEqualityConstraints"))
 """
-function TaoComputeEqualityConstraints(petsclib::PetscLibType, tao::Tao, X::PetscVec, CE::PetscVec) end
+function TaoComputeEqualityConstraints(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, CE::AbstractPetscVec) end
 
-@for_petsc function TaoComputeEqualityConstraints(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, CE::PetscVec )
+@for_petsc function TaoComputeEqualityConstraints(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, CE::AbstractPetscVec )
 
     @chk ccall(
                (:TaoComputeEqualityConstraints, $petsc_library),
@@ -1689,7 +1689,7 @@ function TaoComputeEqualityConstraints(petsclib::PetscLibType, tao::Tao, X::Pets
 end 
 
 """
-	TaoComputeInequalityConstraints(petsclib::PetscLibType,tao::Tao, X::PetscVec, CI::PetscVec) 
+	TaoComputeInequalityConstraints(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, CI::AbstractPetscVec) 
 Compute the variable bounds using the
 routine set by `TaoSetInequalityConstraintsRoutine()`.
 
@@ -1709,9 +1709,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoComputeInequalityConstraints"))
 """
-function TaoComputeInequalityConstraints(petsclib::PetscLibType, tao::Tao, X::PetscVec, CI::PetscVec) end
+function TaoComputeInequalityConstraints(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, CI::AbstractPetscVec) end
 
-@for_petsc function TaoComputeInequalityConstraints(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, CI::PetscVec )
+@for_petsc function TaoComputeInequalityConstraints(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, CI::AbstractPetscVec )
 
     @chk ccall(
                (:TaoComputeInequalityConstraints, $petsc_library),
@@ -1725,7 +1725,7 @@ function TaoComputeInequalityConstraints(petsclib::PetscLibType, tao::Tao, X::Pe
 end 
 
 """
-	TaoDefaultComputeGradient(petsclib::PetscLibType,tao::Tao, Xin::PetscVec, G::PetscVec, dummy::Cvoid) 
+	TaoDefaultComputeGradient(petsclib::PetscLibType,tao::AbstractTao, Xin::AbstractPetscVec, G::AbstractPetscVec, dummy::Cvoid) 
 computes the gradient using finite differences.
 
 Collective
@@ -1749,9 +1749,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoDefaultComputeGradient"))
 """
-function TaoDefaultComputeGradient(petsclib::PetscLibType, tao::Tao, Xin::PetscVec, G::PetscVec, dummy::Cvoid) end
+function TaoDefaultComputeGradient(petsclib::PetscLibType, tao::AbstractTao, Xin::AbstractPetscVec, G::AbstractPetscVec, dummy::Cvoid) end
 
-@for_petsc function TaoDefaultComputeGradient(petsclib::$UnionPetscLib, tao::Tao, Xin::PetscVec, G::PetscVec, dummy::Cvoid )
+@for_petsc function TaoDefaultComputeGradient(petsclib::$UnionPetscLib, tao::AbstractTao, Xin::AbstractPetscVec, G::AbstractPetscVec, dummy::Cvoid )
 
     @chk ccall(
                (:TaoDefaultComputeGradient, $petsc_library),
@@ -1765,7 +1765,7 @@ function TaoDefaultComputeGradient(petsclib::PetscLibType, tao::Tao, Xin::PetscV
 end 
 
 """
-	TaoDefaultComputeHessian(petsclib::PetscLibType,tao::Tao, V::PetscVec, H::PetscMat, B::PetscMat, dummy::Cvoid) 
+	TaoDefaultComputeHessian(petsclib::PetscLibType,tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, dummy::Cvoid) 
 Computes the Hessian using finite differences.
 
 Collective
@@ -1789,9 +1789,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoDefaultComputeHessian"))
 """
-function TaoDefaultComputeHessian(petsclib::PetscLibType, tao::Tao, V::PetscVec, H::PetscMat, B::PetscMat, dummy::Cvoid) end
+function TaoDefaultComputeHessian(petsclib::PetscLibType, tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, dummy::Cvoid) end
 
-@for_petsc function TaoDefaultComputeHessian(petsclib::$UnionPetscLib, tao::Tao, V::PetscVec, H::PetscMat, B::PetscMat, dummy::Cvoid )
+@for_petsc function TaoDefaultComputeHessian(petsclib::$UnionPetscLib, tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, dummy::Cvoid )
 
     @chk ccall(
                (:TaoDefaultComputeHessian, $petsc_library),
@@ -1805,7 +1805,7 @@ function TaoDefaultComputeHessian(petsclib::PetscLibType, tao::Tao, V::PetscVec,
 end 
 
 """
-	TaoDefaultComputeHessianColor(petsclib::PetscLibType,tao::Tao, V::PetscVec, H::PetscMat, B::PetscMat, ctx::Cvoid) 
+	TaoDefaultComputeHessianColor(petsclib::PetscLibType,tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid) 
 Computes the Hessian using colored finite differences.
 
 Collective
@@ -1826,9 +1826,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoDefaultComputeHessianColor"))
 """
-function TaoDefaultComputeHessianColor(petsclib::PetscLibType, tao::Tao, V::PetscVec, H::PetscMat, B::PetscMat, ctx::Cvoid) end
+function TaoDefaultComputeHessianColor(petsclib::PetscLibType, tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid) end
 
-@for_petsc function TaoDefaultComputeHessianColor(petsclib::$UnionPetscLib, tao::Tao, V::PetscVec, H::PetscMat, B::PetscMat, ctx::Cvoid )
+@for_petsc function TaoDefaultComputeHessianColor(petsclib::$UnionPetscLib, tao::AbstractTao, V::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid )
 
     @chk ccall(
                (:TaoDefaultComputeHessianColor, $petsc_library),
@@ -1842,14 +1842,14 @@ function TaoDefaultComputeHessianColor(petsclib::PetscLibType, tao::Tao, V::Pets
 end 
 
 """
-	TaoDefaultComputeHessianMFFD(petsclib::PetscLibType,tao::Tao, X::PetscVec, H::PetscMat, B::PetscMat, ctx::Cvoid) 
+	TaoDefaultComputeHessianMFFD(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid) 
 
 # External Links
 $(_doc_external("Tao/TaoDefaultComputeHessianMFFD"))
 """
-function TaoDefaultComputeHessianMFFD(petsclib::PetscLibType, tao::Tao, X::PetscVec, H::PetscMat, B::PetscMat, ctx::Cvoid) end
+function TaoDefaultComputeHessianMFFD(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid) end
 
-@for_petsc function TaoDefaultComputeHessianMFFD(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec, H::PetscMat, B::PetscMat, ctx::Cvoid )
+@for_petsc function TaoDefaultComputeHessianMFFD(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec, H::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid )
 
     @chk ccall(
                (:TaoDefaultComputeHessianMFFD, $petsc_library),
@@ -1863,7 +1863,7 @@ function TaoDefaultComputeHessianMFFD(petsclib::PetscLibType, tao::Tao, X::Petsc
 end 
 
 """
-	TaoParametersInitialize(petsclib::PetscLibType,tao::Tao) 
+	TaoParametersInitialize(petsclib::PetscLibType,tao::AbstractTao) 
 Sets all the parameters in `tao` to their default value (when `TaoCreate()` was called) if they
 currently contain default values. Default values are the parameter values when the object's type is set.
 
@@ -1880,9 +1880,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoParametersInitialize"))
 """
-function TaoParametersInitialize(petsclib::PetscLibType, tao::Tao) end
+function TaoParametersInitialize(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoParametersInitialize(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoParametersInitialize(petsclib::$UnionPetscLib, tao::AbstractTao )
 
     @chk ccall(
                (:TaoParametersInitialize, $petsc_library),
@@ -1935,7 +1935,7 @@ function TaoCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 end 
 
 """
-	TaoSolve(petsclib::PetscLibType,tao::Tao) 
+	TaoSolve(petsclib::PetscLibType,tao::AbstractTao) 
 Solves an optimization problem min F(x) s.t. l <= x <= u
 
 Collective
@@ -1950,9 +1950,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSolve"))
 """
-function TaoSolve(petsclib::PetscLibType, tao::Tao) end
+function TaoSolve(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoSolve(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoSolve(petsclib::$UnionPetscLib, tao::AbstractTao )
 
     @chk ccall(
                (:TaoSolve, $petsc_library),
@@ -1966,7 +1966,7 @@ function TaoSolve(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoSetUp(petsclib::PetscLibType,tao::Tao) 
+	TaoSetUp(petsclib::PetscLibType,tao::AbstractTao) 
 Sets up the internal data structures for the later use
 of a Tao solver
 
@@ -1982,9 +1982,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoSetUp"))
 """
-function TaoSetUp(petsclib::PetscLibType, tao::Tao) end
+function TaoSetUp(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoSetUp(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoSetUp(petsclib::$UnionPetscLib, tao::AbstractTao )
 
     @chk ccall(
                (:TaoSetUp, $petsc_library),
@@ -1998,7 +1998,7 @@ function TaoSetUp(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoDestroy(petsclib::PetscLibType,tao::Tao) 
+	TaoDestroy(petsclib::PetscLibType,tao::AbstractTao) 
 Destroys the `Tao` context that was created with `TaoCreate()`
 
 Collective
@@ -2013,9 +2013,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoDestroy"))
 """
-function TaoDestroy(petsclib::PetscLibType, tao::Tao) end
+function TaoDestroy(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoDestroy(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoDestroy(petsclib::$UnionPetscLib, tao::AbstractTao )
 	tao_ = Ref(tao.ptr)
 
     @chk ccall(
@@ -2031,7 +2031,7 @@ function TaoDestroy(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoKSPSetUseEW(petsclib::PetscLibType,tao::Tao, flag::PetscBool) 
+	TaoKSPSetUseEW(petsclib::PetscLibType,tao::AbstractTao, flag::PetscBool) 
 Sets `SNES` to use Eisenstat
 
 Logically Collective
@@ -2047,9 +2047,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoKSPSetUseEW"))
 """
-function TaoKSPSetUseEW(petsclib::PetscLibType, tao::Tao, flag::PetscBool) end
+function TaoKSPSetUseEW(petsclib::PetscLibType, tao::AbstractTao, flag::PetscBool) end
 
-@for_petsc function TaoKSPSetUseEW(petsclib::$UnionPetscLib, tao::Tao, flag::PetscBool )
+@for_petsc function TaoKSPSetUseEW(petsclib::$UnionPetscLib, tao::AbstractTao, flag::PetscBool )
 
     @chk ccall(
                (:TaoKSPSetUseEW, $petsc_library),
@@ -2063,7 +2063,7 @@ function TaoKSPSetUseEW(petsclib::PetscLibType, tao::Tao, flag::PetscBool) end
 end 
 
 """
-	TaoSetFromOptions(petsclib::PetscLibType,tao::Tao) 
+	TaoSetFromOptions(petsclib::PetscLibType,tao::AbstractTao) 
 Sets various Tao parameters from the options database
 
 Collective
@@ -2107,9 +2107,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetFromOptions"))
 """
-function TaoSetFromOptions(petsclib::PetscLibType, tao::Tao) end
+function TaoSetFromOptions(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoSetFromOptions(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoSetFromOptions(petsclib::$UnionPetscLib, tao::AbstractTao )
 
     @chk ccall(
                (:TaoSetFromOptions, $petsc_library),
@@ -2123,7 +2123,7 @@ function TaoSetFromOptions(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoViewFromOptions(petsclib::PetscLibType,A::Tao, obj::PetscObject, name::String) 
+	TaoViewFromOptions(petsclib::PetscLibType,A::AbstractTao, obj::PetscObject, name::String) 
 View a `Tao` object based on values in the options database
 
 Collective
@@ -2140,9 +2140,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoViewFromOptions"))
 """
-function TaoViewFromOptions(petsclib::PetscLibType, A::Tao, obj::PetscObject, name::String) end
+function TaoViewFromOptions(petsclib::PetscLibType, A::AbstractTao, obj::PetscObject, name::String) end
 
-@for_petsc function TaoViewFromOptions(petsclib::$UnionPetscLib, A::Tao, obj::PetscObject, name::String )
+@for_petsc function TaoViewFromOptions(petsclib::$UnionPetscLib, A::AbstractTao, obj::PetscObject, name::String )
 
     @chk ccall(
                (:TaoViewFromOptions, $petsc_library),
@@ -2156,7 +2156,7 @@ function TaoViewFromOptions(petsclib::PetscLibType, A::Tao, obj::PetscObject, na
 end 
 
 """
-	TaoView(petsclib::PetscLibType,tao::Tao, viewer::PetscViewer) 
+	TaoView(petsclib::PetscLibType,tao::AbstractTao, viewer::PetscViewer) 
 Prints information about the `Tao` object
 
 Collective
@@ -2175,9 +2175,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoView"))
 """
-function TaoView(petsclib::PetscLibType, tao::Tao, viewer::PetscViewer) end
+function TaoView(petsclib::PetscLibType, tao::AbstractTao, viewer::PetscViewer) end
 
-@for_petsc function TaoView(petsclib::$UnionPetscLib, tao::Tao, viewer::PetscViewer )
+@for_petsc function TaoView(petsclib::$UnionPetscLib, tao::AbstractTao, viewer::PetscViewer )
 
     @chk ccall(
                (:TaoView, $petsc_library),
@@ -2191,7 +2191,7 @@ function TaoView(petsclib::PetscLibType, tao::Tao, viewer::PetscViewer) end
 end 
 
 """
-	TaoSetRecycleHistory(petsclib::PetscLibType,tao::Tao, recycle::PetscBool) 
+	TaoSetRecycleHistory(petsclib::PetscLibType,tao::AbstractTao, recycle::PetscBool) 
 Sets the boolean flag to enable/disable re
 iterate information from the previous `TaoSolve()`. This feature is disabled by
 default.
@@ -2212,9 +2212,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetRecycleHistory"))
 """
-function TaoSetRecycleHistory(petsclib::PetscLibType, tao::Tao, recycle::PetscBool) end
+function TaoSetRecycleHistory(petsclib::PetscLibType, tao::AbstractTao, recycle::PetscBool) end
 
-@for_petsc function TaoSetRecycleHistory(petsclib::$UnionPetscLib, tao::Tao, recycle::PetscBool )
+@for_petsc function TaoSetRecycleHistory(petsclib::$UnionPetscLib, tao::AbstractTao, recycle::PetscBool )
 
     @chk ccall(
                (:TaoSetRecycleHistory, $petsc_library),
@@ -2228,7 +2228,7 @@ function TaoSetRecycleHistory(petsclib::PetscLibType, tao::Tao, recycle::PetscBo
 end 
 
 """
-	recycle::PetscBool = TaoGetRecycleHistory(petsclib::PetscLibType,tao::Tao) 
+	recycle::PetscBool = TaoGetRecycleHistory(petsclib::PetscLibType,tao::AbstractTao) 
 Retrieve the boolean flag for re
 from the previous `TaoSolve()`. This feature is disabled by default.
 
@@ -2247,9 +2247,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetRecycleHistory"))
 """
-function TaoGetRecycleHistory(petsclib::PetscLibType, tao::Tao) end
+function TaoGetRecycleHistory(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetRecycleHistory(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetRecycleHistory(petsclib::$UnionPetscLib, tao::AbstractTao )
 	recycle_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2265,7 +2265,7 @@ function TaoGetRecycleHistory(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoSetTolerances(petsclib::PetscLibType,tao::Tao, gatol::PetscReal, grtol::PetscReal, gttol::PetscReal) 
+	TaoSetTolerances(petsclib::PetscLibType,tao::AbstractTao, gatol::PetscReal, grtol::PetscReal, gttol::PetscReal) 
 Sets parameters used in `TaoSolve()` convergence tests
 
 Logically Collective
@@ -2287,9 +2287,9 @@ Stopping Criteria:
 # External Links
 $(_doc_external("Tao/TaoSetTolerances"))
 """
-function TaoSetTolerances(petsclib::PetscLibType, tao::Tao, gatol::PetscReal, grtol::PetscReal, gttol::PetscReal) end
+function TaoSetTolerances(petsclib::PetscLibType, tao::AbstractTao, gatol::PetscReal, grtol::PetscReal, gttol::PetscReal) end
 
-@for_petsc function TaoSetTolerances(petsclib::$UnionPetscLib, tao::Tao, gatol::$PetscReal, grtol::$PetscReal, gttol::$PetscReal )
+@for_petsc function TaoSetTolerances(petsclib::$UnionPetscLib, tao::AbstractTao, gatol::$PetscReal, grtol::$PetscReal, gttol::$PetscReal )
 
     @chk ccall(
                (:TaoSetTolerances, $petsc_library),
@@ -2303,7 +2303,7 @@ function TaoSetTolerances(petsclib::PetscLibType, tao::Tao, gatol::PetscReal, gr
 end 
 
 """
-	TaoSetConstraintTolerances(petsclib::PetscLibType,tao::Tao, catol::PetscReal, crtol::PetscReal) 
+	TaoSetConstraintTolerances(petsclib::PetscLibType,tao::AbstractTao, catol::PetscReal, crtol::PetscReal) 
 Sets constraint tolerance parameters used in `TaoSolve()` convergence tests
 
 Logically Collective
@@ -2324,9 +2324,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetConstraintTolerances"))
 """
-function TaoSetConstraintTolerances(petsclib::PetscLibType, tao::Tao, catol::PetscReal, crtol::PetscReal) end
+function TaoSetConstraintTolerances(petsclib::PetscLibType, tao::AbstractTao, catol::PetscReal, crtol::PetscReal) end
 
-@for_petsc function TaoSetConstraintTolerances(petsclib::$UnionPetscLib, tao::Tao, catol::$PetscReal, crtol::$PetscReal )
+@for_petsc function TaoSetConstraintTolerances(petsclib::$UnionPetscLib, tao::AbstractTao, catol::$PetscReal, crtol::$PetscReal )
 
     @chk ccall(
                (:TaoSetConstraintTolerances, $petsc_library),
@@ -2340,7 +2340,7 @@ function TaoSetConstraintTolerances(petsclib::PetscLibType, tao::Tao, catol::Pet
 end 
 
 """
-	catol::PetscReal,crtol::PetscReal = TaoGetConstraintTolerances(petsclib::PetscLibType,tao::Tao) 
+	catol::PetscReal,crtol::PetscReal = TaoGetConstraintTolerances(petsclib::PetscLibType,tao::AbstractTao) 
 Gets constraint tolerance parameters used in `TaoSolve()` convergence tests
 
 Not Collective
@@ -2359,9 +2359,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetConstraintTolerances"))
 """
-function TaoGetConstraintTolerances(petsclib::PetscLibType, tao::Tao) end
+function TaoGetConstraintTolerances(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetConstraintTolerances(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetConstraintTolerances(petsclib::$UnionPetscLib, tao::AbstractTao )
 	catol_ = Ref{$PetscReal}()
 	crtol_ = Ref{$PetscReal}()
 
@@ -2379,7 +2379,7 @@ function TaoGetConstraintTolerances(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoSetFunctionLowerBound(petsclib::PetscLibType,tao::Tao, fmin::PetscReal) 
+	TaoSetFunctionLowerBound(petsclib::PetscLibType,tao::AbstractTao, fmin::PetscReal) 
 Sets a bound on the solution objective value.
 When an approximate solution with an objective value below this number
 has been found, the solver will terminate.
@@ -2400,9 +2400,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetFunctionLowerBound"))
 """
-function TaoSetFunctionLowerBound(petsclib::PetscLibType, tao::Tao, fmin::PetscReal) end
+function TaoSetFunctionLowerBound(petsclib::PetscLibType, tao::AbstractTao, fmin::PetscReal) end
 
-@for_petsc function TaoSetFunctionLowerBound(petsclib::$UnionPetscLib, tao::Tao, fmin::$PetscReal )
+@for_petsc function TaoSetFunctionLowerBound(petsclib::$UnionPetscLib, tao::AbstractTao, fmin::$PetscReal )
 
     @chk ccall(
                (:TaoSetFunctionLowerBound, $petsc_library),
@@ -2416,7 +2416,7 @@ function TaoSetFunctionLowerBound(petsclib::PetscLibType, tao::Tao, fmin::PetscR
 end 
 
 """
-	fmin::PetscReal = TaoGetFunctionLowerBound(petsclib::PetscLibType,tao::Tao) 
+	fmin::PetscReal = TaoGetFunctionLowerBound(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the bound on the solution objective value.
 When an approximate solution with an objective value below this number
 has been found, the solver will terminate.
@@ -2436,9 +2436,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetFunctionLowerBound"))
 """
-function TaoGetFunctionLowerBound(petsclib::PetscLibType, tao::Tao) end
+function TaoGetFunctionLowerBound(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetFunctionLowerBound(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetFunctionLowerBound(petsclib::$UnionPetscLib, tao::AbstractTao )
 	fmin_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2454,7 +2454,7 @@ function TaoGetFunctionLowerBound(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoSetMaximumFunctionEvaluations(petsclib::PetscLibType,tao::Tao, nfcn::PetscInt) 
+	TaoSetMaximumFunctionEvaluations(petsclib::PetscLibType,tao::AbstractTao, nfcn::PetscInt) 
 Sets a maximum number of function evaluations allowed for a `TaoSolve()`.
 
 Logically Collective
@@ -2473,9 +2473,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetMaximumFunctionEvaluations"))
 """
-function TaoSetMaximumFunctionEvaluations(petsclib::PetscLibType, tao::Tao, nfcn::PetscInt) end
+function TaoSetMaximumFunctionEvaluations(petsclib::PetscLibType, tao::AbstractTao, nfcn::PetscInt) end
 
-@for_petsc function TaoSetMaximumFunctionEvaluations(petsclib::$UnionPetscLib, tao::Tao, nfcn::$PetscInt )
+@for_petsc function TaoSetMaximumFunctionEvaluations(petsclib::$UnionPetscLib, tao::AbstractTao, nfcn::$PetscInt )
 
     @chk ccall(
                (:TaoSetMaximumFunctionEvaluations, $petsc_library),
@@ -2489,7 +2489,7 @@ function TaoSetMaximumFunctionEvaluations(petsclib::PetscLibType, tao::Tao, nfcn
 end 
 
 """
-	nfcn::PetscInt = TaoGetMaximumFunctionEvaluations(petsclib::PetscLibType,tao::Tao) 
+	nfcn::PetscInt = TaoGetMaximumFunctionEvaluations(petsclib::PetscLibType,tao::AbstractTao) 
 Gets a maximum number of function evaluations allowed for a `TaoSolve()`
 
 Logically Collective
@@ -2507,9 +2507,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetMaximumFunctionEvaluations"))
 """
-function TaoGetMaximumFunctionEvaluations(petsclib::PetscLibType, tao::Tao) end
+function TaoGetMaximumFunctionEvaluations(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetMaximumFunctionEvaluations(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetMaximumFunctionEvaluations(petsclib::$UnionPetscLib, tao::AbstractTao )
 	nfcn_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -2525,7 +2525,7 @@ function TaoGetMaximumFunctionEvaluations(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	nfuncs::PetscInt = TaoGetCurrentFunctionEvaluations(petsclib::PetscLibType,tao::Tao) 
+	nfuncs::PetscInt = TaoGetCurrentFunctionEvaluations(petsclib::PetscLibType,tao::AbstractTao) 
 Get current number of function evaluations used by a `Tao` object
 
 Not Collective
@@ -2543,9 +2543,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetCurrentFunctionEvaluations"))
 """
-function TaoGetCurrentFunctionEvaluations(petsclib::PetscLibType, tao::Tao) end
+function TaoGetCurrentFunctionEvaluations(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetCurrentFunctionEvaluations(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetCurrentFunctionEvaluations(petsclib::$UnionPetscLib, tao::AbstractTao )
 	nfuncs_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -2561,7 +2561,7 @@ function TaoGetCurrentFunctionEvaluations(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoSetMaximumIterations(petsclib::PetscLibType,tao::Tao, maxits::PetscInt) 
+	TaoSetMaximumIterations(petsclib::PetscLibType,tao::AbstractTao, maxits::PetscInt) 
 Sets a maximum number of iterates to be used in `TaoSolve()`
 
 Logically Collective
@@ -2580,9 +2580,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetMaximumIterations"))
 """
-function TaoSetMaximumIterations(petsclib::PetscLibType, tao::Tao, maxits::PetscInt) end
+function TaoSetMaximumIterations(petsclib::PetscLibType, tao::AbstractTao, maxits::PetscInt) end
 
-@for_petsc function TaoSetMaximumIterations(petsclib::$UnionPetscLib, tao::Tao, maxits::$PetscInt )
+@for_petsc function TaoSetMaximumIterations(petsclib::$UnionPetscLib, tao::AbstractTao, maxits::$PetscInt )
 
     @chk ccall(
                (:TaoSetMaximumIterations, $petsc_library),
@@ -2596,7 +2596,7 @@ function TaoSetMaximumIterations(petsclib::PetscLibType, tao::Tao, maxits::Petsc
 end 
 
 """
-	maxits::PetscInt = TaoGetMaximumIterations(petsclib::PetscLibType,tao::Tao) 
+	maxits::PetscInt = TaoGetMaximumIterations(petsclib::PetscLibType,tao::AbstractTao) 
 Gets a maximum number of iterates that will be used
 
 Not Collective
@@ -2614,9 +2614,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetMaximumIterations"))
 """
-function TaoGetMaximumIterations(petsclib::PetscLibType, tao::Tao) end
+function TaoGetMaximumIterations(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetMaximumIterations(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetMaximumIterations(petsclib::$UnionPetscLib, tao::AbstractTao )
 	maxits_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -2632,7 +2632,7 @@ function TaoGetMaximumIterations(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoSetInitialTrustRegionRadius(petsclib::PetscLibType,tao::Tao, radius::PetscReal) 
+	TaoSetInitialTrustRegionRadius(petsclib::PetscLibType,tao::AbstractTao, radius::PetscReal) 
 Sets the initial trust region radius.
 
 Logically Collective
@@ -2651,9 +2651,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetInitialTrustRegionRadius"))
 """
-function TaoSetInitialTrustRegionRadius(petsclib::PetscLibType, tao::Tao, radius::PetscReal) end
+function TaoSetInitialTrustRegionRadius(petsclib::PetscLibType, tao::AbstractTao, radius::PetscReal) end
 
-@for_petsc function TaoSetInitialTrustRegionRadius(petsclib::$UnionPetscLib, tao::Tao, radius::$PetscReal )
+@for_petsc function TaoSetInitialTrustRegionRadius(petsclib::$UnionPetscLib, tao::AbstractTao, radius::$PetscReal )
 
     @chk ccall(
                (:TaoSetInitialTrustRegionRadius, $petsc_library),
@@ -2667,7 +2667,7 @@ function TaoSetInitialTrustRegionRadius(petsclib::PetscLibType, tao::Tao, radius
 end 
 
 """
-	radius::PetscReal = TaoGetInitialTrustRegionRadius(petsclib::PetscLibType,tao::Tao) 
+	radius::PetscReal = TaoGetInitialTrustRegionRadius(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the initial trust region radius.
 
 Not Collective
@@ -2685,9 +2685,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetInitialTrustRegionRadius"))
 """
-function TaoGetInitialTrustRegionRadius(petsclib::PetscLibType, tao::Tao) end
+function TaoGetInitialTrustRegionRadius(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetInitialTrustRegionRadius(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetInitialTrustRegionRadius(petsclib::$UnionPetscLib, tao::AbstractTao )
 	radius_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2703,7 +2703,7 @@ function TaoGetInitialTrustRegionRadius(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	radius::PetscReal = TaoGetCurrentTrustRegionRadius(petsclib::PetscLibType,tao::Tao) 
+	radius::PetscReal = TaoGetCurrentTrustRegionRadius(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the current trust region radius.
 
 Not Collective
@@ -2721,9 +2721,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetCurrentTrustRegionRadius"))
 """
-function TaoGetCurrentTrustRegionRadius(petsclib::PetscLibType, tao::Tao) end
+function TaoGetCurrentTrustRegionRadius(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetCurrentTrustRegionRadius(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetCurrentTrustRegionRadius(petsclib::$UnionPetscLib, tao::AbstractTao )
 	radius_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2739,7 +2739,7 @@ function TaoGetCurrentTrustRegionRadius(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	gatol::PetscReal,grtol::PetscReal,gttol::PetscReal = TaoGetTolerances(petsclib::PetscLibType,tao::Tao) 
+	gatol::PetscReal,grtol::PetscReal,gttol::PetscReal = TaoGetTolerances(petsclib::PetscLibType,tao::AbstractTao) 
 gets the current values of some tolerances used for the convergence testing of `TaoSolve()`
 
 Not Collective
@@ -2759,9 +2759,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetTolerances"))
 """
-function TaoGetTolerances(petsclib::PetscLibType, tao::Tao) end
+function TaoGetTolerances(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetTolerances(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetTolerances(petsclib::$UnionPetscLib, tao::AbstractTao )
 	gatol_ = Ref{$PetscReal}()
 	grtol_ = Ref{$PetscReal}()
 	gttol_ = Ref{$PetscReal}()
@@ -2781,7 +2781,7 @@ function TaoGetTolerances(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoGetKSP(petsclib::PetscLibType,tao::Tao, ksp::PetscKSP) 
+	TaoGetKSP(petsclib::PetscLibType,tao::AbstractTao, ksp::AbstractPetscKSP) 
 Gets the linear solver used by the optimization solver.
 
 Not Collective
@@ -2799,9 +2799,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetKSP"))
 """
-function TaoGetKSP(petsclib::PetscLibType, tao::Tao, ksp::PetscKSP) end
+function TaoGetKSP(petsclib::PetscLibType, tao::AbstractTao, ksp::AbstractPetscKSP) end
 
-@for_petsc function TaoGetKSP(petsclib::$UnionPetscLib, tao::Tao, ksp::PetscKSP )
+@for_petsc function TaoGetKSP(petsclib::$UnionPetscLib, tao::AbstractTao, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -2817,7 +2817,7 @@ function TaoGetKSP(petsclib::PetscLibType, tao::Tao, ksp::PetscKSP) end
 end 
 
 """
-	lits::PetscInt = TaoGetLinearSolveIterations(petsclib::PetscLibType,tao::Tao) 
+	lits::PetscInt = TaoGetLinearSolveIterations(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the total number of linear iterations
 used by the `Tao` solver
 
@@ -2836,9 +2836,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetLinearSolveIterations"))
 """
-function TaoGetLinearSolveIterations(petsclib::PetscLibType, tao::Tao) end
+function TaoGetLinearSolveIterations(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetLinearSolveIterations(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetLinearSolveIterations(petsclib::$UnionPetscLib, tao::AbstractTao )
 	lits_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -2854,7 +2854,7 @@ function TaoGetLinearSolveIterations(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoGetLineSearch(petsclib::PetscLibType,tao::Tao, ls::TaoLineSearch) 
+	TaoGetLineSearch(petsclib::PetscLibType,tao::AbstractTao, ls::TaoLineSearch) 
 Gets the line search used by the optimization solver.
 
 Not Collective
@@ -2872,9 +2872,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetLineSearch"))
 """
-function TaoGetLineSearch(petsclib::PetscLibType, tao::Tao, ls::TaoLineSearch) end
+function TaoGetLineSearch(petsclib::PetscLibType, tao::AbstractTao, ls::TaoLineSearch) end
 
-@for_petsc function TaoGetLineSearch(petsclib::$UnionPetscLib, tao::Tao, ls::TaoLineSearch )
+@for_petsc function TaoGetLineSearch(petsclib::$UnionPetscLib, tao::AbstractTao, ls::TaoLineSearch )
 
     @chk ccall(
                (:TaoGetLineSearch, $petsc_library),
@@ -2888,7 +2888,7 @@ function TaoGetLineSearch(petsclib::PetscLibType, tao::Tao, ls::TaoLineSearch) e
 end 
 
 """
-	TaoAddLineSearchCounts(petsclib::PetscLibType,tao::Tao) 
+	TaoAddLineSearchCounts(petsclib::PetscLibType,tao::AbstractTao) 
 Adds the number of function evaluations spent
 in the line search to the running total.
 
@@ -2902,9 +2902,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoAddLineSearchCounts"))
 """
-function TaoAddLineSearchCounts(petsclib::PetscLibType, tao::Tao) end
+function TaoAddLineSearchCounts(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoAddLineSearchCounts(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoAddLineSearchCounts(petsclib::$UnionPetscLib, tao::AbstractTao )
 
     @chk ccall(
                (:TaoAddLineSearchCounts, $petsc_library),
@@ -2918,7 +2918,7 @@ function TaoAddLineSearchCounts(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoGetSolution(petsclib::PetscLibType,tao::Tao, X::PetscVec) 
+	TaoGetSolution(petsclib::PetscLibType,tao::AbstractTao, X::AbstractPetscVec) 
 Returns the vector with the current solution from the `Tao` object
 
 Not Collective
@@ -2936,9 +2936,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetSolution"))
 """
-function TaoGetSolution(petsclib::PetscLibType, tao::Tao, X::PetscVec) end
+function TaoGetSolution(petsclib::PetscLibType, tao::AbstractTao, X::AbstractPetscVec) end
 
-@for_petsc function TaoGetSolution(petsclib::$UnionPetscLib, tao::Tao, X::PetscVec )
+@for_petsc function TaoGetSolution(petsclib::$UnionPetscLib, tao::AbstractTao, X::AbstractPetscVec )
 	X_ = Ref(X.ptr)
 
     @chk ccall(
@@ -2954,7 +2954,7 @@ function TaoGetSolution(petsclib::PetscLibType, tao::Tao, X::PetscVec) end
 end 
 
 """
-	TaoResetStatistics(petsclib::PetscLibType,tao::Tao) 
+	TaoResetStatistics(petsclib::PetscLibType,tao::AbstractTao) 
 Initialize the statistics collected by the `Tao` object.
 These statistics include the iteration number, residual norms, and convergence status.
 This routine gets called before solving each optimization problem.
@@ -2971,9 +2971,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoResetStatistics"))
 """
-function TaoResetStatistics(petsclib::PetscLibType, tao::Tao) end
+function TaoResetStatistics(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoResetStatistics(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoResetStatistics(petsclib::$UnionPetscLib, tao::AbstractTao )
 
     @chk ccall(
                (:TaoResetStatistics, $petsc_library),
@@ -2987,7 +2987,7 @@ function TaoResetStatistics(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoSetUpdate(petsclib::PetscLibType,tao::Tao, func::external, ctx::Cvoid) 
+	TaoSetUpdate(petsclib::PetscLibType,tao::AbstractTao, func::external, ctx::Cvoid) 
 Sets the general
 at the beginning of every iteration of the optimization algorithm. Called after the new solution and the gradient
 is determined, but before the Hessian is computed (if applicable).
@@ -3011,9 +3011,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoSetUpdate"))
 """
-function TaoSetUpdate(petsclib::PetscLibType, tao::Tao, func::external, ctx::Cvoid) end
+function TaoSetUpdate(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetUpdate(petsclib::$UnionPetscLib, tao::Tao, func::external, ctx::Cvoid )
+@for_petsc function TaoSetUpdate(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetUpdate, $petsc_library),
@@ -3027,7 +3027,7 @@ function TaoSetUpdate(petsclib::PetscLibType, tao::Tao, func::external, ctx::Cvo
 end 
 
 """
-	TaoSetConvergenceTest(petsclib::PetscLibType,tao::Tao, conv::external, ctx::Cvoid) 
+	TaoSetConvergenceTest(petsclib::PetscLibType,tao::AbstractTao, conv::external, ctx::Cvoid) 
 Sets the function that is to be used to test
 for convergence of the iterative minimization solution.  The new convergence
 testing routine will replace Tao's default convergence test.
@@ -3051,9 +3051,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoSetConvergenceTest"))
 """
-function TaoSetConvergenceTest(petsclib::PetscLibType, tao::Tao, conv::external, ctx::Cvoid) end
+function TaoSetConvergenceTest(petsclib::PetscLibType, tao::AbstractTao, conv::external, ctx::Cvoid) end
 
-@for_petsc function TaoSetConvergenceTest(petsclib::$UnionPetscLib, tao::Tao, conv::external, ctx::Cvoid )
+@for_petsc function TaoSetConvergenceTest(petsclib::$UnionPetscLib, tao::AbstractTao, conv::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetConvergenceTest, $petsc_library),
@@ -3067,7 +3067,7 @@ function TaoSetConvergenceTest(petsclib::PetscLibType, tao::Tao, conv::external,
 end 
 
 """
-	TaoMonitorSet(petsclib::PetscLibType,tao::Tao, func::external, ctx::Cvoid, dest::PetscCtxDestroyFn) 
+	TaoMonitorSet(petsclib::PetscLibType,tao::AbstractTao, func::external, ctx::Cvoid, dest::PetscCtxDestroyFn) 
 Sets an additional function that is to be used at every
 iteration of the solver to display the iteration's
 progress.
@@ -3091,9 +3091,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoMonitorSet"))
 """
-function TaoMonitorSet(petsclib::PetscLibType, tao::Tao, func::external, ctx::Cvoid, dest::PetscCtxDestroyFn) end
+function TaoMonitorSet(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Cvoid, dest::PetscCtxDestroyFn) end
 
-@for_petsc function TaoMonitorSet(petsclib::$UnionPetscLib, tao::Tao, func::external, ctx::Cvoid, dest::PetscCtxDestroyFn )
+@for_petsc function TaoMonitorSet(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Cvoid, dest::PetscCtxDestroyFn )
 
     @chk ccall(
                (:TaoMonitorSet, $petsc_library),
@@ -3107,7 +3107,7 @@ function TaoMonitorSet(petsclib::PetscLibType, tao::Tao, func::external, ctx::Cv
 end 
 
 """
-	TaoMonitorCancel(petsclib::PetscLibType,tao::Tao) 
+	TaoMonitorCancel(petsclib::PetscLibType,tao::AbstractTao) 
 Clears all the monitor functions for a `Tao` object.
 
 Logically Collective
@@ -3127,9 +3127,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorCancel"))
 """
-function TaoMonitorCancel(petsclib::PetscLibType, tao::Tao) end
+function TaoMonitorCancel(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoMonitorCancel(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoMonitorCancel(petsclib::$UnionPetscLib, tao::AbstractTao )
 
     @chk ccall(
                (:TaoMonitorCancel, $petsc_library),
@@ -3143,7 +3143,7 @@ function TaoMonitorCancel(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoMonitorDefault(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoMonitorDefault(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 Default routine for monitoring progress of `TaoSolve()`
 
 Collective
@@ -3162,9 +3162,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorDefault"))
 """
-function TaoMonitorDefault(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoMonitorDefault(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoMonitorDefault(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoMonitorDefault(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoMonitorDefault, $petsc_library),
@@ -3178,7 +3178,7 @@ function TaoMonitorDefault(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
 end 
 
 """
-	TaoMonitorGlobalization(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoMonitorGlobalization(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 Default routine for monitoring progress of `TaoSolve()` with extra detail on the globalization method.
 
 Collective
@@ -3197,9 +3197,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorGlobalization"))
 """
-function TaoMonitorGlobalization(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoMonitorGlobalization(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoMonitorGlobalization(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoMonitorGlobalization(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoMonitorGlobalization, $petsc_library),
@@ -3213,7 +3213,7 @@ function TaoMonitorGlobalization(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) e
 end 
 
 """
-	TaoMonitorDefaultShort(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoMonitorDefaultShort(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 Routine for monitoring progress of `TaoSolve()` that displays fewer digits than `TaoMonitorDefault()`
 
 Collective
@@ -3232,9 +3232,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorDefaultShort"))
 """
-function TaoMonitorDefaultShort(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoMonitorDefaultShort(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoMonitorDefaultShort(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoMonitorDefaultShort(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoMonitorDefaultShort, $petsc_library),
@@ -3248,7 +3248,7 @@ function TaoMonitorDefaultShort(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) en
 end 
 
 """
-	TaoMonitorConstraintNorm(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoMonitorConstraintNorm(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 same as `TaoMonitorDefault()` except
 it prints the norm of the constraint function.
 
@@ -3268,9 +3268,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorConstraintNorm"))
 """
-function TaoMonitorConstraintNorm(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoMonitorConstraintNorm(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoMonitorConstraintNorm(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoMonitorConstraintNorm(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoMonitorConstraintNorm, $petsc_library),
@@ -3284,7 +3284,7 @@ function TaoMonitorConstraintNorm(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) 
 end 
 
 """
-	TaoMonitorSolution(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoMonitorSolution(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 Views the solution at each iteration of `TaoSolve()`
 
 Collective
@@ -3303,9 +3303,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorSolution"))
 """
-function TaoMonitorSolution(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoMonitorSolution(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoMonitorSolution(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoMonitorSolution(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoMonitorSolution, $petsc_library),
@@ -3319,7 +3319,7 @@ function TaoMonitorSolution(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
 end 
 
 """
-	TaoMonitorGradient(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoMonitorGradient(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 Views the gradient at each iteration of `TaoSolve()`
 
 Collective
@@ -3338,9 +3338,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorGradient"))
 """
-function TaoMonitorGradient(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoMonitorGradient(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoMonitorGradient(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoMonitorGradient(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoMonitorGradient, $petsc_library),
@@ -3354,7 +3354,7 @@ function TaoMonitorGradient(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
 end 
 
 """
-	TaoMonitorStep(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoMonitorStep(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 Views the step
 
 Collective
@@ -3373,9 +3373,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorStep"))
 """
-function TaoMonitorStep(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoMonitorStep(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoMonitorStep(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoMonitorStep(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoMonitorStep, $petsc_library),
@@ -3389,7 +3389,7 @@ function TaoMonitorStep(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
 end 
 
 """
-	TaoMonitorSolutionDraw(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoMonitorSolutionDraw(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 Plots the solution at each iteration of `TaoSolve()`
 
 Collective
@@ -3409,9 +3409,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorSolutionDraw"))
 """
-function TaoMonitorSolutionDraw(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoMonitorSolutionDraw(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoMonitorSolutionDraw(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoMonitorSolutionDraw(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoMonitorSolutionDraw, $petsc_library),
@@ -3425,7 +3425,7 @@ function TaoMonitorSolutionDraw(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) en
 end 
 
 """
-	TaoMonitorGradientDraw(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoMonitorGradientDraw(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 Plots the gradient at each iteration of `TaoSolve()`
 
 Collective
@@ -3444,9 +3444,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorGradientDraw"))
 """
-function TaoMonitorGradientDraw(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoMonitorGradientDraw(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoMonitorGradientDraw(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoMonitorGradientDraw(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoMonitorGradientDraw, $petsc_library),
@@ -3460,7 +3460,7 @@ function TaoMonitorGradientDraw(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) en
 end 
 
 """
-	TaoMonitorStepDraw(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoMonitorStepDraw(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 Plots the step direction at each iteration of `TaoSolve()`
 
 Collective
@@ -3479,9 +3479,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorStepDraw"))
 """
-function TaoMonitorStepDraw(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoMonitorStepDraw(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoMonitorStepDraw(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoMonitorStepDraw(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoMonitorStepDraw, $petsc_library),
@@ -3495,7 +3495,7 @@ function TaoMonitorStepDraw(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
 end 
 
 """
-	TaoMonitorResidual(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoMonitorResidual(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 Views the least
 
 Collective
@@ -3514,9 +3514,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoMonitorResidual"))
 """
-function TaoMonitorResidual(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoMonitorResidual(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoMonitorResidual(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoMonitorResidual(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoMonitorResidual, $petsc_library),
@@ -3530,7 +3530,7 @@ function TaoMonitorResidual(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
 end 
 
 """
-	TaoDefaultConvergenceTest(petsclib::PetscLibType,tao::Tao, dummy::Cvoid) 
+	TaoDefaultConvergenceTest(petsclib::PetscLibType,tao::AbstractTao, dummy::Cvoid) 
 Determines whether the solver should continue iterating
 or terminate.
 
@@ -3547,9 +3547,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoDefaultConvergenceTest"))
 """
-function TaoDefaultConvergenceTest(petsclib::PetscLibType, tao::Tao, dummy::Cvoid) end
+function TaoDefaultConvergenceTest(petsclib::PetscLibType, tao::AbstractTao, dummy::Cvoid) end
 
-@for_petsc function TaoDefaultConvergenceTest(petsclib::$UnionPetscLib, tao::Tao, dummy::Cvoid )
+@for_petsc function TaoDefaultConvergenceTest(petsclib::$UnionPetscLib, tao::AbstractTao, dummy::Cvoid )
 
     @chk ccall(
                (:TaoDefaultConvergenceTest, $petsc_library),
@@ -3563,7 +3563,7 @@ function TaoDefaultConvergenceTest(petsclib::PetscLibType, tao::Tao, dummy::Cvoi
 end 
 
 """
-	TaoSetOptionsPrefix(petsclib::PetscLibType,tao::Tao, p::String) 
+	TaoSetOptionsPrefix(petsclib::PetscLibType,tao::AbstractTao, p::String) 
 Sets the prefix used for searching for all
 Tao options in the database.
 
@@ -3580,9 +3580,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoSetOptionsPrefix"))
 """
-function TaoSetOptionsPrefix(petsclib::PetscLibType, tao::Tao, p::String) end
+function TaoSetOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao, p::String) end
 
-@for_petsc function TaoSetOptionsPrefix(petsclib::$UnionPetscLib, tao::Tao, p::String )
+@for_petsc function TaoSetOptionsPrefix(petsclib::$UnionPetscLib, tao::AbstractTao, p::String )
 
     @chk ccall(
                (:TaoSetOptionsPrefix, $petsc_library),
@@ -3596,7 +3596,7 @@ function TaoSetOptionsPrefix(petsclib::PetscLibType, tao::Tao, p::String) end
 end 
 
 """
-	TaoAppendOptionsPrefix(petsclib::PetscLibType,tao::Tao, p::String) 
+	TaoAppendOptionsPrefix(petsclib::PetscLibType,tao::AbstractTao, p::String) 
 Appends to the prefix used for searching for all Tao options in the database.
 
 Logically Collective
@@ -3612,9 +3612,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoAppendOptionsPrefix"))
 """
-function TaoAppendOptionsPrefix(petsclib::PetscLibType, tao::Tao, p::String) end
+function TaoAppendOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao, p::String) end
 
-@for_petsc function TaoAppendOptionsPrefix(petsclib::$UnionPetscLib, tao::Tao, p::String )
+@for_petsc function TaoAppendOptionsPrefix(petsclib::$UnionPetscLib, tao::AbstractTao, p::String )
 
     @chk ccall(
                (:TaoAppendOptionsPrefix, $petsc_library),
@@ -3628,7 +3628,7 @@ function TaoAppendOptionsPrefix(petsclib::PetscLibType, tao::Tao, p::String) end
 end 
 
 """
-	TaoGetOptionsPrefix(petsclib::PetscLibType,tao::Tao, p::String) 
+	TaoGetOptionsPrefix(petsclib::PetscLibType,tao::AbstractTao, p::String) 
 Gets the prefix used for searching for all
 Tao options in the database
 
@@ -3647,9 +3647,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoGetOptionsPrefix"))
 """
-function TaoGetOptionsPrefix(petsclib::PetscLibType, tao::Tao, p::String) end
+function TaoGetOptionsPrefix(petsclib::PetscLibType, tao::AbstractTao, p::String) end
 
-@for_petsc function TaoGetOptionsPrefix(petsclib::$UnionPetscLib, tao::Tao, p::String )
+@for_petsc function TaoGetOptionsPrefix(petsclib::$UnionPetscLib, tao::AbstractTao, p::String )
 	p_ = Ref(pointer(p))
 
     @chk ccall(
@@ -3664,7 +3664,7 @@ function TaoGetOptionsPrefix(petsclib::PetscLibType, tao::Tao, p::String) end
 end 
 
 """
-	TaoSetType(petsclib::PetscLibType,tao::Tao, type::TaoType) 
+	TaoSetType(petsclib::PetscLibType,tao::AbstractTao, type::TaoType) 
 Sets the `TaoType` for the minimization solver.
 
 Collective
@@ -3684,9 +3684,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetType"))
 """
-function TaoSetType(petsclib::PetscLibType, tao::Tao, type::TaoType) end
+function TaoSetType(petsclib::PetscLibType, tao::AbstractTao, type::TaoType) end
 
-@for_petsc function TaoSetType(petsclib::$UnionPetscLib, tao::Tao, type::TaoType )
+@for_petsc function TaoSetType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoType )
 
     @chk ccall(
                (:TaoSetType, $petsc_library),
@@ -3758,7 +3758,7 @@ function TaoRegisterDestroy(petsclib::PetscLibType) end
 end 
 
 """
-	iter::PetscInt = TaoGetIterationNumber(petsclib::PetscLibType,tao::Tao) 
+	iter::PetscInt = TaoGetIterationNumber(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the number of `TaoSolve()` iterations completed
 at this time.
 
@@ -3775,9 +3775,9 @@ Output Parameter:
 # External Links
 $(_doc_external("Tao/TaoGetIterationNumber"))
 """
-function TaoGetIterationNumber(petsclib::PetscLibType, tao::Tao) end
+function TaoGetIterationNumber(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetIterationNumber(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetIterationNumber(petsclib::$UnionPetscLib, tao::AbstractTao )
 	iter_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3793,7 +3793,7 @@ function TaoGetIterationNumber(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	value::PetscReal = TaoGetResidualNorm(petsclib::PetscLibType,tao::Tao) 
+	value::PetscReal = TaoGetResidualNorm(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the current value of the norm of the residual (gradient)
 at this time.
 
@@ -3812,9 +3812,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetResidualNorm"))
 """
-function TaoGetResidualNorm(petsclib::PetscLibType, tao::Tao) end
+function TaoGetResidualNorm(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetResidualNorm(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetResidualNorm(petsclib::$UnionPetscLib, tao::AbstractTao )
 	value_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -3830,7 +3830,7 @@ function TaoGetResidualNorm(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoSetIterationNumber(petsclib::PetscLibType,tao::Tao, iter::PetscInt) 
+	TaoSetIterationNumber(petsclib::PetscLibType,tao::AbstractTao, iter::PetscInt) 
 Sets the current iteration number.
 
 Logically Collective
@@ -3846,9 +3846,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoSetIterationNumber"))
 """
-function TaoSetIterationNumber(petsclib::PetscLibType, tao::Tao, iter::PetscInt) end
+function TaoSetIterationNumber(petsclib::PetscLibType, tao::AbstractTao, iter::PetscInt) end
 
-@for_petsc function TaoSetIterationNumber(petsclib::$UnionPetscLib, tao::Tao, iter::$PetscInt )
+@for_petsc function TaoSetIterationNumber(petsclib::$UnionPetscLib, tao::AbstractTao, iter::$PetscInt )
 
     @chk ccall(
                (:TaoSetIterationNumber, $petsc_library),
@@ -3862,7 +3862,7 @@ function TaoSetIterationNumber(petsclib::PetscLibType, tao::Tao, iter::PetscInt)
 end 
 
 """
-	iter::PetscInt = TaoGetTotalIterationNumber(petsclib::PetscLibType,tao::Tao) 
+	iter::PetscInt = TaoGetTotalIterationNumber(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the total number of `TaoSolve()` iterations
 completed. This number keeps accumulating if multiple solves
 are called with the `Tao` object.
@@ -3882,9 +3882,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetTotalIterationNumber"))
 """
-function TaoGetTotalIterationNumber(petsclib::PetscLibType, tao::Tao) end
+function TaoGetTotalIterationNumber(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetTotalIterationNumber(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetTotalIterationNumber(petsclib::$UnionPetscLib, tao::AbstractTao )
 	iter_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3900,7 +3900,7 @@ function TaoGetTotalIterationNumber(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoSetTotalIterationNumber(petsclib::PetscLibType,tao::Tao, iter::PetscInt) 
+	TaoSetTotalIterationNumber(petsclib::PetscLibType,tao::AbstractTao, iter::PetscInt) 
 Sets the current total iteration number.
 
 Logically Collective
@@ -3916,9 +3916,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoSetTotalIterationNumber"))
 """
-function TaoSetTotalIterationNumber(petsclib::PetscLibType, tao::Tao, iter::PetscInt) end
+function TaoSetTotalIterationNumber(petsclib::PetscLibType, tao::AbstractTao, iter::PetscInt) end
 
-@for_petsc function TaoSetTotalIterationNumber(petsclib::$UnionPetscLib, tao::Tao, iter::$PetscInt )
+@for_petsc function TaoSetTotalIterationNumber(petsclib::$UnionPetscLib, tao::AbstractTao, iter::$PetscInt )
 
     @chk ccall(
                (:TaoSetTotalIterationNumber, $petsc_library),
@@ -3932,7 +3932,7 @@ function TaoSetTotalIterationNumber(petsclib::PetscLibType, tao::Tao, iter::Pets
 end 
 
 """
-	TaoSetConvergedReason(petsclib::PetscLibType,tao::Tao, reason::TaoConvergedReason) 
+	TaoSetConvergedReason(petsclib::PetscLibType,tao::AbstractTao, reason::TaoConvergedReason) 
 Sets the termination flag on a `Tao` object
 
 Logically Collective
@@ -3948,9 +3948,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetConvergedReason"))
 """
-function TaoSetConvergedReason(petsclib::PetscLibType, tao::Tao, reason::TaoConvergedReason) end
+function TaoSetConvergedReason(petsclib::PetscLibType, tao::AbstractTao, reason::TaoConvergedReason) end
 
-@for_petsc function TaoSetConvergedReason(petsclib::$UnionPetscLib, tao::Tao, reason::TaoConvergedReason )
+@for_petsc function TaoSetConvergedReason(petsclib::$UnionPetscLib, tao::AbstractTao, reason::TaoConvergedReason )
 
     @chk ccall(
                (:TaoSetConvergedReason, $petsc_library),
@@ -3964,7 +3964,7 @@ function TaoSetConvergedReason(petsclib::PetscLibType, tao::Tao, reason::TaoConv
 end 
 
 """
-	TaoGetConvergedReason(petsclib::PetscLibType,tao::Tao, reason::TaoConvergedReason) 
+	TaoGetConvergedReason(petsclib::PetscLibType,tao::AbstractTao, reason::TaoConvergedReason) 
 Gets the reason the `TaoSolve()` was stopped.
 
 Not Collective
@@ -3982,9 +3982,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetConvergedReason"))
 """
-function TaoGetConvergedReason(petsclib::PetscLibType, tao::Tao, reason::TaoConvergedReason) end
+function TaoGetConvergedReason(petsclib::PetscLibType, tao::AbstractTao, reason::TaoConvergedReason) end
 
-@for_petsc function TaoGetConvergedReason(petsclib::$UnionPetscLib, tao::Tao, reason::TaoConvergedReason )
+@for_petsc function TaoGetConvergedReason(petsclib::$UnionPetscLib, tao::AbstractTao, reason::TaoConvergedReason )
 
     @chk ccall(
                (:TaoGetConvergedReason, $petsc_library),
@@ -3998,7 +3998,7 @@ function TaoGetConvergedReason(petsclib::PetscLibType, tao::Tao, reason::TaoConv
 end
 
 
-@for_petsc function TaoGetConvergedReason(petsclib::$UnionPetscLib, tao::Tao)
+@for_petsc function TaoGetConvergedReason(petsclib::$UnionPetscLib, tao::AbstractTao)
     reason = Ref{TaoConvergedReason}()
     @chk ccall(
                (:TaoGetConvergedReason, $petsc_library),
@@ -4010,7 +4010,7 @@ end
 end 
 
 """
-	its::PetscInt,f::PetscReal,gnorm::PetscReal,cnorm::PetscReal,xdiff::PetscReal = TaoGetSolutionStatus(petsclib::PetscLibType,tao::Tao, reason::TaoConvergedReason) 
+	its::PetscInt,f::PetscReal,gnorm::PetscReal,cnorm::PetscReal,xdiff::PetscReal = TaoGetSolutionStatus(petsclib::PetscLibType,tao::AbstractTao, reason::TaoConvergedReason) 
 Get the current iterate, objective value,
 residual, infeasibility, and termination from a `Tao` object
 
@@ -4034,9 +4034,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetSolutionStatus"))
 """
-function TaoGetSolutionStatus(petsclib::PetscLibType, tao::Tao, reason::TaoConvergedReason) end
+function TaoGetSolutionStatus(petsclib::PetscLibType, tao::AbstractTao, reason::TaoConvergedReason) end
 
-@for_petsc function TaoGetSolutionStatus(petsclib::$UnionPetscLib, tao::Tao, reason::TaoConvergedReason )
+@for_petsc function TaoGetSolutionStatus(petsclib::$UnionPetscLib, tao::AbstractTao, reason::TaoConvergedReason )
 	its_ = Ref{$PetscInt}()
 	f_ = Ref{$PetscReal}()
 	gnorm_ = Ref{$PetscReal}()
@@ -4060,7 +4060,7 @@ function TaoGetSolutionStatus(petsclib::PetscLibType, tao::Tao, reason::TaoConve
 end 
 
 """
-	type::TaoType = TaoGetType(petsclib::PetscLibType,tao::Tao) 
+	type::TaoType = TaoGetType(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the current `TaoType` being used in the `Tao` object
 
 Not Collective
@@ -4078,9 +4078,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetType"))
 """
-function TaoGetType(petsclib::PetscLibType, tao::Tao) end
+function TaoGetType(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetType(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	type_ = Ref{TaoType}()
 
     @chk ccall(
@@ -4096,7 +4096,7 @@ function TaoGetType(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoMonitor(petsclib::PetscLibType,tao::Tao, its::PetscInt, f::PetscReal, res::PetscReal, cnorm::PetscReal, steplength::PetscReal) 
+	TaoMonitor(petsclib::PetscLibType,tao::AbstractTao, its::PetscInt, f::PetscReal, res::PetscReal, cnorm::PetscReal, steplength::PetscReal) 
 Monitor the solver and the current solution.  This
 routine will record the iteration number and residual statistics,
 and call any monitors specified by the user.
@@ -4120,9 +4120,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoMonitor"))
 """
-function TaoMonitor(petsclib::PetscLibType, tao::Tao, its::PetscInt, f::PetscReal, res::PetscReal, cnorm::PetscReal, steplength::PetscReal) end
+function TaoMonitor(petsclib::PetscLibType, tao::AbstractTao, its::PetscInt, f::PetscReal, res::PetscReal, cnorm::PetscReal, steplength::PetscReal) end
 
-@for_petsc function TaoMonitor(petsclib::$UnionPetscLib, tao::Tao, its::$PetscInt, f::$PetscReal, res::$PetscReal, cnorm::$PetscReal, steplength::$PetscReal )
+@for_petsc function TaoMonitor(petsclib::$UnionPetscLib, tao::AbstractTao, its::$PetscInt, f::$PetscReal, res::$PetscReal, cnorm::$PetscReal, steplength::$PetscReal )
 
     @chk ccall(
                (:TaoMonitor, $petsc_library),
@@ -4136,7 +4136,7 @@ function TaoMonitor(petsclib::PetscLibType, tao::Tao, its::PetscInt, f::PetscRea
 end 
 
 """
-	TaoSetConvergenceHistory(petsclib::PetscLibType,tao::Tao, obj::Vector{PetscReal}, resid::Vector{PetscReal}, cnorm::Vector{PetscReal}, lits::Vector{PetscInt}, na::PetscInt, reset::PetscBool) 
+	TaoSetConvergenceHistory(petsclib::PetscLibType,tao::AbstractTao, obj::Vector{PetscReal}, resid::Vector{PetscReal}, cnorm::Vector{PetscReal}, lits::Vector{PetscInt}, na::PetscInt, reset::PetscBool) 
 Sets the array used to hold the convergence history.
 
 Logically Collective
@@ -4158,9 +4158,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetConvergenceHistory"))
 """
-function TaoSetConvergenceHistory(petsclib::PetscLibType, tao::Tao, obj::Vector{PetscReal}, resid::Vector{PetscReal}, cnorm::Vector{PetscReal}, lits::Vector{PetscInt}, na::PetscInt, reset::PetscBool) end
+function TaoSetConvergenceHistory(petsclib::PetscLibType, tao::AbstractTao, obj::Vector{PetscReal}, resid::Vector{PetscReal}, cnorm::Vector{PetscReal}, lits::Vector{PetscInt}, na::PetscInt, reset::PetscBool) end
 
-@for_petsc function TaoSetConvergenceHistory(petsclib::$UnionPetscLib, tao::Tao, obj::Vector{$PetscReal}, resid::Vector{$PetscReal}, cnorm::Vector{$PetscReal}, lits::Vector{$PetscInt}, na::$PetscInt, reset::PetscBool )
+@for_petsc function TaoSetConvergenceHistory(petsclib::$UnionPetscLib, tao::AbstractTao, obj::Vector{$PetscReal}, resid::Vector{$PetscReal}, cnorm::Vector{$PetscReal}, lits::Vector{$PetscInt}, na::$PetscInt, reset::PetscBool )
 
     @chk ccall(
                (:TaoSetConvergenceHistory, $petsc_library),
@@ -4174,7 +4174,7 @@ function TaoSetConvergenceHistory(petsclib::PetscLibType, tao::Tao, obj::Vector{
 end 
 
 """
-	obj::PetscReal,resid::PetscReal,cnorm::PetscReal,lits::PetscInt,nhist::PetscInt = TaoGetConvergenceHistory(petsclib::PetscLibType,tao::Tao) 
+	obj::PetscReal,resid::PetscReal,cnorm::PetscReal,lits::PetscInt,nhist::PetscInt = TaoGetConvergenceHistory(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the arrays used that hold the convergence history.
 
 Collective
@@ -4196,9 +4196,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoGetConvergenceHistory"))
 """
-function TaoGetConvergenceHistory(petsclib::PetscLibType, tao::Tao) end
+function TaoGetConvergenceHistory(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoGetConvergenceHistory(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoGetConvergenceHistory(petsclib::$UnionPetscLib, tao::AbstractTao )
 	obj_ = Ref{$PetscReal}()
 	resid_ = Ref{$PetscReal}()
 	cnorm_ = Ref{$PetscReal}()
@@ -4222,7 +4222,7 @@ function TaoGetConvergenceHistory(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoSetApplicationContext(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoSetApplicationContext(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 Sets the optional user
 `Tao` callback functions with `TaoGetApplicationContext()`
 
@@ -4239,9 +4239,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoSetApplicationContext"))
 """
-function TaoSetApplicationContext(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoSetApplicationContext(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoSetApplicationContext(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoSetApplicationContext(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoSetApplicationContext, $petsc_library),
@@ -4255,7 +4255,7 @@ function TaoSetApplicationContext(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) 
 end 
 
 """
-	TaoGetApplicationContext(petsclib::PetscLibType,tao::Tao, ctx::PeCtx) 
+	TaoGetApplicationContext(petsclib::PetscLibType,tao::AbstractTao, ctx::PeCtx) 
 Gets the user
 
 Not Collective
@@ -4273,9 +4273,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoGetApplicationContext"))
 """
-function TaoGetApplicationContext(petsclib::PetscLibType, tao::Tao, ctx::PeCtx) end
+function TaoGetApplicationContext(petsclib::PetscLibType, tao::AbstractTao, ctx::PeCtx) end
 
-@for_petsc function TaoGetApplicationContext(petsclib::$UnionPetscLib, tao::Tao, ctx::PeCtx )
+@for_petsc function TaoGetApplicationContext(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::PeCtx )
 
     @chk ccall(
                (:TaoGetApplicationContext, $petsc_library),
@@ -4289,7 +4289,7 @@ function TaoGetApplicationContext(petsclib::PetscLibType, tao::Tao, ctx::PeCtx) 
 end 
 
 """
-	TaoSetGradientNorm(petsclib::PetscLibType,tao::Tao, M::PetscMat) 
+	TaoSetGradientNorm(petsclib::PetscLibType,tao::AbstractTao, M::AbstractPetscMat) 
 Sets the matrix used to define the norm that measures the size of the gradient in some of the `Tao` algorithms
 
 Collective
@@ -4305,9 +4305,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoSetGradientNorm"))
 """
-function TaoSetGradientNorm(petsclib::PetscLibType, tao::Tao, M::PetscMat) end
+function TaoSetGradientNorm(petsclib::PetscLibType, tao::AbstractTao, M::AbstractPetscMat) end
 
-@for_petsc function TaoSetGradientNorm(petsclib::$UnionPetscLib, tao::Tao, M::PetscMat )
+@for_petsc function TaoSetGradientNorm(petsclib::$UnionPetscLib, tao::AbstractTao, M::AbstractPetscMat )
 
     @chk ccall(
                (:TaoSetGradientNorm, $petsc_library),
@@ -4321,7 +4321,7 @@ function TaoSetGradientNorm(petsclib::PetscLibType, tao::Tao, M::PetscMat) end
 end 
 
 """
-	TaoGetGradientNorm(petsclib::PetscLibType,tao::Tao, M::PetscMat) 
+	TaoGetGradientNorm(petsclib::PetscLibType,tao::AbstractTao, M::AbstractPetscMat) 
 Returns the matrix used to define the norm used for measuring the size of the gradient in some of the `Tao` algorithms
 
 Not Collective
@@ -4339,9 +4339,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoGetGradientNorm"))
 """
-function TaoGetGradientNorm(petsclib::PetscLibType, tao::Tao, M::PetscMat) end
+function TaoGetGradientNorm(petsclib::PetscLibType, tao::AbstractTao, M::AbstractPetscMat) end
 
-@for_petsc function TaoGetGradientNorm(petsclib::$UnionPetscLib, tao::Tao, M::PetscMat )
+@for_petsc function TaoGetGradientNorm(petsclib::$UnionPetscLib, tao::AbstractTao, M::AbstractPetscMat )
 	M_ = Ref(M.ptr)
 
     @chk ccall(
@@ -4357,7 +4357,7 @@ function TaoGetGradientNorm(petsclib::PetscLibType, tao::Tao, M::PetscMat) end
 end 
 
 """
-	gnorm::PetscReal = TaoGradientNorm(petsclib::PetscLibType,tao::Tao, gradient::PetscVec, type::NormType) 
+	gnorm::PetscReal = TaoGradientNorm(petsclib::PetscLibType,tao::AbstractTao, gradient::AbstractPetscVec, type::NormType) 
 Compute the norm using the `NormType`, the user has selected
 
 Collective
@@ -4377,9 +4377,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoGradientNorm"))
 """
-function TaoGradientNorm(petsclib::PetscLibType, tao::Tao, gradient::PetscVec, type::NormType) end
+function TaoGradientNorm(petsclib::PetscLibType, tao::AbstractTao, gradient::AbstractPetscVec, type::NormType) end
 
-@for_petsc function TaoGradientNorm(petsclib::$UnionPetscLib, tao::Tao, gradient::PetscVec, type::NormType )
+@for_petsc function TaoGradientNorm(petsclib::$UnionPetscLib, tao::AbstractTao, gradient::AbstractPetscVec, type::NormType )
 	gnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -4395,7 +4395,7 @@ function TaoGradientNorm(petsclib::PetscLibType, tao::Tao, gradient::PetscVec, t
 end 
 
 """
-	TaoSoftThreshold(petsclib::PetscLibType,in::PetscVec, lb::PetscReal, ub::PetscReal, out::PetscVec) 
+	TaoSoftThreshold(petsclib::PetscLibType,in::AbstractPetscVec, lb::PetscReal, ub::PetscReal, out::AbstractPetscVec) 
 Calculates soft thresholding routine with input vector
 and given lower and upper bound and returns it to output vector.
 
@@ -4412,9 +4412,9 @@ Output Parameter:
 # External Links
 $(_doc_external("Tao/TaoSoftThreshold"))
 """
-function TaoSoftThreshold(petsclib::PetscLibType, in::PetscVec, lb::PetscReal, ub::PetscReal, out::PetscVec) end
+function TaoSoftThreshold(petsclib::PetscLibType, in::AbstractPetscVec, lb::PetscReal, ub::PetscReal, out::AbstractPetscVec) end
 
-@for_petsc function TaoSoftThreshold(petsclib::$UnionPetscLib, in::PetscVec, lb::$PetscReal, ub::$PetscReal, out::PetscVec )
+@for_petsc function TaoSoftThreshold(petsclib::$UnionPetscLib, in::AbstractPetscVec, lb::$PetscReal, ub::$PetscReal, out::AbstractPetscVec )
 
     @chk ccall(
                (:TaoSoftThreshold, $petsc_library),
@@ -4428,7 +4428,7 @@ function TaoSoftThreshold(petsclib::PetscLibType, in::PetscVec, lb::PetscReal, u
 end 
 
 """
-	TaoPythonSetType(petsclib::PetscLibType,tao::Tao, pyname::String) 
+	TaoPythonSetType(petsclib::PetscLibType,tao::AbstractTao, pyname::String) 
 Initialize a `Tao` object implemented in Python.
 
 Collective
@@ -4447,9 +4447,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoPythonSetType"))
 """
-function TaoPythonSetType(petsclib::PetscLibType, tao::Tao, pyname::String) end
+function TaoPythonSetType(petsclib::PetscLibType, tao::AbstractTao, pyname::String) end
 
-@for_petsc function TaoPythonSetType(petsclib::$UnionPetscLib, tao::Tao, pyname::String )
+@for_petsc function TaoPythonSetType(petsclib::$UnionPetscLib, tao::AbstractTao, pyname::String )
 
     @chk ccall(
                (:TaoPythonSetType, $petsc_library),
@@ -4463,7 +4463,7 @@ function TaoPythonSetType(petsclib::PetscLibType, tao::Tao, pyname::String) end
 end 
 
 """
-	pyname::String = TaoPythonGetType(petsclib::PetscLibType,tao::Tao) 
+	pyname::String = TaoPythonGetType(petsclib::PetscLibType,tao::AbstractTao) 
 Get the type of a `Tao` object implemented in Python.
 
 Not Collective
@@ -4481,9 +4481,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoPythonGetType"))
 """
-function TaoPythonGetType(petsclib::PetscLibType, tao::Tao) end
+function TaoPythonGetType(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoPythonGetType(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoPythonGetType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	pyname_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -4499,7 +4499,7 @@ function TaoPythonGetType(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoShellSetSolve(petsclib::PetscLibType,tao::Tao, solve::external) 
+	TaoShellSetSolve(petsclib::PetscLibType,tao::AbstractTao, solve::external) 
 Sets routine to apply as solver
 
 Logically Collective
@@ -4518,9 +4518,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoShellSetSolve"))
 """
-function TaoShellSetSolve(petsclib::PetscLibType, tao::Tao, solve::external) end
+function TaoShellSetSolve(petsclib::PetscLibType, tao::AbstractTao, solve::external) end
 
-@for_petsc function TaoShellSetSolve(petsclib::$UnionPetscLib, tao::Tao, solve::external )
+@for_petsc function TaoShellSetSolve(petsclib::$UnionPetscLib, tao::AbstractTao, solve::external )
 
     @chk ccall(
                (:TaoShellSetSolve, $petsc_library),
@@ -4534,7 +4534,7 @@ function TaoShellSetSolve(petsclib::PetscLibType, tao::Tao, solve::external) end
 end 
 
 """
-	TaoShellGetContext(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoShellGetContext(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 Returns the user
 
 Not Collective
@@ -4552,9 +4552,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoShellGetContext"))
 """
-function TaoShellGetContext(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoShellGetContext(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoShellGetContext(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoShellGetContext(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoShellGetContext, $petsc_library),
@@ -4568,7 +4568,7 @@ function TaoShellGetContext(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
 end 
 
 """
-	TaoShellSetContext(petsclib::PetscLibType,tao::Tao, ctx::Cvoid) 
+	TaoShellSetContext(petsclib::PetscLibType,tao::AbstractTao, ctx::Cvoid) 
 sets the context for a `TAOSHELL`
 
 Logically Collective
@@ -4584,9 +4584,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoShellSetContext"))
 """
-function TaoShellSetContext(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
+function TaoShellSetContext(petsclib::PetscLibType, tao::AbstractTao, ctx::Cvoid) end
 
-@for_petsc function TaoShellSetContext(petsclib::$UnionPetscLib, tao::Tao, ctx::Cvoid )
+@for_petsc function TaoShellSetContext(petsclib::$UnionPetscLib, tao::AbstractTao, ctx::Cvoid )
 
     @chk ccall(
                (:TaoShellSetContext, $petsc_library),
@@ -4600,7 +4600,7 @@ function TaoShellSetContext(petsclib::PetscLibType, tao::Tao, ctx::Cvoid) end
 end 
 
 """
-	TaoBRGNGetDampingVector(petsclib::PetscLibType,tao::Tao, d::PetscVec) 
+	TaoBRGNGetDampingVector(petsclib::PetscLibType,tao::AbstractTao, d::AbstractPetscVec) 
 Get the damping vector {diag}(J^T J) from a `TAOBRGN` with `TAOBRGN_REGULARIZATION_LM` regularization
 
 Collective
@@ -4618,9 +4618,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoBRGNGetDampingVector"))
 """
-function TaoBRGNGetDampingVector(petsclib::PetscLibType, tao::Tao, d::PetscVec) end
+function TaoBRGNGetDampingVector(petsclib::PetscLibType, tao::AbstractTao, d::AbstractPetscVec) end
 
-@for_petsc function TaoBRGNGetDampingVector(petsclib::$UnionPetscLib, tao::Tao, d::PetscVec )
+@for_petsc function TaoBRGNGetDampingVector(petsclib::$UnionPetscLib, tao::AbstractTao, d::AbstractPetscVec )
 	d_ = Ref(d.ptr)
 
     @chk ccall(
@@ -4636,7 +4636,7 @@ function TaoBRGNGetDampingVector(petsclib::PetscLibType, tao::Tao, d::PetscVec) 
 end 
 
 """
-	type::TaoBRGNRegularizationType = TaoBRGNGetRegularizationType(petsclib::PetscLibType,tao::Tao) 
+	type::TaoBRGNRegularizationType = TaoBRGNGetRegularizationType(petsclib::PetscLibType,tao::AbstractTao) 
 Get the `TaoBRGNRegularizationType` of a `TAOBRGN`
 
 Not collective
@@ -4654,9 +4654,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNGetRegularizationType"))
 """
-function TaoBRGNGetRegularizationType(petsclib::PetscLibType, tao::Tao) end
+function TaoBRGNGetRegularizationType(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoBRGNGetRegularizationType(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoBRGNGetRegularizationType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	type_ = Ref{TaoBRGNRegularizationType}()
 
     @chk ccall(
@@ -4672,7 +4672,7 @@ function TaoBRGNGetRegularizationType(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoBRGNSetRegularizationType(petsclib::PetscLibType,tao::Tao, type::TaoBRGNRegularizationType) 
+	TaoBRGNSetRegularizationType(petsclib::PetscLibType,tao::AbstractTao, type::TaoBRGNRegularizationType) 
 Set the `TaoBRGNRegularizationType` of a `TAOBRGN`
 
 Logically collective
@@ -4688,9 +4688,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNSetRegularizationType"))
 """
-function TaoBRGNSetRegularizationType(petsclib::PetscLibType, tao::Tao, type::TaoBRGNRegularizationType) end
+function TaoBRGNSetRegularizationType(petsclib::PetscLibType, tao::AbstractTao, type::TaoBRGNRegularizationType) end
 
-@for_petsc function TaoBRGNSetRegularizationType(petsclib::$UnionPetscLib, tao::Tao, type::TaoBRGNRegularizationType )
+@for_petsc function TaoBRGNSetRegularizationType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoBRGNRegularizationType )
 
     @chk ccall(
                (:TaoBRGNSetRegularizationType, $petsc_library),
@@ -4704,7 +4704,7 @@ function TaoBRGNSetRegularizationType(petsclib::PetscLibType, tao::Tao, type::Ta
 end 
 
 """
-	TaoBRGNGetSubsolver(petsclib::PetscLibType,tao::Tao, subsolver::Tao) 
+	TaoBRGNGetSubsolver(petsclib::PetscLibType,tao::AbstractTao, subsolver::AbstractTao) 
 Get the pointer to the subsolver inside a `TAOBRGN`
 
 Collective
@@ -4720,9 +4720,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNGetSubsolver"))
 """
-function TaoBRGNGetSubsolver(petsclib::PetscLibType, tao::Tao, subsolver::Tao) end
+function TaoBRGNGetSubsolver(petsclib::PetscLibType, tao::AbstractTao, subsolver::AbstractTao) end
 
-@for_petsc function TaoBRGNGetSubsolver(petsclib::$UnionPetscLib, tao::Tao, subsolver::Tao )
+@for_petsc function TaoBRGNGetSubsolver(petsclib::$UnionPetscLib, tao::AbstractTao, subsolver::AbstractTao )
 	subsolver_ = Ref(subsolver.ptr)
 
     @chk ccall(
@@ -4738,7 +4738,7 @@ function TaoBRGNGetSubsolver(petsclib::PetscLibType, tao::Tao, subsolver::Tao) e
 end 
 
 """
-	TaoBRGNSetRegularizerWeight(petsclib::PetscLibType,tao::Tao, lambda::PetscReal) 
+	TaoBRGNSetRegularizerWeight(petsclib::PetscLibType,tao::AbstractTao, lambda::PetscReal) 
 Set the regularizer weight for the Gauss
 
 Collective
@@ -4754,9 +4754,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoBRGNSetRegularizerWeight"))
 """
-function TaoBRGNSetRegularizerWeight(petsclib::PetscLibType, tao::Tao, lambda::PetscReal) end
+function TaoBRGNSetRegularizerWeight(petsclib::PetscLibType, tao::AbstractTao, lambda::PetscReal) end
 
-@for_petsc function TaoBRGNSetRegularizerWeight(petsclib::$UnionPetscLib, tao::Tao, lambda::$PetscReal )
+@for_petsc function TaoBRGNSetRegularizerWeight(petsclib::$UnionPetscLib, tao::AbstractTao, lambda::$PetscReal )
 
     @chk ccall(
                (:TaoBRGNSetRegularizerWeight, $petsc_library),
@@ -4770,7 +4770,7 @@ function TaoBRGNSetRegularizerWeight(petsclib::PetscLibType, tao::Tao, lambda::P
 end 
 
 """
-	TaoBRGNSetL1SmoothEpsilon(petsclib::PetscLibType,tao::Tao, epsilon::PetscReal) 
+	TaoBRGNSetL1SmoothEpsilon(petsclib::PetscLibType,tao::AbstractTao, epsilon::PetscReal) 
 Set the L1
 
 Collective
@@ -4786,9 +4786,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNSetL1SmoothEpsilon"))
 """
-function TaoBRGNSetL1SmoothEpsilon(petsclib::PetscLibType, tao::Tao, epsilon::PetscReal) end
+function TaoBRGNSetL1SmoothEpsilon(petsclib::PetscLibType, tao::AbstractTao, epsilon::PetscReal) end
 
-@for_petsc function TaoBRGNSetL1SmoothEpsilon(petsclib::$UnionPetscLib, tao::Tao, epsilon::$PetscReal )
+@for_petsc function TaoBRGNSetL1SmoothEpsilon(petsclib::$UnionPetscLib, tao::AbstractTao, epsilon::$PetscReal )
 
     @chk ccall(
                (:TaoBRGNSetL1SmoothEpsilon, $petsc_library),
@@ -4802,7 +4802,7 @@ function TaoBRGNSetL1SmoothEpsilon(petsclib::PetscLibType, tao::Tao, epsilon::Pe
 end 
 
 """
-	TaoBRGNSetDictionaryMatrix(petsclib::PetscLibType,tao::Tao, dict::PetscMat) 
+	TaoBRGNSetDictionaryMatrix(petsclib::PetscLibType,tao::AbstractTao, dict::AbstractPetscMat) 
 bind the dictionary matrix from user application context to gn
 
 Input Parameters:
@@ -4816,9 +4816,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNSetDictionaryMatrix"))
 """
-function TaoBRGNSetDictionaryMatrix(petsclib::PetscLibType, tao::Tao, dict::PetscMat) end
+function TaoBRGNSetDictionaryMatrix(petsclib::PetscLibType, tao::AbstractTao, dict::AbstractPetscMat) end
 
-@for_petsc function TaoBRGNSetDictionaryMatrix(petsclib::$UnionPetscLib, tao::Tao, dict::PetscMat )
+@for_petsc function TaoBRGNSetDictionaryMatrix(petsclib::$UnionPetscLib, tao::AbstractTao, dict::AbstractPetscMat )
 
     @chk ccall(
                (:TaoBRGNSetDictionaryMatrix, $petsc_library),
@@ -4832,7 +4832,7 @@ function TaoBRGNSetDictionaryMatrix(petsclib::PetscLibType, tao::Tao, dict::Pets
 end 
 
 """
-	TaoBRGNSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType,tao::Tao, func::external, ctx::Cvoid) 
+	TaoBRGNSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType,tao::AbstractTao, func::external, ctx::Cvoid) 
 Sets the user
 function into the algorithm.
 
@@ -4855,9 +4855,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNSetRegularizerObjectiveAndGradientRoutine"))
 """
-function TaoBRGNSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType, tao::Tao, func::external, ctx::Cvoid) end
+function TaoBRGNSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoBRGNSetRegularizerObjectiveAndGradientRoutine(petsclib::$UnionPetscLib, tao::Tao, func::external, ctx::Cvoid )
+@for_petsc function TaoBRGNSetRegularizerObjectiveAndGradientRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoBRGNSetRegularizerObjectiveAndGradientRoutine, $petsc_library),
@@ -4871,7 +4871,7 @@ function TaoBRGNSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType
 end 
 
 """
-	TaoBRGNSetRegularizerHessianRoutine(petsclib::PetscLibType,tao::Tao, Hreg::PetscMat, func::external, ctx::Cvoid) 
+	TaoBRGNSetRegularizerHessianRoutine(petsclib::PetscLibType,tao::AbstractTao, Hreg::AbstractPetscMat, func::external, ctx::Cvoid) 
 Sets the user
 function into the algorithm.
 
@@ -4894,9 +4894,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBRGNSetRegularizerHessianRoutine"))
 """
-function TaoBRGNSetRegularizerHessianRoutine(petsclib::PetscLibType, tao::Tao, Hreg::PetscMat, func::external, ctx::Cvoid) end
+function TaoBRGNSetRegularizerHessianRoutine(petsclib::PetscLibType, tao::AbstractTao, Hreg::AbstractPetscMat, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoBRGNSetRegularizerHessianRoutine(petsclib::$UnionPetscLib, tao::Tao, Hreg::PetscMat, func::external, ctx::Cvoid )
+@for_petsc function TaoBRGNSetRegularizerHessianRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, Hreg::AbstractPetscMat, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoBRGNSetRegularizerHessianRoutine, $petsc_library),
@@ -4910,7 +4910,7 @@ function TaoBRGNSetRegularizerHessianRoutine(petsclib::PetscLibType, tao::Tao, H
 end 
 
 """
-	TaoADMMSetMisfitHessianChangeStatus(petsclib::PetscLibType,tao::Tao, b::PetscBool) 
+	TaoADMMSetMisfitHessianChangeStatus(petsclib::PetscLibType,tao::AbstractTao, b::PetscBool) 
 Set boolean that determines  whether Hessian matrix of misfit subsolver changes with respect to input vector.
 
 Collective
@@ -4926,9 +4926,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetMisfitHessianChangeStatus"))
 """
-function TaoADMMSetMisfitHessianChangeStatus(petsclib::PetscLibType, tao::Tao, b::PetscBool) end
+function TaoADMMSetMisfitHessianChangeStatus(petsclib::PetscLibType, tao::AbstractTao, b::PetscBool) end
 
-@for_petsc function TaoADMMSetMisfitHessianChangeStatus(petsclib::$UnionPetscLib, tao::Tao, b::PetscBool )
+@for_petsc function TaoADMMSetMisfitHessianChangeStatus(petsclib::$UnionPetscLib, tao::AbstractTao, b::PetscBool )
 
     @chk ccall(
                (:TaoADMMSetMisfitHessianChangeStatus, $petsc_library),
@@ -4942,7 +4942,7 @@ function TaoADMMSetMisfitHessianChangeStatus(petsclib::PetscLibType, tao::Tao, b
 end 
 
 """
-	TaoADMMSetRegHessianChangeStatus(petsclib::PetscLibType,tao::Tao, b::PetscBool) 
+	TaoADMMSetRegHessianChangeStatus(petsclib::PetscLibType,tao::AbstractTao, b::PetscBool) 
 Set boolean that determines whether Hessian matrix of regularization subsolver changes with respect to input vector.
 
 Collective
@@ -4958,9 +4958,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetRegHessianChangeStatus"))
 """
-function TaoADMMSetRegHessianChangeStatus(petsclib::PetscLibType, tao::Tao, b::PetscBool) end
+function TaoADMMSetRegHessianChangeStatus(petsclib::PetscLibType, tao::AbstractTao, b::PetscBool) end
 
-@for_petsc function TaoADMMSetRegHessianChangeStatus(petsclib::$UnionPetscLib, tao::Tao, b::PetscBool )
+@for_petsc function TaoADMMSetRegHessianChangeStatus(petsclib::$UnionPetscLib, tao::AbstractTao, b::PetscBool )
 
     @chk ccall(
                (:TaoADMMSetRegHessianChangeStatus, $petsc_library),
@@ -4974,7 +4974,7 @@ function TaoADMMSetRegHessianChangeStatus(petsclib::PetscLibType, tao::Tao, b::P
 end 
 
 """
-	TaoADMMSetSpectralPenalty(petsclib::PetscLibType,tao::Tao, mu::PetscReal) 
+	TaoADMMSetSpectralPenalty(petsclib::PetscLibType,tao::AbstractTao, mu::PetscReal) 
 Set the spectral penalty (mu) value
 
 Collective
@@ -4990,9 +4990,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetSpectralPenalty"))
 """
-function TaoADMMSetSpectralPenalty(petsclib::PetscLibType, tao::Tao, mu::PetscReal) end
+function TaoADMMSetSpectralPenalty(petsclib::PetscLibType, tao::AbstractTao, mu::PetscReal) end
 
-@for_petsc function TaoADMMSetSpectralPenalty(petsclib::$UnionPetscLib, tao::Tao, mu::$PetscReal )
+@for_petsc function TaoADMMSetSpectralPenalty(petsclib::$UnionPetscLib, tao::AbstractTao, mu::$PetscReal )
 
     @chk ccall(
                (:TaoADMMSetSpectralPenalty, $petsc_library),
@@ -5006,7 +5006,7 @@ function TaoADMMSetSpectralPenalty(petsclib::PetscLibType, tao::Tao, mu::PetscRe
 end 
 
 """
-	mu::PetscReal = TaoADMMGetSpectralPenalty(petsclib::PetscLibType,tao::Tao) 
+	mu::PetscReal = TaoADMMGetSpectralPenalty(petsclib::PetscLibType,tao::AbstractTao) 
 Get the spectral penalty (mu) value
 
 Collective
@@ -5024,9 +5024,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMGetSpectralPenalty"))
 """
-function TaoADMMGetSpectralPenalty(petsclib::PetscLibType, tao::Tao) end
+function TaoADMMGetSpectralPenalty(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoADMMGetSpectralPenalty(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoADMMGetSpectralPenalty(petsclib::$UnionPetscLib, tao::AbstractTao )
 	mu_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -5042,7 +5042,7 @@ function TaoADMMGetSpectralPenalty(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoADMMGetMisfitSubsolver(petsclib::PetscLibType,tao::Tao, misfit::Tao) 
+	TaoADMMGetMisfitSubsolver(petsclib::PetscLibType,tao::AbstractTao, misfit::AbstractTao) 
 Get the pointer to the misfit subsolver inside `TAOADMM`
 
 Collective
@@ -5060,9 +5060,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMGetMisfitSubsolver"))
 """
-function TaoADMMGetMisfitSubsolver(petsclib::PetscLibType, tao::Tao, misfit::Tao) end
+function TaoADMMGetMisfitSubsolver(petsclib::PetscLibType, tao::AbstractTao, misfit::AbstractTao) end
 
-@for_petsc function TaoADMMGetMisfitSubsolver(petsclib::$UnionPetscLib, tao::Tao, misfit::Tao )
+@for_petsc function TaoADMMGetMisfitSubsolver(petsclib::$UnionPetscLib, tao::AbstractTao, misfit::AbstractTao )
 	misfit_ = Ref(misfit.ptr)
 
     @chk ccall(
@@ -5078,7 +5078,7 @@ function TaoADMMGetMisfitSubsolver(petsclib::PetscLibType, tao::Tao, misfit::Tao
 end 
 
 """
-	TaoADMMGetRegularizationSubsolver(petsclib::PetscLibType,tao::Tao, reg::Tao) 
+	TaoADMMGetRegularizationSubsolver(petsclib::PetscLibType,tao::AbstractTao, reg::AbstractTao) 
 Get the pointer to the regularization subsolver inside `TAOADMM`
 
 Collective
@@ -5096,9 +5096,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMGetRegularizationSubsolver"))
 """
-function TaoADMMGetRegularizationSubsolver(petsclib::PetscLibType, tao::Tao, reg::Tao) end
+function TaoADMMGetRegularizationSubsolver(petsclib::PetscLibType, tao::AbstractTao, reg::AbstractTao) end
 
-@for_petsc function TaoADMMGetRegularizationSubsolver(petsclib::$UnionPetscLib, tao::Tao, reg::Tao )
+@for_petsc function TaoADMMGetRegularizationSubsolver(petsclib::$UnionPetscLib, tao::AbstractTao, reg::AbstractTao )
 	reg_ = Ref(reg.ptr)
 
     @chk ccall(
@@ -5114,7 +5114,7 @@ function TaoADMMGetRegularizationSubsolver(petsclib::PetscLibType, tao::Tao, reg
 end 
 
 """
-	TaoADMMSetConstraintVectorRHS(petsclib::PetscLibType,tao::Tao, c::PetscVec) 
+	TaoADMMSetConstraintVectorRHS(petsclib::PetscLibType,tao::AbstractTao, c::AbstractPetscVec) 
 Set the RHS constraint vector for `TAOADMM`
 
 Collective
@@ -5130,9 +5130,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetConstraintVectorRHS"))
 """
-function TaoADMMSetConstraintVectorRHS(petsclib::PetscLibType, tao::Tao, c::PetscVec) end
+function TaoADMMSetConstraintVectorRHS(petsclib::PetscLibType, tao::AbstractTao, c::AbstractPetscVec) end
 
-@for_petsc function TaoADMMSetConstraintVectorRHS(petsclib::$UnionPetscLib, tao::Tao, c::PetscVec )
+@for_petsc function TaoADMMSetConstraintVectorRHS(petsclib::$UnionPetscLib, tao::AbstractTao, c::AbstractPetscVec )
 
     @chk ccall(
                (:TaoADMMSetConstraintVectorRHS, $petsc_library),
@@ -5146,7 +5146,7 @@ function TaoADMMSetConstraintVectorRHS(petsclib::PetscLibType, tao::Tao, c::Pets
 end 
 
 """
-	TaoADMMSetMinimumSpectralPenalty(petsclib::PetscLibType,tao::Tao, mu::PetscReal) 
+	TaoADMMSetMinimumSpectralPenalty(petsclib::PetscLibType,tao::AbstractTao, mu::PetscReal) 
 Set the minimum value for the spectral penalty
 
 Collective
@@ -5162,9 +5162,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetMinimumSpectralPenalty"))
 """
-function TaoADMMSetMinimumSpectralPenalty(petsclib::PetscLibType, tao::Tao, mu::PetscReal) end
+function TaoADMMSetMinimumSpectralPenalty(petsclib::PetscLibType, tao::AbstractTao, mu::PetscReal) end
 
-@for_petsc function TaoADMMSetMinimumSpectralPenalty(petsclib::$UnionPetscLib, tao::Tao, mu::$PetscReal )
+@for_petsc function TaoADMMSetMinimumSpectralPenalty(petsclib::$UnionPetscLib, tao::AbstractTao, mu::$PetscReal )
 
     @chk ccall(
                (:TaoADMMSetMinimumSpectralPenalty, $petsc_library),
@@ -5178,7 +5178,7 @@ function TaoADMMSetMinimumSpectralPenalty(petsclib::PetscLibType, tao::Tao, mu::
 end 
 
 """
-	TaoADMMSetRegularizerCoefficient(petsclib::PetscLibType,tao::Tao, lambda::PetscReal) 
+	TaoADMMSetRegularizerCoefficient(petsclib::PetscLibType,tao::AbstractTao, lambda::PetscReal) 
 Set the regularization coefficient lambda for L1 norm regularization case
 
 Collective
@@ -5194,9 +5194,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetRegularizerCoefficient"))
 """
-function TaoADMMSetRegularizerCoefficient(petsclib::PetscLibType, tao::Tao, lambda::PetscReal) end
+function TaoADMMSetRegularizerCoefficient(petsclib::PetscLibType, tao::AbstractTao, lambda::PetscReal) end
 
-@for_petsc function TaoADMMSetRegularizerCoefficient(petsclib::$UnionPetscLib, tao::Tao, lambda::$PetscReal )
+@for_petsc function TaoADMMSetRegularizerCoefficient(petsclib::$UnionPetscLib, tao::AbstractTao, lambda::$PetscReal )
 
     @chk ccall(
                (:TaoADMMSetRegularizerCoefficient, $petsc_library),
@@ -5210,7 +5210,7 @@ function TaoADMMSetRegularizerCoefficient(petsclib::PetscLibType, tao::Tao, lamb
 end 
 
 """
-	lambda::PetscReal = TaoADMMGetRegularizerCoefficient(petsclib::PetscLibType,tao::Tao) 
+	lambda::PetscReal = TaoADMMGetRegularizerCoefficient(petsclib::PetscLibType,tao::AbstractTao) 
 Get the regularization coefficient lambda for L1 norm regularization case
 
 Collective
@@ -5228,9 +5228,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMGetRegularizerCoefficient"))
 """
-function TaoADMMGetRegularizerCoefficient(petsclib::PetscLibType, tao::Tao) end
+function TaoADMMGetRegularizerCoefficient(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoADMMGetRegularizerCoefficient(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoADMMGetRegularizerCoefficient(petsclib::$UnionPetscLib, tao::AbstractTao )
 	lambda_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -5246,7 +5246,7 @@ function TaoADMMGetRegularizerCoefficient(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoADMMSetMisfitConstraintJacobian(petsclib::PetscLibType,tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid) 
+	TaoADMMSetMisfitConstraintJacobian(petsclib::PetscLibType,tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid) 
 Set the constraint matrix B for the `TAOADMM` algorithm. Matrix B constrains the z variable.
 
 Collective
@@ -5265,9 +5265,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetMisfitConstraintJacobian"))
 """
-function TaoADMMSetMisfitConstraintJacobian(petsclib::PetscLibType, tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid) end
+function TaoADMMSetMisfitConstraintJacobian(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoADMMSetMisfitConstraintJacobian(petsclib::$UnionPetscLib, tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid )
+@for_petsc function TaoADMMSetMisfitConstraintJacobian(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoADMMSetMisfitConstraintJacobian, $petsc_library),
@@ -5281,7 +5281,7 @@ function TaoADMMSetMisfitConstraintJacobian(petsclib::PetscLibType, tao::Tao, J:
 end 
 
 """
-	TaoADMMSetRegularizerConstraintJacobian(petsclib::PetscLibType,tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid) 
+	TaoADMMSetRegularizerConstraintJacobian(petsclib::PetscLibType,tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid) 
 Set the constraint matrix B for `TAOADMM` algorithm. Matrix B constraints z variable.
 
 Collective
@@ -5300,9 +5300,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetRegularizerConstraintJacobian"))
 """
-function TaoADMMSetRegularizerConstraintJacobian(petsclib::PetscLibType, tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid) end
+function TaoADMMSetRegularizerConstraintJacobian(petsclib::PetscLibType, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoADMMSetRegularizerConstraintJacobian(petsclib::$UnionPetscLib, tao::Tao, J::PetscMat, Jpre::PetscMat, func::external, ctx::Cvoid )
+@for_petsc function TaoADMMSetRegularizerConstraintJacobian(petsclib::$UnionPetscLib, tao::AbstractTao, J::AbstractPetscMat, Jpre::AbstractPetscMat, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoADMMSetRegularizerConstraintJacobian, $petsc_library),
@@ -5316,7 +5316,7 @@ function TaoADMMSetRegularizerConstraintJacobian(petsclib::PetscLibType, tao::Ta
 end 
 
 """
-	TaoADMMSetMisfitObjectiveAndGradientRoutine(petsclib::PetscLibType,tao::Tao, func::external, ctx::Cvoid) 
+	TaoADMMSetMisfitObjectiveAndGradientRoutine(petsclib::PetscLibType,tao::AbstractTao, func::external, ctx::Cvoid) 
 Sets the user
 
 Collective
@@ -5333,9 +5333,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetMisfitObjectiveAndGradientRoutine"))
 """
-function TaoADMMSetMisfitObjectiveAndGradientRoutine(petsclib::PetscLibType, tao::Tao, func::external, ctx::Cvoid) end
+function TaoADMMSetMisfitObjectiveAndGradientRoutine(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoADMMSetMisfitObjectiveAndGradientRoutine(petsclib::$UnionPetscLib, tao::Tao, func::external, ctx::Cvoid )
+@for_petsc function TaoADMMSetMisfitObjectiveAndGradientRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoADMMSetMisfitObjectiveAndGradientRoutine, $petsc_library),
@@ -5349,7 +5349,7 @@ function TaoADMMSetMisfitObjectiveAndGradientRoutine(petsclib::PetscLibType, tao
 end 
 
 """
-	TaoADMMSetMisfitHessianRoutine(petsclib::PetscLibType,tao::Tao, H::PetscMat, Hpre::PetscMat, func::external, ctx::Cvoid) 
+	TaoADMMSetMisfitHessianRoutine(petsclib::PetscLibType,tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Cvoid) 
 Sets the user
 function into the algorithm, to be used for subsolverX.
 
@@ -5369,9 +5369,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetMisfitHessianRoutine"))
 """
-function TaoADMMSetMisfitHessianRoutine(petsclib::PetscLibType, tao::Tao, H::PetscMat, Hpre::PetscMat, func::external, ctx::Cvoid) end
+function TaoADMMSetMisfitHessianRoutine(petsclib::PetscLibType, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoADMMSetMisfitHessianRoutine(petsclib::$UnionPetscLib, tao::Tao, H::PetscMat, Hpre::PetscMat, func::external, ctx::Cvoid )
+@for_petsc function TaoADMMSetMisfitHessianRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoADMMSetMisfitHessianRoutine, $petsc_library),
@@ -5385,7 +5385,7 @@ function TaoADMMSetMisfitHessianRoutine(petsclib::PetscLibType, tao::Tao, H::Pet
 end 
 
 """
-	TaoADMMSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType,tao::Tao, func::external, ctx::Cvoid) 
+	TaoADMMSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType,tao::AbstractTao, func::external, ctx::Cvoid) 
 Sets the user
 
 Collective
@@ -5402,9 +5402,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetRegularizerObjectiveAndGradientRoutine"))
 """
-function TaoADMMSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType, tao::Tao, func::external, ctx::Cvoid) end
+function TaoADMMSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType, tao::AbstractTao, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoADMMSetRegularizerObjectiveAndGradientRoutine(petsclib::$UnionPetscLib, tao::Tao, func::external, ctx::Cvoid )
+@for_petsc function TaoADMMSetRegularizerObjectiveAndGradientRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoADMMSetRegularizerObjectiveAndGradientRoutine, $petsc_library),
@@ -5418,7 +5418,7 @@ function TaoADMMSetRegularizerObjectiveAndGradientRoutine(petsclib::PetscLibType
 end 
 
 """
-	TaoADMMSetRegularizerHessianRoutine(petsclib::PetscLibType,tao::Tao, H::PetscMat, Hpre::PetscMat, func::external, ctx::Cvoid) 
+	TaoADMMSetRegularizerHessianRoutine(petsclib::PetscLibType,tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Cvoid) 
 Sets the user
 function, to be used for subsolverZ.
 
@@ -5438,9 +5438,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoADMMSetRegularizerHessianRoutine"))
 """
-function TaoADMMSetRegularizerHessianRoutine(petsclib::PetscLibType, tao::Tao, H::PetscMat, Hpre::PetscMat, func::external, ctx::Cvoid) end
+function TaoADMMSetRegularizerHessianRoutine(petsclib::PetscLibType, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Cvoid) end
 
-@for_petsc function TaoADMMSetRegularizerHessianRoutine(petsclib::$UnionPetscLib, tao::Tao, H::PetscMat, Hpre::PetscMat, func::external, ctx::Cvoid )
+@for_petsc function TaoADMMSetRegularizerHessianRoutine(petsclib::$UnionPetscLib, tao::AbstractTao, H::AbstractPetscMat, Hpre::AbstractPetscMat, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:TaoADMMSetRegularizerHessianRoutine, $petsc_library),
@@ -5454,7 +5454,7 @@ function TaoADMMSetRegularizerHessianRoutine(petsclib::PetscLibType, tao::Tao, H
 end 
 
 """
-	TaoGetADMMParentTao(petsclib::PetscLibType,tao::Tao, admm_tao::Tao) 
+	TaoGetADMMParentTao(petsclib::PetscLibType,tao::AbstractTao, admm_tao::AbstractTao) 
 Gets pointer to parent `TAOADMM`, used by inner subsolver.
 
 Collective
@@ -5472,9 +5472,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoGetADMMParentTao"))
 """
-function TaoGetADMMParentTao(petsclib::PetscLibType, tao::Tao, admm_tao::Tao) end
+function TaoGetADMMParentTao(petsclib::PetscLibType, tao::AbstractTao, admm_tao::AbstractTao) end
 
-@for_petsc function TaoGetADMMParentTao(petsclib::$UnionPetscLib, tao::Tao, admm_tao::Tao )
+@for_petsc function TaoGetADMMParentTao(petsclib::$UnionPetscLib, tao::AbstractTao, admm_tao::AbstractTao )
 	admm_tao_ = Ref(admm_tao.ptr)
 
     @chk ccall(
@@ -5490,7 +5490,7 @@ function TaoGetADMMParentTao(petsclib::PetscLibType, tao::Tao, admm_tao::Tao) en
 end 
 
 """
-	TaoADMMGetDualVector(petsclib::PetscLibType,tao::Tao, Y::PetscVec) 
+	TaoADMMGetDualVector(petsclib::PetscLibType,tao::AbstractTao, Y::AbstractPetscVec) 
 Returns the dual vector associated with the current `TAOADMM` state
 
 Not Collective
@@ -5508,9 +5508,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoADMMGetDualVector"))
 """
-function TaoADMMGetDualVector(petsclib::PetscLibType, tao::Tao, Y::PetscVec) end
+function TaoADMMGetDualVector(petsclib::PetscLibType, tao::AbstractTao, Y::AbstractPetscVec) end
 
-@for_petsc function TaoADMMGetDualVector(petsclib::$UnionPetscLib, tao::Tao, Y::PetscVec )
+@for_petsc function TaoADMMGetDualVector(petsclib::$UnionPetscLib, tao::AbstractTao, Y::AbstractPetscVec )
 	Y_ = Ref(Y.ptr)
 
     @chk ccall(
@@ -5526,7 +5526,7 @@ function TaoADMMGetDualVector(petsclib::PetscLibType, tao::Tao, Y::PetscVec) end
 end 
 
 """
-	TaoADMMSetRegularizerType(petsclib::PetscLibType,tao::Tao, type::TaoADMMRegularizerType) 
+	TaoADMMSetRegularizerType(petsclib::PetscLibType,tao::AbstractTao, type::TaoADMMRegularizerType) 
 Set regularizer type for `TAOADMM` routine
 
 Not Collective
@@ -5545,9 +5545,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoADMMSetRegularizerType"))
 """
-function TaoADMMSetRegularizerType(petsclib::PetscLibType, tao::Tao, type::TaoADMMRegularizerType) end
+function TaoADMMSetRegularizerType(petsclib::PetscLibType, tao::AbstractTao, type::TaoADMMRegularizerType) end
 
-@for_petsc function TaoADMMSetRegularizerType(petsclib::$UnionPetscLib, tao::Tao, type::TaoADMMRegularizerType )
+@for_petsc function TaoADMMSetRegularizerType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoADMMRegularizerType )
 
     @chk ccall(
                (:TaoADMMSetRegularizerType, $petsc_library),
@@ -5561,7 +5561,7 @@ function TaoADMMSetRegularizerType(petsclib::PetscLibType, tao::Tao, type::TaoAD
 end 
 
 """
-	type::TaoADMMRegularizerType = TaoADMMGetRegularizerType(petsclib::PetscLibType,tao::Tao) 
+	type::TaoADMMRegularizerType = TaoADMMGetRegularizerType(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the type of regularizer routine for `TAOADMM`
 
 Not Collective
@@ -5579,9 +5579,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoADMMGetRegularizerType"))
 """
-function TaoADMMGetRegularizerType(petsclib::PetscLibType, tao::Tao) end
+function TaoADMMGetRegularizerType(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoADMMGetRegularizerType(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoADMMGetRegularizerType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	type_ = Ref{TaoADMMRegularizerType}()
 
     @chk ccall(
@@ -5597,7 +5597,7 @@ function TaoADMMGetRegularizerType(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoADMMSetUpdateType(petsclib::PetscLibType,tao::Tao, type::TaoADMMUpdateType) 
+	TaoADMMSetUpdateType(petsclib::PetscLibType,tao::AbstractTao, type::TaoADMMUpdateType) 
 Set update routine for `TAOADMM` routine
 
 Not Collective
@@ -5613,9 +5613,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoADMMSetUpdateType"))
 """
-function TaoADMMSetUpdateType(petsclib::PetscLibType, tao::Tao, type::TaoADMMUpdateType) end
+function TaoADMMSetUpdateType(petsclib::PetscLibType, tao::AbstractTao, type::TaoADMMUpdateType) end
 
-@for_petsc function TaoADMMSetUpdateType(petsclib::$UnionPetscLib, tao::Tao, type::TaoADMMUpdateType )
+@for_petsc function TaoADMMSetUpdateType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoADMMUpdateType )
 
     @chk ccall(
                (:TaoADMMSetUpdateType, $petsc_library),
@@ -5629,7 +5629,7 @@ function TaoADMMSetUpdateType(petsclib::PetscLibType, tao::Tao, type::TaoADMMUpd
 end 
 
 """
-	type::TaoADMMUpdateType = TaoADMMGetUpdateType(petsclib::PetscLibType,tao::Tao) 
+	type::TaoADMMUpdateType = TaoADMMGetUpdateType(petsclib::PetscLibType,tao::AbstractTao) 
 Gets the type of spectral penalty update routine for `TAOADMM`
 
 Not Collective
@@ -5647,9 +5647,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoADMMGetUpdateType"))
 """
-function TaoADMMGetUpdateType(petsclib::PetscLibType, tao::Tao) end
+function TaoADMMGetUpdateType(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoADMMGetUpdateType(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoADMMGetUpdateType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	type_ = Ref{TaoADMMUpdateType}()
 
     @chk ccall(
@@ -5665,7 +5665,7 @@ function TaoADMMGetUpdateType(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	type::TaoALMMType = TaoALMMGetType(petsclib::PetscLibType,tao::Tao) 
+	type::TaoALMMType = TaoALMMGetType(petsclib::PetscLibType,tao::AbstractTao) 
 Retrieve the augmented Lagrangian formulation type for the subproblem.
 
 Input Parameter:
@@ -5681,9 +5681,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMGetType"))
 """
-function TaoALMMGetType(petsclib::PetscLibType, tao::Tao) end
+function TaoALMMGetType(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoALMMGetType(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoALMMGetType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	type_ = Ref{TaoALMMType}()
 
     @chk ccall(
@@ -5699,7 +5699,7 @@ function TaoALMMGetType(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoALMMSetType(petsclib::PetscLibType,tao::Tao, type::TaoALMMType) 
+	TaoALMMSetType(petsclib::PetscLibType,tao::AbstractTao, type::TaoALMMType) 
 Determine the augmented Lagrangian formulation type for the subproblem.
 
 Input Parameters:
@@ -5713,9 +5713,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMSetType"))
 """
-function TaoALMMSetType(petsclib::PetscLibType, tao::Tao, type::TaoALMMType) end
+function TaoALMMSetType(petsclib::PetscLibType, tao::AbstractTao, type::TaoALMMType) end
 
-@for_petsc function TaoALMMSetType(petsclib::$UnionPetscLib, tao::Tao, type::TaoALMMType )
+@for_petsc function TaoALMMSetType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoALMMType )
 
     @chk ccall(
                (:TaoALMMSetType, $petsc_library),
@@ -5729,7 +5729,7 @@ function TaoALMMSetType(petsclib::PetscLibType, tao::Tao, type::TaoALMMType) end
 end 
 
 """
-	TaoALMMGetSubsolver(petsclib::PetscLibType,tao::Tao, subsolver::Tao) 
+	TaoALMMGetSubsolver(petsclib::PetscLibType,tao::AbstractTao, subsolver::AbstractTao) 
 Retrieve the subsolver being used by `TAOALMM`.
 
 Input Parameter:
@@ -5745,9 +5745,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMGetSubsolver"))
 """
-function TaoALMMGetSubsolver(petsclib::PetscLibType, tao::Tao, subsolver::Tao) end
+function TaoALMMGetSubsolver(petsclib::PetscLibType, tao::AbstractTao, subsolver::AbstractTao) end
 
-@for_petsc function TaoALMMGetSubsolver(petsclib::$UnionPetscLib, tao::Tao, subsolver::Tao )
+@for_petsc function TaoALMMGetSubsolver(petsclib::$UnionPetscLib, tao::AbstractTao, subsolver::AbstractTao )
 	subsolver_ = Ref(subsolver.ptr)
 
     @chk ccall(
@@ -5763,7 +5763,7 @@ function TaoALMMGetSubsolver(petsclib::PetscLibType, tao::Tao, subsolver::Tao) e
 end 
 
 """
-	TaoALMMSetSubsolver(petsclib::PetscLibType,tao::Tao, subsolver::Tao) 
+	TaoALMMSetSubsolver(petsclib::PetscLibType,tao::AbstractTao, subsolver::AbstractTao) 
 Changes the subsolver inside `TAOALMM` with the user provided one.
 
 Input Parameters:
@@ -5777,9 +5777,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMSetSubsolver"))
 """
-function TaoALMMSetSubsolver(petsclib::PetscLibType, tao::Tao, subsolver::Tao) end
+function TaoALMMSetSubsolver(petsclib::PetscLibType, tao::AbstractTao, subsolver::AbstractTao) end
 
-@for_petsc function TaoALMMSetSubsolver(petsclib::$UnionPetscLib, tao::Tao, subsolver::Tao )
+@for_petsc function TaoALMMSetSubsolver(petsclib::$UnionPetscLib, tao::AbstractTao, subsolver::AbstractTao )
 
     @chk ccall(
                (:TaoALMMSetSubsolver, $petsc_library),
@@ -5793,7 +5793,7 @@ function TaoALMMSetSubsolver(petsclib::PetscLibType, tao::Tao, subsolver::Tao) e
 end 
 
 """
-	TaoALMMGetMultipliers(petsclib::PetscLibType,tao::Tao, Y::PetscVec) 
+	TaoALMMGetMultipliers(petsclib::PetscLibType,tao::AbstractTao, Y::AbstractPetscVec) 
 Retrieve a pointer to the Lagrange multipliers.
 
 Input Parameter:
@@ -5809,9 +5809,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMGetMultipliers"))
 """
-function TaoALMMGetMultipliers(petsclib::PetscLibType, tao::Tao, Y::PetscVec) end
+function TaoALMMGetMultipliers(petsclib::PetscLibType, tao::AbstractTao, Y::AbstractPetscVec) end
 
-@for_petsc function TaoALMMGetMultipliers(petsclib::$UnionPetscLib, tao::Tao, Y::PetscVec )
+@for_petsc function TaoALMMGetMultipliers(petsclib::$UnionPetscLib, tao::AbstractTao, Y::AbstractPetscVec )
 	Y_ = Ref(Y.ptr)
 
     @chk ccall(
@@ -5827,7 +5827,7 @@ function TaoALMMGetMultipliers(petsclib::PetscLibType, tao::Tao, Y::PetscVec) en
 end 
 
 """
-	TaoALMMSetMultipliers(petsclib::PetscLibType,tao::Tao, Y::PetscVec) 
+	TaoALMMSetMultipliers(petsclib::PetscLibType,tao::AbstractTao, Y::AbstractPetscVec) 
 Set user
 
 Input Parameters:
@@ -5841,9 +5841,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMSetMultipliers"))
 """
-function TaoALMMSetMultipliers(petsclib::PetscLibType, tao::Tao, Y::PetscVec) end
+function TaoALMMSetMultipliers(petsclib::PetscLibType, tao::AbstractTao, Y::AbstractPetscVec) end
 
-@for_petsc function TaoALMMSetMultipliers(petsclib::$UnionPetscLib, tao::Tao, Y::PetscVec )
+@for_petsc function TaoALMMSetMultipliers(petsclib::$UnionPetscLib, tao::AbstractTao, Y::AbstractPetscVec )
 
     @chk ccall(
                (:TaoALMMSetMultipliers, $petsc_library),
@@ -5857,7 +5857,7 @@ function TaoALMMSetMultipliers(petsclib::PetscLibType, tao::Tao, Y::PetscVec) en
 end 
 
 """
-	TaoALMMGetPrimalIS(petsclib::PetscLibType,tao::Tao, opt_is::IS, slack_is::IS) 
+	TaoALMMGetPrimalIS(petsclib::PetscLibType,tao::AbstractTao, opt_is::AbstractIS, slack_is::AbstractIS) 
 Retrieve the index set that identifies optimization
 and slack variable components of the subsolver's solution vector.
 
@@ -5875,9 +5875,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMGetPrimalIS"))
 """
-function TaoALMMGetPrimalIS(petsclib::PetscLibType, tao::Tao, opt_is::IS, slack_is::IS) end
+function TaoALMMGetPrimalIS(petsclib::PetscLibType, tao::AbstractTao, opt_is::AbstractIS, slack_is::AbstractIS) end
 
-@for_petsc function TaoALMMGetPrimalIS(petsclib::$UnionPetscLib, tao::Tao, opt_is::IS, slack_is::IS )
+@for_petsc function TaoALMMGetPrimalIS(petsclib::$UnionPetscLib, tao::AbstractTao, opt_is::AbstractIS, slack_is::AbstractIS )
 	opt_is_ = Ref(opt_is.ptr)
 	slack_is_ = Ref(slack_is.ptr)
 
@@ -5895,7 +5895,7 @@ function TaoALMMGetPrimalIS(petsclib::PetscLibType, tao::Tao, opt_is::IS, slack_
 end 
 
 """
-	TaoALMMGetDualIS(petsclib::PetscLibType,tao::Tao, eq_is::IS, ineq_is::IS) 
+	TaoALMMGetDualIS(petsclib::PetscLibType,tao::AbstractTao, eq_is::AbstractIS, ineq_is::AbstractIS) 
 Retrieve the index set that identifies equality
 and inequality constraint components of the dual vector returned
 by `TaoALMMGetMultipliers()`.
@@ -5914,9 +5914,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoALMMGetDualIS"))
 """
-function TaoALMMGetDualIS(petsclib::PetscLibType, tao::Tao, eq_is::IS, ineq_is::IS) end
+function TaoALMMGetDualIS(petsclib::PetscLibType, tao::AbstractTao, eq_is::AbstractIS, ineq_is::AbstractIS) end
 
-@for_petsc function TaoALMMGetDualIS(petsclib::$UnionPetscLib, tao::Tao, eq_is::IS, ineq_is::IS )
+@for_petsc function TaoALMMGetDualIS(petsclib::$UnionPetscLib, tao::AbstractTao, eq_is::AbstractIS, ineq_is::AbstractIS )
 	eq_is_ = Ref(eq_is.ptr)
 	ineq_is_ = Ref(ineq_is.ptr)
 
@@ -5934,7 +5934,7 @@ function TaoALMMGetDualIS(petsclib::PetscLibType, tao::Tao, eq_is::IS, ineq_is::
 end 
 
 """
-	TaoLMVMRecycle(petsclib::PetscLibType,tao::Tao, flg::PetscBool) 
+	TaoLMVMRecycle(petsclib::PetscLibType,tao::AbstractTao, flg::PetscBool) 
 Enable/disable recycling of the QN history between subsequent `TaoSolve()` calls.
 
 Input Parameters:
@@ -5948,9 +5948,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Tao/TaoLMVMRecycle"))
 """
-function TaoLMVMRecycle(petsclib::PetscLibType, tao::Tao, flg::PetscBool) end
+function TaoLMVMRecycle(petsclib::PetscLibType, tao::AbstractTao, flg::PetscBool) end
 
-@for_petsc function TaoLMVMRecycle(petsclib::$UnionPetscLib, tao::Tao, flg::PetscBool )
+@for_petsc function TaoLMVMRecycle(petsclib::$UnionPetscLib, tao::AbstractTao, flg::PetscBool )
 
     @chk ccall(
                (:TaoLMVMRecycle, $petsc_library),
@@ -5964,7 +5964,7 @@ function TaoLMVMRecycle(petsclib::PetscLibType, tao::Tao, flg::PetscBool) end
 end 
 
 """
-	TaoLMVMSetH0(petsclib::PetscLibType,tao::Tao, H0::PetscMat) 
+	TaoLMVMSetH0(petsclib::PetscLibType,tao::AbstractTao, H0::AbstractPetscMat) 
 Set the initial Hessian for the QN approximation
 
 Input Parameters:
@@ -5978,9 +5978,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoLMVMSetH0"))
 """
-function TaoLMVMSetH0(petsclib::PetscLibType, tao::Tao, H0::PetscMat) end
+function TaoLMVMSetH0(petsclib::PetscLibType, tao::AbstractTao, H0::AbstractPetscMat) end
 
-@for_petsc function TaoLMVMSetH0(petsclib::$UnionPetscLib, tao::Tao, H0::PetscMat )
+@for_petsc function TaoLMVMSetH0(petsclib::$UnionPetscLib, tao::AbstractTao, H0::AbstractPetscMat )
 
     @chk ccall(
                (:TaoLMVMSetH0, $petsc_library),
@@ -5994,7 +5994,7 @@ function TaoLMVMSetH0(petsclib::PetscLibType, tao::Tao, H0::PetscMat) end
 end 
 
 """
-	TaoLMVMGetH0(petsclib::PetscLibType,tao::Tao, H0::PetscMat) 
+	TaoLMVMGetH0(petsclib::PetscLibType,tao::AbstractTao, H0::AbstractPetscMat) 
 Get the matrix object for the QN initial Hessian
 
 Input Parameter:
@@ -6010,9 +6010,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoLMVMGetH0"))
 """
-function TaoLMVMGetH0(petsclib::PetscLibType, tao::Tao, H0::PetscMat) end
+function TaoLMVMGetH0(petsclib::PetscLibType, tao::AbstractTao, H0::AbstractPetscMat) end
 
-@for_petsc function TaoLMVMGetH0(petsclib::$UnionPetscLib, tao::Tao, H0::PetscMat )
+@for_petsc function TaoLMVMGetH0(petsclib::$UnionPetscLib, tao::AbstractTao, H0::AbstractPetscMat )
 	H0_ = Ref(H0.ptr)
 
     @chk ccall(
@@ -6028,7 +6028,7 @@ function TaoLMVMGetH0(petsclib::PetscLibType, tao::Tao, H0::PetscMat) end
 end 
 
 """
-	TaoLMVMGetH0KSP(petsclib::PetscLibType,tao::Tao, ksp::PetscKSP) 
+	TaoLMVMGetH0KSP(petsclib::PetscLibType,tao::AbstractTao, ksp::AbstractPetscKSP) 
 Get the iterative solver for applying the inverse of the QN initial Hessian
 
 Input Parameter:
@@ -6044,9 +6044,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoLMVMGetH0KSP"))
 """
-function TaoLMVMGetH0KSP(petsclib::PetscLibType, tao::Tao, ksp::PetscKSP) end
+function TaoLMVMGetH0KSP(petsclib::PetscLibType, tao::AbstractTao, ksp::AbstractPetscKSP) end
 
-@for_petsc function TaoLMVMGetH0KSP(petsclib::$UnionPetscLib, tao::Tao, ksp::PetscKSP )
+@for_petsc function TaoLMVMGetH0KSP(petsclib::$UnionPetscLib, tao::AbstractTao, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -6062,7 +6062,7 @@ function TaoLMVMGetH0KSP(petsclib::PetscLibType, tao::Tao, ksp::PetscKSP) end
 end 
 
 """
-	type::TaoBNCGType = TaoBNCGGetType(petsclib::PetscLibType,tao::Tao) 
+	type::TaoBNCGType = TaoBNCGGetType(petsclib::PetscLibType,tao::AbstractTao) 
 Return the type for the `TAOBNCG` solver
 
 Input Parameter:
@@ -6078,9 +6078,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBNCGGetType"))
 """
-function TaoBNCGGetType(petsclib::PetscLibType, tao::Tao) end
+function TaoBNCGGetType(petsclib::PetscLibType, tao::AbstractTao) end
 
-@for_petsc function TaoBNCGGetType(petsclib::$UnionPetscLib, tao::Tao )
+@for_petsc function TaoBNCGGetType(petsclib::$UnionPetscLib, tao::AbstractTao )
 	type_ = Ref{TaoBNCGType}()
 
     @chk ccall(
@@ -6096,7 +6096,7 @@ function TaoBNCGGetType(petsclib::PetscLibType, tao::Tao) end
 end 
 
 """
-	TaoBNCGSetType(petsclib::PetscLibType,tao::Tao, type::TaoBNCGType) 
+	TaoBNCGSetType(petsclib::PetscLibType,tao::AbstractTao, type::TaoBNCGType) 
 Set the type for the `TAOBNCG` solver
 
 Input Parameters:
@@ -6110,9 +6110,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoBNCGSetType"))
 """
-function TaoBNCGSetType(petsclib::PetscLibType, tao::Tao, type::TaoBNCGType) end
+function TaoBNCGSetType(petsclib::PetscLibType, tao::AbstractTao, type::TaoBNCGType) end
 
-@for_petsc function TaoBNCGSetType(petsclib::$UnionPetscLib, tao::Tao, type::TaoBNCGType )
+@for_petsc function TaoBNCGSetType(petsclib::$UnionPetscLib, tao::AbstractTao, type::TaoBNCGType )
 
     @chk ccall(
                (:TaoBNCGSetType, $petsc_library),
@@ -6126,7 +6126,7 @@ function TaoBNCGSetType(petsclib::PetscLibType, tao::Tao, type::TaoBNCGType) end
 end 
 
 """
-	TaoGetLMVMMatrix(petsclib::PetscLibType,tao::Tao, B::PetscMat) 
+	TaoGetLMVMMatrix(petsclib::PetscLibType,tao::AbstractTao, B::AbstractPetscMat) 
 Returns a pointer to the internal LMVM matrix. Valid
 only for quasi-Newton family of methods.
 
@@ -6143,9 +6143,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoGetLMVMMatrix"))
 """
-function TaoGetLMVMMatrix(petsclib::PetscLibType, tao::Tao, B::PetscMat) end
+function TaoGetLMVMMatrix(petsclib::PetscLibType, tao::AbstractTao, B::AbstractPetscMat) end
 
-@for_petsc function TaoGetLMVMMatrix(petsclib::$UnionPetscLib, tao::Tao, B::PetscMat )
+@for_petsc function TaoGetLMVMMatrix(petsclib::$UnionPetscLib, tao::AbstractTao, B::AbstractPetscMat )
 	B_ = Ref(B.ptr)
 
     @chk ccall(
@@ -6161,7 +6161,7 @@ function TaoGetLMVMMatrix(petsclib::PetscLibType, tao::Tao, B::PetscMat) end
 end 
 
 """
-	TaoSetLMVMMatrix(petsclib::PetscLibType,tao::Tao, B::PetscMat) 
+	TaoSetLMVMMatrix(petsclib::PetscLibType,tao::AbstractTao, B::AbstractPetscMat) 
 Sets an external LMVM matrix into the Tao solver. Valid
 only for quasi-Newton family of methods.
 
@@ -6179,9 +6179,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoSetLMVMMatrix"))
 """
-function TaoSetLMVMMatrix(petsclib::PetscLibType, tao::Tao, B::PetscMat) end
+function TaoSetLMVMMatrix(petsclib::PetscLibType, tao::AbstractTao, B::AbstractPetscMat) end
 
-@for_petsc function TaoSetLMVMMatrix(petsclib::$UnionPetscLib, tao::Tao, B::PetscMat )
+@for_petsc function TaoSetLMVMMatrix(petsclib::$UnionPetscLib, tao::AbstractTao, B::AbstractPetscMat )
 
     @chk ccall(
                (:TaoSetLMVMMatrix, $petsc_library),
@@ -6195,7 +6195,7 @@ function TaoSetLMVMMatrix(petsclib::PetscLibType, tao::Tao, B::PetscMat) end
 end 
 
 """
-	TaoVecGetSubVec(petsclib::PetscLibType,vfull::PetscVec, is::IS, reduced_type::TaoSubsetType, maskvalue::PetscReal, vreduced::PetscVec) 
+	TaoVecGetSubVec(petsclib::PetscLibType,vfull::AbstractPetscVec, is::AbstractIS, reduced_type::TaoSubsetType, maskvalue::PetscReal, vreduced::AbstractPetscVec) 
 Gets a subvector using the `IS`
 
 Input Parameters:
@@ -6214,9 +6214,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoVecGetSubVec"))
 """
-function TaoVecGetSubVec(petsclib::PetscLibType, vfull::PetscVec, is::IS, reduced_type::TaoSubsetType, maskvalue::PetscReal, vreduced::PetscVec) end
+function TaoVecGetSubVec(petsclib::PetscLibType, vfull::AbstractPetscVec, is::AbstractIS, reduced_type::TaoSubsetType, maskvalue::PetscReal, vreduced::AbstractPetscVec) end
 
-@for_petsc function TaoVecGetSubVec(petsclib::$UnionPetscLib, vfull::PetscVec, is::IS, reduced_type::TaoSubsetType, maskvalue::$PetscReal, vreduced::PetscVec )
+@for_petsc function TaoVecGetSubVec(petsclib::$UnionPetscLib, vfull::AbstractPetscVec, is::AbstractIS, reduced_type::TaoSubsetType, maskvalue::$PetscReal, vreduced::AbstractPetscVec )
 	vreduced_ = Ref(vreduced.ptr)
 
     @chk ccall(
@@ -6232,7 +6232,7 @@ function TaoVecGetSubVec(petsclib::PetscLibType, vfull::PetscVec, is::IS, reduce
 end 
 
 """
-	TaoMatGetSubMat(petsclib::PetscLibType,M::PetscMat, is::IS, v1::PetscVec, subset_type::TaoSubsetType, Msub::PetscMat) 
+	TaoMatGetSubMat(petsclib::PetscLibType,M::AbstractPetscMat, is::AbstractIS, v1::AbstractPetscVec, subset_type::TaoSubsetType, Msub::AbstractPetscMat) 
 Gets a submatrix using the `IS`
 
 Input Parameters:
@@ -6251,9 +6251,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoMatGetSubMat"))
 """
-function TaoMatGetSubMat(petsclib::PetscLibType, M::PetscMat, is::IS, v1::PetscVec, subset_type::TaoSubsetType, Msub::PetscMat) end
+function TaoMatGetSubMat(petsclib::PetscLibType, M::AbstractPetscMat, is::AbstractIS, v1::AbstractPetscVec, subset_type::TaoSubsetType, Msub::AbstractPetscMat) end
 
-@for_petsc function TaoMatGetSubMat(petsclib::$UnionPetscLib, M::PetscMat, is::IS, v1::PetscVec, subset_type::TaoSubsetType, Msub::PetscMat )
+@for_petsc function TaoMatGetSubMat(petsclib::$UnionPetscLib, M::AbstractPetscMat, is::AbstractIS, v1::AbstractPetscVec, subset_type::TaoSubsetType, Msub::AbstractPetscMat )
 	Msub_ = Ref(Msub.ptr)
 
     @chk ccall(
@@ -6269,7 +6269,7 @@ function TaoMatGetSubMat(petsclib::PetscLibType, M::PetscMat, is::IS, v1::PetscV
 end 
 
 """
-	bound_tol::PetscReal = TaoEstimateActiveBounds(petsclib::PetscLibType,X::PetscVec, XL::PetscVec, XU::PetscVec, G::PetscVec, S::PetscVec, W::PetscVec, steplen::PetscReal, active_lower::IS, active_upper::IS, active_fixed::IS, active::IS, inactive::IS) 
+	bound_tol::PetscReal = TaoEstimateActiveBounds(petsclib::PetscLibType,X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, G::AbstractPetscVec, S::AbstractPetscVec, W::AbstractPetscVec, steplen::PetscReal, active_lower::AbstractIS, active_upper::AbstractIS, active_fixed::AbstractIS, active::AbstractIS, inactive::AbstractIS) 
 Generates index sets for variables at the lower and upper
 bounds, as well as fixed variables where lower and upper bounds equal each other.
 
@@ -6297,9 +6297,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoEstimateActiveBounds"))
 """
-function TaoEstimateActiveBounds(petsclib::PetscLibType, X::PetscVec, XL::PetscVec, XU::PetscVec, G::PetscVec, S::PetscVec, W::PetscVec, steplen::PetscReal, active_lower::IS, active_upper::IS, active_fixed::IS, active::IS, inactive::IS) end
+function TaoEstimateActiveBounds(petsclib::PetscLibType, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, G::AbstractPetscVec, S::AbstractPetscVec, W::AbstractPetscVec, steplen::PetscReal, active_lower::AbstractIS, active_upper::AbstractIS, active_fixed::AbstractIS, active::AbstractIS, inactive::AbstractIS) end
 
-@for_petsc function TaoEstimateActiveBounds(petsclib::$UnionPetscLib, X::PetscVec, XL::PetscVec, XU::PetscVec, G::PetscVec, S::PetscVec, W::PetscVec, steplen::$PetscReal, active_lower::IS, active_upper::IS, active_fixed::IS, active::IS, inactive::IS )
+@for_petsc function TaoEstimateActiveBounds(petsclib::$UnionPetscLib, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, G::AbstractPetscVec, S::AbstractPetscVec, W::AbstractPetscVec, steplen::$PetscReal, active_lower::AbstractIS, active_upper::AbstractIS, active_fixed::AbstractIS, active::AbstractIS, inactive::AbstractIS )
 	bound_tol_ = Ref{$PetscReal}()
 	active_lower_ = Ref(active_lower.ptr)
 	active_upper_ = Ref(active_upper.ptr)
@@ -6325,7 +6325,7 @@ function TaoEstimateActiveBounds(petsclib::PetscLibType, X::PetscVec, XL::PetscV
 end 
 
 """
-	TaoBoundStep(petsclib::PetscLibType,X::PetscVec, XL::PetscVec, XU::PetscVec, active_lower::IS, active_upper::IS, active_fixed::IS, scale::PetscReal, S::PetscVec) 
+	TaoBoundStep(petsclib::PetscLibType,X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, active_lower::AbstractIS, active_upper::AbstractIS, active_fixed::AbstractIS, scale::PetscReal, S::AbstractPetscVec) 
 Ensures the correct zero or adjusted step direction values for active
 variables.
 
@@ -6348,9 +6348,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoBoundStep"))
 """
-function TaoBoundStep(petsclib::PetscLibType, X::PetscVec, XL::PetscVec, XU::PetscVec, active_lower::IS, active_upper::IS, active_fixed::IS, scale::PetscReal, S::PetscVec) end
+function TaoBoundStep(petsclib::PetscLibType, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, active_lower::AbstractIS, active_upper::AbstractIS, active_fixed::AbstractIS, scale::PetscReal, S::AbstractPetscVec) end
 
-@for_petsc function TaoBoundStep(petsclib::$UnionPetscLib, X::PetscVec, XL::PetscVec, XU::PetscVec, active_lower::IS, active_upper::IS, active_fixed::IS, scale::$PetscReal, S::PetscVec )
+@for_petsc function TaoBoundStep(petsclib::$UnionPetscLib, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, active_lower::AbstractIS, active_upper::AbstractIS, active_fixed::AbstractIS, scale::$PetscReal, S::AbstractPetscVec )
 
     @chk ccall(
                (:TaoBoundStep, $petsc_library),
@@ -6364,7 +6364,7 @@ function TaoBoundStep(petsclib::PetscLibType, X::PetscVec, XL::PetscVec, XU::Pet
 end 
 
 """
-	nDiff::PetscInt = TaoBoundSolution(petsclib::PetscLibType,X::PetscVec, XL::PetscVec, XU::PetscVec, bound_tol::PetscReal, Xout::PetscVec) 
+	nDiff::PetscInt = TaoBoundSolution(petsclib::PetscLibType,X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, bound_tol::PetscReal, Xout::AbstractPetscVec) 
 Ensures that the solution vector is snapped into the bounds within a given tolerance.
 
 Collective
@@ -6386,9 +6386,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoBoundSolution"))
 """
-function TaoBoundSolution(petsclib::PetscLibType, X::PetscVec, XL::PetscVec, XU::PetscVec, bound_tol::PetscReal, Xout::PetscVec) end
+function TaoBoundSolution(petsclib::PetscLibType, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, bound_tol::PetscReal, Xout::AbstractPetscVec) end
 
-@for_petsc function TaoBoundSolution(petsclib::$UnionPetscLib, X::PetscVec, XL::PetscVec, XU::PetscVec, bound_tol::$PetscReal, Xout::PetscVec )
+@for_petsc function TaoBoundSolution(petsclib::$UnionPetscLib, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, bound_tol::$PetscReal, Xout::AbstractPetscVec )
 	nDiff_ = Ref{$PetscInt}()
 
     @chk ccall(

@@ -200,7 +200,7 @@ function PetscRegressorSetUp(petsclib::PetscLibType, regressor::PetscRegressor) 
 end 
 
 """
-	PetscRegressorFit(petsclib::PetscLibType,regressor::PetscRegressor, X::PetscMat, y::PetscVec) 
+	PetscRegressorFit(petsclib::PetscLibType,regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec) 
 Fit, or train, a regressor from a training dataset
 
 Collective
@@ -217,9 +217,9 @@ Level: beginner
 # External Links
 $(_doc_external("Ml/PetscRegressorFit"))
 """
-function PetscRegressorFit(petsclib::PetscLibType, regressor::PetscRegressor, X::PetscMat, y::PetscVec) end
+function PetscRegressorFit(petsclib::PetscLibType, regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec) end
 
-@for_petsc function PetscRegressorFit(petsclib::$UnionPetscLib, regressor::PetscRegressor, X::PetscMat, y::PetscVec )
+@for_petsc function PetscRegressorFit(petsclib::$UnionPetscLib, regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec )
 
     @chk ccall(
                (:PetscRegressorFit, $petsc_library),
@@ -233,7 +233,7 @@ function PetscRegressorFit(petsclib::PetscLibType, regressor::PetscRegressor, X:
 end 
 
 """
-	PetscRegressorPredict(petsclib::PetscLibType,regressor::PetscRegressor, X::PetscMat, y::PetscVec) 
+	PetscRegressorPredict(petsclib::PetscLibType,regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec) 
 Compute predictions (that is, perform inference) using a fitted regression model.
 
 Collective
@@ -252,9 +252,9 @@ Level: beginner
 # External Links
 $(_doc_external("Ml/PetscRegressorPredict"))
 """
-function PetscRegressorPredict(petsclib::PetscLibType, regressor::PetscRegressor, X::PetscMat, y::PetscVec) end
+function PetscRegressorPredict(petsclib::PetscLibType, regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec) end
 
-@for_petsc function PetscRegressorPredict(petsclib::$UnionPetscLib, regressor::PetscRegressor, X::PetscMat, y::PetscVec )
+@for_petsc function PetscRegressorPredict(petsclib::$UnionPetscLib, regressor::PetscRegressor, X::AbstractPetscMat, y::AbstractPetscVec )
 
     @chk ccall(
                (:PetscRegressorPredict, $petsc_library),
@@ -437,7 +437,7 @@ function PetscRegressorSetRegularizerWeight(petsclib::PetscLibType, regressor::P
 end 
 
 """
-	PetscRegressorGetTao(petsclib::PetscLibType,regressor::PetscRegressor, tao::Tao) 
+	PetscRegressorGetTao(petsclib::PetscLibType,regressor::PetscRegressor, tao::AbstractTao) 
 Returns the `Tao` context for a `PetscRegressor` object.
 
 Not Collective, but if the `PetscRegressor` is parallel, then the `Tao` object is parallel
@@ -455,9 +455,9 @@ Level: beginner
 # External Links
 $(_doc_external("Ml/PetscRegressorGetTao"))
 """
-function PetscRegressorGetTao(petsclib::PetscLibType, regressor::PetscRegressor, tao::Tao) end
+function PetscRegressorGetTao(petsclib::PetscLibType, regressor::PetscRegressor, tao::AbstractTao) end
 
-@for_petsc function PetscRegressorGetTao(petsclib::$UnionPetscLib, regressor::PetscRegressor, tao::Tao )
+@for_petsc function PetscRegressorGetTao(petsclib::$UnionPetscLib, regressor::PetscRegressor, tao::AbstractTao )
 
     @chk ccall(
                (:PetscRegressorGetTao, $petsc_library),
@@ -696,7 +696,7 @@ function PetscRegressorLinearSetUseKSP(petsclib::PetscLibType, regressor::PetscR
 end 
 
 """
-	PetscRegressorLinearGetKSP(petsclib::PetscLibType,regressor::PetscRegressor, ksp::PetscKSP) 
+	PetscRegressorLinearGetKSP(petsclib::PetscLibType,regressor::PetscRegressor, ksp::AbstractPetscKSP) 
 Returns the `KSP` context for a `PETSCREGRESSORLINEAR` object.
 
 Not Collective, but if the `PetscRegressor` is parallel, then the `KSP` object is parallel
@@ -714,9 +714,9 @@ Level: beginner
 # External Links
 $(_doc_external("Ml/PetscRegressorLinearGetKSP"))
 """
-function PetscRegressorLinearGetKSP(petsclib::PetscLibType, regressor::PetscRegressor, ksp::PetscKSP) end
+function PetscRegressorLinearGetKSP(petsclib::PetscLibType, regressor::PetscRegressor, ksp::AbstractPetscKSP) end
 
-@for_petsc function PetscRegressorLinearGetKSP(petsclib::$UnionPetscLib, regressor::PetscRegressor, ksp::PetscKSP )
+@for_petsc function PetscRegressorLinearGetKSP(petsclib::$UnionPetscLib, regressor::PetscRegressor, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(

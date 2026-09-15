@@ -15,7 +15,7 @@ mutable struct MatHtoolKernelFn end
 
 # -------------------------------------------------------
 """
-	MatSetType(petsclib::PetscLibType,mat::PetscMat, matype::MatType) 
+	MatSetType(petsclib::PetscLibType,mat::AbstractPetscMat, matype::MatType) 
 Builds matrix object for a particular matrix type
 
 Collective
@@ -34,9 +34,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetType"))
 """
-function MatSetType(petsclib::PetscLibType, mat::PetscMat, matype::MatType) end
+function MatSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype::MatType) end
 
-@for_petsc function MatSetType(petsclib::$UnionPetscLib, mat::PetscMat, matype::MatType )
+@for_petsc function MatSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, matype::MatType )
 
     @chk ccall(
                (:MatSetType, $petsc_library),
@@ -50,7 +50,7 @@ function MatSetType(petsclib::PetscLibType, mat::PetscMat, matype::MatType) end
 end 
 
 """
-	type::MatType = MatGetType(petsclib::PetscLibType,mat::PetscMat) 
+	type::MatType = MatGetType(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Gets the matrix type as a string from the matrix object.
 
 Not Collective
@@ -90,7 +90,7 @@ function MatGetType(petsclib::PetscLibType, mat::AbstractPetscMat) end
 end 
 
 """
-	vtype::VecType = MatGetVecType(petsclib::PetscLibType,mat::PetscMat) 
+	vtype::VecType = MatGetVecType(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Gets the vector type the matrix will return with `MatCreateVecs()`
 
 Not Collective
@@ -108,9 +108,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetVecType"))
 """
-function MatGetVecType(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetVecType(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetVecType(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetVecType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	vtype_ = Ref{VecType}()
 
     @chk ccall(
@@ -126,7 +126,7 @@ function MatGetVecType(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatSetVecType(petsclib::PetscLibType,mat::PetscMat, vtype::VecType) 
+	MatSetVecType(petsclib::PetscLibType,mat::AbstractPetscMat, vtype::VecType) 
 Set the vector type the matrix will return with `MatCreateVecs()`
 
 Collective
@@ -142,9 +142,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSetVecType"))
 """
-function MatSetVecType(petsclib::PetscLibType, mat::PetscMat, vtype::VecType) end
+function MatSetVecType(petsclib::PetscLibType, mat::AbstractPetscMat, vtype::VecType) end
 
-@for_petsc function MatSetVecType(petsclib::$UnionPetscLib, mat::PetscMat, vtype::VecType )
+@for_petsc function MatSetVecType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, vtype::VecType )
 
     @chk ccall(
                (:MatSetVecType, $petsc_library),
@@ -221,7 +221,7 @@ function MatRegisterRootName(petsclib::PetscLibType, rname::Vector{Cchar}, sname
 end 
 
 """
-	MatProductReplaceMats(petsclib::PetscLibType,A::PetscMat, B::PetscMat, C::PetscMat, D::PetscMat) 
+	MatProductReplaceMats(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, D::AbstractPetscMat) 
 Replace the input matrices for the matrix
 
 Collective
@@ -255,7 +255,7 @@ function MatProductReplaceMats(petsclib::PetscLibType, A::Union{Ptr,PetscMat}, B
 end 
 
 """
-	MatProductSetFromOptions(petsclib::PetscLibType,mat::PetscMat) 
+	MatProductSetFromOptions(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Sets the options for the computation of a matrix
 the algorithm etc are determined from the options database.
 
@@ -277,9 +277,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatProductSetFromOptions"))
 """
-function MatProductSetFromOptions(petsclib::PetscLibType, mat::PetscMat) end
+function MatProductSetFromOptions(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatProductSetFromOptions(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatProductSetFromOptions(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatProductSetFromOptions, $petsc_library),
@@ -293,7 +293,7 @@ function MatProductSetFromOptions(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatProductView(petsclib::PetscLibType,mat::PetscMat, viewer::PetscViewer) 
+	MatProductView(petsclib::PetscLibType,mat::AbstractPetscMat, viewer::PetscViewer) 
 View the private matrix
 
 Logically Collective
@@ -309,9 +309,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatProductView"))
 """
-function MatProductView(petsclib::PetscLibType, mat::PetscMat, viewer::PetscViewer) end
+function MatProductView(petsclib::PetscLibType, mat::AbstractPetscMat, viewer::PetscViewer) end
 
-@for_petsc function MatProductView(petsclib::$UnionPetscLib, mat::PetscMat, viewer::PetscViewer )
+@for_petsc function MatProductView(petsclib::$UnionPetscLib, mat::AbstractPetscMat, viewer::PetscViewer )
 
     @chk ccall(
                (:MatProductView, $petsc_library),
@@ -325,7 +325,7 @@ function MatProductView(petsclib::PetscLibType, mat::PetscMat, viewer::PetscView
 end 
 
 """
-	MatProductNumeric(petsclib::PetscLibType,mat::PetscMat) 
+	MatProductNumeric(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Compute a matrix
 
 Collective
@@ -340,9 +340,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatProductNumeric"))
 """
-function MatProductNumeric(petsclib::PetscLibType, mat::PetscMat) end
+function MatProductNumeric(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatProductNumeric(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatProductNumeric(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatProductNumeric, $petsc_library),
@@ -356,7 +356,7 @@ function MatProductNumeric(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatProductSymbolic(petsclib::PetscLibType,mat::PetscMat) 
+	MatProductSymbolic(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Perform the symbolic portion of a matrix
 product to be done with `MatProductNumeric()`
 
@@ -372,9 +372,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatProductSymbolic"))
 """
-function MatProductSymbolic(petsclib::PetscLibType, mat::PetscMat) end
+function MatProductSymbolic(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatProductSymbolic(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatProductSymbolic(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatProductSymbolic, $petsc_library),
@@ -388,7 +388,7 @@ function MatProductSymbolic(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatProductSetFill(petsclib::PetscLibType,mat::PetscMat, fill::PetscReal) 
+	MatProductSetFill(petsclib::PetscLibType,mat::AbstractPetscMat, fill::PetscReal) 
 Set an expected fill of the matrix whose values are computed via a matrix
 
 Collective
@@ -405,9 +405,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatProductSetFill"))
 """
-function MatProductSetFill(petsclib::PetscLibType, mat::PetscMat, fill::PetscReal) end
+function MatProductSetFill(petsclib::PetscLibType, mat::AbstractPetscMat, fill::PetscReal) end
 
-@for_petsc function MatProductSetFill(petsclib::$UnionPetscLib, mat::PetscMat, fill::$PetscReal )
+@for_petsc function MatProductSetFill(petsclib::$UnionPetscLib, mat::AbstractPetscMat, fill::$PetscReal )
 
     @chk ccall(
                (:MatProductSetFill, $petsc_library),
@@ -421,7 +421,7 @@ function MatProductSetFill(petsclib::PetscLibType, mat::PetscMat, fill::PetscRea
 end 
 
 """
-	MatProductSetAlgorithm(petsclib::PetscLibType,mat::PetscMat, alg::MatProductAlgorithm) 
+	MatProductSetAlgorithm(petsclib::PetscLibType,mat::AbstractPetscMat, alg::MatProductAlgorithm) 
 Requests a particular algorithm for a matrix
 
 Collective
@@ -440,9 +440,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatProductSetAlgorithm"))
 """
-function MatProductSetAlgorithm(petsclib::PetscLibType, mat::PetscMat, alg::MatProductAlgorithm) end
+function MatProductSetAlgorithm(petsclib::PetscLibType, mat::AbstractPetscMat, alg::MatProductAlgorithm) end
 
-@for_petsc function MatProductSetAlgorithm(petsclib::$UnionPetscLib, mat::PetscMat, alg::MatProductAlgorithm )
+@for_petsc function MatProductSetAlgorithm(petsclib::$UnionPetscLib, mat::AbstractPetscMat, alg::MatProductAlgorithm )
 
     @chk ccall(
                (:MatProductSetAlgorithm, $petsc_library),
@@ -456,7 +456,7 @@ function MatProductSetAlgorithm(petsclib::PetscLibType, mat::PetscMat, alg::MatP
 end 
 
 """
-	MatProductGetAlgorithm(petsclib::PetscLibType,mat::PetscMat, alg::MatProductAlgorithm) 
+	MatProductGetAlgorithm(petsclib::PetscLibType,mat::AbstractPetscMat, alg::MatProductAlgorithm) 
 Returns the selected algorithm for a matrix
 
 Not Collective
@@ -474,9 +474,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatProductGetAlgorithm"))
 """
-function MatProductGetAlgorithm(petsclib::PetscLibType, mat::PetscMat, alg::MatProductAlgorithm) end
+function MatProductGetAlgorithm(petsclib::PetscLibType, mat::AbstractPetscMat, alg::MatProductAlgorithm) end
 
-@for_petsc function MatProductGetAlgorithm(petsclib::$UnionPetscLib, mat::PetscMat, alg::MatProductAlgorithm )
+@for_petsc function MatProductGetAlgorithm(petsclib::$UnionPetscLib, mat::AbstractPetscMat, alg::MatProductAlgorithm )
 
     @chk ccall(
                (:MatProductGetAlgorithm, $petsc_library),
@@ -490,7 +490,7 @@ function MatProductGetAlgorithm(petsclib::PetscLibType, mat::PetscMat, alg::MatP
 end 
 
 """
-	MatProductSetType(petsclib::PetscLibType,mat::PetscMat, productype::MatProductType) 
+	MatProductSetType(petsclib::PetscLibType,mat::AbstractPetscMat, productype::MatProductType) 
 Sets a particular matrix
 
 Collective
@@ -508,9 +508,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatProductSetType"))
 """
-function MatProductSetType(petsclib::PetscLibType, mat::PetscMat, productype::MatProductType) end
+function MatProductSetType(petsclib::PetscLibType, mat::AbstractPetscMat, productype::MatProductType) end
 
-@for_petsc function MatProductSetType(petsclib::$UnionPetscLib, mat::PetscMat, productype::MatProductType )
+@for_petsc function MatProductSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, productype::MatProductType )
 
     @chk ccall(
                (:MatProductSetType, $petsc_library),
@@ -524,7 +524,7 @@ function MatProductSetType(petsclib::PetscLibType, mat::PetscMat, productype::Ma
 end 
 
 """
-	MatProductClear(petsclib::PetscLibType,mat::PetscMat) 
+	MatProductClear(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Clears from the matrix any internal data structures related to the computation of the values of the matrix from matrix
 
 Collective
@@ -542,9 +542,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatProductClear"))
 """
-function MatProductClear(petsclib::PetscLibType, mat::PetscMat) end
+function MatProductClear(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatProductClear(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatProductClear(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatProductClear, $petsc_library),
@@ -558,7 +558,7 @@ function MatProductClear(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatProductCreateWithMat(petsclib::PetscLibType,A::PetscMat, B::PetscMat, C::PetscMat, D::PetscMat) 
+	MatProductCreateWithMat(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, D::AbstractPetscMat) 
 Set a given matrix to have its values computed via matrix
 
 Collective
@@ -577,9 +577,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatProductCreateWithMat"))
 """
-function MatProductCreateWithMat(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::Union{Ptr,PetscMat}, D::PetscMat) end
+function MatProductCreateWithMat(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::Union{Ptr,PetscMat}, D::AbstractPetscMat) end
 
-@for_petsc function MatProductCreateWithMat(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, C::Union{Ptr,PetscMat}, D::PetscMat )
+@for_petsc function MatProductCreateWithMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::Union{Ptr,PetscMat}, D::AbstractPetscMat )
 
     @chk ccall(
                (:MatProductCreateWithMat, $petsc_library),
@@ -593,7 +593,7 @@ function MatProductCreateWithMat(petsclib::PetscLibType, A::PetscMat, B::PetscMa
 end 
 
 """
-	D::PetscMat = MatProductCreate(petsclib::PetscLibType,A::PetscMat, B::PetscMat, C::PetscMat) 
+	D::PetscMat = MatProductCreate(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat) 
 create a matrix to hold the result of a matrix
 
 Collective
@@ -614,9 +614,9 @@ Example:
 # External Links
 $(_doc_external("Mat/MatProductCreate"))
 """
-function MatProductCreate(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::Union{Ptr,PetscMat}) end
+function MatProductCreate(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::Union{Ptr,PetscMat}) end
 
-@for_petsc function MatProductCreate(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, C::Union{Ptr,PetscMat})
+@for_petsc function MatProductCreate(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::Union{Ptr,PetscMat})
 	D_ = Ref{CMat}()
 
     @chk ccall(
@@ -632,7 +632,7 @@ function MatProductCreate(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::U
 end 
 
 """
-	mtype::MatProductType = MatProductGetType(petsclib::PetscLibType,mat::PetscMat) 
+	mtype::MatProductType = MatProductGetType(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Returns the type of matrix
 
 Not Collective
@@ -650,9 +650,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatProductGetType"))
 """
-function MatProductGetType(petsclib::PetscLibType, mat::PetscMat) end
+function MatProductGetType(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatProductGetType(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatProductGetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	mtype_ = Ref{MatProductType}()
 
     @chk ccall(
@@ -668,7 +668,7 @@ function MatProductGetType(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatProductGetMats(petsclib::PetscLibType,mat::PetscMat, A::PetscMat, B::PetscMat, C::PetscMat) 
+	MatProductGetMats(petsclib::PetscLibType,mat::AbstractPetscMat, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat) 
 Returns the matrices associated with the matrix
 
 Not Collective
@@ -688,9 +688,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatProductGetMats"))
 """
-function MatProductGetMats(petsclib::PetscLibType, mat::PetscMat, A::PetscMat, B::PetscMat, C::Union{Ptr,PetscMat}) end
+function MatProductGetMats(petsclib::PetscLibType, mat::AbstractPetscMat, A::AbstractPetscMat, B::AbstractPetscMat, C::Union{Ptr,PetscMat}) end
 
-@for_petsc function MatProductGetMats(petsclib::$UnionPetscLib, mat::PetscMat, A::PetscMat, B::PetscMat, C::Union{Ptr,PetscMat})
+@for_petsc function MatProductGetMats(petsclib::$UnionPetscLib, mat::AbstractPetscMat, A::AbstractPetscMat, B::AbstractPetscMat, C::Union{Ptr,PetscMat})
 	A_ = Ref(A.ptr)
 	B_ = Ref(B.ptr)
 	C_ = Ref(C.ptr)
@@ -763,7 +763,7 @@ function MatInitializePackage(petsclib::PetscLibType) end
 end 
 
 """
-	MatSetRandom(petsclib::PetscLibType,x::PetscMat, rctx::PetscRandom) 
+	MatSetRandom(petsclib::PetscLibType,x::AbstractPetscMat, rctx::PetscRandom) 
 Sets all components of a matrix to random numbers.
 
 Logically Collective
@@ -779,9 +779,9 @@ Example:
 # External Links
 $(_doc_external("Mat/MatSetRandom"))
 """
-function MatSetRandom(petsclib::PetscLibType, x::PetscMat, rctx::Union{Ptr,PetscRandom}) end
+function MatSetRandom(petsclib::PetscLibType, x::AbstractPetscMat, rctx::Union{Ptr,PetscRandom}) end
 
-@for_petsc function MatSetRandom(petsclib::$UnionPetscLib, x::PetscMat, rctx::Union{Ptr,PetscRandom})
+@for_petsc function MatSetRandom(petsclib::$UnionPetscLib, x::AbstractPetscMat, rctx::Union{Ptr,PetscRandom})
 
     @chk ccall(
                (:MatSetRandom, $petsc_library),
@@ -795,7 +795,7 @@ function MatSetRandom(petsclib::PetscLibType, x::PetscMat, rctx::Union{Ptr,Petsc
 end 
 
 """
-	MatCopyHashToXAIJ(petsclib::PetscLibType,A::PetscMat, B::PetscMat) 
+	MatCopyHashToXAIJ(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat) 
 copy hash table entries into an XAIJ matrix type
 
 Logically Collective
@@ -812,9 +812,9 @@ Example:
 # External Links
 $(_doc_external("Mat/MatCopyHashToXAIJ"))
 """
-function MatCopyHashToXAIJ(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
+function MatCopyHashToXAIJ(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function MatCopyHashToXAIJ(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat )
+@for_petsc function MatCopyHashToXAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
 
     @chk ccall(
                (:MatCopyHashToXAIJ, $petsc_library),
@@ -828,7 +828,7 @@ function MatCopyHashToXAIJ(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
 end 
 
 """
-	pivot::PetscReal,row::PetscInt = MatFactorGetErrorZeroPivot(petsclib::PetscLibType,mat::PetscMat) 
+	pivot::PetscReal,row::PetscInt = MatFactorGetErrorZeroPivot(petsclib::PetscLibType,mat::AbstractPetscMat) 
 returns the pivot value that was determined to be zero and the row it occurred in
 
 Logically Collective
@@ -850,9 +850,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatFactorGetErrorZeroPivot"))
 """
-function MatFactorGetErrorZeroPivot(petsclib::PetscLibType, mat::PetscMat) end
+function MatFactorGetErrorZeroPivot(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatFactorGetErrorZeroPivot(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatFactorGetErrorZeroPivot(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	pivot_ = Ref{$PetscReal}()
 	row_ = Ref{$PetscInt}()
 
@@ -870,7 +870,7 @@ function MatFactorGetErrorZeroPivot(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatFactorGetError(petsclib::PetscLibType,mat::PetscMat, err::MatFactorError) 
+	MatFactorGetError(petsclib::PetscLibType,mat::AbstractPetscMat, err::MatFactorError) 
 gets the error code from a factorization
 
 Logically Collective
@@ -889,9 +889,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatFactorGetError"))
 """
-function MatFactorGetError(petsclib::PetscLibType, mat::PetscMat, err::MatFactorError) end
+function MatFactorGetError(petsclib::PetscLibType, mat::AbstractPetscMat, err::MatFactorError) end
 
-@for_petsc function MatFactorGetError(petsclib::$UnionPetscLib, mat::PetscMat, err::MatFactorError )
+@for_petsc function MatFactorGetError(petsclib::$UnionPetscLib, mat::AbstractPetscMat, err::MatFactorError )
 
     @chk ccall(
                (:MatFactorGetError, $petsc_library),
@@ -905,7 +905,7 @@ function MatFactorGetError(petsclib::PetscLibType, mat::PetscMat, err::MatFactor
 end 
 
 """
-	MatFactorClearError(petsclib::PetscLibType,mat::PetscMat) 
+	MatFactorClearError(petsclib::PetscLibType,mat::AbstractPetscMat) 
 clears the error code in a factorization
 
 Logically Collective
@@ -921,9 +921,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatFactorClearError"))
 """
-function MatFactorClearError(petsclib::PetscLibType, mat::PetscMat) end
+function MatFactorClearError(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatFactorClearError(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatFactorClearError(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatFactorClearError, $petsc_library),
@@ -937,7 +937,7 @@ function MatFactorClearError(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatFindNonzeroRows(petsclib::PetscLibType,mat::PetscMat, keptrows::IS) 
+	MatFindNonzeroRows(petsclib::PetscLibType,mat::AbstractPetscMat, keptrows::AbstractIS) 
 Locate all rows that are not completely zero in the matrix
 
 Input Parameter:
@@ -953,9 +953,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatFindNonzeroRows"))
 """
-function MatFindNonzeroRows(petsclib::PetscLibType, mat::PetscMat, keptrows::IS) end
+function MatFindNonzeroRows(petsclib::PetscLibType, mat::AbstractPetscMat, keptrows::AbstractIS) end
 
-@for_petsc function MatFindNonzeroRows(petsclib::$UnionPetscLib, mat::PetscMat, keptrows::IS )
+@for_petsc function MatFindNonzeroRows(petsclib::$UnionPetscLib, mat::AbstractPetscMat, keptrows::AbstractIS )
 
     @chk ccall(
                (:MatFindNonzeroRows, $petsc_library),
@@ -969,7 +969,7 @@ function MatFindNonzeroRows(petsclib::PetscLibType, mat::PetscMat, keptrows::IS)
 end 
 
 """
-	MatFindZeroRows(petsclib::PetscLibType,mat::PetscMat, zerorows::IS) 
+	MatFindZeroRows(petsclib::PetscLibType,mat::AbstractPetscMat, zerorows::AbstractIS) 
 Locate all rows that are completely zero in the matrix
 
 Input Parameter:
@@ -985,9 +985,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatFindZeroRows"))
 """
-function MatFindZeroRows(petsclib::PetscLibType, mat::PetscMat, zerorows::IS) end
+function MatFindZeroRows(petsclib::PetscLibType, mat::AbstractPetscMat, zerorows::AbstractIS) end
 
-@for_petsc function MatFindZeroRows(petsclib::$UnionPetscLib, mat::PetscMat, zerorows::IS )
+@for_petsc function MatFindZeroRows(petsclib::$UnionPetscLib, mat::AbstractPetscMat, zerorows::AbstractIS )
 
     @chk ccall(
                (:MatFindZeroRows, $petsc_library),
@@ -1001,7 +1001,7 @@ function MatFindZeroRows(petsclib::PetscLibType, mat::PetscMat, zerorows::IS) en
 end 
 
 """
-	MatGetDiagonalBlock(petsclib::PetscLibType,A::PetscMat, a::PetscMat) 
+	MatGetDiagonalBlock(petsclib::PetscLibType,A::AbstractPetscMat, a::AbstractPetscMat) 
 Returns the part of the matrix associated with the on
 
 Not Collective
@@ -1019,9 +1019,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetDiagonalBlock"))
 """
-function MatGetDiagonalBlock(petsclib::PetscLibType, A::PetscMat, a::PetscMat) end
+function MatGetDiagonalBlock(petsclib::PetscLibType, A::AbstractPetscMat, a::AbstractPetscMat) end
 
-@for_petsc function MatGetDiagonalBlock(petsclib::$UnionPetscLib, A::PetscMat, a::PetscMat )
+@for_petsc function MatGetDiagonalBlock(petsclib::$UnionPetscLib, A::AbstractPetscMat, a::AbstractPetscMat )
 	a_ = Ref(a.ptr)
 
     @chk ccall(
@@ -1037,7 +1037,7 @@ function MatGetDiagonalBlock(petsclib::PetscLibType, A::PetscMat, a::PetscMat) e
 end 
 
 """
-	trace::PetscScalar = MatGetTrace(petsclib::PetscLibType,mat::PetscMat) 
+	trace::PetscScalar = MatGetTrace(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Gets the trace of a matrix. The sum of the diagonal entries.
 
 Collective
@@ -1055,9 +1055,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetTrace"))
 """
-function MatGetTrace(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetTrace(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetTrace(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetTrace(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	trace_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -1073,7 +1073,7 @@ function MatGetTrace(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatRealPart(petsclib::PetscLibType,mat::PetscMat) 
+	MatRealPart(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Zeros out the imaginary part of the matrix
 
 Logically Collective
@@ -1088,9 +1088,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatRealPart"))
 """
-function MatRealPart(petsclib::PetscLibType, mat::PetscMat) end
+function MatRealPart(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatRealPart(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatRealPart(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatRealPart, $petsc_library),
@@ -1104,7 +1104,7 @@ function MatRealPart(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	nghosts::PetscInt,ghosts::Vector{PetscInt} = MatGetGhosts(petsclib::PetscLibType,mat::PetscMat) 
+	nghosts::PetscInt,ghosts::Vector{PetscInt} = MatGetGhosts(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Get the global indices of all ghost nodes defined by the sparse matrix
 
 Collective
@@ -1123,9 +1123,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetGhosts"))
 """
-function MatGetGhosts(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetGhosts(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetGhosts(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetGhosts(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	nghosts_ = Ref{$PetscInt}()
 	ghosts_ = Ref{Ptr{$PetscInt}}()
 
@@ -1143,7 +1143,7 @@ function MatGetGhosts(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatImaginaryPart(petsclib::PetscLibType,mat::PetscMat) 
+	MatImaginaryPart(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Moves the imaginary part of the matrix to the real part and zeros the imaginary part
 
 Logically Collective
@@ -1158,9 +1158,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatImaginaryPart"))
 """
-function MatImaginaryPart(petsclib::PetscLibType, mat::PetscMat) end
+function MatImaginaryPart(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatImaginaryPart(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatImaginaryPart(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatImaginaryPart, $petsc_library),
@@ -1174,7 +1174,7 @@ function MatImaginaryPart(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	missing::PetscBool,dd::PetscInt = MatMissingDiagonal(petsclib::PetscLibType,mat::PetscMat) 
+	missing::PetscBool,dd::PetscInt = MatMissingDiagonal(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Determine if sparse matrix is missing a diagonal entry (or block entry for `MATBAIJ` and `MATSBAIJ` matrices) in the nonzero structure
 
 Not Collective
@@ -1193,9 +1193,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMissingDiagonal"))
 """
-function MatMissingDiagonal(petsclib::PetscLibType, mat::PetscMat) end
+function MatMissingDiagonal(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatMissingDiagonal(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatMissingDiagonal(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	missing_ = Ref{PetscBool}()
 	dd_ = Ref{$PetscInt}()
 
@@ -1213,7 +1213,7 @@ function MatMissingDiagonal(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	ncols::PetscInt,cols::Vector{PetscInt},vals::Vector{PetscScalar} = MatGetRow(petsclib::PetscLibType,mat::PetscMat, row::PetscInt) 
+	ncols::PetscInt,cols::Vector{PetscInt},vals::Vector{PetscScalar} = MatGetRow(petsclib::PetscLibType,mat::AbstractPetscMat, row::PetscInt) 
 Gets a row of a matrix.  You MUST call `MatRestoreRow()`
 for each row that you get to ensure that your application does
 not bleed memory.
@@ -1236,9 +1236,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetRow"))
 """
-function MatGetRow(petsclib::PetscLibType, mat::PetscMat, row::PetscInt) end
+function MatGetRow(petsclib::PetscLibType, mat::AbstractPetscMat, row::PetscInt) end
 
-@for_petsc function MatGetRow(petsclib::$UnionPetscLib, mat::PetscMat, row::$PetscInt )
+@for_petsc function MatGetRow(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt )
 	ncols_ = Ref{$PetscInt}()
 	cols_ = Ref{Ptr{$PetscInt}}()
 	vals_ = Ref{Ptr{$PetscScalar}}()
@@ -1258,7 +1258,7 @@ function MatGetRow(petsclib::PetscLibType, mat::PetscMat, row::PetscInt) end
 end 
 
 """
-	MatConjugate(petsclib::PetscLibType,mat::PetscMat) 
+	MatConjugate(petsclib::PetscLibType,mat::AbstractPetscMat) 
 replaces the matrix values with their complex conjugates
 
 Logically Collective
@@ -1273,9 +1273,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatConjugate"))
 """
-function MatConjugate(petsclib::PetscLibType, mat::PetscMat) end
+function MatConjugate(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatConjugate(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatConjugate(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatConjugate, $petsc_library),
@@ -1289,7 +1289,7 @@ function MatConjugate(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	ncols::PetscInt,cols::Vector{PetscInt},vals::Vector{PetscScalar} = MatRestoreRow(petsclib::PetscLibType,mat::PetscMat, row::PetscInt) 
+	ncols::PetscInt,cols::Vector{PetscInt},vals::Vector{PetscScalar} = MatRestoreRow(petsclib::PetscLibType,mat::AbstractPetscMat, row::PetscInt) 
 Frees any temporary space allocated by `MatGetRow()`.
 
 Not Collective
@@ -1308,9 +1308,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatRestoreRow"))
 """
-function MatRestoreRow(petsclib::PetscLibType, mat::PetscMat, row::PetscInt) end
+function MatRestoreRow(petsclib::PetscLibType, mat::AbstractPetscMat, row::PetscInt) end
 
-@for_petsc function MatRestoreRow(petsclib::$UnionPetscLib, mat::PetscMat, row::$PetscInt )
+@for_petsc function MatRestoreRow(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt )
 	ncols_ = Ref{$PetscInt}()
 	cols_ = Ref{Ptr{$PetscInt}}()
 	vals_ = Ref{Ptr{$PetscScalar}}()
@@ -1330,7 +1330,7 @@ function MatRestoreRow(petsclib::PetscLibType, mat::PetscMat, row::PetscInt) end
 end 
 
 """
-	MatGetRowUpperTriangular(petsclib::PetscLibType,mat::PetscMat) 
+	MatGetRowUpperTriangular(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Sets a flag to enable calls to `MatGetRow()` for matrix in `MATSBAIJ` format.
 You should call `MatRestoreRowUpperTriangular()` after calling` MatGetRow()` and `MatRestoreRow()` to disable the flag.
 
@@ -1346,9 +1346,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetRowUpperTriangular"))
 """
-function MatGetRowUpperTriangular(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetRowUpperTriangular(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetRowUpperTriangular(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetRowUpperTriangular(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatGetRowUpperTriangular, $petsc_library),
@@ -1362,7 +1362,7 @@ function MatGetRowUpperTriangular(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatRestoreRowUpperTriangular(petsclib::PetscLibType,mat::PetscMat) 
+	MatRestoreRowUpperTriangular(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Disable calls to `MatGetRow()` for matrix in `MATSBAIJ` format.
 
 Not Collective
@@ -1377,9 +1377,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatRestoreRowUpperTriangular"))
 """
-function MatRestoreRowUpperTriangular(petsclib::PetscLibType, mat::PetscMat) end
+function MatRestoreRowUpperTriangular(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatRestoreRowUpperTriangular(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatRestoreRowUpperTriangular(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatRestoreRowUpperTriangular, $petsc_library),
@@ -1393,7 +1393,7 @@ function MatRestoreRowUpperTriangular(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatSetOptionsPrefix(petsclib::PetscLibType,A::PetscMat, prefix::Vector{Cchar}) 
+	MatSetOptionsPrefix(petsclib::PetscLibType,A::AbstractPetscMat, prefix::Vector{Cchar}) 
 Sets the prefix used for searching for all
 `Mat` options in the database.
 
@@ -1410,9 +1410,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSetOptionsPrefix"))
 """
-function MatSetOptionsPrefix(petsclib::PetscLibType, A::PetscMat, prefix::Vector{Cchar}) end
+function MatSetOptionsPrefix(petsclib::PetscLibType, A::AbstractPetscMat, prefix::Vector{Cchar}) end
 
-@for_petsc function MatSetOptionsPrefix(petsclib::$UnionPetscLib, A::PetscMat, prefix::Vector{Cchar} )
+@for_petsc function MatSetOptionsPrefix(petsclib::$UnionPetscLib, A::AbstractPetscMat, prefix::Vector{Cchar} )
 
     @chk ccall(
                (:MatSetOptionsPrefix, $petsc_library),
@@ -1426,7 +1426,7 @@ function MatSetOptionsPrefix(petsclib::PetscLibType, A::PetscMat, prefix::Vector
 end 
 
 """
-	MatSetOptionsPrefixFactor(petsclib::PetscLibType,A::PetscMat, prefix::Vector{Cchar}) 
+	MatSetOptionsPrefixFactor(petsclib::PetscLibType,A::AbstractPetscMat, prefix::Vector{Cchar}) 
 Sets the prefix used for searching for all matrix factor options in the database for
 for matrices created with `MatGetFactor()`
 
@@ -1443,9 +1443,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSetOptionsPrefixFactor"))
 """
-function MatSetOptionsPrefixFactor(petsclib::PetscLibType, A::PetscMat, prefix::Vector{Cchar}) end
+function MatSetOptionsPrefixFactor(petsclib::PetscLibType, A::AbstractPetscMat, prefix::Vector{Cchar}) end
 
-@for_petsc function MatSetOptionsPrefixFactor(petsclib::$UnionPetscLib, A::PetscMat, prefix::Vector{Cchar} )
+@for_petsc function MatSetOptionsPrefixFactor(petsclib::$UnionPetscLib, A::AbstractPetscMat, prefix::Vector{Cchar} )
 
     @chk ccall(
                (:MatSetOptionsPrefixFactor, $petsc_library),
@@ -1459,7 +1459,7 @@ function MatSetOptionsPrefixFactor(petsclib::PetscLibType, A::PetscMat, prefix::
 end 
 
 """
-	MatAppendOptionsPrefixFactor(petsclib::PetscLibType,A::PetscMat, prefix::Vector{Cchar}) 
+	MatAppendOptionsPrefixFactor(petsclib::PetscLibType,A::AbstractPetscMat, prefix::Vector{Cchar}) 
 Appends to the prefix used for searching for all matrix factor options in the database for
 for matrices created with `MatGetFactor()`
 
@@ -1478,9 +1478,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatAppendOptionsPrefixFactor"))
 """
-function MatAppendOptionsPrefixFactor(petsclib::PetscLibType, A::PetscMat, prefix::Vector{Cchar}) end
+function MatAppendOptionsPrefixFactor(petsclib::PetscLibType, A::AbstractPetscMat, prefix::Vector{Cchar}) end
 
-@for_petsc function MatAppendOptionsPrefixFactor(petsclib::$UnionPetscLib, A::PetscMat, prefix::Vector{Cchar} )
+@for_petsc function MatAppendOptionsPrefixFactor(petsclib::$UnionPetscLib, A::AbstractPetscMat, prefix::Vector{Cchar} )
 
     @chk ccall(
                (:MatAppendOptionsPrefixFactor, $petsc_library),
@@ -1494,7 +1494,7 @@ function MatAppendOptionsPrefixFactor(petsclib::PetscLibType, A::PetscMat, prefi
 end 
 
 """
-	MatAppendOptionsPrefix(petsclib::PetscLibType,A::PetscMat, prefix::Vector{Cchar}) 
+	MatAppendOptionsPrefix(petsclib::PetscLibType,A::AbstractPetscMat, prefix::Vector{Cchar}) 
 Appends to the prefix used for searching for all
 matrix options in the database.
 
@@ -1511,9 +1511,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatAppendOptionsPrefix"))
 """
-function MatAppendOptionsPrefix(petsclib::PetscLibType, A::PetscMat, prefix::Vector{Cchar}) end
+function MatAppendOptionsPrefix(petsclib::PetscLibType, A::AbstractPetscMat, prefix::Vector{Cchar}) end
 
-@for_petsc function MatAppendOptionsPrefix(petsclib::$UnionPetscLib, A::PetscMat, prefix::Vector{Cchar} )
+@for_petsc function MatAppendOptionsPrefix(petsclib::$UnionPetscLib, A::AbstractPetscMat, prefix::Vector{Cchar} )
 
     @chk ccall(
                (:MatAppendOptionsPrefix, $petsc_library),
@@ -1527,7 +1527,7 @@ function MatAppendOptionsPrefix(petsclib::PetscLibType, A::PetscMat, prefix::Vec
 end 
 
 """
-	MatGetOptionsPrefix(petsclib::PetscLibType,A::PetscMat, prefix::Vector{Cchar}) 
+	MatGetOptionsPrefix(petsclib::PetscLibType,A::AbstractPetscMat, prefix::Vector{Cchar}) 
 Gets the prefix used for searching for all
 matrix options in the database.
 
@@ -1546,9 +1546,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetOptionsPrefix"))
 """
-function MatGetOptionsPrefix(petsclib::PetscLibType, A::PetscMat, prefix::Vector{Cchar}) end
+function MatGetOptionsPrefix(petsclib::PetscLibType, A::AbstractPetscMat, prefix::Vector{Cchar}) end
 
-@for_petsc function MatGetOptionsPrefix(petsclib::$UnionPetscLib, A::PetscMat, prefix::Vector{Cchar} )
+@for_petsc function MatGetOptionsPrefix(petsclib::$UnionPetscLib, A::AbstractPetscMat, prefix::Vector{Cchar} )
 	prefix_ = Ref(pointer(prefix))
 
     @chk ccall(
@@ -1563,7 +1563,7 @@ function MatGetOptionsPrefix(petsclib::PetscLibType, A::PetscMat, prefix::Vector
 end 
 
 """
-	MatGetState(petsclib::PetscLibType,A::PetscMat, state::PetscObjectState) 
+	MatGetState(petsclib::PetscLibType,A::AbstractPetscMat, state::PetscObjectState) 
 Gets the state of a `Mat`. Same value as returned by `PetscObjectStateGet()`
 
 Not Collective
@@ -1581,9 +1581,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetState"))
 """
-function MatGetState(petsclib::PetscLibType, A::PetscMat, state::PetscObjectState) end
+function MatGetState(petsclib::PetscLibType, A::AbstractPetscMat, state::PetscObjectState) end
 
-@for_petsc function MatGetState(petsclib::$UnionPetscLib, A::PetscMat, state::PetscObjectState )
+@for_petsc function MatGetState(petsclib::$UnionPetscLib, A::AbstractPetscMat, state::PetscObjectState )
 
     @chk ccall(
                (:MatGetState, $petsc_library),
@@ -1597,7 +1597,7 @@ function MatGetState(petsclib::PetscLibType, A::PetscMat, state::PetscObjectStat
 end 
 
 """
-	MatResetPreallocation(petsclib::PetscLibType,A::PetscMat) 
+	MatResetPreallocation(petsclib::PetscLibType,A::AbstractPetscMat) 
 Reset matrix to use the original preallocation values provided by the user, for example with `MatXAIJSetPreallocation()`
 
 Collective
@@ -1612,9 +1612,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatResetPreallocation"))
 """
-function MatResetPreallocation(petsclib::PetscLibType, A::PetscMat) end
+function MatResetPreallocation(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatResetPreallocation(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatResetPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 
     @chk ccall(
                (:MatResetPreallocation, $petsc_library),
@@ -1628,7 +1628,7 @@ function MatResetPreallocation(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatResetHash(petsclib::PetscLibType,A::PetscMat) 
+	MatResetHash(petsclib::PetscLibType,A::AbstractPetscMat) 
 Reset the matrix so that it will use a hash table for the next round of `MatSetValues()` and `MatAssemblyBegin()`/`MatAssemblyEnd()`.
 
 Collective
@@ -1659,7 +1659,7 @@ function MatResetHash(petsclib::PetscLibType, A::AbstractPetscMat) end
 end 
 
 """
-	MatSetUp(petsclib::PetscLibType,A::PetscMat) 
+	MatSetUp(petsclib::PetscLibType,A::AbstractPetscMat) 
 Sets up the internal matrix data structures for later use by the matrix
 
 Collective
@@ -1674,9 +1674,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSetUp"))
 """
-function MatSetUp(petsclib::PetscLibType, A::PetscMat) end
+function MatSetUp(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSetUp(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSetUp(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 
     @chk ccall(
                (:MatSetUp, $petsc_library),
@@ -1690,7 +1690,7 @@ function MatSetUp(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatViewFromOptions(petsclib::PetscLibType,A::PetscMat, obj::PetscObject, name::Vector{Cchar}) 
+	MatViewFromOptions(petsclib::PetscLibType,A::AbstractPetscMat, obj::PetscObject, name::Vector{Cchar}) 
 View properties of the matrix based on options set in the options database
 
 Collective
@@ -1710,9 +1710,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatViewFromOptions"))
 """
-function MatViewFromOptions(petsclib::PetscLibType, A::PetscMat, obj::PetscObject, name::Vector{Cchar}) end
+function MatViewFromOptions(petsclib::PetscLibType, A::AbstractPetscMat, obj::PetscObject, name::Vector{Cchar}) end
 
-@for_petsc function MatViewFromOptions(petsclib::$UnionPetscLib, A::PetscMat, obj::PetscObject, name::Vector{Cchar} )
+@for_petsc function MatViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscMat, obj::PetscObject, name::Vector{Cchar} )
 
     @chk ccall(
                (:MatViewFromOptions, $petsc_library),
@@ -1726,7 +1726,7 @@ function MatViewFromOptions(petsclib::PetscLibType, A::PetscMat, obj::PetscObjec
 end 
 
 """
-	MatView(petsclib::PetscLibType,mat::PetscMat, viewer::PetscViewer) 
+	MatView(petsclib::PetscLibType,mat::AbstractPetscMat, viewer::PetscViewer) 
 display information about a matrix in a variety ways
 
 Collective on viewer
@@ -1757,9 +1757,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatView"))
 """
-function MatView(petsclib::PetscLibType, mat::PetscMat, viewer::PetscViewer) end
+function MatView(petsclib::PetscLibType, mat::AbstractPetscMat, viewer::PetscViewer) end
 
-@for_petsc function MatView(petsclib::$UnionPetscLib, mat::PetscMat, viewer::PetscViewer )
+@for_petsc function MatView(petsclib::$UnionPetscLib, mat::AbstractPetscMat, viewer::PetscViewer )
 
     @chk ccall(
                (:MatView, $petsc_library),
@@ -1773,7 +1773,7 @@ function MatView(petsclib::PetscLibType, mat::PetscMat, viewer::PetscViewer) end
 end 
 
 """
-	MatLoad(petsclib::PetscLibType,mat::PetscMat, viewer::PetscViewer) 
+	MatLoad(petsclib::PetscLibType,mat::AbstractPetscMat, viewer::PetscViewer) 
 Loads a matrix that has been stored in binary/HDF5 format
 with `MatView()`.  The matrix format is determined from the options database.
 Generates a parallel MPI matrix if the communicator has more than one
@@ -1796,9 +1796,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatLoad"))
 """
-function MatLoad(petsclib::PetscLibType, mat::PetscMat, viewer::PetscViewer) end
+function MatLoad(petsclib::PetscLibType, mat::AbstractPetscMat, viewer::PetscViewer) end
 
-@for_petsc function MatLoad(petsclib::$UnionPetscLib, mat::PetscMat, viewer::PetscViewer )
+@for_petsc function MatLoad(petsclib::$UnionPetscLib, mat::AbstractPetscMat, viewer::PetscViewer )
 
     @chk ccall(
                (:MatLoad, $petsc_library),
@@ -1886,7 +1886,7 @@ function MatSetValues(petsclib::PetscLibType, mat::AbstractPetscMat, m::PetscInt
 end 
 
 """
-	MatSetValuesIS(petsclib::PetscLibType,mat::PetscMat, ism::IS, isn::IS, v::Vector{PetscScalar}, addv::InsertMode) 
+	MatSetValuesIS(petsclib::PetscLibType,mat::AbstractPetscMat, ism::AbstractIS, isn::AbstractIS, v::Vector{PetscScalar}, addv::InsertMode) 
 Inserts or adds a block of values into a matrix using an `IS` to indicate the rows and columns
 These values may be cached, so `MatAssemblyBegin()` and `MatAssemblyEnd()`
 MUST be called after all calls to `MatSetValues()` have been completed.
@@ -1909,9 +1909,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatSetValuesIS"))
 """
-function MatSetValuesIS(petsclib::PetscLibType, mat::PetscMat, ism::IS, isn::IS, v::Vector{PetscScalar}, addv::InsertMode) end
+function MatSetValuesIS(petsclib::PetscLibType, mat::AbstractPetscMat, ism::AbstractIS, isn::AbstractIS, v::Vector{PetscScalar}, addv::InsertMode) end
 
-@for_petsc function MatSetValuesIS(petsclib::$UnionPetscLib, mat::PetscMat, ism::IS, isn::IS, v::Vector{$PetscScalar}, addv::InsertMode )
+@for_petsc function MatSetValuesIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ism::AbstractIS, isn::AbstractIS, v::Vector{$PetscScalar}, addv::InsertMode )
 
     @chk ccall(
                (:MatSetValuesIS, $petsc_library),
@@ -1925,7 +1925,7 @@ function MatSetValuesIS(petsclib::PetscLibType, mat::PetscMat, ism::IS, isn::IS,
 end 
 
 """
-	MatSetValuesRowLocal(petsclib::PetscLibType,mat::PetscMat, row::PetscInt, v::Vector{PetscScalar}) 
+	MatSetValuesRowLocal(petsclib::PetscLibType,mat::AbstractPetscMat, row::PetscInt, v::Vector{PetscScalar}) 
 Inserts a row (block row for `MATBAIJ` matrices) of nonzero
 values into a matrix
 
@@ -1945,9 +1945,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetValuesRowLocal"))
 """
-function MatSetValuesRowLocal(petsclib::PetscLibType, mat::PetscMat, row::PetscInt, v::Vector{PetscScalar}) end
+function MatSetValuesRowLocal(petsclib::PetscLibType, mat::AbstractPetscMat, row::PetscInt, v::Vector{PetscScalar}) end
 
-@for_petsc function MatSetValuesRowLocal(petsclib::$UnionPetscLib, mat::PetscMat, row::$PetscInt, v::Vector{$PetscScalar} )
+@for_petsc function MatSetValuesRowLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, v::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatSetValuesRowLocal, $petsc_library),
@@ -1961,7 +1961,7 @@ function MatSetValuesRowLocal(petsclib::PetscLibType, mat::PetscMat, row::PetscI
 end 
 
 """
-	MatSetValuesRow(petsclib::PetscLibType,mat::PetscMat, row::PetscInt, v::Vector{PetscScalar}) 
+	MatSetValuesRow(petsclib::PetscLibType,mat::AbstractPetscMat, row::PetscInt, v::Vector{PetscScalar}) 
 Inserts a row (block row for `MATBAIJ` matrices) of nonzero
 values into a matrix
 
@@ -1980,9 +1980,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSetValuesRow"))
 """
-function MatSetValuesRow(petsclib::PetscLibType, mat::PetscMat, row::PetscInt, v::Vector{PetscScalar}) end
+function MatSetValuesRow(petsclib::PetscLibType, mat::AbstractPetscMat, row::PetscInt, v::Vector{PetscScalar}) end
 
-@for_petsc function MatSetValuesRow(petsclib::$UnionPetscLib, mat::PetscMat, row::$PetscInt, v::Vector{$PetscScalar} )
+@for_petsc function MatSetValuesRow(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, v::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatSetValuesRow, $petsc_library),
@@ -1996,7 +1996,7 @@ function MatSetValuesRow(petsclib::PetscLibType, mat::PetscMat, row::PetscInt, v
 end 
 
 """
-	MatSetValuesStencil(petsclib::PetscLibType,mat::PetscMat, m::PetscInt, idxm::Vector{MatStencil}, n::PetscInt, idxn::Vector{MatStencil}, v::Vector{PetscScalar}, addv::InsertMode) 
+	MatSetValuesStencil(petsclib::PetscLibType,mat::AbstractPetscMat, m::PetscInt, idxm::Vector{MatStencil}, n::PetscInt, idxn::Vector{MatStencil}, v::Vector{PetscScalar}, addv::InsertMode) 
 Inserts or adds a block of values into a matrix.
 Using structured grid indexing
 
@@ -2020,9 +2020,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatSetValuesStencil"))
 """
-function MatSetValuesStencil(petsclib::PetscLibType, mat::PetscMat, m::PetscInt, idxm::Vector{MatStencil}, n::PetscInt, idxn::Vector{MatStencil}, v::Vector{PetscScalar}, addv::InsertMode) end
+function MatSetValuesStencil(petsclib::PetscLibType, mat::AbstractPetscMat, m::PetscInt, idxm::Vector{MatStencil}, n::PetscInt, idxn::Vector{MatStencil}, v::Vector{PetscScalar}, addv::InsertMode) end
 
-@for_petsc function MatSetValuesStencil(petsclib::$UnionPetscLib, mat::PetscMat, m::$PetscInt, idxm::Vector{MatStencil}, n::$PetscInt, idxn::Vector{MatStencil}, v::Vector{$PetscScalar}, addv::InsertMode )
+@for_petsc function MatSetValuesStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{MatStencil}, n::$PetscInt, idxn::Vector{MatStencil}, v::Vector{$PetscScalar}, addv::InsertMode )
 
     @chk ccall(
                (:MatSetValuesStencil, $petsc_library),
@@ -2036,7 +2036,7 @@ function MatSetValuesStencil(petsclib::PetscLibType, mat::PetscMat, m::PetscInt,
 end 
 
 """
-	MatSetValuesBlockedStencil(petsclib::PetscLibType,mat::PetscMat, m::PetscInt, idxm::Vector{MatStencil}, n::PetscInt, idxn::Vector{MatStencil}, v::Vector{PetscScalar}, addv::InsertMode) 
+	MatSetValuesBlockedStencil(petsclib::PetscLibType,mat::AbstractPetscMat, m::PetscInt, idxm::Vector{MatStencil}, n::PetscInt, idxn::Vector{MatStencil}, v::Vector{PetscScalar}, addv::InsertMode) 
 Inserts or adds a block of values into a matrix.
 Using structured grid indexing
 
@@ -2061,9 +2061,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatSetValuesBlockedStencil"))
 """
-function MatSetValuesBlockedStencil(petsclib::PetscLibType, mat::PetscMat, m::PetscInt, idxm::Vector{MatStencil}, n::PetscInt, idxn::Vector{MatStencil}, v::Vector{PetscScalar}, addv::InsertMode) end
+function MatSetValuesBlockedStencil(petsclib::PetscLibType, mat::AbstractPetscMat, m::PetscInt, idxm::Vector{MatStencil}, n::PetscInt, idxn::Vector{MatStencil}, v::Vector{PetscScalar}, addv::InsertMode) end
 
-@for_petsc function MatSetValuesBlockedStencil(petsclib::$UnionPetscLib, mat::PetscMat, m::$PetscInt, idxm::Vector{MatStencil}, n::$PetscInt, idxn::Vector{MatStencil}, v::Vector{$PetscScalar}, addv::InsertMode )
+@for_petsc function MatSetValuesBlockedStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{MatStencil}, n::$PetscInt, idxn::Vector{MatStencil}, v::Vector{$PetscScalar}, addv::InsertMode )
 
     @chk ccall(
                (:MatSetValuesBlockedStencil, $petsc_library),
@@ -2077,7 +2077,7 @@ function MatSetValuesBlockedStencil(petsclib::PetscLibType, mat::PetscMat, m::Pe
 end 
 
 """
-	MatSetStencil(petsclib::PetscLibType,mat::PetscMat, dim::PetscInt, dims::Vector{PetscInt}, starts::Vector{PetscInt}, dof::PetscInt) 
+	MatSetStencil(petsclib::PetscLibType,mat::AbstractPetscMat, dim::PetscInt, dims::Vector{PetscInt}, starts::Vector{PetscInt}, dof::PetscInt) 
 Sets the grid information for setting values into a matrix via
 `MatSetValuesStencil()`
 
@@ -2098,9 +2098,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatSetStencil"))
 """
-function MatSetStencil(petsclib::PetscLibType, mat::PetscMat, dim::PetscInt, dims::Vector{PetscInt}, starts::Vector{PetscInt}, dof::PetscInt) end
+function MatSetStencil(petsclib::PetscLibType, mat::AbstractPetscMat, dim::PetscInt, dims::Vector{PetscInt}, starts::Vector{PetscInt}, dof::PetscInt) end
 
-@for_petsc function MatSetStencil(petsclib::$UnionPetscLib, mat::PetscMat, dim::$PetscInt, dims::Vector{$PetscInt}, starts::Vector{$PetscInt}, dof::$PetscInt )
+@for_petsc function MatSetStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, dim::$PetscInt, dims::Vector{$PetscInt}, starts::Vector{$PetscInt}, dof::$PetscInt )
 
     @chk ccall(
                (:MatSetStencil, $petsc_library),
@@ -2114,7 +2114,7 @@ function MatSetStencil(petsclib::PetscLibType, mat::PetscMat, dim::PetscInt, dim
 end 
 
 """
-	MatSetValuesBlocked(petsclib::PetscLibType,mat::PetscMat, m::PetscInt, idxm::Vector{PetscInt}, n::PetscInt, idxn::Vector{PetscInt}, v::Vector{PetscScalar}, addv::InsertMode) 
+	MatSetValuesBlocked(petsclib::PetscLibType,mat::AbstractPetscMat, m::PetscInt, idxm::Vector{PetscInt}, n::PetscInt, idxn::Vector{PetscInt}, v::Vector{PetscScalar}, addv::InsertMode) 
 Inserts or adds a block of values into a matrix.
 
 Not Collective
@@ -2136,9 +2136,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetValuesBlocked"))
 """
-function MatSetValuesBlocked(petsclib::PetscLibType, mat::PetscMat, m::PetscInt, idxm::Vector{PetscInt}, n::PetscInt, idxn::Vector{PetscInt}, v::Vector{PetscScalar}, addv::InsertMode) end
+function MatSetValuesBlocked(petsclib::PetscLibType, mat::AbstractPetscMat, m::PetscInt, idxm::Vector{PetscInt}, n::PetscInt, idxn::Vector{PetscInt}, v::Vector{PetscScalar}, addv::InsertMode) end
 
-@for_petsc function MatSetValuesBlocked(petsclib::$UnionPetscLib, mat::PetscMat, m::$PetscInt, idxm::Vector{$PetscInt}, n::$PetscInt, idxn::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
+@for_petsc function MatSetValuesBlocked(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{$PetscInt}, n::$PetscInt, idxn::Vector{$PetscInt}, v::Vector{$PetscScalar}, addv::InsertMode )
 
     @chk ccall(
                (:MatSetValuesBlocked, $petsc_library),
@@ -2152,7 +2152,7 @@ function MatSetValuesBlocked(petsclib::PetscLibType, mat::PetscMat, m::PetscInt,
 end 
 
 """
-	MatGetValues(petsclib::PetscLibType,mat::PetscMat, m::PetscInt, idxm::Vector{PetscInt}, n::PetscInt, idxn::Vector{PetscInt}, v::Vector{PetscScalar}) 
+	MatGetValues(petsclib::PetscLibType,mat::AbstractPetscMat, m::PetscInt, idxm::Vector{PetscInt}, n::PetscInt, idxn::Vector{PetscInt}, v::Vector{PetscScalar}) 
 Gets a block of local values from a matrix.
 
 Not Collective; can only return values that are owned by the give process
@@ -2172,9 +2172,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetValues"))
 """
-function MatGetValues(petsclib::PetscLibType, mat::PetscMat, m::PetscInt, idxm::Vector{PetscInt}, n::PetscInt, idxn::Vector{PetscInt}, v::Vector{PetscScalar}) end
+function MatGetValues(petsclib::PetscLibType, mat::AbstractPetscMat, m::PetscInt, idxm::Vector{PetscInt}, n::PetscInt, idxn::Vector{PetscInt}, v::Vector{PetscScalar}) end
 
-@for_petsc function MatGetValues(petsclib::$UnionPetscLib, mat::PetscMat, m::$PetscInt, idxm::Vector{$PetscInt}, n::$PetscInt, idxn::Vector{$PetscInt}, v::Vector{$PetscScalar} )
+@for_petsc function MatGetValues(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, idxm::Vector{$PetscInt}, n::$PetscInt, idxn::Vector{$PetscInt}, v::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatGetValues, $petsc_library),
@@ -2188,7 +2188,7 @@ function MatGetValues(petsclib::PetscLibType, mat::PetscMat, m::PetscInt, idxm::
 end 
 
 """
-	MatGetValuesLocal(petsclib::PetscLibType,mat::PetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}) 
+	MatGetValuesLocal(petsclib::PetscLibType,mat::AbstractPetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}) 
 retrieves values from certain locations in a matrix using the local numbering of the indices
 defined previously by `MatSetLocalToGlobalMapping()`
 
@@ -2213,9 +2213,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetValuesLocal"))
 """
-function MatGetValuesLocal(petsclib::PetscLibType, mat::PetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}) end
+function MatGetValuesLocal(petsclib::PetscLibType, mat::AbstractPetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}) end
 
-@for_petsc function MatGetValuesLocal(petsclib::$UnionPetscLib, mat::PetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, y::Vector{$PetscScalar} )
+@for_petsc function MatGetValuesLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, y::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatGetValuesLocal, $petsc_library),
@@ -2229,7 +2229,7 @@ function MatGetValuesLocal(petsclib::PetscLibType, mat::PetscMat, nrow::PetscInt
 end 
 
 """
-	MatSetValuesBatch(petsclib::PetscLibType,mat::PetscMat, nb::PetscInt, bs::PetscInt, rows::Vector{PetscInt}, v::Vector{PetscScalar}) 
+	MatSetValuesBatch(petsclib::PetscLibType,mat::AbstractPetscMat, nb::PetscInt, bs::PetscInt, rows::Vector{PetscInt}, v::Vector{PetscScalar}) 
 Adds (`ADD_VALUES`) many blocks of values into a matrix at once. The blocks must all be square and
 the same size. Currently, this can only be called once and creates the given matrix.
 
@@ -2250,9 +2250,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSetValuesBatch"))
 """
-function MatSetValuesBatch(petsclib::PetscLibType, mat::PetscMat, nb::PetscInt, bs::PetscInt, rows::Vector{PetscInt}, v::Vector{PetscScalar}) end
+function MatSetValuesBatch(petsclib::PetscLibType, mat::AbstractPetscMat, nb::PetscInt, bs::PetscInt, rows::Vector{PetscInt}, v::Vector{PetscScalar}) end
 
-@for_petsc function MatSetValuesBatch(petsclib::$UnionPetscLib, mat::PetscMat, nb::$PetscInt, bs::$PetscInt, rows::Vector{$PetscInt}, v::Vector{$PetscScalar} )
+@for_petsc function MatSetValuesBatch(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nb::$PetscInt, bs::$PetscInt, rows::Vector{$PetscInt}, v::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatSetValuesBatch, $petsc_library),
@@ -2266,7 +2266,7 @@ function MatSetValuesBatch(petsclib::PetscLibType, mat::PetscMat, nb::PetscInt, 
 end 
 
 """
-	MatSetLocalToGlobalMapping(petsclib::PetscLibType,x::PetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping) 
+	MatSetLocalToGlobalMapping(petsclib::PetscLibType,x::AbstractPetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping) 
 Sets a local
 the routine `MatSetValuesLocal()` to allow users to insert matrix entries
 using a local (per-processor) numbering.
@@ -2285,9 +2285,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetLocalToGlobalMapping"))
 """
-function MatSetLocalToGlobalMapping(petsclib::PetscLibType, x::PetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping) end
+function MatSetLocalToGlobalMapping(petsclib::PetscLibType, x::AbstractPetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping) end
 
-@for_petsc function MatSetLocalToGlobalMapping(petsclib::$UnionPetscLib, x::PetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping )
+@for_petsc function MatSetLocalToGlobalMapping(petsclib::$UnionPetscLib, x::AbstractPetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping )
 
     @chk ccall(
                (:MatSetLocalToGlobalMapping, $petsc_library),
@@ -2301,7 +2301,7 @@ function MatSetLocalToGlobalMapping(petsclib::PetscLibType, x::PetscMat, rmappin
 end 
 
 """
-	rmapping::ISLocalToGlobalMapping,cmapping::ISLocalToGlobalMapping = MatGetLocalToGlobalMapping(petsclib::PetscLibType,A::PetscMat) 
+	rmapping::ISLocalToGlobalMapping,cmapping::ISLocalToGlobalMapping = MatGetLocalToGlobalMapping(petsclib::PetscLibType,A::AbstractPetscMat) 
 Gets the local
 
 Not Collective
@@ -2320,10 +2320,10 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetLocalToGlobalMapping"))
 """
-function MatGetLocalToGlobalMapping(petsclib::PetscLibType, A::PetscMat) end
+function MatGetLocalToGlobalMapping(petsclib::PetscLibType, A::AbstractPetscMat) end
 
 # returns the row and column mappings (owned by `A`; `C_NULL` if none was set)
-@for_petsc function MatGetLocalToGlobalMapping(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatGetLocalToGlobalMapping(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	rmapping_ = Ref{ISLocalToGlobalMapping}(C_NULL)
 	cmapping_ = Ref{ISLocalToGlobalMapping}(C_NULL)
 
@@ -2338,7 +2338,7 @@ function MatGetLocalToGlobalMapping(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatSetLayouts(petsclib::PetscLibType,A::PetscMat, rmap::PetscLayout, cmap::PetscLayout) 
+	MatSetLayouts(petsclib::PetscLibType,A::AbstractPetscMat, rmap::PetscLayout, cmap::PetscLayout) 
 Sets the `PetscLayout` objects for rows and columns of a matrix
 
 Logically Collective
@@ -2355,9 +2355,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSetLayouts"))
 """
-function MatSetLayouts(petsclib::PetscLibType, A::PetscMat, rmap::PetscLayout, cmap::PetscLayout) end
+function MatSetLayouts(petsclib::PetscLibType, A::AbstractPetscMat, rmap::PetscLayout, cmap::PetscLayout) end
 
-@for_petsc function MatSetLayouts(petsclib::$UnionPetscLib, A::PetscMat, rmap::PetscLayout, cmap::PetscLayout )
+@for_petsc function MatSetLayouts(petsclib::$UnionPetscLib, A::AbstractPetscMat, rmap::PetscLayout, cmap::PetscLayout )
 
     @chk ccall(
                (:MatSetLayouts, $petsc_library),
@@ -2371,7 +2371,7 @@ function MatSetLayouts(petsclib::PetscLibType, A::PetscMat, rmap::PetscLayout, c
 end 
 
 """
-	MatGetLayouts(petsclib::PetscLibType,A::PetscMat, rmap::PetscLayout, cmap::PetscLayout) 
+	MatGetLayouts(petsclib::PetscLibType,A::AbstractPetscMat, rmap::PetscLayout, cmap::PetscLayout) 
 Gets the `PetscLayout` objects for rows and columns
 
 Not Collective
@@ -2390,9 +2390,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetLayouts"))
 """
-function MatGetLayouts(petsclib::PetscLibType, A::PetscMat, rmap::PetscLayout, cmap::PetscLayout) end
+function MatGetLayouts(petsclib::PetscLibType, A::AbstractPetscMat, rmap::PetscLayout, cmap::PetscLayout) end
 
-@for_petsc function MatGetLayouts(petsclib::$UnionPetscLib, A::PetscMat, rmap::PetscLayout, cmap::PetscLayout )
+@for_petsc function MatGetLayouts(petsclib::$UnionPetscLib, A::AbstractPetscMat, rmap::PetscLayout, cmap::PetscLayout )
 
     @chk ccall(
                (:MatGetLayouts, $petsc_library),
@@ -2406,7 +2406,7 @@ function MatGetLayouts(petsclib::PetscLibType, A::PetscMat, rmap::PetscLayout, c
 end 
 
 """
-	MatSetValuesLocal(petsclib::PetscLibType,mat::PetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}, addv::InsertMode) 
+	MatSetValuesLocal(petsclib::PetscLibType,mat::AbstractPetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}, addv::InsertMode) 
 Inserts or adds values into certain locations of a matrix,
 using a local numbering of the rows and columns.
 
@@ -2430,9 +2430,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetValuesLocal"))
 """
-function MatSetValuesLocal(petsclib::PetscLibType, mat::PetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}, addv::InsertMode) end
+function MatSetValuesLocal(petsclib::PetscLibType, mat::AbstractPetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}, addv::InsertMode) end
 
-@for_petsc function MatSetValuesLocal(petsclib::$UnionPetscLib, mat::PetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, y::Vector{$PetscScalar}, addv::InsertMode )
+@for_petsc function MatSetValuesLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, y::Vector{$PetscScalar}, addv::InsertMode )
 
     @chk ccall(
                (:MatSetValuesLocal, $petsc_library),
@@ -2446,7 +2446,7 @@ function MatSetValuesLocal(petsclib::PetscLibType, mat::PetscMat, nrow::PetscInt
 end 
 
 """
-	MatSetValuesBlockedLocal(petsclib::PetscLibType,mat::PetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}, addv::InsertMode) 
+	MatSetValuesBlockedLocal(petsclib::PetscLibType,mat::AbstractPetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}, addv::InsertMode) 
 Inserts or adds values into certain locations of a matrix,
 using a local ordering of the nodes a block at a time.
 
@@ -2470,9 +2470,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetValuesBlockedLocal"))
 """
-function MatSetValuesBlockedLocal(petsclib::PetscLibType, mat::PetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}, addv::InsertMode) end
+function MatSetValuesBlockedLocal(petsclib::PetscLibType, mat::AbstractPetscMat, nrow::PetscInt, irow::Vector{PetscInt}, ncol::PetscInt, icol::Vector{PetscInt}, y::Vector{PetscScalar}, addv::InsertMode) end
 
-@for_petsc function MatSetValuesBlockedLocal(petsclib::$UnionPetscLib, mat::PetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, y::Vector{$PetscScalar}, addv::InsertMode )
+@for_petsc function MatSetValuesBlockedLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nrow::$PetscInt, irow::Vector{$PetscInt}, ncol::$PetscInt, icol::Vector{$PetscInt}, y::Vector{$PetscScalar}, addv::InsertMode )
 
     @chk ccall(
                (:MatSetValuesBlockedLocal, $petsc_library),
@@ -2486,7 +2486,7 @@ function MatSetValuesBlockedLocal(petsclib::PetscLibType, mat::PetscMat, nrow::P
 end 
 
 """
-	MatMultDiagonalBlock(petsclib::PetscLibType,mat::PetscMat, x::PetscVec, y::PetscVec) 
+	MatMultDiagonalBlock(petsclib::PetscLibType,mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes the matrix
 
 Collective
@@ -2505,9 +2505,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatMultDiagonalBlock"))
 """
-function MatMultDiagonalBlock(petsclib::PetscLibType, mat::PetscMat, x::PetscVec, y::PetscVec) end
+function MatMultDiagonalBlock(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function MatMultDiagonalBlock(petsclib::$UnionPetscLib, mat::PetscMat, x::PetscVec, y::PetscVec )
+@for_petsc function MatMultDiagonalBlock(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:MatMultDiagonalBlock, $petsc_library),
@@ -2521,7 +2521,7 @@ function MatMultDiagonalBlock(petsclib::PetscLibType, mat::PetscMat, x::PetscVec
 end 
 
 """
-	MatMult(petsclib::PetscLibType,mat::PetscMat, x::PetscVec, y::PetscVec) 
+	MatMult(petsclib::PetscLibType,mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes the matrix
 
 Neighbor-wise Collective
@@ -2540,9 +2540,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMult"))
 """
-function MatMult(petsclib::PetscLibType, mat::AbstractPetscMat, x::PetscVec, y::PetscVec) end
+function MatMult(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function MatMult(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::PetscVec, y::PetscVec )
+@for_petsc function MatMult(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:MatMult, $petsc_library),
@@ -2556,7 +2556,7 @@ function MatMult(petsclib::PetscLibType, mat::AbstractPetscMat, x::PetscVec, y::
 end 
 
 """
-	MatMultTranspose(petsclib::PetscLibType,mat::PetscMat, x::PetscVec, y::PetscVec) 
+	MatMultTranspose(petsclib::PetscLibType,mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes matrix transpose times a vector y = A^T * x.
 
 Neighbor-wise Collective
@@ -2575,9 +2575,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMultTranspose"))
 """
-function MatMultTranspose(petsclib::PetscLibType, mat::PetscMat, x::PetscVec, y::PetscVec) end
+function MatMultTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function MatMultTranspose(petsclib::$UnionPetscLib, mat::PetscMat, x::PetscVec, y::PetscVec )
+@for_petsc function MatMultTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:MatMultTranspose, $petsc_library),
@@ -2591,7 +2591,7 @@ function MatMultTranspose(petsclib::PetscLibType, mat::PetscMat, x::PetscVec, y:
 end 
 
 """
-	MatMultHermitianTranspose(petsclib::PetscLibType,mat::PetscMat, x::PetscVec, y::PetscVec) 
+	MatMultHermitianTranspose(petsclib::PetscLibType,mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes matrix Hermitian
 
 Neighbor-wise Collective
@@ -2610,9 +2610,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMultHermitianTranspose"))
 """
-function MatMultHermitianTranspose(petsclib::PetscLibType, mat::PetscMat, x::PetscVec, y::PetscVec) end
+function MatMultHermitianTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function MatMultHermitianTranspose(petsclib::$UnionPetscLib, mat::PetscMat, x::PetscVec, y::PetscVec )
+@for_petsc function MatMultHermitianTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:MatMultHermitianTranspose, $petsc_library),
@@ -2626,7 +2626,7 @@ function MatMultHermitianTranspose(petsclib::PetscLibType, mat::PetscMat, x::Pet
 end 
 
 """
-	MatMultAdd(petsclib::PetscLibType,mat::PetscMat, v1::PetscVec, v2::PetscVec, v3::PetscVec) 
+	MatMultAdd(petsclib::PetscLibType,mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec) 
 Computes v3 = v2 + A * v1.
 
 Neighbor-wise Collective
@@ -2646,9 +2646,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMultAdd"))
 """
-function MatMultAdd(petsclib::PetscLibType, mat::PetscMat, v1::PetscVec, v2::PetscVec, v3::PetscVec) end
+function MatMultAdd(petsclib::PetscLibType, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec) end
 
-@for_petsc function MatMultAdd(petsclib::$UnionPetscLib, mat::PetscMat, v1::PetscVec, v2::PetscVec, v3::PetscVec )
+@for_petsc function MatMultAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec )
 
     @chk ccall(
                (:MatMultAdd, $petsc_library),
@@ -2662,7 +2662,7 @@ function MatMultAdd(petsclib::PetscLibType, mat::PetscMat, v1::PetscVec, v2::Pet
 end 
 
 """
-	MatMultTransposeAdd(petsclib::PetscLibType,mat::PetscMat, v1::PetscVec, v2::PetscVec, v3::PetscVec) 
+	MatMultTransposeAdd(petsclib::PetscLibType,mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec) 
 Computes v3 = v2 + A^T * v1.
 
 Neighbor-wise Collective
@@ -2682,9 +2682,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMultTransposeAdd"))
 """
-function MatMultTransposeAdd(petsclib::PetscLibType, mat::PetscMat, v1::PetscVec, v2::PetscVec, v3::PetscVec) end
+function MatMultTransposeAdd(petsclib::PetscLibType, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec) end
 
-@for_petsc function MatMultTransposeAdd(petsclib::$UnionPetscLib, mat::PetscMat, v1::PetscVec, v2::PetscVec, v3::PetscVec )
+@for_petsc function MatMultTransposeAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec )
 
     @chk ccall(
                (:MatMultTransposeAdd, $petsc_library),
@@ -2698,7 +2698,7 @@ function MatMultTransposeAdd(petsclib::PetscLibType, mat::PetscMat, v1::PetscVec
 end 
 
 """
-	MatMultHermitianTransposeAdd(petsclib::PetscLibType,mat::PetscMat, v1::PetscVec, v2::PetscVec, v3::PetscVec) 
+	MatMultHermitianTransposeAdd(petsclib::PetscLibType,mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec) 
 Computes v3 = v2 + A^H * v1.
 
 Neighbor-wise Collective
@@ -2718,9 +2718,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMultHermitianTransposeAdd"))
 """
-function MatMultHermitianTransposeAdd(petsclib::PetscLibType, mat::PetscMat, v1::PetscVec, v2::PetscVec, v3::PetscVec) end
+function MatMultHermitianTransposeAdd(petsclib::PetscLibType, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec) end
 
-@for_petsc function MatMultHermitianTransposeAdd(petsclib::$UnionPetscLib, mat::PetscMat, v1::PetscVec, v2::PetscVec, v3::PetscVec )
+@for_petsc function MatMultHermitianTransposeAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v1::AbstractPetscVec, v2::AbstractPetscVec, v3::AbstractPetscVec )
 
     @chk ccall(
                (:MatMultHermitianTransposeAdd, $petsc_library),
@@ -2734,7 +2734,7 @@ function MatMultHermitianTransposeAdd(petsclib::PetscLibType, mat::PetscMat, v1:
 end 
 
 """
-	t::MatFactorType = MatGetFactorType(petsclib::PetscLibType,mat::PetscMat) 
+	t::MatFactorType = MatGetFactorType(petsclib::PetscLibType,mat::AbstractPetscMat) 
 gets the type of factorization a matrix is
 
 Not Collective
@@ -2753,9 +2753,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetFactorType"))
 """
-function MatGetFactorType(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetFactorType(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetFactorType(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetFactorType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	t_ = Ref{MatFactorType}()
 
     @chk ccall(
@@ -2771,7 +2771,7 @@ function MatGetFactorType(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatSetFactorType(petsclib::PetscLibType,mat::PetscMat, t::MatFactorType) 
+	MatSetFactorType(petsclib::PetscLibType,mat::AbstractPetscMat, t::MatFactorType) 
 sets the type of factorization a matrix is
 
 Logically Collective
@@ -2788,9 +2788,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetFactorType"))
 """
-function MatSetFactorType(petsclib::PetscLibType, mat::PetscMat, t::MatFactorType) end
+function MatSetFactorType(petsclib::PetscLibType, mat::AbstractPetscMat, t::MatFactorType) end
 
-@for_petsc function MatSetFactorType(petsclib::$UnionPetscLib, mat::PetscMat, t::MatFactorType )
+@for_petsc function MatSetFactorType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, t::MatFactorType )
 
     @chk ccall(
                (:MatSetFactorType, $petsc_library),
@@ -2804,7 +2804,7 @@ function MatSetFactorType(petsclib::PetscLibType, mat::PetscMat, t::MatFactorTyp
 end 
 
 """
-    MatGetInfo(petsclib::PetscLibType,mat::PetscMat, flag::MatInfoType, info::Ref{MatInfo}) 
+    MatGetInfo(petsclib::PetscLibType,mat::AbstractPetscMat, flag::MatInfoType, info::Ref{MatInfo}) 
 Returns information about matrix storage (number of
 nonzeros, memory, etc.).
 
@@ -2827,9 +2827,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetInfo"))
 """
-function MatGetInfo(petsclib::PetscLibType, mat::PetscMat, flag::MatInfoType, info::Ref{MatInfo}) end
+function MatGetInfo(petsclib::PetscLibType, mat::AbstractPetscMat, flag::MatInfoType, info::Ref{MatInfo}) end
 
-@for_petsc function MatGetInfo(petsclib::$UnionPetscLib, mat::PetscMat, flag::MatInfoType, info::Ref{MatInfo})
+@for_petsc function MatGetInfo(petsclib::$UnionPetscLib, mat::AbstractPetscMat, flag::MatInfoType, info::Ref{MatInfo})
     @chk ccall(
                (:MatGetInfo, $petsc_library),
                PetscErrorCode,
@@ -2840,7 +2840,7 @@ function MatGetInfo(petsclib::PetscLibType, mat::PetscMat, flag::MatInfoType, in
 end
 
 """
-	MatLUFactor(petsclib::PetscLibType,mat::PetscMat, row::IS, col::IS, info::MatFactorInfo) 
+	MatLUFactor(petsclib::PetscLibType,mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::MatFactorInfo) 
 Performs in
 
 Collective
@@ -2856,9 +2856,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Mat/MatLUFactor"))
 """
-function MatLUFactor(petsclib::PetscLibType, mat::PetscMat, row::IS, col::IS, info::MatFactorInfo) end
+function MatLUFactor(petsclib::PetscLibType, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::MatFactorInfo) end
 
-@for_petsc function MatLUFactor(petsclib::$UnionPetscLib, mat::PetscMat, row::IS, col::IS, info::MatFactorInfo )
+@for_petsc function MatLUFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::MatFactorInfo )
 
     @chk ccall(
                (:MatLUFactor, $petsc_library),
@@ -2872,7 +2872,7 @@ function MatLUFactor(petsclib::PetscLibType, mat::PetscMat, row::IS, col::IS, in
 end 
 
 """
-	MatILUFactor(petsclib::PetscLibType,mat::PetscMat, row::IS, col::IS, info::MatFactorInfo) 
+	MatILUFactor(petsclib::PetscLibType,mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::MatFactorInfo) 
 Performs in
 
 Collective
@@ -2887,9 +2887,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Mat/MatILUFactor"))
 """
-function MatILUFactor(petsclib::PetscLibType, mat::PetscMat, row::IS, col::IS, info::MatFactorInfo) end
+function MatILUFactor(petsclib::PetscLibType, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::MatFactorInfo) end
 
-@for_petsc function MatILUFactor(petsclib::$UnionPetscLib, mat::PetscMat, row::IS, col::IS, info::MatFactorInfo )
+@for_petsc function MatILUFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::MatFactorInfo )
 
     @chk ccall(
                (:MatILUFactor, $petsc_library),
@@ -2903,7 +2903,7 @@ function MatILUFactor(petsclib::PetscLibType, mat::PetscMat, row::IS, col::IS, i
 end 
 
 """
-	MatLUFactorSymbolic(petsclib::PetscLibType,fact::PetscMat, mat::PetscMat, row::IS, col::IS, info::MatFactorInfo) 
+	MatLUFactorSymbolic(petsclib::PetscLibType,fact::AbstractPetscMat, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::MatFactorInfo) 
 Performs symbolic LU factorization of matrix.
 Call this routine before calling `MatLUFactorNumeric()` and after `MatGetFactor()`.
 
@@ -2920,9 +2920,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Mat/MatLUFactorSymbolic"))
 """
-function MatLUFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::PetscMat, row::IS, col::IS, info::MatFactorInfo) end
+function MatLUFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::MatFactorInfo) end
 
-@for_petsc function MatLUFactorSymbolic(petsclib::$UnionPetscLib, fact::PetscMat, mat::PetscMat, row::IS, col::IS, info::MatFactorInfo )
+@for_petsc function MatLUFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::MatFactorInfo )
 
     @chk ccall(
                (:MatLUFactorSymbolic, $petsc_library),
@@ -2936,7 +2936,7 @@ function MatLUFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::PetscM
 end 
 
 """
-	MatLUFactorNumeric(petsclib::PetscLibType,fact::PetscMat, mat::PetscMat, info::MatFactorInfo) 
+	MatLUFactorNumeric(petsclib::PetscLibType,fact::AbstractPetscMat, mat::AbstractPetscMat, info::MatFactorInfo) 
 Performs numeric LU factorization of a matrix.
 Call this routine after first calling `MatLUFactorSymbolic()` and `MatGetFactor()`.
 
@@ -2954,9 +2954,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatLUFactorNumeric"))
 """
-function MatLUFactorNumeric(petsclib::PetscLibType, fact::PetscMat, mat::PetscMat, info::MatFactorInfo) end
+function MatLUFactorNumeric(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, info::MatFactorInfo) end
 
-@for_petsc function MatLUFactorNumeric(petsclib::$UnionPetscLib, fact::PetscMat, mat::PetscMat, info::MatFactorInfo )
+@for_petsc function MatLUFactorNumeric(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, info::MatFactorInfo )
 
     @chk ccall(
                (:MatLUFactorNumeric, $petsc_library),
@@ -2970,7 +2970,7 @@ function MatLUFactorNumeric(petsclib::PetscLibType, fact::PetscMat, mat::PetscMa
 end 
 
 """
-	MatCholeskyFactor(petsclib::PetscLibType,mat::PetscMat, perm::IS, info::MatFactorInfo) 
+	MatCholeskyFactor(petsclib::PetscLibType,mat::AbstractPetscMat, perm::AbstractIS, info::MatFactorInfo) 
 Performs in
 symmetric matrix.
 
@@ -2989,9 +2989,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatCholeskyFactor"))
 """
-function MatCholeskyFactor(petsclib::PetscLibType, mat::PetscMat, perm::IS, info::MatFactorInfo) end
+function MatCholeskyFactor(petsclib::PetscLibType, mat::AbstractPetscMat, perm::AbstractIS, info::MatFactorInfo) end
 
-@for_petsc function MatCholeskyFactor(petsclib::$UnionPetscLib, mat::PetscMat, perm::IS, info::MatFactorInfo )
+@for_petsc function MatCholeskyFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, perm::AbstractIS, info::MatFactorInfo )
 
     @chk ccall(
                (:MatCholeskyFactor, $petsc_library),
@@ -3005,7 +3005,7 @@ function MatCholeskyFactor(petsclib::PetscLibType, mat::PetscMat, perm::IS, info
 end 
 
 """
-	MatCholeskyFactorSymbolic(petsclib::PetscLibType,fact::PetscMat, mat::PetscMat, perm::IS, info::MatFactorInfo) 
+	MatCholeskyFactorSymbolic(petsclib::PetscLibType,fact::AbstractPetscMat, mat::AbstractPetscMat, perm::AbstractIS, info::MatFactorInfo) 
 Performs symbolic Cholesky factorization
 of a symmetric matrix.
 
@@ -3022,9 +3022,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Mat/MatCholeskyFactorSymbolic"))
 """
-function MatCholeskyFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::PetscMat, perm::IS, info::MatFactorInfo) end
+function MatCholeskyFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, perm::AbstractIS, info::MatFactorInfo) end
 
-@for_petsc function MatCholeskyFactorSymbolic(petsclib::$UnionPetscLib, fact::PetscMat, mat::PetscMat, perm::IS, info::MatFactorInfo )
+@for_petsc function MatCholeskyFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, perm::AbstractIS, info::MatFactorInfo )
 
     @chk ccall(
                (:MatCholeskyFactorSymbolic, $petsc_library),
@@ -3038,7 +3038,7 @@ function MatCholeskyFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::
 end 
 
 """
-	MatCholeskyFactorNumeric(petsclib::PetscLibType,fact::PetscMat, mat::PetscMat, info::MatFactorInfo) 
+	MatCholeskyFactorNumeric(petsclib::PetscLibType,fact::AbstractPetscMat, mat::AbstractPetscMat, info::MatFactorInfo) 
 Performs numeric Cholesky factorization
 of a symmetric matrix. Call this routine after first calling `MatGetFactor()` and
 `MatCholeskyFactorSymbolic()`.
@@ -3057,9 +3057,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatCholeskyFactorNumeric"))
 """
-function MatCholeskyFactorNumeric(petsclib::PetscLibType, fact::PetscMat, mat::PetscMat, info::MatFactorInfo) end
+function MatCholeskyFactorNumeric(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, info::MatFactorInfo) end
 
-@for_petsc function MatCholeskyFactorNumeric(petsclib::$UnionPetscLib, fact::PetscMat, mat::PetscMat, info::MatFactorInfo )
+@for_petsc function MatCholeskyFactorNumeric(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, info::MatFactorInfo )
 
     @chk ccall(
                (:MatCholeskyFactorNumeric, $petsc_library),
@@ -3073,7 +3073,7 @@ function MatCholeskyFactorNumeric(petsclib::PetscLibType, fact::PetscMat, mat::P
 end 
 
 """
-	MatQRFactor(petsclib::PetscLibType,mat::PetscMat, col::IS, info::MatFactorInfo) 
+	MatQRFactor(petsclib::PetscLibType,mat::AbstractPetscMat, col::AbstractIS, info::MatFactorInfo) 
 Performs in
 
 Collective
@@ -3088,9 +3088,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Mat/MatQRFactor"))
 """
-function MatQRFactor(petsclib::PetscLibType, mat::PetscMat, col::IS, info::MatFactorInfo) end
+function MatQRFactor(petsclib::PetscLibType, mat::AbstractPetscMat, col::AbstractIS, info::MatFactorInfo) end
 
-@for_petsc function MatQRFactor(petsclib::$UnionPetscLib, mat::PetscMat, col::IS, info::MatFactorInfo )
+@for_petsc function MatQRFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, col::AbstractIS, info::MatFactorInfo )
 
     @chk ccall(
                (:MatQRFactor, $petsc_library),
@@ -3104,7 +3104,7 @@ function MatQRFactor(petsclib::PetscLibType, mat::PetscMat, col::IS, info::MatFa
 end 
 
 """
-	MatQRFactorSymbolic(petsclib::PetscLibType,fact::PetscMat, mat::PetscMat, col::IS, info::MatFactorInfo) 
+	MatQRFactorSymbolic(petsclib::PetscLibType,fact::AbstractPetscMat, mat::AbstractPetscMat, col::AbstractIS, info::MatFactorInfo) 
 Performs symbolic QR factorization of matrix.
 Call this routine after `MatGetFactor()` but before calling `MatQRFactorNumeric()`.
 
@@ -3120,9 +3120,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Mat/MatQRFactorSymbolic"))
 """
-function MatQRFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::PetscMat, col::IS, info::MatFactorInfo) end
+function MatQRFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, col::AbstractIS, info::MatFactorInfo) end
 
-@for_petsc function MatQRFactorSymbolic(petsclib::$UnionPetscLib, fact::PetscMat, mat::PetscMat, col::IS, info::MatFactorInfo )
+@for_petsc function MatQRFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, col::AbstractIS, info::MatFactorInfo )
 
     @chk ccall(
                (:MatQRFactorSymbolic, $petsc_library),
@@ -3136,7 +3136,7 @@ function MatQRFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::PetscM
 end 
 
 """
-	MatQRFactorNumeric(petsclib::PetscLibType,fact::PetscMat, mat::PetscMat, info::MatFactorInfo) 
+	MatQRFactorNumeric(petsclib::PetscLibType,fact::AbstractPetscMat, mat::AbstractPetscMat, info::MatFactorInfo) 
 Performs numeric QR factorization of a matrix.
 Call this routine after first calling `MatGetFactor()`, and `MatQRFactorSymbolic()`.
 
@@ -3154,9 +3154,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatQRFactorNumeric"))
 """
-function MatQRFactorNumeric(petsclib::PetscLibType, fact::PetscMat, mat::PetscMat, info::MatFactorInfo) end
+function MatQRFactorNumeric(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, info::MatFactorInfo) end
 
-@for_petsc function MatQRFactorNumeric(petsclib::$UnionPetscLib, fact::PetscMat, mat::PetscMat, info::MatFactorInfo )
+@for_petsc function MatQRFactorNumeric(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, info::MatFactorInfo )
 
     @chk ccall(
                (:MatQRFactorNumeric, $petsc_library),
@@ -3170,7 +3170,7 @@ function MatQRFactorNumeric(petsclib::PetscLibType, fact::PetscMat, mat::PetscMa
 end 
 
 """
-	MatSolve(petsclib::PetscLibType,mat::PetscMat, b::PetscVec, x::PetscVec) 
+	MatSolve(petsclib::PetscLibType,mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec) 
 Solves A x = b, given a factored matrix.
 
 Neighbor-wise Collective
@@ -3189,9 +3189,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSolve"))
 """
-function MatSolve(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, x::PetscVec) end
+function MatSolve(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec) end
 
-@for_petsc function MatSolve(petsclib::$UnionPetscLib, mat::PetscMat, b::PetscVec, x::PetscVec )
+@for_petsc function MatSolve(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec )
 
     @chk ccall(
                (:MatSolve, $petsc_library),
@@ -3205,7 +3205,7 @@ function MatSolve(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, x::PetscVe
 end 
 
 """
-	MatMatSolve(petsclib::PetscLibType,A::PetscMat, B::PetscMat, X::PetscMat) 
+	MatMatSolve(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, X::AbstractPetscMat) 
 Solves A X = B, given a factored matrix.
 
 Neighbor-wise Collective
@@ -3224,9 +3224,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatMatSolve"))
 """
-function MatMatSolve(petsclib::PetscLibType, A::PetscMat, B::PetscMat, X::PetscMat) end
+function MatMatSolve(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, X::AbstractPetscMat) end
 
-@for_petsc function MatMatSolve(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, X::PetscMat )
+@for_petsc function MatMatSolve(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, X::AbstractPetscMat )
 
     @chk ccall(
                (:MatMatSolve, $petsc_library),
@@ -3240,7 +3240,7 @@ function MatMatSolve(petsclib::PetscLibType, A::PetscMat, B::PetscMat, X::PetscM
 end 
 
 """
-	MatMatSolveTranspose(petsclib::PetscLibType,A::PetscMat, B::PetscMat, X::PetscMat) 
+	MatMatSolveTranspose(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, X::AbstractPetscMat) 
 Solves A^T X = B , given a factored matrix.
 
 Neighbor-wise Collective
@@ -3259,9 +3259,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatMatSolveTranspose"))
 """
-function MatMatSolveTranspose(petsclib::PetscLibType, A::PetscMat, B::PetscMat, X::PetscMat) end
+function MatMatSolveTranspose(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, X::AbstractPetscMat) end
 
-@for_petsc function MatMatSolveTranspose(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, X::PetscMat )
+@for_petsc function MatMatSolveTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, X::AbstractPetscMat )
 
     @chk ccall(
                (:MatMatSolveTranspose, $petsc_library),
@@ -3275,7 +3275,7 @@ function MatMatSolveTranspose(petsclib::PetscLibType, A::PetscMat, B::PetscMat, 
 end 
 
 """
-	MatMatTransposeSolve(petsclib::PetscLibType,A::PetscMat, Bt::PetscMat, X::PetscMat) 
+	MatMatTransposeSolve(petsclib::PetscLibType,A::AbstractPetscMat, Bt::AbstractPetscMat, X::AbstractPetscMat) 
 Solves A X = B^T, given a factored matrix.
 
 Neighbor-wise Collective
@@ -3294,9 +3294,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatMatTransposeSolve"))
 """
-function MatMatTransposeSolve(petsclib::PetscLibType, A::PetscMat, Bt::PetscMat, X::PetscMat) end
+function MatMatTransposeSolve(petsclib::PetscLibType, A::AbstractPetscMat, Bt::AbstractPetscMat, X::AbstractPetscMat) end
 
-@for_petsc function MatMatTransposeSolve(petsclib::$UnionPetscLib, A::PetscMat, Bt::PetscMat, X::PetscMat )
+@for_petsc function MatMatTransposeSolve(petsclib::$UnionPetscLib, A::AbstractPetscMat, Bt::AbstractPetscMat, X::AbstractPetscMat )
 
     @chk ccall(
                (:MatMatTransposeSolve, $petsc_library),
@@ -3310,7 +3310,7 @@ function MatMatTransposeSolve(petsclib::PetscLibType, A::PetscMat, Bt::PetscMat,
 end 
 
 """
-	MatForwardSolve(petsclib::PetscLibType,mat::PetscMat, b::PetscVec, x::PetscVec) 
+	MatForwardSolve(petsclib::PetscLibType,mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec) 
 Solves  L x = b , given a factored matrix, A = LU , or
 U^T*D^(1/2) x = b, given a factored symmetric matrix, A = U^T*D*U,
 
@@ -3330,9 +3330,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatForwardSolve"))
 """
-function MatForwardSolve(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, x::PetscVec) end
+function MatForwardSolve(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec) end
 
-@for_petsc function MatForwardSolve(petsclib::$UnionPetscLib, mat::PetscMat, b::PetscVec, x::PetscVec )
+@for_petsc function MatForwardSolve(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec )
 
     @chk ccall(
                (:MatForwardSolve, $petsc_library),
@@ -3346,7 +3346,7 @@ function MatForwardSolve(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, x::
 end 
 
 """
-	MatBackwardSolve(petsclib::PetscLibType,mat::PetscMat, b::PetscVec, x::PetscVec) 
+	MatBackwardSolve(petsclib::PetscLibType,mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec) 
 Solves U x = b, given a factored matrix, A = LU.
 D^(1/2) U x = b, given a factored symmetric matrix, A = U^T*D*U,
 
@@ -3366,9 +3366,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatBackwardSolve"))
 """
-function MatBackwardSolve(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, x::PetscVec) end
+function MatBackwardSolve(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec) end
 
-@for_petsc function MatBackwardSolve(petsclib::$UnionPetscLib, mat::PetscMat, b::PetscVec, x::PetscVec )
+@for_petsc function MatBackwardSolve(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec )
 
     @chk ccall(
                (:MatBackwardSolve, $petsc_library),
@@ -3382,7 +3382,7 @@ function MatBackwardSolve(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, x:
 end 
 
 """
-	MatSolveAdd(petsclib::PetscLibType,mat::PetscMat, b::PetscVec, y::PetscVec, x::PetscVec) 
+	MatSolveAdd(petsclib::PetscLibType,mat::AbstractPetscMat, b::AbstractPetscVec, y::AbstractPetscVec, x::AbstractPetscVec) 
 Computes x = y + A^{
 
 Neighbor-wise Collective
@@ -3402,9 +3402,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSolveAdd"))
 """
-function MatSolveAdd(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, y::PetscVec, x::PetscVec) end
+function MatSolveAdd(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, y::AbstractPetscVec, x::AbstractPetscVec) end
 
-@for_petsc function MatSolveAdd(petsclib::$UnionPetscLib, mat::PetscMat, b::PetscVec, y::PetscVec, x::PetscVec )
+@for_petsc function MatSolveAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, y::AbstractPetscVec, x::AbstractPetscVec )
 
     @chk ccall(
                (:MatSolveAdd, $petsc_library),
@@ -3418,7 +3418,7 @@ function MatSolveAdd(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, y::Pets
 end 
 
 """
-	MatSolveTranspose(petsclib::PetscLibType,mat::PetscMat, b::PetscVec, x::PetscVec) 
+	MatSolveTranspose(petsclib::PetscLibType,mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec) 
 Solves A^T x = b, given a factored matrix.
 
 Neighbor-wise Collective
@@ -3437,9 +3437,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSolveTranspose"))
 """
-function MatSolveTranspose(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, x::PetscVec) end
+function MatSolveTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec) end
 
-@for_petsc function MatSolveTranspose(petsclib::$UnionPetscLib, mat::PetscMat, b::PetscVec, x::PetscVec )
+@for_petsc function MatSolveTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec )
 
     @chk ccall(
                (:MatSolveTranspose, $petsc_library),
@@ -3453,7 +3453,7 @@ function MatSolveTranspose(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, x
 end 
 
 """
-	MatSolveTransposeAdd(petsclib::PetscLibType,mat::PetscMat, b::PetscVec, y::PetscVec, x::PetscVec) 
+	MatSolveTransposeAdd(petsclib::PetscLibType,mat::AbstractPetscMat, b::AbstractPetscVec, y::AbstractPetscVec, x::AbstractPetscVec) 
 Computes x = y + A^{
 factored matrix.
 
@@ -3474,9 +3474,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSolveTransposeAdd"))
 """
-function MatSolveTransposeAdd(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, y::PetscVec, x::PetscVec) end
+function MatSolveTransposeAdd(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, y::AbstractPetscVec, x::AbstractPetscVec) end
 
-@for_petsc function MatSolveTransposeAdd(petsclib::$UnionPetscLib, mat::PetscMat, b::PetscVec, y::PetscVec, x::PetscVec )
+@for_petsc function MatSolveTransposeAdd(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, y::AbstractPetscVec, x::AbstractPetscVec )
 
     @chk ccall(
                (:MatSolveTransposeAdd, $petsc_library),
@@ -3490,7 +3490,7 @@ function MatSolveTransposeAdd(petsclib::PetscLibType, mat::PetscMat, b::PetscVec
 end 
 
 """
-	MatSOR(petsclib::PetscLibType,mat::PetscMat, b::PetscVec, omega::PetscReal, flag::MatSORType, shift::PetscReal, its::PetscInt, lits::PetscInt, x::PetscVec) 
+	MatSOR(petsclib::PetscLibType,mat::AbstractPetscMat, b::AbstractPetscVec, omega::PetscReal, flag::MatSORType, shift::PetscReal, its::PetscInt, lits::PetscInt, x::AbstractPetscVec) 
 Computes relaxation (SOR, Gauss
 
 Neighbor-wise Collective
@@ -3527,9 +3527,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSOR"))
 """
-function MatSOR(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, omega::PetscReal, flag::MatSORType, shift::PetscReal, its::PetscInt, lits::PetscInt, x::PetscVec) end
+function MatSOR(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, omega::PetscReal, flag::MatSORType, shift::PetscReal, its::PetscInt, lits::PetscInt, x::AbstractPetscVec) end
 
-@for_petsc function MatSOR(petsclib::$UnionPetscLib, mat::PetscMat, b::PetscVec, omega::$PetscReal, flag::MatSORType, shift::$PetscReal, its::$PetscInt, lits::$PetscInt, x::PetscVec )
+@for_petsc function MatSOR(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, omega::$PetscReal, flag::MatSORType, shift::$PetscReal, its::$PetscInt, lits::$PetscInt, x::AbstractPetscVec )
 
     @chk ccall(
                (:MatSOR, $petsc_library),
@@ -3543,7 +3543,7 @@ function MatSOR(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, omega::Petsc
 end 
 
 """
-	MatCopy(petsclib::PetscLibType,A::PetscMat, B::PetscMat, str::MatStructure) 
+	MatCopy(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, str::MatStructure) 
 Copies a matrix to another matrix.
 
 Collective
@@ -3562,9 +3562,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCopy"))
 """
-function MatCopy(petsclib::PetscLibType, A::PetscMat, B::PetscMat, str::MatStructure) end
+function MatCopy(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, str::MatStructure) end
 
-@for_petsc function MatCopy(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, str::MatStructure )
+@for_petsc function MatCopy(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, str::MatStructure )
 
     @chk ccall(
                (:MatCopy, $petsc_library),
@@ -3578,7 +3578,7 @@ function MatCopy(petsclib::PetscLibType, A::PetscMat, B::PetscMat, str::MatStruc
 end 
 
 """
-	MatConvert(petsclib::PetscLibType,mat::PetscMat, newtype::MatType, reuse::MatReuse, M::PetscMat) 
+	MatConvert(petsclib::PetscLibType,mat::AbstractPetscMat, newtype::MatType, reuse::MatReuse, M::AbstractPetscMat) 
 Converts a matrix to another matrix, either of the same
 or different type.
 
@@ -3602,9 +3602,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatConvert"))
 """
-function MatConvert(petsclib::PetscLibType, mat::PetscMat, newtype::MatType, reuse::MatReuse, M::PetscMat) end
+function MatConvert(petsclib::PetscLibType, mat::AbstractPetscMat, newtype::MatType, reuse::MatReuse, M::AbstractPetscMat) end
 
-@for_petsc function MatConvert(petsclib::$UnionPetscLib, mat::PetscMat, newtype::MatType, reuse::MatReuse, M::PetscMat )
+@for_petsc function MatConvert(petsclib::$UnionPetscLib, mat::AbstractPetscMat, newtype::MatType, reuse::MatReuse, M::AbstractPetscMat )
 	M_ = Ref(M.ptr)
 
     @chk ccall(
@@ -3620,7 +3620,7 @@ function MatConvert(petsclib::PetscLibType, mat::PetscMat, newtype::MatType, reu
 end 
 
 """
-	type::MatSolverType = MatFactorGetSolverType(petsclib::PetscLibType,mat::PetscMat) 
+	type::MatSolverType = MatFactorGetSolverType(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Returns name of the package providing the factorization routines
 
 Not Collective
@@ -3638,9 +3638,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatFactorGetSolverType"))
 """
-function MatFactorGetSolverType(petsclib::PetscLibType, mat::PetscMat) end
+function MatFactorGetSolverType(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatFactorGetSolverType(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatFactorGetSolverType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	type_ = Ref{MatSolverType}()
 
     @chk ccall(
@@ -3691,7 +3691,7 @@ function MatSolverTypeRegister(petsclib::PetscLibType, package::MatSolverType, m
 end 
 
 """
-	flg::PetscBool = MatFactorGetCanUseOrdering(petsclib::PetscLibType,mat::PetscMat) 
+	flg::PetscBool = MatFactorGetCanUseOrdering(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Indicates if the factorization can use the ordering provided in `MatLUFactorSymbolic()`, `MatCholeskyFactorSymbolic()`
 
 Logically Collective
@@ -3709,9 +3709,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatFactorGetCanUseOrdering"))
 """
-function MatFactorGetCanUseOrdering(petsclib::PetscLibType, mat::PetscMat) end
+function MatFactorGetCanUseOrdering(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatFactorGetCanUseOrdering(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatFactorGetCanUseOrdering(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3727,7 +3727,7 @@ function MatFactorGetCanUseOrdering(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatFactorGetPreferredOrdering(petsclib::PetscLibType,mat::PetscMat, ftype::MatFactorType, otype::MatOrderingType) 
+	MatFactorGetPreferredOrdering(petsclib::PetscLibType,mat::AbstractPetscMat, ftype::MatFactorType, otype::MatOrderingType) 
 The preferred ordering for a particular matrix factor object
 
 Logically Collective
@@ -3746,9 +3746,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatFactorGetPreferredOrdering"))
 """
-function MatFactorGetPreferredOrdering(petsclib::PetscLibType, mat::PetscMat, ftype::MatFactorType, otype::MatOrderingType) end
+function MatFactorGetPreferredOrdering(petsclib::PetscLibType, mat::AbstractPetscMat, ftype::MatFactorType, otype::MatOrderingType) end
 
-@for_petsc function MatFactorGetPreferredOrdering(petsclib::$UnionPetscLib, mat::PetscMat, ftype::MatFactorType, otype::MatOrderingType )
+@for_petsc function MatFactorGetPreferredOrdering(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ftype::MatFactorType, otype::MatOrderingType )
 
     @chk ccall(
                (:MatFactorGetPreferredOrdering, $petsc_library),
@@ -3762,7 +3762,7 @@ function MatFactorGetPreferredOrdering(petsclib::PetscLibType, mat::PetscMat, ft
 end 
 
 """
-	MatGetFactor(petsclib::PetscLibType,mat::PetscMat, type::MatSolverType, ftype::MatFactorType, f::PetscMat) 
+	MatGetFactor(petsclib::PetscLibType,mat::AbstractPetscMat, type::MatSolverType, ftype::MatFactorType, f::AbstractPetscMat) 
 Returns a matrix suitable to calls to MatXXFactorSymbolic,Numeric()
 
 Collective
@@ -3790,9 +3790,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetFactor"))
 """
-function MatGetFactor(petsclib::PetscLibType, mat::PetscMat, type::MatSolverType, ftype::MatFactorType, f::PetscMat) end
+function MatGetFactor(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatSolverType, ftype::MatFactorType, f::AbstractPetscMat) end
 
-@for_petsc function MatGetFactor(petsclib::$UnionPetscLib, mat::PetscMat, type::MatSolverType, ftype::MatFactorType, f::PetscMat )
+@for_petsc function MatGetFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatSolverType, ftype::MatFactorType, f::AbstractPetscMat )
 	f_ = Ref(f.ptr)
 
     @chk ccall(
@@ -3808,7 +3808,7 @@ function MatGetFactor(petsclib::PetscLibType, mat::PetscMat, type::MatSolverType
 end 
 
 """
-	flg::PetscBool = MatGetFactorAvailable(petsclib::PetscLibType,mat::PetscMat, type::MatSolverType, ftype::MatFactorType) 
+	flg::PetscBool = MatGetFactorAvailable(petsclib::PetscLibType,mat::AbstractPetscMat, type::MatSolverType, ftype::MatFactorType) 
 Returns a flag if matrix supports particular type and factor type
 
 Not Collective
@@ -3829,9 +3829,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetFactorAvailable"))
 """
-function MatGetFactorAvailable(petsclib::PetscLibType, mat::PetscMat, type::MatSolverType, ftype::MatFactorType) end
+function MatGetFactorAvailable(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatSolverType, ftype::MatFactorType) end
 
-@for_petsc function MatGetFactorAvailable(petsclib::$UnionPetscLib, mat::PetscMat, type::MatSolverType, ftype::MatFactorType )
+@for_petsc function MatGetFactorAvailable(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatSolverType, ftype::MatFactorType )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3847,7 +3847,7 @@ function MatGetFactorAvailable(petsclib::PetscLibType, mat::PetscMat, type::MatS
 end 
 
 """
-	MatDuplicate(petsclib::PetscLibType,mat::PetscMat, op::MatDuplicateOption, M::PetscMat) 
+	MatDuplicate(petsclib::PetscLibType,mat::AbstractPetscMat, op::MatDuplicateOption, M::AbstractPetscMat) 
 Duplicates a matrix including the non
 
 Collective
@@ -3867,9 +3867,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDuplicate"))
 """
-function MatDuplicate(petsclib::PetscLibType, mat::PetscMat, op::MatDuplicateOption, M::PetscMat) end
+function MatDuplicate(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatDuplicateOption, M::AbstractPetscMat) end
 
-@for_petsc function MatDuplicate(petsclib::$UnionPetscLib, mat::PetscMat, op::MatDuplicateOption, M::PetscMat )
+@for_petsc function MatDuplicate(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatDuplicateOption, M::AbstractPetscMat )
 	M_ = Ref(M.ptr)
 
     @chk ccall(
@@ -3885,7 +3885,7 @@ function MatDuplicate(petsclib::PetscLibType, mat::PetscMat, op::MatDuplicateOpt
 end 
 
 """
-	MatGetDiagonal(petsclib::PetscLibType,mat::PetscMat, v::PetscVec) 
+	MatGetDiagonal(petsclib::PetscLibType,mat::AbstractPetscMat, v::AbstractPetscVec) 
 Gets the diagonal of a matrix as a `Vec`
 
 Logically Collective
@@ -3903,9 +3903,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetDiagonal"))
 """
-function MatGetDiagonal(petsclib::PetscLibType, mat::PetscMat, v::PetscVec) end
+function MatGetDiagonal(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec) end
 
-@for_petsc function MatGetDiagonal(petsclib::$UnionPetscLib, mat::PetscMat, v::PetscVec )
+@for_petsc function MatGetDiagonal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec )
 
     @chk ccall(
                (:MatGetDiagonal, $petsc_library),
@@ -3919,7 +3919,7 @@ function MatGetDiagonal(petsclib::PetscLibType, mat::PetscMat, v::PetscVec) end
 end 
 
 """
-	MatGetRowMin(petsclib::PetscLibType,mat::PetscMat, v::PetscVec, idx::Vector{PetscInt}) 
+	MatGetRowMin(petsclib::PetscLibType,mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{PetscInt}) 
 Gets the minimum value (of the real part) of each
 row of the matrix
 
@@ -3940,9 +3940,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetRowMin"))
 """
-function MatGetRowMin(petsclib::PetscLibType, mat::PetscMat, v::PetscVec, idx::Vector{PetscInt}) end
+function MatGetRowMin(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{PetscInt}) end
 
-@for_petsc function MatGetRowMin(petsclib::$UnionPetscLib, mat::PetscMat, v::PetscVec, idx::Vector{$PetscInt} )
+@for_petsc function MatGetRowMin(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatGetRowMin, $petsc_library),
@@ -3956,7 +3956,7 @@ function MatGetRowMin(petsclib::PetscLibType, mat::PetscMat, v::PetscVec, idx::V
 end 
 
 """
-	MatGetRowMinAbs(petsclib::PetscLibType,mat::PetscMat, v::PetscVec, idx::Vector{PetscInt}) 
+	MatGetRowMinAbs(petsclib::PetscLibType,mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{PetscInt}) 
 Gets the minimum value (in absolute value) of each
 row of the matrix
 
@@ -3976,9 +3976,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetRowMinAbs"))
 """
-function MatGetRowMinAbs(petsclib::PetscLibType, mat::PetscMat, v::PetscVec, idx::Vector{PetscInt}) end
+function MatGetRowMinAbs(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{PetscInt}) end
 
-@for_petsc function MatGetRowMinAbs(petsclib::$UnionPetscLib, mat::PetscMat, v::PetscVec, idx::Vector{$PetscInt} )
+@for_petsc function MatGetRowMinAbs(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatGetRowMinAbs, $petsc_library),
@@ -3992,7 +3992,7 @@ function MatGetRowMinAbs(petsclib::PetscLibType, mat::PetscMat, v::PetscVec, idx
 end 
 
 """
-	MatGetRowMax(petsclib::PetscLibType,mat::PetscMat, v::PetscVec, idx::Vector{PetscInt}) 
+	MatGetRowMax(petsclib::PetscLibType,mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{PetscInt}) 
 Gets the maximum value (of the real part) of each
 row of the matrix
 
@@ -4012,9 +4012,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetRowMax"))
 """
-function MatGetRowMax(petsclib::PetscLibType, mat::PetscMat, v::PetscVec, idx::Vector{PetscInt}) end
+function MatGetRowMax(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{PetscInt}) end
 
-@for_petsc function MatGetRowMax(petsclib::$UnionPetscLib, mat::PetscMat, v::PetscVec, idx::Vector{$PetscInt} )
+@for_petsc function MatGetRowMax(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatGetRowMax, $petsc_library),
@@ -4028,7 +4028,7 @@ function MatGetRowMax(petsclib::PetscLibType, mat::PetscMat, v::PetscVec, idx::V
 end 
 
 """
-	MatGetRowMaxAbs(petsclib::PetscLibType,mat::PetscMat, v::PetscVec, idx::Vector{PetscInt}) 
+	MatGetRowMaxAbs(petsclib::PetscLibType,mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{PetscInt}) 
 Gets the maximum value (in absolute value) of each
 row of the matrix
 
@@ -4048,9 +4048,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetRowMaxAbs"))
 """
-function MatGetRowMaxAbs(petsclib::PetscLibType, mat::PetscMat, v::PetscVec, idx::Vector{PetscInt}) end
+function MatGetRowMaxAbs(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{PetscInt}) end
 
-@for_petsc function MatGetRowMaxAbs(petsclib::$UnionPetscLib, mat::PetscMat, v::PetscVec, idx::Vector{$PetscInt} )
+@for_petsc function MatGetRowMaxAbs(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec, idx::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatGetRowMaxAbs, $petsc_library),
@@ -4064,7 +4064,7 @@ function MatGetRowMaxAbs(petsclib::PetscLibType, mat::PetscMat, v::PetscVec, idx
 end 
 
 """
-	MatGetRowSumAbs(petsclib::PetscLibType,mat::PetscMat, v::PetscVec) 
+	MatGetRowSumAbs(petsclib::PetscLibType,mat::AbstractPetscMat, v::AbstractPetscVec) 
 Gets the sum value (in absolute value) of each row of the matrix
 
 Logically Collective
@@ -4084,9 +4084,9 @@ This code is only implemented for a couple of matrix formats.
 # External Links
 $(_doc_external("Mat/MatGetRowSumAbs"))
 """
-function MatGetRowSumAbs(petsclib::PetscLibType, mat::PetscMat, v::PetscVec) end
+function MatGetRowSumAbs(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec) end
 
-@for_petsc function MatGetRowSumAbs(petsclib::$UnionPetscLib, mat::PetscMat, v::PetscVec )
+@for_petsc function MatGetRowSumAbs(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec )
 
     @chk ccall(
                (:MatGetRowSumAbs, $petsc_library),
@@ -4100,7 +4100,7 @@ function MatGetRowSumAbs(petsclib::PetscLibType, mat::PetscMat, v::PetscVec) end
 end 
 
 """
-	MatGetRowSum(petsclib::PetscLibType,mat::PetscMat, v::PetscVec) 
+	MatGetRowSum(petsclib::PetscLibType,mat::AbstractPetscMat, v::AbstractPetscVec) 
 Gets the sum of each row of the matrix
 
 Logically or Neighborhood Collective
@@ -4118,9 +4118,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetRowSum"))
 """
-function MatGetRowSum(petsclib::PetscLibType, mat::PetscMat, v::PetscVec) end
+function MatGetRowSum(petsclib::PetscLibType, mat::AbstractPetscMat, v::AbstractPetscVec) end
 
-@for_petsc function MatGetRowSum(petsclib::$UnionPetscLib, mat::PetscMat, v::PetscVec )
+@for_petsc function MatGetRowSum(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::AbstractPetscVec )
 
     @chk ccall(
                (:MatGetRowSum, $petsc_library),
@@ -4134,7 +4134,7 @@ function MatGetRowSum(petsclib::PetscLibType, mat::PetscMat, v::PetscVec) end
 end 
 
 """
-	MatTransposeSetPrecursor(petsclib::PetscLibType,mat::PetscMat, B::PetscMat) 
+	MatTransposeSetPrecursor(petsclib::PetscLibType,mat::AbstractPetscMat, B::AbstractPetscMat) 
 Set the matrix from which the second matrix will receive numerical transpose data with a call to `MatTranspose`(A,`MAT_REUSE_MATRIX`,&B)
 when B was not obtained with `MatTranspose`(A,`MAT_INITIAL_MATRIX`,&B)
 
@@ -4153,9 +4153,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatTransposeSetPrecursor"))
 """
-function MatTransposeSetPrecursor(petsclib::PetscLibType, mat::PetscMat, B::PetscMat) end
+function MatTransposeSetPrecursor(petsclib::PetscLibType, mat::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function MatTransposeSetPrecursor(petsclib::$UnionPetscLib, mat::PetscMat, B::PetscMat )
+@for_petsc function MatTransposeSetPrecursor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, B::AbstractPetscMat )
 
     @chk ccall(
                (:MatTransposeSetPrecursor, $petsc_library),
@@ -4169,7 +4169,7 @@ function MatTransposeSetPrecursor(petsclib::PetscLibType, mat::PetscMat, B::Pets
 end 
 
 """
-	MatTranspose(petsclib::PetscLibType,mat::PetscMat, reuse::MatReuse, B::PetscMat) 
+	MatTranspose(petsclib::PetscLibType,mat::AbstractPetscMat, reuse::MatReuse, B::AbstractPetscMat) 
 Computes the transpose of a matrix, either in
 
 Collective
@@ -4189,9 +4189,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatTranspose"))
 """
-function MatTranspose(petsclib::PetscLibType, mat::PetscMat, reuse::MatReuse, B::PetscMat) end
+function MatTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, reuse::MatReuse, B::AbstractPetscMat) end
 
-@for_petsc function MatTranspose(petsclib::$UnionPetscLib, mat::PetscMat, reuse::MatReuse, B::PetscMat )
+@for_petsc function MatTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, reuse::MatReuse, B::AbstractPetscMat )
 	B_ = Ref(B.ptr)
 
     @chk ccall(
@@ -4207,7 +4207,7 @@ function MatTranspose(petsclib::PetscLibType, mat::PetscMat, reuse::MatReuse, B:
 end 
 
 """
-	MatTransposeSymbolic(petsclib::PetscLibType,A::PetscMat, B::PetscMat) 
+	MatTransposeSymbolic(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat) 
 Computes the symbolic part of the transpose of a matrix.
 
 Collective
@@ -4226,9 +4226,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatTransposeSymbolic"))
 """
-function MatTransposeSymbolic(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
+function MatTransposeSymbolic(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function MatTransposeSymbolic(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat )
+@for_petsc function MatTransposeSymbolic(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
 	B_ = Ref(B.ptr)
 
     @chk ccall(
@@ -4244,7 +4244,7 @@ function MatTransposeSymbolic(petsclib::PetscLibType, A::PetscMat, B::PetscMat) 
 end 
 
 """
-	flg::PetscBool = MatIsTranspose(petsclib::PetscLibType,A::PetscMat, B::PetscMat, tol::PetscReal) 
+	flg::PetscBool = MatIsTranspose(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, tol::PetscReal) 
 Test whether a matrix is another one's transpose,
 or its own, in which case it tests symmetry.
 
@@ -4265,9 +4265,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatIsTranspose"))
 """
-function MatIsTranspose(petsclib::PetscLibType, A::PetscMat, B::PetscMat, tol::PetscReal) end
+function MatIsTranspose(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, tol::PetscReal) end
 
-@for_petsc function MatIsTranspose(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, tol::$PetscReal )
+@for_petsc function MatIsTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, tol::$PetscReal )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4283,7 +4283,7 @@ function MatIsTranspose(petsclib::PetscLibType, A::PetscMat, B::PetscMat, tol::P
 end 
 
 """
-	MatHermitianTranspose(petsclib::PetscLibType,mat::PetscMat, reuse::MatReuse, B::PetscMat) 
+	MatHermitianTranspose(petsclib::PetscLibType,mat::AbstractPetscMat, reuse::MatReuse, B::AbstractPetscMat) 
 Computes an in
 
 Collective
@@ -4302,9 +4302,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatHermitianTranspose"))
 """
-function MatHermitianTranspose(petsclib::PetscLibType, mat::PetscMat, reuse::MatReuse, B::PetscMat) end
+function MatHermitianTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, reuse::MatReuse, B::AbstractPetscMat) end
 
-@for_petsc function MatHermitianTranspose(petsclib::$UnionPetscLib, mat::PetscMat, reuse::MatReuse, B::PetscMat )
+@for_petsc function MatHermitianTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, reuse::MatReuse, B::AbstractPetscMat )
 	B_ = Ref(B.ptr)
 
     @chk ccall(
@@ -4320,7 +4320,7 @@ function MatHermitianTranspose(petsclib::PetscLibType, mat::PetscMat, reuse::Mat
 end 
 
 """
-	flg::PetscBool = MatIsHermitianTranspose(petsclib::PetscLibType,A::PetscMat, B::PetscMat, tol::PetscReal) 
+	flg::PetscBool = MatIsHermitianTranspose(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, tol::PetscReal) 
 Test whether a matrix is another one's Hermitian transpose,
 
 Collective
@@ -4340,9 +4340,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatIsHermitianTranspose"))
 """
-function MatIsHermitianTranspose(petsclib::PetscLibType, A::PetscMat, B::PetscMat, tol::PetscReal) end
+function MatIsHermitianTranspose(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, tol::PetscReal) end
 
-@for_petsc function MatIsHermitianTranspose(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, tol::$PetscReal )
+@for_petsc function MatIsHermitianTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, tol::$PetscReal )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4358,7 +4358,7 @@ function MatIsHermitianTranspose(petsclib::PetscLibType, A::PetscMat, B::PetscMa
 end 
 
 """
-	MatPermute(petsclib::PetscLibType,mat::PetscMat, row::IS, col::IS, B::PetscMat) 
+	MatPermute(petsclib::PetscLibType,mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, B::AbstractPetscMat) 
 Creates a new matrix with rows and columns permuted from the
 original.
 
@@ -4379,9 +4379,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatPermute"))
 """
-function MatPermute(petsclib::PetscLibType, mat::PetscMat, row::IS, col::IS, B::PetscMat) end
+function MatPermute(petsclib::PetscLibType, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, B::AbstractPetscMat) end
 
-@for_petsc function MatPermute(petsclib::$UnionPetscLib, mat::PetscMat, row::IS, col::IS, B::PetscMat )
+@for_petsc function MatPermute(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, B::AbstractPetscMat )
 	B_ = Ref(B.ptr)
 
     @chk ccall(
@@ -4397,7 +4397,7 @@ function MatPermute(petsclib::PetscLibType, mat::PetscMat, row::IS, col::IS, B::
 end 
 
 """
-	flg::PetscBool = MatEqual(petsclib::PetscLibType,A::PetscMat, B::PetscMat) 
+	flg::PetscBool = MatEqual(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat) 
 Compares two matrices.
 
 Collective
@@ -4416,9 +4416,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatEqual"))
 """
-function MatEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
+function MatEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function MatEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat )
+@for_petsc function MatEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4434,7 +4434,7 @@ function MatEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
 end 
 
 """
-	MatDiagonalScale(petsclib::PetscLibType,mat::PetscMat, l::PetscVec, r::PetscVec) 
+	MatDiagonalScale(petsclib::PetscLibType,mat::AbstractPetscMat, l::AbstractPetscVec, r::AbstractPetscVec) 
 Scales a matrix on the left and right by diagonal
 matrices that are stored as vectors.  Either of the two scaling
 matrices can be `NULL`.
@@ -4453,9 +4453,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDiagonalScale"))
 """
-function MatDiagonalScale(petsclib::PetscLibType, mat::PetscMat, l::Union{Ptr,PetscVec}, r::Union{Ptr,PetscVec}) end
+function MatDiagonalScale(petsclib::PetscLibType, mat::AbstractPetscMat, l::Union{Ptr,PetscVec}, r::Union{Ptr,PetscVec}) end
 
-@for_petsc function MatDiagonalScale(petsclib::$UnionPetscLib, mat::PetscMat, l::Union{Ptr,PetscVec}, r::Union{Ptr,PetscVec})
+@for_petsc function MatDiagonalScale(petsclib::$UnionPetscLib, mat::AbstractPetscMat, l::Union{Ptr,PetscVec}, r::Union{Ptr,PetscVec})
 
     @chk ccall(
                (:MatDiagonalScale, $petsc_library),
@@ -4469,7 +4469,7 @@ function MatDiagonalScale(petsclib::PetscLibType, mat::PetscMat, l::Union{Ptr,Pe
 end 
 
 """
-	MatScale(petsclib::PetscLibType,mat::PetscMat, a::PetscScalar) 
+	MatScale(petsclib::PetscLibType,mat::AbstractPetscMat, a::PetscScalar) 
 Scales all elements of a matrix by a given number.
 
 Logically Collective
@@ -4485,9 +4485,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatScale"))
 """
-function MatScale(petsclib::PetscLibType, mat::PetscMat, a::PetscScalar) end
+function MatScale(petsclib::PetscLibType, mat::AbstractPetscMat, a::PetscScalar) end
 
-@for_petsc function MatScale(petsclib::$UnionPetscLib, mat::PetscMat, a::$PetscScalar )
+@for_petsc function MatScale(petsclib::$UnionPetscLib, mat::AbstractPetscMat, a::$PetscScalar )
 
     @chk ccall(
                (:MatScale, $petsc_library),
@@ -4501,7 +4501,7 @@ function MatScale(petsclib::PetscLibType, mat::PetscMat, a::PetscScalar) end
 end 
 
 """
-	nrm::PetscReal = MatNorm(petsclib::PetscLibType,mat::PetscMat, type::NormType) 
+	nrm::PetscReal = MatNorm(petsclib::PetscLibType,mat::AbstractPetscMat, type::NormType) 
 Calculates various norms of a matrix.
 
 Collective
@@ -4520,9 +4520,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatNorm"))
 """
-function MatNorm(petsclib::PetscLibType, mat::PetscMat, type::NormType) end
+function MatNorm(petsclib::PetscLibType, mat::AbstractPetscMat, type::NormType) end
 
-@for_petsc function MatNorm(petsclib::$UnionPetscLib, mat::PetscMat, type::NormType )
+@for_petsc function MatNorm(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::NormType )
 	nrm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -4538,7 +4538,7 @@ function MatNorm(petsclib::PetscLibType, mat::PetscMat, type::NormType) end
 end 
 
 """
-	MatAssemblyBegin(petsclib::PetscLibType,mat::PetscMat, type::MatAssemblyType) 
+	MatAssemblyBegin(petsclib::PetscLibType,mat::AbstractPetscMat, type::MatAssemblyType) 
 Begins assembling the matrix.  This routine should
 be called after completing all calls to `MatSetValues()`.
 
@@ -4571,7 +4571,7 @@ function MatAssemblyBegin(petsclib::PetscLibType, mat::AbstractPetscMat, type::M
 end 
 
 """
-	assembled::PetscBool = MatAssembled(petsclib::PetscLibType,mat::PetscMat) 
+	assembled::PetscBool = MatAssembled(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Indicates if a matrix has been assembled and is ready for
 use; for example, in matrix-vector product.
 
@@ -4590,9 +4590,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatAssembled"))
 """
-function MatAssembled(petsclib::PetscLibType, mat::PetscMat) end
+function MatAssembled(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatAssembled(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatAssembled(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	assembled_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4608,7 +4608,7 @@ function MatAssembled(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatAssemblyEnd(petsclib::PetscLibType,mat::PetscMat, type::MatAssemblyType) 
+	MatAssemblyEnd(petsclib::PetscLibType,mat::AbstractPetscMat, type::MatAssemblyType) 
 Completes assembling the matrix.  This routine should
 be called after `MatAssemblyBegin()`.
 
@@ -4654,7 +4654,7 @@ function MatAssemblyEnd(petsclib::PetscLibType, mat::AbstractPetscMat, type::Mat
 end 
 
 """
-	MatSetOption(petsclib::PetscLibType,mat::PetscMat, op::MatOption, flg::PetscBool) 
+	MatSetOption(petsclib::PetscLibType,mat::AbstractPetscMat, op::MatOption, flg::PetscBool) 
 Sets a parameter option for a matrix. Some options
 may be specific to certain storage formats.  Some options
 determine how values will be inserted (or added). Sorted,
@@ -4709,9 +4709,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetOption"))
 """
-function MatSetOption(petsclib::PetscLibType, mat::PetscMat, op::MatOption, flg::PetscBool) end
+function MatSetOption(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOption, flg::PetscBool) end
 
-@for_petsc function MatSetOption(petsclib::$UnionPetscLib, mat::PetscMat, op::MatOption, flg::PetscBool )
+@for_petsc function MatSetOption(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOption, flg::PetscBool )
 
     @chk ccall(
                (:MatSetOption, $petsc_library),
@@ -4725,7 +4725,7 @@ function MatSetOption(petsclib::PetscLibType, mat::PetscMat, op::MatOption, flg:
 end 
 
 """
-	flg::PetscBool = MatGetOption(petsclib::PetscLibType,mat::PetscMat, op::MatOption) 
+	flg::PetscBool = MatGetOption(petsclib::PetscLibType,mat::AbstractPetscMat, op::MatOption) 
 Gets a parameter option that has been set for a matrix.
 
 Logically Collective
@@ -4745,9 +4745,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetOption"))
 """
-function MatGetOption(petsclib::PetscLibType, mat::PetscMat, op::MatOption) end
+function MatGetOption(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOption) end
 
-@for_petsc function MatGetOption(petsclib::$UnionPetscLib, mat::PetscMat, op::MatOption )
+@for_petsc function MatGetOption(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOption )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4763,7 +4763,7 @@ function MatGetOption(petsclib::PetscLibType, mat::PetscMat, op::MatOption) end
 end 
 
 """
-	MatZeroEntries(petsclib::PetscLibType,mat::PetscMat) 
+	MatZeroEntries(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Zeros all entries of a matrix.  For sparse matrices
 this routine retains the old nonzero structure.
 
@@ -4779,9 +4779,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatZeroEntries"))
 """
-function MatZeroEntries(petsclib::PetscLibType, mat::PetscMat) end
+function MatZeroEntries(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatZeroEntries(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatZeroEntries(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatZeroEntries, $petsc_library),
@@ -4795,7 +4795,7 @@ function MatZeroEntries(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatZeroRowsColumns(petsclib::PetscLibType,mat::PetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::PetscVec, b::PetscVec) 
+	MatZeroRowsColumns(petsclib::PetscLibType,mat::AbstractPetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) 
 Zeros all entries (except possibly the main diagonal)
 of a set of rows and columns of a matrix.
 
@@ -4817,9 +4817,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatZeroRowsColumns"))
 """
-function MatZeroRowsColumns(petsclib::PetscLibType, mat::PetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::PetscVec, b::PetscVec) end
+function MatZeroRowsColumns(petsclib::PetscLibType, mat::AbstractPetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) end
 
-@for_petsc function MatZeroRowsColumns(petsclib::$UnionPetscLib, mat::PetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::PetscVec, b::PetscVec )
+@for_petsc function MatZeroRowsColumns(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
 
     @chk ccall(
                (:MatZeroRowsColumns, $petsc_library),
@@ -4833,7 +4833,7 @@ function MatZeroRowsColumns(petsclib::PetscLibType, mat::PetscMat, numRows::Pets
 end 
 
 """
-	MatZeroRowsColumnsIS(petsclib::PetscLibType,mat::PetscMat, is::IS, diag::PetscScalar, x::PetscVec, b::PetscVec) 
+	MatZeroRowsColumnsIS(petsclib::PetscLibType,mat::AbstractPetscMat, is::AbstractIS, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) 
 Zeros all entries (except possibly the main diagonal)
 of a set of rows and columns of a matrix.
 
@@ -4854,9 +4854,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatZeroRowsColumnsIS"))
 """
-function MatZeroRowsColumnsIS(petsclib::PetscLibType, mat::PetscMat, is::IS, diag::PetscScalar, x::PetscVec, b::PetscVec) end
+function MatZeroRowsColumnsIS(petsclib::PetscLibType, mat::AbstractPetscMat, is::AbstractIS, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) end
 
-@for_petsc function MatZeroRowsColumnsIS(petsclib::$UnionPetscLib, mat::PetscMat, is::IS, diag::$PetscScalar, x::PetscVec, b::PetscVec )
+@for_petsc function MatZeroRowsColumnsIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
 
     @chk ccall(
                (:MatZeroRowsColumnsIS, $petsc_library),
@@ -4870,7 +4870,7 @@ function MatZeroRowsColumnsIS(petsclib::PetscLibType, mat::PetscMat, is::IS, dia
 end 
 
 """
-	MatZeroRows(petsclib::PetscLibType,mat::PetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::PetscVec, b::PetscVec) 
+	MatZeroRows(petsclib::PetscLibType,mat::AbstractPetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) 
 Zeros all entries (except possibly the main diagonal)
 of a set of rows of a matrix.
 
@@ -4892,9 +4892,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatZeroRows"))
 """
-function MatZeroRows(petsclib::PetscLibType, mat::PetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::PetscVec, b::PetscVec) end
+function MatZeroRows(petsclib::PetscLibType, mat::AbstractPetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) end
 
-@for_petsc function MatZeroRows(petsclib::$UnionPetscLib, mat::PetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::PetscVec, b::PetscVec )
+@for_petsc function MatZeroRows(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
 
     @chk ccall(
                (:MatZeroRows, $petsc_library),
@@ -4908,7 +4908,7 @@ function MatZeroRows(petsclib::PetscLibType, mat::PetscMat, numRows::PetscInt, r
 end 
 
 """
-	MatZeroRowsIS(petsclib::PetscLibType,mat::PetscMat, is::IS, diag::PetscScalar, x::PetscVec, b::PetscVec) 
+	MatZeroRowsIS(petsclib::PetscLibType,mat::AbstractPetscMat, is::AbstractIS, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) 
 Zeros all entries (except possibly the main diagonal)
 of a set of rows of a matrix indicated by an `IS`
 
@@ -4929,9 +4929,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatZeroRowsIS"))
 """
-function MatZeroRowsIS(petsclib::PetscLibType, mat::PetscMat, is::Union{Ptr,IS}, diag::PetscScalar, x::PetscVec, b::PetscVec) end
+function MatZeroRowsIS(petsclib::PetscLibType, mat::AbstractPetscMat, is::Union{Ptr,IS}, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) end
 
-@for_petsc function MatZeroRowsIS(petsclib::$UnionPetscLib, mat::PetscMat, is::Union{Ptr,IS}, diag::$PetscScalar, x::PetscVec, b::PetscVec )
+@for_petsc function MatZeroRowsIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::Union{Ptr,IS}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
 
     @chk ccall(
                (:MatZeroRowsIS, $petsc_library),
@@ -4945,7 +4945,7 @@ function MatZeroRowsIS(petsclib::PetscLibType, mat::PetscMat, is::Union{Ptr,IS},
 end 
 
 """
-	MatZeroRowsStencil(petsclib::PetscLibType,mat::PetscMat, numRows::PetscInt, rows::Vector{MatStencil}, diag::PetscScalar, x::PetscVec, b::PetscVec) 
+	MatZeroRowsStencil(petsclib::PetscLibType,mat::AbstractPetscMat, numRows::PetscInt, rows::Vector{MatStencil}, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) 
 Zeros all entries (except possibly the main diagonal)
 of a set of rows of a matrix indicated by a `MatStencil`. These rows must be local to the process.
 
@@ -4967,9 +4967,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatZeroRowsStencil"))
 """
-function MatZeroRowsStencil(petsclib::PetscLibType, mat::PetscMat, numRows::PetscInt, rows::Vector{MatStencil}, diag::PetscScalar, x::PetscVec, b::PetscVec) end
+function MatZeroRowsStencil(petsclib::PetscLibType, mat::AbstractPetscMat, numRows::PetscInt, rows::Vector{MatStencil}, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) end
 
-@for_petsc function MatZeroRowsStencil(petsclib::$UnionPetscLib, mat::PetscMat, numRows::$PetscInt, rows::Vector{MatStencil}, diag::$PetscScalar, x::PetscVec, b::PetscVec )
+@for_petsc function MatZeroRowsStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{MatStencil}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
 
     @chk ccall(
                (:MatZeroRowsStencil, $petsc_library),
@@ -4983,7 +4983,7 @@ function MatZeroRowsStencil(petsclib::PetscLibType, mat::PetscMat, numRows::Pets
 end 
 
 """
-	MatZeroRowsColumnsStencil(petsclib::PetscLibType,mat::PetscMat, numRows::PetscInt, rows::Vector{MatStencil}, diag::PetscScalar, x::PetscVec, b::PetscVec) 
+	MatZeroRowsColumnsStencil(petsclib::PetscLibType,mat::AbstractPetscMat, numRows::PetscInt, rows::Vector{MatStencil}, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) 
 Zeros all row and column entries (except possibly the main diagonal)
 of a set of rows and columns of a matrix.
 
@@ -5005,9 +5005,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatZeroRowsColumnsStencil"))
 """
-function MatZeroRowsColumnsStencil(petsclib::PetscLibType, mat::PetscMat, numRows::PetscInt, rows::Vector{MatStencil}, diag::PetscScalar, x::PetscVec, b::PetscVec) end
+function MatZeroRowsColumnsStencil(petsclib::PetscLibType, mat::AbstractPetscMat, numRows::PetscInt, rows::Vector{MatStencil}, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) end
 
-@for_petsc function MatZeroRowsColumnsStencil(petsclib::$UnionPetscLib, mat::PetscMat, numRows::$PetscInt, rows::Vector{MatStencil}, diag::$PetscScalar, x::PetscVec, b::PetscVec )
+@for_petsc function MatZeroRowsColumnsStencil(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{MatStencil}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
 
     @chk ccall(
                (:MatZeroRowsColumnsStencil, $petsc_library),
@@ -5021,7 +5021,7 @@ function MatZeroRowsColumnsStencil(petsclib::PetscLibType, mat::PetscMat, numRow
 end 
 
 """
-	MatZeroRowsLocal(petsclib::PetscLibType,mat::PetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::PetscVec, b::PetscVec) 
+	MatZeroRowsLocal(petsclib::PetscLibType,mat::AbstractPetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) 
 Zeros all entries (except possibly the main diagonal)
 of a set of rows of a matrix; using local numbering of rows.
 
@@ -5043,9 +5043,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatZeroRowsLocal"))
 """
-function MatZeroRowsLocal(petsclib::PetscLibType, mat::PetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::PetscVec, b::PetscVec) end
+function MatZeroRowsLocal(petsclib::PetscLibType, mat::AbstractPetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) end
 
-@for_petsc function MatZeroRowsLocal(petsclib::$UnionPetscLib, mat::PetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::PetscVec, b::PetscVec )
+@for_petsc function MatZeroRowsLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
 
     @chk ccall(
                (:MatZeroRowsLocal, $petsc_library),
@@ -5059,7 +5059,7 @@ function MatZeroRowsLocal(petsclib::PetscLibType, mat::PetscMat, numRows::PetscI
 end 
 
 """
-	MatZeroRowsLocalIS(petsclib::PetscLibType,mat::PetscMat, is::IS, diag::PetscScalar, x::PetscVec, b::PetscVec) 
+	MatZeroRowsLocalIS(petsclib::PetscLibType,mat::AbstractPetscMat, is::AbstractIS, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) 
 Zeros all entries (except possibly the main diagonal)
 of a set of rows of a matrix; using local numbering of rows.
 
@@ -5080,9 +5080,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatZeroRowsLocalIS"))
 """
-function MatZeroRowsLocalIS(petsclib::PetscLibType, mat::PetscMat, is::IS, diag::PetscScalar, x::PetscVec, b::PetscVec) end
+function MatZeroRowsLocalIS(petsclib::PetscLibType, mat::AbstractPetscMat, is::AbstractIS, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) end
 
-@for_petsc function MatZeroRowsLocalIS(petsclib::$UnionPetscLib, mat::PetscMat, is::IS, diag::$PetscScalar, x::PetscVec, b::PetscVec )
+@for_petsc function MatZeroRowsLocalIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
 
     @chk ccall(
                (:MatZeroRowsLocalIS, $petsc_library),
@@ -5096,7 +5096,7 @@ function MatZeroRowsLocalIS(petsclib::PetscLibType, mat::PetscMat, is::IS, diag:
 end 
 
 """
-	MatZeroRowsColumnsLocal(petsclib::PetscLibType,mat::PetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::PetscVec, b::PetscVec) 
+	MatZeroRowsColumnsLocal(petsclib::PetscLibType,mat::AbstractPetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) 
 Zeros all entries (except possibly the main diagonal)
 of a set of rows and columns of a matrix; using local numbering of rows.
 
@@ -5118,9 +5118,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatZeroRowsColumnsLocal"))
 """
-function MatZeroRowsColumnsLocal(petsclib::PetscLibType, mat::PetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::PetscVec, b::PetscVec) end
+function MatZeroRowsColumnsLocal(petsclib::PetscLibType, mat::AbstractPetscMat, numRows::PetscInt, rows::Vector{PetscInt}, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) end
 
-@for_petsc function MatZeroRowsColumnsLocal(petsclib::$UnionPetscLib, mat::PetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::PetscVec, b::PetscVec )
+@for_petsc function MatZeroRowsColumnsLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, numRows::$PetscInt, rows::Vector{$PetscInt}, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
 
     @chk ccall(
                (:MatZeroRowsColumnsLocal, $petsc_library),
@@ -5134,7 +5134,7 @@ function MatZeroRowsColumnsLocal(petsclib::PetscLibType, mat::PetscMat, numRows:
 end 
 
 """
-	MatZeroRowsColumnsLocalIS(petsclib::PetscLibType,mat::PetscMat, is::IS, diag::PetscScalar, x::PetscVec, b::PetscVec) 
+	MatZeroRowsColumnsLocalIS(petsclib::PetscLibType,mat::AbstractPetscMat, is::AbstractIS, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) 
 Zeros all entries (except possibly the main diagonal)
 of a set of rows and columns of a matrix; using local numbering of rows.
 
@@ -5155,9 +5155,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatZeroRowsColumnsLocalIS"))
 """
-function MatZeroRowsColumnsLocalIS(petsclib::PetscLibType, mat::PetscMat, is::IS, diag::PetscScalar, x::PetscVec, b::PetscVec) end
+function MatZeroRowsColumnsLocalIS(petsclib::PetscLibType, mat::AbstractPetscMat, is::AbstractIS, diag::PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec) end
 
-@for_petsc function MatZeroRowsColumnsLocalIS(petsclib::$UnionPetscLib, mat::PetscMat, is::IS, diag::$PetscScalar, x::PetscVec, b::PetscVec )
+@for_petsc function MatZeroRowsColumnsLocalIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS, diag::$PetscScalar, x::AbstractPetscVec, b::AbstractPetscVec )
 
     @chk ccall(
                (:MatZeroRowsColumnsLocalIS, $petsc_library),
@@ -5171,7 +5171,7 @@ function MatZeroRowsColumnsLocalIS(petsclib::PetscLibType, mat::PetscMat, is::IS
 end 
 
 """
-	m::PetscInt,n::PetscInt = MatGetSize(petsclib::PetscLibType,mat::PetscMat) 
+	m::PetscInt,n::PetscInt = MatGetSize(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Returns the numbers of rows and columns in a matrix.
 
 Not Collective
@@ -5210,7 +5210,7 @@ function MatGetSize(petsclib::PetscLibType, mat::AbstractPetscMat) end
 end 
 
 """
-	m::PetscInt,n::PetscInt = MatGetLocalSize(petsclib::PetscLibType,mat::PetscMat) 
+	m::PetscInt,n::PetscInt = MatGetLocalSize(petsclib::PetscLibType,mat::AbstractPetscMat) 
 For most matrix formats, excluding `MATELEMENTAL` and `MATSCALAPACK`, Returns the number of local rows and local columns
 of a matrix. For all matrices this is the local size of the left and right vectors as returned by `MatCreateVecs()`.
 
@@ -5230,9 +5230,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatGetLocalSize"))
 """
-function MatGetLocalSize(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetLocalSize(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetLocalSize(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetLocalSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	m_ = Ref{$PetscInt}()
 	n_ = Ref{$PetscInt}()
 
@@ -5250,7 +5250,7 @@ function MatGetLocalSize(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	m::PetscInt,n::PetscInt = MatGetOwnershipRangeColumn(petsclib::PetscLibType,mat::PetscMat) 
+	m::PetscInt,n::PetscInt = MatGetOwnershipRangeColumn(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Returns the range of matrix columns associated with rows of a
 vector one multiplies this matrix by that are owned by this processor.
 
@@ -5271,9 +5271,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatGetOwnershipRangeColumn"))
 """
-function MatGetOwnershipRangeColumn(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetOwnershipRangeColumn(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetOwnershipRangeColumn(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetOwnershipRangeColumn(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	m_ = Ref{$PetscInt}()
 	n_ = Ref{$PetscInt}()
 
@@ -5291,7 +5291,7 @@ function MatGetOwnershipRangeColumn(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	m::PetscInt,n::PetscInt = MatGetOwnershipRange(petsclib::PetscLibType,mat::PetscMat) 
+	m::PetscInt,n::PetscInt = MatGetOwnershipRange(petsclib::PetscLibType,mat::AbstractPetscMat) 
 For matrices that own values by row, excludes `MATELEMENTAL` and `MATSCALAPACK`, returns the range of matrix rows owned by
 this MPI process.
 
@@ -5312,9 +5312,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatGetOwnershipRange"))
 """
-function MatGetOwnershipRange(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetOwnershipRange(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetOwnershipRange(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetOwnershipRange(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	m_ = Ref{$PetscInt}()
 	n_ = Ref{$PetscInt}()
 
@@ -5332,7 +5332,7 @@ function MatGetOwnershipRange(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	ranges::Vector{PetscInt} = MatGetOwnershipRanges(petsclib::PetscLibType,mat::PetscMat) 
+	ranges::Vector{PetscInt} = MatGetOwnershipRanges(petsclib::PetscLibType,mat::AbstractPetscMat) 
 For matrices that own values by row, excludes `MATELEMENTAL` and
 `MATSCALAPACK`, returns the range of matrix rows owned by each process.
 
@@ -5354,9 +5354,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatGetOwnershipRanges"))
 """
-function MatGetOwnershipRanges(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetOwnershipRanges(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetOwnershipRanges(petsclib::$UnionPetscLib, mat::PetscMat)
+@for_petsc function MatGetOwnershipRanges(petsclib::$UnionPetscLib, mat::AbstractPetscMat)
     ranges_ = Ref{Ptr{$PetscInt}}()
     @chk ccall(
         (:MatGetOwnershipRanges, $petsc_library),
@@ -5379,7 +5379,7 @@ function MatGetOwnershipRanges(petsclib::PetscLibType, mat::PetscMat) end
 end
 
 """
-	ranges::Vector{PetscInt} = MatGetOwnershipRangesColumn(petsclib::PetscLibType,mat::PetscMat) 
+	ranges::Vector{PetscInt} = MatGetOwnershipRangesColumn(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Returns the ranges of matrix columns associated with rows of a
 vector one multiplies this vector by that are owned by each processor.
 
@@ -5400,9 +5400,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatGetOwnershipRangesColumn"))
 """
-function MatGetOwnershipRangesColumn(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetOwnershipRangesColumn(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetOwnershipRangesColumn(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetOwnershipRangesColumn(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	ranges_ = Ref{Ptr{$PetscInt}}()
 
     @chk ccall(
@@ -5429,7 +5429,7 @@ function MatGetOwnershipRangesColumn(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatGetOwnershipIS(petsclib::PetscLibType,A::PetscMat, rows::IS, cols::IS) 
+	MatGetOwnershipIS(petsclib::PetscLibType,A::AbstractPetscMat, rows::AbstractIS, cols::AbstractIS) 
 Get row and column ownership of a matrices' values as index sets.
 
 Not Collective
@@ -5448,9 +5448,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetOwnershipIS"))
 """
-function MatGetOwnershipIS(petsclib::PetscLibType, A::PetscMat, rows::IS, cols::IS) end
+function MatGetOwnershipIS(petsclib::PetscLibType, A::AbstractPetscMat, rows::AbstractIS, cols::AbstractIS) end
 
-@for_petsc function MatGetOwnershipIS(petsclib::$UnionPetscLib, A::PetscMat, rows::IS, cols::IS )
+@for_petsc function MatGetOwnershipIS(petsclib::$UnionPetscLib, A::AbstractPetscMat, rows::AbstractIS, cols::AbstractIS )
 
     @chk ccall(
                (:MatGetOwnershipIS, $petsc_library),
@@ -5464,7 +5464,7 @@ function MatGetOwnershipIS(petsclib::PetscLibType, A::PetscMat, rows::IS, cols::
 end 
 
 """
-	MatILUFactorSymbolic(petsclib::PetscLibType,fact::PetscMat, mat::PetscMat, row::IS, col::IS, info::MatFactorInfo) 
+	MatILUFactorSymbolic(petsclib::PetscLibType,fact::AbstractPetscMat, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::MatFactorInfo) 
 Performs symbolic ILU factorization of a matrix obtained with `MatGetFactor()`
 Uses levels of fill only, not drop tolerance. Use `MatLUFactorNumeric()`
 to complete the factorization.
@@ -5483,9 +5483,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Mat/MatILUFactorSymbolic"))
 """
-function MatILUFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::PetscMat, row::IS, col::IS, info::MatFactorInfo) end
+function MatILUFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::MatFactorInfo) end
 
-@for_petsc function MatILUFactorSymbolic(petsclib::$UnionPetscLib, fact::PetscMat, mat::PetscMat, row::IS, col::IS, info::MatFactorInfo )
+@for_petsc function MatILUFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, row::AbstractIS, col::AbstractIS, info::MatFactorInfo )
 
     @chk ccall(
                (:MatILUFactorSymbolic, $petsc_library),
@@ -5499,7 +5499,7 @@ function MatILUFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::Petsc
 end 
 
 """
-	MatICCFactorSymbolic(petsclib::PetscLibType,fact::PetscMat, mat::PetscMat, perm::IS, info::MatFactorInfo) 
+	MatICCFactorSymbolic(petsclib::PetscLibType,fact::AbstractPetscMat, mat::AbstractPetscMat, perm::AbstractIS, info::MatFactorInfo) 
 Performs symbolic incomplete
 Cholesky factorization for a symmetric matrix.  Use
 `MatCholeskyFactorNumeric()` to complete the factorization.
@@ -5516,9 +5516,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Mat/MatICCFactorSymbolic"))
 """
-function MatICCFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::PetscMat, perm::IS, info::MatFactorInfo) end
+function MatICCFactorSymbolic(petsclib::PetscLibType, fact::AbstractPetscMat, mat::AbstractPetscMat, perm::AbstractIS, info::MatFactorInfo) end
 
-@for_petsc function MatICCFactorSymbolic(petsclib::$UnionPetscLib, fact::PetscMat, mat::PetscMat, perm::IS, info::MatFactorInfo )
+@for_petsc function MatICCFactorSymbolic(petsclib::$UnionPetscLib, fact::AbstractPetscMat, mat::AbstractPetscMat, perm::AbstractIS, info::MatFactorInfo )
 
     @chk ccall(
                (:MatICCFactorSymbolic, $petsc_library),
@@ -5532,7 +5532,7 @@ function MatICCFactorSymbolic(petsclib::PetscLibType, fact::PetscMat, mat::Petsc
 end 
 
 """
-	submat::Vector{PetscMat} = MatCreateSubMatrices(petsclib::PetscLibType,mat::PetscMat, n::PetscInt, irow::Vector{IS}, icol::Vector{IS}, scall::MatReuse) 
+	submat::Vector{PetscMat} = MatCreateSubMatrices(petsclib::PetscLibType,mat::AbstractPetscMat, n::PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse) 
 Extracts several submatrices from a matrix. If submat
 points to an array of valid matrices, they may be reused to store the new
 submatrices.
@@ -5556,9 +5556,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateSubMatrices"))
 """
-function MatCreateSubMatrices(petsclib::PetscLibType, mat::PetscMat, n::PetscInt, irow::Vector{IS}, icol::Vector{IS}, scall::MatReuse) end
+function MatCreateSubMatrices(petsclib::PetscLibType, mat::AbstractPetscMat, n::PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse) end
 
-@for_petsc function MatCreateSubMatrices(petsclib::$UnionPetscLib, mat::PetscMat, n::$PetscInt, irow::Vector{IS}, icol::Vector{IS}, scall::MatReuse )
+@for_petsc function MatCreateSubMatrices(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse )
 	submat_ = Ref{Ptr{PetscMat}}()
 
     @chk ccall(
@@ -5574,7 +5574,7 @@ function MatCreateSubMatrices(petsclib::PetscLibType, mat::PetscMat, n::PetscInt
 end 
 
 """
-	submat::Vector{PetscMat} = MatCreateSubMatricesMPI(petsclib::PetscLibType,mat::PetscMat, n::PetscInt, irow::Vector{IS}, icol::Vector{IS}, scall::MatReuse) 
+	submat::Vector{PetscMat} = MatCreateSubMatricesMPI(petsclib::PetscLibType,mat::AbstractPetscMat, n::PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse) 
 Extracts MPI submatrices across a sub communicator of `mat` (by pairs of `IS` that may live on subcomms).
 
 Collective
@@ -5596,9 +5596,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateSubMatricesMPI"))
 """
-function MatCreateSubMatricesMPI(petsclib::PetscLibType, mat::PetscMat, n::PetscInt, irow::Vector{IS}, icol::Vector{IS}, scall::MatReuse) end
+function MatCreateSubMatricesMPI(petsclib::PetscLibType, mat::AbstractPetscMat, n::PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse) end
 
-@for_petsc function MatCreateSubMatricesMPI(petsclib::$UnionPetscLib, mat::PetscMat, n::$PetscInt, irow::Vector{IS}, icol::Vector{IS}, scall::MatReuse )
+@for_petsc function MatCreateSubMatricesMPI(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, irow::Vector{<:AbstractIS}, icol::Vector{<:AbstractIS}, scall::MatReuse )
 	submat_ = Ref{Ptr{PetscMat}}()
 
     @chk ccall(
@@ -5614,7 +5614,7 @@ function MatCreateSubMatricesMPI(petsclib::PetscLibType, mat::PetscMat, n::Petsc
 end 
 
 """
-	MatDestroyMatrices(petsclib::PetscLibType,n::PetscInt, mat::Vector{PetscMat}) 
+	MatDestroyMatrices(petsclib::PetscLibType,n::PetscInt, mat::Vector{<:AbstractPetscMat}) 
 Destroys an array of matrices
 
 Collective
@@ -5630,9 +5630,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatDestroyMatrices"))
 """
-function MatDestroyMatrices(petsclib::PetscLibType, n::PetscInt, mat::Vector{PetscMat}) end
+function MatDestroyMatrices(petsclib::PetscLibType, n::PetscInt, mat::Vector{<:AbstractPetscMat}) end
 
-@for_petsc function MatDestroyMatrices(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{PetscMat} )
+@for_petsc function MatDestroyMatrices(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{<:AbstractPetscMat} )
 	mat_ = Ref(pointer(mat))
 
     @chk ccall(
@@ -5647,7 +5647,7 @@ function MatDestroyMatrices(petsclib::PetscLibType, n::PetscInt, mat::Vector{Pet
 end 
 
 """
-	MatDestroySubMatrices(petsclib::PetscLibType,n::PetscInt, mat::Vector{PetscMat}) 
+	MatDestroySubMatrices(petsclib::PetscLibType,n::PetscInt, mat::Vector{<:AbstractPetscMat}) 
 Destroys a set of matrices obtained with `MatCreateSubMatrices()`.
 
 Collective
@@ -5663,9 +5663,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatDestroySubMatrices"))
 """
-function MatDestroySubMatrices(petsclib::PetscLibType, n::PetscInt, mat::Vector{PetscMat}) end
+function MatDestroySubMatrices(petsclib::PetscLibType, n::PetscInt, mat::Vector{<:AbstractPetscMat}) end
 
-@for_petsc function MatDestroySubMatrices(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{PetscMat} )
+@for_petsc function MatDestroySubMatrices(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{<:AbstractPetscMat} )
 	mat_ = Ref(pointer(mat))
 
     @chk ccall(
@@ -5680,7 +5680,7 @@ function MatDestroySubMatrices(petsclib::PetscLibType, n::PetscInt, mat::Vector{
 end 
 
 """
-	MatGetSeqNonzeroStructure(petsclib::PetscLibType,mat::PetscMat, matstruct::PetscMat) 
+	MatGetSeqNonzeroStructure(petsclib::PetscLibType,mat::AbstractPetscMat, matstruct::AbstractPetscMat) 
 Extracts the nonzero structure from a matrix and stores it, in its entirety, on each process
 
 Collective
@@ -5698,9 +5698,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatGetSeqNonzeroStructure"))
 """
-function MatGetSeqNonzeroStructure(petsclib::PetscLibType, mat::PetscMat, matstruct::PetscMat) end
+function MatGetSeqNonzeroStructure(petsclib::PetscLibType, mat::AbstractPetscMat, matstruct::AbstractPetscMat) end
 
-@for_petsc function MatGetSeqNonzeroStructure(petsclib::$UnionPetscLib, mat::PetscMat, matstruct::PetscMat )
+@for_petsc function MatGetSeqNonzeroStructure(petsclib::$UnionPetscLib, mat::AbstractPetscMat, matstruct::AbstractPetscMat )
 	matstruct_ = Ref(matstruct.ptr)
 
     @chk ccall(
@@ -5716,7 +5716,7 @@ function MatGetSeqNonzeroStructure(petsclib::PetscLibType, mat::PetscMat, matstr
 end 
 
 """
-	MatDestroySeqNonzeroStructure(petsclib::PetscLibType,mat::PetscMat) 
+	MatDestroySeqNonzeroStructure(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Destroys matrix obtained with `MatGetSeqNonzeroStructure()`.
 
 Collective
@@ -5731,9 +5731,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatDestroySeqNonzeroStructure"))
 """
-function MatDestroySeqNonzeroStructure(petsclib::PetscLibType, mat::PetscMat) end
+function MatDestroySeqNonzeroStructure(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatDestroySeqNonzeroStructure(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatDestroySeqNonzeroStructure(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -5749,7 +5749,7 @@ function MatDestroySeqNonzeroStructure(petsclib::PetscLibType, mat::PetscMat) en
 end 
 
 """
-	MatIncreaseOverlap(petsclib::PetscLibType,mat::PetscMat, n::PetscInt, is::Vector{IS}, ov::PetscInt) 
+	MatIncreaseOverlap(petsclib::PetscLibType,mat::AbstractPetscMat, n::PetscInt, is::Vector{<:AbstractIS}, ov::PetscInt) 
 Given a set of submatrices indicated by index sets,
 replaces the index sets by larger ones that represent submatrices with
 additional overlap.
@@ -5772,9 +5772,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatIncreaseOverlap"))
 """
-function MatIncreaseOverlap(petsclib::PetscLibType, mat::PetscMat, n::PetscInt, is::Vector{IS}, ov::PetscInt) end
+function MatIncreaseOverlap(petsclib::PetscLibType, mat::AbstractPetscMat, n::PetscInt, is::Vector{<:AbstractIS}, ov::PetscInt) end
 
-@for_petsc function MatIncreaseOverlap(petsclib::$UnionPetscLib, mat::PetscMat, n::$PetscInt, is::Vector{IS}, ov::$PetscInt )
+@for_petsc function MatIncreaseOverlap(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, is::Vector{<:AbstractIS}, ov::$PetscInt )
 
     @chk ccall(
                (:MatIncreaseOverlap, $petsc_library),
@@ -5788,7 +5788,7 @@ function MatIncreaseOverlap(petsclib::PetscLibType, mat::PetscMat, n::PetscInt, 
 end 
 
 """
-	MatIncreaseOverlapSplit(petsclib::PetscLibType,mat::PetscMat, n::PetscInt, is::Vector{IS}, ov::PetscInt) 
+	MatIncreaseOverlapSplit(petsclib::PetscLibType,mat::AbstractPetscMat, n::PetscInt, is::Vector{<:AbstractIS}, ov::PetscInt) 
 Given a set of submatrices indicated by index sets across
 a sub communicator, replaces the index sets by larger ones that represent submatrices with
 additional overlap.
@@ -5811,9 +5811,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatIncreaseOverlapSplit"))
 """
-function MatIncreaseOverlapSplit(petsclib::PetscLibType, mat::PetscMat, n::PetscInt, is::Vector{IS}, ov::PetscInt) end
+function MatIncreaseOverlapSplit(petsclib::PetscLibType, mat::AbstractPetscMat, n::PetscInt, is::Vector{<:AbstractIS}, ov::PetscInt) end
 
-@for_petsc function MatIncreaseOverlapSplit(petsclib::$UnionPetscLib, mat::PetscMat, n::$PetscInt, is::Vector{IS}, ov::$PetscInt )
+@for_petsc function MatIncreaseOverlapSplit(petsclib::$UnionPetscLib, mat::AbstractPetscMat, n::$PetscInt, is::Vector{<:AbstractIS}, ov::$PetscInt )
 
     @chk ccall(
                (:MatIncreaseOverlapSplit, $petsc_library),
@@ -5827,7 +5827,7 @@ function MatIncreaseOverlapSplit(petsclib::PetscLibType, mat::PetscMat, n::Petsc
 end 
 
 """
-	bs::PetscInt = MatGetBlockSize(petsclib::PetscLibType,mat::PetscMat) 
+	bs::PetscInt = MatGetBlockSize(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Returns the matrix block size.
 
 Not Collective
@@ -5845,9 +5845,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetBlockSize"))
 """
-function MatGetBlockSize(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetBlockSize(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetBlockSize(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetBlockSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	bs_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -5863,7 +5863,7 @@ function MatGetBlockSize(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	rbs::PetscInt,cbs::PetscInt = MatGetBlockSizes(petsclib::PetscLibType,mat::PetscMat) 
+	rbs::PetscInt,cbs::PetscInt = MatGetBlockSizes(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Returns the matrix block row and column sizes.
 
 Not Collective
@@ -5882,9 +5882,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetBlockSizes"))
 """
-function MatGetBlockSizes(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetBlockSizes(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetBlockSizes(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	rbs_ = Ref{$PetscInt}()
 	cbs_ = Ref{$PetscInt}()
 
@@ -5902,7 +5902,7 @@ function MatGetBlockSizes(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatSetBlockSize(petsclib::PetscLibType,mat::PetscMat, bs::PetscInt) 
+	MatSetBlockSize(petsclib::PetscLibType,mat::AbstractPetscMat, bs::PetscInt) 
 Sets the matrix block size.
 
 Logically Collective
@@ -5918,9 +5918,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetBlockSize"))
 """
-function MatSetBlockSize(petsclib::PetscLibType, mat::PetscMat, bs::PetscInt) end
+function MatSetBlockSize(petsclib::PetscLibType, mat::AbstractPetscMat, bs::PetscInt) end
 
-@for_petsc function MatSetBlockSize(petsclib::$UnionPetscLib, mat::PetscMat, bs::$PetscInt )
+@for_petsc function MatSetBlockSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat, bs::$PetscInt )
 
     @chk ccall(
                (:MatSetBlockSize, $petsc_library),
@@ -5934,7 +5934,7 @@ function MatSetBlockSize(petsclib::PetscLibType, mat::PetscMat, bs::PetscInt) en
 end 
 
 """
-	MatComputeVariableBlockEnvelope(petsclib::PetscLibType,mat::PetscMat) 
+	MatComputeVariableBlockEnvelope(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Given a matrix whose nonzeros are in blocks along the diagonal this computes and stores
 the sizes of these blocks in the matrix. An individual block may lie over several processes.
 
@@ -5950,9 +5950,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatComputeVariableBlockEnvelope"))
 """
-function MatComputeVariableBlockEnvelope(petsclib::PetscLibType, mat::PetscMat) end
+function MatComputeVariableBlockEnvelope(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatComputeVariableBlockEnvelope(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatComputeVariableBlockEnvelope(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatComputeVariableBlockEnvelope, $petsc_library),
@@ -5966,7 +5966,7 @@ function MatComputeVariableBlockEnvelope(petsclib::PetscLibType, mat::PetscMat) 
 end 
 
 """
-	MatInvertVariableBlockEnvelope(petsclib::PetscLibType,A::PetscMat, reuse::MatReuse, C::PetscMat) 
+	MatInvertVariableBlockEnvelope(petsclib::PetscLibType,A::AbstractPetscMat, reuse::MatReuse, C::AbstractPetscMat) 
 set matrix C to be the inverted block diagonal of matrix A
 
 Collective
@@ -5985,9 +5985,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatInvertVariableBlockEnvelope"))
 """
-function MatInvertVariableBlockEnvelope(petsclib::PetscLibType, A::PetscMat, reuse::MatReuse, C::PetscMat) end
+function MatInvertVariableBlockEnvelope(petsclib::PetscLibType, A::AbstractPetscMat, reuse::MatReuse, C::AbstractPetscMat) end
 
-@for_petsc function MatInvertVariableBlockEnvelope(petsclib::$UnionPetscLib, A::PetscMat, reuse::MatReuse, C::PetscMat )
+@for_petsc function MatInvertVariableBlockEnvelope(petsclib::$UnionPetscLib, A::AbstractPetscMat, reuse::MatReuse, C::AbstractPetscMat )
 	C_ = Ref(C.ptr)
 
     @chk ccall(
@@ -6003,7 +6003,7 @@ function MatInvertVariableBlockEnvelope(petsclib::PetscLibType, A::PetscMat, reu
 end 
 
 """
-	MatSetVariableBlockSizes(petsclib::PetscLibType,mat::PetscMat, nblocks::PetscInt, bsizes::Vector{PetscInt}) 
+	MatSetVariableBlockSizes(petsclib::PetscLibType,mat::AbstractPetscMat, nblocks::PetscInt, bsizes::Vector{PetscInt}) 
 Sets diagonal point
 
 Not Collective
@@ -6021,9 +6021,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetVariableBlockSizes"))
 """
-function MatSetVariableBlockSizes(petsclib::PetscLibType, mat::PetscMat, nblocks::PetscInt, bsizes::Vector{PetscInt}) end
+function MatSetVariableBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat, nblocks::PetscInt, bsizes::Vector{PetscInt}) end
 
-@for_petsc function MatSetVariableBlockSizes(petsclib::$UnionPetscLib, mat::PetscMat, nblocks::$PetscInt, bsizes::Vector{$PetscInt} )
+@for_petsc function MatSetVariableBlockSizes(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nblocks::$PetscInt, bsizes::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatSetVariableBlockSizes, $petsc_library),
@@ -6037,7 +6037,7 @@ function MatSetVariableBlockSizes(petsclib::PetscLibType, mat::PetscMat, nblocks
 end 
 
 """
-	nblocks::PetscInt,bsizes::Vector{PetscInt} = MatGetVariableBlockSizes(petsclib::PetscLibType,mat::PetscMat) 
+	nblocks::PetscInt,bsizes::Vector{PetscInt} = MatGetVariableBlockSizes(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Gets a diagonal blocks of the matrix that need not be of the same size
 
 Not Collective; No Fortran Support
@@ -6056,9 +6056,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetVariableBlockSizes"))
 """
-function MatGetVariableBlockSizes(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetVariableBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetVariableBlockSizes(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetVariableBlockSizes(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	nblocks_ = Ref{$PetscInt}()
 	bsizes_ = Ref{Ptr{$PetscInt}}()
 
@@ -6076,7 +6076,7 @@ function MatGetVariableBlockSizes(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatSelectVariableBlockSizes(petsclib::PetscLibType,subA::PetscMat, A::PetscMat, isrow::IS) 
+	MatSelectVariableBlockSizes(petsclib::PetscLibType,subA::AbstractPetscMat, A::AbstractPetscMat, isrow::AbstractIS) 
 When creating a submatrix, pass on the variable block sizes
 
 Not Collective
@@ -6093,9 +6093,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSelectVariableBlockSizes"))
 """
-function MatSelectVariableBlockSizes(petsclib::PetscLibType, subA::PetscMat, A::PetscMat, isrow::IS) end
+function MatSelectVariableBlockSizes(petsclib::PetscLibType, subA::AbstractPetscMat, A::AbstractPetscMat, isrow::AbstractIS) end
 
-@for_petsc function MatSelectVariableBlockSizes(petsclib::$UnionPetscLib, subA::PetscMat, A::PetscMat, isrow::IS )
+@for_petsc function MatSelectVariableBlockSizes(petsclib::$UnionPetscLib, subA::AbstractPetscMat, A::AbstractPetscMat, isrow::AbstractIS )
 
     @chk ccall(
                (:MatSelectVariableBlockSizes, $petsc_library),
@@ -6109,7 +6109,7 @@ function MatSelectVariableBlockSizes(petsclib::PetscLibType, subA::PetscMat, A::
 end 
 
 """
-	MatSetBlockSizes(petsclib::PetscLibType,mat::PetscMat, rbs::PetscInt, cbs::PetscInt) 
+	MatSetBlockSizes(petsclib::PetscLibType,mat::AbstractPetscMat, rbs::PetscInt, cbs::PetscInt) 
 Sets the matrix block row and column sizes.
 
 Logically Collective
@@ -6126,9 +6126,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetBlockSizes"))
 """
-function MatSetBlockSizes(petsclib::PetscLibType, mat::PetscMat, rbs::PetscInt, cbs::PetscInt) end
+function MatSetBlockSizes(petsclib::PetscLibType, mat::AbstractPetscMat, rbs::PetscInt, cbs::PetscInt) end
 
-@for_petsc function MatSetBlockSizes(petsclib::$UnionPetscLib, mat::PetscMat, rbs::$PetscInt, cbs::$PetscInt )
+@for_petsc function MatSetBlockSizes(petsclib::$UnionPetscLib, mat::AbstractPetscMat, rbs::$PetscInt, cbs::$PetscInt )
 
     @chk ccall(
                (:MatSetBlockSizes, $petsc_library),
@@ -6142,7 +6142,7 @@ function MatSetBlockSizes(petsclib::PetscLibType, mat::PetscMat, rbs::PetscInt, 
 end 
 
 """
-	MatSetBlockSizesFromMats(petsclib::PetscLibType,mat::PetscMat, fromRow::PetscMat, fromCol::PetscMat) 
+	MatSetBlockSizesFromMats(petsclib::PetscLibType,mat::AbstractPetscMat, fromRow::AbstractPetscMat, fromCol::AbstractPetscMat) 
 Sets the matrix block row and column sizes to match a pair of matrices
 
 Logically Collective
@@ -6159,9 +6159,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSetBlockSizesFromMats"))
 """
-function MatSetBlockSizesFromMats(petsclib::PetscLibType, mat::PetscMat, fromRow::PetscMat, fromCol::PetscMat) end
+function MatSetBlockSizesFromMats(petsclib::PetscLibType, mat::AbstractPetscMat, fromRow::AbstractPetscMat, fromCol::AbstractPetscMat) end
 
-@for_petsc function MatSetBlockSizesFromMats(petsclib::$UnionPetscLib, mat::PetscMat, fromRow::PetscMat, fromCol::PetscMat )
+@for_petsc function MatSetBlockSizesFromMats(petsclib::$UnionPetscLib, mat::AbstractPetscMat, fromRow::AbstractPetscMat, fromCol::AbstractPetscMat )
 
     @chk ccall(
                (:MatSetBlockSizesFromMats, $petsc_library),
@@ -6175,7 +6175,7 @@ function MatSetBlockSizesFromMats(petsclib::PetscLibType, mat::PetscMat, fromRow
 end 
 
 """
-	MatResidual(petsclib::PetscLibType,mat::PetscMat, b::PetscVec, x::PetscVec, r::PetscVec) 
+	MatResidual(petsclib::PetscLibType,mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec) 
 Default routine to calculate the residual r = b
 
 Collective
@@ -6195,9 +6195,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatResidual"))
 """
-function MatResidual(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, x::PetscVec, r::PetscVec) end
+function MatResidual(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec) end
 
-@for_petsc function MatResidual(petsclib::$UnionPetscLib, mat::PetscMat, b::PetscVec, x::PetscVec, r::PetscVec )
+@for_petsc function MatResidual(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec )
 
     @chk ccall(
                (:MatResidual, $petsc_library),
@@ -6211,7 +6211,7 @@ function MatResidual(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, x::Pets
 end 
 
 """
-	n::PetscInt,ia::Vector{PetscInt},ja::Vector{PetscInt},done::PetscBool = MatGetRowIJ(petsclib::PetscLibType,mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool) 
+	n::PetscInt,ia::Vector{PetscInt},ja::Vector{PetscInt},done::PetscBool = MatGetRowIJ(petsclib::PetscLibType,mat::AbstractPetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool) 
 Returns the compressed row storage i and j indices for the local rows of a sparse matrix
 
 Collective
@@ -6238,9 +6238,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatGetRowIJ"))
 """
-function MatGetRowIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool) end
+function MatGetRowIJ(petsclib::PetscLibType, mat::AbstractPetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool) end
 
-@for_petsc function MatGetRowIJ(petsclib::$UnionPetscLib, mat::PetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool )
+@for_petsc function MatGetRowIJ(petsclib::$UnionPetscLib, mat::AbstractPetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool )
 	n_ = Ref{$PetscInt}()
 	ia_ = Ref{Ptr{$PetscInt}}(C_NULL)
 	ja_ = Ref{Ptr{$PetscInt}}(C_NULL)
@@ -6271,7 +6271,7 @@ function MatGetRowIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, sym
 end 
 
 """
-	n::PetscInt,ia::Vector{PetscInt},ja::Vector{PetscInt},done::PetscBool = MatGetColumnIJ(petsclib::PetscLibType,mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool) 
+	n::PetscInt,ia::Vector{PetscInt},ja::Vector{PetscInt},done::PetscBool = MatGetColumnIJ(petsclib::PetscLibType,mat::AbstractPetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool) 
 Returns the compressed column storage i and j indices for sequential matrices.
 
 Collective
@@ -6298,9 +6298,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatGetColumnIJ"))
 """
-function MatGetColumnIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool) end
+function MatGetColumnIJ(petsclib::PetscLibType, mat::AbstractPetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool) end
 
-@for_petsc function MatGetColumnIJ(petsclib::$UnionPetscLib, mat::PetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool )
+@for_petsc function MatGetColumnIJ(petsclib::$UnionPetscLib, mat::AbstractPetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool )
 	n_ = Ref{$PetscInt}()
 	ia_ = Ref{Ptr{$PetscInt}}(C_NULL)
 	ja_ = Ref{Ptr{$PetscInt}}(C_NULL)
@@ -6331,7 +6331,7 @@ function MatGetColumnIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, 
 end 
 
 """
-	done::PetscBool = MatRestoreRowIJ(petsclib::PetscLibType,mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{PetscInt}, ja::Vector{PetscInt}) 
+	done::PetscBool = MatRestoreRowIJ(petsclib::PetscLibType,mat::AbstractPetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{PetscInt}, ja::Vector{PetscInt}) 
 Call after you are completed with the ia,ja indices obtained with `MatGetRowIJ()`.
 
 Collective
@@ -6357,10 +6357,10 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatRestoreRowIJ"))
 """
-function MatRestoreRowIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{PetscInt}, ja::Vector{PetscInt}) end
+function MatRestoreRowIJ(petsclib::PetscLibType, mat::AbstractPetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{PetscInt}, ja::Vector{PetscInt}) end
 
 # `ia`/`ja` are the arrays obtained from MatGetRowIJ (their pointers are handed back to PETSc)
-@for_petsc function MatRestoreRowIJ(petsclib::$UnionPetscLib, mat::PetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{$PetscInt}, ja::Vector{$PetscInt} )
+@for_petsc function MatRestoreRowIJ(petsclib::$UnionPetscLib, mat::AbstractPetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{$PetscInt}, ja::Vector{$PetscInt} )
 	n_ = Ref{$PetscInt}()
 	ia_ = Ref{Ptr{$PetscInt}}(isempty(ia) ? C_NULL : pointer(ia))
 	ja_ = Ref{Ptr{$PetscInt}}(isempty(ja) ? C_NULL : pointer(ja))
@@ -6377,7 +6377,7 @@ function MatRestoreRowIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt,
 end 
 
 """
-	done::PetscBool = MatRestoreColumnIJ(petsclib::PetscLibType,mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{PetscInt}, ja::Vector{PetscInt}) 
+	done::PetscBool = MatRestoreColumnIJ(petsclib::PetscLibType,mat::AbstractPetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{PetscInt}, ja::Vector{PetscInt}) 
 Call after you are completed with the ia,ja indices obtained with `MatGetColumnIJ()`.
 
 Collective
@@ -6403,10 +6403,10 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatRestoreColumnIJ"))
 """
-function MatRestoreColumnIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{PetscInt}, ja::Vector{PetscInt}) end
+function MatRestoreColumnIJ(petsclib::PetscLibType, mat::AbstractPetscMat, shift::PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{PetscInt}, ja::Vector{PetscInt}) end
 
 # `ia`/`ja` are the arrays obtained from MatGetColumnIJ (their pointers are handed back to PETSc)
-@for_petsc function MatRestoreColumnIJ(petsclib::$UnionPetscLib, mat::PetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{$PetscInt}, ja::Vector{$PetscInt} )
+@for_petsc function MatRestoreColumnIJ(petsclib::$UnionPetscLib, mat::AbstractPetscMat, shift::$PetscInt, symmetric::PetscBool, inodecompressed::PetscBool, ia::Vector{$PetscInt}, ja::Vector{$PetscInt} )
 	n_ = Ref{$PetscInt}()
 	ia_ = Ref{Ptr{$PetscInt}}(isempty(ia) ? C_NULL : pointer(ia))
 	ja_ = Ref{Ptr{$PetscInt}}(isempty(ja) ? C_NULL : pointer(ja))
@@ -6423,7 +6423,7 @@ function MatRestoreColumnIJ(petsclib::PetscLibType, mat::PetscMat, shift::PetscI
 end 
 
 """
-	MatSetUnfactored(petsclib::PetscLibType,mat::PetscMat) 
+	MatSetUnfactored(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Resets a factored matrix to be treated as unfactored.
 
 Logically Collective
@@ -6438,9 +6438,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSetUnfactored"))
 """
-function MatSetUnfactored(petsclib::PetscLibType, mat::PetscMat) end
+function MatSetUnfactored(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatSetUnfactored(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatSetUnfactored(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatSetUnfactored, $petsc_library),
@@ -6454,7 +6454,7 @@ function MatSetUnfactored(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	newmat::PetscMat = MatCreateSubMatrix(petsclib::PetscLibType,mat::PetscMat, isrow::IS, iscol::IS, cll::MatReuse) 
+	newmat::PetscMat = MatCreateSubMatrix(petsclib::PetscLibType,mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, cll::MatReuse) 
 Gets a single submatrix on the same number of processors
 as the original matrix.
 
@@ -6476,9 +6476,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateSubMatrix"))
 """
-function MatCreateSubMatrix(petsclib::PetscLibType, mat::PetscMat, isrow::IS, iscol::IS, cll::MatReuse) end
+function MatCreateSubMatrix(petsclib::PetscLibType, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, cll::MatReuse) end
 
-@for_petsc function MatCreateSubMatrix(petsclib::$UnionPetscLib, mat::PetscMat, isrow::IS, iscol::IS, cll::MatReuse )
+@for_petsc function MatCreateSubMatrix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, cll::MatReuse )
 	newmat_ = Ref{CMat}()
 
     @chk ccall(
@@ -6494,7 +6494,7 @@ function MatCreateSubMatrix(petsclib::PetscLibType, mat::PetscMat, isrow::IS, is
 end 
 
 """
-	MatPropagateSymmetryOptions(petsclib::PetscLibType,A::PetscMat, B::PetscMat) 
+	MatPropagateSymmetryOptions(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat) 
 Propagates symmetry options set on a matrix to another matrix
 
 Not Collective
@@ -6510,9 +6510,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatPropagateSymmetryOptions"))
 """
-function MatPropagateSymmetryOptions(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
+function MatPropagateSymmetryOptions(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function MatPropagateSymmetryOptions(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat )
+@for_petsc function MatPropagateSymmetryOptions(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
 
     @chk ccall(
                (:MatPropagateSymmetryOptions, $petsc_library),
@@ -6526,7 +6526,7 @@ function MatPropagateSymmetryOptions(petsclib::PetscLibType, A::PetscMat, B::Pet
 end 
 
 """
-	MatStashSetInitialSize(petsclib::PetscLibType,mat::PetscMat, size::PetscInt, bsize::PetscInt) 
+	MatStashSetInitialSize(petsclib::PetscLibType,mat::AbstractPetscMat, size::PetscInt, bsize::PetscInt) 
 sets the sizes of the matrix stash, that is
 used during the assembly process to store values that belong to
 other processors.
@@ -6549,9 +6549,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatStashSetInitialSize"))
 """
-function MatStashSetInitialSize(petsclib::PetscLibType, mat::PetscMat, size::PetscInt, bsize::PetscInt) end
+function MatStashSetInitialSize(petsclib::PetscLibType, mat::AbstractPetscMat, size::PetscInt, bsize::PetscInt) end
 
-@for_petsc function MatStashSetInitialSize(petsclib::$UnionPetscLib, mat::PetscMat, size::$PetscInt, bsize::$PetscInt )
+@for_petsc function MatStashSetInitialSize(petsclib::$UnionPetscLib, mat::AbstractPetscMat, size::$PetscInt, bsize::$PetscInt )
 
     @chk ccall(
                (:MatStashSetInitialSize, $petsc_library),
@@ -6565,7 +6565,7 @@ function MatStashSetInitialSize(petsclib::PetscLibType, mat::PetscMat, size::Pet
 end 
 
 """
-	MatInterpolateAdd(petsclib::PetscLibType,A::PetscMat, x::PetscVec, y::PetscVec, w::PetscVec) 
+	MatInterpolateAdd(petsclib::PetscLibType,A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec) 
 w = y + A*x or A^T*x depending on the shape of
 the matrix
 
@@ -6586,9 +6586,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatInterpolateAdd"))
 """
-function MatInterpolateAdd(petsclib::PetscLibType, A::PetscMat, x::PetscVec, y::PetscVec, w::PetscVec) end
+function MatInterpolateAdd(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec) end
 
-@for_petsc function MatInterpolateAdd(petsclib::$UnionPetscLib, A::PetscMat, x::PetscVec, y::PetscVec, w::PetscVec )
+@for_petsc function MatInterpolateAdd(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec )
 
     @chk ccall(
                (:MatInterpolateAdd, $petsc_library),
@@ -6602,7 +6602,7 @@ function MatInterpolateAdd(petsclib::PetscLibType, A::PetscMat, x::PetscVec, y::
 end 
 
 """
-	MatInterpolate(petsclib::PetscLibType,A::PetscMat, x::PetscVec, y::PetscVec) 
+	MatInterpolate(petsclib::PetscLibType,A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) 
 y = A*x or A^T*x depending on the shape of
 the matrix
 
@@ -6622,9 +6622,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatInterpolate"))
 """
-function MatInterpolate(petsclib::PetscLibType, A::PetscMat, x::PetscVec, y::PetscVec) end
+function MatInterpolate(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function MatInterpolate(petsclib::$UnionPetscLib, A::PetscMat, x::PetscVec, y::PetscVec )
+@for_petsc function MatInterpolate(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:MatInterpolate, $petsc_library),
@@ -6638,7 +6638,7 @@ function MatInterpolate(petsclib::PetscLibType, A::PetscMat, x::PetscVec, y::Pet
 end 
 
 """
-	MatRestrict(petsclib::PetscLibType,A::PetscMat, x::PetscVec, y::PetscVec) 
+	MatRestrict(petsclib::PetscLibType,A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) 
 y = A*x or A^T*x
 
 Neighbor-wise Collective
@@ -6657,9 +6657,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatRestrict"))
 """
-function MatRestrict(petsclib::PetscLibType, A::PetscMat, x::PetscVec, y::PetscVec) end
+function MatRestrict(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function MatRestrict(petsclib::$UnionPetscLib, A::PetscMat, x::PetscVec, y::PetscVec )
+@for_petsc function MatRestrict(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:MatRestrict, $petsc_library),
@@ -6673,7 +6673,7 @@ function MatRestrict(petsclib::PetscLibType, A::PetscMat, x::PetscVec, y::PetscV
 end 
 
 """
-	MatMatInterpolateAdd(petsclib::PetscLibType,A::PetscMat, x::PetscMat, w::PetscMat, y::PetscMat) 
+	MatMatInterpolateAdd(petsclib::PetscLibType,A::AbstractPetscMat, x::AbstractPetscMat, w::AbstractPetscMat, y::AbstractPetscMat) 
 Y = W + A*X or W + A^T*X depending on the shape of `A`
 
 Neighbor-wise Collective
@@ -6693,9 +6693,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMatInterpolateAdd"))
 """
-function MatMatInterpolateAdd(petsclib::PetscLibType, A::PetscMat, x::PetscMat, w::PetscMat, y::PetscMat) end
+function MatMatInterpolateAdd(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscMat, w::AbstractPetscMat, y::AbstractPetscMat) end
 
-@for_petsc function MatMatInterpolateAdd(petsclib::$UnionPetscLib, A::PetscMat, x::PetscMat, w::PetscMat, y::PetscMat )
+@for_petsc function MatMatInterpolateAdd(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscMat, w::AbstractPetscMat, y::AbstractPetscMat )
 	y_ = Ref(y.ptr)
 
     @chk ccall(
@@ -6711,7 +6711,7 @@ function MatMatInterpolateAdd(petsclib::PetscLibType, A::PetscMat, x::PetscMat, 
 end 
 
 """
-	MatMatInterpolate(petsclib::PetscLibType,A::PetscMat, x::PetscMat, y::PetscMat) 
+	MatMatInterpolate(petsclib::PetscLibType,A::AbstractPetscMat, x::AbstractPetscMat, y::AbstractPetscMat) 
 Y = A*X or A^T*X depending on the shape of `A`
 
 Neighbor-wise Collective
@@ -6730,9 +6730,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMatInterpolate"))
 """
-function MatMatInterpolate(petsclib::PetscLibType, A::PetscMat, x::PetscMat, y::PetscMat) end
+function MatMatInterpolate(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscMat, y::AbstractPetscMat) end
 
-@for_petsc function MatMatInterpolate(petsclib::$UnionPetscLib, A::PetscMat, x::PetscMat, y::PetscMat )
+@for_petsc function MatMatInterpolate(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscMat, y::AbstractPetscMat )
 	y_ = Ref(y.ptr)
 
     @chk ccall(
@@ -6748,7 +6748,7 @@ function MatMatInterpolate(petsclib::PetscLibType, A::PetscMat, x::PetscMat, y::
 end 
 
 """
-	MatMatRestrict(petsclib::PetscLibType,A::PetscMat, x::PetscMat, y::PetscMat) 
+	MatMatRestrict(petsclib::PetscLibType,A::AbstractPetscMat, x::AbstractPetscMat, y::AbstractPetscMat) 
 Y = A*X or A^T*X depending on the shape of `A`
 
 Neighbor-wise Collective
@@ -6767,9 +6767,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMatRestrict"))
 """
-function MatMatRestrict(petsclib::PetscLibType, A::PetscMat, x::PetscMat, y::PetscMat) end
+function MatMatRestrict(petsclib::PetscLibType, A::AbstractPetscMat, x::AbstractPetscMat, y::AbstractPetscMat) end
 
-@for_petsc function MatMatRestrict(petsclib::$UnionPetscLib, A::PetscMat, x::PetscMat, y::PetscMat )
+@for_petsc function MatMatRestrict(petsclib::$UnionPetscLib, A::AbstractPetscMat, x::AbstractPetscMat, y::AbstractPetscMat )
 	y_ = Ref(y.ptr)
 
     @chk ccall(
@@ -6785,7 +6785,7 @@ function MatMatRestrict(petsclib::PetscLibType, A::PetscMat, x::PetscMat, y::Pet
 end 
 
 """
-	MatGetNullSpace(petsclib::PetscLibType,mat::PetscMat, nullsp::MatNullSpace) 
+	MatGetNullSpace(petsclib::PetscLibType,mat::AbstractPetscMat, nullsp::MatNullSpace) 
 retrieves the null space of a matrix.
 
 Logically Collective
@@ -6801,9 +6801,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatGetNullSpace"))
 """
-function MatGetNullSpace(petsclib::PetscLibType, mat::PetscMat, nullsp::MatNullSpace) end
+function MatGetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace) end
 
-@for_petsc function MatGetNullSpace(petsclib::$UnionPetscLib, mat::PetscMat, nullsp::MatNullSpace )
+@for_petsc function MatGetNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
 
     @chk ccall(
                (:MatGetNullSpace, $petsc_library),
@@ -6817,7 +6817,7 @@ function MatGetNullSpace(petsclib::PetscLibType, mat::PetscMat, nullsp::MatNullS
 end 
 
 """
-	MatGetNullSpaces(petsclib::PetscLibType,n::PetscInt, mat::Vector{PetscMat}, nullsp::Vector{MatNullSpace}) 
+	MatGetNullSpaces(petsclib::PetscLibType,n::PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Vector{MatNullSpace}) 
 gets the null spaces, transpose null spaces, and near null spaces from an array of matrices
 
 Logically Collective
@@ -6837,9 +6837,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatGetNullSpaces"))
 """
-function MatGetNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{PetscMat}, nullsp::Vector{MatNullSpace}) end
+function MatGetNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Vector{MatNullSpace}) end
 
-@for_petsc function MatGetNullSpaces(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{PetscMat}, nullsp::Vector{MatNullSpace} )
+@for_petsc function MatGetNullSpaces(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Vector{MatNullSpace} )
 	nullsp_ = Ref(pointer(nullsp))
 
     @chk ccall(
@@ -6854,7 +6854,7 @@ function MatGetNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{Petsc
 end 
 
 """
-	MatRestoreNullSpaces(petsclib::PetscLibType,n::PetscInt, mat::Vector{PetscMat}, nullsp::Vector{MatNullSpace}) 
+	MatRestoreNullSpaces(petsclib::PetscLibType,n::PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Vector{MatNullSpace}) 
 sets the null spaces, transpose null spaces, and near null spaces obtained with `MatGetNullSpaces()` for an array of matrices
 
 Logically Collective
@@ -6872,9 +6872,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatRestoreNullSpaces"))
 """
-function MatRestoreNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{PetscMat}, nullsp::Vector{MatNullSpace}) end
+function MatRestoreNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Vector{MatNullSpace}) end
 
-@for_petsc function MatRestoreNullSpaces(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{PetscMat}, nullsp::Vector{MatNullSpace} )
+@for_petsc function MatRestoreNullSpaces(petsclib::$UnionPetscLib, n::$PetscInt, mat::Vector{<:AbstractPetscMat}, nullsp::Vector{MatNullSpace} )
 	nullsp_ = Ref(pointer(nullsp))
 
     @chk ccall(
@@ -6889,7 +6889,7 @@ function MatRestoreNullSpaces(petsclib::PetscLibType, n::PetscInt, mat::Vector{P
 end 
 
 """
-	MatSetNullSpace(petsclib::PetscLibType,mat::PetscMat, nullsp::MatNullSpace) 
+	MatSetNullSpace(petsclib::PetscLibType,mat::AbstractPetscMat, nullsp::MatNullSpace) 
 attaches a null space to a matrix.
 
 Logically Collective
@@ -6906,9 +6906,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSetNullSpace"))
 """
-function MatSetNullSpace(petsclib::PetscLibType, mat::PetscMat, nullsp::MatNullSpace) end
+function MatSetNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace) end
 
-@for_petsc function MatSetNullSpace(petsclib::$UnionPetscLib, mat::PetscMat, nullsp::MatNullSpace )
+@for_petsc function MatSetNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
 
     @chk ccall(
                (:MatSetNullSpace, $petsc_library),
@@ -6922,7 +6922,7 @@ function MatSetNullSpace(petsclib::PetscLibType, mat::PetscMat, nullsp::MatNullS
 end 
 
 """
-	MatGetTransposeNullSpace(petsclib::PetscLibType,mat::PetscMat, nullsp::MatNullSpace) 
+	MatGetTransposeNullSpace(petsclib::PetscLibType,mat::AbstractPetscMat, nullsp::MatNullSpace) 
 retrieves the null space of the transpose of a matrix.
 
 Logically Collective
@@ -6938,9 +6938,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatGetTransposeNullSpace"))
 """
-function MatGetTransposeNullSpace(petsclib::PetscLibType, mat::PetscMat, nullsp::MatNullSpace) end
+function MatGetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace) end
 
-@for_petsc function MatGetTransposeNullSpace(petsclib::$UnionPetscLib, mat::PetscMat, nullsp::MatNullSpace )
+@for_petsc function MatGetTransposeNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
 
     @chk ccall(
                (:MatGetTransposeNullSpace, $petsc_library),
@@ -6954,7 +6954,7 @@ function MatGetTransposeNullSpace(petsclib::PetscLibType, mat::PetscMat, nullsp:
 end 
 
 """
-	MatSetTransposeNullSpace(petsclib::PetscLibType,mat::PetscMat, nullsp::MatNullSpace) 
+	MatSetTransposeNullSpace(petsclib::PetscLibType,mat::AbstractPetscMat, nullsp::MatNullSpace) 
 attaches the null space of a transpose of a matrix to the matrix
 
 Logically Collective
@@ -6970,9 +6970,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSetTransposeNullSpace"))
 """
-function MatSetTransposeNullSpace(petsclib::PetscLibType, mat::PetscMat, nullsp::MatNullSpace) end
+function MatSetTransposeNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace) end
 
-@for_petsc function MatSetTransposeNullSpace(petsclib::$UnionPetscLib, mat::PetscMat, nullsp::MatNullSpace )
+@for_petsc function MatSetTransposeNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
 
     @chk ccall(
                (:MatSetTransposeNullSpace, $petsc_library),
@@ -6986,7 +6986,7 @@ function MatSetTransposeNullSpace(petsclib::PetscLibType, mat::PetscMat, nullsp:
 end 
 
 """
-	MatSetNearNullSpace(petsclib::PetscLibType,mat::PetscMat, nullsp::MatNullSpace) 
+	MatSetNearNullSpace(petsclib::PetscLibType,mat::AbstractPetscMat, nullsp::MatNullSpace) 
 attaches a null space to a matrix, which is often the null space (rigid body modes) of the operator without boundary conditions
 This null space will be used to provide near null space vectors to a multigrid preconditioner built from this matrix.
 
@@ -7003,9 +7003,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSetNearNullSpace"))
 """
-function MatSetNearNullSpace(petsclib::PetscLibType, mat::PetscMat, nullsp::MatNullSpace) end
+function MatSetNearNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace) end
 
-@for_petsc function MatSetNearNullSpace(petsclib::$UnionPetscLib, mat::PetscMat, nullsp::MatNullSpace )
+@for_petsc function MatSetNearNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
 
     @chk ccall(
                (:MatSetNearNullSpace, $petsc_library),
@@ -7019,7 +7019,7 @@ function MatSetNearNullSpace(petsclib::PetscLibType, mat::PetscMat, nullsp::MatN
 end 
 
 """
-	MatGetNearNullSpace(petsclib::PetscLibType,mat::PetscMat, nullsp::MatNullSpace) 
+	MatGetNearNullSpace(petsclib::PetscLibType,mat::AbstractPetscMat, nullsp::MatNullSpace) 
 Get null space attached with `MatSetNearNullSpace()`
 
 Not Collective
@@ -7037,9 +7037,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetNearNullSpace"))
 """
-function MatGetNearNullSpace(petsclib::PetscLibType, mat::PetscMat, nullsp::MatNullSpace) end
+function MatGetNearNullSpace(petsclib::PetscLibType, mat::AbstractPetscMat, nullsp::MatNullSpace) end
 
-@for_petsc function MatGetNearNullSpace(petsclib::$UnionPetscLib, mat::PetscMat, nullsp::MatNullSpace )
+@for_petsc function MatGetNearNullSpace(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nullsp::MatNullSpace )
 
     @chk ccall(
                (:MatGetNearNullSpace, $petsc_library),
@@ -7053,7 +7053,7 @@ function MatGetNearNullSpace(petsclib::PetscLibType, mat::PetscMat, nullsp::MatN
 end 
 
 """
-	MatICCFactor(petsclib::PetscLibType,mat::PetscMat, row::IS, info::MatFactorInfo) 
+	MatICCFactor(petsclib::PetscLibType,mat::AbstractPetscMat, row::AbstractIS, info::MatFactorInfo) 
 Performs in
 
 Collective
@@ -7070,9 +7070,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatICCFactor"))
 """
-function MatICCFactor(petsclib::PetscLibType, mat::PetscMat, row::IS, info::MatFactorInfo) end
+function MatICCFactor(petsclib::PetscLibType, mat::AbstractPetscMat, row::AbstractIS, info::MatFactorInfo) end
 
-@for_petsc function MatICCFactor(petsclib::$UnionPetscLib, mat::PetscMat, row::IS, info::MatFactorInfo )
+@for_petsc function MatICCFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::AbstractIS, info::MatFactorInfo )
 
     @chk ccall(
                (:MatICCFactor, $petsc_library),
@@ -7086,7 +7086,7 @@ function MatICCFactor(petsclib::PetscLibType, mat::PetscMat, row::IS, info::MatF
 end 
 
 """
-	MatDiagonalScaleLocal(petsclib::PetscLibType,mat::PetscMat, diag::PetscVec) 
+	MatDiagonalScaleLocal(petsclib::PetscLibType,mat::AbstractPetscMat, diag::AbstractPetscVec) 
 Scales columns of a matrix given the scaling values including the
 ghosted ones.
 
@@ -7103,9 +7103,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatDiagonalScaleLocal"))
 """
-function MatDiagonalScaleLocal(petsclib::PetscLibType, mat::PetscMat, diag::PetscVec) end
+function MatDiagonalScaleLocal(petsclib::PetscLibType, mat::AbstractPetscMat, diag::AbstractPetscVec) end
 
-@for_petsc function MatDiagonalScaleLocal(petsclib::$UnionPetscLib, mat::PetscMat, diag::PetscVec )
+@for_petsc function MatDiagonalScaleLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, diag::AbstractPetscVec )
 
     @chk ccall(
                (:MatDiagonalScaleLocal, $petsc_library),
@@ -7119,7 +7119,7 @@ function MatDiagonalScaleLocal(petsclib::PetscLibType, mat::PetscMat, diag::Pets
 end 
 
 """
-	nneg::PetscInt,nzero::PetscInt,npos::PetscInt = MatGetInertia(petsclib::PetscLibType,mat::PetscMat) 
+	nneg::PetscInt,nzero::PetscInt,npos::PetscInt = MatGetInertia(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Gets the inertia from a factored matrix
 
 Collective
@@ -7139,9 +7139,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetInertia"))
 """
-function MatGetInertia(petsclib::PetscLibType, mat::PetscMat) end
+function MatGetInertia(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatGetInertia(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatGetInertia(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	nneg_ = Ref{$PetscInt}()
 	nzero_ = Ref{$PetscInt}()
 	npos_ = Ref{$PetscInt}()
@@ -7161,7 +7161,7 @@ function MatGetInertia(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatSolves(petsclib::PetscLibType,mat::PetscMat, b::Vecs, x::Vecs) 
+	MatSolves(petsclib::PetscLibType,mat::AbstractPetscMat, b::Vecs, x::Vecs) 
 Solves A x = b, given a factored matrix, for a collection of vectors
 
 Neighbor-wise Collective
@@ -7180,9 +7180,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSolves"))
 """
-function MatSolves(petsclib::PetscLibType, mat::PetscMat, b::Vecs, x::Vecs) end
+function MatSolves(petsclib::PetscLibType, mat::AbstractPetscMat, b::Vecs, x::Vecs) end
 
-@for_petsc function MatSolves(petsclib::$UnionPetscLib, mat::PetscMat, b::Vecs, x::Vecs )
+@for_petsc function MatSolves(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::Vecs, x::Vecs )
 
     @chk ccall(
                (:MatSolves, $petsc_library),
@@ -7196,7 +7196,7 @@ function MatSolves(petsclib::PetscLibType, mat::PetscMat, b::Vecs, x::Vecs) end
 end 
 
 """
-	flg::PetscBool = MatIsSymmetric(petsclib::PetscLibType,A::PetscMat, tol::PetscReal) 
+	flg::PetscBool = MatIsSymmetric(petsclib::PetscLibType,A::AbstractPetscMat, tol::PetscReal) 
 Test whether a matrix is symmetric
 
 Collective
@@ -7216,9 +7216,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatIsSymmetric"))
 """
-function MatIsSymmetric(petsclib::PetscLibType, A::PetscMat, tol::PetscReal) end
+function MatIsSymmetric(petsclib::PetscLibType, A::AbstractPetscMat, tol::PetscReal) end
 
-@for_petsc function MatIsSymmetric(petsclib::$UnionPetscLib, A::PetscMat, tol::$PetscReal )
+@for_petsc function MatIsSymmetric(petsclib::$UnionPetscLib, A::AbstractPetscMat, tol::$PetscReal )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -7234,7 +7234,7 @@ function MatIsSymmetric(petsclib::PetscLibType, A::PetscMat, tol::PetscReal) end
 end 
 
 """
-	flg::PetscBool = MatIsHermitian(petsclib::PetscLibType,A::PetscMat, tol::PetscReal) 
+	flg::PetscBool = MatIsHermitian(petsclib::PetscLibType,A::AbstractPetscMat, tol::PetscReal) 
 Test whether a matrix is Hermitian
 
 Collective
@@ -7254,9 +7254,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatIsHermitian"))
 """
-function MatIsHermitian(petsclib::PetscLibType, A::PetscMat, tol::PetscReal) end
+function MatIsHermitian(petsclib::PetscLibType, A::AbstractPetscMat, tol::PetscReal) end
 
-@for_petsc function MatIsHermitian(petsclib::$UnionPetscLib, A::PetscMat, tol::$PetscScalar )
+@for_petsc function MatIsHermitian(petsclib::$UnionPetscLib, A::AbstractPetscMat, tol::$PetscScalar )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -7272,7 +7272,7 @@ function MatIsHermitian(petsclib::PetscLibType, A::PetscMat, tol::PetscReal) end
 end 
 
 """
-	set::PetscBool,flg::PetscBool = MatIsSymmetricKnown(petsclib::PetscLibType,A::PetscMat) 
+	set::PetscBool,flg::PetscBool = MatIsSymmetricKnown(petsclib::PetscLibType,A::AbstractPetscMat) 
 Checks if a matrix knows if it is symmetric or not and its symmetric state
 
 Not Collective
@@ -7291,9 +7291,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatIsSymmetricKnown"))
 """
-function MatIsSymmetricKnown(petsclib::PetscLibType, A::PetscMat) end
+function MatIsSymmetricKnown(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatIsSymmetricKnown(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatIsSymmetricKnown(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	set_ = Ref{PetscBool}()
 	flg_ = Ref{PetscBool}()
 
@@ -7311,7 +7311,7 @@ function MatIsSymmetricKnown(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	set::PetscBool,flg::PetscBool = MatIsSPDKnown(petsclib::PetscLibType,A::PetscMat) 
+	set::PetscBool,flg::PetscBool = MatIsSPDKnown(petsclib::PetscLibType,A::AbstractPetscMat) 
 Checks if a matrix knows if it is symmetric positive definite or not and its symmetric positive definite state
 
 Not Collective
@@ -7330,9 +7330,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatIsSPDKnown"))
 """
-function MatIsSPDKnown(petsclib::PetscLibType, A::PetscMat) end
+function MatIsSPDKnown(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatIsSPDKnown(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatIsSPDKnown(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	set_ = Ref{PetscBool}()
 	flg_ = Ref{PetscBool}()
 
@@ -7350,7 +7350,7 @@ function MatIsSPDKnown(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	set::PetscBool,flg::PetscBool = MatIsHermitianKnown(petsclib::PetscLibType,A::PetscMat) 
+	set::PetscBool,flg::PetscBool = MatIsHermitianKnown(petsclib::PetscLibType,A::AbstractPetscMat) 
 Checks if a matrix knows if it is Hermitian or not and its Hermitian state
 
 Not Collective
@@ -7369,9 +7369,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatIsHermitianKnown"))
 """
-function MatIsHermitianKnown(petsclib::PetscLibType, A::PetscMat) end
+function MatIsHermitianKnown(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatIsHermitianKnown(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatIsHermitianKnown(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	set_ = Ref{PetscBool}()
 	flg_ = Ref{PetscBool}()
 
@@ -7389,7 +7389,7 @@ function MatIsHermitianKnown(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	flg::PetscBool = MatIsStructurallySymmetric(petsclib::PetscLibType,A::PetscMat) 
+	flg::PetscBool = MatIsStructurallySymmetric(petsclib::PetscLibType,A::AbstractPetscMat) 
 Test whether a matrix is structurally symmetric
 
 Collective
@@ -7407,9 +7407,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatIsStructurallySymmetric"))
 """
-function MatIsStructurallySymmetric(petsclib::PetscLibType, A::PetscMat) end
+function MatIsStructurallySymmetric(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatIsStructurallySymmetric(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatIsStructurallySymmetric(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -7425,7 +7425,7 @@ function MatIsStructurallySymmetric(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	set::PetscBool,flg::PetscBool = MatIsStructurallySymmetricKnown(petsclib::PetscLibType,A::PetscMat) 
+	set::PetscBool,flg::PetscBool = MatIsStructurallySymmetricKnown(petsclib::PetscLibType,A::AbstractPetscMat) 
 Checks if a matrix knows if it is structurally symmetric or not and its structurally symmetric state
 
 Not Collective
@@ -7444,9 +7444,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatIsStructurallySymmetricKnown"))
 """
-function MatIsStructurallySymmetricKnown(petsclib::PetscLibType, A::PetscMat) end
+function MatIsStructurallySymmetricKnown(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatIsStructurallySymmetricKnown(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatIsStructurallySymmetricKnown(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	set_ = Ref{PetscBool}()
 	flg_ = Ref{PetscBool}()
 
@@ -7464,7 +7464,7 @@ function MatIsStructurallySymmetricKnown(petsclib::PetscLibType, A::PetscMat) en
 end 
 
 """
-	nstash::PetscInt,reallocs::PetscInt,bnstash::PetscInt,breallocs::PetscInt = MatStashGetInfo(petsclib::PetscLibType,mat::PetscMat) 
+	nstash::PetscInt,reallocs::PetscInt,bnstash::PetscInt,breallocs::PetscInt = MatStashGetInfo(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Gets how many values are currently in the matrix stash, i.e. need
 to be communicated to other processors during the `MatAssemblyBegin()`/`MatAssemblyEnd()` process
 
@@ -7486,9 +7486,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatStashGetInfo"))
 """
-function MatStashGetInfo(petsclib::PetscLibType, mat::PetscMat) end
+function MatStashGetInfo(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatStashGetInfo(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatStashGetInfo(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	nstash_ = Ref{$PetscInt}()
 	reallocs_ = Ref{$PetscInt}()
 	bnstash_ = Ref{$PetscInt}()
@@ -7510,7 +7510,7 @@ function MatStashGetInfo(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	right::PetscVec,left::PetscVec = MatCreateVecs(petsclib::PetscLibType,mat::PetscMat) 
+	right::PetscVec,left::PetscVec = MatCreateVecs(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Get vector(s) compatible with the matrix, i.e. with the same
 parallel layout, `PetscLayout` for rows and columns
 
@@ -7530,9 +7530,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateVecs"))
 """
-function MatCreateVecs(petsclib::PetscLibType, mat::PetscMat) end
+function MatCreateVecs(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatCreateVecs(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatCreateVecs(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	right_ = Ref{CVec}()
 	left_ = Ref{CVec}()
 
@@ -7582,7 +7582,7 @@ function MatFactorInfoInitialize(petsclib::PetscLibType, info::MatFactorInfo) en
 end 
 
 """
-	MatFactorSetSchurIS(petsclib::PetscLibType,mat::PetscMat, is::IS) 
+	MatFactorSetSchurIS(petsclib::PetscLibType,mat::AbstractPetscMat, is::AbstractIS) 
 Set indices corresponding to the Schur complement you wish to have computed
 
 Collective
@@ -7599,9 +7599,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatFactorSetSchurIS"))
 """
-function MatFactorSetSchurIS(petsclib::PetscLibType, mat::PetscMat, is::IS) end
+function MatFactorSetSchurIS(petsclib::PetscLibType, mat::AbstractPetscMat, is::AbstractIS) end
 
-@for_petsc function MatFactorSetSchurIS(petsclib::$UnionPetscLib, mat::PetscMat, is::IS )
+@for_petsc function MatFactorSetSchurIS(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS )
 
     @chk ccall(
                (:MatFactorSetSchurIS, $petsc_library),
@@ -7615,7 +7615,7 @@ function MatFactorSetSchurIS(petsclib::PetscLibType, mat::PetscMat, is::IS) end
 end 
 
 """
-	S::PetscMat,status::MatFactorSchurStatus = MatFactorCreateSchurComplement(petsclib::PetscLibType,F::PetscMat) 
+	S::PetscMat,status::MatFactorSchurStatus = MatFactorCreateSchurComplement(petsclib::PetscLibType,F::AbstractPetscMat) 
 Create a Schur complement matrix object using Schur data computed during the factorization step
 
 Logically Collective
@@ -7632,9 +7632,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatFactorCreateSchurComplement"))
 """
-function MatFactorCreateSchurComplement(petsclib::PetscLibType, F::PetscMat) end
+function MatFactorCreateSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat) end
 
-@for_petsc function MatFactorCreateSchurComplement(petsclib::$UnionPetscLib, F::PetscMat )
+@for_petsc function MatFactorCreateSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat )
 	S_ = Ref{CMat}()
 	status_ = Ref{MatFactorSchurStatus}()
 
@@ -7652,7 +7652,7 @@ function MatFactorCreateSchurComplement(petsclib::PetscLibType, F::PetscMat) end
 end 
 
 """
-	MatFactorGetSchurComplement(petsclib::PetscLibType,F::PetscMat, S::PetscMat, status::MatFactorSchurStatus) 
+	MatFactorGetSchurComplement(petsclib::PetscLibType,F::AbstractPetscMat, S::AbstractPetscMat, status::MatFactorSchurStatus) 
 Gets access to a Schur complement matrix using the current Schur data within a factored matrix
 
 Logically Collective
@@ -7669,9 +7669,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatFactorGetSchurComplement"))
 """
-function MatFactorGetSchurComplement(petsclib::PetscLibType, F::PetscMat, S::Union{Ptr,PetscMat}, status::Union{Ptr,MatFactorSchurStatus}) end
+function MatFactorGetSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat, S::Union{Ptr,PetscMat}, status::Union{Ptr,MatFactorSchurStatus}) end
 
-@for_petsc function MatFactorGetSchurComplement(petsclib::$UnionPetscLib, F::PetscMat, S::Union{Ptr,PetscMat}, status::Union{Ptr,MatFactorSchurStatus})
+@for_petsc function MatFactorGetSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat, S::Union{Ptr,PetscMat}, status::Union{Ptr,MatFactorSchurStatus})
 	S_ = Ref(S.ptr)
 
     @chk ccall(
@@ -7687,7 +7687,7 @@ function MatFactorGetSchurComplement(petsclib::PetscLibType, F::PetscMat, S::Uni
 end 
 
 """
-	MatFactorRestoreSchurComplement(petsclib::PetscLibType,F::PetscMat, S::PetscMat, status::MatFactorSchurStatus) 
+	MatFactorRestoreSchurComplement(petsclib::PetscLibType,F::AbstractPetscMat, S::AbstractPetscMat, status::MatFactorSchurStatus) 
 Restore the Schur complement matrix object obtained from a call to `MatFactorGetSchurComplement()`
 
 Logically Collective
@@ -7704,9 +7704,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatFactorRestoreSchurComplement"))
 """
-function MatFactorRestoreSchurComplement(petsclib::PetscLibType, F::PetscMat, S::PetscMat, status::MatFactorSchurStatus) end
+function MatFactorRestoreSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat, S::AbstractPetscMat, status::MatFactorSchurStatus) end
 
-@for_petsc function MatFactorRestoreSchurComplement(petsclib::$UnionPetscLib, F::PetscMat, S::PetscMat, status::MatFactorSchurStatus )
+@for_petsc function MatFactorRestoreSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat, S::AbstractPetscMat, status::MatFactorSchurStatus )
 	S_ = Ref(S.ptr)
 
     @chk ccall(
@@ -7722,7 +7722,7 @@ function MatFactorRestoreSchurComplement(petsclib::PetscLibType, F::PetscMat, S:
 end 
 
 """
-	MatFactorSolveSchurComplementTranspose(petsclib::PetscLibType,F::PetscMat, rhs::PetscVec, sol::PetscVec) 
+	MatFactorSolveSchurComplementTranspose(petsclib::PetscLibType,F::AbstractPetscMat, rhs::AbstractPetscVec, sol::AbstractPetscVec) 
 Solve the transpose of the Schur complement system computed during the factorization step
 
 Logically Collective
@@ -7739,9 +7739,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatFactorSolveSchurComplementTranspose"))
 """
-function MatFactorSolveSchurComplementTranspose(petsclib::PetscLibType, F::PetscMat, rhs::PetscVec, sol::PetscVec) end
+function MatFactorSolveSchurComplementTranspose(petsclib::PetscLibType, F::AbstractPetscMat, rhs::AbstractPetscVec, sol::AbstractPetscVec) end
 
-@for_petsc function MatFactorSolveSchurComplementTranspose(petsclib::$UnionPetscLib, F::PetscMat, rhs::PetscVec, sol::PetscVec )
+@for_petsc function MatFactorSolveSchurComplementTranspose(petsclib::$UnionPetscLib, F::AbstractPetscMat, rhs::AbstractPetscVec, sol::AbstractPetscVec )
 
     @chk ccall(
                (:MatFactorSolveSchurComplementTranspose, $petsc_library),
@@ -7755,7 +7755,7 @@ function MatFactorSolveSchurComplementTranspose(petsclib::PetscLibType, F::Petsc
 end 
 
 """
-	MatFactorSolveSchurComplement(petsclib::PetscLibType,F::PetscMat, rhs::PetscVec, sol::PetscVec) 
+	MatFactorSolveSchurComplement(petsclib::PetscLibType,F::AbstractPetscMat, rhs::AbstractPetscVec, sol::AbstractPetscVec) 
 Solve the Schur complement system computed during the factorization step
 
 Logically Collective
@@ -7772,9 +7772,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatFactorSolveSchurComplement"))
 """
-function MatFactorSolveSchurComplement(petsclib::PetscLibType, F::PetscMat, rhs::PetscVec, sol::PetscVec) end
+function MatFactorSolveSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat, rhs::AbstractPetscVec, sol::AbstractPetscVec) end
 
-@for_petsc function MatFactorSolveSchurComplement(petsclib::$UnionPetscLib, F::PetscMat, rhs::PetscVec, sol::PetscVec )
+@for_petsc function MatFactorSolveSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat, rhs::AbstractPetscVec, sol::AbstractPetscVec )
 
     @chk ccall(
                (:MatFactorSolveSchurComplement, $petsc_library),
@@ -7788,7 +7788,7 @@ function MatFactorSolveSchurComplement(petsclib::PetscLibType, F::PetscMat, rhs:
 end 
 
 """
-	MatFactorInvertSchurComplement(petsclib::PetscLibType,F::PetscMat) 
+	MatFactorInvertSchurComplement(petsclib::PetscLibType,F::AbstractPetscMat) 
 Invert the Schur complement matrix computed during the factorization step
 
 Logically Collective
@@ -7803,9 +7803,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatFactorInvertSchurComplement"))
 """
-function MatFactorInvertSchurComplement(petsclib::PetscLibType, F::PetscMat) end
+function MatFactorInvertSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat) end
 
-@for_petsc function MatFactorInvertSchurComplement(petsclib::$UnionPetscLib, F::PetscMat )
+@for_petsc function MatFactorInvertSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat )
 
     @chk ccall(
                (:MatFactorInvertSchurComplement, $petsc_library),
@@ -7819,7 +7819,7 @@ function MatFactorInvertSchurComplement(petsclib::PetscLibType, F::PetscMat) end
 end 
 
 """
-	MatFactorFactorizeSchurComplement(petsclib::PetscLibType,F::PetscMat) 
+	MatFactorFactorizeSchurComplement(petsclib::PetscLibType,F::AbstractPetscMat) 
 Factorize the Schur complement matrix computed during the factorization step
 
 Logically Collective
@@ -7834,9 +7834,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatFactorFactorizeSchurComplement"))
 """
-function MatFactorFactorizeSchurComplement(petsclib::PetscLibType, F::PetscMat) end
+function MatFactorFactorizeSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat) end
 
-@for_petsc function MatFactorFactorizeSchurComplement(petsclib::$UnionPetscLib, F::PetscMat )
+@for_petsc function MatFactorFactorizeSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat )
 
     @chk ccall(
                (:MatFactorFactorizeSchurComplement, $petsc_library),
@@ -7850,7 +7850,7 @@ function MatFactorFactorizeSchurComplement(petsclib::PetscLibType, F::PetscMat) 
 end 
 
 """
-	MatPtAP(petsclib::PetscLibType,A::PetscMat, P::PetscMat, scall::MatReuse, fill::PetscReal, C::PetscMat) 
+	MatPtAP(petsclib::PetscLibType,A::AbstractPetscMat, P::AbstractPetscMat, scall::MatReuse, fill::PetscReal, C::AbstractPetscMat) 
 Creates the matrix product C = P^T * A * P
 
 Neighbor-wise Collective
@@ -7872,9 +7872,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatPtAP"))
 """
-function MatPtAP(petsclib::PetscLibType, A::PetscMat, P::PetscMat, scall::MatReuse, fill::PetscReal, C::PetscMat) end
+function MatPtAP(petsclib::PetscLibType, A::AbstractPetscMat, P::AbstractPetscMat, scall::MatReuse, fill::PetscReal, C::AbstractPetscMat) end
 
-@for_petsc function MatPtAP(petsclib::$UnionPetscLib, A::PetscMat, P::PetscMat, scall::MatReuse, fill::$PetscReal, C::PetscMat )
+@for_petsc function MatPtAP(petsclib::$UnionPetscLib, A::AbstractPetscMat, P::AbstractPetscMat, scall::MatReuse, fill::$PetscReal, C::AbstractPetscMat )
 	C_ = Ref(C.ptr)
 
     @chk ccall(
@@ -7890,7 +7890,7 @@ function MatPtAP(petsclib::PetscLibType, A::PetscMat, P::PetscMat, scall::MatReu
 end 
 
 """
-	MatRARt(petsclib::PetscLibType,A::PetscMat, R::PetscMat, scall::MatReuse, fill::PetscReal, C::PetscMat) 
+	MatRARt(petsclib::PetscLibType,A::AbstractPetscMat, R::AbstractPetscMat, scall::MatReuse, fill::PetscReal, C::AbstractPetscMat) 
 Creates the matrix product C = R * A * R^T
 
 Neighbor-wise Collective
@@ -7912,9 +7912,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatRARt"))
 """
-function MatRARt(petsclib::PetscLibType, A::PetscMat, R::PetscMat, scall::MatReuse, fill::PetscReal, C::PetscMat) end
+function MatRARt(petsclib::PetscLibType, A::AbstractPetscMat, R::AbstractPetscMat, scall::MatReuse, fill::PetscReal, C::AbstractPetscMat) end
 
-@for_petsc function MatRARt(petsclib::$UnionPetscLib, A::PetscMat, R::PetscMat, scall::MatReuse, fill::$PetscReal, C::PetscMat )
+@for_petsc function MatRARt(petsclib::$UnionPetscLib, A::AbstractPetscMat, R::AbstractPetscMat, scall::MatReuse, fill::$PetscReal, C::AbstractPetscMat )
 	C_ = Ref(C.ptr)
 
     @chk ccall(
@@ -7930,7 +7930,7 @@ function MatRARt(petsclib::PetscLibType, A::PetscMat, R::PetscMat, scall::MatReu
 end 
 
 """
-	MatMatMult(petsclib::PetscLibType,A::PetscMat, B::PetscMat, scall::MatReuse, fill::PetscReal, C::PetscMat) 
+	MatMatMult(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::PetscReal, C::AbstractPetscMat) 
 Performs matrix
 
 Neighbor-wise Collective
@@ -7950,9 +7950,9 @@ Output Parameter:
 # External Links
 $(_doc_external("Mat/MatMatMult"))
 """
-function MatMatMult(petsclib::PetscLibType, A::PetscMat, B::PetscMat, scall::MatReuse, fill::PetscReal, C::PetscMat) end
+function MatMatMult(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::PetscReal, C::AbstractPetscMat) end
 
-@for_petsc function MatMatMult(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, scall::MatReuse, fill::$PetscReal, C::PetscMat )
+@for_petsc function MatMatMult(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::$PetscReal, C::AbstractPetscMat )
 	C_ = Ref(C.ptr)
 
     @chk ccall(
@@ -7968,7 +7968,7 @@ function MatMatMult(petsclib::PetscLibType, A::PetscMat, B::PetscMat, scall::Mat
 end 
 
 """
-	MatMatTransposeMult(petsclib::PetscLibType,A::PetscMat, B::PetscMat, scall::MatReuse, fill::PetscReal, C::PetscMat) 
+	MatMatTransposeMult(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::PetscReal, C::AbstractPetscMat) 
 Performs matrix
 
 Neighbor-wise Collective
@@ -7994,9 +7994,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMatTransposeMult"))
 """
-function MatMatTransposeMult(petsclib::PetscLibType, A::PetscMat, B::PetscMat, scall::MatReuse, fill::PetscReal, C::PetscMat) end
+function MatMatTransposeMult(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::PetscReal, C::AbstractPetscMat) end
 
-@for_petsc function MatMatTransposeMult(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, scall::MatReuse, fill::$PetscReal, C::PetscMat )
+@for_petsc function MatMatTransposeMult(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::$PetscReal, C::AbstractPetscMat )
 	C_ = Ref(C.ptr)
 
     @chk ccall(
@@ -8012,7 +8012,7 @@ function MatMatTransposeMult(petsclib::PetscLibType, A::PetscMat, B::PetscMat, s
 end 
 
 """
-	MatTransposeMatMult(petsclib::PetscLibType,A::PetscMat, B::PetscMat, scall::MatReuse, fill::PetscReal, C::PetscMat) 
+	MatTransposeMatMult(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::PetscReal, C::AbstractPetscMat) 
 Performs matrix
 
 Neighbor-wise Collective
@@ -8033,9 +8033,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatTransposeMatMult"))
 """
-function MatTransposeMatMult(petsclib::PetscLibType, A::PetscMat, B::PetscMat, scall::MatReuse, fill::PetscReal, C::PetscMat) end
+function MatTransposeMatMult(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::PetscReal, C::AbstractPetscMat) end
 
-@for_petsc function MatTransposeMatMult(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, scall::MatReuse, fill::$PetscReal, C::PetscMat )
+@for_petsc function MatTransposeMatMult(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, fill::$PetscReal, C::AbstractPetscMat )
 	C_ = Ref(C.ptr)
 
     @chk ccall(
@@ -8051,7 +8051,7 @@ function MatTransposeMatMult(petsclib::PetscLibType, A::PetscMat, B::PetscMat, s
 end 
 
 """
-	MatMatMatMult(petsclib::PetscLibType,A::PetscMat, B::PetscMat, C::PetscMat, scall::MatReuse, fill::PetscReal, D::PetscMat) 
+	MatMatMatMult(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, scall::MatReuse, fill::PetscReal, D::AbstractPetscMat) 
 Performs matrix
 
 Neighbor-wise Collective
@@ -8074,9 +8074,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMatMatMult"))
 """
-function MatMatMatMult(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::PetscMat, scall::MatReuse, fill::PetscReal, D::PetscMat) end
+function MatMatMatMult(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, scall::MatReuse, fill::PetscReal, D::AbstractPetscMat) end
 
-@for_petsc function MatMatMatMult(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, C::PetscMat, scall::MatReuse, fill::$PetscReal, D::PetscMat )
+@for_petsc function MatMatMatMult(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, scall::MatReuse, fill::$PetscReal, D::AbstractPetscMat )
 	D_ = Ref(D.ptr)
 
     @chk ccall(
@@ -8092,7 +8092,7 @@ function MatMatMatMult(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::Pets
 end 
 
 """
-	matredundant::PetscMat = MatCreateRedundantMatrix(petsclib::PetscLibType,mat::PetscMat, nsubcomm::PetscInt, subcomm::MPI_Comm, reuse::MatReuse) 
+	matredundant::PetscMat = MatCreateRedundantMatrix(petsclib::PetscLibType,mat::AbstractPetscMat, nsubcomm::PetscInt, subcomm::MPI_Comm, reuse::MatReuse) 
 Create redundant matrices and put them into processors of subcommunicators.
 
 Collective
@@ -8113,9 +8113,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateRedundantMatrix"))
 """
-function MatCreateRedundantMatrix(petsclib::PetscLibType, mat::PetscMat, nsubcomm::PetscInt, subcomm::MPI_Comm, reuse::MatReuse) end
+function MatCreateRedundantMatrix(petsclib::PetscLibType, mat::AbstractPetscMat, nsubcomm::PetscInt, subcomm::MPI_Comm, reuse::MatReuse) end
 
-@for_petsc function MatCreateRedundantMatrix(petsclib::$UnionPetscLib, mat::PetscMat, nsubcomm::$PetscInt, subcomm::MPI_Comm, reuse::MatReuse )
+@for_petsc function MatCreateRedundantMatrix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nsubcomm::$PetscInt, subcomm::MPI_Comm, reuse::MatReuse )
 	matredundant_ = Ref{CMat}()
 
     @chk ccall(
@@ -8131,7 +8131,7 @@ function MatCreateRedundantMatrix(petsclib::PetscLibType, mat::PetscMat, nsubcom
 end 
 
 """
-	MatGetMultiProcBlock(petsclib::PetscLibType,mat::PetscMat, subComm::MPI_Comm, scall::MatReuse, subMat::PetscMat) 
+	MatGetMultiProcBlock(petsclib::PetscLibType,mat::AbstractPetscMat, subComm::MPI_Comm, scall::MatReuse, subMat::AbstractPetscMat) 
 Create multiple 'parallel submatrices' from
 a given `Mat`. Each submatrix can span multiple procs.
 
@@ -8152,9 +8152,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetMultiProcBlock"))
 """
-function MatGetMultiProcBlock(petsclib::PetscLibType, mat::PetscMat, subComm::MPI_Comm, scall::MatReuse, subMat::PetscMat) end
+function MatGetMultiProcBlock(petsclib::PetscLibType, mat::AbstractPetscMat, subComm::MPI_Comm, scall::MatReuse, subMat::AbstractPetscMat) end
 
-@for_petsc function MatGetMultiProcBlock(petsclib::$UnionPetscLib, mat::PetscMat, subComm::MPI_Comm, scall::MatReuse, subMat::PetscMat )
+@for_petsc function MatGetMultiProcBlock(petsclib::$UnionPetscLib, mat::AbstractPetscMat, subComm::MPI_Comm, scall::MatReuse, subMat::AbstractPetscMat )
 	subMat_ = Ref(subMat.ptr)
 
     @chk ccall(
@@ -8170,7 +8170,7 @@ function MatGetMultiProcBlock(petsclib::PetscLibType, mat::PetscMat, subComm::MP
 end 
 
 """
-	MatGetLocalSubMatrix(petsclib::PetscLibType,mat::PetscMat, isrow::IS, iscol::IS, submat::PetscMat) 
+	MatGetLocalSubMatrix(petsclib::PetscLibType,mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, submat::AbstractPetscMat) 
 Gets a reference to a submatrix specified in local numbering
 
 Not Collective
@@ -8190,9 +8190,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetLocalSubMatrix"))
 """
-function MatGetLocalSubMatrix(petsclib::PetscLibType, mat::PetscMat, isrow::IS, iscol::IS, submat::PetscMat) end
+function MatGetLocalSubMatrix(petsclib::PetscLibType, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, submat::AbstractPetscMat) end
 
-@for_petsc function MatGetLocalSubMatrix(petsclib::$UnionPetscLib, mat::PetscMat, isrow::IS, iscol::IS, submat::PetscMat )
+@for_petsc function MatGetLocalSubMatrix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, submat::AbstractPetscMat )
 	submat_ = Ref(submat.ptr)
 
     @chk ccall(
@@ -8208,7 +8208,7 @@ function MatGetLocalSubMatrix(petsclib::PetscLibType, mat::PetscMat, isrow::IS, 
 end 
 
 """
-	MatRestoreLocalSubMatrix(petsclib::PetscLibType,mat::PetscMat, isrow::IS, iscol::IS, submat::PetscMat) 
+	MatRestoreLocalSubMatrix(petsclib::PetscLibType,mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, submat::AbstractPetscMat) 
 Restores a reference to a submatrix specified in local numbering obtained with `MatGetLocalSubMatrix()`
 
 Not Collective
@@ -8226,9 +8226,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatRestoreLocalSubMatrix"))
 """
-function MatRestoreLocalSubMatrix(petsclib::PetscLibType, mat::PetscMat, isrow::IS, iscol::IS, submat::PetscMat) end
+function MatRestoreLocalSubMatrix(petsclib::PetscLibType, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, submat::AbstractPetscMat) end
 
-@for_petsc function MatRestoreLocalSubMatrix(petsclib::$UnionPetscLib, mat::PetscMat, isrow::IS, iscol::IS, submat::PetscMat )
+@for_petsc function MatRestoreLocalSubMatrix(petsclib::$UnionPetscLib, mat::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS, submat::AbstractPetscMat )
 	submat_ = Ref(submat.ptr)
 
     @chk ccall(
@@ -8244,7 +8244,7 @@ function MatRestoreLocalSubMatrix(petsclib::PetscLibType, mat::PetscMat, isrow::
 end 
 
 """
-	MatFindZeroDiagonals(petsclib::PetscLibType,mat::PetscMat, is::IS) 
+	MatFindZeroDiagonals(petsclib::PetscLibType,mat::AbstractPetscMat, is::AbstractIS) 
 Finds all the rows of a matrix that have zero or no diagonal entry in the matrix
 
 Collective
@@ -8262,9 +8262,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatFindZeroDiagonals"))
 """
-function MatFindZeroDiagonals(petsclib::PetscLibType, mat::PetscMat, is::IS) end
+function MatFindZeroDiagonals(petsclib::PetscLibType, mat::AbstractPetscMat, is::AbstractIS) end
 
-@for_petsc function MatFindZeroDiagonals(petsclib::$UnionPetscLib, mat::PetscMat, is::IS )
+@for_petsc function MatFindZeroDiagonals(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS )
 
     @chk ccall(
                (:MatFindZeroDiagonals, $petsc_library),
@@ -8278,7 +8278,7 @@ function MatFindZeroDiagonals(petsclib::PetscLibType, mat::PetscMat, is::IS) end
 end 
 
 """
-	MatFindOffBlockDiagonalEntries(petsclib::PetscLibType,mat::PetscMat, is::IS) 
+	MatFindOffBlockDiagonalEntries(petsclib::PetscLibType,mat::AbstractPetscMat, is::AbstractIS) 
 Finds all the rows of a matrix that have entries outside of the main diagonal block (defined by the matrix block size)
 
 Collective
@@ -8296,9 +8296,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatFindOffBlockDiagonalEntries"))
 """
-function MatFindOffBlockDiagonalEntries(petsclib::PetscLibType, mat::PetscMat, is::IS) end
+function MatFindOffBlockDiagonalEntries(petsclib::PetscLibType, mat::AbstractPetscMat, is::AbstractIS) end
 
-@for_petsc function MatFindOffBlockDiagonalEntries(petsclib::$UnionPetscLib, mat::PetscMat, is::IS )
+@for_petsc function MatFindOffBlockDiagonalEntries(petsclib::$UnionPetscLib, mat::AbstractPetscMat, is::AbstractIS )
 
     @chk ccall(
                (:MatFindOffBlockDiagonalEntries, $petsc_library),
@@ -8312,7 +8312,7 @@ function MatFindOffBlockDiagonalEntries(petsclib::PetscLibType, mat::PetscMat, i
 end 
 
 """
-	values::Vector{PetscScalar} = MatInvertBlockDiagonal(petsclib::PetscLibType,mat::PetscMat) 
+	values::Vector{PetscScalar} = MatInvertBlockDiagonal(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Inverts the block diagonal entries.
 
 Collective; No Fortran Support
@@ -8330,9 +8330,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatInvertBlockDiagonal"))
 """
-function MatInvertBlockDiagonal(petsclib::PetscLibType, mat::PetscMat) end
+function MatInvertBlockDiagonal(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatInvertBlockDiagonal(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatInvertBlockDiagonal(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	values_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -8348,7 +8348,7 @@ function MatInvertBlockDiagonal(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatInvertVariableBlockDiagonal(petsclib::PetscLibType,mat::PetscMat, nblocks::PetscInt, bsizes::Vector{PetscInt}, values::Vector{PetscScalar}) 
+	MatInvertVariableBlockDiagonal(petsclib::PetscLibType,mat::AbstractPetscMat, nblocks::PetscInt, bsizes::Vector{PetscInt}, values::Vector{PetscScalar}) 
 Inverts the point block diagonal entries.
 
 Collective; No Fortran Support
@@ -8368,9 +8368,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatInvertVariableBlockDiagonal"))
 """
-function MatInvertVariableBlockDiagonal(petsclib::PetscLibType, mat::PetscMat, nblocks::PetscInt, bsizes::Vector{PetscInt}, values::Vector{PetscScalar}) end
+function MatInvertVariableBlockDiagonal(petsclib::PetscLibType, mat::AbstractPetscMat, nblocks::PetscInt, bsizes::Vector{PetscInt}, values::Vector{PetscScalar}) end
 
-@for_petsc function MatInvertVariableBlockDiagonal(petsclib::$UnionPetscLib, mat::PetscMat, nblocks::$PetscInt, bsizes::Vector{$PetscInt}, values::Vector{$PetscScalar} )
+@for_petsc function MatInvertVariableBlockDiagonal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, nblocks::$PetscInt, bsizes::Vector{$PetscInt}, values::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatInvertVariableBlockDiagonal, $petsc_library),
@@ -8384,7 +8384,7 @@ function MatInvertVariableBlockDiagonal(petsclib::PetscLibType, mat::PetscMat, n
 end 
 
 """
-	MatInvertBlockDiagonalMat(petsclib::PetscLibType,A::PetscMat, C::PetscMat) 
+	MatInvertBlockDiagonalMat(petsclib::PetscLibType,A::AbstractPetscMat, C::AbstractPetscMat) 
 set the values of matrix C to be the inverted block diagonal of matrix A
 
 Collective
@@ -8400,9 +8400,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatInvertBlockDiagonalMat"))
 """
-function MatInvertBlockDiagonalMat(petsclib::PetscLibType, A::PetscMat, C::PetscMat) end
+function MatInvertBlockDiagonalMat(petsclib::PetscLibType, A::AbstractPetscMat, C::AbstractPetscMat) end
 
-@for_petsc function MatInvertBlockDiagonalMat(petsclib::$UnionPetscLib, A::PetscMat, C::PetscMat )
+@for_petsc function MatInvertBlockDiagonalMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, C::AbstractPetscMat )
 
     @chk ccall(
                (:MatInvertBlockDiagonalMat, $petsc_library),
@@ -8416,7 +8416,7 @@ function MatInvertBlockDiagonalMat(petsclib::PetscLibType, A::PetscMat, C::Petsc
 end 
 
 """
-	MatTransColoringApplySpToDen(petsclib::PetscLibType,coloring::MatTransposeColoring, B::PetscMat, Btdense::PetscMat) 
+	MatTransColoringApplySpToDen(petsclib::PetscLibType,coloring::MatTransposeColoring, B::AbstractPetscMat, Btdense::AbstractPetscMat) 
 Given a symbolic matrix product C = A*B^T for which
 a `MatTransposeColoring` context has been created, computes a dense B^T by applying
 `MatTransposeColoring` to sparse `B`.
@@ -8437,9 +8437,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatTransColoringApplySpToDen"))
 """
-function MatTransColoringApplySpToDen(petsclib::PetscLibType, coloring::MatTransposeColoring, B::PetscMat, Btdense::PetscMat) end
+function MatTransColoringApplySpToDen(petsclib::PetscLibType, coloring::MatTransposeColoring, B::AbstractPetscMat, Btdense::AbstractPetscMat) end
 
-@for_petsc function MatTransColoringApplySpToDen(petsclib::$UnionPetscLib, coloring::MatTransposeColoring, B::PetscMat, Btdense::PetscMat )
+@for_petsc function MatTransColoringApplySpToDen(petsclib::$UnionPetscLib, coloring::MatTransposeColoring, B::AbstractPetscMat, Btdense::AbstractPetscMat )
 
     @chk ccall(
                (:MatTransColoringApplySpToDen, $petsc_library),
@@ -8453,7 +8453,7 @@ function MatTransColoringApplySpToDen(petsclib::PetscLibType, coloring::MatTrans
 end 
 
 """
-	MatTransColoringApplyDenToSp(petsclib::PetscLibType,matcoloring::MatTransposeColoring, Cden::PetscMat, Csp::PetscMat) 
+	MatTransColoringApplyDenToSp(petsclib::PetscLibType,matcoloring::MatTransposeColoring, Cden::AbstractPetscMat, Csp::AbstractPetscMat) 
 Given a symbolic matrix product C_{sp} = A*B^T for which
 a `MatTransposeColoring` context has been created and a dense matrix C_{den} = A*B^T_{dense}
 in which `B^T_{dens}` is obtained from `MatTransColoringApplySpToDen()`, recover sparse matrix
@@ -8475,9 +8475,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatTransColoringApplyDenToSp"))
 """
-function MatTransColoringApplyDenToSp(petsclib::PetscLibType, matcoloring::MatTransposeColoring, Cden::PetscMat, Csp::PetscMat) end
+function MatTransColoringApplyDenToSp(petsclib::PetscLibType, matcoloring::MatTransposeColoring, Cden::AbstractPetscMat, Csp::AbstractPetscMat) end
 
-@for_petsc function MatTransColoringApplyDenToSp(petsclib::$UnionPetscLib, matcoloring::MatTransposeColoring, Cden::PetscMat, Csp::PetscMat )
+@for_petsc function MatTransColoringApplyDenToSp(petsclib::$UnionPetscLib, matcoloring::MatTransposeColoring, Cden::AbstractPetscMat, Csp::AbstractPetscMat )
 
     @chk ccall(
                (:MatTransColoringApplyDenToSp, $petsc_library),
@@ -8491,7 +8491,7 @@ function MatTransColoringApplyDenToSp(petsclib::PetscLibType, matcoloring::MatTr
 end 
 
 """
-	MatGetNonzeroState(petsclib::PetscLibType,mat::PetscMat, state::PetscObjectState) 
+	MatGetNonzeroState(petsclib::PetscLibType,mat::AbstractPetscMat, state::PetscObjectState) 
 Returns a 64
 matrix has had new nonzero locations added to (or removed from) the matrix since the previous call, the value will be larger.
 
@@ -8510,9 +8510,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetNonzeroState"))
 """
-function MatGetNonzeroState(petsclib::PetscLibType, mat::PetscMat, state::PetscObjectState) end
+function MatGetNonzeroState(petsclib::PetscLibType, mat::AbstractPetscMat, state::PetscObjectState) end
 
-@for_petsc function MatGetNonzeroState(petsclib::$UnionPetscLib, mat::PetscMat, state::PetscObjectState )
+@for_petsc function MatGetNonzeroState(petsclib::$UnionPetscLib, mat::AbstractPetscMat, state::PetscObjectState )
 
     @chk ccall(
                (:MatGetNonzeroState, $petsc_library),
@@ -8526,7 +8526,7 @@ function MatGetNonzeroState(petsclib::PetscLibType, mat::PetscMat, state::PetscO
 end 
 
 """
-	mpimat::PetscMat = MatCreateMPIMatConcatenateSeqMat(petsclib::PetscLibType,comm::MPI_Comm, seqmat::PetscMat, n::PetscInt, reuse::MatReuse) 
+	mpimat::PetscMat = MatCreateMPIMatConcatenateSeqMat(petsclib::PetscLibType,comm::MPI_Comm, seqmat::AbstractPetscMat, n::PetscInt, reuse::MatReuse) 
 Creates a single large PETSc matrix by concatenating sequential
 matrices from each processor
 
@@ -8548,9 +8548,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatCreateMPIMatConcatenateSeqMat"))
 """
-function MatCreateMPIMatConcatenateSeqMat(petsclib::PetscLibType, comm::MPI_Comm, seqmat::PetscMat, n::PetscInt, reuse::MatReuse) end
+function MatCreateMPIMatConcatenateSeqMat(petsclib::PetscLibType, comm::MPI_Comm, seqmat::AbstractPetscMat, n::PetscInt, reuse::MatReuse) end
 
-@for_petsc function MatCreateMPIMatConcatenateSeqMat(petsclib::$UnionPetscLib, comm::MPI_Comm, seqmat::PetscMat, n::$PetscInt, reuse::MatReuse )
+@for_petsc function MatCreateMPIMatConcatenateSeqMat(petsclib::$UnionPetscLib, comm::MPI_Comm, seqmat::AbstractPetscMat, n::$PetscInt, reuse::MatReuse )
 	mpimat_ = Ref{CMat}()
 
     @chk ccall(
@@ -8566,7 +8566,7 @@ function MatCreateMPIMatConcatenateSeqMat(petsclib::PetscLibType, comm::MPI_Comm
 end 
 
 """
-	n::PetscInt,iss::Vector{IS} = MatSubdomainsCreateCoalesce(petsclib::PetscLibType,A::PetscMat, N::PetscInt) 
+	n::PetscInt,iss::Vector{IS} = MatSubdomainsCreateCoalesce(petsclib::PetscLibType,A::AbstractPetscMat, N::PetscInt) 
 Creates index subdomains by coalescing adjacent MPI processes' ownership ranges.
 
 Collective
@@ -8586,9 +8586,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSubdomainsCreateCoalesce"))
 """
-function MatSubdomainsCreateCoalesce(petsclib::PetscLibType, A::PetscMat, N::PetscInt) end
+function MatSubdomainsCreateCoalesce(petsclib::PetscLibType, A::AbstractPetscMat, N::PetscInt) end
 
-@for_petsc function MatSubdomainsCreateCoalesce(petsclib::$UnionPetscLib, A::PetscMat, N::$PetscInt )
+@for_petsc function MatSubdomainsCreateCoalesce(petsclib::$UnionPetscLib, A::AbstractPetscMat, N::$PetscInt )
 	n_ = Ref{$PetscInt}()
 	iss_ = Ref{Ptr{CIS}}()
 
@@ -8606,7 +8606,7 @@ function MatSubdomainsCreateCoalesce(petsclib::PetscLibType, A::PetscMat, N::Pet
 end 
 
 """
-	MatGalerkin(petsclib::PetscLibType,restrct::PetscMat, dA::PetscMat, interpolate::PetscMat, reuse::MatReuse, fill::PetscReal, A::PetscMat) 
+	MatGalerkin(petsclib::PetscLibType,restrct::AbstractPetscMat, dA::AbstractPetscMat, interpolate::AbstractPetscMat, reuse::MatReuse, fill::PetscReal, A::AbstractPetscMat) 
 Constructs the coarse grid problem matrix via Galerkin projection.
 
 If the interpolation and restriction operators are the same, uses `MatPtAP()`.
@@ -8636,9 +8636,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatGalerkin"))
 """
-function MatGalerkin(petsclib::PetscLibType, restrct::PetscMat, dA::PetscMat, interpolate::PetscMat, reuse::MatReuse, fill::PetscReal, A::PetscMat) end
+function MatGalerkin(petsclib::PetscLibType, restrct::AbstractPetscMat, dA::AbstractPetscMat, interpolate::AbstractPetscMat, reuse::MatReuse, fill::PetscReal, A::AbstractPetscMat) end
 
-@for_petsc function MatGalerkin(petsclib::$UnionPetscLib, restrct::PetscMat, dA::PetscMat, interpolate::PetscMat, reuse::MatReuse, fill::$PetscReal, A::PetscMat )
+@for_petsc function MatGalerkin(petsclib::$UnionPetscLib, restrct::AbstractPetscMat, dA::AbstractPetscMat, interpolate::AbstractPetscMat, reuse::MatReuse, fill::$PetscReal, A::AbstractPetscMat )
 	A_ = Ref(A.ptr)
 
     @chk ccall(
@@ -8654,7 +8654,7 @@ function MatGalerkin(petsclib::PetscLibType, restrct::PetscMat, dA::PetscMat, in
 end 
 
 """
-	has::PetscBool = MatHasOperation(petsclib::PetscLibType,mat::PetscMat, op::MatOperation) 
+	has::PetscBool = MatHasOperation(petsclib::PetscLibType,mat::AbstractPetscMat, op::MatOperation) 
 Determines whether the given matrix supports the particular operation.
 
 Not Collective
@@ -8673,9 +8673,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatHasOperation"))
 """
-function MatHasOperation(petsclib::PetscLibType, mat::PetscMat, op::MatOperation) end
+function MatHasOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOperation) end
 
-@for_petsc function MatHasOperation(petsclib::$UnionPetscLib, mat::PetscMat, op::MatOperation )
+@for_petsc function MatHasOperation(petsclib::$UnionPetscLib, mat::AbstractPetscMat, op::MatOperation )
 	has_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -8691,7 +8691,7 @@ function MatHasOperation(petsclib::PetscLibType, mat::PetscMat, op::MatOperation
 end 
 
 """
-	cong::PetscBool = MatHasCongruentLayouts(petsclib::PetscLibType,mat::PetscMat) 
+	cong::PetscBool = MatHasCongruentLayouts(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Determines whether the rows and columns layouts of the matrix are congruent
 
 Collective
@@ -8709,9 +8709,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatHasCongruentLayouts"))
 """
-function MatHasCongruentLayouts(petsclib::PetscLibType, mat::PetscMat) end
+function MatHasCongruentLayouts(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatHasCongruentLayouts(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatHasCongruentLayouts(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	cong_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -8727,14 +8727,14 @@ function MatHasCongruentLayouts(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatSetInf(petsclib::PetscLibType,A::PetscMat) 
+	MatSetInf(petsclib::PetscLibType,A::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("Mat/MatSetInf"))
 """
-function MatSetInf(petsclib::PetscLibType, A::PetscMat) end
+function MatSetInf(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSetInf(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSetInf(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 
     @chk ccall(
                (:MatSetInf, $petsc_library),
@@ -8748,7 +8748,7 @@ function MatSetInf(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	graph::PetscMat = MatCreateGraph(petsclib::PetscLibType,A::PetscMat, sym::PetscBool, scale::PetscBool, filter::PetscReal, num_idx::PetscInt, index::Vector{PetscInt}) 
+	graph::PetscMat = MatCreateGraph(petsclib::PetscLibType,A::AbstractPetscMat, sym::PetscBool, scale::PetscBool, filter::PetscReal, num_idx::PetscInt, index::Vector{PetscInt}) 
 create a scalar matrix (that is a matrix with one vertex for each block vertex in the original matrix), for use in graph algorithms
 and possibly removes small values from the graph structure.
 
@@ -8772,9 +8772,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateGraph"))
 """
-function MatCreateGraph(petsclib::PetscLibType, A::PetscMat, sym::PetscBool, scale::PetscBool, filter::PetscReal, num_idx::PetscInt, index::Vector{PetscInt}) end
+function MatCreateGraph(petsclib::PetscLibType, A::AbstractPetscMat, sym::PetscBool, scale::PetscBool, filter::PetscReal, num_idx::PetscInt, index::Vector{PetscInt}) end
 
-@for_petsc function MatCreateGraph(petsclib::$UnionPetscLib, A::PetscMat, sym::PetscBool, scale::PetscBool, filter::$PetscReal, num_idx::$PetscInt, index::Vector{$PetscInt} )
+@for_petsc function MatCreateGraph(petsclib::$UnionPetscLib, A::AbstractPetscMat, sym::PetscBool, scale::PetscBool, filter::$PetscReal, num_idx::$PetscInt, index::Vector{$PetscInt} )
 	graph_ = Ref{CMat}()
 
     @chk ccall(
@@ -8790,7 +8790,7 @@ function MatCreateGraph(petsclib::PetscLibType, A::PetscMat, sym::PetscBool, sca
 end 
 
 """
-	MatEliminateZeros(petsclib::PetscLibType,A::PetscMat, keep::PetscBool) 
+	MatEliminateZeros(petsclib::PetscLibType,A::AbstractPetscMat, keep::PetscBool) 
 eliminate the nondiagonal zero entries in place from the nonzero structure of a sparse `Mat` in place,
 meaning the same memory is used for the matrix, and no new memory is allocated.
 
@@ -8807,9 +8807,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatEliminateZeros"))
 """
-function MatEliminateZeros(petsclib::PetscLibType, A::PetscMat, keep::PetscBool) end
+function MatEliminateZeros(petsclib::PetscLibType, A::AbstractPetscMat, keep::PetscBool) end
 
-@for_petsc function MatEliminateZeros(petsclib::$UnionPetscLib, A::PetscMat, keep::PetscBool )
+@for_petsc function MatEliminateZeros(petsclib::$UnionPetscLib, A::AbstractPetscMat, keep::PetscBool )
 
     @chk ccall(
                (:MatEliminateZeros, $petsc_library),
@@ -8823,7 +8823,7 @@ function MatEliminateZeros(petsclib::PetscLibType, A::PetscMat, keep::PetscBool)
 end 
 
 """
-	m::PetscMemType = MatGetCurrentMemType(petsclib::PetscLibType,A::PetscMat) 
+	m::PetscMemType = MatGetCurrentMemType(petsclib::PetscLibType,A::AbstractPetscMat) 
 Get the memory location of the matrix
 
 Not Collective, but the result will be the same on all MPI processes
@@ -8841,9 +8841,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetCurrentMemType"))
 """
-function MatGetCurrentMemType(petsclib::PetscLibType, A::PetscMat) end
+function MatGetCurrentMemType(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatGetCurrentMemType(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatGetCurrentMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	m_ = Ref{PetscMemType}()
 
     @chk ccall(
@@ -8859,7 +8859,7 @@ function MatGetCurrentMemType(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatScaLAPACKSetBlockSizes(petsclib::PetscLibType,A::PetscMat, mb::PetscInt, nb::PetscInt) 
+	MatScaLAPACKSetBlockSizes(petsclib::PetscLibType,A::AbstractPetscMat, mb::PetscInt, nb::PetscInt) 
 Sets the block sizes to be used for the distribution of
 the `MATSCALAPACK` matrix
 
@@ -8877,9 +8877,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatScaLAPACKSetBlockSizes"))
 """
-function MatScaLAPACKSetBlockSizes(petsclib::PetscLibType, A::PetscMat, mb::PetscInt, nb::PetscInt) end
+function MatScaLAPACKSetBlockSizes(petsclib::PetscLibType, A::AbstractPetscMat, mb::PetscInt, nb::PetscInt) end
 
-@for_petsc function MatScaLAPACKSetBlockSizes(petsclib::$UnionPetscLib, A::PetscMat, mb::$PetscInt, nb::$PetscInt )
+@for_petsc function MatScaLAPACKSetBlockSizes(petsclib::$UnionPetscLib, A::AbstractPetscMat, mb::$PetscInt, nb::$PetscInt )
 
     @chk ccall(
                (:MatScaLAPACKSetBlockSizes, $petsc_library),
@@ -8893,7 +8893,7 @@ function MatScaLAPACKSetBlockSizes(petsclib::PetscLibType, A::PetscMat, mb::Pets
 end 
 
 """
-	mb::PetscInt,nb::PetscInt = MatScaLAPACKGetBlockSizes(petsclib::PetscLibType,A::PetscMat) 
+	mb::PetscInt,nb::PetscInt = MatScaLAPACKGetBlockSizes(petsclib::PetscLibType,A::AbstractPetscMat) 
 Gets the block sizes used in the distribution of
 the `MATSCALAPACK` matrix
 
@@ -8913,9 +8913,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatScaLAPACKGetBlockSizes"))
 """
-function MatScaLAPACKGetBlockSizes(petsclib::PetscLibType, A::PetscMat) end
+function MatScaLAPACKGetBlockSizes(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatScaLAPACKGetBlockSizes(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatScaLAPACKGetBlockSizes(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	mb_ = Ref{$PetscInt}()
 	nb_ = Ref{$PetscInt}()
 
@@ -8979,7 +8979,7 @@ function MatCreateScaLAPACK(petsclib::PetscLibType, comm::MPI_Comm, mb::PetscInt
 end 
 
 """
-	MatMPISELLSetPreallocation(petsclib::PetscLibType,B::PetscMat, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+	MatMPISELLSetPreallocation(petsclib::PetscLibType,B::AbstractPetscMat, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
 Preallocates memory for a `MATMPISELL` sparse parallel matrix in sell format.
 For good matrix assembly performance the user should preallocate the matrix storage by
 setting the parameters `d_nz` (or `d_nnz`) and `o_nz` (or `o_nnz`).
@@ -9016,9 +9016,9 @@ as follows
 # External Links
 $(_doc_external("Mat/MatMPISELLSetPreallocation"))
 """
-function MatMPISELLSetPreallocation(petsclib::PetscLibType, B::PetscMat, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) end
+function MatMPISELLSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) end
 
-@for_petsc function MatMPISELLSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+@for_petsc function MatMPISELLSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatMPISELLSetPreallocation, $petsc_library),
@@ -9085,7 +9085,7 @@ function MatCreateSELL(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::P
 end 
 
 """
-	colmap::Vector{PetscInt} = MatMPISELLGetSeqSELL(petsclib::PetscLibType,A::PetscMat, Ad::PetscMat, Ao::PetscMat) 
+	colmap::Vector{PetscInt} = MatMPISELLGetSeqSELL(petsclib::PetscLibType,A::AbstractPetscMat, Ad::AbstractPetscMat, Ao::AbstractPetscMat) 
 Returns the local pieces of this distributed matrix
 
 Not Collective
@@ -9105,9 +9105,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMPISELLGetSeqSELL"))
 """
-function MatMPISELLGetSeqSELL(petsclib::PetscLibType, A::PetscMat, Ad::PetscMat, Ao::PetscMat) end
+function MatMPISELLGetSeqSELL(petsclib::PetscLibType, A::AbstractPetscMat, Ad::AbstractPetscMat, Ao::AbstractPetscMat) end
 
-@for_petsc function MatMPISELLGetSeqSELL(petsclib::$UnionPetscLib, A::PetscMat, Ad::PetscMat, Ao::PetscMat )
+@for_petsc function MatMPISELLGetSeqSELL(petsclib::$UnionPetscLib, A::AbstractPetscMat, Ad::AbstractPetscMat, Ao::AbstractPetscMat )
 	Ad_ = Ref(Ad.ptr)
 	Ao_ = Ref(Ao.ptr)
 	colmap_ = Ref{Ptr{$PetscInt}}()
@@ -9127,7 +9127,7 @@ function MatMPISELLGetSeqSELL(petsclib::PetscLibType, A::PetscMat, Ad::PetscMat,
 end 
 
 """
-	MatMPISELLGetLocalMatCondensed(petsclib::PetscLibType,A::PetscMat, scall::MatReuse, row::IS, col::IS, A_loc::PetscMat) 
+	MatMPISELLGetLocalMatCondensed(petsclib::PetscLibType,A::AbstractPetscMat, scall::MatReuse, row::AbstractIS, col::AbstractIS, A_loc::AbstractPetscMat) 
 Creates a `MATSEQSELL` matrix from an `MATMPISELL` matrix by
 taking all its local rows and NON-ZERO columns
 
@@ -9149,9 +9149,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMPISELLGetLocalMatCondensed"))
 """
-function MatMPISELLGetLocalMatCondensed(petsclib::PetscLibType, A::PetscMat, scall::MatReuse, row::Union{Ptr,IS}, col::Union{Ptr,IS}, A_loc::PetscMat) end
+function MatMPISELLGetLocalMatCondensed(petsclib::PetscLibType, A::AbstractPetscMat, scall::MatReuse, row::Union{Ptr,IS}, col::Union{Ptr,IS}, A_loc::AbstractPetscMat) end
 
-@for_petsc function MatMPISELLGetLocalMatCondensed(petsclib::$UnionPetscLib, A::PetscMat, scall::MatReuse, row::Union{Ptr,IS}, col::Union{Ptr,IS}, A_loc::PetscMat )
+@for_petsc function MatMPISELLGetLocalMatCondensed(petsclib::$UnionPetscLib, A::AbstractPetscMat, scall::MatReuse, row::Union{Ptr,IS}, col::Union{Ptr,IS}, A_loc::AbstractPetscMat )
 	A_loc_ = Ref(A_loc.ptr)
 
     @chk ccall(
@@ -9167,7 +9167,7 @@ function MatMPISELLGetLocalMatCondensed(petsclib::PetscLibType, A::PetscMat, sca
 end 
 
 """
-	MatSeqSELLSetPreallocation(petsclib::PetscLibType,B::PetscMat, rlenmax::PetscInt, rlen::Vector{PetscInt}) 
+	MatSeqSELLSetPreallocation(petsclib::PetscLibType,B::AbstractPetscMat, rlenmax::PetscInt, rlen::Vector{PetscInt}) 
 For good matrix assembly performance
 the user should preallocate the matrix storage by setting the parameter `nz`
 (or the array `nnz`).
@@ -9186,9 +9186,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqSELLSetPreallocation"))
 """
-function MatSeqSELLSetPreallocation(petsclib::PetscLibType, B::PetscMat, rlenmax::PetscInt, rlen::Vector{PetscInt}) end
+function MatSeqSELLSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, rlenmax::PetscInt, rlen::Vector{PetscInt}) end
 
-@for_petsc function MatSeqSELLSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, rlenmax::$PetscInt, rlen::Vector{$PetscInt} )
+@for_petsc function MatSeqSELLSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, rlenmax::$PetscInt, rlen::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatSeqSELLSetPreallocation, $petsc_library),
@@ -9202,7 +9202,7 @@ function MatSeqSELLSetPreallocation(petsclib::PetscLibType, B::PetscMat, rlenmax
 end 
 
 """
-	ratio::PetscReal = MatSeqSELLGetFillRatio(petsclib::PetscLibType,A::PetscMat) 
+	ratio::PetscReal = MatSeqSELLGetFillRatio(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns a ratio that indicates the irregularity of the matrix.
 
 Not Collective
@@ -9220,9 +9220,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqSELLGetFillRatio"))
 """
-function MatSeqSELLGetFillRatio(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqSELLGetFillRatio(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqSELLGetFillRatio(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqSELLGetFillRatio(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	ratio_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -9238,7 +9238,7 @@ function MatSeqSELLGetFillRatio(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	slicewidth::PetscInt = MatSeqSELLGetMaxSliceWidth(petsclib::PetscLibType,A::PetscMat) 
+	slicewidth::PetscInt = MatSeqSELLGetMaxSliceWidth(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns the maximum slice width.
 
 Not Collective
@@ -9256,9 +9256,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqSELLGetMaxSliceWidth"))
 """
-function MatSeqSELLGetMaxSliceWidth(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqSELLGetMaxSliceWidth(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqSELLGetMaxSliceWidth(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqSELLGetMaxSliceWidth(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	slicewidth_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -9274,7 +9274,7 @@ function MatSeqSELLGetMaxSliceWidth(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	slicewidth::PetscReal = MatSeqSELLGetAvgSliceWidth(petsclib::PetscLibType,A::PetscMat) 
+	slicewidth::PetscReal = MatSeqSELLGetAvgSliceWidth(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns the average slice width.
 
 Not Collective
@@ -9292,9 +9292,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqSELLGetAvgSliceWidth"))
 """
-function MatSeqSELLGetAvgSliceWidth(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqSELLGetAvgSliceWidth(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqSELLGetAvgSliceWidth(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqSELLGetAvgSliceWidth(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	slicewidth_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -9310,7 +9310,7 @@ function MatSeqSELLGetAvgSliceWidth(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatSeqSELLSetSliceHeight(petsclib::PetscLibType,A::PetscMat, sliceheight::PetscInt) 
+	MatSeqSELLSetSliceHeight(petsclib::PetscLibType,A::AbstractPetscMat, sliceheight::PetscInt) 
 sets the slice height.
 
 Not Collective
@@ -9324,9 +9324,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Mat/MatSeqSELLSetSliceHeight"))
 """
-function MatSeqSELLSetSliceHeight(petsclib::PetscLibType, A::PetscMat, sliceheight::PetscInt) end
+function MatSeqSELLSetSliceHeight(petsclib::PetscLibType, A::AbstractPetscMat, sliceheight::PetscInt) end
 
-@for_petsc function MatSeqSELLSetSliceHeight(petsclib::$UnionPetscLib, A::PetscMat, sliceheight::$PetscInt )
+@for_petsc function MatSeqSELLSetSliceHeight(petsclib::$UnionPetscLib, A::AbstractPetscMat, sliceheight::$PetscInt )
 
     @chk ccall(
                (:MatSeqSELLSetSliceHeight, $petsc_library),
@@ -9340,7 +9340,7 @@ function MatSeqSELLSetSliceHeight(petsclib::PetscLibType, A::PetscMat, sliceheig
 end 
 
 """
-	variance::PetscReal = MatSeqSELLGetVarSliceSize(petsclib::PetscLibType,A::PetscMat) 
+	variance::PetscReal = MatSeqSELLGetVarSliceSize(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns the variance of the slice size.
 
 Not Collective
@@ -9358,9 +9358,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqSELLGetVarSliceSize"))
 """
-function MatSeqSELLGetVarSliceSize(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqSELLGetVarSliceSize(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqSELLGetVarSliceSize(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqSELLGetVarSliceSize(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	variance_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -9416,7 +9416,7 @@ function MatCreateSeqSELL(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n
 end 
 
 """
-	MatPreallocatorPreallocate(petsclib::PetscLibType,mat::PetscMat, fill::PetscBool, A::PetscMat) 
+	MatPreallocatorPreallocate(petsclib::PetscLibType,mat::AbstractPetscMat, fill::PetscBool, A::AbstractPetscMat) 
 Preallocates the A matrix, using information from a `MATPREALLOCATOR` mat, optionally filling A with zeros
 
 Input Parameters:
@@ -9429,9 +9429,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Mat/MatPreallocatorPreallocate"))
 """
-function MatPreallocatorPreallocate(petsclib::PetscLibType, mat::PetscMat, fill::PetscBool, A::PetscMat) end
+function MatPreallocatorPreallocate(petsclib::PetscLibType, mat::AbstractPetscMat, fill::PetscBool, A::AbstractPetscMat) end
 
-@for_petsc function MatPreallocatorPreallocate(petsclib::$UnionPetscLib, mat::PetscMat, fill::PetscBool, A::PetscMat )
+@for_petsc function MatPreallocatorPreallocate(petsclib::$UnionPetscLib, mat::AbstractPetscMat, fill::PetscBool, A::AbstractPetscMat )
 
     @chk ccall(
                (:MatPreallocatorPreallocate, $petsc_library),
@@ -9486,7 +9486,7 @@ function MatCreateConstantDiagonal(petsclib::PetscLibType, comm::MPI_Comm, m::Pe
 end 
 
 """
-	value::PetscScalar = MatConstantDiagonalGetConstant(petsclib::PetscLibType,mat::PetscMat) 
+	value::PetscScalar = MatConstantDiagonalGetConstant(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Get the scalar constant of a constant diagonal matrix
 
 Not collective
@@ -9504,9 +9504,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatConstantDiagonalGetConstant"))
 """
-function MatConstantDiagonalGetConstant(petsclib::PetscLibType, mat::PetscMat) end
+function MatConstantDiagonalGetConstant(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatConstantDiagonalGetConstant(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatConstantDiagonalGetConstant(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	value_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -9522,7 +9522,7 @@ function MatConstantDiagonalGetConstant(petsclib::PetscLibType, mat::PetscMat) e
 end 
 
 """
-	MatMPIBAIJSetPreallocationCSR(petsclib::PetscLibType,B::PetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) 
+	MatMPIBAIJSetPreallocationCSR(petsclib::PetscLibType,B::AbstractPetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) 
 Creates a sparse parallel matrix in `MATBAIJ` format using the given nonzero structure and (optional) numerical values
 
 Collective
@@ -9541,9 +9541,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMPIBAIJSetPreallocationCSR"))
 """
-function MatMPIBAIJSetPreallocationCSR(petsclib::PetscLibType, B::PetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Union{Ptr,Vector{PetscScalar}}) end
+function MatMPIBAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Union{Ptr,Vector{PetscScalar}}) end
 
-@for_petsc function MatMPIBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::PetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Union{Ptr,Vector{$PetscScalar}})
+@for_petsc function MatMPIBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Union{Ptr,Vector{$PetscScalar}})
 
     @chk ccall(
                (:MatMPIBAIJSetPreallocationCSR, $petsc_library),
@@ -9557,7 +9557,7 @@ function MatMPIBAIJSetPreallocationCSR(petsclib::PetscLibType, B::PetscMat, bs::
 end 
 
 """
-	MatMPIBAIJSetPreallocation(petsclib::PetscLibType,B::PetscMat, bs::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+	MatMPIBAIJSetPreallocation(petsclib::PetscLibType,B::AbstractPetscMat, bs::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
 Allocates memory for a sparse parallel matrix in `MATMPIBAIJ` format
 (block compressed row).
 
@@ -9592,9 +9592,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMPIBAIJSetPreallocation"))
 """
-function MatMPIBAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, bs::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr,Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr,Vector{PetscInt}}) end
+function MatMPIBAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, bs::PetscInt, d_nz::PetscInt, d_nnz::Union{Ptr,Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatMPIBAIJSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, bs::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr,Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr,Vector{$PetscInt}})
+@for_petsc function MatMPIBAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, d_nz::$PetscInt, d_nnz::Union{Ptr,Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr,Vector{$PetscInt}})
 
     @chk ccall(
                (:MatMPIBAIJSetPreallocation, $petsc_library),
@@ -9659,7 +9659,7 @@ function MatCreateBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, m::
 end 
 
 """
-	MatMPIBAIJSetHashTableFactor(petsclib::PetscLibType,mat::PetscMat, fact::PetscReal) 
+	MatMPIBAIJSetHashTableFactor(petsclib::PetscLibType,mat::AbstractPetscMat, fact::PetscReal) 
 Sets the factor required to compute the size of the matrices hash table
 
 Input Parameters:
@@ -9676,9 +9676,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMPIBAIJSetHashTableFactor"))
 """
-function MatMPIBAIJSetHashTableFactor(petsclib::PetscLibType, mat::PetscMat, fact::PetscReal) end
+function MatMPIBAIJSetHashTableFactor(petsclib::PetscLibType, mat::AbstractPetscMat, fact::PetscReal) end
 
-@for_petsc function MatMPIBAIJSetHashTableFactor(petsclib::$UnionPetscLib, mat::PetscMat, fact::$PetscReal )
+@for_petsc function MatMPIBAIJSetHashTableFactor(petsclib::$UnionPetscLib, mat::AbstractPetscMat, fact::$PetscReal )
 
     @chk ccall(
                (:MatMPIBAIJSetHashTableFactor, $petsc_library),
@@ -9692,14 +9692,14 @@ function MatMPIBAIJSetHashTableFactor(petsclib::PetscLibType, mat::PetscMat, fac
 end 
 
 """
-	colmap::Vector{PetscInt} = MatMPIBAIJGetSeqBAIJ(petsclib::PetscLibType,A::PetscMat, Ad::PetscMat, Ao::PetscMat) 
+	colmap::Vector{PetscInt} = MatMPIBAIJGetSeqBAIJ(petsclib::PetscLibType,A::AbstractPetscMat, Ad::AbstractPetscMat, Ao::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("Mat/MatMPIBAIJGetSeqBAIJ"))
 """
-function MatMPIBAIJGetSeqBAIJ(petsclib::PetscLibType, A::PetscMat, Ad::PetscMat, Ao::PetscMat) end
+function MatMPIBAIJGetSeqBAIJ(petsclib::PetscLibType, A::AbstractPetscMat, Ad::AbstractPetscMat, Ao::AbstractPetscMat) end
 
-@for_petsc function MatMPIBAIJGetSeqBAIJ(petsclib::$UnionPetscLib, A::PetscMat, Ad::PetscMat, Ao::PetscMat )
+@for_petsc function MatMPIBAIJGetSeqBAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, Ad::AbstractPetscMat, Ao::AbstractPetscMat )
 	Ad_ = Ref(Ad.ptr)
 	Ao_ = Ref(Ao.ptr)
 	colmap_ = Ref{Ptr{$PetscInt}}()
@@ -9813,7 +9813,7 @@ function MatCreateBAIJMKL(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, 
 end 
 
 """
-	indices::PetscInt = MatSeqBAIJSetColumnIndices(petsclib::PetscLibType,mat::PetscMat) 
+	indices::PetscInt = MatSeqBAIJSetColumnIndices(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Set the column indices for all the block rows in the matrix.
 
 Input Parameters:
@@ -9827,9 +9827,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSeqBAIJSetColumnIndices"))
 """
-function MatSeqBAIJSetColumnIndices(petsclib::PetscLibType, mat::PetscMat) end
+function MatSeqBAIJSetColumnIndices(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatSeqBAIJSetColumnIndices(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatSeqBAIJSetColumnIndices(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	indices_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -9845,7 +9845,7 @@ function MatSeqBAIJSetColumnIndices(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatSeqBAIJGetArray(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatSeqBAIJGetArray(petsclib::PetscLibType,A::AbstractPetscMat) 
 gives read/write access to the array where the data for a `MATSEQBAIJ` matrix is stored
 
 Not Collective
@@ -9863,9 +9863,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqBAIJGetArray"))
 """
-function MatSeqBAIJGetArray(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqBAIJGetArray(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqBAIJGetArray(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqBAIJGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -9881,7 +9881,7 @@ function MatSeqBAIJGetArray(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatSeqBAIJRestoreArray(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatSeqBAIJRestoreArray(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns access to the array where the data for a `MATSEQBAIJ` matrix is stored obtained by `MatSeqBAIJGetArray()`
 
 Not Collective
@@ -9897,9 +9897,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqBAIJRestoreArray"))
 """
-function MatSeqBAIJRestoreArray(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqBAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqBAIJRestoreArray(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqBAIJRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -9965,7 +9965,7 @@ function MatCreateSeqBAIJ(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, 
 end 
 
 """
-	MatSeqBAIJSetPreallocation(petsclib::PetscLibType,B::PetscMat, bs::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) 
+	MatSeqBAIJSetPreallocation(petsclib::PetscLibType,B::AbstractPetscMat, bs::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) 
 Sets the block size and expected nonzeros
 per row in the matrix. For good matrix assembly performance the
 user should preallocate the matrix storage by setting the parameter `nz`
@@ -9992,9 +9992,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqBAIJSetPreallocation"))
 """
-function MatSeqBAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, bs::PetscInt, nz::PetscInt, nnz::Union{Ptr,Vector{PetscInt}}) end
+function MatSeqBAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, bs::PetscInt, nz::PetscInt, nnz::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatSeqBAIJSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, bs::$PetscInt, nz::$PetscInt, nnz::Union{Ptr,Vector{$PetscInt}})
+@for_petsc function MatSeqBAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, nz::$PetscInt, nnz::Union{Ptr,Vector{$PetscInt}})
 
     @chk ccall(
                (:MatSeqBAIJSetPreallocation, $petsc_library),
@@ -10008,7 +10008,7 @@ function MatSeqBAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, bs::Pet
 end 
 
 """
-	MatSeqBAIJSetPreallocationCSR(petsclib::PetscLibType,B::PetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) 
+	MatSeqBAIJSetPreallocationCSR(petsclib::PetscLibType,B::AbstractPetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) 
 Creates a sparse sequential matrix in `MATSEQBAIJ` format using the given nonzero structure and (optional) numerical values
 
 Collective
@@ -10027,9 +10027,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSeqBAIJSetPreallocationCSR"))
 """
-function MatSeqBAIJSetPreallocationCSR(petsclib::PetscLibType, B::PetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Union{Ptr,Vector{PetscScalar}}) end
+function MatSeqBAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Union{Ptr,Vector{PetscScalar}}) end
 
-@for_petsc function MatSeqBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::PetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Union{Ptr,Vector{$PetscScalar}})
+@for_petsc function MatSeqBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Union{Ptr,Vector{$PetscScalar}})
 
     @chk ccall(
                (:MatSeqBAIJSetPreallocationCSR, $petsc_library),
@@ -10134,7 +10134,7 @@ function MatCreateSeqBAIJMKL(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscIn
 end 
 
 """
-	MatPythonSetType(petsclib::PetscLibType,mat::PetscMat, pyname::Vector{Cchar}) 
+	MatPythonSetType(petsclib::PetscLibType,mat::AbstractPetscMat, pyname::Vector{Cchar}) 
 Initialize a `Mat` object implemented in Python.
 
 Collective
@@ -10153,9 +10153,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatPythonSetType"))
 """
-function MatPythonSetType(petsclib::PetscLibType, mat::PetscMat, pyname::Vector{Cchar}) end
+function MatPythonSetType(petsclib::PetscLibType, mat::AbstractPetscMat, pyname::Vector{Cchar}) end
 
-@for_petsc function MatPythonSetType(petsclib::$UnionPetscLib, mat::PetscMat, pyname::Vector{Cchar} )
+@for_petsc function MatPythonSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, pyname::Vector{Cchar} )
 
     @chk ccall(
                (:MatPythonSetType, $petsc_library),
@@ -10169,7 +10169,7 @@ function MatPythonSetType(petsclib::PetscLibType, mat::PetscMat, pyname::Vector{
 end 
 
 """
-	pyname::Vector{Cchar} = MatPythonGetType(petsclib::PetscLibType,mat::PetscMat) 
+	pyname::Vector{Cchar} = MatPythonGetType(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Get the Python name of a `Mat` object implemented in Python.
 
 Not Collective
@@ -10187,9 +10187,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatPythonGetType"))
 """
-function MatPythonGetType(petsclib::PetscLibType, mat::PetscMat) end
+function MatPythonGetType(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatPythonGetType(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatPythonGetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	pyname_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -10246,7 +10246,7 @@ function MatPythonCreate(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n:
 end 
 
 """
-	newmat::PetscMat = MatCreateLocalRef(petsclib::PetscLibType,A::PetscMat, isrow::IS, iscol::IS) 
+	newmat::PetscMat = MatCreateLocalRef(petsclib::PetscLibType,A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS) 
 Gets a logical reference to a local submatrix, for use in assembly, that is to set values into the matrix
 
 Not Collective
@@ -10266,9 +10266,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatCreateLocalRef"))
 """
-function MatCreateLocalRef(petsclib::PetscLibType, A::PetscMat, isrow::IS, iscol::IS) end
+function MatCreateLocalRef(petsclib::PetscLibType, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS) end
 
-@for_petsc function MatCreateLocalRef(petsclib::$UnionPetscLib, A::PetscMat, isrow::IS, iscol::IS )
+@for_petsc function MatCreateLocalRef(petsclib::$UnionPetscLib, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS )
 	newmat_ = Ref{CMat}()
 
     @chk ccall(
@@ -10284,7 +10284,7 @@ function MatCreateLocalRef(petsclib::PetscLibType, A::PetscMat, isrow::IS, iscol
 end 
 
 """
-	MatShellGetContext(petsclib::PetscLibType,mat::PetscMat, ctx::Cvoid) 
+	MatShellGetContext(petsclib::PetscLibType,mat::AbstractPetscMat, ctx::Cvoid) 
 Returns the user
 
 Not Collective
@@ -10317,7 +10317,7 @@ function MatShellGetContext(petsclib::PetscLibType, mat::AbstractPetscMat, ctx::
 end 
 
 """
-	MatShellSetMatProductOperation(petsclib::PetscLibType,A::PetscMat, ptype::MatProductType, symbolic::external, numeric::external, destroy::external, Btype::MatType, Ctype::MatType) 
+	MatShellSetMatProductOperation(petsclib::PetscLibType,A::AbstractPetscMat, ptype::MatProductType, symbolic::external, numeric::external, destroy::external, Btype::MatType, Ctype::MatType) 
 Allows user to set a matrix matrix operation for a `MATSHELL` shell matrix.
 
 Logically Collective; No Fortran Support
@@ -10338,9 +10338,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatShellSetMatProductOperation"))
 """
-function MatShellSetMatProductOperation(petsclib::PetscLibType, A::PetscMat, ptype::MatProductType, symbolic::Union{Ptr,external}, numeric::Union{Ptr,external}, destroy::Union{Ptr,external}, Btype::MatType, Ctype::Union{Ptr,MatType}) end
+function MatShellSetMatProductOperation(petsclib::PetscLibType, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr,external}, numeric::Union{Ptr,external}, destroy::Union{Ptr,external}, Btype::MatType, Ctype::Union{Ptr,MatType}) end
 
-@for_petsc function MatShellSetMatProductOperation(petsclib::$UnionPetscLib, A::PetscMat, ptype::MatProductType, symbolic::Union{Ptr,external}, numeric::external, destroy::Union{Ptr,external}, Btype::MatType, Ctype::Union{Ptr,MatType})
+@for_petsc function MatShellSetMatProductOperation(petsclib::$UnionPetscLib, A::AbstractPetscMat, ptype::MatProductType, symbolic::Union{Ptr,external}, numeric::external, destroy::Union{Ptr,external}, Btype::MatType, Ctype::Union{Ptr,MatType})
 
     @chk ccall(
                (:MatShellSetMatProductOperation, $petsc_library),
@@ -10398,7 +10398,7 @@ function MatCreateShell(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::
 end 
 
 """
-	MatShellSetContext(petsclib::PetscLibType,mat::PetscMat, ctx::Cvoid) 
+	MatShellSetContext(petsclib::PetscLibType,mat::AbstractPetscMat, ctx::Cvoid) 
 sets the context for a `MATSHELL` shell matrix
 
 Logically Collective
@@ -10414,9 +10414,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatShellSetContext"))
 """
-function MatShellSetContext(petsclib::PetscLibType, mat::PetscMat, ctx::Cvoid) end
+function MatShellSetContext(petsclib::PetscLibType, mat::AbstractPetscMat, ctx::Cvoid) end
 
-@for_petsc function MatShellSetContext(petsclib::$UnionPetscLib, mat::PetscMat, ctx::Cvoid )
+@for_petsc function MatShellSetContext(petsclib::$UnionPetscLib, mat::AbstractPetscMat, ctx::Cvoid )
 
     @chk ccall(
                (:MatShellSetContext, $petsc_library),
@@ -10430,7 +10430,7 @@ function MatShellSetContext(petsclib::PetscLibType, mat::PetscMat, ctx::Cvoid) e
 end 
 
 """
-	MatShellSetContextDestroy(petsclib::PetscLibType,mat::PetscMat, f::PetscCtxDestroyFn) 
+	MatShellSetContextDestroy(petsclib::PetscLibType,mat::AbstractPetscMat, f::PetscCtxDestroyFn) 
 sets the destroy function for a `MATSHELL` shell matrix context
 
 Logically Collective
@@ -10447,9 +10447,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatShellSetContextDestroy"))
 """
-function MatShellSetContextDestroy(petsclib::PetscLibType, mat::PetscMat, f::PetscCtxDestroyFn) end
+function MatShellSetContextDestroy(petsclib::PetscLibType, mat::AbstractPetscMat, f::PetscCtxDestroyFn) end
 
-@for_petsc function MatShellSetContextDestroy(petsclib::$UnionPetscLib, mat::PetscMat, f::PetscCtxDestroyFn )
+@for_petsc function MatShellSetContextDestroy(petsclib::$UnionPetscLib, mat::AbstractPetscMat, f::PetscCtxDestroyFn )
 
     @chk ccall(
                (:MatShellSetContextDestroy, $petsc_library),
@@ -10463,7 +10463,7 @@ function MatShellSetContextDestroy(petsclib::PetscLibType, mat::PetscMat, f::Pet
 end 
 
 """
-	MatShellSetVecType(petsclib::PetscLibType,mat::PetscMat, vtype::VecType) 
+	MatShellSetVecType(petsclib::PetscLibType,mat::AbstractPetscMat, vtype::VecType) 
 Sets the `VecType` of `Vec` returned by `MatCreateVecs()`
 
 Logically Collective
@@ -10479,9 +10479,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatShellSetVecType"))
 """
-function MatShellSetVecType(petsclib::PetscLibType, mat::PetscMat, vtype::VecType) end
+function MatShellSetVecType(petsclib::PetscLibType, mat::AbstractPetscMat, vtype::VecType) end
 
-@for_petsc function MatShellSetVecType(petsclib::$UnionPetscLib, mat::PetscMat, vtype::VecType )
+@for_petsc function MatShellSetVecType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, vtype::VecType )
 
     @chk ccall(
                (:MatShellSetVecType, $petsc_library),
@@ -10495,7 +10495,7 @@ function MatShellSetVecType(petsclib::PetscLibType, mat::PetscMat, vtype::VecTyp
 end 
 
 """
-	MatShellSetManageScalingShifts(petsclib::PetscLibType,A::PetscMat) 
+	MatShellSetManageScalingShifts(petsclib::PetscLibType,A::AbstractPetscMat) 
 Allows the user to control the scaling and shift operations of the `MATSHELL`. Must be called immediately
 after `MatCreateShell()`
 
@@ -10511,9 +10511,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatShellSetManageScalingShifts"))
 """
-function MatShellSetManageScalingShifts(petsclib::PetscLibType, A::PetscMat) end
+function MatShellSetManageScalingShifts(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatShellSetManageScalingShifts(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatShellSetManageScalingShifts(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 
     @chk ccall(
                (:MatShellSetManageScalingShifts, $petsc_library),
@@ -10527,7 +10527,7 @@ function MatShellSetManageScalingShifts(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	flg::PetscBool = MatShellTestMult(petsclib::PetscLibType,mat::PetscMat, f::external, base::PetscVec, ctx::Cvoid) 
+	flg::PetscBool = MatShellTestMult(petsclib::PetscLibType,mat::AbstractPetscMat, f::external, base::AbstractPetscVec, ctx::Cvoid) 
 Compares the multiply routine provided to the `MATSHELL` with differencing on a given function.
 
 Logically Collective; No Fortran Support
@@ -10551,9 +10551,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatShellTestMult"))
 """
-function MatShellTestMult(petsclib::PetscLibType, mat::PetscMat, f::external, base::PetscVec, ctx::Cvoid) end
+function MatShellTestMult(petsclib::PetscLibType, mat::AbstractPetscMat, f::external, base::AbstractPetscVec, ctx::Cvoid) end
 
-@for_petsc function MatShellTestMult(petsclib::$UnionPetscLib, mat::PetscMat, f::external, base::PetscVec, ctx::Cvoid )
+@for_petsc function MatShellTestMult(petsclib::$UnionPetscLib, mat::AbstractPetscMat, f::external, base::AbstractPetscVec, ctx::Cvoid )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -10569,7 +10569,7 @@ function MatShellTestMult(petsclib::PetscLibType, mat::PetscMat, f::external, ba
 end 
 
 """
-	flg::PetscBool = MatShellTestMultTranspose(petsclib::PetscLibType,mat::PetscMat, f::external, base::PetscVec, ctx::Cvoid) 
+	flg::PetscBool = MatShellTestMultTranspose(petsclib::PetscLibType,mat::AbstractPetscMat, f::external, base::AbstractPetscVec, ctx::Cvoid) 
 Compares the multiply transpose routine provided to the `MATSHELL` with differencing on a given function.
 
 Logically Collective; No Fortran Support
@@ -10593,9 +10593,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatShellTestMultTranspose"))
 """
-function MatShellTestMultTranspose(petsclib::PetscLibType, mat::PetscMat, f::external, base::PetscVec, ctx::Cvoid) end
+function MatShellTestMultTranspose(petsclib::PetscLibType, mat::AbstractPetscMat, f::external, base::AbstractPetscVec, ctx::Cvoid) end
 
-@for_petsc function MatShellTestMultTranspose(petsclib::$UnionPetscLib, mat::PetscMat, f::external, base::PetscVec, ctx::Cvoid )
+@for_petsc function MatShellTestMultTranspose(petsclib::$UnionPetscLib, mat::AbstractPetscMat, f::external, base::AbstractPetscVec, ctx::Cvoid )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -10611,7 +10611,7 @@ function MatShellTestMultTranspose(petsclib::PetscLibType, mat::PetscMat, f::ext
 end 
 
 """
-	flg::PetscBool = MatIsShell(petsclib::PetscLibType,mat::PetscMat) 
+	flg::PetscBool = MatIsShell(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Inquires if a matrix is derived from `MATSHELL`
 
 Input Parameter:
@@ -10627,9 +10627,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatIsShell"))
 """
-function MatIsShell(petsclib::PetscLibType, mat::PetscMat) end
+function MatIsShell(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatIsShell(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatIsShell(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -10645,7 +10645,7 @@ function MatIsShell(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatMAIJGetAIJ(petsclib::PetscLibType,A::PetscMat, B::PetscMat) 
+	MatMAIJGetAIJ(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat) 
 Get the `MATAIJ` matrix describing the blockwise action of the `MATMAIJ` matrix
 
 Not Collective, but if the `MATMAIJ` matrix is parallel, the `MATAIJ` matrix is also parallel
@@ -10663,9 +10663,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMAIJGetAIJ"))
 """
-function MatMAIJGetAIJ(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
+function MatMAIJGetAIJ(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function MatMAIJGetAIJ(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat )
+@for_petsc function MatMAIJGetAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
 	B_ = Ref(B.ptr)
 
     @chk ccall(
@@ -10681,7 +10681,7 @@ function MatMAIJGetAIJ(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
 end 
 
 """
-	MatMAIJRedimension(petsclib::PetscLibType,A::PetscMat, dof::PetscInt, B::PetscMat) 
+	MatMAIJRedimension(petsclib::PetscLibType,A::AbstractPetscMat, dof::PetscInt, B::AbstractPetscMat) 
 Get a new `MATMAIJ` matrix with the same action, but for a different block size
 
 Logically Collective
@@ -10700,9 +10700,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMAIJRedimension"))
 """
-function MatMAIJRedimension(petsclib::PetscLibType, A::PetscMat, dof::PetscInt, B::PetscMat) end
+function MatMAIJRedimension(petsclib::PetscLibType, A::AbstractPetscMat, dof::PetscInt, B::AbstractPetscMat) end
 
-@for_petsc function MatMAIJRedimension(petsclib::$UnionPetscLib, A::PetscMat, dof::$PetscInt, B::PetscMat )
+@for_petsc function MatMAIJRedimension(petsclib::$UnionPetscLib, A::AbstractPetscMat, dof::$PetscInt, B::AbstractPetscMat )
 	B_ = Ref(B.ptr)
 
     @chk ccall(
@@ -10718,7 +10718,7 @@ function MatMAIJRedimension(petsclib::PetscLibType, A::PetscMat, dof::PetscInt, 
 end 
 
 """
-	maij::PetscMat = MatCreateMAIJ(petsclib::PetscLibType,A::PetscMat, dof::PetscInt) 
+	maij::PetscMat = MatCreateMAIJ(petsclib::PetscLibType,A::AbstractPetscMat, dof::PetscInt) 
 Creates a matrix type providing restriction and interpolation
 operations for multicomponent problems.  It interpolates each component the same
 way independently.  The matrix type is based on `MATSEQAIJ` for sequential matrices,
@@ -10740,9 +10740,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateMAIJ"))
 """
-function MatCreateMAIJ(petsclib::PetscLibType, A::PetscMat, dof::PetscInt) end
+function MatCreateMAIJ(petsclib::PetscLibType, A::AbstractPetscMat, dof::PetscInt) end
 
-@for_petsc function MatCreateMAIJ(petsclib::$UnionPetscLib, A::PetscMat, dof::$PetscInt )
+@for_petsc function MatCreateMAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, dof::$PetscInt )
 	maij_ = Ref{CMat}()
 
     @chk ccall(
@@ -10758,7 +10758,7 @@ function MatCreateMAIJ(petsclib::PetscLibType, A::PetscMat, dof::PetscInt) end
 end 
 
 """
-	flg::PetscBool = MatISGetAllowRepeated(petsclib::PetscLibType,A::PetscMat) 
+	flg::PetscBool = MatISGetAllowRepeated(petsclib::PetscLibType,A::AbstractPetscMat) 
 Get the flag to allow repeated entries in the local to global map
 
 Not Collective
@@ -10776,9 +10776,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatISGetAllowRepeated"))
 """
-function MatISGetAllowRepeated(petsclib::PetscLibType, A::PetscMat) end
+function MatISGetAllowRepeated(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatISGetAllowRepeated(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatISGetAllowRepeated(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -10794,7 +10794,7 @@ function MatISGetAllowRepeated(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatISSetAllowRepeated(petsclib::PetscLibType,A::PetscMat, flg::PetscBool) 
+	MatISSetAllowRepeated(petsclib::PetscLibType,A::AbstractPetscMat, flg::PetscBool) 
 Set the flag to allow repeated entries in the local to global map
 
 Logically Collective
@@ -10810,9 +10810,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatISSetAllowRepeated"))
 """
-function MatISSetAllowRepeated(petsclib::PetscLibType, A::PetscMat, flg::PetscBool) end
+function MatISSetAllowRepeated(petsclib::PetscLibType, A::AbstractPetscMat, flg::PetscBool) end
 
-@for_petsc function MatISSetAllowRepeated(petsclib::$UnionPetscLib, A::PetscMat, flg::PetscBool )
+@for_petsc function MatISSetAllowRepeated(petsclib::$UnionPetscLib, A::AbstractPetscMat, flg::PetscBool )
 
     @chk ccall(
                (:MatISSetAllowRepeated, $petsc_library),
@@ -10826,7 +10826,7 @@ function MatISSetAllowRepeated(petsclib::PetscLibType, A::PetscMat, flg::PetscBo
 end 
 
 """
-	MatISStoreL2L(petsclib::PetscLibType,A::PetscMat, store::PetscBool) 
+	MatISStoreL2L(petsclib::PetscLibType,A::AbstractPetscMat, store::PetscBool) 
 Store local
 
 Logically Collective
@@ -10842,9 +10842,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatISStoreL2L"))
 """
-function MatISStoreL2L(petsclib::PetscLibType, A::PetscMat, store::PetscBool) end
+function MatISStoreL2L(petsclib::PetscLibType, A::AbstractPetscMat, store::PetscBool) end
 
-@for_petsc function MatISStoreL2L(petsclib::$UnionPetscLib, A::PetscMat, store::PetscBool )
+@for_petsc function MatISStoreL2L(petsclib::$UnionPetscLib, A::AbstractPetscMat, store::PetscBool )
 
     @chk ccall(
                (:MatISStoreL2L, $petsc_library),
@@ -10858,7 +10858,7 @@ function MatISStoreL2L(petsclib::PetscLibType, A::PetscMat, store::PetscBool) en
 end 
 
 """
-	MatISFixLocalEmpty(petsclib::PetscLibType,A::PetscMat, fix::PetscBool) 
+	MatISFixLocalEmpty(petsclib::PetscLibType,A::AbstractPetscMat, fix::PetscBool) 
 Compress out zero local rows from the local matrices
 
 Logically Collective
@@ -10874,9 +10874,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatISFixLocalEmpty"))
 """
-function MatISFixLocalEmpty(petsclib::PetscLibType, A::PetscMat, fix::PetscBool) end
+function MatISFixLocalEmpty(petsclib::PetscLibType, A::AbstractPetscMat, fix::PetscBool) end
 
-@for_petsc function MatISFixLocalEmpty(petsclib::$UnionPetscLib, A::PetscMat, fix::PetscBool )
+@for_petsc function MatISFixLocalEmpty(petsclib::$UnionPetscLib, A::AbstractPetscMat, fix::PetscBool )
 
     @chk ccall(
                (:MatISFixLocalEmpty, $petsc_library),
@@ -10890,7 +10890,7 @@ function MatISFixLocalEmpty(petsclib::PetscLibType, A::PetscMat, fix::PetscBool)
 end 
 
 """
-	MatISSetPreallocation(petsclib::PetscLibType,B::PetscMat, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+	MatISSetPreallocation(petsclib::PetscLibType,B::AbstractPetscMat, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
 Preallocates memory for a `MATIS` parallel matrix.
 
 Collective
@@ -10922,9 +10922,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatISSetPreallocation"))
 """
-function MatISSetPreallocation(petsclib::PetscLibType, B::PetscMat, d_nz::PetscInt, d_nnz::Union{Ptr,Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr,Vector{PetscInt}}) end
+function MatISSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, d_nz::PetscInt, d_nnz::Union{Ptr,Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatISSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, d_nz::$PetscInt, d_nnz::Union{Ptr,Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr,Vector{$PetscInt}})
+@for_petsc function MatISSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, d_nz::$PetscInt, d_nnz::Union{Ptr,Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr,Vector{$PetscInt}})
 
     @chk ccall(
                (:MatISSetPreallocation, $petsc_library),
@@ -10938,7 +10938,7 @@ function MatISSetPreallocation(petsclib::PetscLibType, B::PetscMat, d_nz::PetscI
 end 
 
 """
-	MatISGetLocalMat(petsclib::PetscLibType,mat::PetscMat, loc::PetscMat) 
+	MatISGetLocalMat(petsclib::PetscLibType,mat::AbstractPetscMat, loc::AbstractPetscMat) 
 Gets the local matrix stored inside a `MATIS` matrix.
 
 Not Collective.
@@ -10956,9 +10956,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatISGetLocalMat"))
 """
-function MatISGetLocalMat(petsclib::PetscLibType, mat::PetscMat, loc::PetscMat) end
+function MatISGetLocalMat(petsclib::PetscLibType, mat::AbstractPetscMat, loc::AbstractPetscMat) end
 
-@for_petsc function MatISGetLocalMat(petsclib::$UnionPetscLib, mat::PetscMat, loc::PetscMat )
+@for_petsc function MatISGetLocalMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, loc::AbstractPetscMat )
 	loc_ = Ref(loc.ptr)
 
     @chk ccall(
@@ -10974,7 +10974,7 @@ function MatISGetLocalMat(petsclib::PetscLibType, mat::PetscMat, loc::PetscMat) 
 end 
 
 """
-	MatISRestoreLocalMat(petsclib::PetscLibType,mat::PetscMat, loc::PetscMat) 
+	MatISRestoreLocalMat(petsclib::PetscLibType,mat::AbstractPetscMat, loc::AbstractPetscMat) 
 Restores the local matrix obtained with `MatISGetLocalMat()`
 
 Not Collective.
@@ -10990,9 +10990,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatISRestoreLocalMat"))
 """
-function MatISRestoreLocalMat(petsclib::PetscLibType, mat::PetscMat, loc::PetscMat) end
+function MatISRestoreLocalMat(petsclib::PetscLibType, mat::AbstractPetscMat, loc::AbstractPetscMat) end
 
-@for_petsc function MatISRestoreLocalMat(petsclib::$UnionPetscLib, mat::PetscMat, loc::PetscMat )
+@for_petsc function MatISRestoreLocalMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, loc::AbstractPetscMat )
 	loc_ = Ref(loc.ptr)
 
     @chk ccall(
@@ -11008,7 +11008,7 @@ function MatISRestoreLocalMat(petsclib::PetscLibType, mat::PetscMat, loc::PetscM
 end 
 
 """
-	MatISSetLocalMatType(petsclib::PetscLibType,mat::PetscMat, mtype::MatType) 
+	MatISSetLocalMatType(petsclib::PetscLibType,mat::AbstractPetscMat, mtype::MatType) 
 Specifies the type of local matrix inside the `MATIS`
 
 Logically Collective.
@@ -11024,9 +11024,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatISSetLocalMatType"))
 """
-function MatISSetLocalMatType(petsclib::PetscLibType, mat::PetscMat, mtype::MatType) end
+function MatISSetLocalMatType(petsclib::PetscLibType, mat::AbstractPetscMat, mtype::MatType) end
 
-@for_petsc function MatISSetLocalMatType(petsclib::$UnionPetscLib, mat::PetscMat, mtype::MatType )
+@for_petsc function MatISSetLocalMatType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, mtype::MatType )
 
     @chk ccall(
                (:MatISSetLocalMatType, $petsc_library),
@@ -11040,7 +11040,7 @@ function MatISSetLocalMatType(petsclib::PetscLibType, mat::PetscMat, mtype::MatT
 end 
 
 """
-	MatISSetLocalMat(petsclib::PetscLibType,mat::PetscMat, loc::PetscMat) 
+	MatISSetLocalMat(petsclib::PetscLibType,mat::AbstractPetscMat, loc::AbstractPetscMat) 
 Replace the local matrix stored inside a `MATIS` object.
 
 Not Collective
@@ -11056,9 +11056,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatISSetLocalMat"))
 """
-function MatISSetLocalMat(petsclib::PetscLibType, mat::PetscMat, loc::PetscMat) end
+function MatISSetLocalMat(petsclib::PetscLibType, mat::AbstractPetscMat, loc::AbstractPetscMat) end
 
-@for_petsc function MatISSetLocalMat(petsclib::$UnionPetscLib, mat::PetscMat, loc::PetscMat )
+@for_petsc function MatISSetLocalMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, loc::AbstractPetscMat )
 
     @chk ccall(
                (:MatISSetLocalMat, $petsc_library),
@@ -11115,7 +11115,7 @@ function MatCreateIS(petsclib::PetscLibType, comm::MPI_Comm, bs::PetscInt, m::Pe
 end 
 
 """
-	MatISGetLocalToGlobalMapping(petsclib::PetscLibType,A::PetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping) 
+	MatISGetLocalToGlobalMapping(petsclib::PetscLibType,A::AbstractPetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping) 
 Gets the local
 
 Not Collective
@@ -11134,9 +11134,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatISGetLocalToGlobalMapping"))
 """
-function MatISGetLocalToGlobalMapping(petsclib::PetscLibType, A::PetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping) end
+function MatISGetLocalToGlobalMapping(petsclib::PetscLibType, A::AbstractPetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping) end
 
-@for_petsc function MatISGetLocalToGlobalMapping(petsclib::$UnionPetscLib, A::PetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping )
+@for_petsc function MatISGetLocalToGlobalMapping(petsclib::$UnionPetscLib, A::AbstractPetscMat, rmapping::ISLocalToGlobalMapping, cmapping::ISLocalToGlobalMapping )
 
     @chk ccall(
                (:MatISGetLocalToGlobalMapping, $petsc_library),
@@ -11150,7 +11150,7 @@ function MatISGetLocalToGlobalMapping(petsclib::PetscLibType, A::PetscMat, rmapp
 end 
 
 """
-	MatHermitianTransposeGetMat(petsclib::PetscLibType,A::PetscMat, M::PetscMat) 
+	MatHermitianTransposeGetMat(petsclib::PetscLibType,A::AbstractPetscMat, M::AbstractPetscMat) 
 Gets the `Mat` object stored inside a `MATHERMITIANTRANSPOSEVIRTUAL`
 
 Logically Collective
@@ -11168,9 +11168,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatHermitianTransposeGetMat"))
 """
-function MatHermitianTransposeGetMat(petsclib::PetscLibType, A::PetscMat, M::PetscMat) end
+function MatHermitianTransposeGetMat(petsclib::PetscLibType, A::AbstractPetscMat, M::AbstractPetscMat) end
 
-@for_petsc function MatHermitianTransposeGetMat(petsclib::$UnionPetscLib, A::PetscMat, M::PetscMat )
+@for_petsc function MatHermitianTransposeGetMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, M::AbstractPetscMat )
 	M_ = Ref(M.ptr)
 
     @chk ccall(
@@ -11186,7 +11186,7 @@ function MatHermitianTransposeGetMat(petsclib::PetscLibType, A::PetscMat, M::Pet
 end 
 
 """
-	N::PetscMat = MatCreateHermitianTranspose(petsclib::PetscLibType,A::PetscMat) 
+	N::PetscMat = MatCreateHermitianTranspose(petsclib::PetscLibType,A::AbstractPetscMat) 
 Creates a new matrix object of `MatType` `MATHERMITIANTRANSPOSEVIRTUAL` that behaves like A'*
 
 Collective
@@ -11205,9 +11205,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateHermitianTranspose"))
 """
-function MatCreateHermitianTranspose(petsclib::PetscLibType, A::PetscMat) end
+function MatCreateHermitianTranspose(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatCreateHermitianTranspose(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatCreateHermitianTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	N_ = Ref{CMat}()
 
     @chk ccall(
@@ -11223,7 +11223,7 @@ function MatCreateHermitianTranspose(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatTransposeGetMat(petsclib::PetscLibType,A::PetscMat, M::PetscMat) 
+	MatTransposeGetMat(petsclib::PetscLibType,A::AbstractPetscMat, M::AbstractPetscMat) 
 Gets the `Mat` object stored inside a `MATTRANSPOSEVIRTUAL`
 
 Logically Collective
@@ -11241,9 +11241,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatTransposeGetMat"))
 """
-function MatTransposeGetMat(petsclib::PetscLibType, A::PetscMat, M::PetscMat) end
+function MatTransposeGetMat(petsclib::PetscLibType, A::AbstractPetscMat, M::AbstractPetscMat) end
 
-@for_petsc function MatTransposeGetMat(petsclib::$UnionPetscLib, A::PetscMat, M::PetscMat )
+@for_petsc function MatTransposeGetMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, M::AbstractPetscMat )
 	M_ = Ref(M.ptr)
 
     @chk ccall(
@@ -11259,7 +11259,7 @@ function MatTransposeGetMat(petsclib::PetscLibType, A::PetscMat, M::PetscMat) en
 end 
 
 """
-	N::PetscMat = MatCreateTranspose(petsclib::PetscLibType,A::PetscMat) 
+	N::PetscMat = MatCreateTranspose(petsclib::PetscLibType,A::AbstractPetscMat) 
 Creates a new matrix `MATTRANSPOSEVIRTUAL` object that behaves like A'
 
 Collective
@@ -11278,9 +11278,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateTranspose"))
 """
-function MatCreateTranspose(petsclib::PetscLibType, A::PetscMat) end
+function MatCreateTranspose(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatCreateTranspose(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatCreateTranspose(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	N_ = Ref{CMat}()
 
     @chk ccall(
@@ -11296,7 +11296,7 @@ function MatCreateTranspose(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatDenseGetLocalMatrix(petsclib::PetscLibType,A::PetscMat, B::PetscMat) 
+	MatDenseGetLocalMatrix(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat) 
 For a `MATMPIDENSE` or `MATSEQDENSE` matrix returns the sequential
 matrix that represents the operator. For sequential matrices it returns itself.
 
@@ -11313,9 +11313,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseGetLocalMatrix"))
 """
-function MatDenseGetLocalMatrix(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
+function MatDenseGetLocalMatrix(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function MatDenseGetLocalMatrix(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat )
+@for_petsc function MatDenseGetLocalMatrix(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
 	B_ = Ref(B.ptr)
 
     @chk ccall(
@@ -11331,7 +11331,7 @@ function MatDenseGetLocalMatrix(petsclib::PetscLibType, A::PetscMat, B::PetscMat
 end 
 
 """
-	MatMPIDenseSetPreallocation(petsclib::PetscLibType,B::PetscMat, data::PetscScalar) 
+	MatMPIDenseSetPreallocation(petsclib::PetscLibType,B::AbstractPetscMat, data::PetscScalar) 
 Sets the array used to store the matrix entries
 
 Collective
@@ -11348,9 +11348,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMPIDenseSetPreallocation"))
 """
-function MatMPIDenseSetPreallocation(petsclib::PetscLibType, B::PetscMat) end
+function MatMPIDenseSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat) end
 
-@for_petsc function MatMPIDenseSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, data::Union{Ptr,$PetscScalar} )
+@for_petsc function MatMPIDenseSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, data::Union{Ptr,$PetscScalar} )
 
     @chk ccall(
                (:MatMPIDenseSetPreallocation, $petsc_library),
@@ -11363,7 +11363,7 @@ function MatMPIDenseSetPreallocation(petsclib::PetscLibType, B::PetscMat) end
 end 
 
 """
-	array::PetscScalar = MatDensePlaceArray(petsclib::PetscLibType,mat::PetscMat) 
+	array::PetscScalar = MatDensePlaceArray(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Allows one to replace the array in a `MATDENSE` matrix with an
 array provided by the user. This is useful to avoid copying an array
 into a matrix
@@ -11382,9 +11382,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatDensePlaceArray"))
 """
-function MatDensePlaceArray(petsclib::PetscLibType, mat::PetscMat) end
+function MatDensePlaceArray(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatDensePlaceArray(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatDensePlaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	array_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -11400,7 +11400,7 @@ function MatDensePlaceArray(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatDenseResetArray(petsclib::PetscLibType,mat::PetscMat) 
+	MatDenseResetArray(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Resets the matrix array to that it previously had before the call to `MatDensePlaceArray()`
 
 Not Collective
@@ -11415,9 +11415,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatDenseResetArray"))
 """
-function MatDenseResetArray(petsclib::PetscLibType, mat::PetscMat) end
+function MatDenseResetArray(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatDenseResetArray(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatDenseResetArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatDenseResetArray, $petsc_library),
@@ -11431,7 +11431,7 @@ function MatDenseResetArray(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	array::PetscScalar = MatDenseReplaceArray(petsclib::PetscLibType,mat::PetscMat) 
+	array::PetscScalar = MatDenseReplaceArray(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Allows one to replace the array in a dense matrix with an
 array provided by the user. This is useful to avoid copying an array
 into a matrix
@@ -11449,9 +11449,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatDenseReplaceArray"))
 """
-function MatDenseReplaceArray(petsclib::PetscLibType, mat::PetscMat) end
+function MatDenseReplaceArray(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatDenseReplaceArray(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatDenseReplaceArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	array_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -11508,7 +11508,7 @@ function MatCreateDense(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::
 end 
 
 """
-	lda::PetscInt = MatDenseGetLDA(petsclib::PetscLibType,A::PetscMat) 
+	lda::PetscInt = MatDenseGetLDA(petsclib::PetscLibType,A::AbstractPetscMat) 
 gets the leading dimension of the array returned from `MatDenseGetArray()`
 
 Not Collective
@@ -11526,9 +11526,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseGetLDA"))
 """
-function MatDenseGetLDA(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseGetLDA(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseGetLDA(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseGetLDA(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	lda_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -11544,7 +11544,7 @@ function MatDenseGetLDA(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatDenseSetLDA(petsclib::PetscLibType,A::PetscMat, lda::PetscInt) 
+	MatDenseSetLDA(petsclib::PetscLibType,A::AbstractPetscMat, lda::PetscInt) 
 Sets the leading dimension of the array used by the `MATDENSE` matrix
 
 Collective if the matrix layouts have not yet been setup
@@ -11560,9 +11560,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseSetLDA"))
 """
-function MatDenseSetLDA(petsclib::PetscLibType, A::PetscMat, lda::PetscInt) end
+function MatDenseSetLDA(petsclib::PetscLibType, A::AbstractPetscMat, lda::PetscInt) end
 
-@for_petsc function MatDenseSetLDA(petsclib::$UnionPetscLib, A::PetscMat, lda::$PetscInt )
+@for_petsc function MatDenseSetLDA(petsclib::$UnionPetscLib, A::AbstractPetscMat, lda::$PetscInt )
 
     @chk ccall(
                (:MatDenseSetLDA, $petsc_library),
@@ -11576,7 +11576,7 @@ function MatDenseSetLDA(petsclib::PetscLibType, A::PetscMat, lda::PetscInt) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatDenseGetArray(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatDenseGetArray(petsclib::PetscLibType,A::AbstractPetscMat) 
 gives read
 
 Logically Collective
@@ -11594,9 +11594,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseGetArray"))
 """
-function MatDenseGetArray(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseGetArray(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseGetArray(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat )
     array_ = Ref{Ptr{$PetscScalar}}()
 
     # 1. Get the raw pointer from PETSc
@@ -11619,7 +11619,7 @@ function MatDenseGetArray(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatDenseRestoreArray(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatDenseRestoreArray(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns access to the array where the data for a `MATDENSE` matrix is stored obtained by `MatDenseGetArray()`
 
 Logically Collective
@@ -11635,9 +11635,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreArray"))
 """
-function MatDenseRestoreArray(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseRestoreArray(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -11649,7 +11649,7 @@ function MatDenseRestoreArray(petsclib::PetscLibType, A::PetscMat) end
     return nothing
 end
 
-@for_petsc function MatDenseRestoreArray(petsclib::$UnionPetscLib, A::PetscMat, array::Array{$PetscScalar})
+@for_petsc function MatDenseRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Array{$PetscScalar})
     # Create a temporary Ref to the array's internal pointer to satisfy the ** signature
     ptr_ref = Ref(pointer(array))
     
@@ -11663,7 +11663,7 @@ end
 end
 
 """
-	array::Vector{PetscScalar} = MatDenseGetArrayRead(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatDenseGetArrayRead(petsclib::PetscLibType,A::AbstractPetscMat) 
 gives read
 
 Not Collective
@@ -11681,9 +11681,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseGetArrayRead"))
 """
-function MatDenseGetArrayRead(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseGetArrayRead(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseGetArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
     array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -11700,7 +11700,7 @@ function MatDenseGetArrayRead(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatDenseRestoreArrayRead(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatDenseRestoreArrayRead(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns access to the array where the data for a `MATDENSE` matrix is stored obtained by `MatDenseGetArrayRead()`
 
 Not Collective
@@ -11716,9 +11716,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreArrayRead"))
 """
-function MatDenseRestoreArrayRead(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseRestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseRestoreArrayRead(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseRestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
     array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -11735,7 +11735,7 @@ function MatDenseRestoreArrayRead(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatDenseGetArrayWrite(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatDenseGetArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat) 
 gives write
 
 Not Collective
@@ -11753,9 +11753,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseGetArrayWrite"))
 """
-function MatDenseGetArrayWrite(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseGetArrayWrite(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseGetArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat )
     array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -11772,7 +11772,7 @@ function MatDenseGetArrayWrite(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatDenseRestoreArrayWrite(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatDenseRestoreArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns access to the array where the data for a `MATDENSE` matrix is stored obtained by `MatDenseGetArrayWrite()`
 
 Not Collective
@@ -11788,9 +11788,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreArrayWrite"))
 """
-function MatDenseRestoreArrayWrite(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseRestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseRestoreArrayWrite(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseRestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat )
     array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -11807,7 +11807,7 @@ function MatDenseRestoreArrayWrite(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar},mtype::PetscMemType = MatDenseGetArrayAndMemType(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar},mtype::PetscMemType = MatDenseGetArrayAndMemType(petsclib::PetscLibType,A::AbstractPetscMat) 
 gives read
 
 Logically Collective
@@ -11827,9 +11827,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseGetArrayAndMemType"))
 """
-function MatDenseGetArrayAndMemType(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseGetArrayAndMemType(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseGetArrayAndMemType(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseGetArrayAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
     array_ = Ref{Ptr{$PetscScalar}}()
     mtype_ = Ref{PetscMemType}()
 
@@ -11846,7 +11846,7 @@ function MatDenseGetArrayAndMemType(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatDenseRestoreArrayAndMemType(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatDenseRestoreArrayAndMemType(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns access to the array that is obtained by `MatDenseGetArrayAndMemType()`
 
 Logically Collective
@@ -11862,9 +11862,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreArrayAndMemType"))
 """
-function MatDenseRestoreArrayAndMemType(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseRestoreArrayAndMemType(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseRestoreArrayAndMemType(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseRestoreArrayAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
     array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -11881,7 +11881,7 @@ function MatDenseRestoreArrayAndMemType(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar},mtype::PetscMemType = MatDenseGetArrayReadAndMemType(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar},mtype::PetscMemType = MatDenseGetArrayReadAndMemType(petsclib::PetscLibType,A::AbstractPetscMat) 
 gives read
 
 Logically Collective
@@ -11901,9 +11901,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseGetArrayReadAndMemType"))
 """
-function MatDenseGetArrayReadAndMemType(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseGetArrayReadAndMemType(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseGetArrayReadAndMemType(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseGetArrayReadAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
     array_ = Ref{Ptr{$PetscScalar}}()
     mtype_ = Ref{PetscMemType}()
 
@@ -11920,7 +11920,7 @@ function MatDenseGetArrayReadAndMemType(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatDenseRestoreArrayReadAndMemType(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatDenseRestoreArrayReadAndMemType(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns access to the array that is obtained by `MatDenseGetArrayReadAndMemType()`
 
 Logically Collective
@@ -11936,9 +11936,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreArrayReadAndMemType"))
 """
-function MatDenseRestoreArrayReadAndMemType(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseRestoreArrayReadAndMemType(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseRestoreArrayReadAndMemType(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseRestoreArrayReadAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -11954,7 +11954,7 @@ function MatDenseRestoreArrayReadAndMemType(petsclib::PetscLibType, A::PetscMat)
 end 
 
 """
-	array::Vector{PetscScalar},mtype::PetscMemType = MatDenseGetArrayWriteAndMemType(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar},mtype::PetscMemType = MatDenseGetArrayWriteAndMemType(petsclib::PetscLibType,A::AbstractPetscMat) 
 gives write
 
 Logically Collective
@@ -11974,9 +11974,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseGetArrayWriteAndMemType"))
 """
-function MatDenseGetArrayWriteAndMemType(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseGetArrayWriteAndMemType(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseGetArrayWriteAndMemType(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseGetArrayWriteAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
     array_ = Ref{Ptr{$PetscScalar}}()
     mtype_ = Ref{PetscMemType}()
 
@@ -11993,7 +11993,7 @@ function MatDenseGetArrayWriteAndMemType(petsclib::PetscLibType, A::PetscMat) en
 end 
 
 """
-	array::Vector{PetscScalar} = MatDenseRestoreArrayWriteAndMemType(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatDenseRestoreArrayWriteAndMemType(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns access to the array that is obtained by `MatDenseGetArrayReadAndMemType()`
 
 Logically Collective
@@ -12009,9 +12009,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreArrayWriteAndMemType"))
 """
-function MatDenseRestoreArrayWriteAndMemType(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseRestoreArrayWriteAndMemType(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseRestoreArrayWriteAndMemType(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseRestoreArrayWriteAndMemType(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -12067,7 +12067,7 @@ function MatCreateSeqDense(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, 
 end 
 
 """
-	MatSeqDenseSetPreallocation(petsclib::PetscLibType,B::PetscMat, data::Vector{PetscScalar}) 
+	MatSeqDenseSetPreallocation(petsclib::PetscLibType,B::AbstractPetscMat, data::Vector{PetscScalar}) 
 Sets the array used for storing the matrix elements of a `MATSEQDENSE` matrix
 
 Collective
@@ -12083,9 +12083,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqDenseSetPreallocation"))
 """
-function MatSeqDenseSetPreallocation(petsclib::PetscLibType, B::PetscMat, data::Vector{PetscScalar}) end
+function MatSeqDenseSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, data::Vector{PetscScalar}) end
 
-@for_petsc function MatSeqDenseSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, data::Vector{$PetscScalar} )
+@for_petsc function MatSeqDenseSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, data::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatSeqDenseSetPreallocation, $petsc_library),
@@ -12099,7 +12099,7 @@ function MatSeqDenseSetPreallocation(petsclib::PetscLibType, B::PetscMat, data::
 end 
 
 """
-	vals::Vector{PetscScalar} = MatDenseGetColumn(petsclib::PetscLibType,A::PetscMat, col::PetscInt) 
+	vals::Vector{PetscScalar} = MatDenseGetColumn(petsclib::PetscLibType,A::AbstractPetscMat, col::PetscInt) 
 gives access to a column of a dense matrix. This is only the local part of the column. You MUST call `MatDenseRestoreColumn()` to avoid memory bleeding.
 
 Not Collective
@@ -12118,9 +12118,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseGetColumn"))
 """
-function MatDenseGetColumn(petsclib::PetscLibType, A::PetscMat, col::PetscInt) end
+function MatDenseGetColumn(petsclib::PetscLibType, A::AbstractPetscMat, col::PetscInt) end
 
-@for_petsc function MatDenseGetColumn(petsclib::$UnionPetscLib, A::PetscMat, col::$PetscInt )
+@for_petsc function MatDenseGetColumn(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt )
 	vals_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -12136,7 +12136,7 @@ function MatDenseGetColumn(petsclib::PetscLibType, A::PetscMat, col::PetscInt) e
 end 
 
 """
-	vals::Vector{PetscScalar} = MatDenseRestoreColumn(petsclib::PetscLibType,A::PetscMat) 
+	vals::Vector{PetscScalar} = MatDenseRestoreColumn(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns access to a column of a `MATDENSE` matrix which is returned by `MatDenseGetColumn()`.
 
 Not Collective
@@ -12152,9 +12152,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreColumn"))
 """
-function MatDenseRestoreColumn(petsclib::PetscLibType, A::PetscMat) end
+function MatDenseRestoreColumn(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatDenseRestoreColumn(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatDenseRestoreColumn(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	vals_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -12170,7 +12170,7 @@ function MatDenseRestoreColumn(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatDenseGetColumnVec(petsclib::PetscLibType,A::PetscMat, col::PetscInt, v::PetscVec) 
+	MatDenseGetColumnVec(petsclib::PetscLibType,A::AbstractPetscMat, col::PetscInt, v::AbstractPetscVec) 
 Gives read
 
 Collective
@@ -12189,9 +12189,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseGetColumnVec"))
 """
-function MatDenseGetColumnVec(petsclib::PetscLibType, A::PetscMat, col::PetscInt, v::PetscVec) end
+function MatDenseGetColumnVec(petsclib::PetscLibType, A::AbstractPetscMat, col::PetscInt, v::AbstractPetscVec) end
 
-@for_petsc function MatDenseGetColumnVec(petsclib::$UnionPetscLib, A::PetscMat, col::$PetscInt, v::PetscVec )
+@for_petsc function MatDenseGetColumnVec(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt, v::AbstractPetscVec )
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -12207,7 +12207,7 @@ function MatDenseGetColumnVec(petsclib::PetscLibType, A::PetscMat, col::PetscInt
 end 
 
 """
-	MatDenseRestoreColumnVec(petsclib::PetscLibType,A::PetscMat, col::PetscInt, v::PetscVec) 
+	MatDenseRestoreColumnVec(petsclib::PetscLibType,A::AbstractPetscMat, col::PetscInt, v::AbstractPetscVec) 
 Returns access to a column of a dense matrix obtained from `MatDenseGetColumnVec()`.
 
 Collective
@@ -12224,9 +12224,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreColumnVec"))
 """
-function MatDenseRestoreColumnVec(petsclib::PetscLibType, A::PetscMat, col::PetscInt, v::PetscVec) end
+function MatDenseRestoreColumnVec(petsclib::PetscLibType, A::AbstractPetscMat, col::PetscInt, v::AbstractPetscVec) end
 
-@for_petsc function MatDenseRestoreColumnVec(petsclib::$UnionPetscLib, A::PetscMat, col::$PetscInt, v::PetscVec )
+@for_petsc function MatDenseRestoreColumnVec(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt, v::AbstractPetscVec )
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -12242,7 +12242,7 @@ function MatDenseRestoreColumnVec(petsclib::PetscLibType, A::PetscMat, col::Pets
 end 
 
 """
-	MatDenseGetColumnVecRead(petsclib::PetscLibType,A::PetscMat, col::PetscInt, v::PetscVec) 
+	MatDenseGetColumnVecRead(petsclib::PetscLibType,A::AbstractPetscMat, col::PetscInt, v::AbstractPetscVec) 
 Gives read
 
 Collective
@@ -12261,9 +12261,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseGetColumnVecRead"))
 """
-function MatDenseGetColumnVecRead(petsclib::PetscLibType, A::PetscMat, col::PetscInt, v::PetscVec) end
+function MatDenseGetColumnVecRead(petsclib::PetscLibType, A::AbstractPetscMat, col::PetscInt, v::AbstractPetscVec) end
 
-@for_petsc function MatDenseGetColumnVecRead(petsclib::$UnionPetscLib, A::PetscMat, col::$PetscInt, v::PetscVec )
+@for_petsc function MatDenseGetColumnVecRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt, v::AbstractPetscVec )
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -12279,7 +12279,7 @@ function MatDenseGetColumnVecRead(petsclib::PetscLibType, A::PetscMat, col::Pets
 end 
 
 """
-	MatDenseRestoreColumnVecRead(petsclib::PetscLibType,A::PetscMat, col::PetscInt, v::PetscVec) 
+	MatDenseRestoreColumnVecRead(petsclib::PetscLibType,A::AbstractPetscMat, col::PetscInt, v::AbstractPetscVec) 
 Returns access to a column of a dense matrix obtained from `MatDenseGetColumnVecRead()`.
 
 Collective
@@ -12296,9 +12296,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreColumnVecRead"))
 """
-function MatDenseRestoreColumnVecRead(petsclib::PetscLibType, A::PetscMat, col::PetscInt, v::PetscVec) end
+function MatDenseRestoreColumnVecRead(petsclib::PetscLibType, A::AbstractPetscMat, col::PetscInt, v::AbstractPetscVec) end
 
-@for_petsc function MatDenseRestoreColumnVecRead(petsclib::$UnionPetscLib, A::PetscMat, col::$PetscInt, v::PetscVec )
+@for_petsc function MatDenseRestoreColumnVecRead(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt, v::AbstractPetscVec )
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -12314,7 +12314,7 @@ function MatDenseRestoreColumnVecRead(petsclib::PetscLibType, A::PetscMat, col::
 end 
 
 """
-	MatDenseGetColumnVecWrite(petsclib::PetscLibType,A::PetscMat, col::PetscInt, v::PetscVec) 
+	MatDenseGetColumnVecWrite(petsclib::PetscLibType,A::AbstractPetscMat, col::PetscInt, v::AbstractPetscVec) 
 Gives write
 
 Collective
@@ -12333,9 +12333,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseGetColumnVecWrite"))
 """
-function MatDenseGetColumnVecWrite(petsclib::PetscLibType, A::PetscMat, col::PetscInt, v::PetscVec) end
+function MatDenseGetColumnVecWrite(petsclib::PetscLibType, A::AbstractPetscMat, col::PetscInt, v::AbstractPetscVec) end
 
-@for_petsc function MatDenseGetColumnVecWrite(petsclib::$UnionPetscLib, A::PetscMat, col::$PetscInt, v::PetscVec )
+@for_petsc function MatDenseGetColumnVecWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt, v::AbstractPetscVec )
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -12351,7 +12351,7 @@ function MatDenseGetColumnVecWrite(petsclib::PetscLibType, A::PetscMat, col::Pet
 end 
 
 """
-	MatDenseRestoreColumnVecWrite(petsclib::PetscLibType,A::PetscMat, col::PetscInt, v::PetscVec) 
+	MatDenseRestoreColumnVecWrite(petsclib::PetscLibType,A::AbstractPetscMat, col::PetscInt, v::AbstractPetscVec) 
 Returns access to a column of a dense matrix obtained from `MatDenseGetColumnVecWrite()`.
 
 Collective
@@ -12368,9 +12368,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreColumnVecWrite"))
 """
-function MatDenseRestoreColumnVecWrite(petsclib::PetscLibType, A::PetscMat, col::PetscInt, v::PetscVec) end
+function MatDenseRestoreColumnVecWrite(petsclib::PetscLibType, A::AbstractPetscMat, col::PetscInt, v::AbstractPetscVec) end
 
-@for_petsc function MatDenseRestoreColumnVecWrite(petsclib::$UnionPetscLib, A::PetscMat, col::$PetscInt, v::PetscVec )
+@for_petsc function MatDenseRestoreColumnVecWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat, col::$PetscInt, v::AbstractPetscVec )
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -12386,7 +12386,7 @@ function MatDenseRestoreColumnVecWrite(petsclib::PetscLibType, A::PetscMat, col:
 end 
 
 """
-	MatDenseGetSubMatrix(petsclib::PetscLibType,A::PetscMat, rbegin::PetscInt, rend::PetscInt, cbegin::PetscInt, cend::PetscInt, v::PetscMat) 
+	MatDenseGetSubMatrix(petsclib::PetscLibType,A::AbstractPetscMat, rbegin::PetscInt, rend::PetscInt, cbegin::PetscInt, cend::PetscInt, v::AbstractPetscMat) 
 Gives access to a block of rows and columns of a dense matrix, represented as a `Mat`.
 
 Collective
@@ -12408,9 +12408,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseGetSubMatrix"))
 """
-function MatDenseGetSubMatrix(petsclib::PetscLibType, A::PetscMat, rbegin::PetscInt, rend::PetscInt, cbegin::PetscInt, cend::PetscInt, v::PetscMat) end
+function MatDenseGetSubMatrix(petsclib::PetscLibType, A::AbstractPetscMat, rbegin::PetscInt, rend::PetscInt, cbegin::PetscInt, cend::PetscInt, v::AbstractPetscMat) end
 
-@for_petsc function MatDenseGetSubMatrix(petsclib::$UnionPetscLib, A::PetscMat, rbegin::$PetscInt, rend::$PetscInt, cbegin::$PetscInt, cend::$PetscInt, v::PetscMat )
+@for_petsc function MatDenseGetSubMatrix(petsclib::$UnionPetscLib, A::AbstractPetscMat, rbegin::$PetscInt, rend::$PetscInt, cbegin::$PetscInt, cend::$PetscInt, v::AbstractPetscMat )
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -12426,7 +12426,7 @@ function MatDenseGetSubMatrix(petsclib::PetscLibType, A::PetscMat, rbegin::Petsc
 end 
 
 """
-	MatDenseRestoreSubMatrix(petsclib::PetscLibType,A::PetscMat, v::PetscMat) 
+	MatDenseRestoreSubMatrix(petsclib::PetscLibType,A::AbstractPetscMat, v::AbstractPetscMat) 
 Returns access to a block of columns of a dense matrix obtained from `MatDenseGetSubMatrix()`.
 
 Collective
@@ -12442,9 +12442,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDenseRestoreSubMatrix"))
 """
-function MatDenseRestoreSubMatrix(petsclib::PetscLibType, A::PetscMat, v::PetscMat) end
+function MatDenseRestoreSubMatrix(petsclib::PetscLibType, A::AbstractPetscMat, v::AbstractPetscMat) end
 
-@for_petsc function MatDenseRestoreSubMatrix(petsclib::$UnionPetscLib, A::PetscMat, v::PetscMat )
+@for_petsc function MatDenseRestoreSubMatrix(petsclib::$UnionPetscLib, A::AbstractPetscMat, v::AbstractPetscMat )
 	v_ = Ref(v.ptr)
 
     @chk ccall(
@@ -12460,14 +12460,14 @@ function MatDenseRestoreSubMatrix(petsclib::PetscLibType, A::PetscMat, v::PetscM
 end 
 
 """
-	MatSeqDenseInvert(petsclib::PetscLibType,A::PetscMat) 
+	MatSeqDenseInvert(petsclib::PetscLibType,A::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("Mat/MatSeqDenseInvert"))
 """
-function MatSeqDenseInvert(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqDenseInvert(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqDenseInvert(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqDenseInvert(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 
     @chk ccall(
                (:MatSeqDenseInvert, $petsc_library),
@@ -12527,7 +12527,7 @@ function MatCreateComposite(petsclib::PetscLibType, comm::MPI_Comm, nmat::PetscI
 end 
 
 """
-	MatCompositeAddMat(petsclib::PetscLibType,mat::PetscMat, smat::PetscMat) 
+	MatCompositeAddMat(petsclib::PetscLibType,mat::AbstractPetscMat, smat::AbstractPetscMat) 
 Add another matrix to a composite matrix.
 
 Collective
@@ -12543,9 +12543,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCompositeAddMat"))
 """
-function MatCompositeAddMat(petsclib::PetscLibType, mat::PetscMat, smat::PetscMat) end
+function MatCompositeAddMat(petsclib::PetscLibType, mat::AbstractPetscMat, smat::AbstractPetscMat) end
 
-@for_petsc function MatCompositeAddMat(petsclib::$UnionPetscLib, mat::PetscMat, smat::PetscMat )
+@for_petsc function MatCompositeAddMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, smat::AbstractPetscMat )
 
     @chk ccall(
                (:MatCompositeAddMat, $petsc_library),
@@ -12559,7 +12559,7 @@ function MatCompositeAddMat(petsclib::PetscLibType, mat::PetscMat, smat::PetscMa
 end 
 
 """
-	MatCompositeSetType(petsclib::PetscLibType,mat::PetscMat, type::MatCompositeType) 
+	MatCompositeSetType(petsclib::PetscLibType,mat::AbstractPetscMat, type::MatCompositeType) 
 Indicates if the matrix is defined as the sum of a set of matrices or the product.
 
 Logically Collective
@@ -12576,9 +12576,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCompositeSetType"))
 """
-function MatCompositeSetType(petsclib::PetscLibType, mat::PetscMat, type::MatCompositeType) end
+function MatCompositeSetType(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatCompositeType) end
 
-@for_petsc function MatCompositeSetType(petsclib::$UnionPetscLib, mat::PetscMat, type::MatCompositeType )
+@for_petsc function MatCompositeSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatCompositeType )
 
     @chk ccall(
                (:MatCompositeSetType, $petsc_library),
@@ -12592,7 +12592,7 @@ function MatCompositeSetType(petsclib::PetscLibType, mat::PetscMat, type::MatCom
 end 
 
 """
-	type::MatCompositeType = MatCompositeGetType(petsclib::PetscLibType,mat::PetscMat) 
+	type::MatCompositeType = MatCompositeGetType(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Returns type of composite.
 
 Not Collective
@@ -12610,9 +12610,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCompositeGetType"))
 """
-function MatCompositeGetType(petsclib::PetscLibType, mat::PetscMat) end
+function MatCompositeGetType(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatCompositeGetType(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatCompositeGetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	type_ = Ref{MatCompositeType}()
 
     @chk ccall(
@@ -12628,7 +12628,7 @@ function MatCompositeGetType(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatCompositeSetMatStructure(petsclib::PetscLibType,mat::PetscMat, str::MatStructure) 
+	MatCompositeSetMatStructure(petsclib::PetscLibType,mat::AbstractPetscMat, str::MatStructure) 
 Indicates structure of matrices in the composite matrix.
 
 Not Collective
@@ -12644,9 +12644,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCompositeSetMatStructure"))
 """
-function MatCompositeSetMatStructure(petsclib::PetscLibType, mat::PetscMat, str::MatStructure) end
+function MatCompositeSetMatStructure(petsclib::PetscLibType, mat::AbstractPetscMat, str::MatStructure) end
 
-@for_petsc function MatCompositeSetMatStructure(petsclib::$UnionPetscLib, mat::PetscMat, str::MatStructure )
+@for_petsc function MatCompositeSetMatStructure(petsclib::$UnionPetscLib, mat::AbstractPetscMat, str::MatStructure )
 
     @chk ccall(
                (:MatCompositeSetMatStructure, $petsc_library),
@@ -12660,7 +12660,7 @@ function MatCompositeSetMatStructure(petsclib::PetscLibType, mat::PetscMat, str:
 end 
 
 """
-	MatCompositeGetMatStructure(petsclib::PetscLibType,mat::PetscMat, str::MatStructure) 
+	MatCompositeGetMatStructure(petsclib::PetscLibType,mat::AbstractPetscMat, str::MatStructure) 
 Returns the structure of matrices in the composite matrix.
 
 Not Collective
@@ -12678,9 +12678,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCompositeGetMatStructure"))
 """
-function MatCompositeGetMatStructure(petsclib::PetscLibType, mat::PetscMat, str::MatStructure) end
+function MatCompositeGetMatStructure(petsclib::PetscLibType, mat::AbstractPetscMat, str::MatStructure) end
 
-@for_petsc function MatCompositeGetMatStructure(petsclib::$UnionPetscLib, mat::PetscMat, str::MatStructure )
+@for_petsc function MatCompositeGetMatStructure(petsclib::$UnionPetscLib, mat::AbstractPetscMat, str::MatStructure )
 
     @chk ccall(
                (:MatCompositeGetMatStructure, $petsc_library),
@@ -12694,7 +12694,7 @@ function MatCompositeGetMatStructure(petsclib::PetscLibType, mat::PetscMat, str:
 end 
 
 """
-	MatCompositeSetMergeType(petsclib::PetscLibType,mat::PetscMat, type::MatCompositeMergeType) 
+	MatCompositeSetMergeType(petsclib::PetscLibType,mat::AbstractPetscMat, type::MatCompositeMergeType) 
 Sets order of `MatCompositeMerge()`.
 
 Logically Collective
@@ -12711,9 +12711,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCompositeSetMergeType"))
 """
-function MatCompositeSetMergeType(petsclib::PetscLibType, mat::PetscMat, type::MatCompositeMergeType) end
+function MatCompositeSetMergeType(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatCompositeMergeType) end
 
-@for_petsc function MatCompositeSetMergeType(petsclib::$UnionPetscLib, mat::PetscMat, type::MatCompositeMergeType )
+@for_petsc function MatCompositeSetMergeType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatCompositeMergeType )
 
     @chk ccall(
                (:MatCompositeSetMergeType, $petsc_library),
@@ -12727,7 +12727,7 @@ function MatCompositeSetMergeType(petsclib::PetscLibType, mat::PetscMat, type::M
 end 
 
 """
-	MatCompositeMerge(petsclib::PetscLibType,mat::PetscMat) 
+	MatCompositeMerge(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Given a composite matrix, replaces it with a "regular" matrix
 by summing or computing the product of all the matrices inside the composite matrix.
 
@@ -12747,9 +12747,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCompositeMerge"))
 """
-function MatCompositeMerge(petsclib::PetscLibType, mat::PetscMat) end
+function MatCompositeMerge(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatCompositeMerge(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatCompositeMerge(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatCompositeMerge, $petsc_library),
@@ -12763,7 +12763,7 @@ function MatCompositeMerge(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	nmat::PetscInt = MatCompositeGetNumberMat(petsclib::PetscLibType,mat::PetscMat) 
+	nmat::PetscInt = MatCompositeGetNumberMat(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Returns the number of matrices in the composite matrix.
 
 Not Collective
@@ -12781,9 +12781,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCompositeGetNumberMat"))
 """
-function MatCompositeGetNumberMat(petsclib::PetscLibType, mat::PetscMat) end
+function MatCompositeGetNumberMat(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatCompositeGetNumberMat(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatCompositeGetNumberMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	nmat_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -12799,7 +12799,7 @@ function MatCompositeGetNumberMat(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatCompositeGetMat(petsclib::PetscLibType,mat::PetscMat, i::PetscInt, Ai::PetscMat) 
+	MatCompositeGetMat(petsclib::PetscLibType,mat::AbstractPetscMat, i::PetscInt, Ai::AbstractPetscMat) 
 Returns the ith matrix from the composite matrix.
 
 Logically Collective
@@ -12818,9 +12818,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCompositeGetMat"))
 """
-function MatCompositeGetMat(petsclib::PetscLibType, mat::PetscMat, i::PetscInt, Ai::PetscMat) end
+function MatCompositeGetMat(petsclib::PetscLibType, mat::AbstractPetscMat, i::PetscInt, Ai::AbstractPetscMat) end
 
-@for_petsc function MatCompositeGetMat(petsclib::$UnionPetscLib, mat::PetscMat, i::$PetscInt, Ai::PetscMat )
+@for_petsc function MatCompositeGetMat(petsclib::$UnionPetscLib, mat::AbstractPetscMat, i::$PetscInt, Ai::AbstractPetscMat )
 	Ai_ = Ref(Ai.ptr)
 
     @chk ccall(
@@ -12836,7 +12836,7 @@ function MatCompositeGetMat(petsclib::PetscLibType, mat::PetscMat, i::PetscInt, 
 end 
 
 """
-	scalings::PetscScalar = MatCompositeSetScalings(petsclib::PetscLibType,mat::PetscMat) 
+	scalings::PetscScalar = MatCompositeSetScalings(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Sets separate scaling factors for component matrices.
 
 Logically Collective
@@ -12852,9 +12852,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCompositeSetScalings"))
 """
-function MatCompositeSetScalings(petsclib::PetscLibType, mat::PetscMat) end
+function MatCompositeSetScalings(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatCompositeSetScalings(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatCompositeSetScalings(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	scalings_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -12870,7 +12870,7 @@ function MatCompositeSetScalings(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatLRCGetMats(petsclib::PetscLibType,N::PetscMat, A::PetscMat, U::PetscMat, c::PetscVec, V::PetscMat) 
+	MatLRCGetMats(petsclib::PetscLibType,N::AbstractPetscMat, A::AbstractPetscMat, U::AbstractPetscMat, c::AbstractPetscVec, V::AbstractPetscMat) 
 Returns the constituents of an LRC matrix
 
 Not collective
@@ -12891,9 +12891,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatLRCGetMats"))
 """
-function MatLRCGetMats(petsclib::PetscLibType, N::PetscMat, A::PetscMat, U::PetscMat, c::PetscVec, V::PetscMat) end
+function MatLRCGetMats(petsclib::PetscLibType, N::AbstractPetscMat, A::AbstractPetscMat, U::AbstractPetscMat, c::AbstractPetscVec, V::AbstractPetscMat) end
 
-@for_petsc function MatLRCGetMats(petsclib::$UnionPetscLib, N::PetscMat, A::PetscMat, U::PetscMat, c::PetscVec, V::PetscMat )
+@for_petsc function MatLRCGetMats(petsclib::$UnionPetscLib, N::AbstractPetscMat, A::AbstractPetscMat, U::AbstractPetscMat, c::AbstractPetscVec, V::AbstractPetscMat )
 	A_ = Ref(A.ptr)
 	U_ = Ref(U.ptr)
 	c_ = Ref(c.ptr)
@@ -12915,7 +12915,7 @@ function MatLRCGetMats(petsclib::PetscLibType, N::PetscMat, A::PetscMat, U::Pets
 end 
 
 """
-	MatLRCSetMats(petsclib::PetscLibType,N::PetscMat, A::PetscMat, U::PetscMat, c::PetscVec, V::PetscMat) 
+	MatLRCSetMats(petsclib::PetscLibType,N::AbstractPetscMat, A::AbstractPetscMat, U::AbstractPetscMat, c::AbstractPetscVec, V::AbstractPetscMat) 
 Sets the constituents of an LRC matrix
 
 Logically collective
@@ -12934,9 +12934,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatLRCSetMats"))
 """
-function MatLRCSetMats(petsclib::PetscLibType, N::PetscMat, A::PetscMat, U::PetscMat, c::PetscVec, V::PetscMat) end
+function MatLRCSetMats(petsclib::PetscLibType, N::AbstractPetscMat, A::AbstractPetscMat, U::AbstractPetscMat, c::AbstractPetscVec, V::AbstractPetscMat) end
 
-@for_petsc function MatLRCSetMats(petsclib::$UnionPetscLib, N::PetscMat, A::PetscMat, U::PetscMat, c::PetscVec, V::PetscMat )
+@for_petsc function MatLRCSetMats(petsclib::$UnionPetscLib, N::AbstractPetscMat, A::AbstractPetscMat, U::AbstractPetscMat, c::AbstractPetscVec, V::AbstractPetscMat )
 
     @chk ccall(
                (:MatLRCSetMats, $petsc_library),
@@ -12950,7 +12950,7 @@ function MatLRCSetMats(petsclib::PetscLibType, N::PetscMat, A::PetscMat, U::Pets
 end 
 
 """
-	N::PetscMat = MatCreateLRC(petsclib::PetscLibType,A::PetscMat, U::PetscMat, c::PetscVec, V::PetscMat) 
+	N::PetscMat = MatCreateLRC(petsclib::PetscLibType,A::AbstractPetscMat, U::AbstractPetscMat, c::AbstractPetscVec, V::AbstractPetscMat) 
 Creates a new matrix object that behaves like A + U*C*V' of type `MATLRC`
 
 Collective
@@ -12971,9 +12971,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateLRC"))
 """
-function MatCreateLRC(petsclib::PetscLibType, A::PetscMat, U::PetscMat, c::Union{Ptr,PetscVec}, V::PetscMat) end
+function MatCreateLRC(petsclib::PetscLibType, A::AbstractPetscMat, U::AbstractPetscMat, c::Union{Ptr,PetscVec}, V::AbstractPetscMat) end
 
-@for_petsc function MatCreateLRC(petsclib::$UnionPetscLib, A::PetscMat, U::PetscMat, c::Union{Ptr,PetscVec}, V::PetscMat )
+@for_petsc function MatCreateLRC(petsclib::$UnionPetscLib, A::AbstractPetscMat, U::AbstractPetscMat, c::Union{Ptr,PetscVec}, V::AbstractPetscMat )
 	N_ = Ref{CMat}()
 
     @chk ccall(
@@ -13043,7 +13043,7 @@ function MatCreateMFFD(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::P
 end 
 
 """
-	MatMPISBAIJSetPreallocation(petsclib::PetscLibType,B::PetscMat, bs::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+	MatMPISBAIJSetPreallocation(petsclib::PetscLibType,B::AbstractPetscMat, bs::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
 For good matrix assembly performance
 the user should preallocate the matrix storage by setting the parameters
 d_nz (or d_nnz) and o_nz (or o_nnz).  By setting these parameters accurately,
@@ -13079,9 +13079,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMPISBAIJSetPreallocation"))
 """
-function MatMPISBAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, bs::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) end
+function MatMPISBAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, bs::PetscInt, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) end
 
-@for_petsc function MatMPISBAIJSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, bs::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
+@for_petsc function MatMPISBAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, d_nz::$PetscInt, d_nnz::Vector{$PetscInt}, o_nz::$PetscInt, o_nnz::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatMPISBAIJSetPreallocation, $petsc_library),
@@ -13194,7 +13194,7 @@ function MatCreateMPISBAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs:
 end 
 
 """
-	MatMPISBAIJSetPreallocationCSR(petsclib::PetscLibType,B::PetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) 
+	MatMPISBAIJSetPreallocationCSR(petsclib::PetscLibType,B::AbstractPetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) 
 Creates a sparse parallel matrix in `MATMPISBAIJ` format using the given nonzero structure and (optional) numerical values
 
 Collective
@@ -13214,9 +13214,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMPISBAIJSetPreallocationCSR"))
 """
-function MatMPISBAIJSetPreallocationCSR(petsclib::PetscLibType, B::PetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) end
+function MatMPISBAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) end
 
-@for_petsc function MatMPISBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::PetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
+@for_petsc function MatMPISBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatMPISBAIJSetPreallocationCSR, $petsc_library),
@@ -13230,7 +13230,7 @@ function MatMPISBAIJSetPreallocationCSR(petsclib::PetscLibType, B::PetscMat, bs:
 end 
 
 """
-	indices::PetscInt = MatSeqSBAIJSetColumnIndices(petsclib::PetscLibType,mat::PetscMat) 
+	indices::PetscInt = MatSeqSBAIJSetColumnIndices(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Set the column indices for all the rows
 in a `MATSEQSBAIJ` matrix.
 
@@ -13245,9 +13245,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSeqSBAIJSetColumnIndices"))
 """
-function MatSeqSBAIJSetColumnIndices(petsclib::PetscLibType, mat::PetscMat) end
+function MatSeqSBAIJSetColumnIndices(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatSeqSBAIJSetColumnIndices(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatSeqSBAIJSetColumnIndices(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	indices_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -13263,7 +13263,7 @@ function MatSeqSBAIJSetColumnIndices(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatSeqSBAIJGetArray(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatSeqSBAIJGetArray(petsclib::PetscLibType,A::AbstractPetscMat) 
 gives access to the array where the numerical data for a `MATSEQSBAIJ` matrix is stored
 
 Not Collective
@@ -13281,9 +13281,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqSBAIJGetArray"))
 """
-function MatSeqSBAIJGetArray(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqSBAIJGetArray(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqSBAIJGetArray(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqSBAIJGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -13299,7 +13299,7 @@ function MatSeqSBAIJGetArray(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatSeqSBAIJRestoreArray(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatSeqSBAIJRestoreArray(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns access to the array where the numerical data for a `MATSEQSBAIJ` matrix is stored obtained by `MatSeqSBAIJGetArray()`
 
 Not Collective
@@ -13315,9 +13315,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqSBAIJRestoreArray"))
 """
-function MatSeqSBAIJRestoreArray(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqSBAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqSBAIJRestoreArray(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqSBAIJRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -13333,7 +13333,7 @@ function MatSeqSBAIJRestoreArray(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatSeqSBAIJSetPreallocation(petsclib::PetscLibType,B::PetscMat, bs::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) 
+	MatSeqSBAIJSetPreallocation(petsclib::PetscLibType,B::AbstractPetscMat, bs::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) 
 Creates a sparse symmetric matrix in block AIJ (block
 compressed row) `MATSEQSBAIJ` format.  For good matrix assembly performance the
 user should preallocate the matrix storage by setting the parameter `nz`
@@ -13360,9 +13360,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqSBAIJSetPreallocation"))
 """
-function MatSeqSBAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, bs::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) end
+function MatSeqSBAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, bs::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) end
 
-@for_petsc function MatSeqSBAIJSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, bs::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
+@for_petsc function MatSeqSBAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatSeqSBAIJSetPreallocation, $petsc_library),
@@ -13376,7 +13376,7 @@ function MatSeqSBAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, bs::Pe
 end 
 
 """
-	MatSeqSBAIJSetPreallocationCSR(petsclib::PetscLibType,B::PetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) 
+	MatSeqSBAIJSetPreallocationCSR(petsclib::PetscLibType,B::AbstractPetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) 
 Creates a sparse parallel matrix in `MATSEQSBAIJ` format using the given nonzero structure and (optional) numerical values
 
 Input Parameters:
@@ -13393,9 +13393,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSeqSBAIJSetPreallocationCSR"))
 """
-function MatSeqSBAIJSetPreallocationCSR(petsclib::PetscLibType, B::PetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) end
+function MatSeqSBAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscMat, bs::PetscInt, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) end
 
-@for_petsc function MatSeqSBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::PetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
+@for_petsc function MatSeqSBAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatSeqSBAIJSetPreallocationCSR, $petsc_library),
@@ -13500,14 +13500,14 @@ function MatCreateSeqSBAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, bs:
 end 
 
 """
-	MatReorderingSeqSBAIJ(petsclib::PetscLibType,A::PetscMat, perm::IS) 
+	MatReorderingSeqSBAIJ(petsclib::PetscLibType,A::AbstractPetscMat, perm::AbstractIS) 
 
 # External Links
 $(_doc_external("Mat/MatReorderingSeqSBAIJ"))
 """
-function MatReorderingSeqSBAIJ(petsclib::PetscLibType, A::PetscMat, perm::IS) end
+function MatReorderingSeqSBAIJ(petsclib::PetscLibType, A::AbstractPetscMat, perm::AbstractIS) end
 
-@for_petsc function MatReorderingSeqSBAIJ(petsclib::$UnionPetscLib, A::PetscMat, perm::IS )
+@for_petsc function MatReorderingSeqSBAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, perm::AbstractIS )
 
     @chk ccall(
                (:MatReorderingSeqSBAIJ, $petsc_library),
@@ -13521,7 +13521,7 @@ function MatReorderingSeqSBAIJ(petsclib::PetscLibType, A::PetscMat, perm::IS) en
 end 
 
 """
-	MatKAIJGetAIJ(petsclib::PetscLibType,A::PetscMat, B::PetscMat) 
+	MatKAIJGetAIJ(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat) 
 Get the `MATAIJ` matrix describing the blockwise action of the `MATKAIJ` matrix
 
 Not Collective, but if the `MATKAIJ` matrix is parallel, the `MATAIJ` matrix is also parallel
@@ -13539,9 +13539,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJGetAIJ"))
 """
-function MatKAIJGetAIJ(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
+function MatKAIJGetAIJ(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function MatKAIJGetAIJ(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat )
+@for_petsc function MatKAIJGetAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
 	B_ = Ref(B.ptr)
 
     @chk ccall(
@@ -13557,7 +13557,7 @@ function MatKAIJGetAIJ(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
 end 
 
 """
-	m::PetscInt,n::PetscInt,S::Vector{PetscScalar} = MatKAIJGetS(petsclib::PetscLibType,A::PetscMat) 
+	m::PetscInt,n::PetscInt,S::Vector{PetscScalar} = MatKAIJGetS(petsclib::PetscLibType,A::AbstractPetscMat) 
 Get the `S` matrix describing the shift action of the `MATKAIJ` matrix
 
 Not Collective; the entire `S` is stored and returned independently on all processes.
@@ -13577,9 +13577,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJGetS"))
 """
-function MatKAIJGetS(petsclib::PetscLibType, A::PetscMat) end
+function MatKAIJGetS(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatKAIJGetS(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatKAIJGetS(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	m_ = Ref{$PetscInt}()
 	n_ = Ref{$PetscInt}()
 	S_ = Ref{Ptr{$PetscScalar}}()
@@ -13599,7 +13599,7 @@ function MatKAIJGetS(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	m::PetscInt,n::PetscInt,S::Vector{PetscScalar} = MatKAIJGetSRead(petsclib::PetscLibType,A::PetscMat) 
+	m::PetscInt,n::PetscInt,S::Vector{PetscScalar} = MatKAIJGetSRead(petsclib::PetscLibType,A::AbstractPetscMat) 
 Get a read
 
 Not Collective; the entire `S` is stored and returned independently on all processes.
@@ -13619,9 +13619,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJGetSRead"))
 """
-function MatKAIJGetSRead(petsclib::PetscLibType, A::PetscMat) end
+function MatKAIJGetSRead(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatKAIJGetSRead(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatKAIJGetSRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	m_ = Ref{$PetscInt}()
 	n_ = Ref{$PetscInt}()
 	S_ = Ref{Ptr{$PetscScalar}}()
@@ -13641,7 +13641,7 @@ function MatKAIJGetSRead(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	S::Vector{PetscScalar} = MatKAIJRestoreS(petsclib::PetscLibType,A::PetscMat) 
+	S::Vector{PetscScalar} = MatKAIJRestoreS(petsclib::PetscLibType,A::AbstractPetscMat) 
 Restore array obtained with `MatKAIJGetS()`
 
 Not Collective
@@ -13657,9 +13657,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJRestoreS"))
 """
-function MatKAIJRestoreS(petsclib::PetscLibType, A::PetscMat) end
+function MatKAIJRestoreS(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatKAIJRestoreS(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatKAIJRestoreS(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	S_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -13675,7 +13675,7 @@ function MatKAIJRestoreS(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	S::Vector{PetscScalar} = MatKAIJRestoreSRead(petsclib::PetscLibType,A::PetscMat) 
+	S::Vector{PetscScalar} = MatKAIJRestoreSRead(petsclib::PetscLibType,A::AbstractPetscMat) 
 Restore array obtained with `MatKAIJGetSRead()`
 
 Not Collective
@@ -13691,9 +13691,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJRestoreSRead"))
 """
-function MatKAIJRestoreSRead(petsclib::PetscLibType, A::PetscMat) end
+function MatKAIJRestoreSRead(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatKAIJRestoreSRead(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatKAIJRestoreSRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	S_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -13709,7 +13709,7 @@ function MatKAIJRestoreSRead(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	m::PetscInt,n::PetscInt,T::Vector{PetscScalar} = MatKAIJGetT(petsclib::PetscLibType,A::PetscMat) 
+	m::PetscInt,n::PetscInt,T::Vector{PetscScalar} = MatKAIJGetT(petsclib::PetscLibType,A::AbstractPetscMat) 
 Get the transformation matrix `T` associated with the `MATKAIJ` matrix
 
 Not Collective; the entire `T` is stored and returned independently on all processes
@@ -13729,9 +13729,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJGetT"))
 """
-function MatKAIJGetT(petsclib::PetscLibType, A::PetscMat) end
+function MatKAIJGetT(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatKAIJGetT(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatKAIJGetT(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	m_ = Ref{$PetscInt}()
 	n_ = Ref{$PetscInt}()
 	T_ = Ref{Ptr{$PetscScalar}}()
@@ -13751,7 +13751,7 @@ function MatKAIJGetT(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	m::PetscInt,n::PetscInt,T::Vector{PetscScalar} = MatKAIJGetTRead(petsclib::PetscLibType,A::PetscMat) 
+	m::PetscInt,n::PetscInt,T::Vector{PetscScalar} = MatKAIJGetTRead(petsclib::PetscLibType,A::AbstractPetscMat) 
 Get a read
 
 Not Collective; the entire `T` is stored and returned independently on all processes
@@ -13771,9 +13771,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJGetTRead"))
 """
-function MatKAIJGetTRead(petsclib::PetscLibType, A::PetscMat) end
+function MatKAIJGetTRead(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatKAIJGetTRead(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatKAIJGetTRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	m_ = Ref{$PetscInt}()
 	n_ = Ref{$PetscInt}()
 	T_ = Ref{Ptr{$PetscScalar}}()
@@ -13793,7 +13793,7 @@ function MatKAIJGetTRead(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	T::Vector{PetscScalar} = MatKAIJRestoreT(petsclib::PetscLibType,A::PetscMat) 
+	T::Vector{PetscScalar} = MatKAIJRestoreT(petsclib::PetscLibType,A::AbstractPetscMat) 
 Restore array obtained with `MatKAIJGetT()`
 
 Not Collective
@@ -13809,9 +13809,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJRestoreT"))
 """
-function MatKAIJRestoreT(petsclib::PetscLibType, A::PetscMat) end
+function MatKAIJRestoreT(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatKAIJRestoreT(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatKAIJRestoreT(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	T_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -13827,7 +13827,7 @@ function MatKAIJRestoreT(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	T::Vector{PetscScalar} = MatKAIJRestoreTRead(petsclib::PetscLibType,A::PetscMat) 
+	T::Vector{PetscScalar} = MatKAIJRestoreTRead(petsclib::PetscLibType,A::AbstractPetscMat) 
 Restore array obtained with `MatKAIJGetTRead()`
 
 Not Collective
@@ -13843,9 +13843,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJRestoreTRead"))
 """
-function MatKAIJRestoreTRead(petsclib::PetscLibType, A::PetscMat) end
+function MatKAIJRestoreTRead(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatKAIJRestoreTRead(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatKAIJRestoreTRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	T_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -13861,7 +13861,7 @@ function MatKAIJRestoreTRead(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatKAIJSetAIJ(petsclib::PetscLibType,A::PetscMat, B::PetscMat) 
+	MatKAIJSetAIJ(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat) 
 Set the `MATAIJ` matrix describing the blockwise action of the `MATKAIJ` matrix
 
 Logically Collective; if the `MATAIJ` matrix is parallel, the `MATKAIJ` matrix is also parallel
@@ -13877,9 +13877,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJSetAIJ"))
 """
-function MatKAIJSetAIJ(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
+function MatKAIJSetAIJ(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function MatKAIJSetAIJ(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat )
+@for_petsc function MatKAIJSetAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
 
     @chk ccall(
                (:MatKAIJSetAIJ, $petsc_library),
@@ -13893,7 +13893,7 @@ function MatKAIJSetAIJ(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
 end 
 
 """
-	MatKAIJSetS(petsclib::PetscLibType,A::PetscMat, p::PetscInt, q::PetscInt, S::Vector{PetscScalar}) 
+	MatKAIJSetS(petsclib::PetscLibType,A::AbstractPetscMat, p::PetscInt, q::PetscInt, S::Vector{PetscScalar}) 
 Set the `S` matrix describing the shift action of the `MATKAIJ` matrix
 
 Logically Collective; the entire `S` is stored independently on all processes.
@@ -13911,9 +13911,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJSetS"))
 """
-function MatKAIJSetS(petsclib::PetscLibType, A::PetscMat, p::PetscInt, q::PetscInt, S::Vector{PetscScalar}) end
+function MatKAIJSetS(petsclib::PetscLibType, A::AbstractPetscMat, p::PetscInt, q::PetscInt, S::Vector{PetscScalar}) end
 
-@for_petsc function MatKAIJSetS(petsclib::$UnionPetscLib, A::PetscMat, p::$PetscInt, q::$PetscInt, S::Vector{$PetscScalar} )
+@for_petsc function MatKAIJSetS(petsclib::$UnionPetscLib, A::AbstractPetscMat, p::$PetscInt, q::$PetscInt, S::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatKAIJSetS, $petsc_library),
@@ -13927,7 +13927,7 @@ function MatKAIJSetS(petsclib::PetscLibType, A::PetscMat, p::PetscInt, q::PetscI
 end 
 
 """
-	identity::PetscBool = MatKAIJGetScaledIdentity(petsclib::PetscLibType,A::PetscMat) 
+	identity::PetscBool = MatKAIJGetScaledIdentity(petsclib::PetscLibType,A::AbstractPetscMat) 
 Check if both `S` and `T` are scaled identities.
 
 Logically Collective.
@@ -13945,9 +13945,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJGetScaledIdentity"))
 """
-function MatKAIJGetScaledIdentity(petsclib::PetscLibType, A::PetscMat) end
+function MatKAIJGetScaledIdentity(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatKAIJGetScaledIdentity(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatKAIJGetScaledIdentity(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	identity_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -13963,7 +13963,7 @@ function MatKAIJGetScaledIdentity(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatKAIJSetT(petsclib::PetscLibType,A::PetscMat, p::PetscInt, q::PetscInt, T::Vector{PetscScalar}) 
+	MatKAIJSetT(petsclib::PetscLibType,A::AbstractPetscMat, p::PetscInt, q::PetscInt, T::Vector{PetscScalar}) 
 Set the transformation matrix `T` associated with the `MATKAIJ` matrix
 
 Logically Collective; the entire `T` is stored independently on all processes.
@@ -13981,9 +13981,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatKAIJSetT"))
 """
-function MatKAIJSetT(petsclib::PetscLibType, A::PetscMat, p::PetscInt, q::PetscInt, T::Vector{PetscScalar}) end
+function MatKAIJSetT(petsclib::PetscLibType, A::AbstractPetscMat, p::PetscInt, q::PetscInt, T::Vector{PetscScalar}) end
 
-@for_petsc function MatKAIJSetT(petsclib::$UnionPetscLib, A::PetscMat, p::$PetscInt, q::$PetscInt, T::Vector{$PetscScalar} )
+@for_petsc function MatKAIJSetT(petsclib::$UnionPetscLib, A::AbstractPetscMat, p::$PetscInt, q::$PetscInt, T::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatKAIJSetT, $petsc_library),
@@ -13997,7 +13997,7 @@ function MatKAIJSetT(petsclib::PetscLibType, A::PetscMat, p::PetscInt, q::PetscI
 end 
 
 """
-	kaij::PetscMat = MatCreateKAIJ(petsclib::PetscLibType,A::PetscMat, p::PetscInt, q::PetscInt, S::Vector{PetscScalar}, T::Vector{PetscScalar}) 
+	kaij::PetscMat = MatCreateKAIJ(petsclib::PetscLibType,A::AbstractPetscMat, p::PetscInt, q::PetscInt, S::Vector{PetscScalar}, T::Vector{PetscScalar}) 
 Creates a matrix of type `MATKAIJ`.
 
 Collective
@@ -14019,9 +14019,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateKAIJ"))
 """
-function MatCreateKAIJ(petsclib::PetscLibType, A::PetscMat, p::PetscInt, q::PetscInt, S::Union{Ptr,Vector{PetscScalar}}, T::Union{Ptr,Vector{PetscScalar}}) end
+function MatCreateKAIJ(petsclib::PetscLibType, A::AbstractPetscMat, p::PetscInt, q::PetscInt, S::Union{Ptr,Vector{PetscScalar}}, T::Union{Ptr,Vector{PetscScalar}}) end
 
-@for_petsc function MatCreateKAIJ(petsclib::$UnionPetscLib, A::PetscMat, p::$PetscInt, q::$PetscInt, S::Union{Ptr,Vector{$PetscScalar}}, T::Union{Ptr,Vector{$PetscScalar}} )
+@for_petsc function MatCreateKAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat, p::$PetscInt, q::$PetscInt, S::Union{Ptr,Vector{$PetscScalar}}, T::Union{Ptr,Vector{$PetscScalar}} )
 	kaij_ = Ref{CMat}()
 
     @chk ccall(
@@ -14037,7 +14037,7 @@ function MatCreateKAIJ(petsclib::PetscLibType, A::PetscMat, p::PetscInt, q::Pets
 end 
 
 """
-	B::PetscMat = MatMPIAdjCreateNonemptySubcommMat(petsclib::PetscLibType,A::PetscMat) 
+	B::PetscMat = MatMPIAdjCreateNonemptySubcommMat(petsclib::PetscLibType,A::AbstractPetscMat) 
 create the same `MATMPIADJ` matrix on a subcommunicator containing only processes owning a positive number of rows
 
 Collective
@@ -14055,9 +14055,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatMPIAdjCreateNonemptySubcommMat"))
 """
-function MatMPIAdjCreateNonemptySubcommMat(petsclib::PetscLibType, A::PetscMat) end
+function MatMPIAdjCreateNonemptySubcommMat(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatMPIAdjCreateNonemptySubcommMat(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatMPIAdjCreateNonemptySubcommMat(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	B_ = Ref{CMat}()
 
     @chk ccall(
@@ -14073,7 +14073,7 @@ function MatMPIAdjCreateNonemptySubcommMat(petsclib::PetscLibType, A::PetscMat) 
 end 
 
 """
-	MatMPIAdjToSeq(petsclib::PetscLibType,A::PetscMat, B::PetscMat) 
+	MatMPIAdjToSeq(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat) 
 Converts an parallel `MATMPIADJ` matrix to complete `MATMPIADJ` on each process (needed by sequential partitioners)
 
 Logically Collective
@@ -14091,9 +14091,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMPIAdjToSeq"))
 """
-function MatMPIAdjToSeq(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
+function MatMPIAdjToSeq(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function MatMPIAdjToSeq(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat )
+@for_petsc function MatMPIAdjToSeq(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
 	B_ = Ref(B.ptr)
 
     @chk ccall(
@@ -14109,7 +14109,7 @@ function MatMPIAdjToSeq(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
 end 
 
 """
-	MatMPIAdjToSeqRankZero(petsclib::PetscLibType,A::PetscMat, B::PetscMat) 
+	MatMPIAdjToSeqRankZero(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat) 
 Converts an parallel `MATMPIADJ` matrix to complete `MATMPIADJ` on rank zero (needed by sequential partitioners)
 
 Logically Collective
@@ -14127,9 +14127,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMPIAdjToSeqRankZero"))
 """
-function MatMPIAdjToSeqRankZero(petsclib::PetscLibType, A::PetscMat, B::PetscMat) end
+function MatMPIAdjToSeqRankZero(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function MatMPIAdjToSeqRankZero(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat )
+@for_petsc function MatMPIAdjToSeqRankZero(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat )
 	B_ = Ref(B.ptr)
 
     @chk ccall(
@@ -14145,7 +14145,7 @@ function MatMPIAdjToSeqRankZero(petsclib::PetscLibType, A::PetscMat, B::PetscMat
 end 
 
 """
-	i::PetscInt,j::PetscInt,values::PetscInt = MatMPIAdjSetPreallocation(petsclib::PetscLibType,B::PetscMat) 
+	i::PetscInt,j::PetscInt,values::PetscInt = MatMPIAdjSetPreallocation(petsclib::PetscLibType,B::AbstractPetscMat) 
 Sets the array used for storing the matrix elements
 
 Logically Collective
@@ -14164,9 +14164,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMPIAdjSetPreallocation"))
 """
-function MatMPIAdjSetPreallocation(petsclib::PetscLibType, B::PetscMat) end
+function MatMPIAdjSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat) end
 
-@for_petsc function MatMPIAdjSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat )
+@for_petsc function MatMPIAdjSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat )
 	i_ = Ref{$PetscInt}()
 	j_ = Ref{$PetscInt}()
 	values_ = Ref{$PetscInt}()
@@ -14229,7 +14229,7 @@ function MatCreateMPIAdj(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, N:
 end 
 
 """
-	MatScatterGetVecScatter(petsclib::PetscLibType,mat::PetscMat, scatter::VecScatter) 
+	MatScatterGetVecScatter(petsclib::PetscLibType,mat::AbstractPetscMat, scatter::VecScatter) 
 Returns the user
 
 Logically Collective
@@ -14247,9 +14247,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatScatterGetVecScatter"))
 """
-function MatScatterGetVecScatter(petsclib::PetscLibType, mat::PetscMat, scatter::VecScatter) end
+function MatScatterGetVecScatter(petsclib::PetscLibType, mat::AbstractPetscMat, scatter::VecScatter) end
 
-@for_petsc function MatScatterGetVecScatter(petsclib::$UnionPetscLib, mat::PetscMat, scatter::VecScatter )
+@for_petsc function MatScatterGetVecScatter(petsclib::$UnionPetscLib, mat::AbstractPetscMat, scatter::VecScatter )
 
     @chk ccall(
                (:MatScatterGetVecScatter, $petsc_library),
@@ -14300,7 +14300,7 @@ function MatCreateScatter(petsclib::PetscLibType, comm::MPI_Comm, scatter::VecSc
 end 
 
 """
-	MatScatterSetVecScatter(petsclib::PetscLibType,mat::PetscMat, scatter::VecScatter) 
+	MatScatterSetVecScatter(petsclib::PetscLibType,mat::AbstractPetscMat, scatter::VecScatter) 
 sets the scatter that the matrix is to apply as its linear operator in a `MATSCATTER`
 
 Logically Collective
@@ -14316,9 +14316,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatScatterSetVecScatter"))
 """
-function MatScatterSetVecScatter(petsclib::PetscLibType, mat::PetscMat, scatter::VecScatter) end
+function MatScatterSetVecScatter(petsclib::PetscLibType, mat::AbstractPetscMat, scatter::VecScatter) end
 
-@for_petsc function MatScatterSetVecScatter(petsclib::$UnionPetscLib, mat::PetscMat, scatter::VecScatter )
+@for_petsc function MatScatterSetVecScatter(petsclib::$UnionPetscLib, mat::AbstractPetscMat, scatter::VecScatter )
 
     @chk ccall(
                (:MatScatterSetVecScatter, $petsc_library),
@@ -14368,7 +14368,7 @@ function MatCreateCentering(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt,
 end 
 
 """
-	MatDiagonalGetDiagonal(petsclib::PetscLibType,A::PetscMat, diag::PetscVec) 
+	MatDiagonalGetDiagonal(petsclib::PetscLibType,A::AbstractPetscMat, diag::AbstractPetscVec) 
 Get the diagonal of a `MATDIAGONAL`
 
 Input Parameter:
@@ -14384,9 +14384,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatDiagonalGetDiagonal"))
 """
-function MatDiagonalGetDiagonal(petsclib::PetscLibType, A::PetscMat, diag::PetscVec) end
+function MatDiagonalGetDiagonal(petsclib::PetscLibType, A::AbstractPetscMat, diag::AbstractPetscVec) end
 
-@for_petsc function MatDiagonalGetDiagonal(petsclib::$UnionPetscLib, A::PetscMat, diag::PetscVec )
+@for_petsc function MatDiagonalGetDiagonal(petsclib::$UnionPetscLib, A::AbstractPetscMat, diag::AbstractPetscVec )
 	diag_ = Ref(diag.ptr)
 
     @chk ccall(
@@ -14402,7 +14402,7 @@ function MatDiagonalGetDiagonal(petsclib::PetscLibType, A::PetscMat, diag::Petsc
 end 
 
 """
-	MatDiagonalRestoreDiagonal(petsclib::PetscLibType,A::PetscMat, diag::PetscVec) 
+	MatDiagonalRestoreDiagonal(petsclib::PetscLibType,A::AbstractPetscMat, diag::AbstractPetscVec) 
 Restore the diagonal of a `MATDIAGONAL`
 
 Input Parameters:
@@ -14416,9 +14416,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatDiagonalRestoreDiagonal"))
 """
-function MatDiagonalRestoreDiagonal(petsclib::PetscLibType, A::PetscMat, diag::PetscVec) end
+function MatDiagonalRestoreDiagonal(petsclib::PetscLibType, A::AbstractPetscMat, diag::AbstractPetscVec) end
 
-@for_petsc function MatDiagonalRestoreDiagonal(petsclib::$UnionPetscLib, A::PetscMat, diag::PetscVec )
+@for_petsc function MatDiagonalRestoreDiagonal(petsclib::$UnionPetscLib, A::AbstractPetscMat, diag::AbstractPetscVec )
 	diag_ = Ref(diag.ptr)
 
     @chk ccall(
@@ -14434,7 +14434,7 @@ function MatDiagonalRestoreDiagonal(petsclib::PetscLibType, A::PetscMat, diag::P
 end 
 
 """
-	MatDiagonalGetInverseDiagonal(petsclib::PetscLibType,A::PetscMat, inv_diag::PetscVec) 
+	MatDiagonalGetInverseDiagonal(petsclib::PetscLibType,A::AbstractPetscMat, inv_diag::AbstractPetscVec) 
 Get the inverse diagonal of a `MATDIAGONAL`
 
 Input Parameter:
@@ -14450,9 +14450,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatDiagonalGetInverseDiagonal"))
 """
-function MatDiagonalGetInverseDiagonal(petsclib::PetscLibType, A::PetscMat, inv_diag::PetscVec) end
+function MatDiagonalGetInverseDiagonal(petsclib::PetscLibType, A::AbstractPetscMat, inv_diag::AbstractPetscVec) end
 
-@for_petsc function MatDiagonalGetInverseDiagonal(petsclib::$UnionPetscLib, A::PetscMat, inv_diag::PetscVec )
+@for_petsc function MatDiagonalGetInverseDiagonal(petsclib::$UnionPetscLib, A::AbstractPetscMat, inv_diag::AbstractPetscVec )
 	inv_diag_ = Ref(inv_diag.ptr)
 
     @chk ccall(
@@ -14468,7 +14468,7 @@ function MatDiagonalGetInverseDiagonal(petsclib::PetscLibType, A::PetscMat, inv_
 end 
 
 """
-	MatDiagonalRestoreInverseDiagonal(petsclib::PetscLibType,A::PetscMat, inv_diag::PetscVec) 
+	MatDiagonalRestoreInverseDiagonal(petsclib::PetscLibType,A::AbstractPetscMat, inv_diag::AbstractPetscVec) 
 Restore the inverse diagonal of a `MATDIAGONAL`
 
 Input Parameters:
@@ -14482,9 +14482,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatDiagonalRestoreInverseDiagonal"))
 """
-function MatDiagonalRestoreInverseDiagonal(petsclib::PetscLibType, A::PetscMat, inv_diag::PetscVec) end
+function MatDiagonalRestoreInverseDiagonal(petsclib::PetscLibType, A::AbstractPetscMat, inv_diag::AbstractPetscVec) end
 
-@for_petsc function MatDiagonalRestoreInverseDiagonal(petsclib::$UnionPetscLib, A::PetscMat, inv_diag::PetscVec )
+@for_petsc function MatDiagonalRestoreInverseDiagonal(petsclib::$UnionPetscLib, A::AbstractPetscMat, inv_diag::AbstractPetscVec )
 	inv_diag_ = Ref(inv_diag.ptr)
 
     @chk ccall(
@@ -14500,7 +14500,7 @@ function MatDiagonalRestoreInverseDiagonal(petsclib::PetscLibType, A::PetscMat, 
 end 
 
 """
-	J::PetscMat = MatCreateDiagonal(petsclib::PetscLibType,diag::PetscVec) 
+	J::PetscMat = MatCreateDiagonal(petsclib::PetscLibType,diag::AbstractPetscVec) 
 Creates a matrix defined by a given vector along its diagonal.
 
 Collective
@@ -14519,9 +14519,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateDiagonal"))
 """
-function MatCreateDiagonal(petsclib::PetscLibType, diag::PetscVec) end
+function MatCreateDiagonal(petsclib::PetscLibType, diag::AbstractPetscVec) end
 
-@for_petsc function MatCreateDiagonal(petsclib::$UnionPetscLib, diag::PetscVec )
+@for_petsc function MatCreateDiagonal(petsclib::$UnionPetscLib, diag::AbstractPetscVec )
 	J_ = Ref{CMat}()
 
     @chk ccall(
@@ -14537,7 +14537,7 @@ function MatCreateDiagonal(petsclib::PetscLibType, diag::PetscVec) end
 end 
 
 """
-	MatNormalGetMat(petsclib::PetscLibType,A::PetscMat, M::PetscMat) 
+	MatNormalGetMat(petsclib::PetscLibType,A::AbstractPetscMat, M::AbstractPetscMat) 
 Gets the `Mat` object stored inside a `MATNORMAL`
 
 Logically Collective
@@ -14555,9 +14555,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatNormalGetMat"))
 """
-function MatNormalGetMat(petsclib::PetscLibType, A::PetscMat, M::PetscMat) end
+function MatNormalGetMat(petsclib::PetscLibType, A::AbstractPetscMat, M::AbstractPetscMat) end
 
-@for_petsc function MatNormalGetMat(petsclib::$UnionPetscLib, A::PetscMat, M::PetscMat )
+@for_petsc function MatNormalGetMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, M::AbstractPetscMat )
 	M_ = Ref(M.ptr)
 
     @chk ccall(
@@ -14573,7 +14573,7 @@ function MatNormalGetMat(petsclib::PetscLibType, A::PetscMat, M::PetscMat) end
 end 
 
 """
-	N::PetscMat = MatCreateNormal(petsclib::PetscLibType,A::PetscMat) 
+	N::PetscMat = MatCreateNormal(petsclib::PetscLibType,A::AbstractPetscMat) 
 Creates a new `MATNORMAL` matrix object that behaves like A^T A.
 
 Collective
@@ -14591,9 +14591,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateNormal"))
 """
-function MatCreateNormal(petsclib::PetscLibType, A::PetscMat) end
+function MatCreateNormal(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatCreateNormal(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatCreateNormal(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	N_ = Ref{CMat}()
 
     @chk ccall(
@@ -14609,7 +14609,7 @@ function MatCreateNormal(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatNormalHermitianGetMat(petsclib::PetscLibType,A::PetscMat, M::PetscMat) 
+	MatNormalHermitianGetMat(petsclib::PetscLibType,A::AbstractPetscMat, M::AbstractPetscMat) 
 Gets the `Mat` object stored inside a `MATNORMALHERMITIAN`
 
 Logically Collective
@@ -14627,9 +14627,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatNormalHermitianGetMat"))
 """
-function MatNormalHermitianGetMat(petsclib::PetscLibType, A::PetscMat, M::PetscMat) end
+function MatNormalHermitianGetMat(petsclib::PetscLibType, A::AbstractPetscMat, M::AbstractPetscMat) end
 
-@for_petsc function MatNormalHermitianGetMat(petsclib::$UnionPetscLib, A::PetscMat, M::PetscMat )
+@for_petsc function MatNormalHermitianGetMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, M::AbstractPetscMat )
 	M_ = Ref(M.ptr)
 
     @chk ccall(
@@ -14645,7 +14645,7 @@ function MatNormalHermitianGetMat(petsclib::PetscLibType, A::PetscMat, M::PetscM
 end 
 
 """
-	N::PetscMat = MatCreateNormalHermitian(petsclib::PetscLibType,A::PetscMat) 
+	N::PetscMat = MatCreateNormalHermitian(petsclib::PetscLibType,A::AbstractPetscMat) 
 Creates a new matrix object `MATNORMALHERMITIAN` that behaves like A^* A.
 
 Collective
@@ -14663,9 +14663,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateNormalHermitian"))
 """
-function MatCreateNormalHermitian(petsclib::PetscLibType, A::PetscMat) end
+function MatCreateNormalHermitian(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatCreateNormalHermitian(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatCreateNormalHermitian(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	N_ = Ref{CMat}()
 
     @chk ccall(
@@ -14681,7 +14681,7 @@ function MatCreateNormalHermitian(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatBlockMatSetPreallocation(petsclib::PetscLibType,B::PetscMat, bs::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) 
+	MatBlockMatSetPreallocation(petsclib::PetscLibType,B::AbstractPetscMat, bs::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) 
 For good matrix assembly performance
 the user should preallocate the matrix storage by setting the parameter nz
 (or the array nnz).  By setting these parameters accurately, performance
@@ -14703,9 +14703,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatBlockMatSetPreallocation"))
 """
-function MatBlockMatSetPreallocation(petsclib::PetscLibType, B::PetscMat, bs::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) end
+function MatBlockMatSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, bs::PetscInt, nz::PetscInt, nnz::Vector{PetscInt}) end
 
-@for_petsc function MatBlockMatSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, bs::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
+@for_petsc function MatBlockMatSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, bs::$PetscInt, nz::$PetscInt, nnz::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatBlockMatSetPreallocation, $petsc_library),
@@ -14802,7 +14802,7 @@ function MatCreateFFT(petsclib::PetscLibType, comm::MPI_Comm, ndim::PetscInt, di
 end 
 
 """
-	x::PetscVec,y::PetscVec,z::PetscVec = MatCreateVecsFFTW(petsclib::PetscLibType,A::PetscMat) 
+	x::PetscVec,y::PetscVec,z::PetscVec = MatCreateVecsFFTW(petsclib::PetscLibType,A::AbstractPetscMat) 
 Get vector(s) compatible with the matrix, i.e. with the
 parallel layout determined by `MATFFTW`
 
@@ -14826,9 +14826,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateVecsFFTW"))
 """
-function MatCreateVecsFFTW(petsclib::PetscLibType, A::PetscMat) end
+function MatCreateVecsFFTW(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatCreateVecsFFTW(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatCreateVecsFFTW(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	x_ = Ref{CVec}()
 	y_ = Ref{CVec}()
 	z_ = Ref{CVec}()
@@ -14848,14 +14848,14 @@ function MatCreateVecsFFTW(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatHtoolSetKernel(petsclib::PetscLibType,A::PetscMat, kernel::MatHtoolKernelFn, kernelctx::Cvoid) 
+	MatHtoolSetKernel(petsclib::PetscLibType,A::AbstractPetscMat, kernel::MatHtoolKernelFn, kernelctx::Cvoid) 
 
 # External Links
 $(_doc_external("Mat/MatHtoolSetKernel"))
 """
-function MatHtoolSetKernel(petsclib::PetscLibType, A::PetscMat, kernel::MatHtoolKernelFn, kernelctx::Cvoid) end
+function MatHtoolSetKernel(petsclib::PetscLibType, A::AbstractPetscMat, kernel::MatHtoolKernelFn, kernelctx::Cvoid) end
 
-@for_petsc function MatHtoolSetKernel(petsclib::$UnionPetscLib, A::PetscMat, kernel::MatHtoolKernelFn, kernelctx::Cvoid )
+@for_petsc function MatHtoolSetKernel(petsclib::$UnionPetscLib, A::AbstractPetscMat, kernel::MatHtoolKernelFn, kernelctx::Cvoid )
 
     @chk ccall(
                (:MatHtoolSetKernel, $petsc_library),
@@ -14869,14 +14869,14 @@ function MatHtoolSetKernel(petsclib::PetscLibType, A::PetscMat, kernel::MatHtool
 end 
 
 """
-	MatHtoolGetPermutationSource(petsclib::PetscLibType,A::PetscMat, is::IS) 
+	MatHtoolGetPermutationSource(petsclib::PetscLibType,A::AbstractPetscMat, is::AbstractIS) 
 
 # External Links
 $(_doc_external("Mat/MatHtoolGetPermutationSource"))
 """
-function MatHtoolGetPermutationSource(petsclib::PetscLibType, A::PetscMat, is::IS) end
+function MatHtoolGetPermutationSource(petsclib::PetscLibType, A::AbstractPetscMat, is::AbstractIS) end
 
-@for_petsc function MatHtoolGetPermutationSource(petsclib::$UnionPetscLib, A::PetscMat, is::IS )
+@for_petsc function MatHtoolGetPermutationSource(petsclib::$UnionPetscLib, A::AbstractPetscMat, is::AbstractIS )
 
     @chk ccall(
                (:MatHtoolGetPermutationSource, $petsc_library),
@@ -14890,14 +14890,14 @@ function MatHtoolGetPermutationSource(petsclib::PetscLibType, A::PetscMat, is::I
 end 
 
 """
-	MatHtoolGetPermutationTarget(petsclib::PetscLibType,A::PetscMat, is::IS) 
+	MatHtoolGetPermutationTarget(petsclib::PetscLibType,A::AbstractPetscMat, is::AbstractIS) 
 
 # External Links
 $(_doc_external("Mat/MatHtoolGetPermutationTarget"))
 """
-function MatHtoolGetPermutationTarget(petsclib::PetscLibType, A::PetscMat, is::IS) end
+function MatHtoolGetPermutationTarget(petsclib::PetscLibType, A::AbstractPetscMat, is::AbstractIS) end
 
-@for_petsc function MatHtoolGetPermutationTarget(petsclib::$UnionPetscLib, A::PetscMat, is::IS )
+@for_petsc function MatHtoolGetPermutationTarget(petsclib::$UnionPetscLib, A::AbstractPetscMat, is::AbstractIS )
 
     @chk ccall(
                (:MatHtoolGetPermutationTarget, $petsc_library),
@@ -14911,14 +14911,14 @@ function MatHtoolGetPermutationTarget(petsclib::PetscLibType, A::PetscMat, is::I
 end 
 
 """
-	MatHtoolUsePermutation(petsclib::PetscLibType,A::PetscMat, use::PetscBool) 
+	MatHtoolUsePermutation(petsclib::PetscLibType,A::AbstractPetscMat, use::PetscBool) 
 
 # External Links
 $(_doc_external("Mat/MatHtoolUsePermutation"))
 """
-function MatHtoolUsePermutation(petsclib::PetscLibType, A::PetscMat, use::PetscBool) end
+function MatHtoolUsePermutation(petsclib::PetscLibType, A::AbstractPetscMat, use::PetscBool) end
 
-@for_petsc function MatHtoolUsePermutation(petsclib::$UnionPetscLib, A::PetscMat, use::PetscBool )
+@for_petsc function MatHtoolUsePermutation(petsclib::$UnionPetscLib, A::AbstractPetscMat, use::PetscBool )
 
     @chk ccall(
                (:MatHtoolUsePermutation, $petsc_library),
@@ -14932,14 +14932,14 @@ function MatHtoolUsePermutation(petsclib::PetscLibType, A::PetscMat, use::PetscB
 end 
 
 """
-	MatHtoolUseRecompression(petsclib::PetscLibType,A::PetscMat, use::PetscBool) 
+	MatHtoolUseRecompression(petsclib::PetscLibType,A::AbstractPetscMat, use::PetscBool) 
 
 # External Links
 $(_doc_external("Mat/MatHtoolUseRecompression"))
 """
-function MatHtoolUseRecompression(petsclib::PetscLibType, A::PetscMat, use::PetscBool) end
+function MatHtoolUseRecompression(petsclib::PetscLibType, A::AbstractPetscMat, use::PetscBool) end
 
-@for_petsc function MatHtoolUseRecompression(petsclib::$UnionPetscLib, A::PetscMat, use::PetscBool )
+@for_petsc function MatHtoolUseRecompression(petsclib::$UnionPetscLib, A::AbstractPetscMat, use::PetscBool )
 
     @chk ccall(
                (:MatHtoolUseRecompression, $petsc_library),
@@ -14980,7 +14980,7 @@ function MatCreateHtoolFromKernel(petsclib::PetscLibType, comm::MPI_Comm, m::Pet
 end 
 
 """
-	MatHYPRESetPreallocation(petsclib::PetscLibType,A::PetscMat, dnz::PetscInt, dnnz::Vector{PetscInt}, onz::PetscInt, onnz::Vector{PetscInt}) 
+	MatHYPRESetPreallocation(petsclib::PetscLibType,A::AbstractPetscMat, dnz::PetscInt, dnnz::Vector{PetscInt}, onz::PetscInt, onnz::Vector{PetscInt}) 
 Preallocates memory for a sparse parallel matrix in HYPRE IJ format
 
 Collective
@@ -15010,9 +15010,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatHYPRESetPreallocation"))
 """
-function MatHYPRESetPreallocation(petsclib::PetscLibType, A::PetscMat, dnz::PetscInt, dnnz::Vector{PetscInt}, onz::PetscInt, onnz::Vector{PetscInt}) end
+function MatHYPRESetPreallocation(petsclib::PetscLibType, A::AbstractPetscMat, dnz::PetscInt, dnnz::Vector{PetscInt}, onz::PetscInt, onnz::Vector{PetscInt}) end
 
-@for_petsc function MatHYPRESetPreallocation(petsclib::$UnionPetscLib, A::PetscMat, dnz::$PetscInt, dnnz::Vector{$PetscInt}, onz::$PetscInt, onnz::Vector{$PetscInt} )
+@for_petsc function MatHYPRESetPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat, dnz::$PetscInt, dnnz::Vector{$PetscInt}, onz::$PetscInt, onnz::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatHYPRESetPreallocation, $petsc_library),
@@ -15026,7 +15026,7 @@ function MatHYPRESetPreallocation(petsclib::PetscLibType, A::PetscMat, dnz::Pets
 end 
 
 """
-	MatHYPREGetParCSR(petsclib::PetscLibType,A::PetscMat, parcsr::hypre_ParCSRMatrix) 
+	MatHYPREGetParCSR(petsclib::PetscLibType,A::AbstractPetscMat, parcsr::hypre_ParCSRMatrix) 
 Gets the pointer to the ParCSR matrix
 
 Not Collective, No Fortran Support
@@ -15044,9 +15044,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatHYPREGetParCSR"))
 """
-function MatHYPREGetParCSR(petsclib::PetscLibType, A::PetscMat, parcsr::hypre_ParCSRMatrix) end
+function MatHYPREGetParCSR(petsclib::PetscLibType, A::AbstractPetscMat, parcsr::hypre_ParCSRMatrix) end
 
-@for_petsc function MatHYPREGetParCSR(petsclib::$UnionPetscLib, A::PetscMat, parcsr::hypre_ParCSRMatrix )
+@for_petsc function MatHYPREGetParCSR(petsclib::$UnionPetscLib, A::AbstractPetscMat, parcsr::hypre_ParCSRMatrix )
 
     @chk ccall(
                (:MatHYPREGetParCSR, $petsc_library),
@@ -15060,7 +15060,7 @@ function MatHYPREGetParCSR(petsclib::PetscLibType, A::PetscMat, parcsr::hypre_Pa
 end 
 
 """
-	newmat::PetscMat = MatCreateSubMatrixVirtual(petsclib::PetscLibType,A::PetscMat, isrow::IS, iscol::IS) 
+	newmat::PetscMat = MatCreateSubMatrixVirtual(petsclib::PetscLibType,A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS) 
 Creates a virtual matrix `MATSUBMATRIX` that acts as a submatrix
 
 Collective
@@ -15080,9 +15080,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatCreateSubMatrixVirtual"))
 """
-function MatCreateSubMatrixVirtual(petsclib::PetscLibType, A::PetscMat, isrow::IS, iscol::IS) end
+function MatCreateSubMatrixVirtual(petsclib::PetscLibType, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS) end
 
-@for_petsc function MatCreateSubMatrixVirtual(petsclib::$UnionPetscLib, A::PetscMat, isrow::IS, iscol::IS )
+@for_petsc function MatCreateSubMatrixVirtual(petsclib::$UnionPetscLib, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS )
 	newmat_ = Ref{CMat}()
 
     @chk ccall(
@@ -15098,7 +15098,7 @@ function MatCreateSubMatrixVirtual(petsclib::PetscLibType, A::PetscMat, isrow::I
 end 
 
 """
-	MatSubMatrixVirtualUpdate(petsclib::PetscLibType,N::PetscMat, A::PetscMat, isrow::IS, iscol::IS) 
+	MatSubMatrixVirtualUpdate(petsclib::PetscLibType,N::AbstractPetscMat, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS) 
 Updates a `MATSUBMATRIX` virtual submatrix
 
 Collective
@@ -15116,9 +15116,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSubMatrixVirtualUpdate"))
 """
-function MatSubMatrixVirtualUpdate(petsclib::PetscLibType, N::PetscMat, A::PetscMat, isrow::IS, iscol::IS) end
+function MatSubMatrixVirtualUpdate(petsclib::PetscLibType, N::AbstractPetscMat, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS) end
 
-@for_petsc function MatSubMatrixVirtualUpdate(petsclib::$UnionPetscLib, N::PetscMat, A::PetscMat, isrow::IS, iscol::IS )
+@for_petsc function MatSubMatrixVirtualUpdate(petsclib::$UnionPetscLib, N::AbstractPetscMat, A::AbstractPetscMat, isrow::AbstractIS, iscol::AbstractIS )
 
     @chk ccall(
                (:MatSubMatrixVirtualUpdate, $petsc_library),
@@ -15132,7 +15132,7 @@ function MatSubMatrixVirtualUpdate(petsclib::PetscLibType, N::PetscMat, A::Petsc
 end 
 
 """
-	MatNestGetSubMat(petsclib::PetscLibType,A::PetscMat, idxm::PetscInt, jdxm::PetscInt, sub::PetscMat) 
+	MatNestGetSubMat(petsclib::PetscLibType,A::AbstractPetscMat, idxm::PetscInt, jdxm::PetscInt, sub::AbstractPetscMat) 
 Returns a single, sub
 
 Not Collective
@@ -15153,9 +15153,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatNestGetSubMat"))
 """
-function MatNestGetSubMat(petsclib::PetscLibType, A::PetscMat, idxm::PetscInt, jdxm::PetscInt, sub::PetscMat) end
+function MatNestGetSubMat(petsclib::PetscLibType, A::AbstractPetscMat, idxm::PetscInt, jdxm::PetscInt, sub::AbstractPetscMat) end
 
-@for_petsc function MatNestGetSubMat(petsclib::$UnionPetscLib, A::PetscMat, idxm::$PetscInt, jdxm::$PetscInt, sub::PetscMat )
+@for_petsc function MatNestGetSubMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, idxm::$PetscInt, jdxm::$PetscInt, sub::AbstractPetscMat )
 	sub_ = Ref(sub.ptr)
 
     @chk ccall(
@@ -15171,7 +15171,7 @@ function MatNestGetSubMat(petsclib::PetscLibType, A::PetscMat, idxm::PetscInt, j
 end 
 
 """
-	MatNestSetSubMat(petsclib::PetscLibType,A::PetscMat, idxm::PetscInt, jdxm::PetscInt, sub::PetscMat) 
+	MatNestSetSubMat(petsclib::PetscLibType,A::AbstractPetscMat, idxm::PetscInt, jdxm::PetscInt, sub::AbstractPetscMat) 
 Set a single submatrix in the `MATNEST`
 
 Logically Collective
@@ -15190,9 +15190,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatNestSetSubMat"))
 """
-function MatNestSetSubMat(petsclib::PetscLibType, A::PetscMat, idxm::PetscInt, jdxm::PetscInt, sub::PetscMat) end
+function MatNestSetSubMat(petsclib::PetscLibType, A::AbstractPetscMat, idxm::PetscInt, jdxm::PetscInt, sub::AbstractPetscMat) end
 
-@for_petsc function MatNestSetSubMat(petsclib::$UnionPetscLib, A::PetscMat, idxm::$PetscInt, jdxm::$PetscInt, sub::PetscMat )
+@for_petsc function MatNestSetSubMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, idxm::$PetscInt, jdxm::$PetscInt, sub::AbstractPetscMat )
 
     @chk ccall(
                (:MatNestSetSubMat, $petsc_library),
@@ -15206,7 +15206,7 @@ function MatNestSetSubMat(petsclib::PetscLibType, A::PetscMat, idxm::PetscInt, j
 end 
 
 """
-	M::PetscInt,N::PetscInt = MatNestGetSubMats(petsclib::PetscLibType,A::PetscMat, mat::PetscMat) 
+	M::PetscInt,N::PetscInt = MatNestGetSubMats(petsclib::PetscLibType,A::AbstractPetscMat, mat::AbstractPetscMat) 
 Returns the entire two dimensional array of matrices defining a `MATNEST` matrix.
 
 Not Collective
@@ -15227,9 +15227,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatNestGetSubMats"))
 """
-function MatNestGetSubMats(petsclib::PetscLibType, A::PetscMat, mat::PetscMat) end
+function MatNestGetSubMats(petsclib::PetscLibType, A::AbstractPetscMat, mat::AbstractPetscMat) end
 
-@for_petsc function MatNestGetSubMats(petsclib::$UnionPetscLib, A::PetscMat, mat::PetscMat )
+@for_petsc function MatNestGetSubMats(petsclib::$UnionPetscLib, A::AbstractPetscMat, mat::AbstractPetscMat )
 	M_ = Ref{$PetscInt}()
 	N_ = Ref{$PetscInt}()
 
@@ -15247,7 +15247,7 @@ function MatNestGetSubMats(petsclib::PetscLibType, A::PetscMat, mat::PetscMat) e
 end 
 
 """
-	M::PetscInt,N::PetscInt = MatNestGetSize(petsclib::PetscLibType,A::PetscMat) 
+	M::PetscInt,N::PetscInt = MatNestGetSize(petsclib::PetscLibType,A::AbstractPetscMat) 
 Returns the size of the `MATNEST` matrix.
 
 Not Collective
@@ -15267,9 +15267,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatNestGetSize"))
 """
-function MatNestGetSize(petsclib::PetscLibType, A::PetscMat) end
+function MatNestGetSize(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatNestGetSize(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatNestGetSize(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	M_ = Ref{$PetscInt}()
 	N_ = Ref{$PetscInt}()
 
@@ -15287,7 +15287,7 @@ function MatNestGetSize(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatNestGetISs(petsclib::PetscLibType,A::PetscMat, rows::Vector{IS}, cols::Vector{IS}) 
+	MatNestGetISs(petsclib::PetscLibType,A::AbstractPetscMat, rows::Vector{<:AbstractIS}, cols::Vector{<:AbstractIS}) 
 Returns the index sets partitioning the row and column spaces of a `MATNEST`
 
 Not Collective
@@ -15307,9 +15307,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNestGetISs"))
 """
-function MatNestGetISs(petsclib::PetscLibType, A::PetscMat, rows::Vector{IS}, cols::Vector{IS}) end
+function MatNestGetISs(petsclib::PetscLibType, A::AbstractPetscMat, rows::Vector{<:AbstractIS}, cols::Vector{<:AbstractIS}) end
 
-@for_petsc function MatNestGetISs(petsclib::$UnionPetscLib, A::PetscMat, rows::Vector{IS}, cols::Vector{IS} )
+@for_petsc function MatNestGetISs(petsclib::$UnionPetscLib, A::AbstractPetscMat, rows::Vector{<:AbstractIS}, cols::Vector{<:AbstractIS} )
 
     @chk ccall(
                (:MatNestGetISs, $petsc_library),
@@ -15323,7 +15323,7 @@ function MatNestGetISs(petsclib::PetscLibType, A::PetscMat, rows::Vector{IS}, co
 end 
 
 """
-	MatNestGetLocalISs(petsclib::PetscLibType,A::PetscMat, rows::Vector{IS}, cols::Vector{IS}) 
+	MatNestGetLocalISs(petsclib::PetscLibType,A::AbstractPetscMat, rows::Vector{<:AbstractIS}, cols::Vector{<:AbstractIS}) 
 Returns the index sets partitioning the row and column spaces of a `MATNEST`
 
 Not Collective
@@ -15343,9 +15343,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNestGetLocalISs"))
 """
-function MatNestGetLocalISs(petsclib::PetscLibType, A::PetscMat, rows::Vector{IS}, cols::Vector{IS}) end
+function MatNestGetLocalISs(petsclib::PetscLibType, A::AbstractPetscMat, rows::Vector{<:AbstractIS}, cols::Vector{<:AbstractIS}) end
 
-@for_petsc function MatNestGetLocalISs(petsclib::$UnionPetscLib, A::PetscMat, rows::Vector{IS}, cols::Vector{IS} )
+@for_petsc function MatNestGetLocalISs(petsclib::$UnionPetscLib, A::AbstractPetscMat, rows::Vector{<:AbstractIS}, cols::Vector{<:AbstractIS} )
 
     @chk ccall(
                (:MatNestGetLocalISs, $petsc_library),
@@ -15359,7 +15359,7 @@ function MatNestGetLocalISs(petsclib::PetscLibType, A::PetscMat, rows::Vector{IS
 end 
 
 """
-	MatNestSetVecType(petsclib::PetscLibType,A::PetscMat, vtype::VecType) 
+	MatNestSetVecType(petsclib::PetscLibType,A::AbstractPetscMat, vtype::VecType) 
 Sets the type of `Vec` returned by `MatCreateVecs()`
 
 Not Collective
@@ -15375,9 +15375,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatNestSetVecType"))
 """
-function MatNestSetVecType(petsclib::PetscLibType, A::PetscMat, vtype::VecType) end
+function MatNestSetVecType(petsclib::PetscLibType, A::AbstractPetscMat, vtype::VecType) end
 
-@for_petsc function MatNestSetVecType(petsclib::$UnionPetscLib, A::PetscMat, vtype::VecType )
+@for_petsc function MatNestSetVecType(petsclib::$UnionPetscLib, A::AbstractPetscMat, vtype::VecType )
 
     @chk ccall(
                (:MatNestSetVecType, $petsc_library),
@@ -15391,7 +15391,7 @@ function MatNestSetVecType(petsclib::PetscLibType, A::PetscMat, vtype::VecType) 
 end 
 
 """
-	MatNestSetSubMats(petsclib::PetscLibType,A::PetscMat, nr::PetscInt, is_row::Vector{IS}, nc::PetscInt, is_col::Vector{IS}, a::Vector{PetscMat}) 
+	MatNestSetSubMats(petsclib::PetscLibType,A::AbstractPetscMat, nr::PetscInt, is_row::Vector{<:AbstractIS}, nc::PetscInt, is_col::Vector{<:AbstractIS}, a::Vector{<:AbstractPetscMat}) 
 Sets the nested submatrices in a `MATNEST`
 
 Collective
@@ -15411,9 +15411,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatNestSetSubMats"))
 """
-function MatNestSetSubMats(petsclib::PetscLibType, A::PetscMat, nr::PetscInt, is_row::Vector{IS}, nc::PetscInt, is_col::Vector{IS}, a::Vector{PetscMat}) end
+function MatNestSetSubMats(petsclib::PetscLibType, A::AbstractPetscMat, nr::PetscInt, is_row::Vector{<:AbstractIS}, nc::PetscInt, is_col::Vector{<:AbstractIS}, a::Vector{<:AbstractPetscMat}) end
 
-@for_petsc function MatNestSetSubMats(petsclib::$UnionPetscLib, A::PetscMat, nr::$PetscInt, is_row::Vector{IS}, nc::$PetscInt, is_col::Vector{IS}, a::Vector{PetscMat} )
+@for_petsc function MatNestSetSubMats(petsclib::$UnionPetscLib, A::AbstractPetscMat, nr::$PetscInt, is_row::Vector{<:AbstractIS}, nc::$PetscInt, is_col::Vector{<:AbstractIS}, a::Vector{<:AbstractPetscMat} )
 
     @chk ccall(
                (:MatNestSetSubMats, $petsc_library),
@@ -15427,7 +15427,7 @@ function MatNestSetSubMats(petsclib::PetscLibType, A::PetscMat, nr::PetscInt, is
 end 
 
 """
-	B::PetscMat = MatCreateNest(petsclib::PetscLibType,comm::MPI_Comm, nr::PetscInt, is_row::Vector{IS}, nc::PetscInt, is_col::Vector{IS}, a::Vector{PetscMat}) 
+	B::PetscMat = MatCreateNest(petsclib::PetscLibType,comm::MPI_Comm, nr::PetscInt, is_row::Vector{<:AbstractIS}, nc::PetscInt, is_col::Vector{<:AbstractIS}, a::Vector{<:AbstractPetscMat}) 
 Creates a new `MATNEST` matrix containing several nested submatrices, each stored separately
 
 Collective
@@ -15452,9 +15452,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateNest"))
 """
-function MatCreateNest(petsclib::PetscLibType, comm::MPI_Comm, nr::PetscInt, is_row::Vector{IS}, nc::PetscInt, is_col::Vector{IS}, a::Vector{PetscMat}) end
+function MatCreateNest(petsclib::PetscLibType, comm::MPI_Comm, nr::PetscInt, is_row::Vector{<:AbstractIS}, nc::PetscInt, is_col::Vector{<:AbstractIS}, a::Vector{<:AbstractPetscMat}) end
 
-@for_petsc function MatCreateNest(petsclib::$UnionPetscLib, comm::MPI_Comm, nr::$PetscInt, is_row::Vector{IS}, nc::$PetscInt, is_col::Vector{IS}, a::Vector{PetscMat} )
+@for_petsc function MatCreateNest(petsclib::$UnionPetscLib, comm::MPI_Comm, nr::$PetscInt, is_row::Vector{<:AbstractIS}, nc::$PetscInt, is_col::Vector{<:AbstractIS}, a::Vector{<:AbstractPetscMat} )
 	B_ = Ref{CMat}()
 
     @chk ccall(
@@ -15470,7 +15470,7 @@ function MatCreateNest(petsclib::PetscLibType, comm::MPI_Comm, nr::PetscInt, is_
 end 
 
 """
-	MatMPIAIJGetNumberNonzeros(petsclib::PetscLibType,A::PetscMat, nz::PetscCount) 
+	MatMPIAIJGetNumberNonzeros(petsclib::PetscLibType,A::AbstractPetscMat, nz::PetscCount) 
 gets the number of nonzeros in the matrix on this MPI rank
 
 Not Collective
@@ -15488,9 +15488,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMPIAIJGetNumberNonzeros"))
 """
-function MatMPIAIJGetNumberNonzeros(petsclib::PetscLibType, A::PetscMat, nz::PetscCount) end
+function MatMPIAIJGetNumberNonzeros(petsclib::PetscLibType, A::AbstractPetscMat, nz::PetscCount) end
 
-@for_petsc function MatMPIAIJGetNumberNonzeros(petsclib::$UnionPetscLib, A::PetscMat, nz::PetscCount )
+@for_petsc function MatMPIAIJGetNumberNonzeros(petsclib::$UnionPetscLib, A::AbstractPetscMat, nz::PetscCount )
 
     @chk ccall(
                (:MatMPIAIJGetNumberNonzeros, $petsc_library),
@@ -15504,7 +15504,7 @@ function MatMPIAIJGetNumberNonzeros(petsclib::PetscLibType, A::PetscMat, nz::Pet
 end 
 
 """
-	MatMPIAIJSetUseScalableIncreaseOverlap(petsclib::PetscLibType,A::PetscMat, sc::PetscBool) 
+	MatMPIAIJSetUseScalableIncreaseOverlap(petsclib::PetscLibType,A::AbstractPetscMat, sc::PetscBool) 
 Determine if the matrix uses a scalable algorithm to compute the overlap
 
 Collective
@@ -15520,9 +15520,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMPIAIJSetUseScalableIncreaseOverlap"))
 """
-function MatMPIAIJSetUseScalableIncreaseOverlap(petsclib::PetscLibType, A::PetscMat, sc::PetscBool) end
+function MatMPIAIJSetUseScalableIncreaseOverlap(petsclib::PetscLibType, A::AbstractPetscMat, sc::PetscBool) end
 
-@for_petsc function MatMPIAIJSetUseScalableIncreaseOverlap(petsclib::$UnionPetscLib, A::PetscMat, sc::PetscBool )
+@for_petsc function MatMPIAIJSetUseScalableIncreaseOverlap(petsclib::$UnionPetscLib, A::AbstractPetscMat, sc::PetscBool )
 
     @chk ccall(
                (:MatMPIAIJSetUseScalableIncreaseOverlap, $petsc_library),
@@ -15536,7 +15536,7 @@ function MatMPIAIJSetUseScalableIncreaseOverlap(petsclib::PetscLibType, A::Petsc
 end 
 
 """
-	garray::PetscInt,mat::PetscMat = MatCreateMPIAIJWithSeqAIJ(petsclib::PetscLibType,comm::MPI_Comm, M::PetscInt, N::PetscInt, A::PetscMat, B::PetscMat) 
+	garray::PetscInt,mat::PetscMat = MatCreateMPIAIJWithSeqAIJ(petsclib::PetscLibType,comm::MPI_Comm, M::PetscInt, N::PetscInt, A::AbstractPetscMat, B::AbstractPetscMat) 
 creates a `MATMPIAIJ` matrix using `MATSEQAIJ` matrices that contain the "diagonal"
 and "off-diagonal" part of the matrix in CSR format.
 
@@ -15560,9 +15560,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJWithSeqAIJ"))
 """
-function MatCreateMPIAIJWithSeqAIJ(petsclib::PetscLibType, comm::MPI_Comm, M::PetscInt, N::PetscInt, A::PetscMat, B::PetscMat) end
+function MatCreateMPIAIJWithSeqAIJ(petsclib::PetscLibType, comm::MPI_Comm, M::PetscInt, N::PetscInt, A::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function MatCreateMPIAIJWithSeqAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, M::$PetscInt, N::$PetscInt, A::PetscMat, B::PetscMat )
+@for_petsc function MatCreateMPIAIJWithSeqAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, M::$PetscInt, N::$PetscInt, A::AbstractPetscMat, B::AbstractPetscMat )
 	garray_ = Ref{$PetscInt}()
 	mat_ = Ref{CMat}()
 
@@ -15580,7 +15580,7 @@ function MatCreateMPIAIJWithSeqAIJ(petsclib::PetscLibType, comm::MPI_Comm, M::Pe
 end 
 
 """
-	MatMPIAIJSetPreallocationCSR(petsclib::PetscLibType,B::PetscMat, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) 
+	MatMPIAIJSetPreallocationCSR(petsclib::PetscLibType,B::AbstractPetscMat, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) 
 Allocates memory for a sparse parallel matrix in `MATAIJ` format
 (the default parallel PETSc format).
 
@@ -15600,9 +15600,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatMPIAIJSetPreallocationCSR"))
 """
-function MatMPIAIJSetPreallocationCSR(petsclib::PetscLibType, B::PetscMat, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) end
+function MatMPIAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscMat, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) end
 
-@for_petsc function MatMPIAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::PetscMat, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
+@for_petsc function MatMPIAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatMPIAIJSetPreallocationCSR, $petsc_library),
@@ -15616,7 +15616,7 @@ function MatMPIAIJSetPreallocationCSR(petsclib::PetscLibType, B::PetscMat, i::Ve
 end 
 
 """
-	MatMPIAIJSetPreallocation(petsclib::PetscLibType,B::PetscMat, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
+	MatMPIAIJSetPreallocation(petsclib::PetscLibType,B::AbstractPetscMat, d_nz::PetscInt, d_nnz::Vector{PetscInt}, o_nz::PetscInt, o_nnz::Vector{PetscInt}) 
 Preallocates memory for a sparse parallel matrix in `MATMPIAIJ` format
 (the default parallel PETSc format).  For good matrix assembly performance
 the user should preallocate the matrix storage by setting the parameters
@@ -15648,9 +15648,9 @@ of local rows, i.e 'm'.
 # External Links
 $(_doc_external("Mat/MatMPIAIJSetPreallocation"))
 """
-function MatMPIAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, d_nz::PetscInt, d_nnz::Union{Ptr,Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr,Vector{PetscInt}}) end
+function MatMPIAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, d_nz::PetscInt, d_nnz::Union{Ptr,Vector{PetscInt}}, o_nz::PetscInt, o_nnz::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatMPIAIJSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, d_nz::$PetscInt, d_nnz::Union{Ptr,Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr,Vector{$PetscInt}} )
+@for_petsc function MatMPIAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, d_nz::$PetscInt, d_nnz::Union{Ptr,Vector{$PetscInt}}, o_nz::$PetscInt, o_nnz::Union{Ptr,Vector{$PetscInt}} )
 
     @chk ccall(
                (:MatMPIAIJSetPreallocation, $petsc_library),
@@ -15711,7 +15711,7 @@ function MatCreateMPIAIJWithArrays(petsclib::PetscLibType, comm::MPI_Comm, m::Pe
 end 
 
 """
-	MatUpdateMPIAIJWithArrays(petsclib::PetscLibType,mat::PetscMat, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, Ii::Vector{PetscInt}, J::Vector{PetscInt}, v::Vector{PetscScalar}) 
+	MatUpdateMPIAIJWithArrays(petsclib::PetscLibType,mat::AbstractPetscMat, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, Ii::Vector{PetscInt}, J::Vector{PetscInt}, v::Vector{PetscScalar}) 
 updates a `MATMPIAIJ` matrix using arrays that contain in standard
 CSR format for the local rows. Only the numerical values are updated the other arrays must be identical to what was passed
 from `MatCreateMPIAIJWithArrays()`
@@ -15740,9 +15740,9 @@ Level: deprecated
 # External Links
 $(_doc_external("Mat/MatUpdateMPIAIJWithArrays"))
 """
-function MatUpdateMPIAIJWithArrays(petsclib::PetscLibType, mat::PetscMat, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, Ii::Vector{PetscInt}, J::Vector{PetscInt}, v::Vector{PetscScalar}) end
+function MatUpdateMPIAIJWithArrays(petsclib::PetscLibType, mat::AbstractPetscMat, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt, Ii::Vector{PetscInt}, J::Vector{PetscInt}, v::Vector{PetscScalar}) end
 
-@for_petsc function MatUpdateMPIAIJWithArrays(petsclib::$UnionPetscLib, mat::PetscMat, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, Ii::Vector{$PetscInt}, J::Vector{$PetscInt}, v::Vector{$PetscScalar} )
+@for_petsc function MatUpdateMPIAIJWithArrays(petsclib::$UnionPetscLib, mat::AbstractPetscMat, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt, Ii::Vector{$PetscInt}, J::Vector{$PetscInt}, v::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatUpdateMPIAIJWithArrays, $petsc_library),
@@ -15756,7 +15756,7 @@ function MatUpdateMPIAIJWithArrays(petsclib::PetscLibType, mat::PetscMat, m::Pet
 end 
 
 """
-	MatUpdateMPIAIJWithArray(petsclib::PetscLibType,mat::PetscMat, v::Vector{PetscScalar}) 
+	MatUpdateMPIAIJWithArray(petsclib::PetscLibType,mat::AbstractPetscMat, v::Vector{PetscScalar}) 
 updates an `MATMPIAIJ` matrix using an array that contains the nonzero values
 
 Collective
@@ -15773,9 +15773,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatUpdateMPIAIJWithArray"))
 """
-function MatUpdateMPIAIJWithArray(petsclib::PetscLibType, mat::PetscMat, v::Vector{PetscScalar}) end
+function MatUpdateMPIAIJWithArray(petsclib::PetscLibType, mat::AbstractPetscMat, v::Vector{PetscScalar}) end
 
-@for_petsc function MatUpdateMPIAIJWithArray(petsclib::$UnionPetscLib, mat::PetscMat, v::Vector{$PetscScalar} )
+@for_petsc function MatUpdateMPIAIJWithArray(petsclib::$UnionPetscLib, mat::AbstractPetscMat, v::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatUpdateMPIAIJWithArray, $petsc_library),
@@ -15845,7 +15845,7 @@ function MatCreateAIJ(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n::Pe
 end 
 
 """
-	Ad::PetscMat,Ao::PetscMat,colmap::Vector{PetscInt} = MatMPIAIJGetSeqAIJ(petsclib::PetscLibType,A::PetscMat) 
+	Ad::PetscMat,Ao::PetscMat,colmap::Vector{PetscInt} = MatMPIAIJGetSeqAIJ(petsclib::PetscLibType,A::AbstractPetscMat) 
 Returns the local pieces of this distributed matrix
 
 Not Collective
@@ -15865,11 +15865,11 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMPIAIJGetSeqAIJ"))
 """
-function MatMPIAIJGetSeqAIJ(petsclib::PetscLibType, A::PetscMat) end
+function MatMPIAIJGetSeqAIJ(petsclib::PetscLibType, A::AbstractPetscMat) end
 
 # `Ad`, `Ao` and `colmap` are owned by `A` (do not destroy them); `colmap` has one entry per
 # column of `Ao`
-@for_petsc function MatMPIAIJGetSeqAIJ(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatMPIAIJGetSeqAIJ(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	Ad_ = Ref{CMat}()
 	Ao_ = Ref{CMat}()
 	colmap_ = Ref{Ptr{$PetscInt}}(C_NULL)
@@ -15890,14 +15890,14 @@ function MatMPIAIJGetSeqAIJ(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatCreateMPIAIJSumSeqAIJNumeric(petsclib::PetscLibType,seqmat::PetscMat, mpimat::PetscMat) 
+	MatCreateMPIAIJSumSeqAIJNumeric(petsclib::PetscLibType,seqmat::AbstractPetscMat, mpimat::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJSumSeqAIJNumeric"))
 """
-function MatCreateMPIAIJSumSeqAIJNumeric(petsclib::PetscLibType, seqmat::PetscMat, mpimat::PetscMat) end
+function MatCreateMPIAIJSumSeqAIJNumeric(petsclib::PetscLibType, seqmat::AbstractPetscMat, mpimat::AbstractPetscMat) end
 
-@for_petsc function MatCreateMPIAIJSumSeqAIJNumeric(petsclib::$UnionPetscLib, seqmat::PetscMat, mpimat::PetscMat )
+@for_petsc function MatCreateMPIAIJSumSeqAIJNumeric(petsclib::$UnionPetscLib, seqmat::AbstractPetscMat, mpimat::AbstractPetscMat )
 
     @chk ccall(
                (:MatCreateMPIAIJSumSeqAIJNumeric, $petsc_library),
@@ -15911,14 +15911,14 @@ function MatCreateMPIAIJSumSeqAIJNumeric(petsclib::PetscLibType, seqmat::PetscMa
 end 
 
 """
-	mpimat::PetscMat = MatCreateMPIAIJSumSeqAIJSymbolic(petsclib::PetscLibType,comm::MPI_Comm, seqmat::PetscMat, m::PetscInt, n::PetscInt) 
+	mpimat::PetscMat = MatCreateMPIAIJSumSeqAIJSymbolic(petsclib::PetscLibType,comm::MPI_Comm, seqmat::AbstractPetscMat, m::PetscInt, n::PetscInt) 
 
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJSumSeqAIJSymbolic"))
 """
-function MatCreateMPIAIJSumSeqAIJSymbolic(petsclib::PetscLibType, comm::MPI_Comm, seqmat::PetscMat, m::PetscInt, n::PetscInt) end
+function MatCreateMPIAIJSumSeqAIJSymbolic(petsclib::PetscLibType, comm::MPI_Comm, seqmat::AbstractPetscMat, m::PetscInt, n::PetscInt) end
 
-@for_petsc function MatCreateMPIAIJSumSeqAIJSymbolic(petsclib::$UnionPetscLib, comm::MPI_Comm, seqmat::PetscMat, m::$PetscInt, n::$PetscInt )
+@for_petsc function MatCreateMPIAIJSumSeqAIJSymbolic(petsclib::$UnionPetscLib, comm::MPI_Comm, seqmat::AbstractPetscMat, m::$PetscInt, n::$PetscInt )
 	mpimat_ = Ref{CMat}()
 
     @chk ccall(
@@ -15934,7 +15934,7 @@ function MatCreateMPIAIJSumSeqAIJSymbolic(petsclib::PetscLibType, comm::MPI_Comm
 end 
 
 """
-	mpimat::PetscMat = MatCreateMPIAIJSumSeqAIJ(petsclib::PetscLibType,comm::MPI_Comm, seqmat::PetscMat, m::PetscInt, n::PetscInt, scall::MatReuse) 
+	mpimat::PetscMat = MatCreateMPIAIJSumSeqAIJ(petsclib::PetscLibType,comm::MPI_Comm, seqmat::AbstractPetscMat, m::PetscInt, n::PetscInt, scall::MatReuse) 
 Creates a `MATMPIAIJ` matrix by adding sequential
 matrices from each processor
 
@@ -15957,9 +15957,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatCreateMPIAIJSumSeqAIJ"))
 """
-function MatCreateMPIAIJSumSeqAIJ(petsclib::PetscLibType, comm::MPI_Comm, seqmat::PetscMat, m::PetscInt, n::PetscInt, scall::MatReuse) end
+function MatCreateMPIAIJSumSeqAIJ(petsclib::PetscLibType, comm::MPI_Comm, seqmat::AbstractPetscMat, m::PetscInt, n::PetscInt, scall::MatReuse) end
 
-@for_petsc function MatCreateMPIAIJSumSeqAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, seqmat::PetscMat, m::$PetscInt, n::$PetscInt, scall::MatReuse )
+@for_petsc function MatCreateMPIAIJSumSeqAIJ(petsclib::$UnionPetscLib, comm::MPI_Comm, seqmat::AbstractPetscMat, m::$PetscInt, n::$PetscInt, scall::MatReuse )
 	mpimat_ = Ref{CMat}()
 
     @chk ccall(
@@ -15975,7 +15975,7 @@ function MatCreateMPIAIJSumSeqAIJ(petsclib::PetscLibType, comm::MPI_Comm, seqmat
 end 
 
 """
-	MatAIJGetLocalMat(petsclib::PetscLibType,A::PetscMat, A_loc::PetscMat) 
+	MatAIJGetLocalMat(petsclib::PetscLibType,A::AbstractPetscMat, A_loc::AbstractPetscMat) 
 Creates a `MATSEQAIJ` from a `MATAIJ` matrix.
 
 Not Collective
@@ -15993,9 +15993,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatAIJGetLocalMat"))
 """
-function MatAIJGetLocalMat(petsclib::PetscLibType, A::PetscMat, A_loc::PetscMat) end
+function MatAIJGetLocalMat(petsclib::PetscLibType, A::AbstractPetscMat, A_loc::AbstractPetscMat) end
 
-@for_petsc function MatAIJGetLocalMat(petsclib::$UnionPetscLib, A::PetscMat, A_loc::PetscMat )
+@for_petsc function MatAIJGetLocalMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, A_loc::AbstractPetscMat )
 	A_loc_ = Ref(A_loc.ptr)
 
     @chk ccall(
@@ -16011,7 +16011,7 @@ function MatAIJGetLocalMat(petsclib::PetscLibType, A::PetscMat, A_loc::PetscMat)
 end 
 
 """
-	MatMPIAIJGetLocalMat(petsclib::PetscLibType,A::PetscMat, scall::MatReuse, A_loc::PetscMat) 
+	MatMPIAIJGetLocalMat(petsclib::PetscLibType,A::AbstractPetscMat, scall::MatReuse, A_loc::AbstractPetscMat) 
 Creates a `MATSEQAIJ` from a `MATMPIAIJ` matrix.
 
 Not Collective
@@ -16030,9 +16030,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatMPIAIJGetLocalMat"))
 """
-function MatMPIAIJGetLocalMat(petsclib::PetscLibType, A::PetscMat, scall::MatReuse, A_loc::PetscMat) end
+function MatMPIAIJGetLocalMat(petsclib::PetscLibType, A::AbstractPetscMat, scall::MatReuse, A_loc::AbstractPetscMat) end
 
-@for_petsc function MatMPIAIJGetLocalMat(petsclib::$UnionPetscLib, A::PetscMat, scall::MatReuse, A_loc::PetscMat )
+@for_petsc function MatMPIAIJGetLocalMat(petsclib::$UnionPetscLib, A::AbstractPetscMat, scall::MatReuse, A_loc::AbstractPetscMat )
 	A_loc_ = Ref(A_loc.ptr)
 
     @chk ccall(
@@ -16048,7 +16048,7 @@ function MatMPIAIJGetLocalMat(petsclib::PetscLibType, A::PetscMat, scall::MatReu
 end 
 
 """
-	MatMPIAIJGetLocalMatMerge(petsclib::PetscLibType,A::PetscMat, scall::MatReuse, glob::IS, A_loc::PetscMat) 
+	MatMPIAIJGetLocalMatMerge(petsclib::PetscLibType,A::AbstractPetscMat, scall::MatReuse, glob::AbstractIS, A_loc::AbstractPetscMat) 
 Creates a `MATSEQAIJ` from a `MATMPIAIJ` matrix by taking all its local rows and putting them into a sequential matrix with
 mlocal rows and n columns. Where n is the sum of the number of columns of the diagonal and off-diagonal part
 
@@ -16069,9 +16069,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatMPIAIJGetLocalMatMerge"))
 """
-function MatMPIAIJGetLocalMatMerge(petsclib::PetscLibType, A::PetscMat, scall::MatReuse, glob::IS, A_loc::PetscMat) end
+function MatMPIAIJGetLocalMatMerge(petsclib::PetscLibType, A::AbstractPetscMat, scall::MatReuse, glob::AbstractIS, A_loc::AbstractPetscMat) end
 
-@for_petsc function MatMPIAIJGetLocalMatMerge(petsclib::$UnionPetscLib, A::PetscMat, scall::MatReuse, glob::IS, A_loc::PetscMat )
+@for_petsc function MatMPIAIJGetLocalMatMerge(petsclib::$UnionPetscLib, A::AbstractPetscMat, scall::MatReuse, glob::AbstractIS, A_loc::AbstractPetscMat )
 	A_loc_ = Ref(A_loc.ptr)
 
     @chk ccall(
@@ -16087,7 +16087,7 @@ function MatMPIAIJGetLocalMatMerge(petsclib::PetscLibType, A::PetscMat, scall::M
 end 
 
 """
-	MatMPIAIJGetLocalMatCondensed(petsclib::PetscLibType,A::PetscMat, scall::MatReuse, row::IS, col::IS, A_loc::PetscMat) 
+	MatMPIAIJGetLocalMatCondensed(petsclib::PetscLibType,A::AbstractPetscMat, scall::MatReuse, row::AbstractIS, col::AbstractIS, A_loc::AbstractPetscMat) 
 Creates a `MATSEQAIJ` matrix from an `MATMPIAIJ` matrix by taking all its local rows and NON
 
 Not Collective
@@ -16108,9 +16108,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatMPIAIJGetLocalMatCondensed"))
 """
-function MatMPIAIJGetLocalMatCondensed(petsclib::PetscLibType, A::PetscMat, scall::MatReuse, row::IS, col::IS, A_loc::PetscMat) end
+function MatMPIAIJGetLocalMatCondensed(petsclib::PetscLibType, A::AbstractPetscMat, scall::MatReuse, row::AbstractIS, col::AbstractIS, A_loc::AbstractPetscMat) end
 
-@for_petsc function MatMPIAIJGetLocalMatCondensed(petsclib::$UnionPetscLib, A::PetscMat, scall::MatReuse, row::IS, col::IS, A_loc::PetscMat )
+@for_petsc function MatMPIAIJGetLocalMatCondensed(petsclib::$UnionPetscLib, A::AbstractPetscMat, scall::MatReuse, row::AbstractIS, col::AbstractIS, A_loc::AbstractPetscMat )
 	A_loc_ = Ref(A_loc.ptr)
 
     @chk ccall(
@@ -16126,7 +16126,7 @@ function MatMPIAIJGetLocalMatCondensed(petsclib::PetscLibType, A::PetscMat, scal
 end 
 
 """
-	MatGetBrowsOfAcols(petsclib::PetscLibType,A::PetscMat, B::PetscMat, scall::MatReuse, rowb::IS, colb::IS, B_seq::PetscMat) 
+	MatGetBrowsOfAcols(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, rowb::AbstractIS, colb::AbstractIS, B_seq::AbstractPetscMat) 
 Returns `IS` that contain rows of `B` that equal to nonzero columns of local `A`
 
 Collective
@@ -16148,9 +16148,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatGetBrowsOfAcols"))
 """
-function MatGetBrowsOfAcols(petsclib::PetscLibType, A::PetscMat, B::PetscMat, scall::MatReuse, rowb::IS, colb::IS, B_seq::PetscMat) end
+function MatGetBrowsOfAcols(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, rowb::AbstractIS, colb::AbstractIS, B_seq::AbstractPetscMat) end
 
-@for_petsc function MatGetBrowsOfAcols(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, scall::MatReuse, rowb::IS, colb::IS, B_seq::PetscMat )
+@for_petsc function MatGetBrowsOfAcols(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, scall::MatReuse, rowb::AbstractIS, colb::AbstractIS, B_seq::AbstractPetscMat )
 	B_seq_ = Ref(B_seq.ptr)
 
     @chk ccall(
@@ -16347,7 +16347,7 @@ function MatCreateMPIAIJMKL(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt,
 end 
 
 """
-	MatSTRUMPACKSetReordering(petsclib::PetscLibType,F::PetscMat, reordering::MatSTRUMPACKReordering) 
+	MatSTRUMPACKSetReordering(petsclib::PetscLibType,F::AbstractPetscMat, reordering::MatSTRUMPACKReordering) 
 Set STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> fill
 
 Logically Collective
@@ -16366,9 +16366,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKSetReordering"))
 """
-function MatSTRUMPACKSetReordering(petsclib::PetscLibType, F::PetscMat, reordering::MatSTRUMPACKReordering) end
+function MatSTRUMPACKSetReordering(petsclib::PetscLibType, F::AbstractPetscMat, reordering::MatSTRUMPACKReordering) end
 
-@for_petsc function MatSTRUMPACKSetReordering(petsclib::$UnionPetscLib, F::PetscMat, reordering::MatSTRUMPACKReordering )
+@for_petsc function MatSTRUMPACKSetReordering(petsclib::$UnionPetscLib, F::AbstractPetscMat, reordering::MatSTRUMPACKReordering )
 
     @chk ccall(
                (:MatSTRUMPACKSetReordering, $petsc_library),
@@ -16382,7 +16382,7 @@ function MatSTRUMPACKSetReordering(petsclib::PetscLibType, F::PetscMat, reorderi
 end 
 
 """
-	MatSTRUMPACKGetReordering(petsclib::PetscLibType,F::PetscMat, reordering::MatSTRUMPACKReordering) 
+	MatSTRUMPACKGetReordering(petsclib::PetscLibType,F::AbstractPetscMat, reordering::MatSTRUMPACKReordering) 
 Get STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> fill
 
 Logically Collective
@@ -16400,9 +16400,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKGetReordering"))
 """
-function MatSTRUMPACKGetReordering(petsclib::PetscLibType, F::PetscMat, reordering::MatSTRUMPACKReordering) end
+function MatSTRUMPACKGetReordering(petsclib::PetscLibType, F::AbstractPetscMat, reordering::MatSTRUMPACKReordering) end
 
-@for_petsc function MatSTRUMPACKGetReordering(petsclib::$UnionPetscLib, F::PetscMat, reordering::MatSTRUMPACKReordering )
+@for_petsc function MatSTRUMPACKGetReordering(petsclib::$UnionPetscLib, F::AbstractPetscMat, reordering::MatSTRUMPACKReordering )
 
     @chk ccall(
                (:MatSTRUMPACKGetReordering, $petsc_library),
@@ -16416,7 +16416,7 @@ function MatSTRUMPACKGetReordering(petsclib::PetscLibType, F::PetscMat, reorderi
 end 
 
 """
-	MatSTRUMPACKSetColPerm(petsclib::PetscLibType,F::PetscMat, cperm::PetscBool) 
+	MatSTRUMPACKSetColPerm(petsclib::PetscLibType,F::AbstractPetscMat, cperm::PetscBool) 
 Set whether STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master>
 should try to permute the columns of the matrix in order to get a nonzero diagonal
 
@@ -16436,9 +16436,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKSetColPerm"))
 """
-function MatSTRUMPACKSetColPerm(petsclib::PetscLibType, F::PetscMat, cperm::PetscBool) end
+function MatSTRUMPACKSetColPerm(petsclib::PetscLibType, F::AbstractPetscMat, cperm::PetscBool) end
 
-@for_petsc function MatSTRUMPACKSetColPerm(petsclib::$UnionPetscLib, F::PetscMat, cperm::PetscBool )
+@for_petsc function MatSTRUMPACKSetColPerm(petsclib::$UnionPetscLib, F::AbstractPetscMat, cperm::PetscBool )
 
     @chk ccall(
                (:MatSTRUMPACKSetColPerm, $petsc_library),
@@ -16452,7 +16452,7 @@ function MatSTRUMPACKSetColPerm(petsclib::PetscLibType, F::PetscMat, cperm::Pets
 end 
 
 """
-	cperm::PetscBool = MatSTRUMPACKGetColPerm(petsclib::PetscLibType,F::PetscMat) 
+	cperm::PetscBool = MatSTRUMPACKGetColPerm(petsclib::PetscLibType,F::AbstractPetscMat) 
 Get whether STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master>
 will try to permute the columns of the matrix in order to get a nonzero diagonal
 
@@ -16471,9 +16471,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKGetColPerm"))
 """
-function MatSTRUMPACKGetColPerm(petsclib::PetscLibType, F::PetscMat) end
+function MatSTRUMPACKGetColPerm(petsclib::PetscLibType, F::AbstractPetscMat) end
 
-@for_petsc function MatSTRUMPACKGetColPerm(petsclib::$UnionPetscLib, F::PetscMat )
+@for_petsc function MatSTRUMPACKGetColPerm(petsclib::$UnionPetscLib, F::AbstractPetscMat )
 	cperm_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -16489,7 +16489,7 @@ function MatSTRUMPACKGetColPerm(petsclib::PetscLibType, F::PetscMat) end
 end 
 
 """
-	MatSTRUMPACKSetGPU(petsclib::PetscLibType,F::PetscMat, gpu::PetscBool) 
+	MatSTRUMPACKSetGPU(petsclib::PetscLibType,F::AbstractPetscMat, gpu::PetscBool) 
 Set whether STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master>
 should enable GPU acceleration (not supported for all compression types)
 
@@ -16509,9 +16509,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKSetGPU"))
 """
-function MatSTRUMPACKSetGPU(petsclib::PetscLibType, F::PetscMat, gpu::PetscBool) end
+function MatSTRUMPACKSetGPU(petsclib::PetscLibType, F::AbstractPetscMat, gpu::PetscBool) end
 
-@for_petsc function MatSTRUMPACKSetGPU(petsclib::$UnionPetscLib, F::PetscMat, gpu::PetscBool )
+@for_petsc function MatSTRUMPACKSetGPU(petsclib::$UnionPetscLib, F::AbstractPetscMat, gpu::PetscBool )
 
     @chk ccall(
                (:MatSTRUMPACKSetGPU, $petsc_library),
@@ -16525,7 +16525,7 @@ function MatSTRUMPACKSetGPU(petsclib::PetscLibType, F::PetscMat, gpu::PetscBool)
 end 
 
 """
-	gpu::PetscBool = MatSTRUMPACKGetGPU(petsclib::PetscLibType,F::PetscMat) 
+	gpu::PetscBool = MatSTRUMPACKGetGPU(petsclib::PetscLibType,F::AbstractPetscMat) 
 Get whether STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master>
 will try to use GPU acceleration (not supported for all compression types)
 
@@ -16544,9 +16544,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKGetGPU"))
 """
-function MatSTRUMPACKGetGPU(petsclib::PetscLibType, F::PetscMat) end
+function MatSTRUMPACKGetGPU(petsclib::PetscLibType, F::AbstractPetscMat) end
 
-@for_petsc function MatSTRUMPACKGetGPU(petsclib::$UnionPetscLib, F::PetscMat )
+@for_petsc function MatSTRUMPACKGetGPU(petsclib::$UnionPetscLib, F::AbstractPetscMat )
 	gpu_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -16562,7 +16562,7 @@ function MatSTRUMPACKGetGPU(petsclib::PetscLibType, F::PetscMat) end
 end 
 
 """
-	MatSTRUMPACKSetCompression(petsclib::PetscLibType,F::PetscMat, comp::MatSTRUMPACKCompressionType) 
+	MatSTRUMPACKSetCompression(petsclib::PetscLibType,F::AbstractPetscMat, comp::MatSTRUMPACKCompressionType) 
 Set STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> compression type
 
 Input Parameters:
@@ -16579,9 +16579,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKSetCompression"))
 """
-function MatSTRUMPACKSetCompression(petsclib::PetscLibType, F::PetscMat, comp::MatSTRUMPACKCompressionType) end
+function MatSTRUMPACKSetCompression(petsclib::PetscLibType, F::AbstractPetscMat, comp::MatSTRUMPACKCompressionType) end
 
-@for_petsc function MatSTRUMPACKSetCompression(petsclib::$UnionPetscLib, F::PetscMat, comp::MatSTRUMPACKCompressionType )
+@for_petsc function MatSTRUMPACKSetCompression(petsclib::$UnionPetscLib, F::AbstractPetscMat, comp::MatSTRUMPACKCompressionType )
 
     @chk ccall(
                (:MatSTRUMPACKSetCompression, $petsc_library),
@@ -16595,7 +16595,7 @@ function MatSTRUMPACKSetCompression(petsclib::PetscLibType, F::PetscMat, comp::M
 end 
 
 """
-	MatSTRUMPACKGetCompression(petsclib::PetscLibType,F::PetscMat, comp::MatSTRUMPACKCompressionType) 
+	MatSTRUMPACKGetCompression(petsclib::PetscLibType,F::AbstractPetscMat, comp::MatSTRUMPACKCompressionType) 
 Get STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> compression type
 
 Input Parameters:
@@ -16611,9 +16611,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKGetCompression"))
 """
-function MatSTRUMPACKGetCompression(petsclib::PetscLibType, F::PetscMat, comp::MatSTRUMPACKCompressionType) end
+function MatSTRUMPACKGetCompression(petsclib::PetscLibType, F::AbstractPetscMat, comp::MatSTRUMPACKCompressionType) end
 
-@for_petsc function MatSTRUMPACKGetCompression(petsclib::$UnionPetscLib, F::PetscMat, comp::MatSTRUMPACKCompressionType )
+@for_petsc function MatSTRUMPACKGetCompression(petsclib::$UnionPetscLib, F::AbstractPetscMat, comp::MatSTRUMPACKCompressionType )
 
     @chk ccall(
                (:MatSTRUMPACKGetCompression, $petsc_library),
@@ -16627,7 +16627,7 @@ function MatSTRUMPACKGetCompression(petsclib::PetscLibType, F::PetscMat, comp::M
 end 
 
 """
-	MatSTRUMPACKSetCompRelTol(petsclib::PetscLibType,F::PetscMat, rtol::PetscReal) 
+	MatSTRUMPACKSetCompRelTol(petsclib::PetscLibType,F::AbstractPetscMat, rtol::PetscReal) 
 Set STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> relative tolerance for compression
 
 Logically Collective
@@ -16646,9 +16646,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKSetCompRelTol"))
 """
-function MatSTRUMPACKSetCompRelTol(petsclib::PetscLibType, F::PetscMat, rtol::PetscReal) end
+function MatSTRUMPACKSetCompRelTol(petsclib::PetscLibType, F::AbstractPetscMat, rtol::PetscReal) end
 
-@for_petsc function MatSTRUMPACKSetCompRelTol(petsclib::$UnionPetscLib, F::PetscMat, rtol::$PetscReal )
+@for_petsc function MatSTRUMPACKSetCompRelTol(petsclib::$UnionPetscLib, F::AbstractPetscMat, rtol::$PetscReal )
 
     @chk ccall(
                (:MatSTRUMPACKSetCompRelTol, $petsc_library),
@@ -16662,7 +16662,7 @@ function MatSTRUMPACKSetCompRelTol(petsclib::PetscLibType, F::PetscMat, rtol::Pe
 end 
 
 """
-	rtol::PetscReal = MatSTRUMPACKGetCompRelTol(petsclib::PetscLibType,F::PetscMat) 
+	rtol::PetscReal = MatSTRUMPACKGetCompRelTol(petsclib::PetscLibType,F::AbstractPetscMat) 
 Get STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> relative tolerance for compression
 
 Logically Collective
@@ -16680,9 +16680,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKGetCompRelTol"))
 """
-function MatSTRUMPACKGetCompRelTol(petsclib::PetscLibType, F::PetscMat) end
+function MatSTRUMPACKGetCompRelTol(petsclib::PetscLibType, F::AbstractPetscMat) end
 
-@for_petsc function MatSTRUMPACKGetCompRelTol(petsclib::$UnionPetscLib, F::PetscMat )
+@for_petsc function MatSTRUMPACKGetCompRelTol(petsclib::$UnionPetscLib, F::AbstractPetscMat )
 	rtol_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -16698,7 +16698,7 @@ function MatSTRUMPACKGetCompRelTol(petsclib::PetscLibType, F::PetscMat) end
 end 
 
 """
-	MatSTRUMPACKSetCompAbsTol(petsclib::PetscLibType,F::PetscMat, atol::PetscReal) 
+	MatSTRUMPACKSetCompAbsTol(petsclib::PetscLibType,F::AbstractPetscMat, atol::PetscReal) 
 Set STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> absolute tolerance for compression
 
 Logically Collective
@@ -16717,9 +16717,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKSetCompAbsTol"))
 """
-function MatSTRUMPACKSetCompAbsTol(petsclib::PetscLibType, F::PetscMat, atol::PetscReal) end
+function MatSTRUMPACKSetCompAbsTol(petsclib::PetscLibType, F::AbstractPetscMat, atol::PetscReal) end
 
-@for_petsc function MatSTRUMPACKSetCompAbsTol(petsclib::$UnionPetscLib, F::PetscMat, atol::$PetscReal )
+@for_petsc function MatSTRUMPACKSetCompAbsTol(petsclib::$UnionPetscLib, F::AbstractPetscMat, atol::$PetscReal )
 
     @chk ccall(
                (:MatSTRUMPACKSetCompAbsTol, $petsc_library),
@@ -16733,7 +16733,7 @@ function MatSTRUMPACKSetCompAbsTol(petsclib::PetscLibType, F::PetscMat, atol::Pe
 end 
 
 """
-	atol::PetscReal = MatSTRUMPACKGetCompAbsTol(petsclib::PetscLibType,F::PetscMat) 
+	atol::PetscReal = MatSTRUMPACKGetCompAbsTol(petsclib::PetscLibType,F::AbstractPetscMat) 
 Get STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> absolute tolerance for compression
 
 Logically Collective
@@ -16751,9 +16751,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKGetCompAbsTol"))
 """
-function MatSTRUMPACKGetCompAbsTol(petsclib::PetscLibType, F::PetscMat) end
+function MatSTRUMPACKGetCompAbsTol(petsclib::PetscLibType, F::AbstractPetscMat) end
 
-@for_petsc function MatSTRUMPACKGetCompAbsTol(petsclib::$UnionPetscLib, F::PetscMat )
+@for_petsc function MatSTRUMPACKGetCompAbsTol(petsclib::$UnionPetscLib, F::AbstractPetscMat )
 	atol_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -16769,7 +16769,7 @@ function MatSTRUMPACKGetCompAbsTol(petsclib::PetscLibType, F::PetscMat) end
 end 
 
 """
-	MatSTRUMPACKSetCompLeafSize(petsclib::PetscLibType,F::PetscMat, leaf_size::PetscInt) 
+	MatSTRUMPACKSetCompLeafSize(petsclib::PetscLibType,F::AbstractPetscMat, leaf_size::PetscInt) 
 Set STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> leaf size for HSS, BLR, HODLR...
 
 Logically Collective
@@ -16788,9 +16788,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKSetCompLeafSize"))
 """
-function MatSTRUMPACKSetCompLeafSize(petsclib::PetscLibType, F::PetscMat, leaf_size::PetscInt) end
+function MatSTRUMPACKSetCompLeafSize(petsclib::PetscLibType, F::AbstractPetscMat, leaf_size::PetscInt) end
 
-@for_petsc function MatSTRUMPACKSetCompLeafSize(petsclib::$UnionPetscLib, F::PetscMat, leaf_size::$PetscInt )
+@for_petsc function MatSTRUMPACKSetCompLeafSize(petsclib::$UnionPetscLib, F::AbstractPetscMat, leaf_size::$PetscInt )
 
     @chk ccall(
                (:MatSTRUMPACKSetCompLeafSize, $petsc_library),
@@ -16804,7 +16804,7 @@ function MatSTRUMPACKSetCompLeafSize(petsclib::PetscLibType, F::PetscMat, leaf_s
 end 
 
 """
-	leaf_size::PetscInt = MatSTRUMPACKGetCompLeafSize(petsclib::PetscLibType,F::PetscMat) 
+	leaf_size::PetscInt = MatSTRUMPACKGetCompLeafSize(petsclib::PetscLibType,F::AbstractPetscMat) 
 Get STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> leaf size for HSS, BLR, HODLR...
 
 Logically Collective
@@ -16822,9 +16822,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKGetCompLeafSize"))
 """
-function MatSTRUMPACKGetCompLeafSize(petsclib::PetscLibType, F::PetscMat) end
+function MatSTRUMPACKGetCompLeafSize(petsclib::PetscLibType, F::AbstractPetscMat) end
 
-@for_petsc function MatSTRUMPACKGetCompLeafSize(petsclib::$UnionPetscLib, F::PetscMat )
+@for_petsc function MatSTRUMPACKGetCompLeafSize(petsclib::$UnionPetscLib, F::AbstractPetscMat )
 	leaf_size_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -16840,7 +16840,7 @@ function MatSTRUMPACKGetCompLeafSize(petsclib::PetscLibType, F::PetscMat) end
 end 
 
 """
-	MatSTRUMPACKSetGeometricNxyz(petsclib::PetscLibType,F::PetscMat, nx::PetscInt, ny::PetscInt, nz::PetscInt) 
+	MatSTRUMPACKSetGeometricNxyz(petsclib::PetscLibType,F::AbstractPetscMat, nx::PetscInt, ny::PetscInt, nz::PetscInt) 
 Set STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> mesh x, y and z dimensions, for use with GEOMETRIC ordering.
 
 Logically Collective
@@ -16858,9 +16858,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKSetGeometricNxyz"))
 """
-function MatSTRUMPACKSetGeometricNxyz(petsclib::PetscLibType, F::PetscMat, nx::PetscInt, ny::PetscInt, nz::PetscInt) end
+function MatSTRUMPACKSetGeometricNxyz(petsclib::PetscLibType, F::AbstractPetscMat, nx::PetscInt, ny::PetscInt, nz::PetscInt) end
 
-@for_petsc function MatSTRUMPACKSetGeometricNxyz(petsclib::$UnionPetscLib, F::PetscMat, nx::$PetscInt, ny::$PetscInt, nz::$PetscInt )
+@for_petsc function MatSTRUMPACKSetGeometricNxyz(petsclib::$UnionPetscLib, F::AbstractPetscMat, nx::$PetscInt, ny::$PetscInt, nz::$PetscInt )
 
     @chk ccall(
                (:MatSTRUMPACKSetGeometricNxyz, $petsc_library),
@@ -16874,7 +16874,7 @@ function MatSTRUMPACKSetGeometricNxyz(petsclib::PetscLibType, F::PetscMat, nx::P
 end 
 
 """
-	MatSTRUMPACKSetGeometricComponents(petsclib::PetscLibType,F::PetscMat, nc::PetscInt) 
+	MatSTRUMPACKSetGeometricComponents(petsclib::PetscLibType,F::AbstractPetscMat, nc::PetscInt) 
 Set STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master>
 number of degrees of freedom per mesh point, for use with GEOMETRIC ordering.
 
@@ -16894,9 +16894,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKSetGeometricComponents"))
 """
-function MatSTRUMPACKSetGeometricComponents(petsclib::PetscLibType, F::PetscMat, nc::PetscInt) end
+function MatSTRUMPACKSetGeometricComponents(petsclib::PetscLibType, F::AbstractPetscMat, nc::PetscInt) end
 
-@for_petsc function MatSTRUMPACKSetGeometricComponents(petsclib::$UnionPetscLib, F::PetscMat, nc::$PetscInt )
+@for_petsc function MatSTRUMPACKSetGeometricComponents(petsclib::$UnionPetscLib, F::AbstractPetscMat, nc::$PetscInt )
 
     @chk ccall(
                (:MatSTRUMPACKSetGeometricComponents, $petsc_library),
@@ -16910,7 +16910,7 @@ function MatSTRUMPACKSetGeometricComponents(petsclib::PetscLibType, F::PetscMat,
 end 
 
 """
-	MatSTRUMPACKSetGeometricWidth(petsclib::PetscLibType,F::PetscMat, w::PetscInt) 
+	MatSTRUMPACKSetGeometricWidth(petsclib::PetscLibType,F::AbstractPetscMat, w::PetscInt) 
 Set STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> width of the separator, for use with GEOMETRIC ordering.
 
 Logically Collective
@@ -16929,9 +16929,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKSetGeometricWidth"))
 """
-function MatSTRUMPACKSetGeometricWidth(petsclib::PetscLibType, F::PetscMat, w::PetscInt) end
+function MatSTRUMPACKSetGeometricWidth(petsclib::PetscLibType, F::AbstractPetscMat, w::PetscInt) end
 
-@for_petsc function MatSTRUMPACKSetGeometricWidth(petsclib::$UnionPetscLib, F::PetscMat, w::$PetscInt )
+@for_petsc function MatSTRUMPACKSetGeometricWidth(petsclib::$UnionPetscLib, F::AbstractPetscMat, w::$PetscInt )
 
     @chk ccall(
                (:MatSTRUMPACKSetGeometricWidth, $petsc_library),
@@ -16945,7 +16945,7 @@ function MatSTRUMPACKSetGeometricWidth(petsclib::PetscLibType, F::PetscMat, w::P
 end 
 
 """
-	MatSTRUMPACKSetCompMinSepSize(petsclib::PetscLibType,F::PetscMat, min_sep_size::PetscInt) 
+	MatSTRUMPACKSetCompMinSepSize(petsclib::PetscLibType,F::AbstractPetscMat, min_sep_size::PetscInt) 
 Set STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> minimum separator size for low
 
 Logically Collective
@@ -16964,9 +16964,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKSetCompMinSepSize"))
 """
-function MatSTRUMPACKSetCompMinSepSize(petsclib::PetscLibType, F::PetscMat, min_sep_size::PetscInt) end
+function MatSTRUMPACKSetCompMinSepSize(petsclib::PetscLibType, F::AbstractPetscMat, min_sep_size::PetscInt) end
 
-@for_petsc function MatSTRUMPACKSetCompMinSepSize(petsclib::$UnionPetscLib, F::PetscMat, min_sep_size::$PetscInt )
+@for_petsc function MatSTRUMPACKSetCompMinSepSize(petsclib::$UnionPetscLib, F::AbstractPetscMat, min_sep_size::$PetscInt )
 
     @chk ccall(
                (:MatSTRUMPACKSetCompMinSepSize, $petsc_library),
@@ -16980,7 +16980,7 @@ function MatSTRUMPACKSetCompMinSepSize(petsclib::PetscLibType, F::PetscMat, min_
 end 
 
 """
-	min_sep_size::PetscInt = MatSTRUMPACKGetCompMinSepSize(petsclib::PetscLibType,F::PetscMat) 
+	min_sep_size::PetscInt = MatSTRUMPACKGetCompMinSepSize(petsclib::PetscLibType,F::AbstractPetscMat) 
 Get STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> minimum separator size for low
 
 Logically Collective
@@ -16998,9 +16998,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKGetCompMinSepSize"))
 """
-function MatSTRUMPACKGetCompMinSepSize(petsclib::PetscLibType, F::PetscMat) end
+function MatSTRUMPACKGetCompMinSepSize(petsclib::PetscLibType, F::AbstractPetscMat) end
 
-@for_petsc function MatSTRUMPACKGetCompMinSepSize(petsclib::$UnionPetscLib, F::PetscMat )
+@for_petsc function MatSTRUMPACKGetCompMinSepSize(petsclib::$UnionPetscLib, F::AbstractPetscMat )
 	min_sep_size_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -17016,7 +17016,7 @@ function MatSTRUMPACKGetCompMinSepSize(petsclib::PetscLibType, F::PetscMat) end
 end 
 
 """
-	MatSTRUMPACKSetCompLossyPrecision(petsclib::PetscLibType,F::PetscMat, lossy_prec::PetscInt) 
+	MatSTRUMPACKSetCompLossyPrecision(petsclib::PetscLibType,F::AbstractPetscMat, lossy_prec::PetscInt) 
 Set STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> precision for lossy compression (requires ZFP support)
 
 Logically Collective
@@ -17035,9 +17035,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKSetCompLossyPrecision"))
 """
-function MatSTRUMPACKSetCompLossyPrecision(petsclib::PetscLibType, F::PetscMat, lossy_prec::PetscInt) end
+function MatSTRUMPACKSetCompLossyPrecision(petsclib::PetscLibType, F::AbstractPetscMat, lossy_prec::PetscInt) end
 
-@for_petsc function MatSTRUMPACKSetCompLossyPrecision(petsclib::$UnionPetscLib, F::PetscMat, lossy_prec::$PetscInt )
+@for_petsc function MatSTRUMPACKSetCompLossyPrecision(petsclib::$UnionPetscLib, F::AbstractPetscMat, lossy_prec::$PetscInt )
 
     @chk ccall(
                (:MatSTRUMPACKSetCompLossyPrecision, $petsc_library),
@@ -17051,7 +17051,7 @@ function MatSTRUMPACKSetCompLossyPrecision(petsclib::PetscLibType, F::PetscMat, 
 end 
 
 """
-	lossy_prec::PetscInt = MatSTRUMPACKGetCompLossyPrecision(petsclib::PetscLibType,F::PetscMat) 
+	lossy_prec::PetscInt = MatSTRUMPACKGetCompLossyPrecision(petsclib::PetscLibType,F::AbstractPetscMat) 
 Get STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master> precision for lossy compression (requires ZFP support)
 
 Logically Collective
@@ -17069,9 +17069,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKGetCompLossyPrecision"))
 """
-function MatSTRUMPACKGetCompLossyPrecision(petsclib::PetscLibType, F::PetscMat) end
+function MatSTRUMPACKGetCompLossyPrecision(petsclib::PetscLibType, F::AbstractPetscMat) end
 
-@for_petsc function MatSTRUMPACKGetCompLossyPrecision(petsclib::$UnionPetscLib, F::PetscMat )
+@for_petsc function MatSTRUMPACKGetCompLossyPrecision(petsclib::$UnionPetscLib, F::AbstractPetscMat )
 	lossy_prec_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -17087,7 +17087,7 @@ function MatSTRUMPACKGetCompLossyPrecision(petsclib::PetscLibType, F::PetscMat) 
 end 
 
 """
-	MatSTRUMPACKSetCompButterflyLevels(petsclib::PetscLibType,F::PetscMat, bfly_lvls::PetscInt) 
+	MatSTRUMPACKSetCompButterflyLevels(petsclib::PetscLibType,F::AbstractPetscMat, bfly_lvls::PetscInt) 
 Set STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master>
 number of butterfly levels in HODLR compression (requires ButterflyPACK support)
 
@@ -17108,9 +17108,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKSetCompButterflyLevels"))
 """
-function MatSTRUMPACKSetCompButterflyLevels(petsclib::PetscLibType, F::PetscMat, bfly_lvls::PetscInt) end
+function MatSTRUMPACKSetCompButterflyLevels(petsclib::PetscLibType, F::AbstractPetscMat, bfly_lvls::PetscInt) end
 
-@for_petsc function MatSTRUMPACKSetCompButterflyLevels(petsclib::$UnionPetscLib, F::PetscMat, bfly_lvls::$PetscInt )
+@for_petsc function MatSTRUMPACKSetCompButterflyLevels(petsclib::$UnionPetscLib, F::AbstractPetscMat, bfly_lvls::$PetscInt )
 
     @chk ccall(
                (:MatSTRUMPACKSetCompButterflyLevels, $petsc_library),
@@ -17124,7 +17124,7 @@ function MatSTRUMPACKSetCompButterflyLevels(petsclib::PetscLibType, F::PetscMat,
 end 
 
 """
-	bfly_lvls::PetscInt = MatSTRUMPACKGetCompButterflyLevels(petsclib::PetscLibType,F::PetscMat) 
+	bfly_lvls::PetscInt = MatSTRUMPACKGetCompButterflyLevels(petsclib::PetscLibType,F::AbstractPetscMat) 
 Get STRUMPACK <https://portal.nersc.gov/project/sparse/strumpack/master>
 number of butterfly levels in HODLR compression (requires ButterflyPACK support)
 
@@ -17143,9 +17143,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSTRUMPACKGetCompButterflyLevels"))
 """
-function MatSTRUMPACKGetCompButterflyLevels(petsclib::PetscLibType, F::PetscMat) end
+function MatSTRUMPACKGetCompButterflyLevels(petsclib::PetscLibType, F::AbstractPetscMat) end
 
-@for_petsc function MatSTRUMPACKGetCompButterflyLevels(petsclib::$UnionPetscLib, F::PetscMat )
+@for_petsc function MatSTRUMPACKGetCompButterflyLevels(petsclib::$UnionPetscLib, F::AbstractPetscMat )
 	bfly_lvls_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -17249,14 +17249,14 @@ function MatCreateAIJViennaCL(petsclib::PetscLibType, comm::MPI_Comm, m::PetscIn
 end 
 
 """
-	diagU::PetscScalar = MatSuperluDistGetDiagU(petsclib::PetscLibType,F::PetscMat) 
+	diagU::PetscScalar = MatSuperluDistGetDiagU(petsclib::PetscLibType,F::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("Mat/MatSuperluDistGetDiagU"))
 """
-function MatSuperluDistGetDiagU(petsclib::PetscLibType, F::PetscMat) end
+function MatSuperluDistGetDiagU(petsclib::PetscLibType, F::AbstractPetscMat) end
 
-@for_petsc function MatSuperluDistGetDiagU(petsclib::$UnionPetscLib, F::PetscMat )
+@for_petsc function MatSuperluDistGetDiagU(petsclib::$UnionPetscLib, F::AbstractPetscMat )
 	diagU_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -17338,7 +17338,7 @@ function MatCreateMPIAIJPERM(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt
 end 
 
 """
-	MatMumpsSetIcntl(petsclib::PetscLibType,F::PetscMat, icntl::PetscInt, ival::PetscInt) 
+	MatMumpsSetIcntl(petsclib::PetscLibType,F::AbstractPetscMat, icntl::PetscInt, ival::PetscInt) 
 Set MUMPS parameter ICNTL() <https://mumps
 
 Logically Collective
@@ -17358,9 +17358,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMumpsSetIcntl"))
 """
-function MatMumpsSetIcntl(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt, ival::PetscInt) end
+function MatMumpsSetIcntl(petsclib::PetscLibType, F::AbstractPetscMat, icntl::PetscInt, ival::PetscInt) end
 
-@for_petsc function MatMumpsSetIcntl(petsclib::$UnionPetscLib, F::PetscMat, icntl::$PetscInt, ival::$PetscInt )
+@for_petsc function MatMumpsSetIcntl(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt, ival::$PetscInt )
 
     @chk ccall(
                (:MatMumpsSetIcntl, $petsc_library),
@@ -17374,7 +17374,7 @@ function MatMumpsSetIcntl(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt, 
 end 
 
 """
-	ival::PetscInt = MatMumpsGetIcntl(petsclib::PetscLibType,F::PetscMat, icntl::PetscInt) 
+	ival::PetscInt = MatMumpsGetIcntl(petsclib::PetscLibType,F::AbstractPetscMat, icntl::PetscInt) 
 Get MUMPS parameter ICNTL() <https://mumps
 
 Logically Collective
@@ -17393,9 +17393,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMumpsGetIcntl"))
 """
-function MatMumpsGetIcntl(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt) end
+function MatMumpsGetIcntl(petsclib::PetscLibType, F::AbstractPetscMat, icntl::PetscInt) end
 
-@for_petsc function MatMumpsGetIcntl(petsclib::$UnionPetscLib, F::PetscMat, icntl::$PetscInt )
+@for_petsc function MatMumpsGetIcntl(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt )
 	ival_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -17411,7 +17411,7 @@ function MatMumpsGetIcntl(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt) 
 end 
 
 """
-	MatMumpsSetCntl(petsclib::PetscLibType,F::PetscMat, icntl::PetscInt, val::PetscReal) 
+	MatMumpsSetCntl(petsclib::PetscLibType,F::AbstractPetscMat, icntl::PetscInt, val::PetscReal) 
 Set MUMPS parameter CNTL() <https://mumps
 
 Logically Collective
@@ -17431,9 +17431,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMumpsSetCntl"))
 """
-function MatMumpsSetCntl(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt, val::PetscReal) end
+function MatMumpsSetCntl(petsclib::PetscLibType, F::AbstractPetscMat, icntl::PetscInt, val::PetscReal) end
 
-@for_petsc function MatMumpsSetCntl(petsclib::$UnionPetscLib, F::PetscMat, icntl::$PetscInt, val::$PetscReal )
+@for_petsc function MatMumpsSetCntl(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt, val::$PetscReal )
 
     @chk ccall(
                (:MatMumpsSetCntl, $petsc_library),
@@ -17447,7 +17447,7 @@ function MatMumpsSetCntl(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt, v
 end 
 
 """
-	val::PetscReal = MatMumpsGetCntl(petsclib::PetscLibType,F::PetscMat, icntl::PetscInt) 
+	val::PetscReal = MatMumpsGetCntl(petsclib::PetscLibType,F::AbstractPetscMat, icntl::PetscInt) 
 Get MUMPS parameter CNTL() <https://mumps
 
 Logically Collective
@@ -17466,9 +17466,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMumpsGetCntl"))
 """
-function MatMumpsGetCntl(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt) end
+function MatMumpsGetCntl(petsclib::PetscLibType, F::AbstractPetscMat, icntl::PetscInt) end
 
-@for_petsc function MatMumpsGetCntl(petsclib::$UnionPetscLib, F::PetscMat, icntl::$PetscInt )
+@for_petsc function MatMumpsGetCntl(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt )
 	val_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -17484,7 +17484,7 @@ function MatMumpsGetCntl(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt) e
 end 
 
 """
-	MatMumpsGetInverse(petsclib::PetscLibType,F::PetscMat, spRHS::PetscMat) 
+	MatMumpsGetInverse(petsclib::PetscLibType,F::AbstractPetscMat, spRHS::AbstractPetscMat) 
 Get user
 
 Logically Collective
@@ -17502,9 +17502,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMumpsGetInverse"))
 """
-function MatMumpsGetInverse(petsclib::PetscLibType, F::PetscMat, spRHS::PetscMat) end
+function MatMumpsGetInverse(petsclib::PetscLibType, F::AbstractPetscMat, spRHS::AbstractPetscMat) end
 
-@for_petsc function MatMumpsGetInverse(petsclib::$UnionPetscLib, F::PetscMat, spRHS::PetscMat )
+@for_petsc function MatMumpsGetInverse(petsclib::$UnionPetscLib, F::AbstractPetscMat, spRHS::AbstractPetscMat )
 
     @chk ccall(
                (:MatMumpsGetInverse, $petsc_library),
@@ -17518,7 +17518,7 @@ function MatMumpsGetInverse(petsclib::PetscLibType, F::PetscMat, spRHS::PetscMat
 end 
 
 """
-	MatMumpsGetInverseTranspose(petsclib::PetscLibType,F::PetscMat, spRHST::PetscMat) 
+	MatMumpsGetInverseTranspose(petsclib::PetscLibType,F::AbstractPetscMat, spRHST::AbstractPetscMat) 
 Get user
 
 Logically Collective
@@ -17536,9 +17536,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMumpsGetInverseTranspose"))
 """
-function MatMumpsGetInverseTranspose(petsclib::PetscLibType, F::PetscMat, spRHST::PetscMat) end
+function MatMumpsGetInverseTranspose(petsclib::PetscLibType, F::AbstractPetscMat, spRHST::AbstractPetscMat) end
 
-@for_petsc function MatMumpsGetInverseTranspose(petsclib::$UnionPetscLib, F::PetscMat, spRHST::PetscMat )
+@for_petsc function MatMumpsGetInverseTranspose(petsclib::$UnionPetscLib, F::AbstractPetscMat, spRHST::AbstractPetscMat )
 
     @chk ccall(
                (:MatMumpsGetInverseTranspose, $petsc_library),
@@ -17552,7 +17552,7 @@ function MatMumpsGetInverseTranspose(petsclib::PetscLibType, F::PetscMat, spRHST
 end 
 
 """
-	MatMumpsSetBlk(petsclib::PetscLibType,F::PetscMat, nblk::PetscInt, blkvar::Vector{PetscInt}, blkptr::Vector{PetscInt}) 
+	MatMumpsSetBlk(petsclib::PetscLibType,F::AbstractPetscMat, nblk::PetscInt, blkvar::Vector{PetscInt}, blkptr::Vector{PetscInt}) 
 Set user
 
 Not collective, only relevant on the first process of the MPI communicator
@@ -17570,9 +17570,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMumpsSetBlk"))
 """
-function MatMumpsSetBlk(petsclib::PetscLibType, F::PetscMat, nblk::PetscInt, blkvar::Vector{PetscInt}, blkptr::Vector{PetscInt}) end
+function MatMumpsSetBlk(petsclib::PetscLibType, F::AbstractPetscMat, nblk::PetscInt, blkvar::Vector{PetscInt}, blkptr::Vector{PetscInt}) end
 
-@for_petsc function MatMumpsSetBlk(petsclib::$UnionPetscLib, F::PetscMat, nblk::$PetscInt, blkvar::Vector{$PetscInt}, blkptr::Vector{$PetscInt} )
+@for_petsc function MatMumpsSetBlk(petsclib::$UnionPetscLib, F::AbstractPetscMat, nblk::$PetscInt, blkvar::Vector{$PetscInt}, blkptr::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatMumpsSetBlk, $petsc_library),
@@ -17586,7 +17586,7 @@ function MatMumpsSetBlk(petsclib::PetscLibType, F::PetscMat, nblk::PetscInt, blk
 end 
 
 """
-	ival::PetscInt = MatMumpsGetInfo(petsclib::PetscLibType,F::PetscMat, icntl::PetscInt) 
+	ival::PetscInt = MatMumpsGetInfo(petsclib::PetscLibType,F::AbstractPetscMat, icntl::PetscInt) 
 Get MUMPS parameter INFO() <https://mumps
 
 Logically Collective
@@ -17605,9 +17605,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMumpsGetInfo"))
 """
-function MatMumpsGetInfo(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt) end
+function MatMumpsGetInfo(petsclib::PetscLibType, F::AbstractPetscMat, icntl::PetscInt) end
 
-@for_petsc function MatMumpsGetInfo(petsclib::$UnionPetscLib, F::PetscMat, icntl::$PetscInt )
+@for_petsc function MatMumpsGetInfo(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt )
 	ival_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -17623,7 +17623,7 @@ function MatMumpsGetInfo(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt) e
 end 
 
 """
-	ival::PetscInt = MatMumpsGetInfog(petsclib::PetscLibType,F::PetscMat, icntl::PetscInt) 
+	ival::PetscInt = MatMumpsGetInfog(petsclib::PetscLibType,F::AbstractPetscMat, icntl::PetscInt) 
 Get MUMPS parameter INFOG() <https://mumps
 
 Logically Collective
@@ -17642,9 +17642,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMumpsGetInfog"))
 """
-function MatMumpsGetInfog(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt) end
+function MatMumpsGetInfog(petsclib::PetscLibType, F::AbstractPetscMat, icntl::PetscInt) end
 
-@for_petsc function MatMumpsGetInfog(petsclib::$UnionPetscLib, F::PetscMat, icntl::$PetscInt )
+@for_petsc function MatMumpsGetInfog(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt )
 	ival_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -17660,7 +17660,7 @@ function MatMumpsGetInfog(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt) 
 end 
 
 """
-	val::PetscReal = MatMumpsGetRinfo(petsclib::PetscLibType,F::PetscMat, icntl::PetscInt) 
+	val::PetscReal = MatMumpsGetRinfo(petsclib::PetscLibType,F::AbstractPetscMat, icntl::PetscInt) 
 Get MUMPS parameter RINFO() <https://mumps
 
 Logically Collective
@@ -17679,9 +17679,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMumpsGetRinfo"))
 """
-function MatMumpsGetRinfo(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt) end
+function MatMumpsGetRinfo(petsclib::PetscLibType, F::AbstractPetscMat, icntl::PetscInt) end
 
-@for_petsc function MatMumpsGetRinfo(petsclib::$UnionPetscLib, F::PetscMat, icntl::$PetscInt )
+@for_petsc function MatMumpsGetRinfo(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt )
 	val_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -17697,7 +17697,7 @@ function MatMumpsGetRinfo(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt) 
 end 
 
 """
-	val::PetscReal = MatMumpsGetRinfog(petsclib::PetscLibType,F::PetscMat, icntl::PetscInt) 
+	val::PetscReal = MatMumpsGetRinfog(petsclib::PetscLibType,F::AbstractPetscMat, icntl::PetscInt) 
 Get MUMPS parameter RINFOG() <https://mumps
 
 Logically Collective
@@ -17716,9 +17716,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMumpsGetRinfog"))
 """
-function MatMumpsGetRinfog(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt) end
+function MatMumpsGetRinfog(petsclib::PetscLibType, F::AbstractPetscMat, icntl::PetscInt) end
 
-@for_petsc function MatMumpsGetRinfog(petsclib::$UnionPetscLib, F::PetscMat, icntl::$PetscInt )
+@for_petsc function MatMumpsGetRinfog(petsclib::$UnionPetscLib, F::AbstractPetscMat, icntl::$PetscInt )
 	val_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -17734,7 +17734,7 @@ function MatMumpsGetRinfog(petsclib::PetscLibType, F::PetscMat, icntl::PetscInt)
 end 
 
 """
-	size::PetscInt = MatMumpsGetNullPivots(petsclib::PetscLibType,F::PetscMat, array::PetscInt) 
+	size::PetscInt = MatMumpsGetNullPivots(petsclib::PetscLibType,F::AbstractPetscMat, array::PetscInt) 
 Get MUMPS parameter PIVNUL_LIST() <https://mumps
 
 Logically Collective
@@ -17754,9 +17754,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatMumpsGetNullPivots"))
 """
-function MatMumpsGetNullPivots(petsclib::PetscLibType, F::PetscMat, array::PetscInt) end
+function MatMumpsGetNullPivots(petsclib::PetscLibType, F::AbstractPetscMat, array::PetscInt) end
 
-@for_petsc function MatMumpsGetNullPivots(petsclib::$UnionPetscLib, F::PetscMat, array::$PetscInt )
+@for_petsc function MatMumpsGetNullPivots(petsclib::$UnionPetscLib, F::AbstractPetscMat, array::$PetscInt )
 	size_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -17772,14 +17772,14 @@ function MatMumpsGetNullPivots(petsclib::PetscLibType, F::PetscMat, array::Petsc
 end 
 
 """
-	MatSeqAIJSetValuesLocalFast(petsclib::PetscLibType,A::PetscMat, m::PetscInt, im::Vector{PetscInt}, n::PetscInt, in::Vector{PetscInt}, v::Vector{PetscScalar}, is::InsertMode) 
+	MatSeqAIJSetValuesLocalFast(petsclib::PetscLibType,A::AbstractPetscMat, m::PetscInt, im::Vector{PetscInt}, n::PetscInt, in::Vector{PetscInt}, v::Vector{PetscScalar}, is::InsertMode) 
 
 # External Links
 $(_doc_external("Mat/MatSeqAIJSetValuesLocalFast"))
 """
-function MatSeqAIJSetValuesLocalFast(petsclib::PetscLibType, A::PetscMat, m::PetscInt, im::Vector{PetscInt}, n::PetscInt, in::Vector{PetscInt}, v::Vector{PetscScalar}, is::InsertMode) end
+function MatSeqAIJSetValuesLocalFast(petsclib::PetscLibType, A::AbstractPetscMat, m::PetscInt, im::Vector{PetscInt}, n::PetscInt, in::Vector{PetscInt}, v::Vector{PetscScalar}, is::InsertMode) end
 
-@for_petsc function MatSeqAIJSetValuesLocalFast(petsclib::$UnionPetscLib, A::PetscMat, m::$PetscInt, im::Vector{$PetscInt}, n::$PetscInt, in::Vector{$PetscInt}, v::Vector{$PetscScalar}, is::InsertMode )
+@for_petsc function MatSeqAIJSetValuesLocalFast(petsclib::$UnionPetscLib, A::AbstractPetscMat, m::$PetscInt, im::Vector{$PetscInt}, n::$PetscInt, in::Vector{$PetscInt}, v::Vector{$PetscScalar}, is::InsertMode )
 
     @chk ccall(
                (:MatSeqAIJSetValuesLocalFast, $petsc_library),
@@ -17793,7 +17793,7 @@ function MatSeqAIJSetValuesLocalFast(petsclib::PetscLibType, A::PetscMat, m::Pet
 end 
 
 """
-	MatSeqAIJSetTotalPreallocation(petsclib::PetscLibType,A::PetscMat, nztotal::PetscInt) 
+	MatSeqAIJSetTotalPreallocation(petsclib::PetscLibType,A::AbstractPetscMat, nztotal::PetscInt) 
 Sets an upper bound on the total number of expected nonzeros in the matrix.
 
 Input Parameters:
@@ -17807,9 +17807,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSeqAIJSetTotalPreallocation"))
 """
-function MatSeqAIJSetTotalPreallocation(petsclib::PetscLibType, A::PetscMat, nztotal::PetscInt) end
+function MatSeqAIJSetTotalPreallocation(petsclib::PetscLibType, A::AbstractPetscMat, nztotal::PetscInt) end
 
-@for_petsc function MatSeqAIJSetTotalPreallocation(petsclib::$UnionPetscLib, A::PetscMat, nztotal::$PetscInt )
+@for_petsc function MatSeqAIJSetTotalPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat, nztotal::$PetscInt )
 
     @chk ccall(
                (:MatSeqAIJSetTotalPreallocation, $petsc_library),
@@ -17823,7 +17823,7 @@ function MatSeqAIJSetTotalPreallocation(petsclib::PetscLibType, A::PetscMat, nzt
 end 
 
 """
-	indices::PetscInt = MatSeqAIJSetColumnIndices(petsclib::PetscLibType,mat::PetscMat) 
+	indices::PetscInt = MatSeqAIJSetColumnIndices(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Set the column indices for all the rows
 in the matrix.
 
@@ -17838,9 +17838,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSeqAIJSetColumnIndices"))
 """
-function MatSeqAIJSetColumnIndices(petsclib::PetscLibType, mat::PetscMat) end
+function MatSeqAIJSetColumnIndices(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatSeqAIJSetColumnIndices(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatSeqAIJSetColumnIndices(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	indices_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -17856,7 +17856,7 @@ function MatSeqAIJSetColumnIndices(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatStoreValues(petsclib::PetscLibType,mat::PetscMat) 
+	MatStoreValues(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Stashes a copy of the matrix values; this allows reusing of the linear part of a Jacobian, while recomputing only the
 nonlinear portion.
 
@@ -17872,9 +17872,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatStoreValues"))
 """
-function MatStoreValues(petsclib::PetscLibType, mat::PetscMat) end
+function MatStoreValues(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatStoreValues(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatStoreValues(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatStoreValues, $petsc_library),
@@ -17888,7 +17888,7 @@ function MatStoreValues(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	MatRetrieveValues(petsclib::PetscLibType,mat::PetscMat) 
+	MatRetrieveValues(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Retrieves the copy of the matrix values that was stored with `MatStoreValues()`
 
 Logically Collect
@@ -17903,9 +17903,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatRetrieveValues"))
 """
-function MatRetrieveValues(petsclib::PetscLibType, mat::PetscMat) end
+function MatRetrieveValues(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatRetrieveValues(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatRetrieveValues(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 
     @chk ccall(
                (:MatRetrieveValues, $petsc_library),
@@ -17967,7 +17967,7 @@ function MatCreateSeqAIJ(petsclib::PetscLibType, comm::MPI_Comm, m::PetscInt, n:
 end 
 
 """
-	MatSeqAIJSetPreallocation(petsclib::PetscLibType,B::PetscMat, nz::PetscInt, nnz::Vector{PetscInt}) 
+	MatSeqAIJSetPreallocation(petsclib::PetscLibType,B::AbstractPetscMat, nz::PetscInt, nnz::Vector{PetscInt}) 
 For good matrix assembly performance
 the user should preallocate the matrix storage by setting the parameter nz
 (or the array nnz).  By setting these parameters accurately, performance
@@ -17993,9 +17993,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqAIJSetPreallocation"))
 """
-function MatSeqAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, nz::PetscInt, nnz::Union{Ptr,Vector{PetscInt}}) end
+function MatSeqAIJSetPreallocation(petsclib::PetscLibType, B::AbstractPetscMat, nz::PetscInt, nnz::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatSeqAIJSetPreallocation(petsclib::$UnionPetscLib, B::PetscMat, nz::$PetscInt, nnz::Union{Ptr,Vector{$PetscInt}} )
+@for_petsc function MatSeqAIJSetPreallocation(petsclib::$UnionPetscLib, B::AbstractPetscMat, nz::$PetscInt, nnz::Union{Ptr,Vector{$PetscInt}} )
 
     @chk ccall(
                (:MatSeqAIJSetPreallocation, $petsc_library),
@@ -18009,7 +18009,7 @@ function MatSeqAIJSetPreallocation(petsclib::PetscLibType, B::PetscMat, nz::Pets
 end 
 
 """
-	MatSeqAIJSetPreallocationCSR(petsclib::PetscLibType,B::PetscMat, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) 
+	MatSeqAIJSetPreallocationCSR(petsclib::PetscLibType,B::AbstractPetscMat, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) 
 Allocates memory for a sparse sequential matrix in `MATSEQAIJ` format.
 
 Input Parameters:
@@ -18025,9 +18025,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSeqAIJSetPreallocationCSR"))
 """
-function MatSeqAIJSetPreallocationCSR(petsclib::PetscLibType, B::PetscMat, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) end
+function MatSeqAIJSetPreallocationCSR(petsclib::PetscLibType, B::AbstractPetscMat, i::Vector{PetscInt}, j::Vector{PetscInt}, v::Vector{PetscScalar}) end
 
-@for_petsc function MatSeqAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::PetscMat, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
+@for_petsc function MatSeqAIJSetPreallocationCSR(petsclib::$UnionPetscLib, B::AbstractPetscMat, i::Vector{$PetscInt}, j::Vector{$PetscInt}, v::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatSeqAIJSetPreallocationCSR, $petsc_library),
@@ -18041,7 +18041,7 @@ function MatSeqAIJSetPreallocationCSR(petsclib::PetscLibType, B::PetscMat, i::Ve
 end 
 
 """
-	MatSeqAIJKron(petsclib::PetscLibType,A::PetscMat, B::PetscMat, reuse::MatReuse, C::PetscMat) 
+	MatSeqAIJKron(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, reuse::MatReuse, C::AbstractPetscMat) 
 Computes `C`, the Kronecker product of `A` and `B`.
 
 Input Parameters:
@@ -18059,9 +18059,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqAIJKron"))
 """
-function MatSeqAIJKron(petsclib::PetscLibType, A::PetscMat, B::PetscMat, reuse::MatReuse, C::PetscMat) end
+function MatSeqAIJKron(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, reuse::MatReuse, C::AbstractPetscMat) end
 
-@for_petsc function MatSeqAIJKron(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, reuse::MatReuse, C::PetscMat )
+@for_petsc function MatSeqAIJKron(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, reuse::MatReuse, C::AbstractPetscMat )
 	C_ = Ref(C.ptr)
 
     @chk ccall(
@@ -18077,7 +18077,7 @@ function MatSeqAIJKron(petsclib::PetscLibType, A::PetscMat, B::PetscMat, reuse::
 end 
 
 """
-    array::Vector{PetscScalar} = MatSeqAIJGetArray(petsclib::PetscLibType, A::PetscMat)
+    array::Vector{PetscScalar} = MatSeqAIJGetArray(petsclib::PetscLibType, A::AbstractPetscMat)
 
 Returns a 1D Julia Array (Vector) providing direct read/write access to the internal
 numerical values of a `MATSEQAIJ` (Sparse) matrix.
@@ -18100,9 +18100,9 @@ See also: `MatSeqAIJRestoreArray()`, `MatDenseGetArray()`
 # External Links
 $(_doc_external("Mat/MatSeqAIJGetArray"))
 """
-function MatSeqAIJGetArray(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqAIJGetArray(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqAIJGetArray(petsclib::$UnionPetscLib, A::PetscMat)
+@for_petsc function MatSeqAIJGetArray(petsclib::$UnionPetscLib, A::AbstractPetscMat)
     array_ = Ref{Ptr{$PetscScalar}}()
 
     # 1. Get the pointer to the numerical values
@@ -18124,7 +18124,7 @@ function MatSeqAIJGetArray(petsclib::PetscLibType, A::PetscMat) end
 end
 
 """
-    MatSeqAIJRestoreArray(petsclib::PetscLibType, A::PetscMat, array::Array)
+    MatSeqAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::Array)
 
 Restores a `MATSEQAIJ` matrix after direct access to its internal data was obtained
 via `MatSeqAIJGetArray()`.
@@ -18146,9 +18146,9 @@ See also: `MatSeqAIJGetArray()`, `MatDenseRestoreArray()`
 # External Links
 $(_doc_external("Mat/MatSeqAIJRestoreArray"))
 """
-function MatSeqAIJRestoreArray(petsclib::PetscLibType, A::PetscMat, array::Array) end
+function MatSeqAIJRestoreArray(petsclib::PetscLibType, A::AbstractPetscMat, array::Array) end
 
-@for_petsc function MatSeqAIJRestoreArray(petsclib::$UnionPetscLib, A::PetscMat, array::Array{$PetscScalar})
+@for_petsc function MatSeqAIJRestoreArray(petsclib::$UnionPetscLib, A::AbstractPetscMat, array::Array{$PetscScalar})
     # Create a Ref to the pointer of the Julia array to satisfy the ** signature
     ptr_ref = Ref(pointer(array))
 
@@ -18162,7 +18162,7 @@ function MatSeqAIJRestoreArray(petsclib::PetscLibType, A::PetscMat, array::Array
 end
 
 """
-	array::Vector{PetscScalar} = MatSeqAIJGetArrayRead(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatSeqAIJGetArrayRead(petsclib::PetscLibType,A::AbstractPetscMat) 
 gives read
 
 Not Collective; No Fortran Support
@@ -18180,9 +18180,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqAIJGetArrayRead"))
 """
-function MatSeqAIJGetArrayRead(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqAIJGetArrayRead(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqAIJGetArrayRead(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqAIJGetArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -18198,7 +18198,7 @@ function MatSeqAIJGetArrayRead(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatSeqAIJRestoreArrayRead(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatSeqAIJRestoreArrayRead(petsclib::PetscLibType,A::AbstractPetscMat) 
 restore the read
 
 Not Collective; No Fortran Support
@@ -18216,9 +18216,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqAIJRestoreArrayRead"))
 """
-function MatSeqAIJRestoreArrayRead(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqAIJRestoreArrayRead(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqAIJRestoreArrayRead(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqAIJRestoreArrayRead(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -18234,7 +18234,7 @@ function MatSeqAIJRestoreArrayRead(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatSeqAIJGetArrayWrite(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatSeqAIJGetArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat) 
 gives write
 
 Not Collective; No Fortran Support
@@ -18252,9 +18252,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqAIJGetArrayWrite"))
 """
-function MatSeqAIJGetArrayWrite(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqAIJGetArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqAIJGetArrayWrite(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqAIJGetArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -18270,7 +18270,7 @@ function MatSeqAIJGetArrayWrite(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	array::Vector{PetscScalar} = MatSeqAIJRestoreArrayWrite(petsclib::PetscLibType,A::PetscMat) 
+	array::Vector{PetscScalar} = MatSeqAIJRestoreArrayWrite(petsclib::PetscLibType,A::AbstractPetscMat) 
 restore the read
 
 Not Collective; No Fortran Support
@@ -18288,9 +18288,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqAIJRestoreArrayWrite"))
 """
-function MatSeqAIJRestoreArrayWrite(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqAIJRestoreArrayWrite(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqAIJRestoreArrayWrite(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqAIJRestoreArrayWrite(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	array_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -18306,7 +18306,7 @@ function MatSeqAIJRestoreArrayWrite(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	i::Vector{PetscInt},j::Vector{PetscInt},a::Vector{PetscScalar},mtype::PetscMemType = MatSeqAIJGetCSRAndMemType(petsclib::PetscLibType,mat::PetscMat) 
+	i::Vector{PetscInt},j::Vector{PetscInt},a::Vector{PetscScalar},mtype::PetscMemType = MatSeqAIJGetCSRAndMemType(petsclib::PetscLibType,mat::AbstractPetscMat) 
 Get the CSR arrays and the memory type of the `MATSEQAIJ` matrix
 
 Not Collective; No Fortran Support
@@ -18327,9 +18327,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSeqAIJGetCSRAndMemType"))
 """
-function MatSeqAIJGetCSRAndMemType(petsclib::PetscLibType, mat::PetscMat) end
+function MatSeqAIJGetCSRAndMemType(petsclib::PetscLibType, mat::AbstractPetscMat) end
 
-@for_petsc function MatSeqAIJGetCSRAndMemType(petsclib::$UnionPetscLib, mat::PetscMat )
+@for_petsc function MatSeqAIJGetCSRAndMemType(petsclib::$UnionPetscLib, mat::AbstractPetscMat )
 	i_ = Ref{Ptr{$PetscInt}}()
 	j_ = Ref{Ptr{$PetscInt}}()
 	a_ = Ref{Ptr{$PetscScalar}}()
@@ -18355,7 +18355,7 @@ function MatSeqAIJGetCSRAndMemType(petsclib::PetscLibType, mat::PetscMat) end
 end 
 
 """
-	nz::PetscInt = MatSeqAIJGetMaxRowNonzeros(petsclib::PetscLibType,A::PetscMat) 
+	nz::PetscInt = MatSeqAIJGetMaxRowNonzeros(petsclib::PetscLibType,A::AbstractPetscMat) 
 returns the maximum number of nonzeros in any row
 
 Not Collective
@@ -18373,9 +18373,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqAIJGetMaxRowNonzeros"))
 """
-function MatSeqAIJGetMaxRowNonzeros(petsclib::PetscLibType, A::PetscMat) end
+function MatSeqAIJGetMaxRowNonzeros(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatSeqAIJGetMaxRowNonzeros(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatSeqAIJGetMaxRowNonzeros(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	nz_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -18479,7 +18479,7 @@ function MatCreateSeqAIJFromTriple(petsclib::PetscLibType, comm::MPI_Comm, m::Pe
 end 
 
 """
-	MatSeqAIJSetType(petsclib::PetscLibType,mat::PetscMat, matype::MatType) 
+	MatSeqAIJSetType(petsclib::PetscLibType,mat::AbstractPetscMat, matype::MatType) 
 Converts a `MATSEQAIJ` matrix to a subtype
 
 Collective
@@ -18498,9 +18498,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSeqAIJSetType"))
 """
-function MatSeqAIJSetType(petsclib::PetscLibType, mat::PetscMat, matype::MatType) end
+function MatSeqAIJSetType(petsclib::PetscLibType, mat::AbstractPetscMat, matype::MatType) end
 
-@for_petsc function MatSeqAIJSetType(petsclib::$UnionPetscLib, mat::PetscMat, matype::MatType )
+@for_petsc function MatSeqAIJSetType(petsclib::$UnionPetscLib, mat::AbstractPetscMat, matype::MatType )
 
     @chk ccall(
                (:MatSeqAIJSetType, $petsc_library),
@@ -18546,14 +18546,14 @@ function MatSeqAIJRegister(petsclib::PetscLibType, sname::Vector{Cchar}, fnc::ex
 end 
 
 """
-	MatInodeAdjustForInodes(petsclib::PetscLibType,A::PetscMat, rperm::IS, cperm::IS) 
+	MatInodeAdjustForInodes(petsclib::PetscLibType,A::AbstractPetscMat, rperm::AbstractIS, cperm::AbstractIS) 
 
 # External Links
 $(_doc_external("Mat/MatInodeAdjustForInodes"))
 """
-function MatInodeAdjustForInodes(petsclib::PetscLibType, A::PetscMat, rperm::IS, cperm::IS) end
+function MatInodeAdjustForInodes(petsclib::PetscLibType, A::AbstractPetscMat, rperm::AbstractIS, cperm::AbstractIS) end
 
-@for_petsc function MatInodeAdjustForInodes(petsclib::$UnionPetscLib, A::PetscMat, rperm::IS, cperm::IS )
+@for_petsc function MatInodeAdjustForInodes(petsclib::$UnionPetscLib, A::AbstractPetscMat, rperm::AbstractIS, cperm::AbstractIS )
 
     @chk ccall(
                (:MatInodeAdjustForInodes, $petsc_library),
@@ -18567,7 +18567,7 @@ function MatInodeAdjustForInodes(petsclib::PetscLibType, A::PetscMat, rperm::IS,
 end 
 
 """
-	node_count::PetscInt,sizes::Vector{PetscInt},limit::PetscInt = MatInodeGetInodeSizes(petsclib::PetscLibType,A::PetscMat) 
+	node_count::PetscInt,sizes::Vector{PetscInt},limit::PetscInt = MatInodeGetInodeSizes(petsclib::PetscLibType,A::AbstractPetscMat) 
 Returns the inode information of a matrix with inodes
 
 Not Collective
@@ -18587,9 +18587,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatInodeGetInodeSizes"))
 """
-function MatInodeGetInodeSizes(petsclib::PetscLibType, A::PetscMat) end
+function MatInodeGetInodeSizes(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatInodeGetInodeSizes(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatInodeGetInodeSizes(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	node_count_ = Ref{$PetscInt}()
 	sizes_ = Ref{Ptr{$PetscInt}}()
 	limit_ = Ref{$PetscInt}()
@@ -18675,7 +18675,7 @@ function MatCreateSeqAIJKokkos(petsclib::PetscLibType, comm::MPI_Comm, m::PetscI
 end 
 
 """
-	MatSuperluSetILUDropTol(petsclib::PetscLibType,F::PetscMat, dtol::PetscReal) 
+	MatSuperluSetILUDropTol(petsclib::PetscLibType,F::AbstractPetscMat, dtol::PetscReal) 
 Set SuperLU <https://portal.nersc.gov/project/sparse/superlu/superlu_ug.pdf> ILU drop tolerance
 
 Logically Collective
@@ -18694,9 +18694,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatSuperluSetILUDropTol"))
 """
-function MatSuperluSetILUDropTol(petsclib::PetscLibType, F::PetscMat, dtol::PetscReal) end
+function MatSuperluSetILUDropTol(petsclib::PetscLibType, F::AbstractPetscMat, dtol::PetscReal) end
 
-@for_petsc function MatSuperluSetILUDropTol(petsclib::$UnionPetscLib, F::PetscMat, dtol::$PetscReal )
+@for_petsc function MatSuperluSetILUDropTol(petsclib::$UnionPetscLib, F::AbstractPetscMat, dtol::$PetscReal )
 
     @chk ccall(
                (:MatSuperluSetILUDropTol, $petsc_library),
@@ -18909,7 +18909,7 @@ function MatCreateDenseFromVecType(petsclib::PetscLibType, comm::MPI_Comm, vtype
 end 
 
 """
-	MatGetColumnVector(petsclib::PetscLibType,A::PetscMat, yy::PetscVec, col::PetscInt) 
+	MatGetColumnVector(petsclib::PetscLibType,A::AbstractPetscMat, yy::AbstractPetscVec, col::PetscInt) 
 Gets the values from a given column of a matrix.
 
 Not Collective
@@ -18926,9 +18926,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatGetColumnVector"))
 """
-function MatGetColumnVector(petsclib::PetscLibType, A::PetscMat, yy::PetscVec, col::PetscInt) end
+function MatGetColumnVector(petsclib::PetscLibType, A::AbstractPetscMat, yy::AbstractPetscVec, col::PetscInt) end
 
-@for_petsc function MatGetColumnVector(petsclib::$UnionPetscLib, A::PetscMat, yy::PetscVec, col::$PetscInt )
+@for_petsc function MatGetColumnVector(petsclib::$UnionPetscLib, A::AbstractPetscMat, yy::AbstractPetscVec, col::$PetscInt )
 
     @chk ccall(
                (:MatGetColumnVector, $petsc_library),
@@ -18942,7 +18942,7 @@ function MatGetColumnVector(petsclib::PetscLibType, A::PetscMat, yy::PetscVec, c
 end 
 
 """
-	MatGetColumnNorms(petsclib::PetscLibType,A::PetscMat, type::NormType, norms::Vector{PetscReal}) 
+	MatGetColumnNorms(petsclib::PetscLibType,A::AbstractPetscMat, type::NormType, norms::Vector{PetscReal}) 
 Gets the norms of each column of a sparse or dense matrix.
 
 Input Parameters:
@@ -18959,9 +18959,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetColumnNorms"))
 """
-function MatGetColumnNorms(petsclib::PetscLibType, A::PetscMat, type::NormType, norms::Vector{PetscReal}) end
+function MatGetColumnNorms(petsclib::PetscLibType, A::AbstractPetscMat, type::NormType, norms::Vector{PetscReal}) end
 
-@for_petsc function MatGetColumnNorms(petsclib::$UnionPetscLib, A::PetscMat, type::NormType, norms::Vector{$PetscReal} )
+@for_petsc function MatGetColumnNorms(petsclib::$UnionPetscLib, A::AbstractPetscMat, type::NormType, norms::Vector{$PetscReal} )
 
     @chk ccall(
                (:MatGetColumnNorms, $petsc_library),
@@ -18975,7 +18975,7 @@ function MatGetColumnNorms(petsclib::PetscLibType, A::PetscMat, type::NormType, 
 end 
 
 """
-	MatGetColumnSumsRealPart(petsclib::PetscLibType,A::PetscMat, sums::Vector{PetscReal}) 
+	MatGetColumnSumsRealPart(petsclib::PetscLibType,A::AbstractPetscMat, sums::Vector{PetscReal}) 
 Gets the sums of the real part of each column of a sparse or dense matrix.
 
 Input Parameter:
@@ -18991,9 +18991,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetColumnSumsRealPart"))
 """
-function MatGetColumnSumsRealPart(petsclib::PetscLibType, A::PetscMat, sums::Vector{PetscReal}) end
+function MatGetColumnSumsRealPart(petsclib::PetscLibType, A::AbstractPetscMat, sums::Vector{PetscReal}) end
 
-@for_petsc function MatGetColumnSumsRealPart(petsclib::$UnionPetscLib, A::PetscMat, sums::Vector{$PetscReal} )
+@for_petsc function MatGetColumnSumsRealPart(petsclib::$UnionPetscLib, A::AbstractPetscMat, sums::Vector{$PetscReal} )
 
     @chk ccall(
                (:MatGetColumnSumsRealPart, $petsc_library),
@@ -19007,7 +19007,7 @@ function MatGetColumnSumsRealPart(petsclib::PetscLibType, A::PetscMat, sums::Vec
 end 
 
 """
-	MatGetColumnSumsImaginaryPart(petsclib::PetscLibType,A::PetscMat, sums::Vector{PetscReal}) 
+	MatGetColumnSumsImaginaryPart(petsclib::PetscLibType,A::AbstractPetscMat, sums::Vector{PetscReal}) 
 Gets the sums of the imaginary part of each column of a sparse or dense matrix.
 
 Input Parameter:
@@ -19023,9 +19023,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetColumnSumsImaginaryPart"))
 """
-function MatGetColumnSumsImaginaryPart(petsclib::PetscLibType, A::PetscMat, sums::Vector{PetscReal}) end
+function MatGetColumnSumsImaginaryPart(petsclib::PetscLibType, A::AbstractPetscMat, sums::Vector{PetscReal}) end
 
-@for_petsc function MatGetColumnSumsImaginaryPart(petsclib::$UnionPetscLib, A::PetscMat, sums::Vector{$PetscReal} )
+@for_petsc function MatGetColumnSumsImaginaryPart(petsclib::$UnionPetscLib, A::AbstractPetscMat, sums::Vector{$PetscReal} )
 
     @chk ccall(
                (:MatGetColumnSumsImaginaryPart, $petsc_library),
@@ -19039,7 +19039,7 @@ function MatGetColumnSumsImaginaryPart(petsclib::PetscLibType, A::PetscMat, sums
 end 
 
 """
-	MatGetColumnSums(petsclib::PetscLibType,A::PetscMat, sums::Vector{PetscScalar}) 
+	MatGetColumnSums(petsclib::PetscLibType,A::AbstractPetscMat, sums::Vector{PetscScalar}) 
 Gets the sums of each column of a sparse or dense matrix.
 
 Input Parameter:
@@ -19055,9 +19055,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetColumnSums"))
 """
-function MatGetColumnSums(petsclib::PetscLibType, A::PetscMat, sums::Vector{PetscScalar}) end
+function MatGetColumnSums(petsclib::PetscLibType, A::AbstractPetscMat, sums::Vector{PetscScalar}) end
 
-@for_petsc function MatGetColumnSums(petsclib::$UnionPetscLib, A::PetscMat, sums::Vector{$PetscScalar} )
+@for_petsc function MatGetColumnSums(petsclib::$UnionPetscLib, A::AbstractPetscMat, sums::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatGetColumnSums, $petsc_library),
@@ -19071,7 +19071,7 @@ function MatGetColumnSums(petsclib::PetscLibType, A::PetscMat, sums::Vector{Pets
 end 
 
 """
-	MatGetColumnMeansRealPart(petsclib::PetscLibType,A::PetscMat, means::Vector{PetscReal}) 
+	MatGetColumnMeansRealPart(petsclib::PetscLibType,A::AbstractPetscMat, means::Vector{PetscReal}) 
 Gets the arithmetic means of the real part of each column of a sparse or dense matrix.
 
 Input Parameter:
@@ -19087,9 +19087,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetColumnMeansRealPart"))
 """
-function MatGetColumnMeansRealPart(petsclib::PetscLibType, A::PetscMat, means::Vector{PetscReal}) end
+function MatGetColumnMeansRealPart(petsclib::PetscLibType, A::AbstractPetscMat, means::Vector{PetscReal}) end
 
-@for_petsc function MatGetColumnMeansRealPart(petsclib::$UnionPetscLib, A::PetscMat, means::Vector{$PetscReal} )
+@for_petsc function MatGetColumnMeansRealPart(petsclib::$UnionPetscLib, A::AbstractPetscMat, means::Vector{$PetscReal} )
 
     @chk ccall(
                (:MatGetColumnMeansRealPart, $petsc_library),
@@ -19103,7 +19103,7 @@ function MatGetColumnMeansRealPart(petsclib::PetscLibType, A::PetscMat, means::V
 end 
 
 """
-	MatGetColumnMeansImaginaryPart(petsclib::PetscLibType,A::PetscMat, means::Vector{PetscReal}) 
+	MatGetColumnMeansImaginaryPart(petsclib::PetscLibType,A::AbstractPetscMat, means::Vector{PetscReal}) 
 Gets the arithmetic means of the imaginary part of each column of a sparse or dense matrix.
 
 Input Parameter:
@@ -19119,9 +19119,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetColumnMeansImaginaryPart"))
 """
-function MatGetColumnMeansImaginaryPart(petsclib::PetscLibType, A::PetscMat, means::Vector{PetscReal}) end
+function MatGetColumnMeansImaginaryPart(petsclib::PetscLibType, A::AbstractPetscMat, means::Vector{PetscReal}) end
 
-@for_petsc function MatGetColumnMeansImaginaryPart(petsclib::$UnionPetscLib, A::PetscMat, means::Vector{$PetscReal} )
+@for_petsc function MatGetColumnMeansImaginaryPart(petsclib::$UnionPetscLib, A::AbstractPetscMat, means::Vector{$PetscReal} )
 
     @chk ccall(
                (:MatGetColumnMeansImaginaryPart, $petsc_library),
@@ -19135,7 +19135,7 @@ function MatGetColumnMeansImaginaryPart(petsclib::PetscLibType, A::PetscMat, mea
 end 
 
 """
-	MatGetColumnMeans(petsclib::PetscLibType,A::PetscMat, means::Vector{PetscScalar}) 
+	MatGetColumnMeans(petsclib::PetscLibType,A::AbstractPetscMat, means::Vector{PetscScalar}) 
 Gets the arithmetic means of each column of a sparse or dense matrix.
 
 Input Parameter:
@@ -19151,9 +19151,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatGetColumnMeans"))
 """
-function MatGetColumnMeans(petsclib::PetscLibType, A::PetscMat, means::Vector{PetscScalar}) end
+function MatGetColumnMeans(petsclib::PetscLibType, A::AbstractPetscMat, means::Vector{PetscScalar}) end
 
-@for_petsc function MatGetColumnMeans(petsclib::$UnionPetscLib, A::PetscMat, means::Vector{$PetscScalar} )
+@for_petsc function MatGetColumnMeans(petsclib::$UnionPetscLib, A::AbstractPetscMat, means::Vector{$PetscScalar} )
 
     @chk ccall(
                (:MatGetColumnMeans, $petsc_library),
@@ -19167,7 +19167,7 @@ function MatGetColumnMeans(petsclib::PetscLibType, A::PetscMat, means::Vector{Pe
 end 
 
 """
-	MatGetColumnReductions(petsclib::PetscLibType,A::PetscMat, type::PetscInt, reductions::Vector{PetscReal}) 
+	MatGetColumnReductions(petsclib::PetscLibType,A::AbstractPetscMat, type::PetscInt, reductions::Vector{PetscReal}) 
 Gets the reductions of each column of a sparse or dense matrix.
 
 Input Parameters:
@@ -19185,9 +19185,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatGetColumnReductions"))
 """
-function MatGetColumnReductions(petsclib::PetscLibType, A::PetscMat, type::PetscInt, reductions::Vector{PetscReal}) end
+function MatGetColumnReductions(petsclib::PetscLibType, A::AbstractPetscMat, type::PetscInt, reductions::Vector{PetscReal}) end
 
-@for_petsc function MatGetColumnReductions(petsclib::$UnionPetscLib, A::PetscMat, type::$PetscInt, reductions::Vector{$PetscReal} )
+@for_petsc function MatGetColumnReductions(petsclib::$UnionPetscLib, A::AbstractPetscMat, type::$PetscInt, reductions::Vector{$PetscReal} )
 
     @chk ccall(
                (:MatGetColumnReductions, $petsc_library),
@@ -19201,7 +19201,7 @@ function MatGetColumnReductions(petsclib::PetscLibType, A::PetscMat, type::Petsc
 end 
 
 """
-	MatReorderForNonzeroDiagonal(petsclib::PetscLibType,mat::PetscMat, abstol::PetscReal, ris::IS, cis::IS) 
+	MatReorderForNonzeroDiagonal(petsclib::PetscLibType,mat::AbstractPetscMat, abstol::PetscReal, ris::AbstractIS, cis::AbstractIS) 
 Changes matrix ordering to remove
 zeros from diagonal. This may help in the `PCLU` factorization to
 prevent a zero pivot.
@@ -19224,9 +19224,9 @@ Options Database Key:
 # External Links
 $(_doc_external("Mat/MatReorderForNonzeroDiagonal"))
 """
-function MatReorderForNonzeroDiagonal(petsclib::PetscLibType, mat::PetscMat, abstol::PetscReal, ris::IS, cis::IS) end
+function MatReorderForNonzeroDiagonal(petsclib::PetscLibType, mat::AbstractPetscMat, abstol::PetscReal, ris::AbstractIS, cis::AbstractIS) end
 
-@for_petsc function MatReorderForNonzeroDiagonal(petsclib::$UnionPetscLib, mat::PetscMat, abstol::$PetscReal, ris::IS, cis::IS )
+@for_petsc function MatReorderForNonzeroDiagonal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, abstol::$PetscReal, ris::AbstractIS, cis::AbstractIS )
 
     @chk ccall(
                (:MatReorderForNonzeroDiagonal, $petsc_library),
@@ -19342,7 +19342,7 @@ function MatCreateFromOptions(petsclib::PetscLibType, comm::MPI_Comm, prefix::Ve
 end 
 
 """
-	MatSetErrorIfFailure(petsclib::PetscLibType,mat::PetscMat, flg::PetscBool) 
+	MatSetErrorIfFailure(petsclib::PetscLibType,mat::AbstractPetscMat, flg::PetscBool) 
 Causes `Mat` to generate an immediate error, for example a zero pivot, is detected.
 
 Logically Collective
@@ -19358,9 +19358,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatSetErrorIfFailure"))
 """
-function MatSetErrorIfFailure(petsclib::PetscLibType, mat::PetscMat, flg::PetscBool) end
+function MatSetErrorIfFailure(petsclib::PetscLibType, mat::AbstractPetscMat, flg::PetscBool) end
 
-@for_petsc function MatSetErrorIfFailure(petsclib::$UnionPetscLib, mat::PetscMat, flg::PetscBool )
+@for_petsc function MatSetErrorIfFailure(petsclib::$UnionPetscLib, mat::AbstractPetscMat, flg::PetscBool )
 
     @chk ccall(
                (:MatSetErrorIfFailure, $petsc_library),
@@ -19374,7 +19374,7 @@ function MatSetErrorIfFailure(petsclib::PetscLibType, mat::PetscMat, flg::PetscB
 end 
 
 """
-	MatSetSizes(petsclib::PetscLibType,A::PetscMat, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt) 
+	MatSetSizes(petsclib::PetscLibType,A::AbstractPetscMat, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt) 
 Sets the local and global sizes, and checks to determine compatibility
 
 Collective
@@ -19394,9 +19394,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatSetSizes"))
 """
-function MatSetSizes(petsclib::PetscLibType, A::PetscMat, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt) end
+function MatSetSizes(petsclib::PetscLibType, A::AbstractPetscMat, m::PetscInt, n::PetscInt, M::PetscInt, N::PetscInt) end
 
-@for_petsc function MatSetSizes(petsclib::$UnionPetscLib, A::PetscMat, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt )
+@for_petsc function MatSetSizes(petsclib::$UnionPetscLib, A::AbstractPetscMat, m::$PetscInt, n::$PetscInt, M::$PetscInt, N::$PetscInt )
 
     @chk ccall(
                (:MatSetSizes, $petsc_library),
@@ -19410,7 +19410,7 @@ function MatSetSizes(petsclib::PetscLibType, A::PetscMat, m::PetscInt, n::PetscI
 end 
 
 """
-	MatSetFromOptions(petsclib::PetscLibType,B::PetscMat) 
+	MatSetFromOptions(petsclib::PetscLibType,B::AbstractPetscMat) 
 Creates a matrix where the type is determined
 from the options database.
 
@@ -19441,9 +19441,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatSetFromOptions"))
 """
-function MatSetFromOptions(petsclib::PetscLibType, B::PetscMat) end
+function MatSetFromOptions(petsclib::PetscLibType, B::AbstractPetscMat) end
 
-@for_petsc function MatSetFromOptions(petsclib::$UnionPetscLib, B::PetscMat )
+@for_petsc function MatSetFromOptions(petsclib::$UnionPetscLib, B::AbstractPetscMat )
 
     @chk ccall(
                (:MatSetFromOptions, $petsc_library),
@@ -19457,7 +19457,7 @@ function MatSetFromOptions(petsclib::PetscLibType, B::PetscMat) end
 end 
 
 """
-	MatXAIJSetPreallocation(petsclib::PetscLibType,A::PetscMat, bs::PetscInt, dnnz::Vector{PetscInt}, onnz::Vector{PetscInt}, dnnzu::Vector{PetscInt}, onnzu::Vector{PetscInt}) 
+	MatXAIJSetPreallocation(petsclib::PetscLibType,A::AbstractPetscMat, bs::PetscInt, dnnz::Vector{PetscInt}, onnz::Vector{PetscInt}, dnnzu::Vector{PetscInt}, onnzu::Vector{PetscInt}) 
 set preallocation for serial and parallel `MATAIJ`, `MATBAIJ`, and `MATSBAIJ` matrices and their unassembled versions.
 
 Collective
@@ -19479,9 +19479,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatXAIJSetPreallocation"))
 """
-function MatXAIJSetPreallocation(petsclib::PetscLibType, A::PetscMat, bs::PetscInt, dnnz::Union{Ptr,Vector{PetscInt}}, onnz::Union{Ptr,Vector{PetscInt}}, dnnzu::Union{Ptr,Vector{PetscInt}}, onnzu::Union{Ptr,Vector{PetscInt}}) end
+function MatXAIJSetPreallocation(petsclib::PetscLibType, A::AbstractPetscMat, bs::PetscInt, dnnz::Union{Ptr,Vector{PetscInt}}, onnz::Union{Ptr,Vector{PetscInt}}, dnnzu::Union{Ptr,Vector{PetscInt}}, onnzu::Union{Ptr,Vector{PetscInt}}) end
 
-@for_petsc function MatXAIJSetPreallocation(petsclib::$UnionPetscLib, A::PetscMat, bs::$PetscInt, dnnz::Union{Ptr,Vector{$PetscInt}}, onnz::Union{Ptr,Vector{$PetscInt}}, dnnzu::Union{Ptr,Vector{$PetscInt}}, onnzu::Union{Ptr,Vector{$PetscInt}} )
+@for_petsc function MatXAIJSetPreallocation(petsclib::$UnionPetscLib, A::AbstractPetscMat, bs::$PetscInt, dnnz::Union{Ptr,Vector{$PetscInt}}, onnz::Union{Ptr,Vector{$PetscInt}}, dnnzu::Union{Ptr,Vector{$PetscInt}}, onnzu::Union{Ptr,Vector{$PetscInt}} )
 
     @chk ccall(
                (:MatXAIJSetPreallocation, $petsc_library),
@@ -19495,7 +19495,7 @@ function MatXAIJSetPreallocation(petsclib::PetscLibType, A::PetscMat, bs::PetscI
 end 
 
 """
-	MatHeaderMerge(petsclib::PetscLibType,A::PetscMat, C::PetscMat) 
+	MatHeaderMerge(petsclib::PetscLibType,A::AbstractPetscMat, C::AbstractPetscMat) 
 Merges some information from the header of `C` to `A`; the `C` object is then destroyed
 
 Collective, No Fortran Support
@@ -19511,9 +19511,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatHeaderMerge"))
 """
-function MatHeaderMerge(petsclib::PetscLibType, A::PetscMat, C::PetscMat) end
+function MatHeaderMerge(petsclib::PetscLibType, A::AbstractPetscMat, C::AbstractPetscMat) end
 
-@for_petsc function MatHeaderMerge(petsclib::$UnionPetscLib, A::PetscMat, C::PetscMat )
+@for_petsc function MatHeaderMerge(petsclib::$UnionPetscLib, A::AbstractPetscMat, C::AbstractPetscMat )
 	C_ = Ref(C.ptr)
 
     @chk ccall(
@@ -19529,7 +19529,7 @@ function MatHeaderMerge(petsclib::PetscLibType, A::PetscMat, C::PetscMat) end
 end 
 
 """
-	MatHeaderReplace(petsclib::PetscLibType,A::PetscMat, C::PetscMat) 
+	MatHeaderReplace(petsclib::PetscLibType,A::AbstractPetscMat, C::AbstractPetscMat) 
 Replaces the internal data of matrix `A` by the internal data of matrix `C` while deleting the outer wrapper of `C`
 
 Input Parameters:
@@ -19543,9 +19543,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatHeaderReplace"))
 """
-function MatHeaderReplace(petsclib::PetscLibType, A::PetscMat, C::PetscMat) end
+function MatHeaderReplace(petsclib::PetscLibType, A::AbstractPetscMat, C::AbstractPetscMat) end
 
-@for_petsc function MatHeaderReplace(petsclib::$UnionPetscLib, A::PetscMat, C::PetscMat )
+@for_petsc function MatHeaderReplace(petsclib::$UnionPetscLib, A::AbstractPetscMat, C::AbstractPetscMat )
 	C_ = Ref(C.ptr)
 
     @chk ccall(
@@ -19561,7 +19561,7 @@ function MatHeaderReplace(petsclib::PetscLibType, A::PetscMat, C::PetscMat) end
 end 
 
 """
-	MatBindToCPU(petsclib::PetscLibType,A::PetscMat, flg::PetscBool) 
+	MatBindToCPU(petsclib::PetscLibType,A::AbstractPetscMat, flg::PetscBool) 
 marks a matrix to temporarily stay on the CPU and perform computations on the CPU
 
 Logically Collective
@@ -19577,9 +19577,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatBindToCPU"))
 """
-function MatBindToCPU(petsclib::PetscLibType, A::PetscMat, flg::PetscBool) end
+function MatBindToCPU(petsclib::PetscLibType, A::AbstractPetscMat, flg::PetscBool) end
 
-@for_petsc function MatBindToCPU(petsclib::$UnionPetscLib, A::PetscMat, flg::PetscBool )
+@for_petsc function MatBindToCPU(petsclib::$UnionPetscLib, A::AbstractPetscMat, flg::PetscBool )
 
     @chk ccall(
                (:MatBindToCPU, $petsc_library),
@@ -19593,7 +19593,7 @@ function MatBindToCPU(petsclib::PetscLibType, A::PetscMat, flg::PetscBool) end
 end 
 
 """
-	flg::PetscBool = MatBoundToCPU(petsclib::PetscLibType,A::PetscMat) 
+	flg::PetscBool = MatBoundToCPU(petsclib::PetscLibType,A::AbstractPetscMat) 
 query if a matrix is bound to the CPU
 
 Input Parameter:
@@ -19609,9 +19609,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatBoundToCPU"))
 """
-function MatBoundToCPU(petsclib::PetscLibType, A::PetscMat) end
+function MatBoundToCPU(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatBoundToCPU(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatBoundToCPU(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -19627,7 +19627,7 @@ function MatBoundToCPU(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatSetPreallocationCOO(petsclib::PetscLibType,A::PetscMat, ncoo::PetscCount, coo_i::Vector{PetscInt}, coo_j::Vector{PetscInt}) 
+	MatSetPreallocationCOO(petsclib::PetscLibType,A::AbstractPetscMat, ncoo::PetscCount, coo_i::Vector{PetscInt}, coo_j::Vector{PetscInt}) 
 set preallocation for matrices using a coordinate format of the entries with global indices
 
 Collective
@@ -19647,9 +19647,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatSetPreallocationCOO"))
 """
-function MatSetPreallocationCOO(petsclib::PetscLibType, A::PetscMat, ncoo::PetscCount, coo_i::Vector{PetscInt}, coo_j::Vector{PetscInt}) end
+function MatSetPreallocationCOO(petsclib::PetscLibType, A::AbstractPetscMat, ncoo::PetscCount, coo_i::Vector{PetscInt}, coo_j::Vector{PetscInt}) end
 
-@for_petsc function MatSetPreallocationCOO(petsclib::$UnionPetscLib, A::PetscMat, ncoo::PetscCount, coo_i::Vector{$PetscInt}, coo_j::Vector{$PetscInt} )
+@for_petsc function MatSetPreallocationCOO(petsclib::$UnionPetscLib, A::AbstractPetscMat, ncoo::PetscCount, coo_i::Vector{$PetscInt}, coo_j::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatSetPreallocationCOO, $petsc_library),
@@ -19663,7 +19663,7 @@ function MatSetPreallocationCOO(petsclib::PetscLibType, A::PetscMat, ncoo::Petsc
 end 
 
 """
-	MatSetPreallocationCOOLocal(petsclib::PetscLibType,A::PetscMat, ncoo::PetscCount, coo_i::Vector{PetscInt}, coo_j::Vector{PetscInt}) 
+	MatSetPreallocationCOOLocal(petsclib::PetscLibType,A::AbstractPetscMat, ncoo::PetscCount, coo_i::Vector{PetscInt}, coo_j::Vector{PetscInt}) 
 set preallocation for matrices using a coordinate format of the entries with local indices
 
 Collective
@@ -19683,9 +19683,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatSetPreallocationCOOLocal"))
 """
-function MatSetPreallocationCOOLocal(petsclib::PetscLibType, A::PetscMat, ncoo::PetscCount, coo_i::Vector{PetscInt}, coo_j::Vector{PetscInt}) end
+function MatSetPreallocationCOOLocal(petsclib::PetscLibType, A::AbstractPetscMat, ncoo::PetscCount, coo_i::Vector{PetscInt}, coo_j::Vector{PetscInt}) end
 
-@for_petsc function MatSetPreallocationCOOLocal(petsclib::$UnionPetscLib, A::PetscMat, ncoo::PetscCount, coo_i::Vector{$PetscInt}, coo_j::Vector{$PetscInt} )
+@for_petsc function MatSetPreallocationCOOLocal(petsclib::$UnionPetscLib, A::AbstractPetscMat, ncoo::PetscCount, coo_i::Vector{$PetscInt}, coo_j::Vector{$PetscInt} )
 
     @chk ccall(
                (:MatSetPreallocationCOOLocal, $petsc_library),
@@ -19699,7 +19699,7 @@ function MatSetPreallocationCOOLocal(petsclib::PetscLibType, A::PetscMat, ncoo::
 end 
 
 """
-	MatSetValuesCOO(petsclib::PetscLibType,A::PetscMat, coo_v::Vector{PetscScalar}, imode::InsertMode) 
+	MatSetValuesCOO(petsclib::PetscLibType,A::AbstractPetscMat, coo_v::Vector{PetscScalar}, imode::InsertMode) 
 set values at once in a matrix preallocated using `MatSetPreallocationCOO()`
 
 Collective
@@ -19716,10 +19716,10 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatSetValuesCOO"))
 """
-function MatSetValuesCOO(petsclib::PetscLibType, A::PetscMat, coo_v::Vector{PetscScalar}, imode::InsertMode) end
-function MatSetValuesCOO(petsclib::PetscLibType, A::PetscMat, coo_v::Ptr{PetscScalar}, imode::InsertMode) end
+function MatSetValuesCOO(petsclib::PetscLibType, A::AbstractPetscMat, coo_v::Vector{PetscScalar}, imode::InsertMode) end
+function MatSetValuesCOO(petsclib::PetscLibType, A::AbstractPetscMat, coo_v::Ptr{PetscScalar}, imode::InsertMode) end
 
-@for_petsc function MatSetValuesCOO(petsclib::$UnionPetscLib, A::PetscMat, coo_v::Vector{$PetscScalar}, imode::InsertMode )
+@for_petsc function MatSetValuesCOO(petsclib::$UnionPetscLib, A::AbstractPetscMat, coo_v::Vector{$PetscScalar}, imode::InsertMode )
 
     @chk ccall(
                (:MatSetValuesCOO, $petsc_library),
@@ -19732,7 +19732,7 @@ function MatSetValuesCOO(petsclib::PetscLibType, A::PetscMat, coo_v::Ptr{PetscSc
 	return nothing
 end 
 
-@for_petsc function MatSetValuesCOO(petsclib::$UnionPetscLib, A::PetscMat, coo_v::Ptr{$PetscScalar}, imode::InsertMode )
+@for_petsc function MatSetValuesCOO(petsclib::$UnionPetscLib, A::AbstractPetscMat, coo_v::Ptr{$PetscScalar}, imode::InsertMode )
 
     @chk ccall(
                (:MatSetValuesCOO, $petsc_library),
@@ -19746,7 +19746,7 @@ end
 end 
 
 """
-	MatSetBindingPropagates(petsclib::PetscLibType,A::PetscMat, flg::PetscBool) 
+	MatSetBindingPropagates(petsclib::PetscLibType,A::AbstractPetscMat, flg::PetscBool) 
 Sets whether the state of being bound to the CPU for a GPU matrix type propagates to child and some other associated objects
 
 Input Parameters:
@@ -19760,9 +19760,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatSetBindingPropagates"))
 """
-function MatSetBindingPropagates(petsclib::PetscLibType, A::PetscMat, flg::PetscBool) end
+function MatSetBindingPropagates(petsclib::PetscLibType, A::AbstractPetscMat, flg::PetscBool) end
 
-@for_petsc function MatSetBindingPropagates(petsclib::$UnionPetscLib, A::PetscMat, flg::PetscBool )
+@for_petsc function MatSetBindingPropagates(petsclib::$UnionPetscLib, A::AbstractPetscMat, flg::PetscBool )
 
     @chk ccall(
                (:MatSetBindingPropagates, $petsc_library),
@@ -19776,7 +19776,7 @@ function MatSetBindingPropagates(petsclib::PetscLibType, A::PetscMat, flg::Petsc
 end 
 
 """
-	flg::PetscBool = MatGetBindingPropagates(petsclib::PetscLibType,A::PetscMat) 
+	flg::PetscBool = MatGetBindingPropagates(petsclib::PetscLibType,A::AbstractPetscMat) 
 Gets whether the state of being bound to the CPU for a GPU matrix type propagates to child and some other associated objects
 
 Input Parameter:
@@ -19792,9 +19792,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/MatGetBindingPropagates"))
 """
-function MatGetBindingPropagates(petsclib::PetscLibType, A::PetscMat) end
+function MatGetBindingPropagates(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatGetBindingPropagates(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatGetBindingPropagates(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -19810,7 +19810,7 @@ function MatGetBindingPropagates(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	bw::PetscInt = MatComputeBandwidth(petsclib::PetscLibType,A::PetscMat, fraction::PetscReal) 
+	bw::PetscInt = MatComputeBandwidth(petsclib::PetscLibType,A::AbstractPetscMat, fraction::PetscReal) 
 Calculate the full bandwidth of the matrix, meaning the width 2k+1 where k diagonals on either side are sufficient to contain all the matrix nonzeros.
 
 Collective
@@ -19829,9 +19829,9 @@ Level: beginner
 # External Links
 $(_doc_external("Mat/MatComputeBandwidth"))
 """
-function MatComputeBandwidth(petsclib::PetscLibType, A::PetscMat, fraction::PetscReal) end
+function MatComputeBandwidth(petsclib::PetscLibType, A::AbstractPetscMat, fraction::PetscReal) end
 
-@for_petsc function MatComputeBandwidth(petsclib::$UnionPetscLib, A::PetscMat, fraction::$PetscReal )
+@for_petsc function MatComputeBandwidth(petsclib::$UnionPetscLib, A::AbstractPetscMat, fraction::$PetscReal )
 	bw_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -19847,7 +19847,7 @@ function MatComputeBandwidth(petsclib::PetscLibType, A::PetscMat, fraction::Pets
 end 
 
 """
-	MatAXPY(petsclib::PetscLibType,Y::PetscMat, a::PetscScalar, X::PetscMat, str::MatStructure) 
+	MatAXPY(petsclib::PetscLibType,Y::AbstractPetscMat, a::PetscScalar, X::AbstractPetscMat, str::MatStructure) 
 Computes Y = a*X + Y.
 
 Logically Collective
@@ -19865,9 +19865,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatAXPY"))
 """
-function MatAXPY(petsclib::PetscLibType, Y::PetscMat, a::PetscScalar, X::PetscMat, str::MatStructure) end
+function MatAXPY(petsclib::PetscLibType, Y::AbstractPetscMat, a::PetscScalar, X::AbstractPetscMat, str::MatStructure) end
 
-@for_petsc function MatAXPY(petsclib::$UnionPetscLib, Y::PetscMat, a::$PetscScalar, X::PetscMat, str::MatStructure )
+@for_petsc function MatAXPY(petsclib::$UnionPetscLib, Y::AbstractPetscMat, a::$PetscScalar, X::AbstractPetscMat, str::MatStructure )
 
     @chk ccall(
                (:MatAXPY, $petsc_library),
@@ -19881,7 +19881,7 @@ function MatAXPY(petsclib::PetscLibType, Y::PetscMat, a::PetscScalar, X::PetscMa
 end 
 
 """
-	MatShift(petsclib::PetscLibType,Y::PetscMat, a::PetscScalar) 
+	MatShift(petsclib::PetscLibType,Y::AbstractPetscMat, a::PetscScalar) 
 Computes `Y =  Y + a I`, where `a` is a `PetscScalar`
 
 Neighbor-wise Collective
@@ -19897,9 +19897,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatShift"))
 """
-function MatShift(petsclib::PetscLibType, Y::PetscMat, a::PetscScalar) end
+function MatShift(petsclib::PetscLibType, Y::AbstractPetscMat, a::PetscScalar) end
 
-@for_petsc function MatShift(petsclib::$UnionPetscLib, Y::PetscMat, a::$PetscScalar )
+@for_petsc function MatShift(petsclib::$UnionPetscLib, Y::AbstractPetscMat, a::$PetscScalar )
 
     @chk ccall(
                (:MatShift, $petsc_library),
@@ -19913,7 +19913,7 @@ function MatShift(petsclib::PetscLibType, Y::PetscMat, a::PetscScalar) end
 end 
 
 """
-	MatDiagonalSet(petsclib::PetscLibType,Y::PetscMat, D::PetscVec, is::InsertMode) 
+	MatDiagonalSet(petsclib::PetscLibType,Y::AbstractPetscMat, D::AbstractPetscVec, is::InsertMode) 
 Computes `Y` = `Y` + `D`, where `D` is a diagonal matrix
 that is represented as a vector. Or Y[i,i] = D[i] if `InsertMode` is
 `INSERT_VALUES`.
@@ -19932,9 +19932,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatDiagonalSet"))
 """
-function MatDiagonalSet(petsclib::PetscLibType, Y::PetscMat, D::PetscVec, is::InsertMode) end
+function MatDiagonalSet(petsclib::PetscLibType, Y::AbstractPetscMat, D::AbstractPetscVec, is::InsertMode) end
 
-@for_petsc function MatDiagonalSet(petsclib::$UnionPetscLib, Y::PetscMat, D::PetscVec, is::InsertMode )
+@for_petsc function MatDiagonalSet(petsclib::$UnionPetscLib, Y::AbstractPetscMat, D::AbstractPetscVec, is::InsertMode )
 
     @chk ccall(
                (:MatDiagonalSet, $petsc_library),
@@ -19948,7 +19948,7 @@ function MatDiagonalSet(petsclib::PetscLibType, Y::PetscMat, D::PetscVec, is::In
 end 
 
 """
-	MatAYPX(petsclib::PetscLibType,Y::PetscMat, a::PetscScalar, X::PetscMat, str::MatStructure) 
+	MatAYPX(petsclib::PetscLibType,Y::AbstractPetscMat, a::PetscScalar, X::AbstractPetscMat, str::MatStructure) 
 Computes Y = a*Y + X.
 
 Logically Collective
@@ -19966,9 +19966,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatAYPX"))
 """
-function MatAYPX(petsclib::PetscLibType, Y::PetscMat, a::PetscScalar, X::PetscMat, str::MatStructure) end
+function MatAYPX(petsclib::PetscLibType, Y::AbstractPetscMat, a::PetscScalar, X::AbstractPetscMat, str::MatStructure) end
 
-@for_petsc function MatAYPX(petsclib::$UnionPetscLib, Y::PetscMat, a::$PetscScalar, X::PetscMat, str::MatStructure )
+@for_petsc function MatAYPX(petsclib::$UnionPetscLib, Y::AbstractPetscMat, a::$PetscScalar, X::AbstractPetscMat, str::MatStructure )
 
     @chk ccall(
                (:MatAYPX, $petsc_library),
@@ -19982,7 +19982,7 @@ function MatAYPX(petsclib::PetscLibType, Y::PetscMat, a::PetscScalar, X::PetscMa
 end 
 
 """
-	MatComputeOperator(petsclib::PetscLibType,inmat::PetscMat, mattype::MatType, mat::PetscMat) 
+	MatComputeOperator(petsclib::PetscLibType,inmat::AbstractPetscMat, mattype::MatType, mat::AbstractPetscMat) 
 Computes the explicit matrix
 
 Collective
@@ -20001,9 +20001,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatComputeOperator"))
 """
-function MatComputeOperator(petsclib::PetscLibType, inmat::PetscMat, mattype::MatType, mat::PetscMat) end
+function MatComputeOperator(petsclib::PetscLibType, inmat::AbstractPetscMat, mattype::MatType, mat::AbstractPetscMat) end
 
-@for_petsc function MatComputeOperator(petsclib::$UnionPetscLib, inmat::PetscMat, mattype::MatType, mat::PetscMat )
+@for_petsc function MatComputeOperator(petsclib::$UnionPetscLib, inmat::AbstractPetscMat, mattype::MatType, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -20019,7 +20019,7 @@ function MatComputeOperator(petsclib::PetscLibType, inmat::PetscMat, mattype::Ma
 end 
 
 """
-	MatComputeOperatorTranspose(petsclib::PetscLibType,inmat::PetscMat, mattype::MatType, mat::PetscMat) 
+	MatComputeOperatorTranspose(petsclib::PetscLibType,inmat::AbstractPetscMat, mattype::MatType, mat::AbstractPetscMat) 
 Computes the explicit matrix representation of
 a give matrix that can apply `MatMultTranspose()`
 
@@ -20039,9 +20039,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatComputeOperatorTranspose"))
 """
-function MatComputeOperatorTranspose(petsclib::PetscLibType, inmat::PetscMat, mattype::MatType, mat::PetscMat) end
+function MatComputeOperatorTranspose(petsclib::PetscLibType, inmat::AbstractPetscMat, mattype::MatType, mat::AbstractPetscMat) end
 
-@for_petsc function MatComputeOperatorTranspose(petsclib::$UnionPetscLib, inmat::PetscMat, mattype::MatType, mat::PetscMat )
+@for_petsc function MatComputeOperatorTranspose(petsclib::$UnionPetscLib, inmat::AbstractPetscMat, mattype::MatType, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -20057,7 +20057,7 @@ function MatComputeOperatorTranspose(petsclib::PetscLibType, inmat::PetscMat, ma
 end 
 
 """
-	MatFilter(petsclib::PetscLibType,A::PetscMat, tol::PetscReal, compress::PetscBool, keep::PetscBool) 
+	MatFilter(petsclib::PetscLibType,A::AbstractPetscMat, tol::PetscReal, compress::PetscBool, keep::PetscBool) 
 Set all values in the matrix with an absolute value less than or equal to the tolerance to zero, and optionally compress the underlying storage
 
 Input Parameters:
@@ -20073,9 +20073,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatFilter"))
 """
-function MatFilter(petsclib::PetscLibType, A::PetscMat, tol::PetscReal, compress::PetscBool, keep::PetscBool) end
+function MatFilter(petsclib::PetscLibType, A::AbstractPetscMat, tol::PetscReal, compress::PetscBool, keep::PetscBool) end
 
-@for_petsc function MatFilter(petsclib::$UnionPetscLib, A::PetscMat, tol::$PetscReal, compress::PetscBool, keep::PetscBool )
+@for_petsc function MatFilter(petsclib::$UnionPetscLib, A::AbstractPetscMat, tol::$PetscReal, compress::PetscBool, keep::PetscBool )
 
     @chk ccall(
                (:MatFilter, $petsc_library),
@@ -20089,7 +20089,7 @@ function MatFilter(petsclib::PetscLibType, A::PetscMat, tol::PetscReal, compress
 end 
 
 """
-	flg::PetscBool = MatMultEqual(petsclib::PetscLibType,A::PetscMat, B::PetscMat, n::PetscInt) 
+	flg::PetscBool = MatMultEqual(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, n::PetscInt) 
 Compares matrix
 
 Collective
@@ -20109,9 +20109,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMultEqual"))
 """
-function MatMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::PetscInt) end
+function MatMultEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, n::PetscInt) end
 
-@for_petsc function MatMultEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, n::$PetscInt )
+@for_petsc function MatMultEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, n::$PetscInt )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20127,7 +20127,7 @@ function MatMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::Petsc
 end 
 
 """
-	flg::PetscBool = MatMultAddEqual(petsclib::PetscLibType,A::PetscMat, B::PetscMat, n::PetscInt) 
+	flg::PetscBool = MatMultAddEqual(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, n::PetscInt) 
 Compares matrix
 
 Collective
@@ -20147,9 +20147,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMultAddEqual"))
 """
-function MatMultAddEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::PetscInt) end
+function MatMultAddEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, n::PetscInt) end
 
-@for_petsc function MatMultAddEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, n::$PetscInt )
+@for_petsc function MatMultAddEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, n::$PetscInt )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20165,7 +20165,7 @@ function MatMultAddEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::Pe
 end 
 
 """
-	flg::PetscBool = MatMultTransposeEqual(petsclib::PetscLibType,A::PetscMat, B::PetscMat, n::PetscInt) 
+	flg::PetscBool = MatMultTransposeEqual(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, n::PetscInt) 
 Compares matrix
 
 Collective
@@ -20185,9 +20185,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMultTransposeEqual"))
 """
-function MatMultTransposeEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::PetscInt) end
+function MatMultTransposeEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, n::PetscInt) end
 
-@for_petsc function MatMultTransposeEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, n::$PetscInt )
+@for_petsc function MatMultTransposeEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, n::$PetscInt )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20203,7 +20203,7 @@ function MatMultTransposeEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat,
 end 
 
 """
-	flg::PetscBool = MatMultTransposeAddEqual(petsclib::PetscLibType,A::PetscMat, B::PetscMat, n::PetscInt) 
+	flg::PetscBool = MatMultTransposeAddEqual(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, n::PetscInt) 
 Compares matrix
 
 Collective
@@ -20223,9 +20223,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMultTransposeAddEqual"))
 """
-function MatMultTransposeAddEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::PetscInt) end
+function MatMultTransposeAddEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, n::PetscInt) end
 
-@for_petsc function MatMultTransposeAddEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, n::$PetscInt )
+@for_petsc function MatMultTransposeAddEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, n::$PetscInt )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20241,7 +20241,7 @@ function MatMultTransposeAddEqual(petsclib::PetscLibType, A::PetscMat, B::PetscM
 end 
 
 """
-	flg::PetscBool = MatMultHermitianTransposeEqual(petsclib::PetscLibType,A::PetscMat, B::PetscMat, n::PetscInt) 
+	flg::PetscBool = MatMultHermitianTransposeEqual(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, n::PetscInt) 
 Compares matrix
 
 Collective
@@ -20261,9 +20261,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMultHermitianTransposeEqual"))
 """
-function MatMultHermitianTransposeEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::PetscInt) end
+function MatMultHermitianTransposeEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, n::PetscInt) end
 
-@for_petsc function MatMultHermitianTransposeEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, n::$PetscInt )
+@for_petsc function MatMultHermitianTransposeEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, n::$PetscInt )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20279,7 +20279,7 @@ function MatMultHermitianTransposeEqual(petsclib::PetscLibType, A::PetscMat, B::
 end 
 
 """
-	flg::PetscBool = MatMultHermitianTransposeAddEqual(petsclib::PetscLibType,A::PetscMat, B::PetscMat, n::PetscInt) 
+	flg::PetscBool = MatMultHermitianTransposeAddEqual(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, n::PetscInt) 
 Compares matrix
 
 Collective
@@ -20299,9 +20299,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMultHermitianTransposeAddEqual"))
 """
-function MatMultHermitianTransposeAddEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, n::PetscInt) end
+function MatMultHermitianTransposeAddEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, n::PetscInt) end
 
-@for_petsc function MatMultHermitianTransposeAddEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, n::$PetscInt )
+@for_petsc function MatMultHermitianTransposeAddEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, n::$PetscInt )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20317,7 +20317,7 @@ function MatMultHermitianTransposeAddEqual(petsclib::PetscLibType, A::PetscMat, 
 end 
 
 """
-	flg::PetscBool = MatMatMultEqual(petsclib::PetscLibType,A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) 
+	flg::PetscBool = MatMatMultEqual(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::PetscInt) 
 Test A*B*x = C*x for n random vector x
 
 Collective
@@ -20338,9 +20338,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMatMultEqual"))
 """
-function MatMatMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) end
+function MatMatMultEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::PetscInt) end
 
-@for_petsc function MatMatMultEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, C::PetscMat, n::$PetscInt )
+@for_petsc function MatMatMultEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::$PetscInt )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20356,7 +20356,7 @@ function MatMatMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::Pe
 end 
 
 """
-	flg::PetscBool = MatTransposeMatMultEqual(petsclib::PetscLibType,A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) 
+	flg::PetscBool = MatTransposeMatMultEqual(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::PetscInt) 
 Test A^T*B*x = C*x for n random vector x
 
 Collective
@@ -20377,9 +20377,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatTransposeMatMultEqual"))
 """
-function MatTransposeMatMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) end
+function MatTransposeMatMultEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::PetscInt) end
 
-@for_petsc function MatTransposeMatMultEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, C::PetscMat, n::$PetscInt )
+@for_petsc function MatTransposeMatMultEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::$PetscInt )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20395,7 +20395,7 @@ function MatTransposeMatMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscM
 end 
 
 """
-	flg::PetscBool = MatMatTransposeMultEqual(petsclib::PetscLibType,A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) 
+	flg::PetscBool = MatMatTransposeMultEqual(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::PetscInt) 
 Test A*B^T*x = C*x for n random vector x
 
 Collective
@@ -20416,9 +20416,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatMatTransposeMultEqual"))
 """
-function MatMatTransposeMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) end
+function MatMatTransposeMultEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::PetscInt) end
 
-@for_petsc function MatMatTransposeMultEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, C::PetscMat, n::$PetscInt )
+@for_petsc function MatMatTransposeMultEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::$PetscInt )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20434,7 +20434,7 @@ function MatMatTransposeMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscM
 end 
 
 """
-	flg::PetscBool = MatPtAPMultEqual(petsclib::PetscLibType,A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) 
+	flg::PetscBool = MatPtAPMultEqual(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::PetscInt) 
 Compares matrix
 
 Collective
@@ -20455,9 +20455,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatPtAPMultEqual"))
 """
-function MatPtAPMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) end
+function MatPtAPMultEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::PetscInt) end
 
-@for_petsc function MatPtAPMultEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, C::PetscMat, n::$PetscInt )
+@for_petsc function MatPtAPMultEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::$PetscInt )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20473,7 +20473,7 @@ function MatPtAPMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::P
 end 
 
 """
-	flg::PetscBool = MatRARtMultEqual(petsclib::PetscLibType,A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) 
+	flg::PetscBool = MatRARtMultEqual(petsclib::PetscLibType,A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::PetscInt) 
 Compares matrix
 
 Collective
@@ -20494,9 +20494,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatRARtMultEqual"))
 """
-function MatRARtMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::PetscMat, n::PetscInt) end
+function MatRARtMultEqual(petsclib::PetscLibType, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::PetscInt) end
 
-@for_petsc function MatRARtMultEqual(petsclib::$UnionPetscLib, A::PetscMat, B::PetscMat, C::PetscMat, n::$PetscInt )
+@for_petsc function MatRARtMultEqual(petsclib::$UnionPetscLib, A::AbstractPetscMat, B::AbstractPetscMat, C::AbstractPetscMat, n::$PetscInt )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20512,7 +20512,7 @@ function MatRARtMultEqual(petsclib::PetscLibType, A::PetscMat, B::PetscMat, C::P
 end 
 
 """
-	flg::PetscBool = MatIsLinear(petsclib::PetscLibType,A::PetscMat, n::PetscInt) 
+	flg::PetscBool = MatIsLinear(petsclib::PetscLibType,A::AbstractPetscMat, n::PetscInt) 
 Check if a shell matrix `A` is a linear operator.
 
 Collective
@@ -20531,9 +20531,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatIsLinear"))
 """
-function MatIsLinear(petsclib::PetscLibType, A::PetscMat, n::PetscInt) end
+function MatIsLinear(petsclib::PetscLibType, A::AbstractPetscMat, n::PetscInt) end
 
-@for_petsc function MatIsLinear(petsclib::$UnionPetscLib, A::PetscMat, n::$PetscInt )
+@for_petsc function MatIsLinear(petsclib::$UnionPetscLib, A::AbstractPetscMat, n::$PetscInt )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -20549,7 +20549,7 @@ function MatIsLinear(petsclib::PetscLibType, A::PetscMat, n::PetscInt) end
 end 
 
 """
-	MatSetHPL(petsclib::PetscLibType,A::PetscMat, iseed::Cint) 
+	MatSetHPL(petsclib::PetscLibType,A::AbstractPetscMat, iseed::Cint) 
 fills a `MATSEQDENSE` matrix using the HPL 2.3 random matrix generation routine
 
 Collective
@@ -20565,9 +20565,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatSetHPL"))
 """
-function MatSetHPL(petsclib::PetscLibType, A::PetscMat, iseed::Cint) end
+function MatSetHPL(petsclib::PetscLibType, A::AbstractPetscMat, iseed::Cint) end
 
-@for_petsc function MatSetHPL(petsclib::$UnionPetscLib, A::PetscMat, iseed::Cint )
+@for_petsc function MatSetHPL(petsclib::$UnionPetscLib, A::AbstractPetscMat, iseed::Cint )
 
     @chk ccall(
                (:MatSetHPL, $petsc_library),
@@ -20581,7 +20581,7 @@ function MatSetHPL(petsclib::PetscLibType, A::PetscMat, iseed::Cint) end
 end 
 
 """
-	L::PetscMat = MatCreateLaplacian(petsclib::PetscLibType,A::PetscMat, tol::PetscReal, weighted::PetscBool) 
+	L::PetscMat = MatCreateLaplacian(petsclib::PetscLibType,A::AbstractPetscMat, tol::PetscReal, weighted::PetscBool) 
 Create the matrix Laplacian, with all values in the matrix less than the tolerance set to zero
 
 Input Parameters:
@@ -20599,9 +20599,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Mat/MatCreateLaplacian"))
 """
-function MatCreateLaplacian(petsclib::PetscLibType, A::PetscMat, tol::PetscReal, weighted::PetscBool) end
+function MatCreateLaplacian(petsclib::PetscLibType, A::AbstractPetscMat, tol::PetscReal, weighted::PetscBool) end
 
-@for_petsc function MatCreateLaplacian(petsclib::$UnionPetscLib, A::PetscMat, tol::$PetscReal, weighted::PetscBool )
+@for_petsc function MatCreateLaplacian(petsclib::$UnionPetscLib, A::AbstractPetscMat, tol::$PetscReal, weighted::PetscBool )
 	L_ = Ref{CMat}()
 
     @chk ccall(
@@ -20649,7 +20649,7 @@ function MatOrderingRegister(petsclib::PetscLibType, sname::Vector{Cchar}, fnc::
 end 
 
 """
-	MatGetOrdering(petsclib::PetscLibType,mat::PetscMat, type::MatOrderingType, rperm::IS, cperm::IS) 
+	MatGetOrdering(petsclib::PetscLibType,mat::AbstractPetscMat, type::MatOrderingType, rperm::AbstractIS, cperm::AbstractIS) 
 Gets a reordering for a matrix to reduce fill or to
 improve numerical stability of LU factorization.
 
@@ -20663,9 +20663,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Mat/MatGetOrdering"))
 """
-function MatGetOrdering(petsclib::PetscLibType, mat::PetscMat, type::MatOrderingType, rperm::IS, cperm::IS) end
+function MatGetOrdering(petsclib::PetscLibType, mat::AbstractPetscMat, type::MatOrderingType, rperm::AbstractIS, cperm::AbstractIS) end
 
-@for_petsc function MatGetOrdering(petsclib::$UnionPetscLib, mat::PetscMat, type::MatOrderingType, rperm::IS, cperm::IS )
+@for_petsc function MatGetOrdering(petsclib::$UnionPetscLib, mat::AbstractPetscMat, type::MatOrderingType, rperm::AbstractIS, cperm::AbstractIS )
 
     @chk ccall(
                (:MatGetOrdering, $petsc_library),
@@ -20700,7 +20700,7 @@ function MatGetOrderingList(petsclib::PetscLibType, list::PetscFunctionList) end
 end 
 
 """
-	MatMeshToCellGraph(petsclib::PetscLibType,mesh::PetscMat, ncommonnodes::PetscInt, dual::PetscMat) 
+	MatMeshToCellGraph(petsclib::PetscLibType,mesh::AbstractPetscMat, ncommonnodes::PetscInt, dual::AbstractPetscMat) 
 Convert a mesh to a cell graph.
 
 Collective
@@ -20720,9 +20720,9 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatMeshToCellGraph"))
 """
-function MatMeshToCellGraph(petsclib::PetscLibType, mesh::PetscMat, ncommonnodes::PetscInt, dual::PetscMat) end
+function MatMeshToCellGraph(petsclib::PetscLibType, mesh::AbstractPetscMat, ncommonnodes::PetscInt, dual::AbstractPetscMat) end
 
-@for_petsc function MatMeshToCellGraph(petsclib::$UnionPetscLib, mesh::PetscMat, ncommonnodes::$PetscInt, dual::PetscMat )
+@for_petsc function MatMeshToCellGraph(petsclib::$UnionPetscLib, mesh::AbstractPetscMat, ncommonnodes::$PetscInt, dual::AbstractPetscMat )
 	dual_ = Ref(dual.ptr)
 
     @chk ccall(
@@ -20738,7 +20738,7 @@ function MatMeshToCellGraph(petsclib::PetscLibType, mesh::PetscMat, ncommonnodes
 end 
 
 """
-	MatLMVMSetMultAlgorithm(petsclib::PetscLibType,B::PetscMat, alg::MatLMVMMultAlgorithm) 
+	MatLMVMSetMultAlgorithm(petsclib::PetscLibType,B::AbstractPetscMat, alg::MatLMVMMultAlgorithm) 
 Set the algorithm used by a `MatLMVM` for products
 
 Logically collective
@@ -20754,9 +20754,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMSetMultAlgorithm"))
 """
-function MatLMVMSetMultAlgorithm(petsclib::PetscLibType, B::PetscMat, alg::MatLMVMMultAlgorithm) end
+function MatLMVMSetMultAlgorithm(petsclib::PetscLibType, B::AbstractPetscMat, alg::MatLMVMMultAlgorithm) end
 
-@for_petsc function MatLMVMSetMultAlgorithm(petsclib::$UnionPetscLib, B::PetscMat, alg::MatLMVMMultAlgorithm )
+@for_petsc function MatLMVMSetMultAlgorithm(petsclib::$UnionPetscLib, B::AbstractPetscMat, alg::MatLMVMMultAlgorithm )
 
     @chk ccall(
                (:MatLMVMSetMultAlgorithm, $petsc_library),
@@ -20770,7 +20770,7 @@ function MatLMVMSetMultAlgorithm(petsclib::PetscLibType, B::PetscMat, alg::MatLM
 end 
 
 """
-	MatLMVMGetMultAlgorithm(petsclib::PetscLibType,B::PetscMat, alg::MatLMVMMultAlgorithm) 
+	MatLMVMGetMultAlgorithm(petsclib::PetscLibType,B::AbstractPetscMat, alg::MatLMVMMultAlgorithm) 
 Get the algorithm used by a `MatLMVM` for products
 
 Not collective
@@ -20788,9 +20788,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMGetMultAlgorithm"))
 """
-function MatLMVMGetMultAlgorithm(petsclib::PetscLibType, B::PetscMat, alg::MatLMVMMultAlgorithm) end
+function MatLMVMGetMultAlgorithm(petsclib::PetscLibType, B::AbstractPetscMat, alg::MatLMVMMultAlgorithm) end
 
-@for_petsc function MatLMVMGetMultAlgorithm(petsclib::$UnionPetscLib, B::PetscMat, alg::MatLMVMMultAlgorithm )
+@for_petsc function MatLMVMGetMultAlgorithm(petsclib::$UnionPetscLib, B::AbstractPetscMat, alg::MatLMVMMultAlgorithm )
 
     @chk ccall(
                (:MatLMVMGetMultAlgorithm, $petsc_library),
@@ -20804,7 +20804,7 @@ function MatLMVMGetMultAlgorithm(petsclib::PetscLibType, B::PetscMat, alg::MatLM
 end 
 
 """
-	MatLMVMGetLastUpdate(petsclib::PetscLibType,B::PetscMat, x_prev::PetscVec, f_prev::PetscVec) 
+	MatLMVMGetLastUpdate(petsclib::PetscLibType,B::AbstractPetscMat, x_prev::AbstractPetscVec, f_prev::AbstractPetscVec) 
 Get the last vectors passed to `MatLMVMUpdate()`
 
 Not collective
@@ -20823,9 +20823,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatLMVMGetLastUpdate"))
 """
-function MatLMVMGetLastUpdate(petsclib::PetscLibType, B::PetscMat, x_prev::PetscVec, f_prev::PetscVec) end
+function MatLMVMGetLastUpdate(petsclib::PetscLibType, B::AbstractPetscMat, x_prev::AbstractPetscVec, f_prev::AbstractPetscVec) end
 
-@for_petsc function MatLMVMGetLastUpdate(petsclib::$UnionPetscLib, B::PetscMat, x_prev::PetscVec, f_prev::PetscVec )
+@for_petsc function MatLMVMGetLastUpdate(petsclib::$UnionPetscLib, B::AbstractPetscMat, x_prev::AbstractPetscVec, f_prev::AbstractPetscVec )
 	x_prev_ = Ref(x_prev.ptr)
 	f_prev_ = Ref(f_prev.ptr)
 
@@ -20843,7 +20843,7 @@ function MatLMVMGetLastUpdate(petsclib::PetscLibType, B::PetscMat, x_prev::Petsc
 end 
 
 """
-	MatLMVMUpdate(petsclib::PetscLibType,B::PetscMat, X::PetscVec, F::PetscVec) 
+	MatLMVMUpdate(petsclib::PetscLibType,B::AbstractPetscMat, X::AbstractPetscVec, F::AbstractPetscVec) 
 Adds (X
 
 Input Parameters:
@@ -20858,9 +20858,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatLMVMUpdate"))
 """
-function MatLMVMUpdate(petsclib::PetscLibType, B::PetscMat, X::PetscVec, F::PetscVec) end
+function MatLMVMUpdate(petsclib::PetscLibType, B::AbstractPetscMat, X::AbstractPetscVec, F::AbstractPetscVec) end
 
-@for_petsc function MatLMVMUpdate(petsclib::$UnionPetscLib, B::PetscMat, X::PetscVec, F::PetscVec )
+@for_petsc function MatLMVMUpdate(petsclib::$UnionPetscLib, B::AbstractPetscMat, X::AbstractPetscVec, F::AbstractPetscVec )
 
     @chk ccall(
                (:MatLMVMUpdate, $petsc_library),
@@ -20874,7 +20874,7 @@ function MatLMVMUpdate(petsclib::PetscLibType, B::PetscMat, X::PetscVec, F::Pets
 end 
 
 """
-	MatLMVMClearJ0(petsclib::PetscLibType,B::PetscMat) 
+	MatLMVMClearJ0(petsclib::PetscLibType,B::AbstractPetscMat) 
 Removes all definitions of J0 and reverts to
 an identity matrix (scale = 1.0).
 
@@ -20888,9 +20888,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMClearJ0"))
 """
-function MatLMVMClearJ0(petsclib::PetscLibType, B::PetscMat) end
+function MatLMVMClearJ0(petsclib::PetscLibType, B::AbstractPetscMat) end
 
-@for_petsc function MatLMVMClearJ0(petsclib::$UnionPetscLib, B::PetscMat )
+@for_petsc function MatLMVMClearJ0(petsclib::$UnionPetscLib, B::AbstractPetscMat )
 
     @chk ccall(
                (:MatLMVMClearJ0, $petsc_library),
@@ -20904,7 +20904,7 @@ function MatLMVMClearJ0(petsclib::PetscLibType, B::PetscMat) end
 end 
 
 """
-	MatLMVMSetJ0Scale(petsclib::PetscLibType,B::PetscMat, scale::PetscReal) 
+	MatLMVMSetJ0Scale(petsclib::PetscLibType,B::AbstractPetscMat, scale::PetscReal) 
 Allows the user to define a scalar value
 mu such that J0 = mu*I.
 
@@ -20919,9 +20919,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMSetJ0Scale"))
 """
-function MatLMVMSetJ0Scale(petsclib::PetscLibType, B::PetscMat, scale::PetscReal) end
+function MatLMVMSetJ0Scale(petsclib::PetscLibType, B::AbstractPetscMat, scale::PetscReal) end
 
-@for_petsc function MatLMVMSetJ0Scale(petsclib::$UnionPetscLib, B::PetscMat, scale::$PetscReal )
+@for_petsc function MatLMVMSetJ0Scale(petsclib::$UnionPetscLib, B::AbstractPetscMat, scale::$PetscReal )
 
     @chk ccall(
                (:MatLMVMSetJ0Scale, $petsc_library),
@@ -20935,7 +20935,7 @@ function MatLMVMSetJ0Scale(petsclib::PetscLibType, B::PetscMat, scale::PetscReal
 end 
 
 """
-	MatLMVMSetJ0Diag(petsclib::PetscLibType,B::PetscMat, V::PetscVec) 
+	MatLMVMSetJ0Diag(petsclib::PetscLibType,B::AbstractPetscMat, V::AbstractPetscVec) 
 Allows the user to define a vector
 V such that J0 = diag(V).
 
@@ -20950,9 +20950,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMSetJ0Diag"))
 """
-function MatLMVMSetJ0Diag(petsclib::PetscLibType, B::PetscMat, V::PetscVec) end
+function MatLMVMSetJ0Diag(petsclib::PetscLibType, B::AbstractPetscMat, V::AbstractPetscVec) end
 
-@for_petsc function MatLMVMSetJ0Diag(petsclib::$UnionPetscLib, B::PetscMat, V::PetscVec )
+@for_petsc function MatLMVMSetJ0Diag(petsclib::$UnionPetscLib, B::AbstractPetscMat, V::AbstractPetscVec )
 
     @chk ccall(
                (:MatLMVMSetJ0Diag, $petsc_library),
@@ -20966,7 +20966,7 @@ function MatLMVMSetJ0Diag(petsclib::PetscLibType, B::PetscMat, V::PetscVec) end
 end 
 
 """
-	MatLMVMSetJ0(petsclib::PetscLibType,B::PetscMat, J0::PetscMat) 
+	MatLMVMSetJ0(petsclib::PetscLibType,B::AbstractPetscMat, J0::AbstractPetscMat) 
 Allows the user to define the initial Jacobian matrix from which the LMVM
 up.
 
@@ -20981,9 +20981,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMSetJ0"))
 """
-function MatLMVMSetJ0(petsclib::PetscLibType, B::PetscMat, J0::PetscMat) end
+function MatLMVMSetJ0(petsclib::PetscLibType, B::AbstractPetscMat, J0::AbstractPetscMat) end
 
-@for_petsc function MatLMVMSetJ0(petsclib::$UnionPetscLib, B::PetscMat, J0::PetscMat )
+@for_petsc function MatLMVMSetJ0(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0::AbstractPetscMat )
 
     @chk ccall(
                (:MatLMVMSetJ0, $petsc_library),
@@ -20997,7 +20997,7 @@ function MatLMVMSetJ0(petsclib::PetscLibType, B::PetscMat, J0::PetscMat) end
 end 
 
 """
-	MatLMVMSetJ0PC(petsclib::PetscLibType,B::PetscMat, J0pc::PC) 
+	MatLMVMSetJ0PC(petsclib::PetscLibType,B::AbstractPetscMat, J0pc::PC) 
 Allows the user to define a `PC` object that acts as the initial inverse
 
 Input Parameters:
@@ -21011,9 +21011,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMSetJ0PC"))
 """
-function MatLMVMSetJ0PC(petsclib::PetscLibType, B::PetscMat, J0pc::PC) end
+function MatLMVMSetJ0PC(petsclib::PetscLibType, B::AbstractPetscMat, J0pc::PC) end
 
-@for_petsc function MatLMVMSetJ0PC(petsclib::$UnionPetscLib, B::PetscMat, J0pc::PC )
+@for_petsc function MatLMVMSetJ0PC(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0pc::PC )
 
     @chk ccall(
                (:MatLMVMSetJ0PC, $petsc_library),
@@ -21027,7 +21027,7 @@ function MatLMVMSetJ0PC(petsclib::PetscLibType, B::PetscMat, J0pc::PC) end
 end 
 
 """
-	MatLMVMSetJ0KSP(petsclib::PetscLibType,B::PetscMat, J0ksp::PetscKSP) 
+	MatLMVMSetJ0KSP(petsclib::PetscLibType,B::AbstractPetscMat, J0ksp::AbstractPetscKSP) 
 Allows the user to provide a pre
 approximation.
 
@@ -21042,9 +21042,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMSetJ0KSP"))
 """
-function MatLMVMSetJ0KSP(petsclib::PetscLibType, B::PetscMat, J0ksp::PetscKSP) end
+function MatLMVMSetJ0KSP(petsclib::PetscLibType, B::AbstractPetscMat, J0ksp::AbstractPetscKSP) end
 
-@for_petsc function MatLMVMSetJ0KSP(petsclib::$UnionPetscLib, B::PetscMat, J0ksp::PetscKSP )
+@for_petsc function MatLMVMSetJ0KSP(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:MatLMVMSetJ0KSP, $petsc_library),
@@ -21058,7 +21058,7 @@ function MatLMVMSetJ0KSP(petsclib::PetscLibType, B::PetscMat, J0ksp::PetscKSP) e
 end 
 
 """
-	MatLMVMGetJ0(petsclib::PetscLibType,B::PetscMat, J0::PetscMat) 
+	MatLMVMGetJ0(petsclib::PetscLibType,B::AbstractPetscMat, J0::AbstractPetscMat) 
 Returns a pointer to the internal `J0` matrix.
 
 Input Parameter:
@@ -21074,9 +21074,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMGetJ0"))
 """
-function MatLMVMGetJ0(petsclib::PetscLibType, B::PetscMat, J0::PetscMat) end
+function MatLMVMGetJ0(petsclib::PetscLibType, B::AbstractPetscMat, J0::AbstractPetscMat) end
 
-@for_petsc function MatLMVMGetJ0(petsclib::$UnionPetscLib, B::PetscMat, J0::PetscMat )
+@for_petsc function MatLMVMGetJ0(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0::AbstractPetscMat )
 	J0_ = Ref(J0.ptr)
 
     @chk ccall(
@@ -21092,7 +21092,7 @@ function MatLMVMGetJ0(petsclib::PetscLibType, B::PetscMat, J0::PetscMat) end
 end 
 
 """
-	MatLMVMGetJ0PC(petsclib::PetscLibType,B::PetscMat, J0pc::PC) 
+	MatLMVMGetJ0PC(petsclib::PetscLibType,B::AbstractPetscMat, J0pc::PC) 
 Returns a pointer to the internal `PC` object
 associated with the initial Jacobian.
 
@@ -21109,9 +21109,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMGetJ0PC"))
 """
-function MatLMVMGetJ0PC(petsclib::PetscLibType, B::PetscMat, J0pc::PC) end
+function MatLMVMGetJ0PC(petsclib::PetscLibType, B::AbstractPetscMat, J0pc::PC) end
 
-@for_petsc function MatLMVMGetJ0PC(petsclib::$UnionPetscLib, B::PetscMat, J0pc::PC )
+@for_petsc function MatLMVMGetJ0PC(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0pc::PC )
 
     @chk ccall(
                (:MatLMVMGetJ0PC, $petsc_library),
@@ -21125,7 +21125,7 @@ function MatLMVMGetJ0PC(petsclib::PetscLibType, B::PetscMat, J0pc::PC) end
 end 
 
 """
-	MatLMVMGetJ0KSP(petsclib::PetscLibType,B::PetscMat, J0ksp::PetscKSP) 
+	MatLMVMGetJ0KSP(petsclib::PetscLibType,B::AbstractPetscMat, J0ksp::AbstractPetscKSP) 
 Returns a pointer to the internal `KSP` solver
 associated with the initial Jacobian.
 
@@ -21142,9 +21142,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMGetJ0KSP"))
 """
-function MatLMVMGetJ0KSP(petsclib::PetscLibType, B::PetscMat, J0ksp::PetscKSP) end
+function MatLMVMGetJ0KSP(petsclib::PetscLibType, B::AbstractPetscMat, J0ksp::AbstractPetscKSP) end
 
-@for_petsc function MatLMVMGetJ0KSP(petsclib::$UnionPetscLib, B::PetscMat, J0ksp::PetscKSP )
+@for_petsc function MatLMVMGetJ0KSP(petsclib::$UnionPetscLib, B::AbstractPetscMat, J0ksp::AbstractPetscKSP )
 	J0ksp_ = Ref(J0ksp.ptr)
 
     @chk ccall(
@@ -21160,7 +21160,7 @@ function MatLMVMGetJ0KSP(petsclib::PetscLibType, B::PetscMat, J0ksp::PetscKSP) e
 end 
 
 """
-	MatLMVMApplyJ0Fwd(petsclib::PetscLibType,B::PetscMat, X::PetscVec, Y::PetscVec) 
+	MatLMVMApplyJ0Fwd(petsclib::PetscLibType,B::AbstractPetscMat, X::AbstractPetscVec, Y::AbstractPetscVec) 
 Applies an approximation of the forward
 matrix-vector product with the initial Jacobian.
 
@@ -21179,9 +21179,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMApplyJ0Fwd"))
 """
-function MatLMVMApplyJ0Fwd(petsclib::PetscLibType, B::PetscMat, X::PetscVec, Y::PetscVec) end
+function MatLMVMApplyJ0Fwd(petsclib::PetscLibType, B::AbstractPetscMat, X::AbstractPetscVec, Y::AbstractPetscVec) end
 
-@for_petsc function MatLMVMApplyJ0Fwd(petsclib::$UnionPetscLib, B::PetscMat, X::PetscVec, Y::PetscVec )
+@for_petsc function MatLMVMApplyJ0Fwd(petsclib::$UnionPetscLib, B::AbstractPetscMat, X::AbstractPetscVec, Y::AbstractPetscVec )
 
     @chk ccall(
                (:MatLMVMApplyJ0Fwd, $petsc_library),
@@ -21195,7 +21195,7 @@ function MatLMVMApplyJ0Fwd(petsclib::PetscLibType, B::PetscMat, X::PetscVec, Y::
 end 
 
 """
-	MatLMVMApplyJ0Inv(petsclib::PetscLibType,B::PetscMat, X::PetscVec, Y::PetscVec) 
+	MatLMVMApplyJ0Inv(petsclib::PetscLibType,B::AbstractPetscMat, X::AbstractPetscVec, Y::AbstractPetscVec) 
 Applies some estimation of the initial Jacobian
 inverse to the given vector.
 
@@ -21214,9 +21214,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMApplyJ0Inv"))
 """
-function MatLMVMApplyJ0Inv(petsclib::PetscLibType, B::PetscMat, X::PetscVec, Y::PetscVec) end
+function MatLMVMApplyJ0Inv(petsclib::PetscLibType, B::AbstractPetscMat, X::AbstractPetscVec, Y::AbstractPetscVec) end
 
-@for_petsc function MatLMVMApplyJ0Inv(petsclib::$UnionPetscLib, B::PetscMat, X::PetscVec, Y::PetscVec )
+@for_petsc function MatLMVMApplyJ0Inv(petsclib::$UnionPetscLib, B::AbstractPetscMat, X::AbstractPetscVec, Y::AbstractPetscVec )
 
     @chk ccall(
                (:MatLMVMApplyJ0Inv, $petsc_library),
@@ -21230,7 +21230,7 @@ function MatLMVMApplyJ0Inv(petsclib::PetscLibType, B::PetscMat, X::PetscVec, Y::
 end 
 
 """
-	flg::PetscBool = MatLMVMIsAllocated(petsclib::PetscLibType,B::PetscMat) 
+	flg::PetscBool = MatLMVMIsAllocated(petsclib::PetscLibType,B::AbstractPetscMat) 
 Returns a boolean flag that shows whether
 the necessary data structures for the underlying matrix is allocated.
 
@@ -21247,9 +21247,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatLMVMIsAllocated"))
 """
-function MatLMVMIsAllocated(petsclib::PetscLibType, B::PetscMat) end
+function MatLMVMIsAllocated(petsclib::PetscLibType, B::AbstractPetscMat) end
 
-@for_petsc function MatLMVMIsAllocated(petsclib::$UnionPetscLib, B::PetscMat )
+@for_petsc function MatLMVMIsAllocated(petsclib::$UnionPetscLib, B::AbstractPetscMat )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -21265,7 +21265,7 @@ function MatLMVMIsAllocated(petsclib::PetscLibType, B::PetscMat) end
 end 
 
 """
-	MatLMVMAllocate(petsclib::PetscLibType,B::PetscMat, X::PetscVec, F::PetscVec) 
+	MatLMVMAllocate(petsclib::PetscLibType,B::AbstractPetscMat, X::AbstractPetscVec, F::AbstractPetscVec) 
 Produces all necessary common memory for
 LMVM approximations based on the solution and function vectors
 provided.
@@ -21282,9 +21282,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatLMVMAllocate"))
 """
-function MatLMVMAllocate(petsclib::PetscLibType, B::PetscMat, X::PetscVec, F::PetscVec) end
+function MatLMVMAllocate(petsclib::PetscLibType, B::AbstractPetscMat, X::AbstractPetscVec, F::AbstractPetscVec) end
 
-@for_petsc function MatLMVMAllocate(petsclib::$UnionPetscLib, B::PetscMat, X::PetscVec, F::PetscVec )
+@for_petsc function MatLMVMAllocate(petsclib::$UnionPetscLib, B::AbstractPetscMat, X::AbstractPetscVec, F::AbstractPetscVec )
 
     @chk ccall(
                (:MatLMVMAllocate, $petsc_library),
@@ -21298,7 +21298,7 @@ function MatLMVMAllocate(petsclib::PetscLibType, B::PetscMat, X::PetscVec, F::Pe
 end 
 
 """
-	MatLMVMResetShift(petsclib::PetscLibType,B::PetscMat) 
+	MatLMVMResetShift(petsclib::PetscLibType,B::AbstractPetscMat) 
 Zero the shift factor for a `MATLMVM`.
 
 Input Parameter:
@@ -21311,9 +21311,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatLMVMResetShift"))
 """
-function MatLMVMResetShift(petsclib::PetscLibType, B::PetscMat) end
+function MatLMVMResetShift(petsclib::PetscLibType, B::AbstractPetscMat) end
 
-@for_petsc function MatLMVMResetShift(petsclib::$UnionPetscLib, B::PetscMat )
+@for_petsc function MatLMVMResetShift(petsclib::$UnionPetscLib, B::AbstractPetscMat )
 
     @chk ccall(
                (:MatLMVMResetShift, $petsc_library),
@@ -21327,7 +21327,7 @@ function MatLMVMResetShift(petsclib::PetscLibType, B::PetscMat) end
 end 
 
 """
-	MatLMVMReset(petsclib::PetscLibType,B::PetscMat, destructive::PetscBool) 
+	MatLMVMReset(petsclib::PetscLibType,B::AbstractPetscMat, destructive::PetscBool) 
 Flushes all of the accumulated updates out of
 the `MATLMVM` approximation.
 
@@ -21342,9 +21342,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatLMVMReset"))
 """
-function MatLMVMReset(petsclib::PetscLibType, B::PetscMat, destructive::PetscBool) end
+function MatLMVMReset(petsclib::PetscLibType, B::AbstractPetscMat, destructive::PetscBool) end
 
-@for_petsc function MatLMVMReset(petsclib::$UnionPetscLib, B::PetscMat, destructive::PetscBool )
+@for_petsc function MatLMVMReset(petsclib::$UnionPetscLib, B::AbstractPetscMat, destructive::PetscBool )
 
     @chk ccall(
                (:MatLMVMReset, $petsc_library),
@@ -21358,7 +21358,7 @@ function MatLMVMReset(petsclib::PetscLibType, B::PetscMat, destructive::PetscBoo
 end 
 
 """
-	MatLMVMSetHistorySize(petsclib::PetscLibType,B::PetscMat, hist_size::PetscInt) 
+	MatLMVMSetHistorySize(petsclib::PetscLibType,B::AbstractPetscMat, hist_size::PetscInt) 
 Set the number of past iterates to be
 stored for the construction of the limited-memory quasi-Newton update.
 
@@ -21376,9 +21376,9 @@ Level: beginner
 # External Links
 $(_doc_external("Ksp/MatLMVMSetHistorySize"))
 """
-function MatLMVMSetHistorySize(petsclib::PetscLibType, B::PetscMat, hist_size::PetscInt) end
+function MatLMVMSetHistorySize(petsclib::PetscLibType, B::AbstractPetscMat, hist_size::PetscInt) end
 
-@for_petsc function MatLMVMSetHistorySize(petsclib::$UnionPetscLib, B::PetscMat, hist_size::$PetscInt )
+@for_petsc function MatLMVMSetHistorySize(petsclib::$UnionPetscLib, B::AbstractPetscMat, hist_size::$PetscInt )
 
     @chk ccall(
                (:MatLMVMSetHistorySize, $petsc_library),
@@ -21392,14 +21392,14 @@ function MatLMVMSetHistorySize(petsclib::PetscLibType, B::PetscMat, hist_size::P
 end 
 
 """
-	hist_size::PetscInt = MatLMVMGetHistorySize(petsclib::PetscLibType,B::PetscMat) 
+	hist_size::PetscInt = MatLMVMGetHistorySize(petsclib::PetscLibType,B::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("Ksp/MatLMVMGetHistorySize"))
 """
-function MatLMVMGetHistorySize(petsclib::PetscLibType, B::PetscMat) end
+function MatLMVMGetHistorySize(petsclib::PetscLibType, B::AbstractPetscMat) end
 
-@for_petsc function MatLMVMGetHistorySize(petsclib::$UnionPetscLib, B::PetscMat )
+@for_petsc function MatLMVMGetHistorySize(petsclib::$UnionPetscLib, B::AbstractPetscMat )
 	hist_size_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -21415,7 +21415,7 @@ function MatLMVMGetHistorySize(petsclib::PetscLibType, B::PetscMat) end
 end 
 
 """
-	nupdates::PetscInt = MatLMVMGetUpdateCount(petsclib::PetscLibType,B::PetscMat) 
+	nupdates::PetscInt = MatLMVMGetUpdateCount(petsclib::PetscLibType,B::AbstractPetscMat) 
 Returns the number of accepted updates.
 
 Input Parameter:
@@ -21431,9 +21431,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatLMVMGetUpdateCount"))
 """
-function MatLMVMGetUpdateCount(petsclib::PetscLibType, B::PetscMat) end
+function MatLMVMGetUpdateCount(petsclib::PetscLibType, B::AbstractPetscMat) end
 
-@for_petsc function MatLMVMGetUpdateCount(petsclib::$UnionPetscLib, B::PetscMat )
+@for_petsc function MatLMVMGetUpdateCount(petsclib::$UnionPetscLib, B::AbstractPetscMat )
 	nupdates_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -21449,7 +21449,7 @@ function MatLMVMGetUpdateCount(petsclib::PetscLibType, B::PetscMat) end
 end 
 
 """
-	nrejects::PetscInt = MatLMVMGetRejectCount(petsclib::PetscLibType,B::PetscMat) 
+	nrejects::PetscInt = MatLMVMGetRejectCount(petsclib::PetscLibType,B::AbstractPetscMat) 
 Returns the number of rejected updates.
 The counters are reset when `MatLMVMReset()` is called.
 
@@ -21466,9 +21466,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatLMVMGetRejectCount"))
 """
-function MatLMVMGetRejectCount(petsclib::PetscLibType, B::PetscMat) end
+function MatLMVMGetRejectCount(petsclib::PetscLibType, B::AbstractPetscMat) end
 
-@for_petsc function MatLMVMGetRejectCount(petsclib::$UnionPetscLib, B::PetscMat )
+@for_petsc function MatLMVMGetRejectCount(petsclib::$UnionPetscLib, B::AbstractPetscMat )
 	nrejects_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -21754,7 +21754,7 @@ function MatCreateLMVMDDFP(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, 
 end 
 
 """
-	MatLMVMDenseSetType(petsclib::PetscLibType,B::PetscMat, type::MatLMVMDenseType) 
+	MatLMVMDenseSetType(petsclib::PetscLibType,B::AbstractPetscMat, type::MatLMVMDenseType) 
 Sets the memory storage type for dense `MATLMVM`
 
 Input Parameters:
@@ -21777,9 +21777,9 @@ MatLMVMDenseTypes:
 # External Links
 $(_doc_external("Ksp/MatLMVMDenseSetType"))
 """
-function MatLMVMDenseSetType(petsclib::PetscLibType, B::PetscMat, type::MatLMVMDenseType) end
+function MatLMVMDenseSetType(petsclib::PetscLibType, B::AbstractPetscMat, type::MatLMVMDenseType) end
 
-@for_petsc function MatLMVMDenseSetType(petsclib::$UnionPetscLib, B::PetscMat, type::MatLMVMDenseType )
+@for_petsc function MatLMVMDenseSetType(petsclib::$UnionPetscLib, B::AbstractPetscMat, type::MatLMVMDenseType )
 
     @chk ccall(
                (:MatLMVMDenseSetType, $petsc_library),
@@ -21901,7 +21901,7 @@ function MatCreateLMVMBFGS(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, 
 end 
 
 """
-	phi::PetscReal = MatLMVMSymBroydenGetPhi(petsclib::PetscLibType,B::PetscMat) 
+	phi::PetscReal = MatLMVMSymBroydenGetPhi(petsclib::PetscLibType,B::AbstractPetscMat) 
 Get the phi parameter for a Broyden class quasi
 
 Input Parameter:
@@ -21921,9 +21921,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMSymBroydenGetPhi"))
 """
-function MatLMVMSymBroydenGetPhi(petsclib::PetscLibType, B::PetscMat) end
+function MatLMVMSymBroydenGetPhi(petsclib::PetscLibType, B::AbstractPetscMat) end
 
-@for_petsc function MatLMVMSymBroydenGetPhi(petsclib::$UnionPetscLib, B::PetscMat )
+@for_petsc function MatLMVMSymBroydenGetPhi(petsclib::$UnionPetscLib, B::AbstractPetscMat )
 	phi_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -21939,7 +21939,7 @@ function MatLMVMSymBroydenGetPhi(petsclib::PetscLibType, B::PetscMat) end
 end 
 
 """
-	MatLMVMSymBroydenSetPhi(petsclib::PetscLibType,B::PetscMat, phi::PetscReal) 
+	MatLMVMSymBroydenSetPhi(petsclib::PetscLibType,B::AbstractPetscMat, phi::PetscReal) 
 Get the phi parameter for a Broyden class quasi
 
 Input Parameters:
@@ -21957,9 +21957,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMSymBroydenSetPhi"))
 """
-function MatLMVMSymBroydenSetPhi(petsclib::PetscLibType, B::PetscMat, phi::PetscReal) end
+function MatLMVMSymBroydenSetPhi(petsclib::PetscLibType, B::AbstractPetscMat, phi::PetscReal) end
 
-@for_petsc function MatLMVMSymBroydenSetPhi(petsclib::$UnionPetscLib, B::PetscMat, phi::$PetscReal )
+@for_petsc function MatLMVMSymBroydenSetPhi(petsclib::$UnionPetscLib, B::AbstractPetscMat, phi::$PetscReal )
 
     @chk ccall(
                (:MatLMVMSymBroydenSetPhi, $petsc_library),
@@ -21973,7 +21973,7 @@ function MatLMVMSymBroydenSetPhi(petsclib::PetscLibType, B::PetscMat, phi::Petsc
 end 
 
 """
-	psi::PetscReal = MatLMVMSymBadBroydenGetPsi(petsclib::PetscLibType,B::PetscMat) 
+	psi::PetscReal = MatLMVMSymBadBroydenGetPsi(petsclib::PetscLibType,B::AbstractPetscMat) 
 Get the psi parameter for a Broyden class quasi
 
 Input Parameter:
@@ -21993,9 +21993,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatLMVMSymBadBroydenGetPsi"))
 """
-function MatLMVMSymBadBroydenGetPsi(petsclib::PetscLibType, B::PetscMat) end
+function MatLMVMSymBadBroydenGetPsi(petsclib::PetscLibType, B::AbstractPetscMat) end
 
-@for_petsc function MatLMVMSymBadBroydenGetPsi(petsclib::$UnionPetscLib, B::PetscMat )
+@for_petsc function MatLMVMSymBadBroydenGetPsi(petsclib::$UnionPetscLib, B::AbstractPetscMat )
 	psi_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -22011,7 +22011,7 @@ function MatLMVMSymBadBroydenGetPsi(petsclib::PetscLibType, B::PetscMat) end
 end 
 
 """
-	MatLMVMSymBadBroydenSetPsi(petsclib::PetscLibType,B::PetscMat, psi::PetscReal) 
+	MatLMVMSymBadBroydenSetPsi(petsclib::PetscLibType,B::AbstractPetscMat, psi::PetscReal) 
 Get the psi parameter for a Broyden class quasi
 
 Input Parameters:
@@ -22029,9 +22029,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/MatLMVMSymBadBroydenSetPsi"))
 """
-function MatLMVMSymBadBroydenSetPsi(petsclib::PetscLibType, B::PetscMat, psi::PetscReal) end
+function MatLMVMSymBadBroydenSetPsi(petsclib::PetscLibType, B::AbstractPetscMat, psi::PetscReal) end
 
-@for_petsc function MatLMVMSymBadBroydenSetPsi(petsclib::$UnionPetscLib, B::PetscMat, psi::$PetscReal )
+@for_petsc function MatLMVMSymBadBroydenSetPsi(petsclib::$UnionPetscLib, B::AbstractPetscMat, psi::$PetscReal )
 
     @chk ccall(
                (:MatLMVMSymBadBroydenSetPsi, $petsc_library),
@@ -22045,7 +22045,7 @@ function MatLMVMSymBadBroydenSetPsi(petsclib::PetscLibType, B::PetscMat, psi::Pe
 end 
 
 """
-	MatLMVMSymBroydenSetDelta(petsclib::PetscLibType,B::PetscMat, delta::PetscScalar) 
+	MatLMVMSymBroydenSetDelta(petsclib::PetscLibType,B::AbstractPetscMat, delta::PetscScalar) 
 Sets the starting value for the diagonal scaling vector computed
 in the SymBrdn approximations (also works for BFGS and DFP).
 
@@ -22060,9 +22060,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatLMVMSymBroydenSetDelta"))
 """
-function MatLMVMSymBroydenSetDelta(petsclib::PetscLibType, B::PetscMat, delta::PetscScalar) end
+function MatLMVMSymBroydenSetDelta(petsclib::PetscLibType, B::AbstractPetscMat, delta::PetscScalar) end
 
-@for_petsc function MatLMVMSymBroydenSetDelta(petsclib::$UnionPetscLib, B::PetscMat, delta::$PetscScalar )
+@for_petsc function MatLMVMSymBroydenSetDelta(petsclib::$UnionPetscLib, B::AbstractPetscMat, delta::$PetscScalar )
 
     @chk ccall(
                (:MatLMVMSymBroydenSetDelta, $petsc_library),
@@ -22076,7 +22076,7 @@ function MatLMVMSymBroydenSetDelta(petsclib::PetscLibType, B::PetscMat, delta::P
 end 
 
 """
-	MatLMVMSymBroydenSetScaleType(petsclib::PetscLibType,B::PetscMat, stype::MatLMVMSymBroydenScaleType) 
+	MatLMVMSymBroydenSetScaleType(petsclib::PetscLibType,B::AbstractPetscMat, stype::MatLMVMSymBroydenScaleType) 
 Sets the scale type for symmetric Broyden
 
 Input Parameters:
@@ -22100,9 +22100,9 @@ MatLMVMSymBrdnScaleTypes:
 # External Links
 $(_doc_external("Ksp/MatLMVMSymBroydenSetScaleType"))
 """
-function MatLMVMSymBroydenSetScaleType(petsclib::PetscLibType, B::PetscMat, stype::MatLMVMSymBroydenScaleType) end
+function MatLMVMSymBroydenSetScaleType(petsclib::PetscLibType, B::AbstractPetscMat, stype::MatLMVMSymBroydenScaleType) end
 
-@for_petsc function MatLMVMSymBroydenSetScaleType(petsclib::$UnionPetscLib, B::PetscMat, stype::MatLMVMSymBroydenScaleType )
+@for_petsc function MatLMVMSymBroydenSetScaleType(petsclib::$UnionPetscLib, B::AbstractPetscMat, stype::MatLMVMSymBroydenScaleType )
 
     @chk ccall(
                (:MatLMVMSymBroydenSetScaleType, $petsc_library),
@@ -22278,7 +22278,7 @@ function MatCreateLMVMDFP(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, N
 end 
 
 """
-	S::PetscMat = MatCreateSchurComplement(petsclib::PetscLibType,A00::PetscMat, Ap00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat) 
+	S::PetscMat = MatCreateSchurComplement(petsclib::PetscLibType,A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat) 
 Creates a new `Mat` that behaves like the Schur complement of a matrix
 
 Collective
@@ -22301,9 +22301,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatCreateSchurComplement"))
 """
-function MatCreateSchurComplement(petsclib::PetscLibType, A00::PetscMat, Ap00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat) end
+function MatCreateSchurComplement(petsclib::PetscLibType, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat) end
 
-@for_petsc function MatCreateSchurComplement(petsclib::$UnionPetscLib, A00::PetscMat, Ap00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat )
+@for_petsc function MatCreateSchurComplement(petsclib::$UnionPetscLib, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat )
 	S_ = Ref{CMat}()
 
     @chk ccall(
@@ -22319,7 +22319,7 @@ function MatCreateSchurComplement(petsclib::PetscLibType, A00::PetscMat, Ap00::P
 end 
 
 """
-	MatSchurComplementSetSubMatrices(petsclib::PetscLibType,S::PetscMat, A00::PetscMat, Ap00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat) 
+	MatSchurComplementSetSubMatrices(petsclib::PetscLibType,S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat) 
 Sets the matrices that define the Schur complement
 
 Collective
@@ -22339,9 +22339,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatSchurComplementSetSubMatrices"))
 """
-function MatSchurComplementSetSubMatrices(petsclib::PetscLibType, S::PetscMat, A00::PetscMat, Ap00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat) end
+function MatSchurComplementSetSubMatrices(petsclib::PetscLibType, S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat) end
 
-@for_petsc function MatSchurComplementSetSubMatrices(petsclib::$UnionPetscLib, S::PetscMat, A00::PetscMat, Ap00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat )
+@for_petsc function MatSchurComplementSetSubMatrices(petsclib::$UnionPetscLib, S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat )
 
     @chk ccall(
                (:MatSchurComplementSetSubMatrices, $petsc_library),
@@ -22355,7 +22355,7 @@ function MatSchurComplementSetSubMatrices(petsclib::PetscLibType, S::PetscMat, A
 end 
 
 """
-	MatSchurComplementGetKSP(petsclib::PetscLibType,S::PetscMat, ksp::PetscKSP) 
+	MatSchurComplementGetKSP(petsclib::PetscLibType,S::AbstractPetscMat, ksp::AbstractPetscKSP) 
 Gets the `KSP` object that is used to solve with `A00` in the Schur complement matrix S = A11
 
 Not Collective
@@ -22376,9 +22376,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatSchurComplementGetKSP"))
 """
-function MatSchurComplementGetKSP(petsclib::PetscLibType, S::PetscMat, ksp::PetscKSP) end
+function MatSchurComplementGetKSP(petsclib::PetscLibType, S::AbstractPetscMat, ksp::AbstractPetscKSP) end
 
-@for_petsc function MatSchurComplementGetKSP(petsclib::$UnionPetscLib, S::PetscMat, ksp::PetscKSP )
+@for_petsc function MatSchurComplementGetKSP(petsclib::$UnionPetscLib, S::AbstractPetscMat, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -22394,7 +22394,7 @@ function MatSchurComplementGetKSP(petsclib::PetscLibType, S::PetscMat, ksp::Pets
 end 
 
 """
-	MatSchurComplementSetKSP(petsclib::PetscLibType,S::PetscMat, ksp::PetscKSP) 
+	MatSchurComplementSetKSP(petsclib::PetscLibType,S::AbstractPetscMat, ksp::AbstractPetscKSP) 
 Sets the `KSP` object that is used to solve with `A00` in the Schur complement matrix  S = A11
 
 Not Collective
@@ -22410,9 +22410,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/MatSchurComplementSetKSP"))
 """
-function MatSchurComplementSetKSP(petsclib::PetscLibType, S::PetscMat, ksp::PetscKSP) end
+function MatSchurComplementSetKSP(petsclib::PetscLibType, S::AbstractPetscMat, ksp::AbstractPetscKSP) end
 
-@for_petsc function MatSchurComplementSetKSP(petsclib::$UnionPetscLib, S::PetscMat, ksp::PetscKSP )
+@for_petsc function MatSchurComplementSetKSP(petsclib::$UnionPetscLib, S::AbstractPetscMat, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:MatSchurComplementSetKSP, $petsc_library),
@@ -22426,7 +22426,7 @@ function MatSchurComplementSetKSP(petsclib::PetscLibType, S::PetscMat, ksp::Pets
 end 
 
 """
-	MatSchurComplementUpdateSubMatrices(petsclib::PetscLibType,S::PetscMat, A00::PetscMat, Ap00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat) 
+	MatSchurComplementUpdateSubMatrices(petsclib::PetscLibType,S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat) 
 Updates the Schur complement matrix object with new submatrices
 
 Collective
@@ -22446,9 +22446,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatSchurComplementUpdateSubMatrices"))
 """
-function MatSchurComplementUpdateSubMatrices(petsclib::PetscLibType, S::PetscMat, A00::PetscMat, Ap00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat) end
+function MatSchurComplementUpdateSubMatrices(petsclib::PetscLibType, S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat) end
 
-@for_petsc function MatSchurComplementUpdateSubMatrices(petsclib::$UnionPetscLib, S::PetscMat, A00::PetscMat, Ap00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat )
+@for_petsc function MatSchurComplementUpdateSubMatrices(petsclib::$UnionPetscLib, S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat )
 
     @chk ccall(
                (:MatSchurComplementUpdateSubMatrices, $petsc_library),
@@ -22462,7 +22462,7 @@ function MatSchurComplementUpdateSubMatrices(petsclib::PetscLibType, S::PetscMat
 end 
 
 """
-	MatSchurComplementGetSubMatrices(petsclib::PetscLibType,S::PetscMat, A00::PetscMat, Ap00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat) 
+	MatSchurComplementGetSubMatrices(petsclib::PetscLibType,S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat) 
 Get the individual submatrices in the Schur complement
 
 Collective
@@ -22484,9 +22484,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/MatSchurComplementGetSubMatrices"))
 """
-function MatSchurComplementGetSubMatrices(petsclib::PetscLibType, S::PetscMat, A00::PetscMat, Ap00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat) end
+function MatSchurComplementGetSubMatrices(petsclib::PetscLibType, S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat) end
 
-@for_petsc function MatSchurComplementGetSubMatrices(petsclib::$UnionPetscLib, S::PetscMat, A00::PetscMat, Ap00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat )
+@for_petsc function MatSchurComplementGetSubMatrices(petsclib::$UnionPetscLib, S::AbstractPetscMat, A00::AbstractPetscMat, Ap00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat )
 	A00_ = Ref(A00.ptr)
 	Ap00_ = Ref(Ap00.ptr)
 	A01_ = Ref(A01.ptr)
@@ -22510,7 +22510,7 @@ function MatSchurComplementGetSubMatrices(petsclib::PetscLibType, S::PetscMat, A
 end 
 
 """
-	MatSchurComplementComputeExplicitOperator(petsclib::PetscLibType,A::PetscMat, S::PetscMat) 
+	MatSchurComplementComputeExplicitOperator(petsclib::PetscLibType,A::AbstractPetscMat, S::AbstractPetscMat) 
 Compute the Schur complement matrix explicitly
 
 Collective
@@ -22528,9 +22528,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatSchurComplementComputeExplicitOperator"))
 """
-function MatSchurComplementComputeExplicitOperator(petsclib::PetscLibType, A::PetscMat, S::PetscMat) end
+function MatSchurComplementComputeExplicitOperator(petsclib::PetscLibType, A::AbstractPetscMat, S::AbstractPetscMat) end
 
-@for_petsc function MatSchurComplementComputeExplicitOperator(petsclib::$UnionPetscLib, A::PetscMat, S::PetscMat )
+@for_petsc function MatSchurComplementComputeExplicitOperator(petsclib::$UnionPetscLib, A::AbstractPetscMat, S::AbstractPetscMat )
 	S_ = Ref(S.ptr)
 
     @chk ccall(
@@ -22546,7 +22546,7 @@ function MatSchurComplementComputeExplicitOperator(petsclib::PetscLibType, A::Pe
 end 
 
 """
-	MatGetSchurComplement(petsclib::PetscLibType,A::PetscMat, isrow0::IS, iscol0::IS, isrow1::IS, iscol1::IS, mreuse::MatReuse, S::PetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse, Sp::PetscMat) 
+	MatGetSchurComplement(petsclib::PetscLibType,A::AbstractPetscMat, isrow0::AbstractIS, iscol0::AbstractIS, isrow1::AbstractIS, iscol1::AbstractIS, mreuse::MatReuse, S::AbstractPetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse, Sp::AbstractPetscMat) 
 Obtain the Schur complement from eliminating part of the matrix in another part.
 
 Collective
@@ -22573,9 +22573,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatGetSchurComplement"))
 """
-function MatGetSchurComplement(petsclib::PetscLibType, A::PetscMat, isrow0::IS, iscol0::IS, isrow1::IS, iscol1::IS, mreuse::MatReuse, S::PetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse, Sp::PetscMat) end
+function MatGetSchurComplement(petsclib::PetscLibType, A::AbstractPetscMat, isrow0::AbstractIS, iscol0::AbstractIS, isrow1::AbstractIS, iscol1::AbstractIS, mreuse::MatReuse, S::AbstractPetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse, Sp::AbstractPetscMat) end
 
-@for_petsc function MatGetSchurComplement(petsclib::$UnionPetscLib, A::PetscMat, isrow0::IS, iscol0::IS, isrow1::IS, iscol1::IS, mreuse::MatReuse, S::PetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse, Sp::PetscMat )
+@for_petsc function MatGetSchurComplement(petsclib::$UnionPetscLib, A::AbstractPetscMat, isrow0::AbstractIS, iscol0::AbstractIS, isrow1::AbstractIS, iscol1::AbstractIS, mreuse::MatReuse, S::AbstractPetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse, Sp::AbstractPetscMat )
 	S_ = Ref(S.ptr)
 	Sp_ = Ref(Sp.ptr)
 
@@ -22593,7 +22593,7 @@ function MatGetSchurComplement(petsclib::PetscLibType, A::PetscMat, isrow0::IS, 
 end 
 
 """
-	MatSchurComplementSetAinvType(petsclib::PetscLibType,S::PetscMat, ainvtype::MatSchurComplementAinvType) 
+	MatSchurComplementSetAinvType(petsclib::PetscLibType,S::AbstractPetscMat, ainvtype::MatSchurComplementAinvType) 
 set the type of approximation used for the inverse of the (0,0) block used in forming `Sp` in `MatSchurComplementGetPmat()`
 
 Not Collective
@@ -22613,9 +22613,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatSchurComplementSetAinvType"))
 """
-function MatSchurComplementSetAinvType(petsclib::PetscLibType, S::PetscMat, ainvtype::MatSchurComplementAinvType) end
+function MatSchurComplementSetAinvType(petsclib::PetscLibType, S::AbstractPetscMat, ainvtype::MatSchurComplementAinvType) end
 
-@for_petsc function MatSchurComplementSetAinvType(petsclib::$UnionPetscLib, S::PetscMat, ainvtype::MatSchurComplementAinvType )
+@for_petsc function MatSchurComplementSetAinvType(petsclib::$UnionPetscLib, S::AbstractPetscMat, ainvtype::MatSchurComplementAinvType )
 
     @chk ccall(
                (:MatSchurComplementSetAinvType, $petsc_library),
@@ -22629,7 +22629,7 @@ function MatSchurComplementSetAinvType(petsclib::PetscLibType, S::PetscMat, ainv
 end 
 
 """
-	ainvtype::MatSchurComplementAinvType = MatSchurComplementGetAinvType(petsclib::PetscLibType,S::PetscMat) 
+	ainvtype::MatSchurComplementAinvType = MatSchurComplementGetAinvType(petsclib::PetscLibType,S::AbstractPetscMat) 
 get the type of approximation for the inverse of the (0,0) block used in forming `Sp` in `MatSchurComplementGetPmat()`
 
 Not Collective
@@ -22648,9 +22648,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatSchurComplementGetAinvType"))
 """
-function MatSchurComplementGetAinvType(petsclib::PetscLibType, S::PetscMat) end
+function MatSchurComplementGetAinvType(petsclib::PetscLibType, S::AbstractPetscMat) end
 
-@for_petsc function MatSchurComplementGetAinvType(petsclib::$UnionPetscLib, S::PetscMat )
+@for_petsc function MatSchurComplementGetAinvType(petsclib::$UnionPetscLib, S::AbstractPetscMat )
 	ainvtype_ = Ref{MatSchurComplementAinvType}()
 
     @chk ccall(
@@ -22666,7 +22666,7 @@ function MatSchurComplementGetAinvType(petsclib::PetscLibType, S::PetscMat) end
 end 
 
 """
-	Sp::PetscMat = MatCreateSchurComplementPmat(petsclib::PetscLibType,A00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse) 
+	Sp::PetscMat = MatCreateSchurComplementPmat(petsclib::PetscLibType,A00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse) 
 create a matrix for preconditioning the Schur complement by explicitly assembling the sparse matrix
 Sp = A11 - A10 inv(DIAGFORM(A00)) A01
 
@@ -22690,9 +22690,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatCreateSchurComplementPmat"))
 """
-function MatCreateSchurComplementPmat(petsclib::PetscLibType, A00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse) end
+function MatCreateSchurComplementPmat(petsclib::PetscLibType, A00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse) end
 
-@for_petsc function MatCreateSchurComplementPmat(petsclib::$UnionPetscLib, A00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse )
+@for_petsc function MatCreateSchurComplementPmat(petsclib::$UnionPetscLib, A00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat, ainvtype::MatSchurComplementAinvType, preuse::MatReuse )
 	Sp_ = Ref{CMat}()
 
     @chk ccall(
@@ -22708,7 +22708,7 @@ function MatCreateSchurComplementPmat(petsclib::PetscLibType, A00::PetscMat, A01
 end 
 
 """
-	MatSchurComplementGetPmat(petsclib::PetscLibType,S::PetscMat, preuse::MatReuse, Sp::PetscMat) 
+	MatSchurComplementGetPmat(petsclib::PetscLibType,S::AbstractPetscMat, preuse::MatReuse, Sp::AbstractPetscMat) 
 Obtain a matrix for preconditioning the Schur complement by assembling Sp = A11
 
 Collective
@@ -22727,9 +22727,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/MatSchurComplementGetPmat"))
 """
-function MatSchurComplementGetPmat(petsclib::PetscLibType, S::PetscMat, preuse::MatReuse, Sp::PetscMat) end
+function MatSchurComplementGetPmat(petsclib::PetscLibType, S::AbstractPetscMat, preuse::MatReuse, Sp::AbstractPetscMat) end
 
-@for_petsc function MatSchurComplementGetPmat(petsclib::$UnionPetscLib, S::PetscMat, preuse::MatReuse, Sp::PetscMat )
+@for_petsc function MatSchurComplementGetPmat(petsclib::$UnionPetscLib, S::AbstractPetscMat, preuse::MatReuse, Sp::AbstractPetscMat )
 	Sp_ = Ref(Sp.ptr)
 
     @chk ccall(
@@ -22745,7 +22745,7 @@ function MatSchurComplementGetPmat(petsclib::PetscLibType, S::PetscMat, preuse::
 end 
 
 """
-	J::PetscMat = MatCreateSNESMFMore(petsclib::PetscLibType,snes::PetscSNES, x::PetscVec) 
+	J::PetscMat = MatCreateSNESMFMore(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec) 
 Creates a matrix
 context for use with a `SNES` solver that uses the More method to compute an optimal h based on the noise of the function.  This matrix can be used as
 the Jacobian argument for the routine `SNESSetJacobian()`.
@@ -22771,9 +22771,9 @@ Level: advanced
 # External Links
 $(_doc_external("Snes/MatCreateSNESMFMore"))
 """
-function MatCreateSNESMFMore(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec) end
+function MatCreateSNESMFMore(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec) end
 
-@for_petsc function MatCreateSNESMFMore(petsclib::$UnionPetscLib, snes::PetscSNES, x::PetscVec )
+@for_petsc function MatCreateSNESMFMore(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec )
 	J_ = Ref{CMat}()
 
     @chk ccall(
@@ -22789,7 +22789,7 @@ function MatCreateSNESMFMore(petsclib::PetscLibType, snes::PetscSNES, x::PetscVe
 end 
 
 """
-	MatSNESMFMoreSetParameters(petsclib::PetscLibType,mat::PetscMat, error::PetscReal, umin::PetscReal, h::PetscReal) 
+	MatSNESMFMoreSetParameters(petsclib::PetscLibType,mat::AbstractPetscMat, error::PetscReal, umin::PetscReal, h::PetscReal) 
 Sets the parameters for the approximation of
 matrix-vector products using finite differences, see  `MatCreateSNESMFMore()`
 
@@ -22813,9 +22813,9 @@ Level: advanced
 # External Links
 $(_doc_external("Snes/MatSNESMFMoreSetParameters"))
 """
-function MatSNESMFMoreSetParameters(petsclib::PetscLibType, mat::PetscMat, error::PetscReal, umin::PetscReal, h::PetscReal) end
+function MatSNESMFMoreSetParameters(petsclib::PetscLibType, mat::AbstractPetscMat, error::PetscReal, umin::PetscReal, h::PetscReal) end
 
-@for_petsc function MatSNESMFMoreSetParameters(petsclib::$UnionPetscLib, mat::PetscMat, error::$PetscReal, umin::$PetscReal, h::$PetscReal )
+@for_petsc function MatSNESMFMoreSetParameters(petsclib::$UnionPetscLib, mat::AbstractPetscMat, error::$PetscReal, umin::$PetscReal, h::$PetscReal )
 
     @chk ccall(
                (:MatSNESMFMoreSetParameters, $petsc_library),
@@ -22829,7 +22829,7 @@ function MatSNESMFMoreSetParameters(petsclib::PetscLibType, mat::PetscMat, error
 end 
 
 """
-	MatSNESMFGetSNES(petsclib::PetscLibType,J::PetscMat, snes::PetscSNES) 
+	MatSNESMFGetSNES(petsclib::PetscLibType,J::AbstractPetscMat, snes::AbstractPetscSNES) 
 returns the `SNES` associated with a matrix created with `MatCreateSNESMF()`
 
 Not Collective
@@ -22847,9 +22847,9 @@ Level: advanced
 # External Links
 $(_doc_external("Snes/MatSNESMFGetSNES"))
 """
-function MatSNESMFGetSNES(petsclib::PetscLibType, J::PetscMat, snes::PetscSNES) end
+function MatSNESMFGetSNES(petsclib::PetscLibType, J::AbstractPetscMat, snes::AbstractPetscSNES) end
 
-@for_petsc function MatSNESMFGetSNES(petsclib::$UnionPetscLib, J::PetscMat, snes::PetscSNES )
+@for_petsc function MatSNESMFGetSNES(petsclib::$UnionPetscLib, J::AbstractPetscMat, snes::AbstractPetscSNES )
 	snes_ = Ref(snes.ptr)
 
     @chk ccall(
@@ -22865,7 +22865,7 @@ function MatSNESMFGetSNES(petsclib::PetscLibType, J::PetscMat, snes::PetscSNES) 
 end 
 
 """
-	MatSNESMFSetReuseBase(petsclib::PetscLibType,J::PetscMat, use::PetscBool) 
+	MatSNESMFSetReuseBase(petsclib::PetscLibType,J::AbstractPetscMat, use::PetscBool) 
 Causes the base vector to be used for differencing even if the function provided to `SNESSetFunction()` is not the
 same as that provided to `MatMFFDSetFunction()`.
 
@@ -22883,9 +22883,9 @@ Level: advanced
 # External Links
 $(_doc_external("Snes/MatSNESMFSetReuseBase"))
 """
-function MatSNESMFSetReuseBase(petsclib::PetscLibType, J::PetscMat, use::PetscBool) end
+function MatSNESMFSetReuseBase(petsclib::PetscLibType, J::AbstractPetscMat, use::PetscBool) end
 
-@for_petsc function MatSNESMFSetReuseBase(petsclib::$UnionPetscLib, J::PetscMat, use::PetscBool )
+@for_petsc function MatSNESMFSetReuseBase(petsclib::$UnionPetscLib, J::AbstractPetscMat, use::PetscBool )
 
     @chk ccall(
                (:MatSNESMFSetReuseBase, $petsc_library),
@@ -22899,7 +22899,7 @@ function MatSNESMFSetReuseBase(petsclib::PetscLibType, J::PetscMat, use::PetscBo
 end 
 
 """
-	use::PetscBool = MatSNESMFGetReuseBase(petsclib::PetscLibType,J::PetscMat) 
+	use::PetscBool = MatSNESMFGetReuseBase(petsclib::PetscLibType,J::AbstractPetscMat) 
 Determines if the base vector is to be used for differencing even if the function provided to `SNESSetFunction()` is not the
 same as that provided to `MatMFFDSetFunction()`.
 
@@ -22919,9 +22919,9 @@ Level: advanced
 # External Links
 $(_doc_external("Snes/MatSNESMFGetReuseBase"))
 """
-function MatSNESMFGetReuseBase(petsclib::PetscLibType, J::PetscMat) end
+function MatSNESMFGetReuseBase(petsclib::PetscLibType, J::AbstractPetscMat) end
 
-@for_petsc function MatSNESMFGetReuseBase(petsclib::$UnionPetscLib, J::PetscMat )
+@for_petsc function MatSNESMFGetReuseBase(petsclib::$UnionPetscLib, J::AbstractPetscMat )
 	use_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -22937,7 +22937,7 @@ function MatSNESMFGetReuseBase(petsclib::PetscLibType, J::PetscMat) end
 end 
 
 """
-	J::PetscMat = MatCreateSNESMF(petsclib::PetscLibType,snes::PetscSNES) 
+	J::PetscMat = MatCreateSNESMF(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Creates a finite differencing based matrix
 a `SNES` solver.  This matrix can be used as the Jacobian argument for
 the routine `SNESSetJacobian()`. See `MatCreateMFFD()` for details on how
@@ -22960,9 +22960,9 @@ Level: advanced
 # External Links
 $(_doc_external("Snes/MatCreateSNESMF"))
 """
-function MatCreateSNESMF(petsclib::PetscLibType, snes::PetscSNES) end
+function MatCreateSNESMF(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function MatCreateSNESMF(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function MatCreateSNESMF(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	J_ = Ref{CMat}()
 
     @chk ccall(
@@ -22978,7 +22978,7 @@ function MatCreateSNESMF(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	dm::PetscDM = MatGetDM(petsclib::PetscLibType,A::PetscMat) 
+	dm::PetscDM = MatGetDM(petsclib::PetscLibType,A::AbstractPetscMat) 
 Gets the `DM` defining the data layout of the matrix
 
 Not Collective
@@ -23004,9 +23004,9 @@ See also:
 # External Links
 $(_doc_external("DM/MatGetDM"))
 """
-function MatGetDM(petsclib::PetscLibType, A::PetscMat) end
+function MatGetDM(petsclib::PetscLibType, A::AbstractPetscMat) end
 
-@for_petsc function MatGetDM(petsclib::$UnionPetscLib, A::PetscMat )
+@for_petsc function MatGetDM(petsclib::$UnionPetscLib, A::AbstractPetscMat )
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -23022,7 +23022,7 @@ function MatGetDM(petsclib::PetscLibType, A::PetscMat) end
 end 
 
 """
-	MatSetDM(petsclib::PetscLibType,A::PetscMat, dm::PetscDM) 
+	MatSetDM(petsclib::PetscLibType,A::AbstractPetscMat, dm::AbstractPetscDM) 
 Sets the `DM` defining the data layout of the matrix
 
 Not Collective
@@ -23047,9 +23047,9 @@ See also:
 # External Links
 $(_doc_external("DM/MatSetDM"))
 """
-function MatSetDM(petsclib::PetscLibType, A::PetscMat, dm::PetscDM) end
+function MatSetDM(petsclib::PetscLibType, A::AbstractPetscMat, dm::AbstractPetscDM) end
 
-@for_petsc function MatSetDM(petsclib::$UnionPetscLib, A::PetscMat, dm::PetscDM )
+@for_petsc function MatSetDM(petsclib::$UnionPetscLib, A::AbstractPetscMat, dm::AbstractPetscDM )
 
     @chk ccall(
                (:MatSetDM, $petsc_library),
@@ -23063,7 +23063,7 @@ function MatSetDM(petsclib::PetscLibType, A::PetscMat, dm::PetscDM) end
 end 
 
 """
-	MatDFischer(petsclib::PetscLibType,jac::PetscMat, X::PetscVec, Con::PetscVec, XL::PetscVec, XU::PetscVec, T1::PetscVec, T2::PetscVec, Da::PetscVec, Db::PetscVec) 
+	MatDFischer(petsclib::PetscLibType,jac::AbstractPetscMat, X::AbstractPetscVec, Con::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, T1::AbstractPetscVec, T2::AbstractPetscVec, Da::AbstractPetscVec, Db::AbstractPetscVec) 
 Calculates an element of the B
 Fischer-Burmeister function for complementarity problems.
 
@@ -23089,9 +23089,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/MatDFischer"))
 """
-function MatDFischer(petsclib::PetscLibType, jac::PetscMat, X::PetscVec, Con::PetscVec, XL::PetscVec, XU::PetscVec, T1::PetscVec, T2::PetscVec, Da::PetscVec, Db::PetscVec) end
+function MatDFischer(petsclib::PetscLibType, jac::AbstractPetscMat, X::AbstractPetscVec, Con::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, T1::AbstractPetscVec, T2::AbstractPetscVec, Da::AbstractPetscVec, Db::AbstractPetscVec) end
 
-@for_petsc function MatDFischer(petsclib::$UnionPetscLib, jac::PetscMat, X::PetscVec, Con::PetscVec, XL::PetscVec, XU::PetscVec, T1::PetscVec, T2::PetscVec, Da::PetscVec, Db::PetscVec )
+@for_petsc function MatDFischer(petsclib::$UnionPetscLib, jac::AbstractPetscMat, X::AbstractPetscVec, Con::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, T1::AbstractPetscVec, T2::AbstractPetscVec, Da::AbstractPetscVec, Db::AbstractPetscVec )
 
     @chk ccall(
                (:MatDFischer, $petsc_library),
@@ -23105,7 +23105,7 @@ function MatDFischer(petsclib::PetscLibType, jac::PetscMat, X::PetscVec, Con::Pe
 end 
 
 """
-	MatDSFischer(petsclib::PetscLibType,jac::PetscMat, X::PetscVec, Con::PetscVec, XL::PetscVec, XU::PetscVec, mu::PetscReal, T1::PetscVec, T2::PetscVec, Da::PetscVec, Db::PetscVec, Dm::PetscVec) 
+	MatDSFischer(petsclib::PetscLibType,jac::AbstractPetscMat, X::AbstractPetscVec, Con::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, mu::PetscReal, T1::AbstractPetscVec, T2::AbstractPetscVec, Da::AbstractPetscVec, Db::AbstractPetscVec, Dm::AbstractPetscVec) 
 Calculates an element of the B
 smoothed Fischer-Burmeister function for complementarity problems.
 
@@ -23133,9 +23133,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/MatDSFischer"))
 """
-function MatDSFischer(petsclib::PetscLibType, jac::PetscMat, X::PetscVec, Con::PetscVec, XL::PetscVec, XU::PetscVec, mu::PetscReal, T1::PetscVec, T2::PetscVec, Da::PetscVec, Db::PetscVec, Dm::PetscVec) end
+function MatDSFischer(petsclib::PetscLibType, jac::AbstractPetscMat, X::AbstractPetscVec, Con::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, mu::PetscReal, T1::AbstractPetscVec, T2::AbstractPetscVec, Da::AbstractPetscVec, Db::AbstractPetscVec, Dm::AbstractPetscVec) end
 
-@for_petsc function MatDSFischer(petsclib::$UnionPetscLib, jac::PetscMat, X::PetscVec, Con::PetscVec, XL::PetscVec, XU::PetscVec, mu::$PetscReal, T1::PetscVec, T2::PetscVec, Da::PetscVec, Db::PetscVec, Dm::PetscVec )
+@for_petsc function MatDSFischer(petsclib::$UnionPetscLib, jac::AbstractPetscMat, X::AbstractPetscVec, Con::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, mu::$PetscReal, T1::AbstractPetscVec, T2::AbstractPetscVec, Da::AbstractPetscVec, Db::AbstractPetscVec, Dm::AbstractPetscVec )
 
     @chk ccall(
                (:MatDSFischer, $petsc_library),
@@ -23149,7 +23149,7 @@ function MatDSFischer(petsclib::PetscLibType, jac::PetscMat, X::PetscVec, Con::P
 end 
 
 """
-	J::PetscMat = MatCreateSubMatrixFree(petsclib::PetscLibType,mat::PetscMat, Rows::IS, Cols::IS) 
+	J::PetscMat = MatCreateSubMatrixFree(petsclib::PetscLibType,mat::AbstractPetscMat, Rows::AbstractIS, Cols::AbstractIS) 
 Creates a reduced matrix by masking a
 full matrix.
 
@@ -23170,9 +23170,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/MatCreateSubMatrixFree"))
 """
-function MatCreateSubMatrixFree(petsclib::PetscLibType, mat::PetscMat, Rows::IS, Cols::IS) end
+function MatCreateSubMatrixFree(petsclib::PetscLibType, mat::AbstractPetscMat, Rows::AbstractIS, Cols::AbstractIS) end
 
-@for_petsc function MatCreateSubMatrixFree(petsclib::$UnionPetscLib, mat::PetscMat, Rows::IS, Cols::IS )
+@for_petsc function MatCreateSubMatrixFree(petsclib::$UnionPetscLib, mat::AbstractPetscMat, Rows::AbstractIS, Cols::AbstractIS )
 	J_ = Ref{CMat}()
 
     @chk ccall(
@@ -23188,14 +23188,14 @@ function MatCreateSubMatrixFree(petsclib::PetscLibType, mat::PetscMat, Rows::IS,
 end 
 
 """
-	MatSetValue(petsclib::PetscLibType,mat::PetscMat, i::PetscInt, j::PetscInt, va::PetscScalar, mode::InsertMode) 
+	MatSetValue(petsclib::PetscLibType,mat::AbstractPetscMat, i::PetscInt, j::PetscInt, va::PetscScalar, mode::InsertMode) 
 
 # External Links
 $(_doc_external("Mat/MatSetValue"))
 """
-function MatSetValue(petsclib::PetscLibType, mat::PetscMat, i::PetscInt, j::PetscInt, va::PetscScalar, mode::InsertMode) end
+function MatSetValue(petsclib::PetscLibType, mat::AbstractPetscMat, i::PetscInt, j::PetscInt, va::PetscScalar, mode::InsertMode) end
 
-@for_petsc function MatSetValue(petsclib::$UnionPetscLib, mat::PetscMat, i::$PetscInt, j::$PetscInt, va::$PetscScalar, mode::InsertMode )
+@for_petsc function MatSetValue(petsclib::$UnionPetscLib, mat::AbstractPetscMat, i::$PetscInt, j::$PetscInt, va::$PetscScalar, mode::InsertMode )
 
     @chk ccall(
                (:MatSetValue, $petsc_library),
@@ -23209,14 +23209,14 @@ function MatSetValue(petsclib::PetscLibType, mat::PetscMat, i::PetscInt, j::Pets
 end 
 
 """
-	va::PetscScalar = MatGetValue(petsclib::PetscLibType,mat::PetscMat, row::PetscInt, col::PetscInt) 
+	va::PetscScalar = MatGetValue(petsclib::PetscLibType,mat::AbstractPetscMat, row::PetscInt, col::PetscInt) 
 
 # External Links
 $(_doc_external("Mat/MatGetValue"))
 """
-function MatGetValue(petsclib::PetscLibType, mat::PetscMat, row::PetscInt, col::PetscInt) end
+function MatGetValue(petsclib::PetscLibType, mat::AbstractPetscMat, row::PetscInt, col::PetscInt) end
 
-@for_petsc function MatGetValue(petsclib::$UnionPetscLib, mat::PetscMat, row::$PetscInt, col::$PetscInt )
+@for_petsc function MatGetValue(petsclib::$UnionPetscLib, mat::AbstractPetscMat, row::$PetscInt, col::$PetscInt )
 	va_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -23232,14 +23232,14 @@ function MatGetValue(petsclib::PetscLibType, mat::PetscMat, row::PetscInt, col::
 end 
 
 """
-	MatSetValueLocal(petsclib::PetscLibType,mat::PetscMat, i::PetscInt, j::PetscInt, va::PetscScalar, mode::InsertMode) 
+	MatSetValueLocal(petsclib::PetscLibType,mat::AbstractPetscMat, i::PetscInt, j::PetscInt, va::PetscScalar, mode::InsertMode) 
 
 # External Links
 $(_doc_external("Mat/MatSetValueLocal"))
 """
-function MatSetValueLocal(petsclib::PetscLibType, mat::PetscMat, i::PetscInt, j::PetscInt, va::PetscScalar, mode::InsertMode) end
+function MatSetValueLocal(petsclib::PetscLibType, mat::AbstractPetscMat, i::PetscInt, j::PetscInt, va::PetscScalar, mode::InsertMode) end
 
-@for_petsc function MatSetValueLocal(petsclib::$UnionPetscLib, mat::PetscMat, i::$PetscInt, j::$PetscInt, va::$PetscScalar, mode::InsertMode )
+@for_petsc function MatSetValueLocal(petsclib::$UnionPetscLib, mat::AbstractPetscMat, i::$PetscInt, j::$PetscInt, va::$PetscScalar, mode::InsertMode )
 
     @chk ccall(
                (:MatSetValueLocal, $petsc_library),
@@ -23259,7 +23259,7 @@ end
 
 
 """
-    MatShellSetOperation(petsclib::PetscLibType, mat::PetscMat, op::MatOperation, g::Ptr)
+    MatShellSetOperation(petsclib::PetscLibType, mat::AbstractPetscMat, op::MatOperation, g::Ptr)
 
 Allows user to set a matrix operation for a `MATSHELL` shell matrix.
 

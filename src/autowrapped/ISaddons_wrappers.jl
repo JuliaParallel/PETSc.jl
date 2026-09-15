@@ -168,7 +168,7 @@ function ISLocalToGlobalMappingLoad(petsclib::PetscLibType, mapping::ISLocalToGl
 end 
 
 """
-	mapping::ISLocalToGlobalMapping = ISLocalToGlobalMappingCreateIS(petsclib::PetscLibType,is::IS) 
+	mapping::ISLocalToGlobalMapping = ISLocalToGlobalMappingCreateIS(petsclib::PetscLibType,is::AbstractIS) 
 Creates a mapping between a local (0 to n)
 ordering and a global parallel ordering.
 
@@ -187,9 +187,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/ISLocalToGlobalMappingCreateIS"))
 """
-function ISLocalToGlobalMappingCreateIS(petsclib::PetscLibType, is::IS) end
+function ISLocalToGlobalMappingCreateIS(petsclib::PetscLibType, is::AbstractIS) end
 
-@for_petsc function ISLocalToGlobalMappingCreateIS(petsclib::$UnionPetscLib, is::IS )
+@for_petsc function ISLocalToGlobalMappingCreateIS(petsclib::$UnionPetscLib, is::AbstractIS )
 	mapping_ = Ref{ISLocalToGlobalMapping}()
 
     @chk ccall(
@@ -423,7 +423,7 @@ function ISLocalToGlobalMappingDestroy(petsclib::PetscLibType, mapping::Union{IS
 end 
 
 """
-	ISLocalToGlobalMappingApplyIS(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, is::IS, newis::IS) 
+	ISLocalToGlobalMappingApplyIS(petsclib::PetscLibType,mapping::ISLocalToGlobalMapping, is::AbstractIS, newis::AbstractIS) 
 Creates from an `IS` in the local numbering
 a new index set using the global numbering defined in an `ISLocalToGlobalMapping`
 context.
@@ -445,9 +445,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/ISLocalToGlobalMappingApplyIS"))
 """
-function ISLocalToGlobalMappingApplyIS(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, is::IS, newis::IS) end
+function ISLocalToGlobalMappingApplyIS(petsclib::PetscLibType, mapping::ISLocalToGlobalMapping, is::AbstractIS, newis::AbstractIS) end
 
-@for_petsc function ISLocalToGlobalMappingApplyIS(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, is::IS, newis::IS )
+@for_petsc function ISLocalToGlobalMappingApplyIS(petsclib::$UnionPetscLib, mapping::ISLocalToGlobalMapping, is::AbstractIS, newis::AbstractIS )
 	newis_ = Ref(newis.ptr)
 
     @chk ccall(
@@ -1431,7 +1431,7 @@ function ISColoringGetColors(petsclib::PetscLibType, iscoloring::ISColoring) end
 end 
 
 """
-	nn::PetscInt = ISColoringGetIS(petsclib::PetscLibType,iscoloring::ISColoring, mode::PetscCopyMode, isis::Vector{IS}) 
+	nn::PetscInt = ISColoringGetIS(petsclib::PetscLibType,iscoloring::ISColoring, mode::PetscCopyMode, isis::Vector{<:AbstractIS}) 
 Extracts index sets from the coloring context. Each is contains the nodes of one color
 
 Collective
@@ -1451,9 +1451,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/ISColoringGetIS"))
 """
-function ISColoringGetIS(petsclib::PetscLibType, iscoloring::ISColoring, mode::PetscCopyMode, isis::Vector{IS}) end
+function ISColoringGetIS(petsclib::PetscLibType, iscoloring::ISColoring, mode::PetscCopyMode, isis::Vector{<:AbstractIS}) end
 
-@for_petsc function ISColoringGetIS(petsclib::$UnionPetscLib, iscoloring::ISColoring, mode::PetscCopyMode, isis::Vector{IS} )
+@for_petsc function ISColoringGetIS(petsclib::$UnionPetscLib, iscoloring::ISColoring, mode::PetscCopyMode, isis::Vector{<:AbstractIS} )
 	nn_ = Ref{$PetscInt}()
 	isis_ = Ref(pointer(isis))
 
@@ -1470,7 +1470,7 @@ function ISColoringGetIS(petsclib::PetscLibType, iscoloring::ISColoring, mode::P
 end 
 
 """
-	ISColoringRestoreIS(petsclib::PetscLibType,iscoloring::ISColoring, mode::PetscCopyMode, is::Vector{IS}) 
+	ISColoringRestoreIS(petsclib::PetscLibType,iscoloring::ISColoring, mode::PetscCopyMode, is::Vector{<:AbstractIS}) 
 Restores the index sets extracted from the coloring context with `ISColoringGetIS()` using `PETSC_USE_POINTER`
 
 Collective
@@ -1487,9 +1487,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/ISColoringRestoreIS"))
 """
-function ISColoringRestoreIS(petsclib::PetscLibType, iscoloring::ISColoring, mode::PetscCopyMode, is::Vector{IS}) end
+function ISColoringRestoreIS(petsclib::PetscLibType, iscoloring::ISColoring, mode::PetscCopyMode, is::Vector{<:AbstractIS}) end
 
-@for_petsc function ISColoringRestoreIS(petsclib::$UnionPetscLib, iscoloring::ISColoring, mode::PetscCopyMode, is::Vector{IS} )
+@for_petsc function ISColoringRestoreIS(petsclib::$UnionPetscLib, iscoloring::ISColoring, mode::PetscCopyMode, is::Vector{<:AbstractIS} )
 	is_ = Ref(pointer(is))
 
     @chk ccall(

@@ -29,7 +29,7 @@ mutable struct KSPFlexibleModifyPCFn end
 
 # -------------------------------------------------------
 """
-	KSPComputeOperator(petsclib::PetscLibType,ksp::PetscKSP, mattype::MatType, mat::PetscMat) 
+	KSPComputeOperator(petsclib::PetscLibType,ksp::AbstractPetscKSP, mattype::MatType, mat::AbstractPetscMat) 
 Computes the explicit preconditioned operator, including diagonal scaling and null
 space removal if applicable.
 
@@ -49,9 +49,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPComputeOperator"))
 """
-function KSPComputeOperator(petsclib::PetscLibType, ksp::PetscKSP, mattype::MatType, mat::PetscMat) end
+function KSPComputeOperator(petsclib::PetscLibType, ksp::AbstractPetscKSP, mattype::MatType, mat::AbstractPetscMat) end
 
-@for_petsc function KSPComputeOperator(petsclib::$UnionPetscLib, ksp::PetscKSP, mattype::MatType, mat::PetscMat )
+@for_petsc function KSPComputeOperator(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, mattype::MatType, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -67,7 +67,7 @@ function KSPComputeOperator(petsclib::PetscLibType, ksp::PetscKSP, mattype::MatT
 end 
 
 """
-	r::Vector{PetscReal},c::Vector{PetscReal} = KSPComputeEigenvaluesExplicitly(petsclib::PetscLibType,ksp::PetscKSP, nmax::PetscInt) 
+	r::Vector{PetscReal},c::Vector{PetscReal} = KSPComputeEigenvaluesExplicitly(petsclib::PetscLibType,ksp::AbstractPetscKSP, nmax::PetscInt) 
 Computes all of the eigenvalues of the
 preconditioned operator using LAPACK.
 
@@ -88,9 +88,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPComputeEigenvaluesExplicitly"))
 """
-function KSPComputeEigenvaluesExplicitly(petsclib::PetscLibType, ksp::PetscKSP, nmax::PetscInt) end
+function KSPComputeEigenvaluesExplicitly(petsclib::PetscLibType, ksp::AbstractPetscKSP, nmax::PetscInt) end
 
-@for_petsc function KSPComputeEigenvaluesExplicitly(petsclib::$UnionPetscLib, ksp::PetscKSP, nmax::$PetscInt )
+@for_petsc function KSPComputeEigenvaluesExplicitly(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, nmax::$PetscInt )
 	r = Vector{$PetscReal}(undef, ni);  # CHECK SIZE!!
 	c = Vector{$PetscReal}(undef, ni);  # CHECK SIZE!!
 
@@ -106,14 +106,14 @@ function KSPComputeEigenvaluesExplicitly(petsclib::PetscLibType, ksp::PetscKSP, 
 end 
 
 """
-	KSPMonitorLGRange(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, monctx::Cvoid) 
+	KSPMonitorLGRange(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, monctx::Cvoid) 
 
 # External Links
 $(_doc_external("KSP/KSPMonitorLGRange"))
 """
-function KSPMonitorLGRange(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, monctx::Cvoid) end
+function KSPMonitorLGRange(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, monctx::Cvoid) end
 
-@for_petsc function KSPMonitorLGRange(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, monctx::Cvoid )
+@for_petsc function KSPMonitorLGRange(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, monctx::Cvoid )
 
     @chk ccall(
                (:KSPMonitorLGRange, $petsc_library),
@@ -127,7 +127,7 @@ function KSPMonitorLGRange(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, r
 end 
 
 """
-	emax::PetscReal,emin::PetscReal = KSPComputeExtremeSingularValues(petsclib::PetscLibType,ksp::PetscKSP) 
+	emax::PetscReal,emin::PetscReal = KSPComputeExtremeSingularValues(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Computes the extreme singular values
 for the preconditioned operator. Called after or during `KSPSolve()`.
 
@@ -150,9 +150,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPComputeExtremeSingularValues"))
 """
-function KSPComputeExtremeSingularValues(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPComputeExtremeSingularValues(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPComputeExtremeSingularValues(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPComputeExtremeSingularValues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	emax_ = Ref{$PetscReal}()
 	emin_ = Ref{$PetscReal}()
 
@@ -170,7 +170,7 @@ function KSPComputeExtremeSingularValues(petsclib::PetscLibType, ksp::PetscKSP) 
 end 
 
 """
-	r::Vector{PetscReal},c::Vector{PetscReal},neig::PetscInt = KSPComputeEigenvalues(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt) 
+	r::Vector{PetscReal},c::Vector{PetscReal},neig::PetscInt = KSPComputeEigenvalues(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt) 
 Computes the extreme eigenvalues for the
 preconditioned operator. Called after or during `KSPSolve()`.
 
@@ -195,9 +195,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPComputeEigenvalues"))
 """
-function KSPComputeEigenvalues(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt) end
+function KSPComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt) end
 
-@for_petsc function KSPComputeEigenvalues(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt )
+@for_petsc function KSPComputeEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt )
 	r = Vector{$PetscReal}(undef, ni);  # CHECK SIZE!!
 	c = Vector{$PetscReal}(undef, ni);  # CHECK SIZE!!
 	neig_ = Ref{$PetscInt}()
@@ -215,7 +215,7 @@ function KSPComputeEigenvalues(petsclib::PetscLibType, ksp::PetscKSP, n::PetscIn
 end 
 
 """
-	nrit::PetscInt,tetar::Vector{PetscReal},tetai::Vector{PetscReal} = KSPComputeRitz(petsclib::PetscLibType,ksp::PetscKSP, ritz::PetscBool, small::PetscBool, S::Vector{PetscVec}) 
+	nrit::PetscInt,tetar::Vector{PetscReal},tetai::Vector{PetscReal} = KSPComputeRitz(petsclib::PetscLibType,ksp::AbstractPetscKSP, ritz::PetscBool, small::PetscBool, S::Vector{<:AbstractPetscVec}) 
 Computes the Ritz or harmonic Ritz pairs associated with the
 smallest or largest in modulus, for the preconditioned operator.
 
@@ -239,9 +239,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPComputeRitz"))
 """
-function KSPComputeRitz(petsclib::PetscLibType, ksp::PetscKSP, ritz::PetscBool, small::PetscBool, S::Vector{PetscVec}) end
+function KSPComputeRitz(petsclib::PetscLibType, ksp::AbstractPetscKSP, ritz::PetscBool, small::PetscBool, S::Vector{<:AbstractPetscVec}) end
 
-@for_petsc function KSPComputeRitz(petsclib::$UnionPetscLib, ksp::PetscKSP, ritz::PetscBool, small::PetscBool, S::Vector{PetscVec} )
+@for_petsc function KSPComputeRitz(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, ritz::PetscBool, small::PetscBool, S::Vector{<:AbstractPetscVec} )
 	nrit_ = Ref{$PetscInt}()
 	tetar = Vector{$PetscReal}(undef, ni);  # CHECK SIZE!!
 	tetai = Vector{$PetscReal}(undef, ni);  # CHECK SIZE!!
@@ -259,7 +259,7 @@ function KSPComputeRitz(petsclib::PetscLibType, ksp::PetscKSP, ritz::PetscBool, 
 end 
 
 """
-	KSPSetUpOnBlocks(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPSetUpOnBlocks(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Sets up the preconditioner for each block in
 the block Jacobi `PCJACOBI`, overlapping Schwarz `PCASM`, and fieldsplit `PCFIELDSPLIT` preconditioners
 
@@ -275,9 +275,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetUpOnBlocks"))
 """
-function KSPSetUpOnBlocks(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPSetUpOnBlocks(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPSetUpOnBlocks(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPSetUpOnBlocks(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPSetUpOnBlocks, $petsc_library),
@@ -291,7 +291,7 @@ function KSPSetUpOnBlocks(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetReusePreconditioner(petsclib::PetscLibType,ksp::PetscKSP, flag::PetscBool) 
+	KSPSetReusePreconditioner(petsclib::PetscLibType,ksp::AbstractPetscKSP, flag::PetscBool) 
 reuse the current preconditioner for future `KSPSolve()`, do not construct a new preconditioner even if the `Mat` operator
 in the `KSP` has different values
 
@@ -312,9 +312,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetReusePreconditioner"))
 """
-function KSPSetReusePreconditioner(petsclib::PetscLibType, ksp::PetscKSP, flag::PetscBool) end
+function KSPSetReusePreconditioner(petsclib::PetscLibType, ksp::AbstractPetscKSP, flag::PetscBool) end
 
-@for_petsc function KSPSetReusePreconditioner(petsclib::$UnionPetscLib, ksp::PetscKSP, flag::PetscBool )
+@for_petsc function KSPSetReusePreconditioner(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flag::PetscBool )
 
     @chk ccall(
                (:KSPSetReusePreconditioner, $petsc_library),
@@ -328,7 +328,7 @@ function KSPSetReusePreconditioner(petsclib::PetscLibType, ksp::PetscKSP, flag::
 end 
 
 """
-	flag::PetscBool = KSPGetReusePreconditioner(petsclib::PetscLibType,ksp::PetscKSP) 
+	flag::PetscBool = KSPGetReusePreconditioner(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Determines if the `KSP` reuses the current preconditioner even if the `Mat` operator in the `KSP` has changed.
 
 Collective
@@ -346,9 +346,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetReusePreconditioner"))
 """
-function KSPGetReusePreconditioner(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetReusePreconditioner(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetReusePreconditioner(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetReusePreconditioner(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -364,7 +364,7 @@ function KSPGetReusePreconditioner(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetSkipPCSetFromOptions(petsclib::PetscLibType,ksp::PetscKSP, flag::PetscBool) 
+	KSPSetSkipPCSetFromOptions(petsclib::PetscLibType,ksp::AbstractPetscKSP, flag::PetscBool) 
 prevents `KSPSetFromOptions()` from calling `PCSetFromOptions()`.
 This is used if the same `PC` is shared by more than one `KSP` so its options are not reset for each `KSP`
 
@@ -381,9 +381,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetSkipPCSetFromOptions"))
 """
-function KSPSetSkipPCSetFromOptions(petsclib::PetscLibType, ksp::PetscKSP, flag::PetscBool) end
+function KSPSetSkipPCSetFromOptions(petsclib::PetscLibType, ksp::AbstractPetscKSP, flag::PetscBool) end
 
-@for_petsc function KSPSetSkipPCSetFromOptions(petsclib::$UnionPetscLib, ksp::PetscKSP, flag::PetscBool )
+@for_petsc function KSPSetSkipPCSetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flag::PetscBool )
 
     @chk ccall(
                (:KSPSetSkipPCSetFromOptions, $petsc_library),
@@ -397,7 +397,7 @@ function KSPSetSkipPCSetFromOptions(petsclib::PetscLibType, ksp::PetscKSP, flag:
 end 
 
 """
-	KSPSetUp(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPSetUp(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Sets up the internal data structures for the
 later use `KSPSolve()` the `KSP` linear iterative solver.
 
@@ -413,9 +413,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetUp"))
 """
-function KSPSetUp(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPSetUp(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPSetUp(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPSetUp(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPSetUp, $petsc_library),
@@ -429,7 +429,7 @@ function KSPSetUp(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPConvergedReasonView(petsclib::PetscLibType,ksp::PetscKSP, viewer::PetscViewer) 
+	KSPConvergedReasonView(petsclib::PetscLibType,ksp::AbstractPetscKSP, viewer::PetscViewer) 
 Displays the reason a `KSP` solve converged or diverged, `KSPConvergedReason` to a `PetscViewer`
 
 Collective
@@ -450,9 +450,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPConvergedReasonView"))
 """
-function KSPConvergedReasonView(petsclib::PetscLibType, ksp::PetscKSP, viewer::PetscViewer) end
+function KSPConvergedReasonView(petsclib::PetscLibType, ksp::AbstractPetscKSP, viewer::PetscViewer) end
 
-@for_petsc function KSPConvergedReasonView(petsclib::$UnionPetscLib, ksp::PetscKSP, viewer::PetscViewer )
+@for_petsc function KSPConvergedReasonView(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, viewer::PetscViewer )
 
     @chk ccall(
                (:KSPConvergedReasonView, $petsc_library),
@@ -466,7 +466,7 @@ function KSPConvergedReasonView(petsclib::PetscLibType, ksp::PetscKSP, viewer::P
 end 
 
 """
-	KSPConvergedReasonViewSet(petsclib::PetscLibType,ksp::PetscKSP, f::KSPConvergedReasonViewFn, vctx::Cvoid, reasonviewdestroy::PetscCtxDestroyFn) 
+	KSPConvergedReasonViewSet(petsclib::PetscLibType,ksp::AbstractPetscKSP, f::KSPConvergedReasonViewFn, vctx::Cvoid, reasonviewdestroy::PetscCtxDestroyFn) 
 Sets an ADDITIONAL function that is to be used at the
 end of the linear solver to display the convergence reason of the linear solver.
 
@@ -491,9 +491,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedReasonViewSet"))
 """
-function KSPConvergedReasonViewSet(petsclib::PetscLibType, ksp::PetscKSP, f::KSPConvergedReasonViewFn, vctx::Cvoid, reasonviewdestroy::PetscCtxDestroyFn) end
+function KSPConvergedReasonViewSet(petsclib::PetscLibType, ksp::AbstractPetscKSP, f::KSPConvergedReasonViewFn, vctx::Cvoid, reasonviewdestroy::PetscCtxDestroyFn) end
 
-@for_petsc function KSPConvergedReasonViewSet(petsclib::$UnionPetscLib, ksp::PetscKSP, f::KSPConvergedReasonViewFn, vctx::Cvoid, reasonviewdestroy::PetscCtxDestroyFn )
+@for_petsc function KSPConvergedReasonViewSet(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, f::KSPConvergedReasonViewFn, vctx::Cvoid, reasonviewdestroy::PetscCtxDestroyFn )
 
     @chk ccall(
                (:KSPConvergedReasonViewSet, $petsc_library),
@@ -507,7 +507,7 @@ function KSPConvergedReasonViewSet(petsclib::PetscLibType, ksp::PetscKSP, f::KSP
 end 
 
 """
-	KSPConvergedReasonViewCancel(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPConvergedReasonViewCancel(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Clears all the `KSPConvergedReason` view functions for a `KSP` object set with `KSPConvergedReasonViewSet()`
 as well as the default viewer.
 
@@ -523,9 +523,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedReasonViewCancel"))
 """
-function KSPConvergedReasonViewCancel(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPConvergedReasonViewCancel(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPConvergedReasonViewCancel(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPConvergedReasonViewCancel(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPConvergedReasonViewCancel, $petsc_library),
@@ -539,7 +539,7 @@ function KSPConvergedReasonViewCancel(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPConvergedReasonViewFromOptions(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPConvergedReasonViewFromOptions(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Processes command line options to determine if/how a `KSPReason` is to be viewed.
 
 Collective
@@ -554,9 +554,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedReasonViewFromOptions"))
 """
-function KSPConvergedReasonViewFromOptions(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPConvergedReasonViewFromOptions(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPConvergedReasonViewFromOptions(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPConvergedReasonViewFromOptions(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPConvergedReasonViewFromOptions, $petsc_library),
@@ -570,7 +570,7 @@ function KSPConvergedReasonViewFromOptions(petsclib::PetscLibType, ksp::PetscKSP
 end 
 
 """
-	KSPConvergedRateView(petsclib::PetscLibType,ksp::PetscKSP, viewer::PetscViewer) 
+	KSPConvergedRateView(petsclib::PetscLibType,ksp::AbstractPetscKSP, viewer::PetscViewer) 
 Displays the convergence rate <https://en.wikipedia.org/wiki/Coefficient_of_determination> of `KSPSolve()` to a viewer
 
 Collective
@@ -589,9 +589,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedRateView"))
 """
-function KSPConvergedRateView(petsclib::PetscLibType, ksp::PetscKSP, viewer::PetscViewer) end
+function KSPConvergedRateView(petsclib::PetscLibType, ksp::AbstractPetscKSP, viewer::PetscViewer) end
 
-@for_petsc function KSPConvergedRateView(petsclib::$UnionPetscLib, ksp::PetscKSP, viewer::PetscViewer )
+@for_petsc function KSPConvergedRateView(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, viewer::PetscViewer )
 
     @chk ccall(
                (:KSPConvergedRateView, $petsc_library),
@@ -605,7 +605,7 @@ function KSPConvergedRateView(petsclib::PetscLibType, ksp::PetscKSP, viewer::Pet
 end 
 
 """
-	KSPSolve(petsclib::PetscLibType,ksp::PetscKSP, b::PetscVec, x::PetscVec) 
+	KSPSolve(petsclib::PetscLibType,ksp::AbstractPetscKSP, b::AbstractPetscVec, x::AbstractPetscVec) 
 Solves a linear system associated with `KSP` object
 
 Collective
@@ -640,9 +640,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSolve"))
 """
-function KSPSolve(petsclib::PetscLibType, ksp::PetscKSP, b::Union{PetscVec,Ptr}, x::Union{PetscVec,Ptr}) end
+function KSPSolve(petsclib::PetscLibType, ksp::AbstractPetscKSP, b::Union{PetscVec,Ptr}, x::Union{PetscVec,Ptr}) end
 
-@for_petsc function KSPSolve(petsclib::$UnionPetscLib, ksp::PetscKSP, b::Union{PetscVec,Ptr}, x::Union{PetscVec,Ptr} )
+@for_petsc function KSPSolve(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, b::Union{PetscVec,Ptr}, x::Union{PetscVec,Ptr} )
 
     @chk ccall(
                (:KSPSolve, $petsc_library),
@@ -656,7 +656,7 @@ function KSPSolve(petsclib::PetscLibType, ksp::PetscKSP, b::Union{PetscVec,Ptr},
 end 
 
 """
-	KSPSolveTranspose(petsclib::PetscLibType,ksp::PetscKSP, b::PetscVec, x::PetscVec) 
+	KSPSolveTranspose(petsclib::PetscLibType,ksp::AbstractPetscKSP, b::AbstractPetscVec, x::AbstractPetscVec) 
 Solves a linear system with the transpose of the matrix associated with the `KSP` object,  A^T x = b.
 
 Collective
@@ -674,9 +674,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSolveTranspose"))
 """
-function KSPSolveTranspose(petsclib::PetscLibType, ksp::PetscKSP, b::PetscVec, x::PetscVec) end
+function KSPSolveTranspose(petsclib::PetscLibType, ksp::AbstractPetscKSP, b::AbstractPetscVec, x::AbstractPetscVec) end
 
-@for_petsc function KSPSolveTranspose(petsclib::$UnionPetscLib, ksp::PetscKSP, b::PetscVec, x::PetscVec )
+@for_petsc function KSPSolveTranspose(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, b::AbstractPetscVec, x::AbstractPetscVec )
 
     @chk ccall(
                (:KSPSolveTranspose, $petsc_library),
@@ -690,7 +690,7 @@ function KSPSolveTranspose(petsclib::PetscLibType, ksp::PetscKSP, b::PetscVec, x
 end 
 
 """
-	KSPMatSolve(petsclib::PetscLibType,ksp::PetscKSP, B::PetscMat, X::PetscMat) 
+	KSPMatSolve(petsclib::PetscLibType,ksp::AbstractPetscKSP, B::AbstractPetscMat, X::AbstractPetscMat) 
 Solves a linear system with multiple right
 
 Input Parameters:
@@ -707,9 +707,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMatSolve"))
 """
-function KSPMatSolve(petsclib::PetscLibType, ksp::PetscKSP, B::PetscMat, X::PetscMat) end
+function KSPMatSolve(petsclib::PetscLibType, ksp::AbstractPetscKSP, B::AbstractPetscMat, X::AbstractPetscMat) end
 
-@for_petsc function KSPMatSolve(petsclib::$UnionPetscLib, ksp::PetscKSP, B::PetscMat, X::PetscMat )
+@for_petsc function KSPMatSolve(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, B::AbstractPetscMat, X::AbstractPetscMat )
 
     @chk ccall(
                (:KSPMatSolve, $petsc_library),
@@ -723,7 +723,7 @@ function KSPMatSolve(petsclib::PetscLibType, ksp::PetscKSP, B::PetscMat, X::Pets
 end 
 
 """
-	KSPMatSolveTranspose(petsclib::PetscLibType,ksp::PetscKSP, B::PetscMat, X::PetscMat) 
+	KSPMatSolveTranspose(petsclib::PetscLibType,ksp::AbstractPetscKSP, B::AbstractPetscMat, X::AbstractPetscMat) 
 Solves a linear system with the transposed matrix with multiple right
 
 Input Parameters:
@@ -740,9 +740,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMatSolveTranspose"))
 """
-function KSPMatSolveTranspose(petsclib::PetscLibType, ksp::PetscKSP, B::PetscMat, X::PetscMat) end
+function KSPMatSolveTranspose(petsclib::PetscLibType, ksp::AbstractPetscKSP, B::AbstractPetscMat, X::AbstractPetscMat) end
 
-@for_petsc function KSPMatSolveTranspose(petsclib::$UnionPetscLib, ksp::PetscKSP, B::PetscMat, X::PetscMat )
+@for_petsc function KSPMatSolveTranspose(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, B::AbstractPetscMat, X::AbstractPetscMat )
 
     @chk ccall(
                (:KSPMatSolveTranspose, $petsc_library),
@@ -756,7 +756,7 @@ function KSPMatSolveTranspose(petsclib::PetscLibType, ksp::PetscKSP, B::PetscMat
 end 
 
 """
-	KSPSetMatSolveBatchSize(petsclib::PetscLibType,ksp::PetscKSP, bs::PetscInt) 
+	KSPSetMatSolveBatchSize(petsclib::PetscLibType,ksp::AbstractPetscKSP, bs::PetscInt) 
 Sets the maximum number of columns treated simultaneously in `KSPMatSolve()`.
 
 Logically Collective
@@ -772,9 +772,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetMatSolveBatchSize"))
 """
-function KSPSetMatSolveBatchSize(petsclib::PetscLibType, ksp::PetscKSP, bs::PetscInt) end
+function KSPSetMatSolveBatchSize(petsclib::PetscLibType, ksp::AbstractPetscKSP, bs::PetscInt) end
 
-@for_petsc function KSPSetMatSolveBatchSize(petsclib::$UnionPetscLib, ksp::PetscKSP, bs::$PetscInt )
+@for_petsc function KSPSetMatSolveBatchSize(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, bs::$PetscInt )
 
     @chk ccall(
                (:KSPSetMatSolveBatchSize, $petsc_library),
@@ -788,7 +788,7 @@ function KSPSetMatSolveBatchSize(petsclib::PetscLibType, ksp::PetscKSP, bs::Pets
 end 
 
 """
-	bs::PetscInt = KSPGetMatSolveBatchSize(petsclib::PetscLibType,ksp::PetscKSP) 
+	bs::PetscInt = KSPGetMatSolveBatchSize(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the maximum number of columns treated simultaneously in `KSPMatSolve()`.
 
 Input Parameter:
@@ -804,9 +804,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetMatSolveBatchSize"))
 """
-function KSPGetMatSolveBatchSize(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetMatSolveBatchSize(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetMatSolveBatchSize(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetMatSolveBatchSize(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	bs_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -822,7 +822,7 @@ function KSPGetMatSolveBatchSize(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPResetViewers(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPResetViewers(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Resets all the viewers set from the options database during `KSPSetFromOptions()`
 
 Collective
@@ -837,9 +837,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPResetViewers"))
 """
-function KSPResetViewers(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPResetViewers(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPResetViewers(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPResetViewers(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPResetViewers, $petsc_library),
@@ -853,7 +853,7 @@ function KSPResetViewers(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPReset(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPReset(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Removes any allocated `Vec` and `Mat` from the `KSP` data structures.
 
 Collective
@@ -868,9 +868,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPReset"))
 """
-function KSPReset(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPReset(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPReset(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPReset(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPReset, $petsc_library),
@@ -884,7 +884,7 @@ function KSPReset(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPDestroy(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPDestroy(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Destroys a `KSP` context.
 
 Collective
@@ -899,9 +899,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPDestroy"))
 """
-function KSPDestroy(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPDestroy(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPDestroy(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPDestroy(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -917,7 +917,7 @@ function KSPDestroy(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetPCSide(petsclib::PetscLibType,ksp::PetscKSP, side::PCSide) 
+	KSPSetPCSide(petsclib::PetscLibType,ksp::AbstractPetscKSP, side::PCSide) 
 Sets the preconditioning side.
 
 Logically Collective
@@ -932,9 +932,9 @@ Output Parameter:
 # External Links
 $(_doc_external("KSP/KSPSetPCSide"))
 """
-function KSPSetPCSide(petsclib::PetscLibType, ksp::PetscKSP, side::PCSide) end
+function KSPSetPCSide(petsclib::PetscLibType, ksp::AbstractPetscKSP, side::PCSide) end
 
-@for_petsc function KSPSetPCSide(petsclib::$UnionPetscLib, ksp::PetscKSP, side::PCSide )
+@for_petsc function KSPSetPCSide(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, side::PCSide )
 
     @chk ccall(
                (:KSPSetPCSide, $petsc_library),
@@ -948,7 +948,7 @@ function KSPSetPCSide(petsclib::PetscLibType, ksp::PetscKSP, side::PCSide) end
 end 
 
 """
-	KSPGetPCSide(petsclib::PetscLibType,ksp::PetscKSP, side::PCSide) 
+	KSPGetPCSide(petsclib::PetscLibType,ksp::AbstractPetscKSP, side::PCSide) 
 Gets the preconditioning side.
 
 Not Collective
@@ -963,9 +963,9 @@ Output Parameter:
 # External Links
 $(_doc_external("KSP/KSPGetPCSide"))
 """
-function KSPGetPCSide(petsclib::PetscLibType, ksp::PetscKSP, side::PCSide) end
+function KSPGetPCSide(petsclib::PetscLibType, ksp::AbstractPetscKSP, side::PCSide) end
 
-@for_petsc function KSPGetPCSide(petsclib::$UnionPetscLib, ksp::PetscKSP, side::PCSide )
+@for_petsc function KSPGetPCSide(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, side::PCSide )
 
     @chk ccall(
                (:KSPGetPCSide, $petsc_library),
@@ -979,7 +979,7 @@ function KSPGetPCSide(petsclib::PetscLibType, ksp::PetscKSP, side::PCSide) end
 end 
 
 """
-	rtol::PetscReal,abstol::PetscReal,dtol::PetscReal,maxits::PetscInt = KSPGetTolerances(petsclib::PetscLibType,ksp::PetscKSP) 
+	rtol::PetscReal,abstol::PetscReal,dtol::PetscReal,maxits::PetscInt = KSPGetTolerances(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the relative, absolute, divergence, and maximum
 iteration tolerances used by the default `KSP` convergence tests.
 
@@ -1001,9 +1001,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetTolerances"))
 """
-function KSPGetTolerances(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetTolerances(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetTolerances(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetTolerances(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	rtol_ = Ref{$PetscReal}()
 	abstol_ = Ref{$PetscReal}()
 	dtol_ = Ref{$PetscReal}()
@@ -1025,7 +1025,7 @@ function KSPGetTolerances(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetTolerances(petsclib::PetscLibType,ksp::PetscKSP, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, maxits::PetscInt) 
+	KSPSetTolerances(petsclib::PetscLibType,ksp::AbstractPetscKSP, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, maxits::PetscInt) 
 Sets the relative, absolute, divergence, and maximum
 iteration tolerances used by the default `KSP` convergence testers.
 
@@ -1051,9 +1051,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetTolerances"))
 """
-function KSPSetTolerances(petsclib::PetscLibType, ksp::PetscKSP, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, maxits::PetscInt) end
+function KSPSetTolerances(petsclib::PetscLibType, ksp::AbstractPetscKSP, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, maxits::PetscInt) end
 
-@for_petsc function KSPSetTolerances(petsclib::$UnionPetscLib, ksp::PetscKSP, rtol::$PetscReal, abstol::$PetscReal, dtol::$PetscReal, maxits::$PetscInt )
+@for_petsc function KSPSetTolerances(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, rtol::$PetscReal, abstol::$PetscReal, dtol::$PetscReal, maxits::$PetscInt )
 
     @chk ccall(
                (:KSPSetTolerances, $petsc_library),
@@ -1067,7 +1067,7 @@ function KSPSetTolerances(petsclib::PetscLibType, ksp::PetscKSP, rtol::PetscReal
 end 
 
 """
-	KSPSetMinimumIterations(petsclib::PetscLibType,ksp::PetscKSP, minit::PetscInt) 
+	KSPSetMinimumIterations(petsclib::PetscLibType,ksp::AbstractPetscKSP, minit::PetscInt) 
 Sets the minimum number of iterations to use, regardless of the tolerances
 
 Logically Collective
@@ -1086,9 +1086,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetMinimumIterations"))
 """
-function KSPSetMinimumIterations(petsclib::PetscLibType, ksp::PetscKSP, minit::PetscInt) end
+function KSPSetMinimumIterations(petsclib::PetscLibType, ksp::AbstractPetscKSP, minit::PetscInt) end
 
-@for_petsc function KSPSetMinimumIterations(petsclib::$UnionPetscLib, ksp::PetscKSP, minit::$PetscInt )
+@for_petsc function KSPSetMinimumIterations(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, minit::$PetscInt )
 
     @chk ccall(
                (:KSPSetMinimumIterations, $petsc_library),
@@ -1102,7 +1102,7 @@ function KSPSetMinimumIterations(petsclib::PetscLibType, ksp::PetscKSP, minit::P
 end 
 
 """
-	minit::PetscInt = KSPGetMinimumIterations(petsclib::PetscLibType,ksp::PetscKSP) 
+	minit::PetscInt = KSPGetMinimumIterations(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the minimum number of iterations to use, regardless of the tolerances, that was set with `KSPSetMinimumIterations()` or `
 
 Not Collective
@@ -1120,9 +1120,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetMinimumIterations"))
 """
-function KSPGetMinimumIterations(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetMinimumIterations(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetMinimumIterations(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetMinimumIterations(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	minit_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1138,7 +1138,7 @@ function KSPGetMinimumIterations(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetInitialGuessNonzero(petsclib::PetscLibType,ksp::PetscKSP, flg::PetscBool) 
+	KSPSetInitialGuessNonzero(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
 Tells the iterative solver that the
 initial guess is nonzero; otherwise `KSP` assumes the initial guess
 is to be zero (and thus zeros it out before solving).
@@ -1159,9 +1159,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetInitialGuessNonzero"))
 """
-function KSPSetInitialGuessNonzero(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) end
+function KSPSetInitialGuessNonzero(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool) end
 
-@for_petsc function KSPSetInitialGuessNonzero(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
+@for_petsc function KSPSetInitialGuessNonzero(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetInitialGuessNonzero, $petsc_library),
@@ -1175,7 +1175,7 @@ function KSPSetInitialGuessNonzero(petsclib::PetscLibType, ksp::PetscKSP, flg::P
 end 
 
 """
-	flag::PetscBool = KSPGetInitialGuessNonzero(petsclib::PetscLibType,ksp::PetscKSP) 
+	flag::PetscBool = KSPGetInitialGuessNonzero(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Determines whether the `KSP` solver is using
 a zero initial guess.
 
@@ -1194,9 +1194,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetInitialGuessNonzero"))
 """
-function KSPGetInitialGuessNonzero(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetInitialGuessNonzero(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetInitialGuessNonzero(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetInitialGuessNonzero(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1212,7 +1212,7 @@ function KSPGetInitialGuessNonzero(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetErrorIfNotConverged(petsclib::PetscLibType,ksp::PetscKSP, flg::PetscBool) 
+	KSPSetErrorIfNotConverged(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
 Causes `KSPSolve()` to generate an error if the solver has not converged as soon as the error is detected.
 
 Logically Collective
@@ -1231,9 +1231,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetErrorIfNotConverged"))
 """
-function KSPSetErrorIfNotConverged(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) end
+function KSPSetErrorIfNotConverged(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool) end
 
-@for_petsc function KSPSetErrorIfNotConverged(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
+@for_petsc function KSPSetErrorIfNotConverged(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetErrorIfNotConverged, $petsc_library),
@@ -1247,7 +1247,7 @@ function KSPSetErrorIfNotConverged(petsclib::PetscLibType, ksp::PetscKSP, flg::P
 end 
 
 """
-	flag::PetscBool = KSPGetErrorIfNotConverged(petsclib::PetscLibType,ksp::PetscKSP) 
+	flag::PetscBool = KSPGetErrorIfNotConverged(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Will `KSPSolve()` generate an error if the solver does not converge?
 
 Not Collective
@@ -1265,9 +1265,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetErrorIfNotConverged"))
 """
-function KSPGetErrorIfNotConverged(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetErrorIfNotConverged(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetErrorIfNotConverged(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetErrorIfNotConverged(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1283,7 +1283,7 @@ function KSPGetErrorIfNotConverged(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetInitialGuessKnoll(petsclib::PetscLibType,ksp::PetscKSP, flg::PetscBool) 
+	KSPSetInitialGuessKnoll(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
 Tells the iterative solver to use `PCApply()` on the right hand side vector to compute the initial guess (The Knoll trick)
 
 Logically Collective
@@ -1299,9 +1299,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetInitialGuessKnoll"))
 """
-function KSPSetInitialGuessKnoll(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) end
+function KSPSetInitialGuessKnoll(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool) end
 
-@for_petsc function KSPSetInitialGuessKnoll(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
+@for_petsc function KSPSetInitialGuessKnoll(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetInitialGuessKnoll, $petsc_library),
@@ -1315,7 +1315,7 @@ function KSPSetInitialGuessKnoll(petsclib::PetscLibType, ksp::PetscKSP, flg::Pet
 end 
 
 """
-	flag::PetscBool = KSPGetInitialGuessKnoll(petsclib::PetscLibType,ksp::PetscKSP) 
+	flag::PetscBool = KSPGetInitialGuessKnoll(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Determines whether the `KSP` solver is using the Knoll trick (using PCApply(pc,b,...) to compute
 the initial guess
 
@@ -1334,9 +1334,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetInitialGuessKnoll"))
 """
-function KSPGetInitialGuessKnoll(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetInitialGuessKnoll(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetInitialGuessKnoll(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetInitialGuessKnoll(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1352,7 +1352,7 @@ function KSPGetInitialGuessKnoll(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	flg::PetscBool = KSPGetComputeSingularValues(petsclib::PetscLibType,ksp::PetscKSP) 
+	flg::PetscBool = KSPGetComputeSingularValues(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the flag indicating whether the extreme singular
 values will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -1375,9 +1375,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetComputeSingularValues"))
 """
-function KSPGetComputeSingularValues(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetComputeSingularValues(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetComputeSingularValues(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetComputeSingularValues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1393,7 +1393,7 @@ function KSPGetComputeSingularValues(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetComputeSingularValues(petsclib::PetscLibType,ksp::PetscKSP, flg::PetscBool) 
+	KSPSetComputeSingularValues(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
 Sets a flag so that the extreme singular
 values will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -1414,9 +1414,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetComputeSingularValues"))
 """
-function KSPSetComputeSingularValues(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) end
+function KSPSetComputeSingularValues(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool) end
 
-@for_petsc function KSPSetComputeSingularValues(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
+@for_petsc function KSPSetComputeSingularValues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetComputeSingularValues, $petsc_library),
@@ -1430,7 +1430,7 @@ function KSPSetComputeSingularValues(petsclib::PetscLibType, ksp::PetscKSP, flg:
 end 
 
 """
-	flg::PetscBool = KSPGetComputeEigenvalues(petsclib::PetscLibType,ksp::PetscKSP) 
+	flg::PetscBool = KSPGetComputeEigenvalues(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the flag indicating that the extreme eigenvalues
 values will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -1450,9 +1450,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetComputeEigenvalues"))
 """
-function KSPGetComputeEigenvalues(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetComputeEigenvalues(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetComputeEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1468,7 +1468,7 @@ function KSPGetComputeEigenvalues(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetComputeEigenvalues(petsclib::PetscLibType,ksp::PetscKSP, flg::PetscBool) 
+	KSPSetComputeEigenvalues(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
 Sets a flag so that the extreme eigenvalues
 values will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -1486,9 +1486,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetComputeEigenvalues"))
 """
-function KSPSetComputeEigenvalues(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) end
+function KSPSetComputeEigenvalues(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool) end
 
-@for_petsc function KSPSetComputeEigenvalues(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
+@for_petsc function KSPSetComputeEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetComputeEigenvalues, $petsc_library),
@@ -1502,7 +1502,7 @@ function KSPSetComputeEigenvalues(petsclib::PetscLibType, ksp::PetscKSP, flg::Pe
 end 
 
 """
-	KSPSetComputeRitz(petsclib::PetscLibType,ksp::PetscKSP, flg::PetscBool) 
+	KSPSetComputeRitz(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
 Sets a flag so that the Ritz or harmonic Ritz pairs
 will be calculated via a Lanczos or Arnoldi process as the linear
 system is solved.
@@ -1520,9 +1520,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetComputeRitz"))
 """
-function KSPSetComputeRitz(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) end
+function KSPSetComputeRitz(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool) end
 
-@for_petsc function KSPSetComputeRitz(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
+@for_petsc function KSPSetComputeRitz(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetComputeRitz, $petsc_library),
@@ -1536,7 +1536,7 @@ function KSPSetComputeRitz(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool
 end 
 
 """
-	r::PetscVec = KSPGetRhs(petsclib::PetscLibType,ksp::PetscKSP) 
+	r::PetscVec = KSPGetRhs(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the right
 be solved.
 
@@ -1555,9 +1555,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPGetRhs"))
 """
-function KSPGetRhs(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetRhs(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetRhs(petsclib::$UnionPetscLib, ksp::PetscKSP)
+@for_petsc function KSPGetRhs(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP)
     r_ = Ref{CVec}()
 
     @chk ccall(
@@ -1571,7 +1571,7 @@ function KSPGetRhs(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	v::PetscVec = KSPGetSolution(petsclib::PetscLibType,ksp::PetscKSP) 
+	v::PetscVec = KSPGetSolution(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the location of the solution for the linear system to be solved.
 
 Not Collective
@@ -1589,9 +1589,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPGetSolution"))
 """
-function KSPGetSolution(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetSolution(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetSolution(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetSolution(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	v_ = Ref{CVec}()
 
     @chk ccall(
@@ -1606,7 +1606,7 @@ function KSPGetSolution(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetPC(petsclib::PetscLibType,ksp::PetscKSP, pc::PC) 
+	KSPSetPC(petsclib::PetscLibType,ksp::AbstractPetscKSP, pc::PC) 
 Sets the preconditioner to be used to calculate the
 application of the preconditioner on a vector into a `KSP`.
 
@@ -1623,9 +1623,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetPC"))
 """
-function KSPSetPC(petsclib::PetscLibType, ksp::PetscKSP, pc::PC) end
+function KSPSetPC(petsclib::PetscLibType, ksp::AbstractPetscKSP, pc::PC) end
 
-@for_petsc function KSPSetPC(petsclib::$UnionPetscLib, ksp::PetscKSP, pc::PC )
+@for_petsc function KSPSetPC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, pc::PC )
 
     @chk ccall(
                (:KSPSetPC, $petsc_library),
@@ -1639,7 +1639,7 @@ function KSPSetPC(petsclib::PetscLibType, ksp::PetscKSP, pc::PC) end
 end 
 
 """
-	KSPGetPC(petsclib::PetscLibType,ksp::PetscKSP, pc::PC) 
+	KSPGetPC(petsclib::PetscLibType,ksp::AbstractPetscKSP, pc::PC) 
 Returns a pointer to the preconditioner context with the `KSP`
 
 Not Collective
@@ -1657,9 +1657,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPGetPC"))
 """
-function KSPGetPC(petsclib::PetscLibType, ksp::PetscKSP, pc::PC) end
+function KSPGetPC(petsclib::PetscLibType, ksp::AbstractPetscKSP, pc::PC) end
 
-@for_petsc function KSPGetPC(petsclib::$UnionPetscLib, ksp::PetscKSP, pc::PC )
+@for_petsc function KSPGetPC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, pc::PC )
 
     @chk ccall(
                (:KSPGetPC, $petsc_library),
@@ -1673,7 +1673,7 @@ function KSPGetPC(petsclib::PetscLibType, ksp::PetscKSP, pc::PC) end
 end 
 
 """
-	KSPMonitor(petsclib::PetscLibType,ksp::PetscKSP, it::PetscInt, rnorm::PetscReal) 
+	KSPMonitor(petsclib::PetscLibType,ksp::AbstractPetscKSP, it::PetscInt, rnorm::PetscReal) 
 runs the user provided monitor routines, if they exist
 
 Collective
@@ -1690,9 +1690,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPMonitor"))
 """
-function KSPMonitor(petsclib::PetscLibType, ksp::PetscKSP, it::PetscInt, rnorm::PetscReal) end
+function KSPMonitor(petsclib::PetscLibType, ksp::AbstractPetscKSP, it::PetscInt, rnorm::PetscReal) end
 
-@for_petsc function KSPMonitor(petsclib::$UnionPetscLib, ksp::PetscKSP, it::$PetscInt, rnorm::$PetscReal )
+@for_petsc function KSPMonitor(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, it::$PetscInt, rnorm::$PetscReal )
 
     @chk ccall(
                (:KSPMonitor, $petsc_library),
@@ -1706,7 +1706,7 @@ function KSPMonitor(petsclib::PetscLibType, ksp::PetscKSP, it::PetscInt, rnorm::
 end 
 
 """
-	KSPMonitorSet(petsclib::PetscLibType,ksp::PetscKSP, monitor::KSPMonitorFn, ctx::Cvoid, monitordestroy::PetscCtxDestroyFn) 
+	KSPMonitorSet(petsclib::PetscLibType,ksp::AbstractPetscKSP, monitor::KSPMonitorFn, ctx::Cvoid, monitordestroy::PetscCtxDestroyFn) 
 Sets an ADDITIONAL function to be called at every iteration to monitor, i.e. display in some way, perhaps by printing in the terminal,
 the residual norm computed in a `KSPSolve()`
 
@@ -1738,9 +1738,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPMonitorSet"))
 """
-function KSPMonitorSet(petsclib::PetscLibType, ksp::PetscKSP, monitor::KSPMonitorFn, ctx::Cvoid, monitordestroy::PetscCtxDestroyFn) end
+function KSPMonitorSet(petsclib::PetscLibType, ksp::AbstractPetscKSP, monitor::KSPMonitorFn, ctx::Cvoid, monitordestroy::PetscCtxDestroyFn) end
 
-@for_petsc function KSPMonitorSet(petsclib::$UnionPetscLib, ksp::PetscKSP, monitor::KSPMonitorFn, ctx::Cvoid, monitordestroy::PetscCtxDestroyFn )
+@for_petsc function KSPMonitorSet(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, monitor::KSPMonitorFn, ctx::Cvoid, monitordestroy::PetscCtxDestroyFn )
 
     @chk ccall(
                (:KSPMonitorSet, $petsc_library),
@@ -1754,7 +1754,7 @@ function KSPMonitorSet(petsclib::PetscLibType, ksp::PetscKSP, monitor::KSPMonito
 end 
 
 """
-	KSPMonitorCancel(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPMonitorCancel(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Clears all monitors for a `KSP` object.
 
 Logically Collective
@@ -1772,9 +1772,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorCancel"))
 """
-function KSPMonitorCancel(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPMonitorCancel(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPMonitorCancel(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPMonitorCancel(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPMonitorCancel, $petsc_library),
@@ -1788,7 +1788,7 @@ function KSPMonitorCancel(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPGetMonitorContext(petsclib::PetscLibType,ksp::PetscKSP, ctx::Cvoid) 
+	KSPGetMonitorContext(petsclib::PetscLibType,ksp::AbstractPetscKSP, ctx::Cvoid) 
 Gets the monitoring context, as set by `KSPMonitorSet()` for the FIRST monitor only.
 
 Not Collective
@@ -1806,9 +1806,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetMonitorContext"))
 """
-function KSPGetMonitorContext(petsclib::PetscLibType, ksp::PetscKSP, ctx::Cvoid) end
+function KSPGetMonitorContext(petsclib::PetscLibType, ksp::AbstractPetscKSP, ctx::Cvoid) end
 
-@for_petsc function KSPGetMonitorContext(petsclib::$UnionPetscLib, ksp::PetscKSP, ctx::Cvoid )
+@for_petsc function KSPGetMonitorContext(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, ctx::Cvoid )
 
     @chk ccall(
                (:KSPGetMonitorContext, $petsc_library),
@@ -1822,7 +1822,7 @@ function KSPGetMonitorContext(petsclib::PetscLibType, ksp::PetscKSP, ctx::Cvoid)
 end 
 
 """
-	KSPSetResidualHistory(petsclib::PetscLibType,ksp::PetscKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) 
+	KSPSetResidualHistory(petsclib::PetscLibType,ksp::AbstractPetscKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) 
 Sets the array used to hold the residual history.
 If set, this array will contain the residual norms computed at each
 iteration of the solver.
@@ -1843,9 +1843,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetResidualHistory"))
 """
-function KSPSetResidualHistory(petsclib::PetscLibType, ksp::PetscKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) end
+function KSPSetResidualHistory(petsclib::PetscLibType, ksp::AbstractPetscKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) end
 
-@for_petsc function KSPSetResidualHistory(petsclib::$UnionPetscLib, ksp::PetscKSP, a::Vector{$PetscReal}, na::PetscCount, reset::PetscBool )
+@for_petsc function KSPSetResidualHistory(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, a::Vector{$PetscReal}, na::PetscCount, reset::PetscBool )
 
     @chk ccall(
                (:KSPSetResidualHistory, $petsc_library),
@@ -1859,7 +1859,7 @@ function KSPSetResidualHistory(petsclib::PetscLibType, ksp::PetscKSP, a::Vector{
 end 
 
 """
-	a::Vector{PetscReal},na::PetscInt = KSPGetResidualHistory(petsclib::PetscLibType,ksp::PetscKSP) 
+	a::Vector{PetscReal},na::PetscInt = KSPGetResidualHistory(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the array used to hold the residual history and the number of residuals it contains.
 
 Not Collective
@@ -1878,9 +1878,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetResidualHistory"))
 """
-function KSPGetResidualHistory(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetResidualHistory(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetResidualHistory(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetResidualHistory(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	a_ = Ref{Ptr{$PetscReal}}()
 	na_ = Ref{$PetscInt}()
 
@@ -1898,7 +1898,7 @@ function KSPGetResidualHistory(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetErrorHistory(petsclib::PetscLibType,ksp::PetscKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) 
+	KSPSetErrorHistory(petsclib::PetscLibType,ksp::AbstractPetscKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) 
 Sets the array used to hold the error history. If set, this array will contain the error norms computed at each iteration of the solver.
 
 Not Collective
@@ -1916,9 +1916,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetErrorHistory"))
 """
-function KSPSetErrorHistory(petsclib::PetscLibType, ksp::PetscKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) end
+function KSPSetErrorHistory(petsclib::PetscLibType, ksp::AbstractPetscKSP, a::Vector{PetscReal}, na::PetscCount, reset::PetscBool) end
 
-@for_petsc function KSPSetErrorHistory(petsclib::$UnionPetscLib, ksp::PetscKSP, a::Vector{$PetscReal}, na::PetscCount, reset::PetscBool )
+@for_petsc function KSPSetErrorHistory(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, a::Vector{$PetscReal}, na::PetscCount, reset::PetscBool )
 
     @chk ccall(
                (:KSPSetErrorHistory, $petsc_library),
@@ -1932,7 +1932,7 @@ function KSPSetErrorHistory(petsclib::PetscLibType, ksp::PetscKSP, a::Vector{Pet
 end 
 
 """
-	a::Vector{PetscReal},na::PetscInt = KSPGetErrorHistory(petsclib::PetscLibType,ksp::PetscKSP) 
+	a::Vector{PetscReal},na::PetscInt = KSPGetErrorHistory(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the array used to hold the error history and the number of residuals it contains.
 
 Not Collective
@@ -1951,9 +1951,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetErrorHistory"))
 """
-function KSPGetErrorHistory(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetErrorHistory(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetErrorHistory(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetErrorHistory(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	a_ = Ref{Ptr{$PetscReal}}()
 	na_ = Ref{$PetscInt}()
 
@@ -1971,7 +1971,7 @@ function KSPGetErrorHistory(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	cr::PetscReal,rRsq::PetscReal,ce::PetscReal,eRsq::PetscReal = KSPComputeConvergenceRate(petsclib::PetscLibType,ksp::PetscKSP) 
+	cr::PetscReal,rRsq::PetscReal,ce::PetscReal,eRsq::PetscReal = KSPComputeConvergenceRate(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Compute the convergence rate for the iteration <https:/en.wikipedia.org/wiki/Coefficient_of_determination>
 
 Not Collective
@@ -1992,9 +1992,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPComputeConvergenceRate"))
 """
-function KSPComputeConvergenceRate(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPComputeConvergenceRate(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPComputeConvergenceRate(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPComputeConvergenceRate(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	cr_ = Ref{$PetscReal}()
 	rRsq_ = Ref{$PetscReal}()
 	ce_ = Ref{$PetscReal}()
@@ -2016,7 +2016,7 @@ function KSPComputeConvergenceRate(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetConvergenceTest(petsclib::PetscLibType,ksp::PetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
+	KSPSetConvergenceTest(petsclib::PetscLibType,ksp::AbstractPetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
 Sets the function to be used to determine convergence of `KSPSolve()`
 
 Logically Collective
@@ -2034,9 +2034,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetConvergenceTest"))
 """
-function KSPSetConvergenceTest(petsclib::PetscLibType, ksp::PetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
+function KSPSetConvergenceTest(petsclib::PetscLibType, ksp::AbstractPetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
 
-@for_petsc function KSPSetConvergenceTest(petsclib::$UnionPetscLib, ksp::PetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
+@for_petsc function KSPSetConvergenceTest(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
 
     @chk ccall(
                (:KSPSetConvergenceTest, $petsc_library),
@@ -2050,7 +2050,7 @@ function KSPSetConvergenceTest(petsclib::PetscLibType, ksp::PetscKSP, converge::
 end 
 
 """
-	KSPGetConvergenceTest(petsclib::PetscLibType,ksp::PetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
+	KSPGetConvergenceTest(petsclib::PetscLibType,ksp::AbstractPetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
 Gets the function to be used to determine convergence.
 
 Logically Collective
@@ -2070,9 +2070,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetConvergenceTest"))
 """
-function KSPGetConvergenceTest(petsclib::PetscLibType, ksp::PetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
+function KSPGetConvergenceTest(petsclib::PetscLibType, ksp::AbstractPetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
 
-@for_petsc function KSPGetConvergenceTest(petsclib::$UnionPetscLib, ksp::PetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
+@for_petsc function KSPGetConvergenceTest(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
 
     @chk ccall(
                (:KSPGetConvergenceTest, $petsc_library),
@@ -2086,7 +2086,7 @@ function KSPGetConvergenceTest(petsclib::PetscLibType, ksp::PetscKSP, converge::
 end 
 
 """
-	KSPGetAndClearConvergenceTest(petsclib::PetscLibType,ksp::PetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
+	KSPGetAndClearConvergenceTest(petsclib::PetscLibType,ksp::AbstractPetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
 Gets the function to be used to determine convergence. Removes the current test without calling destroy on the test context
 
 Logically Collective
@@ -2106,9 +2106,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetAndClearConvergenceTest"))
 """
-function KSPGetAndClearConvergenceTest(petsclib::PetscLibType, ksp::PetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
+function KSPGetAndClearConvergenceTest(petsclib::PetscLibType, ksp::AbstractPetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
 
-@for_petsc function KSPGetAndClearConvergenceTest(petsclib::$UnionPetscLib, ksp::PetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
+@for_petsc function KSPGetAndClearConvergenceTest(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, converge::KSPConvergenceTestFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
 
     @chk ccall(
                (:KSPGetAndClearConvergenceTest, $petsc_library),
@@ -2122,7 +2122,7 @@ function KSPGetAndClearConvergenceTest(petsclib::PetscLibType, ksp::PetscKSP, co
 end 
 
 """
-	KSPGetConvergenceContext(petsclib::PetscLibType,ksp::PetscKSP, ctx::Cvoid) 
+	KSPGetConvergenceContext(petsclib::PetscLibType,ksp::AbstractPetscKSP, ctx::Cvoid) 
 Gets the convergence context set with `KSPSetConvergenceTest()`.
 
 Not Collective
@@ -2140,9 +2140,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetConvergenceContext"))
 """
-function KSPGetConvergenceContext(petsclib::PetscLibType, ksp::PetscKSP, ctx::Cvoid) end
+function KSPGetConvergenceContext(petsclib::PetscLibType, ksp::AbstractPetscKSP, ctx::Cvoid) end
 
-@for_petsc function KSPGetConvergenceContext(petsclib::$UnionPetscLib, ksp::PetscKSP, ctx::Cvoid )
+@for_petsc function KSPGetConvergenceContext(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, ctx::Cvoid )
 
     @chk ccall(
                (:KSPGetConvergenceContext, $petsc_library),
@@ -2156,7 +2156,7 @@ function KSPGetConvergenceContext(petsclib::PetscLibType, ksp::PetscKSP, ctx::Cv
 end 
 
 """
-	KSPBuildSolution(petsclib::PetscLibType,ksp::PetscKSP, v::PetscVec, V::PetscVec) 
+	KSPBuildSolution(petsclib::PetscLibType,ksp::AbstractPetscKSP, v::AbstractPetscVec, V::AbstractPetscVec) 
 Builds the approximate solution in a vector provided.
 
 Collective
@@ -2176,9 +2176,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPBuildSolution"))
 """
-function KSPBuildSolution(petsclib::PetscLibType, ksp::PetscKSP, v::PetscVec, V::PetscVec) end
+function KSPBuildSolution(petsclib::PetscLibType, ksp::AbstractPetscKSP, v::AbstractPetscVec, V::AbstractPetscVec) end
 
-@for_petsc function KSPBuildSolution(petsclib::$UnionPetscLib, ksp::PetscKSP, v::PetscVec, V::PetscVec )
+@for_petsc function KSPBuildSolution(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, v::AbstractPetscVec, V::AbstractPetscVec )
 	V_ = Ref(V.ptr)
 
     @chk ccall(
@@ -2194,7 +2194,7 @@ function KSPBuildSolution(petsclib::PetscLibType, ksp::PetscKSP, v::PetscVec, V:
 end 
 
 """
-	KSPBuildResidual(petsclib::PetscLibType,ksp::PetscKSP, t::PetscVec, v::PetscVec, V::PetscVec) 
+	KSPBuildResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, V::AbstractPetscVec) 
 Builds the residual in a vector provided.
 
 Collective
@@ -2214,9 +2214,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPBuildResidual"))
 """
-function KSPBuildResidual(petsclib::PetscLibType, ksp::PetscKSP, t::PetscVec, v::PetscVec, V::PetscVec) end
+function KSPBuildResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, V::AbstractPetscVec) end
 
-@for_petsc function KSPBuildResidual(petsclib::$UnionPetscLib, ksp::PetscKSP, t::PetscVec, v::PetscVec, V::PetscVec )
+@for_petsc function KSPBuildResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, V::AbstractPetscVec )
 	V_ = Ref(V.ptr)
 
     @chk ccall(
@@ -2232,7 +2232,7 @@ function KSPBuildResidual(petsclib::PetscLibType, ksp::PetscKSP, t::PetscVec, v:
 end 
 
 """
-	KSPSetDiagonalScale(petsclib::PetscLibType,ksp::PetscKSP, scale::PetscBool) 
+	KSPSetDiagonalScale(petsclib::PetscLibType,ksp::AbstractPetscKSP, scale::PetscBool) 
 Tells `KSP` to symmetrically diagonally scale the system
 before solving. This actually CHANGES the matrix (and right-hand side).
 
@@ -2253,9 +2253,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetDiagonalScale"))
 """
-function KSPSetDiagonalScale(petsclib::PetscLibType, ksp::PetscKSP, scale::PetscBool) end
+function KSPSetDiagonalScale(petsclib::PetscLibType, ksp::AbstractPetscKSP, scale::PetscBool) end
 
-@for_petsc function KSPSetDiagonalScale(petsclib::$UnionPetscLib, ksp::PetscKSP, scale::PetscBool )
+@for_petsc function KSPSetDiagonalScale(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, scale::PetscBool )
 
     @chk ccall(
                (:KSPSetDiagonalScale, $petsc_library),
@@ -2269,7 +2269,7 @@ function KSPSetDiagonalScale(petsclib::PetscLibType, ksp::PetscKSP, scale::Petsc
 end 
 
 """
-	scale::PetscBool = KSPGetDiagonalScale(petsclib::PetscLibType,ksp::PetscKSP) 
+	scale::PetscBool = KSPGetDiagonalScale(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Checks if `KSP` solver scales the matrix and right
 
 Not Collective
@@ -2287,9 +2287,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetDiagonalScale"))
 """
-function KSPGetDiagonalScale(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetDiagonalScale(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetDiagonalScale(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetDiagonalScale(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	scale_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2305,7 +2305,7 @@ function KSPGetDiagonalScale(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetDiagonalScaleFix(petsclib::PetscLibType,ksp::PetscKSP, fix::PetscBool) 
+	KSPSetDiagonalScaleFix(petsclib::PetscLibType,ksp::AbstractPetscKSP, fix::PetscBool) 
 Tells `KSP` to diagonally scale the system back after solving.
 
 Logically Collective
@@ -2322,9 +2322,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetDiagonalScaleFix"))
 """
-function KSPSetDiagonalScaleFix(petsclib::PetscLibType, ksp::PetscKSP, fix::PetscBool) end
+function KSPSetDiagonalScaleFix(petsclib::PetscLibType, ksp::AbstractPetscKSP, fix::PetscBool) end
 
-@for_petsc function KSPSetDiagonalScaleFix(petsclib::$UnionPetscLib, ksp::PetscKSP, fix::PetscBool )
+@for_petsc function KSPSetDiagonalScaleFix(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, fix::PetscBool )
 
     @chk ccall(
                (:KSPSetDiagonalScaleFix, $petsc_library),
@@ -2338,7 +2338,7 @@ function KSPSetDiagonalScaleFix(petsclib::PetscLibType, ksp::PetscKSP, fix::Pets
 end 
 
 """
-	fix::PetscBool = KSPGetDiagonalScaleFix(petsclib::PetscLibType,ksp::PetscKSP) 
+	fix::PetscBool = KSPGetDiagonalScaleFix(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Determines if `KSP` diagonally scales the system back after solving. That is `KSPSetDiagonalScaleFix()` has been called
 
 Not Collective
@@ -2357,9 +2357,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetDiagonalScaleFix"))
 """
-function KSPGetDiagonalScaleFix(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetDiagonalScaleFix(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetDiagonalScaleFix(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetDiagonalScaleFix(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	fix_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2375,7 +2375,7 @@ function KSPGetDiagonalScaleFix(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetComputeOperators(petsclib::PetscLibType,ksp::PetscKSP, func::Union{KSPComputeOperatorsFn, Ptr}, ctx::Union{Cvoid, Ptr}) 
+	KSPSetComputeOperators(petsclib::PetscLibType,ksp::AbstractPetscKSP, func::Union{KSPComputeOperatorsFn, Ptr}, ctx::Union{Cvoid, Ptr}) 
 set routine to compute the linear operators
 
 Logically Collective
@@ -2392,9 +2392,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetComputeOperators"))
 """
-function KSPSetComputeOperators(petsclib::PetscLibType, ksp::PetscKSP, func::Union{KSPComputeOperatorsFn, Ptr}, ctx::Union{Cvoid, Ptr}) end
+function KSPSetComputeOperators(petsclib::PetscLibType, ksp::AbstractPetscKSP, func::Union{KSPComputeOperatorsFn, Ptr}, ctx::Union{Cvoid, Ptr}) end
 
-@for_petsc function KSPSetComputeOperators(petsclib::$UnionPetscLib, ksp::PetscKSP, func::Union{KSPComputeOperatorsFn, Ptr}, ctx::Union{Cvoid, Ptr})
+@for_petsc function KSPSetComputeOperators(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, func::Union{KSPComputeOperatorsFn, Ptr}, ctx::Union{Cvoid, Ptr})
 
     @chk ccall(
                (:KSPSetComputeOperators, $petsc_library),
@@ -2408,7 +2408,7 @@ function KSPSetComputeOperators(petsclib::PetscLibType, ksp::PetscKSP, func::Uni
 end 
 
 """
-	KSPSetComputeRHS(petsclib::PetscLibType,ksp::PetscKSP, func::Union{KSPComputeRHSFn,Ptr}, ctx::Union{Cvoid, Ptr}) 
+	KSPSetComputeRHS(petsclib::PetscLibType,ksp::AbstractPetscKSP, func::Union{KSPComputeRHSFn,Ptr}, ctx::Union{Cvoid, Ptr}) 
 set routine to compute the right
 
 Logically Collective
@@ -2425,9 +2425,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetComputeRHS"))
 """
-function KSPSetComputeRHS(petsclib::PetscLibType, ksp::PetscKSP, func::Union{KSPComputeRHSFn,Ptr}, ctx::Union{Cvoid, Ptr}) end
+function KSPSetComputeRHS(petsclib::PetscLibType, ksp::AbstractPetscKSP, func::Union{KSPComputeRHSFn,Ptr}, ctx::Union{Cvoid, Ptr}) end
 
-@for_petsc function KSPSetComputeRHS(petsclib::$UnionPetscLib, ksp::PetscKSP, func::Union{KSPComputeRHSFn,Ptr}, ctx::Union{Cvoid, Ptr} )
+@for_petsc function KSPSetComputeRHS(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, func::Union{KSPComputeRHSFn,Ptr}, ctx::Union{Cvoid, Ptr} )
 
     @chk ccall(
                (:KSPSetComputeRHS, $petsc_library),
@@ -2441,7 +2441,7 @@ function KSPSetComputeRHS(petsclib::PetscLibType, ksp::PetscKSP, func::Union{KSP
 end 
 
 """
-	KSPSetComputeInitialGuess(petsclib::PetscLibType,ksp::PetscKSP, func::Union{KSPComputeInitialGuessFn, Ptr}, ctx::Union{Cvoid, Ptr}) 
+	KSPSetComputeInitialGuess(petsclib::PetscLibType,ksp::AbstractPetscKSP, func::Union{KSPComputeInitialGuessFn, Ptr}, ctx::Union{Cvoid, Ptr}) 
 set routine to compute the initial guess of the linear system
 
 Logically Collective
@@ -2459,9 +2459,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetComputeInitialGuess"))
 """
-function KSPSetComputeInitialGuess(petsclib::PetscLibType, ksp::PetscKSP, func::Union{KSPComputeInitialGuessFn, Ptr}, ctx::Union{Cvoid, Ptr}) end
+function KSPSetComputeInitialGuess(petsclib::PetscLibType, ksp::AbstractPetscKSP, func::Union{KSPComputeInitialGuessFn, Ptr}, ctx::Union{Cvoid, Ptr}) end
 
-@for_petsc function KSPSetComputeInitialGuess(petsclib::$UnionPetscLib, ksp::PetscKSP, func::Union{KSPComputeInitialGuessFn, Ptr}, ctx::Union{Cvoid, Ptr})
+@for_petsc function KSPSetComputeInitialGuess(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, func::Union{KSPComputeInitialGuessFn, Ptr}, ctx::Union{Cvoid, Ptr})
 
     @chk ccall(
                (:KSPSetComputeInitialGuess, $petsc_library),
@@ -2475,7 +2475,7 @@ function KSPSetComputeInitialGuess(petsclib::PetscLibType, ksp::PetscKSP, func::
 end 
 
 """
-	flg::PetscBool = KSPSetUseExplicitTranspose(petsclib::PetscLibType,ksp::PetscKSP) 
+	flg::PetscBool = KSPSetUseExplicitTranspose(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Determines the explicit transpose of the operator is formed in `KSPSolveTranspose()`. In some configurations (like GPUs) it may
 be explicitly formed since the solve is much more efficient.
 
@@ -2494,9 +2494,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetUseExplicitTranspose"))
 """
-function KSPSetUseExplicitTranspose(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPSetUseExplicitTranspose(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPSetUseExplicitTranspose(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPSetUseExplicitTranspose(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -2512,7 +2512,7 @@ function KSPSetUseExplicitTranspose(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	rnorm::PetscReal = KSPGetResidualNorm(petsclib::PetscLibType,ksp::PetscKSP) 
+	rnorm::PetscReal = KSPGetResidualNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the last (possibly approximate and/or preconditioned) residual norm that has been computed.
 
 Not Collective
@@ -2530,9 +2530,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetResidualNorm"))
 """
-function KSPGetResidualNorm(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetResidualNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetResidualNorm(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetResidualNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	rnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2548,7 +2548,7 @@ function KSPGetResidualNorm(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	its::PetscInt = KSPGetIterationNumber(petsclib::PetscLibType,ksp::PetscKSP) 
+	its::PetscInt = KSPGetIterationNumber(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the current iteration number; if the `KSPSolve()` is complete, returns the number of iterations used.
 
 Not Collective
@@ -2566,9 +2566,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetIterationNumber"))
 """
-function KSPGetIterationNumber(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetIterationNumber(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetIterationNumber(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetIterationNumber(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	its_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -2585,7 +2585,7 @@ end
 
 
 """
-	its::PetscInt = KSPGetTotalIterations(petsclib::PetscLibType,ksp::PetscKSP) 
+	its::PetscInt = KSPGetTotalIterations(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the total number of iterations this `KSP` object has performed since was created, counted over all linear solves
 
 Not Collective
@@ -2603,9 +2603,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetTotalIterations"))
 """
-function KSPGetTotalIterations(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetTotalIterations(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetTotalIterations(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetTotalIterations(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	its_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -2621,7 +2621,7 @@ function KSPGetTotalIterations(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPMonitorResidual(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Print the (possibly preconditioned, possibly approximate) residual norm at each iteration of an iterative solver.
 
 Collective
@@ -2645,9 +2645,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorResidual"))
 """
-function KSPMonitorResidual(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorResidual(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorResidual, $petsc_library),
@@ -2661,7 +2661,7 @@ function KSPMonitorResidual(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, 
 end 
 
 """
-	KSPMonitorResidualView(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorResidualView(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Plots the (possibly preconditioned) residual at each iteration of an iterative solver.
 
 Collective
@@ -2682,9 +2682,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorResidualView"))
 """
-function KSPMonitorResidualView(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorResidualView(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorResidualView(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorResidualView(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorResidualView, $petsc_library),
@@ -2698,7 +2698,7 @@ function KSPMonitorResidualView(petsclib::PetscLibType, ksp::PetscKSP, n::PetscI
 end 
 
 """
-	KSPMonitorResidualDrawLG(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorResidualDrawLG(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Plots the (possibly preconditioned) residual norm at each iteration of an iterative solver.
 
 Collective
@@ -2719,9 +2719,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorResidualDrawLG"))
 """
-function KSPMonitorResidualDrawLG(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorResidualDrawLG(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorResidualDrawLG(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorResidualDrawLG, $petsc_library),
@@ -2774,14 +2774,14 @@ function KSPMonitorResidualDrawLGCreate(petsclib::PetscLibType, viewer::PetscVie
 end 
 
 """
-	KSPMonitorResidualShort(petsclib::PetscLibType,ksp::PetscKSP, its::PetscInt, fnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorResidualShort(petsclib::PetscLibType,ksp::AbstractPetscKSP, its::PetscInt, fnorm::PetscReal, vf::PetscViewerAndFormat) 
 
 # External Links
 $(_doc_external("KSP/KSPMonitorResidualShort"))
 """
-function KSPMonitorResidualShort(petsclib::PetscLibType, ksp::PetscKSP, its::PetscInt, fnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorResidualShort(petsclib::PetscLibType, ksp::AbstractPetscKSP, its::PetscInt, fnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorResidualShort(petsclib::$UnionPetscLib, ksp::PetscKSP, its::$PetscInt, fnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorResidualShort(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, its::$PetscInt, fnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorResidualShort, $petsc_library),
@@ -2795,7 +2795,7 @@ function KSPMonitorResidualShort(petsclib::PetscLibType, ksp::PetscKSP, its::Pet
 end 
 
 """
-	KSPMonitorResidualRange(petsclib::PetscLibType,ksp::PetscKSP, it::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorResidualRange(petsclib::PetscLibType,ksp::AbstractPetscKSP, it::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Prints the percentage of residual elements that are more than 10 percent of the maximum value.
 
 Collective
@@ -2816,9 +2816,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorResidualRange"))
 """
-function KSPMonitorResidualRange(petsclib::PetscLibType, ksp::PetscKSP, it::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorResidualRange(petsclib::PetscLibType, ksp::AbstractPetscKSP, it::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorResidualRange(petsclib::$UnionPetscLib, ksp::PetscKSP, it::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorResidualRange(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, it::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorResidualRange, $petsc_library),
@@ -2832,7 +2832,7 @@ function KSPMonitorResidualRange(petsclib::PetscLibType, ksp::PetscKSP, it::Pets
 end 
 
 """
-	KSPMonitorTrueResidual(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorTrueResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Prints the true residual norm, as well as the (possibly preconditioned, possibly approximate) residual norm,
 at each iteration of a `KSPSolve()` iterative solver.
 
@@ -2854,9 +2854,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorTrueResidual"))
 """
-function KSPMonitorTrueResidual(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorTrueResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorTrueResidual(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorTrueResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorTrueResidual, $petsc_library),
@@ -2870,7 +2870,7 @@ function KSPMonitorTrueResidual(petsclib::PetscLibType, ksp::PetscKSP, n::PetscI
 end 
 
 """
-	KSPMonitorTrueResidualView(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorTrueResidualView(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Plots the true residual at each iteration of an iterative solver.
 
 Collective
@@ -2892,9 +2892,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorTrueResidualView"))
 """
-function KSPMonitorTrueResidualView(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorTrueResidualView(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorTrueResidualView(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorTrueResidualView(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorTrueResidualView, $petsc_library),
@@ -2908,7 +2908,7 @@ function KSPMonitorTrueResidualView(petsclib::PetscLibType, ksp::PetscKSP, n::Pe
 end 
 
 """
-	KSPMonitorTrueResidualDrawLG(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorTrueResidualDrawLG(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Plots the true residual norm at each iteration of an iterative solver.
 
 Collective
@@ -2930,9 +2930,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorTrueResidualDrawLG"))
 """
-function KSPMonitorTrueResidualDrawLG(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorTrueResidualDrawLG(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorTrueResidualDrawLG(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorTrueResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorTrueResidualDrawLG, $petsc_library),
@@ -2984,7 +2984,7 @@ function KSPMonitorTrueResidualDrawLGCreate(petsclib::PetscLibType, viewer::Pets
 end 
 
 """
-	KSPMonitorTrueResidualMax(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorTrueResidualMax(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Prints the true residual max norm at each iteration of an iterative solver.
 
 Collective
@@ -3005,9 +3005,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorTrueResidualMax"))
 """
-function KSPMonitorTrueResidualMax(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorTrueResidualMax(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorTrueResidualMax(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorTrueResidualMax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorTrueResidualMax, $petsc_library),
@@ -3021,7 +3021,7 @@ function KSPMonitorTrueResidualMax(petsclib::PetscLibType, ksp::PetscKSP, n::Pet
 end 
 
 """
-	KSPMonitorError(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorError(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Prints the error norm, as well as the (possibly preconditioned) residual norm, at each iteration of an iterative solver.
 
 Collective
@@ -3042,9 +3042,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorError"))
 """
-function KSPMonitorError(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorError(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorError(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorError(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorError, $petsc_library),
@@ -3058,7 +3058,7 @@ function KSPMonitorError(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rno
 end 
 
 """
-	KSPMonitorErrorDraw(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorErrorDraw(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Plots the error at each iteration of an iterative solver.
 
 Collective
@@ -3079,9 +3079,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorErrorDraw"))
 """
-function KSPMonitorErrorDraw(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorErrorDraw(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorErrorDraw(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorErrorDraw(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorErrorDraw, $petsc_library),
@@ -3095,7 +3095,7 @@ function KSPMonitorErrorDraw(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt,
 end 
 
 """
-	KSPMonitorErrorDrawLG(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorErrorDrawLG(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Plots the error and residual norm at each iteration of an iterative solver.
 
 Collective
@@ -3116,9 +3116,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorErrorDrawLG"))
 """
-function KSPMonitorErrorDrawLG(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorErrorDrawLG(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorErrorDrawLG(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorErrorDrawLG(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorErrorDrawLG, $petsc_library),
@@ -3170,7 +3170,7 @@ function KSPMonitorErrorDrawLGCreate(petsclib::PetscLibType, viewer::PetscViewer
 end 
 
 """
-	KSPMonitorSolution(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorSolution(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Print the solution norm at each iteration of an iterative solver.
 
 Collective
@@ -3191,9 +3191,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorSolution"))
 """
-function KSPMonitorSolution(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorSolution(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorSolution(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorSolution(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorSolution, $petsc_library),
@@ -3207,7 +3207,7 @@ function KSPMonitorSolution(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, 
 end 
 
 """
-	KSPMonitorSolutionDraw(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorSolutionDraw(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Plots the solution at each iteration of an iterative solver.
 
 Collective
@@ -3228,9 +3228,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorSolutionDraw"))
 """
-function KSPMonitorSolutionDraw(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorSolutionDraw(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorSolutionDraw(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorSolutionDraw(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorSolutionDraw, $petsc_library),
@@ -3244,7 +3244,7 @@ function KSPMonitorSolutionDraw(petsclib::PetscLibType, ksp::PetscKSP, n::PetscI
 end 
 
 """
-	KSPMonitorSolutionDrawLG(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorSolutionDrawLG(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Plots the solution norm at each iteration of an iterative solver.
 
 Collective
@@ -3265,9 +3265,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorSolutionDrawLG"))
 """
-function KSPMonitorSolutionDrawLG(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorSolutionDrawLG(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorSolutionDrawLG(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorSolutionDrawLG(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorSolutionDrawLG, $petsc_library),
@@ -3319,7 +3319,7 @@ function KSPMonitorSolutionDrawLGCreate(petsclib::PetscLibType, viewer::PetscVie
 end 
 
 """
-	KSPMonitorSingularValue(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorSingularValue(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Prints the two norm of the true residual and estimation of the extreme singular values of the preconditioned problem at each iteration.
 
 Logically Collective
@@ -3340,9 +3340,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPMonitorSingularValue"))
 """
-function KSPMonitorSingularValue(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorSingularValue(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorSingularValue(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorSingularValue(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorSingularValue, $petsc_library),
@@ -3467,7 +3467,7 @@ function KSPMonitorDynamicToleranceSetCoefficient(petsclib::PetscLibType, ctx::C
 end 
 
 """
-	KSPMonitorDynamicTolerance(petsclib::PetscLibType,ksp::PetscKSP, its::PetscInt, fnorm::PetscReal, ctx::Cvoid) 
+	KSPMonitorDynamicTolerance(petsclib::PetscLibType,ksp::AbstractPetscKSP, its::PetscInt, fnorm::PetscReal, ctx::Cvoid) 
 A monitor that changes the inner tolerance of nested preconditioners in every outer iteration in an adaptive way.
 
 Collective
@@ -3488,9 +3488,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPMonitorDynamicTolerance"))
 """
-function KSPMonitorDynamicTolerance(petsclib::PetscLibType, ksp::PetscKSP, its::PetscInt, fnorm::PetscReal, ctx::Cvoid) end
+function KSPMonitorDynamicTolerance(petsclib::PetscLibType, ksp::AbstractPetscKSP, its::PetscInt, fnorm::PetscReal, ctx::Cvoid) end
 
-@for_petsc function KSPMonitorDynamicTolerance(petsclib::$UnionPetscLib, ksp::PetscKSP, its::$PetscInt, fnorm::$PetscReal, ctx::Cvoid )
+@for_petsc function KSPMonitorDynamicTolerance(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, its::$PetscInt, fnorm::$PetscReal, ctx::Cvoid )
 
     @chk ccall(
                (:KSPMonitorDynamicTolerance, $petsc_library),
@@ -3533,7 +3533,7 @@ function KSPMonitorDynamicToleranceDestroy(petsclib::PetscLibType, ctx::Cvoid) e
 end 
 
 """
-	KSPConvergedSkip(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, reason::KSPConvergedReason, dtx::Cvoid) 
+	KSPConvergedSkip(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, reason::KSPConvergedReason, dtx::Cvoid) 
 Convergence test that do not return as converged
 until the maximum number of iterations is reached.
 
@@ -3559,9 +3559,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPConvergedSkip"))
 """
-function KSPConvergedSkip(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, reason::KSPConvergedReason, dtx::Cvoid) end
+function KSPConvergedSkip(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, reason::KSPConvergedReason, dtx::Cvoid) end
 
-@for_petsc function KSPConvergedSkip(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, reason::KSPConvergedReason, dtx::Cvoid )
+@for_petsc function KSPConvergedSkip(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, reason::KSPConvergedReason, dtx::Cvoid )
 
     @chk ccall(
                (:KSPConvergedSkip, $petsc_library),
@@ -3575,7 +3575,7 @@ function KSPConvergedSkip(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rn
 end 
 
 """
-	KSPSetConvergedNegativeCurvature(petsclib::PetscLibType,ksp::PetscKSP, flg::PetscBool) 
+	KSPSetConvergedNegativeCurvature(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
 Allows to declare convergence and return `KSP_CONVERGED_NEG_CURVE` when negative curvature is detected
 
 Collective
@@ -3594,9 +3594,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetConvergedNegativeCurvature"))
 """
-function KSPSetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) end
+function KSPSetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool) end
 
-@for_petsc function KSPSetConvergedNegativeCurvature(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
+@for_petsc function KSPSetConvergedNegativeCurvature(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetConvergedNegativeCurvature, $petsc_library),
@@ -3610,7 +3610,7 @@ function KSPSetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::PetscKSP,
 end 
 
 """
-	flg::PetscBool = KSPGetConvergedNegativeCurvature(petsclib::PetscLibType,ksp::PetscKSP) 
+	flg::PetscBool = KSPGetConvergedNegativeCurvature(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Get the flag to declare convergence if negative curvature is detected
 
 Collective
@@ -3628,9 +3628,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetConvergedNegativeCurvature"))
 """
-function KSPGetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetConvergedNegativeCurvature(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetConvergedNegativeCurvature(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetConvergedNegativeCurvature(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3681,7 +3681,7 @@ function KSPConvergedDefaultCreate(petsclib::PetscLibType) end
 end 
 
 """
-	KSPConvergedDefaultSetUIRNorm(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPConvergedDefaultSetUIRNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 makes the default convergence test use  || B*(b
 instead of  || B*b ||. In the case of right preconditioner or if `KSPSetNormType`(ksp,`KSP_NORM_UNPRECONDITIONED`)
 is used there is no B in the above formula.
@@ -3701,9 +3701,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedDefaultSetUIRNorm"))
 """
-function KSPConvergedDefaultSetUIRNorm(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPConvergedDefaultSetUIRNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPConvergedDefaultSetUIRNorm(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPConvergedDefaultSetUIRNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPConvergedDefaultSetUIRNorm, $petsc_library),
@@ -3717,7 +3717,7 @@ function KSPConvergedDefaultSetUIRNorm(petsclib::PetscLibType, ksp::PetscKSP) en
 end 
 
 """
-	KSPConvergedDefaultSetUMIRNorm(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPConvergedDefaultSetUMIRNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 makes the default convergence test use min(|| B*(b
 In the case of right preconditioner or if `KSPSetNormType`(ksp,`KSP_NORM_UNPRECONDITIONED`)
 is used there is no B in the above formula.
@@ -3737,9 +3737,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedDefaultSetUMIRNorm"))
 """
-function KSPConvergedDefaultSetUMIRNorm(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPConvergedDefaultSetUMIRNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPConvergedDefaultSetUMIRNorm(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPConvergedDefaultSetUMIRNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPConvergedDefaultSetUMIRNorm, $petsc_library),
@@ -3753,7 +3753,7 @@ function KSPConvergedDefaultSetUMIRNorm(petsclib::PetscLibType, ksp::PetscKSP) e
 end 
 
 """
-	KSPConvergedDefaultSetConvergedMaxits(petsclib::PetscLibType,ksp::PetscKSP, flg::PetscBool) 
+	KSPConvergedDefaultSetConvergedMaxits(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
 allows the default convergence test to declare convergence and return `KSP_CONVERGED_ITS` if the maximum number of iterations is reached
 
 Collective
@@ -3772,9 +3772,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPConvergedDefaultSetConvergedMaxits"))
 """
-function KSPConvergedDefaultSetConvergedMaxits(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) end
+function KSPConvergedDefaultSetConvergedMaxits(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool) end
 
-@for_petsc function KSPConvergedDefaultSetConvergedMaxits(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
+@for_petsc function KSPConvergedDefaultSetConvergedMaxits(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPConvergedDefaultSetConvergedMaxits, $petsc_library),
@@ -3788,7 +3788,7 @@ function KSPConvergedDefaultSetConvergedMaxits(petsclib::PetscLibType, ksp::Pets
 end 
 
 """
-	KSPConvergedDefault(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, reason::KSPConvergedReason, ctx::Cvoid) 
+	KSPConvergedDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, reason::KSPConvergedReason, ctx::Cvoid) 
 Default code to determine convergence of the linear iterative solvers
 
 Collective
@@ -3822,9 +3822,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPConvergedDefault"))
 """
-function KSPConvergedDefault(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, reason::KSPConvergedReason, ctx::Cvoid) end
+function KSPConvergedDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, reason::KSPConvergedReason, ctx::Cvoid) end
 
-@for_petsc function KSPConvergedDefault(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, reason::KSPConvergedReason, ctx::Cvoid )
+@for_petsc function KSPConvergedDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, reason::KSPConvergedReason, ctx::Cvoid )
 
     @chk ccall(
                (:KSPConvergedDefault, $petsc_library),
@@ -3870,14 +3870,14 @@ function KSPConvergedDefaultDestroy(petsclib::PetscLibType, ctx::Cvoid) end
 end 
 
 """
-	KSPBuildSolutionDefault(petsclib::PetscLibType,ksp::PetscKSP, v::PetscVec, V::PetscVec) 
+	KSPBuildSolutionDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP, v::AbstractPetscVec, V::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("KSP/KSPBuildSolutionDefault"))
 """
-function KSPBuildSolutionDefault(petsclib::PetscLibType, ksp::PetscKSP, v::PetscVec, V::PetscVec) end
+function KSPBuildSolutionDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP, v::AbstractPetscVec, V::AbstractPetscVec) end
 
-@for_petsc function KSPBuildSolutionDefault(petsclib::$UnionPetscLib, ksp::PetscKSP, v::PetscVec, V::PetscVec )
+@for_petsc function KSPBuildSolutionDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, v::AbstractPetscVec, V::AbstractPetscVec )
 	V_ = Ref(V.ptr)
 
     @chk ccall(
@@ -3893,7 +3893,7 @@ function KSPBuildSolutionDefault(petsclib::PetscLibType, ksp::PetscKSP, v::Petsc
 end 
 
 """
-	KSPBuildResidualDefault(petsclib::PetscLibType,ksp::PetscKSP, t::PetscVec, v::PetscVec, V::PetscVec) 
+	KSPBuildResidualDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, V::AbstractPetscVec) 
 Default code to compute the residual.
 
 Collecive on ksp
@@ -3913,9 +3913,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPBuildResidualDefault"))
 """
-function KSPBuildResidualDefault(petsclib::PetscLibType, ksp::PetscKSP, t::PetscVec, v::PetscVec, V::PetscVec) end
+function KSPBuildResidualDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, V::AbstractPetscVec) end
 
-@for_petsc function KSPBuildResidualDefault(petsclib::$UnionPetscLib, ksp::PetscKSP, t::PetscVec, v::PetscVec, V::PetscVec )
+@for_petsc function KSPBuildResidualDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, t::AbstractPetscVec, v::AbstractPetscVec, V::AbstractPetscVec )
 	V_ = Ref(V.ptr)
 
     @chk ccall(
@@ -3931,7 +3931,7 @@ function KSPBuildResidualDefault(petsclib::PetscLibType, ksp::PetscKSP, t::Petsc
 end 
 
 """
-	right::Vector{PetscVec},left::Vector{PetscVec} = KSPCreateVecs(petsclib::PetscLibType,ksp::PetscKSP, rightn::PetscInt, leftn::PetscInt) 
+	right::Vector{PetscVec},left::Vector{PetscVec} = KSPCreateVecs(petsclib::PetscLibType,ksp::AbstractPetscKSP, rightn::PetscInt, leftn::PetscInt) 
 Gets a number of work vectors suitably sized for the operator in the `KSP`
 
 Collective
@@ -3952,9 +3952,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPCreateVecs"))
 """
-function KSPCreateVecs(petsclib::PetscLibType, ksp::PetscKSP, rightn::PetscInt, leftn::PetscInt) end
+function KSPCreateVecs(petsclib::PetscLibType, ksp::AbstractPetscKSP, rightn::PetscInt, leftn::PetscInt) end
 
-@for_petsc function KSPCreateVecs(petsclib::$UnionPetscLib, ksp::PetscKSP, rightn::$PetscInt, leftn::$PetscInt )
+@for_petsc function KSPCreateVecs(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, rightn::$PetscInt, leftn::$PetscInt )
 	right_ = Ref{Ptr{CVec}}()
 	left_ = Ref{Ptr{CVec}}()
 
@@ -3986,7 +3986,7 @@ function KSPCreateVecs(petsclib::PetscLibType, ksp::PetscKSP, rightn::PetscInt, 
 end 
 
 """
-	KSPSetWorkVecs(petsclib::PetscLibType,ksp::PetscKSP, nw::PetscInt) 
+	KSPSetWorkVecs(petsclib::PetscLibType,ksp::AbstractPetscKSP, nw::PetscInt) 
 Sets a number of work vectors into a `KSP` object
 
 Collective
@@ -4002,9 +4002,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetWorkVecs"))
 """
-function KSPSetWorkVecs(petsclib::PetscLibType, ksp::PetscKSP, nw::PetscInt) end
+function KSPSetWorkVecs(petsclib::PetscLibType, ksp::AbstractPetscKSP, nw::PetscInt) end
 
-@for_petsc function KSPSetWorkVecs(petsclib::$UnionPetscLib, ksp::PetscKSP, nw::$PetscInt )
+@for_petsc function KSPSetWorkVecs(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, nw::$PetscInt )
 
     @chk ccall(
                (:KSPSetWorkVecs, $petsc_library),
@@ -4018,14 +4018,14 @@ function KSPSetWorkVecs(petsclib::PetscLibType, ksp::PetscKSP, nw::PetscInt) end
 end 
 
 """
-	KSPDestroyDefault(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPDestroyDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 
 # External Links
 $(_doc_external("KSP/KSPDestroyDefault"))
 """
-function KSPDestroyDefault(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPDestroyDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPDestroyDefault(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPDestroyDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPDestroyDefault, $petsc_library),
@@ -4039,7 +4039,7 @@ function KSPDestroyDefault(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	reason::KSPConvergedReason = KSPGetConvergedReason(petsclib::PetscLibType,ksp::PetscKSP) 
+	reason::KSPConvergedReason = KSPGetConvergedReason(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the reason the `KSP` iteration was stopped.
 
 Not Collective
@@ -4061,9 +4061,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetConvergedReason"))
 """
-function KSPGetConvergedReason(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetConvergedReason(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetConvergedReason(petsclib::$UnionPetscLib, ksp::PetscKSP)
+@for_petsc function KSPGetConvergedReason(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP)
     reason = Ref{KSPConvergedReason}()
     @chk ccall(
                (:KSPGetConvergedReason, $petsc_library),
@@ -4077,7 +4077,7 @@ function KSPGetConvergedReason(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPGetConvergedReasonString(petsclib::PetscLibType,ksp::PetscKSP, strreason::String) 
+	KSPGetConvergedReasonString(petsclib::PetscLibType,ksp::AbstractPetscKSP, strreason::String) 
 Return a human readable string for a `KSPConvergedReason`
 
 Not Collective
@@ -4095,9 +4095,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPGetConvergedReasonString"))
 """
-function KSPGetConvergedReasonString(petsclib::PetscLibType, ksp::PetscKSP, strreason::String) end
+function KSPGetConvergedReasonString(petsclib::PetscLibType, ksp::AbstractPetscKSP, strreason::String) end
 
-@for_petsc function KSPGetConvergedReasonString(petsclib::$UnionPetscLib, ksp::PetscKSP, strreason::String )
+@for_petsc function KSPGetConvergedReasonString(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, strreason::String )
 	strreason_ = Ref(pointer(strreason))
 
     @chk ccall(
@@ -4112,7 +4112,7 @@ function KSPGetConvergedReasonString(petsclib::PetscLibType, ksp::PetscKSP, strr
 end 
 
 """
-	KSPSetDM(petsclib::PetscLibType,ksp::PetscKSP, dm::PetscDM) 
+	KSPSetDM(petsclib::PetscLibType,ksp::AbstractPetscKSP, dm::AbstractPetscDM) 
 Sets the `DM` that may be used by some preconditioners and that may be used to construct the linear system
 
 Logically Collective
@@ -4128,9 +4128,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetDM"))
 """
-function KSPSetDM(petsclib::PetscLibType, ksp::PetscKSP, dm::PetscDM) end
+function KSPSetDM(petsclib::PetscLibType, ksp::AbstractPetscKSP, dm::AbstractPetscDM) end
 
-@for_petsc function KSPSetDM(petsclib::$UnionPetscLib, ksp::PetscKSP, dm::PetscDM )
+@for_petsc function KSPSetDM(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, dm::AbstractPetscDM )
 
     @chk ccall(
                (:KSPSetDM, $petsc_library),
@@ -4144,7 +4144,7 @@ function KSPSetDM(petsclib::PetscLibType, ksp::PetscKSP, dm::PetscDM) end
 end 
 
 """
-	KSPSetDMActive(petsclib::PetscLibType,ksp::PetscKSP, flg::PetscBool) 
+	KSPSetDMActive(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
 Indicates the `DM` should be used to generate the linear system matrix and right
 
 Logically Collective
@@ -4160,9 +4160,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetDMActive"))
 """
-function KSPSetDMActive(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) end
+function KSPSetDMActive(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool) end
 
-@for_petsc function KSPSetDMActive(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
+@for_petsc function KSPSetDMActive(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetDMActive, $petsc_library),
@@ -4176,7 +4176,7 @@ function KSPSetDMActive(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) e
 end 
 
 """
-    dm::PetscDM = KSPGetDM(petsclib::PetscLibType,ksp::PetscKSP) 
+    dm::PetscDM = KSPGetDM(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the `DM` that may be used by some preconditioners and that may be used to construct the linear system
 
 Not Collective
@@ -4194,9 +4194,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetDM"))
 """
-function KSPGetDM(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetDM(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetDM(petsclib::$UnionPetscLib, ksp::PetscKSP)
+@for_petsc function KSPGetDM(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP)
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -4212,7 +4212,7 @@ function KSPGetDM(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetApplicationContext(petsclib::PetscLibType,ksp::PetscKSP, ctx::Cvoid) 
+	KSPSetApplicationContext(petsclib::PetscLibType,ksp::AbstractPetscKSP, ctx::Cvoid) 
 Sets the optional user
 
 Logically Collective
@@ -4228,9 +4228,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetApplicationContext"))
 """
-function KSPSetApplicationContext(petsclib::PetscLibType, ksp::PetscKSP, ctx::Cvoid) end
+function KSPSetApplicationContext(petsclib::PetscLibType, ksp::AbstractPetscKSP, ctx::Cvoid) end
 
-@for_petsc function KSPSetApplicationContext(petsclib::$UnionPetscLib, ksp::PetscKSP, ctx::Cvoid )
+@for_petsc function KSPSetApplicationContext(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, ctx::Cvoid )
 
     @chk ccall(
                (:KSPSetApplicationContext, $petsc_library),
@@ -4244,7 +4244,7 @@ function KSPSetApplicationContext(petsclib::PetscLibType, ksp::PetscKSP, ctx::Cv
 end 
 
 """
-	KSPGetApplicationContext(petsclib::PetscLibType,ksp::PetscKSP, ctx::PeCtx) 
+	KSPGetApplicationContext(petsclib::PetscLibType,ksp::AbstractPetscKSP, ctx::PeCtx) 
 Gets the user
 
 Not Collective
@@ -4262,9 +4262,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetApplicationContext"))
 """
-function KSPGetApplicationContext(petsclib::PetscLibType, ksp::PetscKSP, ctx::PeCtx) end
+function KSPGetApplicationContext(petsclib::PetscLibType, ksp::AbstractPetscKSP, ctx::PeCtx) end
 
-@for_petsc function KSPGetApplicationContext(petsclib::$UnionPetscLib, ksp::PetscKSP, ctx::PeCtx )
+@for_petsc function KSPGetApplicationContext(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, ctx::PeCtx )
 
     @chk ccall(
                (:KSPGetApplicationContext, $petsc_library),
@@ -4278,7 +4278,7 @@ function KSPGetApplicationContext(petsclib::PetscLibType, ksp::PetscKSP, ctx::Pe
 end 
 
 """
-	KSPCheckSolve(petsclib::PetscLibType,ksp::PetscKSP, pc::PC, vec::PetscVec) 
+	KSPCheckSolve(petsclib::PetscLibType,ksp::AbstractPetscKSP, pc::PC, vec::AbstractPetscVec) 
 Checks if the `PCSetUp()` or `KSPSolve()` failed and set the error flag for the outer `PC`. A `KSP_DIVERGED_ITS` is
 not considered a failure in this context
 
@@ -4296,9 +4296,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPCheckSolve"))
 """
-function KSPCheckSolve(petsclib::PetscLibType, ksp::PetscKSP, pc::PC, vec::PetscVec) end
+function KSPCheckSolve(petsclib::PetscLibType, ksp::AbstractPetscKSP, pc::PC, vec::AbstractPetscVec) end
 
-@for_petsc function KSPCheckSolve(petsclib::$UnionPetscLib, ksp::PetscKSP, pc::PC, vec::PetscVec )
+@for_petsc function KSPCheckSolve(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, pc::PC, vec::AbstractPetscVec )
 
     @chk ccall(
                (:KSPCheckSolve, $petsc_library),
@@ -4312,7 +4312,7 @@ function KSPCheckSolve(petsclib::PetscLibType, ksp::PetscKSP, pc::PC, vec::Petsc
 end 
 
 """
-	KSPInitialResidual(petsclib::PetscLibType,ksp::PetscKSP, vsoln::PetscVec, vt1::PetscVec, vt2::PetscVec, vres::PetscVec, vb::PetscVec) 
+	KSPInitialResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec, vt2::AbstractPetscVec, vres::AbstractPetscVec, vb::AbstractPetscVec) 
 Computes the residual. Either b
 preconditioning or C*(b - A*x) with left preconditioning; the latter
 residual is often called the "preconditioned residual".
@@ -4336,9 +4336,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPInitialResidual"))
 """
-function KSPInitialResidual(petsclib::PetscLibType, ksp::PetscKSP, vsoln::PetscVec, vt1::PetscVec, vt2::PetscVec, vres::PetscVec, vb::PetscVec) end
+function KSPInitialResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec, vt2::AbstractPetscVec, vres::AbstractPetscVec, vb::AbstractPetscVec) end
 
-@for_petsc function KSPInitialResidual(petsclib::$UnionPetscLib, ksp::PetscKSP, vsoln::PetscVec, vt1::PetscVec, vt2::PetscVec, vres::PetscVec, vb::PetscVec )
+@for_petsc function KSPInitialResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec, vt2::AbstractPetscVec, vres::AbstractPetscVec, vb::AbstractPetscVec )
 
     @chk ccall(
                (:KSPInitialResidual, $petsc_library),
@@ -4352,7 +4352,7 @@ function KSPInitialResidual(petsclib::PetscLibType, ksp::PetscKSP, vsoln::PetscV
 end 
 
 """
-	KSPUnwindPreconditioner(petsclib::PetscLibType,ksp::PetscKSP, vsoln::PetscVec, vt1::PetscVec) 
+	KSPUnwindPreconditioner(petsclib::PetscLibType,ksp::AbstractPetscKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec) 
 Unwinds the preconditioning in the solution. That is,
 takes solution to the preconditioned problem and gets the solution to the
 original problem from it.
@@ -4374,9 +4374,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPUnwindPreconditioner"))
 """
-function KSPUnwindPreconditioner(petsclib::PetscLibType, ksp::PetscKSP, vsoln::PetscVec, vt1::PetscVec) end
+function KSPUnwindPreconditioner(petsclib::PetscLibType, ksp::AbstractPetscKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec) end
 
-@for_petsc function KSPUnwindPreconditioner(petsclib::$UnionPetscLib, ksp::PetscKSP, vsoln::PetscVec, vt1::PetscVec )
+@for_petsc function KSPUnwindPreconditioner(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, vsoln::AbstractPetscVec, vt1::AbstractPetscVec )
 
     @chk ccall(
                (:KSPUnwindPreconditioner, $petsc_library),
@@ -4390,7 +4390,7 @@ function KSPUnwindPreconditioner(petsclib::PetscLibType, ksp::PetscKSP, vsoln::P
 end 
 
 """
-	KSPLoad(petsclib::PetscLibType,newdm::PetscKSP, viewer::PetscViewer) 
+	KSPLoad(petsclib::PetscLibType,newdm::AbstractPetscKSP, viewer::PetscViewer) 
 Loads a `KSP` that has been stored in a `PETSCVIEWERBINARY`  with `KSPView()`.
 
 Collective
@@ -4407,9 +4407,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLoad"))
 """
-function KSPLoad(petsclib::PetscLibType, newdm::PetscKSP, viewer::PetscViewer) end
+function KSPLoad(petsclib::PetscLibType, newdm::AbstractPetscKSP, viewer::PetscViewer) end
 
-@for_petsc function KSPLoad(petsclib::$UnionPetscLib, newdm::PetscKSP, viewer::PetscViewer )
+@for_petsc function KSPLoad(petsclib::$UnionPetscLib, newdm::AbstractPetscKSP, viewer::PetscViewer )
 
     @chk ccall(
                (:KSPLoad, $petsc_library),
@@ -4423,7 +4423,7 @@ function KSPLoad(petsclib::PetscLibType, newdm::PetscKSP, viewer::PetscViewer) e
 end 
 
 """
-	KSPView(petsclib::PetscLibType,ksp::PetscKSP, viewer::PetscViewer) 
+	KSPView(petsclib::PetscLibType,ksp::AbstractPetscKSP, viewer::PetscViewer) 
 Prints the various parameters currently set in the `KSP` object. For example, the convergence tolerances and `KSPType`.
 Also views the `PC` and `Mat` contained by the `KSP` with `PCView()` and `MatView()`.
 
@@ -4443,9 +4443,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPView"))
 """
-function KSPView(petsclib::PetscLibType, ksp::PetscKSP, viewer::PetscViewer) end
+function KSPView(petsclib::PetscLibType, ksp::AbstractPetscKSP, viewer::PetscViewer) end
 
-@for_petsc function KSPView(petsclib::$UnionPetscLib, ksp::PetscKSP, viewer::PetscViewer )
+@for_petsc function KSPView(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, viewer::PetscViewer )
 
     @chk ccall(
                (:KSPView, $petsc_library),
@@ -4459,7 +4459,7 @@ function KSPView(petsclib::PetscLibType, ksp::PetscKSP, viewer::PetscViewer) end
 end 
 
 """
-	KSPViewFromOptions(petsclib::PetscLibType,A::PetscKSP, obj::PetscObject, name::String) 
+	KSPViewFromOptions(petsclib::PetscLibType,A::AbstractPetscKSP, obj::PetscObject, name::String) 
 View (print) a `KSP` object based on values in the options database. Also views the `PC` and `Mat` contained by the `KSP`
 with `PCView()` and `MatView()`.
 
@@ -4477,9 +4477,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPViewFromOptions"))
 """
-function KSPViewFromOptions(petsclib::PetscLibType, A::PetscKSP, obj::PetscObject, name::String) end
+function KSPViewFromOptions(petsclib::PetscLibType, A::AbstractPetscKSP, obj::PetscObject, name::String) end
 
-@for_petsc function KSPViewFromOptions(petsclib::$UnionPetscLib, A::PetscKSP, obj::PetscObject, name::String )
+@for_petsc function KSPViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscKSP, obj::PetscObject, name::String )
 
     @chk ccall(
                (:KSPViewFromOptions, $petsc_library),
@@ -4493,7 +4493,7 @@ function KSPViewFromOptions(petsclib::PetscLibType, A::PetscKSP, obj::PetscObjec
 end 
 
 """
-	KSPSetNormType(petsclib::PetscLibType,ksp::PetscKSP, normtype::KSPNormType) 
+	KSPSetNormType(petsclib::PetscLibType,ksp::AbstractPetscKSP, normtype::KSPNormType) 
 Sets the type of residual norm that is used for convergence testing in `KSPSolve()` for the given `KSP` context
 
 Logically Collective
@@ -4506,9 +4506,9 @@ Input Parameters:
 # External Links
 $(_doc_external("KSP/KSPSetNormType"))
 """
-function KSPSetNormType(petsclib::PetscLibType, ksp::PetscKSP, normtype::KSPNormType) end
+function KSPSetNormType(petsclib::PetscLibType, ksp::AbstractPetscKSP, normtype::KSPNormType) end
 
-@for_petsc function KSPSetNormType(petsclib::$UnionPetscLib, ksp::PetscKSP, normtype::KSPNormType )
+@for_petsc function KSPSetNormType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, normtype::KSPNormType )
 
     @chk ccall(
                (:KSPSetNormType, $petsc_library),
@@ -4522,7 +4522,7 @@ function KSPSetNormType(petsclib::PetscLibType, ksp::PetscKSP, normtype::KSPNorm
 end 
 
 """
-	KSPSetCheckNormIteration(petsclib::PetscLibType,ksp::PetscKSP, it::PetscInt) 
+	KSPSetCheckNormIteration(petsclib::PetscLibType,ksp::AbstractPetscKSP, it::PetscInt) 
 Sets the first iteration at which the norm of the residual will be
 computed and used in the convergence test of `KSPSolve()` for the given `KSP` context
 
@@ -4539,9 +4539,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetCheckNormIteration"))
 """
-function KSPSetCheckNormIteration(petsclib::PetscLibType, ksp::PetscKSP, it::PetscInt) end
+function KSPSetCheckNormIteration(petsclib::PetscLibType, ksp::AbstractPetscKSP, it::PetscInt) end
 
-@for_petsc function KSPSetCheckNormIteration(petsclib::$UnionPetscLib, ksp::PetscKSP, it::$PetscInt )
+@for_petsc function KSPSetCheckNormIteration(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, it::$PetscInt )
 
     @chk ccall(
                (:KSPSetCheckNormIteration, $petsc_library),
@@ -4555,7 +4555,7 @@ function KSPSetCheckNormIteration(petsclib::PetscLibType, ksp::PetscKSP, it::Pet
 end 
 
 """
-	KSPSetLagNorm(petsclib::PetscLibType,ksp::PetscKSP, flg::PetscBool) 
+	KSPSetLagNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
 Lags the residual norm calculation so that it is computed as part of the `MPI_Allreduce()` used for
 computing the inner products needed for the next iteration.
 
@@ -4575,9 +4575,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetLagNorm"))
 """
-function KSPSetLagNorm(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) end
+function KSPSetLagNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool) end
 
-@for_petsc function KSPSetLagNorm(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
+@for_petsc function KSPSetLagNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPSetLagNorm, $petsc_library),
@@ -4591,7 +4591,7 @@ function KSPSetLagNorm(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) en
 end 
 
 """
-	KSPSetSupportedNorm(petsclib::PetscLibType,ksp::PetscKSP, normtype::KSPNormType, pcside::PCSide, priority::PetscInt) 
+	KSPSetSupportedNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP, normtype::KSPNormType, pcside::PCSide, priority::PetscInt) 
 Sets a norm and preconditioner side supported by a `KSPType`
 
 Logically Collective
@@ -4609,9 +4609,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetSupportedNorm"))
 """
-function KSPSetSupportedNorm(petsclib::PetscLibType, ksp::PetscKSP, normtype::KSPNormType, pcside::PCSide, priority::PetscInt) end
+function KSPSetSupportedNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP, normtype::KSPNormType, pcside::PCSide, priority::PetscInt) end
 
-@for_petsc function KSPSetSupportedNorm(petsclib::$UnionPetscLib, ksp::PetscKSP, normtype::KSPNormType, pcside::PCSide, priority::$PetscInt )
+@for_petsc function KSPSetSupportedNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, normtype::KSPNormType, pcside::PCSide, priority::$PetscInt )
 
     @chk ccall(
                (:KSPSetSupportedNorm, $petsc_library),
@@ -4625,7 +4625,7 @@ function KSPSetSupportedNorm(petsclib::PetscLibType, ksp::PetscKSP, normtype::KS
 end 
 
 """
-	normtype::KSPNormType = KSPGetNormType(petsclib::PetscLibType,ksp::PetscKSP) 
+	normtype::KSPNormType = KSPGetNormType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the `KSPNormType` that is used for convergence testing during `KSPSolve()` for this `KSP` context
 
 Not Collective
@@ -4643,9 +4643,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetNormType"))
 """
-function KSPGetNormType(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetNormType(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetNormType(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetNormType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	normtype_ = Ref{KSPNormType}()
 
     @chk ccall(
@@ -4661,7 +4661,7 @@ function KSPGetNormType(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetOperators(petsclib::PetscLibType,ksp::PetscKSP, Amat::PetscMat, Pmat::PetscMat) 
+	KSPSetOperators(petsclib::PetscLibType,ksp::AbstractPetscKSP, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) 
 Sets the matrix associated with the linear system
 and a (possibly) different one from which the preconditioner will be built into the `KSP` context. The matrix will then be used during `KSPSolve()`
 
@@ -4695,7 +4695,7 @@ function KSPSetOperators(petsclib::PetscLibType, ksp::AbstractPetscKSP, Amat::Ab
 end 
 
 """
-	Amat, PMat = KSPGetOperators(petsclib::PetscLibType,ksp::PetscKSP) 
+	Amat, PMat = KSPGetOperators(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the matrix associated with the linear system
 and a (possibly) different one used to construct the preconditioner from the `KSP` context
 
@@ -4715,9 +4715,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetOperators"))
 """
-function KSPGetOperators(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetOperators(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetOperators(petsclib::$UnionPetscLib, ksp::PetscKSP)
+@for_petsc function KSPGetOperators(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP)
 	Amat_ = Ref{CVec}()
 	Pmat_ = Ref{CVec}()
 
@@ -4735,7 +4735,7 @@ function KSPGetOperators(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	mat::PetscBool,pmat::PetscBool = KSPGetOperatorsSet(petsclib::PetscLibType,ksp::PetscKSP) 
+	mat::PetscBool,pmat::PetscBool = KSPGetOperatorsSet(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Determines if the matrix associated with the linear system and
 possibly a different one from which the preconditioner will be built have been set in the `KSP` with `KSPSetOperators()`
 
@@ -4755,9 +4755,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetOperatorsSet"))
 """
-function KSPGetOperatorsSet(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetOperatorsSet(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetOperatorsSet(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetOperatorsSet(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	mat_ = Ref{PetscBool}()
 	pmat_ = Ref{PetscBool}()
 
@@ -4775,7 +4775,7 @@ function KSPGetOperatorsSet(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPSetPreSolve(petsclib::PetscLibType,ksp::PetscKSP, presolve::KSPPSolveFn, ctx::Cvoid) 
+	KSPSetPreSolve(petsclib::PetscLibType,ksp::AbstractPetscKSP, presolve::KSPPSolveFn, ctx::Cvoid) 
 Sets a function that is called at the beginning of each `KSPSolve()`. Used in conjunction with `KSPSetPostSolve()`.
 
 Logically Collective
@@ -4792,9 +4792,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetPreSolve"))
 """
-function KSPSetPreSolve(petsclib::PetscLibType, ksp::PetscKSP, presolve::KSPPSolveFn, ctx::Cvoid) end
+function KSPSetPreSolve(petsclib::PetscLibType, ksp::AbstractPetscKSP, presolve::KSPPSolveFn, ctx::Cvoid) end
 
-@for_petsc function KSPSetPreSolve(petsclib::$UnionPetscLib, ksp::PetscKSP, presolve::KSPPSolveFn, ctx::Cvoid )
+@for_petsc function KSPSetPreSolve(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, presolve::KSPPSolveFn, ctx::Cvoid )
 
     @chk ccall(
                (:KSPSetPreSolve, $petsc_library),
@@ -4808,7 +4808,7 @@ function KSPSetPreSolve(petsclib::PetscLibType, ksp::PetscKSP, presolve::KSPPSol
 end 
 
 """
-	KSPSetPostSolve(petsclib::PetscLibType,ksp::PetscKSP, postsolve::KSPPSolveFn, ctx::Cvoid) 
+	KSPSetPostSolve(petsclib::PetscLibType,ksp::AbstractPetscKSP, postsolve::KSPPSolveFn, ctx::Cvoid) 
 Sets a function that is called at the end of each `KSPSolve()` (whether it converges or not). Used in conjunction with `KSPSetPreSolve()`.
 
 Logically Collective
@@ -4825,9 +4825,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetPostSolve"))
 """
-function KSPSetPostSolve(petsclib::PetscLibType, ksp::PetscKSP, postsolve::KSPPSolveFn, ctx::Cvoid) end
+function KSPSetPostSolve(petsclib::PetscLibType, ksp::AbstractPetscKSP, postsolve::KSPPSolveFn, ctx::Cvoid) end
 
-@for_petsc function KSPSetPostSolve(petsclib::$UnionPetscLib, ksp::PetscKSP, postsolve::KSPPSolveFn, ctx::Cvoid )
+@for_petsc function KSPSetPostSolve(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, postsolve::KSPPSolveFn, ctx::Cvoid )
 
     @chk ccall(
                (:KSPSetPostSolve, $petsc_library),
@@ -4841,7 +4841,7 @@ function KSPSetPostSolve(petsclib::PetscLibType, ksp::PetscKSP, postsolve::KSPPS
 end 
 
 """
-	KSPSetNestLevel(petsclib::PetscLibType,ksp::PetscKSP, level::PetscInt) 
+	KSPSetNestLevel(petsclib::PetscLibType,ksp::AbstractPetscKSP, level::PetscInt) 
 sets the amount of nesting the `KSP` has. That is the number of levels of `KSP` above this `KSP` in a linear solve.
 
 Collective
@@ -4857,9 +4857,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPSetNestLevel"))
 """
-function KSPSetNestLevel(petsclib::PetscLibType, ksp::PetscKSP, level::PetscInt) end
+function KSPSetNestLevel(petsclib::PetscLibType, ksp::AbstractPetscKSP, level::PetscInt) end
 
-@for_petsc function KSPSetNestLevel(petsclib::$UnionPetscLib, ksp::PetscKSP, level::$PetscInt )
+@for_petsc function KSPSetNestLevel(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, level::$PetscInt )
 
     @chk ccall(
                (:KSPSetNestLevel, $petsc_library),
@@ -4873,7 +4873,7 @@ function KSPSetNestLevel(petsclib::PetscLibType, ksp::PetscKSP, level::PetscInt)
 end 
 
 """
-	level::PetscInt = KSPGetNestLevel(petsclib::PetscLibType,ksp::PetscKSP) 
+	level::PetscInt = KSPGetNestLevel(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 gets the amount of nesting the `KSP` has
 
 Not Collective
@@ -4891,9 +4891,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPGetNestLevel"))
 """
-function KSPGetNestLevel(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetNestLevel(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetNestLevel(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetNestLevel(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	level_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -4945,7 +4945,7 @@ function KSPCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 end 
 
 """
-	KSPSetType(petsclib::PetscLibType,ksp::PetscKSP, type::KSPType) 
+	KSPSetType(petsclib::PetscLibType,ksp::AbstractPetscKSP, type::KSPType) 
 Sets the algorithm/method to be used to solve the linear system with the given `KSP`
 
 Logically Collective
@@ -4964,9 +4964,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetType"))
 """
-function KSPSetType(petsclib::PetscLibType, ksp::PetscKSP, type::KSPType) end
+function KSPSetType(petsclib::PetscLibType, ksp::AbstractPetscKSP, type::KSPType) end
 
-@for_petsc function KSPSetType(petsclib::$UnionPetscLib, ksp::PetscKSP, type::KSPType )
+@for_petsc function KSPSetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, type::KSPType )
 
     @chk ccall(
                (:KSPSetType, $petsc_library),
@@ -4980,7 +4980,7 @@ function KSPSetType(petsclib::PetscLibType, ksp::PetscKSP, type::KSPType) end
 end 
 
 """
-	type::KSPType = KSPGetType(petsclib::PetscLibType,ksp::PetscKSP) 
+	type::KSPType = KSPGetType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the `KSP` type as a string from the `KSP` object.
 
 Not Collective
@@ -4998,9 +4998,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGetType"))
 """
-function KSPGetType(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetType(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetType(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	type_ = Ref{KSPType}()
 
     @chk ccall(
@@ -5088,7 +5088,7 @@ function KSPMonitorRegister(petsclib::PetscLibType, name::String, vtype::PetscVi
 end 
 
 """
-	KSPSetOptionsPrefix(petsclib::PetscLibType,ksp::PetscKSP, prefix::String) 
+	KSPSetOptionsPrefix(petsclib::PetscLibType,ksp::AbstractPetscKSP, prefix::String) 
 Sets the prefix used for searching for all
 `KSP` options in the database.
 
@@ -5105,9 +5105,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPSetOptionsPrefix"))
 """
-function KSPSetOptionsPrefix(petsclib::PetscLibType, ksp::PetscKSP, prefix::String) end
+function KSPSetOptionsPrefix(petsclib::PetscLibType, ksp::AbstractPetscKSP, prefix::String) end
 
-@for_petsc function KSPSetOptionsPrefix(petsclib::$UnionPetscLib, ksp::PetscKSP, prefix::String )
+@for_petsc function KSPSetOptionsPrefix(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, prefix::String )
 
     @chk ccall(
                (:KSPSetOptionsPrefix, $petsc_library),
@@ -5121,7 +5121,7 @@ function KSPSetOptionsPrefix(petsclib::PetscLibType, ksp::PetscKSP, prefix::Stri
 end 
 
 """
-	KSPAppendOptionsPrefix(petsclib::PetscLibType,ksp::PetscKSP, prefix::String) 
+	KSPAppendOptionsPrefix(petsclib::PetscLibType,ksp::AbstractPetscKSP, prefix::String) 
 Appends to the prefix used for searching for all
 `KSP` options in the database.
 
@@ -5138,9 +5138,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPAppendOptionsPrefix"))
 """
-function KSPAppendOptionsPrefix(petsclib::PetscLibType, ksp::PetscKSP, prefix::String) end
+function KSPAppendOptionsPrefix(petsclib::PetscLibType, ksp::AbstractPetscKSP, prefix::String) end
 
-@for_petsc function KSPAppendOptionsPrefix(petsclib::$UnionPetscLib, ksp::PetscKSP, prefix::String )
+@for_petsc function KSPAppendOptionsPrefix(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, prefix::String )
 
     @chk ccall(
                (:KSPAppendOptionsPrefix, $petsc_library),
@@ -5154,7 +5154,7 @@ function KSPAppendOptionsPrefix(petsclib::PetscLibType, ksp::PetscKSP, prefix::S
 end 
 
 """
-	KSPSetUseFischerGuess(petsclib::PetscLibType,ksp::PetscKSP, model::PetscInt, size::PetscInt) 
+	KSPSetUseFischerGuess(petsclib::PetscLibType,ksp::AbstractPetscKSP, model::PetscInt, size::PetscInt) 
 Use the Paul Fischer algorithm or its variants to compute initial guesses for a set of solves with related right
 
 Logically Collective
@@ -5174,9 +5174,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetUseFischerGuess"))
 """
-function KSPSetUseFischerGuess(petsclib::PetscLibType, ksp::PetscKSP, model::PetscInt, size::PetscInt) end
+function KSPSetUseFischerGuess(petsclib::PetscLibType, ksp::AbstractPetscKSP, model::PetscInt, size::PetscInt) end
 
-@for_petsc function KSPSetUseFischerGuess(petsclib::$UnionPetscLib, ksp::PetscKSP, model::$PetscInt, size::$PetscInt )
+@for_petsc function KSPSetUseFischerGuess(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, model::$PetscInt, size::$PetscInt )
 
     @chk ccall(
                (:KSPSetUseFischerGuess, $petsc_library),
@@ -5190,7 +5190,7 @@ function KSPSetUseFischerGuess(petsclib::PetscLibType, ksp::PetscKSP, model::Pet
 end 
 
 """
-	KSPSetGuess(petsclib::PetscLibType,ksp::PetscKSP, guess::KSPGuess) 
+	KSPSetGuess(petsclib::PetscLibType,ksp::AbstractPetscKSP, guess::KSPGuess) 
 Set the initial guess object `KSPGuess` to be used by the `KSP` object to generate initial guesses
 
 Logically Collective
@@ -5206,9 +5206,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPSetGuess"))
 """
-function KSPSetGuess(petsclib::PetscLibType, ksp::PetscKSP, guess::KSPGuess) end
+function KSPSetGuess(petsclib::PetscLibType, ksp::AbstractPetscKSP, guess::KSPGuess) end
 
-@for_petsc function KSPSetGuess(petsclib::$UnionPetscLib, ksp::PetscKSP, guess::KSPGuess )
+@for_petsc function KSPSetGuess(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, guess::KSPGuess )
 
     @chk ccall(
                (:KSPSetGuess, $petsc_library),
@@ -5222,7 +5222,7 @@ function KSPSetGuess(petsclib::PetscLibType, ksp::PetscKSP, guess::KSPGuess) end
 end 
 
 """
-	KSPGetGuess(petsclib::PetscLibType,ksp::PetscKSP, guess::KSPGuess) 
+	KSPGetGuess(petsclib::PetscLibType,ksp::AbstractPetscKSP, guess::KSPGuess) 
 Gets the initial guess generator for the `KSP`.
 
 Not Collective
@@ -5240,9 +5240,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPGetGuess"))
 """
-function KSPGetGuess(petsclib::PetscLibType, ksp::PetscKSP, guess::KSPGuess) end
+function KSPGetGuess(petsclib::PetscLibType, ksp::AbstractPetscKSP, guess::KSPGuess) end
 
-@for_petsc function KSPGetGuess(petsclib::$UnionPetscLib, ksp::PetscKSP, guess::KSPGuess )
+@for_petsc function KSPGetGuess(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, guess::KSPGuess )
 
     @chk ccall(
                (:KSPGetGuess, $petsc_library),
@@ -5256,7 +5256,7 @@ function KSPGetGuess(petsclib::PetscLibType, ksp::PetscKSP, guess::KSPGuess) end
 end 
 
 """
-	prefix::String = KSPGetOptionsPrefix(petsclib::PetscLibType,ksp::PetscKSP) 
+	prefix::String = KSPGetOptionsPrefix(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the prefix used for searching for all `KSP` options in the database.
 
 Not Collective
@@ -5274,9 +5274,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGetOptionsPrefix"))
 """
-function KSPGetOptionsPrefix(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGetOptionsPrefix(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGetOptionsPrefix(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGetOptionsPrefix(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
     
     prefix_ = Ref{Ptr{Int8}}()
 
@@ -5297,7 +5297,7 @@ function KSPGetOptionsPrefix(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPMonitorSetFromOptions(petsclib::PetscLibType,ksp::PetscKSP, opt::String, name::String, ctx::Cvoid) 
+	KSPMonitorSetFromOptions(petsclib::PetscLibType,ksp::AbstractPetscKSP, opt::String, name::String, ctx::Cvoid) 
 Sets a monitor function and viewer appropriate for the type indicated by the user in the options database
 
 Collective
@@ -5321,9 +5321,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPMonitorSetFromOptions"))
 """
-function KSPMonitorSetFromOptions(petsclib::PetscLibType, ksp::PetscKSP, opt::String, name::String, ctx::Cvoid) end
+function KSPMonitorSetFromOptions(petsclib::PetscLibType, ksp::AbstractPetscKSP, opt::String, name::String, ctx::Cvoid) end
 
-@for_petsc function KSPMonitorSetFromOptions(petsclib::$UnionPetscLib, ksp::PetscKSP, opt::String, name::String, ctx::Cvoid )
+@for_petsc function KSPMonitorSetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, opt::String, name::String, ctx::Cvoid )
 
     @chk ccall(
                (:KSPMonitorSetFromOptions, $petsc_library),
@@ -5337,7 +5337,7 @@ function KSPMonitorSetFromOptions(petsclib::PetscLibType, ksp::PetscKSP, opt::St
 end 
 
 """
-	KSPSetFromOptions(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPSetFromOptions(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Sets `KSP` options from the options database.
 This routine must be called before `KSPSetUp()` if the user is to be
 allowed to set the Krylov type.
@@ -5395,9 +5395,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPSetFromOptions"))
 """
-function KSPSetFromOptions(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPSetFromOptions(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPSetFromOptions(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPSetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPSetFromOptions, $petsc_library),
@@ -5411,7 +5411,7 @@ function KSPSetFromOptions(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPResetFromOptions(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPResetFromOptions(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Sets `KSP` parameters from user options ONLY if the `KSP` was previously set from options
 
 Collective
@@ -5426,9 +5426,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPResetFromOptions"))
 """
-function KSPResetFromOptions(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPResetFromOptions(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPResetFromOptions(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPResetFromOptions(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPResetFromOptions, $petsc_library),
@@ -5495,7 +5495,7 @@ function KSPInitializePackage(petsclib::PetscLibType) end
 end 
 
 """
-	ctx::Cvoid = KSPMonitorSAWsCreate(petsclib::PetscLibType,ksp::PetscKSP) 
+	ctx::Cvoid = KSPMonitorSAWsCreate(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 create an SAWs monitor context for `KSP`
 
 Collective
@@ -5513,9 +5513,9 @@ Level: developer
 # External Links
 $(_doc_external("KSP/KSPMonitorSAWsCreate"))
 """
-function KSPMonitorSAWsCreate(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPMonitorSAWsCreate(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPMonitorSAWsCreate(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPMonitorSAWsCreate(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	ctx_ = Ref{Cvoid}()
 
     @chk ccall(
@@ -5562,7 +5562,7 @@ function KSPMonitorSAWsDestroy(petsclib::PetscLibType, ctx::Cvoid) end
 end 
 
 """
-	KSPMonitorSAWs(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, ctx::Cvoid) 
+	KSPMonitorSAWs(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, ctx::Cvoid) 
 monitor `KSP` solution using SAWs
 
 Logically Collective
@@ -5580,9 +5580,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPMonitorSAWs"))
 """
-function KSPMonitorSAWs(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, ctx::Cvoid) end
+function KSPMonitorSAWs(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, ctx::Cvoid) end
 
-@for_petsc function KSPMonitorSAWs(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, ctx::Cvoid )
+@for_petsc function KSPMonitorSAWs(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, ctx::Cvoid )
 
     @chk ccall(
                (:KSPMonitorSAWs, $petsc_library),
@@ -5596,7 +5596,7 @@ function KSPMonitorSAWs(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnor
 end 
 
 """
-	KSPGMRESSetPreAllocateVectors(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPGMRESSetPreAllocateVectors(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Causes `KSPGMRES` and `KSPFGMRES` to preallocate all its
 needed work vectors at initial setup rather than the default, which
 is to allocate several at a time when needed.
@@ -5617,9 +5617,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESSetPreAllocateVectors"))
 """
-function KSPGMRESSetPreAllocateVectors(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGMRESSetPreAllocateVectors(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGMRESSetPreAllocateVectors(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGMRESSetPreAllocateVectors(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPGMRESSetPreAllocateVectors, $petsc_library),
@@ -5633,7 +5633,7 @@ function KSPGMRESSetPreAllocateVectors(petsclib::PetscLibType, ksp::PetscKSP) en
 end 
 
 """
-	KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::PetscLibType,ksp::PetscKSP, it::PetscInt) 
+	KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::PetscLibType,ksp::AbstractPetscKSP, it::PetscInt) 
 This is the basic orthogonalization routine
 using classical Gram-Schmidt with possible iterative refinement to improve the stability
 
@@ -5656,9 +5656,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESClassicalGramSchmidtOrthogonalization"))
 """
-function KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::PetscLibType, ksp::PetscKSP, it::PetscInt) end
+function KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::PetscLibType, ksp::AbstractPetscKSP, it::PetscInt) end
 
-@for_petsc function KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::$UnionPetscLib, ksp::PetscKSP, it::$PetscInt )
+@for_petsc function KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, it::$PetscInt )
 
     @chk ccall(
                (:KSPGMRESClassicalGramSchmidtOrthogonalization, $petsc_library),
@@ -5672,7 +5672,7 @@ function KSPGMRESClassicalGramSchmidtOrthogonalization(petsclib::PetscLibType, k
 end 
 
 """
-	KSPGMRESSetOrthogonalization(petsclib::PetscLibType,ksp::PetscKSP, fcn::external) 
+	KSPGMRESSetOrthogonalization(petsclib::PetscLibType,ksp::AbstractPetscKSP, fcn::external) 
 Sets the orthogonalization routine used by `KSPGMRES` and `KSPFGMRES`.
 
 Logically Collective
@@ -5698,9 +5698,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESSetOrthogonalization"))
 """
-function KSPGMRESSetOrthogonalization(petsclib::PetscLibType, ksp::PetscKSP, fcn::external) end
+function KSPGMRESSetOrthogonalization(petsclib::PetscLibType, ksp::AbstractPetscKSP, fcn::external) end
 
-@for_petsc function KSPGMRESSetOrthogonalization(petsclib::$UnionPetscLib, ksp::PetscKSP, fcn::external )
+@for_petsc function KSPGMRESSetOrthogonalization(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, fcn::external )
 
     @chk ccall(
                (:KSPGMRESSetOrthogonalization, $petsc_library),
@@ -5714,7 +5714,7 @@ function KSPGMRESSetOrthogonalization(petsclib::PetscLibType, ksp::PetscKSP, fcn
 end 
 
 """
-	KSPGMRESMonitorKrylov(petsclib::PetscLibType,ksp::PetscKSP, its::PetscInt, fgnorm::PetscReal, dummy::Cvoid) 
+	KSPGMRESMonitorKrylov(petsclib::PetscLibType,ksp::AbstractPetscKSP, its::PetscInt, fgnorm::PetscReal, dummy::Cvoid) 
 Calls `VecView()` to monitor each new direction in the `KSPGMRES` accumulated Krylov space.
 
 Collective
@@ -5735,9 +5735,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESMonitorKrylov"))
 """
-function KSPGMRESMonitorKrylov(petsclib::PetscLibType, ksp::PetscKSP, its::PetscInt, fgnorm::PetscReal, dummy::Cvoid) end
+function KSPGMRESMonitorKrylov(petsclib::PetscLibType, ksp::AbstractPetscKSP, its::PetscInt, fgnorm::PetscReal, dummy::Cvoid) end
 
-@for_petsc function KSPGMRESMonitorKrylov(petsclib::$UnionPetscLib, ksp::PetscKSP, its::$PetscInt, fgnorm::$PetscReal, dummy::Cvoid )
+@for_petsc function KSPGMRESMonitorKrylov(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, its::$PetscInt, fgnorm::$PetscReal, dummy::Cvoid )
 
     @chk ccall(
                (:KSPGMRESMonitorKrylov, $petsc_library),
@@ -5751,7 +5751,7 @@ function KSPGMRESMonitorKrylov(petsclib::PetscLibType, ksp::PetscKSP, its::Petsc
 end 
 
 """
-	KSPGMRESSetCGSRefinementType(petsclib::PetscLibType,ksp::PetscKSP, type::KSPGMRESCGSRefinementType) 
+	KSPGMRESSetCGSRefinementType(petsclib::PetscLibType,ksp::AbstractPetscKSP, type::KSPGMRESCGSRefinementType) 
 Sets the type of iterative refinement to use
 in the classical Gram-Schmidt orthogonalization used by `KSPGMRES` and other PETSc GMRES implementations.
 
@@ -5766,9 +5766,9 @@ Input Parameters:
 # External Links
 $(_doc_external("KSP/KSPGMRESSetCGSRefinementType"))
 """
-function KSPGMRESSetCGSRefinementType(petsclib::PetscLibType, ksp::PetscKSP, type::KSPGMRESCGSRefinementType) end
+function KSPGMRESSetCGSRefinementType(petsclib::PetscLibType, ksp::AbstractPetscKSP, type::KSPGMRESCGSRefinementType) end
 
-@for_petsc function KSPGMRESSetCGSRefinementType(petsclib::$UnionPetscLib, ksp::PetscKSP, type::KSPGMRESCGSRefinementType )
+@for_petsc function KSPGMRESSetCGSRefinementType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, type::KSPGMRESCGSRefinementType )
 
     @chk ccall(
                (:KSPGMRESSetCGSRefinementType, $petsc_library),
@@ -5782,7 +5782,7 @@ function KSPGMRESSetCGSRefinementType(petsclib::PetscLibType, ksp::PetscKSP, typ
 end 
 
 """
-	type::KSPGMRESCGSRefinementType = KSPGMRESGetCGSRefinementType(petsclib::PetscLibType,ksp::PetscKSP) 
+	type::KSPGMRESCGSRefinementType = KSPGMRESGetCGSRefinementType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the type of iterative refinement to use
 in the classical Gram-Schmidt orthogonalization used by `KSPGMRES` and other PETSc GMRES implementations.
 
@@ -5802,9 +5802,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESGetCGSRefinementType"))
 """
-function KSPGMRESGetCGSRefinementType(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGMRESGetCGSRefinementType(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGMRESGetCGSRefinementType(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGMRESGetCGSRefinementType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	type_ = Ref{KSPGMRESCGSRefinementType}()
 
     @chk ccall(
@@ -5820,7 +5820,7 @@ function KSPGMRESGetCGSRefinementType(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPGMRESSetRestart(petsclib::PetscLibType,ksp::PetscKSP, restart::PetscInt) 
+	KSPGMRESSetRestart(petsclib::PetscLibType,ksp::AbstractPetscKSP, restart::PetscInt) 
 Sets number of iterations at which GMRES (`KSPGMRES`, `KSPFGMRES`, `KSPPGMRES`, `KSPAGMRES`, `KSPDGMRES`, `KSPPIPEFGMRES`,
 and `KSPLGMRES`) restarts.
 
@@ -5841,9 +5841,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESSetRestart"))
 """
-function KSPGMRESSetRestart(petsclib::PetscLibType, ksp::PetscKSP, restart::PetscInt) end
+function KSPGMRESSetRestart(petsclib::PetscLibType, ksp::AbstractPetscKSP, restart::PetscInt) end
 
-@for_petsc function KSPGMRESSetRestart(petsclib::$UnionPetscLib, ksp::PetscKSP, restart::$PetscInt )
+@for_petsc function KSPGMRESSetRestart(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, restart::$PetscInt )
 
     @chk ccall(
                (:KSPGMRESSetRestart, $petsc_library),
@@ -5857,7 +5857,7 @@ function KSPGMRESSetRestart(petsclib::PetscLibType, ksp::PetscKSP, restart::Pets
 end 
 
 """
-	restart::PetscInt = KSPGMRESGetRestart(petsclib::PetscLibType,ksp::PetscKSP) 
+	restart::PetscInt = KSPGMRESGetRestart(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets number of iterations at which GMRES (`KSPGMRES`, `KSPFGMRES`, `KSPPGMRES`, `KSPAGMRES`, `KSPDGMRES`, `KSPPIPEFGMRES`,
 and `KSPLGMRES`) restarts.
 
@@ -5877,9 +5877,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESGetRestart"))
 """
-function KSPGMRESGetRestart(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGMRESGetRestart(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGMRESGetRestart(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGMRESGetRestart(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	restart_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -5895,7 +5895,7 @@ function KSPGMRESGetRestart(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPGMRESSetHapTol(petsclib::PetscLibType,ksp::PetscKSP, tol::PetscReal) 
+	KSPGMRESSetHapTol(petsclib::PetscLibType,ksp::AbstractPetscKSP, tol::PetscReal) 
 Sets the tolerance for detecting a happy ending in GMRES (`KSPGMRES`, `KSPFGMRES` and `KSPLGMRES` and others)
 
 Logically Collective
@@ -5914,9 +5914,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESSetHapTol"))
 """
-function KSPGMRESSetHapTol(petsclib::PetscLibType, ksp::PetscKSP, tol::PetscReal) end
+function KSPGMRESSetHapTol(petsclib::PetscLibType, ksp::AbstractPetscKSP, tol::PetscReal) end
 
-@for_petsc function KSPGMRESSetHapTol(petsclib::$UnionPetscLib, ksp::PetscKSP, tol::$PetscReal )
+@for_petsc function KSPGMRESSetHapTol(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, tol::$PetscReal )
 
     @chk ccall(
                (:KSPGMRESSetHapTol, $petsc_library),
@@ -5930,7 +5930,7 @@ function KSPGMRESSetHapTol(petsclib::PetscLibType, ksp::PetscKSP, tol::PetscReal
 end 
 
 """
-	KSPGMRESSetBreakdownTolerance(petsclib::PetscLibType,ksp::PetscKSP, tol::PetscReal) 
+	KSPGMRESSetBreakdownTolerance(petsclib::PetscLibType,ksp::AbstractPetscKSP, tol::PetscReal) 
 Sets the tolerance for determining divergence breakdown in `KSPGMRES` at restart.
 
 Logically Collective
@@ -5949,9 +5949,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESSetBreakdownTolerance"))
 """
-function KSPGMRESSetBreakdownTolerance(petsclib::PetscLibType, ksp::PetscKSP, tol::PetscReal) end
+function KSPGMRESSetBreakdownTolerance(petsclib::PetscLibType, ksp::AbstractPetscKSP, tol::PetscReal) end
 
-@for_petsc function KSPGMRESSetBreakdownTolerance(petsclib::$UnionPetscLib, ksp::PetscKSP, tol::$PetscReal )
+@for_petsc function KSPGMRESSetBreakdownTolerance(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, tol::$PetscReal )
 
     @chk ccall(
                (:KSPGMRESSetBreakdownTolerance, $petsc_library),
@@ -5965,7 +5965,7 @@ function KSPGMRESSetBreakdownTolerance(petsclib::PetscLibType, ksp::PetscKSP, to
 end 
 
 """
-	KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::PetscLibType,ksp::PetscKSP, it::PetscInt) 
+	KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::PetscLibType,ksp::AbstractPetscKSP, it::PetscInt) 
 This is the basic orthogonalization routine
 using modified Gram-Schmidt.
 
@@ -5985,9 +5985,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGMRESModifiedGramSchmidtOrthogonalization"))
 """
-function KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::PetscLibType, ksp::PetscKSP, it::PetscInt) end
+function KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::PetscLibType, ksp::AbstractPetscKSP, it::PetscInt) end
 
-@for_petsc function KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::$UnionPetscLib, ksp::PetscKSP, it::$PetscInt )
+@for_petsc function KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, it::$PetscInt )
 
     @chk ccall(
                (:KSPGMRESModifiedGramSchmidtOrthogonalization, $petsc_library),
@@ -6001,7 +6001,7 @@ function KSPGMRESModifiedGramSchmidtOrthogonalization(petsclib::PetscLibType, ks
 end 
 
 """
-	KSPPIPEFGMRESSetShift(petsclib::PetscLibType,ksp::PetscKSP, shift::PetscScalar) 
+	KSPPIPEFGMRESSetShift(petsclib::PetscLibType,ksp::AbstractPetscKSP, shift::PetscScalar) 
 Set the shift parameter for the flexible, pipelined `KSPPIPEFGMRES` solver.
 
 Logically Collective
@@ -6020,9 +6020,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEFGMRESSetShift"))
 """
-function KSPPIPEFGMRESSetShift(petsclib::PetscLibType, ksp::PetscKSP, shift::PetscScalar) end
+function KSPPIPEFGMRESSetShift(petsclib::PetscLibType, ksp::AbstractPetscKSP, shift::PetscScalar) end
 
-@for_petsc function KSPPIPEFGMRESSetShift(petsclib::$UnionPetscLib, ksp::PetscKSP, shift::$PetscScalar )
+@for_petsc function KSPPIPEFGMRESSetShift(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, shift::$PetscScalar )
 
     @chk ccall(
                (:KSPPIPEFGMRESSetShift, $petsc_library),
@@ -6036,7 +6036,7 @@ function KSPPIPEFGMRESSetShift(petsclib::PetscLibType, ksp::PetscKSP, shift::Pet
 end 
 
 """
-	KSPFGMRESSetModifyPC(petsclib::PetscLibType,ksp::PetscKSP, fcn::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
+	KSPFGMRESSetModifyPC(petsclib::PetscLibType,ksp::AbstractPetscKSP, fcn::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
 Sets the routine used by `KSPFGMRES` to modify the preconditioner. [](sec_flexibleksp)
 
 Logically Collective
@@ -6058,9 +6058,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPFGMRESSetModifyPC"))
 """
-function KSPFGMRESSetModifyPC(petsclib::PetscLibType, ksp::PetscKSP, fcn::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
+function KSPFGMRESSetModifyPC(petsclib::PetscLibType, ksp::AbstractPetscKSP, fcn::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
 
-@for_petsc function KSPFGMRESSetModifyPC(petsclib::$UnionPetscLib, ksp::PetscKSP, fcn::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
+@for_petsc function KSPFGMRESSetModifyPC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, fcn::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
 
     @chk ccall(
                (:KSPFGMRESSetModifyPC, $petsc_library),
@@ -6074,7 +6074,7 @@ function KSPFGMRESSetModifyPC(petsclib::PetscLibType, ksp::PetscKSP, fcn::KSPFle
 end 
 
 """
-	KSPFlexibleSetModifyPC(petsclib::PetscLibType,ksp::PetscKSP, fcn::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
+	KSPFlexibleSetModifyPC(petsclib::PetscLibType,ksp::AbstractPetscKSP, fcn::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
 Sets the routine used by flexible `KSP` methods to modify the preconditioner. [](sec_flexibleksp)
 
 Logically Collective
@@ -6092,9 +6092,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPFlexibleSetModifyPC"))
 """
-function KSPFlexibleSetModifyPC(petsclib::PetscLibType, ksp::PetscKSP, fcn::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
+function KSPFlexibleSetModifyPC(petsclib::PetscLibType, ksp::AbstractPetscKSP, fcn::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
 
-@for_petsc function KSPFlexibleSetModifyPC(petsclib::$UnionPetscLib, ksp::PetscKSP, fcn::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
+@for_petsc function KSPFlexibleSetModifyPC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, fcn::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
 
     @chk ccall(
                (:KSPFlexibleSetModifyPC, $petsc_library),
@@ -6108,7 +6108,7 @@ function KSPFlexibleSetModifyPC(petsclib::PetscLibType, ksp::PetscKSP, fcn::KSPF
 end 
 
 """
-	KSPFGMRESModifyPCNoChange(petsclib::PetscLibType,ksp::PetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Cvoid) 
+	KSPFGMRESModifyPCNoChange(petsclib::PetscLibType,ksp::AbstractPetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Cvoid) 
 this is the default used by `KSPFMGMRES`
 
 Input Parameters:
@@ -6125,9 +6125,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPFGMRESModifyPCNoChange"))
 """
-function KSPFGMRESModifyPCNoChange(petsclib::PetscLibType, ksp::PetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Cvoid) end
+function KSPFGMRESModifyPCNoChange(petsclib::PetscLibType, ksp::AbstractPetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Cvoid) end
 
-@for_petsc function KSPFGMRESModifyPCNoChange(petsclib::$UnionPetscLib, ksp::PetscKSP, total_its::$PetscInt, loc_its::$PetscInt, res_norm::$PetscReal, ctx::Cvoid )
+@for_petsc function KSPFGMRESModifyPCNoChange(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, total_its::$PetscInt, loc_its::$PetscInt, res_norm::$PetscReal, ctx::Cvoid )
 
     @chk ccall(
                (:KSPFGMRESModifyPCNoChange, $petsc_library),
@@ -6141,7 +6141,7 @@ function KSPFGMRESModifyPCNoChange(petsclib::PetscLibType, ksp::PetscKSP, total_
 end 
 
 """
-	KSPFGMRESModifyPCKSP(petsclib::PetscLibType,ksp::PetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Cvoid) 
+	KSPFGMRESModifyPCKSP(petsclib::PetscLibType,ksp::AbstractPetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Cvoid) 
 modifies the attributes of the `KSPFGMRES` preconditioner, see [](sec_flexibleksp).
 
 Input Parameters:
@@ -6158,9 +6158,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPFGMRESModifyPCKSP"))
 """
-function KSPFGMRESModifyPCKSP(petsclib::PetscLibType, ksp::PetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Cvoid) end
+function KSPFGMRESModifyPCKSP(petsclib::PetscLibType, ksp::AbstractPetscKSP, total_its::PetscInt, loc_its::PetscInt, res_norm::PetscReal, ctx::Cvoid) end
 
-@for_petsc function KSPFGMRESModifyPCKSP(petsclib::$UnionPetscLib, ksp::PetscKSP, total_its::$PetscInt, loc_its::$PetscInt, res_norm::$PetscReal, ctx::Cvoid )
+@for_petsc function KSPFGMRESModifyPCKSP(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, total_its::$PetscInt, loc_its::$PetscInt, res_norm::$PetscReal, ctx::Cvoid )
 
     @chk ccall(
                (:KSPFGMRESModifyPCKSP, $petsc_library),
@@ -6174,7 +6174,7 @@ function KSPFGMRESModifyPCKSP(petsclib::PetscLibType, ksp::PetscKSP, total_its::
 end 
 
 """
-	KSPLGMRESSetAugDim(petsclib::PetscLibType,ksp::PetscKSP, dim::PetscInt) 
+	KSPLGMRESSetAugDim(petsclib::PetscLibType,ksp::AbstractPetscKSP, dim::PetscInt) 
 Set the number of error approximations to include in the approximation space (default is 2) for `KSPLGMRES`
 
 Collective
@@ -6193,9 +6193,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLGMRESSetAugDim"))
 """
-function KSPLGMRESSetAugDim(petsclib::PetscLibType, ksp::PetscKSP, dim::PetscInt) end
+function KSPLGMRESSetAugDim(petsclib::PetscLibType, ksp::AbstractPetscKSP, dim::PetscInt) end
 
-@for_petsc function KSPLGMRESSetAugDim(petsclib::$UnionPetscLib, ksp::PetscKSP, dim::$PetscInt )
+@for_petsc function KSPLGMRESSetAugDim(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, dim::$PetscInt )
 
     @chk ccall(
                (:KSPLGMRESSetAugDim, $petsc_library),
@@ -6209,7 +6209,7 @@ function KSPLGMRESSetAugDim(petsclib::PetscLibType, ksp::PetscKSP, dim::PetscInt
 end 
 
 """
-	KSPLGMRESSetConstant(petsclib::PetscLibType,ksp::PetscKSP) 
+	KSPLGMRESSetConstant(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 keep the error approximation space a constant size for every restart cycle
 
 Collective
@@ -6227,9 +6227,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLGMRESSetConstant"))
 """
-function KSPLGMRESSetConstant(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPLGMRESSetConstant(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPLGMRESSetConstant(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPLGMRESSetConstant(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:KSPLGMRESSetConstant, $petsc_library),
@@ -6243,7 +6243,7 @@ function KSPLGMRESSetConstant(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPChebyshevSetEigenvalues(petsclib::PetscLibType,ksp::PetscKSP, emax::PetscReal, emin::PetscReal) 
+	KSPChebyshevSetEigenvalues(petsclib::PetscLibType,ksp::AbstractPetscKSP, emax::PetscReal, emin::PetscReal) 
 Sets estimates for the extreme eigenvalues of the preconditioned problem.
 
 Logically Collective
@@ -6263,9 +6263,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPChebyshevSetEigenvalues"))
 """
-function KSPChebyshevSetEigenvalues(petsclib::PetscLibType, ksp::PetscKSP, emax::PetscReal, emin::PetscReal) end
+function KSPChebyshevSetEigenvalues(petsclib::PetscLibType, ksp::AbstractPetscKSP, emax::PetscReal, emin::PetscReal) end
 
-@for_petsc function KSPChebyshevSetEigenvalues(petsclib::$UnionPetscLib, ksp::PetscKSP, emax::$PetscReal, emin::$PetscReal )
+@for_petsc function KSPChebyshevSetEigenvalues(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, emax::$PetscReal, emin::$PetscReal )
 
     @chk ccall(
                (:KSPChebyshevSetEigenvalues, $petsc_library),
@@ -6279,7 +6279,7 @@ function KSPChebyshevSetEigenvalues(petsclib::PetscLibType, ksp::PetscKSP, emax:
 end 
 
 """
-	KSPChebyshevEstEigSet(petsclib::PetscLibType,ksp::PetscKSP, a::PetscReal, b::PetscReal, c::PetscReal, d::PetscReal) 
+	KSPChebyshevEstEigSet(petsclib::PetscLibType,ksp::AbstractPetscKSP, a::PetscReal, b::PetscReal, c::PetscReal, d::PetscReal) 
 Automatically estimate the eigenvalues to use for Chebyshev
 
 Logically Collective
@@ -6299,9 +6299,9 @@ Options Database Key:
 # External Links
 $(_doc_external("KSP/KSPChebyshevEstEigSet"))
 """
-function KSPChebyshevEstEigSet(petsclib::PetscLibType, ksp::PetscKSP, a::PetscReal, b::PetscReal, c::PetscReal, d::PetscReal) end
+function KSPChebyshevEstEigSet(petsclib::PetscLibType, ksp::AbstractPetscKSP, a::PetscReal, b::PetscReal, c::PetscReal, d::PetscReal) end
 
-@for_petsc function KSPChebyshevEstEigSet(petsclib::$UnionPetscLib, ksp::PetscKSP, a::$PetscReal, b::$PetscReal, c::$PetscReal, d::$PetscReal )
+@for_petsc function KSPChebyshevEstEigSet(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, a::$PetscReal, b::$PetscReal, c::$PetscReal, d::$PetscReal )
 
     @chk ccall(
                (:KSPChebyshevEstEigSet, $petsc_library),
@@ -6315,7 +6315,7 @@ function KSPChebyshevEstEigSet(petsclib::PetscLibType, ksp::PetscKSP, a::PetscRe
 end 
 
 """
-	KSPChebyshevEstEigSetUseNoisy(petsclib::PetscLibType,ksp::PetscKSP, use::PetscBool) 
+	KSPChebyshevEstEigSetUseNoisy(petsclib::PetscLibType,ksp::AbstractPetscKSP, use::PetscBool) 
 use a noisy random number generated right
 
 Logically Collective
@@ -6334,9 +6334,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPChebyshevEstEigSetUseNoisy"))
 """
-function KSPChebyshevEstEigSetUseNoisy(petsclib::PetscLibType, ksp::PetscKSP, use::PetscBool) end
+function KSPChebyshevEstEigSetUseNoisy(petsclib::PetscLibType, ksp::AbstractPetscKSP, use::PetscBool) end
 
-@for_petsc function KSPChebyshevEstEigSetUseNoisy(petsclib::$UnionPetscLib, ksp::PetscKSP, use::PetscBool )
+@for_petsc function KSPChebyshevEstEigSetUseNoisy(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, use::PetscBool )
 
     @chk ccall(
                (:KSPChebyshevEstEigSetUseNoisy, $petsc_library),
@@ -6350,7 +6350,7 @@ function KSPChebyshevEstEigSetUseNoisy(petsclib::PetscLibType, ksp::PetscKSP, us
 end 
 
 """
-	KSPChebyshevEstEigGetKSP(petsclib::PetscLibType,ksp::PetscKSP, kspest::PetscKSP) 
+	KSPChebyshevEstEigGetKSP(petsclib::PetscLibType,ksp::AbstractPetscKSP, kspest::AbstractPetscKSP) 
 Get the Krylov method context used to estimate the eigenvalues for the Chebyshev method.
 
 Input Parameter:
@@ -6366,9 +6366,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPChebyshevEstEigGetKSP"))
 """
-function KSPChebyshevEstEigGetKSP(petsclib::PetscLibType, ksp::PetscKSP, kspest::PetscKSP) end
+function KSPChebyshevEstEigGetKSP(petsclib::PetscLibType, ksp::AbstractPetscKSP, kspest::AbstractPetscKSP) end
 
-@for_petsc function KSPChebyshevEstEigGetKSP(petsclib::$UnionPetscLib, ksp::PetscKSP, kspest::PetscKSP )
+@for_petsc function KSPChebyshevEstEigGetKSP(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, kspest::AbstractPetscKSP )
 	kspest_ = Ref(kspest.ptr)
 
     @chk ccall(
@@ -6384,7 +6384,7 @@ function KSPChebyshevEstEigGetKSP(petsclib::PetscLibType, ksp::PetscKSP, kspest:
 end 
 
 """
-	KSPChebyshevSetKind(petsclib::PetscLibType,ksp::PetscKSP, kind::KSPChebyshevKind) 
+	KSPChebyshevSetKind(petsclib::PetscLibType,ksp::AbstractPetscKSP, kind::KSPChebyshevKind) 
 set the kind of Chebyshev polynomial to use
 
 Logically Collective
@@ -6403,9 +6403,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPChebyshevSetKind"))
 """
-function KSPChebyshevSetKind(petsclib::PetscLibType, ksp::PetscKSP, kind::KSPChebyshevKind) end
+function KSPChebyshevSetKind(petsclib::PetscLibType, ksp::AbstractPetscKSP, kind::KSPChebyshevKind) end
 
-@for_petsc function KSPChebyshevSetKind(petsclib::$UnionPetscLib, ksp::PetscKSP, kind::KSPChebyshevKind )
+@for_petsc function KSPChebyshevSetKind(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, kind::KSPChebyshevKind )
 
     @chk ccall(
                (:KSPChebyshevSetKind, $petsc_library),
@@ -6419,7 +6419,7 @@ function KSPChebyshevSetKind(petsclib::PetscLibType, ksp::PetscKSP, kind::KSPChe
 end 
 
 """
-	KSPChebyshevGetKind(petsclib::PetscLibType,ksp::PetscKSP, kind::KSPChebyshevKind) 
+	KSPChebyshevGetKind(petsclib::PetscLibType,ksp::AbstractPetscKSP, kind::KSPChebyshevKind) 
 get the kind of Chebyshev polynomial to use
 
 Logically Collective
@@ -6435,9 +6435,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPChebyshevGetKind"))
 """
-function KSPChebyshevGetKind(petsclib::PetscLibType, ksp::PetscKSP, kind::KSPChebyshevKind) end
+function KSPChebyshevGetKind(petsclib::PetscLibType, ksp::AbstractPetscKSP, kind::KSPChebyshevKind) end
 
-@for_petsc function KSPChebyshevGetKind(petsclib::$UnionPetscLib, ksp::PetscKSP, kind::KSPChebyshevKind )
+@for_petsc function KSPChebyshevGetKind(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, kind::KSPChebyshevKind )
 
     @chk ccall(
                (:KSPChebyshevGetKind, $petsc_library),
@@ -6451,7 +6451,7 @@ function KSPChebyshevGetKind(petsclib::PetscLibType, ksp::PetscKSP, kind::KSPChe
 end 
 
 """
-	KSPFCGSetMmax(petsclib::PetscLibType,ksp::PetscKSP, mmax::PetscInt) 
+	KSPFCGSetMmax(petsclib::PetscLibType,ksp::AbstractPetscKSP, mmax::PetscInt) 
 set the maximum number of previous directions `KSPFCG` will store for orthogonalization
 
 Logically Collective
@@ -6470,9 +6470,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPFCGSetMmax"))
 """
-function KSPFCGSetMmax(petsclib::PetscLibType, ksp::PetscKSP, mmax::PetscInt) end
+function KSPFCGSetMmax(petsclib::PetscLibType, ksp::AbstractPetscKSP, mmax::PetscInt) end
 
-@for_petsc function KSPFCGSetMmax(petsclib::$UnionPetscLib, ksp::PetscKSP, mmax::$PetscInt )
+@for_petsc function KSPFCGSetMmax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, mmax::$PetscInt )
 
     @chk ccall(
                (:KSPFCGSetMmax, $petsc_library),
@@ -6486,7 +6486,7 @@ function KSPFCGSetMmax(petsclib::PetscLibType, ksp::PetscKSP, mmax::PetscInt) en
 end 
 
 """
-	mmax::PetscInt = KSPFCGGetMmax(petsclib::PetscLibType,ksp::PetscKSP) 
+	mmax::PetscInt = KSPFCGGetMmax(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 get the maximum number of previous directions `KSPFCG` will store
 
 Not Collective
@@ -6504,9 +6504,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPFCGGetMmax"))
 """
-function KSPFCGGetMmax(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPFCGGetMmax(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPFCGGetMmax(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPFCGGetMmax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	mmax_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6522,7 +6522,7 @@ function KSPFCGGetMmax(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPFCGSetNprealloc(petsclib::PetscLibType,ksp::PetscKSP, nprealloc::PetscInt) 
+	KSPFCGSetNprealloc(petsclib::PetscLibType,ksp::AbstractPetscKSP, nprealloc::PetscInt) 
 set the number of directions to preallocate with `KSPFCG`
 
 Logically Collective
@@ -6541,9 +6541,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPFCGSetNprealloc"))
 """
-function KSPFCGSetNprealloc(petsclib::PetscLibType, ksp::PetscKSP, nprealloc::PetscInt) end
+function KSPFCGSetNprealloc(petsclib::PetscLibType, ksp::AbstractPetscKSP, nprealloc::PetscInt) end
 
-@for_petsc function KSPFCGSetNprealloc(petsclib::$UnionPetscLib, ksp::PetscKSP, nprealloc::$PetscInt )
+@for_petsc function KSPFCGSetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, nprealloc::$PetscInt )
 
     @chk ccall(
                (:KSPFCGSetNprealloc, $petsc_library),
@@ -6557,7 +6557,7 @@ function KSPFCGSetNprealloc(petsclib::PetscLibType, ksp::PetscKSP, nprealloc::Pe
 end 
 
 """
-	nprealloc::PetscInt = KSPFCGGetNprealloc(petsclib::PetscLibType,ksp::PetscKSP) 
+	nprealloc::PetscInt = KSPFCGGetNprealloc(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 get the number of directions preallocate by `KSPFCG`
 
 Not Collective
@@ -6575,9 +6575,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPFCGGetNprealloc"))
 """
-function KSPFCGGetNprealloc(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPFCGGetNprealloc(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPFCGGetNprealloc(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPFCGGetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	nprealloc_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6593,7 +6593,7 @@ function KSPFCGGetNprealloc(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPFCGSetTruncationType(petsclib::PetscLibType,ksp::PetscKSP, truncstrat::KSPFCDTruncationType) 
+	KSPFCGSetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType) 
 specify how many of its stored previous directions `KSPFCG` uses during orthoganalization
 
 Logically Collective
@@ -6607,9 +6607,9 @@ Input Parameters:
 # External Links
 $(_doc_external("KSP/KSPFCGSetTruncationType"))
 """
-function KSPFCGSetTruncationType(petsclib::PetscLibType, ksp::PetscKSP, truncstrat::KSPFCDTruncationType) end
+function KSPFCGSetTruncationType(petsclib::PetscLibType, ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType) end
 
-@for_petsc function KSPFCGSetTruncationType(petsclib::$UnionPetscLib, ksp::PetscKSP, truncstrat::KSPFCDTruncationType )
+@for_petsc function KSPFCGSetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType )
 
     @chk ccall(
                (:KSPFCGSetTruncationType, $petsc_library),
@@ -6623,7 +6623,7 @@ function KSPFCGSetTruncationType(petsclib::PetscLibType, ksp::PetscKSP, truncstr
 end 
 
 """
-	truncstrat::KSPFCDTruncationType = KSPFCGGetTruncationType(petsclib::PetscLibType,ksp::PetscKSP) 
+	truncstrat::KSPFCDTruncationType = KSPFCGGetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 get the truncation strategy employed by `KSPFCG`
 
 Not Collective
@@ -6641,9 +6641,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPFCGGetTruncationType"))
 """
-function KSPFCGGetTruncationType(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPFCGGetTruncationType(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPFCGGetTruncationType(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPFCGGetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	truncstrat_ = Ref{KSPFCDTruncationType}()
 
     @chk ccall(
@@ -6659,7 +6659,7 @@ function KSPFCGGetTruncationType(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPPIPEFCGSetMmax(petsclib::PetscLibType,ksp::PetscKSP, mmax::PetscInt) 
+	KSPPIPEFCGSetMmax(petsclib::PetscLibType,ksp::AbstractPetscKSP, mmax::PetscInt) 
 set the maximum number of previous directions `KSPPIPEFCG` will store for orthogonalization
 
 Logically Collective
@@ -6678,9 +6678,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGSetMmax"))
 """
-function KSPPIPEFCGSetMmax(petsclib::PetscLibType, ksp::PetscKSP, mmax::PetscInt) end
+function KSPPIPEFCGSetMmax(petsclib::PetscLibType, ksp::AbstractPetscKSP, mmax::PetscInt) end
 
-@for_petsc function KSPPIPEFCGSetMmax(petsclib::$UnionPetscLib, ksp::PetscKSP, mmax::$PetscInt )
+@for_petsc function KSPPIPEFCGSetMmax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, mmax::$PetscInt )
 
     @chk ccall(
                (:KSPPIPEFCGSetMmax, $petsc_library),
@@ -6694,7 +6694,7 @@ function KSPPIPEFCGSetMmax(petsclib::PetscLibType, ksp::PetscKSP, mmax::PetscInt
 end 
 
 """
-	mmax::PetscInt = KSPPIPEFCGGetMmax(petsclib::PetscLibType,ksp::PetscKSP) 
+	mmax::PetscInt = KSPPIPEFCGGetMmax(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 get the maximum number of previous directions `KSPPIPEFCG` will store
 
 Not Collective
@@ -6712,9 +6712,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGGetMmax"))
 """
-function KSPPIPEFCGGetMmax(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPPIPEFCGGetMmax(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPPIPEFCGGetMmax(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPPIPEFCGGetMmax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	mmax_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6730,7 +6730,7 @@ function KSPPIPEFCGGetMmax(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPPIPEFCGSetNprealloc(petsclib::PetscLibType,ksp::PetscKSP, nprealloc::PetscInt) 
+	KSPPIPEFCGSetNprealloc(petsclib::PetscLibType,ksp::AbstractPetscKSP, nprealloc::PetscInt) 
 set the number of directions to preallocate with `KSPPIPEFCG`
 
 Logically Collective
@@ -6749,9 +6749,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGSetNprealloc"))
 """
-function KSPPIPEFCGSetNprealloc(petsclib::PetscLibType, ksp::PetscKSP, nprealloc::PetscInt) end
+function KSPPIPEFCGSetNprealloc(petsclib::PetscLibType, ksp::AbstractPetscKSP, nprealloc::PetscInt) end
 
-@for_petsc function KSPPIPEFCGSetNprealloc(petsclib::$UnionPetscLib, ksp::PetscKSP, nprealloc::$PetscInt )
+@for_petsc function KSPPIPEFCGSetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, nprealloc::$PetscInt )
 
     @chk ccall(
                (:KSPPIPEFCGSetNprealloc, $petsc_library),
@@ -6765,7 +6765,7 @@ function KSPPIPEFCGSetNprealloc(petsclib::PetscLibType, ksp::PetscKSP, nprealloc
 end 
 
 """
-	nprealloc::PetscInt = KSPPIPEFCGGetNprealloc(petsclib::PetscLibType,ksp::PetscKSP) 
+	nprealloc::PetscInt = KSPPIPEFCGGetNprealloc(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 get the number of directions to preallocate by `KSPPIPEFCG`
 
 Not Collective
@@ -6783,9 +6783,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGGetNprealloc"))
 """
-function KSPPIPEFCGGetNprealloc(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPPIPEFCGGetNprealloc(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPPIPEFCGGetNprealloc(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPPIPEFCGGetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	nprealloc_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6801,7 +6801,7 @@ function KSPPIPEFCGGetNprealloc(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPPIPEFCGSetTruncationType(petsclib::PetscLibType,ksp::PetscKSP, truncstrat::KSPFCDTruncationType) 
+	KSPPIPEFCGSetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType) 
 specify how many of its stored previous directions `KSPPIPEFCG` uses during orthoganalization
 
 Logically Collective
@@ -6814,9 +6814,9 @@ Input Parameters:
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGSetTruncationType"))
 """
-function KSPPIPEFCGSetTruncationType(petsclib::PetscLibType, ksp::PetscKSP, truncstrat::KSPFCDTruncationType) end
+function KSPPIPEFCGSetTruncationType(petsclib::PetscLibType, ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType) end
 
-@for_petsc function KSPPIPEFCGSetTruncationType(petsclib::$UnionPetscLib, ksp::PetscKSP, truncstrat::KSPFCDTruncationType )
+@for_petsc function KSPPIPEFCGSetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType )
 
     @chk ccall(
                (:KSPPIPEFCGSetTruncationType, $petsc_library),
@@ -6830,7 +6830,7 @@ function KSPPIPEFCGSetTruncationType(petsclib::PetscLibType, ksp::PetscKSP, trun
 end 
 
 """
-	truncstrat::KSPFCDTruncationType = KSPPIPEFCGGetTruncationType(petsclib::PetscLibType,ksp::PetscKSP) 
+	truncstrat::KSPFCDTruncationType = KSPPIPEFCGGetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 get the truncation strategy employed by `KSPPIPEFCG`
 
 Not Collective
@@ -6848,9 +6848,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEFCGGetTruncationType"))
 """
-function KSPPIPEFCGGetTruncationType(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPPIPEFCGGetTruncationType(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPPIPEFCGGetTruncationType(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPPIPEFCGGetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	truncstrat_ = Ref{KSPFCDTruncationType}()
 
     @chk ccall(
@@ -6866,7 +6866,7 @@ function KSPPIPEFCGGetTruncationType(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPPythonSetType(petsclib::PetscLibType,ksp::PetscKSP, pyname::String) 
+	KSPPythonSetType(petsclib::PetscLibType,ksp::AbstractPetscKSP, pyname::String) 
 Initialize a `KSP` object to a type implemented in Python.
 
 Collective
@@ -6885,9 +6885,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPythonSetType"))
 """
-function KSPPythonSetType(petsclib::PetscLibType, ksp::PetscKSP, pyname::String) end
+function KSPPythonSetType(petsclib::PetscLibType, ksp::AbstractPetscKSP, pyname::String) end
 
-@for_petsc function KSPPythonSetType(petsclib::$UnionPetscLib, ksp::PetscKSP, pyname::String )
+@for_petsc function KSPPythonSetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, pyname::String )
 
     @chk ccall(
                (:KSPPythonSetType, $petsc_library),
@@ -6901,7 +6901,7 @@ function KSPPythonSetType(petsclib::PetscLibType, ksp::PetscKSP, pyname::String)
 end 
 
 """
-	pyname::String = KSPPythonGetType(petsclib::PetscLibType,ksp::PetscKSP) 
+	pyname::String = KSPPythonGetType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Get the type of a `KSP` object implemented in Python.
 
 Not Collective
@@ -6919,9 +6919,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPythonGetType"))
 """
-function KSPPythonGetType(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPPythonGetType(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPPythonGetType(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPPythonGetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	pyname_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -6937,7 +6937,7 @@ function KSPPythonGetType(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPCGSetType(petsclib::PetscLibType,ksp::PetscKSP, type::KSPCGType) 
+	KSPCGSetType(petsclib::PetscLibType,ksp::AbstractPetscKSP, type::KSPCGType) 
 Sets the variant of the conjugate gradient method to
 use for solving a linear system with a complex coefficient matrix.
 This option is irrelevant when solving a real system.
@@ -6952,9 +6952,9 @@ Input Parameters:
 # External Links
 $(_doc_external("KSP/KSPCGSetType"))
 """
-function KSPCGSetType(petsclib::PetscLibType, ksp::PetscKSP, type::KSPCGType) end
+function KSPCGSetType(petsclib::PetscLibType, ksp::AbstractPetscKSP, type::KSPCGType) end
 
-@for_petsc function KSPCGSetType(petsclib::$UnionPetscLib, ksp::PetscKSP, type::KSPCGType )
+@for_petsc function KSPCGSetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, type::KSPCGType )
 
     @chk ccall(
                (:KSPCGSetType, $petsc_library),
@@ -6968,7 +6968,7 @@ function KSPCGSetType(petsclib::PetscLibType, ksp::PetscKSP, type::KSPCGType) en
 end 
 
 """
-	KSPCGUseSingleReduction(petsclib::PetscLibType,ksp::PetscKSP, flg::PetscBool) 
+	KSPCGUseSingleReduction(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
 Merge the two inner products needed in `KSPCG` into a single `MPI_Allreduce()` call.
 
 Logically Collective
@@ -6987,9 +6987,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPCGUseSingleReduction"))
 """
-function KSPCGUseSingleReduction(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) end
+function KSPCGUseSingleReduction(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool) end
 
-@for_petsc function KSPCGUseSingleReduction(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
+@for_petsc function KSPCGUseSingleReduction(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPCGUseSingleReduction, $petsc_library),
@@ -7003,7 +7003,7 @@ function KSPCGUseSingleReduction(petsclib::PetscLibType, ksp::PetscKSP, flg::Pet
 end 
 
 """
-	KSPCGSetRadius(petsclib::PetscLibType,ksp::PetscKSP, radius::PetscReal) 
+	KSPCGSetRadius(petsclib::PetscLibType,ksp::AbstractPetscKSP, radius::PetscReal) 
 Sets the radius of the trust region used by the `KSPCG` when the solver is used inside `SNESNEWTONTR`
 
 Logically Collective
@@ -7019,9 +7019,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPCGSetRadius"))
 """
-function KSPCGSetRadius(petsclib::PetscLibType, ksp::PetscKSP, radius::PetscReal) end
+function KSPCGSetRadius(petsclib::PetscLibType, ksp::AbstractPetscKSP, radius::PetscReal) end
 
-@for_petsc function KSPCGSetRadius(petsclib::$UnionPetscLib, ksp::PetscKSP, radius::$PetscReal )
+@for_petsc function KSPCGSetRadius(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, radius::$PetscReal )
 
     @chk ccall(
                (:KSPCGSetRadius, $petsc_library),
@@ -7035,7 +7035,7 @@ function KSPCGSetRadius(petsclib::PetscLibType, ksp::PetscKSP, radius::PetscReal
 end 
 
 """
-	KSPCGSetObjectiveTarget(petsclib::PetscLibType,ksp::PetscKSP, obj::PetscReal) 
+	KSPCGSetObjectiveTarget(petsclib::PetscLibType,ksp::AbstractPetscKSP, obj::PetscReal) 
 Sets the target value for the CG quadratic model
 
 Logically Collective
@@ -7051,9 +7051,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPCGSetObjectiveTarget"))
 """
-function KSPCGSetObjectiveTarget(petsclib::PetscLibType, ksp::PetscKSP, obj::PetscReal) end
+function KSPCGSetObjectiveTarget(petsclib::PetscLibType, ksp::AbstractPetscKSP, obj::PetscReal) end
 
-@for_petsc function KSPCGSetObjectiveTarget(petsclib::$UnionPetscLib, ksp::PetscKSP, obj::$PetscReal )
+@for_petsc function KSPCGSetObjectiveTarget(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, obj::$PetscReal )
 
     @chk ccall(
                (:KSPCGSetObjectiveTarget, $petsc_library),
@@ -7067,7 +7067,7 @@ function KSPCGSetObjectiveTarget(petsclib::PetscLibType, ksp::PetscKSP, obj::Pet
 end 
 
 """
-	KSPCGGetNormD(petsclib::PetscLibType,ksp::PetscKSP, norm_d::PetscReal) 
+	KSPCGGetNormD(petsclib::PetscLibType,ksp::AbstractPetscKSP, norm_d::PetscReal) 
 Get norm of the direction when the solver is used inside `SNESNEWTONTR`
 
 Not collective
@@ -7083,9 +7083,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPCGGetNormD"))
 """
-function KSPCGGetNormD(petsclib::PetscLibType, ksp::PetscKSP, norm_d::PetscReal) end
+function KSPCGGetNormD(petsclib::PetscLibType, ksp::AbstractPetscKSP, norm_d::PetscReal) end
 
-@for_petsc function KSPCGGetNormD(petsclib::$UnionPetscLib, ksp::PetscKSP, norm_d::$PetscReal )
+@for_petsc function KSPCGGetNormD(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, norm_d::$PetscReal )
 
     @chk ccall(
                (:KSPCGGetNormD, $petsc_library),
@@ -7099,7 +7099,7 @@ function KSPCGGetNormD(petsclib::PetscLibType, ksp::PetscKSP, norm_d::PetscReal)
 end 
 
 """
-	KSPCGGetObjFcn(petsclib::PetscLibType,ksp::PetscKSP, o_fcn::PetscReal) 
+	KSPCGGetObjFcn(petsclib::PetscLibType,ksp::AbstractPetscKSP, o_fcn::PetscReal) 
 Get the conjugate gradient objective function value
 
 Not collective
@@ -7115,9 +7115,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPCGGetObjFcn"))
 """
-function KSPCGGetObjFcn(petsclib::PetscLibType, ksp::PetscKSP, o_fcn::PetscReal) end
+function KSPCGGetObjFcn(petsclib::PetscLibType, ksp::AbstractPetscKSP, o_fcn::PetscReal) end
 
-@for_petsc function KSPCGGetObjFcn(petsclib::$UnionPetscLib, ksp::PetscKSP, o_fcn::$PetscReal )
+@for_petsc function KSPCGGetObjFcn(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, o_fcn::$PetscReal )
 
     @chk ccall(
                (:KSPCGGetObjFcn, $petsc_library),
@@ -7131,7 +7131,7 @@ function KSPCGGetObjFcn(petsclib::PetscLibType, ksp::PetscKSP, o_fcn::PetscReal)
 end 
 
 """
-	e_min::PetscReal = KSPGLTRGetMinEig(petsclib::PetscLibType,ksp::PetscKSP) 
+	e_min::PetscReal = KSPGLTRGetMinEig(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Get minimum eigenvalue computed by `KSPGLTR`
 
 Collective
@@ -7149,9 +7149,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGLTRGetMinEig"))
 """
-function KSPGLTRGetMinEig(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGLTRGetMinEig(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGLTRGetMinEig(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGLTRGetMinEig(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	e_min_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -7167,7 +7167,7 @@ function KSPGLTRGetMinEig(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	lambda::PetscReal = KSPGLTRGetLambda(petsclib::PetscLibType,ksp::PetscKSP) 
+	lambda::PetscReal = KSPGLTRGetLambda(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Get the multiplier on the trust
 
 Not Collective
@@ -7185,9 +7185,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPGLTRGetLambda"))
 """
-function KSPGLTRGetLambda(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGLTRGetLambda(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGLTRGetLambda(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGLTRGetLambda(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	lambda_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -7203,14 +7203,14 @@ function KSPGLTRGetLambda(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPHPDDMSetDeflationMat(petsclib::PetscLibType,ksp::PetscKSP, U::PetscMat) 
+	KSPHPDDMSetDeflationMat(petsclib::PetscLibType,ksp::AbstractPetscKSP, U::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("KSP/KSPHPDDMSetDeflationMat"))
 """
-function KSPHPDDMSetDeflationMat(petsclib::PetscLibType, ksp::PetscKSP, U::PetscMat) end
+function KSPHPDDMSetDeflationMat(petsclib::PetscLibType, ksp::AbstractPetscKSP, U::AbstractPetscMat) end
 
-@for_petsc function KSPHPDDMSetDeflationMat(petsclib::$UnionPetscLib, ksp::PetscKSP, U::PetscMat )
+@for_petsc function KSPHPDDMSetDeflationMat(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, U::AbstractPetscMat )
 
     @chk ccall(
                (:KSPHPDDMSetDeflationMat, $petsc_library),
@@ -7224,14 +7224,14 @@ function KSPHPDDMSetDeflationMat(petsclib::PetscLibType, ksp::PetscKSP, U::Petsc
 end 
 
 """
-	KSPHPDDMGetDeflationMat(petsclib::PetscLibType,ksp::PetscKSP, U::PetscMat) 
+	KSPHPDDMGetDeflationMat(petsclib::PetscLibType,ksp::AbstractPetscKSP, U::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("KSP/KSPHPDDMGetDeflationMat"))
 """
-function KSPHPDDMGetDeflationMat(petsclib::PetscLibType, ksp::PetscKSP, U::PetscMat) end
+function KSPHPDDMGetDeflationMat(petsclib::PetscLibType, ksp::AbstractPetscKSP, U::AbstractPetscMat) end
 
-@for_petsc function KSPHPDDMGetDeflationMat(petsclib::$UnionPetscLib, ksp::PetscKSP, U::PetscMat )
+@for_petsc function KSPHPDDMGetDeflationMat(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, U::AbstractPetscMat )
 	U_ = Ref(U.ptr)
 
     @chk ccall(
@@ -7247,14 +7247,14 @@ function KSPHPDDMGetDeflationMat(petsclib::PetscLibType, ksp::PetscKSP, U::Petsc
 end 
 
 """
-	KSPHPDDMSetType(petsclib::PetscLibType,ksp::PetscKSP, type::KSPHPDDMType) 
+	KSPHPDDMSetType(petsclib::PetscLibType,ksp::AbstractPetscKSP, type::KSPHPDDMType) 
 
 # External Links
 $(_doc_external("KSP/KSPHPDDMSetType"))
 """
-function KSPHPDDMSetType(petsclib::PetscLibType, ksp::PetscKSP, type::KSPHPDDMType) end
+function KSPHPDDMSetType(petsclib::PetscLibType, ksp::AbstractPetscKSP, type::KSPHPDDMType) end
 
-@for_petsc function KSPHPDDMSetType(petsclib::$UnionPetscLib, ksp::PetscKSP, type::KSPHPDDMType )
+@for_petsc function KSPHPDDMSetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, type::KSPHPDDMType )
 
     @chk ccall(
                (:KSPHPDDMSetType, $petsc_library),
@@ -7268,14 +7268,14 @@ function KSPHPDDMSetType(petsclib::PetscLibType, ksp::PetscKSP, type::KSPHPDDMTy
 end 
 
 """
-	type::KSPHPDDMType = KSPHPDDMGetType(petsclib::PetscLibType,ksp::PetscKSP) 
+	type::KSPHPDDMType = KSPHPDDMGetType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 
 # External Links
 $(_doc_external("KSP/KSPHPDDMGetType"))
 """
-function KSPHPDDMGetType(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPHPDDMGetType(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPHPDDMGetType(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPHPDDMGetType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	type_ = Ref{KSPHPDDMType}()
 
     @chk ccall(
@@ -7291,7 +7291,7 @@ function KSPHPDDMGetType(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPRichardsonSetScale(petsclib::PetscLibType,ksp::PetscKSP, scale::PetscReal) 
+	KSPRichardsonSetScale(petsclib::PetscLibType,ksp::AbstractPetscKSP, scale::PetscReal) 
 Set the damping factor; if this routine is not called, the factor defaults to 1.0.
 
 Logically Collective
@@ -7310,9 +7310,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPRichardsonSetScale"))
 """
-function KSPRichardsonSetScale(petsclib::PetscLibType, ksp::PetscKSP, scale::PetscReal) end
+function KSPRichardsonSetScale(petsclib::PetscLibType, ksp::AbstractPetscKSP, scale::PetscReal) end
 
-@for_petsc function KSPRichardsonSetScale(petsclib::$UnionPetscLib, ksp::PetscKSP, scale::$PetscReal )
+@for_petsc function KSPRichardsonSetScale(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, scale::$PetscReal )
 
     @chk ccall(
                (:KSPRichardsonSetScale, $petsc_library),
@@ -7326,7 +7326,7 @@ function KSPRichardsonSetScale(petsclib::PetscLibType, ksp::PetscKSP, scale::Pet
 end 
 
 """
-	KSPRichardsonSetSelfScale(petsclib::PetscLibType,ksp::PetscKSP, scale::PetscBool) 
+	KSPRichardsonSetSelfScale(petsclib::PetscLibType,ksp::AbstractPetscKSP, scale::PetscBool) 
 Sets Richardson to automatically determine optimal scaling at each iteration to minimize the 2
 preconditioned residual
 
@@ -7346,9 +7346,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPRichardsonSetSelfScale"))
 """
-function KSPRichardsonSetSelfScale(petsclib::PetscLibType, ksp::PetscKSP, scale::PetscBool) end
+function KSPRichardsonSetSelfScale(petsclib::PetscLibType, ksp::AbstractPetscKSP, scale::PetscBool) end
 
-@for_petsc function KSPRichardsonSetSelfScale(petsclib::$UnionPetscLib, ksp::PetscKSP, scale::PetscBool )
+@for_petsc function KSPRichardsonSetSelfScale(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, scale::PetscBool )
 
     @chk ccall(
                (:KSPRichardsonSetSelfScale, $petsc_library),
@@ -7362,7 +7362,7 @@ function KSPRichardsonSetSelfScale(petsclib::PetscLibType, ksp::PetscKSP, scale:
 end 
 
 """
-	KSPFETIDPSetPressureOperator(petsclib::PetscLibType,ksp::PetscKSP, P::PetscMat) 
+	KSPFETIDPSetPressureOperator(petsclib::PetscLibType,ksp::AbstractPetscKSP, P::AbstractPetscMat) 
 Sets the operator used to set up the pressure preconditioner for the saddle point `KSPFETIDP` solver,
 
 Collective
@@ -7378,9 +7378,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPFETIDPSetPressureOperator"))
 """
-function KSPFETIDPSetPressureOperator(petsclib::PetscLibType, ksp::PetscKSP, P::PetscMat) end
+function KSPFETIDPSetPressureOperator(petsclib::PetscLibType, ksp::AbstractPetscKSP, P::AbstractPetscMat) end
 
-@for_petsc function KSPFETIDPSetPressureOperator(petsclib::$UnionPetscLib, ksp::PetscKSP, P::PetscMat )
+@for_petsc function KSPFETIDPSetPressureOperator(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, P::AbstractPetscMat )
 
     @chk ccall(
                (:KSPFETIDPSetPressureOperator, $petsc_library),
@@ -7394,7 +7394,7 @@ function KSPFETIDPSetPressureOperator(petsclib::PetscLibType, ksp::PetscKSP, P::
 end 
 
 """
-	KSPFETIDPGetInnerKSP(petsclib::PetscLibType,ksp::PetscKSP, innerksp::PetscKSP) 
+	KSPFETIDPGetInnerKSP(petsclib::PetscLibType,ksp::AbstractPetscKSP, innerksp::AbstractPetscKSP) 
 Gets the `KSP` object for the Lagrange multipliers from inside a `KSPFETIDP`
 
 Input Parameter:
@@ -7410,9 +7410,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPFETIDPGetInnerKSP"))
 """
-function KSPFETIDPGetInnerKSP(petsclib::PetscLibType, ksp::PetscKSP, innerksp::PetscKSP) end
+function KSPFETIDPGetInnerKSP(petsclib::PetscLibType, ksp::AbstractPetscKSP, innerksp::AbstractPetscKSP) end
 
-@for_petsc function KSPFETIDPGetInnerKSP(petsclib::$UnionPetscLib, ksp::PetscKSP, innerksp::PetscKSP )
+@for_petsc function KSPFETIDPGetInnerKSP(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, innerksp::AbstractPetscKSP )
 	innerksp_ = Ref(innerksp.ptr)
 
     @chk ccall(
@@ -7428,7 +7428,7 @@ function KSPFETIDPGetInnerKSP(petsclib::PetscLibType, ksp::PetscKSP, innerksp::P
 end 
 
 """
-	KSPFETIDPGetInnerBDDC(petsclib::PetscLibType,ksp::PetscKSP, pc::PC) 
+	KSPFETIDPGetInnerBDDC(petsclib::PetscLibType,ksp::AbstractPetscKSP, pc::PC) 
 Gets the `PCBDDC` preconditioner used to set up the `KSPFETIDP` matrix for the Lagrange multipliers
 
 Input Parameter:
@@ -7444,9 +7444,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPFETIDPGetInnerBDDC"))
 """
-function KSPFETIDPGetInnerBDDC(petsclib::PetscLibType, ksp::PetscKSP, pc::PC) end
+function KSPFETIDPGetInnerBDDC(petsclib::PetscLibType, ksp::AbstractPetscKSP, pc::PC) end
 
-@for_petsc function KSPFETIDPGetInnerBDDC(petsclib::$UnionPetscLib, ksp::PetscKSP, pc::PC )
+@for_petsc function KSPFETIDPGetInnerBDDC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, pc::PC )
 
     @chk ccall(
                (:KSPFETIDPGetInnerBDDC, $petsc_library),
@@ -7460,7 +7460,7 @@ function KSPFETIDPGetInnerBDDC(petsclib::PetscLibType, ksp::PetscKSP, pc::PC) en
 end 
 
 """
-	KSPFETIDPSetInnerBDDC(petsclib::PetscLibType,ksp::PetscKSP, pc::PC) 
+	KSPFETIDPSetInnerBDDC(petsclib::PetscLibType,ksp::AbstractPetscKSP, pc::PC) 
 Provides the `PCBDDC` preconditioner used to set up the `KSPFETIDP` matrix for the Lagrange multipliers
 
 Collective
@@ -7476,9 +7476,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPFETIDPSetInnerBDDC"))
 """
-function KSPFETIDPSetInnerBDDC(petsclib::PetscLibType, ksp::PetscKSP, pc::PC) end
+function KSPFETIDPSetInnerBDDC(petsclib::PetscLibType, ksp::AbstractPetscKSP, pc::PC) end
 
-@for_petsc function KSPFETIDPSetInnerBDDC(petsclib::$UnionPetscLib, ksp::PetscKSP, pc::PC )
+@for_petsc function KSPFETIDPSetInnerBDDC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, pc::PC )
 
     @chk ccall(
                (:KSPFETIDPSetInnerBDDC, $petsc_library),
@@ -7492,7 +7492,7 @@ function KSPFETIDPSetInnerBDDC(petsclib::PetscLibType, ksp::PetscKSP, pc::PC) en
 end 
 
 """
-	KSPBCGSLSetXRes(petsclib::PetscLibType,ksp::PetscKSP, delta::PetscReal) 
+	KSPBCGSLSetXRes(petsclib::PetscLibType,ksp::AbstractPetscKSP, delta::PetscReal) 
 Sets the parameter governing when
 exact residuals will be used instead of computed residuals for `KSPCBGSL`.
 
@@ -7512,9 +7512,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPBCGSLSetXRes"))
 """
-function KSPBCGSLSetXRes(petsclib::PetscLibType, ksp::PetscKSP, delta::PetscReal) end
+function KSPBCGSLSetXRes(petsclib::PetscLibType, ksp::AbstractPetscKSP, delta::PetscReal) end
 
-@for_petsc function KSPBCGSLSetXRes(petsclib::$UnionPetscLib, ksp::PetscKSP, delta::$PetscReal )
+@for_petsc function KSPBCGSLSetXRes(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, delta::$PetscReal )
 
     @chk ccall(
                (:KSPBCGSLSetXRes, $petsc_library),
@@ -7528,7 +7528,7 @@ function KSPBCGSLSetXRes(petsclib::PetscLibType, ksp::PetscKSP, delta::PetscReal
 end 
 
 """
-	KSPBCGSLSetUsePseudoinverse(petsclib::PetscLibType,ksp::PetscKSP, use_pinv::PetscBool) 
+	KSPBCGSLSetUsePseudoinverse(petsclib::PetscLibType,ksp::AbstractPetscKSP, use_pinv::PetscBool) 
 Use pseudoinverse (via SVD) to solve polynomial part of the update in `KSPCBGSL` solver
 
 Logically Collective
@@ -7547,9 +7547,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPBCGSLSetUsePseudoinverse"))
 """
-function KSPBCGSLSetUsePseudoinverse(petsclib::PetscLibType, ksp::PetscKSP, use_pinv::PetscBool) end
+function KSPBCGSLSetUsePseudoinverse(petsclib::PetscLibType, ksp::AbstractPetscKSP, use_pinv::PetscBool) end
 
-@for_petsc function KSPBCGSLSetUsePseudoinverse(petsclib::$UnionPetscLib, ksp::PetscKSP, use_pinv::PetscBool )
+@for_petsc function KSPBCGSLSetUsePseudoinverse(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, use_pinv::PetscBool )
 
     @chk ccall(
                (:KSPBCGSLSetUsePseudoinverse, $petsc_library),
@@ -7563,7 +7563,7 @@ function KSPBCGSLSetUsePseudoinverse(petsclib::PetscLibType, ksp::PetscKSP, use_
 end 
 
 """
-	KSPBCGSLSetPol(petsclib::PetscLibType,ksp::PetscKSP, uMROR::PetscBool) 
+	KSPBCGSLSetPol(petsclib::PetscLibType,ksp::AbstractPetscKSP, uMROR::PetscBool) 
 Sets the type of polynomial part that will
 be used in the `KSPCBGSL` `KSPSolve()`
 
@@ -7584,9 +7584,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPBCGSLSetPol"))
 """
-function KSPBCGSLSetPol(petsclib::PetscLibType, ksp::PetscKSP, uMROR::PetscBool) end
+function KSPBCGSLSetPol(petsclib::PetscLibType, ksp::AbstractPetscKSP, uMROR::PetscBool) end
 
-@for_petsc function KSPBCGSLSetPol(petsclib::$UnionPetscLib, ksp::PetscKSP, uMROR::PetscBool )
+@for_petsc function KSPBCGSLSetPol(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, uMROR::PetscBool )
 
     @chk ccall(
                (:KSPBCGSLSetPol, $petsc_library),
@@ -7600,7 +7600,7 @@ function KSPBCGSLSetPol(petsclib::PetscLibType, ksp::PetscKSP, uMROR::PetscBool)
 end 
 
 """
-	KSPBCGSLSetEll(petsclib::PetscLibType,ksp::PetscKSP, ell::PetscInt) 
+	KSPBCGSLSetEll(petsclib::PetscLibType,ksp::AbstractPetscKSP, ell::PetscInt) 
 Sets the number of search directions to use in the `KSPBCGSL` Krylov solver
 
 Logically Collective
@@ -7619,9 +7619,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPBCGSLSetEll"))
 """
-function KSPBCGSLSetEll(petsclib::PetscLibType, ksp::PetscKSP, ell::PetscInt) end
+function KSPBCGSLSetEll(petsclib::PetscLibType, ksp::AbstractPetscKSP, ell::PetscInt) end
 
-@for_petsc function KSPBCGSLSetEll(petsclib::$UnionPetscLib, ksp::PetscKSP, ell::$PetscInt )
+@for_petsc function KSPBCGSLSetEll(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, ell::$PetscInt )
 
     @chk ccall(
                (:KSPBCGSLSetEll, $petsc_library),
@@ -7635,7 +7635,7 @@ function KSPBCGSLSetEll(petsclib::PetscLibType, ksp::PetscKSP, ell::PetscInt) en
 end 
 
 """
-	KSPQCGSetTrustRegionRadius(petsclib::PetscLibType,ksp::PetscKSP, delta::PetscReal) 
+	KSPQCGSetTrustRegionRadius(petsclib::PetscLibType,ksp::AbstractPetscKSP, delta::PetscReal) 
 Sets the radius of the trust region for `KSPQCG`
 
 Logically Collective
@@ -7654,9 +7654,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPQCGSetTrustRegionRadius"))
 """
-function KSPQCGSetTrustRegionRadius(petsclib::PetscLibType, ksp::PetscKSP, delta::PetscReal) end
+function KSPQCGSetTrustRegionRadius(petsclib::PetscLibType, ksp::AbstractPetscKSP, delta::PetscReal) end
 
-@for_petsc function KSPQCGSetTrustRegionRadius(petsclib::$UnionPetscLib, ksp::PetscKSP, delta::$PetscReal )
+@for_petsc function KSPQCGSetTrustRegionRadius(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, delta::$PetscReal )
 
     @chk ccall(
                (:KSPQCGSetTrustRegionRadius, $petsc_library),
@@ -7670,7 +7670,7 @@ function KSPQCGSetTrustRegionRadius(petsclib::PetscLibType, ksp::PetscKSP, delta
 end 
 
 """
-	tsnorm::PetscReal = KSPQCGGetTrialStepNorm(petsclib::PetscLibType,ksp::PetscKSP) 
+	tsnorm::PetscReal = KSPQCGGetTrialStepNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the norm of a trial step vector in `KSPQCG`.  The WCG step may be
 constrained, so this is not necessarily the length of the ultimate step taken in `KSPQCG`.
 
@@ -7689,9 +7689,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPQCGGetTrialStepNorm"))
 """
-function KSPQCGGetTrialStepNorm(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPQCGGetTrialStepNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPQCGGetTrialStepNorm(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPQCGGetTrialStepNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	tsnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -7707,7 +7707,7 @@ function KSPQCGGetTrialStepNorm(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	quadratic::PetscReal = KSPQCGGetQuadratic(petsclib::PetscLibType,ksp::PetscKSP) 
+	quadratic::PetscReal = KSPQCGGetQuadratic(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets the value of the quadratic function, evaluated at the new iterate
 
 Collective
@@ -7725,9 +7725,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPQCGGetQuadratic"))
 """
-function KSPQCGGetQuadratic(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPQCGGetQuadratic(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPQCGGetQuadratic(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPQCGGetQuadratic(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	quadratic_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -7743,7 +7743,7 @@ function KSPQCGGetQuadratic(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPGCRSetModifyPC(petsclib::PetscLibType,ksp::PetscKSP, fnc::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
+	KSPGCRSetModifyPC(petsclib::PetscLibType,ksp::AbstractPetscKSP, fnc::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
 Sets the routine used by `KSPGCR` to modify the preconditioner for each iteration
 
 Logically Collective
@@ -7761,9 +7761,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGCRSetModifyPC"))
 """
-function KSPGCRSetModifyPC(petsclib::PetscLibType, ksp::PetscKSP, fnc::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
+function KSPGCRSetModifyPC(petsclib::PetscLibType, ksp::AbstractPetscKSP, fnc::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
 
-@for_petsc function KSPGCRSetModifyPC(petsclib::$UnionPetscLib, ksp::PetscKSP, fnc::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
+@for_petsc function KSPGCRSetModifyPC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, fnc::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
 
     @chk ccall(
                (:KSPGCRSetModifyPC, $petsc_library),
@@ -7777,7 +7777,7 @@ function KSPGCRSetModifyPC(petsclib::PetscLibType, ksp::PetscKSP, fnc::KSPFlexib
 end 
 
 """
-	KSPGCRSetRestart(petsclib::PetscLibType,ksp::PetscKSP, restart::PetscInt) 
+	KSPGCRSetRestart(petsclib::PetscLibType,ksp::AbstractPetscKSP, restart::PetscInt) 
 Sets number of iterations at which `KSPGCR` restarts.
 
 Not Collective
@@ -7796,9 +7796,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGCRSetRestart"))
 """
-function KSPGCRSetRestart(petsclib::PetscLibType, ksp::PetscKSP, restart::PetscInt) end
+function KSPGCRSetRestart(petsclib::PetscLibType, ksp::AbstractPetscKSP, restart::PetscInt) end
 
-@for_petsc function KSPGCRSetRestart(petsclib::$UnionPetscLib, ksp::PetscKSP, restart::$PetscInt )
+@for_petsc function KSPGCRSetRestart(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, restart::$PetscInt )
 
     @chk ccall(
                (:KSPGCRSetRestart, $petsc_library),
@@ -7812,7 +7812,7 @@ function KSPGCRSetRestart(petsclib::PetscLibType, ksp::PetscKSP, restart::PetscI
 end 
 
 """
-	restart::PetscInt = KSPGCRGetRestart(petsclib::PetscLibType,ksp::PetscKSP) 
+	restart::PetscInt = KSPGCRGetRestart(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Gets number of iterations at which `KSPGCR` restarts.
 
 Not Collective
@@ -7830,9 +7830,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPGCRGetRestart"))
 """
-function KSPGCRGetRestart(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPGCRGetRestart(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPGCRGetRestart(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPGCRGetRestart(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	restart_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -7848,7 +7848,7 @@ function KSPGCRGetRestart(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPPIPEGCRSetUnrollW(petsclib::PetscLibType,ksp::PetscKSP, unroll_w::PetscBool) 
+	KSPPIPEGCRSetUnrollW(petsclib::PetscLibType,ksp::AbstractPetscKSP, unroll_w::PetscBool) 
 Set to `PETSC_TRUE` to use `KSPPIPEGCR` with unrolling of the w vector
 
 Logically Collective
@@ -7867,9 +7867,9 @@ Options Database Key:
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetUnrollW"))
 """
-function KSPPIPEGCRSetUnrollW(petsclib::PetscLibType, ksp::PetscKSP, unroll_w::PetscBool) end
+function KSPPIPEGCRSetUnrollW(petsclib::PetscLibType, ksp::AbstractPetscKSP, unroll_w::PetscBool) end
 
-@for_petsc function KSPPIPEGCRSetUnrollW(petsclib::$UnionPetscLib, ksp::PetscKSP, unroll_w::PetscBool )
+@for_petsc function KSPPIPEGCRSetUnrollW(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, unroll_w::PetscBool )
 
     @chk ccall(
                (:KSPPIPEGCRSetUnrollW, $petsc_library),
@@ -7883,7 +7883,7 @@ function KSPPIPEGCRSetUnrollW(petsclib::PetscLibType, ksp::PetscKSP, unroll_w::P
 end 
 
 """
-	unroll_w::PetscBool = KSPPIPEGCRGetUnrollW(petsclib::PetscLibType,ksp::PetscKSP) 
+	unroll_w::PetscBool = KSPPIPEGCRGetUnrollW(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Get information on `KSPPIPEGCR` if it uses unrolling the w vector
 
 Logically Collective
@@ -7901,9 +7901,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRGetUnrollW"))
 """
-function KSPPIPEGCRGetUnrollW(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPPIPEGCRGetUnrollW(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPPIPEGCRGetUnrollW(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPPIPEGCRGetUnrollW(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	unroll_w_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -7919,7 +7919,7 @@ function KSPPIPEGCRGetUnrollW(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPPIPEGCRSetMmax(petsclib::PetscLibType,ksp::PetscKSP, mmax::PetscInt) 
+	KSPPIPEGCRSetMmax(petsclib::PetscLibType,ksp::AbstractPetscKSP, mmax::PetscInt) 
 set the maximum number of previous directions `KSPPIPEGCR` will store for orthogonalization
 
 Logically Collective
@@ -7938,9 +7938,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetMmax"))
 """
-function KSPPIPEGCRSetMmax(petsclib::PetscLibType, ksp::PetscKSP, mmax::PetscInt) end
+function KSPPIPEGCRSetMmax(petsclib::PetscLibType, ksp::AbstractPetscKSP, mmax::PetscInt) end
 
-@for_petsc function KSPPIPEGCRSetMmax(petsclib::$UnionPetscLib, ksp::PetscKSP, mmax::$PetscInt )
+@for_petsc function KSPPIPEGCRSetMmax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, mmax::$PetscInt )
 
     @chk ccall(
                (:KSPPIPEGCRSetMmax, $petsc_library),
@@ -7954,7 +7954,7 @@ function KSPPIPEGCRSetMmax(petsclib::PetscLibType, ksp::PetscKSP, mmax::PetscInt
 end 
 
 """
-	mmax::PetscInt = KSPPIPEGCRGetMmax(petsclib::PetscLibType,ksp::PetscKSP) 
+	mmax::PetscInt = KSPPIPEGCRGetMmax(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 get the maximum number of previous directions `KSPPIPEGCR` will store
 
 Not Collective
@@ -7972,9 +7972,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRGetMmax"))
 """
-function KSPPIPEGCRGetMmax(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPPIPEGCRGetMmax(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPPIPEGCRGetMmax(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPPIPEGCRGetMmax(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	mmax_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -7990,7 +7990,7 @@ function KSPPIPEGCRGetMmax(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPPIPEGCRSetNprealloc(petsclib::PetscLibType,ksp::PetscKSP, nprealloc::PetscInt) 
+	KSPPIPEGCRSetNprealloc(petsclib::PetscLibType,ksp::AbstractPetscKSP, nprealloc::PetscInt) 
 set the number of directions to preallocate with `KSPPIPEGCR`
 
 Logically Collective
@@ -8009,9 +8009,9 @@ Options Database Key:
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetNprealloc"))
 """
-function KSPPIPEGCRSetNprealloc(petsclib::PetscLibType, ksp::PetscKSP, nprealloc::PetscInt) end
+function KSPPIPEGCRSetNprealloc(petsclib::PetscLibType, ksp::AbstractPetscKSP, nprealloc::PetscInt) end
 
-@for_petsc function KSPPIPEGCRSetNprealloc(petsclib::$UnionPetscLib, ksp::PetscKSP, nprealloc::$PetscInt )
+@for_petsc function KSPPIPEGCRSetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, nprealloc::$PetscInt )
 
     @chk ccall(
                (:KSPPIPEGCRSetNprealloc, $petsc_library),
@@ -8025,7 +8025,7 @@ function KSPPIPEGCRSetNprealloc(petsclib::PetscLibType, ksp::PetscKSP, nprealloc
 end 
 
 """
-	nprealloc::PetscInt = KSPPIPEGCRGetNprealloc(petsclib::PetscLibType,ksp::PetscKSP) 
+	nprealloc::PetscInt = KSPPIPEGCRGetNprealloc(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 get the number of directions preallocate by `KSPPIPEGCR`
 
 Not Collective
@@ -8043,9 +8043,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRGetNprealloc"))
 """
-function KSPPIPEGCRGetNprealloc(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPPIPEGCRGetNprealloc(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPPIPEGCRGetNprealloc(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPPIPEGCRGetNprealloc(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	nprealloc_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -8061,7 +8061,7 @@ function KSPPIPEGCRGetNprealloc(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPPIPEGCRSetTruncationType(petsclib::PetscLibType,ksp::PetscKSP, truncstrat::KSPFCDTruncationType) 
+	KSPPIPEGCRSetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType) 
 specify how many of its stored previous directions `KSPPIPEGCR` uses during orthogonalization
 
 Logically Collective
@@ -8074,9 +8074,9 @@ Input Parameters:
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetTruncationType"))
 """
-function KSPPIPEGCRSetTruncationType(petsclib::PetscLibType, ksp::PetscKSP, truncstrat::KSPFCDTruncationType) end
+function KSPPIPEGCRSetTruncationType(petsclib::PetscLibType, ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType) end
 
-@for_petsc function KSPPIPEGCRSetTruncationType(petsclib::$UnionPetscLib, ksp::PetscKSP, truncstrat::KSPFCDTruncationType )
+@for_petsc function KSPPIPEGCRSetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, truncstrat::KSPFCDTruncationType )
 
     @chk ccall(
                (:KSPPIPEGCRSetTruncationType, $petsc_library),
@@ -8090,7 +8090,7 @@ function KSPPIPEGCRSetTruncationType(petsclib::PetscLibType, ksp::PetscKSP, trun
 end 
 
 """
-	truncstrat::KSPFCDTruncationType = KSPPIPEGCRGetTruncationType(petsclib::PetscLibType,ksp::PetscKSP) 
+	truncstrat::KSPFCDTruncationType = KSPPIPEGCRGetTruncationType(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 get the truncation strategy employed by `KSPPIPEGCR`
 
 Not Collective
@@ -8105,9 +8105,9 @@ Output Parameter:
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRGetTruncationType"))
 """
-function KSPPIPEGCRGetTruncationType(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPPIPEGCRGetTruncationType(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPPIPEGCRGetTruncationType(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPPIPEGCRGetTruncationType(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	truncstrat_ = Ref{KSPFCDTruncationType}()
 
     @chk ccall(
@@ -8123,7 +8123,7 @@ function KSPPIPEGCRGetTruncationType(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPPIPEGCRSetModifyPC(petsclib::PetscLibType,ksp::PetscKSP, fnc::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
+	KSPPIPEGCRSetModifyPC(petsclib::PetscLibType,ksp::AbstractPetscKSP, fnc::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) 
 Sets the routine used by `KSPPIPEGCR` to modify the preconditioner at each iteration
 
 Logically Collective
@@ -8141,9 +8141,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPPIPEGCRSetModifyPC"))
 """
-function KSPPIPEGCRSetModifyPC(petsclib::PetscLibType, ksp::PetscKSP, fnc::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
+function KSPPIPEGCRSetModifyPC(petsclib::PetscLibType, ksp::AbstractPetscKSP, fnc::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn) end
 
-@for_petsc function KSPPIPEGCRSetModifyPC(petsclib::$UnionPetscLib, ksp::PetscKSP, fnc::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
+@for_petsc function KSPPIPEGCRSetModifyPC(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, fnc::KSPFlexibleModifyPCFn, ctx::Cvoid, destroy::PetscCtxDestroyFn )
 
     @chk ccall(
                (:KSPPIPEGCRSetModifyPC, $petsc_library),
@@ -8157,7 +8157,7 @@ function KSPPIPEGCRSetModifyPC(petsclib::PetscLibType, ksp::PetscKSP, fnc::KSPFl
 end 
 
 """
-	KSPMINRESSetUseQLP(petsclib::PetscLibType,ksp::PetscKSP, qlp::PetscBool) 
+	KSPMINRESSetUseQLP(petsclib::PetscLibType,ksp::AbstractPetscKSP, qlp::PetscBool) 
 Use the QLP variant of `KSPMINRES`
 
 Logically Collective
@@ -8173,9 +8173,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPMINRESSetUseQLP"))
 """
-function KSPMINRESSetUseQLP(petsclib::PetscLibType, ksp::PetscKSP, qlp::PetscBool) end
+function KSPMINRESSetUseQLP(petsclib::PetscLibType, ksp::AbstractPetscKSP, qlp::PetscBool) end
 
-@for_petsc function KSPMINRESSetUseQLP(petsclib::$UnionPetscLib, ksp::PetscKSP, qlp::PetscBool )
+@for_petsc function KSPMINRESSetUseQLP(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, qlp::PetscBool )
 
     @chk ccall(
                (:KSPMINRESSetUseQLP, $petsc_library),
@@ -8189,7 +8189,7 @@ function KSPMINRESSetUseQLP(petsclib::PetscLibType, ksp::PetscKSP, qlp::PetscBoo
 end 
 
 """
-	KSPMINRESSetRadius(petsclib::PetscLibType,ksp::PetscKSP, radius::PetscReal) 
+	KSPMINRESSetRadius(petsclib::PetscLibType,ksp::AbstractPetscKSP, radius::PetscReal) 
 Set the maximum solution norm allowed for use with trust region methods
 
 Logically Collective
@@ -8208,9 +8208,9 @@ Options Database Key:
 # External Links
 $(_doc_external("KSP/KSPMINRESSetRadius"))
 """
-function KSPMINRESSetRadius(petsclib::PetscLibType, ksp::PetscKSP, radius::PetscReal) end
+function KSPMINRESSetRadius(petsclib::PetscLibType, ksp::AbstractPetscKSP, radius::PetscReal) end
 
-@for_petsc function KSPMINRESSetRadius(petsclib::$UnionPetscLib, ksp::PetscKSP, radius::$PetscReal )
+@for_petsc function KSPMINRESSetRadius(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, radius::$PetscReal )
 
     @chk ccall(
                (:KSPMINRESSetRadius, $petsc_library),
@@ -8224,7 +8224,7 @@ function KSPMINRESSetRadius(petsclib::PetscLibType, ksp::PetscKSP, radius::Petsc
 end 
 
 """
-	qlp::PetscBool = KSPMINRESGetUseQLP(petsclib::PetscLibType,ksp::PetscKSP) 
+	qlp::PetscBool = KSPMINRESGetUseQLP(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Get the flag that indicates if the QLP variant is being used
 
 Logically Collective
@@ -8242,9 +8242,9 @@ Level: beginner
 # External Links
 $(_doc_external("KSP/KSPMINRESGetUseQLP"))
 """
-function KSPMINRESGetUseQLP(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPMINRESGetUseQLP(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPMINRESGetUseQLP(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPMINRESGetUseQLP(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	qlp_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -8260,7 +8260,7 @@ function KSPMINRESGetUseQLP(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPLSQRSetComputeStandardErrorVec(petsclib::PetscLibType,ksp::PetscKSP, flg::PetscBool) 
+	KSPLSQRSetComputeStandardErrorVec(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
 Compute a vector of standard error estimates during `KSPSolve()` for  `KSPLSQR`.
 
 Logically Collective
@@ -8276,9 +8276,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLSQRSetComputeStandardErrorVec"))
 """
-function KSPLSQRSetComputeStandardErrorVec(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) end
+function KSPLSQRSetComputeStandardErrorVec(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool) end
 
-@for_petsc function KSPLSQRSetComputeStandardErrorVec(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
+@for_petsc function KSPLSQRSetComputeStandardErrorVec(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPLSQRSetComputeStandardErrorVec, $petsc_library),
@@ -8292,7 +8292,7 @@ function KSPLSQRSetComputeStandardErrorVec(petsclib::PetscLibType, ksp::PetscKSP
 end 
 
 """
-	KSPLSQRSetExactMatNorm(petsclib::PetscLibType,ksp::PetscKSP, flg::PetscBool) 
+	KSPLSQRSetExactMatNorm(petsclib::PetscLibType,ksp::AbstractPetscKSP, flg::PetscBool) 
 Compute exact matrix norm instead of iteratively refined estimate.
 
 Not Collective
@@ -8308,9 +8308,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLSQRSetExactMatNorm"))
 """
-function KSPLSQRSetExactMatNorm(petsclib::PetscLibType, ksp::PetscKSP, flg::PetscBool) end
+function KSPLSQRSetExactMatNorm(petsclib::PetscLibType, ksp::AbstractPetscKSP, flg::PetscBool) end
 
-@for_petsc function KSPLSQRSetExactMatNorm(petsclib::$UnionPetscLib, ksp::PetscKSP, flg::PetscBool )
+@for_petsc function KSPLSQRSetExactMatNorm(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, flg::PetscBool )
 
     @chk ccall(
                (:KSPLSQRSetExactMatNorm, $petsc_library),
@@ -8324,7 +8324,7 @@ function KSPLSQRSetExactMatNorm(petsclib::PetscLibType, ksp::PetscKSP, flg::Pets
 end 
 
 """
-	KSPLSQRGetStandardErrorVec(petsclib::PetscLibType,ksp::PetscKSP, se::PetscVec) 
+	KSPLSQRGetStandardErrorVec(petsclib::PetscLibType,ksp::AbstractPetscKSP, se::AbstractPetscVec) 
 Get vector of standard error estimates.
 Only available if -ksp_lsqr_set_standard_error was set to true
 or `KSPLSQRSetComputeStandardErrorVec`(ksp, `PETSC_TRUE`) was called.
@@ -8345,9 +8345,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLSQRGetStandardErrorVec"))
 """
-function KSPLSQRGetStandardErrorVec(petsclib::PetscLibType, ksp::PetscKSP, se::PetscVec) end
+function KSPLSQRGetStandardErrorVec(petsclib::PetscLibType, ksp::AbstractPetscKSP, se::AbstractPetscVec) end
 
-@for_petsc function KSPLSQRGetStandardErrorVec(petsclib::$UnionPetscLib, ksp::PetscKSP, se::PetscVec )
+@for_petsc function KSPLSQRGetStandardErrorVec(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, se::AbstractPetscVec )
 	se_ = Ref(se.ptr)
 
     @chk ccall(
@@ -8363,7 +8363,7 @@ function KSPLSQRGetStandardErrorVec(petsclib::PetscLibType, ksp::PetscKSP, se::P
 end 
 
 """
-	arnorm::PetscReal,anorm::PetscReal = KSPLSQRGetNorms(petsclib::PetscLibType,ksp::PetscKSP) 
+	arnorm::PetscReal,anorm::PetscReal = KSPLSQRGetNorms(petsclib::PetscLibType,ksp::AbstractPetscKSP) 
 Get the norm estimates that `KSPLSQR` computes internally during `KSPSolve()`.
 
 Not Collective
@@ -8382,9 +8382,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLSQRGetNorms"))
 """
-function KSPLSQRGetNorms(petsclib::PetscLibType, ksp::PetscKSP) end
+function KSPLSQRGetNorms(petsclib::PetscLibType, ksp::AbstractPetscKSP) end
 
-@for_petsc function KSPLSQRGetNorms(petsclib::$UnionPetscLib, ksp::PetscKSP )
+@for_petsc function KSPLSQRGetNorms(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP )
 	arnorm_ = Ref{$PetscReal}()
 	anorm_ = Ref{$PetscReal}()
 
@@ -8402,7 +8402,7 @@ function KSPLSQRGetNorms(petsclib::PetscLibType, ksp::PetscKSP) end
 end 
 
 """
-	KSPLSQRMonitorResidual(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPLSQRMonitorResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Prints the residual norm, as well as the normal equation residual norm, at each iteration of an iterative solver for the `KSPLSQR` solver
 
 Collective
@@ -8423,9 +8423,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLSQRMonitorResidual"))
 """
-function KSPLSQRMonitorResidual(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPLSQRMonitorResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPLSQRMonitorResidual(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPLSQRMonitorResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPLSQRMonitorResidual, $petsc_library),
@@ -8439,7 +8439,7 @@ function KSPLSQRMonitorResidual(petsclib::PetscLibType, ksp::PetscKSP, n::PetscI
 end 
 
 """
-	KSPLSQRMonitorResidualDrawLG(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPLSQRMonitorResidualDrawLG(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Plots the true residual norm at each iteration of an iterative solver for the `KSPLSQR` solver
 
 Collective
@@ -8460,9 +8460,9 @@ Level: intermediate
 # External Links
 $(_doc_external("KSP/KSPLSQRMonitorResidualDrawLG"))
 """
-function KSPLSQRMonitorResidualDrawLG(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPLSQRMonitorResidualDrawLG(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPLSQRMonitorResidualDrawLG(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPLSQRMonitorResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPLSQRMonitorResidualDrawLG, $petsc_library),
@@ -8514,7 +8514,7 @@ function KSPLSQRMonitorResidualDrawLGCreate(petsclib::PetscLibType, viewer::Pets
 end 
 
 """
-	KSPLSQRConvergedDefault(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, reason::KSPConvergedReason, ctx::Cvoid) 
+	KSPLSQRConvergedDefault(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, reason::KSPConvergedReason, ctx::Cvoid) 
 Determines convergence of the `KSPLSQR` Krylov method, including a check on the residual norm of the normal equations.
 
 Collective
@@ -8537,9 +8537,9 @@ Level: advanced
 # External Links
 $(_doc_external("KSP/KSPLSQRConvergedDefault"))
 """
-function KSPLSQRConvergedDefault(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, reason::KSPConvergedReason, ctx::Cvoid) end
+function KSPLSQRConvergedDefault(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, reason::KSPConvergedReason, ctx::Cvoid) end
 
-@for_petsc function KSPLSQRConvergedDefault(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, reason::KSPConvergedReason, ctx::Cvoid )
+@for_petsc function KSPLSQRConvergedDefault(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, reason::KSPConvergedReason, ctx::Cvoid )
 
     @chk ccall(
                (:KSPLSQRConvergedDefault, $petsc_library),
@@ -8553,7 +8553,7 @@ function KSPLSQRConvergedDefault(petsclib::PetscLibType, ksp::PetscKSP, n::Petsc
 end 
 
 """
-	KSPMonitorSNESResidual(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorSNESResidual(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Prints the `SNES` residual norm, as well as the `KSP` residual norm, at each iteration of a `KSPSolve()` called within a `SNESSolve()`.
 
 Collective
@@ -8574,9 +8574,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Snes/KSPMonitorSNESResidual"))
 """
-function KSPMonitorSNESResidual(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorSNESResidual(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorSNESResidual(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorSNESResidual(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorSNESResidual, $petsc_library),
@@ -8590,7 +8590,7 @@ function KSPMonitorSNESResidual(petsclib::PetscLibType, ksp::PetscKSP, n::PetscI
 end 
 
 """
-	KSPMonitorSNESResidualDrawLG(petsclib::PetscLibType,ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	KSPMonitorSNESResidualDrawLG(petsclib::PetscLibType,ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Plots the linear `KSP` residual norm and the `SNES` residual norm of a `KSPSolve()` called within a `SNESSolve()`.
 
 Collective
@@ -8611,9 +8611,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Snes/KSPMonitorSNESResidualDrawLG"))
 """
-function KSPMonitorSNESResidualDrawLG(petsclib::PetscLibType, ksp::PetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function KSPMonitorSNESResidualDrawLG(petsclib::PetscLibType, ksp::AbstractPetscKSP, n::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function KSPMonitorSNESResidualDrawLG(petsclib::$UnionPetscLib, ksp::PetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function KSPMonitorSNESResidualDrawLG(petsclib::$UnionPetscLib, ksp::AbstractPetscKSP, n::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:KSPMonitorSNESResidualDrawLG, $petsc_library),

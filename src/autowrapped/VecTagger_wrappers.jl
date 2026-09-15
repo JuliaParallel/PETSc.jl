@@ -382,7 +382,7 @@ function VecTaggerView(petsclib::PetscLibType, tagger::VecTagger, viewer::PetscV
 end 
 
 """
-	numBoxes::PetscInt,listed::PetscBool = VecTaggerComputeBoxes(petsclib::PetscLibType,tagger::VecTagger, vec::PetscVec, boxes::Vector{VecTaggerBox}) 
+	numBoxes::PetscInt,listed::PetscBool = VecTaggerComputeBoxes(petsclib::PetscLibType,tagger::VecTagger, vec::AbstractPetscVec, boxes::Vector{VecTaggerBox}) 
 If the tagged index set can be summarized as a list of boxes of values, returns that list, otherwise returns
 in listed `PETSC_FALSE`
 
@@ -404,9 +404,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerComputeBoxes"))
 """
-function VecTaggerComputeBoxes(petsclib::PetscLibType, tagger::VecTagger, vec::PetscVec, boxes::Vector{VecTaggerBox}) end
+function VecTaggerComputeBoxes(petsclib::PetscLibType, tagger::VecTagger, vec::AbstractPetscVec, boxes::Vector{VecTaggerBox}) end
 
-@for_petsc function VecTaggerComputeBoxes(petsclib::$UnionPetscLib, tagger::VecTagger, vec::PetscVec, boxes::Vector{VecTaggerBox} )
+@for_petsc function VecTaggerComputeBoxes(petsclib::$UnionPetscLib, tagger::VecTagger, vec::AbstractPetscVec, boxes::Vector{VecTaggerBox} )
 	numBoxes_ = Ref{$PetscInt}()
 	boxes_ = Ref(pointer(boxes))
 	listed_ = Ref{PetscBool}()
@@ -425,7 +425,7 @@ function VecTaggerComputeBoxes(petsclib::PetscLibType, tagger::VecTagger, vec::P
 end 
 
 """
-	listed::PetscBool = VecTaggerComputeIS(petsclib::PetscLibType,tagger::VecTagger, vec::PetscVec, is::Vector{IS}) 
+	listed::PetscBool = VecTaggerComputeIS(petsclib::PetscLibType,tagger::VecTagger, vec::AbstractPetscVec, is::Vector{<:AbstractIS}) 
 Use a `VecTagger` context to tag a set of indices based on a vector's values
 
 Collective
@@ -445,9 +445,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTaggerComputeIS"))
 """
-function VecTaggerComputeIS(petsclib::PetscLibType, tagger::VecTagger, vec::PetscVec, is::Vector{IS}) end
+function VecTaggerComputeIS(petsclib::PetscLibType, tagger::VecTagger, vec::AbstractPetscVec, is::Vector{<:AbstractIS}) end
 
-@for_petsc function VecTaggerComputeIS(petsclib::$UnionPetscLib, tagger::VecTagger, vec::PetscVec, is::Vector{IS} )
+@for_petsc function VecTaggerComputeIS(petsclib::$UnionPetscLib, tagger::VecTagger, vec::AbstractPetscVec, is::Vector{<:AbstractIS} )
 	listed_ = Ref{PetscBool}()
 
     @chk ccall(

@@ -1,7 +1,7 @@
 # autodefined type arguments for class ------
 # -------------------------------------------------------
 """
-	PFSet(petsclib::PetscLibType,pf::PF, apply::external, applyvec::external, view::external, destroy::external, ctx::Cvoid) 
+	PFSet(petsclib::PetscLibType,pf::AbstractPF, apply::external, applyvec::external, view::external, destroy::external, ctx::Cvoid) 
 Sets the C/C++/Fortran functions to be used by the PF function
 
 Collective
@@ -21,9 +21,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/PFSet"))
 """
-function PFSet(petsclib::PetscLibType, pf::PF, apply::external, applyvec::external, view::external, destroy::external, ctx::Cvoid) end
+function PFSet(petsclib::PetscLibType, pf::AbstractPF, apply::external, applyvec::external, view::external, destroy::external, ctx::Cvoid) end
 
-@for_petsc function PFSet(petsclib::$UnionPetscLib, pf::PF, apply::external, applyvec::external, view::external, destroy::external, ctx::Cvoid )
+@for_petsc function PFSet(petsclib::$UnionPetscLib, pf::AbstractPF, apply::external, applyvec::external, view::external, destroy::external, ctx::Cvoid )
 
     @chk ccall(
                (:PFSet, $petsc_library),
@@ -37,7 +37,7 @@ function PFSet(petsclib::PetscLibType, pf::PF, apply::external, applyvec::extern
 end 
 
 """
-	PFDestroy(petsclib::PetscLibType,pf::PF) 
+	PFDestroy(petsclib::PetscLibType,pf::AbstractPF) 
 Destroys `PF` context that was created with `PFCreate()`.
 
 Collective
@@ -52,9 +52,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/PFDestroy"))
 """
-function PFDestroy(petsclib::PetscLibType, pf::PF) end
+function PFDestroy(petsclib::PetscLibType, pf::AbstractPF) end
 
-@for_petsc function PFDestroy(petsclib::$UnionPetscLib, pf::PF )
+@for_petsc function PFDestroy(petsclib::$UnionPetscLib, pf::AbstractPF )
 	pf_ = Ref(pf.ptr)
 
     @chk ccall(
@@ -108,7 +108,7 @@ function PFCreate(petsclib::PetscLibType, comm::MPI_Comm, dimin::PetscInt, dimou
 end 
 
 """
-	PFApplyVec(petsclib::PetscLibType,pf::PF, x::PetscVec, y::PetscVec) 
+	PFApplyVec(petsclib::PetscLibType,pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec) 
 Applies the mathematical function to a vector
 
 Collective
@@ -127,9 +127,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/PFApplyVec"))
 """
-function PFApplyVec(petsclib::PetscLibType, pf::PF, x::PetscVec, y::PetscVec) end
+function PFApplyVec(petsclib::PetscLibType, pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function PFApplyVec(petsclib::$UnionPetscLib, pf::PF, x::PetscVec, y::PetscVec )
+@for_petsc function PFApplyVec(petsclib::$UnionPetscLib, pf::AbstractPF, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:PFApplyVec, $petsc_library),
@@ -143,7 +143,7 @@ function PFApplyVec(petsclib::PetscLibType, pf::PF, x::PetscVec, y::PetscVec) en
 end 
 
 """
-	y::PetscScalar = PFApply(petsclib::PetscLibType,pf::PF, n::PetscInt, x::PetscScalar) 
+	y::PetscScalar = PFApply(petsclib::PetscLibType,pf::AbstractPF, n::PetscInt, x::PetscScalar) 
 Applies the mathematical function to an array of values.
 
 Collective
@@ -165,9 +165,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/PFApply"))
 """
-function PFApply(petsclib::PetscLibType, pf::PF, n::PetscInt, x::PetscScalar) end
+function PFApply(petsclib::PetscLibType, pf::AbstractPF, n::PetscInt, x::PetscScalar) end
 
-@for_petsc function PFApply(petsclib::$UnionPetscLib, pf::PF, n::$PetscInt, x::$PetscScalar )
+@for_petsc function PFApply(petsclib::$UnionPetscLib, pf::AbstractPF, n::$PetscInt, x::$PetscScalar )
 	y_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -183,7 +183,7 @@ function PFApply(petsclib::PetscLibType, pf::PF, n::PetscInt, x::PetscScalar) en
 end 
 
 """
-	PFViewFromOptions(petsclib::PetscLibType,A::PF, obj::PetscObject, name::String) 
+	PFViewFromOptions(petsclib::PetscLibType,A::AbstractPF, obj::PetscObject, name::String) 
 View a `PF` based on options set in the options database
 
 Collective
@@ -200,9 +200,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PFViewFromOptions"))
 """
-function PFViewFromOptions(petsclib::PetscLibType, A::PF, obj::PetscObject, name::String) end
+function PFViewFromOptions(petsclib::PetscLibType, A::AbstractPF, obj::PetscObject, name::String) end
 
-@for_petsc function PFViewFromOptions(petsclib::$UnionPetscLib, A::PF, obj::PetscObject, name::String )
+@for_petsc function PFViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPF, obj::PetscObject, name::String )
 
     @chk ccall(
                (:PFViewFromOptions, $petsc_library),
@@ -216,7 +216,7 @@ function PFViewFromOptions(petsclib::PetscLibType, A::PF, obj::PetscObject, name
 end 
 
 """
-	PFView(petsclib::PetscLibType,pf::PF, viewer::PetscViewer) 
+	PFView(petsclib::PetscLibType,pf::AbstractPF, viewer::PetscViewer) 
 Prints information about a mathematical function
 
 Collective unless `viewer` is `PETSC_VIEWER_STDOUT_SELF`
@@ -232,9 +232,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/PFView"))
 """
-function PFView(petsclib::PetscLibType, pf::PF, viewer::PetscViewer) end
+function PFView(petsclib::PetscLibType, pf::AbstractPF, viewer::PetscViewer) end
 
-@for_petsc function PFView(petsclib::$UnionPetscLib, pf::PF, viewer::PetscViewer )
+@for_petsc function PFView(petsclib::$UnionPetscLib, pf::AbstractPF, viewer::PetscViewer )
 
     @chk ccall(
                (:PFView, $petsc_library),
@@ -278,7 +278,7 @@ function PFRegister(petsclib::PetscLibType, sname::String, fnc::external) end
 end 
 
 """
-	type::PFType = PFGetType(petsclib::PetscLibType,pf::PF) 
+	type::PFType = PFGetType(petsclib::PetscLibType,pf::AbstractPF) 
 Gets the `PFType` name (as a string) from the `PF`
 context.
 
@@ -297,9 +297,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PFGetType"))
 """
-function PFGetType(petsclib::PetscLibType, pf::PF) end
+function PFGetType(petsclib::PetscLibType, pf::AbstractPF) end
 
-@for_petsc function PFGetType(petsclib::$UnionPetscLib, pf::PF )
+@for_petsc function PFGetType(petsclib::$UnionPetscLib, pf::AbstractPF )
 	type_ = Ref{PFType}()
 
     @chk ccall(
@@ -315,7 +315,7 @@ function PFGetType(petsclib::PetscLibType, pf::PF) end
 end 
 
 """
-	PFSetType(petsclib::PetscLibType,pf::PF, type::PFType, ctx::Cvoid) 
+	PFSetType(petsclib::PetscLibType,pf::AbstractPF, type::PFType, ctx::Cvoid) 
 Builds `PF` for a particular function
 
 Collective
@@ -335,9 +335,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PFSetType"))
 """
-function PFSetType(petsclib::PetscLibType, pf::PF, type::PFType, ctx::Cvoid) end
+function PFSetType(petsclib::PetscLibType, pf::AbstractPF, type::PFType, ctx::Cvoid) end
 
-@for_petsc function PFSetType(petsclib::$UnionPetscLib, pf::PF, type::PFType, ctx::Cvoid )
+@for_petsc function PFSetType(petsclib::$UnionPetscLib, pf::AbstractPF, type::PFType, ctx::Cvoid )
 
     @chk ccall(
                (:PFSetType, $petsc_library),
@@ -351,7 +351,7 @@ function PFSetType(petsclib::PetscLibType, pf::PF, type::PFType, ctx::Cvoid) end
 end 
 
 """
-	PFSetFromOptions(petsclib::PetscLibType,pf::PF) 
+	PFSetFromOptions(petsclib::PetscLibType,pf::AbstractPF) 
 Sets `PF` options from the options database.
 
 Collective
@@ -366,9 +366,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PFSetFromOptions"))
 """
-function PFSetFromOptions(petsclib::PetscLibType, pf::PF) end
+function PFSetFromOptions(petsclib::PetscLibType, pf::AbstractPF) end
 
-@for_petsc function PFSetFromOptions(petsclib::$UnionPetscLib, pf::PF )
+@for_petsc function PFSetFromOptions(petsclib::$UnionPetscLib, pf::AbstractPF )
 
     @chk ccall(
                (:PFSetFromOptions, $petsc_library),
@@ -435,7 +435,7 @@ function PFInitializePackage(petsclib::PetscLibType) end
 end 
 
 """
-	PFStringSetFunction(petsclib::PetscLibType,pf::PF, string::String) 
+	PFStringSetFunction(petsclib::PetscLibType,pf::AbstractPF, string::String) 
 Creates a function from a string
 
 Collective
@@ -451,9 +451,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/PFStringSetFunction"))
 """
-function PFStringSetFunction(petsclib::PetscLibType, pf::PF, string::String) end
+function PFStringSetFunction(petsclib::PetscLibType, pf::AbstractPF, string::String) end
 
-@for_petsc function PFStringSetFunction(petsclib::$UnionPetscLib, pf::PF, string::String )
+@for_petsc function PFStringSetFunction(petsclib::$UnionPetscLib, pf::AbstractPF, string::String )
 
     @chk ccall(
                (:PFStringSetFunction, $petsc_library),

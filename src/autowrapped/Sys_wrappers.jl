@@ -7914,7 +7914,7 @@ function PetscInfoSetFilterCommSelf(petsclib::PetscLibType, commSelfFlag::PetscI
 end 
 
 """
-	PetscInfoSetFromOptions(petsclib::PetscLibType,options::PetscOptions) 
+	PetscInfoSetFromOptions(petsclib::PetscLibType,options::AbstractPetscOptions) 
 Configure `PetscInfo()` using command line options, enabling or disabling various calls to `PetscInfo()`
 
 Not Collective
@@ -7932,9 +7932,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscInfoSetFromOptions"))
 """
-function PetscInfoSetFromOptions(petsclib::PetscLibType, options::PetscOptions) end
+function PetscInfoSetFromOptions(petsclib::PetscLibType, options::AbstractPetscOptions) end
 
-@for_petsc function PetscInfoSetFromOptions(petsclib::$UnionPetscLib, options::PetscOptions )
+@for_petsc function PetscInfoSetFromOptions(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 
     @chk ccall(
                (:PetscInfoSetFromOptions, $petsc_library),
@@ -11199,7 +11199,7 @@ function PetscProbCreateFromOptions(petsclib::PetscLibType, dim::PetscInt, prefi
 end 
 
 """
-	alpha::PetscReal = PetscProbComputeKSStatistic(petsclib::PetscLibType,v::PetscVec, cdf::PetscProbFn) 
+	alpha::PetscReal = PetscProbComputeKSStatistic(petsclib::PetscLibType,v::AbstractPetscVec, cdf::PetscProbFn) 
 Compute the Kolmogorov
 
 Collective
@@ -11218,9 +11218,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/PetscProbComputeKSStatistic"))
 """
-function PetscProbComputeKSStatistic(petsclib::PetscLibType, v::PetscVec, cdf::PetscProbFn) end
+function PetscProbComputeKSStatistic(petsclib::PetscLibType, v::AbstractPetscVec, cdf::PetscProbFn) end
 
-@for_petsc function PetscProbComputeKSStatistic(petsclib::$UnionPetscLib, v::PetscVec, cdf::PetscProbFn )
+@for_petsc function PetscProbComputeKSStatistic(petsclib::$UnionPetscLib, v::AbstractPetscVec, cdf::PetscProbFn )
 	alpha_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -11236,7 +11236,7 @@ function PetscProbComputeKSStatistic(petsclib::PetscLibType, v::PetscVec, cdf::P
 end 
 
 """
-	alpha::PetscReal = PetscProbComputeKSStatisticWeighted(petsclib::PetscLibType,v::PetscVec, w::PetscVec, cdf::PetscProbFn) 
+	alpha::PetscReal = PetscProbComputeKSStatisticWeighted(petsclib::PetscLibType,v::AbstractPetscVec, w::AbstractPetscVec, cdf::PetscProbFn) 
 Compute the Kolmogorov
 
 Collective
@@ -11256,9 +11256,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/PetscProbComputeKSStatisticWeighted"))
 """
-function PetscProbComputeKSStatisticWeighted(petsclib::PetscLibType, v::PetscVec, w::PetscVec, cdf::PetscProbFn) end
+function PetscProbComputeKSStatisticWeighted(petsclib::PetscLibType, v::AbstractPetscVec, w::AbstractPetscVec, cdf::PetscProbFn) end
 
-@for_petsc function PetscProbComputeKSStatisticWeighted(petsclib::$UnionPetscLib, v::PetscVec, w::PetscVec, cdf::PetscProbFn )
+@for_petsc function PetscProbComputeKSStatisticWeighted(petsclib::$UnionPetscLib, v::AbstractPetscVec, w::AbstractPetscVec, cdf::PetscProbFn )
 	alpha_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -11274,7 +11274,7 @@ function PetscProbComputeKSStatisticWeighted(petsclib::PetscLibType, v::PetscVec
 end 
 
 """
-	alpha::PetscReal = PetscProbComputeKSStatisticMagnitude(petsclib::PetscLibType,v::PetscVec, cdf::PetscProbFn) 
+	alpha::PetscReal = PetscProbComputeKSStatisticMagnitude(petsclib::PetscLibType,v::AbstractPetscVec, cdf::PetscProbFn) 
 Compute the Kolmogorov
 
 Collective
@@ -11293,9 +11293,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/PetscProbComputeKSStatisticMagnitude"))
 """
-function PetscProbComputeKSStatisticMagnitude(petsclib::PetscLibType, v::PetscVec, cdf::PetscProbFn) end
+function PetscProbComputeKSStatisticMagnitude(petsclib::PetscLibType, v::AbstractPetscVec, cdf::PetscProbFn) end
 
-@for_petsc function PetscProbComputeKSStatisticMagnitude(petsclib::$UnionPetscLib, v::PetscVec, cdf::PetscProbFn )
+@for_petsc function PetscProbComputeKSStatisticMagnitude(petsclib::$UnionPetscLib, v::AbstractPetscVec, cdf::PetscProbFn )
 	alpha_ = Ref{$PetscReal}()
 
     @chk ccall(

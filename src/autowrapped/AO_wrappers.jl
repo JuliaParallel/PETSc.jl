@@ -54,7 +54,7 @@ function AOInitializePackage(petsclib::PetscLibType) end
 end 
 
 """
-	AOSetType(petsclib::PetscLibType,ao::AO, method::AOType) 
+	AOSetType(petsclib::PetscLibType,ao::AbstractAO, method::AOType) 
 Builds an application ordering for a particular `AOType`
 
 Collective
@@ -73,9 +73,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/AOSetType"))
 """
-function AOSetType(petsclib::PetscLibType, ao::AO, method::AOType) end
+function AOSetType(petsclib::PetscLibType, ao::AbstractAO, method::AOType) end
 
-@for_petsc function AOSetType(petsclib::$UnionPetscLib, ao::AO, method::AOType )
+@for_petsc function AOSetType(petsclib::$UnionPetscLib, ao::AbstractAO, method::AOType )
 
     @chk ccall(
                (:AOSetType, $petsc_library),
@@ -89,7 +89,7 @@ function AOSetType(petsclib::PetscLibType, ao::AO, method::AOType) end
 end 
 
 """
-	type::AOType = AOGetType(petsclib::PetscLibType,ao::AO) 
+	type::AOType = AOGetType(petsclib::PetscLibType,ao::AbstractAO) 
 Gets the `AO` type name (as a string) from the AO.
 
 Not Collective
@@ -107,9 +107,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/AOGetType"))
 """
-function AOGetType(petsclib::PetscLibType, ao::AO) end
+function AOGetType(petsclib::PetscLibType, ao::AbstractAO) end
 
-@for_petsc function AOGetType(petsclib::$UnionPetscLib, ao::AO )
+@for_petsc function AOGetType(petsclib::$UnionPetscLib, ao::AbstractAO )
 	type_ = Ref{AOType}()
 
     @chk ccall(
@@ -184,7 +184,7 @@ function AORegisterAll(petsclib::PetscLibType) end
 end 
 
 """
-	AOView(petsclib::PetscLibType,ao::AO, viewer::PetscViewer) 
+	AOView(petsclib::PetscLibType,ao::AbstractAO, viewer::PetscViewer) 
 Displays an application ordering.
 
 Collective
@@ -203,9 +203,9 @@ Options Database Key:
 # External Links
 $(_doc_external("Vec/AOView"))
 """
-function AOView(petsclib::PetscLibType, ao::AO, viewer::PetscViewer) end
+function AOView(petsclib::PetscLibType, ao::AbstractAO, viewer::PetscViewer) end
 
-@for_petsc function AOView(petsclib::$UnionPetscLib, ao::AO, viewer::PetscViewer )
+@for_petsc function AOView(petsclib::$UnionPetscLib, ao::AbstractAO, viewer::PetscViewer )
 
     @chk ccall(
                (:AOView, $petsc_library),
@@ -219,7 +219,7 @@ function AOView(petsclib::PetscLibType, ao::AO, viewer::PetscViewer) end
 end 
 
 """
-	AOViewFromOptions(petsclib::PetscLibType,ao::AO, obj::PetscObject, name::String) 
+	AOViewFromOptions(petsclib::PetscLibType,ao::AbstractAO, obj::PetscObject, name::String) 
 View an `AO` based on values in the options database
 
 Collective
@@ -236,9 +236,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/AOViewFromOptions"))
 """
-function AOViewFromOptions(petsclib::PetscLibType, ao::AO, obj::PetscObject, name::String) end
+function AOViewFromOptions(petsclib::PetscLibType, ao::AbstractAO, obj::PetscObject, name::String) end
 
-@for_petsc function AOViewFromOptions(petsclib::$UnionPetscLib, ao::AO, obj::PetscObject, name::String )
+@for_petsc function AOViewFromOptions(petsclib::$UnionPetscLib, ao::AbstractAO, obj::PetscObject, name::String )
 
     @chk ccall(
                (:AOViewFromOptions, $petsc_library),
@@ -252,7 +252,7 @@ function AOViewFromOptions(petsclib::PetscLibType, ao::AO, obj::PetscObject, nam
 end 
 
 """
-	AODestroy(petsclib::PetscLibType,ao::AO) 
+	AODestroy(petsclib::PetscLibType,ao::AbstractAO) 
 Destroys an application ordering.
 
 Collective
@@ -267,9 +267,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/AODestroy"))
 """
-function AODestroy(petsclib::PetscLibType, ao::AO) end
+function AODestroy(petsclib::PetscLibType, ao::AbstractAO) end
 
-@for_petsc function AODestroy(petsclib::$UnionPetscLib, ao::AO )
+@for_petsc function AODestroy(petsclib::$UnionPetscLib, ao::AbstractAO )
 	ao_ = Ref(ao.ptr)
 
     @chk ccall(
@@ -285,7 +285,7 @@ function AODestroy(petsclib::PetscLibType, ao::AO) end
 end 
 
 """
-	AOPetscToApplicationIS(petsclib::PetscLibType,ao::AO, is::IS) 
+	AOPetscToApplicationIS(petsclib::PetscLibType,ao::AbstractAO, is::AbstractIS) 
 Maps an index set in the PETSc ordering to
 the application-defined ordering.
 
@@ -306,9 +306,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/AOPetscToApplicationIS"))
 """
-function AOPetscToApplicationIS(petsclib::PetscLibType, ao::AO, is::IS) end
+function AOPetscToApplicationIS(petsclib::PetscLibType, ao::AbstractAO, is::AbstractIS) end
 
-@for_petsc function AOPetscToApplicationIS(petsclib::$UnionPetscLib, ao::AO, is::IS )
+@for_petsc function AOPetscToApplicationIS(petsclib::$UnionPetscLib, ao::AbstractAO, is::AbstractIS )
 
     @chk ccall(
                (:AOPetscToApplicationIS, $petsc_library),
@@ -322,7 +322,7 @@ function AOPetscToApplicationIS(petsclib::PetscLibType, ao::AO, is::IS) end
 end 
 
 """
-	AOApplicationToPetscIS(petsclib::PetscLibType,ao::AO, is::IS) 
+	AOApplicationToPetscIS(petsclib::PetscLibType,ao::AbstractAO, is::AbstractIS) 
 Maps an index set in the application
 ordering to the PETSc ordering.
 
@@ -343,9 +343,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/AOApplicationToPetscIS"))
 """
-function AOApplicationToPetscIS(petsclib::PetscLibType, ao::AO, is::IS) end
+function AOApplicationToPetscIS(petsclib::PetscLibType, ao::AbstractAO, is::AbstractIS) end
 
-@for_petsc function AOApplicationToPetscIS(petsclib::$UnionPetscLib, ao::AO, is::IS )
+@for_petsc function AOApplicationToPetscIS(petsclib::$UnionPetscLib, ao::AbstractAO, is::AbstractIS )
 
     @chk ccall(
                (:AOApplicationToPetscIS, $petsc_library),
@@ -359,7 +359,7 @@ function AOApplicationToPetscIS(petsclib::PetscLibType, ao::AO, is::IS) end
 end 
 
 """
-	AOPetscToApplication(petsclib::PetscLibType,ao::AO, n::PetscInt, ia::Vector{PetscInt}) 
+	AOPetscToApplication(petsclib::PetscLibType,ao::AbstractAO, n::PetscInt, ia::Vector{PetscInt}) 
 Maps a set of integers in the PETSc ordering to
 the application-defined ordering.
 
@@ -381,9 +381,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/AOPetscToApplication"))
 """
-function AOPetscToApplication(petsclib::PetscLibType, ao::AO, n::PetscInt, ia::Vector{PetscInt}) end
+function AOPetscToApplication(petsclib::PetscLibType, ao::AbstractAO, n::PetscInt, ia::Vector{PetscInt}) end
 
-@for_petsc function AOPetscToApplication(petsclib::$UnionPetscLib, ao::AO, n::$PetscInt, ia::Vector{$PetscInt} )
+@for_petsc function AOPetscToApplication(petsclib::$UnionPetscLib, ao::AbstractAO, n::$PetscInt, ia::Vector{$PetscInt} )
 
     @chk ccall(
                (:AOPetscToApplication, $petsc_library),
@@ -397,7 +397,7 @@ function AOPetscToApplication(petsclib::PetscLibType, ao::AO, n::PetscInt, ia::V
 end 
 
 """
-	AOApplicationToPetsc(petsclib::PetscLibType,ao::AO, n::PetscInt, ia::Vector{PetscInt}) 
+	AOApplicationToPetsc(petsclib::PetscLibType,ao::AbstractAO, n::PetscInt, ia::Vector{PetscInt}) 
 Maps a set of integers in the application
 ordering to the PETSc ordering.
 
@@ -419,9 +419,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/AOApplicationToPetsc"))
 """
-function AOApplicationToPetsc(petsclib::PetscLibType, ao::AO, n::PetscInt, ia::Vector{PetscInt}) end
+function AOApplicationToPetsc(petsclib::PetscLibType, ao::AbstractAO, n::PetscInt, ia::Vector{PetscInt}) end
 
-@for_petsc function AOApplicationToPetsc(petsclib::$UnionPetscLib, ao::AO, n::$PetscInt, ia::Vector{$PetscInt} )
+@for_petsc function AOApplicationToPetsc(petsclib::$UnionPetscLib, ao::AbstractAO, n::$PetscInt, ia::Vector{$PetscInt} )
 
     @chk ccall(
                (:AOApplicationToPetsc, $petsc_library),
@@ -435,7 +435,7 @@ function AOApplicationToPetsc(petsclib::PetscLibType, ao::AO, n::PetscInt, ia::V
 end 
 
 """
-	AOPetscToApplicationPermuteInt(petsclib::PetscLibType,ao::AO, block::PetscInt, array::Vector{PetscInt}) 
+	AOPetscToApplicationPermuteInt(petsclib::PetscLibType,ao::AbstractAO, block::PetscInt, array::Vector{PetscInt}) 
 Permutes an array of blocks of integers
 in the PETSc ordering to the application-defined ordering.
 
@@ -456,9 +456,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/AOPetscToApplicationPermuteInt"))
 """
-function AOPetscToApplicationPermuteInt(petsclib::PetscLibType, ao::AO, block::PetscInt, array::Vector{PetscInt}) end
+function AOPetscToApplicationPermuteInt(petsclib::PetscLibType, ao::AbstractAO, block::PetscInt, array::Vector{PetscInt}) end
 
-@for_petsc function AOPetscToApplicationPermuteInt(petsclib::$UnionPetscLib, ao::AO, block::$PetscInt, array::Vector{$PetscInt} )
+@for_petsc function AOPetscToApplicationPermuteInt(petsclib::$UnionPetscLib, ao::AbstractAO, block::$PetscInt, array::Vector{$PetscInt} )
 
     @chk ccall(
                (:AOPetscToApplicationPermuteInt, $petsc_library),
@@ -472,7 +472,7 @@ function AOPetscToApplicationPermuteInt(petsclib::PetscLibType, ao::AO, block::P
 end 
 
 """
-	AOApplicationToPetscPermuteInt(petsclib::PetscLibType,ao::AO, block::PetscInt, array::Vector{PetscInt}) 
+	AOApplicationToPetscPermuteInt(petsclib::PetscLibType,ao::AbstractAO, block::PetscInt, array::Vector{PetscInt}) 
 Permutes an array of blocks of integers
 in the application-defined ordering to the PETSc ordering.
 
@@ -493,9 +493,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/AOApplicationToPetscPermuteInt"))
 """
-function AOApplicationToPetscPermuteInt(petsclib::PetscLibType, ao::AO, block::PetscInt, array::Vector{PetscInt}) end
+function AOApplicationToPetscPermuteInt(petsclib::PetscLibType, ao::AbstractAO, block::PetscInt, array::Vector{PetscInt}) end
 
-@for_petsc function AOApplicationToPetscPermuteInt(petsclib::$UnionPetscLib, ao::AO, block::$PetscInt, array::Vector{$PetscInt} )
+@for_petsc function AOApplicationToPetscPermuteInt(petsclib::$UnionPetscLib, ao::AbstractAO, block::$PetscInt, array::Vector{$PetscInt} )
 
     @chk ccall(
                (:AOApplicationToPetscPermuteInt, $petsc_library),
@@ -509,7 +509,7 @@ function AOApplicationToPetscPermuteInt(petsclib::PetscLibType, ao::AO, block::P
 end 
 
 """
-	AOPetscToApplicationPermuteReal(petsclib::PetscLibType,ao::AO, block::PetscInt, array::Vector{PetscReal}) 
+	AOPetscToApplicationPermuteReal(petsclib::PetscLibType,ao::AbstractAO, block::PetscInt, array::Vector{PetscReal}) 
 Permutes an array of blocks of reals
 in the PETSc ordering to the application-defined ordering.
 
@@ -530,9 +530,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/AOPetscToApplicationPermuteReal"))
 """
-function AOPetscToApplicationPermuteReal(petsclib::PetscLibType, ao::AO, block::PetscInt, array::Vector{PetscReal}) end
+function AOPetscToApplicationPermuteReal(petsclib::PetscLibType, ao::AbstractAO, block::PetscInt, array::Vector{PetscReal}) end
 
-@for_petsc function AOPetscToApplicationPermuteReal(petsclib::$UnionPetscLib, ao::AO, block::$PetscInt, array::Vector{$PetscReal} )
+@for_petsc function AOPetscToApplicationPermuteReal(petsclib::$UnionPetscLib, ao::AbstractAO, block::$PetscInt, array::Vector{$PetscReal} )
 
     @chk ccall(
                (:AOPetscToApplicationPermuteReal, $petsc_library),
@@ -546,7 +546,7 @@ function AOPetscToApplicationPermuteReal(petsclib::PetscLibType, ao::AO, block::
 end 
 
 """
-	AOApplicationToPetscPermuteReal(petsclib::PetscLibType,ao::AO, block::PetscInt, array::Vector{PetscReal}) 
+	AOApplicationToPetscPermuteReal(petsclib::PetscLibType,ao::AbstractAO, block::PetscInt, array::Vector{PetscReal}) 
 Permutes an array of blocks of reals
 in the application-defined ordering to the PETSc ordering.
 
@@ -567,9 +567,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/AOApplicationToPetscPermuteReal"))
 """
-function AOApplicationToPetscPermuteReal(petsclib::PetscLibType, ao::AO, block::PetscInt, array::Vector{PetscReal}) end
+function AOApplicationToPetscPermuteReal(petsclib::PetscLibType, ao::AbstractAO, block::PetscInt, array::Vector{PetscReal}) end
 
-@for_petsc function AOApplicationToPetscPermuteReal(petsclib::$UnionPetscLib, ao::AO, block::$PetscInt, array::Vector{$PetscReal} )
+@for_petsc function AOApplicationToPetscPermuteReal(petsclib::$UnionPetscLib, ao::AbstractAO, block::$PetscInt, array::Vector{$PetscReal} )
 
     @chk ccall(
                (:AOApplicationToPetscPermuteReal, $petsc_library),
@@ -583,7 +583,7 @@ function AOApplicationToPetscPermuteReal(petsclib::PetscLibType, ao::AO, block::
 end 
 
 """
-	AOSetFromOptions(petsclib::PetscLibType,ao::AO) 
+	AOSetFromOptions(petsclib::PetscLibType,ao::AbstractAO) 
 Sets `AO` options from the options database.
 
 Collective
@@ -601,9 +601,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/AOSetFromOptions"))
 """
-function AOSetFromOptions(petsclib::PetscLibType, ao::AO) end
+function AOSetFromOptions(petsclib::PetscLibType, ao::AbstractAO) end
 
-@for_petsc function AOSetFromOptions(petsclib::$UnionPetscLib, ao::AO )
+@for_petsc function AOSetFromOptions(petsclib::$UnionPetscLib, ao::AbstractAO )
 
     @chk ccall(
                (:AOSetFromOptions, $petsc_library),
@@ -617,7 +617,7 @@ function AOSetFromOptions(petsclib::PetscLibType, ao::AO) end
 end 
 
 """
-	AOSetIS(petsclib::PetscLibType,ao::AO, isapp::IS, ispetsc::IS) 
+	AOSetIS(petsclib::PetscLibType,ao::AbstractAO, isapp::AbstractIS, ispetsc::AbstractIS) 
 Sets the `IS` associated with the application ordering.
 
 Collective
@@ -634,9 +634,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/AOSetIS"))
 """
-function AOSetIS(petsclib::PetscLibType, ao::AO, isapp::IS, ispetsc::IS) end
+function AOSetIS(petsclib::PetscLibType, ao::AbstractAO, isapp::AbstractIS, ispetsc::AbstractIS) end
 
-@for_petsc function AOSetIS(petsclib::$UnionPetscLib, ao::AO, isapp::IS, ispetsc::IS )
+@for_petsc function AOSetIS(petsclib::$UnionPetscLib, ao::AbstractAO, isapp::AbstractIS, ispetsc::AbstractIS )
 
     @chk ccall(
                (:AOSetIS, $petsc_library),
@@ -690,7 +690,7 @@ function AOCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 end 
 
 """
-	hasIndex::PetscBool = AOMappingHasApplicationIndex(petsclib::PetscLibType,ao::AO, idex::PetscInt) 
+	hasIndex::PetscBool = AOMappingHasApplicationIndex(petsclib::PetscLibType,ao::AbstractAO, idex::PetscInt) 
 Checks if an `AO` has a requested application index.
 
 Not Collective
@@ -709,9 +709,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/AOMappingHasApplicationIndex"))
 """
-function AOMappingHasApplicationIndex(petsclib::PetscLibType, ao::AO, idex::PetscInt) end
+function AOMappingHasApplicationIndex(petsclib::PetscLibType, ao::AbstractAO, idex::PetscInt) end
 
-@for_petsc function AOMappingHasApplicationIndex(petsclib::$UnionPetscLib, ao::AO, idex::$PetscInt )
+@for_petsc function AOMappingHasApplicationIndex(petsclib::$UnionPetscLib, ao::AbstractAO, idex::$PetscInt )
 	hasIndex_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -727,7 +727,7 @@ function AOMappingHasApplicationIndex(petsclib::PetscLibType, ao::AO, idex::Pets
 end 
 
 """
-	hasIndex::PetscBool = AOMappingHasPetscIndex(petsclib::PetscLibType,ao::AO, idex::PetscInt) 
+	hasIndex::PetscBool = AOMappingHasPetscIndex(petsclib::PetscLibType,ao::AbstractAO, idex::PetscInt) 
 checks if an `AO` has a requested PETSc index.
 
 Not Collective
@@ -746,9 +746,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/AOMappingHasPetscIndex"))
 """
-function AOMappingHasPetscIndex(petsclib::PetscLibType, ao::AO, idex::PetscInt) end
+function AOMappingHasPetscIndex(petsclib::PetscLibType, ao::AbstractAO, idex::PetscInt) end
 
-@for_petsc function AOMappingHasPetscIndex(petsclib::$UnionPetscLib, ao::AO, idex::$PetscInt )
+@for_petsc function AOMappingHasPetscIndex(petsclib::$UnionPetscLib, ao::AbstractAO, idex::$PetscInt )
 	hasIndex_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -804,7 +804,7 @@ function AOCreateMapping(petsclib::PetscLibType, comm::MPI_Comm, napp::PetscInt,
 end 
 
 """
-	aoout::AO = AOCreateMappingIS(petsclib::PetscLibType,isapp::IS, ispetsc::IS) 
+	aoout::AO = AOCreateMappingIS(petsclib::PetscLibType,isapp::AbstractIS, ispetsc::AbstractIS) 
 Creates an application mapping using two index sets.
 
 Input Parameters:
@@ -824,9 +824,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/AOCreateMappingIS"))
 """
-function AOCreateMappingIS(petsclib::PetscLibType, isapp::IS, ispetsc::IS) end
+function AOCreateMappingIS(petsclib::PetscLibType, isapp::AbstractIS, ispetsc::AbstractIS) end
 
-@for_petsc function AOCreateMappingIS(petsclib::$UnionPetscLib, isapp::IS, ispetsc::IS )
+@for_petsc function AOCreateMappingIS(petsclib::$UnionPetscLib, isapp::AbstractIS, ispetsc::AbstractIS )
 	aoout_ = Ref{CAO}()
 
     @chk ccall(
@@ -881,7 +881,7 @@ function AOCreateMemoryScalable(petsclib::PetscLibType, comm::MPI_Comm, napp::Pe
 end 
 
 """
-	aoout::AO = AOCreateMemoryScalableIS(petsclib::PetscLibType,isapp::IS, ispetsc::IS) 
+	aoout::AO = AOCreateMemoryScalableIS(petsclib::PetscLibType,isapp::AbstractIS, ispetsc::AbstractIS) 
 Creates a memory scalable application ordering using two index sets.
 
 Collective
@@ -900,9 +900,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/AOCreateMemoryScalableIS"))
 """
-function AOCreateMemoryScalableIS(petsclib::PetscLibType, isapp::IS, ispetsc::IS) end
+function AOCreateMemoryScalableIS(petsclib::PetscLibType, isapp::AbstractIS, ispetsc::AbstractIS) end
 
-@for_petsc function AOCreateMemoryScalableIS(petsclib::$UnionPetscLib, isapp::IS, ispetsc::IS )
+@for_petsc function AOCreateMemoryScalableIS(petsclib::$UnionPetscLib, isapp::AbstractIS, ispetsc::AbstractIS )
 	aoout_ = Ref{CAO}()
 
     @chk ccall(
@@ -958,7 +958,7 @@ function AOCreateBasic(petsclib::PetscLibType, comm::MPI_Comm, napp::PetscInt, m
 end 
 
 """
-	aoout::AO = AOCreateBasicIS(petsclib::PetscLibType,isapp::IS, ispetsc::IS) 
+	aoout::AO = AOCreateBasicIS(petsclib::PetscLibType,isapp::AbstractIS, ispetsc::AbstractIS) 
 Creates a basic application ordering using two `IS` index sets.
 
 Collective
@@ -977,9 +977,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/AOCreateBasicIS"))
 """
-function AOCreateBasicIS(petsclib::PetscLibType, isapp::IS, ispetsc::IS) end
+function AOCreateBasicIS(petsclib::PetscLibType, isapp::AbstractIS, ispetsc::AbstractIS) end
 
-@for_petsc function AOCreateBasicIS(petsclib::$UnionPetscLib, isapp::IS, ispetsc::IS )
+@for_petsc function AOCreateBasicIS(petsclib::$UnionPetscLib, isapp::AbstractIS, ispetsc::AbstractIS )
 	aoout_ = Ref{CAO}()
 
     @chk ccall(

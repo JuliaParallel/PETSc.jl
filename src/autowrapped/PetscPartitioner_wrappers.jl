@@ -347,7 +347,7 @@ function PetscPartitionerDestroy(petsclib::PetscLibType, part::Union{PetscPartit
 end 
 
 """
-	PetscPartitionerPartition(petsclib::PetscLibType,part::PetscPartitioner, nparts::PetscInt, numVertices::PetscInt, start::Vector{PetscInt}, adjacency::Vector{PetscInt}, vertexSection::PetscSection, edgeSection::PetscSection, targetSection::PetscSection, partSection::PetscSection, partition::IS) 
+	PetscPartitionerPartition(petsclib::PetscLibType,part::PetscPartitioner, nparts::PetscInt, numVertices::PetscInt, start::Vector{PetscInt}, adjacency::Vector{PetscInt}, vertexSection::PetscSection, edgeSection::PetscSection, targetSection::PetscSection, partSection::PetscSection, partition::AbstractIS) 
 Partition a graph
 
 Collective
@@ -377,9 +377,9 @@ Level: developer
 # External Links
 $(_doc_external("Mat/PetscPartitionerPartition"))
 """
-function PetscPartitionerPartition(petsclib::PetscLibType, part::PetscPartitioner, nparts::PetscInt, numVertices::PetscInt, start::Vector{PetscInt}, adjacency::Vector{PetscInt}, vertexSection::PetscSection, edgeSection::PetscSection, targetSection::PetscSection, partSection::PetscSection, partition::IS) end
+function PetscPartitionerPartition(petsclib::PetscLibType, part::PetscPartitioner, nparts::PetscInt, numVertices::PetscInt, start::Vector{PetscInt}, adjacency::Vector{PetscInt}, vertexSection::PetscSection, edgeSection::PetscSection, targetSection::PetscSection, partSection::PetscSection, partition::AbstractIS) end
 
-@for_petsc function PetscPartitionerPartition(petsclib::$UnionPetscLib, part::PetscPartitioner, nparts::$PetscInt, numVertices::$PetscInt, start::Vector{$PetscInt}, adjacency::Vector{$PetscInt}, vertexSection::PetscSection, edgeSection::PetscSection, targetSection::PetscSection, partSection::PetscSection, partition::IS )
+@for_petsc function PetscPartitionerPartition(petsclib::$UnionPetscLib, part::PetscPartitioner, nparts::$PetscInt, numVertices::$PetscInt, start::Vector{$PetscInt}, adjacency::Vector{$PetscInt}, vertexSection::PetscSection, edgeSection::PetscSection, targetSection::PetscSection, partSection::PetscSection, partition::AbstractIS )
 	partition_ = Ref(partition.ptr)
 
     @chk ccall(
@@ -567,7 +567,7 @@ function PetscPartitionerMatPartitioningGetMatPartitioning(petsclib::PetscLibTyp
 end 
 
 """
-	PetscPartitionerDMPlexPartition(petsclib::PetscLibType,part::PetscPartitioner, dm::PetscDM, targetSection::PetscSection, partSection::PetscSection, partition::IS) 
+	PetscPartitionerDMPlexPartition(petsclib::PetscLibType,part::PetscPartitioner, dm::AbstractPetscDM, targetSection::PetscSection, partSection::PetscSection, partition::AbstractIS) 
 Create a non
 
 Collective
@@ -589,9 +589,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/PetscPartitionerDMPlexPartition"))
 """
-function PetscPartitionerDMPlexPartition(petsclib::PetscLibType, part::PetscPartitioner, dm::PetscDM, targetSection::PetscSection, partSection::PetscSection, partition::IS) end
+function PetscPartitionerDMPlexPartition(petsclib::PetscLibType, part::PetscPartitioner, dm::AbstractPetscDM, targetSection::PetscSection, partSection::PetscSection, partition::AbstractIS) end
 
-@for_petsc function PetscPartitionerDMPlexPartition(petsclib::$UnionPetscLib, part::PetscPartitioner, dm::PetscDM, targetSection::PetscSection, partSection::PetscSection, partition::IS )
+@for_petsc function PetscPartitionerDMPlexPartition(petsclib::$UnionPetscLib, part::PetscPartitioner, dm::AbstractPetscDM, targetSection::PetscSection, partSection::PetscSection, partition::AbstractIS )
 	partition_ = Ref(partition.ptr)
 
     @chk ccall(

@@ -145,7 +145,7 @@ function PetscOptionsCreateViewer(petsclib::PetscLibType, comm::MPI_Comm, option
 end 
 
 """
-	viewers::Vector{PetscViewer},formats::Vector{PetscViewerFormat},set::PetscBool = PetscOptionsCreateViewers(petsclib::PetscLibType,comm::MPI_Comm, options::PetscOptions, pre::String, name::String, n_max::PetscInt) 
+	viewers::Vector{PetscViewer},formats::Vector{PetscViewerFormat},set::PetscBool = PetscOptionsCreateViewers(petsclib::PetscLibType,comm::MPI_Comm, options::AbstractPetscOptions, pre::String, name::String, n_max::PetscInt) 
 Create multiple viewers from a comma
 
 Collective
@@ -170,9 +170,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsCreateViewers"))
 """
-function PetscOptionsCreateViewers(petsclib::PetscLibType, comm::MPI_Comm, options::PetscOptions, pre::String, name::String, n_max::PetscInt) end
+function PetscOptionsCreateViewers(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, pre::String, name::String, n_max::PetscInt) end
 
-@for_petsc function PetscOptionsCreateViewers(petsclib::$UnionPetscLib, comm::MPI_Comm, options::PetscOptions, pre::String, name::String, n_max::$PetscInt )
+@for_petsc function PetscOptionsCreateViewers(petsclib::$UnionPetscLib, comm::MPI_Comm, options::AbstractPetscOptions, pre::String, name::String, n_max::$PetscInt )
 	viewers = Vector{PetscViewer}(undef, ni);  # CHECK SIZE!!
 	formats = Vector{PetscViewerFormat}(undef, ni);  # CHECK SIZE!!
 	set_ = Ref{PetscBool}()
@@ -190,7 +190,7 @@ function PetscOptionsCreateViewers(petsclib::PetscLibType, comm::MPI_Comm, optio
 end 
 
 """
-	PetscOptionsInsertStringYAML(petsclib::PetscLibType,options::PetscOptions, in_str::String) 
+	PetscOptionsInsertStringYAML(petsclib::PetscLibType,options::AbstractPetscOptions, in_str::String) 
 Inserts YAML
 
 Logically Collective
@@ -211,9 +211,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsInsertStringYAML"))
 """
-function PetscOptionsInsertStringYAML(petsclib::PetscLibType, options::PetscOptions, in_str::String) end
+function PetscOptionsInsertStringYAML(petsclib::PetscLibType, options::AbstractPetscOptions, in_str::String) end
 
-@for_petsc function PetscOptionsInsertStringYAML(petsclib::$UnionPetscLib, options::PetscOptions, in_str::String )
+@for_petsc function PetscOptionsInsertStringYAML(petsclib::$UnionPetscLib, options::AbstractPetscOptions, in_str::String )
 
     @chk ccall(
                (:PetscOptionsInsertStringYAML, $petsc_library),
@@ -227,7 +227,7 @@ function PetscOptionsInsertStringYAML(petsclib::PetscLibType, options::PetscOpti
 end 
 
 """
-	PetscOptionsInsertFileYAML(petsclib::PetscLibType,comm::MPI_Comm, options::PetscOptions, file::String, require::PetscBool) 
+	PetscOptionsInsertFileYAML(petsclib::PetscLibType,comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) 
 Insert a YAML
 
 Collective
@@ -250,9 +250,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsInsertFileYAML"))
 """
-function PetscOptionsInsertFileYAML(petsclib::PetscLibType, comm::MPI_Comm, options::PetscOptions, file::String, require::PetscBool) end
+function PetscOptionsInsertFileYAML(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) end
 
-@for_petsc function PetscOptionsInsertFileYAML(petsclib::$UnionPetscLib, comm::MPI_Comm, options::PetscOptions, file::String, require::PetscBool )
+@for_petsc function PetscOptionsInsertFileYAML(petsclib::$UnionPetscLib, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool )
 
     @chk ccall(
                (:PetscOptionsInsertFileYAML, $petsc_library),
@@ -299,7 +299,7 @@ function PetscOptionsCreate(petsclib::PetscLibType) end
 end 
 
 """
-	PetscOptionsDestroy(petsclib::PetscLibType,options::PetscOptions) 
+	PetscOptionsDestroy(petsclib::PetscLibType,options::AbstractPetscOptions) 
 Destroys an option database.
 
 Logically Collective on whatever communicator was associated with the call to `PetscOptionsCreate()`
@@ -314,9 +314,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsDestroy"))
 """
-function PetscOptionsDestroy(petsclib::PetscLibType, options::PetscOptions) end
+function PetscOptionsDestroy(petsclib::PetscLibType, options::AbstractPetscOptions) end
 
-@for_petsc function PetscOptionsDestroy(petsclib::$UnionPetscLib, options::PetscOptions )
+@for_petsc function PetscOptionsDestroy(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 	options_ = Ref(options.ptr)
 
     @chk ccall(
@@ -352,7 +352,7 @@ function PetscOptionsCreateDefault(petsclib::PetscLibType) end
 end 
 
 """
-	PetscOptionsPush(petsclib::PetscLibType,opt::PetscOptions) 
+	PetscOptionsPush(petsclib::PetscLibType,opt::AbstractPetscOptions) 
 Push a new `PetscOptions` object as the default provider of options
 Allows using different parts of a code to use different options databases
 
@@ -368,9 +368,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsPush"))
 """
-function PetscOptionsPush(petsclib::PetscLibType, opt::PetscOptions) end
+function PetscOptionsPush(petsclib::PetscLibType, opt::AbstractPetscOptions) end
 
-@for_petsc function PetscOptionsPush(petsclib::$UnionPetscLib, opt::PetscOptions )
+@for_petsc function PetscOptionsPush(petsclib::$UnionPetscLib, opt::AbstractPetscOptions )
 
     @chk ccall(
                (:PetscOptionsPush, $petsc_library),
@@ -467,7 +467,7 @@ function PetscOptionsValidKey(petsclib::PetscLibType, key::String) end
 end 
 
 """
-	PetscOptionsInsertString(petsclib::PetscLibType,options::PetscOptions, in_str::String) 
+	PetscOptionsInsertString(petsclib::PetscLibType,options::AbstractPetscOptions, in_str::String) 
 Inserts options into the database from a string
 
 Logically Collective
@@ -495,9 +495,9 @@ Contributed by Boyana Norris
 # External Links
 $(_doc_external("Sys/PetscOptionsInsertString"))
 """
-function PetscOptionsInsertString(petsclib::PetscLibType, options::PetscOptions, in_str::String) end
+function PetscOptionsInsertString(petsclib::PetscLibType, options::AbstractPetscOptions, in_str::String) end
 
-@for_petsc function PetscOptionsInsertString(petsclib::$UnionPetscLib, options::PetscOptions, in_str::String )
+@for_petsc function PetscOptionsInsertString(petsclib::$UnionPetscLib, options::AbstractPetscOptions, in_str::String )
 
     @chk ccall(
                (:PetscOptionsInsertString, $petsc_library),
@@ -511,7 +511,7 @@ function PetscOptionsInsertString(petsclib::PetscLibType, options::PetscOptions,
 end 
 
 """
-	PetscOptionsInsertFile(petsclib::PetscLibType,comm::MPI_Comm, options::PetscOptions, file::String, require::PetscBool) 
+	PetscOptionsInsertFile(petsclib::PetscLibType,comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) 
 Inserts options into the database from a file.
 
 Collective
@@ -536,9 +536,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscOptionsInsertFile"))
 """
-function PetscOptionsInsertFile(petsclib::PetscLibType, comm::MPI_Comm, options::PetscOptions, file::String, require::PetscBool) end
+function PetscOptionsInsertFile(petsclib::PetscLibType, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool) end
 
-@for_petsc function PetscOptionsInsertFile(petsclib::$UnionPetscLib, comm::MPI_Comm, options::PetscOptions, file::String, require::PetscBool )
+@for_petsc function PetscOptionsInsertFile(petsclib::$UnionPetscLib, comm::MPI_Comm, options::AbstractPetscOptions, file::String, require::PetscBool )
 
     @chk ccall(
                (:PetscOptionsInsertFile, $petsc_library),
@@ -552,7 +552,7 @@ function PetscOptionsInsertFile(petsclib::PetscLibType, comm::MPI_Comm, options:
 end 
 
 """
-	PetscOptionsInsertArgs(petsclib::PetscLibType,options::PetscOptions, argc::Cint, args::String) 
+	PetscOptionsInsertArgs(petsclib::PetscLibType,options::AbstractPetscOptions, argc::Cint, args::String) 
 Inserts options into the database from a array of strings
 
 Logically Collective
@@ -569,9 +569,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsInsertArgs"))
 """
-function PetscOptionsInsertArgs(petsclib::PetscLibType, options::PetscOptions, argc::Cint, args::String) end
+function PetscOptionsInsertArgs(petsclib::PetscLibType, options::AbstractPetscOptions, argc::Cint, args::String) end
 
-@for_petsc function PetscOptionsInsertArgs(petsclib::$UnionPetscLib, options::PetscOptions, argc::Cint, args::String )
+@for_petsc function PetscOptionsInsertArgs(petsclib::$UnionPetscLib, options::AbstractPetscOptions, argc::Cint, args::String )
 	args_ = Ref(pointer(args))
 
     @chk ccall(
@@ -586,7 +586,7 @@ function PetscOptionsInsertArgs(petsclib::PetscLibType, options::PetscOptions, a
 end 
 
 """
-	PetscOptionsInsert(petsclib::PetscLibType,options::PetscOptions, argc::Cint, args::Cchar, file::String) 
+	PetscOptionsInsert(petsclib::PetscLibType,options::AbstractPetscOptions, argc::Cint, args::Cchar, file::String) 
 Inserts into the options database from the command line,
 the environmental variable and a file.
 
@@ -613,9 +613,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsInsert"))
 """
-function PetscOptionsInsert(petsclib::PetscLibType, options::PetscOptions, argc::Cint, args::Cchar, file::String) end
+function PetscOptionsInsert(petsclib::PetscLibType, options::AbstractPetscOptions, argc::Cint, args::Cchar, file::String) end
 
-@for_petsc function PetscOptionsInsert(petsclib::$UnionPetscLib, options::PetscOptions, argc::Cint, args::Cchar, file::String )
+@for_petsc function PetscOptionsInsert(petsclib::$UnionPetscLib, options::AbstractPetscOptions, argc::Cint, args::Cchar, file::String )
 
     @chk ccall(
                (:PetscOptionsInsert, $petsc_library),
@@ -629,7 +629,7 @@ function PetscOptionsInsert(petsclib::PetscLibType, options::PetscOptions, argc:
 end 
 
 """
-	PetscOptionsView(petsclib::PetscLibType,options::PetscOptions, viewer::PetscViewerFormat) 
+	PetscOptionsView(petsclib::PetscLibType,options::AbstractPetscOptions, viewer::PetscViewerFormat) 
 Prints the options that have been loaded. This is
 useful for debugging purposes.
 
@@ -649,9 +649,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsView"))
 """
-function PetscOptionsView(petsclib::PetscLibType, options::PetscOptions, viewer::PetscViewer) end
+function PetscOptionsView(petsclib::PetscLibType, options::AbstractPetscOptions, viewer::PetscViewer) end
 
-@for_petsc function PetscOptionsView(petsclib::$UnionPetscLib, options::PetscOptions, viewer::PetscViewerFormat )
+@for_petsc function PetscOptionsView(petsclib::$UnionPetscLib, options::AbstractPetscOptions, viewer::PetscViewerFormat )
 
     @chk ccall(
                (:PetscOptionsView, $petsc_library),
@@ -685,7 +685,7 @@ function PetscOptionsLeftError(petsclib::PetscLibType) end
 end 
 
 """
-	PetscOptionsPrefixPush(petsclib::PetscLibType,options::PetscOptions, prefix::String) 
+	PetscOptionsPrefixPush(petsclib::PetscLibType,options::AbstractPetscOptions, prefix::String) 
 Designate a prefix to be used by all options insertions to follow.
 
 Logically Collective
@@ -705,9 +705,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsPrefixPush"))
 """
-function PetscOptionsPrefixPush(petsclib::PetscLibType, options::PetscOptions, prefix::String) end
+function PetscOptionsPrefixPush(petsclib::PetscLibType, options::AbstractPetscOptions, prefix::String) end
 
-@for_petsc function PetscOptionsPrefixPush(petsclib::$UnionPetscLib, options::PetscOptions, prefix::String )
+@for_petsc function PetscOptionsPrefixPush(petsclib::$UnionPetscLib, options::AbstractPetscOptions, prefix::String )
 
     @chk ccall(
                (:PetscOptionsPrefixPush, $petsc_library),
@@ -721,7 +721,7 @@ function PetscOptionsPrefixPush(petsclib::PetscLibType, options::PetscOptions, p
 end 
 
 """
-	PetscOptionsPrefixPop(petsclib::PetscLibType,options::PetscOptions) 
+	PetscOptionsPrefixPop(petsclib::PetscLibType,options::AbstractPetscOptions) 
 Remove the latest options prefix, see `PetscOptionsPrefixPush()` for details
 
 Logically Collective on the `MPI_Comm` used when called `PetscOptionsPrefixPush()`
@@ -736,9 +736,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsPrefixPop"))
 """
-function PetscOptionsPrefixPop(petsclib::PetscLibType, options::PetscOptions) end
+function PetscOptionsPrefixPop(petsclib::PetscLibType, options::AbstractPetscOptions) end
 
-@for_petsc function PetscOptionsPrefixPop(petsclib::$UnionPetscLib, options::PetscOptions )
+@for_petsc function PetscOptionsPrefixPop(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 
     @chk ccall(
                (:PetscOptionsPrefixPop, $petsc_library),
@@ -752,7 +752,7 @@ function PetscOptionsPrefixPop(petsclib::PetscLibType, options::PetscOptions) en
 end 
 
 """
-	PetscOptionsClear(petsclib::PetscLibType,options::PetscOptions) 
+	PetscOptionsClear(petsclib::PetscLibType,options::AbstractPetscOptions) 
 Removes all options form the database leaving it empty.
 
 Logically Collective
@@ -767,9 +767,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscOptionsClear"))
 """
-function PetscOptionsClear(petsclib::PetscLibType, options::PetscOptions) end
+function PetscOptionsClear(petsclib::PetscLibType, options::AbstractPetscOptions) end
 
-@for_petsc function PetscOptionsClear(petsclib::$UnionPetscLib, options::PetscOptions )
+@for_petsc function PetscOptionsClear(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 
     @chk ccall(
                (:PetscOptionsClear, $petsc_library),
@@ -783,7 +783,7 @@ function PetscOptionsClear(petsclib::PetscLibType, options::PetscOptions) end
 end 
 
 """
-	PetscOptionsSetAlias(petsclib::PetscLibType,options::PetscOptions, newname::String, oldname::String) 
+	PetscOptionsSetAlias(petsclib::PetscLibType,options::AbstractPetscOptions, newname::String, oldname::String) 
 Makes a key and alias for another key
 
 Logically Collective
@@ -805,9 +805,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsSetAlias"))
 """
-function PetscOptionsSetAlias(petsclib::PetscLibType, options::PetscOptions, newname::String, oldname::String) end
+function PetscOptionsSetAlias(petsclib::PetscLibType, options::AbstractPetscOptions, newname::String, oldname::String) end
 
-@for_petsc function PetscOptionsSetAlias(petsclib::$UnionPetscLib, options::PetscOptions, newname::String, oldname::String )
+@for_petsc function PetscOptionsSetAlias(petsclib::$UnionPetscLib, options::AbstractPetscOptions, newname::String, oldname::String )
 
     @chk ccall(
                (:PetscOptionsSetAlias, $petsc_library),
@@ -821,7 +821,7 @@ function PetscOptionsSetAlias(petsclib::PetscLibType, options::PetscOptions, new
 end 
 
 """
-	PetscOptionsSetValue(petsclib::PetscLibType,options::PetscOptions, name::String, value::Union{Ptr,String}) 
+	PetscOptionsSetValue(petsclib::PetscLibType,options::AbstractPetscOptions, name::String, value::Union{Ptr,String}) 
 Sets an option name
 database, overriding whatever is already present.
 
@@ -839,9 +839,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsSetValue"))
 """
-function PetscOptionsSetValue(petsclib::PetscLibType, options::PetscOptions, name::String, value::Union{Ptr,String}) end
+function PetscOptionsSetValue(petsclib::PetscLibType, options::AbstractPetscOptions, name::String, value::Union{Ptr,String}) end
 
-@for_petsc function PetscOptionsSetValue(petsclib::$UnionPetscLib, options::PetscOptions, name::String, value::Union{Ptr,String} )
+@for_petsc function PetscOptionsSetValue(petsclib::$UnionPetscLib, options::AbstractPetscOptions, name::String, value::Union{Ptr,String} )
 
     @chk ccall(
                (:PetscOptionsSetValue, $petsc_library),
@@ -855,7 +855,7 @@ function PetscOptionsSetValue(petsclib::PetscLibType, options::PetscOptions, nam
 end 
 
 """
-	PetscOptionsClearValue(petsclib::PetscLibType,options::PetscOptions, name::String) 
+	PetscOptionsClearValue(petsclib::PetscLibType,options::AbstractPetscOptions, name::String) 
 Clears an option name
 database, overriding whatever is already present.
 
@@ -872,9 +872,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsClearValue"))
 """
-function PetscOptionsClearValue(petsclib::PetscLibType, options::PetscOptions, name::String) end
+function PetscOptionsClearValue(petsclib::PetscLibType, options::AbstractPetscOptions, name::String) end
 
-@for_petsc function PetscOptionsClearValue(petsclib::$UnionPetscLib, options::PetscOptions, name::String )
+@for_petsc function PetscOptionsClearValue(petsclib::$UnionPetscLib, options::AbstractPetscOptions, name::String )
 
     @chk ccall(
                (:PetscOptionsClearValue, $petsc_library),
@@ -888,7 +888,7 @@ function PetscOptionsClearValue(petsclib::PetscLibType, options::PetscOptions, n
 end 
 
 """
-	set::PetscBool = PetscOptionsFindPair(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String, value::String) 
+	set::PetscBool = PetscOptionsFindPair(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, value::String) 
 Gets an option name
 
 Not Collective
@@ -909,9 +909,9 @@ Level: developer
 # External Links
 $(_doc_external("Sys/PetscOptionsFindPair"))
 """
-function PetscOptionsFindPair(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String, value::String) end
+function PetscOptionsFindPair(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, value::String) end
 
-@for_petsc function PetscOptionsFindPair(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String, value::String )
+@for_petsc function PetscOptionsFindPair(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, value::String )
 	value_ = Ref(pointer(value))
 	set_ = Ref{PetscBool}()
 
@@ -928,7 +928,7 @@ function PetscOptionsFindPair(petsclib::PetscLibType, options::PetscOptions, pre
 end 
 
 """
-	PetscOptionsReject(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String, mess::String) 
+	PetscOptionsReject(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, mess::String) 
 Generates an error if a certain option is given.
 
 Not Collective
@@ -951,9 +951,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsReject"))
 """
-function PetscOptionsReject(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String, mess::String) end
+function PetscOptionsReject(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, mess::String) end
 
-@for_petsc function PetscOptionsReject(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String, mess::String )
+@for_petsc function PetscOptionsReject(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, mess::String )
 
     @chk ccall(
                (:PetscOptionsReject, $petsc_library),
@@ -967,7 +967,7 @@ function PetscOptionsReject(petsclib::PetscLibType, options::PetscOptions, pre::
 end 
 
 """
-	set::PetscBool = PetscOptionsHasHelp(petsclib::PetscLibType,options::PetscOptions) 
+	set::PetscBool = PetscOptionsHasHelp(petsclib::PetscLibType,options::AbstractPetscOptions) 
 Determines whether the "
 
 Not Collective
@@ -985,9 +985,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsHasHelp"))
 """
-function PetscOptionsHasHelp(petsclib::PetscLibType, options::PetscOptions) end
+function PetscOptionsHasHelp(petsclib::PetscLibType, options::AbstractPetscOptions) end
 
-@for_petsc function PetscOptionsHasHelp(petsclib::$UnionPetscLib, options::PetscOptions )
+@for_petsc function PetscOptionsHasHelp(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 	set_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1003,7 +1003,7 @@ function PetscOptionsHasHelp(petsclib::PetscLibType, options::PetscOptions) end
 end 
 
 """
-	set::PetscBool = PetscOptionsHasName(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String) 
+	set::PetscBool = PetscOptionsHasName(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
 Determines whether a certain option is given in the database. This returns true whether the option is a number, string or Boolean, even
 if its value is set to false.
 
@@ -1029,9 +1029,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsHasName"))
 """
-function PetscOptionsHasName(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String) end
+function PetscOptionsHasName(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
 
-@for_petsc function PetscOptionsHasName(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
+@for_petsc function PetscOptionsHasName(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	set_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1047,7 +1047,7 @@ function PetscOptionsHasName(petsclib::PetscLibType, options::PetscOptions, pre:
 end 
 
 """
-	PetscOptionsGetAll(petsclib::PetscLibType,options::PetscOptions, copts::String) 
+	PetscOptionsGetAll(petsclib::PetscLibType,options::AbstractPetscOptions, copts::String) 
 Lists all the options the program was run with in a single string.
 
 Not Collective
@@ -1065,9 +1065,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsGetAll"))
 """
-function PetscOptionsGetAll(petsclib::PetscLibType, options::PetscOptions, copts::String) end
+function PetscOptionsGetAll(petsclib::PetscLibType, options::AbstractPetscOptions, copts::String) end
 
-@for_petsc function PetscOptionsGetAll(petsclib::$UnionPetscLib, options::PetscOptions, copts::String )
+@for_petsc function PetscOptionsGetAll(petsclib::$UnionPetscLib, options::AbstractPetscOptions, copts::String )
 	copts_ = Ref(pointer(copts))
 
     @chk ccall(
@@ -1082,7 +1082,7 @@ function PetscOptionsGetAll(petsclib::PetscLibType, options::PetscOptions, copts
 end 
 
 """
-	used::PetscBool = PetscOptionsUsed(petsclib::PetscLibType,options::PetscOptions, name::String) 
+	used::PetscBool = PetscOptionsUsed(petsclib::PetscLibType,options::AbstractPetscOptions, name::String) 
 Indicates if PETSc has used a particular option set in the database
 
 Not Collective
@@ -1101,9 +1101,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsUsed"))
 """
-function PetscOptionsUsed(petsclib::PetscLibType, options::PetscOptions, name::String) end
+function PetscOptionsUsed(petsclib::PetscLibType, options::AbstractPetscOptions, name::String) end
 
-@for_petsc function PetscOptionsUsed(petsclib::$UnionPetscLib, options::PetscOptions, name::String )
+@for_petsc function PetscOptionsUsed(petsclib::$UnionPetscLib, options::AbstractPetscOptions, name::String )
 	used_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1119,7 +1119,7 @@ function PetscOptionsUsed(petsclib::PetscLibType, options::PetscOptions, name::S
 end 
 
 """
-	N::PetscInt = PetscOptionsAllUsed(petsclib::PetscLibType,options::PetscOptions) 
+	N::PetscInt = PetscOptionsAllUsed(petsclib::PetscLibType,options::AbstractPetscOptions) 
 Returns a count of the number of options in the
 database that have never been selected.
 
@@ -1138,9 +1138,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsAllUsed"))
 """
-function PetscOptionsAllUsed(petsclib::PetscLibType, options::PetscOptions) end
+function PetscOptionsAllUsed(petsclib::PetscLibType, options::AbstractPetscOptions) end
 
-@for_petsc function PetscOptionsAllUsed(petsclib::$UnionPetscLib, options::PetscOptions )
+@for_petsc function PetscOptionsAllUsed(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 	N_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1156,7 +1156,7 @@ function PetscOptionsAllUsed(petsclib::PetscLibType, options::PetscOptions) end
 end 
 
 """
-	PetscOptionsLeft(petsclib::PetscLibType,options::PetscOptions) 
+	PetscOptionsLeft(petsclib::PetscLibType,options::AbstractPetscOptions) 
 Prints to screen any options that were set and never used.
 
 Not Collective
@@ -1174,9 +1174,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsLeft"))
 """
-function PetscOptionsLeft(petsclib::PetscLibType, options::PetscOptions) end
+function PetscOptionsLeft(petsclib::PetscLibType, options::AbstractPetscOptions) end
 
-@for_petsc function PetscOptionsLeft(petsclib::$UnionPetscLib, options::PetscOptions )
+@for_petsc function PetscOptionsLeft(petsclib::$UnionPetscLib, options::AbstractPetscOptions )
 
     @chk ccall(
                (:PetscOptionsLeft, $petsc_library),
@@ -1190,7 +1190,7 @@ function PetscOptionsLeft(petsclib::PetscLibType, options::PetscOptions) end
 end 
 
 """
-	N::PetscInt = PetscOptionsLeftGet(petsclib::PetscLibType,options::PetscOptions, names::String, values::String) 
+	N::PetscInt = PetscOptionsLeftGet(petsclib::PetscLibType,options::AbstractPetscOptions, names::String, values::String) 
 Returns all options that were set and never used.
 
 Not Collective
@@ -1210,9 +1210,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsLeftGet"))
 """
-function PetscOptionsLeftGet(petsclib::PetscLibType, options::PetscOptions, names::String, values::String) end
+function PetscOptionsLeftGet(petsclib::PetscLibType, options::AbstractPetscOptions, names::String, values::String) end
 
-@for_petsc function PetscOptionsLeftGet(petsclib::$UnionPetscLib, options::PetscOptions, names::String, values::String )
+@for_petsc function PetscOptionsLeftGet(petsclib::$UnionPetscLib, options::AbstractPetscOptions, names::String, values::String )
 	N_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1228,7 +1228,7 @@ function PetscOptionsLeftGet(petsclib::PetscLibType, options::PetscOptions, name
 end 
 
 """
-	PetscOptionsLeftRestore(petsclib::PetscLibType,options::PetscOptions, N::PetscInt, names::String, values::String) 
+	PetscOptionsLeftRestore(petsclib::PetscLibType,options::AbstractPetscOptions, N::PetscInt, names::String, values::String) 
 Free memory for the unused PETSc options obtained using `PetscOptionsLeftGet()`.
 
 Not Collective
@@ -1246,9 +1246,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscOptionsLeftRestore"))
 """
-function PetscOptionsLeftRestore(petsclib::PetscLibType, options::PetscOptions, N::PetscInt, names::String, values::String) end
+function PetscOptionsLeftRestore(petsclib::PetscLibType, options::AbstractPetscOptions, N::PetscInt, names::String, values::String) end
 
-@for_petsc function PetscOptionsLeftRestore(petsclib::$UnionPetscLib, options::PetscOptions, N::$PetscInt, names::String, values::String )
+@for_petsc function PetscOptionsLeftRestore(petsclib::$UnionPetscLib, options::AbstractPetscOptions, N::$PetscInt, names::String, values::String )
 
     @chk ccall(
                (:PetscOptionsLeftRestore, $petsc_library),
@@ -1434,7 +1434,7 @@ function PetscOptionsStringToScalar(petsclib::PetscLibType, name::String) end
 end 
 
 """
-	ivalue::PetscBool,set::PetscBool = PetscOptionsGetBool(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String) 
+	ivalue::PetscBool,set::PetscBool = PetscOptionsGetBool(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
 Gets the Logical (true or false) value for a particular
 option in the database.
 
@@ -1461,9 +1461,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetBool"))
 """
-function PetscOptionsGetBool(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String) end
+function PetscOptionsGetBool(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
 
-@for_petsc function PetscOptionsGetBool(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
+@for_petsc function PetscOptionsGetBool(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	ivalue_ = Ref{PetscBool}()
 	set_ = Ref{PetscBool}()
 
@@ -1481,7 +1481,7 @@ function PetscOptionsGetBool(petsclib::PetscLibType, options::PetscOptions, pre:
 end 
 
 """
-	set::PetscBool = PetscOptionsGetBool3(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String, ivalue::PetscBool3) 
+	set::PetscBool = PetscOptionsGetBool3(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, ivalue::PetscBool3) 
 Gets the ternary logical (true, false or unknown) value for a particular
 option in the database.
 
@@ -1508,9 +1508,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetBool3"))
 """
-function PetscOptionsGetBool3(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String, ivalue::PetscBool3) end
+function PetscOptionsGetBool3(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, ivalue::PetscBool3) end
 
-@for_petsc function PetscOptionsGetBool3(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String, ivalue::PetscBool3 )
+@for_petsc function PetscOptionsGetBool3(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, ivalue::PetscBool3 )
 	set_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1526,7 +1526,7 @@ function PetscOptionsGetBool3(petsclib::PetscLibType, options::PetscOptions, pre
 end 
 
 """
-	value::PetscInt,set::PetscBool = PetscOptionsGetEList(petsclib::PetscLibType,options::PetscOptions, pre::String, opt::String, list::String, ntext::PetscInt) 
+	value::PetscInt,set::PetscBool = PetscOptionsGetEList(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::PetscInt) 
 Puts a list of option values that a single one may be selected from
 
 Not Collective
@@ -1554,9 +1554,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Sys/PetscOptionsGetEList"))
 """
-function PetscOptionsGetEList(petsclib::PetscLibType, options::PetscOptions, pre::String, opt::String, list::String, ntext::PetscInt) end
+function PetscOptionsGetEList(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::PetscInt) end
 
-@for_petsc function PetscOptionsGetEList(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, opt::String, list::String, ntext::$PetscInt )
+@for_petsc function PetscOptionsGetEList(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, opt::String, list::String, ntext::$PetscInt )
 	list_ = Ref(pointer(list))
 	value_ = Ref{$PetscInt}()
 	set_ = Ref{PetscBool}()
@@ -1575,7 +1575,7 @@ function PetscOptionsGetEList(petsclib::PetscLibType, options::PetscOptions, pre
 end 
 
 """
-	set::PetscBool = PetscOptionsGetEnum(petsclib::PetscLibType,options::PetscOptions, pre::String, opt::String, list::String, value::PetscEnum) 
+	set::PetscBool = PetscOptionsGetEnum(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, opt::String, list::String, value::PetscEnum) 
 Gets the enum value for a particular option in the database.
 
 Not Collective
@@ -1603,9 +1603,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetEnum"))
 """
-function PetscOptionsGetEnum(petsclib::PetscLibType, options::PetscOptions, pre::String, opt::String, list::String, value::PetscEnum) end
+function PetscOptionsGetEnum(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, opt::String, list::String, value::PetscEnum) end
 
-@for_petsc function PetscOptionsGetEnum(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, opt::String, list::String, value::PetscEnum )
+@for_petsc function PetscOptionsGetEnum(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, opt::String, list::String, value::PetscEnum )
 	list_ = Ref(pointer(list))
 	set_ = Ref{PetscBool}()
 
@@ -1622,7 +1622,7 @@ function PetscOptionsGetEnum(petsclib::PetscLibType, options::PetscOptions, pre:
 end 
 
 """
-	ivalue::PetscInt,set::PetscBool = PetscOptionsGetInt(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String) 
+	ivalue::PetscInt,set::PetscBool = PetscOptionsGetInt(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
 Gets the integer value for a particular option in the database.
 
 Not Collective
@@ -1649,9 +1649,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetInt"))
 """
-function PetscOptionsGetInt(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String) end
+function PetscOptionsGetInt(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
 
-@for_petsc function PetscOptionsGetInt(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
+@for_petsc function PetscOptionsGetInt(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	ivalue_ = Ref{$PetscInt}()
 	set_ = Ref{PetscBool}()
 
@@ -1669,7 +1669,7 @@ function PetscOptionsGetInt(petsclib::PetscLibType, options::PetscOptions, pre::
 end 
 
 """
-	set::PetscBool = PetscOptionsGetMPIInt(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String, ivalue::PetscMPIInt) 
+	set::PetscBool = PetscOptionsGetMPIInt(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, ivalue::PetscMPIInt) 
 Gets the MPI integer value for a particular option in the database.
 
 Not Collective
@@ -1696,9 +1696,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetMPIInt"))
 """
-function PetscOptionsGetMPIInt(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String, ivalue::PetscMPIInt) end
+function PetscOptionsGetMPIInt(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, ivalue::PetscMPIInt) end
 
-@for_petsc function PetscOptionsGetMPIInt(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String, ivalue::PetscMPIInt )
+@for_petsc function PetscOptionsGetMPIInt(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, ivalue::PetscMPIInt )
 	set_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1714,7 +1714,7 @@ function PetscOptionsGetMPIInt(petsclib::PetscLibType, options::PetscOptions, pr
 end 
 
 """
-	dvalue::PetscReal,set::PetscBool = PetscOptionsGetReal(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String) 
+	dvalue::PetscReal,set::PetscBool = PetscOptionsGetReal(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
 Gets the double precision value for a particular
 option in the database.
 
@@ -1741,9 +1741,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetReal"))
 """
-function PetscOptionsGetReal(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String) end
+function PetscOptionsGetReal(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
 
-@for_petsc function PetscOptionsGetReal(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
+@for_petsc function PetscOptionsGetReal(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	dvalue_ = Ref{$PetscReal}()
 	set_ = Ref{PetscBool}()
 
@@ -1761,7 +1761,7 @@ function PetscOptionsGetReal(petsclib::PetscLibType, options::PetscOptions, pre:
 end 
 
 """
-	dvalue::PetscScalar,set::PetscBool = PetscOptionsGetScalar(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String) 
+	dvalue::PetscScalar,set::PetscBool = PetscOptionsGetScalar(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
 Gets the scalar value for a particular
 option in the database.
 
@@ -1788,9 +1788,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetScalar"))
 """
-function PetscOptionsGetScalar(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String) end
+function PetscOptionsGetScalar(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
 
-@for_petsc function PetscOptionsGetScalar(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
+@for_petsc function PetscOptionsGetScalar(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	dvalue_ = Ref{$PetscScalar}()
 	set_ = Ref{PetscBool}()
 
@@ -1808,7 +1808,7 @@ function PetscOptionsGetScalar(petsclib::PetscLibType, options::PetscOptions, pr
 end 
 
 """
-	string::Union{Bool,String} = PetscOptionsGetString(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String, string::String, len::Csize_t) 
+	string::Union{Bool,String} = PetscOptionsGetString(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, string::String, len::Csize_t) 
 Gets the string value for a particular option in
 the database.
 
@@ -1835,9 +1835,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetString"))
 """
-function PetscOptionsGetString(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String) end
+function PetscOptionsGetString(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
 
-@for_petsc function PetscOptionsGetString(petsclib::$UnionPetscLib, options::PetscOptions, pre::Union{Ptr,String}, name::String)
+@for_petsc function PetscOptionsGetString(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::Union{Ptr,String}, name::String)
 	set_ = Ref{PetscBool}()
     val = Vector{UInt8}(undef, 256)
 
@@ -1860,7 +1860,7 @@ function PetscOptionsGetString(petsclib::PetscLibType, options::PetscOptions, pr
 end 
 
 """
-	dvalue::Vector{PetscBool},nmax::PetscInt,set::PetscBool = PetscOptionsGetBoolArray(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String) 
+	dvalue::Vector{PetscBool},nmax::PetscInt,set::PetscBool = PetscOptionsGetBoolArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
 Gets an array of Logical (true or false) values for a particular
 option in the database.  The values must be separated with commas with no intervening spaces.
 
@@ -1888,9 +1888,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetBoolArray"))
 """
-function PetscOptionsGetBoolArray(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String) end
+function PetscOptionsGetBoolArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
 
-@for_petsc function PetscOptionsGetBoolArray(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
+@for_petsc function PetscOptionsGetBoolArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	dvalue = Vector{PetscBool}(undef, ni);  # CHECK SIZE!!
 	nmax_ = Ref{$PetscInt}()
 	set_ = Ref{PetscBool}()
@@ -1909,7 +1909,7 @@ function PetscOptionsGetBoolArray(petsclib::PetscLibType, options::PetscOptions,
 end 
 
 """
-	nmax::PetscInt,set::PetscBool = PetscOptionsGetEnumArray(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}) 
+	nmax::PetscInt,set::PetscBool = PetscOptionsGetEnumArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}) 
 Gets an array of enum values for a particular option in the database.
 
 Not Collective
@@ -1937,9 +1937,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetEnumArray"))
 """
-function PetscOptionsGetEnumArray(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}) end
+function PetscOptionsGetEnumArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum}) end
 
-@for_petsc function PetscOptionsGetEnumArray(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum} )
+@for_petsc function PetscOptionsGetEnumArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, list::String, ivalue::Vector{PetscEnum} )
 	list_ = Ref(pointer(list))
 	nmax_ = Ref{$PetscInt}()
 	set_ = Ref{PetscBool}()
@@ -1958,7 +1958,7 @@ function PetscOptionsGetEnumArray(petsclib::PetscLibType, options::PetscOptions,
 end 
 
 """
-	ivalue::Vector{PetscInt},nmax::PetscInt,set::PetscBool = PetscOptionsGetIntArray(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String) 
+	ivalue::Vector{PetscInt},nmax::PetscInt,set::PetscBool = PetscOptionsGetIntArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
 Gets an array of integer values for a particular option in the database.
 
 Not Collective
@@ -1985,9 +1985,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetIntArray"))
 """
-function PetscOptionsGetIntArray(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String) end
+function PetscOptionsGetIntArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
 
-@for_petsc function PetscOptionsGetIntArray(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
+@for_petsc function PetscOptionsGetIntArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	ivalue = Vector{$PetscInt}(undef, ni);  # CHECK SIZE!!
 	nmax_ = Ref{$PetscInt}()
 	set_ = Ref{PetscBool}()
@@ -2006,7 +2006,7 @@ function PetscOptionsGetIntArray(petsclib::PetscLibType, options::PetscOptions, 
 end 
 
 """
-	dvalue::Vector{PetscReal},nmax::PetscInt,set::PetscBool = PetscOptionsGetRealArray(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String) 
+	dvalue::Vector{PetscReal},nmax::PetscInt,set::PetscBool = PetscOptionsGetRealArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
 Gets an array of double precision values for a
 particular option in the database.  The values must be separated with commas with no intervening spaces.
 
@@ -2034,9 +2034,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetRealArray"))
 """
-function PetscOptionsGetRealArray(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String) end
+function PetscOptionsGetRealArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
 
-@for_petsc function PetscOptionsGetRealArray(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
+@for_petsc function PetscOptionsGetRealArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	dvalue = Vector{$PetscReal}(undef, ni);  # CHECK SIZE!!
 	nmax_ = Ref{$PetscInt}()
 	set_ = Ref{PetscBool}()
@@ -2055,7 +2055,7 @@ function PetscOptionsGetRealArray(petsclib::PetscLibType, options::PetscOptions,
 end 
 
 """
-	dvalue::Vector{PetscScalar},nmax::PetscInt,set::PetscBool = PetscOptionsGetScalarArray(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String) 
+	dvalue::Vector{PetscScalar},nmax::PetscInt,set::PetscBool = PetscOptionsGetScalarArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String) 
 Gets an array of scalars for a
 particular option in the database.  The values must be separated with commas with no intervening spaces.
 
@@ -2083,9 +2083,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetScalarArray"))
 """
-function PetscOptionsGetScalarArray(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String) end
+function PetscOptionsGetScalarArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String) end
 
-@for_petsc function PetscOptionsGetScalarArray(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String )
+@for_petsc function PetscOptionsGetScalarArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String )
 	dvalue = Vector{$PetscScalar}(undef, ni);  # CHECK SIZE!!
 	nmax_ = Ref{$PetscInt}()
 	set_ = Ref{PetscBool}()
@@ -2104,7 +2104,7 @@ function PetscOptionsGetScalarArray(petsclib::PetscLibType, options::PetscOption
 end 
 
 """
-	nmax::PetscInt,set::PetscBool = PetscOptionsGetStringArray(petsclib::PetscLibType,options::PetscOptions, pre::String, name::String, strings::String) 
+	nmax::PetscInt,set::PetscBool = PetscOptionsGetStringArray(petsclib::PetscLibType,options::AbstractPetscOptions, pre::String, name::String, strings::String) 
 Gets an array of string values for a particular
 option in the database. The values must be separated with commas with no intervening spaces.
 
@@ -2132,9 +2132,9 @@ Level: beginner
 # External Links
 $(_doc_external("Sys/PetscOptionsGetStringArray"))
 """
-function PetscOptionsGetStringArray(petsclib::PetscLibType, options::PetscOptions, pre::String, name::String, strings::String) end
+function PetscOptionsGetStringArray(petsclib::PetscLibType, options::AbstractPetscOptions, pre::String, name::String, strings::String) end
 
-@for_petsc function PetscOptionsGetStringArray(petsclib::$UnionPetscLib, options::PetscOptions, pre::String, name::String, strings::String )
+@for_petsc function PetscOptionsGetStringArray(petsclib::$UnionPetscLib, options::AbstractPetscOptions, pre::String, name::String, strings::String )
 	strings_ = Ref(pointer(strings))
 	nmax_ = Ref{$PetscInt}()
 	set_ = Ref{PetscBool}()
@@ -2193,14 +2193,14 @@ function PetscOptionsGetenv(petsclib::PetscLibType, comm::MPI_Comm, name::String
 end 
 
 """
-	set::PetscBool = PetscOptionsGetVec(petsclib::PetscLibType,options::PetscOptions, prefix::String, key::String, v::PetscVec) 
+	set::PetscBool = PetscOptionsGetVec(petsclib::PetscLibType,options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("Vec/PetscOptionsGetVec"))
 """
-function PetscOptionsGetVec(petsclib::PetscLibType, options::PetscOptions, prefix::String, key::String, v::PetscVec) end
+function PetscOptionsGetVec(petsclib::PetscLibType, options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec) end
 
-@for_petsc function PetscOptionsGetVec(petsclib::$UnionPetscLib, options::PetscOptions, prefix::String, key::String, v::PetscVec )
+@for_petsc function PetscOptionsGetVec(petsclib::$UnionPetscLib, options::AbstractPetscOptions, prefix::String, key::String, v::AbstractPetscVec )
 	set_ = Ref{PetscBool}()
 
     @chk ccall(

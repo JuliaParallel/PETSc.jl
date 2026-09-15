@@ -198,6 +198,22 @@ grep -rn "VecGetLocalSize(petsclib, x)" src/autowrapped/ # placeholder sizes: mu
 julia --project=. -e 'using Pkg; Pkg.test()'             # includes test/wrapper_signatures.jl
 ```
 
+## Moving to a new PETSc release (what happened for 3.24 -> 3.25)
+
+1. Fetch the tarball, dump the snapshot, run `apidiff.jl OLD NEW` and read the report.
+2. Generate into a scratch directory; the generator warns about **classes not assigned to any
+   file** (3.25 added `PetscDA` and `TaoTerm`: add them to `rules/files.toml`) and about typedefs
+   it skips (a typedef whose value is unknown, e.g. `PetscComplex = __complex128`, is declared as an
+   opaque type instead; typedefs the prologue already defines, `PetscInt`, `PetscScalar`, ... are
+   excluded automatically).
+3. New C idioms may need a classifier rule: 3.25 introduced `typedef void *PetscCtx` /
+   `PetscCtxRt`, which the classifier treats as `void *`.
+4. `getAPI.py` mis-parses a few declarations (`unsigned char R[]` -> type `unsigned`, name `char`;
+   `int (*cmp)(...)` -> name `int cmp`); the loader sanitises names and `types.toml` maps
+   `unsigned` to `Cuchar`. Check the generator's "type names used but not defined" warning.
+5. Load the package (`using PETSc`), run `check_callers.jl`, then the test suite with the matching
+   `PETSc_jll` (bump its compat in `Project.toml`).
+
 ## Things that bite
 
 - The manual page of a PETSc function sometimes ends with `*/` instead of `@*/`; the indexer

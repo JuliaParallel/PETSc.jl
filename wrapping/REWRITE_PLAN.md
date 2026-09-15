@@ -4,8 +4,10 @@ Status (2026-09-15, end of day): M0-M3 essentially done on the local `v0.5` bran
 lives in `wrapping/generator/` (see `WRAPPING.md`), `src/autowrapped/` is regenerated from PETSc
 3.24.0, the high-level layer and tests are adapted to the return convention (see `DEVIATIONS.md`),
 `test/wrapper_quality.jl` and `.github/workflows/wrappers.yml` exist. All serial test files pass
-locally with the regenerated wrappers (examples and MPI runs pending at the time of writing). Open: M4
-hygiene items, M5 (PETSc 3.25.4).
+locally with the regenerated wrappers (examples and MPI runs pending at the time of writing). M5 done: `src/autowrapped` is
+generated from PETSc 3.25.4 and `PETSc_jll = "3.25"` (full suite run against it in progress at the
+time of writing). Open: M4 hygiene items (delete the old generator files in `wrapping/`,
+`src/deprecated/`, `src/startup.jl`; revisit the remaining `other` category in `DEVIATIONS.md`).
 
 ## 1. What the analysis found
 

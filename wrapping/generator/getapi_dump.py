@@ -34,7 +34,25 @@ def load_getapi(petsc_dir):
     sys.exit("getAPI.py not found under %s (needs PETSc >= 3.23)" % petsc_dir)
 
 
+def make_walk_deterministic():
+    """getAPI.py records the first definition it meets when a function is defined in several files
+    (e.g. device.c vs device.cxx) and walks the tree with os.walk/os.listdir, whose order depends on
+    the filesystem. Sort them so two machines produce the same snapshot."""
+    _walk, _listdir = os.walk, os.listdir
+
+    def walk(top, *a, **k):
+        for root, dirs, files in _walk(top, *a, **k):
+            # MATLAB mex stubs re-declare PETSc functions with other signatures
+            dirs[:] = sorted(d for d in dirs if d not in ("mex-scripts", "matlab"))
+            files.sort()
+            yield root, dirs, files
+
+    os.walk = walk
+    os.listdir = lambda *a, **k: sorted(_listdir(*a, **k))
+
+
 def run_getapi(getAPI, layout, petsc_dir):
+    make_walk_deterministic()
     # both layouts open include files relative to the cwd, so run inside PETSC_DIR
     cwd = os.getcwd()
     os.chdir(petsc_dir)

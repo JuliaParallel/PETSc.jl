@@ -608,7 +608,7 @@ end
 end 
 
 """
-	dummy::PetscInt = PetscBinaryRead(petsclib::PetscLibType,fd::Cint, p::Ptr{Cvoid}, n::PetscCount, type::PetscDataType) 
+	data::Ptr{Cvoid},count::PetscInt = PetscBinaryRead(petsclib::PetscLibType,fd::Cint, num::PetscCount, type::PetscDataType) 
 Reads from a binary file.
 
 Not Collective
@@ -630,23 +630,25 @@ Level: developer
 # External Links
 $(_doc_external("Viewer/PetscBinaryRead"))
 """
-function PetscBinaryRead(petsclib::PetscLibType, fd::Cint, p::Ptr{Cvoid}, n::PetscCount, type::PetscDataType)
+function PetscBinaryRead(petsclib::PetscLibType, fd::Cint, num::PetscCount, type::PetscDataType)
     error("PetscBinaryRead: no generated method for these argument types")
 end
 
-@for_petsc function PetscBinaryRead(petsclib::$UnionPetscLib, fd::Cint, p::Ptr{Cvoid}, n::PetscCount, type::PetscDataType )
-	dummy_ = Ref{$PetscInt}()
+@for_petsc function PetscBinaryRead(petsclib::$UnionPetscLib, fd::Cint, num::PetscCount, type::PetscDataType )
+	data_ = Ref{Ptr{Cvoid}}()
+	count_ = Ref{$PetscInt}()
 
     @chk ccall(
                (:PetscBinaryRead, $petsc_library),
                PetscErrorCode,
                (Cint, Ptr{Cvoid}, PetscCount, Ptr{$PetscInt}, PetscDataType),
-               fd, p, n, dummy_, type,
+               fd, data_, num, count_, type,
               )
 
-	dummy = dummy_[]
+	data = data_[]
+	count = count_[]
 
-	return dummy
+	return data,count
 end 
 
 """

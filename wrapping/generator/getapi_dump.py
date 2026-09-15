@@ -43,7 +43,7 @@ def make_walk_deterministic():
     def walk(top, *a, **k):
         for root, dirs, files in _walk(top, *a, **k):
             # MATLAB mex stubs re-declare PETSc functions with other signatures
-            dirs[:] = sorted(d for d in dirs if d not in ("mex-scripts", "matlab"))
+            dirs[:] = sorted(d for d in dirs if d != "mex-scripts")
             files.sort()
             yield root, dirs, files
 

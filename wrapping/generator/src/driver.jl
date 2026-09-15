@@ -174,7 +174,7 @@ function generate(; api_json::AbstractString, petsc_dir::AbstractString, outdir:
                 occursin("::", arg) || continue
                 for id in eachmatch(r"[A-Za-z_]\w*", last(split(arg, "::"; limit = 2)))
                     n = id.match
-                    (isknown(n) || n in defined || n in ("Union", "Ptr", "Ref", "Vector", "Nothing", "AbstractString", "AbstractArray", "UnionPetscLib")) || push!(missing, n)
+                    (isknown(n) || n in defined || n in ("Union", "Ptr", "Ref", "Vector", "Nothing", "AbstractString", "AbstractArray", "UnionPetscLib", "MPI")) || push!(missing, n)
                 end
             end
         end

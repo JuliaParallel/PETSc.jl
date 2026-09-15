@@ -24,3 +24,11 @@ nullable = true
 size = "Nc"
 [DMPlexGetCellCoordinates.coords]
 size = "Nc"
+
+# ownership ranges: one entry per rank plus one
+[MatGetOwnershipRanges.ranges]
+prelude = "nproc = MPI.Comm_size(PetscObjectGetComm(petsclib, mat))"
+size = "nproc + 1"
+[MatGetOwnershipRangesColumn.ranges]
+prelude = "nproc = MPI.Comm_size(PetscObjectGetComm(petsclib, mat))"
+size = "nproc + 1"

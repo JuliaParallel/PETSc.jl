@@ -3,6 +3,7 @@
 #
 
 using MPI
+using OffsetArrays   # DMStagVecGetArray and friends return OffsetArrays
 const MPI_Comm = MPI.Comm
 const MPI_Datatype = MPI.MPI_Datatype
 const MPI_File = MPI.MPI_File

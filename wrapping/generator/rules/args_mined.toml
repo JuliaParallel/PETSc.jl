@@ -320,11 +320,11 @@ prelude = "nghosts = nghosts_[]"
 size = "Int(nghosts)"
 
 [MatGetOwnershipRanges.ranges]
-prelude = "comm_ref = Ref{MPI.MPI_Comm}()\n\tcomm = MPI.Comm(comm_ref[])\n\tnproc = MPI.Comm_size(comm)"
+prelude = "nproc = MPI.Comm_size(PetscObjectGetComm(petsclib, mat))"
 size = "nproc + 1"
 
 [MatGetOwnershipRangesColumn.ranges]
-prelude = "comm_ref = Ref{MPI.MPI_Comm}()\n\tcomm = MPI.Comm(comm_ref[])\n\tnproc = MPI.Comm_size(comm)"
+prelude = "nproc = MPI.Comm_size(PetscObjectGetComm(petsclib, mat))"
 size = "nproc + 1"
 
 [MatGetRow.cols]

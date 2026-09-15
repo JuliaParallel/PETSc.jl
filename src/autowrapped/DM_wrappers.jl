@@ -2084,7 +2084,7 @@ function DMCreateDomainDecomposition(petsclib::PetscLibType, dm::AbstractPetscDM
 end 
 
 """
-	iscat::Ptr{VecScatter},oscat::Ptr{VecScatter},gscat::Ptr{VecScatter} = DMCreateDomainDecompositionScatters(petsclib::PetscLibType,dm::AbstractPetscDM, n::PetscInt, subdms::AbstractPetscDM) 
+	subdms::PetscDM,iscat::Ptr{VecScatter},oscat::Ptr{VecScatter},gscat::Ptr{VecScatter} = DMCreateDomainDecompositionScatters(petsclib::PetscLibType,dm::AbstractPetscDM, n::PetscInt) 
 Returns scatters to the subdomain vectors from the global vector for subdomains created with
 `DMCreateDomainDecomposition()`
 
@@ -2119,10 +2119,10 @@ See also:
 # External Links
 $(_doc_external("DM/DMCreateDomainDecompositionScatters"))
 """
-function DMCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt, subdms::AbstractPetscDM) end
+function DMCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::AbstractPetscDM, n::PetscInt) end
 
-@for_petsc function DMCreateDomainDecompositionScatters(petsclib::$UnionPetscLib, dm::AbstractPetscDM, n::$PetscInt, subdms::AbstractPetscDM )
-	subdms_ = Ref(subdms.ptr)
+@for_petsc function DMCreateDomainDecompositionScatters(petsclib::$UnionPetscLib, dm::AbstractPetscDM, n::$PetscInt )
+	subdms_ = Ref{CDM}()
 	iscat_ = Ref{Ptr{VecScatter}}()
 	oscat_ = Ref{Ptr{VecScatter}}()
 	gscat_ = Ref{Ptr{VecScatter}}()
@@ -2134,12 +2134,12 @@ function DMCreateDomainDecompositionScatters(petsclib::PetscLibType, dm::Abstrac
                dm, n, subdms_, iscat_, oscat_, gscat_,
               )
 
-	subdms.ptr = subdms_[]
+	subdms = PetscDM(subdms_[], petsclib)
 	iscat = iscat_[]
 	oscat = oscat_[]
 	gscat = gscat_[]
 
-	return iscat,oscat,gscat
+	return subdms,iscat,oscat,gscat
 end 
 
 """

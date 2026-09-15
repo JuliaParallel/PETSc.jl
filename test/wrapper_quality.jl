@@ -75,7 +75,7 @@ end
                 continue
             end
             checked += 1
-            if length(rts) != 1 || !isconcretetype(rts[1]) && rts[1] !== Union{}
+            if isempty(rts) || any(t -> !isconcretetype(t) && t !== Union{}, rts)
                 push!(unstable, "$(m.name)$(Tuple{argtypes...}) -> $(rts)")
             end
         end

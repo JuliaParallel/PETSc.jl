@@ -99,7 +99,7 @@ function PetscLogHandlerCreateLegacy(petsclib::PetscLibType, comm::MPI_Comm, Pet
 end 
 
 """
-	handler::PetscLogHandler = PetscLogHandlerCreateTrace(petsclib::PetscLibType,comm::MPI_Comm, file::Libc.FILE) 
+	file::Libc.FILE,handler::PetscLogHandler = PetscLogHandlerCreateTrace(petsclib::PetscLibType,comm::MPI_Comm) 
 Create a logger that traces events and stages to a given file descriptor
 
 Collective, No Fortran Support
@@ -118,21 +118,23 @@ Level: developer
 # External Links
 $(_doc_external("Log/PetscLogHandlerCreateTrace"))
 """
-function PetscLogHandlerCreateTrace(petsclib::PetscLibType, comm::MPI_Comm, file::Libc.FILE) end
+function PetscLogHandlerCreateTrace(petsclib::PetscLibType, comm::MPI_Comm) end
 
-@for_petsc function PetscLogHandlerCreateTrace(petsclib::$UnionPetscLib, comm::MPI_Comm, file::Libc.FILE )
+@for_petsc function PetscLogHandlerCreateTrace(petsclib::$UnionPetscLib, comm::MPI_Comm )
+	file_ = Ref{Libc.FILE}()
 	handler_ = Ref{PetscLogHandler}()
 
     @chk ccall(
                (:PetscLogHandlerCreateTrace, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, Ptr{Libc.FILE}, Ptr{PetscLogHandler}),
-               comm, file, handler_,
+               comm, file_, handler_,
               )
 
+	file = file_[]
 	handler = handler_[]
 
-	return handler
+	return file,handler
 end 
 
 """

@@ -274,7 +274,7 @@ function PetscSectionCopy(petsclib::PetscLibType, section::PetscSection, newSect
 end 
 
 """
-	PetscSectionCreate(petsclib::PetscLibType,comm::MPI_Comm, s::PetscSection) 
+	s::PetscSection = PetscSectionCreate(petsclib::PetscLibType,comm::MPI_Comm) 
 Allocates a `PetscSection` and sets the map contents to the default.
 
 Collective
@@ -290,19 +290,21 @@ Level: beginner
 # External Links
 $(_doc_external("PetscSection/PetscSectionCreate"))
 """
-function PetscSectionCreate(petsclib::PetscLibType, comm::MPI_Comm, s::PetscSection) end
+function PetscSectionCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 
-@for_petsc function PetscSectionCreate(petsclib::$UnionPetscLib, comm::MPI_Comm, s::PetscSection )
+@for_petsc function PetscSectionCreate(petsclib::$UnionPetscLib, comm::MPI_Comm )
+	s_ = Ref{PetscSection}()
 
     @chk ccall(
                (:PetscSectionCreate, $petsc_library),
                PetscErrorCode,
                (MPI_Comm, Ptr{PetscSection}),
-               comm, s,
+               comm, s_,
               )
 
+	s = s_[]
 
-	return nothing
+	return s
 end 
 
 """

@@ -6615,7 +6615,7 @@ function MatFactorClearError(petsclib::PetscLibType, mat::AbstractPetscMat) end
 end 
 
 """
-	status::MatFactorSchurStatus = MatFactorCreateSchurComplement(petsclib::PetscLibType,F::AbstractPetscMat, S::AbstractPetscMat) 
+	S::PetscMat,status::MatFactorSchurStatus = MatFactorCreateSchurComplement(petsclib::PetscLibType,F::AbstractPetscMat) 
 Create a Schur complement matrix object using Schur data computed during the factorization step
 
 Logically Collective
@@ -6632,10 +6632,10 @@ Level: advanced
 # External Links
 $(_doc_external("Mat/MatFactorCreateSchurComplement"))
 """
-function MatFactorCreateSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat, S::AbstractPetscMat) end
+function MatFactorCreateSchurComplement(petsclib::PetscLibType, F::AbstractPetscMat) end
 
-@for_petsc function MatFactorCreateSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat, S::AbstractPetscMat )
-	S_ = Ref(S.ptr)
+@for_petsc function MatFactorCreateSchurComplement(petsclib::$UnionPetscLib, F::AbstractPetscMat )
+	S_ = Ref{CMat}()
 	status_ = Ref{MatFactorSchurStatus}()
 
     @chk ccall(
@@ -6645,10 +6645,10 @@ function MatFactorCreateSchurComplement(petsclib::PetscLibType, F::AbstractPetsc
                F, S_, status_,
               )
 
-	S.ptr = S_[]
+	S = PetscMat(S_[], petsclib)
 	status = status_[]
 
-	return status
+	return S,status
 end 
 
 """
@@ -8911,9 +8911,7 @@ function MatGetOwnershipRanges(petsclib::PetscLibType, mat::AbstractPetscMat) en
                mat, ranges_,
               )
 
-	comm_ref = Ref{MPI.MPI_Comm}()
-	comm = MPI.Comm(comm_ref[])
-	nproc = MPI.Comm_size(comm)
+	nproc = MPI.Comm_size(PetscObjectGetComm(petsclib, mat))
 	ranges = unsafe_wrap(Array, ranges_[], nproc + 1; own = false)
 
 	return ranges
@@ -8953,9 +8951,7 @@ function MatGetOwnershipRangesColumn(petsclib::PetscLibType, mat::AbstractPetscM
                mat, ranges_,
               )
 
-	comm_ref = Ref{MPI.MPI_Comm}()
-	comm = MPI.Comm(comm_ref[])
-	nproc = MPI.Comm_size(comm)
+	nproc = MPI.Comm_size(PetscObjectGetComm(petsclib, mat))
 	ranges = unsafe_wrap(Array, ranges_[], nproc + 1; own = false)
 
 	return ranges

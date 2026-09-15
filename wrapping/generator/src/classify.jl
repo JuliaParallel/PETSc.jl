@@ -24,6 +24,11 @@ function is_output(r::Rules, fn::String, name::String, typename::String, stars::
     # a non-const `T *x` with scalar T is an output whatever the manual page says (PETSc docs
     # occasionally list one under Input Parameters, e.g. TSIRKGetNumStages), except in Restore*
     occursin("Restore", fn) && return false        # Restore* hands everything back to PETSc
+    # `XCreate(..., X *x)`: the created object, even if the manual page lists it as an input
+    if occursin("Create", fn) && stars == 1 && !isarray && !isconst && !is_simple(r, typename) &&
+       !(typename in r.struct_types) && !(typename in r.string_types) && typename != "Cvoid" && typename != "Cchar"
+        return true
+    end
     if stars == 1 && !isarray && !isconst && is_simple(r, typename)
         return true
     end

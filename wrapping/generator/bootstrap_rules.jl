@@ -71,6 +71,12 @@ function mine(golden::AbstractString)
                         (isempty(pl) || startswith(pl, "#")) && continue
                         occursin(r"^[\w, ]+ = ", pl) && !occursin("unsafe_wrap", pl) && push!(pre, pl)
                     end
+                    # hand-written communicator lookups collapse to the generated wrapper
+                    if any(occursin("comm_ref", l) for l in pre)
+                        om = match(r"(?m)^@for_petsc function \w+\(\s*petsclib::\$UnionPetscLib,\s*(\w+)::", code)
+                        obj = om === nothing ? "mat" : om.captures[1]
+                        pre = ["nproc = MPI.Comm_size(PetscObjectGetComm(petsclib, $obj))"]
+                    end
                     isempty(pre) || add!(fn, m.captures[1], "prelude", join(pre, "\n\t"))
                 end
             end

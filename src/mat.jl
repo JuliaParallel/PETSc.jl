@@ -18,14 +18,37 @@ function Base.show(io::IO, v::AbstractPetscMat{PetscLib}) where {PetscLib}
 end
 
 """
-    MatPtr(petsclib, mat::CMat)
+    MatPtr(petsclib, ptr::CMat, own::Bool)
 
 Container type for a PETSc Mat that is just a raw pointer.
+
+If `own` is `true` a finalizer is set on the matrix, but only on a serial
+communicator, since `MatDestroy` is collective and a GC finalizer runs at an
+arbitrary point. If `own` is `false` the handle belongs to PETSc and `destroy`
+is a no-op, leaving the wrapper usable.
 """
 mutable struct MatPtr{PetscLib} <:
                AbstractPetscMat{PetscLib}
     ptr::CMat
+    age::Int
+    own::Bool
 end
+function MatPtr(
+    petsclib::PetscLib,
+    ptr::CMat,
+    own,
+) where {PetscLib <: PetscLibType}
+    m = MatPtr{PetscLib}(ptr, petsclib.age, own)
+    # Short-circuits on a borrowed handle, which is the hot path: callbacks wrap
+    # PETSc-owned matrices on every invocation and never need the communicator.
+    if own && MPI.Comm_size(LibPETSc.PetscObjectGetComm(getlib(PetscLib), m)) == 1
+        finalizer(destroy, m)
+    end
+    return m
+end
+MatPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} =
+    MatPtr(getlib(PetscLib), x...)
+owns(m::MatPtr) = m.own
 
 Base.size(m::AbstractPetscMat{PetscLib}) where {PetscLib} = LibPETSc.MatGetSize(PetscLib,m)
 Base.length(m::AbstractPetscMat{PetscLib}) where {PetscLib} = prod(size(m))
@@ -480,11 +503,13 @@ Destroy a Mat (matrix) object and release associated resources.
 
 This function is typically called automatically via finalizers when the object
 is garbage collected, but can be called explicitly to free resources immediately.
+Does nothing on a matrix that only borrows its handle: see [`owns`](@ref).
 
 # External Links
 $(_doc_external("Mat/MatDestroy"))
 """
 function destroy(m::AbstractPetscMat{PetscLib}) where {PetscLib}
+    owns(m) || return nothing
     # Drop the backing arrays: Julia-side bookkeeping
     # that has to go when PETSc no longer owns the matrix.
     pop!(_MATSEQAIJ_WITHARRAYS_STORAGE, m.ptr, nothing)

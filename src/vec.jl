@@ -31,12 +31,15 @@ end
 
 Container type for a PETSc Vec that is just a raw pointer.
 
-If `own` is `true`, the finalizer is set on the vector; calling `destroy` when
-`own` is `false` is a no-op.
+If `own` is `true` a finalizer is set on the vector, but only on a serial
+communicator, since `VecDestroy` is collective and a GC finalizer runs at an
+arbitrary point. If `own` is `false` the handle belongs to PETSc and `destroy`
+is a no-op, leaving the wrapper usable.
 """
 mutable struct VecPtr{PetscLib} <:
                AbstractPetscVec{PetscLib}
     ptr::CVec
+    age::Int
     own::Bool
 end
 function VecPtr(
@@ -44,18 +47,16 @@ function VecPtr(
     ptr::CVec,
     own,
 ) where {PetscLib <: PetscLibType}
-    v = VecPtr{PetscLib}(ptr, own)
-    #comm = getcomm(v)
-
-    #comm = MPI.Comm()
-    comm = LibPETSc.PetscObjectGetComm(getlib(PetscLib), v)
-
-    if own && MPI.Comm_size(comm) == 1
+    v = VecPtr{PetscLib}(ptr, petsclib.age, own)
+    # Short-circuits on a borrowed handle, which is the hot path: callbacks wrap
+    # PETSc-owned vectors on every invocation and never need the communicator.
+    if own && MPI.Comm_size(LibPETSc.PetscObjectGetComm(getlib(PetscLib), v)) == 1
         finalizer(destroy, v)
     end
     return v
 end
 VecPtr(::Type{PetscLib}, x...) where {PetscLib <: PetscLibType} = VecPtr(getlib(PetscLib), x...)
+owns(v::VecPtr) = v.own
 
 
 """
@@ -218,12 +219,14 @@ end
 Destroy a PETSc vector and release its resources.
 
 Safe to call more than once, and safe to reach as a GC finalizer after the
-library has been finalized or re-initialized: see [`isdestroyable`](@ref).
+library has been finalized or re-initialized: see [`isdestroyable`](@ref). Does
+nothing on a vector that only borrows its handle: see [`owns`](@ref).
 
 # External Links
 $(_doc_external("Vec/VecDestroy"))
 """
 function destroy(m::AbstractPetscVec{PetscLib}) where {PetscLib}
+    owns(m) || return nothing
     if isdestroyable(m, PetscLib)
         LibPETSc.VecDestroy(PetscLib, m)
     end

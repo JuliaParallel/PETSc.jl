@@ -90,6 +90,56 @@ for petsclib in PETSc.petsclibs
             PETSc.finalize(petsclib)
         end
 
+        # ── wrappers that borrow a handle instead of owning it ───────────────
+        # VecPtr and MatPtr wrap a pointer PETSc still owns, which is how the
+        # TS and SNES callbacks hand their arguments to Julia. Destroying one of
+        # those frees an object the solver is still using, so `destroy` consults
+        # `own` and leaves the wrapper untouched.
+        @testset "borrowed handles" begin
+            PETSc.initialize(petsclib)
+
+            v = PETSc.VecSeq(petsclib, PetscScalar[1, 2, 3, 4])
+            borrowed_v = PETSc.VecPtr(petsclib, v.ptr, false)
+            @test PETSc.owns(v)
+            @test !PETSc.owns(borrowed_v)
+            @test PETSc.destroy(borrowed_v) === nothing
+            @test borrowed_v.ptr == v.ptr
+            @test PETSc.LibPETSc.VecGetSize(petsclib, v) == 4
+
+            m = PETSc.MatSeqAIJ(petsclib, 4, 4, 1)
+            borrowed_m = PETSc.MatPtr(petsclib, m.ptr, false)
+            @test !PETSc.owns(borrowed_m)
+            @test PETSc.destroy(borrowed_m) === nothing
+            @test borrowed_m.ptr == m.ptr
+
+            PETSc.destroy(v)
+            PETSc.destroy(m)
+            PETSc.finalize(petsclib)
+        end
+
+        # ── an owning VecPtr still destroys ──────────────────────────────────
+        # It records an age like every other wrapper, so `isdestroyable` reads
+        # the field instead of throwing on a type that never had one.
+        @testset "owned raw pointer" begin
+            PETSc.initialize(petsclib)
+            libage = PETSc.LibPETSc.getlib(typeof(petsclib)).age
+
+            raw = PETSc.LibPETSc.VecCreateSeq(
+                petsclib, PETSc.LibPETSc.PETSC_COMM_SELF, PetscInt(4),
+            )
+            owned = PETSc.VecPtr(petsclib, raw.ptr, true)
+            @test owned.age == libage
+            @test PETSc.owns(owned)
+            @test PETSc.isdestroyable(owned, typeof(petsclib))
+
+            PETSc.destroy(owned)
+            @test owned.ptr == C_NULL
+            @test PETSc.destroy(owned) === nothing
+
+            raw.ptr = C_NULL  # the VecPtr freed it; keep the finalizer off it
+            PETSc.finalize(petsclib)
+        end
+
         # ── after the library is finalized ───────────────────────────────────
         @testset "after finalize" begin
             PETSc.initialize(petsclib)

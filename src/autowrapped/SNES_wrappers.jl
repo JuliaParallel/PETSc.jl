@@ -16,7 +16,7 @@ mutable struct SNESObjectiveFn end
 
 # -------------------------------------------------------
 """
-	SNESMonitorSolution(petsclib::PetscLibType,snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
+	SNESMonitorSolution(petsclib::PetscLibType,snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
 Monitors progress of a `SNES` `SNESSolve()` by calling
 `VecView()` for the approximate solution at each iteration.
 
@@ -38,9 +38,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMonitorSolution"))
 """
-function SNESMonitorSolution(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
+function SNESMonitorSolution(petsclib::PetscLibType, snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function SNESMonitorSolution(petsclib::$UnionPetscLib, snes::PetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function SNESMonitorSolution(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:SNESMonitorSolution, $petsc_library),
@@ -54,7 +54,7 @@ function SNESMonitorSolution(petsclib::PetscLibType, snes::PetscSNES, its::Petsc
 end 
 
 """
-	SNESMonitorResidual(petsclib::PetscLibType,snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
+	SNESMonitorResidual(petsclib::PetscLibType,snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
 Monitors progress of a `SNESSolve()` by calling
 `VecView()` for the residual at each iteration.
 
@@ -76,9 +76,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMonitorResidual"))
 """
-function SNESMonitorResidual(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
+function SNESMonitorResidual(petsclib::PetscLibType, snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function SNESMonitorResidual(petsclib::$UnionPetscLib, snes::PetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function SNESMonitorResidual(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:SNESMonitorResidual, $petsc_library),
@@ -92,7 +92,7 @@ function SNESMonitorResidual(petsclib::PetscLibType, snes::PetscSNES, its::Petsc
 end 
 
 """
-	SNESMonitorSolutionUpdate(petsclib::PetscLibType,snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
+	SNESMonitorSolutionUpdate(petsclib::PetscLibType,snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
 Monitors progress of a `SNESSolve()` by calling
 `VecView()` for the UPDATE to the solution at each iteration.
 
@@ -114,9 +114,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMonitorSolutionUpdate"))
 """
-function SNESMonitorSolutionUpdate(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
+function SNESMonitorSolutionUpdate(petsclib::PetscLibType, snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function SNESMonitorSolutionUpdate(petsclib::$UnionPetscLib, snes::PetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function SNESMonitorSolutionUpdate(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:SNESMonitorSolutionUpdate, $petsc_library),
@@ -130,14 +130,14 @@ function SNESMonitorSolutionUpdate(petsclib::PetscLibType, snes::PetscSNES, its:
 end 
 
 """
-	SNESMonitorDefaultSetUp(petsclib::PetscLibType,snes::PetscSNES, vf::PetscViewerAndFormat) 
+	SNESMonitorDefaultSetUp(petsclib::PetscLibType,snes::AbstractPetscSNES, vf::PetscViewerAndFormat) 
 
 # External Links
 $(_doc_external("SNES/SNESMonitorDefaultSetUp"))
 """
-function SNESMonitorDefaultSetUp(petsclib::PetscLibType, snes::PetscSNES, vf::PetscViewerAndFormat) end
+function SNESMonitorDefaultSetUp(petsclib::PetscLibType, snes::AbstractPetscSNES, vf::PetscViewerAndFormat) end
 
-@for_petsc function SNESMonitorDefaultSetUp(petsclib::$UnionPetscLib, snes::PetscSNES, vf::PetscViewerAndFormat )
+@for_petsc function SNESMonitorDefaultSetUp(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:SNESMonitorDefaultSetUp, $petsc_library),
@@ -151,7 +151,7 @@ function SNESMonitorDefaultSetUp(petsclib::PetscLibType, snes::PetscSNES, vf::Pe
 end 
 
 """
-	SNESMonitorDefault(petsclib::PetscLibType,snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
+	SNESMonitorDefault(petsclib::PetscLibType,snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
 Monitors progress of a `SNESSolve()` (default).
 
 Collective
@@ -174,9 +174,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMonitorDefault"))
 """
-function SNESMonitorDefault(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
+function SNESMonitorDefault(petsclib::PetscLibType, snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function SNESMonitorDefault(petsclib::$UnionPetscLib, snes::PetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function SNESMonitorDefault(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:SNESMonitorDefault, $petsc_library),
@@ -190,7 +190,7 @@ function SNESMonitorDefault(petsclib::PetscLibType, snes::PetscSNES, its::PetscI
 end 
 
 """
-	SNESMonitorScaling(petsclib::PetscLibType,snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
+	SNESMonitorScaling(petsclib::PetscLibType,snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
 Monitors the largest value in each row of the Jacobian of a `SNESSolve()`
 
 Collective
@@ -209,9 +209,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMonitorScaling"))
 """
-function SNESMonitorScaling(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
+function SNESMonitorScaling(petsclib::PetscLibType, snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function SNESMonitorScaling(petsclib::$UnionPetscLib, snes::PetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function SNESMonitorScaling(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:SNESMonitorScaling, $petsc_library),
@@ -225,7 +225,7 @@ function SNESMonitorScaling(petsclib::PetscLibType, snes::PetscSNES, its::PetscI
 end 
 
 """
-	SNESMonitorJacUpdateSpectrum(petsclib::PetscLibType,snes::PetscSNES, it::PetscInt, fnorm::PetscReal, vf::PetscViewerAndFormat) 
+	SNESMonitorJacUpdateSpectrum(petsclib::PetscLibType,snes::AbstractPetscSNES, it::PetscInt, fnorm::PetscReal, vf::PetscViewerAndFormat) 
 Monitors the spectrun of the change in the Jacobian from the last Jacobian evaluation of a `SNESSolve()`
 
 Collective
@@ -246,9 +246,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMonitorJacUpdateSpectrum"))
 """
-function SNESMonitorJacUpdateSpectrum(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt, fnorm::PetscReal, vf::PetscViewerAndFormat) end
+function SNESMonitorJacUpdateSpectrum(petsclib::PetscLibType, snes::AbstractPetscSNES, it::PetscInt, fnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function SNESMonitorJacUpdateSpectrum(petsclib::$UnionPetscLib, snes::PetscSNES, it::$PetscInt, fnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function SNESMonitorJacUpdateSpectrum(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, it::$PetscInt, fnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:SNESMonitorJacUpdateSpectrum, $petsc_library),
@@ -262,7 +262,7 @@ function SNESMonitorJacUpdateSpectrum(petsclib::PetscLibType, snes::PetscSNES, i
 end 
 
 """
-	SNESMonitorRange(petsclib::PetscLibType,snes::PetscSNES, it::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
+	SNESMonitorRange(petsclib::PetscLibType,snes::AbstractPetscSNES, it::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) 
 Prints the percentage of residual elements that are more than 10 percent of the maximum entry in the residual in each iteration of a `SNESSolve()`
 
 Collective
@@ -283,9 +283,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMonitorRange"))
 """
-function SNESMonitorRange(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
+function SNESMonitorRange(petsclib::PetscLibType, snes::AbstractPetscSNES, it::PetscInt, rnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function SNESMonitorRange(petsclib::$UnionPetscLib, snes::PetscSNES, it::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function SNESMonitorRange(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, it::$PetscInt, rnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:SNESMonitorRange, $petsc_library),
@@ -299,7 +299,7 @@ function SNESMonitorRange(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt,
 end 
 
 """
-	SNESMonitorRatio(petsclib::PetscLibType,snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
+	SNESMonitorRatio(petsclib::PetscLibType,snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
 Monitors progress of a `SNESSolve()` by printing the ratio of residual norm at each iteration to the previous.
 
 Collective
@@ -320,9 +320,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMonitorRatio"))
 """
-function SNESMonitorRatio(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
+function SNESMonitorRatio(petsclib::PetscLibType, snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function SNESMonitorRatio(petsclib::$UnionPetscLib, snes::PetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function SNESMonitorRatio(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:SNESMonitorRatio, $petsc_library),
@@ -336,7 +336,7 @@ function SNESMonitorRatio(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt
 end 
 
 """
-	SNESMonitorRatioSetUp(petsclib::PetscLibType,snes::PetscSNES, vf::PetscViewerAndFormat) 
+	SNESMonitorRatioSetUp(petsclib::PetscLibType,snes::AbstractPetscSNES, vf::PetscViewerAndFormat) 
 Insures the `SNES` object is saving its history since this monitor needs access to it
 
 Collective
@@ -352,9 +352,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMonitorRatioSetUp"))
 """
-function SNESMonitorRatioSetUp(petsclib::PetscLibType, snes::PetscSNES, vf::PetscViewerAndFormat) end
+function SNESMonitorRatioSetUp(petsclib::PetscLibType, snes::AbstractPetscSNES, vf::PetscViewerAndFormat) end
 
-@for_petsc function SNESMonitorRatioSetUp(petsclib::$UnionPetscLib, snes::PetscSNES, vf::PetscViewerAndFormat )
+@for_petsc function SNESMonitorRatioSetUp(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:SNESMonitorRatioSetUp, $petsc_library),
@@ -368,14 +368,14 @@ function SNESMonitorRatioSetUp(petsclib::PetscLibType, snes::PetscSNES, vf::Pets
 end 
 
 """
-	SNESMonitorDefaultShort(petsclib::PetscLibType,snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
+	SNESMonitorDefaultShort(petsclib::PetscLibType,snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
 
 # External Links
 $(_doc_external("SNES/SNESMonitorDefaultShort"))
 """
-function SNESMonitorDefaultShort(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
+function SNESMonitorDefaultShort(petsclib::PetscLibType, snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function SNESMonitorDefaultShort(petsclib::$UnionPetscLib, snes::PetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function SNESMonitorDefaultShort(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:SNESMonitorDefaultShort, $petsc_library),
@@ -389,7 +389,7 @@ function SNESMonitorDefaultShort(petsclib::PetscLibType, snes::PetscSNES, its::P
 end 
 
 """
-	SNESMonitorDefaultField(petsclib::PetscLibType,snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
+	SNESMonitorDefaultField(petsclib::PetscLibType,snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
 Monitors progress of a `SNESSolve()`, separated into fields.
 
 Collective
@@ -410,9 +410,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMonitorDefaultField"))
 """
-function SNESMonitorDefaultField(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
+function SNESMonitorDefaultField(petsclib::PetscLibType, snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function SNESMonitorDefaultField(petsclib::$UnionPetscLib, snes::PetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function SNESMonitorDefaultField(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:SNESMonitorDefaultField, $petsc_library),
@@ -426,7 +426,7 @@ function SNESMonitorDefaultField(petsclib::PetscLibType, snes::PetscSNES, its::P
 end 
 
 """
-	SNESConvergedDefault(petsclib::PetscLibType,snes::PetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, reason::SNESConvergedReason, dummy::Cvoid) 
+	SNESConvergedDefault(petsclib::PetscLibType,snes::AbstractPetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, reason::SNESConvergedReason, dummy::Cvoid) 
 Default convergence test for `SNESSolve()`.
 
 Collective
@@ -460,9 +460,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESConvergedDefault"))
 """
-function SNESConvergedDefault(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, reason::SNESConvergedReason, dummy::Cvoid) end
+function SNESConvergedDefault(petsclib::PetscLibType, snes::AbstractPetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, reason::SNESConvergedReason, dummy::Cvoid) end
 
-@for_petsc function SNESConvergedDefault(petsclib::$UnionPetscLib, snes::PetscSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal, reason::SNESConvergedReason, dummy::Cvoid )
+@for_petsc function SNESConvergedDefault(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal, reason::SNESConvergedReason, dummy::Cvoid )
 
     @chk ccall(
                (:SNESConvergedDefault, $petsc_library),
@@ -476,7 +476,7 @@ function SNESConvergedDefault(petsclib::PetscLibType, snes::PetscSNES, it::Petsc
 end 
 
 """
-	SNESConvergedSkip(petsclib::PetscLibType,snes::PetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, reason::SNESConvergedReason, dummy::Cvoid) 
+	SNESConvergedSkip(petsclib::PetscLibType,snes::AbstractPetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, reason::SNESConvergedReason, dummy::Cvoid) 
 Convergence test for `SNES` that NEVER returns as
 converged, UNLESS the maximum number of iteration have been reached.
 
@@ -503,9 +503,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESConvergedSkip"))
 """
-function SNESConvergedSkip(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, reason::SNESConvergedReason, dummy::Cvoid) end
+function SNESConvergedSkip(petsclib::PetscLibType, snes::AbstractPetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal, reason::SNESConvergedReason, dummy::Cvoid) end
 
-@for_petsc function SNESConvergedSkip(petsclib::$UnionPetscLib, snes::PetscSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal, reason::SNESConvergedReason, dummy::Cvoid )
+@for_petsc function SNESConvergedSkip(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal, reason::SNESConvergedReason, dummy::Cvoid )
 
     @chk ccall(
                (:SNESConvergedSkip, $petsc_library),
@@ -519,7 +519,7 @@ function SNESConvergedSkip(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt
 end 
 
 """
-	SNESSetWorkVecs(petsclib::PetscLibType,snes::PetscSNES, nw::PetscInt) 
+	SNESSetWorkVecs(petsclib::PetscLibType,snes::AbstractPetscSNES, nw::PetscInt) 
 Allocates a number of work vectors to be used internally by the `SNES` solver
 
 Input Parameters:
@@ -533,9 +533,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESSetWorkVecs"))
 """
-function SNESSetWorkVecs(petsclib::PetscLibType, snes::PetscSNES, nw::PetscInt) end
+function SNESSetWorkVecs(petsclib::PetscLibType, snes::AbstractPetscSNES, nw::PetscInt) end
 
-@for_petsc function SNESSetWorkVecs(petsclib::$UnionPetscLib, snes::PetscSNES, nw::$PetscInt )
+@for_petsc function SNESSetWorkVecs(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, nw::$PetscInt )
 
     @chk ccall(
                (:SNESSetWorkVecs, $petsc_library),
@@ -602,7 +602,7 @@ function SNESInitializePackage(petsclib::PetscLibType) end
 end 
 
 """
-	SNESSetErrorIfNotConverged(petsclib::PetscLibType,snes::PetscSNES, flg::PetscBool) 
+	SNESSetErrorIfNotConverged(petsclib::PetscLibType,snes::AbstractPetscSNES, flg::PetscBool) 
 Causes `SNESSolve()` to generate an error immediately if the solver has not converged.
 
 Logically Collective
@@ -621,9 +621,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetErrorIfNotConverged"))
 """
-function SNESSetErrorIfNotConverged(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
+function SNESSetErrorIfNotConverged(petsclib::PetscLibType, snes::AbstractPetscSNES, flg::PetscBool) end
 
-@for_petsc function SNESSetErrorIfNotConverged(petsclib::$UnionPetscLib, snes::PetscSNES, flg::PetscBool )
+@for_petsc function SNESSetErrorIfNotConverged(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, flg::PetscBool )
 
     @chk ccall(
                (:SNESSetErrorIfNotConverged, $petsc_library),
@@ -637,7 +637,7 @@ function SNESSetErrorIfNotConverged(petsclib::PetscLibType, snes::PetscSNES, flg
 end 
 
 """
-	flag::PetscBool = SNESGetErrorIfNotConverged(petsclib::PetscLibType,snes::PetscSNES) 
+	flag::PetscBool = SNESGetErrorIfNotConverged(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Indicates if `SNESSolve()` will generate an error if the solver does not converge?
 
 Not Collective
@@ -655,9 +655,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetErrorIfNotConverged"))
 """
-function SNESGetErrorIfNotConverged(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetErrorIfNotConverged(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetErrorIfNotConverged(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetErrorIfNotConverged(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -673,7 +673,7 @@ function SNESGetErrorIfNotConverged(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetAlwaysComputesFinalResidual(petsclib::PetscLibType,snes::PetscSNES, flg::PetscBool) 
+	SNESSetAlwaysComputesFinalResidual(petsclib::PetscLibType,snes::AbstractPetscSNES, flg::PetscBool) 
 tells the `SNES` to always compute the residual (nonlinear function value) at the final solution
 
 Logically Collective
@@ -689,9 +689,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESSetAlwaysComputesFinalResidual"))
 """
-function SNESSetAlwaysComputesFinalResidual(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
+function SNESSetAlwaysComputesFinalResidual(petsclib::PetscLibType, snes::AbstractPetscSNES, flg::PetscBool) end
 
-@for_petsc function SNESSetAlwaysComputesFinalResidual(petsclib::$UnionPetscLib, snes::PetscSNES, flg::PetscBool )
+@for_petsc function SNESSetAlwaysComputesFinalResidual(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, flg::PetscBool )
 
     @chk ccall(
                (:SNESSetAlwaysComputesFinalResidual, $petsc_library),
@@ -705,7 +705,7 @@ function SNESSetAlwaysComputesFinalResidual(petsclib::PetscLibType, snes::PetscS
 end 
 
 """
-	flg::PetscBool = SNESGetAlwaysComputesFinalResidual(petsclib::PetscLibType,snes::PetscSNES) 
+	flg::PetscBool = SNESGetAlwaysComputesFinalResidual(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 checks if the `SNES` always computes the residual at the final solution
 
 Logically Collective
@@ -723,9 +723,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESGetAlwaysComputesFinalResidual"))
 """
-function SNESGetAlwaysComputesFinalResidual(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetAlwaysComputesFinalResidual(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetAlwaysComputesFinalResidual(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetAlwaysComputesFinalResidual(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -741,7 +741,7 @@ function SNESGetAlwaysComputesFinalResidual(petsclib::PetscLibType, snes::PetscS
 end 
 
 """
-	SNESSetFunctionDomainError(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESSetFunctionDomainError(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 tells `SNES` that the input vector, a proposed new solution, to your function you provided to `SNESSetFunction()` is not
 in the functions domain. For example, a step with negative pressure.
 
@@ -759,9 +759,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESSetFunctionDomainError"))
 """
-function SNESSetFunctionDomainError(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESSetFunctionDomainError(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESSetFunctionDomainError(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESSetFunctionDomainError(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESSetFunctionDomainError, $petsc_library),
@@ -775,7 +775,7 @@ function SNESSetFunctionDomainError(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetJacobianDomainError(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESSetJacobianDomainError(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 tells `SNES` that the function you provided to `SNESSetJacobian()` at the proposed step. For example there is a negative element transformation.
 
 Logically Collective
@@ -791,9 +791,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESSetJacobianDomainError"))
 """
-function SNESSetJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESSetJacobianDomainError(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESSetJacobianDomainError(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESSetJacobianDomainError(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESSetJacobianDomainError, $petsc_library),
@@ -807,7 +807,7 @@ function SNESSetJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetCheckJacobianDomainError(petsclib::PetscLibType,snes::PetscSNES, flg::PetscBool) 
+	SNESSetCheckJacobianDomainError(petsclib::PetscLibType,snes::AbstractPetscSNES, flg::PetscBool) 
 tells `SNESSolve()` whether to check if the user called `SNESSetJacobianDomainError()` Jacobian domain error after
 each Jacobian evaluation. By default, it checks for the Jacobian domain error in the debug mode, and does not check it in the optimized mode.
 
@@ -824,9 +824,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESSetCheckJacobianDomainError"))
 """
-function SNESSetCheckJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
+function SNESSetCheckJacobianDomainError(petsclib::PetscLibType, snes::AbstractPetscSNES, flg::PetscBool) end
 
-@for_petsc function SNESSetCheckJacobianDomainError(petsclib::$UnionPetscLib, snes::PetscSNES, flg::PetscBool )
+@for_petsc function SNESSetCheckJacobianDomainError(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, flg::PetscBool )
 
     @chk ccall(
                (:SNESSetCheckJacobianDomainError, $petsc_library),
@@ -840,7 +840,7 @@ function SNESSetCheckJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES
 end 
 
 """
-	flg::PetscBool = SNESGetCheckJacobianDomainError(petsclib::PetscLibType,snes::PetscSNES) 
+	flg::PetscBool = SNESGetCheckJacobianDomainError(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Get an indicator whether or not `SNES` is checking Jacobian domain errors after each Jacobian evaluation.
 
 Logically Collective
@@ -858,9 +858,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESGetCheckJacobianDomainError"))
 """
-function SNESGetCheckJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetCheckJacobianDomainError(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetCheckJacobianDomainError(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetCheckJacobianDomainError(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -876,7 +876,7 @@ function SNESGetCheckJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES
 end 
 
 """
-	domainerror::PetscBool = SNESGetFunctionDomainError(petsclib::PetscLibType,snes::PetscSNES) 
+	domainerror::PetscBool = SNESGetFunctionDomainError(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the status of the domain error after a call to `SNESComputeFunction()`
 
 Not Collective, different MPI processes may return different values
@@ -894,9 +894,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESGetFunctionDomainError"))
 """
-function SNESGetFunctionDomainError(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetFunctionDomainError(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetFunctionDomainError(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetFunctionDomainError(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	domainerror_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -912,7 +912,7 @@ function SNESGetFunctionDomainError(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	domainerror::PetscBool = SNESGetJacobianDomainError(petsclib::PetscLibType,snes::PetscSNES) 
+	domainerror::PetscBool = SNESGetJacobianDomainError(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the status of the Jacobian domain error after a call to `SNESComputeJacobian()`
 
 Not Collective, different MPI processes may return different values
@@ -930,9 +930,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESGetJacobianDomainError"))
 """
-function SNESGetJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetJacobianDomainError(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetJacobianDomainError(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetJacobianDomainError(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	domainerror_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -948,7 +948,7 @@ function SNESGetJacobianDomainError(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESLoad(petsclib::PetscLibType,snes::PetscSNES, viewer::PetscViewer) 
+	SNESLoad(petsclib::PetscLibType,snes::AbstractPetscSNES, viewer::PetscViewer) 
 Loads a `SNES` that has been stored in `PETSCVIEWERBINARY` with `SNESView()`.
 
 Collective
@@ -965,9 +965,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLoad"))
 """
-function SNESLoad(petsclib::PetscLibType, snes::PetscSNES, viewer::PetscViewer) end
+function SNESLoad(petsclib::PetscLibType, snes::AbstractPetscSNES, viewer::PetscViewer) end
 
-@for_petsc function SNESLoad(petsclib::$UnionPetscLib, snes::PetscSNES, viewer::PetscViewer )
+@for_petsc function SNESLoad(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, viewer::PetscViewer )
 
     @chk ccall(
                (:SNESLoad, $petsc_library),
@@ -981,7 +981,7 @@ function SNESLoad(petsclib::PetscLibType, snes::PetscSNES, viewer::PetscViewer) 
 end 
 
 """
-	SNESViewFromOptions(petsclib::PetscLibType,A::PetscSNES, obj::PetscObject, name::String) 
+	SNESViewFromOptions(petsclib::PetscLibType,A::AbstractPetscSNES, obj::PetscObject, name::String) 
 View a `SNES` based on values in the options database
 
 Collective
@@ -998,9 +998,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESViewFromOptions"))
 """
-function SNESViewFromOptions(petsclib::PetscLibType, A::PetscSNES, obj::PetscObject, name::String) end
+function SNESViewFromOptions(petsclib::PetscLibType, A::AbstractPetscSNES, obj::PetscObject, name::String) end
 
-@for_petsc function SNESViewFromOptions(petsclib::$UnionPetscLib, A::PetscSNES, obj::PetscObject, name::String )
+@for_petsc function SNESViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscSNES, obj::PetscObject, name::String )
 
     @chk ccall(
                (:SNESViewFromOptions, $petsc_library),
@@ -1014,7 +1014,7 @@ function SNESViewFromOptions(petsclib::PetscLibType, A::PetscSNES, obj::PetscObj
 end 
 
 """
-	SNESView(petsclib::PetscLibType,snes::PetscSNES, viewer::PetscViewer) 
+	SNESView(petsclib::PetscLibType,snes::AbstractPetscSNES, viewer::PetscViewer) 
 Prints or visualizes the `SNES` data structure.
 
 Collective
@@ -1033,9 +1033,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/SNESView"))
 """
-function SNESView(petsclib::PetscLibType, snes::PetscSNES, viewer::PetscViewer) end
+function SNESView(petsclib::PetscLibType, snes::AbstractPetscSNES, viewer::PetscViewer) end
 
-@for_petsc function SNESView(petsclib::$UnionPetscLib, snes::PetscSNES, viewer::PetscViewer )
+@for_petsc function SNESView(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, viewer::PetscViewer )
 
     @chk ccall(
                (:SNESView, $petsc_library),
@@ -1083,7 +1083,7 @@ function SNESAddOptionsChecker(petsclib::PetscLibType, snescheck::external) end
 end 
 
 """
-	SNESSetUpMatrices(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESSetUpMatrices(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 ensures that matrices are available for `SNES` Newton
 
 Collective
@@ -1098,9 +1098,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESSetUpMatrices"))
 """
-function SNESSetUpMatrices(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESSetUpMatrices(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESSetUpMatrices(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESSetUpMatrices(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESSetUpMatrices, $petsc_library),
@@ -1114,7 +1114,7 @@ function SNESSetUpMatrices(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESMonitorSetFromOptions(petsclib::PetscLibType,snes::PetscSNES, name::String, help::String, manual::String, monitor::external, monitorsetup::external) 
+	SNESMonitorSetFromOptions(petsclib::PetscLibType,snes::AbstractPetscSNES, name::String, help::String, manual::String, monitor::external, monitorsetup::external) 
 Sets a monitor function and viewer appropriate for the type indicated by the user
 
 Collective
@@ -1153,9 +1153,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESMonitorSetFromOptions"))
 """
-function SNESMonitorSetFromOptions(petsclib::PetscLibType, snes::PetscSNES, name::String, help::String, manual::String, monitor::external, monitorsetup::external) end
+function SNESMonitorSetFromOptions(petsclib::PetscLibType, snes::AbstractPetscSNES, name::String, help::String, manual::String, monitor::external, monitorsetup::external) end
 
-@for_petsc function SNESMonitorSetFromOptions(petsclib::$UnionPetscLib, snes::PetscSNES, name::String, help::String, manual::String, monitor::external, monitorsetup::external )
+@for_petsc function SNESMonitorSetFromOptions(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, name::String, help::String, manual::String, monitor::external, monitorsetup::external )
 
     @chk ccall(
                (:SNESMonitorSetFromOptions, $petsc_library),
@@ -1169,7 +1169,7 @@ function SNESMonitorSetFromOptions(petsclib::PetscLibType, snes::PetscSNES, name
 end 
 
 """
-	SNESSetFromOptions(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESSetFromOptions(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Sets various `SNES` and `KSP` parameters from user options.
 
 Collective
@@ -1225,9 +1225,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/SNESSetFromOptions"))
 """
-function SNESSetFromOptions(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESSetFromOptions(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESSetFromOptions(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESSetFromOptions(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESSetFromOptions, $petsc_library),
@@ -1241,7 +1241,7 @@ function SNESSetFromOptions(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESResetFromOptions(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESResetFromOptions(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Sets various `SNES` and `KSP` parameters from user options ONLY if the `SNESSetFromOptions()` was previously called
 
 Collective
@@ -1256,9 +1256,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESResetFromOptions"))
 """
-function SNESResetFromOptions(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESResetFromOptions(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESResetFromOptions(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESResetFromOptions(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESResetFromOptions, $petsc_library),
@@ -1272,7 +1272,7 @@ function SNESResetFromOptions(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetComputeApplicationContext(petsclib::PetscLibType,snes::PetscSNES, compute::external, destroy::PetscCtxDestroyFn) 
+	SNESSetComputeApplicationContext(petsclib::PetscLibType,snes::AbstractPetscSNES, compute::external, destroy::PetscCtxDestroyFn) 
 Sets an optional function to compute a user
 the nonlinear solvers.
 
@@ -1294,9 +1294,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetComputeApplicationContext"))
 """
-function SNESSetComputeApplicationContext(petsclib::PetscLibType, snes::PetscSNES, compute::external, destroy::PetscCtxDestroyFn) end
+function SNESSetComputeApplicationContext(petsclib::PetscLibType, snes::AbstractPetscSNES, compute::external, destroy::PetscCtxDestroyFn) end
 
-@for_petsc function SNESSetComputeApplicationContext(petsclib::$UnionPetscLib, snes::PetscSNES, compute::external, destroy::PetscCtxDestroyFn )
+@for_petsc function SNESSetComputeApplicationContext(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, compute::external, destroy::PetscCtxDestroyFn )
 
     @chk ccall(
                (:SNESSetComputeApplicationContext, $petsc_library),
@@ -1310,7 +1310,7 @@ function SNESSetComputeApplicationContext(petsclib::PetscLibType, snes::PetscSNE
 end 
 
 """
-	SNESSetApplicationContext(petsclib::PetscLibType,snes::PetscSNES, ctx::Cvoid) 
+	SNESSetApplicationContext(petsclib::PetscLibType,snes::AbstractPetscSNES, ctx::Cvoid) 
 Sets the optional user
 
 Logically Collective
@@ -1326,9 +1326,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetApplicationContext"))
 """
-function SNESSetApplicationContext(petsclib::PetscLibType, snes::PetscSNES, ctx::Cvoid) end
+function SNESSetApplicationContext(petsclib::PetscLibType, snes::AbstractPetscSNES, ctx::Cvoid) end
 
-@for_petsc function SNESSetApplicationContext(petsclib::$UnionPetscLib, snes::PetscSNES, ctx::Cvoid )
+@for_petsc function SNESSetApplicationContext(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, ctx::Cvoid )
 
     @chk ccall(
                (:SNESSetApplicationContext, $petsc_library),
@@ -1342,7 +1342,7 @@ function SNESSetApplicationContext(petsclib::PetscLibType, snes::PetscSNES, ctx:
 end 
 
 """
-	SNESGetApplicationContext(petsclib::PetscLibType,snes::PetscSNES, ctx::PeCtx) 
+	SNESGetApplicationContext(petsclib::PetscLibType,snes::AbstractPetscSNES, ctx::PeCtx) 
 Gets the user
 nonlinear solvers set with `SNESGetApplicationContext()` or `SNESSetComputeApplicationContext()`
 
@@ -1361,9 +1361,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetApplicationContext"))
 """
-function SNESGetApplicationContext(petsclib::PetscLibType, snes::PetscSNES, ctx::PeCtx) end
+function SNESGetApplicationContext(petsclib::PetscLibType, snes::AbstractPetscSNES, ctx::PeCtx) end
 
-@for_petsc function SNESGetApplicationContext(petsclib::$UnionPetscLib, snes::PetscSNES, ctx::PeCtx )
+@for_petsc function SNESGetApplicationContext(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, ctx::PeCtx )
 
     @chk ccall(
                (:SNESGetApplicationContext, $petsc_library),
@@ -1377,7 +1377,7 @@ function SNESGetApplicationContext(petsclib::PetscLibType, snes::PetscSNES, ctx:
 end 
 
 """
-	SNESSetUseMatrixFree(petsclib::PetscLibType,snes::PetscSNES, mf_operator::PetscBool, mf::PetscBool) 
+	SNESSetUseMatrixFree(petsclib::PetscLibType,snes::AbstractPetscSNES, mf_operator::PetscBool, mf::PetscBool) 
 indicates that `SNES` should use matrix
 
 Logically Collective
@@ -1401,9 +1401,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetUseMatrixFree"))
 """
-function SNESSetUseMatrixFree(petsclib::PetscLibType, snes::PetscSNES, mf_operator::PetscBool, mf::PetscBool) end
+function SNESSetUseMatrixFree(petsclib::PetscLibType, snes::AbstractPetscSNES, mf_operator::PetscBool, mf::PetscBool) end
 
-@for_petsc function SNESSetUseMatrixFree(petsclib::$UnionPetscLib, snes::PetscSNES, mf_operator::PetscBool, mf::PetscBool )
+@for_petsc function SNESSetUseMatrixFree(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, mf_operator::PetscBool, mf::PetscBool )
 
     @chk ccall(
                (:SNESSetUseMatrixFree, $petsc_library),
@@ -1417,7 +1417,7 @@ function SNESSetUseMatrixFree(petsclib::PetscLibType, snes::PetscSNES, mf_operat
 end 
 
 """
-	mf_operator::PetscBool,mf::PetscBool = SNESGetUseMatrixFree(petsclib::PetscLibType,snes::PetscSNES) 
+	mf_operator::PetscBool,mf::PetscBool = SNESGetUseMatrixFree(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 indicates if the `SNES` uses matrix
 
 Not Collective, but the resulting flags will be the same on all MPI processes
@@ -1436,9 +1436,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetUseMatrixFree"))
 """
-function SNESGetUseMatrixFree(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetUseMatrixFree(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetUseMatrixFree(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetUseMatrixFree(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	mf_operator_ = Ref{PetscBool}()
 	mf_ = Ref{PetscBool}()
 
@@ -1456,7 +1456,7 @@ function SNESGetUseMatrixFree(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	iter::PetscInt = SNESGetIterationNumber(petsclib::PetscLibType,snes::PetscSNES) 
+	iter::PetscInt = SNESGetIterationNumber(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the number of nonlinear iterations completed in the current or most recent `SNESSolve()`
 
 Not Collective
@@ -1474,9 +1474,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetIterationNumber"))
 """
-function SNESGetIterationNumber(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetIterationNumber(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetIterationNumber(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetIterationNumber(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	iter_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1492,7 +1492,7 @@ function SNESGetIterationNumber(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetIterationNumber(petsclib::PetscLibType,snes::PetscSNES, iter::PetscInt) 
+	SNESSetIterationNumber(petsclib::PetscLibType,snes::AbstractPetscSNES, iter::PetscInt) 
 Sets the current iteration number.
 
 Not Collective
@@ -1508,9 +1508,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESSetIterationNumber"))
 """
-function SNESSetIterationNumber(petsclib::PetscLibType, snes::PetscSNES, iter::PetscInt) end
+function SNESSetIterationNumber(petsclib::PetscLibType, snes::AbstractPetscSNES, iter::PetscInt) end
 
-@for_petsc function SNESSetIterationNumber(petsclib::$UnionPetscLib, snes::PetscSNES, iter::$PetscInt )
+@for_petsc function SNESSetIterationNumber(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, iter::$PetscInt )
 
     @chk ccall(
                (:SNESSetIterationNumber, $petsc_library),
@@ -1524,7 +1524,7 @@ function SNESSetIterationNumber(petsclib::PetscLibType, snes::PetscSNES, iter::P
 end 
 
 """
-	nfails::PetscInt = SNESGetNonlinearStepFailures(petsclib::PetscLibType,snes::PetscSNES) 
+	nfails::PetscInt = SNESGetNonlinearStepFailures(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the number of unsuccessful steps
 attempted by the nonlinear solver in the current or most recent `SNESSolve()` .
 
@@ -1544,9 +1544,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetNonlinearStepFailures"))
 """
-function SNESGetNonlinearStepFailures(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetNonlinearStepFailures(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetNonlinearStepFailures(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetNonlinearStepFailures(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	nfails_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1562,7 +1562,7 @@ function SNESGetNonlinearStepFailures(petsclib::PetscLibType, snes::PetscSNES) e
 end 
 
 """
-	SNESSetMaxNonlinearStepFailures(petsclib::PetscLibType,snes::PetscSNES, maxFails::PetscInt) 
+	SNESSetMaxNonlinearStepFailures(petsclib::PetscLibType,snes::AbstractPetscSNES, maxFails::PetscInt) 
 Sets the maximum number of unsuccessful steps
 attempted by the nonlinear solver before it gives up and returns unconverged or generates an error
 
@@ -1583,9 +1583,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetMaxNonlinearStepFailures"))
 """
-function SNESSetMaxNonlinearStepFailures(petsclib::PetscLibType, snes::PetscSNES, maxFails::PetscInt) end
+function SNESSetMaxNonlinearStepFailures(petsclib::PetscLibType, snes::AbstractPetscSNES, maxFails::PetscInt) end
 
-@for_petsc function SNESSetMaxNonlinearStepFailures(petsclib::$UnionPetscLib, snes::PetscSNES, maxFails::$PetscInt )
+@for_petsc function SNESSetMaxNonlinearStepFailures(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, maxFails::$PetscInt )
 
     @chk ccall(
                (:SNESSetMaxNonlinearStepFailures, $petsc_library),
@@ -1599,7 +1599,7 @@ function SNESSetMaxNonlinearStepFailures(petsclib::PetscLibType, snes::PetscSNES
 end 
 
 """
-	maxFails::PetscInt = SNESGetMaxNonlinearStepFailures(petsclib::PetscLibType,snes::PetscSNES) 
+	maxFails::PetscInt = SNESGetMaxNonlinearStepFailures(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the maximum number of unsuccessful steps
 attempted by the nonlinear solver before it gives up and returns unconverged or generates an error
 
@@ -1619,9 +1619,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetMaxNonlinearStepFailures"))
 """
-function SNESGetMaxNonlinearStepFailures(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetMaxNonlinearStepFailures(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetMaxNonlinearStepFailures(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetMaxNonlinearStepFailures(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	maxFails_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1637,7 +1637,7 @@ function SNESGetMaxNonlinearStepFailures(petsclib::PetscLibType, snes::PetscSNES
 end 
 
 """
-	nfuncs::PetscInt = SNESGetNumberFunctionEvals(petsclib::PetscLibType,snes::PetscSNES) 
+	nfuncs::PetscInt = SNESGetNumberFunctionEvals(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the number of user provided function evaluations
 done by the `SNES` object in the current or most recent `SNESSolve()`
 
@@ -1656,9 +1656,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetNumberFunctionEvals"))
 """
-function SNESGetNumberFunctionEvals(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetNumberFunctionEvals(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetNumberFunctionEvals(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetNumberFunctionEvals(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	nfuncs_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1674,7 +1674,7 @@ function SNESGetNumberFunctionEvals(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	nfails::PetscInt = SNESGetLinearSolveFailures(petsclib::PetscLibType,snes::PetscSNES) 
+	nfails::PetscInt = SNESGetLinearSolveFailures(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the number of failed (non
 linear solvers in the current or most recent `SNESSolve()`
 
@@ -1696,9 +1696,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetLinearSolveFailures"))
 """
-function SNESGetLinearSolveFailures(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetLinearSolveFailures(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetLinearSolveFailures(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetLinearSolveFailures(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	nfails_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1714,7 +1714,7 @@ function SNESGetLinearSolveFailures(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetMaxLinearSolveFailures(petsclib::PetscLibType,snes::PetscSNES, maxFails::PetscInt) 
+	SNESSetMaxLinearSolveFailures(petsclib::PetscLibType,snes::AbstractPetscSNES, maxFails::PetscInt) 
 the number of failed linear solve attempts
 allowed before `SNES` returns with a diverged reason of `SNES_DIVERGED_LINEAR_SOLVE`
 
@@ -1734,9 +1734,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetMaxLinearSolveFailures"))
 """
-function SNESSetMaxLinearSolveFailures(petsclib::PetscLibType, snes::PetscSNES, maxFails::PetscInt) end
+function SNESSetMaxLinearSolveFailures(petsclib::PetscLibType, snes::AbstractPetscSNES, maxFails::PetscInt) end
 
-@for_petsc function SNESSetMaxLinearSolveFailures(petsclib::$UnionPetscLib, snes::PetscSNES, maxFails::$PetscInt )
+@for_petsc function SNESSetMaxLinearSolveFailures(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, maxFails::$PetscInt )
 
     @chk ccall(
                (:SNESSetMaxLinearSolveFailures, $petsc_library),
@@ -1750,7 +1750,7 @@ function SNESSetMaxLinearSolveFailures(petsclib::PetscLibType, snes::PetscSNES, 
 end 
 
 """
-	maxFails::PetscInt = SNESGetMaxLinearSolveFailures(petsclib::PetscLibType,snes::PetscSNES) 
+	maxFails::PetscInt = SNESGetMaxLinearSolveFailures(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 gets the maximum number of linear solve failures that
 are allowed before `SNES` returns as unsuccessful
 
@@ -1769,9 +1769,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetMaxLinearSolveFailures"))
 """
-function SNESGetMaxLinearSolveFailures(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetMaxLinearSolveFailures(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetMaxLinearSolveFailures(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetMaxLinearSolveFailures(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	maxFails_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1787,7 +1787,7 @@ function SNESGetMaxLinearSolveFailures(petsclib::PetscLibType, snes::PetscSNES) 
 end 
 
 """
-	lits::PetscInt = SNESGetLinearSolveIterations(petsclib::PetscLibType,snes::PetscSNES) 
+	lits::PetscInt = SNESGetLinearSolveIterations(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the total number of linear iterations
 used by the nonlinear solver in the most recent `SNESSolve()`
 
@@ -1806,9 +1806,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetLinearSolveIterations"))
 """
-function SNESGetLinearSolveIterations(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetLinearSolveIterations(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetLinearSolveIterations(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetLinearSolveIterations(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	lits_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1824,7 +1824,7 @@ function SNESGetLinearSolveIterations(petsclib::PetscLibType, snes::PetscSNES) e
 end 
 
 """
-	SNESSetCountersReset(petsclib::PetscLibType,snes::PetscSNES, reset::PetscBool) 
+	SNESSetCountersReset(petsclib::PetscLibType,snes::AbstractPetscSNES, reset::PetscBool) 
 Sets whether or not the counters for linear iterations and function evaluations
 are reset every time `SNESSolve()` is called.
 
@@ -1841,9 +1841,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESSetCountersReset"))
 """
-function SNESSetCountersReset(petsclib::PetscLibType, snes::PetscSNES, reset::PetscBool) end
+function SNESSetCountersReset(petsclib::PetscLibType, snes::AbstractPetscSNES, reset::PetscBool) end
 
-@for_petsc function SNESSetCountersReset(petsclib::$UnionPetscLib, snes::PetscSNES, reset::PetscBool )
+@for_petsc function SNESSetCountersReset(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, reset::PetscBool )
 
     @chk ccall(
                (:SNESSetCountersReset, $petsc_library),
@@ -1857,7 +1857,7 @@ function SNESSetCountersReset(petsclib::PetscLibType, snes::PetscSNES, reset::Pe
 end 
 
 """
-	SNESResetCounters(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESResetCounters(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Reset counters for linear iterations and function evaluations.
 
 Logically Collective
@@ -1872,9 +1872,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESResetCounters"))
 """
-function SNESResetCounters(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESResetCounters(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESResetCounters(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESResetCounters(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESResetCounters, $petsc_library),
@@ -1888,7 +1888,7 @@ function SNESResetCounters(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetKSP(petsclib::PetscLibType,snes::PetscSNES, ksp::PetscKSP) 
+	SNESSetKSP(petsclib::PetscLibType,snes::AbstractPetscSNES, ksp::AbstractPetscKSP) 
 Sets a `KSP` context for the `SNES` object to use
 
 Not Collective, but the `SNES` and `KSP` objects must live on the same `MPI_Comm`
@@ -1904,9 +1904,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESSetKSP"))
 """
-function SNESSetKSP(petsclib::PetscLibType, snes::PetscSNES, ksp::PetscKSP) end
+function SNESSetKSP(petsclib::PetscLibType, snes::AbstractPetscSNES, ksp::AbstractPetscKSP) end
 
-@for_petsc function SNESSetKSP(petsclib::$UnionPetscLib, snes::PetscSNES, ksp::PetscKSP )
+@for_petsc function SNESSetKSP(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:SNESSetKSP, $petsc_library),
@@ -1920,7 +1920,7 @@ function SNESSetKSP(petsclib::PetscLibType, snes::PetscSNES, ksp::PetscKSP) end
 end 
 
 """
-	SNESParametersInitialize(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESParametersInitialize(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Sets all the parameters in `snes` to their default value (when `SNESCreate()` was called) if they
 currently contain default values
 
@@ -1937,9 +1937,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESParametersInitialize"))
 """
-function SNESParametersInitialize(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESParametersInitialize(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESParametersInitialize(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESParametersInitialize(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESParametersInitialize, $petsc_library),
@@ -1995,7 +1995,7 @@ function SNESCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 end 
 
 """
-	SNESSetFunction(petsclib::PetscLibType,snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, ctx::Cvoid) 
+	SNESSetFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, r::AbstractPetscVec, f::SNESFunctionFn, ctx::Cvoid) 
 Sets the function evaluation routine and function
 vector for use by the `SNES` routines in solving systems of nonlinear
 equations.
@@ -2016,9 +2016,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/SNESSetFunction"))
 """
-function SNESSetFunction(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, ctx::Cvoid) end
+function SNESSetFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, r::AbstractPetscVec, f::SNESFunctionFn, ctx::Cvoid) end
 
-@for_petsc function SNESSetFunction(petsclib::$UnionPetscLib, snes::PetscSNES, r::PetscVec, f::Union{SNESFunctionFn, Ptr}, ctx::Union{Cvoid, Ptr}    )
+@for_petsc function SNESSetFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, r::AbstractPetscVec, f::Union{SNESFunctionFn, Ptr}, ctx::Union{Cvoid, Ptr}    )
 
     @chk ccall(
                (:SNESSetFunction, $petsc_library),
@@ -2032,7 +2032,7 @@ function SNESSetFunction(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, f
 end 
 
 """
-	SNESSetInitialFunction(petsclib::PetscLibType,snes::PetscSNES, f::PetscVec) 
+	SNESSetInitialFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, f::AbstractPetscVec) 
 Set an already computed function evaluation at the initial guess to be reused by `SNESSolve()`.
 
 Logically Collective
@@ -2048,9 +2048,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESSetInitialFunction"))
 """
-function SNESSetInitialFunction(petsclib::PetscLibType, snes::PetscSNES, f::PetscVec) end
+function SNESSetInitialFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, f::AbstractPetscVec) end
 
-@for_petsc function SNESSetInitialFunction(petsclib::$UnionPetscLib, snes::PetscSNES, f::PetscVec )
+@for_petsc function SNESSetInitialFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, f::AbstractPetscVec )
 
     @chk ccall(
                (:SNESSetInitialFunction, $petsc_library),
@@ -2064,7 +2064,7 @@ function SNESSetInitialFunction(petsclib::PetscLibType, snes::PetscSNES, f::Pets
 end 
 
 """
-	SNESSetNormSchedule(petsclib::PetscLibType,snes::PetscSNES, normschedule::SNESNormSchedule) 
+	SNESSetNormSchedule(petsclib::PetscLibType,snes::AbstractPetscSNES, normschedule::SNESNormSchedule) 
 Sets the `SNESNormSchedule` used in convergence and monitoring
 of the `SNES` method, when norms are computed in the solving process
 
@@ -2084,9 +2084,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESSetNormSchedule"))
 """
-function SNESSetNormSchedule(petsclib::PetscLibType, snes::PetscSNES, normschedule::SNESNormSchedule) end
+function SNESSetNormSchedule(petsclib::PetscLibType, snes::AbstractPetscSNES, normschedule::SNESNormSchedule) end
 
-@for_petsc function SNESSetNormSchedule(petsclib::$UnionPetscLib, snes::PetscSNES, normschedule::SNESNormSchedule )
+@for_petsc function SNESSetNormSchedule(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, normschedule::SNESNormSchedule )
 
     @chk ccall(
                (:SNESSetNormSchedule, $petsc_library),
@@ -2100,7 +2100,7 @@ function SNESSetNormSchedule(petsclib::PetscLibType, snes::PetscSNES, normschedu
 end 
 
 """
-	SNESGetNormSchedule(petsclib::PetscLibType,snes::PetscSNES, normschedule::SNESNormSchedule) 
+	SNESGetNormSchedule(petsclib::PetscLibType,snes::AbstractPetscSNES, normschedule::SNESNormSchedule) 
 Gets the `SNESNormSchedule` used in convergence and monitoring
 of the `SNES` method.
 
@@ -2117,9 +2117,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESGetNormSchedule"))
 """
-function SNESGetNormSchedule(petsclib::PetscLibType, snes::PetscSNES, normschedule::SNESNormSchedule) end
+function SNESGetNormSchedule(petsclib::PetscLibType, snes::AbstractPetscSNES, normschedule::SNESNormSchedule) end
 
-@for_petsc function SNESGetNormSchedule(petsclib::$UnionPetscLib, snes::PetscSNES, normschedule::SNESNormSchedule )
+@for_petsc function SNESGetNormSchedule(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, normschedule::SNESNormSchedule )
 
     @chk ccall(
                (:SNESGetNormSchedule, $petsc_library),
@@ -2133,7 +2133,7 @@ function SNESGetNormSchedule(petsclib::PetscLibType, snes::PetscSNES, normschedu
 end 
 
 """
-	SNESSetFunctionNorm(petsclib::PetscLibType,snes::PetscSNES, norm::PetscReal) 
+	SNESSetFunctionNorm(petsclib::PetscLibType,snes::AbstractPetscSNES, norm::PetscReal) 
 Sets the last computed residual norm.
 
 Logically Collective
@@ -2149,9 +2149,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESSetFunctionNorm"))
 """
-function SNESSetFunctionNorm(petsclib::PetscLibType, snes::PetscSNES, norm::PetscReal) end
+function SNESSetFunctionNorm(petsclib::PetscLibType, snes::AbstractPetscSNES, norm::PetscReal) end
 
-@for_petsc function SNESSetFunctionNorm(petsclib::$UnionPetscLib, snes::PetscSNES, norm::$PetscReal )
+@for_petsc function SNESSetFunctionNorm(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, norm::$PetscReal )
 
     @chk ccall(
                (:SNESSetFunctionNorm, $petsc_library),
@@ -2165,7 +2165,7 @@ function SNESSetFunctionNorm(petsclib::PetscLibType, snes::PetscSNES, norm::Pets
 end 
 
 """
-	norm::PetscReal = SNESGetFunctionNorm(petsclib::PetscLibType,snes::PetscSNES) 
+	norm::PetscReal = SNESGetFunctionNorm(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the last computed norm of the residual
 
 Not Collective
@@ -2183,9 +2183,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESGetFunctionNorm"))
 """
-function SNESGetFunctionNorm(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetFunctionNorm(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetFunctionNorm(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetFunctionNorm(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	norm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2201,7 +2201,7 @@ function SNESGetFunctionNorm(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	ynorm::PetscReal = SNESGetUpdateNorm(petsclib::PetscLibType,snes::PetscSNES) 
+	ynorm::PetscReal = SNESGetUpdateNorm(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the last computed norm of the solution update
 
 Not Collective
@@ -2219,9 +2219,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESGetUpdateNorm"))
 """
-function SNESGetUpdateNorm(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetUpdateNorm(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetUpdateNorm(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetUpdateNorm(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	ynorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2237,7 +2237,7 @@ function SNESGetUpdateNorm(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	xnorm::PetscReal = SNESGetSolutionNorm(petsclib::PetscLibType,snes::PetscSNES) 
+	xnorm::PetscReal = SNESGetSolutionNorm(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the last computed norm of the solution
 
 Not Collective
@@ -2255,9 +2255,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESGetSolutionNorm"))
 """
-function SNESGetSolutionNorm(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetSolutionNorm(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetSolutionNorm(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetSolutionNorm(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	xnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -2273,7 +2273,7 @@ function SNESGetSolutionNorm(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetFunctionType(petsclib::PetscLibType,snes::PetscSNES, type::SNESFunctionType) 
+	SNESSetFunctionType(petsclib::PetscLibType,snes::AbstractPetscSNES, type::SNESFunctionType) 
 Sets the `SNESFunctionType`
 of the `SNES` method.
 
@@ -2295,9 +2295,9 @@ Values of the function type:
 # External Links
 $(_doc_external("SNES/SNESSetFunctionType"))
 """
-function SNESSetFunctionType(petsclib::PetscLibType, snes::PetscSNES, type::SNESFunctionType) end
+function SNESSetFunctionType(petsclib::PetscLibType, snes::AbstractPetscSNES, type::SNESFunctionType) end
 
-@for_petsc function SNESSetFunctionType(petsclib::$UnionPetscLib, snes::PetscSNES, type::SNESFunctionType )
+@for_petsc function SNESSetFunctionType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, type::SNESFunctionType )
 
     @chk ccall(
                (:SNESSetFunctionType, $petsc_library),
@@ -2311,7 +2311,7 @@ function SNESSetFunctionType(petsclib::PetscLibType, snes::PetscSNES, type::SNES
 end 
 
 """
-	SNESGetFunctionType(petsclib::PetscLibType,snes::PetscSNES, type::SNESFunctionType) 
+	SNESGetFunctionType(petsclib::PetscLibType,snes::AbstractPetscSNES, type::SNESFunctionType) 
 Gets the `SNESFunctionType` used in convergence and monitoring set with `SNESSetFunctionType()`
 of the SNES method.
 
@@ -2328,9 +2328,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESGetFunctionType"))
 """
-function SNESGetFunctionType(petsclib::PetscLibType, snes::PetscSNES, type::SNESFunctionType) end
+function SNESGetFunctionType(petsclib::PetscLibType, snes::AbstractPetscSNES, type::SNESFunctionType) end
 
-@for_petsc function SNESGetFunctionType(petsclib::$UnionPetscLib, snes::PetscSNES, type::SNESFunctionType )
+@for_petsc function SNESGetFunctionType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, type::SNESFunctionType )
 
     @chk ccall(
                (:SNESGetFunctionType, $petsc_library),
@@ -2344,7 +2344,7 @@ function SNESGetFunctionType(petsclib::PetscLibType, snes::PetscSNES, type::SNES
 end 
 
 """
-	SNESSetNGS(petsclib::PetscLibType,snes::PetscSNES, f::SNESNGSFn, ctx::Cvoid) 
+	SNESSetNGS(petsclib::PetscLibType,snes::AbstractPetscSNES, f::SNESNGSFn, ctx::Cvoid) 
 Sets the user nonlinear Gauss
 use with composed nonlinear solvers.
 
@@ -2360,9 +2360,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetNGS"))
 """
-function SNESSetNGS(petsclib::PetscLibType, snes::PetscSNES, f::SNESNGSFn, ctx::Cvoid) end
+function SNESSetNGS(petsclib::PetscLibType, snes::AbstractPetscSNES, f::SNESNGSFn, ctx::Cvoid) end
 
-@for_petsc function SNESSetNGS(petsclib::$UnionPetscLib, snes::PetscSNES, f::SNESNGSFn, ctx::Cvoid )
+@for_petsc function SNESSetNGS(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, f::SNESNGSFn, ctx::Cvoid )
 
     @chk ccall(
                (:SNESSetNGS, $petsc_library),
@@ -2376,14 +2376,14 @@ function SNESSetNGS(petsclib::PetscLibType, snes::PetscSNES, f::SNESNGSFn, ctx::
 end 
 
 """
-	SNESPicardComputeMFFunction(petsclib::PetscLibType,snes::PetscSNES, x::PetscVec, f::PetscVec, ctx::Cvoid) 
+	SNESPicardComputeMFFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Cvoid) 
 
 # External Links
 $(_doc_external("SNES/SNESPicardComputeMFFunction"))
 """
-function SNESPicardComputeMFFunction(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec, f::PetscVec, ctx::Cvoid) end
+function SNESPicardComputeMFFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Cvoid) end
 
-@for_petsc function SNESPicardComputeMFFunction(petsclib::$UnionPetscLib, snes::PetscSNES, x::PetscVec, f::PetscVec, ctx::Cvoid )
+@for_petsc function SNESPicardComputeMFFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Cvoid )
 
     @chk ccall(
                (:SNESPicardComputeMFFunction, $petsc_library),
@@ -2397,14 +2397,14 @@ function SNESPicardComputeMFFunction(petsclib::PetscLibType, snes::PetscSNES, x:
 end 
 
 """
-	SNESPicardComputeFunction(petsclib::PetscLibType,snes::PetscSNES, x::PetscVec, f::PetscVec, ctx::Cvoid) 
+	SNESPicardComputeFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Cvoid) 
 
 # External Links
 $(_doc_external("SNES/SNESPicardComputeFunction"))
 """
-function SNESPicardComputeFunction(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec, f::PetscVec, ctx::Cvoid) end
+function SNESPicardComputeFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Cvoid) end
 
-@for_petsc function SNESPicardComputeFunction(petsclib::$UnionPetscLib, snes::PetscSNES, x::PetscVec, f::PetscVec, ctx::Cvoid )
+@for_petsc function SNESPicardComputeFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec, ctx::Cvoid )
 
     @chk ccall(
                (:SNESPicardComputeFunction, $petsc_library),
@@ -2418,14 +2418,14 @@ function SNESPicardComputeFunction(petsclib::PetscLibType, snes::PetscSNES, x::P
 end 
 
 """
-	SNESPicardComputeJacobian(petsclib::PetscLibType,snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Cvoid) 
+	SNESPicardComputeJacobian(petsclib::PetscLibType,snes::AbstractPetscSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid) 
 
 # External Links
 $(_doc_external("SNES/SNESPicardComputeJacobian"))
 """
-function SNESPicardComputeJacobian(petsclib::PetscLibType, snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Cvoid) end
+function SNESPicardComputeJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid) end
 
-@for_petsc function SNESPicardComputeJacobian(petsclib::$UnionPetscLib, snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Cvoid )
+@for_petsc function SNESPicardComputeJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid )
 
     @chk ccall(
                (:SNESPicardComputeJacobian, $petsc_library),
@@ -2439,7 +2439,7 @@ function SNESPicardComputeJacobian(petsclib::PetscLibType, snes::PetscSNES, x1::
 end 
 
 """
-	SNESSetPicard(petsclib::PetscLibType,snes::PetscSNES, r::PetscVec, bp::SNESFunctionFn, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid) 
+	SNESSetPicard(petsclib::PetscLibType,snes::AbstractPetscSNES, r::AbstractPetscVec, bp::SNESFunctionFn, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::SNESJacobianFn, ctx::Cvoid) 
 Use `SNES` to solve the system A(x) x = bp(x) + b  via a Picard type iteration (Picard linearization)
 
 Logically Collective
@@ -2461,9 +2461,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetPicard"))
 """
-function SNESSetPicard(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, bp::SNESFunctionFn, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid) end
+function SNESSetPicard(petsclib::PetscLibType, snes::AbstractPetscSNES, r::AbstractPetscVec, bp::SNESFunctionFn, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::SNESJacobianFn, ctx::Cvoid) end
 
-@for_petsc function SNESSetPicard(petsclib::$UnionPetscLib, snes::PetscSNES, r::PetscVec, bp::SNESFunctionFn, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid )
+@for_petsc function SNESSetPicard(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, r::AbstractPetscVec, bp::SNESFunctionFn, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::SNESJacobianFn, ctx::Cvoid )
 
     @chk ccall(
                (:SNESSetPicard, $petsc_library),
@@ -2477,7 +2477,7 @@ function SNESSetPicard(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, bp:
 end 
 
 """
-	SNESGetPicard(petsclib::PetscLibType,snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid) 
+	SNESGetPicard(petsclib::PetscLibType,snes::AbstractPetscSNES, r::AbstractPetscVec, f::SNESFunctionFn, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::SNESJacobianFn, ctx::Cvoid) 
 Returns the context for the Picard iteration
 
 Not Collective, but `Vec` is parallel if `SNES` is parallel. Collective if `Vec` is requested, but has not been created yet.
@@ -2500,9 +2500,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESGetPicard"))
 """
-function SNESGetPicard(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid) end
+function SNESGetPicard(petsclib::PetscLibType, snes::AbstractPetscSNES, r::AbstractPetscVec, f::SNESFunctionFn, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::SNESJacobianFn, ctx::Cvoid) end
 
-@for_petsc function SNESGetPicard(petsclib::$UnionPetscLib, snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid )
+@for_petsc function SNESGetPicard(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, r::AbstractPetscVec, f::SNESFunctionFn, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::SNESJacobianFn, ctx::Cvoid )
 	r_ = Ref(r.ptr)
 	Amat_ = Ref(Amat.ptr)
 	Pmat_ = Ref(Pmat.ptr)
@@ -2522,7 +2522,7 @@ function SNESGetPicard(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, f::
 end 
 
 """
-	SNESSetComputeInitialGuess(petsclib::PetscLibType,snes::PetscSNES, func::SNESInitialGuessFn, ctx::Cvoid) 
+	SNESSetComputeInitialGuess(petsclib::PetscLibType,snes::AbstractPetscSNES, func::SNESInitialGuessFn, ctx::Cvoid) 
 Sets a routine used to compute an initial guess for the nonlinear problem
 
 Logically Collective
@@ -2540,9 +2540,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetComputeInitialGuess"))
 """
-function SNESSetComputeInitialGuess(petsclib::PetscLibType, snes::PetscSNES, func::SNESInitialGuessFn, ctx::Cvoid) end
+function SNESSetComputeInitialGuess(petsclib::PetscLibType, snes::AbstractPetscSNES, func::SNESInitialGuessFn, ctx::Cvoid) end
 
-@for_petsc function SNESSetComputeInitialGuess(petsclib::$UnionPetscLib, snes::PetscSNES, func::SNESInitialGuessFn, ctx::Cvoid )
+@for_petsc function SNESSetComputeInitialGuess(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::SNESInitialGuessFn, ctx::Cvoid )
 
     @chk ccall(
                (:SNESSetComputeInitialGuess, $petsc_library),
@@ -2556,7 +2556,7 @@ function SNESSetComputeInitialGuess(petsclib::PetscLibType, snes::PetscSNES, fun
 end 
 
 """
-	SNESGetRhs(petsclib::PetscLibType,snes::PetscSNES, rhs::PetscVec) 
+	SNESGetRhs(petsclib::PetscLibType,snes::AbstractPetscSNES, rhs::AbstractPetscVec) 
 Gets the vector for solving F(x) = `rhs`. If `rhs` is not set
 it assumes a zero right-hand side.
 
@@ -2575,9 +2575,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetRhs"))
 """
-function SNESGetRhs(petsclib::PetscLibType, snes::PetscSNES, rhs::PetscVec) end
+function SNESGetRhs(petsclib::PetscLibType, snes::AbstractPetscSNES, rhs::AbstractPetscVec) end
 
-@for_petsc function SNESGetRhs(petsclib::$UnionPetscLib, snes::PetscSNES, rhs::PetscVec )
+@for_petsc function SNESGetRhs(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, rhs::AbstractPetscVec )
 	rhs_ = Ref(rhs.ptr)
 
     @chk ccall(
@@ -2593,7 +2593,7 @@ function SNESGetRhs(petsclib::PetscLibType, snes::PetscSNES, rhs::PetscVec) end
 end 
 
 """
-	SNESComputeFunction(petsclib::PetscLibType,snes::PetscSNES, x::PetscVec, y::PetscVec) 
+	SNESComputeFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec, y::AbstractPetscVec) 
 Calls the function that has been set with `SNESSetFunction()`.
 
 Collective
@@ -2612,9 +2612,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESComputeFunction"))
 """
-function SNESComputeFunction(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec, y::PetscVec) end
+function SNESComputeFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function SNESComputeFunction(petsclib::$UnionPetscLib, snes::PetscSNES, x::PetscVec, y::PetscVec )
+@for_petsc function SNESComputeFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:SNESComputeFunction, $petsc_library),
@@ -2628,7 +2628,7 @@ function SNESComputeFunction(petsclib::PetscLibType, snes::PetscSNES, x::PetscVe
 end 
 
 """
-	SNESComputeMFFunction(petsclib::PetscLibType,snes::PetscSNES, x::PetscVec, y::PetscVec) 
+	SNESComputeMFFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec, y::AbstractPetscVec) 
 Calls the function that has been set with `DMSNESSetMFFunction()`.
 
 Collective
@@ -2647,9 +2647,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESComputeMFFunction"))
 """
-function SNESComputeMFFunction(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec, y::PetscVec) end
+function SNESComputeMFFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function SNESComputeMFFunction(petsclib::$UnionPetscLib, snes::PetscSNES, x::PetscVec, y::PetscVec )
+@for_petsc function SNESComputeMFFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:SNESComputeMFFunction, $petsc_library),
@@ -2663,7 +2663,7 @@ function SNESComputeMFFunction(petsclib::PetscLibType, snes::PetscSNES, x::Petsc
 end 
 
 """
-	SNESComputeNGS(petsclib::PetscLibType,snes::PetscSNES, b::PetscVec, x::PetscVec) 
+	SNESComputeNGS(petsclib::PetscLibType,snes::AbstractPetscSNES, b::AbstractPetscVec, x::AbstractPetscVec) 
 Calls the Gauss
 
 Collective
@@ -2683,9 +2683,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESComputeNGS"))
 """
-function SNESComputeNGS(petsclib::PetscLibType, snes::PetscSNES, b::PetscVec, x::PetscVec) end
+function SNESComputeNGS(petsclib::PetscLibType, snes::AbstractPetscSNES, b::AbstractPetscVec, x::AbstractPetscVec) end
 
-@for_petsc function SNESComputeNGS(petsclib::$UnionPetscLib, snes::PetscSNES, b::PetscVec, x::PetscVec )
+@for_petsc function SNESComputeNGS(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, b::AbstractPetscVec, x::AbstractPetscVec )
 
     @chk ccall(
                (:SNESComputeNGS, $petsc_library),
@@ -2699,7 +2699,7 @@ function SNESComputeNGS(petsclib::PetscLibType, snes::PetscSNES, b::PetscVec, x:
 end 
 
 """
-	SNESTestFunction(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESTestFunction(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Computes the difference between the computed and finite
 
 Collective
@@ -2718,9 +2718,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESTestFunction"))
 """
-function SNESTestFunction(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESTestFunction(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESTestFunction(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESTestFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESTestFunction, $petsc_library),
@@ -2734,7 +2734,7 @@ function SNESTestFunction(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	Jnorm::PetscReal,diffNorm::PetscReal = SNESTestJacobian(petsclib::PetscLibType,snes::PetscSNES) 
+	Jnorm::PetscReal,diffNorm::PetscReal = SNESTestJacobian(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Computes the difference between the computed and finite
 
 Collective
@@ -2757,9 +2757,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESTestJacobian"))
 """
-function SNESTestJacobian(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESTestJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESTestJacobian(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESTestJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	Jnorm_ = Ref{$PetscReal}()
 	diffNorm_ = Ref{$PetscReal}()
 
@@ -2777,7 +2777,7 @@ function SNESTestJacobian(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESComputeJacobian(petsclib::PetscLibType,snes::PetscSNES, X::PetscVec, A::PetscMat, B::PetscMat) 
+	SNESComputeJacobian(petsclib::PetscLibType,snes::AbstractPetscSNES, X::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat) 
 Computes the Jacobian matrix that has been set with `SNESSetJacobian()`.
 
 Collective
@@ -2814,9 +2814,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESComputeJacobian"))
 """
-function SNESComputeJacobian(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, A::PetscMat, B::PetscMat) end
+function SNESComputeJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, X::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function SNESComputeJacobian(petsclib::$UnionPetscLib, snes::PetscSNES, X::PetscVec, A::PetscMat, B::PetscMat )
+@for_petsc function SNESComputeJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, X::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat )
 
     @chk ccall(
                (:SNESComputeJacobian, $petsc_library),
@@ -2830,7 +2830,7 @@ function SNESComputeJacobian(petsclib::PetscLibType, snes::PetscSNES, X::PetscVe
 end 
 
 """
-	SNESSetJacobian(petsclib::PetscLibType,snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::Union{SNESJacobianFn,Ptr}, ctx::Union{Cvoid,Ptr}) 
+	SNESSetJacobian(petsclib::PetscLibType,snes::AbstractPetscSNES, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::Union{SNESJacobianFn,Ptr}, ctx::Union{Cvoid,Ptr}) 
 Sets the function to compute Jacobian as well as the
 location to store the matrix.
 
@@ -2852,9 +2852,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/SNESSetJacobian"))
 """
-function SNESSetJacobian(petsclib::PetscLibType, snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::Union{SNESJacobianFn,Ptr}, ctx::Union{Cvoid,Ptr}) end
+function SNESSetJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::Union{SNESJacobianFn,Ptr}, ctx::Union{Cvoid,Ptr}) end
 
-@for_petsc function SNESSetJacobian(petsclib::$UnionPetscLib, snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::Union{Ptr,SNESJacobianFn}, ctx::Union{Cvoid,Ptr} )
+@for_petsc function SNESSetJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::Union{Ptr,SNESJacobianFn}, ctx::Union{Cvoid,Ptr} )
 
     @chk ccall(
                (:SNESSetJacobian, $petsc_library),
@@ -2868,7 +2868,7 @@ function SNESSetJacobian(petsclib::PetscLibType, snes::PetscSNES, Amat::PetscMat
 end 
 
 """
-	SNESGetJacobian(petsclib::PetscLibType,snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid) 
+	SNESGetJacobian(petsclib::PetscLibType,snes::AbstractPetscSNES, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::SNESJacobianFn, ctx::Cvoid) 
 Returns the Jacobian matrix and optionally the user
 provided context for evaluating the Jacobian.
 
@@ -2890,9 +2890,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESGetJacobian"))
 """
-function SNESGetJacobian(petsclib::PetscLibType, snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid) end
+function SNESGetJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::SNESJacobianFn, ctx::Cvoid) end
 
-@for_petsc function SNESGetJacobian(petsclib::$UnionPetscLib, snes::PetscSNES, Amat::PetscMat, Pmat::PetscMat, J::SNESJacobianFn, ctx::Cvoid )
+@for_petsc function SNESGetJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, Amat::AbstractPetscMat, Pmat::AbstractPetscMat, J::SNESJacobianFn, ctx::Cvoid )
 	Amat_ = Ref(Amat.ptr)
 	Pmat_ = Ref(Pmat.ptr)
 
@@ -2916,9 +2916,9 @@ Return the assembled system (A) matrix from `snes`, passing `NULL` for the
 preconditioner matrix, Jacobian function, and context.  Use this when only
 the system matrix is needed (e.g. to attach a null space via `MatSetNullSpace`).
 """
-function SNESGetJacobianMat(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetJacobianMat(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetJacobianMat(petsclib::$UnionPetscLib, snes::PetscSNES)
+@for_petsc function SNESGetJacobianMat(petsclib::$UnionPetscLib, snes::AbstractPetscSNES)
     J_ref = Ref{CMat}(C_NULL)
     @chk ccall(
         (:SNESGetJacobian, $petsc_library), PetscErrorCode,
@@ -2928,7 +2928,7 @@ function SNESGetJacobianMat(petsclib::PetscLibType, snes::PetscSNES) end
 end
 
 """
-	SNESSetUp(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESSetUp(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Sets up the internal data structures for the later use
 of a nonlinear solver `SNESSolve()`.
 
@@ -2944,9 +2944,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESSetUp"))
 """
-function SNESSetUp(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESSetUp(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESSetUp(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESSetUp(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESSetUp, $petsc_library),
@@ -2960,7 +2960,7 @@ function SNESSetUp(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESReset(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESReset(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Resets a `SNES` context to the state it was in before `SNESSetUp()` was called and removes any allocated `Vec` and `Mat` from its data structures
 
 Collective
@@ -2975,9 +2975,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESReset"))
 """
-function SNESReset(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESReset(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESReset(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESReset(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESReset, $petsc_library),
@@ -2991,7 +2991,7 @@ function SNESReset(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESConvergedReasonViewCancel(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESConvergedReasonViewCancel(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Clears all the reason view functions for a `SNES` object provided with `SNESConvergedReasonViewSet()` also
 removes the default viewer.
 
@@ -3007,9 +3007,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESConvergedReasonViewCancel"))
 """
-function SNESConvergedReasonViewCancel(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESConvergedReasonViewCancel(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESConvergedReasonViewCancel(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESConvergedReasonViewCancel(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESConvergedReasonViewCancel, $petsc_library),
@@ -3023,7 +3023,7 @@ function SNESConvergedReasonViewCancel(petsclib::PetscLibType, snes::PetscSNES) 
 end 
 
 """
-	SNESDestroy(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESDestroy(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Destroys the nonlinear solver context that was created
 with `SNESCreate()`.
 
@@ -3039,9 +3039,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/SNESDestroy"))
 """
-function SNESDestroy(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESDestroy(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESDestroy(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESDestroy(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	snes_ = Ref(snes.ptr)
 
     @chk ccall(
@@ -3057,7 +3057,7 @@ function SNESDestroy(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetLagPreconditioner(petsclib::PetscLibType,snes::PetscSNES, lag::PetscInt) 
+	SNESSetLagPreconditioner(petsclib::PetscLibType,snes::AbstractPetscSNES, lag::PetscInt) 
 Sets when the preconditioner is rebuilt in the nonlinear solve `SNESSolve()`.
 
 Logically Collective
@@ -3081,9 +3081,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetLagPreconditioner"))
 """
-function SNESSetLagPreconditioner(petsclib::PetscLibType, snes::PetscSNES, lag::PetscInt) end
+function SNESSetLagPreconditioner(petsclib::PetscLibType, snes::AbstractPetscSNES, lag::PetscInt) end
 
-@for_petsc function SNESSetLagPreconditioner(petsclib::$UnionPetscLib, snes::PetscSNES, lag::$PetscInt )
+@for_petsc function SNESSetLagPreconditioner(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, lag::$PetscInt )
 
     @chk ccall(
                (:SNESSetLagPreconditioner, $petsc_library),
@@ -3097,7 +3097,7 @@ function SNESSetLagPreconditioner(petsclib::PetscLibType, snes::PetscSNES, lag::
 end 
 
 """
-	SNESSetGridSequence(petsclib::PetscLibType,snes::PetscSNES, steps::PetscInt) 
+	SNESSetGridSequence(petsclib::PetscLibType,snes::AbstractPetscSNES, steps::PetscInt) 
 sets the number of steps of grid sequencing that `SNES` will do
 
 Logically Collective
@@ -3117,9 +3117,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetGridSequence"))
 """
-function SNESSetGridSequence(petsclib::PetscLibType, snes::PetscSNES, steps::PetscInt) end
+function SNESSetGridSequence(petsclib::PetscLibType, snes::AbstractPetscSNES, steps::PetscInt) end
 
-@for_petsc function SNESSetGridSequence(petsclib::$UnionPetscLib, snes::PetscSNES, steps::$PetscInt )
+@for_petsc function SNESSetGridSequence(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, steps::$PetscInt )
 
     @chk ccall(
                (:SNESSetGridSequence, $petsc_library),
@@ -3133,7 +3133,7 @@ function SNESSetGridSequence(petsclib::PetscLibType, snes::PetscSNES, steps::Pet
 end 
 
 """
-	steps::PetscInt = SNESGetGridSequence(petsclib::PetscLibType,snes::PetscSNES) 
+	steps::PetscInt = SNESGetGridSequence(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 gets the number of steps of grid sequencing that `SNES` will do
 
 Logically Collective
@@ -3151,9 +3151,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetGridSequence"))
 """
-function SNESGetGridSequence(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetGridSequence(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetGridSequence(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetGridSequence(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	steps_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3169,7 +3169,7 @@ function SNESGetGridSequence(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	lag::PetscInt = SNESGetLagPreconditioner(petsclib::PetscLibType,snes::PetscSNES) 
+	lag::PetscInt = SNESGetLagPreconditioner(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Return how often the preconditioner is rebuilt
 
 Not Collective
@@ -3188,9 +3188,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetLagPreconditioner"))
 """
-function SNESGetLagPreconditioner(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetLagPreconditioner(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetLagPreconditioner(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetLagPreconditioner(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	lag_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3206,7 +3206,7 @@ function SNESGetLagPreconditioner(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetLagJacobian(petsclib::PetscLibType,snes::PetscSNES, lag::PetscInt) 
+	SNESSetLagJacobian(petsclib::PetscLibType,snes::AbstractPetscSNES, lag::PetscInt) 
 Set when the Jacobian is rebuilt in the nonlinear solve. See `SNESSetLagPreconditioner()` for determining how
 often the preconditioner is rebuilt.
 
@@ -3230,9 +3230,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetLagJacobian"))
 """
-function SNESSetLagJacobian(petsclib::PetscLibType, snes::PetscSNES, lag::PetscInt) end
+function SNESSetLagJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, lag::PetscInt) end
 
-@for_petsc function SNESSetLagJacobian(petsclib::$UnionPetscLib, snes::PetscSNES, lag::$PetscInt )
+@for_petsc function SNESSetLagJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, lag::$PetscInt )
 
     @chk ccall(
                (:SNESSetLagJacobian, $petsc_library),
@@ -3246,7 +3246,7 @@ function SNESSetLagJacobian(petsclib::PetscLibType, snes::PetscSNES, lag::PetscI
 end 
 
 """
-	lag::PetscInt = SNESGetLagJacobian(petsclib::PetscLibType,snes::PetscSNES) 
+	lag::PetscInt = SNESGetLagJacobian(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Get how often the Jacobian is rebuilt. See `SNESGetLagPreconditioner()` to determine when the preconditioner is rebuilt
 
 Not Collective
@@ -3266,9 +3266,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetLagJacobian"))
 """
-function SNESGetLagJacobian(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetLagJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetLagJacobian(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetLagJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	lag_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3284,7 +3284,7 @@ function SNESGetLagJacobian(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetLagJacobianPersists(petsclib::PetscLibType,snes::PetscSNES, flg::PetscBool) 
+	SNESSetLagJacobianPersists(petsclib::PetscLibType,snes::AbstractPetscSNES, flg::PetscBool) 
 Set whether or not the Jacobian lagging persists through multiple nonlinear solves
 
 Logically collective
@@ -3306,9 +3306,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESSetLagJacobianPersists"))
 """
-function SNESSetLagJacobianPersists(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
+function SNESSetLagJacobianPersists(petsclib::PetscLibType, snes::AbstractPetscSNES, flg::PetscBool) end
 
-@for_petsc function SNESSetLagJacobianPersists(petsclib::$UnionPetscLib, snes::PetscSNES, flg::PetscBool )
+@for_petsc function SNESSetLagJacobianPersists(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, flg::PetscBool )
 
     @chk ccall(
                (:SNESSetLagJacobianPersists, $petsc_library),
@@ -3322,7 +3322,7 @@ function SNESSetLagJacobianPersists(petsclib::PetscLibType, snes::PetscSNES, flg
 end 
 
 """
-	SNESSetLagPreconditionerPersists(petsclib::PetscLibType,snes::PetscSNES, flg::PetscBool) 
+	SNESSetLagPreconditionerPersists(petsclib::PetscLibType,snes::AbstractPetscSNES, flg::PetscBool) 
 Set whether or not the preconditioner lagging persists through multiple nonlinear solves
 
 Logically Collective
@@ -3344,9 +3344,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESSetLagPreconditionerPersists"))
 """
-function SNESSetLagPreconditionerPersists(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
+function SNESSetLagPreconditionerPersists(petsclib::PetscLibType, snes::AbstractPetscSNES, flg::PetscBool) end
 
-@for_petsc function SNESSetLagPreconditionerPersists(petsclib::$UnionPetscLib, snes::PetscSNES, flg::PetscBool )
+@for_petsc function SNESSetLagPreconditionerPersists(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, flg::PetscBool )
 
     @chk ccall(
                (:SNESSetLagPreconditionerPersists, $petsc_library),
@@ -3360,7 +3360,7 @@ function SNESSetLagPreconditionerPersists(petsclib::PetscLibType, snes::PetscSNE
 end 
 
 """
-	SNESSetForceIteration(petsclib::PetscLibType,snes::PetscSNES, force::PetscBool) 
+	SNESSetForceIteration(petsclib::PetscLibType,snes::AbstractPetscSNES, force::PetscBool) 
 force `SNESSolve()` to take at least one iteration regardless of the initial residual norm
 
 Logically Collective
@@ -3379,9 +3379,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetForceIteration"))
 """
-function SNESSetForceIteration(petsclib::PetscLibType, snes::PetscSNES, force::PetscBool) end
+function SNESSetForceIteration(petsclib::PetscLibType, snes::AbstractPetscSNES, force::PetscBool) end
 
-@for_petsc function SNESSetForceIteration(petsclib::$UnionPetscLib, snes::PetscSNES, force::PetscBool )
+@for_petsc function SNESSetForceIteration(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, force::PetscBool )
 
     @chk ccall(
                (:SNESSetForceIteration, $petsc_library),
@@ -3395,7 +3395,7 @@ function SNESSetForceIteration(petsclib::PetscLibType, snes::PetscSNES, force::P
 end 
 
 """
-	force::PetscBool = SNESGetForceIteration(petsclib::PetscLibType,snes::PetscSNES) 
+	force::PetscBool = SNESGetForceIteration(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Check whether or not `SNESSolve()` take at least one iteration regardless of the initial residual norm
 
 Logically Collective
@@ -3413,9 +3413,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetForceIteration"))
 """
-function SNESGetForceIteration(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetForceIteration(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetForceIteration(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetForceIteration(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	force_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3431,7 +3431,7 @@ function SNESGetForceIteration(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetTolerances(petsclib::PetscLibType,snes::PetscSNES, abstol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt, maxf::PetscInt) 
+	SNESSetTolerances(petsclib::PetscLibType,snes::AbstractPetscSNES, abstol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt, maxf::PetscInt) 
 Sets various parameters used in `SNES` convergence tests.
 
 Logically Collective
@@ -3458,9 +3458,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetTolerances"))
 """
-function SNESSetTolerances(petsclib::PetscLibType, snes::PetscSNES, abstol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt, maxf::PetscInt) end
+function SNESSetTolerances(petsclib::PetscLibType, snes::AbstractPetscSNES, abstol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt, maxf::PetscInt) end
 
-@for_petsc function SNESSetTolerances(petsclib::$UnionPetscLib, snes::PetscSNES, abstol::$PetscReal, rtol::$PetscReal, stol::$PetscReal, maxit::$PetscInt, maxf::$PetscInt )
+@for_petsc function SNESSetTolerances(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, abstol::$PetscReal, rtol::$PetscReal, stol::$PetscReal, maxit::$PetscInt, maxf::$PetscInt )
 
     @chk ccall(
                (:SNESSetTolerances, $petsc_library),
@@ -3474,7 +3474,7 @@ function SNESSetTolerances(petsclib::PetscLibType, snes::PetscSNES, abstol::Pets
 end 
 
 """
-	SNESSetDivergenceTolerance(petsclib::PetscLibType,snes::PetscSNES, divtol::PetscReal) 
+	SNESSetDivergenceTolerance(petsclib::PetscLibType,snes::AbstractPetscSNES, divtol::PetscReal) 
 Sets the divergence tolerance used for the `SNES` divergence test.
 
 Logically Collective
@@ -3494,9 +3494,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetDivergenceTolerance"))
 """
-function SNESSetDivergenceTolerance(petsclib::PetscLibType, snes::PetscSNES, divtol::PetscReal) end
+function SNESSetDivergenceTolerance(petsclib::PetscLibType, snes::AbstractPetscSNES, divtol::PetscReal) end
 
-@for_petsc function SNESSetDivergenceTolerance(petsclib::$UnionPetscLib, snes::PetscSNES, divtol::$PetscReal )
+@for_petsc function SNESSetDivergenceTolerance(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, divtol::$PetscReal )
 
     @chk ccall(
                (:SNESSetDivergenceTolerance, $petsc_library),
@@ -3510,7 +3510,7 @@ function SNESSetDivergenceTolerance(petsclib::PetscLibType, snes::PetscSNES, div
 end 
 
 """
-	atol::PetscReal,rtol::PetscReal,stol::PetscReal,maxit::PetscInt,maxf::PetscInt = SNESGetTolerances(petsclib::PetscLibType,snes::PetscSNES) 
+	atol::PetscReal,rtol::PetscReal,stol::PetscReal,maxit::PetscInt,maxf::PetscInt = SNESGetTolerances(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets various parameters used in `SNES` convergence tests.
 
 Not Collective
@@ -3532,9 +3532,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetTolerances"))
 """
-function SNESGetTolerances(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetTolerances(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetTolerances(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetTolerances(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	atol_ = Ref{$PetscReal}()
 	rtol_ = Ref{$PetscReal}()
 	stol_ = Ref{$PetscReal}()
@@ -3558,7 +3558,7 @@ function SNESGetTolerances(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESGetDivergenceTolerance(petsclib::PetscLibType,snes::PetscSNES, divtol::PetscReal) 
+	SNESGetDivergenceTolerance(petsclib::PetscLibType,snes::AbstractPetscSNES, divtol::PetscReal) 
 Gets divergence tolerance used in divergence test.
 
 Not Collective
@@ -3574,9 +3574,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetDivergenceTolerance"))
 """
-function SNESGetDivergenceTolerance(petsclib::PetscLibType, snes::PetscSNES, divtol::PetscReal) end
+function SNESGetDivergenceTolerance(petsclib::PetscLibType, snes::AbstractPetscSNES, divtol::PetscReal) end
 
-@for_petsc function SNESGetDivergenceTolerance(petsclib::$UnionPetscLib, snes::PetscSNES, divtol::$PetscReal )
+@for_petsc function SNESGetDivergenceTolerance(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, divtol::$PetscReal )
 
     @chk ccall(
                (:SNESGetDivergenceTolerance, $petsc_library),
@@ -3590,14 +3590,14 @@ function SNESGetDivergenceTolerance(petsclib::PetscLibType, snes::PetscSNES, div
 end 
 
 """
-	SNESMonitorLGRange(petsclib::PetscLibType,snes::PetscSNES, n::PetscInt, rnorm::PetscReal, monctx::Cvoid) 
+	SNESMonitorLGRange(petsclib::PetscLibType,snes::AbstractPetscSNES, n::PetscInt, rnorm::PetscReal, monctx::Cvoid) 
 
 # External Links
 $(_doc_external("SNES/SNESMonitorLGRange"))
 """
-function SNESMonitorLGRange(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt, rnorm::PetscReal, monctx::Cvoid) end
+function SNESMonitorLGRange(petsclib::PetscLibType, snes::AbstractPetscSNES, n::PetscInt, rnorm::PetscReal, monctx::Cvoid) end
 
-@for_petsc function SNESMonitorLGRange(petsclib::$UnionPetscLib, snes::PetscSNES, n::$PetscInt, rnorm::$PetscReal, monctx::Cvoid )
+@for_petsc function SNESMonitorLGRange(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, n::$PetscInt, rnorm::$PetscReal, monctx::Cvoid )
 
     @chk ccall(
                (:SNESMonitorLGRange, $petsc_library),
@@ -3611,7 +3611,7 @@ function SNESMonitorLGRange(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt
 end 
 
 """
-	SNESConverged(petsclib::PetscLibType,snes::PetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal) 
+	SNESConverged(petsclib::PetscLibType,snes::AbstractPetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal) 
 Run the convergence test and update the `SNESConvergedReason`.
 
 Collective
@@ -3630,9 +3630,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESConverged"))
 """
-function SNESConverged(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal) end
+function SNESConverged(petsclib::PetscLibType, snes::AbstractPetscSNES, it::PetscInt, xnorm::PetscReal, snorm::PetscReal, fnorm::PetscReal) end
 
-@for_petsc function SNESConverged(petsclib::$UnionPetscLib, snes::PetscSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal )
+@for_petsc function SNESConverged(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, it::$PetscInt, xnorm::$PetscReal, snorm::$PetscReal, fnorm::$PetscReal )
 
     @chk ccall(
                (:SNESConverged, $petsc_library),
@@ -3646,7 +3646,7 @@ function SNESConverged(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt, xn
 end 
 
 """
-	SNESMonitor(petsclib::PetscLibType,snes::PetscSNES, iter::PetscInt, rnorm::PetscReal) 
+	SNESMonitor(petsclib::PetscLibType,snes::AbstractPetscSNES, iter::PetscInt, rnorm::PetscReal) 
 runs any `SNES` monitor routines provided with `SNESMonitor()` or the options database
 
 Collective
@@ -3663,9 +3663,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESMonitor"))
 """
-function SNESMonitor(petsclib::PetscLibType, snes::PetscSNES, iter::PetscInt, rnorm::PetscReal) end
+function SNESMonitor(petsclib::PetscLibType, snes::AbstractPetscSNES, iter::PetscInt, rnorm::PetscReal) end
 
-@for_petsc function SNESMonitor(petsclib::$UnionPetscLib, snes::PetscSNES, iter::$PetscInt, rnorm::$PetscReal )
+@for_petsc function SNESMonitor(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, iter::$PetscInt, rnorm::$PetscReal )
 
     @chk ccall(
                (:SNESMonitor, $petsc_library),
@@ -3679,7 +3679,7 @@ function SNESMonitor(petsclib::PetscLibType, snes::PetscSNES, iter::PetscInt, rn
 end 
 
 """
-	SNESMonitorSet(petsclib::PetscLibType,snes::PetscSNES, f::external, mctx::Cvoid, monitordestroy::PetscCtxDestroyFn) 
+	SNESMonitorSet(petsclib::PetscLibType,snes::AbstractPetscSNES, f::external, mctx::Cvoid, monitordestroy::PetscCtxDestroyFn) 
 Sets an ADDITIONAL function that is to be used at every
 iteration of the `SNES` nonlinear solver to display the iteration's
 progress.
@@ -3705,9 +3705,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMonitorSet"))
 """
-function SNESMonitorSet(petsclib::PetscLibType, snes::PetscSNES, f::external, mctx::Cvoid, monitordestroy::PetscCtxDestroyFn) end
+function SNESMonitorSet(petsclib::PetscLibType, snes::AbstractPetscSNES, f::external, mctx::Cvoid, monitordestroy::PetscCtxDestroyFn) end
 
-@for_petsc function SNESMonitorSet(petsclib::$UnionPetscLib, snes::PetscSNES, f::external, mctx::Cvoid, monitordestroy::PetscCtxDestroyFn )
+@for_petsc function SNESMonitorSet(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, f::external, mctx::Cvoid, monitordestroy::PetscCtxDestroyFn )
 
     @chk ccall(
                (:SNESMonitorSet, $petsc_library),
@@ -3721,7 +3721,7 @@ function SNESMonitorSet(petsclib::PetscLibType, snes::PetscSNES, f::external, mc
 end 
 
 """
-	SNESMonitorCancel(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESMonitorCancel(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Clears all the monitor functions for a `SNES` object.
 
 Logically Collective
@@ -3741,9 +3741,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMonitorCancel"))
 """
-function SNESMonitorCancel(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESMonitorCancel(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESMonitorCancel(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESMonitorCancel(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESMonitorCancel, $petsc_library),
@@ -3757,7 +3757,7 @@ function SNESMonitorCancel(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetConvergenceTest(petsclib::PetscLibType,snes::PetscSNES, SNESConvergenceTestFunction::external, cctx::Cvoid, destroy::external) 
+	SNESSetConvergenceTest(petsclib::PetscLibType,snes::AbstractPetscSNES, SNESConvergenceTestFunction::external, cctx::Cvoid, destroy::external) 
 Sets the function that is to be used
 to test for convergence of the nonlinear iterative solution.
 
@@ -3776,9 +3776,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESSetConvergenceTest"))
 """
-function SNESSetConvergenceTest(petsclib::PetscLibType, snes::PetscSNES, SNESConvergenceTestFunction::external, cctx::Ptr{Cvoid}, destroy::external) end
+function SNESSetConvergenceTest(petsclib::PetscLibType, snes::AbstractPetscSNES, SNESConvergenceTestFunction::external, cctx::Ptr{Cvoid}, destroy::external) end
 
-@for_petsc function SNESSetConvergenceTest(petsclib::$UnionPetscLib, snes::PetscSNES, SNESConvergenceTestFunction::external, cctx::Ptr{Cvoid}, destroy::external )
+@for_petsc function SNESSetConvergenceTest(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, SNESConvergenceTestFunction::external, cctx::Ptr{Cvoid}, destroy::external )
 
     @chk ccall(
                (:SNESSetConvergenceTest, $petsc_library),
@@ -3792,7 +3792,7 @@ function SNESSetConvergenceTest(petsclib::PetscLibType, snes::PetscSNES, SNESCon
 end 
 
 """
-	SNESGetConvergedReason(petsclib::PetscLibType,snes::PetscSNES, reason::SNESConvergedReason) 
+	SNESGetConvergedReason(petsclib::PetscLibType,snes::AbstractPetscSNES, reason::SNESConvergedReason) 
 Gets the reason the `SNES` iteration was stopped, which may be due to convergence, divergence, or stagnation
 
 Not Collective
@@ -3813,10 +3813,10 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetConvergedReason"))
 """
-function SNESGetConvergedReason(petsclib::PetscLibType, snes::PetscSNES, reason::SNESConvergedReason) end
+function SNESGetConvergedReason(petsclib::PetscLibType, snes::AbstractPetscSNES, reason::SNESConvergedReason) end
 
 
-@for_petsc function SNESGetConvergedReason(petsclib::$UnionPetscLib, snes::PetscSNES)
+@for_petsc function SNESGetConvergedReason(petsclib::$UnionPetscLib, snes::AbstractPetscSNES)
     reason = Ref{SNESConvergedReason}()
     @chk ccall(
                (:SNESGetConvergedReason, $petsc_library),
@@ -3827,7 +3827,7 @@ function SNESGetConvergedReason(petsclib::PetscLibType, snes::PetscSNES, reason:
     return reason[]
 end
 
-@for_petsc function SNESGetConvergedReason(petsclib::$UnionPetscLib, snes::PetscSNES, reason::SNESConvergedReason )
+@for_petsc function SNESGetConvergedReason(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, reason::SNESConvergedReason )
 
     @chk ccall(
                (:SNESGetConvergedReason, $petsc_library),
@@ -3841,7 +3841,7 @@ end
 end 
 
 """
-	SNESGetConvergedReasonString(petsclib::PetscLibType,snes::PetscSNES, strreason::Cchar) 
+	SNESGetConvergedReasonString(petsclib::PetscLibType,snes::AbstractPetscSNES, strreason::Cchar) 
 Return a human readable string for `SNESConvergedReason`
 
 Not Collective
@@ -3859,9 +3859,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/SNESGetConvergedReasonString"))
 """
-function SNESGetConvergedReasonString(petsclib::PetscLibType, snes::PetscSNES, strreason::Cchar) end
+function SNESGetConvergedReasonString(petsclib::PetscLibType, snes::AbstractPetscSNES, strreason::Cchar) end
 
-@for_petsc function SNESGetConvergedReasonString(petsclib::$UnionPetscLib, snes::PetscSNES, strreason::Cchar )
+@for_petsc function SNESGetConvergedReasonString(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, strreason::Cchar )
 
     @chk ccall(
                (:SNESGetConvergedReasonString, $petsc_library),
@@ -3875,7 +3875,7 @@ function SNESGetConvergedReasonString(petsclib::PetscLibType, snes::PetscSNES, s
 end 
 
 """
-	SNESSetConvergedReason(petsclib::PetscLibType,snes::PetscSNES, reason::SNESConvergedReason) 
+	SNESSetConvergedReason(petsclib::PetscLibType,snes::AbstractPetscSNES, reason::SNESConvergedReason) 
 Sets the reason the `SNES` iteration was stopped.
 
 Not Collective
@@ -3892,9 +3892,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESSetConvergedReason"))
 """
-function SNESSetConvergedReason(petsclib::PetscLibType, snes::PetscSNES, reason::SNESConvergedReason) end
+function SNESSetConvergedReason(petsclib::PetscLibType, snes::AbstractPetscSNES, reason::SNESConvergedReason) end
 
-@for_petsc function SNESSetConvergedReason(petsclib::$UnionPetscLib, snes::PetscSNES, reason::SNESConvergedReason )
+@for_petsc function SNESSetConvergedReason(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, reason::SNESConvergedReason )
 
     @chk ccall(
                (:SNESSetConvergedReason, $petsc_library),
@@ -3908,7 +3908,7 @@ function SNESSetConvergedReason(petsclib::PetscLibType, snes::PetscSNES, reason:
 end 
 
 """
-	SNESSetConvergenceHistory(petsclib::PetscLibType,snes::PetscSNES, a::Vector{PetscReal}, its::Vector{PetscInt}, na::PetscInt, reset::PetscBool) 
+	SNESSetConvergenceHistory(petsclib::PetscLibType,snes::AbstractPetscSNES, a::Vector{PetscReal}, its::Vector{PetscInt}, na::PetscInt, reset::PetscBool) 
 Sets the arrays used to hold the convergence history.
 
 Logically Collective
@@ -3928,9 +3928,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetConvergenceHistory"))
 """
-function SNESSetConvergenceHistory(petsclib::PetscLibType, snes::PetscSNES, a::Vector{PetscReal}, its::Vector{PetscInt}, na::PetscInt, reset::PetscBool) end
+function SNESSetConvergenceHistory(petsclib::PetscLibType, snes::AbstractPetscSNES, a::Vector{PetscReal}, its::Vector{PetscInt}, na::PetscInt, reset::PetscBool) end
 
-@for_petsc function SNESSetConvergenceHistory(petsclib::$UnionPetscLib, snes::PetscSNES, a::Vector{$PetscReal}, its::Vector{$PetscInt}, na::$PetscInt, reset::PetscBool )
+@for_petsc function SNESSetConvergenceHistory(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, a::Vector{$PetscReal}, its::Vector{$PetscInt}, na::$PetscInt, reset::PetscBool )
 
     @chk ccall(
                (:SNESSetConvergenceHistory, $petsc_library),
@@ -3944,7 +3944,7 @@ function SNESSetConvergenceHistory(petsclib::PetscLibType, snes::PetscSNES, a::V
 end 
 
 """
-	a::Vector{PetscReal},its::Vector{PetscInt},na::PetscInt = SNESGetConvergenceHistory(petsclib::PetscLibType,snes::PetscSNES) 
+	a::Vector{PetscReal},its::Vector{PetscInt},na::PetscInt = SNESGetConvergenceHistory(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the arrays used to hold the convergence history.
 
 Not Collective
@@ -3965,9 +3965,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetConvergenceHistory"))
 """
-function SNESGetConvergenceHistory(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetConvergenceHistory(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetConvergenceHistory(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetConvergenceHistory(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	a_ = Ref{Ptr{$PetscReal}}()
 	its_ = Ref{Ptr{$PetscInt}}()
 	na_ = Ref{$PetscInt}()
@@ -3987,7 +3987,7 @@ function SNESGetConvergenceHistory(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetUpdate(petsclib::PetscLibType,snes::PetscSNES, func::SNESUpdateFn) 
+	SNESSetUpdate(petsclib::PetscLibType,snes::AbstractPetscSNES, func::SNESUpdateFn) 
 Sets the general
 at the beginning of every iteration of the nonlinear solve. Specifically
 it is called just before the Jacobian is "evaluated" and after the function
@@ -4007,9 +4007,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESSetUpdate"))
 """
-function SNESSetUpdate(petsclib::PetscLibType, snes::PetscSNES, func::SNESUpdateFn) end
+function SNESSetUpdate(petsclib::PetscLibType, snes::AbstractPetscSNES, func::SNESUpdateFn) end
 
-@for_petsc function SNESSetUpdate(petsclib::$UnionPetscLib, snes::PetscSNES, func::SNESUpdateFn )
+@for_petsc function SNESSetUpdate(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::SNESUpdateFn )
 
     @chk ccall(
                (:SNESSetUpdate, $petsc_library),
@@ -4023,7 +4023,7 @@ function SNESSetUpdate(petsclib::PetscLibType, snes::PetscSNES, func::SNESUpdate
 end 
 
 """
-	SNESConvergedReasonView(petsclib::PetscLibType,snes::PetscSNES, viewer::PetscViewer) 
+	SNESConvergedReasonView(petsclib::PetscLibType,snes::AbstractPetscSNES, viewer::PetscViewer) 
 Displays the reason a `SNES` solve converged or diverged to a viewer
 
 Collective
@@ -4046,9 +4046,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/SNESConvergedReasonView"))
 """
-function SNESConvergedReasonView(petsclib::PetscLibType, snes::PetscSNES, viewer::PetscViewer) end
+function SNESConvergedReasonView(petsclib::PetscLibType, snes::AbstractPetscSNES, viewer::PetscViewer) end
 
-@for_petsc function SNESConvergedReasonView(petsclib::$UnionPetscLib, snes::PetscSNES, viewer::PetscViewer )
+@for_petsc function SNESConvergedReasonView(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, viewer::PetscViewer )
 
     @chk ccall(
                (:SNESConvergedReasonView, $petsc_library),
@@ -4062,7 +4062,7 @@ function SNESConvergedReasonView(petsclib::PetscLibType, snes::PetscSNES, viewer
 end 
 
 """
-	SNESConvergedReasonViewSet(petsclib::PetscLibType,snes::PetscSNES, f::external, vctx::Cvoid, reasonviewdestroy::PetscCtxDestroyFn) 
+	SNESConvergedReasonViewSet(petsclib::PetscLibType,snes::AbstractPetscSNES, f::external, vctx::Cvoid, reasonviewdestroy::PetscCtxDestroyFn) 
 Sets an ADDITIONAL function that is to be used at the
 end of the nonlinear solver to display the convergence reason of the nonlinear solver.
 
@@ -4091,9 +4091,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESConvergedReasonViewSet"))
 """
-function SNESConvergedReasonViewSet(petsclib::PetscLibType, snes::PetscSNES, f::external, vctx::Cvoid, reasonviewdestroy::PetscCtxDestroyFn) end
+function SNESConvergedReasonViewSet(petsclib::PetscLibType, snes::AbstractPetscSNES, f::external, vctx::Cvoid, reasonviewdestroy::PetscCtxDestroyFn) end
 
-@for_petsc function SNESConvergedReasonViewSet(petsclib::$UnionPetscLib, snes::PetscSNES, f::external, vctx::Cvoid, reasonviewdestroy::PetscCtxDestroyFn )
+@for_petsc function SNESConvergedReasonViewSet(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, f::external, vctx::Cvoid, reasonviewdestroy::PetscCtxDestroyFn )
 
     @chk ccall(
                (:SNESConvergedReasonViewSet, $petsc_library),
@@ -4107,7 +4107,7 @@ function SNESConvergedReasonViewSet(petsclib::PetscLibType, snes::PetscSNES, f::
 end 
 
 """
-	SNESConvergedReasonViewFromOptions(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESConvergedReasonViewFromOptions(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Processes command line options to determine if/how a `SNESConvergedReason` is to be viewed at the end of `SNESSolve()`
 All the user-provided viewer routines set with `SNESConvergedReasonViewSet()` will be called, if they exist.
 
@@ -4124,9 +4124,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESConvergedReasonViewFromOptions"))
 """
-function SNESConvergedReasonViewFromOptions(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESConvergedReasonViewFromOptions(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESConvergedReasonViewFromOptions(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESConvergedReasonViewFromOptions(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESConvergedReasonViewFromOptions, $petsc_library),
@@ -4140,7 +4140,7 @@ function SNESConvergedReasonViewFromOptions(petsclib::PetscLibType, snes::PetscS
 end 
 
 """
-	SNESSolve(petsclib::PetscLibType,snes::PetscSNES, b::Union{PetscVec,Ptr}, x::PetscVec) 
+	SNESSolve(petsclib::PetscLibType,snes::AbstractPetscSNES, b::Union{PetscVec,Ptr}, x::AbstractPetscVec) 
 Solves a nonlinear system F(x) = b  associated with a `SNES` object
 
 Collective
@@ -4159,9 +4159,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/SNESSolve"))
 """
-function SNESSolve(petsclib::PetscLibType, snes::PetscSNES, b::Union{PetscVec,Ptr}, x::PetscVec) end
+function SNESSolve(petsclib::PetscLibType, snes::AbstractPetscSNES, b::Union{PetscVec,Ptr}, x::AbstractPetscVec) end
 
-@for_petsc function SNESSolve(petsclib::$UnionPetscLib, snes::PetscSNES, b::Union{PetscVec,Ptr}, x::PetscVec )
+@for_petsc function SNESSolve(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, b::Union{PetscVec,Ptr}, x::AbstractPetscVec )
 
     @chk ccall(
                (:SNESSolve, $petsc_library),
@@ -4175,7 +4175,7 @@ function SNESSolve(petsclib::PetscLibType, snes::PetscSNES, b::Union{PetscVec,Pt
 end 
 
 """
-	SNESSetType(petsclib::PetscLibType,snes::PetscSNES, type::SNESType) 
+	SNESSetType(petsclib::PetscLibType,snes::AbstractPetscSNES, type::SNESType) 
 Sets the algorithm/method to be used to solve the nonlinear system with the given `SNES`
 
 Collective
@@ -4195,9 +4195,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetType"))
 """
-function SNESSetType(petsclib::PetscLibType, snes::PetscSNES, type::SNESType) end
+function SNESSetType(petsclib::PetscLibType, snes::AbstractPetscSNES, type::SNESType) end
 
-@for_petsc function SNESSetType(petsclib::$UnionPetscLib, snes::PetscSNES, type::SNESType )
+@for_petsc function SNESSetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, type::SNESType )
 
     @chk ccall(
                (:SNESSetType, $petsc_library),
@@ -4211,7 +4211,7 @@ function SNESSetType(petsclib::PetscLibType, snes::PetscSNES, type::SNESType) en
 end 
 
 """
-	type::SNESType = SNESGetType(petsclib::PetscLibType,snes::PetscSNES) 
+	type::SNESType = SNESGetType(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the `SNES` method type and name (as a string).
 
 Not Collective
@@ -4229,9 +4229,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetType"))
 """
-function SNESGetType(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetType(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetType(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESGetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	type_ = Ref{SNESType}()
 
     @chk ccall(
@@ -4247,7 +4247,7 @@ function SNESGetType(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetSolution(petsclib::PetscLibType,snes::PetscSNES, u::PetscVec) 
+	SNESSetSolution(petsclib::PetscLibType,snes::AbstractPetscSNES, u::AbstractPetscVec) 
 Sets the solution vector for use by the `SNES` routines.
 
 Logically Collective
@@ -4263,9 +4263,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/SNESSetSolution"))
 """
-function SNESSetSolution(petsclib::PetscLibType, snes::PetscSNES, u::PetscVec) end
+function SNESSetSolution(petsclib::PetscLibType, snes::AbstractPetscSNES, u::AbstractPetscVec) end
 
-@for_petsc function SNESSetSolution(petsclib::$UnionPetscLib, snes::PetscSNES, u::PetscVec )
+@for_petsc function SNESSetSolution(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, u::AbstractPetscVec )
 
     @chk ccall(
                (:SNESSetSolution, $petsc_library),
@@ -4279,7 +4279,7 @@ function SNESSetSolution(petsclib::PetscLibType, snes::PetscSNES, u::PetscVec) e
 end 
 
 """
-	SNESGetSolution(petsclib::PetscLibType,snes::PetscSNES, x::PetscVec) 
+	SNESGetSolution(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec) 
 Returns the vector where the approximate solution is
 stored. This is the fine grid solution when using `SNESSetGridSequence()`.
 
@@ -4298,9 +4298,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetSolution"))
 """
-function SNESGetSolution(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec) end
+function SNESGetSolution(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec) end
 
-@for_petsc function SNESGetSolution(petsclib::$UnionPetscLib, snes::PetscSNES, x::PetscVec )
+@for_petsc function SNESGetSolution(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec )
 	x_ = Ref(x.ptr)
 
     @chk ccall(
@@ -4316,7 +4316,7 @@ function SNESGetSolution(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec) e
 end
 
 """
-	SNESGetSolutionUpdate(petsclib::PetscLibType,snes::PetscSNES, x::PetscVec) 
+	SNESGetSolutionUpdate(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec) 
 Returns the vector where the solution update is
 stored.
 
@@ -4335,9 +4335,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESGetSolutionUpdate"))
 """
-function SNESGetSolutionUpdate(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec) end
+function SNESGetSolutionUpdate(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec) end
 
-@for_petsc function SNESGetSolutionUpdate(petsclib::$UnionPetscLib, snes::PetscSNES, x::PetscVec )
+@for_petsc function SNESGetSolutionUpdate(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec )
 	x_ = Ref(x.ptr)
 
     @chk ccall(
@@ -4353,7 +4353,7 @@ function SNESGetSolutionUpdate(petsclib::PetscLibType, snes::PetscSNES, x::Petsc
 end
 
 """
-	SNESGetFunction(petsclib::PetscLibType,snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, ctx::Cvoid) 
+	SNESGetFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, r::AbstractPetscVec, f::SNESFunctionFn, ctx::Cvoid) 
 Returns the function that defines the nonlinear system set with `SNESSetFunction()`
 
 Not Collective, but `r` is parallel if `snes` is parallel. Collective if `r` is requested, but has not been created yet.
@@ -4373,9 +4373,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESGetFunction"))
 """
-function SNESGetFunction(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, ctx::Cvoid) end
+function SNESGetFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, r::AbstractPetscVec, f::SNESFunctionFn, ctx::Cvoid) end
 
-@for_petsc function SNESGetFunction(petsclib::$UnionPetscLib, snes::PetscSNES, r::PetscVec, f::SNESFunctionFn, ctx::Cvoid )
+@for_petsc function SNESGetFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, r::AbstractPetscVec, f::SNESFunctionFn, ctx::Cvoid )
 	r_ = Ref(r.ptr)
 
     @chk ccall(
@@ -4391,7 +4391,7 @@ function SNESGetFunction(petsclib::PetscLibType, snes::PetscSNES, r::PetscVec, f
 end 
 
 """
-	SNESGetNGS(petsclib::PetscLibType,snes::PetscSNES, f::SNESNGSFn, ctx::Cvoid) 
+	SNESGetNGS(petsclib::PetscLibType,snes::AbstractPetscSNES, f::SNESNGSFn, ctx::Cvoid) 
 Returns the function and context set with `SNESSetNGS()`
 
 Input Parameter:
@@ -4408,9 +4408,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESGetNGS"))
 """
-function SNESGetNGS(petsclib::PetscLibType, snes::PetscSNES, f::SNESNGSFn, ctx::Cvoid) end
+function SNESGetNGS(petsclib::PetscLibType, snes::AbstractPetscSNES, f::SNESNGSFn, ctx::Cvoid) end
 
-@for_petsc function SNESGetNGS(petsclib::$UnionPetscLib, snes::PetscSNES, f::SNESNGSFn, ctx::Cvoid )
+@for_petsc function SNESGetNGS(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, f::SNESNGSFn, ctx::Cvoid )
 
     @chk ccall(
                (:SNESGetNGS, $petsc_library),
@@ -4424,7 +4424,7 @@ function SNESGetNGS(petsclib::PetscLibType, snes::PetscSNES, f::SNESNGSFn, ctx::
 end 
 
 """
-	SNESSetOptionsPrefix(petsclib::PetscLibType,snes::PetscSNES, prefix::String) 
+	SNESSetOptionsPrefix(petsclib::PetscLibType,snes::AbstractPetscSNES, prefix::String) 
 Sets the prefix used for searching for all
 `SNES` options in the database.
 
@@ -4441,9 +4441,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESSetOptionsPrefix"))
 """
-function SNESSetOptionsPrefix(petsclib::PetscLibType, snes::PetscSNES, prefix::String) end
+function SNESSetOptionsPrefix(petsclib::PetscLibType, snes::AbstractPetscSNES, prefix::String) end
 
-@for_petsc function SNESSetOptionsPrefix(petsclib::$UnionPetscLib, snes::PetscSNES, prefix::String )
+@for_petsc function SNESSetOptionsPrefix(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, prefix::String )
 
     @chk ccall(
                (:SNESSetOptionsPrefix, $petsc_library),
@@ -4457,7 +4457,7 @@ function SNESSetOptionsPrefix(petsclib::PetscLibType, snes::PetscSNES, prefix::S
 end 
 
 """
-	SNESAppendOptionsPrefix(petsclib::PetscLibType,snes::PetscSNES, prefix::String) 
+	SNESAppendOptionsPrefix(petsclib::PetscLibType,snes::AbstractPetscSNES, prefix::String) 
 Appends to the prefix used for searching for all
 `SNES` options in the database.
 
@@ -4474,9 +4474,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESAppendOptionsPrefix"))
 """
-function SNESAppendOptionsPrefix(petsclib::PetscLibType, snes::PetscSNES, prefix::String) end
+function SNESAppendOptionsPrefix(petsclib::PetscLibType, snes::AbstractPetscSNES, prefix::String) end
 
-@for_petsc function SNESAppendOptionsPrefix(petsclib::$UnionPetscLib, snes::PetscSNES, prefix::String )
+@for_petsc function SNESAppendOptionsPrefix(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, prefix::String )
 
     @chk ccall(
                (:SNESAppendOptionsPrefix, $petsc_library),
@@ -4490,7 +4490,7 @@ function SNESAppendOptionsPrefix(petsclib::PetscLibType, snes::PetscSNES, prefix
 end 
 
 """
-	SNESGetOptionsPrefix(petsclib::PetscLibType,snes::PetscSNES, prefix::String) 
+	SNESGetOptionsPrefix(petsclib::PetscLibType,snes::AbstractPetscSNES, prefix::String) 
 Gets the prefix used for searching for all
 `SNES` options in the database.
 
@@ -4509,9 +4509,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESGetOptionsPrefix"))
 """
-function SNESGetOptionsPrefix(petsclib::PetscLibType, snes::PetscSNES, prefix::String) end
+function SNESGetOptionsPrefix(petsclib::PetscLibType, snes::AbstractPetscSNES, prefix::String) end
 
-@for_petsc function SNESGetOptionsPrefix(petsclib::$UnionPetscLib, snes::PetscSNES, prefix::String )
+@for_petsc function SNESGetOptionsPrefix(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, prefix::String )
 	prefix_ = Ref(pointer(prefix))
 
     @chk ccall(
@@ -4558,14 +4558,14 @@ function SNESRegister(petsclib::PetscLibType, sname::String, fnc::external) end
 end 
 
 """
-	SNESTestLocalMin(petsclib::PetscLibType,snes::PetscSNES) 
+	SNESTestLocalMin(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 
 # External Links
 $(_doc_external("SNES/SNESTestLocalMin"))
 """
-function SNESTestLocalMin(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESTestLocalMin(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESTestLocalMin(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESTestLocalMin(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESTestLocalMin, $petsc_library),
@@ -4579,7 +4579,7 @@ function SNESTestLocalMin(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESKSPSetUseEW(petsclib::PetscLibType,snes::PetscSNES, flag::PetscBool) 
+	SNESKSPSetUseEW(petsclib::PetscLibType,snes::AbstractPetscSNES, flag::PetscBool) 
 Sets `SNES` to the use Eisenstat
 computing relative tolerance for linear solvers within an inexact
 Newton method.
@@ -4607,9 +4607,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESKSPSetUseEW"))
 """
-function SNESKSPSetUseEW(petsclib::PetscLibType, snes::PetscSNES, flag::PetscBool) end
+function SNESKSPSetUseEW(petsclib::PetscLibType, snes::AbstractPetscSNES, flag::PetscBool) end
 
-@for_petsc function SNESKSPSetUseEW(petsclib::$UnionPetscLib, snes::PetscSNES, flag::PetscBool )
+@for_petsc function SNESKSPSetUseEW(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, flag::PetscBool )
 
     @chk ccall(
                (:SNESKSPSetUseEW, $petsc_library),
@@ -4623,7 +4623,7 @@ function SNESKSPSetUseEW(petsclib::PetscLibType, snes::PetscSNES, flag::PetscBoo
 end 
 
 """
-	flag::PetscBool = SNESKSPGetUseEW(petsclib::PetscLibType,snes::PetscSNES) 
+	flag::PetscBool = SNESKSPGetUseEW(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets if `SNES` is using Eisenstat
 for computing relative tolerance for linear solvers within an
 inexact Newton method.
@@ -4643,9 +4643,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESKSPGetUseEW"))
 """
-function SNESKSPGetUseEW(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESKSPGetUseEW(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESKSPGetUseEW(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESKSPGetUseEW(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4661,7 +4661,7 @@ function SNESKSPGetUseEW(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESKSPSetParametersEW(petsclib::PetscLibType,snes::PetscSNES, version::PetscInt, rtol_0::PetscReal, rtol_max::PetscReal, gamma::PetscReal, alpha::PetscReal, alpha2::PetscReal, threshold::PetscReal) 
+	SNESKSPSetParametersEW(petsclib::PetscLibType,snes::AbstractPetscSNES, version::PetscInt, rtol_0::PetscReal, rtol_max::PetscReal, gamma::PetscReal, alpha::PetscReal, alpha2::PetscReal, threshold::PetscReal) 
 Sets parameters for Eisenstat
 convergence criteria for the linear solvers within an inexact
 Newton method.
@@ -4686,9 +4686,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESKSPSetParametersEW"))
 """
-function SNESKSPSetParametersEW(petsclib::PetscLibType, snes::PetscSNES, version::PetscInt, rtol_0::PetscReal, rtol_max::PetscReal, gamma::PetscReal, alpha::PetscReal, alpha2::PetscReal, threshold::PetscReal) end
+function SNESKSPSetParametersEW(petsclib::PetscLibType, snes::AbstractPetscSNES, version::PetscInt, rtol_0::PetscReal, rtol_max::PetscReal, gamma::PetscReal, alpha::PetscReal, alpha2::PetscReal, threshold::PetscReal) end
 
-@for_petsc function SNESKSPSetParametersEW(petsclib::$UnionPetscLib, snes::PetscSNES, version::$PetscInt, rtol_0::$PetscReal, rtol_max::$PetscReal, gamma::$PetscReal, alpha::$PetscReal, alpha2::$PetscReal, threshold::$PetscReal )
+@for_petsc function SNESKSPSetParametersEW(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, version::$PetscInt, rtol_0::$PetscReal, rtol_max::$PetscReal, gamma::$PetscReal, alpha::$PetscReal, alpha2::$PetscReal, threshold::$PetscReal )
 
     @chk ccall(
                (:SNESKSPSetParametersEW, $petsc_library),
@@ -4702,7 +4702,7 @@ function SNESKSPSetParametersEW(petsclib::PetscLibType, snes::PetscSNES, version
 end 
 
 """
-	version::PetscInt,rtol_0::PetscReal,rtol_max::PetscReal,gamma::PetscReal,alpha::PetscReal,alpha2::PetscReal,threshold::PetscReal = SNESKSPGetParametersEW(petsclib::PetscLibType,snes::PetscSNES) 
+	version::PetscInt,rtol_0::PetscReal,rtol_max::PetscReal,gamma::PetscReal,alpha::PetscReal,alpha2::PetscReal,threshold::PetscReal = SNESKSPGetParametersEW(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets parameters for Eisenstat
 convergence criteria for the linear solvers within an inexact
 Newton method.
@@ -4728,9 +4728,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESKSPGetParametersEW"))
 """
-function SNESKSPGetParametersEW(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESKSPGetParametersEW(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESKSPGetParametersEW(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESKSPGetParametersEW(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	version_ = Ref{$PetscInt}()
 	rtol_0_ = Ref{$PetscReal}()
 	rtol_max_ = Ref{$PetscReal}()
@@ -4758,7 +4758,7 @@ function SNESKSPGetParametersEW(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESGetKSP(petsclib::PetscLibType,snes::PetscSNES, ksp::PetscKSP) 
+	SNESGetKSP(petsclib::PetscLibType,snes::AbstractPetscSNES, ksp::AbstractPetscKSP) 
 Returns the `KSP` context for a `SNES` solver.
 
 Not Collective, but if `snes` is parallel, then `ksp` is parallel
@@ -4776,9 +4776,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/SNESGetKSP"))
 """
-function SNESGetKSP(petsclib::PetscLibType, snes::PetscSNES, ksp::PetscKSP) end
+function SNESGetKSP(petsclib::PetscLibType, snes::AbstractPetscSNES, ksp::AbstractPetscKSP) end
 
-@for_petsc function SNESGetKSP(petsclib::$UnionPetscLib, snes::PetscSNES, ksp::PetscKSP )
+@for_petsc function SNESGetKSP(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -4794,7 +4794,7 @@ function SNESGetKSP(petsclib::PetscLibType, snes::PetscSNES, ksp::PetscKSP) end
 end 
 
 """
-	SNESSetDM(petsclib::PetscLibType,snes::PetscSNES, dm::PetscDM) 
+	SNESSetDM(petsclib::PetscLibType,snes::AbstractPetscSNES, dm::AbstractPetscDM) 
 Sets the `DM` that may be used by some `SNES` nonlinear solvers or their underlying preconditioners
 
 Logically Collective
@@ -4810,9 +4810,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetDM"))
 """
-function SNESSetDM(petsclib::PetscLibType, snes::PetscSNES, dm::PetscDM) end
+function SNESSetDM(petsclib::PetscLibType, snes::AbstractPetscSNES, dm::AbstractPetscDM) end
 
-@for_petsc function SNESSetDM(petsclib::$UnionPetscLib, snes::PetscSNES, dm::PetscDM )
+@for_petsc function SNESSetDM(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, dm::AbstractPetscDM )
 
     @chk ccall(
                (:SNESSetDM, $petsc_library),
@@ -4826,7 +4826,7 @@ function SNESSetDM(petsclib::PetscLibType, snes::PetscSNES, dm::PetscDM) end
 end 
 
 """
-	dm::PetscDM = SNESGetDM(petsclib::PetscLibType,snes::PetscSNES) 
+	dm::PetscDM = SNESGetDM(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the `DM` that may be used by some `SNES` nonlinear solvers/preconditioners
 
 Not Collective but `dm` obtained is parallel on `snes`
@@ -4844,9 +4844,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESGetDM"))
 """
-function SNESGetDM(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESGetDM(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESGetDM(petsclib::$UnionPetscLib, snes::PetscSNES)
+@for_petsc function SNESGetDM(petsclib::$UnionPetscLib, snes::AbstractPetscSNES)
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -4862,7 +4862,7 @@ function SNESGetDM(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetNPC(petsclib::PetscLibType,snes::PetscSNES, npc::PetscSNES) 
+	SNESSetNPC(petsclib::PetscLibType,snes::AbstractPetscSNES, npc::AbstractPetscSNES) 
 Sets the nonlinear preconditioner to be used.
 
 Collective
@@ -4881,9 +4881,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESSetNPC"))
 """
-function SNESSetNPC(petsclib::PetscLibType, snes::PetscSNES, npc::PetscSNES) end
+function SNESSetNPC(petsclib::PetscLibType, snes::AbstractPetscSNES, npc::AbstractPetscSNES) end
 
-@for_petsc function SNESSetNPC(petsclib::$UnionPetscLib, snes::PetscSNES, npc::PetscSNES )
+@for_petsc function SNESSetNPC(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, npc::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESSetNPC, $petsc_library),
@@ -4897,7 +4897,7 @@ function SNESSetNPC(petsclib::PetscLibType, snes::PetscSNES, npc::PetscSNES) end
 end 
 
 """
-	SNESGetNPC(petsclib::PetscLibType,snes::PetscSNES, pc::PetscSNES) 
+	SNESGetNPC(petsclib::PetscLibType,snes::AbstractPetscSNES, pc::AbstractPetscSNES) 
 Gets a nonlinear preconditioning solver SNES` to be used to precondition the original nonlinear solver.
 
 Not Collective; but any changes to the obtained the `pc` object must be applied collectively
@@ -4918,9 +4918,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESGetNPC"))
 """
-function SNESGetNPC(petsclib::PetscLibType, snes::PetscSNES, pc::PetscSNES) end
+function SNESGetNPC(petsclib::PetscLibType, snes::AbstractPetscSNES, pc::AbstractPetscSNES) end
 
-@for_petsc function SNESGetNPC(petsclib::$UnionPetscLib, snes::PetscSNES, pc::PetscSNES )
+@for_petsc function SNESGetNPC(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, pc::AbstractPetscSNES )
 	pc_ = Ref(pc.ptr)
 
     @chk ccall(
@@ -4936,7 +4936,7 @@ function SNESGetNPC(petsclib::PetscLibType, snes::PetscSNES, pc::PetscSNES) end
 end 
 
 """
-	has_npc::PetscBool = SNESHasNPC(petsclib::PetscLibType,snes::PetscSNES) 
+	has_npc::PetscBool = SNESHasNPC(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Returns whether a nonlinear preconditioner is associated with the given `SNES`
 
 Not Collective
@@ -4954,9 +4954,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESHasNPC"))
 """
-function SNESHasNPC(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESHasNPC(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESHasNPC(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESHasNPC(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	has_npc_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4972,7 +4972,7 @@ function SNESHasNPC(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESSetNPCSide(petsclib::PetscLibType,snes::PetscSNES, side::PCSide) 
+	SNESSetNPCSide(petsclib::PetscLibType,snes::AbstractPetscSNES, side::PCSide) 
 Sets the nonlinear preconditioning side used by the nonlinear preconditioner inside `SNES`.
 
 Logically Collective
@@ -4987,9 +4987,9 @@ Output Parameter:
 # External Links
 $(_doc_external("SNES/SNESSetNPCSide"))
 """
-function SNESSetNPCSide(petsclib::PetscLibType, snes::PetscSNES, side::PCSide) end
+function SNESSetNPCSide(petsclib::PetscLibType, snes::AbstractPetscSNES, side::PCSide) end
 
-@for_petsc function SNESSetNPCSide(petsclib::$UnionPetscLib, snes::PetscSNES, side::PCSide )
+@for_petsc function SNESSetNPCSide(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, side::PCSide )
 
     @chk ccall(
                (:SNESSetNPCSide, $petsc_library),
@@ -5003,7 +5003,7 @@ function SNESSetNPCSide(petsclib::PetscLibType, snes::PetscSNES, side::PCSide) e
 end 
 
 """
-	SNESGetNPCSide(petsclib::PetscLibType,snes::PetscSNES, side::PCSide) 
+	SNESGetNPCSide(petsclib::PetscLibType,snes::AbstractPetscSNES, side::PCSide) 
 Gets the preconditioning side used by the nonlinear preconditioner inside `SNES`.
 
 Not Collective
@@ -5018,9 +5018,9 @@ Output Parameter:
 # External Links
 $(_doc_external("SNES/SNESGetNPCSide"))
 """
-function SNESGetNPCSide(petsclib::PetscLibType, snes::PetscSNES, side::PCSide) end
+function SNESGetNPCSide(petsclib::PetscLibType, snes::AbstractPetscSNES, side::PCSide) end
 
-@for_petsc function SNESGetNPCSide(petsclib::$UnionPetscLib, snes::PetscSNES, side::PCSide )
+@for_petsc function SNESGetNPCSide(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, side::PCSide )
 
     @chk ccall(
                (:SNESGetNPCSide, $petsc_library),
@@ -5034,7 +5034,7 @@ function SNESGetNPCSide(petsclib::PetscLibType, snes::PetscSNES, side::PCSide) e
 end 
 
 """
-	SNESSetLineSearch(petsclib::PetscLibType,snes::PetscSNES, linesearch::SNESLineSearch) 
+	SNESSetLineSearch(petsclib::PetscLibType,snes::AbstractPetscSNES, linesearch::SNESLineSearch) 
 Sets the `SNESLineSearch` to be used for a given `SNES`
 
 Collective
@@ -5050,9 +5050,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESSetLineSearch"))
 """
-function SNESSetLineSearch(petsclib::PetscLibType, snes::PetscSNES, linesearch::SNESLineSearch) end
+function SNESSetLineSearch(petsclib::PetscLibType, snes::AbstractPetscSNES, linesearch::SNESLineSearch) end
 
-@for_petsc function SNESSetLineSearch(petsclib::$UnionPetscLib, snes::PetscSNES, linesearch::SNESLineSearch )
+@for_petsc function SNESSetLineSearch(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, linesearch::SNESLineSearch )
 
     @chk ccall(
                (:SNESSetLineSearch, $petsc_library),
@@ -5066,7 +5066,7 @@ function SNESSetLineSearch(petsclib::PetscLibType, snes::PetscSNES, linesearch::
 end 
 
 """
-	SNESGetLineSearch(petsclib::PetscLibType,snes::PetscSNES, linesearch::SNESLineSearch) 
+	SNESGetLineSearch(petsclib::PetscLibType,snes::AbstractPetscSNES, linesearch::SNESLineSearch) 
 Returns the line search associated with the `SNES`.
 
 Not Collective
@@ -5084,9 +5084,9 @@ Level: beginner
 # External Links
 $(_doc_external("SNES/SNESGetLineSearch"))
 """
-function SNESGetLineSearch(petsclib::PetscLibType, snes::PetscSNES, linesearch::SNESLineSearch) end
+function SNESGetLineSearch(petsclib::PetscLibType, snes::AbstractPetscSNES, linesearch::SNESLineSearch) end
 
-@for_petsc function SNESGetLineSearch(petsclib::$UnionPetscLib, snes::PetscSNES, linesearch::SNESLineSearch )
+@for_petsc function SNESGetLineSearch(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, linesearch::SNESLineSearch )
 
     @chk ccall(
                (:SNESGetLineSearch, $petsc_library),
@@ -5100,7 +5100,7 @@ function SNESGetLineSearch(petsclib::PetscLibType, snes::PetscSNES, linesearch::
 end 
 
 """
-	SNESComputeJacobianDefault(petsclib::PetscLibType,snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Cvoid) 
+	SNESComputeJacobianDefault(petsclib::PetscLibType,snes::AbstractPetscSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid) 
 Computes the Jacobian using finite differences.
 
 Collective
@@ -5128,9 +5128,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESComputeJacobianDefault"))
 """
-function SNESComputeJacobianDefault(petsclib::PetscLibType, snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Cvoid) end
+function SNESComputeJacobianDefault(petsclib::PetscLibType, snes::AbstractPetscSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid) end
 
-@for_petsc function SNESComputeJacobianDefault(petsclib::$UnionPetscLib, snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Cvoid )
+@for_petsc function SNESComputeJacobianDefault(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid )
 
     @chk ccall(
                (:SNESComputeJacobianDefault, $petsc_library),
@@ -5144,7 +5144,7 @@ function SNESComputeJacobianDefault(petsclib::PetscLibType, snes::PetscSNES, x1:
 end 
 
 """
-	SNESApplyNPC(petsclib::PetscLibType,snes::PetscSNES, x::PetscVec, f::PetscVec, y::PetscVec) 
+	SNESApplyNPC(petsclib::PetscLibType,snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec, y::AbstractPetscVec) 
 Calls `SNESSolve()` on the preconditioner for the `SNES`
 
 Collective
@@ -5164,9 +5164,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESApplyNPC"))
 """
-function SNESApplyNPC(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec, f::PetscVec, y::PetscVec) end
+function SNESApplyNPC(petsclib::PetscLibType, snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function SNESApplyNPC(petsclib::$UnionPetscLib, snes::PetscSNES, x::PetscVec, f::PetscVec, y::PetscVec )
+@for_petsc function SNESApplyNPC(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::AbstractPetscVec, f::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:SNESApplyNPC, $petsc_library),
@@ -5180,14 +5180,14 @@ function SNESApplyNPC(petsclib::PetscLibType, snes::PetscSNES, x::PetscVec, f::P
 end 
 
 """
-	SNESComputeFunctionDefaultNPC(petsclib::PetscLibType,snes::PetscSNES, X::PetscVec, F::PetscVec) 
+	SNESComputeFunctionDefaultNPC(petsclib::PetscLibType,snes::AbstractPetscSNES, X::AbstractPetscVec, F::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("SNES/SNESComputeFunctionDefaultNPC"))
 """
-function SNESComputeFunctionDefaultNPC(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, F::PetscVec) end
+function SNESComputeFunctionDefaultNPC(petsclib::PetscLibType, snes::AbstractPetscSNES, X::AbstractPetscVec, F::AbstractPetscVec) end
 
-@for_petsc function SNESComputeFunctionDefaultNPC(petsclib::$UnionPetscLib, snes::PetscSNES, X::PetscVec, F::PetscVec )
+@for_petsc function SNESComputeFunctionDefaultNPC(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, X::AbstractPetscVec, F::AbstractPetscVec )
 
     @chk ccall(
                (:SNESComputeFunctionDefaultNPC, $petsc_library),
@@ -5201,7 +5201,7 @@ function SNESComputeFunctionDefaultNPC(petsclib::PetscLibType, snes::PetscSNES, 
 end 
 
 """
-	fnorm::PetscReal = SNESGetNPCFunction(petsclib::PetscLibType,snes::PetscSNES, F::PetscVec) 
+	fnorm::PetscReal = SNESGetNPCFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, F::AbstractPetscVec) 
 Gets the current function value and its norm from a nonlinear preconditioner after `SNESSolve()` has been called on that `SNES`
 
 Collective
@@ -5220,9 +5220,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESGetNPCFunction"))
 """
-function SNESGetNPCFunction(petsclib::PetscLibType, snes::PetscSNES, F::PetscVec) end
+function SNESGetNPCFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, F::AbstractPetscVec) end
 
-@for_petsc function SNESGetNPCFunction(petsclib::$UnionPetscLib, snes::PetscSNES, F::PetscVec )
+@for_petsc function SNESGetNPCFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, F::AbstractPetscVec )
 	fnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -5238,7 +5238,7 @@ function SNESGetNPCFunction(petsclib::PetscLibType, snes::PetscSNES, F::PetscVec
 end 
 
 """
-	SNESSetObjective(petsclib::PetscLibType,snes::PetscSNES, obj::SNESObjectiveFn, ctx::Cvoid) 
+	SNESSetObjective(petsclib::PetscLibType,snes::AbstractPetscSNES, obj::SNESObjectiveFn, ctx::Cvoid) 
 Sets the objective function minimized by some of the `SNES` linesearch methods, used instead of the 2
 
 Logically Collective
@@ -5256,9 +5256,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESSetObjective"))
 """
-function SNESSetObjective(petsclib::PetscLibType, snes::PetscSNES, obj::SNESObjectiveFn, ctx::Cvoid) end
+function SNESSetObjective(petsclib::PetscLibType, snes::AbstractPetscSNES, obj::SNESObjectiveFn, ctx::Cvoid) end
 
-@for_petsc function SNESSetObjective(petsclib::$UnionPetscLib, snes::PetscSNES, obj::SNESObjectiveFn, ctx::Cvoid )
+@for_petsc function SNESSetObjective(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, obj::SNESObjectiveFn, ctx::Cvoid )
 
     @chk ccall(
                (:SNESSetObjective, $petsc_library),
@@ -5272,7 +5272,7 @@ function SNESSetObjective(petsclib::PetscLibType, snes::PetscSNES, obj::SNESObje
 end 
 
 """
-	SNESGetObjective(petsclib::PetscLibType,snes::PetscSNES, obj::SNESObjectiveFn, ctx::Cvoid) 
+	SNESGetObjective(petsclib::PetscLibType,snes::AbstractPetscSNES, obj::SNESObjectiveFn, ctx::Cvoid) 
 Returns the objective function set with `SNESSetObjective()`
 
 Not Collective
@@ -5291,9 +5291,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESGetObjective"))
 """
-function SNESGetObjective(petsclib::PetscLibType, snes::PetscSNES, obj::SNESObjectiveFn, ctx::Cvoid) end
+function SNESGetObjective(petsclib::PetscLibType, snes::AbstractPetscSNES, obj::SNESObjectiveFn, ctx::Cvoid) end
 
-@for_petsc function SNESGetObjective(petsclib::$UnionPetscLib, snes::PetscSNES, obj::SNESObjectiveFn, ctx::Cvoid )
+@for_petsc function SNESGetObjective(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, obj::SNESObjectiveFn, ctx::Cvoid )
 
     @chk ccall(
                (:SNESGetObjective, $petsc_library),
@@ -5307,7 +5307,7 @@ function SNESGetObjective(petsclib::PetscLibType, snes::PetscSNES, obj::SNESObje
 end 
 
 """
-	ob::PetscReal = SNESComputeObjective(petsclib::PetscLibType,snes::PetscSNES, X::PetscVec) 
+	ob::PetscReal = SNESComputeObjective(petsclib::PetscLibType,snes::AbstractPetscSNES, X::AbstractPetscVec) 
 Computes the objective function that has been provided by `SNESSetObjective()`
 
 Collective
@@ -5326,9 +5326,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESComputeObjective"))
 """
-function SNESComputeObjective(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec) end
+function SNESComputeObjective(petsclib::PetscLibType, snes::AbstractPetscSNES, X::AbstractPetscVec) end
 
-@for_petsc function SNESComputeObjective(petsclib::$UnionPetscLib, snes::PetscSNES, X::PetscVec )
+@for_petsc function SNESComputeObjective(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, X::AbstractPetscVec )
 	ob_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -5344,7 +5344,7 @@ function SNESComputeObjective(petsclib::PetscLibType, snes::PetscSNES, X::PetscV
 end 
 
 """
-	SNESObjectiveComputeFunctionDefaultFD(petsclib::PetscLibType,snes::PetscSNES, X::PetscVec, F::PetscVec, ctx::Cvoid) 
+	SNESObjectiveComputeFunctionDefaultFD(petsclib::PetscLibType,snes::AbstractPetscSNES, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Cvoid) 
 Computes the gradient of a user provided objective function
 
 Collective
@@ -5368,9 +5368,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESObjectiveComputeFunctionDefaultFD"))
 """
-function SNESObjectiveComputeFunctionDefaultFD(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, F::PetscVec, ctx::Cvoid) end
+function SNESObjectiveComputeFunctionDefaultFD(petsclib::PetscLibType, snes::AbstractPetscSNES, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Cvoid) end
 
-@for_petsc function SNESObjectiveComputeFunctionDefaultFD(petsclib::$UnionPetscLib, snes::PetscSNES, X::PetscVec, F::PetscVec, ctx::Cvoid )
+@for_petsc function SNESObjectiveComputeFunctionDefaultFD(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Cvoid )
 
     @chk ccall(
                (:SNESObjectiveComputeFunctionDefaultFD, $petsc_library),
@@ -5384,7 +5384,7 @@ function SNESObjectiveComputeFunctionDefaultFD(petsclib::PetscLibType, snes::Pet
 end 
 
 """
-	SNESComputeJacobianDefaultColor(petsclib::PetscLibType,snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Cvoid) 
+	SNESComputeJacobianDefaultColor(petsclib::PetscLibType,snes::AbstractPetscSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid) 
 Computes the Jacobian using
 finite differences and coloring to exploit matrix sparsity.
 
@@ -5414,9 +5414,9 @@ Options Database Keys:
 # External Links
 $(_doc_external("SNES/SNESComputeJacobianDefaultColor"))
 """
-function SNESComputeJacobianDefaultColor(petsclib::PetscLibType, snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Ptr{Cvoid}) end
+function SNESComputeJacobianDefaultColor(petsclib::PetscLibType, snes::AbstractPetscSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid}) end
 
-@for_petsc function SNESComputeJacobianDefaultColor(petsclib::$UnionPetscLib, snes::PetscSNES, x1::PetscVec, J::PetscMat, B::PetscMat, ctx::Ptr{Cvoid})
+@for_petsc function SNESComputeJacobianDefaultColor(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x1::AbstractPetscVec, J::AbstractPetscMat, B::AbstractPetscMat, ctx::Ptr{Cvoid})
 
     @chk ccall(
                (:SNESComputeJacobianDefaultColor, $petsc_library),
@@ -5430,7 +5430,7 @@ function SNESComputeJacobianDefaultColor(petsclib::PetscLibType, snes::PetscSNES
 end 
 
 """
-	SNESPruneJacobianColor(petsclib::PetscLibType,snes::PetscSNES, J::PetscMat, B::PetscMat) 
+	SNESPruneJacobianColor(petsclib::PetscLibType,snes::AbstractPetscSNES, J::AbstractPetscMat, B::AbstractPetscMat) 
 Remove nondiagonal zeros in the Jacobian matrix and update the `MatMFFD` coloring information based on the new nonzero structure
 
 Collective
@@ -5447,9 +5447,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESPruneJacobianColor"))
 """
-function SNESPruneJacobianColor(petsclib::PetscLibType, snes::PetscSNES, J::PetscMat, B::PetscMat) end
+function SNESPruneJacobianColor(petsclib::PetscLibType, snes::AbstractPetscSNES, J::AbstractPetscMat, B::AbstractPetscMat) end
 
-@for_petsc function SNESPruneJacobianColor(petsclib::$UnionPetscLib, snes::PetscSNES, J::PetscMat, B::PetscMat )
+@for_petsc function SNESPruneJacobianColor(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, J::AbstractPetscMat, B::AbstractPetscMat )
 
     @chk ccall(
                (:SNESPruneJacobianColor, $petsc_library),
@@ -5463,7 +5463,7 @@ function SNESPruneJacobianColor(petsclib::PetscLibType, snes::PetscSNES, J::Pets
 end 
 
 """
-	ctx::Cvoid = SNESMonitorSAWsCreate(petsclib::PetscLibType,snes::PetscSNES) 
+	ctx::Cvoid = SNESMonitorSAWsCreate(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 create an SAWs monitor context for `SNES`
 
 Collective
@@ -5481,9 +5481,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESMonitorSAWsCreate"))
 """
-function SNESMonitorSAWsCreate(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESMonitorSAWsCreate(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESMonitorSAWsCreate(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESMonitorSAWsCreate(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	ctx_ = Ref{Cvoid}()
 
     @chk ccall(
@@ -5530,7 +5530,7 @@ function SNESMonitorSAWsDestroy(petsclib::PetscLibType, ctx::Cvoid) end
 end 
 
 """
-	SNESMonitorSAWs(petsclib::PetscLibType,snes::PetscSNES, n::PetscInt, rnorm::PetscReal, ctx::Cvoid) 
+	SNESMonitorSAWs(petsclib::PetscLibType,snes::AbstractPetscSNES, n::PetscInt, rnorm::PetscReal, ctx::Cvoid) 
 monitor solution process of `SNES` using SAWs
 
 Collective
@@ -5548,9 +5548,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESMonitorSAWs"))
 """
-function SNESMonitorSAWs(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt, rnorm::PetscReal, ctx::Cvoid) end
+function SNESMonitorSAWs(petsclib::PetscLibType, snes::AbstractPetscSNES, n::PetscInt, rnorm::PetscReal, ctx::Cvoid) end
 
-@for_petsc function SNESMonitorSAWs(petsclib::$UnionPetscLib, snes::PetscSNES, n::$PetscInt, rnorm::$PetscReal, ctx::Cvoid )
+@for_petsc function SNESMonitorSAWs(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, n::$PetscInt, rnorm::$PetscReal, ctx::Cvoid )
 
     @chk ccall(
                (:SNESMonitorSAWs, $petsc_library),
@@ -5564,7 +5564,7 @@ function SNESMonitorSAWs(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt, r
 end 
 
 """
-	SNESNGMRESSetRestartFmRise(petsclib::PetscLibType,snes::PetscSNES, flg::PetscBool) 
+	SNESNGMRESSetRestartFmRise(petsclib::PetscLibType,snes::AbstractPetscSNES, flg::PetscBool) 
 Increase the restart count if the step x_M increases the residual F_M inside a `SNESNGMRES` solve
 
 Input Parameters:
@@ -5581,9 +5581,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESNGMRESSetRestartFmRise"))
 """
-function SNESNGMRESSetRestartFmRise(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
+function SNESNGMRESSetRestartFmRise(petsclib::PetscLibType, snes::AbstractPetscSNES, flg::PetscBool) end
 
-@for_petsc function SNESNGMRESSetRestartFmRise(petsclib::$UnionPetscLib, snes::PetscSNES, flg::PetscBool )
+@for_petsc function SNESNGMRESSetRestartFmRise(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, flg::PetscBool )
 
     @chk ccall(
                (:SNESNGMRESSetRestartFmRise, $petsc_library),
@@ -5597,14 +5597,14 @@ function SNESNGMRESSetRestartFmRise(petsclib::PetscLibType, snes::PetscSNES, flg
 end 
 
 """
-	flg::PetscBool = SNESNGMRESGetRestartFmRise(petsclib::PetscLibType,snes::PetscSNES) 
+	flg::PetscBool = SNESNGMRESGetRestartFmRise(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 
 # External Links
 $(_doc_external("SNES/SNESNGMRESGetRestartFmRise"))
 """
-function SNESNGMRESGetRestartFmRise(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESNGMRESGetRestartFmRise(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESNGMRESGetRestartFmRise(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESNGMRESGetRestartFmRise(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -5620,7 +5620,7 @@ function SNESNGMRESGetRestartFmRise(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESNGMRESSetRestartType(petsclib::PetscLibType,snes::PetscSNES, rtype::SNESNGMRESRestartType) 
+	SNESNGMRESSetRestartType(petsclib::PetscLibType,snes::AbstractPetscSNES, rtype::SNESNGMRESRestartType) 
 Sets the restart type for `SNESNGMRES`.
 
 Logically Collective
@@ -5641,9 +5641,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNGMRESSetRestartType"))
 """
-function SNESNGMRESSetRestartType(petsclib::PetscLibType, snes::PetscSNES, rtype::SNESNGMRESRestartType) end
+function SNESNGMRESSetRestartType(petsclib::PetscLibType, snes::AbstractPetscSNES, rtype::SNESNGMRESRestartType) end
 
-@for_petsc function SNESNGMRESSetRestartType(petsclib::$UnionPetscLib, snes::PetscSNES, rtype::SNESNGMRESRestartType )
+@for_petsc function SNESNGMRESSetRestartType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, rtype::SNESNGMRESRestartType )
 
     @chk ccall(
                (:SNESNGMRESSetRestartType, $petsc_library),
@@ -5657,7 +5657,7 @@ function SNESNGMRESSetRestartType(petsclib::PetscLibType, snes::PetscSNES, rtype
 end 
 
 """
-	SNESNGMRESSetSelectType(petsclib::PetscLibType,snes::PetscSNES, stype::SNESNGMRESSelectType) 
+	SNESNGMRESSetSelectType(petsclib::PetscLibType,snes::AbstractPetscSNES, stype::SNESNGMRESSelectType) 
 Sets the selection type for `SNESNGMRES`.  This determines how the candidate solution and
 combined solution are used to create the next iterate.
 
@@ -5678,9 +5678,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNGMRESSetSelectType"))
 """
-function SNESNGMRESSetSelectType(petsclib::PetscLibType, snes::PetscSNES, stype::SNESNGMRESSelectType) end
+function SNESNGMRESSetSelectType(petsclib::PetscLibType, snes::AbstractPetscSNES, stype::SNESNGMRESSelectType) end
 
-@for_petsc function SNESNGMRESSetSelectType(petsclib::$UnionPetscLib, snes::PetscSNES, stype::SNESNGMRESSelectType )
+@for_petsc function SNESNGMRESSetSelectType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, stype::SNESNGMRESSelectType )
 
     @chk ccall(
                (:SNESNGMRESSetSelectType, $petsc_library),
@@ -5694,7 +5694,7 @@ function SNESNGMRESSetSelectType(petsclib::PetscLibType, snes::PetscSNES, stype:
 end 
 
 """
-	SNESVISetComputeVariableBounds(petsclib::PetscLibType,snes::PetscSNES, compute::external) 
+	SNESVISetComputeVariableBounds(petsclib::PetscLibType,snes::AbstractPetscSNES, compute::external) 
 Sets a function that is called to compute the bounds on variable for
 (differential) variable inequalities.
 
@@ -5715,9 +5715,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESVISetComputeVariableBounds"))
 """
-function SNESVISetComputeVariableBounds(petsclib::PetscLibType, snes::PetscSNES, compute::external) end
+function SNESVISetComputeVariableBounds(petsclib::PetscLibType, snes::AbstractPetscSNES, compute::external) end
 
-@for_petsc function SNESVISetComputeVariableBounds(petsclib::$UnionPetscLib, snes::PetscSNES, compute::external )
+@for_petsc function SNESVISetComputeVariableBounds(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, compute::external )
 
     @chk ccall(
                (:SNESVISetComputeVariableBounds, $petsc_library),
@@ -5731,7 +5731,7 @@ function SNESVISetComputeVariableBounds(petsclib::PetscLibType, snes::PetscSNES,
 end 
 
 """
-	SNESVIGetActiveSetIS(petsclib::PetscLibType,snes::PetscSNES, X::PetscVec, F::PetscVec, ISact::IS) 
+	SNESVIGetActiveSetIS(petsclib::PetscLibType,snes::AbstractPetscSNES, X::AbstractPetscVec, F::AbstractPetscVec, ISact::AbstractIS) 
 Gets the global indices for the active set variables
 
 Input Parameters:
@@ -5749,9 +5749,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESVIGetActiveSetIS"))
 """
-function SNESVIGetActiveSetIS(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, F::PetscVec, ISact::IS) end
+function SNESVIGetActiveSetIS(petsclib::PetscLibType, snes::AbstractPetscSNES, X::AbstractPetscVec, F::AbstractPetscVec, ISact::AbstractIS) end
 
-@for_petsc function SNESVIGetActiveSetIS(petsclib::$UnionPetscLib, snes::PetscSNES, X::PetscVec, F::PetscVec, ISact::IS )
+@for_petsc function SNESVIGetActiveSetIS(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, X::AbstractPetscVec, F::AbstractPetscVec, ISact::AbstractIS )
 
     @chk ccall(
                (:SNESVIGetActiveSetIS, $petsc_library),
@@ -5765,7 +5765,7 @@ function SNESVIGetActiveSetIS(petsclib::PetscLibType, snes::PetscSNES, X::PetscV
 end 
 
 """
-	fnorm::PetscReal = SNESVIComputeInactiveSetFnorm(petsclib::PetscLibType,snes::PetscSNES, F::PetscVec, X::PetscVec) 
+	fnorm::PetscReal = SNESVIComputeInactiveSetFnorm(petsclib::PetscLibType,snes::AbstractPetscSNES, F::AbstractPetscVec, X::AbstractPetscVec) 
 Computes the function norm for variational inequalities on the inactive set
 
 Input Parameters:
@@ -5783,9 +5783,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESVIComputeInactiveSetFnorm"))
 """
-function SNESVIComputeInactiveSetFnorm(petsclib::PetscLibType, snes::PetscSNES, F::PetscVec, X::PetscVec) end
+function SNESVIComputeInactiveSetFnorm(petsclib::PetscLibType, snes::AbstractPetscSNES, F::AbstractPetscVec, X::AbstractPetscVec) end
 
-@for_petsc function SNESVIComputeInactiveSetFnorm(petsclib::$UnionPetscLib, snes::PetscSNES, F::PetscVec, X::PetscVec )
+@for_petsc function SNESVIComputeInactiveSetFnorm(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, F::AbstractPetscVec, X::AbstractPetscVec )
 	fnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -5801,7 +5801,7 @@ function SNESVIComputeInactiveSetFnorm(petsclib::PetscLibType, snes::PetscSNES, 
 end 
 
 """
-	fty::PetscScalar = SNESVIComputeInactiveSetFtY(petsclib::PetscLibType,snes::PetscSNES, F::PetscVec, X::PetscVec, Y::PetscVec) 
+	fty::PetscScalar = SNESVIComputeInactiveSetFtY(petsclib::PetscLibType,snes::AbstractPetscSNES, F::AbstractPetscVec, X::AbstractPetscVec, Y::AbstractPetscVec) 
 Computes the directional derivative for variational inequalities on the inactive set,
 assuming that there exists some G(x) for which the `SNESFunctionFn` F(x) = grad G(x) (relevant for some line search algorithms)
 
@@ -5821,9 +5821,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESVIComputeInactiveSetFtY"))
 """
-function SNESVIComputeInactiveSetFtY(petsclib::PetscLibType, snes::PetscSNES, F::PetscVec, X::PetscVec, Y::PetscVec) end
+function SNESVIComputeInactiveSetFtY(petsclib::PetscLibType, snes::AbstractPetscSNES, F::AbstractPetscVec, X::AbstractPetscVec, Y::AbstractPetscVec) end
 
-@for_petsc function SNESVIComputeInactiveSetFtY(petsclib::$UnionPetscLib, snes::PetscSNES, F::PetscVec, X::PetscVec, Y::PetscVec )
+@for_petsc function SNESVIComputeInactiveSetFtY(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, F::AbstractPetscVec, X::AbstractPetscVec, Y::AbstractPetscVec )
 	fty_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -5839,7 +5839,7 @@ function SNESVIComputeInactiveSetFtY(petsclib::PetscLibType, snes::PetscSNES, F:
 end 
 
 """
-	SNESVISetVariableBounds(petsclib::PetscLibType,snes::PetscSNES, xl::PetscVec, xu::PetscVec) 
+	SNESVISetVariableBounds(petsclib::PetscLibType,snes::AbstractPetscSNES, xl::AbstractPetscVec, xu::AbstractPetscVec) 
 Sets the lower and upper bounds for the solution vector. `xl` <= x <= `xu`. This allows solving
 (differential) variable inequalities.
 
@@ -5855,9 +5855,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESVISetVariableBounds"))
 """
-function SNESVISetVariableBounds(petsclib::PetscLibType, snes::PetscSNES, xl::PetscVec, xu::PetscVec) end
+function SNESVISetVariableBounds(petsclib::PetscLibType, snes::AbstractPetscSNES, xl::AbstractPetscVec, xu::AbstractPetscVec) end
 
-@for_petsc function SNESVISetVariableBounds(petsclib::$UnionPetscLib, snes::PetscSNES, xl::PetscVec, xu::PetscVec )
+@for_petsc function SNESVISetVariableBounds(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, xl::AbstractPetscVec, xu::AbstractPetscVec )
 
     @chk ccall(
                (:SNESVISetVariableBounds, $petsc_library),
@@ -5871,7 +5871,7 @@ function SNESVISetVariableBounds(petsclib::PetscLibType, snes::PetscSNES, xl::Pe
 end 
 
 """
-	SNESVIGetVariableBounds(petsclib::PetscLibType,snes::PetscSNES, xl::PetscVec, xu::PetscVec) 
+	SNESVIGetVariableBounds(petsclib::PetscLibType,snes::AbstractPetscSNES, xl::AbstractPetscVec, xu::AbstractPetscVec) 
 Gets the lower and upper bounds for the solution vector. `xl` <= x <= `xu`. These are used in solving
 (differential) variable inequalities.
 
@@ -5887,9 +5887,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESVIGetVariableBounds"))
 """
-function SNESVIGetVariableBounds(petsclib::PetscLibType, snes::PetscSNES, xl::PetscVec, xu::PetscVec) end
+function SNESVIGetVariableBounds(petsclib::PetscLibType, snes::AbstractPetscSNES, xl::AbstractPetscVec, xu::AbstractPetscVec) end
 
-@for_petsc function SNESVIGetVariableBounds(petsclib::$UnionPetscLib, snes::PetscSNES, xl::PetscVec, xu::PetscVec )
+@for_petsc function SNESVIGetVariableBounds(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, xl::AbstractPetscVec, xu::AbstractPetscVec )
 	xl_ = Ref(xl.ptr)
 	xu_ = Ref(xu.ptr)
 
@@ -5907,7 +5907,7 @@ function SNESVIGetVariableBounds(petsclib::PetscLibType, snes::PetscSNES, xl::Pe
 end 
 
 """
-	SNESVIGetInactiveSet(petsclib::PetscLibType,snes::PetscSNES, inact::IS) 
+	SNESVIGetInactiveSet(petsclib::PetscLibType,snes::AbstractPetscSNES, inact::AbstractIS) 
 Gets the global indices for the inactive set variables (these correspond to the degrees of freedom the linear
 system is solved on)
 
@@ -5924,9 +5924,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESVIGetInactiveSet"))
 """
-function SNESVIGetInactiveSet(petsclib::PetscLibType, snes::PetscSNES, inact::IS) end
+function SNESVIGetInactiveSet(petsclib::PetscLibType, snes::AbstractPetscSNES, inact::AbstractIS) end
 
-@for_petsc function SNESVIGetInactiveSet(petsclib::$UnionPetscLib, snes::PetscSNES, inact::IS )
+@for_petsc function SNESVIGetInactiveSet(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, inact::AbstractIS )
 
     @chk ccall(
                (:SNESVIGetInactiveSet, $petsc_library),
@@ -5940,7 +5940,7 @@ function SNESVIGetInactiveSet(petsclib::PetscLibType, snes::PetscSNES, inact::IS
 end 
 
 """
-	SNESVISetRedundancyCheck(petsclib::PetscLibType,snes::PetscSNES, func::external, ctx::Cvoid) 
+	SNESVISetRedundancyCheck(petsclib::PetscLibType,snes::AbstractPetscSNES, func::external, ctx::Cvoid) 
 Provide a function to check for any redundancy in the VI active set
 
 Logically Collective
@@ -5957,9 +5957,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESVISetRedundancyCheck"))
 """
-function SNESVISetRedundancyCheck(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
+function SNESVISetRedundancyCheck(petsclib::PetscLibType, snes::AbstractPetscSNES, func::external, ctx::Cvoid) end
 
-@for_petsc function SNESVISetRedundancyCheck(petsclib::$UnionPetscLib, snes::PetscSNES, func::external, ctx::Cvoid )
+@for_petsc function SNESVISetRedundancyCheck(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:SNESVISetRedundancyCheck, $petsc_library),
@@ -5973,7 +5973,7 @@ function SNESVISetRedundancyCheck(petsclib::PetscLibType, snes::PetscSNES, func:
 end 
 
 """
-	merit::PetscReal,phinorm::PetscReal = SNESVIComputeMeritFunction(petsclib::PetscLibType,phi::PetscVec) 
+	merit::PetscReal,phinorm::PetscReal = SNESVIComputeMeritFunction(petsclib::PetscLibType,phi::AbstractPetscVec) 
 Evaluates the merit function for the mixed complementarity problem.
 
 Input Parameter:
@@ -5990,9 +5990,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESVIComputeMeritFunction"))
 """
-function SNESVIComputeMeritFunction(petsclib::PetscLibType, phi::PetscVec) end
+function SNESVIComputeMeritFunction(petsclib::PetscLibType, phi::AbstractPetscVec) end
 
-@for_petsc function SNESVIComputeMeritFunction(petsclib::$UnionPetscLib, phi::PetscVec )
+@for_petsc function SNESVIComputeMeritFunction(petsclib::$UnionPetscLib, phi::AbstractPetscVec )
 	merit_ = Ref{$PetscReal}()
 	phinorm_ = Ref{$PetscReal}()
 
@@ -6010,7 +6010,7 @@ function SNESVIComputeMeritFunction(petsclib::PetscLibType, phi::PetscVec) end
 end 
 
 """
-	SNESVIComputeFunction(petsclib::PetscLibType,snes::PetscSNES, X::PetscVec, phi::PetscVec, functx::Cvoid) 
+	SNESVIComputeFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, X::AbstractPetscVec, phi::AbstractPetscVec, functx::Cvoid) 
 Provides the function that reformulates a system of nonlinear equations in mixed complementarity form to a system of nonlinear
 equations in semismooth form.
 
@@ -6029,9 +6029,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESVIComputeFunction"))
 """
-function SNESVIComputeFunction(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, phi::PetscVec, functx::Cvoid) end
+function SNESVIComputeFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, X::AbstractPetscVec, phi::AbstractPetscVec, functx::Cvoid) end
 
-@for_petsc function SNESVIComputeFunction(petsclib::$UnionPetscLib, snes::PetscSNES, X::PetscVec, phi::PetscVec, functx::Cvoid )
+@for_petsc function SNESVIComputeFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, X::AbstractPetscVec, phi::AbstractPetscVec, functx::Cvoid )
 
     @chk ccall(
                (:SNESVIComputeFunction, $petsc_library),
@@ -6188,7 +6188,7 @@ function SNESMSRegister(petsclib::PetscLibType, name::SNESMSType, nstages::Petsc
 end 
 
 """
-	mstype::SNESMSType = SNESMSGetType(petsclib::PetscLibType,snes::PetscSNES) 
+	mstype::SNESMSType = SNESMSGetType(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Get the type of multistage smoother `SNESMS`
 
 Not Collective
@@ -6206,9 +6206,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESMSGetType"))
 """
-function SNESMSGetType(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESMSGetType(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESMSGetType(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESMSGetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	mstype_ = Ref{SNESMSType}()
 
     @chk ccall(
@@ -6224,7 +6224,7 @@ function SNESMSGetType(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESMSSetType(petsclib::PetscLibType,snes::PetscSNES, mstype::SNESMSType) 
+	SNESMSSetType(petsclib::PetscLibType,snes::AbstractPetscSNES, mstype::SNESMSType) 
 Set the type of multistage smoother `SNESMS`
 
 Logically Collective
@@ -6240,9 +6240,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESMSSetType"))
 """
-function SNESMSSetType(petsclib::PetscLibType, snes::PetscSNES, mstype::SNESMSType) end
+function SNESMSSetType(petsclib::PetscLibType, snes::AbstractPetscSNES, mstype::SNESMSType) end
 
-@for_petsc function SNESMSSetType(petsclib::$UnionPetscLib, snes::PetscSNES, mstype::SNESMSType )
+@for_petsc function SNESMSSetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, mstype::SNESMSType )
 
     @chk ccall(
                (:SNESMSSetType, $petsc_library),
@@ -6256,7 +6256,7 @@ function SNESMSSetType(petsclib::PetscLibType, snes::PetscSNES, mstype::SNESMSTy
 end 
 
 """
-	damping::PetscReal = SNESMSGetDamping(petsclib::PetscLibType,snes::PetscSNES) 
+	damping::PetscReal = SNESMSGetDamping(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Get the damping parameter of `SNESMS` multistage scheme
 
 Not Collective
@@ -6274,9 +6274,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESMSGetDamping"))
 """
-function SNESMSGetDamping(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESMSGetDamping(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESMSGetDamping(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESMSGetDamping(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	damping_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -6292,7 +6292,7 @@ function SNESMSGetDamping(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESMSSetDamping(petsclib::PetscLibType,snes::PetscSNES, damping::PetscReal) 
+	SNESMSSetDamping(petsclib::PetscLibType,snes::AbstractPetscSNES, damping::PetscReal) 
 Set the damping parameter for a `SNESMS` multistage scheme
 
 Logically Collective
@@ -6308,9 +6308,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESMSSetDamping"))
 """
-function SNESMSSetDamping(petsclib::PetscLibType, snes::PetscSNES, damping::PetscReal) end
+function SNESMSSetDamping(petsclib::PetscLibType, snes::AbstractPetscSNES, damping::PetscReal) end
 
-@for_petsc function SNESMSSetDamping(petsclib::$UnionPetscLib, snes::PetscSNES, damping::$PetscReal )
+@for_petsc function SNESMSSetDamping(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, damping::$PetscReal )
 
     @chk ccall(
                (:SNESMSSetDamping, $petsc_library),
@@ -6324,7 +6324,7 @@ function SNESMSSetDamping(petsclib::PetscLibType, snes::PetscSNES, damping::Pets
 end 
 
 """
-	SNESNGSSetTolerances(petsclib::PetscLibType,snes::PetscSNES, abstol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt) 
+	SNESNGSSetTolerances(petsclib::PetscLibType,snes::AbstractPetscSNES, abstol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt) 
 Sets various parameters used in convergence tests for nonlinear Gauss
 
 Logically Collective
@@ -6349,9 +6349,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNGSSetTolerances"))
 """
-function SNESNGSSetTolerances(petsclib::PetscLibType, snes::PetscSNES, abstol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt) end
+function SNESNGSSetTolerances(petsclib::PetscLibType, snes::AbstractPetscSNES, abstol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt) end
 
-@for_petsc function SNESNGSSetTolerances(petsclib::$UnionPetscLib, snes::PetscSNES, abstol::$PetscReal, rtol::$PetscReal, stol::$PetscReal, maxit::$PetscInt )
+@for_petsc function SNESNGSSetTolerances(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, abstol::$PetscReal, rtol::$PetscReal, stol::$PetscReal, maxit::$PetscInt )
 
     @chk ccall(
                (:SNESNGSSetTolerances, $petsc_library),
@@ -6365,7 +6365,7 @@ function SNESNGSSetTolerances(petsclib::PetscLibType, snes::PetscSNES, abstol::P
 end 
 
 """
-	SNESNGSGetTolerances(petsclib::PetscLibType,snes::PetscSNES, atol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt) 
+	SNESNGSGetTolerances(petsclib::PetscLibType,snes::AbstractPetscSNES, atol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt) 
 Gets various parameters used in convergence tests for nonlinear Gauss
 
 Not Collective
@@ -6385,9 +6385,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNGSGetTolerances"))
 """
-function SNESNGSGetTolerances(petsclib::PetscLibType, snes::PetscSNES, atol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt) end
+function SNESNGSGetTolerances(petsclib::PetscLibType, snes::AbstractPetscSNES, atol::PetscReal, rtol::PetscReal, stol::PetscReal, maxit::PetscInt) end
 
-@for_petsc function SNESNGSGetTolerances(petsclib::$UnionPetscLib, snes::PetscSNES, atol::$PetscReal, rtol::$PetscReal, stol::$PetscReal, maxit::$PetscInt )
+@for_petsc function SNESNGSGetTolerances(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, atol::$PetscReal, rtol::$PetscReal, stol::$PetscReal, maxit::$PetscInt )
 
     @chk ccall(
                (:SNESNGSGetTolerances, $petsc_library),
@@ -6401,7 +6401,7 @@ function SNESNGSGetTolerances(petsclib::PetscLibType, snes::PetscSNES, atol::Pet
 end 
 
 """
-	SNESNGSSetSweeps(petsclib::PetscLibType,snes::PetscSNES, sweeps::PetscInt) 
+	SNESNGSSetSweeps(petsclib::PetscLibType,snes::AbstractPetscSNES, sweeps::PetscInt) 
 Sets the number of sweeps of nonlinear GS to use in `SNESNCG`
 
 Logically Collective
@@ -6420,9 +6420,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNGSSetSweeps"))
 """
-function SNESNGSSetSweeps(petsclib::PetscLibType, snes::PetscSNES, sweeps::PetscInt) end
+function SNESNGSSetSweeps(petsclib::PetscLibType, snes::AbstractPetscSNES, sweeps::PetscInt) end
 
-@for_petsc function SNESNGSSetSweeps(petsclib::$UnionPetscLib, snes::PetscSNES, sweeps::$PetscInt )
+@for_petsc function SNESNGSSetSweeps(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, sweeps::$PetscInt )
 
     @chk ccall(
                (:SNESNGSSetSweeps, $petsc_library),
@@ -6436,7 +6436,7 @@ function SNESNGSSetSweeps(petsclib::PetscLibType, snes::PetscSNES, sweeps::Petsc
 end 
 
 """
-	sweeps::PetscInt = SNESNGSGetSweeps(petsclib::PetscLibType,snes::PetscSNES) 
+	sweeps::PetscInt = SNESNGSGetSweeps(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the number of sweeps nonlinear GS will use in `SNESNCG`
 
 Input Parameter:
@@ -6452,9 +6452,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNGSGetSweeps"))
 """
-function SNESNGSGetSweeps(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESNGSGetSweeps(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESNGSGetSweeps(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESNGSGetSweeps(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	sweeps_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -6470,7 +6470,7 @@ function SNESNGSGetSweeps(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESNewtonALSetCorrectionType(petsclib::PetscLibType,snes::PetscSNES, ctype::SNESNewtonALCorrectionType) 
+	SNESNewtonALSetCorrectionType(petsclib::PetscLibType,snes::AbstractPetscSNES, ctype::SNESNewtonALCorrectionType) 
 Set the type of correction to use in the arc
 
 Logically Collective
@@ -6489,9 +6489,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonALSetCorrectionType"))
 """
-function SNESNewtonALSetCorrectionType(petsclib::PetscLibType, snes::PetscSNES, ctype::SNESNewtonALCorrectionType) end
+function SNESNewtonALSetCorrectionType(petsclib::PetscLibType, snes::AbstractPetscSNES, ctype::SNESNewtonALCorrectionType) end
 
-@for_petsc function SNESNewtonALSetCorrectionType(petsclib::$UnionPetscLib, snes::PetscSNES, ctype::SNESNewtonALCorrectionType )
+@for_petsc function SNESNewtonALSetCorrectionType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, ctype::SNESNewtonALCorrectionType )
 
     @chk ccall(
                (:SNESNewtonALSetCorrectionType, $petsc_library),
@@ -6505,7 +6505,7 @@ function SNESNewtonALSetCorrectionType(petsclib::PetscLibType, snes::PetscSNES, 
 end 
 
 """
-	SNESNewtonALSetFunction(petsclib::PetscLibType,snes::PetscSNES, func::SNESFunctionFn, ctx::Cvoid) 
+	SNESNewtonALSetFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, func::SNESFunctionFn, ctx::Cvoid) 
 Sets a user function that is called at each function evaluation to
 compute the tangent load vector for the arc-length continuation method.
 
@@ -6523,9 +6523,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonALSetFunction"))
 """
-function SNESNewtonALSetFunction(petsclib::PetscLibType, snes::PetscSNES, func::SNESFunctionFn, ctx::Cvoid) end
+function SNESNewtonALSetFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, func::SNESFunctionFn, ctx::Cvoid) end
 
-@for_petsc function SNESNewtonALSetFunction(petsclib::$UnionPetscLib, snes::PetscSNES, func::SNESFunctionFn, ctx::Cvoid )
+@for_petsc function SNESNewtonALSetFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::SNESFunctionFn, ctx::Cvoid )
 
     @chk ccall(
                (:SNESNewtonALSetFunction, $petsc_library),
@@ -6539,7 +6539,7 @@ function SNESNewtonALSetFunction(petsclib::PetscLibType, snes::PetscSNES, func::
 end 
 
 """
-	SNESNewtonALGetFunction(petsclib::PetscLibType,snes::PetscSNES, func::SNESFunctionFn, ctx::Cvoid) 
+	SNESNewtonALGetFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, func::SNESFunctionFn, ctx::Cvoid) 
 Get the user function and context set with `SNESNewtonALSetFunction`
 
 Logically Collective
@@ -6556,9 +6556,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonALGetFunction"))
 """
-function SNESNewtonALGetFunction(petsclib::PetscLibType, snes::PetscSNES, func::SNESFunctionFn, ctx::Cvoid) end
+function SNESNewtonALGetFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, func::SNESFunctionFn, ctx::Cvoid) end
 
-@for_petsc function SNESNewtonALGetFunction(petsclib::$UnionPetscLib, snes::PetscSNES, func::SNESFunctionFn, ctx::Cvoid )
+@for_petsc function SNESNewtonALGetFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::SNESFunctionFn, ctx::Cvoid )
 
     @chk ccall(
                (:SNESNewtonALGetFunction, $petsc_library),
@@ -6572,7 +6572,7 @@ function SNESNewtonALGetFunction(petsclib::PetscLibType, snes::PetscSNES, func::
 end 
 
 """
-	lambda::PetscReal = SNESNewtonALGetLoadParameter(petsclib::PetscLibType,snes::PetscSNES) 
+	lambda::PetscReal = SNESNewtonALGetLoadParameter(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Get the value of the load parameter `lambda` for the arc
 
 Logically Collective
@@ -6590,9 +6590,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonALGetLoadParameter"))
 """
-function SNESNewtonALGetLoadParameter(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESNewtonALGetLoadParameter(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESNewtonALGetLoadParameter(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESNewtonALGetLoadParameter(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	lambda_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -6608,7 +6608,7 @@ function SNESNewtonALGetLoadParameter(petsclib::PetscLibType, snes::PetscSNES) e
 end 
 
 """
-	SNESNewtonALComputeFunction(petsclib::PetscLibType,snes::PetscSNES, X::PetscVec, Q::PetscVec) 
+	SNESNewtonALComputeFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, X::AbstractPetscVec, Q::AbstractPetscVec) 
 Calls the function that has been set with `SNESNewtonALSetFunction()`.
 
 Collective
@@ -6627,9 +6627,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESNewtonALComputeFunction"))
 """
-function SNESNewtonALComputeFunction(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, Q::PetscVec) end
+function SNESNewtonALComputeFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, X::AbstractPetscVec, Q::AbstractPetscVec) end
 
-@for_petsc function SNESNewtonALComputeFunction(petsclib::$UnionPetscLib, snes::PetscSNES, X::PetscVec, Q::PetscVec )
+@for_petsc function SNESNewtonALComputeFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, X::AbstractPetscVec, Q::AbstractPetscVec )
 
     @chk ccall(
                (:SNESNewtonALComputeFunction, $petsc_library),
@@ -6643,7 +6643,7 @@ function SNESNewtonALComputeFunction(petsclib::PetscLibType, snes::PetscSNES, X:
 end 
 
 """
-	SNESPythonSetType(petsclib::PetscLibType,snes::PetscSNES, pyname::String) 
+	SNESPythonSetType(petsclib::PetscLibType,snes::AbstractPetscSNES, pyname::String) 
 Initialize a `SNES` object implemented in Python.
 
 Collective
@@ -6662,9 +6662,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESPythonSetType"))
 """
-function SNESPythonSetType(petsclib::PetscLibType, snes::PetscSNES, pyname::String) end
+function SNESPythonSetType(petsclib::PetscLibType, snes::AbstractPetscSNES, pyname::String) end
 
-@for_petsc function SNESPythonSetType(petsclib::$UnionPetscLib, snes::PetscSNES, pyname::String )
+@for_petsc function SNESPythonSetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, pyname::String )
 
     @chk ccall(
                (:SNESPythonSetType, $petsc_library),
@@ -6678,7 +6678,7 @@ function SNESPythonSetType(petsclib::PetscLibType, snes::PetscSNES, pyname::Stri
 end 
 
 """
-	pyname::String = SNESPythonGetType(petsclib::PetscLibType,snes::PetscSNES) 
+	pyname::String = SNESPythonGetType(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Get the type of a `SNES` object implemented in Python set with `SNESPythonSetType()`
 
 Not Collective
@@ -6696,9 +6696,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESPythonGetType"))
 """
-function SNESPythonGetType(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESPythonGetType(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESPythonGetType(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESPythonGetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	pyname_ = Ref{Ptr{Cchar}}()
 
     @chk ccall(
@@ -6714,7 +6714,7 @@ function SNESPythonGetType(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESShellSetSolve(petsclib::PetscLibType,snes::PetscSNES, solve::external) 
+	SNESShellSetSolve(petsclib::PetscLibType,snes::AbstractPetscSNES, solve::external) 
 Sets routine to apply as solver to a `SNESSHELL` `SNES` object
 
 Logically Collective
@@ -6734,9 +6734,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESShellSetSolve"))
 """
-function SNESShellSetSolve(petsclib::PetscLibType, snes::PetscSNES, solve::external) end
+function SNESShellSetSolve(petsclib::PetscLibType, snes::AbstractPetscSNES, solve::external) end
 
-@for_petsc function SNESShellSetSolve(petsclib::$UnionPetscLib, snes::PetscSNES, solve::external )
+@for_petsc function SNESShellSetSolve(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, solve::external )
 
     @chk ccall(
                (:SNESShellSetSolve, $petsc_library),
@@ -6750,7 +6750,7 @@ function SNESShellSetSolve(petsclib::PetscLibType, snes::PetscSNES, solve::exter
 end 
 
 """
-	SNESShellGetContext(petsclib::PetscLibType,snes::PetscSNES, ctx::Cvoid) 
+	SNESShellGetContext(petsclib::PetscLibType,snes::AbstractPetscSNES, ctx::Cvoid) 
 Returns the user
 
 Not Collective
@@ -6768,9 +6768,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESShellGetContext"))
 """
-function SNESShellGetContext(petsclib::PetscLibType, snes::PetscSNES, ctx::Cvoid) end
+function SNESShellGetContext(petsclib::PetscLibType, snes::AbstractPetscSNES, ctx::Cvoid) end
 
-@for_petsc function SNESShellGetContext(petsclib::$UnionPetscLib, snes::PetscSNES, ctx::Cvoid )
+@for_petsc function SNESShellGetContext(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, ctx::Cvoid )
 
     @chk ccall(
                (:SNESShellGetContext, $petsc_library),
@@ -6784,7 +6784,7 @@ function SNESShellGetContext(petsclib::PetscLibType, snes::PetscSNES, ctx::Cvoid
 end 
 
 """
-	SNESShellSetContext(petsclib::PetscLibType,snes::PetscSNES, ctx::Cvoid) 
+	SNESShellSetContext(petsclib::PetscLibType,snes::AbstractPetscSNES, ctx::Cvoid) 
 sets the context for a `SNESSHELL`
 
 Logically Collective
@@ -6800,9 +6800,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESShellSetContext"))
 """
-function SNESShellSetContext(petsclib::PetscLibType, snes::PetscSNES, ctx::Cvoid) end
+function SNESShellSetContext(petsclib::PetscLibType, snes::AbstractPetscSNES, ctx::Cvoid) end
 
-@for_petsc function SNESShellSetContext(petsclib::$UnionPetscLib, snes::PetscSNES, ctx::Cvoid )
+@for_petsc function SNESShellSetContext(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, ctx::Cvoid )
 
     @chk ccall(
                (:SNESShellSetContext, $petsc_library),
@@ -6816,7 +6816,7 @@ function SNESShellSetContext(petsclib::PetscLibType, snes::PetscSNES, ctx::Cvoid
 end 
 
 """
-	SNESNASMSetType(petsclib::PetscLibType,snes::PetscSNES, type::PCASMType) 
+	SNESNASMSetType(petsclib::PetscLibType,snes::AbstractPetscSNES, type::PCASMType) 
 Set the type of subdomain update used for the nonlinear additive Schwarz solver `SNESNASM`
 
 Logically Collective
@@ -6835,9 +6835,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNASMSetType"))
 """
-function SNESNASMSetType(petsclib::PetscLibType, snes::PetscSNES, type::PCASMType) end
+function SNESNASMSetType(petsclib::PetscLibType, snes::AbstractPetscSNES, type::PCASMType) end
 
-@for_petsc function SNESNASMSetType(petsclib::$UnionPetscLib, snes::PetscSNES, type::PCASMType )
+@for_petsc function SNESNASMSetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, type::PCASMType )
 
     @chk ccall(
                (:SNESNASMSetType, $petsc_library),
@@ -6851,7 +6851,7 @@ function SNESNASMSetType(petsclib::PetscLibType, snes::PetscSNES, type::PCASMTyp
 end 
 
 """
-	type::PCASMType = SNESNASMGetType(petsclib::PetscLibType,snes::PetscSNES) 
+	type::PCASMType = SNESNASMGetType(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Get the type of subdomain update used for the nonlinear additive Schwarz solver `SNESNASM`
 
 Logically Collective
@@ -6869,9 +6869,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNASMGetType"))
 """
-function SNESNASMGetType(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESNASMGetType(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESNASMGetType(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESNASMGetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	type_ = Ref{PCASMType}()
 
     @chk ccall(
@@ -6887,7 +6887,7 @@ function SNESNASMGetType(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESNASMSetSubdomains(petsclib::PetscLibType,snes::PetscSNES, n::PetscInt, subsnes::Vector{PetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter}) 
+	SNESNASMSetSubdomains(petsclib::PetscLibType,snes::AbstractPetscSNES, n::PetscInt, subsnes::Vector{<:AbstractPetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter}) 
 Manually Set the context required to restrict and solve subdomain problems in the nonlinear additive Schwarz solver
 
 Logically Collective
@@ -6907,9 +6907,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNASMSetSubdomains"))
 """
-function SNESNASMSetSubdomains(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt, subsnes::Vector{PetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter}) end
+function SNESNASMSetSubdomains(petsclib::PetscLibType, snes::AbstractPetscSNES, n::PetscInt, subsnes::Vector{<:AbstractPetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter}) end
 
-@for_petsc function SNESNASMSetSubdomains(petsclib::$UnionPetscLib, snes::PetscSNES, n::$PetscInt, subsnes::Vector{PetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter} )
+@for_petsc function SNESNASMSetSubdomains(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, n::$PetscInt, subsnes::Vector{<:AbstractPetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter} )
 
     @chk ccall(
                (:SNESNASMSetSubdomains, $petsc_library),
@@ -6923,7 +6923,7 @@ function SNESNASMSetSubdomains(petsclib::PetscLibType, snes::PetscSNES, n::Petsc
 end 
 
 """
-	n::PetscInt = SNESNASMGetSubdomains(petsclib::PetscLibType,snes::PetscSNES, subsnes::Vector{PetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter}) 
+	n::PetscInt = SNESNASMGetSubdomains(petsclib::PetscLibType,snes::AbstractPetscSNES, subsnes::Vector{<:AbstractPetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter}) 
 Get the local subdomain contexts for the nonlinear additive Schwarz solver
 
 Not Collective but some of the objects returned will be parallel
@@ -6945,9 +6945,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNASMGetSubdomains"))
 """
-function SNESNASMGetSubdomains(petsclib::PetscLibType, snes::PetscSNES, subsnes::Vector{PetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter}) end
+function SNESNASMGetSubdomains(petsclib::PetscLibType, snes::AbstractPetscSNES, subsnes::Vector{<:AbstractPetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter}) end
 
-@for_petsc function SNESNASMGetSubdomains(petsclib::$UnionPetscLib, snes::PetscSNES, subsnes::Vector{PetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter} )
+@for_petsc function SNESNASMGetSubdomains(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, subsnes::Vector{<:AbstractPetscSNES}, iscatter::Vector{VecScatter}, oscatter::Vector{VecScatter}, gscatter::Vector{VecScatter} )
 	n_ = Ref{$PetscInt}()
 	subsnes_ = Ref(pointer(subsnes))
 	iscatter_ = Ref(pointer(iscatter))
@@ -6967,7 +6967,7 @@ function SNESNASMGetSubdomains(petsclib::PetscLibType, snes::PetscSNES, subsnes:
 end 
 
 """
-	n::PetscInt = SNESNASMGetSubdomainVecs(petsclib::PetscLibType,snes::PetscSNES, x::Vector{PetscVec}, y::Vector{PetscVec}, b::Vector{PetscVec}, xl::Vector{PetscVec}) 
+	n::PetscInt = SNESNASMGetSubdomainVecs(petsclib::PetscLibType,snes::AbstractPetscSNES, x::Vector{<:AbstractPetscVec}, y::Vector{<:AbstractPetscVec}, b::Vector{<:AbstractPetscVec}, xl::Vector{<:AbstractPetscVec}) 
 Get the processor
 
 Not Collective
@@ -6989,9 +6989,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESNASMGetSubdomainVecs"))
 """
-function SNESNASMGetSubdomainVecs(petsclib::PetscLibType, snes::PetscSNES, x::Vector{PetscVec}, y::Vector{PetscVec}, b::Vector{PetscVec}, xl::Vector{PetscVec}) end
+function SNESNASMGetSubdomainVecs(petsclib::PetscLibType, snes::AbstractPetscSNES, x::Vector{<:AbstractPetscVec}, y::Vector{<:AbstractPetscVec}, b::Vector{<:AbstractPetscVec}, xl::Vector{<:AbstractPetscVec}) end
 
-@for_petsc function SNESNASMGetSubdomainVecs(petsclib::$UnionPetscLib, snes::PetscSNES, x::Vector{PetscVec}, y::Vector{PetscVec}, b::Vector{PetscVec}, xl::Vector{PetscVec} )
+@for_petsc function SNESNASMGetSubdomainVecs(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, x::Vector{<:AbstractPetscVec}, y::Vector{<:AbstractPetscVec}, b::Vector{<:AbstractPetscVec}, xl::Vector{<:AbstractPetscVec} )
 	n_ = Ref{$PetscInt}()
 	x_ = Ref(pointer(x))
 	y_ = Ref(pointer(y))
@@ -7011,7 +7011,7 @@ function SNESNASMGetSubdomainVecs(petsclib::PetscLibType, snes::PetscSNES, x::Ve
 end 
 
 """
-	SNESNASMSetComputeFinalJacobian(petsclib::PetscLibType,snes::PetscSNES, flg::PetscBool) 
+	SNESNASMSetComputeFinalJacobian(petsclib::PetscLibType,snes::AbstractPetscSNES, flg::PetscBool) 
 Schedules the computation of the global and subdomain Jacobians upon convergence for the
 nonlinear additive Schwarz solver
 
@@ -7028,9 +7028,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESNASMSetComputeFinalJacobian"))
 """
-function SNESNASMSetComputeFinalJacobian(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
+function SNESNASMSetComputeFinalJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, flg::PetscBool) end
 
-@for_petsc function SNESNASMSetComputeFinalJacobian(petsclib::$UnionPetscLib, snes::PetscSNES, flg::PetscBool )
+@for_petsc function SNESNASMSetComputeFinalJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, flg::PetscBool )
 
     @chk ccall(
                (:SNESNASMSetComputeFinalJacobian, $petsc_library),
@@ -7044,7 +7044,7 @@ function SNESNASMSetComputeFinalJacobian(petsclib::PetscLibType, snes::PetscSNES
 end 
 
 """
-	SNESNASMSetDamping(petsclib::PetscLibType,snes::PetscSNES, dmp::PetscReal) 
+	SNESNASMSetDamping(petsclib::PetscLibType,snes::AbstractPetscSNES, dmp::PetscReal) 
 Sets the update damping for `SNESNASM` the nonlinear additive Schwarz solver
 
 Logically Collective
@@ -7063,9 +7063,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNASMSetDamping"))
 """
-function SNESNASMSetDamping(petsclib::PetscLibType, snes::PetscSNES, dmp::PetscReal) end
+function SNESNASMSetDamping(petsclib::PetscLibType, snes::AbstractPetscSNES, dmp::PetscReal) end
 
-@for_petsc function SNESNASMSetDamping(petsclib::$UnionPetscLib, snes::PetscSNES, dmp::$PetscReal )
+@for_petsc function SNESNASMSetDamping(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, dmp::$PetscReal )
 
     @chk ccall(
                (:SNESNASMSetDamping, $petsc_library),
@@ -7079,7 +7079,7 @@ function SNESNASMSetDamping(petsclib::PetscLibType, snes::PetscSNES, dmp::PetscR
 end 
 
 """
-	dmp::PetscReal = SNESNASMGetDamping(petsclib::PetscLibType,snes::PetscSNES) 
+	dmp::PetscReal = SNESNASMGetDamping(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the update damping for `SNESNASM` the nonlinear additive Schwarz solver
 
 Not Collective
@@ -7097,9 +7097,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNASMGetDamping"))
 """
-function SNESNASMGetDamping(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESNASMGetDamping(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESNASMGetDamping(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESNASMGetDamping(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	dmp_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -7115,7 +7115,7 @@ function SNESNASMGetDamping(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESNASMGetSNES(petsclib::PetscLibType,snes::PetscSNES, i::PetscInt, subsnes::PetscSNES) 
+	SNESNASMGetSNES(petsclib::PetscLibType,snes::AbstractPetscSNES, i::PetscInt, subsnes::AbstractPetscSNES) 
 Gets a subsolver
 
 Not Collective
@@ -7134,9 +7134,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNASMGetSNES"))
 """
-function SNESNASMGetSNES(petsclib::PetscLibType, snes::PetscSNES, i::PetscInt, subsnes::PetscSNES) end
+function SNESNASMGetSNES(petsclib::PetscLibType, snes::AbstractPetscSNES, i::PetscInt, subsnes::AbstractPetscSNES) end
 
-@for_petsc function SNESNASMGetSNES(petsclib::$UnionPetscLib, snes::PetscSNES, i::$PetscInt, subsnes::PetscSNES )
+@for_petsc function SNESNASMGetSNES(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, i::$PetscInt, subsnes::AbstractPetscSNES )
 	subsnes_ = Ref(subsnes.ptr)
 
     @chk ccall(
@@ -7152,7 +7152,7 @@ function SNESNASMGetSNES(petsclib::PetscLibType, snes::PetscSNES, i::PetscInt, s
 end 
 
 """
-	n::PetscInt = SNESNASMGetNumber(petsclib::PetscLibType,snes::PetscSNES) 
+	n::PetscInt = SNESNASMGetNumber(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets number of subsolvers
 
 Not Collective
@@ -7170,9 +7170,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNASMGetNumber"))
 """
-function SNESNASMGetNumber(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESNASMGetNumber(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESNASMGetNumber(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESNASMGetNumber(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	n_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -7188,7 +7188,7 @@ function SNESNASMGetNumber(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESNASMSetWeight(petsclib::PetscLibType,snes::PetscSNES, weight::PetscVec) 
+	SNESNASMSetWeight(petsclib::PetscLibType,snes::AbstractPetscSNES, weight::AbstractPetscVec) 
 Sets weight to use when adding overlapping updates
 
 Collective
@@ -7204,9 +7204,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNASMSetWeight"))
 """
-function SNESNASMSetWeight(petsclib::PetscLibType, snes::PetscSNES, weight::PetscVec) end
+function SNESNASMSetWeight(petsclib::PetscLibType, snes::AbstractPetscSNES, weight::AbstractPetscVec) end
 
-@for_petsc function SNESNASMSetWeight(petsclib::$UnionPetscLib, snes::PetscSNES, weight::PetscVec )
+@for_petsc function SNESNASMSetWeight(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, weight::AbstractPetscVec )
 
     @chk ccall(
                (:SNESNASMSetWeight, $petsc_library),
@@ -7220,7 +7220,7 @@ function SNESNASMSetWeight(petsclib::PetscLibType, snes::PetscSNES, weight::Pets
 end 
 
 """
-	SNESQNSetRestartType(petsclib::PetscLibType,snes::PetscSNES, rtype::SNESQNRestartType) 
+	SNESQNSetRestartType(petsclib::PetscLibType,snes::AbstractPetscSNES, rtype::SNESQNRestartType) 
 Sets the restart type for `SNESQN`.
 
 Logically Collective
@@ -7241,9 +7241,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESQNSetRestartType"))
 """
-function SNESQNSetRestartType(petsclib::PetscLibType, snes::PetscSNES, rtype::SNESQNRestartType) end
+function SNESQNSetRestartType(petsclib::PetscLibType, snes::AbstractPetscSNES, rtype::SNESQNRestartType) end
 
-@for_petsc function SNESQNSetRestartType(petsclib::$UnionPetscLib, snes::PetscSNES, rtype::SNESQNRestartType )
+@for_petsc function SNESQNSetRestartType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, rtype::SNESQNRestartType )
 
     @chk ccall(
                (:SNESQNSetRestartType, $petsc_library),
@@ -7257,7 +7257,7 @@ function SNESQNSetRestartType(petsclib::PetscLibType, snes::PetscSNES, rtype::SN
 end 
 
 """
-	SNESQNSetScaleType(petsclib::PetscLibType,snes::PetscSNES, stype::SNESQNScaleType) 
+	SNESQNSetScaleType(petsclib::PetscLibType,snes::AbstractPetscSNES, stype::SNESQNScaleType) 
 Sets the scaling type for the inner inverse Jacobian in `SNESQN`.
 
 Logically Collective
@@ -7276,9 +7276,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESQNSetScaleType"))
 """
-function SNESQNSetScaleType(petsclib::PetscLibType, snes::PetscSNES, stype::SNESQNScaleType) end
+function SNESQNSetScaleType(petsclib::PetscLibType, snes::AbstractPetscSNES, stype::SNESQNScaleType) end
 
-@for_petsc function SNESQNSetScaleType(petsclib::$UnionPetscLib, snes::PetscSNES, stype::SNESQNScaleType )
+@for_petsc function SNESQNSetScaleType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, stype::SNESQNScaleType )
 
     @chk ccall(
                (:SNESQNSetScaleType, $petsc_library),
@@ -7292,7 +7292,7 @@ function SNESQNSetScaleType(petsclib::PetscLibType, snes::PetscSNES, stype::SNES
 end 
 
 """
-	SNESQNSetType(petsclib::PetscLibType,snes::PetscSNES, qtype::SNESQNType) 
+	SNESQNSetType(petsclib::PetscLibType,snes::AbstractPetscSNES, qtype::SNESQNType) 
 Sets the quasi
 
 Logically Collective
@@ -7311,9 +7311,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESQNSetType"))
 """
-function SNESQNSetType(petsclib::PetscLibType, snes::PetscSNES, qtype::SNESQNType) end
+function SNESQNSetType(petsclib::PetscLibType, snes::AbstractPetscSNES, qtype::SNESQNType) end
 
-@for_petsc function SNESQNSetType(petsclib::$UnionPetscLib, snes::PetscSNES, qtype::SNESQNType )
+@for_petsc function SNESQNSetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, qtype::SNESQNType )
 
     @chk ccall(
                (:SNESQNSetType, $petsc_library),
@@ -7327,7 +7327,7 @@ function SNESQNSetType(petsclib::PetscLibType, snes::PetscSNES, qtype::SNESQNTyp
 end 
 
 """
-	SNESCompositeSetType(petsclib::PetscLibType,snes::PetscSNES, type::SNESCompositeType) 
+	SNESCompositeSetType(petsclib::PetscLibType,snes::AbstractPetscSNES, type::SNESCompositeType) 
 Sets the type of composite preconditioner.
 
 Logically Collective
@@ -7347,9 +7347,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESCompositeSetType"))
 """
-function SNESCompositeSetType(petsclib::PetscLibType, snes::PetscSNES, type::SNESCompositeType) end
+function SNESCompositeSetType(petsclib::PetscLibType, snes::AbstractPetscSNES, type::SNESCompositeType) end
 
-@for_petsc function SNESCompositeSetType(petsclib::$UnionPetscLib, snes::PetscSNES, type::SNESCompositeType )
+@for_petsc function SNESCompositeSetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, type::SNESCompositeType )
 
     @chk ccall(
                (:SNESCompositeSetType, $petsc_library),
@@ -7363,7 +7363,7 @@ function SNESCompositeSetType(petsclib::PetscLibType, snes::PetscSNES, type::SNE
 end 
 
 """
-	SNESCompositeAddSNES(petsclib::PetscLibType,snes::PetscSNES, type::SNESType) 
+	SNESCompositeAddSNES(petsclib::PetscLibType,snes::AbstractPetscSNES, type::SNESType) 
 Adds another `SNES` to the `SNESCOMPOSITE`
 
 Collective
@@ -7379,9 +7379,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESCompositeAddSNES"))
 """
-function SNESCompositeAddSNES(petsclib::PetscLibType, snes::PetscSNES, type::SNESType) end
+function SNESCompositeAddSNES(petsclib::PetscLibType, snes::AbstractPetscSNES, type::SNESType) end
 
-@for_petsc function SNESCompositeAddSNES(petsclib::$UnionPetscLib, snes::PetscSNES, type::SNESType )
+@for_petsc function SNESCompositeAddSNES(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, type::SNESType )
 
     @chk ccall(
                (:SNESCompositeAddSNES, $petsc_library),
@@ -7395,7 +7395,7 @@ function SNESCompositeAddSNES(petsclib::PetscLibType, snes::PetscSNES, type::SNE
 end 
 
 """
-	SNESCompositeGetSNES(petsclib::PetscLibType,snes::PetscSNES, n::PetscInt, subsnes::PetscSNES) 
+	SNESCompositeGetSNES(petsclib::PetscLibType,snes::AbstractPetscSNES, n::PetscInt, subsnes::AbstractPetscSNES) 
 Gets one of the `SNES` objects in the `SNES` of `SNESType` `SNESCOMPOSITE`
 
 Not Collective
@@ -7414,9 +7414,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESCompositeGetSNES"))
 """
-function SNESCompositeGetSNES(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt, subsnes::PetscSNES) end
+function SNESCompositeGetSNES(petsclib::PetscLibType, snes::AbstractPetscSNES, n::PetscInt, subsnes::AbstractPetscSNES) end
 
-@for_petsc function SNESCompositeGetSNES(petsclib::$UnionPetscLib, snes::PetscSNES, n::$PetscInt, subsnes::PetscSNES )
+@for_petsc function SNESCompositeGetSNES(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, n::$PetscInt, subsnes::AbstractPetscSNES )
 	subsnes_ = Ref(subsnes.ptr)
 
     @chk ccall(
@@ -7432,7 +7432,7 @@ function SNESCompositeGetSNES(petsclib::PetscLibType, snes::PetscSNES, n::PetscI
 end 
 
 """
-	n::PetscInt = SNESCompositeGetNumber(petsclib::PetscLibType,snes::PetscSNES) 
+	n::PetscInt = SNESCompositeGetNumber(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Get the number of subsolvers in the `SNESCOMPOSITE`
 
 Logically Collective
@@ -7450,9 +7450,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESCompositeGetNumber"))
 """
-function SNESCompositeGetNumber(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESCompositeGetNumber(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESCompositeGetNumber(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESCompositeGetNumber(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	n_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -7468,7 +7468,7 @@ function SNESCompositeGetNumber(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESCompositeSetDamping(petsclib::PetscLibType,snes::PetscSNES, n::PetscInt, dmp::PetscReal) 
+	SNESCompositeSetDamping(petsclib::PetscLibType,snes::AbstractPetscSNES, n::PetscInt, dmp::PetscReal) 
 Sets the damping of a subsolver when using `SNES_COMPOSITE_ADDITIVE` with a `SNES` of `SNESType` `SNESCOMPOSITE`
 
 Not Collective
@@ -7486,9 +7486,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESCompositeSetDamping"))
 """
-function SNESCompositeSetDamping(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt, dmp::PetscReal) end
+function SNESCompositeSetDamping(petsclib::PetscLibType, snes::AbstractPetscSNES, n::PetscInt, dmp::PetscReal) end
 
-@for_petsc function SNESCompositeSetDamping(petsclib::$UnionPetscLib, snes::PetscSNES, n::$PetscInt, dmp::$PetscReal )
+@for_petsc function SNESCompositeSetDamping(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, n::$PetscInt, dmp::$PetscReal )
 
     @chk ccall(
                (:SNESCompositeSetDamping, $petsc_library),
@@ -7502,7 +7502,7 @@ function SNESCompositeSetDamping(petsclib::PetscLibType, snes::PetscSNES, n::Pet
 end 
 
 """
-	rho_flag::PetscBool = SNESNewtonTRDCGetRhoFlag(petsclib::PetscLibType,snes::PetscSNES) 
+	rho_flag::PetscBool = SNESNewtonTRDCGetRhoFlag(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Get whether the current solution update is within the trust
 
 Logically Collective
@@ -7521,9 +7521,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESNewtonTRDCGetRhoFlag"))
 """
-function SNESNewtonTRDCGetRhoFlag(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESNewtonTRDCGetRhoFlag(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESNewtonTRDCGetRhoFlag(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESNewtonTRDCGetRhoFlag(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	rho_flag_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -7539,7 +7539,7 @@ function SNESNewtonTRDCGetRhoFlag(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESNewtonTRDCSetPreCheck(petsclib::PetscLibType,snes::PetscSNES, func::external, ctx::Cvoid) 
+	SNESNewtonTRDCSetPreCheck(petsclib::PetscLibType,snes::AbstractPetscSNES, func::external, ctx::Cvoid) 
 Sets a user function that is called before the search step has been determined.
 Allows the user a chance to change or override the trust region decision.
 
@@ -7558,9 +7558,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonTRDCSetPreCheck"))
 """
-function SNESNewtonTRDCSetPreCheck(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
+function SNESNewtonTRDCSetPreCheck(petsclib::PetscLibType, snes::AbstractPetscSNES, func::external, ctx::Cvoid) end
 
-@for_petsc function SNESNewtonTRDCSetPreCheck(petsclib::$UnionPetscLib, snes::PetscSNES, func::external, ctx::Cvoid )
+@for_petsc function SNESNewtonTRDCSetPreCheck(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:SNESNewtonTRDCSetPreCheck, $petsc_library),
@@ -7574,7 +7574,7 @@ function SNESNewtonTRDCSetPreCheck(petsclib::PetscLibType, snes::PetscSNES, func
 end 
 
 """
-	SNESNewtonTRDCSetPostCheck(petsclib::PetscLibType,snes::PetscSNES, func::external, ctx::Cvoid) 
+	SNESNewtonTRDCSetPostCheck(petsclib::PetscLibType,snes::AbstractPetscSNES, func::external, ctx::Cvoid) 
 Sets a user function that is called after the search step has been determined but before the next
 function evaluation. Allows the user a chance to change or override the decision of the line search routine
 
@@ -7592,9 +7592,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonTRDCSetPostCheck"))
 """
-function SNESNewtonTRDCSetPostCheck(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
+function SNESNewtonTRDCSetPostCheck(petsclib::PetscLibType, snes::AbstractPetscSNES, func::external, ctx::Cvoid) end
 
-@for_petsc function SNESNewtonTRDCSetPostCheck(petsclib::$UnionPetscLib, snes::PetscSNES, func::external, ctx::Cvoid )
+@for_petsc function SNESNewtonTRDCSetPostCheck(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:SNESNewtonTRDCSetPostCheck, $petsc_library),
@@ -7608,14 +7608,14 @@ function SNESNewtonTRDCSetPostCheck(petsclib::PetscLibType, snes::PetscSNES, fun
 end 
 
 """
-	bs::PetscInt,nodesPerCell::PetscInt,subspaceOffsets::PetscInt,ghostBcNodes::PetscInt,globalBcNodes::PetscInt = SNESPatchSetDiscretisationInfo(petsclib::PetscLibType,snes::PetscSNES, nsubspaces::PetscInt, dms::PetscDM, cellNodeMap::PetscInt, numGhostBcs::PetscInt, numGlobalBcs::PetscInt) 
+	bs::PetscInt,nodesPerCell::PetscInt,subspaceOffsets::PetscInt,ghostBcNodes::PetscInt,globalBcNodes::PetscInt = SNESPatchSetDiscretisationInfo(petsclib::PetscLibType,snes::AbstractPetscSNES, nsubspaces::PetscInt, dms::AbstractPetscDM, cellNodeMap::PetscInt, numGhostBcs::PetscInt, numGlobalBcs::PetscInt) 
 
 # External Links
 $(_doc_external("SNES/SNESPatchSetDiscretisationInfo"))
 """
-function SNESPatchSetDiscretisationInfo(petsclib::PetscLibType, snes::PetscSNES, nsubspaces::PetscInt, dms::PetscDM, cellNodeMap::PetscInt, numGhostBcs::PetscInt, numGlobalBcs::PetscInt) end
+function SNESPatchSetDiscretisationInfo(petsclib::PetscLibType, snes::AbstractPetscSNES, nsubspaces::PetscInt, dms::AbstractPetscDM, cellNodeMap::PetscInt, numGhostBcs::PetscInt, numGlobalBcs::PetscInt) end
 
-@for_petsc function SNESPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, snes::PetscSNES, nsubspaces::$PetscInt, dms::PetscDM, cellNodeMap::$PetscInt, numGhostBcs::$PetscInt, numGlobalBcs::$PetscInt )
+@for_petsc function SNESPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, nsubspaces::$PetscInt, dms::AbstractPetscDM, cellNodeMap::$PetscInt, numGhostBcs::$PetscInt, numGlobalBcs::$PetscInt )
 	dms_ = Ref(dms.ptr)
 	bs_ = Ref{$PetscInt}()
 	nodesPerCell_ = Ref{$PetscInt}()
@@ -7641,14 +7641,14 @@ function SNESPatchSetDiscretisationInfo(petsclib::PetscLibType, snes::PetscSNES,
 end 
 
 """
-	SNESPatchSetComputeOperator(petsclib::PetscLibType,snes::PetscSNES, func::external, ctx::Cvoid) 
+	SNESPatchSetComputeOperator(petsclib::PetscLibType,snes::AbstractPetscSNES, func::external, ctx::Cvoid) 
 
 # External Links
 $(_doc_external("SNES/SNESPatchSetComputeOperator"))
 """
-function SNESPatchSetComputeOperator(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
+function SNESPatchSetComputeOperator(petsclib::PetscLibType, snes::AbstractPetscSNES, func::external, ctx::Cvoid) end
 
-@for_petsc function SNESPatchSetComputeOperator(petsclib::$UnionPetscLib, snes::PetscSNES, func::external, ctx::Cvoid )
+@for_petsc function SNESPatchSetComputeOperator(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:SNESPatchSetComputeOperator, $petsc_library),
@@ -7662,14 +7662,14 @@ function SNESPatchSetComputeOperator(petsclib::PetscLibType, snes::PetscSNES, fu
 end 
 
 """
-	SNESPatchSetComputeFunction(petsclib::PetscLibType,snes::PetscSNES, func::external, ctx::Cvoid) 
+	SNESPatchSetComputeFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, func::external, ctx::Cvoid) 
 
 # External Links
 $(_doc_external("SNES/SNESPatchSetComputeFunction"))
 """
-function SNESPatchSetComputeFunction(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
+function SNESPatchSetComputeFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, func::external, ctx::Cvoid) end
 
-@for_petsc function SNESPatchSetComputeFunction(petsclib::$UnionPetscLib, snes::PetscSNES, func::external, ctx::Cvoid )
+@for_petsc function SNESPatchSetComputeFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:SNESPatchSetComputeFunction, $petsc_library),
@@ -7683,14 +7683,14 @@ function SNESPatchSetComputeFunction(petsclib::PetscLibType, snes::PetscSNES, fu
 end 
 
 """
-	ctx::Cvoid = SNESPatchSetConstructType(petsclib::PetscLibType,snes::PetscSNES, ctype::PCPatchConstructType, func::external) 
+	ctx::Cvoid = SNESPatchSetConstructType(petsclib::PetscLibType,snes::AbstractPetscSNES, ctype::PCPatchConstructType, func::external) 
 
 # External Links
 $(_doc_external("SNES/SNESPatchSetConstructType"))
 """
-function SNESPatchSetConstructType(petsclib::PetscLibType, snes::PetscSNES, ctype::PCPatchConstructType, func::external) end
+function SNESPatchSetConstructType(petsclib::PetscLibType, snes::AbstractPetscSNES, ctype::PCPatchConstructType, func::external) end
 
-@for_petsc function SNESPatchSetConstructType(petsclib::$UnionPetscLib, snes::PetscSNES, ctype::PCPatchConstructType, func::external )
+@for_petsc function SNESPatchSetConstructType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, ctype::PCPatchConstructType, func::external )
 	ctx_ = Ref{Cvoid}()
 
     @chk ccall(
@@ -7706,14 +7706,14 @@ function SNESPatchSetConstructType(petsclib::PetscLibType, snes::PetscSNES, ctyp
 end 
 
 """
-	SNESPatchSetCellNumbering(petsclib::PetscLibType,snes::PetscSNES, cellNumbering::PetscSection) 
+	SNESPatchSetCellNumbering(petsclib::PetscLibType,snes::AbstractPetscSNES, cellNumbering::PetscSection) 
 
 # External Links
 $(_doc_external("SNES/SNESPatchSetCellNumbering"))
 """
-function SNESPatchSetCellNumbering(petsclib::PetscLibType, snes::PetscSNES, cellNumbering::PetscSection) end
+function SNESPatchSetCellNumbering(petsclib::PetscLibType, snes::AbstractPetscSNES, cellNumbering::PetscSection) end
 
-@for_petsc function SNESPatchSetCellNumbering(petsclib::$UnionPetscLib, snes::PetscSNES, cellNumbering::PetscSection )
+@for_petsc function SNESPatchSetCellNumbering(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, cellNumbering::PetscSection )
 
     @chk ccall(
                (:SNESPatchSetCellNumbering, $petsc_library),
@@ -7727,7 +7727,7 @@ function SNESPatchSetCellNumbering(petsclib::PetscLibType, snes::PetscSNES, cell
 end 
 
 """
-	SNESMultiblockSetFields(petsclib::PetscLibType,snes::PetscSNES, name::String, n::PetscInt, fields::PetscInt) 
+	SNESMultiblockSetFields(petsclib::PetscLibType,snes::AbstractPetscSNES, name::String, n::PetscInt, fields::PetscInt) 
 Sets the fields for one particular block in a `SNESMULTIBLOCK` solver
 
 Logically Collective
@@ -7745,9 +7745,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMultiblockSetFields"))
 """
-function SNESMultiblockSetFields(petsclib::PetscLibType, snes::PetscSNES, name::String, n::PetscInt, fields::PetscInt) end
+function SNESMultiblockSetFields(petsclib::PetscLibType, snes::AbstractPetscSNES, name::String, n::PetscInt, fields::PetscInt) end
 
-@for_petsc function SNESMultiblockSetFields(petsclib::$UnionPetscLib, snes::PetscSNES, name::String, n::$PetscInt, fields::$PetscInt )
+@for_petsc function SNESMultiblockSetFields(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, name::String, n::$PetscInt, fields::$PetscInt )
 
     @chk ccall(
                (:SNESMultiblockSetFields, $petsc_library),
@@ -7761,7 +7761,7 @@ function SNESMultiblockSetFields(petsclib::PetscLibType, snes::PetscSNES, name::
 end 
 
 """
-	SNESMultiblockSetIS(petsclib::PetscLibType,snes::PetscSNES, name::String, is::IS) 
+	SNESMultiblockSetIS(petsclib::PetscLibType,snes::AbstractPetscSNES, name::String, is::AbstractIS) 
 Sets the global row indices for one particular block in a `SNESMULTIBLOCK` solver
 
 Logically Collective
@@ -7778,9 +7778,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMultiblockSetIS"))
 """
-function SNESMultiblockSetIS(petsclib::PetscLibType, snes::PetscSNES, name::String, is::IS) end
+function SNESMultiblockSetIS(petsclib::PetscLibType, snes::AbstractPetscSNES, name::String, is::AbstractIS) end
 
-@for_petsc function SNESMultiblockSetIS(petsclib::$UnionPetscLib, snes::PetscSNES, name::String, is::IS )
+@for_petsc function SNESMultiblockSetIS(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, name::String, is::AbstractIS )
 
     @chk ccall(
                (:SNESMultiblockSetIS, $petsc_library),
@@ -7794,7 +7794,7 @@ function SNESMultiblockSetIS(petsclib::PetscLibType, snes::PetscSNES, name::Stri
 end 
 
 """
-	SNESMultiblockSetType(petsclib::PetscLibType,snes::PetscSNES, type::PCCompositeType) 
+	SNESMultiblockSetType(petsclib::PetscLibType,snes::AbstractPetscSNES, type::PCCompositeType) 
 Sets the type of block combination used for a `SNESMULTIBLOCK` solver
 
 Logically Collective
@@ -7814,9 +7814,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESMultiblockSetType"))
 """
-function SNESMultiblockSetType(petsclib::PetscLibType, snes::PetscSNES, type::PCCompositeType) end
+function SNESMultiblockSetType(petsclib::PetscLibType, snes::AbstractPetscSNES, type::PCCompositeType) end
 
-@for_petsc function SNESMultiblockSetType(petsclib::$UnionPetscLib, snes::PetscSNES, type::PCCompositeType )
+@for_petsc function SNESMultiblockSetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, type::PCCompositeType )
 
     @chk ccall(
                (:SNESMultiblockSetType, $petsc_library),
@@ -7830,7 +7830,7 @@ function SNESMultiblockSetType(petsclib::PetscLibType, snes::PetscSNES, type::PC
 end 
 
 """
-	SNESMultiblockSetBlockSize(petsclib::PetscLibType,snes::PetscSNES, bs::PetscInt) 
+	SNESMultiblockSetBlockSize(petsclib::PetscLibType,snes::AbstractPetscSNES, bs::PetscInt) 
 Sets the block size for structured block division in a `SNESMULTIBLOCK` solver. If not set the matrix block size is used.
 
 Logically Collective
@@ -7846,9 +7846,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMultiblockSetBlockSize"))
 """
-function SNESMultiblockSetBlockSize(petsclib::PetscLibType, snes::PetscSNES, bs::PetscInt) end
+function SNESMultiblockSetBlockSize(petsclib::PetscLibType, snes::AbstractPetscSNES, bs::PetscInt) end
 
-@for_petsc function SNESMultiblockSetBlockSize(petsclib::$UnionPetscLib, snes::PetscSNES, bs::$PetscInt )
+@for_petsc function SNESMultiblockSetBlockSize(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, bs::$PetscInt )
 
     @chk ccall(
                (:SNESMultiblockSetBlockSize, $petsc_library),
@@ -7862,7 +7862,7 @@ function SNESMultiblockSetBlockSize(petsclib::PetscLibType, snes::PetscSNES, bs:
 end 
 
 """
-	n::PetscInt = SNESMultiblockGetSubSNES(petsclib::PetscLibType,snes::PetscSNES, subsnes::Vector{PetscSNES}) 
+	n::PetscInt = SNESMultiblockGetSubSNES(petsclib::PetscLibType,snes::AbstractPetscSNES, subsnes::Vector{<:AbstractPetscSNES}) 
 Gets the `SNES` contexts for all blocks in a `SNESMULTIBLOCK` solver.
 
 Not Collective but each `SNES` obtained is parallel
@@ -7881,9 +7881,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESMultiblockGetSubSNES"))
 """
-function SNESMultiblockGetSubSNES(petsclib::PetscLibType, snes::PetscSNES, subsnes::Vector{PetscSNES}) end
+function SNESMultiblockGetSubSNES(petsclib::PetscLibType, snes::AbstractPetscSNES, subsnes::Vector{<:AbstractPetscSNES}) end
 
-@for_petsc function SNESMultiblockGetSubSNES(petsclib::$UnionPetscLib, snes::PetscSNES, subsnes::Vector{PetscSNES} )
+@for_petsc function SNESMultiblockGetSubSNES(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, subsnes::Vector{<:AbstractPetscSNES} )
 	n_ = Ref{$PetscInt}()
 	subsnes_ = Ref(pointer(subsnes))
 
@@ -7900,7 +7900,7 @@ function SNESMultiblockGetSubSNES(petsclib::PetscLibType, snes::PetscSNES, subsn
 end 
 
 """
-	SNESNCGSetType(petsclib::PetscLibType,snes::PetscSNES, btype::SNESNCGType) 
+	SNESNCGSetType(petsclib::PetscLibType,snes::AbstractPetscSNES, btype::SNESNCGType) 
 Sets the conjugate update type for nonlinear CG `SNESNCG`.
 
 Logically Collective
@@ -7919,9 +7919,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNCGSetType"))
 """
-function SNESNCGSetType(petsclib::PetscLibType, snes::PetscSNES, btype::SNESNCGType) end
+function SNESNCGSetType(petsclib::PetscLibType, snes::AbstractPetscSNES, btype::SNESNCGType) end
 
-@for_petsc function SNESNCGSetType(petsclib::$UnionPetscLib, snes::PetscSNES, btype::SNESNCGType )
+@for_petsc function SNESNCGSetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, btype::SNESNCGType )
 
     @chk ccall(
                (:SNESNCGSetType, $petsc_library),
@@ -7935,7 +7935,7 @@ function SNESNCGSetType(petsclib::PetscLibType, snes::PetscSNES, btype::SNESNCGT
 end 
 
 """
-	Xcoarse::PetscVec = SNESFASCreateCoarseVec(petsclib::PetscLibType,snes::PetscSNES) 
+	Xcoarse::PetscVec = SNESFASCreateCoarseVec(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 create a `Vec` corresponding to a state vector on one level coarser than the current level
 
 Collective
@@ -7953,9 +7953,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESFASCreateCoarseVec"))
 """
-function SNESFASCreateCoarseVec(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESFASCreateCoarseVec(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESFASCreateCoarseVec(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESFASCreateCoarseVec(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	Xcoarse_ = Ref{CVec}()
 
     @chk ccall(
@@ -7971,7 +7971,7 @@ function SNESFASCreateCoarseVec(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESFASRestrict(petsclib::PetscLibType,fine::PetscSNES, Xfine::PetscVec, Xcoarse::PetscVec) 
+	SNESFASRestrict(petsclib::PetscLibType,fine::AbstractPetscSNES, Xfine::AbstractPetscVec, Xcoarse::AbstractPetscVec) 
 restrict a `Vec` to the next coarser level
 
 Collective
@@ -7990,9 +7990,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESFASRestrict"))
 """
-function SNESFASRestrict(petsclib::PetscLibType, fine::PetscSNES, Xfine::PetscVec, Xcoarse::PetscVec) end
+function SNESFASRestrict(petsclib::PetscLibType, fine::AbstractPetscSNES, Xfine::AbstractPetscVec, Xcoarse::AbstractPetscVec) end
 
-@for_petsc function SNESFASRestrict(petsclib::$UnionPetscLib, fine::PetscSNES, Xfine::PetscVec, Xcoarse::PetscVec )
+@for_petsc function SNESFASRestrict(petsclib::$UnionPetscLib, fine::AbstractPetscSNES, Xfine::AbstractPetscVec, Xcoarse::AbstractPetscVec )
 
     @chk ccall(
                (:SNESFASRestrict, $petsc_library),
@@ -8006,7 +8006,7 @@ function SNESFASRestrict(petsclib::PetscLibType, fine::PetscSNES, Xfine::PetscVe
 end 
 
 """
-	flg::PetscBool = SNESFASGetGalerkin(petsclib::PetscLibType,snes::PetscSNES) 
+	flg::PetscBool = SNESFASGetGalerkin(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets if the coarse problems are formed by projection to the fine problem
 
 Not Collective but the result would be the same on all MPI processes
@@ -8024,9 +8024,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASGetGalerkin"))
 """
-function SNESFASGetGalerkin(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESFASGetGalerkin(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESFASGetGalerkin(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESFASGetGalerkin(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -8042,7 +8042,7 @@ function SNESFASGetGalerkin(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESFASSetGalerkin(petsclib::PetscLibType,snes::PetscSNES, flg::PetscBool) 
+	SNESFASSetGalerkin(petsclib::PetscLibType,snes::AbstractPetscSNES, flg::PetscBool) 
 Sets coarse problems as formed by projection to the fine problem
 
 Logically Collective
@@ -8058,9 +8058,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASSetGalerkin"))
 """
-function SNESFASSetGalerkin(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
+function SNESFASSetGalerkin(petsclib::PetscLibType, snes::AbstractPetscSNES, flg::PetscBool) end
 
-@for_petsc function SNESFASSetGalerkin(petsclib::$UnionPetscLib, snes::PetscSNES, flg::PetscBool )
+@for_petsc function SNESFASSetGalerkin(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, flg::PetscBool )
 
     @chk ccall(
                (:SNESFASSetGalerkin, $petsc_library),
@@ -8074,7 +8074,7 @@ function SNESFASSetGalerkin(petsclib::PetscLibType, snes::PetscSNES, flg::PetscB
 end 
 
 """
-	SNESFASGalerkinFunctionDefault(petsclib::PetscLibType,snes::PetscSNES, X::PetscVec, F::PetscVec, ctx::Cvoid) 
+	SNESFASGalerkinFunctionDefault(petsclib::PetscLibType,snes::AbstractPetscSNES, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Cvoid) 
 Computes the Galerkin FAS function
 
 Collective
@@ -8094,9 +8094,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESFASGalerkinFunctionDefault"))
 """
-function SNESFASGalerkinFunctionDefault(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, F::PetscVec, ctx::Cvoid) end
+function SNESFASGalerkinFunctionDefault(petsclib::PetscLibType, snes::AbstractPetscSNES, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Cvoid) end
 
-@for_petsc function SNESFASGalerkinFunctionDefault(petsclib::$UnionPetscLib, snes::PetscSNES, X::PetscVec, F::PetscVec, ctx::Cvoid )
+@for_petsc function SNESFASGalerkinFunctionDefault(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, X::AbstractPetscVec, F::AbstractPetscVec, ctx::Cvoid )
 
     @chk ccall(
                (:SNESFASGalerkinFunctionDefault, $petsc_library),
@@ -8110,7 +8110,7 @@ function SNESFASGalerkinFunctionDefault(petsclib::PetscLibType, snes::PetscSNES,
 end 
 
 """
-	SNESFASSetType(petsclib::PetscLibType,snes::PetscSNES, fastype::SNESFASType) 
+	SNESFASSetType(petsclib::PetscLibType,snes::AbstractPetscSNES, fastype::SNESFASType) 
 Sets the update and correction type used for `SNESFAS`.
 
 Logically Collective
@@ -8126,9 +8126,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESFASSetType"))
 """
-function SNESFASSetType(petsclib::PetscLibType, snes::PetscSNES, fastype::SNESFASType) end
+function SNESFASSetType(petsclib::PetscLibType, snes::AbstractPetscSNES, fastype::SNESFASType) end
 
-@for_petsc function SNESFASSetType(petsclib::$UnionPetscLib, snes::PetscSNES, fastype::SNESFASType )
+@for_petsc function SNESFASSetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, fastype::SNESFASType )
 
     @chk ccall(
                (:SNESFASSetType, $petsc_library),
@@ -8142,7 +8142,7 @@ function SNESFASSetType(petsclib::PetscLibType, snes::PetscSNES, fastype::SNESFA
 end 
 
 """
-	fastype::SNESFASType = SNESFASGetType(petsclib::PetscLibType,snes::PetscSNES) 
+	fastype::SNESFASType = SNESFASGetType(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the update and correction type used for `SNESFAS`.
 
 Logically Collective
@@ -8160,9 +8160,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESFASGetType"))
 """
-function SNESFASGetType(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESFASGetType(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESFASGetType(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESFASGetType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	fastype_ = Ref{SNESFASType}()
 
     @chk ccall(
@@ -8178,7 +8178,7 @@ function SNESFASGetType(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESFASSetLevels(petsclib::PetscLibType,snes::PetscSNES, levels::PetscInt, comms::MPI_Comm) 
+	SNESFASSetLevels(petsclib::PetscLibType,snes::AbstractPetscSNES, levels::PetscInt, comms::MPI_Comm) 
 Sets the number of levels to use with `SNESFAS`.
 Must be called before any other `SNESFAS` routine.
 
@@ -8195,9 +8195,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESFASSetLevels"))
 """
-function SNESFASSetLevels(petsclib::PetscLibType, snes::PetscSNES, levels::PetscInt, comms::MPI_Comm) end
+function SNESFASSetLevels(petsclib::PetscLibType, snes::AbstractPetscSNES, levels::PetscInt, comms::MPI_Comm) end
 
-@for_petsc function SNESFASSetLevels(petsclib::$UnionPetscLib, snes::PetscSNES, levels::$PetscInt, comms::MPI_Comm )
+@for_petsc function SNESFASSetLevels(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, levels::$PetscInt, comms::MPI_Comm )
 
     @chk ccall(
                (:SNESFASSetLevels, $petsc_library),
@@ -8211,7 +8211,7 @@ function SNESFASSetLevels(petsclib::PetscLibType, snes::PetscSNES, levels::Petsc
 end 
 
 """
-	levels::PetscInt = SNESFASGetLevels(petsclib::PetscLibType,snes::PetscSNES) 
+	levels::PetscInt = SNESFASGetLevels(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the number of levels in a `SNESFAS`, including fine and coarse grids
 
 Input Parameter:
@@ -8227,9 +8227,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASGetLevels"))
 """
-function SNESFASGetLevels(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESFASGetLevels(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESFASGetLevels(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESFASGetLevels(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	levels_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -8245,7 +8245,7 @@ function SNESFASGetLevels(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESFASGetCycleSNES(petsclib::PetscLibType,snes::PetscSNES, level::PetscInt, lsnes::PetscSNES) 
+	SNESFASGetCycleSNES(petsclib::PetscLibType,snes::AbstractPetscSNES, level::PetscInt, lsnes::AbstractPetscSNES) 
 Gets the `SNES` corresponding to a particular level of the `SNESFAS` hierarchy
 
 Input Parameters:
@@ -8262,9 +8262,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASGetCycleSNES"))
 """
-function SNESFASGetCycleSNES(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, lsnes::PetscSNES) end
+function SNESFASGetCycleSNES(petsclib::PetscLibType, snes::AbstractPetscSNES, level::PetscInt, lsnes::AbstractPetscSNES) end
 
-@for_petsc function SNESFASGetCycleSNES(petsclib::$UnionPetscLib, snes::PetscSNES, level::$PetscInt, lsnes::PetscSNES )
+@for_petsc function SNESFASGetCycleSNES(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, level::$PetscInt, lsnes::AbstractPetscSNES )
 	lsnes_ = Ref(lsnes.ptr)
 
     @chk ccall(
@@ -8280,7 +8280,7 @@ function SNESFASGetCycleSNES(petsclib::PetscLibType, snes::PetscSNES, level::Pet
 end 
 
 """
-	SNESFASSetNumberSmoothUp(petsclib::PetscLibType,snes::PetscSNES, n::PetscInt) 
+	SNESFASSetNumberSmoothUp(petsclib::PetscLibType,snes::AbstractPetscSNES, n::PetscInt) 
 Sets the number of post
 use on all levels.
 
@@ -8300,9 +8300,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASSetNumberSmoothUp"))
 """
-function SNESFASSetNumberSmoothUp(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt) end
+function SNESFASSetNumberSmoothUp(petsclib::PetscLibType, snes::AbstractPetscSNES, n::PetscInt) end
 
-@for_petsc function SNESFASSetNumberSmoothUp(petsclib::$UnionPetscLib, snes::PetscSNES, n::$PetscInt )
+@for_petsc function SNESFASSetNumberSmoothUp(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, n::$PetscInt )
 
     @chk ccall(
                (:SNESFASSetNumberSmoothUp, $petsc_library),
@@ -8316,7 +8316,7 @@ function SNESFASSetNumberSmoothUp(petsclib::PetscLibType, snes::PetscSNES, n::Pe
 end 
 
 """
-	SNESFASSetNumberSmoothDown(petsclib::PetscLibType,snes::PetscSNES, n::PetscInt) 
+	SNESFASSetNumberSmoothDown(petsclib::PetscLibType,snes::AbstractPetscSNES, n::PetscInt) 
 Sets the number of pre
 use on all levels.
 
@@ -8336,9 +8336,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASSetNumberSmoothDown"))
 """
-function SNESFASSetNumberSmoothDown(petsclib::PetscLibType, snes::PetscSNES, n::PetscInt) end
+function SNESFASSetNumberSmoothDown(petsclib::PetscLibType, snes::AbstractPetscSNES, n::PetscInt) end
 
-@for_petsc function SNESFASSetNumberSmoothDown(petsclib::$UnionPetscLib, snes::PetscSNES, n::$PetscInt )
+@for_petsc function SNESFASSetNumberSmoothDown(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, n::$PetscInt )
 
     @chk ccall(
                (:SNESFASSetNumberSmoothDown, $petsc_library),
@@ -8352,7 +8352,7 @@ function SNESFASSetNumberSmoothDown(petsclib::PetscLibType, snes::PetscSNES, n::
 end 
 
 """
-	SNESFASSetContinuation(petsclib::PetscLibType,snes::PetscSNES, continuation::PetscBool) 
+	SNESFASSetContinuation(petsclib::PetscLibType,snes::AbstractPetscSNES, continuation::PetscBool) 
 Sets the `SNESFAS` cycle to default to using exact Newton solves on the upsweep
 
 Logically Collective
@@ -8371,9 +8371,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASSetContinuation"))
 """
-function SNESFASSetContinuation(petsclib::PetscLibType, snes::PetscSNES, continuation::PetscBool) end
+function SNESFASSetContinuation(petsclib::PetscLibType, snes::AbstractPetscSNES, continuation::PetscBool) end
 
-@for_petsc function SNESFASSetContinuation(petsclib::$UnionPetscLib, snes::PetscSNES, continuation::PetscBool )
+@for_petsc function SNESFASSetContinuation(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, continuation::PetscBool )
 
     @chk ccall(
                (:SNESFASSetContinuation, $petsc_library),
@@ -8387,7 +8387,7 @@ function SNESFASSetContinuation(petsclib::PetscLibType, snes::PetscSNES, continu
 end 
 
 """
-	SNESFASSetCycles(petsclib::PetscLibType,snes::PetscSNES, cycles::PetscInt) 
+	SNESFASSetCycles(petsclib::PetscLibType,snes::AbstractPetscSNES, cycles::PetscInt) 
 Sets the number of `SNESFAS` multigrid cycles to use each time a grid is visited.  Use `SNESFASSetCyclesOnLevel()` for more
 complicated cycling.
 
@@ -8407,9 +8407,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASSetCycles"))
 """
-function SNESFASSetCycles(petsclib::PetscLibType, snes::PetscSNES, cycles::PetscInt) end
+function SNESFASSetCycles(petsclib::PetscLibType, snes::AbstractPetscSNES, cycles::PetscInt) end
 
-@for_petsc function SNESFASSetCycles(petsclib::$UnionPetscLib, snes::PetscSNES, cycles::$PetscInt )
+@for_petsc function SNESFASSetCycles(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, cycles::$PetscInt )
 
     @chk ccall(
                (:SNESFASSetCycles, $petsc_library),
@@ -8423,7 +8423,7 @@ function SNESFASSetCycles(petsclib::PetscLibType, snes::PetscSNES, cycles::Petsc
 end 
 
 """
-	SNESFASSetMonitor(petsclib::PetscLibType,snes::PetscSNES, vf::PetscViewerAndFormat, flg::PetscBool) 
+	SNESFASSetMonitor(petsclib::PetscLibType,snes::AbstractPetscSNES, vf::PetscViewerAndFormat, flg::PetscBool) 
 Sets the method
 
 Logically Collective
@@ -8440,9 +8440,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASSetMonitor"))
 """
-function SNESFASSetMonitor(petsclib::PetscLibType, snes::PetscSNES, vf::PetscViewerAndFormat, flg::PetscBool) end
+function SNESFASSetMonitor(petsclib::PetscLibType, snes::AbstractPetscSNES, vf::PetscViewerAndFormat, flg::PetscBool) end
 
-@for_petsc function SNESFASSetMonitor(petsclib::$UnionPetscLib, snes::PetscSNES, vf::PetscViewerAndFormat, flg::PetscBool )
+@for_petsc function SNESFASSetMonitor(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, vf::PetscViewerAndFormat, flg::PetscBool )
 
     @chk ccall(
                (:SNESFASSetMonitor, $petsc_library),
@@ -8456,7 +8456,7 @@ function SNESFASSetMonitor(petsclib::PetscLibType, snes::PetscSNES, vf::PetscVie
 end 
 
 """
-	SNESFASSetLog(petsclib::PetscLibType,snes::PetscSNES, flg::PetscBool) 
+	SNESFASSetLog(petsclib::PetscLibType,snes::AbstractPetscSNES, flg::PetscBool) 
 Sets or unsets time logging for various `SNESFAS` stages on all levels
 
 Logically Collective
@@ -8472,9 +8472,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASSetLog"))
 """
-function SNESFASSetLog(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) end
+function SNESFASSetLog(petsclib::PetscLibType, snes::AbstractPetscSNES, flg::PetscBool) end
 
-@for_petsc function SNESFASSetLog(petsclib::$UnionPetscLib, snes::PetscSNES, flg::PetscBool )
+@for_petsc function SNESFASSetLog(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, flg::PetscBool )
 
     @chk ccall(
                (:SNESFASSetLog, $petsc_library),
@@ -8488,7 +8488,7 @@ function SNESFASSetLog(petsclib::PetscLibType, snes::PetscSNES, flg::PetscBool) 
 end 
 
 """
-	SNESFASCycleSetCycles(petsclib::PetscLibType,snes::PetscSNES, cycles::PetscInt) 
+	SNESFASCycleSetCycles(petsclib::PetscLibType,snes::AbstractPetscSNES, cycles::PetscInt) 
 Sets the number of cycles for all levels in a `SNESFAS`
 
 Logically Collective
@@ -8504,9 +8504,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASCycleSetCycles"))
 """
-function SNESFASCycleSetCycles(petsclib::PetscLibType, snes::PetscSNES, cycles::PetscInt) end
+function SNESFASCycleSetCycles(petsclib::PetscLibType, snes::AbstractPetscSNES, cycles::PetscInt) end
 
-@for_petsc function SNESFASCycleSetCycles(petsclib::$UnionPetscLib, snes::PetscSNES, cycles::$PetscInt )
+@for_petsc function SNESFASCycleSetCycles(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, cycles::$PetscInt )
 
     @chk ccall(
                (:SNESFASCycleSetCycles, $petsc_library),
@@ -8520,7 +8520,7 @@ function SNESFASCycleSetCycles(petsclib::PetscLibType, snes::PetscSNES, cycles::
 end 
 
 """
-	SNESFASCycleGetSmoother(petsclib::PetscLibType,snes::PetscSNES, smooth::PetscSNES) 
+	SNESFASCycleGetSmoother(petsclib::PetscLibType,snes::AbstractPetscSNES, smooth::AbstractPetscSNES) 
 Gets the smoother on a particular cycle level.
 
 Logically Collective
@@ -8538,9 +8538,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASCycleGetSmoother"))
 """
-function SNESFASCycleGetSmoother(petsclib::PetscLibType, snes::PetscSNES, smooth::PetscSNES) end
+function SNESFASCycleGetSmoother(petsclib::PetscLibType, snes::AbstractPetscSNES, smooth::AbstractPetscSNES) end
 
-@for_petsc function SNESFASCycleGetSmoother(petsclib::$UnionPetscLib, snes::PetscSNES, smooth::PetscSNES )
+@for_petsc function SNESFASCycleGetSmoother(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, smooth::AbstractPetscSNES )
 	smooth_ = Ref(smooth.ptr)
 
     @chk ccall(
@@ -8556,7 +8556,7 @@ function SNESFASCycleGetSmoother(petsclib::PetscLibType, snes::PetscSNES, smooth
 end 
 
 """
-	SNESFASCycleGetSmootherUp(petsclib::PetscLibType,snes::PetscSNES, smoothu::PetscSNES) 
+	SNESFASCycleGetSmootherUp(petsclib::PetscLibType,snes::AbstractPetscSNES, smoothu::AbstractPetscSNES) 
 Gets the up smoother on a particular cycle level.
 
 Logically Collective
@@ -8574,9 +8574,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASCycleGetSmootherUp"))
 """
-function SNESFASCycleGetSmootherUp(petsclib::PetscLibType, snes::PetscSNES, smoothu::PetscSNES) end
+function SNESFASCycleGetSmootherUp(petsclib::PetscLibType, snes::AbstractPetscSNES, smoothu::AbstractPetscSNES) end
 
-@for_petsc function SNESFASCycleGetSmootherUp(petsclib::$UnionPetscLib, snes::PetscSNES, smoothu::PetscSNES )
+@for_petsc function SNESFASCycleGetSmootherUp(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, smoothu::AbstractPetscSNES )
 	smoothu_ = Ref(smoothu.ptr)
 
     @chk ccall(
@@ -8592,7 +8592,7 @@ function SNESFASCycleGetSmootherUp(petsclib::PetscLibType, snes::PetscSNES, smoo
 end 
 
 """
-	SNESFASCycleGetSmootherDown(petsclib::PetscLibType,snes::PetscSNES, smoothd::PetscSNES) 
+	SNESFASCycleGetSmootherDown(petsclib::PetscLibType,snes::AbstractPetscSNES, smoothd::AbstractPetscSNES) 
 Gets the down smoother on a particular cycle level.
 
 Logically Collective
@@ -8610,9 +8610,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASCycleGetSmootherDown"))
 """
-function SNESFASCycleGetSmootherDown(petsclib::PetscLibType, snes::PetscSNES, smoothd::PetscSNES) end
+function SNESFASCycleGetSmootherDown(petsclib::PetscLibType, snes::AbstractPetscSNES, smoothd::AbstractPetscSNES) end
 
-@for_petsc function SNESFASCycleGetSmootherDown(petsclib::$UnionPetscLib, snes::PetscSNES, smoothd::PetscSNES )
+@for_petsc function SNESFASCycleGetSmootherDown(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, smoothd::AbstractPetscSNES )
 	smoothd_ = Ref(smoothd.ptr)
 
     @chk ccall(
@@ -8628,7 +8628,7 @@ function SNESFASCycleGetSmootherDown(petsclib::PetscLibType, snes::PetscSNES, sm
 end 
 
 """
-	SNESFASCycleGetCorrection(petsclib::PetscLibType,snes::PetscSNES, correction::PetscSNES) 
+	SNESFASCycleGetCorrection(petsclib::PetscLibType,snes::AbstractPetscSNES, correction::AbstractPetscSNES) 
 Gets the coarse correction `SNESFAS` context for this level
 
 Logically Collective
@@ -8646,9 +8646,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASCycleGetCorrection"))
 """
-function SNESFASCycleGetCorrection(petsclib::PetscLibType, snes::PetscSNES, correction::PetscSNES) end
+function SNESFASCycleGetCorrection(petsclib::PetscLibType, snes::AbstractPetscSNES, correction::AbstractPetscSNES) end
 
-@for_petsc function SNESFASCycleGetCorrection(petsclib::$UnionPetscLib, snes::PetscSNES, correction::PetscSNES )
+@for_petsc function SNESFASCycleGetCorrection(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, correction::AbstractPetscSNES )
 	correction_ = Ref(correction.ptr)
 
     @chk ccall(
@@ -8664,7 +8664,7 @@ function SNESFASCycleGetCorrection(petsclib::PetscLibType, snes::PetscSNES, corr
 end 
 
 """
-	SNESFASCycleGetInterpolation(petsclib::PetscLibType,snes::PetscSNES, mat::PetscMat) 
+	SNESFASCycleGetInterpolation(petsclib::PetscLibType,snes::AbstractPetscSNES, mat::AbstractPetscMat) 
 Gets the interpolation on a level
 
 Logically Collective
@@ -8682,9 +8682,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASCycleGetInterpolation"))
 """
-function SNESFASCycleGetInterpolation(petsclib::PetscLibType, snes::PetscSNES, mat::PetscMat) end
+function SNESFASCycleGetInterpolation(petsclib::PetscLibType, snes::AbstractPetscSNES, mat::AbstractPetscMat) end
 
-@for_petsc function SNESFASCycleGetInterpolation(petsclib::$UnionPetscLib, snes::PetscSNES, mat::PetscMat )
+@for_petsc function SNESFASCycleGetInterpolation(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -8700,7 +8700,7 @@ function SNESFASCycleGetInterpolation(petsclib::PetscLibType, snes::PetscSNES, m
 end 
 
 """
-	SNESFASCycleGetRestriction(petsclib::PetscLibType,snes::PetscSNES, mat::PetscMat) 
+	SNESFASCycleGetRestriction(petsclib::PetscLibType,snes::AbstractPetscSNES, mat::AbstractPetscMat) 
 Gets the restriction on a level
 
 Logically Collective
@@ -8718,9 +8718,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASCycleGetRestriction"))
 """
-function SNESFASCycleGetRestriction(petsclib::PetscLibType, snes::PetscSNES, mat::PetscMat) end
+function SNESFASCycleGetRestriction(petsclib::PetscLibType, snes::AbstractPetscSNES, mat::AbstractPetscMat) end
 
-@for_petsc function SNESFASCycleGetRestriction(petsclib::$UnionPetscLib, snes::PetscSNES, mat::PetscMat )
+@for_petsc function SNESFASCycleGetRestriction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -8736,7 +8736,7 @@ function SNESFASCycleGetRestriction(petsclib::PetscLibType, snes::PetscSNES, mat
 end 
 
 """
-	SNESFASCycleGetInjection(petsclib::PetscLibType,snes::PetscSNES, mat::PetscMat) 
+	SNESFASCycleGetInjection(petsclib::PetscLibType,snes::AbstractPetscSNES, mat::AbstractPetscMat) 
 Gets the injection on a level
 
 Logically Collective
@@ -8754,9 +8754,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASCycleGetInjection"))
 """
-function SNESFASCycleGetInjection(petsclib::PetscLibType, snes::PetscSNES, mat::PetscMat) end
+function SNESFASCycleGetInjection(petsclib::PetscLibType, snes::AbstractPetscSNES, mat::AbstractPetscMat) end
 
-@for_petsc function SNESFASCycleGetInjection(petsclib::$UnionPetscLib, snes::PetscSNES, mat::PetscMat )
+@for_petsc function SNESFASCycleGetInjection(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -8772,7 +8772,7 @@ function SNESFASCycleGetInjection(petsclib::PetscLibType, snes::PetscSNES, mat::
 end 
 
 """
-	SNESFASCycleGetRScale(petsclib::PetscLibType,snes::PetscSNES, vec::PetscVec) 
+	SNESFASCycleGetRScale(petsclib::PetscLibType,snes::AbstractPetscSNES, vec::AbstractPetscVec) 
 Gets the injection scale
 
 Logically Collective
@@ -8790,9 +8790,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASCycleGetRScale"))
 """
-function SNESFASCycleGetRScale(petsclib::PetscLibType, snes::PetscSNES, vec::PetscVec) end
+function SNESFASCycleGetRScale(petsclib::PetscLibType, snes::AbstractPetscSNES, vec::AbstractPetscVec) end
 
-@for_petsc function SNESFASCycleGetRScale(petsclib::$UnionPetscLib, snes::PetscSNES, vec::PetscVec )
+@for_petsc function SNESFASCycleGetRScale(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, vec::AbstractPetscVec )
 	vec_ = Ref(vec.ptr)
 
     @chk ccall(
@@ -8808,7 +8808,7 @@ function SNESFASCycleGetRScale(petsclib::PetscLibType, snes::PetscSNES, vec::Pet
 end 
 
 """
-	flg::PetscBool = SNESFASCycleIsFine(petsclib::PetscLibType,snes::PetscSNES) 
+	flg::PetscBool = SNESFASCycleIsFine(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Determines if a given `SNES` is the finest level in a `SNESFAS`
 
 Logically Collective
@@ -8826,9 +8826,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASCycleIsFine"))
 """
-function SNESFASCycleIsFine(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESFASCycleIsFine(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESFASCycleIsFine(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESFASCycleIsFine(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -8844,7 +8844,7 @@ function SNESFASCycleIsFine(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESFASSetInterpolation(petsclib::PetscLibType,snes::PetscSNES, level::PetscInt, mat::PetscMat) 
+	SNESFASSetInterpolation(petsclib::PetscLibType,snes::AbstractPetscSNES, level::PetscInt, mat::AbstractPetscMat) 
 Sets the `Mat` to be used to apply the
 interpolation from l-1 to the lth level
 
@@ -8860,9 +8860,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASSetInterpolation"))
 """
-function SNESFASSetInterpolation(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, mat::PetscMat) end
+function SNESFASSetInterpolation(petsclib::PetscLibType, snes::AbstractPetscSNES, level::PetscInt, mat::AbstractPetscMat) end
 
-@for_petsc function SNESFASSetInterpolation(petsclib::$UnionPetscLib, snes::PetscSNES, level::$PetscInt, mat::PetscMat )
+@for_petsc function SNESFASSetInterpolation(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, level::$PetscInt, mat::AbstractPetscMat )
 
     @chk ccall(
                (:SNESFASSetInterpolation, $petsc_library),
@@ -8876,7 +8876,7 @@ function SNESFASSetInterpolation(petsclib::PetscLibType, snes::PetscSNES, level:
 end 
 
 """
-	SNESFASGetInterpolation(petsclib::PetscLibType,snes::PetscSNES, level::PetscInt, mat::PetscMat) 
+	SNESFASGetInterpolation(petsclib::PetscLibType,snes::AbstractPetscSNES, level::PetscInt, mat::AbstractPetscMat) 
 Gets the matrix used to calculate the
 interpolation from l-1 to the lth level
 
@@ -8894,9 +8894,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASGetInterpolation"))
 """
-function SNESFASGetInterpolation(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, mat::PetscMat) end
+function SNESFASGetInterpolation(petsclib::PetscLibType, snes::AbstractPetscSNES, level::PetscInt, mat::AbstractPetscMat) end
 
-@for_petsc function SNESFASGetInterpolation(petsclib::$UnionPetscLib, snes::PetscSNES, level::$PetscInt, mat::PetscMat )
+@for_petsc function SNESFASGetInterpolation(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, level::$PetscInt, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -8912,7 +8912,7 @@ function SNESFASGetInterpolation(petsclib::PetscLibType, snes::PetscSNES, level:
 end 
 
 """
-	SNESFASSetRestriction(petsclib::PetscLibType,snes::PetscSNES, level::PetscInt, mat::PetscMat) 
+	SNESFASSetRestriction(petsclib::PetscLibType,snes::AbstractPetscSNES, level::PetscInt, mat::AbstractPetscMat) 
 Sets the matrix to be used to restrict the defect
 from level l to l-1.
 
@@ -8928,9 +8928,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASSetRestriction"))
 """
-function SNESFASSetRestriction(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, mat::PetscMat) end
+function SNESFASSetRestriction(petsclib::PetscLibType, snes::AbstractPetscSNES, level::PetscInt, mat::AbstractPetscMat) end
 
-@for_petsc function SNESFASSetRestriction(petsclib::$UnionPetscLib, snes::PetscSNES, level::$PetscInt, mat::PetscMat )
+@for_petsc function SNESFASSetRestriction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, level::$PetscInt, mat::AbstractPetscMat )
 
     @chk ccall(
                (:SNESFASSetRestriction, $petsc_library),
@@ -8944,7 +8944,7 @@ function SNESFASSetRestriction(petsclib::PetscLibType, snes::PetscSNES, level::P
 end 
 
 """
-	SNESFASGetRestriction(petsclib::PetscLibType,snes::PetscSNES, level::PetscInt, mat::PetscMat) 
+	SNESFASGetRestriction(petsclib::PetscLibType,snes::AbstractPetscSNES, level::PetscInt, mat::AbstractPetscMat) 
 Gets the matrix used to calculate the
 restriction from l to the l-1th level
 
@@ -8962,9 +8962,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASGetRestriction"))
 """
-function SNESFASGetRestriction(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, mat::PetscMat) end
+function SNESFASGetRestriction(petsclib::PetscLibType, snes::AbstractPetscSNES, level::PetscInt, mat::AbstractPetscMat) end
 
-@for_petsc function SNESFASGetRestriction(petsclib::$UnionPetscLib, snes::PetscSNES, level::$PetscInt, mat::PetscMat )
+@for_petsc function SNESFASGetRestriction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, level::$PetscInt, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -8980,7 +8980,7 @@ function SNESFASGetRestriction(petsclib::PetscLibType, snes::PetscSNES, level::P
 end 
 
 """
-	SNESFASSetInjection(petsclib::PetscLibType,snes::PetscSNES, level::PetscInt, mat::PetscMat) 
+	SNESFASSetInjection(petsclib::PetscLibType,snes::AbstractPetscSNES, level::PetscInt, mat::AbstractPetscMat) 
 Sets the matrix to be used to inject the solution
 from `level` to `level-1`.
 
@@ -8996,9 +8996,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASSetInjection"))
 """
-function SNESFASSetInjection(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, mat::PetscMat) end
+function SNESFASSetInjection(petsclib::PetscLibType, snes::AbstractPetscSNES, level::PetscInt, mat::AbstractPetscMat) end
 
-@for_petsc function SNESFASSetInjection(petsclib::$UnionPetscLib, snes::PetscSNES, level::$PetscInt, mat::PetscMat )
+@for_petsc function SNESFASSetInjection(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, level::$PetscInt, mat::AbstractPetscMat )
 
     @chk ccall(
                (:SNESFASSetInjection, $petsc_library),
@@ -9012,7 +9012,7 @@ function SNESFASSetInjection(petsclib::PetscLibType, snes::PetscSNES, level::Pet
 end 
 
 """
-	SNESFASGetInjection(petsclib::PetscLibType,snes::PetscSNES, level::PetscInt, mat::PetscMat) 
+	SNESFASGetInjection(petsclib::PetscLibType,snes::AbstractPetscSNES, level::PetscInt, mat::AbstractPetscMat) 
 Gets the matrix used to calculate the
 injection from l-1 to the lth level
 
@@ -9030,9 +9030,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASGetInjection"))
 """
-function SNESFASGetInjection(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, mat::PetscMat) end
+function SNESFASGetInjection(petsclib::PetscLibType, snes::AbstractPetscSNES, level::PetscInt, mat::AbstractPetscMat) end
 
-@for_petsc function SNESFASGetInjection(petsclib::$UnionPetscLib, snes::PetscSNES, level::$PetscInt, mat::PetscMat )
+@for_petsc function SNESFASGetInjection(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, level::$PetscInt, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -9048,7 +9048,7 @@ function SNESFASGetInjection(petsclib::PetscLibType, snes::PetscSNES, level::Pet
 end 
 
 """
-	SNESFASSetRScale(petsclib::PetscLibType,snes::PetscSNES, level::PetscInt, rscale::PetscVec) 
+	SNESFASSetRScale(petsclib::PetscLibType,snes::AbstractPetscSNES, level::PetscInt, rscale::AbstractPetscVec) 
 Sets the scaling factor of the restriction
 operator from level l to l-1.
 
@@ -9064,9 +9064,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASSetRScale"))
 """
-function SNESFASSetRScale(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, rscale::PetscVec) end
+function SNESFASSetRScale(petsclib::PetscLibType, snes::AbstractPetscSNES, level::PetscInt, rscale::AbstractPetscVec) end
 
-@for_petsc function SNESFASSetRScale(petsclib::$UnionPetscLib, snes::PetscSNES, level::$PetscInt, rscale::PetscVec )
+@for_petsc function SNESFASSetRScale(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, level::$PetscInt, rscale::AbstractPetscVec )
 
     @chk ccall(
                (:SNESFASSetRScale, $petsc_library),
@@ -9080,7 +9080,7 @@ function SNESFASSetRScale(petsclib::PetscLibType, snes::PetscSNES, level::PetscI
 end 
 
 """
-	SNESFASGetSmoother(petsclib::PetscLibType,snes::PetscSNES, level::PetscInt, smooth::PetscSNES) 
+	SNESFASGetSmoother(petsclib::PetscLibType,snes::AbstractPetscSNES, level::PetscInt, smooth::AbstractPetscSNES) 
 Gets the default smoother on a level.
 
 Input Parameters:
@@ -9097,9 +9097,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASGetSmoother"))
 """
-function SNESFASGetSmoother(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, smooth::PetscSNES) end
+function SNESFASGetSmoother(petsclib::PetscLibType, snes::AbstractPetscSNES, level::PetscInt, smooth::AbstractPetscSNES) end
 
-@for_petsc function SNESFASGetSmoother(petsclib::$UnionPetscLib, snes::PetscSNES, level::$PetscInt, smooth::PetscSNES )
+@for_petsc function SNESFASGetSmoother(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, level::$PetscInt, smooth::AbstractPetscSNES )
 	smooth_ = Ref(smooth.ptr)
 
     @chk ccall(
@@ -9115,7 +9115,7 @@ function SNESFASGetSmoother(petsclib::PetscLibType, snes::PetscSNES, level::Pets
 end 
 
 """
-	SNESFASGetSmootherDown(petsclib::PetscLibType,snes::PetscSNES, level::PetscInt, smooth::PetscSNES) 
+	SNESFASGetSmootherDown(petsclib::PetscLibType,snes::AbstractPetscSNES, level::PetscInt, smooth::AbstractPetscSNES) 
 Gets the downsmoother on a level.
 
 Input Parameters:
@@ -9132,9 +9132,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASGetSmootherDown"))
 """
-function SNESFASGetSmootherDown(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, smooth::PetscSNES) end
+function SNESFASGetSmootherDown(petsclib::PetscLibType, snes::AbstractPetscSNES, level::PetscInt, smooth::AbstractPetscSNES) end
 
-@for_petsc function SNESFASGetSmootherDown(petsclib::$UnionPetscLib, snes::PetscSNES, level::$PetscInt, smooth::PetscSNES )
+@for_petsc function SNESFASGetSmootherDown(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, level::$PetscInt, smooth::AbstractPetscSNES )
 	smooth_ = Ref(smooth.ptr)
 
     @chk ccall(
@@ -9150,7 +9150,7 @@ function SNESFASGetSmootherDown(petsclib::PetscLibType, snes::PetscSNES, level::
 end 
 
 """
-	SNESFASGetSmootherUp(petsclib::PetscLibType,snes::PetscSNES, level::PetscInt, smooth::PetscSNES) 
+	SNESFASGetSmootherUp(petsclib::PetscLibType,snes::AbstractPetscSNES, level::PetscInt, smooth::AbstractPetscSNES) 
 Gets the upsmoother on a level.
 
 Input Parameters:
@@ -9167,9 +9167,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASGetSmootherUp"))
 """
-function SNESFASGetSmootherUp(petsclib::PetscLibType, snes::PetscSNES, level::PetscInt, smooth::PetscSNES) end
+function SNESFASGetSmootherUp(petsclib::PetscLibType, snes::AbstractPetscSNES, level::PetscInt, smooth::AbstractPetscSNES) end
 
-@for_petsc function SNESFASGetSmootherUp(petsclib::$UnionPetscLib, snes::PetscSNES, level::$PetscInt, smooth::PetscSNES )
+@for_petsc function SNESFASGetSmootherUp(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, level::$PetscInt, smooth::AbstractPetscSNES )
 	smooth_ = Ref(smooth.ptr)
 
     @chk ccall(
@@ -9185,7 +9185,7 @@ function SNESFASGetSmootherUp(petsclib::PetscLibType, snes::PetscSNES, level::Pe
 end 
 
 """
-	SNESFASGetCoarseSolve(petsclib::PetscLibType,snes::PetscSNES, coarse::PetscSNES) 
+	SNESFASGetCoarseSolve(petsclib::PetscLibType,snes::AbstractPetscSNES, coarse::AbstractPetscSNES) 
 Gets the coarsest level solver.
 
 Input Parameter:
@@ -9201,9 +9201,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASGetCoarseSolve"))
 """
-function SNESFASGetCoarseSolve(petsclib::PetscLibType, snes::PetscSNES, coarse::PetscSNES) end
+function SNESFASGetCoarseSolve(petsclib::PetscLibType, snes::AbstractPetscSNES, coarse::AbstractPetscSNES) end
 
-@for_petsc function SNESFASGetCoarseSolve(petsclib::$UnionPetscLib, snes::PetscSNES, coarse::PetscSNES )
+@for_petsc function SNESFASGetCoarseSolve(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, coarse::AbstractPetscSNES )
 	coarse_ = Ref(coarse.ptr)
 
     @chk ccall(
@@ -9219,7 +9219,7 @@ function SNESFASGetCoarseSolve(petsclib::PetscLibType, snes::PetscSNES, coarse::
 end 
 
 """
-	SNESFASFullSetDownSweep(petsclib::PetscLibType,snes::PetscSNES, swp::PetscBool) 
+	SNESFASFullSetDownSweep(petsclib::PetscLibType,snes::AbstractPetscSNES, swp::PetscBool) 
 Smooth during the initial downsweep for `SNESFAS`
 
 Logically Collective
@@ -9238,9 +9238,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASFullSetDownSweep"))
 """
-function SNESFASFullSetDownSweep(petsclib::PetscLibType, snes::PetscSNES, swp::PetscBool) end
+function SNESFASFullSetDownSweep(petsclib::PetscLibType, snes::AbstractPetscSNES, swp::PetscBool) end
 
-@for_petsc function SNESFASFullSetDownSweep(petsclib::$UnionPetscLib, snes::PetscSNES, swp::PetscBool )
+@for_petsc function SNESFASFullSetDownSweep(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, swp::PetscBool )
 
     @chk ccall(
                (:SNESFASFullSetDownSweep, $petsc_library),
@@ -9254,7 +9254,7 @@ function SNESFASFullSetDownSweep(petsclib::PetscLibType, snes::PetscSNES, swp::P
 end 
 
 """
-	SNESFASFullSetTotal(petsclib::PetscLibType,snes::PetscSNES, total::PetscBool) 
+	SNESFASFullSetTotal(petsclib::PetscLibType,snes::AbstractPetscSNES, total::PetscBool) 
 Use total residual restriction and total interpolation on the initial down and up sweep of full `SNESFAS` cycles
 
 Logically Collective
@@ -9273,9 +9273,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASFullSetTotal"))
 """
-function SNESFASFullSetTotal(petsclib::PetscLibType, snes::PetscSNES, total::PetscBool) end
+function SNESFASFullSetTotal(petsclib::PetscLibType, snes::AbstractPetscSNES, total::PetscBool) end
 
-@for_petsc function SNESFASFullSetTotal(petsclib::$UnionPetscLib, snes::PetscSNES, total::PetscBool )
+@for_petsc function SNESFASFullSetTotal(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, total::PetscBool )
 
     @chk ccall(
                (:SNESFASFullSetTotal, $petsc_library),
@@ -9289,7 +9289,7 @@ function SNESFASFullSetTotal(petsclib::PetscLibType, snes::PetscSNES, total::Pet
 end 
 
 """
-	total::PetscBool = SNESFASFullGetTotal(petsclib::PetscLibType,snes::PetscSNES) 
+	total::PetscBool = SNESFASFullGetTotal(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Use total residual restriction and total interpolation on the initial down and up sweep of full FAS cycles
 
 Logically Collective
@@ -9307,9 +9307,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESFASFullGetTotal"))
 """
-function SNESFASFullGetTotal(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESFASFullGetTotal(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESFASFullGetTotal(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESFASFullGetTotal(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	total_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -9325,7 +9325,7 @@ function SNESFASFullGetTotal(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESNewtonTRSetNormType(petsclib::PetscLibType,snes::PetscSNES, norm::NormType) 
+	SNESNewtonTRSetNormType(petsclib::PetscLibType,snes::AbstractPetscSNES, norm::NormType) 
 Specify the type of norm to use for the computation of the trust region.
 
 Input Parameters:
@@ -9339,9 +9339,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonTRSetNormType"))
 """
-function SNESNewtonTRSetNormType(petsclib::PetscLibType, snes::PetscSNES, norm::NormType) end
+function SNESNewtonTRSetNormType(petsclib::PetscLibType, snes::AbstractPetscSNES, norm::NormType) end
 
-@for_petsc function SNESNewtonTRSetNormType(petsclib::$UnionPetscLib, snes::PetscSNES, norm::NormType )
+@for_petsc function SNESNewtonTRSetNormType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, norm::NormType )
 
     @chk ccall(
                (:SNESNewtonTRSetNormType, $petsc_library),
@@ -9355,7 +9355,7 @@ function SNESNewtonTRSetNormType(petsclib::PetscLibType, snes::PetscSNES, norm::
 end 
 
 """
-	SNESNewtonTRSetQNType(petsclib::PetscLibType,snes::PetscSNES, use::SNESNewtonTRQNType) 
+	SNESNewtonTRSetQNType(petsclib::PetscLibType,snes::AbstractPetscSNES, use::SNESNewtonTRQNType) 
 Specify to use a quasi
 
 Input Parameters:
@@ -9369,9 +9369,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonTRSetQNType"))
 """
-function SNESNewtonTRSetQNType(petsclib::PetscLibType, snes::PetscSNES, use::SNESNewtonTRQNType) end
+function SNESNewtonTRSetQNType(petsclib::PetscLibType, snes::AbstractPetscSNES, use::SNESNewtonTRQNType) end
 
-@for_petsc function SNESNewtonTRSetQNType(petsclib::$UnionPetscLib, snes::PetscSNES, use::SNESNewtonTRQNType )
+@for_petsc function SNESNewtonTRSetQNType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, use::SNESNewtonTRQNType )
 
     @chk ccall(
                (:SNESNewtonTRSetQNType, $petsc_library),
@@ -9385,7 +9385,7 @@ function SNESNewtonTRSetQNType(petsclib::PetscLibType, snes::PetscSNES, use::SNE
 end 
 
 """
-	SNESNewtonTRSetFallbackType(petsclib::PetscLibType,snes::PetscSNES, ftype::SNESNewtonTRFallbackType) 
+	SNESNewtonTRSetFallbackType(petsclib::PetscLibType,snes::AbstractPetscSNES, ftype::SNESNewtonTRFallbackType) 
 Set the type of fallback to use if the solution of the trust region subproblem is outside the radius
 
 Input Parameters:
@@ -9400,9 +9400,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonTRSetFallbackType"))
 """
-function SNESNewtonTRSetFallbackType(petsclib::PetscLibType, snes::PetscSNES, ftype::SNESNewtonTRFallbackType) end
+function SNESNewtonTRSetFallbackType(petsclib::PetscLibType, snes::AbstractPetscSNES, ftype::SNESNewtonTRFallbackType) end
 
-@for_petsc function SNESNewtonTRSetFallbackType(petsclib::$UnionPetscLib, snes::PetscSNES, ftype::SNESNewtonTRFallbackType )
+@for_petsc function SNESNewtonTRSetFallbackType(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, ftype::SNESNewtonTRFallbackType )
 
     @chk ccall(
                (:SNESNewtonTRSetFallbackType, $petsc_library),
@@ -9416,7 +9416,7 @@ function SNESNewtonTRSetFallbackType(petsclib::PetscLibType, snes::PetscSNES, ft
 end 
 
 """
-	SNESNewtonTRSetPreCheck(petsclib::PetscLibType,snes::PetscSNES, func::external, ctx::Cvoid) 
+	SNESNewtonTRSetPreCheck(petsclib::PetscLibType,snes::AbstractPetscSNES, func::external, ctx::Cvoid) 
 Sets a user function that is called before the search step has been determined.
 Allows the user a chance to change or override the trust region decision.
 
@@ -9434,9 +9434,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonTRSetPreCheck"))
 """
-function SNESNewtonTRSetPreCheck(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
+function SNESNewtonTRSetPreCheck(petsclib::PetscLibType, snes::AbstractPetscSNES, func::external, ctx::Cvoid) end
 
-@for_petsc function SNESNewtonTRSetPreCheck(petsclib::$UnionPetscLib, snes::PetscSNES, func::external, ctx::Cvoid )
+@for_petsc function SNESNewtonTRSetPreCheck(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:SNESNewtonTRSetPreCheck, $petsc_library),
@@ -9450,7 +9450,7 @@ function SNESNewtonTRSetPreCheck(petsclib::PetscLibType, snes::PetscSNES, func::
 end 
 
 """
-	SNESNewtonTRSetPostCheck(petsclib::PetscLibType,snes::PetscSNES, func::external, ctx::Cvoid) 
+	SNESNewtonTRSetPostCheck(petsclib::PetscLibType,snes::AbstractPetscSNES, func::external, ctx::Cvoid) 
 Sets a user function that is called after the search step has been determined but before the next
 function evaluation. Allows the user a chance to change or override the internal decision of the solver
 
@@ -9468,9 +9468,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonTRSetPostCheck"))
 """
-function SNESNewtonTRSetPostCheck(petsclib::PetscLibType, snes::PetscSNES, func::external, ctx::Cvoid) end
+function SNESNewtonTRSetPostCheck(petsclib::PetscLibType, snes::AbstractPetscSNES, func::external, ctx::Cvoid) end
 
-@for_petsc function SNESNewtonTRSetPostCheck(petsclib::$UnionPetscLib, snes::PetscSNES, func::external, ctx::Cvoid )
+@for_petsc function SNESNewtonTRSetPostCheck(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, func::external, ctx::Cvoid )
 
     @chk ccall(
                (:SNESNewtonTRSetPostCheck, $petsc_library),
@@ -9484,7 +9484,7 @@ function SNESNewtonTRSetPostCheck(petsclib::PetscLibType, snes::PetscSNES, func:
 end 
 
 """
-	changed_Y::PetscBool = SNESNewtonTRPreCheck(petsclib::PetscLibType,snes::PetscSNES, X::PetscVec, Y::PetscVec) 
+	changed_Y::PetscBool = SNESNewtonTRPreCheck(petsclib::PetscLibType,snes::AbstractPetscSNES, X::AbstractPetscVec, Y::AbstractPetscVec) 
 Runs the precheck routine
 
 Logically Collective
@@ -9504,9 +9504,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonTRPreCheck"))
 """
-function SNESNewtonTRPreCheck(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, Y::PetscVec) end
+function SNESNewtonTRPreCheck(petsclib::PetscLibType, snes::AbstractPetscSNES, X::AbstractPetscVec, Y::AbstractPetscVec) end
 
-@for_petsc function SNESNewtonTRPreCheck(petsclib::$UnionPetscLib, snes::PetscSNES, X::PetscVec, Y::PetscVec )
+@for_petsc function SNESNewtonTRPreCheck(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, X::AbstractPetscVec, Y::AbstractPetscVec )
 	changed_Y_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -9522,7 +9522,7 @@ function SNESNewtonTRPreCheck(petsclib::PetscLibType, snes::PetscSNES, X::PetscV
 end 
 
 """
-	changed_Y::PetscBool,changed_W::PetscBool = SNESNewtonTRPostCheck(petsclib::PetscLibType,snes::PetscSNES, X::PetscVec, Y::PetscVec, W::PetscVec) 
+	changed_Y::PetscBool,changed_W::PetscBool = SNESNewtonTRPostCheck(petsclib::PetscLibType,snes::AbstractPetscSNES, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec) 
 Runs the postcheck routine
 
 Logically Collective
@@ -9542,9 +9542,9 @@ Output Parameters:
 # External Links
 $(_doc_external("SNES/SNESNewtonTRPostCheck"))
 """
-function SNESNewtonTRPostCheck(petsclib::PetscLibType, snes::PetscSNES, X::PetscVec, Y::PetscVec, W::PetscVec) end
+function SNESNewtonTRPostCheck(petsclib::PetscLibType, snes::AbstractPetscSNES, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec) end
 
-@for_petsc function SNESNewtonTRPostCheck(petsclib::$UnionPetscLib, snes::PetscSNES, X::PetscVec, Y::PetscVec, W::PetscVec )
+@for_petsc function SNESNewtonTRPostCheck(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec )
 	changed_Y_ = Ref{PetscBool}()
 	changed_W_ = Ref{PetscBool}()
 
@@ -9562,7 +9562,7 @@ function SNESNewtonTRPostCheck(petsclib::PetscLibType, snes::PetscSNES, X::Petsc
 end 
 
 """
-	SNESNewtonTRSetTolerances(petsclib::PetscLibType,snes::PetscSNES, delta_min::PetscReal, delta_max::PetscReal, delta_0::PetscReal) 
+	SNESNewtonTRSetTolerances(petsclib::PetscLibType,snes::AbstractPetscSNES, delta_min::PetscReal, delta_max::PetscReal, delta_0::PetscReal) 
 Sets the trust region parameter tolerances.
 
 Logically Collective
@@ -9583,9 +9583,9 @@ Options Database Key:
 # External Links
 $(_doc_external("SNES/SNESNewtonTRSetTolerances"))
 """
-function SNESNewtonTRSetTolerances(petsclib::PetscLibType, snes::PetscSNES, delta_min::PetscReal, delta_max::PetscReal, delta_0::PetscReal) end
+function SNESNewtonTRSetTolerances(petsclib::PetscLibType, snes::AbstractPetscSNES, delta_min::PetscReal, delta_max::PetscReal, delta_0::PetscReal) end
 
-@for_petsc function SNESNewtonTRSetTolerances(petsclib::$UnionPetscLib, snes::PetscSNES, delta_min::$PetscReal, delta_max::$PetscReal, delta_0::$PetscReal )
+@for_petsc function SNESNewtonTRSetTolerances(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, delta_min::$PetscReal, delta_max::$PetscReal, delta_0::$PetscReal )
 
     @chk ccall(
                (:SNESNewtonTRSetTolerances, $petsc_library),
@@ -9599,7 +9599,7 @@ function SNESNewtonTRSetTolerances(petsclib::PetscLibType, snes::PetscSNES, delt
 end 
 
 """
-	delta_min::PetscReal,delta_max::PetscReal,delta_0::PetscReal = SNESNewtonTRGetTolerances(petsclib::PetscLibType,snes::PetscSNES) 
+	delta_min::PetscReal,delta_max::PetscReal,delta_0::PetscReal = SNESNewtonTRGetTolerances(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the trust region parameter tolerances.
 
 Not Collective
@@ -9619,9 +9619,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonTRGetTolerances"))
 """
-function SNESNewtonTRGetTolerances(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESNewtonTRGetTolerances(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESNewtonTRGetTolerances(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESNewtonTRGetTolerances(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	delta_min_ = Ref{$PetscReal}()
 	delta_max_ = Ref{$PetscReal}()
 	delta_0_ = Ref{$PetscReal}()
@@ -9641,7 +9641,7 @@ function SNESNewtonTRGetTolerances(petsclib::PetscLibType, snes::PetscSNES) end
 end 
 
 """
-	SNESNewtonTRSetUpdateParameters(petsclib::PetscLibType,snes::PetscSNES, eta1::PetscReal, eta2::PetscReal, eta3::PetscReal, t1::PetscReal, t2::PetscReal) 
+	SNESNewtonTRSetUpdateParameters(petsclib::PetscLibType,snes::AbstractPetscSNES, eta1::PetscReal, eta2::PetscReal, eta3::PetscReal, t1::PetscReal, t2::PetscReal) 
 Sets the trust region update parameters.
 
 Logically Collective
@@ -9666,9 +9666,9 @@ Options Database Key:
 # External Links
 $(_doc_external("SNES/SNESNewtonTRSetUpdateParameters"))
 """
-function SNESNewtonTRSetUpdateParameters(petsclib::PetscLibType, snes::PetscSNES, eta1::PetscReal, eta2::PetscReal, eta3::PetscReal, t1::PetscReal, t2::PetscReal) end
+function SNESNewtonTRSetUpdateParameters(petsclib::PetscLibType, snes::AbstractPetscSNES, eta1::PetscReal, eta2::PetscReal, eta3::PetscReal, t1::PetscReal, t2::PetscReal) end
 
-@for_petsc function SNESNewtonTRSetUpdateParameters(petsclib::$UnionPetscLib, snes::PetscSNES, eta1::$PetscReal, eta2::$PetscReal, eta3::$PetscReal, t1::$PetscReal, t2::$PetscReal )
+@for_petsc function SNESNewtonTRSetUpdateParameters(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, eta1::$PetscReal, eta2::$PetscReal, eta3::$PetscReal, t1::$PetscReal, t2::$PetscReal )
 
     @chk ccall(
                (:SNESNewtonTRSetUpdateParameters, $petsc_library),
@@ -9682,7 +9682,7 @@ function SNESNewtonTRSetUpdateParameters(petsclib::PetscLibType, snes::PetscSNES
 end 
 
 """
-	eta1::PetscReal,eta2::PetscReal,eta3::PetscReal,t1::PetscReal,t2::PetscReal = SNESNewtonTRGetUpdateParameters(petsclib::PetscLibType,snes::PetscSNES) 
+	eta1::PetscReal,eta2::PetscReal,eta3::PetscReal,t1::PetscReal,t2::PetscReal = SNESNewtonTRGetUpdateParameters(petsclib::PetscLibType,snes::AbstractPetscSNES) 
 Gets the trust region update parameters.
 
 Not Collective
@@ -9704,9 +9704,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESNewtonTRGetUpdateParameters"))
 """
-function SNESNewtonTRGetUpdateParameters(petsclib::PetscLibType, snes::PetscSNES) end
+function SNESNewtonTRGetUpdateParameters(petsclib::PetscLibType, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESNewtonTRGetUpdateParameters(petsclib::$UnionPetscLib, snes::PetscSNES )
+@for_petsc function SNESNewtonTRGetUpdateParameters(petsclib::$UnionPetscLib, snes::AbstractPetscSNES )
 	eta1_ = Ref{$PetscReal}()
 	eta2_ = Ref{$PetscReal}()
 	eta3_ = Ref{$PetscReal}()
@@ -9730,7 +9730,7 @@ function SNESNewtonTRGetUpdateParameters(petsclib::PetscLibType, snes::PetscSNES
 end 
 
 """
-	SNESConvergedCorrectPressure(petsclib::PetscLibType,snes::PetscSNES, it::PetscInt, xnorm::PetscReal, gnorm::PetscReal, f::PetscReal, reason::SNESConvergedReason, ctx::Cvoid) 
+	SNESConvergedCorrectPressure(petsclib::PetscLibType,snes::AbstractPetscSNES, it::PetscInt, xnorm::PetscReal, gnorm::PetscReal, f::PetscReal, reason::SNESConvergedReason, ctx::Cvoid) 
 The regular `SNES` convergence test that, up on convergence, adds a vector in the nullspace
 to make the continuum integral of the pressure field equal to zero.
 
@@ -9757,9 +9757,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESConvergedCorrectPressure"))
 """
-function SNESConvergedCorrectPressure(petsclib::PetscLibType, snes::PetscSNES, it::PetscInt, xnorm::PetscReal, gnorm::PetscReal, f::PetscReal, reason::SNESConvergedReason, ctx::Cvoid) end
+function SNESConvergedCorrectPressure(petsclib::PetscLibType, snes::AbstractPetscSNES, it::PetscInt, xnorm::PetscReal, gnorm::PetscReal, f::PetscReal, reason::SNESConvergedReason, ctx::Cvoid) end
 
-@for_petsc function SNESConvergedCorrectPressure(petsclib::$UnionPetscLib, snes::PetscSNES, it::$PetscInt, xnorm::$PetscReal, gnorm::$PetscReal, f::$PetscReal, reason::SNESConvergedReason, ctx::Cvoid )
+@for_petsc function SNESConvergedCorrectPressure(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, it::$PetscInt, xnorm::$PetscReal, gnorm::$PetscReal, f::$PetscReal, reason::SNESConvergedReason, ctx::Cvoid )
 
     @chk ccall(
                (:SNESConvergedCorrectPressure, $petsc_library),
@@ -9773,7 +9773,7 @@ function SNESConvergedCorrectPressure(petsclib::PetscLibType, snes::PetscSNES, i
 end 
 
 """
-	SNESMonitorFields(petsclib::PetscLibType,snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
+	SNESMonitorFields(petsclib::PetscLibType,snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) 
 Monitors the residual for each field separately
 
 Collective
@@ -9791,9 +9791,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESMonitorFields"))
 """
-function SNESMonitorFields(petsclib::PetscLibType, snes::PetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
+function SNESMonitorFields(petsclib::PetscLibType, snes::AbstractPetscSNES, its::PetscInt, fgnorm::PetscReal, vf::PetscViewerAndFormat) end
 
-@for_petsc function SNESMonitorFields(petsclib::$UnionPetscLib, snes::PetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
+@for_petsc function SNESMonitorFields(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, its::$PetscInt, fgnorm::$PetscReal, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:SNESMonitorFields, $petsc_library),
@@ -9807,7 +9807,7 @@ function SNESMonitorFields(petsclib::PetscLibType, snes::PetscSNES, its::PetscIn
 end 
 
 """
-	SNESTSFormFunction(petsclib::PetscLibType,snes::PetscSNES, U::PetscVec, F::PetscVec, ctx::Cvoid) 
+	SNESTSFormFunction(petsclib::PetscLibType,snes::AbstractPetscSNES, U::AbstractPetscVec, F::AbstractPetscVec, ctx::Cvoid) 
 Function to evaluate nonlinear residual defined by an ODE solver algorithm implemented within `TS`
 
 Logically Collective
@@ -9827,9 +9827,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/SNESTSFormFunction"))
 """
-function SNESTSFormFunction(petsclib::PetscLibType, snes::PetscSNES, U::PetscVec, F::PetscVec, ctx::Cvoid) end
+function SNESTSFormFunction(petsclib::PetscLibType, snes::AbstractPetscSNES, U::AbstractPetscVec, F::AbstractPetscVec, ctx::Cvoid) end
 
-@for_petsc function SNESTSFormFunction(petsclib::$UnionPetscLib, snes::PetscSNES, U::PetscVec, F::PetscVec, ctx::Cvoid )
+@for_petsc function SNESTSFormFunction(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, U::AbstractPetscVec, F::AbstractPetscVec, ctx::Cvoid )
 
     @chk ccall(
                (:SNESTSFormFunction, $petsc_library),
@@ -9843,7 +9843,7 @@ function SNESTSFormFunction(petsclib::PetscLibType, snes::PetscSNES, U::PetscVec
 end 
 
 """
-	SNESTSFormJacobian(petsclib::PetscLibType,snes::PetscSNES, U::PetscVec, A::PetscMat, B::PetscMat, ctx::Cvoid) 
+	SNESTSFormJacobian(petsclib::PetscLibType,snes::AbstractPetscSNES, U::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid) 
 Function to evaluate the Jacobian defined by an ODE solver algorithm implemented within `TS`
 
 Collective
@@ -9864,9 +9864,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/SNESTSFormJacobian"))
 """
-function SNESTSFormJacobian(petsclib::PetscLibType, snes::PetscSNES, U::PetscVec, A::PetscMat, B::PetscMat, ctx::Cvoid) end
+function SNESTSFormJacobian(petsclib::PetscLibType, snes::AbstractPetscSNES, U::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid) end
 
-@for_petsc function SNESTSFormJacobian(petsclib::$UnionPetscLib, snes::PetscSNES, U::PetscVec, A::PetscMat, B::PetscMat, ctx::Cvoid )
+@for_petsc function SNESTSFormJacobian(petsclib::$UnionPetscLib, snes::AbstractPetscSNES, U::AbstractPetscVec, A::AbstractPetscMat, B::AbstractPetscMat, ctx::Cvoid )
 
     @chk ccall(
                (:SNESTSFormJacobian, $petsc_library),

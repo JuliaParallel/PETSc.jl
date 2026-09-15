@@ -292,7 +292,7 @@ function KSPGuessGetType(petsclib::PetscLibType, guess::KSPGuess) end
 end 
 
 """
-	KSPGuessUpdate(petsclib::PetscLibType,guess::KSPGuess, rhs::PetscVec, sol::PetscVec) 
+	KSPGuessUpdate(petsclib::PetscLibType,guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec) 
 Updates the guess object with the current solution and rhs vector
 
 Collective
@@ -309,9 +309,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/KSPGuessUpdate"))
 """
-function KSPGuessUpdate(petsclib::PetscLibType, guess::KSPGuess, rhs::PetscVec, sol::PetscVec) end
+function KSPGuessUpdate(petsclib::PetscLibType, guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec) end
 
-@for_petsc function KSPGuessUpdate(petsclib::$UnionPetscLib, guess::KSPGuess, rhs::PetscVec, sol::PetscVec )
+@for_petsc function KSPGuessUpdate(petsclib::$UnionPetscLib, guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec )
 
     @chk ccall(
                (:KSPGuessUpdate, $petsc_library),
@@ -325,7 +325,7 @@ function KSPGuessUpdate(petsclib::PetscLibType, guess::KSPGuess, rhs::PetscVec, 
 end 
 
 """
-	KSPGuessFormGuess(petsclib::PetscLibType,guess::KSPGuess, rhs::PetscVec, sol::PetscVec) 
+	KSPGuessFormGuess(petsclib::PetscLibType,guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec) 
 Form the initial guess
 
 Collective
@@ -342,9 +342,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/KSPGuessFormGuess"))
 """
-function KSPGuessFormGuess(petsclib::PetscLibType, guess::KSPGuess, rhs::PetscVec, sol::PetscVec) end
+function KSPGuessFormGuess(petsclib::PetscLibType, guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec) end
 
-@for_petsc function KSPGuessFormGuess(petsclib::$UnionPetscLib, guess::KSPGuess, rhs::PetscVec, sol::PetscVec )
+@for_petsc function KSPGuessFormGuess(petsclib::$UnionPetscLib, guess::KSPGuess, rhs::AbstractPetscVec, sol::AbstractPetscVec )
 
     @chk ccall(
                (:KSPGuessFormGuess, $petsc_library),

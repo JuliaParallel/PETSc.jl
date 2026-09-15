@@ -2942,7 +2942,7 @@ function PetscQuadratureExpandComposite(petsclib::PetscLibType, q::PetscQuadratu
 end 
 
 """
-	Np::PetscInt = PetscQuadratureComputePermutations(petsclib::PetscLibType,quad::PetscQuadrature, perm::Vector{IS}) 
+	Np::PetscInt = PetscQuadratureComputePermutations(petsclib::PetscLibType,quad::PetscQuadrature, perm::Vector{<:AbstractIS}) 
 Compute permutations of quadrature points corresponding to domain orientations
 
 Input Parameter:
@@ -2959,9 +2959,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/PetscQuadratureComputePermutations"))
 """
-function PetscQuadratureComputePermutations(petsclib::PetscLibType, quad::PetscQuadrature, perm::Vector{IS}) end
+function PetscQuadratureComputePermutations(petsclib::PetscLibType, quad::PetscQuadrature, perm::Vector{<:AbstractIS}) end
 
-@for_petsc function PetscQuadratureComputePermutations(petsclib::$UnionPetscLib, quad::PetscQuadrature, perm::Vector{IS} )
+@for_petsc function PetscQuadratureComputePermutations(petsclib::$UnionPetscLib, quad::PetscQuadrature, perm::Vector{<:AbstractIS} )
 	Np_ = Ref{$PetscInt}()
 	perm_ = Ref(pointer(perm))
 

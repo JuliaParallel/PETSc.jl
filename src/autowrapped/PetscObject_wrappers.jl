@@ -1237,7 +1237,7 @@ function PetscObjectCompareId(petsclib::PetscLibType, obj::PetscObject, id::Pets
 end 
 
 """
-	PetscObjectGetOptions(petsclib::PetscLibType,obj::PetscObject, options::PetscOptions) 
+	PetscObjectGetOptions(petsclib::PetscLibType,obj::PetscObject, options::AbstractPetscOptions) 
 Gets the options database used by the object that has been set with `PetscObjectSetOptions()`
 
 Collective
@@ -1256,9 +1256,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscObjectGetOptions"))
 """
-function PetscObjectGetOptions(petsclib::PetscLibType, obj::PetscObject, options::PetscOptions) end
+function PetscObjectGetOptions(petsclib::PetscLibType, obj::PetscObject, options::AbstractPetscOptions) end
 
-@for_petsc function PetscObjectGetOptions(petsclib::$UnionPetscLib, obj::PetscObject, options::PetscOptions )
+@for_petsc function PetscObjectGetOptions(petsclib::$UnionPetscLib, obj::PetscObject, options::AbstractPetscOptions )
 	options_ = Ref(options.ptr)
 
     @chk ccall(
@@ -1274,7 +1274,7 @@ function PetscObjectGetOptions(petsclib::PetscLibType, obj::PetscObject, options
 end 
 
 """
-	PetscObjectSetOptions(petsclib::PetscLibType,obj::PetscObject, options::PetscOptions) 
+	PetscObjectSetOptions(petsclib::PetscLibType,obj::PetscObject, options::AbstractPetscOptions) 
 Sets the options database used by the object. Call immediately after creating the object.
 
 Collective
@@ -1291,9 +1291,9 @@ Level: advanced
 # External Links
 $(_doc_external("Sys/PetscObjectSetOptions"))
 """
-function PetscObjectSetOptions(petsclib::PetscLibType, obj::PetscObject, options::PetscOptions) end
+function PetscObjectSetOptions(petsclib::PetscLibType, obj::PetscObject, options::AbstractPetscOptions) end
 
-@for_petsc function PetscObjectSetOptions(petsclib::$UnionPetscLib, obj::PetscObject, options::PetscOptions )
+@for_petsc function PetscObjectSetOptions(petsclib::$UnionPetscLib, obj::PetscObject, options::AbstractPetscOptions )
 
     @chk ccall(
                (:PetscObjectSetOptions, $petsc_library),

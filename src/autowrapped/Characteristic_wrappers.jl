@@ -225,14 +225,14 @@ function CharacteristicRegister(petsclib::PetscLibType, sname::String, fnc::exte
 end 
 
 """
-	CharacteristicSetVelocityInterpolation(petsclib::PetscLibType,c::Characteristic, da::PetscDM, v::PetscVec, vOld::PetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) 
+	CharacteristicSetVelocityInterpolation(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) 
 
 # External Links
 $(_doc_external("Ts/CharacteristicSetVelocityInterpolation"))
 """
-function CharacteristicSetVelocityInterpolation(petsclib::PetscLibType, c::Characteristic, da::PetscDM, v::PetscVec, vOld::PetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) end
+function CharacteristicSetVelocityInterpolation(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) end
 
-@for_petsc function CharacteristicSetVelocityInterpolation(petsclib::$UnionPetscLib, c::Characteristic, da::PetscDM, v::PetscVec, vOld::PetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Cvoid )
+@for_petsc function CharacteristicSetVelocityInterpolation(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Cvoid )
 
     @chk ccall(
                (:CharacteristicSetVelocityInterpolation, $petsc_library),
@@ -246,14 +246,14 @@ function CharacteristicSetVelocityInterpolation(petsclib::PetscLibType, c::Chara
 end 
 
 """
-	CharacteristicSetVelocityInterpolationLocal(petsclib::PetscLibType,c::Characteristic, da::PetscDM, v::PetscVec, vOld::PetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) 
+	CharacteristicSetVelocityInterpolationLocal(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) 
 
 # External Links
 $(_doc_external("Ts/CharacteristicSetVelocityInterpolationLocal"))
 """
-function CharacteristicSetVelocityInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::PetscDM, v::PetscVec, vOld::PetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) end
+function CharacteristicSetVelocityInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) end
 
-@for_petsc function CharacteristicSetVelocityInterpolationLocal(petsclib::$UnionPetscLib, c::Characteristic, da::PetscDM, v::PetscVec, vOld::PetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Cvoid )
+@for_petsc function CharacteristicSetVelocityInterpolationLocal(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, vOld::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Cvoid )
 
     @chk ccall(
                (:CharacteristicSetVelocityInterpolationLocal, $petsc_library),
@@ -267,14 +267,14 @@ function CharacteristicSetVelocityInterpolationLocal(petsclib::PetscLibType, c::
 end 
 
 """
-	CharacteristicSetFieldInterpolation(petsclib::PetscLibType,c::Characteristic, da::PetscDM, v::PetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) 
+	CharacteristicSetFieldInterpolation(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) 
 
 # External Links
 $(_doc_external("Ts/CharacteristicSetFieldInterpolation"))
 """
-function CharacteristicSetFieldInterpolation(petsclib::PetscLibType, c::Characteristic, da::PetscDM, v::PetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) end
+function CharacteristicSetFieldInterpolation(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) end
 
-@for_petsc function CharacteristicSetFieldInterpolation(petsclib::$UnionPetscLib, c::Characteristic, da::PetscDM, v::PetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Cvoid )
+@for_petsc function CharacteristicSetFieldInterpolation(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Cvoid )
 
     @chk ccall(
                (:CharacteristicSetFieldInterpolation, $petsc_library),
@@ -288,14 +288,14 @@ function CharacteristicSetFieldInterpolation(petsclib::PetscLibType, c::Characte
 end 
 
 """
-	CharacteristicSetFieldInterpolationLocal(petsclib::PetscLibType,c::Characteristic, da::PetscDM, v::PetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) 
+	CharacteristicSetFieldInterpolationLocal(petsclib::PetscLibType,c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) 
 
 # External Links
 $(_doc_external("Ts/CharacteristicSetFieldInterpolationLocal"))
 """
-function CharacteristicSetFieldInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::PetscDM, v::PetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) end
+function CharacteristicSetFieldInterpolationLocal(petsclib::PetscLibType, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::PetscInt, components::Vector{PetscInt}, interp::external, ctx::Cvoid) end
 
-@for_petsc function CharacteristicSetFieldInterpolationLocal(petsclib::$UnionPetscLib, c::Characteristic, da::PetscDM, v::PetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Cvoid )
+@for_petsc function CharacteristicSetFieldInterpolationLocal(petsclib::$UnionPetscLib, c::Characteristic, da::AbstractPetscDM, v::AbstractPetscVec, numComponents::$PetscInt, components::Vector{$PetscInt}, interp::external, ctx::Cvoid )
 
     @chk ccall(
                (:CharacteristicSetFieldInterpolationLocal, $petsc_library),
@@ -309,7 +309,7 @@ function CharacteristicSetFieldInterpolationLocal(petsclib::PetscLibType, c::Cha
 end 
 
 """
-	CharacteristicSolve(petsclib::PetscLibType,c::Characteristic, dt::PetscReal, solution::PetscVec) 
+	CharacteristicSolve(petsclib::PetscLibType,c::Characteristic, dt::PetscReal, solution::AbstractPetscVec) 
 Apply the Method of Characteristics solver
 
 Collective
@@ -326,9 +326,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/CharacteristicSolve"))
 """
-function CharacteristicSolve(petsclib::PetscLibType, c::Characteristic, dt::PetscReal, solution::PetscVec) end
+function CharacteristicSolve(petsclib::PetscLibType, c::Characteristic, dt::PetscReal, solution::AbstractPetscVec) end
 
-@for_petsc function CharacteristicSolve(petsclib::$UnionPetscLib, c::Characteristic, dt::$PetscReal, solution::PetscVec )
+@for_petsc function CharacteristicSolve(petsclib::$UnionPetscLib, c::Characteristic, dt::$PetscReal, solution::AbstractPetscVec )
 
     @chk ccall(
                (:CharacteristicSolve, $petsc_library),

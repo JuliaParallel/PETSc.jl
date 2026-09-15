@@ -115,8 +115,32 @@ function write_petsc_wrappers_version(petsc_dir::AbstractString; outdir::Abstrac
     return path
 end
 
-const CustomTypes = ["PetscVec","PetscMat","PetscDM", "PetscKSP", 
+const CustomTypes = ["PetscVec","PetscMat","PetscDM", "PetscKSP",
                     "PetscSNES","PetscOptions","IS","PF","TS","AO","Tao"]
+
+# Abstract supertype of each custom type, used for input arguments only
+# ----------------------------------------------------------------------------
+
+const AbstractCustomTypes = Dict(t => "Abstract" * t for t in CustomTypes)
+
+"""
+    abstract_arg_type(typename) -> String
+
+The type an input argument is annotated with. A wrapper reads its inputs
+through `unsafe_convert`, so it accepts any subtype: a borrowed handle
+(`VecPtr`), a shell matrix, or a DM that carries its flavour in the type.
+
+Output arguments keep the concrete name, since the wrapper constructs one.
+"""
+function abstract_arg_type(typename::AbstractString)
+    m = match(r"^Vector\{(\w+)\}$", typename)
+    if m !== nothing
+        inner = m.captures[1]
+        haskey(AbstractCustomTypes, inner) || return typename
+        return "Vector{<:$(AbstractCustomTypes[inner])}"
+    end
+    return get(AbstractCustomTypes, typename, typename)
+end
 
 # Remove entry from vector of strings
 remove_entry(x::Vector{String}, entry::String) = filter!(y -> y != entry, x)
@@ -436,7 +460,7 @@ function julia_function_doc_header(args::Vector{f_args}, function_name::String)
             num_out += 1 
         else
             str_in *= num_in > 0 ? ", " : ""
-            str_in *= "$(arg.name)::$(arg.typename)"
+            str_in *= "$(arg.name)::$(abstract_arg_type(arg.typename))"
             num_in += 1
         end
     end

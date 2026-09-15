@@ -288,7 +288,7 @@ function TaoLineSearchDestroy(petsclib::PetscLibType, ls::Union{TaoLineSearch, R
 end 
 
 """
-	f::PetscReal,steplength::PetscReal = TaoLineSearchApply(petsclib::PetscLibType,ls::TaoLineSearch, x::PetscVec, g::PetscVec, s::PetscVec, reason::TaoLineSearchConvergedReason) 
+	f::PetscReal,steplength::PetscReal = TaoLineSearchApply(petsclib::PetscLibType,ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, s::AbstractPetscVec, reason::TaoLineSearchConvergedReason) 
 Performs a line
 Criteria for acceptable step length depends on the line-search algorithm chosen
 
@@ -313,9 +313,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoLineSearchApply"))
 """
-function TaoLineSearchApply(petsclib::PetscLibType, ls::TaoLineSearch, x::PetscVec, g::PetscVec, s::PetscVec, reason::TaoLineSearchConvergedReason) end
+function TaoLineSearchApply(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, s::AbstractPetscVec, reason::TaoLineSearchConvergedReason) end
 
-@for_petsc function TaoLineSearchApply(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::PetscVec, g::PetscVec, s::PetscVec, reason::TaoLineSearchConvergedReason )
+@for_petsc function TaoLineSearchApply(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, s::AbstractPetscVec, reason::TaoLineSearchConvergedReason )
 	f_ = Ref{$PetscReal}()
 	steplength_ = Ref{$PetscReal}()
 
@@ -726,7 +726,7 @@ function TaoLineSearchSetObjectiveAndGTSRoutine(petsclib::PetscLibType, ls::TaoL
 end 
 
 """
-	TaoLineSearchUseTaoRoutines(petsclib::PetscLibType,ls::TaoLineSearch, ts::Tao) 
+	TaoLineSearchUseTaoRoutines(petsclib::PetscLibType,ls::TaoLineSearch, ts::AbstractTao) 
 Informs the `TaoLineSearch` to use the
 objective and gradient evaluation routines from the given `Tao` object. The default.
 
@@ -743,9 +743,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoLineSearchUseTaoRoutines"))
 """
-function TaoLineSearchUseTaoRoutines(petsclib::PetscLibType, ls::TaoLineSearch, ts::Tao) end
+function TaoLineSearchUseTaoRoutines(petsclib::PetscLibType, ls::TaoLineSearch, ts::AbstractTao) end
 
-@for_petsc function TaoLineSearchUseTaoRoutines(petsclib::$UnionPetscLib, ls::TaoLineSearch, ts::Tao )
+@for_petsc function TaoLineSearchUseTaoRoutines(petsclib::$UnionPetscLib, ls::TaoLineSearch, ts::AbstractTao )
 
     @chk ccall(
                (:TaoLineSearchUseTaoRoutines, $petsc_library),
@@ -759,7 +759,7 @@ function TaoLineSearchUseTaoRoutines(petsclib::PetscLibType, ls::TaoLineSearch, 
 end 
 
 """
-	f::PetscReal = TaoLineSearchComputeObjective(petsclib::PetscLibType,ls::TaoLineSearch, x::PetscVec) 
+	f::PetscReal = TaoLineSearchComputeObjective(petsclib::PetscLibType,ls::TaoLineSearch, x::AbstractPetscVec) 
 Computes the objective function value at a given point
 
 Collective
@@ -778,9 +778,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoLineSearchComputeObjective"))
 """
-function TaoLineSearchComputeObjective(petsclib::PetscLibType, ls::TaoLineSearch, x::PetscVec) end
+function TaoLineSearchComputeObjective(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec) end
 
-@for_petsc function TaoLineSearchComputeObjective(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::PetscVec )
+@for_petsc function TaoLineSearchComputeObjective(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec )
 	f_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -796,7 +796,7 @@ function TaoLineSearchComputeObjective(petsclib::PetscLibType, ls::TaoLineSearch
 end 
 
 """
-	f::PetscReal = TaoLineSearchComputeObjectiveAndGradient(petsclib::PetscLibType,ls::TaoLineSearch, x::PetscVec, g::PetscVec) 
+	f::PetscReal = TaoLineSearchComputeObjectiveAndGradient(petsclib::PetscLibType,ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec) 
 Computes the objective function value at a given point
 
 Collective
@@ -816,9 +816,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoLineSearchComputeObjectiveAndGradient"))
 """
-function TaoLineSearchComputeObjectiveAndGradient(petsclib::PetscLibType, ls::TaoLineSearch, x::PetscVec, g::PetscVec) end
+function TaoLineSearchComputeObjectiveAndGradient(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec) end
 
-@for_petsc function TaoLineSearchComputeObjectiveAndGradient(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::PetscVec, g::PetscVec )
+@for_petsc function TaoLineSearchComputeObjectiveAndGradient(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec )
 	f_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -834,7 +834,7 @@ function TaoLineSearchComputeObjectiveAndGradient(petsclib::PetscLibType, ls::Ta
 end 
 
 """
-	TaoLineSearchComputeGradient(petsclib::PetscLibType,ls::TaoLineSearch, x::PetscVec, g::PetscVec) 
+	TaoLineSearchComputeGradient(petsclib::PetscLibType,ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec) 
 Computes the gradient of the objective function
 
 Collective
@@ -853,9 +853,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoLineSearchComputeGradient"))
 """
-function TaoLineSearchComputeGradient(petsclib::PetscLibType, ls::TaoLineSearch, x::PetscVec, g::PetscVec) end
+function TaoLineSearchComputeGradient(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec) end
 
-@for_petsc function TaoLineSearchComputeGradient(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::PetscVec, g::PetscVec )
+@for_petsc function TaoLineSearchComputeGradient(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec )
 
     @chk ccall(
                (:TaoLineSearchComputeGradient, $petsc_library),
@@ -869,7 +869,7 @@ function TaoLineSearchComputeGradient(petsclib::PetscLibType, ls::TaoLineSearch,
 end 
 
 """
-	f::PetscReal,gts::PetscReal = TaoLineSearchComputeObjectiveAndGTS(petsclib::PetscLibType,ls::TaoLineSearch, x::PetscVec) 
+	f::PetscReal,gts::PetscReal = TaoLineSearchComputeObjectiveAndGTS(petsclib::PetscLibType,ls::TaoLineSearch, x::AbstractPetscVec) 
 Computes the objective function value and inner product of gradient and
 step direction at a given point
 
@@ -890,9 +890,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoLineSearchComputeObjectiveAndGTS"))
 """
-function TaoLineSearchComputeObjectiveAndGTS(petsclib::PetscLibType, ls::TaoLineSearch, x::PetscVec) end
+function TaoLineSearchComputeObjectiveAndGTS(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec) end
 
-@for_petsc function TaoLineSearchComputeObjectiveAndGTS(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::PetscVec )
+@for_petsc function TaoLineSearchComputeObjectiveAndGTS(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec )
 	f_ = Ref{$PetscReal}()
 	gts_ = Ref{$PetscReal}()
 
@@ -910,7 +910,7 @@ function TaoLineSearchComputeObjectiveAndGTS(petsclib::PetscLibType, ls::TaoLine
 end 
 
 """
-	f::PetscReal,steplength::PetscReal = TaoLineSearchGetSolution(petsclib::PetscLibType,ls::TaoLineSearch, x::PetscVec, g::PetscVec, reason::TaoLineSearchConvergedReason) 
+	f::PetscReal,steplength::PetscReal = TaoLineSearchGetSolution(petsclib::PetscLibType,ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, reason::TaoLineSearchConvergedReason) 
 Returns the solution to the line search
 
 Collective
@@ -932,9 +932,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/TaoLineSearchGetSolution"))
 """
-function TaoLineSearchGetSolution(petsclib::PetscLibType, ls::TaoLineSearch, x::PetscVec, g::PetscVec, reason::TaoLineSearchConvergedReason) end
+function TaoLineSearchGetSolution(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, reason::TaoLineSearchConvergedReason) end
 
-@for_petsc function TaoLineSearchGetSolution(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::PetscVec, g::PetscVec, reason::TaoLineSearchConvergedReason )
+@for_petsc function TaoLineSearchGetSolution(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec, g::AbstractPetscVec, reason::TaoLineSearchConvergedReason )
 	f_ = Ref{$PetscReal}()
 	steplength_ = Ref{$PetscReal}()
 
@@ -952,7 +952,7 @@ function TaoLineSearchGetSolution(petsclib::PetscLibType, ls::TaoLineSearch, x::
 end 
 
 """
-	TaoLineSearchGetStartingVector(petsclib::PetscLibType,ls::TaoLineSearch, x::PetscVec) 
+	TaoLineSearchGetStartingVector(petsclib::PetscLibType,ls::TaoLineSearch, x::AbstractPetscVec) 
 Gets a the initial point of the line
 search.
 
@@ -971,9 +971,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoLineSearchGetStartingVector"))
 """
-function TaoLineSearchGetStartingVector(petsclib::PetscLibType, ls::TaoLineSearch, x::PetscVec) end
+function TaoLineSearchGetStartingVector(petsclib::PetscLibType, ls::TaoLineSearch, x::AbstractPetscVec) end
 
-@for_petsc function TaoLineSearchGetStartingVector(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::PetscVec )
+@for_petsc function TaoLineSearchGetStartingVector(petsclib::$UnionPetscLib, ls::TaoLineSearch, x::AbstractPetscVec )
 	x_ = Ref(x.ptr)
 
     @chk ccall(
@@ -989,7 +989,7 @@ function TaoLineSearchGetStartingVector(petsclib::PetscLibType, ls::TaoLineSearc
 end
 
 """
-	TaoLineSearchGetStepDirection(petsclib::PetscLibType,ls::TaoLineSearch, s::PetscVec) 
+	TaoLineSearchGetStepDirection(petsclib::PetscLibType,ls::TaoLineSearch, s::AbstractPetscVec) 
 Gets the step direction of the line
 search.
 
@@ -1008,9 +1008,9 @@ Level: advanced
 # External Links
 $(_doc_external("Tao/TaoLineSearchGetStepDirection"))
 """
-function TaoLineSearchGetStepDirection(petsclib::PetscLibType, ls::TaoLineSearch, s::PetscVec) end
+function TaoLineSearchGetStepDirection(petsclib::PetscLibType, ls::TaoLineSearch, s::AbstractPetscVec) end
 
-@for_petsc function TaoLineSearchGetStepDirection(petsclib::$UnionPetscLib, ls::TaoLineSearch, s::PetscVec )
+@for_petsc function TaoLineSearchGetStepDirection(petsclib::$UnionPetscLib, ls::TaoLineSearch, s::AbstractPetscVec )
 	s_ = Ref(s.ptr)
 
     @chk ccall(
@@ -1062,7 +1062,7 @@ function TaoLineSearchGetFullStepObjective(petsclib::PetscLibType, ls::TaoLineSe
 end 
 
 """
-	TaoLineSearchSetVariableBounds(petsclib::PetscLibType,ls::TaoLineSearch, xl::PetscVec, xu::PetscVec) 
+	TaoLineSearchSetVariableBounds(petsclib::PetscLibType,ls::TaoLineSearch, xl::AbstractPetscVec, xu::AbstractPetscVec) 
 Sets the upper and lower bounds for a bounded line search
 
 Logically Collective
@@ -1079,9 +1079,9 @@ Level: beginner
 # External Links
 $(_doc_external("Tao/TaoLineSearchSetVariableBounds"))
 """
-function TaoLineSearchSetVariableBounds(petsclib::PetscLibType, ls::TaoLineSearch, xl::PetscVec, xu::PetscVec) end
+function TaoLineSearchSetVariableBounds(petsclib::PetscLibType, ls::TaoLineSearch, xl::AbstractPetscVec, xu::AbstractPetscVec) end
 
-@for_petsc function TaoLineSearchSetVariableBounds(petsclib::$UnionPetscLib, ls::TaoLineSearch, xl::PetscVec, xu::PetscVec )
+@for_petsc function TaoLineSearchSetVariableBounds(petsclib::$UnionPetscLib, ls::TaoLineSearch, xl::AbstractPetscVec, xu::AbstractPetscVec )
 
     @chk ccall(
                (:TaoLineSearchSetVariableBounds, $petsc_library),

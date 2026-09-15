@@ -527,7 +527,7 @@ function DMAdaptorView(petsclib::PetscLibType, adaptor::DMAdaptor, viewer::Petsc
 end 
 
 """
-	DMAdaptorGetSolver(petsclib::PetscLibType,adaptor::DMAdaptor, snes::PetscSNES) 
+	DMAdaptorGetSolver(petsclib::PetscLibType,adaptor::DMAdaptor, snes::AbstractPetscSNES) 
 Gets the solver used to produce discrete solutions
 
 Not Collective
@@ -547,9 +547,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMAdaptorGetSolver"))
 """
-function DMAdaptorGetSolver(petsclib::PetscLibType, adaptor::DMAdaptor, snes::PetscSNES) end
+function DMAdaptorGetSolver(petsclib::PetscLibType, adaptor::DMAdaptor, snes::AbstractPetscSNES) end
 
-@for_petsc function DMAdaptorGetSolver(petsclib::$UnionPetscLib, adaptor::DMAdaptor, snes::PetscSNES )
+@for_petsc function DMAdaptorGetSolver(petsclib::$UnionPetscLib, adaptor::DMAdaptor, snes::AbstractPetscSNES )
 	snes_ = Ref(snes.ptr)
 
     @chk ccall(
@@ -565,7 +565,7 @@ function DMAdaptorGetSolver(petsclib::PetscLibType, adaptor::DMAdaptor, snes::Pe
 end 
 
 """
-	DMAdaptorSetSolver(petsclib::PetscLibType,adaptor::DMAdaptor, snes::PetscSNES) 
+	DMAdaptorSetSolver(petsclib::PetscLibType,adaptor::DMAdaptor, snes::AbstractPetscSNES) 
 Sets the solver used to produce discrete solutions
 
 Not Collective
@@ -583,9 +583,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMAdaptorSetSolver"))
 """
-function DMAdaptorSetSolver(petsclib::PetscLibType, adaptor::DMAdaptor, snes::PetscSNES) end
+function DMAdaptorSetSolver(petsclib::PetscLibType, adaptor::DMAdaptor, snes::AbstractPetscSNES) end
 
-@for_petsc function DMAdaptorSetSolver(petsclib::$UnionPetscLib, adaptor::DMAdaptor, snes::PetscSNES )
+@for_petsc function DMAdaptorSetSolver(petsclib::$UnionPetscLib, adaptor::DMAdaptor, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:DMAdaptorSetSolver, $petsc_library),
@@ -725,7 +725,7 @@ function DMAdaptorSetTransferFunction(petsclib::PetscLibType, adaptor::DMAdaptor
 end 
 
 """
-	DMAdaptorMonitor(petsclib::PetscLibType,adaptor::DMAdaptor, it::PetscInt, odm::PetscDM, adm::PetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::PetscVec) 
+	DMAdaptorMonitor(petsclib::PetscLibType,adaptor::DMAdaptor, it::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec) 
 runs the user provided monitor routines, if they exist
 
 Collective
@@ -746,9 +746,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMAdaptorMonitor"))
 """
-function DMAdaptorMonitor(petsclib::PetscLibType, adaptor::DMAdaptor, it::PetscInt, odm::PetscDM, adm::PetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::PetscVec) end
+function DMAdaptorMonitor(petsclib::PetscLibType, adaptor::DMAdaptor, it::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec) end
 
-@for_petsc function DMAdaptorMonitor(petsclib::$UnionPetscLib, adaptor::DMAdaptor, it::$PetscInt, odm::PetscDM, adm::PetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::PetscVec )
+@for_petsc function DMAdaptorMonitor(petsclib::$UnionPetscLib, adaptor::DMAdaptor, it::$PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::AbstractPetscVec )
 
     @chk ccall(
                (:DMAdaptorMonitor, $petsc_library),
@@ -762,7 +762,7 @@ function DMAdaptorMonitor(petsclib::PetscLibType, adaptor::DMAdaptor, it::PetscI
 end 
 
 """
-	DMAdaptorMonitorSize(petsclib::PetscLibType,adaptor::DMAdaptor, n::PetscInt, odm::PetscDM, adm::PetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::PetscVec, vf::PetscViewerAndFormat) 
+	DMAdaptorMonitorSize(petsclib::PetscLibType,adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::PetscViewerAndFormat) 
 Prints the mesh sizes at each iteration of an adaptation loop.
 
 Collective
@@ -787,9 +787,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorSize"))
 """
-function DMAdaptorMonitorSize(petsclib::PetscLibType, adaptor::DMAdaptor, n::PetscInt, odm::PetscDM, adm::PetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::PetscVec, vf::PetscViewerAndFormat) end
+function DMAdaptorMonitorSize(petsclib::PetscLibType, adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::PetscViewerAndFormat) end
 
-@for_petsc function DMAdaptorMonitorSize(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::PetscDM, adm::PetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::PetscVec, vf::PetscViewerAndFormat )
+@for_petsc function DMAdaptorMonitorSize(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::AbstractPetscVec, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:DMAdaptorMonitorSize, $petsc_library),
@@ -803,7 +803,7 @@ function DMAdaptorMonitorSize(petsclib::PetscLibType, adaptor::DMAdaptor, n::Pet
 end 
 
 """
-	DMAdaptorMonitorError(petsclib::PetscLibType,adaptor::DMAdaptor, n::PetscInt, odm::PetscDM, adm::PetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::PetscVec, vf::PetscViewerAndFormat) 
+	DMAdaptorMonitorError(petsclib::PetscLibType,adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::PetscViewerAndFormat) 
 Prints the error norm at each iteration of an adaptation loop.
 
 Collective
@@ -828,9 +828,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorError"))
 """
-function DMAdaptorMonitorError(petsclib::PetscLibType, adaptor::DMAdaptor, n::PetscInt, odm::PetscDM, adm::PetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::PetscVec, vf::PetscViewerAndFormat) end
+function DMAdaptorMonitorError(petsclib::PetscLibType, adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::PetscViewerAndFormat) end
 
-@for_petsc function DMAdaptorMonitorError(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::PetscDM, adm::PetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::PetscVec, vf::PetscViewerAndFormat )
+@for_petsc function DMAdaptorMonitorError(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::AbstractPetscVec, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:DMAdaptorMonitorError, $petsc_library),
@@ -844,7 +844,7 @@ function DMAdaptorMonitorError(petsclib::PetscLibType, adaptor::DMAdaptor, n::Pe
 end 
 
 """
-	DMAdaptorMonitorErrorDraw(petsclib::PetscLibType,adaptor::DMAdaptor, n::PetscInt, odm::PetscDM, adm::PetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::PetscVec, vf::PetscViewerAndFormat) 
+	DMAdaptorMonitorErrorDraw(petsclib::PetscLibType,adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::PetscViewerAndFormat) 
 Plots the error at each iteration of an iterative solver.
 
 Collective
@@ -869,9 +869,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorErrorDraw"))
 """
-function DMAdaptorMonitorErrorDraw(petsclib::PetscLibType, adaptor::DMAdaptor, n::PetscInt, odm::PetscDM, adm::PetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::PetscVec, vf::PetscViewerAndFormat) end
+function DMAdaptorMonitorErrorDraw(petsclib::PetscLibType, adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::PetscViewerAndFormat) end
 
-@for_petsc function DMAdaptorMonitorErrorDraw(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::PetscDM, adm::PetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::PetscVec, vf::PetscViewerAndFormat )
+@for_petsc function DMAdaptorMonitorErrorDraw(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::AbstractPetscVec, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:DMAdaptorMonitorErrorDraw, $petsc_library),
@@ -923,7 +923,7 @@ function DMAdaptorMonitorErrorDrawLGCreate(petsclib::PetscLibType, viewer::Petsc
 end 
 
 """
-	DMAdaptorMonitorErrorDrawLG(petsclib::PetscLibType,adaptor::DMAdaptor, n::PetscInt, odm::PetscDM, adm::PetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::PetscVec, vf::PetscViewerAndFormat) 
+	DMAdaptorMonitorErrorDrawLG(petsclib::PetscLibType,adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::PetscViewerAndFormat) 
 Plots the error norm at each iteration of an adaptive loop.
 
 Collective
@@ -949,9 +949,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMAdaptorMonitorErrorDrawLG"))
 """
-function DMAdaptorMonitorErrorDrawLG(petsclib::PetscLibType, adaptor::DMAdaptor, n::PetscInt, odm::PetscDM, adm::PetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::PetscVec, vf::PetscViewerAndFormat) end
+function DMAdaptorMonitorErrorDrawLG(petsclib::PetscLibType, adaptor::DMAdaptor, n::PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::PetscInt, enorms::Vector{PetscReal}, error::AbstractPetscVec, vf::PetscViewerAndFormat) end
 
-@for_petsc function DMAdaptorMonitorErrorDrawLG(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::PetscDM, adm::PetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::PetscVec, vf::PetscViewerAndFormat )
+@for_petsc function DMAdaptorMonitorErrorDrawLG(petsclib::$UnionPetscLib, adaptor::DMAdaptor, n::$PetscInt, odm::AbstractPetscDM, adm::AbstractPetscDM, Nf::$PetscInt, enorms::Vector{$PetscReal}, error::AbstractPetscVec, vf::PetscViewerAndFormat )
 
     @chk ccall(
                (:DMAdaptorMonitorErrorDrawLG, $petsc_library),
@@ -992,7 +992,7 @@ function DMAdaptorMonitorRegisterAll(petsclib::PetscLibType) end
 end 
 
 """
-	DMAdaptorAdapt(petsclib::PetscLibType,adaptor::DMAdaptor, x::PetscVec, strategy::DMAdaptationStrategy, adm::PetscDM, ax::PetscVec) 
+	DMAdaptorAdapt(petsclib::PetscLibType,adaptor::DMAdaptor, x::AbstractPetscVec, strategy::DMAdaptationStrategy, adm::AbstractPetscDM, ax::AbstractPetscVec) 
 Creates a new `DM` that is adapted to the problem
 
 Not Collective
@@ -1021,9 +1021,9 @@ See also:
 # External Links
 $(_doc_external("DM/DMAdaptorAdapt"))
 """
-function DMAdaptorAdapt(petsclib::PetscLibType, adaptor::DMAdaptor, x::PetscVec, strategy::DMAdaptationStrategy, adm::PetscDM, ax::PetscVec) end
+function DMAdaptorAdapt(petsclib::PetscLibType, adaptor::DMAdaptor, x::AbstractPetscVec, strategy::DMAdaptationStrategy, adm::AbstractPetscDM, ax::AbstractPetscVec) end
 
-@for_petsc function DMAdaptorAdapt(petsclib::$UnionPetscLib, adaptor::DMAdaptor, x::PetscVec, strategy::DMAdaptationStrategy, adm::PetscDM, ax::PetscVec )
+@for_petsc function DMAdaptorAdapt(petsclib::$UnionPetscLib, adaptor::DMAdaptor, x::AbstractPetscVec, strategy::DMAdaptationStrategy, adm::AbstractPetscDM, ax::AbstractPetscVec )
 	adm_ = Ref(adm.ptr)
 	ax_ = Ref(ax.ptr)
 
@@ -1270,7 +1270,7 @@ function DMSwarmSortDestroy(petsclib::PetscLibType, _ctx::Union{DMSwarmSort, Ref
 end 
 
 """
-	npoints::PetscInt = DMSwarmSortGetNumberOfPointsPerCell(petsclib::PetscLibType,sw::PetscDM, cell::PetscInt) 
+	npoints::PetscInt = DMSwarmSortGetNumberOfPointsPerCell(petsclib::PetscLibType,sw::AbstractPetscDM, cell::PetscInt) 
 Returns the number of points in a cell
 
 Not Collective
@@ -1289,9 +1289,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMSwarmSortGetNumberOfPointsPerCell"))
 """
-function DMSwarmSortGetNumberOfPointsPerCell(petsclib::PetscLibType, sw::PetscDM, cell::PetscInt) end
+function DMSwarmSortGetNumberOfPointsPerCell(petsclib::PetscLibType, sw::AbstractPetscDM, cell::PetscInt) end
 
-@for_petsc function DMSwarmSortGetNumberOfPointsPerCell(petsclib::$UnionPetscLib, sw::PetscDM, cell::$PetscInt )
+@for_petsc function DMSwarmSortGetNumberOfPointsPerCell(petsclib::$UnionPetscLib, sw::AbstractPetscDM, cell::$PetscInt )
 	npoints_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1307,7 +1307,7 @@ function DMSwarmSortGetNumberOfPointsPerCell(petsclib::PetscLibType, sw::PetscDM
 end 
 
 """
-	DMSwarmSortGetPointsPerCell(petsclib::PetscLibType,sw::PetscDM, cell::PetscInt, npoints::PetscInt, pidlist::PetscInt) 
+	DMSwarmSortGetPointsPerCell(petsclib::PetscLibType,sw::AbstractPetscDM, cell::PetscInt, npoints::PetscInt, pidlist::PetscInt) 
 Creates an array of point indices for all points in a cell
 
 Not Collective
@@ -1325,9 +1325,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMSwarmSortGetPointsPerCell"))
 """
-function DMSwarmSortGetPointsPerCell(petsclib::PetscLibType, sw::PetscDM, cell::PetscInt, npoints::PetscInt, pidlist::PetscInt) end
+function DMSwarmSortGetPointsPerCell(petsclib::PetscLibType, sw::AbstractPetscDM, cell::PetscInt, npoints::PetscInt, pidlist::PetscInt) end
 
-@for_petsc function DMSwarmSortGetPointsPerCell(petsclib::$UnionPetscLib, sw::PetscDM, cell::$PetscInt, npoints::$PetscInt, pidlist::$PetscInt )
+@for_petsc function DMSwarmSortGetPointsPerCell(petsclib::$UnionPetscLib, sw::AbstractPetscDM, cell::$PetscInt, npoints::$PetscInt, pidlist::$PetscInt )
 
     @chk ccall(
                (:DMSwarmSortGetPointsPerCell, $petsc_library),
@@ -1341,7 +1341,7 @@ function DMSwarmSortGetPointsPerCell(petsclib::PetscLibType, sw::PetscDM, cell::
 end 
 
 """
-	DMSwarmSortRestorePointsPerCell(petsclib::PetscLibType,dm::PetscDM, e::PetscInt, npoints::PetscInt, pidlist::PetscInt) 
+	DMSwarmSortRestorePointsPerCell(petsclib::PetscLibType,dm::AbstractPetscDM, e::PetscInt, npoints::PetscInt, pidlist::PetscInt) 
 Restores an array of point indices for all points in a cell
 
 Not Collective
@@ -1359,9 +1359,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMSwarmSortRestorePointsPerCell"))
 """
-function DMSwarmSortRestorePointsPerCell(petsclib::PetscLibType, dm::PetscDM, e::PetscInt, npoints::PetscInt, pidlist::PetscInt) end
+function DMSwarmSortRestorePointsPerCell(petsclib::PetscLibType, dm::AbstractPetscDM, e::PetscInt, npoints::PetscInt, pidlist::PetscInt) end
 
-@for_petsc function DMSwarmSortRestorePointsPerCell(petsclib::$UnionPetscLib, dm::PetscDM, e::$PetscInt, npoints::$PetscInt, pidlist::$PetscInt )
+@for_petsc function DMSwarmSortRestorePointsPerCell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, e::$PetscInt, npoints::$PetscInt, pidlist::$PetscInt )
 
     @chk ccall(
                (:DMSwarmSortRestorePointsPerCell, $petsc_library),
@@ -1375,7 +1375,7 @@ function DMSwarmSortRestorePointsPerCell(petsclib::PetscLibType, dm::PetscDM, e:
 end 
 
 """
-	DMSwarmSortGetAccess(petsclib::PetscLibType,sw::PetscDM) 
+	DMSwarmSortGetAccess(petsclib::PetscLibType,sw::AbstractPetscDM) 
 Setups up a `DMSWARM` point sort context for efficient traversal of points within a cell
 
 Not Collective
@@ -1390,9 +1390,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMSwarmSortGetAccess"))
 """
-function DMSwarmSortGetAccess(petsclib::PetscLibType, sw::PetscDM) end
+function DMSwarmSortGetAccess(petsclib::PetscLibType, sw::AbstractPetscDM) end
 
-@for_petsc function DMSwarmSortGetAccess(petsclib::$UnionPetscLib, sw::PetscDM )
+@for_petsc function DMSwarmSortGetAccess(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 
     @chk ccall(
                (:DMSwarmSortGetAccess, $petsc_library),
@@ -1406,7 +1406,7 @@ function DMSwarmSortGetAccess(petsclib::PetscLibType, sw::PetscDM) end
 end 
 
 """
-	DMSwarmSortRestoreAccess(petsclib::PetscLibType,sw::PetscDM) 
+	DMSwarmSortRestoreAccess(petsclib::PetscLibType,sw::AbstractPetscDM) 
 Invalidates the `DMSWARM` point sorting context previously computed with `DMSwarmSortGetAccess()`
 
 Not Collective
@@ -1421,9 +1421,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMSwarmSortRestoreAccess"))
 """
-function DMSwarmSortRestoreAccess(petsclib::PetscLibType, sw::PetscDM) end
+function DMSwarmSortRestoreAccess(petsclib::PetscLibType, sw::AbstractPetscDM) end
 
-@for_petsc function DMSwarmSortRestoreAccess(petsclib::$UnionPetscLib, sw::PetscDM )
+@for_petsc function DMSwarmSortRestoreAccess(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 
     @chk ccall(
                (:DMSwarmSortRestoreAccess, $petsc_library),
@@ -1437,7 +1437,7 @@ function DMSwarmSortRestoreAccess(petsclib::PetscLibType, sw::PetscDM) end
 end 
 
 """
-	isvalid::PetscBool = DMSwarmSortGetIsValid(petsclib::PetscLibType,sw::PetscDM) 
+	isvalid::PetscBool = DMSwarmSortGetIsValid(petsclib::PetscLibType,sw::AbstractPetscDM) 
 Gets the isvalid flag associated with a `DMSWARM` point sorting context
 
 Not Collective
@@ -1455,9 +1455,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMSwarmSortGetIsValid"))
 """
-function DMSwarmSortGetIsValid(petsclib::PetscLibType, sw::PetscDM) end
+function DMSwarmSortGetIsValid(petsclib::PetscLibType, sw::AbstractPetscDM) end
 
-@for_petsc function DMSwarmSortGetIsValid(petsclib::$UnionPetscLib, sw::PetscDM )
+@for_petsc function DMSwarmSortGetIsValid(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 	isvalid_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -1473,7 +1473,7 @@ function DMSwarmSortGetIsValid(petsclib::PetscLibType, sw::PetscDM) end
 end 
 
 """
-	ncells::PetscInt,npoints::PetscInt = DMSwarmSortGetSizes(petsclib::PetscLibType,sw::PetscDM) 
+	ncells::PetscInt,npoints::PetscInt = DMSwarmSortGetSizes(petsclib::PetscLibType,sw::AbstractPetscDM) 
 Gets the sizes associated with a `DMSWARM` point sorting context
 
 Not Collective
@@ -1492,9 +1492,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMSwarmSortGetSizes"))
 """
-function DMSwarmSortGetSizes(petsclib::PetscLibType, sw::PetscDM) end
+function DMSwarmSortGetSizes(petsclib::PetscLibType, sw::AbstractPetscDM) end
 
-@for_petsc function DMSwarmSortGetSizes(petsclib::$UnionPetscLib, sw::PetscDM )
+@for_petsc function DMSwarmSortGetSizes(petsclib::$UnionPetscLib, sw::AbstractPetscDM )
 	ncells_ = Ref{$PetscInt}()
 	npoints_ = Ref{$PetscInt}()
 
@@ -1576,7 +1576,7 @@ function DMSwarmCellDMView(petsclib::PetscLibType, celldm::DMSwarmCellDM, viewer
 end 
 
 """
-	DMSwarmCellDMGetDM(petsclib::PetscLibType,celldm::DMSwarmCellDM, dm::PetscDM) 
+	DMSwarmCellDMGetDM(petsclib::PetscLibType,celldm::DMSwarmCellDM, dm::AbstractPetscDM) 
 Returns the background `DM` for the `DMSwarm`
 
 Not Collective
@@ -1594,9 +1594,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSwarmCellDMGetDM"))
 """
-function DMSwarmCellDMGetDM(petsclib::PetscLibType, celldm::DMSwarmCellDM, dm::PetscDM) end
+function DMSwarmCellDMGetDM(petsclib::PetscLibType, celldm::DMSwarmCellDM, dm::AbstractPetscDM) end
 
-@for_petsc function DMSwarmCellDMGetDM(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM, dm::PetscDM )
+@for_petsc function DMSwarmCellDMGetDM(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM, dm::AbstractPetscDM )
 	dm_ = Ref(dm.ptr)
 
     @chk ccall(
@@ -1787,7 +1787,7 @@ function DMSwarmCellDMSetSort(petsclib::PetscLibType, celldm::DMSwarmCellDM, sor
 end 
 
 """
-	bs::PetscInt = DMSwarmCellDMGetBlockSize(petsclib::PetscLibType,celldm::DMSwarmCellDM, sw::PetscDM) 
+	bs::PetscInt = DMSwarmCellDMGetBlockSize(petsclib::PetscLibType,celldm::DMSwarmCellDM, sw::AbstractPetscDM) 
 Returns the total blocksize for the `DM` fields
 
 Not Collective
@@ -1806,9 +1806,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMSwarmCellDMGetBlockSize"))
 """
-function DMSwarmCellDMGetBlockSize(petsclib::PetscLibType, celldm::DMSwarmCellDM, sw::PetscDM) end
+function DMSwarmCellDMGetBlockSize(petsclib::PetscLibType, celldm::DMSwarmCellDM, sw::AbstractPetscDM) end
 
-@for_petsc function DMSwarmCellDMGetBlockSize(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM, sw::PetscDM )
+@for_petsc function DMSwarmCellDMGetBlockSize(petsclib::$UnionPetscLib, celldm::DMSwarmCellDM, sw::AbstractPetscDM )
 	bs_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1824,7 +1824,7 @@ function DMSwarmCellDMGetBlockSize(petsclib::PetscLibType, celldm::DMSwarmCellDM
 end 
 
 """
-	celldm::DMSwarmCellDM = DMSwarmCellDMCreate(petsclib::PetscLibType,dm::PetscDM, Nf::PetscInt, dmFields::String, Nfc::PetscInt, coordFields::String) 
+	celldm::DMSwarmCellDM = DMSwarmCellDMCreate(petsclib::PetscLibType,dm::AbstractPetscDM, Nf::PetscInt, dmFields::String, Nfc::PetscInt, coordFields::String) 
 create a `DMSwarmCellDM`
 
 Collective
@@ -1846,9 +1846,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMSwarmCellDMCreate"))
 """
-function DMSwarmCellDMCreate(petsclib::PetscLibType, dm::PetscDM, Nf::PetscInt, dmFields::String, Nfc::PetscInt, coordFields::String) end
+function DMSwarmCellDMCreate(petsclib::PetscLibType, dm::AbstractPetscDM, Nf::PetscInt, dmFields::String, Nfc::PetscInt, coordFields::String) end
 
-@for_petsc function DMSwarmCellDMCreate(petsclib::$UnionPetscLib, dm::PetscDM, Nf::$PetscInt, dmFields::String, Nfc::$PetscInt, coordFields::String )
+@for_petsc function DMSwarmCellDMCreate(petsclib::$UnionPetscLib, dm::AbstractPetscDM, Nf::$PetscInt, dmFields::String, Nfc::$PetscInt, coordFields::String )
 	dmFields_ = Ref(pointer(dmFields))
 	coordFields_ = Ref(pointer(coordFields))
 	celldm_ = Ref{DMSwarmCellDM}()
@@ -2213,7 +2213,7 @@ function DMFieldGetNumComponents(petsclib::PetscLibType, field::DMField) end
 end 
 
 """
-	DMFieldGetDM(petsclib::PetscLibType,field::DMField, dm::PetscDM) 
+	DMFieldGetDM(petsclib::PetscLibType,field::DMField, dm::AbstractPetscDM) 
 Returns the `DM` for the manifold over which the field is defined.
 
 Not Collective
@@ -2231,9 +2231,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMFieldGetDM"))
 """
-function DMFieldGetDM(petsclib::PetscLibType, field::DMField, dm::PetscDM) end
+function DMFieldGetDM(petsclib::PetscLibType, field::DMField, dm::AbstractPetscDM) end
 
-@for_petsc function DMFieldGetDM(petsclib::$UnionPetscLib, field::DMField, dm::PetscDM )
+@for_petsc function DMFieldGetDM(petsclib::$UnionPetscLib, field::DMField, dm::AbstractPetscDM )
 	dm_ = Ref(dm.ptr)
 
     @chk ccall(
@@ -2249,7 +2249,7 @@ function DMFieldGetDM(petsclib::PetscLibType, field::DMField, dm::PetscDM) end
 end 
 
 """
-	DMFieldEvaluate(petsclib::PetscLibType,field::DMField, points::PetscVec, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) 
+	DMFieldEvaluate(petsclib::PetscLibType,field::DMField, points::AbstractPetscVec, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) 
 Evaluate the field and its derivatives on a set of points
 
 Collective
@@ -2281,9 +2281,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMFieldEvaluate"))
 """
-function DMFieldEvaluate(petsclib::PetscLibType, field::DMField, points::PetscVec, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) end
+function DMFieldEvaluate(petsclib::PetscLibType, field::DMField, points::AbstractPetscVec, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) end
 
-@for_petsc function DMFieldEvaluate(petsclib::$UnionPetscLib, field::DMField, points::PetscVec, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid )
+@for_petsc function DMFieldEvaluate(petsclib::$UnionPetscLib, field::DMField, points::AbstractPetscVec, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid )
 
     @chk ccall(
                (:DMFieldEvaluate, $petsc_library),
@@ -2297,7 +2297,7 @@ function DMFieldEvaluate(petsclib::PetscLibType, field::DMField, points::PetscVe
 end 
 
 """
-	DMFieldEvaluateFE(petsclib::PetscLibType,field::DMField, cellIS::IS, points::PetscQuadrature, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) 
+	DMFieldEvaluateFE(petsclib::PetscLibType,field::DMField, cellIS::AbstractIS, points::PetscQuadrature, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) 
 Evaluate the field and its derivatives on a set of points mapped from
 quadrature points on a reference point.  The derivatives are taken with respect to the
 reference coordinates.
@@ -2330,9 +2330,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMFieldEvaluateFE"))
 """
-function DMFieldEvaluateFE(petsclib::PetscLibType, field::DMField, cellIS::IS, points::PetscQuadrature, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) end
+function DMFieldEvaluateFE(petsclib::PetscLibType, field::DMField, cellIS::AbstractIS, points::PetscQuadrature, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) end
 
-@for_petsc function DMFieldEvaluateFE(petsclib::$UnionPetscLib, field::DMField, cellIS::IS, points::PetscQuadrature, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid )
+@for_petsc function DMFieldEvaluateFE(petsclib::$UnionPetscLib, field::DMField, cellIS::AbstractIS, points::PetscQuadrature, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid )
 
     @chk ccall(
                (:DMFieldEvaluateFE, $petsc_library),
@@ -2346,7 +2346,7 @@ function DMFieldEvaluateFE(petsclib::PetscLibType, field::DMField, cellIS::IS, p
 end 
 
 """
-	DMFieldEvaluateFV(petsclib::PetscLibType,field::DMField, cellIS::IS, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) 
+	DMFieldEvaluateFV(petsclib::PetscLibType,field::DMField, cellIS::AbstractIS, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) 
 Evaluate the mean of a field and its finite volume derivatives on a set of points.
 
 Not Collective
@@ -2376,9 +2376,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMFieldEvaluateFV"))
 """
-function DMFieldEvaluateFV(petsclib::PetscLibType, field::DMField, cellIS::IS, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) end
+function DMFieldEvaluateFV(petsclib::PetscLibType, field::DMField, cellIS::AbstractIS, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) end
 
-@for_petsc function DMFieldEvaluateFV(petsclib::$UnionPetscLib, field::DMField, cellIS::IS, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid )
+@for_petsc function DMFieldEvaluateFV(petsclib::$UnionPetscLib, field::DMField, cellIS::AbstractIS, datatype::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid )
 
     @chk ccall(
                (:DMFieldEvaluateFV, $petsc_library),
@@ -2392,7 +2392,7 @@ function DMFieldEvaluateFV(petsclib::PetscLibType, field::DMField, cellIS::IS, d
 end 
 
 """
-	minDegree::PetscInt,maxDegree::PetscInt = DMFieldGetDegree(petsclib::PetscLibType,field::DMField, cellIS::IS) 
+	minDegree::PetscInt,maxDegree::PetscInt = DMFieldGetDegree(petsclib::PetscLibType,field::DMField, cellIS::AbstractIS) 
 Get the polynomial degree of a field when pulled back onto the
 reference element
 
@@ -2413,9 +2413,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMFieldGetDegree"))
 """
-function DMFieldGetDegree(petsclib::PetscLibType, field::DMField, cellIS::IS) end
+function DMFieldGetDegree(petsclib::PetscLibType, field::DMField, cellIS::AbstractIS) end
 
-@for_petsc function DMFieldGetDegree(petsclib::$UnionPetscLib, field::DMField, cellIS::IS )
+@for_petsc function DMFieldGetDegree(petsclib::$UnionPetscLib, field::DMField, cellIS::AbstractIS )
 	minDegree_ = Ref{$PetscInt}()
 	maxDegree_ = Ref{$PetscInt}()
 
@@ -2433,7 +2433,7 @@ function DMFieldGetDegree(petsclib::PetscLibType, field::DMField, cellIS::IS) en
 end 
 
 """
-	quad::PetscQuadrature = DMFieldCreateDefaultQuadrature(petsclib::PetscLibType,field::DMField, pointIS::IS) 
+	quad::PetscQuadrature = DMFieldCreateDefaultQuadrature(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS) 
 Creates a quadrature sufficient to integrate the field on the selected
 points via pullback onto the reference element
 
@@ -2453,9 +2453,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMFieldCreateDefaultQuadrature"))
 """
-function DMFieldCreateDefaultQuadrature(petsclib::PetscLibType, field::DMField, pointIS::IS) end
+function DMFieldCreateDefaultQuadrature(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS) end
 
-@for_petsc function DMFieldCreateDefaultQuadrature(petsclib::$UnionPetscLib, field::DMField, pointIS::IS )
+@for_petsc function DMFieldCreateDefaultQuadrature(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS )
 	quad_ = Ref{PetscQuadrature}()
 
     @chk ccall(
@@ -2471,7 +2471,7 @@ function DMFieldCreateDefaultQuadrature(petsclib::PetscLibType, field::DMField, 
 end 
 
 """
-	quad::PetscQuadrature = DMFieldCreateDefaultFaceQuadrature(petsclib::PetscLibType,field::DMField, pointIS::IS) 
+	quad::PetscQuadrature = DMFieldCreateDefaultFaceQuadrature(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS) 
 Creates a quadrature sufficient to integrate the field on all faces of the selected cells via pullback onto the reference element
 
 Not Collective
@@ -2490,9 +2490,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMFieldCreateDefaultFaceQuadrature"))
 """
-function DMFieldCreateDefaultFaceQuadrature(petsclib::PetscLibType, field::DMField, pointIS::IS) end
+function DMFieldCreateDefaultFaceQuadrature(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS) end
 
-@for_petsc function DMFieldCreateDefaultFaceQuadrature(petsclib::$UnionPetscLib, field::DMField, pointIS::IS )
+@for_petsc function DMFieldCreateDefaultFaceQuadrature(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS )
 	quad_ = Ref{PetscQuadrature}()
 
     @chk ccall(
@@ -2508,7 +2508,7 @@ function DMFieldCreateDefaultFaceQuadrature(petsclib::PetscLibType, field::DMFie
 end 
 
 """
-	geom::PetscFEGeom = DMFieldCreateFEGeom(petsclib::PetscLibType,field::DMField, pointIS::IS, quad::PetscQuadrature, mode::PetscFEGeomMode) 
+	geom::PetscFEGeom = DMFieldCreateFEGeom(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, mode::PetscFEGeomMode) 
 Compute and create the geometric factors of a coordinate field
 
 Not Collective
@@ -2529,9 +2529,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMFieldCreateFEGeom"))
 """
-function DMFieldCreateFEGeom(petsclib::PetscLibType, field::DMField, pointIS::IS, quad::PetscQuadrature, mode::PetscFEGeomMode) end
+function DMFieldCreateFEGeom(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, mode::PetscFEGeomMode) end
 
-@for_petsc function DMFieldCreateFEGeom(petsclib::$UnionPetscLib, field::DMField, pointIS::IS, quad::PetscQuadrature, mode::PetscFEGeomMode )
+@for_petsc function DMFieldCreateFEGeom(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, mode::PetscFEGeomMode )
 	geom_ = Ref{PetscFEGeom}()
 
     @chk ccall(
@@ -2631,14 +2631,14 @@ function DMFieldRegister(petsclib::PetscLibType, sname::String, fnc::external) e
 end 
 
 """
-	cornerValues::PetscScalar,field::DMField = DMFieldCreateDA(petsclib::PetscLibType,dm::PetscDM, nc::PetscInt) 
+	cornerValues::PetscScalar,field::DMField = DMFieldCreateDA(petsclib::PetscLibType,dm::AbstractPetscDM, nc::PetscInt) 
 
 # External Links
 $(_doc_external("DM/DMFieldCreateDA"))
 """
-function DMFieldCreateDA(petsclib::PetscLibType, dm::PetscDM, nc::PetscInt) end
+function DMFieldCreateDA(petsclib::PetscLibType, dm::AbstractPetscDM, nc::PetscInt) end
 
-@for_petsc function DMFieldCreateDA(petsclib::$UnionPetscLib, dm::PetscDM, nc::$PetscInt )
+@for_petsc function DMFieldCreateDA(petsclib::$UnionPetscLib, dm::AbstractPetscDM, nc::$PetscInt )
 	cornerValues_ = Ref{$PetscScalar}()
 	field_ = Ref{DMField}()
 
@@ -2656,14 +2656,14 @@ function DMFieldCreateDA(petsclib::PetscLibType, dm::PetscDM, nc::PetscInt) end
 end 
 
 """
-	field::DMField = DMFieldCreateDSWithDG(petsclib::PetscLibType,dm::PetscDM, dmDG::PetscDM, fieldNum::PetscInt, vec::PetscVec, vecDG::PetscVec) 
+	field::DMField = DMFieldCreateDSWithDG(petsclib::PetscLibType,dm::AbstractPetscDM, dmDG::AbstractPetscDM, fieldNum::PetscInt, vec::AbstractPetscVec, vecDG::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("DM/DMFieldCreateDSWithDG"))
 """
-function DMFieldCreateDSWithDG(petsclib::PetscLibType, dm::PetscDM, dmDG::PetscDM, fieldNum::PetscInt, vec::PetscVec, vecDG::PetscVec) end
+function DMFieldCreateDSWithDG(petsclib::PetscLibType, dm::AbstractPetscDM, dmDG::AbstractPetscDM, fieldNum::PetscInt, vec::AbstractPetscVec, vecDG::AbstractPetscVec) end
 
-@for_petsc function DMFieldCreateDSWithDG(petsclib::$UnionPetscLib, dm::PetscDM, dmDG::PetscDM, fieldNum::$PetscInt, vec::PetscVec, vecDG::PetscVec )
+@for_petsc function DMFieldCreateDSWithDG(petsclib::$UnionPetscLib, dm::AbstractPetscDM, dmDG::AbstractPetscDM, fieldNum::$PetscInt, vec::AbstractPetscVec, vecDG::AbstractPetscVec )
 	field_ = Ref{DMField}()
 
     @chk ccall(
@@ -2679,14 +2679,14 @@ function DMFieldCreateDSWithDG(petsclib::PetscLibType, dm::PetscDM, dmDG::PetscD
 end 
 
 """
-	field::DMField = DMFieldCreateDS(petsclib::PetscLibType,dm::PetscDM, fieldNum::PetscInt, vec::PetscVec) 
+	field::DMField = DMFieldCreateDS(petsclib::PetscLibType,dm::AbstractPetscDM, fieldNum::PetscInt, vec::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("DM/DMFieldCreateDS"))
 """
-function DMFieldCreateDS(petsclib::PetscLibType, dm::PetscDM, fieldNum::PetscInt, vec::PetscVec) end
+function DMFieldCreateDS(petsclib::PetscLibType, dm::AbstractPetscDM, fieldNum::PetscInt, vec::AbstractPetscVec) end
 
-@for_petsc function DMFieldCreateDS(petsclib::$UnionPetscLib, dm::PetscDM, fieldNum::$PetscInt, vec::PetscVec )
+@for_petsc function DMFieldCreateDS(petsclib::$UnionPetscLib, dm::AbstractPetscDM, fieldNum::$PetscInt, vec::AbstractPetscVec )
 	field_ = Ref{DMField}()
 
     @chk ccall(
@@ -2723,14 +2723,14 @@ function DMFieldShellGetContext(petsclib::PetscLibType, field::DMField, ctx::Cvo
 end 
 
 """
-	DMFieldShellEvaluateFEDefault(petsclib::PetscLibType,field::DMField, pointIS::IS, quad::PetscQuadrature, type::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) 
+	DMFieldShellEvaluateFEDefault(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) 
 
 # External Links
 $(_doc_external("DM/DMFieldShellEvaluateFEDefault"))
 """
-function DMFieldShellEvaluateFEDefault(petsclib::PetscLibType, field::DMField, pointIS::IS, quad::PetscQuadrature, type::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) end
+function DMFieldShellEvaluateFEDefault(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) end
 
-@for_petsc function DMFieldShellEvaluateFEDefault(petsclib::$UnionPetscLib, field::DMField, pointIS::IS, quad::PetscQuadrature, type::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid )
+@for_petsc function DMFieldShellEvaluateFEDefault(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS, quad::PetscQuadrature, type::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid )
 
     @chk ccall(
                (:DMFieldShellEvaluateFEDefault, $petsc_library),
@@ -2744,14 +2744,14 @@ function DMFieldShellEvaluateFEDefault(petsclib::PetscLibType, field::DMField, p
 end 
 
 """
-	DMFieldShellEvaluateFVDefault(petsclib::PetscLibType,field::DMField, pointIS::IS, type::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) 
+	DMFieldShellEvaluateFVDefault(petsclib::PetscLibType,field::DMField, pointIS::AbstractIS, type::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) 
 
 # External Links
 $(_doc_external("DM/DMFieldShellEvaluateFVDefault"))
 """
-function DMFieldShellEvaluateFVDefault(petsclib::PetscLibType, field::DMField, pointIS::IS, type::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) end
+function DMFieldShellEvaluateFVDefault(petsclib::PetscLibType, field::DMField, pointIS::AbstractIS, type::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid) end
 
-@for_petsc function DMFieldShellEvaluateFVDefault(petsclib::$UnionPetscLib, field::DMField, pointIS::IS, type::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid )
+@for_petsc function DMFieldShellEvaluateFVDefault(petsclib::$UnionPetscLib, field::DMField, pointIS::AbstractIS, type::PetscDataType, B::Cvoid, D::Cvoid, H::Cvoid )
 
     @chk ccall(
                (:DMFieldShellEvaluateFVDefault, $petsc_library),
@@ -2891,14 +2891,14 @@ function DMFieldShellSetCreateDefaultQuadrature(petsclib::PetscLibType, field::D
 end 
 
 """
-	ctx::Cvoid,field::DMField = DMFieldCreateShell(petsclib::PetscLibType,dm::PetscDM, numComponents::PetscInt, continuity::DMFieldContinuity) 
+	ctx::Cvoid,field::DMField = DMFieldCreateShell(petsclib::PetscLibType,dm::AbstractPetscDM, numComponents::PetscInt, continuity::DMFieldContinuity) 
 
 # External Links
 $(_doc_external("DM/DMFieldCreateShell"))
 """
-function DMFieldCreateShell(petsclib::PetscLibType, dm::PetscDM, numComponents::PetscInt, continuity::DMFieldContinuity) end
+function DMFieldCreateShell(petsclib::PetscLibType, dm::AbstractPetscDM, numComponents::PetscInt, continuity::DMFieldContinuity) end
 
-@for_petsc function DMFieldCreateShell(petsclib::$UnionPetscLib, dm::PetscDM, numComponents::$PetscInt, continuity::DMFieldContinuity )
+@for_petsc function DMFieldCreateShell(petsclib::$UnionPetscLib, dm::AbstractPetscDM, numComponents::$PetscInt, continuity::DMFieldContinuity )
 	ctx_ = Ref{Cvoid}()
 	field_ = Ref{DMField}()
 
@@ -3208,7 +3208,7 @@ function DMPlexTransformSetUp(petsclib::PetscLibType, tr::DMPlexTransform) end
 end 
 
 """
-	DMPlexTransformGetDM(petsclib::PetscLibType,tr::DMPlexTransform, dm::PetscDM) 
+	DMPlexTransformGetDM(petsclib::PetscLibType,tr::DMPlexTransform, dm::AbstractPetscDM) 
 Get the base `DM` for the transform
 
 Input Parameter:
@@ -3224,9 +3224,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMPlexTransformGetDM"))
 """
-function DMPlexTransformGetDM(petsclib::PetscLibType, tr::DMPlexTransform, dm::PetscDM) end
+function DMPlexTransformGetDM(petsclib::PetscLibType, tr::DMPlexTransform, dm::AbstractPetscDM) end
 
-@for_petsc function DMPlexTransformGetDM(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::PetscDM )
+@for_petsc function DMPlexTransformGetDM(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::AbstractPetscDM )
 	dm_ = Ref(dm.ptr)
 
     @chk ccall(
@@ -3242,7 +3242,7 @@ function DMPlexTransformGetDM(petsclib::PetscLibType, tr::DMPlexTransform, dm::P
 end 
 
 """
-	DMPlexTransformSetDM(petsclib::PetscLibType,tr::DMPlexTransform, dm::PetscDM) 
+	DMPlexTransformSetDM(petsclib::PetscLibType,tr::DMPlexTransform, dm::AbstractPetscDM) 
 Set the base `DM` for the transform
 
 Input Parameters:
@@ -3256,9 +3256,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMPlexTransformSetDM"))
 """
-function DMPlexTransformSetDM(petsclib::PetscLibType, tr::DMPlexTransform, dm::PetscDM) end
+function DMPlexTransformSetDM(petsclib::PetscLibType, tr::DMPlexTransform, dm::AbstractPetscDM) end
 
-@for_petsc function DMPlexTransformSetDM(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::PetscDM )
+@for_petsc function DMPlexTransformSetDM(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::AbstractPetscDM )
 
     @chk ccall(
                (:DMPlexTransformSetDM, $petsc_library),
@@ -3398,7 +3398,7 @@ function DMPlexTransformSetTransformTypes(petsclib::PetscLibType, tr::DMPlexTran
 end 
 
 """
-	DMPlexTransformSetDimensions(petsclib::PetscLibType,tr::DMPlexTransform, dm::PetscDM, tdm::PetscDM) 
+	DMPlexTransformSetDimensions(petsclib::PetscLibType,tr::DMPlexTransform, dm::AbstractPetscDM, tdm::AbstractPetscDM) 
 Set the dimensions for the transformed `DM`
 
 Input Parameters:
@@ -3415,9 +3415,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/DMPlexTransformSetDimensions"))
 """
-function DMPlexTransformSetDimensions(petsclib::PetscLibType, tr::DMPlexTransform, dm::PetscDM, tdm::PetscDM) end
+function DMPlexTransformSetDimensions(petsclib::PetscLibType, tr::DMPlexTransform, dm::AbstractPetscDM, tdm::AbstractPetscDM) end
 
-@for_petsc function DMPlexTransformSetDimensions(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::PetscDM, tdm::PetscDM )
+@for_petsc function DMPlexTransformSetDimensions(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::AbstractPetscDM, tdm::AbstractPetscDM )
 
     @chk ccall(
                (:DMPlexTransformSetDimensions, $petsc_library),
@@ -4069,14 +4069,14 @@ function DMPlexTransformMapCoordinates(petsclib::PetscLibType, tr::DMPlexTransfo
 end 
 
 """
-	DMPlexTransformCreateDiscLabels(petsclib::PetscLibType,tr::DMPlexTransform, rdm::PetscDM) 
+	DMPlexTransformCreateDiscLabels(petsclib::PetscLibType,tr::DMPlexTransform, rdm::AbstractPetscDM) 
 
 # External Links
 $(_doc_external("DM/DMPlexTransformCreateDiscLabels"))
 """
-function DMPlexTransformCreateDiscLabels(petsclib::PetscLibType, tr::DMPlexTransform, rdm::PetscDM) end
+function DMPlexTransformCreateDiscLabels(petsclib::PetscLibType, tr::DMPlexTransform, rdm::AbstractPetscDM) end
 
-@for_petsc function DMPlexTransformCreateDiscLabels(petsclib::$UnionPetscLib, tr::DMPlexTransform, rdm::PetscDM )
+@for_petsc function DMPlexTransformCreateDiscLabels(petsclib::$UnionPetscLib, tr::DMPlexTransform, rdm::AbstractPetscDM )
 
     @chk ccall(
                (:DMPlexTransformCreateDiscLabels, $petsc_library),
@@ -4090,7 +4090,7 @@ function DMPlexTransformCreateDiscLabels(petsclib::PetscLibType, tr::DMPlexTrans
 end 
 
 """
-	DMPlexTransformApply(petsclib::PetscLibType,tr::DMPlexTransform, dm::PetscDM, tdm::PetscDM) 
+	DMPlexTransformApply(petsclib::PetscLibType,tr::DMPlexTransform, dm::AbstractPetscDM, tdm::AbstractPetscDM) 
 Execute the transformation, producing another `DM`
 
 Collective
@@ -4114,9 +4114,9 @@ Options Database Keys:
 # External Links
 $(_doc_external("DM/DMPlexTransformApply"))
 """
-function DMPlexTransformApply(petsclib::PetscLibType, tr::DMPlexTransform, dm::PetscDM, tdm::PetscDM) end
+function DMPlexTransformApply(petsclib::PetscLibType, tr::DMPlexTransform, dm::AbstractPetscDM, tdm::AbstractPetscDM) end
 
-@for_petsc function DMPlexTransformApply(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::PetscDM, tdm::PetscDM )
+@for_petsc function DMPlexTransformApply(petsclib::$UnionPetscLib, tr::DMPlexTransform, dm::AbstractPetscDM, tdm::AbstractPetscDM )
 	tdm_ = Ref(tdm.ptr)
 
     @chk ccall(
@@ -4132,14 +4132,14 @@ function DMPlexTransformApply(petsclib::PetscLibType, tr::DMPlexTransform, dm::P
 end 
 
 """
-	DMPlexTransformAdaptLabel(petsclib::PetscLibType,dm::PetscDM, metric::PetscVec, adaptLabel::DMLabel, rgLabel::DMLabel, rdm::PetscDM) 
+	DMPlexTransformAdaptLabel(petsclib::PetscLibType,dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel, rdm::AbstractPetscDM) 
 
 # External Links
 $(_doc_external("DM/DMPlexTransformAdaptLabel"))
 """
-function DMPlexTransformAdaptLabel(petsclib::PetscLibType, dm::PetscDM, metric::PetscVec, adaptLabel::DMLabel, rgLabel::DMLabel, rdm::PetscDM) end
+function DMPlexTransformAdaptLabel(petsclib::PetscLibType, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel, rdm::AbstractPetscDM) end
 
-@for_petsc function DMPlexTransformAdaptLabel(petsclib::$UnionPetscLib, dm::PetscDM, metric::PetscVec, adaptLabel::DMLabel, rgLabel::DMLabel, rdm::PetscDM )
+@for_petsc function DMPlexTransformAdaptLabel(petsclib::$UnionPetscLib, dm::AbstractPetscDM, metric::AbstractPetscVec, adaptLabel::DMLabel, rgLabel::DMLabel, rdm::AbstractPetscDM )
 	rdm_ = Ref(rdm.ptr)
 
     @chk ccall(
@@ -4787,7 +4787,7 @@ function DMPlexTransformExtrudeSetThicknesses(petsclib::PetscLibType, tr::DMPlex
 end 
 
 """
-	monitorptr::DMNetworkMonitor = DMNetworkMonitorCreate(petsclib::PetscLibType,network::PetscDM) 
+	monitorptr::DMNetworkMonitor = DMNetworkMonitorCreate(petsclib::PetscLibType,network::AbstractPetscDM) 
 Creates a network monitor context
 
 Collective
@@ -4805,9 +4805,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMNetworkMonitorCreate"))
 """
-function DMNetworkMonitorCreate(petsclib::PetscLibType, network::PetscDM) end
+function DMNetworkMonitorCreate(petsclib::PetscLibType, network::AbstractPetscDM) end
 
-@for_petsc function DMNetworkMonitorCreate(petsclib::$UnionPetscLib, network::PetscDM )
+@for_petsc function DMNetworkMonitorCreate(petsclib::$UnionPetscLib, network::AbstractPetscDM )
 	monitorptr_ = Ref{DMNetworkMonitor}()
 
     @chk ccall(
@@ -4927,7 +4927,7 @@ function DMNetworkMonitorAdd(petsclib::PetscLibType, monitor::DMNetworkMonitor, 
 end 
 
 """
-	DMNetworkMonitorView(petsclib::PetscLibType,monitor::DMNetworkMonitor, x::PetscVec) 
+	DMNetworkMonitorView(petsclib::PetscLibType,monitor::DMNetworkMonitor, x::AbstractPetscVec) 
 A `DMNETWORK` specific monitor function for `TSMonitorSet()`
 
 Collective, No Fortran support
@@ -4943,9 +4943,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMNetworkMonitorView"))
 """
-function DMNetworkMonitorView(petsclib::PetscLibType, monitor::DMNetworkMonitor, x::PetscVec) end
+function DMNetworkMonitorView(petsclib::PetscLibType, monitor::DMNetworkMonitor, x::AbstractPetscVec) end
 
-@for_petsc function DMNetworkMonitorView(petsclib::$UnionPetscLib, monitor::DMNetworkMonitor, x::PetscVec )
+@for_petsc function DMNetworkMonitorView(petsclib::$UnionPetscLib, monitor::DMNetworkMonitor, x::AbstractPetscVec )
 
     @chk ccall(
                (:DMNetworkMonitorView, $petsc_library),
@@ -5090,7 +5090,7 @@ function DMLabelAddStrata(petsclib::PetscLibType, label::DMLabel, numStrata::Pet
 end 
 
 """
-	DMLabelAddStrataIS(petsclib::PetscLibType,label::DMLabel, valueIS::IS) 
+	DMLabelAddStrataIS(petsclib::PetscLibType,label::DMLabel, valueIS::AbstractIS) 
 Adds new stratum values in a `DMLabel`
 
 Not Collective
@@ -5106,9 +5106,9 @@ Level: beginner
 # External Links
 $(_doc_external("DM/DMLabelAddStrataIS"))
 """
-function DMLabelAddStrataIS(petsclib::PetscLibType, label::DMLabel, valueIS::IS) end
+function DMLabelAddStrataIS(petsclib::PetscLibType, label::DMLabel, valueIS::AbstractIS) end
 
-@for_petsc function DMLabelAddStrataIS(petsclib::$UnionPetscLib, label::DMLabel, valueIS::IS )
+@for_petsc function DMLabelAddStrataIS(petsclib::$UnionPetscLib, label::DMLabel, valueIS::AbstractIS )
 
     @chk ccall(
                (:DMLabelAddStrataIS, $petsc_library),
@@ -5717,7 +5717,7 @@ function DMLabelClearValue(petsclib::PetscLibType, label::DMLabel, point::PetscI
 end 
 
 """
-	DMLabelInsertIS(petsclib::PetscLibType,label::DMLabel, is::IS, value::PetscInt) 
+	DMLabelInsertIS(petsclib::PetscLibType,label::DMLabel, is::AbstractIS, value::PetscInt) 
 Set all points in the `IS` to a value
 
 Not Collective
@@ -5734,9 +5734,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMLabelInsertIS"))
 """
-function DMLabelInsertIS(petsclib::PetscLibType, label::DMLabel, is::IS, value::PetscInt) end
+function DMLabelInsertIS(petsclib::PetscLibType, label::DMLabel, is::AbstractIS, value::PetscInt) end
 
-@for_petsc function DMLabelInsertIS(petsclib::$UnionPetscLib, label::DMLabel, is::IS, value::$PetscInt )
+@for_petsc function DMLabelInsertIS(petsclib::$UnionPetscLib, label::DMLabel, is::AbstractIS, value::$PetscInt )
 
     @chk ccall(
                (:DMLabelInsertIS, $petsc_library),
@@ -5786,7 +5786,7 @@ function DMLabelGetNumValues(petsclib::PetscLibType, label::DMLabel) end
 end 
 
 """
-	DMLabelGetValueIS(petsclib::PetscLibType,label::DMLabel, values::IS) 
+	DMLabelGetValueIS(petsclib::PetscLibType,label::DMLabel, values::AbstractIS) 
 Get an `IS` of all values that the `DMlabel` takes
 
 Not Collective
@@ -5804,9 +5804,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMLabelGetValueIS"))
 """
-function DMLabelGetValueIS(petsclib::PetscLibType, label::DMLabel, values::IS) end
+function DMLabelGetValueIS(petsclib::PetscLibType, label::DMLabel, values::AbstractIS) end
 
-@for_petsc function DMLabelGetValueIS(petsclib::$UnionPetscLib, label::DMLabel, values::IS )
+@for_petsc function DMLabelGetValueIS(petsclib::$UnionPetscLib, label::DMLabel, values::AbstractIS )
 	values_ = Ref(values.ptr)
 
     @chk ccall(
@@ -5861,7 +5861,7 @@ function DMLabelGetValueBounds(petsclib::PetscLibType, label::DMLabel) end
 end 
 
 """
-	DMLabelGetNonEmptyStratumValuesIS(petsclib::PetscLibType,label::DMLabel, values::IS) 
+	DMLabelGetNonEmptyStratumValuesIS(petsclib::PetscLibType,label::DMLabel, values::AbstractIS) 
 Get an `IS` of all values that the `DMlabel` takes
 
 Not Collective
@@ -5879,9 +5879,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMLabelGetNonEmptyStratumValuesIS"))
 """
-function DMLabelGetNonEmptyStratumValuesIS(petsclib::PetscLibType, label::DMLabel, values::IS) end
+function DMLabelGetNonEmptyStratumValuesIS(petsclib::PetscLibType, label::DMLabel, values::AbstractIS) end
 
-@for_petsc function DMLabelGetNonEmptyStratumValuesIS(petsclib::$UnionPetscLib, label::DMLabel, values::IS )
+@for_petsc function DMLabelGetNonEmptyStratumValuesIS(petsclib::$UnionPetscLib, label::DMLabel, values::AbstractIS )
 	values_ = Ref(values.ptr)
 
     @chk ccall(
@@ -6048,7 +6048,7 @@ function DMLabelGetStratumBounds(petsclib::PetscLibType, label::DMLabel, value::
 end 
 
 """
-	DMLabelGetStratumIS(petsclib::PetscLibType,label::DMLabel, value::PetscInt, points::IS) 
+	DMLabelGetStratumIS(petsclib::PetscLibType,label::DMLabel, value::PetscInt, points::AbstractIS) 
 Get an `IS` with the stratum points
 
 Not Collective
@@ -6067,9 +6067,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMLabelGetStratumIS"))
 """
-function DMLabelGetStratumIS(petsclib::PetscLibType, label::DMLabel, value::PetscInt, points::IS) end
+function DMLabelGetStratumIS(petsclib::PetscLibType, label::DMLabel, value::PetscInt, points::AbstractIS) end
 
-@for_petsc function DMLabelGetStratumIS(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt, points::IS )
+@for_petsc function DMLabelGetStratumIS(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt, points::AbstractIS )
 	points_ = Ref(points.ptr)
 
     @chk ccall(
@@ -6085,7 +6085,7 @@ function DMLabelGetStratumIS(petsclib::PetscLibType, label::DMLabel, value::Pets
 end 
 
 """
-	DMLabelSetStratumIS(petsclib::PetscLibType,label::DMLabel, value::PetscInt, is::IS) 
+	DMLabelSetStratumIS(petsclib::PetscLibType,label::DMLabel, value::PetscInt, is::AbstractIS) 
 Set the stratum points using an `IS`
 
 Not Collective
@@ -6102,9 +6102,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMLabelSetStratumIS"))
 """
-function DMLabelSetStratumIS(petsclib::PetscLibType, label::DMLabel, value::PetscInt, is::IS) end
+function DMLabelSetStratumIS(petsclib::PetscLibType, label::DMLabel, value::PetscInt, is::AbstractIS) end
 
-@for_petsc function DMLabelSetStratumIS(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt, is::IS )
+@for_petsc function DMLabelSetStratumIS(petsclib::$UnionPetscLib, label::DMLabel, value::$PetscInt, is::AbstractIS )
 
     @chk ccall(
                (:DMLabelSetStratumIS, $petsc_library),
@@ -6255,7 +6255,7 @@ function DMLabelFilter(petsclib::PetscLibType, label::DMLabel, start::PetscInt, 
 end 
 
 """
-	DMLabelPermute(petsclib::PetscLibType,label::DMLabel, permutation::IS, labelNew::DMLabel) 
+	DMLabelPermute(petsclib::PetscLibType,label::DMLabel, permutation::AbstractIS, labelNew::DMLabel) 
 Create a new label with permuted points
 
 Not Collective
@@ -6274,9 +6274,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/DMLabelPermute"))
 """
-function DMLabelPermute(petsclib::PetscLibType, label::DMLabel, permutation::IS, labelNew::DMLabel) end
+function DMLabelPermute(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS, labelNew::DMLabel) end
 
-@for_petsc function DMLabelPermute(petsclib::$UnionPetscLib, label::DMLabel, permutation::IS, labelNew::DMLabel )
+@for_petsc function DMLabelPermute(petsclib::$UnionPetscLib, label::DMLabel, permutation::AbstractIS, labelNew::DMLabel )
 
     @chk ccall(
                (:DMLabelPermute, $petsc_library),
@@ -6290,7 +6290,7 @@ function DMLabelPermute(petsclib::PetscLibType, label::DMLabel, permutation::IS,
 end 
 
 """
-	DMLabelPermuteValues(petsclib::PetscLibType,label::DMLabel, permutation::IS) 
+	DMLabelPermuteValues(petsclib::PetscLibType,label::DMLabel, permutation::AbstractIS) 
 Permute the values in a label
 
 Not collective
@@ -6307,9 +6307,9 @@ Output Parameter:
 # External Links
 $(_doc_external("DM/DMLabelPermuteValues"))
 """
-function DMLabelPermuteValues(petsclib::PetscLibType, label::DMLabel, permutation::IS) end
+function DMLabelPermuteValues(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS) end
 
-@for_petsc function DMLabelPermuteValues(petsclib::$UnionPetscLib, label::DMLabel, permutation::IS )
+@for_petsc function DMLabelPermuteValues(petsclib::$UnionPetscLib, label::DMLabel, permutation::AbstractIS )
 
     @chk ccall(
                (:DMLabelPermuteValues, $petsc_library),
@@ -6323,7 +6323,7 @@ function DMLabelPermuteValues(petsclib::PetscLibType, label::DMLabel, permutatio
 end 
 
 """
-	DMLabelRewriteValues(petsclib::PetscLibType,label::DMLabel, permutation::IS) 
+	DMLabelRewriteValues(petsclib::PetscLibType,label::DMLabel, permutation::AbstractIS) 
 Permute the values in a label, but some may be omitted
 
 Not collective
@@ -6340,9 +6340,9 @@ Output Parameter:
 # External Links
 $(_doc_external("DM/DMLabelRewriteValues"))
 """
-function DMLabelRewriteValues(petsclib::PetscLibType, label::DMLabel, permutation::IS) end
+function DMLabelRewriteValues(petsclib::PetscLibType, label::DMLabel, permutation::AbstractIS) end
 
-@for_petsc function DMLabelRewriteValues(petsclib::$UnionPetscLib, label::DMLabel, permutation::IS )
+@for_petsc function DMLabelRewriteValues(petsclib::$UnionPetscLib, label::DMLabel, permutation::AbstractIS )
 
     @chk ccall(
                (:DMLabelRewriteValues, $petsc_library),
@@ -6530,7 +6530,7 @@ function DMLabelPropagatePush(petsclib::PetscLibType, label::DMLabel, pointSF::P
 end 
 
 """
-	DMLabelConvertToSection(petsclib::PetscLibType,label::DMLabel, section::PetscSection, is::IS) 
+	DMLabelConvertToSection(petsclib::PetscLibType,label::DMLabel, section::PetscSection, is::AbstractIS) 
 Make a `PetscSection`/`IS` pair that encodes the label
 
 Not Collective
@@ -6549,9 +6549,9 @@ Level: developer
 # External Links
 $(_doc_external("DM/DMLabelConvertToSection"))
 """
-function DMLabelConvertToSection(petsclib::PetscLibType, label::DMLabel, section::PetscSection, is::IS) end
+function DMLabelConvertToSection(petsclib::PetscLibType, label::DMLabel, section::PetscSection, is::AbstractIS) end
 
-@for_petsc function DMLabelConvertToSection(petsclib::$UnionPetscLib, label::DMLabel, section::PetscSection, is::IS )
+@for_petsc function DMLabelConvertToSection(petsclib::$UnionPetscLib, label::DMLabel, section::PetscSection, is::AbstractIS )
 	is_ = Ref(is.ptr)
 
     @chk ccall(
@@ -6830,15 +6830,15 @@ Project the pointwise functions `funcs` (one `Ptr{Cvoid}` per field, matching
 matching `Vector{Ptr{Cvoid}}` of context pointers (use `C_NULL` entries for
 no context).
 """
-function DMProjectFunction(petsclib::PetscLibType, dm::PetscDM, time::Real,
+function DMProjectFunction(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real,
                            funcs::Vector{Ptr{Cvoid}}, ctxs::Vector{Ptr{Cvoid}},
-                           mode::InsertMode, X::PetscVec) end
+                           mode::InsertMode, X::AbstractPetscVec) end
 
-@for_petsc function DMProjectFunction(petsclib::$UnionPetscLib, dm::PetscDM,
+@for_petsc function DMProjectFunction(petsclib::$UnionPetscLib, dm::AbstractPetscDM,
                                       time::Real,
                                       funcs::Vector{Ptr{Cvoid}},
                                       ctxs::Vector{Ptr{Cvoid}},
-                                      mode::InsertMode, X::PetscVec)
+                                      mode::InsertMode, X::AbstractPetscVec)
     GC.@preserve funcs ctxs @chk ccall(
         (:DMProjectFunction, $petsc_library), PetscErrorCode,
         (CDM, $PetscReal, Ptr{Ptr{Cvoid}}, Ptr{Ptr{Cvoid}}, InsertMode, CVec),
@@ -6853,15 +6853,15 @@ Compute the L² norm of the difference between the global vector `X` and the
 pointwise exact functions `funcs`.  `ctxs` is a `Vector{Ptr{Cvoid}}` of
 context pointers (use `C_NULL` entries for no context).
 """
-function DMComputeL2Diff(petsclib::PetscLibType, dm::PetscDM, time::Real,
+function DMComputeL2Diff(petsclib::PetscLibType, dm::AbstractPetscDM, time::Real,
                          funcs::Vector{Ptr{Cvoid}}, ctxs::Vector{Ptr{Cvoid}},
-                         X::PetscVec) end
+                         X::AbstractPetscVec) end
 
-@for_petsc function DMComputeL2Diff(petsclib::$UnionPetscLib, dm::PetscDM,
+@for_petsc function DMComputeL2Diff(petsclib::$UnionPetscLib, dm::AbstractPetscDM,
                                     time::Real,
                                     funcs::Vector{Ptr{Cvoid}},
                                     ctxs::Vector{Ptr{Cvoid}},
-                                    X::PetscVec)
+                                    X::AbstractPetscVec)
     diff_ref = Ref{$PetscReal}(0)
     GC.@preserve funcs ctxs @chk ccall(
         (:DMComputeL2Diff, $petsc_library), PetscErrorCode,

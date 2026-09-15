@@ -114,7 +114,7 @@ function PCSetFromOptions(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	PCSetDM(petsclib::PetscLibType,pc::PC, dm::PetscDM) 
+	PCSetDM(petsclib::PetscLibType,pc::PC, dm::AbstractPetscDM) 
 Sets the `DM` that may be used by some preconditioners
 
 Logically Collective
@@ -130,9 +130,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCSetDM"))
 """
-function PCSetDM(petsclib::PetscLibType, pc::PC, dm::PetscDM) end
+function PCSetDM(petsclib::PetscLibType, pc::PC, dm::AbstractPetscDM) end
 
-@for_petsc function PCSetDM(petsclib::$UnionPetscLib, pc::PC, dm::PetscDM )
+@for_petsc function PCSetDM(petsclib::$UnionPetscLib, pc::PC, dm::AbstractPetscDM )
 
     @chk ccall(
                (:PCSetDM, $petsc_library),
@@ -347,7 +347,7 @@ function PCGetDiagonalScale(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	PCSetDiagonalScale(petsclib::PetscLibType,pc::PC, s::PetscVec) 
+	PCSetDiagonalScale(petsclib::PetscLibType,pc::PC, s::AbstractPetscVec) 
 Indicates the left scaling to use to apply an additional left and right
 scaling as needed by certain time-stepping codes.
 
@@ -364,9 +364,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCSetDiagonalScale"))
 """
-function PCSetDiagonalScale(petsclib::PetscLibType, pc::PC, s::PetscVec) end
+function PCSetDiagonalScale(petsclib::PetscLibType, pc::PC, s::AbstractPetscVec) end
 
-@for_petsc function PCSetDiagonalScale(petsclib::$UnionPetscLib, pc::PC, s::PetscVec )
+@for_petsc function PCSetDiagonalScale(petsclib::$UnionPetscLib, pc::PC, s::AbstractPetscVec )
 
     @chk ccall(
                (:PCSetDiagonalScale, $petsc_library),
@@ -380,7 +380,7 @@ function PCSetDiagonalScale(petsclib::PetscLibType, pc::PC, s::PetscVec) end
 end 
 
 """
-	PCDiagonalScaleLeft(petsclib::PetscLibType,pc::PC, in::PetscVec, out::PetscVec) 
+	PCDiagonalScaleLeft(petsclib::PetscLibType,pc::PC, in::AbstractPetscVec, out::AbstractPetscVec) 
 Scales a vector by the left scaling as needed by certain time
 
 Logically Collective
@@ -397,9 +397,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCDiagonalScaleLeft"))
 """
-function PCDiagonalScaleLeft(petsclib::PetscLibType, pc::PC, in::PetscVec, out::PetscVec) end
+function PCDiagonalScaleLeft(petsclib::PetscLibType, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec) end
 
-@for_petsc function PCDiagonalScaleLeft(petsclib::$UnionPetscLib, pc::PC, in::PetscVec, out::PetscVec )
+@for_petsc function PCDiagonalScaleLeft(petsclib::$UnionPetscLib, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec )
 
     @chk ccall(
                (:PCDiagonalScaleLeft, $petsc_library),
@@ -413,7 +413,7 @@ function PCDiagonalScaleLeft(petsclib::PetscLibType, pc::PC, in::PetscVec, out::
 end 
 
 """
-	PCDiagonalScaleRight(petsclib::PetscLibType,pc::PC, in::PetscVec, out::PetscVec) 
+	PCDiagonalScaleRight(petsclib::PetscLibType,pc::PC, in::AbstractPetscVec, out::AbstractPetscVec) 
 Scales a vector by the right scaling as needed by certain time
 
 Logically Collective
@@ -430,9 +430,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCDiagonalScaleRight"))
 """
-function PCDiagonalScaleRight(petsclib::PetscLibType, pc::PC, in::PetscVec, out::PetscVec) end
+function PCDiagonalScaleRight(petsclib::PetscLibType, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec) end
 
-@for_petsc function PCDiagonalScaleRight(petsclib::$UnionPetscLib, pc::PC, in::PetscVec, out::PetscVec )
+@for_petsc function PCDiagonalScaleRight(petsclib::$UnionPetscLib, pc::PC, in::AbstractPetscVec, out::AbstractPetscVec )
 
     @chk ccall(
                (:PCDiagonalScaleRight, $petsc_library),
@@ -658,7 +658,7 @@ function PCCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 end 
 
 """
-	PCApply(petsclib::PetscLibType,pc::PC, x::PetscVec, y::PetscVec) 
+	PCApply(petsclib::PetscLibType,pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) 
 Applies the preconditioner to a vector.
 
 Collective
@@ -677,9 +677,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCApply"))
 """
-function PCApply(petsclib::PetscLibType, pc::PC, x::PetscVec, y::PetscVec) end
+function PCApply(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function PCApply(petsclib::$UnionPetscLib, pc::PC, x::PetscVec, y::PetscVec )
+@for_petsc function PCApply(petsclib::$UnionPetscLib, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:PCApply, $petsc_library),
@@ -693,7 +693,7 @@ function PCApply(petsclib::PetscLibType, pc::PC, x::PetscVec, y::PetscVec) end
 end 
 
 """
-	PCMatApply(petsclib::PetscLibType,pc::PC, X::PetscMat, Y::PetscMat) 
+	PCMatApply(petsclib::PetscLibType,pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat) 
 Applies the preconditioner to multiple vectors stored as a `MATDENSE`. Like `PCApply()`, `Y` and `X` must be different matrices.
 
 Collective
@@ -712,9 +712,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCMatApply"))
 """
-function PCMatApply(petsclib::PetscLibType, pc::PC, X::PetscMat, Y::PetscMat) end
+function PCMatApply(petsclib::PetscLibType, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat) end
 
-@for_petsc function PCMatApply(petsclib::$UnionPetscLib, pc::PC, X::PetscMat, Y::PetscMat )
+@for_petsc function PCMatApply(petsclib::$UnionPetscLib, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat )
 
     @chk ccall(
                (:PCMatApply, $petsc_library),
@@ -728,7 +728,7 @@ function PCMatApply(petsclib::PetscLibType, pc::PC, X::PetscMat, Y::PetscMat) en
 end 
 
 """
-	PCMatApplyTranspose(petsclib::PetscLibType,pc::PC, X::PetscMat, Y::PetscMat) 
+	PCMatApplyTranspose(petsclib::PetscLibType,pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat) 
 Applies the transpose of preconditioner to multiple vectors stored as a `MATDENSE`. Like `PCApplyTranspose()`, `Y` and `X` must be different matrices.
 
 Collective
@@ -747,9 +747,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCMatApplyTranspose"))
 """
-function PCMatApplyTranspose(petsclib::PetscLibType, pc::PC, X::PetscMat, Y::PetscMat) end
+function PCMatApplyTranspose(petsclib::PetscLibType, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat) end
 
-@for_petsc function PCMatApplyTranspose(petsclib::$UnionPetscLib, pc::PC, X::PetscMat, Y::PetscMat )
+@for_petsc function PCMatApplyTranspose(petsclib::$UnionPetscLib, pc::PC, X::AbstractPetscMat, Y::AbstractPetscMat )
 
     @chk ccall(
                (:PCMatApplyTranspose, $petsc_library),
@@ -763,7 +763,7 @@ function PCMatApplyTranspose(petsclib::PetscLibType, pc::PC, X::PetscMat, Y::Pet
 end 
 
 """
-	PCApplySymmetricLeft(petsclib::PetscLibType,pc::PC, x::PetscVec, y::PetscVec) 
+	PCApplySymmetricLeft(petsclib::PetscLibType,pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) 
 Applies the left part of a symmetric preconditioner to a vector.
 
 Collective
@@ -782,9 +782,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCApplySymmetricLeft"))
 """
-function PCApplySymmetricLeft(petsclib::PetscLibType, pc::PC, x::PetscVec, y::PetscVec) end
+function PCApplySymmetricLeft(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function PCApplySymmetricLeft(petsclib::$UnionPetscLib, pc::PC, x::PetscVec, y::PetscVec )
+@for_petsc function PCApplySymmetricLeft(petsclib::$UnionPetscLib, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:PCApplySymmetricLeft, $petsc_library),
@@ -798,7 +798,7 @@ function PCApplySymmetricLeft(petsclib::PetscLibType, pc::PC, x::PetscVec, y::Pe
 end 
 
 """
-	PCApplySymmetricRight(petsclib::PetscLibType,pc::PC, x::PetscVec, y::PetscVec) 
+	PCApplySymmetricRight(petsclib::PetscLibType,pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) 
 Applies the right part of a symmetric preconditioner to a vector.
 
 Collective
@@ -817,9 +817,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCApplySymmetricRight"))
 """
-function PCApplySymmetricRight(petsclib::PetscLibType, pc::PC, x::PetscVec, y::PetscVec) end
+function PCApplySymmetricRight(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function PCApplySymmetricRight(petsclib::$UnionPetscLib, pc::PC, x::PetscVec, y::PetscVec )
+@for_petsc function PCApplySymmetricRight(petsclib::$UnionPetscLib, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:PCApplySymmetricRight, $petsc_library),
@@ -833,7 +833,7 @@ function PCApplySymmetricRight(petsclib::PetscLibType, pc::PC, x::PetscVec, y::P
 end 
 
 """
-	PCApplyTranspose(petsclib::PetscLibType,pc::PC, x::PetscVec, y::PetscVec) 
+	PCApplyTranspose(petsclib::PetscLibType,pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) 
 Applies the transpose of preconditioner to a vector.
 
 Collective
@@ -852,9 +852,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCApplyTranspose"))
 """
-function PCApplyTranspose(petsclib::PetscLibType, pc::PC, x::PetscVec, y::PetscVec) end
+function PCApplyTranspose(petsclib::PetscLibType, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function PCApplyTranspose(petsclib::$UnionPetscLib, pc::PC, x::PetscVec, y::PetscVec )
+@for_petsc function PCApplyTranspose(petsclib::$UnionPetscLib, pc::PC, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:PCApplyTranspose, $petsc_library),
@@ -904,7 +904,7 @@ function PCApplyTransposeExists(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	PCApplyBAorAB(petsclib::PetscLibType,pc::PC, side::PCSide, x::PetscVec, y::PetscVec, work::PetscVec) 
+	PCApplyBAorAB(petsclib::PetscLibType,pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec) 
 Applies the preconditioner and operator to a vector. y = B*A*x  or  y = A*B*x.
 
 Collective
@@ -925,9 +925,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCApplyBAorAB"))
 """
-function PCApplyBAorAB(petsclib::PetscLibType, pc::PC, side::PCSide, x::PetscVec, y::PetscVec, work::PetscVec) end
+function PCApplyBAorAB(petsclib::PetscLibType, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec) end
 
-@for_petsc function PCApplyBAorAB(petsclib::$UnionPetscLib, pc::PC, side::PCSide, x::PetscVec, y::PetscVec, work::PetscVec )
+@for_petsc function PCApplyBAorAB(petsclib::$UnionPetscLib, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec )
 
     @chk ccall(
                (:PCApplyBAorAB, $petsc_library),
@@ -941,7 +941,7 @@ function PCApplyBAorAB(petsclib::PetscLibType, pc::PC, side::PCSide, x::PetscVec
 end 
 
 """
-	PCApplyBAorABTranspose(petsclib::PetscLibType,pc::PC, side::PCSide, x::PetscVec, y::PetscVec, work::PetscVec) 
+	PCApplyBAorABTranspose(petsclib::PetscLibType,pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec) 
 Applies the transpose of the preconditioner
 and operator to a vector. That is, applies B^T * A^T with left preconditioning,
 NOT (B*A)^T = A^T*B^T.
@@ -964,9 +964,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCApplyBAorABTranspose"))
 """
-function PCApplyBAorABTranspose(petsclib::PetscLibType, pc::PC, side::PCSide, x::PetscVec, y::PetscVec, work::PetscVec) end
+function PCApplyBAorABTranspose(petsclib::PetscLibType, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec) end
 
-@for_petsc function PCApplyBAorABTranspose(petsclib::$UnionPetscLib, pc::PC, side::PCSide, x::PetscVec, y::PetscVec, work::PetscVec )
+@for_petsc function PCApplyBAorABTranspose(petsclib::$UnionPetscLib, pc::PC, side::PCSide, x::AbstractPetscVec, y::AbstractPetscVec, work::AbstractPetscVec )
 
     @chk ccall(
                (:PCApplyBAorABTranspose, $petsc_library),
@@ -1017,7 +1017,7 @@ function PCApplyRichardsonExists(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	outits::PetscInt = PCApplyRichardson(petsclib::PetscLibType,pc::PC, b::PetscVec, y::PetscVec, w::PetscVec, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, its::PetscInt, guesszero::PetscBool, reason::PCRiCchardsonConvergedReason) 
+	outits::PetscInt = PCApplyRichardson(petsclib::PetscLibType,pc::PC, b::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, its::PetscInt, guesszero::PetscBool, reason::PCRiCchardsonConvergedReason) 
 Applies several steps of Richardson iteration with
 the particular preconditioner. This routine is usually used by the
 Krylov solvers and not the application code directly.
@@ -1046,9 +1046,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCApplyRichardson"))
 """
-function PCApplyRichardson(petsclib::PetscLibType, pc::PC, b::PetscVec, y::PetscVec, w::PetscVec, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, its::PetscInt, guesszero::PetscBool, reason::PCRiCchardsonConvergedReason) end
+function PCApplyRichardson(petsclib::PetscLibType, pc::PC, b::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec, rtol::PetscReal, abstol::PetscReal, dtol::PetscReal, its::PetscInt, guesszero::PetscBool, reason::PCRiCchardsonConvergedReason) end
 
-@for_petsc function PCApplyRichardson(petsclib::$UnionPetscLib, pc::PC, b::PetscVec, y::PetscVec, w::PetscVec, rtol::$PetscReal, abstol::$PetscReal, dtol::$PetscReal, its::$PetscInt, guesszero::PetscBool, reason::PCRiCchardsonConvergedReason )
+@for_petsc function PCApplyRichardson(petsclib::$UnionPetscLib, pc::PC, b::AbstractPetscVec, y::AbstractPetscVec, w::AbstractPetscVec, rtol::$PetscReal, abstol::$PetscReal, dtol::$PetscReal, its::$PetscInt, guesszero::PetscBool, reason::PCRiCchardsonConvergedReason )
 	outits_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -1259,7 +1259,7 @@ function PCSetModifySubMatrices(petsclib::PetscLibType, pc::PC, func::PCModifySu
 end 
 
 """
-	PCModifySubMatrices(petsclib::PetscLibType,pc::PC, nsub::PetscInt, row::Vector{IS}, col::Vector{IS}, submat::Vector{PetscMat}, ctx::Cvoid) 
+	PCModifySubMatrices(petsclib::PetscLibType,pc::PC, nsub::PetscInt, row::Vector{<:AbstractIS}, col::Vector{<:AbstractIS}, submat::Vector{<:AbstractPetscMat}, ctx::Cvoid) 
 Calls an optional user
 certain preconditioners if one has been set with `PCSetModifySubMatrices()`.
 
@@ -1287,9 +1287,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCModifySubMatrices"))
 """
-function PCModifySubMatrices(petsclib::PetscLibType, pc::PC, nsub::PetscInt, row::Vector{IS}, col::Vector{IS}, submat::Vector{PetscMat}, ctx::Cvoid) end
+function PCModifySubMatrices(petsclib::PetscLibType, pc::PC, nsub::PetscInt, row::Vector{<:AbstractIS}, col::Vector{<:AbstractIS}, submat::Vector{<:AbstractPetscMat}, ctx::Cvoid) end
 
-@for_petsc function PCModifySubMatrices(petsclib::$UnionPetscLib, pc::PC, nsub::$PetscInt, row::Vector{IS}, col::Vector{IS}, submat::Vector{PetscMat}, ctx::Cvoid )
+@for_petsc function PCModifySubMatrices(petsclib::$UnionPetscLib, pc::PC, nsub::$PetscInt, row::Vector{<:AbstractIS}, col::Vector{<:AbstractIS}, submat::Vector{<:AbstractPetscMat}, ctx::Cvoid )
 
     @chk ccall(
                (:PCModifySubMatrices, $petsc_library),
@@ -1303,7 +1303,7 @@ function PCModifySubMatrices(petsclib::PetscLibType, pc::PC, nsub::PetscInt, row
 end 
 
 """
-	PCSetOperators(petsclib::PetscLibType,pc::PC, Amat::PetscMat, Pmat::PetscMat) 
+	PCSetOperators(petsclib::PetscLibType,pc::PC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) 
 Sets the matrix associated with the linear system and
 a (possibly) different one associated with the preconditioner.
 
@@ -1321,9 +1321,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCSetOperators"))
 """
-function PCSetOperators(petsclib::PetscLibType, pc::PC, Amat::PetscMat, Pmat::PetscMat) end
+function PCSetOperators(petsclib::PetscLibType, pc::PC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) end
 
-@for_petsc function PCSetOperators(petsclib::$UnionPetscLib, pc::PC, Amat::PetscMat, Pmat::PetscMat )
+@for_petsc function PCSetOperators(petsclib::$UnionPetscLib, pc::PC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
 
     @chk ccall(
                (:PCSetOperators, $petsc_library),
@@ -1405,7 +1405,7 @@ function PCGetReusePreconditioner(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	PCGetOperators(petsclib::PetscLibType,pc::PC, Amat::PetscMat, Pmat::PetscMat) 
+	PCGetOperators(petsclib::PetscLibType,pc::PC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) 
 Gets the matrix associated with the linear system and
 possibly a different one which is used to construct the preconditioner.
 
@@ -1425,9 +1425,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCGetOperators"))
 """
-function PCGetOperators(petsclib::PetscLibType, pc::PC, Amat::PetscMat, Pmat::PetscMat) end
+function PCGetOperators(petsclib::PetscLibType, pc::PC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) end
 
-@for_petsc function PCGetOperators(petsclib::$UnionPetscLib, pc::PC, Amat::PetscMat, Pmat::PetscMat )
+@for_petsc function PCGetOperators(petsclib::$UnionPetscLib, pc::PC, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
 	Amat_ = Ref(Amat.ptr)
 	Pmat_ = Ref(Pmat.ptr)
 
@@ -1485,7 +1485,7 @@ function PCGetOperatorsSet(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	PCFactorGetMatrix(petsclib::PetscLibType,pc::PC, mat::PetscMat) 
+	PCFactorGetMatrix(petsclib::PetscLibType,pc::PC, mat::AbstractPetscMat) 
 Gets the factored matrix from the
 preconditioner context.  This routine is valid only for the `PCLU`,
 `PCILU`, `PCCHOLESKY`, and `PCICC` methods.
@@ -1505,9 +1505,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCFactorGetMatrix"))
 """
-function PCFactorGetMatrix(petsclib::PetscLibType, pc::PC, mat::PetscMat) end
+function PCFactorGetMatrix(petsclib::PetscLibType, pc::PC, mat::AbstractPetscMat) end
 
-@for_petsc function PCFactorGetMatrix(petsclib::$UnionPetscLib, pc::PC, mat::PetscMat )
+@for_petsc function PCFactorGetMatrix(petsclib::$UnionPetscLib, pc::PC, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -1621,7 +1621,7 @@ function PCGetOptionsPrefix(petsclib::PetscLibType, pc::PC, prefix::String) end
 end 
 
 """
-	PCPreSolve(petsclib::PetscLibType,pc::PC, ksp::PetscKSP) 
+	PCPreSolve(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
 Optional pre
 the iterative solve itself. Used in conjunction with `PCPostSolve()`
 
@@ -1638,9 +1638,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCPreSolve"))
 """
-function PCPreSolve(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
+function PCPreSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
 
-@for_petsc function PCPreSolve(petsclib::$UnionPetscLib, pc::PC, ksp::PetscKSP )
+@for_petsc function PCPreSolve(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:PCPreSolve, $petsc_library),
@@ -1689,7 +1689,7 @@ function PCSetPostSetUp(petsclib::PetscLibType, pc::PC, postsetup::external) end
 end 
 
 """
-	PCPostSolve(petsclib::PetscLibType,pc::PC, ksp::PetscKSP) 
+	PCPostSolve(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
 Optional post
 preconditioner-specific actions that must be performed after
 the iterative solve itself.
@@ -1705,9 +1705,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Ksp/PCPostSolve"))
 """
-function PCPostSolve(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
+function PCPostSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
 
-@for_petsc function PCPostSolve(petsclib::$UnionPetscLib, pc::PC, ksp::PetscKSP )
+@for_petsc function PCPostSolve(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:PCPostSolve, $petsc_library),
@@ -1849,7 +1849,7 @@ function PCRegister(petsclib::PetscLibType, sname::String, fnc::external) end
 end 
 
 """
-	PCComputeOperator(petsclib::PetscLibType,pc::PC, mattype::MatType, mat::PetscMat) 
+	PCComputeOperator(petsclib::PetscLibType,pc::PC, mattype::MatType, mat::AbstractPetscMat) 
 Computes the explicit preconditioned operator as a matrix `Mat`.
 
 Collective
@@ -1868,9 +1868,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCComputeOperator"))
 """
-function PCComputeOperator(petsclib::PetscLibType, pc::PC, mattype::MatType, mat::PetscMat) end
+function PCComputeOperator(petsclib::PetscLibType, pc::PC, mattype::MatType, mat::AbstractPetscMat) end
 
-@for_petsc function PCComputeOperator(petsclib::$UnionPetscLib, pc::PC, mattype::MatType, mat::PetscMat )
+@for_petsc function PCComputeOperator(petsclib::$UnionPetscLib, pc::PC, mattype::MatType, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -1920,7 +1920,7 @@ function PCSetCoordinates(petsclib::PetscLibType, pc::PC, dim::PetscInt, nloc::P
 end 
 
 """
-	num_levels::PetscInt = PCGetInterpolations(petsclib::PetscLibType,pc::PC, interpolations::Vector{PetscMat}) 
+	num_levels::PetscInt = PCGetInterpolations(petsclib::PetscLibType,pc::PC, interpolations::Vector{<:AbstractPetscMat}) 
 Gets interpolation matrices for all levels (except level 0)
 
 Logically Collective
@@ -1939,9 +1939,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCGetInterpolations"))
 """
-function PCGetInterpolations(petsclib::PetscLibType, pc::PC, interpolations::Vector{PetscMat}) end
+function PCGetInterpolations(petsclib::PetscLibType, pc::PC, interpolations::Vector{<:AbstractPetscMat}) end
 
-@for_petsc function PCGetInterpolations(petsclib::$UnionPetscLib, pc::PC, interpolations::Vector{PetscMat} )
+@for_petsc function PCGetInterpolations(petsclib::$UnionPetscLib, pc::PC, interpolations::Vector{<:AbstractPetscMat} )
 	num_levels_ = Ref{$PetscInt}()
 	interpolations_ = Ref(pointer(interpolations))
 
@@ -1958,7 +1958,7 @@ function PCGetInterpolations(petsclib::PetscLibType, pc::PC, interpolations::Vec
 end 
 
 """
-	num_levels::PetscInt = PCGetCoarseOperators(petsclib::PetscLibType,pc::PC, coarseOperators::Vector{PetscMat}) 
+	num_levels::PetscInt = PCGetCoarseOperators(petsclib::PetscLibType,pc::PC, coarseOperators::Vector{<:AbstractPetscMat}) 
 Gets coarse operator matrices for all levels (except the finest level)
 
 Logically Collective
@@ -1977,9 +1977,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCGetCoarseOperators"))
 """
-function PCGetCoarseOperators(petsclib::PetscLibType, pc::PC, coarseOperators::Vector{PetscMat}) end
+function PCGetCoarseOperators(petsclib::PetscLibType, pc::PC, coarseOperators::Vector{<:AbstractPetscMat}) end
 
-@for_petsc function PCGetCoarseOperators(petsclib::$UnionPetscLib, pc::PC, coarseOperators::Vector{PetscMat} )
+@for_petsc function PCGetCoarseOperators(petsclib::$UnionPetscLib, pc::PC, coarseOperators::Vector{<:AbstractPetscMat} )
 	num_levels_ = Ref{$PetscInt}()
 	coarseOperators_ = Ref(pointer(coarseOperators))
 
@@ -2062,7 +2062,7 @@ function PCMatGetApplyOperation(petsclib::PetscLibType, pc::PC, matop::MatOperat
 end 
 
 """
-	PCASMSetLocalSubdomains(petsclib::PetscLibType,pc::PC, n::PetscInt, is::Vector{IS}, is_loc::Vector{IS}) 
+	PCASMSetLocalSubdomains(petsclib::PetscLibType,pc::PC, n::PetscInt, is::Vector{<:AbstractIS}, is_loc::Vector{<:AbstractIS}) 
 Sets the local subdomains (for this processor only) for the additive Schwarz preconditioner `PCASM`.
 
 Collective
@@ -2087,9 +2087,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCASMSetLocalSubdomains"))
 """
-function PCASMSetLocalSubdomains(petsclib::PetscLibType, pc::PC, n::PetscInt, is::Vector{IS}, is_loc::Vector{IS}) end
+function PCASMSetLocalSubdomains(petsclib::PetscLibType, pc::PC, n::PetscInt, is::Vector{<:AbstractIS}, is_loc::Vector{<:AbstractIS}) end
 
-@for_petsc function PCASMSetLocalSubdomains(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt, is::Vector{IS}, is_loc::Vector{IS} )
+@for_petsc function PCASMSetLocalSubdomains(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt, is::Vector{<:AbstractIS}, is_loc::Vector{<:AbstractIS} )
 
     @chk ccall(
                (:PCASMSetLocalSubdomains, $petsc_library),
@@ -2103,7 +2103,7 @@ function PCASMSetLocalSubdomains(petsclib::PetscLibType, pc::PC, n::PetscInt, is
 end 
 
 """
-	PCASMSetTotalSubdomains(petsclib::PetscLibType,pc::PC, N::PetscInt, is::Vector{IS}, is_loc::Vector{IS}) 
+	PCASMSetTotalSubdomains(petsclib::PetscLibType,pc::PC, N::PetscInt, is::Vector{<:AbstractIS}, is_loc::Vector{<:AbstractIS}) 
 Sets the subdomains for all processors for the
 additive Schwarz preconditioner, `PCASM`.
 
@@ -2128,9 +2128,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCASMSetTotalSubdomains"))
 """
-function PCASMSetTotalSubdomains(petsclib::PetscLibType, pc::PC, N::PetscInt, is::Vector{IS}, is_loc::Vector{IS}) end
+function PCASMSetTotalSubdomains(petsclib::PetscLibType, pc::PC, N::PetscInt, is::Vector{<:AbstractIS}, is_loc::Vector{<:AbstractIS}) end
 
-@for_petsc function PCASMSetTotalSubdomains(petsclib::$UnionPetscLib, pc::PC, N::$PetscInt, is::Vector{IS}, is_loc::Vector{IS} )
+@for_petsc function PCASMSetTotalSubdomains(petsclib::$UnionPetscLib, pc::PC, N::$PetscInt, is::Vector{<:AbstractIS}, is_loc::Vector{<:AbstractIS} )
 
     @chk ccall(
                (:PCASMSetTotalSubdomains, $petsc_library),
@@ -2342,7 +2342,7 @@ function PCASMSetSortIndices(petsclib::PetscLibType, pc::PC, doSort::PetscBool) 
 end 
 
 """
-	n_loc::PetscInt,first_loc::PetscInt = PCASMGetSubKSP(petsclib::PetscLibType,pc::PC, ksp::Vector{PetscKSP}) 
+	n_loc::PetscInt,first_loc::PetscInt = PCASMGetSubKSP(petsclib::PetscLibType,pc::PC, ksp::Vector{<:AbstractPetscKSP}) 
 Gets the local `KSP` contexts for all blocks on
 this processor.
 
@@ -2364,9 +2364,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCASMGetSubKSP"))
 """
-function PCASMGetSubKSP(petsclib::PetscLibType, pc::PC, ksp::Vector{PetscKSP}) end
+function PCASMGetSubKSP(petsclib::PetscLibType, pc::PC, ksp::Vector{<:AbstractPetscKSP}) end
 
-@for_petsc function PCASMGetSubKSP(petsclib::$UnionPetscLib, pc::PC, ksp::Vector{PetscKSP} )
+@for_petsc function PCASMGetSubKSP(petsclib::$UnionPetscLib, pc::PC, ksp::Vector{<:AbstractPetscKSP} )
 	n_loc_ = Ref{$PetscInt}()
 	first_loc_ = Ref{$PetscInt}()
 	ksp_ = Ref(pointer(ksp))
@@ -2385,7 +2385,7 @@ function PCASMGetSubKSP(petsclib::PetscLibType, pc::PC, ksp::Vector{PetscKSP}) e
 end 
 
 """
-	outis::Vector{IS} = PCASMCreateSubdomains(petsclib::PetscLibType,A::PetscMat, n::PetscInt) 
+	outis::Vector{IS} = PCASMCreateSubdomains(petsclib::PetscLibType,A::AbstractPetscMat, n::PetscInt) 
 Creates the index sets for the overlapping Schwarz
 preconditioner, `PCASM`,  for any problem on a general grid.
 
@@ -2405,9 +2405,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCASMCreateSubdomains"))
 """
-function PCASMCreateSubdomains(petsclib::PetscLibType, A::PetscMat, n::PetscInt) end
+function PCASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, n::PetscInt) end
 
-@for_petsc function PCASMCreateSubdomains(petsclib::$UnionPetscLib, A::PetscMat, n::$PetscInt )
+@for_petsc function PCASMCreateSubdomains(petsclib::$UnionPetscLib, A::AbstractPetscMat, n::$PetscInt )
 	outis_ = Ref{Ptr{IS}}()
 
     @chk ccall(
@@ -2423,7 +2423,7 @@ function PCASMCreateSubdomains(petsclib::PetscLibType, A::PetscMat, n::PetscInt)
 end 
 
 """
-	PCASMDestroySubdomains(petsclib::PetscLibType,n::PetscInt, is::Vector{IS}, is_loc::Vector{IS}) 
+	PCASMDestroySubdomains(petsclib::PetscLibType,n::PetscInt, is::Vector{<:AbstractIS}, is_loc::Vector{<:AbstractIS}) 
 Destroys the index sets created with
 `PCASMCreateSubdomains()`. Should be called after setting subdomains with `PCASMSetLocalSubdomains()`.
 
@@ -2441,9 +2441,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCASMDestroySubdomains"))
 """
-function PCASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, is::Vector{IS}, is_loc::Vector{IS}) end
+function PCASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, is::Vector{<:AbstractIS}, is_loc::Vector{<:AbstractIS}) end
 
-@for_petsc function PCASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, is::Vector{IS}, is_loc::Vector{IS} )
+@for_petsc function PCASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, is::Vector{<:AbstractIS}, is_loc::Vector{<:AbstractIS} )
 	is_ = Ref(pointer(is))
 	is_loc_ = Ref(pointer(is_loc))
 
@@ -2508,7 +2508,7 @@ function PCASMCreateSubdomains2D(petsclib::PetscLibType, m::PetscInt, n::PetscIn
 end 
 
 """
-	n::PetscInt = PCASMGetLocalSubdomains(petsclib::PetscLibType,pc::PC, is::Vector{IS}, is_loc::Vector{IS}) 
+	n::PetscInt = PCASMGetLocalSubdomains(petsclib::PetscLibType,pc::PC, is::Vector{<:AbstractIS}, is_loc::Vector{<:AbstractIS}) 
 Gets the local subdomains (for this processor
 only) for the additive Schwarz preconditioner, `PCASM`.
 
@@ -2530,9 +2530,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCASMGetLocalSubdomains"))
 """
-function PCASMGetLocalSubdomains(petsclib::PetscLibType, pc::PC, is::Vector{IS}, is_loc::Vector{IS}) end
+function PCASMGetLocalSubdomains(petsclib::PetscLibType, pc::PC, is::Vector{<:AbstractIS}, is_loc::Vector{<:AbstractIS}) end
 
-@for_petsc function PCASMGetLocalSubdomains(petsclib::$UnionPetscLib, pc::PC, is::Vector{IS}, is_loc::Vector{IS} )
+@for_petsc function PCASMGetLocalSubdomains(petsclib::$UnionPetscLib, pc::PC, is::Vector{<:AbstractIS}, is_loc::Vector{<:AbstractIS} )
 	n_ = Ref{$PetscInt}()
 	is_ = Ref(pointer(is))
 	is_loc_ = Ref(pointer(is_loc))
@@ -2550,7 +2550,7 @@ function PCASMGetLocalSubdomains(petsclib::PetscLibType, pc::PC, is::Vector{IS},
 end 
 
 """
-	n::PetscInt = PCASMGetLocalSubmatrices(petsclib::PetscLibType,pc::PC, mat::Vector{PetscMat}) 
+	n::PetscInt = PCASMGetLocalSubmatrices(petsclib::PetscLibType,pc::PC, mat::Vector{<:AbstractPetscMat}) 
 Gets the local submatrices (for this processor
 only) for the additive Schwarz preconditioner, `PCASM`.
 
@@ -2571,9 +2571,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCASMGetLocalSubmatrices"))
 """
-function PCASMGetLocalSubmatrices(petsclib::PetscLibType, pc::PC, mat::Vector{PetscMat}) end
+function PCASMGetLocalSubmatrices(petsclib::PetscLibType, pc::PC, mat::Vector{<:AbstractPetscMat}) end
 
-@for_petsc function PCASMGetLocalSubmatrices(petsclib::$UnionPetscLib, pc::PC, mat::Vector{PetscMat} )
+@for_petsc function PCASMGetLocalSubmatrices(petsclib::$UnionPetscLib, pc::PC, mat::Vector{<:AbstractPetscMat} )
 	n_ = Ref{$PetscInt}()
 	mat_ = Ref(pointer(mat))
 
@@ -2794,7 +2794,7 @@ function PCMPIServerEnd(petsclib::PetscLibType) end
 end 
 
 """
-	PCMPIGetKSP(petsclib::PetscLibType,pc::PC, innerksp::PetscKSP) 
+	PCMPIGetKSP(petsclib::PetscLibType,pc::PC, innerksp::AbstractPetscKSP) 
 Gets the `KSP` created by the `PCMPI`
 
 Not Collective
@@ -2812,9 +2812,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMPIGetKSP"))
 """
-function PCMPIGetKSP(petsclib::PetscLibType, pc::PC, innerksp::PetscKSP) end
+function PCMPIGetKSP(petsclib::PetscLibType, pc::PC, innerksp::AbstractPetscKSP) end
 
-@for_petsc function PCMPIGetKSP(petsclib::$UnionPetscLib, pc::PC, innerksp::PetscKSP )
+@for_petsc function PCMPIGetKSP(petsclib::$UnionPetscLib, pc::PC, innerksp::AbstractPetscKSP )
 	innerksp_ = Ref(innerksp.ptr)
 
     @chk ccall(
@@ -2901,7 +2901,7 @@ function PCPythonGetType(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	PCKSPSetKSP(petsclib::PetscLibType,pc::PC, ksp::PetscKSP) 
+	PCKSPSetKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
 Sets the `KSP` context for a `PCKSP`.
 
 Collective
@@ -2917,9 +2917,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCKSPSetKSP"))
 """
-function PCKSPSetKSP(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
+function PCKSPSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
 
-@for_petsc function PCKSPSetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::PetscKSP )
+@for_petsc function PCKSPSetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:PCKSPSetKSP, $petsc_library),
@@ -2933,7 +2933,7 @@ function PCKSPSetKSP(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
 end 
 
 """
-	PCKSPGetKSP(petsclib::PetscLibType,pc::PC, ksp::PetscKSP) 
+	PCKSPGetKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
 Gets the `KSP` context for a `PCKSP`.
 
 Not Collective but ksp returned is parallel if pc was parallel
@@ -2949,9 +2949,9 @@ Output Parameter:
 # External Links
 $(_doc_external("Ksp/PCKSPGetKSP"))
 """
-function PCKSPGetKSP(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
+function PCKSPGetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
 
-@for_petsc function PCKSPGetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::PetscKSP )
+@for_petsc function PCKSPGetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -2967,7 +2967,7 @@ function PCKSPGetKSP(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
 end 
 
 """
-	PCMGResidualDefault(petsclib::PetscLibType,mat::PetscMat, b::PetscVec, x::PetscVec, r::PetscVec) 
+	PCMGResidualDefault(petsclib::PetscLibType,mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec) 
 Default routine to calculate the residual.
 
 Collective
@@ -2987,9 +2987,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCMGResidualDefault"))
 """
-function PCMGResidualDefault(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, x::PetscVec, r::PetscVec) end
+function PCMGResidualDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec) end
 
-@for_petsc function PCMGResidualDefault(petsclib::$UnionPetscLib, mat::PetscMat, b::PetscVec, x::PetscVec, r::PetscVec )
+@for_petsc function PCMGResidualDefault(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec )
 
     @chk ccall(
                (:PCMGResidualDefault, $petsc_library),
@@ -3003,7 +3003,7 @@ function PCMGResidualDefault(petsclib::PetscLibType, mat::PetscMat, b::PetscVec,
 end 
 
 """
-	PCMGResidualTransposeDefault(petsclib::PetscLibType,mat::PetscMat, b::PetscVec, x::PetscVec, r::PetscVec) 
+	PCMGResidualTransposeDefault(petsclib::PetscLibType,mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec) 
 Default routine to calculate the residual of the transposed linear system
 
 Collective
@@ -3023,9 +3023,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCMGResidualTransposeDefault"))
 """
-function PCMGResidualTransposeDefault(petsclib::PetscLibType, mat::PetscMat, b::PetscVec, x::PetscVec, r::PetscVec) end
+function PCMGResidualTransposeDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec) end
 
-@for_petsc function PCMGResidualTransposeDefault(petsclib::$UnionPetscLib, mat::PetscMat, b::PetscVec, x::PetscVec, r::PetscVec )
+@for_petsc function PCMGResidualTransposeDefault(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscVec, x::AbstractPetscVec, r::AbstractPetscVec )
 
     @chk ccall(
                (:PCMGResidualTransposeDefault, $petsc_library),
@@ -3039,7 +3039,7 @@ function PCMGResidualTransposeDefault(petsclib::PetscLibType, mat::PetscMat, b::
 end 
 
 """
-	PCMGMatResidualDefault(petsclib::PetscLibType,mat::PetscMat, b::PetscMat, x::PetscMat, r::PetscMat) 
+	PCMGMatResidualDefault(petsclib::PetscLibType,mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat) 
 Default routine to calculate the residual.
 
 Collective
@@ -3059,9 +3059,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCMGMatResidualDefault"))
 """
-function PCMGMatResidualDefault(petsclib::PetscLibType, mat::PetscMat, b::PetscMat, x::PetscMat, r::PetscMat) end
+function PCMGMatResidualDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat) end
 
-@for_petsc function PCMGMatResidualDefault(petsclib::$UnionPetscLib, mat::PetscMat, b::PetscMat, x::PetscMat, r::PetscMat )
+@for_petsc function PCMGMatResidualDefault(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGMatResidualDefault, $petsc_library),
@@ -3075,7 +3075,7 @@ function PCMGMatResidualDefault(petsclib::PetscLibType, mat::PetscMat, b::PetscM
 end 
 
 """
-	PCMGMatResidualTransposeDefault(petsclib::PetscLibType,mat::PetscMat, b::PetscMat, x::PetscMat, r::PetscMat) 
+	PCMGMatResidualTransposeDefault(petsclib::PetscLibType,mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat) 
 Default routine to calculate the residual of the transposed linear system
 
 Collective
@@ -3095,9 +3095,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCMGMatResidualTransposeDefault"))
 """
-function PCMGMatResidualTransposeDefault(petsclib::PetscLibType, mat::PetscMat, b::PetscMat, x::PetscMat, r::PetscMat) end
+function PCMGMatResidualTransposeDefault(petsclib::PetscLibType, mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat) end
 
-@for_petsc function PCMGMatResidualTransposeDefault(petsclib::$UnionPetscLib, mat::PetscMat, b::PetscMat, x::PetscMat, r::PetscMat )
+@for_petsc function PCMGMatResidualTransposeDefault(petsclib::$UnionPetscLib, mat::AbstractPetscMat, b::AbstractPetscMat, x::AbstractPetscMat, r::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGMatResidualTransposeDefault, $petsc_library),
@@ -3111,7 +3111,7 @@ function PCMGMatResidualTransposeDefault(petsclib::PetscLibType, mat::PetscMat, 
 end 
 
 """
-	PCMGGetCoarseSolve(petsclib::PetscLibType,pc::PC, ksp::PetscKSP) 
+	PCMGGetCoarseSolve(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
 Gets the solver context to be used on the coarse grid.
 
 Not Collective
@@ -3129,9 +3129,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGGetCoarseSolve"))
 """
-function PCMGGetCoarseSolve(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
+function PCMGGetCoarseSolve(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
 
-@for_petsc function PCMGGetCoarseSolve(petsclib::$UnionPetscLib, pc::PC, ksp::PetscKSP )
+@for_petsc function PCMGGetCoarseSolve(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -3147,7 +3147,7 @@ function PCMGGetCoarseSolve(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
 end 
 
 """
-	PCMGSetResidual(petsclib::PetscLibType,pc::PC, l::PetscInt, residual::external, mat::PetscMat) 
+	PCMGSetResidual(petsclib::PetscLibType,pc::PC, l::PetscInt, residual::external, mat::AbstractPetscMat) 
 Sets the function to be used to calculate the residual on the lth level.
 
 Logically Collective
@@ -3166,9 +3166,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGSetResidual"))
 """
-function PCMGSetResidual(petsclib::PetscLibType, pc::PC, l::PetscInt, residual::external, mat::PetscMat) end
+function PCMGSetResidual(petsclib::PetscLibType, pc::PC, l::PetscInt, residual::external, mat::AbstractPetscMat) end
 
-@for_petsc function PCMGSetResidual(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, residual::external, mat::PetscMat )
+@for_petsc function PCMGSetResidual(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, residual::external, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGSetResidual, $petsc_library),
@@ -3182,7 +3182,7 @@ function PCMGSetResidual(petsclib::PetscLibType, pc::PC, l::PetscInt, residual::
 end 
 
 """
-	PCMGSetResidualTranspose(petsclib::PetscLibType,pc::PC, l::PetscInt, residualt::external, mat::PetscMat) 
+	PCMGSetResidualTranspose(petsclib::PetscLibType,pc::PC, l::PetscInt, residualt::external, mat::AbstractPetscMat) 
 Sets the function to be used to calculate the residual of the transposed linear system
 on the lth level.
 
@@ -3202,9 +3202,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGSetResidualTranspose"))
 """
-function PCMGSetResidualTranspose(petsclib::PetscLibType, pc::PC, l::PetscInt, residualt::external, mat::PetscMat) end
+function PCMGSetResidualTranspose(petsclib::PetscLibType, pc::PC, l::PetscInt, residualt::external, mat::AbstractPetscMat) end
 
-@for_petsc function PCMGSetResidualTranspose(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, residualt::external, mat::PetscMat )
+@for_petsc function PCMGSetResidualTranspose(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, residualt::external, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGSetResidualTranspose, $petsc_library),
@@ -3218,7 +3218,7 @@ function PCMGSetResidualTranspose(petsclib::PetscLibType, pc::PC, l::PetscInt, r
 end 
 
 """
-	PCMGSetInterpolation(petsclib::PetscLibType,pc::PC, l::PetscInt, mat::PetscMat) 
+	PCMGSetInterpolation(petsclib::PetscLibType,pc::PC, l::PetscInt, mat::AbstractPetscMat) 
 Sets the function to be used to calculate the
 interpolation from l-1 to the lth level
 
@@ -3236,9 +3236,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGSetInterpolation"))
 """
-function PCMGSetInterpolation(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::PetscMat) end
+function PCMGSetInterpolation(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::AbstractPetscMat) end
 
-@for_petsc function PCMGSetInterpolation(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::PetscMat )
+@for_petsc function PCMGSetInterpolation(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGSetInterpolation, $petsc_library),
@@ -3252,7 +3252,7 @@ function PCMGSetInterpolation(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::
 end 
 
 """
-	PCMGSetOperators(petsclib::PetscLibType,pc::PC, l::PetscInt, Amat::PetscMat, Pmat::PetscMat) 
+	PCMGSetOperators(petsclib::PetscLibType,pc::PC, l::PetscInt, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) 
 Sets operator and matrix from which to construct a preconditioner for lth level
 
 Logically Collective
@@ -3270,9 +3270,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGSetOperators"))
 """
-function PCMGSetOperators(petsclib::PetscLibType, pc::PC, l::PetscInt, Amat::PetscMat, Pmat::PetscMat) end
+function PCMGSetOperators(petsclib::PetscLibType, pc::PC, l::PetscInt, Amat::AbstractPetscMat, Pmat::AbstractPetscMat) end
 
-@for_petsc function PCMGSetOperators(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, Amat::PetscMat, Pmat::PetscMat )
+@for_petsc function PCMGSetOperators(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, Amat::AbstractPetscMat, Pmat::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGSetOperators, $petsc_library),
@@ -3286,7 +3286,7 @@ function PCMGSetOperators(petsclib::PetscLibType, pc::PC, l::PetscInt, Amat::Pet
 end 
 
 """
-	PCMGGetInterpolation(petsclib::PetscLibType,pc::PC, l::PetscInt, mat::PetscMat) 
+	PCMGGetInterpolation(petsclib::PetscLibType,pc::PC, l::PetscInt, mat::AbstractPetscMat) 
 Gets the function to be used to calculate the
 interpolation from l-1 to the lth level
 
@@ -3306,9 +3306,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGGetInterpolation"))
 """
-function PCMGGetInterpolation(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::PetscMat) end
+function PCMGGetInterpolation(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::AbstractPetscMat) end
 
-@for_petsc function PCMGGetInterpolation(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::PetscMat )
+@for_petsc function PCMGGetInterpolation(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -3324,7 +3324,7 @@ function PCMGGetInterpolation(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::
 end 
 
 """
-	PCMGSetRestriction(petsclib::PetscLibType,pc::PC, l::PetscInt, mat::PetscMat) 
+	PCMGSetRestriction(petsclib::PetscLibType,pc::PC, l::PetscInt, mat::AbstractPetscMat) 
 Sets the function to be used to restrict dual vectors
 from level l to l-1.
 
@@ -3342,9 +3342,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGSetRestriction"))
 """
-function PCMGSetRestriction(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::PetscMat) end
+function PCMGSetRestriction(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::AbstractPetscMat) end
 
-@for_petsc function PCMGSetRestriction(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::PetscMat )
+@for_petsc function PCMGSetRestriction(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGSetRestriction, $petsc_library),
@@ -3358,7 +3358,7 @@ function PCMGSetRestriction(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::Pe
 end 
 
 """
-	PCMGGetRestriction(petsclib::PetscLibType,pc::PC, l::PetscInt, mat::PetscMat) 
+	PCMGGetRestriction(petsclib::PetscLibType,pc::PC, l::PetscInt, mat::AbstractPetscMat) 
 Gets the function to be used to restrict dual (i.e. residual) vectors
 from level l to l-1.
 
@@ -3378,9 +3378,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGGetRestriction"))
 """
-function PCMGGetRestriction(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::PetscMat) end
+function PCMGGetRestriction(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::AbstractPetscMat) end
 
-@for_petsc function PCMGGetRestriction(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::PetscMat )
+@for_petsc function PCMGGetRestriction(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -3396,7 +3396,7 @@ function PCMGGetRestriction(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::Pe
 end 
 
 """
-	PCMGSetRScale(petsclib::PetscLibType,pc::PC, l::PetscInt, rscale::PetscVec) 
+	PCMGSetRScale(petsclib::PetscLibType,pc::PC, l::PetscInt, rscale::AbstractPetscVec) 
 Sets the pointwise scaling for the restriction operator from level l to l
 
 Logically Collective
@@ -3413,9 +3413,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGSetRScale"))
 """
-function PCMGSetRScale(petsclib::PetscLibType, pc::PC, l::PetscInt, rscale::PetscVec) end
+function PCMGSetRScale(petsclib::PetscLibType, pc::PC, l::PetscInt, rscale::AbstractPetscVec) end
 
-@for_petsc function PCMGSetRScale(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, rscale::PetscVec )
+@for_petsc function PCMGSetRScale(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, rscale::AbstractPetscVec )
 
     @chk ccall(
                (:PCMGSetRScale, $petsc_library),
@@ -3429,7 +3429,7 @@ function PCMGSetRScale(petsclib::PetscLibType, pc::PC, l::PetscInt, rscale::Pets
 end 
 
 """
-	PCMGGetRScale(petsclib::PetscLibType,pc::PC, l::PetscInt, rscale::PetscVec) 
+	PCMGGetRScale(petsclib::PetscLibType,pc::PC, l::PetscInt, rscale::AbstractPetscVec) 
 Gets the pointwise scaling for the restriction operator from level l to l
 
 Collective
@@ -3446,9 +3446,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGGetRScale"))
 """
-function PCMGGetRScale(petsclib::PetscLibType, pc::PC, l::PetscInt, rscale::PetscVec) end
+function PCMGGetRScale(petsclib::PetscLibType, pc::PC, l::PetscInt, rscale::AbstractPetscVec) end
 
-@for_petsc function PCMGGetRScale(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, rscale::PetscVec )
+@for_petsc function PCMGGetRScale(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, rscale::AbstractPetscVec )
 	rscale_ = Ref(rscale.ptr)
 
     @chk ccall(
@@ -3464,7 +3464,7 @@ function PCMGGetRScale(petsclib::PetscLibType, pc::PC, l::PetscInt, rscale::Pets
 end 
 
 """
-	PCMGSetInjection(petsclib::PetscLibType,pc::PC, l::PetscInt, mat::PetscMat) 
+	PCMGSetInjection(petsclib::PetscLibType,pc::PC, l::PetscInt, mat::AbstractPetscMat) 
 Sets the function to be used to inject primal (i.e. solution) vectors
 from level l to l-1.
 
@@ -3482,9 +3482,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGSetInjection"))
 """
-function PCMGSetInjection(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::PetscMat) end
+function PCMGSetInjection(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::AbstractPetscMat) end
 
-@for_petsc function PCMGSetInjection(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::PetscMat )
+@for_petsc function PCMGSetInjection(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCMGSetInjection, $petsc_library),
@@ -3498,7 +3498,7 @@ function PCMGSetInjection(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::Pets
 end 
 
 """
-	PCMGGetInjection(petsclib::PetscLibType,pc::PC, l::PetscInt, mat::PetscMat) 
+	PCMGGetInjection(petsclib::PetscLibType,pc::PC, l::PetscInt, mat::AbstractPetscMat) 
 Gets the function to be used to inject primal vectors (i.e. solutions)
 from level l to l-1.
 
@@ -3518,9 +3518,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGGetInjection"))
 """
-function PCMGGetInjection(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::PetscMat) end
+function PCMGGetInjection(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::AbstractPetscMat) end
 
-@for_petsc function PCMGGetInjection(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::PetscMat )
+@for_petsc function PCMGGetInjection(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, mat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 
     @chk ccall(
@@ -3536,7 +3536,7 @@ function PCMGGetInjection(petsclib::PetscLibType, pc::PC, l::PetscInt, mat::Pets
 end 
 
 """
-	PCMGGetSmoother(petsclib::PetscLibType,pc::PC, l::PetscInt, ksp::PetscKSP) 
+	PCMGGetSmoother(petsclib::PetscLibType,pc::PC, l::PetscInt, ksp::AbstractPetscKSP) 
 Gets the `KSP` context to be used as smoother for
 both pre- and post-smoothing.  Call both `PCMGGetSmootherUp()` and
 `PCMGGetSmootherDown()` to use different functions for pre- and
@@ -3556,9 +3556,9 @@ Output Parameter:
 # External Links
 $(_doc_external("Ksp/PCMGGetSmoother"))
 """
-function PCMGGetSmoother(petsclib::PetscLibType, pc::PC, l::PetscInt, ksp::PetscKSP) end
+function PCMGGetSmoother(petsclib::PetscLibType, pc::PC, l::PetscInt, ksp::AbstractPetscKSP) end
 
-@for_petsc function PCMGGetSmoother(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, ksp::PetscKSP )
+@for_petsc function PCMGGetSmoother(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -3574,7 +3574,7 @@ function PCMGGetSmoother(petsclib::PetscLibType, pc::PC, l::PetscInt, ksp::Petsc
 end 
 
 """
-	PCMGGetSmootherUp(petsclib::PetscLibType,pc::PC, l::PetscInt, ksp::PetscKSP) 
+	PCMGGetSmootherUp(petsclib::PetscLibType,pc::PC, l::PetscInt, ksp::AbstractPetscKSP) 
 Gets the KSP context to be used as smoother after
 coarse grid correction (post-smoother).
 
@@ -3594,9 +3594,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGGetSmootherUp"))
 """
-function PCMGGetSmootherUp(petsclib::PetscLibType, pc::PC, l::PetscInt, ksp::PetscKSP) end
+function PCMGGetSmootherUp(petsclib::PetscLibType, pc::PC, l::PetscInt, ksp::AbstractPetscKSP) end
 
-@for_petsc function PCMGGetSmootherUp(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, ksp::PetscKSP )
+@for_petsc function PCMGGetSmootherUp(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -3612,7 +3612,7 @@ function PCMGGetSmootherUp(petsclib::PetscLibType, pc::PC, l::PetscInt, ksp::Pet
 end 
 
 """
-	PCMGGetSmootherDown(petsclib::PetscLibType,pc::PC, l::PetscInt, ksp::PetscKSP) 
+	PCMGGetSmootherDown(petsclib::PetscLibType,pc::PC, l::PetscInt, ksp::AbstractPetscKSP) 
 Gets the `KSP` context to be used as smoother before
 coarse grid correction (pre-smoother).
 
@@ -3632,9 +3632,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGGetSmootherDown"))
 """
-function PCMGGetSmootherDown(petsclib::PetscLibType, pc::PC, l::PetscInt, ksp::PetscKSP) end
+function PCMGGetSmootherDown(petsclib::PetscLibType, pc::PC, l::PetscInt, ksp::AbstractPetscKSP) end
 
-@for_petsc function PCMGGetSmootherDown(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, ksp::PetscKSP )
+@for_petsc function PCMGGetSmootherDown(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -3683,7 +3683,7 @@ function PCMGSetCycleTypeOnLevel(petsclib::PetscLibType, pc::PC, l::PetscInt, c:
 end 
 
 """
-	PCMGSetRhs(petsclib::PetscLibType,pc::PC, l::PetscInt, c::PetscVec) 
+	PCMGSetRhs(petsclib::PetscLibType,pc::PC, l::PetscInt, c::AbstractPetscVec) 
 Sets the vector to be used to store the right
 
 Logically Collective
@@ -3700,9 +3700,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGSetRhs"))
 """
-function PCMGSetRhs(petsclib::PetscLibType, pc::PC, l::PetscInt, c::PetscVec) end
+function PCMGSetRhs(petsclib::PetscLibType, pc::PC, l::PetscInt, c::AbstractPetscVec) end
 
-@for_petsc function PCMGSetRhs(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::PetscVec )
+@for_petsc function PCMGSetRhs(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::AbstractPetscVec )
 
     @chk ccall(
                (:PCMGSetRhs, $petsc_library),
@@ -3716,7 +3716,7 @@ function PCMGSetRhs(petsclib::PetscLibType, pc::PC, l::PetscInt, c::PetscVec) en
 end 
 
 """
-	PCMGSetX(petsclib::PetscLibType,pc::PC, l::PetscInt, c::PetscVec) 
+	PCMGSetX(petsclib::PetscLibType,pc::PC, l::PetscInt, c::AbstractPetscVec) 
 Sets the vector to be used to store the solution on a particular level.
 
 Logically Collective
@@ -3733,9 +3733,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGSetX"))
 """
-function PCMGSetX(petsclib::PetscLibType, pc::PC, l::PetscInt, c::PetscVec) end
+function PCMGSetX(petsclib::PetscLibType, pc::PC, l::PetscInt, c::AbstractPetscVec) end
 
-@for_petsc function PCMGSetX(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::PetscVec )
+@for_petsc function PCMGSetX(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::AbstractPetscVec )
 
     @chk ccall(
                (:PCMGSetX, $petsc_library),
@@ -3749,7 +3749,7 @@ function PCMGSetX(petsclib::PetscLibType, pc::PC, l::PetscInt, c::PetscVec) end
 end 
 
 """
-	PCMGSetR(petsclib::PetscLibType,pc::PC, l::PetscInt, c::PetscVec) 
+	PCMGSetR(petsclib::PetscLibType,pc::PC, l::PetscInt, c::AbstractPetscVec) 
 Sets the vector to be used to store the residual on a particular level.
 
 Logically Collective
@@ -3766,9 +3766,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCMGSetR"))
 """
-function PCMGSetR(petsclib::PetscLibType, pc::PC, l::PetscInt, c::PetscVec) end
+function PCMGSetR(petsclib::PetscLibType, pc::PC, l::PetscInt, c::AbstractPetscVec) end
 
-@for_petsc function PCMGSetR(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::PetscVec )
+@for_petsc function PCMGSetR(petsclib::$UnionPetscLib, pc::PC, l::$PetscInt, c::AbstractPetscVec )
 
     @chk ccall(
                (:PCMGSetR, $petsc_library),
@@ -4642,7 +4642,7 @@ function PCHMGUseMatMAIJ(petsclib::PetscLibType, pc::PC, usematmaij::PetscBool) 
 end 
 
 """
-	PCTelescopeGetKSP(petsclib::PetscLibType,pc::PC, subksp::PetscKSP) 
+	PCTelescopeGetKSP(petsclib::PetscLibType,pc::PC, subksp::AbstractPetscKSP) 
 Gets the `KSP` created by the telescoping `PC`.
 
 Not Collective
@@ -4660,9 +4660,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCTelescopeGetKSP"))
 """
-function PCTelescopeGetKSP(petsclib::PetscLibType, pc::PC, subksp::PetscKSP) end
+function PCTelescopeGetKSP(petsclib::PetscLibType, pc::PC, subksp::AbstractPetscKSP) end
 
-@for_petsc function PCTelescopeGetKSP(petsclib::$UnionPetscLib, pc::PC, subksp::PetscKSP )
+@for_petsc function PCTelescopeGetKSP(petsclib::$UnionPetscLib, pc::PC, subksp::AbstractPetscKSP )
 	subksp_ = Ref(subksp.ptr)
 
     @chk ccall(
@@ -4992,9 +4992,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCTelescopeGetDM"))
 """
-function PCTelescopeGetDM(petsclib::PetscLibType, pc::PC, subdm::PetscDM) end
+function PCTelescopeGetDM(petsclib::PetscLibType, pc::PC, subdm::AbstractPetscDM) end
 
-@for_petsc function PCTelescopeGetDM(petsclib::$UnionPetscLib, pc::PC, subdm::PetscDM )
+@for_petsc function PCTelescopeGetDM(petsclib::$UnionPetscLib, pc::PC, subdm::AbstractPetscDM )
 	subdm_ = Ref{CDM}()
 
     @chk ccall(
@@ -5731,7 +5731,7 @@ function PCISSetUseStiffnessScaling(petsclib::PetscLibType, pc::PC, use::PetscBo
 end 
 
 """
-	PCISSetSubdomainDiagonalScaling(petsclib::PetscLibType,pc::PC, scaling_factors::PetscVec) 
+	PCISSetSubdomainDiagonalScaling(petsclib::PetscLibType,pc::PC, scaling_factors::AbstractPetscVec) 
 Set diagonal scaling for `PCIS`.
 
 Logically Collective
@@ -5749,9 +5749,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCISSetSubdomainDiagonalScaling"))
 """
-function PCISSetSubdomainDiagonalScaling(petsclib::PetscLibType, pc::PC, scaling_factors::PetscVec) end
+function PCISSetSubdomainDiagonalScaling(petsclib::PetscLibType, pc::PC, scaling_factors::AbstractPetscVec) end
 
-@for_petsc function PCISSetSubdomainDiagonalScaling(petsclib::$UnionPetscLib, pc::PC, scaling_factors::PetscVec )
+@for_petsc function PCISSetSubdomainDiagonalScaling(petsclib::$UnionPetscLib, pc::PC, scaling_factors::AbstractPetscVec )
 
     @chk ccall(
                (:PCISSetSubdomainDiagonalScaling, $petsc_library),
@@ -5893,7 +5893,7 @@ function PCISInitialize(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	PCISApplySchur(petsclib::PetscLibType,pc::PC, v::PetscVec, vec1_B::PetscVec, vec2_B::PetscVec, vec1_D::PetscVec, vec2_D::PetscVec) 
+	PCISApplySchur(petsclib::PetscLibType,pc::PC, v::AbstractPetscVec, vec1_B::AbstractPetscVec, vec2_B::AbstractPetscVec, vec1_D::AbstractPetscVec, vec2_D::AbstractPetscVec) 
 applies the Schur complement arising from the `MATIS` inside the `PCNN` preconditioner
 
 Input Parameters:
@@ -5913,9 +5913,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCISApplySchur"))
 """
-function PCISApplySchur(petsclib::PetscLibType, pc::PC, v::PetscVec, vec1_B::PetscVec, vec2_B::PetscVec, vec1_D::PetscVec, vec2_D::PetscVec) end
+function PCISApplySchur(petsclib::PetscLibType, pc::PC, v::AbstractPetscVec, vec1_B::AbstractPetscVec, vec2_B::AbstractPetscVec, vec1_D::AbstractPetscVec, vec2_D::AbstractPetscVec) end
 
-@for_petsc function PCISApplySchur(petsclib::$UnionPetscLib, pc::PC, v::PetscVec, vec1_B::PetscVec, vec2_B::PetscVec, vec1_D::PetscVec, vec2_D::PetscVec )
+@for_petsc function PCISApplySchur(petsclib::$UnionPetscLib, pc::PC, v::AbstractPetscVec, vec1_B::AbstractPetscVec, vec2_B::AbstractPetscVec, vec1_D::AbstractPetscVec, vec2_D::AbstractPetscVec )
 
     @chk ccall(
                (:PCISApplySchur, $petsc_library),
@@ -5929,7 +5929,7 @@ function PCISApplySchur(petsclib::PetscLibType, pc::PC, v::PetscVec, vec1_B::Pet
 end 
 
 """
-	PCISScatterArrayNToVecB(petsclib::PetscLibType,pc::PC, array_N::PetscScalar, v_B::PetscVec, imode::InsertMode, smode::ScatterMode) 
+	PCISScatterArrayNToVecB(petsclib::PetscLibType,pc::PC, array_N::PetscScalar, v_B::AbstractPetscVec, imode::InsertMode, smode::ScatterMode) 
 Scatters interface node values from a big array (of all local nodes, interior or interface,
 including ghosts) into an interface vector, when in `SCATTER_FORWARD` mode, or vice-versa, when in `SCATTER_REVERSE`
 mode.
@@ -5950,9 +5950,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCISScatterArrayNToVecB"))
 """
-function PCISScatterArrayNToVecB(petsclib::PetscLibType, pc::PC, array_N::PetscScalar, v_B::PetscVec, imode::InsertMode, smode::ScatterMode) end
+function PCISScatterArrayNToVecB(petsclib::PetscLibType, pc::PC, array_N::PetscScalar, v_B::AbstractPetscVec, imode::InsertMode, smode::ScatterMode) end
 
-@for_petsc function PCISScatterArrayNToVecB(petsclib::$UnionPetscLib, pc::PC, array_N::$PetscScalar, v_B::PetscVec, imode::InsertMode, smode::ScatterMode )
+@for_petsc function PCISScatterArrayNToVecB(petsclib::$UnionPetscLib, pc::PC, array_N::$PetscScalar, v_B::AbstractPetscVec, imode::InsertMode, smode::ScatterMode )
 
     @chk ccall(
                (:PCISScatterArrayNToVecB, $petsc_library),
@@ -5966,7 +5966,7 @@ function PCISScatterArrayNToVecB(petsclib::PetscLibType, pc::PC, array_N::PetscS
 end 
 
 """
-	PCISApplyInvSchur(petsclib::PetscLibType,pc::PC, b::PetscVec, x::PetscVec, vec1_N::PetscVec, vec2_N::PetscVec) 
+	PCISApplyInvSchur(petsclib::PetscLibType,pc::PC, b::AbstractPetscVec, x::AbstractPetscVec, vec1_N::AbstractPetscVec, vec2_N::AbstractPetscVec) 
 Solves the Neumann problem related to applying the inverse of the Schur complement.
 
 Input Parameters:
@@ -5985,9 +5985,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCISApplyInvSchur"))
 """
-function PCISApplyInvSchur(petsclib::PetscLibType, pc::PC, b::PetscVec, x::PetscVec, vec1_N::PetscVec, vec2_N::PetscVec) end
+function PCISApplyInvSchur(petsclib::PetscLibType, pc::PC, b::AbstractPetscVec, x::AbstractPetscVec, vec1_N::AbstractPetscVec, vec2_N::AbstractPetscVec) end
 
-@for_petsc function PCISApplyInvSchur(petsclib::$UnionPetscLib, pc::PC, b::PetscVec, x::PetscVec, vec1_N::PetscVec, vec2_N::PetscVec )
+@for_petsc function PCISApplyInvSchur(petsclib::$UnionPetscLib, pc::PC, b::AbstractPetscVec, x::AbstractPetscVec, vec1_N::AbstractPetscVec, vec2_N::AbstractPetscVec )
 
     @chk ccall(
                (:PCISApplyInvSchur, $petsc_library),
@@ -6368,7 +6368,7 @@ function PCJacobiGetFixDiagonal(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	PCJacobiGetDiagonal(petsclib::PetscLibType,pc::PC, diagonal::PetscVec, diagonal_sqrt::PetscVec) 
+	PCJacobiGetDiagonal(petsclib::PetscLibType,pc::PC, diagonal::AbstractPetscVec, diagonal_sqrt::AbstractPetscVec) 
 Returns copy of the diagonal and/or diagonal squareroot `Vec`
 
 Logically Collective
@@ -6387,9 +6387,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCJacobiGetDiagonal"))
 """
-function PCJacobiGetDiagonal(petsclib::PetscLibType, pc::PC, diagonal::PetscVec, diagonal_sqrt::PetscVec) end
+function PCJacobiGetDiagonal(petsclib::PetscLibType, pc::PC, diagonal::AbstractPetscVec, diagonal_sqrt::AbstractPetscVec) end
 
-@for_petsc function PCJacobiGetDiagonal(petsclib::$UnionPetscLib, pc::PC, diagonal::PetscVec, diagonal_sqrt::PetscVec )
+@for_petsc function PCJacobiGetDiagonal(petsclib::$UnionPetscLib, pc::PC, diagonal::AbstractPetscVec, diagonal_sqrt::AbstractPetscVec )
 
     @chk ccall(
                (:PCJacobiGetDiagonal, $petsc_library),
@@ -6475,7 +6475,7 @@ function PCJacobiGetType(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	PCGalerkinSetRestriction(petsclib::PetscLibType,pc::PC, R::PetscMat) 
+	PCGalerkinSetRestriction(petsclib::PetscLibType,pc::PC, R::AbstractPetscMat) 
 Sets the restriction operator for the `PCGALERKIN` preconditioner
 
 Logically Collective
@@ -6492,9 +6492,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCGalerkinSetRestriction"))
 """
-function PCGalerkinSetRestriction(petsclib::PetscLibType, pc::PC, R::PetscMat) end
+function PCGalerkinSetRestriction(petsclib::PetscLibType, pc::PC, R::AbstractPetscMat) end
 
-@for_petsc function PCGalerkinSetRestriction(petsclib::$UnionPetscLib, pc::PC, R::PetscMat )
+@for_petsc function PCGalerkinSetRestriction(petsclib::$UnionPetscLib, pc::PC, R::AbstractPetscMat )
 
     @chk ccall(
                (:PCGalerkinSetRestriction, $petsc_library),
@@ -6508,7 +6508,7 @@ function PCGalerkinSetRestriction(petsclib::PetscLibType, pc::PC, R::PetscMat) e
 end 
 
 """
-	PCGalerkinSetInterpolation(petsclib::PetscLibType,pc::PC, P::PetscMat) 
+	PCGalerkinSetInterpolation(petsclib::PetscLibType,pc::PC, P::AbstractPetscMat) 
 Sets the interpolation operator for the `PCGALERKIN` preconditioner
 
 Logically Collective
@@ -6525,9 +6525,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCGalerkinSetInterpolation"))
 """
-function PCGalerkinSetInterpolation(petsclib::PetscLibType, pc::PC, P::PetscMat) end
+function PCGalerkinSetInterpolation(petsclib::PetscLibType, pc::PC, P::AbstractPetscMat) end
 
-@for_petsc function PCGalerkinSetInterpolation(petsclib::$UnionPetscLib, pc::PC, P::PetscMat )
+@for_petsc function PCGalerkinSetInterpolation(petsclib::$UnionPetscLib, pc::PC, P::AbstractPetscMat )
 
     @chk ccall(
                (:PCGalerkinSetInterpolation, $petsc_library),
@@ -6582,7 +6582,7 @@ function PCGalerkinSetComputeSubmatrix(petsclib::PetscLibType, pc::PC, computeAs
 end 
 
 """
-	PCGalerkinGetKSP(petsclib::PetscLibType,pc::PC, ksp::PetscKSP) 
+	PCGalerkinGetKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
 Gets the `KSP` object in the `PCGALERKIN`
 
 Not Collective
@@ -6601,9 +6601,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCGalerkinGetKSP"))
 """
-function PCGalerkinGetKSP(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
+function PCGalerkinGetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
 
-@for_petsc function PCGalerkinGetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::PetscKSP )
+@for_petsc function PCGalerkinGetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -7787,14 +7787,14 @@ function PCCompositeSpecialSetAlpha(petsclib::PetscLibType, pc::PC, alpha::Petsc
 end 
 
 """
-	PCCompositeSpecialSetAlphaMat(petsclib::PetscLibType,pc::PC, alpha_mat::PetscMat) 
+	PCCompositeSpecialSetAlphaMat(petsclib::PetscLibType,pc::PC, alpha_mat::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("Ksp/PCCompositeSpecialSetAlphaMat"))
 """
-function PCCompositeSpecialSetAlphaMat(petsclib::PetscLibType, pc::PC, alpha_mat::PetscMat) end
+function PCCompositeSpecialSetAlphaMat(petsclib::PetscLibType, pc::PC, alpha_mat::AbstractPetscMat) end
 
-@for_petsc function PCCompositeSpecialSetAlphaMat(petsclib::$UnionPetscLib, pc::PC, alpha_mat::PetscMat )
+@for_petsc function PCCompositeSpecialSetAlphaMat(petsclib::$UnionPetscLib, pc::PC, alpha_mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCCompositeSpecialSetAlphaMat, $petsc_library),
@@ -7943,7 +7943,7 @@ function PCCompositeGetPC(petsclib::PetscLibType, pc::PC, n::PetscInt, subpc::PC
 end 
 
 """
-	PCBDDCSetDiscreteGradient(petsclib::PetscLibType,pc::PC, G::PetscMat, order::PetscInt, field::PetscInt, global_::PetscBool, conforming::PetscBool) 
+	PCBDDCSetDiscreteGradient(petsclib::PetscLibType,pc::PC, G::AbstractPetscMat, order::PetscInt, field::PetscInt, global_::PetscBool, conforming::PetscBool) 
 Sets the discrete gradient to be used by the `PCBDDC` preconditioner
 
 Collective
@@ -7963,9 +7963,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCBDDCSetDiscreteGradient"))
 """
-function PCBDDCSetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::PetscMat, order::PetscInt, field::PetscInt, global_::PetscBool, conforming::PetscBool) end
+function PCBDDCSetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::AbstractPetscMat, order::PetscInt, field::PetscInt, global_::PetscBool, conforming::PetscBool) end
 
-@for_petsc function PCBDDCSetDiscreteGradient(petsclib::$UnionPetscLib, pc::PC, G::PetscMat, order::$PetscInt, field::$PetscInt, global_::PetscBool, conforming::PetscBool )
+@for_petsc function PCBDDCSetDiscreteGradient(petsclib::$UnionPetscLib, pc::PC, G::AbstractPetscMat, order::$PetscInt, field::$PetscInt, global_::PetscBool, conforming::PetscBool )
 
     @chk ccall(
                (:PCBDDCSetDiscreteGradient, $petsc_library),
@@ -7979,7 +7979,7 @@ function PCBDDCSetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::PetscMat, 
 end 
 
 """
-	PCBDDCSetDivergenceMat(petsclib::PetscLibType,pc::PC, divudotp::PetscMat, trans::PetscBool, vl2l::IS) 
+	PCBDDCSetDivergenceMat(petsclib::PetscLibType,pc::PC, divudotp::AbstractPetscMat, trans::PetscBool, vl2l::AbstractIS) 
 Sets the linear operator representing .. for the `PCBDDC` preconditioner
 
 Collective
@@ -7998,9 +7998,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCBDDCSetDivergenceMat"))
 """
-function PCBDDCSetDivergenceMat(petsclib::PetscLibType, pc::PC, divudotp::PetscMat, trans::PetscBool, vl2l::IS) end
+function PCBDDCSetDivergenceMat(petsclib::PetscLibType, pc::PC, divudotp::AbstractPetscMat, trans::PetscBool, vl2l::AbstractIS) end
 
-@for_petsc function PCBDDCSetDivergenceMat(petsclib::$UnionPetscLib, pc::PC, divudotp::PetscMat, trans::PetscBool, vl2l::IS )
+@for_petsc function PCBDDCSetDivergenceMat(petsclib::$UnionPetscLib, pc::PC, divudotp::AbstractPetscMat, trans::PetscBool, vl2l::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetDivergenceMat, $petsc_library),
@@ -8014,7 +8014,7 @@ function PCBDDCSetDivergenceMat(petsclib::PetscLibType, pc::PC, divudotp::PetscM
 end 
 
 """
-	PCBDDCSetChangeOfBasisMat(petsclib::PetscLibType,pc::PC, change::PetscMat, interior::PetscBool) 
+	PCBDDCSetChangeOfBasisMat(petsclib::PetscLibType,pc::PC, change::AbstractPetscMat, interior::PetscBool) 
 Set user defined change of basis for dofs
 
 Collective
@@ -8031,9 +8031,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCSetChangeOfBasisMat"))
 """
-function PCBDDCSetChangeOfBasisMat(petsclib::PetscLibType, pc::PC, change::PetscMat, interior::PetscBool) end
+function PCBDDCSetChangeOfBasisMat(petsclib::PetscLibType, pc::PC, change::AbstractPetscMat, interior::PetscBool) end
 
-@for_petsc function PCBDDCSetChangeOfBasisMat(petsclib::$UnionPetscLib, pc::PC, change::PetscMat, interior::PetscBool )
+@for_petsc function PCBDDCSetChangeOfBasisMat(petsclib::$UnionPetscLib, pc::PC, change::AbstractPetscMat, interior::PetscBool )
 
     @chk ccall(
                (:PCBDDCSetChangeOfBasisMat, $petsc_library),
@@ -8047,7 +8047,7 @@ function PCBDDCSetChangeOfBasisMat(petsclib::PetscLibType, pc::PC, change::Petsc
 end 
 
 """
-	PCBDDCSetPrimalVerticesIS(petsclib::PetscLibType,pc::PC, PrimalVertices::IS) 
+	PCBDDCSetPrimalVerticesIS(petsclib::PetscLibType,pc::PC, PrimalVertices::AbstractIS) 
 Set additional user defined primal vertices in `PCBDDC`
 
 Collective
@@ -8063,9 +8063,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCSetPrimalVerticesIS"))
 """
-function PCBDDCSetPrimalVerticesIS(petsclib::PetscLibType, pc::PC, PrimalVertices::IS) end
+function PCBDDCSetPrimalVerticesIS(petsclib::PetscLibType, pc::PC, PrimalVertices::AbstractIS) end
 
-@for_petsc function PCBDDCSetPrimalVerticesIS(petsclib::$UnionPetscLib, pc::PC, PrimalVertices::IS )
+@for_petsc function PCBDDCSetPrimalVerticesIS(petsclib::$UnionPetscLib, pc::PC, PrimalVertices::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetPrimalVerticesIS, $petsc_library),
@@ -8079,7 +8079,7 @@ function PCBDDCSetPrimalVerticesIS(petsclib::PetscLibType, pc::PC, PrimalVertice
 end 
 
 """
-	PCBDDCGetPrimalVerticesIS(petsclib::PetscLibType,pc::PC, is::IS) 
+	PCBDDCGetPrimalVerticesIS(petsclib::PetscLibType,pc::PC, is::AbstractIS) 
 Get user defined primal vertices set with `PCBDDCSetPrimalVerticesIS()`
 
 Collective
@@ -8097,9 +8097,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCGetPrimalVerticesIS"))
 """
-function PCBDDCGetPrimalVerticesIS(petsclib::PetscLibType, pc::PC, is::IS) end
+function PCBDDCGetPrimalVerticesIS(petsclib::PetscLibType, pc::PC, is::AbstractIS) end
 
-@for_petsc function PCBDDCGetPrimalVerticesIS(petsclib::$UnionPetscLib, pc::PC, is::IS )
+@for_petsc function PCBDDCGetPrimalVerticesIS(petsclib::$UnionPetscLib, pc::PC, is::AbstractIS )
 
     @chk ccall(
                (:PCBDDCGetPrimalVerticesIS, $petsc_library),
@@ -8113,7 +8113,7 @@ function PCBDDCGetPrimalVerticesIS(petsclib::PetscLibType, pc::PC, is::IS) end
 end 
 
 """
-	PCBDDCSetPrimalVerticesLocalIS(petsclib::PetscLibType,pc::PC, PrimalVertices::IS) 
+	PCBDDCSetPrimalVerticesLocalIS(petsclib::PetscLibType,pc::PC, PrimalVertices::AbstractIS) 
 Set additional user defined primal vertices in `PCBDDC`
 
 Collective
@@ -8129,9 +8129,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCSetPrimalVerticesLocalIS"))
 """
-function PCBDDCSetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::PC, PrimalVertices::IS) end
+function PCBDDCSetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::PC, PrimalVertices::AbstractIS) end
 
-@for_petsc function PCBDDCSetPrimalVerticesLocalIS(petsclib::$UnionPetscLib, pc::PC, PrimalVertices::IS )
+@for_petsc function PCBDDCSetPrimalVerticesLocalIS(petsclib::$UnionPetscLib, pc::PC, PrimalVertices::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetPrimalVerticesLocalIS, $petsc_library),
@@ -8145,7 +8145,7 @@ function PCBDDCSetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::PC, PrimalVe
 end 
 
 """
-	PCBDDCGetPrimalVerticesLocalIS(petsclib::PetscLibType,pc::PC, is::IS) 
+	PCBDDCGetPrimalVerticesLocalIS(petsclib::PetscLibType,pc::PC, is::AbstractIS) 
 Get user defined primal vertices set with `PCBDDCSetPrimalVerticesLocalIS()`
 
 Collective
@@ -8163,9 +8163,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCGetPrimalVerticesLocalIS"))
 """
-function PCBDDCGetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::PC, is::IS) end
+function PCBDDCGetPrimalVerticesLocalIS(petsclib::PetscLibType, pc::PC, is::AbstractIS) end
 
-@for_petsc function PCBDDCGetPrimalVerticesLocalIS(petsclib::$UnionPetscLib, pc::PC, is::IS )
+@for_petsc function PCBDDCGetPrimalVerticesLocalIS(petsclib::$UnionPetscLib, pc::PC, is::AbstractIS )
 
     @chk ccall(
                (:PCBDDCGetPrimalVerticesLocalIS, $petsc_library),
@@ -8249,7 +8249,7 @@ function PCBDDCSetLevels(petsclib::PetscLibType, pc::PC, levels::PetscInt) end
 end 
 
 """
-	PCBDDCSetDirichletBoundaries(petsclib::PetscLibType,pc::PC, DirichletBoundaries::IS) 
+	PCBDDCSetDirichletBoundaries(petsclib::PetscLibType,pc::PC, DirichletBoundaries::AbstractIS) 
 Set the `IS` defining Dirichlet boundaries for the global problem.
 
 Collective
@@ -8265,9 +8265,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCSetDirichletBoundaries"))
 """
-function PCBDDCSetDirichletBoundaries(petsclib::PetscLibType, pc::PC, DirichletBoundaries::IS) end
+function PCBDDCSetDirichletBoundaries(petsclib::PetscLibType, pc::PC, DirichletBoundaries::AbstractIS) end
 
-@for_petsc function PCBDDCSetDirichletBoundaries(petsclib::$UnionPetscLib, pc::PC, DirichletBoundaries::IS )
+@for_petsc function PCBDDCSetDirichletBoundaries(petsclib::$UnionPetscLib, pc::PC, DirichletBoundaries::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetDirichletBoundaries, $petsc_library),
@@ -8281,7 +8281,7 @@ function PCBDDCSetDirichletBoundaries(petsclib::PetscLibType, pc::PC, DirichletB
 end 
 
 """
-	PCBDDCSetDirichletBoundariesLocal(petsclib::PetscLibType,pc::PC, DirichletBoundaries::IS) 
+	PCBDDCSetDirichletBoundariesLocal(petsclib::PetscLibType,pc::PC, DirichletBoundaries::AbstractIS) 
 Set the `IS` defining Dirichlet boundaries for the global problem in local ordering.
 
 Collective
@@ -8297,9 +8297,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCSetDirichletBoundariesLocal"))
 """
-function PCBDDCSetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC, DirichletBoundaries::IS) end
+function PCBDDCSetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC, DirichletBoundaries::AbstractIS) end
 
-@for_petsc function PCBDDCSetDirichletBoundariesLocal(petsclib::$UnionPetscLib, pc::PC, DirichletBoundaries::IS )
+@for_petsc function PCBDDCSetDirichletBoundariesLocal(petsclib::$UnionPetscLib, pc::PC, DirichletBoundaries::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetDirichletBoundariesLocal, $petsc_library),
@@ -8313,7 +8313,7 @@ function PCBDDCSetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC, Diric
 end 
 
 """
-	PCBDDCSetNeumannBoundaries(petsclib::PetscLibType,pc::PC, NeumannBoundaries::IS) 
+	PCBDDCSetNeumannBoundaries(petsclib::PetscLibType,pc::PC, NeumannBoundaries::AbstractIS) 
 Set the `IS` defining Neumann boundaries for the global problem.
 
 Collective
@@ -8329,9 +8329,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCSetNeumannBoundaries"))
 """
-function PCBDDCSetNeumannBoundaries(petsclib::PetscLibType, pc::PC, NeumannBoundaries::IS) end
+function PCBDDCSetNeumannBoundaries(petsclib::PetscLibType, pc::PC, NeumannBoundaries::AbstractIS) end
 
-@for_petsc function PCBDDCSetNeumannBoundaries(petsclib::$UnionPetscLib, pc::PC, NeumannBoundaries::IS )
+@for_petsc function PCBDDCSetNeumannBoundaries(petsclib::$UnionPetscLib, pc::PC, NeumannBoundaries::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetNeumannBoundaries, $petsc_library),
@@ -8345,7 +8345,7 @@ function PCBDDCSetNeumannBoundaries(petsclib::PetscLibType, pc::PC, NeumannBound
 end 
 
 """
-	PCBDDCSetNeumannBoundariesLocal(petsclib::PetscLibType,pc::PC, NeumannBoundaries::IS) 
+	PCBDDCSetNeumannBoundariesLocal(petsclib::PetscLibType,pc::PC, NeumannBoundaries::AbstractIS) 
 Set the `IS` defining Neumann boundaries for the global problem in local ordering.
 
 Collective
@@ -8361,9 +8361,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCSetNeumannBoundariesLocal"))
 """
-function PCBDDCSetNeumannBoundariesLocal(petsclib::PetscLibType, pc::PC, NeumannBoundaries::IS) end
+function PCBDDCSetNeumannBoundariesLocal(petsclib::PetscLibType, pc::PC, NeumannBoundaries::AbstractIS) end
 
-@for_petsc function PCBDDCSetNeumannBoundariesLocal(petsclib::$UnionPetscLib, pc::PC, NeumannBoundaries::IS )
+@for_petsc function PCBDDCSetNeumannBoundariesLocal(petsclib::$UnionPetscLib, pc::PC, NeumannBoundaries::AbstractIS )
 
     @chk ccall(
                (:PCBDDCSetNeumannBoundariesLocal, $petsc_library),
@@ -8377,7 +8377,7 @@ function PCBDDCSetNeumannBoundariesLocal(petsclib::PetscLibType, pc::PC, Neumann
 end 
 
 """
-	PCBDDCGetDirichletBoundaries(petsclib::PetscLibType,pc::PC, DirichletBoundaries::IS) 
+	PCBDDCGetDirichletBoundaries(petsclib::PetscLibType,pc::PC, DirichletBoundaries::AbstractIS) 
 Get parallel `IS` for Dirichlet boundaries
 
 Collective
@@ -8395,9 +8395,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCGetDirichletBoundaries"))
 """
-function PCBDDCGetDirichletBoundaries(petsclib::PetscLibType, pc::PC, DirichletBoundaries::IS) end
+function PCBDDCGetDirichletBoundaries(petsclib::PetscLibType, pc::PC, DirichletBoundaries::AbstractIS) end
 
-@for_petsc function PCBDDCGetDirichletBoundaries(petsclib::$UnionPetscLib, pc::PC, DirichletBoundaries::IS )
+@for_petsc function PCBDDCGetDirichletBoundaries(petsclib::$UnionPetscLib, pc::PC, DirichletBoundaries::AbstractIS )
 
     @chk ccall(
                (:PCBDDCGetDirichletBoundaries, $petsc_library),
@@ -8411,7 +8411,7 @@ function PCBDDCGetDirichletBoundaries(petsclib::PetscLibType, pc::PC, DirichletB
 end 
 
 """
-	PCBDDCGetDirichletBoundariesLocal(petsclib::PetscLibType,pc::PC, DirichletBoundaries::IS) 
+	PCBDDCGetDirichletBoundariesLocal(petsclib::PetscLibType,pc::PC, DirichletBoundaries::AbstractIS) 
 Get parallel `IS` for Dirichlet boundaries (in local ordering)
 
 Collective
@@ -8429,9 +8429,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCGetDirichletBoundariesLocal"))
 """
-function PCBDDCGetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC, DirichletBoundaries::IS) end
+function PCBDDCGetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC, DirichletBoundaries::AbstractIS) end
 
-@for_petsc function PCBDDCGetDirichletBoundariesLocal(petsclib::$UnionPetscLib, pc::PC, DirichletBoundaries::IS )
+@for_petsc function PCBDDCGetDirichletBoundariesLocal(petsclib::$UnionPetscLib, pc::PC, DirichletBoundaries::AbstractIS )
 
     @chk ccall(
                (:PCBDDCGetDirichletBoundariesLocal, $petsc_library),
@@ -8445,7 +8445,7 @@ function PCBDDCGetDirichletBoundariesLocal(petsclib::PetscLibType, pc::PC, Diric
 end 
 
 """
-	PCBDDCGetNeumannBoundaries(petsclib::PetscLibType,pc::PC, NeumannBoundaries::IS) 
+	PCBDDCGetNeumannBoundaries(petsclib::PetscLibType,pc::PC, NeumannBoundaries::AbstractIS) 
 Get parallel `IS` for Neumann boundaries
 
 Not Collective
@@ -8463,9 +8463,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCGetNeumannBoundaries"))
 """
-function PCBDDCGetNeumannBoundaries(petsclib::PetscLibType, pc::PC, NeumannBoundaries::IS) end
+function PCBDDCGetNeumannBoundaries(petsclib::PetscLibType, pc::PC, NeumannBoundaries::AbstractIS) end
 
-@for_petsc function PCBDDCGetNeumannBoundaries(petsclib::$UnionPetscLib, pc::PC, NeumannBoundaries::IS )
+@for_petsc function PCBDDCGetNeumannBoundaries(petsclib::$UnionPetscLib, pc::PC, NeumannBoundaries::AbstractIS )
 
     @chk ccall(
                (:PCBDDCGetNeumannBoundaries, $petsc_library),
@@ -8479,7 +8479,7 @@ function PCBDDCGetNeumannBoundaries(petsclib::PetscLibType, pc::PC, NeumannBound
 end 
 
 """
-	PCBDDCGetNeumannBoundariesLocal(petsclib::PetscLibType,pc::PC, NeumannBoundaries::IS) 
+	PCBDDCGetNeumannBoundariesLocal(petsclib::PetscLibType,pc::PC, NeumannBoundaries::AbstractIS) 
 Get parallel `IS` for Neumann boundaries (in local ordering)
 
 Not Collective
@@ -8497,9 +8497,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCGetNeumannBoundariesLocal"))
 """
-function PCBDDCGetNeumannBoundariesLocal(petsclib::PetscLibType, pc::PC, NeumannBoundaries::IS) end
+function PCBDDCGetNeumannBoundariesLocal(petsclib::PetscLibType, pc::PC, NeumannBoundaries::AbstractIS) end
 
-@for_petsc function PCBDDCGetNeumannBoundariesLocal(petsclib::$UnionPetscLib, pc::PC, NeumannBoundaries::IS )
+@for_petsc function PCBDDCGetNeumannBoundariesLocal(petsclib::$UnionPetscLib, pc::PC, NeumannBoundaries::AbstractIS )
 
     @chk ccall(
                (:PCBDDCGetNeumannBoundariesLocal, $petsc_library),
@@ -8548,7 +8548,7 @@ function PCBDDCSetLocalAdjacencyGraph(petsclib::PetscLibType, pc::PC, nvtxs::Pet
 end 
 
 """
-	PCBDDCSetDofsSplittingLocal(petsclib::PetscLibType,pc::PC, n_is::PetscInt, ISForDofs::Vector{IS}) 
+	PCBDDCSetDofsSplittingLocal(petsclib::PetscLibType,pc::PC, n_is::PetscInt, ISForDofs::Vector{<:AbstractIS}) 
 Set the `IS` defining fields of the local subdomain matrix
 
 Collective
@@ -8565,9 +8565,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCSetDofsSplittingLocal"))
 """
-function PCBDDCSetDofsSplittingLocal(petsclib::PetscLibType, pc::PC, n_is::PetscInt, ISForDofs::Vector{IS}) end
+function PCBDDCSetDofsSplittingLocal(petsclib::PetscLibType, pc::PC, n_is::PetscInt, ISForDofs::Vector{<:AbstractIS}) end
 
-@for_petsc function PCBDDCSetDofsSplittingLocal(petsclib::$UnionPetscLib, pc::PC, n_is::$PetscInt, ISForDofs::Vector{IS} )
+@for_petsc function PCBDDCSetDofsSplittingLocal(petsclib::$UnionPetscLib, pc::PC, n_is::$PetscInt, ISForDofs::Vector{<:AbstractIS} )
 
     @chk ccall(
                (:PCBDDCSetDofsSplittingLocal, $petsc_library),
@@ -8581,7 +8581,7 @@ function PCBDDCSetDofsSplittingLocal(petsclib::PetscLibType, pc::PC, n_is::Petsc
 end 
 
 """
-	PCBDDCSetDofsSplitting(petsclib::PetscLibType,pc::PC, n_is::PetscInt, ISForDofs::Vector{IS}) 
+	PCBDDCSetDofsSplitting(petsclib::PetscLibType,pc::PC, n_is::PetscInt, ISForDofs::Vector{<:AbstractIS}) 
 Set the `IS` defining fields of the global matrix
 
 Collective
@@ -8598,9 +8598,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCBDDCSetDofsSplitting"))
 """
-function PCBDDCSetDofsSplitting(petsclib::PetscLibType, pc::PC, n_is::PetscInt, ISForDofs::Vector{IS}) end
+function PCBDDCSetDofsSplitting(petsclib::PetscLibType, pc::PC, n_is::PetscInt, ISForDofs::Vector{<:AbstractIS}) end
 
-@for_petsc function PCBDDCSetDofsSplitting(petsclib::$UnionPetscLib, pc::PC, n_is::$PetscInt, ISForDofs::Vector{IS} )
+@for_petsc function PCBDDCSetDofsSplitting(petsclib::$UnionPetscLib, pc::PC, n_is::$PetscInt, ISForDofs::Vector{<:AbstractIS} )
 
     @chk ccall(
                (:PCBDDCSetDofsSplitting, $petsc_library),
@@ -8614,7 +8614,7 @@ function PCBDDCSetDofsSplitting(petsclib::PetscLibType, pc::PC, n_is::PetscInt, 
 end 
 
 """
-	PCBDDCMatFETIDPGetRHS(petsclib::PetscLibType,fetidp_mat::PetscMat, standard_rhs::PetscVec, fetidp_flux_rhs::PetscVec) 
+	PCBDDCMatFETIDPGetRHS(petsclib::PetscLibType,fetidp_mat::AbstractPetscMat, standard_rhs::AbstractPetscVec, fetidp_flux_rhs::AbstractPetscVec) 
 Compute the right
 
 Collective
@@ -8633,9 +8633,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCBDDCMatFETIDPGetRHS"))
 """
-function PCBDDCMatFETIDPGetRHS(petsclib::PetscLibType, fetidp_mat::PetscMat, standard_rhs::PetscVec, fetidp_flux_rhs::PetscVec) end
+function PCBDDCMatFETIDPGetRHS(petsclib::PetscLibType, fetidp_mat::AbstractPetscMat, standard_rhs::AbstractPetscVec, fetidp_flux_rhs::AbstractPetscVec) end
 
-@for_petsc function PCBDDCMatFETIDPGetRHS(petsclib::$UnionPetscLib, fetidp_mat::PetscMat, standard_rhs::PetscVec, fetidp_flux_rhs::PetscVec )
+@for_petsc function PCBDDCMatFETIDPGetRHS(petsclib::$UnionPetscLib, fetidp_mat::AbstractPetscMat, standard_rhs::AbstractPetscVec, fetidp_flux_rhs::AbstractPetscVec )
 
     @chk ccall(
                (:PCBDDCMatFETIDPGetRHS, $petsc_library),
@@ -8649,7 +8649,7 @@ function PCBDDCMatFETIDPGetRHS(petsclib::PetscLibType, fetidp_mat::PetscMat, sta
 end 
 
 """
-	PCBDDCMatFETIDPGetSolution(petsclib::PetscLibType,fetidp_mat::PetscMat, fetidp_flux_sol::PetscVec, standard_sol::PetscVec) 
+	PCBDDCMatFETIDPGetSolution(petsclib::PetscLibType,fetidp_mat::AbstractPetscMat, fetidp_flux_sol::AbstractPetscVec, standard_sol::AbstractPetscVec) 
 Compute the physical solution using the solution of the FETI
 
 Collective
@@ -8668,9 +8668,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCBDDCMatFETIDPGetSolution"))
 """
-function PCBDDCMatFETIDPGetSolution(petsclib::PetscLibType, fetidp_mat::PetscMat, fetidp_flux_sol::PetscVec, standard_sol::PetscVec) end
+function PCBDDCMatFETIDPGetSolution(petsclib::PetscLibType, fetidp_mat::AbstractPetscMat, fetidp_flux_sol::AbstractPetscVec, standard_sol::AbstractPetscVec) end
 
-@for_petsc function PCBDDCMatFETIDPGetSolution(petsclib::$UnionPetscLib, fetidp_mat::PetscMat, fetidp_flux_sol::PetscVec, standard_sol::PetscVec )
+@for_petsc function PCBDDCMatFETIDPGetSolution(petsclib::$UnionPetscLib, fetidp_mat::AbstractPetscMat, fetidp_flux_sol::AbstractPetscVec, standard_sol::AbstractPetscVec )
 
     @chk ccall(
                (:PCBDDCMatFETIDPGetSolution, $petsc_library),
@@ -8777,14 +8777,14 @@ function PCBDDCFinalizePackage(petsclib::PetscLibType) end
 end 
 
 """
-	PCHPDDMSetAuxiliaryMat(petsclib::PetscLibType,pc::PC, is::IS, A::PetscMat, setup::external, ctx::Cvoid) 
+	PCHPDDMSetAuxiliaryMat(petsclib::PetscLibType,pc::PC, is::AbstractIS, A::AbstractPetscMat, setup::external, ctx::Cvoid) 
 
 # External Links
 $(_doc_external("Ksp/PCHPDDMSetAuxiliaryMat"))
 """
-function PCHPDDMSetAuxiliaryMat(petsclib::PetscLibType, pc::PC, is::IS, A::PetscMat, setup::external, ctx::Cvoid) end
+function PCHPDDMSetAuxiliaryMat(petsclib::PetscLibType, pc::PC, is::AbstractIS, A::AbstractPetscMat, setup::external, ctx::Cvoid) end
 
-@for_petsc function PCHPDDMSetAuxiliaryMat(petsclib::$UnionPetscLib, pc::PC, is::IS, A::PetscMat, setup::external, ctx::Cvoid )
+@for_petsc function PCHPDDMSetAuxiliaryMat(petsclib::$UnionPetscLib, pc::PC, is::AbstractIS, A::AbstractPetscMat, setup::external, ctx::Cvoid )
 
     @chk ccall(
                (:PCHPDDMSetAuxiliaryMat, $petsc_library),
@@ -8819,14 +8819,14 @@ function PCHPDDMHasNeumannMat(petsclib::PetscLibType, pc::PC, has::PetscBool) en
 end 
 
 """
-	PCHPDDMSetRHSMat(petsclib::PetscLibType,pc::PC, B::PetscMat) 
+	PCHPDDMSetRHSMat(petsclib::PetscLibType,pc::PC, B::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("Ksp/PCHPDDMSetRHSMat"))
 """
-function PCHPDDMSetRHSMat(petsclib::PetscLibType, pc::PC, B::PetscMat) end
+function PCHPDDMSetRHSMat(petsclib::PetscLibType, pc::PC, B::AbstractPetscMat) end
 
-@for_petsc function PCHPDDMSetRHSMat(petsclib::$UnionPetscLib, pc::PC, B::PetscMat )
+@for_petsc function PCHPDDMSetRHSMat(petsclib::$UnionPetscLib, pc::PC, B::AbstractPetscMat )
 
     @chk ccall(
                (:PCHPDDMSetRHSMat, $petsc_library),
@@ -8953,14 +8953,14 @@ function PCHPDDMGetSTShareSubKSP(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	PCHPDDMSetDeflationMat(petsclib::PetscLibType,pc::PC, is::IS, U::PetscMat) 
+	PCHPDDMSetDeflationMat(petsclib::PetscLibType,pc::PC, is::AbstractIS, U::AbstractPetscMat) 
 
 # External Links
 $(_doc_external("Ksp/PCHPDDMSetDeflationMat"))
 """
-function PCHPDDMSetDeflationMat(petsclib::PetscLibType, pc::PC, is::IS, U::PetscMat) end
+function PCHPDDMSetDeflationMat(petsclib::PetscLibType, pc::PC, is::AbstractIS, U::AbstractPetscMat) end
 
-@for_petsc function PCHPDDMSetDeflationMat(petsclib::$UnionPetscLib, pc::PC, is::IS, U::PetscMat )
+@for_petsc function PCHPDDMSetDeflationMat(petsclib::$UnionPetscLib, pc::PC, is::AbstractIS, U::AbstractPetscMat )
 
     @chk ccall(
                (:PCHPDDMSetDeflationMat, $petsc_library),
@@ -9146,14 +9146,14 @@ function PCPatchGetPartitionOfUnity(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	npatch::PetscInt = PCPatchGetSubKSP(petsclib::PetscLibType,pc::PC, ksp::PetscKSP) 
+	npatch::PetscInt = PCPatchGetSubKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
 
 # External Links
 $(_doc_external("Ksp/PCPatchGetSubKSP"))
 """
-function PCPatchGetSubKSP(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
+function PCPatchGetSubKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
 
-@for_petsc function PCPatchGetSubKSP(petsclib::$UnionPetscLib, pc::PC, ksp::PetscKSP )
+@for_petsc function PCPatchGetSubKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 	npatch_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -9278,14 +9278,14 @@ function PCPatchSetConstructType(petsclib::PetscLibType, pc::PC, ctype::PCPatchC
 end 
 
 """
-	bs::PetscInt,nodesPerCell::PetscInt,subspaceOffsets::PetscInt,ghostBcNodes::PetscInt,globalBcNodes::PetscInt = PCPatchSetDiscretisationInfo(petsclib::PetscLibType,pc::PC, nsubspaces::PetscInt, dms::PetscDM, cellNodeMap::PetscInt, numGhostBcs::PetscInt, numGlobalBcs::PetscInt) 
+	bs::PetscInt,nodesPerCell::PetscInt,subspaceOffsets::PetscInt,ghostBcNodes::PetscInt,globalBcNodes::PetscInt = PCPatchSetDiscretisationInfo(petsclib::PetscLibType,pc::PC, nsubspaces::PetscInt, dms::AbstractPetscDM, cellNodeMap::PetscInt, numGhostBcs::PetscInt, numGlobalBcs::PetscInt) 
 
 # External Links
 $(_doc_external("Ksp/PCPatchSetDiscretisationInfo"))
 """
-function PCPatchSetDiscretisationInfo(petsclib::PetscLibType, pc::PC, nsubspaces::PetscInt, dms::PetscDM, cellNodeMap::PetscInt, numGhostBcs::PetscInt, numGlobalBcs::PetscInt) end
+function PCPatchSetDiscretisationInfo(petsclib::PetscLibType, pc::PC, nsubspaces::PetscInt, dms::AbstractPetscDM, cellNodeMap::PetscInt, numGhostBcs::PetscInt, numGlobalBcs::PetscInt) end
 
-@for_petsc function PCPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, pc::PC, nsubspaces::$PetscInt, dms::PetscDM, cellNodeMap::$PetscInt, numGhostBcs::$PetscInt, numGlobalBcs::$PetscInt )
+@for_petsc function PCPatchSetDiscretisationInfo(petsclib::$UnionPetscLib, pc::PC, nsubspaces::$PetscInt, dms::AbstractPetscDM, cellNodeMap::$PetscInt, numGhostBcs::$PetscInt, numGlobalBcs::$PetscInt )
 	dms_ = Ref(dms.ptr)
 	bs_ = Ref{$PetscInt}()
 	nodesPerCell_ = Ref{$PetscInt}()
@@ -9487,7 +9487,7 @@ function PCPatchSetComputeOperatorInteriorFacets(petsclib::PetscLibType, pc::PC,
 end 
 
 """
-	n_loc::PetscInt,first_loc::PetscInt = PCBJacobiGetSubKSP(petsclib::PetscLibType,pc::PC, ksp::Vector{PetscKSP}) 
+	n_loc::PetscInt,first_loc::PetscInt = PCBJacobiGetSubKSP(petsclib::PetscLibType,pc::PC, ksp::Vector{<:AbstractPetscKSP}) 
 Gets the local `KSP` contexts for all blocks on
 this processor.
 
@@ -9508,9 +9508,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCBJacobiGetSubKSP"))
 """
-function PCBJacobiGetSubKSP(petsclib::PetscLibType, pc::PC, ksp::Vector{PetscKSP}) end
+function PCBJacobiGetSubKSP(petsclib::PetscLibType, pc::PC, ksp::Vector{<:AbstractPetscKSP}) end
 
-@for_petsc function PCBJacobiGetSubKSP(petsclib::$UnionPetscLib, pc::PC, ksp::Vector{PetscKSP} )
+@for_petsc function PCBJacobiGetSubKSP(petsclib::$UnionPetscLib, pc::PC, ksp::Vector{<:AbstractPetscKSP} )
 	n_loc_ = Ref{$PetscInt}()
 	first_loc_ = Ref{$PetscInt}()
 	ksp_ = Ref(pointer(ksp))
@@ -9678,14 +9678,14 @@ function PCBJacobiGetLocalBlocks(petsclib::PetscLibType, pc::PC, blocks::PetscIn
 end 
 
 """
-	PCBJKOKKOSSetKSP(petsclib::PetscLibType,pc::PC, ksp::PetscKSP) 
+	PCBJKOKKOSSetKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
 
 # External Links
 $(_doc_external("Ksp/PCBJKOKKOSSetKSP"))
 """
-function PCBJKOKKOSSetKSP(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
+function PCBJKOKKOSSetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
 
-@for_petsc function PCBJKOKKOSSetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::PetscKSP )
+@for_petsc function PCBJKOKKOSSetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 
     @chk ccall(
                (:PCBJKOKKOSSetKSP, $petsc_library),
@@ -9699,14 +9699,14 @@ function PCBJKOKKOSSetKSP(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
 end 
 
 """
-	PCBJKOKKOSGetKSP(petsclib::PetscLibType,pc::PC, ksp::PetscKSP) 
+	PCBJKOKKOSGetKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
 
 # External Links
 $(_doc_external("Ksp/PCBJKOKKOSGetKSP"))
 """
-function PCBJKOKKOSGetKSP(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
+function PCBJKOKKOSGetKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
 
-@for_petsc function PCBJKOKKOSGetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::PetscKSP )
+@for_petsc function PCBJKOKKOSGetKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -10029,7 +10029,7 @@ function PCRedundantSetScatter(petsclib::PetscLibType, pc::PC, in::VecScatter, o
 end 
 
 """
-	PCRedundantGetKSP(petsclib::PetscLibType,pc::PC, innerksp::PetscKSP) 
+	PCRedundantGetKSP(petsclib::PetscLibType,pc::PC, innerksp::AbstractPetscKSP) 
 Gets the less parallel `KSP` created by the redundant `PC`.
 
 Not Collective
@@ -10047,9 +10047,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCRedundantGetKSP"))
 """
-function PCRedundantGetKSP(petsclib::PetscLibType, pc::PC, innerksp::PetscKSP) end
+function PCRedundantGetKSP(petsclib::PetscLibType, pc::PC, innerksp::AbstractPetscKSP) end
 
-@for_petsc function PCRedundantGetKSP(petsclib::$UnionPetscLib, pc::PC, innerksp::PetscKSP )
+@for_petsc function PCRedundantGetKSP(petsclib::$UnionPetscLib, pc::PC, innerksp::AbstractPetscKSP )
 	innerksp_ = Ref(innerksp.ptr)
 
     @chk ccall(
@@ -10065,7 +10065,7 @@ function PCRedundantGetKSP(petsclib::PetscLibType, pc::PC, innerksp::PetscKSP) e
 end 
 
 """
-	PCRedundantGetOperators(petsclib::PetscLibType,pc::PC, mat::PetscMat, pmat::PetscMat) 
+	PCRedundantGetOperators(petsclib::PetscLibType,pc::PC, mat::AbstractPetscMat, pmat::AbstractPetscMat) 
 gets the sequential linear system matrix and matrix used to construct the preconditioner
 
 Not Collective
@@ -10084,9 +10084,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCRedundantGetOperators"))
 """
-function PCRedundantGetOperators(petsclib::PetscLibType, pc::PC, mat::PetscMat, pmat::PetscMat) end
+function PCRedundantGetOperators(petsclib::PetscLibType, pc::PC, mat::AbstractPetscMat, pmat::AbstractPetscMat) end
 
-@for_petsc function PCRedundantGetOperators(petsclib::$UnionPetscLib, pc::PC, mat::PetscMat, pmat::PetscMat )
+@for_petsc function PCRedundantGetOperators(petsclib::$UnionPetscLib, pc::PC, mat::AbstractPetscMat, pmat::AbstractPetscMat )
 	mat_ = Ref(mat.ptr)
 	pmat_ = Ref(pmat.ptr)
 
@@ -10104,7 +10104,7 @@ function PCRedundantGetOperators(petsclib::PetscLibType, pc::PC, mat::PetscMat, 
 end 
 
 """
-	PCLMVMSetUpdateVec(petsclib::PetscLibType,pc::PC, X::PetscVec) 
+	PCLMVMSetUpdateVec(petsclib::PetscLibType,pc::PC, X::AbstractPetscVec) 
 Set the vector to be used as solution update for the internal LMVM matrix.
 
 Input Parameters:
@@ -10118,9 +10118,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCLMVMSetUpdateVec"))
 """
-function PCLMVMSetUpdateVec(petsclib::PetscLibType, pc::PC, X::PetscVec) end
+function PCLMVMSetUpdateVec(petsclib::PetscLibType, pc::PC, X::AbstractPetscVec) end
 
-@for_petsc function PCLMVMSetUpdateVec(petsclib::$UnionPetscLib, pc::PC, X::PetscVec )
+@for_petsc function PCLMVMSetUpdateVec(petsclib::$UnionPetscLib, pc::PC, X::AbstractPetscVec )
 
     @chk ccall(
                (:PCLMVMSetUpdateVec, $petsc_library),
@@ -10134,7 +10134,7 @@ function PCLMVMSetUpdateVec(petsclib::PetscLibType, pc::PC, X::PetscVec) end
 end 
 
 """
-	PCLMVMSetMatLMVM(petsclib::PetscLibType,pc::PC, B::PetscMat) 
+	PCLMVMSetMatLMVM(petsclib::PetscLibType,pc::PC, B::AbstractPetscMat) 
 Replaces the `MATLMVM` matrix inside the preconditioner with the one provided by the user.
 
 Input Parameters:
@@ -10148,9 +10148,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCLMVMSetMatLMVM"))
 """
-function PCLMVMSetMatLMVM(petsclib::PetscLibType, pc::PC, B::PetscMat) end
+function PCLMVMSetMatLMVM(petsclib::PetscLibType, pc::PC, B::AbstractPetscMat) end
 
-@for_petsc function PCLMVMSetMatLMVM(petsclib::$UnionPetscLib, pc::PC, B::PetscMat )
+@for_petsc function PCLMVMSetMatLMVM(petsclib::$UnionPetscLib, pc::PC, B::AbstractPetscMat )
 
     @chk ccall(
                (:PCLMVMSetMatLMVM, $petsc_library),
@@ -10164,7 +10164,7 @@ function PCLMVMSetMatLMVM(petsclib::PetscLibType, pc::PC, B::PetscMat) end
 end 
 
 """
-	PCLMVMGetMatLMVM(petsclib::PetscLibType,pc::PC, B::PetscMat) 
+	PCLMVMGetMatLMVM(petsclib::PetscLibType,pc::PC, B::AbstractPetscMat) 
 Returns a pointer to the underlying `MATLMVM` matrix.
 
 Input Parameter:
@@ -10180,9 +10180,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCLMVMGetMatLMVM"))
 """
-function PCLMVMGetMatLMVM(petsclib::PetscLibType, pc::PC, B::PetscMat) end
+function PCLMVMGetMatLMVM(petsclib::PetscLibType, pc::PC, B::AbstractPetscMat) end
 
-@for_petsc function PCLMVMGetMatLMVM(petsclib::$UnionPetscLib, pc::PC, B::PetscMat )
+@for_petsc function PCLMVMGetMatLMVM(petsclib::$UnionPetscLib, pc::PC, B::AbstractPetscMat )
 	B_ = Ref(B.ptr)
 
     @chk ccall(
@@ -10198,7 +10198,7 @@ function PCLMVMGetMatLMVM(petsclib::PetscLibType, pc::PC, B::PetscMat) end
 end 
 
 """
-	PCLMVMSetIS(petsclib::PetscLibType,pc::PC, inactive::IS) 
+	PCLMVMSetIS(petsclib::PetscLibType,pc::PC, inactive::AbstractIS) 
 Sets the index sets that reduce the `PC` application.
 
 Input Parameters:
@@ -10212,9 +10212,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCLMVMSetIS"))
 """
-function PCLMVMSetIS(petsclib::PetscLibType, pc::PC, inactive::IS) end
+function PCLMVMSetIS(petsclib::PetscLibType, pc::PC, inactive::AbstractIS) end
 
-@for_petsc function PCLMVMSetIS(petsclib::$UnionPetscLib, pc::PC, inactive::IS )
+@for_petsc function PCLMVMSetIS(petsclib::$UnionPetscLib, pc::PC, inactive::AbstractIS )
 
     @chk ccall(
                (:PCLMVMSetIS, $petsc_library),
@@ -10257,7 +10257,7 @@ function PCLMVMClearIS(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	PCRedistributeGetKSP(petsclib::PetscLibType,pc::PC, innerksp::PetscKSP) 
+	PCRedistributeGetKSP(petsclib::PetscLibType,pc::PC, innerksp::AbstractPetscKSP) 
 Gets the `KSP` created by the `PCREDISTRIBUTE`
 
 Not Collective
@@ -10275,9 +10275,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCRedistributeGetKSP"))
 """
-function PCRedistributeGetKSP(petsclib::PetscLibType, pc::PC, innerksp::PetscKSP) end
+function PCRedistributeGetKSP(petsclib::PetscLibType, pc::PC, innerksp::AbstractPetscKSP) end
 
-@for_petsc function PCRedistributeGetKSP(petsclib::$UnionPetscLib, pc::PC, innerksp::PetscKSP )
+@for_petsc function PCRedistributeGetKSP(petsclib::$UnionPetscLib, pc::PC, innerksp::AbstractPetscKSP )
 	innerksp_ = Ref(innerksp.ptr)
 
     @chk ccall(
@@ -10293,7 +10293,7 @@ function PCRedistributeGetKSP(petsclib::PetscLibType, pc::PC, innerksp::PetscKSP
 end 
 
 """
-	PCFieldSplitRestrictIS(petsclib::PetscLibType,pc::PC, isy::IS) 
+	PCFieldSplitRestrictIS(petsclib::PetscLibType,pc::PC, isy::AbstractIS) 
 Restricts the fieldsplit `IS`s to be within a given `IS`.
 
 Input Parameters:
@@ -10307,9 +10307,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCFieldSplitRestrictIS"))
 """
-function PCFieldSplitRestrictIS(petsclib::PetscLibType, pc::PC, isy::IS) end
+function PCFieldSplitRestrictIS(petsclib::PetscLibType, pc::PC, isy::AbstractIS) end
 
-@for_petsc function PCFieldSplitRestrictIS(petsclib::$UnionPetscLib, pc::PC, isy::IS )
+@for_petsc function PCFieldSplitRestrictIS(petsclib::$UnionPetscLib, pc::PC, isy::AbstractIS )
 
     @chk ccall(
                (:PCFieldSplitRestrictIS, $petsc_library),
@@ -10509,7 +10509,7 @@ function PCFieldSplitGetOffDiagUseAmat(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	PCFieldSplitSetIS(petsclib::PetscLibType,pc::PC, splitname::String, is::IS) 
+	PCFieldSplitSetIS(petsclib::PetscLibType,pc::PC, splitname::String, is::AbstractIS) 
 Sets the exact elements for a split in a `PCFIELDSPLIT`
 
 Logically Collective
@@ -10526,9 +10526,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCFieldSplitSetIS"))
 """
-function PCFieldSplitSetIS(petsclib::PetscLibType, pc::PC, splitname::String, is::IS) end
+function PCFieldSplitSetIS(petsclib::PetscLibType, pc::PC, splitname::String, is::AbstractIS) end
 
-@for_petsc function PCFieldSplitSetIS(petsclib::$UnionPetscLib, pc::PC, splitname::String, is::IS )
+@for_petsc function PCFieldSplitSetIS(petsclib::$UnionPetscLib, pc::PC, splitname::String, is::AbstractIS )
 
     @chk ccall(
                (:PCFieldSplitSetIS, $petsc_library),
@@ -10542,7 +10542,7 @@ function PCFieldSplitSetIS(petsclib::PetscLibType, pc::PC, splitname::String, is
 end 
 
 """
-	PCFieldSplitGetIS(petsclib::PetscLibType,pc::PC, splitname::String, is::IS) 
+	PCFieldSplitGetIS(petsclib::PetscLibType,pc::PC, splitname::String, is::AbstractIS) 
 Retrieves the elements for a split as an `IS`
 
 Logically Collective
@@ -10561,9 +10561,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCFieldSplitGetIS"))
 """
-function PCFieldSplitGetIS(petsclib::PetscLibType, pc::PC, splitname::String, is::IS) end
+function PCFieldSplitGetIS(petsclib::PetscLibType, pc::PC, splitname::String, is::AbstractIS) end
 
-@for_petsc function PCFieldSplitGetIS(petsclib::$UnionPetscLib, pc::PC, splitname::String, is::IS )
+@for_petsc function PCFieldSplitGetIS(petsclib::$UnionPetscLib, pc::PC, splitname::String, is::AbstractIS )
 
     @chk ccall(
                (:PCFieldSplitGetIS, $petsc_library),
@@ -10577,7 +10577,7 @@ function PCFieldSplitGetIS(petsclib::PetscLibType, pc::PC, splitname::String, is
 end 
 
 """
-	PCFieldSplitGetISByIndex(petsclib::PetscLibType,pc::PC, index::PetscInt, is::IS) 
+	PCFieldSplitGetISByIndex(petsclib::PetscLibType,pc::PC, index::PetscInt, is::AbstractIS) 
 Retrieves the elements for a given split as an `IS`
 
 Logically Collective
@@ -10597,9 +10597,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCFieldSplitGetISByIndex"))
 """
-function PCFieldSplitGetISByIndex(petsclib::PetscLibType, pc::PC, index::PetscInt, is::IS) end
+function PCFieldSplitGetISByIndex(petsclib::PetscLibType, pc::PC, index::PetscInt, is::AbstractIS) end
 
-@for_petsc function PCFieldSplitGetISByIndex(petsclib::$UnionPetscLib, pc::PC, index::$PetscInt, is::IS )
+@for_petsc function PCFieldSplitGetISByIndex(petsclib::$UnionPetscLib, pc::PC, index::$PetscInt, is::AbstractIS )
 
     @chk ccall(
                (:PCFieldSplitGetISByIndex, $petsc_library),
@@ -10646,7 +10646,7 @@ function PCFieldSplitSetBlockSize(petsclib::PetscLibType, pc::PC, bs::PetscInt) 
 end 
 
 """
-	n::PetscInt = PCFieldSplitGetSubKSP(petsclib::PetscLibType,pc::PC, subksp::Vector{PetscKSP}) 
+	n::PetscInt = PCFieldSplitGetSubKSP(petsclib::PetscLibType,pc::PC, subksp::Vector{<:AbstractPetscKSP}) 
 Gets the `KSP` contexts for all splits
 
 Collective
@@ -10665,9 +10665,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCFieldSplitGetSubKSP"))
 """
-function PCFieldSplitGetSubKSP(petsclib::PetscLibType, pc::PC, subksp::Vector{PetscKSP}) end
+function PCFieldSplitGetSubKSP(petsclib::PetscLibType, pc::PC, subksp::Vector{<:AbstractPetscKSP}) end
 
-@for_petsc function PCFieldSplitGetSubKSP(petsclib::$UnionPetscLib, pc::PC, subksp::Vector{PetscKSP} )
+@for_petsc function PCFieldSplitGetSubKSP(petsclib::$UnionPetscLib, pc::PC, subksp::Vector{<:AbstractPetscKSP} )
 	n_ = Ref{$PetscInt}()
 	subksp_ = Ref(pointer(subksp))
 
@@ -10684,7 +10684,7 @@ function PCFieldSplitGetSubKSP(petsclib::PetscLibType, pc::PC, subksp::Vector{Pe
 end 
 
 """
-	n::PetscInt = PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType,pc::PC, subksp::Vector{PetscKSP}) 
+	n::PetscInt = PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType,pc::PC, subksp::Vector{<:AbstractPetscKSP}) 
 Gets the `KSP` contexts used inside the Schur complement based `PCFIELDSPLIT`
 
 Collective
@@ -10703,9 +10703,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCFieldSplitSchurGetSubKSP"))
 """
-function PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType, pc::PC, subksp::Vector{PetscKSP}) end
+function PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType, pc::PC, subksp::Vector{<:AbstractPetscKSP}) end
 
-@for_petsc function PCFieldSplitSchurGetSubKSP(petsclib::$UnionPetscLib, pc::PC, subksp::Vector{PetscKSP} )
+@for_petsc function PCFieldSplitSchurGetSubKSP(petsclib::$UnionPetscLib, pc::PC, subksp::Vector{<:AbstractPetscKSP} )
 	n_ = Ref{$PetscInt}()
 	subksp_ = Ref(pointer(subksp))
 
@@ -10722,7 +10722,7 @@ function PCFieldSplitSchurGetSubKSP(petsclib::PetscLibType, pc::PC, subksp::Vect
 end 
 
 """
-	PCFieldSplitSetSchurPre(petsclib::PetscLibType,pc::PC, ptype::PCFieldSplitSchurPreType, pre::PetscMat) 
+	PCFieldSplitSetSchurPre(petsclib::PetscLibType,pc::PC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat) 
 Indicates from what operator the preconditioner is constructed for the Schur complement.
 The default is the A11 matrix.
 
@@ -10747,9 +10747,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCFieldSplitSetSchurPre"))
 """
-function PCFieldSplitSetSchurPre(petsclib::PetscLibType, pc::PC, ptype::PCFieldSplitSchurPreType, pre::PetscMat) end
+function PCFieldSplitSetSchurPre(petsclib::PetscLibType, pc::PC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat) end
 
-@for_petsc function PCFieldSplitSetSchurPre(petsclib::$UnionPetscLib, pc::PC, ptype::PCFieldSplitSchurPreType, pre::PetscMat )
+@for_petsc function PCFieldSplitSetSchurPre(petsclib::$UnionPetscLib, pc::PC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat )
 
     @chk ccall(
                (:PCFieldSplitSetSchurPre, $petsc_library),
@@ -10763,7 +10763,7 @@ function PCFieldSplitSetSchurPre(petsclib::PetscLibType, pc::PC, ptype::PCFieldS
 end 
 
 """
-	PCFieldSplitGetSchurPre(petsclib::PetscLibType,pc::PC, ptype::PCFieldSplitSchurPreType, pre::PetscMat) 
+	PCFieldSplitGetSchurPre(petsclib::PetscLibType,pc::PC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat) 
 For Schur complement fieldsplit, determine how the Schur complement will be
 preconditioned.  See `PCFieldSplitSetSchurPre()` for details.
 
@@ -10783,9 +10783,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCFieldSplitGetSchurPre"))
 """
-function PCFieldSplitGetSchurPre(petsclib::PetscLibType, pc::PC, ptype::PCFieldSplitSchurPreType, pre::PetscMat) end
+function PCFieldSplitGetSchurPre(petsclib::PetscLibType, pc::PC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat) end
 
-@for_petsc function PCFieldSplitGetSchurPre(petsclib::$UnionPetscLib, pc::PC, ptype::PCFieldSplitSchurPreType, pre::PetscMat )
+@for_petsc function PCFieldSplitGetSchurPre(petsclib::$UnionPetscLib, pc::PC, ptype::PCFieldSplitSchurPreType, pre::AbstractPetscMat )
 	pre_ = Ref(pre.ptr)
 
     @chk ccall(
@@ -10801,7 +10801,7 @@ function PCFieldSplitGetSchurPre(petsclib::PetscLibType, pc::PC, ptype::PCFieldS
 end 
 
 """
-	PCFieldSplitSchurGetS(petsclib::PetscLibType,pc::PC, S::PetscMat) 
+	PCFieldSplitSchurGetS(petsclib::PetscLibType,pc::PC, S::AbstractPetscMat) 
 extract the `MATSCHURCOMPLEMENT` object used by this `PCFIELDSPLIT` in case it needs to be configured separately
 
 Not Collective
@@ -10820,9 +10820,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCFieldSplitSchurGetS"))
 """
-function PCFieldSplitSchurGetS(petsclib::PetscLibType, pc::PC, S::PetscMat) end
+function PCFieldSplitSchurGetS(petsclib::PetscLibType, pc::PC, S::AbstractPetscMat) end
 
-@for_petsc function PCFieldSplitSchurGetS(petsclib::$UnionPetscLib, pc::PC, S::PetscMat )
+@for_petsc function PCFieldSplitSchurGetS(petsclib::$UnionPetscLib, pc::PC, S::AbstractPetscMat )
 	S_ = Ref(S.ptr)
 
     @chk ccall(
@@ -10838,7 +10838,7 @@ function PCFieldSplitSchurGetS(petsclib::PetscLibType, pc::PC, S::PetscMat) end
 end 
 
 """
-	PCFieldSplitSchurRestoreS(petsclib::PetscLibType,pc::PC, S::PetscMat) 
+	PCFieldSplitSchurRestoreS(petsclib::PetscLibType,pc::PC, S::AbstractPetscMat) 
 returns the `MATSCHURCOMPLEMENT` matrix used by this `PC`
 
 Not Collective
@@ -10854,9 +10854,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCFieldSplitSchurRestoreS"))
 """
-function PCFieldSplitSchurRestoreS(petsclib::PetscLibType, pc::PC, S::PetscMat) end
+function PCFieldSplitSchurRestoreS(petsclib::PetscLibType, pc::PC, S::AbstractPetscMat) end
 
-@for_petsc function PCFieldSplitSchurRestoreS(petsclib::$UnionPetscLib, pc::PC, S::PetscMat )
+@for_petsc function PCFieldSplitSchurRestoreS(petsclib::$UnionPetscLib, pc::PC, S::AbstractPetscMat )
 	S_ = Ref(S.ptr)
 
     @chk ccall(
@@ -10943,7 +10943,7 @@ function PCFieldSplitSetSchurScale(petsclib::PetscLibType, pc::PC, scale::PetscS
 end 
 
 """
-	PCFieldSplitGetSchurBlocks(petsclib::PetscLibType,pc::PC, A00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat) 
+	PCFieldSplitGetSchurBlocks(petsclib::PetscLibType,pc::PC, A00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat) 
 Gets all matrix blocks for the Schur complement
 
 Collective
@@ -10964,9 +10964,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCFieldSplitGetSchurBlocks"))
 """
-function PCFieldSplitGetSchurBlocks(petsclib::PetscLibType, pc::PC, A00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat) end
+function PCFieldSplitGetSchurBlocks(petsclib::PetscLibType, pc::PC, A00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat) end
 
-@for_petsc function PCFieldSplitGetSchurBlocks(petsclib::$UnionPetscLib, pc::PC, A00::PetscMat, A01::PetscMat, A10::PetscMat, A11::PetscMat )
+@for_petsc function PCFieldSplitGetSchurBlocks(petsclib::$UnionPetscLib, pc::PC, A00::AbstractPetscMat, A01::AbstractPetscMat, A10::AbstractPetscMat, A11::AbstractPetscMat )
 	A00_ = Ref(A00.ptr)
 	A01_ = Ref(A01.ptr)
 	A10_ = Ref(A10.ptr)
@@ -11383,7 +11383,7 @@ function PCGASMSetTotalSubdomains(petsclib::PetscLibType, pc::PC, N::PetscInt) e
 end 
 
 """
-	PCGASMSetSubdomains(petsclib::PetscLibType,pc::PC, n::PetscInt, iis::Vector{IS}, ois::Vector{IS}) 
+	PCGASMSetSubdomains(petsclib::PetscLibType,pc::PC, n::PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS}) 
 Sets the subdomains for this MPI process
 for the additive Schwarz preconditioner with multiple MPI processes per subdomain, `PCGASM`
 
@@ -11405,9 +11405,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCGASMSetSubdomains"))
 """
-function PCGASMSetSubdomains(petsclib::PetscLibType, pc::PC, n::PetscInt, iis::Vector{IS}, ois::Vector{IS}) end
+function PCGASMSetSubdomains(petsclib::PetscLibType, pc::PC, n::PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS}) end
 
-@for_petsc function PCGASMSetSubdomains(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt, iis::Vector{IS}, ois::Vector{IS} )
+@for_petsc function PCGASMSetSubdomains(petsclib::$UnionPetscLib, pc::PC, n::$PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS} )
 
     @chk ccall(
                (:PCGASMSetSubdomains, $petsc_library),
@@ -11523,7 +11523,7 @@ function PCGASMSetSortIndices(petsclib::PetscLibType, pc::PC, doSort::PetscBool)
 end 
 
 """
-	n_loc::PetscInt,first_loc::PetscInt = PCGASMGetSubKSP(petsclib::PetscLibType,pc::PC, ksp::Vector{PetscKSP}) 
+	n_loc::PetscInt,first_loc::PetscInt = PCGASMGetSubKSP(petsclib::PetscLibType,pc::PC, ksp::Vector{<:AbstractPetscKSP}) 
 Gets the local `KSP` contexts for all subdomains on this MPI process.
 
 Collective iff first_local is requested
@@ -11544,9 +11544,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCGASMGetSubKSP"))
 """
-function PCGASMGetSubKSP(petsclib::PetscLibType, pc::PC, ksp::Vector{PetscKSP}) end
+function PCGASMGetSubKSP(petsclib::PetscLibType, pc::PC, ksp::Vector{<:AbstractPetscKSP}) end
 
-@for_petsc function PCGASMGetSubKSP(petsclib::$UnionPetscLib, pc::PC, ksp::Vector{PetscKSP} )
+@for_petsc function PCGASMGetSubKSP(petsclib::$UnionPetscLib, pc::PC, ksp::Vector{<:AbstractPetscKSP} )
 	n_loc_ = Ref{$PetscInt}()
 	first_loc_ = Ref{$PetscInt}()
 	ksp_ = Ref(pointer(ksp))
@@ -11565,7 +11565,7 @@ function PCGASMGetSubKSP(petsclib::PetscLibType, pc::PC, ksp::Vector{PetscKSP}) 
 end 
 
 """
-	n::PetscInt,iis::Vector{IS} = PCGASMCreateSubdomains(petsclib::PetscLibType,A::PetscMat, N::PetscInt) 
+	n::PetscInt,iis::Vector{IS} = PCGASMCreateSubdomains(petsclib::PetscLibType,A::AbstractPetscMat, N::PetscInt) 
 Creates `n` index sets defining `n` nonoverlapping subdomains on this MPI process for the `PCGASM` additive
 Schwarz preconditioner for a any problem based on its matrix.
 
@@ -11586,9 +11586,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCGASMCreateSubdomains"))
 """
-function PCGASMCreateSubdomains(petsclib::PetscLibType, A::PetscMat, N::PetscInt) end
+function PCGASMCreateSubdomains(petsclib::PetscLibType, A::AbstractPetscMat, N::PetscInt) end
 
-@for_petsc function PCGASMCreateSubdomains(petsclib::$UnionPetscLib, A::PetscMat, N::$PetscInt )
+@for_petsc function PCGASMCreateSubdomains(petsclib::$UnionPetscLib, A::AbstractPetscMat, N::$PetscInt )
 	n_ = Ref{$PetscInt}()
 	iis_ = Ref{Ptr{IS}}()
 
@@ -11606,7 +11606,7 @@ function PCGASMCreateSubdomains(petsclib::PetscLibType, A::PetscMat, N::PetscInt
 end 
 
 """
-	PCGASMDestroySubdomains(petsclib::PetscLibType,n::PetscInt, iis::Vector{IS}, ois::Vector{IS}) 
+	PCGASMDestroySubdomains(petsclib::PetscLibType,n::PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS}) 
 Destroys the index sets created with
 `PCGASMCreateSubdomains()` or `PCGASMCreateSubdomains2D()`. Should be
 called after setting subdomains with `PCGASMSetSubdomains()`.
@@ -11625,9 +11625,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCGASMDestroySubdomains"))
 """
-function PCGASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, iis::Vector{IS}, ois::Vector{IS}) end
+function PCGASMDestroySubdomains(petsclib::PetscLibType, n::PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS}) end
 
-@for_petsc function PCGASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, iis::Vector{IS}, ois::Vector{IS} )
+@for_petsc function PCGASMDestroySubdomains(petsclib::$UnionPetscLib, n::$PetscInt, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS} )
 	iis_ = Ref(pointer(iis))
 	ois_ = Ref(pointer(ois))
 
@@ -11693,7 +11693,7 @@ function PCGASMCreateSubdomains2D(petsclib::PetscLibType, pc::PC, M::PetscInt, N
 end 
 
 """
-	n::PetscInt = PCGASMGetSubdomains(petsclib::PetscLibType,pc::PC, iis::Vector{IS}, ois::Vector{IS}) 
+	n::PetscInt = PCGASMGetSubdomains(petsclib::PetscLibType,pc::PC, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS}) 
 Gets the subdomains supported on this MPI process
 for the `PCGASM` additive Schwarz preconditioner.
 
@@ -11715,9 +11715,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCGASMGetSubdomains"))
 """
-function PCGASMGetSubdomains(petsclib::PetscLibType, pc::PC, iis::Vector{IS}, ois::Vector{IS}) end
+function PCGASMGetSubdomains(petsclib::PetscLibType, pc::PC, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS}) end
 
-@for_petsc function PCGASMGetSubdomains(petsclib::$UnionPetscLib, pc::PC, iis::Vector{IS}, ois::Vector{IS} )
+@for_petsc function PCGASMGetSubdomains(petsclib::$UnionPetscLib, pc::PC, iis::Vector{<:AbstractIS}, ois::Vector{<:AbstractIS} )
 	n_ = Ref{$PetscInt}()
 	iis_ = Ref(pointer(iis))
 	ois_ = Ref(pointer(ois))
@@ -11735,7 +11735,7 @@ function PCGASMGetSubdomains(petsclib::PetscLibType, pc::PC, iis::Vector{IS}, oi
 end 
 
 """
-	n::PetscInt = PCGASMGetSubmatrices(petsclib::PetscLibType,pc::PC, mat::Vector{PetscMat}) 
+	n::PetscInt = PCGASMGetSubmatrices(petsclib::PetscLibType,pc::PC, mat::Vector{<:AbstractPetscMat}) 
 Gets the local submatrices (for this MPI process
 only) for the `PCGASM` additive Schwarz preconditioner.
 
@@ -11756,9 +11756,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCGASMGetSubmatrices"))
 """
-function PCGASMGetSubmatrices(petsclib::PetscLibType, pc::PC, mat::Vector{PetscMat}) end
+function PCGASMGetSubmatrices(petsclib::PetscLibType, pc::PC, mat::Vector{<:AbstractPetscMat}) end
 
-@for_petsc function PCGASMGetSubmatrices(petsclib::$UnionPetscLib, pc::PC, mat::Vector{PetscMat} )
+@for_petsc function PCGASMGetSubmatrices(petsclib::$UnionPetscLib, pc::PC, mat::Vector{<:AbstractPetscMat} )
 	n_ = Ref{$PetscInt}()
 	mat_ = Ref(pointer(mat))
 
@@ -11850,7 +11850,7 @@ function PCGASMGetUseDMSubdomains(petsclib::PetscLibType, pc::PC) end
 end 
 
 """
-	PCHYPRESetDiscreteGradient(petsclib::PetscLibType,pc::PC, G::PetscMat) 
+	PCHYPRESetDiscreteGradient(petsclib::PetscLibType,pc::PC, G::AbstractPetscMat) 
 Set the discrete gradient matrix for `PCHYPRE` type of AMS or ADS
 
 Collective
@@ -11866,9 +11866,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCHYPRESetDiscreteGradient"))
 """
-function PCHYPRESetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::PetscMat) end
+function PCHYPRESetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::AbstractPetscMat) end
 
-@for_petsc function PCHYPRESetDiscreteGradient(petsclib::$UnionPetscLib, pc::PC, G::PetscMat )
+@for_petsc function PCHYPRESetDiscreteGradient(petsclib::$UnionPetscLib, pc::PC, G::AbstractPetscMat )
 
     @chk ccall(
                (:PCHYPRESetDiscreteGradient, $petsc_library),
@@ -11882,7 +11882,7 @@ function PCHYPRESetDiscreteGradient(petsclib::PetscLibType, pc::PC, G::PetscMat)
 end 
 
 """
-	PCHYPRESetDiscreteCurl(petsclib::PetscLibType,pc::PC, C::PetscMat) 
+	PCHYPRESetDiscreteCurl(petsclib::PetscLibType,pc::PC, C::AbstractPetscMat) 
 Set the discrete curl matrix for `PCHYPRE` type of ADS
 
 Collective
@@ -11898,9 +11898,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCHYPRESetDiscreteCurl"))
 """
-function PCHYPRESetDiscreteCurl(petsclib::PetscLibType, pc::PC, C::PetscMat) end
+function PCHYPRESetDiscreteCurl(petsclib::PetscLibType, pc::PC, C::AbstractPetscMat) end
 
-@for_petsc function PCHYPRESetDiscreteCurl(petsclib::$UnionPetscLib, pc::PC, C::PetscMat )
+@for_petsc function PCHYPRESetDiscreteCurl(petsclib::$UnionPetscLib, pc::PC, C::AbstractPetscMat )
 
     @chk ccall(
                (:PCHYPRESetDiscreteCurl, $petsc_library),
@@ -11914,7 +11914,7 @@ function PCHYPRESetDiscreteCurl(petsclib::PetscLibType, pc::PC, C::PetscMat) end
 end 
 
 """
-	PCHYPRESetInterpolations(petsclib::PetscLibType,pc::PC, dim::PetscInt, RT_PiFull::PetscMat, RT_Pi::Vector{PetscMat}, ND_PiFull::PetscMat, ND_Pi::Vector{PetscMat}) 
+	PCHYPRESetInterpolations(petsclib::PetscLibType,pc::PC, dim::PetscInt, RT_PiFull::AbstractPetscMat, RT_Pi::Vector{<:AbstractPetscMat}, ND_PiFull::AbstractPetscMat, ND_Pi::Vector{<:AbstractPetscMat}) 
 Set the interpolation matrices for `PCHYPRE` type of AMS or ADS
 
 Collective
@@ -11934,9 +11934,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCHYPRESetInterpolations"))
 """
-function PCHYPRESetInterpolations(petsclib::PetscLibType, pc::PC, dim::PetscInt, RT_PiFull::PetscMat, RT_Pi::Vector{PetscMat}, ND_PiFull::PetscMat, ND_Pi::Vector{PetscMat}) end
+function PCHYPRESetInterpolations(petsclib::PetscLibType, pc::PC, dim::PetscInt, RT_PiFull::AbstractPetscMat, RT_Pi::Vector{<:AbstractPetscMat}, ND_PiFull::AbstractPetscMat, ND_Pi::Vector{<:AbstractPetscMat}) end
 
-@for_petsc function PCHYPRESetInterpolations(petsclib::$UnionPetscLib, pc::PC, dim::$PetscInt, RT_PiFull::PetscMat, RT_Pi::Vector{PetscMat}, ND_PiFull::PetscMat, ND_Pi::Vector{PetscMat} )
+@for_petsc function PCHYPRESetInterpolations(petsclib::$UnionPetscLib, pc::PC, dim::$PetscInt, RT_PiFull::AbstractPetscMat, RT_Pi::Vector{<:AbstractPetscMat}, ND_PiFull::AbstractPetscMat, ND_Pi::Vector{<:AbstractPetscMat} )
 
     @chk ccall(
                (:PCHYPRESetInterpolations, $petsc_library),
@@ -11950,7 +11950,7 @@ function PCHYPRESetInterpolations(petsclib::PetscLibType, pc::PC, dim::PetscInt,
 end 
 
 """
-	PCHYPRESetAlphaPoissonMatrix(petsclib::PetscLibType,pc::PC, A::PetscMat) 
+	PCHYPRESetAlphaPoissonMatrix(petsclib::PetscLibType,pc::PC, A::AbstractPetscMat) 
 Set the vector Poisson matrix for `PCHYPRE` of type AMS
 
 Collective
@@ -11966,9 +11966,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCHYPRESetAlphaPoissonMatrix"))
 """
-function PCHYPRESetAlphaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::PetscMat) end
+function PCHYPRESetAlphaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat) end
 
-@for_petsc function PCHYPRESetAlphaPoissonMatrix(petsclib::$UnionPetscLib, pc::PC, A::PetscMat )
+@for_petsc function PCHYPRESetAlphaPoissonMatrix(petsclib::$UnionPetscLib, pc::PC, A::AbstractPetscMat )
 
     @chk ccall(
                (:PCHYPRESetAlphaPoissonMatrix, $petsc_library),
@@ -11982,7 +11982,7 @@ function PCHYPRESetAlphaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::PetscMa
 end 
 
 """
-	PCHYPRESetBetaPoissonMatrix(petsclib::PetscLibType,pc::PC, A::PetscMat) 
+	PCHYPRESetBetaPoissonMatrix(petsclib::PetscLibType,pc::PC, A::AbstractPetscMat) 
 Set the Poisson matrix for `PCHYPRE` of type AMS
 
 Collective
@@ -11998,9 +11998,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCHYPRESetBetaPoissonMatrix"))
 """
-function PCHYPRESetBetaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::PetscMat) end
+function PCHYPRESetBetaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat) end
 
-@for_petsc function PCHYPRESetBetaPoissonMatrix(petsclib::$UnionPetscLib, pc::PC, A::PetscMat )
+@for_petsc function PCHYPRESetBetaPoissonMatrix(petsclib::$UnionPetscLib, pc::PC, A::AbstractPetscMat )
 
     @chk ccall(
                (:PCHYPRESetBetaPoissonMatrix, $petsc_library),
@@ -12014,7 +12014,7 @@ function PCHYPRESetBetaPoissonMatrix(petsclib::PetscLibType, pc::PC, A::PetscMat
 end 
 
 """
-	PCHYPRESetEdgeConstantVectors(petsclib::PetscLibType,pc::PC, ozz::PetscVec, zoz::PetscVec, zzo::PetscVec) 
+	PCHYPRESetEdgeConstantVectors(petsclib::PetscLibType,pc::PC, ozz::AbstractPetscVec, zoz::AbstractPetscVec, zzo::AbstractPetscVec) 
 Set the representation of the constant vector fields in the edge element basis for `PCHYPRE` of type AMS
 
 Collective
@@ -12032,9 +12032,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCHYPRESetEdgeConstantVectors"))
 """
-function PCHYPRESetEdgeConstantVectors(petsclib::PetscLibType, pc::PC, ozz::PetscVec, zoz::PetscVec, zzo::PetscVec) end
+function PCHYPRESetEdgeConstantVectors(petsclib::PetscLibType, pc::PC, ozz::AbstractPetscVec, zoz::AbstractPetscVec, zzo::AbstractPetscVec) end
 
-@for_petsc function PCHYPRESetEdgeConstantVectors(petsclib::$UnionPetscLib, pc::PC, ozz::PetscVec, zoz::PetscVec, zzo::PetscVec )
+@for_petsc function PCHYPRESetEdgeConstantVectors(petsclib::$UnionPetscLib, pc::PC, ozz::AbstractPetscVec, zoz::AbstractPetscVec, zzo::AbstractPetscVec )
 
     @chk ccall(
                (:PCHYPRESetEdgeConstantVectors, $petsc_library),
@@ -12048,7 +12048,7 @@ function PCHYPRESetEdgeConstantVectors(petsclib::PetscLibType, pc::PC, ozz::Pets
 end 
 
 """
-	PCHYPREAMSSetInteriorNodes(petsclib::PetscLibType,pc::PC, interior::PetscVec) 
+	PCHYPREAMSSetInteriorNodes(petsclib::PetscLibType,pc::PC, interior::AbstractPetscVec) 
 Set the list of interior nodes to a zero
 
 Collective
@@ -12064,9 +12064,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCHYPREAMSSetInteriorNodes"))
 """
-function PCHYPREAMSSetInteriorNodes(petsclib::PetscLibType, pc::PC, interior::PetscVec) end
+function PCHYPREAMSSetInteriorNodes(petsclib::PetscLibType, pc::PC, interior::AbstractPetscVec) end
 
-@for_petsc function PCHYPREAMSSetInteriorNodes(petsclib::$UnionPetscLib, pc::PC, interior::PetscVec )
+@for_petsc function PCHYPREAMSSetInteriorNodes(petsclib::$UnionPetscLib, pc::PC, interior::AbstractPetscVec )
 
     @chk ccall(
                (:PCHYPREAMSSetInteriorNodes, $petsc_library),
@@ -12651,7 +12651,7 @@ function PCDeflationSetSpaceToCompute(petsclib::PetscLibType, pc::PC, type::PCDe
 end 
 
 """
-	PCDeflationSetSpace(petsclib::PetscLibType,pc::PC, W::PetscMat, transpose::PetscBool) 
+	PCDeflationSetSpace(petsclib::PetscLibType,pc::PC, W::AbstractPetscMat, transpose::PetscBool) 
 Set the deflation space matrix (or its (Hermitian) transpose).
 
 Logically Collective
@@ -12668,9 +12668,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ksp/PCDeflationSetSpace"))
 """
-function PCDeflationSetSpace(petsclib::PetscLibType, pc::PC, W::PetscMat, transpose::PetscBool) end
+function PCDeflationSetSpace(petsclib::PetscLibType, pc::PC, W::AbstractPetscMat, transpose::PetscBool) end
 
-@for_petsc function PCDeflationSetSpace(petsclib::$UnionPetscLib, pc::PC, W::PetscMat, transpose::PetscBool )
+@for_petsc function PCDeflationSetSpace(petsclib::$UnionPetscLib, pc::PC, W::AbstractPetscMat, transpose::PetscBool )
 
     @chk ccall(
                (:PCDeflationSetSpace, $petsc_library),
@@ -12684,7 +12684,7 @@ function PCDeflationSetSpace(petsclib::PetscLibType, pc::PC, W::PetscMat, transp
 end 
 
 """
-	PCDeflationSetProjectionNullSpaceMat(petsclib::PetscLibType,pc::PC, mat::PetscMat) 
+	PCDeflationSetProjectionNullSpaceMat(petsclib::PetscLibType,pc::PC, mat::AbstractPetscMat) 
 Set the projection null space matrix (W'*A).
 
 Collective
@@ -12700,9 +12700,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCDeflationSetProjectionNullSpaceMat"))
 """
-function PCDeflationSetProjectionNullSpaceMat(petsclib::PetscLibType, pc::PC, mat::PetscMat) end
+function PCDeflationSetProjectionNullSpaceMat(petsclib::PetscLibType, pc::PC, mat::AbstractPetscMat) end
 
-@for_petsc function PCDeflationSetProjectionNullSpaceMat(petsclib::$UnionPetscLib, pc::PC, mat::PetscMat )
+@for_petsc function PCDeflationSetProjectionNullSpaceMat(petsclib::$UnionPetscLib, pc::PC, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCDeflationSetProjectionNullSpaceMat, $petsc_library),
@@ -12716,7 +12716,7 @@ function PCDeflationSetProjectionNullSpaceMat(petsclib::PetscLibType, pc::PC, ma
 end 
 
 """
-	PCDeflationSetCoarseMat(petsclib::PetscLibType,pc::PC, mat::PetscMat) 
+	PCDeflationSetCoarseMat(petsclib::PetscLibType,pc::PC, mat::AbstractPetscMat) 
 Set the coarse problem `Mat`.
 
 Collective
@@ -12732,9 +12732,9 @@ Level: developer
 # External Links
 $(_doc_external("Ksp/PCDeflationSetCoarseMat"))
 """
-function PCDeflationSetCoarseMat(petsclib::PetscLibType, pc::PC, mat::PetscMat) end
+function PCDeflationSetCoarseMat(petsclib::PetscLibType, pc::PC, mat::AbstractPetscMat) end
 
-@for_petsc function PCDeflationSetCoarseMat(petsclib::$UnionPetscLib, pc::PC, mat::PetscMat )
+@for_petsc function PCDeflationSetCoarseMat(petsclib::$UnionPetscLib, pc::PC, mat::AbstractPetscMat )
 
     @chk ccall(
                (:PCDeflationSetCoarseMat, $petsc_library),
@@ -12748,7 +12748,7 @@ function PCDeflationSetCoarseMat(petsclib::PetscLibType, pc::PC, mat::PetscMat) 
 end 
 
 """
-	PCDeflationGetCoarseKSP(petsclib::PetscLibType,pc::PC, ksp::PetscKSP) 
+	PCDeflationGetCoarseKSP(petsclib::PetscLibType,pc::PC, ksp::AbstractPetscKSP) 
 Returns the coarse problem `KSP`.
 
 Not Collective
@@ -12766,9 +12766,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCDeflationGetCoarseKSP"))
 """
-function PCDeflationGetCoarseKSP(petsclib::PetscLibType, pc::PC, ksp::PetscKSP) end
+function PCDeflationGetCoarseKSP(petsclib::PetscLibType, pc::PC, ksp::AbstractPetscKSP) end
 
-@for_petsc function PCDeflationGetCoarseKSP(petsclib::$UnionPetscLib, pc::PC, ksp::PetscKSP )
+@for_petsc function PCDeflationGetCoarseKSP(petsclib::$UnionPetscLib, pc::PC, ksp::AbstractPetscKSP )
 	ksp_ = Ref(ksp.ptr)
 
     @chk ccall(
@@ -13819,7 +13819,7 @@ function PCGAMGRegister(petsclib::PetscLibType, type::PCGAMGType, create::extern
 end 
 
 """
-	G::PetscMat = PCGAMGCreateGraph(petsclib::PetscLibType,pc::PC, A::PetscMat) 
+	G::PetscMat = PCGAMGCreateGraph(petsclib::PetscLibType,pc::PC, A::AbstractPetscMat) 
 Creates a graph that is used by the `PCGAMGType` in the coarsening process
 
 Input Parameters:
@@ -13836,9 +13836,9 @@ Level: advanced
 # External Links
 $(_doc_external("Ksp/PCGAMGCreateGraph"))
 """
-function PCGAMGCreateGraph(petsclib::PetscLibType, pc::PC, A::PetscMat) end
+function PCGAMGCreateGraph(petsclib::PetscLibType, pc::PC, A::AbstractPetscMat) end
 
-@for_petsc function PCGAMGCreateGraph(petsclib::$UnionPetscLib, pc::PC, A::PetscMat )
+@for_petsc function PCGAMGCreateGraph(petsclib::$UnionPetscLib, pc::PC, A::AbstractPetscMat )
 	G_ = Ref{CMat}()
 
     @chk ccall(

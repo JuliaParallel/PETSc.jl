@@ -10,7 +10,7 @@ const ISLocalToGlobalMapping = Ptr{_p_ISLocalToGlobalMapping}
 
 # -------------------------------------------------------
 """
-	max::PetscReal = VecMaxPointwiseDivide(petsclib::PetscLibType,x::PetscVec, y::PetscVec) 
+	max::PetscReal = VecMaxPointwiseDivide(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes the maximum of the componentwise division `max = max_i abs(x[i]/y[i])`.
 
 Logically Collective
@@ -29,9 +29,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecMaxPointwiseDivide"))
 """
-function VecMaxPointwiseDivide(petsclib::PetscLibType, x::PetscVec, y::PetscVec) end
+function VecMaxPointwiseDivide(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function VecMaxPointwiseDivide(petsclib::$UnionPetscLib, x::PetscVec, y::PetscVec )
+@for_petsc function VecMaxPointwiseDivide(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec )
 	max_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -47,7 +47,7 @@ function VecMaxPointwiseDivide(petsclib::PetscLibType, x::PetscVec, y::PetscVec)
 end 
 
 """
-	val::PetscScalar = VecDot(petsclib::PetscLibType,x::PetscVec, y::PetscVec) 
+	val::PetscScalar = VecDot(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes the vector dot product.
 
 Collective
@@ -68,9 +68,9 @@ For complex vectors, `VecDot()` computes
 # External Links
 $(_doc_external("Vec/VecDot"))
 """
-function VecDot(petsclib::PetscLibType, x::PetscVec, y::PetscVec) end
+function VecDot(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function VecDot(petsclib::$UnionPetscLib, x::PetscVec, y::PetscVec )
+@for_petsc function VecDot(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec )
 	val_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -86,7 +86,7 @@ function VecDot(petsclib::PetscLibType, x::PetscVec, y::PetscVec) end
 end 
 
 """
-	val::PetscReal = VecDotRealPart(petsclib::PetscLibType,x::PetscVec, y::PetscVec) 
+	val::PetscReal = VecDotRealPart(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes the real part of the vector dot product.
 
 Collective
@@ -113,9 +113,9 @@ the space R^{2n} (that is a vector of 2n components with the real or imaginary p
 # External Links
 $(_doc_external("Vec/VecDotRealPart"))
 """
-function VecDotRealPart(petsclib::PetscLibType, x::PetscVec, y::PetscVec) end
+function VecDotRealPart(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function VecDotRealPart(petsclib::$UnionPetscLib, x::PetscVec, y::PetscVec )
+@for_petsc function VecDotRealPart(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec )
 	val_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -131,7 +131,7 @@ function VecDotRealPart(petsclib::PetscLibType, x::PetscVec, y::PetscVec) end
 end 
 
 """
-	val::PetscReal = VecNorm(petsclib::PetscLibType,x::PetscVec, type::NormType) 
+	val::PetscReal = VecNorm(petsclib::PetscLibType,x::AbstractPetscVec, type::NormType) 
 Computes the vector norm.
 
 Collective
@@ -151,9 +151,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecNorm"))
 """
-function VecNorm(petsclib::PetscLibType, x::PetscVec, type::NormType) end
+function VecNorm(petsclib::PetscLibType, x::AbstractPetscVec, type::NormType) end
 
-@for_petsc function VecNorm(petsclib::$UnionPetscLib, x::PetscVec, type::NormType )
+@for_petsc function VecNorm(petsclib::$UnionPetscLib, x::AbstractPetscVec, type::NormType )
 	val_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -169,7 +169,7 @@ function VecNorm(petsclib::PetscLibType, x::PetscVec, type::NormType) end
 end 
 
 """
-	available::PetscBool,val::PetscReal = VecNormAvailable(petsclib::PetscLibType,x::PetscVec, type::NormType) 
+	available::PetscBool,val::PetscReal = VecNormAvailable(petsclib::PetscLibType,x::AbstractPetscVec, type::NormType) 
 Returns the vector norm if it is already known. That is, it has been previously computed and cached in the vector
 
 Not Collective
@@ -192,9 +192,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecNormAvailable"))
 """
-function VecNormAvailable(petsclib::PetscLibType, x::PetscVec, type::NormType) end
+function VecNormAvailable(petsclib::PetscLibType, x::AbstractPetscVec, type::NormType) end
 
-@for_petsc function VecNormAvailable(petsclib::$UnionPetscLib, x::PetscVec, type::NormType )
+@for_petsc function VecNormAvailable(petsclib::$UnionPetscLib, x::AbstractPetscVec, type::NormType )
 	available_ = Ref{PetscBool}()
 	val_ = Ref{$PetscReal}()
 
@@ -212,7 +212,7 @@ function VecNormAvailable(petsclib::PetscLibType, x::PetscVec, type::NormType) e
 end 
 
 """
-	val::PetscReal = VecNormalize(petsclib::PetscLibType,x::PetscVec) 
+	val::PetscReal = VecNormalize(petsclib::PetscLibType,x::AbstractPetscVec) 
 Normalizes a vector by its 2
 
 Collective
@@ -230,9 +230,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecNormalize"))
 """
-function VecNormalize(petsclib::PetscLibType, x::PetscVec) end
+function VecNormalize(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecNormalize(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecNormalize(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	val_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -248,7 +248,7 @@ function VecNormalize(petsclib::PetscLibType, x::PetscVec) end
 end 
 
 """
-	p::PetscInt,val::PetscReal = VecMax(petsclib::PetscLibType,x::PetscVec) 
+	p::PetscInt,val::PetscReal = VecMax(petsclib::PetscLibType,x::AbstractPetscVec) 
 Determines the vector component with maximum real part and its location.
 
 Collective
@@ -267,9 +267,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecMax"))
 """
-function VecMax(petsclib::PetscLibType, x::PetscVec) end
+function VecMax(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecMax(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecMax(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	p_ = Ref{$PetscInt}()
 	val_ = Ref{$PetscReal}()
 
@@ -287,7 +287,7 @@ function VecMax(petsclib::PetscLibType, x::PetscVec) end
 end 
 
 """
-	p::PetscInt,val::PetscReal = VecMin(petsclib::PetscLibType,x::PetscVec) 
+	p::PetscInt,val::PetscReal = VecMin(petsclib::PetscLibType,x::AbstractPetscVec) 
 Determines the vector component with minimum real part and its location.
 
 Collective
@@ -306,9 +306,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecMin"))
 """
-function VecMin(petsclib::PetscLibType, x::PetscVec) end
+function VecMin(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecMin(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecMin(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	p_ = Ref{$PetscInt}()
 	val_ = Ref{$PetscReal}()
 
@@ -326,7 +326,7 @@ function VecMin(petsclib::PetscLibType, x::PetscVec) end
 end 
 
 """
-	val::PetscScalar = VecTDot(petsclib::PetscLibType,x::PetscVec, y::PetscVec) 
+	val::PetscScalar = VecTDot(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes an indefinite vector dot product. That is, this
 routine does NOT use the complex conjugate.
 
@@ -348,9 +348,9 @@ For complex vectors, `VecTDot()` computes the indefinite form
 # External Links
 $(_doc_external("Vec/VecTDot"))
 """
-function VecTDot(petsclib::PetscLibType, x::PetscVec, y::PetscVec) end
+function VecTDot(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function VecTDot(petsclib::$UnionPetscLib, x::PetscVec, y::PetscVec )
+@for_petsc function VecTDot(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec )
 	val_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -366,7 +366,7 @@ function VecTDot(petsclib::PetscLibType, x::PetscVec, y::PetscVec) end
 end 
 
 """
-	VecAXPY(petsclib::PetscLibType,y::PetscVec, alpha::PetscScalar, x::PetscVec) 
+	VecAXPY(petsclib::PetscLibType,y::AbstractPetscVec, alpha::PetscScalar, x::AbstractPetscVec) 
 Computes `y = alpha x + y`.
 
 Logically Collective
@@ -386,9 +386,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecAXPY"))
 """
-function VecAXPY(petsclib::PetscLibType, y::PetscVec, alpha::PetscScalar, x::PetscVec) end
+function VecAXPY(petsclib::PetscLibType, y::AbstractPetscVec, alpha::PetscScalar, x::AbstractPetscVec) end
 
-@for_petsc function VecAXPY(petsclib::$UnionPetscLib, y::PetscVec, alpha::$PetscScalar, x::PetscVec )
+@for_petsc function VecAXPY(petsclib::$UnionPetscLib, y::AbstractPetscVec, alpha::$PetscScalar, x::AbstractPetscVec )
 
     @chk ccall(
                (:VecAXPY, $petsc_library),
@@ -402,7 +402,7 @@ function VecAXPY(petsclib::PetscLibType, y::PetscVec, alpha::PetscScalar, x::Pet
 end 
 
 """
-	VecAYPX(petsclib::PetscLibType,y::PetscVec, beta::PetscScalar, x::PetscVec) 
+	VecAYPX(petsclib::PetscLibType,y::AbstractPetscVec, beta::PetscScalar, x::AbstractPetscVec) 
 Computes `y = x + beta y`.
 
 Logically Collective
@@ -422,9 +422,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecAYPX"))
 """
-function VecAYPX(petsclib::PetscLibType, y::PetscVec, beta::PetscScalar, x::PetscVec) end
+function VecAYPX(petsclib::PetscLibType, y::AbstractPetscVec, beta::PetscScalar, x::AbstractPetscVec) end
 
-@for_petsc function VecAYPX(petsclib::$UnionPetscLib, y::PetscVec, beta::$PetscScalar, x::PetscVec )
+@for_petsc function VecAYPX(petsclib::$UnionPetscLib, y::AbstractPetscVec, beta::$PetscScalar, x::AbstractPetscVec )
 
     @chk ccall(
                (:VecAYPX, $petsc_library),
@@ -438,7 +438,7 @@ function VecAYPX(petsclib::PetscLibType, y::PetscVec, beta::PetscScalar, x::Pets
 end 
 
 """
-	VecAXPBY(petsclib::PetscLibType,y::PetscVec, alpha::PetscScalar, beta::PetscScalar, x::PetscVec) 
+	VecAXPBY(petsclib::PetscLibType,y::AbstractPetscVec, alpha::PetscScalar, beta::PetscScalar, x::AbstractPetscVec) 
 Computes `y = alpha x + beta y`.
 
 Logically Collective
@@ -459,9 +459,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecAXPBY"))
 """
-function VecAXPBY(petsclib::PetscLibType, y::PetscVec, alpha::PetscScalar, beta::PetscScalar, x::PetscVec) end
+function VecAXPBY(petsclib::PetscLibType, y::AbstractPetscVec, alpha::PetscScalar, beta::PetscScalar, x::AbstractPetscVec) end
 
-@for_petsc function VecAXPBY(petsclib::$UnionPetscLib, y::PetscVec, alpha::$PetscScalar, beta::$PetscScalar, x::PetscVec )
+@for_petsc function VecAXPBY(petsclib::$UnionPetscLib, y::AbstractPetscVec, alpha::$PetscScalar, beta::$PetscScalar, x::AbstractPetscVec )
 
     @chk ccall(
                (:VecAXPBY, $petsc_library),
@@ -475,7 +475,7 @@ function VecAXPBY(petsclib::PetscLibType, y::PetscVec, alpha::PetscScalar, beta:
 end 
 
 """
-	VecAXPBYPCZ(petsclib::PetscLibType,z::PetscVec, alpha::PetscScalar, beta::PetscScalar, gamma::PetscScalar, x::PetscVec, y::PetscVec) 
+	VecAXPBYPCZ(petsclib::PetscLibType,z::AbstractPetscVec, alpha::PetscScalar, beta::PetscScalar, gamma::PetscScalar, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes `z = alpha x + beta y + gamma z`
 
 Logically Collective
@@ -498,9 +498,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecAXPBYPCZ"))
 """
-function VecAXPBYPCZ(petsclib::PetscLibType, z::PetscVec, alpha::PetscScalar, beta::PetscScalar, gamma::PetscScalar, x::PetscVec, y::PetscVec) end
+function VecAXPBYPCZ(petsclib::PetscLibType, z::AbstractPetscVec, alpha::PetscScalar, beta::PetscScalar, gamma::PetscScalar, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function VecAXPBYPCZ(petsclib::$UnionPetscLib, z::PetscVec, alpha::$PetscScalar, beta::$PetscScalar, gamma::$PetscScalar, x::PetscVec, y::PetscVec )
+@for_petsc function VecAXPBYPCZ(petsclib::$UnionPetscLib, z::AbstractPetscVec, alpha::$PetscScalar, beta::$PetscScalar, gamma::$PetscScalar, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:VecAXPBYPCZ, $petsc_library),
@@ -514,7 +514,7 @@ function VecAXPBYPCZ(petsclib::PetscLibType, z::PetscVec, alpha::PetscScalar, be
 end 
 
 """
-	VecWAXPY(petsclib::PetscLibType,w::PetscVec, alpha::PetscScalar, x::PetscVec, y::PetscVec) 
+	VecWAXPY(petsclib::PetscLibType,w::AbstractPetscVec, alpha::PetscScalar, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes `w = alpha x + y`.
 
 Logically Collective
@@ -534,9 +534,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecWAXPY"))
 """
-function VecWAXPY(petsclib::PetscLibType, w::PetscVec, alpha::PetscScalar, x::PetscVec, y::PetscVec) end
+function VecWAXPY(petsclib::PetscLibType, w::AbstractPetscVec, alpha::PetscScalar, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function VecWAXPY(petsclib::$UnionPetscLib, w::PetscVec, alpha::$PetscScalar, x::PetscVec, y::PetscVec )
+@for_petsc function VecWAXPY(petsclib::$UnionPetscLib, w::AbstractPetscVec, alpha::$PetscScalar, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:VecWAXPY, $petsc_library),
@@ -550,7 +550,7 @@ function VecWAXPY(petsclib::PetscLibType, w::PetscVec, alpha::PetscScalar, x::Pe
 end 
 
 """
-	y::Vector{PetscScalar} = VecGetValues(petsclib::PetscLibType,x::PetscVec, ni::PetscInt, ix::Vector{PetscInt}) 
+	y::Vector{PetscScalar} = VecGetValues(petsclib::PetscLibType,x::AbstractPetscVec, ni::PetscInt, ix::Vector{PetscInt}) 
 Gets values from certain locations of a vector. Currently
 can only get values on the same processor on which they are owned
 
@@ -588,7 +588,7 @@ function VecGetValues(petsclib::PetscLibType, x::AbstractPetscVec, ni::PetscInt,
 end 
 
 """
-	val::Vector{PetscScalar} = VecMTDot(petsclib::PetscLibType,x::PetscVec, nv::PetscInt, y::Vector{PetscVec}) 
+	val::Vector{PetscScalar} = VecMTDot(petsclib::PetscLibType,x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}) 
 Computes indefinite vector multiple dot products.
 That is, it does NOT use the complex conjugate.
 
@@ -611,9 +611,9 @@ For complex vectors, `VecMTDot()` computes the indefinite form
 # External Links
 $(_doc_external("Vec/VecMTDot"))
 """
-function VecMTDot(petsclib::PetscLibType, x::PetscVec, nv::PetscInt, y::Vector{PetscVec}) end
+function VecMTDot(petsclib::PetscLibType, x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}) end
 
-@for_petsc function VecMTDot(petsclib::$UnionPetscLib, x::PetscVec, nv::$PetscInt, y::Vector{PetscVec} )
+@for_petsc function VecMTDot(petsclib::$UnionPetscLib, x::AbstractPetscVec, nv::$PetscInt, y::Vector{<:AbstractPetscVec} )
 	val = Vector{$PetscScalar}(undef, ni);  # CHECK SIZE!!
 
     @chk ccall(
@@ -628,7 +628,7 @@ function VecMTDot(petsclib::PetscLibType, x::PetscVec, nv::PetscInt, y::Vector{P
 end 
 
 """
-	val::Vector{PetscScalar} = VecMDot(petsclib::PetscLibType,x::PetscVec, nv::PetscInt, y::Vector{PetscVec}) 
+	val::Vector{PetscScalar} = VecMDot(petsclib::PetscLibType,x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}) 
 Computes multiple vector dot products.
 
 Collective
@@ -650,9 +650,9 @@ For complex vectors, `VecMDot()` computes
 # External Links
 $(_doc_external("Vec/VecMDot"))
 """
-function VecMDot(petsclib::PetscLibType, x::PetscVec, nv::PetscInt, y::Vector{PetscVec}) end
+function VecMDot(petsclib::PetscLibType, x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}) end
 
-@for_petsc function VecMDot(petsclib::$UnionPetscLib, x::PetscVec, nv::$PetscInt, y::Vector{PetscVec} )
+@for_petsc function VecMDot(petsclib::$UnionPetscLib, x::AbstractPetscVec, nv::$PetscInt, y::Vector{<:AbstractPetscVec} )
 	val = Vector{$PetscScalar}(undef, ni);  # CHECK SIZE!!
 
     @chk ccall(
@@ -667,7 +667,7 @@ function VecMDot(petsclib::PetscLibType, x::PetscVec, nv::PetscInt, y::Vector{Pe
 end 
 
 """
-	VecMAXPY(petsclib::PetscLibType,y::PetscVec, nv::PetscInt, alpha::Vector{PetscScalar}, x::Vector{PetscVec}) 
+	VecMAXPY(petsclib::PetscLibType,y::AbstractPetscVec, nv::PetscInt, alpha::Vector{PetscScalar}, x::Vector{<:AbstractPetscVec}) 
 Computes `y = y + sum alpha[i] x[i]`
 
 Logically Collective
@@ -685,9 +685,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecMAXPY"))
 """
-function VecMAXPY(petsclib::PetscLibType, y::PetscVec, nv::PetscInt, alpha::Vector{PetscScalar}, x::Vector{PetscVec}) end
+function VecMAXPY(petsclib::PetscLibType, y::AbstractPetscVec, nv::PetscInt, alpha::Vector{PetscScalar}, x::Vector{<:AbstractPetscVec}) end
 
-@for_petsc function VecMAXPY(petsclib::$UnionPetscLib, y::PetscVec, nv::$PetscInt, alpha::Vector{$PetscScalar}, x::Vector{PetscVec} )
+@for_petsc function VecMAXPY(petsclib::$UnionPetscLib, y::AbstractPetscVec, nv::$PetscInt, alpha::Vector{$PetscScalar}, x::Vector{<:AbstractPetscVec} )
 
     @chk ccall(
                (:VecMAXPY, $petsc_library),
@@ -701,7 +701,7 @@ function VecMAXPY(petsclib::PetscLibType, y::PetscVec, nv::PetscInt, alpha::Vect
 end 
 
 """
-	VecMAXPBY(petsclib::PetscLibType,y::PetscVec, nv::PetscInt, alpha::Vector{PetscScalar}, beta::PetscScalar, x::Vector{PetscVec}) 
+	VecMAXPBY(petsclib::PetscLibType,y::AbstractPetscVec, nv::PetscInt, alpha::Vector{PetscScalar}, beta::PetscScalar, x::Vector{<:AbstractPetscVec}) 
 Computes `y = beta y + sum alpha[i] x[i]`
 
 Logically Collective
@@ -720,9 +720,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecMAXPBY"))
 """
-function VecMAXPBY(petsclib::PetscLibType, y::PetscVec, nv::PetscInt, alpha::Vector{PetscScalar}, beta::PetscScalar, x::Vector{PetscVec}) end
+function VecMAXPBY(petsclib::PetscLibType, y::AbstractPetscVec, nv::PetscInt, alpha::Vector{PetscScalar}, beta::PetscScalar, x::Vector{<:AbstractPetscVec}) end
 
-@for_petsc function VecMAXPBY(petsclib::$UnionPetscLib, y::PetscVec, nv::$PetscInt, alpha::Vector{$PetscScalar}, beta::$PetscScalar, x::Vector{PetscVec} )
+@for_petsc function VecMAXPBY(petsclib::$UnionPetscLib, y::AbstractPetscVec, nv::$PetscInt, alpha::Vector{$PetscScalar}, beta::$PetscScalar, x::Vector{<:AbstractPetscVec} )
 
     @chk ccall(
                (:VecMAXPBY, $petsc_library),
@@ -736,7 +736,7 @@ function VecMAXPBY(petsclib::PetscLibType, y::PetscVec, nv::PetscInt, alpha::Vec
 end 
 
 """
-	VecConcatenate(petsclib::PetscLibType,nx::PetscInt, X::Vector{PetscVec}, Y::PetscVec, x_is::Vector{IS}) 
+	VecConcatenate(petsclib::PetscLibType,nx::PetscInt, X::Vector{<:AbstractPetscVec}, Y::AbstractPetscVec, x_is::Vector{<:AbstractIS}) 
 Creates a new vector that is a vertical concatenation of all the given array of vectors
 in the order they appear in the array. The concatenated vector resides on the same
 communicator and is the same type as the source vectors.
@@ -758,9 +758,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecConcatenate"))
 """
-function VecConcatenate(petsclib::PetscLibType, nx::PetscInt, X::Vector{PetscVec}, Y::PetscVec, x_is::Vector{IS}) end
+function VecConcatenate(petsclib::PetscLibType, nx::PetscInt, X::Vector{<:AbstractPetscVec}, Y::AbstractPetscVec, x_is::Vector{<:AbstractIS}) end
 
-@for_petsc function VecConcatenate(petsclib::$UnionPetscLib, nx::$PetscInt, X::Vector{PetscVec}, Y::PetscVec, x_is::Vector{IS} )
+@for_petsc function VecConcatenate(petsclib::$UnionPetscLib, nx::$PetscInt, X::Vector{<:AbstractPetscVec}, Y::AbstractPetscVec, x_is::Vector{<:AbstractIS} )
 	Y_ = Ref(Y.ptr)
 	x_is_ = Ref(pointer(x_is))
 
@@ -777,7 +777,7 @@ function VecConcatenate(petsclib::PetscLibType, nx::PetscInt, X::Vector{PetscVec
 end 
 
 """
-	VecGetSubVector(petsclib::PetscLibType,X::PetscVec, is::IS, Y::PetscVec) 
+	VecGetSubVector(petsclib::PetscLibType,X::AbstractPetscVec, is::AbstractIS, Y::AbstractPetscVec) 
 Gets a vector representing part of another vector
 
 Collective
@@ -796,9 +796,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecGetSubVector"))
 """
-function VecGetSubVector(petsclib::PetscLibType, X::PetscVec, is::IS, Y::PetscVec) end
+function VecGetSubVector(petsclib::PetscLibType, X::AbstractPetscVec, is::AbstractIS, Y::AbstractPetscVec) end
 
-@for_petsc function VecGetSubVector(petsclib::$UnionPetscLib, X::PetscVec, is::IS, Y::PetscVec )
+@for_petsc function VecGetSubVector(petsclib::$UnionPetscLib, X::AbstractPetscVec, is::AbstractIS, Y::AbstractPetscVec )
 	Y_ = Ref(Y.ptr)
 
     @chk ccall(
@@ -814,7 +814,7 @@ function VecGetSubVector(petsclib::PetscLibType, X::PetscVec, is::IS, Y::PetscVe
 end 
 
 """
-	VecRestoreSubVector(petsclib::PetscLibType,X::PetscVec, is::IS, Y::PetscVec) 
+	VecRestoreSubVector(petsclib::PetscLibType,X::AbstractPetscVec, is::AbstractIS, Y::AbstractPetscVec) 
 Restores a subvector extracted using `VecGetSubVector()`
 
 Collective
@@ -831,9 +831,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecRestoreSubVector"))
 """
-function VecRestoreSubVector(petsclib::PetscLibType, X::PetscVec, is::IS, Y::PetscVec) end
+function VecRestoreSubVector(petsclib::PetscLibType, X::AbstractPetscVec, is::AbstractIS, Y::AbstractPetscVec) end
 
-@for_petsc function VecRestoreSubVector(petsclib::$UnionPetscLib, X::PetscVec, is::IS, Y::PetscVec )
+@for_petsc function VecRestoreSubVector(petsclib::$UnionPetscLib, X::AbstractPetscVec, is::AbstractIS, Y::AbstractPetscVec )
 	Y_ = Ref(Y.ptr)
 
     @chk ccall(
@@ -849,7 +849,7 @@ function VecRestoreSubVector(petsclib::PetscLibType, X::PetscVec, is::IS, Y::Pet
 end 
 
 """
-	w::PetscVec = VecCreateLocalVector(petsclib::PetscLibType,v::PetscVec) 
+	w::PetscVec = VecCreateLocalVector(petsclib::PetscLibType,v::AbstractPetscVec) 
 Creates a vector object suitable for use with `VecGetLocalVector()` and friends. You must call `VecDestroy()` when the
 vector is no longer needed.
 
@@ -868,9 +868,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecCreateLocalVector"))
 """
-function VecCreateLocalVector(petsclib::PetscLibType, v::PetscVec) end
+function VecCreateLocalVector(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecCreateLocalVector(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecCreateLocalVector(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 	w_ = Ref{CVec}()
 
     @chk ccall(
@@ -886,7 +886,7 @@ function VecCreateLocalVector(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	VecGetLocalVectorRead(petsclib::PetscLibType,v::PetscVec, w::PetscVec) 
+	VecGetLocalVectorRead(petsclib::PetscLibType,v::AbstractPetscVec, w::AbstractPetscVec) 
 Maps the local portion of a vector into a
 vector.
 
@@ -905,9 +905,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGetLocalVectorRead"))
 """
-function VecGetLocalVectorRead(petsclib::PetscLibType, v::PetscVec, w::PetscVec) end
+function VecGetLocalVectorRead(petsclib::PetscLibType, v::AbstractPetscVec, w::AbstractPetscVec) end
 
-@for_petsc function VecGetLocalVectorRead(petsclib::$UnionPetscLib, v::PetscVec, w::PetscVec )
+@for_petsc function VecGetLocalVectorRead(petsclib::$UnionPetscLib, v::AbstractPetscVec, w::AbstractPetscVec )
 
     @chk ccall(
                (:VecGetLocalVectorRead, $petsc_library),
@@ -921,7 +921,7 @@ function VecGetLocalVectorRead(petsclib::PetscLibType, v::PetscVec, w::PetscVec)
 end 
 
 """
-	VecRestoreLocalVectorRead(petsclib::PetscLibType,v::PetscVec, w::PetscVec) 
+	VecRestoreLocalVectorRead(petsclib::PetscLibType,v::AbstractPetscVec, w::AbstractPetscVec) 
 Unmaps the local portion of a vector
 previously mapped into a vector using `VecGetLocalVectorRead()`.
 
@@ -938,9 +938,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreLocalVectorRead"))
 """
-function VecRestoreLocalVectorRead(petsclib::PetscLibType, v::PetscVec, w::PetscVec) end
+function VecRestoreLocalVectorRead(petsclib::PetscLibType, v::AbstractPetscVec, w::AbstractPetscVec) end
 
-@for_petsc function VecRestoreLocalVectorRead(petsclib::$UnionPetscLib, v::PetscVec, w::PetscVec )
+@for_petsc function VecRestoreLocalVectorRead(petsclib::$UnionPetscLib, v::AbstractPetscVec, w::AbstractPetscVec )
 
     @chk ccall(
                (:VecRestoreLocalVectorRead, $petsc_library),
@@ -954,7 +954,7 @@ function VecRestoreLocalVectorRead(petsclib::PetscLibType, v::PetscVec, w::Petsc
 end 
 
 """
-	VecGetLocalVector(petsclib::PetscLibType,v::PetscVec, w::PetscVec) 
+	VecGetLocalVector(petsclib::PetscLibType,v::AbstractPetscVec, w::AbstractPetscVec) 
 Maps the local portion of a vector into a
 vector.
 
@@ -973,9 +973,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGetLocalVector"))
 """
-function VecGetLocalVector(petsclib::PetscLibType, v::PetscVec, w::PetscVec) end
+function VecGetLocalVector(petsclib::PetscLibType, v::AbstractPetscVec, w::AbstractPetscVec) end
 
-@for_petsc function VecGetLocalVector(petsclib::$UnionPetscLib, v::PetscVec, w::PetscVec )
+@for_petsc function VecGetLocalVector(petsclib::$UnionPetscLib, v::AbstractPetscVec, w::AbstractPetscVec )
 
     @chk ccall(
                (:VecGetLocalVector, $petsc_library),
@@ -989,7 +989,7 @@ function VecGetLocalVector(petsclib::PetscLibType, v::PetscVec, w::PetscVec) end
 end 
 
 """
-	VecRestoreLocalVector(petsclib::PetscLibType,v::PetscVec, w::PetscVec) 
+	VecRestoreLocalVector(petsclib::PetscLibType,v::AbstractPetscVec, w::AbstractPetscVec) 
 Unmaps the local portion of a vector
 previously mapped into a vector using `VecGetLocalVector()`.
 
@@ -1006,9 +1006,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreLocalVector"))
 """
-function VecRestoreLocalVector(petsclib::PetscLibType, v::PetscVec, w::PetscVec) end
+function VecRestoreLocalVector(petsclib::PetscLibType, v::AbstractPetscVec, w::AbstractPetscVec) end
 
-@for_petsc function VecRestoreLocalVector(petsclib::$UnionPetscLib, v::PetscVec, w::PetscVec )
+@for_petsc function VecRestoreLocalVector(petsclib::$UnionPetscLib, v::AbstractPetscVec, w::AbstractPetscVec )
 
     @chk ccall(
                (:VecRestoreLocalVector, $petsc_library),
@@ -1022,7 +1022,7 @@ function VecRestoreLocalVector(petsclib::PetscLibType, v::PetscVec, w::PetscVec)
 end 
 
 """
-	a::Vector{PetscScalar} = VecGetArray(petsclib::PetscLibType,x::PetscVec) 
+	a::Vector{PetscScalar} = VecGetArray(petsclib::PetscLibType,x::AbstractPetscVec) 
 Returns a pointer to a contiguous array that contains this
 MPI processes's portion of the vector data
 
@@ -1042,9 +1042,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGetArray"))
 """
-function VecGetArray(petsclib::PetscLibType, x::PetscVec) end
+function VecGetArray(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecGetArray(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecGetArray(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	a_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -1060,7 +1060,7 @@ function VecGetArray(petsclib::PetscLibType, x::PetscVec) end
 end 
 
 """
-	VecRestoreArray(petsclib::PetscLibType,x::PetscVec, a::Vector{PetscScalar}) 
+	VecRestoreArray(petsclib::PetscLibType,x::AbstractPetscVec, a::Vector{PetscScalar}) 
 Restores a vector after `VecGetArray()` has been called and the array is no longer needed
 
 Logically Collective
@@ -1077,9 +1077,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreArray"))
 """
-function VecRestoreArray(petsclib::PetscLibType, x::PetscVec, a::Vector{PetscScalar}) end
+function VecRestoreArray(petsclib::PetscLibType, x::AbstractPetscVec, a::Vector{PetscScalar}) end
 
-@for_petsc function VecRestoreArray(petsclib::$UnionPetscLib, x::PetscVec, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArray(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::Vector{$PetscScalar} )
 	a_ = Ref(pointer(a))
 
     @chk ccall(
@@ -1094,7 +1094,7 @@ function VecRestoreArray(petsclib::PetscLibType, x::PetscVec, a::Vector{PetscSca
 end 
 
 """
-	a::Vector{PetscScalar} = VecGetArrayRead(petsclib::PetscLibType,x::PetscVec) 
+	a::Vector{PetscScalar} = VecGetArrayRead(petsclib::PetscLibType,x::AbstractPetscVec) 
 Get read
 
 Not Collective
@@ -1131,7 +1131,7 @@ function VecGetArrayRead(petsclib::PetscLibType, x::AbstractPetscVec) end
 end 
 
 """
-	VecRestoreArrayRead(petsclib::PetscLibType,x::PetscVec, a::Vector{PetscScalar}) 
+	VecRestoreArrayRead(petsclib::PetscLibType,x::AbstractPetscVec, a::Vector{PetscScalar}) 
 Restore array obtained with `VecGetArrayRead()`
 
 Not Collective
@@ -1164,7 +1164,7 @@ function VecRestoreArrayRead(petsclib::PetscLibType, x::AbstractPetscVec, a::Vec
 end 
 
 """
-	a::Vector{PetscScalar} = VecGetArrayWrite(petsclib::PetscLibType,x::PetscVec) 
+	a::Vector{PetscScalar} = VecGetArrayWrite(petsclib::PetscLibType,x::AbstractPetscVec) 
 Returns a pointer to a contiguous array that WILL contain this
 MPI processes's portion of the vector data.
 
@@ -1202,7 +1202,7 @@ function VecGetArrayWrite(petsclib::PetscLibType, x::AbstractPetscVec) end
 end 
 
 """
-	VecRestoreArrayWrite(petsclib::PetscLibType,x::PetscVec, a::Vector{PetscScalar}) 
+	VecRestoreArrayWrite(petsclib::PetscLibType,x::AbstractPetscVec, a::Vector{PetscScalar}) 
 Restores a vector after `VecGetArrayWrite()` has been called.
 
 Logically Collective
@@ -1236,7 +1236,7 @@ function VecRestoreArrayWrite(petsclib::PetscLibType, x::AbstractPetscVec, a::Ve
 end 
 
 """
-	a::Vector{PetscScalar} = VecGetArrays(petsclib::PetscLibType,x::Vector{PetscVec}, n::PetscInt) 
+	a::Vector{PetscScalar} = VecGetArrays(petsclib::PetscLibType,x::Vector{<:AbstractPetscVec}, n::PetscInt) 
 Returns a pointer to the arrays in a set of vectors
 that were created by a call to `VecDuplicateVecs()`.
 
@@ -1256,9 +1256,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecGetArrays"))
 """
-function VecGetArrays(petsclib::PetscLibType, x::Vector{PetscVec}, n::PetscInt) end
+function VecGetArrays(petsclib::PetscLibType, x::Vector{<:AbstractPetscVec}, n::PetscInt) end
 
-@for_petsc function VecGetArrays(petsclib::$UnionPetscLib, x::Vector{PetscVec}, n::$PetscInt )
+@for_petsc function VecGetArrays(petsclib::$UnionPetscLib, x::Vector{<:AbstractPetscVec}, n::$PetscInt )
 
     @chk ccall(
                (:VecGetArrays, $petsc_library),
@@ -1272,7 +1272,7 @@ function VecGetArrays(petsclib::PetscLibType, x::Vector{PetscVec}, n::PetscInt) 
 end 
 
 """
-	VecRestoreArrays(petsclib::PetscLibType,x::Vector{PetscVec}, n::PetscInt, a::Vector{PetscScalar}) 
+	VecRestoreArrays(petsclib::PetscLibType,x::Vector{<:AbstractPetscVec}, n::PetscInt, a::Vector{PetscScalar}) 
 Restores a group of vectors after `VecGetArrays()`
 has been called.
 
@@ -1288,9 +1288,9 @@ Input Parameters:
 # External Links
 $(_doc_external("Vec/VecRestoreArrays"))
 """
-function VecRestoreArrays(petsclib::PetscLibType, x::Vector{PetscVec}, n::PetscInt, a::Vector{PetscScalar}) end
+function VecRestoreArrays(petsclib::PetscLibType, x::Vector{<:AbstractPetscVec}, n::PetscInt, a::Vector{PetscScalar}) end
 
-@for_petsc function VecRestoreArrays(petsclib::$UnionPetscLib, x::Vector{PetscVec}, n::$PetscInt, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArrays(petsclib::$UnionPetscLib, x::Vector{<:AbstractPetscVec}, n::$PetscInt, a::Vector{$PetscScalar} )
 
     @chk ccall(
                (:VecRestoreArrays, $petsc_library),
@@ -1304,7 +1304,7 @@ function VecRestoreArrays(petsclib::PetscLibType, x::Vector{PetscVec}, n::PetscI
 end 
 
 """
-	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayAndMemType(petsclib::PetscLibType,x::PetscVec) 
+	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayAndMemType(petsclib::PetscLibType,x::AbstractPetscVec) 
 Like `VecGetArray()`, but if this is a standard device vector (e.g.,
 `VECCUDA`), the returned pointer will be a device pointer to the device memory that contains
 this MPI processes's portion of the vector data.
@@ -1326,9 +1326,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGetArrayAndMemType"))
 """
-function VecGetArrayAndMemType(petsclib::PetscLibType, x::PetscVec) end
+function VecGetArrayAndMemType(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecGetArrayAndMemType(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecGetArrayAndMemType(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	a_ = Ref{Ptr{$PetscScalar}}()
 	mtype_ = Ref{PetscMemType}()
 
@@ -1346,7 +1346,7 @@ function VecGetArrayAndMemType(petsclib::PetscLibType, x::PetscVec) end
 end
 
 """
-	VecRestoreArrayAndMemType(petsclib::PetscLibType,x::PetscVec, a::Vector{PetscScalar}) 
+	VecRestoreArrayAndMemType(petsclib::PetscLibType,x::AbstractPetscVec, a::Vector{PetscScalar}) 
 Restores a vector after `VecGetArrayAndMemType()` has been called.
 
 Logically Collective; No Fortran Support
@@ -1363,9 +1363,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreArrayAndMemType"))
 """
-function VecRestoreArrayAndMemType(petsclib::PetscLibType, x::PetscVec, a::Vector{PetscScalar}) end
+function VecRestoreArrayAndMemType(petsclib::PetscLibType, x::AbstractPetscVec, a::Vector{PetscScalar}) end
 
-@for_petsc function VecRestoreArrayAndMemType(petsclib::$UnionPetscLib, x::PetscVec, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArrayAndMemType(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::Vector{$PetscScalar} )
 	a_ = Ref(pointer(a))
 
     @chk ccall(
@@ -1380,7 +1380,7 @@ function VecRestoreArrayAndMemType(petsclib::PetscLibType, x::PetscVec, a::Vecto
 end 
 
 """
-	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayReadAndMemType(petsclib::PetscLibType,x::PetscVec) 
+	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayReadAndMemType(petsclib::PetscLibType,x::AbstractPetscVec) 
 Like `VecGetArrayRead()`, but if the input vector is a device vector, it will return a read
 The returned pointer is guaranteed to point to up-to-date data. For host vectors, it functions as `VecGetArrayRead()`.
 
@@ -1400,9 +1400,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGetArrayReadAndMemType"))
 """
-function VecGetArrayReadAndMemType(petsclib::PetscLibType, x::PetscVec) end
+function VecGetArrayReadAndMemType(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecGetArrayReadAndMemType(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecGetArrayReadAndMemType(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	a_ = Ref{Ptr{$PetscScalar}}()
 	mtype_ = Ref{PetscMemType}()
 
@@ -1420,7 +1420,7 @@ function VecGetArrayReadAndMemType(petsclib::PetscLibType, x::PetscVec) end
 end
 
 """
-	VecRestoreArrayReadAndMemType(petsclib::PetscLibType,x::PetscVec, a::Vector{PetscScalar}) 
+	VecRestoreArrayReadAndMemType(petsclib::PetscLibType,x::AbstractPetscVec, a::Vector{PetscScalar}) 
 Restore array obtained with `VecGetArrayReadAndMemType()`
 
 Not Collective; No Fortran Support
@@ -1436,9 +1436,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreArrayReadAndMemType"))
 """
-function VecRestoreArrayReadAndMemType(petsclib::PetscLibType, x::PetscVec, a::Vector{PetscScalar}) end
+function VecRestoreArrayReadAndMemType(petsclib::PetscLibType, x::AbstractPetscVec, a::Vector{PetscScalar}) end
 
-@for_petsc function VecRestoreArrayReadAndMemType(petsclib::$UnionPetscLib, x::PetscVec, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArrayReadAndMemType(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::Vector{$PetscScalar} )
 	a_ = Ref(pointer(a))
 
     @chk ccall(
@@ -1453,7 +1453,7 @@ function VecRestoreArrayReadAndMemType(petsclib::PetscLibType, x::PetscVec, a::V
 end 
 
 """
-	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayWriteAndMemType(petsclib::PetscLibType,x::PetscVec) 
+	a::Vector{PetscScalar},mtype::PetscMemType = VecGetArrayWriteAndMemType(petsclib::PetscLibType,x::AbstractPetscVec) 
 Like `VecGetArrayWrite()`, but if this is a device vector it will always return
 a device pointer to the device memory that contains this processor's portion of the vector data.
 
@@ -1473,9 +1473,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGetArrayWriteAndMemType"))
 """
-function VecGetArrayWriteAndMemType(petsclib::PetscLibType, x::PetscVec) end
+function VecGetArrayWriteAndMemType(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecGetArrayWriteAndMemType(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecGetArrayWriteAndMemType(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	a_ = Ref{Ptr{$PetscScalar}}()
 	mtype_ = Ref{PetscMemType}()
 
@@ -1493,7 +1493,7 @@ function VecGetArrayWriteAndMemType(petsclib::PetscLibType, x::PetscVec) end
 end
 
 """
-	VecRestoreArrayWriteAndMemType(petsclib::PetscLibType,x::PetscVec, a::Vector{PetscScalar}) 
+	VecRestoreArrayWriteAndMemType(petsclib::PetscLibType,x::AbstractPetscVec, a::Vector{PetscScalar}) 
 Restore array obtained with `VecGetArrayWriteAndMemType()`
 
 Logically Collective; No Fortran Support
@@ -1509,9 +1509,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreArrayWriteAndMemType"))
 """
-function VecRestoreArrayWriteAndMemType(petsclib::PetscLibType, x::PetscVec, a::Vector{PetscScalar}) end
+function VecRestoreArrayWriteAndMemType(petsclib::PetscLibType, x::AbstractPetscVec, a::Vector{PetscScalar}) end
 
-@for_petsc function VecRestoreArrayWriteAndMemType(petsclib::$UnionPetscLib, x::PetscVec, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArrayWriteAndMemType(petsclib::$UnionPetscLib, x::AbstractPetscVec, a::Vector{$PetscScalar} )
 	a_ = Ref(pointer(a))
 
     @chk ccall(
@@ -1526,7 +1526,7 @@ function VecRestoreArrayWriteAndMemType(petsclib::PetscLibType, x::PetscVec, a::
 end 
 
 """
-	VecPlaceArray(petsclib::PetscLibType,vec::PetscVec, array::Vector{PetscScalar}) 
+	VecPlaceArray(petsclib::PetscLibType,vec::AbstractPetscVec, array::Vector{PetscScalar}) 
 Allows one to replace the array in a vector with an
 array provided by the user. This is useful to avoid copying an array
 into a vector.
@@ -1544,9 +1544,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecPlaceArray"))
 """
-function VecPlaceArray(petsclib::PetscLibType, vec::PetscVec, array::Vector{PetscScalar}) end
+function VecPlaceArray(petsclib::PetscLibType, vec::AbstractPetscVec, array::Vector{PetscScalar}) end
 
-@for_petsc function VecPlaceArray(petsclib::$UnionPetscLib, vec::PetscVec, array::Vector{$PetscScalar} )
+@for_petsc function VecPlaceArray(petsclib::$UnionPetscLib, vec::AbstractPetscVec, array::Vector{$PetscScalar} )
 
     @chk ccall(
                (:VecPlaceArray, $petsc_library),
@@ -1560,7 +1560,7 @@ function VecPlaceArray(petsclib::PetscLibType, vec::PetscVec, array::Vector{Pets
 end 
 
 """
-	VecReplaceArray(petsclib::PetscLibType,vec::PetscVec, array::Vector{PetscScalar}) 
+	VecReplaceArray(petsclib::PetscLibType,vec::AbstractPetscVec, array::Vector{PetscScalar}) 
 Allows one to replace the array in a vector with an
 array provided by the user. This is useful to avoid copying an array
 into a vector.
@@ -1578,9 +1578,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecReplaceArray"))
 """
-function VecReplaceArray(petsclib::PetscLibType, vec::PetscVec, array::Vector{PetscScalar}) end
+function VecReplaceArray(petsclib::PetscLibType, vec::AbstractPetscVec, array::Vector{PetscScalar}) end
 
-@for_petsc function VecReplaceArray(petsclib::$UnionPetscLib, vec::PetscVec, array::Vector{$PetscScalar} )
+@for_petsc function VecReplaceArray(petsclib::$UnionPetscLib, vec::AbstractPetscVec, array::Vector{$PetscScalar} )
 
     @chk ccall(
                (:VecReplaceArray, $petsc_library),
@@ -1594,7 +1594,7 @@ function VecReplaceArray(petsclib::PetscLibType, vec::PetscVec, array::Vector{Pe
 end 
 
 """
-	a::Vector{PetscScalar} = VecGetArray2d(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) 
+	a::Vector{PetscScalar} = VecGetArray2d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) 
 Returns a pointer to a 2d contiguous array that contains this
 processor's portion of the vector data.  You MUST call `VecRestoreArray2d()`
 when you no longer need access to the array.
@@ -1620,9 +1620,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetArray2d"))
 """
-function VecGetArray2d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) end
+function VecGetArray2d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) end
 
-@for_petsc function VecGetArray2d(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt )
+@for_petsc function VecGetArray2d(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt )
 
     arr_ptr = Ref{Ptr{Ptr{$PetscScalar}}}()
 
@@ -1650,7 +1650,7 @@ function VecGetArray2d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::Pets
 end 
 
 """
-	a::Vector{PetscScalar} = VecGetArray2dWrite(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) 
+	a::Vector{PetscScalar} = VecGetArray2dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) 
 Returns a pointer to a 2d contiguous array that will contain this
 processor's portion of the vector data.  You MUST call `VecRestoreArray2dWrite()`
 when you no longer need access to the array.
@@ -1676,9 +1676,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetArray2dWrite"))
 """
-function VecGetArray2dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) end
+function VecGetArray2dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) end
 
-@for_petsc function VecGetArray2dWrite(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt )
+@for_petsc function VecGetArray2dWrite(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt )
 
     arr_ptr = Ref{Ptr{Ptr{$PetscScalar}}}()
 
@@ -1697,7 +1697,7 @@ function VecGetArray2dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n:
 end 
 
 """
-	VecRestoreArray2d(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) 
+	VecRestoreArray2d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) 
 Restores a vector after `VecGetArray2d()` has been called.
 
 Logically Collective
@@ -1719,9 +1719,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray2d"))
 """
-function VecRestoreArray2d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) end
+function VecRestoreArray2d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) end
 
-@for_petsc function VecRestoreArray2d(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, a::PetscArray{$PetscScalar, 2} )
+@for_petsc function VecRestoreArray2d(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, a::PetscArray{$PetscScalar, 2} )
 	if a.ptr[] != C_NULL 
 
         @chk ccall(
@@ -1742,7 +1742,7 @@ end
 
 
 """
-	VecRestoreArray2dWrite(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) 
+	VecRestoreArray2dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) 
 Restores a vector after `VecGetArray2dWrite()` has been called.
 
 Logically Collective
@@ -1764,9 +1764,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray2dWrite"))
 """
-function VecRestoreArray2dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) end
+function VecRestoreArray2dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) end
 
-@for_petsc function VecRestoreArray2dWrite(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, a::PetscArray{$PetscScalar, 2} )
+@for_petsc function VecRestoreArray2dWrite(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, a::PetscArray{$PetscScalar, 2} )
 	if a.ptr[]  != C_NULL  
 
         @chk ccall(
@@ -1788,7 +1788,7 @@ end
 
 
 """
-	a::PetscArray = VecGetArray1d(petsclib::PetscLibType,x::PetscVec, m::PetscInt, mstart::PetscInt) 
+	a::PetscArray = VecGetArray1d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, mstart::PetscInt) 
 Returns a pointer to a 1d contiguous array that contains this
 processor's portion of the vector data.  You MUST call `VecRestoreArray1d()`
 when you no longer need access to the array.
@@ -1812,9 +1812,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetArray1d"))
 """
-function VecGetArray1d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, mstart::PetscInt) end
+function VecGetArray1d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, mstart::PetscInt) end
 
-@for_petsc function VecGetArray1d(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, mstart::$PetscInt )
+@for_petsc function VecGetArray1d(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, mstart::$PetscInt )
 	a_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -1833,7 +1833,7 @@ end
 
 
 """
-	a::PetscArray = VecGetArray1dWrite(petsclib::PetscLibType,x::PetscVec, m::PetscInt, mstart::PetscInt) 
+	a::PetscArray = VecGetArray1dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, mstart::PetscInt) 
 Returns a pointer to a 1d contiguous array that will contain this
 processor's portion of the vector data.  You MUST call `VecRestoreArray1dWrite()`
 when you no longer need access to the array.
@@ -1857,9 +1857,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetArray1dWrite"))
 """
-function VecGetArray1dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, mstart::PetscInt) end
+function VecGetArray1dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, mstart::PetscInt) end
 
-@for_petsc function VecGetArray1dWrite(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, mstart::$PetscInt )
+@for_petsc function VecGetArray1dWrite(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, mstart::$PetscInt )
 	a_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -1879,7 +1879,7 @@ end
 
 
 """
-	VecRestoreArray1d(petsclib::PetscLibType,x::PetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) 
+	VecRestoreArray1d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) 
 Restores a vector after `VecGetArray1d()` has been called.
 
 Logically Collective
@@ -1899,9 +1899,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray1d"))
 """
-function VecRestoreArray1d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) end
+function VecRestoreArray1d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) end
 
-@for_petsc function VecRestoreArray1d(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, mstart::$PetscInt, a::PetscArray{$PetscScalar, 1} )
+@for_petsc function VecRestoreArray1d(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, mstart::$PetscInt, a::PetscArray{$PetscScalar, 1} )
 	if a.ptr[]  != C_NULL 
 
     @chk ccall(
@@ -1922,7 +1922,7 @@ end
 
 
 """
-	VecRestoreArray1dWrite(petsclib::PetscLibType,x::PetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) 
+	VecRestoreArray1dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) 
 Restores a vector after `VecGetArray1dWrite()` has been called.
 
 Logically Collective
@@ -1942,9 +1942,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray1dWrite"))
 """
-function VecRestoreArray1dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) end
+function VecRestoreArray1dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) end
 
-@for_petsc function VecRestoreArray1dWrite(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, mstart::$PetscInt, a::PetscArray{$PetscScalar, 1} )
+@for_petsc function VecRestoreArray1dWrite(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, mstart::$PetscInt, a::PetscArray{$PetscScalar, 1} )
 	if a.ptr[]  != C_NULL 
 
     @chk ccall(
@@ -1966,7 +1966,7 @@ end
  
 
 """
-	a::PetscArray = VecGetArray3d(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
+	a::PetscArray = VecGetArray3d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
 Returns a pointer to a 3d contiguous array that contains this
 processor's portion of the vector data.  You MUST call `VecRestoreArray3d()`
 when you no longer need access to the array.
@@ -1994,9 +1994,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetArray3d"))
 """
-function VecGetArray3d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) end
+function VecGetArray3d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) end
 
-@for_petsc function VecGetArray3d(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt )
+@for_petsc function VecGetArray3d(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt )
 	a_ = Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}()
 
     @chk ccall(
@@ -2016,7 +2016,7 @@ end
 
 
 """
-	a::PetscArray = VecGetArray3dWrite(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
+	a::PetscArray = VecGetArray3dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
 Returns a pointer to a 3d contiguous array that will contain this
 processor's portion of the vector data.  You MUST call `VecRestoreArray3dWrite()`
 when you no longer need access to the array.
@@ -2044,9 +2044,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetArray3dWrite"))
 """
-function VecGetArray3dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) end
+function VecGetArray3dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) end
 
-@for_petsc function VecGetArray3dWrite(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt )
+@for_petsc function VecGetArray3dWrite(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt )
 	a_ = Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}()
 
     @chk ccall(
@@ -2066,7 +2066,7 @@ end
 
 
 """
-	VecRestoreArray3d(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) 
+	VecRestoreArray3d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) 
 Restores a vector after `VecGetArray3d()` has been called.
 
 Logically Collective
@@ -2090,9 +2090,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray3d"))
 """
-function VecRestoreArray3d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) end
+function VecRestoreArray3d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) end
 
-@for_petsc function VecRestoreArray3d(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, a::PetscArray{$PetscScalar, 3} )
+@for_petsc function VecRestoreArray3d(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, a::PetscArray{$PetscScalar, 3} )
 	if a.ptr[]  != C_NULL  
 
     @chk ccall(
@@ -2112,7 +2112,7 @@ function VecRestoreArray3d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::
 end 
 
 """
-	VecRestoreArray3dWrite(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) 
+	VecRestoreArray3dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) 
 Restores a vector after `VecGetArray3dWrite()` has been called.
 
 Logically Collective
@@ -2136,9 +2136,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray3dWrite"))
 """
-function VecRestoreArray3dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) end
+function VecRestoreArray3dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) end
 
-@for_petsc function VecRestoreArray3dWrite(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, a::PetscArray{$PetscScalar, 3} )
+@for_petsc function VecRestoreArray3dWrite(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, a::PetscArray{$PetscScalar, 3} )
 	if a.ptr[]  != C_NULL  
 
     @chk ccall(
@@ -2160,7 +2160,7 @@ end
 
 
 """
-	a::PetscArray = VecGetArray4d(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) 
+	a::PetscArray = VecGetArray4d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) 
 Returns a pointer to a 4d contiguous array that contains this processor's portion of the vector data.  You MUST call `VecRestoreArray4d()` when you no longer need access to the array.
 
 Logically Collective
@@ -2188,9 +2188,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetArray4d"))
 """
-function VecGetArray4d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) end
+function VecGetArray4d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) end
 
-@for_petsc function VecGetArray4d(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt )
+@for_petsc function VecGetArray4d(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt )
 	a_ = Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}()
 
     @chk ccall(
@@ -2209,7 +2209,7 @@ end
 
 
 """
-	a::PetscArray = VecGetArray4dWrite(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) 
+	a::PetscArray = VecGetArray4dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) 
 Returns a pointer to a 4d contiguous array that will contain this
 processor's portion of the vector data.  You MUST call `VecRestoreArray4dWrite()`
 when you no longer need access to the array.
@@ -2239,9 +2239,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetArray4dWrite"))
 """
-function VecGetArray4dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) end
+function VecGetArray4dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) end
 
-@for_petsc function VecGetArray4dWrite(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt )
+@for_petsc function VecGetArray4dWrite(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt )
 	a_ = Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}()
 
     @chk ccall(
@@ -2260,7 +2260,7 @@ end
 
 
 """
-	VecRestoreArray4d(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) 
+	VecRestoreArray4d(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) 
 Restores a vector after `VecGetArray4d()` has been called.
 
 Logically Collective
@@ -2286,9 +2286,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray4d"))
 """
-function VecRestoreArray4d(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) end
+function VecRestoreArray4d(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) end
 
-@for_petsc function VecRestoreArray4d(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt, a::PetscArray{$PetscScalar, 4} )
+@for_petsc function VecRestoreArray4d(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt, a::PetscArray{$PetscScalar, 4} )
 	if a.ptr[]  != C_NULL  
 
         @chk ccall(
@@ -2308,7 +2308,7 @@ end
 
 
 """
-	VecRestoreArray4dWrite(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) 
+	VecRestoreArray4dWrite(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) 
 Restores a vector after `VecGetArray4dWrite()` has been called.
 
 Logically Collective
@@ -2334,9 +2334,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray4dWrite"))
 """
-function VecRestoreArray4dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) end
+function VecRestoreArray4dWrite(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) end
 
-@for_petsc function VecRestoreArray4dWrite(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt, a::PetscArray{$PetscScalar, 4} )
+@for_petsc function VecRestoreArray4dWrite(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt, a::PetscArray{$PetscScalar, 4} )
 	if a.ptr[]  != C_NULL  
 
     @chk ccall(
@@ -2354,7 +2354,7 @@ function VecRestoreArray4dWrite(petsclib::PetscLibType, x::PetscVec, m::PetscInt
 end 
 
 """
-	a::Vector{PetscScalar} = VecGetArray2dRead(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) 
+	a::Vector{PetscScalar} = VecGetArray2dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) 
 Returns a pointer to a 2d contiguous array that contains this
 processor's portion of the vector data.  You MUST call `VecRestoreArray2dRead()`
 when you no longer need access to the array.
@@ -2380,9 +2380,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetArray2dRead"))
 """
-function VecGetArray2dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) end
+function VecGetArray2dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt) end
 
-@for_petsc function VecGetArray2dRead(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt )
+@for_petsc function VecGetArray2dRead(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt )
 
     arr_ptr = Ref{Ptr{Ptr{$PetscScalar}}}()
 
@@ -2401,7 +2401,7 @@ function VecGetArray2dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::
 end 
 
 """
-	VecRestoreArray2dRead(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) 
+	VecRestoreArray2dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) 
 Restores a vector after `VecGetArray2dRead()` has been called.
 
 Logically Collective
@@ -2423,9 +2423,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray2dRead"))
 """
-function VecRestoreArray2dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) end
+function VecRestoreArray2dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, mstart::PetscInt, nstart::PetscInt, a::PetscArray{PetscScalar, 2}) end
 
-@for_petsc function VecRestoreArray2dRead(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, a::PetscArray{$PetscScalar, 2} )
+@for_petsc function VecRestoreArray2dRead(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, a::PetscArray{$PetscScalar, 2} )
 	if a.ptr[]  != C_NULL  
 
         @chk ccall(
@@ -2446,7 +2446,7 @@ end
 
 
 """
-	VecRestoreArray1dRead(petsclib::PetscLibType,x::PetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) 
+	VecRestoreArray1dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) 
 Restores a vector after `VecGetArray1dRead()` has been called.
 
 Logically Collective
@@ -2466,9 +2466,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray1dRead"))
 """
-function VecRestoreArray1dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) end
+function VecRestoreArray1dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::PetscArray{PetscScalar, 1}) end
 
-@for_petsc function VecRestoreArray1dRead(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, mstart::$PetscInt, a::PetscArray{$PetscScalar, 1} )
+@for_petsc function VecRestoreArray1dRead(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, mstart::$PetscInt, a::PetscArray{$PetscScalar, 1} )
 	if a.ptr[]  != C_NULL 
         @chk ccall(
                 (:VecRestoreArray1dRead, $petsc_library),
@@ -2489,7 +2489,7 @@ end
 
 
 """
-	VecRestoreArray1dRead(petsclib::PetscLibType,x::PetscVec, m::PetscInt, mstart::PetscInt, a::Vector{PetscScalar}) 
+	VecRestoreArray1dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::Vector{PetscScalar}) 
 Restores a vector after `VecGetArray1dRead()` has been called.
 
 Logically Collective
@@ -2509,9 +2509,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray1dRead"))
 """
-function VecRestoreArray1dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt, mstart::PetscInt, a::Vector{PetscScalar}) end
+function VecRestoreArray1dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, mstart::PetscInt, a::Vector{PetscScalar}) end
 
-@for_petsc function VecRestoreArray1dRead(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, mstart::$PetscInt, a::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArray1dRead(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, mstart::$PetscInt, a::Vector{$PetscScalar} )
 	a_ = Ref(pointer(a))
 
     @chk ccall(
@@ -2526,7 +2526,7 @@ function VecRestoreArray1dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt,
 end 
 
 """
-	a::PetscArray = VecGetArray3dRead(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
+	a::PetscArray = VecGetArray3dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) 
 Returns a pointer to a 3d contiguous array that contains this
 processor's portion of the vector data.  You MUST call `VecRestoreArray3dRead()`
 when you no longer need access to the array.
@@ -2554,9 +2554,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetArray3dRead"))
 """
-function VecGetArray3dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) end
+function VecGetArray3dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt) end
 
-@for_petsc function VecGetArray3dRead(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt )
+@for_petsc function VecGetArray3dRead(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt )
 	a_ = Ref{Ptr{Ptr{Ptr{$PetscScalar}}}}()
 
     @chk ccall(
@@ -2576,7 +2576,7 @@ end
  
 
 """
-	VecRestoreArray3dRead(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) 
+	VecRestoreArray3dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) 
 Restores a vector after `VecGetArray3dRead()` has been called.
 
 Logically Collective
@@ -2600,9 +2600,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecRestoreArray3dRead"))
 """
-function VecRestoreArray3dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) end
+function VecRestoreArray3dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, a::PetscArray{PetscScalar, 3}) end
 
-@for_petsc function VecRestoreArray3dRead(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, a::PetscArray{$PetscScalar, 3} )
+@for_petsc function VecRestoreArray3dRead(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, a::PetscArray{$PetscScalar, 3} )
 	if a.ptr[]  != C_NULL 
 
     @chk ccall(
@@ -2623,7 +2623,7 @@ end
 
 
 """
-	a::PetscArray = VecGetArray4dRead(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) 
+	a::PetscArray = VecGetArray4dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) 
 Returns a pointer to a 4d contiguous array that contains this
 processor's portion of the vector data.  You MUST call `VecRestoreArray4dRead()`
 when you no longer need access to the array.
@@ -2653,9 +2653,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGetArray4dRead"))
 """
-function VecGetArray4dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) end
+function VecGetArray4dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt) end
 
-@for_petsc function VecGetArray4dRead(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt )
+@for_petsc function VecGetArray4dRead(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt )
 	a_ = Ref{Ptr{Ptr{Ptr{Ptr{$PetscScalar}}}}}()
 
     @chk ccall(
@@ -2674,7 +2674,7 @@ end
 
 
 """
-	VecRestoreArray4dRead(petsclib::PetscLibType,x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) 
+	VecRestoreArray4dRead(petsclib::PetscLibType,x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) 
 Restores a vector after `VecGetArray4d()` has been called.
 
 Logically Collective
@@ -2700,9 +2700,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRestoreArray4dRead"))
 """
-function VecRestoreArray4dRead(petsclib::PetscLibType, x::PetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) end
+function VecRestoreArray4dRead(petsclib::PetscLibType, x::AbstractPetscVec, m::PetscInt, n::PetscInt, p::PetscInt, q::PetscInt, mstart::PetscInt, nstart::PetscInt, pstart::PetscInt, qstart::PetscInt, a::PetscArray{PetscScalar, 4}) end
 
-@for_petsc function VecRestoreArray4dRead(petsclib::$UnionPetscLib, x::PetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt, a::PetscArray{$PetscScalar, 4} )
+@for_petsc function VecRestoreArray4dRead(petsclib::$UnionPetscLib, x::AbstractPetscVec, m::$PetscInt, n::$PetscInt, p::$PetscInt, q::$PetscInt, mstart::$PetscInt, nstart::$PetscInt, pstart::$PetscInt, qstart::$PetscInt, a::PetscArray{$PetscScalar, 4} )
 	if a.ptr[]  != C_NULL  
 
     @chk ccall(
@@ -2724,7 +2724,7 @@ end
 
 
 """
-	state::PetscInt = VecLockGet(petsclib::PetscLibType,x::PetscVec) 
+	state::PetscInt = VecLockGet(petsclib::PetscLibType,x::AbstractPetscVec) 
 Get the current lock status of a vector
 
 Logically Collective
@@ -2743,9 +2743,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecLockGet"))
 """
-function VecLockGet(petsclib::PetscLibType, x::PetscVec) end
+function VecLockGet(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecLockGet(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecLockGet(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	state_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -2761,14 +2761,14 @@ function VecLockGet(petsclib::PetscLibType, x::PetscVec) end
 end 
 
 """
-	VecLockGetLocation(petsclib::PetscLibType,x::PetscVec, file::Vector{Cchar}, func::Vector{Cchar}, line::Cint) 
+	VecLockGetLocation(petsclib::PetscLibType,x::AbstractPetscVec, file::Vector{Cchar}, func::Vector{Cchar}, line::Cint) 
 
 # External Links
 $(_doc_external("Vec/VecLockGetLocation"))
 """
-function VecLockGetLocation(petsclib::PetscLibType, x::PetscVec, file::Vector{Cchar}, func::Vector{Cchar}, line::Cint) end
+function VecLockGetLocation(petsclib::PetscLibType, x::AbstractPetscVec, file::Vector{Cchar}, func::Vector{Cchar}, line::Cint) end
 
-@for_petsc function VecLockGetLocation(petsclib::$UnionPetscLib, x::PetscVec, file::Vector{Cchar}, func::Vector{Cchar}, line::Cint )
+@for_petsc function VecLockGetLocation(petsclib::$UnionPetscLib, x::AbstractPetscVec, file::Vector{Cchar}, func::Vector{Cchar}, line::Cint )
 	file_ = Ref(pointer(file))
 	func_ = Ref(pointer(func))
 
@@ -2784,7 +2784,7 @@ function VecLockGetLocation(petsclib::PetscLibType, x::PetscVec, file::Vector{Cc
 end 
 
 """
-	VecLockReadPush(petsclib::PetscLibType,x::PetscVec) 
+	VecLockReadPush(petsclib::PetscLibType,x::AbstractPetscVec) 
 Push a read
 
 Logically Collective
@@ -2799,9 +2799,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecLockReadPush"))
 """
-function VecLockReadPush(petsclib::PetscLibType, x::PetscVec) end
+function VecLockReadPush(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecLockReadPush(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecLockReadPush(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 
     @chk ccall(
                (:VecLockReadPush, $petsc_library),
@@ -2815,7 +2815,7 @@ function VecLockReadPush(petsclib::PetscLibType, x::PetscVec) end
 end 
 
 """
-	VecLockReadPop(petsclib::PetscLibType,x::PetscVec) 
+	VecLockReadPop(petsclib::PetscLibType,x::AbstractPetscVec) 
 Pop a read
 
 Logically Collective
@@ -2830,9 +2830,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecLockReadPop"))
 """
-function VecLockReadPop(petsclib::PetscLibType, x::PetscVec) end
+function VecLockReadPop(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecLockReadPop(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecLockReadPop(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 
     @chk ccall(
                (:VecLockReadPop, $petsc_library),
@@ -2846,7 +2846,7 @@ function VecLockReadPop(petsclib::PetscLibType, x::PetscVec) end
 end 
 
 """
-	VecLockWriteSet(petsclib::PetscLibType,x::PetscVec, flg::PetscBool) 
+	VecLockWriteSet(petsclib::PetscLibType,x::AbstractPetscVec, flg::PetscBool) 
 Lock or unlock a vector for exclusive read/write access
 
 Logically Collective
@@ -2862,9 +2862,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecLockWriteSet"))
 """
-function VecLockWriteSet(petsclib::PetscLibType, x::PetscVec, flg::PetscBool) end
+function VecLockWriteSet(petsclib::PetscLibType, x::AbstractPetscVec, flg::PetscBool) end
 
-@for_petsc function VecLockWriteSet(petsclib::$UnionPetscLib, x::PetscVec, flg::PetscBool )
+@for_petsc function VecLockWriteSet(petsclib::$UnionPetscLib, x::AbstractPetscVec, flg::PetscBool )
 
     @chk ccall(
                (:VecLockWriteSet, $petsc_library),
@@ -2878,7 +2878,7 @@ function VecLockWriteSet(petsclib::PetscLibType, x::PetscVec, flg::PetscBool) en
 end 
 
 """
-	VecGetLocalToGlobalMapping(petsclib::PetscLibType,X::PetscVec, mapping::ISLocalToGlobalMapping) 
+	VecGetLocalToGlobalMapping(petsclib::PetscLibType,X::AbstractPetscVec, mapping::ISLocalToGlobalMapping) 
 Gets the local
 
 Not Collective
@@ -2896,9 +2896,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecGetLocalToGlobalMapping"))
 """
-function VecGetLocalToGlobalMapping(petsclib::PetscLibType, X::PetscVec, mapping::ISLocalToGlobalMapping) end
+function VecGetLocalToGlobalMapping(petsclib::PetscLibType, X::AbstractPetscVec, mapping::ISLocalToGlobalMapping) end
 
-@for_petsc function VecGetLocalToGlobalMapping(petsclib::$UnionPetscLib, X::PetscVec, mapping::ISLocalToGlobalMapping )
+@for_petsc function VecGetLocalToGlobalMapping(petsclib::$UnionPetscLib, X::AbstractPetscVec, mapping::ISLocalToGlobalMapping )
 
     @chk ccall(
                (:VecGetLocalToGlobalMapping, $petsc_library),
@@ -2912,7 +2912,7 @@ function VecGetLocalToGlobalMapping(petsclib::PetscLibType, X::PetscVec, mapping
 end 
 
 """
-	VecAssemblyBegin(petsclib::PetscLibType,vec::PetscVec) 
+	VecAssemblyBegin(petsclib::PetscLibType,vec::AbstractPetscVec) 
 Begins assembling the vector; that is ensuring all the vector's entries are stored on the correct MPI process. This routine should
 be called after completing all calls to `VecSetValues()`.
 
@@ -2928,9 +2928,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecAssemblyBegin"))
 """
-function VecAssemblyBegin(petsclib::PetscLibType, vec::PetscVec) end
+function VecAssemblyBegin(petsclib::PetscLibType, vec::AbstractPetscVec) end
 
-@for_petsc function VecAssemblyBegin(petsclib::$UnionPetscLib, vec::PetscVec )
+@for_petsc function VecAssemblyBegin(petsclib::$UnionPetscLib, vec::AbstractPetscVec )
 
     @chk ccall(
                (:VecAssemblyBegin, $petsc_library),
@@ -2944,7 +2944,7 @@ function VecAssemblyBegin(petsclib::PetscLibType, vec::PetscVec) end
 end 
 
 """
-	VecAssemblyEnd(petsclib::PetscLibType,vec::PetscVec) 
+	VecAssemblyEnd(petsclib::PetscLibType,vec::AbstractPetscVec) 
 Completes assembling the vector.  This routine should be called after `VecAssemblyBegin()`.
 
 Collective
@@ -2968,9 +2968,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecAssemblyEnd"))
 """
-function VecAssemblyEnd(petsclib::PetscLibType, vec::PetscVec) end
+function VecAssemblyEnd(petsclib::PetscLibType, vec::AbstractPetscVec) end
 
-@for_petsc function VecAssemblyEnd(petsclib::$UnionPetscLib, vec::PetscVec )
+@for_petsc function VecAssemblyEnd(petsclib::$UnionPetscLib, vec::AbstractPetscVec )
 
     @chk ccall(
                (:VecAssemblyEnd, $petsc_library),
@@ -2984,7 +2984,7 @@ function VecAssemblyEnd(petsclib::PetscLibType, vec::PetscVec) end
 end 
 
 """
-	VecPointwiseMax(petsclib::PetscLibType,w::PetscVec, x::PetscVec, y::PetscVec) 
+	VecPointwiseMax(petsclib::PetscLibType,w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes the component
 
 Logically Collective
@@ -3003,9 +3003,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecPointwiseMax"))
 """
-function VecPointwiseMax(petsclib::PetscLibType, w::PetscVec, x::PetscVec, y::PetscVec) end
+function VecPointwiseMax(petsclib::PetscLibType, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function VecPointwiseMax(petsclib::$UnionPetscLib, w::PetscVec, x::PetscVec, y::PetscVec )
+@for_petsc function VecPointwiseMax(petsclib::$UnionPetscLib, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:VecPointwiseMax, $petsc_library),
@@ -3019,7 +3019,7 @@ function VecPointwiseMax(petsclib::PetscLibType, w::PetscVec, x::PetscVec, y::Pe
 end 
 
 """
-	VecPointwiseMin(petsclib::PetscLibType,w::PetscVec, x::PetscVec, y::PetscVec) 
+	VecPointwiseMin(petsclib::PetscLibType,w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes the component
 
 Logically Collective
@@ -3038,9 +3038,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecPointwiseMin"))
 """
-function VecPointwiseMin(petsclib::PetscLibType, w::PetscVec, x::PetscVec, y::PetscVec) end
+function VecPointwiseMin(petsclib::PetscLibType, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function VecPointwiseMin(petsclib::$UnionPetscLib, w::PetscVec, x::PetscVec, y::PetscVec )
+@for_petsc function VecPointwiseMin(petsclib::$UnionPetscLib, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:VecPointwiseMin, $petsc_library),
@@ -3054,7 +3054,7 @@ function VecPointwiseMin(petsclib::PetscLibType, w::PetscVec, x::PetscVec, y::Pe
 end 
 
 """
-	VecPointwiseMaxAbs(petsclib::PetscLibType,w::PetscVec, x::PetscVec, y::PetscVec) 
+	VecPointwiseMaxAbs(petsclib::PetscLibType,w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes the component
 
 Logically Collective
@@ -3073,9 +3073,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecPointwiseMaxAbs"))
 """
-function VecPointwiseMaxAbs(petsclib::PetscLibType, w::PetscVec, x::PetscVec, y::PetscVec) end
+function VecPointwiseMaxAbs(petsclib::PetscLibType, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function VecPointwiseMaxAbs(petsclib::$UnionPetscLib, w::PetscVec, x::PetscVec, y::PetscVec )
+@for_petsc function VecPointwiseMaxAbs(petsclib::$UnionPetscLib, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:VecPointwiseMaxAbs, $petsc_library),
@@ -3089,7 +3089,7 @@ function VecPointwiseMaxAbs(petsclib::PetscLibType, w::PetscVec, x::PetscVec, y:
 end 
 
 """
-	VecPointwiseDivide(petsclib::PetscLibType,w::PetscVec, x::PetscVec, y::PetscVec) 
+	VecPointwiseDivide(petsclib::PetscLibType,w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes the component
 
 Logically Collective
@@ -3108,9 +3108,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecPointwiseDivide"))
 """
-function VecPointwiseDivide(petsclib::PetscLibType, w::PetscVec, x::PetscVec, y::PetscVec) end
+function VecPointwiseDivide(petsclib::PetscLibType, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function VecPointwiseDivide(petsclib::$UnionPetscLib, w::PetscVec, x::PetscVec, y::PetscVec )
+@for_petsc function VecPointwiseDivide(petsclib::$UnionPetscLib, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:VecPointwiseDivide, $petsc_library),
@@ -3124,7 +3124,7 @@ function VecPointwiseDivide(petsclib::PetscLibType, w::PetscVec, x::PetscVec, y:
 end 
 
 """
-	VecPointwiseMult(petsclib::PetscLibType,w::PetscVec, x::PetscVec, y::PetscVec) 
+	VecPointwiseMult(petsclib::PetscLibType,w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) 
 Computes the component
 
 Logically Collective
@@ -3143,9 +3143,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecPointwiseMult"))
 """
-function VecPointwiseMult(petsclib::PetscLibType, w::PetscVec, x::PetscVec, y::PetscVec) end
+function VecPointwiseMult(petsclib::PetscLibType, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function VecPointwiseMult(petsclib::$UnionPetscLib, w::PetscVec, x::PetscVec, y::PetscVec )
+@for_petsc function VecPointwiseMult(petsclib::$UnionPetscLib, w::AbstractPetscVec, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:VecPointwiseMult, $petsc_library),
@@ -3159,7 +3159,7 @@ function VecPointwiseMult(petsclib::PetscLibType, w::PetscVec, x::PetscVec, y::P
 end 
 
 """
-	newv::PetscVec = VecDuplicate(petsclib::PetscLibType,v::PetscVec) 
+	newv::PetscVec = VecDuplicate(petsclib::PetscLibType,v::AbstractPetscVec) 
 Creates a new vector of the same type as an existing vector.
 
 Collective
@@ -3177,9 +3177,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecDuplicate"))
 """
-function VecDuplicate(petsclib::PetscLibType, v::PetscVec) end
+function VecDuplicate(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecDuplicate(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecDuplicate(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 	newv_ = Ref{CVec}()
 
     @chk ccall(
@@ -3228,7 +3228,7 @@ function VecDestroy(petsclib::PetscLibType, v::AbstractPetscVec) end
 end 
 
 """
-	V::Vector{PetscVec} = VecDuplicateVecs(petsclib::PetscLibType,v::PetscVec, m::PetscInt) 
+	V::Vector{PetscVec} = VecDuplicateVecs(petsclib::PetscLibType,v::AbstractPetscVec, m::PetscInt) 
 Creates several vectors of the same type as an existing vector.
 
 Collective
@@ -3248,9 +3248,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecDuplicateVecs"))
 """
-function VecDuplicateVecs(petsclib::PetscLibType, v::PetscVec, m::PetscInt) end
+function VecDuplicateVecs(petsclib::PetscLibType, v::AbstractPetscVec, m::PetscInt) end
 
-@for_petsc function VecDuplicateVecs(petsclib::$UnionPetscLib, v::PetscVec, m::$PetscInt )
+@for_petsc function VecDuplicateVecs(petsclib::$UnionPetscLib, v::AbstractPetscVec, m::$PetscInt )
 	V_ = Ref{Ptr{PetscVec}}()
 
     @chk ccall(
@@ -3266,7 +3266,7 @@ function VecDuplicateVecs(petsclib::PetscLibType, v::PetscVec, m::PetscInt) end
 end 
 
 """
-	VecDestroyVecs(petsclib::PetscLibType,m::PetscInt, vv::Vector{PetscVec}) 
+	VecDestroyVecs(petsclib::PetscLibType,m::PetscInt, vv::Vector{<:AbstractPetscVec}) 
 Frees a block of vectors obtained with `VecDuplicateVecs()`.
 
 Collective
@@ -3282,9 +3282,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecDestroyVecs"))
 """
-function VecDestroyVecs(petsclib::PetscLibType, m::PetscInt, vv::Vector{PetscVec}) end
+function VecDestroyVecs(petsclib::PetscLibType, m::PetscInt, vv::Vector{<:AbstractPetscVec}) end
 
-@for_petsc function VecDestroyVecs(petsclib::$UnionPetscLib, m::$PetscInt, vv::Vector{PetscVec} )
+@for_petsc function VecDestroyVecs(petsclib::$UnionPetscLib, m::$PetscInt, vv::Vector{<:AbstractPetscVec} )
 	vv_ = Ref(pointer(vv))
 
     @chk ccall(
@@ -3299,7 +3299,7 @@ function VecDestroyVecs(petsclib::PetscLibType, m::PetscInt, vv::Vector{PetscVec
 end 
 
 """
-	VecViewFromOptions(petsclib::PetscLibType,A::PetscVec, obj::PetscObject, name::Vector{Cchar}) 
+	VecViewFromOptions(petsclib::PetscLibType,A::AbstractPetscVec, obj::PetscObject, name::Vector{Cchar}) 
 View a vector based on values in the options database
 
 Collective
@@ -3316,9 +3316,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecViewFromOptions"))
 """
-function VecViewFromOptions(petsclib::PetscLibType, A::PetscVec, obj::PetscObject, name::Vector{Cchar}) end
+function VecViewFromOptions(petsclib::PetscLibType, A::AbstractPetscVec, obj::PetscObject, name::Vector{Cchar}) end
 
-@for_petsc function VecViewFromOptions(petsclib::$UnionPetscLib, A::PetscVec, obj::PetscObject, name::Vector{Cchar} )
+@for_petsc function VecViewFromOptions(petsclib::$UnionPetscLib, A::AbstractPetscVec, obj::PetscObject, name::Vector{Cchar} )
 
     @chk ccall(
                (:VecViewFromOptions, $petsc_library),
@@ -3332,7 +3332,7 @@ function VecViewFromOptions(petsclib::PetscLibType, A::PetscVec, obj::PetscObjec
 end 
 
 """
-	VecView(petsclib::PetscLibType,vec::PetscVec, viewer::PetscViewer) 
+	VecView(petsclib::PetscLibType,vec::AbstractPetscVec, viewer::PetscViewer) 
 Views a vector object.
 
 Collective
@@ -3350,9 +3350,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecView"))
 """
-function VecView(petsclib::PetscLibType, vec::PetscVec, viewer::PetscViewer) end
+function VecView(petsclib::PetscLibType, vec::AbstractPetscVec, viewer::PetscViewer) end
 
-@for_petsc function VecView(petsclib::$UnionPetscLib, vec::PetscVec, viewer::PetscViewer )
+@for_petsc function VecView(petsclib::$UnionPetscLib, vec::AbstractPetscVec, viewer::PetscViewer )
 
     @chk ccall(
                (:VecView, $petsc_library),
@@ -3366,7 +3366,7 @@ function VecView(petsclib::PetscLibType, vec::PetscVec, viewer::PetscViewer) end
 end 
 
 """
-	VecViewNative(petsclib::PetscLibType,vec::PetscVec, viewer::PetscViewer) 
+	VecViewNative(petsclib::PetscLibType,vec::AbstractPetscVec, viewer::PetscViewer) 
 Views a vector object with the original type specific viewer
 
 Collective
@@ -3384,9 +3384,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecViewNative"))
 """
-function VecViewNative(petsclib::PetscLibType, vec::PetscVec, viewer::PetscViewer) end
+function VecViewNative(petsclib::PetscLibType, vec::AbstractPetscVec, viewer::PetscViewer) end
 
-@for_petsc function VecViewNative(petsclib::$UnionPetscLib, vec::PetscVec, viewer::PetscViewer )
+@for_petsc function VecViewNative(petsclib::$UnionPetscLib, vec::AbstractPetscVec, viewer::PetscViewer )
 
     @chk ccall(
                (:VecViewNative, $petsc_library),
@@ -3400,7 +3400,7 @@ function VecViewNative(petsclib::PetscLibType, vec::PetscVec, viewer::PetscViewe
 end 
 
 """
-	size::PetscInt = VecGetSize(petsclib::PetscLibType,x::PetscVec) 
+	size::PetscInt = VecGetSize(petsclib::PetscLibType,x::AbstractPetscVec) 
 Returns the global number of elements of the vector.
 
 Not Collective
@@ -3436,7 +3436,7 @@ function VecGetSize(petsclib::PetscLibType, x::AbstractPetscVec) end
 end 
 
 """
-	size::PetscInt = VecGetLocalSize(petsclib::PetscLibType,x::PetscVec) 
+	size::PetscInt = VecGetLocalSize(petsclib::PetscLibType,x::AbstractPetscVec) 
 Returns the number of elements of the vector stored
 in local memory (that is on this MPI process)
 
@@ -3473,7 +3473,7 @@ function VecGetLocalSize(petsclib::PetscLibType, x::AbstractPetscVec) end
 end 
 
 """
-	low::PetscInt,high::PetscInt = VecGetOwnershipRange(petsclib::PetscLibType,x::PetscVec) 
+	low::PetscInt,high::PetscInt = VecGetOwnershipRange(petsclib::PetscLibType,x::AbstractPetscVec) 
 Returns the range of indices owned by
 this process. The vector is laid out with the
 first `n1` elements on the first processor, next `n2` elements on the
@@ -3497,9 +3497,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGetOwnershipRange"))
 """
-function VecGetOwnershipRange(petsclib::PetscLibType, x::PetscVec) end
+function VecGetOwnershipRange(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecGetOwnershipRange(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecGetOwnershipRange(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	low_ = Ref{$PetscInt}()
 	high_ = Ref{$PetscInt}()
 
@@ -3517,7 +3517,7 @@ function VecGetOwnershipRange(petsclib::PetscLibType, x::PetscVec) end
 end 
 
 """
-	ranges::Vector{PetscInt} = VecGetOwnershipRanges(petsclib::PetscLibType,x::PetscVec) 
+	ranges::Vector{PetscInt} = VecGetOwnershipRanges(petsclib::PetscLibType,x::AbstractPetscVec) 
 Returns the range of indices owned by EACH processor,
 The vector is laid out with the
 first `n1` elements on the first processor, next `n2` elements on the
@@ -3540,9 +3540,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGetOwnershipRanges"))
 """
-function VecGetOwnershipRanges(petsclib::PetscLibType, x::PetscVec) end
+function VecGetOwnershipRanges(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecGetOwnershipRanges(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecGetOwnershipRanges(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 	ranges_ = Ref{Ptr{$PetscInt}}()
 
     @chk ccall(
@@ -3558,7 +3558,7 @@ function VecGetOwnershipRanges(petsclib::PetscLibType, x::PetscVec) end
 end 
 
 """
-	VecResetArray(petsclib::PetscLibType,vec::PetscVec) 
+	VecResetArray(petsclib::PetscLibType,vec::AbstractPetscVec) 
 Resets a vector to use its default memory. Call this
 after the use of `VecPlaceArray()`.
 
@@ -3574,9 +3574,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecResetArray"))
 """
-function VecResetArray(petsclib::PetscLibType, vec::PetscVec) end
+function VecResetArray(petsclib::PetscLibType, vec::AbstractPetscVec) end
 
-@for_petsc function VecResetArray(petsclib::$UnionPetscLib, vec::PetscVec )
+@for_petsc function VecResetArray(petsclib::$UnionPetscLib, vec::AbstractPetscVec )
 
     @chk ccall(
                (:VecResetArray, $petsc_library),
@@ -3590,7 +3590,7 @@ function VecResetArray(petsclib::PetscLibType, vec::PetscVec) end
 end 
 
 """
-	VecLoad(petsclib::PetscLibType,vec::PetscVec, viewer::PetscViewer) 
+	VecLoad(petsclib::PetscLibType,vec::AbstractPetscVec, viewer::PetscViewer) 
 Loads a vector that has been stored in binary or HDF5 format
 with `VecView()`.
 
@@ -3609,9 +3609,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecLoad"))
 """
-function VecLoad(petsclib::PetscLibType, vec::PetscVec, viewer::PetscViewer) end
+function VecLoad(petsclib::PetscLibType, vec::AbstractPetscVec, viewer::PetscViewer) end
 
-@for_petsc function VecLoad(petsclib::$UnionPetscLib, vec::PetscVec, viewer::PetscViewer )
+@for_petsc function VecLoad(petsclib::$UnionPetscLib, vec::AbstractPetscVec, viewer::PetscViewer )
 
     @chk ccall(
                (:VecLoad, $petsc_library),
@@ -3625,7 +3625,7 @@ function VecLoad(petsclib::PetscLibType, vec::PetscVec, viewer::PetscViewer) end
 end 
 
 """
-	VecReciprocal(petsclib::PetscLibType,vec::PetscVec) 
+	VecReciprocal(petsclib::PetscLibType,vec::AbstractPetscVec) 
 Replaces each component of a vector by its reciprocal.
 
 Logically Collective
@@ -3643,9 +3643,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecReciprocal"))
 """
-function VecReciprocal(petsclib::PetscLibType, vec::PetscVec) end
+function VecReciprocal(petsclib::PetscLibType, vec::AbstractPetscVec) end
 
-@for_petsc function VecReciprocal(petsclib::$UnionPetscLib, vec::PetscVec )
+@for_petsc function VecReciprocal(petsclib::$UnionPetscLib, vec::AbstractPetscVec )
 
     @chk ccall(
                (:VecReciprocal, $petsc_library),
@@ -3659,7 +3659,7 @@ function VecReciprocal(petsclib::PetscLibType, vec::PetscVec) end
 end 
 
 """
-	VecZeroEntries(petsclib::PetscLibType,vec::PetscVec) 
+	VecZeroEntries(petsclib::PetscLibType,vec::AbstractPetscVec) 
 puts a `0.0` in each element of a vector
 
 Logically Collective
@@ -3674,9 +3674,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecZeroEntries"))
 """
-function VecZeroEntries(petsclib::PetscLibType, vec::PetscVec) end
+function VecZeroEntries(petsclib::PetscLibType, vec::AbstractPetscVec) end
 
-@for_petsc function VecZeroEntries(petsclib::$UnionPetscLib, vec::PetscVec )
+@for_petsc function VecZeroEntries(petsclib::$UnionPetscLib, vec::AbstractPetscVec )
 
     @chk ccall(
                (:VecZeroEntries, $petsc_library),
@@ -3690,7 +3690,7 @@ function VecZeroEntries(petsclib::PetscLibType, vec::PetscVec) end
 end 
 
 """
-	bs::PetscInt = VecGetBlockSize(petsclib::PetscLibType,v::PetscVec) 
+	bs::PetscInt = VecGetBlockSize(petsclib::PetscLibType,v::AbstractPetscVec) 
 Gets the blocksize for the vector, i.e. what is used for `VecSetValuesBlocked()`
 and `VecSetValuesBlockedLocal()`.
 
@@ -3709,9 +3709,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecGetBlockSize"))
 """
-function VecGetBlockSize(petsclib::PetscLibType, v::PetscVec) end
+function VecGetBlockSize(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecGetBlockSize(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecGetBlockSize(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 	bs_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -3727,7 +3727,7 @@ function VecGetBlockSize(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	VecAppendOptionsPrefix(petsclib::PetscLibType,v::PetscVec, prefix::Vector{Cchar}) 
+	VecAppendOptionsPrefix(petsclib::PetscLibType,v::AbstractPetscVec, prefix::Vector{Cchar}) 
 Appends to the prefix used for searching for all
 `Vec` options in the database.
 
@@ -3744,9 +3744,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecAppendOptionsPrefix"))
 """
-function VecAppendOptionsPrefix(petsclib::PetscLibType, v::PetscVec, prefix::Vector{Cchar}) end
+function VecAppendOptionsPrefix(petsclib::PetscLibType, v::AbstractPetscVec, prefix::Vector{Cchar}) end
 
-@for_petsc function VecAppendOptionsPrefix(petsclib::$UnionPetscLib, v::PetscVec, prefix::Vector{Cchar} )
+@for_petsc function VecAppendOptionsPrefix(petsclib::$UnionPetscLib, v::AbstractPetscVec, prefix::Vector{Cchar} )
 
     @chk ccall(
                (:VecAppendOptionsPrefix, $petsc_library),
@@ -3760,7 +3760,7 @@ function VecAppendOptionsPrefix(petsclib::PetscLibType, v::PetscVec, prefix::Vec
 end 
 
 """
-	VecGetOptionsPrefix(petsclib::PetscLibType,v::PetscVec, prefix::Vector{Cchar}) 
+	VecGetOptionsPrefix(petsclib::PetscLibType,v::AbstractPetscVec, prefix::Vector{Cchar}) 
 Sets the prefix used for searching for all
 Vec options in the database.
 
@@ -3779,9 +3779,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecGetOptionsPrefix"))
 """
-function VecGetOptionsPrefix(petsclib::PetscLibType, v::PetscVec, prefix::Vector{Cchar}) end
+function VecGetOptionsPrefix(petsclib::PetscLibType, v::AbstractPetscVec, prefix::Vector{Cchar}) end
 
-@for_petsc function VecGetOptionsPrefix(petsclib::$UnionPetscLib, v::PetscVec, prefix::Vector{Cchar} )
+@for_petsc function VecGetOptionsPrefix(petsclib::$UnionPetscLib, v::AbstractPetscVec, prefix::Vector{Cchar} )
 	prefix_ = Ref(pointer(prefix))
 
     @chk ccall(
@@ -3796,7 +3796,7 @@ function VecGetOptionsPrefix(petsclib::PetscLibType, v::PetscVec, prefix::Vector
 end 
 
 """
-	VecGetState(petsclib::PetscLibType,v::PetscVec, state::PetscObjectState) 
+	VecGetState(petsclib::PetscLibType,v::AbstractPetscVec, state::PetscObjectState) 
 Gets the state of a `Vec`.
 
 Not Collective
@@ -3814,9 +3814,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecGetState"))
 """
-function VecGetState(petsclib::PetscLibType, v::PetscVec, state::PetscObjectState) end
+function VecGetState(petsclib::PetscLibType, v::AbstractPetscVec, state::PetscObjectState) end
 
-@for_petsc function VecGetState(petsclib::$UnionPetscLib, v::PetscVec, state::PetscObjectState )
+@for_petsc function VecGetState(petsclib::$UnionPetscLib, v::AbstractPetscVec, state::PetscObjectState )
 
     @chk ccall(
                (:VecGetState, $petsc_library),
@@ -3830,7 +3830,7 @@ function VecGetState(petsclib::PetscLibType, v::PetscVec, state::PetscObjectStat
 end 
 
 """
-	VecCopy(petsclib::PetscLibType,x::PetscVec, y::PetscVec) 
+	VecCopy(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
 Copies a vector `y = x`
 
 Logically Collective
@@ -3848,9 +3848,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecCopy"))
 """
-function VecCopy(petsclib::PetscLibType, x::PetscVec, y::PetscVec) end
+function VecCopy(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function VecCopy(petsclib::$UnionPetscLib, x::PetscVec, y::PetscVec )
+@for_petsc function VecCopy(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec )
 
     @chk ccall(
                (:VecCopy, $petsc_library),
@@ -3864,7 +3864,7 @@ function VecCopy(petsclib::PetscLibType, x::PetscVec, y::PetscVec) end
 end 
 
 """
-	VecGetLayout(petsclib::PetscLibType,x::PetscVec, map::PetscLayout) 
+	VecGetLayout(petsclib::PetscLibType,x::AbstractPetscVec, map::PetscLayout) 
 get `PetscLayout` describing a vector layout
 
 Not Collective
@@ -3882,9 +3882,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetLayout"))
 """
-function VecGetLayout(petsclib::PetscLibType, x::PetscVec, map::PetscLayout) end
+function VecGetLayout(petsclib::PetscLibType, x::AbstractPetscVec, map::PetscLayout) end
 
-@for_petsc function VecGetLayout(petsclib::$UnionPetscLib, x::PetscVec, map::PetscLayout )
+@for_petsc function VecGetLayout(petsclib::$UnionPetscLib, x::AbstractPetscVec, map::PetscLayout )
 
     @chk ccall(
                (:VecGetLayout, $petsc_library),
@@ -3898,7 +3898,7 @@ function VecGetLayout(petsclib::PetscLibType, x::PetscVec, map::PetscLayout) end
 end 
 
 """
-	VecFlag(petsclib::PetscLibType,xin::PetscVec, flg::PetscInt) 
+	VecFlag(petsclib::PetscLibType,xin::AbstractPetscVec, flg::PetscInt) 
 set infinity into the local part of the vector on any subset of MPI processes
 
 Logically Collective
@@ -3914,9 +3914,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecFlag"))
 """
-function VecFlag(petsclib::PetscLibType, xin::PetscVec, flg::PetscInt) end
+function VecFlag(petsclib::PetscLibType, xin::AbstractPetscVec, flg::PetscInt) end
 
-@for_petsc function VecFlag(petsclib::$UnionPetscLib, xin::PetscVec, flg::$PetscInt )
+@for_petsc function VecFlag(petsclib::$UnionPetscLib, xin::AbstractPetscVec, flg::$PetscInt )
 
     @chk ccall(
                (:VecFlag, $petsc_library),
@@ -3930,7 +3930,7 @@ function VecFlag(petsclib::PetscLibType, xin::PetscVec, flg::PetscInt) end
 end 
 
 """
-	VecBindToCPU(petsclib::PetscLibType,v::PetscVec, flg::PetscBool) 
+	VecBindToCPU(petsclib::PetscLibType,v::AbstractPetscVec, flg::PetscBool) 
 marks a vector to temporarily stay on the CPU and perform computations on the CPU
 
 Logically collective
@@ -3946,9 +3946,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecBindToCPU"))
 """
-function VecBindToCPU(petsclib::PetscLibType, v::PetscVec, flg::PetscBool) end
+function VecBindToCPU(petsclib::PetscLibType, v::AbstractPetscVec, flg::PetscBool) end
 
-@for_petsc function VecBindToCPU(petsclib::$UnionPetscLib, v::PetscVec, flg::PetscBool )
+@for_petsc function VecBindToCPU(petsclib::$UnionPetscLib, v::AbstractPetscVec, flg::PetscBool )
 
     @chk ccall(
                (:VecBindToCPU, $petsc_library),
@@ -3962,7 +3962,7 @@ function VecBindToCPU(petsclib::PetscLibType, v::PetscVec, flg::PetscBool) end
 end 
 
 """
-	flg::PetscBool = VecBoundToCPU(petsclib::PetscLibType,v::PetscVec) 
+	flg::PetscBool = VecBoundToCPU(petsclib::PetscLibType,v::AbstractPetscVec) 
 query if a vector is bound to the CPU
 
 Not collective
@@ -3980,9 +3980,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecBoundToCPU"))
 """
-function VecBoundToCPU(petsclib::PetscLibType, v::PetscVec) end
+function VecBoundToCPU(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecBoundToCPU(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecBoundToCPU(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -3998,7 +3998,7 @@ function VecBoundToCPU(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	flg::PetscBool = VecGetBindingPropagates(petsclib::PetscLibType,v::PetscVec) 
+	flg::PetscBool = VecGetBindingPropagates(petsclib::PetscLibType,v::AbstractPetscVec) 
 Gets whether the state of being bound to the CPU for a GPU vector type propagates to child and some other associated objects
 
 Input Parameter:
@@ -4014,9 +4014,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetBindingPropagates"))
 """
-function VecGetBindingPropagates(petsclib::PetscLibType, v::PetscVec) end
+function VecGetBindingPropagates(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecGetBindingPropagates(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecGetBindingPropagates(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4032,7 +4032,7 @@ function VecGetBindingPropagates(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	VecGetPinnedMemoryMin(petsclib::PetscLibType,v::PetscVec, mbytes::Csize_t) 
+	VecGetPinnedMemoryMin(petsclib::PetscLibType,v::AbstractPetscVec, mbytes::Csize_t) 
 Get the minimum data size for which pinned memory will be used for host (CPU) allocations.
 
 Logically Collective
@@ -4050,9 +4050,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetPinnedMemoryMin"))
 """
-function VecGetPinnedMemoryMin(petsclib::PetscLibType, v::PetscVec, mbytes::Csize_t) end
+function VecGetPinnedMemoryMin(petsclib::PetscLibType, v::AbstractPetscVec, mbytes::Csize_t) end
 
-@for_petsc function VecGetPinnedMemoryMin(petsclib::$UnionPetscLib, v::PetscVec, mbytes::Csize_t )
+@for_petsc function VecGetPinnedMemoryMin(petsclib::$UnionPetscLib, v::AbstractPetscVec, mbytes::Csize_t )
 
     @chk ccall(
                (:VecGetPinnedMemoryMin, $petsc_library),
@@ -4066,7 +4066,7 @@ function VecGetPinnedMemoryMin(petsclib::PetscLibType, v::PetscVec, mbytes::Csiz
 end 
 
 """
-	VecGetOffloadMask(petsclib::PetscLibType,v::PetscVec, mask::PetscOffloadMask) 
+	VecGetOffloadMask(petsclib::PetscLibType,v::AbstractPetscVec, mask::PetscOffloadMask) 
 Get the offload mask of a `Vec`
 
 Not Collective
@@ -4084,9 +4084,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecGetOffloadMask"))
 """
-function VecGetOffloadMask(petsclib::PetscLibType, v::PetscVec, mask::PetscOffloadMask) end
+function VecGetOffloadMask(petsclib::PetscLibType, v::AbstractPetscVec, mask::PetscOffloadMask) end
 
-@for_petsc function VecGetOffloadMask(petsclib::$UnionPetscLib, v::PetscVec, mask::PetscOffloadMask )
+@for_petsc function VecGetOffloadMask(petsclib::$UnionPetscLib, v::AbstractPetscVec, mask::PetscOffloadMask )
 
     @chk ccall(
                (:VecGetOffloadMask, $petsc_library),
@@ -4100,7 +4100,7 @@ function VecGetOffloadMask(petsclib::PetscLibType, v::PetscVec, mask::PetscOfflo
 end 
 
 """
-	norm::PetscReal,norm_loc::PetscInt,norma::PetscReal,norma_loc::PetscInt,normr::PetscReal,normr_loc::PetscInt = VecErrorWeightedNorms(petsclib::PetscLibType,U::PetscVec, Y::PetscVec, E::PetscVec, wnormtype::NormType, atol::PetscReal, vatol::PetscVec, rtol::PetscReal, vrtol::PetscVec, ignore_max::PetscReal) 
+	norm::PetscReal,norm_loc::PetscInt,norma::PetscReal,norma_loc::PetscInt,normr::PetscReal,normr_loc::PetscInt = VecErrorWeightedNorms(petsclib::PetscLibType,U::AbstractPetscVec, Y::AbstractPetscVec, E::AbstractPetscVec, wnormtype::NormType, atol::PetscReal, vatol::AbstractPetscVec, rtol::PetscReal, vrtol::AbstractPetscVec, ignore_max::PetscReal) 
 compute a weighted norm of the difference between two vectors
 
 Collective
@@ -4131,9 +4131,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecErrorWeightedNorms"))
 """
-function VecErrorWeightedNorms(petsclib::PetscLibType, U::PetscVec, Y::PetscVec, E::PetscVec, wnormtype::NormType, atol::PetscReal, vatol::PetscVec, rtol::PetscReal, vrtol::PetscVec, ignore_max::PetscReal) end
+function VecErrorWeightedNorms(petsclib::PetscLibType, U::AbstractPetscVec, Y::AbstractPetscVec, E::AbstractPetscVec, wnormtype::NormType, atol::PetscReal, vatol::AbstractPetscVec, rtol::PetscReal, vrtol::AbstractPetscVec, ignore_max::PetscReal) end
 
-@for_petsc function VecErrorWeightedNorms(petsclib::$UnionPetscLib, U::PetscVec, Y::PetscVec, E::PetscVec, wnormtype::NormType, atol::$PetscReal, vatol::PetscVec, rtol::$PetscReal, vrtol::PetscVec, ignore_max::$PetscReal )
+@for_petsc function VecErrorWeightedNorms(petsclib::$UnionPetscLib, U::AbstractPetscVec, Y::AbstractPetscVec, E::AbstractPetscVec, wnormtype::NormType, atol::$PetscReal, vatol::AbstractPetscVec, rtol::$PetscReal, vrtol::AbstractPetscVec, ignore_max::$PetscReal )
 	norm_ = Ref{$PetscReal}()
 	norm_loc_ = Ref{$PetscInt}()
 	norma_ = Ref{$PetscReal}()
@@ -4186,7 +4186,7 @@ function VecRegisterAll(petsclib::PetscLibType) end
 end 
 
 """
-	type::VecType = VecGetType(petsclib::PetscLibType,vec::PetscVec) 
+	type::VecType = VecGetType(petsclib::PetscLibType,vec::AbstractPetscVec) 
 Gets the vector type name (as a string) from a `Vec`.
 
 Not Collective
@@ -4427,7 +4427,7 @@ function VecCreateMPI(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, N::Pe
 end 
 
 """
-	l::PetscVec = VecGhostGetLocalForm(petsclib::PetscLibType,g::PetscVec) 
+	l::PetscVec = VecGhostGetLocalForm(petsclib::PetscLibType,g::AbstractPetscVec) 
 Obtains the local ghosted representation of
 a parallel vector (obtained with `VecCreateGhost()`, `VecCreateGhostWithArray()` or `VecCreateSeq()`).
 
@@ -4446,9 +4446,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecGhostGetLocalForm"))
 """
-function VecGhostGetLocalForm(petsclib::PetscLibType, g::PetscVec) end
+function VecGhostGetLocalForm(petsclib::PetscLibType, g::AbstractPetscVec) end
 
-@for_petsc function VecGhostGetLocalForm(petsclib::$UnionPetscLib, g::PetscVec)
+@for_petsc function VecGhostGetLocalForm(petsclib::$UnionPetscLib, g::AbstractPetscVec)
 	l_ = Ref{CVec}()
 
     @chk ccall(
@@ -4465,7 +4465,7 @@ function VecGhostGetLocalForm(petsclib::PetscLibType, g::PetscVec) end
 end 
 
 """
-	flg::PetscBool = VecGhostIsLocalForm(petsclib::PetscLibType,g::PetscVec, l::PetscVec) 
+	flg::PetscBool = VecGhostIsLocalForm(petsclib::PetscLibType,g::AbstractPetscVec, l::AbstractPetscVec) 
 Checks if a given vector is the local form of a global vector
 
 Not Collective
@@ -4484,9 +4484,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecGhostIsLocalForm"))
 """
-function VecGhostIsLocalForm(petsclib::PetscLibType, g::PetscVec, l::PetscVec) end
+function VecGhostIsLocalForm(petsclib::PetscLibType, g::AbstractPetscVec, l::AbstractPetscVec) end
 
-@for_petsc function VecGhostIsLocalForm(petsclib::$UnionPetscLib, g::PetscVec, l::PetscVec )
+@for_petsc function VecGhostIsLocalForm(petsclib::$UnionPetscLib, g::AbstractPetscVec, l::AbstractPetscVec )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -4502,7 +4502,7 @@ function VecGhostIsLocalForm(petsclib::PetscLibType, g::PetscVec, l::PetscVec) e
 end 
 
 """
-	VecGhostRestoreLocalForm(petsclib::PetscLibType,g::PetscVec, l::PetscVec) 
+	VecGhostRestoreLocalForm(petsclib::PetscLibType,g::AbstractPetscVec, l::AbstractPetscVec) 
 Restores the local ghosted representation of
 a parallel vector obtained with `VecGhostGetLocalForm()`.
 
@@ -4519,9 +4519,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecGhostRestoreLocalForm"))
 """
-function VecGhostRestoreLocalForm(petsclib::PetscLibType, g::PetscVec, l::PetscVec) end
+function VecGhostRestoreLocalForm(petsclib::PetscLibType, g::AbstractPetscVec, l::AbstractPetscVec) end
 
-@for_petsc function VecGhostRestoreLocalForm(petsclib::$UnionPetscLib, g::PetscVec, l::PetscVec )
+@for_petsc function VecGhostRestoreLocalForm(petsclib::$UnionPetscLib, g::AbstractPetscVec, l::AbstractPetscVec )
 	l_ = Ref(l.ptr)
 
     @chk ccall(
@@ -4537,7 +4537,7 @@ function VecGhostRestoreLocalForm(petsclib::PetscLibType, g::PetscVec, l::PetscV
 end 
 
 """
-	VecGhostUpdateBegin(petsclib::PetscLibType,g::PetscVec, insertmode::InsertMode, scattermode::ScatterMode) 
+	VecGhostUpdateBegin(petsclib::PetscLibType,g::AbstractPetscVec, insertmode::InsertMode, scattermode::ScatterMode) 
 Begins the vector scatter to update the vector from
 local representation to global or global representation to local.
 
@@ -4556,9 +4556,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecGhostUpdateBegin"))
 """
-function VecGhostUpdateBegin(petsclib::PetscLibType, g::PetscVec, insertmode::InsertMode, scattermode::ScatterMode) end
+function VecGhostUpdateBegin(petsclib::PetscLibType, g::AbstractPetscVec, insertmode::InsertMode, scattermode::ScatterMode) end
 
-@for_petsc function VecGhostUpdateBegin(petsclib::$UnionPetscLib, g::PetscVec, insertmode::InsertMode, scattermode::ScatterMode )
+@for_petsc function VecGhostUpdateBegin(petsclib::$UnionPetscLib, g::AbstractPetscVec, insertmode::InsertMode, scattermode::ScatterMode )
 
     @chk ccall(
                (:VecGhostUpdateBegin, $petsc_library),
@@ -4572,7 +4572,7 @@ function VecGhostUpdateBegin(petsclib::PetscLibType, g::PetscVec, insertmode::In
 end 
 
 """
-	VecGhostUpdateEnd(petsclib::PetscLibType,g::PetscVec, insertmode::InsertMode, scattermode::ScatterMode) 
+	VecGhostUpdateEnd(petsclib::PetscLibType,g::AbstractPetscVec, insertmode::InsertMode, scattermode::ScatterMode) 
 End the vector scatter to update the vector from
 local representation to global or global representation to local.
 
@@ -4591,9 +4591,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecGhostUpdateEnd"))
 """
-function VecGhostUpdateEnd(petsclib::PetscLibType, g::PetscVec, insertmode::InsertMode, scattermode::ScatterMode) end
+function VecGhostUpdateEnd(petsclib::PetscLibType, g::AbstractPetscVec, insertmode::InsertMode, scattermode::ScatterMode) end
 
-@for_petsc function VecGhostUpdateEnd(petsclib::$UnionPetscLib, g::PetscVec, insertmode::InsertMode, scattermode::ScatterMode )
+@for_petsc function VecGhostUpdateEnd(petsclib::$UnionPetscLib, g::AbstractPetscVec, insertmode::InsertMode, scattermode::ScatterMode )
 
     @chk ccall(
                (:VecGhostUpdateEnd, $petsc_library),
@@ -4693,7 +4693,7 @@ function VecCreateGhostWithArray(petsclib::PetscLibType, comm::MPI_Comm, n::Pets
 end 
 
 """
-	VecGhostGetGhostIS(petsclib::PetscLibType,X::PetscVec, ghost::IS) 
+	VecGhostGetGhostIS(petsclib::PetscLibType,X::AbstractPetscVec, ghost::AbstractIS) 
 Return ghosting indices of a ghost vector
 
 Input Parameters:
@@ -4709,9 +4709,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecGhostGetGhostIS"))
 """
-function VecGhostGetGhostIS(petsclib::PetscLibType, X::PetscVec, ghost::IS) end
+function VecGhostGetGhostIS(petsclib::PetscLibType, X::AbstractPetscVec, ghost::AbstractIS) end
 
-@for_petsc function VecGhostGetGhostIS(petsclib::$UnionPetscLib, X::PetscVec, ghost::IS )
+@for_petsc function VecGhostGetGhostIS(petsclib::$UnionPetscLib, X::AbstractPetscVec, ghost::AbstractIS )
 
     @chk ccall(
                (:VecGhostGetGhostIS, $petsc_library),
@@ -4769,7 +4769,7 @@ function VecCreateGhost(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, N::
 end 
 
 """
-	VecMPISetGhost(petsclib::PetscLibType,vv::PetscVec, nghost::PetscInt, ghosts::Vector{PetscInt}) 
+	VecMPISetGhost(petsclib::PetscLibType,vv::AbstractPetscVec, nghost::PetscInt, ghosts::Vector{PetscInt}) 
 Sets the ghost points for an MPI ghost vector
 
 Collective
@@ -4789,9 +4789,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecMPISetGhost"))
 """
-function VecMPISetGhost(petsclib::PetscLibType, vv::PetscVec, nghost::PetscInt, ghosts::Vector{PetscInt}) end
+function VecMPISetGhost(petsclib::PetscLibType, vv::AbstractPetscVec, nghost::PetscInt, ghosts::Vector{PetscInt}) end
 
-@for_petsc function VecMPISetGhost(petsclib::$UnionPetscLib, vv::PetscVec, nghost::$PetscInt, ghosts::Vector{$PetscInt} )
+@for_petsc function VecMPISetGhost(petsclib::$UnionPetscLib, vv::AbstractPetscVec, nghost::$PetscInt, ghosts::Vector{$PetscInt} )
 
     @chk ccall(
                (:VecMPISetGhost, $petsc_library),
@@ -5045,14 +5045,14 @@ function VecCreateSeqWithArray(petsclib::PetscLibType, comm::MPI_Comm, bs::Petsc
 end 
 
 """
-	a::PetscScalar = VecKokkosPlaceArray(petsclib::PetscLibType,v::PetscVec) 
+	a::PetscScalar = VecKokkosPlaceArray(petsclib::PetscLibType,v::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("Vec/VecKokkosPlaceArray"))
 """
-function VecKokkosPlaceArray(petsclib::PetscLibType, v::PetscVec) end
+function VecKokkosPlaceArray(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecKokkosPlaceArray(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecKokkosPlaceArray(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 	a_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -5068,14 +5068,14 @@ function VecKokkosPlaceArray(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	VecKokkosResetArray(petsclib::PetscLibType,v::PetscVec) 
+	VecKokkosResetArray(petsclib::PetscLibType,v::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("Vec/VecKokkosResetArray"))
 """
-function VecKokkosResetArray(petsclib::PetscLibType, v::PetscVec) end
+function VecKokkosResetArray(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecKokkosResetArray(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecKokkosResetArray(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 
     @chk ccall(
                (:VecKokkosResetArray, $petsc_library),
@@ -5222,7 +5222,7 @@ function VecCreateShared(petsclib::PetscLibType, comm::MPI_Comm, n::PetscInt, N:
 end 
 
 """
-	VecNestGetSubVec(petsclib::PetscLibType,X::PetscVec, idxm::PetscInt, sx::PetscVec) 
+	VecNestGetSubVec(petsclib::PetscLibType,X::AbstractPetscVec, idxm::PetscInt, sx::AbstractPetscVec) 
 Returns a single, sub
 
 Not Collective
@@ -5241,9 +5241,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecNestGetSubVec"))
 """
-function VecNestGetSubVec(petsclib::PetscLibType, X::PetscVec, idxm::PetscInt, sx::PetscVec) end
+function VecNestGetSubVec(petsclib::PetscLibType, X::AbstractPetscVec, idxm::PetscInt, sx::AbstractPetscVec) end
 
-@for_petsc function VecNestGetSubVec(petsclib::$UnionPetscLib, X::PetscVec, idxm::$PetscInt, sx::PetscVec )
+@for_petsc function VecNestGetSubVec(petsclib::$UnionPetscLib, X::AbstractPetscVec, idxm::$PetscInt, sx::AbstractPetscVec )
 	sx_ = Ref(sx.ptr)
 
     @chk ccall(
@@ -5259,7 +5259,7 @@ function VecNestGetSubVec(petsclib::PetscLibType, X::PetscVec, idxm::PetscInt, s
 end
 
 """
-	N::PetscInt = VecNestGetSubVecs(petsclib::PetscLibType,X::PetscVec, sx::Vector{PetscVec}) 
+	N::PetscInt = VecNestGetSubVecs(petsclib::PetscLibType,X::AbstractPetscVec, sx::Vector{<:AbstractPetscVec}) 
 Returns the entire array of vectors defining a nest vector.
 
 Not Collective
@@ -5278,9 +5278,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecNestGetSubVecs"))
 """
-function VecNestGetSubVecs(petsclib::PetscLibType, X::PetscVec, sx::Vector{PetscVec}) end
+function VecNestGetSubVecs(petsclib::PetscLibType, X::AbstractPetscVec, sx::Vector{<:AbstractPetscVec}) end
 
-@for_petsc function VecNestGetSubVecs(petsclib::$UnionPetscLib, X::PetscVec, sx::Vector{PetscVec} )
+@for_petsc function VecNestGetSubVecs(petsclib::$UnionPetscLib, X::AbstractPetscVec, sx::Vector{<:AbstractPetscVec} )
 	N_ = Ref{$PetscInt}()
 	sx_ = Ref(pointer(sx))
 
@@ -5297,7 +5297,7 @@ function VecNestGetSubVecs(petsclib::PetscLibType, X::PetscVec, sx::Vector{Petsc
 end 
 
 """
-	VecNestSetSubVec(petsclib::PetscLibType,X::PetscVec, idxm::PetscInt, sx::PetscVec) 
+	VecNestSetSubVec(petsclib::PetscLibType,X::AbstractPetscVec, idxm::PetscInt, sx::AbstractPetscVec) 
 Set a single component vector in a nest vector at specified index.
 
 Not Collective
@@ -5314,9 +5314,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecNestSetSubVec"))
 """
-function VecNestSetSubVec(petsclib::PetscLibType, X::PetscVec, idxm::PetscInt, sx::PetscVec) end
+function VecNestSetSubVec(petsclib::PetscLibType, X::AbstractPetscVec, idxm::PetscInt, sx::AbstractPetscVec) end
 
-@for_petsc function VecNestSetSubVec(petsclib::$UnionPetscLib, X::PetscVec, idxm::$PetscInt, sx::PetscVec )
+@for_petsc function VecNestSetSubVec(petsclib::$UnionPetscLib, X::AbstractPetscVec, idxm::$PetscInt, sx::AbstractPetscVec )
 
     @chk ccall(
                (:VecNestSetSubVec, $petsc_library),
@@ -5330,7 +5330,7 @@ function VecNestSetSubVec(petsclib::PetscLibType, X::PetscVec, idxm::PetscInt, s
 end 
 
 """
-	VecNestSetSubVecs(petsclib::PetscLibType,X::PetscVec, N::PetscInt, idxm::Vector{PetscInt}, sx::Vector{PetscVec}) 
+	VecNestSetSubVecs(petsclib::PetscLibType,X::AbstractPetscVec, N::PetscInt, idxm::Vector{PetscInt}, sx::Vector{<:AbstractPetscVec}) 
 Sets the component vectors at the specified indices in a nest vector.
 
 Not Collective
@@ -5348,9 +5348,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecNestSetSubVecs"))
 """
-function VecNestSetSubVecs(petsclib::PetscLibType, X::PetscVec, N::PetscInt, idxm::Vector{PetscInt}, sx::Vector{PetscVec}) end
+function VecNestSetSubVecs(petsclib::PetscLibType, X::AbstractPetscVec, N::PetscInt, idxm::Vector{PetscInt}, sx::Vector{<:AbstractPetscVec}) end
 
-@for_petsc function VecNestSetSubVecs(petsclib::$UnionPetscLib, X::PetscVec, N::$PetscInt, idxm::Vector{$PetscInt}, sx::Vector{PetscVec} )
+@for_petsc function VecNestSetSubVecs(petsclib::$UnionPetscLib, X::AbstractPetscVec, N::$PetscInt, idxm::Vector{$PetscInt}, sx::Vector{<:AbstractPetscVec} )
 
     @chk ccall(
                (:VecNestSetSubVecs, $petsc_library),
@@ -5364,7 +5364,7 @@ function VecNestSetSubVecs(petsclib::PetscLibType, X::PetscVec, N::PetscInt, idx
 end 
 
 """
-	N::PetscInt = VecNestGetSize(petsclib::PetscLibType,X::PetscVec) 
+	N::PetscInt = VecNestGetSize(petsclib::PetscLibType,X::AbstractPetscVec) 
 Returns the size of the nest vector.
 
 Not Collective
@@ -5382,9 +5382,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecNestGetSize"))
 """
-function VecNestGetSize(petsclib::PetscLibType, X::PetscVec) end
+function VecNestGetSize(petsclib::PetscLibType, X::AbstractPetscVec) end
 
-@for_petsc function VecNestGetSize(petsclib::$UnionPetscLib, X::PetscVec )
+@for_petsc function VecNestGetSize(petsclib::$UnionPetscLib, X::AbstractPetscVec )
 	N_ = Ref{$PetscInt}()
 
     @chk ccall(
@@ -5400,7 +5400,7 @@ function VecNestGetSize(petsclib::PetscLibType, X::PetscVec) end
 end 
 
 """
-	Y::PetscVec = VecCreateNest(petsclib::PetscLibType,comm::MPI_Comm, nb::PetscInt, is::Vector{IS}, x::Vector{PetscVec}) 
+	Y::PetscVec = VecCreateNest(petsclib::PetscLibType,comm::MPI_Comm, nb::PetscInt, is::Vector{<:AbstractIS}, x::Vector{<:AbstractPetscVec}) 
 Creates a new vector containing several nested subvectors, each stored separately
 
 Collective
@@ -5421,9 +5421,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecCreateNest"))
 """
-function VecCreateNest(petsclib::PetscLibType, comm::MPI_Comm, nb::PetscInt, is::Vector{IS}, x::Vector{PetscVec}) end
+function VecCreateNest(petsclib::PetscLibType, comm::MPI_Comm, nb::PetscInt, is::Vector{<:AbstractIS}, x::Vector{<:AbstractPetscVec}) end
 
-@for_petsc function VecCreateNest(petsclib::$UnionPetscLib, comm::MPI_Comm, nb::$PetscInt, is::Vector{IS}, x::Vector{PetscVec} )
+@for_petsc function VecCreateNest(petsclib::$UnionPetscLib, comm::MPI_Comm, nb::$PetscInt, is::Vector{<:AbstractIS}, x::Vector{<:AbstractPetscVec} )
 	Y_ = Ref{CVec}()
 
     @chk ccall(
@@ -5439,7 +5439,7 @@ function VecCreateNest(petsclib::PetscLibType, comm::MPI_Comm, nb::PetscInt, is:
 end 
 
 """
-	VecDotBegin(petsclib::PetscLibType,x::PetscVec, y::PetscVec, result::PetscScalar) 
+	VecDotBegin(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec, result::PetscScalar) 
 Starts a split phase dot product computation.
 
 Input Parameters:
@@ -5455,9 +5455,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecDotBegin"))
 """
-function VecDotBegin(petsclib::PetscLibType, x::PetscVec, y::PetscVec, result::PetscScalar) end
+function VecDotBegin(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec, result::PetscScalar) end
 
-@for_petsc function VecDotBegin(petsclib::$UnionPetscLib, x::PetscVec, y::PetscVec, result::$PetscScalar )
+@for_petsc function VecDotBegin(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec, result::$PetscScalar )
 
     @chk ccall(
                (:VecDotBegin, $petsc_library),
@@ -5471,7 +5471,7 @@ function VecDotBegin(petsclib::PetscLibType, x::PetscVec, y::PetscVec, result::P
 end 
 
 """
-	VecDotEnd(petsclib::PetscLibType,x::PetscVec, y::PetscVec, result::PetscScalar) 
+	VecDotEnd(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec, result::PetscScalar) 
 Ends a split phase dot product computation.
 
 Input Parameters:
@@ -5487,9 +5487,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecDotEnd"))
 """
-function VecDotEnd(petsclib::PetscLibType, x::PetscVec, y::PetscVec, result::PetscScalar) end
+function VecDotEnd(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec, result::PetscScalar) end
 
-@for_petsc function VecDotEnd(petsclib::$UnionPetscLib, x::PetscVec, y::PetscVec, result::$PetscScalar )
+@for_petsc function VecDotEnd(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec, result::$PetscScalar )
 
     @chk ccall(
                (:VecDotEnd, $petsc_library),
@@ -5503,7 +5503,7 @@ function VecDotEnd(petsclib::PetscLibType, x::PetscVec, y::PetscVec, result::Pet
 end 
 
 """
-	VecTDotBegin(petsclib::PetscLibType,x::PetscVec, y::PetscVec, result::PetscScalar) 
+	VecTDotBegin(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec, result::PetscScalar) 
 Starts a split phase transpose dot product computation.
 
 Input Parameters:
@@ -5519,9 +5519,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTDotBegin"))
 """
-function VecTDotBegin(petsclib::PetscLibType, x::PetscVec, y::PetscVec, result::PetscScalar) end
+function VecTDotBegin(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec, result::PetscScalar) end
 
-@for_petsc function VecTDotBegin(petsclib::$UnionPetscLib, x::PetscVec, y::PetscVec, result::$PetscScalar )
+@for_petsc function VecTDotBegin(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec, result::$PetscScalar )
 
     @chk ccall(
                (:VecTDotBegin, $petsc_library),
@@ -5535,7 +5535,7 @@ function VecTDotBegin(petsclib::PetscLibType, x::PetscVec, y::PetscVec, result::
 end 
 
 """
-	VecTDotEnd(petsclib::PetscLibType,x::PetscVec, y::PetscVec, result::PetscScalar) 
+	VecTDotEnd(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec, result::PetscScalar) 
 Ends a split phase transpose dot product computation.
 
 Input Parameters:
@@ -5551,9 +5551,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecTDotEnd"))
 """
-function VecTDotEnd(petsclib::PetscLibType, x::PetscVec, y::PetscVec, result::PetscScalar) end
+function VecTDotEnd(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec, result::PetscScalar) end
 
-@for_petsc function VecTDotEnd(petsclib::$UnionPetscLib, x::PetscVec, y::PetscVec, result::$PetscScalar )
+@for_petsc function VecTDotEnd(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec, result::$PetscScalar )
 
     @chk ccall(
                (:VecTDotEnd, $petsc_library),
@@ -5567,7 +5567,7 @@ function VecTDotEnd(petsclib::PetscLibType, x::PetscVec, y::PetscVec, result::Pe
 end 
 
 """
-	VecNormBegin(petsclib::PetscLibType,x::PetscVec, ntype::NormType, result::PetscReal) 
+	VecNormBegin(petsclib::PetscLibType,x::AbstractPetscVec, ntype::NormType, result::PetscReal) 
 Starts a split phase norm computation.
 
 Input Parameters:
@@ -5582,9 +5582,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecNormBegin"))
 """
-function VecNormBegin(petsclib::PetscLibType, x::PetscVec, ntype::NormType, result::PetscReal) end
+function VecNormBegin(petsclib::PetscLibType, x::AbstractPetscVec, ntype::NormType, result::PetscReal) end
 
-@for_petsc function VecNormBegin(petsclib::$UnionPetscLib, x::PetscVec, ntype::NormType, result::$PetscReal )
+@for_petsc function VecNormBegin(petsclib::$UnionPetscLib, x::AbstractPetscVec, ntype::NormType, result::$PetscReal )
 
     @chk ccall(
                (:VecNormBegin, $petsc_library),
@@ -5598,7 +5598,7 @@ function VecNormBegin(petsclib::PetscLibType, x::PetscVec, ntype::NormType, resu
 end 
 
 """
-	VecNormEnd(petsclib::PetscLibType,x::PetscVec, ntype::NormType, result::PetscReal) 
+	VecNormEnd(petsclib::PetscLibType,x::AbstractPetscVec, ntype::NormType, result::PetscReal) 
 Ends a split phase norm computation.
 
 Input Parameters:
@@ -5613,9 +5613,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecNormEnd"))
 """
-function VecNormEnd(petsclib::PetscLibType, x::PetscVec, ntype::NormType, result::PetscReal) end
+function VecNormEnd(petsclib::PetscLibType, x::AbstractPetscVec, ntype::NormType, result::PetscReal) end
 
-@for_petsc function VecNormEnd(petsclib::$UnionPetscLib, x::PetscVec, ntype::NormType, result::$PetscReal )
+@for_petsc function VecNormEnd(petsclib::$UnionPetscLib, x::AbstractPetscVec, ntype::NormType, result::$PetscReal )
 
     @chk ccall(
                (:VecNormEnd, $petsc_library),
@@ -5629,7 +5629,7 @@ function VecNormEnd(petsclib::PetscLibType, x::PetscVec, ntype::NormType, result
 end 
 
 """
-	VecMDotBegin(petsclib::PetscLibType,x::PetscVec, nv::PetscInt, y::Vector{PetscVec}, result::Vector{PetscScalar}) 
+	VecMDotBegin(petsclib::PetscLibType,x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, result::Vector{PetscScalar}) 
 Starts a split phase multiple dot product computation.
 
 Input Parameters:
@@ -5646,9 +5646,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecMDotBegin"))
 """
-function VecMDotBegin(petsclib::PetscLibType, x::PetscVec, nv::PetscInt, y::Vector{PetscVec}, result::Vector{PetscScalar}) end
+function VecMDotBegin(petsclib::PetscLibType, x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, result::Vector{PetscScalar}) end
 
-@for_petsc function VecMDotBegin(petsclib::$UnionPetscLib, x::PetscVec, nv::$PetscInt, y::Vector{PetscVec}, result::Vector{$PetscScalar} )
+@for_petsc function VecMDotBegin(petsclib::$UnionPetscLib, x::AbstractPetscVec, nv::$PetscInt, y::Vector{<:AbstractPetscVec}, result::Vector{$PetscScalar} )
 
     @chk ccall(
                (:VecMDotBegin, $petsc_library),
@@ -5662,7 +5662,7 @@ function VecMDotBegin(petsclib::PetscLibType, x::PetscVec, nv::PetscInt, y::Vect
 end 
 
 """
-	result::Vector{PetscScalar} = VecMDotEnd(petsclib::PetscLibType,x::PetscVec, nv::PetscInt, y::Vector{PetscVec}) 
+	result::Vector{PetscScalar} = VecMDotEnd(petsclib::PetscLibType,x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}) 
 Ends a split phase multiple dot product computation.
 
 Input Parameters:
@@ -5681,9 +5681,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecMDotEnd"))
 """
-function VecMDotEnd(petsclib::PetscLibType, x::PetscVec, nv::PetscInt, y::Vector{PetscVec}) end
+function VecMDotEnd(petsclib::PetscLibType, x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}) end
 
-@for_petsc function VecMDotEnd(petsclib::$UnionPetscLib, x::PetscVec, nv::$PetscInt, y::Vector{PetscVec} )
+@for_petsc function VecMDotEnd(petsclib::$UnionPetscLib, x::AbstractPetscVec, nv::$PetscInt, y::Vector{<:AbstractPetscVec} )
 	result = Vector{$PetscScalar}(undef, ni);  # CHECK SIZE!!
 
     @chk ccall(
@@ -5698,7 +5698,7 @@ function VecMDotEnd(petsclib::PetscLibType, x::PetscVec, nv::PetscInt, y::Vector
 end 
 
 """
-	VecMTDotBegin(petsclib::PetscLibType,x::PetscVec, nv::PetscInt, y::Vector{PetscVec}, result::Vector{PetscScalar}) 
+	VecMTDotBegin(petsclib::PetscLibType,x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, result::Vector{PetscScalar}) 
 Starts a split phase transpose multiple dot product computation.
 
 Input Parameters:
@@ -5715,9 +5715,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecMTDotBegin"))
 """
-function VecMTDotBegin(petsclib::PetscLibType, x::PetscVec, nv::PetscInt, y::Vector{PetscVec}, result::Vector{PetscScalar}) end
+function VecMTDotBegin(petsclib::PetscLibType, x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}, result::Vector{PetscScalar}) end
 
-@for_petsc function VecMTDotBegin(petsclib::$UnionPetscLib, x::PetscVec, nv::$PetscInt, y::Vector{PetscVec}, result::Vector{$PetscScalar} )
+@for_petsc function VecMTDotBegin(petsclib::$UnionPetscLib, x::AbstractPetscVec, nv::$PetscInt, y::Vector{<:AbstractPetscVec}, result::Vector{$PetscScalar} )
 
     @chk ccall(
                (:VecMTDotBegin, $petsc_library),
@@ -5731,7 +5731,7 @@ function VecMTDotBegin(petsclib::PetscLibType, x::PetscVec, nv::PetscInt, y::Vec
 end 
 
 """
-	result::Vector{PetscScalar} = VecMTDotEnd(petsclib::PetscLibType,x::PetscVec, nv::PetscInt, y::Vector{PetscVec}) 
+	result::Vector{PetscScalar} = VecMTDotEnd(petsclib::PetscLibType,x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}) 
 Ends a split phase transpose multiple dot product computation.
 
 Input Parameters:
@@ -5750,9 +5750,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecMTDotEnd"))
 """
-function VecMTDotEnd(petsclib::PetscLibType, x::PetscVec, nv::PetscInt, y::Vector{PetscVec}) end
+function VecMTDotEnd(petsclib::PetscLibType, x::AbstractPetscVec, nv::PetscInt, y::Vector{<:AbstractPetscVec}) end
 
-@for_petsc function VecMTDotEnd(petsclib::$UnionPetscLib, x::PetscVec, nv::$PetscInt, y::Vector{PetscVec} )
+@for_petsc function VecMTDotEnd(petsclib::$UnionPetscLib, x::AbstractPetscVec, nv::$PetscInt, y::Vector{<:AbstractPetscVec} )
 	result = Vector{$PetscScalar}(undef, nv);  
 
     @chk ccall(
@@ -5767,7 +5767,7 @@ function VecMTDotEnd(petsclib::PetscLibType, x::PetscVec, nv::PetscInt, y::Vecto
 end 
 
 """
-	VecExp(petsclib::PetscLibType,v::PetscVec) 
+	VecExp(petsclib::PetscLibType,v::AbstractPetscVec) 
 Replaces each component of a vector by e^x_i
 
 Not Collective
@@ -5786,9 +5786,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecExp"))
 """
-function VecExp(petsclib::PetscLibType, v::PetscVec) end
+function VecExp(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecExp(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecExp(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 
     @chk ccall(
                (:VecExp, $petsc_library),
@@ -5802,7 +5802,7 @@ function VecExp(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	VecLog(petsclib::PetscLibType,v::PetscVec) 
+	VecLog(petsclib::PetscLibType,v::AbstractPetscVec) 
 Replaces each component of a vector by log(x_i), the natural logarithm
 
 Not Collective
@@ -5821,9 +5821,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecLog"))
 """
-function VecLog(petsclib::PetscLibType, v::PetscVec) end
+function VecLog(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecLog(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecLog(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 
     @chk ccall(
                (:VecLog, $petsc_library),
@@ -5837,7 +5837,7 @@ function VecLog(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	VecAbs(petsclib::PetscLibType,v::PetscVec) 
+	VecAbs(petsclib::PetscLibType,v::AbstractPetscVec) 
 Replaces every element in a vector with its absolute value.
 
 Logically Collective
@@ -5852,9 +5852,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecAbs"))
 """
-function VecAbs(petsclib::PetscLibType, v::PetscVec) end
+function VecAbs(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecAbs(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecAbs(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 
     @chk ccall(
                (:VecAbs, $petsc_library),
@@ -5868,7 +5868,7 @@ function VecAbs(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	VecConjugate(petsclib::PetscLibType,x::PetscVec) 
+	VecConjugate(petsclib::PetscLibType,x::AbstractPetscVec) 
 Conjugates a vector. That is, replace every entry in a vector with its complex conjugate
 
 Logically Collective
@@ -5883,9 +5883,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecConjugate"))
 """
-function VecConjugate(petsclib::PetscLibType, x::PetscVec) end
+function VecConjugate(petsclib::PetscLibType, x::AbstractPetscVec) end
 
-@for_petsc function VecConjugate(petsclib::$UnionPetscLib, x::PetscVec )
+@for_petsc function VecConjugate(petsclib::$UnionPetscLib, x::AbstractPetscVec )
 
     @chk ccall(
                (:VecConjugate, $petsc_library),
@@ -5899,7 +5899,7 @@ function VecConjugate(petsclib::PetscLibType, x::PetscVec) end
 end 
 
 """
-	VecImaginaryPart(petsclib::PetscLibType,v::PetscVec) 
+	VecImaginaryPart(petsclib::PetscLibType,v::AbstractPetscVec) 
 Replaces a complex vector with its imginary part
 
 Collective
@@ -5914,9 +5914,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecImaginaryPart"))
 """
-function VecImaginaryPart(petsclib::PetscLibType, v::PetscVec) end
+function VecImaginaryPart(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecImaginaryPart(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecImaginaryPart(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 
     @chk ccall(
                (:VecImaginaryPart, $petsc_library),
@@ -5930,7 +5930,7 @@ function VecImaginaryPart(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	VecRealPart(petsclib::PetscLibType,v::PetscVec) 
+	VecRealPart(petsclib::PetscLibType,v::AbstractPetscVec) 
 Replaces a complex vector with its real part
 
 Collective
@@ -5945,9 +5945,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecRealPart"))
 """
-function VecRealPart(petsclib::PetscLibType, v::PetscVec) end
+function VecRealPart(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecRealPart(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecRealPart(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 
     @chk ccall(
                (:VecRealPart, $petsc_library),
@@ -5961,7 +5961,7 @@ function VecRealPart(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	dp::PetscScalar,nm::PetscReal = VecDotNorm2(petsclib::PetscLibType,s::PetscVec, t::PetscVec) 
+	dp::PetscScalar,nm::PetscReal = VecDotNorm2(petsclib::PetscLibType,s::AbstractPetscVec, t::AbstractPetscVec) 
 computes the inner product of two vectors and the 2
 
 Collective
@@ -5982,9 +5982,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecDotNorm2"))
 """
-function VecDotNorm2(petsclib::PetscLibType, s::PetscVec, t::PetscVec) end
+function VecDotNorm2(petsclib::PetscLibType, s::AbstractPetscVec, t::AbstractPetscVec) end
 
-@for_petsc function VecDotNorm2(petsclib::$UnionPetscLib, s::PetscVec, t::PetscVec )
+@for_petsc function VecDotNorm2(petsclib::$UnionPetscLib, s::AbstractPetscVec, t::AbstractPetscVec )
 	dp_ = Ref{$PetscScalar}()
 	nm_ = Ref{$PetscReal}()
 
@@ -6002,7 +6002,7 @@ function VecDotNorm2(petsclib::PetscLibType, s::PetscVec, t::PetscVec) end
 end 
 
 """
-	mean::PetscScalar = VecMean(petsclib::PetscLibType,v::PetscVec) 
+	mean::PetscScalar = VecMean(petsclib::PetscLibType,v::AbstractPetscVec) 
 Computes the arithmetic mean of all the components of a vector.
 
 Collective
@@ -6020,9 +6020,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecMean"))
 """
-function VecMean(petsclib::PetscLibType, v::PetscVec) end
+function VecMean(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecMean(petsclib::$UnionPetscLib, v::PetscVec )
+@for_petsc function VecMean(petsclib::$UnionPetscLib, v::AbstractPetscVec )
 	mean_ = Ref{$PetscScalar}()
 
     @chk ccall(
@@ -6038,7 +6038,7 @@ function VecMean(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	VecPermute(petsclib::PetscLibType,x::PetscVec, row::IS, inv::PetscBool) 
+	VecPermute(petsclib::PetscLibType,x::AbstractPetscVec, row::AbstractIS, inv::PetscBool) 
 Permutes a vector in place using the given ordering.
 
 Input Parameters:
@@ -6053,9 +6053,9 @@ Level: beginner
 # External Links
 $(_doc_external("Vec/VecPermute"))
 """
-function VecPermute(petsclib::PetscLibType, x::PetscVec, row::IS, inv::PetscBool) end
+function VecPermute(petsclib::PetscLibType, x::AbstractPetscVec, row::AbstractIS, inv::PetscBool) end
 
-@for_petsc function VecPermute(petsclib::$UnionPetscLib, x::PetscVec, row::IS, inv::PetscBool )
+@for_petsc function VecPermute(petsclib::$UnionPetscLib, x::AbstractPetscVec, row::AbstractIS, inv::PetscBool )
 
     @chk ccall(
                (:VecPermute, $petsc_library),
@@ -6069,7 +6069,7 @@ function VecPermute(petsclib::PetscLibType, x::PetscVec, row::IS, inv::PetscBool
 end 
 
 """
-	flg::PetscBool = VecEqual(petsclib::PetscLibType,vec1::PetscVec, vec2::PetscVec) 
+	flg::PetscBool = VecEqual(petsclib::PetscLibType,vec1::AbstractPetscVec, vec2::AbstractPetscVec) 
 Compares two vectors. Returns true if the two vectors are either pointing to the same memory buffer,
 or if the two vectors have the same local and global layout as well as bitwise equality of all entries.
 Does NOT take round-off errors into account.
@@ -6090,9 +6090,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecEqual"))
 """
-function VecEqual(petsclib::PetscLibType, vec1::PetscVec, vec2::PetscVec) end
+function VecEqual(petsclib::PetscLibType, vec1::AbstractPetscVec, vec2::AbstractPetscVec) end
 
-@for_petsc function VecEqual(petsclib::$UnionPetscLib, vec1::PetscVec, vec2::PetscVec )
+@for_petsc function VecEqual(petsclib::$UnionPetscLib, vec1::AbstractPetscVec, vec2::AbstractPetscVec )
 	flg_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -6108,7 +6108,7 @@ function VecEqual(petsclib::PetscLibType, vec1::PetscVec, vec2::PetscVec) end
 end 
 
 """
-	n::PetscInt,e::Vector{PetscScalar} = VecUniqueEntries(petsclib::PetscLibType,vec::PetscVec) 
+	n::PetscInt,e::Vector{PetscScalar} = VecUniqueEntries(petsclib::PetscLibType,vec::AbstractPetscVec) 
 Compute the number of unique entries, and those entries
 
 Collective
@@ -6127,9 +6127,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecUniqueEntries"))
 """
-function VecUniqueEntries(petsclib::PetscLibType, vec::PetscVec) end
+function VecUniqueEntries(petsclib::PetscLibType, vec::AbstractPetscVec) end
 
-@for_petsc function VecUniqueEntries(petsclib::$UnionPetscLib, vec::PetscVec )
+@for_petsc function VecUniqueEntries(petsclib::$UnionPetscLib, vec::AbstractPetscVec )
 	n_ = Ref{$PetscInt}()
 	e_ = Ref{Ptr{$PetscScalar}}()
 
@@ -6147,7 +6147,7 @@ function VecUniqueEntries(petsclib::PetscLibType, vec::PetscVec) end
 end 
 
 """
-	VecFilter(petsclib::PetscLibType,v::PetscVec, tol::PetscReal) 
+	VecFilter(petsclib::PetscLibType,v::AbstractPetscVec, tol::PetscReal) 
 Set all values in the vector with an absolute value less than or equal to the tolerance to zero
 
 Input Parameters:
@@ -6164,9 +6164,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecFilter"))
 """
-function VecFilter(petsclib::PetscLibType, v::PetscVec, tol::PetscReal) end
+function VecFilter(petsclib::PetscLibType, v::AbstractPetscVec, tol::PetscReal) end
 
-@for_petsc function VecFilter(petsclib::$UnionPetscLib, v::PetscVec, tol::$PetscReal )
+@for_petsc function VecFilter(petsclib::$UnionPetscLib, v::AbstractPetscVec, tol::$PetscReal )
 
     @chk ccall(
                (:VecFilter, $petsc_library),
@@ -6180,7 +6180,7 @@ function VecFilter(petsclib::PetscLibType, v::PetscVec, tol::PetscReal) end
 end 
 
 """
-	VecWhichEqual(petsclib::PetscLibType,Vec1::PetscVec, Vec2::PetscVec, S::IS) 
+	VecWhichEqual(petsclib::PetscLibType,Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, S::AbstractIS) 
 Creates an index set containing the indices
 where the vectors `Vec1` and `Vec2` have identical elements.
 
@@ -6200,9 +6200,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecWhichEqual"))
 """
-function VecWhichEqual(petsclib::PetscLibType, Vec1::PetscVec, Vec2::PetscVec, S::IS) end
+function VecWhichEqual(petsclib::PetscLibType, Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, S::AbstractIS) end
 
-@for_petsc function VecWhichEqual(petsclib::$UnionPetscLib, Vec1::PetscVec, Vec2::PetscVec, S::IS )
+@for_petsc function VecWhichEqual(petsclib::$UnionPetscLib, Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, S::AbstractIS )
 
     @chk ccall(
                (:VecWhichEqual, $petsc_library),
@@ -6216,7 +6216,7 @@ function VecWhichEqual(petsclib::PetscLibType, Vec1::PetscVec, Vec2::PetscVec, S
 end 
 
 """
-	VecWhichLessThan(petsclib::PetscLibType,Vec1::PetscVec, Vec2::PetscVec, S::IS) 
+	VecWhichLessThan(petsclib::PetscLibType,Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, S::AbstractIS) 
 Creates an index set containing the indices
 where the vectors `Vec1` < `Vec2`
 
@@ -6236,9 +6236,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecWhichLessThan"))
 """
-function VecWhichLessThan(petsclib::PetscLibType, Vec1::PetscVec, Vec2::PetscVec, S::IS) end
+function VecWhichLessThan(petsclib::PetscLibType, Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, S::AbstractIS) end
 
-@for_petsc function VecWhichLessThan(petsclib::$UnionPetscLib, Vec1::PetscVec, Vec2::PetscVec, S::IS )
+@for_petsc function VecWhichLessThan(petsclib::$UnionPetscLib, Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, S::AbstractIS )
 
     @chk ccall(
                (:VecWhichLessThan, $petsc_library),
@@ -6252,7 +6252,7 @@ function VecWhichLessThan(petsclib::PetscLibType, Vec1::PetscVec, Vec2::PetscVec
 end 
 
 """
-	VecWhichGreaterThan(petsclib::PetscLibType,Vec1::PetscVec, Vec2::PetscVec, S::IS) 
+	VecWhichGreaterThan(petsclib::PetscLibType,Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, S::AbstractIS) 
 Creates an index set containing the indices
 where the vectors `Vec1` > `Vec2`
 
@@ -6272,9 +6272,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecWhichGreaterThan"))
 """
-function VecWhichGreaterThan(petsclib::PetscLibType, Vec1::PetscVec, Vec2::PetscVec, S::IS) end
+function VecWhichGreaterThan(petsclib::PetscLibType, Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, S::AbstractIS) end
 
-@for_petsc function VecWhichGreaterThan(petsclib::$UnionPetscLib, Vec1::PetscVec, Vec2::PetscVec, S::IS )
+@for_petsc function VecWhichGreaterThan(petsclib::$UnionPetscLib, Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, S::AbstractIS )
 
     @chk ccall(
                (:VecWhichGreaterThan, $petsc_library),
@@ -6288,7 +6288,7 @@ function VecWhichGreaterThan(petsclib::PetscLibType, Vec1::PetscVec, Vec2::Petsc
 end 
 
 """
-	VecWhichBetween(petsclib::PetscLibType,VecLow::PetscVec, V::PetscVec, VecHigh::PetscVec, S::IS) 
+	VecWhichBetween(petsclib::PetscLibType,VecLow::AbstractPetscVec, V::AbstractPetscVec, VecHigh::AbstractPetscVec, S::AbstractIS) 
 Creates an index set containing the indices
 where  `VecLow` < `V` < `VecHigh`
 
@@ -6309,9 +6309,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecWhichBetween"))
 """
-function VecWhichBetween(petsclib::PetscLibType, VecLow::PetscVec, V::PetscVec, VecHigh::PetscVec, S::IS) end
+function VecWhichBetween(petsclib::PetscLibType, VecLow::AbstractPetscVec, V::AbstractPetscVec, VecHigh::AbstractPetscVec, S::AbstractIS) end
 
-@for_petsc function VecWhichBetween(petsclib::$UnionPetscLib, VecLow::PetscVec, V::PetscVec, VecHigh::PetscVec, S::IS )
+@for_petsc function VecWhichBetween(petsclib::$UnionPetscLib, VecLow::AbstractPetscVec, V::AbstractPetscVec, VecHigh::AbstractPetscVec, S::AbstractIS )
 
     @chk ccall(
                (:VecWhichBetween, $petsc_library),
@@ -6325,7 +6325,7 @@ function VecWhichBetween(petsclib::PetscLibType, VecLow::PetscVec, V::PetscVec, 
 end 
 
 """
-	VecWhichBetweenOrEqual(petsclib::PetscLibType,VecLow::PetscVec, V::PetscVec, VecHigh::PetscVec, S::IS) 
+	VecWhichBetweenOrEqual(petsclib::PetscLibType,VecLow::AbstractPetscVec, V::AbstractPetscVec, VecHigh::AbstractPetscVec, S::AbstractIS) 
 Creates an index set containing the indices
 where  `VecLow` <= `V` <= `VecHigh`
 
@@ -6346,9 +6346,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecWhichBetweenOrEqual"))
 """
-function VecWhichBetweenOrEqual(petsclib::PetscLibType, VecLow::PetscVec, V::PetscVec, VecHigh::PetscVec, S::IS) end
+function VecWhichBetweenOrEqual(petsclib::PetscLibType, VecLow::AbstractPetscVec, V::AbstractPetscVec, VecHigh::AbstractPetscVec, S::AbstractIS) end
 
-@for_petsc function VecWhichBetweenOrEqual(petsclib::$UnionPetscLib, VecLow::PetscVec, V::PetscVec, VecHigh::PetscVec, S::IS )
+@for_petsc function VecWhichBetweenOrEqual(petsclib::$UnionPetscLib, VecLow::AbstractPetscVec, V::AbstractPetscVec, VecHigh::AbstractPetscVec, S::AbstractIS )
 
     @chk ccall(
                (:VecWhichBetweenOrEqual, $petsc_library),
@@ -6362,7 +6362,7 @@ function VecWhichBetweenOrEqual(petsclib::PetscLibType, VecLow::PetscVec, V::Pet
 end 
 
 """
-	VecWhichInactive(petsclib::PetscLibType,VecLow::PetscVec, V::PetscVec, D::PetscVec, VecHigh::PetscVec, Strong::PetscBool, S::IS) 
+	VecWhichInactive(petsclib::PetscLibType,VecLow::AbstractPetscVec, V::AbstractPetscVec, D::AbstractPetscVec, VecHigh::AbstractPetscVec, Strong::PetscBool, S::AbstractIS) 
 Creates an `IS` based on a set of vectors
 
 Collective
@@ -6384,9 +6384,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecWhichInactive"))
 """
-function VecWhichInactive(petsclib::PetscLibType, VecLow::PetscVec, V::PetscVec, D::PetscVec, VecHigh::PetscVec, Strong::PetscBool, S::IS) end
+function VecWhichInactive(petsclib::PetscLibType, VecLow::AbstractPetscVec, V::AbstractPetscVec, D::AbstractPetscVec, VecHigh::AbstractPetscVec, Strong::PetscBool, S::AbstractIS) end
 
-@for_petsc function VecWhichInactive(petsclib::$UnionPetscLib, VecLow::PetscVec, V::PetscVec, D::PetscVec, VecHigh::PetscVec, Strong::PetscBool, S::IS )
+@for_petsc function VecWhichInactive(petsclib::$UnionPetscLib, VecLow::AbstractPetscVec, V::AbstractPetscVec, D::AbstractPetscVec, VecHigh::AbstractPetscVec, Strong::PetscBool, S::AbstractIS )
 
     @chk ccall(
                (:VecWhichInactive, $petsc_library),
@@ -6400,7 +6400,7 @@ function VecWhichInactive(petsclib::PetscLibType, VecLow::PetscVec, V::PetscVec,
 end 
 
 """
-	VecISAXPY(petsclib::PetscLibType,vfull::PetscVec, is::IS, alpha::PetscScalar, vreduced::PetscVec) 
+	VecISAXPY(petsclib::PetscLibType,vfull::AbstractPetscVec, is::AbstractIS, alpha::PetscScalar, vreduced::AbstractPetscVec) 
 Adds a reduced vector to the appropriate elements of a full
 vfull[is[i]] += alpha*vreduced[i]
 
@@ -6422,9 +6422,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecISAXPY"))
 """
-function VecISAXPY(petsclib::PetscLibType, vfull::PetscVec, is::IS, alpha::PetscScalar, vreduced::PetscVec) end
+function VecISAXPY(petsclib::PetscLibType, vfull::AbstractPetscVec, is::AbstractIS, alpha::PetscScalar, vreduced::AbstractPetscVec) end
 
-@for_petsc function VecISAXPY(petsclib::$UnionPetscLib, vfull::PetscVec, is::IS, alpha::$PetscScalar, vreduced::PetscVec )
+@for_petsc function VecISAXPY(petsclib::$UnionPetscLib, vfull::AbstractPetscVec, is::AbstractIS, alpha::$PetscScalar, vreduced::AbstractPetscVec )
 
     @chk ccall(
                (:VecISAXPY, $petsc_library),
@@ -6438,7 +6438,7 @@ function VecISAXPY(petsclib::PetscLibType, vfull::PetscVec, is::IS, alpha::Petsc
 end 
 
 """
-	VecISCopy(petsclib::PetscLibType,vfull::PetscVec, is::IS, mode::ScatterMode, vreduced::PetscVec) 
+	VecISCopy(petsclib::PetscLibType,vfull::AbstractPetscVec, is::AbstractIS, mode::ScatterMode, vreduced::AbstractPetscVec) 
 Copies between a reduced vector and the appropriate elements of a full
 
 Logically Collective
@@ -6459,9 +6459,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecISCopy"))
 """
-function VecISCopy(petsclib::PetscLibType, vfull::PetscVec, is::IS, mode::ScatterMode, vreduced::PetscVec) end
+function VecISCopy(petsclib::PetscLibType, vfull::AbstractPetscVec, is::AbstractIS, mode::ScatterMode, vreduced::AbstractPetscVec) end
 
-@for_petsc function VecISCopy(petsclib::$UnionPetscLib, vfull::PetscVec, is::IS, mode::ScatterMode, vreduced::PetscVec )
+@for_petsc function VecISCopy(petsclib::$UnionPetscLib, vfull::AbstractPetscVec, is::AbstractIS, mode::ScatterMode, vreduced::AbstractPetscVec )
 
     @chk ccall(
                (:VecISCopy, $petsc_library),
@@ -6475,7 +6475,7 @@ function VecISCopy(petsclib::PetscLibType, vfull::PetscVec, is::IS, mode::Scatte
 end 
 
 """
-	VecISSet(petsclib::PetscLibType,V::PetscVec, S::IS, c::PetscScalar) 
+	VecISSet(petsclib::PetscLibType,V::AbstractPetscVec, S::AbstractIS, c::PetscScalar) 
 Sets the elements of a vector, specified by an index set, to a constant
 
 Logically Collective
@@ -6492,9 +6492,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecISSet"))
 """
-function VecISSet(petsclib::PetscLibType, V::PetscVec, S::IS, c::PetscScalar) end
+function VecISSet(petsclib::PetscLibType, V::AbstractPetscVec, S::AbstractIS, c::PetscScalar) end
 
-@for_petsc function VecISSet(petsclib::$UnionPetscLib, V::PetscVec, S::IS, c::$PetscScalar )
+@for_petsc function VecISSet(petsclib::$UnionPetscLib, V::AbstractPetscVec, S::AbstractIS, c::$PetscScalar )
 
     @chk ccall(
                (:VecISSet, $petsc_library),
@@ -6508,7 +6508,7 @@ function VecISSet(petsclib::PetscLibType, V::PetscVec, S::IS, c::PetscScalar) en
 end 
 
 """
-	VecISShift(petsclib::PetscLibType,V::PetscVec, S::IS, c::PetscScalar) 
+	VecISShift(petsclib::PetscLibType,V::AbstractPetscVec, S::AbstractIS, c::PetscScalar) 
 Shifts the elements of a vector, specified by an index set, by a constant
 
 Logically Collective
@@ -6525,9 +6525,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecISShift"))
 """
-function VecISShift(petsclib::PetscLibType, V::PetscVec, S::IS, c::PetscScalar) end
+function VecISShift(petsclib::PetscLibType, V::AbstractPetscVec, S::AbstractIS, c::PetscScalar) end
 
-@for_petsc function VecISShift(petsclib::$UnionPetscLib, V::PetscVec, S::IS, c::$PetscScalar )
+@for_petsc function VecISShift(petsclib::$UnionPetscLib, V::AbstractPetscVec, S::AbstractIS, c::$PetscScalar )
 
     @chk ccall(
                (:VecISShift, $petsc_library),
@@ -6541,7 +6541,7 @@ function VecISShift(petsclib::PetscLibType, V::PetscVec, S::IS, c::PetscScalar) 
 end 
 
 """
-	VecBoundGradientProjection(petsclib::PetscLibType,G::PetscVec, X::PetscVec, XL::PetscVec, XU::PetscVec, GP::PetscVec) 
+	VecBoundGradientProjection(petsclib::PetscLibType,G::AbstractPetscVec, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, GP::AbstractPetscVec) 
 Projects vector according to this definition.
 If XL[i] < X[i] < XU[i], then GP[i] = G[i];
 If X[i] <= XL[i], then GP[i] = min(G[i],0);
@@ -6563,9 +6563,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecBoundGradientProjection"))
 """
-function VecBoundGradientProjection(petsclib::PetscLibType, G::PetscVec, X::PetscVec, XL::PetscVec, XU::PetscVec, GP::PetscVec) end
+function VecBoundGradientProjection(petsclib::PetscLibType, G::AbstractPetscVec, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, GP::AbstractPetscVec) end
 
-@for_petsc function VecBoundGradientProjection(petsclib::$UnionPetscLib, G::PetscVec, X::PetscVec, XL::PetscVec, XU::PetscVec, GP::PetscVec )
+@for_petsc function VecBoundGradientProjection(petsclib::$UnionPetscLib, G::AbstractPetscVec, X::AbstractPetscVec, XL::AbstractPetscVec, XU::AbstractPetscVec, GP::AbstractPetscVec )
 
     @chk ccall(
                (:VecBoundGradientProjection, $petsc_library),
@@ -6579,7 +6579,7 @@ function VecBoundGradientProjection(petsclib::PetscLibType, G::PetscVec, X::Pets
 end 
 
 """
-	VecPow(petsclib::PetscLibType,v::PetscVec, p::PetscScalar) 
+	VecPow(petsclib::PetscLibType,v::AbstractPetscVec, p::PetscScalar) 
 Replaces each component of a vector by  x_i^p 
 
 Logically Collective
@@ -6595,9 +6595,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Vec/VecPow"))
 """
-function VecPow(petsclib::PetscLibType, v::PetscVec, p::PetscScalar) end
+function VecPow(petsclib::PetscLibType, v::AbstractPetscVec, p::PetscScalar) end
 
-@for_petsc function VecPow(petsclib::$UnionPetscLib, v::PetscVec, p::$PetscScalar )
+@for_petsc function VecPow(petsclib::$UnionPetscLib, v::AbstractPetscVec, p::$PetscScalar )
 
     @chk ccall(
                (:VecPow, $petsc_library),
@@ -6611,7 +6611,7 @@ function VecPow(petsclib::PetscLibType, v::PetscVec, p::PetscScalar) end
 end 
 
 """
-	VecMedian(petsclib::PetscLibType,Vec1::PetscVec, Vec2::PetscVec, Vec3::PetscVec, VMedian::PetscVec) 
+	VecMedian(petsclib::PetscLibType,Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, Vec3::AbstractPetscVec, VMedian::AbstractPetscVec) 
 Computes the componentwise median of three vectors
 and stores the result in this vector.  Used primarily for projecting
 a vector within upper and lower bounds.
@@ -6633,9 +6633,9 @@ Level: advanced
 # External Links
 $(_doc_external("Vec/VecMedian"))
 """
-function VecMedian(petsclib::PetscLibType, Vec1::PetscVec, Vec2::PetscVec, Vec3::PetscVec, VMedian::PetscVec) end
+function VecMedian(petsclib::PetscLibType, Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, Vec3::AbstractPetscVec, VMedian::AbstractPetscVec) end
 
-@for_petsc function VecMedian(petsclib::$UnionPetscLib, Vec1::PetscVec, Vec2::PetscVec, Vec3::PetscVec, VMedian::PetscVec )
+@for_petsc function VecMedian(petsclib::$UnionPetscLib, Vec1::AbstractPetscVec, Vec2::AbstractPetscVec, Vec3::AbstractPetscVec, VMedian::AbstractPetscVec )
 
     @chk ccall(
                (:VecMedian, $petsc_library),
@@ -6649,7 +6649,7 @@ function VecMedian(petsclib::PetscLibType, Vec1::PetscVec, Vec2::PetscVec, Vec3:
 end 
 
 """
-	values::Vector{PetscScalar} = VecGetValuesSection(petsclib::PetscLibType,v::PetscVec, s::PetscSection, point::PetscInt) 
+	values::Vector{PetscScalar} = VecGetValuesSection(petsclib::PetscLibType,v::AbstractPetscVec, s::PetscSection, point::PetscInt) 
 Gets all the values associated with a given point, according to the section, in the given `Vec`
 
 Not Collective
@@ -6669,9 +6669,9 @@ Level: developer
 # External Links
 $(_doc_external("Vec/VecGetValuesSection"))
 """
-function VecGetValuesSection(petsclib::PetscLibType, v::PetscVec, s::PetscSection, point::PetscInt) end
+function VecGetValuesSection(petsclib::PetscLibType, v::AbstractPetscVec, s::PetscSection, point::PetscInt) end
 
-@for_petsc function VecGetValuesSection(petsclib::$UnionPetscLib, v::PetscVec, s::PetscSection, point::$PetscInt )
+@for_petsc function VecGetValuesSection(petsclib::$UnionPetscLib, v::AbstractPetscVec, s::PetscSection, point::$PetscInt )
 	values_ = Ref{Ptr{$PetscScalar}}()
 
     @chk ccall(
@@ -6687,7 +6687,7 @@ function VecGetValuesSection(petsclib::PetscLibType, v::PetscVec, s::PetscSectio
 end 
 
 """
-	dm::PetscDM = VecGetDM(petsclib::PetscLibType,v::PetscVec) 
+	dm::PetscDM = VecGetDM(petsclib::PetscLibType,v::AbstractPetscVec) 
 Gets the `DM` defining the data layout of the vector
 
 Not Collective
@@ -6710,9 +6710,9 @@ See also:
 # External Links
 $(_doc_external("DM/VecGetDM"))
 """
-function VecGetDM(petsclib::PetscLibType, v::PetscVec) end
+function VecGetDM(petsclib::PetscLibType, v::AbstractPetscVec) end
 
-@for_petsc function VecGetDM(petsclib::$UnionPetscLib, v::PetscVec)
+@for_petsc function VecGetDM(petsclib::$UnionPetscLib, v::AbstractPetscVec)
 	dm_ = Ref{CDM}()
 
     @chk ccall(
@@ -6727,7 +6727,7 @@ function VecGetDM(petsclib::PetscLibType, v::PetscVec) end
 end 
 
 """
-	VecFischer(petsclib::PetscLibType,X::PetscVec, F::PetscVec, L::PetscVec, U::PetscVec, FB::PetscVec) 
+	VecFischer(petsclib::PetscLibType,X::AbstractPetscVec, F::AbstractPetscVec, L::AbstractPetscVec, U::AbstractPetscVec, FB::AbstractPetscVec) 
 Evaluates the Fischer
 problems.
 
@@ -6749,9 +6749,9 @@ Level: developer
 # External Links
 $(_doc_external("Tao/VecFischer"))
 """
-function VecFischer(petsclib::PetscLibType, X::PetscVec, F::PetscVec, L::PetscVec, U::PetscVec, FB::PetscVec) end
+function VecFischer(petsclib::PetscLibType, X::AbstractPetscVec, F::AbstractPetscVec, L::AbstractPetscVec, U::AbstractPetscVec, FB::AbstractPetscVec) end
 
-@for_petsc function VecFischer(petsclib::$UnionPetscLib, X::PetscVec, F::PetscVec, L::PetscVec, U::PetscVec, FB::PetscVec )
+@for_petsc function VecFischer(petsclib::$UnionPetscLib, X::AbstractPetscVec, F::AbstractPetscVec, L::AbstractPetscVec, U::AbstractPetscVec, FB::AbstractPetscVec )
 
     @chk ccall(
                (:VecFischer, $petsc_library),
@@ -6765,14 +6765,14 @@ function VecFischer(petsclib::PetscLibType, X::PetscVec, F::PetscVec, L::PetscVe
 end 
 
 """
-	xv::Vector{PetscScalar},yv::Vector{PetscScalar} = VecGetArrayPair(petsclib::PetscLibType,x::PetscVec, y::PetscVec) 
+	xv::Vector{PetscScalar},yv::Vector{PetscScalar} = VecGetArrayPair(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("Vec/VecGetArrayPair"))
 """
-function VecGetArrayPair(petsclib::PetscLibType, x::PetscVec, y::PetscVec) end
+function VecGetArrayPair(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec) end
 
-@for_petsc function VecGetArrayPair(petsclib::$UnionPetscLib, x::PetscVec, y::PetscVec )
+@for_petsc function VecGetArrayPair(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec )
 	xv_ = Ref{Ptr{$PetscScalar}}()
 	yv_ = Ref{Ptr{$PetscScalar}}()
 
@@ -6790,14 +6790,14 @@ function VecGetArrayPair(petsclib::PetscLibType, x::PetscVec, y::PetscVec) end
 end 
 
 """
-	VecRestoreArrayPair(petsclib::PetscLibType,x::PetscVec, y::PetscVec, xv::Vector{PetscScalar}, yv::Vector{PetscScalar}) 
+	VecRestoreArrayPair(petsclib::PetscLibType,x::AbstractPetscVec, y::AbstractPetscVec, xv::Vector{PetscScalar}, yv::Vector{PetscScalar}) 
 
 # External Links
 $(_doc_external("Vec/VecRestoreArrayPair"))
 """
-function VecRestoreArrayPair(petsclib::PetscLibType, x::PetscVec, y::PetscVec, xv::Vector{PetscScalar}, yv::Vector{PetscScalar}) end
+function VecRestoreArrayPair(petsclib::PetscLibType, x::AbstractPetscVec, y::AbstractPetscVec, xv::Vector{PetscScalar}, yv::Vector{PetscScalar}) end
 
-@for_petsc function VecRestoreArrayPair(petsclib::$UnionPetscLib, x::PetscVec, y::PetscVec, xv::Vector{$PetscScalar}, yv::Vector{$PetscScalar} )
+@for_petsc function VecRestoreArrayPair(petsclib::$UnionPetscLib, x::AbstractPetscVec, y::AbstractPetscVec, xv::Vector{$PetscScalar}, yv::Vector{$PetscScalar} )
 	xv_ = Ref(pointer(xv))
 	yv_ = Ref(pointer(yv))
 

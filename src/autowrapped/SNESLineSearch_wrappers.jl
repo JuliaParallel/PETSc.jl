@@ -379,7 +379,7 @@ function SNESLineSearchSetPostCheck(petsclib::PetscLibType, linesearch::SNESLine
 end 
 
 """
-	changed::PetscBool = SNESLineSearchPreCheck(petsclib::PetscLibType,linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec) 
+	changed::PetscBool = SNESLineSearchPreCheck(petsclib::PetscLibType,linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec) 
 Prepares the line search for being applied.
 
 Logically Collective
@@ -400,9 +400,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchPreCheck"))
 """
-function SNESLineSearchPreCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec) end
+function SNESLineSearchPreCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec) end
 
-@for_petsc function SNESLineSearchPreCheck(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec )
+@for_petsc function SNESLineSearchPreCheck(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec )
 	changed_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -418,7 +418,7 @@ function SNESLineSearchPreCheck(petsclib::PetscLibType, linesearch::SNESLineSear
 end 
 
 """
-	changed_Y::PetscBool,changed_W::PetscBool = SNESLineSearchPostCheck(petsclib::PetscLibType,linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec, W::PetscVec) 
+	changed_Y::PetscBool,changed_W::PetscBool = SNESLineSearchPostCheck(petsclib::PetscLibType,linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec) 
 Hook to modify step direction or updated solution after a successful linesearch
 
 Logically Collective
@@ -440,9 +440,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchPostCheck"))
 """
-function SNESLineSearchPostCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec, W::PetscVec) end
+function SNESLineSearchPostCheck(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec) end
 
-@for_petsc function SNESLineSearchPostCheck(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec, W::PetscVec )
+@for_petsc function SNESLineSearchPostCheck(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec )
 	changed_Y_ = Ref{PetscBool}()
 	changed_W_ = Ref{PetscBool}()
 
@@ -460,7 +460,7 @@ function SNESLineSearchPostCheck(petsclib::PetscLibType, linesearch::SNESLineSea
 end 
 
 """
-	changed::PetscBool = SNESLineSearchPreCheckPicard(petsclib::PetscLibType,linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec, ctx::Cvoid) 
+	changed::PetscBool = SNESLineSearchPreCheckPicard(petsclib::PetscLibType,linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, ctx::Cvoid) 
 Implements a correction that is sometimes useful to improve the convergence rate of Picard iteration {cite}`hindmarsh1996time`
 
 Logically Collective
@@ -487,9 +487,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchPreCheckPicard"))
 """
-function SNESLineSearchPreCheckPicard(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec, ctx::Cvoid) end
+function SNESLineSearchPreCheckPicard(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, ctx::Cvoid) end
 
-@for_petsc function SNESLineSearchPreCheckPicard(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::PetscVec, Y::PetscVec, ctx::Cvoid )
+@for_petsc function SNESLineSearchPreCheckPicard(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::AbstractPetscVec, Y::AbstractPetscVec, ctx::Cvoid )
 	changed_ = Ref{PetscBool}()
 
     @chk ccall(
@@ -505,7 +505,7 @@ function SNESLineSearchPreCheckPicard(petsclib::PetscLibType, linesearch::SNESLi
 end 
 
 """
-	fnorm::PetscReal = SNESLineSearchApply(petsclib::PetscLibType,linesearch::SNESLineSearch, X::PetscVec, F::PetscVec, Y::PetscVec) 
+	fnorm::PetscReal = SNESLineSearchApply(petsclib::PetscLibType,linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec) 
 Computes the line
 
 Collective
@@ -535,9 +535,9 @@ Level: intermediate
 # External Links
 $(_doc_external("SNES/SNESLineSearchApply"))
 """
-function SNESLineSearchApply(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, F::PetscVec, Y::PetscVec) end
+function SNESLineSearchApply(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec) end
 
-@for_petsc function SNESLineSearchApply(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::PetscVec, F::PetscVec, Y::PetscVec )
+@for_petsc function SNESLineSearchApply(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec )
 	fnorm_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -858,7 +858,7 @@ function SNESLineSearchSetType(petsclib::PetscLibType, linesearch::SNESLineSearc
 end 
 
 """
-	SNESLineSearchSetSNES(petsclib::PetscLibType,linesearch::SNESLineSearch, snes::PetscSNES) 
+	SNESLineSearchSetSNES(petsclib::PetscLibType,linesearch::SNESLineSearch, snes::AbstractPetscSNES) 
 Sets the `SNES` for the linesearch for function evaluation.
 
 Input Parameters:
@@ -872,9 +872,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetSNES"))
 """
-function SNESLineSearchSetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch, snes::PetscSNES) end
+function SNESLineSearchSetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESLineSearchSetSNES(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, snes::PetscSNES )
+@for_petsc function SNESLineSearchSetSNES(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, snes::AbstractPetscSNES )
 
     @chk ccall(
                (:SNESLineSearchSetSNES, $petsc_library),
@@ -888,7 +888,7 @@ function SNESLineSearchSetSNES(petsclib::PetscLibType, linesearch::SNESLineSearc
 end 
 
 """
-	SNESLineSearchGetSNES(petsclib::PetscLibType,linesearch::SNESLineSearch, snes::PetscSNES) 
+	SNESLineSearchGetSNES(petsclib::PetscLibType,linesearch::SNESLineSearch, snes::AbstractPetscSNES) 
 Gets the `SNES` instance associated with the line search.
 
 Not Collective
@@ -906,9 +906,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetSNES"))
 """
-function SNESLineSearchGetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch, snes::PetscSNES) end
+function SNESLineSearchGetSNES(petsclib::PetscLibType, linesearch::SNESLineSearch, snes::AbstractPetscSNES) end
 
-@for_petsc function SNESLineSearchGetSNES(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, snes::PetscSNES )
+@for_petsc function SNESLineSearchGetSNES(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, snes::AbstractPetscSNES )
 	snes_ = Ref(snes.ptr)
 
     @chk ccall(
@@ -1366,7 +1366,7 @@ function SNESLineSearchSetComputeNorms(petsclib::PetscLibType, linesearch::SNESL
 end 
 
 """
-	SNESLineSearchGetVecs(petsclib::PetscLibType,linesearch::SNESLineSearch, X::PetscVec, F::PetscVec, Y::PetscVec, W::PetscVec, G::PetscVec) 
+	SNESLineSearchGetVecs(petsclib::PetscLibType,linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec, G::AbstractPetscVec) 
 Gets the vectors from the `SNESLineSearch` context
 
 Not Collective but the vectors are parallel
@@ -1388,9 +1388,9 @@ Level: advanced
 # External Links
 $(_doc_external("SNES/SNESLineSearchGetVecs"))
 """
-function SNESLineSearchGetVecs(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, F::PetscVec, Y::PetscVec, W::PetscVec, G::PetscVec) end
+function SNESLineSearchGetVecs(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec, G::AbstractPetscVec) end
 
-@for_petsc function SNESLineSearchGetVecs(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::PetscVec, F::PetscVec, Y::PetscVec, W::PetscVec, G::PetscVec )
+@for_petsc function SNESLineSearchGetVecs(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec, G::AbstractPetscVec )
 	X_ = Ref(X.ptr)
 	F_ = Ref(F.ptr)
 	Y_ = Ref(Y.ptr)
@@ -1414,7 +1414,7 @@ function SNESLineSearchGetVecs(petsclib::PetscLibType, linesearch::SNESLineSearc
 end 
 
 """
-	SNESLineSearchSetVecs(petsclib::PetscLibType,linesearch::SNESLineSearch, X::PetscVec, F::PetscVec, Y::PetscVec, W::PetscVec, G::PetscVec) 
+	SNESLineSearchSetVecs(petsclib::PetscLibType,linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec, G::AbstractPetscVec) 
 Sets the vectors on the `SNESLineSearch` context
 
 Logically Collective
@@ -1434,9 +1434,9 @@ Level: developer
 # External Links
 $(_doc_external("SNES/SNESLineSearchSetVecs"))
 """
-function SNESLineSearchSetVecs(petsclib::PetscLibType, linesearch::SNESLineSearch, X::PetscVec, F::PetscVec, Y::PetscVec, W::PetscVec, G::PetscVec) end
+function SNESLineSearchSetVecs(petsclib::PetscLibType, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec, G::AbstractPetscVec) end
 
-@for_petsc function SNESLineSearchSetVecs(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::PetscVec, F::PetscVec, Y::PetscVec, W::PetscVec, G::PetscVec )
+@for_petsc function SNESLineSearchSetVecs(petsclib::$UnionPetscLib, linesearch::SNESLineSearch, X::AbstractPetscVec, F::AbstractPetscVec, Y::AbstractPetscVec, W::AbstractPetscVec, G::AbstractPetscVec )
 
     @chk ccall(
                (:SNESLineSearchSetVecs, $petsc_library),

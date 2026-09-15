@@ -345,7 +345,7 @@ function PetscDualSpaceDuplicate(petsclib::PetscLibType, sp::PetscDualSpace) end
 end 
 
 """
-	PetscDualSpaceGetDM(petsclib::PetscLibType,sp::PetscDualSpace, dm::PetscDM) 
+	PetscDualSpaceGetDM(petsclib::PetscLibType,sp::PetscDualSpace, dm::AbstractPetscDM) 
 Get the `DM` representing the reference cell of a `PetscDualSpace`
 
 Not Collective
@@ -363,9 +363,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/PetscDualSpaceGetDM"))
 """
-function PetscDualSpaceGetDM(petsclib::PetscLibType, sp::PetscDualSpace, dm::PetscDM) end
+function PetscDualSpaceGetDM(petsclib::PetscLibType, sp::PetscDualSpace, dm::AbstractPetscDM) end
 
-@for_petsc function PetscDualSpaceGetDM(petsclib::$UnionPetscLib, sp::PetscDualSpace, dm::PetscDM )
+@for_petsc function PetscDualSpaceGetDM(petsclib::$UnionPetscLib, sp::PetscDualSpace, dm::AbstractPetscDM )
 	dm_ = Ref(dm.ptr)
 
     @chk ccall(
@@ -381,7 +381,7 @@ function PetscDualSpaceGetDM(petsclib::PetscLibType, sp::PetscDualSpace, dm::Pet
 end 
 
 """
-	PetscDualSpaceSetDM(petsclib::PetscLibType,sp::PetscDualSpace, dm::PetscDM) 
+	PetscDualSpaceSetDM(petsclib::PetscLibType,sp::PetscDualSpace, dm::AbstractPetscDM) 
 Get the `DM` representing the reference cell
 
 Not Collective
@@ -397,9 +397,9 @@ Level: intermediate
 # External Links
 $(_doc_external("DM/PetscDualSpaceSetDM"))
 """
-function PetscDualSpaceSetDM(petsclib::PetscLibType, sp::PetscDualSpace, dm::PetscDM) end
+function PetscDualSpaceSetDM(petsclib::PetscLibType, sp::PetscDualSpace, dm::AbstractPetscDM) end
 
-@for_petsc function PetscDualSpaceSetDM(petsclib::$UnionPetscLib, sp::PetscDualSpace, dm::PetscDM )
+@for_petsc function PetscDualSpaceSetDM(petsclib::$UnionPetscLib, sp::PetscDualSpace, dm::AbstractPetscDM )
 
     @chk ccall(
                (:PetscDualSpaceSetDM, $petsc_library),
@@ -1012,7 +1012,7 @@ function PetscDualSpaceApplyInteriorDefault(petsclib::PetscLibType, sp::PetscDua
 end 
 
 """
-	PetscDualSpaceGetAllData(petsclib::PetscLibType,sp::PetscDualSpace, allNodes::PetscQuadrature, allMat::PetscMat) 
+	PetscDualSpaceGetAllData(petsclib::PetscLibType,sp::PetscDualSpace, allNodes::PetscQuadrature, allMat::AbstractPetscMat) 
 Get all quadrature nodes from this space, and the matrix that sends quadrature node values to degree
 
 Input Parameter:
@@ -1029,9 +1029,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/PetscDualSpaceGetAllData"))
 """
-function PetscDualSpaceGetAllData(petsclib::PetscLibType, sp::PetscDualSpace, allNodes::PetscQuadrature, allMat::PetscMat) end
+function PetscDualSpaceGetAllData(petsclib::PetscLibType, sp::PetscDualSpace, allNodes::PetscQuadrature, allMat::AbstractPetscMat) end
 
-@for_petsc function PetscDualSpaceGetAllData(petsclib::$UnionPetscLib, sp::PetscDualSpace, allNodes::PetscQuadrature, allMat::PetscMat )
+@for_petsc function PetscDualSpaceGetAllData(petsclib::$UnionPetscLib, sp::PetscDualSpace, allNodes::PetscQuadrature, allMat::AbstractPetscMat )
 	allMat_ = Ref(allMat.ptr)
 
     @chk ccall(
@@ -1084,7 +1084,7 @@ function PetscDualSpaceCreateAllDataDefault(petsclib::PetscLibType, sp::PetscDua
 end 
 
 """
-	PetscDualSpaceGetInteriorData(petsclib::PetscLibType,sp::PetscDualSpace, intNodes::PetscQuadrature, intMat::PetscMat) 
+	PetscDualSpaceGetInteriorData(petsclib::PetscLibType,sp::PetscDualSpace, intNodes::PetscQuadrature, intMat::AbstractPetscMat) 
 Get all quadrature points necessary to compute the interior degrees of freedom from
 this space, as well as the matrix that computes the degrees of freedom from the quadrature
 values.
@@ -1107,9 +1107,9 @@ Level: advanced
 # External Links
 $(_doc_external("DM/PetscDualSpaceGetInteriorData"))
 """
-function PetscDualSpaceGetInteriorData(petsclib::PetscLibType, sp::PetscDualSpace, intNodes::PetscQuadrature, intMat::PetscMat) end
+function PetscDualSpaceGetInteriorData(petsclib::PetscLibType, sp::PetscDualSpace, intNodes::PetscQuadrature, intMat::AbstractPetscMat) end
 
-@for_petsc function PetscDualSpaceGetInteriorData(petsclib::$UnionPetscLib, sp::PetscDualSpace, intNodes::PetscQuadrature, intMat::PetscMat )
+@for_petsc function PetscDualSpaceGetInteriorData(petsclib::$UnionPetscLib, sp::PetscDualSpace, intNodes::PetscQuadrature, intMat::AbstractPetscMat )
 	intMat_ = Ref(intMat.ptr)
 
     @chk ccall(

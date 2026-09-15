@@ -53,7 +53,7 @@ function TSTrajectoryRegister(petsclib::PetscLibType, sname::String, fnc::extern
 end 
 
 """
-	TSTrajectorySet(petsclib::PetscLibType,tj::TSTrajectory, ts::TS, stepnum::PetscInt, time::PetscReal, X::PetscVec) 
+	TSTrajectorySet(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS, stepnum::PetscInt, time::PetscReal, X::AbstractPetscVec) 
 Sets a vector of state in the trajectory object
 
 Collective
@@ -72,9 +72,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/TSTrajectorySet"))
 """
-function TSTrajectorySet(petsclib::PetscLibType, tj::TSTrajectory, ts::TS, stepnum::PetscInt, time::PetscReal, X::PetscVec) end
+function TSTrajectorySet(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, stepnum::PetscInt, time::PetscReal, X::AbstractPetscVec) end
 
-@for_petsc function TSTrajectorySet(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::TS, stepnum::$PetscInt, time::$PetscReal, X::PetscVec )
+@for_petsc function TSTrajectorySet(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, stepnum::$PetscInt, time::$PetscReal, X::AbstractPetscVec )
 
     @chk ccall(
                (:TSTrajectorySet, $petsc_library),
@@ -124,7 +124,7 @@ function TSTrajectoryGetNumSteps(petsclib::PetscLibType, tj::TSTrajectory) end
 end 
 
 """
-	time::PetscReal = TSTrajectoryGet(petsclib::PetscLibType,tj::TSTrajectory, ts::TS, stepnum::PetscInt) 
+	time::PetscReal = TSTrajectoryGet(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS, stepnum::PetscInt) 
 Updates the solution vector of a time stepper object by querying the `TSTrajectory`
 
 Collective
@@ -144,9 +144,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/TSTrajectoryGet"))
 """
-function TSTrajectoryGet(petsclib::PetscLibType, tj::TSTrajectory, ts::TS, stepnum::PetscInt) end
+function TSTrajectoryGet(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, stepnum::PetscInt) end
 
-@for_petsc function TSTrajectoryGet(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::TS, stepnum::$PetscInt )
+@for_petsc function TSTrajectoryGet(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, stepnum::$PetscInt )
 	time_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -162,7 +162,7 @@ function TSTrajectoryGet(petsclib::PetscLibType, tj::TSTrajectory, ts::TS, stepn
 end 
 
 """
-	time::PetscReal = TSTrajectoryGetVecs(petsclib::PetscLibType,tj::TSTrajectory, ts::TS, stepnum::PetscInt, U::PetscVec, Udot::PetscVec) 
+	time::PetscReal = TSTrajectoryGetVecs(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS, stepnum::PetscInt, U::AbstractPetscVec, Udot::AbstractPetscVec) 
 Reconstructs the vector of state and its time derivative using information from the `TSTrajectory` and, possibly, from the `TS`
 
 Collective
@@ -184,9 +184,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/TSTrajectoryGetVecs"))
 """
-function TSTrajectoryGetVecs(petsclib::PetscLibType, tj::TSTrajectory, ts::TS, stepnum::PetscInt, U::PetscVec, Udot::PetscVec) end
+function TSTrajectoryGetVecs(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, stepnum::PetscInt, U::AbstractPetscVec, Udot::AbstractPetscVec) end
 
-@for_petsc function TSTrajectoryGetVecs(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::TS, stepnum::$PetscInt, U::PetscVec, Udot::PetscVec )
+@for_petsc function TSTrajectoryGetVecs(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, stepnum::$PetscInt, U::AbstractPetscVec, Udot::AbstractPetscVec )
 	time_ = Ref{$PetscReal}()
 
     @chk ccall(
@@ -372,7 +372,7 @@ function TSTrajectoryCreate(petsclib::PetscLibType, comm::MPI_Comm) end
 end 
 
 """
-	TSTrajectorySetType(petsclib::PetscLibType,tj::TSTrajectory, ts::TS, type::TSTrajectoryType) 
+	TSTrajectorySetType(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS, type::TSTrajectoryType) 
 Sets the storage method to be used as in a trajectory
 
 Collective
@@ -392,9 +392,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/TSTrajectorySetType"))
 """
-function TSTrajectorySetType(petsclib::PetscLibType, tj::TSTrajectory, ts::TS, type::TSTrajectoryType) end
+function TSTrajectorySetType(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, type::TSTrajectoryType) end
 
-@for_petsc function TSTrajectorySetType(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::TS, type::TSTrajectoryType )
+@for_petsc function TSTrajectorySetType(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, type::TSTrajectoryType )
 
     @chk ccall(
                (:TSTrajectorySetType, $petsc_library),
@@ -408,7 +408,7 @@ function TSTrajectorySetType(petsclib::PetscLibType, tj::TSTrajectory, ts::TS, t
 end 
 
 """
-	type::TSTrajectoryType = TSTrajectoryGetType(petsclib::PetscLibType,tj::TSTrajectory, ts::TS) 
+	type::TSTrajectoryType = TSTrajectoryGetType(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS) 
 Gets the trajectory type
 
 Collective
@@ -427,9 +427,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/TSTrajectoryGetType"))
 """
-function TSTrajectoryGetType(petsclib::PetscLibType, tj::TSTrajectory, ts::TS) end
+function TSTrajectoryGetType(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS) end
 
-@for_petsc function TSTrajectoryGetType(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::TS )
+@for_petsc function TSTrajectoryGetType(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS )
 	type_ = Ref{TSTrajectoryType}()
 
     @chk ccall(
@@ -710,7 +710,7 @@ function TSTrajectorySetFiletemplate(petsclib::PetscLibType, tj::TSTrajectory, f
 end 
 
 """
-	TSTrajectorySetFromOptions(petsclib::PetscLibType,tj::TSTrajectory, ts::TS) 
+	TSTrajectorySetFromOptions(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS) 
 Sets various `TSTrajectory` parameters from user options.
 
 Collective
@@ -731,9 +731,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/TSTrajectorySetFromOptions"))
 """
-function TSTrajectorySetFromOptions(petsclib::PetscLibType, tj::TSTrajectory, ts::TS) end
+function TSTrajectorySetFromOptions(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS) end
 
-@for_petsc function TSTrajectorySetFromOptions(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::TS )
+@for_petsc function TSTrajectorySetFromOptions(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS )
 
     @chk ccall(
                (:TSTrajectorySetFromOptions, $petsc_library),
@@ -747,7 +747,7 @@ function TSTrajectorySetFromOptions(petsclib::PetscLibType, tj::TSTrajectory, ts
 end 
 
 """
-	TSTrajectorySetUp(petsclib::PetscLibType,tj::TSTrajectory, ts::TS) 
+	TSTrajectorySetUp(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS) 
 Sets up the internal data structures, e.g. stacks, for the later use
 of a `TS` `TSTrajectory`.
 
@@ -764,9 +764,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/TSTrajectorySetUp"))
 """
-function TSTrajectorySetUp(petsclib::PetscLibType, tj::TSTrajectory, ts::TS) end
+function TSTrajectorySetUp(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS) end
 
-@for_petsc function TSTrajectorySetUp(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::TS )
+@for_petsc function TSTrajectorySetUp(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS )
 
     @chk ccall(
                (:TSTrajectorySetUp, $petsc_library),
@@ -848,7 +848,7 @@ function TSTrajectoryGetSolutionOnly(petsclib::PetscLibType, tj::TSTrajectory) e
 end 
 
 """
-	TSTrajectoryGetUpdatedHistoryVecs(petsclib::PetscLibType,tj::TSTrajectory, ts::TS, time::PetscReal, U::PetscVec, Udot::PetscVec) 
+	TSTrajectoryGetUpdatedHistoryVecs(petsclib::PetscLibType,tj::TSTrajectory, ts::AbstractTS, time::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec) 
 Get updated state and time
 
 Collective
@@ -869,9 +869,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/TSTrajectoryGetUpdatedHistoryVecs"))
 """
-function TSTrajectoryGetUpdatedHistoryVecs(petsclib::PetscLibType, tj::TSTrajectory, ts::TS, time::PetscReal, U::PetscVec, Udot::PetscVec) end
+function TSTrajectoryGetUpdatedHistoryVecs(petsclib::PetscLibType, tj::TSTrajectory, ts::AbstractTS, time::PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec) end
 
-@for_petsc function TSTrajectoryGetUpdatedHistoryVecs(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::TS, time::$PetscReal, U::PetscVec, Udot::PetscVec )
+@for_petsc function TSTrajectoryGetUpdatedHistoryVecs(petsclib::$UnionPetscLib, tj::TSTrajectory, ts::AbstractTS, time::$PetscReal, U::AbstractPetscVec, Udot::AbstractPetscVec )
 	U_ = Ref(U.ptr)
 	Udot_ = Ref(Udot.ptr)
 
@@ -889,7 +889,7 @@ function TSTrajectoryGetUpdatedHistoryVecs(petsclib::PetscLibType, tj::TSTraject
 end 
 
 """
-	TSTrajectoryRestoreUpdatedHistoryVecs(petsclib::PetscLibType,tj::TSTrajectory, U::PetscVec, Udot::PetscVec) 
+	TSTrajectoryRestoreUpdatedHistoryVecs(petsclib::PetscLibType,tj::TSTrajectory, U::AbstractPetscVec, Udot::AbstractPetscVec) 
 Restores updated state and time
 
 Collective
@@ -906,9 +906,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/TSTrajectoryRestoreUpdatedHistoryVecs"))
 """
-function TSTrajectoryRestoreUpdatedHistoryVecs(petsclib::PetscLibType, tj::TSTrajectory, U::PetscVec, Udot::PetscVec) end
+function TSTrajectoryRestoreUpdatedHistoryVecs(petsclib::PetscLibType, tj::TSTrajectory, U::AbstractPetscVec, Udot::AbstractPetscVec) end
 
-@for_petsc function TSTrajectoryRestoreUpdatedHistoryVecs(petsclib::$UnionPetscLib, tj::TSTrajectory, U::PetscVec, Udot::PetscVec )
+@for_petsc function TSTrajectoryRestoreUpdatedHistoryVecs(petsclib::$UnionPetscLib, tj::TSTrajectory, U::AbstractPetscVec, Udot::AbstractPetscVec )
 	U_ = Ref(U.ptr)
 	Udot_ = Ref(Udot.ptr)
 
@@ -1403,14 +1403,14 @@ function TSMonitorLGCtxNetworkDestroy(petsclib::PetscLibType, ctx::Union{TSMonit
 end 
 
 """
-	ctx::TSMonitorLGCtxNetwork = TSMonitorLGCtxNetworkCreate(petsclib::PetscLibType,ts::TS, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) 
+	ctx::TSMonitorLGCtxNetwork = TSMonitorLGCtxNetworkCreate(petsclib::PetscLibType,ts::AbstractTS, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) 
 
 # External Links
 $(_doc_external("Ts/TSMonitorLGCtxNetworkCreate"))
 """
-function TSMonitorLGCtxNetworkCreate(petsclib::PetscLibType, ts::TS, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) end
+function TSMonitorLGCtxNetworkCreate(petsclib::PetscLibType, ts::AbstractTS, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::PetscInt) end
 
-@for_petsc function TSMonitorLGCtxNetworkCreate(petsclib::$UnionPetscLib, ts::TS, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::$PetscInt )
+@for_petsc function TSMonitorLGCtxNetworkCreate(petsclib::$UnionPetscLib, ts::AbstractTS, host::String, label::String, x::Cint, y::Cint, m::Cint, n::Cint, howoften::$PetscInt )
 	ctx_ = Ref{TSMonitorLGCtxNetwork}()
 
     @chk ccall(
@@ -1426,7 +1426,7 @@ function TSMonitorLGCtxNetworkCreate(petsclib::PetscLibType, ts::TS, host::Strin
 end 
 
 """
-	TSMonitorLGCtxNetworkSolution(petsclib::PetscLibType,ts::TS, step::PetscInt, ptime::PetscReal, u::PetscVec, dctx::Cvoid) 
+	TSMonitorLGCtxNetworkSolution(petsclib::PetscLibType,ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dctx::Cvoid) 
 Monitors progress of the `TS` solvers for a `DMNETWORK` solution with one window for each vertex and each edge
 
 Collective
@@ -1448,9 +1448,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ts/TSMonitorLGCtxNetworkSolution"))
 """
-function TSMonitorLGCtxNetworkSolution(petsclib::PetscLibType, ts::TS, step::PetscInt, ptime::PetscReal, u::PetscVec, dctx::Cvoid) end
+function TSMonitorLGCtxNetworkSolution(petsclib::PetscLibType, ts::AbstractTS, step::PetscInt, ptime::PetscReal, u::AbstractPetscVec, dctx::Cvoid) end
 
-@for_petsc function TSMonitorLGCtxNetworkSolution(petsclib::$UnionPetscLib, ts::TS, step::$PetscInt, ptime::$PetscReal, u::PetscVec, dctx::Cvoid )
+@for_petsc function TSMonitorLGCtxNetworkSolution(petsclib::$UnionPetscLib, ts::AbstractTS, step::$PetscInt, ptime::$PetscReal, u::AbstractPetscVec, dctx::Cvoid )
 
     @chk ccall(
                (:TSMonitorLGCtxNetworkSolution, $petsc_library),
@@ -1464,7 +1464,7 @@ function TSMonitorLGCtxNetworkSolution(petsclib::PetscLibType, ts::TS, step::Pet
 end 
 
 """
-	ctx::TSMonitorEnvelopeCtx = TSMonitorEnvelopeCtxCreate(petsclib::PetscLibType,ts::TS) 
+	ctx::TSMonitorEnvelopeCtx = TSMonitorEnvelopeCtxCreate(petsclib::PetscLibType,ts::AbstractTS) 
 Creates a context for use with `TSMonitorEnvelope()`
 
 Collective
@@ -1482,9 +1482,9 @@ Level: intermediate
 # External Links
 $(_doc_external("Ts/TSMonitorEnvelopeCtxCreate"))
 """
-function TSMonitorEnvelopeCtxCreate(petsclib::PetscLibType, ts::TS) end
+function TSMonitorEnvelopeCtxCreate(petsclib::PetscLibType, ts::AbstractTS) end
 
-@for_petsc function TSMonitorEnvelopeCtxCreate(petsclib::$UnionPetscLib, ts::TS )
+@for_petsc function TSMonitorEnvelopeCtxCreate(petsclib::$UnionPetscLib, ts::AbstractTS )
 	ctx_ = Ref{TSMonitorEnvelopeCtx}()
 
     @chk ccall(
@@ -2626,7 +2626,7 @@ function TSAdaptCandidatesGet(petsclib::PetscLibType, adapt::TSAdapt) end
 end 
 
 """
-	next_sc::PetscInt,next_h::PetscReal,accept::PetscBool = TSAdaptChoose(petsclib::PetscLibType,adapt::TSAdapt, ts::TS, h::PetscReal) 
+	next_sc::PetscInt,next_h::PetscReal,accept::PetscBool = TSAdaptChoose(petsclib::PetscLibType,adapt::TSAdapt, ts::AbstractTS, h::PetscReal) 
 choose which method and step size to use for the next step
 
 Collective
@@ -2648,9 +2648,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/TSAdaptChoose"))
 """
-function TSAdaptChoose(petsclib::PetscLibType, adapt::TSAdapt, ts::TS, h::PetscReal) end
+function TSAdaptChoose(petsclib::PetscLibType, adapt::TSAdapt, ts::AbstractTS, h::PetscReal) end
 
-@for_petsc function TSAdaptChoose(petsclib::$UnionPetscLib, adapt::TSAdapt, ts::TS, h::$PetscReal )
+@for_petsc function TSAdaptChoose(petsclib::$UnionPetscLib, adapt::TSAdapt, ts::AbstractTS, h::$PetscReal )
 	next_sc_ = Ref{$PetscInt}()
 	next_h_ = Ref{$PetscReal}()
 	accept_ = Ref{PetscBool}()
@@ -2706,7 +2706,7 @@ function TSAdaptSetTimeStepIncreaseDelay(petsclib::PetscLibType, adapt::TSAdapt,
 end 
 
 """
-	accept::PetscBool = TSAdaptCheckStage(petsclib::PetscLibType,adapt::TSAdapt, ts::TS, t::PetscReal, Y::PetscVec) 
+	accept::PetscBool = TSAdaptCheckStage(petsclib::PetscLibType,adapt::TSAdapt, ts::AbstractTS, t::PetscReal, Y::AbstractPetscVec) 
 checks whether to accept a stage, (e.g. reject and change time step size if nonlinear solve fails or solution vector is infeasible)
 
 Collective
@@ -2727,9 +2727,9 @@ Level: developer
 # External Links
 $(_doc_external("Ts/TSAdaptCheckStage"))
 """
-function TSAdaptCheckStage(petsclib::PetscLibType, adapt::TSAdapt, ts::TS, t::PetscReal, Y::PetscVec) end
+function TSAdaptCheckStage(petsclib::PetscLibType, adapt::TSAdapt, ts::AbstractTS, t::PetscReal, Y::AbstractPetscVec) end
 
-@for_petsc function TSAdaptCheckStage(petsclib::$UnionPetscLib, adapt::TSAdapt, ts::TS, t::$PetscReal, Y::PetscVec )
+@for_petsc function TSAdaptCheckStage(petsclib::$UnionPetscLib, adapt::TSAdapt, ts::AbstractTS, t::$PetscReal, Y::AbstractPetscVec )
 	accept_ = Ref{PetscBool}()
 
     @chk ccall(

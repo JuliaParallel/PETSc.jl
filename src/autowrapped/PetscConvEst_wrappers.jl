@@ -196,14 +196,14 @@ function PetscConvEstSetUp(petsclib::PetscLibType, ce::PetscConvEst) end
 end 
 
 """
-	PetscConvEstComputeInitialGuess(petsclib::PetscLibType,ce::PetscConvEst, r::PetscInt, dm::PetscDM, u::PetscVec) 
+	PetscConvEstComputeInitialGuess(petsclib::PetscLibType,ce::PetscConvEst, r::PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec) 
 
 # External Links
 $(_doc_external("Snes/PetscConvEstComputeInitialGuess"))
 """
-function PetscConvEstComputeInitialGuess(petsclib::PetscLibType, ce::PetscConvEst, r::PetscInt, dm::PetscDM, u::PetscVec) end
+function PetscConvEstComputeInitialGuess(petsclib::PetscLibType, ce::PetscConvEst, r::PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec) end
 
-@for_petsc function PetscConvEstComputeInitialGuess(petsclib::$UnionPetscLib, ce::PetscConvEst, r::$PetscInt, dm::PetscDM, u::PetscVec )
+@for_petsc function PetscConvEstComputeInitialGuess(petsclib::$UnionPetscLib, ce::PetscConvEst, r::$PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec )
 
     @chk ccall(
                (:PetscConvEstComputeInitialGuess, $petsc_library),
@@ -217,14 +217,14 @@ function PetscConvEstComputeInitialGuess(petsclib::PetscLibType, ce::PetscConvEs
 end 
 
 """
-	PetscConvEstComputeError(petsclib::PetscLibType,ce::PetscConvEst, r::PetscInt, dm::PetscDM, u::PetscVec, errors::Vector{PetscReal}) 
+	PetscConvEstComputeError(petsclib::PetscLibType,ce::PetscConvEst, r::PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec, errors::Vector{PetscReal}) 
 
 # External Links
 $(_doc_external("Snes/PetscConvEstComputeError"))
 """
-function PetscConvEstComputeError(petsclib::PetscLibType, ce::PetscConvEst, r::PetscInt, dm::PetscDM, u::PetscVec, errors::Vector{PetscReal}) end
+function PetscConvEstComputeError(petsclib::PetscLibType, ce::PetscConvEst, r::PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec, errors::Vector{PetscReal}) end
 
-@for_petsc function PetscConvEstComputeError(petsclib::$UnionPetscLib, ce::PetscConvEst, r::$PetscInt, dm::PetscDM, u::PetscVec, errors::Vector{$PetscReal} )
+@for_petsc function PetscConvEstComputeError(petsclib::$UnionPetscLib, ce::PetscConvEst, r::$PetscInt, dm::AbstractPetscDM, u::AbstractPetscVec, errors::Vector{$PetscReal} )
 
     @chk ccall(
                (:PetscConvEstComputeError, $petsc_library),

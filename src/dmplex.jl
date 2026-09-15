@@ -978,7 +978,7 @@ function mat_null_space_create(petsclib, comm; has_const::Bool = true)
     return LibPETSc.MatNullSpaceCreate(petsclib, comm,
         LibPETSc.PetscBool(has_const),
         petsclib.PetscInt(0),
-        LibPETSc.CVec[])
+        LibPETSc.PetscVec{typeof(petsclib)}[])
 end
 
 """
@@ -995,9 +995,10 @@ LibPETSc.@for_petsc function mat_null_space_create(
     comm,
     vecs,
 )
-    cvecs = LibPETSc.CVec[v.ptr for v in vecs]
+    # the wrapper converts the handles itself; accept anything with a `.ptr`
+    pvecs = [LibPETSc.PetscVec{$PetscLib}(v.ptr) for v in vecs]
     return LibPETSc.MatNullSpaceCreate(petsclib, comm,
-        LibPETSc.PETSC_FALSE, $PetscInt(length(cvecs)), cvecs)
+        LibPETSc.PETSC_FALSE, $PetscInt(length(pvecs)), pvecs)
 end
 
 """

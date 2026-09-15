@@ -41,10 +41,7 @@ jobs:
           - os: macOS-latest
             arch: aarch64
             version: 1
-          - os: ubuntu-latest
-            arch: x64
-            version: 'lts'
-            
+          # PETSc_jll >= 3.25 requires Julia 1.12, so there is no LTS (1.10) job
     steps:
       - uses: actions/checkout@v7
       - uses: julia-actions/setup-julia@v3

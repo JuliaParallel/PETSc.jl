@@ -1,0 +1,110 @@
+# Type mapping rules for the wrapper generator.
+
+# C type name -> Julia type name. Applied as plain substring replacements in this order,
+# exactly like the original generator (which is why `int` -> `Cint` also hits `Point`).
+# Set fix_substring_replacements = true to use word-boundary replacements instead.
+fix_substring_replacements = false
+
+# Type parameters that vary with the library and get a `$` inside @for_petsc bodies.
+dispatch_types = ["PetscScalar", "PetscReal", "PetscInt", "PetscComplex"]
+
+[replace]
+order = ["size_t", "ptrdiff_t", "short", "int32_t", "float", "bool", "char", "void", "double", "int", "FILE"]
+size_t = "Csize_t"
+ptrdiff_t = "Cptrdiff_t"
+short = "Cshort"
+int32_t = "Int32"
+float = "Cfloat"
+bool = "Bool"
+char = "Cchar"
+void = "Cvoid"
+double = "Cdouble"
+int = "Cint"
+FILE = "Libc.FILE"
+
+# Argument names that are Julia keywords or would shadow something.
+[rename_args]
+function = "fnc"
+end = "end_"
+global = "glob"
+local = "loc"
+
+# PETSc handle types that have a Julia struct in the prologue.
+#   julia    : concrete struct name used in return positions
+#   abstract : abstract supertype used for input arguments
+#   c        : alias of Ptr{Cvoid} used in ccall signatures
+[[handles]]
+c_name = "Vec"
+julia = "PetscVec"
+abstract = "AbstractPetscVec"
+c = "CVec"
+
+[[handles]]
+c_name = "Mat"
+julia = "PetscMat"
+abstract = "AbstractPetscMat"
+c = "CMat"
+
+[[handles]]
+c_name = "DM"
+julia = "PetscDM"
+abstract = "AbstractPetscDM"
+c = "CDM"
+
+[[handles]]
+c_name = "KSP"
+julia = "PetscKSP"
+abstract = "AbstractPetscKSP"
+c = "CKSP"
+
+[[handles]]
+c_name = "SNES"
+julia = "PetscSNES"
+abstract = "AbstractPetscSNES"
+c = "CSNES"
+
+[[handles]]
+c_name = "PetscOptions"
+julia = "PetscOptions"
+abstract = "AbstractPetscOptions"
+c = "COptions"
+
+[[handles]]
+c_name = "IS"
+julia = "IS"
+abstract = "AbstractIS"
+c = "CIS"
+
+[[handles]]
+c_name = "PF"
+julia = "PF"
+abstract = "AbstractPF"
+c = "CPF"
+
+[[handles]]
+c_name = "TS"
+julia = "TS"
+abstract = "AbstractTS"
+c = "CTS"
+
+[[handles]]
+c_name = "AO"
+julia = "AO"
+abstract = "AbstractAO"
+c = "CAO"
+
+[[handles]]
+c_name = "Tao"
+julia = "Tao"
+abstract = "AbstractTao"
+c = "CTao"
+
+# Types the generator would try to declare as opaque pointers but which are defined
+# elsewhere (prologue, support files, Julia Base) or must keep a hand-written definition.
+[predeclared]
+names = []
+
+# String-enum aliases that are Cstring instead of Ptr{Cchar}
+[senum_overrides]
+VecType = "Cstring"
+MatType = "Cstring"

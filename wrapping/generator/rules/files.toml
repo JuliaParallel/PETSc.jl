@@ -1,0 +1,241 @@
+# Which PETSc classes go into which generated file, and the include order.
+# `standalone = true` collects every function that getAPI.py did not attach to a class.
+
+# Functions never wrapped (name => reason). Functions containing "_" are always skipped.
+[exclude]
+LandauKokkosCreateMatMaps = "Kokkos only"
+LandauKokkosDestroyMatMaps = "Kokkos only"
+LandauKokkosJacobian = "Kokkos only"
+LandauKokkosStaticDataClear = "Kokkos only"
+LandauKokkosStaticDataSet = "Kokkos only"
+PetscObjectListAdd = "not wrapped in the hand-edited baseline"
+PetscObjectListDestroy = "not wrapped in the hand-edited baseline"
+PetscObjectListDuplicate = "not wrapped in the hand-edited baseline"
+PetscObjectListFind = "not wrapped in the hand-edited baseline"
+PetscObjectListRemoveReference = "not wrapped in the hand-edited baseline"
+PetscObjectListReverseFind = "not wrapped in the hand-edited baseline"
+VecGetArray1dRead = "not wrapped in the hand-edited baseline"
+
+[[file]]
+name = "Sys_wrappers.jl"
+standalone = true
+
+[[file]]
+name = "Vec_wrappers.jl"
+classes = ["Vec"]
+
+[[file]]
+name = "Vecs_wrappers.jl"
+classes = ["Vecs"]
+
+[[file]]
+name = "Mat_wrappers.jl"
+classes = ["Mat"]
+
+[[file]]
+name = "KSP_wrappers.jl"
+classes = ["KSP"]
+
+[[file]]
+name = "SNES_wrappers.jl"
+classes = ["SNES"]
+
+[[file]]
+name = "DM_wrappers.jl"
+classes = ["DM"]
+
+[[file]]
+name = "PetscOptions_wrappers.jl"
+classes = ["PetscOptions"]
+
+[[file]]
+name = "PetscObject_wrappers.jl"
+classes = ["PetscObject", "PetscObjectList"]
+
+[[file]]
+name = "PetscDraw_wrappers.jl"
+classes = ["PetscDraw", "PetscDrawAxis", "PetscDrawLG", "PetscDrawSP", "PetscDrawHG", "PetscDrawBar"]
+
+[[file]]
+name = "PetscRegressor_wrappers.jl"
+classes = ["PetscRegressor"]
+
+[[file]]
+name = "PF_wrappers.jl"
+classes = ["PF"]
+
+[[file]]
+name = "IS_wrappers.jl"
+classes = ["IS"]
+
+[[file]]
+name = "TS_wrappers.jl"
+classes = ["TS"]
+
+[[file]]
+name = "AO_wrappers.jl"
+classes = ["AO"]
+
+[[file]]
+name = "Tao_wrappers.jl"
+classes = ["Tao"]
+
+[[file]]
+name = "DMaddons_wrappers.jl"
+classes = ["DMAdaptor", "DMSwarmDataField", "DMSwarmDataBucket", "DMSwarmSort", "DMSwarmCellDM", "DMInterpolationInfo", "DMPlexStorageVersion", "DMPlexPointQueue", "DMField", "DMUniversalLabel", "DMGeneratorFunctionList", "DMPlexTransform", "DMNetworkMonitorList", "DMNetworkMonitor", "DMLabel"]
+
+[[file]]
+name = "VecTagger_wrappers.jl"
+classes = ["VecTagger"]
+
+[[file]]
+name = "PetscDS_wrappers.jl"
+classes = ["PetscDS"]
+
+[[file]]
+name = "Mataddons_wrappers.jl"
+classes = ["MatColoring", "MatFDColoring", "MatTransposeColoring", "MatPartitioning", "MatNullSpace", "MatMFFD", "MatCoarsen"]
+
+[[file]]
+name = "ISaddons_wrappers.jl"
+classes = ["ISLocalToGlobalMapping", "ISColoring"]
+
+[[file]]
+name = "SNESLineSearch_wrappers.jl"
+classes = ["SNESLineSearch"]
+
+[[file]]
+name = "PetscBag_wrappers.jl"
+classes = ["PetscBag", "PetscBagItem"]
+
+[[file]]
+name = "KSPGuess_wrappers.jl"
+classes = ["KSPGuess"]
+
+[[file]]
+name = "PetscKDTree_wrappers.jl"
+classes = ["PetscKDTree"]
+
+[[file]]
+name = "PetscGridHash_wrappers.jl"
+classes = ["PetscGridHash"]
+
+[[file]]
+name = "PetscSection_wrappers.jl"
+classes = ["PetscSection", "PetscSectionSym"]
+
+[[file]]
+name = "TSaddons_wrappers.jl"
+classes = ["TSTrajectory", "TSMonitorDrawCtx", "TSMonitorSolutionCtx", "TSMonitorVTKCtx", "TSMonitorLGCtx", "TSMonitorLGCtxNetwork", "TSMonitorEnvelopeCtx", "TSMonitorSPEigCtx", "TSMonitorSPCtx", "TSMonitorHGCtx", "TSAdapt", "TSGLLEAdapt"]
+
+[[file]]
+name = "PetscSpace_wrappers.jl"
+classes = ["PetscSpace"]
+
+[[file]]
+name = "PetscDevice_wrappers.jl"
+classes = ["PetscDevice", "PetscDeviceContext"]
+
+[[file]]
+name = "PetscLayout_wrappers.jl"
+classes = ["PetscLayout"]
+
+[[file]]
+name = "PetscMatlabEngine_wrappers.jl"
+classes = ["PetscMatlabEngine"]
+
+[[file]]
+name = "PetscPartitioner_wrappers.jl"
+classes = ["PetscPartitioner"]
+
+[[file]]
+name = "PetscConvEst_wrappers.jl"
+classes = ["PetscConvEst"]
+
+[[file]]
+name = "PetscFE_wrappers.jl"
+classes = ["PetscFE", "PetscQuadrature", "PetscTabulation", "PetscWeakForm"]
+
+[[file]]
+name = "PetscBench_wrappers.jl"
+classes = ["PetscBench"]
+
+[[file]]
+name = "PetscToken_wrappers.jl"
+classes = ["PetscToken"]
+
+[[file]]
+name = "PetscFunctionList_wrappers.jl"
+classes = ["PetscFunctionList"]
+
+[[file]]
+name = "PetscDLLibrary_wrappers.jl"
+classes = ["PetscDLLibrary"]
+
+[[file]]
+name = "PetscContainer_wrappers.jl"
+classes = ["PetscContainer"]
+
+[[file]]
+name = "PetscRandom_wrappers.jl"
+classes = ["PetscRandom"]
+
+[[file]]
+name = "Petsccomm_wrappers.jl"
+classes = ["PetscSubcomm", "PetscShmComm"]
+
+[[file]]
+name = "PetscOmpCtrl_wrappers.jl"
+classes = ["PetscOmpCtrl"]
+
+[[file]]
+name = "PetscHeap_wrappers.jl"
+classes = ["PetscHeap"]
+
+[[file]]
+name = "PetscSegBuffer_wrappers.jl"
+classes = ["PetscSegBuffer"]
+
+[[file]]
+name = "PetscLimiter_wrappers.jl"
+classes = ["PetscLimiter"]
+
+[[file]]
+name = "PetscFV_wrappers.jl"
+classes = ["PetscFV"]
+
+[[file]]
+name = "Tao_addons_wrappers.jl"
+classes = ["TaoMonitorDrawCtx", "TaoLineSearch"]
+
+[[file]]
+name = "PetscViewer_wrappers.jl"
+classes = ["PetscViewer", "PetscViewers"]
+
+[[file]]
+name = "Characteristic_wrappers.jl"
+classes = ["Characteristic"]
+
+[[file]]
+name = "PetscSF_wrappers.jl"
+classes = ["PetscSF", "PetscSFLink"]
+
+[[file]]
+name = "PetscDualSpace_wrappers.jl"
+classes = ["PetscDualSpace"]
+
+[[file]]
+name = "PetscOptions_addons_wrappers.jl"
+classes = ["PetscOptionsHelpPrinted", "PetscOptionItem", "PetscOptionItems"]
+
+[[file]]
+name = "PetscIntStack_wrappers.jl"
+classes = ["PetscIntStack"]
+
+[[file]]
+name = "PetscLog_wrappers.jl"
+classes = ["PetscLogHandler", "PetscLogRegistry", "PetscLogState"]
+
+[[file]]
+name = "PC_wrappers.jl"
+classes = ["PC"]
